@@ -138,6 +138,13 @@ public:
      * @param username
      * @return string like bootstrap1:port1;bootstrap2:port2;...
      */
+    /**
+     * Try to register a name
+     * @param accountId
+     * @param password
+     * @param username
+     * @return string like bootstrap1:port1;bootstrap2:port2;...
+     */
     bool registerName(const std::string& accountId, const std::string& password, const std::string& username);
 
 Q_SIGNALS:
