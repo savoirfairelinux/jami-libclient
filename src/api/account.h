@@ -78,6 +78,18 @@ to_status(const std::string& type)
 
 #pragma pop_macro("REGISTERED")
 
+enum class KeyExchangeProtocol {
+    NONE,
+    SDES
+};
+
+enum class TlsMethod {
+    DEFAULT,
+    TLSv1,
+    TLSv1_1,
+    TLSv1_2
+};
+
 struct ConfProperties_t {
     std::string             displayName;
     std::string             mailbox;
@@ -104,11 +116,10 @@ struct ConfProperties_t {
     bool                    archiveHasPassword;
     std::string             archivePath;
     std::string             archivePin;
-    // in NewDeviceModel:   deviceID;
-    // in NewDeviceModel:   deviceName;
     bool                    proxyEnabled;
     std::string             proxyServer;
     std::string             proxyPushToken;
+    int                     registrationExpire;
     struct Audio_t {
         int                 audioPortMax;
         int                 audioPortMin;
@@ -139,7 +150,7 @@ struct ConfProperties_t {
         bool                ringtoneEnabled;
     } Ringtone;
     struct SRTP_t {
-        std::string         keyExchange;
+        KeyExchangeProtocol keyExchange;
         bool                enable;
         bool                rtpFallback;
     } SRTP;
@@ -151,7 +162,7 @@ struct ConfProperties_t {
         std::string         certificateFile;
         std::string         privateKeyFile;
         std::string         password;
-        std::string         method;
+        TlsMethod           method;
         std::string         ciphers;
         std::string         serverName;
         bool                verifyServer;
@@ -168,6 +179,9 @@ struct ConfProperties_t {
         std::string         uri;
         std::string         account;
     } RingNS;
+    struct Registration_t {
+        int                 expire;
+    } Registration;
 
     MapStringString         toDetails() const;
 };
