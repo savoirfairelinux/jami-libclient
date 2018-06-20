@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "da5c1566_b373b8e6",
+        "filename": "src/contactmodel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 694,
+      "author": {
+        "id": 579
+      },
+      "writtenOn": "2018-06-20T18:04:18Z",
+      "side": 1,
+      "message": "add else catching potential upstream failures instead of silently ignoring it ?",
+      "range": {
+        "startLine": 694,
+        "startChar": 4,
+        "endLine": 694,
+        "endChar": 5
+      },
+      "revId": "57985d9873ba7c798a874e4c7db529a7f71865f5",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da5c1566_53633c1a",
+        "filename": "src/newaccountmodel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 579
+      },
+      "writtenOn": "2018-06-20T18:04:18Z",
+      "side": 1,
+      "message": "address missing. copy\u0026paste ? :)",
+      "range": {
+        "startLine": 117,
+        "startChar": 6,
+        "endLine": 118,
+        "endChar": 18
+      },
+      "revId": "57985d9873ba7c798a874e4c7db529a7f71865f5",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da5c1566_936dd407",
+        "filename": "src/newaccountmodel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 254,
+      "author": {
+        "id": 579
+      },
+      "writtenOn": "2018-06-20T18:04:18Z",
+      "side": 1,
+      "message": "It would be more intuitive to keep the same argument order as the configurationmanager IMO. accountId, then password, then username",
+      "range": {
+        "startLine": 254,
+        "startChar": 30,
+        "endLine": 254,
+        "endChar": 116
+      },
+      "revId": "57985d9873ba7c798a874e4c7db529a7f71865f5",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da5c1566_d3762cd8",
+        "filename": "src/newaccountmodel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 404,
+      "author": {
+        "id": 579
+      },
+      "writtenOn": "2018-06-20T18:04:18Z",
+      "side": 1,
+      "message": "Possible to use enum instead of bare ints ?",
+      "range": {
+        "startLine": 404,
+        "startChar": 4,
+        "endLine": 404,
+        "endChar": 11
+      },
+      "revId": "57985d9873ba7c798a874e4c7db529a7f71865f5",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
