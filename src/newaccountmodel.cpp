@@ -575,7 +575,7 @@ account::Info::fromDetails(const MapStringString& details)
     confProperties.Ringtone.ringtonePath                = toStdString(details[ConfProperties::Ringtone::PATH]);
     confProperties.Ringtone.ringtoneEnabled             = toBool(details[ConfProperties::Ringtone::ENABLED]);
     // SRTP
-    confProperties.SRTP.keyExchange                     = toStdString(details[ConfProperties::SRTP::KEY_EXCHANGE]);
+    confProperties.SRTP.keyExchange                     = toStdString(details[ConfProperties::SRTP::KEY_EXCHANGE]).empty()? account::KeyExchangeProtocol::NONE : account::KeyExchangeProtocol::SDES;
     confProperties.SRTP.enable                          = toBool(details[ConfProperties::SRTP::ENABLED]);
     confProperties.SRTP.rtpFallback                     = toBool(details[ConfProperties::SRTP::RTP_FALLBACK]);
     // TLS
@@ -586,7 +586,16 @@ account::Info::fromDetails(const MapStringString& details)
     confProperties.TLS.certificateFile                  = toStdString(details[ConfProperties::TLS::CERTIFICATE_FILE]);
     confProperties.TLS.privateKeyFile                   = toStdString(details[ConfProperties::TLS::PRIVATE_KEY_FILE]);
     confProperties.TLS.password                         = toStdString(details[ConfProperties::TLS::PASSWORD]);
-    confProperties.TLS.method                           = toStdString(details[ConfProperties::TLS::METHOD]);
+    auto method = toStdString(details[ConfProperties::TLS::METHOD]);
+    if (method == "TLSv1") {
+        confProperties.TLS.method                       = account::TlsMethod::TLSv1;
+    } else if (method == "TLSv1.1") {
+        confProperties.TLS.method                       = account::TlsMethod::TLSv1_1;
+    } else if (method == "TLSv1.2") {
+        confProperties.TLS.method                       = account::TlsMethod::TLSv1_2;
+    } else {
+        confProperties.TLS.method                       = account::TlsMethod::DEFAULT;
+    }
     confProperties.TLS.ciphers                          = toStdString(details[ConfProperties::TLS::CIPHERS]);
     confProperties.TLS.serverName                       = toStdString(details[ConfProperties::TLS::SERVER_NAME]);
     confProperties.TLS.verifyServer                     = toBool(details[ConfProperties::TLS::VERIFY_SERVER]);
@@ -600,6 +609,8 @@ account::Info::fromDetails(const MapStringString& details)
     // RingNS
     confProperties.RingNS.uri                           = toStdString(details[ConfProperties::RingNS::URI]);
     confProperties.RingNS.account                       = toStdString(details[ConfProperties::RingNS::ACCOUNT]);
+    // Registration
+    confProperties.Registration.expire                  = toInt(details[ConfProperties::Registration::EXPIRE]);
 }
 
 MapStringString
@@ -660,7 +671,7 @@ account::ConfProperties_t::toDetails() const
     details[ConfProperties::Ringtone::PATH]             = toQString(this->Ringtone.ringtonePath);
     details[ConfProperties::Ringtone::ENABLED]          = toQString(this->Ringtone.ringtoneEnabled);
     // SRTP
-    details[ConfProperties::SRTP::KEY_EXCHANGE]         = toQString(this->SRTP.keyExchange);
+    details[ConfProperties::SRTP::KEY_EXCHANGE]         = this->SRTP.keyExchange == account::KeyExchangeProtocol::NONE? "" : "sdes";
     details[ConfProperties::SRTP::ENABLED]              = toQString(this->SRTP.enable);
     details[ConfProperties::SRTP::RTP_FALLBACK]         = toQString(this->SRTP.rtpFallback);
     // TLS
@@ -671,7 +682,21 @@ account::ConfProperties_t::toDetails() const
     details[ConfProperties::TLS::CERTIFICATE_FILE]      = toQString(this->TLS.certificateFile);
     details[ConfProperties::TLS::PRIVATE_KEY_FILE]      = toQString(this->TLS.privateKeyFile);
     details[ConfProperties::TLS::PASSWORD]              = toQString(this->TLS.password);
-    details[ConfProperties::TLS::METHOD]                = toQString(this->TLS.method);
+    switch (this->TLS.method) {
+    case account::TlsMethod::TLSv1:
+        details[ConfProperties::TLS::METHOD]            = "TLSv1";
+        break;
+    case account::TlsMethod::TLSv1_1:
+        details[ConfProperties::TLS::METHOD]            = "TLSv1.1";
+        break;
+    case account::TlsMethod::TLSv1_2:
+        details[ConfProperties::TLS::METHOD]            = "TLSv1.2";
+        break;
+    case account::TlsMethod::DEFAULT:
+    default:
+        details[ConfProperties::TLS::METHOD]            = "Default";
+        break;
+    }
     details[ConfProperties::TLS::CIPHERS]               = toQString(this->TLS.ciphers);
     details[ConfProperties::TLS::SERVER_NAME]           = toQString(this->TLS.serverName);
     details[ConfProperties::TLS::VERIFY_SERVER]         = toQString(this->TLS.verifyServer);
@@ -685,6 +710,8 @@ account::ConfProperties_t::toDetails() const
     // RingNS
     details[ConfProperties::RingNS::URI]                = toQString(this->RingNS.uri);
     details[ConfProperties::RingNS::ACCOUNT]            = toQString(this->RingNS.account);
+    // Registration
+    details[ConfProperties::Registration::EXPIRE]       = toQString(this->Registration.expire);
 
     return details;
 }
