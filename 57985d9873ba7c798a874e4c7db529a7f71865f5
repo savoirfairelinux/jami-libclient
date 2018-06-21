@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "da5c1566_ee4a63ab",
+        "filename": "src/contactmodel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 694,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2018-06-21T16:22:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "da5c1566_b373b8e6",
+      "range": {
+        "startLine": 694,
+        "startChar": 4,
+        "endLine": 694,
+        "endChar": 5
+      },
+      "revId": "57985d9873ba7c798a874e4c7db529a7f71865f5",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "da5c1566_53633c1a",
         "filename": "src/newaccountmodel.cpp",
         "patchSetId": 1
@@ -36,6 +60,30 @@
       "writtenOn": "2018-06-20T18:04:18Z",
       "side": 1,
       "message": "address missing. copy\u0026paste ? :)",
+      "range": {
+        "startLine": 117,
+        "startChar": 6,
+        "endLine": 118,
+        "endChar": 18
+      },
+      "revId": "57985d9873ba7c798a874e4c7db529a7f71865f5",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da5c1566_4ec70f13",
+        "filename": "src/newaccountmodel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2018-06-21T16:22:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "da5c1566_53633c1a",
       "range": {
         "startLine": 117,
         "startChar": 6,
@@ -71,6 +119,30 @@
     },
     {
       "key": {
+        "uuid": "da5c1566_2ecc5b35",
+        "filename": "src/newaccountmodel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 254,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2018-06-21T16:22:37Z",
+      "side": 1,
+      "message": "Moreover, I already use the good order in my patch for the client...",
+      "parentUuid": "da5c1566_936dd407",
+      "range": {
+        "startLine": 254,
+        "startChar": 30,
+        "endLine": 254,
+        "endChar": 116
+      },
+      "revId": "57985d9873ba7c798a874e4c7db529a7f71865f5",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "da5c1566_d3762cd8",
         "filename": "src/newaccountmodel.cpp",
         "patchSetId": 1
@@ -82,6 +154,30 @@
       "writtenOn": "2018-06-20T18:04:18Z",
       "side": 1,
       "message": "Possible to use enum instead of bare ints ?",
+      "range": {
+        "startLine": 404,
+        "startChar": 4,
+        "endLine": 404,
+        "endChar": 11
+      },
+      "revId": "57985d9873ba7c798a874e4c7db529a7f71865f5",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da5c1566_8ed127d0",
+        "filename": "src/newaccountmodel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 404,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2018-06-21T16:22:37Z",
+      "side": 1,
+      "message": "This is used to convert the int into the enum here.",
+      "parentUuid": "da5c1566_d3762cd8",
       "range": {
         "startLine": 404,
         "startChar": 4,
