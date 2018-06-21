@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "da5c1566_6eb5b3cc",
+        "filename": "src/newaccountmodel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 579
+      },
+      "writtenOn": "2018-06-21T15:23:38Z",
+      "side": 1,
+      "message": "missing @param pin",
+      "range": {
+        "startLine": 91,
+        "startChar": 5,
+        "endLine": 91,
+        "endChar": 7
+      },
+      "revId": "7edca6b64937d185ba646a86f55121748a5095fe",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
