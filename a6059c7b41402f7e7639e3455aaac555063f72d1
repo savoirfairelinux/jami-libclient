@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "da5c1566_2ea61bc2",
+        "filename": "src/api/newaccountmodel.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 579
+      },
+      "writtenOn": "2018-06-21T15:01:29Z",
+      "side": 1,
+      "message": "Missing @exception or @throws ?",
+      "range": {
+        "startLine": 124,
+        "startChar": 4,
+        "endLine": 128,
+        "endChar": 7
+      },
+      "revId": "a6059c7b41402f7e7639e3455aaac555063f72d1",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da5c1566_eec42361",
+        "filename": "src/call.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1707,
+      "author": {
+        "id": 579
+      },
+      "writtenOn": "2018-06-21T15:01:29Z",
+      "side": 1,
+      "message": "I\u0027d rather like to avoid hardcoded paths/filenames",
+      "range": {
+        "startLine": 1707,
+        "startChar": 83,
+        "endLine": 1707,
+        "endChar": 93
+      },
+      "revId": "a6059c7b41402f7e7639e3455aaac555063f72d1",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da5c1566_8eabe788",
+        "filename": "src/newaccountmodel.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 579
+      },
+      "writtenOn": "2018-06-21T15:01:29Z",
+      "side": 1,
+      "message": "Nitpicking, sorry :)\n\ngetOrInsertProfile returns \"\" in case of error during insertion. We should maybe check for empty() before calling setAvatarProfile ?",
+      "range": {
+        "startLine": 181,
+        "startChar": 4,
+        "endLine": 181,
+        "endChar": 67
+      },
+      "revId": "a6059c7b41402f7e7639e3455aaac555063f72d1",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    }
+  ]
+}
