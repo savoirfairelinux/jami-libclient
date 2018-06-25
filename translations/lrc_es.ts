@@ -1260,7 +1260,7 @@
     <message>
         <location filename="../src/api/call.h" line="79"/>
         <source>Inactive</source>
-        <translation type="unfinished"/>
+        <translation>Inactivo</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="81"/>
@@ -1276,7 +1276,7 @@
     <message>
         <location filename="../src/api/call.h" line="87"/>
         <source>Auto answering</source>
-        <translation type="unfinished"/>
+        <translation>Respuesta automática</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="519"/>
@@ -1419,7 +1419,7 @@
     <message>
         <location filename="../src/conversationmodel.cpp" line="1227"/>
         <source>Contact added</source>
-        <translation type="unfinished"/>
+        <translation>Contacto añadido</translation>
     </message>
     <message>
         <location filename="../src/conversationmodel.cpp" line="1262"/>
