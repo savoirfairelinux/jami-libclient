@@ -91,7 +91,6 @@ enum class TlsMethod {
 };
 
 struct ConfProperties_t {
-    std::string             displayName;
     std::string             mailbox;
     std::string             dtmfType;
     bool                    autoAnswer;
