@@ -143,11 +143,32 @@ public:
      * @param accountId
      * @param password
      * @param username
-     * @return string like bootstrap1:port1;bootstrap2:port2;...
+     * @return if operation started
      */
     bool registerName(const std::string& accountId, const std::string& password, const std::string& username);
 
+    /**
+     * Create a new Ring or SIP account
+     * @param type determine if the new account will be a Ring account or a SIP one
+     * @param displayName
+     * @param username
+     * @param archivePath
+     * @param password of the archive (unused for SIP)
+     * @param pin of the archive (unused for SIP)
+     * @return the created account
+     */
+    static std::string createNewAccount(profile::Type type,
+                                        const std::string& displayName = "",
+                                        const std::string& archivePath = "",
+                                        const std::string& password = "",
+                                        const std::string& pin = "");
+
 Q_SIGNALS:
+    /**
+     * Connect this signal to know when an invalid account is here
+     * @param accountID
+     */
+    void invalidAccountDetected(const std::string& accountID);
     /**
      * Connect this signal to know when the status of an account has changed.
      * @param accountID
