@@ -55,7 +55,11 @@
 #include "call_const.h"
 
 //System
+#ifndef _MSC_VER
 #include <unistd.h>
+#else
+#include "../../daemon/MSVC/unistd.h"
+#endif // !_MSC_VER
 #include <errno.h>
 
 //Private
@@ -477,10 +481,10 @@ Call* CallModelPrivate::addCall2(Call* call, Call* parentCall)
       connect(call,&Call::videoStopped,[this,call](Video::Renderer* r) {
          emit q_ptr->rendererRemoved(call, r);
       });
-      connect(call,&Call::mediaAdded, [this,call](Media::Media* media) {
+      connect(call,&Call::mediaAdded, [this,call](media::Media* media) {
          emit q_ptr->mediaAdded(call,media);
       });
-      connect(call,&Call::mediaStateChanged, [this,call](Media::Media* media, const Media::Media::State s, const Media::Media::State m) {
+      connect(call,&Call::mediaStateChanged, [this,call](media::Media* media, const media::Media::State s, const media::Media::State m) {
          emit q_ptr->mediaStateChanged(call,media,s,m);
       });
 
@@ -1452,10 +1456,10 @@ void CallModelPrivate::slotRecordStateChanged (const QString& callId, bool state
 {
    if (auto call = q_ptr->getCall(callId)) {
 
-      call->d_ptr->m_mIsRecording[ Media::Media::Type::AUDIO ].setAt( Media::Media::Direction::IN  , state);
-      call->d_ptr->m_mIsRecording[ Media::Media::Type::AUDIO ].setAt( Media::Media::Direction::OUT , state);
-      call->d_ptr->m_mIsRecording[ Media::Media::Type::VIDEO ].setAt( Media::Media::Direction::IN  , state);
-      call->d_ptr->m_mIsRecording[ Media::Media::Type::VIDEO ].setAt( Media::Media::Direction::OUT , state);
+      call->d_ptr->m_mIsRecording[ media::Media::Type::AUDIO ].setAt( media::Media::Direction::IN  , state);
+      call->d_ptr->m_mIsRecording[ media::Media::Type::AUDIO ].setAt( media::Media::Direction::OUT , state);
+      call->d_ptr->m_mIsRecording[ media::Media::Type::VIDEO ].setAt( media::Media::Direction::IN  , state);
+      call->d_ptr->m_mIsRecording[ media::Media::Type::VIDEO ].setAt( media::Media::Direction::OUT , state);
 
       emit call->changed();
    }
@@ -1466,11 +1470,11 @@ void CallModelPrivate::slotAudioMuted( const QString& callId, bool state)
    Call* call = q_ptr->getCall(callId);
 
    if (call) {
-      auto a = call->firstMedia<Media::Audio>(Media::Media::Direction::OUT);
+      auto a = call->firstMedia<media::Audio>(media::Media::Direction::OUT);
       if (state)
-         a->Media::d_ptr->muteConfirmed();
+         a->media::Media::d_ptr->muteConfirmed();
       else
-         a->Media::d_ptr->unmuteConfirmed();
+         a->media::Media::d_ptr->unmuteConfirmed();
    }
 }
 
@@ -1479,11 +1483,11 @@ void CallModelPrivate::slotVideoMutex( const QString& callId, bool state)
    Call* call = q_ptr->getCall(callId);
 
    if (call) {
-      auto v = call->firstMedia<Media::Video>(Media::Media::Direction::OUT);
+      auto v = call->firstMedia<media::Video>(media::Media::Direction::OUT);
       if (state)
-         v->Media::d_ptr->muteConfirmed();
+         v->media::Media::d_ptr->muteConfirmed();
       else
-         v->Media::d_ptr->unmuteConfirmed();
+         v->media::Media::d_ptr->unmuteConfirmed();
    }
 }
 

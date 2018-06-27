@@ -31,6 +31,6 @@
 
 namespace PresenceManager {
 
-PresenceManagerInterface& LIB_EXPORT instance();
+LIB_EXPORT PresenceManagerInterface& instance();
 
 }

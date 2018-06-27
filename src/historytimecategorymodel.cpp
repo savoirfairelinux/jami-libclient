@@ -21,6 +21,16 @@
 #include <QtCore/QDate>
 #include <time.h>
 
+#ifdef _MSC_VER
+struct tm *localtime_r(const time_t *_clock, struct tm *_result)
+{
+    struct tm *p = localtime(_clock);
+    if (p)
+        *(_result) = *p;
+    return p;
+}
+#endif
+
 class HistoryTimeCategoryModelPrivate
 {
 public:

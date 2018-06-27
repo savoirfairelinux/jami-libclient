@@ -18,10 +18,10 @@
 
 class LIB_EXPORT MediaTypeInference {
 public:
-   static Media::Media* safeMediaCreator(Call* c, Media::Media::Type t, Media::Media::Direction d);
+   static media::Media* safeMediaCreator(Call* c, media::Media::Type t, media::Media::Direction d);
 
    template<typename T>
-   static inline Media::Media::Type getType() {
+   static inline media::Media::Type getType() {
       const int id = MediaTypeInference::getId<T>();
       return MediaTypeInference::typeMap(!MediaTypeInference::typeMap().contains(id))[id];
    }
@@ -31,25 +31,25 @@ public:
       static int id = genId();
       return id;
    }
-   static QHash<int, Media::Media::Type>& typeMap(bool regen = false);
+   static QHash<int, media::Media::Type>& typeMap(bool regen = false);
 private:
    static int genId();
 };
 
 /**
  * Perform a safe cast of the first media of "T" type
- * @example Media::Audio* audio = call->firstMedia<Media::Audio>(Media::Media::Direction::OUT);
+ * @example Media::Audio* audio = call->firstMedia<media::Audio>(media::Media::Direction::OUT);
  * @return nullptr if none, the media otherwise.
  */
 template<typename T>
-T* Call::firstMedia(Media::Media::Direction direction) const
+T* Call::firstMedia(media::Media::Direction direction) const
 {
-   const Media::Media::Type t = MediaTypeInference::getType<T>();
+   const media::Media::Type t = MediaTypeInference::getType<T>();
 
-   QList<Media::Media*> ms = media(t, direction);
+   QList<media::Media*> ms = media(t, direction);
 
    if (!ms.isEmpty()) {
-      Media::Media* m = ms[0];
+      media::Media* m = ms[0];
       Q_ASSERT(m->type() == t);
 
       return reinterpret_cast<T*>(m);
@@ -63,21 +63,25 @@ T* Call::addOutgoingMedia(bool useExisting)
 {
    #pragma push_macro("OUT")
    #undef OUT
-   T* existing = firstMedia<T>(Media::Media::Direction::OUT);
+   T* existing = firstMedia<T>(media::Media::Direction::OUT);
    if (useExisting && existing)
       return existing;
 
-   Media::Media::Type t = MediaTypeInference::getType<T>();
+   media::Media::Type t = MediaTypeInference::getType<T>();
 
-   return static_cast<T*>(MediaTypeInference::safeMediaCreator(this,t,Media::Media::Direction::OUT));
+   return static_cast<T*>(MediaTypeInference::safeMediaCreator(this,t, media::Media::Direction::OUT));
    #pragma pop_macro("OUT")
 }
 
+#ifdef _MSC_VER
+#define __attribute__(A) /*do nothing*/
+#endif // _MSC_VER
+
 #define REGISTER_MEDIA() __attribute__ ((unused)) static auto forceType = [] {\
-  QHash<int,::Media::Media::Type>& sTypeMap = MediaTypeInference::typeMap(0);\
-  sTypeMap[MediaTypeInference::getId<Media::Audio>()] = ::Media::Media::Type::AUDIO;\
-  sTypeMap[MediaTypeInference::getId<Media::Video>()] = ::Media::Media::Type::VIDEO;\
-  sTypeMap[MediaTypeInference::getId<Media::Text >()] = ::Media::Media::Type::TEXT ;\
-  sTypeMap[MediaTypeInference::getId<Media::File >()] = ::Media::Media::Type::FILE ;\
+  QHash<int,::media::Media::Type>& sTypeMap = MediaTypeInference::typeMap(0);\
+  sTypeMap[MediaTypeInference::getId<media::Audio>()] = ::media::Media::Type::AUDIO;\
+  sTypeMap[MediaTypeInference::getId<media::Video>()] = ::media::Media::Type::VIDEO;\
+  sTypeMap[MediaTypeInference::getId<media::Text >()] = ::media::Media::Type::TEXT ;\
+  sTypeMap[MediaTypeInference::getId<media::File >()] = ::media::Media::Type::FILE ;\
   return 0;\
 }();

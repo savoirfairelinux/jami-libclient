@@ -31,29 +31,29 @@ public:
     Video::SourceModel *m_pSourceModel = nullptr;
 };
 
-Media::Video::Video(Call* parent, const Media::Direction direction) : Media::Media(parent, direction), d_ptr(new MediaVideoPrivate())
+media::Video::Video(Call* parent, const Media::Direction direction) : media::Media(parent, direction), d_ptr(new MediaVideoPrivate())
 {
    Q_ASSERT(parent);
 }
 
-Media::Media::Type Media::Video::type()
+media::Media::Type media::Video::type()
 {
-   return Media::Media::Type::VIDEO;
+   return media::Media::Type::VIDEO;
 }
 
-bool Media::Video::mute()
+bool media::Video::mute()
 {
    CallManagerInterface& callManager = CallManager::instance();
    return callManager.muteLocalMedia(call()->dringId(),DRing::Media::Details::MEDIA_TYPE_VIDEO,true);
 }
 
-bool Media::Video::unmute()
+bool media::Video::unmute()
 {
    CallManagerInterface& callManager = CallManager::instance();
    return callManager.muteLocalMedia(call()->dringId(),DRing::Media::Details::MEDIA_TYPE_VIDEO,false);
 }
 
-Video::SourceModel* Media::Video::sourceModel() const
+Video::SourceModel* media::Video::sourceModel() const
 {
     if (!d_ptr->m_pSourceModel) {
         d_ptr->m_pSourceModel = new ::Video::SourceModel();
@@ -62,7 +62,7 @@ Video::SourceModel* Media::Video::sourceModel() const
     return d_ptr->m_pSourceModel;
 }
 
-Media::Video::~Video()
+media::Video::~Video()
 {
    delete d_ptr;
 }

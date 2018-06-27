@@ -73,7 +73,11 @@ template<typename A> constexpr int enum_class_size() {
 #ifdef LRC_IMPORT
 #define LIB_EXPORT Q_DECL_IMPORT
 #else
+#if defined(_MSC_VER)
+#define LIB_EXPORT
+#else
 #define LIB_EXPORT Q_DECL_EXPORT
+#endif
 #endif
 
 //Doesn't work
@@ -175,7 +179,13 @@ private:
    uint m_Flags;
 };
 
+#ifdef _MSC_VER
+#define DO_PRAGMA(x) /*do nothing*/
+#define __attribute__(A) /*do nothing*/
+#include <ciso646>
+#else
 #define DO_PRAGMA(x) _Pragma (#x)
+#endif // _MSC_VER
 
 //Globally disable the "-Wunused-function" warning for GCC
 //refs: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=55578

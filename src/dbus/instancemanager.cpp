@@ -19,7 +19,11 @@
 
 #include "instancemanager.h"
 
+#ifndef _MSC_VER
 #include <unistd.h>
+#else
+#include "../../daemon/MSVC/unistd.h"
+#endif // !_MSC_VER
 
 #include "../globalinstances.h"
 #include "../interfaces/dbuserrorhandleri.h"
