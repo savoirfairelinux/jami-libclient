@@ -24,7 +24,7 @@ class Account;
 class Call;
 class ContactMethod;
 
-namespace Media {
+namespace media {
    class Text;
    class TextRecording;
 }

@@ -59,10 +59,10 @@
 class MediaTextPrivate
 {
 public:
-   MediaTextPrivate(Media::Text* parent);
+   MediaTextPrivate(media::Text* parent);
 
    //Attributes
-   Media::TextRecording* m_pRecording;
+   media::TextRecording* m_pRecording;
    bool                  m_HasChecked;
    QHash<QString,bool>   m_hMimeTypes;
    QStringList           m_lMimeTypes;
@@ -71,7 +71,7 @@ public:
    void updateMimeList(const QMap<QString,QString>& payloads);
 
 private:
-   Media::Text* q_ptr;
+    media::Text* q_ptr;
 };
 
 class ProfileChunk
@@ -163,14 +163,14 @@ void IMConversationManagerPrivate::newMessage(const QString& callId, const QStri
       }
    }
 
-   Media::Text* media = call->firstMedia<Media::Text>(Media::Media::Direction::IN);
+   media::Text* media = call->firstMedia<media::Text>(media::Media::Direction::IN);
 
    if (!media) {
-      media = call->d_ptr->mediaFactory<Media::Text>(Media::Media::Direction::IN);
+      media = call->d_ptr->mediaFactory<media::Text>(media::Media::Direction::IN);
    }
 
    media->recording()->setCall(call);
-   media->recording()->d_ptr->insertNewMessage(message,call->peerContactMethod(),Media::Media::Direction::IN);
+   media->recording()->d_ptr->insertNewMessage(message,call->peerContactMethod(),media::Media::Direction::IN);
 
    media->d_ptr->updateMimeList(message);
 
@@ -181,7 +181,7 @@ void IMConversationManagerPrivate::newAccountMessage(const QString& accountId, c
 {
    if (auto cm = PhoneDirectoryModel::instance().getNumber(from, AccountModel::instance().getById(accountId.toLatin1()))) {
        auto txtRecording = cm->textRecording();
-       txtRecording->d_ptr->insertNewMessage(payloads, cm, Media::Media::Direction::IN);
+       txtRecording->d_ptr->insertNewMessage(payloads, cm, media::Media::Direction::IN);
    }
 }
 
@@ -193,26 +193,26 @@ void IMConversationManagerPrivate::accountMessageStatusChanged(const QString& ac
     }
 }
 
-MediaTextPrivate::MediaTextPrivate(Media::Text* parent) : q_ptr(parent),m_pRecording(nullptr),m_HasChecked(false)
+MediaTextPrivate::MediaTextPrivate(media::Text* parent) : q_ptr(parent),m_pRecording(nullptr),m_HasChecked(false)
 {
 }
 
-Media::Text::Text(Call* parent, const Media::Direction direction) : Media::Media(parent, direction), d_ptr(new MediaTextPrivate(this))
+media::Text::Text(Call* parent, const Media::Direction direction) : media::Media(parent, direction), d_ptr(new MediaTextPrivate(this))
 {
    Q_ASSERT(parent);
 }
 
-Media::Media::Type Media::Text::type()
+media::Media::Type media::Text::type()
 {
-   return Media::Media::Type::TEXT;
+   return media::Media::Type::TEXT;
 }
 
-Media::Text::~Text()
+media::Text::~Text()
 {
    delete d_ptr;
 }
 
-Media::TextRecording* Media::Text::recording() const
+media::TextRecording* media::Text::recording() const
 {
    const bool wasChecked = d_ptr->m_HasChecked;
    d_ptr->m_HasChecked = true;
@@ -239,12 +239,12 @@ Media::TextRecording* Media::Text::recording() const
 }
 
 
-bool Media::Text::hasMimeType( const QString& mimeType ) const
+bool media::Text::hasMimeType( const QString& mimeType ) const
 {
    return d_ptr->m_hMimeTypes.contains(mimeType);
 }
 
-QStringList Media::Text::mimeTypes() const
+QStringList media::Text::mimeTypes() const
 {
    return d_ptr->m_lMimeTypes;
 }
@@ -291,7 +291,7 @@ void MediaTextPrivate::updateMimeList(const QMap<QString,QString>& payloads)
  * "text/enriched" : (RTF) The rich text format used by older applications (like WordPad and OS X TextEdit)
  * "text/html"     : The format used by web browsers
  */
-void Media::Text::send(const QMap<QString,QString>& message, const bool isMixed)
+void media::Text::send(const QMap<QString,QString>& message, const bool isMixed)
 {
    CallManagerInterface& callManager = CallManager::instance();
    Q_NOREPLY callManager.sendTextMessage(call()->dringId(), message, isMixed);

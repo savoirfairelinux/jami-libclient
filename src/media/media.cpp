@@ -20,7 +20,7 @@
 #include "../private/media_p.h"
 #include <call.h>
 
-const Matrix2D<Media::Media::State, Media::Media::Action, bool> Media::MediaPrivate::m_mValidTransitions ={{
+const Matrix2D<media::Media::State, media::Media::Action, bool> media::MediaPrivate::m_mValidTransitions ={{
    /*                MUTE   UNMUTE  TERMINATE */
    /* ACTIVE   */ {{ true  , true  , true     }},
    /* MUTED    */ {{ true  , true  , true     }},
@@ -30,7 +30,7 @@ const Matrix2D<Media::Media::State, Media::Media::Action, bool> Media::MediaPriv
 
 //Use the Media::MediaPrivate wrapper to avoid vtable issues
 #define MEDF &MediaPrivate
-const Matrix2D<Media::Media::State, Media::Media::Action, Media::MediaTransitionFct> Media::MediaPrivate::m_mCallbacks ={{
+const Matrix2D<media::Media::State, media::Media::Action, media::MediaTransitionFct> media::MediaPrivate::m_mCallbacks ={{
    /*                     MUTE           UNMUTE         TERMINATE     */
    /* ACTIVE   */ {{ MEDF::mute    , MEDF::nothing , MEDF::terminate }},
    /* MUTED    */ {{ MEDF::nothing , MEDF::unmute  , MEDF::terminate }},
@@ -39,22 +39,23 @@ const Matrix2D<Media::Media::State, Media::Media::Action, Media::MediaTransition
 }};
 #undef MEDF
 
-namespace Media {
+namespace media {
 
 MediaPrivate::MediaPrivate(Media* parent) :
- m_State(Media::Media::State::ACTIVE),m_pCall(nullptr),q_ptr(parent),m_Direction(Media::Direction::OUT)
+ m_State(media::Media::State::ACTIVE),m_pCall(nullptr),q_ptr(parent),m_Direction(Media::Direction::OUT)
 {
 
 }
 
-Media::Media(Call* parent, const Direction dir) : QObject(parent), d_ptr(new MediaPrivate(this))
+media::Media::Media(Call* parent, const media::Media::Direction dir) :
+    QObject(parent), d_ptr(new MediaPrivate(this))
 {
    Q_ASSERT(parent);
    d_ptr->m_pCall = parent;
    d_ptr->m_Direction = dir;
 }
 
-Media::~Media()
+media::Media::~Media()
 {
    delete d_ptr;
 }
@@ -68,59 +69,59 @@ Media::~Media()
  *
  * @return if the operation has already failed
  */
-bool Media::Media::mute()
+bool media::Media::mute()
 {
    return false;
 }
 
-bool Media::Media::unmute()
+bool media::Media::unmute()
 {
    return false;
 }
 
-bool Media::Media::terminate()
+bool media::Media::terminate()
 {
    return false;
 }
 
-bool Media::MediaPrivate::mute()
+bool media::MediaPrivate::mute()
 {
    return q_ptr->mute();
 }
 
-bool Media::MediaPrivate::unmute()
+bool media::MediaPrivate::unmute()
 {
    return q_ptr->unmute();
 }
 
-bool Media::MediaPrivate::terminate()
+bool media::MediaPrivate::terminate()
 {
    return q_ptr->terminate();
 }
 
-bool Media::MediaPrivate::nothing()
+bool media::MediaPrivate::nothing()
 {
    return true;
 }
 
-Call* Media::Media::call() const
+Call* media::Media::call() const
 {
    return d_ptr->m_pCall;
 }
 
-Media::Media::Direction Media::Media::direction() const
+media::Media::Direction media::Media::direction() const
 {
    return d_ptr->m_Direction;
 }
 
-Media::Media::State Media::Media::state() const
+media::Media::State media::Media::state() const
 {
    return d_ptr->m_State;
 }
 
-bool Media::Media::performAction(const Media::Media::Action action)
+bool media::Media::performAction(const media::Media::Action action)
 {
-   const Media::Media::State s = d_ptr->m_State;
+   const media::Media::State s = d_ptr->m_State;
 
    //TODO implement a state machine
    const bool ret = (d_ptr->*(d_ptr->m_mCallbacks)[d_ptr->m_State][action])();
@@ -132,34 +133,34 @@ bool Media::Media::performAction(const Media::Media::Action action)
    return ret;
 }
 
-Media::Media* operator<<(Media::Media* m, Media::Media::Action a)
+media::Media* operator<<(media::Media* m, media::Media::Action a)
 {
    m->performAction(a);
    return m;
 }
 
-void Media::MediaPrivate::muteConfirmed()
+void media::MediaPrivate::muteConfirmed()
 {
    const auto ll = m_State;
-   m_State = Media::Media::State::MUTED;
+   m_State = media::Media::State::MUTED;
    emit q_ptr->stateChanged(m_State, ll);
 }
 
-void Media::MediaPrivate::unmuteConfirmed()
+void media::MediaPrivate::unmuteConfirmed()
 {
    const auto ll = m_State;
    switch(q_ptr->type()) {
-      case Media::Media::Type::AUDIO:
-      case Media::Media::Type::VIDEO:
-      case Media::Media::Type::FILE:
-         m_State = Media::Media::State::ACTIVE;
+      case media::Media::Type::AUDIO:
+      case media::Media::Type::VIDEO:
+      case media::Media::Type::FILE:
+         m_State = media::Media::State::ACTIVE;
          emit q_ptr->stateChanged(m_State, ll);
          break;
-      case Media::Media::Type::TEXT:
-         m_State = Media::Media::State::IDLE;
+      case media::Media::Type::TEXT:
+         m_State = media::Media::State::IDLE;
          emit q_ptr->stateChanged(m_State, ll);
          break;
-      case Media::Media::Type::COUNT__:
+      case media::Media::Type::COUNT__:
          break;
    };
 }

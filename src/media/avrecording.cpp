@@ -23,7 +23,7 @@
 //Ring
 #include <callmodel.h>
 
-namespace Media {
+namespace media {
 
 class AVRecordingPrivate {
 public:
@@ -65,12 +65,12 @@ public:
    RecordingPlaybackManager();
 
    //Attributes
-   QList<Media::AVRecording*>         m_lActiveRecordings;
-   QHash<QString,Media::AVRecording*> m_hActiveRecordings;
+   QList<media::AVRecording*>         m_lActiveRecordings;
+   QHash<QString, media::AVRecording*> m_hActiveRecordings;
 
    //Mutator
-   void activateRecording   (Media::AVRecording* r);
-   void desactivateRecording(Media::AVRecording* r);
+   void activateRecording   (media::AVRecording* r);
+   void desactivateRecording(media::AVRecording* r);
 
    //Singleton
    static RecordingPlaybackManager& instance();
@@ -97,29 +97,29 @@ RecordingPlaybackManager& RecordingPlaybackManager::instance()
 }
 
 
-Media::AVRecordingPrivate::AVRecordingPrivate(AVRecording* r) : q_ptr(r),m_Position(0.0),m_Duration(0),m_IsPaused(false),
+media::AVRecordingPrivate::AVRecordingPrivate(AVRecording* r) : q_ptr(r),m_Position(0.0),m_Duration(0),m_IsPaused(false),
 m_Elapsed(0),m_Left(0)
 {
 
 }
 
-Media::AVRecording::AVRecording() : Recording(Recording::Type::AUDIO_VIDEO), d_ptr(new AVRecordingPrivate(this))
+media::AVRecording::AVRecording() : Recording(Recording::Type::AUDIO_VIDEO), d_ptr(new AVRecordingPrivate(this))
 {
 }
 
-Media::AVRecording::~AVRecording()
+media::AVRecording::~AVRecording()
 {
    delete d_ptr;
 }
 
 ///Return this recording path, if any
-QUrl Media::AVRecording::path() const
+QUrl media::AVRecording::path() const
 {
    return d_ptr->m_Path;
 }
 
 ///Get the current playback position (0.0 if not playing)
-Media::AVRecording::Position Media::AVRecording::position() const
+media::AVRecording::Position media::AVRecording::position() const
 {
    return d_ptr->m_Position;
 }
@@ -128,7 +128,7 @@ Media::AVRecording::Position Media::AVRecording::position() const
  * Recording duration (in seconds). This is only available for audio/video
  * recordings and only after playback started.
  */
-int Media::AVRecording::duration() const
+int media::AVRecording::duration() const
 {
    return d_ptr->m_Duration;
 }
@@ -146,31 +146,31 @@ int Media::AVRecording::duration() const
    }
 
 ///Get the a string in format hhh:mm:ss for the time elapsed since the playback started
-QString Media::AVRecording::formattedTimeElapsed() const
+QString media::AVRecording::formattedTimeElapsed() const
 {
    FORMATTED_TIME_MACRO(d_ptr->m_Elapsed);
 }
 
 ///Get the a string in format hhh:mm:ss for the total time of this recording
-QString Media::AVRecording::formattedDuration() const
+QString media::AVRecording::formattedDuration() const
 {
    FORMATTED_TIME_MACRO(d_ptr->m_Duration);
 }
 
 ///Get the a string in format hhh:mm:ss for the time elapsed before the playback end
-QString Media::AVRecording::formattedTimeLeft() const
+QString media::AVRecording::formattedTimeLeft() const
 {
    FORMATTED_TIME_MACRO(d_ptr->m_Left);
 }
 #undef FORMATTED_TIME_MACRO
 
-void Media::AVRecording::setPath(const QUrl& path)
+void media::AVRecording::setPath(const QUrl& path)
 {
    d_ptr->m_Path = path;
 }
 
 ///Play (or resume) the playback
-void Media::AVRecording::play()
+void media::AVRecording::play()
 {
    RecordingPlaybackManager::instance().activateRecording(this);
 
@@ -186,7 +186,7 @@ void Media::AVRecording::play()
 }
 
 ///Stop the playback, cancel any pause point
-void Media::AVRecording::stop()
+void media::AVRecording::stop()
 {
    CallManagerInterface& callManager = CallManager::instance();
    Q_NOREPLY callManager.stopRecordedFilePlayback();
@@ -197,7 +197,7 @@ void Media::AVRecording::stop()
 }
 
 ///Pause (or resume)
-void Media::AVRecording::pause()
+void media::AVRecording::pause()
 {
    if (d_ptr->m_IsPaused) {
       play();
@@ -213,20 +213,20 @@ void Media::AVRecording::pause()
  * @note only available during playback
  * @args pos The position, in percent
  */
-void Media::AVRecording::seek(AVRecording::Position pos)
+void media::AVRecording::seek(AVRecording::Position pos)
 {
    CallManagerInterface& callManager = CallManager::instance();
    Q_NOREPLY callManager.recordPlaybackSeek(pos);
 }
 
 ///Move the playback position to the origin
-void Media::AVRecording::reset()
+void media::AVRecording::reset()
 {
    seek(0.0);
 }
 
 ///Update all internal playback metadatas
-void Media::AVRecordingPrivate::notifySeek(int position, int size)
+void media::AVRecordingPrivate::notifySeek(int position, int size)
 {
    const int oldElapsed  = m_Elapsed ;
    const int oldDuration = m_Duration;
@@ -258,7 +258,7 @@ void RecordingPlaybackManager::slotRecordPlaybackFilepath(const QString& callID,
 ///Callback when a recording stop
 void RecordingPlaybackManager::slotRecordPlaybackStopped(const QString& filepath)
 {
-   Media::AVRecording* r = m_hActiveRecordings[filepath];
+    media::AVRecording* r = m_hActiveRecordings[filepath];
    if (r) {
       desactivateRecording(r);
    }
@@ -267,7 +267,7 @@ void RecordingPlaybackManager::slotRecordPlaybackStopped(const QString& filepath
 ///Callback when a recording position changed
 void RecordingPlaybackManager::slotUpdatePlaybackScale(const QString& filepath, int position, int size)
 {
-   Media::AVRecording* r = m_hActiveRecordings[filepath];
+    media::AVRecording* r = m_hActiveRecordings[filepath];
 
    if (r) {
       r->d_ptr->notifySeek(position, size);
@@ -277,14 +277,14 @@ void RecordingPlaybackManager::slotUpdatePlaybackScale(const QString& filepath, 
 }
 
 ///To avoid having to keep a list of all recording, manage a small active recording list
-void RecordingPlaybackManager::activateRecording(Media::AVRecording* r)
+void RecordingPlaybackManager::activateRecording(media::AVRecording* r)
 {
    m_lActiveRecordings << r;
    m_hActiveRecordings[r->path().path()] = r;
 }
 
 ///To avoid having to keep a list of all recording, manage a small active recording list
-void RecordingPlaybackManager::desactivateRecording(Media::AVRecording* r)
+void RecordingPlaybackManager::desactivateRecording(media::AVRecording* r)
 {
    m_lActiveRecordings.removeAll(r);
    m_hActiveRecordings.remove(m_hActiveRecordings.key(r));
