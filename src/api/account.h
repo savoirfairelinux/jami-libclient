@@ -111,9 +111,7 @@ struct ConfProperties_t {
     std::string             userAgent;
     bool                    upnpEnabled;
     bool                    hasCustomUserAgent;
-    bool                    allowIncomingFromHistory;
-    bool                    allowIncomingFromContact;
-    bool                    allowIncomingFromTrusted;
+    bool                    allowIncoming;
     std::string             archivePassword;
     bool                    archiveHasPassword;
     std::string             archivePath;
