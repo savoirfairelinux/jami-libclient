@@ -1706,13 +1706,15 @@ void CallPrivate::sendProfile()
     // TODO: migrate sendProfile to newcallmodel.cpp as soon as possible.
     std::ifstream dbfile(lrc::DATABASE_PATH.toStdString());
     std::string photo = "";
+    std::string alias = "";
     if (dbfile.good()) {
         lrc::Database db;
         auto accountProfileId = lrc::authority::database::getOrInsertProfile(db, uri);
         // Retrieve avatar from database
         photo = lrc::authority::database::getAvatarForProfileId(db, accountProfileId);
+        alias = lrc::authority::database::getAliasForProfileId(db, accountProfileId);
     }
-    auto vCard = profile->person()->toVCard({}, photo);
+    auto vCard = profile->person()->toVCard({}, photo, alias);
 
     qsrand(time(nullptr));
     const auto& key = QString::number(qrand());
