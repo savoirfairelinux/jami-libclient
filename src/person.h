@@ -158,7 +158,7 @@ public:
    bool isPlaceHolder              () const;
    bool hasBeenCalled              () const;
 
-   bool hasRecording(Media::Media::Type type, Media::Media::Direction direction) const;
+   bool hasRecording(media::Media::Type type, media::Media::Direction direction) const;
 
    //Setters
    void setContactMethods ( ContactMethods           );

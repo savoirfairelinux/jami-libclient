@@ -22,7 +22,7 @@
 
 #include <typedefs.h>
 
-namespace Media {
+namespace media {
    class Recording;
    class TextRecording;
 }
@@ -30,7 +30,7 @@ namespace Media {
 class LIB_EXPORT LocalTextRecordingCollection : public CollectionInterface
 {
 public:
-   explicit LocalTextRecordingCollection(CollectionMediator<Media::Recording>* mediator);
+   explicit LocalTextRecordingCollection(CollectionMediator<media::Recording>* mediator);
    virtual ~LocalTextRecordingCollection();
 
    virtual bool load  () override;
@@ -47,8 +47,8 @@ public:
    virtual bool listId(std::function<void(const QList<Element>)> callback) const override;
    virtual QList<Element> listId() const override;
 
-   Media::TextRecording* fetchFor (const ContactMethod* cm);
-   Media::TextRecording* createFor(const ContactMethod* cm);
+   media::TextRecording* fetchFor (const ContactMethod* cm);
+   media::TextRecording* createFor(const ContactMethod* cm);
 
    virtual FlagPack<SupportedFeatures> supportedFeatures() const override;
 

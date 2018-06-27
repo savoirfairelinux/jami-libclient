@@ -243,7 +243,7 @@ private:
    };
 
    ///This model expect a certain size, get each sections size
-   constexpr static const short sizes[] = {
+   constexpr static const int sizes[] = {
       enum_class_size< Certificate             :: Checks                > (),
       enum_class_size< Certificate             :: Checks                > (),
       enum_class_size< SecurityEvaluationModel :: AccountSecurityChecks > (),
@@ -270,7 +270,7 @@ private:
 
 };
 
-constexpr const short CombinaisonProxyModel::sizes[];
+constexpr const int CombinaisonProxyModel::sizes[];
 
 ///Create a callback map for signals to avoid a large switch(){} in the code
 static const Matrix1D<SecurityEvaluationModel::Severity, void(SecurityEvaluationModel::*)()> m_lSignalMap = {{

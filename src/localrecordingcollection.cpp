@@ -26,23 +26,23 @@
 #include <media/recording.h>
 #include <media/avrecording.h>
 
-class LocalRecordingEditor final : public CollectionEditor<Media::Recording>
+class LocalRecordingEditor final : public CollectionEditor<media::Recording>
 {
 public:
-   LocalRecordingEditor(CollectionMediator<Media::Recording>* m) : CollectionEditor<Media::Recording>(m) {}
-   virtual bool save       ( const Media::Recording* item ) override;
-   virtual bool remove     ( const Media::Recording* item ) override;
-   virtual bool edit       ( Media::Recording*       item ) override;
-   virtual bool addNew     ( Media::Recording*       item ) override;
-   virtual bool addExisting( const Media::Recording* item ) override;
+   LocalRecordingEditor(CollectionMediator<media::Recording>* m) : CollectionEditor<media::Recording>(m) {}
+   virtual bool save       ( const media::Recording* item ) override;
+   virtual bool remove     ( const media::Recording* item ) override;
+   virtual bool edit       (media::Recording*       item ) override;
+   virtual bool addNew     (media::Recording*       item ) override;
+   virtual bool addExisting( const media::Recording* item ) override;
 
 private:
-   virtual QVector<Media::Recording*> items() const override;
+   virtual QVector<media::Recording*> items() const override;
    //Attributes
-   QVector<Media::Recording*> m_lNumbers;
+   QVector<media::Recording*> m_lNumbers;
 };
 
-LocalRecordingCollection::LocalRecordingCollection(CollectionMediator<Media::Recording>* mediator) :
+LocalRecordingCollection::LocalRecordingCollection(CollectionMediator<media::Recording>* mediator) :
    CollectionInterface(new LocalRecordingEditor(mediator))
 {
    load();
@@ -55,43 +55,43 @@ LocalRecordingCollection::~LocalRecordingCollection()
 
 LocalRecordingCollection& LocalRecordingCollection::instance()
 {
-   static auto instance = Media::RecordingModel::instance().addCollection<LocalRecordingCollection>();
+   static auto instance = media::RecordingModel::instance().addCollection<LocalRecordingCollection>();
    return *instance;
 }
 
-bool LocalRecordingEditor::save(const Media::Recording* recording)
+bool LocalRecordingEditor::save(const media::Recording* recording)
 {
    Q_UNUSED(recording)
    return true;
 }
 
-bool LocalRecordingEditor::remove(const Media::Recording* item)
+bool LocalRecordingEditor::remove(const media::Recording* item)
 {
    Q_UNUSED(item)
    //TODO
    return false;
 }
 
-bool LocalRecordingEditor::edit( Media::Recording* item)
+bool LocalRecordingEditor::edit(media::Recording* item)
 {
    Q_UNUSED(item)
    return false;
 }
 
-bool LocalRecordingEditor::addNew( Media::Recording* item)
+bool LocalRecordingEditor::addNew(media::Recording* item)
 {
    addExisting(item);
    return save(item);
 }
 
-bool LocalRecordingEditor::addExisting(const Media::Recording* item)
+bool LocalRecordingEditor::addExisting(const media::Recording* item)
 {
-   m_lNumbers << const_cast<Media::Recording*>(item);
+   m_lNumbers << const_cast<media::Recording*>(item);
    mediator()->addItem(item);
    return false;
 }
 
-QVector<Media::Recording*> LocalRecordingEditor::items() const
+QVector<media::Recording*> LocalRecordingEditor::items() const
 {
    return m_lNumbers;
 }
@@ -148,11 +148,11 @@ QByteArray LocalRecordingCollection::id() const
    return "localrecording";
 }
 
-Media::Recording* LocalRecordingCollection::addFromPath(const QString& path)
+media::Recording* LocalRecordingCollection::addFromPath(const QString& path)
 {
-   Media::AVRecording* rec = new Media::AVRecording();
+    media::AVRecording* rec = new media::AVRecording();
    rec->setPath(path);
 
-   editor<Media::Recording>()->addExisting(rec);
+   editor<media::Recording>()->addExisting(rec);
    return rec;
 }

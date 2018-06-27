@@ -85,7 +85,6 @@ d_ptr(new VideoDevicePrivate(this))
       });
       chan->d_ptr->m_lValidResolutions = validResolutions;
    }
-   Q_UNUSED(cap)
 }
 
 ///Destructor
