@@ -724,7 +724,7 @@ void Person::addCustomField(const QString& key, const QString& value)
    d_ptr->m_lCustomAttributes.insert(key, value);
 }
 
-const QByteArray Person::toVCard(QList<Account*> accounts, const std::string& avatar) const
+const QByteArray Person::toVCard(QList<Account*> accounts, const std::string& avatar, const std::string& newName) const
 {
    //serializing here
    VCardUtils maker;
@@ -733,7 +733,7 @@ const QByteArray Person::toVCard(QList<Account*> accounts, const std::string& av
    maker.addProperty(VCardUtils::Property::NAME, (secondName()
                                                    + VCardUtils::Delimiter::SEPARATOR_TOKEN
                                                    + firstName()));
-   maker.addProperty(VCardUtils::Property::FORMATTED_NAME, formattedName());
+   maker.addProperty(VCardUtils::Property::FORMATTED_NAME, newName.empty()? formattedName() : newName.c_str());
    maker.addProperty(VCardUtils::Property::ORGANIZATION, organization());
 
    maker.addEmail("PREF", preferredEmail());

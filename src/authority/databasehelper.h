@@ -95,6 +95,20 @@ std::string getAvatarForProfileId(Database& db, const std::string& profileId);
  */
 void setAvatarForProfileId(Database& db, const std::string& profileId, const std::string& avatar);
 
+/**
+ * @param  db
+ * @param  profileId
+ * @return the alias in the database for a profile
+ */
+std::string getAliasForProfileId(Database& db, const std::string& profileId);
+
+/**
+ * @param  db
+ * @param  profileId
+ * @param  alias
+ */
+void setAliasForProfileId(Database& db, const std::string& profileId, const std::string& alias);
+
 api::contact::Info buildContactFromProfileId(Database& db, const std::string& profileId);
 
 /**
