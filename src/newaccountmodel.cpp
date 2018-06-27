@@ -311,10 +311,8 @@ NewAccountModelPimpl::slotAccountStatusChanged(const std::string& accountID, con
     } else if (accountInfo != accounts.end()) {
         accountInfo->second.status = status;
         if (status == api::account::Status::REGISTERED and not accounts[accountID].enabled) {
-            accounts[accountID].enabled = true;
             emit linked.accountStatusChanged(accountID);
         } else if (status == api::account::Status::UNREGISTERED and accounts[accountID].enabled) {
-            accounts[accountID].enabled = false;
             emit linked.accountStatusChanged(accountID);
         } else
             emit linked.accountStatusChanged(accountID);
