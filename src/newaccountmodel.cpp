@@ -167,6 +167,7 @@ NewAccountModel::setAccountConfig(const std::string& accountId,
     qDebug("UPNP_ENABLED: %s\n", details[ConfProperties::UPNP_ENABLED].toStdString().c_str());
     details[ConfProperties::ENABLED]                    = toQString(accountInfo.enabled);
     details[ConfProperties::ALIAS]                      = toQString(accountInfo.profileInfo.alias);
+    details[ConfProperties::DISPLAYNAME]                = toQString(accountInfo.profileInfo.alias);
     details[ConfProperties::TYPE]                       = (accountInfo.profileInfo.type == profile::Type::RING) ? QString(ProtocolNames::RING) : QString(ProtocolNames::SIP);
     details[ConfProperties::USERNAME]                   = toQString(accountInfo.profileInfo.uri).prepend((accountInfo.profileInfo.type == profile::Type::RING) ? "ring:" : "");
     configurationManager.setAccountDetails(QString::fromStdString(accountId), details);
@@ -192,6 +193,20 @@ NewAccountModel::enableAccount(const std::string& accountId, bool enabled)
         throw std::out_of_range("NewAccountModel::getAccountConfig, can't find " + accountId);
     }
     accountInfo->second.enabled = enabled;
+}
+
+void
+NewAccountModel::setAlias(const std::string& accountId, const std::string& alias)
+{
+    auto accountInfo = pimpl_->accounts.find(accountId);
+    if (accountInfo == pimpl_->accounts.end()) {
+        throw std::out_of_range("NewAccountModel::setAlias, can't find " + accountId);
+    }
+    accountInfo->second.profileInfo.alias = alias;
+    auto accountProfileId = authority::database::getOrInsertProfile(pimpl_->database, accountInfo->second.profileInfo.uri);
+    if (!accountProfileId.empty()) {
+        authority::database::setAliasForProfileId(pimpl_->database, accountProfileId, alias);
+    }
 }
 
 void
@@ -480,7 +495,6 @@ account::Info::fromDetails(const MapStringString& details)
         profileInfo.type                                    = details[ConfProperties::TYPE] == QString(ProtocolNames::RING) ? profile::Type::RING : profile::Type::SIP;
     registeredName                                      = profileInfo.type == profile::Type::RING ? volatileDetails[VolatileProperties::REGISTERED_NAME].toStdString() : profileInfo.alias;
     profileInfo.alias                                   = toStdString(details[ConfProperties::ALIAS]);
-    confProperties.displayName                          = toStdString(details[ConfProperties::DISPLAYNAME]);
     enabled                                             = toBool(details[ConfProperties::ENABLED]);
     confProperties.mailbox                              = toStdString(details[ConfProperties::MAILBOX]);
     confProperties.dtmfType                             = toStdString(details[ConfProperties::DTMF_TYPE]);
@@ -579,7 +593,6 @@ account::ConfProperties_t::toDetails() const
     using namespace DRing::Account;
     MapStringString details;
     // General
-    details[ConfProperties::DISPLAYNAME]                = toQString(this->displayName);
     details[ConfProperties::MAILBOX]                    = toQString(this->mailbox);
     details[ConfProperties::DTMF_TYPE]                  = toQString(this->dtmfType);
     details[ConfProperties::AUTOANSWER]                 = toQString(this->autoAnswer);

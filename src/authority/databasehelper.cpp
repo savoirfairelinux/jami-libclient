@@ -113,6 +113,30 @@ getAvatarForProfileId(Database& db, const std::string& profileId)
     return "";
 }
 
+std::string
+getAliasForProfileId(Database& db, const std::string& profileId)
+{
+    auto returnFromDb = db.select("alias",
+                                  "profiles",
+                                  "id=:id",
+                                  {{":id", profileId}});
+    if (returnFromDb.nbrOfCols == 1 && returnFromDb.payloads.size() >= 1) {
+      auto payloads = returnFromDb.payloads;
+      return payloads[0];
+    }
+    return "";
+}
+
+void
+setAliasForProfileId(Database& db, const std::string& profileId, const std::string& alias)
+{
+    db.update("profiles",
+              "alias=:alias",
+              {{":alias", alias}},
+              "id=:id",
+              {{":id", profileId}});
+}
+
 void
 setAvatarForProfileId(Database& db, const std::string& profileId, const std::string& avatar)
 {
