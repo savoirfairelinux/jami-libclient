@@ -43,6 +43,10 @@
 #include "availableaccountmodel.h"
 #include "pendingcontactrequestmodel.h"
 
+#ifdef _MSC_VER
+#include <ciso646>
+#endif // _MSC_VER
+
 struct CallGroup
 {
    QVector<Call*>  m_lCalls   ;

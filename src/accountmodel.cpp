@@ -57,6 +57,10 @@
 #include "bannedcontactmodel.h"
 #include "contactmethod.h"
 
+#ifdef _MSC_VER
+#include <ciso646>
+#endif // _MSC_VER
+
 QHash<QByteArray,AccountPlaceHolder*> AccountModelPrivate::m_hsPlaceHolder;
 
 AccountModelPrivate::AccountModelPrivate(AccountModel* parent) : QObject(parent),q_ptr(parent),

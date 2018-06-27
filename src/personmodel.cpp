@@ -38,6 +38,10 @@
 #include <QtCore/QDebug>
 #include <QtCore/QCoreApplication>
 
+#ifdef _MSC_VER
+#include <ciso646>
+#endif // _MSC_VER
+
 class PersonItemNode
 {
 public:

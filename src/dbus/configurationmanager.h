@@ -33,6 +33,6 @@
 namespace ConfigurationManager {
 
 ///Singleton to access the ConfigurationManager dbus interface
-ConfigurationManagerInterface& LIB_EXPORT instance();
+LIB_EXPORT ConfigurationManagerInterface& instance();
 
 }

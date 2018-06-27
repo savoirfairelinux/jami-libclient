@@ -46,6 +46,10 @@
 #include "accountmodel.h"
 #include "private/vcardutils.h"
 
+#ifdef _MSC_VER
+#include <ciso646>
+#endif // _MSC_VER
+
 namespace lrc
 {
 

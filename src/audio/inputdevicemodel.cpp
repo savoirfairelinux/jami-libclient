@@ -24,6 +24,10 @@
 #include "dbus/configurationmanager.h"
 #include "settings.h"
 
+#ifdef _MSC_VER
+#include <ciso646>
+#endif // _MSC_VER
+
 class InputDeviceModelPrivate final : public QObject
 {
    Q_OBJECT

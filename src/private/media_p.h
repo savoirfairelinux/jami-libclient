@@ -21,19 +21,19 @@
 #include "private/matrixutils.h"
 
 
-namespace Media {
+namespace LRCMedia {
 class MediaPrivate;
 
 typedef bool (MediaPrivate::*MediaTransitionFct)();
 
 class MediaPrivate
 {
-   friend class Media::Media;
+   friend class LRCMedia::Media;
 public:
    MediaPrivate(Media* parent);
 
-   static const Matrix2D<Media::Media::State, Media::Media::Action, bool> m_mValidTransitions;
-   static const Matrix2D<Media::Media::State, Media::Media::Action, MediaTransitionFct> m_mCallbacks;
+   static const Matrix2D<LRCMedia::Media::State, LRCMedia::Media::Action, bool> m_mValidTransitions;
+   static const Matrix2D<LRCMedia::Media::State, LRCMedia::Media::Action, MediaTransitionFct> m_mCallbacks;
 
    //Actions
    bool mute     ();
@@ -47,9 +47,9 @@ public:
 
 private:
    //Attributes
-   Media::Media::State m_State;
+   LRCMedia::Media::State m_State;
    Call* m_pCall;
-   Media::Media::Direction m_Direction;
+   LRCMedia::Media::Direction m_Direction;
 
    Media* q_ptr;
 };

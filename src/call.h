@@ -46,7 +46,7 @@ namespace Video {
    class ManagerPrivate;
 }
 
-namespace Media {
+namespace LRCMedia {
    class Media;
    class Audio;
    class Video;
@@ -89,10 +89,10 @@ public:
    friend class IMConversationManager;
    friend class VideoRendererManager;
    friend class VideoRendererManagerPrivate;
-   friend class Media::Media;
-   friend class Media::Audio;
-   friend class Media::Video;
-   friend class Media::Text;
+   friend class LRCMedia::Media;
+   friend class LRCMedia::Audio;
+   friend class LRCMedia::Video;
+   friend class LRCMedia::Text;
    friend class MediaTypeInference;
    friend class IMConversationManagerPrivate;
    friend QMimeData* RingMimes::payload(const Call*, const ContactMethod*, const Person*);
@@ -334,13 +334,13 @@ public:
    Q_INVOKABLE QMimeData* mimePayload      (         ) const;
 
    template<typename T>
-   T* firstMedia(Media::Media::Direction direction) const;
-   QList<Media::Recording*> recordings  (Media::Media::Type type, Media::Media::Direction direction) const;
-   QList<Media::Media*>     media       (Media::Media::Type type, Media::Media::Direction direction) const;
-   bool                     hasMedia    (Media::Media::Type type, Media::Media::Direction direction) const;
-   bool                     hasRecording(Media::Media::Type type, Media::Media::Direction direction) const;
-   bool                     isRecording (Media::Media::Type type, Media::Media::Direction direction) const;
-   QList<Media::Media*>     allMedia    (                                                          ) const;
+   T* firstMedia(LRCMedia::Media::Direction direction) const;
+   QList<LRCMedia::Recording*> recordings  (LRCMedia::Media::Type type, LRCMedia::Media::Direction direction) const;
+   QList<LRCMedia::Media*>     media       (LRCMedia::Media::Type type, LRCMedia::Media::Direction direction) const;
+   bool                     hasMedia    (LRCMedia::Media::Type type, LRCMedia::Media::Direction direction) const;
+   bool                     hasRecording(LRCMedia::Media::Type type, LRCMedia::Media::Direction direction) const;
+   bool                     isRecording (LRCMedia::Media::Type type, LRCMedia::Media::Direction direction) const;
+   QList<LRCMedia::Media*>     allMedia    (                                                          ) const;
 
    //Automated function
    Q_INVOKABLE Call::State performAction(Call::Action action);
@@ -399,9 +399,9 @@ Q_SIGNALS:
    ///Remove a new video renderer
    void videoStopped(Video::Renderer* renderer); //TODO remove, use the media signals
    ///Notify when a media is added
-   void mediaAdded(Media::Media* media);
+   void mediaAdded(LRCMedia::Media* media);
    ///Notify when a media state change
-   void mediaStateChanged(Media::Media* media, const Media::Media::State s, const Media::Media::State m);
+   void mediaStateChanged(LRCMedia::Media* media, const LRCMedia::Media::State s, const LRCMedia::Media::State m);
    ///The holding combination has changed
    void holdFlagsChanged(const FlagPack<HoldFlags>& current, const FlagPack<HoldFlags>& previous);
 };

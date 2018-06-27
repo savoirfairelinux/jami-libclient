@@ -266,7 +266,7 @@ bool muteAudio(Call* call, bool state)
       qDebug() << "Error : Muting audio when no item selected. Should not happen.";
       return false;
    }
-   auto audioOut = call->firstMedia<Media::Audio>(Media::Media::Direction::OUT);
+   auto audioOut = call->firstMedia<LRCMedia::Audio>(LRCMedia::Media::Direction::OUT);
    if (!audioOut) {
       qDebug() << "Error : No audio media for this call";
       return false;
@@ -291,7 +291,7 @@ bool muteVideo(Call* call, bool state)
       qDebug() << "Error : Muting video when no item selected. Should not happen.";
       return false;
    }
-   auto videoOut = call->firstMedia<Media::Video>(Media::Media::Direction::OUT);
+   auto videoOut = call->firstMedia<LRCMedia::Video>(LRCMedia::Media::Direction::OUT);
    if (!videoOut) {
       qDebug() << "Error : No video media for this call";
       return false;

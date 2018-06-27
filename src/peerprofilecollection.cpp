@@ -34,6 +34,10 @@
 #include "person.h"
 #include "contactmethod.h"
 
+#ifdef _MSC_VER
+#include <ciso646>
+#endif // _MSC_VER
+
 class PeerProfileEditor final : public CollectionEditor<Person>
 {
 public:

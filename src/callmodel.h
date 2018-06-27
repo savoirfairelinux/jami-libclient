@@ -157,10 +157,10 @@ Q_SIGNALS:
    ///Emitted when a new Video::Renderer is removed
    void rendererRemoved         ( Call* call, Video::Renderer* renderer   );
    ///Notify when a media is added
-   void mediaAdded              ( Call* call, Media::Media* media         );
+   void mediaAdded              ( Call* call, LRCMedia::Media* media         );
    ///Notify when the dial (search) field changed
    void dialNumberChanged       ( Call* call, const QString& entry        );
    ///Notify when a media state change
-   void mediaStateChanged( Call* call, Media::Media* media, const Media::Media::State s, const Media::Media::State m);
+   void mediaStateChanged( Call* call, LRCMedia::Media* media, const LRCMedia::Media::State s, const LRCMedia::Media::State m);
 };
 Q_DECLARE_METATYPE(CallModel*)

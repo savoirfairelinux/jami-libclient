@@ -44,6 +44,10 @@
 #include "mime.h"
 #include "profile.h"
 
+#ifdef _MSC_VER
+#include <ciso646>
+#endif // _MSC_VER
+
 struct Node final
 {
     explicit Node(): type(Node::Type::PROFILE), parent(nullptr),m_Index(0) {}

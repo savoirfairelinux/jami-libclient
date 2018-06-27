@@ -17,7 +17,7 @@
  ***************************************************************************/
 #include "recording.h"
 
-namespace Media {
+namespace LRCMedia {
 
 class RecordingPrivate {
 public:
@@ -49,17 +49,17 @@ Recording::~Recording()
 } //Media::
 
 ///Return this Recording type
-Media::Recording::Type Media::Recording::type() const
+LRCMedia::Recording::Type LRCMedia::Recording::type() const
 {
    return d_ptr->m_Type;
 }
 
-Call* Media::Recording::call() const
+Call* LRCMedia::Recording::call() const
 {
    return d_ptr->m_pCall;
 }
 
-void Media::Recording::setCall(Call* call)
+void LRCMedia::Recording::setCall(Call* call)
 {
    d_ptr->m_pCall = call;
 }

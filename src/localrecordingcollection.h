@@ -21,14 +21,14 @@
 #include <typedefs.h>
 #include <collectioneditor.h>
 
-namespace Media {
+namespace LRCMedia {
    class Recording;
 }
 
 class LIB_EXPORT LocalRecordingCollection : public CollectionInterface
 {
 public:
-   explicit LocalRecordingCollection(CollectionMediator<Media::Recording>* mediator);
+   explicit LocalRecordingCollection(CollectionMediator<LRCMedia::Recording>* mediator);
    virtual ~LocalRecordingCollection();
 
    virtual bool load  () override;
@@ -44,7 +44,7 @@ public:
    virtual FlagPack<SupportedFeatures> supportedFeatures() const override;
 
    //Mutator
-   Media::Recording* addFromPath(const QString& path);
+   LRCMedia::Recording* addFromPath(const QString& path);
 
    static LocalRecordingCollection& instance();
 

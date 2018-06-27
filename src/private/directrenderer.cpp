@@ -36,6 +36,10 @@
 
 #include "videomanager_interface.h"
 
+#ifdef _MSC_VER
+#include <ciso646>
+#endif // _MSC_VER
+
 namespace Video {
 
 class DirectRendererPrivate : public QObject

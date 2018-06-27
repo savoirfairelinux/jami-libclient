@@ -46,26 +46,26 @@
  * concatenated then hashed in sha1 again.
  */
 
-class LocalTextRecordingEditor final : public CollectionEditor<Media::Recording>
+class LocalTextRecordingEditor final : public CollectionEditor<LRCMedia::Recording>
 {
 public:
-   LocalTextRecordingEditor(CollectionMediator<Media::Recording>* m) : CollectionEditor<Media::Recording>(m) {}
-   virtual bool save       ( const Media::Recording* item ) override;
-   virtual bool remove     ( const Media::Recording* item ) override;
-   virtual bool edit       ( Media::Recording*       item ) override;
-   virtual bool addNew     ( Media::Recording*       item ) override;
-   virtual bool addExisting( const Media::Recording* item ) override;
+   LocalTextRecordingEditor(CollectionMediator<LRCMedia::Recording>* m) : CollectionEditor<LRCMedia::Recording>(m) {}
+   virtual bool save       ( const LRCMedia::Recording* item ) override;
+   virtual bool remove     ( const LRCMedia::Recording* item ) override;
+   virtual bool edit       ( LRCMedia::Recording*       item ) override;
+   virtual bool addNew     ( LRCMedia::Recording*       item ) override;
+   virtual bool addExisting( const LRCMedia::Recording* item ) override;
    QString fetch(const QByteArray& sha1);
 
    void clearAll();
 
 private:
-   virtual QVector<Media::Recording*> items() const override;
+   virtual QVector<LRCMedia::Recording*> items() const override;
    //Attributes
-   QVector<Media::Recording*> m_lNumbers;
+   QVector<LRCMedia::Recording*> m_lNumbers;
 };
 
-LocalTextRecordingCollection::LocalTextRecordingCollection(CollectionMediator<Media::Recording>* mediator) :
+LocalTextRecordingCollection::LocalTextRecordingCollection(CollectionMediator<LRCMedia::Recording>* mediator) :
    CollectionInterface(new LocalTextRecordingEditor(mediator))
 {
    load();
@@ -78,14 +78,14 @@ LocalTextRecordingCollection::~LocalTextRecordingCollection()
 
 LocalTextRecordingCollection& LocalTextRecordingCollection::instance()
 {
-   static auto instance = Media::RecordingModel::instance().addCollection<LocalTextRecordingCollection>();
+   static auto instance = LRCMedia::RecordingModel::instance().addCollection<LocalTextRecordingCollection>();
    return *instance;
 }
 
-bool LocalTextRecordingEditor::save(const Media::Recording* recording)
+bool LocalTextRecordingEditor::save(const LRCMedia::Recording* recording)
 {
    Q_UNUSED(recording)
-   QHash<QByteArray,QByteArray> ret = static_cast<const Media::TextRecording*>(recording)->d_ptr->toJsons();
+   QHash<QByteArray,QByteArray> ret = static_cast<const LRCMedia::TextRecording*>(recording)->d_ptr->toJsons();
 
    QDir dir(QStandardPaths::writableLocation(QStandardPaths::DataLocation));
 
@@ -110,36 +110,36 @@ bool LocalTextRecordingEditor::save(const Media::Recording* recording)
 
 void LocalTextRecordingEditor::clearAll()
 {
-    for (Media::Recording *recording : items()) {
-        auto textRecording = qobject_cast<Media::TextRecording*>(recording);
+    for (LRCMedia::Recording *recording : items()) {
+        auto textRecording = qobject_cast<LRCMedia::TextRecording*>(recording);
         textRecording->d_ptr->clear();
         save(recording);
     }
 }
 
-bool LocalTextRecordingEditor::remove(const Media::Recording* item)
+bool LocalTextRecordingEditor::remove(const LRCMedia::Recording* item)
 {
    Q_UNUSED(item)
    //TODO
    return false;
 }
 
-bool LocalTextRecordingEditor::edit( Media::Recording* item)
+bool LocalTextRecordingEditor::edit( LRCMedia::Recording* item)
 {
    Q_UNUSED(item)
    return false;
 }
 
-bool LocalTextRecordingEditor::addNew( Media::Recording* item)
+bool LocalTextRecordingEditor::addNew( LRCMedia::Recording* item)
 {
    Q_UNUSED(item)
    addExisting(item);
    return save(item);
 }
 
-bool LocalTextRecordingEditor::addExisting(const Media::Recording* item)
+bool LocalTextRecordingEditor::addExisting(const LRCMedia::Recording* item)
 {
-   m_lNumbers << const_cast<Media::Recording*>(item);
+   m_lNumbers << const_cast<LRCMedia::Recording*>(item);
    mediator()->addItem(item);
    return false;
 }
@@ -155,7 +155,7 @@ QString LocalTextRecordingEditor::fetch(const QByteArray& sha1)
    return QString::fromUtf8(file.readAll());
 }
 
-QVector<Media::Recording*> LocalTextRecordingEditor::items() const
+QVector<LRCMedia::Recording*> LocalTextRecordingEditor::items() const
 {
    return m_lNumbers;
 }
@@ -206,9 +206,9 @@ bool LocalTextRecordingCollection::load()
                 QJsonDocument loadDoc = QJsonDocument::fromJson(content.toUtf8(), &err);
 
                 if (err.error == QJsonParseError::ParseError::NoError) {
-                    Media::TextRecording* r = Media::TextRecording::fromJson({loadDoc.object()}, nullptr, this);
+                    LRCMedia::TextRecording* r = LRCMedia::TextRecording::fromJson({loadDoc.object()}, nullptr, this);
 
-                    editor<Media::Recording>()->addExisting(r);
+                    editor<LRCMedia::Recording>()->addExisting(r);
 
                     // get CMs from recording
                     for (ContactMethod *cm : r->peers()) {
@@ -255,7 +255,7 @@ FlagPack<CollectionInterface::SupportedFeatures> LocalTextRecordingCollection::s
 
 bool LocalTextRecordingCollection::clear()
 {
-    static_cast<LocalTextRecordingEditor *>(editor<Media::Recording>())->clearAll();
+    static_cast<LocalTextRecordingEditor *>(editor<LRCMedia::Recording>())->clearAll();
 
     QDir dir(QStandardPaths::writableLocation(QStandardPaths::DataLocation) + "/text");
 
@@ -303,10 +303,10 @@ bool LocalTextRecordingCollection::fetch( const QList<CollectionInterface::Eleme
    return false;
 }
 
-Media::TextRecording* LocalTextRecordingCollection::fetchFor(const ContactMethod* cm)
+LRCMedia::TextRecording* LocalTextRecordingCollection::fetchFor(const ContactMethod* cm)
 {
    const QByteArray& sha1 = cm->sha1();
-   const QString content = static_cast<LocalTextRecordingEditor*>(editor<Media::Recording>())->fetch(sha1);
+   const QString content = static_cast<LocalTextRecordingEditor*>(editor<LRCMedia::Recording>())->fetch(sha1);
 
    if (content.isEmpty())
       return nullptr;
@@ -319,19 +319,19 @@ Media::TextRecording* LocalTextRecordingCollection::fetchFor(const ContactMethod
        return nullptr;
    }
 
-   Media::TextRecording* r = Media::TextRecording::fromJson({loadDoc.object()}, cm, this);
+   LRCMedia::TextRecording* r = LRCMedia::TextRecording::fromJson({loadDoc.object()}, cm, this);
 
-   editor<Media::Recording>()->addExisting(r);
+   editor<LRCMedia::Recording>()->addExisting(r);
 
    return r;
 }
 
-Media::TextRecording* LocalTextRecordingCollection::createFor(const ContactMethod* cm)
+LRCMedia::TextRecording* LocalTextRecordingCollection::createFor(const ContactMethod* cm)
 {
-   Media::TextRecording* r = fetchFor(cm);
+   LRCMedia::TextRecording* r = fetchFor(cm);
 
    if (!r) {
-      r = new Media::TextRecording();
+      r = new LRCMedia::TextRecording();
       r->setCollection(this);
       cm->d_ptr->setTextRecording(r);
    }
