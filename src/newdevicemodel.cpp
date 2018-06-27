@@ -22,6 +22,7 @@
 #include <mutex>
 
 // LRC
+#include "api/newaccountmodel.h"
 #include "callbackshandler.h"
 #include "dbus/configurationmanager.h"
 
@@ -107,9 +108,17 @@ NewDeviceModel::revokeDevice(const std::string& id, const std::string& password)
 void
 NewDeviceModel::setCurrentDeviceName(const std::string& newName)
 {
-    MapStringString details = {};
-    details[DRing::Account::ConfProperties::RING_DEVICE_NAME] = newName.c_str();
-    ConfigurationManager::instance().setAccountDetails(owner.id.c_str(), details);
+    // Update deamon config
+    auto config = owner.accountModel->getAccountConfig(owner.id);
+    config.deviceName = newName;
+    owner.accountModel->setAccountConfig(owner.id, config);
+    // Update model
+    std::lock_guard<std::mutex> lock(pimpl_->devicesMtx_);
+    for (auto& device : pimpl_->devices_) {
+        if (device.id == config.deviceId) {
+            device.name = newName;
+        }
+    }
 }
 
 NewDeviceModelPimpl::NewDeviceModelPimpl(const NewDeviceModel& linked, const CallbacksHandler& callbacksHandler)
