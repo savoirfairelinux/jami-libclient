@@ -28,17 +28,17 @@ class MediaFilePrivate
 {
 };
 
-Media::File::File(Call* parent, const Media::Direction direction) : Media::Media(parent, direction), d_ptr(new MediaFilePrivate())
+media::File::File(Call* parent, const Media::Direction direction) : media::Media(parent, direction), d_ptr(new MediaFilePrivate())
 {
    Q_ASSERT(parent);
 }
 
-Media::Media::Type Media::File::type()
+media::Media::Type media::File::type()
 {
-   return Media::Media::Type::FILE;
+   return media::Media::Type::FILE;
 }
 
-Media::File::~File()
+media::File::~File()
 {
    delete d_ptr;
 }

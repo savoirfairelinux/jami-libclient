@@ -26,11 +26,11 @@ class CallPrivate;
 class InstantMessagingModel;
 class IMConversationManagerPrivate;
 
-namespace Media {
+namespace media {
 
 class TextRecording;
 
-class LIB_EXPORT Text : public Media::Media
+class LIB_EXPORT Text : public media::Media
 {
    Q_OBJECT
    friend class ::CallPrivate;

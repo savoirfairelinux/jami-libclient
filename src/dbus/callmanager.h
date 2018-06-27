@@ -33,6 +33,6 @@
 namespace CallManager {
 
 ///Singleton to access dbus "CallManager" interface
-CallManagerInterface& LIB_EXPORT instance();
+LIB_EXPORT CallManagerInterface& instance();
 
 }

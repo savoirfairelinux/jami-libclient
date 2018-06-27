@@ -38,12 +38,12 @@ class Lrc;
 
 namespace conversation
 {
-    class Info;
+    struct Info;
 }
 
 namespace interaction
 {
-    class Info;
+    struct Info;
 }
 
 /**

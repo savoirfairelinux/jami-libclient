@@ -154,15 +154,15 @@ Serializable::Peers* SerializableEntityManager::fromJson(const QJsonObject& json
    return p;
 }
 
-Media::TextRecordingPrivate::TextRecordingPrivate(TextRecording* r) : q_ptr(r),m_pImModel(nullptr),m_pCurrentGroup(nullptr),m_UnreadCount(0)
+media::TextRecordingPrivate::TextRecordingPrivate(TextRecording* r) : q_ptr(r),m_pImModel(nullptr),m_pCurrentGroup(nullptr),m_UnreadCount(0)
 {
 }
 
-Media::TextRecording::TextRecording() : Recording(Recording::Type::TEXT), d_ptr(new TextRecordingPrivate(this))
+media::TextRecording::TextRecording() : Recording(Recording::Type::TEXT), d_ptr(new TextRecordingPrivate(this))
 {
 }
 
-Media::TextRecording::~TextRecording()
+media::TextRecording::~TextRecording()
 {
    delete d_ptr;
 }
@@ -171,7 +171,7 @@ Media::TextRecording::~TextRecording()
  * Updates the message status and potentially the message id, if a new status is set.
  * Returns true if the Message object was modified, false otherwise.
  */
-bool Media::TextRecordingPrivate::updateMessageStatus(Serializable::Message* m, TextRecording::Status newSatus)
+bool media::TextRecordingPrivate::updateMessageStatus(Serializable::Message* m, TextRecording::Status newSatus)
 {
     bool modified = false;
 
@@ -198,7 +198,7 @@ bool Media::TextRecordingPrivate::updateMessageStatus(Serializable::Message* m, 
     return modified;
 }
 
-void Media::TextRecordingPrivate::accountMessageStatusChanged(const uint64_t id, DRing::Account::MessageStates status)
+void media::TextRecordingPrivate::accountMessageStatusChanged(const uint64_t id, DRing::Account::MessageStates status)
 {
     if (auto node = m_hPendingMessages.value(id, nullptr)) {
         if (updateMessageStatus(node->m_pMessage, static_cast<TextRecording::Status>(status))) {
@@ -211,18 +211,18 @@ void Media::TextRecordingPrivate::accountMessageStatusChanged(const uint64_t id,
     }
 }
 
-bool Media::TextRecording::hasMimeType(const QString& mimeType) const
+bool media::TextRecording::hasMimeType(const QString& mimeType) const
 {
    return d_ptr->m_hMimeTypes.contains(mimeType);
 }
 
-QStringList Media::TextRecording::mimeTypes() const
+QStringList media::TextRecording::mimeTypes() const
 {
    return d_ptr->m_lMimeTypes;
 }
 
 ///Get the instant messaging model associated with this recording
-QAbstractItemModel* Media::TextRecording::instantMessagingModel() const
+QAbstractItemModel* media::TextRecording::instantMessagingModel() const
 {
    if (!d_ptr->m_pImModel) {
       d_ptr->m_pImModel = new InstantMessagingModel(const_cast<TextRecording*>(this));
@@ -232,7 +232,7 @@ QAbstractItemModel* Media::TextRecording::instantMessagingModel() const
 }
 
 ///Set all messages as read and then save the recording
-void Media::TextRecording::setAllRead()
+void media::TextRecording::setAllRead()
 {
     bool changed = false;
     for(int row = 0; row < d_ptr->m_lNodes.size(); ++row) {
@@ -257,7 +257,7 @@ void Media::TextRecording::setAllRead()
     }
 }
 
-QVector<ContactMethod*> Media::TextRecording::peers() const
+QVector<ContactMethod*> media::TextRecording::peers() const
 {
     QVector<ContactMethod*> cms;
 
@@ -291,7 +291,7 @@ public:
    {
       const QModelIndex srcIdx = sourceModel()->index(source_row, filterKeyColumn(), source_parent);
 
-      return srcIdx.data((int)Media::TextRecording::Role::HasText).toBool();
+      return srcIdx.data((int)media::TextRecording::Role::HasText).toBool();
    }
 };
 
@@ -299,7 +299,7 @@ public:
  * Subset of the instantMessagingModel() with only plain text and HTML
  * messages. This model can be displayed directly to the user.
  */
-QAbstractItemModel* Media::TextRecording::instantTextMessagingModel() const
+QAbstractItemModel* media::TextRecording::instantTextMessagingModel() const
 {
    if (!d_ptr->m_pTextMessagesModel) {
       auto p = new TextProxyModel(const_cast<TextRecording*>(this));
@@ -321,7 +321,7 @@ public:
     {
         const QModelIndex srcIdx = sourceModel()->index(source_row, filterKeyColumn(), source_parent);
 
-        return !srcIdx.data((int)Media::TextRecording::Role::IsRead).toBool();
+        return !srcIdx.data((int)media::TextRecording::Role::IsRead).toBool();
     }
 };
 
@@ -329,7 +329,7 @@ public:
  * Subset of the instantTextMessagingModel() with only unread plain text and HTML
  * messages. This model can be used to get the number of unread messages.
  */
-QAbstractItemModel* Media::TextRecording::unreadInstantTextMessagingModel() const
+QAbstractItemModel* media::TextRecording::unreadInstantTextMessagingModel() const
 {
     if (!d_ptr->m_pUnreadTextMessagesModel) {
        auto p = new UnreadProxyModel(instantTextMessagingModel());
@@ -341,20 +341,20 @@ QAbstractItemModel* Media::TextRecording::unreadInstantTextMessagingModel() cons
 }
 
 
-bool Media::TextRecording::isEmpty() const
+bool media::TextRecording::isEmpty() const
 {
    return !size();
 }
 
-int Media::TextRecording::size() const
+int media::TextRecording::size() const
 {
     return d_ptr->m_lNodes.size();
 }
 
 // Qt convention compat
-int Media::TextRecording::count() const { return size(); }
+int media::TextRecording::count() const { return size(); }
 
-QHash<QByteArray,QByteArray> Media::TextRecordingPrivate::toJsons() const
+QHash<QByteArray,QByteArray> media::TextRecordingPrivate::toJsons() const
 {
    QHash<QByteArray,QByteArray> ret;
    for (Serializable::Peers* p : m_lAssociatedPeers) {
@@ -372,7 +372,7 @@ QHash<QByteArray,QByteArray> Media::TextRecordingPrivate::toJsons() const
    return ret;
 }
 
-Media::TextRecording* Media::TextRecording::fromJson(const QList<QJsonObject>& items, const ContactMethod* cm, CollectionInterface* backend)
+media::TextRecording* media::TextRecording::fromJson(const QList<QJsonObject>& items, const ContactMethod* cm, CollectionInterface* backend)
 {
     TextRecording* t = new TextRecording();
     if (backend)
@@ -448,7 +448,7 @@ Media::TextRecording* Media::TextRecording::fromJson(const QList<QJsonObject>& i
     return t;
 }
 
-void Media::TextRecordingPrivate::insertNewMessage(const QMap<QString,QString>& message, ContactMethod* cm, Media::Media::Direction direction, uint64_t id)
+void media::TextRecordingPrivate::insertNewMessage(const QMap<QString,QString>& message, ContactMethod* cm, media::Media::Direction direction, uint64_t id)
 {
     //Only create it if none was found on the disk
     if (!m_pCurrentGroup) {
@@ -475,7 +475,7 @@ void Media::TextRecordingPrivate::insertNewMessage(const QMap<QString,QString>& 
    m->authorSha1= cm->sha1()                       ;
    m->id = id;
 
-   if (direction == Media::Media::Direction::OUT)
+   if (direction == media::Media::Direction::OUT)
       m->isRead = true; // assume outgoing messages are read, since we're sending them
 
    static const int profileSize = QString(RingMimes::PROFILE_VCF).size();
@@ -560,10 +560,10 @@ void Serializable::Message::read (const QJsonObject &json)
    timestamp  = json["timestamp" ].toInt                (                           );
    authorSha1 = json["authorSha1"].toString             (                           );
    isRead     = json["isRead"    ].toBool               (                           );
-   direction  = static_cast<Media::Media::Direction>    ( json["direction"].toInt() );
+   direction  = static_cast<media::Media::Direction>    ( json["direction"].toInt() );
    type       = static_cast<Serializable::Message::Type>( json["type"     ].toInt() );
    id         = json["id"        ].toVariant().value<uint64_t>(                     );
-   deliveryStatus = static_cast<Media::TextRecording::Status>(json["deliveryStatus"].toInt());
+   deliveryStatus = static_cast<media::TextRecording::Status>(json["deliveryStatus"].toInt());
 
    QJsonArray a = json["payloads"].toArray();
    for (int i = 0; i < a.size(); ++i) {
@@ -751,7 +751,7 @@ void Serializable::Peers::write(QJsonObject &json) const
 
 
 ///Constructor
-InstantMessagingModel::InstantMessagingModel(Media::TextRecording* recording) : QAbstractListModel(recording),m_pRecording(recording)
+InstantMessagingModel::InstantMessagingModel(media::TextRecording* recording) : QAbstractListModel(recording),m_pRecording(recording)
 {
 }
 
@@ -766,18 +766,18 @@ QHash<int,QByteArray> InstantMessagingModel::roleNames() const
    static bool initRoles = false;
    if (!initRoles) {
       initRoles = true;
-      roles.insert((int)Media::TextRecording::Role::Direction           , "direction"           );
-      roles.insert((int)Media::TextRecording::Role::AuthorDisplayname   , "authorDisplayname"   );
-      roles.insert((int)Media::TextRecording::Role::AuthorUri           , "authorUri"           );
-      roles.insert((int)Media::TextRecording::Role::AuthorPresenceStatus, "authorPresenceStatus");
-      roles.insert((int)Media::TextRecording::Role::Timestamp           , "timestamp"           );
-      roles.insert((int)Media::TextRecording::Role::IsRead              , "isRead"              );
-      roles.insert((int)Media::TextRecording::Role::FormattedDate       , "formattedDate"       );
-      roles.insert((int)Media::TextRecording::Role::IsStatus            , "isStatus"            );
-      roles.insert((int)Media::TextRecording::Role::DeliveryStatus      , "deliveryStatus"      );
-      roles.insert((int)Media::TextRecording::Role::FormattedHtml       , "formattedHtml"       );
-      roles.insert((int)Media::TextRecording::Role::LinkList            , "linkList"            );
-      roles.insert((int)Media::TextRecording::Role::Id                  , "id"                  );
+      roles.insert((int)media::TextRecording::Role::Direction           , "direction"           );
+      roles.insert((int)media::TextRecording::Role::AuthorDisplayname   , "authorDisplayname"   );
+      roles.insert((int)media::TextRecording::Role::AuthorUri           , "authorUri"           );
+      roles.insert((int)media::TextRecording::Role::AuthorPresenceStatus, "authorPresenceStatus");
+      roles.insert((int)media::TextRecording::Role::Timestamp           , "timestamp"           );
+      roles.insert((int)media::TextRecording::Role::IsRead              , "isRead"              );
+      roles.insert((int)media::TextRecording::Role::FormattedDate       , "formattedDate"       );
+      roles.insert((int)media::TextRecording::Role::IsStatus            , "isStatus"            );
+      roles.insert((int)media::TextRecording::Role::DeliveryStatus      , "deliveryStatus"      );
+      roles.insert((int)media::TextRecording::Role::FormattedHtml       , "formattedHtml"       );
+      roles.insert((int)media::TextRecording::Role::LinkList            , "linkList"            );
+      roles.insert((int)media::TextRecording::Role::Id                  , "id"                  );
    }
    return roles;
 }
@@ -791,13 +791,13 @@ QVariant InstantMessagingModel::data( const QModelIndex& idx, int role) const
          case Qt::DisplayRole:
             return QVariant(n->m_pMessage->m_PlainText);
          case Qt::DecorationRole         :
-            if (n->m_pMessage->direction == Media::Media::Direction::IN)
+            if (n->m_pMessage->direction == media::Media::Direction::IN)
                return GlobalInstances::pixmapManipulator().decorationRole(n->m_pContactMethod);
             else if (m_pRecording->call() && m_pRecording->call()->account()
               && m_pRecording->call()->account()->contactMethod()->contact()) {
                auto cm = m_pRecording->call()->account()->contactMethod();
                return GlobalInstances::pixmapManipulator().decorationRole(cm);
-            } else if (n->m_pMessage->direction == Media::Media::Direction::OUT && n->m_pContactMethod->account()){
+            } else if (n->m_pMessage->direction == media::Media::Direction::OUT && n->m_pContactMethod->account()){
                 return GlobalInstances::pixmapManipulator().decorationRole(n->m_pContactMethod->account());
             } else {
                 /* It's most likely an account that doesn't exist anymore
@@ -806,45 +806,45 @@ QVariant InstantMessagingModel::data( const QModelIndex& idx, int role) const
                 return GlobalInstances::pixmapManipulator().decorationRole((ContactMethod*)nullptr);
             }
             break;
-         case (int)Media::TextRecording::Role::Direction            :
+         case (int)media::TextRecording::Role::Direction            :
             return QVariant::fromValue(n->m_pMessage->direction);
-         case (int)Media::TextRecording::Role::AuthorDisplayname    :
+         case (int)media::TextRecording::Role::AuthorDisplayname    :
          case (int)Ring::Role::Name                                 :
-            if (n->m_pMessage->direction == Media::Media::Direction::IN)
+            if (n->m_pMessage->direction == media::Media::Direction::IN)
                return n->m_pContactMethod->roleData(static_cast<int>(Ring::Role::Name));
             else
                return tr("Me");
-         case (int)Media::TextRecording::Role::AuthorUri            :
+         case (int)media::TextRecording::Role::AuthorUri            :
          case (int)Ring::Role::Number                               :
             return n->m_pContactMethod->uri();
-         case (int)Media::TextRecording::Role::AuthorPresenceStatus :
+         case (int)media::TextRecording::Role::AuthorPresenceStatus :
             // Always consider "self" as present
-            if (n->m_pMessage->direction == Media::Media::Direction::OUT)
+            if (n->m_pMessage->direction == media::Media::Direction::OUT)
                return true;
             else
                return n->m_pContactMethod->contact() ?
                   n->m_pContactMethod->contact()->isPresent() : n->m_pContactMethod->isPresent();
-         case (int)Media::TextRecording::Role::Timestamp            :
+         case (int)media::TextRecording::Role::Timestamp            :
             return (uint)n->m_pMessage->timestamp;
-         case (int)Media::TextRecording::Role::IsRead               :
+         case (int)media::TextRecording::Role::IsRead               :
             return (int)n->m_pMessage->isRead;
-         case (int)Media::TextRecording::Role::FormattedDate        :
+         case (int)media::TextRecording::Role::FormattedDate        :
             return QDateTime::fromTime_t(n->m_pMessage->timestamp).toString();
-         case (int)Media::TextRecording::Role::IsStatus             :
+         case (int)media::TextRecording::Role::IsStatus             :
             return n->m_pMessage->type == Serializable::Message::Type::STATUS;
-         case (int)Media::TextRecording::Role::HTML                 :
+         case (int)media::TextRecording::Role::HTML                 :
             return QVariant(n->m_pMessage->m_HTML);
-         case (int)Media::TextRecording::Role::HasText              :
+         case (int)media::TextRecording::Role::HasText              :
             return n->m_pMessage->m_HasText;
-         case (int)Media::TextRecording::Role::ContactMethod        :
+         case (int)media::TextRecording::Role::ContactMethod        :
             return QVariant::fromValue(n->m_pContactMethod);
-         case (int)Media::TextRecording::Role::DeliveryStatus       :
+         case (int)media::TextRecording::Role::DeliveryStatus       :
             return QVariant::fromValue(n->m_pMessage->deliveryStatus);
-         case (int)Media::TextRecording::Role::FormattedHtml        :
+         case (int)media::TextRecording::Role::FormattedHtml        :
             return QVariant::fromValue(n->m_pMessage->getFormattedHtml());
-         case (int)Media::TextRecording::Role::LinkList             :
+         case (int)media::TextRecording::Role::LinkList             :
             return QVariant::fromValue(n->m_pMessage->m_LinkList);
-         case (int)Media::TextRecording::Role::Id                   :
+         case (int)media::TextRecording::Role::Id                   :
             return QVariant::fromValue(n->m_pMessage->id);
          default:
             break;
@@ -878,7 +878,7 @@ bool InstantMessagingModel::setData(const QModelIndex& idx, const QVariant &valu
 
     ::TextMessageNode* n = m_pRecording->d_ptr->m_lNodes[idx.row()];
     switch (role) {
-        case (int)Media::TextRecording::Role::IsRead               :
+        case (int)media::TextRecording::Role::IsRead               :
             if (n->m_pMessage->isRead != value.toBool()) {
                 n->m_pMessage->isRead = value.toBool();
                 if (n->m_pMessage->m_HasText) {
@@ -913,7 +913,7 @@ void InstantMessagingModel::addRowEnd()
    endInsertRows();
 }
 
-void Media::TextRecordingPrivate::clear()
+void media::TextRecordingPrivate::clear()
 {
     m_pImModel->clear();
 

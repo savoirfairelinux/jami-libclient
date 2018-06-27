@@ -31,7 +31,6 @@
 //Qt
 class QTimer;
 
-
 //Ring
 class Account;
 class ContactMethod;
@@ -42,7 +41,7 @@ class Certificate;
 class CallPrivate;
 typedef  void (CallPrivate::*function)();
 
-namespace Media {
+namespace media {
    class Media;
    class Recording;
 }
@@ -178,11 +177,11 @@ public:
     */
    static const TypedStateMachine< Call::LifeCycleState , Call::State > metaStateMap;
 
-   Matrix2D<Media::Media::Type, Media::Media::Direction, QList<Media::Media*>* > m_mMedias;
+   Matrix2D<media::Media::Type, media::Media::Direction, QList<media::Media*>* > m_mMedias;
 
-   Matrix2D<Media::Media::Type, Media::Media::Direction, QList<Media::Recording*>* > m_mRecordings;
+   Matrix2D<media::Media::Type, media::Media::Direction, QList<media::Recording*>* > m_mRecordings;
 
-   Matrix2D<Media::Media::Type, Media::Media::Direction, bool > m_mIsRecording;
+   Matrix2D<media::Media::Type, media::Media::Direction, bool > m_mIsRecording;
 
    static const Matrix1D<Call::LifeCycleState,function> m_mLifeCycleStateChanges;
 
@@ -236,7 +235,7 @@ public:
    static MapStringString getCallDetailsCommon(const QString& callId);
    void peerHoldChanged(bool onPeerHold);
    template<typename T>
-   T* mediaFactory(Media::Media::Direction dir);
+   T* mediaFactory(media::Media::Direction dir);
    void updateOutgoingMedia(const MapStringString& details);
 
    //Static getters

@@ -294,16 +294,16 @@ m_pDialNumber(new TemporaryContactMethod()),
 m_History(false),m_Missed(false),m_Direction(Call::Direction::OUTGOING),m_Type(Call::Type::CALL),
 m_pUserActionModel(nullptr), m_CurrentState(Call::State::ERROR),m_pCertificate(nullptr),m_mMedias({{
    /*                                            IN                                                            OUT                           */
-   /* AUDIO */ {{ new QList<Media::Media*>() /*Created lifecycle == progress*/, new QList<Media::Media*>() /*Created lifecycle == progress*/}},
-   /* VIDEO */ {{ new QList<Media::Media*>() /*On demand                    */, new QList<Media::Media*>() /*On demand                    */}},
-   /* TEXT  */ {{ new QList<Media::Media*>() /*On demand                    */, new QList<Media::Media*>() /*On demand                    */}},
-   /* FILE  */ {{ new QList<Media::Media*>() /*Not implemented              */, new QList<Media::Media*>() /*Not implemented              */}},
+   /* AUDIO */ {{ new QList<media::Media*>() /*Created lifecycle == progress*/, new QList<media::Media*>() /*Created lifecycle == progress*/}},
+   /* VIDEO */ {{ new QList<media::Media*>() /*On demand                    */, new QList<media::Media*>() /*On demand                    */}},
+   /* TEXT  */ {{ new QList<media::Media*>() /*On demand                    */, new QList<media::Media*>() /*On demand                    */}},
+   /* FILE  */ {{ new QList<media::Media*>() /*Not implemented              */, new QList<media::Media*>() /*Not implemented              */}},
 }}), m_mRecordings({{
    /*                           IN                            OUT                */
-   /* AUDIO */ {{ new QList<Media::Recording*>(), new QList<Media::Recording*>()}},
-   /* VIDEO */ {{ new QList<Media::Recording*>(), new QList<Media::Recording*>()}},
-   /* TEXT  */ {{ new QList<Media::Recording*>(), new QList<Media::Recording*>()}},
-   /* FILE  */ {{ new QList<Media::Recording*>(), new QList<Media::Recording*>()}},
+   /* AUDIO */ {{ new QList<media::Recording*>(), new QList<media::Recording*>()}},
+   /* VIDEO */ {{ new QList<media::Recording*>(), new QList<media::Recording*>()}},
+   /* TEXT  */ {{ new QList<media::Recording*>(), new QList<media::Recording*>()}},
+   /* FILE  */ {{ new QList<media::Recording*>(), new QList<media::Recording*>()}},
 }}), m_mIsRecording({{
    /*              IN     OUT   */
    /* AUDIO */ {{ false, false }},
@@ -371,16 +371,16 @@ Call::~Call()
 
 CallPrivate::~CallPrivate()
 {
-   for ( const Media::Media::Type t : EnumIterator<Media::Media::Type>()) {
-      if (m_mMedias[t][Media::Media::Direction::IN  ])
-         delete m_mMedias[t][Media::Media::Direction::IN  ];
-      if (m_mMedias[t][Media::Media::Direction::OUT ])
-         delete m_mMedias[t][Media::Media::Direction::OUT ];
+   for ( const media::Media::Type t : EnumIterator<media::Media::Type>()) {
+      if (m_mMedias[t][media::Media::Direction::IN  ])
+         delete m_mMedias[t][media::Media::Direction::IN  ];
+      if (m_mMedias[t][media::Media::Direction::OUT ])
+         delete m_mMedias[t][media::Media::Direction::OUT ];
 
-      if (m_mRecordings[t][Media::Media::Direction::IN  ])
-         delete m_mRecordings[t][Media::Media::Direction::IN  ];
-      if (m_mRecordings[t][Media::Media::Direction::OUT ])
-         delete m_mRecordings[t][Media::Media::Direction::OUT ];
+      if (m_mRecordings[t][media::Media::Direction::IN  ])
+         delete m_mRecordings[t][media::Media::Direction::IN  ];
+      if (m_mRecordings[t][media::Media::Direction::OUT ])
+         delete m_mRecordings[t][media::Media::Direction::OUT ];
    }
 }
 
@@ -397,7 +397,7 @@ void CallPrivate::deleteCall(Call* call)
 
 void CallPrivate::updateOutgoingMedia(const MapStringString& details)
 {
-   auto list = q_ptr->media(Media::Media::Type::VIDEO, Media::Media::Direction::OUT);
+   auto list = q_ptr->media(media::Media::Type::VIDEO, media::Media::Direction::OUT);
    QString video_source  = details[ DRing::Call::Details::VIDEO_SOURCE];
 
    if (video_source.length() <= 0 && list.isEmpty()) {
@@ -407,12 +407,12 @@ void CallPrivate::updateOutgoingMedia(const MapStringString& details)
 
    if (list.isEmpty()) {
        // Update data
-       static const Media::Media::Direction direction = Media::Media::Direction::OUT;
-       mediaFactory<Media::Video>(direction);
+       static const media::Media::Direction direction = media::Media::Direction::OUT;
+       mediaFactory<media::Video>(direction);
    }
 
-   list = q_ptr->media(Media::Media::Type::VIDEO, Media::Media::Direction::OUT);
-   Media::Video* media_video = static_cast<Media::Video*>(list[0]);
+   list = q_ptr->media(media::Media::Type::VIDEO, media::Media::Direction::OUT);
+   media::Video* media_video = static_cast<media::Video*>(list[0]);
    media_video->sourceModel()->setUsedIndex(video_source);
    return;
 }
@@ -474,10 +474,10 @@ Call* CallPrivate::buildCall(const QString& callId, Call::Direction callDirectio
 
     //Set the recording state
     if (CallManager::instance().getIsRecording(callId)) {
-        call->d_ptr->m_mIsRecording[ Media::Media::Type::AUDIO ].setAt( Media::Media::Direction::IN  , true);
-        call->d_ptr->m_mIsRecording[ Media::Media::Type::AUDIO ].setAt( Media::Media::Direction::OUT , true);
-        call->d_ptr->m_mIsRecording[ Media::Media::Type::VIDEO ].setAt( Media::Media::Direction::IN  , true);
-        call->d_ptr->m_mIsRecording[ Media::Media::Type::VIDEO ].setAt( Media::Media::Direction::OUT , true);
+        call->d_ptr->m_mIsRecording[ media::Media::Type::AUDIO ].setAt( media::Media::Direction::IN  , true);
+        call->d_ptr->m_mIsRecording[ media::Media::Type::AUDIO ].setAt( media::Media::Direction::OUT , true);
+        call->d_ptr->m_mIsRecording[ media::Media::Type::VIDEO ].setAt( media::Media::Direction::IN  , true);
+        call->d_ptr->m_mIsRecording[ media::Media::Type::VIDEO ].setAt( media::Media::Direction::OUT , true);
     }
 
     if (!details[ DRing::Call::Details::TIMESTAMP_START ].isEmpty())
@@ -959,10 +959,10 @@ Call::LifeCycleState Call::lifeCycleState() const
 bool Call::isAVRecording() const
 {
    return lifeCycleState() == Call::LifeCycleState::PROGRESS
-      && (d_ptr->m_mIsRecording[ Media::Media::Type::AUDIO ][ Media::Media::Direction::IN  ]
-      ||  d_ptr->m_mIsRecording[ Media::Media::Type::AUDIO ][ Media::Media::Direction::OUT ]
-      ||  d_ptr->m_mIsRecording[ Media::Media::Type::VIDEO ][ Media::Media::Direction::IN  ]
-      ||  d_ptr->m_mIsRecording[ Media::Media::Type::VIDEO ][ Media::Media::Direction::OUT ]);
+      && (d_ptr->m_mIsRecording[ media::Media::Type::AUDIO ][ media::Media::Direction::IN  ]
+      ||  d_ptr->m_mIsRecording[ media::Media::Type::AUDIO ][ media::Media::Direction::OUT ]
+      ||  d_ptr->m_mIsRecording[ media::Media::Type::VIDEO ][ media::Media::Direction::IN  ]
+      ||  d_ptr->m_mIsRecording[ media::Media::Type::VIDEO ][ media::Media::Direction::OUT ]);
 }
 
 ///Get the call account id
@@ -1008,8 +1008,8 @@ void CallPrivate::registerRenderer(Video::Renderer* renderer)
    emit q_ptr->videoStarted(renderer);
 
    //Test logic, this is very weak, but works in a normal scenario
-   for (const auto d : EnumIterator<Media::Media::Direction>())
-      mediaFactory<Media::Video>(d);
+   for (const auto d : EnumIterator<media::Media::Direction>())
+      mediaFactory<media::Video>(d);
 
    connect(renderer, &Video::Renderer::stopped, this, &CallPrivate::videoStopped);
 
@@ -1026,27 +1026,27 @@ void CallPrivate::removeRenderer(Video::Renderer* renderer)
    return;
 }
 
-QList<Media::Media*> Call::media(Media::Media::Type type, Media::Media::Direction direction) const
+QList<media::Media*> Call::media(media::Media::Type type, media::Media::Direction direction) const
 {
    return *(d_ptr->m_mMedias[type][direction]);
 }
 
-bool Call::hasMedia(Media::Media::Type type, Media::Media::Direction direction) const
+bool Call::hasMedia(media::Media::Type type, media::Media::Direction direction) const
 {
    return d_ptr->m_mMedias[type][direction]->size();
 }
 
-bool Call::hasRecording(Media::Media::Type type, Media::Media::Direction direction) const
+bool Call::hasRecording(media::Media::Type type, media::Media::Direction direction) const
 {
    return d_ptr->m_mRecordings[type][direction]->size();
 }
 
-bool Call::isRecording(Media::Media::Type type, Media::Media::Direction direction) const
+bool Call::isRecording(media::Media::Type type, media::Media::Direction direction) const
 {
    return d_ptr->m_mIsRecording[type][direction];
 }
 
-QList<Media::Recording*> Call::recordings(Media::Media::Type type, Media::Media::Direction direction) const
+QList<media::Recording*> Call::recordings(media::Media::Type type, media::Media::Direction direction) const
 {
    //Note that the recording are not Media attributes to avoid keeping "terminated" media
    //for history call.
@@ -1057,13 +1057,13 @@ QList<Media::Recording*> Call::recordings(Media::Media::Type type, Media::Media:
  * An iffecient way to list all media. If this ever become used elsewhere,
  * add caching.
  */
-QList<Media::Media*> Call::allMedia() const
+QList<media::Media*> Call::allMedia() const
 {
-   QList<Media::Media*> ret;
+   QList<media::Media*> ret;
 
-   for (const auto t : EnumIterator<Media::Media::Type>() ) {
-      for (const auto d : EnumIterator<Media::Media::Direction>() ) {
-         foreach(Media::Media* m, *(d_ptr->m_mMedias[t][d]))
+   for (const auto t : EnumIterator<media::Media::Type>() ) {
+      for (const auto d : EnumIterator<media::Media::Direction>() ) {
+         foreach(media::Media* m, *(d_ptr->m_mMedias[t][d]))
             ret << m;
       }
    }
@@ -1095,10 +1095,10 @@ int MediaTypeInference::genId() {
  * now the safeMediaCreator switch is the only place where this would be useful,
  * so there is very little point to do that.
  */
-QHash<int, Media::Media::Type>& MediaTypeInference::typeMap(bool regen) {
+QHash<int, media::Media::Type>& MediaTypeInference::typeMap(bool regen) {
    static bool isInit = false;
-   //Try to map T to Media::Media::Type then use this to retrieve and cast the media
-   static QHash<int, Media::Media::Type> sTypeMap;
+   //Try to map T to media::Media::Type then use this to retrieve and cast the media
+   static QHash<int, media::Media::Type> sTypeMap;
    if (!isInit || regen) {
       isInit = true;
       REGISTER_MEDIA()
@@ -1110,11 +1110,11 @@ QHash<int, Media::Media::Type>& MediaTypeInference::typeMap(bool regen) {
  * Create, register and connect new media to a call.
  */
 template<typename T>
-T* CallPrivate::mediaFactory(Media::Media::Direction dir)
+T* CallPrivate::mediaFactory(media::Media::Direction dir)
 {
    T* m = new T(q_ptr, dir);
    (*m_mMedias[MediaTypeInference::getType<T>()][dir]) << m;
-   const auto cb = [this,m](const Media::Media::State s, const Media::Media::State p) {
+   const auto cb = [this,m](const media::Media::State s, const media::Media::State p) {
       if (m) {
          emit q_ptr->mediaStateChanged(m,s,p);
       }
@@ -1122,7 +1122,7 @@ T* CallPrivate::mediaFactory(Media::Media::Direction dir)
          Q_ASSERT(false);
    };
 
-   connect(m, &Media::Media::stateChanged, cb);
+   connect(m, &media::Media::stateChanged, cb);
    emit q_ptr->mediaAdded(m);
 
    return m;
@@ -1133,18 +1133,18 @@ T* CallPrivate::mediaFactory(Media::Media::Direction dir)
  * do a static cast to re-create the right type. Given how it is using
  * MediaTypeInference, it is safe-ish.
  */
-Media::Media* MediaTypeInference::safeMediaCreator(Call* c, Media::Media::Type t, Media::Media::Direction d)
+media::Media* MediaTypeInference::safeMediaCreator(Call* c, media::Media::Type t, media::Media::Direction d)
 {
    switch(t) {
-      case Media::Media::Type::AUDIO:
-         return c->d_ptr->mediaFactory<Media::Audio>(d);
-      case Media::Media::Type::VIDEO:
-         return c->d_ptr->mediaFactory<Media::Video>(d);
-      case Media::Media::Type::TEXT :
-         return c->d_ptr->mediaFactory<Media::Text>(d);
-      case Media::Media::Type::FILE :
-         return c->d_ptr->mediaFactory<Media::File>(d);
-      case Media::Media::Type::COUNT__:
+      case media::Media::Type::AUDIO:
+         return c->d_ptr->mediaFactory<media::Audio>(d);
+      case media::Media::Type::VIDEO:
+         return c->d_ptr->mediaFactory<media::Video>(d);
+      case media::Media::Type::TEXT :
+         return c->d_ptr->mediaFactory<media::Text>(d);
+      case media::Media::Type::FILE :
+         return c->d_ptr->mediaFactory<media::File>(d);
+      case media::Media::Type::COUNT__:
          break;
    }
    return nullptr;
@@ -1212,14 +1212,14 @@ void CallPrivate::setRecordingPath(const QString& path)
 
    if (!path.isEmpty() && QFile::exists(path)) {
 
-      Media::Recording* rec = LocalRecordingCollection::instance().addFromPath(path);
-      (*m_mRecordings[Media::Media::Type::AUDIO][Media::Media::Direction::IN ]) << rec;
-      (*m_mRecordings[Media::Media::Type::AUDIO][Media::Media::Direction::OUT]) << rec;
+       media::Recording* rec = LocalRecordingCollection::instance().addFromPath(path);
+      (*m_mRecordings[media::Media::Type::AUDIO][media::Media::Direction::IN ]) << rec;
+      (*m_mRecordings[media::Media::Type::AUDIO][media::Media::Direction::OUT]) << rec;
    }
 
    //TODO add a media type attribute to this method
-   /*(*m_mRecordings[Media::Media::Type::VIDEO][Media::Media::Direction::IN ]
-   (*m_mRecordings[Media::Media::Type::VIDEO][Media::Media::Direction::OUT]*/
+   /*(*m_mRecordings[media::Media::Type::VIDEO][media::Media::Direction::IN ]
+   (*m_mRecordings[media::Media::Type::VIDEO][media::Media::Direction::OUT]*/
 }
 
 ///Set peer name
@@ -1477,17 +1477,17 @@ void CallPrivate::changeCurrentState(Call::State newState)
 void CallPrivate::initMedia()
 {
    //Always assume there is an audio media, even if this is untrue
-   for (const auto d : EnumIterator<Media::Media::Direction>())
-      mediaFactory<Media::Audio>(d);
+   for (const auto d : EnumIterator<media::Media::Direction>())
+      mediaFactory<media::Audio>(d);
 }
 
 void CallPrivate::terminateMedia()
 {
    //Delete remaining media
-   for (const auto t : EnumIterator<Media::Media::Type>() ) {
-      for (const auto d : EnumIterator<Media::Media::Direction>() ) {
+   for (const auto t : EnumIterator<media::Media::Type>() ) {
+      for (const auto d : EnumIterator<media::Media::Direction>() ) {
          for (auto m : q_ptr->media(t,d) ) {
-            m << Media::Media::Action::TERMINATE;
+            m << media::Media::Action::TERMINATE;
             m_mMedias[t][d]->removeAll(m);
             //TODO keep the media for history visualization purpose if it has a recording
             delete m;
@@ -1690,7 +1690,7 @@ void CallPrivate::sendProfile()
      * course, this is an ugly hack is while vCard is a standard, using it
      * like this is not. Therefore we use the proprietary PROFILE_VCF MIME.
      */
-    auto t = mediaFactory<Media::Text>(Media::Media::Direction::OUT);
+    auto t = mediaFactory<media::Text>(media::Media::Direction::OUT);
 
     MapStringString details = ConfigurationManager::instance().getAccountDetails(m_Account->id());
     using namespace DRing::Account;
@@ -1928,13 +1928,13 @@ void CallPrivate::peerHoldChanged(bool onPeerHold)
 void CallPrivate::toggleAudioRecord()
 {
    CallManagerInterface & callManager = CallManager::instance();
-   const bool wasRecording = m_mIsRecording[ Media::Media::Type::AUDIO ][Media::Media::Direction::IN];
+   const bool wasRecording = m_mIsRecording[ media::Media::Type::AUDIO ][media::Media::Direction::IN];
    qDebug() << "Setting record " << !wasRecording << " for call. callId : " << q_ptr  << "ConfId:" << q_ptr;
 
    const bool isRec = callManager.toggleRecording(q_ptr->dringId());
 
-   m_mIsRecording[ Media::Media::Type::AUDIO ].setAt( Media::Media::Direction::IN  , isRec);
-   m_mIsRecording[ Media::Media::Type::AUDIO ].setAt( Media::Media::Direction::OUT , isRec);
+   m_mIsRecording[ media::Media::Type::AUDIO ].setAt( media::Media::Direction::IN  , isRec);
+   m_mIsRecording[ media::Media::Type::AUDIO ].setAt( media::Media::Direction::OUT , isRec);
 }
 
 ///Record the call
@@ -1942,13 +1942,13 @@ void CallPrivate::toggleVideoRecord()
 {
    //TODO upgrade once the video recording is implemented
    CallManagerInterface & callManager = CallManager::instance();
-   const bool wasRecording = m_mIsRecording[ Media::Media::Type::VIDEO ][Media::Media::Direction::IN];
+   const bool wasRecording = m_mIsRecording[ media::Media::Type::VIDEO ][media::Media::Direction::IN];
    qDebug() << "Setting record " << !wasRecording << " for call. callId : " << q_ptr  << "ConfId:" << q_ptr;
 
    const bool isRec = callManager.toggleRecording(q_ptr->dringId());
 
-   m_mIsRecording[ Media::Media::Type::VIDEO ].setAt( Media::Media::Direction::IN  , isRec);
-   m_mIsRecording[ Media::Media::Type::VIDEO ].setAt( Media::Media::Direction::OUT , isRec);
+   m_mIsRecording[ media::Media::Type::VIDEO ].setAt( media::Media::Direction::IN  , isRec);
+   m_mIsRecording[ media::Media::Type::VIDEO ].setAt( media::Media::Direction::OUT , isRec);
 }
 
 ///Start the timer
@@ -2266,11 +2266,11 @@ QVariant Call::roleData(int role) const
       case static_cast<int>(Call::Role::DateTime):
          return dateTime();
       case static_cast<int>(Call::Role::HasAVRecording):
-         return d_ptr->m_mRecordings[Media::Media::Type::AUDIO][Media::Media::Direction::IN]->size()
-            + d_ptr->m_mRecordings[Media::Media::Type::AUDIO][Media::Media::Direction::IN]->size() > 0;
+         return d_ptr->m_mRecordings[media::Media::Type::AUDIO][media::Media::Direction::IN]->size()
+            + d_ptr->m_mRecordings[media::Media::Type::AUDIO][media::Media::Direction::IN]->size() > 0;
       case static_cast<int>(Call::Role::IsAVRecording):
-         return d_ptr->m_mIsRecording[Media::Media::Type::AUDIO][Media::Media::Direction::IN]
-            || d_ptr->m_mIsRecording[Media::Media::Type::AUDIO][Media::Media::Direction::IN];
+         return d_ptr->m_mIsRecording[media::Media::Type::AUDIO][media::Media::Direction::IN]
+            || d_ptr->m_mIsRecording[media::Media::Type::AUDIO][media::Media::Direction::IN];
       case static_cast<int>(Call::Role::Filter): {
          QString normStripppedC;
          foreach(QChar char2,(static_cast<int>(direction())+'\n'+roleData(Call::Role::Name).toString()+'\n'+
@@ -2324,9 +2324,9 @@ QVariant Call::roleData(int role) const
       case static_cast<int>(Call::Role::Certificate):
          return QVariant::fromValue(certificate());
       case static_cast<int>(Call::Role::HasAudioRecording):
-         return d_ptr->m_mRecordings[Media::Media::Type::AUDIO][Media::Media::Direction::IN]->size() > 0;
+         return d_ptr->m_mRecordings[media::Media::Type::AUDIO][media::Media::Direction::IN]->size() > 0;
       case static_cast<int>(Call::Role::HasVideoRecording):
-         return d_ptr->m_mRecordings[Media::Media::Type::VIDEO][Media::Media::Direction::IN]->size() > 0;
+         return d_ptr->m_mRecordings[media::Media::Type::VIDEO][media::Media::Direction::IN]->size() > 0;
       case static_cast<int>(Ring::Role::FormattedState):
       case static_cast<int>(Call::Role::HumanStateName):
          return toHumanStateName(state());

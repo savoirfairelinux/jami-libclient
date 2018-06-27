@@ -24,9 +24,9 @@ class MediaAudioPrivate;
 class Call;
 class CallPrivate;
 
-namespace Media {
+namespace media {
 
-class LIB_EXPORT Audio : public Media::Media
+class LIB_EXPORT Audio : public media::Media
 {
    friend class ::CallPrivate;
 public:

@@ -25,7 +25,7 @@
 class RecordingPlaybackManager;
 class Call;
 
-namespace Media {
+namespace media {
 
 class RecordingPrivate;
 
