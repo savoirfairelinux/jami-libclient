@@ -169,7 +169,11 @@ NewAccountModel::setAccountConfig(const std::string& accountId,
     details[ConfProperties::ALIAS]                      = toQString(accountInfo.profileInfo.alias);
     details[ConfProperties::DISPLAYNAME]                = toQString(accountInfo.profileInfo.alias);
     details[ConfProperties::TYPE]                       = (accountInfo.profileInfo.type == profile::Type::RING) ? QString(ProtocolNames::RING) : QString(ProtocolNames::SIP);
-    details[ConfProperties::USERNAME]                   = toQString(accountInfo.profileInfo.uri).prepend((accountInfo.profileInfo.type == profile::Type::RING) ? "ring:" : "");
+    if (accountInfo.profileInfo.type == profile::Type::RING) {
+        details[ConfProperties::USERNAME] = toQString(accountInfo.profileInfo.uri).prepend((accountInfo.profileInfo.type == profile::Type::RING) ? "ring:" : "");
+    } else {
+        details[ConfProperties::USERNAME] = toQString(confProperties.username);
+    }
     configurationManager.setAccountDetails(QString::fromStdString(accountId), details);
 }
 
@@ -331,6 +335,8 @@ NewAccountModelPimpl::slotAccountStatusChanged(const std::string& accountID, con
             emit linked.accountStatusChanged(accountID);
         } else
             emit linked.accountStatusChanged(accountID);
+    } else if (status == api::account::Status::INVALID) {
+        emit linked.invalidAccountDetected(accountID);
     }
 }
 
@@ -500,6 +506,7 @@ account::Info::fromDetails(const MapStringString& details)
     confProperties.activeCallLimit                      = toInt(details[ConfProperties::ACTIVE_CALL_LIMIT]);
     confProperties.hostname                             = toStdString(details[ConfProperties::HOSTNAME]);
     profileInfo.uri                                     = (profileInfo.type == profile::Type::RING and details[ConfProperties::USERNAME].contains("ring:")) ? details[ConfProperties::USERNAME].toStdString().substr(std::string("ring:").size()) : details[ConfProperties::USERNAME].toStdString();
+    confProperties.username                             = toStdString(details[ConfProperties::USERNAME]);
     confProperties.routeset                             = toStdString(details[ConfProperties::ROUTE]);
     confProperties.password                             = toStdString(details[ConfProperties::PASSWORD]);
     confProperties.realm                                = toStdString(details[ConfProperties::REALM]);
@@ -687,6 +694,29 @@ account::ConfProperties_t::toDetails() const
     details[ConfProperties::Registration::EXPIRE]       = toQString(this->Registration.expire);
 
     return details;
+}
+
+std::string
+NewAccountModel::createNewAccount(profile::Type type,
+                                  const std::string& displayName,
+                                  const std::string& archivePath,
+                                  const std::string& password,
+                                  const std::string& pin)
+{
+
+    MapStringString details = type == profile::Type::SIP?
+                              ConfigurationManager::instance().getAccountTemplate("SIP") :
+                              ConfigurationManager::instance().getAccountTemplate("RING");
+    using namespace DRing::Account;
+    details[ConfProperties::TYPE] = type == profile::Type::SIP? "SIP" : "RING";
+    details[ConfProperties::DISPLAYNAME] = displayName.c_str();
+    details[ConfProperties::ALIAS] = displayName.c_str();
+    details[ConfProperties::UPNP_ENABLED] = "true";
+    details[ConfProperties::ARCHIVE_PASSWORD] = password.c_str();
+    details[ConfProperties::ARCHIVE_PIN] = pin.c_str();
+    details[ConfProperties::ARCHIVE_PATH] = archivePath.c_str();
+    QString accountId = ConfigurationManager::instance().addAccount(details);
+    return accountId.toStdString();
 }
 
 } // namespace lrc
