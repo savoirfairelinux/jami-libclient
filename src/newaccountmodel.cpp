@@ -540,7 +540,7 @@ account::Info::fromDetails(const MapStringString& details)
     confProperties.SRTP.rtpFallback                     = toBool(details[ConfProperties::SRTP::RTP_FALLBACK]);
     // TLS
     confProperties.TLS.listenerPort                     = toInt(details[ConfProperties::TLS::LISTENER_PORT]);
-    confProperties.TLS.enable                           = toBool(details[ConfProperties::TLS::ENABLED]);
+    confProperties.TLS.enable                           = details[ConfProperties::TYPE] == QString(ProtocolNames::RING)? true : toBool(details[ConfProperties::TLS::ENABLED]);
     confProperties.TLS.port                             = toInt(details[ConfProperties::TLS::PORT]);
     confProperties.TLS.certificateListFile              = toStdString(details[ConfProperties::TLS::CA_LIST_FILE]);
     confProperties.TLS.certificateFile                  = toStdString(details[ConfProperties::TLS::CERTIFICATE_FILE]);
