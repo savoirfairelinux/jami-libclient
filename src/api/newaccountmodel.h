@@ -147,6 +147,11 @@ public:
      */
     bool registerName(const std::string& accountId, const std::string& password, const std::string& username);
 
+    /**
+     * Create a new SIP account
+     */
+    static void addNewSIPAccount();
+
 Q_SIGNALS:
     /**
      * Connect this signal to know when the status of an account has changed.
