@@ -132,12 +132,12 @@ public:
      */
     void setAvatar(const std::string& accountId, const std::string& avatar);
     /**
-     * Try to register a name
+     * Change the alias of an account
      * @param accountId
-     * @param password
-     * @param username
-     * @return string like bootstrap1:port1;bootstrap2:port2;...
+     * @param alias
+     * @throws out_of_range exception if account is not found
      */
+    void setAlias(const std::string& accountId, const std::string& alias);
     /**
      * Try to register a name
      * @param accountId
