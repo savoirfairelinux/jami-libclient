@@ -31,7 +31,7 @@ class LocalTextRecordingEditor;
 class ContactMethod;
 class InstantMessagingModel;
 
-namespace Media {
+namespace LRCMedia {
 
 class TextRecordingPrivate;
 class Text;
@@ -99,7 +99,7 @@ public:
    void setAllRead();
 
 Q_SIGNALS:
-   void messageInserted(const QMap<QString,QString>& message, ContactMethod* cm, Media::Media::Direction direction);
+   void messageInserted(const QMap<QString,QString>& message, ContactMethod* cm, LRCMedia::Media::Direction direction);
    void unreadCountChange(int count);
 
 private:
@@ -109,4 +109,4 @@ private:
 
 }
 
-Q_DECLARE_METATYPE(Media::TextRecording::Status)
+Q_DECLARE_METATYPE(LRCMedia::TextRecording::Status)

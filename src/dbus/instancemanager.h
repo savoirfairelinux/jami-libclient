@@ -32,6 +32,6 @@
 
 namespace InstanceManager {
 
-InstanceManagerInterface& LIB_EXPORT instance();
+LIB_EXPORT InstanceManagerInterface& instance();
 
 }

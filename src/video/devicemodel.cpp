@@ -137,7 +137,7 @@ void Video::DeviceModel::setActive(const QModelIndex& idx)
       emit currentIndexChanged(idx.row());
 
       //If the only renderer is the preview, reload it
-      if (Video::PreviewManager::instance().isPreviewing() && VideoRendererManager::instance().size() == 1) {
+      if (Video::PreviewManager::instance().isPreviewing() && ::VideoRendererManager::instance().size() == 1) {
          Video::PreviewManager::instance().stopPreview();
          Video::PreviewManager::instance().startPreview();
       }

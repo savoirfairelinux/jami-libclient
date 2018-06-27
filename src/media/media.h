@@ -24,11 +24,11 @@
 class Call;
 class CallModelPrivate;
 
-namespace Media {
+namespace LRCMedia {
    class MediaPrivate;
 }
 
-namespace Media {
+namespace LRCMedia {
 
 class LIB_EXPORT Media : public QObject
 {
@@ -76,7 +76,7 @@ public:
    Direction direction() const;
 
    //Getters
-   Media::Media::State state() const;
+   LRCMedia::Media::State state() const;
    bool performAction(const Media::Action);
 
    //TODO add an abstract history getter with specialisation per media
@@ -101,6 +101,6 @@ private:
 };
 
 }
-Q_DECLARE_METATYPE(Media::Media::Direction)
+Q_DECLARE_METATYPE(LRCMedia::Media::Direction)
 
-Media::Media* operator<<(Media::Media* m, Media::Media::Action a);
+LRCMedia::Media* operator<<(LRCMedia::Media* m, LRCMedia::Media::Action a);

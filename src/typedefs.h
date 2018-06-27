@@ -167,7 +167,15 @@ private:
    uint m_Flags;
 };
 
+#ifdef _MSC_VER
+#define DO_PRAGMA(x) /*do nothing*/
+#else
 #define DO_PRAGMA(x) _Pragma (#x)
+#endif // _MSC_VER
+
+#ifdef _MSC_VER
+#define __attribute__(A) /*do nothing*/
+#endif // _MSC_VER
 
 //Globally disable the "-Wunused-function" warning for GCC
 //refs: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=55578

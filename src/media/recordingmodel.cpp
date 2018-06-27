@@ -47,7 +47,7 @@ struct RecordingNode final
    RecordingNode::Type     m_Type     ;
    int                     m_Index    ;
    QString                 m_CatName  ;
-   Media::Recording*       m_pRec     ;
+   LRCMedia::Recording*       m_pRec     ;
    QVector<RecordingNode*> m_lChildren;
    RecordingNode*          m_pParent  ;
 
@@ -57,7 +57,7 @@ class RecordingModelPrivate final : public QObject
 {
    Q_OBJECT
 public:
-   explicit RecordingModelPrivate(Media::RecordingModel* parent);
+   explicit RecordingModelPrivate(LRCMedia::RecordingModel* parent);
    ~RecordingModelPrivate();
 
    //Attributes
@@ -69,11 +69,11 @@ public:
 
    //RecordingNode*                 m_pFiles     ; //TODO uncomment when implemented in DRing
 
-   void forwardInsertion(const QMap<QString,QString>& message, ContactMethod* cm, Media::Media::Direction direction);
+   void forwardInsertion(const QMap<QString,QString>& message, ContactMethod* cm, LRCMedia::Media::Direction direction);
    void updateUnreadCount(const int count);
 
 private:
-   Media::RecordingModel* q_ptr;
+    LRCMedia::RecordingModel* q_ptr;
 };
 
 RecordingNode::RecordingNode(RecordingNode::Type type) :
@@ -88,7 +88,7 @@ RecordingNode::~RecordingNode()
       delete c;
 }
 
-RecordingModelPrivate::RecordingModelPrivate(Media::RecordingModel* parent) : q_ptr(parent),m_pText(nullptr),
+RecordingModelPrivate::RecordingModelPrivate(LRCMedia::RecordingModel* parent) : q_ptr(parent),m_pText(nullptr),
 m_pAudioVideo(nullptr)/*,m_pFiles(nullptr)*/
 {
 
@@ -106,11 +106,11 @@ RecordingModelPrivate::~RecordingModelPrivate()
       delete m_pAudioVideo;
 }
 
-void RecordingModelPrivate::forwardInsertion(const QMap<QString,QString>& message, ContactMethod* cm, Media::Media::Direction direction)
+void RecordingModelPrivate::forwardInsertion(const QMap<QString,QString>& message, ContactMethod* cm, LRCMedia::Media::Direction direction)
 {
    Q_UNUSED(message)
    Q_UNUSED(direction)
-   emit q_ptr->newTextMessage(static_cast<Media::TextRecording*>(sender()), cm);
+   emit q_ptr->newTextMessage(static_cast<LRCMedia::TextRecording*>(sender()), cm);
 }
 
 void RecordingModelPrivate::updateUnreadCount(const int count)
@@ -122,17 +122,17 @@ void RecordingModelPrivate::updateUnreadCount(const int count)
     emit q_ptr->unreadMessagesCountChanged(m_UnreadCount);
 }
 
-Media::RecordingModel::~RecordingModel()
+LRCMedia::RecordingModel::~RecordingModel()
 {
    delete d_ptr;
 }
 
-Media::RecordingModel::RecordingModel(QObject* parent) : QAbstractItemModel(parent), CollectionManagerInterface<Recording>(this),
+LRCMedia::RecordingModel::RecordingModel(QObject* parent) : QAbstractItemModel(parent), CollectionManagerInterface<Recording>(this),
 d_ptr(new RecordingModelPrivate(this))
 {
    setObjectName("RecordingModel");
 
-   d_ptr->m_pTextRecordingCollection = addCollection<LocalTextRecordingCollection>();
+   d_ptr->m_pTextRecordingCollection = addCollection<LocalTextRecordingCollection>(LoadOptions::NONE);
 
    d_ptr->m_pTextRecordingCollection->listId([](const QList<CollectionInterface::Element>& e) {
       //TODO
@@ -140,13 +140,13 @@ d_ptr(new RecordingModelPrivate(this))
    });
 }
 
-Media::RecordingModel& Media::RecordingModel::instance()
+LRCMedia::RecordingModel& LRCMedia::RecordingModel::instance()
 {
     static auto instance = new RecordingModel(QCoreApplication::instance());
     return *instance;
 }
 
-QHash<int,QByteArray> Media::RecordingModel::roleNames() const
+QHash<int,QByteArray> LRCMedia::RecordingModel::roleNames() const
 {
    static QHash<int, QByteArray> roles = QAbstractItemModel::roleNames();
    /*static bool initRoles = false;
@@ -157,7 +157,7 @@ QHash<int,QByteArray> Media::RecordingModel::roleNames() const
 }
 
 //Do nothing
-bool Media::RecordingModel::setData( const QModelIndex& index, const QVariant &value, int role)
+bool LRCMedia::RecordingModel::setData( const QModelIndex& index, const QVariant &value, int role)
 {
    Q_UNUSED(index)
    Q_UNUSED(value)
@@ -166,7 +166,7 @@ bool Media::RecordingModel::setData( const QModelIndex& index, const QVariant &v
 }
 
 ///Get bookmark model data RecordingNode::Type and Call::Role
-QVariant Media::RecordingModel::data( const QModelIndex& index, int role) const
+QVariant LRCMedia::RecordingModel::data( const QModelIndex& index, int role) const
 {
    if (!index.isValid())
       return QVariant();
@@ -182,7 +182,7 @@ QVariant Media::RecordingModel::data( const QModelIndex& index, int role) const
 }
 
 ///Get header data
-QVariant Media::RecordingModel::headerData(int section, Qt::Orientation orientation, int role) const
+QVariant LRCMedia::RecordingModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
    Q_UNUSED(section)
    if (orientation == Qt::Horizontal && role == Qt::DisplayRole)
@@ -191,7 +191,7 @@ QVariant Media::RecordingModel::headerData(int section, Qt::Orientation orientat
 }
 
 ///Get the number of child of "parent"
-int Media::RecordingModel::rowCount( const QModelIndex& parent ) const
+int LRCMedia::RecordingModel::rowCount( const QModelIndex& parent ) const
 {
    if (!parent.isValid())
       return d_ptr->m_lCategories.size();
@@ -201,7 +201,7 @@ int Media::RecordingModel::rowCount( const QModelIndex& parent ) const
    }
 }
 
-Qt::ItemFlags Media::RecordingModel::flags( const QModelIndex& index ) const
+Qt::ItemFlags LRCMedia::RecordingModel::flags( const QModelIndex& index ) const
 {
    if (!index.isValid())
       return Qt::NoItemFlags;
@@ -210,14 +210,14 @@ Qt::ItemFlags Media::RecordingModel::flags( const QModelIndex& index ) const
 }
 
 ///There is only 1 column
-int Media::RecordingModel::columnCount ( const QModelIndex& parent) const
+int LRCMedia::RecordingModel::columnCount ( const QModelIndex& parent) const
 {
    Q_UNUSED(parent)
    return 1;
 }
 
 ///Get the bookmark parent
-QModelIndex Media::RecordingModel::parent( const QModelIndex& idx) const
+QModelIndex LRCMedia::RecordingModel::parent( const QModelIndex& idx) const
 {
    if (!idx.isValid())
       return QModelIndex();
@@ -236,7 +236,7 @@ QModelIndex Media::RecordingModel::parent( const QModelIndex& idx) const
 } //parent
 
 ///Get the index
-QModelIndex Media::RecordingModel::index(int row, int column, const QModelIndex& parent) const
+QModelIndex LRCMedia::RecordingModel::index(int row, int column, const QModelIndex& parent) const
 {
    if (column || (!parent.isValid() && row >= d_ptr->m_lCategories.size()))
       return QModelIndex();
@@ -249,7 +249,7 @@ QModelIndex Media::RecordingModel::index(int row, int column, const QModelIndex&
    return createIndex(row,0,modelItem->m_lChildren[row]);
 }
 
-bool Media::RecordingModel::addItemCallback(const Recording* item)
+bool LRCMedia::RecordingModel::addItemCallback(const Recording* item)
 {
    Q_UNUSED(item)
 
@@ -305,13 +305,13 @@ bool Media::RecordingModel::addItemCallback(const Recording* item)
    return false;
 }
 
-bool Media::RecordingModel::removeItemCallback(const Recording* item)
+bool LRCMedia::RecordingModel::removeItemCallback(const Recording* item)
 {
    Q_UNUSED(item)
    return false;
 }
 
-bool Media::RecordingModel::clearAllCollections() const
+bool LRCMedia::RecordingModel::clearAllCollections() const
 {
     foreach (CollectionInterface* backend, collections(CollectionInterface::SupportedFeatures::CLEAR)) {
         backend->clear();
@@ -320,53 +320,53 @@ bool Media::RecordingModel::clearAllCollections() const
 }
 
 ///Deletes all recordings (which are possible to delete) and clears model
-void Media::RecordingModel::clear()
+void LRCMedia::RecordingModel::clear()
 {
     beginResetModel();
     clearAllCollections();
     endResetModel();
 }
 
-void Media::RecordingModel::collectionAddedCallback(CollectionInterface* backend)
+void LRCMedia::RecordingModel::collectionAddedCallback(CollectionInterface* backend)
 {
    Q_UNUSED(backend)
 }
 
 ///Set where the call recordings will be saved
-void Media::RecordingModel::setRecordPath(const QString& path)
+void LRCMedia::RecordingModel::setRecordPath(const QString& path)
 {
    ConfigurationManagerInterface& configurationManager = ConfigurationManager::instance();
    configurationManager.setRecordPath(path);
 }
 
 ///Return the path where recordings are going to be saved
-QString Media::RecordingModel::recordPath() const
+QString LRCMedia::RecordingModel::recordPath() const
 {
    ConfigurationManagerInterface& configurationManager = ConfigurationManager::instance();
    return configurationManager.getRecordPath();
 }
 
 ///are all calls recorded by default
-bool Media::RecordingModel::isAlwaysRecording() const
+bool LRCMedia::RecordingModel::isAlwaysRecording() const
 {
    ConfigurationManagerInterface& configurationManager = ConfigurationManager::instance();
    return configurationManager.getIsAlwaysRecording();
 }
 
 ///Set if all calls needs to be recorded
-void Media::RecordingModel::setAlwaysRecording(bool record)
+void LRCMedia::RecordingModel::setAlwaysRecording(bool record)
 {
    ConfigurationManagerInterface& configurationManager = ConfigurationManager::instance();
    configurationManager.setIsAlwaysRecording   ( record );
 }
 
-int  Media::RecordingModel::unreadCount() const
+int  LRCMedia::RecordingModel::unreadCount() const
 {
     return d_ptr->m_UnreadCount;
 }
 
 ///Create or load the recording associated with the ContactMethod cm
-Media::TextRecording* Media::RecordingModel::createTextRecording(const ContactMethod* cm)
+LRCMedia::TextRecording* LRCMedia::RecordingModel::createTextRecording(const ContactMethod* cm)
 {
    TextRecording* r = d_ptr->m_pTextRecordingCollection->createFor(cm);
 

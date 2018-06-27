@@ -49,6 +49,10 @@
 #include "private/phonedirectorymodel_p.h"
 #include "private/textrecording_p.h"
 
+#ifdef _MSC_VER
+#include <ciso646>
+#endif // _MSC_VER
+
 void ContactMethodPrivate::callAdded(Call* call)
 {
    foreach (ContactMethod* n, m_lParents)
@@ -833,10 +837,10 @@ bool ContactMethod::operator==(const ContactMethod& other) const
    return this->d_ptr== other.d_ptr;
 }
 
-Media::TextRecording* ContactMethod::textRecording() const
+LRCMedia::TextRecording* ContactMethod::textRecording() const
 {
     if (!d_ptr->m_pTextRecording) {
-        d_ptr->m_pTextRecording = Media::RecordingModel::instance().createTextRecording(this);
+        d_ptr->m_pTextRecording = LRCMedia::RecordingModel::instance().createTextRecording(this);
     }
 
     return d_ptr->m_pTextRecording;
@@ -889,7 +893,7 @@ void ContactMethodPrivate::setCertificate(Certificate* certificate)
       certificate->setContactMethod(q_ptr);
 }
 
-void ContactMethodPrivate::setTextRecording(Media::TextRecording* r)
+void ContactMethodPrivate::setTextRecording(LRCMedia::TextRecording* r)
 {
    m_pTextRecording = r;
 }
@@ -906,7 +910,7 @@ bool ContactMethod::sendOfflineTextMessage(const QMap<QString,QString>& payloads
    auto id = ConfigurationManager::instance().sendTextMessage(selectedAccount->id()
                                                     ,uri().format(URI::Section::SCHEME|URI::Section::USER_INFO|URI::Section::HOSTNAME)
                                                     ,payloads);
-   txtRecording->d_ptr->insertNewMessage(payloads, this, Media::Media::Direction::OUT, id);
+   txtRecording->d_ptr->insertNewMessage(payloads, this, LRCMedia::Media::Direction::OUT, id);
    return true;
 }
 

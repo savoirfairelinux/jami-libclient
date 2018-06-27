@@ -30,7 +30,7 @@
 class RecordingModelPrivate;
 class ContactMethod;
 
-namespace Media {
+namespace LRCMedia {
    class Recording;
    class TextRecording;
    class AVRecording;
@@ -87,7 +87,7 @@ public:
    static RecordingModel& instance();
 
 Q_SIGNALS:
-   void newTextMessage(::Media::TextRecording* t, ContactMethod* cm);
+   void newTextMessage(::LRCMedia::TextRecording* t, ContactMethod* cm);
    void unreadMessagesCountChanged(int unreadCount);
 
 private:

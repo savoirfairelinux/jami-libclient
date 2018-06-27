@@ -21,7 +21,7 @@
 
 #include <QtCore/QUrl>
 
-namespace Media {
+namespace LRCMedia {
 
 class AVRecordingPrivate;
 

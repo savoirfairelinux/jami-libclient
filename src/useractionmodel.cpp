@@ -447,8 +447,8 @@ const Matrix1D< UAM::Action, bool(*)(const Person*)> UserActionModelPrivate::per
    { UAMA::BOOKMARK          , nullptr                                         },
    { UAMA::VIEW_CHAT_HISTORY , P_CB {
       return p->hasRecording(
-        Media::Media::Type::TEXT,
-        Media::Media::Direction::OUT
+        LRCMedia::Media::Type::TEXT,
+        LRCMedia::Media::Direction::OUT
       );
    }},
    { UAMA::ADD_CONTACT_METHOD, nullptr                                         },
@@ -705,20 +705,20 @@ void UserActionModelPrivate::updateCheckMask(int& ret, UserActionModel::Action a
          ret += c->state() == Call::State::HOLD? 100 : 1;
          break;
       case UserActionModel::Action::MUTE_AUDIO      : {
-         auto a = c->firstMedia<Media::Audio>(Media::Media::Direction::OUT);
-         ret += a && a->state() == Media::Media::State::MUTED ? 100 : 1;
+         auto a = c->firstMedia<LRCMedia::Audio>(LRCMedia::Media::Direction::OUT);
+         ret += a && a->state() == LRCMedia::Media::State::MUTED ? 100 : 1;
          }
          break;
       case UserActionModel::Action::MUTE_VIDEO      : {
-         auto v = c->firstMedia<Media::Video>(Media::Media::Direction::OUT);
-         ret += v && v->state() == Media::Media::State::MUTED ? 100 : 1;
+         auto v = c->firstMedia<LRCMedia::Video>(LRCMedia::Media::Direction::OUT);
+         ret += v && v->state() == LRCMedia::Media::State::MUTED ? 100 : 1;
          }
          break;
       case UserActionModel::Action::SERVER_TRANSFER :
          ret += c->state() == Call::State::TRANSFERRED? 100 : 1;
          break;
       case UserActionModel::Action::RECORD          :
-         ret += c->isRecording(Media::Media::Type::AUDIO,Media::Media::Direction::OUT) ? 100 : 1;
+         ret += c->isRecording(LRCMedia::Media::Type::AUDIO,LRCMedia::Media::Direction::OUT) ? 100 : 1;
          break;
       case UserActionModel::Action::HANGUP          :
          ret += 0;

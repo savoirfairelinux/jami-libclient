@@ -43,6 +43,10 @@
 #include "private/certificatemodel_p.h"
 #include "accountmodel.h"
 
+#ifdef _MSC_VER
+#include <ciso646>
+#endif // _MSC_VER
+
 /*
  * This data structure is a graph wrapping the certificates in different contexts.
  *

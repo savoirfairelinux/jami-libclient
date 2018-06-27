@@ -32,6 +32,6 @@
 
 namespace VideoManager {
 
-VideoManagerInterface& LIB_EXPORT instance();
+LIB_EXPORT VideoManagerInterface& instance();
 
 }

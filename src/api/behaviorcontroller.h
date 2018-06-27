@@ -38,7 +38,7 @@ class Lrc;
 
 namespace conversation
 {
-    class Info;
+    struct Info;
 }
 
 /**

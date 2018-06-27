@@ -41,7 +41,7 @@ class TemporaryContactMethodPrivate;
 class InstantMessagingModel;
 class Certificate;
 
-namespace Media {
+namespace LRCMedia {
    class TextRecording;
 }
 
@@ -133,7 +133,7 @@ public:
    QString               uid             () const;
    URI::ProtocolHint     protocolHint    () const;
    QByteArray            sha1            () const;
-   Media::TextRecording* textRecording   () const;
+   LRCMedia::TextRecording* textRecording   () const;
    bool                  isReachable     () const;
    Certificate*          certificate     () const;
    QString               registeredName  () const;

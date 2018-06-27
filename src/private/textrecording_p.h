@@ -34,7 +34,7 @@ struct TextMessageNode;
 class InstantMessagingModel;
 class ContactMethod;
 
-namespace Media {
+namespace LRCMedia {
    class TextRecording;
 }
 
@@ -69,7 +69,7 @@ public:
    ///The author display name
    QString                 authorSha1;
    ///The direction
-   Media::Media::Direction direction ;
+   LRCMedia::Media::Direction direction ;
    ///The message Type
    Type                    type      ;
    ///If the message have been read
@@ -79,7 +79,7 @@ public:
    //The token of the message
    uint64_t                id        ;
    //Delivery Status
-   Media::TextRecording::Status deliveryStatus;
+   LRCMedia::TextRecording::Status deliveryStatus;
 
    static const QRegularExpression m_linkRegex;
 
@@ -155,7 +155,7 @@ private:
 }
 //END Those classes are serializable to JSon
 
-namespace Media {
+namespace LRCMedia {
 
 /**
  * The Media::Recording private class. This is where the reconstructed
@@ -179,7 +179,7 @@ public:
    QHash<uint64_t, TextMessageNode*> m_hPendingMessages;
 
    //Helper
-   void insertNewMessage(const QMap<QString,QString>& message, ContactMethod* cm, Media::Media::Direction direction, uint64_t id = 0);
+   void insertNewMessage(const QMap<QString,QString>& message, ContactMethod* cm, LRCMedia::Media::Direction direction, uint64_t id = 0);
    QHash<QByteArray,QByteArray> toJsons() const;
    void accountMessageStatusChanged(const uint64_t id, DRing::Account::MessageStates status);
    bool updateMessageStatus(Serializable::Message* m, TextRecording::Status status);
@@ -235,7 +235,7 @@ class InstantMessagingModel final : public QAbstractListModel
 public:
 
    //Constructor
-   explicit InstantMessagingModel(Media::TextRecording*);
+   explicit InstantMessagingModel(LRCMedia::TextRecording*);
    virtual ~InstantMessagingModel();
 
    //Abstract model function
@@ -248,7 +248,7 @@ public:
    void clear();
 
    //Attributes
-   Media::TextRecording* m_pRecording;
+   LRCMedia::TextRecording* m_pRecording;
 
    //Helper
    void addRowBegin();

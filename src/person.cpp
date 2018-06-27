@@ -44,6 +44,10 @@
 // Std
 #include <random>
 
+#ifdef _MSC_VER
+#include <ciso646>
+#endif // _MSC_VER
+
 class AddressPrivate final
 {
 public:
@@ -559,23 +563,23 @@ bool Person::hasBeenCalled() const
  * some ContactMethod level caching need to be implemented and connected to new\
  * recording signals.
  */
-bool Person::hasRecording(Media::Media::Type type, Media::Media::Direction direction) const
+bool Person::hasRecording(LRCMedia::Media::Type type, LRCMedia::Media::Direction direction) const
 {
    Q_UNUSED(direction) //TODO implement
 
    switch (type) {
-      case Media::Media::Type::AUDIO:
-      case Media::Media::Type::VIDEO:
+      case LRCMedia::Media::Type::AUDIO:
+      case LRCMedia::Media::Type::VIDEO:
          return false; //TODO implement
-      case Media::Media::Type::TEXT:
+      case LRCMedia::Media::Type::TEXT:
          foreach( ContactMethod* cm, phoneNumbers()) {
             if (cm->textRecording() && !cm->textRecording()->isEmpty())
                return true;
          }
 
          return false;
-      case Media::Media::Type::FILE:
-      case Media::Media::Type::COUNT__:
+      case LRCMedia::Media::Type::FILE:
+      case LRCMedia::Media::Type::COUNT__:
          break;
    }
 

@@ -28,29 +28,30 @@ class MediaAudioPrivate
 {
 };
 
-Media::Audio::Audio(Call* parent, const Media::Direction direction) : Media::Media(parent, direction), d_ptr(new MediaAudioPrivate())
+LRCMedia::Audio::Audio(Call* parent, const LRCMedia::Media::Direction direction) :
+    LRCMedia::Media(parent, direction), d_ptr(new MediaAudioPrivate())
 {
    Q_ASSERT(parent);
 }
 
-Media::Media::Type Media::Audio::type()
+LRCMedia::Media::Type LRCMedia::Audio::type()
 {
-   return Media::Media::Type::AUDIO;
+   return LRCMedia::Media::Type::AUDIO;
 }
 
-bool Media::Audio::mute()
-{
-   CallManagerInterface& callManager = CallManager::instance();
-   return callManager.muteLocalMedia(call()->dringId(),DRing::Media::Details::MEDIA_TYPE_AUDIO,true);
-}
-
-bool Media::Audio::unmute()
+bool LRCMedia::Audio::mute()
 {
    CallManagerInterface& callManager = CallManager::instance();
-   return callManager.muteLocalMedia(call()->dringId(),DRing::Media::Details::MEDIA_TYPE_AUDIO,false);
+   return callManager.muteLocalMedia(call()->dringId(), DRing::Media::Details::MEDIA_TYPE_AUDIO,true);
 }
 
-Media::Audio::~Audio()
+bool LRCMedia::Audio::unmute()
+{
+   CallManagerInterface& callManager = CallManager::instance();
+   return callManager.muteLocalMedia(call()->dringId(), DRing::Media::Details::MEDIA_TYPE_AUDIO,false);
+}
+
+LRCMedia::Audio::~Audio()
 {
    delete d_ptr;
 }

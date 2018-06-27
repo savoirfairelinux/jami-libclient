@@ -38,6 +38,10 @@
 // Dbus
 #include "dbus/configurationmanager.h"
 
+#ifdef _MSC_VER
+#include <ciso646>
+#endif // _MSC_VER
+
 namespace lrc
 {
 

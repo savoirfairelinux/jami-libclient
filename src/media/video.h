@@ -29,9 +29,9 @@ class MediaVideoPrivate;
 class Call;
 class CallPrivate;
 
-namespace Media {
+namespace LRCMedia {
 
-class LIB_EXPORT Video : public Media::Media
+class LIB_EXPORT Video : public LRCMedia::Media
 {
    friend class ::CallPrivate;
 public:
