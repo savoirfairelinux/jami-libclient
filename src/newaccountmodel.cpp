@@ -1,5 +1,5 @@
 /****************************************************************************
- *   Copyright (C) 2017-2018 Savoir-faire Linux                                  *
+ *   Copyright (C) 2017-2018 Savoir-faire Linux                             *
  *   Author: Nicolas Jäger <nicolas.jager@savoirfairelinux.com>             *
  *   Author: Sébastien Blin <sebastien.blin@savoirfairelinux.com>           *
  *                                                                          *
@@ -501,9 +501,9 @@ account::Info::fromDetails(const MapStringString& details)
     confProperties.userAgent                            = toStdString(details[ConfProperties::USER_AGENT]);
     confProperties.upnpEnabled                          = toBool(details[ConfProperties::UPNP_ENABLED]);
     confProperties.hasCustomUserAgent                   = toBool(details[ConfProperties::HAS_CUSTOM_USER_AGENT]);
-    confProperties.allowIncomingFromHistory             = toBool(details[ConfProperties::ALLOW_CERT_FROM_HISTORY]);
-    confProperties.allowIncomingFromContact             = toBool(details[ConfProperties::ALLOW_CERT_FROM_CONTACT]);
-    confProperties.allowIncomingFromTrusted             = toBool(details[ConfProperties::ALLOW_CERT_FROM_TRUSTED]);
+    confProperties.allowIncoming                        = toBool(details[ConfProperties::ALLOW_CERT_FROM_HISTORY])
+                                                        | toBool(details[ConfProperties::ALLOW_CERT_FROM_CONTACT])
+                                                        | toBool(details[ConfProperties::ALLOW_CERT_FROM_TRUSTED]);
     confProperties.archivePassword                      = toStdString(details[ConfProperties::ARCHIVE_PASSWORD]);
     confProperties.archiveHasPassword                   = toBool(details[ConfProperties::ARCHIVE_HAS_PASSWORD]);
     confProperties.archivePath                          = toStdString(details[ConfProperties::ARCHIVE_PATH]);
@@ -598,9 +598,9 @@ account::ConfProperties_t::toDetails() const
     details[ConfProperties::USER_AGENT]                 = toQString(this->userAgent);
     details[ConfProperties::UPNP_ENABLED]               = toQString(this->upnpEnabled);
     details[ConfProperties::HAS_CUSTOM_USER_AGENT]      = toQString(this->hasCustomUserAgent);
-    details[ConfProperties::ALLOW_CERT_FROM_HISTORY]    = toQString(this->allowIncomingFromHistory);
-    details[ConfProperties::ALLOW_CERT_FROM_CONTACT]    = toQString(this->allowIncomingFromContact);
-    details[ConfProperties::ALLOW_CERT_FROM_TRUSTED]    = toQString(this->allowIncomingFromTrusted);
+    details[ConfProperties::ALLOW_CERT_FROM_HISTORY]    = toQString(this->allowIncoming);
+    details[ConfProperties::ALLOW_CERT_FROM_CONTACT]    = toQString(this->allowIncoming);
+    details[ConfProperties::ALLOW_CERT_FROM_TRUSTED]    = toQString(this->allowIncoming);
     details[ConfProperties::ARCHIVE_PASSWORD]           = toQString(this->archivePassword);
     details[ConfProperties::ARCHIVE_HAS_PASSWORD]       = toQString(this->archiveHasPassword);
     details[ConfProperties::ARCHIVE_PATH]               = toQString(this->archivePath);
