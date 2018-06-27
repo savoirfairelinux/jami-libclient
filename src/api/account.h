@@ -102,6 +102,8 @@ struct ConfProperties_t {
     std::string             password;
     std::string             realm;
     std::string             localInterface;
+    std::string             deviceId;
+    std::string             deviceName;
     bool                    publishedSameAsLocal;
     int                     localPort;
     int                     publishedPort;
