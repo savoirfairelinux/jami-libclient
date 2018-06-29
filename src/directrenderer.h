@@ -28,9 +28,6 @@ class QMutex;
 class QTimer;
 class QThread;
 
-//Ring
-#include "video/device.h"
-
 namespace Video {
 class DirectRendererPrivate;
 
@@ -50,7 +47,7 @@ public:
    //Getter
    const DRing::SinkTarget& target() const;
    virtual ColorSpace colorSpace() const override;
-   virtual Frame currentFrame() const override;
+   virtual lrc::api::video::Frame currentFrame() const override;
 
 
 public Q_SLOTS:

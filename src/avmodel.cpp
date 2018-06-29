@@ -43,9 +43,6 @@
 #include "dbus/configurationmanager.h"
 #include "dbus/videomanager.h"
 
-// TODO(sblin) remove this as soon as all clients use this class
-#include <private/videorenderermanager.h>
-
 namespace lrc
 {
 
@@ -447,12 +444,6 @@ AVModel::getCurrentRenderedDevice(const std::string& call_id) const
             .right(sourceSize - std::string("display://").size()).toStdString();
     }
     return result;
-}
-
-void
-AVModel::deactivateOldVideoModels()
-{
-    VideoRendererManager::instance().deactivate();
 }
 
 AVModelPimpl::AVModelPimpl(AVModel& linked, const CallbacksHandler& callbacksHandler)

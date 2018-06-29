@@ -20,12 +20,10 @@
 //Base
 #include "video/renderer.h"
 #include "typedefs.h"
+#include "api/newvideo.h"
 
 //Qt
 class QMutex;
-
-//Ring
-#include "video/device.h"
 
 //Private
 struct SHMHeader;
@@ -41,8 +39,6 @@ class LIB_EXPORT ShmRenderer final : public Renderer {
    Q_OBJECT
    #pragma GCC diagnostic pop
 
-   friend class VideoRendererManagerPrivate ;
-
 public:
    //Constructor
    ShmRenderer (const QByteArray& id, const QString& shmPath, const QSize& res);
@@ -54,7 +50,7 @@ public:
 
    //Getters
    int fps() const;
-   virtual Frame currentFrame() const override;
+   virtual lrc::api::video::Frame currentFrame() const override;
    virtual ColorSpace colorSpace  () const override;
 
    //Setters
@@ -70,4 +66,3 @@ public Q_SLOTS:
 };
 
 }
-
