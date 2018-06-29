@@ -32,8 +32,6 @@
 #define CLOCK_REALTIME 0
 #endif
 
-#include "private/videorenderermanager.h"
-#include "video/resolution.h"
 #include "private/videorenderer_p.h"
 #include "videomanager_interface.h"
 
@@ -153,7 +151,7 @@ Video::Frame Video::DirectRenderer::currentFrame() const
     if (not d_ptr->daemonFramePtr_)
         return {};
 
-    Video::Frame frame;
+    lrc::api::video::Frame frame;
     frame.storage = std::move(d_ptr->daemonFramePtr_->storage);
     frame.ptr = frame.storage.data();
     frame.size = frame.storage.size();

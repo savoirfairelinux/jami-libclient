@@ -42,7 +42,6 @@
 #include "vcard.h"
 
 // old LRC
-#include "accountmodel.h"
 #include "api/profile.h"
 #include "qtwrapper/conversions_wrap.hpp"
 

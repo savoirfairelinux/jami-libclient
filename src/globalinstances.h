@@ -24,7 +24,6 @@
 namespace Interfaces {
 class ContactMethodSelectorI;
 class DBusErrorHandlerI;
-class ItemModelStateSerializerI;
 class PixmapManipulatorI;
 class ShortcutCreatorI;
 } // namespace Interfaces
@@ -43,8 +42,6 @@ namespace GlobalInstances {
  * LRC does not provide a default implementation of this interface, thus an exception will be thrown
  * if this getter is called without an instance being set by the client
  */
-LIB_EXPORT Interfaces::ContactMethodSelectorI& contactMethodSelector();
-void LIB_EXPORT setContactMethodSelector(std::unique_ptr<Interfaces::ContactMethodSelectorI> instance);
 
 Interfaces::DBusErrorHandlerI& dBusErrorHandler();
 void setDBusErrorHandler(std::unique_ptr<Interfaces::DBusErrorHandlerI> instance);
@@ -53,8 +50,6 @@ void setDBusErrorHandler(std::unique_ptr<Interfaces::DBusErrorHandlerI> instance
  * LRC does not provide a default implementation of this interface, thus an exception will be thrown
  * if this getter is called without an instance being set by the client
  */
-LIB_EXPORT Interfaces::ItemModelStateSerializerI& itemModelStateSerializer();
-void LIB_EXPORT setItemModelStateSerializer(std::unique_ptr<Interfaces::ItemModelStateSerializerI> instance);
 
 LIB_EXPORT Interfaces::PixmapManipulatorI& pixmapManipulator();
 void LIB_EXPORT setPixmapManipulator(std::unique_ptr<Interfaces::PixmapManipulatorI> instance);
@@ -66,7 +61,6 @@ void LIB_EXPORT setShortcutCreator(std::unique_ptr<Interfaces::ShortcutCreatorI>
 //Private use only
 void setInterfaceInternal(Interfaces::ContactMethodSelectorI   *);
 void setInterfaceInternal(Interfaces::DBusErrorHandlerI        *);
-void setInterfaceInternal(Interfaces::ItemModelStateSerializerI*);
 void setInterfaceInternal(Interfaces::PixmapManipulatorI       *);
 void setInterfaceInternal(Interfaces::ShortcutCreatorI         *);
 
