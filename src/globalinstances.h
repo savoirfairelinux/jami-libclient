@@ -22,14 +22,8 @@
 #include <memory>
 
 namespace Interfaces {
-class AccountListColorizerI;
-class ContactMethodSelectorI;
 class DBusErrorHandlerI;
-class ItemModelStateSerializerI;
 class PixmapManipulatorI;
-class PresenceSerializerI;
-class ShortcutCreatorI;
-class ActionExtenderI;
 } // namespace Interfaces
 
 /**
@@ -42,15 +36,10 @@ class ActionExtenderI;
  */
 namespace GlobalInstances {
 
-LIB_EXPORT Interfaces::AccountListColorizerI& accountListColorizer();
-void LIB_EXPORT setAccountListColorizer(std::unique_ptr<Interfaces::AccountListColorizerI> instance);
-
 /**
  * LRC does not provide a default implementation of this interface, thus an exception will be thrown
  * if this getter is called without an instance being set by the client
  */
-LIB_EXPORT Interfaces::ContactMethodSelectorI& contactMethodSelector();
-void LIB_EXPORT setContactMethodSelector(std::unique_ptr<Interfaces::ContactMethodSelectorI> instance);
 
 Interfaces::DBusErrorHandlerI& dBusErrorHandler();
 void setDBusErrorHandler(std::unique_ptr<Interfaces::DBusErrorHandlerI> instance);
@@ -59,32 +48,13 @@ void setDBusErrorHandler(std::unique_ptr<Interfaces::DBusErrorHandlerI> instance
  * LRC does not provide a default implementation of this interface, thus an exception will be thrown
  * if this getter is called without an instance being set by the client
  */
-LIB_EXPORT Interfaces::ItemModelStateSerializerI& itemModelStateSerializer();
-void LIB_EXPORT setItemModelStateSerializer(std::unique_ptr<Interfaces::ItemModelStateSerializerI> instance);
 
 LIB_EXPORT Interfaces::PixmapManipulatorI& pixmapManipulator();
 void LIB_EXPORT setPixmapManipulator(std::unique_ptr<Interfaces::PixmapManipulatorI> instance);
 
-LIB_EXPORT Interfaces::PresenceSerializerI& presenceSerializer();
-void LIB_EXPORT setPresenceSerializer(std::unique_ptr<Interfaces::PresenceSerializerI> instance);
-
-LIB_EXPORT Interfaces::ShortcutCreatorI& shortcutCreator();
-void LIB_EXPORT setShortcutCreator(std::unique_ptr<Interfaces::ShortcutCreatorI> instance);
-
-LIB_EXPORT Interfaces::ActionExtenderI& actionExtender();
-void LIB_EXPORT setActionExtender(std::unique_ptr<Interfaces::ActionExtenderI> instance);
-
-
-
 //Private use only
-void setInterfaceInternal(Interfaces::AccountListColorizerI    *);
-void setInterfaceInternal(Interfaces::ContactMethodSelectorI   *);
 void setInterfaceInternal(Interfaces::DBusErrorHandlerI        *);
-void setInterfaceInternal(Interfaces::ItemModelStateSerializerI*);
 void setInterfaceInternal(Interfaces::PixmapManipulatorI       *);
-void setInterfaceInternal(Interfaces::PresenceSerializerI      *);
-void setInterfaceInternal(Interfaces::ShortcutCreatorI         *);
-void setInterfaceInternal(Interfaces::ActionExtenderI          *);
 
 /**
  * Generic interface setter. This metamethod can set any type of interface
