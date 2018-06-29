@@ -30,9 +30,6 @@ class QMutex;
 class QTimer;
 class QThread;
 
-//Ring
-#include "video/device.h"
-
 namespace Video {
 class DirectRendererPrivate;
 

@@ -22,6 +22,8 @@
 #include <QtCore/QObject>
 #include <QtCore/QSize>
 
+#include "api/newvideo.h"
+
 // Std
 #include <atomic>
 #include <memory>
@@ -31,7 +33,6 @@ class QMutex;
 namespace Video {
 
 class Renderer;
-struct Frame;
 
 class RendererPrivate final : public QObject
 {
@@ -44,7 +45,7 @@ public:
     QMutex*              m_pMutex      ;
     QString              m_Id          ;
     QSize                m_pSize       ;
-    std::shared_ptr<Frame> m_pFrame; // frame given by daemon for direct rendering
+    std::shared_ptr<lrc::api::video::Frame> m_pFrame; // frame given by daemon for direct rendering
 private:
     Video::Renderer* q_ptr;
 };
