@@ -35,19 +35,13 @@ class QString;
 #include "namedirectory.h"
 #include "usage_statistics.h"
 
-class CredentialModel         ;
 class ContactMethod           ;
 class SecurityEvaluationModel ;
 class Certificate             ;
 class CipherModel             ;
-class AccountStatusModel      ;
 class ProtocolModel           ;
-class CodecModel              ;
-class BootstrapModel          ;
-class RingDeviceModel         ;
 class NetworkInterfaceModel   ;
 class KeyExchangeModelPrivate ;
-class PendingContactRequestModel;
 class Profile;
 class ContactRequest;
 class BannedContactModel;
@@ -122,8 +116,6 @@ class LIB_EXPORT Account : public ItemBase {
    Q_PROPERTY(DtmfType       dTMFType                     READ DTMFType                      WRITE setDTMFType                    )
    Q_PROPERTY(int            voiceMailCount               READ voiceMailCount                WRITE setVoiceMailCount              )
 //    Q_PROPERTY(QString        typeName                     READ type                          WRITE setType                        )
-   Q_PROPERTY(QString        lastErrorMessage             READ lastErrorMessage                                                   )
-   Q_PROPERTY(int            lastErrorCode                READ lastErrorCode                                                      )
    Q_PROPERTY(bool           presenceStatus               READ presenceStatus                                                     )
    Q_PROPERTY(QString        presenceMessage              READ presenceMessage                                                    )
    Q_PROPERTY(bool           supportPresencePublish       READ supportPresencePublish                                             )
@@ -155,16 +147,11 @@ class LIB_EXPORT Account : public ItemBase {
    Q_PROPERTY(bool           allowIncomingFromContact     READ allowIncomingFromContact      WRITE setAllowIncomingFromContact    )
    Q_PROPERTY(bool           allowIncomingFromUnknown     READ allowIncomingFromUnknown      WRITE setAllowIncomingFromUnknown    )
 
-   Q_PROPERTY(CredentialModel*         credentialModel             READ credentialModel                                           )
-   Q_PROPERTY(CodecModel*              codecModel                  READ codecModel                                                )
    Q_PROPERTY(KeyExchangeModel*        keyExchangeModel            READ keyExchangeModel                                          )
    Q_PROPERTY(CipherModel*             cipherModel                 READ cipherModel                                               )
-   Q_PROPERTY(AccountStatusModel*      statusModel                 READ statusModel                                               )
    Q_PROPERTY(SecurityEvaluationModel* securityEvaluationModel     READ securityEvaluationModel                                   )
    Q_PROPERTY(TlsMethodModel*          tlsMethodModel              READ tlsMethodModel                                            )
    Q_PROPERTY(ProtocolModel*           protocolModel               READ protocolModel                                             )
-   Q_PROPERTY(BootstrapModel*          bootstrapModel              READ bootstrapModel                                            )
-   Q_PROPERTY(RingDeviceModel*         ringDeviceModel             READ ringDeviceModel                                           )
    Q_PROPERTY(NetworkInterfaceModel*   networkInterfaceModel       READ networkInterfaceModel                                     )
    Q_PROPERTY(QAbstractItemModel*      knownCertificateModel       READ knownCertificateModel                                     )
    Q_PROPERTY(QAbstractItemModel*      bannedCertificatesModel     READ bannedCertificatesModel                                   )
@@ -286,17 +273,12 @@ class LIB_EXPORT Account : public ItemBase {
          HasProxy                    ,
          DisplayName                 ,
          SrtpEnabled                 ,
-         HasCustomBootstrap          ,
-         CredentialModel             ,
-         CodecModel                  ,
          KeyExchangeModel            ,
          CipherModel                 ,
          StatusModel                 ,
          SecurityEvaluationModel     ,
          TlsMethodModel              ,
          ProtocolModel               ,
-         BootstrapModel              ,
-         RingDeviceModel             ,
          NetworkInterfaceModel       ,
          KnownCertificateModel       ,
          BannedCertificatesModel     ,
@@ -368,26 +350,18 @@ class LIB_EXPORT Account : public ItemBase {
       const QString    toHumanStateName() const;
       const QString    alias           () const;
       QModelIndex      index           () const;
-      QString          stateColorName  () const;
-      QVariant         stateColor      () const;
       virtual bool     isLoaded        () const;
       bool             isIp2ip         () const;
 
-      CredentialModel*          credentialModel            () const;
-      CodecModel*               codecModel                 () const;
       KeyExchangeModel*         keyExchangeModel           () const;
       CipherModel*              cipherModel                () const;
-      AccountStatusModel*       statusModel                () const;
       SecurityEvaluationModel*  securityEvaluationModel    () const;
       TlsMethodModel*           tlsMethodModel             () const;
       ProtocolModel*            protocolModel              () const;
-      BootstrapModel*           bootstrapModel             () const;
-      RingDeviceModel*          ringDeviceModel            () const;
       NetworkInterfaceModel*    networkInterfaceModel      () const;
       QAbstractItemModel*       knownCertificateModel      () const;
       QAbstractItemModel*       bannedCertificatesModel    () const;
       QAbstractItemModel*       allowedCertificatesModel   () const;
-      PendingContactRequestModel* pendingContactRequestModel   () const;
       BannedContactModel* bannedContactModel() const;
 
       Q_INVOKABLE RoleState  roleState (Account::Role role) const;
@@ -425,8 +399,6 @@ class LIB_EXPORT Account : public ItemBase {
       bool    isTlsEnabled                 () const;
       bool    isRingtoneEnabled            () const;
       QString ringtonePath                 () const;
-      QString lastErrorMessage             () const;
-      int     lastErrorCode                () const;
       int     localPort                    () const;
       int     voiceMailCount               () const;
       DtmfType DTMFType                    () const;
@@ -442,7 +414,6 @@ class LIB_EXPORT Account : public ItemBase {
       int     audioPortMax                 () const;
       bool    isUpnpEnabled                () const;
       bool    hasCustomUserAgent           () const;
-      int     lastTransportErrorCode       () const;
       QString lastTransportErrorMessage    () const;
       QString userAgent                    () const;
       bool    useDefaultPort               () const;

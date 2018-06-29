@@ -28,7 +28,6 @@
 #include <contactrequest.h>
 #include <certificate.h>
 #include <account.h>
-#include "private/pendingcontactrequestmodel_p.h"
 #include "person.h"
 #include "contactmethod.h"
 

@@ -40,17 +40,11 @@
 #include "profilemodel.h"
 #include "protocolmodel.h"
 #include "contactrequest.h"
-#include "pendingcontactrequestmodel.h"
-#include "ringdevicemodel.h"
 #include "private/accountmodel_p.h"
-#include "private/ringdevicemodel_p.h"
-#include "accountstatusmodel.h"
 #include "dbus/configurationmanager.h"
 #include "dbus/callmanager.h"
 #include "dbus/instancemanager.h"
 #include "dbus/presencemanager.h"
-#include "codecmodel.h"
-#include "private/pendingcontactrequestmodel_p.h"
 #include "person.h"
 #include "private/vcardutils.h"
 #include "phonedirectorymodel.h"
@@ -89,12 +83,8 @@ void AccountModelPrivate::init()
             SLOT(slotVoiceMailNotify(QString,int))  );
     connect(&configurationManager, SIGNAL(volatileAccountDetailsChanged(QString,MapStringString)),this,
             SLOT(slotVolatileAccountDetailsChange(QString,MapStringString)), Qt::QueuedConnection);
-    connect(&configurationManager, SIGNAL(mediaParametersChanged(QString))                 ,this ,
-            SLOT(slotMediaParametersChanged(QString)), Qt::QueuedConnection);
     connect(&configurationManager, &ConfigurationManagerInterface::incomingTrustRequest, this,
             &AccountModelPrivate::slotIncomingContactRequest, Qt::QueuedConnection);
-    connect(&configurationManager, &ConfigurationManagerInterface::knownDevicesChanged, this,
-            &AccountModelPrivate::slotKownDevicesChanged, Qt::QueuedConnection);
     connect(&configurationManager, &ConfigurationManagerInterface::exportOnRingEnded, this,
             &AccountModelPrivate::slotExportOnRingEnded, Qt::QueuedConnection);
     connect(&configurationManager, &ConfigurationManagerInterface::migrationEnded, this,
@@ -186,16 +176,11 @@ QHash<int,QByteArray> AccountModel::roleNames() const
       roles.insert(CAST(Account::Role::HasProxy                    ) ,QByteArray("hasProxy"                      ));
       roles.insert(CAST(Account::Role::DisplayName                 ) ,QByteArray("displayName"                   ));
       roles.insert(CAST(Account::Role::SrtpEnabled                 ) ,QByteArray("srtpEnabled"                   ));
-      roles.insert(CAST(Account::Role::HasCustomBootstrap          ) ,QByteArray("hasCustomBootstrap"            ));
-      roles.insert(CAST(Account::Role::CredentialModel             ) ,QByteArray("credentialModel"               ));
-      roles.insert(CAST(Account::Role::CodecModel                  ) ,QByteArray("codecModel"                    ));
       roles.insert(CAST(Account::Role::KeyExchangeModel            ) ,QByteArray("keyExchangeModel"              ));
       roles.insert(CAST(Account::Role::CipherModel                 ) ,QByteArray("cipherModel"                   ));
-      roles.insert(CAST(Account::Role::StatusModel                 ) ,QByteArray("statusModel"                   ));
       roles.insert(CAST(Account::Role::SecurityEvaluationModel     ) ,QByteArray("securityEvaluationModel"       ));
       roles.insert(CAST(Account::Role::TlsMethodModel              ) ,QByteArray("tlsMethodModel"                ));
       roles.insert(CAST(Account::Role::ProtocolModel               ) ,QByteArray("protocolModel"                 ));
-      roles.insert(CAST(Account::Role::BootstrapModel              ) ,QByteArray("bootstrapModel"                ));
       roles.insert(CAST(Account::Role::NetworkInterfaceModel       ) ,QByteArray("networkInterfaceModel"         ));
       roles.insert(CAST(Account::Role::KnownCertificateModel       ) ,QByteArray("knownCertificateModel"         ));
       roles.insert(CAST(Account::Role::BannedCertificatesModel     ) ,QByteArray("bannedCertificatesModel"       ));
@@ -326,7 +311,6 @@ void AccountModelPrivate::slotDaemonAccountChanged(const QString& account, const
    Q_UNUSED(registration_state);
    Account* a = q_ptr->getById(account.toLatin1());
 
-   //TODO move this to AccountStatusModel
    if (!a || (a && a->lastSipRegistrationStatus() != status )) {
       if (status != "OK") //Do not pollute the log
          qDebug() << "Account" << account << "status changed to" << status;
@@ -395,9 +379,6 @@ void AccountModelPrivate::slotDaemonAccountChanged(const QString& account, const
       else if (regStateChanged)
          emit q_ptr->registrationChanged(a,a->registrationState() == Account::RegistrationState::READY);
 
-      //Send the messages to AccountStatusModel for processing
-      a->statusModel()->addSipRegistrationEvent(status,code);
-
       //Make sure volatile details get reloaded
       //TODO eventually remove this call and trust the signal
       slotVolatileAccountDetailsChange(account,configurationManager.getVolatileAccountDetails(account));
@@ -455,8 +436,6 @@ void AccountModelPrivate::slotVolatileAccountDetailsChange(const QString& accoun
       const QString transportDesc = details[DRing::Account::VolatileProperties::Transport::STATE_DESC];
       const QString status        = details[DRing::Account::VolatileProperties::Registration::STATUS];
 
-      a->statusModel()->addTransportEvent(transportDesc,transportCode);
-
       a->setLastTransportCode(transportCode);
       a->setLastTransportMessage(transportDesc);
 
@@ -479,25 +458,9 @@ void AccountModelPrivate::slotIncomingContactRequest(const QString& accountId, c
 
    /* do not pass a person before the contact request was added to his model */
    ContactRequest* r = new ContactRequest(a, nullptr, ringID, time);
-   a->pendingContactRequestModel()->d_ptr->addRequest(r);
 
    auto contactMethod = PhoneDirectoryModel::instance().getNumber(ringID, a);
    r->setPeer(VCardUtils::mapToPersonFromReceivedProfile(contactMethod, payload));
-}
-
-///Known Ring devices have changed
-void AccountModelPrivate::slotKownDevicesChanged(const QString& accountId, const MapStringString& accountDevices)
-{
-   qDebug() << "Known devices changed" << accountId;
-
-   Account* a = q_ptr->getById(accountId.toLatin1());
-
-   if (!a) {
-      qWarning() << "Known devices changed for unknown account" << accountId;
-      return;
-  }
-
-   a->ringDeviceModel()->d_ptr->reload(accountDevices);
 }
 
 ///Export on Ring ended
@@ -850,18 +813,6 @@ AccountModel::subscribeToBuddies(const QString &accountId)
                                                        true);
         }
     }
-}
-
-///Called when codec bitrate changes
-void AccountModelPrivate::slotMediaParametersChanged(const QString& accountId)
-{
-   Account* a = q_ptr->getById(accountId.toLatin1());
-   if (a) {
-      if (auto codecModel = a->codecModel()) {
-         qDebug() << "reloading codecs";
-         codecModel << CodecModel::EditAction::RELOAD;
-      }
-   }
 }
 
 /*****************************************************************************
