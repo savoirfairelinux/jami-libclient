@@ -34,7 +34,6 @@ class QTimer;
 //Ring
 class Account;
 class ContactMethod;
-class UserActionModel;
 class InstantMessagingModel;
 class Certificate;
 
@@ -118,7 +117,6 @@ public:
    time_t                    m_pStopTimeStamp    ;
    Call::State               m_CurrentState      ;
    QTimer*                   m_pTimer            ;
-   UserActionModel*          m_pUserActionModel  ;
    bool                      m_History           ;
    bool                      m_Missed            ;
    Call::Direction           m_Direction         ;
@@ -129,9 +127,6 @@ public:
    QDateTime*                m_pDateTime {nullptr};
    QDate*                    m_pDateOnly {nullptr};
    QString                   m_FormattedDate     ;
-
-   //Cache
-   HistoryTimeCategoryModel::HistoryConst m_HistoryConst;
 
    //State machine
    /**
