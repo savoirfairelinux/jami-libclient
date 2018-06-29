@@ -44,9 +44,6 @@
 #include "dbus/videomanager.h"
 #include "database.h"
 
-// TODO(sblin) remove this as soon as all clients use this class
-#include <private/videorenderermanager.h>
-
 namespace lrc
 {
 
@@ -446,8 +443,6 @@ AVModel::useAVFrame(bool useAVFrame) {
     for (auto it = pimpl_->renderers_.cbegin(); it != pimpl_->renderers_.cend(); ++it) {
         it->second->useAVFrame(pimpl_->useAVFrame_);
     }
-    //TODO remove when switch to new av model
-    VideoRendererManager::instance().useAVFrame(useAVFrame);
 }
 
 void
@@ -568,13 +563,6 @@ AVModel::getCurrentRenderedDevice(const std::string& call_id) const
             .right(sourceSize - std::string("display://").size()).toStdString();
     }
     return result;
-}
-
-void
-AVModel::deactivateOldVideoModels()
-{
-    VideoRendererManager::instance().deactivate();
-    pimpl_->init();
 }
 
 AVModelPimpl::AVModelPimpl(AVModel& linked, const CallbacksHandler& callbacksHandler)
