@@ -19,6 +19,9 @@
  ***************************************************************************/
 #include "database.h"
 
+// daemon
+#include <account_const.h>
+
 // Qt
 #include <QObject>
 #include <QtCore/QDir>
@@ -41,10 +44,7 @@
 
 // Lrc for migrations
 #include "dbus/configurationmanager.h"
-#include "person.h"
-#include "account.h"
-#include "accountmodel.h"
-#include "private/vcardutils.h"
+#include "vcard.h"
 
 namespace lrc
 {
@@ -406,31 +406,25 @@ Database::migrateLocalProfiles()
             continue;
         }
 
-        auto personProfile = new Person(nullptr);
-        QList<Account*> accs;
-        VCardUtils::mapToPerson(personProfile, content.toUtf8(), &accs);
-        const auto vCard = VCardUtils::toHashMap(content.toUtf8());
-        // all accounts have the same profile picture for now.
-        const auto alias = vCard["FN"];
+        const auto vCard = lrc::vCard::utils::toHashMap(content.toUtf8());
+        const auto alias = vCard[lrc::vCard::Property::FORMATTED_NAME];
         const auto avatar = vCard["PHOTO;ENCODING=BASE64;TYPE=PNG"];
-
-        for (const auto& account: accs) {
-            if (!account) continue;
-            auto type = account->protocol() == Account::Protocol::RING ? "RING" : "SIP";
-            auto uri = account->username();
-            // Remove the ring: from the username because account uri is stored without "ring:" in the database
-            if (uri.startsWith("ring:")) {
-                uri = uri.mid(std::string("ring:").size());
-            }
-            if (select("id", "profiles","uri=:uri", {{":uri", uri.toStdString()}}).payloads.empty()) {
-                insertInto("profiles",
-                           {{":uri", "uri"}, {":alias", "alias"},
-                           {":photo", "photo"}, {":type", "type"},
-                           {":status", "status"}},
-                           {{":uri", uri.toStdString()}, {":alias", alias.toStdString()},
-                           {":photo", avatar.toStdString()}, {":type", type},
-                           {":status", "TRUSTED"}});
-            }
+        auto type = "SIP";
+        if (vCard.contains(lrc::vCard::Property::X_RINGACCOUNT)) {
+            type = "RING";
+        }
+        auto uri = vCard[lrc::vCard::Property::TELEPHONE];
+        if (uri.startsWith("other:ring:")) {
+            uri = uri.mid(std::string("other:ring:").size());
+        }
+        if (select("id", "profiles","uri=:uri", {{":uri", uri.toStdString()}}).payloads.empty()) {
+            insertInto("profiles",
+                       {{":uri", "uri"}, {":alias", "alias"},
+                       {":photo", "photo"}, {":type", "type"},
+                       {":status", "status"}},
+                       {{":uri", uri.toStdString()}, {":alias", alias.toStdString()},
+                       {":photo", avatar.toStdString()}, {":type", type},
+                       {":status", "TRUSTED"}});
         }
     }
 }
@@ -453,7 +447,7 @@ Database::migratePeerProfiles()
             continue;
         }
 
-        const auto vCard = VCardUtils::toHashMap(content.toUtf8());
+        const auto vCard = lrc::vCard::utils::toHashMap(content.toUtf8());
         auto uri = vCard["TEL;other"];
         const auto alias = vCard["FN"];
         const auto avatar = vCard["PHOTO;ENCODING=BASE64;TYPE=PNG"];
@@ -505,9 +499,11 @@ Database::migrateTextHistory()
                 if (loadDoc.find("groups") == loadDoc.end()) continue;
                 // Load account
                 auto peersObject = loadDoc["peers"].toArray()[0].toObject();
-                auto account = AccountModel::instance().getById(peersObject["accountId"].toString().toUtf8());
-                if (!account) continue;
-                auto accountUri = account->username();
+
+                MapStringString details = ConfigurationManager::instance().getAccountDetails(peersObject["accountId"].toString());
+                if (!details.contains(DRing::Account::ConfProperties::USERNAME)) continue;
+
+                auto accountUri = details[DRing::Account::ConfProperties::USERNAME];
                 auto isARingContact = accountUri.startsWith("ring:");
                 if (isARingContact) {
                     accountUri = accountUri.mid(QString("ring:").length());

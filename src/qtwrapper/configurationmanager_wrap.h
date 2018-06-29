@@ -513,10 +513,6 @@ public Q_SLOTS: // METHODS
         DRing::setRecordPath(rec.toStdString());
     }
 
-    void setShortcuts(MapStringString shortcutsMap) {
-        DRing::setShortcuts(convertMap(shortcutsMap));
-    }
-
     void setVolume(const QString& device, double value) {
         DRing::setVolume(device.toStdString(), value);
     }
