@@ -19,16 +19,14 @@
 
 //Dring
 #include <media_const.h>
-#include "dbus/callmanager.h"
 
 //Ring
-#include <call.h>
 
 class MediaAudioPrivate
 {
 };
 
-media::Audio::Audio(Call* parent, const media::Media::Direction direction) :
+media::Audio::Audio(void* parent, const media::Media::Direction direction) :
     media::Media(parent, direction), d_ptr(new MediaAudioPrivate())
 {
    Q_ASSERT(parent);
@@ -41,14 +39,12 @@ media::Media::Type media::Audio::type()
 
 bool media::Audio::mute()
 {
-   CallManagerInterface& callManager = CallManager::instance();
-   return callManager.muteLocalMedia(call()->dringId(), DRing::Media::Details::MEDIA_TYPE_AUDIO,true);
+    return false;
 }
 
 bool media::Audio::unmute()
 {
-   CallManagerInterface& callManager = CallManager::instance();
-   return callManager.muteLocalMedia(call()->dringId(), DRing::Media::Details::MEDIA_TYPE_AUDIO,false);
+    return false;
 }
 
 media::Audio::~Audio()

@@ -21,7 +21,6 @@
 #include <QtCore/QTimer>
 
 //Ring
-#include "audio/outputdevicemodel.h"
 #include "private/macromodel_p.h"
 
 
@@ -67,8 +66,7 @@ void Macro::execute() {
 void MacroPrivate::nextStep()
 {
    if (m_Position < m_Escaped.size()) {
-      if (!MacroModel::instance().d_ptr->m_lListeners.size())
-         Audio::OutputDeviceModel::playDTMF(QString(m_Escaped[m_Position]));
+      if (!MacroModel::instance().d_ptr->m_lListeners.size()) {}
       else {
          foreach(MacroModel::MacroListener* l, MacroModel::instance().d_ptr->m_lListeners) {
             l->addDTMF(QString(m_Escaped[m_Position]));

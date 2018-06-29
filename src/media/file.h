@@ -21,24 +21,20 @@
 #include <typedefs.h>
 
 class MediaFilePrivate;
-class Call;
-class CallPrivate;
 
 namespace media {
 
 class LIB_EXPORT File : public media::Media
 {
-   friend class ::CallPrivate;
 public:
 
    virtual Media::Type type() override;
 
 private:
-   File(Call* parent, const Media::Direction direction);
+   File(void* parent, const Media::Direction direction);
    virtual ~File();
 
    MediaFilePrivate* d_ptr;
 };
 
 }
-

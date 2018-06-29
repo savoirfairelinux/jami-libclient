@@ -22,7 +22,6 @@
 
 //Ring library
 #include "person.h"
-#include "call.h"
 #include "contactmethod.h"
 #include "collectioneditor.h"
 #include "collectionextensionmodel.h"

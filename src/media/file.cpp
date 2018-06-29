@@ -22,13 +22,12 @@
 #include "dbus/callmanager.h"
 
 //Ring
-#include <call.h>
 
 class MediaFilePrivate
 {
 };
 
-media::File::File(Call* parent, const Media::Direction direction) : media::Media(parent, direction), d_ptr(new MediaFilePrivate())
+media::File::File(void* parent, const Media::Direction direction) : media::Media(parent, direction), d_ptr(new MediaFilePrivate())
 {
    Q_ASSERT(parent);
 }

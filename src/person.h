@@ -199,8 +199,6 @@ Q_SIGNALS:
    void rebased                   ( Person*        );
    ///The last time there was an interaction with this person changed
    void lastUsedTimeChanged       ( long long      ) const;
-   ///A new call used a ContactMethod associated with this Person
-   void callAdded                 ( Call*          );
 
 protected:
    //Presence secret methods

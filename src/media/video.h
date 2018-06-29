@@ -20,33 +20,24 @@
 #include <media/media.h>
 #include <typedefs.h>
 
-namespace Video{
-class SourceModel;
-}
-
 
 class MediaVideoPrivate;
-class Call;
-class CallPrivate;
 
 namespace media {
 
 class LIB_EXPORT Video : public media::Media
 {
-   friend class ::CallPrivate;
 public:
 
    virtual Media::Type type() override;
    virtual bool mute() override;
    virtual bool unmute() override;
-   ::Video::SourceModel* sourceModel() const;
 
 private:
-   Video(Call* parent, const Media::Direction direction);
+   Video(void* parent, const Media::Direction direction);
    virtual ~Video();
 
    MediaVideoPrivate* d_ptr;
 };
 
 }
-

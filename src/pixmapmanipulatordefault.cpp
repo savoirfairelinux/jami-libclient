@@ -22,9 +22,6 @@
 #include <QtCore/QVariant>
 #include <QtCore/QModelIndex>
 
-//Ring
-#include <useractionmodel.h>
-
 // LRC
 #include "api/account.h"
 #include "api/conversation.h"
@@ -45,22 +42,6 @@ QVariant PixmapManipulatorDefault::numberCategoryIcon(const QVariant& p, const Q
     Q_UNUSED(size)
     Q_UNUSED(displayPresence)
     Q_UNUSED(isPresent)
-    return QVariant();
-}
-
-QVariant PixmapManipulatorDefault::callPhoto(Call* c, const QSize& size, bool displayPresence)
-{
-    Q_UNUSED(c)
-    Q_UNUSED(size)
-    Q_UNUSED(displayPresence)
-    return QVariant();
-}
-
-QVariant PixmapManipulatorDefault::callPhoto(const ContactMethod* c, const QSize& size, bool displayPresence)
-{
-    Q_UNUSED(c)
-    Q_UNUSED(size)
-    Q_UNUSED(displayPresence)
     return QVariant();
 }
 
@@ -115,27 +96,9 @@ QVariant PixmapManipulatorDefault::securityLevelIcon(const SecurityEvaluationMod
     return QVariant();
 }
 
-QVariant PixmapManipulatorDefault::historySortingCategoryIcon(const CategorizedHistoryModel::SortedProxy::Categories cat) const
-{
-    Q_UNUSED(cat)
-    return QVariant();
-}
-
-QVariant PixmapManipulatorDefault::contactSortingCategoryIcon(const CategorizedContactModel::SortedProxy::Categories cat) const
-{
-    Q_UNUSED(cat)
-    return QVariant();
-}
-
 QVariant PixmapManipulatorDefault::decorationRole(const QModelIndex& index)
 {
    Q_UNUSED(index)
-   return QVariant();
-}
-
-QVariant PixmapManipulatorDefault::decorationRole(const Call* c)
-{
-   Q_UNUSED(c)
    return QVariant();
 }
 

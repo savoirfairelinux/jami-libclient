@@ -21,9 +21,6 @@
 
 #include "typedefs.h"
 
-class Call;
-class CallModelPrivate;
-
 namespace media {
    class MediaPrivate;
 }
@@ -33,7 +30,6 @@ namespace media {
 class LIB_EXPORT Media : public QObject
 {
    Q_OBJECT
-   friend class ::CallModelPrivate;
 public:
    enum class Type {
       AUDIO = 0, /*!< */
@@ -72,7 +68,6 @@ public:
 
    //Getter
    virtual Media::Type type() = 0;
-   Call* call() const;
    Direction direction() const;
 
    //Getters
@@ -90,7 +85,7 @@ protected:
    virtual bool unmute();
    virtual bool terminate();
 
-   Media(Call* parent, const Direction direction);
+   Media(void* parent, const Direction direction);
 
 Q_SIGNALS:
    void stateChanged(const Media::State state, const Media::State previous);

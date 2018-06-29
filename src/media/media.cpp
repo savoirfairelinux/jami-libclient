@@ -18,7 +18,6 @@
 #include "media.h"
 
 #include "../private/media_p.h"
-#include <call.h>
 
 const Matrix2D<media::Media::State, media::Media::Action, bool> media::MediaPrivate::m_mValidTransitions ={{
    /*                MUTE   UNMUTE  TERMINATE */
@@ -42,16 +41,15 @@ const Matrix2D<media::Media::State, media::Media::Action, media::MediaTransition
 namespace media {
 
 MediaPrivate::MediaPrivate(Media* parent) :
- m_State(media::Media::State::ACTIVE),m_pCall(nullptr),q_ptr(parent),m_Direction(Media::Direction::OUT)
+ m_State(media::Media::State::ACTIVE),q_ptr(parent),m_Direction(Media::Direction::OUT)
 {
 
 }
 
-media::Media::Media(Call* parent, const media::Media::Direction dir) :
-    QObject(parent), d_ptr(new MediaPrivate(this))
+media::Media::Media(void* parent, const media::Media::Direction dir) :
+    QObject(), d_ptr(new MediaPrivate(this))
 {
    Q_ASSERT(parent);
-   d_ptr->m_pCall = parent;
    d_ptr->m_Direction = dir;
 }
 
@@ -104,10 +102,6 @@ bool media::MediaPrivate::nothing()
    return true;
 }
 
-Call* media::Media::call() const
-{
-   return d_ptr->m_pCall;
-}
 
 media::Media::Direction media::Media::direction() const
 {

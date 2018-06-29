@@ -25,13 +25,11 @@
 
 //Ring library
 #include "person.h"
-#include "call.h"
 #include "uri.h"
 #include "contactmethod.h"
 #include "collectioninterface.h"
 #include "collectionmodel.h"
 #include "collectioneditor.h"
-#include "transitionalpersonbackend.h"
 
 //Qt
 #include <QtCore/QHash>
@@ -347,13 +345,6 @@ bool PersonModel::removeItemCallback(const Person* item)
 bool PersonModel::addPeerProfile(Person* person)
 {
    if (!person or not person->collection()) return false;
-
-   // check if this person is saved in the PeerProfileCollection, "ppc"
-   if (person->collection() != &TransitionalPersonBackend::instance() and
-       person->collection()->id() != "ppc")
-   {
-      qWarning() << "About to add Person to the PeerProfileCollection which is part of another collection";
-   }
 
    for (auto col : collections(CollectionInterface::SupportedFeatures::ADD)) {
        //Only add profile to peer profile collection

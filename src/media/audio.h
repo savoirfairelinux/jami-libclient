@@ -21,14 +21,11 @@
 #include <typedefs.h>
 
 class MediaAudioPrivate;
-class Call;
-class CallPrivate;
 
 namespace media {
 
 class LIB_EXPORT Audio : public media::Media
 {
-   friend class ::CallPrivate;
 public:
 
    virtual Media::Type type() override;
@@ -36,11 +33,10 @@ public:
    virtual bool unmute() override;
 
 private:
-   Audio(Call* parent, const Media::Direction direction);
+   Audio(void* parent, const Media::Direction direction);
    virtual ~Audio();
 
    MediaAudioPrivate* d_ptr;
 };
 
 }
-

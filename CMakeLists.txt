@@ -269,82 +269,37 @@ ENDIF()
 #File to compile
 SET( libringclient_LIB_SRCS
   #Data objects
-  src/call.cpp
   src/uri.cpp
-  src/ringdevice.cpp
   src/account.cpp
-  src/credential.cpp
   src/person.cpp
   src/contactmethod.cpp
   src/numbercategory.cpp
   src/macro.cpp
   src/collectionextensioninterface.cpp
-  src/video/rate.cpp
-  src/video/device.cpp
   src/video/renderer.cpp
   src/certificate.cpp
   src/securityflaw.cpp
-  src/ringtone.cpp
-  src/profile.cpp
-  src/contactrequest.cpp
   src/media/media.cpp
   src/media/audio.cpp
   src/media/video.cpp
-  src/media/text.cpp
   src/media/file.cpp
   src/media/recording.cpp
   src/media/avrecording.cpp
-  src/media/textrecording.cpp
 
   #Models
-  src/bootstrapmodel.cpp
-  src/ringdevicemodel.cpp
   src/accountmodel.cpp
-  src/availableaccountmodel.cpp
-  src/callmodel.cpp
-  src/categorizedhistorymodel.cpp
-  src/categorizedbookmarkmodel.cpp
-  src/credentialmodel.cpp
-  src/categorizedcontactmodel.cpp
-  src/useractionmodel.cpp
-  src/presencestatusmodel.cpp
   src/phonedirectorymodel.cpp
-  src/historytimecategorymodel.cpp
   src/numbercategorymodel.cpp
   src/macromodel.cpp
   src/keyexchangemodel.cpp
-  src/tlsmethodmodel.cpp
-  src/protocolmodel.cpp
-  src/numbercompletionmodel.cpp
-  src/profilemodel.cpp
-  src/ringtonemodel.cpp
-  src/lastusednumbermodel.cpp
   src/securityevaluationmodel.cpp
   src/personmodel.cpp
   src/collectionmodel.cpp
   src/collectionextensionmodel.cpp
   src/collectionmanagerinterface.cpp
-  src/networkinterfacemodel.cpp
   src/certificatemodel.cpp
-  src/ciphermodel.cpp
-  src/accountstatusmodel.cpp
-  src/codecmodel.cpp
-  src/recentmodel.cpp
   src/chainoftrustmodel.cpp
-  src/pendingcontactrequestmodel.cpp
-  src/video/devicemodel.cpp
-  src/video/sourcemodel.cpp
-  src/video/channel.cpp
-  src/video/resolution.cpp
-  src/video/configurationproxy.cpp
-  src/audio/alsapluginmodel.cpp
-  src/audio/inputdevicemodel.cpp
-  src/audio/managermodel.cpp
-  src/audio/outputdevicemodel.cpp
-  src/audio/ringtonedevicemodel.cpp
-  src/audio/settings.cpp
   src/media/recordingmodel.cpp
-  src/bannedcontactmodel.cpp
   src/contactmodel.cpp
   src/newcallmodel.cpp
   src/newdevicemodel.cpp
@@ -363,20 +318,8 @@ SET( libringclient_LIB_SRCS
   src/directrenderer.cpp
 
   #Data collections
-  src/transitionalpersonbackend.cpp
   src/collectioninterface.cpp
   src/collectioneditor.cpp
-  src/fallbackpersoncollection.cpp
-  src/daemoncertificatecollection.cpp
-  src/foldercertificatecollection.cpp
-  src/localrecordingcollection.cpp
-  src/localtextrecordingcollection.cpp
-  src/localhistorycollection.cpp
-  src/localprofilecollection.cpp
-  src/localmacrocollection.cpp
-  src/localbookmarkcollection.cpp
-  src/localringtonecollection.cpp
-  src/peerprofilecollection.cpp
 
   #Communication
   src/dbus/configurationmanager.cpp
@@ -387,11 +330,8 @@ SET( libringclient_LIB_SRCS
 
   #Default interface implementations
   src/globalinstances.cpp
-  src/accountlistcolorizerdefault.cpp
-  src/presenceserializerdefault.cpp
   src/pixmapmanipulatordefault.cpp
   src/shortcutcreatordefault.cpp
-  src/actionextenderdefault.cpp
   src/dbuserrorhandlerdefault.cpp
 
   #Other
@@ -400,65 +340,30 @@ SET( libringclient_LIB_SRCS
   src/namedirectory.cpp
   src/itembase.cpp
   src/private/vcardutils.cpp
-  src/private/videorenderermanager.cpp
   src/video/previewmanager.cpp
-  src/private/sortproxies.cpp
-  src/private/threadworker.cpp
   src/mime.cpp
   src/smartinfohub.cpp
   src/usage_statistics.cpp
 
   #Extension
-  src/extensions/presencecollectionextension.cpp
   src/extensions/securityevaluationextension.cpp
 )
 
 # Public API
 SET( libringclient_LIB_HDRS
   src/account.h
-  src/ringdevice.h
-  src/credential.h
   src/accountmodel.h
-  src/availableaccountmodel.h
-  src/call.h
-  src/call.hpp
-  src/callmodel.h
-  src/categorizedhistorymodel.h
   src/person.h
-  src/bootstrapmodel.h
-  src/ringdevicemodel.h
   src/collectioninterface.h
   src/collectioninterface.hpp
-  src/categorizedbookmarkmodel.h
-  src/credentialmodel.h
-  src/categorizedcontactmodel.h
-  src/useractionmodel.h
-  src/presencestatusmodel.h
   src/contactmethod.h
   src/phonedirectorymodel.h
-  src/historytimecategorymodel.h
   src/numbercategorymodel.h
   src/keyexchangemodel.h
-  src/codecmodel.h
-  src/tlsmethodmodel.h
-  src/protocolmodel.h
-  src/numbercompletionmodel.h
-  src/profilemodel.h
   src/numbercategory.h
-  src/ringtonemodel.h
-  src/localrecordingcollection.h
-  src/localbookmarkcollection.h
-  src/localringtonecollection.h
-  src/localmacrocollection.h
-  src/localhistorycollection.h
-  src/localprofilecollection.h
-  src/localtextrecordingcollection.h
-  src/peerprofilecollection.h
-  src/lastusednumbermodel.h
   src/securityevaluationmodel.h
   src/certificate.h
   src/personmodel.h
-  src/transitionalpersonbackend.h
   src/collectionmodel.h
   src/collectionextensionmodel.h
   src/collectionextensionmodel.hpp
@@ -467,42 +372,28 @@ SET( libringclient_LIB_HDRS
   src/namedirectory.h
   src/uri.h
   src/macro.h
-  src/ringtone.h
-  src/profile.h
   src/itembase.h
   src/itembase.hpp
   src/mime.h
   src/collectionextensioninterface.h
   src/collectionmanagerinterface.h
   src/collectionmanagerinterface.hpp
-  src/networkinterfacemodel.h
   src/certificatemodel.h
-  src/ciphermodel.h
-  src/accountstatusmodel.h
   src/collectionmediator.h
   src/collectionmediator.hpp
   src/collectioneditor.h
   src/collectioneditor.hpp
-  src/fallbackpersoncollection.h
-  src/daemoncertificatecollection.h
-  src/foldercertificatecollection.h
   src/securityflaw.h
   src/collectioncreationinterface.h
   src/collectionconfigurationinterface.h
-  src/recentmodel.h
   src/chainoftrustmodel.h
-  src/pendingcontactrequestmodel.h
-  src/contactrequest.h
   src/globalinstances.h
-  src/accountlistcolorizerdefault.h
-  src/presenceserializerdefault.h
   src/pixmapmanipulatordefault.h
   src/shortcutcreatordefault.h
   src/dbuserrorhandlerdefault.h
   src/itemdataroles.h
   src/smartinfohub.h
   src/usage_statistics.h
-  src/bannedcontactmodel.h
   src/vcard.h
   src/shmrenderer.h
   src/directrenderer.h
@@ -531,29 +422,12 @@ SET(libringclient_api_LIB_HDRS
 
 
 SET(libringclient_video_LIB_HDRS
-  src/video/device.h
-  src/video/devicemodel.h
-  src/video/sourcemodel.h
   src/video/renderer.h
-  src/video/resolution.h
-  src/video/channel.h
-  src/video/rate.h
   src/video/previewmanager.h
-  src/video/configurationproxy.h
   #The renderer implementations are not exported on purpose
 )
 
-SET(libringclient_audio_LIB_HDRS
-  src/audio/alsapluginmodel.h
-  src/audio/inputdevicemodel.h
-  src/audio/managermodel.h
-  src/audio/outputdevicemodel.h
-  src/audio/ringtonedevicemodel.h
-  src/audio/settings.h
-)
-
 SET(libringclient_extensions_LIB_HDRS
-  src/extensions/presencecollectionextension.h
   src/extensions/securityevaluationextension.h
 )
 
@@ -561,22 +435,17 @@ SET(libringclient_media_LIB_HDRS
   src/media/media.h
   src/media/audio.h
   src/media/video.h
-  src/media/text.h
   src/media/file.h
   src/media/recording.h
   src/media/avrecording.h
-  src/media/textrecording.h
   src/media/recordingmodel.h
 )
 
 SET(libringclient_interface_LIB_HDRS
-  src/interfaces/accountlistcolorizeri.h
   src/interfaces/contactmethodselectori.h
-  src/interfaces/presenceserializeri.h
   src/interfaces/itemmodelstateserializeri.h
   src/interfaces/pixmapmanipulatori.h
   src/interfaces/shortcutcreatori.h
-  src/interfaces/actionextenderi.h
   src/interfaces/dbuserrorhandleri.h
 )
 
@@ -674,16 +543,11 @@ ENDIF()
 
 # Manually wrap private files and interfaces
 SET(libringclient_PRIVATE_HDRS
-   src/private/call_p.h
-   src/private/ringdevicemodel_p.h
    src/private/namedirectory_p.h
    src/private/account_p.h
-   src/private/sortproxies.h
    src/private/accountmodel_p.h
    src/private/phonedirectorymodel_p.h
    src/private/videorenderer_p.h
-   src/private/textrecording_p.h
-   src/private/videodevice_p.h
    src/private/collectionmodel_p.h
    src/private/securityflaw_p.h
    src/private/macromodel_p.h
@@ -691,7 +555,6 @@ SET(libringclient_PRIVATE_HDRS
    src/collectioncreationinterface.h
    src/private/securityevaluationmodel_p.h
    src/collectionconfigurationinterface.h
-   src/private/imconversationmanagerprivate.h
    src/private/smartInfoHub_p.h
    src/private/certificatemodel_p.h
 )
@@ -819,11 +682,6 @@ INSTALL( FILES ${libringclient_LIB_HDRS} ${libringclient_extra_LIB_HDRS}
 
 INSTALL( FILES ${libringclient_video_LIB_HDRS}
   DESTINATION ${INCLUDE_INSTALL_DIR}/libringclient/video
-  COMPONENT Devel
-)
-
-INSTALL( FILES ${libringclient_audio_LIB_HDRS}
-  DESTINATION ${INCLUDE_INSTALL_DIR}/libringclient/audio
   COMPONENT Devel
 )
 
