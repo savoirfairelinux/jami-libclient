@@ -28,7 +28,6 @@
 #include "accountmodel.h"
 #include "certificatemodel.h"
 #include "collectioninterface.h"
-#include "transitionalpersonbackend.h"
 #include "account.h"
 #include "private/vcardutils.h"
 #include "personmodel.h"
@@ -209,7 +208,8 @@ PersonPrivate::~PersonPrivate()
 Person::Person(CollectionInterface* parent): ItemBase(nullptr),
    d_ptr(new PersonPrivate(this))
 {
-   setCollection(parent ? parent : &TransitionalPersonBackend::instance());
+    if(!parent) return;
+   setCollection(parent);
 
    d_ptr->m_isPlaceHolder = false;
    d_ptr->m_lParents << this;
@@ -218,7 +218,8 @@ Person::Person(CollectionInterface* parent): ItemBase(nullptr),
 Person::Person(const QByteArray& content, Person::Encoding encoding, CollectionInterface* parent)
  : ItemBase(nullptr), d_ptr(new PersonPrivate(this))
 {
-   setCollection(parent ? parent : &TransitionalPersonBackend::instance());
+    if(!parent) return;
+   setCollection(parent);
    d_ptr->m_isPlaceHolder = false;
    d_ptr->m_lParents << this;
    switch (encoding) {

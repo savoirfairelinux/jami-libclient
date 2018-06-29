@@ -51,7 +51,6 @@
 #include "private/videorenderermanager.h"
 #include "localrecordingcollection.h"
 #include "categorizedhistorymodel.h"
-#include "useractionmodel.h"
 #include "callmodel.h"
 #include "certificate.h"
 #include "numbercategory.h"
@@ -292,7 +291,7 @@ m_PeerName(),m_pPeerContactMethod(nullptr),m_HistoryConst(HistoryTimeCategoryMod
 m_pStartTimeStamp(0),
 m_pDialNumber(new TemporaryContactMethod()),
 m_History(false),m_Missed(false),m_Direction(Call::Direction::OUTGOING),m_Type(Call::Type::CALL),
-m_pUserActionModel(nullptr), m_CurrentState(Call::State::ERROR),m_pCertificate(nullptr),m_mMedias({{
+m_CurrentState(Call::State::ERROR),m_pCertificate(nullptr),m_mMedias({{
    /*                                            IN                                                            OUT                           */
    /* AUDIO */ {{ new QList<media::Media*>() /*Created lifecycle == progress*/, new QList<media::Media*>() /*Created lifecycle == progress*/}},
    /* VIDEO */ {{ new QList<media::Media*>() /*On demand                    */, new QList<media::Media*>() /*On demand                    */}},
@@ -2192,13 +2191,6 @@ void CallPrivate::refuseAfterFailure()
        m_pTimer = nullptr;
        q_ptr->performAction(Call::Action::REFUSE);
     }
-}
-
-UserActionModel* Call::userActionModel() const
-{
-   if (!d_ptr->m_pUserActionModel)
-      d_ptr->m_pUserActionModel = new UserActionModel(const_cast<Call*>(this));
-   return d_ptr->m_pUserActionModel;
 }
 
 ///Check if creating a timer is necessary

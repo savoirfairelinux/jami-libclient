@@ -30,7 +30,7 @@ class Account;
 class RingtoneModelPrivate;
 class Ringtone;
 
-///CredentialModel: A model for account credentials
+///RingtoneModel: A model for account ringtons
 class LIB_EXPORT RingtoneModel : public QAbstractTableModel, public CollectionManagerInterface<Ringtone>
 {
    Q_OBJECT
