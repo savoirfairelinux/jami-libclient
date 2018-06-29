@@ -27,11 +27,6 @@
 
 class AccountPrivate;
 class ContactMethod;
-class CipherModel;
-class TlsMethodModel;
-class ProtocolModel;
-class NetworkInterfaceModel;
-class DaemonCertificateCollection;
 class Profile;
 
 typedef void (AccountPrivate::*account_function)();
@@ -95,22 +90,15 @@ public:
    void reloadMod() {reload();modify();}
 
    KeyExchangeModel*            m_pKeyExchangeModel        ;
-   CipherModel*                 m_pCipherModel             ;
    SecurityEvaluationModel*     m_pSecurityEvaluationModel ;
-   TlsMethodModel*              m_pTlsMethodModel          ;
-   ProtocolModel*               m_pProtocolModel           ;
    QAbstractItemModel*          m_pKnownCertificates       ;
    QAbstractItemModel*          m_pBannedCertificates      ;
    QAbstractItemModel*          m_pAllowedCertificates     ;
-   NetworkInterfaceModel*       m_pNetworkInterfaceModel   ;
-   DaemonCertificateCollection* m_pAllowedCerts            ;
-   DaemonCertificateCollection* m_pBannedCerts             ;
    Account::EditState           m_CurrentState             ;
    QMetaObject::Connection      m_cTlsCert                 ;
    QMetaObject::Connection      m_cTlsCaCert               ;
    Profile*                     m_pProfile {nullptr}       ;
    Account::ContactMethods      m_NumbersFromDaemon        ;
-   BannedContactModel* m_pBannedContactModel {nullptr};
 
    QHash<int, Account::RoleStatus> m_hRoleStatus;
 

@@ -37,9 +37,6 @@
 //Ring library
 #include "account.h"
 #include "mime.h"
-#include "profilemodel.h"
-#include "protocolmodel.h"
-#include "contactrequest.h"
 #include "private/accountmodel_p.h"
 #include "dbus/configurationmanager.h"
 #include "dbus/callmanager.h"
@@ -48,13 +45,12 @@
 #include "person.h"
 #include "private/vcardutils.h"
 #include "phonedirectorymodel.h"
-#include "bannedcontactmodel.h"
 #include "contactmethod.h"
 
 QHash<QByteArray,AccountPlaceHolder*> AccountModelPrivate::m_hsPlaceHolder;
 
 AccountModelPrivate::AccountModelPrivate(AccountModel* parent) : QObject(parent),q_ptr(parent),
-m_pIP2IP(nullptr),m_pProtocolModel(nullptr),m_pSelectionModel(nullptr),m_lMimes({RingMimes::ACCOUNT}),
+m_pIP2IP(nullptr),m_pSelectionModel(nullptr),m_lMimes({RingMimes::ACCOUNT}),
 m_lSupportedProtocols {{
    /* SIP  */ false,
    /* RING */ false,
@@ -83,8 +79,6 @@ void AccountModelPrivate::init()
             SLOT(slotVoiceMailNotify(QString,int))  );
     connect(&configurationManager, SIGNAL(volatileAccountDetailsChanged(QString,MapStringString)),this,
             SLOT(slotVolatileAccountDetailsChange(QString,MapStringString)), Qt::QueuedConnection);
-    connect(&configurationManager, &ConfigurationManagerInterface::incomingTrustRequest, this,
-            &AccountModelPrivate::slotIncomingContactRequest, Qt::QueuedConnection);
     connect(&configurationManager, &ConfigurationManagerInterface::exportOnRingEnded, this,
             &AccountModelPrivate::slotExportOnRingEnded, Qt::QueuedConnection);
     connect(&configurationManager, &ConfigurationManagerInterface::migrationEnded, this,
@@ -149,7 +143,6 @@ QHash<int,QByteArray> AccountModel::roleNames() const
       roles.insert(CAST(Account::Role::Id                          ) ,QByteArray("id"                            ));
       roles.insert(CAST(Account::Role::Object                      ) ,QByteArray("object"                        ));
       roles.insert(CAST(Account::Role::TypeName                    ) ,QByteArray("typeName"                      ));
-      roles.insert(CAST(Account::Role::PresenceStatus              ) ,QByteArray("presenceStatus"                ));
       roles.insert(CAST(Account::Role::PresenceMessage             ) ,QByteArray("presenceMessage"               ));
       roles.insert(CAST(Account::Role::UsedForOutgogingCall        ) ,QByteArray("usedForOutgogingCall"          ));
       roles.insert(CAST(Account::Role::TotalCallCount              ) ,QByteArray("totalCallCount"                ));
@@ -177,11 +170,7 @@ QHash<int,QByteArray> AccountModel::roleNames() const
       roles.insert(CAST(Account::Role::DisplayName                 ) ,QByteArray("displayName"                   ));
       roles.insert(CAST(Account::Role::SrtpEnabled                 ) ,QByteArray("srtpEnabled"                   ));
       roles.insert(CAST(Account::Role::KeyExchangeModel            ) ,QByteArray("keyExchangeModel"              ));
-      roles.insert(CAST(Account::Role::CipherModel                 ) ,QByteArray("cipherModel"                   ));
       roles.insert(CAST(Account::Role::SecurityEvaluationModel     ) ,QByteArray("securityEvaluationModel"       ));
-      roles.insert(CAST(Account::Role::TlsMethodModel              ) ,QByteArray("tlsMethodModel"                ));
-      roles.insert(CAST(Account::Role::ProtocolModel               ) ,QByteArray("protocolModel"                 ));
-      roles.insert(CAST(Account::Role::NetworkInterfaceModel       ) ,QByteArray("networkInterfaceModel"         ));
       roles.insert(CAST(Account::Role::KnownCertificateModel       ) ,QByteArray("knownCertificateModel"         ));
       roles.insert(CAST(Account::Role::BannedCertificatesModel     ) ,QByteArray("bannedCertificatesModel"       ));
       roles.insert(CAST(Account::Role::AllowedCertificatesModel    ) ,QByteArray("allowedCertificatesModel"      ));
@@ -444,25 +433,6 @@ void AccountModelPrivate::slotVolatileAccountDetailsChange(const QString& accoun
    }
 }
 
-///When a Ring-DHT trust request arrive
-void AccountModelPrivate::slotIncomingContactRequest(const QString& accountId, const QString& ringID, const QByteArray& payload, time_t time)
-{
-   Q_UNUSED(payload);
-
-   Account* a = q_ptr->getById(accountId.toLatin1());
-
-   if (!a) {
-      qWarning() << "Incoming trust request for unknown account" << accountId;
-      return;
-   }
-
-   /* do not pass a person before the contact request was added to his model */
-   ContactRequest* r = new ContactRequest(a, nullptr, ringID, time);
-
-   auto contactMethod = PhoneDirectoryModel::instance().getNumber(ringID, a);
-   r->setPeer(VCardUtils::mapToPersonFromReceivedProfile(contactMethod, payload));
-}
-
 ///Export on Ring ended
 void AccountModelPrivate::slotExportOnRingEnded(const QString& accountId, int status, const QString& pin)
 {
@@ -527,8 +497,6 @@ AccountModelPrivate::slotContactRemoved(const QString &accountID, const QString 
             auto index = daemon_contacts.indexOf(cm);
             if (index >= 0)
                 daemon_contacts.remove(index);
-            if (banned)
-                account->bannedContactModel()->add(cm);
         }
     }
 }
@@ -975,14 +943,6 @@ bool AccountModel::isRingSupported() const
 }
 
 
-ProtocolModel* AccountModel::protocolModel() const
-{
-   if (!d_ptr->m_pProtocolModel)
-      d_ptr->m_pProtocolModel = new ProtocolModel();
-   return d_ptr->m_pProtocolModel;
-}
-
-
 /*****************************************************************************
  *                                                                           *
  *                                  Setters                                  *
@@ -998,11 +958,6 @@ void AccountModelPrivate::insertAccount(Account* a, int idx)
 
    connect(a,&Account::editStateChanged, [a,this](const Account::EditState state, const Account::EditState previous) {
       emit q_ptr->accountEditStateChanged(a, state, previous);
-   });
-
-   // Connect the signal when a contact was added by an account
-   connect(a, &Account::contactRequestAccepted, [a, this](const ContactRequest* r){
-      emit q_ptr->accountContactAdded(a, r);
    });
 
    switch(a->protocol()) {
@@ -1070,11 +1025,6 @@ Account* AccountModel::add(const QString& alias, const Account::Protocol proto)
    editState();
 
    return a;
-}
-
-Account* AccountModel::add(const QString& alias, const QModelIndex& idx)
-{
-   return add(alias, qvariant_cast<Account::Protocol>(idx.data((int)ProtocolModel::Role::Protocol)));
 }
 
 ///Remove an account

@@ -27,7 +27,6 @@
 #include <QtCore/QString>
 #include <QtCore/QMimeData>
 #include <QtCore/QItemSelectionModel>
-
 //Ring daemon
 #include <account_const.h>
 #include <presence_const.h>
@@ -44,25 +43,16 @@
 #include "private/certificatemodel_p.h"
 #include "private/account_p.h"
 #include "private/accountmodel_p.h"
-#include "ciphermodel.h"
-#include "protocolmodel.h"
-#include "contactrequest.h"
 #include "person.h"
-#include "profile.h"
-#include "profilemodel.h"
-#include "networkinterfacemodel.h"
 #include "contactmethod.h"
 #include "phonedirectorymodel.h"
-#include "presencestatusmodel.h"
 #include "uri.h"
 #include "private/vcardutils.h"
 #include "mime.h"
 #include "namedirectory.h"
 #include "securityevaluationmodel.h"
-#include "daemoncertificatecollection.h"
 #include "private/securityevaluationmodel_p.h"
 #include "extensions/securityevaluationextension.h"
-#include "bannedcontactmodel.h"
 
 // define
 #define TO_BOOL ?"true":"false"
@@ -95,12 +85,11 @@ static uint p_sAutoIncrementId = 0;
 
 AccountPrivate::AccountPrivate(Account* acc) : QObject(acc),q_ptr(acc),
 m_LastErrorCode(-1),m_VoiceMailCount(0),m_CurrentState(Account::EditState::READY),
-m_pAccountNumber(nullptr),m_pKeyExchangeModel(nullptr),m_pSecurityEvaluationModel(nullptr),m_pTlsMethodModel(nullptr),
-m_pCaCert(nullptr),m_pTlsCert(nullptr),m_isLoaded(true),m_pCipherModel(nullptr),m_LastTransportCode(0),m_RegistrationState(Account::RegistrationState::UNREGISTERED),
-m_UseDefaultPort(false),m_pProtocolModel(nullptr),m_RemoteEnabledState(false),
+m_pAccountNumber(nullptr),m_pKeyExchangeModel(nullptr),m_pSecurityEvaluationModel(nullptr),
+m_pCaCert(nullptr),m_pTlsCert(nullptr),m_isLoaded(true),m_LastTransportCode(0),m_RegistrationState(Account::RegistrationState::UNREGISTERED),
+m_UseDefaultPort(false),m_RemoteEnabledState(false),
 m_pKnownCertificates(nullptr),
-m_pBannedCertificates(nullptr), m_pAllowedCertificates(nullptr),m_InternalId(++p_sAutoIncrementId),
-m_pNetworkInterfaceModel(nullptr),m_pAllowedCerts(nullptr),m_pBannedCerts(nullptr)
+m_pBannedCertificates(nullptr), m_pAllowedCertificates(nullptr),m_InternalId(++p_sAutoIncrementId)
 {
 }
 
@@ -144,8 +133,6 @@ Account* Account::buildExistingAccountFromId(const QByteArray& _accountId)
 
          auto contactMethod = PhoneDirectoryModel::instance().getNumber(ringID, a);
          auto person = VCardUtils::mapToPersonFromReceivedProfile(contactMethod, payload);
-
-         auto contactRequest = new ContactRequest(a, person, ringID, timeReceived);
       }
    }
 
@@ -157,7 +144,6 @@ Account* Account::buildExistingAccountFromId(const QByteArray& _accountId)
       for (auto contact_info : account_contacts) {
           auto cm = PhoneDirectoryModel::instance().getNumber(contact_info["id"], a);
           if (contact_info["banned"] IS_TRUE) {
-             a->bannedContactModel()->add(cm);
           } else {
              cm->setConfirmed(contact_info["confirmed"] IS_TRUE);
              a->d_ptr->m_NumbersFromDaemon << cm;
@@ -432,36 +418,12 @@ KeyExchangeModel* Account::keyExchangeModel() const
    return d_ptr->m_pKeyExchangeModel;
 }
 
-CipherModel* Account::cipherModel() const
-{
-   if (!d_ptr->m_pCipherModel) {
-      d_ptr->m_pCipherModel = new CipherModel(const_cast<Account*>(this));
-   }
-   return d_ptr->m_pCipherModel;
-}
-
 SecurityEvaluationModel* Account::securityEvaluationModel() const
 {
    if (!d_ptr->m_pSecurityEvaluationModel) {
       d_ptr->m_pSecurityEvaluationModel = new SecurityEvaluationModel(const_cast<Account*>(this));
    }
    return d_ptr->m_pSecurityEvaluationModel;
-}
-
-TlsMethodModel* Account::tlsMethodModel() const
-{
-   if (!d_ptr->m_pTlsMethodModel ) {
-      d_ptr->m_pTlsMethodModel  = new TlsMethodModel(const_cast<Account*>(this));
-   }
-   return d_ptr->m_pTlsMethodModel;
-}
-
-ProtocolModel* Account::protocolModel() const
-{
-   if (!d_ptr->m_pProtocolModel ) {
-      d_ptr->m_pProtocolModel  = new ProtocolModel(const_cast<Account*>(this));
-   }
-   return d_ptr->m_pProtocolModel;
 }
 
 QAbstractItemModel* Account::knownCertificateModel() const
@@ -478,14 +440,6 @@ QAbstractItemModel* Account::bannedCertificatesModel() const
    if (protocol() != Account::Protocol::RING || isNew())
       return nullptr;
 
-   if (!d_ptr->m_pBannedCerts) {
-      d_ptr->m_pBannedCerts = CertificateModel::instance().addCollection<DaemonCertificateCollection,Account*,DaemonCertificateCollection::Mode>(
-         const_cast<Account*>(this),
-         DaemonCertificateCollection::Mode::BANNED
-      );
-      d_ptr->m_pBannedCerts->load();
-   }
-
    if (!d_ptr->m_pBannedCertificates) {
       d_ptr->m_pBannedCertificates = CertificateModel::instance().d_ptr->createBannedList(this);
    }
@@ -498,37 +452,11 @@ QAbstractItemModel* Account::allowedCertificatesModel() const
    if (protocol() != Account::Protocol::RING || isNew())
       return nullptr;
 
-   if (!d_ptr->m_pAllowedCerts) {
-      d_ptr->m_pAllowedCerts = CertificateModel::instance().addCollection<DaemonCertificateCollection,Account*,DaemonCertificateCollection::Mode>(
-         const_cast<Account*>(this),
-         DaemonCertificateCollection::Mode::ALLOWED
-      );
-      d_ptr->m_pAllowedCerts->load();
-   }
-
    if (!d_ptr->m_pAllowedCertificates) {
       d_ptr->m_pAllowedCertificates = CertificateModel::instance().d_ptr->createAllowedList(this);
    }
 
    return d_ptr->m_pAllowedCertificates;
-}
-
-BannedContactModel*
-Account::bannedContactModel() const
-{
-   if (!d_ptr->m_pBannedContactModel)
-      d_ptr->m_pBannedContactModel = new BannedContactModel(const_cast<Account*>(this));
-
-   return d_ptr->m_pBannedContactModel;
-}
-
-NetworkInterfaceModel* Account::networkInterfaceModel() const
-{
-   if (!d_ptr->m_pNetworkInterfaceModel) {
-      d_ptr->m_pNetworkInterfaceModel = new NetworkInterfaceModel(const_cast<Account*>(this));
-   }
-
-   return d_ptr->m_pNetworkInterfaceModel;
 }
 
 bool Account::isUsedForOutgogingCall() const
@@ -859,11 +787,6 @@ DtmfType Account::DTMFType() const
    return (type == "overrtp" || type.isEmpty())? DtmfType::OverRtp:DtmfType::OverSip;
 }
 
-bool Account::presenceStatus() const
-{
-   return d_ptr->m_pAccountNumber->isPresent();
-}
-
 QString Account::presenceMessage() const
 {
    return d_ptr->m_pAccountNumber->presenceMessage();
@@ -1135,10 +1058,6 @@ QVariant Account::roleData(int role) const
       }
       case CAST(Account::Role::TypeName):
          return CAST(protocol());
-      case CAST(Account::Role::PresenceStatus):
-         return PresenceStatusModel::instance().currentStatus();
-      case CAST(Account::Role::PresenceMessage):
-         return PresenceStatusModel::instance().currentMessage();
       case CAST(Account::Role::RegistrationState):
          return QVariant::fromValue(registrationState());
       case CAST(Account::Role::UsedForOutgogingCall):
@@ -1202,16 +1121,8 @@ QVariant Account::roleData(int role) const
          return isSrtpEnabled();
       case CAST(Account::Role::KeyExchangeModel           ):
          return QVariant::fromValue(keyExchangeModel());
-      case CAST(Account::Role::CipherModel                ):
-         return QVariant::fromValue(cipherModel());
       case CAST(Account::Role::SecurityEvaluationModel    ):
          return QVariant::fromValue(securityEvaluationModel());
-      case CAST(Account::Role::TlsMethodModel             ):
-         return QVariant::fromValue(tlsMethodModel());
-      case CAST(Account::Role::ProtocolModel              ):
-         return QVariant::fromValue(protocolModel());
-      case CAST(Account::Role::NetworkInterfaceModel      ):
-         return QVariant::fromValue(networkInterfaceModel());
       case CAST(Account::Role::KnownCertificateModel      ):
          return QVariant::fromValue(knownCertificateModel());
       case CAST(Account::Role::BannedCertificatesModel    ):
@@ -1293,45 +1204,6 @@ bool Account::banCertificate(Certificate* c)
       return false;
 
    return CertificateModel::instance().d_ptr->banCertificate(c, this);
-}
-
-///Ask the certificate owner (peer) to trust you
-bool Account::sendContactRequest( const URI& uri )
-{
-   if (uri.isEmpty())
-       return false;
-
-   QByteArray payload;
-
-   // Send our VCard as payload
-   payload = profile()->person()->toVCard();
-
-   ConfigurationManager::instance().sendTrustRequest(id(), uri, payload);
-
-   return true;
-}
-
-bool Account::sendContactRequest(const ContactMethod* c)
-{
-    if (!c)
-        return false;
-
-    return sendContactRequest(c->uri());
-}
-
-bool Account::sendContactRequest( Certificate* c )
-{
-   if ((!c) || (c->remoteId().isEmpty()))
-      return false;
-
-   QByteArray payload;
-
-   // Send our VCard as payload
-   payload = profile()->person()->toVCard();
-
-   ConfigurationManager::instance().sendTrustRequest(id(),c->remoteId(), payload);
-
-   return true;
 }
 
 bool Account::removeContact( const URI& uri )
@@ -1956,48 +1828,6 @@ void Account::setDTMFType(DtmfType type)
    d_ptr->setAccountProperty(DRing::Account::ConfProperties::DTMF_TYPE,(type==OverRtp)?"overrtp":"oversip");
 }
 
-void Account::setProfile(Profile* p)
-{
-    if (!p) {
-        qWarning() << "Cannot set profile to null as all accounts must belong to a profile";
-        return;
-    }
-
-    if (p == d_ptr->m_pProfile)
-        return; // nothing to do
-
-    if (d_ptr->m_pProfile)
-        d_ptr->m_pProfile->removeAccount(this);
-
-    if (p->addAccount(this))
-        p->save();
-
-    d_ptr->m_pProfile = p;
-
-    emit changed(this);
-}
-
-Profile* Account::profile() const
-{
-   // Make sure all accounts belong to a profile
-   if (!d_ptr->m_pProfile) {
-      Profile* p = ProfileModel::instance().selectedProfile();
-
-      if (!p) // for now default to the first profile
-         p = ProfileModel::instance().getProfile(ProfileModel::instance().index(0,0));
-
-      if (!p)
-         return nullptr;
-
-      // Use a const cast rather than a mutable to make sure the logic is the
-      // same between "automatic" default profile" and the setProfile
-      // implementation.
-      const_cast<Account*>(this)->setProfile(p);
-   }
-
-   return d_ptr->m_pProfile;
-}
-
 void Account::setLastSipRegistrationStatus(const QString& value )
 {
     d_ptr->m_LastSipRegistrationStatus = value;
@@ -2167,12 +1997,8 @@ void Account::setRoleData(int role, const QVariant& value)
          setSrtpEnabled(value.toBool());
          break;
       case CAST(Account::Role::KeyExchangeModel         ):
-      case CAST(Account::Role::CipherModel              ):
       case CAST(Account::Role::StatusModel              ):
       case CAST(Account::Role::SecurityEvaluationModel  ):
-      case CAST(Account::Role::TlsMethodModel           ):
-      case CAST(Account::Role::ProtocolModel            ):
-      case CAST(Account::Role::NetworkInterfaceModel    ):
       case CAST(Account::Role::KnownCertificateModel    ):
       case CAST(Account::Role::BannedCertificatesModel  ):
       case CAST(Account::Role::AllowedCertificatesModel ):
@@ -2284,7 +2110,6 @@ Account::RoleState Account::roleState(Account::Role role) const
             case Account::Role::HasCustomUserAgent:
             case Account::Role::HasProxy          :
             case Account::Role::Proxy             :
-            case Account::Role::CipherModel       :
             case Account::Role::DisplayName       :
                return Account::RoleState::UNAVAILABLE;
             case Account::Role::Username                :
