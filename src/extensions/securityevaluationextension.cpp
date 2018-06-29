@@ -22,7 +22,6 @@
 #include "person.h"
 #include "account.h"
 #include "call.h"
-#include "presencestatusmodel.h"
 #include "collectionextensionmodel.h"
 #include "globalinstances.h"
 #include "interfaces/pixmapmanipulatori.h"

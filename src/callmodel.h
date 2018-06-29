@@ -104,7 +104,6 @@ public:
    int                  size                ();
    bool                 hasConference       () const;
    bool                 isConnected         () const;
-   UserActionModel*     userActionModel     () const;
    Q_INVOKABLE QItemSelectionModel* selectionModel() const;
 
    Q_INVOKABLE Call* getCall ( const QModelIndex& idx ) const;

@@ -28,7 +28,6 @@
 #include <dbus/videomanager.h>
 #include <video/device.h>
 #include <call.h>
-#include <callmodel.h>
 #include <video/renderer.h>
 #include <video/devicemodel.h>
 #include <video/channel.h>
@@ -260,23 +259,7 @@ void VideoRendererManagerPrivate::startedDecoding(const QString& id, const QStri
    if (id != PREVIEW_RENDERER_ID) {
       qDebug() << "Starting video for call" << id;
 
-      Call* c = CallModel::instance().getCall(id);
-
-      if (c) {
-          emit q_ptr->remotePreviewStarted(id.toStdString(), r);
-          c->d_ptr->registerRenderer(r);
-      }
-      else {
-          //We don't have the conference yet
-          QObject::connect(&CallModel::instance(), &CallModel::conferenceCreated, [=](Call* conf) {
-              Q_UNUSED(conf)
-              Call* c = CallModel::instance().getCall(id);
-
-              if (c) {
-                  c->d_ptr->registerRenderer(r);
-              }
-          });
-      }
+      emit q_ptr->remotePreviewStarted(id.toStdString(), r);
 
    }
    else {
@@ -320,13 +303,6 @@ void VideoRendererManagerPrivate::stoppedDecoding(const QString& id, const QStri
 
     auto r = m_hRenderers.value(id.toLatin1());
 
-    Call* c = CallModel::instance().getCall(id);
-
-    // TODO: the current implementeation of CallPrivate::removeRenderer() does nothing
-    if (c && c->lifeCycleState() == Call::LifeCycleState::FINISHED) {
-        c->d_ptr->removeRenderer(r);
-    }
-
     r->stopRendering();
 
     qDebug() << "Video stopped for call" << id <<  "Renderer found:" << m_hRenderers.contains(id.toLatin1());
@@ -350,11 +326,7 @@ void VideoRendererManagerPrivate::stoppedDecoding(const QString& id, const QStri
     }
 
     // decoding stopped; remove the renderer, if/when call is over
-    if (c && c->lifeCycleState() == Call::LifeCycleState::FINISHED) {
-        removeRenderer(r);
-    } else if (c) {
-        connect(c, &Call::isOver, this, &VideoRendererManagerPrivate::callIsOver);
-    }
+    removeRenderer(r);
 }
 
 void VideoRendererManagerPrivate::callIsOver()
@@ -388,13 +360,6 @@ void VideoRendererManagerPrivate::removeRenderer(Video::Renderer* r)
       qWarning() << "Cannot stop rendering, renderer" << id << "not found";
       return;
    }
-
-   Call* c = CallModel::instance().getCall(id);
-
-   if (c && c->lifeCycleState() == Call::LifeCycleState::FINISHED) {
-      c->d_ptr->removeRenderer(r);
-   }
-
    r->stopRendering();
 
    qDebug() << "Video stopped for call" << id <<  "Renderer found:" << m_hRenderers.contains(id);

@@ -26,7 +26,6 @@
 struct CertificateNode;
 class Account;
 class CertificateModel;
-class DaemonCertificateCollection;
 class QAbstractItemModel;
 
 class CertificateModelPrivate final : public QObject

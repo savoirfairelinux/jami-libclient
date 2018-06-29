@@ -37,8 +37,6 @@
 #include "certificate.h"
 #include "contactmethod.h"
 #include "account.h"
-#include "foldercertificatecollection.h"
-#include "daemoncertificatecollection.h"
 #include "private/matrixutils.h"
 #include "private/certificatemodel_p.h"
 #include "accountmodel.h"
@@ -123,10 +121,6 @@ private:
    CertificateNode* m_pRoot;
 };
 
-//TODO remove
-static FolderCertificateCollection* m_pFallbackCollection = nullptr;
-static DaemonCertificateCollection* m_pFallbackDaemonCollection = nullptr;
-
 const Matrix1D<Certificate::Status, const char*> CertificateModelPrivate::m_StatusMap = {{
 /* Certificate::Status::UNDEFINED      */ DRing::Certificate::Status::UNDEFINED,
 /* Certificate::Status::ALLOWED        */ DRing::Certificate::Status::ALLOWED  ,
@@ -177,17 +171,6 @@ CertificateModel::CertificateModel(QObject* parent) : QAbstractItemModel(parent)
  d_ptr(new CertificateModelPrivate(this))
 {
    setObjectName("CertificateModel");
-   //TODO replace with something else
-   m_pFallbackCollection = addCollection<FolderCertificateCollection,QString,FlagPack<FolderCertificateCollection::Options>, QString>(QString(),
-      FolderCertificateCollection::Options::FALLBACK | FolderCertificateCollection::Options::READ_WRITE,
-      QObject::tr("Local certificate store")
-   );
-   m_pFallbackDaemonCollection = addCollection<DaemonCertificateCollection,Account*,DaemonCertificateCollection::Mode>(
-      nullptr,
-      DaemonCertificateCollection::Mode::ALLOWED
-   );
-
-   m_pFallbackCollection->load();
 }
 
 CertificateModel::~CertificateModel()
@@ -628,7 +611,6 @@ Certificate* CertificateModel::getCertificateFromPath(const QString& path, Accou
 
    if (!cert) {
       cert = new Certificate(path, Certificate::Type::NONE);
-      cert->setCollection(m_pFallbackDaemonCollection);
 
       { // mutex
       QMutexLocker(&d_ptr->m_CertInsertion);
@@ -659,7 +641,6 @@ Certificate* CertificateModel::getCertificateFromPath(const QString& path, Certi
    //The certificate is not loaded yet
    if (!cert) {
       cert = new Certificate(path, type);
-      cert->setCollection(m_pFallbackDaemonCollection);
 
       { // mutex
       QMutexLocker(&d_ptr->m_CertInsertion);

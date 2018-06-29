@@ -18,7 +18,6 @@
 
 #include "smartinfohub.h"
 #include "private/smartInfoHub_p.h"
-#include "callmodel.h"
 #include "typedefs.h"
 
 #include <dbus/videomanager.h>

@@ -24,6 +24,7 @@
 #include <QtCore/QVector>
 #include <QtCore/QString>
 #include <QtCore/QDebug>
+#include <QtCore/QDateTime>
 
 //Typedefs (required to avoid '<' and '>' in the DBus XML)
 typedef QMap<QString, QString>                              MapStringString               ;

@@ -27,7 +27,6 @@
 #include <accountmodel.h>
 #include "matrixutils.h"
 class AccountModel;
-class ProtocolModel;
 class QItemSelectionModel;
 
 class AccountModelPrivate final : public QObject
@@ -52,7 +51,6 @@ public:
    QStringList                       m_lDeletedAccounts   ;
    Account*                          m_pIP2IP             ;
    QList<Account*>                   m_pRemovedAccounts   ;
-   ProtocolModel*                    m_pProtocolModel     ;
    QItemSelectionModel*              m_pSelectionModel    ;
    QItemSelectionModel*              m_pUserSelectionModel {nullptr};
    QStringList                       m_lMimes             ;
@@ -70,9 +68,6 @@ public Q_SLOTS:
    void slotVoiceMailNotify( const QString& accountID , int count );
    void slotAccountPresenceEnabledChanged(bool state);
    void slotVolatileAccountDetailsChange(const QString& accountId, const MapStringString& details);
-   void slotMediaParametersChanged(const QString& accountId);
-   void slotIncomingContactRequest(const QString& accountId, const QString& hash, const QByteArray& payload, time_t time);
-   void slotKownDevicesChanged(const QString& accountId, const MapStringString& devices);
    void slotExportOnRingEnded(const QString& accountId, int status, const QString& pin);
    void slotMigrationEnded(const QString& accountId, const QString& result);
    void slotContactAdded(const QString &accountID, const QString &uri, bool confirmed);

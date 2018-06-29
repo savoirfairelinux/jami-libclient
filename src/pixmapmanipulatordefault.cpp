@@ -22,9 +22,6 @@
 #include <QtCore/QVariant>
 #include <QtCore/QModelIndex>
 
-//Ring
-#include <useractionmodel.h>
-
 // LRC
 #include "api/account.h"
 #include "api/conversation.h"
@@ -112,18 +109,6 @@ QVariant PixmapManipulatorDefault::collectionIcon(const CollectionInterface* int
 QVariant PixmapManipulatorDefault::securityLevelIcon(const SecurityEvaluationModel::SecurityLevel level) const
 {
     Q_UNUSED(level)
-    return QVariant();
-}
-
-QVariant PixmapManipulatorDefault::historySortingCategoryIcon(const CategorizedHistoryModel::SortedProxy::Categories cat) const
-{
-    Q_UNUSED(cat)
-    return QVariant();
-}
-
-QVariant PixmapManipulatorDefault::contactSortingCategoryIcon(const CategorizedContactModel::SortedProxy::Categories cat) const
-{
-    Q_UNUSED(cat)
     return QVariant();
 }
 
