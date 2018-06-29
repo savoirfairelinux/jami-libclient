@@ -28,36 +28,12 @@
 
 namespace Interfaces {
 
-QVariant PixmapManipulatorDefault::contactPhoto(Person* c, const QSize& size, bool displayPresence)
-{
-    Q_UNUSED(c)
-    Q_UNUSED(size)
-    Q_UNUSED(displayPresence)
-    return QVariant();
-}
-
 QVariant PixmapManipulatorDefault::numberCategoryIcon(const QVariant& p, const QSize& size, bool displayPresence, bool isPresent)
 {
     Q_UNUSED(p)
     Q_UNUSED(size)
     Q_UNUSED(displayPresence)
     Q_UNUSED(isPresent)
-    return QVariant();
-}
-
-QVariant PixmapManipulatorDefault::callPhoto(Call* c, const QSize& size, bool displayPresence)
-{
-    Q_UNUSED(c)
-    Q_UNUSED(size)
-    Q_UNUSED(displayPresence)
-    return QVariant();
-}
-
-QVariant PixmapManipulatorDefault::callPhoto(const ContactMethod* c, const QSize& size, bool displayPresence)
-{
-    Q_UNUSED(c)
-    Q_UNUSED(size)
-    Q_UNUSED(displayPresence)
     return QVariant();
 }
 
@@ -71,12 +47,6 @@ PixmapManipulatorDefault::conversationPhoto(const lrc::api::conversation::Info& 
     Q_UNUSED(accountInfo)
     Q_UNUSED(size)
     Q_UNUSED(displayPresence)
-    return QVariant();
-}
-
-QVariant PixmapManipulatorDefault::securityIssueIcon(const QModelIndex& index)
-{
-    Q_UNUSED(index)
     return QVariant();
 }
 
@@ -99,46 +69,9 @@ QVariant PixmapManipulatorDefault::userActionIcon(const UserActionElement& state
     return QVariant();
 }
 
-QVariant PixmapManipulatorDefault::collectionIcon(const CollectionInterface* interface, PixmapManipulatorI::CollectionIconHint hint) const
-{
-    Q_UNUSED(interface)
-    Q_UNUSED(hint)
-    return QVariant();
-}
-
-QVariant PixmapManipulatorDefault::securityLevelIcon(const SecurityEvaluationModel::SecurityLevel level) const
-{
-    Q_UNUSED(level)
-    return QVariant();
-}
-
 QVariant PixmapManipulatorDefault::decorationRole(const QModelIndex& index)
 {
    Q_UNUSED(index)
-   return QVariant();
-}
-
-QVariant PixmapManipulatorDefault::decorationRole(const Call* c)
-{
-   Q_UNUSED(c)
-   return QVariant();
-}
-
-QVariant PixmapManipulatorDefault::decorationRole(const ContactMethod* cm)
-{
-   Q_UNUSED(cm)
-   return QVariant();
-}
-
-QVariant PixmapManipulatorDefault::decorationRole(const Person* p)
-{
-   Q_UNUSED(p)
-   return QVariant();
-}
-
-QVariant PixmapManipulatorDefault::decorationRole(const Account* acc)
-{
-   Q_UNUSED(acc)
    return QVariant();
 }
 

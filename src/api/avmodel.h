@@ -240,8 +240,6 @@ public:
      */
     video::RenderedDevice getCurrentRenderedDevice(const std::string& call_id) const;
 
-    // TODO remove this, this is just to avoid dual rendering.
-    void deactivateOldVideoModels();
     /**
      * set to true to receive AVFrames from render
      */

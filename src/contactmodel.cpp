@@ -38,7 +38,7 @@
 #include "api/newaccountmodel.h"
 #include "callbackshandler.h"
 #include "uri.h"
-#include "private/vcardutils.h"
+#include "vcard.h"
 
 #include "authority/daemon.h"
 #include "authority/databasehelper.h"
@@ -531,7 +531,7 @@ ContactModelPimpl::fillsWithRINGContacts() {
 
         auto contactUri = tr_info[DRing::Account::TrustRequest::FROM];
 
-        const auto vCard = VCardUtils::toHashMap(payload);
+        const auto vCard = lrc::vCard::utils::toHashMap(payload);
         const auto alias = vCard["FN"];
         const auto photo = (vCard.find("PHOTO;ENCODING=BASE64;TYPE=PNG") == vCard.end()) ?
         vCard["PHOTO;ENCODING=BASE64;TYPE=JPEG"] : vCard["PHOTO;ENCODING=BASE64;TYPE=PNG"];
@@ -775,7 +775,7 @@ ContactModelPimpl::slotIncomingContactRequest(const std::string& accountId,
     {
         std::lock_guard<std::mutex> lk(contactsMtx_);
         if (contacts.find(contactUri) == contacts.end()) {
-            const auto vCard = VCardUtils::toHashMap(payload.c_str());
+            const auto vCard = lrc::vCard::utils::toHashMap(payload.c_str());
             const auto alias = vCard["FN"];
             const auto photo = (vCard.find("PHOTO;ENCODING=BASE64;TYPE=PNG") == vCard.end()) ?
             vCard["PHOTO;ENCODING=BASE64;TYPE=JPEG"] : vCard["PHOTO;ENCODING=BASE64;TYPE=PNG"];

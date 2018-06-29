@@ -28,7 +28,6 @@
 
 // Lrc
 #include "typedefs.h"
-#include "namedirectory.h"
 #include "api/datatransfer.h"
 #include "qtwrapper/conversions_wrap.hpp"
 

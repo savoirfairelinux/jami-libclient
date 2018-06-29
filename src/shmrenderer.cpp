@@ -40,8 +40,6 @@
 #include <QtCore/QTimer>
 #include <chrono>
 
-#include "private/videorenderermanager.h"
-#include "video/resolution.h"
 #include "private/videorenderer_p.h"
 
 // Uncomment following line to output in console the FPS value
@@ -181,7 +179,7 @@ bool ShmRendererPrivate::getNewFrame(bool wait)
 
    auto& frame_ptr = q_ptr->Video::Renderer::d_ptr->m_pFrame;
    if (not frame_ptr)
-       frame_ptr.reset(new Frame);
+       frame_ptr.reset(new lrc::api::video::Frame);
    frame_ptr->storage.clear();
    frame_ptr->ptr = m_pShmArea->data + m_pShmArea->readOffset;
    frame_ptr->size = m_pShmArea->frameSize;
@@ -367,7 +365,7 @@ int ShmRenderer::fps() const
 }
 
 /// Get frame data pointer from shared memory
-Frame ShmRenderer::currentFrame() const
+lrc::api::video::Frame ShmRenderer::currentFrame() const
 {
     if (not isRendering())
         return {};
