@@ -28,7 +28,6 @@ class QTimer;
 
 //Ring
 #include "typedefs.h"
-#include "historytimecategorymodel.h"
 #include "media/media.h"
 #include "itemdataroles.h"
 class Account               ;
@@ -82,9 +81,6 @@ class  LIB_EXPORT Call : public ItemBase
    Q_OBJECT
    #pragma GCC diagnostic pop
 public:
-   friend class CallModel            ;
-   friend class CategorizedHistoryModel;
-   friend class CallModelPrivate     ;
    friend class IMConversationManager;
    friend class VideoRendererManager;
    friend class VideoRendererManagerPrivate;

@@ -30,6 +30,8 @@
 #include "api/contactmodel.h"
 #include "api/newaccountmodel.h"
 #include "dbus/callmanager.h"
+
+
 #include "mime.h"
 #include "private/videorenderermanager.h"
 #include "video/renderer.h"

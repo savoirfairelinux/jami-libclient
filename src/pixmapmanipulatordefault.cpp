@@ -112,18 +112,6 @@ QVariant PixmapManipulatorDefault::securityLevelIcon(const SecurityEvaluationMod
     return QVariant();
 }
 
-QVariant PixmapManipulatorDefault::historySortingCategoryIcon(const CategorizedHistoryModel::SortedProxy::Categories cat) const
-{
-    Q_UNUSED(cat)
-    return QVariant();
-}
-
-QVariant PixmapManipulatorDefault::contactSortingCategoryIcon(const CategorizedContactModel::SortedProxy::Categories cat) const
-{
-    Q_UNUSED(cat)
-    return QVariant();
-}
-
 QVariant PixmapManipulatorDefault::decorationRole(const QModelIndex& index)
 {
    Q_UNUSED(index)
