@@ -22,7 +22,6 @@
 #include "typedefs.h"
 
 class Call;
-class CallModelPrivate;
 
 namespace media {
    class MediaPrivate;
@@ -33,7 +32,6 @@ namespace media {
 class LIB_EXPORT Media : public QObject
 {
    Q_OBJECT
-   friend class ::CallModelPrivate;
 public:
    enum class Type {
       AUDIO = 0, /*!< */

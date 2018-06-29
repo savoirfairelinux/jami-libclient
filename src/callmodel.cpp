@@ -47,7 +47,6 @@
 #include "globalinstances.h"
 #include "interfaces/contactmethodselectori.h"
 #include "personmodel.h"
-#include "useractionmodel.h"
 #include "video/renderer.h"
 #include "media/audio.h"
 #include "media/video.h"
@@ -94,7 +93,6 @@ public:
       QHash< Call*       , InternalStruct* > m_shInternalMapping ;
       QHash< QString     , InternalStruct* > m_shDringId         ;
       QItemSelectionModel* m_pSelectionModel;
-      UserActionModel*     m_pUserActionModel;
 
 
       //Helpers
@@ -144,8 +142,7 @@ CallModel& CallModel::instance()
     return *instance;
 }
 
-CallModelPrivate::CallModelPrivate(CallModel* parent) : QObject(parent),q_ptr(parent),m_pSelectionModel(nullptr),
-m_pUserActionModel(nullptr)
+CallModelPrivate::CallModelPrivate(CallModel* parent) : QObject(parent),q_ptr(parent),m_pSelectionModel(nullptr)
 {
 
 }
@@ -387,14 +384,6 @@ bool CallModel::isConnected() const
 bool CallModel::isValid()
 {
    return CallManager::instance().isValid();
-}
-
-
-UserActionModel* CallModel::userActionModel() const
-{
-   if (!d_ptr->m_pUserActionModel)
-      d_ptr->m_pUserActionModel = new UserActionModel(const_cast<CallModel*>(this));
-   return d_ptr->m_pUserActionModel;
 }
 
 

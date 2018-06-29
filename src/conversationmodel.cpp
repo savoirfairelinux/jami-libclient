@@ -51,6 +51,8 @@
 #include "phonedirectorymodel.h"
 #include "contactmethod.h"
 
+#include "uri.h"
+
 // Dbus
 #include "dbus/configurationmanager.h"
 #include "dbus/callmanager.h"
