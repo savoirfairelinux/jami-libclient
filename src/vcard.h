@@ -18,10 +18,16 @@
  ***************************************************************************/
 #pragma once
 
+#include <QHash>
+#include <QByteArray>
+
 namespace lrc
 {
 namespace vCard
 {
+
+constexpr static const char* PROFILE_VCF = "x-ring/ring.profile.vcard";
+
 struct Delimiter {
    constexpr static const char* SEPARATOR_TOKEN    =  ";";
    constexpr static const char* END_LINE_TOKEN     =  "\n";
@@ -61,5 +67,36 @@ struct Property {
 
    constexpr static const char* X_RINGACCOUNT       = "X-RINGACCOUNTID";
 };
+
+namespace utils {
+    /**
+     * Payload to vCard
+     * @param content payload
+     * @return the vCard representation
+     */
+    static QHash<QByteArray, QByteArray> toHashMap(const QByteArray& content)
+    {
+        // TODO without Qt
+        QHash<QByteArray, QByteArray> vCard;
+        QByteArray previousKey,previousValue;
+        const QList<QByteArray> lines = content.split('\n');
+
+        foreach (const QByteArray& property, lines) {
+            //Ignore empty lines
+            if (property.size()) {
+                //Some properties are over multiple lines
+                if (property[0] == ' ' && previousKey.size()) {
+                    previousValue += property.right(property.size()-1);
+                }
+
+                //Do not use split, URIs can have : in them
+                const int dblptPos = property.indexOf(':');
+                const QByteArray k(property.left(dblptPos)),v(property.right(property.size()-dblptPos-1));
+                vCard[k] = v;
+            }
+        }
+        return vCard;
+    }
+}
 }
 }

@@ -44,9 +44,6 @@
 #include "dbus/videomanager.h"
 #include "database.h"
 
-// TODO(sblin) remove this as soon as all clients use this class
-#include <private/videorenderermanager.h>
-
 namespace lrc
 {
 
@@ -81,9 +78,6 @@ public:
      * @return the device name
      */
     std::string getDevice(int type) const;
-
-    // This method is temporary and has to be removed when videorenderermanager will be deleted
-    void init();
 
 public Q_SLOTS:
     /**
@@ -440,14 +434,24 @@ AVModel::startLocalRecorder(const bool& audioOnly) const
    return finalPath.toStdString();
 }
 
+std::string
+AVModel::getRecordPath() const
+{
+    return ConfigurationManager::instance().getRecordPath().toStdString();
+}
+
+void
+AVModel::setRecordPath(const std::string& path) const
+{
+    ConfigurationManager::instance().setRecordPath(QString::fromStdString(path).toUtf8());
+}
+
 void
 AVModel::useAVFrame(bool useAVFrame) {
     pimpl_->useAVFrame_ = useAVFrame;
     for (auto it = pimpl_->renderers_.cbegin(); it != pimpl_->renderers_.cend(); ++it) {
         it->second->useAVFrame(pimpl_->useAVFrame_);
     }
-    //TODO remove when switch to new av model
-    VideoRendererManager::instance().useAVFrame(useAVFrame);
 }
 
 void
@@ -570,23 +574,11 @@ AVModel::getCurrentRenderedDevice(const std::string& call_id) const
     return result;
 }
 
-void
-AVModel::deactivateOldVideoModels()
-{
-    VideoRendererManager::instance().deactivate();
-    pimpl_->init();
-}
-
 AVModelPimpl::AVModelPimpl(AVModel& linked, const CallbacksHandler& callbacksHandler)
 : linked_(linked)
 , callbacksHandler(callbacksHandler)
 {
     std::srand(std::time(nullptr));
-}
-
-void
-AVModelPimpl::init()
-{
     // add preview renderer
     renderers_.insert(std::make_pair(video::PREVIEW_RENDERER_ID,
                                      std::make_unique<video::Renderer>(video::PREVIEW_RENDERER_ID,
@@ -631,7 +623,12 @@ AVModelPimpl::init()
 std::string
 AVModelPimpl::getRecordingPath() const
 {
+#if defined(_WIN32) || defined(__APPLE__)
+    const QDir dir = QString::fromStdString(linked_.getRecordPath()) + "/" + recorderSavesSubdir.c_str();
+#else
     const QDir dir = lrc::Database::getPath() + "/" + recorderSavesSubdir.c_str();
+#endif
+
     dir.mkpath(".");
 
     std::chrono::time_point<std::chrono::system_clock> time_now = std::chrono::system_clock::now();
