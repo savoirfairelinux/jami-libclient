@@ -44,9 +44,6 @@
 #include "dbus/videomanager.h"
 #include "database.h"
 
-// TODO(sblin) remove this as soon as all clients use this class
-#include <private/videorenderermanager.h>
-
 namespace lrc
 {
 
@@ -81,9 +78,6 @@ public:
      * @return the device name
      */
     std::string getDevice(int type) const;
-
-    // This method is temporary and has to be removed when videorenderermanager will be deleted
-    void init();
 
 public Q_SLOTS:
     /**
@@ -446,8 +440,6 @@ AVModel::useAVFrame(bool useAVFrame) {
     for (auto it = pimpl_->renderers_.cbegin(); it != pimpl_->renderers_.cend(); ++it) {
         it->second->useAVFrame(pimpl_->useAVFrame_);
     }
-    //TODO remove when switch to new av model
-    VideoRendererManager::instance().useAVFrame(useAVFrame);
 }
 
 void
@@ -570,23 +562,11 @@ AVModel::getCurrentRenderedDevice(const std::string& call_id) const
     return result;
 }
 
-void
-AVModel::deactivateOldVideoModels()
-{
-    VideoRendererManager::instance().deactivate();
-    pimpl_->init();
-}
-
 AVModelPimpl::AVModelPimpl(AVModel& linked, const CallbacksHandler& callbacksHandler)
 : linked_(linked)
 , callbacksHandler(callbacksHandler)
 {
     std::srand(std::time(nullptr));
-}
-
-void
-AVModelPimpl::init()
-{
     // add preview renderer
     renderers_.insert(std::make_pair(video::PREVIEW_RENDERER_ID,
                                      std::make_unique<video::Renderer>(video::PREVIEW_RENDERER_ID,
