@@ -21,7 +21,6 @@
 class QMimeData;
 
 // LRC
-class Call;
 class ContactMethod;
 class Person;
 
@@ -43,5 +42,5 @@ namespace RingMimes {
    constexpr static const char* MAC_VCF     = "application/vcard"        ;
    constexpr static const char* URI_LIST    = "text/uri-list"            ;
 
-   QMimeData* payload(const Call* c, const ContactMethod* cm, const Person* p);
+   QMimeData* payload(const void* c, const ContactMethod* cm, const Person* p);
 }

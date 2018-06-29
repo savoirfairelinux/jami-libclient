@@ -99,7 +99,6 @@ private:
    PhoneDirectoryModel* q_ptr;
 
 private Q_SLOTS:
-   void slotCallAdded(Call* call);
    void slotChanged();
    void slotLastUsedChanged(time_t t);
    void slotContactChanged(Person* newContact, Person* oldContact);

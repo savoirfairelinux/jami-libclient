@@ -25,13 +25,9 @@ class QModelIndex;
 class QByteArray ;
 
 //Ring
-#include <securityevaluationmodel.h>
-#include <categorizedcontactmodel.h>
-#include <categorizedhistorymodel.h>
 
 class  Person             ;
 class  ContactMethod      ;
-class  Call               ;
 class  CollectionInterface;
 class  Account;
 struct UserActionElement  ;
@@ -72,8 +68,6 @@ public:
     virtual ~PixmapManipulatorI() = default;
 
     virtual QVariant   contactPhoto(Person* c, const QSize& size, bool displayPresence = true) = 0;
-    virtual QVariant   callPhoto(Call* c, const QSize& size, bool displayPresence = true) = 0;
-    virtual QVariant   callPhoto(const ContactMethod* n, const QSize& size, bool displayPresence = true) = 0;
     virtual QVariant   conversationPhoto(const lrc::api::conversation::Info& conversation,
                                          const lrc::api::account::Info& accountInfo,
                                          const QSize& size,
@@ -82,15 +76,10 @@ public:
         return {};
     }
     virtual QVariant   numberCategoryIcon(const QVariant& p, const QSize& size, bool displayPresence = false, bool isPresent = false) = 0;
-    virtual QVariant   securityIssueIcon(const QModelIndex& index) = 0;
     virtual QByteArray toByteArray(const QVariant& pxm) = 0;
     virtual QVariant   personPhoto(const QByteArray& data, const QString& type = "PNG") = 0;
     virtual QVariant   collectionIcon(const CollectionInterface* colItf, PixmapManipulatorI::CollectionIconHint hint = PixmapManipulatorI::CollectionIconHint::NONE) const = 0;
-    virtual QVariant   securityLevelIcon(const SecurityEvaluationModel::SecurityLevel level) const = 0;
-    virtual QVariant   historySortingCategoryIcon(const CategorizedHistoryModel::SortedProxy::Categories cat) const = 0;
-    virtual QVariant   contactSortingCategoryIcon(const CategorizedContactModel::SortedProxy::Categories cat) const = 0;
     virtual QVariant   decorationRole(const QModelIndex&   index) = 0;
-    virtual QVariant   decorationRole(const Call*          c    ) = 0;
     virtual QVariant   decorationRole(const ContactMethod* cm   ) = 0;
     virtual QVariant   decorationRole(const Person*        p    ) = 0;
     virtual QVariant   decorationRole(const lrc::api::conversation::Info& conversation,

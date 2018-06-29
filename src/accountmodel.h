@@ -23,11 +23,10 @@
 #include <QtCore/QVector>
 #include <QtCore/QStringList>
 #include <QtCore/QAbstractListModel>
+#include <QItemSelectionModel>
 
 #include "account.h"
 #include "typedefs.h"
-
-class ContactRequest;
 
 //Private
 class AccountModelPrivate;
@@ -44,7 +43,6 @@ public:
    Q_PROPERTY(bool           presenceEnabled            READ isPresenceEnabled                                )
    Q_PROPERTY(bool           presencePublishSupported   READ isPresencePublishSupported                       )
    Q_PROPERTY(bool           presenceSubscribeSupported READ isPresenceSubscribeSupported                     )
-   Q_PROPERTY(ProtocolModel* protocolModel              READ protocolModel                                    )
    Q_PROPERTY(bool           isSipSupported             READ isSipSupported   NOTIFY supportedProtocolsChanged)
    Q_PROPERTY(bool           isIP2IPSupported           READ isIP2IPSupported NOTIFY supportedProtocolsChanged)
    Q_PROPERTY(bool           isRingSupported            READ isRingSupported  NOTIFY supportedProtocolsChanged)
@@ -74,7 +72,6 @@ public:
    bool                 isPresenceEnabled           (                                      ) const;
    bool                 isPresencePublishSupported  (                                      ) const;
    bool                 isPresenceSubscribeSupported(                                      ) const;
-   ProtocolModel*       protocolModel               (                                      ) const;
    bool                 isSipSupported              (                                      ) const;
    bool                 isIP2IPSupported            (                                      ) const;
    bool                 isRingSupported             (                                      ) const;
@@ -102,7 +99,6 @@ public:
 
    //Mutators
    Q_INVOKABLE Account* add      ( const QString& alias, const Account::Protocol protocol = Account::Protocol::SIP);
-   Q_INVOKABLE Account* add      ( const QString& alias, const QModelIndex&      protocol                         );
    Q_INVOKABLE void     remove   ( Account* account                                                               );
    void                 remove   ( const QModelIndex& index                                                       );
    void                 save     (                                                                                );
@@ -169,7 +165,5 @@ Q_SIGNALS:
    void editStateChanged(const EditState state, const EditState previous) const;
    /// A list of contacts has been obtained.
    void contactsList(Account *account);
-   /// A new contact has been added.
-   void accountContactAdded(Account* a, const ContactRequest* r);
 };
 Q_DECLARE_METATYPE(AccountModel*)

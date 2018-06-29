@@ -27,14 +27,6 @@
 
 class AccountPrivate;
 class ContactMethod;
-class CipherModel;
-class AccountStatusModel;
-class TlsMethodModel;
-class ProtocolModel;
-class NetworkInterfaceModel;
-class BootstrapModel;
-class DaemonCertificateCollection;
-class PendingContactRequestModel;
 class Profile;
 
 typedef void (AccountPrivate::*account_function)();
@@ -97,29 +89,11 @@ public:
    void save   ();
    void reloadMod() {reload();modify();}
 
-   CredentialModel*             m_pCredentials             ;
-   CodecModel*                  m_pCodecModel              ;
-   KeyExchangeModel*            m_pKeyExchangeModel        ;
-   CipherModel*                 m_pCipherModel             ;
-   AccountStatusModel*          m_pStatusModel             ;
-   SecurityEvaluationModel*     m_pSecurityEvaluationModel ;
-   TlsMethodModel*              m_pTlsMethodModel          ;
-   ProtocolModel*               m_pProtocolModel           ;
-   BootstrapModel*              m_pBootstrapModel          ;
-   RingDeviceModel*             m_pRingDeviceModel         ;
-   QAbstractItemModel*          m_pKnownCertificates       ;
-   QAbstractItemModel*          m_pBannedCertificates      ;
-   QAbstractItemModel*          m_pAllowedCertificates     ;
-   NetworkInterfaceModel*       m_pNetworkInterfaceModel   ;
-   DaemonCertificateCollection* m_pAllowedCerts            ;
-   DaemonCertificateCollection* m_pBannedCerts             ;
    Account::EditState           m_CurrentState             ;
    QMetaObject::Connection      m_cTlsCert                 ;
    QMetaObject::Connection      m_cTlsCaCert               ;
    Profile*                     m_pProfile {nullptr}       ;
-   PendingContactRequestModel*    m_pPendingContactRequestModel;
    Account::ContactMethods      m_NumbersFromDaemon        ;
-   BannedContactModel* m_pBannedContactModel {nullptr};
 
    QHash<int, Account::RoleStatus> m_hRoleStatus;
 
@@ -131,11 +105,8 @@ public:
    mutable QString      m_LastErrorMessage;
    mutable int          m_LastErrorCode;
    mutable int          m_VoiceMailCount;
-   mutable Certificate* m_pCaCert;
-   mutable Certificate* m_pTlsCert;
 
 public Q_SLOTS:
       void slotPresentChanged        (bool  present  );
       void slotPresenceMessageChanged(const QString& );
-      void slotUpdateCertificate     (               );
 };

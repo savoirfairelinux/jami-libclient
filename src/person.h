@@ -22,7 +22,6 @@
 #include <QtCore/QVariant>
 #include <time.h>
 #include <itembase.h>
-#include <media/media.h>
 
 //Ring
 #include "itemdataroles.h"
@@ -158,8 +157,6 @@ public:
    bool isPlaceHolder              () const;
    bool hasBeenCalled              () const;
 
-   bool hasRecording(media::Media::Type type, media::Media::Direction direction) const;
-
    //Setters
    void setContactMethods ( ContactMethods           );
    void setFormattedName  ( const QString&    name   );
@@ -199,8 +196,6 @@ Q_SIGNALS:
    void rebased                   ( Person*        );
    ///The last time there was an interaction with this person changed
    void lastUsedTimeChanged       ( long long      ) const;
-   ///A new call used a ContactMethod associated with this Person
-   void callAdded                 ( Call*          );
 
 protected:
    //Presence secret methods

@@ -33,18 +33,11 @@
 class Account;
 class AccountPrivate;
 class Person;
-class Call;
 class ContactMethodPrivate;
 class TemporaryContactMethod;
 class NumberCategory;
 class TemporaryContactMethodPrivate;
 class InstantMessagingModel;
-class Certificate;
-
-namespace media {
-   class TextRecording;
-}
-
 
 ///ContactMethod: represent a phone number
 class LIB_EXPORT ContactMethod : public ItemBase
@@ -53,8 +46,6 @@ class LIB_EXPORT ContactMethod : public ItemBase
 public:
    friend class PhoneDirectoryModel;
    friend class PhoneDirectoryModelPrivate;
-   friend class LocalTextRecordingCollection;
-   friend class CallPrivate;
    friend class AccountPrivate;
 
    enum class Role {
@@ -70,7 +61,6 @@ public:
    Q_PROPERTY(int               lastUsed         READ lastUsed          WRITE setLastUsed             )
    Q_PROPERTY(QString           uri              READ uri                                             )
    Q_PROPERTY(int               callCount        READ callCount                                       )
-   Q_PROPERTY(QList<Call*>      calls            READ calls                                           )
    Q_PROPERTY(int               popularityIndex  READ popularityIndex                                 )
    Q_PROPERTY(bool              bookmarked       READ isBookmarked                                    )
    Q_PROPERTY(QString           uid              READ uid               WRITE setUid                  )
@@ -87,7 +77,6 @@ public:
    Q_PROPERTY(int               totalSpentTime   READ totalSpentTime                                  )
    Q_PROPERTY(URI::ProtocolHint protocolHint     READ protocolHint                                    )
    Q_PROPERTY(bool              isReachable      READ isReachable                                     )
-   Q_PROPERTY(Certificate*      certificate      READ certificate                                     )
    Q_PROPERTY(QString           registeredName   READ registeredName    NOTIFY registeredNameSet      )
    Q_PROPERTY(QString           bestId           READ bestId                                          )
    Q_PROPERTY(QString           bestName         READ bestName                                        )
@@ -122,7 +111,6 @@ public:
    uint                  weekCount       () const;
    uint                  trimCount       () const;
    bool                  haveCalled      () const;
-   QList<Call*>          calls           () const;
    int                   popularityIndex () const;
    QHash<QString, QPair<int, time_t>> alternativeNames() const;
    QString               primaryName     () const;
@@ -133,9 +121,7 @@ public:
    QString               uid             () const;
    URI::ProtocolHint     protocolHint    () const;
    QByteArray            sha1            () const;
-   media::TextRecording* textRecording   () const;
    bool                  isReachable     () const;
-   Certificate*          certificate     () const;
    QString               registeredName  () const;
    Q_DECL_DEPRECATED QString getBestId   () const;
    QString               bestId          () const;
@@ -163,7 +149,6 @@ public:
    void             setConfirmed     (bool                confirmed     );
 
    //Mutator
-   Q_INVOKABLE void addCall(Call* call);
    Q_INVOKABLE void incrementAlternativeName(const QString& name, const time_t lastUsed);
 
    //Helper
@@ -205,12 +190,8 @@ private Q_SLOTS:
    void accountDestroyed(QObject* o);
    void contactRebased(Person* other);
 
-public Q_SLOTS:
-   bool sendOfflineTextMessage(const QMap<QString, QString>& payloads);
-
 Q_SIGNALS:
    ///A new call have used this ContactMethod
-   void callAdded             ( Call* call          );
    ///A property associated with this number has changed
    void changed               (                     );
    ///The presence status of this phone number has changed
