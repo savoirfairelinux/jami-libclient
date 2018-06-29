@@ -19,7 +19,6 @@
 
 #include <memory>
 
-#include "interfaces/accountlistcolorizeri.h"
 #include "interfaces/contactmethodselectori.h"
 #include "interfaces/dbuserrorhandleri.h"
 #include "interfaces/itemmodelstateserializeri.h"
@@ -28,7 +27,6 @@
 #include "interfaces/shortcutcreatori.h"
 #include "interfaces/actionextenderi.h"
 
-#include "accountlistcolorizerdefault.h"
 #include "dbuserrorhandlerdefault.h"
 #include "pixmapmanipulatordefault.h"
 #include "presenceserializerdefault.h"
@@ -39,7 +37,6 @@ namespace GlobalInstances {
 
 struct InstanceManager
 {
-    std::unique_ptr<Interfaces::AccountListColorizerI>     m_accountListColorizer;
     std::unique_ptr<Interfaces::ContactMethodSelectorI>    m_contactMethodSelector;
     std::unique_ptr<Interfaces::DBusErrorHandlerI>         m_dBusErrorHandler;
     std::unique_ptr<Interfaces::ItemModelStateSerializerI> m_itemModelStateSerializer;
@@ -55,26 +52,6 @@ instanceManager()
     static std::unique_ptr<InstanceManager> manager{new InstanceManager};
     return *manager.get();
 }
-
-Interfaces::AccountListColorizerI&
-accountListColorizer()
-{
-    if (!instanceManager().m_accountListColorizer)
-        instanceManager().m_accountListColorizer.reset(new Interfaces::AccountListColorizerDefault);
-    return *instanceManager().m_accountListColorizer.get();
-}
-
-void
-setAccountListColorizer(std::unique_ptr<Interfaces::AccountListColorizerI> instance)
-{
-    // do not allow empty pointers
-    if (!instance) {
-        qWarning() << "ignoring empty unique_ptr";
-        return;
-    }
-    instanceManager().m_accountListColorizer = std::move(instance);
-}
-
 /**
  * LRC does not provide a default implementation of this interface, thus an exception will be thrown
  * if this getter is called without an instance being set by the client
@@ -237,7 +214,6 @@ void setInterfaceInternal(I* i)\
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wmissing-declarations"
 
-REGISTER_INTERFACE(Interfaces::AccountListColorizerI    , m_accountListColorizer    )
 REGISTER_INTERFACE(Interfaces::ContactMethodSelectorI   , m_contactMethodSelector   )
 REGISTER_INTERFACE(Interfaces::DBusErrorHandlerI        , m_dBusErrorHandler        )
 REGISTER_INTERFACE(Interfaces::ItemModelStateSerializerI, m_itemModelStateSerializer)

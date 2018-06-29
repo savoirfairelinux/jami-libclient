@@ -38,26 +38,18 @@
 #include "dbus/videomanager.h"
 #include "dbus/presencemanager.h"
 #include "globalinstances.h"
-#include "interfaces/accountlistcolorizeri.h"
 #include "certificate.h"
 #include "certificatemodel.h"
 #include "accountmodel.h"
 #include "private/certificatemodel_p.h"
 #include "private/account_p.h"
 #include "private/accountmodel_p.h"
-#include "credentialmodel.h"
 #include "ciphermodel.h"
 #include "protocolmodel.h"
-#include "bootstrapmodel.h"
-#include "ringdevicemodel.h"
 #include "contactrequest.h"
 #include "person.h"
 #include "profile.h"
 #include "profilemodel.h"
-#include "pendingcontactrequestmodel.h"
-#include "private/pendingcontactrequestmodel_p.h"
-#include "accountstatusmodel.h"
-#include "codecmodel.h"
 #include "networkinterfacemodel.h"
 #include "contactmethod.h"
 #include "phonedirectorymodel.h"
@@ -101,16 +93,14 @@ const Matrix2D<Account::EditState, Account::EditAction, account_function> Accoun
 //when objects have a different status for each account
 static uint p_sAutoIncrementId = 0;
 
-AccountPrivate::AccountPrivate(Account* acc) : QObject(acc),q_ptr(acc),m_pCredentials(nullptr),m_pCodecModel(nullptr),
+AccountPrivate::AccountPrivate(Account* acc) : QObject(acc),q_ptr(acc),
 m_LastErrorCode(-1),m_VoiceMailCount(0),m_CurrentState(Account::EditState::READY),
 m_pAccountNumber(nullptr),m_pKeyExchangeModel(nullptr),m_pSecurityEvaluationModel(nullptr),m_pTlsMethodModel(nullptr),
-m_pCaCert(nullptr),m_pTlsCert(nullptr),m_isLoaded(true),m_pCipherModel(nullptr),
-m_pStatusModel(nullptr),m_LastTransportCode(0),m_RegistrationState(Account::RegistrationState::UNREGISTERED),
-m_UseDefaultPort(false),m_pProtocolModel(nullptr),m_pBootstrapModel(nullptr),m_RemoteEnabledState(false),
+m_pCaCert(nullptr),m_pTlsCert(nullptr),m_isLoaded(true),m_pCipherModel(nullptr),m_LastTransportCode(0),m_RegistrationState(Account::RegistrationState::UNREGISTERED),
+m_UseDefaultPort(false),m_pProtocolModel(nullptr),m_RemoteEnabledState(false),
 m_pKnownCertificates(nullptr),
 m_pBannedCertificates(nullptr), m_pAllowedCertificates(nullptr),m_InternalId(++p_sAutoIncrementId),
-m_pNetworkInterfaceModel(nullptr),m_pAllowedCerts(nullptr),m_pBannedCerts(nullptr),m_pPendingContactRequestModel(nullptr),
-m_pRingDeviceModel(nullptr)
+m_pNetworkInterfaceModel(nullptr),m_pAllowedCerts(nullptr),m_pBannedCerts(nullptr)
 {
 }
 
@@ -156,14 +146,8 @@ Account* Account::buildExistingAccountFromId(const QByteArray& _accountId)
          auto person = VCardUtils::mapToPersonFromReceivedProfile(contactMethod, payload);
 
          auto contactRequest = new ContactRequest(a, person, ringID, timeReceived);
-         a->pendingContactRequestModel()->d_ptr->addRequest(contactRequest);
       }
    }
-
-   // Connects the account to the signal of the model.
-   connect(a->pendingContactRequestModel() , &PendingContactRequestModel::requestAccepted, [a] (ContactRequest* r) {
-      emit a->contactRequestAccepted(r);
-   });
 
    // Load the contacts associated from the daemon and create the cms.
    const auto account_contacts = static_cast<QVector<QMap<QString, QString>>>(ConfigurationManager::instance()
@@ -220,13 +204,7 @@ Account* Account::buildNewAccountFromAlias(Account::Protocol proto, const QStrin
       a->d_ptr->m_hAccountDetails[iter.key()] = iter.value();
    }
 
-   if (proto == Account::Protocol::RING)
-   {
-       /* Set LRC-provided bootstrap servers */
-       a->bootstrapModel() << BootstrapModel::EditAction::RESET;
-       a->bootstrapModel() << BootstrapModel::EditAction::SAVE;
-   }
-   else
+   if (proto != Account::Protocol::RING)
    {
        a->setHostname(a->d_ptr->m_hAccountDetails[DRing::Account::ConfProperties::HOSTNAME]);
    }
@@ -241,8 +219,6 @@ Account* Account::buildNewAccountFromAlias(Account::Protocol proto, const QStrin
 Account::~Account()
 {
    disconnect();
-   if (d_ptr->m_pCredentials) delete d_ptr->m_pCredentials ;
-   if (d_ptr->m_pCodecModel) delete d_ptr->m_pCodecModel   ;
 }
 
 /*****************************************************************************
@@ -442,57 +418,10 @@ QModelIndex Account::index() const
    return QModelIndex();
 }
 
-///Return status color name
-QString Account::stateColorName() const
-{
-   switch(registrationState()) {
-      case RegistrationState::READY:
-         return "darkGreen";
-      case RegistrationState::UNREGISTERED:
-         return "black";
-      case RegistrationState::TRYING:
-      case RegistrationState::INITIALIZING:
-         return "orange";
-      case RegistrationState::ERROR:
-         return "red";
-      case RegistrationState::COUNT__:
-         break;
-   };
-   return QString();
-}
-
 ///I
 bool Account::isLoaded() const
 {
    return d_ptr->m_isLoaded;
-}
-
-///Return status Qt color, QColor is not part of QtCore, use using the global variant
-QVariant Account::stateColor() const
-{
-   return GlobalInstances::accountListColorizer().color(this);
-}
-
-///Create and return the credential model
-CredentialModel* Account::credentialModel() const
-{
-   if (!d_ptr->m_pCredentials) {
-      d_ptr->m_pCredentials = new CredentialModel(const_cast<Account*>(this));
-      connect(d_ptr->m_pCredentials, &CredentialModel::primaryCredentialChanged,[this]() {
-         Account* a = const_cast<Account*>(this);
-         emit a->changed(a);
-      });
-   }
-   return d_ptr->m_pCredentials;
-}
-
-///Create and return the audio codec model
-CodecModel* Account::codecModel() const
-{
-   if (!d_ptr->m_pCodecModel) {
-      d_ptr->m_pCodecModel = new CodecModel(const_cast<Account*>(this));
-   }
-   return d_ptr->m_pCodecModel;
 }
 
 KeyExchangeModel* Account::keyExchangeModel() const
@@ -509,14 +438,6 @@ CipherModel* Account::cipherModel() const
       d_ptr->m_pCipherModel = new CipherModel(const_cast<Account*>(this));
    }
    return d_ptr->m_pCipherModel;
-}
-
-AccountStatusModel* Account::statusModel() const
-{
-   if (!d_ptr->m_pStatusModel) {
-      d_ptr->m_pStatusModel = new AccountStatusModel(const_cast<Account*>(this));
-   }
-   return d_ptr->m_pStatusModel;
 }
 
 SecurityEvaluationModel* Account::securityEvaluationModel() const
@@ -541,26 +462,6 @@ ProtocolModel* Account::protocolModel() const
       d_ptr->m_pProtocolModel  = new ProtocolModel(const_cast<Account*>(this));
    }
    return d_ptr->m_pProtocolModel;
-}
-
-BootstrapModel* Account::bootstrapModel() const
-{
-   if (protocol() != Account::Protocol::RING)
-      return nullptr;
-
-   if (!d_ptr->m_pBootstrapModel ) {
-      d_ptr->m_pBootstrapModel  = new BootstrapModel(const_cast<Account*>(this));
-   }
-
-   return d_ptr->m_pBootstrapModel;
-}
-
-RingDeviceModel* Account::ringDeviceModel() const
-{
-    if (!d_ptr->m_pRingDeviceModel)
-      d_ptr->m_pRingDeviceModel = new RingDeviceModel(const_cast<Account*>(this));
-
-   return d_ptr->m_pRingDeviceModel;
 }
 
 QAbstractItemModel* Account::knownCertificateModel() const
@@ -610,14 +511,6 @@ QAbstractItemModel* Account::allowedCertificatesModel() const
    }
 
    return d_ptr->m_pAllowedCertificates;
-}
-
-PendingContactRequestModel* Account::pendingContactRequestModel() const
-{
-   if (!d_ptr->m_pPendingContactRequestModel)
-      d_ptr->m_pPendingContactRequestModel = new PendingContactRequestModel(const_cast<Account*>(this));
-
-   return d_ptr->m_pPendingContactRequestModel;
 }
 
 BannedContactModel*
@@ -750,8 +643,6 @@ QString Account::password() const
 {
    switch (protocol()) {
       case Account::Protocol::SIP:
-         if (credentialModel()->primaryCredential(Credential::Type::SIP))
-            return credentialModel()->primaryCredential(Credential::Type::SIP)->password();
          break;
       case Account::Protocol::RING:
          return tlsPassword();
@@ -899,24 +790,6 @@ bool Account::isRingtoneEnabled() const
 QString Account::ringtonePath() const
 {
    return d_ptr->accountDetail(DRing::Account::ConfProperties::Ringtone::PATH);
-}
-
-///Return the last error message received
-QString Account::lastErrorMessage() const
-{
-   return statusModel()->lastErrorMessage();
-}
-
-///Return the last error code (useful for debugging)
-int Account::lastErrorCode() const
-{
-   return statusModel()->lastErrorCode();
-}
-
-///Get the last transport error code, this is used to debug why registration failed
-int Account::lastTransportErrorCode() const
-{
-   return d_ptr->m_LastTransportCode;
 }
 
 ///Get the last transport error message, this is used to debug why registration failed
@@ -1185,9 +1058,9 @@ QVariant Account::roleData(int role) const
       case Qt::CheckStateRole:
          return QVariant(isEnabled() ? Qt::Checked : Qt::Unchecked);
       case Qt::BackgroundRole:
-         return stateColor();
+         return QVariant();
       case Qt::DecorationRole:
-         return GlobalInstances::accountListColorizer().icon(this);
+         return QVariant();
 
       //Specialized
       case CAST(Account::Role::Alias):
@@ -1303,8 +1176,6 @@ QVariant Account::roleData(int role) const
          return isUpnpEnabled();
       case CAST(Account::Role::HasCustomUserAgent       ):
          return hasCustomUserAgent();
-      case CAST(Account::Role::LastTransportErrorCode   ):
-         return lastTransportErrorCode();
       case CAST(Account::Role::LastTransportErrorMessage):
          return lastTransportErrorMessage();
       case CAST(Account::Role::PushnotiticationToken    ):
@@ -1329,27 +1200,16 @@ QVariant Account::roleData(int role) const
          return displayName();
       case CAST(Account::Role::SrtpEnabled              ):
          return isSrtpEnabled();
-      case CAST(Account::Role::HasCustomBootstrap       ):
-         //Do not create the model for nothing
-         return protocol() == Account::Protocol::RING ? bootstrapModel()->isCustom() : false;
-      case CAST(Account::Role::CredentialModel            ):
-         return QVariant::fromValue(credentialModel());
-      case CAST(Account::Role::CodecModel                 ):
-         return QVariant::fromValue(codecModel());
       case CAST(Account::Role::KeyExchangeModel           ):
          return QVariant::fromValue(keyExchangeModel());
       case CAST(Account::Role::CipherModel                ):
          return QVariant::fromValue(cipherModel());
-      case CAST(Account::Role::StatusModel                ):
-         return QVariant::fromValue(statusModel());
       case CAST(Account::Role::SecurityEvaluationModel    ):
          return QVariant::fromValue(securityEvaluationModel());
       case CAST(Account::Role::TlsMethodModel             ):
          return QVariant::fromValue(tlsMethodModel());
       case CAST(Account::Role::ProtocolModel              ):
          return QVariant::fromValue(protocolModel());
-      case CAST(Account::Role::BootstrapModel             ):
-         return QVariant::fromValue(bootstrapModel());
       case CAST(Account::Role::NetworkInterfaceModel      ):
          return QVariant::fromValue(networkInterfaceModel());
       case CAST(Account::Role::KnownCertificateModel      ):
@@ -1380,8 +1240,6 @@ QVariant Account::roleData(int role) const
             return extension<SecurityEvaluationExtension>()->securityLevelIcon(this);
          }
          break;
-      case CAST(Account::Role::LastStatusChangeTimeStamp):
-         return QVariant::fromValue(statusModel()->lastTimeStamp());
       case CAST(Account::Role::RegisteredName):
          return registeredName();
       default:
@@ -1617,10 +1475,6 @@ void Account::setHostname(const QString& detail)
 {
    if (d_ptr->m_HostName != detail) {
       d_ptr->m_HostName = detail;
-      if (protocol() == Account::Protocol::RING)
-      {
-          bootstrapModel() << BootstrapModel::EditAction::RELOAD;
-      }
       d_ptr->setAccountProperty(DRing::Account::ConfProperties::HOSTNAME, detail);
    }
 }
@@ -1654,14 +1508,6 @@ void Account::setUsername(const QString& detail)
          //nothing to do
          break;
       case Account::Protocol::SIP:
-         if (credentialModel()->primaryCredential(Credential::Type::SIP)) {
-            credentialModel()->primaryCredential(Credential::Type::SIP)->setUsername(detail);
-            credentialModel() << CredentialModel::EditAction::MODIFY;
-         }
-         else {
-            const QModelIndex idx = credentialModel()->addCredentials(Credential::Type::SIP);
-            credentialModel()->setData(idx,detail,CredentialModel::Role::NAME);
-         }
          break;
    };
 }
@@ -1684,19 +1530,11 @@ void Account::setNameServiceURL(const QString& detail)
     d_ptr->setAccountProperty(DRing::Account::ConfProperties::RingNS::URI, detail);
 }
 
-///Set the main credential password
+///Set the main password
 void Account::setPassword(const QString& detail)
 {
    switch (protocol()) {
       case Account::Protocol::SIP:
-         if (credentialModel()->primaryCredential(Credential::Type::SIP)) {
-            credentialModel()->primaryCredential(Credential::Type::SIP)->setPassword(detail);
-            credentialModel() << CredentialModel::EditAction::MODIFY;
-         }
-         else {
-            const QModelIndex idx = credentialModel()->addCredentials(Credential::Type::SIP);
-            credentialModel()->setData(idx,detail,CredentialModel::Role::PASSWORD);
-         }
          break;
       case Account::Protocol::RING:
          setTlsPassword(detail);
@@ -2328,21 +2166,12 @@ void Account::setRoleData(int role, const QVariant& value)
       case CAST(Account::Role::SrtpEnabled              ):
          setSrtpEnabled(value.toBool());
          break;
-      case CAST(Account::Role::HasCustomBootstrap       ):
-         //Do not create the model for nothing
-         if (protocol() == Account::Protocol::RING && value.toBool())
-            bootstrapModel()->reset();
-         break;
-      //Read-only
-      case CAST(Account::Role::CredentialModel          ):
-      case CAST(Account::Role::CodecModel               ):
       case CAST(Account::Role::KeyExchangeModel         ):
       case CAST(Account::Role::CipherModel              ):
       case CAST(Account::Role::StatusModel              ):
       case CAST(Account::Role::SecurityEvaluationModel  ):
       case CAST(Account::Role::TlsMethodModel           ):
       case CAST(Account::Role::ProtocolModel            ):
-      case CAST(Account::Role::BootstrapModel           ):
       case CAST(Account::Role::NetworkInterfaceModel    ):
       case CAST(Account::Role::KnownCertificateModel    ):
       case CAST(Account::Role::BannedCertificatesModel  ):
@@ -2488,7 +2317,6 @@ Account::RoleState Account::roleState(Account::Role role) const
             case Account::Role::AllowIncomingFromContact:
             case Account::Role::AllowIncomingFromUnknown:
             case Account::Role::RegisteredName          :
-            case Account::Role::HasCustomBootstrap      :
                return Account::RoleState::UNAVAILABLE;
          }
          break;
@@ -2596,8 +2424,6 @@ void AccountPrivate::save()
 
       const QString currentId = configurationManager.addAccount(details);
 
-      q_ptr->codecModel() << CodecModel::EditAction::RELOAD;
-
       q_ptr->setId(currentId.toLatin1());
    } //New account
    else { //Existing account
@@ -2615,9 +2441,6 @@ void AccountPrivate::save()
       }
    }
 
-   //Save the credentials if they changed
-   q_ptr->credentialModel() << CredentialModel::EditAction::SAVE;
-
    if (!q_ptr->id().isEmpty()) {
       Account* acc =  AccountModel::instance().getById(q_ptr->id());
       if (acc != q_ptr) {
@@ -2630,8 +2453,6 @@ void AccountPrivate::save()
 
       changeState(Account::EditState::READY);
    }
-
-   q_ptr->codecModel() << CodecModel::EditAction::SAVE;
 
    emit q_ptr->changed(q_ptr);
 }
@@ -2698,14 +2519,6 @@ void AccountPrivate::reload()
          connect(m_pAccountNumber,SIGNAL(presenceMessageChanged(QString)),this,SLOT(slotPresenceMessageChanged(QString)));
          connect(m_pAccountNumber,SIGNAL(presentChanged(bool)),this,SLOT(slotPresentChanged(bool)));
       }
-
-      //If the credential model is loaded, then update it
-      if (m_pCredentials)
-         m_pCredentials << CredentialModel::EditAction::RELOAD;
-
-      //If the codec model is loaded, then update it
-      if (m_pCodecModel)
-         m_pCodecModel << CodecModel::EditAction::RELOAD;
 
       emit q_ptr->changed(q_ptr);
 
