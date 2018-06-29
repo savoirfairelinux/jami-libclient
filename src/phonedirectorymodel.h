@@ -42,7 +42,6 @@ class PhoneDirectoryModelPrivate;
 class LIB_EXPORT PhoneDirectoryModel : public QAbstractTableModel {
 
    friend class MostPopularNumberModel;
-   friend class CategorizedBookmarkModel;
 
    //Friend unit test class
    friend class AutoCompletionTest;

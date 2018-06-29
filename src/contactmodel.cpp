@@ -38,7 +38,6 @@
 #include "api/newaccountmodel.h"
 #include "callbackshandler.h"
 #include "uri.h"
-
 #include "private/vcardutils.h"
 
 #include "authority/daemon.h"
@@ -658,7 +657,6 @@ ContactModelPimpl::slotContactRemoved(const std::string& accountId, const std::s
 
         if (banned) {
             contact->second.isBanned = true;
-
             // Update bannedContacts index
             bannedContacts.emplace_back(contact->second.profileInfo.uri);
         } else {
