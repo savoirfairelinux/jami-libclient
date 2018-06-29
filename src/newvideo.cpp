@@ -28,6 +28,9 @@
 // std
 #include <mutex>
 
+// Qt
+#include <QSize>
+
 namespace lrc
 {
 
