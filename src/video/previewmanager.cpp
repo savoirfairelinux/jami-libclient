@@ -17,7 +17,6 @@
  *****************************************************************************/
 #include "previewmanager.h"
 
-#include "private/videorenderermanager.h"
 #include "video/renderer.h"
 
 Video::PreviewManager& Video::PreviewManager::instance()
@@ -29,25 +28,16 @@ Video::PreviewManager& Video::PreviewManager::instance()
 //Getters
 bool Video::PreviewManager::isPreviewing()
 {
-   return ::VideoRendererManager::instance().isPreviewing();
+   return false;
 }
 
 Video::Renderer* Video::PreviewManager::previewRenderer()
 {
-   return ::VideoRendererManager::instance().previewRenderer();
+   return nullptr;
 }
 
-Video::PreviewManager::PreviewManager() : QObject(&::VideoRendererManager::instance())
+Video::PreviewManager::PreviewManager() : QObject()
 {
-   connect(&::VideoRendererManager::instance(), &::VideoRendererManager::previewStateChanged, [this](bool startStop) {
-      emit previewStateChanged(startStop);
-   });
-   connect(&::VideoRendererManager::instance(), &::VideoRendererManager::previewStarted     , [this](Video::Renderer* renderer) {
-      emit previewStarted(renderer);
-   });
-   connect(&::VideoRendererManager::instance(), &::VideoRendererManager::previewStopped     , [this](Video::Renderer* renderer) {
-      emit previewStopped(renderer);
-   });
 }
 
 Video::PreviewManager::~PreviewManager()
@@ -57,10 +47,8 @@ Video::PreviewManager::~PreviewManager()
 
 void Video::PreviewManager::stopPreview()
 {
-   return ::VideoRendererManager::instance().stopPreview();
 }
 
 void Video::PreviewManager::startPreview()
 {
-   return ::VideoRendererManager::instance().startPreview();
 }

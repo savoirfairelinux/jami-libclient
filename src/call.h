@@ -28,12 +28,10 @@ class QTimer;
 
 //Ring
 #include "typedefs.h"
-#include "historytimecategorymodel.h"
 #include "media/media.h"
 #include "itemdataroles.h"
 class Account               ;
 class InstantMessagingModel ;
-class UserActionModel       ;
 class ContactMethod         ;
 class TemporaryContactMethod;
 class CollectionInterface   ;
@@ -83,9 +81,6 @@ class  LIB_EXPORT Call : public ItemBase
    Q_OBJECT
    #pragma GCC diagnostic pop
 public:
-   friend class CallModel            ;
-   friend class CategorizedHistoryModel;
-   friend class CallModelPrivate     ;
    friend class IMConversationManager;
    friend class VideoRendererManager;
    friend class VideoRendererManagerPrivate;
@@ -279,7 +274,6 @@ public:
    Q_PROPERTY( QString            formattedName      READ formattedName                             )
    Q_PROPERTY( QString            length             READ length                                    )
    Q_PROPERTY( bool               recordingAV        READ isAVRecording                             )
-   Q_PROPERTY( UserActionModel*   userActionModel    READ userActionModel   CONSTANT                )
    Q_PROPERTY( QString            toHumanStateName   READ toHumanStateName                          )
    Q_PROPERTY( bool               missed             READ isMissed                                  )
    Q_PROPERTY( Direction          direction          READ direction                                 )
@@ -315,7 +309,6 @@ public:
    Video::Renderer*         videoRenderer    () const;
    const QString            formattedName    () const;
    QString                  length           () const;
-   UserActionModel*         userActionModel  () const;
    QString                  toHumanStateName () const;
    bool                     isMissed         () const;
    Call::Direction          direction        () const;

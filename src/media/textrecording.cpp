@@ -30,7 +30,6 @@
 #include <account_const.h>
 
 //Ring
-#include "callmodel.h"
 #include "contactmethod.h"
 #include "account.h"
 #include "phonedirectorymodel.h"
