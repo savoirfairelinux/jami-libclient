@@ -28,11 +28,8 @@
 #include "phonedirectorymodel.h"
 #include "person.h"
 #include "account.h"
-#include "media/recordingmodel.h"
 #include "private/person_p.h"
 #include "private/contactmethod_p.h"
-#include "call.h"
-#include "availableaccountmodel.h"
 #include "dbus/presencemanager.h"
 #include "numbercategorymodel.h"
 #include "private/numbercategorymodel_p.h"
@@ -40,20 +37,12 @@
 #include "certificate.h"
 #include "accountmodel.h"
 #include "certificatemodel.h"
-#include "media/textrecording.h"
 #include "mime.h"
 #include "globalinstances.h"
 #include "interfaces/pixmapmanipulatori.h"
 
 //Private
 #include "private/phonedirectorymodel_p.h"
-#include "private/textrecording_p.h"
-
-void ContactMethodPrivate::callAdded(Call* call)
-{
-   foreach (ContactMethod* n, m_lParents)
-      emit n->callAdded(call);
-}
 
 void ContactMethodPrivate::changed()
 {
@@ -101,7 +90,7 @@ ContactMethodPrivate::ContactMethodPrivate(const URI& uri, NumberCategory* cat, 
    m_Uri(uri),m_pCategory(cat),m_Tracked(false),m_Present(false),
    m_Type(st),m_PopularityIndex(-1),m_pPerson(nullptr),m_pAccount(nullptr),
    m_IsBookmark(false),
-   m_Index(-1),m_hasType(false),m_pTextRecording(nullptr), m_pCertificate(nullptr),
+   m_Index(-1),m_hasType(false), m_pCertificate(nullptr),
    m_Confirmed(false), q_ptr(q)
 {}
 
@@ -542,11 +531,6 @@ QByteArray ContactMethod::sha1() const
    return d_ptr->m_Sha1;
 }
 
-///Return all calls from this number
-QList<Call*> ContactMethod::calls() const
-{
-   return d_ptr->m_lCalls;
-}
 
 ///Return the phonenumber position in the popularity index
 int ContactMethod::popularityIndex() const
@@ -562,85 +546,6 @@ QHash<QString,QPair<int, time_t>> ContactMethod::alternativeNames() const
 QVariant ContactMethod::roleData(int role) const
 {
    QVariant cat;
-
-   auto lastCall = d_ptr->m_lCalls.isEmpty() ? nullptr : d_ptr->m_lCalls.last();
-
-   switch (role) {
-      case static_cast<int>(Ring::Role::Name):
-      case static_cast<int>(Call::Role::Name):
-         cat = bestName();
-         break;
-      case Qt::ToolTipRole:
-         cat = presenceMessage();
-         break;
-      case static_cast<int>(Ring::Role::URI):
-      case static_cast<int>(Role::Uri):
-         cat = uri();
-         break;
-      case Qt::DisplayRole:
-      case Qt::EditRole:
-      case static_cast<int>(Ring::Role::Number):
-      case static_cast<int>(Call::Role::Number):
-         cat = bestId();
-         break;
-      case Qt::DecorationRole:
-         return GlobalInstances::pixmapManipulator().decorationRole(this);
-      case static_cast<int>(Call::Role::Direction):
-         cat = cat = !lastCall ? QVariant() : QVariant::fromValue(lastCall->direction());
-         break;
-      case static_cast<int>(Ring::Role::LastUsed):
-      case static_cast<int>(Call::Role::Date):
-         cat = d_ptr->m_UsageStats.lastUsed() <= 0 ? QVariant() : QDateTime::fromTime_t(d_ptr->m_UsageStats.lastUsed());
-         break;
-      case static_cast<int>(Ring::Role::Length):
-      case static_cast<int>(Call::Role::Length):
-         cat = cat = !lastCall ? QVariant() : lastCall->length();
-         break;
-      case static_cast<int>(Ring::Role::FormattedLastUsed):
-      case static_cast<int>(Call::Role::FormattedDate):
-      case static_cast<int>(Call::Role::FuzzyDate):
-         cat = HistoryTimeCategoryModel::timeToHistoryCategory(d_ptr->m_UsageStats.lastUsed());
-         break;
-      case static_cast<int>(Ring::Role::IndexedLastUsed):
-         return QVariant(static_cast<int>(HistoryTimeCategoryModel::timeToHistoryConst(d_ptr->m_UsageStats.lastUsed())));
-      case static_cast<int>(Call::Role::HasAVRecording):
-         cat = cat = !lastCall ? QVariant() : lastCall->isAVRecording();
-         break;
-      case static_cast<int>(Call::Role::ContactMethod):
-      case static_cast<int>(Ring::Role::Object):
-      case static_cast<int>(Role::Object):
-         cat = QVariant::fromValue(const_cast<ContactMethod*>(this));
-         break;
-      case static_cast<int>(Ring::Role::ObjectType):
-         cat = QVariant::fromValue(Ring::ObjectType::ContactMethod);
-         break;
-      case static_cast<int>(Call::Role::IsBookmark):
-         cat = false;
-         break;
-      case static_cast<int>(Call::Role::Filter):
-         cat = uri()+primaryName();
-         break;
-      case static_cast<int>(Ring::Role::IsPresent):
-      case static_cast<int>(Call::Role::IsPresent):
-         cat = isPresent();
-         break;
-      case static_cast<int>(Call::Role::Photo):
-         if (contact())
-            cat = contact()->photo();
-         break;
-      case static_cast<int>(Role::CategoryIcon):
-         if (category())
-            cat = d_ptr->m_pCategory->icon(isTracked(), isPresent());
-         break;
-      case static_cast<int>(Call::Role::LifeCycleState):
-         return QVariant::fromValue(Call::LifeCycleState::FINISHED);
-      case static_cast<int>(Ring::Role::UnreadTextMessageCount):
-         if (auto rec = textRecording())
-            cat = rec->unreadInstantTextMessagingModel()->rowCount();
-         else
-            cat = 0;
-         break;
-   }
    return cat;
 }
 
@@ -650,34 +555,6 @@ QMimeData* ContactMethod::mimePayload() const
 }
 
 ///Add a call to the call list, notify listener
-void ContactMethod::addCall(Call* call)
-{
-   if (!call) return;
-
-   d_ptr->m_Type = ContactMethod::Type::USED;
-   d_ptr->m_lCalls << call;
-
-   // call setLastUsed first so that we emit lastUsedChanged()
-   auto time = call->startTimeStamp();
-   setLastUsed(time);
-
-   //Update the contact method statistics
-   d_ptr->m_UsageStats.update(call->startTimeStamp(), call->stopTimeStamp());
-   if (d_ptr->m_pAccount)
-      d_ptr->m_pAccount->usageStats.update(call->startTimeStamp(), call->stopTimeStamp());
-
-   if (call->direction() == Call::Direction::OUTGOING) {
-      d_ptr->m_UsageStats.setHaveCalled();
-      if (d_ptr->m_pAccount)
-         d_ptr->m_pAccount->usageStats.setHaveCalled();
-   }
-
-   if (d_ptr->m_pAccount)
-       d_ptr->m_pAccount->usageStats.setLastUsed(time);
-
-   d_ptr->callAdded(call);
-   d_ptr->changed();
-}
 
 ///Generate an unique representation of this number
 QString ContactMethod::toHash() const
@@ -834,15 +711,6 @@ bool ContactMethod::operator==(const ContactMethod& other) const
    return this->d_ptr== other.d_ptr;
 }
 
-media::TextRecording* ContactMethod::textRecording() const
-{
-    if (!d_ptr->m_pTextRecording) {
-        d_ptr->m_pTextRecording = media::RecordingModel::instance().createTextRecording(this);
-    }
-
-    return d_ptr->m_pTextRecording;
-}
-
 bool ContactMethod::isReachable() const
 {
    auto& m = AccountModel::instance();
@@ -894,27 +762,6 @@ void ContactMethodPrivate::setCertificate(Certificate* certificate)
       certificate->setContactMethod(q_ptr);
 }
 
-void ContactMethodPrivate::setTextRecording(media::TextRecording* r)
-{
-   m_pTextRecording = r;
-}
-
-bool ContactMethod::sendOfflineTextMessage(const QMap<QString,QString>& payloads)
-{
-    auto selectedAccount = account() ? account() : AvailableAccountModel::currentDefaultAccount(this);
-
-    if (!selectedAccount) {
-        qDebug() << "No account available for this contactmethod!";
-        return false;
-    }
-   auto txtRecording = textRecording();
-   auto id = ConfigurationManager::instance().sendTextMessage(selectedAccount->id()
-                                                    ,uri().format(URI::Section::SCHEME|URI::Section::USER_INFO|URI::Section::HOSTNAME)
-                                                    ,payloads);
-   txtRecording->d_ptr->insertNewMessage(payloads, this, media::Media::Direction::OUT, id);
-   return true;
-}
-
 
 /************************************************************************************
  *                                                                                  *
@@ -945,5 +792,3 @@ QVariant TemporaryContactMethod::icon() const
 {
    return QVariant(); //TODO use the pixmapmanipulator to get a better icon
 }
-
-Q_DECLARE_METATYPE(QList<Call*>)

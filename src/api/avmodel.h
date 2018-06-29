@@ -200,9 +200,6 @@ public:
      */
     video::RenderedDevice getCurrentRenderedDevice(const std::string& call_id) const;
 
-    // TODO remove this, this is just to avoid dual rendering.
-    void deactivateOldVideoModels();
-
 Q_SIGNALS:
     /**
      * Emitted when a renderer is started

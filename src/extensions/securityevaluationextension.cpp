@@ -21,8 +21,6 @@
 #include "certificate.h"
 #include "person.h"
 #include "account.h"
-#include "call.h"
-#include "presencestatusmodel.h"
 #include "collectionextensionmodel.h"
 #include "globalinstances.h"
 #include "interfaces/pixmapmanipulatori.h"
@@ -86,7 +84,6 @@ SecurityEvaluationModel::SecurityLevel SecurityEvaluationExtension::securityLeve
 
    static QHash<const QMetaObject*, Types> types {
       { &Account       :: staticMetaObject , ACCOUNT        },
-      { &Call          :: staticMetaObject , CALL           },
       { &Certificate   :: staticMetaObject , CERTIFICATE    },
       { &ContactMethod :: staticMetaObject , CONTACT_METHOD },
       { &Person        :: staticMetaObject , PERSON         },

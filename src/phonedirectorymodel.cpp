@@ -26,7 +26,6 @@
 
 //Ring
 #include "contactmethod.h"
-#include "call.h"
 #include "uri.h"
 #include "account.h"
 #include "person.h"
@@ -40,8 +39,6 @@
 #include "interfaces/pixmapmanipulatori.h"
 #include "personmodel.h"
 #include "dbus/configurationmanager.h"
-#include "media/recordingmodel.h"
-#include "media/textrecording.h"
 
 //Private
 #include "private/phonedirectorymodel_p.h"
@@ -458,26 +455,9 @@ ContactMethod* PhoneDirectoryModel::getNumber(const URI& uri, const QString& typ
    ContactMethod* number = new ContactMethod(uri, NumberCategoryModel::instance().getCategory(type));
    number->setIndex(d_ptr->m_lNumbers.size());
    d_ptr->m_lNumbers << number;
-   connect(number,SIGNAL(callAdded(Call*)),d_ptr.data(),SLOT(slotCallAdded(Call*)));
-   connect(number,SIGNAL(changed()),d_ptr.data(),SLOT(slotChanged()));
    connect(number,&ContactMethod::lastUsedChanged,d_ptr.data(), &PhoneDirectoryModelPrivate::slotLastUsedChanged);
    connect(number,&ContactMethod::contactChanged ,d_ptr.data(), &PhoneDirectoryModelPrivate::slotContactChanged);
    connect(number,&ContactMethod::rebased ,d_ptr.data(), &PhoneDirectoryModelPrivate::slotContactMethodMerged);
-
-    // add the new cm into the historic.
-    for (auto col : CategorizedHistoryModel::instance().collections(CollectionInterface::SupportedFeatures::ADD)) {
-        if (col->id() == "mhb") {
-            QMap<QString,QString> hc;
-            hc[Call::HistoryMapFields::PEER_NUMBER ] = number->uri();
-            // it matters to set a value to hc[Call::HistoryMapFields::CALLID ], but the value itself doesn't matter
-            hc[Call::HistoryMapFields::CALLID ] = "0";
-
-            if (auto fakeCall = Call::buildHistoryCall(hc))
-                col->add(fakeCall);
-            else
-                qDebug() << "buildHistoryCall() has returned an invalid Call object.";
-        }
-    }
 
    const QString hn = number->uri().hostname();
 
@@ -590,8 +570,6 @@ ContactMethod* PhoneDirectoryModel::getNumber(const QString& uri, Person* contac
    if (contact)
       number->setPerson(contact);
    d_ptr->m_lNumbers << number;
-   connect(number,SIGNAL(callAdded(Call*)),d_ptr.data(),SLOT(slotCallAdded(Call*)));
-   connect(number,SIGNAL(changed()),d_ptr.data(),SLOT(slotChanged()));
    connect(number,&ContactMethod::lastUsedChanged,d_ptr.data(), &PhoneDirectoryModelPrivate::slotLastUsedChanged);
    connect(number,&ContactMethod::contactChanged ,d_ptr.data(), &PhoneDirectoryModelPrivate::slotContactChanged );
    connect(number,&ContactMethod::rebased ,d_ptr.data(), &PhoneDirectoryModelPrivate::slotContactMethodMerged);
@@ -678,57 +656,6 @@ QVector<ContactMethod*> PhoneDirectoryModel::getNumbersByPopularity() const
    return d_ptr->m_lPopularityIndex;
 }
 
-void PhoneDirectoryModelPrivate::slotCallAdded(Call* call)
-{
-   Q_UNUSED(call)
-
-   if (call->state() == Call::State::FAILURE)
-      return; //don't update popularity for failed calls
-
-   ContactMethod* number = qobject_cast<ContactMethod*>(sender());
-   if (number) {
-      int currentIndex = number->popularityIndex();
-
-      //The number is already in the top 10 and just passed the "index-1" one
-      if (currentIndex > 0 && m_lPopularityIndex[currentIndex-1]->callCount() < number->callCount()) {
-         do {
-            ContactMethod* tmp = m_lPopularityIndex[currentIndex-1];
-            m_lPopularityIndex[currentIndex-1] = number;
-            m_lPopularityIndex[currentIndex  ] = tmp   ;
-            tmp->setPopularityIndex(tmp->popularityIndex()+1);
-            currentIndex--;
-         } while (currentIndex && m_lPopularityIndex[currentIndex-1]->callCount() < number->callCount());
-         number->setPopularityIndex(currentIndex);
-         emit q_ptr->layoutChanged();
-         if (m_pPopularModel)
-            m_pPopularModel->reload();
-      }
-      //The top 10 is not complete, a call count of "1" is enough to make it
-      else if (m_lPopularityIndex.size() < 10 && currentIndex == -1) {
-         m_lPopularityIndex << number;
-         if (m_pPopularModel)
-            m_pPopularModel->addRow();
-         number->setPopularityIndex(m_lPopularityIndex.size()-1);
-         emit q_ptr->layoutChanged();
-      }
-      //The top 10 is full, but this number just made it to the top 10
-      else if (currentIndex == -1 && m_lPopularityIndex.size() >= 10 && m_lPopularityIndex[9] != number && m_lPopularityIndex[9]->callCount() < number->callCount()) {
-         ContactMethod* tmp = m_lPopularityIndex[9];
-         tmp->setPopularityIndex(-1);
-         m_lPopularityIndex[9]     = number;
-         number->setPopularityIndex(9);
-         emit tmp->changed();
-         emit number->changed();
-         if (m_pPopularModel)
-            m_pPopularModel->reload();
-      }
-
-      //Now check for new peer names
-      if (!call->peerName().isEmpty()) {
-         number->incrementAlternativeName(call->peerName(), call->startTimeStamp());
-      }
-   }
-}
 
 void PhoneDirectoryModelPrivate::slotChanged()
 {
@@ -903,12 +830,8 @@ MostPopularNumberModel::MostPopularNumberModel() : QAbstractListModel(&PhoneDire
 
 QVariant MostPopularNumberModel::data( const QModelIndex& index, int role ) const
 {
-   if (!index.isValid())
       return QVariant();
 
-   return PhoneDirectoryModel::instance().d_ptr->m_lPopularityIndex[index.row()]->roleData(
-      role == Qt::DisplayRole ? (int)Call::Role::Name : role
-   );
 }
 
 int MostPopularNumberModel::rowCount( const QModelIndex& parent ) const
@@ -955,10 +878,7 @@ QAbstractListModel* PhoneDirectoryModel::mostPopularNumberModel() const
 bool
 PhoneDirectoryModel::hasUnreadMessage() const
 {
-    return std::any_of(d_ptr->m_lNumbers.begin(), d_ptr->m_lNumbers.end(),
-    [](ContactMethod* cm){
-        return cm->textRecording()->unreadInstantTextMessagingModel()->rowCount() > 0;
-    });
+    return false;
 }
 
 #include <phonedirectorymodel.moc>
