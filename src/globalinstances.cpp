@@ -23,15 +23,11 @@
 #include "interfaces/dbuserrorhandleri.h"
 #include "interfaces/itemmodelstateserializeri.h"
 #include "interfaces/pixmapmanipulatori.h"
-#include "interfaces/presenceserializeri.h"
 #include "interfaces/shortcutcreatori.h"
-#include "interfaces/actionextenderi.h"
 
 #include "dbuserrorhandlerdefault.h"
 #include "pixmapmanipulatordefault.h"
-#include "presenceserializerdefault.h"
 #include "shortcutcreatordefault.h"
-#include "actionextenderdefault.h"
 
 namespace GlobalInstances {
 
@@ -41,9 +37,7 @@ struct InstanceManager
     std::unique_ptr<Interfaces::DBusErrorHandlerI>         m_dBusErrorHandler;
     std::unique_ptr<Interfaces::ItemModelStateSerializerI> m_itemModelStateSerializer;
     std::unique_ptr<Interfaces::PixmapManipulatorI>        m_pixmapManipulator;
-    std::unique_ptr<Interfaces::PresenceSerializerI>       m_presenceSerializer;
     std::unique_ptr<Interfaces::ShortcutCreatorI>          m_shortcutCreator;
-    std::unique_ptr<Interfaces::ActionExtenderI>           m_actionExtender;
 };
 
 static InstanceManager&
@@ -136,25 +130,6 @@ setPixmapManipulator(std::unique_ptr<Interfaces::PixmapManipulatorI> instance)
     instanceManager().m_pixmapManipulator = std::move(instance);
 }
 
-Interfaces::PresenceSerializerI&
-presenceSerializer()
-{
-    if (!instanceManager().m_presenceSerializer)
-        instanceManager().m_presenceSerializer.reset(new Interfaces::PresenceSerializerDefault);
-    return *instanceManager().m_presenceSerializer.get();
-}
-
-void
-setPresenceSerializer(std::unique_ptr<Interfaces::PresenceSerializerI> instance)
-{
-    // do not allow empty pointers
-    if (!instance) {
-        qWarning() << "ignoring empty unique_ptr";
-        return;
-    }
-    instanceManager().m_presenceSerializer = std::move(instance);
-}
-
 Interfaces::ShortcutCreatorI&
 shortcutCreator()
 {
@@ -172,25 +147,6 @@ setShortcutCreator(std::unique_ptr<Interfaces::ShortcutCreatorI> instance)
         return;
     }
     instanceManager().m_shortcutCreator = std::move(instance);
-}
-
-Interfaces::ActionExtenderI&
-actionExtender()
-{
-    if (!instanceManager().m_shortcutCreator)
-        instanceManager().m_actionExtender.reset(new Interfaces::ActionExtenderDefault);
-    return *instanceManager().m_actionExtender.get();
-}
-
-void
-setActionExtender(std::unique_ptr<Interfaces::ActionExtenderI> instance)
-{
-    // do not allow empty pointers
-    if (!instance) {
-        qWarning() << "ignoring empty unique_ptr";
-        return;
-    }
-    instanceManager().m_actionExtender = std::move(instance);
 }
 
 
@@ -218,9 +174,7 @@ REGISTER_INTERFACE(Interfaces::ContactMethodSelectorI   , m_contactMethodSelecto
 REGISTER_INTERFACE(Interfaces::DBusErrorHandlerI        , m_dBusErrorHandler        )
 REGISTER_INTERFACE(Interfaces::ItemModelStateSerializerI, m_itemModelStateSerializer)
 REGISTER_INTERFACE(Interfaces::PixmapManipulatorI       , m_pixmapManipulator       )
-REGISTER_INTERFACE(Interfaces::PresenceSerializerI      , m_presenceSerializer      )
 REGISTER_INTERFACE(Interfaces::ShortcutCreatorI         , m_shortcutCreator         )
-REGISTER_INTERFACE(Interfaces::ActionExtenderI          , m_actionExtender          )
 
 #pragma GCC diagnostic pop
 

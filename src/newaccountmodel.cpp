@@ -42,7 +42,6 @@
 
 // old LRC
 #include "accountmodel.h"
-#include "profilemodel.h"
 #include "profile.h"
 #include "qtwrapper/conversions_wrap.hpp"
 
@@ -121,11 +120,6 @@ public Q_SLOTS:
      * @param details
      */
     void slotAccountDetailsChanged(const std::string& accountID, const std::map<std::string, std::string>& details);
-
-    /**
-     * @param profile
-     */
-    void slotProfileUpdated(const Profile* profile);
 
     /**
      * Emit nameRegistrationEnded
@@ -351,9 +345,6 @@ NewAccountModelPimpl::NewAccountModelPimpl(NewAccountModel& linked,
     connect(&callbacksHandler, &CallbacksHandler::nameRegistrationEnded, this, &NewAccountModelPimpl::slotNameRegistrationEnded);
     connect(&callbacksHandler, &CallbacksHandler::registeredNameFound, this, &NewAccountModelPimpl::slotRegisteredNameFound);
     connect(&callbacksHandler, &CallbacksHandler::migrationEnded, this, &NewAccountModelPimpl::slotMigrationEnded);
-
-    // NOTE: because we still use the legacy LRC for configuration, we are still using old signals
-    connect(&ProfileModel::instance(), &ProfileModel::profileUpdated, this,  &NewAccountModelPimpl::slotProfileUpdated);
 }
 
 NewAccountModelPimpl::~NewAccountModelPimpl()
@@ -617,14 +608,6 @@ NewAccountModelPimpl::removeFromAccounts(const std::string& accountId)
 
     // Now we can free them
     accounts.erase(accountId);
-}
-
-void
-NewAccountModelPimpl::slotProfileUpdated(const Profile* profile)
-{
-    auto& accounts = profile->accounts();
-    if (!accounts.empty())
-        emit linked.profileUpdated(accounts.first()->id().toStdString());
 }
 
 void
