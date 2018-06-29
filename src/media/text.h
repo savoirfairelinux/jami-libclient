@@ -28,8 +28,6 @@ class IMConversationManagerPrivate;
 
 namespace Media {
 
-class TextRecording;
-
 class LIB_EXPORT Text : public Media::Media
 {
    Q_OBJECT
@@ -40,7 +38,6 @@ public:
    virtual Media::Type type() override;
 
    //Getter
-   TextRecording* recording   (                         ) const;
    bool           hasMimeType ( const QString& mimeType ) const;
    QStringList    mimeTypes   (                         ) const;
 
@@ -60,4 +57,3 @@ Q_SIGNALS:
 };
 
 }
-

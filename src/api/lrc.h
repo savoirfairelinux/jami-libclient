@@ -56,6 +56,11 @@ public:
      */
     DataTransferModel& getDataTransferModel() const;
 
+    /**
+     * Inform the daemon that the connectivity changed
+     */
+    void connectivityChanged() const;
+
 private:
     std::unique_ptr<LrcPimpl> lrcPimpl_;
 };

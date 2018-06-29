@@ -40,7 +40,6 @@
 #include "contactmethod.h"
 #include "namedirectory.h"
 #include "phonedirectorymodel.h"
-#include "bannedcontactmodel.h"
 #include "private/vcardutils.h"
 
 #include "authority/daemon.h"
@@ -513,7 +512,7 @@ ContactModelPimpl::fillsWithRINGContacts() {
         contact::Info contactInfo;
         contactInfo.profileInfo = profileInfo;
         contactInfo.registeredName = cm->registeredName().toStdString();
-        contactInfo.isBanned = account->bannedContactModel()->isBanned(cm);
+        contactInfo.isBanned = tr_info["banned"] == "true";
 
         {
             std::lock_guard<std::mutex> lk(contactsMtx_);
@@ -575,11 +574,6 @@ ContactModelPimpl::slotContactAdded(const std::string& accountId, const std::str
             // If contact is banned, do not re-add it, simply update its flag and the banned contacts list
             if (isBanned) {
                 bannedContacts.erase(it);
-
-                /* Update old LRC.
-                   This method should NOT make any function call that requires the contactsMtx_ lock
-                   otherwise we will get into a deadlock. This is only here for old-lrc transition. */
-                account->bannedContactModel()->remove(cm, false);
             }
 
             addToContacts(cm, linked.owner.profileInfo.type, false);
@@ -620,11 +614,6 @@ ContactModelPimpl::slotContactRemoved(const std::string& accountId, const std::s
                 qDebug() << "ContactModel::slotContactsRemoved(), nullptr";
                 return;
             }
-            auto* cm = PhoneDirectoryModel::instance().getNumber(QString(contactUri.c_str()), account);
-
-            // Update bannedContactModel from old LRC
-            account->bannedContactModel()->add(cm);
-
             // Update bannedContacts index
             bannedContacts.emplace_back(contact->second.profileInfo.uri);
         } else {

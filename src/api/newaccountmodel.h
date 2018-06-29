@@ -195,11 +195,6 @@ Q_SIGNALS:
      * @param accountID
      */
     void accountRemoved(const std::string& accountID);
-    /**
-     * Connect this signal to know when an account was updated.
-     * @param accountID
-     */
-    void profileUpdated(const std::string& accountID);
 
     /**
      * Connect this signal to know when an account is exported on the DHT

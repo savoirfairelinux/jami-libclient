@@ -36,8 +36,6 @@ public:
    friend class Certificate;
    friend class CertificatePrivate;
    friend class Account;
-   friend class DaemonCertificateCollectionPrivate;
-   friend class DaemonCertificateCollection;
 
    enum class Role {
       NodeType          = static_cast<int>(Ring::Role::UserRole) + 100,

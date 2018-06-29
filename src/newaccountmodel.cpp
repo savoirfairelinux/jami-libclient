@@ -36,7 +36,6 @@
 
 // old LRC
 #include "accountmodel.h"
-#include "profilemodel.h"
 #include "profile.h"
 #include "qtwrapper/conversions_wrap.hpp"
 
@@ -103,8 +102,6 @@ public Q_SLOTS:
      * @param account
      */
     void slotAccountRemoved(Account* account);
-
-    void slotProfileUpdated(const Profile* profile);
 
     /**
      * Emit nameRegistrationEnded
@@ -319,7 +316,6 @@ NewAccountModelPimpl::NewAccountModelPimpl(NewAccountModel& linked,
 
     // NOTE: because we still use the legacy LRC for configuration, we are still using old signals
     connect(&AccountModel::instance(), &AccountModel::accountRemoved, this,  &NewAccountModelPimpl::slotAccountRemoved);
-    connect(&ProfileModel::instance(), &ProfileModel::profileUpdated, this,  &NewAccountModelPimpl::slotProfileUpdated);
 }
 
 NewAccountModelPimpl::~NewAccountModelPimpl()
@@ -505,14 +501,6 @@ NewAccountModelPimpl::slotAccountRemoved(Account* account)
 
     // Now we can free them
     accounts.erase(accountId);
-}
-
-void
-NewAccountModelPimpl::slotProfileUpdated(const Profile* profile)
-{
-    auto& accounts = profile->accounts();
-    if (!accounts.empty())
-        emit linked.profileUpdated(accounts.first()->id().toStdString());
 }
 
 void

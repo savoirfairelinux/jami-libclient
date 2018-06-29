@@ -45,7 +45,6 @@
 #include "callbackshandler.h"
 #include "authority/databasehelper.h"
 
-#include "availableaccountmodel.h"
 #include "namedirectory.h"
 #include "phonedirectorymodel.h"
 #include "contactmethod.h"
@@ -1107,10 +1106,6 @@ ConversationModelPimpl::~ConversationModelPimpl()
 void
 ConversationModelPimpl::initConversations()
 {
-    auto* account = AccountModel::instance().getById(linked.owner.id.c_str());
-    if (!account)
-        return;
-
     // Fill conversations
     if (accountProfileId.empty()) {
         // Should not, NewAccountModel must create this profile before.
@@ -1833,10 +1828,6 @@ ConversationModelPimpl::slotTransferStatusCreated(long long dringId, datatransfe
 {
     // check if transfer is for the current account
     if (info.accountId != linked.owner.id) return;
-
-    const auto* account = AccountModel::instance().getById(info.accountId.c_str());
-    if (not account)
-        return;
 
     auto contactProfileId = database::getOrInsertProfile(db, info.peerUri);
     auto accountProfileId = database::getProfileId(db, linked.owner.profileInfo.uri);

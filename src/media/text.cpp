@@ -24,17 +24,14 @@
 
 //Ring
 #include <call.h>
-#include <callmodel.h>
 #include <account.h>
 #include <person.h>
 #include <contactmethod.h>
 #include <mime.h>
-#include <media/textrecording.h>
 #include <media/recordingmodel.h>
 #include <phonedirectorymodel.h>
 #include <private/call_p.h>
 #include <private/vcardutils.h>
-#include <private/textrecording_p.h>
 #include <private/imconversationmanagerprivate.h>
 #include <accountmodel.h>
 #include <personmodel.h>
@@ -62,7 +59,6 @@ public:
    MediaTextPrivate(Media::Text* parent);
 
    //Attributes
-   Media::TextRecording* m_pRecording;
    bool                  m_HasChecked;
    QHash<QString,bool>   m_hMimeTypes;
    QStringList           m_lMimeTypes;
@@ -140,60 +136,18 @@ Person* ProfileChunk::addChunk(const QMap<QString, QString>& args, const QString
 ///Called when a new message is incoming
 void IMConversationManagerPrivate::newMessage(const QString& callId, const QString& from, const QMap<QString,QString>& message)
 {
-   Q_UNUSED(from)
-
-   auto call = CallModel::instance().getCall(callId);
-   if (!call or !call->peerContactMethod()) {
-      return;
-   }
-
-   static const int profileSize = QString(RingMimes::PROFILE_VCF).size();
-
-   //Intercept some messages early, those are intended for internal Ring usage
-   QMapIterator<QString, QString> iter(message);
-   while (iter.hasNext()) {
-      iter.next();
-
-      if (iter.key().left(profileSize) == RingMimes::PROFILE_VCF) {
-          auto args = VCardUtils::parseMimeAttributes(iter.key());
-          if (auto person = ProfileChunk::addChunk(args, iter.value(), call->peerContactMethod())) {
-              PersonModel::instance().addPeerProfile(person);
-          }
-         return;
-      }
-   }
-
-   Media::Text* media = call->firstMedia<Media::Text>(Media::Media::Direction::IN);
-
-   if (!media) {
-      media = call->d_ptr->mediaFactory<Media::Text>(Media::Media::Direction::IN);
-   }
-
-   media->recording()->setCall(call);
-   media->recording()->d_ptr->insertNewMessage(message,call->peerContactMethod(),Media::Media::Direction::IN);
-
-   media->d_ptr->updateMimeList(message);
-
-   emit media->messageReceived(message);
+   return;
 }
 
 void IMConversationManagerPrivate::newAccountMessage(const QString& accountId, const QString& from, const QMap<QString,QString>& payloads)
 {
-   if (auto cm = PhoneDirectoryModel::instance().getNumber(from, AccountModel::instance().getById(accountId.toLatin1()))) {
-       auto txtRecording = cm->textRecording();
-       txtRecording->d_ptr->insertNewMessage(payloads, cm, Media::Media::Direction::IN);
-   }
 }
 
 void IMConversationManagerPrivate::accountMessageStatusChanged(const QString& accountId, uint64_t id, const QString& to, int status)
 {
-    if (auto cm = PhoneDirectoryModel::instance().getNumber(to, AccountModel::instance().getById(accountId.toLatin1()))) {
-        auto txtRecording = cm->textRecording();
-        txtRecording->d_ptr->accountMessageStatusChanged(id, static_cast<DRing::Account::MessageStates>(status));
-    }
 }
 
-MediaTextPrivate::MediaTextPrivate(Media::Text* parent) : q_ptr(parent),m_pRecording(nullptr),m_HasChecked(false)
+MediaTextPrivate::MediaTextPrivate(Media::Text* parent) : q_ptr(parent),m_HasChecked(false)
 {
 }
 
@@ -210,32 +164,6 @@ Media::Media::Type Media::Text::type()
 Media::Text::~Text()
 {
    delete d_ptr;
-}
-
-Media::TextRecording* Media::Text::recording() const
-{
-   const bool wasChecked = d_ptr->m_HasChecked;
-   d_ptr->m_HasChecked = true;
-
-   if ((!wasChecked) && !d_ptr->m_pRecording) {
-      Text* other = call()->firstMedia<Text>(direction() == Media::Direction::OUT ?
-         Media::Direction::IN
-      :  Media::Direction::OUT
-      );
-
-      if (other && other->recording())
-         d_ptr->m_pRecording = other->recording();
-
-   }
-
-   if ((!wasChecked) && !d_ptr->m_pRecording) {
-       if (auto otherRecording = call()->peerContactMethod()->textRecording())
-           d_ptr->m_pRecording = otherRecording;
-       else
-           d_ptr->m_pRecording = RecordingModel::instance().createTextRecording(call()->peerContactMethod());
-   }
-
-   return d_ptr->m_pRecording;
 }
 
 
@@ -295,12 +223,6 @@ void Media::Text::send(const QMap<QString,QString>& message, const bool isMixed)
 {
    CallManagerInterface& callManager = CallManager::instance();
    Q_NOREPLY callManager.sendTextMessage(call()->dringId(), message, isMixed);
-
-   //Make sure the recording exist
-   recording();
-
-   d_ptr->m_pRecording->setCall(call());
-   d_ptr->m_pRecording->d_ptr->insertNewMessage(message,call()->peerContactMethod(),Media::Direction::OUT);
 
    d_ptr->updateMimeList(message);
 

@@ -32,7 +32,6 @@ class ContactMethod;
 
 namespace Media {
    class Recording;
-   class TextRecording;
    class AVRecording;
 
 /**
@@ -80,14 +79,10 @@ public:
    void setRecordPath     ( const QString&  path   );
    void clear             (                        );
 
-   //Mutator
-   TextRecording* createTextRecording(const ContactMethod* cm);
-
    //Singleton
    static RecordingModel& instance();
 
 Q_SIGNALS:
-   void newTextMessage(::Media::TextRecording* t, ContactMethod* cm);
    void unreadMessagesCountChanged(int unreadCount);
 
 private:

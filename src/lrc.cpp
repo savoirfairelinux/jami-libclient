@@ -25,6 +25,7 @@
 #include "database.h"
 #include "callbackshandler.h"
 #include "dbus/instancemanager.h"
+#include "dbus/configurationmanager.h"
 
 namespace lrc
 {
@@ -73,6 +74,12 @@ DataTransferModel&
 Lrc::getDataTransferModel() const
 {
     return *lrcPimpl_->dataTransferModel;
+}
+
+void
+Lrc::connectivityChanged() const
+{
+    ConfigurationManager::instance().connectivityChanged();
 }
 
 LrcPimpl::LrcPimpl(Lrc& linked)

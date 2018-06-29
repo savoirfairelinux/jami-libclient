@@ -24,9 +24,7 @@
 
 //Ring
 #include "recording.h"
-#include "textrecording.h"
 #include "media.h"
-#include "localtextrecordingcollection.h"
 
 //DRing
 #include "dbus/configurationmanager.h"
@@ -64,7 +62,6 @@ public:
    QVector<RecordingNode*>        m_lCategories             ;
    RecordingNode*                 m_pText          {nullptr};
    RecordingNode*                 m_pAudioVideo    {nullptr};
-   LocalTextRecordingCollection*  m_pTextRecordingCollection;
    int                            m_UnreadCount    { 0     };
 
    //RecordingNode*                 m_pFiles     ; //TODO uncomment when implemented in DRing
@@ -96,9 +93,6 @@ m_pAudioVideo(nullptr)/*,m_pFiles(nullptr)*/
 
 RecordingModelPrivate::~RecordingModelPrivate()
 {
-   if (m_pTextRecordingCollection)
-      delete m_pTextRecordingCollection;
-
    if (m_pText)
       delete m_pText;
 
@@ -110,7 +104,6 @@ void RecordingModelPrivate::forwardInsertion(const QMap<QString,QString>& messag
 {
    Q_UNUSED(message)
    Q_UNUSED(direction)
-   emit q_ptr->newTextMessage(static_cast<Media::TextRecording*>(sender()), cm);
 }
 
 void RecordingModelPrivate::updateUnreadCount(const int count)
@@ -131,13 +124,6 @@ Media::RecordingModel::RecordingModel(QObject* parent) : QAbstractItemModel(pare
 d_ptr(new RecordingModelPrivate(this))
 {
    setObjectName("RecordingModel");
-
-   d_ptr->m_pTextRecordingCollection = addCollection<LocalTextRecordingCollection>();
-
-   d_ptr->m_pTextRecordingCollection->listId([](const QList<CollectionInterface::Element>& e) {
-      //TODO
-      Q_UNUSED(e);
-   });
 }
 
 Media::RecordingModel& Media::RecordingModel::instance()
@@ -293,12 +279,6 @@ bool Media::RecordingModel::addItemCallback(const Recording* item)
 
       endInsertRows();
 
-      if (item->type() == Recording::Type::TEXT) {
-         const TextRecording* r = static_cast<const TextRecording*>(item);
-         connect(r, &TextRecording::messageInserted, d_ptr, &RecordingModelPrivate::forwardInsertion);
-         connect(r, &TextRecording::unreadCountChange, d_ptr, &RecordingModelPrivate::updateUnreadCount);
-      }
-
       return true;
    }
 
@@ -363,14 +343,6 @@ void Media::RecordingModel::setAlwaysRecording(bool record)
 int  Media::RecordingModel::unreadCount() const
 {
     return d_ptr->m_UnreadCount;
-}
-
-///Create or load the recording associated with the ContactMethod cm
-Media::TextRecording* Media::RecordingModel::createTextRecording(const ContactMethod* cm)
-{
-   TextRecording* r = d_ptr->m_pTextRecordingCollection->createFor(cm);
-
-   return r;
 }
 
 #include <recordingmodel.moc>

@@ -41,7 +41,6 @@
 #include "personmodel.h"
 #include "dbus/configurationmanager.h"
 #include "media/recordingmodel.h"
-#include "media/textrecording.h"
 
 //Private
 #include "private/phonedirectorymodel_p.h"
@@ -463,21 +462,6 @@ ContactMethod* PhoneDirectoryModel::getNumber(const URI& uri, const QString& typ
    connect(number,&ContactMethod::lastUsedChanged,d_ptr.data(), &PhoneDirectoryModelPrivate::slotLastUsedChanged);
    connect(number,&ContactMethod::contactChanged ,d_ptr.data(), &PhoneDirectoryModelPrivate::slotContactChanged);
    connect(number,&ContactMethod::rebased ,d_ptr.data(), &PhoneDirectoryModelPrivate::slotContactMethodMerged);
-
-    // add the new cm into the historic.
-    for (auto col : CategorizedHistoryModel::instance().collections(CollectionInterface::SupportedFeatures::ADD)) {
-        if (col->id() == "mhb") {
-            QMap<QString,QString> hc;
-            hc[Call::HistoryMapFields::PEER_NUMBER ] = number->uri();
-            // it matters to set a value to hc[Call::HistoryMapFields::CALLID ], but the value itself doesn't matter
-            hc[Call::HistoryMapFields::CALLID ] = "0";
-
-            if (auto fakeCall = Call::buildHistoryCall(hc))
-                col->add(fakeCall);
-            else
-                qDebug() << "buildHistoryCall() has returned an invalid Call object.";
-        }
-    }
 
    const QString hn = number->uri().hostname();
 
@@ -955,10 +939,7 @@ QAbstractListModel* PhoneDirectoryModel::mostPopularNumberModel() const
 bool
 PhoneDirectoryModel::hasUnreadMessage() const
 {
-    return std::any_of(d_ptr->m_lNumbers.begin(), d_ptr->m_lNumbers.end(),
-    [](ContactMethod* cm){
-        return cm->textRecording()->unreadInstantTextMessagingModel()->rowCount() > 0;
-    });
+    return false;
 }
 
 #include <phonedirectorymodel.moc>

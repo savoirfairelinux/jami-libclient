@@ -41,11 +41,6 @@ class TemporaryContactMethodPrivate;
 class InstantMessagingModel;
 class Certificate;
 
-namespace Media {
-   class TextRecording;
-}
-
-
 ///ContactMethod: represent a phone number
 class LIB_EXPORT ContactMethod : public ItemBase
 {
@@ -53,7 +48,6 @@ class LIB_EXPORT ContactMethod : public ItemBase
 public:
    friend class PhoneDirectoryModel;
    friend class PhoneDirectoryModelPrivate;
-   friend class LocalTextRecordingCollection;
    friend class CallPrivate;
    friend class AccountPrivate;
 
@@ -133,7 +127,6 @@ public:
    QString               uid             () const;
    URI::ProtocolHint     protocolHint    () const;
    QByteArray            sha1            () const;
-   Media::TextRecording* textRecording   () const;
    bool                  isReachable     () const;
    Certificate*          certificate     () const;
    QString               registeredName  () const;
@@ -204,9 +197,6 @@ private:
 private Q_SLOTS:
    void accountDestroyed(QObject* o);
    void contactRebased(Person* other);
-
-public Q_SLOTS:
-   bool sendOfflineTextMessage(const QMap<QString, QString>& payloads);
 
 Q_SIGNALS:
    ///A new call have used this ContactMethod

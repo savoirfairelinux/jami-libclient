@@ -20,9 +20,6 @@
 //DRing
 #include "dbus/callmanager.h"
 
-//Ring
-#include <callmodel.h>
-
 namespace Media {
 
 class AVRecordingPrivate {
@@ -81,7 +78,7 @@ public Q_SLOTS:
    void slotUpdatePlaybackScale   (const QString& filepath, int position, int size);
 };
 
-RecordingPlaybackManager::RecordingPlaybackManager() : QObject(&CallModel::instance())
+RecordingPlaybackManager::RecordingPlaybackManager() : QObject()
 {
    CallManagerInterface& callManager = CallManager::instance();
    connect(&callManager,&CallManagerInterface::recordPlaybackStopped , this, &RecordingPlaybackManager::slotRecordPlaybackStopped );

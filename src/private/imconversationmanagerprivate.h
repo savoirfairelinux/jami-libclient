@@ -26,7 +26,6 @@ class ContactMethod;
 
 namespace Media {
    class Text;
-   class TextRecording;
 }
 
 class IMConversationManagerPrivate final : public QObject
