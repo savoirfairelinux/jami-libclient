@@ -20,6 +20,9 @@
  ***************************************************************************/
 #include "database.h"
 
+// daemon
+#include <account_const.h>
+
 // Qt
 #include <QObject>
 #include <QtCore/QDir>
@@ -42,13 +45,8 @@
 
 // Lrc for migrations
 #include "dbus/configurationmanager.h"
-#include "person.h"
-#include "account.h"
-#include "accountmodel.h"
-#include "private/vcardutils.h"
+#include "vcard.h"
 #include <account_const.h>
-
-#include <iostream>
 
 namespace lrc
 {
@@ -512,44 +510,51 @@ Database::migrateLocalProfiles()
             continue;
         }
 
-        auto personProfile = new Person(nullptr);
-        QList<Account*> accs;
-        VCardUtils::mapToPerson(personProfile, content.toUtf8(), &accs);
-        const auto vCard = VCardUtils::toHashMap(content.toUtf8());
-        // all accounts have the same profile picture for now.
-        const auto alias = vCard["FN"];
+        const auto vCard = lrc::vCard::utils::toHashMap(content.toUtf8());
+        const auto alias = vCard[lrc::vCard::Property::FORMATTED_NAME];
         const auto avatar = vCard["PHOTO;ENCODING=BASE64;TYPE=PNG"];
 
-        for (const auto& account: accs) {
-            if (!account) continue;
-            auto type = account->protocol() == Account::Protocol::RING ? "RING" : "SIP";
-            auto uri = account->username();
-            auto accountId = account->id();
-            // Remove the ring: from the username because account uri is stored without "ring:" in the database
-            if (uri.startsWith("ring:")) {
-                uri = uri.mid(std::string("ring:").size());
-            }
-            if (select("id", "profiles","uri=:uri", {{":uri", uri.toStdString()}}).payloads.empty()) {
-                insertInto("profiles",
-                           {{":uri", "uri"}, {":alias", "alias"},
-                           {":photo", "photo"}, {":type", "type"},
-                           {":status", "status"}},
-                           {{":uri", uri.toStdString()}, {":alias", alias.toStdString()},
-                           {":photo", avatar.toStdString()}, {":type", type},
-                           {":status", "TRUSTED"}});
-                auto profileIds = select("id", "profiles","uri=:uri",
-                {{":uri", uri.toStdString()}}).payloads;
-                if (!profileIds.empty() && select("profile_id", "profiles_accounts",
-                "account_id=:account_id AND is_account=:is_account",
-                {{":account_id", accountId.toStdString()},
-                {":is_account", "true"}}).payloads.empty()) {
-                      insertInto("profiles_accounts",
-                                 {{":profile_id", "profile_id"},
-                                 {":account_id", "account_id"},
-                                 {":is_account", "is_account"}},
-                                 {{":profile_id", profileIds[0]},
-                                 {":account_id", accountId.toStdString()},
-                                 {":is_account", "true"}});
+
+        const QStringList accountIds = ConfigurationManager::instance().getAccountList();
+        for (auto accountId : accountIds) {
+            MapStringString account = ConfigurationManager::instance().
+            getAccountDetails(accountId.toStdString().c_str());
+            auto accountURI = account[DRing::Account::ConfProperties::USERNAME].contains("ring:") ?
+            account[DRing::Account::ConfProperties::USERNAME]
+        .toStdString().substr(std::string("ring:").size()) :
+        account[DRing::Account::ConfProperties::USERNAME].toStdString();
+
+            for (const auto& accountId: accountIds) {
+                MapStringString account = ConfigurationManager::instance()
+                    .getAccountDetails(accountId.toStdString().c_str());
+                auto type = account[DRing::Account::ConfProperties::TYPE] == "SIP"? "SIP" : "RING";
+
+                auto uri = account[DRing::Account::ConfProperties::USERNAME].contains("ring:") ?
+                        account[DRing::Account::ConfProperties::USERNAME]
+                        .toStdString().substr(std::string("ring:").size()) :
+                        account[DRing::Account::ConfProperties::USERNAME].toStdString();
+                if (select("id", "profiles","uri=:uri", {{":uri", uri}}).payloads.empty()) {
+                    insertInto("profiles",
+                            {{":uri", "uri"}, {":alias", "alias"},
+                            {":photo", "photo"}, {":type", "type"},
+                            {":status", "status"}},
+                            {{":uri", uri}, {":alias", alias.toStdString()},
+                            {":photo", avatar.toStdString()}, {":type", type},
+                            {":status", "TRUSTED"}});
+                    auto profileIds = select("id", "profiles","uri=:uri",
+                    {{":uri", uri}}).payloads;
+                    if (!profileIds.empty() && select("profile_id", "profiles_accounts",
+                    "account_id=:account_id AND is_account=:is_account",
+                    {{":account_id", accountId.toStdString()},
+                    {":is_account", "true"}}).payloads.empty()) {
+                        insertInto("profiles_accounts",
+                                    {{":profile_id", "profile_id"},
+                                    {":account_id", "account_id"},
+                                    {":is_account", "is_account"}},
+                                    {{":profile_id", profileIds[0]},
+                                    {":account_id", accountId.toStdString()},
+                                    {":is_account", "true"}});
+                    }
                 }
             }
         }
@@ -574,7 +579,7 @@ Database::migratePeerProfiles()
             continue;
         }
 
-        const auto vCard = VCardUtils::toHashMap(content.toUtf8());
+        const auto vCard = lrc::vCard::utils::toHashMap(content.toUtf8());
         auto uri = vCard["TEL;other"];
         const auto alias = vCard["FN"];
         const auto avatar = vCard["PHOTO;ENCODING=BASE64;TYPE=PNG"];
@@ -626,9 +631,11 @@ Database::migrateTextHistory()
                 if (loadDoc.find("groups") == loadDoc.end()) continue;
                 // Load account
                 auto peersObject = loadDoc["peers"].toArray()[0].toObject();
-                auto account = AccountModel::instance().getById(peersObject["accountId"].toString().toUtf8());
-                if (!account) continue;
-                auto accountUri = account->username();
+
+                MapStringString details = ConfigurationManager::instance().getAccountDetails(peersObject["accountId"].toString());
+                if (!details.contains(DRing::Account::ConfProperties::USERNAME)) continue;
+
+                auto accountUri = details[DRing::Account::ConfProperties::USERNAME];
                 auto isARingContact = accountUri.startsWith("ring:");
                 if (isARingContact) {
                     accountUri = accountUri.mid(QString("ring:").length());

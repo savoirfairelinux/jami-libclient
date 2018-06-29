@@ -32,8 +32,6 @@
 #define CLOCK_REALTIME 0
 #endif
 
-#include "private/videorenderermanager.h"
-#include "video/resolution.h"
 #include "private/videorenderer_p.h"
 #include "videomanager_interface.h"
 
@@ -144,7 +142,7 @@ std::unique_ptr<AVFrame, void(*)(AVFrame*)> Video::DirectRenderer::currentAVFram
     return std::move(d_ptr->avframe);
 }
 
-Video::Frame Video::DirectRenderer::currentFrame() const
+lrc::api::video::Frame Video::DirectRenderer::currentFrame() const
 {
     if (not isRendering())
         return {};
@@ -153,7 +151,7 @@ Video::Frame Video::DirectRenderer::currentFrame() const
     if (not d_ptr->daemonFramePtr_)
         return {};
 
-    Video::Frame frame;
+    lrc::api::video::Frame frame;
     frame.storage = std::move(d_ptr->daemonFramePtr_->storage);
     frame.ptr = frame.storage.data();
     frame.size = frame.storage.size();
