@@ -38,12 +38,9 @@ class NumberTreeBackend;
 //Private
 class PhoneDirectoryModelPrivate;
 
-///CredentialModel: A model for account credentials
+///PhoneDirectoryModel: A model for account phonedirectory
 class LIB_EXPORT PhoneDirectoryModel : public QAbstractTableModel {
 
-   //NumberCompletionModel need direct access to the indexes
-   friend class NumberCompletionModel;
-   friend class NumberCompletionModelPrivate;
    friend class MostPopularNumberModel;
    friend class CategorizedBookmarkModel;
 

@@ -22,7 +22,6 @@
 #include <memory>
 
 namespace Interfaces {
-class AccountListColorizerI;
 class ContactMethodSelectorI;
 class DBusErrorHandlerI;
 class ItemModelStateSerializerI;
@@ -41,9 +40,6 @@ class ActionExtenderI;
  * function will throw an exception if no instance has been set by the client.
  */
 namespace GlobalInstances {
-
-LIB_EXPORT Interfaces::AccountListColorizerI& accountListColorizer();
-void LIB_EXPORT setAccountListColorizer(std::unique_ptr<Interfaces::AccountListColorizerI> instance);
 
 /**
  * LRC does not provide a default implementation of this interface, thus an exception will be thrown
@@ -77,7 +73,6 @@ void LIB_EXPORT setActionExtender(std::unique_ptr<Interfaces::ActionExtenderI> i
 
 
 //Private use only
-void setInterfaceInternal(Interfaces::AccountListColorizerI    *);
 void setInterfaceInternal(Interfaces::ContactMethodSelectorI   *);
 void setInterfaceInternal(Interfaces::DBusErrorHandlerI        *);
 void setInterfaceInternal(Interfaces::ItemModelStateSerializerI*);

@@ -22,9 +22,6 @@
 #include <QtCore/QVariant>
 #include <QtCore/QModelIndex>
 
-//Ring
-#include <useractionmodel.h>
-
 // LRC
 #include "api/account.h"
 #include "api/conversation.h"

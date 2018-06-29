@@ -271,9 +271,7 @@ SET( libringclient_LIB_SRCS
   #Data objects
   src/call.cpp
   src/uri.cpp
-  src/ringdevice.cpp
   src/account.cpp
-  src/credential.cpp
   src/person.cpp
   src/contactmethod.cpp
   src/numbercategory.cpp
@@ -297,16 +295,12 @@ SET( libringclient_LIB_SRCS
   src/media/textrecording.cpp
 
   #Models
-  src/bootstrapmodel.cpp
-  src/ringdevicemodel.cpp
   src/accountmodel.cpp
   src/availableaccountmodel.cpp
   src/callmodel.cpp
   src/categorizedhistorymodel.cpp
   src/categorizedbookmarkmodel.cpp
-  src/credentialmodel.cpp
   src/categorizedcontactmodel.cpp
-  src/useractionmodel.cpp
   src/presencestatusmodel.cpp
   src/phonedirectorymodel.cpp
   src/historytimecategorymodel.cpp
@@ -315,10 +309,8 @@ SET( libringclient_LIB_SRCS
   src/keyexchangemodel.cpp
   src/tlsmethodmodel.cpp
   src/protocolmodel.cpp
-  src/numbercompletionmodel.cpp
   src/profilemodel.cpp
   src/ringtonemodel.cpp
-  src/lastusednumbermodel.cpp
   src/securityevaluationmodel.cpp
   src/personmodel.cpp
   src/collectionmodel.cpp
@@ -327,11 +319,7 @@ SET( libringclient_LIB_SRCS
   src/networkinterfacemodel.cpp
   src/certificatemodel.cpp
   src/ciphermodel.cpp
-  src/accountstatusmodel.cpp
-  src/codecmodel.cpp
-  src/recentmodel.cpp
   src/chainoftrustmodel.cpp
-  src/pendingcontactrequestmodel.cpp
   src/video/devicemodel.cpp
   src/video/sourcemodel.cpp
   src/video/channel.cpp
@@ -360,7 +348,6 @@ SET( libringclient_LIB_SRCS
   src/datatransfermodel.cpp
 
   #Data collections
-  src/transitionalpersonbackend.cpp
   src/collectioninterface.cpp
   src/collectioneditor.cpp
   src/fallbackpersoncollection.cpp
@@ -368,10 +355,7 @@ SET( libringclient_LIB_SRCS
   src/foldercertificatecollection.cpp
   src/localrecordingcollection.cpp
   src/localtextrecordingcollection.cpp
-  src/localhistorycollection.cpp
   src/localprofilecollection.cpp
-  src/localmacrocollection.cpp
-  src/localbookmarkcollection.cpp
   src/localringtonecollection.cpp
   src/peerprofilecollection.cpp
 
@@ -384,7 +368,6 @@ SET( libringclient_LIB_SRCS
 
   #Default interface implementations
   src/globalinstances.cpp
-  src/accountlistcolorizerdefault.cpp
   src/presenceserializerdefault.cpp
   src/pixmapmanipulatordefault.cpp
   src/shortcutcreatordefault.cpp
@@ -423,8 +406,6 @@ ENDIF(${ENABLE_LIBWRAP} MATCHES true)
 # Public API
 SET( libringclient_LIB_HDRS
   src/account.h
-  src/ringdevice.h
-  src/credential.h
   src/accountmodel.h
   src/availableaccountmodel.h
   src/call.h
@@ -432,40 +413,29 @@ SET( libringclient_LIB_HDRS
   src/callmodel.h
   src/categorizedhistorymodel.h
   src/person.h
-  src/bootstrapmodel.h
-  src/ringdevicemodel.h
   src/collectioninterface.h
   src/collectioninterface.hpp
   src/categorizedbookmarkmodel.h
-  src/credentialmodel.h
   src/categorizedcontactmodel.h
-  src/useractionmodel.h
   src/presencestatusmodel.h
   src/contactmethod.h
   src/phonedirectorymodel.h
   src/historytimecategorymodel.h
   src/numbercategorymodel.h
   src/keyexchangemodel.h
-  src/codecmodel.h
   src/tlsmethodmodel.h
   src/protocolmodel.h
-  src/numbercompletionmodel.h
   src/profilemodel.h
   src/numbercategory.h
   src/ringtonemodel.h
   src/localrecordingcollection.h
-  src/localbookmarkcollection.h
   src/localringtonecollection.h
-  src/localmacrocollection.h
-  src/localhistorycollection.h
   src/localprofilecollection.h
   src/localtextrecordingcollection.h
   src/peerprofilecollection.h
-  src/lastusednumbermodel.h
   src/securityevaluationmodel.h
   src/certificate.h
   src/personmodel.h
-  src/transitionalpersonbackend.h
   src/collectionmodel.h
   src/collectionextensionmodel.h
   src/collectionextensionmodel.hpp
@@ -485,7 +455,6 @@ SET( libringclient_LIB_HDRS
   src/networkinterfacemodel.h
   src/certificatemodel.h
   src/ciphermodel.h
-  src/accountstatusmodel.h
   src/collectionmediator.h
   src/collectionmediator.hpp
   src/collectioneditor.h
@@ -496,12 +465,9 @@ SET( libringclient_LIB_HDRS
   src/securityflaw.h
   src/collectioncreationinterface.h
   src/collectionconfigurationinterface.h
-  src/recentmodel.h
   src/chainoftrustmodel.h
-  src/pendingcontactrequestmodel.h
   src/contactrequest.h
   src/globalinstances.h
-  src/accountlistcolorizerdefault.h
   src/presenceserializerdefault.h
   src/pixmapmanipulatordefault.h
   src/shortcutcreatordefault.h
@@ -574,7 +540,6 @@ SET(libringclient_media_LIB_HDRS
 )
 
 SET(libringclient_interface_LIB_HDRS
-  src/interfaces/accountlistcolorizeri.h
   src/interfaces/contactmethodselectori.h
   src/interfaces/presenceserializeri.h
   src/interfaces/itemmodelstateserializeri.h
@@ -679,7 +644,6 @@ ENDIF()
 # Manually wrap private files and interfaces
 SET(libringclient_PRIVATE_HDRS
    src/private/call_p.h
-   src/private/ringdevicemodel_p.h
    src/private/namedirectory_p.h
    src/private/account_p.h
    src/private/sortproxies.h
