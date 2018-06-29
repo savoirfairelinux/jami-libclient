@@ -17,7 +17,6 @@
  ***************************************************************************/
 
 #include "namedirectory.h"
-#include "accountmodel.h"
 #include "private/namedirectory_p.h"
 #include "dbus/configurationmanager.h"
 
@@ -47,16 +46,7 @@ void NameDirectoryPrivate::slotNameRegistrationEnded(const QString& accountId, i
 {
     qDebug() << "Name registration ended. Account:" << accountId << "status:" << status << "name:" << name;
 
-   Account* account = AccountModel::instance().getById(accountId.toLatin1());
-
-   emit q_ptr->nameRegistrationEnded(account, static_cast<NameDirectory::RegisterNameStatus>(status), name);
-
-   if (account) {
-       emit account->nameRegistrationEnded(static_cast<NameDirectory::RegisterNameStatus>(status), name);
-   }
-   else {
-       qWarning() << "name registration ended for unknown account" << accountId;
-   }
+   emit q_ptr->nameRegistrationEnded(static_cast<NameDirectory::RegisterNameStatus>(status), name);
 }
 
 //Registered Name found
@@ -76,37 +66,19 @@ void NameDirectoryPrivate::slotRegisteredNameFound(const QString& accountId, int
             break;
     }
 
-    Account* account = AccountModel::instance().getById(accountId.toLatin1());
-
-    emit q_ptr->registeredNameFound(account, static_cast<NameDirectory::LookupStatus>(status), address, name);
-
-    if (account) {
-        emit account->registeredNameFound(static_cast<NameDirectory::LookupStatus>(status), address, name);
-    }
-    else {
-        qWarning() << "registered name found for unknown account" << accountId;
-    }
-}
-
-//Register a name
-bool NameDirectory::registerName(const Account* account, const QString& password, const QString& name) const
-{
-    QString accountId = account ? account->id() : QString();
-    return ConfigurationManager::instance().registerName(accountId, password, name);
+    emit q_ptr->registeredNameFound( static_cast<NameDirectory::LookupStatus>(status), address, name);
 }
 
 //Lookup a name
-bool NameDirectory::lookupName(const Account* account, const QString& nameServiceURL, const QString& name) const
+bool NameDirectory::lookupName(const QString& nameServiceURL, const QString& name) const
 {
-    QString accountId = account ? account->id() : QString();
-    return ConfigurationManager::instance().lookupName(accountId, nameServiceURL, name);
+    return ConfigurationManager::instance().lookupName("", nameServiceURL, name);
 }
 
 //Lookup an address
-bool NameDirectory::lookupAddress(const Account* account, const QString& nameServiceURL, const QString& address) const
+bool NameDirectory::lookupAddress(const QString& nameServiceURL, const QString& address) const
 {
-    QString accountId = account ? account->id() : QString();
-    return ConfigurationManager::instance().lookupAddress(accountId, nameServiceURL, address);
+    return ConfigurationManager::instance().lookupAddress("", nameServiceURL, address);
 }
 
 NameDirectory::~NameDirectory()

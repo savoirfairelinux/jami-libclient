@@ -30,8 +30,7 @@
 #include "api/contactmodel.h"
 #include "api/newaccountmodel.h"
 #include "dbus/callmanager.h"
-#include "mime.h"
-#include "private/videorenderermanager.h"
+#include "vcard.h"
 #include "video/renderer.h"
 
 // Ring daemon
@@ -94,12 +93,6 @@ public Q_SLOTS:
      * @param code unused
      */
     void slotCallStateChanged(const std::string& callId, const std::string &state, int code);
-    /**
-     * Listen from VideoRendererManager when a Renderer starts
-     * @param callId
-     * @param renderer
-     */
-    void slotRemotePreviewStarted(const std::string& callId, Video::Renderer* renderer);
     /**
      * Listen from CallbacksHandler when a VCard chunk is incoming
      * @param callId
@@ -327,16 +320,6 @@ NewCallModel::removeParticipant(const std::string& callId, const std::string& pa
     qDebug() << "removeParticipant() isn't implemented yet";
 }
 
-Video::Renderer*
-NewCallModel::getRenderer(const std::string& callId) const
-{
-   #ifdef ENABLE_VIDEO
-   return VideoRendererManager::instance().getRenderer(callId);
-   #else
-   return nullptr;
-   #endif
-}
-
 std::string
 NewCallModel::getFormattedCallDuration(const std::string& callId) const
 {
@@ -377,7 +360,6 @@ NewCallModelPimpl::NewCallModelPimpl(const NewCallModel& linked, const Callbacks
 {
     connect(&callbacksHandler, &CallbacksHandler::incomingCall, this, &NewCallModelPimpl::slotIncomingCall);
     connect(&callbacksHandler, &CallbacksHandler::callStateChanged, this, &NewCallModelPimpl::slotCallStateChanged);
-    connect(&VideoRendererManager::instance(), &VideoRendererManager::remotePreviewStarted, this, &NewCallModelPimpl::slotRemotePreviewStarted);
     connect(&callbacksHandler, &CallbacksHandler::incomingVCardChunk, this, &NewCallModelPimpl::slotincomingVCardChunk);
     connect(&callbacksHandler, &CallbacksHandler::conferenceCreated, this , &NewCallModelPimpl::slotConferenceCreated);
 
@@ -527,12 +509,6 @@ NewCallModelPimpl::slotCallStateChanged(const std::string& callId, const std::st
 }
 
 void
-NewCallModelPimpl::slotRemotePreviewStarted(const std::string& callId, Video::Renderer* renderer)
-{
-    emit linked.remotePreviewStarted(callId, renderer);
-}
-
-void
 NewCallModelPimpl::slotincomingVCardChunk(const std::string& callId,
                                           const std::string& from,
                                           int part,
@@ -610,7 +586,7 @@ NewCallModelPimpl::sendProfile(const std::string& callId)
         auto sizeLimit = std::min(1000, static_cast<int>(vCard.size()));
         MapStringString chunk;
         chunk[QString("%1; id=%2,part=%3,of=%4")
-               .arg( RingMimes::PROFILE_VCF     )
+               .arg( lrc::vCard::PROFILE_VCF     )
                .arg( key.c_str()                )
                .arg( QString::number( i+1   )   )
                .arg( QString::number( total )   )

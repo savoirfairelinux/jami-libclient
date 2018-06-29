@@ -51,9 +51,8 @@ public:
     static NameDirectory& instance();
 
     //Lookup
-    Q_INVOKABLE bool lookupName    (const Account* account, const QString& nameServiceURL, const QString& name    ) const;
-    Q_INVOKABLE bool lookupAddress (const Account* account, const QString& nameServiceURL, const QString& address ) const;
-    Q_INVOKABLE bool registerName  (const Account* account, const QString& password,       const QString& name    ) const;
+    Q_INVOKABLE bool lookupName    (const QString& nameServiceURL, const QString& name    ) const;
+    Q_INVOKABLE bool lookupAddress (const QString& nameServiceURL, const QString& address ) const;
 
 private:
     //Constructors & Destructors
@@ -66,10 +65,10 @@ private:
 
 Q_SIGNALS:
     ///RegisterName has ended
-    void nameRegistrationEnded(const Account* account, NameDirectory::RegisterNameStatus status, const QString& name);
+    void nameRegistrationEnded(NameDirectory::RegisterNameStatus status, const QString& name);
 
     ///Name or address lookup has completed
-    void registeredNameFound(Account* account, NameDirectory::LookupStatus status, const QString& address, const QString& name);
+    void registeredNameFound(NameDirectory::LookupStatus status, const QString& address, const QString& name);
 };
 
 Q_DECLARE_METATYPE(NameDirectory*)

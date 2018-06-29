@@ -77,5 +77,3 @@ void Video::Renderer::setSize(const QSize& size) const
 {
   d_ptr->m_pSize = size;
 }
-
-#include <renderer.moc>
