@@ -128,9 +128,6 @@ public:
    QDate*                    m_pDateOnly {nullptr};
    QString                   m_FormattedDate     ;
 
-   //Cache
-   HistoryTimeCategoryModel::HistoryConst m_HistoryConst;
-
    //State machine
    /**
     *  actionPerformedStateMap[orig_state][action]
