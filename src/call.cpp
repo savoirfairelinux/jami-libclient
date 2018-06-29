@@ -47,20 +47,12 @@
 #include <mime.h>
 #include "account.h"
 #include "accountmodel.h"
-#include "availableaccountmodel.h"
-#include "private/videorenderermanager.h"
-#include "localrecordingcollection.h"
-#include "categorizedhistorymodel.h"
-#include "useractionmodel.h"
-#include "callmodel.h"
 #include "certificate.h"
 #include "numbercategory.h"
 #include "certificatemodel.h"
 #include "phonedirectorymodel.h"
 #include "contactmethod.h"
 #include "video/renderer.h"
-#include "video/sourcemodel.h"
-#include "tlsmethodmodel.h"
 #include "audio/settings.h"
 #include "personmodel.h"
 #include "private/contactmethod_p.h"
@@ -71,14 +63,12 @@
 #include "media/audio.h"
 #include "media/video.h"
 #include "media/text.h"
-#include "media/textrecording.h"
 #include "media/file.h"
 
 #include "securityevaluationmodel.h"
 #include "globalinstances.h"
 #include "interfaces/pixmapmanipulatori.h"
 
-#include "profilemodel.h"
 #include "profile.h"
 
 //Track where state changes are performed on finished (over, error, failed) calls
@@ -91,7 +81,6 @@
    changeCurrentState(Call::State::ERROR);}
 
 #include "private/call_p.h"
-#include "private/textrecording_p.h"
 
 const TypedStateMachine< TypedStateMachine< Call::State , Call::Action> , Call::State> CallPrivate::actionPerformedStateMap =
 {{
@@ -288,11 +277,11 @@ QDebug LIB_EXPORT operator<<(QDebug dbg, const Call::Action& c)
 
 CallPrivate::CallPrivate(Call* parent) : QObject(parent),q_ptr(parent),
 m_pStopTimeStamp(0),m_pTimer(nullptr),m_Account(nullptr),
-m_PeerName(),m_pPeerContactMethod(nullptr),m_HistoryConst(HistoryTimeCategoryModel::HistoryConst::Never),
+m_PeerName(),m_pPeerContactMethod(nullptr),
 m_pStartTimeStamp(0),
 m_pDialNumber(new TemporaryContactMethod()),
 m_History(false),m_Missed(false),m_Direction(Call::Direction::OUTGOING),m_Type(Call::Type::CALL),
-m_pUserActionModel(nullptr), m_CurrentState(Call::State::ERROR),m_pCertificate(nullptr),m_mMedias({{
+m_CurrentState(Call::State::ERROR),m_pCertificate(nullptr),m_mMedias({{
    /*                                            IN                                                            OUT                           */
    /* AUDIO */ {{ new QList<media::Media*>() /*Created lifecycle == progress*/, new QList<media::Media*>() /*Created lifecycle == progress*/}},
    /* VIDEO */ {{ new QList<media::Media*>() /*On demand                    */, new QList<media::Media*>() /*On demand                    */}},
@@ -316,7 +305,7 @@ m_pUserActionModel(nullptr), m_CurrentState(Call::State::ERROR),m_pCertificate(n
 
 ///Constructor
 Call::Call(Call::State startState, const QString& peerName, ContactMethod* number, Account* account)
-   : ItemBase(&CallModel::instance())
+   : ItemBase()
    , d_ptr(new CallPrivate(this))
 {
    d_ptr->m_CurrentState     = startState;
@@ -330,7 +319,7 @@ Call::Call(Call::State startState, const QString& peerName, ContactMethod* numbe
 
 ///Constructor
 Call::Call(const QString& confId, const QString& account)
-   : ItemBase(&CallModel::instance())
+   : ItemBase()
    , d_ptr(new CallPrivate(this))
 {
    d_ptr->m_CurrentState = Call::State::CONFERENCE;
@@ -413,7 +402,6 @@ void CallPrivate::updateOutgoingMedia(const MapStringString& details)
 
    list = q_ptr->media(media::Media::Type::VIDEO, media::Media::Direction::OUT);
    media::Video* media_video = static_cast<media::Video*>(list[0]);
-   media_video->sourceModel()->setUsedIndex(video_source);
    return;
 }
 
@@ -937,7 +925,6 @@ bool Call::hasVideo() const
    if (!hasRemote())
       return false;
 
-   return VideoRendererManager::instance().getRenderer(this) != nullptr;
    #else
    return false;
    #endif
@@ -975,13 +962,6 @@ Account* Call::account() const
 bool Call::isSecure() const
 {
 
-   /*if (!d_ptr->m_Account) {
-      qDebug() << "Account not set, can't check security";
-      return false;
-   }
-   //BUG this doesn't work
-   return d_ptr->m_Account && ((d_ptr->m_Account->isTlsEnabled()) || (d_ptr->m_Account->tlsMethod() != TlsMethodModel::Type::DEFAULT));*/
-
    return false; //No, it is not and cannot be
 } //isSecure
 
@@ -989,7 +969,6 @@ bool Call::isSecure() const
 Video::Renderer* Call::videoRenderer() const
 {
    #ifdef ENABLE_VIDEO
-   return VideoRendererManager::instance().getRenderer(this);
    #else
    return nullptr;
    #endif
@@ -1209,17 +1188,6 @@ void Call::setPeerContactMethod(ContactMethod* cm)
 ///Set the recording path
 void CallPrivate::setRecordingPath(const QString& path)
 {
-
-   if (!path.isEmpty() && QFile::exists(path)) {
-
-       media::Recording* rec = LocalRecordingCollection::instance().addFromPath(path);
-      (*m_mRecordings[media::Media::Type::AUDIO][media::Media::Direction::IN ]) << rec;
-      (*m_mRecordings[media::Media::Type::AUDIO][media::Media::Direction::OUT]) << rec;
-   }
-
-   //TODO add a media type attribute to this method
-   /*(*m_mRecordings[media::Media::Type::VIDEO][media::Media::Direction::IN ]
-   (*m_mRecordings[media::Media::Type::VIDEO][media::Media::Direction::OUT]*/
 }
 
 ///Set peer name
@@ -1500,9 +1468,6 @@ void CallPrivate::terminateMedia()
 void CallPrivate::setStartTimeStamp(time_t stamp)
 {
    m_pStartTimeStamp = stamp;
-   //While the HistoryConst is not directly related to the call concept,
-   //It is called to often to ignore
-   m_HistoryConst = HistoryTimeCategoryModel::timeToHistoryConst(m_pStartTimeStamp);
 }
 
 void CallPrivate::setStartTimeStamp()
@@ -1519,12 +1484,7 @@ bool Call::hasParentCall() const
 
 bool Call::joinToParent()
 {
-    if (not d_ptr->m_pParentCall)
-        return false;
-    auto success = CallModel::instance().createJoinOrMergeConferenceFromCall(this, d_ptr->m_pParentCall);
-    if (success)
-        setParentCall(nullptr);
-    return success;
+    return false;
 }
 
 QMimeData* Call::mimePayload() const
@@ -1548,10 +1508,6 @@ void CallPrivate::nothing()
 
 void CallPrivate::error()
 {
-   if (q_ptr->videoRenderer()) {
-      //Well, in this case we have no choice, it still doesn't belong here
-      q_ptr->videoRenderer()->stopRendering();
-   }
    throw QString("There was an error handling your call, please restart Ring. If you encounter this problem often, \
    please open Ring in a terminal and send the last 100 lines before this message in a bug report at \
    https://tuleap.ring.cx");
@@ -1678,66 +1634,6 @@ void CallPrivate::abort()
  */
 void CallPrivate::sendProfile()
 {
-    auto profile = ProfileModel::instance().selectedProfile();
-    if (not profile)
-        return;
-
-    /*
-     * SIP messages need to be very small ( < 2kB ) not to hit some hardcoded
-     * buffer size in the PJ_SIP. As profile photo tend to hover around 10kB,
-     * the profile need to be sent in parts and re-assembled. To do this, the
-     * most simple way is to add MIME type metadata intended for the peer. Of
-     * course, this is an ugly hack is while vCard is a standard, using it
-     * like this is not. Therefore we use the proprietary PROFILE_VCF MIME.
-     */
-    auto t = mediaFactory<media::Text>(media::Media::Direction::OUT);
-
-    MapStringString details = ConfigurationManager::instance().getAccountDetails(m_Account->id());
-    using namespace DRing::Account;
-    std::string uri = "";
-    if (m_Account->protocol() == Account::Protocol::RING
-        && details[ConfProperties::USERNAME].contains("ring:")) {
-        uri = details[ConfProperties::USERNAME].toStdString().substr(std::string("ring:").size());
-    } else {
-        uri = details[ConfProperties::USERNAME].toStdString();
-    }
-
-    // NOTE: Some clients still use the old LRC. So, we should be able to use the database or old VCard files for now.
-    // TODO: migrate sendProfile to newcallmodel.cpp as soon as possible.
-#ifdef ENABLE_TEST
-    std::ifstream dbfile(QDir(QStandardPaths::writableLocation(QStandardPaths::TempLocation)).filePath(lrc::NAME).toStdString());
-#else
-    std::ifstream dbfile(QDir(QStandardPaths::writableLocation(QStandardPaths::DataLocation)).filePath(lrc::NAME).toStdString());
-#endif
-    std::string photo = "";
-    std::string alias = "";
-    if (dbfile.good()) {
-        lrc::Database db;
-        auto accountProfileId = lrc::authority::database::getOrInsertProfile(db, uri);
-        // Retrieve avatar from database
-        photo = lrc::authority::database::getAvatarForProfileId(db, accountProfileId);
-        alias = lrc::authority::database::getAliasForProfileId(db, accountProfileId);
-    }
-    auto vCard = profile->person()->toVCard({}, photo, alias);
-
-    qsrand(time(nullptr));
-    const auto& key = QString::number(qrand());
-
-    int i = 0;
-    int total = vCard.size()/1000 + (vCard.size()%1000?1:0);
-    while (vCard.size()) {
-        QMap<QString, QString> chunk;
-        chunk[QString("%1; id=%2,part=%3,of=%4")
-               .arg( RingMimes::PROFILE_VCF     )
-               .arg( key                        )
-               .arg( QString::number( i+1   ) )
-               .arg( QString::number( total )   )
-            ] = vCard.left(1000);
-        vCard = vCard.remove(0, 1000);
-        ++i;
-        t->send(chunk);
-    }
-
 }
 
 ///Cancel this call
@@ -1804,18 +1700,6 @@ void CallPrivate::call()
             m_Account = tryingAcc;
     }
 
-    // Otherwise set default account
-    if (!m_Account) {
-        qDebug() << "Account is not set, taking the first registered.";
-        m_Account = AvailableAccountModel::currentDefaultAccount(peerCM);
-        if (!m_Account) {
-            qDebug() << "Trying to call "
-                     << (m_pTransferNumber ? static_cast<QString>(m_pTransferNumber->uri()) : "ERROR")
-                     << " with no account registered . callId : " << q_ptr  << "ConfId:" << q_ptr;
-            throw tr("No account registered!");
-        }
-    }
-
     // Normal case
     qDebug() << "Calling " << peerCM->uri() << " with account " << m_Account
              << ", CallId: " << q_ptr
@@ -1864,8 +1748,6 @@ void CallPrivate::call()
         return;
     }
     setObjectName("Call:"+m_DringId);
-
-    CallModel::instance().registerCall(q_ptr);
 
     connect(peerCM, SIGNAL(presentChanged(bool)), this, SLOT(updated()));
 
@@ -2192,13 +2074,6 @@ void CallPrivate::refuseAfterFailure()
     }
 }
 
-UserActionModel* Call::userActionModel() const
-{
-   if (!d_ptr->m_pUserActionModel)
-      d_ptr->m_pUserActionModel = new UserActionModel(const_cast<Call*>(this));
-   return d_ptr->m_pUserActionModel;
-}
-
 ///Check if creating a timer is necessary
 void CallPrivate::initTimer()
 {
@@ -2275,7 +2150,7 @@ QVariant Call::roleData(int role) const
          return normStripppedC;
          }
       case static_cast<int>(Call::Role::FuzzyDate):
-         return QVariant::fromValue(d_ptr->m_HistoryConst);
+         return QVariant();
       case static_cast<int>(Call::Role::IsBookmark):
          return false;
       case static_cast<int>(Call::Role::Security):
@@ -2341,9 +2216,6 @@ QVariant Call::roleData(int role) const
       case static_cast<int>(Call::Role::SecurityLevelIcon): //TODO remove
          return GlobalInstances::pixmapManipulator().securityLevelIcon(account()->securityEvaluationModel()->securityLevel());
       case static_cast<int>(Ring::Role::UnreadTextMessageCount):
-         if (peerContactMethod() && peerContactMethod()->textRecording())
-            return peerContactMethod()->textRecording()->unreadInstantTextMessagingModel()->rowCount();
-         else
             return 0;
          break;
       default:

@@ -19,34 +19,25 @@
 
 #include <memory>
 
-#include "interfaces/accountlistcolorizeri.h"
 #include "interfaces/contactmethodselectori.h"
 #include "interfaces/dbuserrorhandleri.h"
 #include "interfaces/itemmodelstateserializeri.h"
 #include "interfaces/pixmapmanipulatori.h"
-#include "interfaces/presenceserializeri.h"
 #include "interfaces/shortcutcreatori.h"
-#include "interfaces/actionextenderi.h"
 
-#include "accountlistcolorizerdefault.h"
 #include "dbuserrorhandlerdefault.h"
 #include "pixmapmanipulatordefault.h"
-#include "presenceserializerdefault.h"
 #include "shortcutcreatordefault.h"
-#include "actionextenderdefault.h"
 
 namespace GlobalInstances {
 
 struct InstanceManager
 {
-    std::unique_ptr<Interfaces::AccountListColorizerI>     m_accountListColorizer;
     std::unique_ptr<Interfaces::ContactMethodSelectorI>    m_contactMethodSelector;
     std::unique_ptr<Interfaces::DBusErrorHandlerI>         m_dBusErrorHandler;
     std::unique_ptr<Interfaces::ItemModelStateSerializerI> m_itemModelStateSerializer;
     std::unique_ptr<Interfaces::PixmapManipulatorI>        m_pixmapManipulator;
-    std::unique_ptr<Interfaces::PresenceSerializerI>       m_presenceSerializer;
     std::unique_ptr<Interfaces::ShortcutCreatorI>          m_shortcutCreator;
-    std::unique_ptr<Interfaces::ActionExtenderI>           m_actionExtender;
 };
 
 static InstanceManager&
@@ -55,26 +46,6 @@ instanceManager()
     static std::unique_ptr<InstanceManager> manager{new InstanceManager};
     return *manager.get();
 }
-
-Interfaces::AccountListColorizerI&
-accountListColorizer()
-{
-    if (!instanceManager().m_accountListColorizer)
-        instanceManager().m_accountListColorizer.reset(new Interfaces::AccountListColorizerDefault);
-    return *instanceManager().m_accountListColorizer.get();
-}
-
-void
-setAccountListColorizer(std::unique_ptr<Interfaces::AccountListColorizerI> instance)
-{
-    // do not allow empty pointers
-    if (!instance) {
-        qWarning() << "ignoring empty unique_ptr";
-        return;
-    }
-    instanceManager().m_accountListColorizer = std::move(instance);
-}
-
 /**
  * LRC does not provide a default implementation of this interface, thus an exception will be thrown
  * if this getter is called without an instance being set by the client
@@ -159,25 +130,6 @@ setPixmapManipulator(std::unique_ptr<Interfaces::PixmapManipulatorI> instance)
     instanceManager().m_pixmapManipulator = std::move(instance);
 }
 
-Interfaces::PresenceSerializerI&
-presenceSerializer()
-{
-    if (!instanceManager().m_presenceSerializer)
-        instanceManager().m_presenceSerializer.reset(new Interfaces::PresenceSerializerDefault);
-    return *instanceManager().m_presenceSerializer.get();
-}
-
-void
-setPresenceSerializer(std::unique_ptr<Interfaces::PresenceSerializerI> instance)
-{
-    // do not allow empty pointers
-    if (!instance) {
-        qWarning() << "ignoring empty unique_ptr";
-        return;
-    }
-    instanceManager().m_presenceSerializer = std::move(instance);
-}
-
 Interfaces::ShortcutCreatorI&
 shortcutCreator()
 {
@@ -195,25 +147,6 @@ setShortcutCreator(std::unique_ptr<Interfaces::ShortcutCreatorI> instance)
         return;
     }
     instanceManager().m_shortcutCreator = std::move(instance);
-}
-
-Interfaces::ActionExtenderI&
-actionExtender()
-{
-    if (!instanceManager().m_shortcutCreator)
-        instanceManager().m_actionExtender.reset(new Interfaces::ActionExtenderDefault);
-    return *instanceManager().m_actionExtender.get();
-}
-
-void
-setActionExtender(std::unique_ptr<Interfaces::ActionExtenderI> instance)
-{
-    // do not allow empty pointers
-    if (!instance) {
-        qWarning() << "ignoring empty unique_ptr";
-        return;
-    }
-    instanceManager().m_actionExtender = std::move(instance);
 }
 
 
@@ -237,14 +170,11 @@ void setInterfaceInternal(I* i)\
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wmissing-declarations"
 
-REGISTER_INTERFACE(Interfaces::AccountListColorizerI    , m_accountListColorizer    )
 REGISTER_INTERFACE(Interfaces::ContactMethodSelectorI   , m_contactMethodSelector   )
 REGISTER_INTERFACE(Interfaces::DBusErrorHandlerI        , m_dBusErrorHandler        )
 REGISTER_INTERFACE(Interfaces::ItemModelStateSerializerI, m_itemModelStateSerializer)
 REGISTER_INTERFACE(Interfaces::PixmapManipulatorI       , m_pixmapManipulator       )
-REGISTER_INTERFACE(Interfaces::PresenceSerializerI      , m_presenceSerializer      )
 REGISTER_INTERFACE(Interfaces::ShortcutCreatorI         , m_shortcutCreator         )
-REGISTER_INTERFACE(Interfaces::ActionExtenderI          , m_actionExtender          )
 
 #pragma GCC diagnostic pop
 

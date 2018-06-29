@@ -28,17 +28,14 @@
 #include "accountmodel.h"
 #include "certificatemodel.h"
 #include "collectioninterface.h"
-#include "transitionalpersonbackend.h"
 #include "account.h"
 #include "private/vcardutils.h"
 #include "personmodel.h"
-#include "historytimecategorymodel.h"
 #include "numbercategorymodel.h"
 #include "numbercategory.h"
 #include "globalinstances.h"
 #include "interfaces/pixmapmanipulatori.h"
 #include "private/person_p.h"
-#include "media/textrecording.h"
 #include "mime.h"
 
 // Std
@@ -187,7 +184,6 @@ void PersonPrivate::registerContactMethod(ContactMethod* m)
 {
    m_HiddenContactMethods << m;
    connect(m, &ContactMethod::lastUsedChanged, this, &PersonPrivate::slotLastUsedTimeChanged);
-   connect(m, &ContactMethod::callAdded, this, &PersonPrivate::slotCallAdded);
 
    if (m->lastUsed() > m_LastUsed)
       slotLastUsedTimeChanged(m->lastUsed());
@@ -209,7 +205,8 @@ PersonPrivate::~PersonPrivate()
 Person::Person(CollectionInterface* parent): ItemBase(nullptr),
    d_ptr(new PersonPrivate(this))
 {
-   setCollection(parent ? parent : &TransitionalPersonBackend::instance());
+    if(!parent) return;
+   setCollection(parent);
 
    d_ptr->m_isPlaceHolder = false;
    d_ptr->m_lParents << this;
@@ -218,7 +215,8 @@ Person::Person(CollectionInterface* parent): ItemBase(nullptr),
 Person::Person(const QByteArray& content, Person::Encoding encoding, CollectionInterface* parent)
  : ItemBase(nullptr), d_ptr(new PersonPrivate(this))
 {
-   setCollection(parent ? parent : &TransitionalPersonBackend::instance());
+    if(!parent) return;
+   setCollection(parent);
    d_ptr->m_isPlaceHolder = false;
    d_ptr->m_lParents << this;
    switch (encoding) {
@@ -378,7 +376,6 @@ void Person::setContactMethods(ContactMethods numbers)
       connect(n,SIGNAL(presentChanged(bool)),this,SLOT(slotPresenceChanged()));
       connect(n, &ContactMethod::lastUsedChanged, d_ptr, &PersonPrivate::slotLastUsedTimeChanged);
       connect(n, &ContactMethod::unreadTextMessageCountChanged, d_ptr, &PersonPrivate::changed);
-      connect(n, &ContactMethod::callAdded, d_ptr, &PersonPrivate::slotCallAdded);
    }
 
    d_ptr->phoneNumbersChanged();
@@ -567,12 +564,7 @@ bool Person::hasRecording(media::Media::Type type, media::Media::Direction direc
       case media::Media::Type::AUDIO:
       case media::Media::Type::VIDEO:
          return false; //TODO implement
-      case media::Media::Type::TEXT:
-         foreach( ContactMethod* cm, phoneNumbers()) {
-            if (cm->textRecording() && !cm->textRecording()->isEmpty())
-               return true;
-         }
-
+case media::Media::Type::TEXT:
          return false;
       case media::Media::Type::FILE:
       case media::Media::Type::COUNT__:
@@ -613,10 +605,10 @@ QVariant Person::roleData(int role) const
          return QVariant(preferredEmail());
       case static_cast<int>(Ring::Role::FormattedLastUsed):
       case static_cast<int>(Person::Role::FormattedLastUsed):
-         return QVariant(HistoryTimeCategoryModel::timeToHistoryCategory(lastUsedTime()));
+         return QVariant();
       case static_cast<int>(Ring::Role::IndexedLastUsed):
       case static_cast<int>(Person::Role::IndexedLastUsed):
-         return QVariant(static_cast<int>(HistoryTimeCategoryModel::timeToHistoryConst(lastUsedTime())));
+         return QVariant();
       case static_cast<int>(Ring::Role::Object):
       case static_cast<int>(Person::Role::Object):
          return QVariant::fromValue(const_cast<Person*>(this));
@@ -637,10 +629,6 @@ QVariant Person::roleData(int role) const
       case static_cast<int>(Ring::Role::UnreadTextMessageCount):
          {
             int unread = 0;
-            for (int i = 0; i < d_ptr->m_Numbers.size(); ++i) {
-               if (auto rec = d_ptr->m_Numbers.at(i)->textRecording())
-                  unread += rec->unreadInstantTextMessagingModel()->rowCount();
-            }
             return unread;
          }
          break;

@@ -171,11 +171,6 @@ public:
     void removeParticipant(const std::string& callId, const std::string& participant) const;
     /**
      * @param  callId
-     * @return the renderer linked to a call
-     */
-    Video::Renderer* getRenderer(const std::string& callId) const;
-    /**
-     * @param  callId
      * @return a human readable call duration (M:ss)
      */
     std::string getFormattedCallDuration(const std::string& callId) const;
