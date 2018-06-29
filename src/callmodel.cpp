@@ -37,7 +37,6 @@
 #include "dbus/callmanager.h"
 #include "dbus/configurationmanager.h"
 #include "dbus/instancemanager.h"
-#include "private/videorenderermanager.h"
 #include "private/imconversationmanagerprivate.h"
 #include "mime.h"
 #include "typedefs.h"
@@ -47,7 +46,6 @@
 #include "globalinstances.h"
 #include "interfaces/contactmethodselectori.h"
 #include "personmodel.h"
-#include "useractionmodel.h"
 #include "video/renderer.h"
 #include "media/audio.h"
 #include "media/video.h"
@@ -94,7 +92,6 @@ public:
       QHash< Call*       , InternalStruct* > m_shInternalMapping ;
       QHash< QString     , InternalStruct* > m_shDringId         ;
       QItemSelectionModel* m_pSelectionModel;
-      UserActionModel*     m_pUserActionModel;
 
 
       //Helpers
@@ -144,8 +141,7 @@ CallModel& CallModel::instance()
     return *instance;
 }
 
-CallModelPrivate::CallModelPrivate(CallModel* parent) : QObject(parent),q_ptr(parent),m_pSelectionModel(nullptr),
-m_pUserActionModel(nullptr)
+CallModelPrivate::CallModelPrivate(CallModel* parent) : QObject(parent),q_ptr(parent),m_pSelectionModel(nullptr)
 {
 
 }
@@ -156,9 +152,6 @@ CallModel::CallModel() : QAbstractItemModel(QCoreApplication::instance()),d_ptr(
    //Register with the daemon
    InstanceManager::instance();
    setObjectName("CallModel");
-   #ifdef ENABLE_VIDEO
-   VideoRendererManager::instance();
-   #endif
 
    //Necessary to receive text message
    IMConversationManagerPrivate::instance();
@@ -387,14 +380,6 @@ bool CallModel::isConnected() const
 bool CallModel::isValid()
 {
    return CallManager::instance().isValid();
-}
-
-
-UserActionModel* CallModel::userActionModel() const
-{
-   if (!d_ptr->m_pUserActionModel)
-      d_ptr->m_pUserActionModel = new UserActionModel(const_cast<CallModel*>(this));
-   return d_ptr->m_pUserActionModel;
 }
 
 

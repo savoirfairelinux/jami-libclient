@@ -32,7 +32,6 @@
 #include "private/person_p.h"
 #include "private/contactmethod_p.h"
 #include "call.h"
-#include "availableaccountmodel.h"
 #include "dbus/presencemanager.h"
 #include "numbercategorymodel.h"
 #include "private/numbercategorymodel_p.h"
@@ -40,14 +39,12 @@
 #include "certificate.h"
 #include "accountmodel.h"
 #include "certificatemodel.h"
-#include "media/textrecording.h"
 #include "mime.h"
 #include "globalinstances.h"
 #include "interfaces/pixmapmanipulatori.h"
 
 //Private
 #include "private/phonedirectorymodel_p.h"
-#include "private/textrecording_p.h"
 
 void ContactMethodPrivate::callAdded(Call* call)
 {
@@ -101,7 +98,7 @@ ContactMethodPrivate::ContactMethodPrivate(const URI& uri, NumberCategory* cat, 
    m_Uri(uri),m_pCategory(cat),m_Tracked(false),m_Present(false),
    m_Type(st),m_PopularityIndex(-1),m_pPerson(nullptr),m_pAccount(nullptr),
    m_IsBookmark(false),
-   m_Index(-1),m_hasType(false),m_pTextRecording(nullptr), m_pCertificate(nullptr),
+   m_Index(-1),m_hasType(false), m_pCertificate(nullptr),
    m_Confirmed(false), q_ptr(q)
 {}
 
@@ -599,10 +596,10 @@ QVariant ContactMethod::roleData(int role) const
       case static_cast<int>(Ring::Role::FormattedLastUsed):
       case static_cast<int>(Call::Role::FormattedDate):
       case static_cast<int>(Call::Role::FuzzyDate):
-         cat = HistoryTimeCategoryModel::timeToHistoryCategory(d_ptr->m_UsageStats.lastUsed());
+         cat = QVariant();
          break;
       case static_cast<int>(Ring::Role::IndexedLastUsed):
-         return QVariant(static_cast<int>(HistoryTimeCategoryModel::timeToHistoryConst(d_ptr->m_UsageStats.lastUsed())));
+         return QVariant();
       case static_cast<int>(Call::Role::HasAVRecording):
          cat = cat = !lastCall ? QVariant() : lastCall->isAVRecording();
          break;
@@ -634,12 +631,6 @@ QVariant ContactMethod::roleData(int role) const
          break;
       case static_cast<int>(Call::Role::LifeCycleState):
          return QVariant::fromValue(Call::LifeCycleState::FINISHED);
-      case static_cast<int>(Ring::Role::UnreadTextMessageCount):
-         if (auto rec = textRecording())
-            cat = rec->unreadInstantTextMessagingModel()->rowCount();
-         else
-            cat = 0;
-         break;
    }
    return cat;
 }
@@ -834,15 +825,6 @@ bool ContactMethod::operator==(const ContactMethod& other) const
    return this->d_ptr== other.d_ptr;
 }
 
-media::TextRecording* ContactMethod::textRecording() const
-{
-    if (!d_ptr->m_pTextRecording) {
-        d_ptr->m_pTextRecording = media::RecordingModel::instance().createTextRecording(this);
-    }
-
-    return d_ptr->m_pTextRecording;
-}
-
 bool ContactMethod::isReachable() const
 {
    auto& m = AccountModel::instance();
@@ -892,27 +874,6 @@ void ContactMethodPrivate::setCertificate(Certificate* certificate)
     m_pCertificate = certificate;
     if (!certificate->contactMethod())
       certificate->setContactMethod(q_ptr);
-}
-
-void ContactMethodPrivate::setTextRecording(media::TextRecording* r)
-{
-   m_pTextRecording = r;
-}
-
-bool ContactMethod::sendOfflineTextMessage(const QMap<QString,QString>& payloads)
-{
-    auto selectedAccount = account() ? account() : AvailableAccountModel::currentDefaultAccount(this);
-
-    if (!selectedAccount) {
-        qDebug() << "No account available for this contactmethod!";
-        return false;
-    }
-   auto txtRecording = textRecording();
-   auto id = ConfigurationManager::instance().sendTextMessage(selectedAccount->id()
-                                                    ,uri().format(URI::Section::SCHEME|URI::Section::USER_INFO|URI::Section::HOSTNAME)
-                                                    ,payloads);
-   txtRecording->d_ptr->insertNewMessage(payloads, this, media::Media::Direction::OUT, id);
-   return true;
 }
 
 

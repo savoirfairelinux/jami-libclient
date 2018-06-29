@@ -20,6 +20,7 @@
 
 //Base
 #include <QtCore/QObject>
+#include "api/newvideo.h"
 #include <typedefs.h>
 
 // Std
@@ -30,8 +31,6 @@
 //Qt
 class QMutex;
 
-//Ring
-#include "device.h"
 
 namespace Video {
 
@@ -94,7 +93,7 @@ public:
 
    //Getters
    virtual bool       isRendering     () const;
-   virtual Frame currentFrame    () const = 0;
+   virtual lrc::api::video::Frame currentFrame    () const = 0;
    virtual QSize      size            () const;
    virtual QMutex*    mutex           () const;
    virtual ColorSpace colorSpace      () const = 0;

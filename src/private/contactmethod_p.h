@@ -43,7 +43,6 @@ public:
    QByteArray         m_Sha1             ;
    ContactMethod::Type  m_Type           ;
    QList<URI>         m_lOtherURIs       ;
-   media::TextRecording* m_pTextRecording;
    Certificate*       m_pCertificate;
    QString            m_RegisteredName   ;
    UsageStatistics    m_UsageStats       ;
@@ -63,7 +62,6 @@ public:
    void registeredNameSet(const QString& registeredName);
 
    //Helpers
-   void setTextRecording(media::TextRecording* r);
    void setCertificate (Certificate*);
    void setRegisteredName(const QString& registeredName);
 
