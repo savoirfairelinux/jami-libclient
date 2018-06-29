@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "823a9f26_d468f4b9",
+        "filename": "src/newaccountmodel.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 174,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-06-29T18:20:21Z",
+      "side": 1,
+      "message": "This mentions the avatar. What about the display name ?",
+      "range": {
+        "startLine": 174,
+        "startChar": 76,
+        "endLine": 174,
+        "endChar": 82
+      },
+      "revId": "fd1e7d03c3d2361b212fb492124c4bed32edde9e",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    }
+  ]
+}
