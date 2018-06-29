@@ -34,6 +34,7 @@
 #include "dbus/callmanager.h"
 #include "dbus/configurationmanager.h"
 #include "dbus/instancemanager.h"
+#include "dbus/configurationmanager.h"
 
 namespace lrc
 {

@@ -26,12 +26,10 @@
 #include "api/behaviorcontroller.h"
 
 // Lrc
-#include "account.h"
 #include "dbus/callmanager.h"
 #include "dbus/configurationmanager.h"
 #include "dbus/presencemanager.h"
 #include "dbus/videomanager.h"
-#include "namedirectory.h"
 
 // DRing
 #include <datatransfer_interface.h>

@@ -196,6 +196,16 @@ public:
      * @param audioOnly
      */
     std::string startLocalRecorder(const bool& audioOnly) const;
+    /**
+     * Get the current recording path
+     * @return recording path
+     */
+    std::string getRecordPath() const;
+    /**
+     * Sets the recording path
+     * @param recording path
+     */
+    void setRecordPath(const std::string& path) const;
 
     /**
      * Start preview renderer. This will start the camera
@@ -240,8 +250,6 @@ public:
      */
     video::RenderedDevice getCurrentRenderedDevice(const std::string& call_id) const;
 
-    // TODO remove this, this is just to avoid dual rendering.
-    void deactivateOldVideoModels();
     /**
      * set to true to receive AVFrames from render
      */
