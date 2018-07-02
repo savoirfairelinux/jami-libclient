@@ -116,121 +116,121 @@
 <context>
     <name>Call</name>
     <message>
-        <location filename="../src/call.cpp" line="713"/>
+        <location filename="../src/call.cpp" line="720"/>
         <source>New</source>
         <extracomment>Call state</extracomment>
         <translation>Neu</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="716"/>
+        <location filename="../src/call.cpp" line="723"/>
         <source>Ringing</source>
         <extracomment>Call state</extracomment>
         <translation>Klingelt</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="719"/>
+        <location filename="../src/call.cpp" line="726"/>
         <source>Calling</source>
         <extracomment>Call state</extracomment>
         <translation>Rufaufbau</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="722"/>
+        <location filename="../src/call.cpp" line="729"/>
         <source>Talking</source>
         <extracomment>Call state</extracomment>
         <translation>Sprechend</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="725"/>
+        <location filename="../src/call.cpp" line="732"/>
         <source>Dialing</source>
         <extracomment>Call state</extracomment>
         <translation>Wählend</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="728"/>
+        <location filename="../src/call.cpp" line="735"/>
         <source>Hold</source>
         <extracomment>Call state</extracomment>
         <translation>Halten</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="731"/>
+        <location filename="../src/call.cpp" line="738"/>
         <source>Failed</source>
         <extracomment>Call state</extracomment>
         <translation>Fehlgeschlagen</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="734"/>
+        <location filename="../src/call.cpp" line="741"/>
         <source>Busy</source>
         <extracomment>Call state</extracomment>
         <translation>Beschäftigt</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="737"/>
+        <location filename="../src/call.cpp" line="744"/>
         <source>Transfer</source>
         <extracomment>Call state</extracomment>
         <translation>Transfer</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="740"/>
+        <location filename="../src/call.cpp" line="747"/>
         <source>Transfer hold</source>
         <extracomment>Call state</extracomment>
         <translation>Transfer halten</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="743"/>
+        <location filename="../src/call.cpp" line="750"/>
         <source>Over</source>
         <extracomment>Call state</extracomment>
         <translation>Über</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="746"/>
+        <location filename="../src/call.cpp" line="753"/>
         <source>Error</source>
         <extracomment>Call state</extracomment>
         <translation>Fehler</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="749"/>
-        <location filename="../src/call.cpp" line="854"/>
+        <location filename="../src/call.cpp" line="756"/>
+        <location filename="../src/call.cpp" line="861"/>
         <source>Conference</source>
         <extracomment>Call state</extracomment>
         <translation>Konferenz</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="752"/>
+        <location filename="../src/call.cpp" line="759"/>
         <source>Conference (hold)</source>
         <extracomment>Call state</extracomment>
         <translation>Konferenz (halten)</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="755"/>
+        <location filename="../src/call.cpp" line="762"/>
         <source>ERROR</source>
         <extracomment>Call state</extracomment>
         <translation>FEHLER</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="758"/>
+        <location filename="../src/call.cpp" line="765"/>
         <source>Searching for</source>
         <extracomment>Call state</extracomment>
         <translation>Suchen nach</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="761"/>
+        <location filename="../src/call.cpp" line="768"/>
         <source>Aborted</source>
         <extracomment>Call state</extracomment>
         <translation>Abgebrochen</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="764"/>
+        <location filename="../src/call.cpp" line="771"/>
         <source>Communication established</source>
         <extracomment>Call state</extracomment>
         <translation>Kommunikation hergestellt</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="858"/>
+        <location filename="../src/call.cpp" line="865"/>
         <source>Unknown</source>
         <translation>Unbekannt</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="2209"/>
+        <location filename="../src/call.cpp" line="2237"/>
         <source>Account: </source>
         <translation>Konto</translation>
     </message>
@@ -255,12 +255,12 @@
 <context>
     <name>CallPrivate</name>
     <message>
-        <location filename="../src/call.cpp" line="1760"/>
+        <location filename="../src/call.cpp" line="1788"/>
         <source>Aborted</source>
         <translation>Abgebrochen</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="1781"/>
+        <location filename="../src/call.cpp" line="1809"/>
         <source>No account registered!</source>
         <translation>Kein Konto registriert!</translation>
     </message>

@@ -116,121 +116,121 @@
 <context>
     <name>Call</name>
     <message>
-        <location filename="../src/call.cpp" line="713"/>
+        <location filename="../src/call.cpp" line="720"/>
         <source>New</source>
         <extracomment>Call state</extracomment>
         <translation>Yeni</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="716"/>
+        <location filename="../src/call.cpp" line="723"/>
         <source>Ringing</source>
         <extracomment>Call state</extracomment>
         <translation>Çalıyor</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="719"/>
+        <location filename="../src/call.cpp" line="726"/>
         <source>Calling</source>
         <extracomment>Call state</extracomment>
         <translation>Aranıyor</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="722"/>
+        <location filename="../src/call.cpp" line="729"/>
         <source>Talking</source>
         <extracomment>Call state</extracomment>
         <translation>Konuşuyor</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="725"/>
+        <location filename="../src/call.cpp" line="732"/>
         <source>Dialing</source>
         <extracomment>Call state</extracomment>
         <translation>Çevriliyor</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="728"/>
+        <location filename="../src/call.cpp" line="735"/>
         <source>Hold</source>
         <extracomment>Call state</extracomment>
         <translation>Beklet</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="731"/>
+        <location filename="../src/call.cpp" line="738"/>
         <source>Failed</source>
         <extracomment>Call state</extracomment>
         <translation>Başarısız</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="734"/>
+        <location filename="../src/call.cpp" line="741"/>
         <source>Busy</source>
         <extracomment>Call state</extracomment>
         <translation>Meşgul</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="737"/>
+        <location filename="../src/call.cpp" line="744"/>
         <source>Transfer</source>
         <extracomment>Call state</extracomment>
         <translation>Aktarım</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="740"/>
+        <location filename="../src/call.cpp" line="747"/>
         <source>Transfer hold</source>
         <extracomment>Call state</extracomment>
         <translation>Aktarma beklemede</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="743"/>
+        <location filename="../src/call.cpp" line="750"/>
         <source>Over</source>
         <extracomment>Call state</extracomment>
         <translation>Bitti</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="746"/>
+        <location filename="../src/call.cpp" line="753"/>
         <source>Error</source>
         <extracomment>Call state</extracomment>
         <translation>Hata</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="749"/>
-        <location filename="../src/call.cpp" line="854"/>
+        <location filename="../src/call.cpp" line="756"/>
+        <location filename="../src/call.cpp" line="861"/>
         <source>Conference</source>
         <extracomment>Call state</extracomment>
         <translation>Toplantı</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="752"/>
+        <location filename="../src/call.cpp" line="759"/>
         <source>Conference (hold)</source>
         <extracomment>Call state</extracomment>
         <translation>Toplantı (sürdürülüyor)</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="755"/>
+        <location filename="../src/call.cpp" line="762"/>
         <source>ERROR</source>
         <extracomment>Call state</extracomment>
         <translation>HATA</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="758"/>
+        <location filename="../src/call.cpp" line="765"/>
         <source>Searching for</source>
         <extracomment>Call state</extracomment>
         <translation>Şu aranıyor</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="761"/>
+        <location filename="../src/call.cpp" line="768"/>
         <source>Aborted</source>
         <extracomment>Call state</extracomment>
         <translation>Kesildi</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="764"/>
+        <location filename="../src/call.cpp" line="771"/>
         <source>Communication established</source>
         <extracomment>Call state</extracomment>
         <translation>Bağlantı sağlandı</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="858"/>
+        <location filename="../src/call.cpp" line="865"/>
         <source>Unknown</source>
         <translation>Bilinmeyen</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="2209"/>
+        <location filename="../src/call.cpp" line="2237"/>
         <source>Account: </source>
         <translation>Hesap:</translation>
     </message>
@@ -255,12 +255,12 @@
 <context>
     <name>CallPrivate</name>
     <message>
-        <location filename="../src/call.cpp" line="1760"/>
+        <location filename="../src/call.cpp" line="1788"/>
         <source>Aborted</source>
         <translation>Kesildi</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="1781"/>
+        <location filename="../src/call.cpp" line="1809"/>
         <source>No account registered!</source>
         <translation>Kayıtlı hesap yok</translation>
     </message>

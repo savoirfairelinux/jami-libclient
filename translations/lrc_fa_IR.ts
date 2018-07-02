@@ -116,121 +116,121 @@
 <context>
     <name>Call</name>
     <message>
-        <location filename="../src/call.cpp" line="713"/>
+        <location filename="../src/call.cpp" line="720"/>
         <source>New</source>
         <extracomment>Call state</extracomment>
         <translation>نو</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="716"/>
+        <location filename="../src/call.cpp" line="723"/>
         <source>Ringing</source>
         <extracomment>Call state</extracomment>
         <translation>در حال زنگ خوردن</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="719"/>
+        <location filename="../src/call.cpp" line="726"/>
         <source>Calling</source>
         <extracomment>Call state</extracomment>
         <translation>در حال تماس</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="722"/>
+        <location filename="../src/call.cpp" line="729"/>
         <source>Talking</source>
         <extracomment>Call state</extracomment>
         <translation>در حال صحبت</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="725"/>
+        <location filename="../src/call.cpp" line="732"/>
         <source>Dialing</source>
         <extracomment>Call state</extracomment>
         <translation>در حال شماره گیری</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="728"/>
+        <location filename="../src/call.cpp" line="735"/>
         <source>Hold</source>
         <extracomment>Call state</extracomment>
         <translation>نگه داشتن</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="731"/>
+        <location filename="../src/call.cpp" line="738"/>
         <source>Failed</source>
         <extracomment>Call state</extracomment>
         <translation>شکست خورد</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="734"/>
+        <location filename="../src/call.cpp" line="741"/>
         <source>Busy</source>
         <extracomment>Call state</extracomment>
         <translation>مشغول</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="737"/>
+        <location filename="../src/call.cpp" line="744"/>
         <source>Transfer</source>
         <extracomment>Call state</extracomment>
         <translation>انتقال</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="740"/>
+        <location filename="../src/call.cpp" line="747"/>
         <source>Transfer hold</source>
         <extracomment>Call state</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="743"/>
+        <location filename="../src/call.cpp" line="750"/>
         <source>Over</source>
         <extracomment>Call state</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="746"/>
+        <location filename="../src/call.cpp" line="753"/>
         <source>Error</source>
         <extracomment>Call state</extracomment>
         <translation>خطا</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="749"/>
-        <location filename="../src/call.cpp" line="854"/>
+        <location filename="../src/call.cpp" line="756"/>
+        <location filename="../src/call.cpp" line="861"/>
         <source>Conference</source>
         <extracomment>Call state</extracomment>
         <translation>نشست</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="752"/>
+        <location filename="../src/call.cpp" line="759"/>
         <source>Conference (hold)</source>
         <extracomment>Call state</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="755"/>
+        <location filename="../src/call.cpp" line="762"/>
         <source>ERROR</source>
         <extracomment>Call state</extracomment>
         <translation>خطا</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="758"/>
+        <location filename="../src/call.cpp" line="765"/>
         <source>Searching for</source>
         <extracomment>Call state</extracomment>
         <translation>درحال جستجو برای</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="761"/>
+        <location filename="../src/call.cpp" line="768"/>
         <source>Aborted</source>
         <extracomment>Call state</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="764"/>
+        <location filename="../src/call.cpp" line="771"/>
         <source>Communication established</source>
         <extracomment>Call state</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="858"/>
+        <location filename="../src/call.cpp" line="865"/>
         <source>Unknown</source>
         <translation>ناشناخته</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="2209"/>
+        <location filename="../src/call.cpp" line="2237"/>
         <source>Account: </source>
         <translation>حساب کاربری</translation>
     </message>
@@ -255,12 +255,12 @@
 <context>
     <name>CallPrivate</name>
     <message>
-        <location filename="../src/call.cpp" line="1760"/>
+        <location filename="../src/call.cpp" line="1788"/>
         <source>Aborted</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="1781"/>
+        <location filename="../src/call.cpp" line="1809"/>
         <source>No account registered!</source>
         <translation>هیچ حسابی ثبت نشده است!</translation>
     </message>
@@ -672,7 +672,7 @@
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="307"/>
         <source>Present</source>
-        <translation type="unfinished"/>
+        <translation>حاضر</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="307"/>
@@ -715,7 +715,7 @@
     <message>
         <location filename="../src/presencestatusmodel.cpp" line="197"/>
         <source>Present</source>
-        <translation type="unfinished"/>
+        <translation>حاضر</translation>
     </message>
     <message>
         <location filename="../src/presencestatusmodel.cpp" line="197"/>
@@ -742,7 +742,7 @@
     <message>
         <location filename="../src/profilemodel.cpp" line="637"/>
         <source>Profiles</source>
-        <translation type="unfinished"/>
+        <translation>پروفایل ها</translation>
     </message>
 </context>
 <context>
@@ -750,7 +750,7 @@
     <message>
         <location filename="../src/profilemodel.cpp" line="751"/>
         <source>New profile</source>
-        <translation type="unfinished"/>
+        <translation>پروفایل جدید</translation>
     </message>
 </context>
 <context>
@@ -763,7 +763,7 @@
     <message>
         <location filename="../src/accountstatusmodel.cpp" line="179"/>
         <source>Code</source>
-        <translation type="unfinished"/>
+        <translation>کد</translation>
     </message>
     <message>
         <location filename="../src/accountstatusmodel.cpp" line="181"/>
@@ -773,7 +773,7 @@
     <message>
         <location filename="../src/accountstatusmodel.cpp" line="183"/>
         <source>Counter</source>
-        <translation type="unfinished"/>
+        <translation>شمارنده</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="42"/>
@@ -783,7 +783,7 @@
     <message>
         <location filename="../src/certificate.cpp" line="43"/>
         <source>Is not expired</source>
-        <translation type="unfinished"/>
+        <translation>منقضی نشده است</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="44"/>
@@ -883,12 +883,12 @@
     <message>
         <location filename="../src/certificate.cpp" line="90"/>
         <source>Expiration date</source>
-        <translation type="unfinished"/>
+        <translation>تاریخ انقضاء</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="91"/>
         <source>Activation date</source>
-        <translation type="unfinished"/>
+        <translation>تاریخ فعال سازی</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="92"/>
@@ -908,7 +908,7 @@
     <message>
         <location filename="../src/certificate.cpp" line="95"/>
         <source>Serial number</source>
-        <translation type="unfinished"/>
+        <translation>شماره سریال</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="96"/>
@@ -1266,7 +1266,7 @@
         <location filename="../src/api/call.h" line="81"/>
         <location filename="../src/api/call.h" line="83"/>
         <source>Finished</source>
-        <translation type="unfinished"/>
+        <translation>پایان یافته</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="85"/>
