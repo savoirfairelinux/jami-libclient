@@ -342,14 +342,30 @@ ContactModel::searchContact(const std::string& query)
         }
         emit modelUpdated(query);
     } else if (uri.full().startsWith("ring:")) {
-        // query is a valid RingID?
-        auto shortUri = uri.full().mid(5).toStdString();
-        profile::Info profileInfo;
-        profileInfo.uri = shortUri;
-        profileInfo.alias = shortUri;
-        profileInfo.type = profile::Type::TEMPORARY;
-        temporaryContact.profileInfo = profileInfo;
-        emit modelUpdated(query);
+        auto updated = false;
+        // Reset temporary if contact exists, else save the query inside it
+        {
+            std::lock_guard<std::mutex> lk(pimpl_->contactsMtx_);
+            auto shortUri = uri.full().mid(5).toStdString();
+            auto iter = pimpl_->contacts.begin();
+            while (iter != pimpl_->contacts.end()) {
+                if (iter->first == shortUri || iter->second.registeredName == shortUri) {
+                    break;
+                }
+                ++iter;
+            }
+            if (iter == pimpl_->contacts.end()) {
+                // query is a valid RingID?
+                profile::Info profileInfo;
+                profileInfo.uri = shortUri;
+                profileInfo.alias = shortUri;
+                profileInfo.type = profile::Type::TEMPORARY;
+                temporaryContact.profileInfo = profileInfo;
+                updated = true;
+            }
+        }
+        if (updated)
+            emit modelUpdated(query);
     } else {
         // Default searching
         profile::Info profileInfo;
