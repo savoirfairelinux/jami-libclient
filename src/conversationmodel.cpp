@@ -292,16 +292,22 @@ ConversationModel::allFilteredConversations() const
         [this] (const conversation::Info& entry) {
             auto contactInfo = owner.contactModel->getContact(entry.participants.front());
 
+            auto filter = pimpl_->filter;
+            auto uri = URI(QString(filter.c_str()));
+            if (uri.full().startsWith("ring:")) {
+                filter = uri.full().mid(5).toStdString();;
+            }
+
             /* Check contact */
             // If contact is banned, only match if filter is a perfect match
             if (contactInfo.isBanned) {
-                if (pimpl_->filter == "") return false;
-                return contactInfo.profileInfo.uri == pimpl_->filter
-                       || contactInfo.profileInfo.alias == pimpl_->filter
-                       || contactInfo.registeredName == pimpl_->filter;
+                if (filter == "") return false;
+                return contactInfo.profileInfo.uri == filter
+                       || contactInfo.profileInfo.alias == filter
+                       || contactInfo.registeredName == filter;
             }
 
-            auto regexFilter = std::regex(pimpl_->filter, std::regex_constants::icase);
+            auto regexFilter = std::regex(filter, std::regex_constants::icase);
             /* Check type */
             if (pimpl_->typeFilter != profile::Type::PENDING) {
                 // Remove pending contacts and get the temporary item if filter is not empty
@@ -326,9 +332,9 @@ ConversationModel::allFilteredConversations() const
             } catch(std::regex_error&) {
                 // If the regex is incorrect, just test if filter is a substring
                 // of the uri or the alias.
-                return contactInfo.profileInfo.alias.find(pimpl_->filter) != std::string::npos
-                && contactInfo.profileInfo.uri.find(pimpl_->filter) != std::string::npos
-                && contactInfo.registeredName.find(pimpl_->filter) != std::string::npos;
+                return contactInfo.profileInfo.alias.find(filter) != std::string::npos
+                && contactInfo.profileInfo.uri.find(filter) != std::string::npos
+                && contactInfo.registeredName.find(filter) != std::string::npos;
             }
         });
     pimpl_->filteredConversations.resize(std::distance(pimpl_->filteredConversations.begin(), it));
