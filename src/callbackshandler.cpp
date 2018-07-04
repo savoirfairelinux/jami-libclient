@@ -143,6 +143,11 @@ CallbacksHandler::CallbacksHandler(const Lrc& parent)
             &ConfigurationManagerInterface::registeredNameFound,
             this,
             &CallbacksHandler::slotRegisteredNameFound);
+
+    connect(&ConfigurationManager::instance(),
+            &ConfigurationManagerInterface::migrationEnded,
+            this,
+            &CallbacksHandler::slotMigrationEnded);
 }
 
 CallbacksHandler::~CallbacksHandler()
@@ -386,5 +391,10 @@ CallbacksHandler::slotRegisteredNameFound(const QString& accountId, int status, 
     emit registeredNameFound(accountId.toStdString(), status, address.toStdString(), name.toStdString());
 }
 
+void
+CallbacksHandler::slotMigrationEnded(const QString& accountId, const QString& status)
+{
+    emit migrationEnded(accountId.toStdString(), status == "SUCCESS");
+}
 
 } // namespace lrc
