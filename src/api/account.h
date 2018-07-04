@@ -55,6 +55,7 @@ enum class Type {
 
 enum class Status {
     INVALID,
+    ERROR_NEED_MIGRATION,
     INITIALIZING,
     UNREGISTERED,
     TRYING,
@@ -72,6 +73,8 @@ to_status(const std::string& type)
         return account::Status::TRYING;
     else if (type == "REGISTERED")
         return account::Status::REGISTERED;
+    else if (type == "ERROR_NEED_MIGRATION")
+        return account::Status::ERROR_NEED_MIGRATION;
     else
         return account::Status::INVALID;
 }
