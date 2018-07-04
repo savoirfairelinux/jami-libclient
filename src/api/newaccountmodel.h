@@ -193,6 +193,13 @@ Q_SIGNALS:
      */
     void registeredNameFound(const std::string& accountId, account::LookupStatus status, const std::string& address, const std::string& name);
 
+    /**
+     * Migration has finished
+     * @param accountId
+     * @param ok
+     */
+    void migrationEnded(const std::string& accountId, bool ok);
+
 private:
     std::unique_ptr<NewAccountModelPimpl> pimpl_;
 };

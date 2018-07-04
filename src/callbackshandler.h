@@ -215,6 +215,13 @@ Q_SIGNALS:
      */
     void registeredNameFound(const std::string& accountId, int status, const std::string& address, const std::string& name);
 
+    /**
+     * Migration ended
+     * @param accountId
+     * @param ok if migration succeed
+     */
+    void migrationEnded(const std::string& accountId, bool ok);
+
 private Q_SLOTS:
     /**
      * Emit newAccountMessage
@@ -372,6 +379,13 @@ private Q_SLOTS:
      * @param name
      */
     void slotRegisteredNameFound(const QString& accountId, int status, const QString& address, const QString& name);
+
+    /**
+     * emit migrationEnded
+     * @param accountId
+     * @param status
+     */
+    void slotMigrationEnded(const QString& accountId, const QString& status);
 
 private:
     const api::Lrc& parent;
