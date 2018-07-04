@@ -36,12 +36,6 @@ namespace lrc
 static constexpr auto VERSION = "1";
 static constexpr auto NAME = "ring.db";
 
-#ifdef ENABLE_TEST
-    static const QString DATABASE_PATH = QDir("/tmp/").filePath(NAME);
-#else
-    static const QString DATABASE_PATH = QDir(QStandardPaths::writableLocation(QStandardPaths::DataLocation)).filePath(NAME);
-#endif
-
 /**
   *  @brief Class that communicates with the database.
   *  @note not thread safe.
