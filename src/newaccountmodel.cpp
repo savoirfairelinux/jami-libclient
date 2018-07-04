@@ -121,6 +121,13 @@ public Q_SLOTS:
      * @param name
      */
     void slotRegisteredNameFound(const std::string& accountId, int status, const std::string& address, const std::string& name);
+
+    /**
+     * Emit migrationEnded
+     * @param accountId
+     * @param ok
+     */
+    void slotMigrationEnded(const std::string& accountId, bool ok);
 };
 
 NewAccountModel::NewAccountModel(Lrc& lrc,
@@ -307,6 +314,7 @@ NewAccountModelPimpl::NewAccountModelPimpl(NewAccountModel& linked,
     connect(&callbacksHandler, &CallbacksHandler::exportOnRingEnded, this, &NewAccountModelPimpl::slotExportOnRingEnded);
     connect(&callbacksHandler, &CallbacksHandler::nameRegistrationEnded, this, &NewAccountModelPimpl::slotNameRegistrationEnded);
     connect(&callbacksHandler, &CallbacksHandler::registeredNameFound, this, &NewAccountModelPimpl::slotRegisteredNameFound);
+    connect(&callbacksHandler, &CallbacksHandler::migrationEnded, this, &NewAccountModelPimpl::slotMigrationEnded);
 
     // NOTE: because we still use the legacy LRC for configuration, we are still using old signals
     connect(&AccountModel::instance(), &AccountModel::accountRemoved, this,  &NewAccountModelPimpl::slotAccountRemoved);
@@ -416,6 +424,15 @@ NewAccountModelPimpl::slotRegisteredNameFound(const std::string& accountId, int 
         break;
     }
     emit linked.registeredNameFound(accountId, convertedStatus, address, name);
+}
+
+void
+NewAccountModelPimpl::slotMigrationEnded(const std::string& accountId, bool ok)
+{
+    if (ok) {
+        addToAccounts(accountId);
+    }
+    emit linked.migrationEnded(accountId, ok);
 }
 
 void
