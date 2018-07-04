@@ -1704,7 +1704,11 @@ void CallPrivate::sendProfile()
 
     // NOTE: Some clients still use the old LRC. So, we should be able to use the database or old VCard files for now.
     // TODO: migrate sendProfile to newcallmodel.cpp as soon as possible.
-    std::ifstream dbfile(lrc::DATABASE_PATH.toStdString());
+#ifdef ENABLE_TEST
+    std::ifstream dbfile(QDir(QStandardPaths::writableLocation(QStandardPaths::TempLocation)).filePath(lrc::NAME).toStdString());
+#else
+    std::ifstream dbfile(QDir(QStandardPaths::writableLocation(QStandardPaths::DataLocation)).filePath(lrc::NAME).toStdString());
+#endif
     std::string photo = "";
     if (dbfile.good()) {
         lrc::Database db;
