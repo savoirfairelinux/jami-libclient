@@ -147,6 +147,11 @@ public:
      */
     bool registerName(const std::string& accountId, const std::string& password, const std::string& username);
 
+    /**
+     * Set an account to the first position
+     */
+    void setTopAccount(const std::string& accountId);
+
 Q_SIGNALS:
     /**
      * Connect this signal to know when the status of an account has changed.
