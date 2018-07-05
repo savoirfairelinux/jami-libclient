@@ -163,6 +163,11 @@ public:
                                         const std::string& password = "",
                                         const std::string& pin = "");
 
+    /**
+     * Set an account to the first position
+     */
+    void setTopAccount(const std::string& accountId);
+
 Q_SIGNALS:
     /**
      * Connect this signal to know when an invalid account is here

@@ -140,11 +140,13 @@ std::vector<std::string>
 NewAccountModel::getAccountList() const
 {
     std::vector<std::string> accountsId;
+    const QStringList accountIds = ConfigurationManager::instance().getAccountList();
 
-    for(auto const& accountInfo: pimpl_->accounts) {
+    for (auto const& id : accountIds) {
+        auto accountInfo = pimpl_->accounts.find(id.toStdString());
         // Do not include accounts flagged for removal
-        if (accountInfo.second.valid)
-            accountsId.emplace_back(accountInfo.first);
+        if (accountInfo != pimpl_->accounts.end() && accountInfo->second.valid)
+            accountsId.emplace_back(id.toStdString());
     }
 
     return accountsId;
@@ -710,6 +712,27 @@ NewAccountModel::createNewAccount(profile::Type type,
     details[ConfProperties::ARCHIVE_PATH] = archivePath.c_str();
     QString accountId = ConfigurationManager::instance().addAccount(details);
     return accountId.toStdString();
+}
+
+void
+NewAccountModel::setTopAccount(const std::string& accountId)
+{
+    bool found = false;
+    std::string order = {};
+
+    const QStringList accountIds = ConfigurationManager::instance().getAccountList();
+    for (auto& id : accountIds)
+    {
+        if (id.toStdString() == accountId) {
+            found = true;
+        } else {
+            order += id.toStdString() + "/";
+        }
+    }
+    if (found) {
+        order = accountId + "/" + order;
+    }
+    ConfigurationManager::instance().setAccountsOrder(order.c_str());
 }
 
 } // namespace lrc
