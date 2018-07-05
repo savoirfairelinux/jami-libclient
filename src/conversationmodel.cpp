@@ -1110,9 +1110,6 @@ ConversationModelPimpl::initConversations()
     }
     for (auto const& c : linked.owner.contactModel->getAllContacts())
     {
-        if(linked.owner.profileInfo.uri == c.second.profileInfo.uri)
-            continue;
-
         auto contactProfileId = database::getProfileId(db, c.second.profileInfo.uri);
         if (contactProfileId.empty()) {
             // Should not, ContactModel must create profiles before.
