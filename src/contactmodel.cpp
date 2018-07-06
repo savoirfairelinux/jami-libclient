@@ -689,6 +689,7 @@ ContactModelPimpl::slotRegisteredNameFound(const std::string& accountId,
         }
         {
             std::lock_guard<std::mutex> lk(contactsMtx_);
+            temporaryContact.registeredName = registeredName;
             temporaryContact.profileInfo.alias = "Not found";
         }
         emit linked.modelUpdated(uri);
