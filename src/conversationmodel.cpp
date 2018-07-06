@@ -301,13 +301,15 @@ ConversationModel::allFilteredConversations() const
                        || contactInfo.registeredName == pimpl_->filter;
             }
 
+            auto regexFilter = std::regex(pimpl_->filter, std::regex_constants::icase);
             /* Check type */
             if (pimpl_->typeFilter != profile::Type::PENDING) {
                 // Remove pending contacts and get the temporary item if filter is not empty
                 if (contactInfo.profileInfo.type == profile::Type::PENDING)
                     return false;
                 if (contactInfo.profileInfo.type == profile::Type::TEMPORARY)
-                    return not contactInfo.profileInfo.alias.empty() || not contactInfo.profileInfo.uri.empty();
+                    return !contactInfo.profileInfo.uri.empty()
+                           || std::regex_search(contactInfo.registeredName, regexFilter);
             } else {
                 // We only want pending requests matching with the filter
                 if (contactInfo.profileInfo.type != profile::Type::PENDING)
@@ -316,7 +318,6 @@ ConversationModel::allFilteredConversations() const
 
             // Otherwise perform usual regex search
             try {
-                auto regexFilter = std::regex(pimpl_->filter, std::regex_constants::icase);
                 bool result = std::regex_search(contactInfo.profileInfo.uri, regexFilter)
                 | std::regex_search(contactInfo.profileInfo.alias, regexFilter)
                 | std::regex_search(contactInfo.registeredName, regexFilter);
