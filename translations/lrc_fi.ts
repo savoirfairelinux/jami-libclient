@@ -231,7 +231,7 @@ Virhe</translation>
         <translation>Tuntematon</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="2237"/>
+        <location filename="../src/call.cpp" line="2243"/>
         <source>Account: </source>
         <translation>Tunnus:</translation>
     </message>
@@ -256,12 +256,12 @@ Virhe</translation>
 <context>
     <name>CallPrivate</name>
     <message>
-        <location filename="../src/call.cpp" line="1788"/>
+        <location filename="../src/call.cpp" line="1794"/>
         <source>Aborted</source>
         <translation>Peruttu</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="1809"/>
+        <location filename="../src/call.cpp" line="1815"/>
         <source>No account registered!</source>
         <translation>Ei rekistöröityä tunnusta!</translation>
     </message>
@@ -1411,50 +1411,50 @@ Virhe</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1226"/>
-        <location filename="../src/conversationmodel.cpp" line="1591"/>
-        <location filename="../src/conversationmodel.cpp" line="1841"/>
+        <location filename="../src/conversationmodel.cpp" line="1231"/>
+        <location filename="../src/conversationmodel.cpp" line="1596"/>
+        <location filename="../src/conversationmodel.cpp" line="1846"/>
         <source>Invitation received</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1227"/>
+        <location filename="../src/conversationmodel.cpp" line="1232"/>
         <source>Contact added</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1262"/>
-        <location filename="../src/conversationmodel.cpp" line="1269"/>
+        <location filename="../src/conversationmodel.cpp" line="1267"/>
+        <location filename="../src/conversationmodel.cpp" line="1274"/>
         <source>Invitation accepted</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1473"/>
+        <location filename="../src/conversationmodel.cpp" line="1478"/>
         <source>ð Outgoing call</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1475"/>
+        <location filename="../src/conversationmodel.cpp" line="1480"/>
         <source>ð Incoming call</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1488"/>
+        <location filename="../src/conversationmodel.cpp" line="1493"/>
         <source>ð Outgoing call - </source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1491"/>
+        <location filename="../src/conversationmodel.cpp" line="1496"/>
         <source>ð Incoming call - </source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1495"/>
+        <location filename="../src/conversationmodel.cpp" line="1500"/>
         <source>ð½ Missed outgoing call</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1497"/>
+        <location filename="../src/conversationmodel.cpp" line="1502"/>
         <source>ð½ Missed incoming call</source>
         <translation type="unfinished"/>
     </message>

@@ -230,7 +230,7 @@
         <translation>Desconocido</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="2237"/>
+        <location filename="../src/call.cpp" line="2243"/>
         <source>Account: </source>
         <translation>Cuenta:</translation>
     </message>
@@ -255,12 +255,12 @@
 <context>
     <name>CallPrivate</name>
     <message>
-        <location filename="../src/call.cpp" line="1788"/>
+        <location filename="../src/call.cpp" line="1794"/>
         <source>Aborted</source>
         <translation>Abortado</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="1809"/>
+        <location filename="../src/call.cpp" line="1815"/>
         <source>No account registered!</source>
         <translation>No hay cuentas registradas</translation>
     </message>
@@ -1266,7 +1266,7 @@
         <location filename="../src/api/call.h" line="81"/>
         <location filename="../src/api/call.h" line="83"/>
         <source>Finished</source>
-        <translation type="unfinished"/>
+        <translation>Terminado</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="85"/>
@@ -1410,52 +1410,52 @@
         <translation>Colección de perfiles de pares</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1226"/>
-        <location filename="../src/conversationmodel.cpp" line="1591"/>
-        <location filename="../src/conversationmodel.cpp" line="1841"/>
+        <location filename="../src/conversationmodel.cpp" line="1231"/>
+        <location filename="../src/conversationmodel.cpp" line="1596"/>
+        <location filename="../src/conversationmodel.cpp" line="1846"/>
         <source>Invitation received</source>
-        <translation type="unfinished"/>
+        <translation>Invitación recibida</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1227"/>
+        <location filename="../src/conversationmodel.cpp" line="1232"/>
         <source>Contact added</source>
         <translation>Contacto añadido</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1262"/>
-        <location filename="../src/conversationmodel.cpp" line="1269"/>
+        <location filename="../src/conversationmodel.cpp" line="1267"/>
+        <location filename="../src/conversationmodel.cpp" line="1274"/>
         <source>Invitation accepted</source>
-        <translation type="unfinished"/>
+        <translation>Invitación aceptada</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1473"/>
+        <location filename="../src/conversationmodel.cpp" line="1478"/>
         <source>ð Outgoing call</source>
-        <translation type="unfinished"/>
+        <translation>ð Llamada saliente</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1475"/>
+        <location filename="../src/conversationmodel.cpp" line="1480"/>
         <source>ð Incoming call</source>
-        <translation type="unfinished"/>
+        <translation>ð Llamada entrante</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1488"/>
+        <location filename="../src/conversationmodel.cpp" line="1493"/>
         <source>ð Outgoing call - </source>
-        <translation type="unfinished"/>
+        <translation>ð Llamada saliente - </translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1491"/>
+        <location filename="../src/conversationmodel.cpp" line="1496"/>
         <source>ð Incoming call - </source>
-        <translation type="unfinished"/>
+        <translation>ð Llamada entrante - </translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1495"/>
+        <location filename="../src/conversationmodel.cpp" line="1500"/>
         <source>ð½ Missed outgoing call</source>
-        <translation type="unfinished"/>
+        <translation>ð½ Llamada saliente perdida</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1497"/>
+        <location filename="../src/conversationmodel.cpp" line="1502"/>
         <source>ð½ Missed incoming call</source>
-        <translation type="unfinished"/>
+        <translation>ð½ Llamada entrante perdida</translation>
     </message>
 </context>
 <context>
