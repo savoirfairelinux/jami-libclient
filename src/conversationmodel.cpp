@@ -1,5 +1,5 @@
 /****************************************************************************
- *   Copyright (C) 2017-2018 Savoir-faire Linux                                  *
+ *   Copyright (C) 2017-2018 Savoir-faire Linux                             *
  *   Author: Nicolas Jäger <nicolas.jager@savoirfairelinux.com>             *
  *   Author: Sébastien Blin <sebastien.blin@savoirfairelinux.com>           *
  *   Author: Guillaume Roguez <guillaume.roguez@savoirfairelinux.com>       *
@@ -381,7 +381,7 @@ void
 ConversationModel::makePermanent(const std::string& uid)
 {
     auto conversationIdx = pimpl_->indexOf(uid);
-    if (conversationIdx == -1)
+    if (conversationIdx == -1 || !owner.enabled)
         return;
 
     auto& conversation = pimpl_->conversations.at(conversationIdx);
@@ -484,7 +484,7 @@ ConversationModelPimpl::placeCall(const std::string& uid, bool isAudioOnly)
 {
     auto conversationIdx = indexOf(uid);
 
-    if (conversationIdx == -1)
+    if (conversationIdx == -1 || !linked.owner.enabled)
         return;
 
     auto& conversation = conversations.at(conversationIdx);
@@ -592,7 +592,7 @@ ConversationModel::sendMessage(const std::string& uid, const std::string& body)
 {
     // FIXME potential race condition between index check and at() call
     auto conversationIdx = pimpl_->indexOf(uid);
-    if (conversationIdx == -1)
+    if (conversationIdx == -1 || !owner.enabled)
         return;
 
     auto& conversation = pimpl_->conversations.at(conversationIdx);
@@ -741,7 +741,7 @@ ConversationModel::joinConversations(const std::string& uidA, const std::string&
 {
     auto conversationAIdx = pimpl_->indexOf(uidA);
     auto conversationBIdx = pimpl_->indexOf(uidB);
-    if (conversationAIdx == -1 || conversationBIdx == -1)
+    if (conversationAIdx == -1 || conversationBIdx == -1 || !owner.enabled)
         return;
     auto& conversationA = pimpl_->conversations[conversationAIdx];
     auto& conversationB = pimpl_->conversations[conversationBIdx];
@@ -1709,7 +1709,7 @@ ConversationModel::sendFile(const std::string& convUid,
                             const std::string& filename)
 {
     auto conversationIdx = pimpl_->indexOf(convUid);
-    if (conversationIdx == -1)
+    if (conversationIdx == -1 || !owner.enabled)
         return;
 
     const auto peerUri = pimpl_->conversations[conversationIdx].participants.front();
