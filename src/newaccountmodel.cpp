@@ -471,7 +471,7 @@ NewAccountModelPimpl::addToAccounts(const std::string& accountId)
     owner.profileInfo.avatar = avatar;
     // Init models for this account
     owner.callModel = std::make_unique<NewCallModel>(owner, callbacksHandler);
-    owner.contactModel = std::make_unique<ContactModel>(owner, database, callbacksHandler);
+    owner.contactModel = std::make_unique<ContactModel>(owner, database, callbacksHandler, behaviorController);
     owner.conversationModel = std::make_unique<ConversationModel>(owner, lrc, database, callbacksHandler, behaviorController);
     owner.deviceModel = std::make_unique<NewDeviceModel>(owner, callbacksHandler);
     owner.codecModel = std::make_unique<NewCodecModel>(owner, callbacksHandler);

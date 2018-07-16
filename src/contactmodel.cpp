@@ -58,7 +58,8 @@ class ContactModelPimpl : public QObject
 public:
     ContactModelPimpl(const ContactModel& linked,
                       Database& db,
-                      const CallbacksHandler& callbacksHandler);
+                      const CallbacksHandler& callbacksHandler,
+                      const BehaviorController& behaviorController);
 
     ~ContactModelPimpl();
     /**
@@ -81,6 +82,7 @@ public:
     void addToContacts(ContactMethod* cm, const profile::Type& type, bool banned = false);
 
     // Helpers
+    const BehaviorController& behaviorController;
     const ContactModel& linked;
     Database& db;
     const CallbacksHandler& callbacksHandler;
@@ -154,10 +156,10 @@ public Q_SLOTS:
 
 using namespace authority;
 
-ContactModel::ContactModel(const account::Info& owner, Database& database, const CallbacksHandler& callbacksHandler)
+ContactModel::ContactModel(const account::Info& owner, Database& database, const CallbacksHandler& callbacksHandler, const BehaviorController& behaviorController)
 : QObject()
 , owner(owner)
-, pimpl_(std::make_unique<ContactModelPimpl>(*this, database, callbacksHandler))
+, pimpl_(std::make_unique<ContactModelPimpl>(*this, database, callbacksHandler, behaviorController))
 {
 }
 
@@ -403,9 +405,11 @@ ContactModel::sendDhtMessage(const std::string& contactUri, const std::string& b
 
 ContactModelPimpl::ContactModelPimpl(const ContactModel& linked,
                                      Database& db,
-                                     const CallbacksHandler& callbacksHandler)
+                                     const CallbacksHandler& callbacksHandler,
+                                     const BehaviorController& behaviorController)
 : linked(linked)
 , db(db)
+, behaviorController(behaviorController)
 , callbacksHandler(callbacksHandler)
 {
     // Init contacts map
@@ -552,6 +556,10 @@ ContactModelPimpl::slotContactAdded(const std::string& accountId, const std::str
     auto* cm = PhoneDirectoryModel::instance().getNumber(QString(contactUri.c_str()), account);
     auto contact = contacts.find(contactUri);
 
+    if (contact->second.profileInfo.type == profile::Type::PENDING) {
+        emit behaviorController.trustRequestTreated(linked.owner.id, contactUri);
+    }
+
     bool isBanned = false;
 
     {
@@ -600,6 +608,10 @@ ContactModelPimpl::slotContactRemoved(const std::string& accountId, const std::s
 
         auto contact = contacts.find(contactUri);
         if (contact == contacts.end()) return;
+
+        if (contact->second.profileInfo.type == profile::Type::PENDING) {
+            emit behaviorController.trustRequestTreated(linked.owner.id, contactUri);
+        }
 
         if (banned) {
             contact->second.isBanned = true;
@@ -728,6 +740,7 @@ ContactModelPimpl::slotIncomingContactRequest(const std::string& accountId,
         return;
     }
 
+    auto emitTrust = false;
     {
         std::lock_guard<std::mutex> lk(contactsMtx_);
         if (contacts.find(contactUri) == contacts.end()) {
@@ -739,6 +752,7 @@ ContactModelPimpl::slotIncomingContactRequest(const std::string& accountId,
             auto profileInfo = profile::Info {contactUri, photo.toStdString(), alias.toStdString(), profile::Type::PENDING};
             auto contactInfo = contact::Info {profileInfo, cm->bestName().toStdString(), cm->isConfirmed(), cm->isPresent()};
             contacts.emplace(contactUri, contactInfo);
+            emitTrust = true;
             database::getOrInsertProfile(db, contactUri, alias.toStdString(),
                                          photo.toStdString(),
                                          profile::to_string(profile::Type::RING));
@@ -747,6 +761,9 @@ ContactModelPimpl::slotIncomingContactRequest(const std::string& accountId,
     }
 
     emit linked.contactAdded(contactUri);
+    if (emitTrust) {
+        emit behaviorController.newTrustRequest(linked.owner.id, contactUri);
+    }
 }
 
 void
@@ -773,6 +790,9 @@ ContactModelPimpl::slotIncomingCall(const std::string& fromId, const std::string
         }
         if (emitContactAdded) {
             emit linked.contactAdded(fromId);
+            if (linked.owner.profileInfo.type == profile::Type::RING) {
+                emit behaviorController.newTrustRequest(linked.owner.id, fromId);
+            }
         }
         emit linked.incomingCallFromPending(fromId, callId);
         return;
@@ -790,7 +810,7 @@ ContactModelPimpl::slotNewAccountMessage(std::string& accountId,
         qDebug() << "ContactModel::slotNewAccountMessage(), nullptr";
         return;
     }
-
+    auto emitNewTrust = false;
     {
         std::lock_guard<std::mutex> lk(contactsMtx_);
         if (contacts.find(from) == contacts.end()) {
@@ -798,7 +818,11 @@ ContactModelPimpl::slotNewAccountMessage(std::string& accountId,
             // The conversation model will create an entry and link the incomingCall.
             auto* cm = PhoneDirectoryModel::instance().getNumber(QString(from.c_str()), account);
             addToContacts(cm, profile::Type::PENDING, false);
+            emitNewTrust = true;
         }
+    }
+    if (emitNewTrust) {
+        emit behaviorController.newTrustRequest(linked.owner.id, from);
     }
     emit linked.newAccountMessage(accountId, from, payloads);
 }
@@ -812,7 +836,7 @@ ContactModelPimpl::slotNewAccountTransfer(long long dringId, datatransfer::Info 
         qDebug() << "ContactModel::slotNewAccountTransfer(), nullptr";
         return;
     }
-
+    bool emitNewTrust = false;
     {
         std::lock_guard<std::mutex> lk(contactsMtx_);
         if (contacts.find(info.peerUri) == contacts.end()) {
@@ -820,7 +844,11 @@ ContactModelPimpl::slotNewAccountTransfer(long long dringId, datatransfer::Info 
             // The conversation model will create an entry and link the incomingCall.
             auto* cm = PhoneDirectoryModel::instance().getNumber(QString(info.peerUri.c_str()), account);
             addToContacts(cm, profile::Type::PENDING, false);
+            emitNewTrust = true;
         }
+    }
+    if (emitNewTrust) {
+        emit behaviorController.newTrustRequest(linked.owner.id, info.peerUri);
     }
     emit linked.newAccountTransfer(dringId, info);
 }
