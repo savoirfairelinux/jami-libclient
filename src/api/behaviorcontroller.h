@@ -41,6 +41,11 @@ namespace conversation
     class Info;
 }
 
+namespace interaction
+{
+    class Info;
+}
+
 /**
   *  @brief Class that helps to control behaviors from the client side.
   *  @note This class must only refer to the common behaviors.
@@ -65,6 +70,24 @@ Q_SIGNALS:
      * Emitted when the client should open the incoming call view.
      */
     void showIncomingCallView(const std::string& accountId, const api::conversation::Info& conversationInfo) const;
+    /**
+     * Emitted when the client receives a new trust request
+     */
+    void newTrustRequest(const std::string& accountId, const std::string& contactUri) const;
+    /**
+     * Emitted when the client receives a trust request has been accepted, refused or blocked
+     */
+    void trustRequestTreated(const std::string& accountId, const std::string& contactUri) const;
+    /**
+     * Emitted when the client receives an unread message to display (text or file for now)
+     */
+    void newUnreadInteraction(const std::string& accountId, const std::string& conversation,
+        uint64_t interactionId, const interaction::Info& interaction) const;
+    /**
+     * Emitted when the unread interaction is now read
+     */
+     void newReadInteraction(const std::string& accountId, const std::string& conversation, uint64_t interactionId) const;
+
 };
 
 } // namespace api
