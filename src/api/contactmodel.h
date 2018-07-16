@@ -28,6 +28,7 @@
 
 // LRC
 #include "typedefs.h"
+#include "api/behaviorcontroller.h"
 
 namespace lrc
 {
@@ -57,7 +58,8 @@ public:
 
     ContactModel(const account::Info& owner,
                  Database& database,
-                 const CallbacksHandler& callbacksHandler);
+                 const CallbacksHandler& callbacksHandler,
+                 const BehaviorController& behaviorController);
     ~ContactModel();
 
     /**

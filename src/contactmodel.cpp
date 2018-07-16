@@ -58,7 +58,8 @@ class ContactModelPimpl : public QObject
 public:
     ContactModelPimpl(const ContactModel& linked,
                       Database& db,
-                      const CallbacksHandler& callbacksHandler);
+                      const CallbacksHandler& callbacksHandler,
+                      const BehaviorController& behaviorController);
 
     ~ContactModelPimpl();
     /**
@@ -81,6 +82,7 @@ public:
     void addToContacts(ContactMethod* cm, const profile::Type& type, bool banned = false);
 
     // Helpers
+    const BehaviorController& behaviorController;
     const ContactModel& linked;
     Database& db;
     const CallbacksHandler& callbacksHandler;
@@ -154,10 +156,10 @@ public Q_SLOTS:
 
 using namespace authority;
 
-ContactModel::ContactModel(const account::Info& owner, Database& database, const CallbacksHandler& callbacksHandler)
+ContactModel::ContactModel(const account::Info& owner, Database& database, const CallbacksHandler& callbacksHandler, const BehaviorController& behaviorController)
 : QObject()
 , owner(owner)
-, pimpl_(std::make_unique<ContactModelPimpl>(*this, database, callbacksHandler))
+, pimpl_(std::make_unique<ContactModelPimpl>(*this, database, callbacksHandler, behaviorController))
 {
 }
 
@@ -235,6 +237,7 @@ ContactModel::addContact(contact::Info contactInfo)
         daemon::addContactFromPending(owner, profile.uri);
         emit pendingContactAccepted(profile.uri);
         daemon::addContact(owner, profile.uri); // BUGS?: daemon::addContactFromPending not always add the contact
+        emit pimpl_->behaviorController.trustRequestTreated(owner.id, profile.uri);
         break;
     case profile::Type::RING:
     case profile::Type::SIP:
@@ -270,6 +273,8 @@ void
 ContactModel::removeContact(const std::string& contactUri, bool banned)
 {
     bool emitContactRemoved = false;
+    auto contactUriCopy = contactUri;
+    bool emitTrustTreated = false;
     {
         std::lock_guard<std::mutex> lk(pimpl_->contactsMtx_);
         auto contact = pimpl_->contacts.find(contactUri);
@@ -277,6 +282,7 @@ ContactModel::removeContact(const std::string& contactUri, bool banned)
             && contact->second.profileInfo.type == profile::Type::PENDING) {
             // Discard the pending request and remove profile from db if necessary
             daemon::discardFromPending(owner, contactUri);
+            emitTrustTreated = true;
             pimpl_->contacts.erase(contactUri);
             database::removeContact(pimpl_->db, owner.profileInfo.uri, contactUri);
             emitContactRemoved = true;
@@ -294,6 +300,9 @@ ContactModel::removeContact(const std::string& contactUri, bool banned)
         // NOTE: this method is async, slotContactRemoved will be call and
         // then the model will be updated.
         daemon::removeContact(owner, contactUri, banned);
+    }
+    if (emitTrustTreated) {
+        emit pimpl_->behaviorController.trustRequestTreated(owner.id, contactUriCopy);
     }
 }
 
@@ -403,9 +412,11 @@ ContactModel::sendDhtMessage(const std::string& contactUri, const std::string& b
 
 ContactModelPimpl::ContactModelPimpl(const ContactModel& linked,
                                      Database& db,
-                                     const CallbacksHandler& callbacksHandler)
+                                     const CallbacksHandler& callbacksHandler,
+                                     const BehaviorController& behaviorController)
 : linked(linked)
 , db(db)
+, behaviorController(behaviorController)
 , callbacksHandler(callbacksHandler)
 {
     // Init contacts map
@@ -728,6 +739,7 @@ ContactModelPimpl::slotIncomingContactRequest(const std::string& accountId,
         return;
     }
 
+    auto emitTrust = false;
     {
         std::lock_guard<std::mutex> lk(contactsMtx_);
         if (contacts.find(contactUri) == contacts.end()) {
@@ -739,6 +751,7 @@ ContactModelPimpl::slotIncomingContactRequest(const std::string& accountId,
             auto profileInfo = profile::Info {contactUri, photo.toStdString(), alias.toStdString(), profile::Type::PENDING};
             auto contactInfo = contact::Info {profileInfo, cm->bestName().toStdString(), cm->isConfirmed(), cm->isPresent()};
             contacts.emplace(contactUri, contactInfo);
+            emitTrust = true;
             database::getOrInsertProfile(db, contactUri, alias.toStdString(),
                                          photo.toStdString(),
                                          profile::to_string(profile::Type::RING));
@@ -747,6 +760,9 @@ ContactModelPimpl::slotIncomingContactRequest(const std::string& accountId,
     }
 
     emit linked.contactAdded(contactUri);
+    if (emitTrust) {
+        emit behaviorController.newTrustRequest(linked.owner.id, contactUri);
+    }
 }
 
 void
@@ -773,6 +789,9 @@ ContactModelPimpl::slotIncomingCall(const std::string& fromId, const std::string
         }
         if (emitContactAdded) {
             emit linked.contactAdded(fromId);
+            if (linked.owner.profileInfo.type == profile::Type::RING) {
+                emit behaviorController.newTrustRequest(linked.owner.id, fromId);
+            }
         }
         emit linked.incomingCallFromPending(fromId, callId);
         return;
@@ -790,7 +809,7 @@ ContactModelPimpl::slotNewAccountMessage(std::string& accountId,
         qDebug() << "ContactModel::slotNewAccountMessage(), nullptr";
         return;
     }
-
+    auto emitNewTrust = false;
     {
         std::lock_guard<std::mutex> lk(contactsMtx_);
         if (contacts.find(from) == contacts.end()) {
@@ -798,7 +817,11 @@ ContactModelPimpl::slotNewAccountMessage(std::string& accountId,
             // The conversation model will create an entry and link the incomingCall.
             auto* cm = PhoneDirectoryModel::instance().getNumber(QString(from.c_str()), account);
             addToContacts(cm, profile::Type::PENDING, false);
+            emitNewTrust = true;
         }
+    }
+    if (emitNewTrust) {
+        emit behaviorController.newTrustRequest(linked.owner.id, from);
     }
     emit linked.newAccountMessage(accountId, from, payloads);
 }
@@ -812,7 +835,7 @@ ContactModelPimpl::slotNewAccountTransfer(long long dringId, datatransfer::Info 
         qDebug() << "ContactModel::slotNewAccountTransfer(), nullptr";
         return;
     }
-
+    bool emitNewTrust = false;
     {
         std::lock_guard<std::mutex> lk(contactsMtx_);
         if (contacts.find(info.peerUri) == contacts.end()) {
@@ -820,7 +843,11 @@ ContactModelPimpl::slotNewAccountTransfer(long long dringId, datatransfer::Info 
             // The conversation model will create an entry and link the incomingCall.
             auto* cm = PhoneDirectoryModel::instance().getNumber(QString(info.peerUri.c_str()), account);
             addToContacts(cm, profile::Type::PENDING, false);
+            emitNewTrust = true;
         }
+    }
+    if (emitNewTrust) {
+        emit behaviorController.newTrustRequest(linked.owner.id, info.peerUri);
     }
     emit linked.newAccountTransfer(dringId, info);
 }
