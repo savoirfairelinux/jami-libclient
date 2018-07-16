@@ -917,6 +917,7 @@ ConversationModel::setInteractionRead(const std::string& convId,
         pimpl_->dirtyConversations = {true, true};
         database::updateInteractionStatus(pimpl_->db, interactionId, newStatus);
         emit interactionStatusUpdated(convId, interactionId, itCopy);
+        emit pimpl_->behaviorController.newReadInteraction(owner.id, convId, interactionId);
     }
 }
 
@@ -1600,7 +1601,7 @@ ConversationModelPimpl::addIncomingMessage(const std::string& from,
     auto msg = interaction::Info {authorId, body,
                                   timestamp == 0 ? std::time(nullptr) : static_cast<time_t>(timestamp),
                                   interaction::Type::TEXT, interaction::Status::UNREAD};
-    int msgId = database::addMessageToConversation(db, accountProfileId, conv[0], msg);
+    auto msgId = database::addMessageToConversation(db, accountProfileId, conv[0], msg);
     auto conversationIdx = indexOf(conv[0]);
     // Add the conversation if not already here
     if (conversationIdx == -1) {
@@ -1614,6 +1615,7 @@ ConversationModelPimpl::addIncomingMessage(const std::string& from,
         conversations[conversationIdx].lastMessageUid = msgId;
     }
     dirtyConversations = {true, true};
+    emit behaviorController.newUnreadInteraction(linked.owner.id, conv[0], msgId, msg);
     emit linked.newInteraction(conv[0], msgId, msg);
     sortConversations();
     emit linked.modelSorted();
@@ -1791,6 +1793,7 @@ ConversationModel::cancelTransfer(const std::string& convUid, uint64_t interacti
         pimpl_->lrc.getDataTransferModel().cancel(interactionId);
         pimpl_->dirtyConversations = {true, true};
         emit interactionStatusUpdated(convUid, interactionId, itCopy);
+        emit pimpl_->behaviorController.newReadInteraction(owner.id, convUid, interactionId);
     }
 }
 
@@ -1875,6 +1878,7 @@ ConversationModelPimpl::slotTransferStatusCreated(long long dringId, datatransfe
         conversations[conversationIdx].lastMessageUid = interactionId;
     }
     dirtyConversations = {true, true};
+    emit behaviorController.newUnreadInteraction(linked.owner.id, convId, interactionId, interaction);
     emit linked.newInteraction(convId, interactionId, interaction);
     sortConversations();
     emit linked.modelSorted();
@@ -1955,6 +1959,7 @@ ConversationModelPimpl::acceptTransfer(const std::string& convUid, uint64_t inte
         sendContactRequest(conversations[conversationIdx].participants.front());
         dirtyConversations = {true, true};
         emit linked.interactionStatusUpdated(convUid, interactionId, itCopy);
+        emit behaviorController.newReadInteraction(linked.owner.id, convUid, interactionId);
     }
 }
 
