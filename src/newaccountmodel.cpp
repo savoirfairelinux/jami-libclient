@@ -78,6 +78,11 @@ public:
      */
     void addToAccounts(const std::string& accountId);
 
+    /**
+     * Sync changes to the accounts list with the lrc.
+     */
+    void updateAccounts();
+
 public Q_SLOTS:
     /**
      * Emit accountStatusChanged.
@@ -101,7 +106,7 @@ public Q_SLOTS:
      * Emit accountRemoved.
      * @param account
      */
-    void slotAccountRemoved(Account* account);
+    void slotAccountRemoved(const std::string& accountId);
 
     void slotProfileUpdated(const Profile* profile);
 
@@ -309,6 +314,7 @@ NewAccountModelPimpl::NewAccountModelPimpl(NewAccountModel& linked,
     for (auto& id : accountIds)
         addToAccounts(id.toStdString());
 
+    connect(&callbacksHandler, &CallbacksHandler::accountsChanged, this, &NewAccountModelPimpl::updateAccounts);
     connect(&callbacksHandler, &CallbacksHandler::accountStatusChanged, this, &NewAccountModelPimpl::slotAccountStatusChanged);
     connect(&callbacksHandler, &CallbacksHandler::accountDetailsChanged, this, &NewAccountModelPimpl::slotAccountDetailsChanged);
     connect(&callbacksHandler, &CallbacksHandler::exportOnRingEnded, this, &NewAccountModelPimpl::slotExportOnRingEnded);
@@ -317,27 +323,47 @@ NewAccountModelPimpl::NewAccountModelPimpl(NewAccountModel& linked,
     connect(&callbacksHandler, &CallbacksHandler::migrationEnded, this, &NewAccountModelPimpl::slotMigrationEnded);
 
     // NOTE: because we still use the legacy LRC for configuration, we are still using old signals
-    connect(&AccountModel::instance(), &AccountModel::accountRemoved, this,  &NewAccountModelPimpl::slotAccountRemoved);
     connect(&ProfileModel::instance(), &ProfileModel::profileUpdated, this,  &NewAccountModelPimpl::slotProfileUpdated);
 }
 
 NewAccountModelPimpl::~NewAccountModelPimpl()
 {
+}
 
+void
+NewAccountModelPimpl::updateAccounts()
+{
+    qDebug() << "Syncing lrc accounts list with the daemon";
+    ConfigurationManagerInterface& configurationManager = ConfigurationManager::instance();
+    QStringList accountIds = configurationManager.getAccountList();
+
+    // Detect removed accounts
+    for (auto it = accounts.begin(); it != accounts.end(); ++it) {
+        if (!accountIds.contains(QString::fromStdString(it->second.id))) {
+            qDebug("detected account removal %s", it->second.id.c_str());
+            slotAccountRemoved(it->second.id);
+        }
+    }
+
+    // Detect new accounts
+    for (int i = 0; i < accountIds.size(); ++i) {
+        auto accountInfo = accounts.find(accountIds[i].toStdString());
+        if (accountInfo == accounts.end()) {
+            // Add account to accountInfoMap
+            qDebug("detected new account %s", accountIds[i].toStdString().c_str());
+            addToAccounts(accountIds[i].toStdString());
+            emit linked.accountAdded(accountIds[i].toStdString());
+        }
+    }
 }
 
 void
 NewAccountModelPimpl::slotAccountStatusChanged(const std::string& accountID, const api::account::Status status)
 {
     auto accountInfo = accounts.find(accountID);
-    if (status == api::account::Status::REGISTERED && accountInfo == accounts.end()) {
-        // Update account
-        // NOTE we don't connect to newAccountAdded from AccountModel
-        // because the account is not ready.
-        accounts.erase(accountID);
-        addToAccounts(accountID);
-        emit linked.accountAdded(accountID);
-    } else if (accountInfo != accounts.end()) {
+
+    // If account is not in the map yet, don't add it, it is updateAccounts's job
+    if (accountInfo != accounts.end()) {
         accountInfo->second.status = status;
         emit linked.accountStatusChanged(accountID);
     }
@@ -481,10 +507,8 @@ NewAccountModelPimpl::addToAccounts(const std::string& accountId)
 }
 
 void
-NewAccountModelPimpl::slotAccountRemoved(Account* account)
+NewAccountModelPimpl::slotAccountRemoved(const std::string& accountId)
 {
-    auto accountId = account->id().toStdString();
-
     /* Update db before waiting for the client to stop using the structs is fine
        as long as we don't free anything */
     authority::database::removeAccount(database, accounts[accountId].profileInfo.uri);
