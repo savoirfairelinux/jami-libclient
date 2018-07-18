@@ -73,7 +73,8 @@ public:
     NewAccountModel::AccountInfoMap accounts;
     const BehaviorController& behaviorController;
 
-    // Synchronization tools for account removal
+    // Synchronization tools
+    std::mutex m_mutex_account;
     std::mutex m_mutex_account_removal;
     std::condition_variable m_condVar_account_removal;
 
@@ -84,13 +85,26 @@ public:
      */
     void addToAccounts(const std::string& accountId);
 
+    /**
+     * Remove account from accounts list. Emit accountRemoved.
+     * @param accountId
+     */
+    void removeFromAccounts(const std::string& accountId);
+
+    /**
+     * Sync changes to the accounts list with the lrc.
+     */
+    void updateAccounts();
+
 public Q_SLOTS:
+
     /**
      * Emit accountStatusChanged.
      * @param accountId
      * @param status
      */
     void slotAccountStatusChanged(const std::string& accountID, const api::account::Status status);
+
     /**
      * Emit exportOnRingEnded.
      * @param accountId
@@ -98,17 +112,16 @@ public Q_SLOTS:
      * @param pin
      */
     void slotExportOnRingEnded(const std::string& accountID, int status, const std::string& pin);
+
     /**
      * @param accountId
      * @param details
      */
     void slotAccountDetailsChanged(const std::string& accountID, const std::map<std::string, std::string>& details);
-    /**
-     * Emit accountRemoved.
-     * @param account
-     */
-    void slotAccountRemoved(Account* account);
 
+    /**
+     * @param profile
+     */
     void slotProfileUpdated(const Profile* profile);
 
     /**
@@ -317,6 +330,7 @@ NewAccountModelPimpl::NewAccountModelPimpl(NewAccountModel& linked,
     for (auto& id : accountIds)
         addToAccounts(id.toStdString());
 
+    connect(&callbacksHandler, &CallbacksHandler::accountsChanged, this, &NewAccountModelPimpl::updateAccounts);
     connect(&callbacksHandler, &CallbacksHandler::accountStatusChanged, this, &NewAccountModelPimpl::slotAccountStatusChanged);
     connect(&callbacksHandler, &CallbacksHandler::accountDetailsChanged, this, &NewAccountModelPimpl::slotAccountDetailsChanged);
     connect(&callbacksHandler, &CallbacksHandler::exportOnRingEnded, this, &NewAccountModelPimpl::slotExportOnRingEnded);
@@ -325,28 +339,62 @@ NewAccountModelPimpl::NewAccountModelPimpl(NewAccountModel& linked,
     connect(&callbacksHandler, &CallbacksHandler::migrationEnded, this, &NewAccountModelPimpl::slotMigrationEnded);
 
     // NOTE: because we still use the legacy LRC for configuration, we are still using old signals
-    connect(&AccountModel::instance(), &AccountModel::accountRemoved, this,  &NewAccountModelPimpl::slotAccountRemoved);
     connect(&ProfileModel::instance(), &ProfileModel::profileUpdated, this,  &NewAccountModelPimpl::slotProfileUpdated);
 }
 
 NewAccountModelPimpl::~NewAccountModelPimpl()
 {
+}
 
+void
+NewAccountModelPimpl::updateAccounts()
+{
+    qDebug() << "Syncing lrc accounts list with the daemon";
+    ConfigurationManagerInterface& configurationManager = ConfigurationManager::instance();
+    QStringList accountIds = configurationManager.getAccountList();
+
+    // Detect removed accounts
+    std::list<std::string> toBeRemoved;
+    for (auto& it : accounts) {
+        auto& accountInfo = it.second;
+        if (!accountIds.contains(QString::fromStdString(accountInfo.id))) {
+            qDebug("detected account removal %s", accountInfo.id.c_str());
+            toBeRemoved.push_back(accountInfo.id);
+        }
+    }
+
+    for (auto it = toBeRemoved.begin(); it != toBeRemoved.end(); ++it) {
+        removeFromAccounts(*it);
+    }
+
+    // Detect new accounts
+    for (auto& id : accountIds) {
+        auto accountInfo = accounts.find(id.toStdString());
+        if (accountInfo == accounts.end()) {
+            qDebug("detected new account %s", id.toStdString().c_str());
+            addToAccounts(id.toStdString());
+        }
+    }
 }
 
 void
 NewAccountModelPimpl::slotAccountStatusChanged(const std::string& accountID, const api::account::Status status)
 {
-    auto accountInfo = accounts.find(accountID);
-    if (status == api::account::Status::REGISTERED && accountInfo == accounts.end()) {
-        // Update account
-        // NOTE we don't connect to newAccountAdded from AccountModel
-        // because the account is not ready.
+    auto it = accounts.find(accountID);
+
+    // If account is not in the map yet, don't add it, it is updateAccounts's job
+    if (it == accounts.end()) {
+        return;
+    }
+
+    auto& accountInfo = it->second;
+
+    if (status == api::account::Status::REGISTERED && accountInfo.profileInfo.uri.empty()) {
         accounts.erase(accountID);
         addToAccounts(accountID);
         emit linked.accountAdded(accountID);
-    } else if (accountInfo != accounts.end()) {
-        accountInfo->second.status = status;
+    } else {
+        accountInfo.status = status;
         emit linked.accountStatusChanged(accountID);
     }
 }
@@ -460,39 +508,50 @@ NewAccountModelPimpl::slotMigrationEnded(const std::string& accountId, bool ok)
 void
 NewAccountModelPimpl::addToAccounts(const std::string& accountId)
 {
+    auto it = accounts.emplace(accountId, account::Info());
+
+    if (!it.second) {
+        qDebug("failed to add new account: id already present in map");
+        return;
+    }
+
     // Init profile
-    auto& item = *(accounts.emplace(accountId, account::Info()).first);
-    auto& owner = item.second;
-    owner.id = accountId;
+    account::Info& newAcc = (it.first)->second;
+    newAcc.id = accountId;
+
     // Fill account::Info struct with details from daemon
     MapStringString details = ConfigurationManager::instance().getAccountDetails(accountId.c_str());
-    owner.fromDetails(details);
+    newAcc.fromDetails(details);
 
-    // Add profile into database
-    using namespace DRing::Account;
-    auto accountType = owner.profileInfo.type == profile::Type::RING ? std::string(ProtocolNames::RING) : std::string(ProtocolNames::SIP);
-    auto accountProfileId = authority::database::getOrInsertProfile(database, owner.profileInfo.uri,
-                                                                    owner.profileInfo.alias, "",
+    // Add profile to database
+    std::string accountType = newAcc.profileInfo.type == profile::Type::RING ?
+                                   DRing::Account::ProtocolNames::RING :
+                                   DRing::Account::ProtocolNames::SIP;
+    auto accountProfileId = authority::database::getOrInsertProfile(database,
+                                                                    newAcc.profileInfo.uri,
+                                                                    newAcc.profileInfo.alias,
+                                                                    "",
                                                                     accountType);
+
     // Retrieve avatar from database
-    auto avatar = authority::database::getAvatarForProfileId(database, accountProfileId);
-    owner.profileInfo.avatar = avatar;
+    newAcc.profileInfo.avatar = authority::database::getAvatarForProfileId(database, accountProfileId);
+
     // Init models for this account
-    owner.callModel = std::make_unique<NewCallModel>(owner, callbacksHandler);
-    owner.contactModel = std::make_unique<ContactModel>(owner, database, callbacksHandler, behaviorController);
-    owner.conversationModel = std::make_unique<ConversationModel>(owner, lrc, database, callbacksHandler, behaviorController);
-    owner.deviceModel = std::make_unique<NewDeviceModel>(owner, callbacksHandler);
-    owner.codecModel = std::make_unique<NewCodecModel>(owner, callbacksHandler);
-    owner.accountModel = &linked;
+    newAcc.callModel = std::make_unique<NewCallModel>(newAcc, callbacksHandler);
+    newAcc.contactModel = std::make_unique<ContactModel>(newAcc, database, callbacksHandler, behaviorController);
+    newAcc.conversationModel = std::make_unique<ConversationModel>(newAcc, lrc, database, callbacksHandler, behaviorController);
+    newAcc.deviceModel = std::make_unique<NewDeviceModel>(newAcc, callbacksHandler);
+    newAcc.codecModel = std::make_unique<NewCodecModel>(newAcc, callbacksHandler);
+    newAcc.accountModel = &linked;
+
     MapStringString volatileDetails = ConfigurationManager::instance().getVolatileAccountDetails(accountId.c_str());
-    owner.status = lrc::api::account::to_status(toStdString(volatileDetails[ConfProperties::Registration::STATUS]));
+    std::string daemonStatus = volatileDetails[DRing::Account::ConfProperties::Registration::STATUS].toStdString();
+    newAcc.status = lrc::api::account::to_status(daemonStatus);
 }
 
 void
-NewAccountModelPimpl::slotAccountRemoved(Account* account)
+NewAccountModelPimpl::removeFromAccounts(const std::string& accountId)
 {
-    auto accountId = account->id().toStdString();
-
     /* Update db before waiting for the client to stop using the structs is fine
        as long as we don't free anything */
     authority::database::removeAccount(database, accounts[accountId].profileInfo.uri);
@@ -530,7 +589,7 @@ account::Info::fromDetails(const MapStringString& details)
 
     // General
     if (details[ConfProperties::TYPE] != "")
-        profileInfo.type                                    = details[ConfProperties::TYPE] == QString(ProtocolNames::RING) ? profile::Type::RING : profile::Type::SIP;
+        profileInfo.type                                = details[ConfProperties::TYPE] == QString(ProtocolNames::RING) ? profile::Type::RING : profile::Type::SIP;
     registeredName                                      = profileInfo.type == profile::Type::RING ? volatileDetails[VolatileProperties::REGISTERED_NAME].toStdString() : profileInfo.alias;
     profileInfo.alias                                   = toStdString(details[ConfProperties::ALIAS]);
     enabled                                             = toBool(details[ConfProperties::ENABLED]);
@@ -539,7 +598,9 @@ account::Info::fromDetails(const MapStringString& details)
     confProperties.autoAnswer                           = toBool(details[ConfProperties::AUTOANSWER]);
     confProperties.activeCallLimit                      = toInt(details[ConfProperties::ACTIVE_CALL_LIMIT]);
     confProperties.hostname                             = toStdString(details[ConfProperties::HOSTNAME]);
-    profileInfo.uri                                     = (profileInfo.type == profile::Type::RING and details[ConfProperties::USERNAME].contains("ring:")) ? details[ConfProperties::USERNAME].toStdString().substr(std::string("ring:").size()) : details[ConfProperties::USERNAME].toStdString();
+    profileInfo.uri                                     = (profileInfo.type == profile::Type::RING and details[ConfProperties::USERNAME].contains("ring:"))
+                                                          ? details[ConfProperties::USERNAME].toStdString().substr(std::string("ring:").size())
+                                                          : details[ConfProperties::USERNAME].toStdString();
     confProperties.username                             = toStdString(details[ConfProperties::USERNAME]);
     confProperties.routeset                             = toStdString(details[ConfProperties::ROUTE]);
     confProperties.password                             = toStdString(details[ConfProperties::PASSWORD]);
