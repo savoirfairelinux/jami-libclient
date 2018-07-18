@@ -113,6 +113,10 @@ Q_SIGNALS:
     void accountDetailsChanged(const std::string& accountId,
                                const std::map<std::string,std::string>& details);
     /**
+     * Connect this signal to know when the accounts list changed
+     */
+    void accountsChanged();
+    /**
      * Connect this signal to know when the account status changed
      * @param accountId the one who changes
      * @param status the new status
@@ -274,6 +278,11 @@ private Q_SLOTS:
      */
     void slotAccountDetailsChanged(const QString& accountId,
                                    const MapStringString& details);
+    /**
+     * Emit accountsChanged
+     */
+    void slotAccountsChanged();
+
     /**
      * Emit accountStatusChanged
      * @param accountId
