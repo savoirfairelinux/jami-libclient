@@ -78,6 +78,11 @@ public:
      */
     void addToAccounts(const std::string& accountId);
 
+    /**
+     * Sync changes to the accounts list with the lrc.
+     */
+    void updateAccounts();
+
 public Q_SLOTS:
     /**
      * Emit accountStatusChanged.
@@ -128,6 +133,16 @@ public Q_SLOTS:
      * @param ok
      */
     void slotMigrationEnded(const std::string& accountId, bool ok);
+
+Q_SIGNALS:
+    /**
+     * This signal is triggered when an account removal was detected by
+     * updateAccounts(). It is meant to trigger slotAccountRemoved()
+     * asynchronously, so when this signal is triggered the account hasn't
+     * been removed in the LRC yet.
+     * @param accountID
+     */
+    void accountPendingRemoval(const std::string& accountID);
 };
 
 NewAccountModel::NewAccountModel(Lrc& lrc,
@@ -309,6 +324,7 @@ NewAccountModelPimpl::NewAccountModelPimpl(NewAccountModel& linked,
     for (auto& id : accountIds)
         addToAccounts(id.toStdString());
 
+    connect(&callbacksHandler, &CallbacksHandler::accountsChanged, this, &NewAccountModelPimpl::updateAccounts);
     connect(&callbacksHandler, &CallbacksHandler::accountStatusChanged, this, &NewAccountModelPimpl::slotAccountStatusChanged);
     connect(&callbacksHandler, &CallbacksHandler::accountDetailsChanged, this, &NewAccountModelPimpl::slotAccountDetailsChanged);
     connect(&callbacksHandler, &CallbacksHandler::exportOnRingEnded, this, &NewAccountModelPimpl::slotExportOnRingEnded);
@@ -316,28 +332,52 @@ NewAccountModelPimpl::NewAccountModelPimpl(NewAccountModel& linked,
     connect(&callbacksHandler, &CallbacksHandler::registeredNameFound, this, &NewAccountModelPimpl::slotRegisteredNameFound);
     connect(&callbacksHandler, &CallbacksHandler::migrationEnded, this, &NewAccountModelPimpl::slotMigrationEnded);
 
+    /* Account removal has to be done asynchronously since this it might be a
+       blocking operation. To this end we implement an internal signal to the
+       NewAccountModelPimpl class and connect it to slotAccountRemoved. */
+    connect(this,              &NewAccountModelPimpl::accountPendingRemoval, this,  &NewAccountModelPimpl::slotAccountRemoved);
+
     // NOTE: because we still use the legacy LRC for configuration, we are still using old signals
-    connect(&AccountModel::instance(), &AccountModel::accountRemoved, this,  &NewAccountModelPimpl::slotAccountRemoved);
     connect(&ProfileModel::instance(), &ProfileModel::profileUpdated, this,  &NewAccountModelPimpl::slotProfileUpdated);
 }
 
 NewAccountModelPimpl::~NewAccountModelPimpl()
 {
+}
 
+void
+NewAccountModelPimpl::updateAccounts()
+{
+    qDebug() << "Syncing lrc accounts list with the daemon";
+    ConfigurationManagerInterface& configurationManager = ConfigurationManager::instance();
+    QStringList accountIds = configurationManager.getAccountList();
+
+    // Detect removed accounts
+    for (auto it = accounts.begin(); it != accounts.end(); ++it) {
+        if (accountIds.indexOf(it.second->id) == -1) {
+            // Remove account asynchronously since account removal might be a blocking operation.
+            emit this.accountPendingRemoval(account);
+        }
+    }
+
+    // Detect new accounts
+    for (int i = 0; i < accountIds.size(); ++i) {
+        auto accountInfo = accounts.find(accountID);
+        if (accountInfo == accounts.end()) {
+            // Add account to accountInfoMap
+            addToAccounts(accountID);
+            emit linked.accountAdded(accountID);
+        }
+    }
 }
 
 void
 NewAccountModelPimpl::slotAccountStatusChanged(const std::string& accountID, const api::account::Status status)
 {
     auto accountInfo = accounts.find(accountID);
-    if (status == api::account::Status::REGISTERED && accountInfo == accounts.end()) {
-        // Update account
-        // NOTE we don't connect to newAccountAdded from AccountModel
-        // because the account is not ready.
-        accounts.erase(accountID);
-        addToAccounts(accountID);
-        emit linked.accountAdded(accountID);
-    } else if (accountInfo != accounts.end()) {
+
+    // If account is not in the map yet, don't add it, it is updateAccounts's job
+    if (accountInfo != accounts.end()) {
         accountInfo->second.status = status;
         emit linked.accountStatusChanged(accountID);
     }
