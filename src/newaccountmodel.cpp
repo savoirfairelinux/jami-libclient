@@ -184,6 +184,17 @@ NewAccountModel::setAccountConfig(const std::string& accountId,
         details[ConfProperties::USERNAME] = toQString(confProperties.username);
     }
     configurationManager.setAccountDetails(QString::fromStdString(accountId), details);
+
+    // Refresh credentials for SIP accounts
+    if (accountInfo.profileInfo.type == profile::Type::SIP) {
+        MapStringString credentials;
+        credentials[ConfProperties::USERNAME] = toQString(confProperties.username);
+        credentials[ConfProperties::PASSWORD] = toQString(confProperties.password);
+        credentials[ConfProperties::REALM] = QString("*");
+        QVector<MapStringString> credentialsVec;
+        credentialsVec.append(credentials);
+        ConfigurationManager::instance().setCredentials(accountId.c_str(), credentialsVec);
+    }
 }
 
 account::ConfProperties_t
