@@ -184,17 +184,6 @@ NewAccountModel::setAccountConfig(const std::string& accountId,
         details[ConfProperties::USERNAME] = toQString(confProperties.username);
     }
     configurationManager.setAccountDetails(QString::fromStdString(accountId), details);
-
-    // Refresh credentials for SIP accounts
-    if (accountInfo.profileInfo.type == profile::Type::SIP) {
-        MapStringString credentials;
-        credentials[ConfProperties::USERNAME] = toQString(confProperties.username);
-        credentials[ConfProperties::PASSWORD] = toQString(confProperties.password);
-        credentials[ConfProperties::REALM] = QString("*");
-        QVector<MapStringString> credentialsVec;
-        credentialsVec.append(credentials);
-        ConfigurationManager::instance().setCredentials(accountId.c_str(), credentialsVec);
-    }
 }
 
 account::ConfProperties_t
@@ -363,6 +352,20 @@ NewAccountModelPimpl::slotAccountDetailsChanged(const std::string& accountId, co
     }
 
     accountInfo->second.fromDetails(convertMap(details));
+
+    // Refresh credentials for SIP accounts
+    if (accountInfo->second.profileInfo.type == profile::Type::SIP) {
+        auto& confProperties = accountInfo->second.confProperties;
+        MapStringString credentials;
+        using namespace DRing::Account;
+        credentials[ConfProperties::USERNAME] = toQString(confProperties.username);
+        credentials[ConfProperties::PASSWORD] = toQString(confProperties.password);
+        credentials[ConfProperties::REALM] = confProperties.realm.empty()? QString("*") : toQString(confProperties.realm);
+        QVector<MapStringString> credentialsVec;
+        credentialsVec.append(credentials);
+        ConfigurationManager::instance().setCredentials(accountId.c_str(), credentialsVec);
+    }
+
     emit linked.accountStatusChanged(accountId);
 }
 
