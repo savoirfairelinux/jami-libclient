@@ -53,6 +53,7 @@ public:
     const NewCodecModel& linked;
 
     void setActiveCodecs();
+    void setCodecDetails(const Codec& codec, bool isAudio);
 
 private:
     void addCodec(const unsigned int& id, const QVector<unsigned int>& activeCodecs);
@@ -129,7 +130,7 @@ NewCodecModel::enable(const unsigned int& codecId, bool enabled)
     auto redraw = false;
     auto isAudio = true;
     {
-        std::unique_lock<std::mutex> lock(pimpl_->audioCodecsMtx);
+        std::unique_lock<std::mutex> lock(pimpl_->videoCodecsMtx);
         auto allDisabled = true;
         for (auto& codec : pimpl_->videoCodecs) {
             if (codec.id == codecId) {
@@ -173,6 +174,95 @@ NewCodecModel::enable(const unsigned int& codecId, bool enabled)
     }
     pimpl_->setActiveCodecs();
     return redraw;
+}
+
+void
+NewCodecModel::autoQuality(const unsigned int& codecId, bool on)
+{
+    auto isAudio = true;
+    Codec finalCodec;
+    {
+        std::unique_lock<std::mutex> lock(pimpl_->videoCodecsMtx);
+        for (auto& codec : pimpl_->videoCodecs) {
+            if (codec.id == codecId) {
+                if (codec.auto_quality_enabled == on) return;
+                codec.auto_quality_enabled = on;
+                isAudio = false;
+                finalCodec = codec;
+            }
+        }
+    }
+    if (isAudio) {
+        std::unique_lock<std::mutex> lock(pimpl_->audioCodecsMtx);
+        for (auto& codec : pimpl_->audioCodecs) {
+            if (codec.id == codecId) {
+                if (codec.auto_quality_enabled == on) return;
+                codec.auto_quality_enabled = on;
+                finalCodec = codec;
+            }
+        }
+    }
+    pimpl_->setCodecDetails(finalCodec, isAudio);
+}
+
+void
+NewCodecModel::quality(const unsigned int& codecId, double quality)
+{
+    auto isAudio = true;
+    auto qualityStr = std::to_string(static_cast<int>(quality));
+    Codec finalCodec;
+    {
+        std::unique_lock<std::mutex> lock(pimpl_->videoCodecsMtx);
+        for (auto& codec : pimpl_->videoCodecs) {
+            if (codec.id == codecId) {
+                if (codec.quality == qualityStr) return;
+                codec.quality = qualityStr;
+                isAudio = false;
+                finalCodec = codec;
+            }
+        }
+    }
+    if (isAudio) {
+        std::unique_lock<std::mutex> lock(pimpl_->audioCodecsMtx);
+        for (auto& codec : pimpl_->audioCodecs) {
+            if (codec.id == codecId) {
+                if (codec.quality == qualityStr) return;
+                codec.quality = qualityStr;
+                finalCodec = codec;
+            }
+        }
+    }
+    pimpl_->setCodecDetails(finalCodec, isAudio);
+}
+
+void
+NewCodecModel::bitrate(const unsigned int& codecId, double bitrate)
+{
+    auto isAudio = true;
+    auto bitrateStr = std::to_string(static_cast<int>(bitrate));
+    Codec finalCodec;
+    {
+        std::unique_lock<std::mutex> lock(pimpl_->videoCodecsMtx);
+        for (auto& codec : pimpl_->videoCodecs) {
+            if (codec.id == codecId) {
+                if (codec.bitrate == bitrateStr) return;
+                codec.bitrate = bitrateStr;
+                isAudio = false;
+                finalCodec = codec;
+            }
+        }
+    }
+    if (isAudio) {
+        std::unique_lock<std::mutex> lock(pimpl_->audioCodecsMtx);
+        for (auto& codec : pimpl_->audioCodecs) {
+            if (codec.id == codecId) {
+                if (codec.bitrate == bitrateStr) return;
+                codec.bitrate = bitrateStr;
+                finalCodec = codec;
+            }
+        }
+    }
+    pimpl_->setCodecDetails(finalCodec, isAudio);
 }
 
 NewCodecModelPimpl::NewCodecModelPimpl(const NewCodecModel& linked, const CallbacksHandler& callbacksHandler)
@@ -242,6 +332,23 @@ NewCodecModelPimpl::addCodec(const unsigned int& id, const QVector<unsigned int>
         std::unique_lock<std::mutex> lock(videoCodecsMtx);
         videoCodecs.emplace_back(codec);
     }
+}
+
+void
+NewCodecModelPimpl::setCodecDetails(const Codec& codec, bool isAudio)
+{
+    MapStringString details;
+    details[ DRing::Account::ConfProperties::CodecInfo::NAME        ] = codec.name.c_str();
+    details[ DRing::Account::ConfProperties::CodecInfo::SAMPLE_RATE ] = codec.samplerate.c_str();
+    details[ DRing::Account::ConfProperties::CodecInfo::BITRATE     ] = codec.bitrate.c_str();
+    details[ DRing::Account::ConfProperties::CodecInfo::MIN_BITRATE ] = codec.min_bitrate.c_str();
+    details[ DRing::Account::ConfProperties::CodecInfo::MAX_BITRATE ] = codec.max_bitrate.c_str();
+    details[ DRing::Account::ConfProperties::CodecInfo::TYPE        ] = isAudio? "AUDIO" : "VIDEO";
+    details[ DRing::Account::ConfProperties::CodecInfo::QUALITY     ] = codec.quality.c_str();
+    details[ DRing::Account::ConfProperties::CodecInfo::MIN_QUALITY ] = codec.min_quality.c_str();
+    details[ DRing::Account::ConfProperties::CodecInfo::MAX_QUALITY ] = codec.max_quality.c_str();
+    details[ DRing::Account::ConfProperties::CodecInfo::AUTO_QUALITY_ENABLED] = codec.auto_quality_enabled? "true" : "false";
+    ConfigurationManager::instance().setCodecDetails(linked.owner.id.c_str(), codec.id, details);
 }
 
 } // namespace lrc
