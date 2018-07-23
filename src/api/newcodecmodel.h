@@ -96,6 +96,27 @@ public:
      * @return if codecId is the only codec impacted
      */
     bool enable(const unsigned int& codecid, bool enabled);
+    /**
+     * Enable/Disable auto quality for this codec
+     * @param codecId
+     * @param on true if enabled else false
+     * @return
+     */
+    void autoQuality(const unsigned int& codecid, bool on);
+    /**
+     * Change wanted quality
+     * @param codecId
+     * @param quality
+     * @return
+     */
+    void quality(const unsigned int& codecid, double quality);
+    /**
+     * Change wanted bitrate
+     * @param codecId
+     * @param bitrate
+     * @return
+     */
+    void bitrate(const unsigned int& codecid, double bitrate);
 
 private:
     std::unique_ptr<NewCodecModelPimpl> pimpl_;
