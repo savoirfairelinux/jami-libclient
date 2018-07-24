@@ -892,7 +892,7 @@ bool Certificate::moveToDotCert() const
 /**
  * get the data by role selection
  * @param role define the role to select
- * @return a QVariant object, wich contains the selection
+ * @return a QVariant object, which contains the selection
  */
 QVariant
 Certificate::roleData(int role) const

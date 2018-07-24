@@ -1769,7 +1769,7 @@ void
 ConversationModel::cancelTransfer(const std::string& convUid, uint64_t interactionId)
 {
     // For this action, we change interaction status before effective canceling as daemon will
-    // emit Finished event code immediatly (before leaving this method) in non-DBus mode.
+    // emit Finished event code immediately (before leaving this method) in non-DBus mode.
     auto conversationIdx = pimpl_->indexOf(convUid);
     interaction::Info itCopy;
     bool emitUpdated = false;

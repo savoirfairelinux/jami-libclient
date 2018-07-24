@@ -210,7 +210,7 @@ void Video::SourceModel::setUsedIndex(QString &deviceStr)
            .arg(DRing::Media::VideoProtocolPrefix::SEPARATOR);
         Video::Device* dev = Video::DeviceModel::instance().getDevice(deviceStr.replace(fullPrefix,""));
         if (dev == nullptr) {
-            // Device not found we dont know what camera is used
+            // Device not found we don't know what camera is used
             idx = ExtendedDeviceList::NONE;
             return;
         }

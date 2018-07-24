@@ -37,7 +37,7 @@ class PersonItemNode;
 //Typedef
 typedef QVector<Person*> PersonList;
 
-///PersonModel: Allow different way to handle contact without poluting the library
+///PersonModel: Allow different way to handle contact without polluting the library
 class LIB_EXPORT PersonModel :
    public QAbstractItemModel, public CollectionManagerInterface<Person> {
    #pragma GCC diagnostic push

@@ -813,7 +813,7 @@ void
 PhoneDirectoryModelPrivate::slotRegisteredNameFound(const Account* account, NameDirectory::LookupStatus status, const QString& address, const QString& name)
 {
     if (status != NameDirectory::LookupStatus::SUCCESS) {
-        // unsuccessfull lookup, so its useless
+        // unsuccessful lookup, so its useless
         return;
     }
     if (address.isEmpty() || name.isEmpty()) {

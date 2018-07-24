@@ -1088,7 +1088,7 @@ int MediaTypeInference::genId() {
 }
 
 /**
- * Everytime new ids are generated (that can be done some time), this map is
+ * Every time new ids are generated (that can be done some time), this map is
  * updated to map those type ids to Media::Type
  *
  * It could be extended to store some operations into lambdas too, but for
@@ -1227,7 +1227,7 @@ void Call::setPeerName(const QString& name)
 {
    d_ptr->m_PeerName = name;
 
-   // its possible that this is not set at the begining of a call, so we should update the CM here
+   // its possible that this is not set at the beginning of a call, so we should update the CM here
    if (peerContactMethod())
       peerContactMethod()->incrementAlternativeName(name, startTimeStamp());
 }
