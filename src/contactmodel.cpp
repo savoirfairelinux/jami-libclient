@@ -22,6 +22,7 @@
 // Std
 #include <algorithm>
 #include <mutex>
+#include <iostream>
 
 // Daemon
 #include <account_const.h>
@@ -30,6 +31,7 @@
 #include "api/account.h"
 #include "api/contact.h"
 #include "api/interaction.h"
+#include "api/newaccountmodel.h"
 #include "api/newcallmodel.h"
 #include "api/conversationmodel.h"
 #include "callbackshandler.h"
@@ -223,15 +225,12 @@ ContactModel::addContact(contact::Info contactInfo)
         && owner.profileInfo.type == profile::Type::SIP))
             profile.type = owner.profileInfo.type;
 
+    QByteArray vCard;
+    vCard.append(owner.accountModel->accountVCard(owner.id).c_str());
     switch (profile.type) {
     case profile::Type::TEMPORARY:
-        // NOTE: do not set profile::Type::RING, this has to be done when the daemon has emited contactAdded
-#ifndef ENABLE_TEST // The old LRC doesn't like mocks
-        if (auto* account = AccountModel::instance().getById(owner.id.c_str()))
-            account->sendContactRequest(URI(profile.uri.c_str()));
-#else
-            ConfigurationManager::instance().addContact(owner.id.c_str(), profile.uri.c_str());
-#endif
+        ConfigurationManager::instance().addContact(owner.id.c_str(), profile.uri.c_str());
+        ConfigurationManager::instance().sendTrustRequest(owner.id.c_str(), profile.uri.c_str(), vCard);
         break;
     case profile::Type::PENDING:
         daemon::addContactFromPending(owner, profile.uri);
@@ -851,7 +850,6 @@ ContactModelPimpl::slotNewAccountTransfer(long long dringId, datatransfer::Info 
     }
     emit linked.newAccountTransfer(dringId, info);
 }
-
 
 } // namespace lrc
 

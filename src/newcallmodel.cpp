@@ -21,6 +21,7 @@
 
 // std
 #include <chrono>
+#include <random>
 
 // Lrc
 #include "callbackshandler.h"
@@ -29,6 +30,7 @@
 #include "api/contactmodel.h"
 #include "api/newaccountmodel.h"
 #include "dbus/callmanager.h"
+#include "mime.h"
 #include "private/videorenderermanager.h"
 #include "video/renderer.h"
 
@@ -38,6 +40,8 @@
 // Qt
 #include <QObject>
 #include <QString>
+
+static std::uniform_int_distribution<int> dis{ 0, std::numeric_limits<int>::max() };
 
 namespace lrc
 {
@@ -49,6 +53,12 @@ class NewCallModelPimpl: public QObject
 public:
     NewCallModelPimpl(const NewCallModel& linked, const CallbacksHandler& callbacksHandler);
     ~NewCallModelPimpl();
+
+    /**
+     * Send the profile VCard into a call
+     * @param callId
+     */
+    void sendProfile(const std::string& callId);
 
     NewCallModel::CallInfoMap calls;
     const CallbacksHandler& callbacksHandler;
@@ -426,6 +436,7 @@ NewCallModelPimpl::slotCallStateChanged(const std::string& callId, const std::st
             if (calls[callId]->startTime.time_since_epoch().count() == 0) {
                 calls[callId]->startTime = std::chrono::steady_clock::now();
                 emit linked.callStarted(callId);
+                sendProfile(callId);
             }
             calls[callId]->status = call::Status::IN_PROGRESS;
         } else if (state == "HOLD") {
@@ -506,6 +517,31 @@ NewCallModelPimpl::slotConferenceCreated(const std::string& confId)
     QStringList callList = CallManager::instance().getParticipantList(confId.c_str());
     foreach(const auto& call, callList) {
         emit linked.callAddedToConference(call.toStdString(), confId);
+    }
+}
+
+void
+NewCallModelPimpl::sendProfile(const std::string& callId)
+{
+    auto vCard = linked.owner.accountModel->accountVCard(linked.owner.id);
+
+    std::random_device rdev;
+    auto key = std::to_string(dis(rdev));
+
+    int i = 0;
+    int total = vCard.size()/1000 + (vCard.size()%1000?1:0);
+    while (vCard.size()) {
+        auto sizeLimit = std::min(1000, static_cast<int>(vCard.size()));
+        MapStringString chunk;
+        chunk[QString("%1; id=%2,part=%3,of=%4")
+               .arg( RingMimes::PROFILE_VCF     )
+               .arg( key.c_str()                )
+               .arg( QString::number( i+1   )   )
+               .arg( QString::number( total )   )
+            ] = vCard.substr(0, sizeLimit).c_str();
+        vCard = vCard.substr(sizeLimit);
+        ++i;
+        CallManager::instance().sendTextMessage(callId.c_str(), chunk, false);
     }
 }
 
