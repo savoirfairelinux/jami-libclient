@@ -290,7 +290,7 @@ const Matrix2D< UAMA, Account::Protocol, bool > UserActionModelPrivate::availabl
 /**
  * This matrix define if an action is stateless or stateful. The only state
  * supported is "checked", but when multiple items are selected, this can
- * cause a heterogenous bunch of checked and unchecked elements, this is
+ * cause a heterogeneous bunch of checked and unchecked elements, this is
  * called "TRISTATE".
  */
 #define ST UserActionModel::ActionStatfulnessLevel::

@@ -743,7 +743,7 @@ ConversationModelTester::testPlaceCall()
     // Place a call
     accInfo_.conversationModel->placeCall(firstConversation.uid);
 
-    // Get first conversation again and make sure it isn't empty anymore (call suceeded)
+    // Get first conversation again and make sure it isn't empty anymore (call succeeded)
     conversations = accInfo_.conversationModel->allFilteredConversations();
     CPPUNIT_ASSERT(conversations.size() != 0);
     auto newConv = accInfo_.conversationModel->filteredConversation(0);

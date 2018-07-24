@@ -118,7 +118,7 @@ ContactRequest::block()
 /**
  * get the data by role selection
  * @param role define the role to select
- * @return a QVariant object, wich contains the selection
+ * @return a QVariant object, which contains the selection
  */
 QVariant
 ContactRequest::roleData(int role) const

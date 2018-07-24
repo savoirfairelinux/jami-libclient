@@ -598,7 +598,7 @@ Qt::ItemFlags NewCredentialTypeModel::flags( const QModelIndex& index ) const
 
    bool avail = m_smAvailableInProtocol[t][m_pAccount->protocol()];
 
-#if 0 //TODO it mostly work, but make developement/testing harder, to enable in the last patch
+#if 0 //TODO it mostly work, but make development/testing harder, to enable in the last patch
    switch(t) {
       case Credential::Type::STUN:
          avail &= m_pAccount->isSipStunEnabled();

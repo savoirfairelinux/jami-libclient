@@ -50,7 +50,7 @@ bool ItemBase::save() const
    return d_ptr->m_pBackend->save(this);
 }
 
-///Show an implementation dependant dialog to edit the contact
+///Show an implementation dependent dialog to edit the contact
 bool ItemBase::edit()
 {
    if (!d_ptr->m_pBackend)

@@ -256,7 +256,7 @@ void VCardUtils::addAddress(const Person::Address& addr)
          .arg(Delimiter::SEPARATOR_TOKEN)
          .arg(addr.type());
 
-   //First two fiels are left empty for now, they are for Postal box and Extended Address
+   //First two fields are left empty for now, they are for Postal box and Extended Address
    QString value = QString("%1%2%3%4%5%6%7%8%9%10%11")
          .arg(Delimiter::SEPARATOR_TOKEN)
          .arg(Delimiter::SEPARATOR_TOKEN)
