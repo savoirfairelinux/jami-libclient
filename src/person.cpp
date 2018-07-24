@@ -41,6 +41,8 @@
 #include "media/textrecording.h"
 #include "mime.h"
 
+#include <iostream>
+
 // Std
 #include <random>
 
@@ -765,7 +767,9 @@ const QByteArray Person::toVCard(QList<Account*> accounts, const std::string& av
        maker.addPhoto(QByteArray(avatar.c_str()), false);
    }
 
-   return maker.endVCard();
+   auto temp = maker.endVCard();
+   std::cout << QString(temp).toStdString() << "xxx" << std::endl;
+   return QByteArray();
 }
 
 void PersonPrivate::slotLastUsedTimeChanged(::time_t t)

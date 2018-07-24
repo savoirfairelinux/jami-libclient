@@ -22,6 +22,7 @@
 // Std
 #include <algorithm>
 #include <mutex>
+#include <iostream>
 
 // Daemon
 #include <account_const.h>
@@ -33,6 +34,7 @@
 #include "api/newcallmodel.h"
 #include "api/conversationmodel.h"
 #include "callbackshandler.h"
+#include "vcard.h"
 
 #include "accountmodel.h"
 #include "contactmethod.h"
@@ -80,6 +82,10 @@ public:
      * @param banned whether contact is banned or not
      */
     void addToContacts(ContactMethod* cm, const profile::Type& type, bool banned = false);
+    /**
+     * Return the current account VCard
+     */
+    QByteArray accountVCard();
 
     // Helpers
     const BehaviorController& behaviorController;
@@ -223,15 +229,11 @@ ContactModel::addContact(contact::Info contactInfo)
         && owner.profileInfo.type == profile::Type::SIP))
             profile.type = owner.profileInfo.type;
 
+    auto vcard = pimpl_->accountVCard();
     switch (profile.type) {
     case profile::Type::TEMPORARY:
-        // NOTE: do not set profile::Type::RING, this has to be done when the daemon has emited contactAdded
-#ifndef ENABLE_TEST // The old LRC doesn't like mocks
-        if (auto* account = AccountModel::instance().getById(owner.id.c_str()))
-            account->sendContactRequest(URI(profile.uri.c_str()));
-#else
-            ConfigurationManager::instance().addContact(owner.id.c_str(), profile.uri.c_str());
-#endif
+        ConfigurationManager::instance().addContact(owner.id.c_str(), profile.uri.c_str());
+        ConfigurationManager::instance().sendTrustRequest(owner.id.c_str(), profile.uri.c_str(), vcard);
         break;
     case profile::Type::PENDING:
         daemon::addContactFromPending(owner, profile.uri);
@@ -852,6 +854,47 @@ ContactModelPimpl::slotNewAccountTransfer(long long dringId, datatransfer::Info 
     emit linked.newAccountTransfer(dringId, info);
 }
 
+QByteArray
+ContactModelPimpl::accountVCard()
+{
+    QByteArray vCard;
+    std::string vCardStr = vCard::Delimiter::BEGIN_TOKEN;
+    vCardStr += vCard::Delimiter::END_LINE_TOKEN;
+    vCardStr += vCard::Property::VERSION;
+    vCardStr += ":2.1";
+    vCardStr += vCard::Delimiter::END_LINE_TOKEN;
+    vCardStr += vCard::Property::UID;
+    vCardStr += ":";
+    vCardStr += linked.owner.id;
+    vCardStr += vCard::Delimiter::END_LINE_TOKEN;
+    vCardStr += vCard::Property::FORMATTED_NAME;
+    vCardStr += ":";
+    vCardStr += linked.owner.profileInfo.alias;
+    vCardStr += vCard::Delimiter::END_LINE_TOKEN;
+    if (linked.owner.profileInfo.type == profile::Type::RING) {
+        vCardStr += vCard::Property::TELEPHONE;
+        vCardStr += vCard::Delimiter::SEPARATOR_TOKEN;
+        vCardStr += "other:ring:";
+        vCardStr += linked.owner.profileInfo.uri;
+        vCardStr += vCard::Delimiter::END_LINE_TOKEN;
+    } else {
+        vCardStr += vCard::Property::TELEPHONE;
+        vCardStr += linked.owner.profileInfo.uri;
+        vCardStr += vCard::Delimiter::END_LINE_TOKEN;
+    }
+    vCardStr += vCard::Property::PHOTO;
+    vCardStr += vCard::Delimiter::SEPARATOR_TOKEN;
+    vCardStr += "ENCODING=BASE64";
+    vCardStr += vCard::Delimiter::SEPARATOR_TOKEN;
+    vCardStr += "TYPE=PNG:";
+    vCardStr += linked.owner.profileInfo.avatar;
+    vCardStr += vCard::Delimiter::END_LINE_TOKEN;
+    vCardStr += vCard::Delimiter::END_TOKEN;
+
+    std::cout << vCardStr << std::endl;
+
+    return vCard.append(vCardStr.c_str());
+}
 
 } // namespace lrc
 
