@@ -726,6 +726,7 @@ void Person::addCustomField(const QString& key, const QString& value)
 
 const QByteArray Person::toVCard(QList<Account*> accounts, const std::string& avatar, const std::string& newName) const
 {
+    return {};
    //serializing here
    VCardUtils maker;
    maker.startVCard("2.1");
