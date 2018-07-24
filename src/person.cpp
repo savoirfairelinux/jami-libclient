@@ -726,46 +726,8 @@ void Person::addCustomField(const QString& key, const QString& value)
 
 const QByteArray Person::toVCard(QList<Account*> accounts, const std::string& avatar, const std::string& newName) const
 {
-   //serializing here
-   VCardUtils maker;
-   maker.startVCard("2.1");
-   maker.addProperty(VCardUtils::Property::UID, uid());
-   maker.addProperty(VCardUtils::Property::NAME, (secondName()
-                                                   + VCardUtils::Delimiter::SEPARATOR_TOKEN
-                                                   + firstName()));
-   maker.addProperty(VCardUtils::Property::FORMATTED_NAME, newName.empty()? formattedName() : newName.c_str());
-   maker.addProperty(VCardUtils::Property::ORGANIZATION, organization());
-
-   maker.addEmail("PREF", preferredEmail());
-
-   foreach (ContactMethod* phone , phoneNumbers()) {
-      QString uri = phone->uri();
-      // in the case of a RingID, we want to make sure that the uri contains "ring:" so that the user
-      // can tell it is a RING number and not some other hash
-      if (phone->uri().protocolHint() == URI::ProtocolHint::RING)
-         uri = phone->uri().full();
-      maker.addContactMethod(phone->category()->name(), uri);
-   }
-
-   foreach (const Address& addr , d_ptr->m_lAddresses) {
-      maker.addAddress(addr);
-   }
-
-   foreach (const QString& key , d_ptr->m_lCustomAttributes.keys()) {
-      maker.addProperty(key, d_ptr->m_lCustomAttributes.value(key));
-   }
-
-   foreach (Account* acc , accounts) {
-      maker.addProperty(VCardUtils::Property::X_RINGACCOUNT, acc->id());
-   }
-
-   if (avatar.empty()) {
-      maker.addPhoto(GlobalInstances::pixmapManipulator().toByteArray(photo()));
-   } else {
-       maker.addPhoto(QByteArray(avatar.c_str()), false);
-   }
-
-   return maker.endVCard();
+   qDebug("warning: use of deprecated Person::toVCard (this is NOP, use NewAccountModel::accountVCard instead)");
+   return {};
 }
 
 void PersonPrivate::slotLastUsedTimeChanged(::time_t t)
