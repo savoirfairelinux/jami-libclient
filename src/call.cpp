@@ -1965,9 +1965,6 @@ void CallPrivate::start()
    }
    setStartTimeStamp();
    initTimer();
-
-   /* we want to exchange vCards once the call starts so both peers have updated profiles */
-   sendProfile();
 }
 
 ///Toggle the timer
@@ -1994,9 +1991,6 @@ void CallPrivate::startWeird()
    qDebug() << "Starting call. callId : " << q_ptr  << "ConfId:" << q_ptr;
    setStartTimeStamp();
    qDebug() << "Warning : call " << q_ptr << " had an unexpected transition of state at its start.";
-
-   /* we want to exchange vCards once the call starts so both peers have updated profiles */
-   sendProfile();
 }
 
 ///Print a warning
