@@ -167,6 +167,12 @@ public:
      * Set an account to the first position
      */
     void setTopAccount(const std::string& accountId);
+    /**
+     * Build the vCard for an account
+     * @param id
+     * @return vcard of the account
+     */
+    std::string accountVCard(const std::string& accountId) const;
 
 Q_SIGNALS:
     /**
