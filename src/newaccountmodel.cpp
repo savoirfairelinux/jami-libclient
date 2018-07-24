@@ -32,6 +32,7 @@
 #include "authority/databasehelper.h"
 #include "callbackshandler.h"
 #include "database.h"
+#include "vcard.h"
 
 // old LRC
 #include "accountmodel.h"
@@ -766,6 +767,48 @@ NewAccountModel::setTopAccount(const std::string& accountId)
         order = accountId + "/" + order;
     }
     ConfigurationManager::instance().setAccountsOrder(order.c_str());
+}
+
+std::string
+NewAccountModel::accountVCard(const std::string& accountId) const
+{
+    auto accountInfo = pimpl_->accounts.find(accountId);
+    if (accountInfo == pimpl_->accounts.end()) {
+        return {};
+    }
+    std::string vCardStr = vCard::Delimiter::BEGIN_TOKEN;
+    vCardStr += vCard::Delimiter::END_LINE_TOKEN;
+    vCardStr += vCard::Property::VERSION;
+    vCardStr += ":2.1";
+    vCardStr += vCard::Delimiter::END_LINE_TOKEN;
+    vCardStr += vCard::Property::UID;
+    vCardStr += ":";
+    vCardStr += accountInfo->second.id;
+    vCardStr += vCard::Delimiter::END_LINE_TOKEN;
+    vCardStr += vCard::Property::FORMATTED_NAME;
+    vCardStr += ":";
+    vCardStr += accountInfo->second.profileInfo.alias;
+    vCardStr += vCard::Delimiter::END_LINE_TOKEN;
+    if (accountInfo->second.profileInfo.type == profile::Type::RING) {
+        vCardStr += vCard::Property::TELEPHONE;
+        vCardStr += vCard::Delimiter::SEPARATOR_TOKEN;
+        vCardStr += "other:ring:";
+        vCardStr += accountInfo->second.profileInfo.uri;
+        vCardStr += vCard::Delimiter::END_LINE_TOKEN;
+    } else {
+        vCardStr += vCard::Property::TELEPHONE;
+        vCardStr += accountInfo->second.profileInfo.uri;
+        vCardStr += vCard::Delimiter::END_LINE_TOKEN;
+    }
+    vCardStr += vCard::Property::PHOTO;
+    vCardStr += vCard::Delimiter::SEPARATOR_TOKEN;
+    vCardStr += "ENCODING=BASE64";
+    vCardStr += vCard::Delimiter::SEPARATOR_TOKEN;
+    vCardStr += "TYPE=PNG:";
+    vCardStr += accountInfo->second.profileInfo.avatar;
+    vCardStr += vCard::Delimiter::END_LINE_TOKEN;
+    vCardStr += vCard::Delimiter::END_TOKEN;
+    return vCardStr;
 }
 
 } // namespace lrc

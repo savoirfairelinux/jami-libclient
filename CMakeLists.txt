@@ -508,6 +508,7 @@ SET( libringclient_LIB_HDRS
   src/smartinfohub.h
   src/usage_statistics.h
   src/bannedcontactmodel.h
+  src/vcard.h
 )
 
 SET(libringclient_api_LIB_HDRS
