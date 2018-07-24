@@ -62,7 +62,7 @@ public:
      */
     void testReceivesImage5MbNoPref();
     /**
-     * Receives a new image with a prefedred dir, should accept tranfer
+     * Receives a new image with a prefedred dir, should accept transfer
      */
     void testReceivesImage5Mb();
     /**

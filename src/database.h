@@ -53,7 +53,7 @@ public:
     ~Database();
 
     /**
-     * A structure wich contains result(s) returned by a database query.
+     * A structure which contains result(s) returned by a database query.
      */
     struct Result {
         int nbrOfCols = -1; ///< store the number of columns returned.

@@ -60,7 +60,7 @@ public:
     virtual bool isChecked(const CollectionInterface* backend) const = 0;
 
     /**
-     * Allow to overload the default algoritm used to look for a default
+     * Allow to overload the default algorithm used to look for a default
      * collection to store something new.
      *
      * @param manager The likes of PersonModel::instance() or CategorizedHistoryModel::instance()

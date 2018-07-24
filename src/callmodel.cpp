@@ -518,7 +518,7 @@ Call* CallModelPrivate::addIncomingCall(const QString& callId)
 {
    qDebug() << "New incoming call:" << callId;
 
-   // Since november 2015, calls are alowed to be declared with a state change
+   // Since november 2015, calls are allowed to be declared with a state change
    // if it has been done, then they should be ignored
    // contains can be true and contain nullptr if it was accessed without
    // contains() first
