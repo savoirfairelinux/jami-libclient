@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "2e86a15b_0b75984d",
+        "filename": "src/api/behaviorcontroller.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 579
+      },
+      "writtenOn": "2018-07-25T19:05:45Z",
+      "side": 1,
+      "message": "Hum, rather \"Emitted when a trust request has been accepted, refused or blocked\" ?",
+      "range": {
+        "startLine": 78,
+        "startChar": 7,
+        "endLine": 78,
+        "endChar": 93
+      },
+      "revId": "cb3a0a167b8db0f60182cb1c8b4dd026203aea0c",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cf64f0b3_441c8993",
+        "filename": "src/contactmodel.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 240,
+      "author": {
+        "id": 579
+      },
+      "writtenOn": "2018-07-25T19:05:45Z",
+      "side": 1,
+      "message": "trustRequestTreated is emitted when \"a trust request has been accepted, refused or blocked\". At this state nothing really happened, we just asked the daemon to add the contact. Consider moving this to slotContactAdded ?",
+      "range": {
+        "startLine": 240,
+        "startChar": 8,
+        "endLine": 240,
+        "endChar": 83
+      },
+      "revId": "cb3a0a167b8db0f60182cb1c8b4dd026203aea0c",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "62f14fa9_f7611e9f",
+        "filename": "src/contactmodel.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 305,
+      "author": {
+        "id": 579
+      },
+      "writtenOn": "2018-07-25T19:05:45Z",
+      "side": 1,
+      "message": "Same here ?",
+      "range": {
+        "startLine": 305,
+        "startChar": 8,
+        "endLine": 305,
+        "endChar": 86
+      },
+      "revId": "cb3a0a167b8db0f60182cb1c8b4dd026203aea0c",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    }
+  ]
+}
