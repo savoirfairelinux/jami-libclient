@@ -68,6 +68,29 @@
       "revId": "cb3a0a167b8db0f60182cb1c8b4dd026203aea0c",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "96ccaf96_c7b1dc6d",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1854,
+      "author": {
+        "id": 579
+      },
+      "writtenOn": "2018-07-25T19:16:08Z",
+      "side": 1,
+      "message": "auto, or int. uint64_t is wrong",
+      "range": {
+        "startLine": 1854,
+        "startChar": 4,
+        "endLine": 1854,
+        "endChar": 12
+      },
+      "revId": "cb3a0a167b8db0f60182cb1c8b4dd026203aea0c",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
     }
   ]
 }
