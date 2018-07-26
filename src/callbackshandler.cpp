@@ -47,92 +47,110 @@ CallbacksHandler::CallbacksHandler(const Lrc& parent)
     connect(&ConfigurationManager::instance(),
             &ConfigurationManagerInterface::incomingAccountMessage,
             this,
-            &CallbacksHandler::slotNewAccountMessage);
+            &CallbacksHandler::slotNewAccountMessage,
+            Qt::QueuedConnection);
 
     connect(&PresenceManager::instance(),
             &PresenceManagerInterface::newBuddyNotification,
             this,
-            &CallbacksHandler::slotNewBuddySubscription);
+            &CallbacksHandler::slotNewBuddySubscription,
+            Qt::QueuedConnection);
 
     connect(&ConfigurationManager::instance(),
             &ConfigurationManagerInterface::contactAdded,
             this,
-            &CallbacksHandler::slotContactAdded);
+            &CallbacksHandler::slotContactAdded,
+            Qt::QueuedConnection);
 
     connect(&ConfigurationManager::instance(),
             &ConfigurationManagerInterface::contactRemoved,
             this,
-            &CallbacksHandler::slotContactRemoved);
+            &CallbacksHandler::slotContactRemoved,
+            Qt::QueuedConnection);
 
     connect(&ConfigurationManager::instance(),
             &ConfigurationManagerInterface::incomingTrustRequest,
             this,
-            &CallbacksHandler::slotIncomingContactRequest);
+            &CallbacksHandler::slotIncomingContactRequest,
+            Qt::QueuedConnection);
 
     connect(&ConfigurationManager::instance(),
             &ConfigurationManagerInterface::accountMessageStatusChanged,
             this,
-            &CallbacksHandler::slotAccountMessageStatusChanged);
+            &CallbacksHandler::slotAccountMessageStatusChanged,
+            Qt::QueuedConnection);
 
     connect(&NameDirectory::instance(),
             &NameDirectory::registeredNameFound,
             this,
-            &CallbacksHandler::slotRegisteredNameFound);
+            &CallbacksHandler::slotRegisteredNameFound,
+            Qt::QueuedConnection);
 
     connect(&ConfigurationManager::instance(),
             &ConfigurationManagerInterface::accountDetailsChanged,
             this,
-            &CallbacksHandler::slotAccountDetailsChanged);
+            &CallbacksHandler::slotAccountDetailsChanged,
+            Qt::QueuedConnection);
 
     connect(&ConfigurationManager::instance(),
             &ConfigurationManagerInterface::registrationStateChanged,
             this,
-            &CallbacksHandler::slotRegistrationStateChanged);
+            &CallbacksHandler::slotRegistrationStateChanged,
+            Qt::QueuedConnection);
 
     connect(&CallManager::instance(),
             &CallManagerInterface::incomingCall,
             this,
-            &CallbacksHandler::slotIncomingCall);
+            &CallbacksHandler::slotIncomingCall,
+            Qt::QueuedConnection);
 
     connect(&CallManager::instance(),
             &CallManagerInterface::callStateChanged,
             this,
-            &CallbacksHandler::slotCallStateChanged);
+            &CallbacksHandler::slotCallStateChanged,
+            Qt::QueuedConnection);
 
     connect(&CallManager::instance(),
             &CallManagerInterface::conferenceCreated,
             this,
-            &CallbacksHandler::slotConferenceCreated);
+            &CallbacksHandler::slotConferenceCreated,
+            Qt::QueuedConnection);
 
     connect(&CallManager::instance(),
             &CallManagerInterface::conferenceRemoved,
             this,
-            &CallbacksHandler::slotConferenceRemoved);
+            &CallbacksHandler::slotConferenceRemoved,
+            Qt::QueuedConnection);
 
     connect(&CallManager::instance(),
             &CallManagerInterface::conferenceChanged,
             this,
-            &CallbacksHandler::slotConferenceChanged);
+            &CallbacksHandler::slotConferenceChanged,
+            Qt::QueuedConnection);
 
     connect(&CallManager::instance(),
             &CallManagerInterface::incomingMessage,
             this,
-            &CallbacksHandler::slotIncomingMessage);
+            &CallbacksHandler::slotIncomingMessage,
+            Qt::QueuedConnection);
 
     connect(&ConfigurationManager::instance(),
             &ConfigurationManagerInterface::dataTransferEvent,
             this,
-            &CallbacksHandler::slotDataTransferEvent);
+            &CallbacksHandler::slotDataTransferEvent,
+            Qt::QueuedConnection);
 
     connect(&ConfigurationManager::instance(),
             &ConfigurationManagerInterface::knownDevicesChanged,
             this,
-            &CallbacksHandler::slotKnownDevicesChanged);
+            &CallbacksHandler::slotKnownDevicesChanged,
+            Qt::QueuedConnection);
 
     connect(&ConfigurationManager::instance(),
             &ConfigurationManagerInterface::deviceRevocationEnded,
             this,
-            &CallbacksHandler::slotDeviceRevokationEnded);
+            &CallbacksHandler::slotDeviceRevokationEnded,
+            Qt::QueuedConnection);
 }
 
 CallbacksHandler::~CallbacksHandler()
