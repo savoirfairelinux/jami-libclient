@@ -22,6 +22,30 @@
       "revId": "bc1bbaedab55d4e48ca099e4c24b9642887de938",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0d9e0f59_063da1ea",
+        "filename": "src/audio/ringtonedevicemodel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 90
+      },
+      "writtenOn": "2018-07-27T18:16:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a5cf2138_727af475",
+      "range": {
+        "startLine": 27,
+        "startChar": 0,
+        "endLine": 29,
+        "endChar": 18
+      },
+      "revId": "bc1bbaedab55d4e48ca099e4c24b9642887de938",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
