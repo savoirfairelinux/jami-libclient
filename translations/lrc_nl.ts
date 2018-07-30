@@ -1410,50 +1410,50 @@
         <translation>Peerprofielverzameling</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1231"/>
-        <location filename="../src/conversationmodel.cpp" line="1596"/>
-        <location filename="../src/conversationmodel.cpp" line="1846"/>
+        <location filename="../src/conversationmodel.cpp" line="1232"/>
+        <location filename="../src/conversationmodel.cpp" line="1597"/>
+        <location filename="../src/conversationmodel.cpp" line="1849"/>
         <source>Invitation received</source>
         <translation>Uitnodiging ontvangen</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1232"/>
+        <location filename="../src/conversationmodel.cpp" line="1233"/>
         <source>Contact added</source>
         <translation>Contact toegevoegd</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1267"/>
-        <location filename="../src/conversationmodel.cpp" line="1274"/>
+        <location filename="../src/conversationmodel.cpp" line="1268"/>
+        <location filename="../src/conversationmodel.cpp" line="1275"/>
         <source>Invitation accepted</source>
         <translation>Uitnodiging aanvaard</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1478"/>
+        <location filename="../src/conversationmodel.cpp" line="1479"/>
         <source>ð Outgoing call</source>
         <translation>ð Uitgaande oproep</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1480"/>
+        <location filename="../src/conversationmodel.cpp" line="1481"/>
         <source>ð Incoming call</source>
         <translation>ð Inkomende oproep</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1493"/>
+        <location filename="../src/conversationmodel.cpp" line="1494"/>
         <source>ð Outgoing call - </source>
         <translation>ð Uitgaande oproep -</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1496"/>
+        <location filename="../src/conversationmodel.cpp" line="1497"/>
         <source>ð Incoming call - </source>
         <translation>ð Inkomende oproep -</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1500"/>
+        <location filename="../src/conversationmodel.cpp" line="1501"/>
         <source>ð½ Missed outgoing call</source>
         <translation>ð½ Gemiste uitgaande oproep</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1502"/>
+        <location filename="../src/conversationmodel.cpp" line="1503"/>
         <source>ð½ Missed incoming call</source>
         <translation>ð½ Gemiste inkomende oproep</translation>
     </message>
