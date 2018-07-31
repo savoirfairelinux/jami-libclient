@@ -61,6 +61,15 @@ public:
      */
     void connectivityChanged() const;
 
+    /**
+     * Test connection with daemon
+     */
+    static bool isConnected();
+    /**
+     * Can communicate with the daemon via dbus
+     */
+    static bool dbusIsValid();
+
 private:
     std::unique_ptr<LrcPimpl> lrcPimpl_;
 };

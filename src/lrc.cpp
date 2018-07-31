@@ -1,5 +1,5 @@
 /****************************************************************************
- *   Copyright (C) 2017-2018 Savoir-faire Linux                                  *
+ *   Copyright (C) 2017-2018 Savoir-faire Linux                             *
  *   Author : Nicolas Jäger <nicolas.jager@savoirfairelinux.com>            *
  *   Author : Sébastien Blin <sebastien.blin@savoirfairelinux.com>          *
  *                                                                          *
@@ -80,6 +80,18 @@ void
 Lrc::connectivityChanged() const
 {
     ConfigurationManager::instance().connectivityChanged();
+}
+
+bool
+Lrc::isConnected()
+{
+    return ConfigurationManager::instance().connection().isConnected();
+}
+
+bool
+Lrc::dbusIsValid()
+{
+    return ConfigurationManager::instance().isValid();
 }
 
 LrcPimpl::LrcPimpl(Lrc& linked)
