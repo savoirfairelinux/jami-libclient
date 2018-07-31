@@ -31,6 +31,7 @@
 #include <algorithm>
 #include <mutex>
 #include <regex>
+#include <fstream>
 
 // LRC
 #include "api/lrc.h"
@@ -1936,7 +1937,13 @@ ConversationModelPimpl::slotTransferStatusAwaitingHost(long long dringId, datatr
             auto isImage = std::find(imageExtensions.begin(), imageExtensions.end(), extension) != imageExtensions.end();
             auto destinationDir = lrc.getDataTransferModel().downloadDirectory;
             if (info.totalSize < 20 * 1024 * 1024 && isImage && !destinationDir.empty()) {
-                acceptTransfer(convId, interactionId, destinationDir + info.displayName);
+                auto wantedFilename = destinationDir + info.displayName;
+                auto duplicate = 0;
+                while (std::ifstream(wantedFilename).good()) {
+                    wantedFilename = destinationDir + "(" + std::to_string(duplicate) + ")" + info.displayName;
+                    ++duplicate;
+                }
+                acceptTransfer(convId, interactionId, wantedFilename);
             }
         }
     }
