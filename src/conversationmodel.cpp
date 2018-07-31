@@ -1192,6 +1192,10 @@ ConversationModelPimpl::sortConversations()
             auto historyB = conversationB.interactions;
             // A or B is a new conversation (without CONTACT interaction)
             if (conversationA.uid.empty() || conversationB.uid.empty()) return conversationA.uid.empty();
+            if (historyA.empty() && historyB.empty()) {
+                // If no information to compare, sort by Ring ID
+                return conversationA.participants.front() > conversationB.participants.front();
+            }
             if (historyA.empty()) return false;
             if (historyB.empty()) return true;
             // Sort by last Interaction
