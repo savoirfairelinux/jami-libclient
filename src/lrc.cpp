@@ -1,5 +1,5 @@
 /****************************************************************************
- *   Copyright (C) 2017-2018 Savoir-faire Linux                                  *
+ *   Copyright (C) 2017-2018 Savoir-faire Linux                             *
  *   Author : Nicolas Jäger <nicolas.jager@savoirfairelinux.com>            *
  *   Author : Sébastien Blin <sebastien.blin@savoirfairelinux.com>          *
  *                                                                          *
@@ -24,6 +24,7 @@
 #include "api/behaviorcontroller.h"
 #include "database.h"
 #include "callbackshandler.h"
+#include "dbus/configurationmanager.h"
 #include "dbus/instancemanager.h"
 
 namespace lrc
@@ -73,6 +74,32 @@ DataTransferModel&
 Lrc::getDataTransferModel() const
 {
     return *lrcPimpl_->dataTransferModel;
+}
+
+void
+Lrc::connectivityChanged() const
+{
+    ConfigurationManager::instance().connectivityChanged();
+}
+
+bool
+Lrc::isConnected()
+{
+#ifdef ENABLE_LIBWRAP
+    return true;
+#else
+    return ConfigurationManager::instance().connection().isConnected();
+#endif
+}
+
+bool
+Lrc::dbusIsValid()
+{
+#ifdef ENABLE_LIBWRAP
+    return true;
+#else
+    return ConfigurationManager::instance().isValid();
+#endif
 }
 
 LrcPimpl::LrcPimpl(Lrc& linked)
