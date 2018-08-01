@@ -49,17 +49,17 @@ removeContact(const api::account::Info& owner, const std::string& contactUri, bo
     QString(contactUri.c_str()), banned);
 }
 
-void
+bool
 addContactFromPending(const api::account::Info& owner, const std::string& contactUri)
 {
-    ConfigurationManager::instance().acceptTrustRequest(QString(owner.id.c_str()),
+    return ConfigurationManager::instance().acceptTrustRequest(QString(owner.id.c_str()),
     QString(contactUri.c_str()));
 }
 
-void
+bool
 discardFromPending(const api::account::Info& owner, const std::string& contactUri)
 {
-    ConfigurationManager::instance().discardTrustRequest(
+    return ConfigurationManager::instance().discardTrustRequest(
         QString(owner.id.c_str()),
         QString(contactUri.c_str())
     );
