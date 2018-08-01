@@ -54,14 +54,16 @@ void removeContact(const api::account::Info& owner, const std::string& contactUr
  * Ask the daemon to add a contact from the pending list.
  * @param owner
  * @param contactUri
+ * @return if operation succeed
  */
-void addContactFromPending(const api::account::Info& owner, const std::string& contactUri);
+bool addContactFromPending(const api::account::Info& owner, const std::string& contactUri);
 /**
  * Ask the daemon to discard a pending.
  * @param owner
  * @param contactUri
+ * @return if operation succeed
  */
-void discardFromPending(const api::account::Info& owner, const std::string& contactUri);
+bool discardFromPending(const api::account::Info& owner, const std::string& contactUri);
 
 } // namespace daemon
 
