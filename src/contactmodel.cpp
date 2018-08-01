@@ -234,9 +234,11 @@ ContactModel::addContact(contact::Info contactInfo)
 #endif
         break;
     case profile::Type::PENDING:
-        daemon::addContactFromPending(owner, profile.uri);
-        emit pendingContactAccepted(profile.uri);
-        daemon::addContact(owner, profile.uri); // BUGS?: daemon::addContactFromPending not always add the contact
+        if (daemon::addContactFromPending(owner, profile.uri)) {
+            emit pendingContactAccepted(profile.uri);
+        } else {
+            return;
+        }
         break;
     case profile::Type::RING:
     case profile::Type::SIP:
@@ -278,7 +280,10 @@ ContactModel::removeContact(const std::string& contactUri, bool banned)
         if (!banned && contact != pimpl_->contacts.end()
             && contact->second.profileInfo.type == profile::Type::PENDING) {
             // Discard the pending request and remove profile from db if necessary
-            daemon::discardFromPending(owner, contactUri);
+            if(!daemon::discardFromPending(owner, contactUri)) {
+                qDebug() << "Discard request for account " << owner.id.c_str() << " failed (" << contactUri.c_str() << ")";
+                return;
+            }
             pimpl_->contacts.erase(contactUri);
             database::removeContact(pimpl_->db, owner.profileInfo.uri, contactUri);
             emitContactRemoved = true;
