@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7742fcc6_94b2887f",
+        "filename": "src/contactmodel.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 238,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-08-02T14:35:18Z",
+      "side": 1,
+      "message": "Maybe should rely on daemon signal ?",
+      "range": {
+        "startLine": 238,
+        "startChar": 8,
+        "endLine": 238,
+        "endChar": 49
+      },
+      "revId": "2300547b595b4012bdfd94ad388bf9cc9129c724",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    }
+  ]
+}
