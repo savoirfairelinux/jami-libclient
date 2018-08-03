@@ -20,11 +20,24 @@ INCLUDE(GNUInstallDirs)
 INCLUDE(CMakePackageConfigHelpers)
 INCLUDE(GenerateExportHeader)
 
-ADD_DEFINITIONS(
-   ${QT_DEFINITIONS}
-   -fexceptions
-   -O2
-)
+option (ENABLE_SHARED "Build shared library" ON)
+
+string(SUBSTRING ${CMAKE_GENERATOR} 0 14 CMAKE_GENERATOR_SHORT)
+if(CMAKE_GENERATOR_SHORT MATCHES "Visual Studio ")
+    message(STATUS "Generating VS project")
+    set(CMAKE_CXX_COMPILER_ID "MSVC")
+    set(ENABLE_TEST false)
+    set(ENABLE_STATIC true)
+    set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /Zi /W0")
+endif()
+
+if (NOT (CMAKE_CXX_COMPILER_ID MATCHES "MSVC"))
+    ADD_DEFINITIONS(
+       ${QT_DEFINITIONS}
+       -fexceptions
+       -O2
+    )
+endif()
 
 # Options
 set(CHK_FREEABLE_BEFORE_ERASE_ACCOUNT_DESCRIPTION
@@ -83,39 +96,41 @@ IF((${ENABLE_TEST} MATCHES true))
   SET(ENABLE_LIBWRAP true) # because mocks use the same interface present in src/qtwrapper
 ENDIF()
 
+if (NOT (CMAKE_CXX_COMPILER_ID MATCHES "MSVC"))
 # Enable some useful warnings
-ADD_DEFINITIONS(
-   -Wall
-   -Wextra
-   -Wmissing-declarations
-   -Wmissing-noreturn
-   -Wpointer-arith
-   -Wcast-align
-   -Wwrite-strings
-   -Wformat-nonliteral
-   -Wformat-security
-   -Wswitch-enum
-   -Winit-self
-   -Wmissing-include-dirs
-   -Wundef
-   -Wmissing-format-attribute
-   -Wno-reorder
-   -Wunused
-   -Wuninitialized
-   -Woverloaded-virtual
-   -Wunused-value
-   -pedantic
-   -Wnonnull
-   -Wsequence-point
-   #-Wsystem-headers
-   -Wsizeof-pointer-memaccess
-   #-Wuseless-cast
-   -Wvarargs
+    ADD_DEFINITIONS(
+       -Wall
+       -Wextra
+       -Wmissing-declarations
+       -Wmissing-noreturn
+       -Wpointer-arith
+       -Wcast-align
+       -Wwrite-strings
+       -Wformat-nonliteral
+       -Wformat-security
+       -Wswitch-enum
+       -Winit-self
+       -Wmissing-include-dirs
+       -Wundef
+       -Wmissing-format-attribute
+       -Wno-reorder
+       -Wunused
+       -Wuninitialized
+       -Woverloaded-virtual
+       -Wunused-value
+       -pedantic
+       -Wnonnull
+       -Wsequence-point
+       #-Wsystem-headers
+       -Wsizeof-pointer-memaccess
+       #-Wuseless-cast
+       -Wvarargs
 
-   #See https://gcc.gnu.org/bugzilla/show_bug.cgi?id=55578
-   -Wno-unused-function
-   -Wno-attributes
-)
+       #See https://gcc.gnu.org/bugzilla/show_bug.cgi?id=55578
+       -Wno-unused-function
+       -Wno-attributes
+    )
+endif()
 
 #Add more warnings for compilers that support it. I used this command:
 #curl https://gcc.gnu.org/onlinedocs/gcc-4.9.2/gcc/Warning-Options.html | \
@@ -198,7 +213,9 @@ IF(${ENABLE_LIBWRAP} MATCHES true)
 
    ADD_SUBDIRECTORY(${CMAKE_SOURCE_DIR}/src/qtwrapper)
    ADD_DEFINITIONS(-DENABLE_LIBWRAP=true) # Use native calls (no dbus)
-   ADD_DEFINITIONS(-Wno-unknown-pragmas)
+   if (NOT (CMAKE_CXX_COMPILER_ID MATCHES "MSVC"))
+      ADD_DEFINITIONS(-Wno-unknown-pragmas)
+   endif()
    SET(ENABLE_QT5 true) # Use Qt5
    MESSAGE(STATUS "Compiling with qtwrapper enabled, Qt5 enabled.")
 
@@ -235,16 +252,18 @@ INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR})
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR}/src)
 INCLUDE_DIRECTORIES ( ${CMAKE_CURRENT_BINARY_DIR})
 
-# Build dbus api
-IF(DEFINED RING_XML_INTERFACES_DIR)
-    SET (dbus_xml_introspecs_path ${RING_XML_INTERFACES_DIR})
-ELSEIF(EXISTS "${RING_BUILD_DIR}/../bin/dbus")
-    SET (dbus_xml_introspecs_path ${RING_BUILD_DIR}/../bin/dbus)
-ELSE()
-    SET (dbus_xml_introspecs_path ${CMAKE_INSTALL_PREFIX}/share/dbus-1/interfaces)
-ENDIF()
+IF(NOT (CMAKE_CXX_COMPILER_ID MATCHES "MSVC"))
+    # Build dbus api
+    IF(DEFINED RING_XML_INTERFACES_DIR)
+        SET (dbus_xml_introspecs_path ${RING_XML_INTERFACES_DIR})
+    ELSEIF(EXISTS "${RING_BUILD_DIR}/../bin/dbus")
+        SET (dbus_xml_introspecs_path ${RING_BUILD_DIR}/../bin/dbus)
+    ELSE()
+        SET (dbus_xml_introspecs_path ${CMAKE_INSTALL_PREFIX}/share/dbus-1/interfaces)
+    ENDIF()
 
-MESSAGE(STATUS "Using Ring DBus-XML interfaces in ${dbus_xml_introspecs_path}")
+    MESSAGE(STATUS "Using Ring DBus-XML interfaces in ${dbus_xml_introspecs_path}")
+ENDIF()
 
 #File to compile
 SET( libringclient_LIB_SRCS
@@ -693,45 +712,57 @@ ENDIF()
 IF(NOT ${ENABLE_TEST} MATCHES true)
   QT5_WRAP_CPP(LIB_HEADER_MOC ${libringclient_PRIVATE_HDRS})
 ENDIF()
-ADD_LIBRARY( ringclient SHARED ${libringclient_LIB_SRCS} ${LIB_HEADER_MOC} )
 
 IF(NOT ${ENABLE_STATIC} MATCHES false)
-   ADD_LIBRARY( ringclient_static  STATIC ${libringclient_LIB_SRCS} ${LIB_HEADER_MOC} )
-   target_link_libraries(ringclient_static Qt5::Core)
-   TARGET_LINK_LIBRARIES( ringclient_static
-      -lpthread
-      ${QT_QTDBUS_LIBRARY}
-      ${QT_QTCORE_LIBRARY}
-      Qt5::Sql
-      )
-   SET_TARGET_PROPERTIES( ringclient_static
-      PROPERTIES VERSION ${GENERIC_LIB_VERSION}
-   )
+    message(STATUS "Configuring as static lib")
+    add_library( ringclient_static  STATIC ${libringclient_LIB_SRCS} ${LIB_HEADER_MOC} )
+    target_link_libraries(ringclient_static Qt5::Core)
+    target_link_libraries( ringclient_static
+       -lpthread
+       ${QT_QTDBUS_LIBRARY}
+       ${QT_QTCORE_LIBRARY}
+       Qt5::Sql
+       )
+    SET_TARGET_PROPERTIES( ringclient_static
+       PROPERTIES VERSION ${GENERIC_LIB_VERSION}
+    )
 ENDIF()
 
-target_link_libraries(ringclient Qt5::Core)
+if (ENABLE_SHARED)
+    message(STATUS "Configuring as shared lib")
+    add_library(ringclient SHARED ${libringclient_LIB_SRCS} ${LIB_HEADER_MOC} )
+    target_link_libraries(ringclient Qt5::Core)
+endif()
 
 IF(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
-  target_link_libraries(ringclient Qt5::DBus)
-  IF(NOT ${ENABLE_STATIC} MATCHES false)
+    if (ENABLE_SHARED)
+        target_link_libraries(ringclient Qt5::DBus)
+    endif()
+  IF(${ENABLE_STATIC} MATCHES true)
       target_link_libraries(ringclient_static Qt5::DBus)
   ENDIF()
 ELSEIF(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
-   FIND_PACKAGE(Qt5Concurrent)
+    FIND_PACKAGE(Qt5Concurrent)
 
-   #For some reason, QSemaphore wont compile on Windows without QtConcurrent
-   target_link_libraries(ringclient Qt5::Concurrent)
+    #For some reason, QSemaphore wont compile on Windows without QtConcurrent
+    if(${ENABLE_STATIC} MATCHES true)
+        target_link_libraries(ringclient_static Qt5::Concurrent)
+    elseif(ENABLE_SHARED)
+        target_link_libraries(ringclient Qt5::Concurrent)
+    endif()
 ENDIF()
 
 
-TARGET_LINK_LIBRARIES( ringclient
-   -lpthread
-   ${QT_QTCORE_LIBRARY}
-   Qt5::Sql
-)
+IF (NOT CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
+    TARGET_LINK_LIBRARIES( ringclient
+        -lpthread
+        ${QT_QTCORE_LIBRARY}
+        Qt5::Sql
+        )
+ENDIF()
 
 IF(${ENABLE_LIBWRAP} MATCHES true)
-   IF(NOT ${ring_BIN} MATCHES "ring_BIN-NOTFOUND")
+   IF((NOT ${ring_BIN} MATCHES "ring_BIN-NOTFOUND") AND (${ENABLE_STATIC} MATCHES false))
       TARGET_LINK_LIBRARIES( ringclient
          qtwrapper
          ${ring_BIN}
@@ -739,7 +770,7 @@ IF(${ENABLE_LIBWRAP} MATCHES true)
    ELSE()
       # Allow building with undefined symbols when only the daemon headers are provided
       # It speeds up our CI builds
-      IF("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
+      IF(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
          SET_TARGET_PROPERTIES( ringclient PROPERTIES LINK_FLAGS "-undefined dynamic_lookup" )
       ENDIF()
    ENDIF()
@@ -749,6 +780,7 @@ IF(${ENABLE_LIBWRAP} MATCHES true)
          ${ring_BIN}
       )
    ENDIF()
+
 ELSE()
    TARGET_LINK_LIBRARIES( ringclient
       ${QT_QTDBUS_LIBRARY}
@@ -767,9 +799,11 @@ IF(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
    ENDIF()
 ENDIF()
 
-SET_TARGET_PROPERTIES( ringclient
-  PROPERTIES VERSION ${GENERIC_LIB_VERSION} SOVERSION ${GENERIC_LIB_VERSION}
-)
+if(${ENABLE_STATIC} MATCHES false)
+    SET_TARGET_PROPERTIES( ringclient
+      PROPERTIES VERSION ${GENERIC_LIB_VERSION} SOVERSION ${GENERIC_LIB_VERSION}
+    )
+endif()
 
 SET(INCLUDE_INSTALL_DIR ${CMAKE_INSTALL_PREFIX}/include)
 
@@ -814,21 +848,22 @@ INSTALL( FILES ${libringclient_api_LIB_HDRS}
 #higher priority than the prefixed one.
 STRING(REPLACE "${CMAKE_LIBRARY_ARCHITECTURE}" "" SANE_LIBRARY_PATH "${CMAKE_INSTALL_FULL_LIBDIR}" )
 
-INSTALL( TARGETS ringclient
-  ARCHIVE DESTINATION ${SANE_LIBRARY_PATH}
-  RUNTIME DESTINATION ${CMAKE_INSTALL_PREFIX}/bin
-  LIBRARY DESTINATION ${SANE_LIBRARY_PATH}
-  DESTINATION ${SANE_LIBRARY_PATH}
-)
-
 IF(NOT ${ENABLE_STATIC} MATCHES false)
-   INSTALL( TARGETS ringclient_static
-      ARCHIVE DESTINATION ${SANE_LIBRARY_PATH}
-      LIBRARY DESTINATION ${SANE_LIBRARY_PATH}
-      DESTINATION ${SANE_LIBRARY_PATH}
-   )
+    INSTALL( TARGETS ringclient_static
+        ARCHIVE DESTINATION ${SANE_LIBRARY_PATH}
+        LIBRARY DESTINATION ${SANE_LIBRARY_PATH}
+        DESTINATION ${SANE_LIBRARY_PATH}
+    )
 ENDIF()
 
+if(ENABLE_SHARED)
+    INSTALL( TARGETS ringclient
+        ARCHIVE DESTINATION ${SANE_LIBRARY_PATH}
+        RUNTIME DESTINATION ${CMAKE_INSTALL_PREFIX}/bin
+        LIBRARY DESTINATION ${SANE_LIBRARY_PATH}
+        DESTINATION ${SANE_LIBRARY_PATH}
+    )
+endif()
 
 SET(LIB_INSTALL_DIR ${SANE_LIBRARY_PATH})
 
