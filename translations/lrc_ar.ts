@@ -238,7 +238,7 @@
 <context>
     <name>CallModel</name>
     <message>
-        <location filename="../src/callmodel.cpp" line="920"/>
+        <location filename="../src/callmodel.cpp" line="924"/>
         <source>Calls</source>
         <translation>المكالمات</translation>
     </message>
@@ -246,8 +246,8 @@
 <context>
     <name>CallModelPrivate</name>
     <message>
-        <location filename="../src/callmodel.cpp" line="555"/>
-        <location filename="../src/callmodel.cpp" line="580"/>
+        <location filename="../src/callmodel.cpp" line="559"/>
+        <location filename="../src/callmodel.cpp" line="584"/>
         <source>Invalid account</source>
         <translation>حساب باطل</translation>
     </message>
@@ -391,102 +391,102 @@
 <context>
     <name>HistoryTimeCategoryModel</name>
     <message>
-        <location filename="../src/historytimecategorymodel.cpp" line="40"/>
+        <location filename="../src/historytimecategorymodel.cpp" line="50"/>
         <source>Today</source>
         <translation>اليوم</translation>
     </message>
     <message>
-        <location filename="../src/historytimecategorymodel.cpp" line="41"/>
+        <location filename="../src/historytimecategorymodel.cpp" line="51"/>
         <source>Yesterday</source>
         <translation>البارحة</translation>
     </message>
     <message>
-        <location filename="../src/historytimecategorymodel.cpp" line="48"/>
+        <location filename="../src/historytimecategorymodel.cpp" line="58"/>
         <source>Two weeks ago</source>
         <translation>منذ أسبوعان</translation>
     </message>
     <message>
-        <location filename="../src/historytimecategorymodel.cpp" line="49"/>
+        <location filename="../src/historytimecategorymodel.cpp" line="59"/>
         <source>Three weeks ago</source>
         <translation>منذ ثلاثة أسابيع</translation>
     </message>
     <message>
-        <location filename="../src/historytimecategorymodel.cpp" line="47"/>
+        <location filename="../src/historytimecategorymodel.cpp" line="57"/>
         <source>A week ago</source>
         <translation>منذ أسبوع</translation>
     </message>
     <message>
-        <location filename="../src/historytimecategorymodel.cpp" line="50"/>
+        <location filename="../src/historytimecategorymodel.cpp" line="60"/>
         <source>A month ago</source>
         <translation>منذ شهر</translation>
     </message>
     <message>
-        <location filename="../src/historytimecategorymodel.cpp" line="51"/>
+        <location filename="../src/historytimecategorymodel.cpp" line="61"/>
         <source>Two months ago</source>
         <translation>منذ شهرين</translation>
     </message>
     <message>
-        <location filename="../src/historytimecategorymodel.cpp" line="52"/>
+        <location filename="../src/historytimecategorymodel.cpp" line="62"/>
         <source>Three months ago</source>
         <translation>منذ ثلاثة أشهر</translation>
     </message>
     <message>
-        <location filename="../src/historytimecategorymodel.cpp" line="53"/>
+        <location filename="../src/historytimecategorymodel.cpp" line="63"/>
         <source>Four months ago</source>
         <translation>منذ أربعة أشهر</translation>
     </message>
     <message>
-        <location filename="../src/historytimecategorymodel.cpp" line="54"/>
+        <location filename="../src/historytimecategorymodel.cpp" line="64"/>
         <source>Five months ago</source>
         <translation>منذ خمسة أشهر</translation>
     </message>
     <message>
-        <location filename="../src/historytimecategorymodel.cpp" line="55"/>
+        <location filename="../src/historytimecategorymodel.cpp" line="65"/>
         <source>Six months ago</source>
         <translation>منذ ستة أشهر</translation>
     </message>
     <message>
-        <location filename="../src/historytimecategorymodel.cpp" line="56"/>
+        <location filename="../src/historytimecategorymodel.cpp" line="66"/>
         <source>Seven months ago</source>
         <translation>منذ سبعة أشهر</translation>
     </message>
     <message>
-        <location filename="../src/historytimecategorymodel.cpp" line="57"/>
+        <location filename="../src/historytimecategorymodel.cpp" line="67"/>
         <source>Eight months ago</source>
         <translation>منذ ثمانية أشهر</translation>
     </message>
     <message>
-        <location filename="../src/historytimecategorymodel.cpp" line="58"/>
+        <location filename="../src/historytimecategorymodel.cpp" line="68"/>
         <source>Nine months ago</source>
         <translation>منذ تسعة أشهر</translation>
     </message>
     <message>
-        <location filename="../src/historytimecategorymodel.cpp" line="59"/>
+        <location filename="../src/historytimecategorymodel.cpp" line="69"/>
         <source>Ten months ago</source>
         <translation>منذ عشرة أشهر</translation>
     </message>
     <message>
-        <location filename="../src/historytimecategorymodel.cpp" line="60"/>
+        <location filename="../src/historytimecategorymodel.cpp" line="70"/>
         <source>Eleven months ago</source>
         <translation>منذ إحدى عشرة شهر</translation>
     </message>
     <message>
-        <location filename="../src/historytimecategorymodel.cpp" line="61"/>
+        <location filename="../src/historytimecategorymodel.cpp" line="71"/>
         <source>Twelve months ago</source>
         <translation>منذ إثنى عشرة شهر</translation>
     </message>
     <message>
-        <location filename="../src/historytimecategorymodel.cpp" line="62"/>
+        <location filename="../src/historytimecategorymodel.cpp" line="72"/>
         <source>A year ago</source>
         <translation>منذ سنة</translation>
     </message>
     <message>
-        <location filename="../src/historytimecategorymodel.cpp" line="63"/>
+        <location filename="../src/historytimecategorymodel.cpp" line="73"/>
         <source>Very long time ago</source>
         <translation>منذ زمن طويل جدا</translation>
     </message>
     <message>
-        <location filename="../src/historytimecategorymodel.cpp" line="64"/>
+        <location filename="../src/historytimecategorymodel.cpp" line="74"/>
         <source>Never</source>
         <translation>أبدا</translation>
     </message>
@@ -523,24 +523,6 @@
         <location filename="../src/macromodel.cpp" line="77"/>
         <source>Other</source>
         <translation>آخر</translation>
-    </message>
-</context>
-<context>
-    <name>Media::RecordingModel</name>
-    <message>
-        <location filename="../src/media/recordingmodel.cpp" line="189"/>
-        <source>Recordings</source>
-        <translation>التسجيلات</translation>
-    </message>
-    <message>
-        <location filename="../src/media/recordingmodel.cpp" line="259"/>
-        <source>Text messages</source>
-        <translation>رسائل نصية</translation>
-    </message>
-    <message>
-        <location filename="../src/media/recordingmodel.cpp" line="264"/>
-        <source>Audio/Video</source>
-        <translation>صوت/فيديو</translation>
     </message>
 </context>
 <context>
@@ -1410,50 +1392,50 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1232"/>
-        <location filename="../src/conversationmodel.cpp" line="1597"/>
-        <location filename="../src/conversationmodel.cpp" line="1849"/>
+        <location filename="../src/conversationmodel.cpp" line="1236"/>
+        <location filename="../src/conversationmodel.cpp" line="1601"/>
+        <location filename="../src/conversationmodel.cpp" line="1853"/>
         <source>Invitation received</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1233"/>
+        <location filename="../src/conversationmodel.cpp" line="1237"/>
         <source>Contact added</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1268"/>
-        <location filename="../src/conversationmodel.cpp" line="1275"/>
+        <location filename="../src/conversationmodel.cpp" line="1272"/>
+        <location filename="../src/conversationmodel.cpp" line="1279"/>
         <source>Invitation accepted</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1479"/>
+        <location filename="../src/conversationmodel.cpp" line="1483"/>
         <source>ð Outgoing call</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1481"/>
+        <location filename="../src/conversationmodel.cpp" line="1485"/>
         <source>ð Incoming call</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1494"/>
+        <location filename="../src/conversationmodel.cpp" line="1498"/>
         <source>ð Outgoing call - </source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1497"/>
+        <location filename="../src/conversationmodel.cpp" line="1501"/>
         <source>ð Incoming call - </source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1501"/>
+        <location filename="../src/conversationmodel.cpp" line="1505"/>
         <source>ð½ Missed outgoing call</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1503"/>
+        <location filename="../src/conversationmodel.cpp" line="1507"/>
         <source>ð½ Missed incoming call</source>
         <translation type="unfinished"/>
     </message>
@@ -1511,6 +1493,24 @@
         <location filename="../src/video/sourcemodel.cpp" line="107"/>
         <source>FILE</source>
         <translation>ملف</translation>
+    </message>
+</context>
+<context>
+    <name>media::RecordingModel</name>
+    <message>
+        <location filename="../src/media/recordingmodel.cpp" line="189"/>
+        <source>Recordings</source>
+        <translation>التسجيلات</translation>
+    </message>
+    <message>
+        <location filename="../src/media/recordingmodel.cpp" line="259"/>
+        <source>Text messages</source>
+        <translation>رسائل نصية</translation>
+    </message>
+    <message>
+        <location filename="../src/media/recordingmodel.cpp" line="264"/>
+        <source>Audio/Video</source>
+        <translation>صوت/فيديو</translation>
     </message>
 </context>
 </TS>

@@ -116,121 +116,121 @@
 <context>
     <name>Call</name>
     <message>
-        <location filename="../src/call.cpp" line="713"/>
+        <location filename="../src/call.cpp" line="720"/>
         <source>New</source>
         <extracomment>Call state</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="716"/>
+        <location filename="../src/call.cpp" line="723"/>
         <source>Ringing</source>
         <extracomment>Call state</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="719"/>
+        <location filename="../src/call.cpp" line="726"/>
         <source>Calling</source>
         <extracomment>Call state</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="722"/>
+        <location filename="../src/call.cpp" line="729"/>
         <source>Talking</source>
         <extracomment>Call state</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="725"/>
+        <location filename="../src/call.cpp" line="732"/>
         <source>Dialing</source>
         <extracomment>Call state</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="728"/>
+        <location filename="../src/call.cpp" line="735"/>
         <source>Hold</source>
         <extracomment>Call state</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="731"/>
+        <location filename="../src/call.cpp" line="738"/>
         <source>Failed</source>
         <extracomment>Call state</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="734"/>
+        <location filename="../src/call.cpp" line="741"/>
         <source>Busy</source>
         <extracomment>Call state</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="737"/>
+        <location filename="../src/call.cpp" line="744"/>
         <source>Transfer</source>
         <extracomment>Call state</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="740"/>
+        <location filename="../src/call.cpp" line="747"/>
         <source>Transfer hold</source>
         <extracomment>Call state</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="743"/>
+        <location filename="../src/call.cpp" line="750"/>
         <source>Over</source>
         <extracomment>Call state</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="746"/>
+        <location filename="../src/call.cpp" line="753"/>
         <source>Error</source>
         <extracomment>Call state</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="749"/>
-        <location filename="../src/call.cpp" line="854"/>
+        <location filename="../src/call.cpp" line="756"/>
+        <location filename="../src/call.cpp" line="861"/>
         <source>Conference</source>
         <extracomment>Call state</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="752"/>
+        <location filename="../src/call.cpp" line="759"/>
         <source>Conference (hold)</source>
         <extracomment>Call state</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="755"/>
+        <location filename="../src/call.cpp" line="762"/>
         <source>ERROR</source>
         <extracomment>Call state</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="758"/>
+        <location filename="../src/call.cpp" line="765"/>
         <source>Searching for</source>
         <extracomment>Call state</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="761"/>
+        <location filename="../src/call.cpp" line="768"/>
         <source>Aborted</source>
         <extracomment>Call state</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="764"/>
+        <location filename="../src/call.cpp" line="771"/>
         <source>Communication established</source>
         <extracomment>Call state</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="858"/>
+        <location filename="../src/call.cpp" line="865"/>
         <source>Unknown</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="2209"/>
+        <location filename="../src/call.cpp" line="2243"/>
         <source>Account: </source>
         <translation type="unfinished"/>
     </message>
@@ -238,7 +238,7 @@
 <context>
     <name>CallModel</name>
     <message>
-        <location filename="../src/callmodel.cpp" line="920"/>
+        <location filename="../src/callmodel.cpp" line="924"/>
         <source>Calls</source>
         <translation type="unfinished"/>
     </message>
@@ -246,8 +246,8 @@
 <context>
     <name>CallModelPrivate</name>
     <message>
-        <location filename="../src/callmodel.cpp" line="555"/>
-        <location filename="../src/callmodel.cpp" line="580"/>
+        <location filename="../src/callmodel.cpp" line="559"/>
+        <location filename="../src/callmodel.cpp" line="584"/>
         <source>Invalid account</source>
         <translation type="unfinished"/>
     </message>
@@ -255,12 +255,12 @@
 <context>
     <name>CallPrivate</name>
     <message>
-        <location filename="../src/call.cpp" line="1760"/>
+        <location filename="../src/call.cpp" line="1794"/>
         <source>Aborted</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="1781"/>
+        <location filename="../src/call.cpp" line="1815"/>
         <source>No account registered!</source>
         <translation type="unfinished"/>
     </message>
@@ -391,102 +391,102 @@
 <context>
     <name>HistoryTimeCategoryModel</name>
     <message>
-        <location filename="../src/historytimecategorymodel.cpp" line="40"/>
+        <location filename="../src/historytimecategorymodel.cpp" line="50"/>
         <source>Today</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/historytimecategorymodel.cpp" line="41"/>
+        <location filename="../src/historytimecategorymodel.cpp" line="51"/>
         <source>Yesterday</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/historytimecategorymodel.cpp" line="48"/>
+        <location filename="../src/historytimecategorymodel.cpp" line="58"/>
         <source>Two weeks ago</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/historytimecategorymodel.cpp" line="49"/>
+        <location filename="../src/historytimecategorymodel.cpp" line="59"/>
         <source>Three weeks ago</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/historytimecategorymodel.cpp" line="47"/>
+        <location filename="../src/historytimecategorymodel.cpp" line="57"/>
         <source>A week ago</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/historytimecategorymodel.cpp" line="50"/>
+        <location filename="../src/historytimecategorymodel.cpp" line="60"/>
         <source>A month ago</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/historytimecategorymodel.cpp" line="51"/>
+        <location filename="../src/historytimecategorymodel.cpp" line="61"/>
         <source>Two months ago</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/historytimecategorymodel.cpp" line="52"/>
+        <location filename="../src/historytimecategorymodel.cpp" line="62"/>
         <source>Three months ago</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/historytimecategorymodel.cpp" line="53"/>
+        <location filename="../src/historytimecategorymodel.cpp" line="63"/>
         <source>Four months ago</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/historytimecategorymodel.cpp" line="54"/>
+        <location filename="../src/historytimecategorymodel.cpp" line="64"/>
         <source>Five months ago</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/historytimecategorymodel.cpp" line="55"/>
+        <location filename="../src/historytimecategorymodel.cpp" line="65"/>
         <source>Six months ago</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/historytimecategorymodel.cpp" line="56"/>
+        <location filename="../src/historytimecategorymodel.cpp" line="66"/>
         <source>Seven months ago</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/historytimecategorymodel.cpp" line="57"/>
+        <location filename="../src/historytimecategorymodel.cpp" line="67"/>
         <source>Eight months ago</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/historytimecategorymodel.cpp" line="58"/>
+        <location filename="../src/historytimecategorymodel.cpp" line="68"/>
         <source>Nine months ago</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/historytimecategorymodel.cpp" line="59"/>
+        <location filename="../src/historytimecategorymodel.cpp" line="69"/>
         <source>Ten months ago</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/historytimecategorymodel.cpp" line="60"/>
+        <location filename="../src/historytimecategorymodel.cpp" line="70"/>
         <source>Eleven months ago</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/historytimecategorymodel.cpp" line="61"/>
+        <location filename="../src/historytimecategorymodel.cpp" line="71"/>
         <source>Twelve months ago</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/historytimecategorymodel.cpp" line="62"/>
+        <location filename="../src/historytimecategorymodel.cpp" line="72"/>
         <source>A year ago</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/historytimecategorymodel.cpp" line="63"/>
+        <location filename="../src/historytimecategorymodel.cpp" line="73"/>
         <source>Very long time ago</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/historytimecategorymodel.cpp" line="64"/>
+        <location filename="../src/historytimecategorymodel.cpp" line="74"/>
         <source>Never</source>
         <translation type="unfinished"/>
     </message>
@@ -522,24 +522,6 @@
     <message>
         <location filename="../src/macromodel.cpp" line="77"/>
         <source>Other</source>
-        <translation type="unfinished"/>
-    </message>
-</context>
-<context>
-    <name>Media::RecordingModel</name>
-    <message>
-        <location filename="../src/media/recordingmodel.cpp" line="189"/>
-        <source>Recordings</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/media/recordingmodel.cpp" line="259"/>
-        <source>Text messages</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/media/recordingmodel.cpp" line="264"/>
-        <source>Audio/Video</source>
         <translation type="unfinished"/>
     </message>
 </context>
@@ -1410,50 +1392,50 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="867"/>
-        <location filename="../src/conversationmodel.cpp" line="1174"/>
-        <location filename="../src/conversationmodel.cpp" line="1382"/>
+        <location filename="../src/conversationmodel.cpp" line="1236"/>
+        <location filename="../src/conversationmodel.cpp" line="1601"/>
+        <location filename="../src/conversationmodel.cpp" line="1853"/>
         <source>Invitation received</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="868"/>
+        <location filename="../src/conversationmodel.cpp" line="1237"/>
         <source>Contact added</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="897"/>
-        <location filename="../src/conversationmodel.cpp" line="904"/>
+        <location filename="../src/conversationmodel.cpp" line="1272"/>
+        <location filename="../src/conversationmodel.cpp" line="1279"/>
         <source>Invitation accepted</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1063"/>
+        <location filename="../src/conversationmodel.cpp" line="1483"/>
         <source>ð Outgoing call</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1065"/>
+        <location filename="../src/conversationmodel.cpp" line="1485"/>
         <source>ð Incoming call</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1078"/>
+        <location filename="../src/conversationmodel.cpp" line="1498"/>
         <source>ð Outgoing call - </source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1081"/>
+        <location filename="../src/conversationmodel.cpp" line="1501"/>
         <source>ð Incoming call - </source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1085"/>
+        <location filename="../src/conversationmodel.cpp" line="1505"/>
         <source>ð½ Missed outgoing call</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1087"/>
+        <location filename="../src/conversationmodel.cpp" line="1507"/>
         <source>ð½ Missed incoming call</source>
         <translation type="unfinished"/>
     </message>
@@ -1510,6 +1492,24 @@
     <message>
         <location filename="../src/video/sourcemodel.cpp" line="107"/>
         <source>FILE</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>media::RecordingModel</name>
+    <message>
+        <location filename="../src/media/recordingmodel.cpp" line="189"/>
+        <source>Recordings</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/media/recordingmodel.cpp" line="259"/>
+        <source>Text messages</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/media/recordingmodel.cpp" line="264"/>
+        <source>Audio/Video</source>
         <translation type="unfinished"/>
     </message>
 </context>
