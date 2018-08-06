@@ -59,13 +59,13 @@
         <location filename="../src/account.cpp" line="349"/>
         <source>Stun configuration error</source>
         <extracomment>Account state</extracomment>
-        <translation>STUN (Session Traversal Utilities for NAT) konfigurációs hiba</translation>
+        <translation>STUN konfigurációs hiba</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="351"/>
         <source>Stun server invalid</source>
         <extracomment>Account state</extracomment>
-        <translation>STUN (Session Traversal Utilities for NAT) kiszolgáló érvénytelen</translation>
+        <translation>STUN kiszolgáló érvénytelen</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="353"/>
@@ -125,13 +125,13 @@
         <location filename="../src/call.cpp" line="723"/>
         <source>Ringing</source>
         <extracomment>Call state</extracomment>
-        <translation>Csörögni…</translation>
+        <translation>Csörögni</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="726"/>
         <source>Calling</source>
         <extracomment>Call state</extracomment>
-        <translation>Hívás…</translation>
+        <translation>Hívás</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="729"/>
@@ -238,7 +238,7 @@
 <context>
     <name>CallModel</name>
     <message>
-        <location filename="../src/callmodel.cpp" line="920"/>
+        <location filename="../src/callmodel.cpp" line="924"/>
         <source>Calls</source>
         <translation>Hívások</translation>
     </message>
@@ -246,8 +246,8 @@
 <context>
     <name>CallModelPrivate</name>
     <message>
-        <location filename="../src/callmodel.cpp" line="555"/>
-        <location filename="../src/callmodel.cpp" line="580"/>
+        <location filename="../src/callmodel.cpp" line="559"/>
+        <location filename="../src/callmodel.cpp" line="584"/>
         <source>Invalid account</source>
         <translation>Érvénytelen fiók</translation>
     </message>
@@ -391,102 +391,102 @@
 <context>
     <name>HistoryTimeCategoryModel</name>
     <message>
-        <location filename="../src/historytimecategorymodel.cpp" line="40"/>
+        <location filename="../src/historytimecategorymodel.cpp" line="50"/>
         <source>Today</source>
         <translation>Ma</translation>
     </message>
     <message>
-        <location filename="../src/historytimecategorymodel.cpp" line="41"/>
+        <location filename="../src/historytimecategorymodel.cpp" line="51"/>
         <source>Yesterday</source>
         <translation>Tegnap</translation>
     </message>
     <message>
-        <location filename="../src/historytimecategorymodel.cpp" line="48"/>
+        <location filename="../src/historytimecategorymodel.cpp" line="58"/>
         <source>Two weeks ago</source>
         <translation>Két héttel ezelőtt</translation>
     </message>
     <message>
-        <location filename="../src/historytimecategorymodel.cpp" line="49"/>
+        <location filename="../src/historytimecategorymodel.cpp" line="59"/>
         <source>Three weeks ago</source>
         <translation>Három héttel ezelőtt</translation>
     </message>
     <message>
-        <location filename="../src/historytimecategorymodel.cpp" line="47"/>
+        <location filename="../src/historytimecategorymodel.cpp" line="57"/>
         <source>A week ago</source>
         <translation>Egy héttel ezelőtt</translation>
     </message>
     <message>
-        <location filename="../src/historytimecategorymodel.cpp" line="50"/>
+        <location filename="../src/historytimecategorymodel.cpp" line="60"/>
         <source>A month ago</source>
         <translation>Egy hónappal ezelőtt</translation>
     </message>
     <message>
-        <location filename="../src/historytimecategorymodel.cpp" line="51"/>
+        <location filename="../src/historytimecategorymodel.cpp" line="61"/>
         <source>Two months ago</source>
         <translation>Két hónappal ezelőtt</translation>
     </message>
     <message>
-        <location filename="../src/historytimecategorymodel.cpp" line="52"/>
+        <location filename="../src/historytimecategorymodel.cpp" line="62"/>
         <source>Three months ago</source>
         <translation>Három hónappal ezelőtt</translation>
     </message>
     <message>
-        <location filename="../src/historytimecategorymodel.cpp" line="53"/>
+        <location filename="../src/historytimecategorymodel.cpp" line="63"/>
         <source>Four months ago</source>
         <translation>Négy hónappal ezelőtt</translation>
     </message>
     <message>
-        <location filename="../src/historytimecategorymodel.cpp" line="54"/>
+        <location filename="../src/historytimecategorymodel.cpp" line="64"/>
         <source>Five months ago</source>
         <translation>Öt hónappal ezelőtt</translation>
     </message>
     <message>
-        <location filename="../src/historytimecategorymodel.cpp" line="55"/>
+        <location filename="../src/historytimecategorymodel.cpp" line="65"/>
         <source>Six months ago</source>
         <translation>Hat hónappal ezelőtt</translation>
     </message>
     <message>
-        <location filename="../src/historytimecategorymodel.cpp" line="56"/>
+        <location filename="../src/historytimecategorymodel.cpp" line="66"/>
         <source>Seven months ago</source>
         <translation>Hét hónappal ezelőtt</translation>
     </message>
     <message>
-        <location filename="../src/historytimecategorymodel.cpp" line="57"/>
+        <location filename="../src/historytimecategorymodel.cpp" line="67"/>
         <source>Eight months ago</source>
         <translation>Nyolc hónappal ezelőtt</translation>
     </message>
     <message>
-        <location filename="../src/historytimecategorymodel.cpp" line="58"/>
+        <location filename="../src/historytimecategorymodel.cpp" line="68"/>
         <source>Nine months ago</source>
         <translation>Kilenc hónappal ezelőtt</translation>
     </message>
     <message>
-        <location filename="../src/historytimecategorymodel.cpp" line="59"/>
+        <location filename="../src/historytimecategorymodel.cpp" line="69"/>
         <source>Ten months ago</source>
         <translation>Tíz hónappal ezelőtt</translation>
     </message>
     <message>
-        <location filename="../src/historytimecategorymodel.cpp" line="60"/>
+        <location filename="../src/historytimecategorymodel.cpp" line="70"/>
         <source>Eleven months ago</source>
         <translation>Tizenegy hónappal ezelőtt</translation>
     </message>
     <message>
-        <location filename="../src/historytimecategorymodel.cpp" line="61"/>
+        <location filename="../src/historytimecategorymodel.cpp" line="71"/>
         <source>Twelve months ago</source>
         <translation>Tizenkét hónappal ezelőtt</translation>
     </message>
     <message>
-        <location filename="../src/historytimecategorymodel.cpp" line="62"/>
+        <location filename="../src/historytimecategorymodel.cpp" line="72"/>
         <source>A year ago</source>
         <translation>Egy évvel ezelőtt</translation>
     </message>
     <message>
-        <location filename="../src/historytimecategorymodel.cpp" line="63"/>
+        <location filename="../src/historytimecategorymodel.cpp" line="73"/>
         <source>Very long time ago</source>
         <translation>Nagyon régen</translation>
     </message>
     <message>
-        <location filename="../src/historytimecategorymodel.cpp" line="64"/>
+        <location filename="../src/historytimecategorymodel.cpp" line="74"/>
         <source>Never</source>
         <translation>Soha</translation>
     </message>
@@ -523,24 +523,6 @@
         <location filename="../src/macromodel.cpp" line="77"/>
         <source>Other</source>
         <translation>Másik</translation>
-    </message>
-</context>
-<context>
-    <name>Media::RecordingModel</name>
-    <message>
-        <location filename="../src/media/recordingmodel.cpp" line="189"/>
-        <source>Recordings</source>
-        <translation>Felvételek</translation>
-    </message>
-    <message>
-        <location filename="../src/media/recordingmodel.cpp" line="259"/>
-        <source>Text messages</source>
-        <translation>Szöveges üzenetek</translation>
-    </message>
-    <message>
-        <location filename="../src/media/recordingmodel.cpp" line="264"/>
-        <source>Audio/Video</source>
-        <translation>Hang/videó</translation>
     </message>
 </context>
 <context>
@@ -682,7 +664,7 @@
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="307"/>
         <source>Uid</source>
-        <translation>Egyéni azonosító (UID)</translation>
+        <translation>Egyéni azonosító</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="307"/>
@@ -943,12 +925,12 @@
     <message>
         <location filename="../src/certificate.cpp" line="102"/>
         <source>Md5 fingerprint</source>
-        <translation>MD5 (Message-Digest algoritmus) ujjlenyomat</translation>
+        <translation>MD5 ujjlenyomat</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="103"/>
         <source>Sha1 fingerprint</source>
-        <translation>SHA-1 (Secure Hash Algorithm 1) ujjlenyomat</translation>
+        <translation>SHA-1 ujjlenyomat</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="104"/>
@@ -1410,50 +1392,50 @@
         <translation>Peer profilgyűjtemény</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1232"/>
-        <location filename="../src/conversationmodel.cpp" line="1597"/>
-        <location filename="../src/conversationmodel.cpp" line="1849"/>
+        <location filename="../src/conversationmodel.cpp" line="1236"/>
+        <location filename="../src/conversationmodel.cpp" line="1601"/>
+        <location filename="../src/conversationmodel.cpp" line="1853"/>
         <source>Invitation received</source>
         <translation>Meghívó érkezett</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1233"/>
+        <location filename="../src/conversationmodel.cpp" line="1237"/>
         <source>Contact added</source>
         <translation>Kapcsolat hozzáadva</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1268"/>
-        <location filename="../src/conversationmodel.cpp" line="1275"/>
+        <location filename="../src/conversationmodel.cpp" line="1272"/>
+        <location filename="../src/conversationmodel.cpp" line="1279"/>
         <source>Invitation accepted</source>
         <translation>Meghívó elfogadva</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1479"/>
+        <location filename="../src/conversationmodel.cpp" line="1483"/>
         <source>ð Outgoing call</source>
         <translation>ð Kimenő hívás</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1481"/>
+        <location filename="../src/conversationmodel.cpp" line="1485"/>
         <source>ð Incoming call</source>
         <translation>ð Bejövő hívás</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1494"/>
+        <location filename="../src/conversationmodel.cpp" line="1498"/>
         <source>ð Outgoing call - </source>
         <translation>ð Kimenő hívás - </translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1497"/>
+        <location filename="../src/conversationmodel.cpp" line="1501"/>
         <source>ð Incoming call - </source>
         <translation>ð Bejövő hívás - </translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1501"/>
+        <location filename="../src/conversationmodel.cpp" line="1505"/>
         <source>ð½ Missed outgoing call</source>
         <translation>ð½ Nem fogadott kimenő hívás</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1503"/>
+        <location filename="../src/conversationmodel.cpp" line="1507"/>
         <source>ð½ Missed incoming call</source>
         <translation>ð½ Nem fogadott bejövő hívás</translation>
     </message>
@@ -1511,6 +1493,24 @@
         <location filename="../src/video/sourcemodel.cpp" line="107"/>
         <source>FILE</source>
         <translation>FÁJL</translation>
+    </message>
+</context>
+<context>
+    <name>media::RecordingModel</name>
+    <message>
+        <location filename="../src/media/recordingmodel.cpp" line="189"/>
+        <source>Recordings</source>
+        <translation>Felvételek</translation>
+    </message>
+    <message>
+        <location filename="../src/media/recordingmodel.cpp" line="259"/>
+        <source>Text messages</source>
+        <translation>Szöveges üzenetek</translation>
+    </message>
+    <message>
+        <location filename="../src/media/recordingmodel.cpp" line="264"/>
+        <source>Audio/Video</source>
+        <translation>Hang/videó</translation>
     </message>
 </context>
 </TS>
