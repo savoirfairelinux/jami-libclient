@@ -747,7 +747,9 @@ ELSEIF(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
     #For some reason, QSemaphore wont compile on Windows without QtConcurrent
     if(${ENABLE_STATIC} MATCHES true)
         target_link_libraries(ringclient_static Qt5::Concurrent)
-    elseif(ENABLE_SHARED)
+    endif()
+
+    if(ENABLE_SHARED)
         target_link_libraries(ringclient Qt5::Concurrent)
     endif()
 ENDIF()
@@ -762,7 +764,7 @@ IF (NOT CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
 ENDIF()
 
 IF(${ENABLE_LIBWRAP} MATCHES true)
-   IF((NOT ${ring_BIN} MATCHES "ring_BIN-NOTFOUND") AND (${ENABLE_STATIC} MATCHES false))
+   IF((NOT ${ring_BIN} MATCHES "ring_BIN-NOTFOUND") AND ENABLE_SHARED)
       TARGET_LINK_LIBRARIES( ringclient
          qtwrapper
          ${ring_BIN}
@@ -799,7 +801,7 @@ IF(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
    ENDIF()
 ENDIF()
 
-if(${ENABLE_STATIC} MATCHES false)
+if(ENABLE_SHARED)
     SET_TARGET_PROPERTIES( ringclient
       PROPERTIES VERSION ${GENERIC_LIB_VERSION} SOVERSION ${GENERIC_LIB_VERSION}
     )
