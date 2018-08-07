@@ -234,6 +234,7 @@ NewAccountModel::setAvatar(const std::string& accountId, const std::string& avat
     if (!accountProfileId.empty()) {
         authority::database::setAvatarForProfileId(pimpl_->database, accountProfileId, avatar);
     }
+    emit profileUpdated(accountId);
 }
 
 bool
