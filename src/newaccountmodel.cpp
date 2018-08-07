@@ -397,6 +397,10 @@ NewAccountModelPimpl::slotNameRegistrationEnded(const std::string& accountId, in
     {
     case 0:
         convertedStatus = account::RegisterNameStatus::SUCCESS;
+        if (accounts.find(accountId) != accounts.end()) {
+            accounts.erase(accountId);
+            addToAccounts(accountId);
+        }
         break;
     case 1:
         convertedStatus = account::RegisterNameStatus::WRONG_PASSWORD;
