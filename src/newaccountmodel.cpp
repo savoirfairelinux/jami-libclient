@@ -220,6 +220,7 @@ NewAccountModel::setAlias(const std::string& accountId, const std::string& alias
     if (!accountProfileId.empty()) {
         authority::database::setAliasForProfileId(pimpl_->database, accountProfileId, alias);
     }
+    emit profileUpdated(accountId);
 }
 
 void
@@ -234,6 +235,7 @@ NewAccountModel::setAvatar(const std::string& accountId, const std::string& avat
     if (!accountProfileId.empty()) {
         authority::database::setAvatarForProfileId(pimpl_->database, accountProfileId, avatar);
     }
+    emit profileUpdated(accountId);
 }
 
 bool
