@@ -122,6 +122,10 @@ public:
                 [this] (const std::string &accountId, const std::map<std::string, std::string>& devices) {
                     Q_EMIT this->knownDevicesChanged(QString(accountId.c_str()), convertMap(devices));
                 }),
+            exportable_callback<ConfigurationSignal::DeviceRevocationEnded>(
+                [this] (const std::string &accountId, const std::string &device, int status) {
+                    Q_EMIT this->deviceRevocationEnded(QString(accountId.c_str()), QString(device.c_str()), status);
+            }),
             exportable_callback<ConfigurationSignal::ExportOnRingEnded>(
                 [this] (const std::string &accountId, int status, const std::string &pin) {
                     Q_EMIT this->exportOnRingEnded(QString(accountId.c_str()), status, QString(pin.c_str()));
