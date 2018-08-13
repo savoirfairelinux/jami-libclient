@@ -305,7 +305,7 @@
     <message>
         <location filename="../src/private/sortproxies.cpp" line="147"/>
         <source>Other</source>
-        <translation type="unfinished"/>
+        <translation>Kita</translation>
     </message>
 </context>
 <context>
@@ -514,7 +514,7 @@
     <message>
         <location filename="../src/macromodel.cpp" line="264"/>
         <source>Other</source>
-        <translation type="unfinished"/>
+        <translation>Kita</translation>
     </message>
 </context>
 <context>
@@ -522,7 +522,7 @@
     <message>
         <location filename="../src/macromodel.cpp" line="77"/>
         <source>Other</source>
-        <translation type="unfinished"/>
+        <translation>Kita</translation>
     </message>
 </context>
 <context>
@@ -745,7 +745,7 @@
     <message>
         <location filename="../src/accountstatusmodel.cpp" line="179"/>
         <source>Code</source>
-        <translation type="unfinished"/>
+        <translation>Kodas</translation>
     </message>
     <message>
         <location filename="../src/accountstatusmodel.cpp" line="181"/>
@@ -830,7 +830,7 @@
     <message>
         <location filename="../src/certificate.cpp" line="56"/>
         <source>The file is a valid certificate</source>
-        <translation type="unfinished"/>
+        <translation>Failas yra galiojantis liudijimas</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="57"/>
@@ -870,7 +870,7 @@
     <message>
         <location filename="../src/certificate.cpp" line="91"/>
         <source>Activation date</source>
-        <translation type="unfinished"/>
+        <translation>Aktyvavimo data</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="92"/>
@@ -976,7 +976,7 @@
     <message>
         <location filename="../src/certificatemodel.cpp" line="397"/>
         <source>An organisation</source>
-        <translation type="unfinished"/>
+        <translation>Organizacija</translation>
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="420"/>
@@ -1102,12 +1102,12 @@
     <message>
         <location filename="../src/numbercategory.cpp" line="72"/>
         <source>Phone number types</source>
-        <translation type="unfinished"/>
+        <translation>Telefono numerio tipai</translation>
     </message>
     <message>
         <location filename="../src/numbercategorymodel.cpp" line="186"/>
         <source>Other</source>
-        <translation type="unfinished"/>
+        <translation>Kita</translation>
     </message>
     <message>
         <location filename="../src/protocolmodel.cpp" line="50"/>
@@ -1392,52 +1392,52 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1236"/>
-        <location filename="../src/conversationmodel.cpp" line="1601"/>
-        <location filename="../src/conversationmodel.cpp" line="1853"/>
+        <location filename="../src/conversationmodel.cpp" line="1237"/>
+        <location filename="../src/conversationmodel.cpp" line="1602"/>
+        <location filename="../src/conversationmodel.cpp" line="1854"/>
         <source>Invitation received</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1237"/>
+        <location filename="../src/conversationmodel.cpp" line="1238"/>
         <source>Contact added</source>
         <translation>Kontaktas pridėtas</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1272"/>
-        <location filename="../src/conversationmodel.cpp" line="1279"/>
+        <location filename="../src/conversationmodel.cpp" line="1273"/>
+        <location filename="../src/conversationmodel.cpp" line="1280"/>
         <source>Invitation accepted</source>
-        <translation type="unfinished"/>
+        <translation>Pakvietimas priimtas</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1483"/>
+        <location filename="../src/conversationmodel.cpp" line="1484"/>
         <source>ð Outgoing call</source>
         <translation>ð Išsiunčiamasis skambutis</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1485"/>
+        <location filename="../src/conversationmodel.cpp" line="1486"/>
         <source>ð Incoming call</source>
         <translation>ð Gaunamasis skambutis</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1498"/>
+        <location filename="../src/conversationmodel.cpp" line="1499"/>
         <source>ð Outgoing call - </source>
         <translation>ð Išsiunčiamasis skambutis - </translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1501"/>
+        <location filename="../src/conversationmodel.cpp" line="1502"/>
         <source>ð Incoming call - </source>
         <translation>ð Gaunamasis skambutis - </translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1505"/>
+        <location filename="../src/conversationmodel.cpp" line="1506"/>
         <source>ð½ Missed outgoing call</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1507"/>
+        <location filename="../src/conversationmodel.cpp" line="1508"/>
         <source>ð½ Missed incoming call</source>
-        <translation type="unfinished"/>
+        <translation>ð½ Praleistas gaunamasis skambutis</translation>
     </message>
 </context>
 <context>
