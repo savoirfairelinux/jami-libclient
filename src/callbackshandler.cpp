@@ -169,6 +169,12 @@ CallbacksHandler::CallbacksHandler(const Lrc& parent)
             this,
             &CallbacksHandler::slotMigrationEnded,
             Qt::QueuedConnection);
+
+    connect(&ConfigurationManager::instance(),
+            &ConfigurationManagerInterface::debugMessageReceived,
+            this,
+            &CallbacksHandler::slotDebugMessageReceived,
+            Qt::QueuedConnection);
 }
 
 CallbacksHandler::~CallbacksHandler()
@@ -416,6 +422,12 @@ void
 CallbacksHandler::slotMigrationEnded(const QString& accountId, const QString& status)
 {
     emit migrationEnded(accountId.toStdString(), status == "SUCCESS");
+}
+
+void
+CallbacksHandler::slotDebugMessageReceived(const QString& message)
+{
+    emit debugMessageReceived(message.toStdString());
 }
 
 } // namespace lrc

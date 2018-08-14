@@ -87,6 +87,10 @@ Q_SIGNALS:
      * Emitted when the unread interaction is now read
      */
      void newReadInteraction(const std::string& accountId, const std::string& conversation, uint64_t interactionId) const;
+     /**
+     * Emit debugMessageReceived
+     */
+     void debugMessageReceived(const std::string& message);
 
 };
 
