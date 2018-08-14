@@ -222,6 +222,12 @@ Q_SIGNALS:
      */
     void migrationEnded(const std::string& accountId, bool ok);
 
+    /**
+    * Debug message received
+    * @param message
+    */
+    void debugMessageReceived(const std::string& message);
+
 private Q_SLOTS:
     /**
      * Emit newAccountMessage
@@ -386,6 +392,12 @@ private Q_SLOTS:
      * @param status
      */
     void slotMigrationEnded(const QString& accountId, const QString& status);
+
+    /**
+    * emit debugMessageReceived
+    * @param message
+    */
+    void slotDebugMessageReceived(const std::string& message);
 
 private:
     const api::Lrc& parent;

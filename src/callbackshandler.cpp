@@ -23,6 +23,7 @@
 #include "api/lrc.h"
 #include "api/newaccountmodel.h"
 #include "api/datatransfermodel.h"
+#include "api/behaviorcontroller.h"
 
 // Lrc
 #include "account.h"
@@ -33,6 +34,9 @@
 
 // DRing
 #include <datatransfer_interface.h>
+
+// For the debugMessageReceived connection that queues const std::string refs
+Q_DECLARE_METATYPE(std::string);
 
 namespace lrc
 {
@@ -168,6 +172,12 @@ CallbacksHandler::CallbacksHandler(const Lrc& parent)
             &ConfigurationManagerInterface::migrationEnded,
             this,
             &CallbacksHandler::slotMigrationEnded,
+            Qt::QueuedConnection);
+
+    connect(&ConfigurationManager::instance(),
+            &ConfigurationManagerInterface::debugMessageReceived,
+            this,
+            &CallbacksHandler::slotDebugMessageReceived,
             Qt::QueuedConnection);
 }
 
@@ -416,6 +426,12 @@ void
 CallbacksHandler::slotMigrationEnded(const QString& accountId, const QString& status)
 {
     emit migrationEnded(accountId.toStdString(), status == "SUCCESS");
+}
+
+void
+CallbacksHandler::slotDebugMessageReceived(const std::string& message)
+{
+    emit parent.getBehaviorController().debugMessageReceived(message);
 }
 
 } // namespace lrc

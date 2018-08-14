@@ -49,7 +49,7 @@ public:
      * get a reference on the behavior controller.
      * @return a BehaviorController&.
      */
-    const BehaviorController& getBehaviorController() const;
+    BehaviorController& getBehaviorController() const;
     /**
      * get a reference on the DataTransfer controller.
      * @return a DataTransferModel&.
