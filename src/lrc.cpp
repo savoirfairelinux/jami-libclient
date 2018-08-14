@@ -64,7 +64,7 @@ Lrc::getAccountModel() const
     return *lrcPimpl_->accountModel;
 }
 
-const BehaviorController&
+BehaviorController&
 Lrc::getBehaviorController() const
 {
     return *lrcPimpl_->behaviorController;
