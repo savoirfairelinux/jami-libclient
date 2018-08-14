@@ -92,7 +92,7 @@ NewCodecModel::increasePriority(const unsigned int& codecId, bool isVideo)
         }
         while (it != codecs.end()) {
             if (it->id == codecId) {
-                std::swap(*it, *it--);
+                std::iter_swap(it, std::prev(it));
                 break;
             }
             it++;
@@ -115,7 +115,7 @@ NewCodecModel::decreasePriority(const unsigned int& codecId, bool isVideo)
         }
         while (it != codecs.end()) {
             if (it->id == codecId) {
-                std::swap(*it, *it++);
+                std::iter_swap(it, std::next(it));
                 break;
             }
             it++;
