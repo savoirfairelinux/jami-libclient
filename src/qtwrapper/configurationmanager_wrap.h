@@ -53,6 +53,7 @@ public:
         using DRing::ConfigurationSignal;
         using DRing::AudioSignal;
         using DRing::DataTransferSignal;
+        using DRing::DebugSignal;
 
         setObjectName("ConfigurationManagerInterface");
         confHandlers = {
@@ -162,6 +163,10 @@ public:
             exportable_callback<ConfigurationSignal::ContactRemoved>(
                 [this] (const std::string& account_id, const std::string& uri, const bool& banned) {
                     Q_EMIT this->contactRemoved(QString(account_id.c_str()), QString(uri.c_str()), banned);
+                }),
+            exportable_callback<DebugSignal::MessageSend>(
+                [this](const std::string& message) {
+                    Q_EMIT this->debugMessageReceived(message);
                 }),
         };
 
@@ -700,6 +705,7 @@ Q_SIGNALS: // SIGNALS
     void contactRemoved(const QString &accountID, const QString &uri, bool banned);
     void dataTransferEvent(qulonglong transfer_id, uint code);
     void deviceRevocationEnded(const QString& accountId, const QString& deviceId, int status);
+    void debugMessageReceived(const std::string& message);
 };
 
 namespace org { namespace ring { namespace Ring {
