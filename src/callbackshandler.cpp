@@ -23,6 +23,7 @@
 #include "api/lrc.h"
 #include "api/newaccountmodel.h"
 #include "api/datatransfermodel.h"
+#include "api/behaviorcontroller.h"
 
 // Lrc
 #include "account.h"
@@ -33,6 +34,12 @@
 
 // DRing
 #include <datatransfer_interface.h>
+
+#ifdef ENABLE_LIBWRAP
+// For the debugMessageReceived connection that queues const std::string refs
+// when not using dbus
+Q_DECLARE_METATYPE(std::string);
+#endif
 
 namespace lrc
 {
@@ -168,6 +175,12 @@ CallbacksHandler::CallbacksHandler(const Lrc& parent)
             &ConfigurationManagerInterface::migrationEnded,
             this,
             &CallbacksHandler::slotMigrationEnded,
+            Qt::QueuedConnection);
+
+    connect(&ConfigurationManager::instance(),
+            &ConfigurationManagerInterface::debugMessageReceived,
+            this,
+            &CallbacksHandler::slotDebugMessageReceived,
             Qt::QueuedConnection);
 }
 
@@ -417,5 +430,19 @@ CallbacksHandler::slotMigrationEnded(const QString& accountId, const QString& st
 {
     emit migrationEnded(accountId.toStdString(), status == "SUCCESS");
 }
+
+#ifdef ENABLE_LIBWRAP
+void
+CallbacksHandler::slotDebugMessageReceived(const std::string& message)
+{
+    emit parent.getBehaviorController().debugMessageReceived(message);
+}
+#else
+void
+CallbacksHandler::slotDebugMessageReceived(const QString& message)
+{
+    emit parent.getBehaviorController().debugMessageReceived(message.toStdString());
+}
+#endif
 
 } // namespace lrc
