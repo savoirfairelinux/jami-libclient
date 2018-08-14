@@ -21,6 +21,7 @@
 #include "callmanager.h"
 #include "presencemanager.h"
 #include "configurationmanager.h"
+
 #ifdef ENABLE_VIDEO
  #include "videomanager.h"
 #endif //ENABLE_VIDEO
@@ -39,6 +40,7 @@ InstanceManagerInterface::InstanceManagerInterface() : m_pTimer(nullptr)
    using DRing::ConfigurationSignal;
    using DRing::PresenceSignal;
    using DRing::DataTransferSignal;
+   using DRing::DebugSignal;
 
 #ifdef ENABLE_VIDEO
    using DRing::VideoSignal;
