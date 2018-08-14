@@ -23,6 +23,7 @@
 #include "api/lrc.h"
 #include "api/newaccountmodel.h"
 #include "api/datatransfermodel.h"
+#include "api/behaviorcontroller.h"
 
 // Lrc
 #include "account.h"
@@ -168,6 +169,12 @@ CallbacksHandler::CallbacksHandler(const Lrc& parent)
             &ConfigurationManagerInterface::migrationEnded,
             this,
             &CallbacksHandler::slotMigrationEnded,
+            Qt::QueuedConnection);
+
+    connect(&ConfigurationManager::instance(),
+            &ConfigurationManagerInterface::debugMessageReceived,
+            this,
+            &CallbacksHandler::slotDebugMessageReceived,
             Qt::QueuedConnection);
 }
 
@@ -416,6 +423,12 @@ void
 CallbacksHandler::slotMigrationEnded(const QString& accountId, const QString& status)
 {
     emit migrationEnded(accountId.toStdString(), status == "SUCCESS");
+}
+
+void
+CallbacksHandler::slotDebugMessageReceived(const QString& message)
+{
+    emit parent.getBehaviorController().debugMessageReceived(message.toStdString());
 }
 
 } // namespace lrc
