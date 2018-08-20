@@ -950,7 +950,7 @@
     <message>
         <location filename="../src/certificate.cpp" line="107"/>
         <source>Outgoing server</source>
-        <translation type="unfinished"/>
+        <translation>Исходящий сервер</translation>
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="183"/>
@@ -1217,7 +1217,7 @@
     <message>
         <location filename="../src/api/call.h" line="67"/>
         <source>Outgoing requested</source>
-        <translation type="unfinished"/>
+        <translation>Запрошен исходящий</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="69"/>
@@ -1258,7 +1258,7 @@
     <message>
         <location filename="../src/api/call.h" line="87"/>
         <source>Auto answering</source>
-        <translation type="unfinished"/>
+        <translation>Автоответ</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="519"/>
@@ -1393,8 +1393,8 @@
     </message>
     <message>
         <location filename="../src/conversationmodel.cpp" line="1237"/>
-        <location filename="../src/conversationmodel.cpp" line="1602"/>
-        <location filename="../src/conversationmodel.cpp" line="1854"/>
+        <location filename="../src/conversationmodel.cpp" line="1607"/>
+        <location filename="../src/conversationmodel.cpp" line="1859"/>
         <source>Invitation received</source>
         <translation>Получено приглашение</translation>
     </message>
@@ -1410,32 +1410,32 @@
         <translation>Приглашение принято</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1484"/>
+        <location filename="../src/conversationmodel.cpp" line="1489"/>
         <source>ð Outgoing call</source>
         <translation>ð Исходящий вызов</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1486"/>
+        <location filename="../src/conversationmodel.cpp" line="1491"/>
         <source>ð Incoming call</source>
         <translation>ð Входящий вызов</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1499"/>
+        <location filename="../src/conversationmodel.cpp" line="1504"/>
         <source>ð Outgoing call - </source>
         <translation>ð Исходящий вызов - </translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1502"/>
+        <location filename="../src/conversationmodel.cpp" line="1507"/>
         <source>ð Incoming call - </source>
         <translation>ð Входящий вызов - </translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1506"/>
+        <location filename="../src/conversationmodel.cpp" line="1511"/>
         <source>ð½ Missed outgoing call</source>
         <translation>ð½ Непринятый исходящий вызов</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1508"/>
+        <location filename="../src/conversationmodel.cpp" line="1513"/>
         <source>ð½ Missed incoming call</source>
         <translation>ð½ Пропущенный входящий вызов</translation>
     </message>

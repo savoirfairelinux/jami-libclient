@@ -23,13 +23,13 @@
         <location filename="../src/account.cpp" line="337"/>
         <source>Initializing</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>آغازِ فرایند</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="339"/>
         <source>Trying...</source>
         <extracomment>Account state</extracomment>
-        <translation>در حال نوشتن…</translation>
+        <translation>در حال سعی کردن…</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="341"/>
@@ -41,7 +41,7 @@
         <location filename="../src/account.cpp" line="343"/>
         <source>Authentication Failed</source>
         <extracomment>Account state</extracomment>
-        <translation>تأیید هویت شکست خورد</translation>
+        <translation>تأیید هویت ناموفق</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="345"/>
@@ -71,7 +71,7 @@
         <location filename="../src/account.cpp" line="353"/>
         <source>Service unavailable</source>
         <extracomment>Account state</extracomment>
-        <translation>خدمت موجود نیست</translation>
+        <translation>خدمات موجود نیست</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="355"/>
@@ -110,7 +110,7 @@
     <message>
         <location filename="../src/bootstrapmodel.cpp" line="381"/>
         <source>Port</source>
-        <translation>درگاه</translation>
+        <translation>پرت</translation>
     </message>
 </context>
 <context>
@@ -149,13 +149,13 @@
         <location filename="../src/call.cpp" line="735"/>
         <source>Hold</source>
         <extracomment>Call state</extracomment>
-        <translation>نگه داشتن</translation>
+        <translation>دست نگاه دارید</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="738"/>
         <source>Failed</source>
         <extracomment>Call state</extracomment>
-        <translation>شکست خورد</translation>
+        <translation>انجام نشد</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="741"/>
@@ -173,13 +173,13 @@
         <location filename="../src/call.cpp" line="747"/>
         <source>Transfer hold</source>
         <extracomment>Call state</extracomment>
-        <translation type="unfinished"/>
+        <translation>انتقال انجام نشد</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="750"/>
         <source>Over</source>
         <extracomment>Call state</extracomment>
-        <translation type="unfinished"/>
+        <translation>تمام شد</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="753"/>
@@ -198,7 +198,7 @@
         <location filename="../src/call.cpp" line="759"/>
         <source>Conference (hold)</source>
         <extracomment>Call state</extracomment>
-        <translation type="unfinished"/>
+        <translation>کنفرانس (در حالت تعلیق)</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="762"/>
@@ -216,13 +216,13 @@
         <location filename="../src/call.cpp" line="768"/>
         <source>Aborted</source>
         <extracomment>Call state</extracomment>
-        <translation type="unfinished"/>
+        <translation>لغو شد</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="771"/>
         <source>Communication established</source>
         <extracomment>Call state</extracomment>
-        <translation type="unfinished"/>
+        <translation>ارتباط برقرار شد</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="865"/>
@@ -257,7 +257,7 @@
     <message>
         <location filename="../src/call.cpp" line="1794"/>
         <source>Aborted</source>
-        <translation type="unfinished"/>
+        <translation>لغو شد</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="1815"/>
@@ -276,7 +276,7 @@
     <message>
         <location filename="../src/categorizedbookmarkmodel.cpp" line="299"/>
         <source>Contacts</source>
-        <translation>مخاطبان</translation>
+        <translation>لیست مخاطبین</translation>
     </message>
 </context>
 <context>
@@ -504,7 +504,7 @@
     <message>
         <location filename="../src/macromodel.cpp" line="157"/>
         <source>Macros</source>
-        <translation type="unfinished"/>
+        <translation>ماکروها</translation>
     </message>
     <message>
         <location filename="../src/macromodel.cpp" line="263"/>
@@ -538,7 +538,7 @@
     <message>
         <location filename="../src/numbercompletionmodel.cpp" line="265"/>
         <source>URI</source>
-        <translation type="unfinished"/>
+        <translation>تعیین کننده هویت منابع یکشکل یو آر ای</translation>
     </message>
     <message>
         <location filename="../src/numbercompletionmodel.cpp" line="265"/>
@@ -569,7 +569,7 @@
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="234"/>
         <source>This account does not support presence tracking</source>
-        <translation type="unfinished"/>
+        <translation>این حساب حضور را رد یابی نمیکند</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="237"/>
@@ -579,7 +579,7 @@
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="305"/>
         <source>URI</source>
-        <translation type="unfinished"/>
+        <translation>تعیین کننده هویت منابع یکشکل یو آر ای</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="305"/>
@@ -604,22 +604,22 @@
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="305"/>
         <source>Call count</source>
-        <translation type="unfinished"/>
+        <translation>شمارش تماس ها</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="305"/>
         <source>Week count</source>
-        <translation type="unfinished"/>
+        <translation>شمارش هفته ها</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="306"/>
         <source>Trimester count</source>
-        <translation type="unfinished"/>
+        <translation>شمارش دوره سه ماهه</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="306"/>
         <source>Have Called</source>
-        <translation type="unfinished"/>
+        <translation>تماس گرفته اند</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="306"/>
@@ -629,7 +629,7 @@
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="306"/>
         <source>Name_count</source>
-        <translation type="unfinished"/>
+        <translation>نام_شمارش</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="306"/>
@@ -639,17 +639,17 @@
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="306"/>
         <source>Popularity_index</source>
-        <translation type="unfinished"/>
+        <translation>محبوبیت_شاخص</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="307"/>
         <source>Bookmarked</source>
-        <translation type="unfinished"/>
+        <translation>نشانه گذاری شده</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="307"/>
         <source>Tracked</source>
-        <translation type="unfinished"/>
+        <translation>ردیابی شده</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="307"/>
@@ -659,22 +659,22 @@
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="307"/>
         <source>Presence message</source>
-        <translation type="unfinished"/>
+        <translation>پیام حضور</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="307"/>
         <source>Uid</source>
-        <translation type="unfinished"/>
+        <translation>شناسه کاربر</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="307"/>
         <source>Has certificate</source>
-        <translation type="unfinished"/>
+        <translation>گواهینامه دارد</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="307"/>
         <source>Registered name</source>
-        <translation type="unfinished"/>
+        <translation>نام ثبت شده</translation>
     </message>
 </context>
 <context>
@@ -708,7 +708,7 @@
         <location filename="../src/presencestatusmodel.cpp" line="308"/>
         <location filename="../src/presencestatusmodel.cpp" line="361"/>
         <source>Custom</source>
-        <translation type="unfinished"/>
+        <translation>سفارشی</translation>
     </message>
     <message>
         <location filename="../src/presencestatusmodel.cpp" line="308"/>
@@ -716,7 +716,7 @@
         <location filename="../src/presencestatusmodel.cpp" line="354"/>
         <location filename="../src/presencestatusmodel.cpp" line="361"/>
         <source>N/A</source>
-        <translation type="unfinished"/>
+        <translation>قابل اجرا نیست</translation>
     </message>
 </context>
 <context>
@@ -760,7 +760,7 @@
     <message>
         <location filename="../src/certificate.cpp" line="42"/>
         <source>Has a private key</source>
-        <translation type="unfinished"/>
+        <translation>یک کلید خصوصی دارد</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="43"/>
@@ -770,97 +770,97 @@
     <message>
         <location filename="../src/certificate.cpp" line="44"/>
         <source>Has strong signing</source>
-        <translation type="unfinished"/>
+        <translation>امضای قوی دارد</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="45"/>
         <source>Is not self signed</source>
-        <translation type="unfinished"/>
+        <translation>خود نشانه نیست</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="46"/>
         <source>Have a matching key pair</source>
-        <translation type="unfinished"/>
+        <translation>یک جفت کلید تطبیق دارید.</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="47"/>
         <source>Has the right private key file permissions</source>
-        <translation type="unfinished"/>
+        <translation>دارای مجوز درست برای دسترسی به فایل خصوصی را دارد.</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="48"/>
         <source>Has the right public key file permissions</source>
-        <translation type="unfinished"/>
+        <translation>دارای مجوز درست برای دسترسی به فایل عمومی  را دارد.</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="49"/>
         <source>Has the right private key directory permissions</source>
-        <translation type="unfinished"/>
+        <translation>دارای مجوز درست برای دسترسی به دایرکتوری کلید خصوصی است.</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="50"/>
         <source>Has the right public key directory permissions</source>
-        <translation type="unfinished"/>
+        <translation>دارای مجوز درست برای دسترسی به دایرکتوری کلید عمومی است.</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="51"/>
         <source>Has the right private key directory location</source>
-        <translation type="unfinished"/>
+        <translation>مکان درست دایرکتوری کلید خصوصی را دارد.</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="52"/>
         <source>Has the right public key directory location</source>
-        <translation type="unfinished"/>
+        <translation>مکان درست دایرکتوری کلید عمومی را دارد.</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="53"/>
         <source>Has the right private key SELinux attributes</source>
-        <translation type="unfinished"/>
+        <translation>دارای کلید خصوصی درست برای دسترسی به SFLinux Attributes است.</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="54"/>
         <source>Has the right public key SELinux attributes</source>
-        <translation type="unfinished"/>
+        <translation>دارای کلید عمومی درست برای دسترسی به SFLinux Attributes است.</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="55"/>
         <source>The certificate file exist and is readable</source>
-        <translation type="unfinished"/>
+        <translation>فایل گواهی وجود دارد و قابل خواندن است.</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="56"/>
         <source>The file is a valid certificate</source>
-        <translation type="unfinished"/>
+        <translation>فایل موجود یک گواهی معتبر است.</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="57"/>
         <source>The certificate has a valid authority</source>
-        <translation type="unfinished"/>
+        <translation>این گواهی دارای مجوز معتبر است.</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="58"/>
         <source>The certificate has a known authority</source>
-        <translation type="unfinished"/>
+        <translation>گواهی دارای مجوز شناخته شده است.</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="59"/>
         <source>The certificate is not revoked</source>
-        <translation type="unfinished"/>
+        <translation>گواهی آن لغونشده است.</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="60"/>
         <source>The certificate authority match</source>
-        <translation type="unfinished"/>
+        <translation>گواهینامه مطابقت دارد.</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="61"/>
         <source>The certificate has the expected owner</source>
-        <translation type="unfinished"/>
+        <translation>گواهی متعلق به صاحب مورد نظر است.</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="62"/>
         <source>The certificate is within its active period</source>
-        <translation type="unfinished"/>
+        <translation>گواهی هنوز معتبر است.</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="90"/>
@@ -875,17 +875,17 @@
     <message>
         <location filename="../src/certificate.cpp" line="92"/>
         <source>Require a private key password</source>
-        <translation type="unfinished"/>
+        <translation>نیاز به رمز عبور برای کلید خصوصی است.</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="93"/>
         <source>Public signature</source>
-        <translation type="unfinished"/>
+        <translation>امضای عمومی</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="94"/>
         <source>Version</source>
-        <translation>نگارش</translation>
+        <translation>نسخه</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="95"/>
@@ -895,67 +895,67 @@
     <message>
         <location filename="../src/certificate.cpp" line="96"/>
         <source>Issuer</source>
-        <translation type="unfinished"/>
+        <translation>صادر کننده</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="97"/>
         <source>Subject key algorithm</source>
-        <translation type="unfinished"/>
+        <translation>الگوریتم کلیدی موضوع</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="98"/>
         <source>Common name (CN)</source>
-        <translation type="unfinished"/>
+        <translation>نام مشترک (سی ان)</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="99"/>
         <source>Name (N)</source>
-        <translation type="unfinished"/>
+        <translation>نام (N)</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="100"/>
         <source>Organization (O)</source>
-        <translation type="unfinished"/>
+        <translation>سازمان (او)</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="101"/>
         <source>Signature algorithm</source>
-        <translation type="unfinished"/>
+        <translation>الگوریتم امضا</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="102"/>
         <source>Md5 fingerprint</source>
-        <translation type="unfinished"/>
+        <translation>اثرانگشت Md5</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="103"/>
         <source>Sha1 fingerprint</source>
-        <translation type="unfinished"/>
+        <translation>اثر انگشت Sha1</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="104"/>
         <source>Public key id</source>
-        <translation type="unfinished"/>
+        <translation>شناسه کلید عمومی</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="105"/>
         <source>Issuer domain name</source>
-        <translation type="unfinished"/>
+        <translation>نام صادر کننده دومین</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="106"/>
         <source>Next expected update</source>
-        <translation type="unfinished"/>
+        <translation>به روز رسانی بعدی</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="107"/>
         <source>Outgoing server</source>
-        <translation type="unfinished"/>
+        <translation>سرور خروجی</translation>
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="183"/>
         <source>Local certificate store</source>
-        <translation type="unfinished"/>
+        <translation>فروشگاه گواهی محلی</translation>
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="267"/>
@@ -966,17 +966,17 @@
     <message>
         <location filename="../src/certificatemodel.cpp" line="267"/>
         <source>Certificate not associated with a group</source>
-        <translation type="unfinished"/>
+        <translation>گواهی با هیچ گروهی مرتبط نیست</translation>
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="397"/>
         <source>A certificate</source>
-        <translation type="unfinished"/>
+        <translation>یک گواهی</translation>
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="397"/>
         <source>An organisation</source>
-        <translation type="unfinished"/>
+        <translation>یک سازمان</translation>
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="420"/>
@@ -986,77 +986,77 @@
     <message>
         <location filename="../src/certificatemodel.cpp" line="420"/>
         <source>The content of the certificate</source>
-        <translation type="unfinished"/>
+        <translation>محتوای گواهی</translation>
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="421"/>
         <source>Checks</source>
-        <translation type="unfinished"/>
+        <translation>بررسی ها</translation>
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="421"/>
         <source>Various security related information</source>
-        <translation type="unfinished"/>
+        <translation>اطلاعات مختلف مربوط به امنیت</translation>
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="610"/>
         <source>Header</source>
-        <translation type="unfinished"/>
+        <translation>سرتیتر</translation>
     </message>
     <message>
         <location filename="../src/daemoncertificatecollection.cpp" line="148"/>
         <source>Daemon certificate store</source>
-        <translation type="unfinished"/>
+        <translation>فروشگاه گواهی Daemon</translation>
     </message>
     <message>
         <location filename="../src/daemoncertificatecollection.cpp" line="152"/>
         <source>%1 banned list</source>
         <extracomment>The list of banned certificates for this account</extracomment>
-        <translation type="unfinished"/>
+        <translation>٪ 1 لیست ممنوع</translation>
     </message>
     <message>
         <location filename="../src/daemoncertificatecollection.cpp" line="155"/>
         <source>%1 allowed list</source>
         <extracomment>The list of allowed certificates for this account</extracomment>
-        <translation type="unfinished"/>
+        <translation>٪ 1  لیست مجاز</translation>
     </message>
     <message>
         <location filename="../src/daemoncertificatecollection.cpp" line="160"/>
         <location filename="../src/foldercertificatecollection.cpp" line="198"/>
         <source>Certificate</source>
-        <translation type="unfinished"/>
+        <translation>گواهی</translation>
     </message>
     <message>
         <location filename="../src/extensions/presencecollectionextension.cpp" line="38"/>
         <source>Presence tracking</source>
-        <translation type="unfinished"/>
+        <translation>ردیابی حضور</translation>
     </message>
     <message>
         <location filename="../src/extensions/securityevaluationextension.cpp" line="63"/>
         <source>Security evaluation</source>
-        <translation type="unfinished"/>
+        <translation>ارزیابی امنیت</translation>
     </message>
     <message>
         <location filename="../src/fallbackpersoncollection.cpp" line="194"/>
         <location filename="../src/transitionalpersonbackend.cpp" line="150"/>
         <source>Contact</source>
-        <translation type="unfinished"/>
+        <translation>لطفا تماس بگیرید</translation>
     </message>
     <message>
         <location filename="../src/localbookmarkcollection.cpp" line="212"/>
         <source>Local bookmarks</source>
-        <translation type="unfinished"/>
+        <translation>نشانکهای یا بوک مارک ها محلی</translation>
     </message>
     <message>
         <location filename="../src/localbookmarkcollection.cpp" line="217"/>
         <location filename="../src/useractionmodel.cpp" line="532"/>
         <source>Bookmark</source>
-        <translation type="unfinished"/>
+        <translation>بوک مارک ها</translation>
     </message>
     <message>
         <location filename="../src/localhistorycollection.cpp" line="195"/>
         <source>Local history</source>
-        <translation type="unfinished"/>
+        <translation>تاریخ محلی</translation>
     </message>
     <message>
         <location filename="../src/localhistorycollection.cpp" line="200"/>
@@ -1066,43 +1066,43 @@
     <message>
         <location filename="../src/localmacrocollection.cpp" line="190"/>
         <source>Local macros</source>
-        <translation type="unfinished"/>
+        <translation>ماکروهای محلی</translation>
     </message>
     <message>
         <location filename="../src/localmacrocollection.cpp" line="195"/>
         <source>Macro</source>
-        <translation type="unfinished"/>
+        <translation>ماکروهای</translation>
     </message>
     <message>
         <location filename="../src/localrecordingcollection.cpp" line="101"/>
         <source>Local recordings</source>
-        <translation type="unfinished"/>
+        <translation>ضبط محلی</translation>
     </message>
     <message>
         <location filename="../src/localrecordingcollection.cpp" line="106"/>
         <location filename="../src/localtextrecordingcollection.cpp" line="170"/>
         <source>Recording</source>
-        <translation type="unfinished"/>
+        <translation>در حال ضبط</translation>
     </message>
     <message>
         <location filename="../src/localringtonecollection.cpp" line="220"/>
         <source>Local ringtones</source>
-        <translation type="unfinished"/>
+        <translation>آهنگ های زنگ محلی</translation>
     </message>
     <message>
         <location filename="../src/localringtonecollection.cpp" line="225"/>
         <source>Ringtone</source>
-        <translation type="unfinished"/>
+        <translation>آهنگ های زنگ</translation>
     </message>
     <message>
         <location filename="../src/localtextrecordingcollection.cpp" line="165"/>
         <source>Local text recordings</source>
-        <translation type="unfinished"/>
+        <translation> متون محلی ضبط شده</translation>
     </message>
     <message>
         <location filename="../src/numbercategory.cpp" line="72"/>
         <source>Phone number types</source>
-        <translation type="unfinished"/>
+        <translation>انواع شماره تلفن</translation>
     </message>
     <message>
         <location filename="../src/numbercategorymodel.cpp" line="186"/>
@@ -1112,12 +1112,12 @@
     <message>
         <location filename="../src/protocolmodel.cpp" line="50"/>
         <source>Ring Account</source>
-        <translation type="unfinished"/>
+        <translation>حساب کاربری رینگ</translation>
     </message>
     <message>
         <location filename="../src/protocolmodel.cpp" line="51"/>
         <source>SIP Account</source>
-        <translation type="unfinished"/>
+        <translation>حساب کاربری سیپ</translation>
     </message>
     <message>
         <location filename="../src/qtwrapper/callmanager_wrap.h" line="315"/>
@@ -1127,57 +1127,57 @@
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="38"/>
         <source>TLS is disabled, the negotiation won&apos;t be encrypted. Your communication will be vulnerable to snooping</source>
-        <translation type="unfinished"/>
+        <translation>TLS غیرفعال است، مذاکره رمزگذاری نخواهد شد. ارتباط شما برای سوء استفاده یا شنود آسیب پذیر خواهد بود خواهد بود.</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="40"/>
         <source>Your certificate and authority don&apos;t match, if your certificate require an authority, it won&apos;t work</source>
-        <translation type="unfinished"/>
+        <translation>گواهی و مجوز شما مطابقت ندارد، اگر گواهینامه شما مستلزم داشتن مجوز باشد، کار نمی کند.</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="41"/>
         <source>The outgoing server specified doesn&apos;t match the hostname or the one included in the certificate</source>
-        <translation type="unfinished"/>
+        <translation>سرور فرستاده شده مشخص شده با نام میزبان یا نام موجود در گواهی منطبق نیست.</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="42"/>
         <source>The &quot;verify incoming certificate&quot; option is disabled, this leave you vulnerable to man in the middle attack</source>
-        <translation type="unfinished"/>
+        <translation>گزینه &quot;تأیید گواهی ورودی&quot; غیرفعال است، این شما را آسیب پذیر می کند به مورد &quot;حمله به مردی که وسط است&quot;.</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="43"/>
         <source>The &quot;verify answer certificate&quot; option is disabled, this leave you vulnerable to man in the middle attack</source>
-        <translation type="unfinished"/>
+        <translation>گزینه « تأیید گواهی پاسخ» غیرفعال است، این شما را آسیب پذیر می کند به مورد &quot;حمله به مردی که وسط است&quot;.</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="44"/>
         <source>None of your certificate provide a private key, this is required. Please select a private key or use a certificate with one built-in</source>
-        <translation type="unfinished"/>
+        <translation>هیچکدام از گواهینامه شما یک کلید خصوصی ندارند، این مورد نیاز است. لطفا یک کلید خصوصی را انتخاب کنید، یا لطفا از یک گواهی استفاده کنید که دارای کلید خصوصی داخلی است.</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="47"/>
         <source>No certificate authority is provided, it won&apos;t be possible to validate if the answer certificates are valid. Some account may also not work.</source>
-        <translation type="unfinished"/>
+        <translation>هیچ گواهی اختیاری ارائه نشده است. اگر گواهی پاسخ معتبر باشد، امکان تایید آن وجود نخواهد داشت. برخی از حساب ها ممکن است کار نکنند.</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="46"/>
         <source>No certificate has been provided. This is, for now, unsupported by Ring</source>
-        <translation type="unfinished"/>
+        <translation>هیچ گواهی ارائه نشده است. این در حال حاضر، توسط رینگ پشتیبانی نمی شود.</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="37"/>
         <source>Your media streams are not encrypted, please enable SDES</source>
-        <translation type="unfinished"/>
+        <translation>جریان های رسانه ای شما رمزگذاری نمی شوند، لطفا SDES را فعال کنید.</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="50"/>
         <source>Your certificate is expired, please contact your system administrator.</source>
-        <translation type="unfinished"/>
+        <translation>گواهی شما منقضی شده است، لطفا با مدیر سیستم خود تماس بگیرید.</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="51"/>
         <source>Your certificate is self signed. This break the chain of trust.</source>
-        <translation type="unfinished"/>
+        <translation>گواهی شما خود امضا شده است این شکستن زنجیره اعتماد است.</translation>
     </message>
     <message>
         <location filename="../src/tlsmethodmodel.cpp" line="64"/>
@@ -1188,7 +1188,7 @@
     <message>
         <location filename="../src/transitionalpersonbackend.cpp" line="145"/>
         <source>Contact placeholders</source>
-        <translation type="unfinished"/>
+        <translation>لطفا با متغیرها تماس بگیرید.</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="517"/>
@@ -1217,7 +1217,7 @@
     <message>
         <location filename="../src/api/call.h" line="67"/>
         <source>Outgoing requested</source>
-        <translation type="unfinished"/>
+        <translation>خروجی درخواست شد</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="69"/>
@@ -1242,7 +1242,7 @@
     <message>
         <location filename="../src/api/call.h" line="79"/>
         <source>Inactive</source>
-        <translation type="unfinished"/>
+        <translation>غیر فعال</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="81"/>
@@ -1253,27 +1253,27 @@
     <message>
         <location filename="../src/api/call.h" line="85"/>
         <source>Communication established</source>
-        <translation type="unfinished"/>
+        <translation>ارتباط برقرار شد.</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="87"/>
         <source>Auto answering</source>
-        <translation type="unfinished"/>
+        <translation>پاسخ خودکار</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="519"/>
         <source>Mute audio</source>
-        <translation type="unfinished"/>
+        <translation>قطع صدا</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="520"/>
         <source>Mute video</source>
-        <translation type="unfinished"/>
+        <translation>قطع ویدیو</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="521"/>
         <source>Server transfer</source>
-        <translation type="unfinished"/>
+        <translation>انتقال سرور</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="522"/>
@@ -1284,72 +1284,72 @@
         <location filename="../src/useractionmodel.cpp" line="523"/>
         <location filename="../src/useractionmodel.cpp" line="789"/>
         <source>Hangup</source>
-        <translation type="unfinished"/>
+        <translation>به صحبت تلفنی خاتمه دادن</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="524"/>
         <source>Join</source>
-        <translation type="unfinished"/>
+        <translation>پیوستن</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="525"/>
         <source>Add new</source>
-        <translation type="unfinished"/>
+        <translation>مورد جدیدی اضافه کنید.</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="526"/>
         <source>Toggle video</source>
-        <translation type="unfinished"/>
+        <translation>تعویض ویدیو</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="527"/>
         <source>Add a contact</source>
-        <translation type="unfinished"/>
+        <translation>یک مخاطب اضافه کنید</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="528"/>
         <source>Add to existing contact</source>
-        <translation type="unfinished"/>
+        <translation>به یک مخاطب موجود اضافه کنید</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="529"/>
         <source>Delete contact</source>
-        <translation type="unfinished"/>
+        <translation>مخاطب را حذف کنید</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="530"/>
         <source>Email contact</source>
-        <translation type="unfinished"/>
+        <translation>تماس با ایمیل</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="531"/>
         <source>Copy contact</source>
-        <translation type="unfinished"/>
+        <translation>کپی مخاطب</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="534"/>
         <source>Add phone number</source>
-        <translation type="unfinished"/>
+        <translation>شماره تلفن را اضافه کنید</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="535"/>
         <source>Call again</source>
-        <translation type="unfinished"/>
+        <translation>دوباره تماس بگیر</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="536"/>
         <source>Edit contact details</source>
-        <translation type="unfinished"/>
+        <translation>ویرایش جزئیات تماس</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="537"/>
         <source>Remove from history</source>
-        <translation type="unfinished"/>
+        <translation>حذف ازتاریخچه</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="786"/>
         <source>Remove</source>
-        <translation type="unfinished"/>
+        <translation>حذف کن</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="756"/>
@@ -1359,12 +1359,12 @@
     <message>
         <location filename="../src/useractionmodel.cpp" line="533"/>
         <source>Open chat</source>
-        <translation type="unfinished"/>
+        <translation>صفحهٔ مکالمه/ گپ را باز کنید</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="768"/>
         <source>Unhold</source>
-        <translation>در حال انتظار</translation>
+        <translation>از سر گرفتن</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="779"/>
@@ -1374,27 +1374,27 @@
     <message>
         <location filename="../src/localprofilecollection.cpp" line="147"/>
         <source>Local profiles</source>
-        <translation type="unfinished"/>
+        <translation>پروفایل های محلی</translation>
     </message>
     <message>
         <location filename="../src/localprofilecollection.cpp" line="152"/>
         <source>Profile Collection</source>
-        <translation type="unfinished"/>
+        <translation>مجموعه مشخصات</translation>
     </message>
     <message>
         <location filename="../src/peerprofilecollection.cpp" line="141"/>
         <source>Peer profiles</source>
-        <translation type="unfinished"/>
+        <translation>پروفایل های همکار</translation>
     </message>
     <message>
         <location filename="../src/peerprofilecollection.cpp" line="146"/>
         <source>Peers Profiles Collection</source>
-        <translation type="unfinished"/>
+        <translation>مجموعه پروفیل های همکار</translation>
     </message>
     <message>
         <location filename="../src/conversationmodel.cpp" line="1237"/>
-        <location filename="../src/conversationmodel.cpp" line="1602"/>
-        <location filename="../src/conversationmodel.cpp" line="1854"/>
+        <location filename="../src/conversationmodel.cpp" line="1607"/>
+        <location filename="../src/conversationmodel.cpp" line="1859"/>
         <source>Invitation received</source>
         <translation>دعوت نامه دریافت شد</translation>
     </message>
@@ -1407,37 +1407,37 @@
         <location filename="../src/conversationmodel.cpp" line="1273"/>
         <location filename="../src/conversationmodel.cpp" line="1280"/>
         <source>Invitation accepted</source>
-        <translation type="unfinished"/>
+        <translation>دعوت پذیرفته شد</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1484"/>
+        <location filename="../src/conversationmodel.cpp" line="1489"/>
         <source>ð Outgoing call</source>
-        <translation type="unfinished"/>
+        <translation>ð تماس خروجی</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1486"/>
+        <location filename="../src/conversationmodel.cpp" line="1491"/>
         <source>ð Incoming call</source>
-        <translation type="unfinished"/>
+        <translation>ð تماس ورودی</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1499"/>
+        <location filename="../src/conversationmodel.cpp" line="1504"/>
         <source>ð Outgoing call - </source>
-        <translation type="unfinished"/>
+        <translation>ð تماس خروجی -</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1502"/>
+        <location filename="../src/conversationmodel.cpp" line="1507"/>
         <source>ð Incoming call - </source>
-        <translation type="unfinished"/>
+        <translation>ð تماس ورودی -</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1506"/>
+        <location filename="../src/conversationmodel.cpp" line="1511"/>
         <source>ð½ Missed outgoing call</source>
-        <translation type="unfinished"/>
+        <translation>ð½  تماس تلفنی رد شد</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1508"/>
+        <location filename="../src/conversationmodel.cpp" line="1513"/>
         <source>ð½ Missed incoming call</source>
-        <translation type="unfinished"/>
+        <translation>ð½ تماس تلفنی رد شد</translation>
     </message>
 </context>
 <context>
@@ -1445,7 +1445,7 @@
     <message>
         <location filename="../src/recentmodel.cpp" line="614"/>
         <source>Recent persons</source>
-        <translation type="unfinished"/>
+        <translation>تماس های اخیر</translation>
     </message>
 </context>
 <context>
@@ -1453,7 +1453,7 @@
     <message>
         <location filename="../src/ringdevicemodel.cpp" line="110"/>
         <source>Id</source>
-        <translation type="unfinished"/>
+        <translation>شناسایی ID</translation>
     </message>
     <message>
         <location filename="../src/ringdevicemodel.cpp" line="112"/>
@@ -1466,7 +1466,7 @@
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="683"/>
         <source>Authority</source>
-        <translation type="unfinished"/>
+        <translation>اختیار</translation>
     </message>
 </context>
 <context>
@@ -1474,7 +1474,7 @@
     <message>
         <location filename="../src/tlsmethodmodel.cpp" line="101"/>
         <source>Automatic</source>
-        <translation type="unfinished"/>
+        <translation>خودکار</translation>
     </message>
 </context>
 <context>
@@ -1482,17 +1482,17 @@
     <message>
         <location filename="../src/video/sourcemodel.cpp" line="95"/>
         <source>NONE</source>
-        <translation type="unfinished"/>
+        <translation>هیچ کدام</translation>
     </message>
     <message>
         <location filename="../src/video/sourcemodel.cpp" line="101"/>
         <source>SCREEN</source>
-        <translation type="unfinished"/>
+        <translation>صفحه نمایش</translation>
     </message>
     <message>
         <location filename="../src/video/sourcemodel.cpp" line="107"/>
         <source>FILE</source>
-        <translation type="unfinished"/>
+        <translation>فایل</translation>
     </message>
 </context>
 <context>
