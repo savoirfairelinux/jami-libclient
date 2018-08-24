@@ -174,8 +174,10 @@ NewCallModel::createCall(const std::string& url, bool isAudioOnly)
                                  : CallManager::instance().placeCall(owner.id.c_str(), url.c_str());
 #endif // ENABLE_LIBWRAP
 
-    if (callId.isEmpty())
+    if (callId.isEmpty()) {
         qDebug() << "no call placed between (account :" << owner.id.c_str() << ", contact :" << url.c_str() << ")";
+        return "";
+    }
 
     auto callInfo = std::make_shared<call::Info>();
     callInfo->id = callId.toStdString();
