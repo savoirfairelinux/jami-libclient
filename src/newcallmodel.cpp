@@ -256,17 +256,14 @@ NewCallModel::togglePause(const std::string& callId) const
         }
         break;
     case call::Status::INVALID:
-    case call::Status::OUTGOING_REQUESTED:
     case call::Status::INCOMING_RINGING:
     case call::Status::OUTGOING_RINGING:
     case call::Status::CONNECTING:
     case call::Status::SEARCHING:
-    case call::Status::PEER_PAUSED:
     case call::Status::INACTIVE:
     case call::Status::ENDED:
     case call::Status::TERMINATING:
     case call::Status::CONNECTED:
-    case call::Status::AUTO_ANSWERING:
         break;
     }
 }
