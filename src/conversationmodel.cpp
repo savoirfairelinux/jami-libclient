@@ -425,18 +425,15 @@ ConversationModel::selectConversation(const std::string& uid) const
                 emit pimpl_->behaviorController.showIncomingCallView(owner.id, conversation);
                 break;
             case call::Status::PAUSED:
-            case call::Status::PEER_PAUSED:
             case call::Status::CONNECTED:
             case call::Status::IN_PROGRESS:
                 // We are currently receiving a call
                 emit pimpl_->behaviorController.showCallView(owner.id, conversation);
                 break;
             case call::Status::INVALID:
-            case call::Status::OUTGOING_REQUESTED:
             case call::Status::INACTIVE:
             case call::Status::ENDED:
             case call::Status::TERMINATING:
-            case call::Status::AUTO_ANSWERING:
             default:
                 // We are not in a call, show the chatview
                 emit pimpl_->behaviorController.showChatView(owner.id, conversation);
@@ -505,11 +502,8 @@ ConversationModelPimpl::placeCall(const std::string& uid, bool isAudioOnly)
                 case call::Status::CONNECTING:
                 case call::Status::SEARCHING:
                 case call::Status::PAUSED:
-                case call::Status::PEER_PAUSED:
-                case call::Status::CONNECTED:
                 case call::Status::IN_PROGRESS:
-                case call::Status::OUTGOING_REQUESTED:
-                case call::Status::AUTO_ANSWERING:
+                case call::Status::CONNECTED:
                     return;
                 case call::Status::INVALID:
                 case call::Status::INACTIVE:
