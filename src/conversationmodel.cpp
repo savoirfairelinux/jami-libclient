@@ -571,6 +571,10 @@ ConversationModelPimpl::placeCall(const std::string& uid, bool isAudioOnly)
     convId = newConv.uid;
 
     newConv.callId = linked.owner.callModel->createCall(url, isAudioOnly);
+    if (!newConv.callId) {
+        qDebug() << "Can't place call (daemon side failure ?)";
+        return;
+    }
 
     dirtyConversations = {true, true};
     emit behaviorController.showIncomingCallView(linked.owner.id, newConv);
