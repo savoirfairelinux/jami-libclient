@@ -74,7 +74,7 @@ public:
      * Create a new call with a contact
      * @param  url of the contact to call
      * @param  isAudioOnly, set to false by default
-     * @return the call uid created
+     * @return the call uid created. Empty string is returned if call couldn't be created.
      */
     std::string createCall(const std::string& url, bool isAudioOnly = false);
     /**
