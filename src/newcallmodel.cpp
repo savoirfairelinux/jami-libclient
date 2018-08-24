@@ -258,17 +258,14 @@ NewCallModel::togglePause(const std::string& callId) const
         }
         break;
     case call::Status::INVALID:
-    case call::Status::OUTGOING_REQUESTED:
     case call::Status::INCOMING_RINGING:
     case call::Status::OUTGOING_RINGING:
     case call::Status::CONNECTING:
     case call::Status::SEARCHING:
-    case call::Status::PEER_PAUSED:
     case call::Status::INACTIVE:
     case call::Status::ENDED:
     case call::Status::TERMINATING:
     case call::Status::CONNECTED:
-    case call::Status::AUTO_ANSWERING:
         break;
     }
 }
@@ -504,30 +501,23 @@ void
 NewCallModelPimpl::slotCallStateChanged(const std::string& callId, const std::string& state, int code)
 {
     Q_UNUSED(code)
-    if (calls.find(callId) != calls.end()) {
-        if (state == "CONNECTING") {
-            calls[callId]->status = call::Status::CONNECTING;
-        } else if (state == "RINGING") {
-            calls[callId]->status = call::Status::OUTGOING_RINGING;
-        } else if (state == "HUNGUP") {
-            calls[callId]->status = call::Status::TERMINATING;
-        } else if (state == "FAILURE" || state == "OVER") {
-            calls[callId]->status = call::Status::ENDED;
-            emit linked.callEnded(callId);
-        } else if (state == "INACTIVE") {
-            calls[callId]->status = call::Status::INACTIVE;
-        } else if (state == "CURRENT") {
-            if (calls[callId]->startTime.time_since_epoch().count() == 0) {
-                calls[callId]->startTime = std::chrono::steady_clock::now();
-                emit linked.callStarted(callId);
-            }
-            calls[callId]->status = call::Status::IN_PROGRESS;
-        } else if (state == "HOLD") {
-            calls[callId]->status = call::Status::PAUSED;
-        }
-        qDebug() << "slotCallStateChanged, call:" << callId.c_str() << " - state: " << state.c_str();
-        emit linked.callStatusChanged(callId);
+    if (calls.find(callId) == calls.end())
+        return;
+
+    auto status = call::to_status(state);
+    auto timeElapsed = calls[callId]->startTime.time_since_epoch().count();
+
+    calls[callId]->status = status;
+    if (status == call::Status::ENDED) {
+        emit linked.callEnded(callId);
+    } else if (status == call::Status::IN_PROGRESS && timeElapsed == 0) {
+        // FIXME hell, this check is EVIL HACK
+        calls[callId]->startTime = std::chrono::steady_clock::now();
+        emit linked.callStarted(callId);
     }
+
+    qDebug() << "slotCallStateChanged, call:" << callId.c_str() << " - state: " << state.c_str();
+    emit linked.callStatusChanged(callId);
 }
 
 void
