@@ -37,19 +37,16 @@ namespace call
 
 enum class Status {
     INVALID,
-    OUTGOING_REQUESTED,
     INCOMING_RINGING,
     OUTGOING_RINGING,
     CONNECTING,
     SEARCHING,
     IN_PROGRESS,
     PAUSED,
-    PEER_PAUSED,
     INACTIVE,
     ENDED,
     TERMINATING,
-    CONNECTED,
-    AUTO_ANSWERING
+    CONNECTED
 };
 
 static inline std::string
@@ -63,8 +60,6 @@ to_string(const call::Status& status)
         return QObject::tr("Talking").toStdString();
     case call::Status::INVALID:
         return QObject::tr("ERROR").toStdString();
-    case call::Status::OUTGOING_REQUESTED:
-        return QObject::tr("Outgoing requested").toStdString();
     case call::Status::INCOMING_RINGING:
         return QObject::tr("Incoming").toStdString();
     case call::Status::OUTGOING_RINGING:
@@ -73,8 +68,6 @@ to_string(const call::Status& status)
         return QObject::tr("Connecting").toStdString();
     case call::Status::SEARCHING:
         return QObject::tr("Searching").toStdString();
-    case call::Status::PEER_PAUSED:
-        return QObject::tr("Hold").toStdString();
     case call::Status::INACTIVE:
         return QObject::tr("Inactive").toStdString();
     case call::Status::ENDED:
@@ -83,8 +76,6 @@ to_string(const call::Status& status)
         return QObject::tr("Finished").toStdString();
     case call::Status::CONNECTED:
         return QObject::tr("Communication established").toStdString();
-    case call::Status::AUTO_ANSWERING:
-        return QObject::tr("Auto answering").toStdString();
     default:
         return ""; // to remove a build warning, should not happen
     }
@@ -142,20 +133,17 @@ canSendSIPMessage(const Info& call) {
     switch(call.status)
     {
     case call::Status::PAUSED:
-    case call::Status::PEER_PAUSED:
     case call::Status::IN_PROGRESS:
     case call::Status::INCOMING_RINGING:
     case call::Status::OUTGOING_RINGING:
     case call::Status::CONNECTED:
         return true;
     case call::Status::INVALID:
-    case call::Status::OUTGOING_REQUESTED:
     case call::Status::CONNECTING:
     case call::Status::SEARCHING:
     case call::Status::INACTIVE:
     case call::Status::ENDED:
     case call::Status::TERMINATING:
-    case call::Status::AUTO_ANSWERING:
     default:
         return false;
     }
