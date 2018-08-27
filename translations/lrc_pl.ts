@@ -41,7 +41,7 @@
         <location filename="../src/account.cpp" line="343"/>
         <source>Authentication Failed</source>
         <extracomment>Account state</extracomment>
-        <translation>Błąd w autoryzacji</translation>
+        <translation>Błąd autoryzacji</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="345"/>
@@ -504,7 +504,7 @@
     <message>
         <location filename="../src/macromodel.cpp" line="157"/>
         <source>Macros</source>
-        <translation>Macros</translation>
+        <translation>Makra</translation>
     </message>
     <message>
         <location filename="../src/macromodel.cpp" line="263"/>
