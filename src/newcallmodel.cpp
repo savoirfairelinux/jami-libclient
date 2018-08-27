@@ -1,5 +1,5 @@
 /****************************************************************************
- *   Copyright (C) 2017-2018 Savoir-faire Linux                                  *
+ *   Copyright (C) 2017-2018 Savoir-faire Linux                             *
  *   Author : Nicolas Jäger <nicolas.jager@savoirfairelinux.com>            *
  *   Author : Sébastien Blin <sebastien.blin@savoirfairelinux.com>          *
  *                                                                          *
@@ -111,7 +111,6 @@ NewCallModel::NewCallModel(const account::Info& owner, const CallbacksHandler& c
 : owner(owner)
 , pimpl_(std::make_unique<NewCallModelPimpl>(*this, callbacksHandler))
 {
-
 }
 
 NewCallModel::~NewCallModel()
@@ -138,7 +137,6 @@ NewCallModel::getCallFromURI(const std::string& uri, bool notOver) const
 const call::Info&
 NewCallModel::getConferenceFromURI(const std::string& uri) const
 {
-    if (pimpl_->calls.empty()) throw std::out_of_range("No call at URI " + uri);
     for (const auto& call: pimpl_->calls) {
         if (call.second->type == call::Type::CONFERENCE) {
             QStringList callList = CallManager::instance().getParticipantList(call.first.c_str());
@@ -199,9 +197,8 @@ NewCallModel::accept(const std::string& callId) const
 void
 NewCallModel::hangUp(const std::string& callId) const
 {
-    auto it = pimpl_->calls.find(callId);
-    if (it == pimpl_->calls.end()) return;
-    auto& call = it->second;
+    if (!hasCall(callId)) return;
+    auto& call = pimpl_->calls[callId];
     switch(call->type)
     {
     case call::Type::DIALOG:
@@ -225,8 +222,7 @@ NewCallModel::toggleAudioRecord(const std::string& callId) const
 void
 NewCallModel::playDTMF(const std::string& callId, const std::string& value) const
 {
-    auto call = pimpl_->calls.find(callId);
-    if (call == pimpl_->calls.end()) return;
+    if (!hasCall(callId)) return;
     if (pimpl_->calls[callId]->status != call::Status::IN_PROGRESS) return;
     CallManager::instance().playDTMF(value.c_str());
 }
@@ -234,12 +230,9 @@ NewCallModel::playDTMF(const std::string& callId, const std::string& value) cons
 void
 NewCallModel::togglePause(const std::string& callId) const
 {
-    auto it = pimpl_->calls.find(callId);
-    if (it == pimpl_->calls.end()) return;
-    auto& call = it->second;
-    switch(call->status)
-    {
-    case call::Status::PAUSED:
+    if (!hasCall(callId)) return;
+    auto& call = pimpl_->calls[callId];
+    if (call->status == call::Status::PAUSED) {
         if (call->type == call::Type::DIALOG)
             CallManager::instance().unhold(callId.c_str());
         else {
@@ -247,8 +240,7 @@ NewCallModel::togglePause(const std::string& callId) const
             call->status =  call::Status::IN_PROGRESS;
             emit callStatusChanged(callId);
         }
-        break;
-    case call::Status::IN_PROGRESS:
+    } else if (call->status == call::Status::IN_PROGRESS) {
         if (call->type == call::Type::DIALOG)
             CallManager::instance().hold(callId.c_str());
         else {
@@ -256,26 +248,14 @@ NewCallModel::togglePause(const std::string& callId) const
             call->status = call::Status::PAUSED;
             emit callStatusChanged(callId);
         }
-        break;
-    case call::Status::INVALID:
-    case call::Status::INCOMING_RINGING:
-    case call::Status::OUTGOING_RINGING:
-    case call::Status::CONNECTING:
-    case call::Status::SEARCHING:
-    case call::Status::INACTIVE:
-    case call::Status::ENDED:
-    case call::Status::TERMINATING:
-    case call::Status::CONNECTED:
-        break;
     }
 }
 
 void
 NewCallModel::toggleMedia(const std::string& callId, const NewCallModel::Media media) const
 {
-    auto it = pimpl_->calls.find(callId);
-    if (it == pimpl_->calls.end()) return;
-    auto& call = it->second;
+    if (!hasCall(callId)) return;
+    auto& call = pimpl_->calls[callId];
     switch(media)
     {
     case NewCallModel::Media::AUDIO:
@@ -301,7 +281,9 @@ NewCallModel::toggleMedia(const std::string& callId, const NewCallModel::Media m
 void
 NewCallModel::setQuality(const std::string& callId, const double quality) const
 {
-    qDebug() << "setQuality, isn't yet implemented";
+    Q_UNUSED(callId)
+    Q_UNUSED(quality)
+    qDebug() << "setQuality isn't implemented yet";
 }
 
 void
@@ -319,8 +301,8 @@ NewCallModel::transferToCall(const std::string& callId, const std::string& callI
 void
 NewCallModel::joinCalls(const std::string& callIdA, const std::string& callIdB) const
 {
-    if (pimpl_->calls.find(callIdA) == pimpl_->calls.end()) return;
-    if (pimpl_->calls.find(callIdB) == pimpl_->calls.end()) return;
+    if (!hasCall(callIdA) || !hasCall(callIdB)) return;
+
     auto& call1 = pimpl_->calls[callIdA];
     auto& call2 = pimpl_->calls[callIdB];
     if (call1->type == call::Type::CONFERENCE)
@@ -336,7 +318,9 @@ NewCallModel::joinCalls(const std::string& callIdA, const std::string& callIdB) 
 void
 NewCallModel::removeParticipant(const std::string& callId, const std::string& participant) const
 {
-
+    Q_UNUSED(callId)
+    Q_UNUSED(participant)
+    qDebug() << "removeParticipant() isn't implemented yet";
 }
 
 Video::Renderer*
@@ -352,7 +336,7 @@ NewCallModel::getRenderer(const std::string& callId) const
 std::string
 NewCallModel::getFormattedCallDuration(const std::string& callId) const
 {
-    if (pimpl_->calls.find(callId) == pimpl_->calls.end()) return "00:00";
+    if (!hasCall(callId)) return "00:00";
     auto& startTime = pimpl_->calls[callId]->startTime;
     if (startTime.time_since_epoch().count() == 0) return "00:00";
     auto now = std::chrono::steady_clock::now();
@@ -378,7 +362,7 @@ NewCallModel::getFormattedCallDuration(const std::string& callId) const
 bool
 NewCallModel::isRecording(const std::string& callId) const
 {
-    if (pimpl_->calls.find(callId) == pimpl_->calls.end()) return false;
+    if (!hasCall(callId)) return false;
     return CallManager::instance().getIsRecording(callId.c_str());
 }
 
@@ -394,7 +378,7 @@ NewCallModelPimpl::NewCallModelPimpl(const NewCallModel& linked, const Callbacks
     connect(&callbacksHandler, &CallbacksHandler::conferenceCreated, this , &NewCallModelPimpl::slotConferenceCreated);
 
 #ifndef ENABLE_LIBWRAP
-    // Only necessary with dbus, cause the daemon is separated
+    // Only necessary with dbus since the daemon runs separately
     initCallFromDaemon();
     initConferencesFromDaemon();
 #endif
@@ -501,8 +485,7 @@ void
 NewCallModelPimpl::slotCallStateChanged(const std::string& callId, const std::string& state, int code)
 {
     Q_UNUSED(code)
-    if (calls.find(callId) == calls.end())
-        return;
+    if (!linked.hasCall(callId)) return;
 
     auto status = call::to_status(state);
     auto timeElapsed = calls[callId]->startTime.time_since_epoch().count();
@@ -533,47 +516,44 @@ NewCallModelPimpl::slotincomingVCardChunk(const std::string& callId,
                                           int numberOfParts,
                                           const std::string& payload)
 {
-    auto it = calls.find(callId);
+    if (!linked.hasCall(callId)) return;
 
-    if (it != calls.end()) {
-        auto it_2 = vcardsChunks.find(from);
-        if (it_2 != vcardsChunks.end()) {
-            vcardsChunks[from][part-1] = payload;
+    auto it_2 = vcardsChunks.find(from);
+    if (it_2 != vcardsChunks.end()) {
+        vcardsChunks[from][part-1] = payload;
 
-            if ( not std::any_of(vcardsChunks[from].begin(), vcardsChunks[from].end(),
-                [](const auto& s) { return s.empty(); }) ) {
+        if ( not std::any_of(vcardsChunks[from].begin(), vcardsChunks[from].end(),
+            [](const auto& s) { return s.empty(); }) ) {
 
-                profile::Info profileInfo;
-                profileInfo.uri = from;
-                profileInfo.type = profile::Type::RING;
+            profile::Info profileInfo;
+            profileInfo.uri = from;
+            profileInfo.type = profile::Type::RING;
 
-                std::string vcardPhoto;
+            std::string vcardPhoto;
 
-                for (auto& chunk : vcardsChunks[from])
-                    vcardPhoto += chunk;
+            for (auto& chunk : vcardsChunks[from])
+                vcardPhoto += chunk;
 
-                for (auto& e : QString(vcardPhoto.c_str()).split( "\n" ))
-                    if (e.contains("PHOTO"))
-                        profileInfo.avatar = e.split( ":" )[1].toStdString();
-                    else if (e.contains("FN"))
-                        profileInfo.alias = e.split( ":" )[1].toStdString();
+            for (auto& e : QString(vcardPhoto.c_str()).split( "\n" ))
+                if (e.contains("PHOTO"))
+                    profileInfo.avatar = e.split( ":" )[1].toStdString();
+                else if (e.contains("FN"))
+                    profileInfo.alias = e.split( ":" )[1].toStdString();
 
-                contact::Info contactInfo;
-                contactInfo.profileInfo = profileInfo;
+            contact::Info contactInfo;
+            contactInfo.profileInfo = profileInfo;
 
-                linked.owner.contactModel->addContact(contactInfo);
-                vcardsChunks.erase(from); // Transfer is finish, we don't want to reuse this entry.
-            }
-        } else {
-            vcardsChunks[from] = std::vector<std::string>(numberOfParts);
-            vcardsChunks[from][part-1] = payload;
+            linked.owner.contactModel->addContact(contactInfo);
+            vcardsChunks.erase(from); // Transfer is finish, we don't want to reuse this entry.
         }
-
+    } else {
+        vcardsChunks[from] = std::vector<std::string>(numberOfParts);
+        vcardsChunks[from][part-1] = payload;
     }
 }
 
 bool
-NewCallModel::hasCall(const std::string& callId)
+NewCallModel::hasCall(const std::string& callId) const
 {
     return pimpl_->calls.find(callId) != pimpl_->calls.end();
 }
