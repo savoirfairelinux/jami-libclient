@@ -103,7 +103,7 @@ public:
      * @param  callId to test
      * @return true if callId is presend else false.
      */
-    bool hasCall(const std::string& callId);
+    bool hasCall(const std::string& callId) const;
     /**
      * Send a text message to a SIP call
      * @param callId
