@@ -21,6 +21,11 @@
 // daemon
 #include <account_const.h>
 
+//qt
+#include <QtGui/QPixmap>
+#include <QtGui/QImage>
+#include <QtCore/QBuffer>
+
 // new LRC
 #include "api/lrc.h"
 #include "api/newcallmodel.h"
@@ -770,7 +775,7 @@ NewAccountModel::setTopAccount(const std::string& accountId)
 }
 
 std::string
-NewAccountModel::accountVCard(const std::string& accountId) const
+NewAccountModel::accountVCard(const std::string& accountId, bool compressImage) const
 {
     auto accountInfo = pimpl_->accounts.find(accountId);
     if (accountInfo == pimpl_->accounts.end()) {
@@ -804,11 +809,27 @@ NewAccountModel::accountVCard(const std::string& accountId) const
     vCardStr += vCard::Delimiter::SEPARATOR_TOKEN;
     vCardStr += "ENCODING=BASE64";
     vCardStr += vCard::Delimiter::SEPARATOR_TOKEN;
-    vCardStr += "TYPE=PNG:";
-    vCardStr += accountInfo->second.profileInfo.avatar;
+    vCardStr += compressImage ? "TYPE=JPEG:" : "TYPE=PNG:";
+    vCardStr += compressImage ? compressedAvatar(accountInfo->second.profileInfo.avatar) : accountInfo->second.profileInfo.avatar;
     vCardStr += vCard::Delimiter::END_LINE_TOKEN;
     vCardStr += vCard::Delimiter::END_TOKEN;
     return vCardStr;
+}
+std::string NewAccountModel::compressedAvatar(std::string img) const
+{
+    QImage image;
+    const bool ret = image.loadFromData(QByteArray::fromBase64(QByteArray(img.c_str()), 0));
+    if (!ret) {
+        qDebug() << "vCard image loading failed";
+        return img;
+    }
+    QByteArray bArray;
+    QBuffer buffer(&bArray);
+    buffer.open(QIODevice::WriteOnly);
+    image.scaled({128,128}).save(&buffer, "JPEG", 90);
+    auto b64Img = bArray.toBase64().trimmed();
+    std::string result = std::string(b64Img.constData(), b64Img.length());
+    return result;
 }
 
 } // namespace lrc
