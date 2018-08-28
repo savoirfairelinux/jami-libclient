@@ -172,7 +172,8 @@ public:
      * @param id
      * @return vcard of the account
      */
-    std::string accountVCard(const std::string& accountId) const;
+    std::string accountVCard(const std::string& accountId, bool compressImage = true) const;
+    std::string compressedAvatar(const std::string& img) const;
 
 Q_SIGNALS:
     /**
