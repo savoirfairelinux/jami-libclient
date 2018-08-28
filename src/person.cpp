@@ -724,7 +724,12 @@ void Person::addCustomField(const QString& key, const QString& value)
    d_ptr->m_lCustomAttributes.insert(key, value);
 }
 
-const QByteArray Person::toVCard(QList<Account*> accounts, const std::string& avatar, const std::string& newName) const
+const QByteArray Person::toVCard(bool compressImage) const
+{
+    return toVCard({}, "", "", compressImage);
+}
+
+const QByteArray Person::toVCard(QList<Account*> accounts, const std::string& avatar, const std::string& newName, const bool compressImage) const
 {
    //serializing here
    VCardUtils maker;
@@ -762,7 +767,7 @@ const QByteArray Person::toVCard(QList<Account*> accounts, const std::string& av
    if (avatar.empty()) {
       maker.addPhoto(GlobalInstances::pixmapManipulator().toByteArray(photo()));
    } else {
-       maker.addPhoto(QByteArray(avatar.c_str()), false);
+      maker.addPhoto(QByteArray(avatar.c_str()), false, compressImage);
    }
 
    return maker.endVCard();

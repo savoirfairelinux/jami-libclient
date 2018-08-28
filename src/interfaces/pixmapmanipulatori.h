@@ -84,6 +84,7 @@ public:
     virtual QVariant   numberCategoryIcon(const QVariant& p, const QSize& size, bool displayPresence = false, bool isPresent = false) = 0;
     virtual QVariant   securityIssueIcon(const QModelIndex& index) = 0;
     virtual QByteArray toByteArray(const QVariant& pxm) = 0;
+    virtual QByteArray compressedImage(const QByteArray& data) = 0;
     virtual QVariant   personPhoto(const QByteArray& data, const QString& type = "PNG") = 0;
     virtual QVariant   collectionIcon(const CollectionInterface* colItf, PixmapManipulatorI::CollectionIconHint hint = PixmapManipulatorI::CollectionIconHint::NONE) const = 0;
     virtual QVariant   securityLevelIcon(const SecurityEvaluationModel::SecurityLevel level) const = 0;

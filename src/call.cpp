@@ -1718,7 +1718,7 @@ void CallPrivate::sendProfile()
         photo = lrc::authority::database::getAvatarForProfileId(db, accountProfileId);
         alias = lrc::authority::database::getAliasForProfileId(db, accountProfileId);
     }
-    auto vCard = profile->person()->toVCard({}, photo, alias);
+    auto vCard = profile->person()->toVCard({}, photo, alias, true);
 
     qsrand(time(nullptr));
     const auto& key = QString::number(qrand());

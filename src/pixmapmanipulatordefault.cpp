@@ -89,12 +89,19 @@ QByteArray PixmapManipulatorDefault::toByteArray(const QVariant& pxm)
     return QByteArray();
 }
 
+QByteArray PixmapManipulatorDefault::compressedImage(const QByteArray& data)
+{
+    Q_UNUSED(data)
+    return QByteArray();
+}
+
 QVariant PixmapManipulatorDefault::personPhoto(const QByteArray& data, const QString& type)
 {
     Q_UNUSED(data)
     Q_UNUSED(type)
     return QVariant();
 }
+
 
 QVariant PixmapManipulatorDefault::userActionIcon(const UserActionElement& state) const
 {
