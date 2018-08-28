@@ -96,6 +96,7 @@ QVariant PixmapManipulatorDefault::personPhoto(const QByteArray& data, const QSt
     return QVariant();
 }
 
+
 QVariant PixmapManipulatorDefault::userActionIcon(const UserActionElement& state) const
 {
     Q_UNUSED(state)
