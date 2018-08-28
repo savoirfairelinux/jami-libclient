@@ -25,6 +25,8 @@
 #include <QtCore/QUrl>
 #include <QtCore/QMimeData>
 #include <QtCore/QMutex>
+#include <QtGui/QPixmap>
+#include <QtGui/QImage>
 
 //Ring
 #include "phonedirectorymodel.h"
