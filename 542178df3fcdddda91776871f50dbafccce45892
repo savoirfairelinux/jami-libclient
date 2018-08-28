@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5e37d93e_67942d1b",
+        "filename": "src/newcallmodel.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 323,
+      "author": {
+        "id": 90
+      },
+      "writtenOn": "2018-08-28T15:55:32Z",
+      "side": 1,
+      "message": "one day, we will remove these Qs eh?",
+      "range": {
+        "startLine": 321,
+        "startChar": 4,
+        "endLine": 323,
+        "endChar": 60
+      },
+      "revId": "542178df3fcdddda91776871f50dbafccce45892",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "63828728_dce4e717",
+        "filename": "src/newcallmodel.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 488,
+      "author": {
+        "id": 90
+      },
+      "writtenOn": "2018-08-28T15:55:32Z",
+      "side": 1,
+      "message": "I have difficulty with one-liners + no brackets :/... but ok",
+      "range": {
+        "startLine": 488,
+        "startChar": 4,
+        "endLine": 488,
+        "endChar": 40
+      },
+      "revId": "542178df3fcdddda91776871f50dbafccce45892",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "283089c8_9188afe1",
+        "filename": "src/newcallmodel.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 521,
+      "author": {
+        "id": 90
+      },
+      "writtenOn": "2018-08-28T15:55:32Z",
+      "side": 1,
+      "message": "this should be just \u0027it\u0027 now?",
+      "range": {
+        "startLine": 521,
+        "startChar": 9,
+        "endLine": 521,
+        "endChar": 13
+      },
+      "revId": "542178df3fcdddda91776871f50dbafccce45892",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    }
+  ]
+}
