@@ -100,12 +100,11 @@ set CMAKE_OPTIONS=""
 if "%arch%"=="x86" (
     set CMAKE_GENERATOR_STRING="Visual Studio 15 2017 Win32"
     set QtCmakeDir=%QtDir%\\msvc2017\\lib\\cmake
-    set CMAKE_OPTIONS=-DQt5Core_DIR=!QtCmakeDir!\\Qt5Core -DQt5Sql_DIR=!QtCmakeDir!\\Qt5Sql -DQt5LinguistTools_DIR=!QtCmakeDir!\\Qt5LinguistTools -DQt5Concurrent_DIR=!QtCmakeDir!\\Qt5Concurrent -Dring_BIN=!DaemonDir!\MSVC\x86\ReleaseLib_win32\bin\dring.lib -DRING_INCLUDE_DIR=!DaemonDir!\src\dring
 ) else if "%arch%"=="x64" (
     set CMAKE_GENERATOR_STRING="Visual Studio 15 2017 Win64"
     set QtCmakeDir=%QtDir%\\msvc2017_64\\lib\\cmake
-    set CMAKE_OPTIONS=-DQt5Core_DIR=!QtCmakeDir!\\Qt5Core -DQt5Sql_DIR=!QtCmakeDir!\\Qt5Sql -DQt5LinguistTools_DIR=!QtCmakeDir!\\Qt5LinguistTools -DQt5Concurrent_DIR=!QtCmakeDir!\\Qt5Concurrent -Dring_BIN=!DaemonDir!\MSVC\x64\ReleaseLib_win32\bin\dring.lib -DRING_INCLUDE_DIR=!DaemonDir!\src\dring
 )
+set CMAKE_OPTIONS=-DQt5Core_DIR=!QtCmakeDir!\\Qt5Core -DQt5Sql_DIR=!QtCmakeDir!\\Qt5Sql -DQt5LinguistTools_DIR=!QtCmakeDir!\\Qt5LinguistTools -DQt5Concurrent_DIR=!QtCmakeDir!\\Qt5Concurrent -DQt5Gui_DIR=!QtCmakeDir!\\Qt5Gui -Dring_BIN=!DaemonDir!\MSVC\x64\ReleaseLib_win32\bin\dring.lib -DRING_INCLUDE_DIR=!DaemonDir!\src\dring
 cmake .. -G !CMAKE_GENERATOR_STRING! !CMAKE_OPTIONS!
 endlocal
 goto cleanup
