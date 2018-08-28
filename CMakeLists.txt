@@ -79,6 +79,7 @@ FIND_PACKAGE(Ring REQUIRED)
 FIND_PACKAGE(Qt5Core REQUIRED)
 FIND_PACKAGE(Qt5LinguistTools) # translations
 FIND_PACKAGE(Qt5Sql REQUIRED)
+FIND_PACKAGE(Qt5Gui REQUIRED)
 
 IF(${CMAKE_SYSTEM_NAME} MATCHES "Linux" AND NOT ENABLE_LIBWRAP)
    FIND_PACKAGE(Qt5DBus)
@@ -717,10 +718,12 @@ IF(NOT ${ENABLE_STATIC} MATCHES false)
     message(STATUS "Configuring as static lib")
     add_library( ringclient_static  STATIC ${libringclient_LIB_SRCS} ${LIB_HEADER_MOC} )
     target_link_libraries(ringclient_static Qt5::Core)
+    target_link_libraries(ringclient_static Qt5::Gui)
     target_link_libraries( ringclient_static
        -lpthread
        ${QT_QTDBUS_LIBRARY}
        ${QT_QTCORE_LIBRARY}
+       ${QT_QTGUI_LIBRARY}
        Qt5::Sql
        )
     SET_TARGET_PROPERTIES( ringclient_static
@@ -731,7 +734,7 @@ ENDIF()
 if (ENABLE_SHARED)
     message(STATUS "Configuring as shared lib")
     add_library(ringclient SHARED ${libringclient_LIB_SRCS} ${LIB_HEADER_MOC} )
-    target_link_libraries(ringclient Qt5::Core)
+    target_link_libraries(ringclient Qt5::Core Qt5::Gui)
 endif()
 
 IF(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
@@ -759,6 +762,7 @@ IF (NOT CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
     TARGET_LINK_LIBRARIES( ringclient
         -lpthread
         ${QT_QTCORE_LIBRARY}
+        ${QT_QTGUI_LIBRARY}
         Qt5::Sql
         )
 ENDIF()
@@ -924,6 +928,7 @@ IF((${ENABLE_TEST} MATCHES true))
   ADD_DEFINITIONS(-DENABLE_LIBWRAP=true) # Avoid dbus models
   ADD_DEFINITIONS(-DENABLE_TEST=true) # Use mocks
   INCLUDE_DIRECTORIES(SYSTEM ${Qt5Core_INCLUDE_DIRS} )
+  INCLUDE_DIRECTORIES(SYSTEM ${Qt5Gui_INCLUDE_DIRS} )
   FIND_PACKAGE(Cppunit REQUIRED)
   FIND_PACKAGE(Qt5Widgets)
   MESSAGE(STATUS "Is cppunit present? " ${CPPUNIT_FOUND})
@@ -958,6 +963,7 @@ IF((${ENABLE_TEST} MATCHES true))
        -lcppunit
        -lpthread
        ${QT_QTCORE_LIBRARY}
+       Qt5::Gui
        Qt5::Sql
     )
 

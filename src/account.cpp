@@ -1445,7 +1445,7 @@ bool Account::sendContactRequest( const URI& uri )
    QByteArray payload;
 
    // Send our VCard as payload
-   payload = profile()->person()->toVCard();
+   payload = profile()->person()->toVCard(true);
 
    ConfigurationManager::instance().sendTrustRequest(id(), uri, payload);
 
@@ -1468,7 +1468,7 @@ bool Account::sendContactRequest( Certificate* c )
    QByteArray payload;
 
    // Send our VCard as payload
-   payload = profile()->person()->toVCard();
+   payload = profile()->person()->toVCard(true);
 
    ConfigurationManager::instance().sendTrustRequest(id(),c->remoteId(), payload);
 

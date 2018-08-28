@@ -25,6 +25,8 @@
 #include <QtCore/QUrl>
 #include <QtCore/QMimeData>
 #include <QtCore/QMutex>
+#include <QtGui/QPixmap>
+#include <QtGui/QImage>
 
 //Ring
 #include "phonedirectorymodel.h"
@@ -279,14 +281,32 @@ void VCardUtils::addContactMethod(const QString& type, const QString& num)
    addProperty(prop, num);
 }
 
-void VCardUtils::addPhoto(const QByteArray img, bool convertToBase64)
+void VCardUtils::addPhoto(const QByteArray img, bool convertToBase64, bool compressImage)
 {
-    auto b64Img = convertToBase64 ? img.toBase64().trimmed() : img.trimmed();
+    QByteArray compressedImg = compressImage ? compressPhoto(img) : img;
+    auto b64Img = convertToBase64 ? compressedImg.toBase64().trimmed() : compressedImg.trimmed();
+    auto type = compressImage ? "TYPE=PNG:" : "TYPE=JPEG:";
     m_vCard << (QString::fromUtf8(Property::PHOTO) +
                 QString::fromUtf8(Delimiter::SEPARATOR_TOKEN) +
                 "ENCODING=BASE64" +
                 QString::fromUtf8(Delimiter::SEPARATOR_TOKEN) +
-                "TYPE=PNG:" + b64Img);
+                type + b64Img);
+}
+
+const QByteArray VCardUtils::compressPhoto(const QByteArray img)
+{
+    QImage image;
+    const bool ret = image.loadFromData(QByteArray::fromBase64(img),nullptr);
+    if (!ret) {
+        qDebug() << "vCard image loading failed";
+        return img;
+    }
+    auto pixmap = QPixmap::fromImage(image);
+    QByteArray bArray;
+    QBuffer buffer(&bArray);
+    buffer.open(QIODevice::WriteOnly);
+    pixmap.scaled({128,128}).save(&buffer, "JPEG", 90);
+    return bArray.toBase64();
 }
 
 const QByteArray VCardUtils::endVCard()
