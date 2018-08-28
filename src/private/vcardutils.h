@@ -73,7 +73,8 @@ public:
    void addEmail(const QString& type, const QString& num);
    void addAddress(const Person::Address& addr);
    void addContactMethod(const QString& type, const QString& num);
-   void addPhoto(const QByteArray img, bool convertToBase64 = true);
+   void addPhoto(const QByteArray img, bool convertToBase64 = true, bool compressImage = false);
+   const QByteArray compressPhoto(const QByteArray img);
    const QByteArray endVCard();
 
    //Loading
