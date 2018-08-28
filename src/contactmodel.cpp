@@ -505,7 +505,8 @@ ContactModelPimpl::fillsWithRINGContacts() {
 
         const auto vCard = VCardUtils::toHashMap(payload);
         const auto alias = vCard["FN"];
-        const auto photo = vCard["PHOTO;ENCODING=BASE64;TYPE=PNG"];
+        const auto photo = (vCard.find("PHOTO;ENCODING=BASE64;TYPE=PNG") == vCard.end()) ?
+        vCard["PHOTO;ENCODING=BASE64;TYPE=JPEG"] : vCard["PHOTO;ENCODING=BASE64;TYPE=PNG"];
 
         lrc::api::profile::Info profileInfo;
         profileInfo.uri = contactUri.toStdString();
@@ -749,7 +750,8 @@ ContactModelPimpl::slotIncomingContactRequest(const std::string& accountId,
             auto* cm = PhoneDirectoryModel::instance().getNumber(URI(contactUri.c_str()), account);
             const auto vCard = VCardUtils::toHashMap(payload.c_str());
             const auto alias = vCard["FN"];
-            const auto photo = vCard["PHOTO;ENCODING=BASE64;TYPE=PNG"];
+            const auto photo = (vCard.find("PHOTO;ENCODING=BASE64;TYPE=PNG") == vCard.end()) ?
+            vCard["PHOTO;ENCODING=BASE64;TYPE=JPEG"] : vCard["PHOTO;ENCODING=BASE64;TYPE=PNG"];
 
             auto profileInfo = profile::Info {contactUri, photo.toStdString(), alias.toStdString(), profile::Type::PENDING};
             auto contactInfo = contact::Info {profileInfo, cm->bestName().toStdString(), cm->isConfirmed(), cm->isPresent()};
