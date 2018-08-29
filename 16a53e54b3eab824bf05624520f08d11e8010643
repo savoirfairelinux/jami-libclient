@@ -48,6 +48,30 @@
     },
     {
       "key": {
+        "uuid": "54538392_2576fada",
+        "filename": "src/newaccountmodel.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 782,
+      "author": {
+        "id": 579
+      },
+      "writtenOn": "2018-08-29T18:14:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f2c771bc_ef2bac18",
+      "range": {
+        "startLine": 782,
+        "startChar": 18,
+        "endLine": 782,
+        "endChar": 21
+      },
+      "revId": "16a53e54b3eab824bf05624520f08d11e8010643",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "47038776_f1098460",
         "filename": "src/person.cpp",
         "patchSetId": 7
