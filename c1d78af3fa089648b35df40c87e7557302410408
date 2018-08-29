@@ -2,6 +2,29 @@
   "comments": [
     {
       "key": {
+        "uuid": "1be9c7ab_3385d8e7",
+        "filename": "src/newaccountmodel.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 821,
+      "author": {
+        "id": 579
+      },
+      "writtenOn": "2018-08-29T21:06:47Z",
+      "side": 1,
+      "message": "QByteArray::fromBase64(img.c_str()) should be fine ?",
+      "range": {
+        "startLine": 821,
+        "startChar": 40,
+        "endLine": 821,
+        "endChar": 90
+      },
+      "revId": "c1d78af3fa089648b35df40c87e7557302410408",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "33ecabb6_7d29bcb5",
         "filename": "src/private/vcardutils.cpp",
         "patchSetId": 8
