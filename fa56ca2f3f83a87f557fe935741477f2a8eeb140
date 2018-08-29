@@ -45,6 +45,30 @@
       "revId": "fa56ca2f3f83a87f557fe935741477f2a8eeb140",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "17d96ffc_b4e9289f",
+        "filename": "src/newaccountmodel.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 832,
+      "author": {
+        "id": 225
+      },
+      "writtenOn": "2018-08-29T21:40:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "65fb36c5_68b256ed",
+      "range": {
+        "startLine": 831,
+        "startChar": 4,
+        "endLine": 832,
+        "endChar": 18
+      },
+      "revId": "fa56ca2f3f83a87f557fe935741477f2a8eeb140",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
