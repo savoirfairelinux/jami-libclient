@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "33ecabb6_7d29bcb5",
+        "filename": "src/private/vcardutils.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 579
+      },
+      "writtenOn": "2018-08-29T21:02:22Z",
+      "side": 1,
+      "message": "really necessary?",
+      "range": {
+        "startLine": 28,
+        "startChar": 0,
+        "endLine": 29,
+        "endChar": 23
+      },
+      "revId": "c1d78af3fa089648b35df40c87e7557302410408",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    }
+  ]
+}
