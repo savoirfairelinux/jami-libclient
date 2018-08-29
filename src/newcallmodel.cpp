@@ -275,6 +275,7 @@ NewCallModel::togglePause(const std::string& callId) const
     case call::Status::INACTIVE:
     case call::Status::ENDED:
     case call::Status::TERMINATING:
+    case call::Status::PEER_BUSY:
     case call::Status::CONNECTED:
         break;
     }
