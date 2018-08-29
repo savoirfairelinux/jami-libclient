@@ -430,6 +430,14 @@ ConversationModel::selectConversation(const std::string& uid) const
     if (not conversation.confId.empty()) {
         emit pimpl_->behaviorController.showCallView(owner.id, conversation);
     } else if (conversation.callId.empty()) {
+        if (!conversation.previousCallId.empty()) {
+            auto previousCall = owner.callModel->getCall(conversation.previousCallId);
+            // TODO this breaks clients without send a message capability
+            if (previousCall.status == call::Status::ENDED_RECORDING_MESSAGE) {
+                return;
+            }
+        }
+
         emit pimpl_->behaviorController.showChatView(owner.id, conversation);
     } else {
         try  {
@@ -448,7 +456,10 @@ ConversationModel::selectConversation(const std::string& uid) const
                 // We are currently receiving a call
                 emit pimpl_->behaviorController.showCallView(owner.id, conversation);
                 break;
-            default: // INVALID, INACTIVE, ENDED, TERMINATING
+            case call::Status::PEER_BUSY:
+                emit pimpl_->behaviorController.showLetMessageView(owner.id, conversation);
+                break;
+            default: // INVALID, INACTIVE, ENDED, ENDED_RECORDING_MESSAGE, TERMINATING
                 // We are not in a call, show the chatview
                 emit pimpl_->behaviorController.showChatView(owner.id, conversation);
             }
@@ -523,6 +534,8 @@ ConversationModelPimpl::placeCall(const std::string& uid, bool isAudioOnly)
                 case call::Status::INVALID:
                 case call::Status::INACTIVE:
                 case call::Status::ENDED:
+                case call::Status::ENDED_RECORDING_MESSAGE:
+                case call::Status::PEER_BUSY:
                 case call::Status::TERMINATING:
                 default:
                     break;
