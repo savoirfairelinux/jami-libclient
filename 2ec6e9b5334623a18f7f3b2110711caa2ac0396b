@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a0541650_eaa670f0",
+        "filename": "src/contactmodel.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 579
+      },
+      "writtenOn": "2018-08-29T18:16:20Z",
+      "side": 1,
+      "message": "useless",
+      "range": {
+        "startLine": 25,
+        "startChar": 0,
+        "endLine": 25,
+        "endChar": 19
+      },
+      "revId": "2ec6e9b5334623a18f7f3b2110711caa2ac0396b",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    }
+  ]
+}
