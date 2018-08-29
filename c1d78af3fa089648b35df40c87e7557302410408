@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "4402593e_60196dd2",
+        "filename": "src/newaccountmodel.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 821,
+      "author": {
+        "id": 225
+      },
+      "writtenOn": "2018-08-29T21:20:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1be9c7ab_3385d8e7",
+      "range": {
+        "startLine": 821,
+        "startChar": 40,
+        "endLine": 821,
+        "endChar": 90
+      },
+      "revId": "c1d78af3fa089648b35df40c87e7557302410408",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "33ecabb6_7d29bcb5",
         "filename": "src/private/vcardutils.cpp",
         "patchSetId": 8
@@ -45,6 +69,30 @@
       "revId": "c1d78af3fa089648b35df40c87e7557302410408",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c2ef1cbc_a5cd9a13",
+        "filename": "src/private/vcardutils.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 225
+      },
+      "writtenOn": "2018-08-29T21:20:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "33ecabb6_7d29bcb5",
+      "range": {
+        "startLine": 28,
+        "startChar": 0,
+        "endLine": 29,
+        "endChar": 23
+      },
+      "revId": "c1d78af3fa089648b35df40c87e7557302410408",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
