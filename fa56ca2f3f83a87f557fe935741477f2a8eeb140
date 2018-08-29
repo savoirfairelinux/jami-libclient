@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6d58dea0_706b1056",
+        "filename": "src/api/newaccountmodel.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 176,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-08-29T21:27:23Z",
+      "side": 1,
+      "message": "const std::string\u0026\nThis is important to avoid a full memory copy of the uncompressed image.",
+      "range": {
+        "startLine": 176,
+        "startChar": 33,
+        "endLine": 176,
+        "endChar": 48
+      },
+      "revId": "fa56ca2f3f83a87f557fe935741477f2a8eeb140",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    }
+  ]
+}
