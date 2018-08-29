@@ -45,6 +45,7 @@ enum class Status {
     PAUSED,
     INACTIVE,
     ENDED,
+    PEER_BUSY,
     TERMINATING,
     CONNECTED
 };
@@ -72,6 +73,8 @@ to_string(const call::Status& status)
         return QObject::tr("Inactive").toStdString();
     case call::Status::ENDED:
         return QObject::tr("Finished").toStdString();
+    case call::Status::PEER_BUSY:
+        return QObject::tr("Peer busy").toStdString();
     case call::Status::TERMINATING:
         return QObject::tr("Finished").toStdString();
     case call::Status::CONNECTED:
@@ -102,7 +105,9 @@ to_status(const std::string& status)
         return Status::PAUSED;
     else if (status == "UNHOLD" || status == "CURRENT" || status == "ACTIVE_ATTACHED")
         return Status::IN_PROGRESS;
-    else if (status == "INACTIVE" || status == "BUSY")
+    else if (status == "BUSY")
+        return Status::PEER_BUSY;
+    else if (status == "INACTIVE")
         return Status::INACTIVE;
     else if (status == "OVER")
         return Status::ENDED;
@@ -143,6 +148,7 @@ canSendSIPMessage(const Info& call) {
     case call::Status::SEARCHING:
     case call::Status::INACTIVE:
     case call::Status::ENDED:
+    case call::Status::PEER_BUSY:
     case call::Status::TERMINATING:
     default:
         return false;
