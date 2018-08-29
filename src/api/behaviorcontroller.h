@@ -63,6 +63,10 @@ Q_SIGNALS:
      */
     void showChatView(const std::string& accountId, const api::conversation::Info& conversationInfo) const;
     /**
+     * Emitted when the client should ask the user whether it wants to leave a message after a failed call.
+     */
+    void showLeaveMessageView(const std::string& accountId, const api::conversation::Info& conversationInfo) const;
+    /**
      * Emitted when the client should open the call view.
      */
     void showCallView(const std::string& accountId, const api::conversation::Info& conversationInfo) const;
