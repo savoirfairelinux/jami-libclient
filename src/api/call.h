@@ -45,6 +45,8 @@ enum class Status {
     PAUSED,
     INACTIVE,
     ENDED,
+    ENDED_RECORDING_MESSAGE,
+    PEER_BUSY,
     TERMINATING,
     CONNECTED
 };
@@ -70,8 +72,11 @@ to_string(const call::Status& status)
         return QObject::tr("Searching").toStdString();
     case call::Status::INACTIVE:
         return QObject::tr("Inactive").toStdString();
+    case call::Status::ENDED_RECORDING_MESSAGE:
     case call::Status::ENDED:
         return QObject::tr("Finished").toStdString();
+    case call::Status::PEER_BUSY:
+        return QObject::tr("Peer busy").toStdString();
     case call::Status::TERMINATING:
         return QObject::tr("Finished").toStdString();
     case call::Status::CONNECTED:
@@ -79,34 +84,6 @@ to_string(const call::Status& status)
     default:
         return ""; // to remove a build warning, should not happen
     }
-}
-
-/**
- * Convert status from daemon into a Status
- * @warning status is a string from the daemon, not from to_string()
- * @param  status
- * @return
- */
-static inline Status
-to_status(const std::string& status)
-{
-    if (status == "INCOMING")
-        return Status::INCOMING_RINGING;
-    else if (status == "CONNECTING")
-        return Status::CONNECTING;
-    else if (status == "RINGING")
-        return Status::OUTGOING_RINGING;
-    else if (status == "HUNGUP")
-        return Status::TERMINATING;
-    else if (status == "HOLD" || status == "ACTIVE_DETACHED")
-        return Status::PAUSED;
-    else if (status == "UNHOLD" || status == "CURRENT" || status == "ACTIVE_ATTACHED")
-        return Status::IN_PROGRESS;
-    else if (status == "INACTIVE" || status == "BUSY")
-        return Status::INACTIVE;
-    else if (status == "OVER" || status == "FAILURE")
-        return Status::ENDED;
-    return Status::INVALID;
 }
 
 enum class Type {
@@ -143,6 +120,8 @@ canSendSIPMessage(const Info& call) {
     case call::Status::SEARCHING:
     case call::Status::INACTIVE:
     case call::Status::ENDED:
+    case call::Status::ENDED_RECORDING_MESSAGE:
+    case call::Status::PEER_BUSY:
     case call::Status::TERMINATING:
     default:
         return false;
