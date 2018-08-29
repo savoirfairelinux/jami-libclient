@@ -68,6 +68,30 @@
       "revId": "542178df3fcdddda91776871f50dbafccce45892",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fe3d92c6_801ca5bf",
+        "filename": "src/newcallmodel.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 521,
+      "author": {
+        "id": 579
+      },
+      "writtenOn": "2018-08-29T18:33:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "283089c8_9188afe1",
+      "range": {
+        "startLine": 521,
+        "startChar": 9,
+        "endLine": 521,
+        "endChar": 13
+      },
+      "revId": "542178df3fcdddda91776871f50dbafccce45892",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
