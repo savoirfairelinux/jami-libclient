@@ -448,6 +448,7 @@ ConversationModel::selectConversation(const std::string& uid) const
                 // We are currently receiving a call
                 emit pimpl_->behaviorController.showCallView(owner.id, conversation);
                 break;
+            case call::Status::PEER_BUSY: /* TODO: emit "showLetMessageView" */
             default: // INVALID, INACTIVE, ENDED, TERMINATING
                 // We are not in a call, show the chatview
                 emit pimpl_->behaviorController.showChatView(owner.id, conversation);
@@ -523,6 +524,7 @@ ConversationModelPimpl::placeCall(const std::string& uid, bool isAudioOnly)
                 case call::Status::INVALID:
                 case call::Status::INACTIVE:
                 case call::Status::ENDED:
+                case call::Status::PEER_BUSY:
                 case call::Status::TERMINATING:
                 default:
                     break;
