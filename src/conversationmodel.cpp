@@ -308,7 +308,13 @@ ConversationModel::allFilteredConversations() const
                        || contactInfo.registeredName == filter;
             }
 
-            auto regexFilter = std::regex(filter, std::regex_constants::icase);
+            std::regex regexFilter;
+            try {
+                regexFilter = std::regex(filter, std::regex_constants::icase);
+            } catch(std::regex_error) {
+                return false;
+            }
+
             /* Check type */
             if (pimpl_->typeFilter != profile::Type::PENDING) {
                 // Remove pending contacts and get the temporary item if filter is not empty
