@@ -79,7 +79,6 @@ public:
      * Retrieve active conferences from the daemon and init the model
      */
     void initConferencesFromDaemon();
-
 public Q_SLOTS:
     /**
      * Listen from CallbacksHandler when a call is incoming
@@ -408,7 +407,7 @@ NewCallModelPimpl::initCallFromDaemon()
             auto system_now = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
             auto diff = static_cast<int64_t>(system_now) - std::stol(details["TIMESTAMP_START"].toStdString());
             callInfo->startTime = now - std::chrono::seconds(diff);
-            callInfo->status =  call::to_status(details["CALL_STATE"].toStdString());
+            callInfo->status = call::to_status(details["CALL_STATE"].toStdString());
             auto endId = details["PEER_NUMBER"].indexOf("@");
             callInfo->peer = details["PEER_NUMBER"].left(endId).toStdString();
             if (linked.owner.profileInfo.type == lrc::api::profile::Type::RING) {
@@ -501,7 +500,8 @@ NewCallModelPimpl::slotCallStateChanged(const std::string& callId, const std::st
         return;
     }
 
-    qDebug() << "slotCallStateChanged, call:" << callId.c_str() << " - state: " << state.c_str();
+    qDebug("slotCallStateChanged (call: %s), from %s to %s", callId.c_str(),
+         call::to_string(previousStatus).c_str(), call::to_string(status).c_str());
 
     // NOTE: signal emission order matters, always emit CallStatusChanged before CallEnded
     emit linked.callStatusChanged(callId);
