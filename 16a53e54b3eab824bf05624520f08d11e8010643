@@ -2,6 +2,75 @@
   "comments": [
     {
       "key": {
+        "uuid": "fc7ad0b3_486f030e",
+        "filename": "src/contactmodel.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 229,
+      "author": {
+        "id": 579
+      },
+      "writtenOn": "2018-08-29T18:03:49Z",
+      "side": 1,
+      "message": "vCard \u003d owner.accountModel-\u003eaccountVCard(owner.id).c_str() ?",
+      "range": {
+        "startLine": 228,
+        "startChar": 4,
+        "endLine": 229,
+        "endChar": 69
+      },
+      "revId": "16a53e54b3eab824bf05624520f08d11e8010643",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f2c771bc_ef2bac18",
+        "filename": "src/newaccountmodel.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 782,
+      "author": {
+        "id": 579
+      },
+      "writtenOn": "2018-08-29T18:03:49Z",
+      "side": 1,
+      "message": "magic number",
+      "range": {
+        "startLine": 782,
+        "startChar": 18,
+        "endLine": 782,
+        "endChar": 21
+      },
+      "revId": "16a53e54b3eab824bf05624520f08d11e8010643",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "47038776_f1098460",
+        "filename": "src/person.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 729,
+      "author": {
+        "id": 579
+      },
+      "writtenOn": "2018-08-29T18:03:49Z",
+      "side": 1,
+      "message": "add a comment here ?",
+      "range": {
+        "startLine": 729,
+        "startChar": 4,
+        "endLine": 729,
+        "endChar": 14
+      },
+      "revId": "16a53e54b3eab824bf05624520f08d11e8010643",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "1813de2c_80426b40",
         "filename": "src/vcard.h",
         "patchSetId": 7
@@ -22,6 +91,30 @@
       "revId": "16a53e54b3eab824bf05624520f08d11e8010643",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "193e9a5c_f259a511",
+        "filename": "src/vcard.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 579
+      },
+      "writtenOn": "2018-08-29T18:03:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1813de2c_80426b40",
+      "range": {
+        "startLine": 4,
+        "startChar": 5,
+        "endLine": 4,
+        "endChar": 70
+      },
+      "revId": "16a53e54b3eab824bf05624520f08d11e8010643",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
