@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1813de2c_80426b40",
+        "filename": "src/vcard.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 579
+      },
+      "writtenOn": "2018-08-29T17:33:10Z",
+      "side": 1,
+      "message": "Nope, not Alexandre Lision.",
+      "range": {
+        "startLine": 4,
+        "startChar": 5,
+        "endLine": 4,
+        "endChar": 70
+      },
+      "revId": "16a53e54b3eab824bf05624520f08d11e8010643",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    }
+  ]
+}
