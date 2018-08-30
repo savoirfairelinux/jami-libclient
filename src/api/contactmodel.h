@@ -163,7 +163,6 @@ Q_SIGNALS:
 
 private:
     std::unique_ptr<ContactModelPimpl> pimpl_;
-
 };
 
 } // namespace api

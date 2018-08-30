@@ -295,9 +295,13 @@ ConversationModel::allFilteredConversations() const
 
             auto filter = pimpl_->filter;
             auto uri = URI(QString(filter.c_str()));
-            if (uri.full().startsWith("ring:")) {
-                filter = uri.full().mid(5).toStdString();;
+            bool stripScheme = (uri.schemeType() == URI::SchemeType::NONE) || (uri.schemeType() == URI::SchemeType::RING);
+            FlagPack<URI::Section> flags = URI::Section::USER_INFO | URI::Section::HOSTNAME | URI::Section::PORT;
+            if (!stripScheme) {
+                flags |= URI::Section::SCHEME;
             }
+
+            filter = uri.format(flags).toStdString();
 
             /* Check contact */
             // If contact is banned, only match if filter is a perfect match
