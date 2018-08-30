@@ -186,7 +186,7 @@ QString URIPrivate::strip(const QString& uri, URI::SchemeType& scheme)
    //Assume the scheme is either sip or ring using the first letter and length, this
    //is dangerous and can cause undefined behaviour that will cause the call to fail
    //later on, but this is not really a problem for now
-   if (end > start+3 && uriTrimmed[start+3] == ':') {
+   if (end >= start+3 && uriTrimmed[start+3] == ':') {
       switch (c) {
          case 's':
             scheme = URI::SchemeType::SIP;
@@ -194,7 +194,7 @@ QString URIPrivate::strip(const QString& uri, URI::SchemeType& scheme)
       }
       start = start +4;
    }
-   else if (end > start+4 && uriTrimmed[start+4] == ':') {
+   else if (end >= start+4 && uriTrimmed[start+4] == ':') {
       switch (c) {
          case 'r':
             scheme = URI::SchemeType::RING;
@@ -216,7 +216,7 @@ QString URIPrivate::strip(const QString& uri, URI::SchemeType& scheme)
 }
 
 /**
- * Return the domaine of an URI
+ * Return the domain of an URI
  *
  * For example, example.com in <sip:12345@example.com>
  */
