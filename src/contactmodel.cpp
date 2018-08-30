@@ -3,6 +3,7 @@
  *   Author: Nicolas Jäger <nicolas.jager@savoirfairelinux.com>             *
  *   Author: Sébastien Blin <sebastien.blin@savoirfairelinux.com>           *
  *   Author: Guillaume Roguez <guillaume.roguez@savoirfairelinux.com>       *
+ *   Author: Hugo Lefeuvre <hugo.lefeuvre@savoirfairelinux.com>             *
  *                                                                          *
  *   This library is free software; you can redistribute it and/or          *
  *   modify it under the terms of the GNU Lesser General Public             *
@@ -17,7 +18,6 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#include "api/contactmodel.h"
 
 // Std
 #include <algorithm>
@@ -27,20 +27,15 @@
 #include <account_const.h>
 
 // LRC
+#include "api/contactmodel.h"
 #include "api/account.h"
 #include "api/contact.h"
 #include "api/interaction.h"
 #include "api/newaccountmodel.h"
 #include "api/newcallmodel.h"
 #include "api/conversationmodel.h"
+#include "api/newaccountmodel.h"
 #include "callbackshandler.h"
-
-#include "accountmodel.h"
-#include "contactmethod.h"
-#include "namedirectory.h"
-#include "phonedirectorymodel.h"
-#include "bannedcontactmodel.h"
-#include "private/vcardutils.h"
 
 #include "authority/daemon.h"
 #include "authority/databasehelper.h"
@@ -63,24 +58,27 @@ public:
                       const BehaviorController& behaviorController);
 
     ~ContactModelPimpl();
+
     /**
      * Fills with contacts based on database's requests
      * @return if the method succeeds
      */
     bool fillsWithSIPContacts();
+
     /**
      * Fills with contacts based on daemon's requests
      * @return if the method succeeds
      */
     bool fillsWithRINGContacts();
+
     /**
      * Add a contact::Info to contacts.
-     * @note: the cm must corresponds to a profile in the database.
-     * @param cm ContactMethod.
+     * @note: the contactId must corresponds to a profile in the database.
+     * @param contactId
      * @param type
      * @param banned whether contact is banned or not
      */
-    void addToContacts(ContactMethod* cm, const profile::Type& type, bool banned = false);
+    void addToContacts(const std::string& contactId, const profile::Type& type, bool banned = false);
 
     // Helpers
     const BehaviorController& behaviorController;
@@ -101,6 +99,7 @@ public Q_SLOTS:
      * @param status
      */
     void slotNewBuddySubscription(const std::string& uri, bool status);
+
     /**
      * Listen CallbacksHandler when a contact is added
      * @param accountId
@@ -108,6 +107,7 @@ public Q_SLOTS:
      * @param confirmed
      */
     void slotContactAdded(const std::string& accountId, const std::string& contactUri, bool confirmed);
+
     /**
      * Listen CallbacksHandler when a contact is removed
      * @param accountId
@@ -115,6 +115,7 @@ public Q_SLOTS:
      * @param banned
      */
     void slotContactRemoved(const std::string& accountId, const std::string& contactUri, bool banned);
+
     /**
      * Listen CallbacksHandler when a registeredName is found
      * @param accountId account linked
@@ -123,6 +124,7 @@ public Q_SLOTS:
      * @param registeredName of the contact found
      */
     void slotRegisteredNameFound(const std::string& accountId, int status, const std::string& uri, const std::string& registeredName);
+
     /**
      * Listen CallbacksHandler when an incoming request arrives
      * @param accountId account linked
@@ -138,6 +140,7 @@ public Q_SLOTS:
      * @param callId
      */
     void slotIncomingCall(const std::string& fromId, const std::string& callId);
+
     /**
      * Listen from callbacksHandler for new account interaction and add pending contact if not present
      * @param accountId
@@ -147,6 +150,7 @@ public Q_SLOTS:
     void slotNewAccountMessage(std::string& accountId,
                                std::string& from,
                                std::map<std::string,std::string> payloads);
+
     /**
      * Listen from callbacksHandler to know when a file transfer interaction is incoming
      * @param dringId Daemon's ID for incoming transfer
@@ -295,8 +299,8 @@ ContactModel::removeContact(const std::string& contactUri, bool banned)
     if (emitContactRemoved) {
         emit contactRemoved(contactUri);
     } else {
-        // NOTE: this method is async, slotContactRemoved will be call and
-        // then the model will be updated.
+        // NOTE: this method is asynchronous, the model will be updated
+        // in slotContactRemoved
         daemon::removeContact(owner, contactUri, banned);
     }
 }
@@ -330,8 +334,6 @@ ContactModel::searchContact(const std::string& query)
 
     if (owner.profileInfo.type == profile::Type::SIP) {
         // We don't need to search anything for SIP contacts.
-        // NOTE: there is no registeredName for SIP contacts
-
         // Reset temporary if contact exists, else save the query inside it
         {
             std::lock_guard<std::mutex> lk(pimpl_->contactsMtx_);
@@ -381,12 +383,10 @@ ContactModel::searchContact(const std::string& query)
 
 
         // Query Name Server
-        if (auto* account = AccountModel::instance().getById(owner.id.c_str())) {
-            if (not account->lookupName(QString(query.c_str()))) {
-                profileInfo.alias = "No reference of " + query + " found";
-            }
-            emit modelUpdated(query);
+        if (not ConfigurationManager::instance().lookupName(linked.owner.id, "", query)) {
+            profileInfo.alias = "No reference of " + query + " found";
         }
+        emit modelUpdated(query);
     }
 
 }
@@ -475,23 +475,19 @@ ContactModelPimpl::fillsWithSIPContacts()
             }
         }
     }
+
     return true;
 }
 
 bool
 ContactModelPimpl::fillsWithRINGContacts() {
     auto account = AccountModel::instance().getById(linked.owner.id.c_str());
-    if (not account) {
-        qDebug() << "ContactModel::fillsWithContacts(), nullptr";
-        return false;
-    }
 
     // Add contacts from daemon
     const VectorMapStringString& contacts_vector = ConfigurationManager::instance().getContacts(linked.owner.id.c_str());
     for (auto contact_info : contacts_vector) {
-        auto cm = PhoneDirectoryModel::instance().getNumber(contact_info["id"], account);
         std::lock_guard<std::mutex> lk(contactsMtx_);
-        addToContacts(cm, linked.owner.profileInfo.type, contact_info["banned"] == "true");
+        addToContacts(contact_info, linked.owner.profileInfo.type);
     }
 
     // Add pending contacts
@@ -551,12 +547,6 @@ ContactModelPimpl::slotContactAdded(const std::string& accountId, const std::str
 {
     Q_UNUSED(confirmed)
     if (accountId != linked.owner.id) return;
-    auto* account = AccountModel::instance().getById(linked.owner.id.c_str());
-    if (not account) {
-        qDebug() << "ContactModel::slotContactsAdded(), nullptr";
-        return;
-    }
-    auto* cm = PhoneDirectoryModel::instance().getNumber(QString(contactUri.c_str()), account);
     auto contact = contacts.find(contactUri);
 
     if (contact->second.profileInfo.type == profile::Type::PENDING) {
@@ -579,11 +569,6 @@ ContactModelPimpl::slotContactAdded(const std::string& accountId, const std::str
             // If contact is banned, do not re-add it, simply update its flag and the banned contacts list
             if (isBanned) {
                 bannedContacts.erase(it);
-
-                /* Update old LRC.
-                   This method should NOT make any function call that requires the contactsMtx_ lock
-                   otherwise we will get into a deadlock. This is only here for old-lrc transition. */
-                account->bannedContactModel()->remove(cm, false);
             }
 
             addToContacts(cm, linked.owner.profileInfo.type, false);
@@ -619,16 +604,6 @@ ContactModelPimpl::slotContactRemoved(const std::string& accountId, const std::s
         if (banned) {
             contact->second.isBanned = true;
 
-            auto* account = AccountModel::instance().getById(linked.owner.id.c_str());
-            if (not account) {
-                qDebug() << "ContactModel::slotContactsRemoved(), nullptr";
-                return;
-            }
-            auto* cm = PhoneDirectoryModel::instance().getNumber(QString(contactUri.c_str()), account);
-
-            // Update bannedContactModel from old LRC
-            account->bannedContactModel()->add(cm);
-
             // Update bannedContacts index
             bannedContacts.emplace_back(contact->second.profileInfo.uri);
         } else {
@@ -658,32 +633,25 @@ ContactModelPimpl::slotContactRemoved(const std::string& accountId, const std::s
 }
 
 void
-ContactModelPimpl::addToContacts(ContactMethod* cm, const profile::Type& type, bool banned)
+ContactModelPimpl::addToContacts(const std::string& contactId, const profile::Type& type, bool banned)
 {
-    if (!cm) {
-        qDebug() << "addToContacts: Called with NULL contact method.";
-    }
-
-    auto contactUri = cm->uri().toStdString();
-    auto contactId = database::getProfileId(db, contactUri);
-    if (contactId.empty()) {
-        contactId = database::getOrInsertProfile(db, contactUri, "", "",
-                                                 to_string(linked.owner.profileInfo.type));
-    }
-
     auto contactInfo = database::buildContactFromProfileId(db, contactId);
-    contactInfo.registeredName = cm->registeredName().toStdString();
     contactInfo.isBanned = banned;
-    contactInfo.isPresent = cm->isPresent();
-    contactInfo.profileInfo.type = type; // Because PENDING should not be stored in the database
-    auto iter = contacts.find(contactInfo.profileInfo.uri);
-    if (iter != contacts.end())
-        iter->second = contactInfo;
+    contactInfo.profileInfo.type = type; // PENDING should not be stored in the database
+
+    // lookup address in case of RING contact
+    if (type == profile::Type::RING) {
+        ConfigurationManager::instance().lookupAddress(linked.owner.id, "", contactId);
+    }
+
+    auto it = contacts.find(contactInfo.profileInfo.uri);
+    if (it != contacts.end())
+        it->second = contactInfo;
     else
-        contacts.emplace_hint(iter, contactInfo.profileInfo.uri, contactInfo);
+        contacts.emplace_hint(it, contactInfo.profileInfo.uri, contactInfo);
 
     if (banned) {
-        bannedContacts.emplace_back(contactUri);
+        bannedContacts.emplace_back(contactId);
     }
 }
 
@@ -737,35 +705,27 @@ ContactModelPimpl::slotIncomingContactRequest(const std::string& accountId,
     if (linked.owner.id != accountId)
         return;
 
-    auto* account = AccountModel::instance().getById(linked.owner.id.c_str());
-    if (not account) {
-        qDebug() << "ContactModel::slotIncomingContactRequest(), nullptr";
-        return;
-    }
-
     auto emitTrust = false;
     {
         std::lock_guard<std::mutex> lk(contactsMtx_);
         if (contacts.find(contactUri) == contacts.end()) {
-            auto* cm = PhoneDirectoryModel::instance().getNumber(URI(contactUri.c_str()), account);
             const auto vCard = VCardUtils::toHashMap(payload.c_str());
             const auto alias = vCard["FN"];
             const auto photo = (vCard.find("PHOTO;ENCODING=BASE64;TYPE=PNG") == vCard.end()) ?
             vCard["PHOTO;ENCODING=BASE64;TYPE=JPEG"] : vCard["PHOTO;ENCODING=BASE64;TYPE=PNG"];
 
             auto profileInfo = profile::Info {contactUri, photo.toStdString(), alias.toStdString(), profile::Type::PENDING};
-            auto contactInfo = contact::Info {profileInfo, cm->bestName().toStdString(), cm->isConfirmed(), cm->isPresent()};
+            auto contactInfo = contact::Info {profileInfo, "", false, false, false};
             contacts.emplace(contactUri, contactInfo);
             emitTrust = true;
             database::getOrInsertProfile(db, contactUri, alias.toStdString(),
                                          photo.toStdString(),
                                          profile::to_string(profile::Type::RING));
-        } else
-            return;
+        }
     }
 
-    emit linked.contactAdded(contactUri);
     if (emitTrust) {
+        emit linked.contactAdded(contactUri);
         emit behaviorController.newTrustRequest(linked.owner.id, contactUri);
     }
 }
@@ -773,34 +733,25 @@ ContactModelPimpl::slotIncomingContactRequest(const std::string& accountId,
 void
 ContactModelPimpl::slotIncomingCall(const std::string& fromId, const std::string& callId)
 {
-    auto* account = AccountModel::instance().getById(linked.owner.id.c_str());
-    if (not account) {
-        qDebug() << "ContactModel::slotIncomingCall(), nullptr";
-        return;
+    bool emitContactAdded = false;
+    {
+        std::lock_guard<std::mutex> lk(contactsMtx_);
+        if (contacts.find(fromId) == contacts.end()) {
+            // Contact not found, load profile from database.
+            // The conversation model will create an entry and link the incomingCall.
+            auto type = (linked.owner.profileInfo.type == profile::Type::RING) ? profile::Type::PENDING : profile::Type::SIP;
+            addToContacts(fromId, type, false);
+            emitContactAdded = true;
+        }
+    }
+    if (emitContactAdded) {
+        emit linked.contactAdded(fromId);
+        if (linked.owner.profileInfo.type == profile::Type::RING) {
+            emit behaviorController.newTrustRequest(linked.owner.id, fromId);
+        }
     }
 
-    {
-        bool emitContactAdded = false;
-        {
-            std::lock_guard<std::mutex> lk(contactsMtx_);
-            if (contacts.find(fromId) == contacts.end()) {
-                // Contact not found, load profile from database.
-                // The conversation model will create an entry and link the incomingCall.
-                auto* cm = PhoneDirectoryModel::instance().getNumber(QString(fromId.c_str()), account);
-                auto type = (linked.owner.profileInfo.type == profile::Type::RING) ? profile::Type::PENDING : profile::Type::SIP;
-                addToContacts(cm, type, false);
-                emitContactAdded = true;
-            }
-        }
-        if (emitContactAdded) {
-            emit linked.contactAdded(fromId);
-            if (linked.owner.profileInfo.type == profile::Type::RING) {
-                emit behaviorController.newTrustRequest(linked.owner.id, fromId);
-            }
-        }
-        emit linked.incomingCallFromPending(fromId, callId);
-        return;
-    }
+    emit linked.incomingCallFromPending(fromId, callId);
 }
 
 void
@@ -809,19 +760,14 @@ ContactModelPimpl::slotNewAccountMessage(std::string& accountId,
                                          std::map<std::string,std::string> payloads)
 {
     if (accountId != linked.owner.id) return;
-    auto* account = AccountModel::instance().getById(linked.owner.id.c_str());
-    if (not account) {
-        qDebug() << "ContactModel::slotNewAccountMessage(), nullptr";
-        return;
-    }
+
     auto emitNewTrust = false;
     {
         std::lock_guard<std::mutex> lk(contactsMtx_);
         if (contacts.find(from) == contacts.end()) {
             // Contact not found, load profile from database.
             // The conversation model will create an entry and link the incomingCall.
-            auto* cm = PhoneDirectoryModel::instance().getNumber(QString(from.c_str()), account);
-            addToContacts(cm, profile::Type::PENDING, false);
+            addToContacts(from, profile::Type::PENDING, false);
             emitNewTrust = true;
         }
     }
@@ -835,25 +781,21 @@ void
 ContactModelPimpl::slotNewAccountTransfer(long long dringId, datatransfer::Info info)
 {
     if (info.accountId != linked.owner.id) return;
-    auto* account = AccountModel::instance().getById(linked.owner.id.c_str());
-    if (not account) {
-        qDebug() << "ContactModel::slotNewAccountTransfer(), nullptr";
-        return;
-    }
+
     bool emitNewTrust = false;
     {
         std::lock_guard<std::mutex> lk(contactsMtx_);
         if (contacts.find(info.peerUri) == contacts.end()) {
             // Contact not found, load profile from database.
             // The conversation model will create an entry and link the incomingCall.
-            auto* cm = PhoneDirectoryModel::instance().getNumber(QString(info.peerUri.c_str()), account);
-            addToContacts(cm, profile::Type::PENDING, false);
+            addToContacts(info.peerUri, profile::Type::PENDING, false);
             emitNewTrust = true;
         }
     }
     if (emitNewTrust) {
         emit behaviorController.newTrustRequest(linked.owner.id, info.peerUri);
     }
+
     emit linked.newAccountTransfer(dringId, info);
 }
 
