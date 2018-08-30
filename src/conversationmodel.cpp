@@ -296,7 +296,7 @@ ConversationModel::allFilteredConversations() const
             auto filter = pimpl_->filter;
             auto uri = URI(QString(filter.c_str()));
             if (uri.full().startsWith("ring:")) {
-                filter = uri.full().mid(5).toStdString();;
+                filter = uri.full().mid(5).toStdString();
             }
 
             /* Check contact */
