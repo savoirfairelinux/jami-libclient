@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "eb022ef3_2d28dea8",
+        "filename": "src/api/newaccountmodel.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 176,
+      "author": {
+        "id": 225
+      },
+      "writtenOn": "2018-08-30T13:58:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6d58dea0_706b1056",
+      "range": {
+        "startLine": 176,
+        "startChar": 33,
+        "endLine": 176,
+        "endChar": 48
+      },
+      "revId": "fa56ca2f3f83a87f557fe935741477f2a8eeb140",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "65fb36c5_68b256ed",
         "filename": "src/newaccountmodel.cpp",
         "patchSetId": 9
