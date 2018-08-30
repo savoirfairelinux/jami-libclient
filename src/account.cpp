@@ -1395,6 +1395,7 @@ QVariant Account::roleData(int role) const
 bool Account::supportScheme( URI::SchemeType type ) const
 {
    switch(type) {
+      case URI::SchemeType::UNRECOGNIZED :
       case URI::SchemeType::NONE :
          if (protocol() == Account::Protocol::RING)
             /* the URIs which are supported by accounts of type RING are well
