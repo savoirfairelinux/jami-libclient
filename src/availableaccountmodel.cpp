@@ -114,6 +114,7 @@ Account* AvailableAccountModel::currentDefaultAccount(ContactMethod* method)
           case URI::ProtocolHint::IP:
              type = URI::SchemeType::SIP;
              break;
+          case URI::ProtocolHint::UNRECOGNIZED:
           case URI::ProtocolHint::RING:
           case URI::ProtocolHint::RING_USERNAME:
              type = URI::SchemeType::RING;
