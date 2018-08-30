@@ -1,6 +1,7 @@
 /****************************************************************************
- *   Copyright (C) 2014-2018 Savoir-faire Linux                          *
+ *   Copyright (C) 2014-2018 Savoir-faire Linux                             *
  *   Author : Emmanuel Lepage Vallee <emmanuel.lepage@savoirfairelinux.com> *
+ *   Author : Hugo Lefeuvre <hugo.lefeuvre@savoirfairelinux.com>            *
  *                                                                          *
  *   This library is free software; you can redistribute it and/or          *
  *   modify it under the terms of the GNU Lesser General Public             *
@@ -19,182 +20,176 @@
 
 #include "typedefs.h"
 
+#include <memory>
 #include <QStringList>
 
-class URIPrivate;
+class URIPimpl;
 class QDataStream;
 
 /**
-    * @class URI A specialized string with multiple attributes
-    *
-    * Most of LibRingClient handle uri as strings, but more
-    * advanced algorithms need to access the various sections.
-    * This class implement a centralized and progressive URI
-    * parser to avoid having custom implementation peppered
-    * everywhere. This class doesn't attempt to produce perfect
-    * output. It has multiple tradeoff to be faster when
-    * accuracy has little value in the context of LibRingClient.
-    *
-    * Here is some example of common numbers/URIs:
-    *  * 123
-    *  * 123@192.168.123.123
-    *  * 123@asterisk-server
-    *  * <sip:123@192.168.123.123>
-    *  * <sips:123@192.168.123.123>
-    *  * <sips:888@192.168.48.213;transport=TLS>
-    *  * <sip:c8oqz84zk7z@privacy.org>;tag=hyh8
-    *  * 1 800 123-4567
-    *  * 18001234567
-    *
-    * @ref http://tools.ietf.org/html/rfc5456#page-8
-    * @ref http://tools.ietf.org/html/rfc3986
-    * @ref http://tools.ietf.org/html/rfc3261
-    * @ref http://tools.ietf.org/html/rfc5630
-    *
-    * <code>
-    * From the RFC:
-    *    foo://example.com:8042/over/there?name=ferret#nose
-    *    \_/   \______________/\_________/ \_________/ \__/
-    *     |           |            |            |        |
-    *  scheme     authority       path        query   fragment
-    *     |   _____________________|__
-    *    / \ /                        \
-    *    urn:example:animal:ferret:nose
-    *
-    *    authority   = [ userinfo "@" ] host [ ":" port ]
-    * </code>
-    *
-    *    "For example, the semicolon (";") and equals ("=") reserved characters are
-    *    often used to delimit parameters and parameter values applicable to
-    *    that segment.  The comma (",") reserved character is often used for
-    *    similar purposes.  For example, one URI producer might use a segment
-    *    such as "name;v=1.1" to indicate a reference to version 1.1 of
-    *    "name", whereas another might use a segment such as "name,1.1" to
-    *    indicate the same. "
-    */
+ * @class URI A specialized string with multiple attributes
+ *
+ * Most of LibRingClient handle uri as strings, but more
+ * advanced algorithms need to access the various sections.
+ * This class implement a centralized and progressive URI
+ * parser to avoid having custom implementation peppered
+ * everywhere. This class doesn't attempt to produce perfect
+ * output. It has multiple tradeoff to be faster when
+ * accuracy has little value in the context of LibRingClient.
+ *
+ * Here is some example of common numbers/URIs:
+ *  * 123
+ *  * 123@192.168.123.123
+ *  * 123@asterisk-server
+ *  * <sip:123@192.168.123.123>
+ *  * <sips:123@192.168.123.123>
+ *  * <sips:888@192.168.48.213;transport=TLS>
+ *  * <sip:c8oqz84zk7z@privacy.org>;tag=hyh8
+ *  * 1 800 123-4567
+ *  * 18001234567
+ *
+ * @ref http://tools.ietf.org/html/rfc5456#page-8
+ * @ref http://tools.ietf.org/html/rfc3986
+ * @ref http://tools.ietf.org/html/rfc3261
+ * @ref http://tools.ietf.org/html/rfc5630
+ *
+ * <code>
+ * From the RFC:
+ *    foo://example.com:8042/over/there?name=ferret#nose
+ *    \_/   \______________/\_________/ \_________/ \__/
+ *     |           |            |            |        |
+ *  scheme     authority       path        query   fragment
+ *     |   _____________________|__
+ *    / \ /                        \
+ *    urn:example:animal:ferret:nose
+ *
+ *    authority   = [ userinfo "@" ] host [ ":" port ]
+ * </code>
+ *
+ *    "For example, the semicolon (";") and equals ("=") reserved characters are
+ *    often used to delimit parameters and parameter values applicable to
+ *    that segment.  The comma (",") reserved character is often used for
+ *    similar purposes.  For example, one URI producer might use a segment
+ *    such as "name;v=1.1" to indicate a reference to version 1.1 of
+ *    "name", whereas another might use a segment such as "name,1.1" to
+ *    indicate the same. "
+ */
 class LIB_EXPORT URI : public QString
 {
-   friend class URIPrivate;
 public:
+    URI();
+    URI(const URI&     other);
+    URI(const QString& other);
+    virtual ~URI();
 
-   ///Default constructor
-   URI();
+    // @enum SchemeType The very first part of the URI followed by a ':'
+    enum class SchemeType {
+        SIP  ,
+        SIPS ,
+        RING ,
+        NONE ,
+        COUNT__,
+        UNRECOGNIZED
+    };
+    Q_ENUMS(URI::SchemeType)
 
-   /**
-    * Default copy constructor
-    * @param other an URI string
-    */
-   URI(const URI&     other);
+    /**
+     * @enum Transport each known valid transport types
+     * Defined at http://tools.ietf.org/html/rfc3261#page-222
+     */
+    enum class Transport {
+        NOT_SET, /*!<  The transport have not been set directly in the URI  */
+        TLS    , /*!<  Encrypted calls (capital)                            */
+        tls    , /*!<  Encrypted calls                                      */
+        TCP    , /*!<  TCP (the default) (capital)                          */
+        tcp    , /*!<  TCP (the default)                                    */
+        UDP    , /*!<  Without a connection (capital)                       */
+        udp    , /*!<  Without a connection                                 */
+        SCTP   , /*!<                                                       */
+        sctp   , /*!<                                                       */
+        DTLS   , /*!<                                                       */
+        dtls   , /*!<                                                       */
+        COUNT__
+    };
+    Q_ENUMS(URI::Transport)
 
-   URI(const QString& other);
-   virtual ~URI();
-
-   ///@enum SchemeType The very first part of the URI followed by a ':'
-   enum class SchemeType {
-      NONE , //Implicit SIP, use account type as reference
-      SIP  ,
-      SIPS ,
-      RING ,
-      COUNT__
-   };
-   Q_ENUMS(URI::SchemeType)
-
-   /**
-    * @enum Transport each known valid transport types
-    * Defined at http://tools.ietf.org/html/rfc3261#page-222
-    */
-   enum class Transport {
-      NOT_SET, /*!<  The transport have not been set directly in the URI  */
-      TLS    , /*!<  Encrypted calls (capital)                            */
-      tls    , /*!<  Encrypted calls                                      */
-      TCP    , /*!<  TCP (the default) (capital)                          */
-      tcp    , /*!<  TCP (the default)                                    */
-      UDP    , /*!<  Without a connection (capital)                       */
-      udp    , /*!<  Without a connection                                 */
-      SCTP   , /*!<                                                       */
-      sctp   , /*!<                                                       */
-      DTLS   , /*!<                                                       */
-      dtls   , /*!<                                                       */
-      COUNT__
-   };
-   Q_ENUMS(URI::Transport)
-
-   /**
-    * @enum Section flags associated with each logical sections of the URI
-    *
-    * Those sections can be packed into a block to be used to define the
-    * expected URI syntax
-    *
-    */
-   enum class Section {
-      CHEVRONS  = 0x1 << 0, /*!< <code><sips:888@192.168.48.213:5060;transport=TLS>
+    /**
+     * @enum Section flags associated with each logical sections of the URI
+     *
+     * Those sections can be packed into a block to be used to define the
+     * expected URI syntax
+     *
+     */
+    enum class Section {
+        CHEVRONS  = 0x1 << 0, /*!< <code><sips:888@192.168.48.213:5060;transport=TLS>
                                 \_/                                              \_/
-                                 |_________________Chevrons_______________________|
-                                                                             </code>*/
-      SCHEME    = 0x1 << 1, /*!< <code><sips:888@192.168.48.213:5060;transport=TLS>
-                                       \___/
-                                         |______Scheme|</code>                      */
-      USER_INFO = 0x1 << 2, /*!< <code><sips:888@192.168.48.213:5060;transport=TLS>
-                                            \___/
-                                              |_________Userinfo</code>             */
-      HOSTNAME  = 0x1 << 3, /*!< <code><sips:888@192.168.48.213:5060;transport=TLS>
-                                                \______________/
-                                                       |_________Hostname</code>    */
-      PORT      = 0x1 << 4, /*!< <code><sips:888@192.168.48.213:5060;transport=TLS>
-                                                               \____/
-                                                                 |_____Port</code>  */
-      TRANSPORT = 0x1 << 5, /*!< <code><sips:888@192.168.48.213:5060;transport=TLS>
-                                                                    \_____________/
-                                                          Transport________|</code> */
-      TAG       = 0x1 << 6, /*!< <code><sips:888@192.168.48.213:5060;tag=b5c73d9ef>
-                                                                    \_____________/
-                                                               Tag_________|</code> */
-   };
+                                |_________________Chevrons_______________________|
+                                </code>*/
+        SCHEME    = 0x1 << 1, /*!< <code><sips:888@192.168.48.213:5060;transport=TLS>
+                                \___/
+                                |______Scheme|</code>                      */
+        USER_INFO = 0x1 << 2, /*!< <code><sips:888@192.168.48.213:5060;transport=TLS>
+                                \___/
+                                |_________Userinfo</code>             */
+        HOSTNAME  = 0x1 << 3, /*!< <code><sips:888@192.168.48.213:5060;transport=TLS>
+                                \______________/
+                                |_________Hostname</code>    */
+        PORT      = 0x1 << 4, /*!< <code><sips:888@192.168.48.213:5060;transport=TLS>
+                                \____/
+                                |_____Port</code>  */
+        TRANSPORT = 0x1 << 5, /*!< <code><sips:888@192.168.48.213:5060;transport=TLS>
+                                \_____________/
+                                Transport________|</code> */
+        TAG       = 0x1 << 6, /*!< <code><sips:888@192.168.48.213:5060;tag=b5c73d9ef>
+                                \_____________/
+                                Tag_________|</code> */
+    };
 
-   /**
-    * @enum ProtocolHint Expanded version of Account::Protocol
-    *
-    * This is used to make better choice when it come to choose an account or
-    * guess if the URI can be used with the current set et configured accounts.
-    *
-    * @warning This is an approximation. Those values are guessed using partial
-    * parsing (for performance) and are not definitive.
-    */
-   enum class ProtocolHint {
-      SIP_OTHER      = 0, /*!< Anything non empty that doesn't fit in other categories                */
-      RING           = 1, /*!< Start with "ring:" and 45 ASCII chars OR 40 ASCII chars                */
-      IP             = 2, /*!< Match an IPv4 address                                                  */
-      SIP_HOST       = 3, /*!< Has an @ and no "ring:" prefix                                         */
-      RING_USERNAME  = 4, /*!< Anything that starts with "ring:" and isn't followed by 40 ASCII chars */
-   };
-   Q_ENUMS(URI::ProtocolHint)
+    /**
+     * @enum ProtocolHint Expanded version of Account::Protocol
+     *
+     * This is used to make better choice when it come to choose an account or
+     * guess if the URI can be used with the current set et configured accounts.
+     *
+     * @warning This is an approximation. Those values are guessed using partial
+     * parsing (for performance) and are not definitive.
+     */
+    enum class ProtocolHint {
+        SIP_OTHER      = 0, /*!< Anything non empty that doesn't fit in other categories                */
+        RING           = 1, /*!< Start with "ring:" and 45 ASCII chars OR 40 ASCII chars                */
+        IP             = 2, /*!< Match an IPv4 address                                                  */
+        SIP_HOST       = 3, /*!< Has an @ and no "ring:" prefix                                         */
+        RING_USERNAME  = 4, /*!< Anything that starts with "ring:" and isn't followed by 40 ASCII chars */
+    };
+    Q_ENUMS(URI::ProtocolHint)
 
-   //Getter
-   QString    hostname      () const;
-   QString    userinfo      () const;
-   bool       hasHostname   () const;
-   bool       hasPort       () const;
-   int        port          () const;
-   SchemeType schemeType    () const;
-   ProtocolHint protocolHint() const;
+    // Getter
+    QString hostname() const;
+    QString userinfo() const;
+    bool hasHostname() const;
+    bool hasPort() const;
+    int port() const;
+    SchemeType schemeType() const;
+    ProtocolHint protocolHint() const;
 
-   //Setter
-   void setSchemeType(SchemeType t);
+    // Setter
+    void setSchemeType(SchemeType t);
 
-   //Converter
-   QString format(FlagPack<URI::Section> sections) const;
+    // Converter
+    QString format(FlagPack<URI::Section> sections) const;
 
-   /**
-    * Helper function which returns a QString containing a uri formatted to include at minimum the
-    * SCHEME and USER_INFO, and also the HOSTNAME and PORT, if available.
-    */
-   QString full() const;
+    /**
+     * Helper function which returns a QString containing a uri formatted to include at minimum the
+     * SCHEME and USER_INFO, and also the HOSTNAME and PORT, if available.
+     */
+    QString full() const;
 
-   URI& operator=(const URI&);
+    URI& operator=(const URI&);
 
 private:
-   const QScopedPointer<URIPrivate> d_ptr;
+    std::unique_ptr<URIPimpl> pimpl_;
 };
+
 Q_DECLARE_METATYPE(URI)
 
 Q_DECLARE_METATYPE(URI::ProtocolHint)
