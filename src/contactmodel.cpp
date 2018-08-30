@@ -82,6 +82,8 @@ public:
      */
     void addToContacts(ContactMethod* cm, const profile::Type& type, bool banned = false);
 
+    void searchRingContact(const std::string& query);
+
     // Helpers
     const BehaviorController& behaviorController;
     const ContactModel& linked;
@@ -329,10 +331,6 @@ ContactModel::searchContact(const std::string& query)
     auto uri = URI(QString(query.c_str()));
 
     if (owner.profileInfo.type == profile::Type::SIP) {
-        // We don't need to search anything for SIP contacts.
-        // NOTE: there is no registeredName for SIP contacts
-
-        // Reset temporary if contact exists, else save the query inside it
         {
             std::lock_guard<std::mutex> lk(pimpl_->contactsMtx_);
             auto iter = pimpl_->contacts.find(query);
@@ -346,49 +344,30 @@ ContactModel::searchContact(const std::string& query)
         }
         emit modelUpdated(query);
     } else if (uri.full().startsWith("ring:")) {
-        auto updated = false;
-        // Reset temporary if contact exists, else save the query inside it
-        {
-            std::lock_guard<std::mutex> lk(pimpl_->contactsMtx_);
-            auto shortUri = uri.full().mid(5).toStdString();
-            auto iter = pimpl_->contacts.begin();
-            while (iter != pimpl_->contacts.end()) {
-                if (iter->first == shortUri || iter->second.registeredName == shortUri) {
-                    break;
-                }
-                ++iter;
-            }
-            if (iter == pimpl_->contacts.end()) {
-                // query is a valid RingID?
-                profile::Info profileInfo;
-                profileInfo.uri = shortUri;
-                profileInfo.alias = shortUri;
-                profileInfo.type = profile::Type::TEMPORARY;
-                temporaryContact.profileInfo = profileInfo;
-                updated = true;
-            }
-        }
-        if (updated)
-            emit modelUpdated(query);
+        auto shortUri = uri.full().mid(5).toStdString();
+        pimpl_->searchRingContact(shortUri);
     } else {
-        // Default searching
-        profile::Info profileInfo;
-        profileInfo.alias = "Searching…";
-        profileInfo.type = profile::Type::TEMPORARY;
-        temporaryContact.profileInfo = profileInfo;
-        temporaryContact.registeredName = query;
-        emit modelUpdated(query);
-
-
-        // Query Name Server
-        if (auto* account = AccountModel::instance().getById(owner.id.c_str())) {
-            if (not account->lookupName(QString(query.c_str()))) {
-                profileInfo.alias = "No reference of " + query + " found";
-            }
-            emit modelUpdated(query);
-        }
+        pimpl_->searchRingContact(query);
     }
 
+}
+
+void
+ContactModelPimpl::searchRingContact(const std::string& query)
+{
+    auto& temporaryContact = contacts[""];
+
+    // Default searching
+    profile::Info profileInfo;
+    profileInfo.alias = "Searching…";
+    profileInfo.type = profile::Type::TEMPORARY;
+    temporaryContact.profileInfo = profileInfo;
+    temporaryContact.registeredName = query;
+    emit linked.modelUpdated(query);
+
+    if (auto* account = AccountModel::instance().getById(linked.owner.id.c_str())) {
+        account->lookupName(QString(query.c_str()));
+    }
 }
 
 uint64_t
