@@ -424,6 +424,11 @@ ConversationModel::selectConversation(const std::string& uid) const
     } else {
         try  {
             auto call = owner.callModel->getCall(conversation.callId);
+
+            if (call.previousStatus == call::Status::PEER_BUSY) {
+                return;
+            }
+
             switch (call.status) {
             case call::Status::INCOMING_RINGING:
             case call::Status::OUTGOING_RINGING:
@@ -438,7 +443,9 @@ ConversationModel::selectConversation(const std::string& uid) const
                 // We are currently receiving a call
                 emit pimpl_->behaviorController.showCallView(owner.id, conversation);
                 break;
-            case call::Status::PEER_BUSY: /* TODO: emit "showLetMessageView" */
+            case call::Status::PEER_BUSY:
+                emit pimpl_->behaviorController.showLetMessageView(owner.id, conversation);
+                break;
             default: // INVALID, INACTIVE, ENDED, TERMINATING
                 // We are not in a call, show the chatview
                 emit pimpl_->behaviorController.showChatView(owner.id, conversation);
