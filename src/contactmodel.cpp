@@ -264,7 +264,6 @@ ContactModel::addContact(contact::Info contactInfo)
         }
     }
 
-    emit contactAdded(profile.uri);
 }
 
 void
@@ -677,8 +676,11 @@ ContactModelPimpl::addToContacts(ContactMethod* cm, const profile::Type& type, b
     contactInfo.isPresent = cm->isPresent();
     contactInfo.profileInfo.type = type; // Because PENDING should not be stored in the database
     auto iter = contacts.find(contactInfo.profileInfo.uri);
-    if (iter != contacts.end())
+    if (iter != contacts.end()) {
+        auto info = iter->second;
+        contactInfo.registeredName = info.registeredName;
         iter->second = contactInfo;
+    }
     else
         contacts.emplace_hint(iter, contactInfo.profileInfo.uri, contactInfo);
 
