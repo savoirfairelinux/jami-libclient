@@ -125,6 +125,7 @@ struct Info
     std::string id;
     std::chrono::steady_clock::time_point startTime;
     Status status = Status::INVALID;
+    Status previousStatus = Status::INVALID;
     Type type = Type::INVALID;
     std::string peer;
     bool isOutgoing;
