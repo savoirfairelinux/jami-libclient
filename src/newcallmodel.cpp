@@ -244,6 +244,7 @@ NewCallModel::togglePause(const std::string& callId) const
             CallManager::instance().unhold(callId.c_str());
         else {
             CallManager::instance().unholdConference(callId.c_str());
+            call->previousStatus = call->status;
             call->status =  call::Status::IN_PROGRESS;
             emit callStatusChanged(callId);
         }
@@ -252,6 +253,7 @@ NewCallModel::togglePause(const std::string& callId) const
             CallManager::instance().hold(callId.c_str());
         else {
             CallManager::instance().holdConference(callId.c_str());
+            call->previousStatus = call->status;
             call->status = call::Status::PAUSED;
             emit callStatusChanged(callId);
         }
@@ -497,6 +499,7 @@ NewCallModelPimpl::slotCallStateChanged(const std::string& callId, const std::st
     auto status = call::to_status(state);
     auto timeElapsed = calls[callId]->startTime.time_since_epoch().count();
 
+    calls[callId]->previousStatus = calls[callId]->status;
     calls[callId]->status = status;
     if (status == call::Status::ENDED) {
         emit linked.callEnded(callId);
