@@ -417,10 +417,12 @@ ConversationModel::selectConversation(const std::string& uid) const
     }
 
     auto& conversation = pimpl_->conversations.at(conversationIdx);
-    try  {
-        if (not conversation.confId.empty()) {
-            emit pimpl_->behaviorController.showCallView(owner.id, conversation);
-        } else {
+    if (not conversation.confId.empty()) {
+        emit pimpl_->behaviorController.showCallView(owner.id, conversation);
+    } else if (conversation.callId.empty()) {
+        emit pimpl_->behaviorController.showChatView(owner.id, conversation);
+    } else {
+        try  {
             auto call = owner.callModel->getCall(conversation.callId);
             switch (call.status) {
             case call::Status::INCOMING_RINGING:
@@ -436,17 +438,14 @@ ConversationModel::selectConversation(const std::string& uid) const
                 // We are currently receiving a call
                 emit pimpl_->behaviorController.showCallView(owner.id, conversation);
                 break;
-            case call::Status::INVALID:
-            case call::Status::INACTIVE:
-            case call::Status::ENDED:
-            case call::Status::TERMINATING:
-            default:
+            default: // INVALID, INACTIVE, ENDED, TERMINATING
                 // We are not in a call, show the chatview
                 emit pimpl_->behaviorController.showChatView(owner.id, conversation);
             }
+        } catch (const std::out_of_range&) {
+            // Should not happen
+            emit pimpl_->behaviorController.showChatView(owner.id, conversation);
         }
-    } catch (const std::out_of_range&) {
-        emit pimpl_->behaviorController.showChatView(owner.id, conversation);
     }
 }
 
@@ -1520,11 +1519,7 @@ ConversationModelPimpl::slotCallEnded(const std::string& callId)
         // reset the callId stored in the conversation
         for (auto& conversation: conversations)
             if (conversation.callId == callId) {
-                try {
-                    conversation.callId = linked.owner.callModel->getCallFromURI(conversation.participants[0], true).id;
-                } catch (std::out_of_range& e) {
-                    conversation.callId = "";
-                }
+                conversation.callId = "";
                 dirtyConversations = {true, true};
                 linked.selectConversation(conversation.uid);
             }
