@@ -318,6 +318,8 @@ ConversationModel::allFilteredConversations() const
             /* Check type */
             if (pimpl_->typeFilter != profile::Type::PENDING) {
                 // Remove pending contacts and get the temporary item if filter is not empty
+                if (contactInfo.profileInfo.type == profile::Type::INVALID)
+                    return false;
                 if (contactInfo.profileInfo.type == profile::Type::PENDING)
                     return false;
                 if (contactInfo.profileInfo.type == profile::Type::TEMPORARY)
