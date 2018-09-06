@@ -21,7 +21,7 @@
 
 #include <QStringList>
 
-class URIPrivate;
+class URIPimpl;
 class QDataStream;
 
 /**
@@ -74,28 +74,20 @@ class QDataStream;
     */
 class LIB_EXPORT URI : public QString
 {
-   friend class URIPrivate;
 public:
-
-   ///Default constructor
    URI();
-
-   /**
-    * Default copy constructor
-    * @param other an URI string
-    */
    URI(const URI&     other);
-
    URI(const QString& other);
    virtual ~URI();
 
-   ///@enum SchemeType The very first part of the URI followed by a ':'
+   // @enum SchemeType The very first part of the URI followed by a ':'
    enum class SchemeType {
-      NONE , //Implicit SIP, use account type as reference
       SIP  ,
       SIPS ,
       RING ,
-      COUNT__
+      NONE ,
+      COUNT__,
+      UNRECOGNIZED
    };
    Q_ENUMS(URI::SchemeType)
 
@@ -169,19 +161,19 @@ public:
    };
    Q_ENUMS(URI::ProtocolHint)
 
-   //Getter
-   QString    hostname      () const;
-   QString    userinfo      () const;
-   bool       hasHostname   () const;
-   bool       hasPort       () const;
-   int        port          () const;
-   SchemeType schemeType    () const;
+   // Getter
+   QString hostname() const;
+   QString userinfo() const;
+   bool hasHostname() const;
+   bool hasPort() const;
+   int port() const;
+   SchemeType schemeType() const;
    ProtocolHint protocolHint() const;
 
-   //Setter
+   // Setter
    void setSchemeType(SchemeType t);
 
-   //Converter
+   // Converter
    QString format(FlagPack<URI::Section> sections) const;
 
    /**
@@ -193,8 +185,9 @@ public:
    URI& operator=(const URI&);
 
 private:
-   const QScopedPointer<URIPrivate> d_ptr;
+   const QScopedPointer<URIPimpl> pimpl_;
 };
+
 Q_DECLARE_METATYPE(URI)
 
 Q_DECLARE_METATYPE(URI::ProtocolHint)
