@@ -318,12 +318,15 @@ ConversationModel::allFilteredConversations() const
             /* Check type */
             if (pimpl_->typeFilter != profile::Type::PENDING) {
                 // Remove pending contacts and get the temporary item if filter is not empty
-                if (contactInfo.profileInfo.type == profile::Type::PENDING)
+                switch (contactInfo.profileInfo.type) {
+                case profile::Type::INVALID:
+                case profile::Type::PENDING:
                     return false;
-                if (contactInfo.profileInfo.type == profile::Type::TEMPORARY)
+                case profile::Type::TEMPORARY:
                     return (!contactInfo.profileInfo.uri.empty()
                            && std::regex_search(contactInfo.profileInfo.uri, regexFilter))
                            || std::regex_search(contactInfo.registeredName, regexFilter);
+                }
             } else {
                 // We only want pending requests matching with the filter
                 if (contactInfo.profileInfo.type != profile::Type::PENDING)
@@ -343,7 +346,7 @@ ConversationModel::allFilteredConversations() const
                 && contactInfo.profileInfo.uri.find(filter) != std::string::npos
                 && contactInfo.registeredName.find(filter) != std::string::npos;
             }
-        });
+    });
     pimpl_->filteredConversations.resize(std::distance(pimpl_->filteredConversations.begin(), it));
     pimpl_->dirtyConversations.first = false;
     return pimpl_->filteredConversations;
