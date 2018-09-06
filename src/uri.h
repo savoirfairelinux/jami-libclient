@@ -21,7 +21,7 @@
 
 #include <QStringList>
 
-class URIPrivate;
+class URIPimpl;
 class QDataStream;
 
 /**
@@ -74,7 +74,7 @@ class QDataStream;
     */
 class LIB_EXPORT URI : public QString
 {
-   friend class URIPrivate;
+   friend class URIPimpl;
 public:
 
    ///Default constructor
@@ -91,11 +91,12 @@ public:
 
    ///@enum SchemeType The very first part of the URI followed by a ':'
    enum class SchemeType {
-      NONE , //Implicit SIP, use account type as reference
       SIP  ,
       SIPS ,
       RING ,
-      COUNT__
+      NONE ,
+      COUNT__,
+      UNRECOGNIZED
    };
    Q_ENUMS(URI::SchemeType)
 
@@ -193,7 +194,7 @@ public:
    URI& operator=(const URI&);
 
 private:
-   const QScopedPointer<URIPrivate> d_ptr;
+   const QScopedPointer<URIPimpl> pimpl;
 };
 Q_DECLARE_METATYPE(URI)
 
