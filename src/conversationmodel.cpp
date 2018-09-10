@@ -1526,12 +1526,12 @@ ConversationModelPimpl::slotCallEnded(const std::string& callId)
                 addOrUpdateCallMessage(callId, QObject::tr("🕽 Missed incoming call").toStdString());
         }
 
-        // reset the callId stored in the conversation
+        /* Reset the callId stored in the conversation.
+           Do not call selectConversation() since it is already done in slotCallStatusChanged. */
         for (auto& conversation: conversations)
             if (conversation.callId == callId) {
                 conversation.callId = "";
                 dirtyConversations = {true, true};
-                linked.selectConversation(conversation.uid);
             }
     } catch (std::out_of_range& e) {
         qDebug() << "ConversationModelPimpl::slotCallEnded can't end inexistant call";
