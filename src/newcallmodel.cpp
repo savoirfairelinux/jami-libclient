@@ -492,16 +492,20 @@ NewCallModelPimpl::slotCallStateChanged(const std::string& callId, const std::st
     if (!linked.hasCall(callId)) return;
 
     auto status = call::to_status(state);
-    auto timeElapsed = calls[callId]->startTime.time_since_epoch().count();
+    auto& call = calls[callId];
 
-    calls[callId]->status = status;
+    auto previousStatus = call->status;
+    call->status = status;
+
     if (status == call::Status::ENDED) {
         emit linked.callEnded(callId);
-    } else if (status == call::Status::IN_PROGRESS && timeElapsed == 0) {
-        // FIXME hell, this check is EVIL HACK
-        calls[callId]->startTime = std::chrono::steady_clock::now();
-        emit linked.callStarted(callId);
-        sendProfile(callId);
+    } else if (status == call::Status::IN_PROGRESS) {
+        if (previousStatus == call::Status::INCOMING_RINGING
+                || previousStatus == call::Status::OUTGOING_RINGING) {
+            call->startTime = std::chrono::steady_clock::now();
+            emit linked.callStarted(callId);
+            sendProfile(callId);
+        }
     }
 
     qDebug() << "slotCallStateChanged, call:" << callId.c_str() << " - state: " << state.c_str();
