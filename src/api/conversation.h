@@ -40,6 +40,7 @@ struct Info
     std::string accountId;
     std::vector<std::string> participants;
     std::string callId;
+    std::string previousCallId;
     std::string confId;
     std::map<uint64_t, interaction::Info> interactions;
     uint64_t lastMessageUid = 0;

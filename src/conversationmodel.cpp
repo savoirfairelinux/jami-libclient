@@ -1528,6 +1528,7 @@ ConversationModelPimpl::slotCallEnded(const std::string& callId)
         // reset the callId stored in the conversation
         for (auto& conversation: conversations)
             if (conversation.callId == callId) {
+                conversation.previousCallId = conversation.callId;
                 conversation.callId = "";
                 dirtyConversations = {true, true};
                 linked.selectConversation(conversation.uid);
