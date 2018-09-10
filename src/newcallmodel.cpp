@@ -492,20 +492,30 @@ NewCallModelPimpl::slotCallStateChanged(const std::string& callId, const std::st
     if (!linked.hasCall(callId)) return;
 
     auto status = call::to_status(state);
-    auto timeElapsed = calls[callId]->startTime.time_since_epoch().count();
+    auto& call = calls[callId];
+    auto previousStatus = call->status;
+    call->status = status;
 
-    calls[callId]->status = status;
-    if (status == call::Status::ENDED) {
-        emit linked.callEnded(callId);
-    } else if (status == call::Status::IN_PROGRESS && timeElapsed == 0) {
-        // FIXME hell, this check is EVIL HACK
-        calls[callId]->startTime = std::chrono::steady_clock::now();
-        emit linked.callStarted(callId);
-        sendProfile(callId);
+    if (previousStatus == call->status) {
+        // call state didn't change, simply ignore signal
+        return;
     }
 
     qDebug() << "slotCallStateChanged, call:" << callId.c_str() << " - state: " << state.c_str();
+
+    // NOTE: signal emission order matters, always emit CallStatusChanged before CallEnded
     emit linked.callStatusChanged(callId);
+
+    if (call->status == call::Status::ENDED) {
+        emit linked.callEnded(callId);
+    } else if (call->status == call::Status::IN_PROGRESS) {
+        if (previousStatus == call::Status::INCOMING_RINGING
+                || previousStatus == call::Status::OUTGOING_RINGING) {
+            call->startTime = std::chrono::steady_clock::now();
+            emit linked.callStarted(callId);
+            sendProfile(callId);
+        }
+    }
 }
 
 void
