@@ -249,12 +249,16 @@ Database::select(const std::string& select,                            // "id", 
 int
 Database::count(const std::string& count, // "id", "body", ...
                 const std::string& table, // "tests"
-                const std::string& where) // "contact=:name AND id=:id"
+                const std::string& where, // "contact=:name AND id=:id"
+                const std::map<std::string, std::string>& bindsWhere) // {{":name", "toto"}, {":id", "65"}}
 {
     QSqlQuery query;
     std::string columnsSelect;
     auto prepareStr = std::string("SELECT count(" + count + ") FROM " + table + " WHERE " + where);
     query.prepare(prepareStr.c_str());
+
+    for (const auto& entry : bindsWhere)
+        query.bindValue(entry.first.c_str(), entry.second.c_str());
 
     if (not query.exec())
         throw QueryError(query);
@@ -580,6 +584,5 @@ Database::migrateTextHistory()
         }
     }
 }
-
 
 } // namespace lrc
