@@ -217,9 +217,12 @@ public:
      * Returns the count of an expression.
      * @param count is the column to count.
      * @param table where to perfom the action on.
-     * @param where defines the conditional to select.
+     * @param where defines the conditional to select using identifiers
+     * @param bindsWhere specifies the value(s) to test using the identifier(s). The key is the identifier, it should
+     *        begin by ':'. The value is the value to test.
      */
-    int count(const std::string& count, const std::string& table, const std::string& where);
+    int count(const std::string& count, const std::string& table,
+              const std::string& where, const std::map<std::string, std::string>& bindsWhere);
 
 private:
     void createTables();

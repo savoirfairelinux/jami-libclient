@@ -224,7 +224,7 @@ void
 DatabaseTester::testCountUnreadMessages()
 {
     auto table = "profiles";
-    auto count = database_->count("uri", table, "status='0'");
+    auto count = database_->count("uri", table, "status=:status", {{":status", "0"}});
     CPPUNIT_ASSERT(count == 1);
 }
 

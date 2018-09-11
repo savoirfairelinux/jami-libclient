@@ -451,7 +451,8 @@ addContact(Database& db, const std::string& accountUri, const std::string& conta
 int
 countUnreadFromInteractions(Database& db, const std::string& conversationId)
 {
-    return db.count("status", "interactions", "status='UNREAD' AND conversation_id='" + conversationId + "'");
+    return db.count("status", "interactions", "status=:status AND conversation_id=:id",
+           {{":status", "UNREAD"}, {":id", conversationId}});
 }
 
 void
