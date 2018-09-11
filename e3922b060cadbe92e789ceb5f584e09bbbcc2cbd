@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "e31c97ba_9b13336a",
+        "filename": "src/contactmodel.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 267,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2018-09-11T19:26:51Z",
+      "side": 0,
+      "message": "This is necessary for SIP accounts, because it\u0027s not daemon side!",
+      "range": {
+        "startLine": 267,
+        "startChar": 4,
+        "endLine": 267,
+        "endChar": 35
+      },
+      "revId": "e3922b060cadbe92e789ceb5f584e09bbbcc2cbd",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    }
+  ]
+}
