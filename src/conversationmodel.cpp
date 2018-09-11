@@ -313,11 +313,24 @@ ConversationModel::allFilteredConversations() const
             }
 
             std::regex regexFilter;
+            auto isValidReFilter = true;
             try {
                 regexFilter = std::regex(filter, std::regex_constants::icase);
-            } catch(std::regex_error) {
-                return false;
+            } catch(std::regex_error&) {
+                isValidReFilter = false;
             }
+
+            auto filterUriAndReg = [regexFilter, isValidReFilter](auto contact, auto filter) {
+                auto result = contact.profileInfo.uri.find(filter) != std::string::npos
+                || contact.registeredName.find(filter) != std::string::npos;
+                if (!result) {
+                    auto regexFound = isValidReFilter? (!contact.profileInfo.uri.empty()
+                           && std::regex_search(contact.profileInfo.uri, regexFilter))
+                           || std::regex_search(contact.registeredName, regexFilter) : false;
+                    result |= regexFound;
+                }
+                return result;
+            };
 
             /* Check type */
             if (pimpl_->typeFilter != profile::Type::PENDING) {
@@ -327,9 +340,7 @@ ConversationModel::allFilteredConversations() const
                 case profile::Type::PENDING:
                     return false;
                 case profile::Type::TEMPORARY:
-                    return (!contactInfo.profileInfo.uri.empty()
-                           && std::regex_search(contactInfo.profileInfo.uri, regexFilter))
-                           || std::regex_search(contactInfo.registeredName, regexFilter);
+                    return filterUriAndReg(contactInfo, filter);
                 }
             } else {
                 // We only want pending requests matching with the filter
@@ -338,18 +349,10 @@ ConversationModel::allFilteredConversations() const
             }
 
             // Otherwise perform usual regex search
-            try {
-                bool result = std::regex_search(contactInfo.profileInfo.uri, regexFilter)
-                | std::regex_search(contactInfo.profileInfo.alias, regexFilter)
-                | std::regex_search(contactInfo.registeredName, regexFilter);
-                return result;
-            } catch(std::regex_error&) {
-                // If the regex is incorrect, just test if filter is a substring
-                // of the uri or the alias.
-                return contactInfo.profileInfo.alias.find(filter) != std::string::npos
-                && contactInfo.profileInfo.uri.find(filter) != std::string::npos
-                && contactInfo.registeredName.find(filter) != std::string::npos;
-            }
+            bool result = contactInfo.profileInfo.alias.find(filter) != std::string::npos;
+            if (!result && isValidReFilter) result |= std::regex_search(contactInfo.profileInfo.alias, regexFilter);
+            result |= filterUriAndReg(contactInfo, filter);
+            return result;
     });
     pimpl_->filteredConversations.resize(std::distance(pimpl_->filteredConversations.begin(), it));
     pimpl_->dirtyConversations.first = false;
