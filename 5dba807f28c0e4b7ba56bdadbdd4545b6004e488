@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "d6395096_2eab4e00",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 351,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2018-09-12T14:18:41Z",
+      "side": 1,
+      "message": "This is. \"*97\" will match \"*97\" with a find, not with a regex match (the filter will be invalid)",
+      "parentUuid": "b7896780_d6a5806a",
+      "range": {
+        "startLine": 351,
+        "startChar": 12,
+        "endLine": 351,
+        "endChar": 86
+      },
+      "revId": "5dba807f28c0e4b7ba56bdadbdd4545b6004e488",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "67070c38_1abb7069",
         "filename": "src/conversationmodel.cpp",
         "patchSetId": 2
@@ -36,6 +60,30 @@
       "writtenOn": "2018-09-12T14:05:15Z",
       "side": 1,
       "message": "hum, |\u003d is no short-circuit, meaning that regex search will be performed even if it is not necessary... this part is not performance critical, but I\u0027d rather like to avoid useless regex calculation",
+      "range": {
+        "startLine": 352,
+        "startChar": 19,
+        "endLine": 352,
+        "endChar": 21
+      },
+      "revId": "5dba807f28c0e4b7ba56bdadbdd4545b6004e488",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "23018357_2ed66bca",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 352,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2018-09-12T14:18:41Z",
+      "side": 1,
+      "message": "Done.",
+      "parentUuid": "67070c38_1abb7069",
       "range": {
         "startLine": 352,
         "startChar": 19,
