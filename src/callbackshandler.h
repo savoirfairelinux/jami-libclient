@@ -106,6 +106,13 @@ Q_SIGNALS:
      */
     void callStateChanged(const std::string& callId, const std::string &state, int code);
     /**
+     * Connect this signal to know when a conference is updated
+     * @param confId the conference id
+     * @param state the new state
+     * @param code
+     */
+    void confStateChanged(const std::string& confId, const std::string &state, int code);
+    /**
      * Connect this signal to know when the account details have changed
      * @param accountId the one who changes
      * @param details the new details
@@ -319,18 +326,18 @@ private Q_SLOTS:
      * Emit conferenceCreated
      * @param callId of the conference
      */
-    void slotConferenceCreated(const QString& callId);
+    void slotConferenceCreated(const QString& confId);
     /**
      * Emit conferenceRemove
      * @param callId of the conference
      */
-    void slotConferenceRemoved(const QString& callId);
+    void slotConferenceRemoved(const QString& confId);
     /**
      * Call slotCallStateChanged
      * @param callId of the conference
      * @param state, new state
      */
-    void slotConferenceChanged(const QString& callId, const QString& state);
+    void slotConferenceChanged(const QString& confId, const QString& state);
     /**
      * Emit accountMessageStatusChanged
      * @param accountId

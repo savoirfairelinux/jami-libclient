@@ -89,6 +89,13 @@ public Q_SLOTS:
      */
     void slotIncomingCall(const std::string& accountId, const std::string& callId, const std::string& fromId);
     /**
+     * Listen from CallbacksHandler when a conference got a new state
+     * @param confId
+     * @param state the new state
+     * @param code unused
+     */
+    void slotConfStateChanged(const std::string& confId, const std::string &state, int code);
+    /**
      * Listen from CallbacksHandler when a call got a new state
      * @param callId
      * @param state the new state
@@ -380,6 +387,7 @@ NewCallModelPimpl::NewCallModelPimpl(const NewCallModel& linked, const Callbacks
 {
     connect(&callbacksHandler, &CallbacksHandler::incomingCall, this, &NewCallModelPimpl::slotIncomingCall);
     connect(&callbacksHandler, &CallbacksHandler::callStateChanged, this, &NewCallModelPimpl::slotCallStateChanged);
+    connect(&callbacksHandler, &CallbacksHandler::confStateChanged, this, &NewCallModelPimpl::slotConfStateChanged);
     connect(&VideoRendererManager::instance(), &VideoRendererManager::remotePreviewStarted, this, &NewCallModelPimpl::slotRemotePreviewStarted);
     connect(&callbacksHandler, &CallbacksHandler::incomingVCardChunk, this, &NewCallModelPimpl::slotincomingVCardChunk);
     connect(&callbacksHandler, &CallbacksHandler::conferenceCreated, this , &NewCallModelPimpl::slotConferenceCreated);
@@ -508,6 +516,16 @@ NewCallModelPimpl::slotCallStateChanged(const std::string& callId, const std::st
     }
 
     qDebug() << "slotCallStateChanged, call:" << callId.c_str() << " - state: " << state.c_str();
+    emit linked.callStatusChanged(callId);
+}
+
+void
+NewCallModelPimpl::slotConfStateChanged(const std::string& confId, const std::string& state, int code)
+{
+    Q_UNUSED(code)
+    if (!linked.hasCall(callId)) return;
+
+    // TODO implement this
     emit linked.callStatusChanged(callId);
 }
 

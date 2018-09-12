@@ -317,21 +317,21 @@ CallbacksHandler::slotIncomingMessage(const QString& callId,
 }
 
 void
-CallbacksHandler::slotConferenceCreated(const QString& callId)
+CallbacksHandler::slotConferenceCreated(const QString& confId)
 {
-    emit conferenceCreated(callId.toStdString());
+    emit conferenceCreated(confId.toStdString());
 }
 
 void
-CallbacksHandler::slotConferenceChanged(const QString& callId, const QString& state)
+CallbacksHandler::slotConferenceChanged(const QString& confId, const QString& state)
 {
-    slotCallStateChanged(callId, state, 0);
+    slotConfStateChanged(confId, state, 0);
 }
 
 void
-CallbacksHandler::slotConferenceRemoved(const QString& callId)
+CallbacksHandler::slotConferenceRemoved(const QString& confId)
 {
-    emit conferenceRemoved(callId.toStdString());
+    emit conferenceRemoved(confId.toStdString());
 }
 
 void
