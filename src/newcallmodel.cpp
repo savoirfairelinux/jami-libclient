@@ -239,21 +239,18 @@ NewCallModel::togglePause(const std::string& callId) const
 {
     if (!hasCall(callId)) return;
     auto& call = pimpl_->calls[callId];
+
     if (call->status == call::Status::PAUSED) {
         if (call->type == call::Type::DIALOG)
             CallManager::instance().unhold(callId.c_str());
         else {
             CallManager::instance().unholdConference(callId.c_str());
-            call->status =  call::Status::IN_PROGRESS;
-            emit callStatusChanged(callId);
         }
     } else if (call->status == call::Status::IN_PROGRESS) {
         if (call->type == call::Type::DIALOG)
             CallManager::instance().hold(callId.c_str());
         else {
             CallManager::instance().holdConference(callId.c_str());
-            call->status = call::Status::PAUSED;
-            emit callStatusChanged(callId);
         }
     }
 }
