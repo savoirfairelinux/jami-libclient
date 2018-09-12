@@ -86,6 +86,7 @@ const std::map<URI::Transport, const char*> URIPimpl::transportNames = {
 };
 
 const std::map<URI::SchemeType, const char*> URIPimpl::schemeNames = {
+    { URI::SchemeType::NONE, "" },
     { URI::SchemeType::SIP, "sip:" },
     { URI::SchemeType::SIPS, "sips:" },
     { URI::SchemeType::RING, "ring:" }
@@ -169,17 +170,13 @@ QString URIPimpl::strip(const QString& uri, URI::SchemeType& schemeType, QString
         }
     }
 
-    if (scheme == URIPimpl::schemeNames.at(URI::SchemeType::SIP)) {
-        schemeType = URI::SchemeType::SIP;
-    } else if (scheme == URIPimpl::schemeNames.at(URI::SchemeType::RING)) {
-        schemeType = URI::SchemeType::RING;
-    } else if (scheme == URIPimpl::schemeNames.at(URI::SchemeType::SIPS)) {
-        schemeType = URI::SchemeType::SIPS;
-    } else if (!scheme.isEmpty()) {
-        schemeType = URI::SchemeType::UNRECOGNIZED;
-    } else {
-        schemeType = URI::SchemeType::NONE;
-    }
+    schemeType = URI::SchemeType::UNRECOGNIZED;
+    auto it = std::find_if(schemeNames.begin(), schemeNames.end(), [&scheme] (auto& it) {
+        return it.second == scheme;
+    });
+
+    if (it != URIPimpl::schemeNames.end())
+        schemeType = it->first;
 
     return uri.mid(scheme.size(), uri.size());
 }
@@ -468,13 +465,36 @@ QString URI::format(FlagPack<URI::Section> sections) const
         pimpl_->parseHostname();
     }
 
+    auto header_type = pimpl_->m_HeaderType;
+    if (header_type == SchemeType::NONE) {
+        switch (protocolHint()) {
+        case ProtocolHint::RING:
+        case ProtocolHint::RING_USERNAME:
+            header_type = SchemeType::RING;
+            break;
+        case ProtocolHint::SIP_HOST:
+        case ProtocolHint::SIP_OTHER:
+        case ProtocolHint::IP:
+            header_type = SchemeType::SIP;
+            break;
+        default:
+            header_type = SchemeType::RING;
+            break;
+        }
+    }
+
     QString ret;
 
     if (sections & URI::Section::CHEVRONS)
         ret += '<';
 
-    if (sections & URI::Section::SCHEME)
-        ret += pimpl_->m_Scheme;
+    if (sections & URI::Section::SCHEME) {
+        if (header_type == SchemeType::UNRECOGNIZED) {
+            ret += pimpl_->m_Scheme;
+        } else {
+            ret += URIPimpl::schemeNames.at(header_type);
+        }
+    }
 
     if (sections & URI::Section::USER_INFO)
         ret += pimpl_->m_Userinfo;
