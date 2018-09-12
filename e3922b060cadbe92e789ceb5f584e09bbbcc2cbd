@@ -22,6 +22,30 @@
       "revId": "e3922b060cadbe92e789ceb5f584e09bbbcc2cbd",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "31ad7ab6_101fea72",
+        "filename": "src/contactmodel.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 267,
+      "author": {
+        "id": 225
+      },
+      "writtenOn": "2018-09-12T14:51:44Z",
+      "side": 0,
+      "message": "Done",
+      "parentUuid": "e31c97ba_9b13336a",
+      "range": {
+        "startLine": 267,
+        "startChar": 4,
+        "endLine": 267,
+        "endChar": 35
+      },
+      "revId": "e3922b060cadbe92e789ceb5f584e09bbbcc2cbd",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
