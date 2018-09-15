@@ -58,11 +58,7 @@ public Q_SLOTS: // METHODS
 
    bool isConnected();
 
-   void pollEvents();
-
 private:
-   QTimer* m_pTimer;
-
 Q_SIGNALS: // SIGNALS
    void started();
 };

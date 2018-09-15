@@ -27,9 +27,7 @@
 
 static int ringFlags = 0;
 
-void pollEvents();
-
-InstanceManagerInterface::InstanceManagerInterface() : m_pTimer(nullptr)
+InstanceManagerInterface::InstanceManagerInterface()
 {
    using namespace std::placeholders;
 
@@ -44,15 +42,6 @@ InstanceManagerInterface::InstanceManagerInterface() : m_pTimer(nullptr)
 #ifdef ENABLE_VIDEO
    using DRing::VideoSignal;
 #endif
-
-   m_pTimer = new QTimer(this);
-   m_pTimer->setInterval(50);
-#ifdef Q_OS_WIN
-   connect(m_pTimer,SIGNAL(timeout()),this,SLOT(pollEvents()));
-#else
-   connect(m_pTimer,&QTimer::timeout,this,&InstanceManagerInterface::pollEvents);
-#endif
-   m_pTimer->start();
 
 #ifndef MUTE_DRING
    ringFlags |= DRing::DRING_FLAG_DEBUG;
@@ -78,11 +67,6 @@ InstanceManagerInterface::InstanceManagerInterface() : m_pTimer(nullptr)
 InstanceManagerInterface::~InstanceManagerInterface()
 {
 
-}
-
-void InstanceManagerInterface::pollEvents()
-{
-   DRing::pollEvents();
 }
 
 bool InstanceManagerInterface::isConnected()
