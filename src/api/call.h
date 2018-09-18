@@ -96,7 +96,7 @@ to_status(const std::string& status)
         return Status::CONNECTING;
     else if (status == "RINGING")
         return Status::OUTGOING_RINGING;
-    else if (status == "HUNGUP")
+    else if (status == "HUNGUP" || status == "FAILURE")
         return Status::TERMINATING;
     else if (status == "HOLD" || status == "ACTIVE_DETACHED")
         return Status::PAUSED;
@@ -104,7 +104,7 @@ to_status(const std::string& status)
         return Status::IN_PROGRESS;
     else if (status == "INACTIVE" || status == "BUSY")
         return Status::INACTIVE;
-    else if (status == "OVER" || status == "FAILURE")
+    else if (status == "OVER")
         return Status::ENDED;
     return Status::INVALID;
 }
