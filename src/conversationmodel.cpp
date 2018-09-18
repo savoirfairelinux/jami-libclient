@@ -448,9 +448,15 @@ ConversationModel::selectConversation(const std::string& uid) const
                 // We are currently receiving a call
                 emit pimpl_->behaviorController.showCallView(owner.id, conversation);
                 break;
-            default: // INVALID, INACTIVE, ENDED, TERMINATING
-                // We are not in a call, show the chatview
+            case call::Status::TERMINATING:
+            case call::Status::INVALID:
+            case call::Status::INACTIVE:
+                // call just ended
                 emit pimpl_->behaviorController.showChatView(owner.id, conversation);
+                break;
+            default: // ENDED
+                // nothing to do
+                break;
             }
         } catch (const std::out_of_range&) {
             // Should not happen
