@@ -107,7 +107,7 @@ QVariant RingDeviceModel::headerData( int section, Qt::Orientation ori, int role
 
       switch (section) {
          case static_cast<int>(RingDevice::Column::Id):
-            return tr("Id");
+            return tr("ID");
          case static_cast<int>(RingDevice::Column::Name):
             return tr("Name");
         default:

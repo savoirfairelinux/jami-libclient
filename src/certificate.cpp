@@ -101,7 +101,7 @@ Matrix1D<Certificate::Details,QString> CertificatePrivate::m_slDetailssName = {{
    /* SIGNATURE_ALGORITHM            */ QObject::tr("Signature algorithm"           ),
    /* MD5_FINGERPRINT                */ QObject::tr("Md5 fingerprint"               ),
    /* SHA1_FINGERPRINT               */ QObject::tr("Sha1 fingerprint"              ),
-   /* PUBLIC_KEY_ID                  */ QObject::tr("Public key id"                 ),
+   /* PUBLIC_KEY_ID                  */ QObject::tr("Public key ID"                 ),
    /* ISSUER_DN                      */ QObject::tr("Issuer domain name"            ),
    /* NEXT_EXPECTED_UPDATE_DATE      */ QObject::tr("Next expected update"          ),
    /* OUTGOING_SERVER                */ QObject::tr("Outgoing server"               ),
