@@ -85,8 +85,8 @@ public:
     /**
      * Helpers for searchContact. Search for a given RING or SIP contact.
      */
-    void searchRingContact(const std::string& query);
-    void searchSipContact(const std::string& query);
+    void searchRingContact(const URI& query);
+    void searchSipContact(const URI& query);
     /**
      * Update temporary item to display a given message about a given uri.
      */
@@ -339,8 +339,6 @@ ContactModel::searchContact(const std::string& query)
 
     auto uri = URI(QString(query.c_str()));
 
-    std::string uriID = uri.format(URI::Section::USER_INFO | URI::Section::HOSTNAME | URI::Section::PORT).toStdString();
-
     auto uriScheme = uri.schemeType();
     if (uri.schemeType() == URI::SchemeType::NONE) {
         // uri has no scheme, default to current account scheme
@@ -352,9 +350,9 @@ ContactModel::searchContact(const std::string& query)
     }
 
     if (uriScheme == URI::SchemeType::SIP && owner.profileInfo.type == profile::Type::SIP) {
-        pimpl_->searchSipContact(uriID);
+        pimpl_->searchSipContact(uri);
     } else if (uriScheme == URI::SchemeType::RING && owner.profileInfo.type == profile::Type::RING) {
-        pimpl_->searchRingContact(uriID);
+        pimpl_->searchRingContact(uri);
     } else {
         pimpl_->updateTemporaryMessage(tr("Bad URI scheme").toStdString(), uri.full().toStdString());
     }
@@ -371,38 +369,48 @@ ContactModelPimpl::updateTemporaryMessage(const std::string& mes, const std::str
 }
 
 void
-ContactModelPimpl::searchRingContact(const std::string& query)
+ContactModelPimpl::searchRingContact(const URI& query)
 {
-    if (query.empty()) {
+    if (query.isEmpty()) {
         return;
     }
 
-    updateTemporaryMessage(tr("Searching…").toStdString(), query);
+    std::string uriID = query.format(URI::Section::USER_INFO | URI::Section::HOSTNAME | URI::Section::PORT).toStdString();
+    if (query.protocolHint() == URI::ProtocolHint::RING) {
+        // no lookup, this is a ring infoHash
+        auto& temporaryContact = contacts[""];
+        temporaryContact.profileInfo.uri = uriID;
+        temporaryContact.profileInfo.alias = uriID;
+        temporaryContact.profileInfo.type = profile::Type::TEMPORARY;
+    } else {
+        updateTemporaryMessage(tr("Searching…").toStdString(), uriID);
 
-    // Default searching
-    if (auto* account = AccountModel::instance().getById(linked.owner.id.c_str())) {
-        account->lookupName(QString(query.c_str()));
+        // Default searching
+        if (auto* account = AccountModel::instance().getById(linked.owner.id.c_str())) {
+            account->lookupName(QString(uriID.c_str()));
+        }
     }
 }
 
 void
-ContactModelPimpl::searchSipContact(const std::string& query)
+ContactModelPimpl::searchSipContact(const URI& query)
 {
-    if (query.empty()) {
+    if (query.isEmpty()) {
         return;
     }
 
+    std::string uriID = query.format(URI::Section::USER_INFO | URI::Section::HOSTNAME | URI::Section::PORT).toStdString();
     auto& temporaryContact = contacts[""];
 
     {
         std::lock_guard<std::mutex> lk(contactsMtx_);
-        if (contacts.find(query) == contacts.end()) {
-            temporaryContact.profileInfo.uri = query;
-            temporaryContact.profileInfo.alias = query;
+        if (contacts.find(uriID) == contacts.end()) {
+            temporaryContact.profileInfo.uri = uriID;
+            temporaryContact.profileInfo.alias = uriID;
             temporaryContact.profileInfo.type = profile::Type::TEMPORARY;
         }
     }
-    emit linked.modelUpdated(query);
+    emit linked.modelUpdated(uriID);
 }
 
 uint64_t
