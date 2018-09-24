@@ -663,8 +663,8 @@
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="307"/>
-        <source>Uid</source>
-        <translation>UID</translation>
+        <source>UID</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="307"/>
@@ -934,8 +934,8 @@
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="104"/>
-        <source>Public key id</source>
-        <translation>Identifiant de clé publique</translation>
+        <source>Public key ID</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="105"/>
@@ -1381,50 +1381,50 @@
         <translation>Liste des profils paires</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1250"/>
-        <location filename="../src/conversationmodel.cpp" line="1616"/>
-        <location filename="../src/conversationmodel.cpp" line="1868"/>
+        <location filename="../src/conversationmodel.cpp" line="1256"/>
+        <location filename="../src/conversationmodel.cpp" line="1622"/>
+        <location filename="../src/conversationmodel.cpp" line="1874"/>
         <source>Invitation received</source>
         <translation>Invitation reçue</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1251"/>
+        <location filename="../src/conversationmodel.cpp" line="1257"/>
         <source>Contact added</source>
         <translation>Contact ajouté</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1286"/>
-        <location filename="../src/conversationmodel.cpp" line="1293"/>
+        <location filename="../src/conversationmodel.cpp" line="1292"/>
+        <location filename="../src/conversationmodel.cpp" line="1299"/>
         <source>Invitation accepted</source>
         <translation>Invitation acceptée</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1502"/>
+        <location filename="../src/conversationmodel.cpp" line="1508"/>
         <source>ð Outgoing call</source>
         <translation>ð Appel sortant</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1504"/>
+        <location filename="../src/conversationmodel.cpp" line="1510"/>
         <source>ð Incoming call</source>
         <translation>ð Appel entrant</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1517"/>
+        <location filename="../src/conversationmodel.cpp" line="1523"/>
         <source>ð Outgoing call - </source>
         <translation>ð Appel sortant -</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1520"/>
+        <location filename="../src/conversationmodel.cpp" line="1526"/>
         <source>ð Incoming call - </source>
         <translation>ð Appel entrant -</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1524"/>
+        <location filename="../src/conversationmodel.cpp" line="1530"/>
         <source>ð½ Missed outgoing call</source>
         <translation>ð½ Appel sortant raté</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1526"/>
+        <location filename="../src/conversationmodel.cpp" line="1532"/>
         <source>ð½ Missed incoming call</source>
         <translation>ð½ Appels entrants ratés</translation>
     </message>
@@ -1441,8 +1441,8 @@
     <name>RingDeviceModel</name>
     <message>
         <location filename="../src/ringdevicemodel.cpp" line="110"/>
-        <source>Id</source>
-        <translation>Identifiant</translation>
+        <source>ID</source>
+        <translation>ID</translation>
     </message>
     <message>
         <location filename="../src/ringdevicemodel.cpp" line="112"/>
@@ -1487,32 +1487,32 @@
 <context>
     <name>lrc::ContactModelPimpl</name>
     <message>
-        <location filename="../src/contactmodel.cpp" line="380"/>
+        <location filename="../src/contactmodel.cpp" line="386"/>
         <source>Searchingâ¦</source>
-        <translation type="unfinished"/>
+        <translation>En cours de recherche</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="741"/>
+        <location filename="../src/contactmodel.cpp" line="749"/>
         <source>Invalid ringID</source>
-        <translation type="unfinished"/>
+        <translation>Identifiant Ring invalide</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="744"/>
+        <location filename="../src/contactmodel.cpp" line="752"/>
         <source>Not found</source>
-        <translation type="unfinished"/>
+        <translation>Introuvable</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="747"/>
+        <location filename="../src/contactmodel.cpp" line="755"/>
         <source>Couldn&apos;t lookupâ¦</source>
-        <translation type="unfinished"/>
+        <translation>Impossible de rechercher</translation>
     </message>
 </context>
 <context>
     <name>lrc::api::ContactModel</name>
     <message>
-        <location filename="../src/contactmodel.cpp" line="359"/>
+        <location filename="../src/contactmodel.cpp" line="357"/>
         <source>Bad URI scheme</source>
-        <translation type="unfinished"/>
+        <translation>Schéma d&apos;URI non supporté</translation>
     </message>
 </context>
 <context>
