@@ -208,7 +208,7 @@ Q_SIGNALS:
      * @param callId
      * @param fromId the peer uri
      */
-    void newIncomingCall(const std::string& callId, const std::string& fromId) const;
+    void newIncomingCall(const std::string& fromId, const std::string& callId) const;
     /**
      * Emitted when the renderer starts
      * @param callId
