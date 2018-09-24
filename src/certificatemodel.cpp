@@ -245,7 +245,7 @@ CertificateNode* CertificateModelPrivate::createCategory(const QString& name, co
    // This code avoids leak, but has side effects.
    if (m_hStrToCat.contains(name)) {
       qWarning() << "Trying to create a certificate node with an already used id."
-         " This can have unforneen consequences";
+         " This can have unforseen consequences";
       return m_hStrToCat[name];
    }
 
