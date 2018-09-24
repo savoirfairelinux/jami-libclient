@@ -482,7 +482,7 @@ NewCallModelPimpl::slotIncomingCall(const std::string& accountId, const std::str
     callInfo->isAudioOnly = callDetails["AUDIO_ONLY"] == "true" ? true : false;
     calls.emplace(callId, std::move(callInfo));
 
-    emit linked.newIncomingCall(fromId, callId);
+    emit linked.newIncomingCall(callId, fromId);
 }
 
 void
