@@ -493,6 +493,13 @@ NewCallModelPimpl::slotCallStateChanged(const std::string& callId, const std::st
 
     auto status = call::to_status(state);
     auto& call = calls[callId];
+
+    if (status == call::Status::ENDED && !call::isTerminating(call->status)) {
+        call->status = call::Status::TERMINATING;
+        emit linked.callStatusChanged(callId);
+    }
+
+    // proper state transition
     auto previousStatus = call->status;
     call->status = status;
 
