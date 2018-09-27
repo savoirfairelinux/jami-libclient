@@ -161,6 +161,29 @@ canSendSIPMessage(const Info& call) {
     }
 }
 
+static inline bool
+isTerminating(const Status& status) {
+    switch(status)
+    {
+    case call::Status::INVALID:
+    case call::Status::INACTIVE:
+    case call::Status::ENDED:
+    case call::Status::PEER_BUSY:
+    case call::Status::TIMEOUT:
+    case call::Status::TERMINATING:
+        return true;
+    case call::Status::PAUSED:
+    case call::Status::IN_PROGRESS:
+    case call::Status::INCOMING_RINGING:
+    case call::Status::OUTGOING_RINGING:
+    case call::Status::CONNECTED:
+    case call::Status::CONNECTING:
+    case call::Status::SEARCHING:
+    default:
+        return false;
+    }
+}
+
 } // namespace call
 } // namespace api
 } // namespace lrc
