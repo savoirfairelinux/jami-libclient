@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "44a617e2_08223265",
+        "filename": "src/contactmodel.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 540,
+      "author": {
+        "id": 579
+      },
+      "writtenOn": "2018-09-28T18:54:45Z",
+      "side": 1,
+      "message": "TODO: check",
+      "range": {
+        "startLine": 540,
+        "startChar": 8,
+        "endLine": 540,
+        "endChar": 37
+      },
+      "revId": "240156fc0500768fc3186dfeeb919d7d1738ddd3",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    }
+  ]
+}
