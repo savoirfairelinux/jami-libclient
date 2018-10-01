@@ -53,7 +53,7 @@
         <location filename="../src/account.cpp" line="347"/>
         <source>Host unreachable</source>
         <extracomment>Account state</extracomment>
-        <translation>Host inalcansável</translation>
+        <translation>Servidor inalcansável</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="349"/>
@@ -478,7 +478,7 @@
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="72"/>
         <source>A year ago</source>
-        <translation>Uma ano atrás</translation>
+        <translation>Um ano atrás</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="73"/>
@@ -644,7 +644,7 @@
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="307"/>
         <source>Bookmarked</source>
-        <translation>Marcado</translation>
+        <translation>Favoritado</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="307"/>
@@ -664,7 +664,7 @@
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="307"/>
         <source>UID</source>
-        <translation type="unfinished"/>
+        <translation>ID do usuário</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="307"/>
@@ -890,7 +890,7 @@
     <message>
         <location filename="../src/certificate.cpp" line="95"/>
         <source>Serial number</source>
-        <translation>Número serial</translation>
+        <translation>Número de série</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="96"/>
@@ -935,7 +935,7 @@
     <message>
         <location filename="../src/certificate.cpp" line="104"/>
         <source>Public key ID</source>
-        <translation type="unfinished"/>
+        <translation>ID da chave pública</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="105"/>
@@ -950,7 +950,7 @@
     <message>
         <location filename="../src/certificate.cpp" line="107"/>
         <source>Outgoing server</source>
-        <translation>Servidor de sáida</translation>
+        <translation>Servidor de saída</translation>
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="183"/>
@@ -1132,17 +1132,17 @@
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="40"/>
         <source>Your certificate and authority don&apos;t match, if your certificate require an authority, it won&apos;t work</source>
-        <translation>Seu certificado e a autoridade não correspondem, se  certificado requer uma autoridade, isso não está funcionando</translation>
+        <translation>Seu certificado e a autoridade não correspondem, se seu certificado requer uma autoridade, isso não está funcionando</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="41"/>
         <source>The outgoing server specified doesn&apos;t match the hostname or the one included in the certificate</source>
-        <translation>O servidor de saída especifícado não corresponde ao nome do host ou o incluído no certificado </translation>
+        <translation>O servidor de saída especificado não corresponde ao nome do servidor ou ao incluído no certificado</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="42"/>
         <source>The &quot;verify incoming certificate&quot; option is disabled, this leave you vulnerable to man in the middle attack</source>
-        <translation>A opção &quot;verificar o certificado de entrada&quot; está desabilitada, isto o deixa vulnerável ao ataque &quot;man-in-the-middle&quot;</translation>
+        <translation>A opção &quot;verificar o certificado recebido&quot; está desabilitada, isto o deixa vulnerável ao ataque &quot;man-in-the-middle&quot;</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="43"/>
@@ -1157,7 +1157,7 @@
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="47"/>
         <source>No certificate authority is provided, it won&apos;t be possible to validate if the answer certificates are valid. Some account may also not work.</source>
-        <translation>Nenhuma autoridade de certificação é fornecida, não será possivel validar se os certificados de resposta são válidos. Algumas contas também podem não funcionar.</translation>
+        <translation>Nenhuma autoridade de certificação é fornecida, não será possível validar se os certificados de resposta são válidos. Algumas contas também podem não funcionar.</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="46"/>
@@ -1197,55 +1197,65 @@
         <translation>Aceitar</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="58"/>
+        <location filename="../src/api/call.h" line="60"/>
         <location filename="../src/useractionmodel.cpp" line="518"/>
         <location filename="../src/useractionmodel.cpp" line="771"/>
         <source>Hold</source>
         <translation>Aguarde</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="60"/>
+        <location filename="../src/api/call.h" line="62"/>
         <source>Talking</source>
         <translation>Falando</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="62"/>
+        <location filename="../src/api/call.h" line="64"/>
         <source>ERROR</source>
         <translation>ERRO</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="64"/>
+        <location filename="../src/api/call.h" line="66"/>
         <source>Incoming</source>
         <translation>Entrada</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="66"/>
+        <location filename="../src/api/call.h" line="68"/>
         <source>Calling</source>
         <translation>Chamando</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="68"/>
+        <location filename="../src/api/call.h" line="70"/>
         <source>Connecting</source>
         <translation>Conectando</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="70"/>
+        <location filename="../src/api/call.h" line="72"/>
         <source>Searching</source>
         <translation>Pesquisando</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="72"/>
+        <location filename="../src/api/call.h" line="74"/>
         <source>Inactive</source>
         <translation>Inativo</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="74"/>
         <location filename="../src/api/call.h" line="76"/>
+        <location filename="../src/api/call.h" line="82"/>
         <source>Finished</source>
         <translation>Terminado</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="78"/>
+        <source>Timeout</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/api/call.h" line="80"/>
+        <source>Peer busy</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/api/call.h" line="84"/>
         <source>Communication established</source>
         <translation>Comunicação estabelecida</translation>
     </message>
@@ -1381,50 +1391,50 @@
         <translation>Coleção de Perfis de pares</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1256"/>
-        <location filename="../src/conversationmodel.cpp" line="1622"/>
-        <location filename="../src/conversationmodel.cpp" line="1874"/>
+        <location filename="../src/conversationmodel.cpp" line="1262"/>
+        <location filename="../src/conversationmodel.cpp" line="1628"/>
+        <location filename="../src/conversationmodel.cpp" line="1880"/>
         <source>Invitation received</source>
         <translation>Convite recebido</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1257"/>
+        <location filename="../src/conversationmodel.cpp" line="1263"/>
         <source>Contact added</source>
         <translation>Contato adicionado</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1292"/>
-        <location filename="../src/conversationmodel.cpp" line="1299"/>
+        <location filename="../src/conversationmodel.cpp" line="1298"/>
+        <location filename="../src/conversationmodel.cpp" line="1305"/>
         <source>Invitation accepted</source>
         <translation>Convite aceito</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1508"/>
+        <location filename="../src/conversationmodel.cpp" line="1514"/>
         <source>ð Outgoing call</source>
         <translation>ð Chamada efetuada</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1510"/>
+        <location filename="../src/conversationmodel.cpp" line="1516"/>
         <source>ð Incoming call</source>
         <translation>ð Chamada recebida</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1523"/>
+        <location filename="../src/conversationmodel.cpp" line="1529"/>
         <source>ð Outgoing call - </source>
         <translation>ð Chamada efetuada - </translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1526"/>
+        <location filename="../src/conversationmodel.cpp" line="1532"/>
         <source>ð Incoming call - </source>
         <translation>ð Chamada recebida - </translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1530"/>
+        <location filename="../src/conversationmodel.cpp" line="1536"/>
         <source>ð½ Missed outgoing call</source>
         <translation>ð½ Chamada efetuada não atendida</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1532"/>
+        <location filename="../src/conversationmodel.cpp" line="1538"/>
         <source>ð½ Missed incoming call</source>
         <translation>ð½ Chamada recebida não atendida</translation>
     </message>
@@ -1489,22 +1499,22 @@
     <message>
         <location filename="../src/contactmodel.cpp" line="386"/>
         <source>Searchingâ¦</source>
-        <translation type="unfinished"/>
+        <translation>Pesquisando</translation>
     </message>
     <message>
         <location filename="../src/contactmodel.cpp" line="749"/>
         <source>Invalid ringID</source>
-        <translation type="unfinished"/>
+        <translation>RingID não válido</translation>
     </message>
     <message>
         <location filename="../src/contactmodel.cpp" line="752"/>
         <source>Not found</source>
-        <translation type="unfinished"/>
+        <translation>Não encontrado</translation>
     </message>
     <message>
         <location filename="../src/contactmodel.cpp" line="755"/>
         <source>Couldn&apos;t lookupâ¦</source>
-        <translation type="unfinished"/>
+        <translation>Não foi possível procurar</translation>
     </message>
 </context>
 <context>
@@ -1512,7 +1522,7 @@
     <message>
         <location filename="../src/contactmodel.cpp" line="357"/>
         <source>Bad URI scheme</source>
-        <translation type="unfinished"/>
+        <translation>Mau esquema de URI</translation>
     </message>
 </context>
 <context>

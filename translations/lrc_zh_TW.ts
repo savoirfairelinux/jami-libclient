@@ -664,7 +664,7 @@
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="307"/>
         <source>UID</source>
-        <translation type="unfinished"/>
+        <translation>UID</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="307"/>
@@ -935,7 +935,7 @@
     <message>
         <location filename="../src/certificate.cpp" line="104"/>
         <source>Public key ID</source>
-        <translation type="unfinished"/>
+        <translation>公開金鑰 ID</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="105"/>
@@ -1197,55 +1197,65 @@
         <translation>接聽</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="58"/>
+        <location filename="../src/api/call.h" line="60"/>
         <location filename="../src/useractionmodel.cpp" line="518"/>
         <location filename="../src/useractionmodel.cpp" line="771"/>
         <source>Hold</source>
         <translation>暫停通話</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="60"/>
+        <location filename="../src/api/call.h" line="62"/>
         <source>Talking</source>
         <translation>通話中</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="62"/>
+        <location filename="../src/api/call.h" line="64"/>
         <source>ERROR</source>
         <translation>錯誤</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="64"/>
+        <location filename="../src/api/call.h" line="66"/>
         <source>Incoming</source>
         <translation>來電</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="66"/>
+        <location filename="../src/api/call.h" line="68"/>
         <source>Calling</source>
         <translation>正在通話</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="68"/>
+        <location filename="../src/api/call.h" line="70"/>
         <source>Connecting</source>
         <translation>連接中</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="70"/>
+        <location filename="../src/api/call.h" line="72"/>
         <source>Searching</source>
         <translation>搜尋</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="72"/>
+        <location filename="../src/api/call.h" line="74"/>
         <source>Inactive</source>
         <translation>不活躍</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="74"/>
         <location filename="../src/api/call.h" line="76"/>
+        <location filename="../src/api/call.h" line="82"/>
         <source>Finished</source>
         <translation>已結束</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="78"/>
+        <source>Timeout</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/api/call.h" line="80"/>
+        <source>Peer busy</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/api/call.h" line="84"/>
         <source>Communication established</source>
         <translation>已建立通訊</translation>
     </message>
@@ -1381,50 +1391,50 @@
         <translation>對方的基本資料收集</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1256"/>
-        <location filename="../src/conversationmodel.cpp" line="1622"/>
-        <location filename="../src/conversationmodel.cpp" line="1874"/>
+        <location filename="../src/conversationmodel.cpp" line="1262"/>
+        <location filename="../src/conversationmodel.cpp" line="1628"/>
+        <location filename="../src/conversationmodel.cpp" line="1880"/>
         <source>Invitation received</source>
         <translation>已收到邀請</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1257"/>
+        <location filename="../src/conversationmodel.cpp" line="1263"/>
         <source>Contact added</source>
         <translation>已新增聯絡人</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1292"/>
-        <location filename="../src/conversationmodel.cpp" line="1299"/>
+        <location filename="../src/conversationmodel.cpp" line="1298"/>
+        <location filename="../src/conversationmodel.cpp" line="1305"/>
         <source>Invitation accepted</source>
         <translation>已接受邀請</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1508"/>
+        <location filename="../src/conversationmodel.cpp" line="1514"/>
         <source>ð Outgoing call</source>
         <translation>ð 撥出電話</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1510"/>
+        <location filename="../src/conversationmodel.cpp" line="1516"/>
         <source>ð Incoming call</source>
         <translation>ð 來電</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1523"/>
+        <location filename="../src/conversationmodel.cpp" line="1529"/>
         <source>ð Outgoing call - </source>
         <translation>ð 撥出電話 - </translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1526"/>
+        <location filename="../src/conversationmodel.cpp" line="1532"/>
         <source>ð Incoming call - </source>
         <translation>ð 來電 - </translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1530"/>
+        <location filename="../src/conversationmodel.cpp" line="1536"/>
         <source>ð½ Missed outgoing call</source>
         <translation>ð½ 未接去電</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1532"/>
+        <location filename="../src/conversationmodel.cpp" line="1538"/>
         <source>ð½ Missed incoming call</source>
         <translation>ð½ 未接來電</translation>
     </message>

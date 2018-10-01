@@ -1197,55 +1197,65 @@
         <translation>Aksepter</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="58"/>
+        <location filename="../src/api/call.h" line="60"/>
         <location filename="../src/useractionmodel.cpp" line="518"/>
         <location filename="../src/useractionmodel.cpp" line="771"/>
         <source>Hold</source>
         <translation>Parker</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="60"/>
+        <location filename="../src/api/call.h" line="62"/>
         <source>Talking</source>
         <translation>Snakker</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="62"/>
+        <location filename="../src/api/call.h" line="64"/>
         <source>ERROR</source>
         <translation>FEIL</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="64"/>
+        <location filename="../src/api/call.h" line="66"/>
         <source>Incoming</source>
         <translation>Innkommende</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="66"/>
+        <location filename="../src/api/call.h" line="68"/>
         <source>Calling</source>
         <translation>Kaller opp</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="68"/>
+        <location filename="../src/api/call.h" line="70"/>
         <source>Connecting</source>
         <translation>Kobler opp</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="70"/>
+        <location filename="../src/api/call.h" line="72"/>
         <source>Searching</source>
         <translation>Søker</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="72"/>
+        <location filename="../src/api/call.h" line="74"/>
         <source>Inactive</source>
         <translation>Uaktiv</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="74"/>
         <location filename="../src/api/call.h" line="76"/>
+        <location filename="../src/api/call.h" line="82"/>
         <source>Finished</source>
         <translation>Fullført</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="78"/>
+        <source>Timeout</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/api/call.h" line="80"/>
+        <source>Peer busy</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/api/call.h" line="84"/>
         <source>Communication established</source>
         <translation>Kommunikasjon etablert</translation>
     </message>
@@ -1381,50 +1391,50 @@
         <translation>Samling av likemannsprofiler</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1256"/>
-        <location filename="../src/conversationmodel.cpp" line="1622"/>
-        <location filename="../src/conversationmodel.cpp" line="1874"/>
+        <location filename="../src/conversationmodel.cpp" line="1262"/>
+        <location filename="../src/conversationmodel.cpp" line="1628"/>
+        <location filename="../src/conversationmodel.cpp" line="1880"/>
         <source>Invitation received</source>
         <translation>Invitasjon mottatt</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1257"/>
+        <location filename="../src/conversationmodel.cpp" line="1263"/>
         <source>Contact added</source>
         <translation>Kontakt lagt til</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1292"/>
-        <location filename="../src/conversationmodel.cpp" line="1299"/>
+        <location filename="../src/conversationmodel.cpp" line="1298"/>
+        <location filename="../src/conversationmodel.cpp" line="1305"/>
         <source>Invitation accepted</source>
         <translation>Invitasjon godtatt</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1508"/>
+        <location filename="../src/conversationmodel.cpp" line="1514"/>
         <source>ð Outgoing call</source>
         <translation>ð Utgående anrop</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1510"/>
+        <location filename="../src/conversationmodel.cpp" line="1516"/>
         <source>ð Incoming call</source>
         <translation>ð Innkommende anrop</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1523"/>
+        <location filename="../src/conversationmodel.cpp" line="1529"/>
         <source>ð Outgoing call - </source>
         <translation>ð Utgående anrop - </translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1526"/>
+        <location filename="../src/conversationmodel.cpp" line="1532"/>
         <source>ð Incoming call - </source>
         <translation>ð Innkommende anrop - </translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1530"/>
+        <location filename="../src/conversationmodel.cpp" line="1536"/>
         <source>ð½ Missed outgoing call</source>
         <translation>ð½ Ubesvart utgående anrop</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1532"/>
+        <location filename="../src/conversationmodel.cpp" line="1538"/>
         <source>ð½ Missed incoming call</source>
         <translation>ð½ Tapt innkommende anrop</translation>
     </message>

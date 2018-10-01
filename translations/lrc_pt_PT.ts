@@ -1,95 +1,95 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="lt" sourcelanguage="en" version="2.0">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="pt_PT" sourcelanguage="en" version="2.0">
 <context>
     <name>Account</name>
     <message>
         <location filename="../src/account.cpp" line="331"/>
         <source>Ready</source>
         <extracomment>Account state</extracomment>
-        <translation>Paruošta</translation>
+        <translation>Pronto</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="333"/>
         <source>Registered</source>
         <extracomment>Account state</extracomment>
-        <translation>Registruota</translation>
+        <translation>Registado</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="335"/>
         <source>Not Registered</source>
         <extracomment>Account state</extracomment>
-        <translation>Neregistruota</translation>
+        <translation>Não Registado</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="337"/>
         <source>Initializing</source>
         <extracomment>Account state</extracomment>
-        <translation>Inicijuojama</translation>
+        <translation>A inicializar</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="339"/>
         <source>Trying...</source>
         <extracomment>Account state</extracomment>
-        <translation>Bandoma...</translation>
+        <translation>A tentar...</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="341"/>
         <source>Error</source>
         <extracomment>Account state</extracomment>
-        <translation>Klaida</translation>
+        <translation>Erro</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="343"/>
         <source>Authentication Failed</source>
         <extracomment>Account state</extracomment>
-        <translation>Tapatybės nustatymas nepavyko</translation>
+        <translation>A Autenticação Falhou</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="345"/>
         <source>Network unreachable</source>
         <extracomment>Account state</extracomment>
-        <translation>Tinklas nepasiekiamas</translation>
+        <translation>Rede inalcançável</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="347"/>
         <source>Host unreachable</source>
         <extracomment>Account state</extracomment>
-        <translation>Kompiuteris nepasiekiamas</translation>
+        <translation>Servidor inalcansável</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="349"/>
         <source>Stun configuration error</source>
         <extracomment>Account state</extracomment>
-        <translation>Stun konfigūracijos klaida</translation>
+        <translation>Erro de configuração do STUN</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="351"/>
         <source>Stun server invalid</source>
         <extracomment>Account state</extracomment>
-        <translation>Neteisingas Stun serveris</translation>
+        <translation>Servidor STUN inválido</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="353"/>
         <source>Service unavailable</source>
         <extracomment>Account state</extracomment>
-        <translation>Paslauga neprieinama</translation>
+        <translation>Serviço indisponível</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="355"/>
         <source>Unacceptable</source>
         <extracomment>Account state</extracomment>
-        <translation>Nepriimtina</translation>
+        <translation>Inaceitável</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="357"/>
         <source>Invalid</source>
         <extracomment>Account state</extracomment>
-        <translation>Neteisinga</translation>
+        <translation>Inválido</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="359"/>
         <source>Request Timeout</source>
         <extracomment>Account state</extracomment>
-        <translation>Užklausos laikas baigėsi</translation>
+        <translation>O pedido excedeu o tempo limite</translation>
     </message>
 </context>
 <context>
@@ -97,7 +97,7 @@
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="438"/>
         <source>Configuration</source>
-        <translation>Konfigūracija</translation>
+        <translation>Configuração</translation>
     </message>
 </context>
 <context>
@@ -105,12 +105,12 @@
     <message>
         <location filename="../src/bootstrapmodel.cpp" line="379"/>
         <source>Hostname</source>
-        <translation>Kompiuterio vardas</translation>
+        <translation>Servidor</translation>
     </message>
     <message>
         <location filename="../src/bootstrapmodel.cpp" line="381"/>
         <source>Port</source>
-        <translation>Prievadas</translation>
+        <translation>Porta</translation>
     </message>
 </context>
 <context>
@@ -119,120 +119,120 @@
         <location filename="../src/call.cpp" line="720"/>
         <source>New</source>
         <extracomment>Call state</extracomment>
-        <translation>Naujas</translation>
+        <translation>Novo</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="723"/>
         <source>Ringing</source>
         <extracomment>Call state</extracomment>
-        <translation>Skambina</translation>
+        <translation>A tocar</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="726"/>
         <source>Calling</source>
         <extracomment>Call state</extracomment>
-        <translation>Skambinama</translation>
+        <translation>A chamar</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="729"/>
         <source>Talking</source>
         <extracomment>Call state</extracomment>
-        <translation>Kalbama</translation>
+        <translation>A falar</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="732"/>
         <source>Dialing</source>
         <extracomment>Call state</extracomment>
-        <translation>Skambinama</translation>
+        <translation>A ligar</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="735"/>
         <source>Hold</source>
         <extracomment>Call state</extracomment>
-        <translation>Užlaikyta</translation>
+        <translation>Modo de espera</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="738"/>
         <source>Failed</source>
         <extracomment>Call state</extracomment>
-        <translation>Nepavyko</translation>
+        <translation>Falhou</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="741"/>
         <source>Busy</source>
         <extracomment>Call state</extracomment>
-        <translation>Užimta</translation>
+        <translation>Ocupado(a)</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="744"/>
         <source>Transfer</source>
         <extracomment>Call state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Transferir</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="747"/>
         <source>Transfer hold</source>
         <extracomment>Call state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Aguarde a transferência</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="750"/>
         <source>Over</source>
         <extracomment>Call state</extracomment>
-        <translation>Baigta</translation>
+        <translation>Sobre</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="753"/>
         <source>Error</source>
         <extracomment>Call state</extracomment>
-        <translation>Klaida</translation>
+        <translation>Erro</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="756"/>
         <location filename="../src/call.cpp" line="861"/>
         <source>Conference</source>
         <extracomment>Call state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Conferência</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="759"/>
         <source>Conference (hold)</source>
         <extracomment>Call state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Conferência (aguarde)</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="762"/>
         <source>ERROR</source>
         <extracomment>Call state</extracomment>
-        <translation>KLAIDA</translation>
+        <translation>ERRO</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="765"/>
         <source>Searching for</source>
         <extracomment>Call state</extracomment>
-        <translation>Ieškoma</translation>
+        <translation>A pesquisar por</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="768"/>
         <source>Aborted</source>
         <extracomment>Call state</extracomment>
-        <translation>Nutraukta</translation>
+        <translation>A interromper</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="771"/>
         <source>Communication established</source>
         <extracomment>Call state</extracomment>
-        <translation>Ryšys užmegztas</translation>
+        <translation>Comunicação estabelecida</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="865"/>
         <source>Unknown</source>
-        <translation>Nežinoma</translation>
+        <translation>Desconhecido</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="2237"/>
         <source>Account: </source>
-        <translation>Paskyra: </translation>
+        <translation>Conta:</translation>
     </message>
 </context>
 <context>
@@ -240,7 +240,7 @@
     <message>
         <location filename="../src/callmodel.cpp" line="924"/>
         <source>Calls</source>
-        <translation>Skambučiai</translation>
+        <translation>Chamadas</translation>
     </message>
 </context>
 <context>
@@ -249,7 +249,7 @@
         <location filename="../src/callmodel.cpp" line="559"/>
         <location filename="../src/callmodel.cpp" line="584"/>
         <source>Invalid account</source>
-        <translation>Neteisinga paskyra</translation>
+        <translation>Conta inválida</translation>
     </message>
 </context>
 <context>
@@ -257,12 +257,12 @@
     <message>
         <location filename="../src/call.cpp" line="1794"/>
         <source>Aborted</source>
-        <translation>Nutraukta</translation>
+        <translation>A interromper</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="1815"/>
         <source>No account registered!</source>
-        <translation>Nėra registruotos paskyros!</translation>
+        <translation>Nenhuma conta registada!</translation>
     </message>
 </context>
 <context>
@@ -271,12 +271,12 @@
         <location filename="../src/categorizedbookmarkmodel.cpp" line="181"/>
         <source>Most popular</source>
         <extracomment>Most popular contacts</extracomment>
-        <translation>Populiariausi</translation>
+        <translation>Mais popular</translation>
     </message>
     <message>
         <location filename="../src/categorizedbookmarkmodel.cpp" line="299"/>
         <source>Contacts</source>
-        <translation>Kontaktai</translation>
+        <translation>Contactos</translation>
     </message>
 </context>
 <context>
@@ -284,28 +284,28 @@
     <message>
         <location filename="../src/categorizedcontactmodel.cpp" line="401"/>
         <source>Contacts</source>
-        <translation>Kontaktai</translation>
+        <translation>Contactos</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="129"/>
         <source>Empty</source>
-        <translation>Tuščia</translation>
+        <translation>Vazio</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="135"/>
         <location filename="../src/private/sortproxies.cpp" line="153"/>
         <source>Unknown</source>
-        <translation>Nežinoma</translation>
+        <translation>Desconhecido</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="141"/>
         <source>Never</source>
-        <translation>Niekada</translation>
+        <translation>Nunca</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="147"/>
         <source>Other</source>
-        <translation>Kita</translation>
+        <translation>Outro</translation>
     </message>
 </context>
 <context>
@@ -313,7 +313,7 @@
     <message>
         <location filename="../src/categorizedhistorymodel.cpp" line="414"/>
         <source>History</source>
-        <translation>Istorija</translation>
+        <translation>Histórico</translation>
     </message>
 </context>
 <context>
@@ -321,7 +321,7 @@
     <message>
         <location filename="../src/chainoftrustmodel.cpp" line="173"/>
         <source>Chain of trust</source>
-        <translation>Pasitikėjimo grandinė</translation>
+        <translation>Cadeia de confiança</translation>
     </message>
 </context>
 <context>
@@ -329,7 +329,7 @@
     <message>
         <location filename="../src/collectionmodel.cpp" line="279"/>
         <source>Name</source>
-        <translation>Pavadinimas</translation>
+        <translation>Nome</translation>
     </message>
 </context>
 <context>
@@ -337,27 +337,27 @@
     <message>
         <location filename="../src/private/sortproxies.cpp" line="49"/>
         <source>Name</source>
-        <translation>Vardas</translation>
+        <translation>Nome</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="50"/>
         <source>Organisation</source>
-        <translation>Organizacija</translation>
+        <translation>Organização</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="51"/>
         <source>Recently used</source>
-        <translation>Neseniai naudoti</translation>
+        <translation>Recentemente utilizado</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="52"/>
         <source>Group</source>
-        <translation>Grupė</translation>
+        <translation>Grupo</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="53"/>
         <source>Department</source>
-        <translation>Padalinys</translation>
+        <translation>Departamento</translation>
     </message>
 </context>
 <context>
@@ -370,22 +370,22 @@
     <message>
         <location filename="../src/private/sortproxies.cpp" line="58"/>
         <source>Name</source>
-        <translation>Vardas</translation>
+        <translation>Nome</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="59"/>
         <source>Popularity</source>
-        <translation>Populiarumas</translation>
+        <translation>Popularidade</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="60"/>
         <source>Duration</source>
-        <translation>Trukmė</translation>
+        <translation>Duração</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="61"/>
         <source>Total time</source>
-        <translation>Bendras laikas</translation>
+        <translation>Tempo total</translation>
     </message>
 </context>
 <context>
@@ -393,102 +393,102 @@
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="50"/>
         <source>Today</source>
-        <translation>Šiandien</translation>
+        <translation>Hoje</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="51"/>
         <source>Yesterday</source>
-        <translation>Vakar</translation>
+        <translation>Ontem</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="58"/>
         <source>Two weeks ago</source>
-        <translation>Prieš dvi savaites</translation>
+        <translation>Duas semanas atrás</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="59"/>
         <source>Three weeks ago</source>
-        <translation>Prieš tris savaites</translation>
+        <translation>Três semanas atrás</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="57"/>
         <source>A week ago</source>
-        <translation>Prieš savaitę</translation>
+        <translation>Uma semana atrás</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="60"/>
         <source>A month ago</source>
-        <translation>Prieš mėnesį</translation>
+        <translation>Um mês atrás</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="61"/>
         <source>Two months ago</source>
-        <translation>Prieš du mėnesius</translation>
+        <translation>Dois meses atrás</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="62"/>
         <source>Three months ago</source>
-        <translation>Prieš tris mėnesius</translation>
+        <translation>Três meses atrás</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="63"/>
         <source>Four months ago</source>
-        <translation>Prieš keturis mėnesius</translation>
+        <translation>Quatro meses atrás</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="64"/>
         <source>Five months ago</source>
-        <translation>Prieš penkis mėnesius</translation>
+        <translation>Cinco meses atrás</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="65"/>
         <source>Six months ago</source>
-        <translation>Prieš šešis mėnesius</translation>
+        <translation>Seis meses atrás</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="66"/>
         <source>Seven months ago</source>
-        <translation>Prieš septynis mėnesius</translation>
+        <translation>Sete meses atrás</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="67"/>
         <source>Eight months ago</source>
-        <translation>Prieš aštuonis mėnesius</translation>
+        <translation>Oito meses atrás</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="68"/>
         <source>Nine months ago</source>
-        <translation>Prieš devynis mėnesius</translation>
+        <translation>Nove meses atrás</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="69"/>
         <source>Ten months ago</source>
-        <translation>Prieš dešimt mėnesių</translation>
+        <translation>Dez meses atrás</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="70"/>
         <source>Eleven months ago</source>
-        <translation>Prieš vienuolika mėnesių</translation>
+        <translation>Onze meses atrás</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="71"/>
         <source>Twelve months ago</source>
-        <translation>Prieš dvylika mėnesių</translation>
+        <translation>Doze meses atrás</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="72"/>
         <source>A year ago</source>
-        <translation>Prieš metus</translation>
+        <translation>Um ano atrás</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="73"/>
         <source>Very long time ago</source>
-        <translation>Prieš labai daug laiko</translation>
+        <translation>Muito tempo atrás</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="74"/>
         <source>Never</source>
-        <translation>Niekada</translation>
+        <translation>Nunca</translation>
     </message>
 </context>
 <context>
@@ -496,7 +496,7 @@
     <message>
         <location filename="../src/media/textrecording.cpp" line="816"/>
         <source>Me</source>
-        <translation>Aš</translation>
+        <translation>Eu</translation>
     </message>
 </context>
 <context>
@@ -504,17 +504,17 @@
     <message>
         <location filename="../src/macromodel.cpp" line="157"/>
         <source>Macros</source>
-        <translation>Makrokomandos</translation>
+        <translation>Macros</translation>
     </message>
     <message>
         <location filename="../src/macromodel.cpp" line="263"/>
         <source>New</source>
-        <translation>Naujas</translation>
+        <translation>Novo</translation>
     </message>
     <message>
         <location filename="../src/macromodel.cpp" line="264"/>
         <source>Other</source>
-        <translation>Kita</translation>
+        <translation>Outro</translation>
     </message>
 </context>
 <context>
@@ -522,7 +522,7 @@
     <message>
         <location filename="../src/macromodel.cpp" line="77"/>
         <source>Other</source>
-        <translation>Kita</translation>
+        <translation>Outro</translation>
     </message>
 </context>
 <context>
@@ -530,7 +530,7 @@
     <message>
         <location filename="../src/numbercategorymodel.cpp" line="56"/>
         <source>Uncategorized</source>
-        <translation type="unfinished"/>
+        <translation>Não categorizado</translation>
     </message>
 </context>
 <context>
@@ -543,17 +543,17 @@
     <message>
         <location filename="../src/numbercompletionmodel.cpp" line="265"/>
         <source>Name</source>
-        <translation>Pavadinimas</translation>
+        <translation>Nome</translation>
     </message>
     <message>
         <location filename="../src/numbercompletionmodel.cpp" line="265"/>
         <source>Account</source>
-        <translation>Paskyra</translation>
+        <translation>Conta</translation>
     </message>
     <message>
         <location filename="../src/numbercompletionmodel.cpp" line="265"/>
         <source>Weight</source>
-        <translation type="unfinished"/>
+        <translation>Peso</translation>
     </message>
 </context>
 <context>
@@ -561,7 +561,7 @@
     <message>
         <location filename="../src/personmodel.cpp" line="171"/>
         <source>Persons</source>
-        <translation type="unfinished"/>
+        <translation>Pessoas</translation>
     </message>
 </context>
 <context>
@@ -569,12 +569,12 @@
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="234"/>
         <source>This account does not support presence tracking</source>
-        <translation>Ši paskyra nepalaiko prisijungimo būsenos sekimo</translation>
+        <translation>Esta conta não suporta rastreamento de presença</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="237"/>
         <source>No associated account</source>
-        <translation>Nėra susietos paskyros</translation>
+        <translation>Nenhuma conta associada</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="305"/>
@@ -584,97 +584,97 @@
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="305"/>
         <source>Type</source>
-        <translation>Tipas</translation>
+        <translation>Tipo</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="305"/>
         <source>Person</source>
-        <translation type="unfinished"/>
+        <translation>Pessoa</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="305"/>
         <source>Account</source>
-        <translation>Paskyra</translation>
+        <translation>Conta</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="305"/>
         <source>State</source>
-        <translation>Būsena</translation>
+        <translation>Estado</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="305"/>
         <source>Call count</source>
-        <translation type="unfinished"/>
+        <translation>Contagem de chamadas</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="305"/>
         <source>Week count</source>
-        <translation type="unfinished"/>
+        <translation>Contagem de semanas</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="306"/>
         <source>Trimester count</source>
-        <translation type="unfinished"/>
+        <translation>Contagem trimestral</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="306"/>
         <source>Have Called</source>
-        <translation type="unfinished"/>
+        <translation>Chamou</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="306"/>
         <source>Last used</source>
-        <translation type="unfinished"/>
+        <translation>Último usado</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="306"/>
         <source>Name_count</source>
-        <translation type="unfinished"/>
+        <translation>Nome_contagem</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="306"/>
         <source>Total (in seconds)</source>
-        <translation>Trukmė (sekundėmis)</translation>
+        <translation>Total (em segundos)</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="306"/>
         <source>Popularity_index</source>
-        <translation type="unfinished"/>
+        <translation>Índice_popularidade</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="307"/>
         <source>Bookmarked</source>
-        <translation type="unfinished"/>
+        <translation>Nos favoritos</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="307"/>
         <source>Tracked</source>
-        <translation type="unfinished"/>
+        <translation>Rastreado</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="307"/>
         <source>Present</source>
-        <translation type="unfinished"/>
+        <translation>Presente</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="307"/>
         <source>Presence message</source>
-        <translation>Būsenos pranešimas</translation>
+        <translation>Mensagem de presença</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="307"/>
         <source>UID</source>
-        <translation type="unfinished"/>
+        <translation>ID do utilizador</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="307"/>
         <source>Has certificate</source>
-        <translation type="unfinished"/>
+        <translation>Tem certificado</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="307"/>
         <source>Registered name</source>
-        <translation type="unfinished"/>
+        <translation>Utilizador registado</translation>
     </message>
 </context>
 <context>
@@ -682,33 +682,33 @@
     <message>
         <location filename="../src/presencestatusmodel.cpp" line="197"/>
         <source>Name</source>
-        <translation>Pavadinimas</translation>
+        <translation>Nome</translation>
     </message>
     <message>
         <location filename="../src/presencestatusmodel.cpp" line="197"/>
         <source>Message</source>
-        <translation>Žinutė</translation>
+        <translation>Mensagem</translation>
     </message>
     <message>
         <location filename="../src/presencestatusmodel.cpp" line="197"/>
         <source>Color</source>
-        <translation>Spalva</translation>
+        <translation>Cor</translation>
     </message>
     <message>
         <location filename="../src/presencestatusmodel.cpp" line="197"/>
         <source>Present</source>
-        <translation type="unfinished"/>
+        <translation>Presente</translation>
     </message>
     <message>
         <location filename="../src/presencestatusmodel.cpp" line="197"/>
         <source>Default</source>
-        <translation type="unfinished"/>
+        <translation>Padrão</translation>
     </message>
     <message>
         <location filename="../src/presencestatusmodel.cpp" line="308"/>
         <location filename="../src/presencestatusmodel.cpp" line="361"/>
         <source>Custom</source>
-        <translation type="unfinished"/>
+        <translation>Personalizado</translation>
     </message>
     <message>
         <location filename="../src/presencestatusmodel.cpp" line="308"/>
@@ -716,7 +716,7 @@
         <location filename="../src/presencestatusmodel.cpp" line="354"/>
         <location filename="../src/presencestatusmodel.cpp" line="361"/>
         <source>N/A</source>
-        <translation type="unfinished"/>
+        <translation>N/A</translation>
     </message>
 </context>
 <context>
@@ -724,7 +724,7 @@
     <message>
         <location filename="../src/profilemodel.cpp" line="637"/>
         <source>Profiles</source>
-        <translation>Profiliai</translation>
+        <translation>Perfis</translation>
     </message>
 </context>
 <context>
@@ -732,7 +732,7 @@
     <message>
         <location filename="../src/profilemodel.cpp" line="751"/>
         <source>New profile</source>
-        <translation>Naujas profilis</translation>
+        <translation>Novo perfil</translation>
     </message>
 </context>
 <context>
@@ -740,509 +740,509 @@
     <message>
         <location filename="../src/accountstatusmodel.cpp" line="177"/>
         <source>Message</source>
-        <translation>Žinutė</translation>
+        <translation>Mensagem</translation>
     </message>
     <message>
         <location filename="../src/accountstatusmodel.cpp" line="179"/>
         <source>Code</source>
-        <translation>Kodas</translation>
+        <translation>Código</translation>
     </message>
     <message>
         <location filename="../src/accountstatusmodel.cpp" line="181"/>
         <source>Time</source>
-        <translation>Laikas</translation>
+        <translation>Tempo</translation>
     </message>
     <message>
         <location filename="../src/accountstatusmodel.cpp" line="183"/>
         <source>Counter</source>
-        <translation type="unfinished"/>
+        <translation>Contador</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="42"/>
         <source>Has a private key</source>
-        <translation>Turi privatųjį raktą</translation>
+        <translation>Tem uma chave privada</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="43"/>
         <source>Is not expired</source>
-        <translation type="unfinished"/>
+        <translation>Não expirou</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="44"/>
         <source>Has strong signing</source>
-        <translation type="unfinished"/>
+        <translation>Tem uma assinatura forte</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="45"/>
         <source>Is not self signed</source>
-        <translation type="unfinished"/>
+        <translation>Não é auto-assinado</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="46"/>
         <source>Have a matching key pair</source>
-        <translation type="unfinished"/>
+        <translation>Tem um par de chaves correspondente</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="47"/>
         <source>Has the right private key file permissions</source>
-        <translation type="unfinished"/>
+        <translation>Tem as permissões do ficheiro de chave privada</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="48"/>
         <source>Has the right public key file permissions</source>
-        <translation type="unfinished"/>
+        <translation>Tem as permissões do ficheiro de chave pública</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="49"/>
         <source>Has the right private key directory permissions</source>
-        <translation>Turi teisingus privačiojo rakto katalogo leidimus</translation>
+        <translation>Tem as permissões do diretório da chave privada</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="50"/>
         <source>Has the right public key directory permissions</source>
-        <translation>Turi teisingus viešojo rakto katalogo leidimus</translation>
+        <translation>Tem as permissões do diretório da chave pública</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="51"/>
         <source>Has the right private key directory location</source>
-        <translation>Turi teisingą privačiojo rakto katalogo vietą</translation>
+        <translation>Tem a localização do diretório da chave privada</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="52"/>
         <source>Has the right public key directory location</source>
-        <translation>Turi teisingą viešojo rakto katalogo vietą</translation>
+        <translation>Tem a localização do diretório da chave pública</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="53"/>
         <source>Has the right private key SELinux attributes</source>
-        <translation>Turi teisingus privačiojo rakto SELinux atributus</translation>
+        <translation>Tem o direito sobre os atributos SELinux da chave privada</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="54"/>
         <source>Has the right public key SELinux attributes</source>
-        <translation>Turi teisingus viešojo rakto SELinux atributus</translation>
+        <translation>Tem o direito sobre os atributos SELinux da chave pública</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="55"/>
         <source>The certificate file exist and is readable</source>
-        <translation>Liudijimo failas yra ir yra skaitomas</translation>
+        <translation>O ficheiro do certificado existe e é legível</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="56"/>
         <source>The file is a valid certificate</source>
-        <translation>Failas yra galiojantis liudijimas</translation>
+        <translation>O ficheiro é um certificado válido</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="57"/>
         <source>The certificate has a valid authority</source>
-        <translation type="unfinished"/>
+        <translation>O certificado tem uma autoridade válida</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="58"/>
         <source>The certificate has a known authority</source>
-        <translation type="unfinished"/>
+        <translation>O certificado tem uma autoridade conhecida</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="59"/>
         <source>The certificate is not revoked</source>
-        <translation>Liudijimas nėra panaikintas</translation>
+        <translation>O certificado não foi revogado</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="60"/>
         <source>The certificate authority match</source>
-        <translation type="unfinished"/>
+        <translation>A autoridade certificadora corresponde</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="61"/>
         <source>The certificate has the expected owner</source>
-        <translation type="unfinished"/>
+        <translation>O certificado tem o proprietário esperado</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="62"/>
         <source>The certificate is within its active period</source>
-        <translation type="unfinished"/>
+        <translation>O certificado está no seu período válido</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="90"/>
         <source>Expiration date</source>
-        <translation type="unfinished"/>
+        <translation>Data de expiração</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="91"/>
         <source>Activation date</source>
-        <translation>Aktyvavimo data</translation>
+        <translation>Data de ativação</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="92"/>
         <source>Require a private key password</source>
-        <translation type="unfinished"/>
+        <translation>Exigir a palavra-chave da chave privada</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="93"/>
         <source>Public signature</source>
-        <translation>Viešasis parašas</translation>
+        <translation>Assinatura pública</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="94"/>
         <source>Version</source>
-        <translation>Versija</translation>
+        <translation>Versão</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="95"/>
         <source>Serial number</source>
-        <translation>Serijos numeris</translation>
+        <translation>Número de série</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="96"/>
         <source>Issuer</source>
-        <translation type="unfinished"/>
+        <translation>Emissor</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="97"/>
         <source>Subject key algorithm</source>
-        <translation type="unfinished"/>
+        <translation>Assunto do algoritmo da chave</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="98"/>
         <source>Common name (CN)</source>
-        <translation>Bendrinis pavadinimas (CN)</translation>
+        <translation>Nome comum (CN)</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="99"/>
         <source>Name (N)</source>
-        <translation>Pavadinimas (N)</translation>
+        <translation>Nome (N)</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="100"/>
         <source>Organization (O)</source>
-        <translation>Įstaiga (O)</translation>
+        <translation>Organização (O)</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="101"/>
         <source>Signature algorithm</source>
-        <translation>Parašo algoritmas</translation>
+        <translation>Algoritmo da assinatura</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="102"/>
         <source>Md5 fingerprint</source>
-        <translation>Md5 kontrolinis kodas</translation>
+        <translation>Md5 da impressão digital</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="103"/>
         <source>Sha1 fingerprint</source>
-        <translation>Sha1 kontrolinis kodas</translation>
+        <translation>Sha1 da impressão digital</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="104"/>
         <source>Public key ID</source>
-        <translation type="unfinished"/>
+        <translation>ID da chave pública</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="105"/>
         <source>Issuer domain name</source>
-        <translation type="unfinished"/>
+        <translation>Nome do domínio do emissor</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="106"/>
         <source>Next expected update</source>
-        <translation>Kitas laukiamas atnaujinimas</translation>
+        <translation>Próxima atualização esperada</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="107"/>
         <source>Outgoing server</source>
-        <translation>Išsiuntimo serveris</translation>
+        <translation>Servidor de saída</translation>
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="183"/>
         <source>Local certificate store</source>
-        <translation type="unfinished"/>
+        <translation>Armazenamento local de certificados</translation>
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="267"/>
         <location filename="../src/localprofilecollection.cpp" line="220"/>
         <source>Default</source>
-        <translation type="unfinished"/>
+        <translation>Padrão</translation>
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="267"/>
         <source>Certificate not associated with a group</source>
-        <translation type="unfinished"/>
+        <translation>Certificado não associado a um grupo</translation>
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="397"/>
         <source>A certificate</source>
-        <translation>Liudijimas</translation>
+        <translation>Um certificado</translation>
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="397"/>
         <source>An organisation</source>
-        <translation>Organizacija</translation>
+        <translation>Uma organização</translation>
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="420"/>
         <source>Details</source>
-        <translation>Išsamiau</translation>
+        <translation>Detalhes</translation>
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="420"/>
         <source>The content of the certificate</source>
-        <translation>Liudijimo turinys</translation>
+        <translation>O conteúdo do certificado</translation>
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="421"/>
         <source>Checks</source>
-        <translation type="unfinished"/>
+        <translation>Verificações</translation>
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="421"/>
         <source>Various security related information</source>
-        <translation>Įvairi su saugumu susijusi informacija</translation>
+        <translation>Várias informações relacionadas à segurança</translation>
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="610"/>
         <source>Header</source>
-        <translation type="unfinished"/>
+        <translation>Cabeçalho</translation>
     </message>
     <message>
         <location filename="../src/daemoncertificatecollection.cpp" line="148"/>
         <source>Daemon certificate store</source>
-        <translation type="unfinished"/>
+        <translation>Armazenamento de certificados Daemon</translation>
     </message>
     <message>
         <location filename="../src/daemoncertificatecollection.cpp" line="152"/>
         <source>%1 banned list</source>
         <extracomment>The list of banned certificates for this account</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1 lista de banidos</translation>
     </message>
     <message>
         <location filename="../src/daemoncertificatecollection.cpp" line="155"/>
         <source>%1 allowed list</source>
         <extracomment>The list of allowed certificates for this account</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1 lista de permitidos</translation>
     </message>
     <message>
         <location filename="../src/daemoncertificatecollection.cpp" line="160"/>
         <location filename="../src/foldercertificatecollection.cpp" line="198"/>
         <source>Certificate</source>
-        <translation>Liudijimas</translation>
+        <translation>Certificado</translation>
     </message>
     <message>
         <location filename="../src/extensions/presencecollectionextension.cpp" line="38"/>
         <source>Presence tracking</source>
-        <translation type="unfinished"/>
+        <translation>Rastreamento de presença</translation>
     </message>
     <message>
         <location filename="../src/extensions/securityevaluationextension.cpp" line="63"/>
         <source>Security evaluation</source>
-        <translation>Saugumo įvertinimas</translation>
+        <translation>Avaliação de segurança</translation>
     </message>
     <message>
         <location filename="../src/fallbackpersoncollection.cpp" line="194"/>
         <location filename="../src/transitionalpersonbackend.cpp" line="150"/>
         <source>Contact</source>
-        <translation>Kontakto</translation>
+        <translation>Contacto</translation>
     </message>
     <message>
         <location filename="../src/localbookmarkcollection.cpp" line="212"/>
         <source>Local bookmarks</source>
-        <translation type="unfinished"/>
+        <translation>Favoritos locais</translation>
     </message>
     <message>
         <location filename="../src/localbookmarkcollection.cpp" line="217"/>
         <location filename="../src/useractionmodel.cpp" line="532"/>
         <source>Bookmark</source>
-        <translation type="unfinished"/>
+        <translation>Favorito</translation>
     </message>
     <message>
         <location filename="../src/localhistorycollection.cpp" line="195"/>
         <source>Local history</source>
-        <translation>Vietinė istorija</translation>
+        <translation>Histórico local</translation>
     </message>
     <message>
         <location filename="../src/localhistorycollection.cpp" line="200"/>
         <source>History</source>
-        <translation>Istorija</translation>
+        <translation>Histórico</translation>
     </message>
     <message>
         <location filename="../src/localmacrocollection.cpp" line="190"/>
         <source>Local macros</source>
-        <translation>Vietinės makrokomandos</translation>
+        <translation>Macros locais</translation>
     </message>
     <message>
         <location filename="../src/localmacrocollection.cpp" line="195"/>
         <source>Macro</source>
-        <translation>Makrokomanda</translation>
+        <translation>Macro</translation>
     </message>
     <message>
         <location filename="../src/localrecordingcollection.cpp" line="101"/>
         <source>Local recordings</source>
-        <translation type="unfinished"/>
+        <translation>Gravações locais</translation>
     </message>
     <message>
         <location filename="../src/localrecordingcollection.cpp" line="106"/>
         <location filename="../src/localtextrecordingcollection.cpp" line="170"/>
         <source>Recording</source>
-        <translation type="unfinished"/>
+        <translation>A gravar</translation>
     </message>
     <message>
         <location filename="../src/localringtonecollection.cpp" line="220"/>
         <source>Local ringtones</source>
-        <translation>Vietinės skambučio melodijos</translation>
+        <translation>Toques de chamada locais</translation>
     </message>
     <message>
         <location filename="../src/localringtonecollection.cpp" line="225"/>
         <source>Ringtone</source>
-        <translation>Skambučio melodija</translation>
+        <translation>Toque de chamada</translation>
     </message>
     <message>
         <location filename="../src/localtextrecordingcollection.cpp" line="165"/>
         <source>Local text recordings</source>
-        <translation type="unfinished"/>
+        <translation>Gravações de texto locais</translation>
     </message>
     <message>
         <location filename="../src/numbercategory.cpp" line="72"/>
         <source>Phone number types</source>
-        <translation>Telefono numerio tipai</translation>
+        <translation>Tipos de número de telefone</translation>
     </message>
     <message>
         <location filename="../src/numbercategorymodel.cpp" line="186"/>
         <source>Other</source>
-        <translation>Kita</translation>
+        <translation>Outro</translation>
     </message>
     <message>
         <location filename="../src/protocolmodel.cpp" line="50"/>
         <source>Ring Account</source>
-        <translation>Ring paskyra</translation>
+        <translation>Conta Ring</translation>
     </message>
     <message>
         <location filename="../src/protocolmodel.cpp" line="51"/>
         <source>SIP Account</source>
-        <translation>SIP paskyra</translation>
+        <translation>Conta SIP</translation>
     </message>
     <message>
         <location filename="../src/qtwrapper/callmanager_wrap.h" line="315"/>
         <source>Me</source>
-        <translation>Aš</translation>
+        <translation>Eu</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="38"/>
         <source>TLS is disabled, the negotiation won&apos;t be encrypted. Your communication will be vulnerable to snooping</source>
-        <translation>TLS yra išjungta, derėjimasis nebus užšifruotas. Jūsų ryšys bus pažeidžiamas šnipinėjimui</translation>
+        <translation>O TLS está desativado, a negociação não será criptografada. A sua comunicação estará vulnerável à espionagem  </translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="40"/>
         <source>Your certificate and authority don&apos;t match, if your certificate require an authority, it won&apos;t work</source>
-        <translation type="unfinished"/>
+        <translation>O seu certificado e a autoridade não correspondem, se o seu certificado requer uma autoridade, não funcionará</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="41"/>
         <source>The outgoing server specified doesn&apos;t match the hostname or the one included in the certificate</source>
-        <translation>Nurodytas išsiuntimo serveris nesutampa su kompiuterio vardu arba su tuo, kuris nurodytas liudijime</translation>
+        <translation>O servidor de saída especificado não corresponde ao nome do servidor ou ao incluído no certificado</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="42"/>
         <source>The &quot;verify incoming certificate&quot; option is disabled, this leave you vulnerable to man in the middle attack</source>
-        <translation type="unfinished"/>
+        <translation>A opção &quot;Verificar certificado recebidos&quot; está desativada, isto torna-o vulnerável ao ataque &quot;man-in-the-middle&quot;</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="43"/>
         <source>The &quot;verify answer certificate&quot; option is disabled, this leave you vulnerable to man in the middle attack</source>
-        <translation type="unfinished"/>
+        <translation>A opção &quot;verificar o certificado de resposta&quot; está desativado, isto torna-o vulnerável ao ataque &quot;man-in-the-middle&quot;</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="44"/>
         <source>None of your certificate provide a private key, this is required. Please select a private key or use a certificate with one built-in</source>
-        <translation type="unfinished"/>
+        <translation>Nenhum dos seus certificados fornece uma chave privada, isto é necessário. Por favor selecione uma chave privada ou use um certificado com uma chave embutida</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="47"/>
         <source>No certificate authority is provided, it won&apos;t be possible to validate if the answer certificates are valid. Some account may also not work.</source>
-        <translation type="unfinished"/>
+        <translation>Não foi fornecida nenhuma autoridade de certificação, não será possível validar se os certificados de resposta são válidos. Algumas contas também podem não funcionar.</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="46"/>
         <source>No certificate has been provided. This is, for now, unsupported by Ring</source>
-        <translation>Nebuvo pateiktas joks liudijimas. Kol kas Ring to nepalaiko</translation>
+        <translation>Não foi fornecido nenhum certificado. Isto ainda não é suportado pelo Ring</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="37"/>
         <source>Your media streams are not encrypted, please enable SDES</source>
-        <translation>Jūsų medijos srautai nėra užšifruoti, prašome įjungti SDES</translation>
+        <translation>As suas transmissões de mídia não estão encriptadas, por favor ative o SDES</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="50"/>
         <source>Your certificate is expired, please contact your system administrator.</source>
-        <translation>Pasibaigė jūsų liudijimo galiojimo laikas, prašome susisiekti su savo sistemos administratoriumi.</translation>
+        <translation>O seu certificado expirou, por favor entre em contacto com o seu administrador do sistema.</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="51"/>
         <source>Your certificate is self signed. This break the chain of trust.</source>
-        <translation>Jūsų liudijimas yra paties pasirašytas. Tai sulaužo pasitikėjimo grandinę.</translation>
+        <translation>O seu certificado é auto-assinado. Isto quebra a corrente de confiança.</translation>
     </message>
     <message>
         <location filename="../src/tlsmethodmodel.cpp" line="64"/>
         <source>Default</source>
         <comment>Default TLS protocol version</comment>
-        <translation type="unfinished"/>
+        <translation>Padrão</translation>
     </message>
     <message>
         <location filename="../src/transitionalpersonbackend.cpp" line="145"/>
         <source>Contact placeholders</source>
-        <translation type="unfinished"/>
+        <translation>Marcadores de contacto</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="517"/>
         <location filename="../src/useractionmodel.cpp" line="759"/>
         <source>Accept</source>
-        <translation>Priimti</translation>
+        <translation>Aceitar</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="60"/>
         <location filename="../src/useractionmodel.cpp" line="518"/>
         <location filename="../src/useractionmodel.cpp" line="771"/>
         <source>Hold</source>
-        <translation>Užlaikyta</translation>
+        <translation>Modo de espera</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="62"/>
         <source>Talking</source>
-        <translation>Kalbama</translation>
+        <translation>A falar</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="64"/>
         <source>ERROR</source>
-        <translation>KLAIDA</translation>
+        <translation>ERRO</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="66"/>
         <source>Incoming</source>
-        <translation>Gaunamasis</translation>
+        <translation>Entrada</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="68"/>
         <source>Calling</source>
-        <translation>Skambinama</translation>
+        <translation>A chamar</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="70"/>
         <source>Connecting</source>
-        <translation>Sujungiama</translation>
+        <translation>A conectar</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="72"/>
         <source>Searching</source>
-        <translation>Ieškoma</translation>
+        <translation>A pesquisar</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="74"/>
         <source>Inactive</source>
-        <translation type="unfinished"/>
+        <translation>Inativo</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="76"/>
         <location filename="../src/api/call.h" line="82"/>
         <source>Finished</source>
-        <translation type="unfinished"/>
+        <translation>Terminado</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="78"/>
@@ -1257,186 +1257,186 @@
     <message>
         <location filename="../src/api/call.h" line="84"/>
         <source>Communication established</source>
-        <translation>Ryšys užmegztas</translation>
+        <translation>Comunicação estabelecida</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="519"/>
         <source>Mute audio</source>
-        <translation>Nutildyti garsą</translation>
+        <translation>Desativar som do áudio</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="520"/>
         <source>Mute video</source>
-        <translation>Išjungti vaizdą</translation>
+        <translation>Desativar som do vídeo</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="521"/>
         <source>Server transfer</source>
-        <translation type="unfinished"/>
+        <translation>Transferência de servidor</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="522"/>
         <source>Record</source>
-        <translation>Įrašyti</translation>
+        <translation>Gravar</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="523"/>
         <location filename="../src/useractionmodel.cpp" line="789"/>
         <source>Hangup</source>
-        <translation>Padėti ragelį</translation>
+        <translation>Desligar</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="524"/>
         <source>Join</source>
-        <translation type="unfinished"/>
+        <translation>Juntar-me</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="525"/>
         <source>Add new</source>
-        <translation>Pridėti naują</translation>
+        <translation>Adicionar novo</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="526"/>
         <source>Toggle video</source>
-        <translation>Perjungti vaizdą</translation>
+        <translation>Alternar vídeo</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="527"/>
         <source>Add a contact</source>
-        <translation>Pridėti kontaktą</translation>
+        <translation>Adicionar um contacto</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="528"/>
         <source>Add to existing contact</source>
-        <translation>Pridėti prie esamų kontaktų</translation>
+        <translation>Adicionar a um contacto existente</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="529"/>
         <source>Delete contact</source>
-        <translation>Ištrinti kontaktą</translation>
+        <translation>Eliminar contacto</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="530"/>
         <source>Email contact</source>
-        <translation type="unfinished"/>
+        <translation>Contacto por email</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="531"/>
         <source>Copy contact</source>
-        <translation>Kopijuoti kontaktą</translation>
+        <translation>Copiar contacto</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="534"/>
         <source>Add phone number</source>
-        <translation>Pridėti telefono numerį</translation>
+        <translation>Adicionar número de telefone</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="535"/>
         <source>Call again</source>
-        <translation>Skambinti dar kartą</translation>
+        <translation>Chamar novamente</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="536"/>
         <source>Edit contact details</source>
-        <translation>Taisyti kontaktinę informaciją</translation>
+        <translation>Editar detalhes do contacto</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="537"/>
         <source>Remove from history</source>
-        <translation>Šalinti iš istorijos</translation>
+        <translation>Remover do histórico</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="786"/>
         <source>Remove</source>
-        <translation>Šalinti</translation>
+        <translation>Remover</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="756"/>
         <source>Call</source>
-        <translation>Skambutis</translation>
+        <translation>Chamar</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="533"/>
         <source>Open chat</source>
-        <translation>Atverti pokalbį</translation>
+        <translation>Abrir conversa</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="768"/>
         <source>Unhold</source>
-        <translation type="unfinished"/>
+        <translation>Soltar</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="779"/>
         <source>Cancel</source>
-        <translation>Atsisakyti</translation>
+        <translation>Cancelar</translation>
     </message>
     <message>
         <location filename="../src/localprofilecollection.cpp" line="147"/>
         <source>Local profiles</source>
-        <translation>Vietiniai profiliai</translation>
+        <translation>Perfis locais</translation>
     </message>
     <message>
         <location filename="../src/localprofilecollection.cpp" line="152"/>
         <source>Profile Collection</source>
-        <translation type="unfinished"/>
+        <translation>Coleção do Perfil</translation>
     </message>
     <message>
         <location filename="../src/peerprofilecollection.cpp" line="141"/>
         <source>Peer profiles</source>
-        <translation type="unfinished"/>
+        <translation>Perfis de pares</translation>
     </message>
     <message>
         <location filename="../src/peerprofilecollection.cpp" line="146"/>
         <source>Peers Profiles Collection</source>
-        <translation type="unfinished"/>
+        <translation>Coleção de Perfis de Pares</translation>
     </message>
     <message>
         <location filename="../src/conversationmodel.cpp" line="1262"/>
         <location filename="../src/conversationmodel.cpp" line="1628"/>
         <location filename="../src/conversationmodel.cpp" line="1880"/>
         <source>Invitation received</source>
-        <translation type="unfinished"/>
+        <translation>Convite recebido</translation>
     </message>
     <message>
         <location filename="../src/conversationmodel.cpp" line="1263"/>
         <source>Contact added</source>
-        <translation>Kontaktas pridėtas</translation>
+        <translation>Contacto adicionado</translation>
     </message>
     <message>
         <location filename="../src/conversationmodel.cpp" line="1298"/>
         <location filename="../src/conversationmodel.cpp" line="1305"/>
         <source>Invitation accepted</source>
-        <translation>Pakvietimas priimtas</translation>
+        <translation>Convite aceite</translation>
     </message>
     <message>
         <location filename="../src/conversationmodel.cpp" line="1514"/>
         <source>ð Outgoing call</source>
-        <translation>ð Išsiunčiamasis skambutis</translation>
+        <translation>ð Chamada feita</translation>
     </message>
     <message>
         <location filename="../src/conversationmodel.cpp" line="1516"/>
         <source>ð Incoming call</source>
-        <translation>ð Gaunamasis skambutis</translation>
+        <translation>ð Chamada recebida</translation>
     </message>
     <message>
         <location filename="../src/conversationmodel.cpp" line="1529"/>
         <source>ð Outgoing call - </source>
-        <translation>ð Išsiunčiamasis skambutis - </translation>
+        <translation>ð Chamada feita - </translation>
     </message>
     <message>
         <location filename="../src/conversationmodel.cpp" line="1532"/>
         <source>ð Incoming call - </source>
-        <translation>ð Gaunamasis skambutis - </translation>
+        <translation>ð Chamada recebida - </translation>
     </message>
     <message>
         <location filename="../src/conversationmodel.cpp" line="1536"/>
         <source>ð½ Missed outgoing call</source>
-        <translation type="unfinished"/>
+        <translation>ð½ Chamada feita não atendida</translation>
     </message>
     <message>
         <location filename="../src/conversationmodel.cpp" line="1538"/>
         <source>ð½ Missed incoming call</source>
-        <translation>ð½ Praleistas gaunamasis skambutis</translation>
+        <translation>ð½ Chamada recebida não atendida</translation>
     </message>
 </context>
 <context>
@@ -1444,7 +1444,7 @@
     <message>
         <location filename="../src/recentmodel.cpp" line="614"/>
         <source>Recent persons</source>
-        <translation>Paskiausi asmenys</translation>
+        <translation>Pessoas recentes</translation>
     </message>
 </context>
 <context>
@@ -1457,7 +1457,7 @@
     <message>
         <location filename="../src/ringdevicemodel.cpp" line="112"/>
         <source>Name</source>
-        <translation>Vardas</translation>
+        <translation>Nome</translation>
     </message>
 </context>
 <context>
@@ -1465,7 +1465,7 @@
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="683"/>
         <source>Authority</source>
-        <translation type="unfinished"/>
+        <translation>Autoridade</translation>
     </message>
 </context>
 <context>
@@ -1473,7 +1473,7 @@
     <message>
         <location filename="../src/tlsmethodmodel.cpp" line="101"/>
         <source>Automatic</source>
-        <translation>Automatinis</translation>
+        <translation>Automático</translation>
     </message>
 </context>
 <context>
@@ -1481,17 +1481,17 @@
     <message>
         <location filename="../src/video/sourcemodel.cpp" line="95"/>
         <source>NONE</source>
-        <translation>NĖRA</translation>
+        <translation>NENHUM</translation>
     </message>
     <message>
         <location filename="../src/video/sourcemodel.cpp" line="101"/>
         <source>SCREEN</source>
-        <translation>EKRANAS</translation>
+        <translation>ECRÃ</translation>
     </message>
     <message>
         <location filename="../src/video/sourcemodel.cpp" line="107"/>
         <source>FILE</source>
-        <translation>FAILAS</translation>
+        <translation>FICHEIRO</translation>
     </message>
 </context>
 <context>
@@ -1499,22 +1499,22 @@
     <message>
         <location filename="../src/contactmodel.cpp" line="386"/>
         <source>Searchingâ¦</source>
-        <translation type="unfinished"/>
+        <translation>A pesquisar</translation>
     </message>
     <message>
         <location filename="../src/contactmodel.cpp" line="749"/>
         <source>Invalid ringID</source>
-        <translation type="unfinished"/>
+        <translation>RingID não válido</translation>
     </message>
     <message>
         <location filename="../src/contactmodel.cpp" line="752"/>
         <source>Not found</source>
-        <translation type="unfinished"/>
+        <translation>Não encontrado</translation>
     </message>
     <message>
         <location filename="../src/contactmodel.cpp" line="755"/>
         <source>Couldn&apos;t lookupâ¦</source>
-        <translation type="unfinished"/>
+        <translation>Não foi possível procurar</translation>
     </message>
 </context>
 <context>
@@ -1522,7 +1522,7 @@
     <message>
         <location filename="../src/contactmodel.cpp" line="357"/>
         <source>Bad URI scheme</source>
-        <translation type="unfinished"/>
+        <translation>Mau esquema de URI</translation>
     </message>
 </context>
 <context>
@@ -1530,17 +1530,17 @@
     <message>
         <location filename="../src/media/recordingmodel.cpp" line="189"/>
         <source>Recordings</source>
-        <translation>Įrašai</translation>
+        <translation>Gravações</translation>
     </message>
     <message>
         <location filename="../src/media/recordingmodel.cpp" line="259"/>
         <source>Text messages</source>
-        <translation>Tekstinės žinutės</translation>
+        <translation>Mensagens de texto</translation>
     </message>
     <message>
         <location filename="../src/media/recordingmodel.cpp" line="264"/>
         <source>Audio/Video</source>
-        <translation>Garsas/Vaizdas</translation>
+        <translation>Áudio/Vídeo</translation>
     </message>
 </context>
 </TS>
