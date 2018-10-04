@@ -373,6 +373,12 @@ NewAccountModelPimpl::updateAccounts()
         if (accountInfo == accounts.end()) {
             qDebug("detected new account %s", id.toStdString().c_str());
             addToAccounts(id.toStdString());
+            if (accountInfo->second.profileInfo.type == profile::Type::SIP) {
+                // NOTE: At this point, a SIP account is ready, but not a Ring
+                // account. Indeed, the keys are not generated at this point.
+                // See slotAccountStatusChanged for more details.
+                emit linked.accountAdded(id.toStdString());
+            }
         }
     }
 }
@@ -389,10 +395,19 @@ NewAccountModelPimpl::slotAccountStatusChanged(const std::string& accountID, con
 
     auto& accountInfo = it->second;
 
-    if (status == api::account::Status::REGISTERED && accountInfo.profileInfo.uri.empty()) {
-        accounts.erase(accountID);
-        addToAccounts(accountID);
-        emit linked.accountAdded(accountID);
+    if (accountInfo.profileInfo.type != profile::Type::SIP) {
+        if (status != api::account::Status::INITIALIZING
+            && accountInfo.status == api::account::Status::INITIALIZING) {
+            // Detect when a new account is generated (keys are ready). During
+            // the generation, a Ring account got the "INITIALIZING" status.
+            // When keys are generated, the status will change.
+            accounts.erase(accountID);
+            addToAccounts(accountID);
+            emit linked.accountAdded(accountID);
+        } else if (!accountInfo.profileInfo.uri.empty()) {
+            accountInfo.status = status;
+            emit linked.accountStatusChanged(accountID);
+        }
     } else {
         accountInfo.status = status;
         emit linked.accountStatusChanged(accountID);
