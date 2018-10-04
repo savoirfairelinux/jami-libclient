@@ -373,6 +373,12 @@ NewAccountModelPimpl::updateAccounts()
         if (accountInfo == accounts.end()) {
             qDebug("detected new account %s", id.toStdString().c_str());
             addToAccounts(id.toStdString());
+            if (accountInfo->second.profileInfo.type == profile::Type::SIP) {
+                // NOTE: At this point, a SIP account is ready, but not a Ring
+                // account. Indeed, the keys are not generated at this point.
+                // See slotAccountStatusChanged for more details.
+                emit linked.accountAdded(id.toStdString());
+            }
         }
     }
 }
@@ -389,10 +395,18 @@ NewAccountModelPimpl::slotAccountStatusChanged(const std::string& accountID, con
 
     auto& accountInfo = it->second;
 
-    if (status == api::account::Status::REGISTERED && accountInfo.profileInfo.uri.empty()) {
-        accounts.erase(accountID);
-        addToAccounts(accountID);
-        emit linked.accountAdded(accountID);
+    if (accountInfo.profileInfo.type != profile::Type::SIP) {
+        // HACK TODO(sblin) change daemon or add signal to know when a Ring
+        // account is ready (when the keys are generated and the id present)
+        if (status == api::account::Status::REGISTERED && accountInfo.profileInfo.uri.empty()) {
+            // This part detect when a new Ring account is created.
+            accounts.erase(accountID);
+            addToAccounts(accountID);
+            emit linked.accountAdded(accountID);
+        } else if (!accountInfo.profileInfo.uri.empty()) {
+            accountInfo.status = status;
+            emit linked.accountStatusChanged(accountID);
+        }
     } else {
         accountInfo.status = status;
         emit linked.accountStatusChanged(accountID);
