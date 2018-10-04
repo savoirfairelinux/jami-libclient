@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "52e38785_6a04dea5",
+        "filename": "src/newaccountmodel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 400,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2018-10-04T14:51:50Z",
+      "side": 1,
+      "message": "This is already defined: the Ring account is ready after creation when leaving the \"INITIALIZING\" state.",
+      "range": {
+        "startLine": 399,
+        "startChar": 0,
+        "endLine": 400,
+        "endChar": 76
+      },
+      "revId": "3e4fcf19648dfeb9977184c890b22805fd1d042d",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    }
+  ]
+}
