@@ -1391,50 +1391,50 @@
         <translation>Coleção de Perfis de pares</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1262"/>
-        <location filename="../src/conversationmodel.cpp" line="1628"/>
-        <location filename="../src/conversationmodel.cpp" line="1880"/>
+        <location filename="../src/conversationmodel.cpp" line="1267"/>
+        <location filename="../src/conversationmodel.cpp" line="1633"/>
+        <location filename="../src/conversationmodel.cpp" line="1885"/>
         <source>Invitation received</source>
         <translation>Convite recebido</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1263"/>
+        <location filename="../src/conversationmodel.cpp" line="1268"/>
         <source>Contact added</source>
         <translation>Contato adicionado</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1298"/>
-        <location filename="../src/conversationmodel.cpp" line="1305"/>
+        <location filename="../src/conversationmodel.cpp" line="1303"/>
+        <location filename="../src/conversationmodel.cpp" line="1310"/>
         <source>Invitation accepted</source>
         <translation>Convite aceito</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1514"/>
+        <location filename="../src/conversationmodel.cpp" line="1519"/>
         <source>ð Outgoing call</source>
         <translation>ð Chamada efetuada</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1516"/>
+        <location filename="../src/conversationmodel.cpp" line="1521"/>
         <source>ð Incoming call</source>
         <translation>ð Chamada recebida</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1529"/>
+        <location filename="../src/conversationmodel.cpp" line="1534"/>
         <source>ð Outgoing call - </source>
         <translation>ð Chamada efetuada - </translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1532"/>
+        <location filename="../src/conversationmodel.cpp" line="1537"/>
         <source>ð Incoming call - </source>
         <translation>ð Chamada recebida - </translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1536"/>
+        <location filename="../src/conversationmodel.cpp" line="1541"/>
         <source>ð½ Missed outgoing call</source>
         <translation>ð½ Chamada efetuada não atendida</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1538"/>
+        <location filename="../src/conversationmodel.cpp" line="1543"/>
         <source>ð½ Missed incoming call</source>
         <translation>ð½ Chamada recebida não atendida</translation>
     </message>
@@ -1497,22 +1497,22 @@
 <context>
     <name>lrc::ContactModelPimpl</name>
     <message>
-        <location filename="../src/contactmodel.cpp" line="386"/>
+        <location filename="../src/contactmodel.cpp" line="392"/>
         <source>Searchingâ¦</source>
         <translation>Pesquisando</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="749"/>
+        <location filename="../src/contactmodel.cpp" line="723"/>
         <source>Invalid ringID</source>
         <translation>RingID não válido</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="752"/>
+        <location filename="../src/contactmodel.cpp" line="726"/>
         <source>Not found</source>
         <translation>Não encontrado</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="755"/>
+        <location filename="../src/contactmodel.cpp" line="729"/>
         <source>Couldn&apos;t lookupâ¦</source>
         <translation>Não foi possível procurar</translation>
     </message>
@@ -1520,7 +1520,7 @@
 <context>
     <name>lrc::api::ContactModel</name>
     <message>
-        <location filename="../src/contactmodel.cpp" line="357"/>
+        <location filename="../src/contactmodel.cpp" line="363"/>
         <source>Bad URI scheme</source>
         <translation>Mau esquema de URI</translation>
     </message>
