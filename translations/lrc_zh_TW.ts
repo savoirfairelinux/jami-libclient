@@ -1247,12 +1247,12 @@
     <message>
         <location filename="../src/api/call.h" line="78"/>
         <source>Timeout</source>
-        <translation type="unfinished"/>
+        <translation>逾時</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="80"/>
         <source>Peer busy</source>
-        <translation type="unfinished"/>
+        <translation>對方忙碌</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="84"/>
@@ -1391,50 +1391,50 @@
         <translation>對方的基本資料收集</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1262"/>
-        <location filename="../src/conversationmodel.cpp" line="1628"/>
-        <location filename="../src/conversationmodel.cpp" line="1880"/>
+        <location filename="../src/conversationmodel.cpp" line="1267"/>
+        <location filename="../src/conversationmodel.cpp" line="1633"/>
+        <location filename="../src/conversationmodel.cpp" line="1885"/>
         <source>Invitation received</source>
         <translation>已收到邀請</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1263"/>
+        <location filename="../src/conversationmodel.cpp" line="1268"/>
         <source>Contact added</source>
         <translation>已新增聯絡人</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1298"/>
-        <location filename="../src/conversationmodel.cpp" line="1305"/>
+        <location filename="../src/conversationmodel.cpp" line="1303"/>
+        <location filename="../src/conversationmodel.cpp" line="1310"/>
         <source>Invitation accepted</source>
         <translation>已接受邀請</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1514"/>
+        <location filename="../src/conversationmodel.cpp" line="1519"/>
         <source>ð Outgoing call</source>
         <translation>ð 撥出電話</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1516"/>
+        <location filename="../src/conversationmodel.cpp" line="1521"/>
         <source>ð Incoming call</source>
         <translation>ð 來電</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1529"/>
+        <location filename="../src/conversationmodel.cpp" line="1534"/>
         <source>ð Outgoing call - </source>
         <translation>ð 撥出電話 - </translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1532"/>
+        <location filename="../src/conversationmodel.cpp" line="1537"/>
         <source>ð Incoming call - </source>
         <translation>ð 來電 - </translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1536"/>
+        <location filename="../src/conversationmodel.cpp" line="1541"/>
         <source>ð½ Missed outgoing call</source>
         <translation>ð½ 未接去電</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1538"/>
+        <location filename="../src/conversationmodel.cpp" line="1543"/>
         <source>ð½ Missed incoming call</source>
         <translation>ð½ 未接來電</translation>
     </message>
@@ -1497,22 +1497,22 @@
 <context>
     <name>lrc::ContactModelPimpl</name>
     <message>
-        <location filename="../src/contactmodel.cpp" line="386"/>
+        <location filename="../src/contactmodel.cpp" line="392"/>
         <source>Searchingâ¦</source>
         <translation>正在搜尋</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="749"/>
+        <location filename="../src/contactmodel.cpp" line="723"/>
         <source>Invalid ringID</source>
         <translation>無效的 ringID</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="752"/>
+        <location filename="../src/contactmodel.cpp" line="726"/>
         <source>Not found</source>
         <translation>找不到</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="755"/>
+        <location filename="../src/contactmodel.cpp" line="729"/>
         <source>Couldn&apos;t lookupâ¦</source>
         <translation>無法查詢！</translation>
     </message>
@@ -1520,7 +1520,7 @@
 <context>
     <name>lrc::api::ContactModel</name>
     <message>
-        <location filename="../src/contactmodel.cpp" line="357"/>
+        <location filename="../src/contactmodel.cpp" line="363"/>
         <source>Bad URI scheme</source>
         <translation>錯誤的 URI 結構</translation>
     </message>
