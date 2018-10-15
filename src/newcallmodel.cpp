@@ -30,6 +30,10 @@
 #include "api/contactmodel.h"
 #include "api/newaccountmodel.h"
 #include "dbus/callmanager.h"
+#include "dbus/videomanager.h"
+#include "video/device.h"
+#include "video/devicemodel.h"
+#include "video/sourcemodel.h"
 #include "mime.h"
 #include "private/videorenderermanager.h"
 #include "video/renderer.h"
@@ -40,6 +44,7 @@
 // Qt
 #include <QObject>
 #include <QString>
+#include <QtCore/QUrl>
 
 static std::uniform_int_distribution<int> dis{ 0, std::numeric_limits<int>::max() };
 
@@ -369,6 +374,47 @@ NewCallModel::isRecording(const std::string& callId) const
     return CallManager::instance().getIsRecording(callId.c_str());
 }
 
+void
+NewCallModel::switchInputTo(Video::Device* device) const
+{
+    int index = Video::DeviceModel::instance().devices().indexOf(device);
+    if (index < 0) {
+        VideoManager::instance().switchInput(DRing::Media::VideoProtocolPrefix::NONE);
+        return;
+    }
+    QString sep = DRing::Media::VideoProtocolPrefix::SEPARATOR;
+    VideoManager::instance().switchInput(QString("%1%2%3")
+       .arg(DRing::Media::VideoProtocolPrefix::CAMERA)
+       .arg(sep)
+       .arg(device->id()));
+}
+
+void
+NewCallModel::setInputFile(const QUrl& url) const
+{
+    QString sep = DRing::Media::VideoProtocolPrefix::SEPARATOR;
+    VideoManager::instance().switchInput(
+        !url.isEmpty() ? QString("%1%2%3")
+           .arg(DRing::Media::VideoProtocolPrefix::FILE)
+           .arg(sep)
+           .arg(url.toLocalFile())
+        : DRing::Media::VideoProtocolPrefix::NONE
+        );
+}
+
+void
+NewCallModel::setDisplay(int index, QRect rect) const {
+    QString sep = DRing::Media::VideoProtocolPrefix::SEPARATOR;
+    VideoManager::instance().switchInput(QString("%1%2:%3+%4,%5 %6x%7")
+           .arg(DRing::Media::VideoProtocolPrefix::DISPLAY)
+           .arg(sep)
+           .arg(index)
+           .arg(rect.x())
+           .arg(rect.y())
+           .arg(rect.width())
+           .arg(rect.height()));
+
+}
 
 NewCallModelPimpl::NewCallModelPimpl(const NewCallModel& linked, const CallbacksHandler& callbacksHandler)
 : linked(linked)
