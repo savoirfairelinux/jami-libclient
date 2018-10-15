@@ -35,6 +35,7 @@
 
 namespace Video {
 class Renderer;
+class Device;
 }
 
 namespace lrc
@@ -186,6 +187,25 @@ public:
      * @return true if the call is recording else false
      */
     bool isRecording(const std::string& callId) const;
+
+    /**
+     * Switch video input to given device
+     * @param device
+     */
+    void switchInputTo(Video::Device* device) const;
+
+    /**
+     * Set video input to a file
+     * @param url
+     */
+    void setInputFile(const QUrl& url) const;
+
+    /**
+     * Set screen as video input
+     * @param index (device index)
+     * @param rect - area to capture
+     */
+    void setDisplay(int index, QRect rect) const;
 
 Q_SIGNALS:
     /**
