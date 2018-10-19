@@ -358,6 +358,7 @@ SET( libringclient_LIB_SRCS
   src/callbackshandler.cpp
   src/behaviorcontroller.cpp
   src/datatransfermodel.cpp
+  src/mediamodel.cpp
 
   #Data collections
   src/transitionalpersonbackend.cpp
@@ -521,6 +522,7 @@ SET(libringclient_api_LIB_HDRS
   src/api/account.h
   src/api/lrc.h
   src/api/avmodel.h
+  src/api/mediamodel.h
   src/api/newaccountmodel.h
   src/api/newcallmodel.h
   src/api/newcodecmodel.h
@@ -531,6 +533,7 @@ SET(libringclient_api_LIB_HDRS
   src/api/behaviorcontroller.h
   src/api/datatransfermodel.h
   src/api/datatransfer.h
+  src/api/video.h
 )
 
 

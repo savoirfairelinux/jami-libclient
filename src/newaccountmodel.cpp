@@ -28,9 +28,10 @@
 
 // new LRC
 #include "api/lrc.h"
-#include "api/newcallmodel.h"
 #include "api/contactmodel.h"
 #include "api/conversationmodel.h"
+#include "api/mediamodel.h"
+#include "api/newcallmodel.h"
 #include "api/newcodecmodel.h"
 #include "api/newdevicemodel.h"
 #include "api/behaviorcontroller.h"
@@ -557,6 +558,7 @@ NewAccountModelPimpl::addToAccounts(const std::string& accountId)
     newAcc.conversationModel = std::make_unique<ConversationModel>(newAcc, lrc, database, callbacksHandler, behaviorController);
     newAcc.deviceModel = std::make_unique<NewDeviceModel>(newAcc, callbacksHandler);
     newAcc.codecModel = std::make_unique<NewCodecModel>(newAcc, callbacksHandler);
+    newAcc.mediaModel = std::make_unique<MediaModel>(newAcc, callbacksHandler);
     newAcc.accountModel = &linked;
 
     MapStringString volatileDetails = ConfigurationManager::instance().getVolatileAccountDetails(accountId.c_str());
