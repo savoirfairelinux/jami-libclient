@@ -47,6 +47,8 @@ public:
     //Singleton
     static VideoRendererManager& instance();
 
+    void deactivate();
+
    //Getters
    bool             isPreviewing   () const;
    Video::Renderer* previewRenderer()      ;
