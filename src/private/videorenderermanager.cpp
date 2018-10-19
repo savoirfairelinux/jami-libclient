@@ -38,9 +38,9 @@
 #include "private/call_p.h"
 
 #ifdef ENABLE_LIBWRAP
- #include "private/directrenderer.h"
+ #include "directrenderer.h"
 #else
- #include "private/shmrenderer.h"
+ #include "shmrenderer.h"
 #endif
 
 constexpr static const char PREVIEW_RENDERER_ID[] = "local";
