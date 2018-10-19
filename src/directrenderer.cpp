@@ -16,6 +16,8 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
+#ifdef ENABLE_LIBWRAP
+
 #include "directrenderer.h"
 
 #include <QtCore/QDebug>
@@ -146,3 +148,5 @@ Video::Renderer::ColorSpace Video::DirectRenderer::colorSpace() const
 }
 
 #include <directrenderer.moc>
+
+#endif
