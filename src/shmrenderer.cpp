@@ -239,14 +239,14 @@ bool ShmRendererPrivate::remapShm()
 bool ShmRenderer::startShm()
 {
    if (d_ptr->m_fd != -1) {
-      qDebug() << "fd must be -1";
+      qWarning() << "fd must be -1";
       return false;
    }
 
    d_ptr->m_fd = ::shm_open(d_ptr->m_ShmPath.toLatin1(), O_RDWR, 0);
 
    if (d_ptr->m_fd < 0) {
-      qDebug() << "could not open shm area" << d_ptr->m_ShmPath
+      qWarning() << "could not open shm area" << d_ptr->m_ShmPath
                << ", shm_open failed:"      << strerror(errno);
       return false;
    }
@@ -259,7 +259,7 @@ bool ShmRenderer::startShm()
    );
 
    if (d_ptr->m_pShmArea == MAP_FAILED) {
-      qDebug() << "Could not remap shared area";
+      qWarning() << "Could not remap shared area";
       return false;
    }
 
