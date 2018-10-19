@@ -28,9 +28,9 @@
 
 // new LRC
 #include "api/lrc.h"
-#include "api/newcallmodel.h"
 #include "api/contactmodel.h"
 #include "api/conversationmodel.h"
+#include "api/newcallmodel.h"
 #include "api/newcodecmodel.h"
 #include "api/newdevicemodel.h"
 #include "api/behaviorcontroller.h"

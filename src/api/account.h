@@ -34,9 +34,9 @@ namespace lrc
 namespace api
 {
 
-class NewCallModel;
 class ContactModel;
 class ConversationModel;
+class NewCallModel;
 class NewAccountModel;
 class NewDeviceModel;
 class NewCodecModel;
@@ -219,9 +219,9 @@ struct Info
     bool valid = true;
     std::string registeredName;
     Status status = account::Status::INVALID;
-    std::unique_ptr<lrc::api::NewCallModel> callModel;
     std::unique_ptr<lrc::api::ContactModel> contactModel;
     std::unique_ptr<lrc::api::ConversationModel> conversationModel;
+    std::unique_ptr<lrc::api::NewCallModel> callModel;
     std::unique_ptr<lrc::api::NewDeviceModel> deviceModel;
     std::unique_ptr<lrc::api::NewCodecModel> codecModel;
     NewAccountModel* accountModel {nullptr};
