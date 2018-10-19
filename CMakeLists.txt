@@ -358,6 +358,9 @@ SET( libringclient_LIB_SRCS
   src/callbackshandler.cpp
   src/behaviorcontroller.cpp
   src/datatransfermodel.cpp
+  src/newvideo.cpp
+  src/shmrenderer.cpp
+  src/directrenderer.cpp
 
   #Data collections
   src/transitionalpersonbackend.cpp
@@ -409,16 +412,6 @@ SET( libringclient_LIB_SRCS
   src/extensions/presencecollectionextension.cpp
   src/extensions/securityevaluationextension.cpp
 )
-
-IF(${ENABLE_LIBWRAP} MATCHES true)
-   SET(libringclient_LIB_SRCS ${libringclient_LIB_SRCS}
-      src/private/directrenderer.cpp
-   )
-ELSE()
-   SET(libringclient_LIB_SRCS ${libringclient_LIB_SRCS}
-      src/private/shmrenderer.cpp
-   )
-ENDIF(${ENABLE_LIBWRAP} MATCHES true)
 
 # Public API
 SET( libringclient_LIB_HDRS
@@ -511,6 +504,8 @@ SET( libringclient_LIB_HDRS
   src/usage_statistics.h
   src/bannedcontactmodel.h
   src/vcard.h
+  src/shmrenderer.h
+  src/directrenderer.h
 )
 
 SET(libringclient_api_LIB_HDRS
@@ -531,6 +526,7 @@ SET(libringclient_api_LIB_HDRS
   src/api/behaviorcontroller.h
   src/api/datatransfermodel.h
   src/api/datatransfer.h
+  src/api/newvideo.h
 )
 
 
