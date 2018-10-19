@@ -531,6 +531,7 @@ SET(libringclient_api_LIB_HDRS
   src/api/behaviorcontroller.h
   src/api/datatransfermodel.h
   src/api/datatransfer.h
+  src/api/video.h
 )
 
 

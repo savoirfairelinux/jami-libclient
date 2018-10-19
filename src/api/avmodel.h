@@ -1,6 +1,7 @@
 /****************************************************************************
  *   Copyright (C) 2018 Savoir-faire Linux                                  *
  *   Author: Hugo Lefeuvre <hugo.lefeuvre@savoirfairelinux.com>             *
+ *   Author: Sébastien Blin <sebastien.blin@savoirfairelinux.com>           *
  *                                                                          *
  *   This library is free software; you can redistribute it and/or          *
  *   modify it under the terms of the GNU Lesser General Public             *
@@ -18,6 +19,7 @@
 #pragma once
 
 // std
+#include <map>
 #include <memory>
 #include <string>
 
@@ -25,11 +27,14 @@
 #include <qobject.h>
 
 // LRC
+#include "api/account.h"
+#include "api/video.h"
 #include "typedefs.h"
 
 namespace lrc
 {
 
+class CallbacksHandler;
 class AVModelPimpl;
 
 namespace api
@@ -38,8 +43,43 @@ namespace api
 class LIB_EXPORT AVModel : public QObject {
     Q_OBJECT
 public:
-    AVModel();
+    AVModel(const CallbacksHandler& callbacksHandler);
     ~AVModel();
+
+    /**
+     * Get if hardware decoding is enabled
+     * @return hardware decoding enabled
+     */
+    bool getDecodingAccelerated() const;
+    /**
+     * Enable/disable hardware decoding
+     * @param if hardware decoding enabled
+     */
+    void setDecodingAccelerated(bool accelerate);
+
+    /**
+     * Retrieve current default video device
+     * @return current default video device name
+     */
+    std::string getDefaultDeviceName() const;
+    /**
+     * Set new default video device
+     * @param name of the device
+     */
+    void setDefaultDevice(const std::string& name);
+    /**
+     * Retrieve current framerate/resolution/etc of a device
+     * @param name of the device
+     * @return settings of the device
+     */
+    video::Settings getDeviceSettings(const std::string& name) const;
+    /**
+     * Retrieve all framerate/resolution/etc possibilities of a device
+     * @param name of the device
+     * @return possibilities of the device
+     */
+    video::Capabilities getDeviceCapabilities(const std::string& name) const;
+
     /**
      * Stop local record at given path
      * @param path

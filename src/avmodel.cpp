@@ -40,7 +40,9 @@ class AVModelPimpl: public QObject
 {
     Q_OBJECT
 public:
-    AVModelPimpl(AVModel& linked);
+    AVModelPimpl(AVModel& linked, const CallbacksHandler& callbacksHandler);
+
+    const CallbacksHandler& callbacksHandler;
     std::string getRecordingPath() const;
     static const std::string recorderSavesSubdir;
     AVModel& linked_;
@@ -48,9 +50,9 @@ public:
 
 const std::string AVModelPimpl::recorderSavesSubdir = "sent_data";
 
-AVModel::AVModel()
+AVModel::AVModel(const CallbacksHandler& callbacksHandler)
 : QObject()
-, pimpl_(std::make_unique<AVModelPimpl>(*this))
+, pimpl_(std::make_unique<AVModelPimpl>(*this, callbacksHandler))
 {
 }
 
@@ -58,8 +60,74 @@ AVModel::~AVModel()
 {
 }
 
-AVModelPimpl::AVModelPimpl(AVModel& linked)
+bool
+AVModel::getDecodingAccelerated() const
+{
+    bool result = VideoManager::instance().getDecodingAccelerated();
+    return result;
+}
+
+void
+AVModel::setDecodingAccelerated(bool accelerate)
+{
+    VideoManager::instance().setDecodingAccelerated(accelerate);
+}
+
+std::string
+AVModel::getDefaultDeviceName() const
+{
+    QString name = VideoManager::instance().getDefaultDevice();
+    return name.toStdString();
+}
+
+void
+AVModel::setDefaultDevice(const std::string& name)
+{
+    VideoManager::instance().setDefaultDevice(name.c_str());
+}
+
+video::Settings
+AVModel::getDeviceSettings(const std::string& name) const
+{
+    MapStringString settings = VideoManager::instance()
+        .getSettings(name.c_str());
+    if (settings["name"].toStdString() != name) {
+        throw std::out_of_range("Device " + name + " not found");
+    }
+    video::Settings result;
+    result.name = settings["name"].toStdString();
+    result.channel = settings["channel"].toStdString();
+    result.size = settings["size"].toStdString();
+    result.rate = settings["rate"].toUInt();
+    return result;
+}
+
+video::Capabilities
+AVModel::getDeviceCapabilities(const std::string& name) const
+{
+    QMap<QString, QMap<QString, QVector<QString>>> capabilites =
+        VideoManager::instance().getCapabilities(name.c_str());
+    video::Capabilities result;
+    for (auto& channel : capabilites.toStdMap()) {
+        std::map<video::Resolution, video::FrameratesList> channelCapabilities;
+        for (auto& resToRates : channel.second.toStdMap()) {
+            video::FrameratesList rates;
+            QVectorIterator<QString> itRates(resToRates.second);
+            while (itRates.hasNext()) {
+                rates.emplace_back(itRates.next().toUInt());
+            }
+            channelCapabilities.insert(
+                std::make_pair(resToRates.first.toStdString(), rates));
+        }
+        result.insert(
+            std::make_pair(channel.first.toStdString(), channelCapabilities));
+    }
+    return result;
+}
+
+AVModelPimpl::AVModelPimpl(AVModel& linked, const CallbacksHandler& callbacksHandler)
 : linked_(linked)
+, callbacksHandler(callbacksHandler)
 {
     std::srand(std::time(nullptr));
 }
