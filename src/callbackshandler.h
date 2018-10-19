@@ -232,6 +232,22 @@ Q_SIGNALS:
     */
     void debugMessageReceived(const std::string& message);
 
+    /**
+     * Renderer is started
+     * @param id
+     * @param shmrenderer
+     * @param width
+     * @param height
+     */
+    void startedDecoding(const std::string& id, const std::string& shmPath, int width, int height);
+
+    /**
+     * Renderer is stopped
+     * @param id
+     * @param shmrenderer
+     */
+    void stoppedDecoding(const std::string& id, const std::string& shmPath);
+
 private Q_SLOTS:
     /**
      * Emit newAccountMessage
@@ -411,6 +427,25 @@ private Q_SLOTS:
 #else
     void slotDebugMessageReceived(const QString& message);
 #endif
+
+
+
+    /**
+     * Renderer is started
+     * @param id
+     * @param shmrenderer
+     * @param width
+     * @param height
+     */
+    void slotStartedDecoding(const QString& id, const QString& shmPath, int width, int height);
+
+    /**
+     * Renderer is stopped
+     * @param id
+     * @param shmrenderer
+     */
+    void slotStoppedDecoding(const QString& id, const QString& shmPath);
+
 
 private:
     const api::Lrc& parent;
