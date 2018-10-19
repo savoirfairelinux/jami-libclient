@@ -30,6 +30,7 @@
 #include "dbus/callmanager.h"
 #include "dbus/configurationmanager.h"
 #include "dbus/presencemanager.h"
+#include "dbus/videomanager.h"
 #include "namedirectory.h"
 
 // DRing
@@ -186,6 +187,18 @@ CallbacksHandler::CallbacksHandler(const Lrc& parent)
             &ConfigurationManagerInterface::debugMessageReceived,
             this,
             &CallbacksHandler::slotDebugMessageReceived,
+            Qt::QueuedConnection);
+
+    connect(&VideoManager::instance(),
+            &VideoManagerInterface::startedDecoding,
+            this,
+            &CallbacksHandler::slotStartedDecoding,
+            Qt::QueuedConnection);
+
+    connect(&VideoManager::instance(),
+            &VideoManagerInterface::stoppedDecoding,
+            this,
+            &CallbacksHandler::slotStoppedDecoding,
             Qt::QueuedConnection);
 }
 
@@ -455,5 +468,18 @@ CallbacksHandler::slotDebugMessageReceived(const QString& message)
     emit parent.getBehaviorController().debugMessageReceived(message.toStdString());
 }
 #endif
+
+void
+CallbacksHandler::slotStartedDecoding(const QString& id, const QString& shmPath, int width, int height)
+{
+    emit startedDecoding(id.toStdString(), shmPath.toStdString(), width, height);
+}
+
+void
+CallbacksHandler::slotStoppedDecoding(const QString& id, const QString& shmPath)
+{
+    emit stoppedDecoding(id.toStdString(), shmPath.toStdString());
+}
+
 
 } // namespace lrc
