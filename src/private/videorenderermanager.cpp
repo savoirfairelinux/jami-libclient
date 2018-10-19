@@ -38,9 +38,9 @@
 #include "private/call_p.h"
 
 #ifdef ENABLE_LIBWRAP
- #include "private/directrenderer.h"
+ #include "directrenderer.h"
 #else
- #include "private/shmrenderer.h"
+ #include "shmrenderer.h"
 #endif
 
 constexpr static const char PREVIEW_RENDERER_ID[] = "local";
@@ -84,6 +84,15 @@ VideoRendererManager::VideoRendererManager():QObject(QCoreApplication::instance(
    VideoManagerInterface& interface = VideoManager::instance();
    connect( &interface , &VideoManagerInterface::startedDecoding, d_ptr.data(), &VideoRendererManagerPrivate::startedDecoding);
    connect( &interface , &VideoManagerInterface::stoppedDecoding, d_ptr.data(), &VideoRendererManagerPrivate::stoppedDecoding);
+}
+
+void
+VideoRendererManager::deactivate()
+{
+    // Used for retrocompability and avoid multiple renderer
+    VideoManagerInterface& interface = VideoManager::instance();
+    disconnect( &interface , &VideoManagerInterface::startedDecoding, d_ptr.data(), &VideoRendererManagerPrivate::startedDecoding);
+    disconnect( &interface , &VideoManagerInterface::stoppedDecoding, d_ptr.data(), &VideoRendererManagerPrivate::stoppedDecoding);
 }
 
 

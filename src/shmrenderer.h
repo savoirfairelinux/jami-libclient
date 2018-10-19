@@ -17,6 +17,8 @@
  ***************************************************************************/
 #pragma once
 
+#ifndef ENABLE_LIBWRAP
+
 //Base
 #include "video/renderer.h"
 #include "typedefs.h"
@@ -71,3 +73,4 @@ public Q_SLOTS:
 
 }
 
+#endif

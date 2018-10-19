@@ -17,6 +17,8 @@
  ***************************************************************************/
 #pragma once
 
+#ifdef ENABLE_LIBWRAP
+
 //Base
 #include <QtCore/QObject>
 #include "typedefs.h"
@@ -63,3 +65,5 @@ private:
 };
 
 }
+
+#endif

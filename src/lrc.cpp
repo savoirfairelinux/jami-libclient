@@ -117,7 +117,7 @@ LrcPimpl::LrcPimpl(Lrc& linked)
 , database(std::make_unique<Database>())
 , accountModel(std::make_unique<NewAccountModel>(linked, *database, *callbackHandler, *behaviorController))
 , dataTransferModel {std::make_unique<DataTransferModel>()}
-, AVModel_ {std::make_unique<AVModel>()}
+, AVModel_ {std::make_unique<AVModel>(*callbackHandler)}
 {
 }
 
