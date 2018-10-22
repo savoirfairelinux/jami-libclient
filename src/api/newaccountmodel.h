@@ -1,7 +1,8 @@
 /****************************************************************************
- *   Copyright (C) 2017-2018 Savoir-faire Linux                                  *
+ *   Copyright (C) 2017-2018 Savoir-faire Linux                             *
  *   Author: Nicolas Jäger <nicolas.jager@savoirfairelinux.com>             *
  *   Author: Sébastien Blin <sebastien.blin@savoirfairelinux.com>           *
+ *   Author: Kateryna Kostiuk <kateryna.kostiuk@savoirfairelinux.com>       *
  *                                                                          *
  *   This library is free software; you can redistribute it and/or          *
  *   modify it under the terms of the GNU Lesser General Public             *
@@ -155,13 +156,15 @@ public:
      * @param archivePath
      * @param password of the archive (unused for SIP)
      * @param pin of the archive (unused for SIP)
+     * @param uri of the account (for SIP)
      * @return the created account
      */
     static std::string createNewAccount(profile::Type type,
                                         const std::string& displayName = "",
                                         const std::string& archivePath = "",
                                         const std::string& password = "",
-                                        const std::string& pin = "");
+                                        const std::string& pin = "",
+                                        const std::string& uri = "");
 
     /**
      * Set an account to the first position
