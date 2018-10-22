@@ -373,7 +373,8 @@ NewAccountModelPimpl::updateAccounts()
         if (accountInfo == accounts.end()) {
             qDebug("detected new account %s", id.toStdString().c_str());
             addToAccounts(id.toStdString());
-            if (accountInfo->second.profileInfo.type == profile::Type::SIP) {
+            auto updatedAccountInfo = accounts.find(id.toStdString());
+            if (updatedAccountInfo->second.profileInfo.type == profile::Type::SIP) {
                 // NOTE: At this point, a SIP account is ready, but not a Ring
                 // account. Indeed, the keys are not generated at this point.
                 // See slotAccountStatusChanged for more details.
