@@ -199,7 +199,14 @@ NewAccountModel::setAccountConfig(const std::string& accountId,
     details[ConfProperties::TYPE]                       = (accountInfo.profileInfo.type == profile::Type::RING) ? QString(ProtocolNames::RING) : QString(ProtocolNames::SIP);
     if (accountInfo.profileInfo.type == profile::Type::RING) {
         details[ConfProperties::USERNAME] = toQString(accountInfo.profileInfo.uri).prepend((accountInfo.profileInfo.type == profile::Type::RING) ? "ring:" : "");
-    } else {
+    } else if (accountInfo.profileInfo.type == profile::Type::SIP) {
+        MapStringString credentials;
+        credentials[ConfProperties::USERNAME] = toQString(confProperties.username);
+        credentials[ConfProperties::PASSWORD] = toQString(confProperties.password);
+        credentials[ConfProperties::REALM] = confProperties.realm.empty()? QString("*") : toQString(confProperties.realm);
+        QVector<MapStringString> credentialsVec;
+        credentialsVec.append(credentials);
+        ConfigurationManager::instance().setCredentials(accountId.c_str(), credentialsVec);
         details[ConfProperties::USERNAME] = toQString(confProperties.username);
     }
     configurationManager.setAccountDetails(QString::fromStdString(accountId), details);
@@ -373,7 +380,8 @@ NewAccountModelPimpl::updateAccounts()
         if (accountInfo == accounts.end()) {
             qDebug("detected new account %s", id.toStdString().c_str());
             addToAccounts(id.toStdString());
-            if (accountInfo->second.profileInfo.type == profile::Type::SIP) {
+            auto updatedAccountInfo = accounts.find(id.toStdString());
+            if (updatedAccountInfo->second.profileInfo.type == profile::Type::SIP) {
                 // NOTE: At this point, a SIP account is ready, but not a Ring
                 // account. Indeed, the keys are not generated at this point.
                 // See slotAccountStatusChanged for more details.
@@ -420,21 +428,6 @@ NewAccountModelPimpl::slotAccountDetailsChanged(const std::string& accountId, co
     auto accountInfo = accounts.find(accountId);
     if (accountInfo == accounts.end()) {
         throw std::out_of_range("NewAccountModelPimpl::slotAccountDetailsChanged, can't find " + accountId);
-    }
-
-    accountInfo->second.fromDetails(convertMap(details));
-
-    // Refresh credentials for SIP accounts
-    if (accountInfo->second.profileInfo.type == profile::Type::SIP) {
-        auto& confProperties = accountInfo->second.confProperties;
-        MapStringString credentials;
-        using namespace DRing::Account;
-        credentials[ConfProperties::USERNAME] = toQString(confProperties.username);
-        credentials[ConfProperties::PASSWORD] = toQString(confProperties.password);
-        credentials[ConfProperties::REALM] = confProperties.realm.empty()? QString("*") : toQString(confProperties.realm);
-        QVector<MapStringString> credentialsVec;
-        credentialsVec.append(credentials);
-        ConfigurationManager::instance().setCredentials(accountId.c_str(), credentialsVec);
     }
 
     emit linked.accountStatusChanged(accountId);
@@ -542,6 +535,7 @@ NewAccountModelPimpl::addToAccounts(const std::string& accountId)
     std::string accountType = newAcc.profileInfo.type == profile::Type::RING ?
                                    DRing::Account::ProtocolNames::RING :
                                    DRing::Account::ProtocolNames::SIP;
+    if(accountType == DRing::Account::ProtocolNames::SIP || !newAcc.profileInfo.uri.empty()) {
     auto accountProfileId = authority::database::getOrInsertProfile(database,
                                                                     newAcc.profileInfo.uri,
                                                                     newAcc.profileInfo.alias,
@@ -550,6 +544,7 @@ NewAccountModelPimpl::addToAccounts(const std::string& accountId)
 
     // Retrieve avatar from database
     newAcc.profileInfo.avatar = authority::database::getAvatarForProfileId(database, accountProfileId);
+    }
 
     // Init models for this account
     newAcc.callModel = std::make_unique<NewCallModel>(newAcc, callbacksHandler);
@@ -811,7 +806,8 @@ NewAccountModel::createNewAccount(profile::Type type,
                                   const std::string& displayName,
                                   const std::string& archivePath,
                                   const std::string& password,
-                                  const std::string& pin)
+                                  const std::string& pin,
+                                  const std::string& URI)
 {
 
     MapStringString details = type == profile::Type::SIP?
@@ -825,6 +821,7 @@ NewAccountModel::createNewAccount(profile::Type type,
     details[ConfProperties::ARCHIVE_PASSWORD] = password.c_str();
     details[ConfProperties::ARCHIVE_PIN] = pin.c_str();
     details[ConfProperties::ARCHIVE_PATH] = archivePath.c_str();
+    details[ConfProperties::USERNAME] = URI.c_str();
     QString accountId = ConfigurationManager::instance().addAccount(details);
     return accountId.toStdString();
 }
