@@ -155,13 +155,15 @@ public:
      * @param archivePath
      * @param password of the archive (unused for SIP)
      * @param pin of the archive (unused for SIP)
+     * @param uri of the account (for SIP)
      * @return the created account
      */
     static std::string createNewAccount(profile::Type type,
                                         const std::string& displayName = "",
                                         const std::string& archivePath = "",
                                         const std::string& password = "",
-                                        const std::string& pin = "");
+                                        const std::string& pin = "",
+                                        const std::string& URI = "");
 
     /**
      * Set an account to the first position
