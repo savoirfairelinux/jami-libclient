@@ -332,23 +332,23 @@ const QString Account::toHumanStateName() const
                                                  //: Account state
    static const QString registered             = tr("Registered"               );
                                                  //: Account state
-   static const QString notRegistered          = tr("Not Registered"           );
+   static const QString notRegistered          = tr("Not registered"           );
                                                  //: Account state
    static const QString initializing           = tr("Initializing"             );
                                                  //: Account state
-   static const QString trying                 = tr("Trying..."                );
+   static const QString trying                 = tr("Trying…"                );
                                                  //: Account state
    static const QString error                  = tr("Error"                    );
                                                  //: Account state
-   static const QString authenticationFailed   = tr("Authentication Failed"    );
+   static const QString authenticationFailed   = tr("Authentication failed"    );
                                                  //: Account state
    static const QString networkUnreachable     = tr("Network unreachable"      );
                                                  //: Account state
    static const QString hostUnreachable        = tr("Host unreachable"         );
                                                  //: Account state
-   static const QString stunConfigurationError = tr("Stun configuration error" );
+   static const QString stunConfigurationError = tr("STUN configuration error" );
                                                  //: Account state
-   static const QString stunServerInvalid      = tr("Stun server invalid"      );
+   static const QString stunServerInvalid      = tr("STUN server invalid"      );
                                                  //: Account state
    static const QString serviceUnavailable     = tr("Service unavailable"      );
                                                  //: Account state
@@ -356,7 +356,7 @@ const QString Account::toHumanStateName() const
                                                  //: Account state
    static const QString invalid                = tr("Invalid"                  );
                                                  //: Account state
-   static const QString requestTimeout         = tr("Request Timeout"          );
+   static const QString requestTimeout         = tr("Request timeout"          );
 
    if(s == DRing::Account::States::READY            )
       return ready                  ;
