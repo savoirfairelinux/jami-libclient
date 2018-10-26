@@ -177,10 +177,6 @@ public:
     std::pair<bool, bool> dirtyConversations {true, true}; ///< true if filteredConversations/customFilteredConversations must be regenerated
     std::map<std::string, std::mutex> interactionsLocks; ///< {convId, mutex}
 
-    // Synchronization tools for account creation synchronization
-    std::mutex m_mutex_conversations;
-    std::condition_variable m_condVar_conversation_creation;
-
 public Q_SLOTS:
     /**
      * Listen from contactModel when updated (like new alias, avatar, etc.)
@@ -571,39 +567,40 @@ ConversationModelPimpl::placeCall(const std::string& uid, bool isAudioOnly)
         url = "ring:" + url; // Add the ring: before or it will fail.
     }
 
-    if (isTemporary) {
-        /* Block until we are sure that the final conversation was created by
-           slotContactAdded(). If adding contact failed we should not process
-           any further */
-        std::unique_lock<std::mutex> lock(m_mutex_conversations);
-        auto res = m_condVar_conversation_creation.wait_for(lock, std::chrono::seconds(2), [&]() {
-            return indexOfContact(convId) >= 0;
+    auto cb = std::function<void(std::string)>(
+        [=](std::string convId) mutable {
+            int contactIndex;
+            if (isTemporary && (contactIndex = indexOfContact(convId)) < 0) {
+                qDebug() << "Can't place call: Other participant is not a contact (removed while placing call ?)";
+                return;
+            }
+
+            auto& newConv = isTemporary ? conversations.at(contactIndex) : conversation;
+            convId = newConv.uid;
+
+            newConv.callId = linked.owner.callModel->createCall(url, isAudioOnly);
+            if (newConv.callId.empty()) {
+                qDebug() << "Can't place call (daemon side failure ?)";
+                return;
+            }
+
+            dirtyConversations = { true, true };
+            emit behaviorController.showIncomingCallView(linked.owner.id, newConv);
         });
-        lock.unlock();
 
-        if (!res) {
-            qDebug() << "ConversationModelPimpl::placeCall reached timeout while waiting for contact to be added. Couldn't place call.";
-            return;
-        }
+    if (isTemporary) {
+        QMetaObject::Connection* const connection = new QMetaObject::Connection;
+        *connection = connect(&this->linked, &ConversationModel::conversationReady,
+            [cb, connection](std::string convId) {
+                cb(convId);
+                QObject::disconnect(*connection);
+                if (connection) {
+                    delete connection;
+                }
+            });
+    } else {
+        cb(convId);
     }
-
-    int contactIndex;
-    if (isTemporary && (contactIndex = indexOfContact(convId)) < 0) {
-        qDebug() << "Can't place call: Other participant is not a contact (removed while placing call ?)";
-        return;
-    }
-
-    auto& newConv = isTemporary ? conversations.at(contactIndex) : conversation;
-    convId = newConv.uid;
-
-    newConv.callId = linked.owner.callModel->createCall(url, isAudioOnly);
-    if (newConv.callId.empty()) {
-        qDebug() << "Can't place call (daemon side failure ?)";
-        return;
-    }
-
-    dirtyConversations = {true, true};
-    emit behaviorController.showIncomingCallView(linked.owner.id, newConv);
 }
 
 void
@@ -658,87 +655,87 @@ ConversationModel::sendMessage(const std::string& uid, const std::string& body)
         pimpl_->sendContactRequest(participant);
     }
 
-    if (isTemporary) {
-        /* Block until we are sure that the final conversation was created by
-           slotContactAdded(). If adding contact failed we should not process
-           any further */
-        std::unique_lock<std::mutex> lock(pimpl_->m_mutex_conversations);
-        auto res = pimpl_->m_condVar_conversation_creation.wait_for(lock, std::chrono::seconds(2), [&]() {
-            return pimpl_->indexOfContact(convId) >= 0;
+    auto cb = std::function<void(std::string)>(
+        [=](std::string convId) mutable {
+            /* Now we should be able to retrieve the final conversation, in case the previous
+               one was temporary */
+               // FIXME potential race condition between index check and at() call
+            int contactIndex;
+            if (isTemporary && (contactIndex = pimpl_->indexOfContact(convId)) < 0) {
+                qDebug() << "Can't send message: Other participant is not a contact";
+                return;
+            }
+
+            auto& newConv = isTemporary ? pimpl_->conversations.at(contactIndex) : conversation;
+            convId = newConv.uid;
+
+            // Send interaction to each participant
+            for (const auto& participant : newConv.participants) {
+                auto contactInfo = owner.contactModel->getContact(participant);
+
+                QStringList callLists = CallManager::instance().getCallList(); // no auto
+                // workaround: sometimes, it may happen that the daemon delete a call, but lrc don't. We check if the call is
+                //             still valid every time the user want to send a message.
+                if (not newConv.callId.empty() and not callLists.contains(newConv.callId.c_str()))
+                    newConv.callId.clear();
+
+                if (not newConv.callId.empty()
+                    and call::canSendSIPMessage(owner.callModel->getCall(newConv.callId))) {
+                    status = interaction::Status::UNKNOWN;
+                    owner.callModel->sendSipMessage(newConv.callId, body);
+
+                } else {
+                    daemonMsgId = owner.contactModel->sendDhtMessage(contactInfo.profileInfo.uri, body);
+                }
+
+            }
+
+            // Add interaction to database
+            auto msg = interaction::Info{ accountId, body, std::time(nullptr),
+                                          interaction::Type::TEXT, status };
+            int msgId = database::addMessageToConversation(pimpl_->db, accountId, convId, msg);
+
+            // Update conversation
+            if (status == interaction::Status::SENDING) {
+                // Because the daemon already give an id for the message, we need to store it.
+                database::addDaemonMsgId(pimpl_->db, std::to_string(msgId), std::to_string(daemonMsgId));
+            }
+
+            bool ret = false;
+
+            {
+                std::lock_guard<std::mutex> lk(pimpl_->interactionsLocks[convId]);
+                ret = newConv.interactions.insert(std::pair<uint64_t, interaction::Info>(msgId, msg)).second;
+            }
+
+            if (!ret) {
+                qDebug("ConversationModel::sendMessage failed to send message because an existing key was already present in the database (key = %d)", msgId);
+                return;
+            }
+
+            newConv.lastMessageUid = msgId;
+            pimpl_->dirtyConversations = { true, true };
+            // Emit this signal for chatview in the client
+            emit newInteraction(convId, msgId, msg);
+            // This conversation is now at the top of the list
+            pimpl_->sortConversations();
+            // The order has changed, informs the client to redraw the list
+            emit modelSorted();
         });
-        lock.unlock();
 
-        if (!res) {
-            qDebug() << "ConversationModel::sendMessage reached timeout while waiting for contact to be added. Couldn't send message.";
-            return;
-        }
+    if (isTemporary) {
+        QMetaObject::Connection* const connection = new QMetaObject::Connection;
+        *connection = connect(this, &ConversationModel::conversationReady,
+            [cb, connection](std::string convId) {
+                cb(convId);
+                QObject::disconnect(*connection);
+                if (connection) {
+                    delete connection;
+                }
+            });
+    } else {
+        cb(convId);
     }
-
-    /* Now we should be able to retrieve the final conversation, in case the previous
-       one was temporary */
-    // FIXME potential race condition between index check and at() call
-    int contactIndex;
-    if (isTemporary && (contactIndex = pimpl_->indexOfContact(convId)) < 0) {
-        qDebug() << "Can't send message: Other participant is not a contact";
-        return;
-    }
-
-    auto& newConv = isTemporary ? pimpl_->conversations.at(contactIndex) : conversation;
-    convId = newConv.uid;
-
-    // Send interaction to each participant
-    for (const auto& participant: newConv.participants) {
-        auto contactInfo = owner.contactModel->getContact(participant);
-
-        QStringList callLists = CallManager::instance().getCallList(); // no auto
-        // workaround: sometimes, it may happen that the daemon delete a call, but lrc don't. We check if the call is
-        //             still valid every time the user want to send a message.
-        if (not newConv.callId.empty() and not callLists.contains(newConv.callId.c_str()))
-            newConv.callId.clear();
-
-        if (not newConv.callId.empty()
-            and call::canSendSIPMessage(owner.callModel->getCall(newConv.callId))) {
-            status = interaction::Status::UNKNOWN;
-            owner.callModel->sendSipMessage(newConv.callId, body);
-
-        } else {
-            daemonMsgId = owner.contactModel->sendDhtMessage(contactInfo.profileInfo.uri, body);
-        }
-
-    }
-
-    // Add interaction to database
-    auto msg = interaction::Info {accountId, body, std::time(nullptr),
-                                  interaction::Type::TEXT, status};
-    int msgId = database::addMessageToConversation(pimpl_->db, accountId, convId, msg);
-
-    // Update conversation
-    if (status == interaction::Status::SENDING) {
-        // Because the daemon already give an id for the message, we need to store it.
-        database::addDaemonMsgId(pimpl_->db, std::to_string(msgId), std::to_string(daemonMsgId));
-    }
-
-    bool ret = false;
-
-    {
-        std::lock_guard<std::mutex> lk(pimpl_->interactionsLocks[convId]);
-        ret = newConv.interactions.insert(std::pair<uint64_t, interaction::Info>(msgId, msg)).second;
-    }
-
-    if (!ret) {
-        qDebug("ConversationModel::sendMessage failed to send message because an existing key was already present in the database (key = %d)", msgId);
-        return;
-    }
-
-    newConv.lastMessageUid = msgId;
-    pimpl_->dirtyConversations = {true, true};
-    // Emit this signal for chatview in the client
-    emit newInteraction(convId, msgId, msg);
-    // This conversation is now at the top of the list
-    pimpl_->sortConversations();
-    // The order has changed, informs the client to redraw the list
-    emit modelSorted();
-
 }
 
 void
@@ -1288,7 +1285,7 @@ ConversationModelPimpl::slotContactAdded(const std::string& uri)
     }
 
     sortConversations();
-    m_condVar_conversation_creation.notify_all();
+    emit linked.conversationReady(uri);
     emit linked.modelSorted();
 }
 
@@ -1761,40 +1758,42 @@ ConversationModel::sendFile(const std::string& convUid,
 
     pimpl_->sendContactRequest(peerUri);
 
+    auto cb = std::function<void(std::string)>(
+        [=](std::string convId) mutable {
+            int contactIndex;
+            if (isTemporary && (contactIndex = pimpl_->indexOfContact(convUidCopy)) < 0) {
+                qDebug() << "Can't send file: Other participant is not a contact (removed while sending file ?)";
+                return;
+            }
+
+            // Retrieve final peer uri after creation of the conversation
+            const auto& newPeerUri = isTemporary ? pimpl_->conversations.at(contactIndex).participants.front() : peerUri;
+
+            auto contactInfo = owner.contactModel->getContact(newPeerUri);
+            if (contactInfo.isBanned) {
+                qDebug() << "ContactModel::sendFile: denied, contact is banned";
+                return;
+            }
+
+            pimpl_->lrc.getDataTransferModel().sendFile(owner.id.c_str(),
+                                                        newPeerUri.c_str(),
+                                                        path.c_str(),
+                                                        filename.c_str());
+        });
+
     if (isTemporary) {
-        /* Block until we are sure that the final conversation was created by
-           slotContactAdded(). If adding contact failed we should not process
-           any further */
-        std::unique_lock<std::mutex> lock(pimpl_->m_mutex_conversations);
-        auto res = pimpl_->m_condVar_conversation_creation.wait_for(lock, std::chrono::seconds(2),
-                   [&]() { return pimpl_->indexOfContact(convUidCopy) >= 0; });
-        lock.unlock();
-
-        if (!res) {
-            qDebug() << "ConversationModel::sendFile reached timeout while waiting for contact to be added. Couldn't send file.";
-            return;
-        }
+        QMetaObject::Connection* const connection = new QMetaObject::Connection;
+        *connection = connect(this, &ConversationModel::conversationReady,
+            [cb, connection](std::string convId) {
+                cb(convId);
+                QObject::disconnect(*connection);
+                if (connection) {
+                    delete connection;
+                }
+            });
+    } else {
+        cb(convUidCopy);
     }
-
-    int contactIndex;
-    if (isTemporary && (contactIndex = pimpl_->indexOfContact(convUidCopy)) < 0) {
-        qDebug() << "Can't send file: Other participant is not a contact (removed while sending file ?)";
-        return;
-    }
-
-    // Retrieve final peer uri after creation of the conversation
-    const auto& newPeerUri = isTemporary ? pimpl_->conversations.at(contactIndex).participants.front() : peerUri;
-
-    auto contactInfo = owner.contactModel->getContact(newPeerUri);
-    if (contactInfo.isBanned) {
-        qDebug() << "ContactModel::sendFile: denied, contact is banned";
-        return;
-    }
-
-    pimpl_->lrc.getDataTransferModel().sendFile(owner.id.c_str(),
-                                                newPeerUri.c_str(),
-                                                path.c_str(),
-                                                filename.c_str());
 }
 
 void
