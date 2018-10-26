@@ -1,0 +1,280 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6f681789_f51f5fa3",
+        "filename": "src/api/newvideo.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 579
+      },
+      "writtenOn": "2018-10-26T16:16:50Z",
+      "side": 1,
+      "message": "not really 2017 ;)",
+      "range": {
+        "startLine": 2,
+        "startChar": 19,
+        "endLine": 2,
+        "endChar": 24
+      },
+      "revId": "57d71d36629a5950a9c4502a8c68e0bdbda4e85c",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a3f74c7c_2f5cd666",
+        "filename": "src/api/newvideo.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 579
+      },
+      "writtenOn": "2018-10-26T16:16:50Z",
+      "side": 1,
+      "message": "reason why not const std::string \u0026 ?",
+      "range": {
+        "startLine": 102,
+        "startChar": 40,
+        "endLine": 102,
+        "endChar": 58
+      },
+      "revId": "57d71d36629a5950a9c4502a8c68e0bdbda4e85c",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "165f4d96_d78ae919",
+        "filename": "src/avmodel.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 579
+      },
+      "writtenOn": "2018-10-26T16:16:50Z",
+      "side": 1,
+      "message": "finishedRenderers ?",
+      "range": {
+        "startLine": 58,
+        "startChar": 32,
+        "endLine": 58,
+        "endChar": 48
+      },
+      "revId": "57d71d36629a5950a9c4502a8c68e0bdbda4e85c",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3fb589b1_62a32550",
+        "filename": "src/avmodel.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 579
+      },
+      "writtenOn": "2018-10-26T16:16:50Z",
+      "side": 1,
+      "message": "one line ?",
+      "range": {
+        "startLine": 90,
+        "startChar": 4,
+        "endLine": 91,
+        "endChar": 18
+      },
+      "revId": "57d71d36629a5950a9c4502a8c68e0bdbda4e85c",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "954a607e_4327d40b",
+        "filename": "src/avmodel.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 261,
+      "author": {
+        "id": 579
+      },
+      "writtenOn": "2018-10-26T16:16:50Z",
+      "side": 1,
+      "message": "very similar, de-duplicate?",
+      "range": {
+        "startLine": 217,
+        "startChar": 0,
+        "endLine": 261,
+        "endChar": 1
+      },
+      "revId": "57d71d36629a5950a9c4502a8c68e0bdbda4e85c",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6ece5345_507bf67c",
+        "filename": "src/avmodel.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 404,
+      "author": {
+        "id": 579
+      },
+      "writtenOn": "2018-10-26T16:16:50Z",
+      "side": 1,
+      "message": "qDebug",
+      "range": {
+        "startLine": 404,
+        "startChar": 8,
+        "endLine": 404,
+        "endChar": 17
+      },
+      "revId": "57d71d36629a5950a9c4502a8c68e0bdbda4e85c",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "75d77166_8f50db19",
+        "filename": "src/avmodel.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 428,
+      "author": {
+        "id": 579
+      },
+      "writtenOn": "2018-10-26T16:16:50Z",
+      "side": 1,
+      "message": "qDebug",
+      "range": {
+        "startLine": 428,
+        "startChar": 4,
+        "endLine": 428,
+        "endChar": 13
+      },
+      "revId": "57d71d36629a5950a9c4502a8c68e0bdbda4e85c",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0c5fa0de_e7268a88",
+        "filename": "src/avmodel.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 438,
+      "author": {
+        "id": 579
+      },
+      "writtenOn": "2018-10-26T16:16:50Z",
+      "side": 1,
+      "message": "wait() after quit() here ?\n\nwe should be 100% sure that the thread stopped rendering before slotCallStateChanged() gets executed right ? otherwise resources will never be freed",
+      "range": {
+        "startLine": 438,
+        "startChar": 4,
+        "endLine": 438,
+        "endChar": 29
+      },
+      "revId": "57d71d36629a5950a9c4502a8c68e0bdbda4e85c",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "51a9b6d4_0c585a04",
+        "filename": "src/newvideo.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 579
+      },
+      "writtenOn": "2018-10-26T16:16:50Z",
+      "side": 1,
+      "message": "duplicate RendererPimpl() ?",
+      "range": {
+        "startLine": 81,
+        "startChar": 0,
+        "endLine": 89,
+        "endChar": 52
+      },
+      "revId": "57d71d36629a5950a9c4502a8c68e0bdbda4e85c",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5683e827_56b8c132",
+        "filename": "src/newvideo.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 579
+      },
+      "writtenOn": "2018-10-26T16:16:50Z",
+      "side": 1,
+      "message": "meh, same as\n\nFrame result \u003d frame\n\n?!\n\nor do you mean a deep copy ? In this case ptr should be manually copied right ?",
+      "range": {
+        "startLine": 116,
+        "startChar": 0,
+        "endLine": 121,
+        "endChar": 31
+      },
+      "revId": "57d71d36629a5950a9c4502a8c68e0bdbda4e85c",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "92796e04_bc1d39f7",
+        "filename": "src/newvideo.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 579
+      },
+      "writtenOn": "2018-10-26T16:16:50Z",
+      "side": 1,
+      "message": "not thread safe, might be a bit racy. Should maybe be protected with a mutex ?",
+      "range": {
+        "startLine": 141,
+        "startChar": 4,
+        "endLine": 142,
+        "endChar": 15
+      },
+      "revId": "57d71d36629a5950a9c4502a8c68e0bdbda4e85c",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "733d7da0_8c582790",
+        "filename": "src/newvideo.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 159,
+      "author": {
+        "id": 579
+      },
+      "writtenOn": "2018-10-26T16:16:50Z",
+      "side": 1,
+      "message": "Execute only if pimpl_-\u003eisRendering_ \u003d\u003d true ?",
+      "range": {
+        "startLine": 154,
+        "startChar": 4,
+        "endLine": 159,
+        "endChar": 30
+      },
+      "revId": "57d71d36629a5950a9c4502a8c68e0bdbda4e85c",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    }
+  ]
+}
