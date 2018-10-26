@@ -18,7 +18,7 @@
  ***************************************************************************/
 #pragma once
 
-// Std
+ // Std
 #include <memory>
 #include <map>
 #include <string>
@@ -63,10 +63,10 @@ public:
     const account::Info& owner;
 
     ConversationModel(const account::Info& owner,
-                      Lrc& lrc,
-                      Database& db,
-                      const CallbacksHandler& callbacksHandler,
-                      const api::BehaviorController& behaviorController);
+        Lrc& lrc,
+        Database& db,
+        const CallbacksHandler& callbacksHandler,
+        const api::BehaviorController& behaviorController);
     ~ConversationModel();
 
     /**
@@ -102,7 +102,7 @@ public:
      * @param uid of the conversation
      * @param banned if we want to ban the contact.
      */
-    void removeConversation(const std::string& uid, bool banned=false);
+    void removeConversation(const std::string& uid, bool banned = false);
     /**
      * Get the action wanted by the user when they click on the conversation
      * @param uid of the conversation
@@ -207,15 +207,15 @@ Q_SIGNALS:
      * @param msg
      */
     void interactionStatusUpdated(const std::string& convUid,
-                                  uint64_t interactionId,
-                                  const api::interaction::Info& msg) const;
+        uint64_t interactionId,
+        const api::interaction::Info& msg) const;
     /**
      * Emitted when an interaction got removed from the conversation
      * @param convUid conversation which owns the interaction
      * @param interactionId
      */
     void interactionRemoved(const std::string& convUid,
-                            uint64_t interactionId) const;
+        uint64_t interactionId) const;
     /**
      * Emitted when user clear the history of a conversation
      * @param uid
@@ -249,6 +249,11 @@ Q_SIGNALS:
      * @note the client must connect this signal to know when update the view of the list
      */
     void allHistoryCleared() const;
+    /**
+     * Emitted at the end of slotContactAdded to notify that an existing conversation can
+     * be modified
+     */
+    void conversationReady() const;
 
 private:
     std::unique_ptr<ConversationModelPimpl> pimpl_;
