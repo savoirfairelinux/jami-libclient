@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "740b5a2c_cc227d90",
+        "filename": "src/api/newvideo.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2018-10-26T16:33:45Z",
+      "side": 1,
+      "message": "Bad copy/paste will see at the end",
+      "parentUuid": "6f681789_f51f5fa3",
+      "range": {
+        "startLine": 2,
+        "startChar": 19,
+        "endLine": 2,
+        "endChar": 24
+      },
+      "revId": "57d71d36629a5950a9c4502a8c68e0bdbda4e85c",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "a3f74c7c_2f5cd666",
         "filename": "src/api/newvideo.h",
         "patchSetId": 10
@@ -36,6 +60,30 @@
       "writtenOn": "2018-10-26T16:16:50Z",
       "side": 1,
       "message": "reason why not const std::string \u0026 ?",
+      "range": {
+        "startLine": 102,
+        "startChar": 40,
+        "endLine": 102,
+        "endChar": 58
+      },
+      "revId": "57d71d36629a5950a9c4502a8c68e0bdbda4e85c",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2b2f5f6d_ef4f9759",
+        "filename": "src/api/newvideo.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2018-10-26T16:33:45Z",
+      "side": 1,
+      "message": "oops",
+      "parentUuid": "a3f74c7c_2f5cd666",
       "range": {
         "startLine": 102,
         "startChar": 40,
@@ -71,6 +119,30 @@
     },
     {
       "key": {
+        "uuid": "f2a3f4bc_6babcea5",
+        "filename": "src/avmodel.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2018-10-26T16:33:45Z",
+      "side": 1,
+      "message": "yes",
+      "parentUuid": "165f4d96_d78ae919",
+      "range": {
+        "startLine": 58,
+        "startChar": 32,
+        "endLine": 58,
+        "endChar": 48
+      },
+      "revId": "57d71d36629a5950a9c4502a8c68e0bdbda4e85c",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "3fb589b1_62a32550",
         "filename": "src/avmodel.cpp",
         "patchSetId": 10
@@ -82,6 +154,30 @@
       "writtenOn": "2018-10-26T16:16:50Z",
       "side": 1,
       "message": "one line ?",
+      "range": {
+        "startLine": 90,
+        "startChar": 4,
+        "endLine": 91,
+        "endChar": 18
+      },
+      "revId": "57d71d36629a5950a9c4502a8c68e0bdbda4e85c",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0b13523c_808c7ef2",
+        "filename": "src/avmodel.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2018-10-26T16:33:45Z",
+      "side": 1,
+      "message": "no, it\u0027s a dbus reply, it\u0027s must be unwrapped, I prefer to do it in 2 lines for now",
+      "parentUuid": "3fb589b1_62a32550",
       "range": {
         "startLine": 90,
         "startChar": 4,
@@ -117,6 +213,30 @@
     },
     {
       "key": {
+        "uuid": "676ab469_565c05ee",
+        "filename": "src/avmodel.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 261,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2018-10-26T16:33:45Z",
+      "side": 1,
+      "message": "sure, at the end",
+      "parentUuid": "954a607e_4327d40b",
+      "range": {
+        "startLine": 217,
+        "startChar": 0,
+        "endLine": 261,
+        "endChar": 1
+      },
+      "revId": "57d71d36629a5950a9c4502a8c68e0bdbda4e85c",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "6ece5345_507bf67c",
         "filename": "src/avmodel.cpp",
         "patchSetId": 10
@@ -128,6 +248,30 @@
       "writtenOn": "2018-10-26T16:16:50Z",
       "side": 1,
       "message": "qDebug",
+      "range": {
+        "startLine": 404,
+        "startChar": 8,
+        "endLine": 404,
+        "endChar": 17
+      },
+      "revId": "57d71d36629a5950a9c4502a8c68e0bdbda4e85c",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4d14c85f_2333a48f",
+        "filename": "src/avmodel.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 404,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2018-10-26T16:33:45Z",
+      "side": 1,
+      "message": "No, just a temporary debug, I will remove all cout directly and then add a qDebug if needed",
+      "parentUuid": "6ece5345_507bf67c",
       "range": {
         "startLine": 404,
         "startChar": 8,
@@ -232,6 +376,30 @@
     },
     {
       "key": {
+        "uuid": "6ded9062_1ad5b555",
+        "filename": "src/newvideo.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2018-10-26T16:33:45Z",
+      "side": 1,
+      "message": "It\u0027s not the same Frame (one is from the old LRC, the other from my .h). For now I don\u0027t know what will be the final format so, I do a dumb copy.",
+      "parentUuid": "5683e827_56b8c132",
+      "range": {
+        "startLine": 116,
+        "startChar": 0,
+        "endLine": 121,
+        "endChar": 31
+      },
+      "revId": "57d71d36629a5950a9c4502a8c68e0bdbda4e85c",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "92796e04_bc1d39f7",
         "filename": "src/newvideo.cpp",
         "patchSetId": 10
@@ -266,6 +434,30 @@
       "writtenOn": "2018-10-26T16:16:50Z",
       "side": 1,
       "message": "Execute only if pimpl_-\u003eisRendering_ \u003d\u003d true ?",
+      "range": {
+        "startLine": 154,
+        "startChar": 4,
+        "endLine": 159,
+        "endChar": 30
+      },
+      "revId": "57d71d36629a5950a9c4502a8c68e0bdbda4e85c",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d74c18a0_1f17a7f9",
+        "filename": "src/newvideo.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 159,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2018-10-26T16:33:45Z",
+      "side": 1,
+      "message": "this will not be a problem if isRendering is false",
+      "parentUuid": "733d7da0_8c582790",
       "range": {
         "startLine": 154,
         "startChar": 4,
