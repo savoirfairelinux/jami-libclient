@@ -249,6 +249,12 @@ Q_SIGNALS:
      * @note the client must connect this signal to know when update the view of the list
      */
     void allHistoryCleared() const;
+    /**
+     * Emitted at the end of slotContactAdded to notify that an existing conversation can
+     * be modified
+     * @param uid
+     */
+    void conversationReady(std::string uid) const;
 
 private:
     std::unique_ptr<ConversationModelPimpl> pimpl_;
