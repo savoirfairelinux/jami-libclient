@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "521a7fb3_1b09ea63",
+        "filename": "src/newaccountmodel.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 383,
+      "author": {
+        "id": 225
+      },
+      "writtenOn": "2018-10-29T15:06:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1ffcb706_12d2e0f4",
+      "revId": "ce30ae469fcf3c94a37ab070d158298218b49227",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "d25545e1_5df69255",
         "filename": "src/newaccountmodel.cpp",
         "patchSetId": 6
@@ -36,6 +54,24 @@
     },
     {
       "key": {
+        "uuid": "41bb8bec_39e7f046",
+        "filename": "src/newaccountmodel.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 539,
+      "author": {
+        "id": 225
+      },
+      "writtenOn": "2018-10-29T15:06:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d25545e1_5df69255",
+      "revId": "ce30ae469fcf3c94a37ab070d158298218b49227",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "b9a6001a_92dde589",
         "filename": "src/newaccountmodel.cpp",
         "patchSetId": 6
@@ -47,6 +83,30 @@
       "writtenOn": "2018-10-27T18:37:24Z",
       "side": 1,
       "message": "hmm. I think we don\u0027t want that.\n1. It\u0027s bad for RING account, URI should be null here\n2. For SIP account, the default username should be empty too.\n3. This breaks the API (but np here, because URI is \"\" by default).\n\nAnyway for a Ring or a SIP account, this configuration entry will be changed after the creation of the account.",
+      "range": {
+        "startLine": 825,
+        "startChar": 4,
+        "endLine": 825,
+        "endChar": 52
+      },
+      "revId": "ce30ae469fcf3c94a37ab070d158298218b49227",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "27cc2ec8_344ba059",
+        "filename": "src/newaccountmodel.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 825,
+      "author": {
+        "id": 225
+      },
+      "writtenOn": "2018-10-29T15:06:54Z",
+      "side": 1,
+      "message": "1.Done for Ring account.\n2.With this patch the default username for SIP account will be \"\", however setting URI at this point will prevent from creating profile in db with empty URI. And this entry fo SIP account not changed until user change account settings.",
+      "parentUuid": "b9a6001a_92dde589",
       "range": {
         "startLine": 825,
         "startChar": 4,
