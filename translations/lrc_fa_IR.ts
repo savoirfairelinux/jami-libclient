@@ -14,34 +14,16 @@
         <translation>ثبت شده</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="335"/>
-        <source>Not Registered</source>
-        <extracomment>Account state</extracomment>
-        <translation>ثبت نشده</translation>
-    </message>
-    <message>
         <location filename="../src/account.cpp" line="337"/>
         <source>Initializing</source>
         <extracomment>Account state</extracomment>
         <translation>آغازِ فرایند</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="339"/>
-        <source>Trying...</source>
-        <extracomment>Account state</extracomment>
-        <translation>در حال سعی کردن…</translation>
-    </message>
-    <message>
         <location filename="../src/account.cpp" line="341"/>
         <source>Error</source>
         <extracomment>Account state</extracomment>
         <translation>خطا</translation>
-    </message>
-    <message>
-        <location filename="../src/account.cpp" line="343"/>
-        <source>Authentication Failed</source>
-        <extracomment>Account state</extracomment>
-        <translation>تأیید هویت ناموفق</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="345"/>
@@ -56,16 +38,34 @@
         <translation>میزبان در دسترس نیست</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="349"/>
-        <source>Stun configuration error</source>
+        <location filename="../src/account.cpp" line="335"/>
+        <source>Not registered</source>
         <extracomment>Account state</extracomment>
-        <translation>خطای پیکربندی STUN</translation>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/account.cpp" line="339"/>
+        <source>Tryingâ¦</source>
+        <extracomment>Account state</extracomment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/account.cpp" line="343"/>
+        <source>Authentication failed</source>
+        <extracomment>Account state</extracomment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/account.cpp" line="349"/>
+        <source>STUN configuration error</source>
+        <extracomment>Account state</extracomment>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/account.cpp" line="351"/>
-        <source>Stun server invalid</source>
+        <source>STUN server invalid</source>
         <extracomment>Account state</extracomment>
-        <translation>کارساز STUN نامعتبر است </translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/account.cpp" line="353"/>
@@ -87,9 +87,9 @@
     </message>
     <message>
         <location filename="../src/account.cpp" line="359"/>
-        <source>Request Timeout</source>
+        <source>Request timeout</source>
         <extracomment>Account state</extracomment>
-        <translation>زمان انقضای درخواست</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -664,7 +664,7 @@
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="307"/>
         <source>UID</source>
-        <translation type="unfinished"/>
+        <translation>UID</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="307"/>
@@ -935,7 +935,7 @@
     <message>
         <location filename="../src/certificate.cpp" line="104"/>
         <source>Public key ID</source>
-        <translation type="unfinished"/>
+        <translation>شناسه کلید عمومی</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="105"/>
@@ -1252,7 +1252,7 @@
     <message>
         <location filename="../src/api/call.h" line="80"/>
         <source>Peer busy</source>
-        <translation type="unfinished"/>
+        <translation>همتا مشغول</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="84"/>
@@ -1504,12 +1504,12 @@
     <message>
         <location filename="../src/contactmodel.cpp" line="723"/>
         <source>Invalid ringID</source>
-        <translation type="unfinished"/>
+        <translation>ringID ناموجود</translation>
     </message>
     <message>
         <location filename="../src/contactmodel.cpp" line="726"/>
         <source>Not found</source>
-        <translation type="unfinished"/>
+        <translation>یافت نشد</translation>
     </message>
     <message>
         <location filename="../src/contactmodel.cpp" line="729"/>

@@ -14,34 +14,16 @@
         <translation>Registrato</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="335"/>
-        <source>Not Registered</source>
-        <extracomment>Account state</extracomment>
-        <translation>Non registrato</translation>
-    </message>
-    <message>
         <location filename="../src/account.cpp" line="337"/>
         <source>Initializing</source>
         <extracomment>Account state</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="339"/>
-        <source>Trying...</source>
-        <extracomment>Account state</extracomment>
-        <translation>Tentando...</translation>
-    </message>
-    <message>
         <location filename="../src/account.cpp" line="341"/>
         <source>Error</source>
         <extracomment>Account state</extracomment>
         <translation>Errore</translation>
-    </message>
-    <message>
-        <location filename="../src/account.cpp" line="343"/>
-        <source>Authentication Failed</source>
-        <extracomment>Account state</extracomment>
-        <translation>Autenticazione fallita</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="345"/>
@@ -56,16 +38,34 @@
         <translation>Host irraggiungibile</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="349"/>
-        <source>Stun configuration error</source>
+        <location filename="../src/account.cpp" line="335"/>
+        <source>Not registered</source>
         <extracomment>Account state</extracomment>
-        <translation>Errore di impostazione STUN</translation>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/account.cpp" line="339"/>
+        <source>Tryingâ¦</source>
+        <extracomment>Account state</extracomment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/account.cpp" line="343"/>
+        <source>Authentication failed</source>
+        <extracomment>Account state</extracomment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/account.cpp" line="349"/>
+        <source>STUN configuration error</source>
+        <extracomment>Account state</extracomment>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/account.cpp" line="351"/>
-        <source>Stun server invalid</source>
+        <source>STUN server invalid</source>
         <extracomment>Account state</extracomment>
-        <translation>Server STUN non valido</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/account.cpp" line="353"/>
@@ -87,9 +87,9 @@
     </message>
     <message>
         <location filename="../src/account.cpp" line="359"/>
-        <source>Request Timeout</source>
+        <source>Request timeout</source>
         <extracomment>Account state</extracomment>
-        <translation>Richiedi Timeout</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

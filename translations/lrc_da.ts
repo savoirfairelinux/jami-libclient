@@ -14,34 +14,16 @@
         <translation>Registreret</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="335"/>
-        <source>Not Registered</source>
-        <extracomment>Account state</extracomment>
-        <translation>Ikke registreret</translation>
-    </message>
-    <message>
         <location filename="../src/account.cpp" line="337"/>
         <source>Initializing</source>
         <extracomment>Account state</extracomment>
         <translation>Initialiserer</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="339"/>
-        <source>Trying...</source>
-        <extracomment>Account state</extracomment>
-        <translation>Prøver...</translation>
-    </message>
-    <message>
         <location filename="../src/account.cpp" line="341"/>
         <source>Error</source>
         <extracomment>Account state</extracomment>
         <translation>Fejl</translation>
-    </message>
-    <message>
-        <location filename="../src/account.cpp" line="343"/>
-        <source>Authentication Failed</source>
-        <extracomment>Account state</extracomment>
-        <translation>Autentificering fejlede</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="345"/>
@@ -56,16 +38,34 @@
         <translation>Host utilgængelig</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="349"/>
-        <source>Stun configuration error</source>
+        <location filename="../src/account.cpp" line="335"/>
+        <source>Not registered</source>
         <extracomment>Account state</extracomment>
-        <translation>STUN-konfigurationsfejl</translation>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/account.cpp" line="339"/>
+        <source>Tryingâ¦</source>
+        <extracomment>Account state</extracomment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/account.cpp" line="343"/>
+        <source>Authentication failed</source>
+        <extracomment>Account state</extracomment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/account.cpp" line="349"/>
+        <source>STUN configuration error</source>
+        <extracomment>Account state</extracomment>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/account.cpp" line="351"/>
-        <source>Stun server invalid</source>
+        <source>STUN server invalid</source>
         <extracomment>Account state</extracomment>
-        <translation>STUN server ugyldig</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/account.cpp" line="353"/>
@@ -87,9 +87,9 @@
     </message>
     <message>
         <location filename="../src/account.cpp" line="359"/>
-        <source>Request Timeout</source>
+        <source>Request timeout</source>
         <extracomment>Account state</extracomment>
-        <translation>Anmodning fik timeout</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -935,7 +935,7 @@
     <message>
         <location filename="../src/certificate.cpp" line="104"/>
         <source>Public key ID</source>
-        <translation type="unfinished"/>
+        <translation>Id for offentlig nøgle</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="105"/>
@@ -1252,7 +1252,7 @@
     <message>
         <location filename="../src/api/call.h" line="80"/>
         <source>Peer busy</source>
-        <translation type="unfinished"/>
+        <translation>Partner optaget</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="84"/>
@@ -1514,7 +1514,7 @@
     <message>
         <location filename="../src/contactmodel.cpp" line="729"/>
         <source>Couldn&apos;t lookupâ¦</source>
-        <translation type="unfinished"/>
+        <translation>Kunne ikke opslåâ¦</translation>
     </message>
 </context>
 <context>
@@ -1522,7 +1522,7 @@
     <message>
         <location filename="../src/contactmodel.cpp" line="363"/>
         <source>Bad URI scheme</source>
-        <translation type="unfinished"/>
+        <translation>Ugyldigt URI-skema</translation>
     </message>
 </context>
 <context>
@@ -1540,7 +1540,7 @@
     <message>
         <location filename="../src/media/recordingmodel.cpp" line="264"/>
         <source>Audio/Video</source>
-        <translation>Lyd/Video</translation>
+        <translation>Lyd/video</translation>
     </message>
 </context>
 </TS>
