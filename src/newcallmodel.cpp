@@ -189,6 +189,7 @@ NewCallModel::createCall(const std::string& url, bool isAudioOnly)
     callInfo->isOutgoing = true;
     callInfo->status =  call::Status::SEARCHING;
     callInfo->type =  call::Type::DIALOG;
+    callInfo->isAudioOnly = isAudioOnly;
     pimpl_->calls.emplace(callId.toStdString(), std::move(callInfo));
 
     return callId.toStdString();
