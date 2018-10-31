@@ -140,6 +140,30 @@
       "revId": "ce30ae469fcf3c94a37ab070d158298218b49227",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "aaf21779_0aa9354b",
+        "filename": "src/newaccountmodel.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 825,
+      "author": {
+        "id": 225
+      },
+      "writtenOn": "2018-10-31T14:39:49Z",
+      "side": 1,
+      "message": "With current workflow profile is not saved for account(will be solved after db migration)\nsteps:\n1. Create SIP account\n2. Open account settings\n3. Set profile and account details\n4. Close application\n5. Open application.\nProfile data is disappear.\nForMAC client I present a form to create SIP account where user could provide account information and then click create account. At this point I could send URI as a parameter to create account. And now I have URI as a necessary field.",
+      "parentUuid": "71d5785b_84722209",
+      "range": {
+        "startLine": 825,
+        "startChar": 4,
+        "endLine": 825,
+        "endChar": 52
+      },
+      "revId": "ce30ae469fcf3c94a37ab070d158298218b49227",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
     }
   ]
 }
