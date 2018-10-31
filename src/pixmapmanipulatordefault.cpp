@@ -68,12 +68,14 @@ QVariant
 PixmapManipulatorDefault::conversationPhoto(const lrc::api::conversation::Info& conversation,
                                             const lrc::api::account::Info& accountInfo,
                                             const QSize& size,
-                                            bool displayPresence)
+                                            bool displayPresence,
+                                            bool useCache)
 {
     Q_UNUSED(conversation)
     Q_UNUSED(accountInfo)
     Q_UNUSED(size)
     Q_UNUSED(displayPresence)
+    Q_UNUSED(useCache)
     return QVariant();
 }
 

@@ -29,7 +29,8 @@ public:
     QVariant   conversationPhoto(const lrc::api::conversation::Info& conversation,
                                  const lrc::api::account::Info& accountInfo,
                                  const QSize& size,
-                                 bool displayPresence = true) override;
+                                 bool displayPresence = true,
+                                 bool useCache = true) override;
     QVariant   callPhoto(const ContactMethod* n, const QSize& size, bool displayPresence = true) override;
     QVariant   numberCategoryIcon(const QVariant& p, const QSize& size, bool displayPresence = false, bool isPresent = false) override;
     QVariant   securityIssueIcon(const QModelIndex& index) override;

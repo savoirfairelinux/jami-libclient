@@ -77,7 +77,8 @@ public:
     virtual QVariant   conversationPhoto(const lrc::api::conversation::Info& conversation,
                                          const lrc::api::account::Info& accountInfo,
                                          const QSize& size,
-                                         bool displayPresence = true) {
+                                         bool displayPresence = true,
+                                         bool useCache = true) {
         Q_UNUSED(conversation); Q_UNUSED(accountInfo); Q_UNUSED(size); Q_UNUSED(displayPresence);
         return {};
     }
