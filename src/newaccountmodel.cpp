@@ -304,6 +304,16 @@ NewAccountModel::flagFreeable(const std::string& accountId) const
     pimpl_->m_condVar_account_removal.notify_all();
 }
 
+    bool
+    NewAccountModel::hasActiveCall() const
+    {
+        for(auto account: getAccountList()) {
+            if(getAccountInfo(account).callModel->hasActiveCall())
+                return true;
+        }
+        return false;
+    }
+
 const account::Info&
 NewAccountModel::getAccountInfo(const std::string& accountId) const
 {

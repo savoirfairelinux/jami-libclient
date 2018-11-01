@@ -74,6 +74,11 @@ Q_SIGNALS:
      * Emitted when the client should open the incoming call view.
      */
     void showIncomingCallView(const std::string& accountId, const api::conversation::Info& conversationInfo) const;
+
+    /**
+     * Emitted when the received a new call while client alredy have current call.
+     */
+    void newParallelIncomingCall(const std::string& accountId, const api::conversation::Info& conversationInfo) const;
     /**
      * Emitted when the client receives a new trust request
      */

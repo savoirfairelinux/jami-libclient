@@ -174,6 +174,10 @@ public:
      */
     std::string accountVCard(const std::string& accountId, bool compressImage = true) const;
     std::string compressedAvatar(const std::string& img) const;
+    /**
+     * Check if any of account have current call
+     */
+    bool hasActiveCall() const;
 
 Q_SIGNALS:
     /**

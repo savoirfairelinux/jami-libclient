@@ -1487,6 +1487,10 @@ ConversationModelPimpl::slotIncomingCall(const std::string& fromId, const std::s
     qDebug() << "Add call to conversation with " << fromId.c_str();
     conversation.callId = callId;
     dirtyConversations = {true, true};
+    if(linked.owner.accountModel->hasActiveCall()) {
+        emit behaviorController.newParallelIncomingCall(linked.owner.id, conversation);
+        return;
+    }
     emit behaviorController.showIncomingCallView(linked.owner.id, conversation);
 }
 
@@ -1504,6 +1508,14 @@ ConversationModelPimpl::slotCallStatusChanged(const std::string& callId)
 
     auto& conversation = *i;
     auto uid = conversation.uid;
+    auto& call = linked.owner.callModel->getCall(callId);
+    if(linked.owner.accountModel->hasActiveCall()
+       && call.status != call::Status::IN_PROGRESS
+       && call.status != call::Status::PAUSED
+       && call.status != call::Status::CONNECTED
+       && call.status != call::Status::CONNECTING) {
+        return;
+    }
     linked.selectConversation(uid);
 }
 

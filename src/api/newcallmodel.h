@@ -186,6 +186,10 @@ public:
      * @return true if the call is recording else false
      */
     bool isRecording(const std::string& callId) const;
+    /**
+      * check if have a call is IN_PROGRESS state
+     */
+    bool hasActiveCall() const;
 
 Q_SIGNALS:
     /**

@@ -22,6 +22,11 @@
 // std
 #include <chrono>
 #include <random>
+// std
+#include <algorithm>
+#include <mutex>
+#include <regex>
+#include <fstream>
 
 // Lrc
 #include "callbackshandler.h"
@@ -368,6 +373,18 @@ NewCallModel::isRecording(const std::string& callId) const
 {
     if (!hasCall(callId)) return false;
     return CallManager::instance().getIsRecording(callId.c_str());
+}
+
+bool
+NewCallModel::hasActiveCall() const
+{
+    //call::Status status = call::Status::IN_PROGRESS ;
+    for (auto call : pimpl_->calls) {
+        if(call.second->status == call::Status::IN_PROGRESS || call.second->status == call::Status::PAUSED || call.second->status == call::Status::CONNECTED
+           || call.second->status == call::Status::CONNECTING)
+            return true;
+    }
+    return false;
 }
 
 
