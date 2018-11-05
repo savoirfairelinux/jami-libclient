@@ -1,8 +1,9 @@
 /****************************************************************************
- *   Copyright (C) 2017-2018 Savoir-faire Linux                                  *
+ *   Copyright (C) 2017-2018 Savoir-faire Linux                             *
  *   Author: Nicolas Jäger <nicolas.jager@savoirfairelinux.com>             *
  *   Author: Sébastien Blin <sebastien.blin@savoirfairelinux.com>           *
  *   Author: Guillaume Roguez <guillaume.roguez@savoirfairelinux.com>       *
+ *   Author: Kateryna Kostiuk <kateryna.kostiuk@savoirfairelinux.com>       * 
  *                                                                          *
  *   This library is free software; you can redistribute it and/or          *
  *   modify it under the terms of the GNU Lesser General Public             *
@@ -33,7 +34,7 @@
 namespace lrc
 {
 
-static constexpr auto VERSION = "1";
+static constexpr auto VERSION = "1.1";
 static constexpr auto NAME = "ring.db";
 
 /**
@@ -235,6 +236,13 @@ private:
     void migrateLocalProfiles();
     void migratePeerProfiles();
     void migrateTextHistory();
+    void linkRingProfilesWithAccounts(bool contactsOnly);
+    void migrateIfNeeded();
+    std::string  getVersion();
+    void migrateFromVersion(const std::string& version);
+    void migrateSchemaFromVersion1();
+    void updateProfileAccountForContact(const std::string& contactURI,
+                                        const std::string& accountID);
 
     QSqlDatabase db_;
 };

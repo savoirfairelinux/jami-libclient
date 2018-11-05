@@ -1,7 +1,8 @@
 /****************************************************************************
- *   Copyright (C) 2017-2018 Savoir-faire Linux                                  *
+ *   Copyright (C) 2017-2018 Savoir-faire Linux                             *
  *   Author: Nicolas Jäger <nicolas.jager@savoirfairelinux.com>             *
  *   Author: Sébastien Blin <sebastien.blin@savoirfairelinux.com>           *
+ *   Author: Kateryna Kostiuk <kateryna.kostiuk@savoirfairelinux.com>       * 
  *                                                                          *
  *   This library is free software; you can redistribute it and/or          *
  *   modify it under the terms of the GNU Lesser General Public             *
@@ -42,25 +43,34 @@ namespace database
 /**
  * Get id from database for a given uri
  * @param db
+ * @param accountId
+ * @param isAccount
  * @param uri
  * @return the id
  * @note "" if no id
  */
-std::string getProfileId(Database& db, const std::string& uri);
+std::string getProfileId(Database& db,
+            const std::string& accountId,
+            const std::string& isAccount,
+            const std::string& uri="");
 
-/**
+ /**
  * Get id for a profile. If the profile doesn't exist, create it.
  * @param db
  * @param contactUri
+ * @param accountId
+ * @param isAccount
  * @param alias
  * @param avatar
  * @return the id
  */
-std::string getOrInsertProfile(Database& db,
-                               const std::string& contactUri,
-                               const std::string& alias = "",
-                               const std::string& avatar = "",
-                               const std::string& type = "INVALID");
+ std::string getOrInsertProfile(Database& db,
+                                const std::string& contactUri,
+                                const std::string& accountId,
+                                bool  isAccount,
+                                const std::string& type,
+                                const std::string& alias = "",
+                                const std::string& avatar = "");
 
 /**
  * Get conversations for a given profile.
@@ -87,6 +97,13 @@ std::vector<std::string> getPeerParticipantsForConversation(Database& db,
  * @return the avatar in the database for a profile
  */
 std::string getAvatarForProfileId(Database& db, const std::string& profileId);
+
+/**
+ * Check if the profile could be removed
+ * @param  db
+ * @param  profileId
+ */
+bool profileCouldBeRemoved(Database& db, const std::string& profileId);
 
 /**
  * @param  db
@@ -234,9 +251,9 @@ void clearInteractionFromConversation(Database& db,
 /**
  * Clear all history stored in the database for the account uri
  * @param  db
- * @param accountUri
+ * @param accountId
  */
-void clearAllHistoryFor(Database& db, const std::string& accountUri);
+void clearAllHistoryFor(Database& db, const std::string& accountId);
 
 /**
  * delete obsolete histori from the database
@@ -249,24 +266,24 @@ void deleteObsoleteHistory(Database& db, long int date);
  * Remove a conversation between an account and a contact. Remove corresponding entries in
  * the conversations table and profiles if the profile is not present in conversations.
  * @param db
- * @param contactUri
+ * @param accountId
  */
-void removeContact(Database& db, const std::string& accountUri, const std::string& contactUri);
+void removeContact(Database& db, const std::string& contactUri, const std::string& accountId);
 
 /**
  * Remove from conversations and profiles linked to an account.
  * @param db
- * @param accountUri
+ * @param accountId
  */
-void removeAccount(Database& db, const std::string& accountUri);
+void removeAccount(Database& db, const std::string& accountId);
 
 /**
  * insert into profiles and conversations.
  * @param db
- * @param accountUri
  * @param contactUri
+ * @param accountId
  */
-void addContact(Database& db, const std::string& accountUri, const std::string& contactUri);
+void addContact(Database& db, const std::string& contactUri, const std::string& accountId);
 
 /**
  * count number of 'UNREAD' from 'interactions' table.
@@ -286,6 +303,15 @@ std::string conversationIdFromInteractionId(Database& db, unsigned int interacti
  * @param db
  */
 uint64_t getLastTimestamp(Database& db);
+
+/**
+ * Get id from database for a given uri
+ * @param db
+ * @param uri
+ * @return the id
+ * @note "" if no id
+ */
+std::string getProfileId(Database& db, const std::string& uri);
 
 } // namespace database
 
