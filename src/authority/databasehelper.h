@@ -43,24 +43,35 @@ namespace database
  * Get id from database for a given uri
  * @param db
  * @param uri
+ * @param accountId
+ * @param type
+ * @param isAccount
  * @return the id
  * @note "" if no id
  */
-std::string getProfileId(Database& db, const std::string& uri);
+std::string getProfileId(Database& db,
+            const std::string& uri,
+            const std::string& accountId,
+            const std::string& type,
+            const std::string& isAccount);
 
-/**
+ /**
  * Get id for a profile. If the profile doesn't exist, create it.
  * @param db
  * @param contactUri
+ * @param accountId
+ * @param isAccount
  * @param alias
  * @param avatar
  * @return the id
  */
-std::string getOrInsertProfile(Database& db,
-                               const std::string& contactUri,
-                               const std::string& alias = "",
-                               const std::string& avatar = "",
-                               const std::string& type = "INVALID");
+ std::string getOrInsertProfile(Database& db,
+                                const std::string& contactUri,
+                                const std::string& accountId,
+                                bool  isAccount,
+                                const std::string& type,
+                                const std::string& alias = "",
+                                const std::string& avatar = "");
 
 /**
  * Get conversations for a given profile.
@@ -87,6 +98,13 @@ std::vector<std::string> getPeerParticipantsForConversation(Database& db,
  * @return the avatar in the database for a profile
  */
 std::string getAvatarForProfileId(Database& db, const std::string& profileId);
+
+/**
+ * @param  db
+ * @param  profileId
+ * @check if the profile is for an account
+ */
+bool profileCouldBeRemoved(Database& db, const std::string& profileId);
 
 /**
  * @param  db
@@ -235,8 +253,11 @@ void clearInteractionFromConversation(Database& db,
  * Clear all history stored in the database for the account uri
  * @param  db
  * @param accountUri
+ * @param accountId
+ * @param type
  */
-void clearAllHistoryFor(Database& db, const std::string& accountUri);
+void clearAllHistoryFor(Database& db, const std::string& accountUri,
+                        const std::string& accountId, const std::string& type);
 
 /**
  * delete obsolete histori from the database
@@ -250,23 +271,34 @@ void deleteObsoleteHistory(Database& db, long int date);
  * the conversations table and profiles if the profile is not present in conversations.
  * @param db
  * @param contactUri
+ * @param accountId
+ * @param type
  */
-void removeContact(Database& db, const std::string& accountUri, const std::string& contactUri);
+void removeContact(Database& db, const std::string& accountUri,
+                   const std::string& contactUri, const std::string& accountId,
+                   const std::string& type);
 
 /**
  * Remove from conversations and profiles linked to an account.
  * @param db
  * @param accountUri
+ * @param accountId
+ * @param type
  */
-void removeAccount(Database& db, const std::string& accountUri);
+void removeAccount(Database& db, const std::string& accountUri,
+                   const std::string& accountId, const std::string& type);
 
 /**
  * insert into profiles and conversations.
  * @param db
  * @param accountUri
  * @param contactUri
+ * @param accountId
+ * @param type
  */
-void addContact(Database& db, const std::string& accountUri, const std::string& contactUri);
+void addContact(Database& db, const std::string& accountUri,
+                const std::string& contactUri, const std::string& accountId,
+                const std::string& type);
 
 /**
  * count number of 'UNREAD' from 'interactions' table.
@@ -286,6 +318,15 @@ std::string conversationIdFromInteractionId(Database& db, unsigned int interacti
  * @param db
  */
 uint64_t getLastTimestamp(Database& db);
+
+/**
+ * Get id from database for a given uri
+ * @param db
+ * @param uri
+ * @return the id
+ * @note "" if no id
+ */
+std::string getProfileId(Database& db, const std::string& uri);
 
 } // namespace database
 
