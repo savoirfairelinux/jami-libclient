@@ -44,6 +44,8 @@
 #include "person.h"
 #include "account.h"
 #include "accountmodel.h"
+#include "api/newaccountmodel.h"
+#include "api/contactmodel.h"
 #include "private/vcardutils.h"
 
 namespace lrc
@@ -89,6 +91,8 @@ Database::Database()
         }
         // NOTE: the migration can take some time.
         migrateOldFiles();
+    } else {
+        migrateIfNeeded();
     }
 }
 
@@ -102,12 +106,14 @@ Database::createTables()
 {
     QSqlQuery query;
 
-    auto tableProfiles = "CREATE TABLE profiles (id INTEGER PRIMARY KEY,\
-                                                 uri TEXT NOT NULL,     \
-                                                 alias TEXT,            \
-                                                 photo TEXT,            \
-                                                 type TEXT,             \
-                                                 status TEXT)";
+    auto tableProfiles = "CREATE TABLE profiles (id INTEGER PRIMARY KEY,  \
+                                                 uri TEXT NOT NULL,       \
+                                                 alias TEXT,              \
+                                                 photo TEXT,              \
+                                                 type TEXT,               \
+                                                 status TEXT,             \
+                                                 account_id TEXT NOT NULL,\
+                                                 is_account BOOL)";
 
     auto tableConversations = "CREATE TABLE conversations (id INTEGER,\
                                                            participant_id INTEGER, \
@@ -147,6 +153,75 @@ Database::createTables()
 }
 
 void
+Database::migrateIfNeeded()
+{
+    try {
+        int currentVersion = getVersion();
+        std::string stringVersion(VERSION);
+        float numberVersion = std::stof(stringVersion);
+        if (numberVersion == currentVersion) {
+            return;
+        }
+        QSqlDatabase::database().transaction();
+        migrateFromVersion(currentVersion);
+        storeVersion(VERSION);
+        QSqlDatabase::database().commit();
+    } catch (QueryError& e) {
+        QSqlDatabase::database().rollback();
+        throw std::runtime_error("Could not correctly migrate the database");
+    }
+}
+
+void
+Database::migrateFromVersion(float currentVersion)
+{
+    if (currentVersion == 1) {
+        migrateSchemaFromVersion1();
+    }
+}
+
+void
+Database::migrateSchemaFromVersion1()
+{
+    QSqlQuery query;
+    auto insertAccountID = "ALTER TABLE profiles ADD COLUMN account_id TEXT NOT NULL DEFAULT('')";
+    auto insertIsAccount = "ALTER TABLE profiles ADD COLUMN is_account BOOL";
+
+    // insert column accountID to profiles table
+    if (not columnExist(std::string("profiles"), std::string("account_id"))) {
+        if(not query.exec(insertAccountID)) {
+            throw QueryError(query);
+        }
+    }
+
+    // insert column is account to profiles table
+    if (not columnExist(std::string("profiles"), std::string("is_account"))) {
+        if(not query.exec(insertIsAccount)) {
+            throw QueryError(query);
+        }
+    }
+}
+
+bool
+Database::columnExist(const std::string& tableName, const std::string& columnName)
+{
+    QSqlQuery query;
+
+    auto getColumnsQuery = std::string("PRAGMA table_info = ") + tableName;
+
+    if (not query.exec(getColumnsQuery.c_str()))
+    throw QueryError(query);
+    int fieldNo = query.record().indexOf("name");
+    while (query.next()) {
+      QString name = query.value(fieldNo).toString();
+      if (name.toStdString()==columnName) {
+        return true;
+      }
+    }
+    return false;
+}
+
+void
 Database::storeVersion(const std::string& version)
 {
     QSqlQuery query;
@@ -155,6 +230,17 @@ Database::storeVersion(const std::string& version)
 
     if (not query.exec(storeVersionQuery.c_str()))
         throw QueryError(query);
+}
+
+float
+Database::getVersion()
+{
+    QSqlQuery query;
+    auto getVersionQuery = std::string("pragma user_version");
+    if (not query.exec(getVersionQuery.c_str()))
+        throw QueryError(query);
+        query.first();
+    return  query.value(0).toFloat();
 }
 
 int
