@@ -262,8 +262,8 @@ ContactModel::addContact(contact::Info contactInfo)
         return;
     }
 
-    database::getOrInsertProfile(pimpl_->db,
-                                 profile.uri, profile.alias, profile.avatar,
+    database::getOrInsertProfile(pimpl_->db, profile.uri, owner.id, false,
+                                 profile.alias, profile.avatar,
                                  to_string(owner.profileInfo.type));
 
     {
@@ -299,13 +299,13 @@ ContactModel::removeContact(const std::string& contactUri, bool banned)
                 return;
             }
             pimpl_->contacts.erase(contactUri);
-            database::removeContact(pimpl_->db, owner.profileInfo.uri, contactUri);
+            database::removeContact(pimpl_->db, owner.profileInfo.uri, contactUri, owner.id, to_string(owner.profileInfo.type));
             emitContactRemoved = true;
         }
         else if (owner.profileInfo.type == profile::Type::SIP) {
             // Remove contact from db
             pimpl_->contacts.erase(contactUri);
-            database::removeContact(pimpl_->db, owner.profileInfo.uri, contactUri);
+            database::removeContact(pimpl_->db, owner.profileInfo.uri, contactUri, owner.id, to_string(owner.profileInfo.type));
             emitContactRemoved = true;
         }
     }
@@ -334,7 +334,8 @@ ContactModel::getBannedContacts() const
 const std::string
 ContactModel::getContactProfileId(const std::string& contactUri) const
 {
-    return database::getProfileId(pimpl_->db, contactUri);
+    return database::getProfileId(pimpl_->db, contactUri, pimpl_->linked.owner.id,
+    to_string(pimpl_->linked.owner.profileInfo.type), "false");
 }
 
 void
@@ -488,7 +489,8 @@ ContactModelPimpl::~ContactModelPimpl()
 bool
 ContactModelPimpl::fillsWithSIPContacts()
 {
-    auto accountProfileId = database::getProfileId(db, linked.owner.profileInfo.uri);
+    auto accountProfileId = database::getProfileId(db, linked.owner.profileInfo.uri,
+    linked.owner.id, to_string(linked.owner.profileInfo.type), "true");
     auto conversationsForAccount = database::getConversationsForProfile(db, accountProfileId);
     for (const auto& c : conversationsForAccount) {
         auto otherParticipants = database::getPeerParticipantsForConversation(db, accountProfileId, c);
@@ -544,7 +546,7 @@ ContactModelPimpl::fillsWithRINGContacts() {
             contacts.emplace(contactUri.toStdString(), contactInfo);
         }
 
-        database::getOrInsertProfile(db, contactUri.toStdString(),
+        database::getOrInsertProfile(db, contactUri.toStdString(), linked.owner.id, false,
                                     alias.toStdString(), photo.toStdString(),
                                     profile::to_string(profile::Type::RING));
     }
@@ -642,7 +644,7 @@ ContactModelPimpl::slotContactRemoved(const std::string& accountId, const std::s
                     bannedContacts.erase(it);
                 }
             }
-            database::removeContact(db, linked.owner.profileInfo.uri, contactUri);
+            database::removeContact(db, linked.owner.profileInfo.uri, contactUri, accountId, to_string(contact->second.profileInfo.type));
             contacts.erase(contactUri);
         }
     }
@@ -755,7 +757,7 @@ ContactModelPimpl::slotIncomingContactRequest(const std::string& accountId,
             auto contactInfo = contact::Info {profileInfo, "", false, false, false};
             contacts.emplace(contactUri, contactInfo);
             emitTrust = true;
-            database::getOrInsertProfile(db, contactUri, alias.toStdString(),
+            database::getOrInsertProfile(db, contactUri, accountId, false, alias.toStdString(),
                                          photo.toStdString(),
                                          profile::to_string(profile::Type::RING));
         }

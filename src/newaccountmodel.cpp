@@ -235,7 +235,7 @@ NewAccountModel::setAlias(const std::string& accountId, const std::string& alias
         throw std::out_of_range("NewAccountModel::setAlias, can't find " + accountId);
     }
     accountInfo->second.profileInfo.alias = alias;
-    auto accountProfileId = authority::database::getOrInsertProfile(pimpl_->database, accountInfo->second.profileInfo.uri);
+    auto accountProfileId = authority::database::getOrInsertProfile(pimpl_->database, accountInfo->second.profileInfo.uri, accountId, true);
     if (!accountProfileId.empty()) {
         authority::database::setAliasForProfileId(pimpl_->database, accountProfileId, alias);
     }
@@ -250,7 +250,7 @@ NewAccountModel::setAvatar(const std::string& accountId, const std::string& avat
         throw std::out_of_range("NewAccountModel::setAvatar, can't find " + accountId);
     }
     accountInfo->second.profileInfo.avatar = avatar;
-    auto accountProfileId = authority::database::getOrInsertProfile(pimpl_->database, accountInfo->second.profileInfo.uri);
+    auto accountProfileId = authority::database::getOrInsertProfile(pimpl_->database, accountInfo->second.profileInfo.uri, accountId, true);
     if (!accountProfileId.empty()) {
         authority::database::setAvatarForProfileId(pimpl_->database, accountProfileId, avatar);
     }
@@ -569,7 +569,12 @@ NewAccountModelPimpl::removeFromAccounts(const std::string& accountId)
 {
     /* Update db before waiting for the client to stop using the structs is fine
        as long as we don't free anything */
-    authority::database::removeAccount(database, accounts[accountId].profileInfo.uri);
+    auto accountInfo = accounts.find(accountId);
+    if (accountInfo == accounts.end()) {
+        return;
+    }  
+    authority::database::removeAccount(database, accounts[accountId].profileInfo.uri, 
+    accountId, to_string(accountInfo->second.profileInfo.type));
 
     /* Inform client about account removal. Do *not* free account structures
        before we are sure that the client stopped using it, otherwise we might
