@@ -5,7 +5,7 @@
         <location filename="../src/account.cpp" line="331"/>
         <source>Ready</source>
         <extracomment>Account state</extracomment>
-        <translation>Kész</translation>
+        <translation>Készen áll</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="333"/>
@@ -41,31 +41,31 @@
         <location filename="../src/account.cpp" line="335"/>
         <source>Not registered</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Nem regisztrált</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="339"/>
         <source>Tryingâ¦</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Próbálâ¦</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="343"/>
         <source>Authentication failed</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Hitelesítési hiba</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="349"/>
         <source>STUN configuration error</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>STUN beállítás hiba</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="351"/>
         <source>STUN server invalid</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>STUN kiszolgáló érvénytelen</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="353"/>
@@ -89,7 +89,7 @@
         <location filename="../src/account.cpp" line="359"/>
         <source>Request timeout</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Kérés időtúllépés</translation>
     </message>
 </context>
 <context>
@@ -950,7 +950,7 @@
     <message>
         <location filename="../src/certificate.cpp" line="107"/>
         <source>Outgoing server</source>
-        <translation>Kimenő szerver</translation>
+        <translation>Kimenő kiszolgáló</translation>
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="183"/>
@@ -1112,7 +1112,7 @@
     <message>
         <location filename="../src/protocolmodel.cpp" line="50"/>
         <source>Ring Account</source>
-        <translation>RING fiók</translation>
+        <translation>Ring fiók</translation>
     </message>
     <message>
         <location filename="../src/protocolmodel.cpp" line="51"/>
@@ -1272,7 +1272,7 @@
     <message>
         <location filename="../src/useractionmodel.cpp" line="521"/>
         <source>Server transfer</source>
-        <translation>Szerverátvitel</translation>
+        <translation>Kiszolgálóátvitel</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="522"/>
@@ -1391,50 +1391,50 @@
         <translation>Partnerprofil gyűjtemény</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1267"/>
-        <location filename="../src/conversationmodel.cpp" line="1633"/>
-        <location filename="../src/conversationmodel.cpp" line="1885"/>
+        <location filename="../src/conversationmodel.cpp" line="1264"/>
+        <location filename="../src/conversationmodel.cpp" line="1630"/>
+        <location filename="../src/conversationmodel.cpp" line="1884"/>
         <source>Invitation received</source>
         <translation>Meghívó érkezett</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1268"/>
+        <location filename="../src/conversationmodel.cpp" line="1265"/>
         <source>Contact added</source>
         <translation>Kapcsolat hozzáadva</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1303"/>
-        <location filename="../src/conversationmodel.cpp" line="1310"/>
+        <location filename="../src/conversationmodel.cpp" line="1300"/>
+        <location filename="../src/conversationmodel.cpp" line="1307"/>
         <source>Invitation accepted</source>
         <translation>Meghívó elfogadva</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1519"/>
+        <location filename="../src/conversationmodel.cpp" line="1516"/>
         <source>ð Outgoing call</source>
         <translation>ð Kimenő hívás</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1521"/>
+        <location filename="../src/conversationmodel.cpp" line="1518"/>
         <source>ð Incoming call</source>
         <translation>ð Bejövő hívás</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1534"/>
+        <location filename="../src/conversationmodel.cpp" line="1531"/>
         <source>ð Outgoing call - </source>
         <translation>ð Kimenő hívás - </translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1537"/>
+        <location filename="../src/conversationmodel.cpp" line="1534"/>
         <source>ð Incoming call - </source>
         <translation>ð Bejövő hívás - </translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1541"/>
+        <location filename="../src/conversationmodel.cpp" line="1538"/>
         <source>ð½ Missed outgoing call</source>
         <translation>ð½ Nem fogadott kimenő hívás</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1543"/>
+        <location filename="../src/conversationmodel.cpp" line="1540"/>
         <source>ð½ Missed incoming call</source>
         <translation>ð½ Nem fogadott bejövő hívás</translation>
     </message>

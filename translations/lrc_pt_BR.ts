@@ -41,31 +41,31 @@
         <location filename="../src/account.cpp" line="335"/>
         <source>Not registered</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Não registrado</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="339"/>
         <source>Tryingâ¦</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Tentando...</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="343"/>
         <source>Authentication failed</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Falha na autenticação</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="349"/>
         <source>STUN configuration error</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Erro de configuração de STUN</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="351"/>
         <source>STUN server invalid</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Servidor STUN inválido</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="353"/>
@@ -89,7 +89,7 @@
         <location filename="../src/account.cpp" line="359"/>
         <source>Request timeout</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>A requisição excedeu o tempo limite</translation>
     </message>
 </context>
 <context>
@@ -1247,12 +1247,12 @@
     <message>
         <location filename="../src/api/call.h" line="78"/>
         <source>Timeout</source>
-        <translation type="unfinished"/>
+        <translation>Tempo esgotado</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="80"/>
         <source>Peer busy</source>
-        <translation type="unfinished"/>
+        <translation>Pessoa ocupada</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="84"/>
@@ -1391,50 +1391,50 @@
         <translation>Coleção de Perfis de pares</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1267"/>
-        <location filename="../src/conversationmodel.cpp" line="1633"/>
-        <location filename="../src/conversationmodel.cpp" line="1885"/>
+        <location filename="../src/conversationmodel.cpp" line="1264"/>
+        <location filename="../src/conversationmodel.cpp" line="1630"/>
+        <location filename="../src/conversationmodel.cpp" line="1884"/>
         <source>Invitation received</source>
         <translation>Convite recebido</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1268"/>
+        <location filename="../src/conversationmodel.cpp" line="1265"/>
         <source>Contact added</source>
         <translation>Contato adicionado</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1303"/>
-        <location filename="../src/conversationmodel.cpp" line="1310"/>
+        <location filename="../src/conversationmodel.cpp" line="1300"/>
+        <location filename="../src/conversationmodel.cpp" line="1307"/>
         <source>Invitation accepted</source>
         <translation>Convite aceito</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1519"/>
+        <location filename="../src/conversationmodel.cpp" line="1516"/>
         <source>ð Outgoing call</source>
         <translation>ð Chamada efetuada</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1521"/>
+        <location filename="../src/conversationmodel.cpp" line="1518"/>
         <source>ð Incoming call</source>
         <translation>ð Chamada recebida</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1534"/>
+        <location filename="../src/conversationmodel.cpp" line="1531"/>
         <source>ð Outgoing call - </source>
         <translation>ð Chamada efetuada - </translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1537"/>
+        <location filename="../src/conversationmodel.cpp" line="1534"/>
         <source>ð Incoming call - </source>
         <translation>ð Chamada recebida - </translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1541"/>
+        <location filename="../src/conversationmodel.cpp" line="1538"/>
         <source>ð½ Missed outgoing call</source>
         <translation>ð½ Chamada efetuada não atendida</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1543"/>
+        <location filename="../src/conversationmodel.cpp" line="1540"/>
         <source>ð½ Missed incoming call</source>
         <translation>ð½ Chamada recebida não atendida</translation>
     </message>
