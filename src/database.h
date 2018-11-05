@@ -33,7 +33,7 @@
 namespace lrc
 {
 
-static constexpr auto VERSION = "1";
+static constexpr auto VERSION = "1.1";
 static constexpr auto NAME = "ring.db";
 
 /**
@@ -235,6 +235,11 @@ private:
     void migrateLocalProfiles();
     void migratePeerProfiles();
     void migrateTextHistory();
+    void migrateIfNeeded();
+    float  getVersion();
+    void migrateFromVersion(float version);
+    void migrateSchemaFromVersion1();
+    bool columnExist(const std::string& tableName, const std::string& columnName);
 
     QSqlDatabase db_;
 };
