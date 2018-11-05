@@ -1,8 +1,9 @@
 /****************************************************************************
- *   Copyright (C) 2017-2018 Savoir-faire Linux                                  *
+ *   Copyright (C) 2017-2018 Savoir-faire Linux                             *
  *   Author: Nicolas Jäger <nicolas.jager@savoirfairelinux.com>             *
  *   Author: Sébastien Blin <sebastien.blin@savoirfairelinux.com>           *
  *   Author: Guillaume Roguez <guillaume.roguez@savoirfairelinux.com>       *
+ *   Author: Kateryna Kostiuk <kateryna.kostiuk@savoirfairelinux.com>       *
  *                                                                          *
  *   This library is free software; you can redistribute it and/or          *
  *   modify it under the terms of the GNU Lesser General Public             *
@@ -45,6 +46,7 @@
 #include "account.h"
 #include "accountmodel.h"
 #include "private/vcardutils.h"
+#include <account_const.h>
 
 namespace lrc
 {
@@ -89,6 +91,8 @@ Database::Database()
         }
         // NOTE: the migration can take some time.
         migrateOldFiles();
+    } else {
+        migrateIfNeeded();
     }
 }
 
@@ -102,11 +106,11 @@ Database::createTables()
 {
     QSqlQuery query;
 
-    auto tableProfiles = "CREATE TABLE profiles (id INTEGER PRIMARY KEY,\
-                                                 uri TEXT NOT NULL,     \
-                                                 alias TEXT,            \
-                                                 photo TEXT,            \
-                                                 type TEXT,             \
+    auto tableProfiles = "CREATE TABLE profiles (id INTEGER PRIMARY KEY,  \
+                                                 uri TEXT NOT NULL,       \
+                                                 alias TEXT,              \
+                                                 photo TEXT,              \
+                                                 type TEXT,               \
                                                  status TEXT)";
 
     auto tableConversations = "CREATE TABLE conversations (id INTEGER,\
@@ -125,6 +129,11 @@ Database::createTables()
                                                          FOREIGN KEY(account_id) REFERENCES profiles(id), \
                                                          FOREIGN KEY(author_id) REFERENCES profiles(id), \
                                                          FOREIGN KEY(conversation_id) REFERENCES conversations(id))";
+
+     auto tableProfileAccounts = "CREATE TABLE profiles_accounts (profile_id INTEGER NOT NULL,                    \
+                                                                 account_id TEXT NOT NULL,                        \
+                                                                 is_account TEXT,                                 \
+                                                                 FOREIGN KEY(profile_id) REFERENCES profiles(id))";
     // add profiles table
     if (not db_.tables().contains("profiles", Qt::CaseInsensitive)
         and not query.exec(tableProfiles)) {
@@ -143,7 +152,55 @@ Database::createTables()
             throw QueryError(query);
     }
 
+    // add profiles accounts table
+    if (not db_.tables().contains("profiles_accounts", Qt::CaseInsensitive)
+        and not query.exec(tableProfileAccounts)) {
+            throw QueryError(query);
+    }
+
     storeVersion(VERSION);
+}
+
+void
+Database::migrateIfNeeded()
+{
+    try {
+        std::string currentVersion = getVersion();
+        if (currentVersion == VERSION) {
+            return;
+        }
+        QSqlDatabase::database().transaction();
+        migrateFromVersion(currentVersion);
+        storeVersion(VERSION);
+        QSqlDatabase::database().commit();
+    } catch (QueryError& e) {
+        QSqlDatabase::database().rollback();
+        throw std::runtime_error("Could not correctly migrate the database");
+    }
+}
+
+void
+Database::migrateFromVersion(const std::string& currentVersion)
+{
+    if (currentVersion == "1") {
+        migrateSchemaFromVersion1();
+    }
+}
+
+void
+Database::migrateSchemaFromVersion1()
+{
+    QSqlQuery query;
+    auto tableProfileAccounts = "CREATE TABLE profiles_accounts (profile_id INTEGER NOT NULL,                     \
+                                                                 account_id TEXT NOT NULL,                        \
+                                                                 is_account TEXT,                                 \
+                                                                 FOREIGN KEY(profile_id) REFERENCES profiles(id))";
+    // add profiles accounts table
+    if (not db_.tables().contains("profiles_accounts", Qt::CaseInsensitive)
+        and not query.exec(tableProfileAccounts)) {
+            throw QueryError(query);
+    }
+    linkRingProfilesWithAccounts(false);
 }
 
 void
@@ -155,6 +212,17 @@ Database::storeVersion(const std::string& version)
 
     if (not query.exec(storeVersionQuery.c_str()))
         throw QueryError(query);
+}
+
+std::string
+Database::getVersion()
+{
+    QSqlQuery query;
+    auto getVersionQuery = std::string("pragma user_version");
+    if (not query.exec(getVersionQuery.c_str()))
+        throw QueryError(query);
+        query.first();
+    return  query.value(0).toString().toStdString();
 }
 
 int
@@ -387,6 +455,7 @@ Database::migrateOldFiles()
     migrateLocalProfiles();
     migratePeerProfiles();
     migrateTextHistory();
+    linkRingProfilesWithAccounts(true);
     // NOTE we don't remove old files for now.
 }
 
@@ -418,6 +487,7 @@ Database::migrateLocalProfiles()
             if (!account) continue;
             auto type = account->protocol() == Account::Protocol::RING ? "RING" : "SIP";
             auto uri = account->username();
+            auto accountId = account->id();
             // Remove the ring: from the username because account uri is stored without "ring:" in the database
             if (uri.startsWith("ring:")) {
                 uri = uri.mid(std::string("ring:").size());
@@ -430,6 +500,20 @@ Database::migrateLocalProfiles()
                            {{":uri", uri.toStdString()}, {":alias", alias.toStdString()},
                            {":photo", avatar.toStdString()}, {":type", type},
                            {":status", "TRUSTED"}});
+                auto profileIds = select("id", "profiles","uri=:uri",
+                {{":uri", uri.toStdString()}}).payloads;
+                if (!profileIds.empty() && select("profile_id", "profiles_accounts",
+                "account_id=:account_id AND is_account=:is_account",
+                {{":account_id", accountId.toStdString()},
+                {":is_account", "true"}}).payloads.empty()) {
+                      insertInto("profiles_accounts",
+                                 {{":profile_id", "profile_id"},
+                                 {":account_id", "account_id"},
+                                 {":is_account", "is_account"}},
+                                 {{":profile_id", profileIds[0]},
+                                 {":account_id", accountId.toStdString()},
+                                 {":is_account", "true"}});
+                }
             }
         }
     }
@@ -537,6 +621,25 @@ Database::migrateTextHistory()
                     qDebug() << "Can't find profile for URI: " << peersObject["uri"].toString() << ". Ignore this file.";
                 } else {
                     auto contactId = contactIds[0];
+                    // link profile id to account id
+                    auto profiles = select("profile_id", "profiles_accounts",
+                                            "profile_id=:profile_id AND \
+                                            account_id=:account_id AND  \
+                                            is_account=:is_account",
+                                            {{":profile_id", contactId},
+                                            {":account_id", peersObject["accountId"].toString().toStdString()},
+                                            {":is_account", "false"}})
+                                            .payloads;
+
+                    if (profiles.empty()) {
+                         insertInto("profiles_accounts",
+                                    {{":profile_id", "profile_id"},
+                                    {":account_id", "account_id"},
+                                    {":is_account", "is_account"}},
+                                    {{":profile_id", contactId},
+                                    {":account_id", peersObject["accountId"].toString().toStdString()},
+                                    {":is_account", "false"}});
+                    }
                     auto accountId = accountIds[0];
                     auto newConversationsId = select("IFNULL(MAX(id), 0) + 1",
                                                         "conversations",
@@ -580,6 +683,106 @@ Database::migrateTextHistory()
                 }
             } else {
                 qWarning() << "Text recording file is empty";
+            }
+        }
+    }
+}
+
+void
+Database::updateProfileAccountForContact(const std::string& contactURI,
+                                         const std::string& accountId)
+{
+    auto profileIds = select("id", "profiles","uri=:uri",
+                             {{":uri", contactURI}})
+                             .payloads;
+    if (profileIds.empty()) {
+        return;
+    }
+    auto rows = select("profile_id", "profiles_accounts",
+    "account_id=:account_id AND is_account=:is_account", {{":account_id", accountId},
+    {":is_account", "false"}}).payloads;
+    if (std::find(rows.begin(), rows.end(), profileIds[0]) == rows.end()) {
+        insertInto("profiles_accounts",
+                   {{":profile_id", "profile_id"}, {":account_id", "account_id"},
+                   {":is_account", "is_account"}},
+                   {{":profile_id", profileIds[0]}, {":account_id", accountId},
+                   {":is_account", "false"}});
+    }
+}
+
+void
+Database::linkRingProfilesWithAccounts(bool contactsOnly)
+{
+    const QStringList accountIds =
+    ConfigurationManager::instance().getAccountList();
+    for (auto accountId : accountIds) {
+        MapStringString account = ConfigurationManager::instance().
+        getAccountDetails(accountId.toStdString().c_str());
+        auto accountURI = account[DRing::Account::ConfProperties::USERNAME].contains("ring:") ?
+        account[DRing::Account::ConfProperties::USERNAME]
+       .toStdString().substr(std::string("ring:").size()) :
+       account[DRing::Account::ConfProperties::USERNAME].toStdString();
+        auto profileIds = select("id", "profiles","uri=:uri", {{":uri", accountURI}}).payloads;
+        if(profileIds.empty()) {
+            continue;
+        }
+        if(!contactsOnly) {
+            //if is_account is true we should have only one profile id for account id
+             if (select("profile_id", "profiles_accounts",
+                        "account_id=:account_id AND is_account=:is_account",
+                        {{":account_id", accountId.toStdString()},
+                        {":is_account", "true"}}).payloads.empty()) {
+                            insertInto("profiles_accounts",
+                            {{":profile_id", "profile_id"}, {":account_id", "account_id"},
+                            {":is_account", "is_account"}},
+                            {{":profile_id", profileIds[0]}, {":account_id", accountId.toStdString()},
+                            {":is_account", "true"}});
+             }
+        }
+
+        if (account[DRing::Account::ConfProperties::TYPE] == DRing::Account::ProtocolNames::RING) {
+
+            // update RING contacts
+            const VectorMapStringString& contacts_vector = ConfigurationManager::instance()
+           .getContacts(accountId.toStdString().c_str());
+            //update contacts profiles
+            for (auto contact_info : contacts_vector) {
+                auto contactURI = contact_info["id"];
+                updateProfileAccountForContact(contactURI.toStdString(), accountId.toStdString());
+            }
+            //update pending contacts profiles
+            const VectorMapStringString& pending_tr = ConfigurationManager::instance()
+            .getTrustRequests(accountId.toStdString().c_str());
+            for (auto tr_info : pending_tr) {
+                auto contactURI = tr_info[DRing::Account::TrustRequest::FROM];
+                updateProfileAccountForContact(contactURI.toStdString(), accountId.toStdString());
+            }
+        } else if (account[DRing::Account::ConfProperties::TYPE] == DRing::Account::ProtocolNames::SIP) {
+            // update SIP contacts
+            auto conversations = select("id", "conversations",
+                                        "participant_id=:participant_id",
+                                        {{":participant_id", profileIds[0]}}).payloads;
+            for (const auto& c : conversations) {
+                auto otherParticipants = select("participant_id","conversations",
+                                                "id=:id AND participant_id!=:participant_id",
+                                                {{":id", c}, {":participant_id", profileIds[0]}})
+                                                .payloads;
+                for (const auto& participant: otherParticipants) {
+                    auto rows = select("profile_id", "profiles_accounts",
+                                       "profile_id=:profile_id AND \
+                                        account_id=:account_id AND  \
+                                        is_account=:is_account",
+                                        {{":profile_id", participant},
+                                        {":account_id", accountId.toStdString()},
+                                        {":is_account", "false"}}).payloads;
+                    if (rows.empty()) {
+                        insertInto("profiles_accounts",
+                        {{":profile_id", "profile_id"}, {":account_id", "account_id"},
+                        {":is_account", "is_account"}},
+                        {{":profile_id", participant}, {":account_id", accountId.toStdString()},
+                        {":is_account", "false"}});
+                    }
+                }
             }
         }
     }
