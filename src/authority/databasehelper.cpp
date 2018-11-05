@@ -39,6 +39,20 @@ getProfileId(Database& db, const std::string& uri)
 }
 
 std::string
+getProfileId(Database& db,
+             const std::string& uri,
+             const std::string& accountId,
+             const std::string& type)
+{
+    auto ids = db.select("id", "profiles",
+                                     "account_id=:account_id AND uri=:uri",
+                                     {{":account_id", accountId},
+                                     {":uri", uri}}).payloads;
+    // SIP profile may not have account ID. In this case search by uri
+    return !ids.empty() ? ids[0] : (type != DRing::Account::ProtocolNames::SIP) ? "" : getProfileId(db, uri);
+}
+
+std::string
 getOrInsertProfile(Database& db,
                    const std::string& contactUri,
                    const std::string& alias,
@@ -78,6 +92,50 @@ getOrInsertProfile(Database& db,
                      "uri=:uri", {{":uri", contactUri}});
        }
        return profileAlreadyExists.payloads[0];
+    }
+}
+
+std::string
+getOrInsertProfile(Database& db,
+                   const std::string& contactUri,
+                   const std::string& accountId,
+                   bool  isAccount,
+                   const std::string& alias,
+                   const std::string& avatar,
+                   const std::string& type)
+{
+    // Check if profile is already present.
+    //for account profile we could have only one row with the given accountID
+    // and for contact profiles could be few so need te check uri in addition
+    auto profileAlreadyExists = getProfileId(db, contactUri, accountId, type);
+    if (profileAlreadyExists.empty()) {
+       // Doesn't exists, add profile to the database
+       auto row = db.insertInto("profiles",
+       {{":uri", "uri"}, {":alias", "alias"}, {":photo", "photo"}, {":type", "type"},
+       {":status", "status"}, {":account_id", "account_id"}, {":is_account", "is_account"}},
+       {{":uri", contactUri}, {":alias", alias}, {":photo", avatar}, {":type", type},
+       {":status", "TRUSTED"}, {":account_id", accountId}, {":is_account", isAccount ? "true" : "false"}});
+
+       if (row == -1) {
+           qDebug() << "contact not added to the database";
+           return "";
+       }
+
+       return std::to_string(row);
+    } else {
+       // Exists, update and retrieve it.
+       if (!avatar.empty() && !alias.empty()) {
+           db.update("profiles",
+                     "alias=:alias, photo=:photo",
+                     {{":alias", alias}, {":photo", avatar}},
+                     "uri=:uri", {{":uri", contactUri}});
+       } else if (!avatar.empty()) {
+           db.update("profiles",
+                     "photo=:photo",
+                     {{":photo", avatar}},
+                     "uri=:uri", {{":uri", contactUri}});
+       }
+       return profileAlreadyExists;
     }
 }
 
@@ -125,6 +183,19 @@ getAliasForProfileId(Database& db, const std::string& profileId)
       return payloads[0];
     }
     return "";
+}
+
+bool
+isProfileForAccount(Database& db, const std::string& profileId)
+{
+    auto returnFromDb = db.select("is_account",
+                                  "profiles",
+                                  "id=:id",
+                                  {{":id", profileId}});
+    if (returnFromDb.nbrOfCols == 1 && returnFromDb.payloads.size() >= 1) {
+      auto payloads = returnFromDb.payloads;
+      return payloads[0] == "NULL" ? false : payloads[0] == "false" ? false : true;
+    }
 }
 
 void
@@ -252,7 +323,7 @@ addDataTransferToConversation(Database& db,
                               const std::string& conversationId,
                               const api::datatransfer::Info& infoFromDaemon)
 {
-    auto peerProfileId = getProfileId(db, infoFromDaemon.peerUri);
+    auto peerProfileId = getProfileId(db, infoFromDaemon.peerUri, infoFromDaemon.accountId, "RING");
 
     return db.insertInto("interactions", {
             {":account_id", "account_id"},
@@ -386,6 +457,17 @@ void clearAllHistoryFor(Database& db, const std::string& accountUri)
     db.deleteFrom("interactions", "account_id=:account_id", {{":account_id", accountId[0]}});
 }
 
+void clearAllHistoryFor(Database& db, const std::string& accountUri,
+                        const std::string& accountId, const std::string& type)
+{
+    auto profileId = getProfileId(db, accountUri, accountId, type);
+
+    if (profileId.empty())
+        return;
+
+    db.deleteFrom("interactions", "account_id=:account_id", {{":account_id", profileId}});
+}
+
 void
 removeContact(Database& db, const std::string& accountUri, const std::string& contactUri)
 {
@@ -411,6 +493,32 @@ removeContact(Database& db, const std::string& accountUri, const std::string& co
 }
 
 void
+removeContact(Database& db, const std::string& accountUri,
+              const std::string& contactUri, const std::string& accountId, const std::string& type)
+{
+    // Get profile for contact
+    auto contactId = getProfileId(db, contactUri, accountId, type);
+    if (contactId.empty()) return; // No profile
+    auto accountProfileId = getProfileId(db, accountUri, accountId, type);
+    // Get common conversations
+    auto conversations = getConversationsBetween(db, accountProfileId, contactId);
+    // Remove conversations + interactions
+    for (const auto& conversationId: conversations) {
+        // Remove conversation
+        db.deleteFrom("conversations", "id=:id", {{":id", conversationId}});
+        // clear History
+        db.deleteFrom("interactions", "conversation_id=:id", {{":id", conversationId}});
+    }
+    // Get conversations for this contact.
+    conversations = getConversationsForProfile(db, contactId);
+    if (conversations.empty()) {
+        // Delete profile
+        if (!isProfileForAccount(db, contactId))
+        db.deleteFrom("profiles", "id=:id", {{":id", contactId}});
+    }
+}
+
+void
 removeAccount(Database& db, const std::string& accountUri)
 {
     auto accountProfileId = database::getProfileId(db, accountUri);
@@ -430,6 +538,26 @@ removeAccount(Database& db, const std::string& accountUri)
 }
 
 void
+removeAccount(Database& db, const std::string& accountUri, const std::string& accountId, const std::string& type)
+{
+    auto accountProfileId = database::getProfileId(db, accountUri, accountId, type);
+    auto conversationsForAccount = getConversationsForProfile(db, accountProfileId);
+    for (const auto& convId: conversationsForAccount) {
+        auto peers = getPeerParticipantsForConversation(db, accountProfileId, convId);
+        db.deleteFrom("conversations", "id=:id", {{":id", convId}});
+        db.deleteFrom("interactions", "conversation_id=:id", {{":id", convId}});
+        for (const auto& peerId: peers) {
+            auto otherConversationsForProfile = getConversationsForProfile(db, peerId);
+            if (otherConversationsForProfile.empty()) {
+                if (!isProfileForAccount(db, peerId))
+                    db.deleteFrom("profiles", "id=:id", {{":id", peerId}});
+            }
+        }
+    }
+    db.deleteFrom("profiles", "id=:id", {{":id", accountProfileId}});
+}
+
+void
 addContact(Database& db, const std::string& accountUri, const std::string& contactUri)
 {
     // Get profile for contact
@@ -440,6 +568,26 @@ addContact(Database& db, const std::string& accountUri, const std::string& conta
     }
     // Get profile of the account linked
     auto accountProfileId = getProfileId(db, accountUri);
+    // Get if conversation exists
+    auto common = getConversationsBetween(db, accountProfileId, row);
+    if (common.empty()) {
+        // conversations doesn't exists, start it.
+        beginConversationsBetween(db, accountProfileId, row);
+    }
+}
+
+void
+addContact(Database& db, const std::string& accountUri,
+           const std::string& contactUri, const std::string& accountId, const std::string& type)
+{
+    // Get profile for contact
+    auto row = getOrInsertProfile(db, contactUri, accountId, false, "", "", type);
+    if (row.empty()) {
+        qDebug() << "database::addContact, no profile for contact. abort";
+        return;
+    }
+    // Get profile of the account linked
+    auto accountProfileId = getProfileId(db, accountUri, accountId, type);
     // Get if conversation exists
     auto common = getConversationsBetween(db, accountProfileId, row);
     if (common.empty()) {

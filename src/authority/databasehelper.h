@@ -49,6 +49,21 @@ namespace database
 std::string getProfileId(Database& db, const std::string& uri);
 
 /**
+ * Get id from database for a given uri
+ * @param db
+ * @param uri
+ * @param accountId
+ * @param type
+ * @param isAccount
+ * @return the id
+ * @note "" if no id
+ */
+std::string getProfileId(Database& db,
+            const std::string& uri,
+            const std::string& accountId,
+            const std::string& type);
+
+/**
  * Get id for a profile. If the profile doesn't exist, create it.
  * @param db
  * @param contactUri
@@ -61,6 +76,24 @@ std::string getOrInsertProfile(Database& db,
                                const std::string& alias = "",
                                const std::string& avatar = "",
                                const std::string& type = "INVALID");
+
+ /**
+ * Get id for a profile. If the profile doesn't exist, create it.
+ * @param db
+ * @param contactUri
+ * @param accountId
+ * @param isAccount
+ * @param alias
+ * @param avatar
+ * @return the id
+ */
+ std::string getOrInsertProfile(Database& db,
+                                const std::string& contactUri,
+                                const std::string& accountId,
+                                bool  isAccount,
+                                const std::string& alias = "",
+                                const std::string& avatar = "",
+                                const std::string& type = "INVALID");
 
 /**
  * Get conversations for a given profile.
@@ -87,6 +120,13 @@ std::vector<std::string> getPeerParticipantsForConversation(Database& db,
  * @return the avatar in the database for a profile
  */
 std::string getAvatarForProfileId(Database& db, const std::string& profileId);
+
+/**
+ * @param  db
+ * @param  profileId
+ * @check if the profile is for an account
+ */
+bool isProfileForAccount(Database& db, const std::string& profileId);
 
 /**
  * @param  db
@@ -239,6 +279,16 @@ void clearInteractionFromConversation(Database& db,
 void clearAllHistoryFor(Database& db, const std::string& accountUri);
 
 /**
+ * Clear all history stored in the database for the account uri
+ * @param  db
+ * @param accountUri
+ * @param accountId
+ * @param type
+ */
+void clearAllHistoryFor(Database& db, const std::string& accountUri,
+                        const std::string& accountId, const std::string& type);
+
+/**
  * delete obsolete histori from the database
  * @param db
  * @param date in second since epoch. Below this date, interactions will be deleted
@@ -254,11 +304,32 @@ void deleteObsoleteHistory(Database& db, long int date);
 void removeContact(Database& db, const std::string& accountUri, const std::string& contactUri);
 
 /**
+ * Remove a conversation between an account and a contact. Remove corresponding entries in
+ * the conversations table and profiles if the profile is not present in conversations.
+ * @param db
+ * @param contactUri
+ * @param accountId
+ * @param type
+ */
+void removeContact(Database& db, const std::string& accountUri,
+                   const std::string& contactUri, const std::string& accountId,
+                   const std::string& type);
+
+/**
  * Remove from conversations and profiles linked to an account.
  * @param db
  * @param accountUri
  */
 void removeAccount(Database& db, const std::string& accountUri);
+/**
+ * Remove from conversations and profiles linked to an account.
+ * @param db
+ * @param accountUri
+ * @param accountId
+ * @param type
+ */
+void removeAccount(Database& db, const std::string& accountUri,
+                   const std::string& accountId, const std::string& type);
 
 /**
  * insert into profiles and conversations.
@@ -267,6 +338,17 @@ void removeAccount(Database& db, const std::string& accountUri);
  * @param contactUri
  */
 void addContact(Database& db, const std::string& accountUri, const std::string& contactUri);
+/**
+ * insert into profiles and conversations.
+ * @param db
+ * @param accountUri
+ * @param contactUri
+ * @param accountId
+ * @param type
+ */
+void addContact(Database& db, const std::string& accountUri,
+                const std::string& contactUri, const std::string& accountId,
+                const std::string& type);
 
 /**
  * count number of 'UNREAD' from 'interactions' table.
