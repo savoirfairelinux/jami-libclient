@@ -1713,7 +1713,9 @@ void CallPrivate::sendProfile()
     std::string alias = "";
     if (dbfile.good()) {
         lrc::Database db;
-        auto accountProfileId = lrc::authority::database::getOrInsertProfile(db, uri);
+        auto accountProfileId = lrc::authority::database::getOrInsertProfile(db, uri,
+        m_Account->id().toStdString(), true, 
+        m_Account->protocol() == Account::Protocol::RING ? "RING" : "SIP");
         // Retrieve avatar from database
         photo = lrc::authority::database::getAvatarForProfileId(db, accountProfileId);
         alias = lrc::authority::database::getAliasForProfileId(db, accountProfileId);
