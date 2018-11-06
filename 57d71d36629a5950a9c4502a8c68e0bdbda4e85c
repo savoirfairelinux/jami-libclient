@@ -330,6 +330,30 @@
     },
     {
       "key": {
+        "uuid": "4a8feb73_cfbfc2a3",
+        "filename": "src/avmodel.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 438,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2018-11-06T21:25:49Z",
+      "side": 1,
+      "message": "The wait is already done in Renderer::quit() :)",
+      "parentUuid": "0c5fa0de_e7268a88",
+      "range": {
+        "startLine": 438,
+        "startChar": 4,
+        "endLine": 438,
+        "endChar": 29
+      },
+      "revId": "57d71d36629a5950a9c4502a8c68e0bdbda4e85c",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "51a9b6d4_0c585a04",
         "filename": "src/newvideo.cpp",
         "patchSetId": 10
@@ -388,6 +412,30 @@
       "side": 1,
       "message": "It\u0027s not the same Frame (one is from the old LRC, the other from my .h). For now I don\u0027t know what will be the final format so, I do a dumb copy.",
       "parentUuid": "5683e827_56b8c132",
+      "range": {
+        "startLine": 116,
+        "startChar": 0,
+        "endLine": 121,
+        "endChar": 31
+      },
+      "revId": "57d71d36629a5950a9c4502a8c68e0bdbda4e85c",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b7d69d24_cbd52807",
+        "filename": "src/newvideo.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2018-11-06T21:25:49Z",
+      "side": 1,
+      "message": "btw it\u0027s not a pointer, for now, I\u0027ll let this as is.",
+      "parentUuid": "6ded9062_1ad5b555",
       "range": {
         "startLine": 116,
         "startChar": 0,
