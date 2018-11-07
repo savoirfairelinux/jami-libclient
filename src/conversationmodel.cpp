@@ -1953,15 +1953,15 @@ ConversationModelPimpl::slotTransferStatusAwaitingHost(long long dringId, datatr
         if (emitUpdated) {
             dirtyConversations = {true, true};
             emit linked.interactionStatusUpdated(convId, interactionId, itCopy);
-            // If it's  an image < 20 Mb, accept transfer.
+            // If it's an accepted file type and less than 20 MB, accept transfer.
             auto extensionIdx = info.displayName.find_last_of(".");
             if (extensionIdx == std::string::npos) return;
             auto extension = info.displayName.substr(extensionIdx);
             std::transform(extension.begin(), extension.end(), extension.begin(), ::tolower);
-            auto imageExtensions = {".gif", ".jpg", ".jpeg", ".png"};
-            auto isImage = std::find(imageExtensions.begin(), imageExtensions.end(), extension) != imageExtensions.end();
+            auto fileExtensions = {".gif", ".jpg", ".jpeg", ".png", ".webp", ".ogg", ".mp3", ".wav", ".flac", ".webm", ".mp4", ".mkv"};
+            auto isAutoAccepted = std::find(fileExtensions.begin(), fileExtensions.end(), extension) != fileExtensions.end();
             auto destinationDir = lrc.getDataTransferModel().downloadDirectory;
-            if (info.totalSize < 20 * 1024 * 1024 && isImage && !destinationDir.empty()) {
+            if (info.totalSize < 20 * 1024 * 1024 && isAutoAccepted && !destinationDir.empty()) {
                 auto wantedFilename = destinationDir + info.displayName;
                 auto duplicate = 0;
                 while (std::ifstream(wantedFilename).good()) {
