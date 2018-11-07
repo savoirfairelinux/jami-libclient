@@ -1965,8 +1965,8 @@ ConversationModelPimpl::slotTransferStatusAwaitingHost(long long dringId, datatr
                 auto wantedFilename = destinationDir + info.displayName;
                 auto duplicate = 0;
                 while (std::ifstream(wantedFilename).good()) {
-                    wantedFilename = destinationDir + "(" + std::to_string(duplicate) + ")" + info.displayName;
                     ++duplicate;
+                    wantedFilename = destinationDir + info.displayName.substr(0, extensionIdx) + " (" + std::to_string(duplicate) + ")" + extension;
                 }
                 acceptTransfer(convId, interactionId, wantedFilename);
             }
