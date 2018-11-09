@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8fb567cc_c5bcd1f3",
+        "filename": "src/newvideo.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 225
+      },
+      "writtenOn": "2018-11-09T21:37:57Z",
+      "side": 1,
+      "message": "#include \u003cmutex\u003e to compile on macos",
+      "range": {
+        "startLine": 53,
+        "startChar": 9,
+        "endLine": 53,
+        "endChar": 14
+      },
+      "revId": "531103d003117b4a8732bb3eb9a28b7aaa170a9f",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bebb247c_20c8df0e",
+        "filename": "src/newvideo.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 225
+      },
+      "writtenOn": "2018-11-09T21:37:57Z",
+      "side": 1,
+      "message": "QString::fromStdString(pimpl_-\u003eid_)",
+      "range": {
+        "startLine": 84,
+        "startChar": 48,
+        "endLine": 84,
+        "endChar": 59
+      },
+      "revId": "531103d003117b4a8732bb3eb9a28b7aaa170a9f",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    }
+  ]
+}
