@@ -1,0 +1,107 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "80ce16b8_31c5afd3",
+        "filename": "src/authority/databasehelper.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2018-11-10T19:20:31Z",
+      "side": 1,
+      "message": "#include \u003caccount_const.h\u003e Or this will not work (DRing::Account)",
+      "revId": "431b1ac3325e6af840721d8ecdce2d9862463f3c",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1abb4e8e_60b3aa6a",
+        "filename": "src/database.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2018-11-10T19:20:31Z",
+      "side": 1,
+      "message": "#include \u003caccount_const.h\u003e here too",
+      "revId": "431b1ac3325e6af840721d8ecdce2d9862463f3c",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c4814941_641e996c",
+        "filename": "src/database.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 166,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2018-11-10T19:20:31Z",
+      "side": 1,
+      "message": "Warning, currentVersion is a float ! (So, dangerous for the \u003d\u003d too)",
+      "range": {
+        "startLine": 166,
+        "startChar": 8,
+        "endLine": 166,
+        "endChar": 11
+      },
+      "revId": "431b1ac3325e6af840721d8ecdce2d9862463f3c",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2f9972d1_6e2224d6",
+        "filename": "src/database.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 724,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2018-11-10T19:20:31Z",
+      "side": 1,
+      "message": "AAA is nice, but here we can\u0027t really do that due to dbus. Please replace auto by MapStringString here for the linux version.",
+      "range": {
+        "startLine": 724,
+        "startChar": 8,
+        "endLine": 724,
+        "endChar": 12
+      },
+      "revId": "431b1ac3325e6af840721d8ecdce2d9862463f3c",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4f3d0f31_01c00013",
+        "filename": "src/database.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 740,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2018-11-10T19:20:31Z",
+      "side": 1,
+      "message": "Also lot of trailing spaces to remove. No big deal",
+      "range": {
+        "startLine": 740,
+        "startChar": 76,
+        "endLine": 740,
+        "endChar": 77
+      },
+      "revId": "431b1ac3325e6af840721d8ecdce2d9862463f3c",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    }
+  ]
+}
