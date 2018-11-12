@@ -184,6 +184,24 @@
     },
     {
       "key": {
+        "uuid": "f7e41759_c6fba9a7",
+        "filename": "src/authority/databasehelper.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 260,
+      "author": {
+        "id": 225
+      },
+      "writtenOn": "2018-11-12T20:08:00Z",
+      "side": 1,
+      "message": "It will generate a new profile for a SIP account that is already created with db version 1. With  new accounts created after updating db it should be fine.",
+      "parentUuid": "c0a23019_10ac3013",
+      "revId": "431b1ac3325e6af840721d8ecdce2d9862463f3c",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "9dc6c8fb_1d440859",
         "filename": "src/call.cpp",
         "patchSetId": 14
