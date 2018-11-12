@@ -41,31 +41,31 @@
         <location filename="../src/account.cpp" line="335"/>
         <source>Not registered</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Niet geregistreerd</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="339"/>
         <source>Tryingâ¦</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Proberen</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="343"/>
         <source>Authentication failed</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Authenticatie mislukt</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="349"/>
         <source>STUN configuration error</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>STUN-configuratiefout</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="351"/>
         <source>STUN server invalid</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>STUN-server ongeldig</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="353"/>
@@ -89,7 +89,7 @@
         <location filename="../src/account.cpp" line="359"/>
         <source>Request timeout</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Aanvraag time-out</translation>
     </message>
 </context>
 <context>
@@ -664,7 +664,7 @@
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="307"/>
         <source>UID</source>
-        <translation type="unfinished"/>
+        <translation>UID</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="307"/>
@@ -935,7 +935,7 @@
     <message>
         <location filename="../src/certificate.cpp" line="104"/>
         <source>Public key ID</source>
-        <translation type="unfinished"/>
+        <translation>Openbare sleutel-ID</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="105"/>
@@ -1247,12 +1247,12 @@
     <message>
         <location filename="../src/api/call.h" line="78"/>
         <source>Timeout</source>
-        <translation type="unfinished"/>
+        <translation>Time-out</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="80"/>
         <source>Peer busy</source>
-        <translation type="unfinished"/>
+        <translation>Contact is bezig</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="84"/>
@@ -1499,22 +1499,22 @@
     <message>
         <location filename="../src/contactmodel.cpp" line="392"/>
         <source>Searchingâ¦</source>
-        <translation type="unfinished"/>
+        <translation>Zoeken</translation>
     </message>
     <message>
         <location filename="../src/contactmodel.cpp" line="723"/>
         <source>Invalid ringID</source>
-        <translation type="unfinished"/>
+        <translation>Ongeldige ring-ID</translation>
     </message>
     <message>
         <location filename="../src/contactmodel.cpp" line="726"/>
         <source>Not found</source>
-        <translation type="unfinished"/>
+        <translation>Niet gevonden</translation>
     </message>
     <message>
         <location filename="../src/contactmodel.cpp" line="729"/>
         <source>Couldn&apos;t lookupâ¦</source>
-        <translation type="unfinished"/>
+        <translation>Kan niet opzoeken</translation>
     </message>
 </context>
 <context>
@@ -1522,7 +1522,7 @@
     <message>
         <location filename="../src/contactmodel.cpp" line="363"/>
         <source>Bad URI scheme</source>
-        <translation type="unfinished"/>
+        <translation>Slecht URI schema</translation>
     </message>
 </context>
 <context>
