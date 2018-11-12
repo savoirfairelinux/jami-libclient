@@ -220,6 +220,24 @@
     },
     {
       "key": {
+        "uuid": "6232e88e_b39e1973",
+        "filename": "src/authority/databasehelper.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 260,
+      "author": {
+        "id": 225
+      },
+      "writtenOn": "2018-11-12T20:21:56Z",
+      "side": 1,
+      "message": "If user have SIP account with Ring db version 1\n- update Ring client and have db version 1.1\n- change URI for SIP account\nNew profile will be generated\nIf user create a SIP account with Ring db version 1.1 and than change URI new profile would not generated",
+      "parentUuid": "78803a45_78b67139",
+      "revId": "431b1ac3325e6af840721d8ecdce2d9862463f3c",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "9dc6c8fb_1d440859",
         "filename": "src/call.cpp",
         "patchSetId": 14
