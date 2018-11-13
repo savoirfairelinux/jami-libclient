@@ -27,6 +27,7 @@
 #include <thread>
 #include <string>
 #include <sstream>
+#include <iostream>
 
 // Qt
 #include <QtCore/QStandardPaths>
@@ -473,6 +474,47 @@ AVModelPimpl::AVModelPimpl(AVModel& linked, const CallbacksHandler& callbacksHan
             this, &AVModelPimpl::stoppedDecoding);
     connect(&callbacksHandler, &CallbacksHandler::callStateChanged,
             this, &AVModelPimpl::slotCallStateChanged);
+
+    auto startedPreview = false;
+    QStringList callList = CallManager::instance().getCallList();
+    for (const auto& callId : callList)
+    {
+        MapStringString rendererInfos = VideoManager::instance().
+            getRenderer(callId);
+        auto shmPath = rendererInfos[DRing::Media::Details::SHM_PATH].toStdString();
+        auto width = rendererInfos[DRing::Media::Details::WIDTH].toInt();
+        auto height = rendererInfos[DRing::Media::Details::HEIGHT].toInt();
+        if (width > 0 && height > 0) {
+            startedPreview = true;
+            startedDecoding(callId.toStdString(), shmPath, width, height);
+        }
+    }
+    QStringList getConferenceList = CallManager::instance().getConferenceList();
+    for (const auto& callId : callList)
+    {
+        std::cout << "XXX" << std::endl;
+        MapStringString rendererInfos = VideoManager::instance().
+            getRenderer(callId);
+        auto shmPath = rendererInfos[DRing::Media::Details::SHM_PATH].toStdString();
+        auto width = rendererInfos[DRing::Media::Details::WIDTH].toInt();
+        auto height = rendererInfos[DRing::Media::Details::HEIGHT].toInt();
+        std::cout << callId.toStdString() << std::endl;
+        std::cout << shmPath << " " << width << " " << height << std::endl;
+        if (width > 0 && height > 0) {
+            startedPreview = true;
+            startedDecoding(callId.toStdString(), shmPath, width, height);
+        }
+    }
+    if (startedPreview) {
+        MapStringString rendererInfos = VideoManager::instance().
+            getRenderer("local");
+        auto shmPath = rendererInfos[DRing::Media::Details::SHM_PATH].toStdString();
+        auto width = rendererInfos[DRing::Media::Details::WIDTH].toInt();
+        auto height = rendererInfos[DRing::Media::Details::HEIGHT].toInt();
+        if (width > 0 && height > 0) {
+            startedDecoding("local", shmPath, width, height);
+        }
+    }
 }
 
 std::string
@@ -501,7 +543,7 @@ void
 AVModelPimpl::startedDecoding(const std::string& id, const std::string& shmPath, int width, int height)
 {
     const std::string res = std::to_string(width) + "x" + std::to_string(height);
-    qDebug() << "startedDecoding for sink id: " << id.c_str();
+    std::cout << "startedDecoding for sink id: " << id.c_str() << std::endl;
     {
         std::lock_guard<std::mutex> lk(renderers_mtx_);
         auto search = renderers_.find(id);
