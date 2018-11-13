@@ -190,6 +190,13 @@ public Q_SLOTS: // METHODS
         return "/tmp/foobar";
     }
 
+    MapStringString getRenderer(const QString& id)
+    {
+        Q_UNUSED(id)
+        return {};
+    }
+
+
 Q_SIGNALS: // SIGNALS
     void deviceEvent();
     void startedDecoding(const QString &id, const QString &shmPath, int width, int height, bool isMixer);
