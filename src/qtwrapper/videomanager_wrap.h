@@ -230,6 +230,11 @@ public Q_SLOTS: // METHODS
         return QString::fromStdString(DRing::startLocalRecorder(audioOnly, path.toStdString()));
     }
 
+    MapStringString getRenderer(const QString& id)
+    {
+        return convertMap(DRing::getRenderer(id.toStdString()));
+    }
+
 Q_SIGNALS: // SIGNALS
     void deviceEvent();
     void startedDecoding(const QString &id, const QString &shmPath, int width, int height, bool isMixer);

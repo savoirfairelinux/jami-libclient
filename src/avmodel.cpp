@@ -473,6 +473,26 @@ AVModelPimpl::AVModelPimpl(AVModel& linked, const CallbacksHandler& callbacksHan
             this, &AVModelPimpl::stoppedDecoding);
     connect(&callbacksHandler, &CallbacksHandler::callStateChanged,
             this, &AVModelPimpl::slotCallStateChanged);
+
+    auto startedPreview = false;
+    auto restartRenderers = [&](const QStringList& callList) {
+        for (const auto& callId : callList)
+        {
+            MapStringString rendererInfos = VideoManager::instance().
+                getRenderer(callId);
+            auto shmPath = rendererInfos[DRing::Media::Details::SHM_PATH].toStdString();
+            auto width = rendererInfos[DRing::Media::Details::WIDTH].toInt();
+            auto height = rendererInfos[DRing::Media::Details::HEIGHT].toInt();
+            if (width > 0 && height > 0) {
+                startedPreview = true;
+                startedDecoding(callId.toStdString(), shmPath, width, height);
+            }
+        }
+    };
+    restartRenderers(CallManager::instance().getCallList());
+    restartRenderers(CallManager::instance().getConferenceList());
+    if (startedPreview)
+        restartRenderers({"local"});
 }
 
 std::string
@@ -501,7 +521,6 @@ void
 AVModelPimpl::startedDecoding(const std::string& id, const std::string& shmPath, int width, int height)
 {
     const std::string res = std::to_string(width) + "x" + std::to_string(height);
-    qDebug() << "startedDecoding for sink id: " << id.c_str();
     {
         std::lock_guard<std::mutex> lk(renderers_mtx_);
         auto search = renderers_.find(id);
