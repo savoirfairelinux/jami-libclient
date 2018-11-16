@@ -549,6 +549,9 @@ NewAccountModelPimpl::addToAccounts(const std::string& accountId)
 
         // Retrieve avatar from database
         newAcc.profileInfo.avatar = authority::database::getAvatarForProfileId(database, accountProfileId);
+
+        // Retrieve alias from database
+        newAcc.profileInfo.alias = authority::database::getAliasForProfileId(database, accountProfileId);
     }
 
     // Init models for this account
