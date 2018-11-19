@@ -231,7 +231,7 @@ Virhe</translation>
         <translation>Tuntematon</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="2237"/>
+        <location filename="../src/call.cpp" line="2239"/>
         <source>Account: </source>
         <translation>Tunnus:</translation>
     </message>
@@ -256,12 +256,12 @@ Virhe</translation>
 <context>
     <name>CallPrivate</name>
     <message>
-        <location filename="../src/call.cpp" line="1794"/>
+        <location filename="../src/call.cpp" line="1796"/>
         <source>Aborted</source>
         <translation>Peruttu</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="1815"/>
+        <location filename="../src/call.cpp" line="1817"/>
         <source>No account registered!</source>
         <translation>Ei rekistöröityä tunnusta!</translation>
     </message>
@@ -826,7 +826,7 @@ Virhe</translation>
     <message>
         <location filename="../src/certificate.cpp" line="55"/>
         <source>The certificate file exist and is readable</source>
-        <translation type="unfinished"/>
+        <translation>Sertifikaattitiedosto on olemassa ja luettavissa</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="56"/>
@@ -1392,50 +1392,50 @@ Virhe</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1264"/>
-        <location filename="../src/conversationmodel.cpp" line="1630"/>
-        <location filename="../src/conversationmodel.cpp" line="1884"/>
+        <location filename="../src/conversationmodel.cpp" line="1265"/>
+        <location filename="../src/conversationmodel.cpp" line="1649"/>
+        <location filename="../src/conversationmodel.cpp" line="1909"/>
         <source>Invitation received</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1265"/>
+        <location filename="../src/conversationmodel.cpp" line="1266"/>
         <source>Contact added</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1300"/>
-        <location filename="../src/conversationmodel.cpp" line="1307"/>
+        <location filename="../src/conversationmodel.cpp" line="1308"/>
+        <location filename="../src/conversationmodel.cpp" line="1315"/>
         <source>Invitation accepted</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1516"/>
+        <location filename="../src/conversationmodel.cpp" line="1524"/>
         <source>ð Outgoing call</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1518"/>
+        <location filename="../src/conversationmodel.cpp" line="1526"/>
         <source>ð Incoming call</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1531"/>
+        <location filename="../src/conversationmodel.cpp" line="1539"/>
         <source>ð Outgoing call - </source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1534"/>
+        <location filename="../src/conversationmodel.cpp" line="1542"/>
         <source>ð Incoming call - </source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1538"/>
+        <location filename="../src/conversationmodel.cpp" line="1546"/>
         <source>ð½ Missed outgoing call</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1540"/>
+        <location filename="../src/conversationmodel.cpp" line="1548"/>
         <source>ð½ Missed incoming call</source>
         <translation type="unfinished"/>
     </message>
@@ -1503,17 +1503,17 @@ Virhe</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="723"/>
+        <location filename="../src/contactmodel.cpp" line="722"/>
         <source>Invalid ringID</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="726"/>
+        <location filename="../src/contactmodel.cpp" line="725"/>
         <source>Not found</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="729"/>
+        <location filename="../src/contactmodel.cpp" line="728"/>
         <source>Couldn&apos;t lookupâ¦</source>
         <translation type="unfinished"/>
     </message>

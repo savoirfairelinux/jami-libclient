@@ -97,7 +97,7 @@
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="438"/>
         <source>Configuration</source>
-        <translation>Konfiguráció</translation>
+        <translation>Beállítások</translation>
     </message>
 </context>
 <context>
@@ -230,7 +230,7 @@
         <translation>Ismeretlen</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="2237"/>
+        <location filename="../src/call.cpp" line="2239"/>
         <source>Account: </source>
         <translation>Fiók:</translation>
     </message>
@@ -255,12 +255,12 @@
 <context>
     <name>CallPrivate</name>
     <message>
-        <location filename="../src/call.cpp" line="1794"/>
+        <location filename="../src/call.cpp" line="1796"/>
         <source>Aborted</source>
         <translation>Megszakítva</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="1815"/>
+        <location filename="../src/call.cpp" line="1817"/>
         <source>No account registered!</source>
         <translation>Nem regisztrált fiók!</translation>
     </message>
@@ -760,7 +760,7 @@
     <message>
         <location filename="../src/certificate.cpp" line="42"/>
         <source>Has a private key</source>
-        <translation>Van egy privát kulcs</translation>
+        <translation>Van egy személyes kulcs</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="43"/>
@@ -785,7 +785,7 @@
     <message>
         <location filename="../src/certificate.cpp" line="47"/>
         <source>Has the right private key file permissions</source>
-        <translation>Megfelelő privát kulcs fájl jogosultságokkal rendelkezik</translation>
+        <translation>Megfelelő személyes kulcs fájl jogosultságokkal rendelkezik</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="48"/>
@@ -795,7 +795,7 @@
     <message>
         <location filename="../src/certificate.cpp" line="49"/>
         <source>Has the right private key directory permissions</source>
-        <translation>Megfelelő privát kulcs könyvtár jogosultságokkal rendelkezik</translation>
+        <translation>Megfelelő személyes kulcs könyvtár jogosultságokkal rendelkezik</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="50"/>
@@ -805,7 +805,7 @@
     <message>
         <location filename="../src/certificate.cpp" line="51"/>
         <source>Has the right private key directory location</source>
-        <translation>Megvan a megfelelő privát kulcs könyvtár helye</translation>
+        <translation>Megvan a megfelelő személyes kulcs könyvtár helye</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="52"/>
@@ -815,7 +815,7 @@
     <message>
         <location filename="../src/certificate.cpp" line="53"/>
         <source>Has the right private key SELinux attributes</source>
-        <translation>Megfelelő magán kulcs SELinux attribútumokkal rendelkezik</translation>
+        <translation>Megfelelő személyes kulcs SELinux attribútumokkal rendelkezik</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="54"/>
@@ -875,7 +875,7 @@
     <message>
         <location filename="../src/certificate.cpp" line="92"/>
         <source>Require a private key password</source>
-        <translation>Privát kulcsú jelszó igénylése</translation>
+        <translation>Személyes kulcsú jelszó igénylése</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="93"/>
@@ -1152,7 +1152,7 @@
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="44"/>
         <source>None of your certificate provide a private key, this is required. Please select a private key or use a certificate with one built-in</source>
-        <translation>Az Ön tanúsítványa nem tartalmaz magánkulcsot, pedig erre szükség van. Kérjük, hogy válasszon egy privát kulcsot vagy használjon egy tanúsítványt egy beépített eszközzel.</translation>
+        <translation>Az Ön tanúsítványa nem tartalmaz személyes kulcsot, pedig erre szükség van. Kérjük, hogy válasszon egy személyes kulcsot vagy használjon egy tanúsítványt egy beépített eszközzel.</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="47"/>
@@ -1391,50 +1391,50 @@
         <translation>Partnerprofil gyűjtemény</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1264"/>
-        <location filename="../src/conversationmodel.cpp" line="1630"/>
-        <location filename="../src/conversationmodel.cpp" line="1884"/>
+        <location filename="../src/conversationmodel.cpp" line="1265"/>
+        <location filename="../src/conversationmodel.cpp" line="1649"/>
+        <location filename="../src/conversationmodel.cpp" line="1909"/>
         <source>Invitation received</source>
         <translation>Meghívó érkezett</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1265"/>
+        <location filename="../src/conversationmodel.cpp" line="1266"/>
         <source>Contact added</source>
         <translation>Kapcsolat hozzáadva</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1300"/>
-        <location filename="../src/conversationmodel.cpp" line="1307"/>
+        <location filename="../src/conversationmodel.cpp" line="1308"/>
+        <location filename="../src/conversationmodel.cpp" line="1315"/>
         <source>Invitation accepted</source>
         <translation>Meghívó elfogadva</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1516"/>
+        <location filename="../src/conversationmodel.cpp" line="1524"/>
         <source>ð Outgoing call</source>
         <translation>ð Kimenő hívás</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1518"/>
+        <location filename="../src/conversationmodel.cpp" line="1526"/>
         <source>ð Incoming call</source>
         <translation>ð Bejövő hívás</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1531"/>
+        <location filename="../src/conversationmodel.cpp" line="1539"/>
         <source>ð Outgoing call - </source>
         <translation>ð Kimenő hívás - </translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1534"/>
+        <location filename="../src/conversationmodel.cpp" line="1542"/>
         <source>ð Incoming call - </source>
         <translation>ð Bejövő hívás - </translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1538"/>
+        <location filename="../src/conversationmodel.cpp" line="1546"/>
         <source>ð½ Missed outgoing call</source>
         <translation>ð½ Nem fogadott kimenő hívás</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1540"/>
+        <location filename="../src/conversationmodel.cpp" line="1548"/>
         <source>ð½ Missed incoming call</source>
         <translation>ð½ Nem fogadott bejövő hívás</translation>
     </message>
@@ -1502,17 +1502,17 @@
         <translation>Keresésâ¦</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="723"/>
+        <location filename="../src/contactmodel.cpp" line="722"/>
         <source>Invalid ringID</source>
         <translation>Érvénytelen Ring azonosító</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="726"/>
+        <location filename="../src/contactmodel.cpp" line="725"/>
         <source>Not found</source>
         <translation>Nem található</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="729"/>
+        <location filename="../src/contactmodel.cpp" line="728"/>
         <source>Couldn&apos;t lookupâ¦</source>
         <translation>Betekintés nem találhatókâ¦</translation>
     </message>
