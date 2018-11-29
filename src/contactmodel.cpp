@@ -719,7 +719,7 @@ ContactModelPimpl::slotRegisteredNameFound(const std::string& accountId,
 
         switch (status) {
         case 1 /* INVALID */:
-            updateTemporaryMessage(tr("Invalid ringID").toStdString(), registeredName);
+            updateTemporaryMessage(tr("Invalid ID").toStdString(), registeredName);
             break;
         case 2 /* NOT FOUND */:
             updateTemporaryMessage(tr("Not found").toStdString(), registeredName);
