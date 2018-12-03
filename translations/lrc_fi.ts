@@ -161,13 +161,13 @@
         <location filename="../src/call.cpp" line="741"/>
         <source>Busy</source>
         <extracomment>Call state</extracomment>
-        <translation>Kiireinen</translation>
+        <translation>Varattu</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="744"/>
         <source>Transfer</source>
         <extracomment>Call state</extracomment>
-        <translation>Lähetys</translation>
+        <translation>Siirto</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="747"/>
@@ -921,17 +921,17 @@ Virhe</translation>
     <message>
         <location filename="../src/certificate.cpp" line="101"/>
         <source>Signature algorithm</source>
-        <translation>Varmennusalgoritmi</translation>
+        <translation>Allekirjoitusalgoritmi</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="102"/>
         <source>Md5 fingerprint</source>
-        <translation>MD5 sormenjälki</translation>
+        <translation>MD5-sormenjälki</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="103"/>
         <source>Sha1 fingerprint</source>
-        <translation>SHA1 avain</translation>
+        <translation>SHA1-sormenjälki</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="104"/>
@@ -1128,7 +1128,7 @@ Virhe</translation>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="38"/>
         <source>TLS is disabled, the negotiation won&apos;t be encrypted. Your communication will be vulnerable to snooping</source>
-        <translation>TLS ei ole kytketty päälle, neuvottelu ei tapahdu salattuna. Yhteyttäsi voidaan haistella.</translation>
+        <translation>TLS ei ole käytössä, joten neuvottelu ei tapahdu salattuna. Viestintäsi on alttiina urkkimiselle.</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="40"/>
