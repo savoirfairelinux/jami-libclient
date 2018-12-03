@@ -63,7 +63,7 @@ Database::Database()
     {
         // create data directory if not created yet
         QDir dataDir;
-        dataDir.mkpath(QStandardPaths::writableLocation(QStandardPaths::DataLocation));
+        dataDir.mkpath(getPath());
     }
 
     // initalize the database.
@@ -71,7 +71,7 @@ Database::Database()
 #ifdef ENABLE_TEST
     db_.setDatabaseName(QDir(QStandardPaths::writableLocation(QStandardPaths::TempLocation)).filePath(NAME));
 #else
-    db_.setDatabaseName(QDir(QStandardPaths::writableLocation(QStandardPaths::DataLocation)).filePath(NAME));
+    db_.setDatabaseName(QDir(getPath()).filePath(NAME));
 #endif
 
     // open the database.
@@ -94,6 +94,23 @@ Database::Database()
     } else {
         migrateIfNeeded();
     }
+}
+
+QString
+Database::getPath()
+{
+  // use ring directory for macos
+  #if defined(__APPLE__)
+      char *home = getenv(("HOME"));
+      if (home) {
+          std::string homeDir = home;
+          std::string dir = homeDir + "/Library/Application Support/ring";
+          return QString::fromStdString(dir);
+      }
+      return QStandardPaths::writableLocation(QStandardPaths::DataLocation);
+  #else
+      return QStandardPaths::writableLocation(QStandardPaths::DataLocation);
+  #endif
 }
 
 Database::~Database()
@@ -462,7 +479,7 @@ Database::migrateOldFiles()
 void
 Database::migrateLocalProfiles()
 {
-    const QDir profilesDir = (QStandardPaths::writableLocation(QStandardPaths::DataLocation)) + "/profiles/";
+    const QDir profilesDir = getPath() + "/profiles/";
     const QStringList entries = profilesDir.entryList({QStringLiteral("*.vcf")}, QDir::Files);
     foreach (const QString& item , entries) {
         auto filePath = profilesDir.path() + '/' + item;
@@ -522,7 +539,7 @@ Database::migrateLocalProfiles()
 void
 Database::migratePeerProfiles()
 {
-    const QDir profilesDir = (QStandardPaths::writableLocation(QStandardPaths::DataLocation)) + "/peer_profiles/";
+    const QDir profilesDir = getPath() + "/peer_profiles/";
 
     const QStringList entries = profilesDir.entryList({QStringLiteral("*.vcf")}, QDir::Files);
 
@@ -562,7 +579,7 @@ void
 Database::migrateTextHistory()
 {
     // load all text recordings so we can recover CMs that are not in the call history
-    QDir dir(QStandardPaths::writableLocation(QStandardPaths::DataLocation) + "/text/");
+    QDir dir(getPath() + "/text/");
     if (dir.exists()) {
         // get .json files, sorted by time, latest first
         QStringList filters;
