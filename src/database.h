@@ -227,6 +227,7 @@ public:
 
 private:
     void createTables();
+    QString getPath();
     void storeVersion(const std::string& version);
 
     /**
