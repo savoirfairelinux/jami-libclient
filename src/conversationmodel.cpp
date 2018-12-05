@@ -293,7 +293,7 @@ ConversationModel::allFilteredConversations() const
 
                 auto filter = pimpl_->filter;
                 auto uri = URI(QString(filter.c_str()));
-                bool stripScheme = (uri.schemeType() == URI::SchemeType::NONE) || (uri.schemeType() == URI::SchemeType::RING);
+                bool stripScheme = (uri.schemeType() < URI::SchemeType::COUNT__);
                 FlagPack<URI::Section> flags = URI::Section::USER_INFO | URI::Section::HOSTNAME | URI::Section::PORT;
                 if (!stripScheme) {
                     flags |= URI::Section::SCHEME;
