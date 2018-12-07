@@ -218,11 +218,13 @@ std::string
 Database::getVersion()
 {
     QSqlQuery query;
-    auto getVersionQuery = std::string("pragma user_version");
-    if (not query.exec(getVersionQuery.c_str()))
+    if (not query.exec("pragma user_version"))
         throw QueryError(query);
-        query.first();
-    return  query.value(0).toString().toStdString();
+
+    if (!query.first())
+        return "";
+
+    return query.value(0).toString().toStdString();
 }
 
 int
@@ -331,7 +333,9 @@ Database::count(const std::string& count, // "id", "body", ...
     if (not query.exec())
         throw QueryError(query);
 
-    query.next();
+    if (!query.next())
+        return -1;
+
     return query.value(0).toInt();
 }
 
