@@ -42,6 +42,15 @@ struct Info
     bool isBanned = false;
 };
 
+static inline const std::string
+get_bestid(const contact::Info& contactInfo)
+{
+    auto bestName = contactInfo.registeredName;
+    if (bestName.empty())
+        bestName = contactInfo.profileInfo.uri;
+    return bestName;
+}
+
 } // namespace contact
 } // namespace api
 } // namespace lrc
