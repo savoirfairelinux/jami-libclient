@@ -222,7 +222,7 @@
         <location filename="../src/call.cpp" line="771"/>
         <source>Communication established</source>
         <extracomment>Call state</extracomment>
-        <translation>A kommunikáció létrejött</translation>
+        <translation>A közlés létrejött</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="865"/>
@@ -1006,7 +1006,7 @@
     <message>
         <location filename="../src/daemoncertificatecollection.cpp" line="148"/>
         <source>Daemon certificate store</source>
-        <translation>Daemon tanúsítványtároló</translation>
+        <translation>Rendszerfolyamat tanúsítványtároló</translation>
     </message>
     <message>
         <location filename="../src/daemoncertificatecollection.cpp" line="152"/>
@@ -1112,7 +1112,7 @@
     <message>
         <location filename="../src/protocolmodel.cpp" line="50"/>
         <source>Ring Account</source>
-        <translation>Ring fiók</translation>
+        <translation>Jami fiók</translation>
     </message>
     <message>
         <location filename="../src/protocolmodel.cpp" line="51"/>
@@ -1127,7 +1127,7 @@
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="38"/>
         <source>TLS is disabled, the negotiation won&apos;t be encrypted. Your communication will be vulnerable to snooping</source>
-        <translation>A TLS le van tiltva, a tárgyalás nem lesz titkosítva. A kommunikáció sebezhető lesz szaglászással.</translation>
+        <translation>A TLS le van tiltva, a tárgyalás nem lesz titkosítva. A közlés sebezhető lesz szaglászással.</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="40"/>
@@ -1162,7 +1162,7 @@
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="46"/>
         <source>No certificate has been provided. This is, for now, unsupported by Ring</source>
-        <translation>Nincs tanúsítvány biztosítva. Ezért, átmenetileg a Ring nem támogatja.</translation>
+        <translation>Nincs tanúsítvány biztosítva. Ezért, átmenetileg a Jami nem támogatja.</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="37"/>
@@ -1257,7 +1257,7 @@
     <message>
         <location filename="../src/api/call.h" line="84"/>
         <source>Communication established</source>
-        <translation>A kommunikáció létrejött</translation>
+        <translation>A közlés létrejött</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="519"/>
@@ -1503,8 +1503,8 @@
     </message>
     <message>
         <location filename="../src/contactmodel.cpp" line="722"/>
-        <source>Invalid ringID</source>
-        <translation>Érvénytelen Ring azonosító</translation>
+        <source>Invalid ID</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/contactmodel.cpp" line="725"/>

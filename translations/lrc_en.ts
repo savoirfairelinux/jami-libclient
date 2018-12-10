@@ -1505,7 +1505,7 @@
     </message>
     <message>
         <location filename="../src/contactmodel.cpp" line="722"/>
-        <source>Invalid ringID</source>
+        <source>Invalid ID</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

@@ -1503,8 +1503,8 @@
     </message>
     <message>
         <location filename="../src/contactmodel.cpp" line="722"/>
-        <source>Invalid ringID</source>
-        <translation>Id. de ring no válido</translation>
+        <source>Invalid ID</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/contactmodel.cpp" line="725"/>

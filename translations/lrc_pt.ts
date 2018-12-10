@@ -167,7 +167,7 @@
         <location filename="../src/call.cpp" line="744"/>
         <source>Transfer</source>
         <extracomment>Call state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Transferir</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="747"/>
@@ -548,7 +548,7 @@
     <message>
         <location filename="../src/numbercompletionmodel.cpp" line="265"/>
         <source>Account</source>
-        <translation type="unfinished"/>
+        <translation>Conta</translation>
     </message>
     <message>
         <location filename="../src/numbercompletionmodel.cpp" line="265"/>
@@ -594,7 +594,7 @@
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="305"/>
         <source>Account</source>
-        <translation type="unfinished"/>
+        <translation>Conta</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="305"/>
@@ -1194,7 +1194,7 @@
         <location filename="../src/useractionmodel.cpp" line="517"/>
         <location filename="../src/useractionmodel.cpp" line="759"/>
         <source>Accept</source>
-        <translation type="unfinished"/>
+        <translation>Aceitar</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="60"/>
@@ -1368,7 +1368,7 @@
     <message>
         <location filename="../src/useractionmodel.cpp" line="779"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Cancelar</translation>
     </message>
     <message>
         <location filename="../src/localprofilecollection.cpp" line="147"/>
@@ -1452,7 +1452,7 @@
     <message>
         <location filename="../src/ringdevicemodel.cpp" line="110"/>
         <source>ID</source>
-        <translation type="unfinished"/>
+        <translation>ID</translation>
     </message>
     <message>
         <location filename="../src/ringdevicemodel.cpp" line="112"/>
@@ -1503,7 +1503,7 @@
     </message>
     <message>
         <location filename="../src/contactmodel.cpp" line="722"/>
-        <source>Invalid ringID</source>
+        <source>Invalid ID</source>
         <translation type="unfinished"/>
     </message>
     <message>

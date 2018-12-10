@@ -47,7 +47,7 @@
         <location filename="../src/account.cpp" line="339"/>
         <source>Tryingâ¦</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Po provohetâ¦</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="343"/>
@@ -1499,12 +1499,12 @@
     <message>
         <location filename="../src/contactmodel.cpp" line="392"/>
         <source>Searchingâ¦</source>
-        <translation type="unfinished"/>
+        <translation>Po kërkohetâ¦</translation>
     </message>
     <message>
         <location filename="../src/contactmodel.cpp" line="722"/>
-        <source>Invalid ringID</source>
-        <translation>ringID e pavlefshme</translation>
+        <source>Invalid ID</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/contactmodel.cpp" line="725"/>
@@ -1514,7 +1514,7 @@
     <message>
         <location filename="../src/contactmodel.cpp" line="728"/>
         <source>Couldn&apos;t lookupâ¦</source>
-        <translation type="unfinished"/>
+        <translation>S’u bë dot kërkimâ¦</translation>
     </message>
 </context>
 <context>
