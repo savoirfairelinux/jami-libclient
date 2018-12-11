@@ -46,6 +46,7 @@
 
 // Dbus
 #include "dbus/configurationmanager.h"
+#include "dbus/presencemanager.h"
 
 namespace lrc
 {
@@ -507,6 +508,7 @@ ContactModelPimpl::fillsWithSIPContacts()
 
 bool
 ContactModelPimpl::fillsWithRINGContacts() {
+
     // Add contacts from daemon
     const VectorMapStringString& contacts_vector = ConfigurationManager::instance().getContacts(linked.owner.id.c_str());
     for (auto contact_info : contacts_vector) {
@@ -548,6 +550,29 @@ ContactModelPimpl::fillsWithRINGContacts() {
         profile::to_string(profile::Type::RING), alias.toStdString(), photo.toStdString());
     }
 
+    // Update presence
+    // TODO fix this map. This is dumb for now. The map contains values as keys, and empty values.
+    const VectorMapStringString& subscriptions {PresenceManager::instance().getSubscriptions(linked.owner.id.c_str())};
+    for (const auto& subscription : subscriptions) {
+        auto first = true;
+        std::string uri = "";
+        for (const auto& key : subscription) {
+            if (first) {
+                first = false;
+                uri = key.toStdString();
+            } else {
+                {
+                    std::lock_guard<std::mutex> lk(contactsMtx_);
+                    auto it = contacts.find(uri);
+                    if (it != contacts.end()) {
+                        it->second.isPresent = key == "Online";
+                        linked.modelUpdated(uri, false);
+                    }
+                }
+                break;
+            }
+        }
+    }
     return true;
 }
 
