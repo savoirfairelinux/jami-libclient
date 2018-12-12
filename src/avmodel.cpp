@@ -644,15 +644,27 @@ std::string
 AVModelPimpl::getDevice(int type) const
 {
     if (type < 0 || type > 2) return {};  // No device
+    std::string result = "";
     auto outputDevices = linked_.getAudioOutputDevices();
     QStringList currentDevicesIdx = ConfigurationManager::instance()
         .getCurrentAudioDevicesIndex();
-    if (currentDevicesIdx.size() < 3
-    || outputDevices.size() != static_cast<size_t>(currentDevicesIdx.size())) {
-        // Should not happen, but cannot retrieve current ringtone device
+    try {
+        if (currentDevicesIdx.size() < 3
+        || outputDevices.size() != static_cast<size_t>(currentDevicesIdx.size())) {
+            // Should not happen, but cannot retrieve current ringtone device
+            return "";
+        }
+        auto deviceIdx = currentDevicesIdx[type].toUInt();
+        if (deviceIdx >= outputDevices.size()) {
+            // Incorrect device index
+            result = outputDevices[0];
+        }
+        result = outputDevices[deviceIdx];
+    } catch (std::bad_alloc& ba) {
+        qWarning() << "bad_alloc caught: " << ba.what();
         return "";
     }
-    return outputDevices[currentDevicesIdx[type].toUInt()];
+    return result;
 }
 
 void
