@@ -483,6 +483,11 @@ NewCallModelPimpl::slotIncomingCall(const std::string& accountId, const std::str
     calls.emplace(callId, std::move(callInfo));
 
     emit linked.newIncomingCall(fromId, callId);
+
+    // HACK. BECAUSE THE DAEMON DOESN'T HANDLE THIS CASE!
+    if (linked.owner.confProperties.autoAnswer) {
+        linked.accept(callId);
+    }
 }
 
 void
