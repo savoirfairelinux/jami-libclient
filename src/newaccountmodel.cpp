@@ -468,9 +468,15 @@ NewAccountModelPimpl::slotNameRegistrationEnded(const std::string& accountId, in
     account::RegisterNameStatus convertedStatus = account::RegisterNameStatus::INVALID;
     switch (status)
     {
-    case 0:
+    case 0: {
         convertedStatus = account::RegisterNameStatus::SUCCESS;
-        break;
+        auto accountInfo = accounts.find(accountId);
+        if (accountInfo != accounts.end() && accountInfo->second.registeredName.empty()) {
+            auto conf = linked.getAccountConfig(accountId);
+            linked.setAccountConfig(accountId, conf);
+            break;
+        }
+      }
     case 1:
         convertedStatus = account::RegisterNameStatus::WRONG_PASSWORD;
         break;
