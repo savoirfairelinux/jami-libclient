@@ -200,6 +200,12 @@ CallbacksHandler::CallbacksHandler(const Lrc& parent)
             this,
             &CallbacksHandler::slotStoppedDecoding,
             Qt::QueuedConnection);
+
+    connect(&VideoManager::instance(),
+            &VideoManagerInterface::deviceEvent,
+            this,
+            &CallbacksHandler::slotDeviceEvent,
+            Qt::QueuedConnection);
 }
 
 CallbacksHandler::~CallbacksHandler()
@@ -479,6 +485,12 @@ void
 CallbacksHandler::slotStoppedDecoding(const QString& id, const QString& shmPath)
 {
     emit stoppedDecoding(id.toStdString(), shmPath.toStdString());
+}
+
+void
+CallbacksHandler::slotDeviceEvent()
+{
+    emit deviceEvent();
 }
 
 

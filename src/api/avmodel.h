@@ -219,6 +219,10 @@ Q_SIGNALS:
      * @param id
      */
     void frameUpdated(const std::string& id);
+    /**
+     * Emitted when a device is plugged or unplugged
+     */
+    void deviceEvent();
 
 private:
     std::unique_ptr<AVModelPimpl> pimpl_;

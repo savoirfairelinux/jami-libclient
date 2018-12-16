@@ -110,6 +110,10 @@ public Q_SLOTS:
      * @param id
      */
     void slotFrameUpdated(const std::string& id);
+    /**
+     * Detect when a device is plugged or unplugged
+     */
+    void slotDeviceEvent();
 
 };
 
@@ -481,6 +485,8 @@ AVModelPimpl::init()
 #ifndef ENABLE_LIBWRAP
     SIZE_RENDERER = renderers_.size();
 #endif
+    connect(&callbacksHandler, &CallbacksHandler::deviceEvent,
+            this, &AVModelPimpl::slotDeviceEvent);
     connect(&callbacksHandler, &CallbacksHandler::startedDecoding,
             this, &AVModelPimpl::startedDecoding);
     connect(&callbacksHandler, &CallbacksHandler::stoppedDecoding,
@@ -682,6 +688,12 @@ void
 AVModelPimpl::slotFrameUpdated(const std::string& id)
 {
     emit linked_.frameUpdated(id);
+}
+
+void
+AVModelPimpl::slotDeviceEvent()
+{
+    emit linked_.deviceEvent();
 }
 
 } // namespace lrc

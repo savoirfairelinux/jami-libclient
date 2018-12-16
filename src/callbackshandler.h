@@ -248,6 +248,11 @@ Q_SIGNALS:
      */
     void stoppedDecoding(const std::string& id, const std::string& shmPath);
 
+    /**
+     * Emitted when a device is plugged or unplugged
+     */
+    void deviceEvent();
+
 private Q_SLOTS:
     /**
      * Emit newAccountMessage
@@ -445,6 +450,11 @@ private Q_SLOTS:
      * @param shmrenderer
      */
     void slotStoppedDecoding(const QString& id, const QString& shmPath);
+
+    /**
+     * Detect when a device is plugged or unplugged
+     */
+    void slotDeviceEvent();
 
 
 private:
