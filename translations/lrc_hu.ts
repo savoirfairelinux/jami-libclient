@@ -2,91 +2,91 @@
 <context>
     <name>Account</name>
     <message>
-        <location filename="../src/account.cpp" line="331"/>
+        <location filename="../src/account.cpp" line="307"/>
         <source>Ready</source>
         <extracomment>Account state</extracomment>
         <translation>Készen áll</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="333"/>
+        <location filename="../src/account.cpp" line="309"/>
         <source>Registered</source>
         <extracomment>Account state</extracomment>
         <translation>Regisztrált</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="337"/>
+        <location filename="../src/account.cpp" line="313"/>
         <source>Initializing</source>
         <extracomment>Account state</extracomment>
         <translation>Szignál…</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="341"/>
+        <location filename="../src/account.cpp" line="317"/>
         <source>Error</source>
         <extracomment>Account state</extracomment>
         <translation>Hiba</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="345"/>
+        <location filename="../src/account.cpp" line="321"/>
         <source>Network unreachable</source>
         <extracomment>Account state</extracomment>
         <translation>A hálózat elérhetetlen</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="347"/>
+        <location filename="../src/account.cpp" line="323"/>
         <source>Host unreachable</source>
         <extracomment>Account state</extracomment>
         <translation>A fogadó elérhetetlen</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="335"/>
+        <location filename="../src/account.cpp" line="311"/>
         <source>Not registered</source>
         <extracomment>Account state</extracomment>
         <translation>Nem regisztrált</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="339"/>
+        <location filename="../src/account.cpp" line="315"/>
         <source>Tryingâ¦</source>
         <extracomment>Account state</extracomment>
         <translation>Próbálâ¦</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="343"/>
+        <location filename="../src/account.cpp" line="319"/>
         <source>Authentication failed</source>
         <extracomment>Account state</extracomment>
         <translation>Hitelesítési hiba</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="349"/>
+        <location filename="../src/account.cpp" line="325"/>
         <source>STUN configuration error</source>
         <extracomment>Account state</extracomment>
         <translation>STUN beállítás hiba</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="351"/>
+        <location filename="../src/account.cpp" line="327"/>
         <source>STUN server invalid</source>
         <extracomment>Account state</extracomment>
         <translation>STUN kiszolgáló érvénytelen</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="353"/>
+        <location filename="../src/account.cpp" line="329"/>
         <source>Service unavailable</source>
         <extracomment>Account state</extracomment>
         <translation>A szolgáltatás nem elérhető</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="355"/>
+        <location filename="../src/account.cpp" line="331"/>
         <source>Unacceptable</source>
         <extracomment>Account state</extracomment>
         <translation>Elfogadhatatlan</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="357"/>
+        <location filename="../src/account.cpp" line="333"/>
         <source>Invalid</source>
         <extracomment>Account state</extracomment>
         <translation>Érvénytelen</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="359"/>
+        <location filename="../src/account.cpp" line="335"/>
         <source>Request timeout</source>
         <extracomment>Account state</extracomment>
         <translation>Kérés időtúllépés</translation>
@@ -101,136 +101,123 @@
     </message>
 </context>
 <context>
-    <name>BootstrapModel</name>
-    <message>
-        <location filename="../src/bootstrapmodel.cpp" line="379"/>
-        <source>Hostname</source>
-        <translation>Kiszolgálónév</translation>
-    </message>
-    <message>
-        <location filename="../src/bootstrapmodel.cpp" line="381"/>
-        <source>Port</source>
-        <translation>Port</translation>
-    </message>
-</context>
-<context>
     <name>Call</name>
     <message>
-        <location filename="../src/call.cpp" line="720"/>
+        <location filename="../src/call.cpp" line="719"/>
         <source>New</source>
         <extracomment>Call state</extracomment>
         <translation>Új</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="723"/>
+        <location filename="../src/call.cpp" line="722"/>
         <source>Ringing</source>
         <extracomment>Call state</extracomment>
         <translation>Csörögni</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="726"/>
+        <location filename="../src/call.cpp" line="725"/>
         <source>Calling</source>
         <extracomment>Call state</extracomment>
         <translation>Hívás</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="729"/>
+        <location filename="../src/call.cpp" line="728"/>
         <source>Talking</source>
         <extracomment>Call state</extracomment>
         <translation>Hívásban</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="732"/>
+        <location filename="../src/call.cpp" line="731"/>
         <source>Dialing</source>
         <extracomment>Call state</extracomment>
         <translation>Tárcsázás</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="735"/>
+        <location filename="../src/call.cpp" line="734"/>
         <source>Hold</source>
         <extracomment>Call state</extracomment>
         <translation>Tartás</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="738"/>
+        <location filename="../src/call.cpp" line="737"/>
         <source>Failed</source>
         <extracomment>Call state</extracomment>
         <translation>Sikertelen</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="741"/>
+        <location filename="../src/call.cpp" line="740"/>
         <source>Busy</source>
         <extracomment>Call state</extracomment>
         <translation>Foglalt</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="744"/>
+        <location filename="../src/call.cpp" line="743"/>
         <source>Transfer</source>
         <extracomment>Call state</extracomment>
         <translation>Átvitel</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="747"/>
+        <location filename="../src/call.cpp" line="746"/>
         <source>Transfer hold</source>
         <extracomment>Call state</extracomment>
         <translation>Átvitel tartása</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="750"/>
+        <location filename="../src/call.cpp" line="749"/>
         <source>Over</source>
         <extracomment>Call state</extracomment>
         <translation>Véget ért</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="753"/>
+        <location filename="../src/call.cpp" line="752"/>
         <source>Error</source>
         <extracomment>Call state</extracomment>
         <translation>Hiba</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="756"/>
-        <location filename="../src/call.cpp" line="861"/>
+        <location filename="../src/call.cpp" line="755"/>
+        <location filename="../src/call.cpp" line="860"/>
         <source>Conference</source>
         <extracomment>Call state</extracomment>
         <translation>Konferencia</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="759"/>
+        <location filename="../src/call.cpp" line="758"/>
         <source>Conference (hold)</source>
         <extracomment>Call state</extracomment>
         <translation>Konferencia (tartás)</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="762"/>
+        <location filename="../src/call.cpp" line="761"/>
         <source>ERROR</source>
         <extracomment>Call state</extracomment>
         <translation>HIBA</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="765"/>
+        <location filename="../src/call.cpp" line="764"/>
         <source>Searching for</source>
         <extracomment>Call state</extracomment>
         <translation>Keresés</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="768"/>
+        <location filename="../src/call.cpp" line="767"/>
         <source>Aborted</source>
         <extracomment>Call state</extracomment>
         <translation>Megszakítva</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="771"/>
+        <location filename="../src/call.cpp" line="770"/>
         <source>Communication established</source>
         <extracomment>Call state</extracomment>
-        <translation>A kommunikáció létrejött</translation>
+        <translation>A közlés létrejött</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="865"/>
+        <location filename="../src/call.cpp" line="864"/>
         <source>Unknown</source>
         <translation>Ismeretlen</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="2239"/>
+        <location filename="../src/call.cpp" line="2231"/>
         <source>Account: </source>
         <translation>Fiók:</translation>
     </message>
@@ -238,7 +225,7 @@
 <context>
     <name>CallModel</name>
     <message>
-        <location filename="../src/callmodel.cpp" line="924"/>
+        <location filename="../src/callmodel.cpp" line="911"/>
         <source>Calls</source>
         <translation>Hívások</translation>
     </message>
@@ -246,8 +233,8 @@
 <context>
     <name>CallModelPrivate</name>
     <message>
-        <location filename="../src/callmodel.cpp" line="559"/>
-        <location filename="../src/callmodel.cpp" line="584"/>
+        <location filename="../src/callmodel.cpp" line="546"/>
+        <location filename="../src/callmodel.cpp" line="571"/>
         <source>Invalid account</source>
         <translation>Érvénytelen fiók</translation>
     </message>
@@ -255,12 +242,12 @@
 <context>
     <name>CallPrivate</name>
     <message>
-        <location filename="../src/call.cpp" line="1796"/>
+        <location filename="../src/call.cpp" line="1795"/>
         <source>Aborted</source>
         <translation>Megszakítva</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="1817"/>
+        <location filename="../src/call.cpp" line="1816"/>
         <source>No account registered!</source>
         <translation>Nem regisztrált fiók!</translation>
     </message>
@@ -311,7 +298,7 @@
 <context>
     <name>CategorizedHistoryModel</name>
     <message>
-        <location filename="../src/categorizedhistorymodel.cpp" line="414"/>
+        <location filename="../src/categorizedhistorymodel.cpp" line="412"/>
         <source>History</source>
         <translation>Előzmények</translation>
     </message>
@@ -534,32 +521,9 @@
     </message>
 </context>
 <context>
-    <name>NumberCompletionModel</name>
-    <message>
-        <location filename="../src/numbercompletionmodel.cpp" line="265"/>
-        <source>URI</source>
-        <translation>URI</translation>
-    </message>
-    <message>
-        <location filename="../src/numbercompletionmodel.cpp" line="265"/>
-        <source>Name</source>
-        <translation>Név</translation>
-    </message>
-    <message>
-        <location filename="../src/numbercompletionmodel.cpp" line="265"/>
-        <source>Account</source>
-        <translation>Fiók</translation>
-    </message>
-    <message>
-        <location filename="../src/numbercompletionmodel.cpp" line="265"/>
-        <source>Weight</source>
-        <translation>Súly</translation>
-    </message>
-</context>
-<context>
     <name>PersonModel</name>
     <message>
-        <location filename="../src/personmodel.cpp" line="171"/>
+        <location filename="../src/personmodel.cpp" line="170"/>
         <source>Persons</source>
         <translation>Személyek</translation>
     </message>
@@ -644,7 +608,7 @@
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="307"/>
         <source>Bookmarked</source>
-        <translation>Könyv megjelölve</translation>
+        <translation>Könyvjelzőzött</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="307"/>
@@ -737,26 +701,6 @@
 </context>
 <context>
     <name>QObject</name>
-    <message>
-        <location filename="../src/accountstatusmodel.cpp" line="177"/>
-        <source>Message</source>
-        <translation>Üzenet</translation>
-    </message>
-    <message>
-        <location filename="../src/accountstatusmodel.cpp" line="179"/>
-        <source>Code</source>
-        <translation>Kód</translation>
-    </message>
-    <message>
-        <location filename="../src/accountstatusmodel.cpp" line="181"/>
-        <source>Time</source>
-        <translation>Idő</translation>
-    </message>
-    <message>
-        <location filename="../src/accountstatusmodel.cpp" line="183"/>
-        <source>Counter</source>
-        <translation>Számláló</translation>
-    </message>
     <message>
         <location filename="../src/certificate.cpp" line="42"/>
         <source>Has a private key</source>
@@ -1006,7 +950,7 @@
     <message>
         <location filename="../src/daemoncertificatecollection.cpp" line="148"/>
         <source>Daemon certificate store</source>
-        <translation>Daemon tanúsítványtároló</translation>
+        <translation>Rendszerfolyamat tanúsítványtároló</translation>
     </message>
     <message>
         <location filename="../src/daemoncertificatecollection.cpp" line="152"/>
@@ -1038,17 +982,10 @@
     </message>
     <message>
         <location filename="../src/fallbackpersoncollection.cpp" line="194"/>
-        <location filename="../src/transitionalpersonbackend.cpp" line="150"/>
         <source>Contact</source>
         <translation>Partnerek</translation>
     </message>
     <message>
-        <location filename="../src/localbookmarkcollection.cpp" line="212"/>
-        <source>Local bookmarks</source>
-        <translation>Helyi könyvjelzők</translation>
-    </message>
-    <message>
-        <location filename="../src/localbookmarkcollection.cpp" line="217"/>
         <location filename="../src/useractionmodel.cpp" line="532"/>
         <source>Bookmark</source>
         <translation>Könyvjelző</translation>
@@ -1062,16 +999,6 @@
         <location filename="../src/localhistorycollection.cpp" line="200"/>
         <source>History</source>
         <translation>Előzmények</translation>
-    </message>
-    <message>
-        <location filename="../src/localmacrocollection.cpp" line="190"/>
-        <source>Local macros</source>
-        <translation>Helyi makrók</translation>
-    </message>
-    <message>
-        <location filename="../src/localmacrocollection.cpp" line="195"/>
-        <source>Macro</source>
-        <translation>Makró</translation>
     </message>
     <message>
         <location filename="../src/localrecordingcollection.cpp" line="101"/>
@@ -1112,7 +1039,7 @@
     <message>
         <location filename="../src/protocolmodel.cpp" line="50"/>
         <source>Ring Account</source>
-        <translation>Ring fiók</translation>
+        <translation>Jami fiók</translation>
     </message>
     <message>
         <location filename="../src/protocolmodel.cpp" line="51"/>
@@ -1127,7 +1054,7 @@
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="38"/>
         <source>TLS is disabled, the negotiation won&apos;t be encrypted. Your communication will be vulnerable to snooping</source>
-        <translation>A TLS le van tiltva, a tárgyalás nem lesz titkosítva. A kommunikáció sebezhető lesz szaglászással.</translation>
+        <translation>A TLS le van tiltva, a tárgyalás nem lesz titkosítva. A közlés sebezhető lesz szaglászással.</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="40"/>
@@ -1162,7 +1089,7 @@
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="46"/>
         <source>No certificate has been provided. This is, for now, unsupported by Ring</source>
-        <translation>Nincs tanúsítvány biztosítva. Ezért, átmenetileg a Ring nem támogatja.</translation>
+        <translation>Nincs tanúsítvány biztosítva. Ezért, átmenetileg a Jami nem támogatja.</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="37"/>
@@ -1184,11 +1111,6 @@
         <source>Default</source>
         <comment>Default TLS protocol version</comment>
         <translation>Alapértelmezett</translation>
-    </message>
-    <message>
-        <location filename="../src/transitionalpersonbackend.cpp" line="145"/>
-        <source>Contact placeholders</source>
-        <translation>Kapcsolat helyőrzők</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="517"/>
@@ -1257,7 +1179,7 @@
     <message>
         <location filename="../src/api/call.h" line="84"/>
         <source>Communication established</source>
-        <translation>A kommunikáció létrejött</translation>
+        <translation>A közlés létrejött</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="519"/>
@@ -1440,14 +1362,6 @@
     </message>
 </context>
 <context>
-    <name>RecentModel</name>
-    <message>
-        <location filename="../src/recentmodel.cpp" line="614"/>
-        <source>Recent persons</source>
-        <translation>Legutóbbi személyek</translation>
-    </message>
-</context>
-<context>
     <name>RingDeviceModel</name>
     <message>
         <location filename="../src/ringdevicemodel.cpp" line="110"/>
@@ -1497,22 +1411,22 @@
 <context>
     <name>lrc::ContactModelPimpl</name>
     <message>
-        <location filename="../src/contactmodel.cpp" line="392"/>
+        <location filename="../src/contactmodel.cpp" line="393"/>
         <source>Searchingâ¦</source>
         <translation>Keresésâ¦</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="722"/>
-        <source>Invalid ringID</source>
-        <translation>Érvénytelen Ring azonosító</translation>
+        <location filename="../src/contactmodel.cpp" line="747"/>
+        <source>Invalid ID</source>
+        <translation>Érvénytelen azonosító</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="725"/>
+        <location filename="../src/contactmodel.cpp" line="750"/>
         <source>Not found</source>
         <translation>Nem található</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="728"/>
+        <location filename="../src/contactmodel.cpp" line="753"/>
         <source>Couldn&apos;t lookupâ¦</source>
         <translation>Betekintés nem találhatókâ¦</translation>
     </message>
@@ -1520,7 +1434,7 @@
 <context>
     <name>lrc::api::ContactModel</name>
     <message>
-        <location filename="../src/contactmodel.cpp" line="363"/>
+        <location filename="../src/contactmodel.cpp" line="364"/>
         <source>Bad URI scheme</source>
         <translation>Érvénytelen URI-séma</translation>
     </message>

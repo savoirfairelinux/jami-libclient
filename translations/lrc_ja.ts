@@ -2,91 +2,91 @@
 <context>
     <name>Account</name>
     <message>
-        <location filename="../src/account.cpp" line="331"/>
+        <location filename="../src/account.cpp" line="307"/>
         <source>Ready</source>
         <extracomment>Account state</extracomment>
         <translation>準備完了</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="333"/>
+        <location filename="../src/account.cpp" line="309"/>
         <source>Registered</source>
         <extracomment>Account state</extracomment>
         <translation>登録済み</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="337"/>
+        <location filename="../src/account.cpp" line="313"/>
         <source>Initializing</source>
         <extracomment>Account state</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="341"/>
+        <location filename="../src/account.cpp" line="317"/>
         <source>Error</source>
         <extracomment>Account state</extracomment>
         <translation>エラー</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="345"/>
+        <location filename="../src/account.cpp" line="321"/>
         <source>Network unreachable</source>
         <extracomment>Account state</extracomment>
         <translation>ネットワーク到達不可</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="347"/>
+        <location filename="../src/account.cpp" line="323"/>
         <source>Host unreachable</source>
         <extracomment>Account state</extracomment>
         <translation>ホスト到達不可</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="335"/>
+        <location filename="../src/account.cpp" line="311"/>
         <source>Not registered</source>
         <extracomment>Account state</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="339"/>
+        <location filename="../src/account.cpp" line="315"/>
         <source>Tryingâ¦</source>
         <extracomment>Account state</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="343"/>
+        <location filename="../src/account.cpp" line="319"/>
         <source>Authentication failed</source>
         <extracomment>Account state</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="349"/>
+        <location filename="../src/account.cpp" line="325"/>
         <source>STUN configuration error</source>
         <extracomment>Account state</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="351"/>
+        <location filename="../src/account.cpp" line="327"/>
         <source>STUN server invalid</source>
         <extracomment>Account state</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="353"/>
+        <location filename="../src/account.cpp" line="329"/>
         <source>Service unavailable</source>
         <extracomment>Account state</extracomment>
         <translation>サービス利用不可</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="355"/>
+        <location filename="../src/account.cpp" line="331"/>
         <source>Unacceptable</source>
         <extracomment>Account state</extracomment>
         <translation>不認可</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="357"/>
+        <location filename="../src/account.cpp" line="333"/>
         <source>Invalid</source>
         <extracomment>Account state</extracomment>
         <translation>不正</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="359"/>
+        <location filename="../src/account.cpp" line="335"/>
         <source>Request timeout</source>
         <extracomment>Account state</extracomment>
         <translation type="unfinished"/>
@@ -101,136 +101,123 @@
     </message>
 </context>
 <context>
-    <name>BootstrapModel</name>
-    <message>
-        <location filename="../src/bootstrapmodel.cpp" line="379"/>
-        <source>Hostname</source>
-        <translation>ホスト名</translation>
-    </message>
-    <message>
-        <location filename="../src/bootstrapmodel.cpp" line="381"/>
-        <source>Port</source>
-        <translation>ポート番号</translation>
-    </message>
-</context>
-<context>
     <name>Call</name>
     <message>
-        <location filename="../src/call.cpp" line="720"/>
+        <location filename="../src/call.cpp" line="719"/>
         <source>New</source>
         <extracomment>Call state</extracomment>
         <translation>新規</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="723"/>
+        <location filename="../src/call.cpp" line="722"/>
         <source>Ringing</source>
         <extracomment>Call state</extracomment>
         <translation>着信中</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="726"/>
+        <location filename="../src/call.cpp" line="725"/>
         <source>Calling</source>
         <extracomment>Call state</extracomment>
         <translation>発信中</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="729"/>
+        <location filename="../src/call.cpp" line="728"/>
         <source>Talking</source>
         <extracomment>Call state</extracomment>
         <translation>通話中</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="732"/>
+        <location filename="../src/call.cpp" line="731"/>
         <source>Dialing</source>
         <extracomment>Call state</extracomment>
         <translation>ダイヤル中</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="735"/>
+        <location filename="../src/call.cpp" line="734"/>
         <source>Hold</source>
         <extracomment>Call state</extracomment>
         <translation>保留</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="738"/>
+        <location filename="../src/call.cpp" line="737"/>
         <source>Failed</source>
         <extracomment>Call state</extracomment>
         <translation>失敗しました</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="741"/>
+        <location filename="../src/call.cpp" line="740"/>
         <source>Busy</source>
         <extracomment>Call state</extracomment>
         <translation>話中</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="744"/>
+        <location filename="../src/call.cpp" line="743"/>
         <source>Transfer</source>
         <extracomment>Call state</extracomment>
         <translation>転送</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="747"/>
+        <location filename="../src/call.cpp" line="746"/>
         <source>Transfer hold</source>
         <extracomment>Call state</extracomment>
         <translation>転送保留</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="750"/>
+        <location filename="../src/call.cpp" line="749"/>
         <source>Over</source>
         <extracomment>Call state</extracomment>
         <translation>通話終了</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="753"/>
+        <location filename="../src/call.cpp" line="752"/>
         <source>Error</source>
         <extracomment>Call state</extracomment>
         <translation>エラー</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="756"/>
-        <location filename="../src/call.cpp" line="861"/>
+        <location filename="../src/call.cpp" line="755"/>
+        <location filename="../src/call.cpp" line="860"/>
         <source>Conference</source>
         <extracomment>Call state</extracomment>
         <translation>グループ通話</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="759"/>
+        <location filename="../src/call.cpp" line="758"/>
         <source>Conference (hold)</source>
         <extracomment>Call state</extracomment>
         <translation>グループ通話 (保留)</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="762"/>
+        <location filename="../src/call.cpp" line="761"/>
         <source>ERROR</source>
         <extracomment>Call state</extracomment>
         <translation>エラー</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="765"/>
+        <location filename="../src/call.cpp" line="764"/>
         <source>Searching for</source>
         <extracomment>Call state</extracomment>
         <translation>検索対象</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="768"/>
+        <location filename="../src/call.cpp" line="767"/>
         <source>Aborted</source>
         <extracomment>Call state</extracomment>
         <translation>中止しました</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="771"/>
+        <location filename="../src/call.cpp" line="770"/>
         <source>Communication established</source>
         <extracomment>Call state</extracomment>
         <translation>通信を確立しました</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="865"/>
+        <location filename="../src/call.cpp" line="864"/>
         <source>Unknown</source>
         <translation>不明</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="2239"/>
+        <location filename="../src/call.cpp" line="2231"/>
         <source>Account: </source>
         <translation>アカウント:</translation>
     </message>
@@ -238,7 +225,7 @@
 <context>
     <name>CallModel</name>
     <message>
-        <location filename="../src/callmodel.cpp" line="924"/>
+        <location filename="../src/callmodel.cpp" line="911"/>
         <source>Calls</source>
         <translation>発信</translation>
     </message>
@@ -246,8 +233,8 @@
 <context>
     <name>CallModelPrivate</name>
     <message>
-        <location filename="../src/callmodel.cpp" line="559"/>
-        <location filename="../src/callmodel.cpp" line="584"/>
+        <location filename="../src/callmodel.cpp" line="546"/>
+        <location filename="../src/callmodel.cpp" line="571"/>
         <source>Invalid account</source>
         <translation>不正なアカウント</translation>
     </message>
@@ -255,12 +242,12 @@
 <context>
     <name>CallPrivate</name>
     <message>
-        <location filename="../src/call.cpp" line="1796"/>
+        <location filename="../src/call.cpp" line="1795"/>
         <source>Aborted</source>
         <translation>中止しました</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="1817"/>
+        <location filename="../src/call.cpp" line="1816"/>
         <source>No account registered!</source>
         <translation>アカウントが登録されていません！</translation>
     </message>
@@ -311,7 +298,7 @@
 <context>
     <name>CategorizedHistoryModel</name>
     <message>
-        <location filename="../src/categorizedhistorymodel.cpp" line="414"/>
+        <location filename="../src/categorizedhistorymodel.cpp" line="412"/>
         <source>History</source>
         <translation>履歴</translation>
     </message>
@@ -534,32 +521,9 @@
     </message>
 </context>
 <context>
-    <name>NumberCompletionModel</name>
-    <message>
-        <location filename="../src/numbercompletionmodel.cpp" line="265"/>
-        <source>URI</source>
-        <translation>URI</translation>
-    </message>
-    <message>
-        <location filename="../src/numbercompletionmodel.cpp" line="265"/>
-        <source>Name</source>
-        <translation>名前</translation>
-    </message>
-    <message>
-        <location filename="../src/numbercompletionmodel.cpp" line="265"/>
-        <source>Account</source>
-        <translation>アカウント</translation>
-    </message>
-    <message>
-        <location filename="../src/numbercompletionmodel.cpp" line="265"/>
-        <source>Weight</source>
-        <translation type="unfinished"/>
-    </message>
-</context>
-<context>
     <name>PersonModel</name>
     <message>
-        <location filename="../src/personmodel.cpp" line="171"/>
+        <location filename="../src/personmodel.cpp" line="170"/>
         <source>Persons</source>
         <translation type="unfinished"/>
     </message>
@@ -737,26 +701,6 @@
 </context>
 <context>
     <name>QObject</name>
-    <message>
-        <location filename="../src/accountstatusmodel.cpp" line="177"/>
-        <source>Message</source>
-        <translation>メッセージ</translation>
-    </message>
-    <message>
-        <location filename="../src/accountstatusmodel.cpp" line="179"/>
-        <source>Code</source>
-        <translation>コード</translation>
-    </message>
-    <message>
-        <location filename="../src/accountstatusmodel.cpp" line="181"/>
-        <source>Time</source>
-        <translation>時刻</translation>
-    </message>
-    <message>
-        <location filename="../src/accountstatusmodel.cpp" line="183"/>
-        <source>Counter</source>
-        <translation>カウンター</translation>
-    </message>
     <message>
         <location filename="../src/certificate.cpp" line="42"/>
         <source>Has a private key</source>
@@ -1038,17 +982,10 @@
     </message>
     <message>
         <location filename="../src/fallbackpersoncollection.cpp" line="194"/>
-        <location filename="../src/transitionalpersonbackend.cpp" line="150"/>
         <source>Contact</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/localbookmarkcollection.cpp" line="212"/>
-        <source>Local bookmarks</source>
-        <translation>ローカルブックマーク</translation>
-    </message>
-    <message>
-        <location filename="../src/localbookmarkcollection.cpp" line="217"/>
         <location filename="../src/useractionmodel.cpp" line="532"/>
         <source>Bookmark</source>
         <translation>ブックマーク</translation>
@@ -1062,16 +999,6 @@
         <location filename="../src/localhistorycollection.cpp" line="200"/>
         <source>History</source>
         <translation>履歴</translation>
-    </message>
-    <message>
-        <location filename="../src/localmacrocollection.cpp" line="190"/>
-        <source>Local macros</source>
-        <translation>ローカルマクロ</translation>
-    </message>
-    <message>
-        <location filename="../src/localmacrocollection.cpp" line="195"/>
-        <source>Macro</source>
-        <translation>マクロ</translation>
     </message>
     <message>
         <location filename="../src/localrecordingcollection.cpp" line="101"/>
@@ -1184,11 +1111,6 @@
         <source>Default</source>
         <comment>Default TLS protocol version</comment>
         <translation>既定</translation>
-    </message>
-    <message>
-        <location filename="../src/transitionalpersonbackend.cpp" line="145"/>
-        <source>Contact placeholders</source>
-        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="517"/>
@@ -1440,14 +1362,6 @@
     </message>
 </context>
 <context>
-    <name>RecentModel</name>
-    <message>
-        <location filename="../src/recentmodel.cpp" line="614"/>
-        <source>Recent persons</source>
-        <translation type="unfinished"/>
-    </message>
-</context>
-<context>
     <name>RingDeviceModel</name>
     <message>
         <location filename="../src/ringdevicemodel.cpp" line="110"/>
@@ -1497,22 +1411,22 @@
 <context>
     <name>lrc::ContactModelPimpl</name>
     <message>
-        <location filename="../src/contactmodel.cpp" line="392"/>
+        <location filename="../src/contactmodel.cpp" line="393"/>
         <source>Searchingâ¦</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="722"/>
-        <source>Invalid ringID</source>
+        <location filename="../src/contactmodel.cpp" line="747"/>
+        <source>Invalid ID</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="725"/>
+        <location filename="../src/contactmodel.cpp" line="750"/>
         <source>Not found</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="728"/>
+        <location filename="../src/contactmodel.cpp" line="753"/>
         <source>Couldn&apos;t lookupâ¦</source>
         <translation type="unfinished"/>
     </message>
@@ -1520,7 +1434,7 @@
 <context>
     <name>lrc::api::ContactModel</name>
     <message>
-        <location filename="../src/contactmodel.cpp" line="363"/>
+        <location filename="../src/contactmodel.cpp" line="364"/>
         <source>Bad URI scheme</source>
         <translation type="unfinished"/>
     </message>

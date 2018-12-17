@@ -2,91 +2,91 @@
 <context>
     <name>Account</name>
     <message>
-        <location filename="../src/account.cpp" line="331"/>
+        <location filename="../src/account.cpp" line="307"/>
         <source>Ready</source>
         <extracomment>Account state</extracomment>
         <translation>Klaar</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="333"/>
+        <location filename="../src/account.cpp" line="309"/>
         <source>Registered</source>
         <extracomment>Account state</extracomment>
         <translation>Geregistreerd</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="337"/>
+        <location filename="../src/account.cpp" line="313"/>
         <source>Initializing</source>
         <extracomment>Account state</extracomment>
         <translation>Bezig met initialiseren</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="341"/>
+        <location filename="../src/account.cpp" line="317"/>
         <source>Error</source>
         <extracomment>Account state</extracomment>
         <translation>Fout</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="345"/>
+        <location filename="../src/account.cpp" line="321"/>
         <source>Network unreachable</source>
         <extracomment>Account state</extracomment>
         <translation>Netwerk onbereikbaar</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="347"/>
+        <location filename="../src/account.cpp" line="323"/>
         <source>Host unreachable</source>
         <extracomment>Account state</extracomment>
         <translation>Host onbereikbaar</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="335"/>
+        <location filename="../src/account.cpp" line="311"/>
         <source>Not registered</source>
         <extracomment>Account state</extracomment>
         <translation>Niet geregistreerd</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="339"/>
+        <location filename="../src/account.cpp" line="315"/>
         <source>Tryingâ¦</source>
         <extracomment>Account state</extracomment>
         <translation>Proberen</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="343"/>
+        <location filename="../src/account.cpp" line="319"/>
         <source>Authentication failed</source>
         <extracomment>Account state</extracomment>
         <translation>Authenticatie mislukt</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="349"/>
+        <location filename="../src/account.cpp" line="325"/>
         <source>STUN configuration error</source>
         <extracomment>Account state</extracomment>
         <translation>STUN-configuratiefout</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="351"/>
+        <location filename="../src/account.cpp" line="327"/>
         <source>STUN server invalid</source>
         <extracomment>Account state</extracomment>
         <translation>STUN-server ongeldig</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="353"/>
+        <location filename="../src/account.cpp" line="329"/>
         <source>Service unavailable</source>
         <extracomment>Account state</extracomment>
         <translation>Dienst nie beschikbaar</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="355"/>
+        <location filename="../src/account.cpp" line="331"/>
         <source>Unacceptable</source>
         <extracomment>Account state</extracomment>
         <translation>Onaanvaardbaar</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="357"/>
+        <location filename="../src/account.cpp" line="333"/>
         <source>Invalid</source>
         <extracomment>Account state</extracomment>
         <translation>Ongeldig</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="359"/>
+        <location filename="../src/account.cpp" line="335"/>
         <source>Request timeout</source>
         <extracomment>Account state</extracomment>
         <translation>Aanvraag time-out</translation>
@@ -101,136 +101,123 @@
     </message>
 </context>
 <context>
-    <name>BootstrapModel</name>
-    <message>
-        <location filename="../src/bootstrapmodel.cpp" line="379"/>
-        <source>Hostname</source>
-        <translation>Hostnaam</translation>
-    </message>
-    <message>
-        <location filename="../src/bootstrapmodel.cpp" line="381"/>
-        <source>Port</source>
-        <translation>Poort</translation>
-    </message>
-</context>
-<context>
     <name>Call</name>
     <message>
-        <location filename="../src/call.cpp" line="720"/>
+        <location filename="../src/call.cpp" line="719"/>
         <source>New</source>
         <extracomment>Call state</extracomment>
         <translation>Nieuw</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="723"/>
+        <location filename="../src/call.cpp" line="722"/>
         <source>Ringing</source>
         <extracomment>Call state</extracomment>
         <translation>Gaad over</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="726"/>
+        <location filename="../src/call.cpp" line="725"/>
         <source>Calling</source>
         <extracomment>Call state</extracomment>
         <translation>Bellen</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="729"/>
+        <location filename="../src/call.cpp" line="728"/>
         <source>Talking</source>
         <extracomment>Call state</extracomment>
         <translation>Praten</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="732"/>
+        <location filename="../src/call.cpp" line="731"/>
         <source>Dialing</source>
         <extracomment>Call state</extracomment>
         <translation>Kiezen</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="735"/>
+        <location filename="../src/call.cpp" line="734"/>
         <source>Hold</source>
         <extracomment>Call state</extracomment>
         <translation>In wacht zetten</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="738"/>
+        <location filename="../src/call.cpp" line="737"/>
         <source>Failed</source>
         <extracomment>Call state</extracomment>
         <translation>Mislukt</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="741"/>
+        <location filename="../src/call.cpp" line="740"/>
         <source>Busy</source>
         <extracomment>Call state</extracomment>
         <translation>Bezig</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="744"/>
+        <location filename="../src/call.cpp" line="743"/>
         <source>Transfer</source>
         <extracomment>Call state</extracomment>
         <translation>Overdracht</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="747"/>
+        <location filename="../src/call.cpp" line="746"/>
         <source>Transfer hold</source>
         <extracomment>Call state</extracomment>
         <translation>In wacht door overdracht</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="750"/>
+        <location filename="../src/call.cpp" line="749"/>
         <source>Over</source>
         <extracomment>Call state</extracomment>
         <translation>Opg’hangen</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="753"/>
+        <location filename="../src/call.cpp" line="752"/>
         <source>Error</source>
         <extracomment>Call state</extracomment>
         <translation>Fout</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="756"/>
-        <location filename="../src/call.cpp" line="861"/>
+        <location filename="../src/call.cpp" line="755"/>
+        <location filename="../src/call.cpp" line="860"/>
         <source>Conference</source>
         <extracomment>Call state</extracomment>
         <translation>Vergadering</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="759"/>
+        <location filename="../src/call.cpp" line="758"/>
         <source>Conference (hold)</source>
         <extracomment>Call state</extracomment>
         <translation>Vergadering (wacht)</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="762"/>
+        <location filename="../src/call.cpp" line="761"/>
         <source>ERROR</source>
         <extracomment>Call state</extracomment>
         <translation>FOUT</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="765"/>
+        <location filename="../src/call.cpp" line="764"/>
         <source>Searching for</source>
         <extracomment>Call state</extracomment>
         <translation>Zoeken naar</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="768"/>
+        <location filename="../src/call.cpp" line="767"/>
         <source>Aborted</source>
         <extracomment>Call state</extracomment>
         <translation>Afgebroken</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="771"/>
+        <location filename="../src/call.cpp" line="770"/>
         <source>Communication established</source>
         <extracomment>Call state</extracomment>
         <translation>Communicatie tot stand gebracht</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="865"/>
+        <location filename="../src/call.cpp" line="864"/>
         <source>Unknown</source>
         <translation>Onbekend</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="2239"/>
+        <location filename="../src/call.cpp" line="2231"/>
         <source>Account: </source>
         <translation>Account:</translation>
     </message>
@@ -238,7 +225,7 @@
 <context>
     <name>CallModel</name>
     <message>
-        <location filename="../src/callmodel.cpp" line="924"/>
+        <location filename="../src/callmodel.cpp" line="911"/>
         <source>Calls</source>
         <translation>Oproepen</translation>
     </message>
@@ -246,8 +233,8 @@
 <context>
     <name>CallModelPrivate</name>
     <message>
-        <location filename="../src/callmodel.cpp" line="559"/>
-        <location filename="../src/callmodel.cpp" line="584"/>
+        <location filename="../src/callmodel.cpp" line="546"/>
+        <location filename="../src/callmodel.cpp" line="571"/>
         <source>Invalid account</source>
         <translation>Ongeldigen account</translation>
     </message>
@@ -255,12 +242,12 @@
 <context>
     <name>CallPrivate</name>
     <message>
-        <location filename="../src/call.cpp" line="1796"/>
+        <location filename="../src/call.cpp" line="1795"/>
         <source>Aborted</source>
         <translation>Afgebroken</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="1817"/>
+        <location filename="../src/call.cpp" line="1816"/>
         <source>No account registered!</source>
         <translation>Genen account geregistreerd!</translation>
     </message>
@@ -311,7 +298,7 @@
 <context>
     <name>CategorizedHistoryModel</name>
     <message>
-        <location filename="../src/categorizedhistorymodel.cpp" line="414"/>
+        <location filename="../src/categorizedhistorymodel.cpp" line="412"/>
         <source>History</source>
         <translation>Geschiedenis</translation>
     </message>
@@ -534,32 +521,9 @@
     </message>
 </context>
 <context>
-    <name>NumberCompletionModel</name>
-    <message>
-        <location filename="../src/numbercompletionmodel.cpp" line="265"/>
-        <source>URI</source>
-        <translation>URI</translation>
-    </message>
-    <message>
-        <location filename="../src/numbercompletionmodel.cpp" line="265"/>
-        <source>Name</source>
-        <translation>Naam</translation>
-    </message>
-    <message>
-        <location filename="../src/numbercompletionmodel.cpp" line="265"/>
-        <source>Account</source>
-        <translation>Account</translation>
-    </message>
-    <message>
-        <location filename="../src/numbercompletionmodel.cpp" line="265"/>
-        <source>Weight</source>
-        <translation>Gewicht</translation>
-    </message>
-</context>
-<context>
     <name>PersonModel</name>
     <message>
-        <location filename="../src/personmodel.cpp" line="171"/>
+        <location filename="../src/personmodel.cpp" line="170"/>
         <source>Persons</source>
         <translation>Personen</translation>
     </message>
@@ -737,26 +701,6 @@
 </context>
 <context>
     <name>QObject</name>
-    <message>
-        <location filename="../src/accountstatusmodel.cpp" line="177"/>
-        <source>Message</source>
-        <translation>Bericht</translation>
-    </message>
-    <message>
-        <location filename="../src/accountstatusmodel.cpp" line="179"/>
-        <source>Code</source>
-        <translation>Code</translation>
-    </message>
-    <message>
-        <location filename="../src/accountstatusmodel.cpp" line="181"/>
-        <source>Time</source>
-        <translation>Tijd</translation>
-    </message>
-    <message>
-        <location filename="../src/accountstatusmodel.cpp" line="183"/>
-        <source>Counter</source>
-        <translation>Teller</translation>
-    </message>
     <message>
         <location filename="../src/certificate.cpp" line="42"/>
         <source>Has a private key</source>
@@ -1038,17 +982,10 @@
     </message>
     <message>
         <location filename="../src/fallbackpersoncollection.cpp" line="194"/>
-        <location filename="../src/transitionalpersonbackend.cpp" line="150"/>
         <source>Contact</source>
         <translation>Contact</translation>
     </message>
     <message>
-        <location filename="../src/localbookmarkcollection.cpp" line="212"/>
-        <source>Local bookmarks</source>
-        <translation>Lokale bladwijzers</translation>
-    </message>
-    <message>
-        <location filename="../src/localbookmarkcollection.cpp" line="217"/>
         <location filename="../src/useractionmodel.cpp" line="532"/>
         <source>Bookmark</source>
         <translation>Bladwijzer</translation>
@@ -1062,16 +999,6 @@
         <location filename="../src/localhistorycollection.cpp" line="200"/>
         <source>History</source>
         <translation>Geschiedenis</translation>
-    </message>
-    <message>
-        <location filename="../src/localmacrocollection.cpp" line="190"/>
-        <source>Local macros</source>
-        <translation>Lokale macro’s</translation>
-    </message>
-    <message>
-        <location filename="../src/localmacrocollection.cpp" line="195"/>
-        <source>Macro</source>
-        <translation>Macro</translation>
     </message>
     <message>
         <location filename="../src/localrecordingcollection.cpp" line="101"/>
@@ -1184,11 +1111,6 @@
         <source>Default</source>
         <comment>Default TLS protocol version</comment>
         <translation>Standaard</translation>
-    </message>
-    <message>
-        <location filename="../src/transitionalpersonbackend.cpp" line="145"/>
-        <source>Contact placeholders</source>
-        <translation>Tijdelijke contactaanduidingen</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="517"/>
@@ -1440,14 +1362,6 @@
     </message>
 </context>
 <context>
-    <name>RecentModel</name>
-    <message>
-        <location filename="../src/recentmodel.cpp" line="614"/>
-        <source>Recent persons</source>
-        <translation>Recente personen</translation>
-    </message>
-</context>
-<context>
     <name>RingDeviceModel</name>
     <message>
         <location filename="../src/ringdevicemodel.cpp" line="110"/>
@@ -1497,22 +1411,22 @@
 <context>
     <name>lrc::ContactModelPimpl</name>
     <message>
-        <location filename="../src/contactmodel.cpp" line="392"/>
+        <location filename="../src/contactmodel.cpp" line="393"/>
         <source>Searchingâ¦</source>
         <translation>Zoeken</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="722"/>
-        <source>Invalid ringID</source>
-        <translation>Ongeldige ring-ID</translation>
+        <location filename="../src/contactmodel.cpp" line="747"/>
+        <source>Invalid ID</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="725"/>
+        <location filename="../src/contactmodel.cpp" line="750"/>
         <source>Not found</source>
         <translation>Niet gevonden</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="728"/>
+        <location filename="../src/contactmodel.cpp" line="753"/>
         <source>Couldn&apos;t lookupâ¦</source>
         <translation>Kan niet opzoeken</translation>
     </message>
@@ -1520,7 +1434,7 @@
 <context>
     <name>lrc::api::ContactModel</name>
     <message>
-        <location filename="../src/contactmodel.cpp" line="363"/>
+        <location filename="../src/contactmodel.cpp" line="364"/>
         <source>Bad URI scheme</source>
         <translation>Slecht URI schema</translation>
     </message>
