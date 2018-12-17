@@ -122,7 +122,6 @@ QItemSelectionModel* Audio::InputDeviceModel::selectionModel() const
          if (idx < d_ptr->m_lDeviceList.size())
             d_ptr->m_pSelectionModel->setCurrentIndex(index(idx,0), QItemSelectionModel::ClearAndSelect);
       }
-
       connect(d_ptr->m_pSelectionModel, &QItemSelectionModel::currentChanged, d_ptr.data(), &InputDeviceModelPrivate::setCurrentDevice);
    }
 

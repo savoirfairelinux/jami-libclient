@@ -124,7 +124,7 @@ QItemSelectionModel* Audio::OutputDeviceModel::selectionModel() const
             d_ptr->m_pSelectionModel->setCurrentIndex(index(idx,0), QItemSelectionModel::ClearAndSelect);
       }
 
-      connect(d_ptr->m_pSelectionModel, SIGNAL(currentChanged(QModelIndex,QModelIndex)), d_ptr.data(), SLOT(setCurrentDevice(QModelIndex)));
+      connect(d_ptr->m_pSelectionModel, &QItemSelectionModel::currentChanged, d_ptr.data(), &OutputDeviceModelPrivate::setCurrentDevice);
    }
 
    return d_ptr->m_pSelectionModel;
