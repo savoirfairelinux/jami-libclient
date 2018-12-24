@@ -78,6 +78,8 @@ public:
     std::mutex m_mutex_account;
     std::mutex m_mutex_account_removal;
     std::condition_variable m_condVar_account_removal;
+    std::atomic_bool username_changed;
+    std::string new_username;
 
     /**
      * Add the profile information from an account to the db then add it to accounts.
@@ -336,6 +338,7 @@ NewAccountModelPimpl::NewAccountModelPimpl(NewAccountModel& linked,
 , behaviorController(behaviorController)
 , callbacksHandler(callbacksHandler)
 , database(database)
+, username_changed(false)
 {
     const QStringList accountIds = ConfigurationManager::instance().getAccountList();
 
@@ -437,8 +440,12 @@ NewAccountModelPimpl::slotAccountDetailsChanged(const std::string& accountId, co
     if (accountInfo == accounts.end()) {
         throw std::out_of_range("NewAccountModelPimpl::slotAccountDetailsChanged, can't find " + accountId);
     }
-
     accountInfo->second.fromDetails(convertMap(details));
+    if (username_changed) {
+        username_changed = false;
+        accountInfo->second.registeredName = new_username;
+        emit linked.profileUpdated(accountId);
+    }
     emit linked.accountStatusChanged(accountId);
 }
 
@@ -473,9 +480,11 @@ NewAccountModelPimpl::slotNameRegistrationEnded(const std::string& accountId, in
         auto accountInfo = accounts.find(accountId);
         if (accountInfo != accounts.end() && accountInfo->second.registeredName.empty()) {
             auto conf = linked.getAccountConfig(accountId);
+            username_changed = true;
+            new_username = name;
             linked.setAccountConfig(accountId, conf);
-            break;
         }
+        break;
       }
     case 1:
         convertedStatus = account::RegisterNameStatus::WRONG_PASSWORD;
