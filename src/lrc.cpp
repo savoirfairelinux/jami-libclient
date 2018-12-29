@@ -18,6 +18,12 @@
  ***************************************************************************/
 #include "api/lrc.h"
 
+#ifndef _MSC_VER
+#include <unistd.h>
+#else
+#include "../../daemon/MSVC/unistd.h"
+#endif // !_MSC_VER
+
 // Models and database
 #include "api/newaccountmodel.h"
 #include "api/avmodel.h"
@@ -59,6 +65,12 @@ Lrc::Lrc()
 
 Lrc::~Lrc()
 {
+    //Unregister from the daemon
+    InstanceManagerInterface& instance = InstanceManager::instance();
+    Q_NOREPLY instance.Unregister(getpid());
+#ifndef ENABLE_LIBWRAP
+    instance.connection().disconnectFromBus(instance.connection().baseService());
+#endif //ENABLE_LIBWRAP
 }
 
 const NewAccountModel&
