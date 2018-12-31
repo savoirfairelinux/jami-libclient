@@ -41,7 +41,7 @@
         <location filename="../src/account.cpp" line="311"/>
         <source>Not registered</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Не зарегистрирован</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="315"/>
@@ -53,19 +53,19 @@
         <location filename="../src/account.cpp" line="319"/>
         <source>Authentication failed</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Аутентификация не удалась</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="325"/>
         <source>STUN configuration error</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Ошибка настройки STUN</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="327"/>
         <source>STUN server invalid</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Неверный сервер STUN</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="329"/>
@@ -89,7 +89,7 @@
         <location filename="../src/account.cpp" line="335"/>
         <source>Request timeout</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Время ожидания запроса</translation>
     </message>
 </context>
 <context>
@@ -628,7 +628,7 @@
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="307"/>
         <source>UID</source>
-        <translation type="unfinished"/>
+        <translation>UID</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="307"/>
@@ -794,7 +794,7 @@
     <message>
         <location filename="../src/certificate.cpp" line="60"/>
         <source>The certificate authority match</source>
-        <translation type="unfinished"/>
+        <translation>Авторизованные сертификаты совпадают</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="61"/>
@@ -879,7 +879,7 @@
     <message>
         <location filename="../src/certificate.cpp" line="104"/>
         <source>Public key ID</source>
-        <translation type="unfinished"/>
+        <translation>ID открытого ключа</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="105"/>
@@ -1169,7 +1169,7 @@
     <message>
         <location filename="../src/api/call.h" line="78"/>
         <source>Timeout</source>
-        <translation type="unfinished"/>
+        <translation>Время ожидания</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="80"/>
@@ -1194,7 +1194,7 @@
     <message>
         <location filename="../src/useractionmodel.cpp" line="521"/>
         <source>Server transfer</source>
-        <translation type="unfinished"/>
+        <translation>Сервер передачи</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="522"/>
@@ -1418,12 +1418,12 @@
     <message>
         <location filename="../src/contactmodel.cpp" line="747"/>
         <source>Invalid ID</source>
-        <translation type="unfinished"/>
+        <translation>Неверный ID</translation>
     </message>
     <message>
         <location filename="../src/contactmodel.cpp" line="750"/>
         <source>Not found</source>
-        <translation type="unfinished"/>
+        <translation>Не найдено</translation>
     </message>
     <message>
         <location filename="../src/contactmodel.cpp" line="753"/>
@@ -1436,7 +1436,7 @@
     <message>
         <location filename="../src/contactmodel.cpp" line="364"/>
         <source>Bad URI scheme</source>
-        <translation type="unfinished"/>
+        <translation>Некорректная схема URI</translation>
     </message>
 </context>
 <context>
