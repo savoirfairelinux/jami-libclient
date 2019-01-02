@@ -1,5 +1,5 @@
 /****************************************************************************
- *   Copyright (C) 2017-2018 Savoir-faire Linux                               *
+ *    Copyright (C) 2017-2019 Savoir-faire Linux Inc.                               *
  *   Author : Guillaume Roguez <guillaume.roguez@savoirfairelinux.com>      *
  *   Author : Stepan Salenikovich <stepan.salenikovich@savoirfairelinux.com>*
  *                                                                          *
