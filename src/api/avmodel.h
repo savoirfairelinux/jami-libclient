@@ -1,5 +1,5 @@
 /****************************************************************************
- *   Copyright (C) 2018 Savoir-faire Linux                                  *
+ *    Copyright (C) 2018-2019 Savoir-faire Linux Inc.                                  *
  *   Author: Hugo Lefeuvre <hugo.lefeuvre@savoirfairelinux.com>             *
  *   Author: Sébastien Blin <sebastien.blin@savoirfairelinux.com>           *
  *                                                                          *

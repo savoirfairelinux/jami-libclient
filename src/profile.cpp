@@ -1,5 +1,5 @@
 /****************************************************************************
- *   Copyright (C) 2016-2018 Savoir-faire Linux                               *
+ *    Copyright (C) 2016-2019 Savoir-faire Linux Inc.                               *
  *   Author : Alexandre Lision <alexandre.lision@savoirfairelinux.com>      *
  *                                                                          *
  *   This library is free software; you can redistribute it and/or          *
