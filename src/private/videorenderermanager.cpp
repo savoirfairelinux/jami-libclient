@@ -426,18 +426,15 @@ void VideoRendererManagerPrivate::removeRenderer(Video::Renderer* r)
        t->wait();
    }
 
-   if (c && c->lifeCycleState() == Call::LifeCycleState::FINISHED) {
+   m_hRendererIds.remove(r);
+   m_hRenderers.remove(id);
 
-       m_hRendererIds.remove(r);
-       m_hRenderers.remove(id);
-
-       m_hThreads[r] = nullptr;
-       if (t) {
-           t->deleteLater();
-       }
-
-       r->deleteLater();
+   m_hThreads[r] = nullptr;
+   if (t) {
+       t->deleteLater();
    }
+
+   r->deleteLater();
 }
 
 void VideoRendererManagerPrivate::stoppedDecoding(const QString& id, const QString& shmPath)
