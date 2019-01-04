@@ -446,7 +446,7 @@ class LIB_EXPORT Account : public ItemBase {
       QString lastSipRegistrationStatus    () const;
 
       Q_INVOKABLE bool exportOnRing (const QString& password) const;
-      Q_INVOKABLE bool exportToFile (const QString& destinationPath) const;
+      Q_INVOKABLE bool exportToFile (const QString& destinationPath, const QString& password = {}) const;
       Q_INVOKABLE bool registerName (const QString& password, const QString& name) const;
       Q_INVOKABLE bool lookupName   (const QString& name                         ) const;
       Q_INVOKABLE bool lookupAddress(const QString& address                      ) const;
