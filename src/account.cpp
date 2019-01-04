@@ -1041,9 +1041,9 @@ bool Account::exportOnRing(const QString& password) const
     return ConfigurationManager::instance().exportOnRing(id(), password);
 }
 
-bool Account::exportToFile(const QString& destinationPath) const
+bool Account::exportToFile(const QString& destinationPath, const QString& password) const
 {
-    return ConfigurationManager::instance().exportToFile(id(), destinationPath);
+    return ConfigurationManager::instance().exportToFile(id(), destinationPath, password);
 }
 
 #define CAST(item) static_cast<int>(item)
