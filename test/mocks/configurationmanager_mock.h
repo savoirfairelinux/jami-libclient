@@ -144,10 +144,11 @@ public Q_SLOTS: // METHODS
         return false;
     }
 
-    bool exportToFile(const QString& accountId, const QString& destinationPath)
+    bool exportToFile(const QString& accountId, const QString& destinationPath, const QString& password = {})
     {
         Q_UNUSED(accountId)
         Q_UNUSED(destinationPath)
+        Q_UNUSED(password)
         return false;
     }
 

@@ -278,9 +278,9 @@ NewAccountModel::registerName(const std::string& accountId, const std::string& p
 }
 
 bool
-NewAccountModel::exportToFile(const std::string& accountId, const std::string& path) const
+NewAccountModel::exportToFile(const std::string& accountId, const std::string& path, const std::string& password) const
 {
-    return ConfigurationManager::instance().exportToFile(accountId.c_str(), path.c_str());
+    return ConfigurationManager::instance().exportToFile(accountId.c_str(), path.c_str(), password.c_str());
 }
 
 bool
