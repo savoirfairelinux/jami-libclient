@@ -93,9 +93,10 @@ public:
      * Call exportToFile from the daemon
      * @param accountId
      * @param path destination
+     * @param password
      * @return if the file is exported with success
      */
-    bool exportToFile(const std::string& accountId, const std::string& path) const;
+    bool exportToFile(const std::string& accountId, const std::string& path, const std::string& password = {}) const;
     /**
      * Call exportOnRing from the daemon
      * @param accountId
