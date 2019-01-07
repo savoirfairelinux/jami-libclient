@@ -1333,7 +1333,7 @@
     <message>
         <location filename="../src/conversationmodel.cpp" line="1524"/>
         <source>ð Outgoing call</source>
-        <translation>Thirrje ikëse ð</translation>
+        <translation>Thirrje ikse ð</translation>
     </message>
     <message>
         <location filename="../src/conversationmodel.cpp" line="1526"/>
@@ -1343,7 +1343,7 @@
     <message>
         <location filename="../src/conversationmodel.cpp" line="1539"/>
         <source>ð Outgoing call - </source>
-        <translation>Thirrje ikëse ð - </translation>
+        <translation>Thirrje ikse ð - </translation>
     </message>
     <message>
         <location filename="../src/conversationmodel.cpp" line="1542"/>
@@ -1353,7 +1353,7 @@
     <message>
         <location filename="../src/conversationmodel.cpp" line="1546"/>
         <source>ð½ Missed outgoing call</source>
-        <translation>Thirrje ikëse të humbura ð½</translation>
+        <translation>Thirrje ikse të humbura ð½</translation>
     </message>
     <message>
         <location filename="../src/conversationmodel.cpp" line="1548"/>
