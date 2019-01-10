@@ -30,6 +30,7 @@
 #include "api/contactmodel.h"
 #include "api/newaccountmodel.h"
 #include "dbus/callmanager.h"
+#include "dbus/configurationmanager.h"
 #include "mime.h"
 #include "private/videorenderermanager.h"
 #include "video/renderer.h"
@@ -266,6 +267,7 @@ NewCallModel::toggleMedia(const std::string& callId, const NewCallModel::Media m
         CallManager::instance().muteLocalMedia(callId.c_str(),
                                                DRing::Media::Details::MEDIA_TYPE_AUDIO,
                                                !call->audioMuted);
+        ConfigurationManager::instance().muteCapture(!call->audioMuted);
         call->audioMuted = !call->audioMuted;
         break;
 
