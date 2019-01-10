@@ -271,8 +271,8 @@ void VideoRendererManagerPrivate::startedDecoding(const QString& id, const QStri
 
       Call* c = CallModel::instance().getCall(id);
 
+      emit q_ptr->remotePreviewStarted(id.toStdString(), r);
       if (c) {
-          emit q_ptr->remotePreviewStarted(id.toStdString(), r);
           c->d_ptr->registerRenderer(r);
       }
       else {
