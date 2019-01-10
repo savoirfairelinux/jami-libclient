@@ -166,21 +166,7 @@ void CallModelPrivate::init()
     CallManagerInterface& callManager = CallManager::instance();
 #ifdef ENABLE_VIDEO
     VideoManager::instance();
-#endif
-
-    //SLOTS
-    /*             SENDER                          SIGNAL                     RECEIVER                    SLOT                   */
-    /**/connect(&callManager, SIGNAL(callStateChanged(QString,QString,int))  , this , SLOT(slotCallStateChanged(QString,QString,int)), Qt::QueuedConnection);
-    /**/connect(&callManager, SIGNAL(incomingCall(QString,QString,QString))   , this , SLOT(slotIncomingCall(QString,QString)),        Qt::QueuedConnection);
-    /**/connect(&callManager, SIGNAL(conferenceCreated(QString))              , this , SLOT(slotIncomingConference(QString)),          Qt::QueuedConnection);
-    /**/connect(&callManager, SIGNAL(conferenceChanged(QString,QString))      , this , SLOT(slotChangingConference(QString,QString)),  Qt::QueuedConnection);
-    /**/connect(&callManager, SIGNAL(conferenceRemoved(QString))              , this , SLOT(slotConferenceRemoved(QString)),           Qt::QueuedConnection);
-    /**/connect(&callManager, SIGNAL(recordPlaybackFilepath(QString,QString)) , this , SLOT(slotNewRecordingAvail(QString,QString)),   Qt::QueuedConnection);
-    /**/connect(&callManager, SIGNAL(recordingStateChanged(QString,bool))     , this , SLOT(slotRecordStateChanged(QString,bool)),     Qt::QueuedConnection);
-    /**/connect(&callManager, SIGNAL(audioMuted(QString,bool))                , this , SLOT(slotAudioMuted(QString,bool)),             Qt::QueuedConnection);
-    /**/connect(&callManager, SIGNAL(videoMuted(QString,bool))                , this , SLOT(slotVideoMutex(QString,bool)),             Qt::QueuedConnection);
-    /**/connect(&callManager, SIGNAL(peerHold(QString,bool))                  , this , SLOT(slotPeerHold(QString,bool)),               Qt::QueuedConnection);
-    /*                                                                                                                           */
+#endif                                                                                                                        */
 
     connect(&CategorizedHistoryModel::instance(),SIGNAL(newHistoryCall(Call*)),this,SLOT(slotAddPrivateCall(Call*)));
 
