@@ -115,6 +115,9 @@ public Q_SLOTS:
      */
     void slotDeviceEvent();
 
+    void slotHardwareDecodingChanged(bool state);
+    void slotHardwareEncodingChanged(bool state);
+
 };
 
 const std::string AVModelPimpl::recorderSavesSubdir = "sent_data";
@@ -495,6 +498,10 @@ AVModelPimpl::init()
             this, &AVModelPimpl::slotCallStateChanged);
     connect(&*renderers_[video::PREVIEW_RENDERER_ID], &api::video::Renderer::frameUpdated,
         this, &AVModelPimpl::slotFrameUpdated);
+    connect(&ConfigurationManager::instance(), &ConfigurationManager::hardwareDecodingChanged,
+            this, &AVModelPimpl::slotHardwareDecodingChanged);
+    connect(&ConfigurationManager::instance(), &ConfigurationManager::hardwareEncodingChanged,
+            this, &AVModelPimpl::slotHardwareEncodingChanged);
 
     auto startedPreview = false;
     auto restartRenderers = [&](const QStringList& callList) {
@@ -694,6 +701,18 @@ void
 AVModelPimpl::slotDeviceEvent()
 {
     emit linked_.deviceEvent();
+}
+
+void
+AvModelPimpl::slotHardwareDecodingChanged(bool state)
+{
+    emit linked_.hardwareDecodingChanged(state);
+}
+
+void
+AvModelPimpl::slotHardwareEncodingChanged(bool state)
+{
+    emit linked_.hardwareEncodingChanged(state);
 }
 
 } // namespace lrc

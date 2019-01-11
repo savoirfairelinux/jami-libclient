@@ -224,6 +224,9 @@ Q_SIGNALS:
      */
     void deviceEvent();
 
+    void hardwareDecodingChanged(bool state);
+    void hardwareEncodingChanged(bool state);
+
 private:
     std::unique_ptr<AVModelPimpl> pimpl_;
 };
