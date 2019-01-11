@@ -848,6 +848,8 @@ Q_SIGNALS: // SIGNALS
     void dataTransferEvent(uint64_t transfer_id, uint32_t code);
     void deviceRevocationEnded(const QString& accountId, const QString& deviceId, int status);
     void debugMessageReceived(const std::string& message);
+    void hardwareDecodingChanged(bool state);
+    void hardwareEncodingChanged(bool state);
 };
 
 namespace org {

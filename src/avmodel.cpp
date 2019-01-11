@@ -114,6 +114,14 @@ public Q_SLOTS:
      * Detect when a device is plugged or unplugged
      */
     void slotDeviceEvent();
+    /**
+     * Listen when hardware decoding changes
+     */
+    void slotHardwareDecodingChanged(bool state);
+    /**
+     * Listen when hardware encoding changes
+     */
+    void slotHardwareEncodingChanged(bool state);
 
 };
 
@@ -495,6 +503,11 @@ AVModelPimpl::init()
             this, &AVModelPimpl::slotCallStateChanged);
     connect(&*renderers_[video::PREVIEW_RENDERER_ID], &api::video::Renderer::frameUpdated,
         this, &AVModelPimpl::slotFrameUpdated);
+    connect(&ConfigurationManager::instance(), &ConfigurationManagerInterface::hardwareDecodingChanged,
+            this, &AVModelPimpl::slotHardwareDecodingChanged);
+    connect(&ConfigurationManager::instance(),
+            &ConfigurationManagerInterface::hardwareEncodingChanged, this,
+            &AVModelPimpl::slotHardwareEncodingChanged);
 
     auto startedPreview = false;
     auto restartRenderers = [&](const QStringList& callList) {
@@ -694,6 +707,18 @@ void
 AVModelPimpl::slotDeviceEvent()
 {
     emit linked_.deviceEvent();
+}
+
+void
+AVModelPimpl::slotHardwareDecodingChanged(bool state)
+{
+    emit linked_.hardwareDecodingChanged(state);
+}
+
+void
+AVModelPimpl::slotHardwareEncodingChanged(bool state)
+{
+    emit linked_.hardwareEncodingChanged(state);
 }
 
 } // namespace lrc

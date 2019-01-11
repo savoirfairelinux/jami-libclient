@@ -168,6 +168,14 @@ public:
                 [this](const std::string& message) {
                     Q_EMIT this->debugMessageReceived(message);
                 }),
+            exportable_callback<ConfigurationSignal::HardwareDecodingChanged>(
+                [this] () {
+                    Q_EMIT this->hardwareDecodingChanged();
+                }),
+            exportable_callback<ConfigurationSignal::HardwareEncodingChanged>(
+                [this] () {
+                    Q_EMIT this->hardwareEncodingChanged();
+                }),
         };
 
         dataXferHandlers = {
@@ -706,6 +714,8 @@ Q_SIGNALS: // SIGNALS
     void dataTransferEvent(qulonglong transfer_id, uint code);
     void deviceRevocationEnded(const QString& accountId, const QString& deviceId, int status);
     void debugMessageReceived(const std::string& message);
+    void hardwareDecodingChanged(bool state);
+    void hardwareEncodingChanged(bool state);
 };
 
 namespace org { namespace ring { namespace Ring {

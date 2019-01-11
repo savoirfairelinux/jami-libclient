@@ -223,6 +223,14 @@ Q_SIGNALS:
      * Emitted when a device is plugged or unplugged
      */
     void deviceEvent();
+    /**
+     * Listen to this signal to know when hardware decoding changes
+     */
+    void hardwareDecodingChanged(bool state);
+    /**
+     * Listen to this signal to know when hardware encoding changes
+     */
+    void hardwareEncodingChanged(bool state);
 
 private:
     std::unique_ptr<AVModelPimpl> pimpl_;
