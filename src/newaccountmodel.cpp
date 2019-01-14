@@ -415,7 +415,7 @@ NewAccountModelPimpl::slotAccountStatusChanged(const std::string& accountID, con
     auto& accountInfo = it->second;
 
     if (accountInfo.profileInfo.type != profile::Type::SIP) {
-        if (status != api::account::Status::INITIALIZING
+        if (status != api::account::Status::INITIALIZING && status != api::account::Status::INVALID && status != api::account::Status::UNREGISTERED
             && accountInfo.status == api::account::Status::INITIALIZING) {
             // Detect when a new account is generated (keys are ready). During
             // the generation, a Ring account got the "INITIALIZING" status.
