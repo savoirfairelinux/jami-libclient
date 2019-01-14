@@ -405,6 +405,10 @@ NewAccountModelPimpl::updateAccounts()
 void
 NewAccountModelPimpl::slotAccountStatusChanged(const std::string& accountID, const api::account::Status status)
 {
+    if (status == api::account::Status::INVALID) {
+        emit linked.invalidAccountDetected(accountID);
+        return;
+    }
     auto it = accounts.find(accountID);
 
     // If account is not in the map yet, don't add it, it is updateAccounts's job
