@@ -166,9 +166,10 @@ void CallModelPrivate::init()
     CallManagerInterface& callManager = CallManager::instance();
 #ifdef ENABLE_VIDEO
     VideoManager::instance();
-#endif                                                                                                                        */
+#endif
 
-    connect(&CategorizedHistoryModel::instance(),SIGNAL(newHistoryCall(Call*)),this,SLOT(slotAddPrivateCall(Call*)));
+    connect(&callManager, SIGNAL(callStateChanged(QString, QString, int)), this, SLOT(slotCallStateChanged(QString, QString, int)), Qt::QueuedConnection);
+    connect(&callManager, SIGNAL(recordingStateChanged(QString, bool)), this, SLOT(slotRecordStateChanged(QString, bool)), Qt::QueuedConnection);
 
     registerCommTypes();
 
