@@ -155,6 +155,14 @@ public Q_SLOTS: // METHODS
     {
     }
 
+    void startAudioDevice()
+    {
+    }
+
+    void stopAudioDevice()
+    {
+    }
+
     bool switchInput(const QString &resource)
     {
         Q_UNUSED(resource)
