@@ -125,6 +125,16 @@ public:
      */
     std::string getInputDevice() const;
     /**
+     * Get current state of the audio meter
+     * @return current state of the audio meter
+     */
+    bool isAudioMeterActive() const;
+    /**
+     * Turn on/off the audio metering feature
+     * @param the new state of the meter
+     */
+    void setAudioMeterState(bool active) const;
+    /**
      * Set current audio manager
      * @param name of the new audio manager
      * @return if the operation is successful

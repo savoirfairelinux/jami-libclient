@@ -95,6 +95,10 @@ Q_SIGNALS:
      * Emitted debugMessageReceived
      */
      void debugMessageReceived(const std::string& message);
+     /**
+     * Emitted audioLevelReceived
+     */
+     void audioLevelReceived(const std::string& id, float level);
 
 };
 
