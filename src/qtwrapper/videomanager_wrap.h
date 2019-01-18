@@ -189,6 +189,16 @@ public Q_SLOTS: // METHODS
 #endif
     }
 
+    void startAudioDevice()
+    {
+        DRing::startAudioDevice();
+    }
+
+    void stopAudioDevice()
+    {
+        DRing::stopAudioDevice();
+    }
+
     bool switchInput(const QString &resource)
     {
 #ifdef ENABLE_VIDEO
