@@ -226,7 +226,6 @@ NewAccountModel::getAccountConfig(const std::string& accountId) const
     return accountInfo->second.confProperties;
 }
 
-
 void
 NewAccountModel::enableAccount(const std::string& accountId, bool enabled)
 {
