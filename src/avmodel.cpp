@@ -114,6 +114,12 @@ public Q_SLOTS:
      * Detect when a device is plugged or unplugged
      */
     void slotDeviceEvent();
+    /**
+     * Audio volume level
+     * @param id Ringbuffer id
+     * @param level Volume in range [0, 1]
+     */
+    void slotAudioMeter(const std::string& id, float level);
 
 };
 
@@ -302,6 +308,30 @@ AVModel::getInputDevice() const
 }
 
 bool
+AVModel::isAudioMeterActive(const std::string& id) const
+{
+    return ConfigurationManager::instance().isAudioMeterActive(id.c_str());
+}
+
+void
+AVModel::setAudioMeterState(bool active, const std::string& id) const
+{
+    ConfigurationManager::instance().setAudioMeterState(active, id.c_str());
+}
+
+void
+AVModel::startAudioDevice() const
+{
+    VideoManager::instance().startAudioDevice();
+}
+
+void
+AVModel::stopAudioDevice() const
+{
+    VideoManager::instance().stopAudioDevice();
+}
+
+bool
 AVModel::setAudioManager(const std::string& name)
 {
     return ConfigurationManager::instance().setAudioManager(name.c_str());
@@ -487,6 +517,8 @@ AVModelPimpl::init()
 #endif
     connect(&callbacksHandler, &CallbacksHandler::deviceEvent,
             this, &AVModelPimpl::slotDeviceEvent);
+    connect(&callbacksHandler, &CallbacksHandler::audioMeter,
+            this, &AVModelPimpl::slotAudioMeter);
     connect(&callbacksHandler, &CallbacksHandler::startedDecoding,
             this, &AVModelPimpl::startedDecoding);
     connect(&callbacksHandler, &CallbacksHandler::stoppedDecoding,
@@ -694,6 +726,12 @@ void
 AVModelPimpl::slotDeviceEvent()
 {
     emit linked_.deviceEvent();
+}
+
+void
+AVModelPimpl::slotAudioMeter(const std::string& id, float level)
+{
+    emit linked_.audioMeter(id, level);
 }
 
 } // namespace lrc

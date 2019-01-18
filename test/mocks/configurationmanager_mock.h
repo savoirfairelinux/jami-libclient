@@ -839,6 +839,7 @@ Q_SIGNALS: // SIGNALS
     void incomingAccountMessage(const QString& accountId, const QString& from, const MapStringString& payloads);
     void mediaParametersChanged(const QString& accountId);
     void audioDeviceEvent();
+    void audioMeter(const QString& id, float level);
     void accountMessageStatusChanged(const QString& accountId, const uint64_t id, const QString& to, int status);
     void nameRegistrationEnded(const QString& accountId, int status, const QString& name);
     void registeredNameFound(const QString& accountId, int status, const QString& address, const QString& name); // used by conversationModel
