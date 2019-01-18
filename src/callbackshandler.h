@@ -176,7 +176,6 @@ Q_SIGNALS:
     void transferStatusTimeoutExpired(long long dringId, api::datatransfer::Info info);
     void transferStatusUnjoinable(long long dringId, api::datatransfer::Info info);
 
-
     /**
      * Connect this signal to get when a device name changed or a device is added
      * @param accountId interaction receiver.
@@ -252,6 +251,13 @@ Q_SIGNALS:
      * Emitted when a device is plugged or unplugged
      */
     void deviceEvent();
+
+    /**
+     * Emitted when an audio level is received
+     * @param id of the ringbuffer level
+     * @param level
+     */
+    void audioMeter(const QString& id, float level);
 
 private Q_SLOTS:
     /**
@@ -433,8 +439,6 @@ private Q_SLOTS:
     void slotDebugMessageReceived(const QString& message);
 #endif
 
-
-
     /**
      * Renderer is started
      * @param id
@@ -456,6 +460,12 @@ private Q_SLOTS:
      */
     void slotDeviceEvent();
 
+    /**
+     * Called when an audio meter level is received
+     * @param id of the ringbuffer level
+     * @param level
+     */
+    void slotAudioMeterReceived(const QString& id, float level);
 
 private:
     const api::Lrc& parent;
