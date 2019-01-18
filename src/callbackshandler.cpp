@@ -206,6 +206,12 @@ CallbacksHandler::CallbacksHandler(const Lrc& parent)
             this,
             &CallbacksHandler::slotDeviceEvent,
             Qt::QueuedConnection);
+
+    connect(&ConfigurationManager::instance(),
+            &ConfigurationManagerInterface::audioMeterReceived,
+            this,
+            &CallbacksHandler::slotAudioMeterReceived,
+            Qt::QueuedConnection);
 }
 
 CallbacksHandler::~CallbacksHandler()
@@ -493,5 +499,10 @@ CallbacksHandler::slotDeviceEvent()
     emit deviceEvent();
 }
 
+void
+CallbacksHandler::slotAudioMeterReceived(const QString& id, float level)
+{
+    emit parent.getBehaviorController().audioLevelReceived(id.toStdString(), level);
+}
 
 } // namespace lrc
