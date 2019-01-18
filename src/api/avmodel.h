@@ -125,6 +125,16 @@ public:
      */
     std::string getInputDevice() const;
     /**
+     * Get current state of the audio meter
+     * @return current state of the audio meter
+     */
+    bool isAudioMeterActive() const;
+    /**
+     * Turn on/off the audio metering feature
+     * @param the new state of the meter
+     */
+    void setAudioMeterState(bool active) const;
+    /**
      * Set current audio manager
      * @param name of the new audio manager
      * @return if the operation is successful
@@ -223,6 +233,12 @@ Q_SIGNALS:
      * Emitted when a device is plugged or unplugged
      */
     void deviceEvent();
+    /**
+     * Audio volume level
+     * @param id Ringbuffer id
+     * @param level Volume in range [0, 1]
+     */
+    void audioMeter(const std::string& id, float level);
 
 private:
     std::unique_ptr<AVModelPimpl> pimpl_;
