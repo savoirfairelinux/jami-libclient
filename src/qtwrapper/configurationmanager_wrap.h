@@ -152,6 +152,10 @@ public:
                 [this] () {
                     Q_EMIT this->audioDeviceEvent();
                 }),
+            exportable_callback<AudioSignal::AudioMeter>(
+                [this](const std::string& id, float level) {
+                    Q_EMIT this->audioMeterReceived(QString(id.c_str()), level);
+                }),
             exportable_callback<ConfigurationSignal::MigrationEnded>(
                 [this] (const std::string& account_id, const std::string& result) {
                     Q_EMIT this->migrationEnded(QString(account_id.c_str()), QString(result.c_str()));
@@ -509,6 +513,14 @@ public Q_SLOTS: // METHODS
         DRing::setNoiseSuppressState(state);
     }
 
+    bool isAudioMeterActive() {
+        return DRing::isAudioMeterActive("");
+    }
+
+    void setAudioMeterState(bool state) {
+        DRing::setAudioMeterState("", state);
+    }
+
     void setRecordPath(const QString& rec) {
         DRing::setRecordPath(rec.toStdString());
     }
@@ -697,6 +709,7 @@ Q_SIGNALS: // SIGNALS
     void incomingAccountMessage(const QString& accountId, const QString& from, const MapStringString& payloads);
     void mediaParametersChanged(const QString& accountId);
     void audioDeviceEvent();
+    void audioMeterReceived(const QString& id, float level);
     void accountMessageStatusChanged(const QString& accountId, const uint64_t id, const QString& to, int status);
     void nameRegistrationEnded(const QString& accountId, int status, const QString& name);
     void registeredNameFound(const QString& accountId, int status, const QString& address, const QString& name);

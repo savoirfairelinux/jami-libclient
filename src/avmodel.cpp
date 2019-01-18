@@ -302,6 +302,18 @@ AVModel::getInputDevice() const
 }
 
 bool
+AVModel::isAudioMeterActive() const
+{
+    return ConfigurationManager::instance().isAudioMeterActive("");
+}
+
+void
+AVModel::setAudioMeterState(bool active) const
+{
+    ConfigurationManager::instance().setAudioMeterState("", active);
+}
+
+bool
 AVModel::setAudioManager(const std::string& name)
 {
     return ConfigurationManager::instance().setAudioManager(name.c_str());
