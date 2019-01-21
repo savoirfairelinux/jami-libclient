@@ -227,7 +227,7 @@
 <context>
     <name>CallModel</name>
     <message>
-        <location filename="../src/callmodel.cpp" line="897"/>
+        <location filename="../src/callmodel.cpp" line="898"/>
         <source>Calls</source>
         <translation type="unfinished"></translation>
     </message>
@@ -235,8 +235,8 @@
 <context>
     <name>CallModelPrivate</name>
     <message>
-        <location filename="../src/callmodel.cpp" line="532"/>
-        <location filename="../src/callmodel.cpp" line="557"/>
+        <location filename="../src/callmodel.cpp" line="533"/>
+        <location filename="../src/callmodel.cpp" line="558"/>
         <source>Invalid account</source>
         <translation type="unfinished"></translation>
     </message>

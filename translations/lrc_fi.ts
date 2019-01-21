@@ -226,7 +226,7 @@ Virhe</translation>
 <context>
     <name>CallModel</name>
     <message>
-        <location filename="../src/callmodel.cpp" line="897"/>
+        <location filename="../src/callmodel.cpp" line="898"/>
         <source>Calls</source>
         <translation>Puhelut</translation>
     </message>
@@ -234,8 +234,8 @@ Virhe</translation>
 <context>
     <name>CallModelPrivate</name>
     <message>
-        <location filename="../src/callmodel.cpp" line="532"/>
-        <location filename="../src/callmodel.cpp" line="557"/>
+        <location filename="../src/callmodel.cpp" line="533"/>
+        <location filename="../src/callmodel.cpp" line="558"/>
         <source>Invalid account</source>
         <translation>Epäkelpo tunnus</translation>
     </message>

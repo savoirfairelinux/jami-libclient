@@ -41,31 +41,31 @@
         <location filename="../src/account.cpp" line="311"/>
         <source>Not registered</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>ثبت‌نشده</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="315"/>
         <source>Tryingâ¦</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>درحال تلاشâ¦</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="319"/>
         <source>Authentication failed</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>تأیید هویت شکست خورد</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="325"/>
         <source>STUN configuration error</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>خطای پیکربندی STUN</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="327"/>
         <source>STUN server invalid</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>کارساز نامعتبر STUN</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="329"/>
@@ -89,7 +89,7 @@
         <location filename="../src/account.cpp" line="335"/>
         <source>Request timeout</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>انقضای درخواست</translation>
     </message>
 </context>
 <context>
@@ -225,7 +225,7 @@
 <context>
     <name>CallModel</name>
     <message>
-        <location filename="../src/callmodel.cpp" line="897"/>
+        <location filename="../src/callmodel.cpp" line="898"/>
         <source>Calls</source>
         <translation>تماس‌ها</translation>
     </message>
@@ -233,8 +233,8 @@
 <context>
     <name>CallModelPrivate</name>
     <message>
-        <location filename="../src/callmodel.cpp" line="532"/>
-        <location filename="../src/callmodel.cpp" line="557"/>
+        <location filename="../src/callmodel.cpp" line="533"/>
+        <location filename="../src/callmodel.cpp" line="558"/>
         <source>Invalid account</source>
         <translation>حساب کاربری نامعتبر</translation>
     </message>
@@ -1169,7 +1169,7 @@
     <message>
         <location filename="../src/api/call.h" line="78"/>
         <source>Timeout</source>
-        <translation type="unfinished"/>
+        <translation>انقضا</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="80"/>
@@ -1413,12 +1413,12 @@
     <message>
         <location filename="../src/contactmodel.cpp" line="393"/>
         <source>Searchingâ¦</source>
-        <translation type="unfinished"/>
+        <translation>درحال جست‌وجوâ¦</translation>
     </message>
     <message>
         <location filename="../src/contactmodel.cpp" line="747"/>
         <source>Invalid ID</source>
-        <translation type="unfinished"/>
+        <translation>شناسهٔ نامعتبر</translation>
     </message>
     <message>
         <location filename="../src/contactmodel.cpp" line="750"/>
@@ -1428,7 +1428,7 @@
     <message>
         <location filename="../src/contactmodel.cpp" line="753"/>
         <source>Couldn&apos;t lookupâ¦</source>
-        <translation type="unfinished"/>
+        <translation>نمی‌توان جستâ¦</translation>
     </message>
 </context>
 <context>
@@ -1436,7 +1436,7 @@
     <message>
         <location filename="../src/contactmodel.cpp" line="364"/>
         <source>Bad URI scheme</source>
-        <translation type="unfinished"/>
+        <translation>شمای نشانی بد</translation>
     </message>
 </context>
 <context>
