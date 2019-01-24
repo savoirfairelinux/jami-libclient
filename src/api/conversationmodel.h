@@ -192,14 +192,18 @@ public:
      */
     int getNumberOfUnreadMessagesFor(const std::string& convUid);
 
-Q_SIGNALS:
+    void addAndCall(const::std::string& url);
+
+Q_SIGNALS :
     /**
      * Emitted when a conversation receives a new interaction
      * @param uid of conversation
      * @param interactionId
      * @param interactionInfo
      */
-    void newInteraction(const std::string& uid, uint64_t interactionId, const interaction::Info& interactionInfo) const;
+    void
+    newInteraction(const std::string &uid, uint64_t interactionId,
+                    const interaction::Info &interactionInfo) const;
     /**
      * Emitted when an interaction got a new status
      * @param convUid conversation which owns the interaction

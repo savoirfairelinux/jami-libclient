@@ -1869,6 +1869,45 @@ ConversationModel::getNumberOfUnreadMessagesFor(const std::string& convUid)
     return pimpl_->getNumberOfUnreadMessagesFor(convUid);
 }
 
+void
+ConversationModel::addAndCall(const std::string &uri) {
+    // Note: supports only 40 characters
+    int contactIndex;
+    bool isContact = true;
+    if ((contactIndex = pimpl_->indexOfContact(uri)) < 0) {
+        isContact = false;
+        ConfigurationManager::instance().addContact(owner.id.c_str(),
+                                                    uri.c_str());
+    }
+
+    auto cb = std::function<void(std::string)>([this](std::string convId) {
+        int contactIndex;
+        if ((contactIndex = pimpl_->indexOfContact(convId)) < 0) {
+            qDebug() << "Can't call contact: Other participant is not a contact "
+                        "(removed while calling?)";
+            return;
+        }
+
+        // Retrieve final peer uri after creation of the conversation
+        auto &conversationUid = pimpl_->conversations[contactIndex].uid;
+        placeCall(conversationUid);
+    });
+
+    if (!isContact) {
+        QMetaObject::Connection *const connection = new QMetaObject::Connection;
+        *connection = connect(this, &ConversationModel::conversationReady,
+                                [cb, connection](std::string convId) {
+                                    cb(convId);
+                                    QObject::disconnect(*connection);
+                                    if (connection) {
+                                        delete connection;
+                                    }
+                                });
+    } else {
+        cb(uri);
+    }
+  }
+
 bool
 ConversationModelPimpl::usefulDataFromDataTransfer(long long dringId, const datatransfer::Info& info,
                                                    int& interactionId, std::string& convId)
