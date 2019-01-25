@@ -327,7 +327,7 @@ void
 AVModel::setInputDevice(const std::string& name)
 {
     int idx = ConfigurationManager::instance()
-        .getAudioOutputDeviceIndex(name.c_str());
+        .getAudioInputDeviceIndex(name.c_str());
     ConfigurationManager::instance().setAudioInputDevice(idx);
 }
 
