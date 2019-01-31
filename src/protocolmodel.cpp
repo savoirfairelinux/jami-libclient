@@ -47,7 +47,7 @@ public Q_SLOTS:
    void slotSelectionChanged(const QModelIndex& idx);
 };
 
-const QString ProtocolModelPrivate::ToolTips::RING_ACCOUNT_TOOLTIP = QObject::tr("Ring Account");
+const QString ProtocolModelPrivate::ToolTips::RING_ACCOUNT_TOOLTIP = QObject::tr("Jami Account");
 const QString ProtocolModelPrivate::ToolTips::SIP_ACCOUNT_TOOLTIP  = QObject::tr("SIP Account" );
 
 

@@ -303,7 +303,7 @@ QVariant PhoneDirectoryModel::headerData(int section, Qt::Orientation orientatio
    Q_UNUSED(section)
    Q_UNUSED(orientation)
    static const QString headers[] = {tr("URI"), tr("Type"), tr("Person"), tr("Account"), tr("State"), tr("Call count"), tr("Week count"),
-   tr("Trimester count"), tr("Have Called"), tr("Last used"), tr("Name_count"),tr("Total (in seconds)"), tr("Popularity_index"),
+   tr("Trimester count"), tr("Have Called"), tr("Last used"), tr("Name_count"),tr("Total (in seconds)"), tr("Popularity index"),
    tr("Bookmarked"), tr("Tracked"), tr("Has certificate"), tr("Present"), tr("Presence message"), tr("UID"), tr("Registered name") };
    if (role == Qt::DisplayRole) return headers[section];
    return QVariant();

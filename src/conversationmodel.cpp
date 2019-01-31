@@ -1543,7 +1543,7 @@ ConversationModelPimpl::slotCallEnded(const std::string& callId)
                     + linked.owner.callModel->getFormattedCallDuration(callId));
         } else {
             if (call.isOutgoing)
-                addOrUpdateCallMessage(callId, QObject::tr("🕽 Missed outgoing call").toStdString());
+                addOrUpdateCallMessage(callId, QObject::tr("🕽 Unaccepted outgoing call").toStdString());
             else
                 addOrUpdateCallMessage(callId, QObject::tr("🕽 Missed incoming call").toStdString());
         }

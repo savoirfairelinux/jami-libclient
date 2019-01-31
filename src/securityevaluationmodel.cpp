@@ -44,7 +44,7 @@ const QString SecurityEvaluationModelPrivate::messages[enum_class_size<SecurityE
    /*REQUIRE_CERTIFICATE_ENABLED */QObject::tr("None of your certificate provide a private key, this is required. Please select a private key"
                                        " or use a certificate with one built-in"),
    /* NOT_MISSING_CERTIFICATE    */QObject::tr("No certificate has been provided. This is, for now, unsupported by Ring"),
-   /* NOT_MISSING_AUTHORITY      */QObject::tr("No certificate authority is provided, it won't be possible to validate if the answer certificates are valid. Some account may also not work."),
+   /* NOT_MISSING_AUTHORITY      */QObject::tr("No certificate authority is provided, it won't be possible to validate if the answer certificates are valid. Some accounts may also not work."),
 };
 
 static const QString s1 = QObject::tr("Your certificate is expired, please contact your system administrator.");
