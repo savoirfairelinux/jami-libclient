@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5f03f24b_b9f41c85",
+        "filename": "src/avmodel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 419,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2019-02-04T23:13:05Z",
+      "side": 1,
+      "message": "Not looking good.. What about a refCounter or something similar ?",
+      "range": {
+        "startLine": 407,
+        "startChar": 0,
+        "endLine": 419,
+        "endChar": 46
+      },
+      "revId": "60a10425fe7ab60671a339b9829a2de59fed3d34",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    }
+  ]
+}
