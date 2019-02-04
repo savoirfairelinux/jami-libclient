@@ -404,7 +404,19 @@ AVModel::stopPreview()
         qWarning() << "Can't find preview renderer!";
         return;
     }
-    VideoManager::instance().stopCamera();
+    // If an active call does not have video muted, don't stop the camera
+    // stopCamera() calls switchInput(""), which disables the camera
+    bool previewShouldBeStopped = true;
+    QStringList callList = CallManager::instance().getCallList();
+    for (const auto& callId : callList) {
+        MapStringString details = CallManager::instance().getCallDetails(callId);
+        auto callStatus = call::to_status(details["CALL_STATE"].toStdString());
+        if ((callStatus == call::Status::CONNECTED || callStatus == call::Status::IN_PROGRESS)
+            && details["VIDEO_MUTED"] != "true")
+            previewShouldBeStopped = false;
+    }
+    if (previewShouldBeStopped)
+        VideoManager::instance().stopCamera();
     pimpl_->renderers_[video::PREVIEW_RENDERER_ID]->stopRendering();
 }
 
