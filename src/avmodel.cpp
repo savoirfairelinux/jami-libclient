@@ -404,7 +404,16 @@ AVModel::stopPreview()
         qWarning() << "Can't find preview renderer!";
         return;
     }
-    VideoManager::instance().stopCamera();
+    // If an active call does not have video muted, don't stop the camera
+    // stopCamera() calls switchInput(""), which disables the camera
+    bool previewShouldBeStopped = true;
+    for (auto it = pimpl_->renderers_.cbegin(); it != pimpl_->renderers_.cend(); ++it) {
+        if (it->second->getId() != video::PREVIEW_RENDERER_ID)
+            // If rendering, don't stop preview
+            previewShouldBeStopped &= !it->second->isRendering();
+    }
+    if (previewShouldBeStopped)
+        VideoManager::instance().stopCamera();
     pimpl_->renderers_[video::PREVIEW_RENDERER_ID]->stopRendering();
 }
 
