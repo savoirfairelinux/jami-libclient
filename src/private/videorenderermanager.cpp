@@ -95,7 +95,6 @@ VideoRendererManager::deactivate()
     disconnect( &interface , &VideoManagerInterface::stoppedDecoding, d_ptr.data(), &VideoRendererManagerPrivate::stoppedDecoding);
 }
 
-
 VideoRendererManager::~VideoRendererManager()
 {
 //    delete d_ptr;
@@ -170,9 +169,18 @@ Video::Renderer* VideoRendererManager::previewRenderer()
 ///Stop video preview
 void VideoRendererManager::stopPreview()
 {
-   VideoManager::instance().stopCamera();
+    // If an active call does not have video muted, don't stop the camera
+    // stopCamera() calls switchInput(""), which disables the camera
+    bool previewShouldBeStopped = true;
+    for (auto it = d_ptr->m_hRenderers.begin(); it != d_ptr->m_hRenderers.end(); ++it) {
+        if (it.key() != PREVIEW_RENDERER_ID)
+            // If rendering, don't stop preview
+            previewShouldBeStopped &= !it.value()->isRendering();
+    }
+    if (previewShouldBeStopped)
+        VideoManager::instance().stopCamera();
 
-   d_ptr->m_PreviewState = false;
+    d_ptr->m_PreviewState = false;
 }
 
 ///Start video preview
@@ -228,7 +236,6 @@ void VideoRendererManagerPrivate::startedDecoding(const QString& id, const QStri
       m_hRendererIds[r]=rid;
 
 #endif
-
 
       QThread* t = new QThread(this);
       m_hThreads[r] = t;
