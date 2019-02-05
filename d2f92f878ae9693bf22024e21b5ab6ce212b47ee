@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8bf91242_d11cf21d",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1546,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2019-02-05T13:19:14Z",
+      "side": 1,
+      "message": "Mmh I will need to test something with this. It\u0027s parsed client side.",
+      "range": {
+        "startLine": 1546,
+        "startChar": 63,
+        "endLine": 1546,
+        "endChar": 72
+      },
+      "revId": "d2f92f878ae9693bf22024e21b5ab6ce212b47ee",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    }
+  ]
+}
