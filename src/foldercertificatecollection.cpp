@@ -29,6 +29,7 @@
 //Ring
 #include "certificate.h"
 #include "certificatemodel.h"
+#include "database.h"
 #include "globalinstances.h"
 #include "interfaces/pixmapmanipulatori.h"
 
@@ -111,7 +112,7 @@ CollectionInterface(new FallbackLocalCertificateEditor(mediator,path),p),d_ptr(n
    d_ptr->m_IsValid = true   ;
 
    if (path.isEmpty()) {
-      d_ptr->m_Path = QStandardPaths::writableLocation(QStandardPaths::DataLocation)+"/certs/";
+      d_ptr->m_Path = lrc::Database::getPath()+"/certs/";
 
       d_ptr->m_IsValid = !FolderCertificateCollectionPrivate::m_sHasFallbackStore;
 

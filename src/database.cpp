@@ -48,6 +48,8 @@
 #include "private/vcardutils.h"
 #include <account_const.h>
 
+#include <iostream>
+
 namespace lrc
 {
 
@@ -61,12 +63,25 @@ Database::Database()
     }
 
     {
+        QDir dataDir(getPath());
+
+        std::cout << getPath().toStdString() << std::endl;
+
+        // Migrate from old name for the folder
+        auto newName = dataDir.dirName();
+        if (dataDir.cdUp()) {
+#if defined(_WIN32) || defined(__APPLE__)
+            dataDir.rename(QStringLiteral("ring"), newName);
+#else
+            dataDir.rename(QStringLiteral("gnome-ring"), newName);
+#endif
+        }
+
         // create data directory if not created yet
-        QDir dataDir;
         dataDir.mkpath(getPath());
     }
 
-    // initalize the database.
+    // initialize the database.
     db_ = QSqlDatabase::addDatabase("QSQLITE");
 #ifdef ENABLE_TEST
     db_.setDatabaseName(QDir(QStandardPaths::writableLocation(QStandardPaths::TempLocation)).filePath(NAME));
@@ -97,13 +112,13 @@ Database::Database()
 }
 
 QString
-Database::getPath()
+lrc::Database::getPath()
 {
-#if defined(_WIN32) || defined(__APPLE__)
-    return QDir(QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation)).filePath("ring/");
-#else
-    return QStandardPaths::writableLocation(QStandardPaths::DataLocation);
-#endif
+    QDir dataDir(QStandardPaths::writableLocation(
+        QStandardPaths::AppLocalDataLocation));
+    // Avoid to depends on the client name.
+    dataDir.cdUp();
+    return dataDir.absolutePath() + "/jami";
 }
 
 Database::~Database()

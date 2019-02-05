@@ -28,6 +28,7 @@
 
 //Ring
 #include "call.h"
+#include "database.h"
 #include "media/media.h"
 #include "media/recording.h"
 #include "media/avrecording.h"
@@ -117,9 +118,9 @@ void LocalHistoryEditor::saveCall(QTextStream& stream, const Call* call)
 bool LocalHistoryEditor::regenFile(const Call* toIgnore)
 {
    QDir dir(QString('/'));
-   dir.mkpath(QStandardPaths::writableLocation(QStandardPaths::DataLocation) + QLatin1Char('/') + QString());
+   dir.mkpath(lrc::Database::getPath() + QLatin1Char('/') + QString());
 
-   QFile file(QStandardPaths::writableLocation(QStandardPaths::DataLocation) + QLatin1Char('/') +"history.ini");
+   QFile file(lrc::Database::getPath() + QLatin1Char('/') +"history.ini");
    if ( file.open(QIODevice::WriteOnly | QIODevice::Text) ) {
       QTextStream stream(&file);
       for (const Call* c : CategorizedHistoryModel::instance().getHistoryCalls()) {
@@ -158,11 +159,11 @@ bool LocalHistoryEditor::edit( Call* item)
 bool LocalHistoryEditor::addNew( Call* call)
 {
    QDir dir(QString('/'));
-   dir.mkpath(QStandardPaths::writableLocation(QStandardPaths::DataLocation) + QLatin1Char('/') + QString());
+   dir.mkpath(lrc::Database::getPath() + QLatin1Char('/') + QString());
 
    if ((call->collection() && call->collection()->editor<Call>() == this)  || call->historyId().isEmpty()) return false;
    //TODO support \r and \n\r end of line
-   QFile file(QStandardPaths::writableLocation(QStandardPaths::DataLocation) + QLatin1Char('/')+"history.ini");
+   QFile file(lrc::Database::getPath() + QLatin1Char('/')+"history.ini");
 
    if ( file.open(QIODevice::Append | QIODevice::Text) ) {
       QTextStream streamFileOut(&file);
@@ -215,7 +216,7 @@ bool LocalHistoryCollection::load()
    if (!CategorizedHistoryModel::instance().isHistoryEnabled())
       return false;
 
-   QFile file(QStandardPaths::writableLocation(QStandardPaths::DataLocation) + QLatin1Char('/') +"history.ini");
+   QFile file(lrc::Database::getPath() + QLatin1Char('/') +"history.ini");
    if ( file.open(QIODevice::ReadOnly | QIODevice::Text) ) {
       QMap<QString,QString> hc;
       QStringList lines;
@@ -273,7 +274,7 @@ FlagPack<CollectionInterface::SupportedFeatures> LocalHistoryCollection::support
 
 bool LocalHistoryCollection::clear()
 {
-   QFile::remove(QStandardPaths::writableLocation(QStandardPaths::DataLocation) + QLatin1Char('/') +"history.ini");
+   QFile::remove(lrc::Database::getPath() + QLatin1Char('/') +"history.ini");
    return true;
 }
 

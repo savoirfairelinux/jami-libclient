@@ -27,6 +27,7 @@
 #include <QtCore/QDateTime>
 
 //Ring
+#include "database.h"
 #include "profile.h"
 #include "private/vcardutils.h"
 #include "account.h"
@@ -135,7 +136,7 @@ QVector<Profile*> LocalProfileEditor::items() const
 
 QString LocalProfileEditor::path(const Profile* p) const
 {
-   const QDir profilesDir = (QStandardPaths::writableLocation(QStandardPaths::DataLocation)) + "/profiles/";
+   const QDir profilesDir = (lrc::Database::getPath()) + "/profiles/";
    profilesDir.mkpath(profilesDir.path());
    return QString("%1/%2.vcf")
       .arg(profilesDir.absolutePath())
@@ -164,7 +165,7 @@ bool LocalProfileCollection::isEnabled() const
 
 bool LocalProfileCollection::load()
 {
-    const QDir profilesDir = (QStandardPaths::writableLocation(QStandardPaths::DataLocation)) + "/profiles/";
+    const QDir profilesDir = (lrc::Database::getPath()) + "/profiles/";
     qDebug() << "Loading vcf from:" << profilesDir;
 
     const QStringList entries = profilesDir.entryList({QStringLiteral("*.vcf")}, QDir::Files);
@@ -205,7 +206,7 @@ FlagPack<CollectionInterface::SupportedFeatures> LocalProfileCollection::support
 
 bool LocalProfileCollection::clear()
 {
-   QFile::remove((QStandardPaths::writableLocation(QStandardPaths::DataLocation)) + "/profiles/");
+   QFile::remove((lrc::Database::getPath()) + "/profiles/");
    return true;
 }
 

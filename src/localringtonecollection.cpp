@@ -30,6 +30,7 @@
 
 //Ring
 #include <collectioneditor.h>
+#include "database.h"
 #include <ringtonemodel.h>
 #include <ringtone.h>
 #include <globalinstances.h>
@@ -89,7 +90,7 @@ LocalRingtoneCollection::~LocalRingtoneCollection()
 
 bool LocalRingtoneCollection::load()
 {
-   QFile file(QStandardPaths::writableLocation(QStandardPaths::DataLocation)
+   QFile file(lrc::Database::getPath()
               + QLatin1Char('/') + LocalRingtoneCollectionPrivate::FILENAME);
    LocalRingtoneEditor* e = static_cast<LocalRingtoneEditor*>(editor<Ringtone>());
 
@@ -143,7 +144,7 @@ bool LocalRingtoneEditor::save(const Ringtone* ringtone)
 {
    Q_UNUSED(ringtone)
 
-   QFile file(QStandardPaths::writableLocation(QStandardPaths::DataLocation)
+   QFile file(lrc::Database::getPath()
               + QLatin1Char('/') + LocalRingtoneCollectionPrivate::FILENAME);
    if ( file.open(QIODevice::WriteOnly | QIODevice::Text) ) {
 
@@ -253,7 +254,7 @@ FlagPack<CollectionInterface::SupportedFeatures> LocalRingtoneCollection::suppor
 
 bool LocalRingtoneCollection::clear()
 {
-   return QFile::remove(QStandardPaths::writableLocation(QStandardPaths::DataLocation)
+   return QFile::remove(lrc::Database::getPath()
                         + QLatin1Char('/') + LocalRingtoneCollectionPrivate::FILENAME);
 }
 
