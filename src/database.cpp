@@ -36,6 +36,7 @@
 
 // Std
 #include <sstream>
+#include <filesystem>
 
 // Data
 #include "api/interaction.h"
@@ -61,12 +62,32 @@ Database::Database()
     }
 
     {
+        QDir dataDir(getPath());
+
+        // Migrate from old name for the folder
+#ifdef LINUX
+        auto newName = dataDir.dirName();
+        if (dataDir::cdUp()) {
+            dataDir.rename(QStringLiteral("gnome-ring"), newName)
+        }
+#endif
+#ifdef WINDOWS
+        auto newName = dataDir.dirName();
+        if (dataDir::cdUp()) {
+            dataDir.rename(QStringLiteral("ring"), newName)
+        }
+#endif
+#ifdef MACOSX
+        auto newName = dataDir.dirName();
+        if (dataDir::cdUp()) {
+            dataDir.rename(QStringLiteral("ring"), newName)
+        }
+#endif
         // create data directory if not created yet
-        QDir dataDir;
         dataDir.mkpath(getPath());
     }
 
-    // initalize the database.
+    // initialize the database.
     db_ = QSqlDatabase::addDatabase("QSQLITE");
 #ifdef ENABLE_TEST
     db_.setDatabaseName(QDir(QStandardPaths::writableLocation(QStandardPaths::TempLocation)).filePath(NAME));
@@ -99,11 +120,7 @@ Database::Database()
 QString
 Database::getPath()
 {
-#if defined(_WIN32) || defined(__APPLE__)
-    return QDir(QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation)).filePath("ring/");
-#else
-    return QStandardPaths::writableLocation(QStandardPaths::DataLocation);
-#endif
+    return QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation);
 }
 
 Database::~Database()
