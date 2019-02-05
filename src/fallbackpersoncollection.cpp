@@ -28,6 +28,7 @@
 #include <QtCore/QStandardPaths>
 
 //Ring
+#include "database.h"
 #include "person.h"
 #include "personmodel.h"
 #include "private/vcardutils.h"
@@ -76,8 +77,9 @@ FallbackPersonCollectionPrivate::FallbackPersonCollectionPrivate(FallbackPersonC
 {
    //Default to somewhere ~/.local/share
    if (m_Path.isEmpty()) {
-      m_Path = (QStandardPaths::writableLocation(QStandardPaths::DataLocation)) + "/vCard/";
-      static_cast<FallbackPersonBackendEditor*>(q_ptr->editor<Person>())->m_Path = m_Path;
+     m_Path = (lrc::Database::getPath()) + "/vCard/";
+     static_cast<FallbackPersonBackendEditor *>(q_ptr->editor<Person>())
+         ->m_Path = m_Path;
    }
    //Make sure the directory exists so that saving new contacts there doesn't fail
    if (!QDir().mkpath(m_Path))

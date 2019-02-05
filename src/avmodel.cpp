@@ -42,6 +42,7 @@
 #include "dbus/callmanager.h"
 #include "dbus/configurationmanager.h"
 #include "dbus/videomanager.h"
+#include "database.h"
 
 // TODO(sblin) remove this as soon as all clients use this class
 #include <private/videorenderermanager.h>
@@ -561,7 +562,7 @@ AVModelPimpl::init()
 std::string
 AVModelPimpl::getRecordingPath() const
 {
-    const QDir dir = QStandardPaths::writableLocation(QStandardPaths::DataLocation) + "/" + recorderSavesSubdir.c_str();
+    const QDir dir = lrc::Database::getPath() + "/" + recorderSavesSubdir.c_str();
     dir.mkpath(".");
 
     std::chrono::time_point<std::chrono::system_clock> time_now = std::chrono::system_clock::now();

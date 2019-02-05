@@ -48,6 +48,8 @@
 #include "private/vcardutils.h"
 #include <account_const.h>
 
+#include <iostream>
+
 namespace lrc
 {
 
@@ -61,12 +63,37 @@ Database::Database()
     }
 
     {
+        QDir dataDir(getPath());
         // create data directory if not created yet
-        QDir dataDir;
         dataDir.mkpath(getPath());
+        QDir oldDataDir(getPath());
+        oldDataDir.cdUp();
+        oldDataDir = oldDataDir
+                    .absolutePath()
+#if defined(_WIN32) || defined(__APPLE__)
+                    + "/ring";
+#else
+                    + "/gnome-ring";
+#endif
+        QStringList filesList = oldDataDir.entryList();
+        QString filename;
+        QDir dir;
+        bool success = true;
+        foreach (filename, filesList) {
+          qDebug() << "Migrate " << oldDataDir.absolutePath() << "/" << filename
+                   << " to " << dataDir.absolutePath() + "/" + filename;
+          if (filename != "." && filename != "..") {
+            success &= dir.rename(oldDataDir.absolutePath() + "/" + filename,
+                                  dataDir.absolutePath() + "/" + filename);
+          }
+        }
+        if (success) {
+            // Remove old directory if the migration is successful.
+            oldDataDir.removeRecursively();
+        }
     }
 
-    // initalize the database.
+    // initialize the database.
     db_ = QSqlDatabase::addDatabase("QSQLITE");
 #ifdef ENABLE_TEST
     db_.setDatabaseName(QDir(QStandardPaths::writableLocation(QStandardPaths::TempLocation)).filePath(NAME));
@@ -97,13 +124,13 @@ Database::Database()
 }
 
 QString
-Database::getPath()
+lrc::Database::getPath()
 {
-#if defined(_WIN32) || defined(__APPLE__)
-    return QDir(QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation)).filePath("ring/");
-#else
-    return QStandardPaths::writableLocation(QStandardPaths::DataLocation);
-#endif
+    QDir dataDir(QStandardPaths::writableLocation(
+        QStandardPaths::AppLocalDataLocation));
+    // Avoid to depends on the client name.
+    dataDir.cdUp();
+    return dataDir.absolutePath() + "/jami";
 }
 
 Database::~Database()

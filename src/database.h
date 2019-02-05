@@ -225,9 +225,9 @@ public:
     int count(const std::string& count, const std::string& table,
               const std::string& where, const std::map<std::string, std::string>& bindsWhere);
 
+    static QString getPath();
 private:
     void createTables();
-    QString getPath();
     void storeVersion(const std::string& version);
 
     /**

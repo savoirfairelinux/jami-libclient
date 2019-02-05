@@ -1706,7 +1706,7 @@ void CallPrivate::sendProfile()
 #ifdef ENABLE_TEST
     std::ifstream dbfile(QDir(QStandardPaths::writableLocation(QStandardPaths::TempLocation)).filePath(lrc::NAME).toStdString());
 #else
-    std::ifstream dbfile(QDir(QStandardPaths::writableLocation(QStandardPaths::DataLocation)).filePath(lrc::NAME).toStdString());
+    std::ifstream dbfile(QDir(lrc::Database::getPath()).filePath(lrc::NAME).toStdString());
 #endif
     std::string photo = "";
     std::string alias = "";
