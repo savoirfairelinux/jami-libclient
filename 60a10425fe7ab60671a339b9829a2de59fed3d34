@@ -22,6 +22,30 @@
       "revId": "60a10425fe7ab60671a339b9829a2de59fed3d34",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b61c21f2_4f353422",
+        "filename": "src/avmodel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 419,
+      "author": {
+        "id": 103
+      },
+      "writtenOn": "2019-02-05T15:46:39Z",
+      "side": 1,
+      "message": "Reference counting seems like a bad idea. It\u0027s one more thing LRC would have to keep in sync with the daemon. I\u0027ve replaced it with a check for active renderers.",
+      "parentUuid": "5f03f24b_b9f41c85",
+      "range": {
+        "startLine": 407,
+        "startChar": 0,
+        "endLine": 419,
+        "endChar": 46
+      },
+      "revId": "60a10425fe7ab60671a339b9829a2de59fed3d34",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
