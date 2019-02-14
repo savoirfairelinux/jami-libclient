@@ -89,7 +89,7 @@ const QList<Video::Rate*> Video::Resolution::validRates() const {
 
 bool Video::Resolution::setActiveRate(Video::Rate* rate) {
    if (!rate || (d_ptr->m_lValidRates.indexOf(rate) == -1)) {
-      qWarning() << "Trying to set an invalid rate" << rate;
+      qWarning() << "Trying to set an invalid rate: " << rate->name();
       return false;
    }
 

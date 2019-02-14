@@ -25,6 +25,7 @@
 //Ring
 namespace Video {
    class Resolution;
+   class Rate;
    class Device;
 }
 class VideoChannelPrivate;
@@ -45,6 +46,8 @@ public:
 
    bool setActiveResolution(Video::Resolution* res);
    bool setActiveResolution(int idx);
+
+   bool setActiveMode(int resIndex, int rateIndex);
 
    //Model
    virtual QVariant      data     ( const QModelIndex& index, int role = Qt::DisplayRole     ) const override;
