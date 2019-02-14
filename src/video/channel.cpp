@@ -19,6 +19,7 @@
 
 //Ring
 #include "resolution.h"
+#include "rate.h"
 #include "device.h"
 #include "../dbus/videomanager.h"
 #include "../private/videochannel_p.h"
@@ -81,7 +82,7 @@ bool Video::Channel::setActiveResolution(int idx)
 
 bool Video::Channel::setActiveResolution(Video::Resolution* res) {
    if ((!res) || d_ptr->m_lValidResolutions.indexOf(res) == -1 || res->name().isEmpty()) {
-      qWarning() << "Invalid active resolution" << (res?res->name():"NULL");
+      qWarning() << "Invalid active resolution: " << (res?res->name():"NULL");
       return false;
    }
 
@@ -91,6 +92,25 @@ bool Video::Channel::setActiveResolution(Video::Resolution* res) {
    d_ptr->m_pCurrentResolution = res;
    d_ptr->m_pDevice->save();
    return true;
+}
+
+bool Video::Channel::setActiveMode(Video::Resolution* res, Video::Rate* rate) {
+    int resIndex = d_ptr->m_lValidResolutions.indexOf(res);
+    /*if ((!res) || resIndex == -1 || res->name().isEmpty() ||
+        (!rate) || res->validRates().indexOf(rate) == -1 || rate->name().isEmpty()) {
+        qWarning() << "Invalid mode: " << (res ? res->name() : "NULL") << (rate ? rate->name() : "NULL");
+        return false;
+    }*/
+
+    if (d_ptr->m_pCurrentResolution == res &&
+        d_ptr->m_pCurrentResolution->activeRate() == rate) {
+        qWarning() << "Mode already set: " << (res ? res->name() : "NULL") << (rate ? rate->name() : "NULL");
+        return false;
+    }
+
+    d_ptr->m_pCurrentResolution = res;
+    d_ptr->m_pCurrentResolution->setActiveRate(rate);
+    return true;
 }
 
 Video::Resolution* Video::Channel::activeResolution()
