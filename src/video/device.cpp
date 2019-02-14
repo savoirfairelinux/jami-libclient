@@ -69,11 +69,11 @@ d_ptr(new VideoDevicePrivate(this))
             }
          }
 
-         // Sort rates in increasing order.
+         // Sort rates in decreasing order.
          qSort(res->d_ptr->m_lValidRates.begin(),
          res->d_ptr->m_lValidRates.end(),
          [](Video::Rate* rateA, Video::Rate* rateB) {
-             return rateA->name().toInt() > rateB->name().toInt();
+             return rateA->name().toInt() < rateB->name().toInt();
          });
       }
 
@@ -198,7 +198,6 @@ Video::Channel* Video::Device::activeChannel() const
    }
    return d_ptr->m_pCurrentChannel;
 }
-
 
 void VideoDevicePrivate::saveIdle()
 {
