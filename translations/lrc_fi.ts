@@ -89,7 +89,7 @@
         <location filename="../src/account.cpp" line="335"/>
         <source>Request timeout</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Pyynnön aikakatkaisu</translation>
     </message>
 </context>
 <context>
@@ -1170,7 +1170,7 @@ Virhe</translation>
     <message>
         <location filename="../src/api/call.h" line="78"/>
         <source>Timeout</source>
-        <translation type="unfinished"/>
+        <translation>Aikakatkaisu</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="80"/>
@@ -1296,7 +1296,7 @@ Virhe</translation>
     <message>
         <location filename="../src/localprofilecollection.cpp" line="147"/>
         <source>Local profiles</source>
-        <translation type="unfinished"/>
+        <translation>Paikalliset profiilit</translation>
     </message>
     <message>
         <location filename="../src/localprofilecollection.cpp" line="152"/>
@@ -1323,7 +1323,7 @@ Virhe</translation>
     <message>
         <location filename="../src/conversationmodel.cpp" line="1266"/>
         <source>Contact added</source>
-        <translation type="unfinished"/>
+        <translation>Yhteystieto lisätty</translation>
     </message>
     <message>
         <location filename="../src/conversationmodel.cpp" line="1308"/>
@@ -1367,7 +1367,7 @@ Virhe</translation>
     <message>
         <location filename="../src/ringdevicemodel.cpp" line="110"/>
         <source>ID</source>
-        <translation type="unfinished"/>
+        <translation>ID</translation>
     </message>
     <message>
         <location filename="../src/ringdevicemodel.cpp" line="112"/>

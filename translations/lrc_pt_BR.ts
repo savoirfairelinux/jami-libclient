@@ -1418,7 +1418,7 @@
     <message>
         <location filename="../src/contactmodel.cpp" line="747"/>
         <source>Invalid ID</source>
-        <translation type="unfinished"/>
+        <translation>ID inválido</translation>
     </message>
     <message>
         <location filename="../src/contactmodel.cpp" line="750"/>

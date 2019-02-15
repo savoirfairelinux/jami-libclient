@@ -1,95 +1,95 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="hu" sourcelanguage="en" version="2.0">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="pl_PL" sourcelanguage="en" version="2.0">
 <context>
     <name>Account</name>
     <message>
         <location filename="../src/account.cpp" line="307"/>
         <source>Ready</source>
         <extracomment>Account state</extracomment>
-        <translation>Készen áll</translation>
+        <translation>Gotowe</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="309"/>
         <source>Registered</source>
         <extracomment>Account state</extracomment>
-        <translation>Regisztrált</translation>
+        <translation>Zarejestrowany</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="313"/>
         <source>Initializing</source>
         <extracomment>Account state</extracomment>
-        <translation>Szignál…</translation>
+        <translation>Uruchamianie</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="317"/>
         <source>Error</source>
         <extracomment>Account state</extracomment>
-        <translation>Hiba</translation>
+        <translation>Błąd</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="321"/>
         <source>Network unreachable</source>
         <extracomment>Account state</extracomment>
-        <translation>A hálózat elérhetetlen</translation>
+        <translation>Sieć niedostępna</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="323"/>
         <source>Host unreachable</source>
         <extracomment>Account state</extracomment>
-        <translation>A fogadó elérhetetlen</translation>
+        <translation>Host niedostępny</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="311"/>
         <source>Not registered</source>
         <extracomment>Account state</extracomment>
-        <translation>Nem regisztrált</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/account.cpp" line="315"/>
         <source>Tryingâ¦</source>
         <extracomment>Account state</extracomment>
-        <translation>Próbálâ¦</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/account.cpp" line="319"/>
         <source>Authentication failed</source>
         <extracomment>Account state</extracomment>
-        <translation>Hitelesítési hiba</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/account.cpp" line="325"/>
         <source>STUN configuration error</source>
         <extracomment>Account state</extracomment>
-        <translation>STUN beállítás hiba</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/account.cpp" line="327"/>
         <source>STUN server invalid</source>
         <extracomment>Account state</extracomment>
-        <translation>STUN kiszolgáló érvénytelen</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/account.cpp" line="329"/>
         <source>Service unavailable</source>
         <extracomment>Account state</extracomment>
-        <translation>A szolgáltatás nem elérhető</translation>
+        <translation>Usługa niedostępna</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="331"/>
         <source>Unacceptable</source>
         <extracomment>Account state</extracomment>
-        <translation>Elfogadhatatlan</translation>
+        <translation>Nie do przyjęcia</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="333"/>
         <source>Invalid</source>
         <extracomment>Account state</extracomment>
-        <translation>Érvénytelen</translation>
+        <translation>Nieważny</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="335"/>
         <source>Request timeout</source>
         <extracomment>Account state</extracomment>
-        <translation>Kérés időtúllépés</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -97,7 +97,7 @@
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="438"/>
         <source>Configuration</source>
-        <translation>Beállítások</translation>
+        <translation>Konfiguracja</translation>
     </message>
 </context>
 <context>
@@ -106,120 +106,120 @@
         <location filename="../src/call.cpp" line="719"/>
         <source>New</source>
         <extracomment>Call state</extracomment>
-        <translation>Új</translation>
+        <translation>Nowy</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="722"/>
         <source>Ringing</source>
         <extracomment>Call state</extracomment>
-        <translation>Csörögni</translation>
+        <translation>Dzwonienie</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="725"/>
         <source>Calling</source>
         <extracomment>Call state</extracomment>
-        <translation>Hívás</translation>
+        <translation>Dzwonienie</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="728"/>
         <source>Talking</source>
         <extracomment>Call state</extracomment>
-        <translation>Hívásban</translation>
+        <translation>Rozmawianie</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="731"/>
         <source>Dialing</source>
         <extracomment>Call state</extracomment>
-        <translation>Tárcsázás</translation>
+        <translation>Wykręcanie</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="734"/>
         <source>Hold</source>
         <extracomment>Call state</extracomment>
-        <translation>Tartás</translation>
+        <translation>Czekanie</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="737"/>
         <source>Failed</source>
         <extracomment>Call state</extracomment>
-        <translation>Sikertelen</translation>
+        <translation>Nie powiodła się</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="740"/>
         <source>Busy</source>
         <extracomment>Call state</extracomment>
-        <translation>Foglalt</translation>
+        <translation>Zajęty</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="743"/>
         <source>Transfer</source>
         <extracomment>Call state</extracomment>
-        <translation>Átvitel</translation>
+        <translation>Przełaczenie</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="746"/>
         <source>Transfer hold</source>
         <extracomment>Call state</extracomment>
-        <translation>Átvitel tartása</translation>
+        <translation>Czekanie na przełaczenie</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="749"/>
         <source>Over</source>
         <extracomment>Call state</extracomment>
-        <translation>Véget ért</translation>
+        <translation>Koniec</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="752"/>
         <source>Error</source>
         <extracomment>Call state</extracomment>
-        <translation>Hiba</translation>
+        <translation>Błąd</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="755"/>
         <location filename="../src/call.cpp" line="860"/>
         <source>Conference</source>
         <extracomment>Call state</extracomment>
-        <translation>Konferencia</translation>
+        <translation>Konferencja</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="758"/>
         <source>Conference (hold)</source>
         <extracomment>Call state</extracomment>
-        <translation>Konferencia (tartás)</translation>
+        <translation>Konferencja (czekanie)</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="761"/>
         <source>ERROR</source>
         <extracomment>Call state</extracomment>
-        <translation>HIBA</translation>
+        <translation>BŁĄD</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="764"/>
         <source>Searching for</source>
         <extracomment>Call state</extracomment>
-        <translation>Keresés</translation>
+        <translation>Szukam</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="767"/>
         <source>Aborted</source>
         <extracomment>Call state</extracomment>
-        <translation>Megszakítva</translation>
+        <translation>Anulowane</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="770"/>
         <source>Communication established</source>
         <extracomment>Call state</extracomment>
-        <translation>A közlés létrejött</translation>
+        <translation>Połączenie się powiodło </translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="864"/>
         <source>Unknown</source>
-        <translation>Ismeretlen</translation>
+        <translation>Nieznane</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="2231"/>
         <source>Account: </source>
-        <translation>Fiók:</translation>
+        <translation>Konto:</translation>
     </message>
 </context>
 <context>
@@ -227,7 +227,7 @@
     <message>
         <location filename="../src/callmodel.cpp" line="898"/>
         <source>Calls</source>
-        <translation>Hívások</translation>
+        <translation>Rozmowy</translation>
     </message>
 </context>
 <context>
@@ -236,7 +236,7 @@
         <location filename="../src/callmodel.cpp" line="533"/>
         <location filename="../src/callmodel.cpp" line="558"/>
         <source>Invalid account</source>
-        <translation>Érvénytelen fiók</translation>
+        <translation>Nieważne konto</translation>
     </message>
 </context>
 <context>
@@ -244,12 +244,12 @@
     <message>
         <location filename="../src/call.cpp" line="1795"/>
         <source>Aborted</source>
-        <translation>Megszakítva</translation>
+        <translation>Anulowane</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="1816"/>
         <source>No account registered!</source>
-        <translation>Nem regisztrált fiók!</translation>
+        <translation>Nie masz zarejestrowanego konta!</translation>
     </message>
 </context>
 <context>
@@ -258,12 +258,12 @@
         <location filename="../src/categorizedbookmarkmodel.cpp" line="181"/>
         <source>Most popular</source>
         <extracomment>Most popular contacts</extracomment>
-        <translation>Legnépszerűbb</translation>
+        <translation>Najbardziej popularne</translation>
     </message>
     <message>
         <location filename="../src/categorizedbookmarkmodel.cpp" line="299"/>
         <source>Contacts</source>
-        <translation>Kapcsolatok</translation>
+        <translation>Kontakty</translation>
     </message>
 </context>
 <context>
@@ -271,28 +271,28 @@
     <message>
         <location filename="../src/categorizedcontactmodel.cpp" line="401"/>
         <source>Contacts</source>
-        <translation>Kapcsolatok</translation>
+        <translation>Kontakty</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="129"/>
         <source>Empty</source>
-        <translation>Üres</translation>
+        <translation>Puste</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="135"/>
         <location filename="../src/private/sortproxies.cpp" line="153"/>
         <source>Unknown</source>
-        <translation>Ismeretlen</translation>
+        <translation>Nieznane</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="141"/>
         <source>Never</source>
-        <translation>Soha</translation>
+        <translation>Nigdy</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="147"/>
         <source>Other</source>
-        <translation>Másik</translation>
+        <translation>Inne</translation>
     </message>
 </context>
 <context>
@@ -300,7 +300,7 @@
     <message>
         <location filename="../src/categorizedhistorymodel.cpp" line="412"/>
         <source>History</source>
-        <translation>Előzmények</translation>
+        <translation>Historia</translation>
     </message>
 </context>
 <context>
@@ -308,7 +308,7 @@
     <message>
         <location filename="../src/chainoftrustmodel.cpp" line="173"/>
         <source>Chain of trust</source>
-        <translation>A bizalom láncolata</translation>
+        <translation>Łańcuch zaufania</translation>
     </message>
 </context>
 <context>
@@ -316,7 +316,7 @@
     <message>
         <location filename="../src/collectionmodel.cpp" line="279"/>
         <source>Name</source>
-        <translation>Név</translation>
+        <translation>Imię</translation>
     </message>
 </context>
 <context>
@@ -324,27 +324,27 @@
     <message>
         <location filename="../src/private/sortproxies.cpp" line="49"/>
         <source>Name</source>
-        <translation>Név</translation>
+        <translation>Imię</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="50"/>
         <source>Organisation</source>
-        <translation>Szervezet</translation>
+        <translation>Organizacja</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="51"/>
         <source>Recently used</source>
-        <translation>Jelenleg használt</translation>
+        <translation>Niedawno używane</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="52"/>
         <source>Group</source>
-        <translation>Csoport</translation>
+        <translation>Grupa</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="53"/>
         <source>Department</source>
-        <translation>Részleg</translation>
+        <translation>Departament</translation>
     </message>
 </context>
 <context>
@@ -352,27 +352,27 @@
     <message>
         <location filename="../src/private/sortproxies.cpp" line="57"/>
         <source>Date</source>
-        <translation>Dátum</translation>
+        <translation>Data</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="58"/>
         <source>Name</source>
-        <translation>Név</translation>
+        <translation>Imię</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="59"/>
         <source>Popularity</source>
-        <translation>Népszerűség</translation>
+        <translation>Popularność</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="60"/>
         <source>Duration</source>
-        <translation>Időtartam</translation>
+        <translation>Czas trwania</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="61"/>
         <source>Total time</source>
-        <translation>Teljes idő</translation>
+        <translation>Całkowity czas</translation>
     </message>
 </context>
 <context>
@@ -380,102 +380,102 @@
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="50"/>
         <source>Today</source>
-        <translation>Ma</translation>
+        <translation>Dzisiaj</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="51"/>
         <source>Yesterday</source>
-        <translation>Tegnap</translation>
+        <translation>Wczoraj</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="58"/>
         <source>Two weeks ago</source>
-        <translation>Két héttel ezelőtt</translation>
+        <translation>Dwa tygodnie temu</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="59"/>
         <source>Three weeks ago</source>
-        <translation>Három héttel ezelőtt</translation>
+        <translation>Trzy tygodnie temu</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="57"/>
         <source>A week ago</source>
-        <translation>Egy héttel ezelőtt</translation>
+        <translation>Tydzień temu</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="60"/>
         <source>A month ago</source>
-        <translation>Egy hónappal ezelőtt</translation>
+        <translation>Miesiąc temu</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="61"/>
         <source>Two months ago</source>
-        <translation>Két hónappal ezelőtt</translation>
+        <translation>Dwa miesiące temu</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="62"/>
         <source>Three months ago</source>
-        <translation>Három hónappal ezelőtt</translation>
+        <translation>Trzy miesiące temu</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="63"/>
         <source>Four months ago</source>
-        <translation>Négy hónappal ezelőtt</translation>
+        <translation>Cztery miesiące temu</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="64"/>
         <source>Five months ago</source>
-        <translation>Öt hónappal ezelőtt</translation>
+        <translation>Pięć miesięcy temu</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="65"/>
         <source>Six months ago</source>
-        <translation>Hat hónappal ezelőtt</translation>
+        <translation>Sześć miesięcy temu</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="66"/>
         <source>Seven months ago</source>
-        <translation>Hét hónappal ezelőtt</translation>
+        <translation>Siedem miesięcy temu</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="67"/>
         <source>Eight months ago</source>
-        <translation>Nyolc hónappal ezelőtt</translation>
+        <translation>Osiem miesięcy temu</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="68"/>
         <source>Nine months ago</source>
-        <translation>Kilenc hónappal ezelőtt</translation>
+        <translation>Dziewięć miesięcy temu</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="69"/>
         <source>Ten months ago</source>
-        <translation>Tíz hónappal ezelőtt</translation>
+        <translation>Dziesięć miesięcy temu</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="70"/>
         <source>Eleven months ago</source>
-        <translation>Tizenegy hónappal ezelőtt</translation>
+        <translation>Jedenaście miesięcy temu</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="71"/>
         <source>Twelve months ago</source>
-        <translation>Tizenkét hónappal ezelőtt</translation>
+        <translation>Dwanaście miesięcy temu</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="72"/>
         <source>A year ago</source>
-        <translation>Egy évvel ezelőtt</translation>
+        <translation>Rok temu</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="73"/>
         <source>Very long time ago</source>
-        <translation>Nagyon régen</translation>
+        <translation>Bardzo dawno temu</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="74"/>
         <source>Never</source>
-        <translation>Soha</translation>
+        <translation>Nigdy</translation>
     </message>
 </context>
 <context>
@@ -483,7 +483,7 @@
     <message>
         <location filename="../src/media/textrecording.cpp" line="816"/>
         <source>Me</source>
-        <translation>Én</translation>
+        <translation>Ja</translation>
     </message>
 </context>
 <context>
@@ -491,17 +491,17 @@
     <message>
         <location filename="../src/macromodel.cpp" line="157"/>
         <source>Macros</source>
-        <translation>Makrók</translation>
+        <translation>Makra</translation>
     </message>
     <message>
         <location filename="../src/macromodel.cpp" line="263"/>
         <source>New</source>
-        <translation>Új</translation>
+        <translation>Nowy</translation>
     </message>
     <message>
         <location filename="../src/macromodel.cpp" line="264"/>
         <source>Other</source>
-        <translation>Másik</translation>
+        <translation>Inne</translation>
     </message>
 </context>
 <context>
@@ -509,7 +509,7 @@
     <message>
         <location filename="../src/macromodel.cpp" line="77"/>
         <source>Other</source>
-        <translation>Másik</translation>
+        <translation>Inne</translation>
     </message>
 </context>
 <context>
@@ -517,7 +517,7 @@
     <message>
         <location filename="../src/numbercategorymodel.cpp" line="56"/>
         <source>Uncategorized</source>
-        <translation>Kategorizálatlan</translation>
+        <translation>Bez kategorii</translation>
     </message>
 </context>
 <context>
@@ -525,7 +525,7 @@
     <message>
         <location filename="../src/personmodel.cpp" line="170"/>
         <source>Persons</source>
-        <translation>Személyek</translation>
+        <translation>Osoby</translation>
     </message>
 </context>
 <context>
@@ -533,12 +533,12 @@
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="234"/>
         <source>This account does not support presence tracking</source>
-        <translation>Ez a fiók nem támogatja a jelenlét követését</translation>
+        <translation>To konto nie obsługuje śledzenie obecności</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="237"/>
         <source>No associated account</source>
-        <translation>Nincs társított fiók</translation>
+        <translation>Brak związanego konta</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="305"/>
@@ -548,97 +548,97 @@
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="305"/>
         <source>Type</source>
-        <translation>Típus</translation>
+        <translation>Typ</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="305"/>
         <source>Person</source>
-        <translation>Személy</translation>
+        <translation>Osoba</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="305"/>
         <source>Account</source>
-        <translation>Fiók</translation>
+        <translation>Konto</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="305"/>
         <source>State</source>
-        <translation>Állapot</translation>
+        <translation>Stan</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="305"/>
         <source>Call count</source>
-        <translation>Hívásszámlálás</translation>
+        <translation>Ilość rozmów</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="305"/>
         <source>Week count</source>
-        <translation>Hét számlálás</translation>
+        <translation>Numer tygodnia</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="306"/>
         <source>Trimester count</source>
-        <translation>Negyedév számlálás</translation>
+        <translation>Number trymestru</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="306"/>
         <source>Have Called</source>
-        <translation>Hívott</translation>
+        <translation>Zadrzwoniłeś</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="306"/>
         <source>Last used</source>
-        <translation>Utoljára használt</translation>
+        <translation>Ostatnio używane</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="306"/>
         <source>Name_count</source>
-        <translation>Névszám</translation>
+        <translation>Liczba_imięn</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="306"/>
         <source>Total (in seconds)</source>
-        <translation>Összesen (másodperc)</translation>
+        <translation>Suma (w sekundach)</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="306"/>
         <source>Popularity_index</source>
-        <translation>Népszerűségi index</translation>
+        <translation>Indeks_popularnośći</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="307"/>
         <source>Bookmarked</source>
-        <translation>Könyvjelzőzött</translation>
+        <translation>Dodane do zakładek</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="307"/>
         <source>Tracked</source>
-        <translation>Nyomon követett</translation>
+        <translation>Śledzone</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="307"/>
         <source>Present</source>
-        <translation>Jelenlegi</translation>
+        <translation>Obecny</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="307"/>
         <source>Presence message</source>
-        <translation>Jelenlét üzenet</translation>
+        <translation>Komunikat obecnośći</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="307"/>
         <source>UID</source>
-        <translation>Egyedi azonosító</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="307"/>
         <source>Has certificate</source>
-        <translation>Van tanúsítvány</translation>
+        <translation>Posiada certyfikat</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="307"/>
         <source>Registered name</source>
-        <translation>Regisztrált név</translation>
+        <translation>Zarejestrowana nazwa</translation>
     </message>
 </context>
 <context>
@@ -646,33 +646,33 @@
     <message>
         <location filename="../src/presencestatusmodel.cpp" line="197"/>
         <source>Name</source>
-        <translation>Név</translation>
+        <translation>Imię</translation>
     </message>
     <message>
         <location filename="../src/presencestatusmodel.cpp" line="197"/>
         <source>Message</source>
-        <translation>Üzenet</translation>
+        <translation>Wiadomość</translation>
     </message>
     <message>
         <location filename="../src/presencestatusmodel.cpp" line="197"/>
         <source>Color</source>
-        <translation>Szín</translation>
+        <translation>Kolor</translation>
     </message>
     <message>
         <location filename="../src/presencestatusmodel.cpp" line="197"/>
         <source>Present</source>
-        <translation>Jelenlegi</translation>
+        <translation>Obecny</translation>
     </message>
     <message>
         <location filename="../src/presencestatusmodel.cpp" line="197"/>
         <source>Default</source>
-        <translation>Alapértelmezett</translation>
+        <translation>Wartość domyślna</translation>
     </message>
     <message>
         <location filename="../src/presencestatusmodel.cpp" line="308"/>
         <location filename="../src/presencestatusmodel.cpp" line="361"/>
         <source>Custom</source>
-        <translation>Szokás</translation>
+        <translation>Wartość własna</translation>
     </message>
     <message>
         <location filename="../src/presencestatusmodel.cpp" line="308"/>
@@ -680,7 +680,7 @@
         <location filename="../src/presencestatusmodel.cpp" line="354"/>
         <location filename="../src/presencestatusmodel.cpp" line="361"/>
         <source>N/A</source>
-        <translation>Nem alkalmazható</translation>
+        <translation>Nie dotyczy</translation>
     </message>
 </context>
 <context>
@@ -688,7 +688,7 @@
     <message>
         <location filename="../src/profilemodel.cpp" line="637"/>
         <source>Profiles</source>
-        <translation>Profilok</translation>
+        <translation>Profile</translation>
     </message>
 </context>
 <context>
@@ -696,7 +696,7 @@
     <message>
         <location filename="../src/profilemodel.cpp" line="751"/>
         <source>New profile</source>
-        <translation>Új profil</translation>
+        <translation>Nowy profil</translation>
     </message>
 </context>
 <context>
@@ -704,661 +704,661 @@
     <message>
         <location filename="../src/certificate.cpp" line="42"/>
         <source>Has a private key</source>
-        <translation>Van egy személyes kulcs</translation>
+        <translation>Ma klucz prywatny</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="43"/>
         <source>Is not expired</source>
-        <translation>Nem járt le</translation>
+        <translation>Nie wygasło</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="44"/>
         <source>Has strong signing</source>
-        <translation>Jelentős aláírással rendelkezik</translation>
+        <translation>Jest silne podpisane</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="45"/>
         <source>Is not self signed</source>
-        <translation>Nem önálló aláírás</translation>
+        <translation>Nie jest samo podpisane.</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="46"/>
         <source>Have a matching key pair</source>
-        <translation>Van egy megfelelő kulcspár</translation>
+        <translation>Mają pasującą pare kluczy</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="47"/>
         <source>Has the right private key file permissions</source>
-        <translation>Megfelelő személyes kulcs fájl jogosultságokkal rendelkezik</translation>
+        <translation>Posiada odpowiednie uprawnienia do plików kluczy prywatnych</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="48"/>
         <source>Has the right public key file permissions</source>
-        <translation>Megfelelő nyilvános kulcs fájl jogosultságokkal rendelkezik</translation>
+        <translation>Posiada odpowiednie uprawnienia do plików kluczy publicznych</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="49"/>
         <source>Has the right private key directory permissions</source>
-        <translation>Megfelelő személyes kulcs könyvtár jogosultságokkal rendelkezik</translation>
+        <translation>Posiada odpowiednie uprawnienia katalogu kluczy prywatnych</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="50"/>
         <source>Has the right public key directory permissions</source>
-        <translation>Megfelelő nyilvános kulcs könyvtár jogosultságokkal rendelkezik</translation>
+        <translation>Posiada odpowiednie uprawnienia katalogu kluczy publicznych</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="51"/>
         <source>Has the right private key directory location</source>
-        <translation>Megvan a megfelelő személyes kulcs könyvtár helye</translation>
+        <translation>Ma poprawny klucz prywatny do lokalizacji katalogu</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="52"/>
         <source>Has the right public key directory location</source>
-        <translation>Megvan megfelelő nyilvános kulcs könyvtár helye</translation>
+        <translation>Ma poprawny klucz publiczny do lokalizacji katalogu</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="53"/>
         <source>Has the right private key SELinux attributes</source>
-        <translation>Megfelelő személyes kulcs SELinux attribútumokkal rendelkezik</translation>
+        <translation>Ma poprawny prywatne klucz do atrybutów SELinux</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="54"/>
         <source>Has the right public key SELinux attributes</source>
-        <translation>Megfelelő nyilvános kulcs SELinux attribútumokkal rendelkezik</translation>
+        <translation>Ma poprawny publiczny klucz do atrybutów SELinux</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="55"/>
         <source>The certificate file exist and is readable</source>
-        <translation>A tanúsítványfájl létezik és olvasható</translation>
+        <translation>Plik certyfikatu istnieje i jest czytelny</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="56"/>
         <source>The file is a valid certificate</source>
-        <translation>A fájl egy érvényes tanúsítvány</translation>
+        <translation>Plik jest ważny certyfikatem</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="57"/>
         <source>The certificate has a valid authority</source>
-        <translation>A tanúsítvány érvényben van</translation>
+        <translation>Certyfikat posiada ważny autorytet</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="58"/>
         <source>The certificate has a known authority</source>
-        <translation>A tanúsítványnak van egy ismert kibocsájtója</translation>
+        <translation>Certyfikat posiada znany autorytet</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="59"/>
         <source>The certificate is not revoked</source>
-        <translation>A tanúsítvány nem vonható vissza</translation>
+        <translation>Certyfikat nie został odwołany</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="60"/>
         <source>The certificate authority match</source>
-        <translation>A tanúsítvány kibocsátói egyezése</translation>
+        <translation>Autorytet certyfikatów zgadza się</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="61"/>
         <source>The certificate has the expected owner</source>
-        <translation>A tanúsítvány rendelkezik a várt tulajdonosával</translation>
+        <translation>Certyfikat ma oczekiwanego właściciela</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="62"/>
         <source>The certificate is within its active period</source>
-        <translation>A tanúsítvány az aktív időtartamon belül van</translation>
+        <translation>Certyfikat jest w okresie aktywnym </translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="90"/>
         <source>Expiration date</source>
-        <translation>Lejárati idő</translation>
+        <translation>Termin ważności</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="91"/>
         <source>Activation date</source>
-        <translation>Az aktiválás időpontja</translation>
+        <translation>Data aktywacji</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="92"/>
         <source>Require a private key password</source>
-        <translation>Személyes kulcsú jelszó igénylése</translation>
+        <translation>Wymagaj hasła klucza prywatnego</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="93"/>
         <source>Public signature</source>
-        <translation>Nyilvános aláírás</translation>
+        <translation>Podpis publiczny</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="94"/>
         <source>Version</source>
-        <translation>Verzió</translation>
+        <translation>Wersja</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="95"/>
         <source>Serial number</source>
-        <translation>Sorozatszám</translation>
+        <translation>Numer seryjny</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="96"/>
         <source>Issuer</source>
-        <translation>Kibocsátó</translation>
+        <translation>Wydawca</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="97"/>
         <source>Subject key algorithm</source>
-        <translation>Tárgyi kulcs algoritmus</translation>
+        <translation>Algorytm klucza podmiotu</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="98"/>
         <source>Common name (CN)</source>
-        <translation>Közös név (CN)</translation>
+        <translation>Wspólna nazwa (CN)</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="99"/>
         <source>Name (N)</source>
-        <translation>Név (N)</translation>
+        <translation>Imię (N)</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="100"/>
         <source>Organization (O)</source>
-        <translation>Szervezet (O)</translation>
+        <translation>Organizacja (O)</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="101"/>
         <source>Signature algorithm</source>
-        <translation>Aláírási algoritmus</translation>
+        <translation>Algorytm kryptograficzny do podpisu</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="102"/>
         <source>Md5 fingerprint</source>
-        <translation>MD5 ujjlenyomat</translation>
+        <translation>Md5 fingerprint</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="103"/>
         <source>Sha1 fingerprint</source>
-        <translation>SHA-1 ujjlenyomat</translation>
+        <translation>Sha1 fingerprint</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="104"/>
         <source>Public key ID</source>
-        <translation>Nyilvános kulcsazonosító</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="105"/>
         <source>Issuer domain name</source>
-        <translation>Kibocsátó domain neve</translation>
+        <translation>Nazwa domeny wydawcy</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="106"/>
         <source>Next expected update</source>
-        <translation>Következő várható frissítés</translation>
+        <translation>Następna oczekiwana aktualizacja</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="107"/>
         <source>Outgoing server</source>
-        <translation>Kimenő kiszolgáló</translation>
+        <translation>Serwer poczty wychodzącej</translation>
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="183"/>
         <source>Local certificate store</source>
-        <translation>Helyi tanúsítványtároló</translation>
+        <translation>Lokalny magazyn certyfikatów</translation>
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="267"/>
         <location filename="../src/localprofilecollection.cpp" line="220"/>
         <source>Default</source>
-        <translation>Alapértelmezett</translation>
+        <translation>Wartość domyślna</translation>
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="267"/>
         <source>Certificate not associated with a group</source>
-        <translation>Tanúsítvány nincs társítva egy csoporttal</translation>
+        <translation>Certyfikat nie zwiążany z grupą</translation>
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="397"/>
         <source>A certificate</source>
-        <translation>Tanúsítvány</translation>
+        <translation>Certyfikat</translation>
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="397"/>
         <source>An organisation</source>
-        <translation>Egy szervezet</translation>
+        <translation>Organizacja</translation>
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="420"/>
         <source>Details</source>
-        <translation>Részletek</translation>
+        <translation>Dane</translation>
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="420"/>
         <source>The content of the certificate</source>
-        <translation>A tanúsítvány tartalma</translation>
+        <translation>Zawartość certyfikatu</translation>
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="421"/>
         <source>Checks</source>
-        <translation>Ellenőrzések</translation>
+        <translation>Kontrole</translation>
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="421"/>
         <source>Various security related information</source>
-        <translation>Különféle biztonsági információk</translation>
+        <translation>Różne informacje związane z zabezpieczeniem</translation>
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="610"/>
         <source>Header</source>
-        <translation>Fejléc</translation>
+        <translation>Nagłówek</translation>
     </message>
     <message>
         <location filename="../src/daemoncertificatecollection.cpp" line="148"/>
         <source>Daemon certificate store</source>
-        <translation>Rendszerfolyamat tanúsítványtároló</translation>
+        <translation>Daemon magazyn certyfikatów</translation>
     </message>
     <message>
         <location filename="../src/daemoncertificatecollection.cpp" line="152"/>
         <source>%1 banned list</source>
         <extracomment>The list of banned certificates for this account</extracomment>
-        <translation>%1 tiltott lista</translation>
+        <translation>lista zbanowanych %1</translation>
     </message>
     <message>
         <location filename="../src/daemoncertificatecollection.cpp" line="155"/>
         <source>%1 allowed list</source>
         <extracomment>The list of allowed certificates for this account</extracomment>
-        <translation>%1 engedélyezett lista</translation>
+        <translation>lista dozwolonych %1</translation>
     </message>
     <message>
         <location filename="../src/daemoncertificatecollection.cpp" line="160"/>
         <location filename="../src/foldercertificatecollection.cpp" line="198"/>
         <source>Certificate</source>
-        <translation>Tanúsítvány</translation>
+        <translation>Certyfikat</translation>
     </message>
     <message>
         <location filename="../src/extensions/presencecollectionextension.cpp" line="38"/>
         <source>Presence tracking</source>
-        <translation>Jelenlétkövetés</translation>
+        <translation>Komunikat obecnośći</translation>
     </message>
     <message>
         <location filename="../src/extensions/securityevaluationextension.cpp" line="63"/>
         <source>Security evaluation</source>
-        <translation>Biztonsági értékelés</translation>
+        <translation>Ocena zabezpieczenia</translation>
     </message>
     <message>
         <location filename="../src/fallbackpersoncollection.cpp" line="194"/>
         <source>Contact</source>
-        <translation>Kapcsolatok</translation>
+        <translation>Kontakt</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="532"/>
         <source>Bookmark</source>
-        <translation>Könyvjelző</translation>
+        <translation>Zakładka</translation>
     </message>
     <message>
         <location filename="../src/localhistorycollection.cpp" line="195"/>
         <source>Local history</source>
-        <translation>Helyi előzmények</translation>
+        <translation>Historia lokalna</translation>
     </message>
     <message>
         <location filename="../src/localhistorycollection.cpp" line="200"/>
         <source>History</source>
-        <translation>Előzmények</translation>
+        <translation>Historia</translation>
     </message>
     <message>
         <location filename="../src/localrecordingcollection.cpp" line="101"/>
         <source>Local recordings</source>
-        <translation>Helyi felvételek</translation>
+        <translation>Nagrania lokalne</translation>
     </message>
     <message>
         <location filename="../src/localrecordingcollection.cpp" line="106"/>
         <location filename="../src/localtextrecordingcollection.cpp" line="170"/>
         <source>Recording</source>
-        <translation>Felvétel</translation>
+        <translation>Nagranie</translation>
     </message>
     <message>
         <location filename="../src/localringtonecollection.cpp" line="220"/>
         <source>Local ringtones</source>
-        <translation>Helyi csengőhangok</translation>
+        <translation>Lokalne dzwonki</translation>
     </message>
     <message>
         <location filename="../src/localringtonecollection.cpp" line="225"/>
         <source>Ringtone</source>
-        <translation>Csengőhang</translation>
+        <translation>Dzwonek</translation>
     </message>
     <message>
         <location filename="../src/localtextrecordingcollection.cpp" line="165"/>
         <source>Local text recordings</source>
-        <translation>Helyi szöveges felvételek</translation>
+        <translation>Lokalne nagrania tekstowe</translation>
     </message>
     <message>
         <location filename="../src/numbercategory.cpp" line="72"/>
         <source>Phone number types</source>
-        <translation>Telefonszám típusok</translation>
+        <translation>Rodzaje numerów telefonicznych</translation>
     </message>
     <message>
         <location filename="../src/numbercategorymodel.cpp" line="186"/>
         <source>Other</source>
-        <translation>Másik</translation>
+        <translation>Inne</translation>
     </message>
     <message>
         <location filename="../src/protocolmodel.cpp" line="50"/>
         <source>Ring Account</source>
-        <translation>Jami fiók</translation>
+        <translation>Konto Ring</translation>
     </message>
     <message>
         <location filename="../src/protocolmodel.cpp" line="51"/>
         <source>SIP Account</source>
-        <translation>SIP fiók </translation>
+        <translation>Konto SIP</translation>
     </message>
     <message>
         <location filename="../src/qtwrapper/callmanager_wrap.h" line="315"/>
         <source>Me</source>
-        <translation>Én</translation>
+        <translation>Ja</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="38"/>
         <source>TLS is disabled, the negotiation won&apos;t be encrypted. Your communication will be vulnerable to snooping</source>
-        <translation>A TLS le van tiltva, a tárgyalás nem lesz titkosítva. A közlés sebezhető lesz szaglászással.</translation>
+        <translation>TLS jest wyłączone, negocjacje nie będzie szyfrowana. Twoja komunikacja będzie narażona na podgląd</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="40"/>
         <source>Your certificate and authority don&apos;t match, if your certificate require an authority, it won&apos;t work</source>
-        <translation>A tanúsítvány és a kibocsátó nem egyezik meg, ha a tanúsítványhoz kibocsátó szükséges, akkor nem fog működni.</translation>
+        <translation>Twój certyfikat i autorytet nie pasują, jeśli twój certyfikat wymaga autoryteta to ono nie będzie działać</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="41"/>
         <source>The outgoing server specified doesn&apos;t match the hostname or the one included in the certificate</source>
-        <translation>A megadott kimenő kiszolgáló nem egyezik a gazdagépnévvel vagy a tanúsítványban szereplővel.</translation>
+        <translation>Określony serwer wychodzący nie pasuje do nazwy hosta lub tego który jest zawarty w certyfikacie</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="42"/>
         <source>The &quot;verify incoming certificate&quot; option is disabled, this leave you vulnerable to man in the middle attack</source>
-        <translation>A „bejövő igazolás ellenőrzése” opció letiltott, ez hagyja, hogy sebezhető legyen az embernek a középső támadásban.</translation>
+        <translation>Opcja &quot;zweryfikuj certyfikat przychodzączy&quot; jest wyłączona, to naraża cię na ataki rodzaju man in the middle</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="43"/>
         <source>The &quot;verify answer certificate&quot; option is disabled, this leave you vulnerable to man in the middle attack</source>
-        <translation>A „ellenőrizze a válaszadási tanúsítvány” opciót letiltott, így a középső támadásban az embernek sebezhetőséget okozhat.</translation>
+        <translation>Opcja &quot;zweryfikuj certyfikat odpowiedzi&quot; jest wyłączona, to naraża cię na ataki rodzaju man in the middle</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="44"/>
         <source>None of your certificate provide a private key, this is required. Please select a private key or use a certificate with one built-in</source>
-        <translation>Az Ön tanúsítványa nem tartalmaz személyes kulcsot, pedig erre szükség van. Kérjük, hogy válasszon egy személyes kulcsot vagy használjon egy tanúsítványt egy beépített eszközzel.</translation>
+        <translation>Żaden z twoich certyfikatów ma klucz prywatny, lecz to jest wymagane. Wybierz klucz prywatny lub użyj certyfikat z wbudowanym kluczem</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="47"/>
         <source>No certificate authority is provided, it won&apos;t be possible to validate if the answer certificates are valid. Some account may also not work.</source>
-        <translation>Nincs tanúsítvány kibocsátó, nem lehet érvényesíteni, ha a válasz-tanúsítványok érvényesek. Néhány fiók szintén nem működhet.</translation>
+        <translation>Autorytet certyfikatów nie jest podany, nie będzie możliwe aby potwierdzić czy certyfikaty odpowiedźi są ważne. Niektóre konta mogą także nie działać.</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="46"/>
         <source>No certificate has been provided. This is, for now, unsupported by Ring</source>
-        <translation>Nincs tanúsítvány biztosítva. Ezért, átmenetileg a Jami nem támogatja.</translation>
+        <translation>Certyfikat nie został podany. Ring, jak na razie, nie może funkcjonować bez certyfikatu</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="37"/>
         <source>Your media streams are not encrypted, please enable SDES</source>
-        <translation>A média közvetítései nincsenek titkosítva, kérjük engedélyezze SDES-t.</translation>
+        <translation>Twój strumień danych nie jest szyfrowany, włącz SDES</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="50"/>
         <source>Your certificate is expired, please contact your system administrator.</source>
-        <translation>Tanúsítványa lejárt, vegye fel a kapcsolatot a rendszergazdájával.</translation>
+        <translation>Twój certyfikat wygasł, skontaktuj się z twoim administratorem systemu.</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="51"/>
         <source>Your certificate is self signed. This break the chain of trust.</source>
-        <translation>A tanúsítvány önaláíró. Ez megtöri a bizalom láncolatát.</translation>
+        <translation>Twój certyfikat jest samo podpisany. To przerywa łańcuch zaufania.</translation>
     </message>
     <message>
         <location filename="../src/tlsmethodmodel.cpp" line="64"/>
         <source>Default</source>
         <comment>Default TLS protocol version</comment>
-        <translation>Alapértelmezett</translation>
+        <translation>Wartość domyślna</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="517"/>
         <location filename="../src/useractionmodel.cpp" line="759"/>
         <source>Accept</source>
-        <translation>Elfogadás</translation>
+        <translation>Akceptuj</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="60"/>
         <location filename="../src/useractionmodel.cpp" line="518"/>
         <location filename="../src/useractionmodel.cpp" line="771"/>
         <source>Hold</source>
-        <translation>Tartás</translation>
+        <translation>Czekanie</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="62"/>
         <source>Talking</source>
-        <translation>Hívásban</translation>
+        <translation>Rozmawianie</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="64"/>
         <source>ERROR</source>
-        <translation>HIBA</translation>
+        <translation>BŁĄD</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="66"/>
         <source>Incoming</source>
-        <translation>Bejövő</translation>
+        <translation>Przychodzące</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="68"/>
         <source>Calling</source>
-        <translation>Hívás</translation>
+        <translation>Dzwonienie</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="70"/>
         <source>Connecting</source>
-        <translation>Kapcsolódás</translation>
+        <translation>Łączenie</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="72"/>
         <source>Searching</source>
-        <translation>Keresés</translation>
+        <translation>Wyszukiwanie</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="74"/>
         <source>Inactive</source>
-        <translation>Tétlen</translation>
+        <translation>Nieaktywne</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="76"/>
         <location filename="../src/api/call.h" line="82"/>
         <source>Finished</source>
-        <translation>Befejezett</translation>
+        <translation>Zakończono</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="78"/>
         <source>Timeout</source>
-        <translation>Időtúllépés</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/api/call.h" line="80"/>
         <source>Peer busy</source>
-        <translation>Kapcsolat elfoglalt</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/api/call.h" line="84"/>
         <source>Communication established</source>
-        <translation>A közlés létrejött</translation>
+        <translation>Połączenie się powiodło </translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="519"/>
         <source>Mute audio</source>
-        <translation>Hang némítása</translation>
+        <translation>Wyłącz dźwięk</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="520"/>
         <source>Mute video</source>
-        <translation>Videó némítása</translation>
+        <translation>Wyłącz wideo</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="521"/>
         <source>Server transfer</source>
-        <translation>Kiszolgálóátvitel</translation>
+        <translation>Transfer z serwera</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="522"/>
         <source>Record</source>
-        <translation>Felvétel</translation>
+        <translation>Nagrywaj</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="523"/>
         <location filename="../src/useractionmodel.cpp" line="789"/>
         <source>Hangup</source>
-        <translation>Lerak</translation>
+        <translation>Odłoż słuchawkę</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="524"/>
         <source>Join</source>
-        <translation>Csatlakozás</translation>
+        <translation>Dołączył się</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="525"/>
         <source>Add new</source>
-        <translation>Új hozzáadása</translation>
+        <translation>Dodaj nowe</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="526"/>
         <source>Toggle video</source>
-        <translation>Videó be-/kikapcsolása</translation>
+        <translation>Włącz wideo</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="527"/>
         <source>Add a contact</source>
-        <translation>Kapcsolat hozzáadása</translation>
+        <translation>Dodaj kontakt</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="528"/>
         <source>Add to existing contact</source>
-        <translation>Hozzáadás meglévő kapcsolathoz</translation>
+        <translation>Dodaj do istniejącyczego kontaku</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="529"/>
         <source>Delete contact</source>
-        <translation>Kapcsolat törlése</translation>
+        <translation>Usuń kontakt</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="530"/>
         <source>Email contact</source>
-        <translation>E-mail kapcsolat</translation>
+        <translation>Wyślij e-mail do kontaktu</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="531"/>
         <source>Copy contact</source>
-        <translation>Kapcsolat másolása</translation>
+        <translation>Kopiuj kontakt</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="534"/>
         <source>Add phone number</source>
-        <translation>Telefonszám hozzáadása</translation>
+        <translation>Dodaj numer telefonu</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="535"/>
         <source>Call again</source>
-        <translation>Újra hívás</translation>
+        <translation>Zadzwoń ponownie</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="536"/>
         <source>Edit contact details</source>
-        <translation>Kapcsolatfelvétel szerkesztése</translation>
+        <translation>Edytuj detale kontaku</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="537"/>
         <source>Remove from history</source>
-        <translation>Eltávolítás az előzményekből</translation>
+        <translation>Usuń z historii</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="786"/>
         <source>Remove</source>
-        <translation>Eltávolítás</translation>
+        <translation>Usuń</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="756"/>
         <source>Call</source>
-        <translation>Hívás</translation>
+        <translation>Dzwoń</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="533"/>
         <source>Open chat</source>
-        <translation>Csevegés megnyitása</translation>
+        <translation>Otwórz chat</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="768"/>
         <source>Unhold</source>
-        <translation>Tartás megszüntetése</translation>
+        <translation>Wznów</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="779"/>
         <source>Cancel</source>
-        <translation>Mégse</translation>
+        <translation>Anuluj</translation>
     </message>
     <message>
         <location filename="../src/localprofilecollection.cpp" line="147"/>
         <source>Local profiles</source>
-        <translation>Helyi profil</translation>
+        <translation>Profile lokalne</translation>
     </message>
     <message>
         <location filename="../src/localprofilecollection.cpp" line="152"/>
         <source>Profile Collection</source>
-        <translation>Profilgyűjtemény</translation>
+        <translation>Kolekcja profil</translation>
     </message>
     <message>
         <location filename="../src/peerprofilecollection.cpp" line="141"/>
         <source>Peer profiles</source>
-        <translation>Egyenrangú nézetek</translation>
+        <translation>Profile Peer</translation>
     </message>
     <message>
         <location filename="../src/peerprofilecollection.cpp" line="146"/>
         <source>Peers Profiles Collection</source>
-        <translation>Egyenrangú nézetek gyűjtemény</translation>
+        <translation>Kolekcja profil peer</translation>
     </message>
     <message>
         <location filename="../src/conversationmodel.cpp" line="1265"/>
         <location filename="../src/conversationmodel.cpp" line="1649"/>
         <location filename="../src/conversationmodel.cpp" line="1909"/>
         <source>Invitation received</source>
-        <translation>Meghívó érkezett</translation>
+        <translation>Otrzymano zaproszenie</translation>
     </message>
     <message>
         <location filename="../src/conversationmodel.cpp" line="1266"/>
         <source>Contact added</source>
-        <translation>Kapcsolat hozzáadva</translation>
+        <translation>Kontakt dodany</translation>
     </message>
     <message>
         <location filename="../src/conversationmodel.cpp" line="1308"/>
         <location filename="../src/conversationmodel.cpp" line="1315"/>
         <source>Invitation accepted</source>
-        <translation>Meghívó elfogadva</translation>
+        <translation>Zaakceptowano zaproszenie</translation>
     </message>
     <message>
         <location filename="../src/conversationmodel.cpp" line="1524"/>
         <source>ð Outgoing call</source>
-        <translation>ð Kimenő hívás</translation>
+        <translation>ð Połączenie wychodzące</translation>
     </message>
     <message>
         <location filename="../src/conversationmodel.cpp" line="1526"/>
         <source>ð Incoming call</source>
-        <translation>ð Bejövő hívás</translation>
+        <translation>ð Połączenie przychodzące</translation>
     </message>
     <message>
         <location filename="../src/conversationmodel.cpp" line="1539"/>
         <source>ð Outgoing call - </source>
-        <translation>ð Kimenő hívás - </translation>
+        <translation>ð Połączenie wychodzące -</translation>
     </message>
     <message>
         <location filename="../src/conversationmodel.cpp" line="1542"/>
         <source>ð Incoming call - </source>
-        <translation>ð Bejövő hívás - </translation>
+        <translation>ð Połączenie przychodzące -</translation>
     </message>
     <message>
         <location filename="../src/conversationmodel.cpp" line="1546"/>
         <source>ð½ Missed outgoing call</source>
-        <translation>ð½ Nem fogadott kimenő hívás</translation>
+        <translation>ð½ Nieodebrane połączenie wychodzące</translation>
     </message>
     <message>
         <location filename="../src/conversationmodel.cpp" line="1548"/>
         <source>ð½ Missed incoming call</source>
-        <translation>ð½ Nem fogadott bejövő hívás</translation>
+        <translation>ð½ Nieodebrane połączenia przychodzące</translation>
     </message>
 </context>
 <context>
@@ -1366,12 +1366,12 @@
     <message>
         <location filename="../src/ringdevicemodel.cpp" line="110"/>
         <source>ID</source>
-        <translation>Azonosító</translation>
+        <translation>ID</translation>
     </message>
     <message>
         <location filename="../src/ringdevicemodel.cpp" line="112"/>
         <source>Name</source>
-        <translation>Név</translation>
+        <translation>Imię</translation>
     </message>
 </context>
 <context>
@@ -1379,7 +1379,7 @@
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="683"/>
         <source>Authority</source>
-        <translation>Felhatalmazás</translation>
+        <translation>Autorytet</translation>
     </message>
 </context>
 <context>
@@ -1387,7 +1387,7 @@
     <message>
         <location filename="../src/tlsmethodmodel.cpp" line="101"/>
         <source>Automatic</source>
-        <translation>Automatikus</translation>
+        <translation>Automatycznie</translation>
     </message>
 </context>
 <context>
@@ -1395,17 +1395,17 @@
     <message>
         <location filename="../src/video/sourcemodel.cpp" line="95"/>
         <source>NONE</source>
-        <translation>EGYIK SEM</translation>
+        <translation>ŻADEN</translation>
     </message>
     <message>
         <location filename="../src/video/sourcemodel.cpp" line="101"/>
         <source>SCREEN</source>
-        <translation>KÉPERNYŐ</translation>
+        <translation>EKRAN</translation>
     </message>
     <message>
         <location filename="../src/video/sourcemodel.cpp" line="107"/>
         <source>FILE</source>
-        <translation>FÁJL</translation>
+        <translation>PLIK</translation>
     </message>
 </context>
 <context>
@@ -1413,22 +1413,22 @@
     <message>
         <location filename="../src/contactmodel.cpp" line="393"/>
         <source>Searchingâ¦</source>
-        <translation>Keresésâ¦</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/contactmodel.cpp" line="747"/>
         <source>Invalid ID</source>
-        <translation>Érvénytelen azonosító</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/contactmodel.cpp" line="750"/>
         <source>Not found</source>
-        <translation>Nem található</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/contactmodel.cpp" line="753"/>
         <source>Couldn&apos;t lookupâ¦</source>
-        <translation>Betekintés nem találhatókâ¦</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1436,7 +1436,7 @@
     <message>
         <location filename="../src/contactmodel.cpp" line="364"/>
         <source>Bad URI scheme</source>
-        <translation>Érvénytelen URI-séma</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1444,17 +1444,17 @@
     <message>
         <location filename="../src/media/recordingmodel.cpp" line="189"/>
         <source>Recordings</source>
-        <translation>Felvételek</translation>
+        <translation>Nagrania</translation>
     </message>
     <message>
         <location filename="../src/media/recordingmodel.cpp" line="259"/>
         <source>Text messages</source>
-        <translation>Szöveges üzenetek</translation>
+        <translation>Wiadomości tekstowe</translation>
     </message>
     <message>
         <location filename="../src/media/recordingmodel.cpp" line="264"/>
         <source>Audio/Video</source>
-        <translation>Hang/videó</translation>
+        <translation>Audio/Wideo</translation>
     </message>
 </context>
 </TS>

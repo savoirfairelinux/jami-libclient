@@ -809,7 +809,7 @@
     <message>
         <location filename="../src/certificate.cpp" line="90"/>
         <source>Expiration date</source>
-        <translation type="unfinished"/>
+        <translation>Ablaufdatum</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="91"/>
@@ -1184,12 +1184,12 @@
     <message>
         <location filename="../src/useractionmodel.cpp" line="519"/>
         <source>Mute audio</source>
-        <translation type="unfinished"/>
+        <translation>Stummschalten</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="520"/>
         <source>Mute video</source>
-        <translation type="unfinished"/>
+        <translation>Video ausschalten</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="521"/>
@@ -1317,12 +1317,12 @@
         <location filename="../src/conversationmodel.cpp" line="1649"/>
         <location filename="../src/conversationmodel.cpp" line="1909"/>
         <source>Invitation received</source>
-        <translation type="unfinished"/>
+        <translation>Einladung erhalten</translation>
     </message>
     <message>
         <location filename="../src/conversationmodel.cpp" line="1266"/>
         <source>Contact added</source>
-        <translation type="unfinished"/>
+        <translation>Kontakt hinzugefügt</translation>
     </message>
     <message>
         <location filename="../src/conversationmodel.cpp" line="1308"/>
