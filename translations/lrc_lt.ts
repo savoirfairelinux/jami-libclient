@@ -53,7 +53,7 @@
         <location filename="../src/account.cpp" line="319"/>
         <source>Authentication failed</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Tapatybės nustatymas nepavyko</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="325"/>
