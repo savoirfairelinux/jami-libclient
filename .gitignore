@@ -3,3 +3,4 @@ build/
 build-local/
 
 msvc/
+translations/*.qm
