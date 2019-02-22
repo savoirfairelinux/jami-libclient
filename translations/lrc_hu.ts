@@ -11,7 +11,7 @@
         <location filename="../src/account.cpp" line="309"/>
         <source>Registered</source>
         <extracomment>Account state</extracomment>
-        <translation>Regisztrált</translation>
+        <translation>Bejegyzett</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="313"/>
@@ -41,7 +41,7 @@
         <location filename="../src/account.cpp" line="311"/>
         <source>Not registered</source>
         <extracomment>Account state</extracomment>
-        <translation>Nem regisztrált</translation>
+        <translation>Nincs bejegyzett</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="315"/>
@@ -249,7 +249,7 @@
     <message>
         <location filename="../src/call.cpp" line="1816"/>
         <source>No account registered!</source>
-        <translation>Nem regisztrált fiók!</translation>
+        <translation>Nincs bejegyzett fiók!</translation>
     </message>
 </context>
 <context>
@@ -638,7 +638,7 @@
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="307"/>
         <source>Registered name</source>
-        <translation>Regisztrált név</translation>
+        <translation>Bejegyzett név</translation>
     </message>
 </context>
 <context>
@@ -819,7 +819,7 @@
     <message>
         <location filename="../src/certificate.cpp" line="92"/>
         <source>Require a private key password</source>
-        <translation>Személyes kulcsú jelszó igénylése</translation>
+        <translation>Személyes kulcs jelszó igénylése</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="93"/>
@@ -1317,7 +1317,7 @@
         <location filename="../src/conversationmodel.cpp" line="1649"/>
         <location filename="../src/conversationmodel.cpp" line="1909"/>
         <source>Invitation received</source>
-        <translation>Meghívó érkezett</translation>
+        <translation>Meghívás megérkezett</translation>
     </message>
     <message>
         <location filename="../src/conversationmodel.cpp" line="1266"/>
@@ -1328,7 +1328,7 @@
         <location filename="../src/conversationmodel.cpp" line="1308"/>
         <location filename="../src/conversationmodel.cpp" line="1315"/>
         <source>Invitation accepted</source>
-        <translation>Meghívó elfogadva</translation>
+        <translation>Meghívás elfogadott</translation>
     </message>
     <message>
         <location filename="../src/conversationmodel.cpp" line="1524"/>
@@ -1387,7 +1387,7 @@
     <message>
         <location filename="../src/tlsmethodmodel.cpp" line="101"/>
         <source>Automatic</source>
-        <translation>Automatikus</translation>
+        <translation>Önműködő</translation>
     </message>
 </context>
 <context>
