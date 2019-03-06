@@ -131,7 +131,7 @@ struct Info
     std::chrono::steady_clock::time_point startTime;
     Status status = Status::INVALID;
     Type type = Type::INVALID;
-    std::string peer;
+    std::string peerUri;
     bool isOutgoing;
     bool audioMuted = false;
     bool videoMuted = false;
