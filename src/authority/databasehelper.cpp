@@ -18,11 +18,19 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
 #include "databasehelper.h"
+
 #include "api/profile.h"
 #include "api/datatransfer.h"
-#include <account_const.h>
+#include "uri.h"
+#include "vcard.h"
 
+#include <account_const.h>
 #include <datatransfer_interface.h>
+
+#include <QImage>
+#include <QBuffer>
+
+#include <fstream>
 
 namespace lrc
 {
@@ -32,6 +40,17 @@ namespace authority
 
 namespace database
 {
+
+enum class GeneratedMessageType {
+    OUTGOING_CALL,
+    INCOMING_CALL,
+    MISSED_OUTGOING_CALL,
+    MISSED_INCOMING_CALL,
+    CONTACT_ADDED,
+    INVITATION_RECEIVED,
+    INVITATION_ACCEPTED,
+    UNKNOWN
+};
 
 std::string
 getProfileId(Database& db,
@@ -565,6 +584,378 @@ getLastTimestamp(Database& db)
         qDebug() << "database::getLastTimestamp, stoull throws an invalid_argument exception: " << e.what();
     }
     return result;
+}
+
+//================================================================================
+// This section provides migration helpers from ring.db
+// to per-account databases yielding a file structure like:
+//
+// { local_storage } / jami
+// └──{ account_id }
+// ├── config.yml
+// ├── contacts
+// ├── export.gz
+// ├── incomingTrustRequests
+// ├── knownDevicesNames
+// ├── history.db < --conversations and interactions database
+//     ├── profile.vcf < --account vcard
+//     ├── profiles < --account contact vcards
+//     │   │──{ contact_uri }.vcf
+//     │   └── ...
+//     ├── ring_device.crt
+//     └── ring_device.key
+//================================================================================
+
+std::string
+migrate_profileToVcard(const api::profile::Info& profileInfo,
+    const std::string& accountId = {})
+{
+    using namespace api;
+    // TODO: check if jpeg or png
+    bool compressedImage = false;
+    std::string vCardStr = vCard::Delimiter::BEGIN_TOKEN;
+    vCardStr += vCard::Delimiter::END_LINE_TOKEN;
+    vCardStr += vCard::Property::VERSION;
+    vCardStr += ":2.1";
+    vCardStr += vCard::Delimiter::END_LINE_TOKEN;
+    if (!accountId.empty()) {
+        vCardStr += vCard::Property::UID;
+        vCardStr += ":";
+        vCardStr += accountId;
+        vCardStr += vCard::Delimiter::END_LINE_TOKEN;
+    }
+    vCardStr += vCard::Property::FORMATTED_NAME;
+    vCardStr += ":";
+    vCardStr += profileInfo.alias;
+    vCardStr += vCard::Delimiter::END_LINE_TOKEN;
+    if (profileInfo.type == profile::Type::RING) {
+        vCardStr += vCard::Property::TELEPHONE;
+        vCardStr += ":";
+        vCardStr += vCard::Delimiter::SEPARATOR_TOKEN;
+        vCardStr += "other:ring:";
+        vCardStr += profileInfo.uri;
+        vCardStr += vCard::Delimiter::END_LINE_TOKEN;
+    } else {
+        vCardStr += vCard::Property::TELEPHONE;
+        vCardStr += profileInfo.uri;
+        vCardStr += vCard::Delimiter::END_LINE_TOKEN;
+    }
+    vCardStr += vCard::Property::PHOTO;
+    vCardStr += vCard::Delimiter::SEPARATOR_TOKEN;
+    vCardStr += "ENCODING=BASE64";
+    vCardStr += vCard::Delimiter::SEPARATOR_TOKEN;
+    vCardStr += compressedImage ? "TYPE=JPEG:" : "TYPE=PNG:";
+    vCardStr += profileInfo.avatar;
+    vCardStr += vCard::Delimiter::END_LINE_TOKEN;
+    vCardStr += vCard::Delimiter::END_TOKEN;
+    return vCardStr;
+}
+
+uint64_t
+migrate_getTimeFromTimeStr(const std::string& str) noexcept
+{
+    uint64_t minutes = 0, seconds = 0;
+    std::size_t delimiterPos = str.find(":");
+    if (delimiterPos != std::string::npos) {
+        try {
+            minutes = std::stoull(str.substr(0, delimiterPos));
+            seconds = std::stoull(str.substr(delimiterPos + 1));
+        } catch (const std::exception&) {
+            return 0;
+        }
+    }
+    return minutes * 60 + seconds;
+}
+
+std::pair<std::string, uint64_t>
+migrateMessageBody(const std::string& body, api::interaction::Type type)
+{
+    uint64_t duration{ 0 };
+    // check in english and local to determine the direction of the call
+    switch (type) {
+    case api::interaction::Type::CALL:
+        {
+            bool en_missedInc   = body.find("Missed incoming call") != std::string::npos;
+            bool en_inc         = body.find("Incoming call") != std::string::npos;
+            bool loc_missedInc  = body.find(QObject::tr("Missed incoming call").toStdString()) != std::string::npos;
+            bool loc_inc        = body.find(QObject::tr("Incoming call").toStdString()) != std::string::npos;
+            bool incomingCall   = en_missedInc || en_inc || loc_missedInc || loc_inc;
+            std::size_t dashPos = body.find("-");
+            bool missedCall = dashPos == std::string::npos;
+            if (!missedCall) {
+                duration = migrate_getTimeFromTimeStr(body.substr(dashPos + 2));
+            }
+            return std::make_pair(std::to_string(incomingCall + 2 * missedCall), duration);
+        }
+        break;
+    case api::interaction::Type::CONTACT:
+        {
+            if (body.find("Contact added") != std::string::npos ||
+                body.find(QObject::tr("Contact added").toStdString()) != std::string::npos) {
+                return std::make_pair(std::to_string((int)GeneratedMessageType::CONTACT_ADDED), 0);
+            } else if (body.find("Invitation received") != std::string::npos ||
+                       body.find(QObject::tr("Invitation received").toStdString()) != std::string::npos) {
+                return std::make_pair(std::to_string((int)GeneratedMessageType::INVITATION_RECEIVED), 0);
+            } else if (body.find("Invitation accepted") != std::string::npos ||
+                       body.find(QObject::tr("Invitation accepted").toStdString()) != std::string::npos) {
+                return std::make_pair(std::to_string((int)GeneratedMessageType::INVITATION_ACCEPTED), 0);
+            }
+        }
+        break;
+    default:
+        return std::make_pair(body, 0);
+    }
+}
+
+std::vector<std::shared_ptr<Database>>
+migrateLegacyDatabaseIfNeeded(const QStringList& accountIds)
+{
+    using namespace lrc::api;
+
+    std::vector<std::shared_ptr<Database>> dbs(accountIds.size());
+
+    if (!dbs.size()) {
+        qDebug() << "No accounts to migrate";
+        return {};
+    }
+
+    std::shared_ptr<Database> legacyDb;
+    try {
+        // create function should throw if there's no migration material
+        legacyDb = lrc::DatabaseFactory::create<LegacyDatabase>();
+    } catch (const std::runtime_error& e) {
+        qDebug() << e.what();
+        return dbs;
+    }
+
+    if (legacyDb == nullptr) {
+        return dbs;
+    }
+
+    int index = 0;
+    qDebug() << "Migrating…";
+    for (auto accountId : accountIds) {
+        qDebug() << "Migrating account: " << accountId << "…";
+        try {
+            auto dbName = accountId.toStdString() + "/jami";
+            dbs.at(index) = lrc::DatabaseFactory::create<Database>(dbName);
+            auto& db = *dbs.at(index++);
+
+            auto accountLocalPath = Database::getPath() + "/" + accountId + "/";
+
+            using namespace DRing::Account;
+            MapStringString accountDetails = ConfigurationManager::instance().
+                getAccountDetails(accountId.toStdString().c_str());
+            bool isRingAccount = accountDetails[ConfProperties::TYPE] == "RING";
+            std::map<std::string, std::string> profileIdUriMap;
+            std::string accountProfileId;
+
+            // 1. profiles_accounts
+            // migrate account's avatar/alias from profiles table to {data_dir}/profile.vcf
+            std::string accountUri;
+            if (isRingAccount) {
+                accountUri = accountDetails[DRing::Account::ConfProperties::USERNAME].contains("ring:") ?
+                    accountDetails[DRing::Account::ConfProperties::USERNAME].toStdString().substr(std::string("ring:").size()) :
+                    accountDetails[DRing::Account::ConfProperties::USERNAME].toStdString();
+            } else {
+                auto uri = URI(accountDetails[DRing::Account::ConfProperties::USERNAME]);
+                uri.setSchemeType(URI::SchemeType::SIP);
+                !uri.hasHostname() ? uri.setHostname(accountDetails[ConfProperties::HOSTNAME]) : (void)0;
+                !uri.hasPort() ? uri.setPort(accountDetails[ConfProperties::PUBLISHED_PORT]) : (void)0;
+                accountUri = uri.full().toStdString();
+            }
+
+            auto accountProfileIds = legacyDb->select(
+                "profile_id", "profiles_accounts",
+                "account_id=:account_id AND \
+                 is_account=:is_account",
+                { {":account_id", accountId.toStdString()},
+                {":is_account", "true"} }).payloads;
+            if (accountProfileIds.empty()) {
+                continue;
+            }
+            accountProfileId = accountProfileIds[0];
+            auto accountProfile = legacyDb->select(
+                "photo, alias",
+                "profiles", "uri=:uri",
+                { {":uri", accountUri} }).payloads;
+            profile::Info accountProfileInfo;
+            // if we can not find the uri in the database
+            // (in the case of poorly kept SIP account uris),
+            // than we cannot migrate the conversations and vcard
+            if (!accountProfile.empty()) {
+                accountProfileInfo = { accountUri, accountProfile[0], accountProfile[1],
+                    isRingAccount ? profile::Type::RING : profile::Type::SIP };
+            }
+
+            auto accountVcard = migrate_profileToVcard(accountProfileInfo, accountId.toStdString());
+            auto profileFilePath = accountLocalPath + "profile" + ".vcf";
+            QFile file(profileFilePath);
+            if (!file.open(QIODevice::WriteOnly)) {
+                throw std::runtime_error("Can't open file: " + profileFilePath.toStdString());
+            }
+            QTextStream(&file) << QString::fromStdString(accountVcard);
+
+            // 2. profiles
+            // migrate profiles from profiles table to {data_dir}/{uri}.vcf
+            // - a partial uri with no scheme and no port will be used as
+            //   the filename
+            // - for SIP, if the hostname is not provided, the account's
+            //   hostname will be added
+            // - for JAMI, the hostname is omitted
+            // e.g. 3d1112ab2bb089370c0744a44bbbb0786418d40b.vcf
+            //      username@hostname.vcf
+            // the full canonical uri CAN be constructed and used for
+            // the 'participant' column of the database, but provides
+            // no further distinction
+
+            // only select non-account profiles
+            auto profileIds = legacyDb->select(
+                "profile_id", "profiles_accounts",
+                "account_id=:account_id AND \
+                 is_account=:is_account",
+                {{":account_id", accountId.toStdString()},
+                {":is_account", "false"}}).payloads;
+            for (const auto& profileId : profileIds) {
+                auto profile = legacyDb->select(
+                    "uri, alias, photo, type", "profiles",
+                    "id=:id",
+                    { {":id", profileId} }).payloads;
+                if (profile.empty()) {
+                    continue;
+                }
+                profile::Info profileInfo{ profile[0], profile[2], profile[1] };
+                auto uri = URI(QString::fromStdString(profile[0]));
+                auto uriScheme = uri.schemeType();
+                if (uri.schemeType() == URI::SchemeType::NONE) {
+                    // if uri has no scheme, default to current account scheme
+                    // this is only for vcard generation
+                    uri.setSchemeType(isRingAccount ? URI::SchemeType::RING : URI::SchemeType::SIP);
+                    profileInfo.type = isRingAccount ? profile::Type::RING : profile::Type::SIP;
+                } else {
+                    profileInfo.type = uri.schemeType() == URI::SchemeType::RING ?
+                        profile::Type::RING :
+                        profile::Type::SIP;
+                }
+                // if the account is a SIP account, set the uri's hostname as the account's
+                // if it doesn't already have one
+                if (!isRingAccount) {
+                    !uri.hasHostname() ? uri.setHostname(accountDetails[ConfProperties::HOSTNAME]) : (void)0;
+                    !uri.hasPort() ? uri.setPort(accountDetails[ConfProperties::PUBLISHED_PORT]) : (void)0;
+                }
+                auto profileUri = uri.userinfo();
+                if (!isRingAccount) {
+                    profileUri += "@" + uri.hostname();
+                }
+                // insert into map for use during the conversations table migration
+                // TODO: use uri.full() instead of profileUri ?
+                profileIdUriMap.insert(std::make_pair(profileId, profileUri.toStdString()));
+                auto vcard = migrate_profileToVcard(profileInfo);
+                // make sure the directory exists
+                QDir dir(accountLocalPath + "profiles");
+                if (!dir.exists())
+                    dir.mkpath(".");
+                profileFilePath = accountLocalPath + "profiles/" + profileUri + ".vcf";
+                QFile file(profileFilePath);
+                // if we catch duplicates here, skip thh profile because
+                // the previous db structure does not guarantee unique uris
+                if (file.exists()) {
+                    qWarning() << "Profile file already exits : " << profileFilePath;
+                    continue;
+                }
+                if(!file.open(QIODevice::WriteOnly)) {
+                    qWarning() << "Can't open file : " << profileFilePath;
+                    continue;
+                }
+                QTextStream(&file) << QString::fromStdString(vcard);
+            }
+
+            // 3. conversations
+            // migrate old conversations table ==> new conversations table
+            // a) participant_id INTEGER becomes participant TEXT (the uri of the participant)
+            //    use the selected non-account profiles
+            auto conversationIds = legacyDb->select(
+                "id", "conversations",
+                "participant_id=:participant_id",
+                { {":participant_id", accountProfileId} }).payloads;
+            if (conversationIds.empty()) {
+                continue;
+            }
+            for (auto conversationId : conversationIds) {
+                // only one peer pre-groupchat
+                auto peerProfileId = getPeerParticipantsForConversation(*legacyDb, accountProfileId, conversationId);
+                if (peerProfileId.empty()) {
+                    continue;
+                }
+                auto it = profileIdUriMap.find(peerProfileId.at(0));
+                // we cannot insert in the conversations table without a uri
+                if (it == profileIdUriMap.end()) {
+                    continue;
+                }
+                try {
+                    db.insertInto("conversations",
+                        {   {":id", "id"} ,
+                            {":participant", "participant"} },
+                        {   { ":id", conversationId } ,
+                            { ":participant", it->second } });
+                } catch (const std::runtime_error& e) {
+                    qWarning() << e.what();
+                }
+            }
+
+            // 4. interactions
+            auto allInteractions = legacyDb->select(
+                "account_id, author_id, conversation_id, \
+                 timestamp, body, type, status, daemon_id",
+                "interactions",
+                "account_id=:account_id",
+                { {":account_id", accountProfileId} });
+            auto interactionIt = allInteractions.payloads.begin();
+            while (interactionIt != allInteractions.payloads.end()) {
+                auto type = api::interaction::to_type(*(interactionIt + 5));
+                auto author_id = *(interactionIt + 1);
+                auto it = profileIdUriMap.find(author_id);
+                if (it == profileIdUriMap.end() && author_id != accountProfileId) {
+                    std::advance(interactionIt, allInteractions.nbrOfCols);
+                    continue;
+                }
+                auto migratedMsg = migrateMessageBody(*(interactionIt + 4), type);
+                auto daemonId = *(interactionIt + 7);
+                auto profileUri = it == profileIdUriMap.end() ? "" : it->second;
+                try {
+                    db.insertInto("interactions", {
+                        {":author", "author"},
+                        {":conversation", "conversation"},
+                        {":timestamp", "timestamp"},
+                        {":duration", "duration"},
+                        {":body", "body"},
+                        {":type", "type"},
+                        {":status", "status"},
+                        {":daemon_id", "daemon_id"}
+                    }, {
+                        {profileUri.empty() ? "" : ":author", profileUri},
+                        {":conversation", *(interactionIt + 2)},
+                        {":timestamp", *(interactionIt + 3)},
+                        {":duration", std::to_string(migratedMsg.second)},
+                        {":body", migratedMsg.first},
+                        {":type", *(interactionIt + 5)},
+                        {":status", *(interactionIt + 6)},
+                        {daemonId.empty() ? "" : ":daemon_id", daemonId}
+                    });
+                } catch (const std::runtime_error& e) {
+                    qWarning() << e.what();
+                }
+                std::advance(interactionIt, allInteractions.nbrOfCols);
+            }
+            qDebug() << "Done";
+        } catch (const std::runtime_error& e) {
+            qWarning().noquote()
+                << "Could not migrate database for account: "
+                << accountId << "\n " << e.what();
+        }
+    }
+
+    return dbs;
 }
 
 } // namespace database
