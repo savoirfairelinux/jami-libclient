@@ -28,7 +28,7 @@
 #include <QtCore/QDateTime>
 
 //Ring
-#include "database.h"
+#include "authority/databasehelper.h"
 #include "private/vcardutils.h"
 #include "account.h"
 #include "accountmodel.h"
@@ -130,7 +130,7 @@ QVector<Person*> PeerProfileEditor::items() const
 
 QString PeerProfileEditor::path(const Person* p) const
 {
-   const QDir profilesDir = (lrc::Database::getPath()) + "/peer_profiles/";
+   const QDir profilesDir = (lrc::authority::storage::getPath()) + "/peer_profiles/";
    profilesDir.mkpath(profilesDir.path());
    return QString("%1/%2.vcf")
       .arg(profilesDir.absolutePath())
@@ -159,7 +159,7 @@ bool PeerProfileCollection::isEnabled() const
 
 bool PeerProfileCollection::load()
 {
-    const QDir profilesDir = (lrc::Database::getPath()) + "/peer_profiles/";
+    const QDir profilesDir = (lrc::authority::storage::getPath()) + "/peer_profiles/";
 
     const QStringList entries = profilesDir.entryList({QStringLiteral("*.vcf")}, QDir::Files);
 
@@ -201,7 +201,7 @@ FlagPack<CollectionInterface::SupportedFeatures> PeerProfileCollection::supporte
 
 bool PeerProfileCollection::clear()
 {
-   QFile::remove((lrc::Database::getPath()) + "/peer_profiles/");
+   QFile::remove((lrc::authority::storage::getPath()) + "/peer_profiles/");
    return true;
 }
 
