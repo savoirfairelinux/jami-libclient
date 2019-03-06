@@ -29,7 +29,7 @@
 //Ring
 #include "certificate.h"
 #include "certificatemodel.h"
-#include "database.h"
+#include "authority\databasehelper.h"
 #include "globalinstances.h"
 #include "interfaces/pixmapmanipulatori.h"
 
@@ -112,7 +112,7 @@ CollectionInterface(new FallbackLocalCertificateEditor(mediator,path),p),d_ptr(n
    d_ptr->m_IsValid = true   ;
 
    if (path.isEmpty()) {
-      d_ptr->m_Path = lrc::Database::getPath()+"/certs/";
+      d_ptr->m_Path = lrc::authority::storage::getPath()+"/certs/";
 
       d_ptr->m_IsValid = !FolderCertificateCollectionPrivate::m_sHasFallbackStore;
 
@@ -225,12 +225,10 @@ FlagPack<CollectionInterface::SupportedFeatures> FolderCertificateCollection::su
       CollectionInterface::SupportedFeatures::ADD      ;
 }
 
-
 QUrl FolderCertificateCollection::path() const
 {
    return QUrl(d_ptr->m_Path);
 }
-
 
 /*******************************************************************************
  *                                                                             *
@@ -300,7 +298,6 @@ QVector<Certificate*> FallbackLocalCertificateEditor::items() const
 {
    return m_lItems;
 }
-
 
 /*******************************************************************************
  *                                                                             *
