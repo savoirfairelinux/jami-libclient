@@ -18,11 +18,19 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
 #include "databasehelper.h"
+
 #include "api/profile.h"
 #include "api/datatransfer.h"
-#include <account_const.h>
+#include "uri.h"
+#include "vcard.h"
 
+#include <account_const.h>
 #include <datatransfer_interface.h>
+
+#include <QImage>
+#include <QBuffer>
+
+#include <fstream>
 
 namespace lrc
 {
@@ -32,6 +40,67 @@ namespace authority
 
 namespace database
 {
+
+std::string
+compressedAvatar(const std::string& img)
+{
+    QImage image;
+    const bool ret = image.loadFromData(QByteArray::fromBase64(img.c_str()), 0);
+    if (!ret) {
+        qDebug() << "vCard image loading failed";
+        return img;
+    }
+    QByteArray bArray;
+    QBuffer buffer(&bArray);
+    buffer.open(QIODevice::WriteOnly);
+    image.scaled({ 128, 128 }).save(&buffer, "JPEG", 90);
+    auto b64Img = bArray.toBase64().trimmed();
+    return std::string(b64Img.constData(), b64Img.length());
+}
+
+std::string
+profileToVcard(const api::profile::Info& profileInfo,
+               const std::string& accountId = {},
+               bool compressImage = true)
+{
+    using namespace api;
+    std::string vCardStr = vCard::Delimiter::BEGIN_TOKEN;
+    vCardStr += vCard::Delimiter::END_LINE_TOKEN;
+    vCardStr += vCard::Property::VERSION;
+    vCardStr += ":2.1";
+    vCardStr += vCard::Delimiter::END_LINE_TOKEN;
+    if (!accountId.empty()) {
+        vCardStr += vCard::Property::UID;
+        vCardStr += ":";
+        vCardStr += accountId;
+        vCardStr += vCard::Delimiter::END_LINE_TOKEN;
+    }
+    vCardStr += vCard::Property::FORMATTED_NAME;
+    vCardStr += ":";
+    vCardStr += profileInfo.alias;
+    vCardStr += vCard::Delimiter::END_LINE_TOKEN;
+    if (profileInfo.type == profile::Type::RING) {
+        vCardStr += vCard::Property::TELEPHONE;
+        vCardStr += ":";
+        vCardStr += vCard::Delimiter::SEPARATOR_TOKEN;
+        vCardStr += "other:ring:";
+        vCardStr += profileInfo.uri;
+        vCardStr += vCard::Delimiter::END_LINE_TOKEN;
+    } else {
+        vCardStr += vCard::Property::TELEPHONE;
+        vCardStr += profileInfo.uri;
+        vCardStr += vCard::Delimiter::END_LINE_TOKEN;
+    }
+    vCardStr += vCard::Property::PHOTO;
+    vCardStr += vCard::Delimiter::SEPARATOR_TOKEN;
+    vCardStr += "ENCODING=BASE64";
+    vCardStr += vCard::Delimiter::SEPARATOR_TOKEN;
+    vCardStr += compressImage ? "TYPE=JPEG:" : "TYPE=PNG:";
+    vCardStr += compressImage ? compressedAvatar(profileInfo.avatar) : profileInfo.avatar;
+    vCardStr += vCard::Delimiter::END_LINE_TOKEN;
+    vCardStr += vCard::Delimiter::END_TOKEN;
+    return vCardStr;
+}
 
 std::string
 getProfileId(Database& db,
@@ -565,6 +634,245 @@ getLastTimestamp(Database& db)
         qDebug() << "database::getLastTimestamp, stoull throws an invalid_argument exception: " << e.what();
     }
     return result;
+}
+
+std::vector<std::shared_ptr<Database>>
+migrateLegacyDatabaseIfNeeded(const QStringList& accountIds)
+{
+    using namespace lrc::api;
+
+    std::vector<std::shared_ptr<Database>> dbs(accountIds.size());
+
+    if (!dbs.size()) {
+        qDebug() << "No accounts to migrate";
+        return {};
+    }
+
+    std::shared_ptr<Database> legacyDb;
+    try {
+        // create function should throw if there's no migration material
+        legacyDb = lrc::DatabaseFactory::create<LegacyDatabase>();
+    } catch (const std::runtime_error& e) {
+        qDebug() << e.what();
+        return dbs;
+    }
+
+    if (legacyDb == nullptr) {
+        return dbs;
+    }
+
+    int index = 0;
+    for (auto accountId : accountIds) {
+        try {
+            auto dbName = accountId.toStdString() + "/jami";
+            dbs.at(index) = lrc::DatabaseFactory::create<Database>(dbName);
+            auto& db = *dbs.at(index++);
+
+            auto accountLocalPath = Database::getPath() + "/" + accountId + "/";
+
+            using namespace DRing::Account;
+            MapStringString accountDetails = ConfigurationManager::instance().
+                getAccountDetails(accountId.toStdString().c_str());
+            bool isRingAccount = accountDetails[ConfProperties::TYPE] == "RING";
+            std::map<std::string, std::string> profileIdUriMap;
+
+            // 1. profiles_accounts
+            // migrate account's avatar/alias from profiles table to {data_dir}/profile.vcf
+            std::string accountUri;
+            if (isRingAccount) {
+                accountUri = accountDetails[DRing::Account::ConfProperties::USERNAME].contains("ring:") ?
+                    accountDetails[DRing::Account::ConfProperties::USERNAME].toStdString().substr(std::string("ring:").size()) :
+                    accountDetails[DRing::Account::ConfProperties::USERNAME].toStdString();
+            } else {
+                auto uri = URI(accountDetails[DRing::Account::ConfProperties::USERNAME]);
+                uri.setSchemeType(URI::SchemeType::SIP);
+                !uri.hasHostname() ? uri.setHostname(accountDetails[ConfProperties::HOSTNAME]) : (void)0;
+                !uri.hasPort() ? uri.setPort(accountDetails[ConfProperties::PUBLISHED_PORT]) : (void)0;
+                accountUri = uri.full().toStdString();
+            }
+
+            auto accountProfile = legacyDb->select(
+                "photo, alias, id",
+                "profiles", "uri=:uri",
+                { {":uri", accountUri} }).payloads;
+            profile::Info accountProfileInfo;
+            // if we can not find the uri in the database
+            // (in the case of poorly kept SIP account uris),
+            // than we cannot migrate the conversations and vcard
+            if (accountProfile.empty()) {
+                continue;
+            }
+            accountProfileInfo = { accountUri, accountProfile[0], accountProfile[1],
+                    isRingAccount ? profile::Type::RING : profile::Type::SIP };
+            std::string accountProfileId = accountProfile[2];
+            auto accountVcard = profileToVcard(accountProfileInfo, accountId.toStdString());
+            auto profileFilePath = accountLocalPath + "profile" + ".vcf";
+            QFile file(profileFilePath);
+            if (!file.open(QIODevice::WriteOnly)) {
+                throw std::runtime_error("Can't open file: " + profileFilePath.toStdString());
+            }
+            QTextStream(&file) << QString::fromStdString(accountVcard);
+
+            // 2. profiles
+            // migrate profiles from profiles table to {data_dir}/{uri}.vcf
+            // - a partial uri with no scheme and no port will be used as
+            //   the filename
+            // - for SIP, if the hostname is not provided, the account's
+            //   hostname will be added
+            // - for JAMI, the hostname is omitted
+            // e.g. 3d1112ab2bb089370c0744a44bbbb0786418d40b.vcf
+            //      username@hostname.vcf
+            // the full canonical uri CAN be constructed and used for
+            // the 'participant' column of the database, but provides
+            // no further distinction
+
+            // only select non-account profiles
+            auto profileIds = legacyDb->select(
+                "profile_id", "profiles_accounts",
+                "account_id=:account_id AND \
+                 is_account=:is_account",
+                {{":account_id", accountId.toStdString()},
+                {":is_account", "false"}}).payloads;
+            for (const auto& profileId : profileIds) {
+                auto profile = legacyDb->select(
+                    "uri, alias, photo, type", "profiles",
+                    "id=:id",
+                    { {":id", profileId} }).payloads;
+                if (profile.empty()) {
+                    continue;
+                }
+                profile::Info profileInfo{ profile[0], profile[2], profile[1] };
+                auto uri = URI(QString::fromStdString(profile[0]));
+                auto uriScheme = uri.schemeType();
+                if (uri.schemeType() == URI::SchemeType::NONE) {
+                    // if uri has no scheme, default to current account scheme
+                    // this is only for vcard generation
+                    uri.setSchemeType(isRingAccount ? URI::SchemeType::RING : URI::SchemeType::SIP);
+                    profileInfo.type = isRingAccount ? profile::Type::RING : profile::Type::SIP;
+                } else {
+                    profileInfo.type = uri.schemeType() == URI::SchemeType::RING ?
+                        profile::Type::RING :
+                        profile::Type::SIP;
+                }
+                // if the account is a SIP account, set the uri's hostname as the account's
+                // if it doesn't already have one
+                if (!isRingAccount) {
+                    !uri.hasHostname() ? uri.setHostname(accountDetails[ConfProperties::HOSTNAME]) : (void)0;
+                    !uri.hasPort() ? uri.setPort(accountDetails[ConfProperties::PUBLISHED_PORT]) : (void)0;
+                }
+                auto profileUri = uri.userinfo();
+                if (!isRingAccount) {
+                    profileUri += "@" + uri.hostname();
+                }
+                // insert into map for use during the conversations table migration
+                // TODO: use uri.full() instead of profileUri ?
+                profileIdUriMap.insert(std::make_pair(profileId, profileUri.toStdString()));
+                auto vcard = profileToVcard(profileInfo);
+                // make sure the directory exists
+                QDir dir(accountLocalPath + "profiles");
+                if (!dir.exists())
+                    dir.mkpath(".");
+                profileFilePath = accountLocalPath + "profiles/" + profileUri + ".vcf";
+                QFile file(profileFilePath);
+                // if we catch duplicates here, skip thh profile because
+                // the previous db structure does not guarantee unique uris
+                if (file.exists()) {
+                    qWarning() << "Profile file already exits : " << profileFilePath;
+                    continue;
+                }
+                if(!file.open(QIODevice::WriteOnly)) {
+                    qWarning() << "Can't open file : " << profileFilePath;
+                    continue;
+                }
+                QTextStream(&file) << QString::fromStdString(vcard);
+            }
+
+            // 3. conversations
+            // migrate old conversations table ==> new conversations table
+            // a) participant_id INTEGER becomes participant TEXT (the uri of the participant)
+            //    use the selected non-account profiles
+            auto conversationIds = legacyDb->select(
+                "id", "conversations",
+                "participant_id=:participant_id",
+                { {":participant_id", accountProfileId} }).payloads;
+            if (conversationIds.empty()) {
+                continue;
+            }
+            for (auto conversationId : conversationIds) {
+                // only one peer pre-groupchat
+                auto peerProfileId = getPeerParticipantsForConversation(*legacyDb, accountProfileId, conversationId);
+                if (peerProfileId.empty()) {
+                    continue;
+                }
+                auto profileUriIter = profileIdUriMap.find(peerProfileId.at(0));
+                // we cannot insert in the conversations table without a uri
+                if (profileUriIter == profileIdUriMap.end()) {
+                    continue;
+                }
+                try {
+                    db.insertInto("conversations",
+                        {   {":id", "id"} ,
+                            {":participant", "participant"} },
+                        {   { ":id", conversationId } ,
+                            { ":participant", profileUriIter->second } });
+                } catch (const std::runtime_error& e) {
+                    qWarning() << e.what();
+                }
+            }
+
+            // 4. interactions
+            auto account_profile_id = legacyDb->select(
+                "id", "accounts_profiles",
+                "account_id=:account_id",
+                { {":account_id", accountId.toStdString()} }).payloads;
+            if (account_profile_id.empty()) {
+                // this should never happen, but will
+                continue;
+            }
+            auto allInteractions = legacyDb->select(
+                "account_id, author_id, conversation_id, \
+                 timestamp, body, type, status, daemon_id",
+                "interactions",
+                "account_id=:account_id",
+                { {":account_id", account_profile_id[0]} });
+            auto interactionIt = allInteractions.payloads.begin();
+            while (interactionIt != allInteractions.payloads.end()) {
+                std::string duration{ "42" }, profileUri{ "cedric" }, isIncoming{ "true" };
+                try {
+                    db.insertInto("interactions", {
+                        {":author", "author"},
+                        {":conversation", "conversation"},
+                        {":timestamp", "timestamp"},
+                        {":duration", "duration"},
+                        {":body", "body"},
+                        {":type", "type"},
+                        {":status", "status"},
+                        {":is_incoming", "is_incoming"},
+                        {":daemon_id", "daemon_id"}
+                    }, {
+                        {":author", profileUri},
+                        {":conversation", *(interactionIt + 2)},
+                        {":timestamp", *(interactionIt + 3)},
+                        {":duration", duration},
+                        {":body", *(interactionIt + 4)},
+                        {":type", *(interactionIt + 5)},
+                        {":status", *(interactionIt + 6)},
+                        {":is_incoming", isIncoming},
+                        {":daemon_id", *(interactionIt + 7)}
+                    });
+                } catch (const std::runtime_error& e) {
+                    qWarning() << e.what();
+                }
+                std::advance(interactionIt, allInteractions.nbrOfCols);
+            }
+        } catch (const std::runtime_error& e) {
+            qWarning().noquote()
+                << "Could not migrate database for account: "
+                << accountId << "\n " << e.what();
+        }
+    }
+
+    return dbs;
 }
 
 } // namespace database
