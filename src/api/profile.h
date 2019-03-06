@@ -35,7 +35,8 @@ enum class Type {
     RING,
     SIP,
     PENDING,
-    TEMPORARY
+    TEMPORARY,
+    COUNT__
 };
 
 static inline const std::string
@@ -71,6 +72,12 @@ to_type(const std::string& type)
         return Type::INVALID;
 }
 
+/**
+ * @var uri
+ * @var avatar
+ * @var alias
+ * @var type
+ */
 struct Info
 {
     std::string uri = "";

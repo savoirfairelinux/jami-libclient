@@ -30,7 +30,6 @@
 #include "api/datatransfermodel.h"
 #include "api/newaccountmodel.h"
 #include "callbackshandler.h"
-#include "database.h"
 #include "dbus/callmanager.h"
 #include "dbus/configurationmanager.h"
 #include "dbus/instancemanager.h"
@@ -50,10 +49,10 @@ public:
     const Lrc& linked;
     std::unique_ptr<BehaviorController> behaviorController;
     std::unique_ptr<CallbacksHandler> callbackHandler;
-    std::unique_ptr<Database> database;
     std::unique_ptr<NewAccountModel> accountModel;
     std::unique_ptr<DataTransferModel> dataTransferModel;
     std::unique_ptr<AVModel> AVModel_;
+
 };
 
 Lrc::Lrc()
@@ -140,8 +139,7 @@ LrcPimpl::LrcPimpl(Lrc& linked)
 : linked(linked)
 , behaviorController(std::make_unique<BehaviorController>())
 , callbackHandler(std::make_unique<CallbacksHandler>(linked))
-, database(std::make_unique<Database>())
-, accountModel(std::make_unique<NewAccountModel>(linked, *database, *callbackHandler, *behaviorController))
+, accountModel(std::make_unique<NewAccountModel>(linked, *callbackHandler, *behaviorController))
 , dataTransferModel {std::make_unique<DataTransferModel>()}
 , AVModel_ {std::make_unique<AVModel>(*callbackHandler)}
 {
