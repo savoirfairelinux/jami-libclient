@@ -486,7 +486,7 @@ CallbacksHandler::slotMigrationEnded(const QString& accountId, const QString& st
 void
 CallbacksHandler::slotDebugMessageReceived(const std::string& message)
 {
-    emit parent.getBehaviorController().debugMessageReceived(message);
+    //emit parent.getBehaviorController().debugMessageReceived(message);
 }
 #else
 void
