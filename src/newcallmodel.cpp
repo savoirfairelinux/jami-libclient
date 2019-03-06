@@ -29,6 +29,7 @@
 #include "api/contact.h"
 #include "api/contactmodel.h"
 #include "api/newaccountmodel.h"
+#include "authority/storagehelper.h"
 #include "dbus/callmanager.h"
 #include "vcard.h"
 #include "video/renderer.h"
@@ -183,7 +184,7 @@ NewCallModel::getCallFromURI(const std::string& uri, bool notOver) const
     // peer url = ring:uri or sip number
     auto url = (owner.profileInfo.type != profile::Type::SIP && uri.find("ring:") == std::string::npos) ? "ring:" + uri : uri;
     for (const auto& call: pimpl_->calls) {
-        if (call.second->peer == url) {
+        if (call.second->peerUri == url) {
             if (!notOver || call.second->status != call::Status::ENDED)
                 return *call.second;
         }
@@ -198,7 +199,7 @@ NewCallModel::getConferenceFromURI(const std::string& uri) const
         if (call.second->type == call::Type::CONFERENCE) {
             QStringList callList = CallManager::instance().getParticipantList(call.first.c_str());
             foreach(const auto& callId, callList) {
-                if (pimpl_->calls[callId.toStdString()]->peer == uri) {
+                if (pimpl_->calls[callId.toStdString()]->peerUri == uri) {
                     return *call.second;
                 }
             }
@@ -214,29 +215,29 @@ NewCallModel::getCall(const std::string& uid) const
 }
 
 std::string
-NewCallModel::createCall(const std::string& url, bool isAudioOnly)
+NewCallModel::createCall(const std::string& uri, bool isAudioOnly)
 {
 #ifdef ENABLE_LIBWRAP
     auto callId = isAudioOnly ? CallManager::instance().placeCall(owner.id.c_str(),
-                                                                  url.c_str(),
+                                                                  uri.c_str(),
                                                                   {{"AUDIO_ONLY", "true"}})
-                                  : CallManager::instance().placeCall(owner.id.c_str(), url.c_str());
+                                  : CallManager::instance().placeCall(owner.id.c_str(), uri.c_str());
 #else // dbus
     // do not use auto here (QDBusPendingReply<QString>)
     QString callId = isAudioOnly ? CallManager::instance().placeCallWithDetails(owner.id.c_str(),
-                                                                                url.c_str(),
+                                                                                uri.c_str(),
                                                                                 {{"AUDIO_ONLY", "true"}})
-                                 : CallManager::instance().placeCall(owner.id.c_str(), url.c_str());
+                                 : CallManager::instance().placeCall(owner.id.c_str(), uri.c_str());
 #endif // ENABLE_LIBWRAP
 
     if (callId.isEmpty()) {
-        qDebug() << "no call placed between (account :" << owner.id.c_str() << ", contact :" << url.c_str() << ")";
+        qDebug() << "no call placed between (account: " << owner.id.c_str() << ", contact: " << uri.c_str() << ")";
         return "";
     }
 
     auto callInfo = std::make_shared<call::Info>();
     callInfo->id = callId.toStdString();
-    callInfo->peer = url;
+    callInfo->peerUri = uri;
     callInfo->isOutgoing = true;
     callInfo->status =  call::Status::SEARCHING;
     callInfo->type =  call::Type::DIALOG;
@@ -393,22 +394,8 @@ NewCallModel::getFormattedCallDuration(const std::string& callId) const
     if (startTime.time_since_epoch().count() == 0) return "00:00";
     auto now = std::chrono::steady_clock::now();
     auto d = std::chrono::duration_cast<std::chrono::seconds>(
-             now.time_since_epoch() - startTime.time_since_epoch()).count();
-
-    std::string formattedString;
-    auto minutes = d / 60;
-    auto seconds = d % 60;
-    if (minutes > 0) {
-        formattedString += std::to_string(minutes) + ":";
-        if (formattedString.length() == 2) {
-            formattedString = "0" + formattedString;
-        }
-    } else {
-        formattedString += "00:";
-    }
-    if (seconds < 10) formattedString += "0";
-    formattedString += std::to_string(seconds);
-    return formattedString;
+        now.time_since_epoch() - startTime.time_since_epoch()).count();
+    return authority::storage::getFormattedCallDuration(d);
 }
 
 bool
@@ -427,7 +414,6 @@ NewCallModel::getSIPCallStatusString(const short& statusCode)
     }
     return "";
 }
-
 
 NewCallModelPimpl::NewCallModelPimpl(const NewCallModel& linked, const CallbacksHandler& callbacksHandler)
 : linked(linked)
@@ -467,9 +453,9 @@ NewCallModelPimpl::initCallFromDaemon()
             callInfo->startTime = now - std::chrono::seconds(diff);
             callInfo->status = call::to_status(details["CALL_STATE"].toStdString());
             auto endId = details["PEER_NUMBER"].indexOf("@");
-            callInfo->peer = details["PEER_NUMBER"].left(endId).toStdString();
+            callInfo->peerUri = details["PEER_NUMBER"].left(endId).toStdString();
             if (linked.owner.profileInfo.type == lrc::api::profile::Type::RING) {
-                callInfo->peer = "ring:" + callInfo->peer;
+                callInfo->peerUri = "ring:" + callInfo->peerUri;
             }
             callInfo->videoMuted = details["VIDEO_MUTED"] == "true";
             callInfo->audioMuted = details["AUDIO_MUTED"] == "true";
@@ -510,7 +496,6 @@ NewCallModelPimpl::initConferencesFromDaemon()
     }
 }
 
-
 void
 NewCallModel::sendSipMessage(const std::string& callId, const std::string& body) const
 {
@@ -536,16 +521,18 @@ NewCallModel::hangupCallsAndConferences()
 void
 NewCallModelPimpl::slotIncomingCall(const std::string& accountId, const std::string& callId, const std::string& fromId)
 {
-    if (linked.owner.id != accountId) return;
+    if (linked.owner.id != accountId) {
+        return;
+    }
 
     // do not use auto here (QDBusPendingReply<MapStringString>)
     MapStringString callDetails = CallManager::instance().getCallDetails(callId.c_str());
 
     auto callInfo = std::make_shared<call::Info>();
     callInfo->id = callId;
-    // peer url = ring:uri or sip number
-    auto url = (linked.owner.profileInfo.type != profile::Type::SIP && fromId.find("ring:") == std::string::npos) ? "ring:" + fromId : fromId;
-    callInfo->peer = url;
+    // peer uri = ring:<jami_id> or sip number
+    auto uri = (linked.owner.profileInfo.type != profile::Type::SIP && fromId.find("ring:") == std::string::npos) ? "ring:" + fromId : fromId;
+    callInfo->peerUri = uri;
     callInfo->isOutgoing = false;
     callInfo->status =  call::Status::INCOMING_RINGING;
     callInfo->type =  call::Type::DIALOG;
