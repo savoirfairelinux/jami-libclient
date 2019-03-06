@@ -20,6 +20,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
 
+#include "api/contactmodel.h"
+
 // Std
 #include <algorithm>
 #include <mutex>
@@ -28,7 +30,6 @@
 #include <account_const.h>
 
 // LRC
-#include "api/contactmodel.h"
 #include "api/account.h"
 #include "api/contact.h"
 #include "api/interaction.h"
@@ -64,13 +65,13 @@ public:
     ~ContactModelPimpl();
 
     /**
-     * Fills with contacts based on database's requests
+     * Fills the contacts based on database's conversations
      * @return if the method succeeds
      */
     bool fillsWithSIPContacts();
 
     /**
-     * Fills with contacts based on daemon's requests
+     * Fills the contacts based on database's conversations
      * @return if the method succeeds
      */
     bool fillsWithRINGContacts();
@@ -263,8 +264,7 @@ ContactModel::addContact(contact::Info contactInfo)
         return;
     }
 
-    database::getOrInsertProfile(pimpl_->db, profile.uri, owner.id, false,
-    to_string(owner.profileInfo.type),profile.alias, profile.avatar);
+    storage::createProfile(owner.id, profile, true);
 
     {
         std::lock_guard<std::mutex> lk(pimpl_->contactsMtx_);
@@ -299,13 +299,13 @@ ContactModel::removeContact(const std::string& contactUri, bool banned)
                 return;
             }
             pimpl_->contacts.erase(contactUri);
-            database::removeContact(pimpl_->db, contactUri, owner.id);
+            storage::removeContact(pimpl_->db, contactUri);
             emitContactRemoved = true;
         }
         else if (owner.profileInfo.type == profile::Type::SIP) {
             // Remove contact from db
             pimpl_->contacts.erase(contactUri);
-            database::removeContact(pimpl_->db, contactUri, owner.id);
+            storage::removeContact(pimpl_->db, contactUri);
             emitContactRemoved = true;
         }
     }
@@ -329,18 +329,6 @@ const std::list<std::string>&
 ContactModel::getBannedContacts() const
 {
     return pimpl_->bannedContacts;
-}
-
-const std::string
-ContactModel::getProfileId(const std::string& uri, bool isAccount) const
-{
-    return database::getProfileId(pimpl_->db, pimpl_->linked.owner.id, isAccount ? "true" : "false", uri);
-}
-
-const std::string
-ContactModel::getContactProfileId(const std::string& contactUri) const
-{
-    return getProfileId(contactUri, false);
 }
 
 void
@@ -437,7 +425,6 @@ ContactModel::sendDhtMessage(const std::string& contactUri, const std::string& b
     return msgId;
 }
 
-
 ContactModelPimpl::ContactModelPimpl(const ContactModel& linked,
                                      Database& db,
                                      const CallbacksHandler& callbacksHandler,
@@ -495,13 +482,12 @@ ContactModelPimpl::~ContactModelPimpl()
 bool
 ContactModelPimpl::fillsWithSIPContacts()
 {
-    auto accountProfileId = database::getProfileId(db, linked.owner.id, "true", linked.owner.profileInfo.uri);
-    auto conversationsForAccount = database::getConversationsForProfile(db, accountProfileId);
-    for (const auto& c : conversationsForAccount) {
-        auto otherParticipants = database::getPeerParticipantsForConversation(db, accountProfileId, c);
+    auto conversationsForAccount = storage::getAllConversations(db);
+    for (const auto& convId : conversationsForAccount) {
+        auto otherParticipants = storage::getPeerParticipantsForConversation(db, convId);
         for (const auto& participant: otherParticipants) {
             // for each conversations get the other profile id
-            auto contactInfo = database::buildContactFromProfileId(db, participant);
+            auto contactInfo = storage::buildContactFromProfile(linked.owner.id, participant);
             {
                 std::lock_guard<std::mutex> lk(contactsMtx_);
                 contacts.emplace(contactInfo.profileInfo.uri, contactInfo);
@@ -531,29 +517,22 @@ ContactModelPimpl::fillsWithRINGContacts() {
 
         auto contactUri = tr_info[DRing::Account::TrustRequest::FROM];
 
+        auto contactInfo = storage::buildContactFromProfile(linked.owner.id, contactUri.toStdString());
+
         const auto vCard = VCardUtils::toHashMap(payload);
         const auto alias = vCard["FN"];
         const auto photo = (vCard.find("PHOTO;ENCODING=BASE64;TYPE=PNG") == vCard.end()) ?
         vCard["PHOTO;ENCODING=BASE64;TYPE=JPEG"] : vCard["PHOTO;ENCODING=BASE64;TYPE=PNG"];
 
-        lrc::api::profile::Info profileInfo;
-        profileInfo.uri = contactUri.toStdString();
-        profileInfo.avatar = photo.toStdString();
-        profileInfo.alias = alias.toStdString();
-        profileInfo.type = profile::Type::PENDING;
-
-        contact::Info contactInfo;
-        contactInfo.profileInfo = profileInfo;
-        contactInfo.registeredName = "";
-        contactInfo.isBanned = false;
+        contactInfo.profileInfo.type = profile::Type::PENDING;
 
         {
             std::lock_guard<std::mutex> lk(contactsMtx_);
             contacts.emplace(contactUri.toStdString(), contactInfo);
         }
 
-        database::getOrInsertProfile(db, contactUri.toStdString(), linked.owner.id, false,
-        profile::to_string(profile::Type::RING), alias.toStdString(), photo.toStdString());
+        // create profile vcard for contact
+        storage::updateProfile(linked.owner.id, contactInfo.profileInfo, true);
     }
 
     // Update presence
@@ -671,7 +650,7 @@ ContactModelPimpl::slotContactRemoved(const std::string& accountId, const std::s
                     bannedContacts.erase(it);
                 }
             }
-            database::removeContact(db, contactUri, accountId);
+            storage::removeContact(db, contactUri);
             contacts.erase(contactUri);
         }
     }
@@ -686,19 +665,20 @@ ContactModelPimpl::slotContactRemoved(const std::string& accountId, const std::s
 }
 
 void
-ContactModelPimpl::addToContacts(const std::string& contactId, const profile::Type& type, bool banned)
+ContactModelPimpl::addToContacts(const std::string& contactUri, const profile::Type& type, bool banned)
 {
-    auto profileId = database::getOrInsertProfile(db, contactId, linked.owner.id,
-    false, to_string(linked.owner.profileInfo.type),"", "");
+    // create a vcard if necessary
+    profile::Info profileInfo{ contactUri, {}, {}, linked.owner.profileInfo.type };
+    storage::createProfile(linked.owner.id, profileInfo, true);
 
-    auto contactInfo = database::buildContactFromProfileId(db, profileId);
+    auto contactInfo = storage::buildContactFromProfile(linked.owner.id, contactUri);
     contactInfo.isBanned = banned;
     contactInfo.profileInfo.type = type; // PENDING should not be stored in the database
 
     // lookup address in case of RING contact
     if (type == profile::Type::RING) {
         ConfigurationManager::instance().lookupAddress(QString::fromStdString(linked.owner.id),
-                                                       "", QString::fromStdString(contactId));
+                                                       "", QString::fromStdString(contactUri));
     }
 
     contactInfo.profileInfo.type = type; // Because PENDING should not be stored in the database
@@ -711,7 +691,7 @@ ContactModelPimpl::addToContacts(const std::string& contactId, const profile::Ty
         contacts.emplace_hint(iter, contactInfo.profileInfo.uri, contactInfo);
 
     if (banned) {
-        bannedContacts.emplace_back(contactId);
+        bannedContacts.emplace_back(contactUri);
     }
 }
 
@@ -784,8 +764,7 @@ ContactModelPimpl::slotIncomingContactRequest(const std::string& accountId,
             auto contactInfo = contact::Info {profileInfo, "", false, false, false};
             contacts.emplace(contactUri, contactInfo);
             emitTrust = true;
-            database::getOrInsertProfile(db, contactUri, accountId, false,
-            profile::to_string(profile::Type::RING), alias.toStdString(), photo.toStdString());
+            storage::updateProfile(accountId, profileInfo, true);
         }
     }
 

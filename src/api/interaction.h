@@ -36,8 +36,8 @@ enum class Type {
     TEXT,
     CALL,
     CONTACT,
-    OUTGOING_DATA_TRANSFER,
-    INCOMING_DATA_TRANSFER
+    DATA_TRANSFER,
+    COUNT
 };
 
 static inline const std::string
@@ -50,10 +50,8 @@ to_string(const Type& type)
         return "CALL";
     case Type::CONTACT:
         return "CONTACT";
-    case Type::OUTGOING_DATA_TRANSFER:
+    case Type::DATA_TRANSFER:
         return "OUTGOING_DATA_TRANSFER";
-    case Type::INCOMING_DATA_TRANSFER:
-        return "INCOMING_DATA_TRANSFER";
     case Type::INVALID:
     default:
         return "INVALID";
@@ -69,24 +67,19 @@ to_type(const std::string& type)
         return interaction::Type::CALL;
     else if (type == "CONTACT")
         return interaction::Type::CONTACT;
-    else if (type == "OUTGOING_DATA_TRANSFER")
-        return interaction::Type::OUTGOING_DATA_TRANSFER;
-    else if (type == "INCOMING_DATA_TRANSFER")
-        return interaction::Type::INCOMING_DATA_TRANSFER;
+    else if (type == "DATA_TRANSFER")
+        return interaction::Type::DATA_TRANSFER;
     else
         return interaction::Type::INVALID;
 }
-
 
 enum class Status {
     INVALID,
     UNKNOWN,
     SENDING,
-    FAILED,
-    SUCCEED,
-    READ,
-    UNREAD,
-    TRANSFER_CREATED, /*[jn] mettre à jour les fonctions de conversion */
+    FAILURE,
+    SUCCESS,
+    TRANSFER_CREATED,
     TRANSFER_ACCEPTED,
     TRANSFER_CANCELED,
     TRANSFER_ERROR,
@@ -106,14 +99,10 @@ to_string(const Status& status)
         return "UNKNOWN";
     case Status::SENDING:
         return "SENDING";
-    case Status::FAILED:
-        return "FAILED";
-    case Status::SUCCEED:
-        return "SUCCEED";
-    case Status::READ:
-        return "READ";
-    case Status::UNREAD:
-        return "UNREAD";
+    case Status::FAILURE:
+        return "FAILURE";
+    case Status::SUCCESS:
+        return "SUCCESS";
     case Status::TRANSFER_CREATED:
         return "TRANSFER_CREATED";
     case Status::TRANSFER_ACCEPTED:
@@ -147,14 +136,10 @@ to_status(const std::string& status)
         return interaction::Status::UNKNOWN;
     else if (status == "SENDING")
         return interaction::Status::SENDING;
-    else if (status == "FAILED")
-        return interaction::Status::FAILED;
-    else if (status == "SUCCEED")
-        return interaction::Status::SUCCEED;
-    else if (status == "READ")
-        return interaction::Status::READ;
-    else if (status == "UNREAD")
-        return interaction::Status::UNREAD;
+    else if (status == "FAILURE")
+        return interaction::Status::FAILURE;
+    else if (status == "SUCCESS")
+        return interaction::Status::SUCCESS;
     else if (status == "TRANSFER_CREATED")
         return interaction::Status::TRANSFER_CREATED;
     else if (status == "TRANSFER_ACCEPTED")
@@ -185,15 +170,13 @@ struct Info
     std::string authorUri;
     std::string body;
     std::time_t timestamp = 0;
+    std::time_t duration = 0;
     Type type = Type::INVALID;
     Status status = Status::INVALID;
 };
 
 static inline bool isOutgoing(const Info& interaction) {
-    return (interaction.status != lrc::api::interaction::Status::READ
-    && interaction.status != lrc::api::interaction::Status::UNREAD
-    && interaction.type != lrc::api::interaction::Type::INCOMING_DATA_TRANSFER)
-    || interaction.type == lrc::api::interaction::Type::OUTGOING_DATA_TRANSFER;
+    return !interaction.authorUri.empty();
 }
 
 } // namespace interaction
