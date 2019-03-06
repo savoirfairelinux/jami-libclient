@@ -36,8 +36,8 @@ enum class Type {
     TEXT,
     CALL,
     CONTACT,
-    OUTGOING_DATA_TRANSFER,
-    INCOMING_DATA_TRANSFER
+    DATA_TRANSFER,
+    COUNT
 };
 
 static inline const std::string
@@ -50,10 +50,8 @@ to_string(const Type& type)
         return "CALL";
     case Type::CONTACT:
         return "CONTACT";
-    case Type::OUTGOING_DATA_TRANSFER:
+    case Type::DATA_TRANSFER:
         return "OUTGOING_DATA_TRANSFER";
-    case Type::INCOMING_DATA_TRANSFER:
-        return "INCOMING_DATA_TRANSFER";
     case Type::INVALID:
     default:
         return "INVALID";
@@ -76,7 +74,6 @@ to_type(const std::string& type)
     else
         return interaction::Type::INVALID;
 }
-
 
 enum class Status {
     INVALID,
@@ -185,6 +182,7 @@ struct Info
     std::string authorUri;
     std::string body;
     std::time_t timestamp = 0;
+    std::time_t duration = 0;
     Type type = Type::INVALID;
     Status status = Status::INVALID;
 };

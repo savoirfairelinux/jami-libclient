@@ -501,7 +501,7 @@ ConversationModel::deleteObsoleteHistory(int days)
     auto currentTime = static_cast<long int>(std::time(nullptr)); // since epoch, in seconds...
     auto date = currentTime - (days * 86400);
 
-    database::deleteObsoleteHistory(pimpl_->db, date);
+    storage::deleteObsoleteHistory(pimpl_->db, date);
 }
 
 void
@@ -694,12 +694,12 @@ ConversationModel::sendMessage(const std::string& uid, const std::string& body)
             // Add interaction to database
             auto msg = interaction::Info{ accountId, body, std::time(nullptr),
                                           interaction::Type::TEXT, status };
-            int msgId = database::addMessageToConversation(pimpl_->db, accountId, convId, msg);
+            int msgId = storage::addMessageToConversation(pimpl_->db, accountId, convId, msg);
 
             // Update conversation
             if (status == interaction::Status::SENDING) {
                 // Because the daemon already give an id for the message, we need to store it.
-                database::addDaemonMsgId(pimpl_->db, std::to_string(msgId), std::to_string(daemonMsgId));
+                storage::addDaemonMsgId(pimpl_->db, std::to_string(msgId), std::to_string(daemonMsgId));
             }
 
             bool ret = false;
@@ -805,13 +805,13 @@ ConversationModel::clearHistory(const std::string& uid)
 
     auto& conversation = pimpl_->conversations.at(conversationIdx);
     // Remove all TEXT interactions from database
-    database::clearHistory(pimpl_->db, uid);
+    storage::clearHistory(pimpl_->db, uid);
     // Update conversation
     {
         std::lock_guard<std::mutex> lk(pimpl_->interactionsLocks[uid]);
         conversation.interactions.clear();
     }
-    database::getHistory(pimpl_->db, conversation); // will contains "Conversation started"
+    storage::getHistory(pimpl_->db, conversation); // will contains "Conversation started"
     pimpl_->sortConversations();
     emit modelSorted();
     emit conversationCleared(uid);
@@ -831,7 +831,7 @@ ConversationModel::clearInteractionFromConversation(const std::string& convId, c
         try
         {
             auto& conversation = pimpl_->conversations.at(conversationIdx);
-            database::clearInteractionFromConversation(pimpl_->db, convId, interactionId);
+            storage::clearInteractionFromConversation(pimpl_->db, convId, interactionId);
             erased_keys = conversation.interactions.erase(interactionId);
 
             if (conversation.lastMessageUid == interactionId) {
@@ -887,7 +887,7 @@ ConversationModel::retryInteraction(const std::string& convId, const uint64_t& i
             } else
                 return;
 
-            database::clearInteractionFromConversation(pimpl_->db, convId, interactionId);
+            storage::clearInteractionFromConversation(pimpl_->db, convId, interactionId);
             conversation.interactions.erase(interactionId);
         } catch (const std::out_of_range& e) {
             qDebug() << "can't find interaction from conversation: " << e.what();
@@ -909,14 +909,14 @@ ConversationModel::retryInteraction(const std::string& convId, const uint64_t& i
 void
 ConversationModel::clearAllHistory()
 {
-    database::clearAllHistoryFor(pimpl_->db, owner.id);
+    storage::clearAllHistoryFor(pimpl_->db, owner.id);
 
     for (auto& conversation : pimpl_->conversations) {
         {
             std::lock_guard<std::mutex> lk(pimpl_->interactionsLocks[conversation.uid]);
             conversation.interactions.clear();
         }
-        database::getHistory(pimpl_->db, conversation);
+        storage::getHistory(pimpl_->db, conversation);
     }
 }
 
@@ -944,7 +944,7 @@ ConversationModel::setInteractionRead(const std::string& convId,
     }
     if (emitUpdated) {
         pimpl_->dirtyConversations = {true, true};
-        database::updateInteractionStatus(pimpl_->db, interactionId, newStatus);
+        storage::updateInteractionStatus(pimpl_->db, interactionId, newStatus);
         emit interactionStatusUpdated(convId, interactionId, itCopy);
         emit pimpl_->behaviorController.newReadInteraction(owner.id, convId, interactionId);
     }
@@ -966,7 +966,7 @@ ConversationModel::clearUnreadInteractions(const std::string& convId) {
                               it.second.status == lrc::api::interaction::Status::UNREAD) {
                               emitUpdated = true;
                               it.second.status = interaction::Status::READ;
-                              database::updateInteractionStatus(pimpl_->db, it.first, interaction::Status::READ);
+                              storage::updateInteractionStatus(pimpl_->db, it.first, interaction::Status::READ);
                           }
                       });
     }
@@ -987,7 +987,7 @@ ConversationModelPimpl::ConversationModelPimpl(const ConversationModel& linked,
 , callbacksHandler(callbacksHandler)
 , typeFilter(profile::Type::INVALID)
 , customTypeFilter(profile::Type::INVALID)
-, accountProfileId(database::getProfileId(db, linked.owner.id, "true", linked.owner.profileInfo.uri))
+, accountProfileId(storage::getProfileId(db, linked.owner.id, "true", linked.owner.profileInfo.uri))
 , behaviorController(behaviorController)
 {
     initConversations();
@@ -1009,7 +1009,6 @@ ConversationModelPimpl::ConversationModelPimpl(const ConversationModel& linked,
             this, &ConversationModelPimpl::slotIncomingCallMessage);
     connect(&callbacksHandler, &CallbacksHandler::accountMessageStatusChanged,
             this, &ConversationModelPimpl::slotUpdateInteractionStatus);
-
 
     // Call related
     connect(&*linked.owner.callModel, &NewCallModel::newIncomingCall,
@@ -1095,7 +1094,6 @@ ConversationModelPimpl::~ConversationModelPimpl()
     disconnect(&callbacksHandler, &CallbacksHandler::accountMessageStatusChanged,
                this, &ConversationModelPimpl::slotUpdateInteractionStatus);
 
-
     // Call related
     disconnect(&*linked.owner.callModel, &NewCallModel::newIncomingCall,
                this, &ConversationModelPimpl::slotIncomingCall);
@@ -1148,17 +1146,17 @@ ConversationModelPimpl::initConversations()
     }
     for (auto const& c : linked.owner.contactModel->getAllContacts())
     {
-        auto contactProfileId = database::getProfileId(db, linked.owner.id, "false",
+        auto contactProfileId = storage::getProfileId(db, linked.owner.id, "false",
         c.second.profileInfo.uri);
         if (contactProfileId.empty()) {
             // Should not, ContactModel must create profiles before.
             qDebug() << "ConversationModelPimpl::initConversations(), contact not in db";
             continue;
         }
-        auto common = database::getConversationsBetween(db, accountProfileId, contactProfileId);
+        auto common = storage::getConversationsBetween(db, accountProfileId, contactProfileId);
         if (common.empty()) {
             // Can't find a conversation with this contact. Start it.
-            auto newConversationsId = database::beginConversationsBetween(db, accountProfileId, contactProfileId);
+            auto newConversationsId = storage::beginConversationsBetween(db, accountProfileId, contactProfileId);
             common.emplace_back(std::move(newConversationsId));
         }
 
@@ -1176,7 +1174,7 @@ ConversationModelPimpl::initConversations()
                 || interaction.second.status == interaction::Status::TRANSFER_ACCEPTED) {
                 // If a datatransfer was left in a non-terminal status in DB, we switch this status to ERROR
                 // TODO : Improve for DBus clients as daemon and transfer may still be ongoing
-                database::updateInteractionStatus(db, interaction.first, interaction::Status::TRANSFER_ERROR);
+                storage::updateInteractionStatus(db, interaction.first, interaction::Status::TRANSFER_ERROR);
                 interaction.second.status = interaction::Status::TRANSFER_ERROR;
             }
         }
@@ -1189,7 +1187,7 @@ ConversationModelPimpl::initConversations()
     // Load all non treated messages for this account
     QVector<Message> messages = ConfigurationManager::instance().getLastMessages(
         linked.owner.id.c_str(),
-        database::getLastTimestamp(db));
+        storage::getLastTimestamp(db));
     for (const auto& message : messages) {
         uint64_t timestamp = 0;
         try {
@@ -1265,13 +1263,13 @@ ConversationModelPimpl::slotContactAdded(const std::string& uri)
                 QObject::tr("Invitation received").toStdString() :
                 QObject::tr("Contact added").toStdString();
     } catch (...) {}
-    auto contactProfileId = database::getOrInsertProfile(db, uri,
+    auto contactProfileId = storage::getOrInsertProfile(db, uri,
     linked.owner.id, false, to_string(type));
-    auto conv = database::getConversationsBetween(db, accountProfileId, contactProfileId);
+    auto conv = storage::getConversationsBetween(db, accountProfileId, contactProfileId);
     if (conv.empty()) {
         // pass conversation UID through only element
         conv.emplace_back(
-            database::beginConversationsBetween(db, accountProfileId,
+            storage::beginConversationsBetween(db, accountProfileId,
                 contactProfileId, interaction
             )
         );
@@ -1299,12 +1297,12 @@ ConversationModelPimpl::slotPendingContactAccepted(const std::string& uri)
     try {
         type = linked.owner.contactModel->getContact(uri).profileInfo.type;
     } catch (std::out_of_range& e) {}
-    auto contactProfileId = database::getOrInsertProfile(db, uri, linked.owner.id,
+    auto contactProfileId = storage::getOrInsertProfile(db, uri, linked.owner.id,
     false, to_string(type));
-    auto conv = database::getConversationsBetween(db, accountProfileId, contactProfileId);
+    auto conv = storage::getConversationsBetween(db, accountProfileId, contactProfileId);
     if (conv.empty()) {
         conv.emplace_back(
-            database::beginConversationsBetween(db, accountProfileId,
+            storage::beginConversationsBetween(db, accountProfileId,
                 contactProfileId, QObject::tr("Invitation accepted").toStdString()
             )
         );
@@ -1315,7 +1313,7 @@ ConversationModelPimpl::slotPendingContactAccepted(const std::string& uri)
                                           QObject::tr("Invitation accepted").toStdString(),
                                           std::time(nullptr), interaction::Type::CONTACT,
                                           interaction::Status::SUCCEED};
-            auto msgId = database::addMessageToConversation(db, accountProfileId, conv[0], msg);
+            auto msgId = storage::addMessageToConversation(db, accountProfileId, conv[0], msg);
             auto convIdx = indexOf(conv[0]);
             {
                 std::lock_guard<std::mutex> lk(interactionsLocks[conversations[convIdx].uid]);
@@ -1328,7 +1326,6 @@ ConversationModelPimpl::slotPendingContactAccepted(const std::string& uri)
         }
     }
 }
-
 
 void
 ConversationModelPimpl::slotContactRemoved(const std::string& uri)
@@ -1436,14 +1433,14 @@ ConversationModelPimpl::addConversationWith(const std::string& convId,
     } catch (...) {
         conversation.callId = "";
     }
-    database::getHistory(db, conversation);
+    storage::getHistory(db, conversation);
     std::vector<std::function<void(void)>> slotLambdas;
     {
         std::lock_guard<std::mutex> lk(interactionsLocks[convId]);
         for (auto& interaction: conversation.interactions) {
             if (interaction.second.status == interaction::Status::SENDING) {
                 // Get the message status from daemon, else unknown
-                auto id = database::getDaemonIdByInteractionId(db, std::to_string(interaction.first));
+                auto id = storage::getDaemonIdByInteractionId(db, std::to_string(interaction.first));
                 int status = 0;
                 if (!id.empty()) {
                     auto msgId = std::stoull(id);
@@ -1570,7 +1567,7 @@ ConversationModelPimpl::addOrUpdateCallMessage(const std::string& callId, const 
             auto uid = conversation.uid;
             auto msg = interaction::Info {accountProfileId, body, std::time(nullptr),
                                          interaction::Type::CALL, interaction::Status::SUCCEED};
-            int msgId = database::addOrUpdateMessage(db, accountProfileId, conversation.uid, msg, callId);
+            int msgId = storage::addOrUpdateMessage(db, accountProfileId, conversation.uid, msg, callId);
             auto newInteraction = conversation.interactions.find(msgId) == conversation.interactions.end();
             if (newInteraction) {
                 conversation.lastMessageUid = msgId;
@@ -1622,7 +1619,7 @@ ConversationModelPimpl::slotIncomingCallMessage(const std::string& callId, const
                  try {
                      type = linked.owner.contactModel->getContact(from).profileInfo.type;
                  } catch (std::out_of_range& e) {}
-                auto authorProfileId = database::getOrInsertProfile(db, from, linked.owner.id,
+                auto authorProfileId = storage::getOrInsertProfile(db, from, linked.owner.id,
                 false, to_string(type));
                 addIncomingMessage(conversation.participants.front(), body, authorProfileId);
             }
@@ -1643,13 +1640,13 @@ ConversationModelPimpl::addIncomingMessage(const std::string& from,
     try {
         type = linked.owner.contactModel->getContact(from).profileInfo.type;
     } catch (std::out_of_range& e) {}
-    auto contactProfileId = database::getOrInsertProfile(db, from, linked.owner.id,
+    auto contactProfileId = storage::getOrInsertProfile(db, from, linked.owner.id,
     false, to_string(type));
-    auto accountProfileId = database::getProfileId(db, linked.owner.id, "true",
+    auto accountProfileId = storage::getProfileId(db, linked.owner.id, "true",
     linked.owner.profileInfo.uri);
-    auto conv = database::getConversationsBetween(db, accountProfileId, contactProfileId);
+    auto conv = storage::getConversationsBetween(db, accountProfileId, contactProfileId);
     if (conv.empty()) {
-        conv.emplace_back(database::beginConversationsBetween(
+        conv.emplace_back(storage::beginConversationsBetween(
             db, accountProfileId, contactProfileId,
             QObject::tr("Invitation received").toStdString()
         ));
@@ -1658,7 +1655,7 @@ ConversationModelPimpl::addIncomingMessage(const std::string& from,
     auto msg = interaction::Info {authorId, body,
                                   timestamp == 0 ? std::time(nullptr) : static_cast<time_t>(timestamp),
                                   interaction::Type::TEXT, interaction::Status::UNREAD};
-    auto msgId = database::addMessageToConversation(db, accountProfileId, conv[0], msg);
+    auto msgId = storage::addMessageToConversation(db, accountProfileId, conv[0], msg);
     auto conversationIdx = indexOf(conv[0]);
     // Add the conversation if not already here
     if (conversationIdx == -1) {
@@ -1718,15 +1715,15 @@ ConversationModelPimpl::slotUpdateInteractionStatus(const std::string& accountId
         break;
     }
     // Update database
-    auto interactionId = database::getInteractionIdByDaemonId(db, std::to_string(id));
+    auto interactionId = storage::getInteractionIdByDaemonId(db, std::to_string(id));
     if (interactionId.empty()) return;
     auto msgId = std::stoull(interactionId);
-    database::updateInteractionStatus(db, msgId, newStatus);
+    storage::updateInteractionStatus(db, msgId, newStatus);
     // Update conversations
-    auto contactProfileId = database::getProfileId(db, linked.owner.id, "false", to);
-    auto accountProfileId = database::getProfileId(db, linked.owner.id, "true",
+    auto contactProfileId = storage::getProfileId(db, linked.owner.id, "false", to);
+    auto accountProfileId = storage::getProfileId(db, linked.owner.id, "true",
     linked.owner.profileInfo.uri);
-    auto conv = database::getConversationsBetween(db, accountProfileId, contactProfileId);
+    auto conv = storage::getConversationsBetween(db, accountProfileId, contactProfileId);
     if (!conv.empty()) {
         auto conversationIdx = indexOf(conv[0]);
         interaction::Info itCopy;
@@ -1759,9 +1756,8 @@ ConversationModelPimpl::slotConferenceRemoved(const std::string& confId)
 int
 ConversationModelPimpl::getNumberOfUnreadMessagesFor(const std::string& uid)
 {
-    return database::countUnreadFromInteractions(db, uid);
+    return storage::countUnreadFromInteractions(db, uid);
 }
-
 
 void
 ConversationModel::sendFile(const std::string& convUid,
@@ -1843,7 +1839,7 @@ ConversationModel::cancelTransfer(const std::string& convUid, uint64_t interacti
             it->second.status = interaction::Status::TRANSFER_CANCELED;
 
             // update information in the db
-            database::updateInteractionStatus(pimpl_->db, interactionId, interaction::Status::TRANSFER_CANCELED);
+            storage::updateInteractionStatus(pimpl_->db, interactionId, interaction::Status::TRANSFER_CANCELED);
             emitUpdated = true;
             itCopy = it->second;
         }
@@ -1884,7 +1880,7 @@ ConversationModelPimpl::usefulDataFromDataTransfer(long long dringId, const data
         return false;
     }
 
-    convId = database::conversationIdFromInteractionId(db, interactionId);
+    convId = storage::conversationIdFromInteractionId(db, interactionId);
     return true;
 }
 
@@ -1901,22 +1897,22 @@ ConversationModelPimpl::slotTransferStatusCreated(long long dringId, datatransfe
     try {
         type = linked.owner.contactModel->getContact(info.peerUri).profileInfo.type;
     } catch (std::out_of_range& e) {}
-    auto contactProfileId = database::getOrInsertProfile(db, info.peerUri, info.accountId,
+    auto contactProfileId = storage::getOrInsertProfile(db, info.peerUri, info.accountId,
     false, to_string(type));
-    auto accountProfileId = database::getProfileId(db, info.accountId, "true",
+    auto accountProfileId = storage::getProfileId(db, info.accountId, "true",
     linked.owner.profileInfo.uri);
 
     // create a new conversation if needed
-    auto conversation_list = database::getConversationsBetween(db, accountProfileId, contactProfileId);
+    auto conversation_list = storage::getConversationsBetween(db, accountProfileId, contactProfileId);
     if (conversation_list.empty()) {
-        conversation_list.emplace_back(database::beginConversationsBetween(
+        conversation_list.emplace_back(storage::beginConversationsBetween(
                                            db, accountProfileId, contactProfileId,
                                            QObject::tr("Invitation received").toStdString()));
     }
 
     // add interaction to the db
     const auto& convId = conversation_list[0];
-    auto interactionId = database::addDataTransferToConversation(db, accountProfileId, convId, info);
+    auto interactionId = storage::addDataTransferToConversation(db, accountProfileId, convId, info);
 
     // map dringId and interactionId for latter retrivial from client (that only known the interactionId)
     lrc.getDataTransferModel().registerTransferId(dringId, interactionId);
@@ -1964,7 +1960,7 @@ ConversationModelPimpl::slotTransferStatusAwaitingHost(long long dringId, datatr
         return;
 
     auto newStatus = interaction::Status::TRANSFER_AWAITING_HOST;
-    database::updateInteractionStatus(db, interactionId, newStatus);
+    storage::updateInteractionStatus(db, interactionId, newStatus);
 
     auto conversationIdx = indexOf(convId);
     if (conversationIdx != -1) {
@@ -2008,8 +2004,8 @@ void
 ConversationModelPimpl::acceptTransfer(const std::string& convUid, uint64_t interactionId, const std::string& path)
 {
     lrc.getDataTransferModel().accept(interactionId, path, 0);
-    database::updateInteractionBody(db, interactionId, path);
-    database::updateInteractionStatus(db, interactionId, interaction::Status::TRANSFER_ACCEPTED);
+    storage::updateInteractionBody(db, interactionId, path);
+    storage::updateInteractionStatus(db, interactionId, interaction::Status::TRANSFER_ACCEPTED);
 
     // prepare interaction Info and emit signal for the client
     auto conversationIdx = indexOf(convUid);
@@ -2043,7 +2039,7 @@ ConversationModelPimpl::slotTransferStatusOngoing(long long dringId, datatransfe
         return;
 
     auto newStatus = interaction::Status::TRANSFER_ONGOING;
-    database::updateInteractionStatus(db, interactionId, newStatus);
+    storage::updateInteractionStatus(db, interactionId, newStatus);
 
     auto conversationIdx = indexOf(convId);
     if (conversationIdx != -1) {
@@ -2099,7 +2095,7 @@ ConversationModelPimpl::slotTransferStatusFinished(long long dringId, datatransf
         }
         if (emitUpdated) {
             dirtyConversations = {true, true};
-            database::updateInteractionStatus(db, interactionId, newStatus);
+            storage::updateInteractionStatus(db, interactionId, newStatus);
             emit linked.interactionStatusUpdated(convId, interactionId, itCopy);
         }
     }
@@ -2138,7 +2134,7 @@ ConversationModelPimpl::updateTransferStatus(long long dringId, datatransfer::In
         return;
 
     // update information in the db
-    database::updateInteractionStatus(db, interactionId, newStatus);
+    storage::updateInteractionStatus(db, interactionId, newStatus);
 
     // prepare interaction Info and emit signal for the client
     auto conversationIdx = indexOf(convId);
