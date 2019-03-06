@@ -18,10 +18,12 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
 #include "databasehelper.h"
+
 #include "api/profile.h"
 #include "api/datatransfer.h"
-#include <account_const.h>
+#include "uri.h"
 
+#include <account_const.h>
 #include <datatransfer_interface.h>
 
 namespace lrc
@@ -565,6 +567,181 @@ getLastTimestamp(Database& db)
         qDebug() << "database::getLastTimestamp, stoull throws an invalid_argument exception: " << e.what();
     }
     return result;
+}
+
+std::vector<std::shared_ptr<Database>>
+migrateLegacyDatabaseIfNeeded(const QStringList& accountIds)
+{
+    std::vector<std::shared_ptr<Database>> dbs(accountIds.size());
+
+    if (!dbs.size()) {
+        qDebug() << "No accounts to migrate";
+        return dbs;
+    }
+
+    try {
+        // create function should throw if there's no migration material
+        auto legacyDb = lrc::DatabaseFactory::create<LegacyDatabase>();
+        int index = 0;
+        for (auto accountId : accountIds) {
+            try {
+                dbs.at(index) = lrc::DatabaseFactory::create<Database>(accountId.toStdString());
+                auto& db = *dbs.at(index++);
+
+                using namespace DRing::Account;
+                MapStringString accountDetails = ConfigurationManager::instance().
+                    getAccountDetails(accountId.toStdString().c_str());
+                bool isRingAccount = accountDetails[ConfProperties::TYPE] == "RING";
+                std::map<std::string, std::string> profileIdUriMap;
+
+                // 1. profiles_accounts
+                // migrate account's avatar/alias from profiles table to account_profile table
+                auto accountURI = accountDetails[DRing::Account::ConfProperties::USERNAME].contains("ring:") ?
+                    accountDetails[DRing::Account::ConfProperties::USERNAME].toStdString().substr(std::string("ring:").size()) :
+                    accountDetails[DRing::Account::ConfProperties::USERNAME].toStdString();
+                auto accountProfile = legacyDb->select(
+                    "photo, alias",
+                    "profiles", "uri=:uri",
+                    { {":uri", accountURI} }).payloads;
+                if (!accountProfile.empty()) {
+                    db.insertInto("account_profile",
+                            { {":photo", "photo"},
+                              {":alias", "alias"} },
+                            {{ ":photo", accountProfile[0] },
+                              { ":alias", accountProfile[1] }});
+                }
+
+                // 2. profiles
+                // migrate profiles from profiles table to new profiles table
+                // a) remove id, status columns
+                // b) the canonical uri will be used in the uri column
+                // e.g. ring:3d1112ab2bb089370c0744a44bbbb0786418d40b or sip:nnnnn@host:5060
+
+                // only select non-account profiles
+                auto profileIds = legacyDb->select(
+                    "profile_id", "profiles_accounts",
+                    "account_id=:account_id AND \
+                     is_account=:is_account",
+                    {{":account_id", accountId.toStdString()},
+                    {":is_account", "false"}}).payloads;
+                for (auto profileId : profileIds) {
+                    auto profile = legacyDb->select(
+                        "uri, alias, photo, type", "profiles",
+                        "id=:id",
+                        { {":id", profileId} }).payloads;
+                    if (!profile.empty()) {
+                        auto uri = URI(QString::fromStdString(profile[0]));
+                        auto uriScheme = uri.schemeType();
+                        if (uri.schemeType() == URI::SchemeType::NONE) {
+                            // uri has no scheme, default to current account scheme
+                            uri.setSchemeType(isRingAccount ? URI::SchemeType::RING : URI::SchemeType::SIP);
+                        }
+                        if (!isRingAccount) { // is a SIP account
+                            !uri.hasHostname() ? uri.setHostname(accountDetails[ConfProperties::HOSTNAME]) : (void)0;
+                            !uri.hasPort() ? uri.setPort(accountDetails[ConfProperties::PUBLISHED_PORT]) : (void)0;
+                        }
+                        auto fullCanonicalUri = uri.full().toStdString();
+                        // insert into map for use during the conversations table migration
+                        profileIdUriMap.insert(std::make_pair(profileId, fullCanonicalUri));
+                        // catch insertion exceptions here and continue, as the previous
+                        // db structure does not guarantee unique uris
+                        try {
+                            db.insertInto("profiles",
+                                {   {":uri", "uri"},
+                                    {":alias", "alias"},
+                                    {":photo", "photo"},
+                                    {":type", "type"} },
+                                {   { ":uri", fullCanonicalUri },
+                                    { ":alias", profile[1] },
+                                    { ":photo", profile[2] },
+                                    { ":type", profile[3] } });
+                        } catch (const std::runtime_error& e) {
+                            qWarning() << e.what();
+                        }
+                    }
+                }
+
+                // 3. conversations
+                // migrate conversations from conversations table to new conversations table
+                // a) participant_id INTEGER becomes participant TEXT (the uri of the participant)
+                // use the selected non-account profiles
+                for (auto profileId : profileIds) {
+                    auto profileUriIter = profileIdUriMap.find(profileId);
+                    // we cannot insert in the conversations table without a uri
+                    if (profileUriIter == profileIdUriMap.end()) {
+                        continue;
+                    }
+                    auto conversationIds = legacyDb->select(
+                        "id", "conversations",
+                        "participant_id=:participant_id",
+                        { {":participant_id", profileId} }).payloads;
+                    if (!conversationIds.empty()) {
+                        for (auto conversationId : conversationIds) {
+                            try {
+                                db.insertInto("conversations",
+                                    {   {":id", "id"} ,
+                                        {":participant", "participant"} },
+                                    {   { ":id", conversationId } ,
+                                        { ":participant", profileUriIter->second } });
+                            } catch (const std::runtime_error& e) {
+                                qWarning() << e.what();
+                            }
+                        }
+                    }
+                }
+
+                // 4. interactions
+                auto account_profile_id = legacyDb->select(
+                    "id", "accounts_profiles",
+                    "account_id=:account_id",
+                    { {":account_id", accountId.toStdString()} }).payloads;
+                if (account_profile_id.empty()) {
+                    // this should never happen, but will
+                    continue;
+                }
+                auto allInteractions = legacyDb->select(
+                    "account_id, author_id, conversation_id, \
+                     timestamp, body, type, status, daemon_id",
+                    "interactions",
+                    "account_id=:account_id",
+                    { {":account_id", account_profile_id[0]} });
+                auto interactionIt = allInteractions.payloads.begin();
+                while (interactionIt != allInteractions.payloads.end()) {
+                    std::string duration{ "42" }, profileUri{ "cedric" };
+                    try {
+                        db.insertInto("interactions", {
+                            {":author", "author"},
+                            {":conversation", "conversation"},
+                            {":timestamp", "timestamp"},
+                            {":duration", "duration"},
+                            {":body", "body"},
+                            {":type", "type"},
+                            {":status", "status"},
+                            {":daemon_id", "daemon_id"}
+                        }, {
+                            {":author", profileUri},
+                            {":conversation", *(interactionIt + 2)},
+                            {":timestamp", *(interactionIt + 3)},
+                            {":duration", duration},
+                            {":body", *(interactionIt + 4)},
+                            {":type", *(interactionIt + 5)},
+                            {":status", *(interactionIt + 6)},
+                            {":daemon_id", *(interactionIt + 7)}
+                        });
+                    } catch (const std::runtime_error& e) {
+                        qWarning() << e.what();
+                    }
+                    std::advance(interactionIt, allInteractions.nbrOfCols);
+                }
+            } catch (const std::runtime_error& e) {
+                qWarning() << e.what();
+            }
+        }
+    } catch (const std::runtime_error& e) {
+        qWarning() << e.what();
+    }
+
+    return dbs;
 }
 
 } // namespace database
