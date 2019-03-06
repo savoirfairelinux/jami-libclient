@@ -187,12 +187,6 @@ CallbacksHandler::CallbacksHandler(const Lrc& parent)
             &CallbacksHandler::slotMigrationEnded,
             Qt::QueuedConnection);
 
-    connect(&ConfigurationManager::instance(),
-            &ConfigurationManagerInterface::debugMessageReceived,
-            this,
-            &CallbacksHandler::slotDebugMessageReceived,
-            Qt::QueuedConnection);
-
     connect(&VideoManager::instance(),
             &VideoManagerInterface::startedDecoding,
             this,
@@ -220,7 +214,16 @@ CallbacksHandler::CallbacksHandler(const Lrc& parent)
 
 CallbacksHandler::~CallbacksHandler()
 {
+}
 
+void
+CallbacksHandler::subscribeToDebugReceived()
+{
+    connect(&ConfigurationManager::instance(),
+            &ConfigurationManagerInterface::debugMessageReceived,
+            this,
+            &CallbacksHandler::slotDebugMessageReceived,
+            Qt::QueuedConnection);
 }
 
 void

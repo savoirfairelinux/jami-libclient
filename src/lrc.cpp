@@ -1,5 +1,5 @@
 /****************************************************************************
- *    Copyright (C) 2017-2019 Savoir-faire Linux Inc.                             *
+ *    Copyright (C) 2017-2019 Savoir-faire Linux Inc.                       *
  *   Author : Nicolas Jäger <nicolas.jager@savoirfairelinux.com>            *
  *   Author : Sébastien Blin <sebastien.blin@savoirfairelinux.com>          *
  *                                                                          *
@@ -30,11 +30,11 @@
 #include "api/datatransfermodel.h"
 #include "api/newaccountmodel.h"
 #include "callbackshandler.h"
-#include "database.h"
 #include "dbus/callmanager.h"
 #include "dbus/configurationmanager.h"
 #include "dbus/instancemanager.h"
 #include "dbus/configurationmanager.h"
+#include "authority/storagehelper.h"
 
 namespace lrc
 {
@@ -45,23 +45,23 @@ class LrcPimpl
 {
 
 public:
-    LrcPimpl(Lrc& linked);
+    LrcPimpl(Lrc& linked, migrationCallback& willMigrateCb, migrationCallback& didMigrateCb);
 
     const Lrc& linked;
     std::unique_ptr<BehaviorController> behaviorController;
     std::unique_ptr<CallbacksHandler> callbackHandler;
-    std::unique_ptr<Database> database;
     std::unique_ptr<NewAccountModel> accountModel;
     std::unique_ptr<DataTransferModel> dataTransferModel;
     std::unique_ptr<AVModel> AVModel_;
+
 };
 
-Lrc::Lrc()
+Lrc::Lrc(migrationCallback willDoMigrationCb, migrationCallback didDoMigrationCb)
 {
     // Ensure Daemon is running/loaded (especially on non-DBus platforms)
     // before instantiating LRC and its members
     InstanceManager::instance();
-    lrcPimpl_ = std::make_unique<LrcPimpl>(*this);
+    lrcPimpl_ = std::make_unique<LrcPimpl>(*this, willDoMigrationCb, didDoMigrationCb);
 }
 
 Lrc::~Lrc()
@@ -124,6 +124,12 @@ Lrc::dbusIsValid()
 #endif
 }
 
+void
+Lrc::subscribeToDebugReceived()
+{
+    lrcPimpl_->callbackHandler->subscribeToDebugReceived();
+}
+
 std::vector<std::string>
 Lrc::activeCalls()
 {
@@ -136,12 +142,11 @@ Lrc::activeCalls()
     return result;
 }
 
-LrcPimpl::LrcPimpl(Lrc& linked)
+LrcPimpl::LrcPimpl(Lrc& linked, migrationCallback& willMigrateCb, migrationCallback& didMigrateCb)
 : linked(linked)
 , behaviorController(std::make_unique<BehaviorController>())
 , callbackHandler(std::make_unique<CallbacksHandler>(linked))
-, database(std::make_unique<Database>())
-, accountModel(std::make_unique<NewAccountModel>(linked, *database, *callbackHandler, *behaviorController))
+, accountModel(std::make_unique<NewAccountModel>(linked, *callbackHandler, *behaviorController, willMigrateCb, didMigrateCb))
 , dataTransferModel {std::make_unique<DataTransferModel>()}
 , AVModel_ {std::make_unique<AVModel>(*callbackHandler)}
 {
