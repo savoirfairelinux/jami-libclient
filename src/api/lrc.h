@@ -41,7 +41,15 @@ class AVModel;
 
 class LIB_EXPORT Lrc {
 public:
-    Lrc();
+    /**
+     * Construct an Lrc object and optionally invoke callbacks
+     * to control ui informing the user of a possibly lengthy
+     * migration process.
+     * @param willMigrateCb
+     * @param didMigrateCb
+     */
+    Lrc(MigrationCb willMigrateCb = {},
+        MigrationCb didMigrateCb = {});
     ~Lrc();
     /**
      * get a reference on account model.
@@ -77,6 +85,10 @@ public:
      * Can communicate with the daemon via dbus
      */
     static bool dbusIsValid();
+    /**
+     * Connect to debugMessageReceived signal
+     */
+    void subscribeToDebugReceived();
 
     /**
      * Helper: get call list from daemon
