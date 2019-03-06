@@ -1,8 +1,9 @@
 /****************************************************************************
- *    Copyright (C) 2017-2019 Savoir-faire Linux Inc.                             *
+ *    Copyright (C) 2017-2019 Savoir-faire Linux Inc.                       *
  *   Author: Nicolas Jäger <nicolas.jager@savoirfairelinux.com>             *
  *   Author: Sébastien Blin <sebastien.blin@savoirfairelinux.com>           *
  *   Author: Kateryna Kostiuk <kateryna.kostiuk@savoirfairelinux.com>       *
+ *   Author: Andreas Traczyk <andreas.traczyk@savoirfairelinux.com>         *
  *                                                                          *
  *   This library is free software; you can redistribute it and/or          *
  *   modify it under the terms of the GNU Lesser General Public             *
@@ -61,17 +62,20 @@ class NewAccountModelPimpl: public QObject
 public:
     NewAccountModelPimpl(NewAccountModel& linked,
                          Lrc& lrc,
-                         Database& database,
                          const CallbacksHandler& callbackHandler,
-                         const BehaviorController& behaviorController);
+                         const BehaviorController& behaviorController,
+                         migrationCallback& willMigrateCb,
+                         migrationCallback& didMigrateCb);
     ~NewAccountModelPimpl();
+
+    using AccountInfoDbMap = std::map<std::string,
+                                      std::pair<account::Info, std::shared_ptr<Database>>>;
 
     NewAccountModel& linked;
     Lrc& lrc;
     const CallbacksHandler& callbacksHandler;
-    Database& database;
-    NewAccountModel::AccountInfoMap accounts;
     const BehaviorController& behaviorController;
+    AccountInfoDbMap accounts;
 
     // Synchronization tools
     std::mutex m_mutex_account;
@@ -83,9 +87,10 @@ public:
     /**
      * Add the profile information from an account to the db then add it to accounts.
      * @param accountId
+     * @param db an optional migrated database object
      * @note this method get details for an account from the daemon.
      */
-    void addToAccounts(const std::string& accountId);
+    void addToAccounts(const std::string& accountId, std::shared_ptr<Database> db = nullptr);
 
     /**
      * Remove account from accounts list. Emit accountRemoved.
@@ -147,11 +152,13 @@ public Q_SLOTS:
 };
 
 NewAccountModel::NewAccountModel(Lrc& lrc,
-                                 Database& database,
                                  const CallbacksHandler& callbacksHandler,
-                                 const BehaviorController& behaviorController)
+                                 const BehaviorController& behaviorController,
+                                 migrationCallback& willMigrateCb,
+                                 migrationCallback& didMigrateCb)
 : QObject()
-, pimpl_(std::make_unique<NewAccountModelPimpl>(*this, lrc, database, callbacksHandler, behaviorController))
+, pimpl_(std::make_unique<NewAccountModelPimpl>(*this, lrc, callbacksHandler, behaviorController,
+                                                willMigrateCb, didMigrateCb))
 {
 }
 
@@ -166,9 +173,9 @@ NewAccountModel::getAccountList() const
     const QStringList accountIds = ConfigurationManager::instance().getAccountList();
 
     for (auto const& id : accountIds) {
-        auto accountInfo = pimpl_->accounts.find(id.toStdString());
+        auto account = pimpl_->accounts.find(id.toStdString());
         // Do not include accounts flagged for removal
-        if (accountInfo != pimpl_->accounts.end() && accountInfo->second.valid)
+        if (account != pimpl_->accounts.end() && account->second.first.valid)
             accountsId.emplace_back(id.toStdString());
     }
 
@@ -178,11 +185,12 @@ NewAccountModel::getAccountList() const
 void
 NewAccountModel::setAccountEnabled(const std::string& accountId, bool enabled) const
 {
-    auto accountInfo = pimpl_->accounts.find(accountId);
-    if (accountInfo == pimpl_->accounts.end()) {
+    auto account = pimpl_->accounts.find(accountId);
+    if (account == pimpl_->accounts.end()) {
         throw std::out_of_range("NewAccountModel::getAccountConfig, can't find " + accountId);
     }
-    accountInfo->second.enabled = enabled;
+    auto& accountInfo = account->second.first;
+    accountInfo.enabled = enabled;
     ConfigurationManager::instance().sendRegister(QString::fromStdString(accountId), enabled);
 }
 
@@ -190,11 +198,11 @@ void
 NewAccountModel::setAccountConfig(const std::string& accountId,
                                   const account::ConfProperties_t& confProperties) const
 {
-    auto accountInfoEntry = pimpl_->accounts.find(accountId);
-    if (accountInfoEntry == pimpl_->accounts.end()) {
+    auto account = pimpl_->accounts.find(accountId);
+    if (account == pimpl_->accounts.end()) {
         throw std::out_of_range("NewAccountModel::save, can't find " + accountId);
     }
-    auto& accountInfo = accountInfoEntry->second;
+    auto& accountInfo = account->second.first;
     auto& configurationManager = ConfigurationManager::instance();
     MapStringString details = confProperties.toDetails();
     // Set values from Info. No need to include ID and TYPE. SIP accounts may modify the USERNAME
@@ -223,45 +231,41 @@ NewAccountModel::setAccountConfig(const std::string& accountId,
 account::ConfProperties_t
 NewAccountModel::getAccountConfig(const std::string& accountId) const
 {
-    auto accountInfo = pimpl_->accounts.find(accountId);
-    if (accountInfo == pimpl_->accounts.end()) {
+    auto account = pimpl_->accounts.find(accountId);
+    if (account == pimpl_->accounts.end()) {
         throw std::out_of_range("NewAccountModel::getAccountConfig, can't find " + accountId);
     }
-
-    return accountInfo->second.confProperties;
+    auto& accountInfo = account->second.first;
+    return accountInfo.confProperties;
 }
 
 void
 NewAccountModel::setAlias(const std::string& accountId, const std::string& alias)
 {
-    auto accountInfo = pimpl_->accounts.find(accountId);
-    if (accountInfo == pimpl_->accounts.end()) {
+    auto account = pimpl_->accounts.find(accountId);
+    if (account == pimpl_->accounts.end()) {
         throw std::out_of_range("NewAccountModel::setAlias, can't find " + accountId);
     }
-    accountInfo->second.profileInfo.alias = alias;
-    auto accountProfileId = authority::database::getOrInsertProfile(pimpl_->database,
-    accountInfo->second.profileInfo.uri, accountId, true,
-    to_string(accountInfo->second.profileInfo.type));
-    if (!accountProfileId.empty()) {
-        authority::database::setAliasForProfileId(pimpl_->database, accountProfileId, alias);
-    }
+    auto& accountInfo = account->second.first;
+    accountInfo.profileInfo.alias = alias;
+
+    authority::storage::updateProfile(accountInfo.id, accountInfo.profileInfo);
+
     emit profileUpdated(accountId);
 }
 
 void
 NewAccountModel::setAvatar(const std::string& accountId, const std::string& avatar)
 {
-    auto accountInfo = pimpl_->accounts.find(accountId);
-    if (accountInfo == pimpl_->accounts.end()) {
+    auto account = pimpl_->accounts.find(accountId);
+    if (account == pimpl_->accounts.end()) {
         throw std::out_of_range("NewAccountModel::setAvatar, can't find " + accountId);
     }
-    accountInfo->second.profileInfo.avatar = avatar;
-    auto accountProfileId = authority::database::getOrInsertProfile(pimpl_->database,
-    accountInfo->second.profileInfo.uri, accountId, true,
-    to_string(accountInfo->second.profileInfo.type));
-    if (!accountProfileId.empty()) {
-        authority::database::setAvatarForProfileId(pimpl_->database, accountProfileId, avatar);
-    }
+    auto& accountInfo = account->second.first;
+    accountInfo.profileInfo.avatar = avatar;
+
+    authority::storage::updateProfile(accountInfo.id, accountInfo.profileInfo);
+
     emit profileUpdated(accountId);
 }
 
@@ -301,13 +305,13 @@ NewAccountModel::changeAccountPassword(const std::string& accountId,
 void
 NewAccountModel::flagFreeable(const std::string& accountId) const
 {
-    auto accountInfo = pimpl_->accounts.find(accountId);
-    if (accountInfo == pimpl_->accounts.end())
+    auto account = pimpl_->accounts.find(accountId);
+    if (account == pimpl_->accounts.end())
         throw std::out_of_range("NewAccountModel::flagFreeable, can't find " + accountId);
 
     {
         std::lock_guard<std::mutex> lock(pimpl_->m_mutex_account_removal);
-        accountInfo->second.freeable = true;
+        account->second.first.freeable = true;
     }
     pimpl_->m_condVar_account_removal.notify_all();
 }
@@ -319,25 +323,32 @@ NewAccountModel::getAccountInfo(const std::string& accountId) const
     if (accountInfo == pimpl_->accounts.end())
         throw std::out_of_range("NewAccountModel::getAccountInfo, can't find " + accountId);
 
-    return accountInfo->second;
+    return accountInfo->second.first;
 }
 
 NewAccountModelPimpl::NewAccountModelPimpl(NewAccountModel& linked,
                                            Lrc& lrc,
-                                           Database& database,
                                            const CallbacksHandler& callbacksHandler,
-                                           const BehaviorController& behaviorController)
+                                           const BehaviorController& behaviorController,
+                                           migrationCallback& willMigrateCb,
+                                           migrationCallback& didMigrateCb)
 : linked(linked)
 , lrc {lrc}
 , behaviorController(behaviorController)
 , callbacksHandler(callbacksHandler)
-, database(database)
 , username_changed(false)
 {
     const QStringList accountIds = ConfigurationManager::instance().getAccountList();
+    auto accountDbs = authority::storage::migrateLegacyDatabaseIfNeeded(accountIds, willMigrateCb, didMigrateCb);
 
-    for (auto& id : accountIds)
-        addToAccounts(id.toStdString());
+    std::vector<std::thread> accThreads;
+    for (const auto& id : accountIds) {
+        accThreads.push_back(std::thread(
+            [this, id, &accountDbs, index = accountIds.indexOf(id)] {
+                addToAccounts(id.toStdString(), accountDbs.at(index));
+            }));
+    }
+    for (auto& t : accThreads) { t.join(); }
 
     connect(&callbacksHandler, &CallbacksHandler::accountsChanged, this, &NewAccountModelPimpl::updateAccounts);
     connect(&callbacksHandler, &CallbacksHandler::accountStatusChanged, this, &NewAccountModelPimpl::slotAccountStatusChanged);
@@ -362,7 +373,7 @@ NewAccountModelPimpl::updateAccounts()
     // Detect removed accounts
     std::list<std::string> toBeRemoved;
     for (auto& it : accounts) {
-        auto& accountInfo = it.second;
+        auto& accountInfo = it.second.first;
         if (!accountIds.contains(QString::fromStdString(accountInfo.id))) {
             qDebug("detected account removal %s", accountInfo.id.c_str());
             toBeRemoved.push_back(accountInfo.id);
@@ -375,15 +386,15 @@ NewAccountModelPimpl::updateAccounts()
 
     // Detect new accounts
     for (auto& id : accountIds) {
-        auto accountInfo = accounts.find(id.toStdString());
-        if (accountInfo == accounts.end()) {
+        auto account = accounts.find(id.toStdString());
+        if (account == accounts.end()) {
             qDebug("detected new account %s", id.toStdString().c_str());
             addToAccounts(id.toStdString());
-            auto updatedAccountInfo = accounts.find(id.toStdString());
-            if (updatedAccountInfo == accounts.end()) {
+            auto updatedAccount = accounts.find(id.toStdString());
+            if (updatedAccount == accounts.end()) {
                 return;
             }
-            if (updatedAccountInfo->second.profileInfo.type == profile::Type::SIP) {
+            if (updatedAccount->second.first.profileInfo.type == profile::Type::SIP) {
                 // NOTE: At this point, a SIP account is ready, but not a Ring
                 // account. Indeed, the keys are not generated at this point.
                 // See slotAccountStatusChanged for more details.
@@ -407,7 +418,7 @@ NewAccountModelPimpl::slotAccountStatusChanged(const std::string& accountID, con
         return;
     }
 
-    auto& accountInfo = it->second;
+    auto& accountInfo = it->second.first;
 
     if (accountInfo.profileInfo.type != profile::Type::SIP) {
         if (status != api::account::Status::INITIALIZING
@@ -431,14 +442,15 @@ NewAccountModelPimpl::slotAccountStatusChanged(const std::string& accountID, con
 void
 NewAccountModelPimpl::slotAccountDetailsChanged(const std::string& accountId, const std::map<std::string, std::string>& details)
 {
-    auto accountInfo = accounts.find(accountId);
-    if (accountInfo == accounts.end()) {
+    auto account = accounts.find(accountId);
+    if (account == accounts.end()) {
         throw std::out_of_range("NewAccountModelPimpl::slotAccountDetailsChanged, can't find " + accountId);
     }
-    accountInfo->second.fromDetails(convertMap(details));
+    auto& accountInfo = account->second.first;
+    accountInfo.fromDetails(convertMap(details));
     if (username_changed) {
         username_changed = false;
-        accountInfo->second.registeredName = new_username;
+        accountInfo.registeredName = new_username;
         emit linked.profileUpdated(accountId);
     }
     emit linked.accountStatusChanged(accountId);
@@ -472,8 +484,8 @@ NewAccountModelPimpl::slotNameRegistrationEnded(const std::string& accountId, in
     {
     case 0: {
         convertedStatus = account::RegisterNameStatus::SUCCESS;
-        auto accountInfo = accounts.find(accountId);
-        if (accountInfo != accounts.end() && accountInfo->second.registeredName.empty()) {
+        auto account = accounts.find(accountId);
+        if (account != accounts.end() && account->second.first.registeredName.empty()) {
             auto conf = linked.getAccountConfig(accountId);
             username_changed = true;
             new_username = name;
@@ -533,9 +545,26 @@ NewAccountModelPimpl::slotMigrationEnded(const std::string& accountId, bool ok)
 }
 
 void
-NewAccountModelPimpl::addToAccounts(const std::string& accountId)
+NewAccountModelPimpl::addToAccounts(const std::string& accountId,
+                                    std::shared_ptr<Database> db)
 {
-    auto it = accounts.emplace(accountId, account::Info());
+    if (db == nullptr) {
+        try {
+            auto appPath = authority::storage::getPath();
+            auto dbName = QString::fromStdString(accountId + "/jami");
+            db = DatabaseFactory::create<Database>(dbName, appPath);
+            // create the profiles path if necessary
+            QDir profilesDir(appPath + QString::fromStdString(accountId) + "/profiles");
+            if (!profilesDir.exists()) {
+                profilesDir.mkpath(".");
+            }
+        } catch (const std::runtime_error& e) {
+            qWarning() << e.what();
+            return;
+        }
+    }
+
+    auto it = accounts.emplace(accountId, std::make_pair(account::Info(), db));
 
     if (!it.second) {
         qDebug("failed to add new account: id already present in map");
@@ -543,62 +572,46 @@ NewAccountModelPimpl::addToAccounts(const std::string& accountId)
     }
 
     // Init profile
-    account::Info& newAcc = (it.first)->second;
-    newAcc.id = accountId;
+    account::Info& newAccInfo = (it.first)->second.first;
+    newAccInfo.id = accountId;
 
     // Fill account::Info struct with details from daemon
     MapStringString details = ConfigurationManager::instance().getAccountDetails(accountId.c_str());
-    newAcc.fromDetails(details);
-
-    // Add profile to database
-    std::string accountType = newAcc.profileInfo.type == profile::Type::RING ?
-                                   DRing::Account::ProtocolNames::RING :
-                                   DRing::Account::ProtocolNames::SIP;
-    if (accountType == DRing::Account::ProtocolNames::SIP || !newAcc.profileInfo.uri.empty()) {
-        auto accountProfileId = authority::database::getOrInsertProfile(database,
-                                                                    newAcc.profileInfo.uri,
-                                                                    accountId,
-                                                                    true,
-                                                                    accountType,
-                                                                    newAcc.profileInfo.alias,
-                                                                    "");
-
-        // Retrieve avatar from database
-        newAcc.profileInfo.avatar = authority::database::getAvatarForProfileId(database, accountProfileId);
-
-        // Retrieve alias from database
-        newAcc.profileInfo.alias = authority::database::getAliasForProfileId(database, accountProfileId);
-    }
+    newAccInfo.fromDetails(details);
 
     // Init models for this account
-    newAcc.callModel = std::make_unique<NewCallModel>(newAcc, callbacksHandler);
-    newAcc.contactModel = std::make_unique<ContactModel>(newAcc, database, callbacksHandler, behaviorController);
-    newAcc.conversationModel = std::make_unique<ConversationModel>(newAcc, lrc, database, callbacksHandler, behaviorController);
-    newAcc.peerDiscoveryModel = std::make_unique<PeerDiscoveryModel>(callbacksHandler, accountId);
-    newAcc.deviceModel = std::make_unique<NewDeviceModel>(newAcc, callbacksHandler);
-    newAcc.codecModel = std::make_unique<NewCodecModel>(newAcc, callbacksHandler);
-    newAcc.accountModel = &linked;
+    newAccInfo.callModel = std::make_unique<NewCallModel>(newAccInfo, callbacksHandler);
+    newAccInfo.contactModel = std::make_unique<ContactModel>(newAccInfo, *db, callbacksHandler, behaviorController);
+    newAccInfo.conversationModel = std::make_unique<ConversationModel>(newAccInfo, lrc, *db, callbacksHandler, behaviorController);
+    newAccInfo.peerDiscoveryModel = std::make_unique<PeerDiscoveryModel>(callbacksHandler, accountId);
+    newAccInfo.deviceModel = std::make_unique<NewDeviceModel>(newAccInfo, callbacksHandler);
+    newAccInfo.codecModel = std::make_unique<NewCodecModel>(newAccInfo, callbacksHandler);
+    newAccInfo.accountModel = &linked;
 
     MapStringString volatileDetails = ConfigurationManager::instance().getVolatileAccountDetails(accountId.c_str());
     std::string daemonStatus = volatileDetails[DRing::Account::ConfProperties::Registration::STATUS].toStdString();
-    newAcc.status = lrc::api::account::to_status(daemonStatus);
+    newAccInfo.status = lrc::api::account::to_status(daemonStatus);
 }
 
 void
 NewAccountModelPimpl::removeFromAccounts(const std::string& accountId)
 {
+    // TODO(atraczyk): is this required ? daemon should remove the account path
+    // only should be removing from memory here
     /* Update db before waiting for the client to stop using the structs is fine
        as long as we don't free anything */
-    auto accountInfo = accounts.find(accountId);
-    if (accountInfo == accounts.end()) {
+    auto account = accounts.find(accountId);
+    if (account == accounts.end()) {
         return;
     }
-    authority::database::removeAccount(database, accountId);
+    auto& accountInfo = account->second.first;
+    auto& accountDb = *(account->second.second);
+    authority::storage::removeAccount(accountId);
 
     /* Inform client about account removal. Do *not* free account structures
        before we are sure that the client stopped using it, otherwise we might
        get into use-after-free troubles. */
-    accounts[accountId].valid = false;
+    accountInfo.valid = false;
     emit linked.accountRemoved(accountId);
 
 #ifdef CHK_FREEABLE_BEFORE_ERASE_ACCOUNT
@@ -879,58 +892,12 @@ NewAccountModel::setTopAccount(const std::string& accountId)
 std::string
 NewAccountModel::accountVCard(const std::string& accountId, bool compressImage) const
 {
-    auto accountInfo = pimpl_->accounts.find(accountId);
-    if (accountInfo == pimpl_->accounts.end()) {
+    auto account = pimpl_->accounts.find(accountId);
+    if (account == pimpl_->accounts.end()) {
         return {};
     }
-    std::string vCardStr = vCard::Delimiter::BEGIN_TOKEN;
-    vCardStr += vCard::Delimiter::END_LINE_TOKEN;
-    vCardStr += vCard::Property::VERSION;
-    vCardStr += ":2.1";
-    vCardStr += vCard::Delimiter::END_LINE_TOKEN;
-    vCardStr += vCard::Property::UID;
-    vCardStr += ":";
-    vCardStr += accountInfo->second.id;
-    vCardStr += vCard::Delimiter::END_LINE_TOKEN;
-    vCardStr += vCard::Property::FORMATTED_NAME;
-    vCardStr += ":";
-    vCardStr += accountInfo->second.profileInfo.alias;
-    vCardStr += vCard::Delimiter::END_LINE_TOKEN;
-    if (accountInfo->second.profileInfo.type == profile::Type::RING) {
-        vCardStr += vCard::Property::TELEPHONE;
-        vCardStr += vCard::Delimiter::SEPARATOR_TOKEN;
-        vCardStr += "other:ring:";
-        vCardStr += accountInfo->second.profileInfo.uri;
-        vCardStr += vCard::Delimiter::END_LINE_TOKEN;
-    } else {
-        vCardStr += vCard::Property::TELEPHONE;
-        vCardStr += accountInfo->second.profileInfo.uri;
-        vCardStr += vCard::Delimiter::END_LINE_TOKEN;
-    }
-    vCardStr += vCard::Property::PHOTO;
-    vCardStr += vCard::Delimiter::SEPARATOR_TOKEN;
-    vCardStr += "ENCODING=BASE64";
-    vCardStr += vCard::Delimiter::SEPARATOR_TOKEN;
-    vCardStr += compressImage ? "TYPE=JPEG:" : "TYPE=PNG:";
-    vCardStr += compressImage ? compressedAvatar(accountInfo->second.profileInfo.avatar) : accountInfo->second.profileInfo.avatar;
-    vCardStr += vCard::Delimiter::END_LINE_TOKEN;
-    vCardStr += vCard::Delimiter::END_TOKEN;
-    return vCardStr;
-}
-std::string NewAccountModel::compressedAvatar(const std::string& img) const
-{
-    QImage image;
-    const bool ret = image.loadFromData(QByteArray::fromBase64(img.c_str()), 0);
-    if (!ret) {
-        qDebug() << "vCard image loading failed";
-        return img;
-    }
-    QByteArray bArray;
-    QBuffer buffer(&bArray);
-    buffer.open(QIODevice::WriteOnly);
-    image.scaled({128,128}).save(&buffer, "JPEG", 90);
-    auto b64Img = bArray.toBase64().trimmed();
-    return std::string(b64Img.constData(), b64Img.length());
+    auto& accountInfo = account->second.first;
+    return authority::storage::vcard::profileToVcard(accountInfo.profileInfo, compressImage);
 }
 
 } // namespace lrc
