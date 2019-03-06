@@ -33,6 +33,13 @@ namespace api
 namespace contact
 {
 
+/**
+ * @var profileInfo
+ * @var registeredName
+ * @var isTrusted
+ * @var isPresent
+ * @var isBanned
+ */
 struct Info
 {
     profile::Info profileInfo;
