@@ -53,10 +53,7 @@ class BehaviorController;
 class LIB_EXPORT NewAccountModel : public QObject {
     Q_OBJECT
 public:
-    using AccountInfoMap = std::map<std::string, account::Info>;
-
     NewAccountModel(Lrc& lrc,
-                    Database& database,
                     const CallbacksHandler& callbackHandler,
                     const api::BehaviorController& behaviorController);
 
