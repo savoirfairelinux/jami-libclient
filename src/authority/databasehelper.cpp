@@ -567,6 +567,60 @@ getLastTimestamp(Database& db)
     return result;
 }
 
+std::vector<std::shared_ptr<Database>>
+migrateLegacyDatabaseIfNeeded(const QStringList& accountIds)
+{
+    std::vector<std::shared_ptr<Database>> dbs(accountIds.size());
+
+    if (!dbs.size()) {
+        qDebug() << "No accounts to migrate";
+        return dbs;
+    }
+
+    try {
+        auto legacyDb = lrc::DatabaseFactory::create<LegacyDatabase>();
+        int index = 0;
+        for (auto accountId : accountIds) {
+            try {
+                dbs.at(index) = lrc::DatabaseFactory::create<Database>(accountId.toStdString());
+                auto& db = *dbs.at(index++);
+                // the factory create function should throw if there's a problem
+
+                // 1. Account profiles
+                // migrate account's avatar/alias from profiles table to account_profile table
+                MapStringString account = ConfigurationManager::instance().
+                    getAccountDetails(accountId.toStdString().c_str());
+                auto accountURI = account[DRing::Account::ConfProperties::USERNAME].contains("ring:") ?
+                    account[DRing::Account::ConfProperties::USERNAME].toStdString().substr(std::string("ring:").size()) :
+                    account[DRing::Account::ConfProperties::USERNAME].toStdString();
+                auto accountProfile = legacyDb->select( "photo, alias",
+                                                        "profiles", "uri=:uri",
+                                                        { {":uri", accountURI} }).payloads;
+                if (!accountProfile.empty()) {
+                    db.insertInto("account_profile",
+                        { {":photo", "photo"},
+                          {":alias", "alias"} },
+                        {{ ":photo", accountProfile[0] },
+                          { ":alias", accountProfile[1] }});
+                }
+
+                // 2. Profiles
+                // migrate profiles from profiles table to new profiles table
+                // a) remove id, status columns
+                // b) the canonical uri will be used in the uri column
+                // e.g. ring:3d1112ab2bb089370c0744a44bbbb0786418d40b or sip:nnnnn@host:5060
+
+            } catch (const std::runtime_error& e) {
+                qWarning() << e.what();
+            }
+        }
+    } catch (const std::runtime_error& e) {
+        qWarning() << e.what();
+    }
+
+    return dbs;
+}
+
 } // namespace database
 
 } // namespace authority
