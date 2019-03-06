@@ -42,7 +42,7 @@
 #include "dbus/callmanager.h"
 #include "dbus/configurationmanager.h"
 #include "dbus/videomanager.h"
-#include "database.h"
+#include "authority/databasehelper.h"
 
 namespace lrc
 {
@@ -663,7 +663,7 @@ AVModelPimpl::getRecordingPath() const
 #if defined(_WIN32) || defined(__APPLE__)
     const QDir dir = QString::fromStdString(linked_.getRecordPath()) + "/" + recorderSavesSubdir.c_str();
 #else
-    const QDir dir = lrc::Database::getPath() + "/" + recorderSavesSubdir.c_str();
+    const QDir dir = authority::storage::getPath() + "/" + recorderSavesSubdir.c_str();
 #endif
 
     dir.mkpath(".");
