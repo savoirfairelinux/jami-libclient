@@ -194,7 +194,6 @@ private:
 #pragma GCC diagnostic ignored "-Wunused-function"
 #endif
 
-
 #define DECLARE_ENUM_FLAGS(T)\
 DO_PRAGMA(GCC diagnostic push)\
 DO_PRAGMA(GCC diagnostic ignored "-Wunused-function")\
@@ -203,3 +202,5 @@ __attribute__ ((unused)) static FlagPack<T> operator|(const T& first, const T& s
    return p | second; \
 } \
 DO_PRAGMA(GCC diagnostic pop)
+
+typedef std::function<void()> migrationCallback;
