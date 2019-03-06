@@ -1,8 +1,9 @@
 /****************************************************************************
- *    Copyright (C) 2017-2019 Savoir-faire Linux Inc.                             *
+ *    Copyright (C) 2017-2019 Savoir-faire Linux Inc.                       *
  *   Author: Nicolas Jäger <nicolas.jager@savoirfairelinux.com>             *
  *   Author: Sébastien Blin <sebastien.blin@savoirfairelinux.com>           *
  *   Author: Kateryna Kostiuk <kateryna.kostiuk@savoirfairelinux.com>       *
+ *   Author: Andreas Traczyk <andreas.traczyk@savoirfairelinux.com>         *
  *                                                                          *
  *   This library is free software; you can redistribute it and/or          *
  *   modify it under the terms of the GNU Lesser General Public             *
@@ -37,96 +38,65 @@ struct Info;
 namespace authority
 {
 
-namespace database
+namespace storage
 {
 
 /**
- * Get id from database for a given uri
- * @param db
- * @param accountId
- * @param isAccount
- * @param uri
- * @return the id
- * @note "" if no id
+ * Get the base path for the application's local storage
+ * @return local storage path
  */
-std::string getProfileId(Database& db,
-            const std::string& accountId,
-            const std::string& isAccount,
-            const std::string& uri="");
+QString getPath();
 
- /**
- * Get id for a profile. If the profile doesn't exist, create it.
- * @param db
- * @param contactUri
- * @param accountId
- * @param isAccount
- * @param alias
- * @param avatar
- * @return the id
- */
- std::string getOrInsertProfile(Database& db,
-                                const std::string& contactUri,
-                                const std::string& accountId,
-                                bool  isAccount,
-                                const std::string& type,
-                                const std::string& alias = "",
-                                const std::string& avatar = "");
+namespace vcard
+{
 
 /**
- * Get conversations for a given profile.
- * @param db
- * @param profileId
+ * Build the vCard for a profile
+ * @param profileInfo
+ * @param compressImage
+ * @return vcard string of the profile
  */
-std::vector<std::string> getConversationsForProfile(Database& db,
-                                                    const std::string& profileId);
+std::string profileToVcard(const api::profile::Info& profileInfo,
+                           bool compressImage = false);
 
 /**
- * Get peer participant for a conversation linked to a profile.
+ * Compress a image into a base64 jpg
+ * @param image
+ * @return compressed image
+ */
+std::string compressedAvatar(const std::string& image);
+
+} // namespace vcard
+
+/**
+ * Get all conversations with a given participant's URI
  * @param db
- * @param profileId
+ * @param participant_uri
+ */
+std::vector<std::string> getConversationsWithPeer(Database& db,
+                                                  const std::string& participant_uri);
+
+/**
+ * Get all peer participant(s) URIs for a given conversation id
+ * @param db
  * @param conversationId
- * @note we don't verify if profileId is in the conversation
  */
 std::vector<std::string> getPeerParticipantsForConversation(Database& db,
-                                                            const std::string& profileId,
                                                             const std::string& conversationId);
 
 /**
- * @param  db
- * @param  profileId
- * @return the avatar in the database for a profile
+ * Saves a peer's profile data to a vCard file
+ * @param  profile_uri
+ * @param  profile the contact info containing peer profile information
  */
-std::string getAvatarForProfileId(Database& db, const std::string& profileId);
+void setProfileForPeer(const std::string& profile_uri, const api::contact::Info& profile);
 
 /**
- * Check if the profile could be removed
- * @param  db
- * @param  profileId
+ * Build a contact info struct from a vCard
+ * @param  profile_uri
+ * @return the contact info containing peer profile information
  */
-bool profileCouldBeRemoved(Database& db, const std::string& profileId);
-
-/**
- * @param  db
- * @param  profileId
- * @param  avatar
- */
-void setAvatarForProfileId(Database& db, const std::string& profileId, const std::string& avatar);
-
-/**
- * @param  db
- * @param  profileId
- * @return the alias in the database for a profile
- */
-std::string getAliasForProfileId(Database& db, const std::string& profileId);
-
-/**
- * @param  db
- * @param  profileId
- * @param  alias
- */
-void setAliasForProfileId(Database& db, const std::string& profileId, const std::string& alias);
-
-api::contact::Info buildContactFromProfileId(Database& db, const std::string& profileId);
+api::contact::Info buildContactFromProfile(const std::string& profile_uri);
 
 /**
  * Get conversations shared between an account and a contact.
@@ -143,14 +113,12 @@ std::vector<std::string> getConversationsBetween(Database& db,
  * Start a conversation between account and contact. Creates an entry in the conversations table
  * and an entry in the interactions table.
  * @param db
- * @param accountProfile the id of the account in the database
- * @param contactProfile the id of the contact in the database
+ * @param peer_uri the URI of the peer
  * @param firstMessage the body of the first message
  * @return conversation_id of the new conversation.
  */
-std::string beginConversationsBetween(Database& db,
-                                      const std::string& accountProfile,
-                                      const std::string& contactProfile,
+std::string beginConversationWithPeer(Database& db,
+                                      const std::string& peer_uri,
                                       const std::string& firstMessage = "");
 
 /**
@@ -163,30 +131,37 @@ void getHistory(Database& db, api::conversation::Info& conversation);
 /**
  * Add an entry into interactions linked to a conversation.
  * @param  db
- * @param  accountProfile
  * @param  conversationId
  * @param  msg
  * @return the id of the inserted interaction
  */
 int addMessageToConversation(Database& db,
-                              const std::string& accountProfile,
-                              const std::string& conversationId,
-                              const api::interaction::Info& msg);
+                             const std::string& conversationId,
+                             const api::interaction::Info& msg);
 
 /**
 * Add or update an entry into interactions linked to a conversation.
 * @param  db
-* @param  accountProfile
 * @param  conversationId
 * @param  msg
 * @param  daemonId
 * @return the id of the inserted interaction
 */
 int addOrUpdateMessage(Database& db,
-                       const std::string& accountProfile,
                        const std::string& conversationId,
                        const api::interaction::Info& msg,
                        const std::string& daemonId);
+
+/**
+* Add a data transfer entry into interactions linked to a conversation.
+* @param  db
+* @param  conversationId
+* @param  daemonId
+* @return the id of the inserted interaction
+*/
+int addDataTransferToConversation(Database& db,
+                                  const std::string& conversationId,
+                                  const api::datatransfer::Info& infoFromDaemon);
 
 /**
  * Change the daemon_id column for an interaction
@@ -249,34 +224,32 @@ void clearInteractionFromConversation(Database& db,
                                       const uint64_t& interactionId);
 
 /**
- * Clear all history stored in the database for the account uri
+ * Clear all history stored in the interactions table of the database
  * @param  db
- * @param accountId
  */
-void clearAllHistoryFor(Database& db, const std::string& accountId);
+void clearAllHistory(Database& db);
 
 /**
- * delete obsolete histori from the database
+ * delete obsolete history from the database
  * @param db
  * @param date in second since epoch. Below this date, interactions will be deleted
  */
 void deleteObsoleteHistory(Database& db, long int date);
 
 /**
- * Remove a conversation between an account and a contact. Remove corresponding entries in
- * the conversations table and profiles if the profile is not present in conversations.
+ * Remove all conversation with a contact. Remove corresponding entries in
+ * the conversations table.
  * @param db
  * @param contactUri
- * @param accountId
  */
-void removeContact(Database& db, const std::string& contactUri, const std::string& accountId);
+void removeContact(Database& db, const std::string& contactUri);
 
 /**
- * Remove from conversations and profiles linked to an account.
- * @param db
+ * Ensure that all files located in
+ * {local_storage}/jami/{accountId} are removed
  * @param accountId
  */
-void removeAccount(Database& db, const std::string& accountId);
+void removeAccount(const std::string& accountId);
 
 /**
  * insert into profiles and conversations.
@@ -291,11 +264,6 @@ void addContact(Database& db, const std::string& contactUri, const std::string& 
  */
 int countUnreadFromInteractions(Database& db, const std::string& conversationId);
 
-int addDataTransferToConversation(Database& db,
-                                  const std::string& accountProfileId,
-                                  const std::string& conversationId,
-                                  const api::datatransfer::Info& infoFromDaemon);
-
 std::string conversationIdFromInteractionId(Database& db, unsigned int interactionId);
 
 /**
@@ -304,6 +272,20 @@ std::string conversationIdFromInteractionId(Database& db, unsigned int interacti
  * @param db
  */
 uint64_t getLastTimestamp(Database& db);
+
+namespace {
+QString JSONStringFromInitList(std::initializer_list<QPair<QString, QJsonValue> > args);
+QString readJSONValue(const QJsonObject& json, const QString& key);
+void writeJSONValue(QJsonObject& json, const QString& key, const QString& value);
+}
+
+/**
+ * Retrieve a list of account database via a migration
+ * procedure from the legacy "ring.db", if it exists
+ * @param accountIds of the accounts to attempt migration upon
+ */
+std::vector<std::shared_ptr<Database>>
+migrateLegacyDatabaseIfNeeded(const QStringList& accountIds);
 
 } // namespace database
 
