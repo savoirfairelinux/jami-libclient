@@ -57,7 +57,7 @@ public:
     const account::Info& owner;
 
     ContactModel(const account::Info& owner,
-                 Database& database,
+                 Database& db,
                  const CallbacksHandler& callbacksHandler,
                  const BehaviorController& behaviorController);
     ~ContactModel();
@@ -85,18 +85,6 @@ public:
      * @return list of banned contacts uris as string
      */
     const std::list<std::string>& getBannedContacts() const;
-    /**
-     * @param  uri
-     * @param  isAccount
-     * @return empty string if no contact, else the uri in db
-     */
-    const std::string getProfileId(const std::string &ur, bool isAccount = false) const;
-    /**
-     * @deprecated use getProfileId
-     * @param  contactUri
-     * @return empty string if no contact, else the uri in db
-     */
-    const std::string getContactProfileId(const std::string& contactUri) const;
     /**
      * @return all contacts for this account.
      */
