@@ -1010,7 +1010,6 @@ ConversationModelPimpl::ConversationModelPimpl(const ConversationModel& linked,
     connect(&callbacksHandler, &CallbacksHandler::accountMessageStatusChanged,
             this, &ConversationModelPimpl::slotUpdateInteractionStatus);
 
-
     // Call related
     connect(&*linked.owner.callModel, &NewCallModel::newIncomingCall,
             this, &ConversationModelPimpl::slotIncomingCall);
@@ -1094,7 +1093,6 @@ ConversationModelPimpl::~ConversationModelPimpl()
                this, &ConversationModelPimpl::slotIncomingCallMessage);
     disconnect(&callbacksHandler, &CallbacksHandler::accountMessageStatusChanged,
                this, &ConversationModelPimpl::slotUpdateInteractionStatus);
-
 
     // Call related
     disconnect(&*linked.owner.callModel, &NewCallModel::newIncomingCall,
@@ -1328,7 +1326,6 @@ ConversationModelPimpl::slotPendingContactAccepted(const std::string& uri)
         }
     }
 }
-
 
 void
 ConversationModelPimpl::slotContactRemoved(const std::string& uri)
@@ -1760,7 +1757,6 @@ ConversationModelPimpl::getNumberOfUnreadMessagesFor(const std::string& uid)
 {
     return database::countUnreadFromInteractions(db, uid);
 }
-
 
 void
 ConversationModel::sendFile(const std::string& convUid,
