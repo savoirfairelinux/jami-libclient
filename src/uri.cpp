@@ -200,7 +200,7 @@ QString URI::hostname() const
  */
 bool URI::hasHostname() const
 {
-    return hostname().isEmpty();
+    return !hostname().isEmpty();
 }
 
 /**
@@ -441,6 +441,25 @@ QString URI::userinfo() const
     if (!pimpl_->m_Parsed)
         pimpl_->parse();
     return pimpl_->m_Userinfo;
+}
+
+void URI::setUserinfo(const QString & userinfo)
+{
+    pimpl_->m_Userinfo = userinfo;
+}
+
+void URI::setHostname(const QString& hostname)
+{
+    pimpl_->m_ExtHostname = hostname;
+}
+
+void URI::setPort(const QString& port)
+{
+    try {
+        pimpl_->m_Port = port.toInt();
+    } catch (...) {
+        qWarning() << "Can't convert port to integer";
+    }
 }
 
 /**

@@ -41,7 +41,8 @@ class AVModel;
 
 class LIB_EXPORT Lrc {
 public:
-    Lrc();
+    Lrc(migrationCallback willMigrateCb = {},
+        migrationCallback didMigrateCb = {});
     ~Lrc();
     /**
      * get a reference on account model.
