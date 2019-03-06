@@ -41,7 +41,8 @@ class AVModel;
 
 class LIB_EXPORT Lrc {
 public:
-    Lrc();
+    Lrc(migrationCallback willMigrateCb = {},
+        migrationCallback didMigrateCb = {});
     ~Lrc();
     /**
      * get a reference on account model.
@@ -77,6 +78,10 @@ public:
      * Can communicate with the daemon via dbus
      */
     static bool dbusIsValid();
+    /**
+     * Connect to debugMessageReceived signal
+     */
+    void subscribeToDebugReceived();
 
     /**
      * Helper: get call list from daemon
