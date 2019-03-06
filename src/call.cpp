@@ -137,7 +137,6 @@ const TypedStateMachine< TypedStateMachine< function , Call::Action > , Call::St
 /*CONNECTED      */  {{CP::nothing    , CP::cancel   , CP::nothing        , CP::nothing     ,  CP::nothing            ,  CP::nothing            ,  CP::nothing  }},/**/
 }};//                                                                                                                                                                */
 
-
 const TypedStateMachine< TypedStateMachine< Call::State , CallPrivate::DaemonState> , Call::State> CallPrivate::stateChangedStateMap =
 {{
 //                        RINGING                   CONNECTING                 CURRENT                   BUSY                  HOLD                        HUNGUP              FAILURE               OVER                      INACTIVE              /**/
@@ -236,7 +235,6 @@ const TypedStateMachine< TypedStateMachine< bool , Call::LifeCycleState > , Call
 }};/*                                                                            **/
 /*^^ A call _can_ be created on hold (conference) and as over (peer hang up before pickup)
  the progress->failure one is an implementation bug*/
-
 
 QDebug LIB_EXPORT operator<<(QDebug dbg, const CallPrivate::DaemonState& c );
 
@@ -660,7 +658,6 @@ Call::State CallPrivate::startStateFromDaemonCallState(const QString& daemonCall
       return Call::State::FAILURE  ;
 } //startStateFromDaemonCallState
 
-
 /*****************************************************************************
  *                                                                           *
  *                                  Getters                                  *
@@ -871,7 +868,6 @@ Certificate* Call::certificate() const
    return d_ptr->m_pCertificate;
 }
 
-
 FlagPack<Call::HoldFlags> Call::holdFlags() const
 {
    return d_ptr->m_fHoldFlags;
@@ -922,7 +918,6 @@ Call::Type Call::type() const
 {
    return d_ptr->m_Type;
 }
-
 
 bool Call::hasRemote() const
 {
@@ -1070,7 +1065,6 @@ QList<media::Media*> Call::allMedia() const
    return ret;
 }
 
-
 /*****************************************************************************
  *                                                                           *
  *                        Media type inference utils                         *
@@ -1148,7 +1142,6 @@ media::Media* MediaTypeInference::safeMediaCreator(Call* c, media::Media::Type t
    }
    return nullptr;
 }
-
 
 /*****************************************************************************
  *                                                                           *
@@ -1531,7 +1524,6 @@ QMimeData* Call::mimePayload() const
    return RingMimes::payload(this, nullptr, nullptr);
 }
 
-
 /*****************************************************************************
  *                                                                           *
  *                              Automate function                            *
@@ -1701,24 +1693,11 @@ void CallPrivate::sendProfile()
         uri = details[ConfProperties::USERNAME].toStdString();
     }
 
-    // NOTE: Some clients still use the old LRC. So, we should be able to use the database or old VCard files for now.
     // TODO: migrate sendProfile to newcallmodel.cpp as soon as possible.
-#ifdef ENABLE_TEST
-    std::ifstream dbfile(QDir(QStandardPaths::writableLocation(QStandardPaths::TempLocation)).filePath(lrc::NAME).toStdString());
-#else
-    std::ifstream dbfile(QDir(lrc::Database::getPath()).filePath(lrc::NAME).toStdString());
-#endif
-    std::string photo = "";
-    std::string alias = "";
-    if (dbfile.good()) {
-        lrc::Database db;
-        auto accountProfileId = lrc::authority::database::getOrInsertProfile(db, uri,
-        m_Account->id().toStdString(), true,
-        m_Account->protocol() == Account::Protocol::RING ? "RING" : "SIP");
-        // Retrieve avatar from database
-        photo = lrc::authority::database::getAvatarForProfileId(db, accountProfileId);
-        alias = lrc::authority::database::getAliasForProfileId(db, accountProfileId);
-    }
+
+    std::string photo = "";//authority::storage::getAvatarForProfileId(db, accountProfileId);
+    std::string alias = "";//authority::storage::getAliasForProfileId(db, accountProfileId);
+
     auto vCard = profile->person()->toVCard({}, photo, alias);
 
     qsrand(time(nullptr));
@@ -2077,7 +2056,6 @@ void Call::appendText(const QString& str)
    }
    else
       qDebug() << "TemporaryContactMethod not defined";
-
 
    emit changed();
 }

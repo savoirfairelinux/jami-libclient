@@ -53,10 +53,7 @@ class BehaviorController;
 class LIB_EXPORT NewAccountModel : public QObject {
     Q_OBJECT
 public:
-    using AccountInfoMap = std::map<std::string, account::Info>;
-
     NewAccountModel(Lrc& lrc,
-                    Database& database,
                     const CallbacksHandler& callbackHandler,
                     const api::BehaviorController& behaviorController);
 
@@ -171,13 +168,6 @@ public:
      * Set an account to the first position
      */
     void setTopAccount(const std::string& accountId);
-    /**
-     * Build the vCard for an account
-     * @param id
-     * @return vcard of the account
-     */
-    std::string accountVCard(const std::string& accountId, bool compressImage = true) const;
-    std::string compressedAvatar(const std::string& img) const;
 
 Q_SIGNALS:
     /**

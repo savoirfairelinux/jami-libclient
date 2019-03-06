@@ -28,7 +28,7 @@
 #include <QtCore/QStandardPaths>
 
 //Ring
-#include "database.h"
+#include "authority/databasehelper.h"
 #include "person.h"
 #include "personmodel.h"
 #include "private/vcardutils.h"
@@ -77,7 +77,7 @@ FallbackPersonCollectionPrivate::FallbackPersonCollectionPrivate(FallbackPersonC
 {
    //Default to somewhere ~/.local/share
    if (m_Path.isEmpty()) {
-     m_Path = (lrc::Database::getPath()) + "/vCard/";
+     m_Path = (lrc::authority::storage::getPath()) + "/vCard/";
      static_cast<FallbackPersonBackendEditor *>(q_ptr->editor<Person>())
          ->m_Path = m_Path;
    }
@@ -104,37 +104,7 @@ FallbackPersonCollection::~FallbackPersonCollection()
 
 bool FallbackPersonBackendEditor::save(const Person* item)
 {
-   if (!item)
-      return false;
-
-   //An UID is required
-   if (item->uid().isEmpty()) {
-      QCryptographicHash hash(QCryptographicHash::Sha1);
-      for (ContactMethod* n : item->phoneNumbers())
-         hash.addData(n->uri().toLatin1());
-      hash.addData(item->formattedName().toLatin1());
-      QByteArray random;
-
-      for (int i=0;i<5;i++)
-         random.append(QChar((char)(rand()%255)));
-
-      hash.addData(random);
-
-      const_cast<Person*>(item)->setUid(hash.result().toHex());
-   }
-
-   const QString path = m_Path+'/'+item->uid()+".vcf";
-
-   QFile file(path);
-
-   if (Q_UNLIKELY(!file.open(QIODevice::WriteOnly))) {
-      qWarning() << "Can't write to" << path;
-      return false;
-   }
-
-   file.write(item->toVCard({}));
-   file.close();
-   return true;
+    return false;
 }
 
 bool FallbackPersonBackendEditor::remove(const Person* item)
@@ -258,7 +228,6 @@ QByteArray FallbackPersonCollection::id() const
 {
    return "fpc2"+d_ptr->m_Path.toLatin1();
 }
-
 
 void FallbackPersonCollectionPrivate::loadAsync()
 {
