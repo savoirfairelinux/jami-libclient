@@ -305,6 +305,14 @@ std::string conversationIdFromInteractionId(Database& db, unsigned int interacti
  */
 uint64_t getLastTimestamp(Database& db);
 
+/**
+ * Retrieve a list of account database via a migration
+ * procedure from the legacy "ring.db", if it exists
+ * @param accountIds of the accounts to attempt migration upon
+ */
+std::vector<std::shared_ptr<Database>>
+migrateLegacyDatabaseIfNeeded(const QStringList& accountIds);
+
 } // namespace database
 
 } // namespace authority

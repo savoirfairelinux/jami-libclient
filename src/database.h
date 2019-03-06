@@ -1,9 +1,10 @@
 /****************************************************************************
- *    Copyright (C) 2017-2019 Savoir-faire Linux Inc.                             *
+ *   Copyright (C) 2017-2019 Savoir-faire Linux Inc.                        *
  *   Author: Nicolas Jäger <nicolas.jager@savoirfairelinux.com>             *
  *   Author: Sébastien Blin <sebastien.blin@savoirfairelinux.com>           *
  *   Author: Guillaume Roguez <guillaume.roguez@savoirfairelinux.com>       *
  *   Author: Kateryna Kostiuk <kateryna.kostiuk@savoirfairelinux.com>       *
+ *   Author: Andreas Traczyk <andreas.traczyk@savoirfairelinux.com>         *
  *                                                                          *
  *   This library is free software; you can redistribute it and/or          *
  *   modify it under the terms of the GNU Lesser General Public             *
@@ -24,21 +25,23 @@
 #include <memory>
 #include <string>
 #include <stdexcept>
+#include <type_traits>
 
 // Qt
-#include <qobject.h>
+#include <QObject>
 #include <QtCore/QDir>
 #include <QtSql/QSqlQuery>
 #include <QtCore/QStandardPaths>
+#include <QDebug>
 
 namespace lrc
 {
 
-static constexpr auto VERSION = "1.1";
+static constexpr auto VERSION = "1";
 static constexpr auto NAME = "ring.db";
 
 /**
-  *  @brief Class that communicates with the database.
+  *  @brief Base class that communicates with a database.
   *  @note not thread safe.
   */
 class Database : public QObject {
@@ -47,11 +50,15 @@ class Database : public QObject {
 public:
     /**
      * Create a database on the user system.
+     * @param the name for which to construct the db.
      * @exception QueryError database query error.
      */
-    Database();
-
+    Database(const std::string& name);
     ~Database();
+
+    void remove();
+
+    virtual void load();
 
     /**
      * A structure which contains result(s) returned by a database query.
@@ -225,27 +232,87 @@ public:
     int count(const std::string& count, const std::string& table,
               const std::string& where, const std::map<std::string, std::string>& bindsWhere);
 
-    static QString getPath();
-private:
-    void createTables();
-    void storeVersion(const std::string& version);
+protected:
+    virtual void createTables();
+    virtual QString getPath();
 
     /**
-     * Migration helpers. Parse JSON for history and VCards and add it into the database.
+     * Migration helpers.
+     */
+    void migrateIfNeeded();
+    void storeVersion(const std::string& version);
+    std::string getVersion();
+
+    virtual void migrateFromVersion(const std::string& version);
+
+    QString connectionName_;
+    QString databaseFullPath_;
+    QSqlDatabase db_;
+};
+
+/**
+  *  @brief A legacy database to help migrate from the single db epoch.
+  *  @note not thread safe.
+  */
+class LegacyDatabase final : public Database {
+    Q_OBJECT
+
+public:
+    /**
+     * Create a migratory legacy database.
+     * @exception QueryError database query error.
+     */
+    LegacyDatabase() : Database("ring") {}
+    ~LegacyDatabase();
+
+    void load() override;
+
+protected:
+    void createTables() override;
+
+private:
+    /**
+     * Migration helpers from old LRC. Parse JSON for history and VCards and add it into the database.
      */
     void migrateOldFiles();
     void migrateLocalProfiles();
     void migratePeerProfiles();
     void migrateTextHistory();
-    void linkRingProfilesWithAccounts(bool contactsOnly);
-    void migrateIfNeeded();
-    std::string  getVersion();
-    void migrateFromVersion(const std::string& version);
-    void migrateSchemaFromVersion1();
-    void updateProfileAccountForContact(const std::string& contactURI,
-                                        const std::string& accountID);
 
-    QSqlDatabase db_;
+    void migrateFromVersion(const std::string& version) override;
+
+    /**
+     * Migration helpers from version 1
+     */
+    void migrateSchemaFromVersion1();
+    void linkRingProfilesWithAccounts(bool contactsOnly);
+    void updateProfileAccountForContact(const std::string& contactURI,
+        const std::string& accountID);
 };
+
+namespace DatabaseFactory
+{
+template<typename T, class... Args>
+std::enable_if_t<
+    std::is_constructible<T, Args...>::value,
+    std::shared_ptr<Database>
+>
+create(Args&&... args) {
+    auto pdb = std::static_pointer_cast<Database>(
+        std::make_shared<T>(std::forward<Args>(args)...)
+    );
+    if (pdb) {
+        // To allow override of the db load method we don't
+        // call it from the ctor.
+        try {
+            pdb->load();
+        } catch (const std::runtime_error& e) {
+            throw std::runtime_error(e);
+        }
+        return pdb;
+    }
+    return nullptr;
+}
+} // DatabaseFactory
 
 } // namespace lrc
