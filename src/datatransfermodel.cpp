@@ -76,7 +76,6 @@ DataTransferModel::Impl::Impl(DataTransferModel& up_link)
     , upLink {up_link}
 {}
 
-
 void
 DataTransferModel::registerTransferId(long long dringId, int interactionId)
 {
@@ -84,7 +83,6 @@ DataTransferModel::registerTransferId(long long dringId, int interactionId)
     pimpl_->dring2lrcIdMap.emplace(dringId, interactionId);
     pimpl_->lrc2dringIdMap.emplace(interactionId, dringId);
 }
-
 
 DataTransferModel::DataTransferModel()
     : QObject()
@@ -113,14 +111,6 @@ DataTransferModel::transferInfo(long long ringId, datatransfer::Info& lrc_info)
 {
     DataTransferInfo infoFromDaemon;
     if (ConfigurationManager::instance().dataTransferInfo(ringId, infoFromDaemon) == 0) {
-#if 0
-        int interactionId;
-        try {
-            interactionId = pimpl_->dring2lrcIdMap.at(ringId);
-        } catch (...) {
-            interactionId = -1;
-        }
-#endif
         //lrc_info.uid = ?
         lrc_info.status = convertDataTransferEvent(DRing::DataTransferEventCode(infoFromDaemon.lastEvent));
         lrc_info.isOutgoing = !(infoFromDaemon.flags & (1 << uint32_t(DRing::DataTransferFlags::direction)));

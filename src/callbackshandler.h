@@ -51,6 +51,10 @@ public:
     CallbacksHandler(const api::Lrc& parent);
     ~CallbacksHandler();
 
+    // This connection relies on the behavior controller
+    // and needs to be made after the lrc object is constructed
+    void subscribeToDebugReceived();
+
 Q_SIGNALS:
     /**
      * Connect this signal to get incoming text interaction from the DHT.
