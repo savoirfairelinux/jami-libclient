@@ -30,7 +30,7 @@
 
 //Ring
 #include <collectioneditor.h>
-#include "database.h"
+#include "authority/databasehelper.h"
 #include <ringtonemodel.h>
 #include <ringtone.h>
 #include <globalinstances.h>
@@ -82,7 +82,6 @@ LocalRingtoneCollection::LocalRingtoneCollection(CollectionMediator<Ringtone>* m
    load();
 }
 
-
 LocalRingtoneCollection::~LocalRingtoneCollection()
 {
    delete d_ptr;
@@ -90,7 +89,7 @@ LocalRingtoneCollection::~LocalRingtoneCollection()
 
 bool LocalRingtoneCollection::load()
 {
-   QFile file(lrc::Database::getPath()
+   QFile file(lrc::authority::storage::getPath()
               + QLatin1Char('/') + LocalRingtoneCollectionPrivate::FILENAME);
    LocalRingtoneEditor* e = static_cast<LocalRingtoneEditor*>(editor<Ringtone>());
 
@@ -144,7 +143,7 @@ bool LocalRingtoneEditor::save(const Ringtone* ringtone)
 {
    Q_UNUSED(ringtone)
 
-   QFile file(lrc::Database::getPath()
+   QFile file(lrc::authority::storage::getPath()
               + QLatin1Char('/') + LocalRingtoneCollectionPrivate::FILENAME);
    if ( file.open(QIODevice::WriteOnly | QIODevice::Text) ) {
 
@@ -254,7 +253,7 @@ FlagPack<CollectionInterface::SupportedFeatures> LocalRingtoneCollection::suppor
 
 bool LocalRingtoneCollection::clear()
 {
-   return QFile::remove(lrc::Database::getPath()
+   return QFile::remove(lrc::authority::storage::getPath()
                         + QLatin1Char('/') + LocalRingtoneCollectionPrivate::FILENAME);
 }
 

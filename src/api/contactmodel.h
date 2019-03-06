@@ -86,18 +86,6 @@ public:
      */
     const std::list<std::string>& getBannedContacts() const;
     /**
-     * @param  uri
-     * @param  isAccount
-     * @return empty string if no contact, else the uri in db
-     */
-    const std::string getProfileId(const std::string &ur, bool isAccount = false) const;
-    /**
-     * @deprecated use getProfileId
-     * @param  contactUri
-     * @return empty string if no contact, else the uri in db
-     */
-    const std::string getContactProfileId(const std::string& contactUri) const;
-    /**
      * @return all contacts for this account.
      */
     const ContactInfoMap& getAllContacts() const;

@@ -25,7 +25,7 @@
 #include <QtCore/QJsonObject>
 
 //Ring
-#include "database.h"
+#include "authority/databasehelper.h"
 #include <globalinstances.h>
 #include <interfaces/pixmapmanipulatori.h>
 #include <media/recordingmodel.h>
@@ -88,7 +88,7 @@ bool LocalTextRecordingEditor::save(const media::Recording* recording)
    Q_UNUSED(recording)
    QHash<QByteArray,QByteArray> ret = static_cast<const media::TextRecording*>(recording)->d_ptr->toJsons();
 
-   QDir dir(lrc::Database::getPath());
+   QDir dir(lrc::authority::storage::getPath());
 
    //Make sure the directory exist
    dir.mkdir("text/");
@@ -147,7 +147,7 @@ bool LocalTextRecordingEditor::addExisting(const media::Recording* item)
 
 QString LocalTextRecordingEditor::fetch(const QByteArray& sha1)
 {
-   QFile file(lrc::Database::getPath() + "/text/" + sha1 + ".json");
+   QFile file(lrc::authority::storage::getPath() + "/text/" + sha1 + ".json");
 
    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
       return QByteArray();
@@ -184,7 +184,7 @@ bool LocalTextRecordingCollection::isEnabled() const
 bool LocalTextRecordingCollection::load()
 {
     // load all text recordings so we can recover CMs that are not in the call history
-    QDir dir(lrc::Database::getPath() + "/text/");
+    QDir dir(lrc::authority::storage::getPath() + "/text/");
     if (dir.exists()) {
         // get .json files, sorted by time, latest first
         QStringList filters;
@@ -258,7 +258,7 @@ bool LocalTextRecordingCollection::clear()
 {
     static_cast<LocalTextRecordingEditor *>(editor<media::Recording>())->clearAll();
 
-    QDir dir(lrc::Database::getPath() + "/text");
+    QDir dir(lrc::authority::storage::getPath() + "/text");
 
     // TODO: the file deletion should be done on each individual file to be able to catch errors
     // and to prevent us deleting files which are not the recordings
@@ -274,7 +274,7 @@ bool LocalTextRecordingCollection::listId(std::function<void(const QList<Element
 {
    QList<Element> list;
 
-   QDir dir(lrc::Database::getPath() + "/text/");
+   QDir dir(lrc::authority::storage::getPath() + "/text/");
 
    if (!dir.exists())
       return false;

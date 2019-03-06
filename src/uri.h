@@ -174,6 +174,9 @@ public:
     ProtocolHint protocolHint() const;
 
     // Setter
+    void setUserinfo(const QString& userinfo);
+    void setHostname(const QString& hostname);
+    void setPort(const QString& port);
     void setSchemeType(SchemeType t);
 
     // Converter
