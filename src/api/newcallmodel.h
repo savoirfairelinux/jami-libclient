@@ -72,11 +72,12 @@ public:
 
     /**
      * Create a new call with a contact
-     * @param  url of the contact to call
+     * @param  uri of the contact to call
      * @param  isAudioOnly, set to false by default
      * @return the call uid created. Empty string is returned if call couldn't be created.
      */
-    std::string createCall(const std::string& url, bool isAudioOnly = false);
+    std::string createCall(const std::string& uri, bool isAudioOnly = false);
+
     /**
      * Get the call from its call id
      * @param  uid
@@ -84,6 +85,7 @@ public:
      * @throw out_of_range exception if not found
      */
     const call::Info& getCall(const std::string& uid) const;
+
     /**
      * Get the call from the peer uri
      * @param  uri
@@ -92,6 +94,7 @@ public:
      * @throw out_of_range exception if not found
      */
     const call::Info& getCallFromURI(const std::string& uri, bool notOver = false) const;
+
     /**
      * Get conference from a peer uri
      * @param  uri
@@ -99,11 +102,13 @@ public:
      * @throw out_of_range exception if not found
      */
     const call::Info& getConferenceFromURI(const std::string& uri) const;
+
     /**
      * @param  callId to test
      * @return true if callId is presend else false.
      */
     bool hasCall(const std::string& callId) const;
+
     /**
      * Send a text message to a SIP call
      * @param callId
@@ -116,64 +121,76 @@ public:
      * @param callId
      */
     void accept(const std::string& callId) const;
+
     /**
      * Hang up a call
      * @param callId
      */
     void hangUp(const std::string& callId) const;
+
     /**
      * Refuse a call
      * @param callId
      */
     void refuse(const std::string& callId) const;
+
     /**
      * Toggle audio record on a call
      * @param callId
      */
     void toggleAudioRecord(const std::string& callId) const;
+
     /**
      * Play DTMF in a call
      * @param callId
      * @param value to play
      */
     void playDTMF(const std::string& callId, const std::string& value) const;
+
     /**
      * Toggle pause on a call
      * @param callId
      */
     void togglePause(const std::string& callId) const;
+
     /**
      * Toggle a media on a call
      * @param callId
      * @param media {AUDIO, VIDEO}
      */
     void toggleMedia(const std::string& callId, const NewCallModel::Media media) const;
+
     /**
      * Not implemented yet
      */
     void setQuality(const std::string& callId, const double quality) const;
+
     /**
      * Blind transfer. Directly transfer a call to a sip number
      * @param callId: the call to transfer
      * @param to: the sip number (for example: "sip:1412")
      */
     void transfer(const std::string& callId, const std::string& to) const;
+
     /**
      * Perform an attended. Transfer a call to another call
      * @param callIdSrc: the call to transfer
      * @param callIdDest: the destination's call
      */
     void transferToCall(const std::string& callIdSrc, const std::string& callIdDest) const;
+
     /**
      * Create a conference from 2 calls.
      * @param callIdA uid of the call A
      * @param callIdB uid of the call B
      */
     void joinCalls(const std::string& callIdA, const std::string& callIdB) const;
+
     /**
      * Not implemented yet
      */
     void removeParticipant(const std::string& callId, const std::string& participant) const;
+
     /**
      * @param  callId
      * @return a human readable call duration (M:ss)
