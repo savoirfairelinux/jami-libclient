@@ -1,8 +1,9 @@
 /****************************************************************************
- *    Copyright (C) 2017-2019 Savoir-faire Linux Inc.                             *
+ *    Copyright (C) 2017-2019 Savoir-faire Linux Inc.                       *
  *   Author: Nicolas Jäger <nicolas.jager@savoirfairelinux.com>             *
  *   Author: Sébastien Blin <sebastien.blin@savoirfairelinux.com>           *
  *   Author: Kateryna Kostiuk <kateryna.kostiuk@savoirfairelinux.com>       *
+ *   Author: Andreas Traczyk <andreas.traczyk@savoirfairelinux.com>         *
  *                                                                          *
  *   This library is free software; you can redistribute it and/or          *
  *   modify it under the terms of the GNU Lesser General Public             *
@@ -37,96 +38,38 @@ struct Info;
 namespace authority
 {
 
-namespace database
+namespace storage
 {
 
 /**
- * Get id from database for a given uri
+ * Get all conversations with a given participant's URI
  * @param db
- * @param accountId
- * @param isAccount
- * @param uri
- * @return the id
- * @note "" if no id
+ * @param participant_uri
  */
-std::string getProfileId(Database& db,
-            const std::string& accountId,
-            const std::string& isAccount,
-            const std::string& uri="");
-
- /**
- * Get id for a profile. If the profile doesn't exist, create it.
- * @param db
- * @param contactUri
- * @param accountId
- * @param isAccount
- * @param alias
- * @param avatar
- * @return the id
- */
- std::string getOrInsertProfile(Database& db,
-                                const std::string& contactUri,
-                                const std::string& accountId,
-                                bool  isAccount,
-                                const std::string& type,
-                                const std::string& alias = "",
-                                const std::string& avatar = "");
+std::vector<std::string> getConversationsWithPeer(Database& db,
+                                                  const std::string& participant_uri);
 
 /**
- * Get conversations for a given profile.
+ * Get all peer participant(s) URIs for a given conversation id
  * @param db
- * @param profileId
- */
-std::vector<std::string> getConversationsForProfile(Database& db,
-                                                    const std::string& profileId);
-
-/**
- * Get peer participant for a conversation linked to a profile.
- * @param db
- * @param profileId
  * @param conversationId
- * @note we don't verify if profileId is in the conversation
  */
 std::vector<std::string> getPeerParticipantsForConversation(Database& db,
-                                                            const std::string& profileId,
                                                             const std::string& conversationId);
 
 /**
- * @param  db
- * @param  profileId
- * @return the avatar in the database for a profile
+ * Saves a peer's profile data to a vCard file
+ * @param  profile_uri
+ * @param  profile the contact info containing peer profile information
  */
-std::string getAvatarForProfileId(Database& db, const std::string& profileId);
+void setProfileForPeer(const std::string& profile_uri, const api::contact::Info& profile);
 
 /**
- * Check if the profile could be removed
- * @param  db
- * @param  profileId
+ * Build a contact info struct from a vCard
+ * @param  profile_uri
+ * @return the contact info containing peer profile information
  */
-bool profileCouldBeRemoved(Database& db, const std::string& profileId);
-
-/**
- * @param  db
- * @param  profileId
- * @param  avatar
- */
-void setAvatarForProfileId(Database& db, const std::string& profileId, const std::string& avatar);
-
-/**
- * @param  db
- * @param  profileId
- * @return the alias in the database for a profile
- */
-std::string getAliasForProfileId(Database& db, const std::string& profileId);
-
-/**
- * @param  db
- * @param  profileId
- * @param  alias
- */
-void setAliasForProfileId(Database& db, const std::string& profileId, const std::string& alias);
-
-api::contact::Info buildContactFromProfileId(Database& db, const std::string& profileId);
+api::contact::Info buildContactFromProfile(const std::string& profile_uri);
 
 /**
  * Get conversations shared between an account and a contact.
@@ -143,14 +86,12 @@ std::vector<std::string> getConversationsBetween(Database& db,
  * Start a conversation between account and contact. Creates an entry in the conversations table
  * and an entry in the interactions table.
  * @param db
- * @param accountProfile the id of the account in the database
- * @param contactProfile the id of the contact in the database
+ * @param peer_uri the URI of the peer
  * @param firstMessage the body of the first message
  * @return conversation_id of the new conversation.
  */
-std::string beginConversationsBetween(Database& db,
-                                      const std::string& accountProfile,
-                                      const std::string& contactProfile,
+std::string beginConversationWithPeer(Database& db,
+                                      const std::string& peer_uri,
                                       const std::string& firstMessage = "");
 
 /**
@@ -304,6 +245,14 @@ std::string conversationIdFromInteractionId(Database& db, unsigned int interacti
  * @param db
  */
 uint64_t getLastTimestamp(Database& db);
+
+/**
+ * Retrieve a list of account database via a migration
+ * procedure from the legacy "ring.db", if it exists
+ * @param accountIds of the accounts to attempt migration upon
+ */
+std::vector<std::shared_ptr<Database>>
+migrateLegacyDatabaseIfNeeded(const QStringList& accountIds);
 
 } // namespace database
 
