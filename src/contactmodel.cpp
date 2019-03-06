@@ -264,7 +264,7 @@ ContactModel::addContact(contact::Info contactInfo)
         return;
     }
 
-    database::getOrInsertProfile(pimpl_->db, profile.uri, owner.id, false,
+    storage::getOrInsertProfile(pimpl_->db, profile.uri, owner.id, false,
     to_string(owner.profileInfo.type),profile.alias, profile.avatar);
 
     {
@@ -300,13 +300,13 @@ ContactModel::removeContact(const std::string& contactUri, bool banned)
                 return;
             }
             pimpl_->contacts.erase(contactUri);
-            database::removeContact(pimpl_->db, contactUri, owner.id);
+            storage::removeContact(pimpl_->db, contactUri, owner.id);
             emitContactRemoved = true;
         }
         else if (owner.profileInfo.type == profile::Type::SIP) {
             // Remove contact from db
             pimpl_->contacts.erase(contactUri);
-            database::removeContact(pimpl_->db, contactUri, owner.id);
+            storage::removeContact(pimpl_->db, contactUri, owner.id);
             emitContactRemoved = true;
         }
     }
@@ -335,7 +335,7 @@ ContactModel::getBannedContacts() const
 const std::string
 ContactModel::getProfileId(const std::string& uri, bool isAccount) const
 {
-    return database::getProfileId(pimpl_->db, pimpl_->linked.owner.id, isAccount ? "true" : "false", uri);
+    return storage::getProfileId(pimpl_->db, pimpl_->linked.owner.id, isAccount ? "true" : "false", uri);
 }
 
 const std::string
@@ -438,7 +438,6 @@ ContactModel::sendDhtMessage(const std::string& contactUri, const std::string& b
     return msgId;
 }
 
-
 ContactModelPimpl::ContactModelPimpl(const ContactModel& linked,
                                      Database& db,
                                      const CallbacksHandler& callbacksHandler,
@@ -496,13 +495,13 @@ ContactModelPimpl::~ContactModelPimpl()
 bool
 ContactModelPimpl::fillsWithSIPContacts()
 {
-    auto accountProfileId = database::getProfileId(db, linked.owner.id, "true", linked.owner.profileInfo.uri);
-    auto conversationsForAccount = database::getConversationsForProfile(db, accountProfileId);
+    auto accountProfileId = storage::getProfileId(db, linked.owner.id, "true", linked.owner.profileInfo.uri);
+    auto conversationsForAccount = storage::getConversationsForProfile(db, accountProfileId);
     for (const auto& c : conversationsForAccount) {
-        auto otherParticipants = database::getPeerParticipantsForConversation(db, accountProfileId, c);
+        auto otherParticipants = storage::getPeerParticipantsForConversation(db, accountProfileId, c);
         for (const auto& participant: otherParticipants) {
             // for each conversations get the other profile id
-            auto contactInfo = database::buildContactFromProfileId(db, participant);
+            auto contactInfo = storage::buildContactFromProfileId(db, participant);
             {
                 std::lock_guard<std::mutex> lk(contactsMtx_);
                 contacts.emplace(contactInfo.profileInfo.uri, contactInfo);
@@ -553,7 +552,7 @@ ContactModelPimpl::fillsWithRINGContacts() {
             contacts.emplace(contactUri.toStdString(), contactInfo);
         }
 
-        database::getOrInsertProfile(db, contactUri.toStdString(), linked.owner.id, false,
+        storage::getOrInsertProfile(db, contactUri.toStdString(), linked.owner.id, false,
         profile::to_string(profile::Type::RING), alias.toStdString(), photo.toStdString());
     }
 
@@ -673,7 +672,7 @@ ContactModelPimpl::slotContactRemoved(const std::string& accountId, const std::s
                     bannedContacts.erase(it);
                 }
             }
-            database::removeContact(db, contactUri, accountId);
+            storage::removeContact(db, contactUri, accountId);
             contacts.erase(contactUri);
         }
     }
@@ -690,10 +689,10 @@ ContactModelPimpl::slotContactRemoved(const std::string& accountId, const std::s
 void
 ContactModelPimpl::addToContacts(const std::string& contactId, const profile::Type& type, bool banned)
 {
-    auto profileId = database::getOrInsertProfile(db, contactId, linked.owner.id,
+    auto profileId = storage::getOrInsertProfile(db, contactId, linked.owner.id,
     false, to_string(linked.owner.profileInfo.type),"", "");
 
-    auto contactInfo = database::buildContactFromProfileId(db, profileId);
+    auto contactInfo = storage::buildContactFromProfileId(db, profileId);
     contactInfo.isBanned = banned;
     contactInfo.profileInfo.type = type; // PENDING should not be stored in the database
 
@@ -786,7 +785,7 @@ ContactModelPimpl::slotIncomingContactRequest(const std::string& accountId,
             auto contactInfo = contact::Info {profileInfo, "", false, false, false};
             contacts.emplace(contactUri, contactInfo);
             emitTrust = true;
-            database::getOrInsertProfile(db, contactUri, accountId, false,
+            storage::getOrInsertProfile(db, contactUri, accountId, false,
             profile::to_string(profile::Type::RING), alias.toStdString(), photo.toStdString());
         }
     }
