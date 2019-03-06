@@ -1,9 +1,10 @@
 /****************************************************************************
- *    Copyright (C) 2017-2019 Savoir-faire Linux Inc.                             *
+ *   Copyright (C) 2017-2019 Savoir-faire Linux Inc.                        *
  *   Author: Nicolas Jäger <nicolas.jager@savoirfairelinux.com>             *
  *   Author: Sébastien Blin <sebastien.blin@savoirfairelinux.com>           *
  *   Author: Guillaume Roguez <guillaume.roguez@savoirfairelinux.com>       *
  *   Author: Kateryna Kostiuk <kateryna.kostiuk@savoirfairelinux.com>       *
+ *   Author: Andreas Traczyk <andreas.traczyk@savoirfairelinux.com>         *
  *                                                                          *
  *   This library is free software; you can redistribute it and/or          *
  *   modify it under the terms of the GNU Lesser General Public             *
@@ -20,25 +21,27 @@
  ***************************************************************************/
 #pragma once
 
+// Qt
+#include <QObject>
+#include <QtCore/QDir>
+#include <QtSql/QSqlQuery>
+#include <QtCore/QStandardPaths>
+#include <QDebug>
+
 // Std
 #include <memory>
 #include <string>
 #include <stdexcept>
-
-// Qt
-#include <qobject.h>
-#include <QtCore/QDir>
-#include <QtSql/QSqlQuery>
-#include <QtCore/QStandardPaths>
+#include <type_traits>
 
 namespace lrc
 {
 
-static constexpr auto VERSION = "1.1";
+static constexpr auto VERSION = "1";
 static constexpr auto NAME = "ring.db";
 
 /**
-  *  @brief Class that communicates with the database.
+  *  @brief Base class that communicates with a database.
   *  @note not thread safe.
   */
 class Database : public QObject {
@@ -47,11 +50,15 @@ class Database : public QObject {
 public:
     /**
      * Create a database on the user system.
+     * @param the name for which to construct the db.
      * @exception QueryError database query error.
      */
-    Database();
-
+    Database(const QString& name, const QString& basePath);
     ~Database();
+
+    void remove();
+
+    virtual void load();
 
     /**
      * A structure which contains result(s) returned by a database query.
@@ -152,6 +159,19 @@ public:
     };
 
     /**
+     * Exception on database truncate operation.
+     * details() returns more information.
+     */
+    class QueryTruncateError final : public QueryError {
+    public:
+        explicit QueryTruncateError(const QSqlQuery& query,
+            const std::string& table);
+        std::string details() override;
+
+        const std::string table;
+    };
+
+    /**
      * Insert value(s) inside a table.
      * @param table where to perfom the action on.
      * @param bindCol binds column(s) and identifier(s). The key is the identifier, it should begin by ':'.
@@ -198,6 +218,14 @@ public:
                     const std::string& where,
                     const std::map<std::string, std::string>& bindsWhere);
     /**
+     * Delete all rows from a table(truncate).
+     * @param table where to perfom the action on.
+     * @exception QueryDeleteError delete query failed.
+     *
+     * @note usually, identifiers between where and bindsWhere, are equals.
+     */
+    void truncateTable(const std::string& table);
+    /**
      * Select data from table.
      * @param select column(s) to select.e
      * @param table where to perfom the action on.
@@ -225,27 +253,85 @@ public:
     int count(const std::string& count, const std::string& table,
               const std::string& where, const std::map<std::string, std::string>& bindsWhere);
 
-    static QString getPath();
-private:
-    void createTables();
-    void storeVersion(const std::string& version);
+    QString basePath_;
+
+protected:
+    virtual void createTables();
 
     /**
-     * Migration helpers. Parse JSON for history and VCards and add it into the database.
+     * Migration helpers.
+     */
+    void migrateIfNeeded();
+    void storeVersion(const std::string& version);
+    std::string getVersion();
+
+    virtual void migrateFromVersion(const std::string& version);
+
+    QString connectionName_;
+    QString databaseFullPath_;
+    QSqlDatabase db_;
+};
+
+/**
+  *  @brief A legacy database to help migrate from the single db epoch.
+  *  @note not thread safe.
+  */
+class LegacyDatabase final : public Database {
+    Q_OBJECT
+
+public:
+    /**
+     * Create a migratory legacy database.
+     * @exception QueryError database query error.
+     */
+    LegacyDatabase(const QString& basePath) : Database("ring", basePath) {}
+    ~LegacyDatabase();
+
+    void load() override;
+
+protected:
+    void createTables() override;
+
+private:
+    /**
+     * Migration helpers from old LRC. Parse JSON for history and VCards and add it into the database.
      */
     void migrateOldFiles();
     void migrateLocalProfiles();
     void migratePeerProfiles();
     void migrateTextHistory();
-    void linkRingProfilesWithAccounts(bool contactsOnly);
-    void migrateIfNeeded();
-    std::string  getVersion();
-    void migrateFromVersion(const std::string& version);
-    void migrateSchemaFromVersion1();
-    void updateProfileAccountForContact(const std::string& contactURI,
-                                        const std::string& accountID);
 
-    QSqlDatabase db_;
+    void migrateFromVersion(const std::string& version) override;
+
+    /**
+     * Migration helpers from version 1
+     */
+    void migrateSchemaFromVersion1();
+    void linkRingProfilesWithAccounts(bool contactsOnly);
+    void updateProfileAccountForContact(const std::string& contactURI,
+        const std::string& accountID);
 };
+
+namespace DatabaseFactory
+{
+template<typename T, class... Args>
+std::enable_if_t<
+    std::is_constructible<T, Args...>::value,
+    std::shared_ptr<Database>
+>
+create(Args&&... args) {
+    auto pdb = std::static_pointer_cast<Database>(
+        std::make_shared<T>(std::forward<Args>(args)...)
+    );
+    // To allow override of the db load method we don't
+    // call it from the constructor.
+    try {
+        pdb->load();
+    } catch (const std::runtime_error& e) {
+        throw std::runtime_error(e);
+    }
+    return pdb;
+}
+} // DatabaseFactory
 
 } // namespace lrc
