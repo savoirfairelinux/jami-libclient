@@ -27,7 +27,7 @@
 #include <QtCore/QDateTime>
 
 //Ring
-#include "database.h"
+#include "authority/databasehelper.h"
 #include "profile.h"
 #include "private/vcardutils.h"
 #include "account.h"
@@ -75,20 +75,6 @@ LocalProfileCollection::~LocalProfileCollection()
 
 bool LocalProfileEditor::save(const Profile* pro)
 {
-    const auto& filename = path(pro);
-    const auto& result = pro->person()->toVCard(pro->accounts().toList());
-
-    qDebug() << "Saving profile in:" << filename;
-    QFile file {filename};
-
-    if (Q_UNLIKELY(!file.open(QIODevice::WriteOnly))) {
-        qWarning() << "Can't write to" << filename;
-        return false;
-    }
-
-    file.write(result);
-    file.close();
-
     // we need to bind the legacy lrc to the new one. We doing that by using profileUpdated
     emit ProfileModel::instance().profileUpdated(pro);
 
@@ -97,11 +83,6 @@ bool LocalProfileEditor::save(const Profile* pro)
 
 bool LocalProfileEditor::remove(const Profile* item)
 {
-    if (QFile::remove(path(item))) {
-        mediator()->removeItem(item);
-        return true;
-    }
-
     return false;
 }
 
@@ -113,20 +94,12 @@ bool LocalProfileEditor::edit( Profile* item)
 
 bool LocalProfileEditor::addNew(Profile* pro)
 {
-    pro->person()->ensureUid();
-    qDebug() << "Creating new profile" << pro->person()->uid();
-    m_lItems << pro;
-    pro->setCollection(m_pCollection);
-    mediator()->addItem(pro);
-    save(pro);
-    return true;
+   return true;
 }
 
 bool LocalProfileEditor::addExisting(const Profile* item)
 {
-   m_lItems << const_cast<Profile*>(item);
-   mediator()->addItem(item);
-   return true;
+    return true;
 }
 
 QVector<Profile*> LocalProfileEditor::items() const
@@ -136,11 +109,7 @@ QVector<Profile*> LocalProfileEditor::items() const
 
 QString LocalProfileEditor::path(const Profile* p) const
 {
-   const QDir profilesDir = (lrc::Database::getPath()) + "/profiles/";
-   profilesDir.mkpath(profilesDir.path());
-   return QString("%1/%2.vcf")
-      .arg(profilesDir.absolutePath())
-      .arg(QString(p->person()->uid()));
+    return QString();
 }
 
 QString LocalProfileCollection::name () const
@@ -165,26 +134,6 @@ bool LocalProfileCollection::isEnabled() const
 
 bool LocalProfileCollection::load()
 {
-    const QDir profilesDir = (lrc::Database::getPath()) + "/profiles/";
-    qDebug() << "Loading vcf from:" << profilesDir;
-
-    const QStringList entries = profilesDir.entryList({QStringLiteral("*.vcf")}, QDir::Files);
-    bool hasProfile = false;
-
-    foreach (const QString& item , entries) {
-        hasProfile = true;
-        auto personProfile = new Person(nullptr);
-        QList<Account*> accs;
-        VCardUtils::mapToPerson(personProfile,QUrl(profilesDir.path()+'/'+item),&accs);
-        auto profile = new Profile(this, personProfile);
-        profile->setAccounts(accs.toVector());
-        editor<Profile>()->addExisting(profile);
-    }
-
-    if (!hasProfile) {
-        //Ring needs at least one global profile
-        setupDefaultProfile();
-    }
     return true;
 }
 
@@ -206,7 +155,7 @@ FlagPack<CollectionInterface::SupportedFeatures> LocalProfileCollection::support
 
 bool LocalProfileCollection::clear()
 {
-   QFile::remove((lrc::Database::getPath()) + "/profiles/");
+   QFile::remove((lrc::authority::storage::getPath()) + "/profiles/");
    return true;
 }
 
@@ -217,12 +166,4 @@ QByteArray LocalProfileCollection::id() const
 
 void LocalProfileCollection::setupDefaultProfile()
 {
-   auto profile = new Profile(this, new Person());
-   profile->person()->setFormattedName(QObject::tr("Default"));
-
-   for (int i = 0 ; i < AccountModel::instance().size() ; i++) {
-       profile->addAccount(AccountModel::instance()[i]);
-   }
-
-   editor<Profile>()->addNew(profile);
 }
