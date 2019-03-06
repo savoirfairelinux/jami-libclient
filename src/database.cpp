@@ -1,9 +1,10 @@
 /****************************************************************************
- *    Copyright (C) 2017-2019 Savoir-faire Linux Inc.                             *
+ *   Copyright (C) 2017-2019 Savoir-faire Linux Inc.                        *
  *   Author: Nicolas Jäger <nicolas.jager@savoirfairelinux.com>             *
  *   Author: Sébastien Blin <sebastien.blin@savoirfairelinux.com>           *
  *   Author: Guillaume Roguez <guillaume.roguez@savoirfairelinux.com>       *
  *   Author: Kateryna Kostiuk <kateryna.kostiuk@savoirfairelinux.com>       *
+ *   Author: Andreas Traczyk <andreas.traczyk@savoirfairelinux.com>         *
  *                                                                          *
  *   This library is free software; you can redistribute it and/or          *
  *   modify it under the terms of the GNU Lesser General Public             *
@@ -53,25 +54,40 @@ namespace lrc
 
 using namespace api;
 
-Database::Database()
-: QObject()
+Database::Database(const std::string& name)
+    : QObject(), name_(name)
+{}
+
+Database::~Database()
+{}
+
+QString
+Database::getPath()
+{
+#if defined(_WIN32) || defined(__APPLE__)
+    return QDir(QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation)).filePath("ring/");
+#else
+    return QStandardPaths::writableLocation(QStandardPaths::DataLocation);
+#endif
+}
+
+void
+Database::load()
 {
     if (not QSqlDatabase::drivers().contains("QSQLITE")) {
         throw std::runtime_error("QSQLITE not supported");
     }
 
-    {
-        // create data directory if not created yet
-        QDir dataDir;
-        dataDir.mkpath(getPath());
-    }
+    // create data directory if not created yet
+    QDir dataDir;
+    dataDir.mkpath(getPath());
 
     // initalize the database.
     db_ = QSqlDatabase::addDatabase("QSQLITE");
 #ifdef ENABLE_TEST
-    db_.setDatabaseName(QDir(QStandardPaths::writableLocation(QStandardPaths::TempLocation)).filePath(NAME));
+    db_.setDatabaseName(QDir(QStandardPaths::writableLocation(QStandardPaths::TempLocation)).filePath(name_ + ".db"));
 #else
-    db_.setDatabaseName(QDir(getPath()).filePath(NAME));
+    db_.setDatabaseName(QDir(getPath()).filePath((name_ + ".db")));
 #endif
 
     // open the database.
@@ -89,26 +105,9 @@ Database::Database()
             QSqlDatabase::database().rollback();
             throw std::runtime_error("Could not correctly create the database");
         }
-        // NOTE: the migration can take some time.
-        migrateOldFiles();
     } else {
         migrateIfNeeded();
     }
-}
-
-QString
-Database::getPath()
-{
-#if defined(_WIN32) || defined(__APPLE__)
-    return QDir(QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation)).filePath("ring/");
-#else
-    return QStandardPaths::writableLocation(QStandardPaths::DataLocation);
-#endif
-}
-
-Database::~Database()
-{
-
 }
 
 void
@@ -192,25 +191,6 @@ Database::migrateIfNeeded()
 void
 Database::migrateFromVersion(const std::string& currentVersion)
 {
-    if (currentVersion == "1") {
-        migrateSchemaFromVersion1();
-    }
-}
-
-void
-Database::migrateSchemaFromVersion1()
-{
-    QSqlQuery query;
-    auto tableProfileAccounts = "CREATE TABLE profiles_accounts (profile_id INTEGER NOT NULL,                     \
-                                                                 account_id TEXT NOT NULL,                        \
-                                                                 is_account TEXT,                                 \
-                                                                 FOREIGN KEY(profile_id) REFERENCES profiles(id))";
-    // add profiles accounts table
-    if (not db_.tables().contains("profiles_accounts", Qt::CaseInsensitive)
-        and not query.exec(tableProfileAccounts)) {
-            throw QueryError(query);
-    }
-    linkRingProfilesWithAccounts(false);
 }
 
 void
@@ -459,8 +439,53 @@ Database::QueryDeleteError::details()
     return oss.str();
 }
 
+/*****************************************************************************
+ *                                                                           *
+ *                               LegacyDatabase                              *
+ *                                                                           *
+ ****************************************************************************/
 void
-Database::migrateOldFiles()
+LegacyDatabase::load()
+{
+    if (not QSqlDatabase::drivers().contains("QSQLITE")) {
+        throw std::runtime_error("QSQLITE not supported");
+    }
+
+    // create data directory if not created yet
+    QDir dataDir;
+    dataDir.mkpath(getPath());
+
+    // initalize the database.
+    db_ = QSqlDatabase::addDatabase("QSQLITE");
+#ifdef ENABLE_TEST
+    db_.setDatabaseName(QDir(QStandardPaths::writableLocation(QStandardPaths::TempLocation)).filePath(name_.c_str()));
+#else
+    db_.setDatabaseName(QDir(getPath()).filePath(name_.c_str()));
+#endif
+
+    // open the database.
+    if (not db_.open()) {
+        throw std::runtime_error("cannot open database");
+    }
+
+    // if db is empty we create them.
+    if (db_.tables().empty()) {
+        try {
+            QSqlDatabase::database().transaction();
+            createTables();
+            QSqlDatabase::database().commit();
+        } catch (QueryError& e) {
+            QSqlDatabase::database().rollback();
+            throw std::runtime_error("Could not correctly create the database");
+        }
+        migrateOldFiles();
+    } else {
+        migrateIfNeeded();
+    }
+}
+
+void
+LegacyDatabase::migrateOldFiles()
 {
     migrateLocalProfiles();
     migratePeerProfiles();
@@ -470,7 +495,7 @@ Database::migrateOldFiles()
 }
 
 void
-Database::migrateLocalProfiles()
+LegacyDatabase::migrateLocalProfiles()
 {
     const QDir profilesDir = getPath() + "/profiles/";
     const QStringList entries = profilesDir.entryList({QStringLiteral("*.vcf")}, QDir::Files);
@@ -530,7 +555,7 @@ Database::migrateLocalProfiles()
 }
 
 void
-Database::migratePeerProfiles()
+LegacyDatabase::migratePeerProfiles()
 {
     const QDir profilesDir = getPath() + "/peer_profiles/";
 
@@ -569,7 +594,7 @@ Database::migratePeerProfiles()
 }
 
 void
-Database::migrateTextHistory()
+LegacyDatabase::migrateTextHistory()
 {
     // load all text recordings so we can recover CMs that are not in the call history
     QDir dir(getPath() + "/text/");
@@ -699,29 +724,31 @@ Database::migrateTextHistory()
 }
 
 void
-Database::updateProfileAccountForContact(const std::string& contactURI,
-                                         const std::string& accountId)
+LegacyDatabase::migrateFromVersion(const std::string& currentVersion)
 {
-    auto profileIds = select("id", "profiles","uri=:uri",
-                             {{":uri", contactURI}})
-                             .payloads;
-    if (profileIds.empty()) {
-        return;
-    }
-    auto rows = select("profile_id", "profiles_accounts",
-    "account_id=:account_id AND is_account=:is_account", {{":account_id", accountId},
-    {":is_account", "false"}}).payloads;
-    if (std::find(rows.begin(), rows.end(), profileIds[0]) == rows.end()) {
-        insertInto("profiles_accounts",
-                   {{":profile_id", "profile_id"}, {":account_id", "account_id"},
-                   {":is_account", "is_account"}},
-                   {{":profile_id", profileIds[0]}, {":account_id", accountId},
-                   {":is_account", "false"}});
+    if (currentVersion == "1") {
+        migrateSchemaFromVersion1();
     }
 }
 
 void
-Database::linkRingProfilesWithAccounts(bool contactsOnly)
+LegacyDatabase::migrateSchemaFromVersion1()
+{
+    QSqlQuery query;
+    auto tableProfileAccounts = "CREATE TABLE profiles_accounts (profile_id INTEGER NOT NULL,                     \
+                                                                 account_id TEXT NOT NULL,                        \
+                                                                 is_account TEXT,                                 \
+                                                                 FOREIGN KEY(profile_id) REFERENCES profiles(id))";
+    // add profiles accounts table
+    if (not db_.tables().contains("profiles_accounts", Qt::CaseInsensitive)
+        and not query.exec(tableProfileAccounts)) {
+        throw QueryError(query);
+    }
+    linkRingProfilesWithAccounts(false);
+}
+
+void
+LegacyDatabase::linkRingProfilesWithAccounts(bool contactsOnly)
 {
     const QStringList accountIds =
     ConfigurationManager::instance().getAccountList();
@@ -795,6 +822,28 @@ Database::linkRingProfilesWithAccounts(bool contactsOnly)
                 }
             }
         }
+    }
+}
+
+void
+LegacyDatabase::updateProfileAccountForContact(const std::string& contactURI,
+    const std::string& accountId)
+{
+    auto profileIds = select("id", "profiles", "uri=:uri",
+        { {":uri", contactURI} })
+        .payloads;
+    if (profileIds.empty()) {
+        return;
+    }
+    auto rows = select("profile_id", "profiles_accounts",
+        "account_id=:account_id AND is_account=:is_account", { {":account_id", accountId},
+        {":is_account", "false"} }).payloads;
+    if (std::find(rows.begin(), rows.end(), profileIds[0]) == rows.end()) {
+        insertInto("profiles_accounts",
+            { {":profile_id", "profile_id"}, {":account_id", "account_id"},
+            {":is_account", "is_account"} },
+            { {":profile_id", profileIds[0]}, {":account_id", accountId},
+            {":is_account", "false"} });
     }
 }
 
