@@ -280,7 +280,7 @@ SET( libringclient_LIB_SRCS
   src/conversationmodel.cpp
   src/database.cpp
   src/authority/daemon.cpp
-  src/authority/databasehelper.cpp
+  src/authority/storagehelper.cpp
   src/lrc.cpp
   src/newaccountmodel.cpp
   src/peerdiscoverymodel.cpp
