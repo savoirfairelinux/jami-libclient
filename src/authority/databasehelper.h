@@ -41,38 +41,6 @@ namespace database
 {
 
 /**
- * Get id from database for a given uri
- * @param db
- * @param accountId
- * @param isAccount
- * @param uri
- * @return the id
- * @note "" if no id
- */
-std::string getProfileId(Database& db,
-            const std::string& accountId,
-            const std::string& isAccount,
-            const std::string& uri="");
-
- /**
- * Get id for a profile. If the profile doesn't exist, create it.
- * @param db
- * @param contactUri
- * @param accountId
- * @param isAccount
- * @param alias
- * @param avatar
- * @return the id
- */
- std::string getOrInsertProfile(Database& db,
-                                const std::string& contactUri,
-                                const std::string& accountId,
-                                bool  isAccount,
-                                const std::string& type,
-                                const std::string& alias = "",
-                                const std::string& avatar = "");
-
-/**
  * Get conversations for a given profile.
  * @param db
  * @param profileId
@@ -87,7 +55,7 @@ std::vector<std::string> getConversationsForProfile(Database& db,
  * @param conversationId
  * @note we don't verify if profileId is in the conversation
  */
-std::vector<std::string> getPeerParticipantsForConversation(Database& db,
+std::vector<std::string> getPeerParticipantsForConversationId(Database& db,
                                                             const std::string& profileId,
                                                             const std::string& conversationId);
 
@@ -304,6 +272,14 @@ std::string conversationIdFromInteractionId(Database& db, unsigned int interacti
  * @param db
  */
 uint64_t getLastTimestamp(Database& db);
+
+/**
+ * Retrieve a list of account database via a migration
+ * procedure from the legacy "ring.db", if it exists
+ * @param accountIds of the accounts to attempt migration upon
+ */
+std::vector<std::shared_ptr<Database>>
+migrateLegacyDatabaseIfNeeded(const QStringList& accountIds);
 
 } // namespace database
 

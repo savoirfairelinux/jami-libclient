@@ -77,7 +77,6 @@ to_type(const std::string& type)
         return interaction::Type::INVALID;
 }
 
-
 enum class Status {
     INVALID,
     UNKNOWN,
@@ -185,6 +184,7 @@ struct Info
     std::string authorUri;
     std::string body;
     std::time_t timestamp = 0;
+    std::time_t duration = 0;
     Type type = Type::INVALID;
     Status status = Status::INVALID;
 };
