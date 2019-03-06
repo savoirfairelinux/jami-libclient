@@ -36,8 +36,8 @@ enum class Type {
     TEXT,
     CALL,
     CONTACT,
-    OUTGOING_DATA_TRANSFER,
-    INCOMING_DATA_TRANSFER
+    DATA_TRANSFER,
+    COUNT__
 };
 
 static inline const std::string
@@ -50,11 +50,10 @@ to_string(const Type& type)
         return "CALL";
     case Type::CONTACT:
         return "CONTACT";
-    case Type::OUTGOING_DATA_TRANSFER:
-        return "OUTGOING_DATA_TRANSFER";
-    case Type::INCOMING_DATA_TRANSFER:
-        return "INCOMING_DATA_TRANSFER";
+    case Type::DATA_TRANSFER:
+        return "DATA_TRANSFER";
     case Type::INVALID:
+    case Type::COUNT__:
     default:
         return "INVALID";
     }
@@ -69,24 +68,19 @@ to_type(const std::string& type)
         return interaction::Type::CALL;
     else if (type == "CONTACT")
         return interaction::Type::CONTACT;
-    else if (type == "OUTGOING_DATA_TRANSFER")
-        return interaction::Type::OUTGOING_DATA_TRANSFER;
-    else if (type == "INCOMING_DATA_TRANSFER")
-        return interaction::Type::INCOMING_DATA_TRANSFER;
+    else if (type == "DATA_TRANSFER")
+        return interaction::Type::DATA_TRANSFER;
     else
         return interaction::Type::INVALID;
 }
-
 
 enum class Status {
     INVALID,
     UNKNOWN,
     SENDING,
-    FAILED,
-    SUCCEED,
-    READ,
-    UNREAD,
-    TRANSFER_CREATED, /*[jn] mettre à jour les fonctions de conversion */
+    FAILURE,
+    SUCCESS,
+    TRANSFER_CREATED,
     TRANSFER_ACCEPTED,
     TRANSFER_CANCELED,
     TRANSFER_ERROR,
@@ -95,7 +89,8 @@ enum class Status {
     TRANSFER_AWAITING_PEER,
     TRANSFER_AWAITING_HOST,
     TRANSFER_TIMEOUT_EXPIRED,
-    TRANSFER_FINISHED
+    TRANSFER_FINISHED,
+    COUNT__
 };
 
 static inline const std::string
@@ -106,14 +101,10 @@ to_string(const Status& status)
         return "UNKNOWN";
     case Status::SENDING:
         return "SENDING";
-    case Status::FAILED:
-        return "FAILED";
-    case Status::SUCCEED:
-        return "SUCCEED";
-    case Status::READ:
-        return "READ";
-    case Status::UNREAD:
-        return "UNREAD";
+    case Status::FAILURE:
+        return "FAILURE";
+    case Status::SUCCESS:
+        return "SUCCESS";
     case Status::TRANSFER_CREATED:
         return "TRANSFER_CREATED";
     case Status::TRANSFER_ACCEPTED:
@@ -135,6 +126,7 @@ to_string(const Status& status)
     case Status::TRANSFER_FINISHED:
         return "TRANSFER_FINISHED";
     case Status::INVALID:
+    case Status::COUNT__:
     default:
         return "INVALID";
     }
@@ -144,56 +136,60 @@ static inline Status
 to_status(const std::string& status)
 {
     if (status == "UNKNOWN")
-        return interaction::Status::UNKNOWN;
+        return Status::UNKNOWN;
     else if (status == "SENDING")
-        return interaction::Status::SENDING;
-    else if (status == "FAILED")
-        return interaction::Status::FAILED;
-    else if (status == "SUCCEED")
-        return interaction::Status::SUCCEED;
-    else if (status == "READ")
-        return interaction::Status::READ;
-    else if (status == "UNREAD")
-        return interaction::Status::UNREAD;
+        return Status::SENDING;
+    else if (status == "FAILURE")
+        return Status::FAILURE;
+    else if (status == "SUCCESS")
+        return Status::SUCCESS;
     else if (status == "TRANSFER_CREATED")
-        return interaction::Status::TRANSFER_CREATED;
+        return Status::TRANSFER_CREATED;
     else if (status == "TRANSFER_ACCEPTED")
-        return interaction::Status::TRANSFER_ACCEPTED;
+        return Status::TRANSFER_ACCEPTED;
     else if (status == "TRANSFER_CANCELED")
-        return interaction::Status::TRANSFER_CANCELED;
+        return Status::TRANSFER_CANCELED;
     else if (status == "TRANSFER_ERROR")
-        return interaction::Status::TRANSFER_ERROR;
+        return Status::TRANSFER_ERROR;
     else if (status == "TRANSFER_UNJOINABLE_PEER")
-        return interaction::Status::TRANSFER_UNJOINABLE_PEER;
+        return Status::TRANSFER_UNJOINABLE_PEER;
     else if (status == "TRANSFER_ONGOING")
-        return interaction::Status::TRANSFER_ONGOING;
+        return Status::TRANSFER_ONGOING;
     else if (status == "TRANSFER_AWAITING_HOST")
-        return interaction::Status::TRANSFER_AWAITING_HOST;
+        return Status::TRANSFER_AWAITING_HOST;
     else if (status == "TRANSFER_AWAITING_PEER")
-        return interaction::Status::TRANSFER_AWAITING_PEER;
+        return Status::TRANSFER_AWAITING_PEER;
     else if (status == "TRANSFER_TIMEOUT_EXPIRED")
-        return interaction::Status::TRANSFER_TIMEOUT_EXPIRED;
+        return Status::TRANSFER_TIMEOUT_EXPIRED;
     else if (status == "TRANSFER_FINISHED")
-        return interaction::Status::TRANSFER_FINISHED;
+        return Status::TRANSFER_FINISHED;
     else
-        return interaction::Status::INVALID;
+        return Status::INVALID;
 
 }
 
+/**
+ * @var authorUri
+ * @var body
+ * @var timestamp
+ * @var duration
+ * @var type
+ * @var status
+ * @var isRead
+ */
 struct Info
 {
     std::string authorUri;
     std::string body;
     std::time_t timestamp = 0;
+    std::time_t duration = 0;
     Type type = Type::INVALID;
     Status status = Status::INVALID;
+    bool isRead = false;
 };
 
 static inline bool isOutgoing(const Info& interaction) {
-    return (interaction.status != lrc::api::interaction::Status::READ
-    && interaction.status != lrc::api::interaction::Status::UNREAD
-    && interaction.type != lrc::api::interaction::Type::INCOMING_DATA_TRANSFER)
-    || interaction.type == lrc::api::interaction::Type::OUTGOING_DATA_TRANSFER;
+    return interaction.authorUri.empty();
 }
 
 } // namespace interaction
