@@ -567,6 +567,34 @@ getLastTimestamp(Database& db)
     return result;
 }
 
+std::vector<std::shared_ptr<Database>>
+migrateLegacyDatabaseIfNeeded(const QStringList& accountIds)
+{
+    std::vector<std::shared_ptr<Database>> dbs(accountIds.size());
+
+    if (!dbs.size()) {
+        qDebug() << "No accounts to migrate";
+        return dbs;
+    }
+
+    try {
+        auto legacyDb = lrc::DatabaseFactory::create<LegacyDatabase>();
+        // do migration
+        int index = 0;
+        for (auto accountId : accountIds) {
+            try {
+                dbs.at(index++) = lrc::DatabaseFactory::create<Database>(accountId.toStdString());
+            } catch (const std::runtime_error& e) {
+                qWarning() << e.what();
+            }
+        }
+    } catch (const std::runtime_error& e) {
+        qWarning() << e.what();
+    }
+
+    return dbs;
+}
+
 } // namespace database
 
 } // namespace authority

@@ -1,9 +1,10 @@
 /****************************************************************************
- *    Copyright (C) 2017-2019 Savoir-faire Linux Inc.                             *
+ *   Copyright (C) 2017-2019 Savoir-faire Linux Inc.                        *
  *   Author: Nicolas Jäger <nicolas.jager@savoirfairelinux.com>             *
  *   Author: Sébastien Blin <sebastien.blin@savoirfairelinux.com>           *
  *   Author: Guillaume Roguez <guillaume.roguez@savoirfairelinux.com>       *
  *   Author: Kateryna Kostiuk <kateryna.kostiuk@savoirfairelinux.com>       *
+ *   Author: Andreas Traczyk <andreas.traczyk@savoirfairelinux.com>         *
  *                                                                          *
  *   This library is free software; you can redistribute it and/or          *
  *   modify it under the terms of the GNU Lesser General Public             *
@@ -53,47 +54,31 @@ namespace lrc
 
 using namespace api;
 
-Database::Database()
-: QObject()
+Database::Database(const std::string& name)
+    : QObject()
 {
     if (not QSqlDatabase::drivers().contains("QSQLITE")) {
         throw std::runtime_error("QSQLITE not supported");
     }
 
-    {
-        // create data directory if not created yet
-        QDir dataDir;
-        dataDir.mkpath(getPath());
-    }
+    // create data directory if not created yet
+    QDir dataDir;
+    dataDir.mkpath(getPath());
 
-    // initalize the database.
-    db_ = QSqlDatabase::addDatabase("QSQLITE");
+    QString databaseFile = QString::fromStdString(name) + ".db";
 #ifdef ENABLE_TEST
-    db_.setDatabaseName(QDir(QStandardPaths::writableLocation(QStandardPaths::TempLocation)).filePath(NAME));
+    name_ = QDir(QStandardPaths::writableLocation(QStandardPaths::TempLocation)).filePath(databaseFile);
 #else
-    db_.setDatabaseName(QDir(getPath()).filePath(NAME));
+    name_ = QDir(getPath()).filePath(databaseFile);
 #endif
 
-    // open the database.
-    if (not db_.open()) {
-        throw std::runtime_error("cannot open database");
-    }
+    // initalize the database.
+    db_ = QSqlDatabase::addDatabase("QSQLITE", name_);
 
-    // if db is empty we create them.
-    if (db_.tables().empty()) {
-        try {
-            QSqlDatabase::database().transaction();
-            createTables();
-            QSqlDatabase::database().commit();
-        } catch (QueryError& e) {
-            QSqlDatabase::database().rollback();
-            throw std::runtime_error("Could not correctly create the database");
-        }
-        // NOTE: the migration can take some time.
-        migrateOldFiles();
-    } else {
-        migrateIfNeeded();
-    }
+}
+
+Database::~Database()
+{
 }
 
 QString
@@ -106,49 +91,88 @@ Database::getPath()
 #endif
 }
 
-Database::~Database()
+void
+Database::load()
 {
+    // open the database.
+    if (not db_.open()) {
+        std::stringstream ss;
+        ss << "cannot open database: " << name_.toStdString();
+        throw std::runtime_error(ss.str());
+    }
 
+    // if db is empty we create them.
+    if (db_.tables().empty()) {
+        try {
+            QSqlDatabase::database(name_).transaction();
+            createTables();
+            QSqlDatabase::database(name_).commit();
+            qDebug() << "Successfully created tables for: " << name_;
+        } catch (QueryError& e) {
+            QSqlDatabase::database(name_).rollback();
+            throw std::runtime_error("Could not correctly create the database");
+        }
+    } else {
+        migrateIfNeeded();
+    }
 }
 
 void
 Database::createTables()
 {
-    QSqlQuery query;
+    QSqlQuery query(db_);
 
-    auto tableProfiles = "CREATE TABLE profiles (id INTEGER PRIMARY KEY,  \
-                                                 uri TEXT NOT NULL,       \
-                                                 alias TEXT,              \
-                                                 photo TEXT,              \
-                                                 type TEXT,               \
-                                                 status TEXT)";
+    auto tableAccountProfile = "CREATE TABLE account_profile ( \
+                                    photo TEXT, \
+                                    alias TEXT \
+                                )";
 
-    auto tableConversations = "CREATE TABLE conversations (id INTEGER,\
-                                                           participant_id INTEGER, \
-                                                           FOREIGN KEY(participant_id) REFERENCES profiles(id))";
+    auto tableProfiles       = "CREATE TABLE profiles ( \
+                                    uri TEXT UNIQUE NOT NULL, \
+                                    alias TEXT, \
+                                    photo TEXT, \
+                                    type TEXT \
+                                )";
 
-    auto tableInteractions = "CREATE TABLE interactions (id INTEGER PRIMARY KEY,\
-                                                         account_id INTEGER, \
-                                                         author_id INTEGER, \
-                                                         conversation_id INTEGER, \
-                                                         timestamp INTEGER, \
-                                                         body TEXT,     \
-                                                         type TEXT,  \
-                                                         status TEXT, \
-                                                         daemon_id TEXT, \
-                                                         FOREIGN KEY(account_id) REFERENCES profiles(id), \
-                                                         FOREIGN KEY(author_id) REFERENCES profiles(id), \
-                                                         FOREIGN KEY(conversation_id) REFERENCES conversations(id))";
+    auto indexProfiles       = "CREATE UNIQUE INDEX idx_profiles _uri ON profiles (uri)";
 
-     auto tableProfileAccounts = "CREATE TABLE profiles_accounts (profile_id INTEGER NOT NULL,                    \
-                                                                 account_id TEXT NOT NULL,                        \
-                                                                 is_account TEXT,                                 \
-                                                                 FOREIGN KEY(profile_id) REFERENCES profiles(id))";
+    auto tableConversations  = "CREATE TABLE conversations ( \
+                                    id INTEGER, \
+                                    participant TEXT, \
+                                    FOREIGN KEY(participant) REFERENCES profiles(uri) \
+                                )";
+
+    auto tableInteractions   = "CREATE TABLE interactions ( \
+                                    id INTEGER PRIMARY KEY, \
+                                    author TEXT, \
+                                    conversation INTEGER, \
+                                    timestamp INTEGER, \
+                                    duration INTEGER, \
+                                    body TEXT, \
+                                    type TEXT, \
+                                    status TEXT, \
+                                    daemon_id TEXT, \
+                                    FOREIGN KEY(author) REFERENCES profiles(uri), \
+                                    FOREIGN KEY(conversation) REFERENCES conversations(id) \
+                                )";
+
+    // add account profile table
+    if (not db_.tables().contains("profiles_accounts", Qt::CaseInsensitive)
+        and not query.exec(tableAccountProfile)) {
+        throw QueryError(query);
+    }
+
     // add profiles table
     if (not db_.tables().contains("profiles", Qt::CaseInsensitive)
         and not query.exec(tableProfiles)) {
             throw QueryError(query);
     }
+
+    // create profiles table index
+    /*if (db_.tables().contains("profiles", Qt::CaseInsensitive)
+        and not query.exec(indexProfiles)) {
+        throw QueryError(query);
+    }*/
 
     // add conversations table
     if (not db_.tables().contains("conversations", Qt::CaseInsensitive)
@@ -159,12 +183,6 @@ Database::createTables()
     // add interactions table
     if (not db_.tables().contains("interactions", Qt::CaseInsensitive)
         and not query.exec(tableInteractions)) {
-            throw QueryError(query);
-    }
-
-    // add profiles accounts table
-    if (not db_.tables().contains("profiles_accounts", Qt::CaseInsensitive)
-        and not query.exec(tableProfileAccounts)) {
             throw QueryError(query);
     }
 
@@ -192,31 +210,12 @@ Database::migrateIfNeeded()
 void
 Database::migrateFromVersion(const std::string& currentVersion)
 {
-    if (currentVersion == "1") {
-        migrateSchemaFromVersion1();
-    }
-}
-
-void
-Database::migrateSchemaFromVersion1()
-{
-    QSqlQuery query;
-    auto tableProfileAccounts = "CREATE TABLE profiles_accounts (profile_id INTEGER NOT NULL,                     \
-                                                                 account_id TEXT NOT NULL,                        \
-                                                                 is_account TEXT,                                 \
-                                                                 FOREIGN KEY(profile_id) REFERENCES profiles(id))";
-    // add profiles accounts table
-    if (not db_.tables().contains("profiles_accounts", Qt::CaseInsensitive)
-        and not query.exec(tableProfileAccounts)) {
-            throw QueryError(query);
-    }
-    linkRingProfilesWithAccounts(false);
 }
 
 void
 Database::storeVersion(const std::string& version)
 {
-    QSqlQuery query;
+    QSqlQuery query(db_);;
 
     auto storeVersionQuery = std::string("PRAGMA user_version = ") + version;
 
@@ -227,7 +226,7 @@ Database::storeVersion(const std::string& version)
 std::string
 Database::getVersion()
 {
-    QSqlQuery query;
+    QSqlQuery query(db_);
     auto getVersionQuery = std::string("pragma user_version");
     if (not query.exec(getVersionQuery.c_str()))
         throw QueryError(query);
@@ -240,7 +239,7 @@ Database::insertInto(const std::string& table,                             // "t
                      const std::map<std::string, std::string>& bindCol,    // {{":id", "id"}, {":forename", "colforname"}, {":name", "colname"}}
                      const std::map<std::string, std::string>& bindsSet)   // {{":id", "7"}, {":forename", "alice"}, {":name", "cooper"}}
 {
-    QSqlQuery query;
+    QSqlQuery query(db_);
     std::string columns;
     std::string binds;
 
@@ -278,7 +277,7 @@ Database::update(const std::string& table,                              // "test
                  const std::string& where,                              // "contact=:name AND id=:id
                  const std::map<std::string, std::string>& bindsWhere)  // {{":name", "toto"}, {":id", "65"}}
 {
-    QSqlQuery query;
+    QSqlQuery query(db_);
 
     auto prepareStr = std::string("UPDATE " + table + " SET " + set + " WHERE " + where);
     query.prepare(prepareStr.c_str());
@@ -299,7 +298,7 @@ Database::select(const std::string& select,                            // "id", 
                  const std::string& where,                             // "contact=:name AND id=:id
                  const std::map<std::string, std::string>& bindsWhere) // {{":name", "toto"}, {":id", "65"}}
 {
-    QSqlQuery query;
+    QSqlQuery query(db_);
     std::string columnsSelect;
 
     auto prepareStr = std::string("SELECT " + select + " FROM " + table + " WHERE " + where);
@@ -330,7 +329,7 @@ Database::count(const std::string& count, // "id", "body", ...
                 const std::string& where, // "contact=:name AND id=:id"
                 const std::map<std::string, std::string>& bindsWhere) // {{":name", "toto"}, {":id", "65"}}
 {
-    QSqlQuery query;
+    QSqlQuery query(db_);
     std::string columnsSelect;
     auto prepareStr = std::string("SELECT count(" + count + ") FROM " + table + " WHERE " + where);
     query.prepare(prepareStr.c_str());
@@ -350,7 +349,7 @@ Database::deleteFrom(const std::string& table,                             // "t
                      const std::string& where,                             // "contact=:name AND id=:id
                      const std::map<std::string, std::string>& bindsWhere) // {{":name", "toto"}, {":id", "65"}}
 {
-    QSqlQuery query;
+    QSqlQuery query(db_);
 
     auto prepareStr = std::string("DELETE FROM " + table + " WHERE " + where);
     query.prepare(prepareStr.c_str());
@@ -459,18 +458,132 @@ Database::QueryDeleteError::details()
     return oss.str();
 }
 
+/*****************************************************************************
+ *                                                                           *
+ *                               LegacyDatabase                              *
+ *                                                                           *
+ ****************************************************************************/
+LegacyDatabase::~LegacyDatabase()
+{
+    // close db and remove file
+    /*if (db_.isOpen()) {
+        db_.close();
+        QFile(name_).remove();
+    }*/
+}
+
 void
-Database::migrateOldFiles()
+LegacyDatabase::load()
+{
+    // check if some migratable data exists
+    auto basePath = getPath();
+    if (not QFile(basePath + "ring.db").exists() &&
+        not QDir(basePath + "text/").exists() &&
+        not QDir(basePath + "profiles/").exists() &&
+        not QDir(basePath + "peer_profiles/").exists()) {
+        throw std::runtime_error("no data to migrate");
+    }
+
+    // open the database.
+    if (not db_.open()) {
+        std::stringstream ss;
+        ss << "cannot open database: " << name_.toStdString();
+        throw std::runtime_error(ss.str());
+    }
+
+    // if db is empty we create them.
+    if (db_.tables().empty()) {
+        try {
+            QSqlDatabase::database(name_).transaction();
+            createTables();
+            QSqlDatabase::database(name_).commit();
+        } catch (QueryError& e) {
+            QSqlDatabase::database(name_).rollback();
+            throw std::runtime_error("Could not correctly create the database");
+        }
+        migrateOldFiles();
+    } else {
+        migrateIfNeeded();
+    }
+}
+
+void
+LegacyDatabase::createTables()
+{
+    QSqlQuery query(db_);
+
+    auto tableProfiles = "CREATE TABLE profiles (id INTEGER PRIMARY KEY,  \
+                                                 uri TEXT NOT NULL,       \
+                                                 alias TEXT,              \
+                                                 photo TEXT,              \
+                                                 type TEXT,               \
+                                                 status TEXT)";
+
+    auto tableConversations = "CREATE TABLE conversations (id INTEGER,\
+                                                           participant_id INTEGER, \
+                                                           FOREIGN KEY(participant_id) REFERENCES profiles(id))";
+
+    auto tableInteractions = "CREATE TABLE interactions (id INTEGER PRIMARY KEY,\
+                                                         account_id INTEGER, \
+                                                         author_id INTEGER, \
+                                                         conversation_id INTEGER, \
+                                                         timestamp INTEGER, \
+                                                         body TEXT,     \
+                                                         type TEXT,  \
+                                                         status TEXT, \
+                                                         daemon_id TEXT, \
+                                                         FOREIGN KEY(account_id) REFERENCES profiles(id), \
+                                                         FOREIGN KEY(author_id) REFERENCES profiles(id), \
+                                                         FOREIGN KEY(conversation_id) REFERENCES conversations(id))";
+
+    auto tableProfileAccounts = "CREATE TABLE profiles_accounts (profile_id INTEGER NOT NULL,                    \
+                                                                 account_id TEXT NOT NULL,                        \
+                                                                 is_account TEXT,                                 \
+                                                                 FOREIGN KEY(profile_id) REFERENCES profiles(id))";
+    // add profiles table
+    if (not db_.tables().contains("profiles", Qt::CaseInsensitive)
+        and not query.exec(tableProfiles)) {
+        throw QueryError(query);
+    }
+
+    // add conversations table
+    if (not db_.tables().contains("conversations", Qt::CaseInsensitive)
+        and not query.exec(tableConversations)) {
+        throw QueryError(query);
+    }
+
+    // add interactions table
+    if (not db_.tables().contains("interactions", Qt::CaseInsensitive)
+        and not query.exec(tableInteractions)) {
+        throw QueryError(query);
+    }
+
+    // add profiles accounts table
+    if (not db_.tables().contains("profiles_accounts", Qt::CaseInsensitive)
+        and not query.exec(tableProfileAccounts)) {
+        throw QueryError(query);
+    }
+
+    storeVersion(VERSION);
+}
+
+void
+LegacyDatabase::migrateOldFiles()
 {
     migrateLocalProfiles();
     migratePeerProfiles();
     migrateTextHistory();
     linkRingProfilesWithAccounts(true);
-    // NOTE we don't remove old files for now.
+
+    // remove old LRC files
+    auto basePath = getPath();
+    QDir(basePath + "/text/").removeRecursively();
+    QDir(basePath + "/profiles/").removeRecursively();
+    QDir(basePath + "/peer_profiles/").removeRecursively();
 }
 
 void
-Database::migrateLocalProfiles()
+LegacyDatabase::migrateLocalProfiles()
 {
     const QDir profilesDir = getPath() + "/profiles/";
     const QStringList entries = profilesDir.entryList({QStringLiteral("*.vcf")}, QDir::Files);
@@ -530,7 +643,7 @@ Database::migrateLocalProfiles()
 }
 
 void
-Database::migratePeerProfiles()
+LegacyDatabase::migratePeerProfiles()
 {
     const QDir profilesDir = getPath() + "/peer_profiles/";
 
@@ -569,7 +682,7 @@ Database::migratePeerProfiles()
 }
 
 void
-Database::migrateTextHistory()
+LegacyDatabase::migrateTextHistory()
 {
     // load all text recordings so we can recover CMs that are not in the call history
     QDir dir(getPath() + "/text/");
@@ -699,29 +812,31 @@ Database::migrateTextHistory()
 }
 
 void
-Database::updateProfileAccountForContact(const std::string& contactURI,
-                                         const std::string& accountId)
+LegacyDatabase::migrateFromVersion(const std::string& currentVersion)
 {
-    auto profileIds = select("id", "profiles","uri=:uri",
-                             {{":uri", contactURI}})
-                             .payloads;
-    if (profileIds.empty()) {
-        return;
-    }
-    auto rows = select("profile_id", "profiles_accounts",
-    "account_id=:account_id AND is_account=:is_account", {{":account_id", accountId},
-    {":is_account", "false"}}).payloads;
-    if (std::find(rows.begin(), rows.end(), profileIds[0]) == rows.end()) {
-        insertInto("profiles_accounts",
-                   {{":profile_id", "profile_id"}, {":account_id", "account_id"},
-                   {":is_account", "is_account"}},
-                   {{":profile_id", profileIds[0]}, {":account_id", accountId},
-                   {":is_account", "false"}});
+    if (currentVersion == "1") {
+        migrateSchemaFromVersion1();
     }
 }
 
 void
-Database::linkRingProfilesWithAccounts(bool contactsOnly)
+LegacyDatabase::migrateSchemaFromVersion1()
+{
+    QSqlQuery query(db_);
+    auto tableProfileAccounts = "CREATE TABLE profiles_accounts (profile_id INTEGER NOT NULL,                     \
+                                                                 account_id TEXT NOT NULL,                        \
+                                                                 is_account TEXT,                                 \
+                                                                 FOREIGN KEY(profile_id) REFERENCES profiles(id))";
+    // add profiles accounts table
+    if (not db_.tables().contains("profiles_accounts", Qt::CaseInsensitive)
+        and not query.exec(tableProfileAccounts)) {
+        throw QueryError(query);
+    }
+    linkRingProfilesWithAccounts(false);
+}
+
+void
+LegacyDatabase::linkRingProfilesWithAccounts(bool contactsOnly)
 {
     const QStringList accountIds =
     ConfigurationManager::instance().getAccountList();
@@ -795,6 +910,28 @@ Database::linkRingProfilesWithAccounts(bool contactsOnly)
                 }
             }
         }
+    }
+}
+
+void
+LegacyDatabase::updateProfileAccountForContact(const std::string& contactURI,
+    const std::string& accountId)
+{
+    auto profileIds = select("id", "profiles", "uri=:uri",
+        { {":uri", contactURI} })
+        .payloads;
+    if (profileIds.empty()) {
+        return;
+    }
+    auto rows = select("profile_id", "profiles_accounts",
+        "account_id=:account_id AND is_account=:is_account", { {":account_id", accountId},
+        {":is_account", "false"} }).payloads;
+    if (std::find(rows.begin(), rows.end(), profileIds[0]) == rows.end()) {
+        insertInto("profiles_accounts",
+            { {":profile_id", "profile_id"}, {":account_id", "account_id"},
+            {":is_account", "is_account"} },
+            { {":profile_id", profileIds[0]}, {":account_id", accountId},
+            {":is_account", "false"} });
     }
 }
 
