@@ -65,7 +65,7 @@
         <location filename="../src/account.cpp" line="327"/>
         <source>STUN server invalid</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Neteisingas STUN serveris</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="329"/>
@@ -628,7 +628,7 @@
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="307"/>
         <source>UID</source>
-        <translation type="unfinished"/>
+        <translation>UID</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="307"/>
@@ -839,7 +839,7 @@
     <message>
         <location filename="../src/certificate.cpp" line="96"/>
         <source>Issuer</source>
-        <translation type="unfinished"/>
+        <translation>Išdavė</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="97"/>
@@ -910,7 +910,7 @@
     <message>
         <location filename="../src/certificatemodel.cpp" line="267"/>
         <source>Certificate not associated with a group</source>
-        <translation type="unfinished"/>
+        <translation>Liudijimas nesusietas su grupe</translation>
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="397"/>
@@ -1079,7 +1079,7 @@
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="44"/>
         <source>None of your certificate provide a private key, this is required. Please select a private key or use a certificate with one built-in</source>
-        <translation type="unfinished"/>
+        <translation>Joks iš jūsų liudijimų nepateikia privačiojo rakto, kuris yra reikalingas. Pasirinkite privatųjį raktą arba naudokite liudijimą su įtaisytuoju privačiuoju raktu</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="47"/>
@@ -1164,7 +1164,7 @@
         <location filename="../src/api/call.h" line="76"/>
         <location filename="../src/api/call.h" line="82"/>
         <source>Finished</source>
-        <translation type="unfinished"/>
+        <translation>Užbaigta</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="78"/>
@@ -1317,7 +1317,7 @@
         <location filename="../src/conversationmodel.cpp" line="1649"/>
         <location filename="../src/conversationmodel.cpp" line="1909"/>
         <source>Invitation received</source>
-        <translation type="unfinished"/>
+        <translation>Gautas pakvietimas</translation>
     </message>
     <message>
         <location filename="../src/conversationmodel.cpp" line="1266"/>

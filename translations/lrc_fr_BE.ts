@@ -1,4 +1,4 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="fr_CH" sourcelanguage="en" version="2.0">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="fr_BE" sourcelanguage="en" version="2.0">
 <context>
     <name>Account</name>
     <message>
@@ -316,7 +316,7 @@
     <message>
         <location filename="../src/collectionmodel.cpp" line="279"/>
         <source>Name</source>
-        <translation>nom</translation>
+        <translation>Nom</translation>
     </message>
 </context>
 <context>
@@ -324,7 +324,7 @@
     <message>
         <location filename="../src/private/sortproxies.cpp" line="49"/>
         <source>Name</source>
-        <translation>nom</translation>
+        <translation>Nom</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="50"/>
@@ -357,7 +357,7 @@
     <message>
         <location filename="../src/private/sortproxies.cpp" line="58"/>
         <source>Name</source>
-        <translation>nom</translation>
+        <translation>Nom</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="59"/>
@@ -646,7 +646,7 @@
     <message>
         <location filename="../src/presencestatusmodel.cpp" line="197"/>
         <source>Name</source>
-        <translation>nom</translation>
+        <translation>Nom</translation>
     </message>
     <message>
         <location filename="../src/presencestatusmodel.cpp" line="197"/>
@@ -1371,7 +1371,7 @@
     <message>
         <location filename="../src/ringdevicemodel.cpp" line="112"/>
         <source>Name</source>
-        <translation>nom</translation>
+        <translation>Nom</translation>
     </message>
 </context>
 <context>

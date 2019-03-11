@@ -1153,7 +1153,7 @@
     <message>
         <location filename="../src/api/call.h" line="72"/>
         <source>Searching</source>
-        <translation type="unfinished"/>
+        <translation>Ricerca</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="74"/>

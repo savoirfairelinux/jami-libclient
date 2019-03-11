@@ -263,7 +263,7 @@
     <message>
         <location filename="../src/categorizedbookmarkmodel.cpp" line="299"/>
         <source>Contacts</source>
-        <translation type="unfinished"/>
+        <translation>Contacts</translation>
     </message>
 </context>
 <context>
@@ -271,7 +271,7 @@
     <message>
         <location filename="../src/categorizedcontactmodel.cpp" line="401"/>
         <source>Contacts</source>
-        <translation type="unfinished"/>
+        <translation>Contacts</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="129"/>
@@ -300,7 +300,7 @@
     <message>
         <location filename="../src/categorizedhistorymodel.cpp" line="412"/>
         <source>History</source>
-        <translation type="unfinished"/>
+        <translation>Historique</translation>
     </message>
 </context>
 <context>
@@ -316,7 +316,7 @@
     <message>
         <location filename="../src/collectionmodel.cpp" line="279"/>
         <source>Name</source>
-        <translation type="unfinished"/>
+        <translation>Nom</translation>
     </message>
 </context>
 <context>
@@ -324,7 +324,7 @@
     <message>
         <location filename="../src/private/sortproxies.cpp" line="49"/>
         <source>Name</source>
-        <translation type="unfinished"/>
+        <translation>Nom</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="50"/>
@@ -357,7 +357,7 @@
     <message>
         <location filename="../src/private/sortproxies.cpp" line="58"/>
         <source>Name</source>
-        <translation type="unfinished"/>
+        <translation>Nom</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="59"/>
@@ -646,7 +646,7 @@
     <message>
         <location filename="../src/presencestatusmodel.cpp" line="197"/>
         <source>Name</source>
-        <translation type="unfinished"/>
+        <translation>Nom</translation>
     </message>
     <message>
         <location filename="../src/presencestatusmodel.cpp" line="197"/>
@@ -998,7 +998,7 @@
     <message>
         <location filename="../src/localhistorycollection.cpp" line="200"/>
         <source>History</source>
-        <translation type="unfinished"/>
+        <translation>Historique</translation>
     </message>
     <message>
         <location filename="../src/localrecordingcollection.cpp" line="101"/>
