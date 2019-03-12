@@ -1,8 +1,21 @@
 :: Ring - native Windows LRC project generator
 
 @echo off
-setlocal
+if NOT "%4"=="" goto Version_New
+goto Default_version
 
+:Version_New
+set QtDir=C:\\Qt\\%4%
+set Version=%4%
+if not exist "%QtDir%" echo This Qt path does not exist, use default version.
+if exist "%QtDir%" goto StartLocal
+:Default_version
+set QtDir=C:\\Qt\\5.9.4
+set Version=5.9.4
+if not exist "%QtDir%" echo Default Qt path does not exist, check you installation path. &goto Usage
+
+setlocal
+:StartLocal
 if "%1" == "/?" goto Usage
 if "%~1" == "" goto Usage
 
@@ -28,6 +41,8 @@ if /I "%1"=="x86" (
     set arch=x86
 ) else if /I "%1"=="x64" (
     set arch=x64
+) else if /I "%1"=="version" (
+    shift
 ) else (
     goto Usage
 )
@@ -122,7 +137,7 @@ goto cleanup
 echo:
 echo The correct usage is:
 echo:
-echo     %0 [action] [architecture]
+echo     %0 [action] [architecture] [version] [version_para]
 echo:
 echo where
 echo:
