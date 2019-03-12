@@ -1,11 +1,23 @@
 :: Ring - native Windows LRC project generator
 
 @echo off
-setlocal
-
 if "%1" == "/?" goto Usage
 if "%~1" == "" goto Usage
+if NOT "%4"=="" goto Version_New
+goto Default_version
 
+:Version_New
+set QtDir=C:\\Qt\\%4%
+set Version=%4%
+if not exist "%QtDir%" echo This Qt path does not exist, use default version.
+if exist "%QtDir%" goto StartLocal
+:Default_version
+set QtDir=C:\\Qt\\5.9.4
+set Version=5.9.4
+if not exist "%QtDir%" echo Default Qt path does not exist, check you installation path. &goto Usage
+
+setlocal
+:StartLocal
 set doGen=N
 set doBuild=N
 
@@ -28,6 +40,8 @@ if /I "%1"=="x86" (
     set arch=x86
 ) else if /I "%1"=="x64" (
     set arch=x64
+) else if /I "%1"=="version" (
+    shift
 ) else (
     goto Usage
 )
@@ -122,16 +136,19 @@ goto cleanup
 echo:
 echo The correct usage is:
 echo:
-echo     %0 [action] [architecture]
+echo     %0 [action] [architecture] [version] [version_para]
 echo:
 echo where
 echo:
 echo [action]           is: gen   ^| build
 echo [architecture]     is: x86   ^| x64
+echo [version]          is: version - optional
+echo [version_para]     is: 5.9.4 ^| Qt version installed
 echo:
 echo For example:
-echo     %SCRIPTNAME% gen x86     - gen x86 static lib vs projects for qtwrapper/lrc
-echo     %SCRIPTNAME% build x64   - build x64 qtwrapper/lrc static libs
+echo     %SCRIPTNAME% gen x86                    - gen x86 static lib vs projects for qtwrapper/lrc for Qt version 5.9.4
+echo     %SCRIPTNAME% gen x86 version 5.12.0     - gen x86 static lib vs projects for qtwrapper/lrc for Qt version 5.12.0
+echo     %SCRIPTNAME% build x64                  - build x64 qtwrapper/lrc static libs 
 echo:
 goto :eof
 
