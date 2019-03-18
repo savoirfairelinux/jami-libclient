@@ -1317,12 +1317,12 @@
         <location filename="../src/conversationmodel.cpp" line="1649"/>
         <location filename="../src/conversationmodel.cpp" line="1909"/>
         <source>Invitation received</source>
-        <translation type="unfinished"/>
+        <translation>Invito ricevuto</translation>
     </message>
     <message>
         <location filename="../src/conversationmodel.cpp" line="1266"/>
         <source>Contact added</source>
-        <translation type="unfinished"/>
+        <translation>Contatto aggiunto</translation>
     </message>
     <message>
         <location filename="../src/conversationmodel.cpp" line="1308"/>
@@ -1366,7 +1366,7 @@
     <message>
         <location filename="../src/ringdevicemodel.cpp" line="110"/>
         <source>ID</source>
-        <translation type="unfinished"/>
+        <translation>ID</translation>
     </message>
     <message>
         <location filename="../src/ringdevicemodel.cpp" line="112"/>

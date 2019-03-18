@@ -1138,7 +1138,7 @@
     <message>
         <location filename="../src/api/call.h" line="66"/>
         <source>Incoming</source>
-        <translation type="unfinished"/>
+        <translation>Викликає</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="68"/>
@@ -1153,7 +1153,7 @@
     <message>
         <location filename="../src/api/call.h" line="72"/>
         <source>Searching</source>
-        <translation type="unfinished"/>
+        <translation>Шукаю</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="74"/>
@@ -1322,7 +1322,7 @@
     <message>
         <location filename="../src/conversationmodel.cpp" line="1266"/>
         <source>Contact added</source>
-        <translation type="unfinished"/>
+        <translation>Контакт додано</translation>
     </message>
     <message>
         <location filename="../src/conversationmodel.cpp" line="1308"/>

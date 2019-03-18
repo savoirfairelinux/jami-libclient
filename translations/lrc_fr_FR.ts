@@ -385,7 +385,7 @@
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="51"/>
         <source>Yesterday</source>
-        <translation type="unfinished"/>
+        <translation>Hier</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="58"/>

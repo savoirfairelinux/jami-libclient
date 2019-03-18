@@ -47,7 +47,7 @@
         <location filename="../src/account.cpp" line="315"/>
         <source>Tryingâ¦</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Подключение</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="319"/>
@@ -1174,7 +1174,7 @@
     <message>
         <location filename="../src/api/call.h" line="80"/>
         <source>Peer busy</source>
-        <translation type="unfinished"/>
+        <translation>Участник занят</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="84"/>
@@ -1413,7 +1413,7 @@
     <message>
         <location filename="../src/contactmodel.cpp" line="393"/>
         <source>Searchingâ¦</source>
-        <translation type="unfinished"/>
+        <translation>Поиск</translation>
     </message>
     <message>
         <location filename="../src/contactmodel.cpp" line="747"/>
@@ -1428,7 +1428,7 @@
     <message>
         <location filename="../src/contactmodel.cpp" line="753"/>
         <source>Couldn&apos;t lookupâ¦</source>
-        <translation type="unfinished"/>
+        <translation>Не распознано</translation>
     </message>
 </context>
 <context>

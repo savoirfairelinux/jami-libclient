@@ -41,7 +41,7 @@
         <location filename="../src/account.cpp" line="311"/>
         <source>Not registered</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Kayıtlı Değil</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="315"/>
@@ -53,19 +53,19 @@
         <location filename="../src/account.cpp" line="319"/>
         <source>Authentication failed</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Yetkilendirme Başarısız</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="325"/>
         <source>STUN configuration error</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>STUN yapılandırma hatası</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="327"/>
         <source>STUN server invalid</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>STUN sunucusu geçersiz</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="329"/>
@@ -89,7 +89,7 @@
         <location filename="../src/account.cpp" line="335"/>
         <source>Request timeout</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>İstek Zaman Aşımına Uğradı</translation>
     </message>
 </context>
 <context>
@@ -628,7 +628,7 @@
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="307"/>
         <source>UID</source>
-        <translation type="unfinished"/>
+        <translation>Kullanıcı kimliği</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="307"/>
@@ -879,7 +879,7 @@
     <message>
         <location filename="../src/certificate.cpp" line="104"/>
         <source>Public key ID</source>
-        <translation type="unfinished"/>
+        <translation>Genel anahtar kimliği</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="105"/>
@@ -1158,23 +1158,23 @@
     <message>
         <location filename="../src/api/call.h" line="74"/>
         <source>Inactive</source>
-        <translation type="unfinished"/>
+        <translation>Etkisiz</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="76"/>
         <location filename="../src/api/call.h" line="82"/>
         <source>Finished</source>
-        <translation type="unfinished"/>
+        <translation>Bitti</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="78"/>
         <source>Timeout</source>
-        <translation type="unfinished"/>
+        <translation>Zamanaşımı</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="80"/>
         <source>Peer busy</source>
-        <translation type="unfinished"/>
+        <translation>Eş meşgul</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="84"/>
@@ -1317,28 +1317,28 @@
         <location filename="../src/conversationmodel.cpp" line="1649"/>
         <location filename="../src/conversationmodel.cpp" line="1909"/>
         <source>Invitation received</source>
-        <translation type="unfinished"/>
+        <translation>Davetiye alındı</translation>
     </message>
     <message>
         <location filename="../src/conversationmodel.cpp" line="1266"/>
         <source>Contact added</source>
-        <translation type="unfinished"/>
+        <translation>Kişi eklendi</translation>
     </message>
     <message>
         <location filename="../src/conversationmodel.cpp" line="1308"/>
         <location filename="../src/conversationmodel.cpp" line="1315"/>
         <source>Invitation accepted</source>
-        <translation type="unfinished"/>
+        <translation>Davetiye alındı</translation>
     </message>
     <message>
         <location filename="../src/conversationmodel.cpp" line="1524"/>
         <source>ð Outgoing call</source>
-        <translation type="unfinished"/>
+        <translation>ð Giden arama</translation>
     </message>
     <message>
         <location filename="../src/conversationmodel.cpp" line="1526"/>
         <source>ð Incoming call</source>
-        <translation type="unfinished"/>
+        <translation>ð Gelen arama</translation>
     </message>
     <message>
         <location filename="../src/conversationmodel.cpp" line="1539"/>
@@ -1418,12 +1418,12 @@
     <message>
         <location filename="../src/contactmodel.cpp" line="747"/>
         <source>Invalid ID</source>
-        <translation type="unfinished"/>
+        <translation>Geçersiz kimlik</translation>
     </message>
     <message>
         <location filename="../src/contactmodel.cpp" line="750"/>
         <source>Not found</source>
-        <translation type="unfinished"/>
+        <translation>Bulunamadı</translation>
     </message>
     <message>
         <location filename="../src/contactmodel.cpp" line="753"/>
