@@ -903,7 +903,7 @@
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="267"/>
-        <location filename="../src/localprofilecollection.cpp" line="220"/>
+        <location filename="../src/localprofilecollection.cpp" line="221"/>
         <source>Default</source>
         <translation>Defaŭlta</translation>
     </message>
@@ -966,7 +966,7 @@
     </message>
     <message>
         <location filename="../src/daemoncertificatecollection.cpp" line="160"/>
-        <location filename="../src/foldercertificatecollection.cpp" line="198"/>
+        <location filename="../src/foldercertificatecollection.cpp" line="199"/>
         <source>Certificate</source>
         <translation>Atestilo</translation>
     </message>
@@ -981,7 +981,7 @@
         <translation>Sekuriga taksado</translation>
     </message>
     <message>
-        <location filename="../src/fallbackpersoncollection.cpp" line="194"/>
+        <location filename="../src/fallbackpersoncollection.cpp" line="196"/>
         <source>Contact</source>
         <translation>Kontakto</translation>
     </message>
@@ -991,12 +991,12 @@
         <translation>Legosigno</translation>
     </message>
     <message>
-        <location filename="../src/localhistorycollection.cpp" line="195"/>
+        <location filename="../src/localhistorycollection.cpp" line="196"/>
         <source>Local history</source>
         <translation>Loka historio</translation>
     </message>
     <message>
-        <location filename="../src/localhistorycollection.cpp" line="200"/>
+        <location filename="../src/localhistorycollection.cpp" line="201"/>
         <source>History</source>
         <translation>Historio</translation>
     </message>
@@ -1007,22 +1007,22 @@
     </message>
     <message>
         <location filename="../src/localrecordingcollection.cpp" line="106"/>
-        <location filename="../src/localtextrecordingcollection.cpp" line="170"/>
+        <location filename="../src/localtextrecordingcollection.cpp" line="171"/>
         <source>Recording</source>
         <translation>Registraĵo</translation>
     </message>
     <message>
-        <location filename="../src/localringtonecollection.cpp" line="220"/>
+        <location filename="../src/localringtonecollection.cpp" line="221"/>
         <source>Local ringtones</source>
         <translation>Lokaj vokosonoj</translation>
     </message>
     <message>
-        <location filename="../src/localringtonecollection.cpp" line="225"/>
+        <location filename="../src/localringtonecollection.cpp" line="226"/>
         <source>Ringtone</source>
         <translation>Vokosono</translation>
     </message>
     <message>
-        <location filename="../src/localtextrecordingcollection.cpp" line="165"/>
+        <location filename="../src/localtextrecordingcollection.cpp" line="166"/>
         <source>Local text recordings</source>
         <translation>Lokaj tekstaj registraĵoj</translation>
     </message>
@@ -1293,22 +1293,22 @@
         <translation>Rezigni</translation>
     </message>
     <message>
-        <location filename="../src/localprofilecollection.cpp" line="147"/>
+        <location filename="../src/localprofilecollection.cpp" line="148"/>
         <source>Local profiles</source>
         <translation>Lokaj profiloj</translation>
     </message>
     <message>
-        <location filename="../src/localprofilecollection.cpp" line="152"/>
+        <location filename="../src/localprofilecollection.cpp" line="153"/>
         <source>Profile Collection</source>
         <translation>Profila Kolekto</translation>
     </message>
     <message>
-        <location filename="../src/peerprofilecollection.cpp" line="141"/>
+        <location filename="../src/peerprofilecollection.cpp" line="142"/>
         <source>Peer profiles</source>
         <translation>Samtavolanaj profiloj</translation>
     </message>
     <message>
-        <location filename="../src/peerprofilecollection.cpp" line="146"/>
+        <location filename="../src/peerprofilecollection.cpp" line="147"/>
         <source>Peers Profiles Collection</source>
         <translation>Kolekto de Samtavolanaj Profiloj</translation>
     </message>

@@ -903,7 +903,7 @@
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="267"/>
-        <location filename="../src/localprofilecollection.cpp" line="220"/>
+        <location filename="../src/localprofilecollection.cpp" line="221"/>
         <source>Default</source>
         <translation>Wartość domyślna</translation>
     </message>
@@ -966,7 +966,7 @@
     </message>
     <message>
         <location filename="../src/daemoncertificatecollection.cpp" line="160"/>
-        <location filename="../src/foldercertificatecollection.cpp" line="198"/>
+        <location filename="../src/foldercertificatecollection.cpp" line="199"/>
         <source>Certificate</source>
         <translation>Certyfikat</translation>
     </message>
@@ -981,7 +981,7 @@
         <translation>Ocena zabezpieczenia</translation>
     </message>
     <message>
-        <location filename="../src/fallbackpersoncollection.cpp" line="194"/>
+        <location filename="../src/fallbackpersoncollection.cpp" line="196"/>
         <source>Contact</source>
         <translation>Kontakt</translation>
     </message>
@@ -991,12 +991,12 @@
         <translation>Zakładka</translation>
     </message>
     <message>
-        <location filename="../src/localhistorycollection.cpp" line="195"/>
+        <location filename="../src/localhistorycollection.cpp" line="196"/>
         <source>Local history</source>
         <translation>Historia lokalna</translation>
     </message>
     <message>
-        <location filename="../src/localhistorycollection.cpp" line="200"/>
+        <location filename="../src/localhistorycollection.cpp" line="201"/>
         <source>History</source>
         <translation>Historia</translation>
     </message>
@@ -1007,22 +1007,22 @@
     </message>
     <message>
         <location filename="../src/localrecordingcollection.cpp" line="106"/>
-        <location filename="../src/localtextrecordingcollection.cpp" line="170"/>
+        <location filename="../src/localtextrecordingcollection.cpp" line="171"/>
         <source>Recording</source>
         <translation>Nagranie</translation>
     </message>
     <message>
-        <location filename="../src/localringtonecollection.cpp" line="220"/>
+        <location filename="../src/localringtonecollection.cpp" line="221"/>
         <source>Local ringtones</source>
         <translation>Lokalne dzwonki</translation>
     </message>
     <message>
-        <location filename="../src/localringtonecollection.cpp" line="225"/>
+        <location filename="../src/localringtonecollection.cpp" line="226"/>
         <source>Ringtone</source>
         <translation>Dzwonek</translation>
     </message>
     <message>
-        <location filename="../src/localtextrecordingcollection.cpp" line="165"/>
+        <location filename="../src/localtextrecordingcollection.cpp" line="166"/>
         <source>Local text recordings</source>
         <translation>Lokalne nagrania tekstowe</translation>
     </message>
@@ -1293,22 +1293,22 @@
         <translation>Anuluj</translation>
     </message>
     <message>
-        <location filename="../src/localprofilecollection.cpp" line="147"/>
+        <location filename="../src/localprofilecollection.cpp" line="148"/>
         <source>Local profiles</source>
         <translation>Profile lokalne</translation>
     </message>
     <message>
-        <location filename="../src/localprofilecollection.cpp" line="152"/>
+        <location filename="../src/localprofilecollection.cpp" line="153"/>
         <source>Profile Collection</source>
         <translation>Kolekcja profil</translation>
     </message>
     <message>
-        <location filename="../src/peerprofilecollection.cpp" line="141"/>
+        <location filename="../src/peerprofilecollection.cpp" line="142"/>
         <source>Peer profiles</source>
         <translation>Profile Peer</translation>
     </message>
     <message>
-        <location filename="../src/peerprofilecollection.cpp" line="146"/>
+        <location filename="../src/peerprofilecollection.cpp" line="147"/>
         <source>Peers Profiles Collection</source>
         <translation>Kolekcja profil peer</translation>
     </message>

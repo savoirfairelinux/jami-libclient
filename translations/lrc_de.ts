@@ -41,31 +41,31 @@
         <location filename="../src/account.cpp" line="311"/>
         <source>Not registered</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Nicht registriert</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="315"/>
         <source>Tryingâ¦</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Versuche!</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="319"/>
         <source>Authentication failed</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Authentifikation fehlgeschlagen</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="325"/>
         <source>STUN configuration error</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>STUN-Konfigurationsfehler</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="327"/>
         <source>STUN server invalid</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>STUN-Server ungültig</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="329"/>
@@ -89,7 +89,7 @@
         <location filename="../src/account.cpp" line="335"/>
         <source>Request timeout</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Zeitüberschreitung</translation>
     </message>
 </context>
 <context>
@@ -628,7 +628,7 @@
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="307"/>
         <source>UID</source>
-        <translation type="unfinished"/>
+        <translation>UID</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="307"/>
@@ -879,7 +879,7 @@
     <message>
         <location filename="../src/certificate.cpp" line="104"/>
         <source>Public key ID</source>
-        <translation type="unfinished"/>
+        <translation>Öffentliche Schlüssel-ID</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="105"/>
@@ -903,7 +903,7 @@
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="267"/>
-        <location filename="../src/localprofilecollection.cpp" line="220"/>
+        <location filename="../src/localprofilecollection.cpp" line="221"/>
         <source>Default</source>
         <translation>Standard</translation>
     </message>
@@ -966,7 +966,7 @@
     </message>
     <message>
         <location filename="../src/daemoncertificatecollection.cpp" line="160"/>
-        <location filename="../src/foldercertificatecollection.cpp" line="198"/>
+        <location filename="../src/foldercertificatecollection.cpp" line="199"/>
         <source>Certificate</source>
         <translation>Zertifikat</translation>
     </message>
@@ -981,7 +981,7 @@
         <translation>Sicherheitsbewertung</translation>
     </message>
     <message>
-        <location filename="../src/fallbackpersoncollection.cpp" line="194"/>
+        <location filename="../src/fallbackpersoncollection.cpp" line="196"/>
         <source>Contact</source>
         <translation>Kontakt</translation>
     </message>
@@ -991,12 +991,12 @@
         <translation>Lesezeichen</translation>
     </message>
     <message>
-        <location filename="../src/localhistorycollection.cpp" line="195"/>
+        <location filename="../src/localhistorycollection.cpp" line="196"/>
         <source>Local history</source>
         <translation>Lokaler Verlauf</translation>
     </message>
     <message>
-        <location filename="../src/localhistorycollection.cpp" line="200"/>
+        <location filename="../src/localhistorycollection.cpp" line="201"/>
         <source>History</source>
         <translation>Verlauf</translation>
     </message>
@@ -1007,22 +1007,22 @@
     </message>
     <message>
         <location filename="../src/localrecordingcollection.cpp" line="106"/>
-        <location filename="../src/localtextrecordingcollection.cpp" line="170"/>
+        <location filename="../src/localtextrecordingcollection.cpp" line="171"/>
         <source>Recording</source>
         <translation>Aufzeichnung</translation>
     </message>
     <message>
-        <location filename="../src/localringtonecollection.cpp" line="220"/>
+        <location filename="../src/localringtonecollection.cpp" line="221"/>
         <source>Local ringtones</source>
         <translation>Lokaler Klingelton</translation>
     </message>
     <message>
-        <location filename="../src/localringtonecollection.cpp" line="225"/>
+        <location filename="../src/localringtonecollection.cpp" line="226"/>
         <source>Ringtone</source>
         <translation>Klingelton</translation>
     </message>
     <message>
-        <location filename="../src/localtextrecordingcollection.cpp" line="165"/>
+        <location filename="../src/localtextrecordingcollection.cpp" line="166"/>
         <source>Local text recordings</source>
         <translation>Lokale Textaufzeichnungen</translation>
     </message>
@@ -1169,12 +1169,12 @@
     <message>
         <location filename="../src/api/call.h" line="78"/>
         <source>Timeout</source>
-        <translation type="unfinished"/>
+        <translation>Zeitüberscheitung</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="80"/>
         <source>Peer busy</source>
-        <translation type="unfinished"/>
+        <translation>Teilnehmer beschäftigt</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="84"/>
@@ -1293,22 +1293,22 @@
         <translation>Abbrechen</translation>
     </message>
     <message>
-        <location filename="../src/localprofilecollection.cpp" line="147"/>
+        <location filename="../src/localprofilecollection.cpp" line="148"/>
         <source>Local profiles</source>
         <translation>Lokale Profile</translation>
     </message>
     <message>
-        <location filename="../src/localprofilecollection.cpp" line="152"/>
+        <location filename="../src/localprofilecollection.cpp" line="153"/>
         <source>Profile Collection</source>
         <translation>Profilsammlung</translation>
     </message>
     <message>
-        <location filename="../src/peerprofilecollection.cpp" line="141"/>
+        <location filename="../src/peerprofilecollection.cpp" line="142"/>
         <source>Peer profiles</source>
         <translation>Teilnehmerprofile</translation>
     </message>
     <message>
-        <location filename="../src/peerprofilecollection.cpp" line="146"/>
+        <location filename="../src/peerprofilecollection.cpp" line="147"/>
         <source>Peers Profiles Collection</source>
         <translation>Sammlung der Teilnehmerprofile</translation>
     </message>
@@ -1413,22 +1413,22 @@
     <message>
         <location filename="../src/contactmodel.cpp" line="393"/>
         <source>Searchingâ¦</source>
-        <translation type="unfinished"/>
+        <translation>Searching!</translation>
     </message>
     <message>
         <location filename="../src/contactmodel.cpp" line="747"/>
         <source>Invalid ID</source>
-        <translation type="unfinished"/>
+        <translation>Ungültige ID</translation>
     </message>
     <message>
         <location filename="../src/contactmodel.cpp" line="750"/>
         <source>Not found</source>
-        <translation type="unfinished"/>
+        <translation>Nicht gefunden</translation>
     </message>
     <message>
         <location filename="../src/contactmodel.cpp" line="753"/>
         <source>Couldn&apos;t lookupâ¦</source>
-        <translation type="unfinished"/>
+        <translation>Konnte nicht suchen!</translation>
     </message>
 </context>
 <context>
@@ -1436,7 +1436,7 @@
     <message>
         <location filename="../src/contactmodel.cpp" line="364"/>
         <source>Bad URI scheme</source>
-        <translation type="unfinished"/>
+        <translation>Ungültiges URI-Schema</translation>
     </message>
 </context>
 <context>

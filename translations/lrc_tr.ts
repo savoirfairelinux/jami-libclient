@@ -903,7 +903,7 @@
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="267"/>
-        <location filename="../src/localprofilecollection.cpp" line="220"/>
+        <location filename="../src/localprofilecollection.cpp" line="221"/>
         <source>Default</source>
         <translation>Varsayılan</translation>
     </message>
@@ -966,7 +966,7 @@
     </message>
     <message>
         <location filename="../src/daemoncertificatecollection.cpp" line="160"/>
-        <location filename="../src/foldercertificatecollection.cpp" line="198"/>
+        <location filename="../src/foldercertificatecollection.cpp" line="199"/>
         <source>Certificate</source>
         <translation>Sertifika</translation>
     </message>
@@ -981,7 +981,7 @@
         <translation>Güvenlik değerlendirmesi</translation>
     </message>
     <message>
-        <location filename="../src/fallbackpersoncollection.cpp" line="194"/>
+        <location filename="../src/fallbackpersoncollection.cpp" line="196"/>
         <source>Contact</source>
         <translation>Kişi</translation>
     </message>
@@ -991,12 +991,12 @@
         <translation>Yer imi</translation>
     </message>
     <message>
-        <location filename="../src/localhistorycollection.cpp" line="195"/>
+        <location filename="../src/localhistorycollection.cpp" line="196"/>
         <source>Local history</source>
         <translation>Yerel geçmiş</translation>
     </message>
     <message>
-        <location filename="../src/localhistorycollection.cpp" line="200"/>
+        <location filename="../src/localhistorycollection.cpp" line="201"/>
         <source>History</source>
         <translation>Geçmiş</translation>
     </message>
@@ -1007,22 +1007,22 @@
     </message>
     <message>
         <location filename="../src/localrecordingcollection.cpp" line="106"/>
-        <location filename="../src/localtextrecordingcollection.cpp" line="170"/>
+        <location filename="../src/localtextrecordingcollection.cpp" line="171"/>
         <source>Recording</source>
         <translation>Kayıt</translation>
     </message>
     <message>
-        <location filename="../src/localringtonecollection.cpp" line="220"/>
+        <location filename="../src/localringtonecollection.cpp" line="221"/>
         <source>Local ringtones</source>
         <translation>Yerel zil sesleri</translation>
     </message>
     <message>
-        <location filename="../src/localringtonecollection.cpp" line="225"/>
+        <location filename="../src/localringtonecollection.cpp" line="226"/>
         <source>Ringtone</source>
         <translation>Zil sesi</translation>
     </message>
     <message>
-        <location filename="../src/localtextrecordingcollection.cpp" line="165"/>
+        <location filename="../src/localtextrecordingcollection.cpp" line="166"/>
         <source>Local text recordings</source>
         <translation>Yerel ileti kayıtları</translation>
     </message>
@@ -1293,22 +1293,22 @@
         <translation>İptal</translation>
     </message>
     <message>
-        <location filename="../src/localprofilecollection.cpp" line="147"/>
+        <location filename="../src/localprofilecollection.cpp" line="148"/>
         <source>Local profiles</source>
         <translation>Yerel profiller</translation>
     </message>
     <message>
-        <location filename="../src/localprofilecollection.cpp" line="152"/>
+        <location filename="../src/localprofilecollection.cpp" line="153"/>
         <source>Profile Collection</source>
         <translation>Profil koleksiyonu</translation>
     </message>
     <message>
-        <location filename="../src/peerprofilecollection.cpp" line="141"/>
+        <location filename="../src/peerprofilecollection.cpp" line="142"/>
         <source>Peer profiles</source>
         <translation>Eş profiller</translation>
     </message>
     <message>
-        <location filename="../src/peerprofilecollection.cpp" line="146"/>
+        <location filename="../src/peerprofilecollection.cpp" line="147"/>
         <source>Peers Profiles Collection</source>
         <translation>Eş Profil Koleksiyonları</translation>
     </message>

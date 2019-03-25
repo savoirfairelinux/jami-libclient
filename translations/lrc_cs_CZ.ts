@@ -17,7 +17,7 @@
         <location filename="../src/account.cpp" line="313"/>
         <source>Initializing</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Inicializuje se</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="317"/>
@@ -41,7 +41,7 @@
         <location filename="../src/account.cpp" line="311"/>
         <source>Not registered</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Neregistrován</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="315"/>
@@ -53,19 +53,19 @@
         <location filename="../src/account.cpp" line="319"/>
         <source>Authentication failed</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Ověření selhalo</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="325"/>
         <source>STUN configuration error</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Chyba nastavení STUN</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="327"/>
         <source>STUN server invalid</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Neplatný server STUN</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="329"/>
@@ -89,7 +89,7 @@
         <location filename="../src/account.cpp" line="335"/>
         <source>Request timeout</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Vypršení žádosti</translation>
     </message>
 </context>
 <context>
@@ -628,7 +628,7 @@
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="307"/>
         <source>UID</source>
-        <translation type="unfinished"/>
+        <translation>UID</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="307"/>
@@ -638,7 +638,7 @@
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="307"/>
         <source>Registered name</source>
-        <translation type="unfinished"/>
+        <translation>Registrované jméno</translation>
     </message>
 </context>
 <context>
@@ -879,7 +879,7 @@
     <message>
         <location filename="../src/certificate.cpp" line="104"/>
         <source>Public key ID</source>
-        <translation type="unfinished"/>
+        <translation>ID veřejného klíče</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="105"/>
@@ -903,7 +903,7 @@
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="267"/>
-        <location filename="../src/localprofilecollection.cpp" line="220"/>
+        <location filename="../src/localprofilecollection.cpp" line="221"/>
         <source>Default</source>
         <translation>Výchozí</translation>
     </message>
@@ -966,7 +966,7 @@
     </message>
     <message>
         <location filename="../src/daemoncertificatecollection.cpp" line="160"/>
-        <location filename="../src/foldercertificatecollection.cpp" line="198"/>
+        <location filename="../src/foldercertificatecollection.cpp" line="199"/>
         <source>Certificate</source>
         <translation>Certifikát</translation>
     </message>
@@ -981,7 +981,7 @@
         <translation>Bezpečnostní vyhodnocení</translation>
     </message>
     <message>
-        <location filename="../src/fallbackpersoncollection.cpp" line="194"/>
+        <location filename="../src/fallbackpersoncollection.cpp" line="196"/>
         <source>Contact</source>
         <translation>Kontakt</translation>
     </message>
@@ -991,12 +991,12 @@
         <translation>Záložka</translation>
     </message>
     <message>
-        <location filename="../src/localhistorycollection.cpp" line="195"/>
+        <location filename="../src/localhistorycollection.cpp" line="196"/>
         <source>Local history</source>
         <translation>Místní historie</translation>
     </message>
     <message>
-        <location filename="../src/localhistorycollection.cpp" line="200"/>
+        <location filename="../src/localhistorycollection.cpp" line="201"/>
         <source>History</source>
         <translation>Historie</translation>
     </message>
@@ -1007,22 +1007,22 @@
     </message>
     <message>
         <location filename="../src/localrecordingcollection.cpp" line="106"/>
-        <location filename="../src/localtextrecordingcollection.cpp" line="170"/>
+        <location filename="../src/localtextrecordingcollection.cpp" line="171"/>
         <source>Recording</source>
         <translation>Nahrávka</translation>
     </message>
     <message>
-        <location filename="../src/localringtonecollection.cpp" line="220"/>
+        <location filename="../src/localringtonecollection.cpp" line="221"/>
         <source>Local ringtones</source>
         <translation>Místní vyzvánění</translation>
     </message>
     <message>
-        <location filename="../src/localringtonecollection.cpp" line="225"/>
+        <location filename="../src/localringtonecollection.cpp" line="226"/>
         <source>Ringtone</source>
         <translation>Vyzvánění</translation>
     </message>
     <message>
-        <location filename="../src/localtextrecordingcollection.cpp" line="165"/>
+        <location filename="../src/localtextrecordingcollection.cpp" line="166"/>
         <source>Local text recordings</source>
         <translation>Místní textové záznamy</translation>
     </message>
@@ -1153,28 +1153,28 @@
     <message>
         <location filename="../src/api/call.h" line="72"/>
         <source>Searching</source>
-        <translation type="unfinished"/>
+        <translation>Hledá se</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="74"/>
         <source>Inactive</source>
-        <translation type="unfinished"/>
+        <translation>Nečinný</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="76"/>
         <location filename="../src/api/call.h" line="82"/>
         <source>Finished</source>
-        <translation type="unfinished"/>
+        <translation>Dokončeno</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="78"/>
         <source>Timeout</source>
-        <translation type="unfinished"/>
+        <translation>Vypršení</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="80"/>
         <source>Peer busy</source>
-        <translation type="unfinished"/>
+        <translation>Protějšek zaneprázdněn</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="84"/>
@@ -1280,7 +1280,7 @@
     <message>
         <location filename="../src/useractionmodel.cpp" line="533"/>
         <source>Open chat</source>
-        <translation type="unfinished"/>
+        <translation>Otevřít zprávy</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="768"/>
@@ -1293,22 +1293,22 @@
         <translation>Zrušit</translation>
     </message>
     <message>
-        <location filename="../src/localprofilecollection.cpp" line="147"/>
+        <location filename="../src/localprofilecollection.cpp" line="148"/>
         <source>Local profiles</source>
         <translation>Místní profily</translation>
     </message>
     <message>
-        <location filename="../src/localprofilecollection.cpp" line="152"/>
+        <location filename="../src/localprofilecollection.cpp" line="153"/>
         <source>Profile Collection</source>
         <translation>Sbírka profilů</translation>
     </message>
     <message>
-        <location filename="../src/peerprofilecollection.cpp" line="141"/>
+        <location filename="../src/peerprofilecollection.cpp" line="142"/>
         <source>Peer profiles</source>
         <translation>Profily peerů</translation>
     </message>
     <message>
-        <location filename="../src/peerprofilecollection.cpp" line="146"/>
+        <location filename="../src/peerprofilecollection.cpp" line="147"/>
         <source>Peers Profiles Collection</source>
         <translation>Sbírka profilů peerů</translation>
     </message>
@@ -1317,48 +1317,48 @@
         <location filename="../src/conversationmodel.cpp" line="1649"/>
         <location filename="../src/conversationmodel.cpp" line="1909"/>
         <source>Invitation received</source>
-        <translation type="unfinished"/>
+        <translation>Pozvání přijato</translation>
     </message>
     <message>
         <location filename="../src/conversationmodel.cpp" line="1266"/>
         <source>Contact added</source>
-        <translation type="unfinished"/>
+        <translation>Kontakt přidán</translation>
     </message>
     <message>
         <location filename="../src/conversationmodel.cpp" line="1308"/>
         <location filename="../src/conversationmodel.cpp" line="1315"/>
         <source>Invitation accepted</source>
-        <translation type="unfinished"/>
+        <translation>Pozvání přijato</translation>
     </message>
     <message>
         <location filename="../src/conversationmodel.cpp" line="1524"/>
         <source>ð Outgoing call</source>
-        <translation type="unfinished"/>
+        <translation>ð Odchozí hovor</translation>
     </message>
     <message>
         <location filename="../src/conversationmodel.cpp" line="1526"/>
         <source>ð Incoming call</source>
-        <translation type="unfinished"/>
+        <translation>ð Příchozí hovor</translation>
     </message>
     <message>
         <location filename="../src/conversationmodel.cpp" line="1539"/>
         <source>ð Outgoing call - </source>
-        <translation type="unfinished"/>
+        <translation>ð Odchozí hovor - </translation>
     </message>
     <message>
         <location filename="../src/conversationmodel.cpp" line="1542"/>
         <source>ð Incoming call - </source>
-        <translation type="unfinished"/>
+        <translation>ð Příchozí hovor - </translation>
     </message>
     <message>
         <location filename="../src/conversationmodel.cpp" line="1546"/>
         <source>ð½ Missed outgoing call</source>
-        <translation type="unfinished"/>
+        <translation>ð½ Zmeškaný odchozí hovor</translation>
     </message>
     <message>
         <location filename="../src/conversationmodel.cpp" line="1548"/>
         <source>ð½ Missed incoming call</source>
-        <translation type="unfinished"/>
+        <translation>ð½ Zmeškaný příchozí hovor</translation>
     </message>
 </context>
 <context>
@@ -1418,12 +1418,12 @@
     <message>
         <location filename="../src/contactmodel.cpp" line="747"/>
         <source>Invalid ID</source>
-        <translation type="unfinished"/>
+        <translation>Neplatné ID</translation>
     </message>
     <message>
         <location filename="../src/contactmodel.cpp" line="750"/>
         <source>Not found</source>
-        <translation type="unfinished"/>
+        <translation>Nenalezeno</translation>
     </message>
     <message>
         <location filename="../src/contactmodel.cpp" line="753"/>
@@ -1436,7 +1436,7 @@
     <message>
         <location filename="../src/contactmodel.cpp" line="364"/>
         <source>Bad URI scheme</source>
-        <translation type="unfinished"/>
+        <translation>Špatné schéma URI</translation>
     </message>
 </context>
 <context>
