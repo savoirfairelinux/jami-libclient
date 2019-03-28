@@ -744,6 +744,20 @@ public Q_SLOTS: // METHODS
         return 0;
     }
 
+    int getMessageStatus(const QString accountID, uint64_t id)
+    {
+        Q_UNUSED(accountID)
+        Q_UNUSED(id)
+        return 0;
+    }
+
+    bool cancelMessage(const QString accountID, uint64_t id)
+    {
+        Q_UNUSED(accountID)
+        Q_UNUSED(id)
+        return false;
+    }
+
     void connectivityChanged()
     {
     }
