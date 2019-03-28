@@ -95,7 +95,8 @@ enum class Status {
     TRANSFER_AWAITING_PEER,
     TRANSFER_AWAITING_HOST,
     TRANSFER_TIMEOUT_EXPIRED,
-    TRANSFER_FINISHED
+    TRANSFER_FINISHED,
+    CANCELED
 };
 
 static inline const std::string

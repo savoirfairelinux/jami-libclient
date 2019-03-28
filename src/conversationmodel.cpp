@@ -141,6 +141,12 @@ public:
     void placeCall(const std::string& uid, bool isAudioOnly = false);
 
     /**
+     * Cancel pending message
+     * @param interactionIdd
+     */
+    bool cancelMessage(const uint64_t& interactionId);
+
+    /**
      * get number of unread messages
      */
     int getNumberOfUnreadMessagesFor(const std::string& uid);
@@ -614,6 +620,37 @@ void
 ConversationModel::placeCall(const std::string& uid)
 {
     pimpl_->placeCall(uid);
+}
+
+void
+ConversationModel::cancelMessage(const std::string& convId,
+                                 const uint64_t& interactionId)
+{
+    auto conversationIdx = pimpl_->indexOf(convId);
+    if (conversationIdx == -1) {
+        return;
+    }
+    bool cancelMessage = false;
+    interaction::Info itCopy;
+    auto newStatus = interaction::Status::CANCELED;
+    {
+        std::lock_guard<std::mutex> lk(pimpl_->interactionsLocks[convId]);
+        auto& interactions = pimpl_->conversations[conversationIdx].interactions;
+        auto it = interactions.find(interactionId);
+        if (it != interactions.end()) {
+            it->second.status = newStatus;
+            cancelMessage = true;
+            itCopy = it->second;
+        }
+    }
+    if (!cancelMessage) {
+        return;
+    }
+    if (pimpl_->cancelMessage(interactionId)) {
+        pimpl_->dirtyConversations = {true, true};
+        database::updateInteractionStatus(pimpl_->db, interactionId, newStatus);
+        emit interactionStatusUpdated(convId, interactionId, itCopy);
+    }
 }
 
 void
@@ -1447,7 +1484,7 @@ ConversationModelPimpl::addConversationWith(const std::string& convId,
                 int status = 0;
                 if (!id.empty()) {
                     auto msgId = std::stoull(id);
-                    status = ConfigurationManager::instance().getMessageStatus(msgId);
+                    status = ConfigurationManager::instance().getMessageStatus(linked.owner.id, msgId);
                 }
                 slotLambdas.emplace_back([=]() -> void {
                     slotUpdateInteractionStatus(linked.owner.id, std::stoull(id), contactUri, status);
@@ -2182,6 +2219,13 @@ ConversationModelPimpl::updateTransfer(QTimer* timer, const std::string& convers
 
     timer->stop();
     delete timer;
+}
+
+bool
+ConversationModelPimpl::cancelMessage(const uint64_t& interactionId)
+{
+    auto id = database::getDaemonIdByInteractionId(db, std::to_string(interactionId));
+    return ConfigurationManager::instance().cancelMessage(linked.owner.id, std::stoull(id));
 }
 
 } // namespace lrc
