@@ -621,6 +621,14 @@ public Q_SLOTS: // METHODS
         return DRing::getMessageStatus(id);
     }
 
+    int getMessageStatus(const std::string& accountID, uint64_t id) {
+        return DRing::getMessageStatus(accountID, id);
+    }
+
+    bool cancelMessage(const std::string& accountID, uint64_t id) {
+        return DRing::cancelMessage(accountID, id);
+    }
+
     void connectivityChanged() {
         DRing::connectivityChanged();
     }
