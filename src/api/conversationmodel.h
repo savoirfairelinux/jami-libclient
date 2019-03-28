@@ -162,7 +162,7 @@ public:
      */
     void clearAllHistory();
     /**
-     * Clear one interaction from the history
+     * Clear one interaction from the history (cancel the interaction if sending)
      * @param convId
      * @param interactionId
      */
@@ -174,9 +174,14 @@ public:
      */
     void retryInteraction(const std::string& convId, const uint64_t& interactionId);
     /**
-     * delete obsolete history from the database
-     * @param days, number of days from today. Below this date, interactions will be deleted
+     * Cancel pending message
+     * @param convId
      */
+    void cancelMessage(const uint64_t& interactionId);
+     /**
+      * delete obsolete history from the database
+      * @param days, number of days from today. Below this date, interactions will be deleted
+      */
     void deleteObsoleteHistory(int date);
 
     void sendFile(const std::string& convUid, const std::string& path, const std::string& filename);
