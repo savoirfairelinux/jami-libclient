@@ -141,6 +141,19 @@ public:
     void placeCall(const std::string& uid, bool isAudioOnly = false);
 
     /**
+     * Cancel pending message
+     * @param interactionIdd
+     */
+    bool cancelMessage(const uint64_t& interactionId);
+
+    /**
+     * Clear one interaction from the history
+     * @param convId
+     * @param interactionId
+     */
+    void clearInteractionFromConversation(const std::string& convId, const uint64_t& interactionId);
+
+    /**
      * get number of unread messages
      */
     int getNumberOfUnreadMessagesFor(const std::string& uid);
@@ -617,6 +630,12 @@ ConversationModel::placeCall(const std::string& uid)
 }
 
 void
+ConversationModel::cancelMessage(const uint64_t& interactionId)
+{
+    pimpl_->cancelMessage(interactionId);
+}
+
+void
 ConversationModel::sendMessage(const std::string& uid, const std::string& body)
 {
     // FIXME potential race condition between index check and at() call
@@ -820,42 +839,8 @@ ConversationModel::clearHistory(const std::string& uid)
 void
 ConversationModel::clearInteractionFromConversation(const std::string& convId, const uint64_t& interactionId)
 {
-    auto conversationIdx = pimpl_->indexOf(convId);
-    if (conversationIdx == -1)
-        return;
+    pimpl_->clearInteractionFromConversation(convId, interactionId);
 
-    auto erased_keys = 0;
-    bool lastInteractionUpdated = false;
-    {
-        std::lock_guard<std::mutex> lk(pimpl_->interactionsLocks[convId]);
-        try
-        {
-            auto& conversation = pimpl_->conversations.at(conversationIdx);
-            database::clearInteractionFromConversation(pimpl_->db, convId, interactionId);
-            erased_keys = conversation.interactions.erase(interactionId);
-
-            if (conversation.lastMessageUid == interactionId) {
-                // Update lastMessageUid
-                auto newLastId = 0;
-                if (!conversation.interactions.empty())
-                    newLastId = conversation.interactions.rbegin()->first;
-                conversation.lastMessageUid = newLastId;
-                lastInteractionUpdated = true;
-            }
-
-        } catch (const std::out_of_range& e) {
-            qDebug() << "can't clear interaction from conversation: " << e.what();
-        }
-    }
-    if (erased_keys > 0) {
-        pimpl_->dirtyConversations.first = true;
-        emit interactionRemoved(convId, interactionId);
-    }
-    if (lastInteractionUpdated) {
-        // last interaction as changed, so the order can changes.
-        pimpl_->sortConversations();
-        emit modelSorted();
-    }
 }
 
 void
@@ -1437,25 +1422,6 @@ ConversationModelPimpl::addConversationWith(const std::string& convId,
         conversation.callId = "";
     }
     database::getHistory(db, conversation);
-    std::vector<std::function<void(void)>> slotLambdas;
-    {
-        std::lock_guard<std::mutex> lk(interactionsLocks[convId]);
-        for (auto& interaction: conversation.interactions) {
-            if (interaction.second.status == interaction::Status::SENDING) {
-                // Get the message status from daemon, else unknown
-                auto id = database::getDaemonIdByInteractionId(db, std::to_string(interaction.first));
-                int status = 0;
-                if (!id.empty()) {
-                    auto msgId = std::stoull(id);
-                    status = ConfigurationManager::instance().getMessageStatus(msgId);
-                }
-                slotLambdas.emplace_back([=]() -> void {
-                    slotUpdateInteractionStatus(linked.owner.id, std::stoull(id), contactUri, status);
-                });
-            }
-        }
-    }
-    for (const auto& l: slotLambdas) { l(); }
 
     conversation.unreadMessages = getNumberOfUnreadMessagesFor(convId);
     conversations.emplace_back(conversation);
@@ -1693,6 +1659,7 @@ ConversationModelPimpl::slotUpdateInteractionStatus(const std::string& accountId
 {
     if (accountId != linked.owner.id) return;
     auto newStatus = interaction::Status::INVALID;
+    bool removeInteraction = false;
     switch (static_cast<DRing::Account::MessageStates>(status))
     {
     case DRing::Account::MessageStates::SENDING:
@@ -1706,6 +1673,10 @@ ConversationModelPimpl::slotUpdateInteractionStatus(const std::string& accountId
         break;
     case DRing::Account::MessageStates::READ:
         newStatus = interaction::Status::READ;
+        break;
+    case DRing::Account::MessageStates::CANCELLED:
+        newStatus = interaction::Status::CANCELLED;
+        removeInteraction = true;
         break;
     case DRing::Account::MessageStates::UNKNOWN:
     default:
@@ -1727,6 +1698,10 @@ ConversationModelPimpl::slotUpdateInteractionStatus(const std::string& accountId
         interaction::Info itCopy;
         bool emitUpdated = false;
         if (conversationIdx != -1) {
+            if (removeInteraction) {
+                clearInteractionFromConversation(conversations[conversationIdx].uid, msgId);
+                return;
+            }
             std::lock_guard<std::mutex> lk(interactionsLocks[conversations[conversationIdx].uid]);
             auto& interactions = conversations[conversationIdx].interactions;
             auto it = interactions.find(msgId);
@@ -2182,6 +2157,52 @@ ConversationModelPimpl::updateTransfer(QTimer* timer, const std::string& convers
 
     timer->stop();
     delete timer;
+}
+
+bool
+ConversationModelPimpl::cancelMessage(const uint64_t& interactionId)
+{
+    auto id = database::getDaemonIdByInteractionId(db, std::to_string(interactionId));
+    return ConfigurationManager::instance().cancelMessage(linked.owner.id, std::stoull(id));
+}
+
+void
+ConversationModelPimpl::clearInteractionFromConversation(const std::string& convId, const uint64_t& interactionId) {
+  auto conversationIdx = indexOf(convId);
+  if (conversationIdx == -1)
+      return;
+
+  auto erased_keys = 0;
+  bool lastInteractionUpdated = false;
+  {
+      std::lock_guard<std::mutex> lk(interactionsLocks[convId]);
+      try
+      {
+          auto& conversation = conversations.at(conversationIdx);
+          database::clearInteractionFromConversation(db, convId, interactionId);
+          erased_keys = conversation.interactions.erase(interactionId);
+
+          if (conversation.lastMessageUid == interactionId) {
+              // Update lastMessageUid
+              auto newLastId = 0;
+              if (!conversation.interactions.empty())
+                  newLastId = conversation.interactions.rbegin()->first;
+              conversation.lastMessageUid = newLastId;
+              lastInteractionUpdated = true;
+          }
+      } catch (const std::out_of_range& e) {
+          qDebug() << "can't clear interaction from conversation: " << e.what();
+      }
+  }
+  if (erased_keys > 0) {
+      dirtyConversations.first = true;
+      emit linked.interactionRemoved(convId, interactionId);
+  }
+  if (lastInteractionUpdated) {
+      // last interaction as changed, so the order can changes.
+      sortConversations();
+      emit linked.modelSorted();
+  }
 }
 
 } // namespace lrc

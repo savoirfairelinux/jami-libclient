@@ -95,7 +95,8 @@ enum class Status {
     TRANSFER_AWAITING_PEER,
     TRANSFER_AWAITING_HOST,
     TRANSFER_TIMEOUT_EXPIRED,
-    TRANSFER_FINISHED
+    TRANSFER_FINISHED,
+    CANCELLED
 };
 
 static inline const std::string
@@ -134,6 +135,8 @@ to_string(const Status& status)
         return "TRANSFER_TIMEOUT_EXPIRED";
     case Status::TRANSFER_FINISHED:
         return "TRANSFER_FINISHED";
+    case Status::CANCELLED:
+        return "CANCELLED";
     case Status::INVALID:
     default:
         return "INVALID";
@@ -175,6 +178,8 @@ to_status(const std::string& status)
         return interaction::Status::TRANSFER_TIMEOUT_EXPIRED;
     else if (status == "TRANSFER_FINISHED")
         return interaction::Status::TRANSFER_FINISHED;
+    else if (status == "CANCELLED")
+        return interaction::Status::CANCELLED;
     else
         return interaction::Status::INVALID;
 
