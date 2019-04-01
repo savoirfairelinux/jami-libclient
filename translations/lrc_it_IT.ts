@@ -17,7 +17,7 @@
         <location filename="../src/account.cpp" line="313"/>
         <source>Initializing</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Inizializzare</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="317"/>
@@ -41,7 +41,7 @@
         <location filename="../src/account.cpp" line="311"/>
         <source>Not registered</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Non registrato</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="315"/>
@@ -53,7 +53,7 @@
         <location filename="../src/account.cpp" line="319"/>
         <source>Authentication failed</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Autenticazione fallita</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="325"/>
@@ -864,7 +864,7 @@
     <message>
         <location filename="../src/certificate.cpp" line="101"/>
         <source>Signature algorithm</source>
-        <translation type="unfinished"/>
+        <translation>Algoritmo di firma</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="102"/>
@@ -879,7 +879,7 @@
     <message>
         <location filename="../src/certificate.cpp" line="104"/>
         <source>Public key ID</source>
-        <translation type="unfinished"/>
+        <translation>ID chiave pubblica</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="105"/>
@@ -894,7 +894,7 @@
     <message>
         <location filename="../src/certificate.cpp" line="107"/>
         <source>Outgoing server</source>
-        <translation type="unfinished"/>
+        <translation>Server in uscita</translation>
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="183"/>
@@ -973,7 +973,7 @@
     <message>
         <location filename="../src/extensions/presencecollectionextension.cpp" line="38"/>
         <source>Presence tracking</source>
-        <translation type="unfinished"/>
+        <translation>Monitoraggio della presenza</translation>
     </message>
     <message>
         <location filename="../src/extensions/securityevaluationextension.cpp" line="63"/>
@@ -1054,17 +1054,17 @@
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="38"/>
         <source>TLS is disabled, the negotiation won&apos;t be encrypted. Your communication will be vulnerable to snooping</source>
-        <translation type="unfinished"/>
+        <translation>TLS è disabilitato, la negoziazione non sarà crittografata. La tua comunicazione sarà vulnerabile allo snooping</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="40"/>
         <source>Your certificate and authority don&apos;t match, if your certificate require an authority, it won&apos;t work</source>
-        <translation type="unfinished"/>
+        <translation>Il tuo certificato e autorità non corrispondono, se il tuo certificato richiede un&apos;autorità, non funzionerà</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="41"/>
         <source>The outgoing server specified doesn&apos;t match the hostname or the one included in the certificate</source>
-        <translation type="unfinished"/>
+        <translation>Il server in uscita specificato non corrisponde al nome host o a quello incluso nel certificato</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="42"/>
@@ -1084,7 +1084,7 @@
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="47"/>
         <source>No certificate authority is provided, it won&apos;t be possible to validate if the answer certificates are valid. Some account may also not work.</source>
-        <translation type="unfinished"/>
+        <translation>Non viene fornita alcuna autorità di certificazione, non sarà possibile convalidare se i certificati di risposta sono validi. Alcuni account potrebbero anche non funzionare.</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="46"/>
@@ -1094,7 +1094,7 @@
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="37"/>
         <source>Your media streams are not encrypted, please enable SDES</source>
-        <translation type="unfinished"/>
+        <translation>I tuoi flussi multimediali non sono crittografati, si prega di abilitare SDES</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="50"/>
@@ -1158,18 +1158,18 @@
     <message>
         <location filename="../src/api/call.h" line="74"/>
         <source>Inactive</source>
-        <translation type="unfinished"/>
+        <translation>Non attivo</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="76"/>
         <location filename="../src/api/call.h" line="82"/>
         <source>Finished</source>
-        <translation type="unfinished"/>
+        <translation>Finito</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="78"/>
         <source>Timeout</source>
-        <translation type="unfinished"/>
+        <translation>Timeout</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="80"/>
@@ -1280,7 +1280,7 @@
     <message>
         <location filename="../src/useractionmodel.cpp" line="533"/>
         <source>Open chat</source>
-        <translation type="unfinished"/>
+        <translation>Apri chat</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="768"/>
@@ -1317,33 +1317,33 @@
         <location filename="../src/conversationmodel.cpp" line="1649"/>
         <location filename="../src/conversationmodel.cpp" line="1909"/>
         <source>Invitation received</source>
-        <translation type="unfinished"/>
+        <translation>Invito ricevuto</translation>
     </message>
     <message>
         <location filename="../src/conversationmodel.cpp" line="1266"/>
         <source>Contact added</source>
-        <translation type="unfinished"/>
+        <translation>Contatto aggiunto</translation>
     </message>
     <message>
         <location filename="../src/conversationmodel.cpp" line="1308"/>
         <location filename="../src/conversationmodel.cpp" line="1315"/>
         <source>Invitation accepted</source>
-        <translation type="unfinished"/>
+        <translation>Invito accettato</translation>
     </message>
     <message>
         <location filename="../src/conversationmodel.cpp" line="1524"/>
         <source>ð Outgoing call</source>
-        <translation type="unfinished"/>
+        <translation>ð Chiamata in uscita</translation>
     </message>
     <message>
         <location filename="../src/conversationmodel.cpp" line="1526"/>
         <source>ð Incoming call</source>
-        <translation type="unfinished"/>
+        <translation>ð Chiamata in arrivo</translation>
     </message>
     <message>
         <location filename="../src/conversationmodel.cpp" line="1539"/>
         <source>ð Outgoing call - </source>
-        <translation type="unfinished"/>
+        <translation>ð Chiamata in uscita -</translation>
     </message>
     <message>
         <location filename="../src/conversationmodel.cpp" line="1542"/>
@@ -1418,12 +1418,12 @@
     <message>
         <location filename="../src/contactmodel.cpp" line="747"/>
         <source>Invalid ID</source>
-        <translation type="unfinished"/>
+        <translation>ID non valido</translation>
     </message>
     <message>
         <location filename="../src/contactmodel.cpp" line="750"/>
         <source>Not found</source>
-        <translation type="unfinished"/>
+        <translation>Non trovato</translation>
     </message>
     <message>
         <location filename="../src/contactmodel.cpp" line="753"/>
