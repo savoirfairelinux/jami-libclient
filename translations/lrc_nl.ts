@@ -41,31 +41,31 @@
         <location filename="../src/account.cpp" line="311"/>
         <source>Not registered</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Niet geregistreerd</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="315"/>
         <source>Tryingâ¦</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Bezig met proberenâ¦</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="319"/>
         <source>Authentication failed</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Aanmelding mislukt</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="325"/>
         <source>STUN configuration error</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>STUN-configuratiefout</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="327"/>
         <source>STUN server invalid</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>STUN-server ongeldig</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="329"/>
@@ -77,7 +77,7 @@
         <location filename="../src/account.cpp" line="331"/>
         <source>Unacceptable</source>
         <extracomment>Account state</extracomment>
-        <translation>Onaanvaardbaar</translation>
+        <translation>Onacceptabel</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="333"/>
@@ -89,7 +89,7 @@
         <location filename="../src/account.cpp" line="335"/>
         <source>Request timeout</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Verzoekstime-out</translation>
     </message>
 </context>
 <context>
@@ -236,7 +236,7 @@
         <location filename="../src/callmodel.cpp" line="533"/>
         <location filename="../src/callmodel.cpp" line="558"/>
         <source>Invalid account</source>
-        <translation>Ongeldige account</translation>
+        <translation>Ongeldig account</translation>
     </message>
 </context>
 <context>
@@ -491,7 +491,7 @@
     <message>
         <location filename="../src/macromodel.cpp" line="157"/>
         <source>Macros</source>
-        <translation>Macro&apos;s</translation>
+        <translation>Macro’s</translation>
     </message>
     <message>
         <location filename="../src/macromodel.cpp" line="263"/>
@@ -533,12 +533,12 @@
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="234"/>
         <source>This account does not support presence tracking</source>
-        <translation>Deze account ondersteunt volgen van aanwezigheid niet</translation>
+        <translation>Dit account ondersteunt volgen van aanwezigheid niet</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="237"/>
         <source>No associated account</source>
-        <translation>Geen bijhorende account</translation>
+        <translation>Geen bijbehorend account</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="305"/>
@@ -628,7 +628,7 @@
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="307"/>
         <source>UID</source>
-        <translation type="unfinished"/>
+        <translation>UID</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="307"/>
@@ -789,7 +789,7 @@
     <message>
         <location filename="../src/certificate.cpp" line="59"/>
         <source>The certificate is not revoked</source>
-        <translation>Het certificaat is niet teruggetrokken</translation>
+        <translation>Het certificaat is niet ingetrokken</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="60"/>
@@ -879,7 +879,7 @@
     <message>
         <location filename="../src/certificate.cpp" line="104"/>
         <source>Public key ID</source>
-        <translation type="unfinished"/>
+        <translation>Openbaresleutel-ID</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="105"/>
@@ -1054,12 +1054,12 @@
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="38"/>
         <source>TLS is disabled, the negotiation won&apos;t be encrypted. Your communication will be vulnerable to snooping</source>
-        <translation>TLS is uitgeschakeld, de onderhandeling zal niet versleuteld worden. Je communicatie zal vatbaar zijn voor afluisteren</translation>
+        <translation>TLS is uitgeschakeld, de onderhandeling zal niet worden versleuteld. Uw communicatie zal vatbaar zijn voor afluisteren</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="40"/>
         <source>Your certificate and authority don&apos;t match, if your certificate require an authority, it won&apos;t work</source>
-        <translation>Je certificaat en certificeringsinstantie komen niet overeen, als je certificaat een een certificeringsinstantie vereist, zal het niet functioneren</translation>
+        <translation>Uw certificaat en certificeringsinstantie komen niet overeen, als uw certificaat een certificeringsinstantie vereist, zal het niet functioneren</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="41"/>
@@ -1069,17 +1069,17 @@
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="42"/>
         <source>The &quot;verify incoming certificate&quot; option is disabled, this leave you vulnerable to man in the middle attack</source>
-        <translation>De optie ‘inkomende certificaten verifiëren’ is uitgeschakeld, dit maakt je vatbaar voor een man-in-the-middle-aanval</translation>
+        <translation>De optie ‘inkomende certificaten verifiëren’ is uitgeschakeld, dit maakt u vatbaar voor een man-in-the-middle-aanval</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="43"/>
         <source>The &quot;verify answer certificate&quot; option is disabled, this leave you vulnerable to man in the middle attack</source>
-        <translation>De optie ‘antwoordcertificaten verifiëren’ is uitgeschakeld, dit maakt je vatbaar voor een man-in-the-middle-aanval</translation>
+        <translation>De optie ‘antwoordcertificaten verifiëren’ is uitgeschakeld, dit maakt u vatbaar voor een man-in-the-middle-aanval</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="44"/>
         <source>None of your certificate provide a private key, this is required. Please select a private key or use a certificate with one built-in</source>
-        <translation>Geen van je certificaten heeft een persoonlijke sleutel, terwijl dit vereist is. Kies een persoonlijke sleutel of gebruik een certificaat met ingebouwde sleutel</translation>
+        <translation>Geen van uw certificaten heeft een persoonlijke sleutel, terwijl dit vereist is. Kies een persoonlijke sleutel of gebruik een certificaat met ingebouwde sleutel</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="47"/>
@@ -1094,17 +1094,17 @@
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="37"/>
         <source>Your media streams are not encrypted, please enable SDES</source>
-        <translation>Je mediastreams zijn niet versleuteld, schakel SDES in</translation>
+        <translation>Uw mediastreams zijn niet versleuteld, schakel SDES in</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="50"/>
         <source>Your certificate is expired, please contact your system administrator.</source>
-        <translation>Je certificaat is vervallen, neem contact op met je systeembeheerder.</translation>
+        <translation>Uw certificaat is vervallen, neem contact op met uw systeembeheerder.</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="51"/>
         <source>Your certificate is self signed. This break the chain of trust.</source>
-        <translation>Je certificaat is zelf-ondertekend. Dit verbreekt de vertrouwensketen.</translation>
+        <translation>Uw certificaat is zelfondertekend. Dit verbreekt de vertrouwensketen.</translation>
     </message>
     <message>
         <location filename="../src/tlsmethodmodel.cpp" line="64"/>
@@ -1116,7 +1116,7 @@
         <location filename="../src/useractionmodel.cpp" line="517"/>
         <location filename="../src/useractionmodel.cpp" line="759"/>
         <source>Accept</source>
-        <translation>Aanvaarden</translation>
+        <translation>Accepteren</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="60"/>
@@ -1169,12 +1169,12 @@
     <message>
         <location filename="../src/api/call.h" line="78"/>
         <source>Timeout</source>
-        <translation type="unfinished"/>
+        <translation>Time-out</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="80"/>
         <source>Peer busy</source>
-        <translation type="unfinished"/>
+        <translation>Peer is bezet</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="84"/>
@@ -1328,7 +1328,7 @@
         <location filename="../src/conversationmodel.cpp" line="1308"/>
         <location filename="../src/conversationmodel.cpp" line="1315"/>
         <source>Invitation accepted</source>
-        <translation>Uitnodiging aanvaard</translation>
+        <translation>Uitnodiging geaccepteerd</translation>
     </message>
     <message>
         <location filename="../src/conversationmodel.cpp" line="1524"/>
@@ -1413,22 +1413,22 @@
     <message>
         <location filename="../src/contactmodel.cpp" line="393"/>
         <source>Searchingâ¦</source>
-        <translation type="unfinished"/>
+        <translation>Bezig met zoekenâ¦</translation>
     </message>
     <message>
         <location filename="../src/contactmodel.cpp" line="747"/>
         <source>Invalid ID</source>
-        <translation type="unfinished"/>
+        <translation>Ongeldig ID</translation>
     </message>
     <message>
         <location filename="../src/contactmodel.cpp" line="750"/>
         <source>Not found</source>
-        <translation type="unfinished"/>
+        <translation>Niet gevonden</translation>
     </message>
     <message>
         <location filename="../src/contactmodel.cpp" line="753"/>
         <source>Couldn&apos;t lookupâ¦</source>
-        <translation type="unfinished"/>
+        <translation>Kon niet opzoekenâ¦</translation>
     </message>
 </context>
 <context>
@@ -1436,7 +1436,7 @@
     <message>
         <location filename="../src/contactmodel.cpp" line="364"/>
         <source>Bad URI scheme</source>
-        <translation type="unfinished"/>
+        <translation>Verkeerd URI-schema</translation>
     </message>
 </context>
 <context>

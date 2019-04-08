@@ -59,13 +59,13 @@
         <location filename="../src/account.cpp" line="325"/>
         <source>STUN configuration error</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Errore di configurazione STUN</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="327"/>
         <source>STUN server invalid</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Il server STUN non è valido</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="329"/>
@@ -89,7 +89,7 @@
         <location filename="../src/account.cpp" line="335"/>
         <source>Request timeout</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Richiesta di timeout</translation>
     </message>
 </context>
 <context>
@@ -628,7 +628,7 @@
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="307"/>
         <source>UID</source>
-        <translation type="unfinished"/>
+        <translation>UID</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="307"/>
@@ -638,7 +638,7 @@
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="307"/>
         <source>Registered name</source>
-        <translation type="unfinished"/>
+        <translation>Nome registrato</translation>
     </message>
 </context>
 <context>
@@ -739,32 +739,32 @@
     <message>
         <location filename="../src/certificate.cpp" line="49"/>
         <source>Has the right private key directory permissions</source>
-        <translation type="unfinished"/>
+        <translation>Ha i permessi di directory della chiave privata giusta</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="50"/>
         <source>Has the right public key directory permissions</source>
-        <translation type="unfinished"/>
+        <translation>Ha le giuste autorizzazioni per le directory della chiave pubblica</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="51"/>
         <source>Has the right private key directory location</source>
-        <translation type="unfinished"/>
+        <translation>Ha la giusta posizione nella directory della chiave privata</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="52"/>
         <source>Has the right public key directory location</source>
-        <translation type="unfinished"/>
+        <translation>Ha la giusta posizione nella directory della chiave pubblica</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="53"/>
         <source>Has the right private key SELinux attributes</source>
-        <translation type="unfinished"/>
+        <translation>Ha gli attributi SELinux della chiave privata giusta</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="54"/>
         <source>Has the right public key SELinux attributes</source>
-        <translation type="unfinished"/>
+        <translation>Ha gli attributi SELinux della chiave pubblica corretti</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="55"/>
@@ -839,17 +839,17 @@
     <message>
         <location filename="../src/certificate.cpp" line="96"/>
         <source>Issuer</source>
-        <translation type="unfinished"/>
+        <translation>Emittente</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="97"/>
         <source>Subject key algorithm</source>
-        <translation type="unfinished"/>
+        <translation>Algoritmo chiave soggetto</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="98"/>
         <source>Common name (CN)</source>
-        <translation type="unfinished"/>
+        <translation>Nome comune (CN)</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="99"/>
@@ -884,7 +884,7 @@
     <message>
         <location filename="../src/certificate.cpp" line="105"/>
         <source>Issuer domain name</source>
-        <translation type="unfinished"/>
+        <translation>Nome di dominio dell&apos;emittente</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="106"/>
@@ -1069,17 +1069,17 @@
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="42"/>
         <source>The &quot;verify incoming certificate&quot; option is disabled, this leave you vulnerable to man in the middle attack</source>
-        <translation type="unfinished"/>
+        <translation>L&apos;opzione &quot;verifica certificato in entrata&quot; è disabilitata, questo ti rende vulnerabile all&apos;uomo nell&apos;attacco centrale</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="43"/>
         <source>The &quot;verify answer certificate&quot; option is disabled, this leave you vulnerable to man in the middle attack</source>
-        <translation type="unfinished"/>
+        <translation>L&apos;opzione &quot;verifica certificato di risposta&quot; è disabilitata, questo ti rende vulnerabile all&apos;uomo nell&apos;attacco centrale</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="44"/>
         <source>None of your certificate provide a private key, this is required. Please select a private key or use a certificate with one built-in</source>
-        <translation type="unfinished"/>
+        <translation>Nessuno del tuo certificato fornisce una chiave privata, questo è richiesto. Si prega di selezionare una chiave privata o utilizzare un certificato con un built-in</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="47"/>
@@ -1174,7 +1174,7 @@
     <message>
         <location filename="../src/api/call.h" line="80"/>
         <source>Peer busy</source>
-        <translation type="unfinished"/>
+        <translation>Peer occupato</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="84"/>
@@ -1348,17 +1348,17 @@
     <message>
         <location filename="../src/conversationmodel.cpp" line="1542"/>
         <source>ð Incoming call - </source>
-        <translation type="unfinished"/>
+        <translation>ð Chiamata in arrivo - </translation>
     </message>
     <message>
         <location filename="../src/conversationmodel.cpp" line="1546"/>
         <source>ð½ Missed outgoing call</source>
-        <translation type="unfinished"/>
+        <translation>ð½ Chiamata in uscita persa</translation>
     </message>
     <message>
         <location filename="../src/conversationmodel.cpp" line="1548"/>
         <source>ð½ Missed incoming call</source>
-        <translation type="unfinished"/>
+        <translation>ð½ Chiamata in entrata persa</translation>
     </message>
 </context>
 <context>
@@ -1436,7 +1436,7 @@
     <message>
         <location filename="../src/contactmodel.cpp" line="364"/>
         <source>Bad URI scheme</source>
-        <translation type="unfinished"/>
+        <translation>Schema URI errato</translation>
     </message>
 </context>
 <context>
