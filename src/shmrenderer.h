@@ -63,8 +63,7 @@ public:
    void setShmPath(const QString& path);
 
 private:
-   QScopedPointer<ShmRendererPrivate> d_ptr;
-   Q_DECLARE_PRIVATE(ShmRenderer)
+   std::unique_ptr<ShmRendererPrivate> d_ptr;
 
 public Q_SLOTS:
    void startRendering() override;

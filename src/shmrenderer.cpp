@@ -79,6 +79,7 @@ class ShmRendererPrivate final : public QObject
 public:
    ShmRendererPrivate(ShmRenderer* parent);
 
+
    //Types
    using TimePoint = std::chrono::time_point<std::chrono::system_clock>;
 
@@ -128,7 +129,7 @@ ShmRendererPrivate::ShmRendererPrivate(ShmRenderer* parent)
 /// Constructor
 ShmRenderer::ShmRenderer(const QByteArray& id, const QString& shmPath, const QSize& res)
    : Renderer(id, res)
-   , d_ptr(new ShmRendererPrivate(this))
+   , d_ptr(std::make_unique<ShmRendererPrivate>(this))
 {
    d_ptr->m_ShmPath = shmPath;
    setObjectName("Video::Renderer:"+id);

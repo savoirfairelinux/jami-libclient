@@ -60,8 +60,7 @@ public Q_SLOTS:
    virtual void stopRendering () override;
 
 private:
-   QScopedPointer<DirectRendererPrivate> d_ptr;
-   Q_DECLARE_PRIVATE(DirectRenderer)
+   std::unique_ptr<DirectRendererPrivate> d_ptr;
 };
 
 }
