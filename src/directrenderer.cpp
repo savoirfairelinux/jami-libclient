@@ -69,7 +69,7 @@ q_ptr(parent)
 ///Constructor
 Video::DirectRenderer::DirectRenderer(const QByteArray& id, const QSize& res) :
 Renderer(id, res),
-d_ptr(new DirectRendererPrivate(this))
+d_ptr(std::make_unique<DirectRendererPrivate>(this))
 {
     setObjectName("Video::DirectRenderer:"+id);
 }
