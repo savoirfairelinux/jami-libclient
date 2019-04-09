@@ -187,6 +187,11 @@ public:
      */
     bool isRecording(const std::string& callId) const;
 
+    /**
+     * Close all active calls and conferences
+     */
+    static void hangupCallsAndConferences();
+
 Q_SIGNALS:
     /**
      * Emitted when a call state changes

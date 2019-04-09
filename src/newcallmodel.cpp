@@ -464,6 +464,19 @@ NewCallModel::sendSipMessage(const std::string& callId, const std::string& body)
 }
 
 void
+NewCallModel::hangupCallsAndConferences()
+{
+    QStringList conferences = CallManager::instance().getConferenceList();
+    for (const auto& conf : conferences) {
+        CallManager::instance().hangUpConference(conf);
+    }
+    QStringList calls = CallManager::instance().getCallList();
+    for (const auto &call : calls) {
+        CallManager::instance().hangUp(call);
+    }
+}
+
+void
 NewCallModelPimpl::slotIncomingCall(const std::string& accountId, const std::string& callId, const std::string& fromId)
 {
     if (linked.owner.id != accountId) return;
