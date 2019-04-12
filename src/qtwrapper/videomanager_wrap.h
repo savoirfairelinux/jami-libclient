@@ -230,6 +230,16 @@ public Q_SLOTS: // METHODS
         DRing::setDecodingAccelerated(state);
     }
 
+    bool getEncodingAccelerated()
+    {
+        return DRing::getEncodingAccelerated();
+    }
+
+    void setEncodingAccelerated(bool state)
+    {
+        DRing::setEncodingAccelerated(state);
+    }
+
     void stopLocalRecorder(const QString& path)
     {
         DRing::stopLocalRecorder(path.toStdString());
