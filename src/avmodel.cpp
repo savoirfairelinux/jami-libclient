@@ -158,6 +158,32 @@ AVModel::setDecodingAccelerated(bool accelerate)
     VideoManager::instance().setDecodingAccelerated(accelerate);
 }
 
+bool
+AVModel::getEncodingAccelerated() const
+{
+    bool result = VideoManager::instance().getEncodingAccelerated();
+    return result;
+}
+
+void
+AVModel::setEncodingAccelerated(bool accelerate)
+{
+    VideoManager::instance().setEncodingAccelerated(accelerate);
+}
+
+bool
+AVModel::getHardwareAcceleration() const
+{
+    bool result = getDecodingAccelerated() & getEncodingAccelerated();
+    return result;
+}
+void
+AVModel::setHardwareAcceleration(bool accelerate)
+{
+    setDecodingAccelerated(accelerate);
+    setEncodingAccelerated(accelerate);
+}
+
 std::vector<std::string>
 AVModel::getDevices() const
 {
