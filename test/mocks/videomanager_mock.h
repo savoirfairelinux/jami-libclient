@@ -186,6 +186,16 @@ public Q_SLOTS: // METHODS
         Q_UNUSED(state)
     }
 
+    bool getEncodingAccelerated()
+    {
+        return false;
+    }
+
+    void setEncodingAccelerated(bool state)
+    {
+        Q_UNUSED(state)
+    }
+
     void stopLocalRecorder(const QString& path)
     {
         Q_UNUSED(path)

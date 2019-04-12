@@ -57,6 +57,28 @@ public:
     void setDecodingAccelerated(bool accelerate);
 
     /**
+     * Get if hardware encoding is enabled
+     * @return hardware encoding enabled
+     */
+    bool getEncodingAccelerated() const;
+    /**
+     * Enable/disable hardware encoding
+     * @param if hardware encoding enabled
+     */
+    void setEncodingAccelerated(bool accelerate);
+
+    /**
+     * Get if hardware acceleration is enabled
+     * @return hardware acceleration enabled
+     */
+    bool getHardwareAcceleration() const;
+    /**
+     * Enable/disable hardware acceleration
+     * @param if hardware acceleration enabled
+     */
+    void setHardwareAcceleration(bool accelerate);
+
+    /**
      * Get video devices
      * @return list of devices
      */
