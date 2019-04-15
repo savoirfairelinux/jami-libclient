@@ -198,6 +198,10 @@ NewCallModel::getConferenceFromURI(const std::string& uri) const
         if (call.second->type == call::Type::CONFERENCE) {
             QStringList callList = CallManager::instance().getParticipantList(call.first.c_str());
             foreach(const auto& callId, callList) {
+                auto it = pimpl_->calls.find(callId.toStdString());
+                if (it == pimpl_->calls.end()) {
+                    throw std::out_of_range("No call at URI " + uri);
+                }
                 if (pimpl_->calls[callId.toStdString()]->peer == uri) {
                     return *call.second;
                 }
