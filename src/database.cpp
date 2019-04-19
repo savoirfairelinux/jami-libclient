@@ -62,36 +62,7 @@ Database::Database()
         throw std::runtime_error("QSQLITE not supported");
     }
 
-    {
-        QDir dataDir(getPath());
-        // create data directory if not created yet
-        dataDir.mkpath(getPath());
-        QDir oldDataDir(getPath());
-        oldDataDir.cdUp();
-        oldDataDir = oldDataDir
-                    .absolutePath()
-#if defined(_WIN32) || defined(__APPLE__)
-                    + "/ring";
-#else
-                    + "/gnome-ring";
-#endif
-        QStringList filesList = oldDataDir.entryList();
-        QString filename;
-        QDir dir;
-        bool success = true;
-        foreach (filename, filesList) {
-          qDebug() << "Migrate " << oldDataDir.absolutePath() << "/" << filename
-                   << " to " << dataDir.absolutePath() + "/" + filename;
-          if (filename != "." && filename != "..") {
-            success &= dir.rename(oldDataDir.absolutePath() + "/" + filename,
-                                  dataDir.absolutePath() + "/" + filename);
-          }
-        }
-        if (success) {
-            // Remove old directory if the migration is successful.
-            oldDataDir.removeRecursively();
-        }
-    }
+    migrateRingToJamiIfNeeded();
 
     // initialize the database.
     db_ = QSqlDatabase::addDatabase("QSQLITE");
@@ -120,6 +91,42 @@ Database::Database()
         migrateOldFiles();
     } else {
         migrateIfNeeded();
+    }
+}
+
+void
+Database::migrateRingToJamiIfNeeded()
+{
+    QDir dataDir(getPath());
+    // create data directory if not created yet
+    dataDir.mkpath(getPath());
+    QDir oldDataDir(getPath());
+    oldDataDir.cdUp();
+    oldDataDir = oldDataDir
+        .absolutePath()
+#if defined(_WIN32) || defined(__APPLE__)
+        + "/ring";
+#else
+        + "/gnome-ring";
+#endif
+    if (!oldDataDir.exists()) {
+        return;
+    }
+    QStringList filesList = oldDataDir.entryList();
+    QString filename;
+    QDir dir;
+    bool success = true;
+    foreach (filename, filesList) {
+        qDebug() << "Migrate " << oldDataDir.absolutePath() << "/" << filename
+                 << " to " << dataDir.absolutePath() + "/" + filename;
+        if (filename != "." && filename != "..") {
+            success |= dir.rename(oldDataDir.absolutePath() + "/" + filename,
+                dataDir.absolutePath() + "/" + filename);
+        }
+    }
+    if (success) {
+        // Remove old directory if the migration is successful.
+        oldDataDir.removeRecursively();
     }
 }
 

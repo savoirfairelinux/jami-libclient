@@ -245,6 +245,8 @@ private:
     void updateProfileAccountForContact(const std::string& contactURI,
                                         const std::string& accountID);
 
+    void migrateRingToJamiIfNeeded();
+
     QSqlDatabase db_;
 };
 
