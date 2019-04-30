@@ -25,15 +25,15 @@
 #endif // !_MSC_VER
 
 // Models and database
-#include "api/newaccountmodel.h"
 #include "api/avmodel.h"
-#include "api/datatransfermodel.h"
 #include "api/behaviorcontroller.h"
-#include "database.h"
+#include "api/datatransfermodel.h"
+#include "api/newaccountmodel.h"
 #include "callbackshandler.h"
+#include "database.h"
+#include "dbus/callmanager.h"
 #include "dbus/configurationmanager.h"
 #include "dbus/instancemanager.h"
-#include "dbus/configurationmanager.h"
 
 namespace lrc
 {
@@ -121,6 +121,18 @@ Lrc::dbusIsValid()
 #else
     return ConfigurationManager::instance().isValid();
 #endif
+}
+
+std::vector<std::string>
+Lrc::activeCalls()
+{
+    QStringList callLists = CallManager::instance().getCallList();
+    std::vector<std::string> result;
+    result.reserve(callLists.size());
+    for (const auto &call : callLists) {
+        result.emplace_back(call.toStdString());
+    }
+    return result;
 }
 
 LrcPimpl::LrcPimpl(Lrc& linked)

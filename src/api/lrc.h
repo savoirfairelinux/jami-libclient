@@ -20,6 +20,8 @@
 
 // Std
 #include <memory>
+#include <vector>
+#include <string>
 
 // Lrc
 #include "typedefs.h"
@@ -76,7 +78,12 @@ public:
      */
     static bool dbusIsValid();
 
-private:
+    /**
+     * Helper: get call list from daemon
+     */
+    static std::vector<std::string> activeCalls();
+
+  private:
     std::unique_ptr<LrcPimpl> lrcPimpl_;
 };
 
