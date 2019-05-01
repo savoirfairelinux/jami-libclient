@@ -121,6 +121,7 @@ struct ConfProperties_t {
     bool                    proxyEnabled;
     std::string             proxyServer;
     std::string             proxyPushToken;
+    bool                    peerDiscovery;
     int                     registrationExpire;
     struct Audio_t {
         int                 audioPortMax;

@@ -671,6 +671,7 @@ account::Info::fromDetails(const MapStringString& details)
     confProperties.proxyEnabled                         = toBool(details[ConfProperties::PROXY_ENABLED]);
     confProperties.proxyServer                          = toStdString(details[ConfProperties::PROXY_SERVER]);
     confProperties.proxyPushToken                       = toStdString(details[ConfProperties::PROXY_PUSH_TOKEN]);
+    confProperties.peerDiscovery                        = toBool(details[ConfProperties::DHT_PEER_DISCOVERY]);
     // Audio
     confProperties.Audio.audioPortMax                   = toInt(details[ConfProperties::Audio::PORT_MAX]);
     confProperties.Audio.audioPortMin                   = toInt(details[ConfProperties::Audio::PORT_MIN]);
@@ -768,6 +769,7 @@ account::ConfProperties_t::toDetails() const
     details[ConfProperties::PROXY_ENABLED]              = toQString(this->proxyEnabled);
     details[ConfProperties::PROXY_SERVER]               = toQString(this->proxyServer);
     details[ConfProperties::PROXY_PUSH_TOKEN]           = toQString(this->proxyPushToken);
+    details[ConfProperties::DHT_PEER_DISCOVERY]         = this->peerDiscovery;
     // Audio
     details[ConfProperties::Audio::PORT_MAX]            = toQString(this->Audio.audioPortMax);
     details[ConfProperties::Audio::PORT_MIN]            = toQString(this->Audio.audioPortMin);
