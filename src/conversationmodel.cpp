@@ -1598,7 +1598,11 @@ ConversationModelPimpl::slotNewAccountMessage(std::string& accountId,
     if (accountId != linked.owner.id)
         return;
 
-    addIncomingMessage(from, payloads["text/plain"]);
+    for (const auto &payload : payloads) {
+        if (payload.first.find("text/plain") != std::string::npos) {
+            addIncomingMessage(from, payload.second);
+        }
+    }
 }
 
 void
