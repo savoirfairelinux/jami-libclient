@@ -827,8 +827,11 @@ ContactModelPimpl::slotNewAccountMessage(std::string& accountId,
         if (contacts.find(from) == contacts.end()) {
             // Contact not found, load profile from database.
             // The conversation model will create an entry and link the incomingCall.
-            addToContacts(from, profile::Type::PENDING, false);
-            emitNewTrust = true;
+            auto type = (linked.owner.profileInfo.type == profile::Type::RING)
+                            ? profile::Type::PENDING
+                            : profile::Type::SIP;
+            addToContacts(from, type, false);
+            emitNewTrust = (linked.owner.profileInfo.type == profile::Type::RING);
         }
     }
     if (emitNewTrust) {
@@ -848,8 +851,11 @@ ContactModelPimpl::slotNewAccountTransfer(long long dringId, datatransfer::Info 
         if (contacts.find(info.peerUri) == contacts.end()) {
             // Contact not found, load profile from database.
             // The conversation model will create an entry and link the incomingCall.
-            addToContacts(info.peerUri, profile::Type::PENDING, false);
-            emitNewTrust = true;
+            auto type = (linked.owner.profileInfo.type == profile::Type::RING)
+                            ? profile::Type::PENDING
+                            : profile::Type::SIP;
+            addToContacts(info.peerUri, type, false);
+            emitNewTrust = (linked.owner.profileInfo.type == profile::Type::RING);
         }
     }
     if (emitNewTrust) {
