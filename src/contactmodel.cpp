@@ -333,9 +333,15 @@ ContactModel::getBannedContacts() const
 }
 
 const std::string
+ContactModel::getProfileId(const std::string& uri, bool isAccount) const
+{
+    return database::getProfileId(pimpl_->db, pimpl_->linked.owner.id, isAccount ? "true" : "false", uri);
+}
+
+const std::string
 ContactModel::getContactProfileId(const std::string& contactUri) const
 {
-    return database::getProfileId(pimpl_->db, pimpl_->linked.owner.id, "false", contactUri);
+    return getProfileId(contactUri, false);
 }
 
 void
