@@ -71,7 +71,7 @@ to_status(const std::string& type)
         return account::Status::UNREGISTERED;
     else if (type == "TRYING")
         return account::Status::TRYING;
-    else if (type == "REGISTERED")
+    else if (type == "REGISTERED" || type == "READY")
         return account::Status::REGISTERED;
     else if (type == "ERROR_NEED_MIGRATION")
         return account::Status::ERROR_NEED_MIGRATION;
