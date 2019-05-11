@@ -401,6 +401,7 @@ ContactModelPimpl::searchRingContact(const URI& query)
         // Default searching
         ConfigurationManager::instance().lookupName(QString::fromStdString(linked.owner.id), "", QString::fromStdString(uriID));
     }
+    emit linked.modelUpdated(uriID);
 }
 
 void
