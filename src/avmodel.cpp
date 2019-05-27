@@ -221,7 +221,7 @@ AVModel::getDeviceSettings(const std::string& name) const
     result.name = settings["name"].toStdString();
     result.channel = settings["channel"].toStdString();
     result.size = settings["size"].toStdString();
-    result.rate = settings["rate"].toUInt();
+    result.rate = settings["rate"].toFloat();
     return result;
 }
 
@@ -238,7 +238,7 @@ AVModel::getDeviceCapabilities(const std::string& name) const
             video::FrameratesList rates;
             QVectorIterator<QString> itRates(resToRates.second);
             while (itRates.hasNext()) {
-                rates.emplace_back(itRates.next().toUInt());
+                rates.emplace_back(itRates.next().toFloat());
             }
             channelCapabilities.insert(
                 std::make_pair(resToRates.first.toStdString(), rates));

@@ -49,7 +49,7 @@ constexpr static const char PREVIEW_RENDERER_ID[] = "local";
 
 using Channel = std::string;
 using Resolution = std::string;
-using Framerate = uint64_t;
+using Framerate = float;
 using FrameratesList = std::vector<Framerate>;
 using Capabilities = std::map<Channel, std::map<Resolution, FrameratesList>>;
 
