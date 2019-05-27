@@ -17,7 +17,7 @@
         <location filename="../src/account.cpp" line="313"/>
         <source>Initializing</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Розпочинаю</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="317"/>
@@ -633,12 +633,12 @@
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="307"/>
         <source>Has certificate</source>
-        <translation type="unfinished"/>
+        <translation>Має сертифікат</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="307"/>
         <source>Registered name</source>
-        <translation type="unfinished"/>
+        <translation>Зареєстроване ім&apos;я</translation>
     </message>
 </context>
 <context>
@@ -1094,7 +1094,7 @@
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="37"/>
         <source>Your media streams are not encrypted, please enable SDES</source>
-        <translation type="unfinished"/>
+        <translation>Ваш медіа потік не зашифровано, будь ласка, увімкніть SDES</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="50"/>
@@ -1280,7 +1280,7 @@
     <message>
         <location filename="../src/useractionmodel.cpp" line="533"/>
         <source>Open chat</source>
-        <translation type="unfinished"/>
+        <translation>Відкрити розмову</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="768"/>
@@ -1295,27 +1295,27 @@
     <message>
         <location filename="../src/localprofilecollection.cpp" line="148"/>
         <source>Local profiles</source>
-        <translation type="unfinished"/>
+        <translation>Локальні профілі</translation>
     </message>
     <message>
         <location filename="../src/localprofilecollection.cpp" line="153"/>
         <source>Profile Collection</source>
-        <translation type="unfinished"/>
+        <translation>Колекція профілів</translation>
     </message>
     <message>
         <location filename="../src/peerprofilecollection.cpp" line="142"/>
         <source>Peer profiles</source>
-        <translation type="unfinished"/>
+        <translation>Профілі учасників</translation>
     </message>
     <message>
         <location filename="../src/peerprofilecollection.cpp" line="147"/>
         <source>Peers Profiles Collection</source>
-        <translation type="unfinished"/>
+        <translation>Колекція профілів учасників</translation>
     </message>
     <message>
         <location filename="../src/conversationmodel.cpp" line="1265"/>
-        <location filename="../src/conversationmodel.cpp" line="1649"/>
-        <location filename="../src/conversationmodel.cpp" line="1909"/>
+        <location filename="../src/conversationmodel.cpp" line="1653"/>
+        <location filename="../src/conversationmodel.cpp" line="1913"/>
         <source>Invitation received</source>
         <translation type="unfinished"/>
     </message>
@@ -1366,7 +1366,7 @@
     <message>
         <location filename="../src/ringdevicemodel.cpp" line="110"/>
         <source>ID</source>
-        <translation type="unfinished"/>
+        <translation>Ідентифікатор</translation>
     </message>
     <message>
         <location filename="../src/ringdevicemodel.cpp" line="112"/>
@@ -1411,22 +1411,22 @@
 <context>
     <name>lrc::ContactModelPimpl</name>
     <message>
-        <location filename="../src/contactmodel.cpp" line="393"/>
+        <location filename="../src/contactmodel.cpp" line="399"/>
         <source>Searchingâ¦</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="747"/>
+        <location filename="../src/contactmodel.cpp" line="754"/>
         <source>Invalid ID</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="750"/>
+        <location filename="../src/contactmodel.cpp" line="757"/>
         <source>Not found</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="753"/>
+        <location filename="../src/contactmodel.cpp" line="760"/>
         <source>Couldn&apos;t lookupâ¦</source>
         <translation type="unfinished"/>
     </message>
@@ -1434,7 +1434,7 @@
 <context>
     <name>lrc::api::ContactModel</name>
     <message>
-        <location filename="../src/contactmodel.cpp" line="364"/>
+        <location filename="../src/contactmodel.cpp" line="370"/>
         <source>Bad URI scheme</source>
         <translation type="unfinished"/>
     </message>

@@ -534,7 +534,7 @@
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="234"/>
         <source>This account does not support presence tracking</source>
-        <translation>Ce compte ne supporte pas le suivi de présence</translation>
+        <translation>Ce compte ne supporte pas le dépistage de présence</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="237"/>
@@ -619,7 +619,7 @@
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="307"/>
         <source>Present</source>
-        <translation>Présent</translation>
+        <translation>Actuel</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="307"/>
@@ -1315,8 +1315,8 @@
     </message>
     <message>
         <location filename="../src/conversationmodel.cpp" line="1265"/>
-        <location filename="../src/conversationmodel.cpp" line="1649"/>
-        <location filename="../src/conversationmodel.cpp" line="1909"/>
+        <location filename="../src/conversationmodel.cpp" line="1653"/>
+        <location filename="../src/conversationmodel.cpp" line="1913"/>
         <source>Invitation received</source>
         <translation>Invitation reçue</translation>
     </message>
@@ -1412,22 +1412,22 @@
 <context>
     <name>lrc::ContactModelPimpl</name>
     <message>
-        <location filename="../src/contactmodel.cpp" line="393"/>
+        <location filename="../src/contactmodel.cpp" line="399"/>
         <source>Searchingâ¦</source>
         <translation>En cours de recherche</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="747"/>
+        <location filename="../src/contactmodel.cpp" line="754"/>
         <source>Invalid ID</source>
         <translation>ID invalide</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="750"/>
+        <location filename="../src/contactmodel.cpp" line="757"/>
         <source>Not found</source>
         <translation>Introuvable</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="753"/>
+        <location filename="../src/contactmodel.cpp" line="760"/>
         <source>Couldn&apos;t lookupâ¦</source>
         <translation>Impossible de rechercher</translation>
     </message>
@@ -1435,7 +1435,7 @@
 <context>
     <name>lrc::api::ContactModel</name>
     <message>
-        <location filename="../src/contactmodel.cpp" line="364"/>
+        <location filename="../src/contactmodel.cpp" line="370"/>
         <source>Bad URI scheme</source>
         <translation>Schéma d&apos;URI non supporté</translation>
     </message>

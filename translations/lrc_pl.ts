@@ -41,31 +41,31 @@
         <location filename="../src/account.cpp" line="311"/>
         <source>Not registered</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Nie zarejestrowano</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="315"/>
         <source>Tryingâ¦</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Próbowanie</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="319"/>
         <source>Authentication failed</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Autoryzacja nie powiodła się</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="325"/>
         <source>STUN configuration error</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Błąd konfiguracji STUN</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="327"/>
         <source>STUN server invalid</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Nieprawidłowy serwer STUN</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="329"/>
@@ -89,7 +89,7 @@
         <location filename="../src/account.cpp" line="335"/>
         <source>Request timeout</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Przekroczono czas akceptacji prośby</translation>
     </message>
 </context>
 <context>
@@ -628,7 +628,7 @@
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="307"/>
         <source>UID</source>
-        <translation type="unfinished"/>
+        <translation>UID</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="307"/>
@@ -879,7 +879,7 @@
     <message>
         <location filename="../src/certificate.cpp" line="104"/>
         <source>Public key ID</source>
-        <translation type="unfinished"/>
+        <translation>ID klucza publicznego</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="105"/>
@@ -1169,12 +1169,12 @@
     <message>
         <location filename="../src/api/call.h" line="78"/>
         <source>Timeout</source>
-        <translation type="unfinished"/>
+        <translation>Przekroczony czas</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="80"/>
         <source>Peer busy</source>
-        <translation type="unfinished"/>
+        <translation>Peer zajęty</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="84"/>
@@ -1314,8 +1314,8 @@
     </message>
     <message>
         <location filename="../src/conversationmodel.cpp" line="1265"/>
-        <location filename="../src/conversationmodel.cpp" line="1649"/>
-        <location filename="../src/conversationmodel.cpp" line="1909"/>
+        <location filename="../src/conversationmodel.cpp" line="1653"/>
+        <location filename="../src/conversationmodel.cpp" line="1913"/>
         <source>Invitation received</source>
         <translation>Otrzymano zaproszenie</translation>
     </message>
@@ -1411,32 +1411,32 @@
 <context>
     <name>lrc::ContactModelPimpl</name>
     <message>
-        <location filename="../src/contactmodel.cpp" line="393"/>
+        <location filename="../src/contactmodel.cpp" line="399"/>
         <source>Searchingâ¦</source>
-        <translation type="unfinished"/>
+        <translation>Szukanie</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="747"/>
+        <location filename="../src/contactmodel.cpp" line="754"/>
         <source>Invalid ID</source>
-        <translation type="unfinished"/>
+        <translation>Nieprawidłowe ID</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="750"/>
+        <location filename="../src/contactmodel.cpp" line="757"/>
         <source>Not found</source>
-        <translation type="unfinished"/>
+        <translation>Nie znaleziono</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="753"/>
+        <location filename="../src/contactmodel.cpp" line="760"/>
         <source>Couldn&apos;t lookupâ¦</source>
-        <translation type="unfinished"/>
+        <translation>Nie można wyszukać</translation>
     </message>
 </context>
 <context>
     <name>lrc::api::ContactModel</name>
     <message>
-        <location filename="../src/contactmodel.cpp" line="364"/>
+        <location filename="../src/contactmodel.cpp" line="370"/>
         <source>Bad URI scheme</source>
-        <translation type="unfinished"/>
+        <translation>Złe URI</translation>
     </message>
 </context>
 <context>

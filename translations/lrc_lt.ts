@@ -263,7 +263,7 @@
     <message>
         <location filename="../src/categorizedbookmarkmodel.cpp" line="299"/>
         <source>Contacts</source>
-        <translation>Kontaktai</translation>
+        <translation>Adresatai</translation>
     </message>
 </context>
 <context>
@@ -271,7 +271,7 @@
     <message>
         <location filename="../src/categorizedcontactmodel.cpp" line="401"/>
         <source>Contacts</source>
-        <translation>Kontaktai</translation>
+        <translation>Adresatai</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="129"/>
@@ -983,7 +983,7 @@
     <message>
         <location filename="../src/fallbackpersoncollection.cpp" line="196"/>
         <source>Contact</source>
-        <translation>Kontakto</translation>
+        <translation>Adresatas</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="532"/>
@@ -1225,17 +1225,17 @@
     <message>
         <location filename="../src/useractionmodel.cpp" line="527"/>
         <source>Add a contact</source>
-        <translation>Pridėti kontaktą</translation>
+        <translation>Pridėti adresatą</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="528"/>
         <source>Add to existing contact</source>
-        <translation>Pridėti prie esamų kontaktų</translation>
+        <translation>Pridėti prie esamų adresatų</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="529"/>
         <source>Delete contact</source>
-        <translation>Ištrinti kontaktą</translation>
+        <translation>Ištrinti adresatą</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="530"/>
@@ -1245,7 +1245,7 @@
     <message>
         <location filename="../src/useractionmodel.cpp" line="531"/>
         <source>Copy contact</source>
-        <translation>Kopijuoti kontaktą</translation>
+        <translation>Kopijuoti adresatą</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="534"/>
@@ -1314,15 +1314,15 @@
     </message>
     <message>
         <location filename="../src/conversationmodel.cpp" line="1265"/>
-        <location filename="../src/conversationmodel.cpp" line="1649"/>
-        <location filename="../src/conversationmodel.cpp" line="1909"/>
+        <location filename="../src/conversationmodel.cpp" line="1653"/>
+        <location filename="../src/conversationmodel.cpp" line="1913"/>
         <source>Invitation received</source>
         <translation>Gautas pakvietimas</translation>
     </message>
     <message>
         <location filename="../src/conversationmodel.cpp" line="1266"/>
         <source>Contact added</source>
-        <translation>Kontaktas pridėtas</translation>
+        <translation>Adresatas pridėtas</translation>
     </message>
     <message>
         <location filename="../src/conversationmodel.cpp" line="1308"/>
@@ -1411,22 +1411,22 @@
 <context>
     <name>lrc::ContactModelPimpl</name>
     <message>
-        <location filename="../src/contactmodel.cpp" line="393"/>
+        <location filename="../src/contactmodel.cpp" line="399"/>
         <source>Searchingâ¦</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="747"/>
+        <location filename="../src/contactmodel.cpp" line="754"/>
         <source>Invalid ID</source>
         <translation>Neteisingas ID</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="750"/>
+        <location filename="../src/contactmodel.cpp" line="757"/>
         <source>Not found</source>
         <translation>Nerasta</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="753"/>
+        <location filename="../src/contactmodel.cpp" line="760"/>
         <source>Couldn&apos;t lookupâ¦</source>
         <translation type="unfinished"/>
     </message>
@@ -1434,7 +1434,7 @@
 <context>
     <name>lrc::api::ContactModel</name>
     <message>
-        <location filename="../src/contactmodel.cpp" line="364"/>
+        <location filename="../src/contactmodel.cpp" line="370"/>
         <source>Bad URI scheme</source>
         <translation>Bloga URI schema</translation>
     </message>

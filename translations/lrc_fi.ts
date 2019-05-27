@@ -1315,8 +1315,8 @@ Virhe</translation>
     </message>
     <message>
         <location filename="../src/conversationmodel.cpp" line="1265"/>
-        <location filename="../src/conversationmodel.cpp" line="1649"/>
-        <location filename="../src/conversationmodel.cpp" line="1909"/>
+        <location filename="../src/conversationmodel.cpp" line="1653"/>
+        <location filename="../src/conversationmodel.cpp" line="1913"/>
         <source>Invitation received</source>
         <translation type="unfinished"/>
     </message>
@@ -1412,22 +1412,22 @@ Virhe</translation>
 <context>
     <name>lrc::ContactModelPimpl</name>
     <message>
-        <location filename="../src/contactmodel.cpp" line="393"/>
+        <location filename="../src/contactmodel.cpp" line="399"/>
         <source>Searchingâ¦</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="747"/>
+        <location filename="../src/contactmodel.cpp" line="754"/>
         <source>Invalid ID</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="750"/>
+        <location filename="../src/contactmodel.cpp" line="757"/>
         <source>Not found</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="753"/>
+        <location filename="../src/contactmodel.cpp" line="760"/>
         <source>Couldn&apos;t lookupâ¦</source>
         <translation type="unfinished"/>
     </message>
@@ -1435,7 +1435,7 @@ Virhe</translation>
 <context>
     <name>lrc::api::ContactModel</name>
     <message>
-        <location filename="../src/contactmodel.cpp" line="364"/>
+        <location filename="../src/contactmodel.cpp" line="370"/>
         <source>Bad URI scheme</source>
         <translation type="unfinished"/>
     </message>
