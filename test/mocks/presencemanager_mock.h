@@ -92,6 +92,7 @@ Q_SIGNALS: // SIGNALS
     void serverError(const QString &accountID, const QString &error, const QString &msg);
     void newBuddyNotification(const QString &accountID, const QString &buddyUri, bool status, const QString &lineStatus);
     void subscriptionStateChanged(const QString &accountID, const QString &buddyUri, bool state);
+    void nearbyPeerNotification(const QString &accountID, const QString &buddyUri, int state, const QString &displayname);
 };
 
 namespace org {
