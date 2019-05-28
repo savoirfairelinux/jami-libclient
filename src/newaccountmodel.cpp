@@ -672,6 +672,7 @@ account::Info::fromDetails(const MapStringString& details)
     confProperties.proxyServer                          = toStdString(details[ConfProperties::PROXY_SERVER]);
     confProperties.proxyPushToken                       = toStdString(details[ConfProperties::PROXY_PUSH_TOKEN]);
     confProperties.peerDiscovery                        = toBool(details[ConfProperties::DHT_PEER_DISCOVERY]);
+    confProperties.acountPeerDiscovery                  = toBool(details[ConfProperties::ACCOUNT_PEER_DISCOVERY]);
     // Audio
     confProperties.Audio.audioPortMax                   = toInt(details[ConfProperties::Audio::PORT_MAX]);
     confProperties.Audio.audioPortMin                   = toInt(details[ConfProperties::Audio::PORT_MIN]);
