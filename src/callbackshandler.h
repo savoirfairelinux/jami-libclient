@@ -69,6 +69,12 @@ Q_SIGNALS:
      */
     void newBuddySubscription(const std::string& contactUri, bool present);
     /**
+     * Connect this signal to get information when a peer is online.
+     * @param contactUri the peer.
+     * @param present if the peer is online.
+     */
+    void newPeerSubscription(const std::string& accountId, const std::string& contactUri, int state, const std::string& displayname);
+    /**
      * Connect this signal to know when a contact is removed by the daemon.
      * @param accountId the one who lost a contact.
      * @param contactUri the contact removed.
@@ -280,6 +286,17 @@ private Q_SLOTS:
                                   const QString& contactUri,
                                   bool status,
                                   const QString& message);
+    /**
+     * Emit newPeerSubscription
+     * @param accountId
+     * @param contactUri
+     * @param status if the peer is added or removed 
+     * @param message unused for now
+     */
+    void slotNearbyPeerSubscription(const QString& accountId,
+                                    const QString& contactUri,
+                                    int state,
+                                    const QString& displayname);
     /**
      * Emit contactAdded
      * @param accountId account linked

@@ -191,6 +191,11 @@ Q_SIGNALS:
      */
     void accountStatusChanged(const std::string& accountID);
     /**
+     * Connect this signal to know when the status of local peer discovery map changed.
+     * @param accountID
+     */
+    void peerMapStatusChanged(const std::string& accountID, const std::string& contactUri, int state, const std::string& displayname);
+    /**
      * Connect this signal to know when an account was added.
      * @param accountID
      */

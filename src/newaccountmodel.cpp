@@ -109,6 +109,13 @@ public Q_SLOTS:
     void slotAccountStatusChanged(const std::string& accountID, const api::account::Status status);
 
     /**
+     * Emit peerMapStatusChanged.
+     * @param accountId
+     * @param status
+     */
+    void slotPeerMapStatusChanged(const std::string& accountID, const std::string& contactUri, int state, const std::string& displayname);
+
+    /**
      * Emit exportOnRingEnded.
      * @param accountId
      * @param status
@@ -343,7 +350,7 @@ NewAccountModelPimpl::NewAccountModelPimpl(NewAccountModel& linked,
 
     for (auto& id : accountIds)
         addToAccounts(id.toStdString());
-
+    connect(&callbacksHandler, &CallbacksHandler::newPeerSubscription, this, &NewAccountModelPimpl::slotPeerMapStatusChanged);
     connect(&callbacksHandler, &CallbacksHandler::accountsChanged, this, &NewAccountModelPimpl::updateAccounts);
     connect(&callbacksHandler, &CallbacksHandler::accountStatusChanged, this, &NewAccountModelPimpl::slotAccountStatusChanged);
     connect(&callbacksHandler, &CallbacksHandler::accountDetailsChanged, this, &NewAccountModelPimpl::slotAccountDetailsChanged);
@@ -399,6 +406,12 @@ NewAccountModelPimpl::updateAccounts()
             }
         }
     }
+}
+
+void
+NewAccountModelPimpl::slotPeerMapStatusChanged(const std::string& accountID, const std::string& contactUri, int state, const std::string& displayname)
+{
+    emit linked.peerMapStatusChanged(accountID,contactUri,state,displayname);
 }
 
 void
