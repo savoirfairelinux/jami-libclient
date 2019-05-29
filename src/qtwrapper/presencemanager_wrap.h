@@ -27,10 +27,11 @@
 #include <QtCore/QVariant>
 #include <QtCore/QTimer>
 
+#include <mutex>
+
 #include "typedefs.h"
 #include <presencemanager_interface.h>
 #include "conversions_wrap.hpp"
-
 
 /*
  * Proxy class for interface org.ring.Ring.PresenceManager
@@ -41,6 +42,8 @@ class PresenceManagerInterface: public QObject
 public:
 
     std::map<std::string, std::shared_ptr<DRing::CallbackWrapperBase>> presHandlers;
+    std::map<QString, std::pair<QString,QString>> peerMap;
+    std::mutex mtx;
 
     PresenceManagerInterface()
     {
@@ -72,6 +75,21 @@ public:
     }
 
     ~PresenceManagerInterface() {}
+
+    void handlerRegister()
+    {
+        DRing::registerSignalHandlers(presHandlers);
+    }
+
+    void handlerUnregister() {
+        DRing::unregisterSignalHandlers();
+    }
+
+    std::map<QString, std::pair<QString, QString>> getPeerMap()
+    {
+        std::lock_guard<std::mutex> lck(mtx);
+        return peerMap;
+    }
 
 public Q_SLOTS: // METHODS
     void answerServerRequest(const QString &uri, bool flag)
