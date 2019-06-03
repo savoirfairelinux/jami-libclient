@@ -38,11 +38,17 @@ class BehaviorController;
 class NewAccountModel;
 class DataTransferModel;
 class AVModel;
+class PeerDiscoveryModel;
 
 class LIB_EXPORT Lrc {
 public:
     Lrc();
     ~Lrc();
+    /**
+     * get a reference on PeerDiscoveryModel model.
+     * @return a PeerDiscoveryModel&.
+     */
+    const PeerDiscoveryModel& getPeerDiscoveryModel(const QString &accountID) const;
     /**
      * get a reference on account model.
      * @return a NewAccountModel&.
