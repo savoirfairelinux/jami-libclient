@@ -343,6 +343,7 @@ SET( libringclient_LIB_SRCS
   src/authority/databasehelper.cpp
   src/lrc.cpp
   src/newaccountmodel.cpp
+  src/peerdiscoverymodel.cpp
   src/callbackshandler.cpp
   src/behaviorcontroller.cpp
   src/datatransfermodel.cpp
@@ -483,6 +484,7 @@ SET(libringclient_api_LIB_HDRS
   src/api/lrc.h
   src/api/avmodel.h
   src/api/newaccountmodel.h
+  src/api/peerdiscoverymodel.h
   src/api/newcallmodel.h
   src/api/newcodecmodel.h
   src/api/newdevicemodel.h
