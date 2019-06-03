@@ -64,6 +64,12 @@ CallbacksHandler::CallbacksHandler(const Lrc& parent)
             &CallbacksHandler::slotNewBuddySubscription,
             Qt::QueuedConnection);
 
+    connect(&PresenceManager::instance(),
+        &PresenceManagerInterface::nearbyPeerNotification,
+        this,
+        &CallbacksHandler::slotNearbyPeerSubscription,
+        Qt::QueuedConnection);
+
     connect(&ConfigurationManager::instance(),
             &ConfigurationManagerInterface::contactAdded,
             this,
@@ -246,6 +252,15 @@ CallbacksHandler::slotNewBuddySubscription(const QString& accountId,
     Q_UNUSED(status)
     Q_UNUSED(message)
     emit newBuddySubscription(uri.toStdString(), status);
+}
+
+void
+CallbacksHandler::slotNearbyPeerSubscription(const QString& accountId,
+                                             const QString& contactUri,
+                                             int state,
+                                             const QString& displayname)
+{
+    emit newPeerSubscription(accountId.toStdString(), contactUri.toStdString(), state, displayname.toStdString());
 }
 
 void
