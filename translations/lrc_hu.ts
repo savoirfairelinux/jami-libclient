@@ -390,82 +390,82 @@
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="58"/>
         <source>Two weeks ago</source>
-        <translation>Két héttel ezelőtt</translation>
+        <translation>Két hete</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="59"/>
         <source>Three weeks ago</source>
-        <translation>Három héttel ezelőtt</translation>
+        <translation>Három hete</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="57"/>
         <source>A week ago</source>
-        <translation>Egy héttel ezelőtt</translation>
+        <translation>Egy hete</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="60"/>
         <source>A month ago</source>
-        <translation>Egy hónappal ezelőtt</translation>
+        <translation>Egy hónapja</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="61"/>
         <source>Two months ago</source>
-        <translation>Két hónappal ezelőtt</translation>
+        <translation>Két hónapja</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="62"/>
         <source>Three months ago</source>
-        <translation>Három hónappal ezelőtt</translation>
+        <translation>Három hónapja</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="63"/>
         <source>Four months ago</source>
-        <translation>Négy hónappal ezelőtt</translation>
+        <translation>Négy hónapja</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="64"/>
         <source>Five months ago</source>
-        <translation>Öt hónappal ezelőtt</translation>
+        <translation>Öt hónapja</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="65"/>
         <source>Six months ago</source>
-        <translation>Hat hónappal ezelőtt</translation>
+        <translation>Hat hónapja</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="66"/>
         <source>Seven months ago</source>
-        <translation>Hét hónappal ezelőtt</translation>
+        <translation>Hét hónapja</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="67"/>
         <source>Eight months ago</source>
-        <translation>Nyolc hónappal ezelőtt</translation>
+        <translation>Nyolc hónapja</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="68"/>
         <source>Nine months ago</source>
-        <translation>Kilenc hónappal ezelőtt</translation>
+        <translation>Kilenc hónapja</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="69"/>
         <source>Ten months ago</source>
-        <translation>Tíz hónappal ezelőtt</translation>
+        <translation>Tíz hónapja</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="70"/>
         <source>Eleven months ago</source>
-        <translation>Tizenegy hónappal ezelőtt</translation>
+        <translation>Tizenegy hónapja</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="71"/>
         <source>Twelve months ago</source>
-        <translation>Tizenkét hónappal ezelőtt</translation>
+        <translation>Tizenkét hónapja</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="72"/>
         <source>A year ago</source>
-        <translation>Egy évvel ezelőtt</translation>
+        <translation>Egy éve</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="73"/>
