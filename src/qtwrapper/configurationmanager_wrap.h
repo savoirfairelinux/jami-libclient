@@ -621,6 +621,10 @@ public Q_SLOTS: // METHODS
         return DRing::getMessageStatus(id);
     }
 
+    MapStringString getNearbyPeers(const QString &accountID){
+        return DRing::getNearbyPeers(accountID.toStdString());
+    }
+
     void connectivityChanged() {
         DRing::connectivityChanged();
     }

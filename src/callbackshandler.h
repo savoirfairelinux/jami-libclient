@@ -69,6 +69,12 @@ Q_SIGNALS:
      */
     void newBuddySubscription(const std::string& contactUri, bool present);
     /**
+     * Connect this signal to get information when peer discovery changes.
+     * @param contactUri the peer.
+     * @param state is 0 if the peer is added.
+     */
+    void newPeerSubscription(const std::string& accountId, const std::string& contactUri, int state, const std::string& displayname);
+    /**
      * Connect this signal to know when a contact is removed by the daemon.
      * @param accountId the one who lost a contact.
      * @param contactUri the contact removed.
@@ -466,6 +472,18 @@ private Q_SLOTS:
      * @param level
      */
     void slotAudioMeterReceived(const QString& id, float level);
+
+    /**
+     * Emit newPeerSubscription
+     * @param accountId
+     * @param contactUri
+     * @param status if the peer is added or removed
+     * @param displayname is the account display name
+     */
+    void slotNearbyPeerSubscription(const QString& accountId,
+                                    const QString& contactUri,
+                                    int state,
+                                    const QString& displayname);
 
 private:
     const api::Lrc& parent;
