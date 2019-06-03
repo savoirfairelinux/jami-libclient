@@ -63,6 +63,10 @@ public:
             exportable_callback<PresenceSignal::SubscriptionStateChanged>(
                 [this] (const std::string &accountID, const std::string &buddyUri, bool state) {
                     Q_EMIT this->subscriptionStateChanged(QString(accountID.c_str()), QString(buddyUri.c_str()), state);
+                }),
+            exportable_callback<PresenceSignal::NearbyPeerNotification>(
+                [this] (const std::string &accountID, const std::string &buddyUri, int status, const std::string &displayname) {
+                    Q_EMIT this->nearbyPeerNotification(QString(accountID.c_str()), QString(buddyUri.c_str()), status, QString(displayname.c_str()));
                 })
          };
     }
@@ -100,6 +104,7 @@ public Q_SLOTS: // METHODS
     }
 
 Q_SIGNALS: // SIGNALS
+    void nearbyPeerNotification(const QString &accountID, const QString &buddyUri, int status, const QString &displayname);
     void newServerSubscriptionRequest(const QString &buddyUri);
     void serverError(const QString &accountID, const QString &error, const QString &msg);
     void newBuddyNotification(const QString &accountID, const QString &buddyUri, bool status, const QString &lineStatus);
