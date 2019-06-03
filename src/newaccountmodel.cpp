@@ -31,6 +31,7 @@
 #include "api/lrc.h"
 #include "api/contactmodel.h"
 #include "api/conversationmodel.h"
+#include "api/peerdiscoverymodel.h"
 #include "api/newcallmodel.h"
 #include "api/newcodecmodel.h"
 #include "api/newdevicemodel.h"
@@ -582,6 +583,7 @@ NewAccountModelPimpl::addToAccounts(const std::string& accountId)
     newAcc.callModel = std::make_unique<NewCallModel>(newAcc, callbacksHandler);
     newAcc.contactModel = std::make_unique<ContactModel>(newAcc, database, callbacksHandler, behaviorController);
     newAcc.conversationModel = std::make_unique<ConversationModel>(newAcc, lrc, database, callbacksHandler, behaviorController);
+    newAcc.peerDiscoveryModel = std::make_unique<PeerDiscoveryModel>(callbacksHandler);
     newAcc.deviceModel = std::make_unique<NewDeviceModel>(newAcc, callbacksHandler);
     newAcc.codecModel = std::make_unique<NewCodecModel>(newAcc, callbacksHandler);
     newAcc.accountModel = &linked;

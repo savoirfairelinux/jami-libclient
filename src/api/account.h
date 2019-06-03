@@ -40,6 +40,7 @@ class NewCallModel;
 class NewAccountModel;
 class NewDeviceModel;
 class NewCodecModel;
+class PeerDiscoveryModel;
 
 namespace account
 {
@@ -225,6 +226,7 @@ struct Info
     std::unique_ptr<lrc::api::NewCallModel> callModel;
     std::unique_ptr<lrc::api::NewDeviceModel> deviceModel;
     std::unique_ptr<lrc::api::NewCodecModel> codecModel;
+    std::unique_ptr<lrc::api::PeerDiscoveryModel> peerDiscoveryModel;
     NewAccountModel* accountModel {nullptr};
 
     // daemon config
