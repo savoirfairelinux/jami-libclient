@@ -40,6 +40,7 @@ namespace lrc
 class CallbacksHandler;
 class Database;
 class NewAccountModelPimpl;
+class PeerDiscoveryModelPimpl;
 
 namespace api
 {
@@ -48,7 +49,7 @@ class Lrc;
 class BehaviorController;
 
 /**
-  *  @brief Class that manages account information.
+  *  @brief Class that manages account information and peer discovery info
   */
 class LIB_EXPORT NewAccountModel : public QObject {
     Q_OBJECT
@@ -179,6 +180,12 @@ public:
     std::string accountVCard(const std::string& accountId, bool compressImage = true) const;
     std::string compressedAvatar(const std::string& img) const;
 
+    /**
+     * get a map of discovered peers account
+     * @return a std::map<std::string, std::string>
+     */
+    MapStringString getNearbyPeers(const QString &accountID) const;
+
 Q_SIGNALS:
     /**
      * Connect this signal to know when an invalid account is here
@@ -237,8 +244,14 @@ Q_SIGNALS:
      */
     void migrationEnded(const std::string& accountId, bool ok);
 
+    /**
+     * Connect this signal to know when the status of local peer discovery map changed.
+     */
+    void modelChanged(const std::string& accountID, const std::string& contactUri, int state, const std::string& displayname);
+
 private:
     std::unique_ptr<NewAccountModelPimpl> pimpl_;
+    std::unique_ptr<PeerDiscoveryModelPimpl> peerpimpl_;
 };
 
 } // namespace api

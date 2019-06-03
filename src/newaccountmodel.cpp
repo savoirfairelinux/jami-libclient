@@ -152,12 +152,53 @@ public Q_SLOTS:
     void slotMigrationEnded(const std::string& accountId, bool ok);
 };
 
+class PeerDiscoveryModelPimpl: public QObject
+{
+    Q_OBJECT
+public:
+    PeerDiscoveryModelPimpl(NewAccountModel& linked,
+                            const CallbacksHandler& callbackHandler);
+    ~PeerDiscoveryModelPimpl();
+
+    NewAccountModel& linked;
+    const CallbacksHandler& callbacksHandler;
+
+public Q_SLOTS:
+
+    /**
+     * Emit peerMapStatusChanged.
+     * @param accountId
+     * @param status
+     */
+    void slotPeerMapStatusChanged(const std::string& accountID, const std::string& contactUri, int state, const std::string& displayname);
+};
+
+PeerDiscoveryModelPimpl::PeerDiscoveryModelPimpl(NewAccountModel& linked,
+                                                 const CallbacksHandler& callbacksHandler)
+: linked(linked)
+, callbacksHandler(callbacksHandler)
+{
+    connect(&callbacksHandler, &CallbacksHandler::newPeerSubscription, this, &PeerDiscoveryModelPimpl::slotPeerMapStatusChanged);
+}
+
+PeerDiscoveryModelPimpl::~PeerDiscoveryModelPimpl()
+{
+    disconnect(&callbacksHandler, &CallbacksHandler::newPeerSubscription, this, &PeerDiscoveryModelPimpl::slotPeerMapStatusChanged);
+}
+
+void
+PeerDiscoveryModelPimpl::slotPeerMapStatusChanged(const std::string& accountID, const std::string& contactUri, int state, const std::string& displayname)
+{
+    emit linked.modelChanged(accountID,contactUri,state,displayname);
+}
+
 NewAccountModel::NewAccountModel(Lrc& lrc,
                                  Database& database,
                                  const CallbacksHandler& callbacksHandler,
                                  const BehaviorController& behaviorController)
 : QObject()
 , pimpl_(std::make_unique<NewAccountModelPimpl>(*this, lrc, database, callbacksHandler, behaviorController))
+, peerpimpl_(std::make_unique<PeerDiscoveryModelPimpl>(*this, callbacksHandler))
 {
 }
 
@@ -942,6 +983,12 @@ std::string NewAccountModel::compressedAvatar(const std::string& img) const
     image.scaled({128,128}).save(&buffer, "JPEG", 90);
     auto b64Img = bArray.toBase64().trimmed();
     return std::string(b64Img.constData(), b64Img.length());
+}
+
+MapStringString
+NewAccountModel::getNearbyPeers(const QString &accountID) const
+{
+    return ConfigurationManager::instance().getNearbyPeers(accountID);
 }
 
 } // namespace lrc
