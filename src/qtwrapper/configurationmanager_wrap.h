@@ -629,6 +629,10 @@ public Q_SLOTS: // METHODS
         return convertMap(DRing::getContactDetails(accountID.toStdString(), uri.toStdString()));
     }
 
+    MapStringString getNearbyPeers(const QString &accountID) {
+        return convertMap(DRing::getNearbyPeers(accountID.toStdString()));
+    }
+
     VectorULongLong dataTransferList() {
         return convertVectorULongLong(DRing::dataTransferList());
     }
