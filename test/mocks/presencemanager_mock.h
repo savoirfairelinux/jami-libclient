@@ -52,6 +52,10 @@ public:
     {
         emit newBuddyNotification(accountID, buddyUri, status, lineStatus);
     }
+    void emitNearbyPeerNotification(const QString &accountID, const QString &buddyUri, int status, const QString &displayname)
+    {
+        emit nearbyPeerNotification(accountID, buddyUri, status, displayname);
+    }
 
 public Q_SLOTS: // METHODS
     void answerServerRequest(const QString &uri, bool flag)
@@ -91,6 +95,7 @@ Q_SIGNALS: // SIGNALS
     void newServerSubscriptionRequest(const QString &buddyUri);
     void serverError(const QString &accountID, const QString &error, const QString &msg);
     void newBuddyNotification(const QString &accountID, const QString &buddyUri, bool status, const QString &lineStatus);
+    void nearbyPeerNotification(const QString &accountID, const QString &buddyUri, int status, const QString &displayname);
     void subscriptionStateChanged(const QString &accountID, const QString &buddyUri, bool state);
 };
 

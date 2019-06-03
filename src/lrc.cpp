@@ -29,6 +29,7 @@
 #include "api/behaviorcontroller.h"
 #include "api/datatransfermodel.h"
 #include "api/newaccountmodel.h"
+#include "api/peerdiscoverymodel.h"
 #include "callbackshandler.h"
 #include "database.h"
 #include "dbus/callmanager.h"
@@ -53,6 +54,7 @@ public:
     std::unique_ptr<NewAccountModel> accountModel;
     std::unique_ptr<DataTransferModel> dataTransferModel;
     std::unique_ptr<AVModel> AVModel_;
+    std::unique_ptr<PeerDiscoveryModel> peerDiscoveryModel_;
 };
 
 Lrc::Lrc()
@@ -77,6 +79,12 @@ const NewAccountModel&
 Lrc::getAccountModel() const
 {
     return *lrcPimpl_->accountModel;
+}
+
+const PeerDiscoveryModel&
+Lrc::getPeerDiscoveryModel() const
+{
+    return *lrcPimpl_->peerDiscoveryModel_;
 }
 
 BehaviorController&
@@ -143,6 +151,7 @@ LrcPimpl::LrcPimpl(Lrc& linked)
 , accountModel(std::make_unique<NewAccountModel>(linked, *database, *callbackHandler, *behaviorController))
 , dataTransferModel {std::make_unique<DataTransferModel>()}
 , AVModel_ {std::make_unique<AVModel>(*callbackHandler)}
+, peerDiscoveryModel_ {std::make_unique<PeerDiscoveryModel>(*callbackHandler)}
 {
 }
 
