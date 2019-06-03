@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a682f340_63c6a24e",
+        "filename": "src/peerdiscoverymodel.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2019-06-03T19:38:24Z",
+      "side": 1,
+      "message": "Don\u0027t forget disconnect() in the destructor :)",
+      "range": {
+        "startLine": 72,
+        "startChar": 8,
+        "endLine": 72,
+        "endChar": 111
+      },
+      "revId": "69d6f131012dda8eb3ceef39083598630bf925b5",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    }
+  ]
+}
