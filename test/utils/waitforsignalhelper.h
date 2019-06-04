@@ -43,6 +43,7 @@ public:
     WaitForSignalHelper(std::function<void()> f);
 
     WaitForSignalHelper& addSignal(const std::string& id, QObject& object, const char* signal);
+    void setSignal(const std::string& id, QObject& object, const char* signal);
     std::map<std::string, int> wait(int timeoutMs);
 
 public Q_SLOTS:

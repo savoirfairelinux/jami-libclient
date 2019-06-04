@@ -1,6 +1,7 @@
 /****************************************************************************
- *    Copyright (C) 2017-2019 Savoir-faire Linux Inc.                                  *
+ *    Copyright (C) 2017-2019 Savoir-faire Linux Inc.                       *
  *   Author: Nicolas Jäger <nicolas.jager@savoirfairelinux.com>             *
+ *   Author: Sébastien Blin <sebastien.blin@savoirfairelinux.com>           *
  *                                                                          *
  *   This library is free software; you can redistribute it and/or          *
  *   modify it under the terms of the GNU Lesser General Public             *
@@ -15,40 +16,35 @@
  *   You should have received a copy of the GNU General Public License      *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
-#include "newaccountmodeltester.h"
+#pragma once
+
+// std
+#include <memory>
 
 // Qt
-#include <QString>
-#include "utils/waitforsignalhelper.h"
+#include <qobject.h>
 
-// lrc
-#include "api/lrc.h"
+// Lrc
+#include "typedefs.h"
 
-namespace ring
-{
-namespace test
-{
+class DaemonPimpl;
 
-CPPUNIT_TEST_SUITE_REGISTRATION(NewAccountModelTester);
+class Daemon : public QObject {
+    Q_OBJECT
 
-NewAccountModelTester::NewAccountModelTester()
-: lrc_(new lrc::api::Lrc())
-{
+public:
+    Daemon();
+    ~Daemon();
 
-}
+    std::vector<std::string> getAccountList() const;
 
-void
-NewAccountModelTester::setUp()
-{
+    void addAccount(const std::string& alias);
+    std::string getAccountId(const std::string& alias) const;
 
-}
+    void addNewDevice(const std::string& accountId, const std::string& id, const std::string& name); // TODO I am not sure that we can control the generated id here.
 
 
-void
-NewAccountModelTester::tearDown()
-{
+private:
+    std::unique_ptr<DaemonPimpl> pimpl_;
 
-}
-
-} // namespace test
-} // namespace ring
+};
