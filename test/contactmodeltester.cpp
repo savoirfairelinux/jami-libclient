@@ -15,7 +15,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA.
- */
+ * /
 #include "contactmodeltester.h"
 #include "utils/waitforsignalhelper.h"
 
@@ -114,14 +114,14 @@ ContactModelTester::testBanUnbanContact()
 void
 ContactModelTester::testGetAllContactsForRINGAccount()
 {
-    auto contacts = accInfo_.contactModel->getAllContacts();
+    /*auto contacts = accInfo_.contactModel->getAllContacts();
     auto contactsFromDaemon = ConfigurationManager::instance().getContacts("ring1");
     // getAllContacts must return all daemon contacts
     int lrcContactsNumber = contacts.size();
     int daemonContactsNumber = contactsFromDaemon.size();
     CPPUNIT_ASSERT_EQUAL(lrcContactsNumber, daemonContactsNumber);
     for (const auto& contactUri: contactsFromDaemon)
-        CPPUNIT_ASSERT(contacts.find(contactUri["id"].toStdString()) != contacts.end());
+        CPPUNIT_ASSERT(contacts.find(contactUri["id"].toStdString()) != contacts.end());* /
 }
 
 void
@@ -130,17 +130,17 @@ ContactModelTester::testReceivesPendingRequest()
     CPPUNIT_ASSERT_EQUAL(accInfo_.contactModel->hasPendingRequests(), false);
     QByteArray payload = "FN:pending0\nPHOTO;ENCODING=BASE64;TYPE=PNG:";
     auto incomingTrustRequestSigsCaught = WaitForSignalHelper([&]() {
-            ConfigurationManager::instance().emitIncomingTrustRequest("ring1", "pending0", payload, 0);
+            //ConfigurationManager::instance().emitIncomingTrustRequest("ring1", "pending0", payload, 0);
         })
         .addSignal("contactAdded", *accInfo_.contactModel, SIGNAL(contactAdded(const std::string&)))
         .wait(1000);
     CPPUNIT_ASSERT_EQUAL(incomingTrustRequestSigsCaught["contactAdded"], 1);
     CPPUNIT_ASSERT(accInfo_.contactModel->hasPendingRequests());
-    auto contactsFromDaemon = ConfigurationManager::instance().getContacts("ring1");
+    /*auto contactsFromDaemon = ConfigurationManager::instance().getContacts("ring1");
     auto contacts = accInfo_.contactModel->getAllContacts();
     int lrcContactsNumber = contacts.size();
     int daemonContactsNumber = contactsFromDaemon.size();
-    CPPUNIT_ASSERT_EQUAL(lrcContactsNumber, daemonContactsNumber + 1);
+    CPPUNIT_ASSERT_EQUAL(lrcContactsNumber, daemonContactsNumber + 1);* /
 }
 
 void
@@ -217,7 +217,7 @@ ContactModelTester::testAddNewSIPContact()
         .wait(1000);
     //CPPUNIT_ASSERT_EQUAL(addContactSigsCaught["contactAdded"] > 0, true);
     // "sipcontact0" should be "ring1" contacts.
-    CPPUNIT_ASSERT_NO_THROW(accInfoSip.contactModel->getContact("sipcontact0"));*/
+    CPPUNIT_ASSERT_NO_THROW(accInfoSip.contactModel->getContact("sipcontact0"));* /
 }
 
 void
@@ -240,7 +240,7 @@ ContactModelTester::testReceivesContactPresenceUpdate()
     CPPUNIT_ASSERT_NO_THROW(accInfo_.contactModel->getContact("contact1"));
     CPPUNIT_ASSERT_EQUAL(accInfo_.contactModel->getContact("contact1").isPresent, false);
     auto newBuddyNotificationSigsCaught = WaitForSignalHelper([&]() {
-            PresenceManager::instance().emitNewBuddyNotification(QString::fromStdString(accInfo_.id), "contact1", true, QString());
+            //PresenceManager::instance().emitNewBuddyNotification(QString::fromStdString(accInfo_.id), "contact1", true, QString());
         })
         .addSignal("modelUpdated", *accInfo_.contactModel, SIGNAL(modelUpdated(const std::string&, bool)))
         .addSignal("modelSorted", *accInfo_.conversationModel, SIGNAL(modelSorted()))
@@ -321,7 +321,7 @@ ContactModelTester::testRmSIPContact()
     int nbContactsAtEnd = accInfoSip.contactModel->getAllContacts().size();
     CPPUNIT_ASSERT_EQUAL(nbContactsAtEnd, nbContactsAtBegin - 1);
     // "sipcontact1" should not be in "ring1" contacts.
-    CPPUNIT_ASSERT_THROW(accInfoSip.contactModel->getContact("sipcontact1"), std::out_of_range);*/
+    CPPUNIT_ASSERT_THROW(accInfoSip.contactModel->getContact("sipcontact1"), std::out_of_range);* /
 }
 
 void
@@ -341,7 +341,7 @@ ContactModelTester::testCountPendingRequests()
     CPPUNIT_ASSERT_EQUAL(accInfo_.contactModel->hasPendingRequests(), false);
     QByteArray payload = "FN:pending0\nPHOTO;ENCODING=BASE64;TYPE=PNG:";
     auto incomingTrustRequestSigsCaught = WaitForSignalHelper([&]() {
-            ConfigurationManager::instance().emitIncomingTrustRequest("ring1", "pending0", payload, 0);
+            //ConfigurationManager::instance().emitIncomingTrustRequest("ring1", "pending0", payload, 0);
         })
         .addSignal("contactAdded", *accInfo_.contactModel, SIGNAL(contactAdded(const std::string&)))
         .wait(1000);

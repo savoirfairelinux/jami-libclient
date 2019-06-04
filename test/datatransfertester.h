@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA.
- */
+ * /
 
 #pragma once
 
@@ -51,27 +51,27 @@ public:
     DataTransferTester();
     /**
      * Method automatically called before each test by CppUnit
-     */
+     * /
     void setUp();
     /**
      * Receives a new file, should be in conversations
-     */
+     * /
     void testReceivesMusic();
     /**
      * Receives a new image without any prefedred dir, should be awaiting peer
-     */
+     * /
     void testReceivesImage5MbNoPref();
     /**
      * Receives a new image with a prefedred dir, should accept transfer
-     */
+     * /
     void testReceivesImage5Mb();
     /**
      * Receives a new image with a prefedred dir but too big, awaiting peer
-     */
+     * /
     void testReceivesImage50Mb();
     /**
      * Method automatically called after each test by CppUnit
-     */
+     * /
     void tearDown();
 
 protected:

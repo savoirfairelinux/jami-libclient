@@ -507,6 +507,7 @@ void
 NewCallModelPimpl::slotCallStateChanged(const std::string& callId, const std::string& state, int code)
 {
     Q_UNUSED(code)
+    qWarning() << "STATE: " << state.c_str();
     if (!linked.hasCall(callId)) return;
 
     auto status = call::to_status(state);

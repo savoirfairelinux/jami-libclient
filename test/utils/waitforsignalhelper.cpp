@@ -43,7 +43,7 @@ WaitForSignalHelper::WaitForSignalHelper(std::function<void()> f)
 }
 
 WaitForSignalHelper&
-WaitForSignalHelper::addSignal(const std::string& id, QObject& object, const char* signal)
+WaitForSignalHelper::addSignal(const std::string& id, QObject& object, const char* signal) 
 {
     results_.insert({id , 0});
     QSignalMapper* signalMapper = new QSignalMapper(this);
@@ -59,10 +59,25 @@ WaitForSignalHelper::addSignal(const std::string& id, QObject& object, const cha
 }
 
 void
+WaitForSignalHelper::setSignal(const std::string& id, QObject& object, const char* signal) 
+{
+    results_.insert({id , 0});
+    QSignalMapper* signalMapper = new QSignalMapper(this);
+    auto connection = connect(&object, signal, signalMapper, SLOT(map()), Qt::QueuedConnection);
+    connections_.emplace_back(connection);
+    signalMapper->setMapping(&object, QString::fromStdString(id));
+    connection = connect(signalMapper,
+            SIGNAL(mapped(const QString&)),
+            this,
+            SLOT(signalSlot(const QString&)), Qt::QueuedConnection);
+    connections_.emplace_back(connection);
+}
+
+void
 WaitForSignalHelper::signalSlot(const QString & id)
 {
     std::string signalId = id.toStdString();
-    std::cout << "Signal caught: " << signalId.c_str() << "\n";
+    qDebug() << "Signal caught: " << id << "\n";
     auto resultsSize = results_.size();
     unsigned signalsCaught = 0;
     // loop through results map till we find the id and increment the value,
@@ -74,7 +89,7 @@ WaitForSignalHelper::signalSlot(const QString & id)
         }
         signalsCaught = signalsCaught + static_cast<unsigned>((*it).second > 0);
         if (signalsCaught == resultsSize) {
-            std::cout << "All signals caught\n";
+            qDebug() << "All signals caught\n";
             eventLoop_.quit();
             break;
         }
@@ -84,7 +99,7 @@ WaitForSignalHelper::signalSlot(const QString & id)
 void
 WaitForSignalHelper::timeout()
 {
-    std::cout << "Timed out! signal(s) missed\n";
+    qDebug() << "Timed out! signal(s) missed\n";
     eventLoop_.quit();
 }
 

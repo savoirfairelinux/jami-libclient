@@ -92,11 +92,6 @@ IF(NOT ENABLE_TEST)
   SET(ENABLE_TEST false)
 ENDIF()
 
-
-IF((${ENABLE_TEST} MATCHES true))
-  SET(ENABLE_LIBWRAP true) # because mocks use the same interface present in src/qtwrapper
-ENDIF()
-
 if (NOT (CMAKE_CXX_COMPILER_ID MATCHES "MSVC"))
 # Enable some useful warnings
     ADD_DEFINITIONS(
@@ -549,7 +544,7 @@ SET( libringclient_extra_LIB_HDRS
   src/typedefs.h
 )
 
-IF(${ENABLE_LIBWRAP} MATCHES true OR ${ENABLE_TEST} MATCHES true)
+IF(${ENABLE_LIBWRAP} MATCHES true)
    # done this way because of bug in cmake 2.8
    # (not necessary in 3.0+)
 ELSE()
@@ -661,7 +656,7 @@ SET(libringclient_PRIVATE_HDRS
 )
 
 
-IF(${ENABLE_LIBWRAP} MATCHES true AND ${ENABLE_TEST} MATCHES false)
+IF(${ENABLE_LIBWRAP} MATCHES true)
    SET(libringclient_PRIVATE_HDRS
       ${libringclient_PRIVATE_HDRS}
 
@@ -854,12 +849,6 @@ INSTALL( FILES ${libringclient_CONFIG_PATH}
   COMPONENT Devel
 )
 
-# WRITE_BASIC_PACKAGE_VERSION_FILE(
-#    ${libringclient_CONFIG_PATH}
-#    VERSION ${GENERIC_LIB_VERSION}
-#    COMPATIBILITY SameMajorVersion
-# )
-
 # translations
 IF( Qt5LinguistTools_FOUND )
    # translation template file
@@ -888,36 +877,34 @@ ADD_CUSTOM_TARGET(uninstall
 
 
 IF((${ENABLE_TEST} MATCHES true))
-  ADD_DEFINITIONS(-DENABLE_LIBWRAP=true) # Avoid dbus models
-  ADD_DEFINITIONS(-DENABLE_TEST=true) # Use mocks
+  ADD_DEFINITIONS(-DENABLE_TEST=false) # Use mocks
   INCLUDE_DIRECTORIES(SYSTEM ${Qt5Core_INCLUDE_DIRS} )
+  INCLUDE_DIRECTORIES(SYSTEM ${Qt5DBus_INCLUDE_DIRS} )
   INCLUDE_DIRECTORIES(SYSTEM ${Qt5Gui_INCLUDE_DIRS} )
   FIND_PACKAGE(Cppunit REQUIRED)
   FIND_PACKAGE(Qt5Widgets)
+  FIND_PACKAGE(Qt5DBus)
   MESSAGE(STATUS "Is cppunit present? " ${CPPUNIT_FOUND})
   # unit testing
   IF (CPPUNIT_FOUND)
     add_executable(LRCTester
-      test/mocks/callmanager_mock.h
-      test/mocks/configurationmanager_mock.h
-      test/mocks/instancemanager_mock.h
-      test/mocks/presencemanager_mock.h
-      test/mocks/videomanager_mock.h
       test/test_runner.cpp
       test/databasetester.h
       test/databasetester.cpp
       test/utils/waitforsignalhelper.h
+      test/utils/daemon_connector.h
       test/utils/waitforsignalhelper.cpp
-      test/conversationmodeltester.h
-      test/conversationmodeltester.cpp
-      test/contactmodeltester.h
-      test/contactmodeltester.cpp
-      test/datatransfertester.h
-      test/datatransfertester.cpp
+      test/utils/daemon_connector.cpp
+      #test/conversationmodeltester.h
+      #test/conversationmodeltester.cpp
+      #test/contactmodeltester.h
+      #test/contactmodeltester.cpp
+      #test/datatransfertester.h
+      #test/datatransfertester.cpp
       test/newcallmodeltester.h
       test/newcallmodeltester.cpp
-      test/newaccountmodeltester.h
-      test/newaccountmodeltester.cpp
+      #test/newdevicemodeltester.h
+      #test/newdevicemodeltester.cpp
       ${libringclient_LIB_SRCS}
       ${LIB_HEADER_MOC}
       ${libringclient_PRIVATE_HDRS}
@@ -928,7 +915,9 @@ IF((${ENABLE_TEST} MATCHES true))
        ${QT_QTCORE_LIBRARY}
        Qt5::Gui
        Qt5::Sql
+       ${QT_QTDBUS_LIBRARY}
     )
+    QT5_USE_MODULES(LRCTester DBus)
 
     IF(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
        TARGET_LINK_LIBRARIES( LRCTester
