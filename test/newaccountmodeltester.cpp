@@ -20,6 +20,7 @@
 // Qt
 #include <QString>
 #include "utils/waitforsignalhelper.h"
+#include "utils/daemon_connector.h"
 
 // lrc
 #include "api/lrc.h"
@@ -40,7 +41,7 @@ NewAccountModelTester::NewAccountModelTester()
 void
 NewAccountModelTester::setUp()
 {
-
+    auto daemon = std::make_unique<Daemon>();
 }
 
 
@@ -49,6 +50,13 @@ NewAccountModelTester::tearDown()
 {
 
 }
+
+void
+NewAccountModelTester::testX()
+{
+
+}
+
 
 } // namespace test
 } // namespace ring

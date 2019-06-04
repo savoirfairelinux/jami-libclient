@@ -77,7 +77,7 @@ NewCallModelTester::testAcceptHoldUnholdHangupCall()
     std::string callId = "ring:contact1";
 
     auto incomingCallSigsCaught = WaitForSignalHelper([&]() {
-            CallManager::instance().emitIncomingCall("ring2", callId.c_str(), "ring:contact1");
+            //CallManager::instance().emitIncomingCall("ring2", callId.c_str(), "ring:contact1");
         })
         .addSignal("newIncomingCall", *accInfo_.callModel, SIGNAL(newIncomingCall(const std::string&, const std::string&)))
         .wait(1000);

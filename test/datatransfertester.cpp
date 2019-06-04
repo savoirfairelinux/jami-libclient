@@ -66,8 +66,8 @@ DataTransferTester::testReceivesMusic()
         "1", lrc::api::datatransfer::Status::on_connection, 0, 10 * 1024 * 1024, 0,
         "./", "glados.mp3", "ring0", firstConversation.participants[0]
     };
-    ConfigurationManager::instance().setDataTransferInfo(1, info);
-    ConfigurationManager::instance().emitDataTransferEvent(1, DRing::DataTransferEventCode::created);
+    //ConfigurationManager::instance().setDataTransferInfo(1, info);
+    //ConfigurationManager::instance().emitDataTransferEvent(1, DRing::DataTransferEventCode::created);
     auto intFinalSize = accInfo_.conversationModel->filteredConversation(0).interactions.size();
     CPPUNIT_ASSERT_EQUAL(intFinalSize, intBaseSize + 1);
     // base conversation + file transfer
@@ -83,11 +83,11 @@ DataTransferTester::testReceivesImage5MbNoPref()
         "1", lrc::api::datatransfer::Status::on_connection, 0, 5 * 1024 * 1024, 0,
         "./", "glados.jpg", "ring0", firstConversation.participants[0]
     };
-    ConfigurationManager::instance().setDataTransferInfo(2, info);
+    //ConfigurationManager::instance().setDataTransferInfo(2, info);
 
     auto dataTransferEventSigsCaught = WaitForSignalHelper([&]() {
-            ConfigurationManager::instance().emitDataTransferEvent(2, DRing::DataTransferEventCode::created);
-            ConfigurationManager::instance().emitDataTransferEvent(2, DRing::DataTransferEventCode::wait_host_acceptance);
+            //ConfigurationManager::instance().emitDataTransferEvent(2, DRing::DataTransferEventCode::created);
+            //ConfigurationManager::instance().emitDataTransferEvent(2, DRing::DataTransferEventCode::wait_host_acceptance);
         })
         .addSignal("interactionStatusUpdated", *accInfo_.conversationModel, SIGNAL(interactionStatusUpdated(const std::string&, uint64_t, const api::interaction::Info&)))
         .wait(1000);
@@ -108,11 +108,11 @@ DataTransferTester::testReceivesImage5Mb()
         "1", lrc::api::datatransfer::Status::on_connection, 0, 5 * 1024 * 1024, 0,
         "./", "glados.jpg", "ring0", firstConversation.participants[0]
     };
-    ConfigurationManager::instance().setDataTransferInfo(3, info);
+    //ConfigurationManager::instance().setDataTransferInfo(3, info);
 
     auto dataTransferEventSigsCaught = WaitForSignalHelper([&]() {
-            ConfigurationManager::instance().emitDataTransferEvent(3, DRing::DataTransferEventCode::created);
-            ConfigurationManager::instance().emitDataTransferEvent(3, DRing::DataTransferEventCode::wait_host_acceptance);
+            //ConfigurationManager::instance().emitDataTransferEvent(3, DRing::DataTransferEventCode::created);
+            //ConfigurationManager::instance().emitDataTransferEvent(3, DRing::DataTransferEventCode::wait_host_acceptance);
         })
         .addSignal("interactionStatusUpdated", *accInfo_.conversationModel, SIGNAL(interactionStatusUpdated(const std::string&, uint64_t, const api::interaction::Info&)))
         .wait(1000);
@@ -133,11 +133,11 @@ DataTransferTester::testReceivesImage50Mb()
         "1", lrc::api::datatransfer::Status::on_connection, 0, 50 * 1024 * 1024, 0,
         "./", "glados.jpg", "ring0", firstConversation.participants[0]
     };
-    ConfigurationManager::instance().setDataTransferInfo(3, info);
+    //ConfigurationManager::instance().setDataTransferInfo(3, info);
 
     auto dataTransferEventSigsCaught = WaitForSignalHelper([&]() {
-            ConfigurationManager::instance().emitDataTransferEvent(3, DRing::DataTransferEventCode::created);
-            ConfigurationManager::instance().emitDataTransferEvent(3, DRing::DataTransferEventCode::wait_host_acceptance);
+            //ConfigurationManager::instance().emitDataTransferEvent(3, DRing::DataTransferEventCode::created);
+            //ConfigurationManager::instance().emitDataTransferEvent(3, DRing::DataTransferEventCode::wait_host_acceptance);
         })
         .addSignal("interactionStatusUpdated", *accInfo_.conversationModel, SIGNAL(interactionStatusUpdated(const std::string&, uint64_t, const api::interaction::Info&)))
         .wait(1000);

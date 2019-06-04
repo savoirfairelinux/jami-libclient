@@ -16,7 +16,7 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
 #pragma once
-#ifdef ENABLE_TEST
+#if 0
  #include "../../test/mocks/presencemanager_mock.h"
 #else
  #ifdef ENABLE_LIBWRAP

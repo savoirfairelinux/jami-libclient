@@ -1,6 +1,7 @@
 /****************************************************************************
- *    Copyright (C) 2017-2019 Savoir-faire Linux Inc.                                  *
+ *    Copyright (C) 2017-2019 Savoir-faire Linux Inc.                       *
  *   Author: Nicolas Jäger <nicolas.jager@savoirfairelinux.com>             *
+ *   Author: Sébastien Blin <sebastien.blin@savoirfairelinux.com>           *
  *                                                                          *
  *   This library is free software; you can redistribute it and/or          *
  *   modify it under the terms of the GNU Lesser General Public             *
@@ -17,49 +18,51 @@
  ***************************************************************************/
 #pragma once
 
-// cppunit
-#include <cppunit/TestFixture.h>
-#include <cppunit/extensions/HelperMacros.h>
+// Qt
+#include <qobject.h>
 
-// std
-#include <memory>
+// Lrc
+#include "typedefs.h"
+
 
 // Qt
-#include <QObject>
+#include <QEventLoop>
 
-namespace lrc
-{
-namespace api
-{
-class Lrc;
-}
-}
-
-namespace ring
-{
-namespace test
-{
-
-class NewAccountModelTester :  public CppUnit::TestFixture {
-    CPPUNIT_TEST_SUITE(NewAccountModelTester);
-    CPPUNIT_TEST(testX);
-    CPPUNIT_TEST_SUITE_END();
+class Daemon : public QObject {
+    Q_OBJECT
 
 public:
-    NewAccountModelTester();
-    /**
-     * Method automatically called before each test by CppUnit
-     */
-    void setUp();
-    void testX();
-    /**
-     * Method automatically called after each test CppUnit
-     */
-    void tearDown();
+    Daemon();
+    ~Daemon();
 
-protected:
-    std::unique_ptr<lrc::api::Lrc> lrc_;
+Q_SIGNALS:
+    /**
+     * Connect this signal to know when the account details have changed
+     * @param accountId the one who changes
+     * @param details the new details
+     */
+    void accountDetailsChanged(const std::string& accountId,
+                               const std::map<std::string,std::string>& details);
+    /**
+     * Connect this signal to know when the accounts list changed
+     */
+    void accountsChanged();
+
+private Q_SLOTS:
+    /**
+     * Emit accountDetailsChanged
+     * @param accountId
+     * @param details
+     */
+    void slotAccountDetailsChanged(const QString& accountId,
+                                   const MapStringString& details);
+    /**
+     * Emit accountsChanged
+     */
+    void slotAccountsChanged();
+
+
+private:
+    QEventLoop eventLoop_;
+
 };
-
-} // namespace test
-} // namespace ring
