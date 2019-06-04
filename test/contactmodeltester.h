@@ -31,8 +31,11 @@
 #include <QObject>
 
 // lrc
-#include "api/lrc.h"
-#include "api/account.h"
+#include <api/lrc.h>
+#include <api/account.h>
+
+// utils
+#include "utils/daemon_connector.h"
 
 namespace ring
 {
@@ -41,19 +44,20 @@ namespace test
 
 class ContactModelTester :  public CppUnit::TestFixture {
     CPPUNIT_TEST_SUITE(ContactModelTester);
-    CPPUNIT_TEST(testGetAllContactsForRINGAccount);
-    CPPUNIT_TEST(testReceivesPendingRequest);
-    CPPUNIT_TEST(testAddNewRingContact);
-    CPPUNIT_TEST(testAddRingURI);
-    CPPUNIT_TEST(testAddNewSIPContact);
-    CPPUNIT_TEST(testAddAlreadyAddedContact);
-    CPPUNIT_TEST(testReceivesContactPresenceUpdate);
-    CPPUNIT_TEST(testRmRingContact);
+    //CPPUNIT_TEST(testReceivesPendingRequest);
+    //CPPUNIT_TEST(testAddNewContact);
+    //CPPUNIT_TEST(testAddRingURI);
+    //CPPUNIT_TEST(testAddAlreadyAddedContact);
+    //CPPUNIT_TEST(testRmTemporaryContact);
+    //CPPUNIT_TEST(testRmContact);
     CPPUNIT_TEST(testRmPendingContact);
+    /*
+    CPPUNIT_TEST(testAddNewSIPContact);
+    CPPUNIT_TEST(testReceivesContactPresenceUpdate);
     CPPUNIT_TEST(testRmSIPContact);
-    CPPUNIT_TEST(testRmTemporaryContact);
     CPPUNIT_TEST(testCountPendingRequests);
     CPPUNIT_TEST(testBanUnbanContact);
+    */
     CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -62,50 +66,60 @@ public:
      * Method automatically called before each test by CppUnit
      */
     void setUp();
+
     /**
-     * Get all contacts for account "ring1".
-     * Contacts are defined in configurationmanager_mock.h
-     */
-    void testGetAllContactsForRINGAccount();
-    /**
-     * Generate a pending request from "pending0" for account "ring1".
+     * Generate a pending request from "Ada" for account "Fred".
      * The pending contact should be added.
      */
     void testReceivesPendingRequest();
+
     /**
-     * Add "dummy" to "ring1" contacts.
-     * A new ring contact should be added.
+     * Add "Fred" to "Ada" contacts.
+     * A new contact should be added.
      */
-    void testAddNewRingContact();
+    void testAddNewContact();
+
     /**
-     * Test if someone try to add ring:xxxxxxxx works correctly and don't create 2 contacts
+     * re-add "Fred" to "Ada" contacts.
+     * No new contact should appears.
+     */
+    void testAddAlreadyAddedContact();
+
+    /**
+     * Test if someone try to add ring:xxxxxxxx works
      */
     void testAddRingURI();
+
+    /**
+     * Remove "Fred" from "Ada" contacts.
+     * The contact should be removed.
+     */
+    void testRmContact();
+
+    /**
+     * remove "Ada" from "Fred" contacts.
+     * The contact should be removed.
+     */
+    void testRmPendingContact();
+
+    /**
+     * Method automatically called after each test by CppUnit
+     */
+    void tearDown();
+
+
+
+
     /**
      * Add "sipcontact0" to "sip0" contacts.
      * A new sip contact should be added.
      */
     void testAddNewSIPContact();
     /**
-     * re-add "contact1" to "ring1" contacts.
-     * No new contact should appears.
-     */
-    void testAddAlreadyAddedContact();
-    /**
      * receive a presence update.
      * modelSorted should not be emitted, but conversationUpdated should.
      */
     void testReceivesContactPresenceUpdate();
-    /**
-     * Remove "dummy" from "ring1" contacts.
-     * The contact should be removed.
-     */
-    void testRmRingContact();
-    /**
-     * remove "pending0" from "ring1" contacts.
-     * The contact should be removed.
-     */
-    void testRmPendingContact();
     /**
      * Add and remove "sipcontact1" form "sip0" contacts.
      * The contact should be removed.
@@ -127,14 +141,10 @@ public:
      * Try to ban and unban contacts
      */
     void testBanUnbanContact();
-    /**
-     * Method automatically called after each test by CppUnit
-     */
-    void tearDown();
 
 protected:
     std::unique_ptr<lrc::api::Lrc> lrc_;
-    const lrc::api::account::Info& accInfo_;
+    std::unique_ptr<Daemon> daemon_;
 };
 
 } // namespace test

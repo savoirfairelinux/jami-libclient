@@ -18,14 +18,22 @@
  */
 #include "newdevicemodeltester.h"
 
+// daemon
+#include <account_const.h>
+
 // std
 #include <string>
 
 // Qt
-#include "utils/waitforsignalhelper.h"
+#include "utils/daemon_connector.h"
 
 // Lrc
+#include <api/account.h>
 #include <api/newaccountmodel.h>
+#include <api/contactmodel.h>
+#include <api/conversationmodel.h>
+#include <api/newcodecmodel.h>
+#include <api/newcallmodel.h>
 #include <api/newdevicemodel.h>
 #include <dbus/configurationmanager.h>
 
@@ -39,7 +47,6 @@ CPPUNIT_TEST_SUITE_REGISTRATION(NewDeviceModelTester);
 
 NewDeviceModelTester::NewDeviceModelTester()
 : lrc_(new lrc::api::Lrc())
-, accInfo_(lrc_->getAccountModel().getAccountInfo("ring3"))
 {
 
 }
@@ -47,150 +54,122 @@ NewDeviceModelTester::NewDeviceModelTester()
 void
 NewDeviceModelTester::setUp()
 {
-
+    daemon_ = std::make_unique<Daemon>();
+    daemon_->addAccount("Fred");
 }
 
 void
 NewDeviceModelTester::testGetAllDevices()
 {
-    // See mocked ConfigurationManager::getKnownRingDevices() and getAccountDetails()
-    auto devices = accInfo_.deviceModel->getAllDevices();
-    // Here, we should have 2 devices (device0 pc) and (device1 tel)
-    CPPUNIT_ASSERT_EQUAL(static_cast<int>(devices.size()), 2);
-    auto device0 = devices.front();
-    CPPUNIT_ASSERT_EQUAL(device0.isCurrent, true);
-    CPPUNIT_ASSERT_EQUAL(device0.id, std::string("device0"));
-    CPPUNIT_ASSERT_EQUAL(device0.name, std::string("pc"));
-    auto device1 = devices.back();
-    CPPUNIT_ASSERT_EQUAL(device1.isCurrent, false);
-    CPPUNIT_ASSERT_EQUAL(device1.id, std::string("device1"));
-    CPPUNIT_ASSERT_EQUAL(device1.name, std::string("tel"));
-}
+    // We should get the same size between DBus and LRC
+    auto accountId = daemon_->getAccountId("Fred");
+    const auto& accInfo = lrc_->getAccountModel().getAccountInfo(accountId);
+    auto devices = accInfo.deviceModel->getAllDevices();
+    const MapStringString accountDevices = ConfigurationManager::instance().getKnownRingDevices(accountId.c_str());
+    CPPUNIT_ASSERT_EQUAL(static_cast<int>(devices.size()), static_cast<int>(accountDevices.size()));
 
-void
-NewDeviceModelTester::testGetValidDevice()
-{
-    // device0 defined in mocked ConfigurationManager
-    auto device0 = accInfo_.deviceModel->getDevice("device0");
-    CPPUNIT_ASSERT_EQUAL(device0.isCurrent, true);
-    CPPUNIT_ASSERT_EQUAL(device0.id, std::string("device0"));
-    CPPUNIT_ASSERT_EQUAL(device0.name, std::string("pc"));
+    const MapStringString aDetails = ConfigurationManager::instance().getAccountDetails(accountId.c_str());
+    auto currentDeviceId = aDetails.value(DRing::Account::ConfProperties::RING_DEVICE_ID).toStdString();
+
+    // Get preferred device should be the same
+    auto hasDefaultDevice = false;
+    for (const auto& device : devices) {
+        if (device.isCurrent) {
+            hasDefaultDevice = true;
+            CPPUNIT_ASSERT_EQUAL(currentDeviceId, device.id);
+        }
+        auto deviceFound = false;
+        for (const auto& aDevice : accountDevices.toStdMap()) {
+            if (device.id == aDevice.first.toStdString()) {
+                deviceFound = true;
+                CPPUNIT_ASSERT_EQUAL(aDevice.second.toStdString(), device.name);
+            }
+        }
+        CPPUNIT_ASSERT(deviceFound);
+    }
+    CPPUNIT_ASSERT(hasDefaultDevice);
 }
 
 void
 NewDeviceModelTester::testGetInvalidDevice()
 {
-    // notADevice not defined in mocked ConfigurationManager
-    auto device0 = accInfo_.deviceModel->getDevice("notADevice");
+    auto accountId = daemon_->getAccountId("Fred");
+    const auto& accInfo = lrc_->getAccountModel().getAccountInfo(accountId);
+    auto device0 = accInfo.deviceModel->getDevice("notADevice");
     CPPUNIT_ASSERT_EQUAL(device0.id, std::string(""));
 }
 
 void
 NewDeviceModelTester::testNewDeviceAdded()
 {
-    // this will add a new device for ring3 (see mock)
-    ConfigurationManager::instance().addNewDevice("ring3", "device2", "tv");
-    // Wait for deviceAdded
-    WaitForSignalHelper(*accInfo_.deviceModel,
-        SIGNAL(deviceAdded(const std::string& id))).wait(1000);
-    auto device0 = accInfo_.deviceModel->getDevice("device2");
+    auto accountId = daemon_->getAccountId("Fred");
+    daemon_->addNewDevice(accountId, "device2", "tv");
+    const auto& accInfo = lrc_->getAccountModel().getAccountInfo(accountId);
+    auto device0 = accInfo.deviceModel->getDevice("device2");
     CPPUNIT_ASSERT_EQUAL(device0.isCurrent, false);
     CPPUNIT_ASSERT_EQUAL(device0.id, std::string("device2"));
     CPPUNIT_ASSERT_EQUAL(device0.name, std::string("tv"));
-    // Revoke device for other tests
-    // NOTE: should be removed when test will not depends from each others
-    // See mock
-    ConfigurationManager::instance().revokeDevice("ring3", "", "device2");
 }
 
 void
 NewDeviceModelTester::testRevokeDevice()
 {
-    // this will add a new device for ring3 (see mock)
-    ConfigurationManager::instance().addNewDevice("ring3", "device2", "tv");
-    // Wait for deviceAdded
-    WaitForSignalHelper(*accInfo_.deviceModel,
-        SIGNAL(deviceAdded(const std::string& id))).wait(1000);
-    // Then revoke device
-    accInfo_.deviceModel->revokeDevice("device2", "");  // empty password = correct
-    // Wait for deviceAdded
-    WaitForSignalHelper(*accInfo_.deviceModel,
-        SIGNAL(deviceRevoked(const std::string& id,
-                            const lrc::api::NewDeviceModel::Status status)))
-        .wait(1000);
-    // Should not exists anymore
-    auto device2 = accInfo_.deviceModel->getDevice("device2");
+    auto accountId = daemon_->getAccountId("Fred");
+    daemon_->addNewDevice(accountId, "device2", "tv");
+    const auto& accInfo = lrc_->getAccountModel().getAccountInfo(accountId);
+    accInfo.deviceModel->revokeDevice("device2", "" /* empty password */);
+    auto device2 = accInfo.deviceModel->getDevice("device2");
     CPPUNIT_ASSERT_EQUAL(device2.id, std::string(""));
 }
 
 void
 NewDeviceModelTester::testRevokeDeviceInvalidDevice()
 {
-    // this will add a new device for ring3 (see mock)
-    ConfigurationManager::instance().addNewDevice("ring3", "device2", "tv");
-    // Wait for deviceAdded
-    WaitForSignalHelper(*accInfo_.deviceModel,
-        SIGNAL(deviceAdded(const std::string& id))).wait(1000);
-    // Then revoke device
-    accInfo_.deviceModel->revokeDevice("device3", "");  // empty password = correct
-    // Wait for deviceAdded
-    WaitForSignalHelper(*accInfo_.deviceModel,
-        SIGNAL(deviceRevoked(const std::string& id,
-                            const lrc::api::NewDeviceModel::Status status)))
-        .wait(1000);
+    auto accountId = daemon_->getAccountId("Fred");
+    daemon_->addNewDevice(accountId, "device2", "tv");
+    const auto& accInfo = lrc_->getAccountModel().getAccountInfo(accountId);
+    // Revoke a wrong device
+    accInfo.deviceModel->revokeDevice("device3", "" /* empty password */);
     // device2 still exists
-    auto device0 = accInfo_.deviceModel->getDevice("device2");
+    auto device0 = accInfo.deviceModel->getDevice("device2");
     CPPUNIT_ASSERT_EQUAL(device0.id, std::string("device2"));
-    // Revoke device for other tests
-    // NOTE: should be removed when test will not depends from each others
-    // See mock
-    ConfigurationManager::instance().revokeDevice("ring3", "", "device2");
 }
 
 void
 NewDeviceModelTester::testRevokeDeviceInvalidPassword()
 {
-    // this will add a new device for ring3 (see mock)
-    ConfigurationManager::instance().addNewDevice("ring3", "device2", "tv");
-    // Wait for deviceAdded
-    WaitForSignalHelper(*accInfo_.deviceModel,
-        SIGNAL(deviceAdded(const std::string& id))).wait(1000);
-    // Then revoke device
-    accInfo_.deviceModel->revokeDevice("device2", "notAPass");  // !empty password = incorrect
-    // Wait for deviceAdded
-    WaitForSignalHelper(*accInfo_.deviceModel,
-        SIGNAL(deviceRevoked(const std::string& id,
-                            const lrc::api::NewDeviceModel::Status status)))
-        .wait(1000);
+    auto accountId = daemon_->getAccountId("Fred");
+    const auto& accInfo = lrc_->getAccountModel().getAccountInfo(accountId);
+    accInfo.deviceModel->setCurrentDeviceName("device2");
     // device2 still exists
-    auto device0 = accInfo_.deviceModel->getDevice("device2");
+    auto device0 = accInfo.deviceModel->getDevice("device2");
     CPPUNIT_ASSERT_EQUAL(device0.id, std::string("device2"));
-    // Revoke device for other tests
-    // NOTE: should be removed when test will not depends from each others
-    // See mock
-    ConfigurationManager::instance().revokeDevice("ring3", "", "device2");
 }
 
 void
 NewDeviceModelTester::testSetCurrentDeviceName()
 {
-    // Will change the name of device0
-    accInfo_.deviceModel->setCurrentDeviceName("NewDeviceName");
-    // Will call mocked ConfigurationManager::setAccountDetails()
-    // Because known devices changed, NewDeviceModel::deviceUpdated will be emitted
-    WaitForSignalHelper(*accInfo_.deviceModel,
-        SIGNAL(deviceUpdated(const std::string& id))).wait(1000);
-    // device0 should have a new name now.
-    auto device0 = accInfo_.deviceModel->getDevice("device0");
-    CPPUNIT_ASSERT_EQUAL(device0.isCurrent, true);
-    CPPUNIT_ASSERT_EQUAL(device0.id, std::string("device0"));
-    CPPUNIT_ASSERT_EQUAL(device0.name, std::string("NewDeviceName"));
+    auto accountId = daemon_->getAccountId("Fred");
+    daemon_->addNewDevice(accountId, "device2", "tv");
+    const auto& accInfo = lrc_->getAccountModel().getAccountInfo(accountId);
+    // Revoke with a wrong password
+    accInfo.deviceModel->setCurrentDeviceName("NewDeviceName");
+
+    auto devices = accInfo.deviceModel->getAllDevices();
+    auto hasDefaultDevice = false;
+    for (const auto& device : devices) {
+        if (device.isCurrent) {
+            hasDefaultDevice = true;
+            CPPUNIT_ASSERT_EQUAL(device.name, std::string("NewDeviceName"));
+        }
+    }
+    CPPUNIT_ASSERT(hasDefaultDevice);
 }
 
 void
 NewDeviceModelTester::tearDown()
 {
-    accInfo_.deviceModel->setCurrentDeviceName("pc");
+    daemon_.reset();
 }
 
 } // namespace test
