@@ -385,6 +385,7 @@ AVModel::setInputDevice(const std::string& name)
 {
     int idx = ConfigurationManager::instance()
         .getAudioInputDeviceIndex(name.c_str());
+    qWarning() << "SET: " << idx;
     ConfigurationManager::instance().setAudioInputDevice(idx);
 }
 
@@ -721,10 +722,10 @@ AVModelPimpl::getDevice(int type) const
     std::string result = "";
     std::vector<std::string> devices;
     switch (type) {
-        case 0: // INPUT
+        case 1: // INPUT
             devices = linked_.getAudioInputDevices();
             break;
-        case 1: // OUTPUT
+        case 0: // OUTPUT
         case 2: // RINGTONE
             devices = linked_.getAudioOutputDevices();
             break;
@@ -734,17 +735,18 @@ AVModelPimpl::getDevice(int type) const
     QStringList currentDevicesIdx = ConfigurationManager::instance()
         .getCurrentAudioDevicesIndex();
     try {
-        if (currentDevicesIdx.size() < 3
-        || devices.size() != static_cast<size_t>(currentDevicesIdx.size())) {
+        if (currentDevicesIdx.size() < 3) {
             // Should not happen, but cannot retrieve current ringtone device
             return "";
         }
         auto deviceIdx = currentDevicesIdx[type].toUInt();
-        if (deviceIdx >= devices.size()) {
-            // Incorrect device index
-            result = devices[0];
+        for (const auto& dev : devices) {
+            int idx = ConfigurationManager::instance().getAudioInputDeviceIndex(dev.c_str());
+            if (idx == deviceIdx) {
+                return dev;
+            }
         }
-        result = devices[deviceIdx];
+        return "";
     } catch (std::bad_alloc& ba) {
         qWarning() << "bad_alloc caught: " << ba.what();
         return "";
