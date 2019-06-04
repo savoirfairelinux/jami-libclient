@@ -18,7 +18,7 @@
  ***************************************************************************/
 #pragma once
 
-#ifdef ENABLE_TEST
+#if 0
  #include "../../test/mocks/configurationmanager_mock.h"
 #else
  #ifdef ENABLE_LIBWRAP

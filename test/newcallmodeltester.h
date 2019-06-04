@@ -34,6 +34,9 @@
 #include "api/lrc.h"
 #include "api/account.h"
 
+// utils
+#include "utils/daemon_connector.h"
+
 namespace ring
 {
 namespace test
@@ -41,9 +44,9 @@ namespace test
 
 class NewCallModelTester :  public CppUnit::TestFixture {
     CPPUNIT_TEST_SUITE(NewCallModelTester);
-    CPPUNIT_TEST(testCreateAndGetCall);
+    //CPPUNIT_TEST(testCreateAndGetCall);
+    //CPPUNIT_TEST(testCreateAndGetAudioOnlyCall);
     CPPUNIT_TEST(testAcceptHoldUnholdHangupCall);
-    CPPUNIT_TEST(testCreateAndGetAudioOnlyCall);
     CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -75,7 +78,7 @@ public:
 
 protected:
     std::unique_ptr<lrc::api::Lrc> lrc_;
-    const lrc::api::account::Info& accInfo_;
+    std::unique_ptr<Daemon> daemon_;
 };
 
 } // namespace test

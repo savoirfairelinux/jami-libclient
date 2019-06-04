@@ -23,9 +23,21 @@
 
 #include <QCoreApplication>
 
+class Application final : public QCoreApplication {
+public:
+    Application(int& argc, char** argv) : QCoreApplication(argc, argv) {}
+    virtual bool notify(QObject *receiver, QEvent *e) override {
+        bool done = true;
+        try {
+            done = QCoreApplication::notify(receiver, e);
+        } catch (...) {}
+        return done;
+    }
+};
+
 int main(int argc, char** argv)
 {
-    QCoreApplication app(argc, argv);
+    Application app(argc, argv);
     std::remove("/tmp/ring.db");
     CppUnit::TestFactoryRegistry &registry = CppUnit::TestFactoryRegistry::getRegistry();
     CppUnit::Test *suite = registry.makeTest();

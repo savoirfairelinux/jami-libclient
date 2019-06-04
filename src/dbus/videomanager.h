@@ -17,7 +17,7 @@
  ***************************************************************************/
 #pragma once
 
-#ifdef ENABLE_TEST
+#if 0
  #include "../../test/mocks/videomanager_mock.h"
 #else
  #ifdef ENABLE_LIBWRAP
