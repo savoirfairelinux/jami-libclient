@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA.
- */
+ * /
 
 #pragma once
 
@@ -51,43 +51,43 @@ class DatabaseTester : public CppUnit::TestFixture {
 public:
     /**
      * Method automatically called before each test by CppUnit
-     */
+     * /
     void setUp();
     /**
      * Method automatically called after each test CppUnit
-     */
+     * /
     void tearDown();
     /**
      * Insert a correct value and try to retrieve it
-     */
+     * /
     void testInsertAndSelectCorrectValue();
     /**
      * Insert incorrect value
-     */
+     * /
     void testInsertIncorrectFail();
     /**
      * Select inexistant value
-     */
+     * /
     void testSelectInexistantValue();
     /**
      * Update value
-     */
+     * /
     void testUpdateCorrectValue();
     /**
      * Update inexistant value
-     */
+     * /
     void testUpdateInexistantValue();
     /**
      * Delete value from the database
-     */
+     * /
     void testDeleteCorrectValue();
     /**
      * Delete inexistant value in the database
-     */
+     * /
     void testDeleteInexistantValue();
     /**
      * Count the number of unread messages.
-     */
+     * /
     void testCountUnreadMessages();
 
 protected:
