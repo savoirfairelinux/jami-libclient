@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA.
- */
+ * /
 #include "conversationmodeltester.h"
 
 // Qt
@@ -534,10 +534,10 @@ ConversationModelTester::testRetryToSendTextInteraction()
     auto secondId = it->first;
 
     // set failure on one interaction
-    ConfigurationManager::instance().emitAccountMessageStatusChanged(
-                                        "ring0", secondId,
-                                        conversation.participants.front().c_str(),
-                                        static_cast<int>(DRing::Account::MessageStates::FAILURE));
+    //ConfigurationManager::instance().emitAccountMessageStatusChanged(
+    //                                    "ring0", secondId,
+    //                                    conversation.participants.front().c_str(),
+    //                                    static_cast<int>(DRing::Account::MessageStates::FAILURE));
     // retry sending
     accInfo_.conversationModel->retryInteraction(conversation.uid, secondId);
     // no more failure, no more secondId, and second message should be the last
@@ -586,10 +586,10 @@ ConversationModelTester::testRetryInvalidInteraction()
     auto secondId = it->first;
 
     // set failure on one interaction
-    ConfigurationManager::instance().emitAccountMessageStatusChanged(
-                                        "ring0", secondId,
-                                        conversation.participants.front().c_str(),
-                                        static_cast<int>(DRing::Account::MessageStates::FAILURE));
+    //ConfigurationManager::instance().emitAccountMessageStatusChanged(
+    //                                    "ring0", secondId,
+    //                                    conversation.participants.front().c_str(),
+    //                                    static_cast<int>(DRing::Account::MessageStates::FAILURE));
     auto firstConv = accInfo_.conversationModel->filteredConversation(0);
     // retry sending (should do nothing)
     accInfo_.conversationModel->retryInteraction(conversation.uid, 1412);
@@ -617,7 +617,7 @@ ConversationModelTester::testRetryIncomingInteraction()
     payloads["text/plain"] = "You're a monster";
 
     auto incomingAccountMessageSigsCaught = WaitForSignalHelper([&]() {
-            ConfigurationManager::instance().emitIncomingAccountMessage(accInfo_.id.c_str(), firstConversation.participants.front().c_str(), payloads);
+            //ConfigurationManager::instance().emitIncomingAccountMessage(accInfo_.id.c_str(), firstConversation.participants.front().c_str(), payloads);
         })
         .addSignal("newInteraction", *accInfo_.conversationModel, SIGNAL(newInteraction(const std::string&, uint64_t, const interaction::Info&)))
         .wait(1000);
@@ -646,7 +646,7 @@ ConversationModelTester::testRetryContactInteraction()
     payloads["text/plain"] = "You're a monster";
 
     auto incomingAccountMessageSigsCaught = WaitForSignalHelper([&]() {
-            ConfigurationManager::instance().emitIncomingAccountMessage(accInfo_.id.c_str(), firstConversation.participants.front().c_str(), payloads);
+            //ConfigurationManager::instance().emitIncomingAccountMessage(accInfo_.id.c_str(), firstConversation.participants.front().c_str(), payloads);
         })
         .addSignal("newInteraction", *accInfo_.conversationModel, SIGNAL(newInteraction(const std::string&, uint64_t, const interaction::Info&)))
         .wait(1000);
@@ -677,7 +677,7 @@ ConversationModelTester::testRetryCallInteraction()
     accInfo_.conversationModel->placeCall(firstConversation.uid);
 
     auto callStateChangedSigsCaught = WaitForSignalHelper([&]() {
-            CallManager::instance().emitCallStateChanged(accInfo_.conversationModel->filteredConversation(0).callId.c_str(), "CURRENT", 0);
+            //CallManager::instance().emitCallStateChanged(accInfo_.conversationModel->filteredConversation(0).callId.c_str(), "CURRENT", 0);
         })
         .addSignal("modelSorted", *accInfo_.conversationModel, SIGNAL(modelSorted()))
         .wait(1000);
@@ -710,7 +710,7 @@ ConversationModelTester::testReceiveMessageAndSetRead()
     payloads["text/plain"] = "This is not a message";
 
     auto incomingAccountMessageSigsCaught = WaitForSignalHelper([&]() {
-            ConfigurationManager::instance().emitIncomingAccountMessage(accInfo_.id.c_str(), firstConversation.participants.front().c_str(), payloads);
+            //ConfigurationManager::instance().emitIncomingAccountMessage(accInfo_.id.c_str(), firstConversation.participants.front().c_str(), payloads);
         })
         .addSignal("newInteraction", *accInfo_.conversationModel, SIGNAL(newInteraction(const std::string&, uint64_t, const interaction::Info&)))
         .wait(1000);
@@ -819,7 +819,7 @@ ConversationModelTester::testClearUnreadInteractions()
     // Send a first message
     payloads["text/plain"] = "This is not a message";
     auto incomingAccountMessageSigsCaught = WaitForSignalHelper([&]() {
-            ConfigurationManager::instance().emitIncomingAccountMessage(accInfo_.id.c_str(), sender, payloads);
+            //ConfigurationManager::instance().emitIncomingAccountMessage(accInfo_.id.c_str(), sender, payloads);
         })
         .addSignal("newInteraction", *accInfo_.conversationModel, SIGNAL(newInteraction(const std::string&, uint64_t, const interaction::Info&)))
         .wait(1000);
@@ -827,7 +827,7 @@ ConversationModelTester::testClearUnreadInteractions()
 
     // Send a second message
     auto incomingAccountMessage2SigsCaught = WaitForSignalHelper([&]() {
-            ConfigurationManager::instance().emitIncomingAccountMessage(accInfo_.id.c_str(), sender, payloads);
+            //ConfigurationManager::instance().emitIncomingAccountMessage(accInfo_.id.c_str(), sender, payloads);
         })
         .addSignal("newInteraction", *accInfo_.conversationModel, SIGNAL(newInteraction(const std::string&, uint64_t, const interaction::Info&)))
         .wait(1000);

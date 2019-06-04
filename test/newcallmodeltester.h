@@ -34,6 +34,9 @@
 #include "api/lrc.h"
 #include "api/account.h"
 
+// utils
+#include "utils/daemon_connector.h"
+
 namespace ring
 {
 namespace test
@@ -75,7 +78,7 @@ public:
 
 protected:
     std::unique_ptr<lrc::api::Lrc> lrc_;
-    const lrc::api::account::Info& accInfo_;
+    std::unique_ptr<Daemon> daemon_;
 };
 
 } // namespace test

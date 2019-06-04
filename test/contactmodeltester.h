@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA.
- */
+ * /
 
 #pragma once
 
@@ -60,76 +60,76 @@ public:
     ContactModelTester();
     /**
      * Method automatically called before each test by CppUnit
-     */
+     * /
     void setUp();
     /**
      * Get all contacts for account "ring1".
      * Contacts are defined in configurationmanager_mock.h
-     */
+     * /
     void testGetAllContactsForRINGAccount();
     /**
      * Generate a pending request from "pending0" for account "ring1".
      * The pending contact should be added.
-     */
+     * /
     void testReceivesPendingRequest();
     /**
      * Add "dummy" to "ring1" contacts.
      * A new ring contact should be added.
-     */
+     * /
     void testAddNewRingContact();
     /**
      * Test if someone try to add ring:xxxxxxxx works correctly and don't create 2 contacts
-     */
+     * /
     void testAddRingURI();
     /**
      * Add "sipcontact0" to "sip0" contacts.
      * A new sip contact should be added.
-     */
+     * /
     void testAddNewSIPContact();
     /**
      * re-add "contact1" to "ring1" contacts.
      * No new contact should appears.
-     */
+     * /
     void testAddAlreadyAddedContact();
     /**
      * receive a presence update.
      * modelSorted should not be emitted, but conversationUpdated should.
-     */
+     * /
     void testReceivesContactPresenceUpdate();
     /**
      * Remove "dummy" from "ring1" contacts.
      * The contact should be removed.
-     */
+     * /
     void testRmRingContact();
     /**
      * remove "pending0" from "ring1" contacts.
      * The contact should be removed.
-     */
+     * /
     void testRmPendingContact();
     /**
      * Add and remove "sipcontact1" form "sip0" contacts.
      * The contact should be removed.
-     */
+     * /
     void testRmSIPContact();
     /**
      * Search "dummy" and try to remove it. Should not change anything
-     */
+     * /
     void testRmTemporaryContact();
     /**
      * Count contact requests
-     */
+     * /
     void testCountPendingRequests();
     /**
      * Count contact requests when banned contacts exists
-     */
+     * /
     void testCountPendingRequestsWithBlockedContact();
     /**
      * Try to ban and unban contacts
-     */
+     * /
     void testBanUnbanContact();
     /**
      * Method automatically called after each test by CppUnit
-     */
+     * /
     void tearDown();
 
 protected:

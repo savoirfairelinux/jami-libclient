@@ -38,7 +38,6 @@ CPPUNIT_TEST_SUITE_REGISTRATION(NewCallModelTester);
 
 NewCallModelTester::NewCallModelTester()
 : lrc_(new lrc::api::Lrc())
-, accInfo_(lrc_->getAccountModel().getAccountInfo("ring2"))
 {
 
 }
@@ -46,55 +45,77 @@ NewCallModelTester::NewCallModelTester()
 void
 NewCallModelTester::setUp()
 {
-
+    daemon_ = std::make_unique<Daemon>();
+    daemon_->addAccount("Fred");
+    daemon_->addAccount("Ada");
 }
 
 void
 NewCallModelTester::testCreateAndGetCall()
 {
-    auto callId = accInfo_.callModel->createCall("ring:contact0");
+    auto accountId = daemon_->getAccountId("Fred");
+    const auto& accInfo = lrc_->getAccountModel().getAccountInfo(accountId);
+    auto accountIdAda = daemon_->getAccountId("Ada");
+    const auto& accInfoAda = lrc_->getAccountModel().getAccountInfo(accountIdAda);
+    auto peer = accInfoAda.profileInfo.uri;
+
+    auto callId = accInfo.callModel->createCall(peer);
     CPPUNIT_ASSERT(!callId.empty());
-    CPPUNIT_ASSERT(accInfo_.callModel->hasCall(callId));
-    auto& call = accInfo_.callModel->getCallFromURI("ring:contact0");
-    auto& callFromId = accInfo_.callModel->getCall(call.id);
-    CPPUNIT_ASSERT_EQUAL(callFromId.peer, std::string("ring:contact0"));
+    CPPUNIT_ASSERT(accInfo.callModel->hasCall(callId));
+    auto& call = accInfo.callModel->getCallFromURI(peer);
+    auto& callFromId = accInfo.callModel->getCall(call.id);
+    CPPUNIT_ASSERT_EQUAL(callFromId.peer, std::string(peer));
 }
 
 void
 NewCallModelTester::testCreateAndGetAudioOnlyCall()
 {
-    auto callId = accInfo_.callModel->createCall("ring:contact0", true);
+    auto accountId = daemon_->getAccountId("Fred");
+    const auto& accInfo = lrc_->getAccountModel().getAccountInfo(accountId);
+    auto accountIdAda = daemon_->getAccountId("Ada");
+    const auto& accInfoAda = lrc_->getAccountModel().getAccountInfo(accountIdAda);
+    auto peer = accInfoAda.profileInfo.uri;
+
+    auto callId = accInfo.callModel->createCall(peer, true);
     CPPUNIT_ASSERT(!callId.empty());
-    CPPUNIT_ASSERT(accInfo_.callModel->hasCall(callId));
-    auto& call = accInfo_.callModel->getCallFromURI("ring:contact0");
-    auto& callFromId = accInfo_.callModel->getCall(call.id);
-    CPPUNIT_ASSERT_EQUAL(callFromId.peer, std::string("ring:contact0"));
+    CPPUNIT_ASSERT(accInfo.callModel->hasCall(callId));
+    auto& call = accInfo.callModel->getCallFromURI(peer);
+    auto& callFromId = accInfo.callModel->getCall(call.id);
+    CPPUNIT_ASSERT_EQUAL(callFromId.peer, std::string(peer));
 }
 
 void
 NewCallModelTester::testAcceptHoldUnholdHangupCall()
 {
-    std::string callId = "ring:contact1";
+    auto accountId = daemon_->getAccountId("Fred");
+    const auto& accInfo = lrc_->getAccountModel().getAccountInfo(accountId);
+    auto fredURI = accInfo.profileInfo.uri;
+    auto accountIdAda = daemon_->getAccountId("Ada");
+    const auto& accInfoAda = lrc_->getAccountModel().getAccountInfo(accountIdAda);
+    auto adaURI = accInfoAda.profileInfo.uri;
 
+    // Test if incoming call is detected
+    std::string callId;
     auto incomingCallSigsCaught = WaitForSignalHelper([&]() {
-            CallManager::instance().emitIncomingCall("ring2", callId.c_str(), "ring:contact1");
+            callId = accInfo.callModel->createCall(adaURI, true);
         })
-        .addSignal("newIncomingCall", *accInfo_.callModel, SIGNAL(newIncomingCall(const std::string&, const std::string&)))
+        .addSignal("newIncomingCall", *accInfoAda.callModel, SIGNAL(newIncomingCall(const std::string&, const std::string&)))
         .wait(1000);
     CPPUNIT_ASSERT_EQUAL(incomingCallSigsCaught["newIncomingCall"], 1);
 
-    CPPUNIT_ASSERT(accInfo_.callModel->hasCall(callId));
-    accInfo_.callModel->accept(callId);
-    auto& call = accInfo_.callModel->getCallFromURI("ring:contact1");
+    // Test status
+    CPPUNIT_ASSERT(accInfoAda.callModel->hasCall(callId));
+    accInfoAda.callModel->accept(callId);
+    auto& call = accInfoAda.callModel->getCallFromURI(fredURI);
     CPPUNIT_ASSERT_EQUAL((int)call.status, (int)lrc::api::call::Status::IN_PROGRESS);
-    accInfo_.callModel->togglePause(callId);
-    auto& callHold = accInfo_.callModel->getCallFromURI("ring:contact1");
+    accInfoAda.callModel->togglePause(callId);
+    auto& callHold = accInfoAda.callModel->getCallFromURI(fredURI);
     CPPUNIT_ASSERT_EQUAL((int)callHold.status, (int)lrc::api::call::Status::PAUSED);
-    accInfo_.callModel->togglePause(callId);
-    auto& callUnhold = accInfo_.callModel->getCallFromURI("ring:contact1");
+    accInfoAda.callModel->togglePause(callId);
+    auto& callUnhold = accInfoAda.callModel->getCallFromURI(fredURI);
     CPPUNIT_ASSERT_EQUAL((int)callUnhold.status, (int)lrc::api::call::Status::IN_PROGRESS);
-    accInfo_.callModel->hangUp(callId);
-    auto& callOver = accInfo_.callModel->getCallFromURI("ring:contact1");
+    accInfoAda.callModel->hangUp(callId);
+    auto& callOver = accInfoAda.callModel->getCallFromURI(fredURI);
     CPPUNIT_ASSERT_EQUAL((int)callOver.status, (int)lrc::api::call::Status::ENDED);
 }
 
