@@ -34,6 +34,8 @@
 #include "api/lrc.h"
 #include "api/account.h"
 
+class Daemon;
+
 namespace ring
 {
 namespace test
@@ -42,13 +44,12 @@ namespace test
 class NewDeviceModelTester :  public CppUnit::TestFixture {
     CPPUNIT_TEST_SUITE(NewDeviceModelTester);
     CPPUNIT_TEST(testGetAllDevices);
-    CPPUNIT_TEST(testGetValidDevice);
     CPPUNIT_TEST(testGetInvalidDevice);
-    CPPUNIT_TEST(testNewDeviceAdded);
+    /*CPPUNIT_TEST(testNewDeviceAdded);
     CPPUNIT_TEST(testRevokeDevice);
     CPPUNIT_TEST(testRevokeDeviceInvalidDevice);
     CPPUNIT_TEST(testRevokeDeviceInvalidPassword);
-    CPPUNIT_TEST(testSetCurrentDeviceName);
+    CPPUNIT_TEST(testSetCurrentDeviceName);*/
     CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -96,7 +97,7 @@ public:
 
 protected:
     std::unique_ptr<lrc::api::Lrc> lrc_;
-    const lrc::api::account::Info& accInfo_;
+    std::unique_ptr<Daemon> daemon_;
 };
 
 } // namespace test

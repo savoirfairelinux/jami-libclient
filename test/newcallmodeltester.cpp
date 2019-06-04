@@ -38,7 +38,6 @@ CPPUNIT_TEST_SUITE_REGISTRATION(NewCallModelTester);
 
 NewCallModelTester::NewCallModelTester()
 : lrc_(new lrc::api::Lrc())
-, accInfo_(lrc_->getAccountModel().getAccountInfo("ring2"))
 {
 
 }
@@ -46,56 +45,175 @@ NewCallModelTester::NewCallModelTester()
 void
 NewCallModelTester::setUp()
 {
-
+    daemon_ = std::make_unique<Daemon>();
+    daemon_->addAccount("Fred");
+    daemon_->addAccount("Ada");
 }
 
 void
 NewCallModelTester::testCreateAndGetCall()
 {
-    auto callId = accInfo_.callModel->createCall("ring:contact0");
+    /*auto accountId = daemon_->getAccountId("Fred");
+    const auto& accInfo = lrc_->getAccountModel().getAccountInfo(accountId);
+    auto accountIdAda = daemon_->getAccountId("Ada");
+    const auto& accInfoAda = lrc_->getAccountModel().getAccountInfo(accountIdAda);
+    auto peer = "ring:" + accInfoAda.profileInfo.uri;
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(1000)); // TODO daemon->waitForPresence("Ada");
+
+    std::string callId;
+    auto callSignals = WaitForSignalHelper([&]() {
+        callId = accInfo.callModel->createCall(peer);
+    })
+    .addSignal("incomingCall", *accInfoAda.callModel,
+        SIGNAL(newIncomingCall(const std::string&, const std::string&)))
+    .wait(10000);
+    CPPUNIT_ASSERT_EQUAL(callSignals["incomingCall"], 1);
+
     CPPUNIT_ASSERT(!callId.empty());
-    CPPUNIT_ASSERT(accInfo_.callModel->hasCall(callId));
-    auto& call = accInfo_.callModel->getCallFromURI("ring:contact0");
-    auto& callFromId = accInfo_.callModel->getCall(call.id);
-    CPPUNIT_ASSERT_EQUAL(callFromId.peer, std::string("ring:contact0"));
+    CPPUNIT_ASSERT(accInfo.callModel->hasCall(callId));
+    auto& call = accInfo.callModel->getCallFromURI(peer);
+    auto& callFromId = accInfo.callModel->getCall(call.id);
+    CPPUNIT_ASSERT_EQUAL(callFromId.peerUri, std::string(peer));*/
 }
 
 void
 NewCallModelTester::testCreateAndGetAudioOnlyCall()
 {
-    auto callId = accInfo_.callModel->createCall("ring:contact0", true);
+    /*auto accountId = daemon_->getAccountId("Fred");
+    const auto& accInfo = lrc_->getAccountModel().getAccountInfo(accountId);
+    auto accountIdAda = daemon_->getAccountId("Ada");
+    const auto& accInfoAda = lrc_->getAccountModel().getAccountInfo(accountIdAda);
+    auto peer = "ring:" + accInfoAda.profileInfo.uri;
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(1000)); // TODO daemon->waitForPresence("Ada");
+
+    std::string callId;
+    auto callSignals = WaitForSignalHelper([&]() {
+        callId = accInfo.callModel->createCall(peer, true);
+    })
+    .addSignal("incomingCall", *accInfoAda.callModel,
+        SIGNAL(newIncomingCall(const std::string&, const std::string&)))
+    .wait(10000);
+    CPPUNIT_ASSERT_EQUAL(callSignals["incomingCall"], 1);
+
     CPPUNIT_ASSERT(!callId.empty());
-    CPPUNIT_ASSERT(accInfo_.callModel->hasCall(callId));
-    auto& call = accInfo_.callModel->getCallFromURI("ring:contact0");
-    auto& callFromId = accInfo_.callModel->getCall(call.id);
-    CPPUNIT_ASSERT_EQUAL(callFromId.peer, std::string("ring:contact0"));
+    CPPUNIT_ASSERT(accInfo.callModel->hasCall(callId));
+    auto& call = accInfo.callModel->getCallFromURI(peer);
+    auto& callFromId = accInfo.callModel->getCall(call.id);
+    CPPUNIT_ASSERT_EQUAL(callFromId.peerUri, std::string(peer));*/
 }
 
 void
 NewCallModelTester::testAcceptHoldUnholdHangupCall()
 {
-    std::string callId = "ring:contact1";
+    auto accountId = daemon_->getAccountId("Fred");
+    const auto& accInfo = lrc_->getAccountModel().getAccountInfo(accountId);
+    auto fredURI = "ring:" + accInfo.profileInfo.uri;
+    auto accountIdAda = daemon_->getAccountId("Ada");
+    const auto& accInfoAda = lrc_->getAccountModel().getAccountInfo(accountIdAda);
+    auto adaURI = "ring:" + accInfoAda.profileInfo.uri;
 
-    auto incomingCallSigsCaught = WaitForSignalHelper([&]() {
-            CallManager::instance().emitIncomingCall("ring2", callId.c_str(), "ring:contact1");
-        })
-        .addSignal("newIncomingCall", *accInfo_.callModel, SIGNAL(newIncomingCall(const std::string&, const std::string&)))
+    std::this_thread::sleep_for(std::chrono::milliseconds(1000)); // TODO daemon->waitForPresence("Ada");
+
+    // TODO daemon (waitForState)
+
+    std::string callId;
+    auto callSignals = WaitForSignalHelper([&]() {
+        callId = accInfo.callModel->createCall(adaURI, true);
+    })
+    .addSignal("incomingCall", *accInfoAda.callModel,
+        SIGNAL(newIncomingCall(const std::string&, const std::string&)))
+    .wait(10000);
+    CPPUNIT_ASSERT_EQUAL(callSignals["incomingCall"], 1);
+    CPPUNIT_ASSERT(accInfo.callModel->hasCall(callId));
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(3000)); // TODO daemon->waitForPresence("Ada");
+
+    auto callAda = accInfoAda.callModel->getCallFromURI(fredURI);
+    // Test status
+    callSignals = WaitForSignalHelper([&]() {
+        accInfoAda.callModel->accept(callAda.id);
+    })
+    .addSignal("statusChanged", *accInfo.callModel,
+        SIGNAL(callStatusChanged(const std::string&, int)))
+    .wait(1000);
+    bool is_calling = false;
+    for (int i = 0; i < 10; ++i) {
+        if (callAda.status == lrc::api::call::Status::IN_PROGRESS) {
+            is_calling = true;
+            break;
+        }
+        callSignals = WaitForSignalHelper([&]() {})
+        .addSignal("statusChanged", *accInfo.callModel,
+            SIGNAL(callStatusChanged(const std::string&, int)))
         .wait(1000);
-    CPPUNIT_ASSERT_EQUAL(incomingCallSigsCaught["newIncomingCall"], 1);
+        callAda = accInfoAda.callModel->getCallFromURI(fredURI);
+    }
+    CPPUNIT_ASSERT(is_calling);
 
-    CPPUNIT_ASSERT(accInfo_.callModel->hasCall(callId));
-    accInfo_.callModel->accept(callId);
-    auto& call = accInfo_.callModel->getCallFromURI("ring:contact1");
-    CPPUNIT_ASSERT_EQUAL((int)call.status, (int)lrc::api::call::Status::IN_PROGRESS);
-    accInfo_.callModel->togglePause(callId);
-    auto& callHold = accInfo_.callModel->getCallFromURI("ring:contact1");
-    CPPUNIT_ASSERT_EQUAL((int)callHold.status, (int)lrc::api::call::Status::PAUSED);
-    accInfo_.callModel->togglePause(callId);
-    auto& callUnhold = accInfo_.callModel->getCallFromURI("ring:contact1");
-    CPPUNIT_ASSERT_EQUAL((int)callUnhold.status, (int)lrc::api::call::Status::IN_PROGRESS);
-    accInfo_.callModel->hangUp(callId);
-    auto& callOver = accInfo_.callModel->getCallFromURI("ring:contact1");
-    CPPUNIT_ASSERT_EQUAL((int)callOver.status, (int)lrc::api::call::Status::ENDED);
+    // Wait for pause
+    callSignals = WaitForSignalHelper([&]() {
+        accInfoAda.callModel->togglePause(callAda.id);
+    })
+    .addSignal("statusChanged", *accInfo.callModel,
+        SIGNAL(callStatusChanged(const std::string&)))
+    .wait(1000);
+    bool is_paused = false;
+    for (int i = 0; i < 10; ++i) {
+        if (callAda.status == lrc::api::call::Status::PAUSED) {
+            is_paused = true;
+            break;
+        }
+        callSignals = WaitForSignalHelper([&]() {})
+        .addSignal("statusChanged", *accInfo.callModel,
+            SIGNAL(callStatusChanged(const std::string&, int)))
+        .wait(1000);
+        callAda = accInfoAda.callModel->getCallFromURI(fredURI);
+    }
+    CPPUNIT_ASSERT(is_paused);
+
+    // Wait for unpause
+    callSignals = WaitForSignalHelper([&]() {
+        accInfoAda.callModel->togglePause(callAda.id);
+    })
+    .addSignal("statusChanged", *accInfo.callModel,
+        SIGNAL(callStatusChanged(const std::string&)))
+    .wait(1000);
+    bool is_unpaused = false;
+    for (int i = 0; i < 10; ++i) {
+        if (callAda.status == lrc::api::call::Status::IN_PROGRESS) {
+            is_unpaused = true;
+            break;
+        }
+        callSignals = WaitForSignalHelper([&]() {})
+        .addSignal("statusChanged", *accInfo.callModel,
+            SIGNAL(callStatusChanged(const std::string&, int)))
+        .wait(1000);
+        callAda = accInfoAda.callModel->getCallFromURI(fredURI);
+    }
+    CPPUNIT_ASSERT(is_unpaused);
+
+    // Wait for ended
+    callSignals = WaitForSignalHelper([&]() {
+        accInfoAda.callModel->hangUp(callAda.id);
+    })
+    .addSignal("statusChanged", *accInfo.callModel,
+        SIGNAL(callStatusChanged(const std::string&)))
+    .wait(1000);
+    bool is_ended = false;
+    for (int i = 0; i < 10; ++i) {
+        if (callAda.status == lrc::api::call::Status::ENDED) {
+            is_ended = true;
+            break;
+        }
+        callSignals = WaitForSignalHelper([&]() {})
+        .addSignal("statusChanged", *accInfo.callModel,
+            SIGNAL(callStatusChanged(const std::string&, int)))
+        .wait(1000);
+        callAda = accInfoAda.callModel->getCallFromURI(fredURI);
+    }
+    CPPUNIT_ASSERT(is_ended);
 }
 
 

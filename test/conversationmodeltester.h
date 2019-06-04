@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA.
- */
+ * /
 
 #pragma once
 
@@ -68,100 +68,100 @@ public:
     ConversationModelTester();
     /**
      * Method automatically called before each test by CppUnit
-     */
+     * /
     void setUp();
     /**
      * Add a new conversation between account "ring0" and "dummy"
-     */
+     * /
     void testAddValidConversation();
     /**
      * Try to add a new conversation between account "ring0" and "notAContact"
      * but "notAContact" is not a ringId of another user, so we can't create a
      * new conversation with "notAContact".
-     */
+     * /
     void testAddInvalidConversation();
     /**
      * Remove the conversation between account "ring0" and "contact0"
      * NOTE: "contact0" is already a contact for "ring0",
      * cf. mock/configurationmanager_mock
-     */
+     * /
     void testRmConversation();
     /**
      * Test the behavior of setFilter(query) with different queries.
-     */
+     * /
     void testFilterAndGetConversations();
     /**
      * Send "Hello World!" to the first conversation and clear the history
-     */
+     * /
     void testSendMessageAndClearHistory();
     /**
      * Make sure it is not possible to send a message to a banned contact
-     */
+     * /
     void testSendMessageToBannedContact();
     /**
      * Make sure banned contacts only appear in perfect-match filter searches.
-     */
+     * /
     void testFilterBannedContact();
     /**
      * Send multiple messages to the first conversation and clear one interaction
-     */
+     * /
     void testSendMessagesAndClearInteraction();
     /**
      * Send multiple messages to the first conversation and clear the last interaction
      * lastMessageUid should be updated
-     */
+     * /
     void testSendMessagesAndClearLastInteraction();
     /**
      * Send an old failed outgoing text interaction
-     */
+     * /
     void testRetryToSendTextInteraction();
     /**
      * Send an old failed outgoing file interaction
-     */
+     * /
     void testRetryToSendFileInteraction();
     /**
      * Retry an unexistant interaction
-     */
+     * /
     void testRetryInvalidInteraction();
     /**
      * Retry an incoming interaction
-     */
+     * /
     void testRetryIncomingInteraction();
     /**
      * Retry a contact interaction
-     */
+     * /
     void testRetryContactInteraction();
     /**
      * Retry a call interaction
-     */
+     * /
     void testRetryCallInteraction();
     /**
      * Receives a message from a conversation and set this message READ
-     */
+     * /
     void testReceiveMessageAndSetRead();
     /**
      * Call the first conversation
-     */
+     * /
     void testPlaceCall();
     /**
      * Make sure it is not possible to call a banned contact
-     */
+     * /
     void testPlaceCallWithBannedContact();
     /**
      * Start and audio-only call with the first conversation
-     */
+     * /
     void testPlaceAudioOnlyCall();
     /**
      * Create a conference with the two first conversations
-     */
+     * /
     void testCreateConference();
     /**
      * Clear any unread text messages from a conversation
-     */
+     * /
     void testClearUnreadInteractions();
     /**
      * Method automatically called after each test by CppUnit
-     */
+     * /
     void tearDown();
 
 protected:
@@ -172,23 +172,23 @@ protected:
 
     /**
      * Ban contact with passed uri
-     */
+     * /
     void banContact(const std::string& uri);
     /**
      * Unban contact with passed uri
-     */
+     * /
     void unbanContact(const std::string& uri);
     /**
      * Return whether passed uri already maps to a contact or not
-     */
+     * /
     bool isAContact(const std::string& uri);
     /**
      * Add passed usename to contacts and return its uri
-     */
+     * /
     std::string addToContacts(const std::string& username);
     /**
      * Return whether a converation with passed contact uri exists or not
-     */
+     * /
     bool hasConversationWithContact(const std::string& uri);
 };
 
