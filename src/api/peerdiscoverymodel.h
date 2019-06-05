@@ -46,15 +46,14 @@ class LIB_EXPORT PeerDiscoveryModel : public QObject {
     Q_OBJECT
 public:
 
-    PeerDiscoveryModel(const CallbacksHandler& callbackHandler,
-                       const QString &accountID);
+    PeerDiscoveryModel(const CallbacksHandler& callbackHandler);
 
     ~PeerDiscoveryModel();
     /**
      * get a map of discovered peers account
      * @return a std::map<std::string, std::string>
      */
-    MapStringString getNearbyPeers() const;
+    MapStringString getNearbyPeers(const QString &accountID) const;
 
 Q_SIGNALS:
     /**

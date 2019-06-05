@@ -82,9 +82,8 @@ Lrc::getAccountModel() const
 }
 
 const PeerDiscoveryModel&
-Lrc::getPeerDiscoveryModel(const QString &accountID) const
+Lrc::getPeerDiscoveryModel() const
 {
-    lrcPimpl_->peerDiscoveryModel_ = std::make_unique<PeerDiscoveryModel>(*lrcPimpl_->callbackHandler,accountID);
     return *lrcPimpl_->peerDiscoveryModel_;
 }
 
@@ -152,6 +151,7 @@ LrcPimpl::LrcPimpl(Lrc& linked)
 , accountModel(std::make_unique<NewAccountModel>(linked, *database, *callbackHandler, *behaviorController))
 , dataTransferModel {std::make_unique<DataTransferModel>()}
 , AVModel_ {std::make_unique<AVModel>(*callbackHandler)}
+, peerDiscoveryModel_ {std::make_unique<PeerDiscoveryModel>(*callbackHandler)}
 {
 }
 

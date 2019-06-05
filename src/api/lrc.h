@@ -48,7 +48,7 @@ public:
      * get a reference on PeerDiscoveryModel model.
      * @return a PeerDiscoveryModel&.
      */
-    const PeerDiscoveryModel& getPeerDiscoveryModel(const QString &accountID) const;
+    const PeerDiscoveryModel& getPeerDiscoveryModel() const;
     /**
      * get a reference on account model.
      * @return a NewAccountModel&.

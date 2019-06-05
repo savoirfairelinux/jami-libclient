@@ -33,13 +33,11 @@ class PeerDiscoveryModelPimpl: public QObject
     Q_OBJECT
 public:
     PeerDiscoveryModelPimpl(PeerDiscoveryModel& linked,
-                            const CallbacksHandler& callbackHandler,
-                            const QString &accountID);
+                            const CallbacksHandler& callbackHandler);
     ~PeerDiscoveryModelPimpl();
 
     PeerDiscoveryModel& linked;
     const CallbacksHandler& callbacksHandler;
-    const QString &accountID;
 
 public Q_SLOTS:
 
@@ -51,10 +49,9 @@ public Q_SLOTS:
     void slotPeerMapStatusChanged(const std::string& accountID, const std::string& contactUri, int state, const std::string& displayname);
 };
 
-PeerDiscoveryModel::PeerDiscoveryModel(const CallbacksHandler& callbacksHandler,
-                                       const QString &accountID)
+PeerDiscoveryModel::PeerDiscoveryModel(const CallbacksHandler& callbacksHandler)
 : QObject()
-, pimpl_(std::make_unique<PeerDiscoveryModelPimpl>(*this, callbacksHandler, accountID))
+, pimpl_(std::make_unique<PeerDiscoveryModelPimpl>(*this, callbacksHandler))
 {
 }
 
@@ -63,11 +60,9 @@ PeerDiscoveryModel::~PeerDiscoveryModel()
 }
 
 PeerDiscoveryModelPimpl::PeerDiscoveryModelPimpl(PeerDiscoveryModel& linked,
-                                                 const CallbacksHandler& callbacksHandler,
-                                                 const QString &accountID)
+                                                 const CallbacksHandler& callbacksHandler)
 : linked(linked)
 , callbacksHandler(callbacksHandler)
-, accountID(accountID)
 {
     connect(&callbacksHandler, &CallbacksHandler::newPeerSubscription, this, &PeerDiscoveryModelPimpl::slotPeerMapStatusChanged);
 }
@@ -84,9 +79,9 @@ PeerDiscoveryModelPimpl::slotPeerMapStatusChanged(const std::string& accountID, 
 }
 
 MapStringString
-PeerDiscoveryModel::getNearbyPeers() const
+PeerDiscoveryModel::getNearbyPeers(const QString &accountID) const
 {
-    return ConfigurationManager::instance().getNearbyPeers(pimpl_->accountID);
+    return ConfigurationManager::instance().getNearbyPeers(accountID);
 }
 
 } // namespace lrc
