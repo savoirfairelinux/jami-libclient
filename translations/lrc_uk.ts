@@ -1317,7 +1317,7 @@
         <location filename="../src/conversationmodel.cpp" line="1653"/>
         <location filename="../src/conversationmodel.cpp" line="1913"/>
         <source>Invitation received</source>
-        <translation type="unfinished"/>
+        <translation>Отримано запрошення</translation>
     </message>
     <message>
         <location filename="../src/conversationmodel.cpp" line="1266"/>
