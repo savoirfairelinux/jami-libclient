@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6e5188e3_944e5d67",
+        "filename": "src/lrc.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2019-06-11T20:44:59Z",
+      "side": 1,
+      "message": "Move in constructor!",
+      "range": {
+        "startLine": 87,
+        "startChar": 4,
+        "endLine": 87,
+        "endChar": 113
+      },
+      "revId": "8484d4000eb8b18073a1aae503b71b6dd34a31d8",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    }
+  ]
+}
