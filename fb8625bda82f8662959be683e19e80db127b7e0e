@@ -93,6 +93,30 @@
       "revId": "fb8625bda82f8662959be683e19e80db127b7e0e",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "e050f334_deab09ad",
+        "filename": "src/peerdiscoverymodel.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 633
+      },
+      "writtenOn": "2019-06-12T14:18:05Z",
+      "side": 1,
+      "message": "actually, we do need this since make_unique_ needs it",
+      "parentUuid": "74832247_6aea2910",
+      "range": {
+        "startLine": 38,
+        "startChar": 4,
+        "endLine": 38,
+        "endChar": 31
+      },
+      "revId": "fb8625bda82f8662959be683e19e80db127b7e0e",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
