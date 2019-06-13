@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4927d3ac_2d035d36",
+        "filename": "src/api/peerdiscoverymodel.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2019-06-13T21:58:12Z",
+      "side": 1,
+      "message": "Maybe this return can be improved to a\n\nvector\u003cPeerContact\u003e where struct PeerContact { uri, display_name }; (LRC can also lookup the name to have registered name if available)",
+      "range": {
+        "startLine": 52,
+        "startChar": 44,
+        "endLine": 53,
+        "endChar": 51
+      },
+      "revId": "940acd015776abd8e4d0fe8f27bfe877151a95f2",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "36b01f43_019e9455",
+        "filename": "src/api/peerdiscoverymodel.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2019-06-13T21:58:12Z",
+      "side": 1,
+      "message": "Not needed, if linked with accountInfo :)\n\nThis will allow the client to get peers without filtering",
+      "range": {
+        "startLine": 55,
+        "startChar": 35,
+        "endLine": 55,
+        "endChar": 59
+      },
+      "revId": "940acd015776abd8e4d0fe8f27bfe877151a95f2",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2a67679c_b6f2bc80",
+        "filename": "src/api/peerdiscoverymodel.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2019-06-13T21:58:12Z",
+      "side": 1,
+      "message": "same here",
+      "range": {
+        "startLine": 61,
+        "startChar": 22,
+        "endLine": 61,
+        "endChar": 50
+      },
+      "revId": "940acd015776abd8e4d0fe8f27bfe877151a95f2",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a1867943_12a4ac52",
+        "filename": "src/newaccountmodel.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 586,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2019-06-13T21:58:12Z",
+      "side": 1,
+      "message": "newAcc, callbacksHandler",
+      "range": {
+        "startLine": 586,
+        "startChar": 68,
+        "endLine": 586,
+        "endChar": 69
+      },
+      "revId": "940acd015776abd8e4d0fe8f27bfe877151a95f2",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a02125c6_aa7b18a3",
+        "filename": "src/peerdiscoverymodel.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2019-06-13T21:58:12Z",
+      "side": 1,
+      "message": "Check if linked account is the same id",
+      "range": {
+        "startLine": 77,
+        "startChar": 1,
+        "endLine": 78,
+        "endChar": 69
+      },
+      "revId": "940acd015776abd8e4d0fe8f27bfe877151a95f2",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    }
+  ]
+}
