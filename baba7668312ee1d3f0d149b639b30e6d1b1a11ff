@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "fea05c6c_cdae1220",
+        "filename": "src/api/peerdiscoverymodel.h",
+        "patchSetId": 16
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 633
+      },
+      "writtenOn": "2019-06-14T20:34:08Z",
+      "side": 1,
+      "message": "is it only 2019?",
+      "parentUuid": "c7f64436_136190bd",
+      "range": {
+        "startLine": 2,
+        "startChar": 20,
+        "endLine": 2,
+        "endChar": 24
+      },
+      "revId": "baba7668312ee1d3f0d149b639b30e6d1b1a11ff",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "5e7a9bf1_f61283d1",
         "filename": "src/api/peerdiscoverymodel.h",
         "patchSetId": 16
@@ -36,6 +60,30 @@
       "writtenOn": "2019-06-14T18:53:48Z",
       "side": 1,
       "message": "To replace with an enum. This avoid dead values",
+      "range": {
+        "startLine": 68,
+        "startChar": 53,
+        "endLine": 68,
+        "endChar": 56
+      },
+      "revId": "baba7668312ee1d3f0d149b639b30e6d1b1a11ff",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7ec09983_936b19b2",
+        "filename": "src/api/peerdiscoverymodel.h",
+        "patchSetId": 16
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 633
+      },
+      "writtenOn": "2019-06-14T20:34:08Z",
+      "side": 1,
+      "message": "chnaged to a enum class",
+      "parentUuid": "5e7a9bf1_f61283d1",
       "range": {
         "startLine": 68,
         "startChar": 53,
@@ -71,6 +119,30 @@
     },
     {
       "key": {
+        "uuid": "4a7e8ab2_adcd822c",
+        "filename": "src/api/peerdiscoverymodel.h",
+        "patchSetId": 16
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 633
+      },
+      "writtenOn": "2019-06-14T20:34:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e3cd69d4_64ebf22f",
+      "range": {
+        "startLine": 70,
+        "startChar": 8,
+        "endLine": 71,
+        "endChar": 27
+      },
+      "revId": "baba7668312ee1d3f0d149b639b30e6d1b1a11ff",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "4ae32aac_1e76b4a7",
         "filename": "src/peerdiscoverymodel.cpp",
         "patchSetId": 16
@@ -94,6 +166,30 @@
     },
     {
       "key": {
+        "uuid": "4bf6e318_2150e5fb",
+        "filename": "src/peerdiscoverymodel.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 633
+      },
+      "writtenOn": "2019-06-14T20:34:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4ae32aac_1e76b4a7",
+      "range": {
+        "startLine": 78,
+        "startChar": 1,
+        "endLine": 79,
+        "endChar": 24
+      },
+      "revId": "baba7668312ee1d3f0d149b639b30e6d1b1a11ff",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9759364e_959d6b48",
         "filename": "src/peerdiscoverymodel.cpp",
         "patchSetId": 16
@@ -114,6 +210,30 @@
       "revId": "baba7668312ee1d3f0d149b639b30e6d1b1a11ff",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3b9a38f7_96e862f6",
+        "filename": "src/peerdiscoverymodel.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 633
+      },
+      "writtenOn": "2019-06-14T20:34:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9759364e_959d6b48",
+      "range": {
+        "startLine": 89,
+        "startChar": 0,
+        "endLine": 97,
+        "endChar": 26
+      },
+      "revId": "baba7668312ee1d3f0d149b639b30e6d1b1a11ff",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
