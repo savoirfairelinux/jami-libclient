@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6e4de3ca_0cea1720",
+        "filename": "src/peerdiscoverymodel.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2019-06-17T20:00:44Z",
+      "side": 1,
+      "message": "remove else, it\u0027s the only case after the if :)",
+      "range": {
+        "startLine": 84,
+        "startChar": 6,
+        "endLine": 84,
+        "endChar": 12
+      },
+      "revId": "e486ca905d3aef1ca885a3417315e86186b6707d",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "da7aeaeb_c9a42cab",
+        "filename": "src/peerdiscoverymodel.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2019-06-17T20:00:44Z",
+      "side": 1,
+      "message": "emit linked_.modelChanged(contactUri,state \u003d\u003d 0 ? PeerModelChanged::INSERT : PeerModelChanged::REMOVE,displayname);",
+      "range": {
+        "startLine": 85,
+        "startChar": 8,
+        "endLine": 89,
+        "endChar": 9
+      },
+      "revId": "e486ca905d3aef1ca885a3417315e86186b6707d",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7b0c7a93_4b5df980",
+        "filename": "src/peerdiscoverymodel.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2019-06-17T20:00:44Z",
+      "side": 1,
+      "message": "trailing space",
+      "range": {
+        "startLine": 90,
+        "startChar": 0,
+        "endLine": 90,
+        "endChar": 8
+      },
+      "revId": "e486ca905d3aef1ca885a3417315e86186b6707d",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    }
+  ]
+}
