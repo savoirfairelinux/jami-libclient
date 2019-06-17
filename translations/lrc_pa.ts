@@ -2,91 +2,91 @@
 <context>
     <name>Account</name>
     <message>
-        <location filename="../src/account.cpp" line="331"/>
+        <location filename="../src/account.cpp" line="307"/>
         <source>Ready</source>
         <extracomment>Account state</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="333"/>
+        <location filename="../src/account.cpp" line="309"/>
         <source>Registered</source>
         <extracomment>Account state</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="337"/>
+        <location filename="../src/account.cpp" line="313"/>
         <source>Initializing</source>
         <extracomment>Account state</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="341"/>
+        <location filename="../src/account.cpp" line="317"/>
         <source>Error</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>ਗੜਬੜ</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="345"/>
+        <location filename="../src/account.cpp" line="321"/>
         <source>Network unreachable</source>
         <extracomment>Account state</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="347"/>
+        <location filename="../src/account.cpp" line="323"/>
         <source>Host unreachable</source>
         <extracomment>Account state</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="335"/>
+        <location filename="../src/account.cpp" line="311"/>
         <source>Not registered</source>
         <extracomment>Account state</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="339"/>
+        <location filename="../src/account.cpp" line="315"/>
         <source>Tryingâ¦</source>
         <extracomment>Account state</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="343"/>
+        <location filename="../src/account.cpp" line="319"/>
         <source>Authentication failed</source>
         <extracomment>Account state</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="349"/>
+        <location filename="../src/account.cpp" line="325"/>
         <source>STUN configuration error</source>
         <extracomment>Account state</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="351"/>
+        <location filename="../src/account.cpp" line="327"/>
         <source>STUN server invalid</source>
         <extracomment>Account state</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="353"/>
+        <location filename="../src/account.cpp" line="329"/>
         <source>Service unavailable</source>
         <extracomment>Account state</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="355"/>
+        <location filename="../src/account.cpp" line="331"/>
         <source>Unacceptable</source>
         <extracomment>Account state</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="357"/>
+        <location filename="../src/account.cpp" line="333"/>
         <source>Invalid</source>
         <extracomment>Account state</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="359"/>
+        <location filename="../src/account.cpp" line="335"/>
         <source>Request timeout</source>
         <extracomment>Account state</extracomment>
         <translation type="unfinished"/>
@@ -101,136 +101,123 @@
     </message>
 </context>
 <context>
-    <name>BootstrapModel</name>
-    <message>
-        <location filename="../src/bootstrapmodel.cpp" line="379"/>
-        <source>Hostname</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/bootstrapmodel.cpp" line="381"/>
-        <source>Port</source>
-        <translation type="unfinished"/>
-    </message>
-</context>
-<context>
     <name>Call</name>
     <message>
-        <location filename="../src/call.cpp" line="720"/>
+        <location filename="../src/call.cpp" line="719"/>
         <source>New</source>
         <extracomment>Call state</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="723"/>
+        <location filename="../src/call.cpp" line="722"/>
         <source>Ringing</source>
         <extracomment>Call state</extracomment>
-        <translation type="unfinished"/>
+        <translation>ਘੰਟੀ ਵੱਜ ਰਹੀ ਹੈ</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="726"/>
+        <location filename="../src/call.cpp" line="725"/>
         <source>Calling</source>
         <extracomment>Call state</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="729"/>
+        <location filename="../src/call.cpp" line="728"/>
         <source>Talking</source>
         <extracomment>Call state</extracomment>
-        <translation type="unfinished"/>
+        <translation>ਗੱਲ ਚੱਲ ਰਹੀ ਹੈ</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="732"/>
+        <location filename="../src/call.cpp" line="731"/>
         <source>Dialing</source>
         <extracomment>Call state</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="735"/>
+        <location filename="../src/call.cpp" line="734"/>
         <source>Hold</source>
         <extracomment>Call state</extracomment>
-        <translation type="unfinished"/>
+        <translation>ਰੋਕ ਕੇ ਰੱਖੀ</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="738"/>
+        <location filename="../src/call.cpp" line="737"/>
         <source>Failed</source>
         <extracomment>Call state</extracomment>
-        <translation type="unfinished"/>
+        <translation>ਅਸਫਲ ਰਿਹਾ</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="741"/>
+        <location filename="../src/call.cpp" line="740"/>
         <source>Busy</source>
         <extracomment>Call state</extracomment>
-        <translation type="unfinished"/>
+        <translation>ਰੁਝੇਵੇਂ ਵਿੱਚ</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="744"/>
+        <location filename="../src/call.cpp" line="743"/>
         <source>Transfer</source>
         <extracomment>Call state</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="747"/>
+        <location filename="../src/call.cpp" line="746"/>
         <source>Transfer hold</source>
         <extracomment>Call state</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="750"/>
+        <location filename="../src/call.cpp" line="749"/>
         <source>Over</source>
         <extracomment>Call state</extracomment>
-        <translation type="unfinished"/>
+        <translation>ਸਮਾਪਤ ਹੋਈ</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="753"/>
+        <location filename="../src/call.cpp" line="752"/>
         <source>Error</source>
         <extracomment>Call state</extracomment>
-        <translation type="unfinished"/>
+        <translation>ਗੜਬੜ</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="756"/>
-        <location filename="../src/call.cpp" line="861"/>
+        <location filename="../src/call.cpp" line="755"/>
+        <location filename="../src/call.cpp" line="860"/>
         <source>Conference</source>
         <extracomment>Call state</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="759"/>
+        <location filename="../src/call.cpp" line="758"/>
         <source>Conference (hold)</source>
         <extracomment>Call state</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="762"/>
+        <location filename="../src/call.cpp" line="761"/>
         <source>ERROR</source>
         <extracomment>Call state</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="765"/>
+        <location filename="../src/call.cpp" line="764"/>
         <source>Searching for</source>
         <extracomment>Call state</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="768"/>
+        <location filename="../src/call.cpp" line="767"/>
         <source>Aborted</source>
         <extracomment>Call state</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="771"/>
+        <location filename="../src/call.cpp" line="770"/>
         <source>Communication established</source>
         <extracomment>Call state</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="865"/>
+        <location filename="../src/call.cpp" line="864"/>
         <source>Unknown</source>
-        <translation type="unfinished"/>
+        <translation>ਅਣਪਛਾਤੀ</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="2239"/>
+        <location filename="../src/call.cpp" line="2231"/>
         <source>Account: </source>
         <translation type="unfinished"/>
     </message>
@@ -238,16 +225,16 @@
 <context>
     <name>CallModel</name>
     <message>
-        <location filename="../src/callmodel.cpp" line="924"/>
+        <location filename="../src/callmodel.cpp" line="898"/>
         <source>Calls</source>
-        <translation type="unfinished"/>
+        <translation>ਕਾਲਾਂ</translation>
     </message>
 </context>
 <context>
     <name>CallModelPrivate</name>
     <message>
-        <location filename="../src/callmodel.cpp" line="559"/>
-        <location filename="../src/callmodel.cpp" line="584"/>
+        <location filename="../src/callmodel.cpp" line="533"/>
+        <location filename="../src/callmodel.cpp" line="558"/>
         <source>Invalid account</source>
         <translation type="unfinished"/>
     </message>
@@ -255,12 +242,12 @@
 <context>
     <name>CallPrivate</name>
     <message>
-        <location filename="../src/call.cpp" line="1796"/>
+        <location filename="../src/call.cpp" line="1795"/>
         <source>Aborted</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="1817"/>
+        <location filename="../src/call.cpp" line="1816"/>
         <source>No account registered!</source>
         <translation type="unfinished"/>
     </message>
@@ -276,7 +263,7 @@
     <message>
         <location filename="../src/categorizedbookmarkmodel.cpp" line="299"/>
         <source>Contacts</source>
-        <translation type="unfinished"/>
+        <translation>ਸੰਪਰਕ</translation>
     </message>
 </context>
 <context>
@@ -284,7 +271,7 @@
     <message>
         <location filename="../src/categorizedcontactmodel.cpp" line="401"/>
         <source>Contacts</source>
-        <translation type="unfinished"/>
+        <translation>ਸੰਪਰਕ</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="129"/>
@@ -295,7 +282,7 @@
         <location filename="../src/private/sortproxies.cpp" line="135"/>
         <location filename="../src/private/sortproxies.cpp" line="153"/>
         <source>Unknown</source>
-        <translation type="unfinished"/>
+        <translation>ਅਣਪਛਾਤੀ</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="141"/>
@@ -311,7 +298,7 @@
 <context>
     <name>CategorizedHistoryModel</name>
     <message>
-        <location filename="../src/categorizedhistorymodel.cpp" line="414"/>
+        <location filename="../src/categorizedhistorymodel.cpp" line="412"/>
         <source>History</source>
         <translation>ਇਤਿਹਾਸ</translation>
     </message>
@@ -329,7 +316,7 @@
     <message>
         <location filename="../src/collectionmodel.cpp" line="279"/>
         <source>Name</source>
-        <translation type="unfinished"/>
+        <translation>ਨਾਂ</translation>
     </message>
 </context>
 <context>
@@ -337,7 +324,7 @@
     <message>
         <location filename="../src/private/sortproxies.cpp" line="49"/>
         <source>Name</source>
-        <translation type="unfinished"/>
+        <translation>ਨਾਂ</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="50"/>
@@ -370,7 +357,7 @@
     <message>
         <location filename="../src/private/sortproxies.cpp" line="58"/>
         <source>Name</source>
-        <translation type="unfinished"/>
+        <translation>ਨਾਂ</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="59"/>
@@ -398,7 +385,7 @@
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="51"/>
         <source>Yesterday</source>
-        <translation type="unfinished"/>
+        <translation>ਕੱਲ੍ਹ</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="58"/>
@@ -534,32 +521,9 @@
     </message>
 </context>
 <context>
-    <name>NumberCompletionModel</name>
-    <message>
-        <location filename="../src/numbercompletionmodel.cpp" line="265"/>
-        <source>URI</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/numbercompletionmodel.cpp" line="265"/>
-        <source>Name</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/numbercompletionmodel.cpp" line="265"/>
-        <source>Account</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/numbercompletionmodel.cpp" line="265"/>
-        <source>Weight</source>
-        <translation type="unfinished"/>
-    </message>
-</context>
-<context>
     <name>PersonModel</name>
     <message>
-        <location filename="../src/personmodel.cpp" line="171"/>
+        <location filename="../src/personmodel.cpp" line="170"/>
         <source>Persons</source>
         <translation type="unfinished"/>
     </message>
@@ -594,7 +558,7 @@
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="305"/>
         <source>Account</source>
-        <translation type="unfinished"/>
+        <translation>ਖਾਤਾ</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="305"/>
@@ -682,7 +646,7 @@
     <message>
         <location filename="../src/presencestatusmodel.cpp" line="197"/>
         <source>Name</source>
-        <translation type="unfinished"/>
+        <translation>ਨਾਂ</translation>
     </message>
     <message>
         <location filename="../src/presencestatusmodel.cpp" line="197"/>
@@ -737,26 +701,6 @@
 </context>
 <context>
     <name>QObject</name>
-    <message>
-        <location filename="../src/accountstatusmodel.cpp" line="177"/>
-        <source>Message</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/accountstatusmodel.cpp" line="179"/>
-        <source>Code</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/accountstatusmodel.cpp" line="181"/>
-        <source>Time</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/accountstatusmodel.cpp" line="183"/>
-        <source>Counter</source>
-        <translation type="unfinished"/>
-    </message>
     <message>
         <location filename="../src/certificate.cpp" line="42"/>
         <source>Has a private key</source>
@@ -885,7 +829,7 @@
     <message>
         <location filename="../src/certificate.cpp" line="94"/>
         <source>Version</source>
-        <translation type="unfinished"/>
+        <translation>ਵਰਜਨ</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="95"/>
@@ -959,7 +903,7 @@
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="267"/>
-        <location filename="../src/localprofilecollection.cpp" line="220"/>
+        <location filename="../src/localprofilecollection.cpp" line="221"/>
         <source>Default</source>
         <translation type="unfinished"/>
     </message>
@@ -1022,7 +966,7 @@
     </message>
     <message>
         <location filename="../src/daemoncertificatecollection.cpp" line="160"/>
-        <location filename="../src/foldercertificatecollection.cpp" line="198"/>
+        <location filename="../src/foldercertificatecollection.cpp" line="199"/>
         <source>Certificate</source>
         <translation type="unfinished"/>
     </message>
@@ -1037,41 +981,24 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/fallbackpersoncollection.cpp" line="194"/>
-        <location filename="../src/transitionalpersonbackend.cpp" line="150"/>
+        <location filename="../src/fallbackpersoncollection.cpp" line="196"/>
         <source>Contact</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/localbookmarkcollection.cpp" line="212"/>
-        <source>Local bookmarks</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/localbookmarkcollection.cpp" line="217"/>
         <location filename="../src/useractionmodel.cpp" line="532"/>
         <source>Bookmark</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/localhistorycollection.cpp" line="195"/>
+        <location filename="../src/localhistorycollection.cpp" line="196"/>
         <source>Local history</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/localhistorycollection.cpp" line="200"/>
+        <location filename="../src/localhistorycollection.cpp" line="201"/>
         <source>History</source>
         <translation>ਇਤਿਹਾਸ</translation>
-    </message>
-    <message>
-        <location filename="../src/localmacrocollection.cpp" line="190"/>
-        <source>Local macros</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/localmacrocollection.cpp" line="195"/>
-        <source>Macro</source>
-        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/localrecordingcollection.cpp" line="101"/>
@@ -1080,22 +1007,22 @@
     </message>
     <message>
         <location filename="../src/localrecordingcollection.cpp" line="106"/>
-        <location filename="../src/localtextrecordingcollection.cpp" line="170"/>
+        <location filename="../src/localtextrecordingcollection.cpp" line="171"/>
         <source>Recording</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/localringtonecollection.cpp" line="220"/>
+        <location filename="../src/localringtonecollection.cpp" line="221"/>
         <source>Local ringtones</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/localringtonecollection.cpp" line="225"/>
+        <location filename="../src/localringtonecollection.cpp" line="226"/>
         <source>Ringtone</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/localtextrecordingcollection.cpp" line="165"/>
+        <location filename="../src/localtextrecordingcollection.cpp" line="166"/>
         <source>Local text recordings</source>
         <translation type="unfinished"/>
     </message>
@@ -1186,27 +1113,22 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/transitionalpersonbackend.cpp" line="145"/>
-        <source>Contact placeholders</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
         <location filename="../src/useractionmodel.cpp" line="517"/>
         <location filename="../src/useractionmodel.cpp" line="759"/>
         <source>Accept</source>
-        <translation type="unfinished"/>
+        <translation>ਸਵੀਕਾਰ ਕਰੋ</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="60"/>
         <location filename="../src/useractionmodel.cpp" line="518"/>
         <location filename="../src/useractionmodel.cpp" line="771"/>
         <source>Hold</source>
-        <translation type="unfinished"/>
+        <translation>ਰੋਕ ਕੇ ਰੱਖੀ</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="62"/>
         <source>Talking</source>
-        <translation type="unfinished"/>
+        <translation>ਗੱਲ ਚੱਲ ਰਹੀ ਹੈ</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="64"/>
@@ -1216,7 +1138,7 @@
     <message>
         <location filename="../src/api/call.h" line="66"/>
         <source>Incoming</source>
-        <translation type="unfinished"/>
+        <translation>ਕਾਲ ਆ ਰਹੀ ਹੈ</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="68"/>
@@ -1226,12 +1148,12 @@
     <message>
         <location filename="../src/api/call.h" line="70"/>
         <source>Connecting</source>
-        <translation type="unfinished"/>
+        <translation>ਕਨੈਕਟ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="72"/>
         <source>Searching</source>
-        <translation type="unfinished"/>
+        <translation>ਖੋਜਿਆ ਜਾ ਰਿਹਾ ਹੈ</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="74"/>
@@ -1313,7 +1235,7 @@
     <message>
         <location filename="../src/useractionmodel.cpp" line="529"/>
         <source>Delete contact</source>
-        <translation type="unfinished"/>
+        <translation>ਸੰਪਰਕ ਮਿਟਾਓ</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="530"/>
@@ -1363,44 +1285,44 @@
     <message>
         <location filename="../src/useractionmodel.cpp" line="768"/>
         <source>Unhold</source>
-        <translation type="unfinished"/>
+        <translation>ਰੋਕ ਨੇ ਨਹੀਂ ਰੱਖੀ</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="779"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>ਰੱਦ ਕਰੋ</translation>
     </message>
     <message>
-        <location filename="../src/localprofilecollection.cpp" line="147"/>
+        <location filename="../src/localprofilecollection.cpp" line="148"/>
         <source>Local profiles</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/localprofilecollection.cpp" line="152"/>
+        <location filename="../src/localprofilecollection.cpp" line="153"/>
         <source>Profile Collection</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/peerprofilecollection.cpp" line="141"/>
+        <location filename="../src/peerprofilecollection.cpp" line="142"/>
         <source>Peer profiles</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/peerprofilecollection.cpp" line="146"/>
+        <location filename="../src/peerprofilecollection.cpp" line="147"/>
         <source>Peers Profiles Collection</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/conversationmodel.cpp" line="1265"/>
-        <location filename="../src/conversationmodel.cpp" line="1649"/>
-        <location filename="../src/conversationmodel.cpp" line="1909"/>
+        <location filename="../src/conversationmodel.cpp" line="1653"/>
+        <location filename="../src/conversationmodel.cpp" line="1913"/>
         <source>Invitation received</source>
-        <translation type="unfinished"/>
+        <translation>ਸੱਦਾ ਮਿਲਿਆ</translation>
     </message>
     <message>
         <location filename="../src/conversationmodel.cpp" line="1266"/>
         <source>Contact added</source>
-        <translation type="unfinished"/>
+        <translation>ਸੰਪਰਕ ਸ਼ਾਮਲ ਕੀਤਾ ਗਿਆ</translation>
     </message>
     <message>
         <location filename="../src/conversationmodel.cpp" line="1308"/>
@@ -1440,14 +1362,6 @@
     </message>
 </context>
 <context>
-    <name>RecentModel</name>
-    <message>
-        <location filename="../src/recentmodel.cpp" line="614"/>
-        <source>Recent persons</source>
-        <translation type="unfinished"/>
-    </message>
-</context>
-<context>
     <name>RingDeviceModel</name>
     <message>
         <location filename="../src/ringdevicemodel.cpp" line="110"/>
@@ -1457,7 +1371,7 @@
     <message>
         <location filename="../src/ringdevicemodel.cpp" line="112"/>
         <source>Name</source>
-        <translation type="unfinished"/>
+        <translation>ਨਾਂ</translation>
     </message>
 </context>
 <context>
@@ -1497,22 +1411,22 @@
 <context>
     <name>lrc::ContactModelPimpl</name>
     <message>
-        <location filename="../src/contactmodel.cpp" line="392"/>
+        <location filename="../src/contactmodel.cpp" line="399"/>
         <source>Searchingâ¦</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="722"/>
-        <source>Invalid ringID</source>
+        <location filename="../src/contactmodel.cpp" line="754"/>
+        <source>Invalid ID</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="725"/>
+        <location filename="../src/contactmodel.cpp" line="757"/>
         <source>Not found</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="728"/>
+        <location filename="../src/contactmodel.cpp" line="760"/>
         <source>Couldn&apos;t lookupâ¦</source>
         <translation type="unfinished"/>
     </message>
@@ -1520,7 +1434,7 @@
 <context>
     <name>lrc::api::ContactModel</name>
     <message>
-        <location filename="../src/contactmodel.cpp" line="363"/>
+        <location filename="../src/contactmodel.cpp" line="370"/>
         <source>Bad URI scheme</source>
         <translation type="unfinished"/>
     </message>
