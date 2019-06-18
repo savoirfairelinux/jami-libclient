@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "05e1e529_963c87df",
+        "filename": "src/peerdiscoverymodel.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 633
+      },
+      "writtenOn": "2019-06-18T13:10:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6e4de3ca_0cea1720",
+      "range": {
+        "startLine": 84,
+        "startChar": 6,
+        "endLine": 84,
+        "endChar": 12
+      },
+      "revId": "e486ca905d3aef1ca885a3417315e86186b6707d",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "da7aeaeb_c9a42cab",
         "filename": "src/peerdiscoverymodel.cpp",
         "patchSetId": 17
@@ -48,6 +72,30 @@
     },
     {
       "key": {
+        "uuid": "872f1f51_443bccc8",
+        "filename": "src/peerdiscoverymodel.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 633
+      },
+      "writtenOn": "2019-06-18T13:10:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "da7aeaeb_c9a42cab",
+      "range": {
+        "startLine": 85,
+        "startChar": 8,
+        "endLine": 89,
+        "endChar": 9
+      },
+      "revId": "e486ca905d3aef1ca885a3417315e86186b6707d",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "7b0c7a93_4b5df980",
         "filename": "src/peerdiscoverymodel.cpp",
         "patchSetId": 17
@@ -68,6 +116,30 @@
       "revId": "e486ca905d3aef1ca885a3417315e86186b6707d",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6b697206_32eb9a84",
+        "filename": "src/peerdiscoverymodel.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 633
+      },
+      "writtenOn": "2019-06-18T13:10:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7b0c7a93_4b5df980",
+      "range": {
+        "startLine": 90,
+        "startChar": 0,
+        "endLine": 90,
+        "endChar": 8
+      },
+      "revId": "e486ca905d3aef1ca885a3417315e86186b6707d",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
