@@ -17,7 +17,7 @@
         <location filename="../src/account.cpp" line="313"/>
         <source>Initializing</source>
         <extracomment>Account state</extracomment>
-        <translation>Inicializujem</translation>
+        <translation>Inicializácia</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="317"/>
@@ -729,12 +729,12 @@
     <message>
         <location filename="../src/certificate.cpp" line="47"/>
         <source>Has the right private key file permissions</source>
-        <translation>Súbor má správne povolenia privátneho kľúča</translation>
+        <translation>Má správne povolenia súboru s privátnym kľúčom</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="48"/>
         <source>Has the right public key file permissions</source>
-        <translation>Súbor má správne povolenia verejného kľúča</translation>
+        <translation>Má správne povolenia súboru s verejným kľúčom</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="49"/>
@@ -769,7 +769,7 @@
     <message>
         <location filename="../src/certificate.cpp" line="55"/>
         <source>The certificate file exist and is readable</source>
-        <translation>Certifikátový súbor existuje a je čitateľný</translation>
+        <translation>Súbor s certifikátom existuje a je čitateľný</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="56"/>
@@ -889,17 +889,17 @@
     <message>
         <location filename="../src/certificate.cpp" line="106"/>
         <source>Next expected update</source>
-        <translation>Najbližší očakávaný update</translation>
+        <translation>Najbližšia očakávaná aktualizácia</translation>
     </message>
     <message>
         <location filename="../src/certificate.cpp" line="107"/>
         <source>Outgoing server</source>
-        <translation>Východzí server</translation>
+        <translation>Odchádzajúci server</translation>
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="183"/>
         <source>Local certificate store</source>
-        <translation>Miestny ochod s certifikátmi</translation>
+        <translation>Miestny obchod s certifikátmi</translation>
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="267"/>
@@ -1019,7 +1019,7 @@
     <message>
         <location filename="../src/localringtonecollection.cpp" line="226"/>
         <source>Ringtone</source>
-        <translation>Vyzváňací tón</translation>
+        <translation>Zvonenie</translation>
     </message>
     <message>
         <location filename="../src/localtextrecordingcollection.cpp" line="166"/>
@@ -1079,7 +1079,7 @@
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="44"/>
         <source>None of your certificate provide a private key, this is required. Please select a private key or use a certificate with one built-in</source>
-        <translation>Žiadne z vašich certifikátov neposkytujú požadovaný privátny kľúč. Vyberte privátny kľúč alebo certifikát, ktorý ho obsahuje.</translation>
+        <translation>Vaše certifikáty neposkytujú požadovaný privátny kľúč. Vyberte privátny kľúč alebo certifikát, ktorý ho obsahuje.</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="47"/>

@@ -41,7 +41,7 @@
         <location filename="../src/account.cpp" line="311"/>
         <source>Not registered</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>Non registrato</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="315"/>
@@ -1280,7 +1280,7 @@
     <message>
         <location filename="../src/useractionmodel.cpp" line="533"/>
         <source>Open chat</source>
-        <translation type="unfinished"/>
+        <translation>Apri chat</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="768"/>

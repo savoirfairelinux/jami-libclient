@@ -5,19 +5,19 @@
         <location filename="../src/account.cpp" line="307"/>
         <source>Ready</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>ਤਿਆਰ</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="309"/>
         <source>Registered</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>ਪੰਜੀਕਰਨ ਹੋਇਆ</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="313"/>
         <source>Initializing</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>ਸ਼ੁਰੂ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="317"/>
@@ -29,67 +29,67 @@
         <location filename="../src/account.cpp" line="321"/>
         <source>Network unreachable</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>ਨੈੱਟਵਰਕ ਨਾਲ ਜੁੜ ਨਹੀਂ ਸਕੇ</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="323"/>
         <source>Host unreachable</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>ਮੇਜ਼ਬਾਨ ਨਾਲ ਜੁੜ ਨਹੀਂ ਸਕੇ</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="311"/>
         <source>Not registered</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>ਪੰਜੀਕਰਨ ਨਹੀਂ ਹੋਇਆ</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="315"/>
         <source>Tryingâ¦</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>ਕੋਸ਼ਿਸ਼ ਕੀਤੀ ਜਾ ਰਹੀ ਹੈâ¦</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="319"/>
         <source>Authentication failed</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>ਪ੍ਰਮਾਣੀਕਰਨ ਨਹੀਂ ਹੋਇਆ</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="325"/>
         <source>STUN configuration error</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>STUN ਸੰਰੂਪਣ ਗੜਬੜ</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="327"/>
         <source>STUN server invalid</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>STUN ਸਰਵਰ ਅਵੈਧ</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="329"/>
         <source>Service unavailable</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>ਸੇਵਾ ਉਪਲਬਧ ਨਹੀਂ ਹੈ</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="331"/>
         <source>Unacceptable</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>ਮਨਜ਼ੂਰ ਕਰਨਯੋਗ ਨਹੀਂ</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="333"/>
         <source>Invalid</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>ਅਵੈਧ</translation>
     </message>
     <message>
         <location filename="../src/account.cpp" line="335"/>
         <source>Request timeout</source>
         <extracomment>Account state</extracomment>
-        <translation type="unfinished"/>
+        <translation>ਬੇਨਤੀ ਦੀ ਸਮਾਂ ਸਮਾਪਤੀ</translation>
     </message>
 </context>
 <context>
@@ -97,7 +97,7 @@
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="438"/>
         <source>Configuration</source>
-        <translation type="unfinished"/>
+        <translation>ਸੰਰੂਪਣ</translation>
     </message>
 </context>
 <context>
@@ -106,7 +106,7 @@
         <location filename="../src/call.cpp" line="719"/>
         <source>New</source>
         <extracomment>Call state</extracomment>
-        <translation type="unfinished"/>
+        <translation>ਨਵੀਂ</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="722"/>
@@ -118,7 +118,7 @@
         <location filename="../src/call.cpp" line="725"/>
         <source>Calling</source>
         <extracomment>Call state</extracomment>
-        <translation type="unfinished"/>
+        <translation>ਕਾਲ ਕੀਤੀ ਜਾ ਰਹੀ ਹੈ</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="728"/>
@@ -130,7 +130,7 @@
         <location filename="../src/call.cpp" line="731"/>
         <source>Dialing</source>
         <extracomment>Call state</extracomment>
-        <translation type="unfinished"/>
+        <translation>ਡਾਇਲ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="734"/>
@@ -142,7 +142,7 @@
         <location filename="../src/call.cpp" line="737"/>
         <source>Failed</source>
         <extracomment>Call state</extracomment>
-        <translation>ਅਸਫਲ ਰਿਹਾ</translation>
+        <translation>ਅਸਫਲ ਰਹੀ</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="740"/>
@@ -154,13 +154,13 @@
         <location filename="../src/call.cpp" line="743"/>
         <source>Transfer</source>
         <extracomment>Call state</extracomment>
-        <translation type="unfinished"/>
+        <translation>ਤਬਾਦਲਾ</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="746"/>
         <source>Transfer hold</source>
         <extracomment>Call state</extracomment>
-        <translation type="unfinished"/>
+        <translation>ਤਬਾਦਲਾ ਰੋਕ ਕੇ ਰੱਖਿਆ</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="749"/>
@@ -179,37 +179,37 @@
         <location filename="../src/call.cpp" line="860"/>
         <source>Conference</source>
         <extracomment>Call state</extracomment>
-        <translation type="unfinished"/>
+        <translation>ਕਾਨਫਰੰਸ</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="758"/>
         <source>Conference (hold)</source>
         <extracomment>Call state</extracomment>
-        <translation type="unfinished"/>
+        <translation>ਕਾਨਫਰੰਸ (ਰੋਕ ਕੇ ਰੱਖੀ)</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="761"/>
         <source>ERROR</source>
         <extracomment>Call state</extracomment>
-        <translation type="unfinished"/>
+        <translation>ਗੜਬੜ</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="764"/>
         <source>Searching for</source>
         <extracomment>Call state</extracomment>
-        <translation type="unfinished"/>
+        <translation>ਖੋਜਿਆ ਜਾ ਰਿਹਾ ਹੈ</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="767"/>
         <source>Aborted</source>
         <extracomment>Call state</extracomment>
-        <translation type="unfinished"/>
+        <translation>ਰੱਦ ਕੀਤੀ ਗਈ</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="770"/>
         <source>Communication established</source>
         <extracomment>Call state</extracomment>
-        <translation type="unfinished"/>
+        <translation>ਸੰਚਾਰ ਸ਼ੁਰੂ ਹੋਇਆ</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="864"/>
@@ -219,7 +219,7 @@
     <message>
         <location filename="../src/call.cpp" line="2231"/>
         <source>Account: </source>
-        <translation type="unfinished"/>
+        <translation>ਖਾਤਾ: </translation>
     </message>
 </context>
 <context>
@@ -236,7 +236,7 @@
         <location filename="../src/callmodel.cpp" line="533"/>
         <location filename="../src/callmodel.cpp" line="558"/>
         <source>Invalid account</source>
-        <translation type="unfinished"/>
+        <translation>ਅਵੈਧ ਖਾਤਾ</translation>
     </message>
 </context>
 <context>
@@ -244,12 +244,12 @@
     <message>
         <location filename="../src/call.cpp" line="1795"/>
         <source>Aborted</source>
-        <translation type="unfinished"/>
+        <translation>ਰੱਦ ਕੀਤੀ ਗਈ</translation>
     </message>
     <message>
         <location filename="../src/call.cpp" line="1816"/>
         <source>No account registered!</source>
-        <translation type="unfinished"/>
+        <translation>ਕਿਸੇ ਖਾਤੇ ਦਾ ਪੰਜੀਕਰਨ ਨਹੀਂ ਹੋਇਆ!</translation>
     </message>
 </context>
 <context>
@@ -258,7 +258,7 @@
         <location filename="../src/categorizedbookmarkmodel.cpp" line="181"/>
         <source>Most popular</source>
         <extracomment>Most popular contacts</extracomment>
-        <translation type="unfinished"/>
+        <translation>ਸਭ ਤੋਂ ਮਸ਼ਹੂਰ</translation>
     </message>
     <message>
         <location filename="../src/categorizedbookmarkmodel.cpp" line="299"/>
@@ -276,23 +276,23 @@
     <message>
         <location filename="../src/private/sortproxies.cpp" line="129"/>
         <source>Empty</source>
-        <translation type="unfinished"/>
+        <translation>ਖਾਲੀ</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="135"/>
         <location filename="../src/private/sortproxies.cpp" line="153"/>
         <source>Unknown</source>
-        <translation>ਅਣਪਛਾਤੀ</translation>
+        <translation>ਅਣਪਛਾਤਾ</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="141"/>
         <source>Never</source>
-        <translation type="unfinished"/>
+        <translation>ਕਦੇ ਵੀ ਨਹੀਂ</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="147"/>
         <source>Other</source>
-        <translation type="unfinished"/>
+        <translation>ਹੋਰ</translation>
     </message>
 </context>
 <context>
@@ -308,7 +308,7 @@
     <message>
         <location filename="../src/chainoftrustmodel.cpp" line="173"/>
         <source>Chain of trust</source>
-        <translation type="unfinished"/>
+        <translation>ਭਰੋਸੇ ਦੀ ਜ਼ੰਜੀਰ</translation>
     </message>
 </context>
 <context>
@@ -329,22 +329,22 @@
     <message>
         <location filename="../src/private/sortproxies.cpp" line="50"/>
         <source>Organisation</source>
-        <translation type="unfinished"/>
+        <translation>ਸੰਸਥਾ</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="51"/>
         <source>Recently used</source>
-        <translation type="unfinished"/>
+        <translation>ਹਾਲ ਹੀ ਵਰਤਿਆ ਗਿਆ</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="52"/>
         <source>Group</source>
-        <translation type="unfinished"/>
+        <translation>ਸਮੂਹ</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="53"/>
         <source>Department</source>
-        <translation type="unfinished"/>
+        <translation>ਵਿਭਾਗ</translation>
     </message>
 </context>
 <context>
@@ -352,7 +352,7 @@
     <message>
         <location filename="../src/private/sortproxies.cpp" line="57"/>
         <source>Date</source>
-        <translation type="unfinished"/>
+        <translation>ਤਰੀਕ</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="58"/>
@@ -362,17 +362,17 @@
     <message>
         <location filename="../src/private/sortproxies.cpp" line="59"/>
         <source>Popularity</source>
-        <translation type="unfinished"/>
+        <translation>ਪ੍ਰਸਿੱਧੀ</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="60"/>
         <source>Duration</source>
-        <translation type="unfinished"/>
+        <translation>ਮਿਆਦ</translation>
     </message>
     <message>
         <location filename="../src/private/sortproxies.cpp" line="61"/>
         <source>Total time</source>
-        <translation type="unfinished"/>
+        <translation>ਕੁੱਲ ਸਮਾਂ</translation>
     </message>
 </context>
 <context>
@@ -380,7 +380,7 @@
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="50"/>
         <source>Today</source>
-        <translation type="unfinished"/>
+        <translation>ਅੱਜ</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="51"/>
@@ -390,92 +390,92 @@
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="58"/>
         <source>Two weeks ago</source>
-        <translation type="unfinished"/>
+        <translation>ਦੋ ਹਫ਼ਤੇ ਪਹਿਲਾਂ</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="59"/>
         <source>Three weeks ago</source>
-        <translation type="unfinished"/>
+        <translation>ਤਿੰਨ ਹਫ਼ਤੇ ਪਹਿਲਾਂ</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="57"/>
         <source>A week ago</source>
-        <translation type="unfinished"/>
+        <translation>ਹਫ਼ਤਾ ਪਹਿਲਾਂ</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="60"/>
         <source>A month ago</source>
-        <translation type="unfinished"/>
+        <translation>ਮਹੀਨਾ ਪਹਿਲਾਂ</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="61"/>
         <source>Two months ago</source>
-        <translation type="unfinished"/>
+        <translation>ਦੋ ਮਹੀਨੇ ਪਹਿਲਾਂ</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="62"/>
         <source>Three months ago</source>
-        <translation type="unfinished"/>
+        <translation>ਤਿੰਨ ਮਹੀਨੇ ਪਹਿਲਾਂ</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="63"/>
         <source>Four months ago</source>
-        <translation type="unfinished"/>
+        <translation>ਚਾਰ ਮਹੀਨੇ ਪਹਿਲਾਂ</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="64"/>
         <source>Five months ago</source>
-        <translation type="unfinished"/>
+        <translation>ਪੰਜ ਮਹੀਨੇ ਪਹਿਲਾਂ</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="65"/>
         <source>Six months ago</source>
-        <translation type="unfinished"/>
+        <translation>ਛੇ ਮਹੀਨੇ ਪਹਿਲਾਂ</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="66"/>
         <source>Seven months ago</source>
-        <translation type="unfinished"/>
+        <translation>ਸੱਤ ਮਹੀਨੇ ਪਹਿਲਾਂ</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="67"/>
         <source>Eight months ago</source>
-        <translation type="unfinished"/>
+        <translation>ਅੱਠ ਮਹੀਨੇ ਪਹਿਲਾਂ</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="68"/>
         <source>Nine months ago</source>
-        <translation type="unfinished"/>
+        <translation>ਨੌਂ ਮਹੀਨੇ ਪਹਿਲਾਂ</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="69"/>
         <source>Ten months ago</source>
-        <translation type="unfinished"/>
+        <translation>ਦੱਸ ਮਹੀਨੇ ਪਹਿਲਾਂ</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="70"/>
         <source>Eleven months ago</source>
-        <translation type="unfinished"/>
+        <translation>ਗਿਆਰਾਂ ਮਹੀਨੇ ਪਹਿਲਾਂ</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="71"/>
         <source>Twelve months ago</source>
-        <translation type="unfinished"/>
+        <translation>ਬਾਰਾਂ ਮਹੀਨੇ ਪਹਿਲਾਂ</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="72"/>
         <source>A year ago</source>
-        <translation type="unfinished"/>
+        <translation>ਸਾਲ ਪਹਿਲਾਂ</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="73"/>
         <source>Very long time ago</source>
-        <translation type="unfinished"/>
+        <translation>ਬਹੁਤ ਸਮਾਂ ਪਹਿਲਾਂ</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="74"/>
         <source>Never</source>
-        <translation type="unfinished"/>
+        <translation>ਕਦੇ ਵੀ ਨਹੀਂ</translation>
     </message>
 </context>
 <context>
@@ -483,7 +483,7 @@
     <message>
         <location filename="../src/media/textrecording.cpp" line="816"/>
         <source>Me</source>
-        <translation type="unfinished"/>
+        <translation>ਮੈਂ</translation>
     </message>
 </context>
 <context>
@@ -491,17 +491,17 @@
     <message>
         <location filename="../src/macromodel.cpp" line="157"/>
         <source>Macros</source>
-        <translation type="unfinished"/>
+        <translation>ਮੈਕਰੋਸ</translation>
     </message>
     <message>
         <location filename="../src/macromodel.cpp" line="263"/>
         <source>New</source>
-        <translation type="unfinished"/>
+        <translation>ਨਵਾਂ</translation>
     </message>
     <message>
         <location filename="../src/macromodel.cpp" line="264"/>
         <source>Other</source>
-        <translation type="unfinished"/>
+        <translation>ਹੋਰ</translation>
     </message>
 </context>
 <context>
@@ -509,7 +509,7 @@
     <message>
         <location filename="../src/macromodel.cpp" line="77"/>
         <source>Other</source>
-        <translation type="unfinished"/>
+        <translation>ਹੋਰ</translation>
     </message>
 </context>
 <context>
@@ -517,7 +517,7 @@
     <message>
         <location filename="../src/numbercategorymodel.cpp" line="56"/>
         <source>Uncategorized</source>
-        <translation type="unfinished"/>
+        <translation>ਗੈਰ-ਸ਼੍ਰੇਣੀਬੱਧ</translation>
     </message>
 </context>
 <context>
@@ -525,7 +525,7 @@
     <message>
         <location filename="../src/personmodel.cpp" line="170"/>
         <source>Persons</source>
-        <translation type="unfinished"/>
+        <translation>ਲੋਕ</translation>
     </message>
 </context>
 <context>
@@ -533,27 +533,27 @@
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="234"/>
         <source>This account does not support presence tracking</source>
-        <translation type="unfinished"/>
+        <translation>ਇਸ ਖਾਤੇ ਵਿੱਚ ਮੌਜੂਦਗੀ &apos;ਤੇ ਨਜ਼ਰ ਰੱਖਣ ਦੀ ਸੁਵਿਧਾ ਨਹੀਂ ਹੈ</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="237"/>
         <source>No associated account</source>
-        <translation type="unfinished"/>
+        <translation>ਕੋਈ ਸੰਬੰਧਿਤ ਖਾਤਾ ਨਹੀਂ ਹੈ</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="305"/>
         <source>URI</source>
-        <translation type="unfinished"/>
+        <translation>URI</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="305"/>
         <source>Type</source>
-        <translation type="unfinished"/>
+        <translation>ਕਿਸਮ</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="305"/>
         <source>Person</source>
-        <translation type="unfinished"/>
+        <translation>ਵਿਅਕਤੀ</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="305"/>
@@ -563,22 +563,22 @@
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="305"/>
         <source>State</source>
-        <translation type="unfinished"/>
+        <translation>ਰਾਜ</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="305"/>
         <source>Call count</source>
-        <translation type="unfinished"/>
+        <translation>ਕਾਲਾਂ ਦੀ ਗਿਣਤੀ</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="305"/>
         <source>Week count</source>
-        <translation type="unfinished"/>
+        <translation>ਹਫ਼ਤਾਵਾਰੀ ਗਿਣਤੀ</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="306"/>
         <source>Trimester count</source>
-        <translation type="unfinished"/>
+        <translation>ਤਿਮਾਹੀ ਗਿਣਤੀ</translation>
     </message>
     <message>
         <location filename="../src/phonedirectorymodel.cpp" line="306"/>
@@ -1034,7 +1034,7 @@
     <message>
         <location filename="../src/numbercategorymodel.cpp" line="186"/>
         <source>Other</source>
-        <translation type="unfinished"/>
+        <translation>ਹੋਰ</translation>
     </message>
     <message>
         <location filename="../src/protocolmodel.cpp" line="50"/>
@@ -1049,7 +1049,7 @@
     <message>
         <location filename="../src/qtwrapper/callmanager_wrap.h" line="315"/>
         <source>Me</source>
-        <translation type="unfinished"/>
+        <translation>ਮੈਂ</translation>
     </message>
     <message>
         <location filename="../src/securityevaluationmodel.cpp" line="38"/>
@@ -1133,7 +1133,7 @@
     <message>
         <location filename="../src/api/call.h" line="64"/>
         <source>ERROR</source>
-        <translation type="unfinished"/>
+        <translation>ਗੜਬੜ</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="66"/>
@@ -1143,7 +1143,7 @@
     <message>
         <location filename="../src/api/call.h" line="68"/>
         <source>Calling</source>
-        <translation type="unfinished"/>
+        <translation>ਕਾਲ ਕੀਤੀ ਜਾ ਰਹੀ ਹੈ</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="70"/>
@@ -1179,7 +1179,7 @@
     <message>
         <location filename="../src/api/call.h" line="84"/>
         <source>Communication established</source>
-        <translation type="unfinished"/>
+        <translation>ਸੰਚਾਰ ਸ਼ੁਰੂ ਹੋਇਆ</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="519"/>
