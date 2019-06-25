@@ -296,11 +296,11 @@ AVModel::getAudioManager() const
 std::vector<std::string>
 AVModel::getAudioOutputDevices() const
 {
-    QStringList managers = ConfigurationManager::instance()
+    QStringList devices = ConfigurationManager::instance()
         .getAudioOutputDeviceList();
     std::vector<std::string> result;
-    for (const auto& manager : managers) {
-        result.emplace_back(manager.toStdString());
+    for (const auto& device : devices) {
+        result.emplace_back(device.toStdString());
     }
     return result;
 }
@@ -308,11 +308,11 @@ AVModel::getAudioOutputDevices() const
 std::vector<std::string>
 AVModel::getAudioInputDevices() const
 {
-    QStringList managers = ConfigurationManager::instance()
+    QStringList devices = ConfigurationManager::instance()
         .getAudioInputDeviceList();
     std::vector<std::string> result;
-    for (const auto& manager : managers) {
-        result.emplace_back(manager.toStdString());
+    for (const auto& device : devices) {
+        result.emplace_back(device.toStdString());
     }
     return result;
 }
@@ -744,7 +744,18 @@ AVModelPimpl::getDevice(int type) const
         }
         auto deviceIdx = currentDevicesIdx[type].toUInt();
         for (const auto& dev : devices) {
-            int idx = ConfigurationManager::instance().getAudioInputDeviceIndex(dev.c_str());
+            int idx;
+            switch (type) {
+            case 1: // INPUT
+                idx = ConfigurationManager::instance().getAudioInputDeviceIndex(dev.c_str());
+                break;
+            case 0: // OUTPUT
+            case 2: // RINGTONE
+                idx = ConfigurationManager::instance().getAudioOutputDeviceIndex(dev.c_str());
+                break;
+            default:
+                break;
+            }
             if (idx == deviceIdx) {
                 return dev;
             }
