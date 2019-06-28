@@ -506,7 +506,6 @@ NewCallModelPimpl::slotIncomingCall(const std::string& accountId, const std::str
 void
 NewCallModelPimpl::slotCallStateChanged(const std::string& callId, const std::string& state, int code)
 {
-    Q_UNUSED(code)
     if (!linked.hasCall(callId)) return;
 
     auto status = call::to_status(state);
@@ -514,7 +513,7 @@ NewCallModelPimpl::slotCallStateChanged(const std::string& callId, const std::st
 
     if (status == call::Status::ENDED && !call::isTerminating(call->status)) {
         call->status = call::Status::TERMINATING;
-        emit linked.callStatusChanged(callId);
+        emit linked.callStatusChanged(callId, code);
     }
 
     // proper state transition
@@ -530,7 +529,7 @@ NewCallModelPimpl::slotCallStateChanged(const std::string& callId, const std::st
          call::to_string(previousStatus).c_str(), call::to_string(status).c_str());
 
     // NOTE: signal emission order matters, always emit CallStatusChanged before CallEnded
-    emit linked.callStatusChanged(callId);
+    emit linked.callStatusChanged(callId, code);
 
     if (call->status == call::Status::ENDED) {
         emit linked.callEnded(callId);
