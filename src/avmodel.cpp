@@ -233,16 +233,24 @@ AVModel::getDeviceCapabilities(const std::string& name) const
         VideoManager::instance().getCapabilities(name.c_str());
     video::Capabilities result;
     for (auto& channel : capabilites.toStdMap()) {
-        std::map<video::Resolution, video::FrameratesList> channelCapabilities;
+        video::ResRateList channelCapabilities;
         for (auto& resToRates : channel.second.toStdMap()) {
             video::FrameratesList rates;
             QVectorIterator<QString> itRates(resToRates.second);
             while (itRates.hasNext()) {
                 rates.emplace_back(itRates.next().toFloat());
             }
-            channelCapabilities.insert(
+            channelCapabilities.emplace_back(
                 std::make_pair(resToRates.first.toStdString(), rates));
         }
+        // sort by resolution widths
+        std::sort(channelCapabilities.begin(), channelCapabilities.end(),
+            [](const std::pair<video::Resolution, video::FrameratesList>& lhs,
+               const std::pair<video::Resolution, video::FrameratesList>& rhs) {
+                auto lhsWidth = stoull(lhs.first.substr(0, lhs.first.find("x")));
+                auto rhsWidth = stoull(rhs.first.substr(0, rhs.first.find("x")));
+                return lhsWidth > rhsWidth;
+            });
         result.insert(
             std::make_pair(channel.first.toStdString(), channelCapabilities));
     }
