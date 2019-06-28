@@ -366,6 +366,12 @@ int ShmRenderer::fps() const
    return d_ptr->m_Fps;
 }
 
+const void*
+ShmRenderer::currentAVFrame() const
+{
+    return {};
+}
+
 /// Get frame data pointer from shared memory
 Frame ShmRenderer::currentFrame() const
 {

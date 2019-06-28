@@ -58,6 +58,7 @@ public:
    int fps() const;
    virtual Frame currentFrame() const override;
    virtual ColorSpace colorSpace  () const override;
+   virtual const void* currentAVFrame() const override;
 
    //Setters
    void setShmPath(const QString& path);
