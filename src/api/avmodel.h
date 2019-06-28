@@ -259,6 +259,7 @@ Q_SIGNALS:
      * @param id
      */
     void frameUpdated(const std::string& id);
+    void avFrameUpdated(const std::string& id, const void* frame);
     /**
      * Emitted when a device is plugged or unplugged
      */

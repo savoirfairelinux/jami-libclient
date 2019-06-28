@@ -220,6 +220,17 @@ public Q_SLOTS: // METHODS
 #endif
     }
 
+    void registerAVSinkTarget(const QString &sinkID,
+                            const DRing::AVSinkTarget& target)
+    {
+#ifdef ENABLE_VIDEO
+        DRing::registerAVSinkTarget(sinkID.toStdString(), target);
+#else
+    Q_UNUSED(sinkID)
+    Q_UNUSED(target)
+#endif
+    }
+
     bool getDecodingAccelerated()
     {
         return DRing::getDecodingAccelerated();

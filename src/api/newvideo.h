@@ -146,6 +146,10 @@ public:
      * Stop rendering
      */
     void stopRendering();
+    /**
+     * set to true to receive AVFrames from render
+     */
+    void useAVFrame(bool useAVFrame);
 
 Q_SIGNALS:
     /**
@@ -153,6 +157,7 @@ Q_SIGNALS:
      * @param id
      */
     void frameUpdated(const std::string& id);
+    void avFrameUpdated(const std::string& id, const void* frame);
 
 private:
     std::unique_ptr<RendererPimpl> pimpl_;

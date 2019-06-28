@@ -111,6 +111,7 @@ public Q_SLOTS:
      * @param id
      */
     void slotFrameUpdated(const std::string& id);
+    void slotAVFrameUpdated(const std::string& id, const void* frame);
     /**
      * Detect when a device is plugged or unplugged
      */
@@ -563,6 +564,8 @@ AVModelPimpl::init()
             this, &AVModelPimpl::slotCallStateChanged);
     connect(&*renderers_[video::PREVIEW_RENDERER_ID], &api::video::Renderer::frameUpdated,
         this, &AVModelPimpl::slotFrameUpdated);
+    connect(&*renderers_[video::PREVIEW_RENDERER_ID], &api::video::Renderer::avFrameUpdated,
+            this, &AVModelPimpl::slotAVFrameUpdated);
 
     auto startedPreview = false;
     auto restartRenderers = [&](const QStringList& callList) {
@@ -627,6 +630,8 @@ AVModelPimpl::startedDecoding(const std::string& id, const std::string& shmPath,
             renderers_.at(id)->initThread();
             connect(&*renderers_[id], &api::video::Renderer::frameUpdated,
                 this, &AVModelPimpl::slotFrameUpdated);
+            connect(&*renderers_[id], &api::video::Renderer::avFrameUpdated,
+                    this, &AVModelPimpl::slotAVFrameUpdated);
         } else {
             (*search).second->update(res, shmPath);
         }
@@ -659,10 +664,12 @@ AVModelPimpl::stoppedDecoding(const std::string& id, const std::string& shmPath)
             if (searchFinished->second) {
                 disconnect(&*renderers_[id], &api::video::Renderer::frameUpdated,
                     this, &AVModelPimpl::slotFrameUpdated);
+                disconnect(&*renderers_[id], &api::video::Renderer::avFrameUpdated,
+                        this, &AVModelPimpl::slotAVFrameUpdated);
                 renderers_.erase(id);
-#ifndef ENABLE_LIBWRAP
+                #ifndef ENABLE_LIBWRAP
                 SIZE_RENDERER = renderers_.size();
-#endif
+                #endif
                 finishedRenderers_.erase(id);
             }
         }
@@ -687,6 +694,8 @@ AVModelPimpl::slotCallStateChanged(const std::string& id, const std::string &sta
     if (!(*search).second->isRendering()) {
         disconnect(&*renderers_[id], &api::video::Renderer::frameUpdated,
             this, &AVModelPimpl::slotFrameUpdated);
+        disconnect(&*renderers_[id], &api::video::Renderer::avFrameUpdated,
+                   this, &AVModelPimpl::slotAVFrameUpdated);
         renderers_.erase(id);
 #ifndef ENABLE_LIBWRAP
         SIZE_RENDERER = renderers_.size();
@@ -757,6 +766,11 @@ void
 AVModelPimpl::slotFrameUpdated(const std::string& id)
 {
     emit linked_.frameUpdated(id);
+}
+
+void
+AVModelPimpl::slotAVFrameUpdated(const std::string& id, const void* frame) {
+     emit linked_.avFrameUpdated(id, frame);
 }
 
 void
