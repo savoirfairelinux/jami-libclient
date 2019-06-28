@@ -33,6 +33,7 @@
 #include <QObject>
 #include <QThread>
 
+struct AVFrame;
 namespace lrc
 {
 
@@ -132,6 +133,8 @@ public:
      * @return current rendered frame
      */
     Frame currentFrame() const;
+
+    AVFrame* currentAVFrame() const;
     /**
      * @return current size
      */

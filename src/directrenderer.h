@@ -29,6 +29,7 @@
 class QMutex;
 class QTimer;
 class QThread;
+struct AVFrame;
 
 //Ring
 #include "video/device.h"
@@ -51,8 +52,10 @@ public:
 
    //Getter
    const DRing::SinkTarget& target() const;
+   const DRing::AVSinkTarget& avTarget() const;
    virtual ColorSpace colorSpace() const override;
    virtual Frame currentFrame() const override;
+   std::unique_ptr<DRing::VideoFrame> videoFrame();
 
 
 public Q_SLOTS:

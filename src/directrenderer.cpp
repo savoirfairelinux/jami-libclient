@@ -47,8 +47,11 @@ public:
     DirectRendererPrivate(Video::DirectRenderer* parent);
     DRing::SinkTarget::FrameBufferPtr requestFrameBuffer(std::size_t bytes);
     void onNewFrame(DRing::SinkTarget::FrameBufferPtr buf);
+    void onNewAVFrame(std::unique_ptr<DRing::VideoFrame> frame);
 
     DRing::SinkTarget target;
+    DRing::AVSinkTarget av_target;
+    std::unique_ptr<DRing::VideoFrame> video_frame;
     mutable QMutex directmutex;
     mutable DRing::SinkTarget::FrameBufferPtr daemonFramePtr_;
 private:
@@ -62,8 +65,9 @@ QObject(parent),
 q_ptr(parent)
 {
     using namespace std::placeholders;
-    target.pull = std::bind(&Video::DirectRendererPrivate::requestFrameBuffer, this, _1);
-    target.push = std::bind(&Video::DirectRendererPrivate::onNewFrame, this, _1);
+    av_target.push = std::bind(&Video::DirectRendererPrivate::onNewAVFrame, this, _1);;
+    // target.pull = std::bind(&Video::DirectRendererPrivate::requestFrameBuffer, this, _1);
+    // target.push = std::bind(&Video::DirectRendererPrivate::onNewFrame, this, _1);
 }
 
 ///Constructor
@@ -114,11 +118,18 @@ void Video::DirectRendererPrivate::onNewFrame(DRing::SinkTarget::FrameBufferPtr 
     emit q_ptr->frameUpdated();
 }
 
+void Video::DirectRendererPrivate::onNewAVFrame(std::unique_ptr<DRing::VideoFrame> frame)
+{
+    if (not q_ptr->isRendering())
+        return;
+    video_frame = std::move(frame);
+    emit q_ptr->frameUpdated();
+}
+
 Video::Frame Video::DirectRenderer::currentFrame() const
 {
     if (not isRendering())
         return {};
-
     QMutexLocker lock(mutex());
     if (not d_ptr->daemonFramePtr_)
         return {};
@@ -133,9 +144,22 @@ Video::Frame Video::DirectRenderer::currentFrame() const
     return std::move(frame);
 }
 
+std::unique_ptr<DRing::VideoFrame> Video::DirectRenderer::videoFrame()
+{
+    if (not isRendering())
+        return {};
+    return std::move(d_ptr->video_frame);
+}
+
+
 const DRing::SinkTarget& Video::DirectRenderer::target() const
 {
     return d_ptr->target;
+}
+
+const DRing::AVSinkTarget& Video::DirectRenderer::avTarget() const
+{
+    return d_ptr->av_target;
 }
 
 Video::Renderer::ColorSpace Video::DirectRenderer::colorSpace() const

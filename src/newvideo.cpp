@@ -21,6 +21,7 @@
 #include "dbus/videomanager.h"
 #ifdef ENABLE_LIBWRAP
  #include "directrenderer.h"
+ #include <videomanager_interface.h>
 #else
  #include "shmrenderer.h"
 #endif
@@ -90,8 +91,7 @@ Renderer::initThread()
     if (!pimpl_->renderer)
         return;
 #ifdef ENABLE_LIBWRAP
-    VideoManager::instance().registerSinkTarget(
-        QString::fromStdString(pimpl_->id_), pimpl_->renderer->target());
+    VideoManager::instance().registerAVSinkTarget(pimpl_->id_.c_str(), pimpl_->renderer->avTarget());
 #endif
     if (!pimpl_->thread_.isRunning())
        pimpl_->thread_.start();
@@ -108,8 +108,9 @@ Renderer::update(const std::string& res, const std::string& shmPath)
     pimpl_->renderer->setSize(size);
 
 #ifdef ENABLE_LIBWRAP
-    VideoManager::instance().registerSinkTarget(pimpl_->id_.c_str(),
-        pimpl_->renderer->target());
+    VideoManager::instance().registerAVSinkTarget(pimpl_->id_.c_str(), pimpl_->renderer->avTarget());
+    //VideoManager::instance().registerSinkTarget(pimpl_->id_.c_str(),
+       // pimpl_->renderer->target());
 #else //ENABLE_LIBWRAP
     pimpl_->renderer->setShmPath(shmPath.c_str());
 #endif
@@ -142,6 +143,12 @@ Renderer::currentFrame() const
     result.height = frame.height;
     result.width = frame.width;
     return result;
+}
+
+AVFrame*
+Renderer::currentAVFrame() const
+{
+    return std::move(pimpl_->renderer->videoFrame()->pointer());
 }
 
 QSize
