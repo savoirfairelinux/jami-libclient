@@ -422,6 +422,13 @@ AVModel::startLocalRecorder(const bool& audioOnly) const
 }
 
 void
+AVModel::useAVFrame(bool useAVFrame) {
+    for (auto it = pimpl_->renderers_.cbegin(); it != pimpl_->renderers_.cend(); ++it) {
+        it->second->useAVFrame(useAVFrame);
+    }
+}
+
+void
 AVModel::startPreview()
 {
     std::lock_guard<std::mutex> lk(pimpl_->renderers_mtx_);
@@ -674,9 +681,9 @@ AVModelPimpl::stoppedDecoding(const std::string& id, const std::string& shmPath)
                 disconnect(&*renderers_[id], &api::video::Renderer::frameUpdated,
                     this, &AVModelPimpl::slotFrameUpdated);
                 renderers_.erase(id);
-#ifndef ENABLE_LIBWRAP
+                #ifndef ENABLE_LIBWRAP
                 SIZE_RENDERER = renderers_.size();
-#endif
+                #endif
                 finishedRenderers_.erase(id);
             }
         }

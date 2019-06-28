@@ -98,14 +98,14 @@ public:
    virtual QSize      size            () const;
    virtual QMutex*    mutex           () const;
    virtual ColorSpace colorSpace      () const = 0;
-
+   virtual const void* currentAVFrame() const = 0;
    void setSize(const QSize& size) const;
 
 Q_SIGNALS:
    void frameUpdated(); // Emitted when a new frame is ready
    void stopped     ();
    void started     ();
-
+   
 public Q_SLOTS:
    virtual void startRendering() = 0;
    virtual void stopRendering () = 0;

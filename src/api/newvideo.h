@@ -133,6 +133,10 @@ public:
      */
     Frame currentFrame() const;
     /**
+     * @return current  avframe
+     */
+    const void* currentAVFrame() const;
+    /**
      * @return current size
      */
     QSize size() const; // TODO convert into std format!
@@ -146,6 +150,10 @@ public:
      * Stop rendering
      */
     void stopRendering();
+    /**
+     * set to true to receive AVFrames from render
+     */
+    void useAVFrame(bool useAVFrame);
 
 Q_SIGNALS:
     /**
