@@ -98,7 +98,7 @@ public:
    virtual QSize      size            () const;
    virtual QMutex*    mutex           () const;
    virtual ColorSpace colorSpace      () const = 0;
-
+   virtual const void* currentAVFrame() const = 0;
    void setSize(const QSize& size) const;
 
 Q_SIGNALS:
