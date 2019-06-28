@@ -58,6 +58,7 @@ public:
    QHash<QByteArray,Video::Renderer*> m_hRenderers  ;
    QHash<Video::Renderer*,QByteArray> m_hRendererIds;
    QHash<Video::Renderer*, QThread*>  m_hThreads    ;
+   bool                                usingAVFrame ;
 
    //Helper
    void removeRenderer(Video::Renderer* r);
@@ -93,6 +94,10 @@ VideoRendererManager::deactivate()
     VideoManagerInterface& interface = VideoManager::instance();
     disconnect( &interface , &VideoManagerInterface::startedDecoding, d_ptr.data(), &VideoRendererManagerPrivate::startedDecoding);
     disconnect( &interface , &VideoManagerInterface::stoppedDecoding, d_ptr.data(), &VideoRendererManagerPrivate::stoppedDecoding);
+}
+void
+VideoRendererManager::useAVFrame(bool useAVFrame) {
+    d_ptr->usingAVFrame = useAVFrame;
 }
 
 VideoRendererManager::~VideoRendererManager()
@@ -149,7 +154,7 @@ Video::Renderer* VideoRendererManager::previewRenderer()
       Video::Renderer* r = nullptr;
 
 #ifdef ENABLE_LIBWRAP
-      r = new Video::DirectRenderer(PREVIEW_RENDERER_ID, res->size());
+      r = new Video::DirectRenderer(PREVIEW_RENDERER_ID, res->size(), false);
 #else //ENABLE_LIBWRAP
       r = new Video::ShmRenderer(PREVIEW_RENDERER_ID,"",res->size());
 #endif
@@ -220,14 +225,21 @@ void VideoRendererManagerPrivate::startedDecoding(const QString& id, const QStri
    if (!m_hRenderers.contains(rid)) {
 
 #ifdef ENABLE_LIBWRAP
-
-      r = new Video::DirectRenderer(rid, res);
+      // do not use a
+      //if (id != PREVIEW_RENDERER_ID) {
+          r = new Video::DirectRenderer(rid, res, usingAVFrame);
+    //  } else {
+        //  r = new Video::DirectRenderer(rid, res, false);
+    //  }
 
       qWarning() << "Calling registerFrameListener";
       m_hRenderers[rid] = r;
       m_hRendererIds[r]=rid;
-
-      VideoManager::instance().registerSinkTarget(id, static_cast<Video::DirectRenderer*>(r)->target());
+      if (usingAVFrame && id != PREVIEW_RENDERER_ID) {
+          VideoManager::instance().registerAVSinkTarget(id, static_cast<Video::DirectRenderer*>(r)->avTarget());
+      } else {
+          VideoManager::instance().registerSinkTarget(id, static_cast<Video::DirectRenderer*>(r)->target());
+      }
 
 #else //ENABLE_LIBWRAP
 
@@ -257,7 +269,11 @@ void VideoRendererManagerPrivate::startedDecoding(const QString& id, const QStri
       r->setSize(res);
 
 #ifdef ENABLE_LIBWRAP
-    VideoManager::instance().registerSinkTarget(id, static_cast<Video::DirectRenderer*>(r)->target());
+      if (usingAVFrame && id != PREVIEW_RENDERER_ID) {
+          VideoManager::instance().registerAVSinkTarget(id, static_cast<Video::DirectRenderer*>(r)->avTarget());
+      } else {
+          VideoManager::instance().registerSinkTarget(id, static_cast<Video::DirectRenderer*>(r)->target());
+      }
 #else //ENABLE_LIBWRAP
 
       static_cast<Video::ShmRenderer*>(r)->setShmPath(shmPath);

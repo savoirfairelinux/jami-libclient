@@ -242,6 +242,10 @@ public:
 
     // TODO remove this, this is just to avoid dual rendering.
     void deactivateOldVideoModels();
+    /**
+     * set to true to receive AVFrames from render
+     */
+    void useAVFrame(bool useAVFrame);
 
 Q_SIGNALS:
     /**
@@ -259,6 +263,12 @@ Q_SIGNALS:
      * @param id
      */
     void frameUpdated(const std::string& id);
+    /**
+     * Emitted when a new frame is ready
+     * @param id
+     * @param frame
+     */
+    void avFrameUpdated(const std::string& id, const void* frame);
     /**
      * Emitted when a device is plugged or unplugged
      */

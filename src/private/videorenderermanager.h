@@ -48,6 +48,7 @@ public:
     static VideoRendererManager& instance();
 
     void deactivate();
+    void useAVFrame(bool useAVFrame);
 
    //Getters
    bool             isPreviewing   () const;
