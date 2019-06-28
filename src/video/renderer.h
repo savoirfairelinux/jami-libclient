@@ -105,6 +105,7 @@ Q_SIGNALS:
    void frameUpdated(); // Emitted when a new frame is ready
    void stopped     ();
    void started     ();
+   void avFrameUpdated(const void* frame);
 
 public Q_SLOTS:
    virtual void startRendering() = 0;
