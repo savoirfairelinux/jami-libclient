@@ -242,6 +242,10 @@ public:
 
     // TODO remove this, this is just to avoid dual rendering.
     void deactivateOldVideoModels();
+    /**
+     * set to true to receive AVFrames from render
+     */
+    void useAVFrame(bool useAVFrame);
 
 Q_SIGNALS:
     /**

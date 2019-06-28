@@ -46,14 +46,15 @@ class LIB_EXPORT DirectRenderer final : public Renderer {
 public:
 
    //Constructor
-   DirectRenderer (const QByteArray& id, const QSize& res);
+   DirectRenderer (const QByteArray& id, const QSize& res, bool useAVFrame);
    virtual ~DirectRenderer();
 
    //Getter
    const DRing::SinkTarget& target() const;
+   const DRing::AVSinkTarget& avTarget() const;
    virtual ColorSpace colorSpace() const override;
    virtual Frame currentFrame() const override;
-
+   virtual std::unique_ptr<AVFrame, void(*)(AVFrame*)> currentAVFrame() const override;
 
 public Q_SLOTS:
    virtual void startRendering() override;

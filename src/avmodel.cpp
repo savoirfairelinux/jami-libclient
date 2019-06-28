@@ -422,6 +422,13 @@ AVModel::startLocalRecorder(const bool& audioOnly) const
 }
 
 void
+AVModel::useAVFrame(bool useAVFrame) {
+    for (auto& it : pimpl_->renderers_) {
+        it.second->useAVFrame(useAVFrame);
+    }
+}
+
+void
 AVModel::startPreview()
 {
     std::lock_guard<std::mutex> lk(pimpl_->renderers_mtx_);

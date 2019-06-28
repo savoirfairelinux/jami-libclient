@@ -31,6 +31,7 @@ class QMutex;
 
 //Private
 struct SHMHeader;
+struct AVFrame;
 
 
 namespace Video {
@@ -58,6 +59,7 @@ public:
    int fps() const;
    virtual Frame currentFrame() const override;
    virtual ColorSpace colorSpace  () const override;
+   virtual std::unique_ptr<AVFrame, void(*)(AVFrame*)> currentAVFrame() const override;
 
    //Setters
    void setShmPath(const QString& path);
