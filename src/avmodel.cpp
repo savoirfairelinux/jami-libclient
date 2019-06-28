@@ -265,9 +265,11 @@ void
 AVModel::setDeviceSettings(video::Settings& settings)
 {
     MapStringString newSettings;
+    auto rate = QString::number(settings.rate, 'f', 7);
+    rate = rate.left(rate.length() - 1);
     newSettings["channel"] = settings.channel.c_str();
     newSettings["name"] = settings.name.c_str();
-    newSettings["rate"] = QString::number(settings.rate);
+    newSettings["rate"] = rate;
     newSettings["size"] = settings.size.c_str();
     VideoManager::instance().applySettings(settings.name.c_str(), newSettings);
 
