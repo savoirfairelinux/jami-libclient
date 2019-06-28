@@ -208,7 +208,7 @@ public Q_SLOTS:
      * Listen from callmodel for calls status changed.
      * @param callId
      */
-    void slotCallStatusChanged(const std::string& callId);
+    void slotCallStatusChanged(const std::string& callId, int code);
     /**
      * Listen from callmodel for writing "Call started"
      * @param callId
@@ -1499,8 +1499,9 @@ ConversationModelPimpl::slotIncomingCall(const std::string& fromId, const std::s
 }
 
 void
-ConversationModelPimpl::slotCallStatusChanged(const std::string& callId)
+ConversationModelPimpl::slotCallStatusChanged(const std::string& callId, int code)
 {
+    Q_UNUSED(code)
     // Get conversation
     auto i = std::find_if(
         conversations.begin(), conversations.end(),

@@ -197,7 +197,7 @@ Q_SIGNALS:
      * Emitted when a call state changes
      * @param callId
      */
-    void callStatusChanged(const std::string& callId) const;
+    void callStatusChanged(const std::string& callId, int code) const;
     /**
      * Emitted when a call starts
      * @param callId
