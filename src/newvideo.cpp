@@ -25,6 +25,9 @@
  #include "shmrenderer.h"
 #endif
 
+// TODO remove this as soon as all clients use this class
+#include <private/videorenderermanager.h>
+
 // std
 #include <mutex>
 
@@ -45,6 +48,7 @@ public:
     std::string id_;
     Settings videoSettings_;
     QThread thread_;
+    bool usingAVFrame_;
 
     /**
      * Convert a string (wxh) to a QSize
@@ -66,6 +70,7 @@ public Q_SLOTS:
      * Detect when the current frame is updated
      */
     void slotFrameUpdated();
+    void slotAVFrameUpdated(const void* frame);
 };
 
 namespace api
@@ -90,8 +95,11 @@ Renderer::initThread()
     if (!pimpl_->renderer)
         return;
 #ifdef ENABLE_LIBWRAP
-    VideoManager::instance().registerSinkTarget(
-        QString::fromStdString(pimpl_->id_), pimpl_->renderer->target());
+    if(pimpl_->usingAVFrame_) {
+        VideoManager::instance().registerAVSinkTarget(pimpl_->id_.c_str(), pimpl_->renderer->avTarget());
+    } else {
+        VideoManager::instance().registerSinkTarget(pimpl_->id_.c_str(), pimpl_->renderer->target());
+    }
 #endif
     if (!pimpl_->thread_.isRunning())
        pimpl_->thread_.start();
@@ -108,8 +116,11 @@ Renderer::update(const std::string& res, const std::string& shmPath)
     pimpl_->renderer->setSize(size);
 
 #ifdef ENABLE_LIBWRAP
-    VideoManager::instance().registerSinkTarget(pimpl_->id_.c_str(),
-        pimpl_->renderer->target());
+    if(pimpl_->usingAVFrame_) {
+        VideoManager::instance().registerAVSinkTarget(pimpl_->id_.c_str(), pimpl_->renderer->avTarget());
+    } else {
+        VideoManager::instance().registerSinkTarget(pimpl_->id_.c_str(), pimpl_->renderer->target());
+    }
 #else //ENABLE_LIBWRAP
     pimpl_->renderer->setShmPath(shmPath.c_str());
 #endif
@@ -122,6 +133,13 @@ Renderer::isRendering() const
     if (pimpl_->renderer)
         return pimpl_->renderer->isRendering();
     return false;
+}
+
+void
+Renderer::useAVFrame(bool useAVFrame) {
+    pimpl_->usingAVFrame_ = useAVFrame;
+    // TODO remove this as soon as all clients use this class
+    VideoRendererManager::instance().useAVFrame(useAVFrame);
 }
 
 std::string
@@ -188,7 +206,7 @@ RendererPimpl::RendererPimpl(Renderer& linked, const std::string& id,
 {
     QSize size = stringToQSize(videoSettings.size);
 #ifdef ENABLE_LIBWRAP
-    renderer = std::make_unique<Video::DirectRenderer>(id.c_str(), size);
+    renderer = std::make_unique<Video::DirectRenderer>(id.c_str(), size, usingAVFrame_);
 #else  // ENABLE_LIBWRAP
     renderer = std::make_unique<Video::ShmRenderer>(id.c_str(), shmPath.c_str(), size);
 #endif
@@ -196,6 +214,8 @@ RendererPimpl::RendererPimpl(Renderer& linked, const std::string& id,
 
     connect(&*renderer, &Video::Renderer::frameUpdated,
         this, &RendererPimpl::slotFrameUpdated);
+    connect(&*renderer, &Video::Renderer::avFrameUpdated,
+        this, &RendererPimpl::slotAVFrameUpdated);
 }
 
 RendererPimpl::~RendererPimpl()
@@ -218,6 +238,10 @@ void
 RendererPimpl::slotFrameUpdated()
 {
     emit linked.frameUpdated(id_);
+}
+void RendererPimpl::slotAVFrameUpdated(const void* frame)
+{
+    emit linked.avFrameUpdated(id_, frame);
 }
 
 } // end of namespace lrc
