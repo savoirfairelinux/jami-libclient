@@ -44,14 +44,14 @@ namespace api
 namespace video
 {
 
-
 constexpr static const char PREVIEW_RENDERER_ID[] = "local";
 
 using Channel = std::string;
 using Resolution = std::string;
 using Framerate = float;
 using FrameratesList = std::vector<Framerate>;
-using Capabilities = std::map<Channel, std::map<Resolution, FrameratesList>>;
+using ResRateList = std::vector<std::pair<Resolution, FrameratesList>>;
+using Capabilities = std::map<Channel, ResRateList>;
 
 /**
  * This class is used by Renderer class to expose video data frame
