@@ -29,6 +29,7 @@
 
 //Qt
 class QMutex;
+struct AVFrame;
 
 //Ring
 #include "device.h"
@@ -98,7 +99,7 @@ public:
    virtual QSize      size            () const;
    virtual QMutex*    mutex           () const;
    virtual ColorSpace colorSpace      () const = 0;
-
+   virtual std::unique_ptr<AVFrame, void(*)(AVFrame*)> currentAVFrame() const = 0;
    void setSize(const QSize& size) const;
 
 Q_SIGNALS:

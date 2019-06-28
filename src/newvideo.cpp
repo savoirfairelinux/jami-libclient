@@ -45,6 +45,7 @@ public:
     std::string id_;
     Settings videoSettings_;
     QThread thread_;
+    bool usingAVFrame_;
 
     /**
      * Convert a string (wxh) to a QSize
@@ -90,8 +91,11 @@ Renderer::initThread()
     if (!pimpl_->renderer)
         return;
 #ifdef ENABLE_LIBWRAP
-    VideoManager::instance().registerSinkTarget(
-        QString::fromStdString(pimpl_->id_), pimpl_->renderer->target());
+    if(pimpl_->usingAVFrame_) {
+        VideoManager::instance().registerAVSinkTarget(pimpl_->id_.c_str(), pimpl_->renderer->avTarget());
+    } else {
+        VideoManager::instance().registerSinkTarget(pimpl_->id_.c_str(), pimpl_->renderer->target());
+    }
 #endif
     if (!pimpl_->thread_.isRunning())
        pimpl_->thread_.start();
@@ -108,8 +112,11 @@ Renderer::update(const std::string& res, const std::string& shmPath)
     pimpl_->renderer->setSize(size);
 
 #ifdef ENABLE_LIBWRAP
-    VideoManager::instance().registerSinkTarget(pimpl_->id_.c_str(),
-        pimpl_->renderer->target());
+    if(pimpl_->usingAVFrame_) {
+        VideoManager::instance().registerAVSinkTarget(pimpl_->id_.c_str(), pimpl_->renderer->avTarget());
+    } else {
+        VideoManager::instance().registerSinkTarget(pimpl_->id_.c_str(), pimpl_->renderer->target());
+    }
 #else //ENABLE_LIBWRAP
     pimpl_->renderer->setShmPath(shmPath.c_str());
 #endif
@@ -122,6 +129,11 @@ Renderer::isRendering() const
     if (pimpl_->renderer)
         return pimpl_->renderer->isRendering();
     return false;
+}
+
+void
+Renderer::useAVFrame(bool useAVFrame) {
+    pimpl_->usingAVFrame_ = useAVFrame;
 }
 
 std::string
@@ -142,6 +154,12 @@ Renderer::currentFrame() const
     result.height = frame.height;
     result.width = frame.width;
     return result;
+}
+
+std::unique_ptr<AVFrame, void(*)(AVFrame*)>
+Renderer::currentAVFrame() const
+{
+    return pimpl_->renderer->currentAVFrame();
 }
 
 QSize
@@ -188,7 +206,7 @@ RendererPimpl::RendererPimpl(Renderer& linked, const std::string& id,
 {
     QSize size = stringToQSize(videoSettings.size);
 #ifdef ENABLE_LIBWRAP
-    renderer = std::make_unique<Video::DirectRenderer>(id.c_str(), size);
+    renderer = std::make_unique<Video::DirectRenderer>(id.c_str(), size, usingAVFrame_);
 #else  // ENABLE_LIBWRAP
     renderer = std::make_unique<Video::ShmRenderer>(id.c_str(), shmPath.c_str(), size);
 #endif
