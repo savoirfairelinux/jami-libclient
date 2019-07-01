@@ -1318,7 +1318,7 @@ Virhe</translation>
         <location filename="../src/conversationmodel.cpp" line="1653"/>
         <location filename="../src/conversationmodel.cpp" line="1913"/>
         <source>Invitation received</source>
-        <translation type="unfinished"/>
+        <translation>Kutsu vastaanotettu</translation>
     </message>
     <message>
         <location filename="../src/conversationmodel.cpp" line="1266"/>

@@ -940,7 +940,7 @@
     <message>
         <location filename="../src/certificatemodel.cpp" line="421"/>
         <source>Various security related information</source>
-        <translation>Különféle biztonsági információk</translation>
+        <translation>Különféle biztonsági részletek</translation>
     </message>
     <message>
         <location filename="../src/certificatemodel.cpp" line="610"/>
