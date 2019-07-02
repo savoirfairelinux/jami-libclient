@@ -122,6 +122,11 @@ public:
      */
     void hangUp(const std::string& callId) const;
     /**
+     * Refuse a call
+     * @param callId
+     */
+    void refuse(const std::string& callId) const;
+    /**
      * Toggle audio record on a call
      * @param callId
      */
@@ -191,6 +196,13 @@ public:
      * Close all active calls and conferences
      */
     static void hangupCallsAndConferences();
+
+    /**
+     * Extract Status Message From Status Map
+     * @param statusCode
+     * @return status message
+     */
+    static std::string getSIPCallStatusString(const short& statusCode);
 
 Q_SIGNALS:
     /**
