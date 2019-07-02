@@ -42,6 +42,64 @@
 #include <QString>
 
 static std::uniform_int_distribution<int> dis{ 0, std::numeric_limits<int>::max() };
+static const std::map<short, std::string> sip_call_status_code_map {
+    {0, QObject::tr("Null").toStdString()},
+    {100, QObject::tr("Trying").toStdString()},
+    {180, QObject::tr("Ringing").toStdString()},
+    {181, QObject::tr("Being Forwarded").toStdString()},
+    {182, QObject::tr("Queued").toStdString()},
+    {183, QObject::tr("Progress").toStdString()},
+    {200, QObject::tr("OK").toStdString()},
+    {202, QObject::tr("Accepted").toStdString()},
+    {300, QObject::tr("Multiple Choices").toStdString()},
+    {301, QObject::tr("Moved Permanently").toStdString()},
+    {302, QObject::tr("Moved Temporarily").toStdString()},
+    {305, QObject::tr("Use Proxy").toStdString()},
+    {380, QObject::tr("Alternative Service").toStdString()},
+    {400, QObject::tr("Bad Request").toStdString()},
+    {401, QObject::tr("Unauthorized").toStdString()},
+    {402, QObject::tr("Payment Required").toStdString()},
+    {403, QObject::tr("Forbidden").toStdString()},
+    {404, QObject::tr("Not Found").toStdString()},
+    {405, QObject::tr("Method Not Allowed").toStdString()},
+    {406, QObject::tr("Not Acceptable").toStdString()},
+    {407, QObject::tr("Proxy Authentication Required").toStdString()},
+    {408, QObject::tr("Request Timeout").toStdString()},
+    {410, QObject::tr("Gone").toStdString()},
+    {413, QObject::tr("Request Entity Too Large").toStdString()},
+    {414, QObject::tr("Request URI Too Long").toStdString()},
+    {415, QObject::tr("Unsupported Media Type").toStdString()},
+    {416, QObject::tr("Unsupported URI Scheme").toStdString()},
+    {420, QObject::tr("Bad Extension").toStdString()},
+    {421, QObject::tr("Extension Required").toStdString()},
+    {422, QObject::tr("Session Timer Too Small").toStdString()},
+    {423, QObject::tr("Interval Too Brief").toStdString()},
+    {480, QObject::tr("Temporarily Unavailable").toStdString()},
+    {481, QObject::tr("Call TSX Does Not Exist").toStdString()},
+    {482, QObject::tr("Loop Detected").toStdString()},
+    {483, QObject::tr("Too Many Hops").toStdString()},
+    {484, QObject::tr("Address Incomplete").toStdString()},
+    {485, QObject::tr("Ambiguous").toStdString()},
+    {486, QObject::tr("Busy").toStdString()},
+    {487, QObject::tr("Request Terminated").toStdString()},
+    {488, QObject::tr("Not Acceptable").toStdString()},
+    {489, QObject::tr("Bad Event").toStdString()},
+    {490, QObject::tr("Request Updated").toStdString()},
+    {491, QObject::tr("Request Pending").toStdString()},
+    {493, QObject::tr("Undecipherable").toStdString()},
+    {500, QObject::tr("Internal Server Error").toStdString()},
+    {501, QObject::tr("Not Implemented").toStdString()},
+    {502, QObject::tr("Bad Gateway").toStdString()},
+    {503, QObject::tr("Service Unavailable").toStdString()},
+    {504, QObject::tr("Server Timeout").toStdString()},
+    {505, QObject::tr("Version Not Supported").toStdString()},
+    {513, QObject::tr("Message Too Large").toStdString()},
+    {580, QObject::tr("Precondition Failure").toStdString()},
+    {600, QObject::tr("Busy Everywhere").toStdString()} ,
+    {603, QObject::tr("Call Refused").toStdString()},
+    {604, QObject::tr("Does Not Exist Anywhere").toStdString()},
+    {606, QObject::tr("Not Acceptable Anywhere").toStdString()}
+};
 
 namespace lrc
 {
@@ -375,6 +433,16 @@ NewCallModel::isRecording(const std::string& callId) const
 {
     if (!hasCall(callId)) return false;
     return CallManager::instance().getIsRecording(callId.c_str());
+}
+
+std::string
+NewCallModel::getSIPCallStatusString(const short& statusCode)
+{
+    auto element = sip_call_status_code_map.find(statusCode);
+    if(element != sip_call_status_code_map.end()){
+        return element->second;
+    }
+    return "";
 }
 
 
