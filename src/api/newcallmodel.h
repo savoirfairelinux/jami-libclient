@@ -192,6 +192,13 @@ public:
      */
     static void hangupCallsAndConferences();
 
+    /**
+     * Extract Status Message From Status Map
+     * @param statusCode
+     * @return status message
+     */
+    std::string getCallStatusString(const short& statusCode);
+
 Q_SIGNALS:
     /**
      * Emitted when a call state changes
