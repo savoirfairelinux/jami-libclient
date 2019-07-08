@@ -308,6 +308,15 @@ AVModel::getAudioOutputDevices() const
 {
     QStringList devices = ConfigurationManager::instance()
         .getAudioOutputDeviceList();
+
+    // A fix for ring-daemon#43
+    if (ConfigurationManager::instance().getAudioManager()
+        == QStringLiteral("pulseaudio")) {
+        if (devices.at(0) == QStringLiteral("default")) {
+            devices[0] = QObject::tr("default");
+        }
+    }
+
     std::vector<std::string> result;
     for (const auto& device : devices) {
         result.emplace_back(device.toStdString());
@@ -320,6 +329,15 @@ AVModel::getAudioInputDevices() const
 {
     QStringList devices = ConfigurationManager::instance()
         .getAudioInputDeviceList();
+
+    // A fix for ring-daemon#43
+    if (ConfigurationManager::instance().getAudioManager()
+        == QStringLiteral("pulseaudio")) {
+        if (devices.at(0) == QStringLiteral("default")) {
+            devices[0] = QObject::tr("default");
+        }
+    }
+
     std::vector<std::string> result;
     for (const auto& device : devices) {
         result.emplace_back(device.toStdString());
