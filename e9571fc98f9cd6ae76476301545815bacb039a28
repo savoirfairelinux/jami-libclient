@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "0d665f71_2cb7046e",
+        "filename": "src/directrenderer.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2019-07-09T20:05:45Z",
+      "side": 1,
+      "message": "I think you would need to retain ownership of the frame here, otherwise the frame might get deleted before use.\n\nI see three options:\n* simply use \u0027std::unique_ptr\u003cDRing::VideoFrame\u003e avframe;\u0027 here, then do avframe \u003d std::move(frame) in onNewAVFrame, and keep passing DRing::VideoFrame up to the client\n* add method in daemon\u0027 DRing::MediaFrame to retrieve the std::unique_ptr\u003cAVFrame\u003e from the MediaFrame, and pass it as \u0027std::unique_ptr\u003cAVFrame, void(*)(AVFrame*)\u003e\u0027 to the client (this shouldn\u0027t require linking LRC with ffmpeg, as AVFrame can be forward-declared).\n* do av_frame_ref in LRC to handle the frame refcount from client-side (this requires linking LRC with ffmpeg)",
+      "range": {
+        "startLine": 56,
+        "startChar": 4,
+        "endLine": 56,
+        "endChar": 15
+      },
+      "revId": "e9571fc98f9cd6ae76476301545815bacb039a28",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "037bc1d4_46fb19b2",
+        "filename": "src/directrenderer.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2019-07-09T20:05:45Z",
+      "side": 1,
+      "message": "Here std::move is a no-op since it operates on a raw pointer (see comment above). The frame ownership is not taken so the frame will be destroyed after this function call.\n\nThis won\u0027t be an issue only if the frame is always read synchronously from frameUpdated which the API doesn\u0027t make mandatory.",
+      "range": {
+        "startLine": 130,
+        "startChar": 8,
+        "endLine": 130,
+        "endChar": 46
+      },
+      "revId": "e9571fc98f9cd6ae76476301545815bacb039a28",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    }
+  ]
+}
