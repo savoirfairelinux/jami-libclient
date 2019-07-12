@@ -37,7 +37,8 @@ class RendererPimpl: public QObject
 {
 public:
     RendererPimpl(Renderer& linked, const std::string& id,
-        Settings videoSettings, const std::string& shmPath);
+        Settings videoSettings, const std::string& shmPath,
+        bool useAVFrame=false);
     ~RendererPimpl();
 
     Renderer& linked;
@@ -202,9 +203,11 @@ Renderer::stopRendering()
 }} // end of api::video
 
 RendererPimpl::RendererPimpl(Renderer& linked, const std::string& id,
-    Settings videoSettings, const std::string& shmPath)
+    Settings videoSettings, const std::string& shmPath, bool useAVFrame)
 : linked(linked)
-, id_(id), videoSettings_(videoSettings)
+, id_(id)
+, videoSettings_(videoSettings)
+, usingAVFrame_(useAVFrame)
 {
     QSize size = stringToQSize(videoSettings.size);
 #ifdef ENABLE_LIBWRAP
