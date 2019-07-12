@@ -156,11 +156,13 @@ Renderer::currentFrame() const
     return result;
 }
 
+#ifdef ENABLE_LIBWRAP
 std::unique_ptr<AVFrame, void(*)(AVFrame*)>
 Renderer::currentAVFrame() const
 {
     return pimpl_->renderer->currentAVFrame();
 }
+#endif
 
 QSize
 Renderer::size() const

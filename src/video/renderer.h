@@ -99,7 +99,9 @@ public:
    virtual QSize      size            () const;
    virtual QMutex*    mutex           () const;
    virtual ColorSpace colorSpace      () const = 0;
+#ifdef ENABLE_LIBWRAP
    virtual std::unique_ptr<AVFrame, void(*)(AVFrame*)> currentAVFrame() const = 0;
+#endif
    void setSize(const QSize& size) const;
 
 Q_SIGNALS:
