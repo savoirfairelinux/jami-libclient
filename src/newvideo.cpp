@@ -156,11 +156,13 @@ Renderer::currentFrame() const
     return result;
 }
 
+#if defined(ENABLE_LIBWRAP) || (defined __APPLE__)
 std::unique_ptr<AVFrame, void(*)(AVFrame*)>
 Renderer::currentAVFrame() const
 {
     return pimpl_->renderer->currentAVFrame();
 }
+#endif
 
 QSize
 Renderer::size() const

@@ -134,10 +134,14 @@ public:
      * @return current rendered frame
      */
     Frame currentFrame() const;
+
+#if defined(ENABLE_LIBWRAP) || (defined __APPLE__)
     /**
      * @return current avframe
      */
     std::unique_ptr<AVFrame, void(*)(AVFrame*)> currentAVFrame() const;
+#endif
+
     /**
      * @return current size
      */
