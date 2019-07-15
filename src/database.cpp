@@ -378,6 +378,18 @@ Database::deleteFrom(const std::string& table,                             // "t
         throw QueryDeleteError(query, table, where, bindsWhere);
 }
 
+void
+Database::deleteAllFrom(const std::string& table)
+{
+    QSqlQuery query(db_);
+
+    auto prepareStr = std::string("TRUNCATE TABLE " + table);
+    query.prepare(prepareStr.c_str());
+
+    if (not query.exec())
+        throw QueryDeleteError(query, table, where, bindsWhere);
+}
+
 Database::QueryError::QueryError(const QSqlQuery& query)
     : std::runtime_error(query.lastError().text().toStdString())
     , query(query)
@@ -472,6 +484,21 @@ Database::QueryDeleteError::details()
     oss << "bindsWhere :";
     for (auto& b : bindsWhere)
         oss << "   {" << b.first.c_str() << "}, {" << b.second.c_str() <<"}";
+    return oss.str();
+}
+
+Database::QueryTruncateError::QueryTruncateError(const QSqlQuery& query,
+    const std::string& table)
+    : QueryError(query)
+    , table(table)
+{}
+
+std::string
+Database::QueryDeleteError::details()
+{
+    std::ostringstream oss;
+    oss << "paramaters sent :";
+    oss << "table = " << table.c_str();
     return oss.str();
 }
 

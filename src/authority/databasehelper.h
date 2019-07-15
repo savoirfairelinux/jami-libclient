@@ -41,38 +41,6 @@ namespace database
 {
 
 /**
- * Get id from database for a given uri
- * @param db
- * @param accountId
- * @param isAccount
- * @param uri
- * @return the id
- * @note "" if no id
- */
-std::string getProfileId(Database& db,
-            const std::string& accountId,
-            const std::string& isAccount,
-            const std::string& uri="");
-
- /**
- * Get id for a profile. If the profile doesn't exist, create it.
- * @param db
- * @param contactUri
- * @param accountId
- * @param isAccount
- * @param alias
- * @param avatar
- * @return the id
- */
- std::string getOrInsertProfile(Database& db,
-                                const std::string& contactUri,
-                                const std::string& accountId,
-                                bool  isAccount,
-                                const std::string& type,
-                                const std::string& alias = "",
-                                const std::string& avatar = "");
-
-/**
  * Get conversations for a given profile.
  * @param db
  * @param profileId

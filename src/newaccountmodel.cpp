@@ -66,13 +66,14 @@ public:
                          const BehaviorController& behaviorController);
     ~NewAccountModelPimpl();
 
-    using AccountMap = std::map<std::string, std::pair<account::Info, std::shared_ptr<Database>>>;
+    using AccountInfoDbMap = std::map<std::string,
+                                      std::pair<account::Info, std::shared_ptr<Database>>>;
 
     NewAccountModel& linked;
     Lrc& lrc;
     const CallbacksHandler& callbacksHandler;
     const BehaviorController& behaviorController;
-    AccountMap accounts;
+    AccountInfoDbMap accounts;
 
     // Synchronization tools
     std::mutex m_mutex_account;
@@ -550,58 +551,42 @@ void
 NewAccountModelPimpl::addToAccounts(const std::string& accountId,
                                     std::shared_ptr<Database> db)
 {
-    try {
-        db = db ? db : DatabaseFactory::create<Database>(accountId);
-    } catch (const std::runtime_error& e) {
-        qWarning() << e.what();
+    if (db == nullptr) {
+        try {
+            db = db ? db : DatabaseFactory::create<Database>(accountId);
+        } catch (const std::runtime_error& e) {
+            qWarning() << e.what();
+            return;
+        }
     }
-    //auto it = accounts.emplace(accountId, std::make_pair(account::Info(), db));
 
-    //if (!it.second) {
-    //    qDebug("failed to add new account: id already present in map");
-    //    return;
-    //}
+    auto it = accounts.emplace(accountId, std::make_pair(account::Info(), db));
 
-    //// Init profile
-    //account::Info& newAcc = (it.first)->second.first;
-    //Database& newDb = *(it.first)->second.second;
-    //newAcc.id = accountId;
+    if (!it.second) {
+        qDebug("failed to add new account: id already present in map");
+        return;
+    }
 
-    //// Fill account::Info struct with details from daemon
-    //MapStringString details = ConfigurationManager::instance().getAccountDetails(accountId.c_str());
-    //newAcc.fromDetails(details);
+    // Init profile
+    account::Info& newAccInfo = (it.first)->second.first;
+    Database& newDb = *(it.first)->second.second;
+    newAccInfo.id = accountId;
 
-    //// Add profile to database
-    //std::string accountType = newAcc.profileInfo.type == profile::Type::RING ?
-    //                               DRing::Account::ProtocolNames::RING :
-    //                               DRing::Account::ProtocolNames::SIP;
-    //if (accountType == DRing::Account::ProtocolNames::SIP || !newAcc.profileInfo.uri.empty()) {
-    //    auto accountProfileId = authority::database::getOrInsertProfile(newDb,
-    //                                                                newAcc.profileInfo.uri,
-    //                                                                accountId,
-    //                                                                true,
-    //                                                                accountType,
-    //                                                                newAcc.profileInfo.alias,
-    //                                                                "");
+    // Fill account::Info struct with details from daemon
+    MapStringString details = ConfigurationManager::instance().getAccountDetails(accountId.c_str());
+    newAccInfo.fromDetails(details);
 
-    //    // Retrieve avatar from database
-    //    newAcc.profileInfo.avatar = authority::database::getAvatarForProfileId(newDb, accountProfileId);
+    // Init models for this account
+    newAccInfo.callModel = std::make_unique<NewCallModel>(newAccInfo, callbacksHandler);
+    newAccInfo.contactModel = std::make_unique<ContactModel>(newAccInfo, newDb, callbacksHandler, behaviorController);
+    newAccInfo.conversationModel = std::make_unique<ConversationModel>(newAccInfo, lrc, newDb, callbacksHandler, behaviorController);
+    newAccInfo.deviceModel = std::make_unique<NewDeviceModel>(newAccInfo, callbacksHandler);
+    newAccInfo.codecModel = std::make_unique<NewCodecModel>(newAccInfo, callbacksHandler);
+    newAccInfo.accountModel = &linked;
 
-    //    // Retrieve alias from database
-    //    newAcc.profileInfo.alias = authority::database::getAliasForProfileId(newDb, accountProfileId);
-    //}
-
-    //// Init models for this account
-    //newAcc.callModel = std::make_unique<NewCallModel>(newAcc, callbacksHandler);
-    //newAcc.contactModel = std::make_unique<ContactModel>(newAcc, newDb, callbacksHandler, behaviorController);
-    //newAcc.conversationModel = std::make_unique<ConversationModel>(newAcc, lrc, newDb, callbacksHandler, behaviorController);
-    //newAcc.deviceModel = std::make_unique<NewDeviceModel>(newAcc, callbacksHandler);
-    //newAcc.codecModel = std::make_unique<NewCodecModel>(newAcc, callbacksHandler);
-    //newAcc.accountModel = &linked;
-
-    //MapStringString volatileDetails = ConfigurationManager::instance().getVolatileAccountDetails(accountId.c_str());
-    //std::string daemonStatus = volatileDetails[DRing::Account::ConfProperties::Registration::STATUS].toStdString();
-    //newAcc.status = lrc::api::account::to_status(daemonStatus);
+    MapStringString volatileDetails = ConfigurationManager::instance().getVolatileAccountDetails(accountId.c_str());
+    std::string daemonStatus = volatileDetails[DRing::Account::ConfProperties::Registration::STATUS].toStdString();
+    newAccInfo.status = lrc::api::account::to_status(daemonStatus);
 }
 
 void

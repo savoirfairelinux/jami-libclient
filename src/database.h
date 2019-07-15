@@ -159,6 +159,19 @@ public:
     };
 
     /**
+     * Exception on database truncate operation.
+     * details() returns more information.
+     */
+    class QueryTruncateError final : public QueryError {
+    public:
+        explicit QueryTruncateError(const QSqlQuery& query,
+            const std::string& table);
+        std::string details() override;
+
+        const std::string table;
+    };
+
+    /**
      * Insert value(s) inside a table.
      * @param table where to perfom the action on.
      * @param bindCol binds column(s) and identifier(s). The key is the identifier, it should begin by ':'.
@@ -204,6 +217,14 @@ public:
     void deleteFrom(const std::string& table,
                     const std::string& where,
                     const std::map<std::string, std::string>& bindsWhere);
+    /**
+     * Delete all rows from a table(truncate).
+     * @param table where to perfom the action on.
+     * @exception QueryDeleteError delete query failed.
+     *
+     * @note usually, identifiers between where and bindsWhere, are equals.
+     */
+    void truncateTable(const std::string& table);
     /**
      * Select data from table.
      * @param select column(s) to select.e
