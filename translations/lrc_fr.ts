@@ -1361,6 +1361,12 @@
         <source>ð½ Missed incoming call</source>
         <translation>ð½ Appels entrants ratés</translation>
     </message>
+    <message>
+        <location filename="../src/avmodel.cpp" line="316"/>
+        <location filename="../src/avmodel.cpp" line="337"/>
+        <source>default</source>
+        <translation type="unfinished"/>
+    </message>
 </context>
 <context>
     <name>RingDeviceModel</name>

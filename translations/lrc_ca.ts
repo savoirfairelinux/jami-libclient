@@ -385,7 +385,7 @@
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="51"/>
         <source>Yesterday</source>
-        <translation type="unfinished"/>
+        <translation>Ahir</translation>
     </message>
     <message>
         <location filename="../src/historytimecategorymodel.cpp" line="58"/>
@@ -1358,6 +1358,12 @@
     <message>
         <location filename="../src/conversationmodel.cpp" line="1548"/>
         <source>ð½ Missed incoming call</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/avmodel.cpp" line="316"/>
+        <location filename="../src/avmodel.cpp" line="337"/>
+        <source>default</source>
         <translation type="unfinished"/>
     </message>
 </context>
