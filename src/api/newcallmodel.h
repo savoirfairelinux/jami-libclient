@@ -122,6 +122,11 @@ public:
      */
     void hangUp(const std::string& callId) const;
     /**
+     * Refuse a call
+     * @param callId
+     */
+    void refuse(const std::string& callId) const;
+    /**
      * Toggle audio record on a call
      * @param callId
      */

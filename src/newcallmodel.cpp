@@ -279,6 +279,13 @@ NewCallModel::hangUp(const std::string& callId) const
 }
 
 void
+NewCallModel::refuse(const std::string& callId) const
+{
+    if (!hasCall(callId)) return;
+    CallManager::instance().refuse(callId.c_str());
+}
+
+void
 NewCallModel::toggleAudioRecord(const std::string& callId) const
 {
     CallManager::instance().toggleRecording(callId.c_str());
