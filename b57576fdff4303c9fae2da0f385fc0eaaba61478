@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "df394ccf_d79abcee",
+        "filename": "src/api/newcallmodel.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 90
+      },
+      "writtenOn": "2019-07-16T19:02:59Z",
+      "side": 1,
+      "message": "This should be in a separate patch",
+      "range": {
+        "startLine": 124,
+        "startChar": 4,
+        "endLine": 128,
+        "endChar": 49
+      },
+      "revId": "b57576fdff4303c9fae2da0f385fc0eaaba61478",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    }
+  ]
+}
