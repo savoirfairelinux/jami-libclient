@@ -103,7 +103,7 @@ class LIB_EXPORT Renderer : public QObject {
     Q_OBJECT
 public:
     Renderer(const std::string& id, Settings videoSettings,
-        const std::string& shmPath = "");
+        const std::string& shmPath = "", const bool useAVFrame = false);
     ~Renderer();
 
     /**

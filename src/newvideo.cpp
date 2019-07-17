@@ -38,7 +38,7 @@ class RendererPimpl: public QObject
 public:
     RendererPimpl(Renderer& linked, const std::string& id,
         Settings videoSettings, const std::string& shmPath,
-        bool useAVFrame=false);
+        const bool useAVFrame);
     ~RendererPimpl();
 
     Renderer& linked;
@@ -77,8 +77,8 @@ namespace video
 {
 
 Renderer::Renderer(const std::string& id, Settings videoSettings,
-    const std::string& shmPath)
-: pimpl_(std::make_unique<RendererPimpl>(*this, id, videoSettings, shmPath))
+    const std::string& shmPath, const bool useAVFrame)
+: pimpl_(std::make_unique<RendererPimpl>(*this, id, videoSettings, shmPath, useAVFrame))
 {}
 
 Renderer::~Renderer()
@@ -206,8 +206,8 @@ RendererPimpl::RendererPimpl(Renderer& linked, const std::string& id,
     Settings videoSettings, const std::string& shmPath, bool useAVFrame)
 : linked(linked)
 , id_(id)
-, videoSettings_(videoSettings)
-, usingAVFrame_(useAVFrame)
+, videoSettings_(videoSettings),
+usingAVFrame_(useAVFrame)
 {
     QSize size = stringToQSize(videoSettings.size);
 #ifdef ENABLE_LIBWRAP
