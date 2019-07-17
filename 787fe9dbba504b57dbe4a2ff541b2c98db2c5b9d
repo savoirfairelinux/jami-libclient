@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "cff6fe59_8d7f7b6b",
+        "filename": "src/peerdiscoverymodel.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2019-07-17T15:07:37Z",
+      "side": 1,
+      "message": "for (const auto\u0026 np : nearbyPeers)",
+      "range": {
+        "startLine": 96,
+        "startChar": 4,
+        "endLine": 100,
+        "endChar": 5
+      },
+      "revId": "787fe9dbba504b57dbe4a2ff541b2c98db2c5b9d",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    }
+  ]
+}
