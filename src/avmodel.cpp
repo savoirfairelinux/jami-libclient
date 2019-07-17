@@ -67,6 +67,7 @@ public:
     std::map<std::string, std::unique_ptr<video::Renderer>> renderers_;
     // store if a renderers is for a finished call
     std::map<std::string, bool> finishedRenderers_;
+    bool useAVFrame_ = false;
 
 #ifndef ENABLE_LIBWRAP
     // TODO: Init Video Renderers from daemon (see: https://git.ring.cx/savoirfairelinux/ring-daemon/issues/59)
@@ -441,9 +442,11 @@ AVModel::startLocalRecorder(const bool& audioOnly) const
 
 void
 AVModel::useAVFrame(bool useAVFrame) {
+    pimpl_->useAVFrame_ = useAVFrame;
     for (auto it = pimpl_->renderers_.cbegin(); it != pimpl_->renderers_.cend(); ++it) {
-        it->second->useAVFrame(useAVFrame);
+        it->second->useAVFrame(pimpl_->useAVFrame_);
     }
+    //TODO remove when switch to new av model
     VideoRendererManager::instance().useAVFrame(useAVFrame);
 }
 
@@ -587,7 +590,7 @@ AVModelPimpl::init()
     // add preview renderer
     renderers_.insert(std::make_pair(video::PREVIEW_RENDERER_ID,
                                      std::make_unique<video::Renderer>(video::PREVIEW_RENDERER_ID,
-                                                                       linked_.getDeviceSettings(linked_.getDefaultDeviceName()))));
+                                                                       linked_.getDeviceSettings(linked_.getDefaultDeviceName()),"", useAVFrame_)));
 #ifndef ENABLE_LIBWRAP
     SIZE_RENDERER = renderers_.size();
 #endif
@@ -659,7 +662,7 @@ AVModelPimpl::startedDecoding(const std::string& id, const std::string& shmPath,
             video::Settings settings;
             settings.size = res;
             renderers_.insert(std::make_pair(id,
-                std::make_unique<video::Renderer>(id.c_str(), settings, shmPath)));
+                std::make_unique<video::Renderer>(id.c_str(), settings, shmPath, useAVFrame_)));
             finishedRenderers_.insert(std::make_pair(id, false));
 #ifndef ENABLE_LIBWRAP
             SIZE_RENDERER = renderers_.size();
