@@ -541,7 +541,6 @@ ContactModelPimpl::fillsWithRINGContacts() {
         profileInfo.avatar = photo.toStdString();
         profileInfo.alias = alias.toStdString();
         profileInfo.type = profile::Type::PENDING;
-
         contact::Info contactInfo;
         contactInfo.profileInfo = profileInfo;
         contactInfo.registeredName = "";
@@ -655,6 +654,9 @@ ContactModelPimpl::slotContactRemoved(const std::string& accountId, const std::s
             emit behaviorController.trustRequestTreated(linked.owner.id, contactUri);
         }
 
+        if (contact->second.profileInfo.type != profile::Type::SIP)
+            PresenceManager::instance().subscribeBuddy(linked.owner.id.c_str(), contactUri.c_str(), false);
+
         if (banned) {
             contact->second.isBanned = true;
             // Update bannedContacts index
@@ -699,6 +701,7 @@ ContactModelPimpl::addToContacts(const std::string& contactId, const profile::Ty
     if (type == profile::Type::RING) {
         ConfigurationManager::instance().lookupAddress(QString::fromStdString(linked.owner.id),
                                                        "", QString::fromStdString(contactId));
+        PresenceManager::instance().subscribeBuddy(linked.owner.id.c_str(), contactId.c_str(), !banned);
     }
 
     contactInfo.profileInfo.type = type; // Because PENDING should not be stored in the database
