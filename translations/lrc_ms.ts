@@ -2,91 +2,91 @@
 <context>
     <name>Account</name>
     <message>
-        <location filename="../src/account.cpp" line="307"/>
+        <location filename="../src/account.cpp" line="293"/>
         <source>Ready</source>
         <extracomment>Account state</extracomment>
         <translation>Sedia</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="309"/>
+        <location filename="../src/account.cpp" line="295"/>
         <source>Registered</source>
         <extracomment>Account state</extracomment>
         <translation>Berdaftar</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="313"/>
+        <location filename="../src/account.cpp" line="299"/>
         <source>Initializing</source>
         <extracomment>Account state</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="317"/>
+        <location filename="../src/account.cpp" line="303"/>
         <source>Error</source>
         <extracomment>Account state</extracomment>
         <translation>Gagal</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="321"/>
+        <location filename="../src/account.cpp" line="307"/>
         <source>Network unreachable</source>
         <extracomment>Account state</extracomment>
         <translation>rangkaian tidak dapat dihubungi</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="323"/>
+        <location filename="../src/account.cpp" line="309"/>
         <source>Host unreachable</source>
         <extracomment>Account state</extracomment>
         <translation>Host tidak dapat dihubungi</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="311"/>
+        <location filename="../src/account.cpp" line="297"/>
         <source>Not registered</source>
         <extracomment>Account state</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="315"/>
+        <location filename="../src/account.cpp" line="301"/>
         <source>Tryingâ¦</source>
         <extracomment>Account state</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="319"/>
+        <location filename="../src/account.cpp" line="305"/>
         <source>Authentication failed</source>
         <extracomment>Account state</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="325"/>
+        <location filename="../src/account.cpp" line="311"/>
         <source>STUN configuration error</source>
         <extracomment>Account state</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="327"/>
+        <location filename="../src/account.cpp" line="313"/>
         <source>STUN server invalid</source>
         <extracomment>Account state</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="329"/>
+        <location filename="../src/account.cpp" line="315"/>
         <source>Service unavailable</source>
         <extracomment>Account state</extracomment>
         <translation>Perkhidmatan tidak tersedia</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="331"/>
+        <location filename="../src/account.cpp" line="317"/>
         <source>Unacceptable</source>
         <extracomment>Account state</extracomment>
         <translation>Tidak dapat diterima</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="333"/>
+        <location filename="../src/account.cpp" line="319"/>
         <source>Invalid</source>
         <extracomment>Account state</extracomment>
         <translation>Tidak sah</translation>
     </message>
     <message>
-        <location filename="../src/account.cpp" line="335"/>
+        <location filename="../src/account.cpp" line="321"/>
         <source>Request timeout</source>
         <extracomment>Account state</extracomment>
         <translation type="unfinished"/>
@@ -103,121 +103,121 @@
 <context>
     <name>Call</name>
     <message>
-        <location filename="../src/call.cpp" line="719"/>
+        <location filename="../src/call.cpp" line="706"/>
         <source>New</source>
         <extracomment>Call state</extracomment>
         <translation>Baharu</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="722"/>
+        <location filename="../src/call.cpp" line="709"/>
         <source>Ringing</source>
         <extracomment>Call state</extracomment>
         <translation>Berdering</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="725"/>
+        <location filename="../src/call.cpp" line="712"/>
         <source>Calling</source>
         <extracomment>Call state</extracomment>
         <translation>Memanggil</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="728"/>
+        <location filename="../src/call.cpp" line="715"/>
         <source>Talking</source>
         <extracomment>Call state</extracomment>
         <translation>Bercakap</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="731"/>
+        <location filename="../src/call.cpp" line="718"/>
         <source>Dialing</source>
         <extracomment>Call state</extracomment>
         <translation>Memanggil</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="734"/>
+        <location filename="../src/call.cpp" line="721"/>
         <source>Hold</source>
         <extracomment>Call state</extracomment>
         <translation>Tangguh</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="737"/>
+        <location filename="../src/call.cpp" line="724"/>
         <source>Failed</source>
         <extracomment>Call state</extracomment>
         <translation>Gagal</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="740"/>
+        <location filename="../src/call.cpp" line="727"/>
         <source>Busy</source>
         <extracomment>Call state</extracomment>
         <translation>Sibuk</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="743"/>
+        <location filename="../src/call.cpp" line="730"/>
         <source>Transfer</source>
         <extracomment>Call state</extracomment>
         <translation>Pindah</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="746"/>
+        <location filename="../src/call.cpp" line="733"/>
         <source>Transfer hold</source>
         <extracomment>Call state</extracomment>
         <translation>Permindahan dibeku</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="749"/>
+        <location filename="../src/call.cpp" line="736"/>
         <source>Over</source>
         <extracomment>Call state</extracomment>
         <translation>Selesai</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="752"/>
+        <location filename="../src/call.cpp" line="739"/>
         <source>Error</source>
         <extracomment>Call state</extracomment>
         <translation>Gagal</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="755"/>
-        <location filename="../src/call.cpp" line="860"/>
+        <location filename="../src/call.cpp" line="742"/>
+        <location filename="../src/call.cpp" line="847"/>
         <source>Conference</source>
         <extracomment>Call state</extracomment>
         <translation>Mesyuarat</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="758"/>
+        <location filename="../src/call.cpp" line="745"/>
         <source>Conference (hold)</source>
         <extracomment>Call state</extracomment>
         <translation>Mesyuarat (dibeku)</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="761"/>
+        <location filename="../src/call.cpp" line="748"/>
         <source>ERROR</source>
         <extracomment>Call state</extracomment>
         <translation>GAGAL</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="764"/>
+        <location filename="../src/call.cpp" line="751"/>
         <source>Searching for</source>
         <extracomment>Call state</extracomment>
         <translation>Mencari</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="767"/>
+        <location filename="../src/call.cpp" line="754"/>
         <source>Aborted</source>
         <extracomment>Call state</extracomment>
         <translation>Digugurkan</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="770"/>
+        <location filename="../src/call.cpp" line="757"/>
         <source>Communication established</source>
         <extracomment>Call state</extracomment>
         <translation>Komunikasi bersambung</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="864"/>
+        <location filename="../src/call.cpp" line="851"/>
         <source>Unknown</source>
         <translation>Tidak diketahui</translation>
     </message>
     <message>
-        <location filename="../src/call.cpp" line="2231"/>
+        <location filename="../src/call.cpp" line="2110"/>
         <source>Account: </source>
         <translation>Akaun</translation>
     </message>
@@ -242,65 +242,9 @@
 <context>
     <name>CallPrivate</name>
     <message>
-        <location filename="../src/call.cpp" line="1795"/>
+        <location filename="../src/call.cpp" line="1689"/>
         <source>Aborted</source>
         <translation>Digugurkan</translation>
-    </message>
-    <message>
-        <location filename="../src/call.cpp" line="1816"/>
-        <source>No account registered!</source>
-        <translation>Tiada akaun terdaftar!</translation>
-    </message>
-</context>
-<context>
-    <name>CategorizedBookmarkModel</name>
-    <message>
-        <location filename="../src/categorizedbookmarkmodel.cpp" line="181"/>
-        <source>Most popular</source>
-        <extracomment>Most popular contacts</extracomment>
-        <translation>Paling popular</translation>
-    </message>
-    <message>
-        <location filename="../src/categorizedbookmarkmodel.cpp" line="299"/>
-        <source>Contacts</source>
-        <translation>Kenalan</translation>
-    </message>
-</context>
-<context>
-    <name>CategorizedContactModel</name>
-    <message>
-        <location filename="../src/categorizedcontactmodel.cpp" line="401"/>
-        <source>Contacts</source>
-        <translation>Kenalan</translation>
-    </message>
-    <message>
-        <location filename="../src/private/sortproxies.cpp" line="129"/>
-        <source>Empty</source>
-        <translation>Kosong</translation>
-    </message>
-    <message>
-        <location filename="../src/private/sortproxies.cpp" line="135"/>
-        <location filename="../src/private/sortproxies.cpp" line="153"/>
-        <source>Unknown</source>
-        <translation>Tidak diketahui</translation>
-    </message>
-    <message>
-        <location filename="../src/private/sortproxies.cpp" line="141"/>
-        <source>Never</source>
-        <translation>Tidak pernah</translation>
-    </message>
-    <message>
-        <location filename="../src/private/sortproxies.cpp" line="147"/>
-        <source>Other</source>
-        <translation>Lain-lain</translation>
-    </message>
-</context>
-<context>
-    <name>CategorizedHistoryModel</name>
-    <message>
-        <location filename="../src/categorizedhistorymodel.cpp" line="412"/>
-        <source>History</source>
-        <translation>Sejarah</translation>
     </message>
 </context>
 <context>
@@ -317,62 +261,6 @@
         <location filename="../src/collectionmodel.cpp" line="279"/>
         <source>Name</source>
         <translation>Nama</translation>
-    </message>
-</context>
-<context>
-    <name>ContactSortingCategoryModel</name>
-    <message>
-        <location filename="../src/private/sortproxies.cpp" line="49"/>
-        <source>Name</source>
-        <translation>Nama</translation>
-    </message>
-    <message>
-        <location filename="../src/private/sortproxies.cpp" line="50"/>
-        <source>Organisation</source>
-        <translation>Organisasi</translation>
-    </message>
-    <message>
-        <location filename="../src/private/sortproxies.cpp" line="51"/>
-        <source>Recently used</source>
-        <translation>Digunakan sebelumnya</translation>
-    </message>
-    <message>
-        <location filename="../src/private/sortproxies.cpp" line="52"/>
-        <source>Group</source>
-        <translation>Kumpulan</translation>
-    </message>
-    <message>
-        <location filename="../src/private/sortproxies.cpp" line="53"/>
-        <source>Department</source>
-        <translation>Jabatan</translation>
-    </message>
-</context>
-<context>
-    <name>HistorySortingCategoryModel</name>
-    <message>
-        <location filename="../src/private/sortproxies.cpp" line="57"/>
-        <source>Date</source>
-        <translation>Tarikh</translation>
-    </message>
-    <message>
-        <location filename="../src/private/sortproxies.cpp" line="58"/>
-        <source>Name</source>
-        <translation>Nama</translation>
-    </message>
-    <message>
-        <location filename="../src/private/sortproxies.cpp" line="59"/>
-        <source>Popularity</source>
-        <translation>Kepopularan</translation>
-    </message>
-    <message>
-        <location filename="../src/private/sortproxies.cpp" line="60"/>
-        <source>Duration</source>
-        <translation>Masa</translation>
-    </message>
-    <message>
-        <location filename="../src/private/sortproxies.cpp" line="61"/>
-        <source>Total time</source>
-        <translation>Jumlah masa</translation>
     </message>
 </context>
 <context>
@@ -531,172 +419,114 @@
 <context>
     <name>PhoneDirectoryModel</name>
     <message>
-        <location filename="../src/phonedirectorymodel.cpp" line="234"/>
+        <location filename="../src/phonedirectorymodel.cpp" line="233"/>
         <source>This account does not support presence tracking</source>
         <translation>Akaun ini tidak menyokong pengesan kehadiran</translation>
     </message>
     <message>
-        <location filename="../src/phonedirectorymodel.cpp" line="237"/>
+        <location filename="../src/phonedirectorymodel.cpp" line="236"/>
         <source>No associated account</source>
         <translation>Tiada akaun berkaitan</translation>
     </message>
     <message>
-        <location filename="../src/phonedirectorymodel.cpp" line="305"/>
+        <location filename="../src/phonedirectorymodel.cpp" line="304"/>
         <source>URI</source>
         <translation>URI</translation>
     </message>
     <message>
-        <location filename="../src/phonedirectorymodel.cpp" line="305"/>
+        <location filename="../src/phonedirectorymodel.cpp" line="304"/>
         <source>Type</source>
         <translation>Jenis</translation>
     </message>
     <message>
-        <location filename="../src/phonedirectorymodel.cpp" line="305"/>
+        <location filename="../src/phonedirectorymodel.cpp" line="304"/>
         <source>Person</source>
         <translation>Seseorang</translation>
     </message>
     <message>
-        <location filename="../src/phonedirectorymodel.cpp" line="305"/>
+        <location filename="../src/phonedirectorymodel.cpp" line="304"/>
         <source>Account</source>
         <translation>Akaun</translation>
     </message>
     <message>
-        <location filename="../src/phonedirectorymodel.cpp" line="305"/>
+        <location filename="../src/phonedirectorymodel.cpp" line="304"/>
         <source>State</source>
         <translation>Keadaan</translation>
     </message>
     <message>
-        <location filename="../src/phonedirectorymodel.cpp" line="305"/>
+        <location filename="../src/phonedirectorymodel.cpp" line="304"/>
         <source>Call count</source>
         <translation>Bilangan panggilan</translation>
     </message>
     <message>
-        <location filename="../src/phonedirectorymodel.cpp" line="305"/>
+        <location filename="../src/phonedirectorymodel.cpp" line="304"/>
         <source>Week count</source>
         <translation>Bilangan minggu</translation>
     </message>
     <message>
-        <location filename="../src/phonedirectorymodel.cpp" line="306"/>
+        <location filename="../src/phonedirectorymodel.cpp" line="305"/>
         <source>Trimester count</source>
         <translation>Bilangan trimester</translation>
     </message>
     <message>
-        <location filename="../src/phonedirectorymodel.cpp" line="306"/>
+        <location filename="../src/phonedirectorymodel.cpp" line="305"/>
         <source>Have Called</source>
         <translation>Telah memanggil</translation>
     </message>
     <message>
-        <location filename="../src/phonedirectorymodel.cpp" line="306"/>
+        <location filename="../src/phonedirectorymodel.cpp" line="305"/>
         <source>Last used</source>
         <translation>Terakhir digunakan</translation>
     </message>
     <message>
-        <location filename="../src/phonedirectorymodel.cpp" line="306"/>
+        <location filename="../src/phonedirectorymodel.cpp" line="305"/>
         <source>Name_count</source>
         <translation>Name_count</translation>
     </message>
     <message>
-        <location filename="../src/phonedirectorymodel.cpp" line="306"/>
+        <location filename="../src/phonedirectorymodel.cpp" line="305"/>
         <source>Total (in seconds)</source>
         <translation>Jumlah (dalam saat)</translation>
     </message>
     <message>
-        <location filename="../src/phonedirectorymodel.cpp" line="306"/>
+        <location filename="../src/phonedirectorymodel.cpp" line="305"/>
         <source>Popularity_index</source>
         <translation>Popularity_index</translation>
     </message>
     <message>
-        <location filename="../src/phonedirectorymodel.cpp" line="307"/>
+        <location filename="../src/phonedirectorymodel.cpp" line="306"/>
         <source>Bookmarked</source>
         <translation>Dibookmark</translation>
     </message>
     <message>
-        <location filename="../src/phonedirectorymodel.cpp" line="307"/>
+        <location filename="../src/phonedirectorymodel.cpp" line="306"/>
         <source>Tracked</source>
         <translation>Dikesan</translation>
     </message>
     <message>
-        <location filename="../src/phonedirectorymodel.cpp" line="307"/>
+        <location filename="../src/phonedirectorymodel.cpp" line="306"/>
         <source>Present</source>
         <translation>Muncul</translation>
     </message>
     <message>
-        <location filename="../src/phonedirectorymodel.cpp" line="307"/>
+        <location filename="../src/phonedirectorymodel.cpp" line="306"/>
         <source>Presence message</source>
         <translation>Pesan muncul</translation>
     </message>
     <message>
-        <location filename="../src/phonedirectorymodel.cpp" line="307"/>
+        <location filename="../src/phonedirectorymodel.cpp" line="306"/>
         <source>UID</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/phonedirectorymodel.cpp" line="307"/>
+        <location filename="../src/phonedirectorymodel.cpp" line="306"/>
         <source>Has certificate</source>
         <translation>Mempunyai certificate</translation>
     </message>
     <message>
-        <location filename="../src/phonedirectorymodel.cpp" line="307"/>
+        <location filename="../src/phonedirectorymodel.cpp" line="306"/>
         <source>Registered name</source>
         <translation type="unfinished"/>
-    </message>
-</context>
-<context>
-    <name>PresenceStatusModel</name>
-    <message>
-        <location filename="../src/presencestatusmodel.cpp" line="197"/>
-        <source>Name</source>
-        <translation>Nama</translation>
-    </message>
-    <message>
-        <location filename="../src/presencestatusmodel.cpp" line="197"/>
-        <source>Message</source>
-        <translation>Pesan</translation>
-    </message>
-    <message>
-        <location filename="../src/presencestatusmodel.cpp" line="197"/>
-        <source>Color</source>
-        <translation>Warna</translation>
-    </message>
-    <message>
-        <location filename="../src/presencestatusmodel.cpp" line="197"/>
-        <source>Present</source>
-        <translation>Ada</translation>
-    </message>
-    <message>
-        <location filename="../src/presencestatusmodel.cpp" line="197"/>
-        <source>Default</source>
-        <translation>Lalai</translation>
-    </message>
-    <message>
-        <location filename="../src/presencestatusmodel.cpp" line="308"/>
-        <location filename="../src/presencestatusmodel.cpp" line="361"/>
-        <source>Custom</source>
-        <translation>Tidak lalai</translation>
-    </message>
-    <message>
-        <location filename="../src/presencestatusmodel.cpp" line="308"/>
-        <location filename="../src/presencestatusmodel.cpp" line="310"/>
-        <location filename="../src/presencestatusmodel.cpp" line="354"/>
-        <location filename="../src/presencestatusmodel.cpp" line="361"/>
-        <source>N/A</source>
-        <translation>Tiada</translation>
-    </message>
-</context>
-<context>
-    <name>ProfileModel</name>
-    <message>
-        <location filename="../src/profilemodel.cpp" line="637"/>
-        <source>Profiles</source>
-        <translation>Profil</translation>
-    </message>
-</context>
-<context>
-    <name>ProfileModelPrivate</name>
-    <message>
-        <location filename="../src/profilemodel.cpp" line="751"/>
-        <source>New profile</source>
-        <translation>Profil baharu</translation>
     </message>
 </context>
 <context>
@@ -898,92 +728,59 @@
         <translation>Server keluar</translation>
     </message>
     <message>
-        <location filename="../src/certificatemodel.cpp" line="183"/>
-        <source>Local certificate store</source>
-        <translation>Penyimpan certificate lokal</translation>
-    </message>
-    <message>
-        <location filename="../src/certificatemodel.cpp" line="267"/>
+        <location filename="../src/certificatemodel.cpp" line="250"/>
         <location filename="../src/localprofilecollection.cpp" line="221"/>
         <source>Default</source>
         <translation>Lalai</translation>
     </message>
     <message>
-        <location filename="../src/certificatemodel.cpp" line="267"/>
+        <location filename="../src/certificatemodel.cpp" line="250"/>
         <source>Certificate not associated with a group</source>
         <translation>Certificate tidak dikaitkan dengan mana-mana kumpulan</translation>
     </message>
     <message>
-        <location filename="../src/certificatemodel.cpp" line="397"/>
+        <location filename="../src/certificatemodel.cpp" line="380"/>
         <source>A certificate</source>
         <translation>Certificate</translation>
     </message>
     <message>
-        <location filename="../src/certificatemodel.cpp" line="397"/>
+        <location filename="../src/certificatemodel.cpp" line="380"/>
         <source>An organisation</source>
         <translation>Organisasi</translation>
     </message>
     <message>
-        <location filename="../src/certificatemodel.cpp" line="420"/>
+        <location filename="../src/certificatemodel.cpp" line="403"/>
         <source>Details</source>
         <translation>Maklumat</translation>
     </message>
     <message>
-        <location filename="../src/certificatemodel.cpp" line="420"/>
+        <location filename="../src/certificatemodel.cpp" line="403"/>
         <source>The content of the certificate</source>
         <translation>Isi certificate</translation>
     </message>
     <message>
-        <location filename="../src/certificatemodel.cpp" line="421"/>
+        <location filename="../src/certificatemodel.cpp" line="404"/>
         <source>Checks</source>
         <translation>Semak</translation>
     </message>
     <message>
-        <location filename="../src/certificatemodel.cpp" line="421"/>
+        <location filename="../src/certificatemodel.cpp" line="404"/>
         <source>Various security related information</source>
         <translation>Berbagai maklumat tentang penyulitan</translation>
     </message>
     <message>
-        <location filename="../src/certificatemodel.cpp" line="610"/>
+        <location filename="../src/certificatemodel.cpp" line="593"/>
         <source>Header</source>
         <translation>Nota kepala</translation>
     </message>
     <message>
-        <location filename="../src/daemoncertificatecollection.cpp" line="148"/>
-        <source>Daemon certificate store</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/daemoncertificatecollection.cpp" line="152"/>
-        <source>%1 banned list</source>
-        <extracomment>The list of banned certificates for this account</extracomment>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/daemoncertificatecollection.cpp" line="155"/>
-        <source>%1 allowed list</source>
-        <extracomment>The list of allowed certificates for this account</extracomment>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/daemoncertificatecollection.cpp" line="160"/>
         <location filename="../src/foldercertificatecollection.cpp" line="199"/>
         <source>Certificate</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/extensions/presencecollectionextension.cpp" line="38"/>
-        <source>Presence tracking</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/extensions/securityevaluationextension.cpp" line="63"/>
+        <location filename="../src/extensions/securityevaluationextension.cpp" line="62"/>
         <source>Security evaluation</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/fallbackpersoncollection.cpp" line="196"/>
-        <source>Contact</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -1036,16 +833,6 @@
         <location filename="../src/numbercategorymodel.cpp" line="186"/>
         <source>Other</source>
         <translation>Lain-lain</translation>
-    </message>
-    <message>
-        <location filename="../src/protocolmodel.cpp" line="50"/>
-        <source>Ring Account</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/protocolmodel.cpp" line="51"/>
-        <source>SIP Account</source>
-        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/qtwrapper/callmanager_wrap.h" line="315"/>
@@ -1106,12 +893,6 @@
         <location filename="../src/securityevaluationmodel.cpp" line="51"/>
         <source>Your certificate is self signed. This break the chain of trust.</source>
         <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/tlsmethodmodel.cpp" line="64"/>
-        <source>Default</source>
-        <comment>Default TLS protocol version</comment>
-        <translation>Lalai</translation>
     </message>
     <message>
         <location filename="../src/useractionmodel.cpp" line="517"/>
@@ -1314,20 +1095,20 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1265"/>
+        <location filename="../src/conversationmodel.cpp" line="1264"/>
         <location filename="../src/conversationmodel.cpp" line="1653"/>
         <location filename="../src/conversationmodel.cpp" line="1913"/>
         <source>Invitation received</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1266"/>
+        <location filename="../src/conversationmodel.cpp" line="1265"/>
         <source>Contact added</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1308"/>
-        <location filename="../src/conversationmodel.cpp" line="1315"/>
+        <location filename="../src/conversationmodel.cpp" line="1307"/>
+        <location filename="../src/conversationmodel.cpp" line="1314"/>
         <source>Invitation accepted</source>
         <translation type="unfinished"/>
     </message>
@@ -1362,9 +1143,285 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/avmodel.cpp" line="316"/>
-        <location filename="../src/avmodel.cpp" line="337"/>
+        <location filename="../src/avmodel.cpp" line="317"/>
+        <location filename="../src/avmodel.cpp" line="338"/>
         <source>default</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/newcallmodel.cpp" line="46"/>
+        <source>Null</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/newcallmodel.cpp" line="47"/>
+        <source>Trying</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/newcallmodel.cpp" line="48"/>
+        <source>Ringing</source>
+        <translation>Berdering</translation>
+    </message>
+    <message>
+        <location filename="../src/newcallmodel.cpp" line="49"/>
+        <source>Being Forwarded</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/newcallmodel.cpp" line="50"/>
+        <source>Queued</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/newcallmodel.cpp" line="51"/>
+        <source>Progress</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/newcallmodel.cpp" line="52"/>
+        <source>OK</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/newcallmodel.cpp" line="53"/>
+        <source>Accepted</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/newcallmodel.cpp" line="54"/>
+        <source>Multiple Choices</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/newcallmodel.cpp" line="55"/>
+        <source>Moved Permanently</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/newcallmodel.cpp" line="56"/>
+        <source>Moved Temporarily</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/newcallmodel.cpp" line="57"/>
+        <source>Use Proxy</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/newcallmodel.cpp" line="58"/>
+        <source>Alternative Service</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/newcallmodel.cpp" line="59"/>
+        <source>Bad Request</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/newcallmodel.cpp" line="60"/>
+        <source>Unauthorized</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/newcallmodel.cpp" line="61"/>
+        <source>Payment Required</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/newcallmodel.cpp" line="62"/>
+        <source>Forbidden</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/newcallmodel.cpp" line="63"/>
+        <source>Not Found</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/newcallmodel.cpp" line="64"/>
+        <source>Method Not Allowed</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/newcallmodel.cpp" line="65"/>
+        <location filename="../src/newcallmodel.cpp" line="85"/>
+        <source>Not Acceptable</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/newcallmodel.cpp" line="66"/>
+        <source>Proxy Authentication Required</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/newcallmodel.cpp" line="67"/>
+        <source>Request Timeout</source>
+        <translation>Masa permintaan tamat</translation>
+    </message>
+    <message>
+        <location filename="../src/newcallmodel.cpp" line="68"/>
+        <source>Gone</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/newcallmodel.cpp" line="69"/>
+        <source>Request Entity Too Large</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/newcallmodel.cpp" line="70"/>
+        <source>Request URI Too Long</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/newcallmodel.cpp" line="71"/>
+        <source>Unsupported Media Type</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/newcallmodel.cpp" line="72"/>
+        <source>Unsupported URI Scheme</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/newcallmodel.cpp" line="73"/>
+        <source>Bad Extension</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/newcallmodel.cpp" line="74"/>
+        <source>Extension Required</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/newcallmodel.cpp" line="75"/>
+        <source>Session Timer Too Small</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/newcallmodel.cpp" line="76"/>
+        <source>Interval Too Brief</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/newcallmodel.cpp" line="77"/>
+        <source>Temporarily Unavailable</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/newcallmodel.cpp" line="78"/>
+        <source>Call TSX Does Not Exist</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/newcallmodel.cpp" line="79"/>
+        <source>Loop Detected</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/newcallmodel.cpp" line="80"/>
+        <source>Too Many Hops</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/newcallmodel.cpp" line="81"/>
+        <source>Address Incomplete</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/newcallmodel.cpp" line="82"/>
+        <source>Ambiguous</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/newcallmodel.cpp" line="83"/>
+        <source>Busy</source>
+        <translation>Sibuk</translation>
+    </message>
+    <message>
+        <location filename="../src/newcallmodel.cpp" line="84"/>
+        <source>Request Terminated</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/newcallmodel.cpp" line="86"/>
+        <source>Bad Event</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/newcallmodel.cpp" line="87"/>
+        <source>Request Updated</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/newcallmodel.cpp" line="88"/>
+        <source>Request Pending</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/newcallmodel.cpp" line="89"/>
+        <source>Undecipherable</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/newcallmodel.cpp" line="90"/>
+        <source>Internal Server Error</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/newcallmodel.cpp" line="91"/>
+        <source>Not Implemented</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/newcallmodel.cpp" line="92"/>
+        <source>Bad Gateway</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/newcallmodel.cpp" line="93"/>
+        <source>Service Unavailable</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/newcallmodel.cpp" line="94"/>
+        <source>Server Timeout</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/newcallmodel.cpp" line="95"/>
+        <source>Version Not Supported</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/newcallmodel.cpp" line="96"/>
+        <source>Message Too Large</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/newcallmodel.cpp" line="97"/>
+        <source>Precondition Failure</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/newcallmodel.cpp" line="98"/>
+        <source>Busy Everywhere</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/newcallmodel.cpp" line="99"/>
+        <source>Call Refused</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/newcallmodel.cpp" line="100"/>
+        <source>Does Not Exist Anywhere</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/newcallmodel.cpp" line="101"/>
+        <source>Not Acceptable Anywhere</source>
         <translation type="unfinished"/>
     </message>
 </context>
@@ -1390,14 +1447,6 @@
     </message>
 </context>
 <context>
-    <name>TlsMethodModel</name>
-    <message>
-        <location filename="../src/tlsmethodmodel.cpp" line="101"/>
-        <source>Automatic</source>
-        <translation>Automatik</translation>
-    </message>
-</context>
-<context>
     <name>Video::SourceModel</name>
     <message>
         <location filename="../src/video/sourcemodel.cpp" line="95"/>
@@ -1418,22 +1467,22 @@
 <context>
     <name>lrc::ContactModelPimpl</name>
     <message>
-        <location filename="../src/contactmodel.cpp" line="399"/>
+        <location filename="../src/contactmodel.cpp" line="398"/>
         <source>Searchingâ¦</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="754"/>
+        <location filename="../src/contactmodel.cpp" line="752"/>
         <source>Invalid ID</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="757"/>
+        <location filename="../src/contactmodel.cpp" line="755"/>
         <source>Not found</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="760"/>
+        <location filename="../src/contactmodel.cpp" line="758"/>
         <source>Couldn&apos;t lookupâ¦</source>
         <translation type="unfinished"/>
     </message>
@@ -1441,7 +1490,7 @@
 <context>
     <name>lrc::api::ContactModel</name>
     <message>
-        <location filename="../src/contactmodel.cpp" line="370"/>
+        <location filename="../src/contactmodel.cpp" line="369"/>
         <source>Bad URI scheme</source>
         <translation type="unfinished"/>
     </message>
@@ -1449,17 +1498,17 @@
 <context>
     <name>media::RecordingModel</name>
     <message>
-        <location filename="../src/media/recordingmodel.cpp" line="189"/>
+        <location filename="../src/media/recordingmodel.cpp" line="175"/>
         <source>Recordings</source>
         <translation>Rakaman</translation>
     </message>
     <message>
-        <location filename="../src/media/recordingmodel.cpp" line="259"/>
+        <location filename="../src/media/recordingmodel.cpp" line="245"/>
         <source>Text messages</source>
         <translation>Pesanan teks</translation>
     </message>
     <message>
-        <location filename="../src/media/recordingmodel.cpp" line="264"/>
+        <location filename="../src/media/recordingmodel.cpp" line="250"/>
         <source>Audio/Video</source>
         <translation>Audio/Video</translation>
     </message>
