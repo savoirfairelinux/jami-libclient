@@ -915,6 +915,8 @@ ConversationModel::clearAllHistory()
         }
         database::getHistory(pimpl_->db, conversation);
     }
+    pimpl_->sortConversations();
+    emit modelSorted();
 }
 
 void
