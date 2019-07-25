@@ -559,8 +559,6 @@ ConversationModelPimpl::placeCall(const std::string& uid, bool isAudioOnly)
         return;
     }
 
-    sendContactRequest(participant);
-
     if (linked.owner.profileInfo.type != profile::Type::SIP) {
         url = "ring:" + url; // Add the ring: before or it will fail.
     }
@@ -596,7 +594,11 @@ ConversationModelPimpl::placeCall(const std::string& uid, bool isAudioOnly)
                     delete connection;
                 }
             });
-    } else {
+    }
+
+    sendContactRequest(participant);
+
+    if (!isTemporary) {
         cb(convId);
     }
 }
@@ -636,19 +638,6 @@ ConversationModel::sendMessage(const std::string& uid, const std::string& body)
     /* Make a copy of participants list: if current conversation is temporary,
        it might me destroyed while we are reading it */
     const auto participants = conversation.participants;
-
-    /* Check participants list, send contact request if needed.
-       NOTE: conferences are not implemented yet, so we have only one participant */
-    for (const auto& participant: participants) {
-        auto contactInfo = owner.contactModel->getContact(participant);
-
-        if (contactInfo.isBanned) {
-            qDebug() << "ContactModel::sendMessage: denied, contact is banned";
-            return;
-        }
-
-        pimpl_->sendContactRequest(participant);
-    }
 
     auto cb = std::function<void(std::string)>(
         [this, accountId, isTemporary, body, &conversation](std::string convId) {
@@ -731,7 +720,22 @@ ConversationModel::sendMessage(const std::string& uid, const std::string& body)
                     delete connection;
                 }
             });
-    } else {
+    }
+
+    /* Check participants list, send contact request if needed.
+       NOTE: conferences are not implemented yet, so we have only one participant */
+    for (const auto& participant: participants) {
+        auto contactInfo = owner.contactModel->getContact(participant);
+
+        if (contactInfo.isBanned) {
+            qDebug() << "ContactModel::sendMessage: denied, contact is banned";
+            return;
+        }
+
+        pimpl_->sendContactRequest(participant);
+    }
+
+    if (!isTemporary) {
         cb(convId);
     }
 }
