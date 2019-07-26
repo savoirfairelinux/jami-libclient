@@ -363,17 +363,18 @@ NewCallModel::transferToCall(const std::string& callId, const std::string& callI
 void
 NewCallModel::joinCalls(const std::string& callIdA, const std::string& callIdB) const
 {
-    if (!hasCall(callIdA) || !hasCall(callIdB)) return;
+    //if (!hasCall(callIdA) || !hasCall(callIdB)) return;
+    // TODO (get active calls!)
 
-    auto& call1 = pimpl_->calls[callIdA];
-    auto& call2 = pimpl_->calls[callIdB];
-    if (call1->type == call::Type::CONFERENCE && call2->type == call::Type::CONFERENCE)
-        CallManager::instance().joinConference(callIdA.c_str(), callIdB.c_str());
-    else if (call1->type == call::Type::CONFERENCE)
-        CallManager::instance().addParticipant(callIdB.c_str(), callIdA.c_str());
-    else if (call2->type == call::Type::CONFERENCE)
-        CallManager::instance().addParticipant(callIdA.c_str(), callIdB.c_str());
-    else
+    //auto& call1 = pimpl_->calls[callIdA];
+    //auto& call2 = pimpl_->calls[callIdB];
+    //if (call1->type == call::Type::CONFERENCE && call2->type == call::Type::CONFERENCE)
+    //    CallManager::instance().joinConference(callIdA.c_str(), callIdB.c_str());
+    //else if (call1->type == call::Type::CONFERENCE)
+    //    CallManager::instance().addParticipant(callIdB.c_str(), callIdA.c_str());
+    //else if (call2->type == call::Type::CONFERENCE)
+    //    CallManager::instance().addParticipant(callIdA.c_str(), callIdB.c_str());
+    //else
         CallManager::instance().joinParticipant(callIdA.c_str(), callIdB.c_str());
 }
 
