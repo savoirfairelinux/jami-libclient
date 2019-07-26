@@ -364,18 +364,45 @@ NewCallModel::transferToCall(const std::string& callId, const std::string& callI
 void
 NewCallModel::joinCalls(const std::string& callIdA, const std::string& callIdB) const
 {
-    if (!hasCall(callIdA) || !hasCall(callIdB)) return;
+    call::Info call1, call2;
+    bool hasCall1 = false, hasCall2 = false;
+    for (const auto &account_id : owner.accountModel->getAccountList()) {
+        try {
+            auto &accountInfo = owner.accountModel->getAccountInfo(account_id);
+            if (accountInfo.callModel->hasCall(callIdA)) {
+                call1 = accountInfo.callModel->getCall(callIdA);
+                hasCall1 = true;
+            }
+            if (accountInfo.callModel->hasCall(callIdB)) {
+                call1 = accountInfo.callModel->getCall(callIdB);
+                hasCall2 = true;
+            }
+            if (hasCall1 && hasCall2) break;
+        } catch (...) {}
+    }
+    if (!hasCall1 || !hasCall2) {
+        qWarning() << "Can't join inexistent calls.";
+        return;
+    }
 
-    auto& call1 = pimpl_->calls[callIdA];
-    auto& call2 = pimpl_->calls[callIdB];
-    if (call1->type == call::Type::CONFERENCE && call2->type == call::Type::CONFERENCE)
+    if (call1.type == call::Type::CONFERENCE && call2.type == call::Type::CONFERENCE) {
+        qWarning() << "JOIN CONF";
         CallManager::instance().joinConference(callIdA.c_str(), callIdB.c_str());
-    else if (call1->type == call::Type::CONFERENCE)
+    }
+    else if (call1.type == call::Type::CONFERENCE) {
         CallManager::instance().addParticipant(callIdB.c_str(), callIdA.c_str());
-    else if (call2->type == call::Type::CONFERENCE)
+        qWarning() << "ADD TO CONF";
+        
+    }
+    else if (call2.type == call::Type::CONFERENCE) {
+
         CallManager::instance().addParticipant(callIdA.c_str(), callIdB.c_str());
-    else
+        qWarning() << "ADD TO CONF2 ";
+    }
+    else {
+        qWarning() << "JOIN PART";
         CallManager::instance().joinParticipant(callIdA.c_str(), callIdB.c_str());
+    }
 }
 
 void
