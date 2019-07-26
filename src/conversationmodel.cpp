@@ -1510,7 +1510,25 @@ ConversationModelPimpl::slotCallStatusChanged(const std::string& callId, int cod
             return conversation.callId == callId;
         });
 
-    if (i == conversations.end()) return;
+    if (i == conversations.end()) {
+        // In this case, the user didn't pass through placeCall
+        // This means that a participant was invited to a call
+        // or a call was placed via dbus.
+        // We have to update the model
+        try {
+            auto call = linked.owner.callModel->getCall(callId);
+            for (auto& conversation: conversations) {
+                if (conversation.participants.front() == call.peerUri) {
+                    conversation.callId = callId;
+                    dirtyConversations = {true, true};
+                    emit linked.conversationUpdated(conversation.uid);
+                }
+            }
+        } catch (std::out_of_range& e) {
+            qDebug() << "ConversationModelPimpl::slotCallStatusChanged can't get inexistant call";
+        }
+        return;
+    }
 
     auto& conversation = *i;
     auto uid = conversation.uid;
@@ -1668,7 +1686,7 @@ void
 ConversationModelPimpl::slotCallAddedToConference(const std::string& callId, const std::string& confId)
 {
     for (auto& conversation: conversations) {
-        if (conversation.callId == callId) {
+        if (conversation.callId == callId || conversation.confId == confId) {
             conversation.confId = confId;
             dirtyConversations = {true, true};
             emit linked.selectConversation(conversation.uid);

@@ -199,9 +199,12 @@ NewCallModel::getConferenceFromURI(const std::string& uri) const
         if (call.second->type == call::Type::CONFERENCE) {
             QStringList callList = CallManager::instance().getParticipantList(call.first.c_str());
             foreach(const auto& callId, callList) {
-                if (pimpl_->calls[callId.toStdString()]->peerUri == uri) {
-                    return *call.second;
-                }
+                try {
+                    if (pimpl_->calls.find(callId.toStdString()) != pimpl_->calls.end()
+                        && pimpl_->calls[callId.toStdString()]->peerUri == uri) {
+                        return *call.second;
+                    }
+                } catch (...) {}
             }
         }
     }
@@ -364,18 +367,70 @@ NewCallModel::transferToCall(const std::string& callId, const std::string& callI
 void
 NewCallModel::joinCalls(const std::string& callIdA, const std::string& callIdB) const
 {
-    if (!hasCall(callIdA) || !hasCall(callIdB)) return;
+    // Get call informations
+    call::Info call1, call2;
+    std::string accountIdCall1 = {}, accountIdCall2 = {};
+    for (const auto &account_id : owner.accountModel->getAccountList()) {
+        try {
+            auto &accountInfo = owner.accountModel->getAccountInfo(account_id);
+            if (accountInfo.callModel->hasCall(callIdA)) {
+                call1 = accountInfo.callModel->getCall(callIdA);
+                accountIdCall1 = account_id;
+            }
+            if (accountInfo.callModel->hasCall(callIdB)) {
+                call2 = accountInfo.callModel->getCall(callIdB);
+                accountIdCall2 = account_id;
+            }
+            if (!accountIdCall1.empty() && !accountIdCall2.empty()) break;
+        } catch (...) {}
+    }
+    if (accountIdCall1.empty() || accountIdCall2.empty()) {
+        qWarning() << "Can't join inexistent calls.";
+        return;
+    }
 
-    auto& call1 = pimpl_->calls[callIdA];
-    auto& call2 = pimpl_->calls[callIdB];
-    if (call1->type == call::Type::CONFERENCE && call2->type == call::Type::CONFERENCE)
-        CallManager::instance().joinConference(callIdA.c_str(), callIdB.c_str());
-    else if (call1->type == call::Type::CONFERENCE)
-        CallManager::instance().addParticipant(callIdB.c_str(), callIdA.c_str());
-    else if (call2->type == call::Type::CONFERENCE)
-        CallManager::instance().addParticipant(callIdA.c_str(), callIdB.c_str());
-    else
+    if (call1.type == call::Type::CONFERENCE && call2.type == call::Type::CONFERENCE) {
+        bool joined = CallManager::instance().joinConference(callIdA.c_str(), callIdB.c_str());
+
+        if (!joined) {
+            qWarning() << "Conference: " << callIdA.c_str() << " couldn't join conference " << callIdB.c_str();
+            return;
+        }
+        if (accountIdCall1 != owner.id) {
+            // If the conference is added from another account
+            try {
+                auto &accountInfo = owner.accountModel->getAccountInfo(accountIdCall1);
+                if (accountInfo.callModel->hasCall(callIdA)) {
+                    emit accountInfo.callModel->callAddedToConference(callIdA, callIdB);
+                }
+            } catch (...) {}
+        } else {
+            emit callAddedToConference(callIdA, callIdB);
+        }
+    } else if (call1.type == call::Type::CONFERENCE || call2.type == call::Type::CONFERENCE) {
+        auto call = call1.type == call::Type::CONFERENCE ? callIdB : callIdA;
+        auto conf = call1.type == call::Type::CONFERENCE ? callIdA : callIdB;
+        auto accountCall = call1.type == call::Type::CONFERENCE ? accountIdCall2 : accountIdCall1;
+        bool joined = CallManager::instance().addParticipant(call.c_str(), conf.c_str());
+        if (!joined) {
+            qWarning() << "Call: " << call.c_str() << " couldn't join conference " << conf.c_str();
+            return;
+        }
+        if (accountCall != owner.id) {
+            // If the call is added from another account
+            try {
+                auto &accountInfo = owner.accountModel->getAccountInfo(accountCall);
+                if (accountInfo.callModel->hasCall(call)) {
+                    accountInfo.callModel->pimpl_->slotConferenceCreated(conf);
+                }
+            } catch (...) {}
+        } else
+            emit callAddedToConference(call, conf);
+    }
+    else {
         CallManager::instance().joinParticipant(callIdA.c_str(), callIdB.c_str());
+        // NOTE: This will trigger slotConferenceCreated.
+    }
 }
 
 void
