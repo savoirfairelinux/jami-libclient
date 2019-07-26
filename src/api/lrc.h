@@ -91,9 +91,24 @@ public:
     void subscribeToDebugReceived();
 
     /**
-     * Helper: get call list from daemon
+     * Helper: get active call list from daemon
      */
     static std::vector<std::string> activeCalls();
+
+    /**
+     * Helper: get call list from daemon
+     */
+    static std::vector<std::string> getCalls();
+
+    /**
+     * Helper: get conference list from daemon
+     */
+    static std::vector<std::string> getConferences();
+
+    /**
+     * Helper: get subcalls list for a conference from daemon
+     */
+    static std::vector<std::string> getConferenceSubcalls(const std::string& id);
 
   private:
     std::unique_ptr<LrcPimpl> lrcPimpl_;

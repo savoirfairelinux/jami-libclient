@@ -1668,7 +1668,7 @@ void
 ConversationModelPimpl::slotCallAddedToConference(const std::string& callId, const std::string& confId)
 {
     for (auto& conversation: conversations) {
-        if (conversation.callId == callId) {
+        if (conversation.callId == callId || conversation.confId == confId) {
             conversation.confId = confId;
             dirtyConversations = {true, true};
             emit linked.selectConversation(conversation.uid);
