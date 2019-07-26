@@ -149,6 +149,42 @@ Lrc::activeCalls()
     return result;
 }
 
+std::vector<std::string>
+Lrc::getCalls()
+{
+    QStringList callLists = CallManager::instance().getCallList();
+    std::vector<std::string> result;
+    result.reserve(callLists.size());
+    for (const auto &call : callLists) {
+        result.emplace_back(call.toStdString());
+    }
+    return result;
+}
+
+std::vector<std::string>
+Lrc::getConferences()
+{
+    QStringList conferencesList = CallManager::instance().getConferenceList();
+    std::vector<std::string> result;
+    result.reserve(conferencesList.size());
+    for (const auto &conf : conferencesList) {
+        result.emplace_back(conf.toStdString());
+    }
+    return result;
+}
+
+std::vector<std::string>
+Lrc::getConferenceSubcalls(const std::string& cid)
+{
+    QStringList callList = CallManager::instance().getParticipantList(cid.c_str());
+    std::vector<std::string> result;
+    result.reserve(callList.size());
+    foreach(const auto& callId, callList) {
+        result.emplace_back(callId.toStdString());
+    }
+    return result;
+}
+
 bool
 isFinished(const QString& callState)
 {
