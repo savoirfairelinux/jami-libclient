@@ -52,6 +52,7 @@ public:
    virtual ColorSpace colorSpace() const override;
    virtual lrc::api::video::Frame currentFrame() const override;
    virtual std::unique_ptr<AVFrame, void(*)(AVFrame*)> currentAVFrame() const override;
+   void configureTarget(bool useAVFrame);
 
 public Q_SLOTS:
    virtual void startRendering() override;
