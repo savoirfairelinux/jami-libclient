@@ -138,6 +138,7 @@ Renderer::isRendering() const
 void
 Renderer::useAVFrame(bool useAVFrame) {
     pimpl_->usingAVFrame_ = useAVFrame;
+    pimpl_->renderer->configureTarget(useAVFrame);
 }
 
 std::string
