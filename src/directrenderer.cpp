@@ -49,6 +49,7 @@ public:
     DRing::SinkTarget::FrameBufferPtr requestFrameBuffer(std::size_t bytes);
     void onNewFrame(DRing::SinkTarget::FrameBufferPtr buf);
     void onNewAVFrame(std::unique_ptr<DRing::VideoFrame> frame);
+    void configureTarget(bool useAVFrame);
 
     DRing::SinkTarget target;
     DRing::AVSinkTarget av_target;
@@ -98,6 +99,10 @@ void Video::DirectRenderer::stopRendering ()
    Video::Renderer::d_ptr->m_isRendering = false;
    emit stopped();
 }
+void Video::DirectRenderer::configureTarget(bool useAVFrame)
+{
+   d_ptr->configureTarget(useAVFrame);
+}
 
 DRing::SinkTarget::FrameBufferPtr Video::DirectRendererPrivate::requestFrameBuffer(std::size_t bytes)
 {
@@ -108,6 +113,19 @@ DRing::SinkTarget::FrameBufferPtr Video::DirectRendererPrivate::requestFrameBuff
     daemonFramePtr_->ptr = daemonFramePtr_->storage.data();
     daemonFramePtr_->ptrSize = bytes;
     return std::move(daemonFramePtr_);
+}
+
+void Video::DirectRendererPrivate::configureTarget(bool useAVFrame) {
+    using namespace std::placeholders;
+    if (useAVFrame) {
+        target.pull = NULL;
+        target.push = NULL;
+        av_target.push = std::bind(&Video::DirectRendererPrivate::onNewAVFrame, this, _1);
+         return;
+    }
+    target.pull = std::bind(&Video::DirectRendererPrivate::requestFrameBuffer, this, _1);
+    target.push = std::bind(&Video::DirectRendererPrivate::onNewFrame, this, _1);
+    av_target.push =  NULL;
 }
 
 void Video::DirectRendererPrivate::onNewFrame(DRing::SinkTarget::FrameBufferPtr buf)
