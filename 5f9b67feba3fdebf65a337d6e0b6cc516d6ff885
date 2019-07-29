@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "144cba66_56630e44",
+        "filename": "src/directrenderer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 225
+      },
+      "writtenOn": "2019-07-29T16:49:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "48c06346_745f55b5",
+      "revId": "5f9b67feba3fdebf65a337d6e0b6cc516d6ff885",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "cc213ea4_0fafe64a",
         "filename": "src/directrenderer.cpp",
         "patchSetId": 2
@@ -33,6 +51,24 @@
       "revId": "5f9b67feba3fdebf65a337d6e0b6cc516d6ff885",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "77b1057e_05d66337",
+        "filename": "src/directrenderer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 225
+      },
+      "writtenOn": "2019-07-29T16:49:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cc213ea4_0fafe64a",
+      "revId": "5f9b67feba3fdebf65a337d6e0b6cc516d6ff885",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     },
     {
       "key": {
@@ -56,6 +92,30 @@
       "revId": "5f9b67feba3fdebf65a337d6e0b6cc516d6ff885",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5c82d0ca_7650f350",
+        "filename": "src/directrenderer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 225
+      },
+      "writtenOn": "2019-07-29T16:49:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c1e41aef_2c8dc4f3",
+      "range": {
+        "startLine": 128,
+        "startChar": 22,
+        "endLine": 128,
+        "endChar": 26
+      },
+      "revId": "5f9b67feba3fdebf65a337d6e0b6cc516d6ff885",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
