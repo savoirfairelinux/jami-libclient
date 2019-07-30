@@ -76,6 +76,14 @@ public:
      * flag account corresponding to passed id as freeable.
      */
     void flagFreeable(const std::string& accountId) const;
+
+     /**
+     * set account enable/disable, save config and do unregister for account
+     * @param accountId.
+     * @param enabled.
+     */
+    void setAccountEnabled(const std::string& accountID, bool enabled) const;
+
     /**
      * saves account config to .yml
      * @param accountId.
