@@ -176,6 +176,12 @@ NewAccountModel::getAccountList() const
 }
 
 void
+NewAccountModel::setAccountEnabled(const std::string& accountId, bool enabled) const
+{
+     ConfigurationManager::instance().sendRegister(QString::fromStdString(accountId), enabled);
+}
+
+void
 NewAccountModel::setAccountConfig(const std::string& accountId,
                                   const account::ConfProperties_t& confProperties) const
 {
