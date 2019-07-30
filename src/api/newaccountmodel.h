@@ -129,12 +129,6 @@ public:
                                const std::string& currentPassword,
                                const std::string& newPassword) const;
     /**
-     * Enable or disable an account
-     * @param accountId
-     * @param enable
-     */
-    void enableAccount(const std::string& accountId, bool enabled);
-    /**
      * Change the avatar of an account
      * @param accountId
      * @param avatar

@@ -178,7 +178,12 @@ NewAccountModel::getAccountList() const
 void
 NewAccountModel::setAccountEnabled(const std::string& accountId, bool enabled) const
 {
-     ConfigurationManager::instance().sendRegister(QString::fromStdString(accountId), enabled);
+    auto accountInfo = pimpl_->accounts.find(accountId);
+    if (accountInfo == pimpl_->accounts.end()) {
+        throw std::out_of_range("NewAccountModel::getAccountConfig, can't find " + accountId);
+    }
+    accountInfo->second.enabled = enabled;
+    ConfigurationManager::instance().sendRegister(QString::fromStdString(accountId), enabled);
 }
 
 void
@@ -224,16 +229,6 @@ NewAccountModel::getAccountConfig(const std::string& accountId) const
     }
 
     return accountInfo->second.confProperties;
-}
-
-void
-NewAccountModel::enableAccount(const std::string& accountId, bool enabled)
-{
-    auto accountInfo = pimpl_->accounts.find(accountId);
-    if (accountInfo == pimpl_->accounts.end()) {
-        throw std::out_of_range("NewAccountModel::getAccountConfig, can't find " + accountId);
-    }
-    accountInfo->second.enabled = enabled;
 }
 
 void
