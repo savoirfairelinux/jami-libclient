@@ -309,6 +309,11 @@ ContactModel::removeContact(const std::string& contactUri, bool banned)
             emitContactRemoved = true;
         }
     }
+    // hang up calls with the removed contact as peer
+    try{
+        auto callinfo = owner.callModel->getCallFromURI(contactUri, true);
+        owner.callModel->hangUp(callinfo.id);
+    } catch (std::out_of_range& e){}
     if (emitContactRemoved) {
         emit contactRemoved(contactUri);
     } else {
