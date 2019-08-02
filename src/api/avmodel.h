@@ -203,9 +203,39 @@ public:
     std::string getRecordPath() const;
     /**
      * Sets the recording path
-     * @param recording path
+     * @param path recording path
      */
     void setRecordPath(const std::string& path) const;
+    /**
+     * Whether or not to record every call
+     * @return always recording
+     */
+    bool getAlwaysRecord() const;
+    /**
+     * Sets whether or not to record every call
+     * @param rec always recording
+     */
+    void setAlwaysRecord(const bool& rec) const;
+    /**
+     * Whether or not local video is recorded
+     * @return recording preview
+     */
+    bool getRecordPreview() const;
+    /**
+     * Sets whether or not to record local video
+     * @param rec recording preview
+     */
+    void setRecordPreview(const bool& rec) const;
+    /**
+     * Gets the quality used while recording
+     * @return recording quality
+     */
+    int getRecordQuality() const;
+    /**
+     * Sets the recording quality
+     * @param quality recording quality
+     */
+    void setRecordQuality(const int& quality) const;
 
     /**
      * Start preview renderer. This will start the camera

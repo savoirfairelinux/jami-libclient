@@ -336,6 +336,14 @@ public Q_SLOTS: // METHODS
         return temp;
     }
 
+    bool getRecordPreview() {
+        return DRing::getRecordPreview();
+    }
+
+    int getRecordQuality() {
+        return DRing::getRecordQuality();
+    }
+
     QStringList getSupportedAudioManagers() {
         QStringList temp;
         return temp;
@@ -523,6 +531,14 @@ public Q_SLOTS: // METHODS
 
     void setRecordPath(const QString& rec) {
         DRing::setRecordPath(rec.toStdString());
+    }
+
+    void setRecordPreview(const bool& rec) {
+        DRing::setRecordPreview(rec);
+    }
+
+    void setRecordQuality(const int& quality) {
+        DRing::setRecordQuality(quality);
     }
 
     void setVolume(const QString& device, double value) {
