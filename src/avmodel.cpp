@@ -447,6 +447,42 @@ AVModel::setRecordPath(const std::string& path) const
     ConfigurationManager::instance().setRecordPath(QString::fromStdString(path).toUtf8());
 }
 
+bool
+AVModel::getAlwaysRecord() const
+{
+    return ConfigurationManager::instance().getIsAlwaysRecording();
+}
+
+void
+AVModel::setAlwaysRecord(const bool& rec) const
+{
+    ConfigurationManager::instance().setIsAlwaysRecording(rec);
+}
+
+bool
+AVModel::getRecordPreview() const
+{
+    return ConfigurationManager::instance().getRecordPreview();
+}
+
+void
+AVModel::setRecordPreview(const bool& rec) const
+{
+    ConfigurationManager::instance().setRecordPreview(rec);
+}
+
+int
+AVModel::getRecordQuality() const
+{
+    return ConfigurationManager::instance().getRecordQuality();
+}
+
+void
+AVModel::setRecordQuality(const int& rec) const
+{
+    ConfigurationManager::instance().setRecordQuality(rec);
+}
+
 void
 AVModel::useAVFrame(bool useAVFrame) {
     pimpl_->useAVFrame_ = useAVFrame;
