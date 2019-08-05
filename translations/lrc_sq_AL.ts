@@ -401,22 +401,22 @@
 <context>
     <name>lrc::ContactModelPimpl</name>
     <message>
-        <location filename="../src/contactmodel.cpp" line="398"/>
+        <location filename="../src/contactmodel.cpp" line="403"/>
         <source>Searchingâ¦</source>
         <translation>Po kërkohetâ¦</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="755"/>
+        <location filename="../src/contactmodel.cpp" line="760"/>
         <source>Invalid ID</source>
         <translation>ID e pavlefshme</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="758"/>
+        <location filename="../src/contactmodel.cpp" line="763"/>
         <source>Not found</source>
         <translation>S’u gjet</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="761"/>
+        <location filename="../src/contactmodel.cpp" line="766"/>
         <source>Couldn&apos;t lookupâ¦</source>
         <translation>S’u bë dot kërkimâ¦</translation>
     </message>
@@ -424,7 +424,7 @@
 <context>
     <name>lrc::api::ContactModel</name>
     <message>
-        <location filename="../src/contactmodel.cpp" line="369"/>
+        <location filename="../src/contactmodel.cpp" line="374"/>
         <source>Bad URI scheme</source>
         <translation>Skemë URI i gabuar</translation>
     </message>

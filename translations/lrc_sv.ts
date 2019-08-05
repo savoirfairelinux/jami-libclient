@@ -124,12 +124,12 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="45"/>
         <source>Null</source>
-        <translation type="unfinished"/>
+        <translation>Null</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="46"/>
         <source>Trying</source>
-        <translation type="unfinished"/>
+        <translation>Försöker</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="47"/>
@@ -401,22 +401,22 @@
 <context>
     <name>lrc::ContactModelPimpl</name>
     <message>
-        <location filename="../src/contactmodel.cpp" line="398"/>
+        <location filename="../src/contactmodel.cpp" line="403"/>
         <source>Searchingâ¦</source>
         <translation>Söker</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="755"/>
+        <location filename="../src/contactmodel.cpp" line="760"/>
         <source>Invalid ID</source>
         <translation>Ogiltigt ID</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="758"/>
+        <location filename="../src/contactmodel.cpp" line="763"/>
         <source>Not found</source>
         <translation>Kunde inte hittas</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="761"/>
+        <location filename="../src/contactmodel.cpp" line="766"/>
         <source>Couldn&apos;t lookupâ¦</source>
         <translation>Kunde inte slå upp</translation>
     </message>
@@ -424,7 +424,7 @@
 <context>
     <name>lrc::api::ContactModel</name>
     <message>
-        <location filename="../src/contactmodel.cpp" line="369"/>
+        <location filename="../src/contactmodel.cpp" line="374"/>
         <source>Bad URI scheme</source>
         <translation>Felaktigt URI-schema</translation>
     </message>

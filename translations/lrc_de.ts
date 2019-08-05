@@ -401,22 +401,22 @@
 <context>
     <name>lrc::ContactModelPimpl</name>
     <message>
-        <location filename="../src/contactmodel.cpp" line="398"/>
+        <location filename="../src/contactmodel.cpp" line="403"/>
         <source>Searchingâ¦</source>
         <translation>Searching!</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="755"/>
+        <location filename="../src/contactmodel.cpp" line="760"/>
         <source>Invalid ID</source>
         <translation>Ungültige ID</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="758"/>
+        <location filename="../src/contactmodel.cpp" line="763"/>
         <source>Not found</source>
         <translation>Nicht gefunden</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="761"/>
+        <location filename="../src/contactmodel.cpp" line="766"/>
         <source>Couldn&apos;t lookupâ¦</source>
         <translation>Konnte nicht suchen!</translation>
     </message>
@@ -424,7 +424,7 @@
 <context>
     <name>lrc::api::ContactModel</name>
     <message>
-        <location filename="../src/contactmodel.cpp" line="369"/>
+        <location filename="../src/contactmodel.cpp" line="374"/>
         <source>Bad URI scheme</source>
         <translation>Ungültiges URI-Schema</translation>
     </message>
