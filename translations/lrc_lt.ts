@@ -255,7 +255,7 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="71"/>
         <source>Unsupported URI Scheme</source>
-        <translation type="unfinished"/>
+        <translation>Nepalaikoma URI schema</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="72"/>
@@ -290,7 +290,7 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="78"/>
         <source>Loop Detected</source>
-        <translation type="unfinished"/>
+        <translation>Aptiktas ciklas</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="79"/>
@@ -300,7 +300,7 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="80"/>
         <source>Address Incomplete</source>
-        <translation type="unfinished"/>
+        <translation>Nepilnas adresas</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="81"/>
@@ -345,7 +345,7 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="90"/>
         <source>Not Implemented</source>
-        <translation type="unfinished"/>
+        <translation>Neįgyvendinta</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="91"/>
@@ -365,7 +365,7 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="94"/>
         <source>Version Not Supported</source>
-        <translation type="unfinished"/>
+        <translation>Versija nėra palaikoma</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="95"/>
@@ -401,22 +401,22 @@
 <context>
     <name>lrc::ContactModelPimpl</name>
     <message>
-        <location filename="../src/contactmodel.cpp" line="398"/>
+        <location filename="../src/contactmodel.cpp" line="403"/>
         <source>Searchingâ¦</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="755"/>
+        <location filename="../src/contactmodel.cpp" line="760"/>
         <source>Invalid ID</source>
         <translation>Neteisingas ID</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="758"/>
+        <location filename="../src/contactmodel.cpp" line="763"/>
         <source>Not found</source>
         <translation>Nerasta</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="761"/>
+        <location filename="../src/contactmodel.cpp" line="766"/>
         <source>Couldn&apos;t lookupâ¦</source>
         <translation type="unfinished"/>
     </message>
@@ -424,7 +424,7 @@
 <context>
     <name>lrc::api::ContactModel</name>
     <message>
-        <location filename="../src/contactmodel.cpp" line="369"/>
+        <location filename="../src/contactmodel.cpp" line="374"/>
         <source>Bad URI scheme</source>
         <translation>Bloga URI schema</translation>
     </message>
