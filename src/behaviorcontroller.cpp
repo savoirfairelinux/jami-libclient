@@ -38,4 +38,4 @@ BehaviorController::~BehaviorController()
 
 } // namespace lrc
 
-#include "api/moc_behaviorcontroller.cpp"
+//#include "api/moc_behaviorcontroller.cpp"

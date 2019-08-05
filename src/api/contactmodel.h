@@ -29,6 +29,7 @@
 // LRC
 #include "typedefs.h"
 #include "api/behaviorcontroller.h"
+#include "api/datatransfer.h"
 
 namespace lrc
 {
@@ -42,7 +43,6 @@ namespace api
 
 namespace contact { struct Info; }
 namespace account { struct Info; }
-namespace datatransfer { struct Info; }
 class NewAccountModel;
 class ConversationModel;
 

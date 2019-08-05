@@ -18,6 +18,7 @@
  ***************************************************************************/
 #pragma once
 
+#include <QString>
 #include "typedefs.h"
 
 class NameDirectoryPrivate;

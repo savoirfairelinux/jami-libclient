@@ -86,7 +86,9 @@ namespace utils {
         QByteArray previousKey,previousValue;
         const QList<QByteArray> lines = content.split('\n');
 
-        foreach (const QByteArray& property, lines) {
+        QListIterator<QByteArray> i(lines);
+        while (i.hasNext()) {
+            const QByteArray& property = i.next();
             //Ignore empty lines
             if (property.size()) {
                 //Some properties are over multiple lines

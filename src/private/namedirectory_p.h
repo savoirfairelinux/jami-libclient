@@ -32,7 +32,7 @@ public:
     NameDirectoryPrivate(NameDirectory*);
 
 public Q_SLOTS:
-    void slotNameRegistrationEnded(const QString& accountId, int status, const QString& name);
-    void slotRegisteredNameFound(const QString& accountId, int status, const QString& address, const QString& name);
+    void slotNameRegistrationEnded(const std::string& accountId, const int32_t& status, const std::string& name);
+    void slotRegisteredNameFound(const std::string& accountId, const int32_t& status, const std::string& address, const std::string& name);
 
 };

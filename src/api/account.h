@@ -191,7 +191,7 @@ struct ConfProperties_t {
         int                 expire;
     } Registration;
 
-    MapStringString         toDetails() const;
+    std::map<std::string, std::string> toDetails() const;
 };
 
 // Possible account export status
@@ -240,7 +240,7 @@ struct Info
     ConfProperties_t        confProperties;
 
     // load/save
-    void                    fromDetails(const MapStringString& details);
+    void                    fromDetails(const std::map<std::string, std::string>& details);
 };
 
 } // namespace account

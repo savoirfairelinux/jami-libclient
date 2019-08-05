@@ -18,11 +18,11 @@
 
 // LRC
 #include "api/newvideo.h"
-#include "dbus/videomanager.h"
-#ifdef ENABLE_LIBWRAP
- #include "directrenderer.h"
+#include "daemonproxy.h"
+#ifdef DAEMON_INTERFACE_IS_LIBRARY
+  #include "directrenderer.h"
 #else
- #include "shmrenderer.h"
+  #include "shmrenderer.h"
 #endif
 
 // std
@@ -60,7 +60,7 @@ public:
 
     std::mutex rendering_mtx_;
 
-#ifdef ENABLE_LIBWRAP
+#ifdef DAEMON_INTERFACE_IS_LIBRARY
      std::unique_ptr<Video::DirectRenderer> renderer;
 #else
      std::unique_ptr<Video::ShmRenderer> renderer;
@@ -94,11 +94,11 @@ Renderer::initThread()
 {
     if (!pimpl_->renderer)
         return;
-#ifdef ENABLE_LIBWRAP
+#ifdef DAEMON_INTERFACE_IS_LIBRARY
     if(pimpl_->usingAVFrame_) {
-        VideoManager::instance().registerAVSinkTarget(pimpl_->id_.c_str(), pimpl_->renderer->avTarget());
+        DaemonProxy::instance().registerAVSinkTarget(pimpl_->id_.c_str(), pimpl_->renderer->avTarget());
     } else {
-        VideoManager::instance().registerSinkTarget(pimpl_->id_.c_str(), pimpl_->renderer->target());
+        DaemonProxy::instance().registerSinkTarget(pimpl_->id_.c_str(), pimpl_->renderer->target());
     }
 #endif
     if (!pimpl_->thread_.isRunning())
@@ -115,13 +115,13 @@ Renderer::update(const std::string& res, const std::string& shmPath)
     QSize size = RendererPimpl::stringToQSize(res);
     pimpl_->renderer->setSize(size);
 
-#ifdef ENABLE_LIBWRAP
+#ifdef DAEMON_INTERFACE_IS_LIBRARY
     if(pimpl_->usingAVFrame_) {
-        VideoManager::instance().registerAVSinkTarget(pimpl_->id_.c_str(), pimpl_->renderer->avTarget());
+        DaemonProxy::instance().registerAVSinkTarget(pimpl_->id_, pimpl_->renderer->avTarget());
     } else {
-        VideoManager::instance().registerSinkTarget(pimpl_->id_.c_str(), pimpl_->renderer->target());
+        DaemonProxy::instance().registerSinkTarget(pimpl_->id_, pimpl_->renderer->target());
     }
-#else //ENABLE_LIBWRAP
+#else
     pimpl_->renderer->setShmPath(shmPath.c_str());
 #endif
 }
@@ -138,7 +138,7 @@ Renderer::isRendering() const
 void
 Renderer::useAVFrame(bool useAVFrame) {
     pimpl_->usingAVFrame_ = useAVFrame;
-#ifdef ENABLE_LIBWRAP
+#ifdef DAEMON_INTERFACE_IS_LIBRARY
     pimpl_->renderer->configureTarget(useAVFrame);
 #endif
 }
@@ -163,7 +163,7 @@ Renderer::currentFrame() const
     return result;
 }
 
-#if defined(ENABLE_LIBWRAP) || (defined __APPLE__)
+#if defined(DAEMON_INTERFACE_IS_LIBRARY) || (defined __APPLE__)
 std::unique_ptr<AVFrame, void(*)(AVFrame*)>
 Renderer::currentAVFrame() const
 {
@@ -216,9 +216,9 @@ RendererPimpl::RendererPimpl(Renderer& linked, const std::string& id,
 , usingAVFrame_(useAVFrame)
 {
     QSize size = stringToQSize(videoSettings.size);
-#ifdef ENABLE_LIBWRAP
+#ifdef DAEMON_INTERFACE_IS_LIBRARY
     renderer = std::make_unique<Video::DirectRenderer>(id.c_str(), size, usingAVFrame_);
-#else  // ENABLE_LIBWRAP
+#else
     renderer = std::make_unique<Video::ShmRenderer>(id.c_str(), shmPath.c_str(), size);
 #endif
     renderer->moveToThread(&thread_);
@@ -246,9 +246,9 @@ RendererPimpl::stringToQSize(const std::string& res)
 void
 RendererPimpl::slotFrameUpdated()
 {
-    emit linked.frameUpdated(id_);
+    Q_EMIT linked.frameUpdated(id_);
 }
 
 } // end of namespace lrc
 
-#include "api/moc_newvideo.cpp"
+//#include "api/moc_newvideo.cpp"

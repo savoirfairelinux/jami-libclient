@@ -21,7 +21,6 @@
 // Lrc
 #include "api/account.h"
 #include "api/contact.h"
-#include "dbus/configurationmanager.h"
 
 namespace lrc
 {

@@ -7,4 +7,20 @@ For more information about the Jami project, see the following:
 - Bug tracker: https://git.jami.net
 - Repositories: https://review.jami.net
 
-For build/install instructions, see the INSTALL file.
+Installation
+==================
+
+libringclient uses Meson for building.
+
+	mkdir build
+	cd build
+	meson -Dprefix=<> ..
+	ninja
+	ninja install
+
+Internationalization
+====================
+
+To regenerate strings for translations we use lupdate (within root of the project)
+
+lupdate ./src/ -source-language en -ts translations/lrc_en.ts

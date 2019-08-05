@@ -23,13 +23,14 @@
 #include <string>
 #include <map>
 
+#include <sigc++/sigc++.h>
+
 // Qt
 #include <qobject.h>
 
 // Lrc
 #include "typedefs.h"
 #include "api/datatransfer.h"
-#include "qtwrapper/conversions_wrap.hpp"
 
 namespace lrc
 {
@@ -44,7 +45,7 @@ namespace account
 }
 }
 
-class CallbacksHandler : public QObject {
+class CallbacksHandler : public QObject, public sigc::trackable {
     Q_OBJECT
 
 public:
@@ -62,9 +63,9 @@ Q_SIGNALS:
      * @param from interaction sender.
      * @param payloads.
      */
-    void newAccountMessage(std::string& accountId,
-                           std::string& from,
-                           std::map<std::string,std::string> payloads);
+    void newAccountMessage(const std::string& accountId,
+                           const std::string& from,
+                           const std::map<std::string,std::string> payloads);
     /**
      * Connect this signal to get information when a peer is online.
      * @param contactUri the peer.
@@ -190,8 +191,8 @@ Q_SIGNALS:
      * @param accountId interaction receiver.
      * @param devices A map of device IDs with corresponding labels.
      */
-    void knownDevicesChanged(std::string& accountId,
-                             std::map<std::string,std::string> devices);
+    void knownDevicesChanged(const std::string& accountId,
+                             const std::map<std::string,std::string> devices);
 
     /**
      * Emit deviceRevocationEnded
@@ -268,16 +269,16 @@ Q_SIGNALS:
      */
     void audioMeter(const std::string& id, float level);
 
-private Q_SLOTS:
+private:
     /**
      * Emit newAccountMessage
      * @param accountId
      * @param from
      * @param payloads of the interaction
      */
-    void slotNewAccountMessage(const QString& accountId,
-                               const QString& from,
-                               const QMap<QString,QString>& payloads);
+    void slotNewAccountMessage(const std::string& accountId,
+                               const std::string& from,
+                               const std::map<std::string, std::string>& payloads);
     /**
      * Emit newBuddySubscription
      * @param accountId
@@ -285,24 +286,36 @@ private Q_SLOTS:
      * @param status if the contact is present
      * @param message unused for now
      */
-    void slotNewBuddySubscription(const QString& accountId,
-                                  const QString& contactUri,
-                                  bool status,
-                                  const QString& message);
+    void slotNewBuddySubscription(const std::string& accountId,
+                                  const std::string& uri,
+                                  const bool& status,
+                                  const std::string& message);
+    /**
+     * Emit newPeerSubscription
+     * @param accountId
+     * @param contactUri
+     * @param status if the peer is added or removed
+     * @param displayname is the account display name
+     */
+    void slotNearbyPeerSubscription(const std::string& accountId,
+                                    const std::string& contactUri,
+                                    const int32_t& state,
+                                    const std::string& displayname);
+
     /**
      * Emit contactAdded
      * @param accountId account linked
      * @param contactUri
      * @param confirmed
      */
-    void slotContactAdded(const QString& accountId, const QString& contactUri, bool confirmed);
+    void slotContactAdded(const std::string& accountId, const std::string& contactUri, const bool& confirmed);
     /**
      * Emit contactRemoved
      * @param accountId account linked
      * @param contactUri
      * @param banned
      */
-    void slotContactRemoved(const QString& accountId, const QString& contactUri, bool banned);
+    void slotContactRemoved(const std::string& accountId, const std::string& contactUri, const bool& banned);
     /**
      * Emit incomingContactRequest
      * @param accountId the linked id
@@ -310,16 +323,16 @@ private Q_SLOTS:
      * @param payload the VCard
      * @param time when the request was received
      */
-    void slotIncomingContactRequest(const QString& accountId,
-                                    const QString& ringId,
-                                    const QByteArray& payload, time_t time);
+    void slotIncomingContactRequest(const std::string& accountId,
+                                    const std::string& ringId,
+                                    const std::vector<uint8_t>& payload,
+                                    const uint64_t& time );
     /**
      * Emit accountDetailsChanged
      * @param accountId
      * @param details
      */
-    void slotAccountDetailsChanged(const QString& accountId,
-                                   const MapStringString& details);
+    void slotAccountDetailsChanged(const std::string& accountId, const std::map<std::string, std::string>& details);
     /**
      * Emit accountsChanged
      */
@@ -332,24 +345,24 @@ private Q_SLOTS:
      * @param detail_code
      * @param detail_str
      */
-    void slotRegistrationStateChanged(const QString& accountId,
-                                      const QString& registration_state,
-                                      unsigned detail_code,
-                                      const QString& detail_str);
+    void slotRegistrationStateChanged(const std::string& accountId,
+                                      const std::string& registration_state,
+                                      const int32_t& detail_code,
+                                      const std::string& detail_str);
     /**
      * Get the URI of the peer and emit incomingCall
      * @param accountId account linked
      * @param callId the incoming call id
      * @param fromQString the uri of the peer
      */
-    void slotIncomingCall(const QString &accountId, const QString &callId, const QString &fromUri);
+    void slotIncomingCall(const std::string& accountId, const std::string& callId, const std::string& fromUri);
     /**
      * Emit callStateChanged
      * @param callId the call which changes.
      * @param state the new state
      * @param code unused for now
      */
-    void slotCallStateChanged(const QString& callId, const QString &state, int code);
+    void slotCallStateChanged(const std::string& callId, const std::string& state, const int32_t& code);
     /**
      * Parse a call message and emit incomingVCardChunk if it's a VCard chunk
      * else incomingCallMessage if it's a text message
@@ -357,25 +370,25 @@ private Q_SLOTS:
      * @param from the URI
      * @param interaction the content of the Message.
      */
-    void slotIncomingMessage(const QString& callId,
-                             const QString& from,
-                             const QMap<QString,QString>& interaction);
+    void slotIncomingMessage(const std::string& callId,
+                             const std::string& from,
+                             const std::map<std::string, std::string>& interaction);
     /**
      * Emit conferenceCreated
      * @param callId of the conference
      */
-    void slotConferenceCreated(const QString& callId);
+    void slotConferenceCreated(const std::string& callId);
     /**
      * Emit conferenceRemove
      * @param callId of the conference
      */
-    void slotConferenceRemoved(const QString& callId);
+    void slotConferenceRemoved(const std::string& callId);
     /**
      * Call slotCallStateChanged
      * @param callId of the conference
      * @param state, new state
      */
-    void slotConferenceChanged(const QString& callId, const QString& state);
+    void slotConferenceChanged(const std::string& callId, const std::string& state);
     /**
      * Emit accountMessageStatusChanged
      * @param accountId
@@ -383,19 +396,19 @@ private Q_SLOTS:
      * @param to peer uri
      * @param status, new status
      */
-    void slotAccountMessageStatusChanged(const QString& accountId,
-                                         const uint64_t id,
-                                         const QString& to, int status);
+    void slotAccountMessageStatusChanged(const std::string& accountId,
+                                         const uint64_t& id,
+                                         const std::string& to,
+                                         const int32_t& status);
 
-    void slotDataTransferEvent(qulonglong id, uint code);
+    void slotDataTransferEvent(const uint64_t& dringId, const int32_t& codeStatus);
 
     /**
      * Emit knownDevicesChanged
      * @param accountId
      * @param devices A map of device IDs and corresponding labels
      */
-    void slotKnownDevicesChanged(const QString& accountId,
-                                 const QMap<QString, QString>& devices);
+    void slotKnownDevicesChanged(const std::string& accountId, const std::map<std::string, std::string>& devices);
 
      /**
       * Emit deviceRevocationEnded
@@ -403,9 +416,9 @@ private Q_SLOTS:
       * @param deviceId
       * @param status SUCCESS = 0, WRONG_PASSWORD = 1, UNKNOWN_DEVICE = 2
       */
-     void slotDeviceRevokationEnded(const QString& accountId,
-                                    const QString& deviceId,
-                                    const int status);
+     void slotDeviceRevokationEnded(const std::string& accountId,
+                                    const std::string& deviceId,
+                                    const int32_t& status);
 
     /**
      * Emit exportOnRingEnded
@@ -413,7 +426,7 @@ private Q_SLOTS:
      * @param status SUCCESS = 0, WRONG_PASSWORD = 1, NETWORK_ERROR = 2
      * @param pin
      */
-    void slotExportOnRingEnded(const QString& accountId, int status, const QString& pin);
+    void slotExportOnRingEnded(const std::string& accountId, const int32_t& status, const std::string& pin);
 
     /**
      * Emit nameRegistrationEnded
@@ -421,7 +434,7 @@ private Q_SLOTS:
      * @param status
      * @param name
      */
-    void slotNameRegistrationEnded(const QString& accountId, int status, const QString& name);
+    void slotNameRegistrationEnded(const std::string& accountId, const int32_t& status, const std::string& name);
 
     /**
      * Emit registeredNameFound
@@ -429,24 +442,23 @@ private Q_SLOTS:
      * @param status
      * @param name
      */
-    void slotRegisteredNameFound(const QString& accountId, int status, const QString& address, const QString& name);
+    void slotRegisteredNameFound(const std::string& accountId,
+                                 const int32_t& status,
+                                 const std::string& address,
+                                 const std::string& name);
 
     /**
      * emit migrationEnded
      * @param accountId
      * @param status
      */
-    void slotMigrationEnded(const QString& accountId, const QString& status);
+    void slotMigrationEnded(const std::string& accountId, const std::string& status);
 
     /**
     * emit debugMessageReceived
     * @param message
     */
-#ifdef ENABLE_LIBWRAP
     void slotDebugMessageReceived(const std::string& message);
-#else
-    void slotDebugMessageReceived(const QString& message);
-#endif
 
     /**
      * Renderer is started
@@ -455,14 +467,18 @@ private Q_SLOTS:
      * @param width
      * @param height
      */
-    void slotStartedDecoding(const QString& id, const QString& shmPath, int width, int height);
+    void slotStartedDecoding(const std::string& id,
+                             const std::string& shmPath,
+                             const int32_t& width,
+                             const int32_t& height,
+                             const bool& );
 
     /**
      * Renderer is stopped
      * @param id
      * @param shmrenderer
      */
-    void slotStoppedDecoding(const QString& id, const QString& shmPath);
+    void slotStoppedDecoding(const std::string& id, const std::string& shmPath, const bool& );
 
     /**
      * Detect when a device is plugged or unplugged
@@ -474,19 +490,7 @@ private Q_SLOTS:
      * @param id of the ringbuffer level
      * @param level
      */
-    void slotAudioMeterReceived(const QString& id, float level);
-
-    /**
-     * Emit newPeerSubscription
-     * @param accountId
-     * @param contactUri
-     * @param status if the peer is added or removed
-     * @param displayname is the account display name
-     */
-    void slotNearbyPeerSubscription(const QString& accountId,
-                                    const QString& contactUri,
-                                    int state,
-                                    const QString& displayname);
+    void slotAudioMeterReceived(const std::string& id, const double& level);
 
 private:
     const api::Lrc& parent;

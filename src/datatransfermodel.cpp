@@ -19,8 +19,7 @@
 // LRC
 #include "api/datatransfermodel.h"
 
-// Dbus
-#include "dbus/configurationmanager.h"
+#include "daemonproxy.h"
 
 // DRing
 #include <datatransfer_interface.h>
@@ -94,7 +93,7 @@ DataTransferModel::~DataTransferModel() = default;
 std::vector<std::string>
 DataTransferModel::Impl::transferIdList() const
 {
-    VectorULongLong dring_list = ConfigurationManager::instance().dataTransferList();
+    std::vector<DataTransferId> dring_list = DaemonProxy::instance().dataTransferList();
     //~ for (auto dring_id : dring_list) {
          //~ pimpl_->registerTransferId(dring_id);
     //~ }
@@ -110,16 +109,16 @@ void
 DataTransferModel::transferInfo(long long ringId, datatransfer::Info& lrc_info)
 {
     DataTransferInfo infoFromDaemon;
-    if (ConfigurationManager::instance().dataTransferInfo(ringId, infoFromDaemon) == 0) {
+    if (DaemonProxy::instance().dataTransferInfo(ringId, infoFromDaemon) == DRing::DataTransferError::success) {
         //lrc_info.uid = ?
         lrc_info.status = convertDataTransferEvent(DRing::DataTransferEventCode(infoFromDaemon.lastEvent));
         lrc_info.isOutgoing = !(infoFromDaemon.flags & (1 << uint32_t(DRing::DataTransferFlags::direction)));
         lrc_info.totalSize = infoFromDaemon.totalSize;
         lrc_info.progress = infoFromDaemon.bytesProgress;
-        lrc_info.path = infoFromDaemon.path.toStdString();
-        lrc_info.displayName = infoFromDaemon.displayName.toStdString();
-        lrc_info.accountId = infoFromDaemon.accountId.toStdString();
-        lrc_info.peerUri = infoFromDaemon.peer.toStdString();
+        lrc_info.path = infoFromDaemon.path;
+        lrc_info.displayName = infoFromDaemon.displayName;
+        lrc_info.accountId = infoFromDaemon.accountId;
+        lrc_info.peerUri = infoFromDaemon.peer;
         //lrc_info.timestamp = ?
         return;
     }
@@ -132,13 +131,13 @@ DataTransferModel::sendFile(const std::string& account_id, const std::string& pe
                             const std::string& file_path, const std::string& display_name)
 {
     DataTransferInfo info;
-    qulonglong id;
-    info.accountId = QString::fromStdString(account_id);
-    info.peer = QString::fromStdString(peer_uri);
-    info.path = QString::fromStdString(file_path);
-    info.displayName = QString::fromStdString(display_name);
+    uint64_t id;
+    info.accountId = account_id;
+    info.peer = peer_uri;
+    info.path = file_path;
+    info.displayName = display_name;
     info.bytesProgress = 0;
-    if (ConfigurationManager::instance().sendFile(info, id) != 0) {
+    if (static_cast<uint32_t>(DaemonProxy::instance().sendFile(info, id)) != 0) {
         qDebug() << "DataTransferModel::sendFile(), error";
         return;
     }
@@ -147,25 +146,23 @@ DataTransferModel::sendFile(const std::string& account_id, const std::string& pe
 void
 DataTransferModel::bytesProgress(int interactionId, int64_t& total, int64_t& progress)
 {
-    ConfigurationManager::instance().dataTransferBytesProgress(pimpl_->lrc2dringIdMap.at(interactionId),
-                                                               reinterpret_cast<qlonglong&>(total),
-                                                               reinterpret_cast<qlonglong&>(progress));
+    DaemonProxy::instance().dataTransferBytesProgress(pimpl_->lrc2dringIdMap.at(interactionId),
+                                                               total,
+                                                               progress);
 }
 
 void
-DataTransferModel::accept(int interactionId,
-                          const std::string& file_path,
-                          std::size_t offset)
+DataTransferModel::accept(int interactionId, const std::string& file_path, std::size_t offset)
 {
     auto dring_id = pimpl_->lrc2dringIdMap.at(interactionId);
-    ConfigurationManager::instance().acceptFileTransfer(dring_id, QString::fromStdString(file_path), offset);
+    DaemonProxy::instance().acceptFileTransfer(dring_id, file_path, offset);
 }
 
 void
 DataTransferModel::cancel(int interactionId)
 {
     auto dring_id = pimpl_->lrc2dringIdMap.at(interactionId);
-    ConfigurationManager::instance().cancelDataTransfer(dring_id);
+    DaemonProxy::instance().cancelDataTransfer(dring_id);
 }
 
 int
@@ -182,5 +179,4 @@ DataTransferModel::getDringIdFromInteractionId(int interactionId)
 
 }} // namespace lrc::api
 
-#include "api/moc_datatransfermodel.cpp"
 #include "datatransfermodel.moc"

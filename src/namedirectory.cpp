@@ -17,19 +17,17 @@
  ***************************************************************************/
 
 #include <QCoreApplication>
+#include <sigc++/sigc++.h>
 
 #include "namedirectory.h"
 #include "private/namedirectory_p.h"
-#include "dbus/configurationmanager.h"
+#include "daemonproxy.h"
 
 NameDirectoryPrivate::NameDirectoryPrivate(NameDirectory* q) : q_ptr(q)
 {
-    ConfigurationManagerInterface& configurationManager = ConfigurationManager::instance();
-
-    connect(&configurationManager, &ConfigurationManagerInterface::nameRegistrationEnded, this,
-            &NameDirectoryPrivate::slotNameRegistrationEnded, Qt::QueuedConnection);
-    connect(&configurationManager, &ConfigurationManagerInterface::registeredNameFound, this,
-            &NameDirectoryPrivate::slotRegisteredNameFound, Qt::QueuedConnection);
+    DaemonProxy& daemon = DaemonProxy::instance();
+    daemon.signalNameRegistrationEnded().connect(sigc::mem_fun(*this,&NameDirectoryPrivate::slotNameRegistrationEnded));
+    daemon.signalRegisteredNameFound().connect(sigc::mem_fun(*this,&NameDirectoryPrivate::slotRegisteredNameFound));
 }
 
 NameDirectory::NameDirectory() : QObject(QCoreApplication::instance()), d_ptr(new NameDirectoryPrivate(this))
@@ -44,43 +42,45 @@ NameDirectory& NameDirectory::instance()
 }
 
 //Name registration ended
-void NameDirectoryPrivate::slotNameRegistrationEnded(const QString& accountId, int status, const QString& name)
+void NameDirectoryPrivate::slotNameRegistrationEnded(const std::string& accountId, const int32_t& status, const std::string& name)
 {
-    qDebug() << "Name registration ended. Account:" << accountId << "status:" << status << "name:" << name;
+    qDebug() << "Name registration ended. Account:" << QString::fromStdString(accountId)
+             << "status:" << status
+             << "name:" << QString::fromStdString(name);
 
-   emit q_ptr->nameRegistrationEnded(static_cast<NameDirectory::RegisterNameStatus>(status), name);
+   Q_EMIT q_ptr->nameRegistrationEnded(static_cast<NameDirectory::RegisterNameStatus>(status), QString::fromStdString(name));
 }
 
 //Registered Name found
-void NameDirectoryPrivate::slotRegisteredNameFound(const QString& accountId, int status, const QString& address, const QString& name)
+void NameDirectoryPrivate::slotRegisteredNameFound(const std::string& accountId, const int32_t& status, const std::string& address, const std::string& name)
 {
     switch (static_cast<NameDirectory::LookupStatus>(status)) {
         case NameDirectory::LookupStatus::INVALID_NAME:
-            qDebug() << "lookup name is INVALID:" << name << accountId;
+            qDebug() << "lookup name is INVALID:" << QString::fromStdString(name) << QString::fromStdString(accountId);
             break;
         case NameDirectory::LookupStatus::NOT_FOUND:
-            qDebug() << "lookup name NOT FOUND:" << name << accountId;
+            qDebug() << "lookup name NOT FOUND:" << QString::fromStdString(name) << QString::fromStdString(accountId);
             break;
         case NameDirectory::LookupStatus::ERROR:
-            qDebug() << "lookup name ERROR:" << name << accountId;
+            qDebug() << "lookup name ERROR:" << QString::fromStdString(name) << QString::fromStdString(accountId);
             break;
         case NameDirectory::LookupStatus::SUCCESS:
             break;
     }
 
-    emit q_ptr->registeredNameFound( static_cast<NameDirectory::LookupStatus>(status), address, name);
+    Q_EMIT q_ptr->registeredNameFound(static_cast<NameDirectory::LookupStatus>(status), QString::fromStdString(address), QString::fromStdString(name));
 }
 
 //Lookup a name
 bool NameDirectory::lookupName(const QString& nameServiceURL, const QString& name) const
 {
-    return ConfigurationManager::instance().lookupName("", nameServiceURL, name);
+    return DaemonProxy::instance().lookupName("", nameServiceURL.toStdString(), name.toStdString());
 }
 
 //Lookup an address
 bool NameDirectory::lookupAddress(const QString& nameServiceURL, const QString& address) const
 {
-    return ConfigurationManager::instance().lookupAddress("", nameServiceURL, address);
+    return DaemonProxy::instance().lookupAddress("", nameServiceURL.toStdString(), address.toStdString());
 }
 
 NameDirectory::~NameDirectory()

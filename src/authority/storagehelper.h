@@ -26,7 +26,6 @@
 #include "api/conversation.h"
 #include "api/interaction.h"
 #include "database.h"
-#include "dbus/configurationmanager.h"
 
 namespace lrc
 {
@@ -384,7 +383,7 @@ void writeJSONValue(QJsonObject& json, const QString& key, const QString& value)
  * @param didMigrateCb to invoke when migration has completed
  */
 std::vector<std::shared_ptr<Database>>
-migrateIfNeeded(const QStringList& accountIds,
+migrateIfNeeded(const std::vector<std::string>& accountIds,
                 MigrationCb& willMigrateCb,
                 MigrationCb& didMigrateCb);
 

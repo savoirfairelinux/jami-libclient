@@ -17,7 +17,7 @@
  ***************************************************************************/
 #pragma once
 
-#ifdef ENABLE_LIBWRAP
+#ifdef DAEMON_INTERFACE_IS_LIBRARY
 
 //Base
 #include <QtCore/QObject>

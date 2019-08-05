@@ -32,10 +32,7 @@
 #include "api/datatransfermodel.h"
 #include "api/newaccountmodel.h"
 #include "callbackshandler.h"
-#include "dbus/callmanager.h"
-#include "dbus/configurationmanager.h"
-#include "dbus/instancemanager.h"
-#include "dbus/configurationmanager.h"
+#include "daemonproxy.h"
 #include "authority/storagehelper.h"
 
 namespace lrc
@@ -44,7 +41,7 @@ namespace lrc
 using namespace api;
 
 // To judge whether the call is finished or not depending on callState
-bool isFinished(const QString& callState);
+bool isFinished(const std::string& callState);
 
 class LrcPimpl
 {
@@ -65,18 +62,12 @@ Lrc::Lrc(MigrationCb willDoMigrationCb, MigrationCb didDoMigrationCb)
 {
     // Ensure Daemon is running/loaded (especially on non-DBus platforms)
     // before instantiating LRC and its members
-    InstanceManager::instance();
+    DaemonProxy::instance();
     lrcPimpl_ = std::make_unique<LrcPimpl>(*this, willDoMigrationCb, didDoMigrationCb);
 }
 
 Lrc::~Lrc()
 {
-    //Unregister from the daemon
-    InstanceManagerInterface& instance = InstanceManager::instance();
-    Q_NOREPLY instance.Unregister(getpid());
-#ifndef ENABLE_LIBWRAP
-    instance.connection().disconnectFromBus(instance.connection().baseService());
-#endif //ENABLE_LIBWRAP
 }
 
 NewAccountModel&
@@ -106,27 +97,19 @@ Lrc::getAVModel() const
 void
 Lrc::connectivityChanged() const
 {
-    ConfigurationManager::instance().connectivityChanged();
+    DaemonProxy::instance().connectivityChanged();
 }
 
 bool
 Lrc::isConnected()
 {
-#ifdef ENABLE_LIBWRAP
     return true;
-#else
-    return ConfigurationManager::instance().connection().isConnected();
-#endif
 }
 
 bool
 Lrc::dbusIsValid()
 {
-#ifdef ENABLE_LIBWRAP
     return true;
-#else
-    return ConfigurationManager::instance().isValid();
-#endif
 }
 
 void
@@ -138,26 +121,24 @@ Lrc::subscribeToDebugReceived()
 std::vector<std::string>
 Lrc::activeCalls()
 {
-    QStringList callLists = CallManager::instance().getCallList();
-    std::vector<std::string> result;
-    result.reserve(callLists.size());
-    for (const auto &call : callLists) {
-        MapStringString callDetails = CallManager::instance().getCallDetails(call);
-        if(!isFinished(callDetails[QString(DRing::Call::Details::CALL_STATE)]))
-            result.emplace_back(call.toStdString());
+    std::vector<std::string> callLists = DaemonProxy::instance().getCallList();
+    for (auto iter = callLists.begin(); iter != callLists.end(); ++iter) {
+        std::map<std::string, std::string> callDetails = DaemonProxy::instance().getCallDetails(*iter);
+        if(isFinished(callDetails.at(DRing::Call::Details::CALL_STATE)))
+            callLists.erase(iter);
     }
-    return result;
+    return callLists;
 }
 
 bool
-isFinished(const QString& callState)
+isFinished(const std::string& callState)
 {
-    if (callState == QLatin1String(DRing::Call::StateEvent::HUNGUP) ||
-        callState == QLatin1String(DRing::Call::StateEvent::BUSY) ||
-        callState == QLatin1String(DRing::Call::StateEvent::PEER_BUSY) ||
-        callState == QLatin1String(DRing::Call::StateEvent::FAILURE) ||
-        callState == QLatin1String(DRing::Call::StateEvent::INACTIVE) ||
-        callState == QLatin1String(DRing::Call::StateEvent::OVER)) {
+    if (callState == DRing::Call::StateEvent::HUNGUP ||
+        callState == DRing::Call::StateEvent::BUSY ||
+        callState == DRing::Call::StateEvent::PEER_BUSY ||
+        callState == DRing::Call::StateEvent::FAILURE ||
+        callState == DRing::Call::StateEvent::INACTIVE ||
+        callState == DRing::Call::StateEvent::OVER) {
         return true;
     }
     return false;

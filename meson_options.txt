@@ -1,0 +1,4 @@
+option('daemon-interface', type: 'combo', choices: ['library', 'dbus'])
+option('daemon-install-prefix', type: 'string')
+option('daemon-mute', type: 'boolean', value: true)
+option('video', type: 'boolean', value: true)

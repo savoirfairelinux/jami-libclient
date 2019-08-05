@@ -39,9 +39,7 @@
 // LRC
 #include "api/call.h"
 #include "callbackshandler.h"
-#include "dbus/callmanager.h"
-#include "dbus/configurationmanager.h"
-#include "dbus/videomanager.h"
+#include "daemonproxy.h"
 #include "authority/storagehelper.h"
 
 namespace lrc
@@ -67,7 +65,7 @@ public:
     bool useAVFrame_ = false;
     std::string currentVideoCaptureDevice_ {};
 
-#ifndef ENABLE_LIBWRAP
+#ifndef DAEMON_INTERFACE_IS_LIBRARY
     // TODO: Init Video Renderers from daemon (see: https://git.jami.net/savoirfairelinux/ring-daemon/issues/59)
     static void stopCameraAndQuit(int);
     static uint32_t SIZE_RENDERER;
@@ -121,7 +119,7 @@ public Q_SLOTS:
 };
 
 const std::string AVModelPimpl::recorderSavesSubdir = "sent_data";
-#ifndef ENABLE_LIBWRAP
+#ifndef DAEMON_INTERFACE_IS_LIBRARY
 uint32_t AVModelPimpl::SIZE_RENDERER = 0;
 #endif
 
@@ -129,7 +127,7 @@ AVModel::AVModel(const CallbacksHandler& callbacksHandler)
 : QObject()
 , pimpl_(std::make_unique<AVModelPimpl>(*this, callbacksHandler))
 {
-#ifndef ENABLE_LIBWRAP
+#ifndef DAEMON_INTERFACE_IS_LIBRARY
     // Because the client uses DBUS, if a crash occurs, the daemon will not
     // be able to know it. So, stop the camera if the user was just previewing.
     std::signal(SIGSEGV, AVModelPimpl::stopCameraAndQuit);
@@ -148,27 +146,25 @@ AVModel::~AVModel()
 bool
 AVModel::getDecodingAccelerated() const
 {
-    bool result = VideoManager::instance().getDecodingAccelerated();
-    return result;
+    return DaemonProxy::instance().getDecodingAccelerated();
 }
 
 void
 AVModel::setDecodingAccelerated(bool accelerate)
 {
-    VideoManager::instance().setDecodingAccelerated(accelerate);
+    DaemonProxy::instance().setDecodingAccelerated(accelerate);
 }
 
 bool
 AVModel::getEncodingAccelerated() const
 {
-    bool result = VideoManager::instance().getEncodingAccelerated();
-    return result;
+    return DaemonProxy::instance().getEncodingAccelerated();
 }
 
 void
 AVModel::setEncodingAccelerated(bool accelerate)
 {
-    VideoManager::instance().setEncodingAccelerated(accelerate);
+    DaemonProxy::instance().setEncodingAccelerated(accelerate);
 }
 
 bool
@@ -187,41 +183,38 @@ AVModel::setHardwareAcceleration(bool accelerate)
 std::vector<std::string>
 AVModel::getDevices() const
 {
-    QStringList devices = VideoManager::instance()
-        .getDeviceList();
-    std::vector<std::string> result;
-    for (const auto& manager : devices) {
-        result.emplace_back(manager.toStdString());
-    }
-    return result;
+    return DaemonProxy::instance().getDeviceList();
 }
 
 std::string
 AVModel::getDefaultDeviceName() const
 {
-    QString name = VideoManager::instance().getDefaultDevice();
-    return name.toStdString();
+    return DaemonProxy::instance().getDefaultDevice();
 }
 
 void
 AVModel::setDefaultDevice(const std::string& name)
 {
-    VideoManager::instance().setDefaultDevice(name.c_str());
+    DaemonProxy::instance().setDefaultDevice(name);
 }
 
 video::Settings
 AVModel::getDeviceSettings(const std::string& name) const
 {
-    MapStringString settings = VideoManager::instance()
-        .getSettings(name.c_str());
-    if (settings["name"].toStdString() != name) {
+    std::map<std::string, std::string> settings = DaemonProxy::instance().getSettings(name);
+
+    if (settings["name"] != name) {
         throw std::out_of_range("Device " + name + " not found");
     }
     video::Settings result;
-    result.name = settings["name"].toStdString();
-    result.channel = settings["channel"].toStdString();
-    result.size = settings["size"].toStdString();
-    result.rate = settings["rate"].toFloat();
+    result.name = settings["name"];
+    result.channel = settings["channel"];
+    result.size = settings["size"];
+    try {
+        result.rate = stof(settings["rate"]);
+    } catch (std::invalid_argument& e) {
+        result.rate = 0.0;
+    }
     return result;
 }
 
@@ -229,19 +222,19 @@ video::Capabilities
 AVModel::getDeviceCapabilities(const std::string& name) const
 {
     // Channel x Resolution x Framerate
-    QMap<QString, QMap<QString, QVector<QString>>> capabilites =
-        VideoManager::instance().getCapabilities(name.c_str());
+    std::map<std::string, std::map<std::string, std::vector<std::string>>> capabilites =
+        DaemonProxy::instance().getCapabilities(name);
+
     video::Capabilities result;
-    for (auto& channel : capabilites.toStdMap()) {
+    for (auto& channel : capabilites) {
         video::ResRateList channelCapabilities;
-        for (auto& resToRates : channel.second.toStdMap()) {
+        for (auto& resToRates : channel.second) {
             video::FrameratesList rates;
-            QVectorIterator<QString> itRates(resToRates.second);
-            while (itRates.hasNext()) {
-                rates.emplace_back(itRates.next().toFloat());
+            for (auto& rate: resToRates.second) {
+                rates.emplace_back(std::stof(rate));
             }
             channelCapabilities.emplace_back(
-                std::make_pair(resToRates.first.toStdString(), rates));
+                std::make_pair(resToRates.first, rates));
         }
         // sort by resolution widths
         std::sort(channelCapabilities.begin(), channelCapabilities.end(),
@@ -251,8 +244,7 @@ AVModel::getDeviceCapabilities(const std::string& name) const
                 auto rhsWidth = stoull(rhs.first.substr(0, rhs.first.find("x")));
                 return lhsWidth > rhsWidth;
             });
-        result.insert(
-            std::make_pair(channel.first.toStdString(), channelCapabilities));
+        result.insert(std::make_pair(channel.first, channelCapabilities));
     }
     return result;
 }
@@ -260,14 +252,12 @@ AVModel::getDeviceCapabilities(const std::string& name) const
 void
 AVModel::setDeviceSettings(video::Settings& settings)
 {
-    MapStringString newSettings;
-    auto rate = QString::number(settings.rate, 'f', 7);
-    rate = rate.left(rate.length() - 1);
+    std::map<std::string, std::string> newSettings;
     newSettings["channel"] = settings.channel.c_str();
     newSettings["name"] = settings.name.c_str();
-    newSettings["rate"] = rate;
+    newSettings["rate"] = std::to_string(settings.rate);
     newSettings["size"] = settings.size.c_str();
-    VideoManager::instance().applySettings(settings.name.c_str(), newSettings);
+    DaemonProxy::instance().applySettings(settings.name.c_str(), newSettings);
 
     // If the preview is running, reload it
     // doing this during a call will cause re-invite, this is unwanted
@@ -283,62 +273,43 @@ AVModel::setDeviceSettings(video::Settings& settings)
 std::vector<std::string>
 AVModel::getSupportedAudioManagers() const
 {
-    QStringList managers = ConfigurationManager::instance()
-        .getSupportedAudioManagers();
-    std::vector<std::string> result;
-    for (const auto& manager : managers) {
-        result.emplace_back(manager.toStdString());
-    }
-    return result;
+    return DaemonProxy::instance().getSupportedAudioManagers();
 }
 
 std::string
 AVModel::getAudioManager() const
 {
-    QString manager = ConfigurationManager::instance().getAudioManager();
-    return manager.toStdString();
+    return DaemonProxy::instance().getAudioManager();
 }
 
 std::vector<std::string>
 AVModel::getAudioOutputDevices() const
 {
-    QStringList devices = ConfigurationManager::instance()
-        .getAudioOutputDeviceList();
+    std::vector<std::string> devices = DaemonProxy::instance().getAudioOutputDeviceList();
 
     // A fix for ring-daemon#43
-    if (ConfigurationManager::instance().getAudioManager()
-        == QStringLiteral("pulseaudio")) {
-        if (devices.at(0) == QStringLiteral("default")) {
-            devices[0] = QObject::tr("default");
+    if (getAudioManager() == "pulseaudio") {
+        if (devices.at(0) == "default") {
+            devices[0] = QObject::tr("default").toStdString();
         }
     }
 
-    std::vector<std::string> result;
-    for (const auto& device : devices) {
-        result.emplace_back(device.toStdString());
-    }
-    return result;
+    return devices;
 }
 
 std::vector<std::string>
 AVModel::getAudioInputDevices() const
 {
-    QStringList devices = ConfigurationManager::instance()
-        .getAudioInputDeviceList();
+    std::vector<std::string> devices = DaemonProxy::instance().getAudioInputDeviceList();
 
     // A fix for ring-daemon#43
-    if (ConfigurationManager::instance().getAudioManager()
-        == QStringLiteral("pulseaudio")) {
-        if (devices.at(0) == QStringLiteral("default")) {
-            devices[0] = QObject::tr("default");
+    if (getAudioManager() == "pulseaudio") {
+        if (devices.at(0) == "default") {
+            devices[0] = QObject::tr("default").toStdString();
         }
     }
 
-    std::vector<std::string> result;
-    for (const auto& device : devices) {
-        result.emplace_back(device.toStdString());
-    }
-    return result;
+    return devices;
 }
 
 std::string
@@ -365,55 +336,52 @@ AVModel::getInputDevice() const
 bool
 AVModel::isAudioMeterActive(const std::string& id) const
 {
-    return ConfigurationManager::instance().isAudioMeterActive(id.c_str());
+    return DaemonProxy::instance().isAudioMeterActive(id);
 }
 
 void
 AVModel::setAudioMeterState(bool active, const std::string& id) const
 {
-    ConfigurationManager::instance().setAudioMeterState(id.c_str(), active);
+    DaemonProxy::instance().setAudioMeterState(id, active);
 }
 
 void
 AVModel::startAudioDevice() const
 {
-    VideoManager::instance().startAudioDevice();
+    DaemonProxy::instance().startAudioDevice();
 }
 
 void
 AVModel::stopAudioDevice() const
 {
-    VideoManager::instance().stopAudioDevice();
+    DaemonProxy::instance().stopAudioDevice();
 }
 
 bool
 AVModel::setAudioManager(const std::string& name)
 {
-    return ConfigurationManager::instance().setAudioManager(name.c_str());
+    return DaemonProxy::instance().setAudioManager(name);
 }
 
 void
 AVModel::setRingtoneDevice(const std::string& name)
 {
-    int idx = ConfigurationManager::instance()
-        .getAudioOutputDeviceIndex(name.c_str());
-    ConfigurationManager::instance().setAudioRingtoneDevice(idx);
+    int idx = DaemonProxy::instance().getAudioOutputDeviceIndex(name);
+    DaemonProxy::instance().setAudioRingtoneDevice(idx);
 }
 
 void
 AVModel::setOutputDevice(const std::string& name)
 {
-    int idx = ConfigurationManager::instance()
-        .getAudioOutputDeviceIndex(name.c_str());
-    ConfigurationManager::instance().setAudioOutputDevice(idx);
+    int idx = DaemonProxy::instance().getAudioOutputDeviceIndex(name);
+    DaemonProxy::instance().setAudioOutputDevice(idx);
 }
 
 void
 AVModel::setInputDevice(const std::string& name)
 {
-    int idx = ConfigurationManager::instance()
-        .getAudioInputDeviceIndex(name.c_str());
-    ConfigurationManager::instance().setAudioInputDevice(idx);
+    int idx = DaemonProxy::instance().getAudioInputDeviceIndex(name);
+    DaemonProxy::instance().setAudioInputDevice(idx);
 }
 
 void
@@ -424,64 +392,62 @@ AVModel::stopLocalRecorder(const std::string& path) const
       return;
    }
 
-   VideoManager::instance().stopLocalRecorder(QString::fromStdString(path));
+   DaemonProxy::instance().stopLocalRecorder(path);
 }
 
 std::string
 AVModel::startLocalRecorder(const bool& audioOnly) const
 {
-   const QString path = QString::fromStdString(pimpl_->getRecordingPath());
-   const QString finalPath = VideoManager::instance().startLocalRecorder(audioOnly, path);
-   return finalPath.toStdString();
+   const std::string path = pimpl_->getRecordingPath();
+   return DaemonProxy::instance().startLocalRecorder(audioOnly, path);
 }
 
 std::string
 AVModel::getRecordPath() const
 {
-    QString path = ConfigurationManager::instance().getRecordPath();
-    return path.toStdString();
+    return DaemonProxy::instance().getRecordPath();
 }
 
 void
 AVModel::setRecordPath(const std::string& path) const
 {
-    ConfigurationManager::instance().setRecordPath(QString::fromStdString(path).toUtf8());
+    DaemonProxy::instance().setRecordPath(path);
 }
 
 bool
 AVModel::getAlwaysRecord() const
 {
-    return ConfigurationManager::instance().getIsAlwaysRecording();
+    return DaemonProxy::instance().getIsAlwaysRecording();
 }
 
 void
 AVModel::setAlwaysRecord(const bool& rec) const
 {
-    ConfigurationManager::instance().setIsAlwaysRecording(rec);
+    DaemonProxy::instance().setIsAlwaysRecording(rec);
 }
 
 bool
 AVModel::getRecordPreview() const
 {
-    return ConfigurationManager::instance().getRecordPreview();
+    return DaemonProxy::instance().getRecordPreview();
 }
 
 void
 AVModel::setRecordPreview(const bool& rec) const
 {
-    ConfigurationManager::instance().setRecordPreview(rec);
+    DaemonProxy::instance().setRecordPreview(rec);
 }
 
 int
 AVModel::getRecordQuality() const
 {
-    return ConfigurationManager::instance().getRecordQuality();
+    return DaemonProxy::instance().getRecordQuality();
 }
 
 void
 AVModel::setRecordQuality(const int& rec) const
 {
-    ConfigurationManager::instance().setRecordQuality(rec);
+    DaemonProxy::instance().setRecordQuality(rec);
 }
 
 void
@@ -502,7 +468,7 @@ AVModel::startPreview()
         qWarning() << "Can't find preview renderer!";
         return;
     }
-    VideoManager::instance().startCamera();
+    DaemonProxy::instance().startCamera();
     pimpl_->renderers_[video::PREVIEW_RENDERER_ID]->startRendering();
 }
 
@@ -525,7 +491,7 @@ AVModel::stopPreview()
             previewShouldBeStopped &= !it->second->isRendering();
     }
     if (previewShouldBeStopped)
-        VideoManager::instance().stopCamera();
+        DaemonProxy::instance().stopCamera();
     pimpl_->renderers_[video::PREVIEW_RENDERER_ID]->stopRendering();
 }
 
@@ -545,11 +511,11 @@ void
 AVModel::setInputFile(const std::string& uri)
 {
     QString sep = DRing::Media::VideoProtocolPrefix::SEPARATOR;
-    VideoManager::instance().switchInput(
+    DaemonProxy::instance().switchInput(
         !uri.empty() ? QString("%1%2%3")
                        .arg(DRing::Media::VideoProtocolPrefix::FILE)
                        .arg(sep)
-                       .arg(QUrl(uri.c_str()).toLocalFile())
+                       .arg(QUrl(uri.c_str()).toLocalFile()).toStdString()
         : DRing::Media::VideoProtocolPrefix::NONE);
 }
 
@@ -557,14 +523,14 @@ void
 AVModel::setDisplay(int idx, int x, int y, int w, int h)
 {
     QString sep = DRing::Media::VideoProtocolPrefix::SEPARATOR;
-    VideoManager::instance().switchInput(QString("%1%2:%3+%4,%5 %6x%7")
+    DaemonProxy::instance().switchInput(QString("%1%2:%3+%4,%5 %6x%7")
        .arg(DRing::Media::VideoProtocolPrefix::DISPLAY)
        .arg(sep)
        .arg(idx)
        .arg(x)
        .arg(y)
        .arg(w)
-       .arg(h));
+       .arg(h).toStdString());
 }
 
 void
@@ -575,12 +541,12 @@ AVModel::switchInputTo(const std::string& id)
         std::begin(devices), std::end(devices), id);
     if (deviceAvailable != devices.end()) {
         QString sep = DRing::Media::VideoProtocolPrefix::SEPARATOR;
-        VideoManager::instance().switchInput(QString("%1%2%3")
+        DaemonProxy::instance().switchInput(QString("%1%2%3")
             .arg(DRing::Media::VideoProtocolPrefix::CAMERA)
             .arg(sep)
-            .arg(id.c_str()));
+            .arg(id.c_str()).toStdString());
     } else {
-        VideoManager::instance()
+        DaemonProxy::instance()
             .switchInput(DRing::Media::VideoProtocolPrefix::NONE);
     }
 }
@@ -589,25 +555,22 @@ video::RenderedDevice
 AVModel::getCurrentRenderedDevice(const std::string& call_id) const
 {
     video::RenderedDevice result;
-    MapStringString callDetails = CallManager::instance()
-        .getCallDetails(call_id.c_str());
-    if (!callDetails.contains("VIDEO_SOURCE")) {
+    std::map<std::string, std::string> callDetails = DaemonProxy::instance().getCallDetails(call_id);
+    if (callDetails.find("VIDEO_SOURCE") == callDetails.end()) {
         return result;
     }
     auto source = callDetails["VIDEO_SOURCE"];
-    auto sourceSize = source.size();
-    if (source.startsWith("camera://")) {
+    if (source.compare(0,9,"camera://") == 0) {
         result.type = video::DeviceType::CAMERA;
-        result.name = source
-            .right(sourceSize - std::string("camera://").size()).toStdString();
-    } else if (source.startsWith("file://")) {
+        result.name = source.substr(9);
+
+    } else if (source.compare(0,7,"file://") == 0) {
         result.type = video::DeviceType::FILE;
-        result.name = source
-            .right(sourceSize -std::string("file://").size()).toStdString();
-    } else if (source.startsWith("display://")) {
+        result.name = source.substr(7);
+
+    } else if (source.compare(0,10,"display://") == 0) {
         result.type = video::DeviceType::DISPLAY;
-        result.name = source
-            .right(sourceSize - std::string("display://").size()).toStdString();
+        result.name = source.substr(10);
     }
     return result;
 }
@@ -639,39 +602,38 @@ AVModelPimpl::AVModelPimpl(AVModel& linked, const CallbacksHandler& callbacksHan
     renderers_.insert(std::make_pair(video::PREVIEW_RENDERER_ID,
                                      std::make_unique<video::Renderer>(video::PREVIEW_RENDERER_ID,
                                                                        linked_.getDeviceSettings(linked_.getDefaultDeviceName()),"", useAVFrame_)));
-#ifndef ENABLE_LIBWRAP
+#ifndef DAEMON_INTERFACE_IS_LIBRARY
     SIZE_RENDERER = renderers_.size();
 #endif
     connect(&callbacksHandler, &CallbacksHandler::deviceEvent,
-            this, &AVModelPimpl::slotDeviceEvent);
+            this, &AVModelPimpl::slotDeviceEvent, Qt::QueuedConnection);
     connect(&callbacksHandler, &CallbacksHandler::audioMeter,
-            this, &AVModelPimpl::slotAudioMeter);
+            this, &AVModelPimpl::slotAudioMeter, Qt::QueuedConnection);
     connect(&callbacksHandler, &CallbacksHandler::startedDecoding,
-            this, &AVModelPimpl::startedDecoding);
+            this, &AVModelPimpl::startedDecoding, Qt::QueuedConnection);
     connect(&callbacksHandler, &CallbacksHandler::stoppedDecoding,
-            this, &AVModelPimpl::stoppedDecoding);
+            this, &AVModelPimpl::stoppedDecoding, Qt::QueuedConnection);
     connect(&callbacksHandler, &CallbacksHandler::callStateChanged,
-            this, &AVModelPimpl::slotCallStateChanged);
+            this, &AVModelPimpl::slotCallStateChanged, Qt::QueuedConnection);
     connect(&*renderers_[video::PREVIEW_RENDERER_ID], &api::video::Renderer::frameUpdated,
-        this, &AVModelPimpl::slotFrameUpdated);
+        this, &AVModelPimpl::slotFrameUpdated, Qt::QueuedConnection);
 
     auto startedPreview = false;
-    auto restartRenderers = [&](const QStringList& callList) {
+    auto restartRenderers = [&](const std::vector<std::string>& callList) {
         for (const auto& callId : callList)
         {
-            MapStringString rendererInfos = VideoManager::instance().
-                getRenderer(callId);
-            auto shmPath = rendererInfos[DRing::Media::Details::SHM_PATH].toStdString();
-            auto width = rendererInfos[DRing::Media::Details::WIDTH].toInt();
-            auto height = rendererInfos[DRing::Media::Details::HEIGHT].toInt();
+            std::map<std::string, std::string> rendererInfos = DaemonProxy::instance().getRenderer(callId);
+            auto shmPath = rendererInfos[DRing::Media::Details::SHM_PATH];
+            auto width = std::stoi(rendererInfos[DRing::Media::Details::WIDTH]);
+            auto height = std::stoi(rendererInfos[DRing::Media::Details::HEIGHT]);
             if (width > 0 && height > 0) {
                 startedPreview = true;
-                startedDecoding(callId.toStdString(), shmPath, width, height);
+                startedDecoding(callId, shmPath, width, height);
             }
         }
     };
-    restartRenderers(CallManager::instance().getCallList());
-    restartRenderers(CallManager::instance().getConferenceList());
+    restartRenderers(DaemonProxy::instance().getCallList());
+    restartRenderers(DaemonProxy::instance().getConferenceList());
     if (startedPreview)
         restartRenderers({"local"});
 }
@@ -717,7 +679,7 @@ AVModelPimpl::startedDecoding(const std::string& id, const std::string& shmPath,
             renderers_.insert(std::make_pair(id,
                 std::make_unique<video::Renderer>(id.c_str(), settings, shmPath, useAVFrame_)));
             finishedRenderers_.insert(std::make_pair(id, false));
-#ifndef ENABLE_LIBWRAP
+#ifndef DAEMON_INTERFACE_IS_LIBRARY
             SIZE_RENDERER = renderers_.size();
 #endif
             renderers_.at(id)->initThread();
@@ -728,13 +690,12 @@ AVModelPimpl::startedDecoding(const std::string& id, const std::string& shmPath,
         }
         renderers_.at(id)->startRendering();
     }
-    emit linked_.rendererStarted(id);
+    Q_EMIT linked_.rendererStarted(id);
 }
 
 void
-AVModelPimpl::stoppedDecoding(const std::string& id, const std::string& shmPath)
+AVModelPimpl::stoppedDecoding(const std::string& id, const std::string& /*shmPath*/)
 {
-    Q_UNUSED(shmPath)
     {
         std::lock_guard<std::mutex> lk(renderers_mtx_);
         auto search = renderers_.find(id);
@@ -756,14 +717,14 @@ AVModelPimpl::stoppedDecoding(const std::string& id, const std::string& shmPath)
                 disconnect(&*renderers_[id], &api::video::Renderer::frameUpdated,
                     this, &AVModelPimpl::slotFrameUpdated);
                 renderers_.erase(id);
-#ifndef ENABLE_LIBWRAP
+#ifndef DAEMON_INTERFACE_IS_LIBRARY
                 SIZE_RENDERER = renderers_.size();
 #endif
                 finishedRenderers_.erase(id);
             }
         }
     }
-    emit linked_.rendererStopped(id);
+    Q_EMIT linked_.rendererStopped(id);
 }
 
 void
@@ -784,7 +745,7 @@ AVModelPimpl::slotCallStateChanged(const std::string& id, const std::string &sta
         disconnect(&*renderers_[id], &api::video::Renderer::frameUpdated,
             this, &AVModelPimpl::slotFrameUpdated);
         renderers_.erase(id);
-#ifndef ENABLE_LIBWRAP
+#ifndef DAEMON_INTERFACE_IS_LIBRARY
         SIZE_RENDERER = renderers_.size();
 #endif
         finishedRenderers_.erase(id);
@@ -793,14 +754,14 @@ AVModelPimpl::slotCallStateChanged(const std::string& id, const std::string &sta
     }
 }
 
-#ifndef ENABLE_LIBWRAP
+#ifndef DAEMON_INTERFACE_IS_LIBRARY
 
 void
 AVModelPimpl::stopCameraAndQuit(int)
 {
     if (SIZE_RENDERER == 1) {
         // This will stop the preview if needed (not in a call).
-        VideoManager::instance().stopCamera();
+        DaemonProxy::instance().stopCamera();
         // HACK: this sleep is just here to let the camera stop and
         // avoid immediate raise
         std::this_thread::sleep_for(std::chrono::milliseconds(50));
@@ -827,23 +788,22 @@ AVModelPimpl::getDevice(int type) const
         default:
             break;
     }
-    QStringList currentDevicesIdx = ConfigurationManager::instance()
-        .getCurrentAudioDevicesIndex();
+    std::vector<std::string> currentDevicesIdx = DaemonProxy::instance().getCurrentAudioDevicesIndex();
     try {
         if (currentDevicesIdx.size() < 3) {
             // Should not happen, but cannot retrieve current ringtone device
             return "";
         }
-        auto deviceIdx = currentDevicesIdx[type].toUInt();
+        auto deviceIdx = std::stoul(currentDevicesIdx[type]);
         for (const auto& dev : devices) {
             uint32_t idx;
             switch (type) {
             case 1: // INPUT
-                idx = ConfigurationManager::instance().getAudioInputDeviceIndex(dev.c_str());
+                idx = DaemonProxy::instance().getAudioInputDeviceIndex(dev);
                 break;
             case 0: // OUTPUT
             case 2: // RINGTONE
-                idx = ConfigurationManager::instance().getAudioOutputDeviceIndex(dev.c_str());
+                idx = DaemonProxy::instance().getAudioOutputDeviceIndex(dev);
                 break;
             default:
                 break;
@@ -863,22 +823,21 @@ AVModelPimpl::getDevice(int type) const
 void
 AVModelPimpl::slotFrameUpdated(const std::string& id)
 {
-    emit linked_.frameUpdated(id);
+    Q_EMIT linked_.frameUpdated(id);
 }
 
 void
 AVModelPimpl::slotDeviceEvent()
 {
-    emit linked_.deviceEvent();
+    Q_EMIT linked_.deviceEvent();
 }
 
 void
 AVModelPimpl::slotAudioMeter(const std::string& id, float level)
 {
-    emit linked_.audioMeter(id, level);
+    Q_EMIT linked_.audioMeter(id, level);
 }
 
 } // namespace lrc
 
-#include "api/moc_avmodel.cpp"
 #include "avmodel.moc"

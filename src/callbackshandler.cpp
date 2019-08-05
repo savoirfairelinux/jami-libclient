@@ -25,20 +25,11 @@
 #include "api/datatransfermodel.h"
 #include "api/behaviorcontroller.h"
 
-// Lrc
-#include "dbus/callmanager.h"
-#include "dbus/configurationmanager.h"
-#include "dbus/presencemanager.h"
-#include "dbus/videomanager.h"
+#include <sigc++/sigc++.h>
+#include "daemonproxy.h"
 
 // DRing
 #include <datatransfer_interface.h>
-
-#ifdef ENABLE_LIBWRAP
-// For the debugMessageReceived connection that queues const std::string refs
-// when not using dbus
-Q_DECLARE_METATYPE(std::string);
-#endif
 
 namespace lrc
 {
@@ -49,167 +40,39 @@ CallbacksHandler::CallbacksHandler(const Lrc& parent)
 : QObject()
 , parent(parent)
 {
+    auto& daemon = DaemonProxy::instance();
+
     // Get signals from daemon
-    connect(&ConfigurationManager::instance(),
-            &ConfigurationManagerInterface::incomingAccountMessage,
-            this,
-            &CallbacksHandler::slotNewAccountMessage,
-            Qt::QueuedConnection);
+    daemon.signalIncomingAccountMessage().connect(sigc::mem_fun(*this, &CallbacksHandler::slotNewAccountMessage));
+    daemon.signalNewBuddyNotification().connect(sigc::mem_fun(*this, &CallbacksHandler::slotNewBuddySubscription));
+    daemon.signalNearbyPeerNotification().connect(sigc::mem_fun(*this, &CallbacksHandler::slotNearbyPeerSubscription));
+    daemon.signalContactAdded().connect(sigc::mem_fun(*this, &CallbacksHandler::slotContactAdded));
+    daemon.signalContactRemoved().connect(sigc::mem_fun(*this, &CallbacksHandler::slotContactRemoved));
+    daemon.signalIncomingTrustRequest().connect(sigc::mem_fun(*this, &CallbacksHandler::slotIncomingContactRequest));
+    daemon.signalAccountMessageStatusChanged().connect(sigc::mem_fun(*this, &CallbacksHandler::slotAccountMessageStatusChanged));
+    daemon.signalAccountDetailsChanged().connect(sigc::mem_fun(*this, &CallbacksHandler::slotAccountDetailsChanged));
+    daemon.signalAccountsChanged().connect(sigc::mem_fun(*this, &CallbacksHandler::slotAccountsChanged));
+    daemon.signalRegistrationStateChanged().connect(sigc::mem_fun(*this, &CallbacksHandler::slotRegistrationStateChanged));
+    daemon.signalIncomingCall().connect(sigc::mem_fun(*this, &CallbacksHandler::slotIncomingCall));
+    daemon.signalCallStateChanged().connect(sigc::mem_fun(*this, &CallbacksHandler::slotCallStateChanged));
+    daemon.signalConferenceCreated().connect(sigc::mem_fun(*this, &CallbacksHandler::slotConferenceCreated));
+    daemon.signalConferenceRemoved().connect(sigc::mem_fun(*this, &CallbacksHandler::slotConferenceRemoved));
+    daemon.signalConferenceChanged().connect(sigc::mem_fun(*this, &CallbacksHandler::slotConferenceChanged));
+    daemon.signalIncomingMessage().connect(sigc::mem_fun(*this, &CallbacksHandler::slotIncomingMessage));
+    daemon.signalDataTransferEvent().connect(sigc::mem_fun(*this, &CallbacksHandler::slotDataTransferEvent));
+    daemon.signalKnownDevicesChanged().connect(sigc::mem_fun(*this, &CallbacksHandler::slotKnownDevicesChanged));
+    daemon.signalDeviceRevocationEnded().connect(sigc::mem_fun(*this, &CallbacksHandler::slotDeviceRevokationEnded));
+    daemon.signalExportOnRingEnded().connect(sigc::mem_fun(*this, &CallbacksHandler::slotExportOnRingEnded));
+    daemon.signalNameRegistrationEnded().connect(sigc::mem_fun(*this, &CallbacksHandler::slotNameRegistrationEnded));
+    daemon.signalRegisteredNameFound().connect(sigc::mem_fun(*this, &CallbacksHandler::slotRegisteredNameFound));
+    daemon.signalMigrationEnded().connect(sigc::mem_fun(*this, &CallbacksHandler::slotMigrationEnded));
+    daemon.signalAudioMeter().connect(sigc::mem_fun(*this, &CallbacksHandler::slotAudioMeterReceived));
 
-    connect(&PresenceManager::instance(),
-            &PresenceManagerInterface::newBuddyNotification,
-            this,
-            &CallbacksHandler::slotNewBuddySubscription,
-            Qt::QueuedConnection);
-
-    connect(&PresenceManager::instance(),
-            &PresenceManagerInterface::nearbyPeerNotification,
-            this,
-            &CallbacksHandler::slotNearbyPeerSubscription,
-            Qt::QueuedConnection);
-
-    connect(&ConfigurationManager::instance(),
-            &ConfigurationManagerInterface::contactAdded,
-            this,
-            &CallbacksHandler::slotContactAdded,
-            Qt::QueuedConnection);
-
-    connect(&ConfigurationManager::instance(),
-            &ConfigurationManagerInterface::contactRemoved,
-            this,
-            &CallbacksHandler::slotContactRemoved,
-            Qt::QueuedConnection);
-
-    connect(&ConfigurationManager::instance(),
-            &ConfigurationManagerInterface::incomingTrustRequest,
-            this,
-            &CallbacksHandler::slotIncomingContactRequest,
-            Qt::QueuedConnection);
-
-    connect(&ConfigurationManager::instance(),
-            &ConfigurationManagerInterface::accountMessageStatusChanged,
-            this,
-            &CallbacksHandler::slotAccountMessageStatusChanged,
-            Qt::QueuedConnection);
-
-    connect(&ConfigurationManager::instance(),
-            &ConfigurationManagerInterface::accountDetailsChanged,
-            this,
-            &CallbacksHandler::slotAccountDetailsChanged,
-            Qt::QueuedConnection);
-
-    connect(&ConfigurationManager::instance(),
-            &ConfigurationManagerInterface::accountsChanged,
-            this,
-            &CallbacksHandler::slotAccountsChanged);
-
-    connect(&ConfigurationManager::instance(),
-            &ConfigurationManagerInterface::registrationStateChanged,
-            this,
-            &CallbacksHandler::slotRegistrationStateChanged,
-            Qt::QueuedConnection);
-
-    connect(&CallManager::instance(),
-            &CallManagerInterface::incomingCall,
-            this,
-            &CallbacksHandler::slotIncomingCall,
-            Qt::QueuedConnection);
-
-    connect(&CallManager::instance(),
-            &CallManagerInterface::callStateChanged,
-            this,
-            &CallbacksHandler::slotCallStateChanged,
-            Qt::QueuedConnection);
-
-    connect(&CallManager::instance(),
-            &CallManagerInterface::conferenceCreated,
-            this,
-            &CallbacksHandler::slotConferenceCreated,
-            Qt::QueuedConnection);
-
-    connect(&CallManager::instance(),
-            &CallManagerInterface::conferenceRemoved,
-            this,
-            &CallbacksHandler::slotConferenceRemoved,
-            Qt::QueuedConnection);
-
-    connect(&CallManager::instance(),
-            &CallManagerInterface::conferenceChanged,
-            this,
-            &CallbacksHandler::slotConferenceChanged,
-            Qt::QueuedConnection);
-
-    connect(&CallManager::instance(),
-            &CallManagerInterface::incomingMessage,
-            this,
-            &CallbacksHandler::slotIncomingMessage,
-            Qt::QueuedConnection);
-
-    connect(&ConfigurationManager::instance(),
-            &ConfigurationManagerInterface::dataTransferEvent,
-            this,
-            &CallbacksHandler::slotDataTransferEvent,
-            Qt::QueuedConnection);
-
-    connect(&ConfigurationManager::instance(),
-            &ConfigurationManagerInterface::knownDevicesChanged,
-            this,
-            &CallbacksHandler::slotKnownDevicesChanged,
-            Qt::QueuedConnection);
-
-    connect(&ConfigurationManager::instance(),
-            &ConfigurationManagerInterface::deviceRevocationEnded,
-            this,
-            &CallbacksHandler::slotDeviceRevokationEnded,
-            Qt::QueuedConnection);
-
-    connect(&ConfigurationManager::instance(),
-            &ConfigurationManagerInterface::exportOnRingEnded,
-            this,
-            &CallbacksHandler::slotExportOnRingEnded,
-            Qt::QueuedConnection);
-
-    connect(&ConfigurationManager::instance(),
-            &ConfigurationManagerInterface::nameRegistrationEnded,
-            this,
-            &CallbacksHandler::slotNameRegistrationEnded,
-            Qt::QueuedConnection);
-
-    connect(&ConfigurationManager::instance(),
-            &ConfigurationManagerInterface::registeredNameFound,
-            this,
-            &CallbacksHandler::slotRegisteredNameFound,
-            Qt::QueuedConnection);
-
-    connect(&ConfigurationManager::instance(),
-            &ConfigurationManagerInterface::migrationEnded,
-            this,
-            &CallbacksHandler::slotMigrationEnded,
-            Qt::QueuedConnection);
-
-    connect(&VideoManager::instance(),
-            &VideoManagerInterface::startedDecoding,
-            this,
-            &CallbacksHandler::slotStartedDecoding,
-            Qt::QueuedConnection);
-
-    connect(&VideoManager::instance(),
-            &VideoManagerInterface::stoppedDecoding,
-            this,
-            &CallbacksHandler::slotStoppedDecoding,
-            Qt::QueuedConnection);
-
-    connect(&VideoManager::instance(),
-            &VideoManagerInterface::deviceEvent,
-            this,
-            &CallbacksHandler::slotDeviceEvent,
-            Qt::QueuedConnection);
-
-    connect(&ConfigurationManager::instance(),
-            &ConfigurationManagerInterface::audioMeter,
-            this,
-            &CallbacksHandler::slotAudioMeterReceived,
-            Qt::QueuedConnection);
+#ifdef ENABLE_VIDEO
+    daemon.signalStartedDecoding().connect(sigc::mem_fun(*this, &CallbacksHandler::slotStartedDecoding));
+    daemon.signalStoppedDecoding().connect(sigc::mem_fun(*this, &CallbacksHandler::slotStoppedDecoding));
+    daemon.signalDeviceEvent().connect(sigc::mem_fun(*this, &CallbacksHandler::slotDeviceEvent));
+#endif
 }
 
 CallbacksHandler::~CallbacksHandler()
@@ -219,188 +82,172 @@ CallbacksHandler::~CallbacksHandler()
 void
 CallbacksHandler::subscribeToDebugReceived()
 {
-    connect(&ConfigurationManager::instance(),
-            &ConfigurationManagerInterface::debugMessageReceived,
-            this,
-            &CallbacksHandler::slotDebugMessageReceived,
-            Qt::QueuedConnection);
+    DaemonProxy::instance().signalDebugMessageReceived().connect(sigc::mem_fun(*this, &CallbacksHandler::slotDebugMessageReceived));
 }
 
 void
-CallbacksHandler::slotNewAccountMessage(const QString& accountId,
-                                        const QString& from,
-                                        const QMap<QString,QString>& payloads)
+CallbacksHandler::slotNewAccountMessage(const std::string& accountId,
+                                        const std::string& from,
+                                        const std::map<std::string, std::string>& payloads )
 {
-    std::map<std::string,std::string> stdPayloads;
-
-    for (auto item : payloads.keys()) {
-        stdPayloads[item.toStdString()] = payloads.value(item).toStdString();
-    }
-
-    auto accountId2 = accountId.toStdString();
-    auto from2 = from.toStdString();
-
-    emit newAccountMessage(accountId2, from2, stdPayloads);
+    Q_EMIT newAccountMessage(accountId, from, payloads);
 }
 
 void
-CallbacksHandler::slotNewBuddySubscription(const QString& accountId,
-                                           const QString& uri,
-                                           bool status,
-                                           const QString& message)
+CallbacksHandler::slotNewBuddySubscription(const std::string& accountId,
+                                           const std::string& uri,
+                                           const bool& status,
+                                           const std::string& message )
 {
-    Q_UNUSED(accountId)
-    Q_UNUSED(status)
-    Q_UNUSED(message)
-    emit newBuddySubscription(uri.toStdString(), status);
+    Q_EMIT newBuddySubscription(uri, status);
 }
 
 void
-CallbacksHandler::slotNearbyPeerSubscription(const QString& accountId,
-                                             const QString& contactUri,
-                                             int state,
-                                             const QString& displayname)
+CallbacksHandler::slotNearbyPeerSubscription(const std::string& accountId,
+                                             const std::string& contactUri,
+                                             const int32_t& state,
+                                             const std::string& displayname )
 {
-    emit newPeerSubscription(accountId.toStdString(), contactUri.toStdString(), state, displayname.toStdString());
+    Q_EMIT newPeerSubscription(accountId, contactUri, state, displayname);
 }
 
 void
-CallbacksHandler::slotContactAdded(const QString& accountId,
-                                   const QString& contactUri,
-                                   bool confirmed)
+CallbacksHandler::slotContactAdded(const std::string& accountId,
+                                   const std::string& contactUri,
+                                   const bool& confirmed )
 {
-    emit contactAdded(accountId.toStdString(), contactUri.toStdString(), confirmed);
+    Q_EMIT contactAdded(accountId, contactUri, confirmed);
 }
 
 void
-CallbacksHandler::slotContactRemoved(const QString& accountId,
-                                     const QString& contactUri,
-                                     bool banned)
+CallbacksHandler::slotContactRemoved(const std::string& accountId,
+                                     const std::string& contactUri,
+                                     const bool& banned )
 {
-    emit contactRemoved(accountId.toStdString(), contactUri.toStdString(), banned);
+    Q_EMIT contactRemoved(accountId, contactUri, banned);
 }
 
 void
-CallbacksHandler::slotIncomingContactRequest(const QString& accountId,
-                                             const QString& ringId,
-                                             const QByteArray& payload,
-                                             time_t time)
+CallbacksHandler::slotIncomingContactRequest(const std::string& accountId,
+                                             const std::string& ringId,
+                                             const std::vector<uint8_t>& payload,
+                                             const uint64_t& time )
 {
-    Q_UNUSED(time)
-    emit incomingContactRequest(accountId.toStdString(), ringId.toStdString(), payload.toStdString());
+    Q_EMIT incomingContactRequest(accountId, ringId, std::string(payload.begin(), payload.end()));
 }
 
 void
-CallbacksHandler::slotIncomingCall(const QString &accountId, const QString &callId, const QString &fromUri)
+CallbacksHandler::slotIncomingCall(const std::string& accountId,
+                                   const std::string& callId,
+                                   const std::string& fromUri )
 {
-    if (fromUri.contains("ring.dht")) {
-        auto fromQString = fromUri.right(50);
-        fromQString = fromQString.left(40);
-        emit incomingCall(accountId.toStdString(), callId.toStdString(), fromQString.toStdString());
+    if (fromUri.find("ring.dht") != std::string::npos) {
+        Q_EMIT incomingCall(accountId, callId, fromUri.substr(fromUri.size()-50, 40));
     } else {
-        auto left = fromUri.indexOf("<")+1;
-        auto right = fromUri.indexOf("@");
-        auto fromQString = fromUri.mid(left, right-left);
-
-        emit incomingCall(accountId.toStdString(), callId.toStdString(), fromQString.toStdString());
+        auto left = fromUri.find_first_of('<')+1;
+        auto right = fromUri.find_first_of('@');
+        Q_EMIT incomingCall(accountId, callId, fromUri.substr(left, right-left));
     }
 }
 
 void
-CallbacksHandler::slotCallStateChanged(const QString& callId, const QString& state, int code)
+CallbacksHandler::slotCallStateChanged(const std::string& callId, const std::string& state, const int32_t& code)
 {
-    emit callStateChanged(callId.toStdString(), state.toStdString(), code);
+    Q_EMIT callStateChanged(callId, state, code);
 }
 
 void
-CallbacksHandler::slotAccountDetailsChanged(const QString& accountId,
-                                            const MapStringString& details)
+CallbacksHandler::slotAccountDetailsChanged(const std::string& accountId,
+                                            const std::map<std::string, std::string>& details )
 {
-    emit accountDetailsChanged(accountId.toStdString(), convertMap(details));
+    Q_EMIT accountDetailsChanged(accountId, details);
 }
 
 void
 CallbacksHandler::slotAccountsChanged()
 {
-    emit accountsChanged();
+    Q_EMIT accountsChanged();
 }
 
 void
-CallbacksHandler::slotRegistrationStateChanged(const QString& accountId,
-                                               const QString& registration_state,
-                                               unsigned detail_code,
-                                               const QString& detail_str)
+CallbacksHandler::slotRegistrationStateChanged(const std::string& accountId,
+                                               const std::string& registration_state,
+                                               const int32_t& detail_code,
+                                               const std::string& detail_str )
 {
-    (void) detail_code;
-    (void) detail_str;
-    emit accountStatusChanged(accountId.toStdString(), lrc::api::account::to_status(registration_state.toStdString()));
+    Q_EMIT accountStatusChanged(accountId, lrc::api::account::to_status(registration_state));
 }
 
 void
-CallbacksHandler::slotIncomingMessage(const QString& callId,
-                                      const QString& from,
-                                      const QMap<QString,QString>& interaction)
+CallbacksHandler::slotIncomingMessage(const std::string& callId,
+                                      const std::string& from,
+                                      const std::map<std::string, std::string>& interaction )
 {
     std::string from2;
-    if (from.contains("ring.dht")) {
-        from2 = from.left(40).toStdString();
+    if (from.find("ring.dht") != std::string::npos) {
+        from2 = from.substr(0,40);
     }
     else {
-        auto left = from.indexOf(":")+1;
-        auto right = from.indexOf("@");
-        from2 = from.mid(left, right-left).toStdString();
+        auto left = from.find_first_of(':')+1;
+        auto right = from.find_first_of('@');
+        from2 = from.substr(left, right-left);
     }
 
-    for (auto& e : interaction.toStdMap()) {
-        if (e.first.contains("x-ring/ring.profile.vcard")) {
-            auto pieces0 = e.first.split( ";" );
-            auto pieces1 = pieces0[1].split( "," );
-            auto pieces2 = pieces1[1].split( "=" );
-            auto pieces3 = pieces1[2].split( "=" );
-            emit incomingVCardChunk(callId.toStdString(),
-                                    from2,
-                                    pieces2[1].toInt(),
-                                    pieces3[1].toInt(),
-                                    e.second.toStdString());
+    for (auto& e : interaction) {
+        if (e.first.find("x-ring/ring.profile.vcard") != std::string::npos) {
+            auto index = e.first.find_first_of(';');
+            auto piece = e.first.substr(index+1);
+            auto comma1 = piece.find_first_of(',');
+            auto comma2 = piece.find_first_of(',', comma1+1);
+            auto comma3 = piece.find_first_of(',', comma2+1);
+            auto pair1 = piece.substr(comma1, comma2-comma1);
+            auto pair2 = piece.substr(comma2, (comma3 == std::string::npos)? std::string::npos : comma3-comma2);
+            index = pair1.find_first_of('=');
+            auto value1 = std::stoi(pair1.substr(index+1));
+            index = pair2.find_first_of('=');
+            auto value2 = std::stoi(pair2.substr(index+1));
+            Q_EMIT incomingVCardChunk(callId, from2, value1, value2, e.second);
         } else { // we consider it as an usual message interaction
-            emit incomingCallMessage(callId.toStdString(), from2, e.second.toStdString());
+            Q_EMIT incomingCallMessage(callId, from2, e.second);
         }
     }
 }
 
 void
-CallbacksHandler::slotConferenceCreated(const QString& callId)
+CallbacksHandler::slotConferenceCreated(const std::string& callId)
 {
-    emit conferenceCreated(callId.toStdString());
+    Q_EMIT conferenceCreated(callId);
 }
 
 void
-CallbacksHandler::slotConferenceChanged(const QString& callId, const QString& state)
+CallbacksHandler::slotConferenceChanged(const std::string& callId, const std::string& state)
 {
     slotCallStateChanged(callId, state, 0);
 }
 
 void
-CallbacksHandler::slotConferenceRemoved(const QString& callId)
+CallbacksHandler::slotConferenceRemoved(const std::string& callId)
 {
-    emit conferenceRemoved(callId.toStdString());
+    Q_EMIT conferenceRemoved(callId);
 }
 
 void
-CallbacksHandler::slotAccountMessageStatusChanged(const QString& accountId,
-                                                  const uint64_t id,
-                                                  const QString& to, int status)
+CallbacksHandler::slotAccountMessageStatusChanged(const std::string& accountId,
+                                                  const uint64_t& id,
+                                                  const std::string& to,
+                                                  const int32_t& status )
 {
-    emit accountMessageStatusChanged(accountId.toStdString(), id,
-                                     to.toStdString(), status);
+    Q_EMIT accountMessageStatusChanged(accountId, id, to, status);
 }
 
 void
-CallbacksHandler::slotDataTransferEvent(qulonglong dringId, uint codeStatus)
+CallbacksHandler::slotDataTransferEvent(const uint64_t& dringId, const int32_t& codeStatus)
 {
     auto event = DRing::DataTransferEventCode(codeStatus);
 
     api::datatransfer::Info info;
+
+    // FIXME: This will be called on DBus thread!
     parent.getDataTransferModel().transferInfo(dringId, info);
 
     // WARNING: info.status could be INVALID in case of async signaling
@@ -409,33 +256,33 @@ CallbacksHandler::slotDataTransferEvent(qulonglong dringId, uint codeStatus)
 
     switch (event) {
     case DRing::DataTransferEventCode::created:
-        emit transferStatusCreated(static_cast<long long>(dringId), info);
+        Q_EMIT transferStatusCreated(static_cast<long long>(dringId), info);
         break;
     case DRing::DataTransferEventCode::closed_by_host:
     case DRing::DataTransferEventCode::closed_by_peer:
-        emit transferStatusCanceled(static_cast<long long>(dringId), info);
+        Q_EMIT transferStatusCanceled(static_cast<long long>(dringId), info);
         break;
     case DRing::DataTransferEventCode::wait_peer_acceptance:
-        emit transferStatusAwaitingPeer(static_cast<long long>(dringId), info);
+        Q_EMIT transferStatusAwaitingPeer(static_cast<long long>(dringId), info);
         break;
     case DRing::DataTransferEventCode::wait_host_acceptance:
-        emit transferStatusAwaitingHost(static_cast<long long>(dringId), info);
+        Q_EMIT transferStatusAwaitingHost(static_cast<long long>(dringId), info);
         break;
     case DRing::DataTransferEventCode::ongoing:
-        emit transferStatusOngoing(static_cast<long long>(dringId), info);
+        Q_EMIT transferStatusOngoing(static_cast<long long>(dringId), info);
         break;
     case DRing::DataTransferEventCode::finished:
-        emit transferStatusFinished(static_cast<long long>(dringId), info);
+        Q_EMIT transferStatusFinished(static_cast<long long>(dringId), info);
         break;
     case DRing::DataTransferEventCode::invalid_pathname:
     case DRing::DataTransferEventCode::unsupported:
-        emit transferStatusError(static_cast<long long>(dringId), info);
+        Q_EMIT transferStatusError(static_cast<long long>(dringId), info);
         break;
     case DRing::DataTransferEventCode::timeout_expired:
-        emit transferStatusTimeoutExpired(static_cast<long long>(dringId), info);
+        Q_EMIT transferStatusTimeoutExpired(static_cast<long long>(dringId), info);
         break;
     case DRing::DataTransferEventCode::unjoinable_peer:
-        emit transferStatusUnjoinable(static_cast<long long>(dringId), info);
+        Q_EMIT transferStatusUnjoinable(static_cast<long long>(dringId), info);
         break;
     case DRing::DataTransferEventCode::invalid:
         break;
@@ -443,84 +290,79 @@ CallbacksHandler::slotDataTransferEvent(qulonglong dringId, uint codeStatus)
 }
 
 void
-CallbacksHandler::slotKnownDevicesChanged(const QString& accountId,
-                                          const QMap<QString, QString>& devices)
+CallbacksHandler::slotKnownDevicesChanged(const std::string& accountId,
+                                          const std::map<std::string, std::string>& devices )
 {
-    std::map<std::string, std::string> stdDevices;
-    for (auto item : devices.keys())
-        stdDevices[item.toStdString()] = devices.value(item).toStdString();
-    auto accountId2 = accountId.toStdString();
-    emit knownDevicesChanged(accountId2, stdDevices);
+    Q_EMIT knownDevicesChanged(accountId, devices);
 }
 
 void
-CallbacksHandler::slotDeviceRevokationEnded(const QString& accountId,
-                                            const QString& deviceId,
-                                            const int status)
+CallbacksHandler::slotDeviceRevokationEnded(const std::string& accountId,
+                                            const std::string& deviceId,
+                                            const int32_t& status )
 {
-    emit deviceRevocationEnded(accountId.toStdString(), deviceId.toStdString(), status);
+    Q_EMIT deviceRevocationEnded(accountId, deviceId, status);
 }
 
 void
-CallbacksHandler::slotExportOnRingEnded(const QString& accountId, int status, const QString& pin)
+CallbacksHandler::slotExportOnRingEnded(const std::string& accountId, const int32_t& status, const std::string& pin)
 {
-    emit exportOnRingEnded(accountId.toStdString(), status, pin.toStdString());
+    Q_EMIT exportOnRingEnded(accountId, status, pin);
 }
 
 void
-CallbacksHandler::slotNameRegistrationEnded(const QString& accountId, int status, const QString& name)
+CallbacksHandler::slotNameRegistrationEnded(const std::string& accountId, const int32_t& status, const std::string& name)
 {
-    emit nameRegistrationEnded(accountId.toStdString(), status, name.toStdString());
+    Q_EMIT nameRegistrationEnded(accountId, status, name);
 }
 
 void
-CallbacksHandler::slotRegisteredNameFound(const QString& accountId, int status, const QString& address, const QString& name)
+CallbacksHandler::slotRegisteredNameFound(const std::string& accountId,
+                                          const int32_t& status,
+                                          const std::string& address,
+                                          const std::string& name )
 {
-    emit registeredNameFound(accountId.toStdString(), status, address.toStdString(), name.toStdString());
+    Q_EMIT registeredNameFound(accountId, status, address, name);
 }
 
 void
-CallbacksHandler::slotMigrationEnded(const QString& accountId, const QString& status)
+CallbacksHandler::slotMigrationEnded(const std::string& accountId, const std::string& status)
 {
-    emit migrationEnded(accountId.toStdString(), status == "SUCCESS");
+    Q_EMIT migrationEnded(accountId, status == "SUCCESS");
 }
 
-#ifdef ENABLE_LIBWRAP
 void
 CallbacksHandler::slotDebugMessageReceived(const std::string& message)
 {
-    emit parent.getBehaviorController().debugMessageReceived(message);
-}
-#else
-void
-CallbacksHandler::slotDebugMessageReceived(const QString& message)
-{
-    emit parent.getBehaviorController().debugMessageReceived(message.toStdString());
-}
-#endif
-
-void
-CallbacksHandler::slotStartedDecoding(const QString& id, const QString& shmPath, int width, int height)
-{
-    emit startedDecoding(id.toStdString(), shmPath.toStdString(), width, height);
+    Q_EMIT parent.getBehaviorController().debugMessageReceived(message);
 }
 
 void
-CallbacksHandler::slotStoppedDecoding(const QString& id, const QString& shmPath)
+CallbacksHandler::slotStartedDecoding(const std::string& id,
+                                      const std::string& shmPath,
+                                      const int32_t& width,
+                                      const int32_t& height,
+                                      const bool& )
 {
-    emit stoppedDecoding(id.toStdString(), shmPath.toStdString());
+    Q_EMIT startedDecoding(id, shmPath, width, height);
+}
+
+void
+CallbacksHandler::slotStoppedDecoding(const std::string& id, const std::string& shmPath, const bool& )
+{
+    Q_EMIT stoppedDecoding(id, shmPath);
 }
 
 void
 CallbacksHandler::slotDeviceEvent()
 {
-    emit deviceEvent();
+    Q_EMIT deviceEvent();
 }
 
 void
-CallbacksHandler::slotAudioMeterReceived(const QString& id, float level)
+CallbacksHandler::slotAudioMeterReceived(const std::string& id, const double& level)
 {
-    emit audioMeter(id.toStdString(), level);
+    Q_EMIT audioMeter(id, level);
 }
 
 } // namespace lrc

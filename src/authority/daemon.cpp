@@ -18,6 +18,7 @@
  ***************************************************************************/
 // Lrc
 #include "daemon.h"
+#include "daemonproxy.h"
 
 namespace lrc
 {
@@ -31,38 +32,31 @@ namespace daemon
 void
 addContact(const api::account::Info& owner, const std::string& contactUri)
 {
-    ConfigurationManager::instance().addContact(QString(owner.id.c_str()),
-    QString(contactUri.c_str()));
+    DaemonProxy::instance().addContact(owner.id, contactUri);
 }
 
 void
 addContact(const api::account::Info& owner, const api::contact::Info& contactInfo)
 {
-    ConfigurationManager::instance().addContact(QString(owner.id.c_str()),
-    QString(contactInfo.profileInfo.uri.c_str()));
+    DaemonProxy::instance().addContact(owner.id, contactInfo.profileInfo.uri);
 }
 
 void
 removeContact(const api::account::Info& owner, const std::string& contactUri, bool banned)
 {
-    ConfigurationManager::instance().removeContact(QString(owner.id.c_str()),
-    QString(contactUri.c_str()), banned);
+    DaemonProxy::instance().removeContact(owner.id, contactUri, banned);
 }
 
 bool
 addContactFromPending(const api::account::Info& owner, const std::string& contactUri)
 {
-    return ConfigurationManager::instance().acceptTrustRequest(QString(owner.id.c_str()),
-    QString(contactUri.c_str()));
+    return DaemonProxy::instance().acceptTrustRequest(owner.id, contactUri);
 }
 
 bool
 discardFromPending(const api::account::Info& owner, const std::string& contactUri)
 {
-    return ConfigurationManager::instance().discardTrustRequest(
-        QString(owner.id.c_str()),
-        QString(contactUri.c_str())
-    );
+    return DaemonProxy::instance().discardTrustRequest(owner.id, contactUri);
 }
 
 } // namespace daemon

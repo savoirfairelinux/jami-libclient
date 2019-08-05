@@ -30,7 +30,7 @@
 #include "api/contactmodel.h"
 #include "api/newaccountmodel.h"
 #include "authority/storagehelper.h"
-#include "dbus/callmanager.h"
+#include "daemonproxy.h"
 #include "vcard.h"
 #include "video/renderer.h"
 
@@ -197,9 +197,9 @@ NewCallModel::getConferenceFromURI(const std::string& uri) const
 {
     for (const auto& call: pimpl_->calls) {
         if (call.second->type == call::Type::CONFERENCE) {
-            QStringList callList = CallManager::instance().getParticipantList(call.first.c_str());
-            foreach(const auto& callId, callList) {
-                if (pimpl_->calls[callId.toStdString()]->peerUri == uri) {
+            std::vector<std::string> callList = DaemonProxy::instance().getParticipantList(call.first);
+            for (const auto& callId: callList) {
+                if (pimpl_->calls[callId]->peerUri == uri) {
                     return *call.second;
                 }
             }
@@ -217,40 +217,30 @@ NewCallModel::getCall(const std::string& uid) const
 std::string
 NewCallModel::createCall(const std::string& uri, bool isAudioOnly)
 {
-#ifdef ENABLE_LIBWRAP
-    auto callId = isAudioOnly ? CallManager::instance().placeCall(owner.id.c_str(),
-                                                                  uri.c_str(),
-                                                                  {{"AUDIO_ONLY", "true"}})
-                                  : CallManager::instance().placeCall(owner.id.c_str(), uri.c_str());
-#else // dbus
-    // do not use auto here (QDBusPendingReply<QString>)
-    QString callId = isAudioOnly ? CallManager::instance().placeCallWithDetails(owner.id.c_str(),
-                                                                                uri.c_str(),
-                                                                                {{"AUDIO_ONLY", "true"}})
-                                 : CallManager::instance().placeCall(owner.id.c_str(), uri.c_str());
-#endif // ENABLE_LIBWRAP
+    std::string callId = isAudioOnly ? DaemonProxy::instance().placeCall(owner.id, uri, {{"AUDIO_ONLY", "true"}})
+                                     : DaemonProxy::instance().placeCall(owner.id, uri);
 
-    if (callId.isEmpty()) {
+    if (callId.empty()) {
         qDebug() << "no call placed between (account: " << owner.id.c_str() << ", contact: " << uri.c_str() << ")";
         return "";
     }
 
     auto callInfo = std::make_shared<call::Info>();
-    callInfo->id = callId.toStdString();
+    callInfo->id = callId;
     callInfo->peerUri = uri;
     callInfo->isOutgoing = true;
     callInfo->status =  call::Status::SEARCHING;
     callInfo->type =  call::Type::DIALOG;
     callInfo->isAudioOnly = isAudioOnly;
-    pimpl_->calls.emplace(callId.toStdString(), std::move(callInfo));
+    pimpl_->calls.emplace(callId, std::move(callInfo));
 
-    return callId.toStdString();
+    return callId;
 }
 
 void
 NewCallModel::accept(const std::string& callId) const
 {
-    CallManager::instance().accept(callId.c_str());
+    DaemonProxy::instance().accept(callId);
 }
 
 void
@@ -261,10 +251,10 @@ NewCallModel::hangUp(const std::string& callId) const
     switch(call->type)
     {
     case call::Type::DIALOG:
-        CallManager::instance().hangUp(callId.c_str());
+        DaemonProxy::instance().hangUp(callId);
         break;
     case call::Type::CONFERENCE:
-        CallManager::instance().hangUpConference(callId.c_str());
+        DaemonProxy::instance().hangUpConference(callId);
         break;
     case call::Type::INVALID:
     default:
@@ -276,13 +266,13 @@ void
 NewCallModel::refuse(const std::string& callId) const
 {
     if (!hasCall(callId)) return;
-    CallManager::instance().refuse(callId.c_str());
+    DaemonProxy::instance().refuse(callId);
 }
 
 void
 NewCallModel::toggleAudioRecord(const std::string& callId) const
 {
-    CallManager::instance().toggleRecording(callId.c_str());
+    DaemonProxy::instance().toggleRecording(callId);
 }
 
 void
@@ -290,7 +280,7 @@ NewCallModel::playDTMF(const std::string& callId, const std::string& value) cons
 {
     if (!hasCall(callId)) return;
     if (pimpl_->calls[callId]->status != call::Status::IN_PROGRESS) return;
-    CallManager::instance().playDTMF(value.c_str());
+    DaemonProxy::instance().playDTMF(value);
 }
 
 void
@@ -301,15 +291,15 @@ NewCallModel::togglePause(const std::string& callId) const
 
     if (call->status == call::Status::PAUSED) {
         if (call->type == call::Type::DIALOG)
-            CallManager::instance().unhold(callId.c_str());
+            DaemonProxy::instance().unhold(callId);
         else {
-            CallManager::instance().unholdConference(callId.c_str());
+            DaemonProxy::instance().unholdConference(callId);
         }
     } else if (call->status == call::Status::IN_PROGRESS) {
         if (call->type == call::Type::DIALOG)
-            CallManager::instance().hold(callId.c_str());
+            DaemonProxy::instance().hold(callId);
         else {
-            CallManager::instance().holdConference(callId.c_str());
+            DaemonProxy::instance().holdConference(callId);
         }
     }
 }
@@ -322,14 +312,14 @@ NewCallModel::toggleMedia(const std::string& callId, const NewCallModel::Media m
     switch(media)
     {
     case NewCallModel::Media::AUDIO:
-        CallManager::instance().muteLocalMedia(callId.c_str(),
+        DaemonProxy::instance().muteLocalMedia(callId,
                                                DRing::Media::Details::MEDIA_TYPE_AUDIO,
                                                !call->audioMuted);
         call->audioMuted = !call->audioMuted;
         break;
 
     case NewCallModel::Media::VIDEO:
-        CallManager::instance().muteLocalMedia(callId.c_str(),
+        DaemonProxy::instance().muteLocalMedia(callId,
                                                DRing::Media::Details::MEDIA_TYPE_VIDEO,
                                                !call->videoMuted);
         call->videoMuted = !call->videoMuted;
@@ -352,13 +342,13 @@ NewCallModel::setQuality(const std::string& callId, const double quality) const
 void
 NewCallModel::transfer(const std::string& callId, const std::string& to) const
 {
-    CallManager::instance().transfer(callId.c_str(), to.c_str());
+    DaemonProxy::instance().transfer(callId, to);
 }
 
 void
 NewCallModel::transferToCall(const std::string& callId, const std::string& callIdDest) const
 {
-    CallManager::instance().attendedTransfer(callId.c_str(), callIdDest.c_str());
+    DaemonProxy::instance().attendedTransfer(callId, callIdDest);
 }
 
 void
@@ -369,13 +359,13 @@ NewCallModel::joinCalls(const std::string& callIdA, const std::string& callIdB) 
     auto& call1 = pimpl_->calls[callIdA];
     auto& call2 = pimpl_->calls[callIdB];
     if (call1->type == call::Type::CONFERENCE && call2->type == call::Type::CONFERENCE)
-        CallManager::instance().joinConference(callIdA.c_str(), callIdB.c_str());
+        DaemonProxy::instance().joinConference(callIdA, callIdB);
     else if (call1->type == call::Type::CONFERENCE)
-        CallManager::instance().addParticipant(callIdB.c_str(), callIdA.c_str());
+        DaemonProxy::instance().addParticipant(callIdB, callIdA);
     else if (call2->type == call::Type::CONFERENCE)
-        CallManager::instance().addParticipant(callIdA.c_str(), callIdB.c_str());
+        DaemonProxy::instance().addParticipant(callIdA, callIdB);
     else
-        CallManager::instance().joinParticipant(callIdA.c_str(), callIdB.c_str());
+        DaemonProxy::instance().joinParticipant(callIdA, callIdB);
 }
 
 void
@@ -402,7 +392,7 @@ bool
 NewCallModel::isRecording(const std::string& callId) const
 {
     if (!hasCall(callId)) return false;
-    return CallManager::instance().getIsRecording(callId.c_str());
+    return DaemonProxy::instance().getIsRecording(callId);
 }
 
 std::string
@@ -419,12 +409,12 @@ NewCallModelPimpl::NewCallModelPimpl(const NewCallModel& linked, const Callbacks
 : linked(linked)
 , callbacksHandler(callbacksHandler)
 {
-    connect(&callbacksHandler, &CallbacksHandler::incomingCall, this, &NewCallModelPimpl::slotIncomingCall);
-    connect(&callbacksHandler, &CallbacksHandler::callStateChanged, this, &NewCallModelPimpl::slotCallStateChanged);
-    connect(&callbacksHandler, &CallbacksHandler::incomingVCardChunk, this, &NewCallModelPimpl::slotincomingVCardChunk);
-    connect(&callbacksHandler, &CallbacksHandler::conferenceCreated, this , &NewCallModelPimpl::slotConferenceCreated);
+    connect(&callbacksHandler, &CallbacksHandler::incomingCall, this, &NewCallModelPimpl::slotIncomingCall, Qt::QueuedConnection);
+    connect(&callbacksHandler, &CallbacksHandler::callStateChanged, this, &NewCallModelPimpl::slotCallStateChanged, Qt::QueuedConnection);
+    connect(&callbacksHandler, &CallbacksHandler::incomingVCardChunk, this, &NewCallModelPimpl::slotincomingVCardChunk, Qt::QueuedConnection);
+    connect(&callbacksHandler, &CallbacksHandler::conferenceCreated, this , &NewCallModelPimpl::slotConferenceCreated, Qt::QueuedConnection);
 
-#ifndef ENABLE_LIBWRAP
+#ifndef DAEMON_INTERFACE_IS_LIBRARY
     // Only necessary with dbus since the daemon runs separately
     initCallFromDaemon();
     initConferencesFromDaemon();
@@ -439,28 +429,28 @@ NewCallModelPimpl::~NewCallModelPimpl()
 void
 NewCallModelPimpl::initCallFromDaemon()
 {
-    QStringList callList = CallManager::instance().getCallList();
+    std::vector<std::string> callList = DaemonProxy::instance().getCallList();
     for (const auto& callId : callList)
     {
-        MapStringString details = CallManager::instance().getCallDetails(callId);
-        auto accountId = details["ACCOUNTID"].toStdString();
+        std::map<std::string, std::string> details = DaemonProxy::instance().getCallDetails(callId);
+        auto accountId = details["ACCOUNTID"];
         if (accountId == linked.owner.id) {
             auto callInfo = std::make_shared<call::Info>();
-            callInfo->id = callId.toStdString();
+            callInfo->id = callId;
             auto now = std::chrono::steady_clock::now();
             auto system_now = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
-            auto diff = static_cast<int64_t>(system_now) - std::stol(details["TIMESTAMP_START"].toStdString());
+            auto diff = static_cast<int64_t>(system_now) - std::stol(details["TIMESTAMP_START"]);
             callInfo->startTime = now - std::chrono::seconds(diff);
-            callInfo->status = call::to_status(details["CALL_STATE"].toStdString());
-            auto endId = details["PEER_NUMBER"].indexOf("@");
-            callInfo->peerUri = details["PEER_NUMBER"].left(endId).toStdString();
+            callInfo->status = call::to_status(details["CALL_STATE"]);
+            auto endId = details["PEER_NUMBER"].find_first_of("@");
+            callInfo->peerUri = details["PEER_NUMBER"].substr(endId);
             if (linked.owner.profileInfo.type == lrc::api::profile::Type::RING) {
                 callInfo->peerUri = "ring:" + callInfo->peerUri;
             }
             callInfo->videoMuted = details["VIDEO_MUTED"] == "true";
             callInfo->audioMuted = details["AUDIO_MUTED"] == "true";
             callInfo->type = call::Type::DIALOG;
-            calls.emplace(callId.toStdString(), std::move(callInfo));
+            calls.emplace(callId, std::move(callInfo));
             // NOTE/BUG: the videorenderer can't know that the client has restarted
             // So, for now, a user will have to manually restart the medias until
             // this renderer is not redesigned.
@@ -471,50 +461,49 @@ NewCallModelPimpl::initCallFromDaemon()
 void
 NewCallModelPimpl::initConferencesFromDaemon()
 {
-    QStringList callList = CallManager::instance().getConferenceList();
+    std::vector<std::string> callList = DaemonProxy::instance().getConferenceList();
     for (const auto& callId : callList)
     {
-        QMap<QString, QString> details = CallManager::instance().getConferenceDetails(callId);
+        std::map<std::string, std::string> details = DaemonProxy::instance().getConferenceDetails(callId);
         auto callInfo = std::make_shared<call::Info>();
-        callInfo->id = callId.toStdString();
-        QStringList callList = CallManager::instance().getParticipantList(callId);
+        callInfo->id = callId;
+        std::vector<std::string> callList = DaemonProxy::instance().getParticipantList(callId);
         auto isForThisAccount = true;
-        foreach(const auto& call, callList) {
-            MapStringString callDetails = CallManager::instance().getCallDetails(call);
-            isForThisAccount = callDetails["ACCOUNTID"].toStdString() == linked.owner.id;
+        for (const auto& call: callList) {
+            std::map<std::string, std::string> callDetails = DaemonProxy::instance().getCallDetails(call);
+            isForThisAccount = callDetails["ACCOUNTID"] == linked.owner.id;
             if (!isForThisAccount) break;
             auto now = std::chrono::steady_clock::now();
             auto system_now = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
-            auto diff = static_cast<int64_t>(system_now) - std::stol(callDetails["TIMESTAMP_START"].toStdString());
+            auto diff = static_cast<int64_t>(system_now) - std::stol(callDetails["TIMESTAMP_START"]);
             callInfo->status =  details["CONF_STATE"] == "ACTIVE_ATTACHED"? call::Status::IN_PROGRESS : call::Status::PAUSED;
             callInfo->startTime = now - std::chrono::seconds(diff);
-            emit linked.callAddedToConference(call.toStdString(), callId.toStdString());
+            Q_EMIT linked.callAddedToConference(call, callId);
         }
         if (!isForThisAccount) break;
         callInfo->type = call::Type::CONFERENCE;
-        calls.emplace(callId.toStdString(), std::move(callInfo));
+        calls.emplace(callId, std::move(callInfo));
     }
 }
 
 void
 NewCallModel::sendSipMessage(const std::string& callId, const std::string& body) const
 {
-    QMap<QString, QString> payloads;
-    payloads["text/plain"] = body.c_str();
-
-    CallManager::instance().sendTextMessage(callId.c_str(), payloads, true /* not used */);
+    std::map<std::string, std::string> payloads;
+    payloads["text/plain"] = body;
+    DaemonProxy::instance().sendTextMessage(callId, payloads, QObject::tr("Me").toStdString(), true);
 }
 
 void
 NewCallModel::hangupCallsAndConferences()
 {
-    QStringList conferences = CallManager::instance().getConferenceList();
+    std::vector<std::string> conferences = DaemonProxy::instance().getConferenceList();
     for (const auto& conf : conferences) {
-        CallManager::instance().hangUpConference(conf);
+        DaemonProxy::instance().hangUpConference(conf);
     }
-    QStringList calls = CallManager::instance().getCallList();
+    std::vector<std::string> calls = DaemonProxy::instance().getCallList();
     for (const auto &call : calls) {
-        CallManager::instance().hangUp(call);
+        DaemonProxy::instance().hangUp(call);
     }
 }
 
@@ -525,8 +514,7 @@ NewCallModelPimpl::slotIncomingCall(const std::string& accountId, const std::str
         return;
     }
 
-    // do not use auto here (QDBusPendingReply<MapStringString>)
-    MapStringString callDetails = CallManager::instance().getCallDetails(callId.c_str());
+    std::map<std::string, std::string> callDetails = DaemonProxy::instance().getCallDetails(callId);
 
     auto callInfo = std::make_shared<call::Info>();
     callInfo->id = callId;
@@ -539,7 +527,7 @@ NewCallModelPimpl::slotIncomingCall(const std::string& accountId, const std::str
     callInfo->isAudioOnly = callDetails["AUDIO_ONLY"] == "true" ? true : false;
     calls.emplace(callId, std::move(callInfo));
 
-    emit linked.newIncomingCall(fromId, callId);
+    Q_EMIT linked.newIncomingCall(fromId, callId);
 
     // HACK. BECAUSE THE DAEMON DOESN'T HANDLE THIS CASE!
     if (linked.owner.confProperties.autoAnswer) {
@@ -557,7 +545,7 @@ NewCallModelPimpl::slotCallStateChanged(const std::string& callId, const std::st
 
     if (status == call::Status::ENDED && !call::isTerminating(call->status)) {
         call->status = call::Status::TERMINATING;
-        emit linked.callStatusChanged(callId, code);
+        Q_EMIT linked.callStatusChanged(callId, code);
     }
 
     // proper state transition
@@ -573,15 +561,15 @@ NewCallModelPimpl::slotCallStateChanged(const std::string& callId, const std::st
          call::to_string(previousStatus).c_str(), call::to_string(status).c_str());
 
     // NOTE: signal emission order matters, always emit CallStatusChanged before CallEnded
-    emit linked.callStatusChanged(callId, code);
+    Q_EMIT linked.callStatusChanged(callId, code);
 
     if (call->status == call::Status::ENDED) {
-        emit linked.callEnded(callId);
+        Q_EMIT linked.callEnded(callId);
     } else if (call->status == call::Status::IN_PROGRESS) {
         if (previousStatus == call::Status::INCOMING_RINGING
                 || previousStatus == call::Status::OUTGOING_RINGING) {
             call->startTime = std::chrono::steady_clock::now();
-            emit linked.callStarted(callId);
+            Q_EMIT linked.callStarted(callId);
             sendProfile(callId);
         }
     }
@@ -645,9 +633,9 @@ NewCallModelPimpl::slotConferenceCreated(const std::string& confId)
     callInfo->type =  call::Type::CONFERENCE;
     callInfo->startTime = std::chrono::steady_clock::now();
     calls[confId] = callInfo;
-    QStringList callList = CallManager::instance().getParticipantList(confId.c_str());
-    foreach(const auto& call, callList) {
-        emit linked.callAddedToConference(call.toStdString(), confId);
+    std::vector<std::string> callList = DaemonProxy::instance().getParticipantList(confId);
+    for (const auto& call: callList) {
+        Q_EMIT linked.callAddedToConference(call, confId);
     }
 }
 
@@ -663,19 +651,17 @@ NewCallModelPimpl::sendProfile(const std::string& callId)
     int total = vCard.size()/1000 + (vCard.size()%1000?1:0);
     while (vCard.size()) {
         auto sizeLimit = std::min(1000, static_cast<int>(vCard.size()));
-        MapStringString chunk;
+        std::map<std::string, std::string> chunk;
         chunk[QString("%1; id=%2,part=%3,of=%4")
-               .arg( lrc::vCard::PROFILE_VCF     )
+               .arg( lrc::vCard::PROFILE_VCF    )
                .arg( key.c_str()                )
                .arg( QString::number( i+1   )   )
-               .arg( QString::number( total )   )
-            ] = vCard.substr(0, sizeLimit).c_str();
+               .arg( QString::number( total )   ).toStdString()
+            ] = vCard.substr(0, sizeLimit);
         vCard = vCard.substr(sizeLimit);
         ++i;
-        CallManager::instance().sendTextMessage(callId.c_str(), chunk, false);
+        DaemonProxy::instance().sendTextMessage(callId, chunk, QObject::tr("Me").toStdString(), false);
     }
 }
 
 } // namespace lrc
-
-#include "api/moc_newcallmodel.cpp"

@@ -19,9 +19,7 @@
 
 // new LRC
 #include "callbackshandler.h"
-
-// Dbus
-#include "dbus/configurationmanager.h"
+#include "daemonproxy.h"
 
 namespace lrc
 {
@@ -68,7 +66,7 @@ PeerDiscoveryModelPimpl::PeerDiscoveryModelPimpl(PeerDiscoveryModel& linked,
 , callbacksHandler_(callbacksHandler)
 , accountID_(accountID)
 {
-    connect(&callbacksHandler_, &CallbacksHandler::newPeerSubscription, this, &PeerDiscoveryModelPimpl::slotPeerMapStatusChanged);
+    connect(&callbacksHandler_, &CallbacksHandler::newPeerSubscription, this, &PeerDiscoveryModelPimpl::slotPeerMapStatusChanged, Qt::QueuedConnection);
 }
 
 PeerDiscoveryModelPimpl::~PeerDiscoveryModelPimpl()
@@ -82,7 +80,7 @@ PeerDiscoveryModelPimpl::slotPeerMapStatusChanged(const std::string& accountID, 
     if(accountID != accountID_){
         return;
     } 
-    emit linked_.modelChanged(contactUri,state == 0 ? PeerModelChanged::INSERT : PeerModelChanged::REMOVE,displayname);
+    Q_EMIT linked_.modelChanged(contactUri,state == 0 ? PeerModelChanged::INSERT : PeerModelChanged::REMOVE,displayname);
 
 }
 
@@ -90,12 +88,12 @@ std::vector<PeerContact>
 PeerDiscoveryModel::getNearbyPeers() const
 {
     std::vector<PeerContact> result;
-    const MapStringString nearbyPeers = ConfigurationManager::instance().getNearbyPeers(QString::fromStdString(pimpl_->accountID_));
+    const std::map<std::string, std::string> nearbyPeers = DaemonProxy::instance().getNearbyPeers(pimpl_->accountID_);
     result.reserve(nearbyPeers.size());
 
-    QMap<QString, QString>::const_iterator i = nearbyPeers.constBegin();
-    while (i != nearbyPeers.constEnd()) {
-        result.emplace_back(PeerContact{i.key().toStdString(), i.value().toStdString()});
+    auto i = nearbyPeers.begin();
+    while (i != nearbyPeers.end()) {
+        result.emplace_back(PeerContact{i->first, i->second});
         ++i;
     }
     return result;
@@ -103,5 +101,5 @@ PeerDiscoveryModel::getNearbyPeers() const
 
 } // namespace lrc
 
-#include "api/moc_peerdiscoverymodel.cpp"
+//#include "api/moc_peerdiscoverymodel.cpp"
 #include "peerdiscoverymodel.moc"

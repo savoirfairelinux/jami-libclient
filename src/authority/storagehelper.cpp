@@ -24,6 +24,7 @@
 #include "api/datatransfer.h"
 #include "uri.h"
 #include "vcard.h"
+#include "daemonproxy.h"
 
 #include <account_const.h>
 #include <datatransfer_interface.h>
@@ -740,7 +741,7 @@ std::pair<msgFlag, uint64_t> migrateMessageBody(const std::string&,
 std::vector<std::string> getPeerParticipantsForConversationId(lrc::Database&,
                                                               const std::string&,
                                                               const std::string&);
-void migrateAccountDb(const QString&,
+void migrateAccountDb(const std::string&,
                       std::shared_ptr<lrc::Database>,
                       std::shared_ptr<lrc::Database>);
 
@@ -902,19 +903,18 @@ getPeerParticipantsForConversationId(Database& db, const std::string& profileId,
 }
 
 void
-migrateAccountDb(const QString& accountId,
+migrateAccountDb(const std::string& accountId,
                  std::shared_ptr<Database> db,
                  std::shared_ptr<Database> legacyDb)
 {
     using namespace lrc::api;
     using namespace migration;
 
-    auto accountLocalPath = getPath() + accountId + "/";
+    auto accountLocalPath = getPath() + accountId.c_str() + "/";
 
     using namespace DRing::Account;
-    MapStringString accountDetails = ConfigurationManager::instance().
-        getAccountDetails(accountId.toStdString().c_str());
-    bool isRingAccount = accountDetails[ConfProperties::TYPE] == "RING";
+    std::map<std::string, std::string> accountDetails = DaemonProxy::instance().getAccountDetails(accountId);
+    bool isRingAccount = accountDetails.at(ConfProperties::TYPE) == "RING";
     std::map<std::string, std::string> profileIdUriMap;
     std::map<std::string, std::string> convIdPeerUriMap;
     std::string accountProfileId;
@@ -923,17 +923,17 @@ migrateAccountDb(const QString& accountId,
     // migrate account's avatar/alias from profiles table to {data_dir}/profile.vcf
     std::string accountUri;
     if (isRingAccount) {
-        accountUri = accountDetails[DRing::Account::ConfProperties::USERNAME].contains("ring:") ?
-            accountDetails[DRing::Account::ConfProperties::USERNAME].toStdString().substr(std::string("ring:").size()) :
-            accountDetails[DRing::Account::ConfProperties::USERNAME].toStdString();
+        accountUri = accountDetails.at(DRing::Account::ConfProperties::USERNAME).find("ring:") != std::string::npos ?
+            accountDetails.at(DRing::Account::ConfProperties::USERNAME).substr(std::string("ring:").size()) :
+            accountDetails.at(DRing::Account::ConfProperties::USERNAME);
     } else {
-        accountUri = accountDetails[DRing::Account::ConfProperties::USERNAME].toStdString();
+        accountUri = accountDetails.at(DRing::Account::ConfProperties::USERNAME);
     }
 
     auto accountProfileIds = legacyDb->select(
         "profile_id", "profiles_accounts",
         "account_id=:account_id AND is_account=:is_account",
-        { {":account_id", accountId.toStdString()},
+        { {":account_id", accountId},
         {":is_account", "true"} }).payloads;
     if (accountProfileIds.size() != 1) {
         return;
@@ -951,7 +951,7 @@ migrateAccountDb(const QString& accountId,
         accountProfileInfo = { accountUri, accountProfile[0], accountProfile[1],
             isRingAccount ? profile::Type::RING : profile::Type::SIP };
     }
-    auto accountVcard = profileToVcard(accountProfileInfo, accountId.toStdString());
+    auto accountVcard = profileToVcard(accountProfileInfo, accountId);
     auto profileFilePath = accountLocalPath + "profile" + ".vcf";
     QFile file(profileFilePath);
     if (!file.open(QIODevice::WriteOnly)) {
@@ -970,7 +970,7 @@ migrateAccountDb(const QString& accountId,
     auto profileIds = legacyDb->select(
         "profile_id", "profiles_accounts",
         "account_id=:account_id AND is_account=:is_account",
-        { {":account_id", accountId.toStdString()},
+        { {":account_id", accountId},
         {":is_account", "false"} }).payloads;
     for (const auto& profileId : profileIds) {
         auto profile = legacyDb->select(
@@ -1142,7 +1142,7 @@ migrateAccountDb(const QString& accountId,
 } // namespace migration
 
 std::vector<std::shared_ptr<Database>>
-migrateIfNeeded(const QStringList& accountIds,
+migrateIfNeeded(const std::vector<std::string>& accountIds,
                 MigrationCb& willMigrateCb,
                 MigrationCb& didMigrateCb)
 {
@@ -1177,7 +1177,10 @@ migrateIfNeeded(const QStringList& accountIds,
     QString filename;
     QDir dir;
     bool success = true;
-    foreach(filename, filesList) {
+
+    QListIterator<QString> i(filesList);
+    while (i.hasNext()) {
+        auto filename = i.next();
         qDebug() << "Migrate " << oldDataDir.absolutePath() << "/" << filename
                  << " to " << dataDir.absolutePath() + "/" + filename;
         if (filename != "." && filename != "..") {
@@ -1196,9 +1199,9 @@ migrateIfNeeded(const QStringList& accountIds,
     bool needsMigration = false;
     std::map<QString, bool> hasMigratedData;
     for (const auto& accountId : accountIds) {
-        auto hasMigratedDb = QFile(appPath + accountId + "/history.db").exists() &&
-                            !QFile(appPath + accountId + "/history.db-journal").exists();
-        hasMigratedData.insert(std::make_pair(accountId, hasMigratedDb));
+        auto hasMigratedDb = QFile(appPath + accountId.data() + "/history.db").exists() &&
+                            !QFile(appPath + accountId.data() + "/history.db-journal").exists();
+        hasMigratedData.insert(std::make_pair(QString::fromStdString(accountId), hasMigratedDb));
         needsMigration |= !hasMigratedDb;
     }
     if (!needsMigration) {
@@ -1239,16 +1242,16 @@ migrateIfNeeded(const QStringList& accountIds,
             // 3. migrate db version 1.1 -> per account dbs version 1
             int index = 0;
             for (const auto& accountId : accountIds) {
-                if (hasMigratedData.at(accountId)) {
+                if (hasMigratedData.at(QString::fromStdString(accountId))) {
                     index++;
                     continue;
                 }
-                qDebug() << "Migrating account: " << accountId << "...";
+                qDebug() << "Migrating account: " << accountId.data() << "...";
                 // try to remove the transaction journal from a failed migration
-                QFile(appPath + accountId + "/history.db-journal").remove();
+                QFile(appPath + accountId.data() + "/history.db-journal").remove();
                 try {
                     QSqlDatabase::database().transaction();
-                    auto dbName = QString::fromStdString(accountId.toStdString() + "/history");
+                    auto dbName = QString::fromStdString(accountId + "/history");
                     dbs.at(index) = lrc::DatabaseFactory::create<Database>(dbName, appPath);
                     auto& db = dbs.at(index++);
                     migration::migrateAccountDb(accountId, db, legacyDb);
@@ -1256,7 +1259,7 @@ migrateIfNeeded(const QStringList& accountIds,
                 } catch (const std::runtime_error& e) {
                     qWarning().noquote()
                         << "Could not migrate database for account: "
-                        << accountId << "\n " << e.what();
+                        << accountId.data() << "\n " << e.what();
                     QSqlDatabase::database().rollback();
                 }
             }

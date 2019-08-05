@@ -24,17 +24,17 @@
 #pragma once
 
 //variables contain in the map information
-static QString LOCAL_FPS           = QStringLiteral("local FPS");
-static QString LOCAL_AUDIO_CODEC   = QStringLiteral("local audio codec");
-static QString LOCAL_VIDEO_CODEC   = QStringLiteral("local video codec");
-static QString LOCAL_WIDTH         = QStringLiteral("local width");
-static QString LOCAL_HEIGHT        = QStringLiteral("local height");
-static QString REMOTE_FPS          = QStringLiteral("remote FPS");
-static QString REMOTE_WIDTH        = QStringLiteral("remote width");
-static QString REMOTE_HEIGHT       = QStringLiteral("remote height");
-static QString REMOTE_VIDEO_CODEC  = QStringLiteral("remote video codec");
-static QString REMOTE_AUDIO_CODEC  = QStringLiteral("remote audio codec");
-static QString CALL_ID             = QStringLiteral("callID");
+static const std::string LOCAL_FPS           ("local FPS");
+static const std::string LOCAL_AUDIO_CODEC   ("local audio codec");
+static const std::string LOCAL_VIDEO_CODEC   ("local video codec");
+static const std::string LOCAL_WIDTH         ("local width");
+static const std::string LOCAL_HEIGHT        ("local height");
+static const std::string REMOTE_FPS          ("remote FPS");
+static const std::string REMOTE_WIDTH        ("remote width");
+static const std::string REMOTE_HEIGHT       ("remote height");
+static const std::string REMOTE_VIDEO_CODEC  ("remote video codec");
+static const std::string REMOTE_AUDIO_CODEC  ("remote audio codec");
+static const std::string CALL_ID             ("callID");
 
 class SmartInfoHubPrivate;
 class SmartInfoHubPrivate final : public QObject
@@ -45,10 +45,10 @@ public:
     constexpr static const char* DEFAULT_RETURN_VALUE_QSTRING = "void";
 
     uint32_t m_refreshTimeInformationMS = 500;
-    QMap<QString, QString> m_information;
+    std::map<std::string, std::string> m_information;
 
-    void setMapInfo(const MapStringString& info);
+    //void setMapInfo(const QMap<QString, QString>& info);
 
-public slots:
-    void slotSmartInfo(const MapStringString& info);
+public Q_SLOTS:
+    void slotSmartInfo(const std::map<std::string, std::string>& info);
 };

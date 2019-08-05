@@ -17,7 +17,7 @@
  ***************************************************************************/
 #pragma once
 
-#ifndef ENABLE_LIBWRAP
+#ifndef DAEMON_INTERFACE_IS_LIBRARY
 
 //Base
 #include "video/renderer.h"

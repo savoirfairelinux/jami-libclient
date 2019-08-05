@@ -24,7 +24,7 @@
 // LRC
 #include "api/newaccountmodel.h"
 #include "callbackshandler.h"
-#include "dbus/configurationmanager.h"
+#include "daemonproxy.h"
 
 // Daemon
 #include <account_const.h>
@@ -34,7 +34,6 @@
 
 namespace lrc
 {
-
 
 using namespace api;
 
@@ -102,7 +101,7 @@ NewDeviceModel::getDevice(const std::string& id) const
 void
 NewDeviceModel::revokeDevice(const std::string& id, const std::string& password)
 {
-    ConfigurationManager::instance().revokeDevice(owner.id.c_str(), password.c_str(), id.c_str());
+    DaemonProxy::instance().revokeDevice(owner.id, password, id);
 }
 
 void
@@ -126,17 +125,19 @@ NewDeviceModelPimpl::NewDeviceModelPimpl(const NewDeviceModel& linked, const Cal
 , callbacksHandler(callbacksHandler)
 , devices_({})
 {
-    const MapStringString aDetails = ConfigurationManager::instance().getAccountDetails(linked.owner.id.c_str());
-    currentDeviceId_ = aDetails.value(DRing::Account::ConfProperties::RING_DEVICE_ID).toStdString();
-    const MapStringString accountDevices = ConfigurationManager::instance().getKnownRingDevices(linked.owner.id.c_str());
+    const std::map<std::string, std::string> aDetails = DaemonProxy::instance().getAccountDetails(linked.owner.id);
+    try {
+        currentDeviceId_ = aDetails.at(DRing::Account::ConfProperties::RING_DEVICE_ID);
+    } catch(std::out_of_range) {}
+    const std::map<std::string, std::string> accountDevices = DaemonProxy::instance().getKnownRingDevices(linked.owner.id);
     auto it = accountDevices.begin();
     while (it != accountDevices.end()) {
         {
             std::lock_guard<std::mutex> lock(devicesMtx_);
             auto device = Device {
-                /* id= */it.key().toStdString(),
-                /* name= */it.value().toStdString(),
-                /* isCurrent= */it.key().toStdString() == currentDeviceId_
+                /* id= */it->first,
+                /* name= */it->second,
+                /* isCurrent= */it->first == currentDeviceId_
             };
             if (device.isCurrent) {
                 devices_.emplace_front(device);
@@ -148,9 +149,9 @@ NewDeviceModelPimpl::NewDeviceModelPimpl(const NewDeviceModel& linked, const Cal
     }
 
     connect(&callbacksHandler, &CallbacksHandler::knownDevicesChanged, this,
-            &NewDeviceModelPimpl::slotKnownDevicesChanged);
+            &NewDeviceModelPimpl::slotKnownDevicesChanged, Qt::QueuedConnection);
     connect(&callbacksHandler, &CallbacksHandler::deviceRevocationEnded, this,
-            &NewDeviceModelPimpl::slotDeviceRevocationEnded);
+            &NewDeviceModelPimpl::slotDeviceRevocationEnded, Qt::QueuedConnection);
 }
 
 NewDeviceModelPimpl::~NewDeviceModelPimpl()
@@ -182,7 +183,7 @@ NewDeviceModelPimpl::slotKnownDevicesChanged(const std::string& accountId,
         }
     }
     for (const auto& device : updatedDevices)
-        emit linked.deviceUpdated(device);
+        Q_EMIT linked.deviceUpdated(device);
 
     // Add new devices
     std::list<std::string> addedDevices;
@@ -200,7 +201,7 @@ NewDeviceModelPimpl::slotKnownDevicesChanged(const std::string& accountId,
         }
     }
     for (const auto& device : addedDevices)
-        emit linked.deviceAdded(device);
+        Q_EMIT linked.deviceAdded(device);
 }
 
 
@@ -224,13 +225,13 @@ NewDeviceModelPimpl::slotDeviceRevocationEnded(const std::string& accountId,
 
     switch (status) {
     case 0:
-        emit linked.deviceRevoked(deviceId, NewDeviceModel::Status::SUCCESS);
+        Q_EMIT linked.deviceRevoked(deviceId, NewDeviceModel::Status::SUCCESS);
         break;
     case 1:
-        emit linked.deviceRevoked(deviceId, NewDeviceModel::Status::WRONG_PASSWORD);
+        Q_EMIT linked.deviceRevoked(deviceId, NewDeviceModel::Status::WRONG_PASSWORD);
         break;
     case 2:
-        emit linked.deviceRevoked(deviceId, NewDeviceModel::Status::UNKNOWN_DEVICE);
+        Q_EMIT linked.deviceRevoked(deviceId, NewDeviceModel::Status::UNKNOWN_DEVICE);
         break;
     default:
         break;
@@ -240,4 +241,4 @@ NewDeviceModelPimpl::slotDeviceRevocationEnded(const std::string& accountId,
 } // namespace lrc
 
 #include "newdevicemodel.moc"
-#include "api/moc_newdevicemodel.cpp"
+//#include "api/moc_newdevicemodel.cpp"

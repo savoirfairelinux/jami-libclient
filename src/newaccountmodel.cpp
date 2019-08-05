@@ -44,12 +44,11 @@
 
 // old LRC
 #include "api/profile.h"
-#include "qtwrapper/conversions_wrap.hpp"
 
-// Dbus
-#include "dbus/configurationmanager.h"
+#include "daemonproxy.h"
 
 #include <atomic>
+#include <limits>
 
 namespace lrc
 {
@@ -170,13 +169,13 @@ std::vector<std::string>
 NewAccountModel::getAccountList() const
 {
     std::vector<std::string> accountsId;
-    const QStringList accountIds = ConfigurationManager::instance().getAccountList();
+    const std::vector<std::string> accountIds = DaemonProxy::instance().getAccountList();
 
     for (auto const& id : accountIds) {
-        auto account = pimpl_->accounts.find(id.toStdString());
+        auto account = pimpl_->accounts.find(id);
         // Do not include accounts flagged for removal
         if (account != pimpl_->accounts.end() && account->second.first.valid)
-            accountsId.emplace_back(id.toStdString());
+            accountsId.emplace_back(id);
     }
 
     return accountsId;
@@ -191,7 +190,7 @@ NewAccountModel::setAccountEnabled(const std::string& accountId, bool enabled) c
     }
     auto& accountInfo = account->second.first;
     accountInfo.enabled = enabled;
-    ConfigurationManager::instance().sendRegister(QString::fromStdString(accountId), enabled);
+    DaemonProxy::instance().sendRegister(accountId, enabled);
 }
 
 void
@@ -203,29 +202,28 @@ NewAccountModel::setAccountConfig(const std::string& accountId,
         throw std::out_of_range("NewAccountModel::save, can't find " + accountId);
     }
     auto& accountInfo = account->second.first;
-    auto& configurationManager = ConfigurationManager::instance();
-    MapStringString details = confProperties.toDetails();
+    std::map<std::string, std::string> details = confProperties.toDetails();
     // Set values from Info. No need to include ID and TYPE. SIP accounts may modify the USERNAME
     // TODO: move these into the ConfProperties_t struct ?
     using namespace DRing::Account;
-    qDebug("UPNP_ENABLED: %s\n", details[ConfProperties::UPNP_ENABLED].toStdString().c_str());
-    details[ConfProperties::ENABLED]                    = toQString(accountInfo.enabled);
-    details[ConfProperties::ALIAS]                      = toQString(accountInfo.profileInfo.alias);
-    details[ConfProperties::DISPLAYNAME]                = toQString(accountInfo.profileInfo.alias);
-    details[ConfProperties::TYPE]                       = (accountInfo.profileInfo.type == profile::Type::RING) ? QString(ProtocolNames::RING) : QString(ProtocolNames::SIP);
+    qDebug("UPNP_ENABLED: %s\n", details[ConfProperties::UPNP_ENABLED].c_str());
+    details[ConfProperties::ENABLED]      = accountInfo.enabled? "true" : "false";
+    details[ConfProperties::ALIAS]        = accountInfo.profileInfo.alias;
+    details[ConfProperties::DISPLAYNAME]  = accountInfo.profileInfo.alias;
+    details[ConfProperties::TYPE]         = (accountInfo.profileInfo.type == profile::Type::RING)? ProtocolNames::RING : ProtocolNames::SIP;
     if (accountInfo.profileInfo.type == profile::Type::RING) {
-        details[ConfProperties::USERNAME] = toQString(accountInfo.profileInfo.uri).prepend((accountInfo.profileInfo.type == profile::Type::RING) ? "ring:" : "");
+        details[ConfProperties::USERNAME] = "ring:" + accountInfo.profileInfo.uri;
     } else if (accountInfo.profileInfo.type == profile::Type::SIP) {
-        MapStringString credentials;
-        credentials[ConfProperties::USERNAME] = toQString(confProperties.username);
-        credentials[ConfProperties::PASSWORD] = toQString(confProperties.password);
-        credentials[ConfProperties::REALM] = confProperties.realm.empty()? QString("*") : toQString(confProperties.realm);
-        QVector<MapStringString> credentialsVec;
-        credentialsVec.append(credentials);
-        ConfigurationManager::instance().setCredentials(accountId.c_str(), credentialsVec);
-        details[ConfProperties::USERNAME] = toQString(confProperties.username);
+        std::map<std::string, std::string> credentials;
+        credentials[ConfProperties::USERNAME] = confProperties.username;
+        credentials[ConfProperties::PASSWORD] = confProperties.password;
+        credentials[ConfProperties::REALM] = confProperties.realm.empty()? "*" : confProperties.realm;
+        std::vector<std::map<std::string, std::string>> credentialsVec;
+        credentialsVec.push_back(credentials);
+        DaemonProxy::instance().setCredentials(accountId, credentialsVec);
+        details[ConfProperties::USERNAME] = confProperties.username;
     }
-    configurationManager.setAccountDetails(QString::fromStdString(accountId), details);
+    DaemonProxy::instance().setAccountDetails(accountId, details);
 }
 
 account::ConfProperties_t
@@ -251,7 +249,7 @@ NewAccountModel::setAlias(const std::string& accountId, const std::string& alias
 
     authority::storage::createOrUpdateProfile(accountInfo.id, accountInfo.profileInfo);
 
-    emit profileUpdated(accountId);
+    Q_EMIT profileUpdated(accountId);
 }
 
 void
@@ -266,31 +264,31 @@ NewAccountModel::setAvatar(const std::string& accountId, const std::string& avat
 
     authority::storage::createOrUpdateProfile(accountInfo.id, accountInfo.profileInfo);
 
-    emit profileUpdated(accountId);
+    Q_EMIT profileUpdated(accountId);
 }
 
 bool
 NewAccountModel::registerName(const std::string& accountId, const std::string& password, const std::string& username)
 {
-    return ConfigurationManager::instance().registerName(accountId.c_str(), password.c_str(), username.c_str());
+    return DaemonProxy::instance().registerName(accountId, password, username);
 }
 
 bool
 NewAccountModel::exportToFile(const std::string& accountId, const std::string& path, const std::string& password) const
 {
-    return ConfigurationManager::instance().exportToFile(accountId.c_str(), path.c_str(), password.c_str());
+    return DaemonProxy::instance().exportToFile(accountId, path, password);
 }
 
 bool
 NewAccountModel::exportOnRing(const std::string& accountId, const std::string& password) const
 {
-    return ConfigurationManager::instance().exportOnRing(accountId.c_str(), password.c_str());
+    return DaemonProxy::instance().exportOnRing(accountId, password);
 }
 
 void
 NewAccountModel::removeAccount(const std::string& accountId) const
 {
-    ConfigurationManager::instance().removeAccount(accountId.c_str());
+    DaemonProxy::instance().removeAccount(accountId);
 }
 
 bool
@@ -298,8 +296,7 @@ NewAccountModel::changeAccountPassword(const std::string& accountId,
                                        const std::string& currentPassword,
                                        const std::string& newPassword) const
 {
-    return ConfigurationManager::instance()
-    .changeAccountPassword(accountId.c_str(), currentPassword.c_str(), newPassword.c_str());
+    return DaemonProxy::instance().changeAccountPassword(accountId, currentPassword, newPassword);
 }
 
 void
@@ -338,19 +335,25 @@ NewAccountModelPimpl::NewAccountModelPimpl(NewAccountModel& linked,
 , callbacksHandler(callbacksHandler)
 , username_changed(false)
 {
-    const QStringList accountIds = ConfigurationManager::instance().getAccountList();
+    const std::vector<std::string> accountIds = DaemonProxy::instance().getAccountList();
     auto accountDbs = authority::storage::migrateIfNeeded(accountIds, willMigrateCb, didMigrateCb);
+
     for (const auto& id : accountIds) {
-        addToAccounts(id.toStdString(), accountDbs.at(accountIds.indexOf(id)));
+        int index = 0;
+        for (const auto& id2: accountIds) {
+            if (id2 == id) break;
+            index++;
+        }
+        addToAccounts(id, accountDbs.at(index));
     }
 
-    connect(&callbacksHandler, &CallbacksHandler::accountsChanged, this, &NewAccountModelPimpl::updateAccounts);
-    connect(&callbacksHandler, &CallbacksHandler::accountStatusChanged, this, &NewAccountModelPimpl::slotAccountStatusChanged);
-    connect(&callbacksHandler, &CallbacksHandler::accountDetailsChanged, this, &NewAccountModelPimpl::slotAccountDetailsChanged);
-    connect(&callbacksHandler, &CallbacksHandler::exportOnRingEnded, this, &NewAccountModelPimpl::slotExportOnRingEnded);
-    connect(&callbacksHandler, &CallbacksHandler::nameRegistrationEnded, this, &NewAccountModelPimpl::slotNameRegistrationEnded);
-    connect(&callbacksHandler, &CallbacksHandler::registeredNameFound, this, &NewAccountModelPimpl::slotRegisteredNameFound);
-    connect(&callbacksHandler, &CallbacksHandler::migrationEnded, this, &NewAccountModelPimpl::slotMigrationEnded);
+    connect(&callbacksHandler, &CallbacksHandler::accountsChanged, this, &NewAccountModelPimpl::updateAccounts, Qt::QueuedConnection);
+    connect(&callbacksHandler, &CallbacksHandler::accountStatusChanged, this, &NewAccountModelPimpl::slotAccountStatusChanged, Qt::QueuedConnection);
+    connect(&callbacksHandler, &CallbacksHandler::accountDetailsChanged, this, &NewAccountModelPimpl::slotAccountDetailsChanged, Qt::QueuedConnection);
+    connect(&callbacksHandler, &CallbacksHandler::exportOnRingEnded, this, &NewAccountModelPimpl::slotExportOnRingEnded, Qt::QueuedConnection);
+    connect(&callbacksHandler, &CallbacksHandler::nameRegistrationEnded, this, &NewAccountModelPimpl::slotNameRegistrationEnded, Qt::QueuedConnection);
+    connect(&callbacksHandler, &CallbacksHandler::registeredNameFound, this, &NewAccountModelPimpl::slotRegisteredNameFound, Qt::QueuedConnection);
+    connect(&callbacksHandler, &CallbacksHandler::migrationEnded, this, &NewAccountModelPimpl::slotMigrationEnded, Qt::QueuedConnection);
 }
 
 NewAccountModelPimpl::~NewAccountModelPimpl()
@@ -361,14 +364,17 @@ void
 NewAccountModelPimpl::updateAccounts()
 {
     qDebug() << "Syncing lrc accounts list with the daemon";
-    ConfigurationManagerInterface& configurationManager = ConfigurationManager::instance();
-    QStringList accountIds = configurationManager.getAccountList();
+    std::vector<std::string> accountIds = DaemonProxy::instance().getAccountList();
 
     // Detect removed accounts
     std::list<std::string> toBeRemoved;
     for (auto& it : accounts) {
         auto& accountInfo = it.second.first;
-        if (!accountIds.contains(QString::fromStdString(accountInfo.id))) {
+        bool found = false;
+        for (auto& id: accountIds)
+            if (id == accountInfo.id) { found = true; break; }
+
+        if (!found) {
             qDebug("detected account removal %s", accountInfo.id.c_str());
             toBeRemoved.push_back(accountInfo.id);
         }
@@ -380,14 +386,14 @@ NewAccountModelPimpl::updateAccounts()
 
     // Detect new accounts
     for (auto& id : accountIds) {
-        auto account = accounts.find(id.toStdString());
-        // NOTE: If the daemon is down, but dbus answered, id can contains
+        auto account = accounts.find(id);
+        // NOTE: If the daemon is down, but dbus answered, id can contain
         // "Remote peer disconnected", "The name is not activable", etc.
         // So avoid to create useless directories.
-        if (account == accounts.end() && id.indexOf(" ") == -1) {
-            qDebug("detected new account %s", id.toStdString().c_str());
-            addToAccounts(id.toStdString());
-            auto updatedAccount = accounts.find(id.toStdString());
+        if (account == accounts.end() && id.find(' ') == std::string::npos) {
+            qDebug("detected new account %s", id.c_str());
+            addToAccounts(id);
+            auto updatedAccount = accounts.find(id);
             if (updatedAccount == accounts.end()) {
                 return;
             }
@@ -395,7 +401,7 @@ NewAccountModelPimpl::updateAccounts()
                 // NOTE: At this point, a SIP account is ready, but not a Ring
                 // account. Indeed, the keys are not generated at this point.
                 // See slotAccountStatusChanged for more details.
-                emit linked.accountAdded(id.toStdString());
+                Q_EMIT linked.accountAdded(id);
             }
         }
     }
@@ -405,7 +411,7 @@ void
 NewAccountModelPimpl::slotAccountStatusChanged(const std::string& accountID, const api::account::Status status)
 {
     if (status == api::account::Status::INVALID) {
-        emit linked.invalidAccountDetected(accountID);
+        Q_EMIT linked.invalidAccountDetected(accountID);
         return;
     }
     auto it = accounts.find(accountID);
@@ -425,14 +431,14 @@ NewAccountModelPimpl::slotAccountStatusChanged(const std::string& accountID, con
             // When keys are generated, the status will change.
             accounts.erase(accountID);
             addToAccounts(accountID);
-            emit linked.accountAdded(accountID);
+            Q_EMIT linked.accountAdded(accountID);
         } else if (!accountInfo.profileInfo.uri.empty()) {
             accountInfo.status = status;
-            emit linked.accountStatusChanged(accountID);
+            Q_EMIT linked.accountStatusChanged(accountID);
         }
     } else {
         accountInfo.status = status;
-        emit linked.accountStatusChanged(accountID);
+        Q_EMIT linked.accountStatusChanged(accountID);
     }
 }
 
@@ -444,13 +450,13 @@ NewAccountModelPimpl::slotAccountDetailsChanged(const std::string& accountId, co
         throw std::out_of_range("NewAccountModelPimpl::slotAccountDetailsChanged, can't find " + accountId);
     }
     auto& accountInfo = account->second.first;
-    accountInfo.fromDetails(convertMap(details));
+    accountInfo.fromDetails(details);
     if (username_changed) {
         username_changed = false;
         accountInfo.registeredName = new_username;
-        emit linked.profileUpdated(accountId);
+        Q_EMIT linked.profileUpdated(accountId);
     }
-    emit linked.accountStatusChanged(accountId);
+    Q_EMIT linked.accountStatusChanged(accountId);
 }
 
 void
@@ -470,7 +476,7 @@ NewAccountModelPimpl::slotExportOnRingEnded(const std::string& accountID, int st
     default:
         break;
     }
-    emit linked.exportOnRingEnded(accountID, convertedStatus, pin);
+    Q_EMIT linked.exportOnRingEnded(accountID, convertedStatus, pin);
 }
 
 void
@@ -505,7 +511,7 @@ NewAccountModelPimpl::slotNameRegistrationEnded(const std::string& accountId, in
     default:
         break;
     }
-    emit linked.nameRegistrationEnded(accountId, convertedStatus, name);
+    Q_EMIT linked.nameRegistrationEnded(accountId, convertedStatus, name);
 }
 
 void
@@ -529,7 +535,7 @@ NewAccountModelPimpl::slotRegisteredNameFound(const std::string& accountId, int 
     default:
         break;
     }
-    emit linked.registeredNameFound(accountId, convertedStatus, address, name);
+    Q_EMIT linked.registeredNameFound(accountId, convertedStatus, address, name);
 }
 
 void
@@ -542,13 +548,13 @@ NewAccountModelPimpl::slotMigrationEnded(const std::string& accountId, bool ok)
             return;
         }
         auto& accountInfo = it->second.first;
-        MapStringString details = ConfigurationManager::instance().getAccountDetails(accountId.c_str());
+        std::map<std::string, std::string> details = DaemonProxy::instance().getAccountDetails(accountId);
         accountInfo.fromDetails(details);
-        MapStringString volatileDetails = ConfigurationManager::instance().getVolatileAccountDetails(accountId.c_str());
-        std::string daemonStatus = volatileDetails[DRing::Account::ConfProperties::Registration::STATUS].toStdString();
+        std::map<std::string, std::string> volatileDetails = DaemonProxy::instance().getVolatileAccountDetails(accountId);
+        std::string daemonStatus = volatileDetails[DRing::Account::ConfProperties::Registration::STATUS];
         accountInfo.status = lrc::api::account::to_status(daemonStatus);
     }
-    emit linked.migrationEnded(accountId, ok);
+    Q_EMIT linked.migrationEnded(accountId, ok);
 }
 
 void
@@ -584,7 +590,7 @@ NewAccountModelPimpl::addToAccounts(const std::string& accountId,
     newAccInfo.profileInfo.avatar = authority::storage::getAccountAvatar(accountId);
 
     // Fill account::Info struct with details from daemon
-    MapStringString details = ConfigurationManager::instance().getAccountDetails(accountId.c_str());
+    std::map<std::string, std::string> details = DaemonProxy::instance().getAccountDetails(accountId);
     newAccInfo.fromDetails(details);
 
     // Init models for this account
@@ -596,8 +602,8 @@ NewAccountModelPimpl::addToAccounts(const std::string& accountId,
     newAccInfo.deviceModel = std::make_unique<NewDeviceModel>(newAccInfo, callbacksHandler);
     newAccInfo.codecModel = std::make_unique<NewCodecModel>(newAccInfo, callbacksHandler);
 
-    MapStringString volatileDetails = ConfigurationManager::instance().getVolatileAccountDetails(accountId.c_str());
-    std::string daemonStatus = volatileDetails[DRing::Account::ConfProperties::Registration::STATUS].toStdString();
+    std::map<std::string, std::string> volatileDetails = DaemonProxy::instance().getVolatileAccountDetails(accountId);
+    std::string daemonStatus = volatileDetails[DRing::Account::ConfProperties::Registration::STATUS];
     newAccInfo.status = lrc::api::account::to_status(daemonStatus);
 }
 
@@ -615,7 +621,7 @@ NewAccountModelPimpl::removeFromAccounts(const std::string& accountId)
        before we are sure that the client stopped using it, otherwise we might
        get into use-after-free troubles. */
     accountInfo.valid = false;
-    emit linked.accountRemoved(accountId);
+    Q_EMIT linked.accountRemoved(accountId);
 
 #ifdef CHK_FREEABLE_BEFORE_ERASE_ACCOUNT
     std::unique_lock<std::mutex> lock(m_mutex_account_removal);
@@ -628,191 +634,610 @@ NewAccountModelPimpl::removeFromAccounts(const std::string& accountId)
     accounts.erase(accountId);
 }
 
-void
-account::Info::fromDetails(const MapStringString& details)
+static inline bool
+to_bool(std::string s) noexcept
 {
-    using namespace DRing::Account;
-    const MapStringString volatileDetails = ConfigurationManager::instance().getVolatileAccountDetails(id.c_str());
-
-    // General
-    if (details[ConfProperties::TYPE] != "")
-        profileInfo.type                                = details[ConfProperties::TYPE] == QString(ProtocolNames::RING) ? profile::Type::RING : profile::Type::SIP;
-    registeredName                                      = profileInfo.type == profile::Type::RING ? volatileDetails[VolatileProperties::REGISTERED_NAME].toStdString() : "";
-    profileInfo.alias                                   = toStdString(details[ConfProperties::DISPLAYNAME]);
-    enabled                                             = toBool(details[ConfProperties::ENABLED]);
-    confProperties.mailbox                              = toStdString(details[ConfProperties::MAILBOX]);
-    confProperties.dtmfType                             = toStdString(details[ConfProperties::DTMF_TYPE]);
-    confProperties.autoAnswer                           = toBool(details[ConfProperties::AUTOANSWER]);
-    confProperties.activeCallLimit                      = toInt(details[ConfProperties::ACTIVE_CALL_LIMIT]);
-    confProperties.hostname                             = toStdString(details[ConfProperties::HOSTNAME]);
-    profileInfo.uri                                     = (profileInfo.type == profile::Type::RING and details[ConfProperties::USERNAME].contains("ring:"))
-                                                          ? details[ConfProperties::USERNAME].toStdString().substr(std::string("ring:").size())
-                                                          : details[ConfProperties::USERNAME].toStdString();
-    confProperties.username                             = toStdString(details[ConfProperties::USERNAME]);
-    confProperties.routeset                             = toStdString(details[ConfProperties::ROUTE]);
-    confProperties.password                             = toStdString(details[ConfProperties::PASSWORD]);
-    confProperties.realm                                = toStdString(details[ConfProperties::REALM]);
-    confProperties.localInterface                       = toStdString(details[ConfProperties::LOCAL_INTERFACE]);
-    confProperties.deviceId                             = toStdString(details[ConfProperties::RING_DEVICE_ID]);
-    confProperties.deviceName                           = toStdString(details[ConfProperties::RING_DEVICE_NAME]);
-    confProperties.publishedSameAsLocal                 = toBool(details[ConfProperties::PUBLISHED_SAMEAS_LOCAL]);
-    confProperties.localPort                            = toInt(details[ConfProperties::LOCAL_PORT]);
-    confProperties.publishedPort                        = toInt(details[ConfProperties::PUBLISHED_PORT]);
-    confProperties.publishedAddress                     = toStdString(details[ConfProperties::PUBLISHED_ADDRESS]);
-    confProperties.userAgent                            = toStdString(details[ConfProperties::USER_AGENT]);
-    confProperties.upnpEnabled                          = toBool(details[ConfProperties::UPNP_ENABLED]);
-    confProperties.hasCustomUserAgent                   = toBool(details[ConfProperties::HAS_CUSTOM_USER_AGENT]);
-    confProperties.allowIncoming                        = toBool(details[ConfProperties::ALLOW_CERT_FROM_HISTORY])
-                                                        | toBool(details[ConfProperties::ALLOW_CERT_FROM_CONTACT])
-                                                        | toBool(details[ConfProperties::ALLOW_CERT_FROM_TRUSTED]);
-    confProperties.archivePassword                      = toStdString(details[ConfProperties::ARCHIVE_PASSWORD]);
-    confProperties.archiveHasPassword                   = toBool(details[ConfProperties::ARCHIVE_HAS_PASSWORD]);
-    confProperties.archivePath                          = toStdString(details[ConfProperties::ARCHIVE_PATH]);
-    confProperties.archivePin                           = toStdString(details[ConfProperties::ARCHIVE_PIN]);
-    confProperties.proxyEnabled                         = toBool(details[ConfProperties::PROXY_ENABLED]);
-    confProperties.proxyServer                          = toStdString(details[ConfProperties::PROXY_SERVER]);
-    confProperties.proxyPushToken                       = toStdString(details[ConfProperties::PROXY_PUSH_TOKEN]);
-    confProperties.peerDiscovery                        = toBool(details[ConfProperties::DHT_PEER_DISCOVERY]);
-    confProperties.accountDiscovery                     = toBool(details[ConfProperties::ACCOUNT_PEER_DISCOVERY]);
-    confProperties.accountPublish                       = toBool(details[ConfProperties::ACCOUNT_PUBLISH]);
-    // Audio
-    confProperties.Audio.audioPortMax                   = toInt(details[ConfProperties::Audio::PORT_MAX]);
-    confProperties.Audio.audioPortMin                   = toInt(details[ConfProperties::Audio::PORT_MIN]);
-    // Video
-    confProperties.Video.videoEnabled                   = toBool(details[ConfProperties::Video::ENABLED]);
-    confProperties.Video.videoPortMax                   = toInt(details[ConfProperties::Video::PORT_MAX]);
-    confProperties.Video.videoPortMin                   = toInt(details[ConfProperties::Video::PORT_MIN]);
-    // STUN
-    confProperties.STUN.server                          = toStdString(details[ConfProperties::STUN::SERVER]);
-    confProperties.STUN.enable                          = toBool(details[ConfProperties::STUN::ENABLED]);
-    // TURN
-    confProperties.TURN.server                          = toStdString(details[ConfProperties::TURN::SERVER]);
-    confProperties.TURN.enable                          = toBool(details[ConfProperties::TURN::ENABLED]);
-    confProperties.TURN.username                        = toStdString(details[ConfProperties::TURN::SERVER_UNAME]);
-    confProperties.TURN.password                        = toStdString(details[ConfProperties::TURN::SERVER_PWD]);
-    confProperties.TURN.realm                           = toStdString(details[ConfProperties::TURN::SERVER_REALM]);
-    // Presence
-    confProperties.Presence.presencePublishSupported    = toBool(details[ConfProperties::Presence::SUPPORT_PUBLISH]);
-    confProperties.Presence.presenceSubscribeSupported  = toBool(details[ConfProperties::Presence::SUPPORT_SUBSCRIBE]);
-    confProperties.Presence.presenceEnabled             = toBool(details[ConfProperties::Presence::ENABLED]);
-    // Ringtone
-    confProperties.Ringtone.ringtonePath                = toStdString(details[ConfProperties::Ringtone::PATH]);
-    confProperties.Ringtone.ringtoneEnabled             = toBool(details[ConfProperties::Ringtone::ENABLED]);
-    // SRTP
-    confProperties.SRTP.keyExchange                     = toStdString(details[ConfProperties::SRTP::KEY_EXCHANGE]).empty()? account::KeyExchangeProtocol::NONE : account::KeyExchangeProtocol::SDES;
-    confProperties.SRTP.enable                          = toBool(details[ConfProperties::SRTP::ENABLED]);
-    confProperties.SRTP.rtpFallback                     = toBool(details[ConfProperties::SRTP::RTP_FALLBACK]);
-    // TLS
-    confProperties.TLS.listenerPort                     = toInt(details[ConfProperties::TLS::LISTENER_PORT]);
-    confProperties.TLS.enable                           = details[ConfProperties::TYPE] == QString(ProtocolNames::RING)? true : toBool(details[ConfProperties::TLS::ENABLED]);
-    confProperties.TLS.port                             = toInt(details[ConfProperties::TLS::PORT]);
-    confProperties.TLS.certificateListFile              = toStdString(details[ConfProperties::TLS::CA_LIST_FILE]);
-    confProperties.TLS.certificateFile                  = toStdString(details[ConfProperties::TLS::CERTIFICATE_FILE]);
-    confProperties.TLS.privateKeyFile                   = toStdString(details[ConfProperties::TLS::PRIVATE_KEY_FILE]);
-    confProperties.TLS.password                         = toStdString(details[ConfProperties::TLS::PASSWORD]);
-    auto method = toStdString(details[ConfProperties::TLS::METHOD]);
-    if (method == "TLSv1") {
-        confProperties.TLS.method                       = account::TlsMethod::TLSv1;
-    } else if (method == "TLSv1.1") {
-        confProperties.TLS.method                       = account::TlsMethod::TLSv1_1;
-    } else if (method == "TLSv1.2") {
-        confProperties.TLS.method                       = account::TlsMethod::TLSv1_2;
-    } else {
-        confProperties.TLS.method                       = account::TlsMethod::DEFAULT;
-    }
-    confProperties.TLS.ciphers                          = toStdString(details[ConfProperties::TLS::CIPHERS]);
-    confProperties.TLS.serverName                       = toStdString(details[ConfProperties::TLS::SERVER_NAME]);
-    confProperties.TLS.verifyServer                     = toBool(details[ConfProperties::TLS::VERIFY_SERVER]);
-    confProperties.TLS.verifyClient                     = toBool(details[ConfProperties::TLS::VERIFY_CLIENT]);
-    confProperties.TLS.requireClientCertificate         = toBool(details[ConfProperties::TLS::REQUIRE_CLIENT_CERTIFICATE]);
-    confProperties.TLS.negotiationTimeoutSec            = toInt(details[ConfProperties::TLS::NEGOTIATION_TIMEOUT_SEC]);
-    // DHT
-    confProperties.DHT.port                             = toInt(details[ConfProperties::DHT::PORT]);
-    confProperties.DHT.PublicInCalls                    = toBool(details[ConfProperties::DHT::PUBLIC_IN_CALLS]);
-    confProperties.DHT.AllowFromTrusted                 = toBool(details[ConfProperties::DHT::ALLOW_FROM_TRUSTED]);
-    // RingNS
-    confProperties.RingNS.uri                           = toStdString(details[ConfProperties::RingNS::URI]);
-    confProperties.RingNS.account                       = toStdString(details[ConfProperties::RingNS::ACCOUNT]);
-    // Registration
-    confProperties.Registration.expire                  = toInt(details[ConfProperties::Registration::EXPIRE]);
-    // Jams
-    confProperties.managerUri                           = toStdString(details[ConfProperties::MANAGER_URI]);
-    confProperties.managerUsername                      = toStdString(details[ConfProperties::MANAGER_USERNAME]);
+    return s == "true" ? true : false;
 }
 
-MapStringString
+static inline std::string
+to_string(bool b) noexcept
+{
+    return b ? "true" : "false";
+}
+
+void
+account::Info::fromDetails(const std::map<std::string, std::string>& details)
+{
+    using namespace DRing::Account;
+    const std::map<std::string, std::string> volatileDetails = DaemonProxy::instance().getVolatileAccountDetails(id);
+
+    // General
+    try {
+        profileInfo.type                                    = details.at(ConfProperties::TYPE) == ProtocolNames::RING ? profile::Type::RING : profile::Type::SIP;
+    } catch (const std::out_of_range& e) {
+        profileInfo.type                                    = profile::Type::INVALID;
+    }
+
+    try {
+        registeredName                                      = profileInfo.type == profile::Type::RING ? volatileDetails.at(VolatileProperties::REGISTERED_NAME) : "";
+    } catch (const std::out_of_range& e) {
+        registeredName                                      = "";
+    }
+
+    try {
+        profileInfo.alias                                   = details.at(ConfProperties::DISPLAYNAME);
+    } catch (const std::out_of_range& e) {
+        profileInfo.alias                                   = "";
+    }
+
+    try {
+        profileInfo.uri                                     = (profileInfo.type == profile::Type::RING && details.at(ConfProperties::USERNAME).compare(0,5,"ring:") == 0)
+                                                              ? details.at(ConfProperties::USERNAME).substr(std::string("ring:").size())
+                                                              : details.at(ConfProperties::USERNAME);
+    } catch (const std::out_of_range& e) {
+        profileInfo.uri                                     = "";
+    }
+
+    try {
+        enabled                                             = to_bool(details.at(ConfProperties::ENABLED));
+    } catch (const std::out_of_range& e) {
+        enabled                                             = false;
+    }
+
+    try {
+        confProperties.mailbox                              = details.at(ConfProperties::MAILBOX);
+    } catch (const std::out_of_range& e) {
+        confProperties.mailbox                              = "";
+    }
+
+    try {
+        confProperties.dtmfType                             = details.at(ConfProperties::DTMF_TYPE);
+    } catch (const std::out_of_range& e) {
+        confProperties.dtmfType                             = "";
+    }
+
+    try {
+        confProperties.autoAnswer                           = to_bool(details.at(ConfProperties::AUTOANSWER));
+    } catch (const std::out_of_range& e) {
+        confProperties.autoAnswer                           = false;
+    }
+
+    try {
+        confProperties.activeCallLimit                      = std::stoi(details.at(ConfProperties::ACTIVE_CALL_LIMIT));
+    } catch (const std::out_of_range& e) {
+        confProperties.activeCallLimit                      = std::numeric_limits<int>::max();
+    } catch (const std::invalid_argument& e) {
+        confProperties.activeCallLimit                      = std::numeric_limits<int>::max();
+    }
+
+    try {
+        confProperties.hostname                             = details.at(ConfProperties::HOSTNAME);
+    } catch (const std::out_of_range& e) {
+        confProperties.hostname                             = "";
+    }
+
+    try {
+        confProperties.username                             = details.at(ConfProperties::USERNAME);
+    } catch (const std::out_of_range& e) {
+        confProperties.username                             = "";
+    }
+
+    try {
+        confProperties.routeset                             = details.at(ConfProperties::ROUTE);
+    } catch (const std::out_of_range& e) {
+        confProperties.routeset                             = "";
+    }
+
+    try {
+        confProperties.password                             = details.at(ConfProperties::PASSWORD);
+    } catch (const std::out_of_range& e) {
+        confProperties.password                             = "";
+    }
+
+    try {
+        confProperties.realm                                = details.at(ConfProperties::REALM);
+    } catch (const std::out_of_range& e) {
+        confProperties.realm                                = "";
+    }
+
+    try {
+        confProperties.localInterface                       = details.at(ConfProperties::LOCAL_INTERFACE);
+    } catch (const std::out_of_range& e) {
+        confProperties.localInterface                       = "";
+    }
+
+    try {
+        confProperties.deviceId                             = details.at(ConfProperties::RING_DEVICE_ID);
+    } catch (const std::out_of_range& e) {
+        confProperties.deviceId                             = "";
+    }
+
+    try {
+        confProperties.deviceName                           = details.at(ConfProperties::RING_DEVICE_NAME);
+    } catch (const std::out_of_range& e) {
+        confProperties.deviceName                           = "";
+    }
+
+    try {
+        confProperties.publishedSameAsLocal                 = to_bool(details.at(ConfProperties::PUBLISHED_SAMEAS_LOCAL));
+    } catch (const std::out_of_range& e) {
+        confProperties.publishedSameAsLocal                 = true;
+    }
+
+    try {
+        confProperties.localPort                            = std::stoi(details.at(ConfProperties::LOCAL_PORT));
+    } catch (const std::out_of_range& e) {
+        confProperties.localPort                            = 1024;
+    } catch (const std::invalid_argument& e) {
+        confProperties.localPort                            = 1024;
+    }
+
+    try {
+        confProperties.publishedPort                        = std::stoi(details.at(ConfProperties::PUBLISHED_PORT));
+    } catch (const std::out_of_range& e) {
+        confProperties.publishedPort                        = 1024;
+    } catch (const std::invalid_argument& e) {
+        confProperties.publishedPort                        = 1024;
+    }
+
+    try {
+        confProperties.publishedAddress                     = details.at(ConfProperties::PUBLISHED_ADDRESS);
+    } catch (const std::out_of_range& e) {
+        confProperties.publishedAddress                     = "";
+    }
+
+    try {
+        confProperties.userAgent                            = details.at(ConfProperties::USER_AGENT);
+    } catch (const std::out_of_range& e) {
+        confProperties.userAgent                            = "";
+    }
+
+    try {
+        confProperties.upnpEnabled                          = to_bool(details.at(ConfProperties::UPNP_ENABLED));
+    } catch (const std::out_of_range& e) {
+        confProperties.upnpEnabled                          = true;
+    }
+
+    try {
+        confProperties.hasCustomUserAgent                   = to_bool(details.at(ConfProperties::HAS_CUSTOM_USER_AGENT));
+    } catch (const std::out_of_range& e) {
+        confProperties.hasCustomUserAgent                   = false;
+    }
+
+    try {
+        confProperties.allowIncoming                        = to_bool(details.at(ConfProperties::ALLOW_CERT_FROM_HISTORY))
+                                                            | to_bool(details.at(ConfProperties::ALLOW_CERT_FROM_CONTACT))
+                                                            | to_bool(details.at(ConfProperties::ALLOW_CERT_FROM_TRUSTED));
+    } catch (const std::out_of_range& e) {
+        confProperties.allowIncoming                        = true;
+    }
+
+    try {
+        confProperties.archivePassword                      = details.at(ConfProperties::ARCHIVE_PASSWORD);
+    } catch (const std::out_of_range& e) {
+        confProperties.archivePassword                      = "";
+    }
+
+    try {
+        confProperties.archiveHasPassword                   = to_bool(details.at(ConfProperties::ARCHIVE_HAS_PASSWORD));
+    } catch (const std::out_of_range& e) {
+        confProperties.archiveHasPassword                   = false;
+    }
+
+    try {
+        confProperties.archivePath                          = details.at(ConfProperties::ARCHIVE_PATH);
+    } catch (const std::out_of_range& e) {
+        confProperties.archivePath                          = "";
+    }
+
+    try {
+        confProperties.archivePin                           = details.at(ConfProperties::ARCHIVE_PIN);
+    } catch (const std::out_of_range& e) {
+        confProperties.archivePin                           = "";
+    }
+
+    try {
+        confProperties.proxyEnabled                         = to_bool(details.at(ConfProperties::PROXY_ENABLED));
+    } catch (const std::out_of_range& e) {
+        confProperties.proxyEnabled                         = false;
+    }
+
+    try {
+        confProperties.proxyServer                          = details.at(ConfProperties::PROXY_SERVER);
+    } catch (const std::out_of_range& e) {
+        confProperties.proxyServer                          = "";
+    }
+
+    try {
+        confProperties.proxyPushToken                       = details.at(ConfProperties::PROXY_PUSH_TOKEN);
+    } catch (const std::out_of_range& e) {
+        confProperties.proxyPushToken                       = "";
+    }
+
+    try {
+        confProperties.peerDiscovery                        = to_bool(details.at(ConfProperties::DHT_PEER_DISCOVERY));
+    } catch (const std::out_of_range& e) {
+        confProperties.peerDiscovery                        = true;
+    }
+
+    try {
+        confProperties.accountDiscovery                     = to_bool(details.at(ConfProperties::ACCOUNT_PEER_DISCOVERY));
+    } catch (const std::out_of_range& e) {
+        confProperties.accountDiscovery                     = true;
+    }
+
+    try {
+        confProperties.accountPublish                       = to_bool(details.at(ConfProperties::ACCOUNT_PUBLISH));
+    } catch (const std::out_of_range& e) {
+        confProperties.accountPublish                       = true;
+    }
+
+    // Audio
+    try {
+        confProperties.Audio.audioPortMax                   = std::stoi(details.at(ConfProperties::Audio::PORT_MAX));
+    } catch (const std::out_of_range& e) {
+        confProperties.Audio.audioPortMax                   = 65535;
+    } catch (const std::invalid_argument& e) {
+        confProperties.Audio.audioPortMax                   = 65535;
+    }
+
+    try {
+        confProperties.Audio.audioPortMin                   = std::stoi(details.at(ConfProperties::Audio::PORT_MIN));
+    } catch (const std::out_of_range& e) {
+        confProperties.Audio.audioPortMin                   = 1024;
+    } catch (const std::invalid_argument& e) {
+        confProperties.Audio.audioPortMin                   = 1024;
+    }
+
+    // Video
+    try {
+        confProperties.Video.videoEnabled                   = to_bool(details.at(ConfProperties::Video::ENABLED));
+    } catch (const std::out_of_range& e) {
+        confProperties.Video.videoEnabled                   = true;
+    }
+
+    try {
+        confProperties.Video.videoPortMax                   = std::stoi(details.at(ConfProperties::Video::PORT_MAX));
+    } catch (const std::out_of_range& e) {
+        confProperties.Video.videoPortMax                   = 65535;
+    } catch (const std::invalid_argument& e) {
+        confProperties.Video.videoPortMax                   = 65535;
+    }
+
+    try {
+        confProperties.Video.videoPortMin                   = std::stoi(details.at(ConfProperties::Video::PORT_MIN));
+    } catch (const std::out_of_range& e) {
+        confProperties.Video.videoPortMin                   = 1024;
+    } catch (const std::invalid_argument& e) {
+        confProperties.Video.videoPortMin                   = 1024;
+    }
+
+    // STUN
+    try {
+        confProperties.STUN.enable                          = to_bool(details.at(ConfProperties::STUN::ENABLED));
+    } catch (const std::out_of_range& e) {
+        confProperties.STUN.enable                          = true;
+    }
+
+    try {
+        confProperties.STUN.server                          = details.at(ConfProperties::STUN::SERVER);
+    } catch (const std::out_of_range& e) {
+        confProperties.STUN.server                          = "";
+    }
+
+    // TURN
+    try {
+        confProperties.TURN.enable                          = to_bool(details.at(ConfProperties::TURN::ENABLED));
+    } catch (const std::out_of_range& e) {
+        confProperties.TURN.enable                          = true;
+    }
+
+    try {
+        confProperties.TURN.server                          = details.at(ConfProperties::TURN::SERVER);
+    } catch (const std::out_of_range& e) {
+        confProperties.TURN.server                          = "";
+    }
+
+    try {
+        confProperties.TURN.username                        = details.at(ConfProperties::TURN::SERVER_UNAME);
+    } catch (const std::out_of_range& e) {
+        confProperties.TURN.username                        = "";
+    }
+
+    try {
+        confProperties.TURN.password                        = details.at(ConfProperties::TURN::SERVER_PWD);
+    } catch (const std::out_of_range& e) {
+        confProperties.TURN.password                        = "";
+    }
+
+    try {
+        confProperties.TURN.realm                           = details.at(ConfProperties::TURN::SERVER_REALM);
+    } catch (const std::out_of_range& e) {
+        confProperties.TURN.realm                           = "";
+    }
+
+    // Presence
+    try {
+        confProperties.Presence.presenceEnabled             = to_bool(details.at(ConfProperties::Presence::ENABLED));
+    } catch (const std::out_of_range& e) {
+        confProperties.Presence.presenceEnabled             = true;
+    }
+
+    try {
+        confProperties.Presence.presencePublishSupported    = to_bool(details.at(ConfProperties::Presence::SUPPORT_PUBLISH));
+    } catch (const std::out_of_range& e) {
+        confProperties.Presence.presencePublishSupported    = true;
+    }
+
+    try {
+        confProperties.Presence.presenceSubscribeSupported  = to_bool(details.at(ConfProperties::Presence::SUPPORT_SUBSCRIBE));
+    } catch (const std::out_of_range& e) {
+        confProperties.Presence.presenceSubscribeSupported  = true;
+    }
+
+    // Ringtone
+    try {
+        confProperties.Ringtone.ringtonePath                = details.at(ConfProperties::Ringtone::PATH);
+    } catch (const std::out_of_range& e) {
+        confProperties.Ringtone.ringtonePath                = "";
+    }
+
+    try {
+        confProperties.Ringtone.ringtoneEnabled             = to_bool(details.at(ConfProperties::Ringtone::ENABLED));
+    } catch (const std::out_of_range& e) {
+        confProperties.Ringtone.ringtoneEnabled             = true;
+    }
+
+    // SRTP
+    try {
+        confProperties.SRTP.keyExchange                     = details.at(ConfProperties::SRTP::KEY_EXCHANGE).empty()? account::KeyExchangeProtocol::NONE : account::KeyExchangeProtocol::SDES;
+    } catch (const std::out_of_range& e) {
+        confProperties.SRTP.keyExchange                     = account::KeyExchangeProtocol::SDES;
+    }
+
+    try {
+        confProperties.SRTP.enable                          = to_bool(details.at(ConfProperties::SRTP::ENABLED));
+    } catch (const std::out_of_range& e) {
+        confProperties.SRTP.enable                          = true;
+    }
+
+    try {
+        confProperties.SRTP.rtpFallback                     = to_bool(details.at(ConfProperties::SRTP::RTP_FALLBACK));
+    } catch (const std::out_of_range& e) {
+        confProperties.SRTP.rtpFallback                     = false;
+    }
+
+    // TLS
+    try {
+        confProperties.TLS.listenerPort                     = std::stoi(details.at(ConfProperties::TLS::LISTENER_PORT));
+    } catch (const std::out_of_range& e) {
+        confProperties.TLS.listenerPort                     = 22500;
+    } catch (const std::invalid_argument& e) {
+        confProperties.TLS.listenerPort                     = 22500;
+    }
+
+    try {
+        confProperties.TLS.enable                           = details.at(ConfProperties::TYPE) == ProtocolNames::RING? true : to_bool(details.at(ConfProperties::TLS::ENABLED));
+    } catch (const std::out_of_range& e) {
+        confProperties.TLS.enable                           = true;
+    }
+
+    try {
+        confProperties.TLS.port                             = std::stoi(details.at(ConfProperties::TLS::PORT));
+    } catch (const std::out_of_range& e) {
+        confProperties.TLS.port                             = 22501;
+    } catch (const std::invalid_argument& e) {
+        confProperties.TLS.port                             = 22501;
+    }
+
+    try {
+        confProperties.TLS.certificateListFile              = details.at(ConfProperties::TLS::CA_LIST_FILE);
+    } catch (const std::out_of_range& e) {
+        confProperties.TLS.certificateListFile              = "";
+    }
+
+    try {
+        confProperties.TLS.certificateFile                  = details.at(ConfProperties::TLS::CERTIFICATE_FILE);
+    } catch (const std::out_of_range& e) {
+        confProperties.TLS.certificateFile                  = "";
+    }
+
+    try {
+        confProperties.TLS.privateKeyFile                   = details.at(ConfProperties::TLS::PRIVATE_KEY_FILE);
+    } catch (const std::out_of_range& e) {
+        confProperties.TLS.privateKeyFile                   = "";
+    }
+
+    try {
+        confProperties.TLS.password                         = details.at(ConfProperties::TLS::PASSWORD);
+    } catch (const std::out_of_range& e) {
+        confProperties.TLS.password                         = "";
+    }
+
+    try {
+        auto method = details.at(ConfProperties::TLS::METHOD);
+        if (method == "TLSv1") {
+            confProperties.TLS.method                       = account::TlsMethod::TLSv1;
+        } else if (method == "TLSv1.1") {
+            confProperties.TLS.method                       = account::TlsMethod::TLSv1_1;
+        } else if (method == "TLSv1.2") {
+            confProperties.TLS.method                       = account::TlsMethod::TLSv1_2;
+        } else {
+            confProperties.TLS.method                       = account::TlsMethod::DEFAULT;
+        }
+    } catch (const std::out_of_range& e) {
+            confProperties.TLS.method                       = account::TlsMethod::DEFAULT;
+    }
+
+    try {
+        confProperties.TLS.ciphers                          = details.at(ConfProperties::TLS::CIPHERS);
+    } catch (const std::out_of_range& e) {
+        confProperties.TLS.ciphers                          = "";
+    }
+
+    try {
+        confProperties.TLS.serverName                       = details.at(ConfProperties::TLS::SERVER_NAME);
+    } catch (const std::out_of_range& e) {
+        confProperties.TLS.serverName                       = "";
+    }
+
+    try {
+        confProperties.TLS.verifyServer                     = to_bool(details.at(ConfProperties::TLS::VERIFY_SERVER));
+    } catch (const std::out_of_range& e) {
+        confProperties.TLS.verifyServer                     = true;
+    }
+
+    try {
+        confProperties.TLS.verifyClient                     = to_bool(details.at(ConfProperties::TLS::VERIFY_CLIENT));
+    } catch (const std::out_of_range& e) {
+        confProperties.TLS.verifyClient                     = true;
+    }
+
+    try {
+        confProperties.TLS.requireClientCertificate         = to_bool(details.at(ConfProperties::TLS::REQUIRE_CLIENT_CERTIFICATE));
+    } catch (const std::out_of_range& e) {
+        confProperties.TLS.requireClientCertificate         = true;
+    }
+
+    try {
+        confProperties.TLS.negotiationTimeoutSec            = std::stoi(details.at(ConfProperties::TLS::NEGOTIATION_TIMEOUT_SEC));
+    } catch (const std::out_of_range& e) {
+        confProperties.TLS.negotiationTimeoutSec            = 10;
+    } catch (const std::invalid_argument& e) {
+        confProperties.TLS.negotiationTimeoutSec            = 10;
+    }
+
+    // DHT
+    try {
+        confProperties.DHT.port                             = std::stoi(details.at(ConfProperties::DHT::PORT));
+    } catch (const std::out_of_range& e) {
+        confProperties.DHT.port                             = 4222;
+    } catch (const std::invalid_argument& e) {
+        confProperties.DHT.port                             = 4222;
+    }
+
+    try {
+        confProperties.DHT.PublicInCalls                    = to_bool(details.at(ConfProperties::DHT::PUBLIC_IN_CALLS));
+    } catch (const std::out_of_range& e) {
+        confProperties.DHT.PublicInCalls                    = false;
+    }
+
+    try {
+        confProperties.DHT.AllowFromTrusted                 = to_bool(details.at(ConfProperties::DHT::ALLOW_FROM_TRUSTED));
+    } catch (const std::out_of_range& e) {
+        confProperties.DHT.AllowFromTrusted                 = true;
+    }
+
+    // RingNS
+    try {
+        confProperties.RingNS.uri                           = details.at(ConfProperties::RingNS::URI);
+    } catch (const std::out_of_range& e) {
+        confProperties.RingNS.uri                           = "";
+    }
+
+    try {
+        confProperties.RingNS.account                       = details.at(ConfProperties::RingNS::ACCOUNT);
+    } catch (const std::out_of_range& e) {
+        confProperties.RingNS.account                       = "";
+    }
+
+    // Registration
+    try {
+        confProperties.Registration.expire                  = std::stoi(details.at(ConfProperties::Registration::EXPIRE));
+    } catch (const std::out_of_range& e) {
+        confProperties.Registration.expire                  = 0;
+    } catch (const std::invalid_argument& e) {
+        confProperties.Registration.expire                  = 0;
+    }
+
+    // Jams
+    try {
+        confProperties.managerUri                           = details.at(ConfProperties::MANAGER_URI);
+    } catch (const std::out_of_range& e) {
+        confProperties.managerUri                           = "";
+    }
+
+    try {
+        confProperties.managerUsername                      = details.at(ConfProperties::MANAGER_USERNAME);
+    } catch (const std::out_of_range& e) {
+        confProperties.managerUsername                      = "";
+    }
+}
+
+std::map<std::string, std::string>
 account::ConfProperties_t::toDetails() const
 {
     using namespace DRing::Account;
-    MapStringString details;
+    std::map<std::string, std::string> details;
     // General
-    details[ConfProperties::MAILBOX]                    = toQString(this->mailbox);
-    details[ConfProperties::DTMF_TYPE]                  = toQString(this->dtmfType);
-    details[ConfProperties::AUTOANSWER]                 = toQString(this->autoAnswer);
-    details[ConfProperties::ACTIVE_CALL_LIMIT]          = toQString(this->activeCallLimit);
-    details[ConfProperties::HOSTNAME]                   = toQString(this->hostname);
-    details[ConfProperties::ROUTE]                      = toQString(this->routeset);
-    details[ConfProperties::PASSWORD]                   = toQString(this->password);
-    details[ConfProperties::REALM]                      = toQString(this->realm);
-    details[ConfProperties::RING_DEVICE_ID]             = toQString(this->deviceId);
-    details[ConfProperties::RING_DEVICE_NAME]           = toQString(this->deviceName);
-    details[ConfProperties::LOCAL_INTERFACE]            = toQString(this->localInterface);
-    details[ConfProperties::PUBLISHED_SAMEAS_LOCAL]     = toQString(this->publishedSameAsLocal);
-    details[ConfProperties::LOCAL_PORT]                 = toQString(this->localPort);
-    details[ConfProperties::PUBLISHED_PORT]             = toQString(this->publishedPort);
-    details[ConfProperties::PUBLISHED_ADDRESS]          = toQString(this->publishedAddress);
-    details[ConfProperties::USER_AGENT]                 = toQString(this->userAgent);
-    details[ConfProperties::UPNP_ENABLED]               = toQString(this->upnpEnabled);
-    details[ConfProperties::HAS_CUSTOM_USER_AGENT]      = toQString(this->hasCustomUserAgent);
-    details[ConfProperties::ALLOW_CERT_FROM_HISTORY]    = toQString(this->allowIncoming);
-    details[ConfProperties::ALLOW_CERT_FROM_CONTACT]    = toQString(this->allowIncoming);
-    details[ConfProperties::ALLOW_CERT_FROM_TRUSTED]    = toQString(this->allowIncoming);
-    details[ConfProperties::ARCHIVE_PASSWORD]           = toQString(this->archivePassword);
-    details[ConfProperties::ARCHIVE_HAS_PASSWORD]       = toQString(this->archiveHasPassword);
-    details[ConfProperties::ARCHIVE_PATH]               = toQString(this->archivePath);
-    details[ConfProperties::ARCHIVE_PIN]                = toQString(this->archivePin);
+    details[ConfProperties::MAILBOX]                    = this->mailbox;
+    details[ConfProperties::DTMF_TYPE]                  = this->dtmfType;
+    details[ConfProperties::AUTOANSWER]                 = std::to_string(this->autoAnswer);
+    details[ConfProperties::ACTIVE_CALL_LIMIT]          = std::to_string(this->activeCallLimit);
+    details[ConfProperties::HOSTNAME]                   = this->hostname;
+    details[ConfProperties::ROUTE]                      = this->routeset;
+    details[ConfProperties::PASSWORD]                   = this->password;
+    details[ConfProperties::REALM]                      = this->realm;
+    details[ConfProperties::RING_DEVICE_ID]             = this->deviceId;
+    details[ConfProperties::RING_DEVICE_NAME]           = this->deviceName;
+    details[ConfProperties::LOCAL_INTERFACE]            = this->localInterface;
+    details[ConfProperties::PUBLISHED_SAMEAS_LOCAL]     = std::to_string(this->publishedSameAsLocal);
+    details[ConfProperties::LOCAL_PORT]                 = std::to_string(this->localPort);
+    details[ConfProperties::PUBLISHED_PORT]             = std::to_string(this->publishedPort);
+    details[ConfProperties::PUBLISHED_ADDRESS]          = this->publishedAddress;
+    details[ConfProperties::USER_AGENT]                 = this->userAgent;
+    details[ConfProperties::UPNP_ENABLED]               = std::to_string(this->upnpEnabled);
+    details[ConfProperties::HAS_CUSTOM_USER_AGENT]      = std::to_string(this->hasCustomUserAgent);
+    details[ConfProperties::ALLOW_CERT_FROM_HISTORY]    = std::to_string(this->allowIncoming);
+    details[ConfProperties::ALLOW_CERT_FROM_CONTACT]    = std::to_string(this->allowIncoming);
+    details[ConfProperties::ALLOW_CERT_FROM_TRUSTED]    = std::to_string(this->allowIncoming);
+    details[ConfProperties::ARCHIVE_PASSWORD]           = this->archivePassword;
+    details[ConfProperties::ARCHIVE_HAS_PASSWORD]       = std::to_string(this->archiveHasPassword);
+    details[ConfProperties::ARCHIVE_PATH]               = this->archivePath;
+    details[ConfProperties::ARCHIVE_PIN]                = this->archivePin;
     // ConfProperties::DEVICE_NAME name is set with NewDeviceModel interface
-    details[ConfProperties::PROXY_ENABLED]              = toQString(this->proxyEnabled);
-    details[ConfProperties::PROXY_SERVER]               = toQString(this->proxyServer);
-    details[ConfProperties::PROXY_PUSH_TOKEN]           = toQString(this->proxyPushToken);
-    details[ConfProperties::DHT_PEER_DISCOVERY]         = toQString(this->peerDiscovery);
-    details[ConfProperties::ACCOUNT_PEER_DISCOVERY]     = toQString(this->accountDiscovery);
-    details[ConfProperties::ACCOUNT_PUBLISH]            = toQString(this->accountPublish);
+    details[ConfProperties::PROXY_ENABLED]              = std::to_string(this->proxyEnabled);
+    details[ConfProperties::PROXY_SERVER]               = this->proxyServer;
+    details[ConfProperties::PROXY_PUSH_TOKEN]           = this->proxyPushToken;
+    details[ConfProperties::DHT_PEER_DISCOVERY]         = std::to_string(this->peerDiscovery);
+    details[ConfProperties::ACCOUNT_PEER_DISCOVERY]     = std::to_string(this->accountDiscovery);
+    details[ConfProperties::ACCOUNT_PUBLISH]            = std::to_string(this->accountPublish);
     // Audio
-    details[ConfProperties::Audio::PORT_MAX]            = toQString(this->Audio.audioPortMax);
-    details[ConfProperties::Audio::PORT_MIN]            = toQString(this->Audio.audioPortMin);
+    details[ConfProperties::Audio::PORT_MAX]            = std::to_string(this->Audio.audioPortMax);
+    details[ConfProperties::Audio::PORT_MIN]            = std::to_string(this->Audio.audioPortMin);
     // Video
-    details[ConfProperties::Video::ENABLED]             = toQString(this->Video.videoEnabled);
-    details[ConfProperties::Video::PORT_MAX]            = toQString(this->Video.videoPortMax);
-    details[ConfProperties::Video::PORT_MIN]            = toQString(this->Video.videoPortMin);
+    details[ConfProperties::Video::ENABLED]             = std::to_string(this->Video.videoEnabled);
+    details[ConfProperties::Video::PORT_MAX]            = std::to_string(this->Video.videoPortMax);
+    details[ConfProperties::Video::PORT_MIN]            = std::to_string(this->Video.videoPortMin);
     // STUN
-    details[ConfProperties::STUN::SERVER]               = toQString(this->STUN.server);
-    details[ConfProperties::STUN::ENABLED]              = toQString(this->STUN.enable);
+    details[ConfProperties::STUN::SERVER]               = this->STUN.server;
+    details[ConfProperties::STUN::ENABLED]              = std::to_string(this->STUN.enable);
     // TURN
-    details[ConfProperties::TURN::SERVER]               = toQString(this->TURN.server);
-    details[ConfProperties::TURN::ENABLED]              = toQString(this->TURN.enable);
-    details[ConfProperties::TURN::SERVER_UNAME]         = toQString(this->TURN.username);
-    details[ConfProperties::TURN::SERVER_PWD]           = toQString(this->TURN.password);
-    details[ConfProperties::TURN::SERVER_REALM]         = toQString(this->TURN.realm);
+    details[ConfProperties::TURN::SERVER]               = this->TURN.server;
+    details[ConfProperties::TURN::ENABLED]              = std::to_string(this->TURN.enable);
+    details[ConfProperties::TURN::SERVER_UNAME]         = this->TURN.username;
+    details[ConfProperties::TURN::SERVER_PWD]           = this->TURN.password;
+    details[ConfProperties::TURN::SERVER_REALM]         = this->TURN.realm;
     // Presence
-    details[ConfProperties::Presence::SUPPORT_PUBLISH]  = toQString(this->Presence.presencePublishSupported);
-    details[ConfProperties::Presence::SUPPORT_SUBSCRIBE] = toQString(this->Presence.presenceSubscribeSupported);
-    details[ConfProperties::Presence::ENABLED]          = toQString(this->Presence.presenceEnabled);
+    details[ConfProperties::Presence::SUPPORT_PUBLISH]  = std::to_string(this->Presence.presencePublishSupported);
+    details[ConfProperties::Presence::SUPPORT_SUBSCRIBE] = std::to_string(this->Presence.presenceSubscribeSupported);
+    details[ConfProperties::Presence::ENABLED]          = std::to_string(this->Presence.presenceEnabled);
     // Ringtone
-    details[ConfProperties::Ringtone::PATH]             = toQString(this->Ringtone.ringtonePath);
-    details[ConfProperties::Ringtone::ENABLED]          = toQString(this->Ringtone.ringtoneEnabled);
+    details[ConfProperties::Ringtone::PATH]             = this->Ringtone.ringtonePath;
+    details[ConfProperties::Ringtone::ENABLED]          = std::to_string(this->Ringtone.ringtoneEnabled);
     // SRTP
     details[ConfProperties::SRTP::KEY_EXCHANGE]         = this->SRTP.keyExchange == account::KeyExchangeProtocol::NONE? "" : "sdes";
-    details[ConfProperties::SRTP::ENABLED]              = toQString(this->SRTP.enable);
-    details[ConfProperties::SRTP::RTP_FALLBACK]         = toQString(this->SRTP.rtpFallback);
+    details[ConfProperties::SRTP::ENABLED]              = std::to_string(this->SRTP.enable);
+    details[ConfProperties::SRTP::RTP_FALLBACK]         = std::to_string(this->SRTP.rtpFallback);
     // TLS
-    details[ConfProperties::TLS::LISTENER_PORT]         = toQString(this->TLS.listenerPort);
-    details[ConfProperties::TLS::ENABLED]               = toQString(this->TLS.enable);
-    details[ConfProperties::TLS::PORT]                  = toQString(this->TLS.port);
-    details[ConfProperties::TLS::CA_LIST_FILE]          = toQString(this->TLS.certificateListFile);
-    details[ConfProperties::TLS::CERTIFICATE_FILE]      = toQString(this->TLS.certificateFile);
-    details[ConfProperties::TLS::PRIVATE_KEY_FILE]      = toQString(this->TLS.privateKeyFile);
-    details[ConfProperties::TLS::PASSWORD]              = toQString(this->TLS.password);
+    details[ConfProperties::TLS::LISTENER_PORT]         = std::to_string(this->TLS.listenerPort);
+    details[ConfProperties::TLS::ENABLED]               = std::to_string(this->TLS.enable);
+    details[ConfProperties::TLS::PORT]                  = std::to_string(this->TLS.port);
+    details[ConfProperties::TLS::CA_LIST_FILE]          = this->TLS.certificateListFile;
+    details[ConfProperties::TLS::CERTIFICATE_FILE]      = this->TLS.certificateFile;
+    details[ConfProperties::TLS::PRIVATE_KEY_FILE]      = this->TLS.privateKeyFile;
+    details[ConfProperties::TLS::PASSWORD]              = this->TLS.password;
     switch (this->TLS.method) {
     case account::TlsMethod::TLSv1:
         details[ConfProperties::TLS::METHOD]            = "TLSv1";
@@ -828,24 +1253,24 @@ account::ConfProperties_t::toDetails() const
         details[ConfProperties::TLS::METHOD]            = "Default";
         break;
     }
-    details[ConfProperties::TLS::CIPHERS]               = toQString(this->TLS.ciphers);
-    details[ConfProperties::TLS::SERVER_NAME]           = toQString(this->TLS.serverName);
-    details[ConfProperties::TLS::VERIFY_SERVER]         = toQString(this->TLS.verifyServer);
-    details[ConfProperties::TLS::VERIFY_CLIENT]         = toQString(this->TLS.verifyClient);
-    details[ConfProperties::TLS::REQUIRE_CLIENT_CERTIFICATE] = toQString(this->TLS.requireClientCertificate);
-    details[ConfProperties::TLS::NEGOTIATION_TIMEOUT_SEC] = toQString(this->TLS.negotiationTimeoutSec);
+    details[ConfProperties::TLS::CIPHERS]               = this->TLS.ciphers;
+    details[ConfProperties::TLS::SERVER_NAME]           = this->TLS.serverName;
+    details[ConfProperties::TLS::VERIFY_SERVER]         = std::to_string(this->TLS.verifyServer);
+    details[ConfProperties::TLS::VERIFY_CLIENT]         = std::to_string(this->TLS.verifyClient);
+    details[ConfProperties::TLS::REQUIRE_CLIENT_CERTIFICATE] = std::to_string(this->TLS.requireClientCertificate);
+    details[ConfProperties::TLS::NEGOTIATION_TIMEOUT_SEC] = std::to_string(this->TLS.negotiationTimeoutSec);
     // DHT
-    details[ConfProperties::DHT::PORT]                  = toQString(this->DHT.port);
-    details[ConfProperties::DHT::PUBLIC_IN_CALLS]       = toQString(this->DHT.PublicInCalls);
-    details[ConfProperties::DHT::ALLOW_FROM_TRUSTED]    = toQString(this->DHT.AllowFromTrusted);
+    details[ConfProperties::DHT::PORT]                  = std::to_string(this->DHT.port);
+    details[ConfProperties::DHT::PUBLIC_IN_CALLS]       = std::to_string(this->DHT.PublicInCalls);
+    details[ConfProperties::DHT::ALLOW_FROM_TRUSTED]    = std::to_string(this->DHT.AllowFromTrusted);
     // RingNS
-    details[ConfProperties::RingNS::URI]                = toQString(this->RingNS.uri);
-    details[ConfProperties::RingNS::ACCOUNT]            = toQString(this->RingNS.account);
+    details[ConfProperties::RingNS::URI]                = this->RingNS.uri;
+    details[ConfProperties::RingNS::ACCOUNT]            = this->RingNS.account;
     // Registration
-    details[ConfProperties::Registration::EXPIRE]       = toQString(this->Registration.expire);
+    details[ConfProperties::Registration::EXPIRE]       = std::to_string(this->Registration.expire);
     // Manager
-    details[ConfProperties::MANAGER_URI]                = toQString(this->managerUri);
-    details[ConfProperties::MANAGER_USERNAME]           = toQString(this->managerUsername);
+    details[ConfProperties::MANAGER_URI]                = this->managerUri;
+    details[ConfProperties::MANAGER_USERNAME]           = this->managerUsername;
 
     return details;
 }
@@ -859,23 +1284,22 @@ NewAccountModel::createNewAccount(profile::Type type,
                                   const std::string& uri)
 {
 
-    MapStringString details = type == profile::Type::SIP?
-                              ConfigurationManager::instance().getAccountTemplate("SIP") :
-                              ConfigurationManager::instance().getAccountTemplate("RING");
+    std::map<std::string, std::string> details = type == profile::Type::SIP?
+                              DaemonProxy::instance().getAccountTemplate("SIP") :
+                              DaemonProxy::instance().getAccountTemplate("RING");
     using namespace DRing::Account;
     details[ConfProperties::TYPE] = type == profile::Type::SIP? "SIP" : "RING";
-    details[ConfProperties::DISPLAYNAME] = displayName.c_str();
-    details[ConfProperties::ALIAS] = displayName.c_str();
+    details[ConfProperties::DISPLAYNAME] = displayName;
+    details[ConfProperties::ALIAS] = displayName;
     details[ConfProperties::UPNP_ENABLED] = "true";
-    details[ConfProperties::ARCHIVE_PASSWORD] = password.c_str();
-    details[ConfProperties::ARCHIVE_PIN] = pin.c_str();
-    details[ConfProperties::ARCHIVE_PATH] = archivePath.c_str();
+    details[ConfProperties::ARCHIVE_PASSWORD] = password;
+    details[ConfProperties::ARCHIVE_PIN] = pin;
+    details[ConfProperties::ARCHIVE_PATH] = archivePath;
     if (type == profile::Type::SIP) {
-        details[ConfProperties::USERNAME] = uri.c_str();
+        details[ConfProperties::USERNAME] = uri;
     }
 
-    QString accountId = ConfigurationManager::instance().addAccount(details);
-    return accountId.toStdString();
+    return DaemonProxy::instance().addAccount(details);
 }
 
 
@@ -885,15 +1309,14 @@ NewAccountModel::connectToAccountManager(const std::string& username,
                                          const std::string& password,
                                          const std::string& serverUri)
 {
-    MapStringString details = ConfigurationManager::instance().getAccountTemplate("RING");
+    std::map<std::string, std::string> details = DaemonProxy::instance().getAccountTemplate("RING");
     using namespace DRing::Account;
     details[ConfProperties::TYPE] = "RING";
     details[ConfProperties::MANAGER_URI] = serverUri.c_str();
     details[ConfProperties::MANAGER_USERNAME] = username.c_str();
     details[ConfProperties::ARCHIVE_PASSWORD] = password.c_str();
 
-    QString accountId = ConfigurationManager::instance().addAccount(details);
-    return accountId.toStdString();
+    return DaemonProxy::instance().addAccount(details);
 }
 
 void
@@ -902,19 +1325,19 @@ NewAccountModel::setTopAccount(const std::string& accountId)
     bool found = false;
     std::string order = {};
 
-    const QStringList accountIds = ConfigurationManager::instance().getAccountList();
+    const std::vector<std::string> accountIds = DaemonProxy::instance().getAccountList();
     for (auto& id : accountIds)
     {
-        if (id.toStdString() == accountId) {
+        if (id == accountId) {
             found = true;
         } else {
-            order += id.toStdString() + "/";
+            order += id + "/";
         }
     }
     if (found) {
         order = accountId + "/" + order;
     }
-    ConfigurationManager::instance().setAccountsOrder(order.c_str());
+    DaemonProxy::instance().setAccountsOrder(order);
 }
 
 std::string
@@ -930,5 +1353,4 @@ NewAccountModel::accountVCard(const std::string& accountId, bool compressImage) 
 
 } // namespace lrc
 
-#include "api/moc_newaccountmodel.cpp"
 #include "newaccountmodel.moc"

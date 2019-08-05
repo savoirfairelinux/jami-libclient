@@ -26,42 +26,6 @@
 #include <QtCore/QDebug>
 #include <QtCore/QDateTime>
 
-//Typedefs (required to avoid '<' and '>' in the DBus XML)
-typedef QMap<QString, QString>                              MapStringString               ;
-typedef QMap<QString, int>                                  MapStringInt                  ;
-typedef QVector<int>                                        VectorInt                     ;
-typedef QVector<uint>                                       VectorUInt                    ;
-typedef QVector<qulonglong>                                 VectorULongLong               ;
-typedef QVector< QMap<QString, QString> >                   VectorMapStringString         ;
-typedef QVector< QString >                                  VectorString                  ;
-typedef QMap< QString, QMap< QString, QVector<QString> > >  MapStringMapStringVectorString;
-typedef QMap< QString, QVector<QString> >                   MapStringVectorString         ;
-typedef QMap< QString, QMap< QString, QStringList > >       MapStringMapStringStringList  ;
-typedef QMap< QString, QStringList >                        MapStringStringList           ;
-typedef QVector< QByteArray >                               VectorVectorByte              ;
-
-// Adapted from libring DRing::DataTransferInfo
-struct DataTransferInfo
-{
-    QString accountId;
-    quint32 lastEvent;
-    quint32 flags;
-    qlonglong totalSize;
-    qlonglong bytesProgress;
-    QString peer;
-    QString displayName;
-    QString path;
-    QString mimetype;
-};
-
-struct Message {
-    QString from;
-    MapStringString payloads;
-    quint64 received;
-};
-
-typedef QVector<Message> messages;
-
 /**
  * This function add a safe way to get an enum class size
  * @note it cannot be "const" due to some compiler issues
@@ -205,3 +169,5 @@ DO_PRAGMA(GCC diagnostic pop)
 
 #include <functional>
 typedef std::function<void()> MigrationCb;
+
+Q_DECLARE_METATYPE(std::string)

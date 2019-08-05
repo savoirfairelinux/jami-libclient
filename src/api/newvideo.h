@@ -135,7 +135,7 @@ public:
      */
     Frame currentFrame() const;
 
-#if defined(ENABLE_LIBWRAP) || (defined __APPLE__)
+#if defined(DAEMON_INTERFACE_IS_LIBRARY) || (defined __APPLE__)
     /**
      * @return current avframe
      */

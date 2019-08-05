@@ -23,7 +23,7 @@
 
 // LRC
 #include "callbackshandler.h"
-#include "dbus/configurationmanager.h"
+#include "daemonproxy.h"
 
 // Daemon
 #include <account_const.h>
@@ -56,7 +56,7 @@ public:
     void setCodecDetails(const Codec& codec, bool isAudio);
 
 private:
-    void addCodec(const unsigned int& id, const QVector<unsigned int>& activeCodecs);
+    void addCodec(const unsigned int& id, const std::vector<unsigned int>& activeCodecs);
 };
 
 NewCodecModel::NewCodecModel(const account::Info& owner, const CallbacksHandler& callbacksHandler)
@@ -275,14 +275,20 @@ NewCodecModelPimpl::NewCodecModelPimpl(const NewCodecModel& linked, const Callba
 : linked(linked)
 , callbacksHandler(callbacksHandler)
 {
-    QVector<unsigned int> codecsList = ConfigurationManager::instance().getCodecList();
-    QVector<unsigned int> activeCodecs = ConfigurationManager::instance().getActiveCodecList(linked.owner.id.c_str());
+    std::vector<unsigned int> codecsList = DaemonProxy::instance().getCodecList();
+    std::vector<unsigned int> activeCodecs = DaemonProxy::instance().getActiveCodecList(linked.owner.id);
     for (const auto& id : activeCodecs) {
         addCodec(id, activeCodecs);
     }
     for (const auto& id : codecsList) {
-        if (activeCodecs.indexOf(id) != -1) continue;
-        addCodec(id, activeCodecs);
+        bool found = false;
+        for (const auto& i: activeCodecs)
+            if (id == i) {
+                found = true;
+                break;
+            }
+        if (!found)
+            addCodec(id, activeCodecs);
     }
 }
 
@@ -294,7 +300,7 @@ NewCodecModelPimpl::~NewCodecModelPimpl()
 void
 NewCodecModelPimpl::setActiveCodecs()
 {
-    QVector<unsigned int> enabledCodecs;
+    std::vector<unsigned int> enabledCodecs;
     {
         std::unique_lock<std::mutex> lock(videoCodecsMtx);
         for (auto& codec : videoCodecs) {
@@ -311,26 +317,29 @@ NewCodecModelPimpl::setActiveCodecs()
             }
         }
     }
-    ConfigurationManager::instance().setActiveCodecList(linked.owner.id.c_str(), enabledCodecs);
+    DaemonProxy::instance().setActiveCodecList(linked.owner.id, enabledCodecs);
 }
 
 void
-NewCodecModelPimpl::addCodec(const unsigned int& id, const QVector<unsigned int>& activeCodecs)
+NewCodecModelPimpl::addCodec(const unsigned int& id, const std::vector<unsigned int>& activeCodecs)
 {
-    MapStringString details = ConfigurationManager::instance().getCodecDetails(linked.owner.id.c_str(), id);
+    std::map<std::string, std::string> details = DaemonProxy::instance().getCodecDetails(linked.owner.id, id);
     Codec codec;
     codec.id = id;
-    codec.enabled = activeCodecs.indexOf(id) != -1;
-    codec.name = details[DRing::Account::ConfProperties::CodecInfo::NAME].toStdString();
-    codec.samplerate = details[DRing::Account::ConfProperties::CodecInfo::SAMPLE_RATE].toStdString();
-    codec.bitrate = details[DRing::Account::ConfProperties::CodecInfo::BITRATE].toStdString();
-    codec.min_bitrate = details[DRing::Account::ConfProperties::CodecInfo::MIN_BITRATE].toStdString();
-    codec.max_bitrate = details[DRing::Account::ConfProperties::CodecInfo::MAX_BITRATE].toStdString();
-    codec.type = details[DRing::Account::ConfProperties::CodecInfo::TYPE].toStdString();
-    codec.quality = details[DRing::Account::ConfProperties::CodecInfo::QUALITY].toStdString();
-    codec.min_quality = details[DRing::Account::ConfProperties::CodecInfo::MIN_QUALITY].toStdString();
-    codec.max_quality = details[DRing::Account::ConfProperties::CodecInfo::MAX_QUALITY].toStdString();
-    codec.auto_quality_enabled = details[DRing::Account::ConfProperties::CodecInfo::AUTO_QUALITY_ENABLED].toStdString() == "true";
+    codec.enabled = false;
+    for (auto i: activeCodecs) {
+        if (i == id) { codec.enabled = true; break; }
+    }
+    codec.name = details[DRing::Account::ConfProperties::CodecInfo::NAME];
+    codec.samplerate = details[DRing::Account::ConfProperties::CodecInfo::SAMPLE_RATE];
+    codec.bitrate = details[DRing::Account::ConfProperties::CodecInfo::BITRATE];
+    codec.min_bitrate = details[DRing::Account::ConfProperties::CodecInfo::MIN_BITRATE];
+    codec.max_bitrate = details[DRing::Account::ConfProperties::CodecInfo::MAX_BITRATE];
+    codec.type = details[DRing::Account::ConfProperties::CodecInfo::TYPE];
+    codec.quality = details[DRing::Account::ConfProperties::CodecInfo::QUALITY];
+    codec.min_quality = details[DRing::Account::ConfProperties::CodecInfo::MIN_QUALITY];
+    codec.max_quality = details[DRing::Account::ConfProperties::CodecInfo::MAX_QUALITY];
+    codec.auto_quality_enabled = details[DRing::Account::ConfProperties::CodecInfo::AUTO_QUALITY_ENABLED] == "true";
     if (codec.type == "AUDIO") {
         std::unique_lock<std::mutex> lock(audioCodecsMtx);
         audioCodecs.emplace_back(codec);
@@ -343,7 +352,7 @@ NewCodecModelPimpl::addCodec(const unsigned int& id, const QVector<unsigned int>
 void
 NewCodecModelPimpl::setCodecDetails(const Codec& codec, bool isAudio)
 {
-    MapStringString details;
+    std::map<std::string, std::string> details;
     details[ DRing::Account::ConfProperties::CodecInfo::NAME        ] = codec.name.c_str();
     details[ DRing::Account::ConfProperties::CodecInfo::SAMPLE_RATE ] = codec.samplerate.c_str();
     details[ DRing::Account::ConfProperties::CodecInfo::BITRATE     ] = codec.bitrate.c_str();
@@ -354,10 +363,10 @@ NewCodecModelPimpl::setCodecDetails(const Codec& codec, bool isAudio)
     details[ DRing::Account::ConfProperties::CodecInfo::MIN_QUALITY ] = codec.min_quality.c_str();
     details[ DRing::Account::ConfProperties::CodecInfo::MAX_QUALITY ] = codec.max_quality.c_str();
     details[ DRing::Account::ConfProperties::CodecInfo::AUTO_QUALITY_ENABLED] = codec.auto_quality_enabled? "true" : "false";
-    ConfigurationManager::instance().setCodecDetails(linked.owner.id.c_str(), codec.id, details);
+    DaemonProxy::instance().setCodecDetails(linked.owner.id, codec.id, details);
 }
 
 } // namespace lrc
 
 #include "newcodecmodel.moc"
-#include "api/moc_newcodecmodel.cpp"
+//#include "api/moc_newcodecmodel.cpp"

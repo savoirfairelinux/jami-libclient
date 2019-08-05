@@ -16,18 +16,19 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
 
+#include <stdexcept>
+#include <string>
+#include <map>
+
 #include "smartinfohub.h"
 #include "private/smartInfoHub_p.h"
 #include "typedefs.h"
-
-#include <dbus/videomanager.h>
-#include <dbus/callmanager.h>
-#include <dbus/callmanager.h>
+#include "daemonproxy.h"
 
 SmartInfoHub::SmartInfoHub()
 {
     d_ptr = new SmartInfoHubPrivate;
-    connect(&CallManager::instance(), SIGNAL(SmartInfo(MapStringString)), d_ptr , SLOT(slotSmartInfo(MapStringString)), Qt::QueuedConnection);
+    DaemonProxy::instance().signalSmartInfo().connect(sigc::mem_fun(*d_ptr,&SmartInfoHubPrivate::slotSmartInfo));
 }
 
 SmartInfoHub::~SmartInfoHub()
@@ -35,12 +36,12 @@ SmartInfoHub::~SmartInfoHub()
 
 void SmartInfoHub::start()
 {
-    CallManager::instance().startSmartInfo(d_ptr->m_refreshTimeInformationMS);
+    DaemonProxy::instance().startSmartInfo(d_ptr->m_refreshTimeInformationMS);
 }
 
 void SmartInfoHub::stop()
 {
-    CallManager::instance().stopSmartInfo();
+    DaemonProxy::instance().stopSmartInfo();
 }
 
 SmartInfoHub& SmartInfoHub::instance()
@@ -56,106 +57,117 @@ void SmartInfoHub::setRefreshTime(uint32_t timeMS)
 }
 
 //Retrieve information from the map and implement all the variables
-void SmartInfoHubPrivate::slotSmartInfo(const MapStringString& map)
+void SmartInfoHubPrivate::slotSmartInfo(const std::map<std::string, std::string>& map)
 {
-    for(int i = 0; i < map.size(); i++){
-        SmartInfoHubPrivate::m_information[map.keys().at(i)]=map[map.keys().at(i)];
-    }
-
-    emit SmartInfoHub::instance().changed();
+    m_information = map;
+    Q_EMIT SmartInfoHub::instance().changed();
 }
 //Getter
 
 bool SmartInfoHub::isConference() const
 {
-    return (d_ptr->m_information["type"] == "conference");
+    try {
+        return (d_ptr->m_information.at("type") == "conference");
+    } catch (std::out_of_range& e) {
+        return false;
+    }
 }
-
 
 float SmartInfoHub::localFps() const
 {
-    if(d_ptr->m_information[LOCAL_FPS] != NULL)
-        return d_ptr->m_information[LOCAL_FPS].toFloat();
-
-    return 0.0;
+    try {
+        return std::stof(d_ptr->m_information.at(LOCAL_FPS));
+    } catch (std::out_of_range& e) {
+        return 0.0;
+    }
 }
 
 float SmartInfoHub::remoteFps() const
 {
-    if(d_ptr->m_information[REMOTE_FPS] != NULL)
-        return d_ptr->m_information[REMOTE_FPS].toFloat();
-
-    return 0.0;
+    try {
+        return std::stof(d_ptr->m_information.at(REMOTE_FPS));
+    } catch (std::out_of_range& e) {
+        return 0.0;
+    }
 }
 
 int SmartInfoHub::remoteWidth() const
 {
-    if(d_ptr->m_information[REMOTE_WIDTH] != NULL)
-        return d_ptr->m_information[REMOTE_WIDTH].toInt();
-    else
+    try {
+        return std::stoi(d_ptr->m_information.at(REMOTE_WIDTH));
+    } catch (std::out_of_range& e) {
         return 0;
+    }
 }
 
 int SmartInfoHub::remoteHeight() const
 {
-    if(d_ptr->m_information[REMOTE_HEIGHT] != NULL)
-        return d_ptr->m_information[REMOTE_HEIGHT].toInt();
-    else
+    try {
+        return std::stoi(d_ptr->m_information.at(REMOTE_HEIGHT));
+    } catch (std::out_of_range& e) {
         return 0;
+    }
 }
 
 int SmartInfoHub::localWidth() const
 {
-    if(d_ptr->m_information[LOCAL_WIDTH] != NULL)
-        return d_ptr->m_information[LOCAL_WIDTH].toInt();
-    else
+    try {
+        return std::stoi(d_ptr->m_information.at(LOCAL_WIDTH));
+    } catch (std::out_of_range& e) {
         return 0;
+    }
 }
 
 int SmartInfoHub::localHeight() const
 {
-    if(d_ptr->m_information[LOCAL_HEIGHT] != NULL)
-        return d_ptr->m_information[LOCAL_HEIGHT].toInt();
-    else
+    try {
+        return std::stoi(d_ptr->m_information.at(LOCAL_HEIGHT));
+    } catch (std::out_of_range& e) {
         return 0;
+    }
 }
 
 QString SmartInfoHub::callID() const
 {
-    if(d_ptr->m_information[CALL_ID] != NULL)
-        return d_ptr->m_information[CALL_ID];
-    else
+    try {
+        return QString::fromStdString(d_ptr->m_information.at(CALL_ID));
+    } catch (std::out_of_range& e) {
         return SmartInfoHubPrivate::DEFAULT_RETURN_VALUE_QSTRING;
+    }
 }
 
 QString SmartInfoHub::localVideoCodec() const
 {
-    if(d_ptr->m_information[LOCAL_VIDEO_CODEC] != NULL)
-        return d_ptr->m_information[LOCAL_VIDEO_CODEC];
-    else
+    try {
+        return QString::fromStdString(d_ptr->m_information.at(LOCAL_VIDEO_CODEC));
+    } catch (std::out_of_range& e) {
         return SmartInfoHubPrivate::DEFAULT_RETURN_VALUE_QSTRING;
+    }
 }
 
 QString SmartInfoHub::localAudioCodec() const
 {
-    if(d_ptr->m_information[LOCAL_AUDIO_CODEC] != NULL)
-        return d_ptr->m_information[LOCAL_AUDIO_CODEC];
-    else
+    try {
+        return QString::fromStdString(d_ptr->m_information.at(LOCAL_AUDIO_CODEC));
+    } catch (std::out_of_range& e) {
         return SmartInfoHubPrivate::DEFAULT_RETURN_VALUE_QSTRING;
+    }
 }
 
 QString SmartInfoHub::remoteVideoCodec() const
 {
-    if(d_ptr->m_information[REMOTE_VIDEO_CODEC] != NULL)
-        return d_ptr->m_information[REMOTE_VIDEO_CODEC];
-    else
+    try {
+        return QString::fromStdString(d_ptr->m_information.at(REMOTE_VIDEO_CODEC));
+    } catch (std::out_of_range& e) {
         return SmartInfoHubPrivate::DEFAULT_RETURN_VALUE_QSTRING;
+    }
 }
 
 QString SmartInfoHub::remoteAudioCodec() const
 {
-    if(d_ptr->m_information[REMOTE_AUDIO_CODEC] != NULL)
-        return d_ptr->m_information[REMOTE_AUDIO_CODEC];
-    else
+    try {
+        return QString::fromStdString(d_ptr->m_information.at(REMOTE_AUDIO_CODEC));
+    } catch (std::out_of_range& e) {
         return SmartInfoHubPrivate::DEFAULT_RETURN_VALUE_QSTRING;
+    }
 }

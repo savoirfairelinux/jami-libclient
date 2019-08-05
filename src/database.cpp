@@ -45,7 +45,7 @@
 #include "api/interaction.h"
 
 // Lrc for migrations
-#include "dbus/configurationmanager.h"
+#include "daemonproxy.h"
 #include "vcard.h"
 #include <account_const.h>
 
@@ -588,7 +588,9 @@ LegacyDatabase::migrateLocalProfiles()
 {
     const QDir profilesDir = basePath_ + "profiles/";
     const QStringList entries = profilesDir.entryList({QStringLiteral("*.vcf")}, QDir::Files);
-    foreach (const QString& item , entries) {
+    QListIterator<QString> i(entries);
+    while (i.hasNext()) {
+        auto item = i.next();
         auto filePath = profilesDir.path() + '/' + item;
         QString content;
         QFile file(filePath);
@@ -603,24 +605,22 @@ LegacyDatabase::migrateLocalProfiles()
         const auto alias = vCard[lrc::vCard::Property::FORMATTED_NAME];
         const auto avatar = vCard["PHOTO;ENCODING=BASE64;TYPE=PNG"];
 
-        const QStringList accountIds = ConfigurationManager::instance().getAccountList();
+        const std::vector<std::string> accountIds = DaemonProxy::instance().getAccountList();
         for (auto accountId : accountIds) {
-            MapStringString account = ConfigurationManager::instance().
-            getAccountDetails(accountId.toStdString().c_str());
-            auto accountURI = account[DRing::Account::ConfProperties::USERNAME].contains("ring:") ?
-            account[DRing::Account::ConfProperties::USERNAME]
-        .toStdString().substr(std::string("ring:").size()) :
-        account[DRing::Account::ConfProperties::USERNAME].toStdString();
+            std::map<std::string, std::string> account = DaemonProxy::instance().getAccountDetails(accountId);
+
+            auto accountURI = account[DRing::Account::ConfProperties::USERNAME].compare(0,5,"ring:") == 0 ?
+                account[DRing::Account::ConfProperties::USERNAME].substr(std::string("ring:").size()) :
+                account[DRing::Account::ConfProperties::USERNAME];
 
             for (const auto& accountId: accountIds) {
-                MapStringString account = ConfigurationManager::instance()
-                    .getAccountDetails(accountId.toStdString().c_str());
+                std::map<std::string, std::string> account = DaemonProxy::instance().getAccountDetails(accountId);
                 auto type = account[DRing::Account::ConfProperties::TYPE] == "SIP"? "SIP" : "RING";
 
-                auto uri = account[DRing::Account::ConfProperties::USERNAME].contains("ring:") ?
-                        account[DRing::Account::ConfProperties::USERNAME]
-                        .toStdString().substr(std::string("ring:").size()) :
-                        account[DRing::Account::ConfProperties::USERNAME].toStdString();
+                auto uri = account[DRing::Account::ConfProperties::USERNAME].compare(0,5,"ring:") ?
+                        account[DRing::Account::ConfProperties::USERNAME].substr(std::string("ring:").size()) :
+                        account[DRing::Account::ConfProperties::USERNAME];
+
                 if (select("id", "profiles","uri=:uri", {{":uri", uri}}).payloads.empty()) {
                     insertInto("profiles",
                             {{":uri", "uri"}, {":alias", "alias"},
@@ -633,14 +633,14 @@ LegacyDatabase::migrateLocalProfiles()
                     {{":uri", uri}}).payloads;
                     if (!profileIds.empty() && select("profile_id", "profiles_accounts",
                     "account_id=:account_id AND is_account=:is_account",
-                    {{":account_id", accountId.toStdString()},
+                    {{":account_id", accountId},
                     {":is_account", "true"}}).payloads.empty()) {
                         insertInto("profiles_accounts",
                                     {{":profile_id", "profile_id"},
                                     {":account_id", "account_id"},
                                     {":is_account", "is_account"}},
                                     {{":profile_id", profileIds[0]},
-                                    {":account_id", accountId.toStdString()},
+                                    {":account_id", accountId},
                                     {":is_account", "true"}});
                     }
                 }
@@ -655,8 +655,9 @@ LegacyDatabase::migratePeerProfiles()
     const QDir profilesDir = basePath_ + "peer_profiles/";
 
     const QStringList entries = profilesDir.entryList({QStringLiteral("*.vcf")}, QDir::Files);
-
-    foreach (const QString& item , entries) {
+    QListIterator<QString> i(entries);
+    while (i.hasNext()) {
+        auto item = i.next();
         auto filePath = profilesDir.path() + '/' + item;
         QString content;
         QFile file(filePath);
@@ -720,15 +721,15 @@ LegacyDatabase::migrateTextHistory()
                 // Load account
                 auto peersObject = loadDoc["peers"].toArray()[0].toObject();
 
-                MapStringString details = ConfigurationManager::instance().getAccountDetails(peersObject["accountId"].toString());
-                if (!details.contains(DRing::Account::ConfProperties::USERNAME)) continue;
+                std::map<std::string, std::string> details = DaemonProxy::instance().getAccountDetails(peersObject["accountId"].toString().toStdString());
+                if (details.find(DRing::Account::ConfProperties::USERNAME) == details.end()) continue;
 
                 auto accountUri = details[DRing::Account::ConfProperties::USERNAME];
-                auto isARingContact = accountUri.startsWith("ring:");
+                auto isARingContact = accountUri.compare(0,5,"ring:") == 0;
                 if (isARingContact) {
-                    accountUri = accountUri.mid(QString("ring:").length());
+                    accountUri = accountUri.substr(QString("ring:").length());
                 }
-                auto accountIds = select("id", "profiles","uri=:uri", {{":uri", accountUri.toStdString()}}).payloads;
+                auto accountIds = select("id", "profiles","uri=:uri", {{":uri", accountUri}}).payloads;
                 auto contactIds = select("id", "profiles","uri=:uri", {{":uri", peersObject["uri"].toString().toStdString()}}).payloads;
                 if (contactIds.empty()) {
                     insertInto("profiles",
@@ -740,10 +741,8 @@ LegacyDatabase::migrateTextHistory()
                     // NOTE: this profile is in a case where it's not a contact for the daemon but a conversation with an account.
                     // So we choose to add the profile to daemon's contacts
                     if(isARingContact) {
-                        ConfigurationManager::instance().addContact(
-                            peersObject["accountId"].toString(),
-                            peersObject["uri"].toString()
-                        );
+                        DaemonProxy::instance().addContact(peersObject["accountId"].toString().toStdString(),
+                                                           peersObject["uri"].toString().toStdString());
                     }
                     contactIds = select("id", "profiles","uri=:uri", {{":uri", peersObject["uri"].toString().toStdString()}}).payloads;
                 }
@@ -847,15 +846,14 @@ LegacyDatabase::migrateSchemaFromVersion1()
 void
 LegacyDatabase::linkRingProfilesWithAccounts(bool contactsOnly)
 {
-    const QStringList accountIds =
-    ConfigurationManager::instance().getAccountList();
+    const std::vector<std::string> accountIds = DaemonProxy::instance().getAccountList();
     for (auto accountId : accountIds) {
-        MapStringString account = ConfigurationManager::instance().
-        getAccountDetails(accountId.toStdString().c_str());
-        auto accountURI = account[DRing::Account::ConfProperties::USERNAME].contains("ring:") ?
-        account[DRing::Account::ConfProperties::USERNAME]
-       .toStdString().substr(std::string("ring:").size()) :
-       account[DRing::Account::ConfProperties::USERNAME].toStdString();
+        std::map<std::string, std::string> account = DaemonProxy::instance().getAccountDetails(accountId);
+
+        auto accountURI = account[DRing::Account::ConfProperties::USERNAME].compare(0,5,"ring:") == 0 ?
+            account[DRing::Account::ConfProperties::USERNAME].substr(std::string("ring:").size()) :
+            account[DRing::Account::ConfProperties::USERNAME];
+
         auto profileIds = select("id", "profiles","uri=:uri", {{":uri", accountURI}}).payloads;
         if(profileIds.empty()) {
             continue;
@@ -864,12 +862,12 @@ LegacyDatabase::linkRingProfilesWithAccounts(bool contactsOnly)
             //if is_account is true we should have only one profile id for account id
              if (select("profile_id", "profiles_accounts",
                         "account_id=:account_id AND is_account=:is_account",
-                        {{":account_id", accountId.toStdString()},
+                        {{":account_id", accountId},
                         {":is_account", "true"}}).payloads.empty()) {
                             insertInto("profiles_accounts",
                             {{":profile_id", "profile_id"}, {":account_id", "account_id"},
                             {":is_account", "is_account"}},
-                            {{":profile_id", profileIds[0]}, {":account_id", accountId.toStdString()},
+                            {{":profile_id", profileIds[0]}, {":account_id", accountId},
                             {":is_account", "true"}});
              }
         }
@@ -877,19 +875,17 @@ LegacyDatabase::linkRingProfilesWithAccounts(bool contactsOnly)
         if (account[DRing::Account::ConfProperties::TYPE] == DRing::Account::ProtocolNames::RING) {
 
             // update RING contacts
-            const VectorMapStringString& contacts_vector = ConfigurationManager::instance()
-           .getContacts(accountId.toStdString().c_str());
+            const std::vector<std::map<std::string, std::string>> contacts_vector = DaemonProxy::instance().getContacts(accountId);
             //update contacts profiles
             for (auto contact_info : contacts_vector) {
                 auto contactURI = contact_info["id"];
-                updateProfileAccountForContact(contactURI.toStdString(), accountId.toStdString());
+                updateProfileAccountForContact(contactURI, accountId);
             }
             //update pending contacts profiles
-            const VectorMapStringString& pending_tr = ConfigurationManager::instance()
-            .getTrustRequests(accountId.toStdString().c_str());
+            const std::vector<std::map<std::string, std::string>> pending_tr = DaemonProxy::instance().getTrustRequests(accountId);
             for (auto tr_info : pending_tr) {
                 auto contactURI = tr_info[DRing::Account::TrustRequest::FROM];
-                updateProfileAccountForContact(contactURI.toStdString(), accountId.toStdString());
+                updateProfileAccountForContact(contactURI, accountId);
             }
         } else if (account[DRing::Account::ConfProperties::TYPE] == DRing::Account::ProtocolNames::SIP) {
             // update SIP contacts
@@ -907,13 +903,13 @@ LegacyDatabase::linkRingProfilesWithAccounts(bool contactsOnly)
                                         account_id=:account_id AND  \
                                         is_account=:is_account",
                                         {{":profile_id", participant},
-                                        {":account_id", accountId.toStdString()},
+                                        {":account_id", accountId},
                                         {":is_account", "false"}}).payloads;
                     if (rows.empty()) {
                         insertInto("profiles_accounts",
                         {{":profile_id", "profile_id"}, {":account_id", "account_id"},
                         {":is_account", "is_account"}},
-                        {{":profile_id", participant}, {":account_id", accountId.toStdString()},
+                        {{":profile_id", participant}, {":account_id", accountId},
                         {":is_account", "false"}});
                     }
                 }
