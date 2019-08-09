@@ -74,7 +74,7 @@ Lrc::~Lrc()
 #endif //ENABLE_LIBWRAP
 }
 
-const NewAccountModel&
+NewAccountModel&
 Lrc::getAccountModel() const
 {
     return *lrcPimpl_->accountModel;
