@@ -47,7 +47,7 @@ public:
      * get a reference on account model.
      * @return a NewAccountModel&.
      */
-    const NewAccountModel& getAccountModel() const;
+    NewAccountModel& getAccountModel() const;
     /**
      * get a reference on the behavior controller.
      * @return a BehaviorController&.
