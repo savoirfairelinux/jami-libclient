@@ -410,7 +410,7 @@ void URIPimpl::parseHostname()
             } else {
                 if (section == URI::Section::HOSTNAME) {
                     m_Hostname2 = extHn.mid(start+1,i-start);
-                } else if (section == URI::Section::HOSTNAME) {
+                } else if (section == URI::Section::PORT) {
                     m_Port = extHn.mid(start+1,i-start-1).toInt();
                 }
                 inAttributes = true;
@@ -477,6 +477,7 @@ QString URI::format(FlagPack<URI::Section> sections) const
         case ProtocolHint::IP:
             header_type = SchemeType::SIP;
             break;
+        case ProtocolHint::UNRECOGNIZED:
         default:
             header_type = SchemeType::RING;
             break;

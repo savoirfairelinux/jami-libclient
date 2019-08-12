@@ -140,7 +140,7 @@ Renderer::useAVFrame(bool useAVFrame) {
     pimpl_->usingAVFrame_ = useAVFrame;
 #ifdef ENABLE_LIBWRAP
     pimpl_->renderer->configureTarget(useAVFrame);
-#endif;
+#endif
 }
 
 std::string

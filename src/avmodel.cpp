@@ -817,7 +817,7 @@ AVModelPimpl::getDevice(int type) const
         }
         auto deviceIdx = currentDevicesIdx[type].toUInt();
         for (const auto& dev : devices) {
-            int idx;
+            uint32_t idx;
             switch (type) {
             case 1: // INPUT
                 idx = ConfigurationManager::instance().getAudioInputDeviceIndex(dev.c_str());

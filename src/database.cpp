@@ -256,7 +256,7 @@ Database::getVersion()
     auto getVersionQuery = std::string("pragma user_version");
     if (not query.exec(getVersionQuery.c_str()))
         throw QueryError(query);
-        query.first();
+    query.first();
     return  query.value(0).toString().toStdString();
 }
 
@@ -346,7 +346,7 @@ Database::select(const std::string& select,                            // "id", 
             result.payloads.emplace_back(query.value(i).toString().toStdString());
     }
 
-    return std::move(result);
+    return result;
 }
 
 int
