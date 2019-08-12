@@ -336,6 +336,9 @@ ConversationModel::allFilteredConversations() const
                         return false;
                     case profile::Type::TEMPORARY:
                         return filterUriAndReg(contactInfo, filter);
+                    case profile::Type::SIP:
+                    case profile::Type::RING:
+                        break;
                     }
                 } else {
                     // We only want pending requests matching with the filter
@@ -457,6 +460,7 @@ ConversationModel::selectConversation(const std::string& uid) const
                 // call just ended
                 emit pimpl_->behaviorController.showChatView(owner.id, conversation);
                 break;
+            case call::Status::ENDED:
             default: // ENDED
                 // nothing to do
                 break;
@@ -1706,6 +1710,9 @@ ConversationModelPimpl::slotUpdateInteractionStatus(const std::string& accountId
     case DRing::Account::MessageStates::SENDING:
         newStatus = interaction::Status::SENDING;
         break;
+    case DRing::Account::MessageStates::CANCELLED:
+        newStatus = interaction::Status::TRANSFER_CANCELED;
+        break;
     case DRing::Account::MessageStates::SENT:
         newStatus = interaction::Status::SUCCEED;
         break;
@@ -1878,7 +1885,7 @@ ConversationModel::getNumberOfUnreadMessagesFor(const std::string& convUid)
 }
 
 bool
-ConversationModelPimpl::usefulDataFromDataTransfer(long long dringId, const datatransfer::Info& info,
+ConversationModelPimpl::usefulDataFromDataTransfer(long long dringId, const datatransfer::Info&,
                                                    int& interactionId, std::string& convId)
 {
     try {

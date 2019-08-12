@@ -63,7 +63,7 @@ struct SHMHeader {
    unsigned writeOffset  ; /*!< offset of writable frame in data                             */
 
 #pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-pedantic"
+#pragma GCC diagnostic ignored "-Wpedantic"
    uint8_t data[]     ; /*!< the whole shared memory                                      */
 #pragma GCC diagnostic pop
 };
