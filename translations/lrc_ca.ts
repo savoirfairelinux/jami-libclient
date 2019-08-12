@@ -72,12 +72,12 @@
         <location filename="../src/conversationmodel.cpp" line="1657"/>
         <location filename="../src/conversationmodel.cpp" line="1917"/>
         <source>Invitation received</source>
-        <translation type="unfinished"/>
+        <translation>S&apos;ha rebut una invitació</translation>
     </message>
     <message>
         <location filename="../src/conversationmodel.cpp" line="1269"/>
         <source>Contact added</source>
-        <translation type="unfinished"/>
+        <translation>Contacte afegit</translation>
     </message>
     <message>
         <location filename="../src/conversationmodel.cpp" line="1311"/>
