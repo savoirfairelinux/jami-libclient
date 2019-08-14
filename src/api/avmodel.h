@@ -285,6 +285,17 @@ public:
      */
     void useAVFrame(bool useAVFrame);
 
+    /**
+     * check if camera is used or not
+     * @return if camera used
+     */
+    bool isCameraUsed();
+
+    /**
+     * stop camera once needed
+     */
+    void stopCamera();
+
 Q_SIGNALS:
     /**
      * Emitted when a renderer is started

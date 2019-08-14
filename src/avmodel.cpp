@@ -611,6 +611,18 @@ AVModel::getCurrentRenderedDevice(const std::string& call_id) const
     return result;
 }
 
+bool
+AVModel::isCameraUsed()
+{
+    return VideoManager::instance().hasCameraStarted();
+}
+
+void
+AVModel::stopCamera()
+{
+    VideoManager::instance().stopCamera();
+}
+
 AVModelPimpl::AVModelPimpl(AVModel& linked, const CallbacksHandler& callbacksHandler)
 : linked_(linked)
 , callbacksHandler(callbacksHandler)
