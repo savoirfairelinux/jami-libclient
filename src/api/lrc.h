@@ -84,6 +84,8 @@ public:
     static std::vector<std::string> activeCalls();
 
   private:
+    static bool isUnFinished(const QString& callState);
+
     std::unique_ptr<LrcPimpl> lrcPimpl_;
 };
 

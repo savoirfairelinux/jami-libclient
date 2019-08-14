@@ -24,6 +24,8 @@
 #include "../../daemon/MSVC/unistd.h"
 #endif // !_MSC_VER
 
+#include "call_const.h"
+
 // Models and database
 #include "api/avmodel.h"
 #include "api/behaviorcontroller.h"
@@ -131,9 +133,25 @@ Lrc::activeCalls()
     std::vector<std::string> result;
     result.reserve(callLists.size());
     for (const auto &call : callLists) {
-        result.emplace_back(call.toStdString());
+        MapStringString callDetails = CallManager::instance().getCallDetails(call);
+        if(isUnFinished(callDetails[QString(DRing::Call::Details::CALL_STATE)]))
+            result.emplace_back(call.toStdString());
     }
     return result;
+}
+
+bool
+Lrc::isUnFinished(const QString& callState)
+{
+    if (callState == QLatin1String(DRing::Call::StateEvent::HUNGUP) ||
+        callState == QLatin1String(DRing::Call::StateEvent::BUSY) ||
+        callState == QLatin1String(DRing::Call::StateEvent::PEER_BUSY) ||
+        callState == QLatin1String(DRing::Call::StateEvent::FAILURE) ||
+        callState == QLatin1String(DRing::Call::StateEvent::INACTIVE) ||
+        callState == QLatin1String(DRing::Call::StateEvent::OVER)) {
+        return false;
+    }
+    return true;
 }
 
 LrcPimpl::LrcPimpl(Lrc& linked)
