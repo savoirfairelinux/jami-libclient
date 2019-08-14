@@ -185,7 +185,7 @@ NewCallModel::getCallFromURI(const std::string& uri, bool notOver) const
     auto url = (owner.profileInfo.type != profile::Type::SIP && uri.find("ring:") == std::string::npos) ? "ring:" + uri : uri;
     for (const auto& call: pimpl_->calls) {
         if (call.second->peerUri == url) {
-            if (!notOver || call.second->status != call::Status::ENDED)
+            if (!notOver || !call::isTerminating(call.second->status))
                 return *call.second;
         }
     }
