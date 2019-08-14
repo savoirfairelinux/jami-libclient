@@ -24,6 +24,8 @@
 #include "../../daemon/MSVC/unistd.h"
 #endif // !_MSC_VER
 
+#include "call_const.h"
+
 // Models and database
 #include "api/avmodel.h"
 #include "api/behaviorcontroller.h"
@@ -40,6 +42,9 @@ namespace lrc
 {
 
 using namespace api;
+
+// To judge whether the call is finished or not depending on callState
+bool isFinished(const QString& callState);
 
 class LrcPimpl
 {
@@ -137,9 +142,25 @@ Lrc::activeCalls()
     std::vector<std::string> result;
     result.reserve(callLists.size());
     for (const auto &call : callLists) {
-        result.emplace_back(call.toStdString());
+        MapStringString callDetails = CallManager::instance().getCallDetails(call);
+        if(!isFinished(callDetails[QString(DRing::Call::Details::CALL_STATE)]))
+            result.emplace_back(call.toStdString());
     }
     return result;
+}
+
+bool
+isFinished(const QString& callState)
+{
+    if (callState == QLatin1String(DRing::Call::StateEvent::HUNGUP) ||
+        callState == QLatin1String(DRing::Call::StateEvent::BUSY) ||
+        callState == QLatin1String(DRing::Call::StateEvent::PEER_BUSY) ||
+        callState == QLatin1String(DRing::Call::StateEvent::FAILURE) ||
+        callState == QLatin1String(DRing::Call::StateEvent::INACTIVE) ||
+        callState == QLatin1String(DRing::Call::StateEvent::OVER)) {
+        return true;
+    }
+    return false;
 }
 
 LrcPimpl::LrcPimpl(Lrc& linked, MigrationCb& willMigrateCb, MigrationCb& didMigrateCb)
