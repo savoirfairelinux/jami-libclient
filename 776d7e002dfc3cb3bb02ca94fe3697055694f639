@@ -1,0 +1,188 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "50346a8d_0b770549",
+        "filename": "src/api/interaction.h",
+        "patchSetId": 61
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2019-08-16T17:33:58Z",
+      "side": 1,
+      "message": "Is this really wanted? Or do we want to move this into metadatas?",
+      "range": {
+        "startLine": 82,
+        "startChar": 4,
+        "endLine": 91,
+        "endChar": 22
+      },
+      "revId": "776d7e002dfc3cb3bb02ca94fe3697055694f639",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5a621981_5852215c",
+        "filename": "src/api/lrc.h",
+        "patchSetId": 61
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2019-08-16T17:33:58Z",
+      "side": 1,
+      "message": "MigrationCb is a better name (capital letter)",
+      "range": {
+        "startLine": 44,
+        "startChar": 8,
+        "endLine": 44,
+        "endChar": 25
+      },
+      "revId": "776d7e002dfc3cb3bb02ca94fe3697055694f639",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b4787177_a4101143",
+        "filename": "src/api/lrc.h",
+        "patchSetId": 61
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2019-08-16T17:33:58Z",
+      "side": 1,
+      "message": "Add comment just to explain :)",
+      "range": {
+        "startLine": 44,
+        "startChar": 26,
+        "endLine": 44,
+        "endChar": 39
+      },
+      "revId": "776d7e002dfc3cb3bb02ca94fe3697055694f639",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "62fcf1df_ac1359e0",
+        "filename": "src/authority/storagehelper.cpp",
+        "patchSetId": 61
+      },
+      "lineNbr": 299,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2019-08-16T17:33:58Z",
+      "side": 1,
+      "message": "Maybe move this into a constexpr, like \"FN\"",
+      "range": {
+        "startLine": 299,
+        "startChar": 35,
+        "endLine": 299,
+        "endChar": 67
+      },
+      "revId": "776d7e002dfc3cb3bb02ca94fe3697055694f639",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d312af3c_a84e9128",
+        "filename": "src/authority/storagehelper.cpp",
+        "patchSetId": 61
+      },
+      "lineNbr": 834,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2019-08-16T17:33:58Z",
+      "side": 1,
+      "message": "Maybe add comment about this",
+      "range": {
+        "startLine": 833,
+        "startChar": 0,
+        "endLine": 834,
+        "endChar": 27
+      },
+      "revId": "776d7e002dfc3cb3bb02ca94fe3697055694f639",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b363c448_4a65f84d",
+        "filename": "src/authority/storagehelper.cpp",
+        "patchSetId": 61
+      },
+      "lineNbr": 1006,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2019-08-16T17:33:58Z",
+      "side": 1,
+      "message": "missing TODO",
+      "range": {
+        "startLine": 1005,
+        "startChar": 56,
+        "endLine": 1006,
+        "endChar": 55
+      },
+      "revId": "776d7e002dfc3cb3bb02ca94fe3697055694f639",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c39c191f_8271a045",
+        "filename": "src/authority/storagehelper.cpp",
+        "patchSetId": 61
+      },
+      "lineNbr": 1015,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2019-08-16T17:33:58Z",
+      "side": 1,
+      "message": "the",
+      "range": {
+        "startLine": 1015,
+        "startChar": 46,
+        "endLine": 1015,
+        "endChar": 48
+      },
+      "revId": "776d7e002dfc3cb3bb02ca94fe3697055694f639",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "faa740ed_763ebbaa",
+        "filename": "src/authority/storagehelper.cpp",
+        "patchSetId": 61
+      },
+      "lineNbr": 1180,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2019-08-16T17:33:58Z",
+      "side": 1,
+      "message": "Maybe throwing by default is not a good thing. If there\u0027s no migration material we should not create the LegacyDb? At least we should avoid throwing each time we launch LRC",
+      "range": {
+        "startLine": 1179,
+        "startChar": 9,
+        "endLine": 1180,
+        "endChar": 72
+      },
+      "revId": "776d7e002dfc3cb3bb02ca94fe3697055694f639",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    }
+  ]
+}
