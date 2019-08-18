@@ -417,6 +417,10 @@ NewAccountModelPimpl::slotAccountStatusChanged(const std::string& accountID, con
             // When keys are generated, the status will change.
             accounts.erase(accountID);
             addToAccounts(accountID);
+            auto updatedAccountInfo = accounts.find(accountID);
+            if (updatedAccountInfo == accounts.end()) {
+                return;
+            }
             emit linked.accountAdded(accountID);
         } else if (!accountInfo.profileInfo.uri.empty()) {
             accountInfo.status = status;
@@ -569,6 +573,11 @@ NewAccountModelPimpl::addToAccounts(const std::string& accountId)
         // Retrieve alias from database
         newAcc.profileInfo.alias = authority::database::getAliasForProfileId(database, accountProfileId);
     }
+    MapStringString volatileDetails = ConfigurationManager::instance().getVolatileAccountDetails(accountId.c_str());
+    std::string daemonStatus = volatileDetails[DRing::Account::ConfProperties::Registration::STATUS].toStdString();
+    newAcc.status = lrc::api::account::to_status(daemonStatus);
+
+    if (newAcc.profileInfo.uri.empty()) return;
 
     // Init models for this account
     newAcc.callModel = std::make_unique<NewCallModel>(newAcc, callbacksHandler);
@@ -579,9 +588,6 @@ NewAccountModelPimpl::addToAccounts(const std::string& accountId)
     newAcc.codecModel = std::make_unique<NewCodecModel>(newAcc, callbacksHandler);
     newAcc.accountModel = &linked;
 
-    MapStringString volatileDetails = ConfigurationManager::instance().getVolatileAccountDetails(accountId.c_str());
-    std::string daemonStatus = volatileDetails[DRing::Account::ConfProperties::Registration::STATUS].toStdString();
-    newAcc.status = lrc::api::account::to_status(daemonStatus);
 }
 
 void
