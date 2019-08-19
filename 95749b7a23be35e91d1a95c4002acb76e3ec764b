@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "69185f2d_74ce9464",
+        "filename": "src/authority/storagehelper.h",
+        "patchSetId": 65
+      },
+      "lineNbr": 173,
+      "author": {
+        "id": 225
+      },
+      "writtenOn": "2019-08-19T20:31:01Z",
+      "side": 1,
+      "message": "is it parameter?",
+      "range": {
+        "startLine": 173,
+        "startChar": 4,
+        "endLine": 173,
+        "endChar": 52
+      },
+      "revId": "95749b7a23be35e91d1a95c4002acb76e3ec764b",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    }
+  ]
+}
