@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "ec9a0f84_54a120ba",
+        "filename": "src/api/interaction.h",
+        "patchSetId": 61
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 90
+      },
+      "writtenOn": "2019-08-19T16:00:23Z",
+      "side": 1,
+      "message": "Yeah I think this will be better in the metadata too but this could be a hefty patch on it\u0027s own.",
+      "parentUuid": "50346a8d_0b770549",
+      "range": {
+        "startLine": 82,
+        "startChar": 4,
+        "endLine": 91,
+        "endChar": 22
+      },
+      "revId": "776d7e002dfc3cb3bb02ca94fe3697055694f639",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "5a621981_5852215c",
         "filename": "src/api/lrc.h",
         "patchSetId": 61
@@ -327,6 +351,30 @@
       "revId": "776d7e002dfc3cb3bb02ca94fe3697055694f639",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "49eda72c_de47d6c8",
+        "filename": "src/authority/storagehelper.cpp",
+        "patchSetId": 61
+      },
+      "lineNbr": 1180,
+      "author": {
+        "id": 90
+      },
+      "writtenOn": "2019-08-19T16:00:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "faa740ed_763ebbaa",
+      "range": {
+        "startLine": 1179,
+        "startChar": 9,
+        "endLine": 1180,
+        "endChar": 72
+      },
+      "revId": "776d7e002dfc3cb3bb02ca94fe3697055694f639",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
