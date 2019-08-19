@@ -68,50 +68,50 @@
         <translation>Comunicação estabelecida</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1268"/>
-        <location filename="../src/conversationmodel.cpp" line="1657"/>
-        <location filename="../src/conversationmodel.cpp" line="1917"/>
+        <location filename="../src/conversationmodel.cpp" line="1272"/>
+        <location filename="../src/conversationmodel.cpp" line="1661"/>
+        <location filename="../src/conversationmodel.cpp" line="1924"/>
         <source>Invitation received</source>
         <translation>Convite recebido</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1269"/>
+        <location filename="../src/conversationmodel.cpp" line="1273"/>
         <source>Contact added</source>
         <translation>Contacto adicionado</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1311"/>
-        <location filename="../src/conversationmodel.cpp" line="1318"/>
+        <location filename="../src/conversationmodel.cpp" line="1315"/>
+        <location filename="../src/conversationmodel.cpp" line="1322"/>
         <source>Invitation accepted</source>
         <translation>Convite aceite</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1528"/>
+        <location filename="../src/conversationmodel.cpp" line="1532"/>
         <source>ð Outgoing call</source>
         <translation>ð Chamada feita</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1530"/>
+        <location filename="../src/conversationmodel.cpp" line="1534"/>
         <source>ð Incoming call</source>
         <translation>ð Chamada recebida</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1543"/>
+        <location filename="../src/conversationmodel.cpp" line="1547"/>
         <source>ð Outgoing call - </source>
         <translation>ð Chamada feita - </translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1546"/>
+        <location filename="../src/conversationmodel.cpp" line="1550"/>
         <source>ð Incoming call - </source>
         <translation>ð Chamada recebida - </translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1550"/>
+        <location filename="../src/conversationmodel.cpp" line="1554"/>
         <source>ð½ Missed outgoing call</source>
         <translation>ð½ Chamada feita não atendida</translation>
     </message>
     <message>
-        <location filename="../src/conversationmodel.cpp" line="1552"/>
+        <location filename="../src/conversationmodel.cpp" line="1556"/>
         <source>ð½ Missed incoming call</source>
         <translation>ð½ Chamada recebida não atendida</translation>
     </message>
