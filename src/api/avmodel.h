@@ -285,6 +285,23 @@ public:
      */
     void useAVFrame(bool useAVFrame);
 
+     /**
+     * set current using device
+     * @ param device name
+     */
+    void setCurrentVideoCaptureDevice(std::string &currentVideoCaptureDevice);
+
+     /**
+     * set current using device
+     * @ return current using device name
+     */
+    std::string getCurrentVideoCaptureDevice() const;
+
+     /**
+     * clear current using device
+     */
+    void clearCurrentVideoCaptureDevice();
+
 Q_SIGNALS:
     /**
      * Emitted when a renderer is started
