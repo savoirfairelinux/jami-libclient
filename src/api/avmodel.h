@@ -285,6 +285,23 @@ public:
      */
     void useAVFrame(bool useAVFrame);
 
+     /**
+     * set current using device
+     * @ param device name
+     */
+    void setCurrentUsingDevice(std::string &decive);
+
+     /**
+     * set current using device
+     * @ return current using device name
+     */
+    std::string getCurrentUsingDevice() const;
+
+     /**
+     * clear current using device
+     */
+    void clearCurrentUsingDevice();
+
 Q_SIGNALS:
     /**
      * Emitted when a renderer is started
