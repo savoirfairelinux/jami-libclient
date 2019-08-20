@@ -65,6 +65,7 @@ public:
     // store if a renderers is for a finished call
     std::map<std::string, bool> finishedRenderers_;
     bool useAVFrame_ = false;
+    std::string currentVideoCaptureDevice_ {};
 
 #ifndef ENABLE_LIBWRAP
     // TODO: Init Video Renderers from daemon (see: https://git.ring.cx/savoirfairelinux/ring-daemon/issues/59)
@@ -609,6 +610,24 @@ AVModel::getCurrentRenderedDevice(const std::string& call_id) const
             .right(sourceSize - std::string("display://").size()).toStdString();
     }
     return result;
+}
+
+void
+AVModel::setCurrentVideoCaptureDevice(std::string &currentVideoCaptureDevice)
+{
+    pimpl_->currentVideoCaptureDevice_ = currentVideoCaptureDevice;
+}
+
+std::string
+AVModel::getCurrentVideoCaptureDevice() const
+{
+    return pimpl_->currentVideoCaptureDevice_;
+}
+
+void
+AVModel::clearCurrentVideoCaptureDevice()
+{
+    pimpl_->currentVideoCaptureDevice_.clear();
 }
 
 AVModelPimpl::AVModelPimpl(AVModel& linked, const CallbacksHandler& callbacksHandler)
