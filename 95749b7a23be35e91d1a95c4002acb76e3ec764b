@@ -22,6 +22,30 @@
       "revId": "95749b7a23be35e91d1a95c4002acb76e3ec764b",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7545319d_d7c25043",
+        "filename": "src/authority/storagehelper.h",
+        "patchSetId": 65
+      },
+      "lineNbr": 173,
+      "author": {
+        "id": 90
+      },
+      "writtenOn": "2019-08-20T14:08:49Z",
+      "side": 1,
+      "message": "No I\u0027ll remove it.",
+      "parentUuid": "69185f2d_74ce9464",
+      "range": {
+        "startLine": 173,
+        "startChar": 4,
+        "endLine": 173,
+        "endChar": 52
+      },
+      "revId": "95749b7a23be35e91d1a95c4002acb76e3ec764b",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
     }
   ]
 }
