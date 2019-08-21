@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "a6ac8cf3_8b2d0f20",
+        "filename": "src/contactmodel.cpp",
+        "patchSetId": 71
+      },
+      "lineNbr": 500,
+      "author": {
+        "id": 90
+      },
+      "writtenOn": "2019-08-21T19:13:48Z",
+      "side": 1,
+      "message": "good yes, and trusted was already set inside too",
+      "parentUuid": "1a1ef4ad_aa66484b",
+      "range": {
+        "startLine": 499,
+        "startChar": 16,
+        "endLine": 500,
+        "endChar": 41
+      },
+      "revId": "fc9311e43356db42421d57f5eb77d2e9370bc5a7",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "7d979d0b_49ea9878",
         "filename": "src/newaccountmodel.cpp",
         "patchSetId": 71
@@ -45,6 +69,30 @@
       "revId": "fc9311e43356db42421d57f5eb77d2e9370bc5a7",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3bf0a413_4205d476",
+        "filename": "src/newaccountmodel.cpp",
+        "patchSetId": 71
+      },
+      "lineNbr": 595,
+      "author": {
+        "id": 90
+      },
+      "writtenOn": "2019-08-21T19:13:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7d979d0b_49ea9878",
+      "range": {
+        "startLine": 594,
+        "startChar": 15,
+        "endLine": 595,
+        "endChar": 16
+      },
+      "revId": "fc9311e43356db42421d57f5eb77d2e9370bc5a7",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
