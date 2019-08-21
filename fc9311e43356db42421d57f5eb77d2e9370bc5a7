@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1a1ef4ad_aa66484b",
+        "filename": "src/contactmodel.cpp",
+        "patchSetId": 71
+      },
+      "lineNbr": 500,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2019-08-21T18:37:08Z",
+      "side": 1,
+      "message": "Maybe this should be done in buildContactFromProfile? Can avoid some errors",
+      "range": {
+        "startLine": 499,
+        "startChar": 16,
+        "endLine": 500,
+        "endChar": 41
+      },
+      "revId": "fc9311e43356db42421d57f5eb77d2e9370bc5a7",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7d979d0b_49ea9878",
+        "filename": "src/newaccountmodel.cpp",
+        "patchSetId": 71
+      },
+      "lineNbr": 595,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2019-08-21T18:37:08Z",
+      "side": 1,
+      "message": "Maybe make sure this is required or not. To avoid to have a new TODO here :)",
+      "range": {
+        "startLine": 594,
+        "startChar": 15,
+        "endLine": 595,
+        "endChar": 16
+      },
+      "revId": "fc9311e43356db42421d57f5eb77d2e9370bc5a7",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    }
+  ]
+}
