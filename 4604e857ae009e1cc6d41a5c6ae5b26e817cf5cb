@@ -22,6 +22,30 @@
       "revId": "4604e857ae009e1cc6d41a5c6ae5b26e817cf5cb",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "371ead1b_273d3c83",
+        "filename": "src/avmodel.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 618,
+      "author": {
+        "id": 633
+      },
+      "writtenOn": "2019-08-21T19:44:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "adb4edfc_41ebb328",
+      "range": {
+        "startLine": 618,
+        "startChar": 34,
+        "endLine": 618,
+        "endChar": 40
+      },
+      "revId": "4604e857ae009e1cc6d41a5c6ae5b26e817cf5cb",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
