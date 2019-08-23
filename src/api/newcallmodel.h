@@ -248,12 +248,6 @@ Q_SIGNALS:
      */
     void newIncomingCall(const std::string& fromId, const std::string& callId) const;
     /**
-     * Emitted when the renderer starts
-     * @param callId
-     * @param renderer
-     */
-    void remotePreviewStarted(const std::string& callId, Video::Renderer* renderer) const;
-    /**
      * Emitted when a call is added to a conference
      * @param callId
      * @param confId
