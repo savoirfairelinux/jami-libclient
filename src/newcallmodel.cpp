@@ -488,7 +488,7 @@ NewCallModelPimpl::initConferencesFromDaemon()
             auto diff = static_cast<int64_t>(system_now) - std::stol(callDetails["TIMESTAMP_START"].toStdString());
             callInfo->status =  details["CONF_STATE"] == "ACTIVE_ATTACHED"? call::Status::IN_PROGRESS : call::Status::PAUSED;
             callInfo->startTime = now - std::chrono::seconds(diff);
-            emit linked.callAddedToConference(call.toStdString(), callId.toStdString());
+            Q_EMIT linked.callAddedToConference(call.toStdString(), callId.toStdString());
         }
         if (!isForThisAccount) break;
         callInfo->type = call::Type::CONFERENCE;
@@ -539,7 +539,7 @@ NewCallModelPimpl::slotIncomingCall(const std::string& accountId, const std::str
     callInfo->isAudioOnly = callDetails["AUDIO_ONLY"] == "true" ? true : false;
     calls.emplace(callId, std::move(callInfo));
 
-    emit linked.newIncomingCall(fromId, callId);
+    Q_EMIT linked.newIncomingCall(fromId, callId);
 
     // HACK. BECAUSE THE DAEMON DOESN'T HANDLE THIS CASE!
     if (linked.owner.confProperties.autoAnswer) {
@@ -557,7 +557,7 @@ NewCallModelPimpl::slotCallStateChanged(const std::string& callId, const std::st
 
     if (status == call::Status::ENDED && !call::isTerminating(call->status)) {
         call->status = call::Status::TERMINATING;
-        emit linked.callStatusChanged(callId, code);
+        Q_EMIT linked.callStatusChanged(callId, code);
     }
 
     // proper state transition
@@ -573,15 +573,15 @@ NewCallModelPimpl::slotCallStateChanged(const std::string& callId, const std::st
          call::to_string(previousStatus).c_str(), call::to_string(status).c_str());
 
     // NOTE: signal emission order matters, always emit CallStatusChanged before CallEnded
-    emit linked.callStatusChanged(callId, code);
+    Q_EMIT linked.callStatusChanged(callId, code);
 
     if (call->status == call::Status::ENDED) {
-        emit linked.callEnded(callId);
+        Q_EMIT linked.callEnded(callId);
     } else if (call->status == call::Status::IN_PROGRESS) {
         if (previousStatus == call::Status::INCOMING_RINGING
                 || previousStatus == call::Status::OUTGOING_RINGING) {
             call->startTime = std::chrono::steady_clock::now();
-            emit linked.callStarted(callId);
+            Q_EMIT linked.callStarted(callId);
             sendProfile(callId);
         }
     }
@@ -647,7 +647,7 @@ NewCallModelPimpl::slotConferenceCreated(const std::string& confId)
     calls[confId] = callInfo;
     QStringList callList = CallManager::instance().getParticipantList(confId.c_str());
     foreach(const auto& call, callList) {
-        emit linked.callAddedToConference(call.toStdString(), confId);
+        Q_EMIT linked.callAddedToConference(call.toStdString(), confId);
     }
 }
 

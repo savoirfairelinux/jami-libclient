@@ -284,7 +284,7 @@ void ShmRenderer::stopShm()
 
    //Emit the signal before closing the file, this lower the risk of invalid
    //memory access
-   emit stopped();
+   Q_EMIT stopped();
 
    ::close(d_ptr->m_fd);
    d_ptr->m_fd = -1;
@@ -329,13 +329,13 @@ void ShmRenderer::startRendering()
       d_ptr->m_pTimer = new QTimer(this);
       d_ptr->m_pTimer->setInterval(33);
       connect(d_ptr->m_pTimer,&QTimer::timeout,[this]() {
-         emit this->frameUpdated();
+         Q_EMIT this->frameUpdated();
       });
    }
    //FIXME This is a temporary hack as frameUpdated() is no longer emitted
    d_ptr->m_pTimer->start();
 
-   emit started();
+   Q_EMIT started();
 }
 
 /// Stop the rendering loop

@@ -55,13 +55,13 @@ public:
     bool isValid() { return true; }
 
     void emitCallStateChanged(const QString &callID, const QString &state, int code) {
-        emit callStateChanged(callID, state, code);
+        Q_EMIT callStateChanged(callID, state, code);
     }
 
 public Q_SLOTS: // METHODS
     bool accept(const QString &callID)
     {
-        emit callStateChanged(callID, "CURRENT", -1);
+        Q_EMIT callStateChanged(callID, "CURRENT", -1);
         return true;
     }
 
@@ -150,7 +150,7 @@ public Q_SLOTS: // METHODS
 
     bool hangUp(const QString &callID)
     {
-        emit callStateChanged(callID, "OVER", -1);
+        Q_EMIT callStateChanged(callID, "OVER", -1);
         return true;
     }
 
@@ -162,7 +162,7 @@ public Q_SLOTS: // METHODS
 
     bool hold(const QString &callID)
     {
-        emit callStateChanged(callID, "HOLD", -1);
+        Q_EMIT callStateChanged(callID, "HOLD", -1);
         return true;
     }
 
@@ -187,26 +187,26 @@ public Q_SLOTS: // METHODS
 
     bool joinParticipant(const QString &sel_callID, const QString &drag_callID)
     {
-        emit conferenceCreated(sel_callID + "," + drag_callID);
+        Q_EMIT conferenceCreated(sel_callID + "," + drag_callID);
         return true;
     }
 
     QString placeCall(const QString &accountID, const QString &to)
     {
-        emit newCallCreated(accountID, to, to);
+        Q_EMIT newCallCreated(accountID, to, to);
         return to;
     }
 
 #ifdef ENABLE_LIBWRAP
     QString placeCall(const QString &accountID, const QString &to, const std::map<std::string, std::string>& VolatileCallDetails)
     {
-        emit newCallCreated(accountID, to, to);
+        Q_EMIT newCallCreated(accountID, to, to);
         return to;
     }
 #else // dbus
     QString  placeCallWithDetails(const QString &accountID, const QString &to, const std::map<std::string, std::string>& VolatileCallDetails)
     {
-       emit newCallCreated(accountID, to, to);
+       Q_EMIT newCallCreated(accountID, to, to);
        return to;
     }
 #endif // ENABLE_LIBWRAP
@@ -265,7 +265,7 @@ public Q_SLOTS: // METHODS
 
     bool unhold(const QString &callID)
     {
-        emit callStateChanged(callID, "CURRENT", -1);
+        Q_EMIT callStateChanged(callID, "CURRENT", -1);
         return true;
     }
 
@@ -294,7 +294,7 @@ public Q_SLOTS: // METHODS
 
     void emitIncomingCall(const QString &accountID, const QString &callID, const QString &from)
     {
-        emit incomingCall(accountID, callID, from);
+        Q_EMIT incomingCall(accountID, callID, from);
     }
 
 Q_SIGNALS: // SIGNALS

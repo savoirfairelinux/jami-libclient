@@ -709,7 +709,7 @@ AVModelPimpl::startedDecoding(const std::string& id, const std::string& shmPath,
         }
         renderers_.at(id)->startRendering();
     }
-    emit linked_.rendererStarted(id);
+    Q_EMIT linked_.rendererStarted(id);
 }
 
 void
@@ -744,7 +744,7 @@ AVModelPimpl::stoppedDecoding(const std::string& id, const std::string& shmPath)
             }
         }
     }
-    emit linked_.rendererStopped(id);
+    Q_EMIT linked_.rendererStopped(id);
 }
 
 void
@@ -844,19 +844,19 @@ AVModelPimpl::getDevice(int type) const
 void
 AVModelPimpl::slotFrameUpdated(const std::string& id)
 {
-    emit linked_.frameUpdated(id);
+    Q_EMIT linked_.frameUpdated(id);
 }
 
 void
 AVModelPimpl::slotDeviceEvent()
 {
-    emit linked_.deviceEvent();
+    Q_EMIT linked_.deviceEvent();
 }
 
 void
 AVModelPimpl::slotAudioMeter(const std::string& id, float level)
 {
-    emit linked_.audioMeter(id, level);
+    Q_EMIT linked_.audioMeter(id, level);
 }
 
 } // namespace lrc

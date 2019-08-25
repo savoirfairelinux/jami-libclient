@@ -182,7 +182,7 @@ NewDeviceModelPimpl::slotKnownDevicesChanged(const std::string& accountId,
         }
     }
     for (const auto& device : updatedDevices)
-        emit linked.deviceUpdated(device);
+        Q_EMIT linked.deviceUpdated(device);
 
     // Add new devices
     std::list<std::string> addedDevices;
@@ -200,7 +200,7 @@ NewDeviceModelPimpl::slotKnownDevicesChanged(const std::string& accountId,
         }
     }
     for (const auto& device : addedDevices)
-        emit linked.deviceAdded(device);
+        Q_EMIT linked.deviceAdded(device);
 }
 
 
@@ -224,13 +224,13 @@ NewDeviceModelPimpl::slotDeviceRevocationEnded(const std::string& accountId,
 
     switch (status) {
     case 0:
-        emit linked.deviceRevoked(deviceId, NewDeviceModel::Status::SUCCESS);
+        Q_EMIT linked.deviceRevoked(deviceId, NewDeviceModel::Status::SUCCESS);
         break;
     case 1:
-        emit linked.deviceRevoked(deviceId, NewDeviceModel::Status::WRONG_PASSWORD);
+        Q_EMIT linked.deviceRevoked(deviceId, NewDeviceModel::Status::WRONG_PASSWORD);
         break;
     case 2:
-        emit linked.deviceRevoked(deviceId, NewDeviceModel::Status::UNKNOWN_DEVICE);
+        Q_EMIT linked.deviceRevoked(deviceId, NewDeviceModel::Status::UNKNOWN_DEVICE);
         break;
     default:
         break;

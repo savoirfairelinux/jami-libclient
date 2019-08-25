@@ -82,7 +82,7 @@ PeerDiscoveryModelPimpl::slotPeerMapStatusChanged(const std::string& accountID, 
     if(accountID != accountID_){
         return;
     } 
-    emit linked_.modelChanged(contactUri,state == 0 ? PeerModelChanged::INSERT : PeerModelChanged::REMOVE,displayname);
+    Q_EMIT linked_.modelChanged(contactUri,state == 0 ? PeerModelChanged::INSERT : PeerModelChanged::REMOVE,displayname);
 
 }
 

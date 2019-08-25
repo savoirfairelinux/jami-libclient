@@ -246,7 +246,7 @@ RendererPimpl::stringToQSize(const std::string& res)
 void
 RendererPimpl::slotFrameUpdated()
 {
-    emit linked.frameUpdated(id_);
+    Q_EMIT linked.frameUpdated(id_);
 }
 
 } // end of namespace lrc

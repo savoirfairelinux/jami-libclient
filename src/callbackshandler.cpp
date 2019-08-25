@@ -240,7 +240,7 @@ CallbacksHandler::slotNewAccountMessage(const QString& accountId,
     auto accountId2 = accountId.toStdString();
     auto from2 = from.toStdString();
 
-    emit newAccountMessage(accountId2, from2, stdPayloads);
+    Q_EMIT newAccountMessage(accountId2, from2, stdPayloads);
 }
 
 void
@@ -252,7 +252,7 @@ CallbacksHandler::slotNewBuddySubscription(const QString& accountId,
     Q_UNUSED(accountId)
     Q_UNUSED(status)
     Q_UNUSED(message)
-    emit newBuddySubscription(uri.toStdString(), status);
+    Q_EMIT newBuddySubscription(uri.toStdString(), status);
 }
 
 void
@@ -261,7 +261,7 @@ CallbacksHandler::slotNearbyPeerSubscription(const QString& accountId,
                                              int state,
                                              const QString& displayname)
 {
-    emit newPeerSubscription(accountId.toStdString(), contactUri.toStdString(), state, displayname.toStdString());
+    Q_EMIT newPeerSubscription(accountId.toStdString(), contactUri.toStdString(), state, displayname.toStdString());
 }
 
 void
@@ -269,7 +269,7 @@ CallbacksHandler::slotContactAdded(const QString& accountId,
                                    const QString& contactUri,
                                    bool confirmed)
 {
-    emit contactAdded(accountId.toStdString(), contactUri.toStdString(), confirmed);
+    Q_EMIT contactAdded(accountId.toStdString(), contactUri.toStdString(), confirmed);
 }
 
 void
@@ -277,7 +277,7 @@ CallbacksHandler::slotContactRemoved(const QString& accountId,
                                      const QString& contactUri,
                                      bool banned)
 {
-    emit contactRemoved(accountId.toStdString(), contactUri.toStdString(), banned);
+    Q_EMIT contactRemoved(accountId.toStdString(), contactUri.toStdString(), banned);
 }
 
 void
@@ -287,7 +287,7 @@ CallbacksHandler::slotIncomingContactRequest(const QString& accountId,
                                              time_t time)
 {
     Q_UNUSED(time)
-    emit incomingContactRequest(accountId.toStdString(), ringId.toStdString(), payload.toStdString());
+    Q_EMIT incomingContactRequest(accountId.toStdString(), ringId.toStdString(), payload.toStdString());
 }
 
 void
@@ -296,33 +296,33 @@ CallbacksHandler::slotIncomingCall(const QString &accountId, const QString &call
     if (fromUri.contains("ring.dht")) {
         auto fromQString = fromUri.right(50);
         fromQString = fromQString.left(40);
-        emit incomingCall(accountId.toStdString(), callId.toStdString(), fromQString.toStdString());
+        Q_EMIT incomingCall(accountId.toStdString(), callId.toStdString(), fromQString.toStdString());
     } else {
         auto left = fromUri.indexOf("<")+1;
         auto right = fromUri.indexOf("@");
         auto fromQString = fromUri.mid(left, right-left);
 
-        emit incomingCall(accountId.toStdString(), callId.toStdString(), fromQString.toStdString());
+        Q_EMIT incomingCall(accountId.toStdString(), callId.toStdString(), fromQString.toStdString());
     }
 }
 
 void
 CallbacksHandler::slotCallStateChanged(const QString& callId, const QString& state, int code)
 {
-    emit callStateChanged(callId.toStdString(), state.toStdString(), code);
+    Q_EMIT callStateChanged(callId.toStdString(), state.toStdString(), code);
 }
 
 void
 CallbacksHandler::slotAccountDetailsChanged(const QString& accountId,
                                             const MapStringString& details)
 {
-    emit accountDetailsChanged(accountId.toStdString(), convertMap(details));
+    Q_EMIT accountDetailsChanged(accountId.toStdString(), convertMap(details));
 }
 
 void
 CallbacksHandler::slotAccountsChanged()
 {
-    emit accountsChanged();
+    Q_EMIT accountsChanged();
 }
 
 void
@@ -333,7 +333,7 @@ CallbacksHandler::slotRegistrationStateChanged(const QString& accountId,
 {
     (void) detail_code;
     (void) detail_str;
-    emit accountStatusChanged(accountId.toStdString(), lrc::api::account::to_status(registration_state.toStdString()));
+    Q_EMIT accountStatusChanged(accountId.toStdString(), lrc::api::account::to_status(registration_state.toStdString()));
 }
 
 void
@@ -357,13 +357,13 @@ CallbacksHandler::slotIncomingMessage(const QString& callId,
             auto pieces1 = pieces0[1].split( "," );
             auto pieces2 = pieces1[1].split( "=" );
             auto pieces3 = pieces1[2].split( "=" );
-            emit incomingVCardChunk(callId.toStdString(),
+            Q_EMIT incomingVCardChunk(callId.toStdString(),
                                     from2,
                                     pieces2[1].toInt(),
                                     pieces3[1].toInt(),
                                     e.second.toStdString());
         } else { // we consider it as an usual message interaction
-            emit incomingCallMessage(callId.toStdString(), from2, e.second.toStdString());
+            Q_EMIT incomingCallMessage(callId.toStdString(), from2, e.second.toStdString());
         }
     }
 }
@@ -371,7 +371,7 @@ CallbacksHandler::slotIncomingMessage(const QString& callId,
 void
 CallbacksHandler::slotConferenceCreated(const QString& callId)
 {
-    emit conferenceCreated(callId.toStdString());
+    Q_EMIT conferenceCreated(callId.toStdString());
 }
 
 void
@@ -383,7 +383,7 @@ CallbacksHandler::slotConferenceChanged(const QString& callId, const QString& st
 void
 CallbacksHandler::slotConferenceRemoved(const QString& callId)
 {
-    emit conferenceRemoved(callId.toStdString());
+    Q_EMIT conferenceRemoved(callId.toStdString());
 }
 
 void
@@ -391,7 +391,7 @@ CallbacksHandler::slotAccountMessageStatusChanged(const QString& accountId,
                                                   const uint64_t id,
                                                   const QString& to, int status)
 {
-    emit accountMessageStatusChanged(accountId.toStdString(), id,
+    Q_EMIT accountMessageStatusChanged(accountId.toStdString(), id,
                                      to.toStdString(), status);
 }
 
@@ -409,33 +409,33 @@ CallbacksHandler::slotDataTransferEvent(qulonglong dringId, uint codeStatus)
 
     switch (event) {
     case DRing::DataTransferEventCode::created:
-        emit transferStatusCreated(static_cast<long long>(dringId), info);
+        Q_EMIT transferStatusCreated(static_cast<long long>(dringId), info);
         break;
     case DRing::DataTransferEventCode::closed_by_host:
     case DRing::DataTransferEventCode::closed_by_peer:
-        emit transferStatusCanceled(static_cast<long long>(dringId), info);
+        Q_EMIT transferStatusCanceled(static_cast<long long>(dringId), info);
         break;
     case DRing::DataTransferEventCode::wait_peer_acceptance:
-        emit transferStatusAwaitingPeer(static_cast<long long>(dringId), info);
+        Q_EMIT transferStatusAwaitingPeer(static_cast<long long>(dringId), info);
         break;
     case DRing::DataTransferEventCode::wait_host_acceptance:
-        emit transferStatusAwaitingHost(static_cast<long long>(dringId), info);
+        Q_EMIT transferStatusAwaitingHost(static_cast<long long>(dringId), info);
         break;
     case DRing::DataTransferEventCode::ongoing:
-        emit transferStatusOngoing(static_cast<long long>(dringId), info);
+        Q_EMIT transferStatusOngoing(static_cast<long long>(dringId), info);
         break;
     case DRing::DataTransferEventCode::finished:
-        emit transferStatusFinished(static_cast<long long>(dringId), info);
+        Q_EMIT transferStatusFinished(static_cast<long long>(dringId), info);
         break;
     case DRing::DataTransferEventCode::invalid_pathname:
     case DRing::DataTransferEventCode::unsupported:
-        emit transferStatusError(static_cast<long long>(dringId), info);
+        Q_EMIT transferStatusError(static_cast<long long>(dringId), info);
         break;
     case DRing::DataTransferEventCode::timeout_expired:
-        emit transferStatusTimeoutExpired(static_cast<long long>(dringId), info);
+        Q_EMIT transferStatusTimeoutExpired(static_cast<long long>(dringId), info);
         break;
     case DRing::DataTransferEventCode::unjoinable_peer:
-        emit transferStatusUnjoinable(static_cast<long long>(dringId), info);
+        Q_EMIT transferStatusUnjoinable(static_cast<long long>(dringId), info);
         break;
     case DRing::DataTransferEventCode::invalid:
         break;
@@ -450,7 +450,7 @@ CallbacksHandler::slotKnownDevicesChanged(const QString& accountId,
     for (auto item : devices.keys())
         stdDevices[item.toStdString()] = devices.value(item).toStdString();
     auto accountId2 = accountId.toStdString();
-    emit knownDevicesChanged(accountId2, stdDevices);
+    Q_EMIT knownDevicesChanged(accountId2, stdDevices);
 }
 
 void
@@ -458,69 +458,69 @@ CallbacksHandler::slotDeviceRevokationEnded(const QString& accountId,
                                             const QString& deviceId,
                                             const int status)
 {
-    emit deviceRevocationEnded(accountId.toStdString(), deviceId.toStdString(), status);
+    Q_EMIT deviceRevocationEnded(accountId.toStdString(), deviceId.toStdString(), status);
 }
 
 void
 CallbacksHandler::slotExportOnRingEnded(const QString& accountId, int status, const QString& pin)
 {
-    emit exportOnRingEnded(accountId.toStdString(), status, pin.toStdString());
+    Q_EMIT exportOnRingEnded(accountId.toStdString(), status, pin.toStdString());
 }
 
 void
 CallbacksHandler::slotNameRegistrationEnded(const QString& accountId, int status, const QString& name)
 {
-    emit nameRegistrationEnded(accountId.toStdString(), status, name.toStdString());
+    Q_EMIT nameRegistrationEnded(accountId.toStdString(), status, name.toStdString());
 }
 
 void
 CallbacksHandler::slotRegisteredNameFound(const QString& accountId, int status, const QString& address, const QString& name)
 {
-    emit registeredNameFound(accountId.toStdString(), status, address.toStdString(), name.toStdString());
+    Q_EMIT registeredNameFound(accountId.toStdString(), status, address.toStdString(), name.toStdString());
 }
 
 void
 CallbacksHandler::slotMigrationEnded(const QString& accountId, const QString& status)
 {
-    emit migrationEnded(accountId.toStdString(), status == "SUCCESS");
+    Q_EMIT migrationEnded(accountId.toStdString(), status == "SUCCESS");
 }
 
 #ifdef ENABLE_LIBWRAP
 void
 CallbacksHandler::slotDebugMessageReceived(const std::string& message)
 {
-    emit parent.getBehaviorController().debugMessageReceived(message);
+    Q_EMIT parent.getBehaviorController().debugMessageReceived(message);
 }
 #else
 void
 CallbacksHandler::slotDebugMessageReceived(const QString& message)
 {
-    emit parent.getBehaviorController().debugMessageReceived(message.toStdString());
+    Q_EMIT parent.getBehaviorController().debugMessageReceived(message.toStdString());
 }
 #endif
 
 void
 CallbacksHandler::slotStartedDecoding(const QString& id, const QString& shmPath, int width, int height)
 {
-    emit startedDecoding(id.toStdString(), shmPath.toStdString(), width, height);
+    Q_EMIT startedDecoding(id.toStdString(), shmPath.toStdString(), width, height);
 }
 
 void
 CallbacksHandler::slotStoppedDecoding(const QString& id, const QString& shmPath)
 {
-    emit stoppedDecoding(id.toStdString(), shmPath.toStdString());
+    Q_EMIT stoppedDecoding(id.toStdString(), shmPath.toStdString());
 }
 
 void
 CallbacksHandler::slotDeviceEvent()
 {
-    emit deviceEvent();
+    Q_EMIT deviceEvent();
 }
 
 void
 CallbacksHandler::slotAudioMeterReceived(const QString& id, float level)
 {
-    emit audioMeter(id.toStdString(), level);
+    Q_EMIT audioMeter(id.toStdString(), level);
 }
 
 } // namespace lrc

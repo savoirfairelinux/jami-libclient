@@ -48,7 +48,7 @@ void NameDirectoryPrivate::slotNameRegistrationEnded(const QString& accountId, i
 {
     qDebug() << "Name registration ended. Account:" << accountId << "status:" << status << "name:" << name;
 
-   emit q_ptr->nameRegistrationEnded(static_cast<NameDirectory::RegisterNameStatus>(status), name);
+   Q_EMIT q_ptr->nameRegistrationEnded(static_cast<NameDirectory::RegisterNameStatus>(status), name);
 }
 
 //Registered Name found
@@ -68,7 +68,7 @@ void NameDirectoryPrivate::slotRegisteredNameFound(const QString& accountId, int
             break;
     }
 
-    emit q_ptr->registeredNameFound( static_cast<NameDirectory::LookupStatus>(status), address, name);
+    Q_EMIT q_ptr->registeredNameFound( static_cast<NameDirectory::LookupStatus>(status), address, name);
 }
 
 //Lookup a name

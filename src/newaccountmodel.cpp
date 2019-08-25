@@ -251,7 +251,7 @@ NewAccountModel::setAlias(const std::string& accountId, const std::string& alias
 
     authority::storage::createOrUpdateProfile(accountInfo.id, accountInfo.profileInfo);
 
-    emit profileUpdated(accountId);
+    Q_EMIT profileUpdated(accountId);
 }
 
 void
@@ -266,7 +266,7 @@ NewAccountModel::setAvatar(const std::string& accountId, const std::string& avat
 
     authority::storage::createOrUpdateProfile(accountInfo.id, accountInfo.profileInfo);
 
-    emit profileUpdated(accountId);
+    Q_EMIT profileUpdated(accountId);
 }
 
 bool
@@ -392,7 +392,7 @@ NewAccountModelPimpl::updateAccounts()
                 // NOTE: At this point, a SIP account is ready, but not a Ring
                 // account. Indeed, the keys are not generated at this point.
                 // See slotAccountStatusChanged for more details.
-                emit linked.accountAdded(id.toStdString());
+                Q_EMIT linked.accountAdded(id.toStdString());
             }
         }
     }
@@ -402,7 +402,7 @@ void
 NewAccountModelPimpl::slotAccountStatusChanged(const std::string& accountID, const api::account::Status status)
 {
     if (status == api::account::Status::INVALID) {
-        emit linked.invalidAccountDetected(accountID);
+        Q_EMIT linked.invalidAccountDetected(accountID);
         return;
     }
     auto it = accounts.find(accountID);
@@ -422,14 +422,14 @@ NewAccountModelPimpl::slotAccountStatusChanged(const std::string& accountID, con
             // When keys are generated, the status will change.
             accounts.erase(accountID);
             addToAccounts(accountID);
-            emit linked.accountAdded(accountID);
+            Q_EMIT linked.accountAdded(accountID);
         } else if (!accountInfo.profileInfo.uri.empty()) {
             accountInfo.status = status;
-            emit linked.accountStatusChanged(accountID);
+            Q_EMIT linked.accountStatusChanged(accountID);
         }
     } else {
         accountInfo.status = status;
-        emit linked.accountStatusChanged(accountID);
+        Q_EMIT linked.accountStatusChanged(accountID);
     }
 }
 
@@ -445,9 +445,9 @@ NewAccountModelPimpl::slotAccountDetailsChanged(const std::string& accountId, co
     if (username_changed) {
         username_changed = false;
         accountInfo.registeredName = new_username;
-        emit linked.profileUpdated(accountId);
+        Q_EMIT linked.profileUpdated(accountId);
     }
-    emit linked.accountStatusChanged(accountId);
+    Q_EMIT linked.accountStatusChanged(accountId);
 }
 
 void
@@ -467,7 +467,7 @@ NewAccountModelPimpl::slotExportOnRingEnded(const std::string& accountID, int st
     default:
         break;
     }
-    emit linked.exportOnRingEnded(accountID, convertedStatus, pin);
+    Q_EMIT linked.exportOnRingEnded(accountID, convertedStatus, pin);
 }
 
 void
@@ -502,7 +502,7 @@ NewAccountModelPimpl::slotNameRegistrationEnded(const std::string& accountId, in
     default:
         break;
     }
-    emit linked.nameRegistrationEnded(accountId, convertedStatus, name);
+    Q_EMIT linked.nameRegistrationEnded(accountId, convertedStatus, name);
 }
 
 void
@@ -526,7 +526,7 @@ NewAccountModelPimpl::slotRegisteredNameFound(const std::string& accountId, int 
     default:
         break;
     }
-    emit linked.registeredNameFound(accountId, convertedStatus, address, name);
+    Q_EMIT linked.registeredNameFound(accountId, convertedStatus, address, name);
 }
 
 void
@@ -535,7 +535,7 @@ NewAccountModelPimpl::slotMigrationEnded(const std::string& accountId, bool ok)
     if (ok) {
         addToAccounts(accountId);
     }
-    emit linked.migrationEnded(accountId, ok);
+    Q_EMIT linked.migrationEnded(accountId, ok);
 }
 
 void
@@ -606,7 +606,7 @@ NewAccountModelPimpl::removeFromAccounts(const std::string& accountId)
        before we are sure that the client stopped using it, otherwise we might
        get into use-after-free troubles. */
     accountInfo.valid = false;
-    emit linked.accountRemoved(accountId);
+    Q_EMIT linked.accountRemoved(accountId);
 
 #ifdef CHK_FREEABLE_BEFORE_ERASE_ACCOUNT
     std::unique_lock<std::mutex> lock(m_mutex_account_removal);

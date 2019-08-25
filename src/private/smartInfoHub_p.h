@@ -49,6 +49,6 @@ public:
 
     void setMapInfo(const MapStringString& info);
 
-public slots:
+public Q_SLOTS:
     void slotSmartInfo(const MapStringString& info);
 };

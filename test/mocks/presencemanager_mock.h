@@ -50,11 +50,11 @@ public:
 
     void emitNewBuddyNotification(const QString &accountID, const QString &buddyUri, bool status, const QString &lineStatus)
     {
-        emit newBuddyNotification(accountID, buddyUri, status, lineStatus);
+        Q_EMIT newBuddyNotification(accountID, buddyUri, status, lineStatus);
     }
     void emitNearbyPeerNotification(const QString &accountID, const QString &buddyUri, int status, const QString &displayname)
     {
-        emit nearbyPeerNotification(accountID, buddyUri, status, displayname);
+        Q_EMIT nearbyPeerNotification(accountID, buddyUri, status, displayname);
     }
 
 public Q_SLOTS: // METHODS

@@ -62,7 +62,7 @@ void SmartInfoHubPrivate::slotSmartInfo(const MapStringString& map)
         SmartInfoHubPrivate::m_information[map.keys().at(i)]=map[map.keys().at(i)];
     }
 
-    emit SmartInfoHub::instance().changed();
+    Q_EMIT SmartInfoHub::instance().changed();
 }
 //Getter
 

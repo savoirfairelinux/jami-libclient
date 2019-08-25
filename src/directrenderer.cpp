@@ -92,12 +92,12 @@ Video::DirectRenderer::~DirectRenderer()
 void Video::DirectRenderer::startRendering()
 {
    Video::Renderer::d_ptr->m_isRendering = true;
-   emit started();
+   Q_EMIT started();
 }
 void Video::DirectRenderer::stopRendering ()
 {
    Video::Renderer::d_ptr->m_isRendering = false;
-   emit stopped();
+   Q_EMIT stopped();
 }
 void Video::DirectRenderer::configureTarget(bool useAVFrame)
 {
@@ -139,7 +139,7 @@ void Video::DirectRendererPrivate::onNewFrame(DRing::SinkTarget::FrameBufferPtr 
         daemonFramePtr_ = std::move(buf);
     }
 
-    emit q_ptr->frameUpdated();
+    Q_EMIT q_ptr->frameUpdated();
 }
 
 void Video::DirectRendererPrivate::onNewAVFrame(std::unique_ptr<DRing::VideoFrame> frame)
@@ -150,7 +150,7 @@ void Video::DirectRendererPrivate::onNewAVFrame(std::unique_ptr<DRing::VideoFram
         QMutexLocker lk(q_ptr->mutex());
         avframe = std::move(frame->getFrame());
     }
-    emit q_ptr->frameUpdated();
+    Q_EMIT q_ptr->frameUpdated();
 }
 
 std::unique_ptr<AVFrame, void(*)(AVFrame*)> Video::DirectRenderer::currentAVFrame() const

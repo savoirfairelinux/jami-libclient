@@ -253,7 +253,7 @@ ContactModel::addContact(contact::Info contactInfo)
         break;
     case profile::Type::PENDING:
         if (daemon::addContactFromPending(owner, profile.uri)) {
-            emit pendingContactAccepted(profile.uri);
+            Q_EMIT pendingContactAccepted(profile.uri);
         } else {
             return;
         }
@@ -285,7 +285,7 @@ ContactModel::addContact(contact::Info contactInfo)
     }
     if (profile.type == profile::Type::TEMPORARY)
         return;
-    emit contactAdded(profile.uri);
+    Q_EMIT contactAdded(profile.uri);
 }
 
 void
@@ -319,7 +319,7 @@ ContactModel::removeContact(const std::string& contactUri, bool banned)
         owner.callModel->hangUp(callinfo.id);
     } catch (std::out_of_range& e){}
     if (emitContactRemoved) {
-        emit contactRemoved(contactUri);
+        Q_EMIT contactRemoved(contactUri);
     } else {
         // NOTE: this method is asynchronous, the model will be updated
         // in slotContactRemoved
@@ -397,7 +397,7 @@ ContactModelPimpl::searchRingContact(const URI& query)
         // Default searching
         ConfigurationManager::instance().lookupName(QString::fromStdString(linked.owner.id), "", QString::fromStdString(uriID));
     }
-    emit linked.modelUpdated(uriID);
+    Q_EMIT linked.modelUpdated(uriID);
 }
 
 void
@@ -418,7 +418,7 @@ ContactModelPimpl::searchSipContact(const URI& query)
             temporaryContact.profileInfo.type = profile::Type::TEMPORARY;
         }
     }
-    emit linked.modelUpdated(uriID);
+    Q_EMIT linked.modelUpdated(uriID);
 }
 
 uint64_t
@@ -592,7 +592,7 @@ ContactModelPimpl::slotNewBuddySubscription(const std::string& contactUri, bool 
         } else
             return;
     }
-    emit linked.modelUpdated(contactUri, false);
+    Q_EMIT linked.modelUpdated(contactUri, false);
 }
 
 void
@@ -603,7 +603,7 @@ ContactModelPimpl::slotContactAdded(const std::string& accountId, const std::str
     auto contact = contacts.find(contactUri);
 
     if (contact->second.profileInfo.type == profile::Type::PENDING) {
-        emit behaviorController.trustRequestTreated(linked.owner.id, contactUri);
+        Q_EMIT behaviorController.trustRequestTreated(linked.owner.id, contactUri);
     }
 
     bool isBanned = false;
@@ -631,9 +631,9 @@ ContactModelPimpl::slotContactAdded(const std::string& accountId, const std::str
     if (isBanned) {
         // Update the smartlist
         linked.owner.conversationModel->refreshFilter();
-        emit linked.bannedStatusChanged(contactUri, false);
+        Q_EMIT linked.bannedStatusChanged(contactUri, false);
     } else {
-        emit linked.contactAdded(contactUri);
+        Q_EMIT linked.contactAdded(contactUri);
     }
 }
 
@@ -651,7 +651,7 @@ ContactModelPimpl::slotContactRemoved(const std::string& accountId, const std::s
         if (contact == contacts.end()) return;
 
         if (contact->second.profileInfo.type == profile::Type::PENDING) {
-            emit behaviorController.trustRequestTreated(linked.owner.id, contactUri);
+            Q_EMIT behaviorController.trustRequestTreated(linked.owner.id, contactUri);
         }
 
         if (contact->second.profileInfo.type != profile::Type::SIP)
@@ -681,9 +681,9 @@ ContactModelPimpl::slotContactRemoved(const std::string& accountId, const std::s
     if (banned) {
         // Update the smartlist
         linked.owner.conversationModel->refreshFilter();
-        emit linked.bannedStatusChanged(contactUri, true);
+        Q_EMIT linked.bannedStatusChanged(contactUri, true);
     } else {
-        emit linked.contactRemoved(contactUri);
+        Q_EMIT linked.contactRemoved(contactUri);
     }
 }
 
@@ -763,7 +763,7 @@ ContactModelPimpl::slotRegisteredNameFound(const std::string& accountId,
         }
     }
 
-    emit linked.modelUpdated(uri);
+    Q_EMIT linked.modelUpdated(uri);
 }
 
 void
@@ -792,8 +792,8 @@ ContactModelPimpl::slotIncomingContactRequest(const std::string& accountId,
     }
 
     if (emitTrust) {
-        emit linked.contactAdded(contactUri);
-        emit behaviorController.newTrustRequest(linked.owner.id, contactUri);
+        Q_EMIT linked.contactAdded(contactUri);
+        Q_EMIT behaviorController.newTrustRequest(linked.owner.id, contactUri);
     }
 }
 
@@ -812,13 +812,13 @@ ContactModelPimpl::slotIncomingCall(const std::string& fromId, const std::string
         }
     }
     if (emitContactAdded) {
-        emit linked.contactAdded(fromId);
+        Q_EMIT linked.contactAdded(fromId);
         if (linked.owner.profileInfo.type == profile::Type::RING) {
-            emit behaviorController.newTrustRequest(linked.owner.id, fromId);
+            Q_EMIT behaviorController.newTrustRequest(linked.owner.id, fromId);
         }
     }
 
-    emit linked.incomingCallFromPending(fromId, callId);
+    Q_EMIT linked.incomingCallFromPending(fromId, callId);
 }
 
 void
@@ -842,9 +842,9 @@ ContactModelPimpl::slotNewAccountMessage(std::string& accountId,
         }
     }
     if (emitNewTrust) {
-        emit behaviorController.newTrustRequest(linked.owner.id, from);
+        Q_EMIT behaviorController.newTrustRequest(linked.owner.id, from);
     }
-    emit linked.newAccountMessage(accountId, from, payloads);
+    Q_EMIT linked.newAccountMessage(accountId, from, payloads);
 }
 
 void
@@ -866,10 +866,10 @@ ContactModelPimpl::slotNewAccountTransfer(long long dringId, datatransfer::Info 
         }
     }
     if (emitNewTrust) {
-        emit behaviorController.newTrustRequest(linked.owner.id, info.peerUri);
+        Q_EMIT behaviorController.newTrustRequest(linked.owner.id, info.peerUri);
     }
 
-    emit linked.newAccountTransfer(dringId, info);
+    Q_EMIT linked.newAccountTransfer(dringId, info);
 }
 
 } // namespace lrc

@@ -100,17 +100,17 @@ public:
 
    void addNewDevice(const QString& accountId, const QString& deviceId, const QString& name) {
        devices[accountId][deviceId] = name;
-       emit knownDevicesChanged(accountId, devices[accountId]);
+       Q_EMIT knownDevicesChanged(accountId, devices[accountId]);
    }
 
    void emitIncomingAccountMessage(const QString& accountId, const QString& from, const QMap<QString,QString>& payloads)
    {
-       emit incomingAccountMessage(accountId, from, payloads);
+       Q_EMIT incomingAccountMessage(accountId, from, payloads);
    }
 
    void emitAccountMessageStatusChanged(const QString& accountId, const uint64_t id, const QString& to, int status)
    {
-       emit accountMessageStatusChanged(accountId, id, to, status);
+       Q_EMIT accountMessageStatusChanged(accountId, id, to, status);
    }
 
    std::map<long long, lrc::api::datatransfer::Info> transferInfos_;
@@ -126,7 +126,7 @@ public:
            it->second = code;
        else
            transferInfosEvent_.emplace(std::make_pair(transfer_id, code));
-       emit dataTransferEvent(transfer_id, code);
+       Q_EMIT dataTransferEvent(transfer_id, code);
    }
 
 public Q_SLOTS: // METHODS
@@ -162,7 +162,7 @@ public Q_SLOTS: // METHODS
         Q_UNUSED(nameServiceURL)
         if (getAccountList().indexOf(accountId) == -1) return false;
         if (name == "notAContact") return false;
-        emit registeredNameFound(accountId, 00, name, name);
+        Q_EMIT registeredNameFound(accountId, 00, name, name);
         return availableContacts_.indexOf(name) != -1;
     }
 
@@ -469,7 +469,7 @@ public Q_SLOTS: // METHODS
             // testSetCurrentDeviceName
             if (details.contains(DRing::Account::ConfProperties::RING_DEVICE_NAME)) {
                 devices["ring3"]["device0"] = details[DRing::Account::ConfProperties::RING_DEVICE_NAME];
-                emit knownDevicesChanged(accountId, devices[accountId]);
+                Q_EMIT knownDevicesChanged(accountId, devices[accountId]);
             }
         }
     }
@@ -674,19 +674,19 @@ public Q_SLOTS: // METHODS
             }
         }
 
-        emit contactRemoved(accountId, uri, ban);
+        Q_EMIT contactRemoved(accountId, uri, ban);
     }
 
     void revokeDevice(const QString &accountId, const QString &password, const QString &deviceId) {
         if (password == "") {
             if (devices[accountId].contains(deviceId)) {
                 devices[accountId].remove(deviceId);
-                emit deviceRevocationEnded(accountId, deviceId, 0);
+                Q_EMIT deviceRevocationEnded(accountId, deviceId, 0);
             } else {
-                emit deviceRevocationEnded(accountId, deviceId, 2);
+                Q_EMIT deviceRevocationEnded(accountId, deviceId, 2);
             }
         } else {
-            emit deviceRevocationEnded(accountId, deviceId, 1);
+            Q_EMIT deviceRevocationEnded(accountId, deviceId, 1);
         }
     }
 
@@ -718,7 +718,7 @@ public Q_SLOTS: // METHODS
             cm.push_back(contact);
         }
 
-        emit contactAdded(accountId, uri, true);
+        Q_EMIT contactAdded(accountId, uri, true);
     }
 
     uint64_t sendTextMessage(const QString& accountId, const QString& to, const QMap<QString,QString>& payloads)
@@ -758,7 +758,7 @@ public Q_SLOTS: // METHODS
     void
     emitIncomingTrustRequest(const QString& accountId, const QString& from, const QByteArray& payload, qulonglong timestamp)
     {
-        emit incomingTrustRequest(accountId, from, payload, timestamp);
+        Q_EMIT incomingTrustRequest(accountId, from, payload, timestamp);
     }
 
     VectorULongLong dataTransferList() {

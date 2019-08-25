@@ -35,15 +35,15 @@ VideoManagerInterface::VideoManagerInterface()
     videoHandlers = {
         exportable_callback<VideoSignal::DeviceEvent>(
             [this] () {
-                emit sender->deviceEvent();
+                Q_EMIT sender->deviceEvent();
         }),
         exportable_callback<VideoSignal::DecodingStarted>(
             [this] (const std::string &id, const std::string &shmPath, int width, int height, bool isMixer) {
-                emit sender->startedDecoding(QString(id.c_str()), QString(shmPath.c_str()), width, height, isMixer);
+                Q_EMIT sender->startedDecoding(QString(id.c_str()), QString(shmPath.c_str()), width, height, isMixer);
         }),
         exportable_callback<VideoSignal::DecodingStopped>(
             [this] (const std::string &id, const std::string &shmPath, bool isMixer) {
-                emit sender->stoppedDecoding(QString(id.c_str()), QString(shmPath.c_str()), isMixer);
+                Q_EMIT sender->stoppedDecoding(QString(id.c_str()), QString(shmPath.c_str()), isMixer);
         })
     };
 #endif
@@ -60,15 +60,15 @@ m_pParent(parent)
 
 void VideoManagerSignalProxy::slotDeviceEvent()
 {
-    emit m_pParent->deviceEvent();
+    Q_EMIT m_pParent->deviceEvent();
 }
 
 void VideoManagerSignalProxy::slotStartedDecoding(const QString &id, const QString &shmPath, int width, int height, bool isMixer)
 {
-        emit m_pParent->startedDecoding(id,shmPath,width,height,isMixer);
+        Q_EMIT m_pParent->startedDecoding(id,shmPath,width,height,isMixer);
 }
 
 void VideoManagerSignalProxy::slotStoppedDecoding(const QString &id, const QString &shmPath, bool isMixer)
 {
-        emit m_pParent->stoppedDecoding(id,shmPath,isMixer);
+        Q_EMIT m_pParent->stoppedDecoding(id,shmPath,isMixer);
 }
