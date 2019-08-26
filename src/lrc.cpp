@@ -130,6 +130,12 @@ Lrc::subscribeToDebugReceived()
     lrcPimpl_->callbackHandler->subscribeToDebugReceived();
 }
 
+void
+Lrc::loadAccounts()
+{
+    lrcPimpl_->accountModel->loadAccounts();
+}
+
 std::vector<std::string>
 Lrc::activeCalls()
 {
@@ -140,6 +146,18 @@ Lrc::activeCalls()
         result.emplace_back(call.toStdString());
     }
     return result;
+}
+
+bool
+Lrc::needsMigration()
+{
+    return authority::storage::needsMigration();
+}
+
+void
+Lrc::performMigration()
+{
+    authority::storage::performMigration();
 }
 
 LrcPimpl::LrcPimpl(Lrc& linked, MigrationCb& willMigrateCb, MigrationCb& didMigrateCb)

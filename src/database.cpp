@@ -65,7 +65,11 @@ Database::Database(const QString& name, const QString& basePath)
     }
 
     // initalize the database.
-    db_ = QSqlDatabase::addDatabase("QSQLITE", connectionName_);
+    if (QSqlDatabase::contains(connectionName_)) {
+        db_ = QSqlDatabase::database(connectionName_);
+    } else {
+        db_ = QSqlDatabase::addDatabase("QSQLITE", connectionName_);
+    }
 
     auto databaseFile = QFileInfo(basePath_ + connectionName_ + ".db");
     QString databaseFileName = databaseFile.fileName();
@@ -100,7 +104,7 @@ void
 Database::load()
 {
     // open the database.
-    if (not db_.open()) {
+    if (!db_.isOpen() && !db_.open()) {
         std::stringstream ss;
         ss << "cannot open database: " << connectionName_.toStdString();
         throw std::runtime_error(ss.str());

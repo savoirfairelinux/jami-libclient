@@ -91,9 +91,25 @@ public:
     void subscribeToDebugReceived();
 
     /**
+     * Load all accounts and corresponding data models
+     */
+    void loadAccounts();
+
+    /**
      * Helper: get call list from daemon
      */
     static std::vector<std::string> activeCalls();
+
+    /**
+     * Helper: check if there is a need to migrate dbs
+     * @return true if there is any need for migration
+     */
+    bool needsMigration();
+
+    /**
+     * Helper: perform the migration process
+     */
+    void performMigration();
 
   private:
     std::unique_ptr<LrcPimpl> lrcPimpl_;
