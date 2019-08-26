@@ -1149,20 +1149,10 @@ migrateAccountDb(const QString& accountId,
 
 } // namespace migration
 
-std::vector<std::shared_ptr<Database>>
-migrateIfNeeded(const QStringList& accountIds,
-                MigrationCb& willMigrateCb,
-                MigrationCb& didMigrateCb)
+bool
+needsMigration()
 {
-    using namespace lrc::api;
-    using namespace migration;
-
-    std::vector<std::shared_ptr<Database>> dbs(accountIds.size());
-
-    if (!accountIds.size()) {
-        qDebug() << "No accounts to migrate";
-        return dbs;
-    }
+    QStringList accountIds = ConfigurationManager::instance().getAccountList();
 
     auto appPath = getPath();
 
@@ -1175,9 +1165,9 @@ migrateIfNeeded(const QStringList& accountIds,
     oldDataDir = oldDataDir
         .absolutePath()
 #if defined(_WIN32)
-        +"/Savoir-faire Linux/Ring";
+        + "/Savoir-faire Linux/Ring";
 #elif defined(__APPLE__)
-        +"/ring";
+        + "/ring";
 #else
         + "/gnome-ring";
 #endif
@@ -1187,7 +1177,7 @@ migrateIfNeeded(const QStringList& accountIds,
     bool success = true;
     foreach(filename, filesList) {
         qDebug() << "Migrate " << oldDataDir.absolutePath() << "/" << filename
-                 << " to " << dataDir.absolutePath() + "/" + filename;
+            << " to " << dataDir.absolutePath() + "/" + filename;
         if (filename != "." && filename != "..") {
             success &= dir.rename(oldDataDir.absolutePath() + "/" + filename,
                 dataDir.absolutePath() + "/" + filename);
@@ -1202,85 +1192,94 @@ migrateIfNeeded(const QStringList& accountIds,
     }
 
     bool needsMigration = false;
+    for (const auto& accountId : accountIds) {
+        needsMigration |= !(QFile(appPath + accountId + "/history.db").exists() &&
+                           !QFile(appPath + accountId + "/history.db-journal").exists());
+    }
+    if (needsMigration) {
+        return true;
+    }
+    // if there's any lingering pre-migration data, remove it
+    QFile(dataDir.absoluteFilePath("ring.db")).remove();
+    QDir(dataDir.absoluteFilePath("text/")).removeRecursively();
+    QDir(dataDir.absoluteFilePath("profiles/")).removeRecursively();
+    QDir(dataDir.absoluteFilePath("peer_profiles/")).removeRecursively();
+    qDebug() << "No migration required";
+    return false;
+}
+
+void
+performMigration()
+{
+    using namespace lrc::api;
+    using namespace migration;
+
+    QStringList accountIds = ConfigurationManager::instance().getAccountList();
+
+    std::vector<std::shared_ptr<Database>> dbs(accountIds.size());
+
+    if (!accountIds.size()) {
+        qDebug() << "No accounts to migrate";
+        return;
+    }
+
+    auto appPath = getPath();
+    QDir dataDir(appPath);
+
     std::map<QString, bool> hasMigratedData;
     for (const auto& accountId : accountIds) {
         auto hasMigratedDb = QFile(appPath + accountId + "/history.db").exists() &&
                             !QFile(appPath + accountId + "/history.db-journal").exists();
         hasMigratedData.insert(std::make_pair(accountId, hasMigratedDb));
-        needsMigration |= !hasMigratedDb;
-    }
-    if (!needsMigration) {
-        // if there's any lingering pre-migration data, remove it
-        QFile(dataDir.absoluteFilePath("ring.db")).remove();
-        QDir(dataDir.absoluteFilePath("text/")).removeRecursively();
-        QDir(dataDir.absoluteFilePath("profiles/")).removeRecursively();
-        QDir(dataDir.absoluteFilePath("peer_profiles/")).removeRecursively();
-        qDebug() << "No migration required";
-        return dbs;
     }
 
     // A fairly long migration may now occur
-    std::thread migrateThread(
-        [&appPath, &accountIds, &dbs, &didMigrateCb, &dataDir, &hasMigratedData] {
-            // 1. migrate old lrc -> new lrc if needed
+    // 1. migrate old lrc -> new lrc if needed
             // 2. migrate new lrc db version 1 -> db version 1.1 if needed
             // the destructor of LegacyDatabase will remove 'ring.db' and clean out
             // old lrc files
-            std::shared_ptr<Database> legacyDb;
-            try {
-                legacyDb = lrc::DatabaseFactory::create<LegacyDatabase>(appPath);
-            } catch (const std::runtime_error& e) {
-                qDebug() << "Exception while attempting to load legacy database: " << e.what();
-                if (didMigrateCb)
-                    didMigrateCb();
-                return;
-            }
+    std::shared_ptr<Database> legacyDb;
+    try {
+        legacyDb = lrc::DatabaseFactory::create<LegacyDatabase>(appPath);
+    } catch (const std::runtime_error& e) {
+        qDebug() << "Exception while attempting to load legacy database: " << e.what();
+        return;
+    }
 
-            // attempt to make a backup of ring.db
-            {
-                QFile dbFile(dataDir.absoluteFilePath("ring.db"));
-                if (dbFile.open(QIODevice::ReadOnly)) {
-                    dbFile.copy(appPath + "ring.db.bak");
-                }
-            }
+    // attempt to make a backup of ring.db
+    {
+        QFile dbFile(dataDir.absoluteFilePath("ring.db"));
+        if (dbFile.open(QIODevice::ReadOnly)) {
+            dbFile.copy(appPath + "ring.db.bak");
+        }
+    }
 
-            // 3. migrate db version 1.1 -> per account dbs version 1
-            int index = 0;
-            for (const auto& accountId : accountIds) {
-                if (hasMigratedData.at(accountId)) {
-                    index++;
-                    continue;
-                }
-                qDebug() << "Migrating account: " << accountId << "...";
-                // try to remove the transaction journal from a failed migration
-                QFile(appPath + accountId + "/history.db-journal").remove();
-                try {
-                    QSqlDatabase::database().transaction();
-                    auto dbName = QString::fromStdString(accountId.toStdString() + "/history");
-                    dbs.at(index) = lrc::DatabaseFactory::create<Database>(dbName, appPath);
-                    auto& db = dbs.at(index++);
-                    migration::migrateAccountDb(accountId, db, legacyDb);
-                    QSqlDatabase::database().commit();
-                } catch (const std::runtime_error& e) {
-                    qWarning().noquote()
-                        << "Could not migrate database for account: "
-                        << accountId << "\n " << e.what();
-                    QSqlDatabase::database().rollback();
-                }
-            }
+    // 3. migrate db version 1.1 -> per account dbs version 1
+    int index = 0;
+    for (const auto& accountId : accountIds) {
+        if (hasMigratedData.at(accountId)) {
+            index++;
+            continue;
+        }
+        qDebug() << "Migrating account: " << accountId << "...";
+        // try to remove the transaction journal from a failed migration
+        QFile(appPath + accountId + "/history.db-journal").remove();
+        try {
+            QSqlDatabase::database().transaction();
+            auto dbName = QString::fromStdString(accountId.toStdString() + "/history");
+            dbs.at(index) = lrc::DatabaseFactory::create<Database>(dbName, appPath);
+            auto& db = dbs.at(index++);
+            migration::migrateAccountDb(accountId, db, legacyDb);
+            QSqlDatabase::database().commit();
+        } catch (const std::runtime_error& e) {
+            qWarning().noquote()
+                << "Could not migrate database for account: "
+                << accountId << "\n " << e.what();
+            QSqlDatabase::database().rollback();
+        }
+    }
 
-            // done
-            if (didMigrateCb)
-                didMigrateCb();
-        });
-
-    // if willMigrateCb blocks, it must be unblocked by didMigrateCb
-    if (willMigrateCb)
-        willMigrateCb();
-
-    migrateThread.join();
-
-    return dbs;
+    return;
 }
 
 } // namespace database

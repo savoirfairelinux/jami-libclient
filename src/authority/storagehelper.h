@@ -384,16 +384,17 @@ void writeJSONValue(QJsonObject& json, const QString& key, const QString& value)
 }
 
 /**
- * Retrieve a list of account database via a migration
- * procedure from the legacy "ring.db", if it exists
- * @param accountIds of the accounts to attempt migration upon
+ * Check if there is a need to migrate dbs
+ * @return true if there is any need for migration
+ */
+bool needsMigration();
+
+/**
+ * Migrate from the legacy "ring.db"
  * @param willMigrateCb to invoke when migration will occur
  * @param didMigrateCb to invoke when migration has completed
  */
-std::vector<std::shared_ptr<Database>>
-migrateIfNeeded(const QStringList& accountIds,
-                MigrationCb& willMigrateCb,
-                MigrationCb& didMigrateCb);
+void performMigration();
 
 } // namespace storage
 

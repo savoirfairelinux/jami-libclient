@@ -85,6 +85,11 @@ public:
     std::string new_username;
 
     /**
+     * Load all the accounts and their corresponding data models.
+     */
+    void loadAccounts();
+
+    /**
      * Add the profile information from an account to the db then add it to accounts.
      * @param accountId
      * @param db an optional migrated database object
@@ -164,6 +169,12 @@ NewAccountModel::NewAccountModel(Lrc& lrc,
 
 NewAccountModel::~NewAccountModel()
 {
+}
+
+void
+NewAccountModel::loadAccounts()
+{
+    pimpl_->loadAccounts();
 }
 
 std::vector<std::string>
@@ -338,12 +349,6 @@ NewAccountModelPimpl::NewAccountModelPimpl(NewAccountModel& linked,
 , callbacksHandler(callbacksHandler)
 , username_changed(false)
 {
-    const QStringList accountIds = ConfigurationManager::instance().getAccountList();
-    auto accountDbs = authority::storage::migrateIfNeeded(accountIds, willMigrateCb, didMigrateCb);
-    for (const auto& id : accountIds) {
-        addToAccounts(id.toStdString(), accountDbs.at(accountIds.indexOf(id)));
-    }
-
     connect(&callbacksHandler, &CallbacksHandler::accountsChanged, this, &NewAccountModelPimpl::updateAccounts);
     connect(&callbacksHandler, &CallbacksHandler::accountStatusChanged, this, &NewAccountModelPimpl::slotAccountStatusChanged);
     connect(&callbacksHandler, &CallbacksHandler::accountDetailsChanged, this, &NewAccountModelPimpl::slotAccountDetailsChanged);
@@ -355,6 +360,15 @@ NewAccountModelPimpl::NewAccountModelPimpl(NewAccountModel& linked,
 
 NewAccountModelPimpl::~NewAccountModelPimpl()
 {
+}
+
+void
+NewAccountModelPimpl::loadAccounts()
+{
+    const QStringList accountIds = ConfigurationManager::instance().getAccountList();
+    for (const auto& id : accountIds) {
+        addToAccounts(id.toStdString());
+    }
 }
 
 void

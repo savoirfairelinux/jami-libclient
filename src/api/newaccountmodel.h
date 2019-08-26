@@ -60,8 +60,13 @@ public:
                     MigrationCb& didMigrateCb);
 
     ~NewAccountModel();
+
     /**
-     * get a list of all acountId.
+     * Load all the accounts and their corresponding data models.
+     */
+    void loadAccounts();
+    /**
+     * get a list of all accountIds.
      * @return a std::vector<std::string>.
      */
     std::vector<std::string> getAccountList() const;
