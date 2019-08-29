@@ -858,6 +858,11 @@ NewAccountModel::createNewAccount(profile::Type type,
     if (type == profile::Type::SIP) {
         details[ConfProperties::USERNAME] = uri.c_str();
     }
+
+    details[ConfProperties::USERNAME] = displayName.c_str();
+    details["Account.managerHostname"] = "HARDCODE ICI";
+
+    
     QString accountId = ConfigurationManager::instance().addAccount(details);
     return accountId.toStdString();
 }
