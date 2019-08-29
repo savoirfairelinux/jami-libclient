@@ -858,6 +858,25 @@ NewAccountModel::createNewAccount(profile::Type type,
     if (type == profile::Type::SIP) {
         details[ConfProperties::USERNAME] = uri.c_str();
     }
+
+    QString accountId = ConfigurationManager::instance().addAccount(details);
+    return accountId.toStdString();
+}
+
+
+
+std::string
+NewAccountModel::connectToAccountManager(const std::string& username,
+                                         const std::string& password,
+                                         const std::string& serverUri)
+{
+    MapStringString details = ConfigurationManager::instance().getAccountTemplate("RING");
+    using namespace DRing::Account;
+    details[ConfProperties::TYPE] = "RING";
+    details[ConfProperties::USERNAME] = username.c_str();
+    details[ConfProperties::ARCHIVE_PASSWORD] = password.c_str();
+    details[ConfProperties::MANAGER_URI] = serverUri.c_str();
+
     QString accountId = ConfigurationManager::instance().addAccount(details);
     return accountId.toStdString();
 }
