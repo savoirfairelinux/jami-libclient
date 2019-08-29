@@ -151,6 +151,17 @@ public:
     bool registerName(const std::string& accountId, const std::string& password, const std::string& username);
 
     /**
+     * Connect to JAMS to retrieve the account
+     * @param username
+     * @param password
+     * @param serverUri
+     * @return the account id
+     */
+    static std::string connectToAccountManager(const std::string& username,
+                                               const std::string& password,
+                                               const std::string& serverUri);
+
+    /**
      * Create a new Ring or SIP account
      * @param type determine if the new account will be a Ring account or a SIP one
      * @param displayName
