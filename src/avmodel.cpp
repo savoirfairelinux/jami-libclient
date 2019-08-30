@@ -68,7 +68,7 @@ public:
     std::string currentVideoCaptureDevice_ {};
 
 #ifndef ENABLE_LIBWRAP
-    // TODO: Init Video Renderers from daemon (see: https://git.ring.cx/savoirfairelinux/ring-daemon/issues/59)
+    // TODO: Init Video Renderers from daemon (see: https://git.jami.net/savoirfairelinux/ring-daemon/issues/59)
     static void stopCameraAndQuit(int);
     static uint32_t SIZE_RENDERER;
 #endif

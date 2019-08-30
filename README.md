@@ -1,10 +1,10 @@
 # libringclient
 
-libringclient is a client library for GNU Ring
+libringclient is a client library for Jami
 
-For more information about the GNU Ring project, see the following:
-- Main website: https://ring.cx/
-- Bug tracker: https://tuleap.ring.cx/projects/ring/
-- Repositories: https://gerrit-ring.savoirfairelinux.com
+For more information about the Jami project, see the following:
+- Main website: https://jami.net
+- Bug tracker: https://git.jami.net
+- Repositories: https://review.jami.net
 
 For build/install instructions, see the INSTALL file.
