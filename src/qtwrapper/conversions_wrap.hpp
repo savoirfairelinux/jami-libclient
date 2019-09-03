@@ -1,5 +1,5 @@
 /******************************************************************************
- *   Copyright (C) 2014-2016 by Savoir-faire Linux                                 *
+ *   Copyright (C) 2014-2019 by Savoir-faire Linux                            *
  *   Author : Philippe Groarke <philippe.groarke@savoirfairelinux.com>        *
  *                                                                            *
  *   This library is free software; you can redistribute it and/or            *
@@ -42,7 +42,11 @@
 inline MapStringString convertMap(const std::map<std::string, std::string>& m) {
    MapStringString temp;
    for (const auto& x : m) {
-      temp[QString(x.first.c_str())] = QString(x.second.c_str());
+#if defined(UNICODE) && defined(_WIN32)
+	  temp[QString(x.first.c_str())] = QString::fromLocal8Bit(x.second.c_str());
+#else
+	  temp[QString(x.first.c_str())] = QString(x.second.c_str());
+#endif
    }
    return temp;
 }
@@ -50,7 +54,11 @@ inline MapStringString convertMap(const std::map<std::string, std::string>& m) {
 inline std::map<std::string, std::string> convertMap(const MapStringString& m) {
    std::map<std::string, std::string> temp;
    for (const auto& x : m.toStdMap()) {
-      temp[x.first.toStdString()] = x.second.toStdString();
+#if defined(UNICODE) && defined(_WIN32)
+	   temp[x.first.toStdString()] = std::string(x.second.toLocal8Bit().constData());
+#else
+	   temp[x.first.toStdString()] = x.second.toStdString();
+#endif
    }
    return temp;
 }
@@ -66,7 +74,11 @@ inline VectorMapStringString convertVecMap(const std::vector<std::map<std::strin
 inline QStringList convertStringList(const std::vector<std::string>& v) {
    QStringList temp;
    for (const auto& x : v) {
-      temp.push_back(QString(x.c_str()));
+#if defined(UNICODE) && defined(_WIN32)
+	   temp.push_back(QString::fromLocal8Bit(x.c_str()));
+#else
+	   temp.push_back(QString(x.c_str()));
+#endif
    }
    return temp;
 }
@@ -74,7 +86,11 @@ inline QStringList convertStringList(const std::vector<std::string>& v) {
 inline VectorString convertVectorString(const std::vector<std::string>& v) {
    VectorString temp;
    for (const auto& x : v) {
-      temp.push_back(QString(x.c_str()));
+#if defined(UNICODE) && defined(_WIN32)
+	   temp.push_back(QString::fromLocal8Bit(x.c_str()));
+#else
+	   temp.push_back(QString(x.c_str()));
+#endif
    }
    return temp;
 }
@@ -90,7 +106,11 @@ inline VectorULongLong convertVectorULongLong(const std::vector<uint64_t>& v) {
 inline std::vector<std::string> convertStringList(const QStringList& v) {
    std::vector<std::string> temp;
    for (const auto& x : v) {
-      temp.push_back(x.toStdString());
+#if defined(UNICODE) && defined(_WIN32)
+	   temp.push_back(std::string(x.toLocal8Bit().constData()));
+#else
+	   temp.push_back(x.toStdString());
+#endif
    }
    return temp;
 }
@@ -115,7 +135,11 @@ toQString(bool b) noexcept
 static inline QString
 toQString(const std::string& str) noexcept
 {
-    return QString::fromStdString(str);
+#if defined(UNICODE) && defined(_WIN32)
+	return QString::fromLocal8Bit(str.c_str());
+#else
+	return QString::fromStdString(str);
+#endif
 }
 
 static inline QString
@@ -139,7 +163,11 @@ toInt(QString qs) noexcept
 static inline std::string
 toStdString(QString qs) noexcept
 {
-    return qs.toStdString();
+#if defined(UNICODE) && defined(_WIN32)
+	return std::string(qs.toLocal8Bit().constData());
+#else
+	return qs.toStdString();
+#endif
 }
 
 #endif //CONVERSIONS_WRAP_H
