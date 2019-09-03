@@ -657,8 +657,8 @@ public Q_SLOTS: // METHODS
         dring_info.totalSize = lrc_info.totalSize;
         dring_info.bytesProgress = lrc_info.bytesProgress;
         dring_info.peer = lrc_info.peer.toStdString();
-        dring_info.displayName = lrc_info.displayName.toLocal8Bit().constData();
-        dring_info.path = lrc_info.path.toLocal8Bit().constData();
+        dring_info.displayName = lrc_info.displayName.toStdString();
+        dring_info.path = lrc_info.path.toStdString();
         dring_info.mimetype = lrc_info.mimetype.toStdString();
         return uint32_t(DRing::sendFile(dring_info, id));
     }
