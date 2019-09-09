@@ -90,7 +90,7 @@
         <location filename="../src/authority/storagehelper.cpp" line="108"/>
         <location filename="../src/authority/storagehelper.cpp" line="119"/>
         <source>Incoming call</source>
-        <translation type="unfinished"/>
+        <translation>مكالمة واردة</translation>
     </message>
     <message>
         <location filename="../src/authority/storagehelper.cpp" line="115"/>

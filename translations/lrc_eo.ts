@@ -84,13 +84,13 @@
         <location filename="../src/authority/storagehelper.cpp" line="112"/>
         <location filename="../src/authority/storagehelper.cpp" line="860"/>
         <source>Outgoing call</source>
-        <translation type="unfinished"/>
+        <translation>Eliranta voko</translation>
     </message>
     <message>
         <location filename="../src/authority/storagehelper.cpp" line="108"/>
         <location filename="../src/authority/storagehelper.cpp" line="119"/>
         <source>Incoming call</source>
-        <translation type="unfinished"/>
+        <translation>Eniranta voko</translation>
     </message>
     <message>
         <location filename="../src/authority/storagehelper.cpp" line="115"/>

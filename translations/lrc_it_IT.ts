@@ -84,24 +84,24 @@
         <location filename="../src/authority/storagehelper.cpp" line="112"/>
         <location filename="../src/authority/storagehelper.cpp" line="860"/>
         <source>Outgoing call</source>
-        <translation type="unfinished"/>
+        <translation>Chiamata in uscita</translation>
     </message>
     <message>
         <location filename="../src/authority/storagehelper.cpp" line="108"/>
         <location filename="../src/authority/storagehelper.cpp" line="119"/>
         <source>Incoming call</source>
-        <translation type="unfinished"/>
+        <translation>Chiamata in arrivo</translation>
     </message>
     <message>
         <location filename="../src/authority/storagehelper.cpp" line="115"/>
         <location filename="../src/authority/storagehelper.cpp" line="858"/>
         <source>Missed outgoing call</source>
-        <translation type="unfinished"/>
+        <translation>Chiamata persa in uscita</translation>
     </message>
     <message>
         <location filename="../src/authority/storagehelper.cpp" line="122"/>
         <source>Missed incoming call</source>
-        <translation type="unfinished"/>
+        <translation>Chiamata persa in arrivo</translation>
     </message>
     <message>
         <location filename="../src/authority/storagehelper.cpp" line="137"/>

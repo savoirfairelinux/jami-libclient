@@ -279,7 +279,7 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="78"/>
         <source>Call TSX Does Not Exist</source>
-        <translation type="unfinished"/>
+        <translation>S’ekziston TSX Thirrjeje</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="79"/>
@@ -407,7 +407,7 @@
     <message>
         <location filename="../src/contactmodel.cpp" line="758"/>
         <source>Registered name not found</source>
-        <translation type="unfinished"/>
+        <translation>S’u gjet emër i regjistruar</translation>
     </message>
     <message>
         <location filename="../src/contactmodel.cpp" line="761"/>

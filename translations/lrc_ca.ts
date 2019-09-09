@@ -84,24 +84,24 @@
         <location filename="../src/authority/storagehelper.cpp" line="112"/>
         <location filename="../src/authority/storagehelper.cpp" line="860"/>
         <source>Outgoing call</source>
-        <translation type="unfinished"/>
+        <translation>Trucada sortint</translation>
     </message>
     <message>
         <location filename="../src/authority/storagehelper.cpp" line="108"/>
         <location filename="../src/authority/storagehelper.cpp" line="119"/>
         <source>Incoming call</source>
-        <translation type="unfinished"/>
+        <translation>Trucada entrant</translation>
     </message>
     <message>
         <location filename="../src/authority/storagehelper.cpp" line="115"/>
         <location filename="../src/authority/storagehelper.cpp" line="858"/>
         <source>Missed outgoing call</source>
-        <translation type="unfinished"/>
+        <translation>Trucada sortint perduda</translation>
     </message>
     <message>
         <location filename="../src/authority/storagehelper.cpp" line="122"/>
         <source>Missed incoming call</source>
-        <translation type="unfinished"/>
+        <translation>Trucada entrant perduda</translation>
     </message>
     <message>
         <location filename="../src/authority/storagehelper.cpp" line="137"/>

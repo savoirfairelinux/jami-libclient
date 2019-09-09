@@ -84,13 +84,13 @@
         <location filename="../src/authority/storagehelper.cpp" line="112"/>
         <location filename="../src/authority/storagehelper.cpp" line="860"/>
         <source>Outgoing call</source>
-        <translation type="unfinished"/>
+        <translation>Appel sortant</translation>
     </message>
     <message>
         <location filename="../src/authority/storagehelper.cpp" line="108"/>
         <location filename="../src/authority/storagehelper.cpp" line="119"/>
         <source>Incoming call</source>
-        <translation type="unfinished"/>
+        <translation>Appel entrant</translation>
     </message>
     <message>
         <location filename="../src/authority/storagehelper.cpp" line="115"/>
