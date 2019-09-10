@@ -95,6 +95,11 @@ public:
      */
     void updateTemporaryMessage(const std::string& mes, const std::string& uri);
 
+    /**
+     * Check if equivalent uri exist in contact
+     */
+    std::string sipUriReceivedFilter(const std::string& uri);
+
     // Helpers
     const BehaviorController& behaviorController;
     const ContactModel& linked;
@@ -834,17 +839,69 @@ ContactModelPimpl::slotNewAccountMessage(std::string& accountId,
         if (contacts.find(from) == contacts.end()) {
             // Contact not found, load profile from database.
             // The conversation model will create an entry and link the incomingCall.
-            auto type = (linked.owner.profileInfo.type == profile::Type::RING)
-                            ? profile::Type::PENDING
-                            : profile::Type::SIP;
-            addToContacts(from, type, false);
-            emitNewTrust = (linked.owner.profileInfo.type == profile::Type::RING);
+
+            if (linked.owner.profileInfo.type == profile::Type::SIP) {
+                std::string potentialContact = sipUriReceivedFilter(from);
+                if (potentialContact.empty()) {
+                    addToContacts(from, profile::Type::SIP, false);
+                } else {
+                    // equivalent uri exist, use that uri
+                    from = potentialContact;
+                }
+            } else {
+                addToContacts(from, profile::Type::PENDING, false);
+                emitNewTrust = true;
+            }
         }
     }
     if (emitNewTrust) {
         emit behaviorController.newTrustRequest(linked.owner.id, from);
     }
     emit linked.newAccountMessage(accountId, from, payloads);
+}
+
+std::string
+ContactModelPimpl::sipUriReceivedFilter(const std::string& uri)
+{
+    // this function serves when the uri is not found in the contact list
+    // return "" means need to add new contact, else means equivalent uri exist
+    std::string uriCopy = uri;
+
+    auto pos = uriCopy.find("@");
+    auto ownerHostName = linked.owner.confProperties.hostname;
+
+    if (pos != std::string::npos) {
+        // "@" is found, separate username and hostname
+        std::string hostName = uriCopy.substr(pos + 1);
+        uriCopy.erase(uriCopy.begin() + pos, uriCopy.end());
+        std::string remoteUser = std::move(uriCopy);
+
+        if (hostName.compare(ownerHostName) == 0) {
+            if (remoteUser.at(0) == '+') {
+                // "+" - country dial-in codes
+                // maximum 3 digits
+                for (int i = 2; i <= 4; i++) {
+                    std::string tempUserName = remoteUser.substr(i);
+                    if (contacts.find(tempUserName) != contacts.end()) {
+                        return tempUserName;
+                    }
+                }
+                return "";
+            } else {
+                if (contacts.find(remoteUser) != contacts.end()) {
+                    return remoteUser;
+                }
+                return "";
+            }
+        } else {
+            // different hostname means not a phone number
+            // no need to check country dial-in codes
+            return "";
+        }
+    } else {
+        // "@" is not found -> not possible since all response uri has one
+        return "";
+    }
 }
 
 void
