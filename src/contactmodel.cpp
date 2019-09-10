@@ -392,6 +392,11 @@ ContactModelPimpl::searchRingContact(const URI& query)
     std::string uriID = query.format(URI::Section::USER_INFO | URI::Section::HOSTNAME | URI::Section::PORT).toStdString();
     if (query.protocolHint() == URI::ProtocolHint::RING) {
         // no lookup, this is a ring infoHash
+        for (auto &i : contacts) {
+            if (i.second.profileInfo.uri == uriID) {
+                return;
+            }
+        }
         auto& temporaryContact = contacts[""];
         temporaryContact.profileInfo.uri = uriID;
         temporaryContact.profileInfo.alias = uriID;
