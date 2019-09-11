@@ -629,7 +629,7 @@ account::Info::fromDetails(const MapStringString& details)
     if (details[ConfProperties::TYPE] != "")
         profileInfo.type                                = details[ConfProperties::TYPE] == QString(ProtocolNames::RING) ? profile::Type::RING : profile::Type::SIP;
     registeredName                                      = profileInfo.type == profile::Type::RING ? volatileDetails[VolatileProperties::REGISTERED_NAME].toStdString() : "";
-    profileInfo.alias                                   = toStdString(details[ConfProperties::ALIAS]);
+    profileInfo.alias                                   = toStdString(details[ConfProperties::DISPLAYNAME]);
     enabled                                             = toBool(details[ConfProperties::ENABLED]);
     confProperties.mailbox                              = toStdString(details[ConfProperties::MAILBOX]);
     confProperties.dtmfType                             = toStdString(details[ConfProperties::DTMF_TYPE]);
