@@ -402,7 +402,7 @@ ContactModelPimpl::searchRingContact(const URI& query)
         temporaryContact.profileInfo.alias = uriID;
         temporaryContact.profileInfo.type = profile::Type::TEMPORARY;
     } else {
-        updateTemporaryMessage(tr("Searching…").toStdString(), uriID);
+        updateTemporaryMessage(tr("Searching...").toStdString(), uriID);
 
         // Default searching
         ConfigurationManager::instance().lookupName(QString::fromStdString(linked.owner.id), "", QString::fromStdString(uriID));
@@ -768,7 +768,7 @@ ContactModelPimpl::slotRegisteredNameFound(const std::string& accountId,
             updateTemporaryMessage(tr("Registered name not found").toStdString(), registeredName);
             break;
         case 3 /* ERROR */:
-            updateTemporaryMessage(tr("Couldn't lookup…").toStdString(), registeredName);
+            updateTemporaryMessage(tr("Couldn't lookup...").toStdString(), registeredName);
             break;
         }
     }
