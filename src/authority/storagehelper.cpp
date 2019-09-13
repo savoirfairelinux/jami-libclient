@@ -628,14 +628,6 @@ removeContact(Database& db, const std::string& contactUri)
     }
 }
 
-void
-removeAccount(const std::string& accountId)
-{
-    auto accountLocalPath = getPath() + QString::fromStdString(accountId) + "/";
-    QDir dir(accountLocalPath);
-    dir.removeRecursively();
-}
-
 int
 countUnreadFromInteractions(Database& db, const std::string& conversationId)
 {

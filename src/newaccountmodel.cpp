@@ -381,7 +381,10 @@ NewAccountModelPimpl::updateAccounts()
     // Detect new accounts
     for (auto& id : accountIds) {
         auto account = accounts.find(id.toStdString());
-        if (account == accounts.end()) {
+        // NOTE: If the daemon is down, but dbus answered, id can contains
+        // "Remote peer disconnected", "The name is not activable", etc.
+        // So avoid to create useless directories.
+        if (account == accounts.end() && id.indexOf(" ") == -1) {
             qDebug("detected new account %s", id.toStdString().c_str());
             addToAccounts(id.toStdString());
             auto updatedAccount = accounts.find(id.toStdString());
@@ -598,10 +601,6 @@ NewAccountModelPimpl::removeFromAccounts(const std::string& accountId)
         return;
     }
     auto& accountInfo = account->second.first;
-    auto& accountDb = *(account->second.second);
-    accountDb.remove();
-    authority::storage::removeAccount(accountId);
-
     /* Inform client about account removal. Do *not* free account structures
        before we are sure that the client stopped using it, otherwise we might
        get into use-after-free troubles. */

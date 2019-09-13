@@ -313,13 +313,6 @@ void deleteObsoleteHistory(Database& db, long int date);
 void removeContact(Database& db, const std::string& contactUri);
 
 /**
- * Ensure that all files located in
- * {local_storage}/jami/{accountId} are removed
- * @param accountId
- */
-void removeAccount(const std::string& accountId);
-
-/**
  * count number of 'UNREAD' from 'interactions' table.
  * @param db
  * @param conversationId
