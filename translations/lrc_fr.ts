@@ -113,12 +113,12 @@
         <location filename="../src/avmodel.cpp" line="312"/>
         <location filename="../src/avmodel.cpp" line="333"/>
         <source>default</source>
-        <translation type="unfinished"/>
+        <translation>défaut</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="46"/>
         <source>Null</source>
-        <translation type="unfinished"/>
+        <translation>Null</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="47"/>
@@ -133,7 +133,7 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="49"/>
         <source>Being Forwarded</source>
-        <translation type="unfinished"/>
+        <translation>En cours de transfert</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="50"/>
@@ -143,7 +143,7 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="51"/>
         <source>Progress</source>
-        <translation type="unfinished"/>
+        <translation>En cours</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="52"/>
@@ -264,7 +264,7 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="75"/>
         <source>Session Timer Too Small</source>
-        <translation type="unfinished"/>
+        <translation>Compteur de session trop petit</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="76"/>
@@ -279,7 +279,7 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="78"/>
         <source>Call TSX Does Not Exist</source>
-        <translation type="unfinished"/>
+        <translation>L&apos;appel TSX n’existe pas</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="79"/>
@@ -369,12 +369,12 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="97"/>
         <source>Precondition Failure</source>
-        <translation type="unfinished"/>
+        <translation>Échec de Précondition </translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="98"/>
         <source>Busy Everywhere</source>
-        <translation type="unfinished"/>
+        <translation>Occupé partout</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="99"/>
@@ -389,7 +389,7 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="101"/>
         <source>Not Acceptable Anywhere</source>
-        <translation type="unfinished"/>
+        <translation>N&apos;est pas acceptable ici</translation>
     </message>
 </context>
 <context>
@@ -407,7 +407,7 @@
     <message>
         <location filename="../src/contactmodel.cpp" line="758"/>
         <source>Registered name not found</source>
-        <translation type="unfinished"/>
+        <translation>Nom d&apos;enregistrement non trouvé</translation>
     </message>
     <message>
         <location filename="../src/contactmodel.cpp" line="761"/>

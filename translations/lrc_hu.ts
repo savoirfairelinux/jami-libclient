@@ -407,7 +407,7 @@
     <message>
         <location filename="../src/contactmodel.cpp" line="758"/>
         <source>Registered name not found</source>
-        <translation type="unfinished"/>
+        <translation>A bejegyzett név nem található</translation>
     </message>
     <message>
         <location filename="../src/contactmodel.cpp" line="761"/>
