@@ -726,6 +726,8 @@ account::Info::fromDetails(const MapStringString& details)
     confProperties.RingNS.account                       = toStdString(details[ConfProperties::RingNS::ACCOUNT]);
     // Registration
     confProperties.Registration.expire                  = toInt(details[ConfProperties::Registration::EXPIRE]);
+    // Jams
+    confProperties.managerUri                           = toStdString(details[ConfProperties::MANAGER_URI]);
 }
 
 MapStringString
