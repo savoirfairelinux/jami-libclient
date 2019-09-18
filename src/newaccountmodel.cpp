@@ -875,9 +875,9 @@ NewAccountModel::connectToAccountManager(const std::string& username,
     MapStringString details = ConfigurationManager::instance().getAccountTemplate("RING");
     using namespace DRing::Account;
     details[ConfProperties::TYPE] = "RING";
-    details[ConfProperties::USERNAME] = username.c_str();
-    details[ConfProperties::ARCHIVE_PASSWORD] = password.c_str();
     details[ConfProperties::MANAGER_URI] = serverUri.c_str();
+    details[ConfProperties::MANAGER_USERNAME] = username.c_str();
+    details[ConfProperties::ARCHIVE_PASSWORD] = password.c_str();
 
     QString accountId = ConfigurationManager::instance().addAccount(details);
     return accountId.toStdString();
