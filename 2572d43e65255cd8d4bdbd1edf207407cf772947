@@ -34,6 +34,24 @@
       "revId": "2572d43e65255cd8d4bdbd1edf207407cf772947",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b7de3984_6d024383",
+        "filename": "src/newaccountmodel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 836,
+      "author": {
+        "id": 633
+      },
+      "writtenOn": "2019-09-18T14:28:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e816dc9e_472cc692",
+      "revId": "2572d43e65255cd8d4bdbd1edf207407cf772947",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
