@@ -83,11 +83,11 @@ if not exist "%VSLATESTDIR%\VC\Auxiliary\Build\vcvarsall.bat" (
 )
 
 if %PROCESSOR_ARCHITECTURE%==x86 (
-    set Comp_x86=x86 10.0.15063.0
-    set Comp_x64=x86_amd64 10.0.15063.0
+    set Comp_x86=x86 10.0.16299.0
+    set Comp_x64=x86_amd64 10.0.16299.0
 ) else (
-    set Comp_x86=amd64_x86 10.0.15063.0
-    set Comp_x64=amd64 10.0.15063.0
+    set Comp_x86=amd64_x86 10.0.16299.0
+    set Comp_x64=amd64 10.0.16299.0
 )
 
 set path=%path:"=%
