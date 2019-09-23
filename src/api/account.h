@@ -108,6 +108,7 @@ struct ConfProperties_t {
     std::string             deviceId;
     std::string             deviceName;
     std::string             managerUri;
+    std::string             managerUsername;
     bool                    publishedSameAsLocal;
     int                     localPort;
     int                     publishedPort;

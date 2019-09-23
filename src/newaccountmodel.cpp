@@ -729,6 +729,7 @@ account::Info::fromDetails(const MapStringString& details)
     confProperties.Registration.expire                  = toInt(details[ConfProperties::Registration::EXPIRE]);
     // Jams
     confProperties.managerUri                           = toStdString(details[ConfProperties::MANAGER_URI]);
+    confProperties.managerUsername                      = toStdString(details[ConfProperties::MANAGER_USERNAME]);
 }
 
 MapStringString
@@ -836,6 +837,7 @@ account::ConfProperties_t::toDetails() const
     details[ConfProperties::Registration::EXPIRE]       = toQString(this->Registration.expire);
     // Manager
     details[ConfProperties::MANAGER_URI]                = toQString(this->managerUri);
+    details[ConfProperties::MANAGER_USERNAME]           = toQString(this->managerUsername);
 
     return details;
 }
