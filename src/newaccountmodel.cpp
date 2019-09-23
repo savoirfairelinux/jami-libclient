@@ -536,6 +536,8 @@ void
 NewAccountModelPimpl::slotMigrationEnded(const std::string& accountId, bool ok)
 {
     if (ok) {
+        // Previous account was incorrect, force a full reload
+        removeFromAccounts(accountId);
         addToAccounts(accountId);
     }
     emit linked.migrationEnded(accountId, ok);
@@ -564,7 +566,7 @@ NewAccountModelPimpl::addToAccounts(const std::string& accountId,
     auto it = accounts.emplace(accountId, std::make_pair(account::Info(), db));
 
     if (!it.second) {
-        qDebug("failed to add new account: id already present in map");
+        qWarning("failed to add new account: id already present in map");
         return;
     }
 
