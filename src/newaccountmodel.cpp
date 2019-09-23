@@ -834,6 +834,8 @@ account::ConfProperties_t::toDetails() const
     details[ConfProperties::RingNS::ACCOUNT]            = toQString(this->RingNS.account);
     // Registration
     details[ConfProperties::Registration::EXPIRE]       = toQString(this->Registration.expire);
+    // Manager
+    details[ConfProperties::MANAGER_URI]                = toQString(this->managerUri);
 
     return details;
 }
