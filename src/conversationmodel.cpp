@@ -1529,10 +1529,6 @@ ConversationModelPimpl::slotCallStatusChanged(const std::string& callId, int cod
         }
         return;
     }
-
-    auto& conversation = *i;
-    auto uid = conversation.uid;
-    linked.selectConversation(uid);
 }
 
 void
