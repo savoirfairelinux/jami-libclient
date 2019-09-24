@@ -187,6 +187,15 @@ public:
     void joinCalls(const std::string& callIdA, const std::string& callIdB) const;
 
     /**
+     * Call a participant and add it to a call
+     * @param uri       URI of the participant
+     * @param callId    Call receiving the participant
+     * @param audioOnly If the call is audio only
+     * @return id for a new call
+     */
+    std::string callAndAddParticipant(const std::string uri, const std::string& callId, bool audioOnly);
+
+    /**
      * Not implemented yet
      */
     void removeParticipant(const std::string& callId, const std::string& participant) const;

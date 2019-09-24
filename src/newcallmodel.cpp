@@ -22,6 +22,7 @@
 // std
 #include <chrono>
 #include <random>
+#include <map>
 
 // Lrc
 #include "callbackshandler.h"
@@ -145,6 +146,7 @@ public:
     bool manageCurrentCall_ {true};
     bool dontHoldConferences_ {false};
 
+    std::map<std::string, std::string> pendingConferences_;
 public Q_SLOTS:
     /**
      * Listen from CallbacksHandler when a call is incoming
@@ -450,6 +452,14 @@ NewCallModel::joinCalls(const std::string& callIdA, const std::string& callIdB) 
     }
 }
 
+std::string
+NewCallModel::callAndAddParticipant(const std::string uri, const std::string& callId, bool audioOnly)
+{
+    auto newCallId = createCall(uri, audioOnly);
+    pimpl_->pendingConferences_.insert({newCallId, callId});
+    return newCallId;
+}
+
 void
 NewCallModel::removeParticipant(const std::string& callId, const std::string& participant) const
 {
@@ -573,6 +583,10 @@ void
 NewCallModelPimpl::setCurrentCall(const std::string& callId)
 {
     if (!manageCurrentCall_) return;
+    auto it = pendingConferences_.find(callId);
+    // Set current call only if not adding this call
+    // to a current conference
+    if (it != pendingConferences_.end()) return;
     std::vector<std::string> filterCalls;
     if (dontHoldConferences_) {
         // Do not hold calls in a conference
@@ -671,15 +685,27 @@ NewCallModelPimpl::slotCallStateChanged(const std::string& callId, const std::st
     // NOTE: signal emission order matters, always emit CallStatusChanged before CallEnded
     emit linked.callStatusChanged(callId, code);
 
-    if (call->status == call::Status::ENDED) {
+    if (call->status == call::Status::OUTGOING_RINGING) {
+        setCurrentCall(callId);
+    } else if (call->status == call::Status::ENDED) {
         emit linked.callEnded(callId);
     } else if (call->status == call::Status::IN_PROGRESS) {
         if (previousStatus == call::Status::INCOMING_RINGING
                 || previousStatus == call::Status::OUTGOING_RINGING) {
+
+            if (previousStatus == call::Status::INCOMING_RINGING)
+                    setCurrentCall(callId);
+
             call->startTime = std::chrono::steady_clock::now();
             setCurrentCall(callId);
             emit linked.callStarted(callId);
             sendProfile(callId);
+        }
+        // Add to calls if in pendingConferences_
+        auto it = pendingConferences_.find(callId);
+        if (it != pendingConferences_.end()) {
+            linked.joinCalls(it->second, it->first);
+            pendingConferences_.erase(it);
         }
     }
 }
