@@ -22,6 +22,7 @@
 // std
 #include <chrono>
 #include <random>
+#include <map>
 
 // Lrc
 #include "callbackshandler.h"
@@ -143,6 +144,8 @@ public:
      */
     void setCurrentCall(const std::string& callId);
     bool manageCurrentCall_ {true};
+
+    std::map<std::string, std::string> pendingConferences_;
 public Q_SLOTS:
     /**
      * Listen from CallbacksHandler when a call is incoming
@@ -441,6 +444,13 @@ NewCallModel::joinCalls(const std::string& callIdA, const std::string& callIdB) 
 }
 
 void
+NewCallModel::callAndAddParticipant(const std::string uri, const std::string& callId, bool audioOnly)
+{
+    auto newCallId = createCall(uri, audioOnly);
+    pimpl_->pendingConferences_.insert({newCallId, callId});
+}
+
+void
 NewCallModel::removeParticipant(const std::string& callId, const std::string& participant) const
 {
     Q_UNUSED(callId)
@@ -657,6 +667,12 @@ NewCallModelPimpl::slotCallStateChanged(const std::string& callId, const std::st
             setCurrentCall(callId);
             emit linked.callStarted(callId);
             sendProfile(callId);
+        }
+        // Add to calls if in pendingConferences_
+        auto it = pendingConferences_.find(callId);
+        if (it != pendingConferences_.end()) {
+            linked.joinCalls(it->second, it->first);
+            pendingConferences_.erase(it);
         }
     }
 }
