@@ -28,6 +28,7 @@
 #include "api/conversationmodel.h"
 #include "api/contact.h"
 #include "api/contactmodel.h"
+#include "api/lrc.h"
 #include "api/newaccountmodel.h"
 #include "authority/storagehelper.h"
 #include "dbus/callmanager.h"
@@ -137,6 +138,11 @@ public:
      * Retrieve active conferences from the daemon and init the model
      */
     void initConferencesFromDaemon();
+    /**
+     * Set a call as the current call (hold other calls)
+     */
+    void setCurrentCall(const std::string& callId);
+    bool manageCurrentCall_ {true};
 public Q_SLOTS:
     /**
      * Listen from CallbacksHandler when a call is incoming
@@ -303,9 +309,10 @@ NewCallModel::togglePause(const std::string& callId) const
     auto& call = pimpl_->calls[callId];
 
     if (call->status == call::Status::PAUSED) {
-        if (call->type == call::Type::DIALOG)
+        if (call->type == call::Type::DIALOG) {
             CallManager::instance().unhold(callId.c_str());
-        else {
+            pimpl_->setCurrentCall(callId);
+        } else {
             CallManager::instance().unholdConference(callId.c_str());
         }
     } else if (call->status == call::Status::IN_PROGRESS) {
@@ -552,6 +559,17 @@ NewCallModelPimpl::initConferencesFromDaemon()
 }
 
 void
+NewCallModelPimpl::setCurrentCall(const std::string& callId)
+{
+    if (!manageCurrentCall_) return;
+    for (const auto& cid : Lrc::activeCalls()) {
+        if (cid != callId) {
+            CallManager::instance().hold(cid.c_str());
+        }
+    }
+}
+
+void
 NewCallModel::sendSipMessage(const std::string& callId, const std::string& body) const
 {
     QMap<QString, QString> payloads;
@@ -636,6 +654,7 @@ NewCallModelPimpl::slotCallStateChanged(const std::string& callId, const std::st
         if (previousStatus == call::Status::INCOMING_RINGING
                 || previousStatus == call::Status::OUTGOING_RINGING) {
             call->startTime = std::chrono::steady_clock::now();
+            setCurrentCall(callId);
             emit linked.callStarted(callId);
             sendProfile(callId);
         }
