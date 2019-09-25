@@ -536,9 +536,17 @@ void
 NewAccountModelPimpl::slotMigrationEnded(const std::string& accountId, bool ok)
 {
     if (ok) {
-        // Previous account was incorrect, force a full reload
-        removeFromAccounts(accountId);
-        addToAccounts(accountId);
+        auto it = accounts.find(accountId);
+        if (it == accounts.end()) {
+            addToAccounts(accountId);
+            return;
+        }
+        auto& accountInfo = it->second.first;
+        MapStringString details = ConfigurationManager::instance().getAccountDetails(accountId.c_str());
+        accountInfo.fromDetails(details);
+        MapStringString volatileDetails = ConfigurationManager::instance().getVolatileAccountDetails(accountId.c_str());
+        std::string daemonStatus = volatileDetails[DRing::Account::ConfProperties::Registration::STATUS].toStdString();
+        accountInfo.status = lrc::api::account::to_status(daemonStatus);
     }
     emit linked.migrationEnded(accountId, ok);
 }
