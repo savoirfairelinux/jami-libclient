@@ -658,13 +658,20 @@ NewCallModelPimpl::slotCallStateChanged(const std::string& callId, const std::st
     // NOTE: signal emission order matters, always emit CallStatusChanged before CallEnded
     emit linked.callStatusChanged(callId, code);
 
-    if (call->status == call::Status::ENDED) {
+    if (call->status == call::Status::INCOMING_RINGING
+    || call->status == call::Status::OUTGOING_RINGING) {
+        // Set current call only if not adding this call
+        // to a current conference
+        auto it = pendingConferences_.find(callId);
+        if (it == pendingConferences_.end()) {
+            setCurrentCall(callId);
+        }
+    } else if (call->status == call::Status::ENDED) {
         emit linked.callEnded(callId);
     } else if (call->status == call::Status::IN_PROGRESS) {
         if (previousStatus == call::Status::INCOMING_RINGING
                 || previousStatus == call::Status::OUTGOING_RINGING) {
             call->startTime = std::chrono::steady_clock::now();
-            setCurrentCall(callId);
             emit linked.callStarted(callId);
             sendProfile(callId);
         }
