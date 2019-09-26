@@ -687,7 +687,6 @@ NewCallModelPimpl::slotCallStateChanged(const std::string& callId, const std::st
                     setCurrentCall(callId);
 
             call->startTime = std::chrono::steady_clock::now();
-            setCurrentCall(callId);
             emit linked.callStarted(callId);
             sendProfile(callId);
         }
