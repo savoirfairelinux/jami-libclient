@@ -428,9 +428,17 @@ ConversationModel::selectConversation(const std::string& uid) const
     }
 
     auto& conversation = pimpl_->conversations.at(conversationIdx);
-    if (not conversation.confId.empty()) {
+    bool callEnded = true;
+    if (!conversation.callId.empty()) {
+        try  {
+            auto call = owner.callModel->getCall(conversation.callId);
+            callEnded = call.status == call::Status::ENDED;
+        } catch (...) {}
+    }
+
+    if (not callEnded and not conversation.confId.empty()) {
         emit pimpl_->behaviorController.showCallView(owner.id, conversation);
-    } else if (conversation.callId.empty()) {
+    } else if (callEnded) {
         emit pimpl_->behaviorController.showChatView(owner.id, conversation);
     } else {
         try  {
@@ -1561,7 +1569,9 @@ ConversationModelPimpl::slotCallEnded(const std::string& callId)
         for (auto& conversation: conversations)
             if (conversation.callId == callId) {
                 conversation.callId = "";
+                conversation.confId = ""; // The participant is detached
                 dirtyConversations = {true, true};
+                emit linked.conversationUpdated(conversation.uid);
             }
     } catch (std::out_of_range& e) {
         qDebug() << "ConversationModelPimpl::slotCallEnded can't end inexistant call";
