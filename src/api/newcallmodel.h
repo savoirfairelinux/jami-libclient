@@ -251,6 +251,15 @@ Q_SIGNALS:
      */
     void callAddedToConference(const std::string& callId, const std::string& confId) const;
 
+    /**
+     * Emitted when a voice mail notice arrives
+     * @param accountId
+     * @param newCount
+     * @param oldCount
+     * @param urgentCount
+     */
+    void voiceMailNotify(const std::string& accountId, int newCount, int oldCount, int urgentCount) const;
+
 private:
     std::unique_ptr<NewCallModelPimpl> pimpl_;
 };

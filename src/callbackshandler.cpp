@@ -145,6 +145,12 @@ CallbacksHandler::CallbacksHandler(const Lrc& parent)
             &CallbacksHandler::slotIncomingMessage,
             Qt::QueuedConnection);
 
+    connect(&CallManager::instance(),
+            &CallManagerInterface::voiceMailNotify,
+            this,
+            &CallbacksHandler::slotVoiceMailNotify,
+            Qt::QueuedConnection);
+
     connect(&ConfigurationManager::instance(),
             &ConfigurationManagerInterface::dataTransferEvent,
             this,
@@ -262,6 +268,12 @@ CallbacksHandler::slotNearbyPeerSubscription(const QString& accountId,
                                              const QString& displayname)
 {
     emit newPeerSubscription(accountId.toStdString(), contactUri.toStdString(), state, displayname.toStdString());
+}
+
+void
+CallbacksHandler::slotVoiceMailNotify(const QString& accountId, int newCount, int oldCount, int urgentCount)
+{
+    emit voiceMailNotify(accountId.toStdString(), newCount, oldCount, urgentCount);
 }
 
 void
