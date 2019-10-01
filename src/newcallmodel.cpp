@@ -166,6 +166,14 @@ public Q_SLOTS:
      * @param callId
      */
     void slotConferenceCreated(const std::string& callId);
+    /**
+     * Listen from CallbacksHandler when a voice mail notice is incoming
+     * @param accountId
+     * @param newCount
+     * @param oldCount
+     * @param urgentCount
+     */
+    void slotVoiceMailNotify(const std::string& accountId, int newCount, int oldCount, int urgentCount);
 };
 
 NewCallModel::NewCallModel(const account::Info& owner, const CallbacksHandler& callbacksHandler)
@@ -423,6 +431,7 @@ NewCallModelPimpl::NewCallModelPimpl(const NewCallModel& linked, const Callbacks
     connect(&callbacksHandler, &CallbacksHandler::callStateChanged, this, &NewCallModelPimpl::slotCallStateChanged);
     connect(&callbacksHandler, &CallbacksHandler::incomingVCardChunk, this, &NewCallModelPimpl::slotincomingVCardChunk);
     connect(&callbacksHandler, &CallbacksHandler::conferenceCreated, this , &NewCallModelPimpl::slotConferenceCreated);
+    connect(&callbacksHandler, &CallbacksHandler::voiceMailNotify, this, &NewCallModelPimpl::slotVoiceMailNotify);
 
 #ifndef ENABLE_LIBWRAP
     // Only necessary with dbus since the daemon runs separately
@@ -628,6 +637,12 @@ NewCallModelPimpl::slotincomingVCardChunk(const std::string& callId,
         vcardsChunks[from] = std::vector<std::string>(numberOfParts);
         vcardsChunks[from][part-1] = payload;
     }
+}
+
+void
+NewCallModelPimpl::slotVoiceMailNotify(const std::string & accountId, int newCount, int oldCount, int urgentCount)
+{
+    emit linked.voiceMailNotify(accountId, newCount, oldCount, urgentCount);
 }
 
 bool

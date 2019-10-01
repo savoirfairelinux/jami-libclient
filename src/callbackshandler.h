@@ -268,6 +268,15 @@ Q_SIGNALS:
      */
     void audioMeter(const std::string& id, float level);
 
+    /**
+     * Emitted when an audio level is received
+     * @param accountId
+     * @param newCount
+     * @param oldCount
+     * @param urgentCount
+     */
+    void voiceMailNotify(const std::string& accountId, int newCount, int oldCount, int urgentCount);
+
 private Q_SLOTS:
     /**
      * Emit newAccountMessage
@@ -487,6 +496,18 @@ private Q_SLOTS:
                                     const QString& contactUri,
                                     int state,
                                     const QString& displayname);
+
+    /**
+     * Emit voiceMailNotify
+     * @param accountId
+     * @param new VM
+     * @param old VM
+     * @param new Urgent VM
+     */
+    void slotVoiceMailNotify(const QString& accountId,
+                             int newCount,
+                             int oldCount,
+                             int urgentCount);
 
 private:
     const api::Lrc& parent;
