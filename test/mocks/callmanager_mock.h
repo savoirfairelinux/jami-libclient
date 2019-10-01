@@ -302,7 +302,7 @@ Q_SIGNALS: // SIGNALS
     void transferFailed();
     void transferSucceeded();
     void recordPlaybackStopped(const QString &filepath);
-    void voiceMailNotify(const QString &accountID, int count);
+    void voiceMailNotify(const QString &accountId, int newVM, int oldVM, int newUrgentVM);
     void incomingMessage(const QString &callID, const QString &from, const MapStringString &message);
     void incomingCall(const QString &accountID, const QString &callID, const QString &from);
     void recordPlaybackFilepath(const QString &callID, const QString &filepath);
