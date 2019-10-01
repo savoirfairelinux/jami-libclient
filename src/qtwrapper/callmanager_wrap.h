@@ -69,9 +69,9 @@ public:
                     Q_EMIT recordPlaybackStopped(QString(filepath.c_str()));
                 }),
             exportable_callback<CallSignal::VoiceMailNotify>(
-                [this] (const std::string &accountID, int count) {
-                    LOG_DRING_SIGNAL2("voiceMailNotify",QString(accountID.c_str()), count);
-                    Q_EMIT voiceMailNotify(QString(accountID.c_str()), count);
+                [this] (const std::string &accountId, int newVM, int oldVM, int newUrgentVM) {
+                    LOG_DRING_SIGNAL2("voiceMailNotify",QString(accountId.c_str()), newVM, oldVM, newUrgentVM);
+                    Q_EMIT voiceMailNotify(QString(accountId.c_str()), newVM, oldVM, newUrgentVM);
                 }),
             exportable_callback<CallSignal::IncomingMessage>(
                 [this] (const std::string &callID, const std::string &from, const std::map<std::string,std::string> &message) {
@@ -373,7 +373,7 @@ Q_SIGNALS: // SIGNALS
     void transferFailed();
     void transferSucceeded();
     void recordPlaybackStopped(const QString &filepath);
-    void voiceMailNotify(const QString &accountID, int count);
+    void voiceMailNotify(const QString &accountId, int newVM, int oldVM, int newUrgentVM);
     void incomingMessage(const QString &callID, const QString &from, const MapStringString &message);
     void incomingCall(const QString &accountID, const QString &callID, const QString &from);
     void recordPlaybackFilepath(const QString &callID, const QString &filepath);
