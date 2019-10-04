@@ -1965,11 +1965,16 @@ ConversationModelPimpl::slotTransferStatusAwaitingHost(long long dringId, datatr
             auto extensionIdx = info.displayName.find_last_of(".");
             if (extensionIdx == std::string::npos) return;
             auto extension = info.displayName.substr(extensionIdx);
+            try {
+                auto contactInfo = linked.owner.contactModel->getContact(conversations[conversationIdx].participants.front());
+                // Only accept if contact is added
+                if (contactInfo.profileInfo.type != profile::Type::RING) return;
+            } catch (...) {
+                return;
+            }
             std::transform(extension.begin(), extension.end(), extension.begin(), ::tolower);
-            auto fileExtensions = {".gif", ".jpg", ".jpeg", ".png", ".webp", ".ogg", ".mp3", ".wav", ".flac", ".webm", ".mp4", ".mkv"};
-            auto isAutoAccepted = std::find(fileExtensions.begin(), fileExtensions.end(), extension) != fileExtensions.end();
             auto destinationDir = lrc.getDataTransferModel().downloadDirectory;
-            if (info.totalSize < 20 * 1024 * 1024 && isAutoAccepted && !destinationDir.empty()) {
+            if (info.totalSize < 20 * 1024 * 1024 && !destinationDir.empty()) {
                 auto wantedFilename = destinationDir + info.displayName;
                 auto duplicate = 0;
                 while (std::ifstream(wantedFilename).good()) {
