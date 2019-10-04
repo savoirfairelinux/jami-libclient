@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "4d4be12b_1899e436",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1979,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2019-10-04T20:03:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "40efa996_70dde5e3",
+      "range": {
+        "startLine": 1979,
+        "startChar": 20,
+        "endLine": 1979,
+        "endChar": 76
+      },
+      "revId": "abe1d564573ebc898a7d8091c40088181b95cb6f",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "e2e9c3ad_e57a7bd3",
         "filename": "src/conversationmodel.cpp",
         "patchSetId": 1
@@ -45,6 +69,30 @@
       "revId": "abe1d564573ebc898a7d8091c40088181b95cb6f",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4814567f_ba64fc8e",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1984,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2019-10-04T20:03:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e2e9c3ad_e57a7bd3",
+      "range": {
+        "startLine": 1984,
+        "startChar": 0,
+        "endLine": 1984,
+        "endChar": 16
+      },
+      "revId": "abe1d564573ebc898a7d8091c40088181b95cb6f",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
