@@ -344,6 +344,19 @@ SET(libringclient_api_LIB_HDRS
   src/api/newvideo.h
 )
 
+SET(libringclient_WEB_chatview
+   src/web-chatview/.eslintrc.json
+   src/web-chatview/chatview-gnome.css
+   src/web-chatview/chatview.css
+   src/web-chatview/chatview.html
+   src/web-chatview/chatview.js
+   src/web-chatview/jed.js
+   src/web-chatview/linkify-html.js
+   src/web-chatview/linkify-string.js
+   src/web-chatview/linkify.js
+   src/web-chatview/qwebchannel.js
+   src/web-chatview/web.gresource.xml
+)
 
 SET(libringclient_video_LIB_HDRS
   src/video/renderer.h
@@ -577,6 +590,11 @@ INSTALL( FILES ${libringclient_LIB_HDRS} ${libringclient_extra_LIB_HDRS}
 
 INSTALL( FILES ${libringclient_video_LIB_HDRS}
   DESTINATION ${INCLUDE_INSTALL_DIR}/libringclient/video
+  COMPONENT Devel
+)
+
+INSTALL( FILES ${libringclient_WEB_chatview}
+  DESTINATION ${INCLUDE_INSTALL_DIR}/libringclient/web-chatview
   COMPONENT Devel
 )
 
