@@ -1,0 +1,90 @@
+.internal_mes_wrapper {
+    margin: 3px 0 0 0;
+}
+
+.message_wrapper {
+    padding: 1em;
+}
+
+.sender_image {
+    margin: 10px;
+}
+
+.message_out + .message_out .message_wrapper {
+    border-top-right-radius: 10px;
+}
+
+.message_in + .message_in .message_wrapper {
+    border-top-left-radius: 10px;
+}
+
+.message_in + .message_in .sender_image {
+    visibility: hidden;
+}
+
+.message_out + .message_out .sender_image {
+    visibility: hidden;
+}
+
+.message_text {
+    hyphens: auto;
+    word-break: break-word;
+    word-wrap: break-word;
+}
+
+.nav-right {
+  align-self: flex-end;
+}
+
+.nav-left {
+  align-self: flex-start;
+}
+
+#nav-contactid {
+  margin: 0px;
+  margin-left: 5px;
+  padding: 0px;
+  height: 100%;
+  font-family: emoji;
+
+  /* enable selection (it is globally disabled in the body) */
+  -webkit-user-select: auto;
+
+  /* contactid field should take as much place as possible, but it should
+     also be the first one to shrink if necesary. */
+  flex-grow: 2;
+  flex-shrink: 2;
+  min-width: 0; /* necessary for child to be able to shrink correctly */
+
+  /* center vertically */
+  display: flex;
+  align-items: center;
+}
+
+#nav-contactid-wrapper {
+  width: 100%;
+}
+
+#nav-contactid-alias {
+  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 3px;
+
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+#nav-contactid-bestId {
+  font-size: 11px;
+
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.oneEntry #nav-contactid-bestId {
+  display: none;
+}
