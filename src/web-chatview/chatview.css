@@ -61,11 +61,11 @@
 /** Body */
 
 body {
-    --messagebar-size: 47px;
+    --messagebar-size: 57px;
     margin: 0;
     overflow: hidden;
     background-color: var(--bg-color);
-    padding-bottom: var(--messagebar-size);
+    padding-bottom: 0;
     /* disable selection highlight because it looks very bad */
     -webkit-user-select: text;
 }
@@ -258,13 +258,13 @@ body {
     overflow: hidden;
     padding: 4px;
     align-items: center;
-    position: fixed;
+    position: relative;
     left: 0;
     right: 0;
-    z-index: 500;
-    bottom: 0;
+    top: 0;
+    z-index: 1;
     /* hairline */
-    border-top: var(--hairline-thickness) solid var(--hairline-color);
+    border: var(--hairline-thickness) solid var(--hairline-color);
 }
 
 #message {
@@ -333,18 +333,15 @@ a:hover {
   border: 0;
 }
 
-#file_image_send_container {
-    visibility: hidden;
-    position: fixed;
-    bottom: var(--messagebar-size);
+#data_transfer_send_container {
+    position: relative;
     z-index: 1;
-    display: flex;
+    display: none;
     justify-content: flex-start;
     left: 0;
     right: 0;
-    height: 8em;
-    /*border-top-left-radius: 25px;
-    border-top-right-radius: 25px;*/
+    min-height: 8em;
+    max-height: 8em;
     border: 2px solid lightgray;
     padding: 20px;
     border-bottom: none;
@@ -352,11 +349,11 @@ a:hover {
     overflow-x: overlay;
 }
 
-#file_image_send_container::-webkit-scrollbar {
+#data_transfer_send_container::-webkit-scrollbar {
     height: 10px;
 }
 
-#file_image_send_container::after {
+#data_transfer_send_container::after {
     /*Create the margins with pseudo-elements*/
     /*to solve overflow:scroll and The Right Padding Problem*/
     content: ' ';
@@ -408,11 +405,13 @@ a:hover {
     color: black;
 }
 
+/* file wrapper related*/
 .file_wrapper {
     position: relative;
-    max-width: 65px;
     min-width: 65px;
+    max-width: 65px;
     max-height: 80px;
+    display: inline-block;
     border: 3px solid rgba(255,255,255,0);
     padding: 30px;
     border-radius: 20px;
@@ -455,13 +454,13 @@ a:hover {
     left: 1px;
 }
 
-.file_wrapper .svg-icon path,
-.file_wrapper .svg-icon polygon,
-.file_wrapper .svg-icon rect {
+.file_wrapper >.svg-icon path,
+.file_wrapper >.svg-icon polygon,
+.file_wrapper >.svg-icon rect {
     fill: #000000;
 }
 
-.file_wrapper .svg-icon circle {
+.file_wrapper >.svg-icon circle {
     stroke: #4691f6;
     stroke-width: 1;
 }
@@ -472,8 +471,143 @@ a:hover {
     left: 7%;
 }
 
+#audio_record_controller {
+    position: relative;
+    max-width: 65px;
+    min-width: 65px;
+    max-height: 80px;
+    border: 3px solid rgba(255,255,255,0);
+    padding: 30px;
+    border-radius: 20px;
+    background-color: white;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin: 5px;
+    font-family: sans-serif;
+}
+
+#audio_record_controller .btn {
+    position: absolute;
+    color: #fff;
+    border: 1px solid #AEAEAE;
+    border-radius: 40%;
+    background: rgba(96,95,97,0.5);
+    font-size: 10px;
+    font-weight: bold;
+    top: -5%;
+    right: -5%;
+}
+
+#audio_record_controller .btn:hover {
+    background-color: lightgray;
+}
+
+#audio_record_controller .btn:focus {
+    outline: none;
+    color: black;
+}
+
+#audio_record_controller .svg-icon {
+    position: absolute;
+    max-width: 2em;
+    max-height: 25px;
+    margin-right: 2em;
+    top: 8%;
+    left: 1px;
+}
+
+#audio_record_controller .svg-icon circle {
+    stroke: #4691f6;
+    stroke-width: 1;
+}
+
+#audio_record_controller .audio_control {
+    position: absolute;
+    top: 50%;
+    left: 30%;
+}
+
+.audio_control .nav-button {
+    width: 24px;
+    height: 24px;
+    background-color: darkgrey;
+}
+
+.audio_control .nav-button:hover {
+    background-color: var(--action-icon-press-color);
+}
+
+.audio_file_wrapper {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+}
+
+.audio_player {
+    position: absolute;
+    width: 70%;
+    background-color: white;
+    font-size: 10px;
+    font-weight: bold;
+    top: 5%;
+    bottom: 5%;
+    right: 5%;
+}
+
+.audio_player .nav-button {
+    width: 24px;
+    height: 24px;
+    margin-top: 1em;
+    margin-bottom: 1em;
+    margin-left: 1em;
+    margin-right: 1em;
+    background-color: darkgrey;
+}
+
+.audio_player .nav-button:hover {
+    background-color: var(--action-icon-press-color);
+}
+
+.audio_player .play_pause-button {
+    position:absolute;
+    top: 5%;
+    left: 20%;
+}
+
+.audio_player .audio_player_timer_text {
+    position: absolute;
+    bottom: 3em;
+    left: 15%;
+}
+
+.audio_player .audio_slider {
+    position: absolute;
+    bottom: 0.5em;
+    width: 90%;
+    height: 1em;
+    left: 5%;
+    z-index: 4;
+    background-color:rgb(41, 40, 40);
+}
+
+.audio_slider .audio_track_progress {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    z-index: 6;
+    left:0;
+    width: 0;
+    height: 100%;
+    background-color: rgb(7, 79, 174);
+}
+
+/* back to bottom button related*/
 #back_to_bottom_button_container {
     position: absolute;
+    bottom: var(--messagebar-size);
     z-index: 1;
     display: flex;
     justify-content: center;
@@ -515,6 +649,7 @@ a:hover {
     cursor: context-menu;
 }
 
+/*message display related*/
 #messages {
     position: relative;
     z-index: 0;
@@ -540,6 +675,19 @@ a:hover {
      "glued" to the message bar. */
     padding-bottom: 1.5em !important;
     margin-top: 4px;
+}
+
+/* The container that envelopes the messagebar and file container */
+#send_inteface_container {
+    position: relative;
+    overflow: auto;
+    height: auto;
+    width: 100%;
+    bottom: 0;
+    padding: 0;
+    margin: 0;
+    z-index: 0;
+    display: table;
 }
 
 /* General messages */

@@ -55,7 +55,7 @@ const inviteImage = document.getElementById("invite_image")
 const navbar = document.getElementById("navbar")
 const invitationText = document.getElementById("text")
 var   messages = document.getElementById("messages")
-var   sendContainer = document.getElementById("file_image_send_container")
+var   sendContainer = document.getElementById("data_transfer_send_container")
 var   wrapperOfNavbar = document.getElementById("wrapperOfNavbar")
 
 /* States: allows us to avoid re-doing something if it isn't meaningful */
@@ -96,8 +96,6 @@ if (use_qt) {
     new QWebChannel(qt.webChannelTransport, function (channel) {
         window.jsbridge = channel.objects.jsbridge
     })
-} else {
-    sendContainer.outerHTML = ""
 }
 
 /* i18n manager */
@@ -562,26 +560,43 @@ function formatDate(date) {
  * Send content of message bar
  */
 function sendMessage() {
-    if (use_qt) {
-        //send image in sendContainer
-        var data_to_send = sendContainer.innerHTML
-        var imgSrcExtract = new RegExp("<img src=\"(.*?)\">", "g")
-        var fileSrcExtract = new RegExp("<div class=\"file_wrapper\" data-path=\"(.*?)\">", "g")
 
-        var img_src
-        while ((img_src = imgSrcExtract.exec(data_to_send)) !== null) {
-            window.jsbridge.sendImage(img_src[1])
-        }
+    //send image in sendContainer
+    var data_to_send = sendContainer.innerHTML
+    var imgSrcExtract = new RegExp("<img src=\"(.*?)\">", "g")
+    var fileSrcExtract = new RegExp("<div class=\"file_wrapper\" data-path=\"(.*?)\">", "g")
 
-        var file_src
-        while ((file_src = fileSrcExtract.exec(data_to_send)) !== null) {
-            window.jsbridge.sendFile(file_src[1])
-        }
-
-        sendContainer.innerHTML = ""
-        sendContainer.style.visibility = "hidden"
-        reduce_send_container();
+    var img_src
+    var img_src_container = new Array()
+    while ((img_src = imgSrcExtract.exec(data_to_send)) !== null) {
+        img_src_container.push(img_src[1])
     }
+
+    var file_src
+    var file_src_container = new Array()
+    while ((file_src = fileSrcExtract.exec(data_to_send)) !== null) {
+        file_src_container.push(file_src[1])
+    }
+
+    if (use_qt) {
+        img_src_container.forEach(function (image) {
+            window.jsbridge.sendImage(image)
+        })
+        file_src_container.forEach(function (file) {
+            window.jsbridge.sendFile(file)
+        })
+    } else {
+        img_src_container.forEach(function (image) {
+            window.prompt("SEND_IMG:" + image)
+        })
+        file_src_container.forEach(function (file) {
+            window.prompt("SEND_FILE:" + file)
+        })
+    }
+
+    sendContainer.innerHTML = ""
+    sendContainer.style.display = "none"
+    reduce_send_container()
 
     var message = messageBarInput.value
     if (message.length > 0) {
@@ -624,7 +639,7 @@ function selectFileToSend() {
     if (use_qt) {
         window.jsbridge.selectFile()
     } else {
-        window.prompt("SEND_FILE")
+        window.prompt("SELECT_FILE")
     }
 }
 
@@ -637,9 +652,8 @@ function clearMessages() {
     while (messages.firstChild) {
         messages.removeChild(messages.firstChild)
     }
-
+    backToBottomBtn.style.visibility = "hidden"
     if (use_qt) {
-        backToBottomBtn.style.visibility="hidden"
         window.jsbridge.emitMessagesCleared()
     } else {
         window.prompt("MESSAGE_CLEARED")
@@ -2118,28 +2132,29 @@ function isTextSelected() {
  * add file (local file) to message area
  */
 function addFile_path(path, name, size) {
-    var html = "<div class='file_wrapper' data-path='" + path + "'>" +
-        "<svg class='svg-icon' viewBox='0 0 20 20'>" +
-        "<path fill = 'none' d = 'M17.222,5.041l-4.443-4.414c-0.152-0.151-0.356-0.235-0.571-0.235h-8.86c-0.444,0-0.807,0.361-0.807,0.808v17.602c0,0.448,0.363,0.808,0.807,0.808h13.303c0.448,0,0.808-0.36,0.808-0.808V5.615C17.459,5.399,17.373,5.192,17.222,5.041zM15.843,17.993H4.157V2.007h7.72l3.966,3.942V17.993z' ></path>" +
-        "<path fill='none' d='M5.112,7.3c0,0.446,0.363,0.808,0.808,0.808h8.077c0.445,0,0.808-0.361,0.808-0.808c0-0.447-0.363-0.808-0.808-0.808H5.92C5.475,6.492,5.112,6.853,5.112,7.3z'></path>" +
-        "<path fill='none' d='M5.92,5.331h4.342c0.445,0,0.808-0.361,0.808-0.808c0-0.446-0.363-0.808-0.808-0.808H5.92c-0.444,0-0.808,0.361-0.808,0.808C5.112,4.97,5.475,5.331,5.92,5.331z'></path>" +
-        "<path fill='none' d='M13.997,9.218H5.92c-0.444,0-0.808,0.361-0.808,0.808c0,0.446,0.363,0.808,0.808,0.808h8.077c0.445,0,0.808-0.361,0.808-0.808C14.805,9.58,14.442,9.218,13.997,9.218z'></path>" +
-        "<path fill='none' d='M13.997,11.944H5.92c-0.444,0-0.808,0.361-0.808,0.808c0,0.446,0.363,0.808,0.808,0.808h8.077c0.445,0,0.808-0.361,0.808-0.808C14.805,12.306,14.442,11.944,13.997,11.944z'></path>" +
-        "<path fill='none' d='M13.997,14.67H5.92c-0.444,0-0.808,0.361-0.808,0.808c0,0.447,0.363,0.808,0.808,0.808h8.077c0.445,0,0.808-0.361,0.808-0.808C14.805,15.032,14.442,14.67,13.997,14.67z'></path>" +
+    var html = "<div class=\"file_wrapper\" data-path=\"" + path + "\">" +
+        "<svg class=\"svg-icon\" viewBox=\"0 0 20 20\">" +
+        "<path fill = \"none\" d = \"M17.222,5.041l-4.443-4.414c-0.152-0.151-0.356-0.235-0.571-0.235h-8.86c-0.444,0-0.807,0.361-0.807,0.808v17.602c0,0.448,0.363,0.808,0.807,0.808h13.303c0.448,0,0.808-0.36,0.808-0.808V5.615C17.459,5.399,17.373,5.192,17.222,5.041zM15.843,17.993H4.157V2.007h7.72l3.966,3.942V17.993z\" ></path>" +
+        "<path fill=\"none\" d=\"M5.112,7.3c0,0.446,0.363,0.808,0.808,0.808h8.077c0.445,0,0.808-0.361,0.808-0.808c0-0.447-0.363-0.808-0.808-0.808H5.92C5.475,6.492,5.112,6.853,5.112,7.3z\"></path>" +
+        "<path fill=\"none\" d=\"M5.92,5.331h4.342c0.445,0,0.808-0.361,0.808-0.808c0-0.446-0.363-0.808-0.808-0.808H5.92c-0.444,0-0.808,0.361-0.808,0.808C5.112,4.97,5.475,5.331,5.92,5.331z\"></path>" +
+        "<path fill=\"none\" d=\"M13.997,9.218H5.92c-0.444,0-0.808,0.361-0.808,0.808c0,0.446,0.363,0.808,0.808,0.808h8.077c0.445,0,0.808-0.361,0.808-0.808C14.805,9.58,14.442,9.218,13.997,9.218z\"></path>" +
+        "<path fill=\"none\" d=\"M13.997,11.944H5.92c-0.444,0-0.808,0.361-0.808,0.808c0,0.446,0.363,0.808,0.808,0.808h8.077c0.445,0,0.808-0.361,0.808-0.808C14.805,12.306,14.442,11.944,13.997,11.944z\"></path>" +
+        "<path fill=\"none\" d=\"M13.997,14.67H5.92c-0.444,0-0.808,0.361-0.808,0.808c0,0.447,0.363,0.808,0.808,0.808h8.077c0.445,0,0.808-0.361,0.808-0.808C14.805,15.032,14.442,14.67,13.997,14.67z\"></path>" +
         "</svg >" +
-        "<div class='fileinfo'>" +
+        "<div class=\"fileinfo\">" +
         "<p>" + name + "</p>" +
         "<p>" + size + "</p>" +
         "</div >" +
-        "<button class='btn' onclick='remove(this)'>X</button>" +
+        "<button class=\"btn\" onclick=\"remove(this)\">X</button>" +
         "</div >"
     // At first, visiblity can empty
-    if (sendContainer.style.visibility.length == 0 || sendContainer.style.visibility == "hidden") {
+    if (sendContainer.style.display.length == 0 || sendContainer.style.display == "none") {
         grow_send_container()
-        sendContainer.style.visibility = "visible"
+        sendContainer.style.display = "flex"
     }
     //add html here since display is set to flex, image will change accordingly
     sendContainer.innerHTML += html
+    updateMesPos()
 }
 
 /**
@@ -2147,17 +2162,18 @@ function addFile_path(path, name, size) {
  */
 function addImage_base64(base64) {
 
-    var html = "<div class='img_wrapper'>" +
-        "<img src='data:image/png;base64," + base64 + "'/>" +
-        "<button class='btn' onclick='remove(this)'>X</button>" +
+    var html = "<div class=\"img_wrapper\">" +
+        "<img src=\"data:image/png;base64," + base64 + "\"/>" +
+        "<button class=\"btn\" onclick=\"remove(this)\">X</button>" +
         "</div >"
     // At first, visiblity can empty
-    if (sendContainer.style.visibility.length == 0 || sendContainer.style.visibility == "hidden") {
+    if (sendContainer.style.display.length == 0 || sendContainer.style.display == "none") {
         grow_send_container()
-        sendContainer.style.visibility = "visible"
+        sendContainer.style.display = "flex"
     }
     //add html here since display is set to flex, image will change accordingly
     sendContainer.innerHTML += html
+    updateMesPos()
 }
 
 /**
@@ -2165,50 +2181,249 @@ function addImage_base64(base64) {
  */
 function addImage_path(path) {
 
-    var html = "<div class='img_wrapper'>" +
-        "<img src='" + path +"'/>" +
-        "<button class='btn' onclick='remove(this)'>X</button>" +
+    var html = "<div class=\"img_wrapper\">" +
+        "<img src=\"" + path +"\"/>" +
+        "<button class=\"btn\" onclick=\"remove(this)\">X</button>" +
         "</div >"
     // At first, visiblity can empty
-    if (sendContainer.style.visibility.length == 0 || sendContainer.style.visibility == "hidden") {
+    if (sendContainer.style.display.length == 0 || sendContainer.style.display == "none") {
         grow_send_container()
-        sendContainer.style.visibility = "visible"
+        sendContainer.style.display = "flex"
     }
     //add html here since display is set to flex, image will change accordingly
     sendContainer.innerHTML += html
+    updateMesPos()
+}
+
+function addAudio_Path(path) {
+    var id = sendContainer.getElementsByTagName("audio").length + 1
+    var html = "<div class=\"file_wrapper\" data-path=\"" + path + "\">" +
+        "<div class=\"audio_file_wrapper\">" +
+        "<svg class=\"svg-icon\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 20 20\"><path d=\"M12 14c1.66 0 2.99-1.34 2.99-3L15 5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5.3-3c0 3-2.54 5.1-5.3 5.1S6.7 14 6.7 11H5c0 3.41 2.72 6.23 6 6.72V21h2v-3.28c3.28-.48 6-3.3 6-6.72h-1.7z\" /><path d=\"M0 0h24v24H0z\" fill=\"none\" /></svg>" +
+        "<audio id=\"audio_" + id + "\" ontimeupdate=\"updateTime('" + id + "')\">" +
+        "<source src=\"" + path + "\" type=\"audio/ogg\">" +
+        "</audio>" +
+        "<div class=\"audio_player\">" +
+        "<div id=\"play_pause_button_" + id + "\" class=\"nav-button action-button play_pause-button\" onclick=\"playPause('" + id + "',this)\">" +
+        "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\"><path d=\"M8 5v14l11-7z\"/><path d=\"M0 0h24v24H0z\" fill=\"none\"/></svg>" +
+        "</div>" +
+        "<span id=\"audio_player_timer_text_" + id + "\" class=\"audio_player_timer_text\" type=\"text\"></span>" +
+        "<div class=\"audio_slider\" onclick=\"setAudioPosition('"+ id +"',this,event)\">" +
+        "<div id=\"audio_track_progress_" + id + "\" class=\"audio_track_progress\">" +
+        "</div>" +
+        "</div>" +
+        "</div>" +
+        "</div>" +
+        "<button class=\"btn\" onclick=\"removeAudioWrapperAndDeleteAudioFile(this,'" + path +"')\">X</button>" +
+        "</div >"
+    //display the send container first and add the audio file info html into the sendcontainer
+    if (sendContainer.style.display.length == 0 || sendContainer.style.display == "none") {
+        grow_send_container()
+        sendContainer.style.display = "flex"
+    }
+
+    sendContainer.innerHTML += html
+    updateMesPos()
+    // initialize the display when the audio file wrapper is firstly added
+}
+
+// Play the audio
+function playTheAudio(id) {
+    var currentAudio = document.getElementById("audio_" + id)
+    currentAudio.play()
+}
+
+// Pauses the active audio.
+function pauseTheAudio(id) {
+    var currentAudio = document.getElementById("audio_" + id)
+    currentAudio.pause()
+}
+
+// Toggle between play and pasue
+function playPause(id, btn) {
+    var currentAudio = document.getElementById("audio_" + id)
+    var playBtnInnerHtml = "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\"><path d=\"M8 5v14l11-7z\"/><path d=\"M0 0h24v24H0z\" fill=\"none\"/></svg>"
+    var pauseBtnInnerHtml = "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\"><path d=\"M6 19h4V5H6v14zm8-14v14h4V5h-4z\"/><path d=\"M0 0h24v24H0z\" fill=\"none\"/></svg>"
+    currentAudio.onended = function () {
+        // set the play-pause button's icon back to play icon
+        btn.innerHTML = "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\"><path d=\"M8 5v14l11-7z\"/><path d=\"M0 0h24v24H0z\" fill=\"none\"/></svg>"
+        document.getElementById("audio_player_timer_text_" + id).innerHTML = "00:00/" + getFormattedTimeDisplay(currentAudio.duration)
+        document.getElementById("audio_track_progress_" + id).style.width = 0
+    }
+    //Checks to see if the song is paused, if it is, play it from where it left off otherwise pause it.
+    if (currentAudio.paused) {
+        currentAudio.play()
+        btn.innerHTML = pauseBtnInnerHtml
+    } else {
+        currentAudio.pause()
+        btn.innerHTML = playBtnInnerHtml
+    }
+}
+
+// Stop the audio
+function stopTheAudio(id) {
+    var currentAudio = document.getElementById("audio_" + id)
+    currentAudio.currentTime = 0
+    currentAudio.pause()
+    var playBtnInnerHtml = "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\"><path d=\"M8 5v14l11-7z\"/><path d=\"M0 0h24v24H0z\" fill=\"none\"/></svg>"
+    document.getElementById("play_pause_button_" + id).innerHTML = playBtnInnerHtml
+}
+
+function updateTime(id) {
+    var currentAudio = document.getElementById("audio_" + id)
+    // Update the timer text
+    var current = getFormattedTimeDisplay(currentAudio.currentTime)
+    var overallDuration = getFormattedTimeDisplay(currentAudio.duration)
+
+    var timerText = current + "/" + overallDuration
+    document.getElementById("audio_player_timer_text_" + id).innerHTML = timerText
+    // Update the time slider and current time display
+    var progressPercentage = (currentAudio.currentTime / currentAudio.duration) * 100 + "%"
+    document.getElementById("audio_track_progress_" + id).style.width = progressPercentage
+}
+
+
+//Gets the percentage of the click on the slider to set the song position accordingly.
+function setAudioPosition(id,obj, e) {
+    //Gets the offset from the left so it gets the exact location.
+    var songSliderWidth = obj.offsetWidth;
+    var evtobj = window.event ? event : e;
+    clickLocation = evtobj.layerX - obj.offsetLeft;
+
+    var percentage = (clickLocation / songSliderWidth);
+    //Sets the song location with the percentage.
+    setLocation(id,percentage);
+}
+
+// Sets the location of the song based off of the percentage of the slider clicked.
+function setLocation(id, percentage) {
+    var activeAudio = document.getElementById("audio_" + id)
+    activeAudio.currentTime = activeAudio.duration * percentage
 }
 
 /**
- * This function adjusts the body paddings so that that the file_image_send_container doesn't
- * overlap messages when it grows.
+ * The section for audio clip record with its controller
  */
-/* exported grow_send_container */
-function grow_send_container() {
-    exec_keeping_scroll_position(function () {
-        var msgbar_size = window.getComputedStyle(document.body).getPropertyValue("--messagebar-size");
-        document.body.style.paddingBottom = (parseInt(msgbar_size) + 158).toString() + "px";
-        //6em
-    }, [])
+// the function that is used to delete a given file
+function removeAudioWrapperAndDeleteAudioFile(e,path) {
+    if (use_qt) {
+        window.jsbridge.deleteSelectedFile(path)
+    } else {
+        window.prompt("DELETE_SELECTED_FILE:" + path)
+    }
+    remove(e)
+}
+
+// add audio controller to send container
+function addAudioController() {
+
+    var html = "<div id=\"audio_record_controller\">" +
+        "<svg class=\"svg-icon\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 20 20\"><path d=\"M12 14c1.66 0 2.99-1.34 2.99-3L15 5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5.3-3c0 3-2.54 5.1-5.3 5.1S6.7 14 6.7 11H5c0 3.41 2.72 6.23 6 6.72V21h2v-3.28c3.28-.48 6-3.3 6-6.72h-1.7z\" /><path d=\"M0 0h24v24H0z\" fill=\"none\" /></svg>" +
+        "<div class=\"audio_control\">" +
+        "<span id=\"timer_text\" type=\"text\">00:00</span> " +
+        "<div class=\"action-button nav-button\" onclick=\"finishAudioRecord()\">" +
+        "<svg class=\"svgicon\" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\"><path d=\"M0 0h24v24H0z\" fill=\"none\" /><path d=\"M6 6h12v12H6z\" /></svg>" +
+        "</div>" +
+        "</div>" +
+        "<button class=\"btn\" onclick=\"stopAndDeleteAudioRecord(this)\" title=\" stop current recording!\">X</button>" +
+        "</div>"
+    // At first, visiblity can empty
+    if (sendContainer.style.display.length == 0 || sendContainer.style.display == "none") {
+        grow_send_container()
+        sendContainer.style.display = "flex"
+    }
+    //add html here since display is set to flex, image will change accordingly
+    if (!document.getElementById("audio_record_controller")) {
+        var containerContentHtml = sendContainer.innerHTML
+        containerContentHtml = html + containerContentHtml
+        sendContainer.innerHTML = containerContentHtml
+    }
+    updateMesPos()
+    startTimer()
+}
+
+// Audio record related functions
+function startRecordingSection() {
+    // the audio starts to record
+    if (document.getElementById("audio_record_controller")) {
+        finishAudioRecord()
+    }
+    if (use_qt) {
+        window.jsbridge.startRecordAudio()
+    } else {
+        window.prompt("START_RECORD_AUDIO")
+    }
+    // add audio widget to file container
+    addAudioController()
+}
+
+function finishAudioRecord() {
+    if (use_qt) {
+        window.jsbridge.finishRecordAudio()
+    } else {
+        window.prompt("FINISH_RECORD_AUDIO")
+    }
+    if (document.getElementById("audio_record_controller")) {
+        document.getElementById("audio_record_controller").outerHTML = ""
+    }
+    stopTimer()
+    if (sendContainer.innerHTML.length == 0) {
+        reduce_send_container()
+        sendContainer.style.display = "none"
+    }
+}
+
+function stopAndDeleteAudioRecord(e) {
+    if (use_qt) {
+        window.jsbridge.stopAndDeleteRecordAudio()
+    } else {
+        window.prompt("STOP_AND_DELETE_RECORD_AUDIO")
+    }
+    remove(e)
+    stopTimer()
+}
+
+// timer for record controller
+var terval
+var timeCount;
+function updateTimer() {
+    timeCount++
+    document.getElementById("timer_text").innerHTML = getFormattedTimeDisplay(timeCount)
+}
+
+function startTimer() {
+    timeCount = 0
+    terval = window.setInterval(updateTimer, 1000)
+}
+
+function stopTimer() {
+    timeCount = 0
+    clearInterval(terval)
+}
+
+// This function is used to get the time format such as 00:00
+function getFormattedTimeDisplay(timeInSecond) {
+    var minute = Math.floor(timeInSecond / 60)
+    var second = Math.floor(timeInSecond) - minute * 60
+    if (second < 10 && second >= 0) {
+        second = "0" + second
+    }
+    if (minute < 10 && minute >= 0) {
+        minute = "0" + minute
+    }
+    var time = minute + ":" + second
+    return time
 }
 
 /**
- * This function adjusts the body paddings so that that the file_image_send_container will hide
- * and recover padding bottom
+ * General event handeler
  */
-/* exported grow_send_container */
-function reduce_send_container() {
-    exec_keeping_scroll_position(function () {
-        document.body.style.paddingBottom = (parseInt(document.body.style.paddingBottom) - 158).toString() + "px";
-        //6em
-    }, [])
-}
-
 // Remove current cancel button division  and hide the sendContainer
 function remove(e) {
     e.parentNode.parentNode.removeChild(e.parentNode)
     if (sendContainer.innerHTML.length == 0) {
         reduce_send_container()
-        sendContainer.style.visibility = "hidden"
+        sendContainer.style.display = "none"
     }
 }
 
@@ -2242,4 +2457,33 @@ function replaceText(text) {
     var output = [currentContent.slice(0, start), text, currentContent.slice(end)].join("")
     input.value = output
     setCaretPosition(input, start + text.length)
+}
+
+/**
+ * This function adjusts the body paddings so that that the file_image_send_container doesn't
+ * overlap messages when it grows.
+ */
+/* exported grow_send_container */
+function grow_send_container() {
+    exec_keeping_scroll_position(function () {
+        backToBottomBtnContainer.style.bottom = "calc(var(--messagebar-size) + 168px)"
+    }, [])
+}
+
+/**
+ * This function adjusts the body paddings so that that the file_image_send_container will hide
+ * and recover padding bottom
+ */
+/* exported grow_send_container */
+function reduce_send_container() {
+    exec_keeping_scroll_position(function () {
+        backToBottomBtnContainer.style.bottom = "var(--messagebar-size)"
+    }, [])
+}
+
+// This function update the bottom of messages window whenever the send_interface changes size when the scroll is at the end
+function updateMesPos() {
+    if (messages.scrollTop >= messages.scrollHeight - messages.clientHeight - scrollDetectionThresh) {
+        back_to_bottom()
+    }
 }
