@@ -61,11 +61,11 @@
 /** Body */
 
 body {
-    --messagebar-size: 57px;
+    --messagebar-size: 0;
     margin: 0;
     overflow: hidden;
     background-color: var(--bg-color);
-    padding-bottom: var(--messagebar-size);
+    padding-bottom: 0;
     /* disable selection highlight because it looks very bad */
     -webkit-user-select: none;
 }
@@ -317,13 +317,13 @@ body {
     overflow: hidden;
     padding: 4px;
     align-items: center;
-    position: fixed;
+    position: relative;
     left: 0;
     right: 0;
-    z-index: 500;
-    bottom: 0;
+    top: 0;
+    z-index: 1;
     /* hairline */
-    border-top: var(--hairline-thickness) solid var(--hairline-color);
+    border: var(--hairline-thickness) solid var(--hairline-color);
 }
 
 #message {
@@ -392,18 +392,15 @@ a:hover {
   border: 0;
 }
 
-#file_image_send_container {
-    visibility: hidden;
-    position: fixed;
-    bottom: var(--messagebar-size);
+#data_transfer_send_container {
+    position: relative;
     z-index: 1;
-    display: flex;
+    display: none;
     justify-content: flex-start;
     left: 0;
     right: 0;
-    height: 8em;
-    /*border-top-left-radius: 25px;
-    border-top-right-radius: 25px;*/
+    min-height: 8em;
+    max-height: 8em;
     border: 2px solid lightgray;
     padding: 20px;
     border-bottom: none;
@@ -411,11 +408,11 @@ a:hover {
     overflow-x: overlay;
 }
 
-#file_image_send_container::-webkit-scrollbar {
+#data_transfer_send_container::-webkit-scrollbar {
     height: 10px;
 }
 
-#file_image_send_container::after {
+#data_transfer_send_container::after {
     /*Create the margins with pseudo-elements*/
     /*to solve overflow:scroll and The Right Padding Problem*/
     content: ' ';
@@ -467,6 +464,7 @@ a:hover {
     color: black;
 }
 
+/* file wrapper related*/
 .file_wrapper {
     position: relative;
     max-width: 65px;
@@ -531,13 +529,79 @@ a:hover {
     left: 7%;
 }
 
-#back_to_bottom_button_container {
+#audio_record_controller {
+    position: relative;
+    max-width: 65px;
+    min-width: 65px;
+    max-height: 80px;
+    border: 3px solid rgba(255,255,255,0);
+    padding: 30px;
+    border-radius: 20px;
+    background-color: white;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin: 5px;
+    font-family: sans-serif;
+}
+
+#audio_record_controller .btn {
     position: absolute;
-    z-index: 1;
+    color: #fff;
+    border: 1px solid #AEAEAE;
+    border-radius: 40%;
+    background: rgba(96,95,97,0.5);
+    font-size: 10px;
+    font-weight: bold;
+    top: -5%;
+    right: -5%;
+}
+
+#audio_record_controller .btn:hover {
+    background-color: lightgray;
+}
+
+#audio_record_controller .btn:focus {
+    outline: none;
+    color: black;
+}
+
+#audio_record_controller .svg-icon {
+    position: absolute;
+    max-width: 2em;
+    max-height: 25px;
+    margin-right: 2em;
+    top: 8%;
+    left: 1px;
+}
+
+#audio_record_controller .svg-icon circle {
+    stroke: #4691f6;
+    stroke-width: 1;
+}
+
+#audio_record_controller .audio_control {
+    position: absolute;
+    top: 50%;
+    left: 30%;
+}
+
+.audio_control .action-button{
+    background-color:coral;
+}
+
+.audio_control .action-button:hover {
+    background-color:darkcyan;
+}
+
+/* back to bottom button related*/
+#back_to_bottom_button_container {
+    position: relative;
+    z-index: 10;
     display: flex;
     justify-content: center;
     width: 100%;
-    height: 4em;
+    height: 2.5em;
     pointer-events: none;
 }
 
@@ -574,6 +638,7 @@ a:hover {
     cursor: context-menu;
 }
 
+/*message display related*/
 #messages {
     position: relative;
     z-index: 0;
@@ -601,6 +666,17 @@ a:hover {
     margin-top: 4px;
 }
 
+/* The container that envelopes the messagebar and file container */
+#send_inteface_container {
+    position: relative;
+    width: 100%;
+    bottom: 0;
+    padding: 0;
+    margin: 0;
+    z-index: 0;
+    display: table;
+    overflow: auto;
+}
 
 /* General messages */
 
