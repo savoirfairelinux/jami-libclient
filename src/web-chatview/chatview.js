@@ -55,7 +55,7 @@ const inviteImage = document.getElementById("invite_image")
 const navbar = document.getElementById("navbar")
 const invitationText = document.getElementById("text")
 var   messages = document.getElementById("messages")
-var   sendContainer = document.getElementById("file_image_send_container")
+var   sendContainer = document.getElementById("data_transfer_send_container")
 var   wrapperOfNavbar = document.getElementById("wrapperOfNavbar")
 
 /* States: allows us to avoid re-doing something if it isn't meaningful */
@@ -579,7 +579,7 @@ function sendMessage() {
         }
 
         sendContainer.innerHTML = ""
-        sendContainer.style.visibility = "hidden"
+        sendContainer.style.display = "none"
     }
 
     var message = messageBarInput.value
@@ -2040,8 +2040,8 @@ function addFile_path(path, name, size) {
         "<button class='btn' onclick='remove(this)'>X</button>" +
         "</div >"
     // At first, visiblity can empty
-    if (sendContainer.style.visibility.length == 0 || sendContainer.style.visibility == "hidden") {
-        sendContainer.style.visibility = "visible"
+    if (sendContainer.style.display.length == 0 || sendContainer.style.display == "none") {
+        sendContainer.style.display = "flex"
     }
     //add html here since display is set to flex, image will change accordingly
     sendContainer.innerHTML += html
@@ -2057,8 +2057,8 @@ function addImage_base64(base64) {
         "<button class='btn' onclick='remove(this)'>X</button>" +
         "</div >"
     // At first, visiblity can empty
-    if (sendContainer.style.visibility.length == 0 || sendContainer.style.visibility == "hidden") {
-        sendContainer.style.visibility = "visible"
+    if (sendContainer.style.display.length == 0 || sendContainer.style.display == "none") {
+        sendContainer.style.display = "flex"
     }
     //add html here since display is set to flex, image will change accordingly
     sendContainer.innerHTML += html
@@ -2071,10 +2071,25 @@ function addImage_path(path) {
         "<button class='btn' onclick='remove(this)'>X</button>" +
         "</div >"
     // At first, visiblity can empty
-    if (sendContainer.style.visibility.length == 0 || sendContainer.style.visibility == "hidden") {
-        sendContainer.style.visibility = "visible"
+    if (sendContainer.style.display.length == 0 || sendContainer.style.display == "none") {
+        sendContainer.style.display = "flex"
     }
     //add html here since display is set to flex, image will change accordingly
+    sendContainer.innerHTML += html
+}
+
+function addAudio_Path(path) {
+    var html = '<div class="file_wrapper" data-path="' + path + '">' +
+        '<audio controls="controls">' +
+        '<source src="' + path + '" type="audio/ogg">' +
+        'Play is not supported'
+    '</audio >' +
+        '<button class="btn" onclick="remove(this)">X</button>' +
+        '</div >'
+    //display the send container first and add the audio file info html into the sendcontainer
+    if (sendContainer.style.display.length == 0 || sendContainer.style.display == "none") {
+        sendContainer.style.display = "flex"
+    }
     sendContainer.innerHTML += html
 }
 
@@ -2082,7 +2097,7 @@ function addImage_path(path) {
 function remove(e) {
     e.parentNode.parentNode.removeChild(e.parentNode)
     if (sendContainer.innerHTML.length == 0) {
-        sendContainer.style.visibility = "hidden"
+        sendContainer.style.display = "none"
     }
 }
 
@@ -2117,4 +2132,83 @@ function replaceText(text) {
     var output = [currentContent.slice(0, start), text, currentContent.slice(end)].join("")
     input.value = output
     setCaretPosition(input, start + text.length)
+}
+
+
+var audioRecordPath
+function startRecordingSection() {
+    // the audio starts to record
+    audioRecordPath = window.jsbridge.startRecordAudio()
+    // add audio widget to file container
+    addAudioController()
+}
+
+function addAudioController() {
+
+    var html = "<div id=\"audio_record_controller\">" +
+        "<svg class=\"svg-icon\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 20 20\"><path d=\"M12 14c1.66 0 2.99-1.34 2.99-3L15 5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5.3-3c0 3-2.54 5.1-5.3 5.1S6.7 14 6.7 11H5c0 3.41 2.72 6.23 6 6.72V21h2v-3.28c3.28-.48 6-3.3 6-6.72h-1.7z\" /><path d=\"M0 0h24v24H0z\" fill=\"none\" /></svg>" +
+        "<div class=\"audio_control\">" +
+        "<span onload=\"startTimer(this)\">00:00</span> " +
+        "<div class=\"action-button nav-button\" onclick=\"finishAudioRecord()\">" +
+        "<svg class=\"svgicon\" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\"><path d=\"M0 0h24v24H0z\" fill=\"none\" /><path d=\"M6 6h12v12H6z\" /></svg>" +
+        "</div>" +
+        "</div>" +
+        "<button class=\"btn\" onclick=\"stopAndDeleteAudioRecord(this)\" title=\" stop current recording!\">X</button>" +
+        "</div>"
+    // At first, visiblity can empty
+    if (sendContainer.style.display.length == 0 || sendContainer.style.display == "none") {
+        sendContainer.style.display = "flex"
+    }
+    //add html here since display is set to flex, image will change accordingly
+    if (!document.getElementById("audio_record_controller")) {
+        sendContainer.innerHTML += html
+    }
+}
+
+function finishAudioRecord() {
+    if (use_qt) {
+        window.jsbridge.finishRecordAudio()
+    } else {
+        // call the function in gnome client to stop the call
+        window.prompt("")
+    }
+    if (document.getElementById("audio_record_controller")) {
+        document.getElementById("audio_record_controller").outerHTML = ""
+    }
+    stopTimer()
+}
+
+function stopAndDeleteAudioRecord(e) {
+    if (use_qt) {
+        window.jsbridge.stopAndDeleteRecordAudio()
+    } else {
+        //TODO: implement code for interrupting the record on gnome client
+    }
+    remove(e)
+    stopTimer()
+}
+
+// timer for record controller
+var terval
+function startTimer(text) {
+    text.innerHTML = "00:00"
+    terval = setInterval(updateTimer(text), 1000)
+}
+
+function updateTimer(text) {
+    var textvalue = text.innerHTML
+    var valueSplit = textvalue.split(":")
+    var second = valueSplit[valueSplit.size - 1]
+    var minute = valueSplit[valueSplit.size - 2]
+    if (second >= 59) {
+        second = 0
+        minute++
+    } else {
+        second++;
+    }
+    text.innerHTML = minute + ":" + second
+}
+
+function stopTimer() {
+    clearInterval(terval)
 }
