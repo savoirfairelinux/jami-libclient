@@ -89,23 +89,31 @@
         <div id="back_to_bottom_button_container">
             <div id="back_to_bottom_button" onclick="back_to_bottom()">Jump to latest &#9660;</div>
         </div>
-        <div id="file_image_send_container"></div>
-        <div id="sendMessage">
-            <div id="sendFileButton" class="nav-button action-button" onclick="selectFileToSend()" title="select file to send">
-                <svg class="svgicon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                    <path d="M16.5 6v11.5c0 2.21-1.79 4-4 4s-4-1.79-4-4V5c0-1.38 1.12-2.5 2.5-2.5s2.5 1.12 2.5 2.5v10.5c0 .55-.45 1-1 1s-1-.45-1-1V6H10v9.5c0 1.38 1.12 2.5 2.5 2.5s2.5-1.12 2.5-2.5V5c0-2.21-1.79-4-4-4S7 2.79 7 5v12.5c0 3.04 2.46 5.5 5.5 5.5s5.5-2.46 5.5-5.5V6h-1.5z" />
-                    <path d="M0 0h24v24H0z" fill="none" />
-                </svg>
-            </div>
-            <textarea id="message" autofocus placeholder="Type a message" onkeyup="grow_text_area()" onkeydown="process_messagebar_keydown()"
-                rows="1"></textarea>
-            <div id="sendButton" class="nav-button action-button" onclick="sendMessage(); grow_text_area()">
-                <svg class="svgicon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                    <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" />
-                    <path d="M0 0h24v24H0z" fill="none" />
-                </svg>
+        <div id="send_inteface_container" onresize="updateBackToBottomContainer()">
+            <div id="sendMessage">
+                <div id="sendFileButton" class="nav-button action-button" onclick="selectFileToSend()" title="select file to send">
+                    <svg class="svgicon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                        <path d="M16.5 6v11.5c0 2.21-1.79 4-4 4s-4-1.79-4-4V5c0-1.38 1.12-2.5 2.5-2.5s2.5 1.12 2.5 2.5v10.5c0 .55-.45 1-1 1s-1-.45-1-1V6H10v9.5c0 1.38 1.12 2.5 2.5 2.5s2.5-1.12 2.5-2.5V5c0-2.21-1.79-4-4-4S7 2.79 7 5v12.5c0 3.04 2.46 5.5 5.5 5.5s5.5-2.46 5.5-5.5V6h-1.5z" />
+                        <path d="M0 0h24v24H0z" fill="none" />
+                    </svg>
+                </div>
+                <div id="audioRecordButton" class="action-button nav-button" onclick="startRecordingSection()">
+                    <svg class="svgicon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                        <path d="M12 14c1.66 0 2.99-1.34 2.99-3L15 5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5.3-3c0 3-2.54 5.1-5.3 5.1S6.7 14 6.7 11H5c0 3.41 2.72 6.23 6 6.72V21h2v-3.28c3.28-.48 6-3.3 6-6.72h-1.7z" />
+                        <path d="M0 0h24v24H0z" fill="none" />
+                    </svg>
+                </div>
+                <textarea id="message" autofocus placeholder="Type a message" onkeyup="grow_text_area()" onkeydown="process_messagebar_keydown()"
+                          rows="1"></textarea>
+                <div id="sendButton" class="nav-button action-button" onclick="sendMessage(); grow_text_area()">
+                    <svg class="svgicon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                        <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" />
+                        <path d="M0 0h24v24H0z" fill="none" />
+                    </svg>
+                </div>
             </div>
         </div>
+        <div id="data_transfer_send_container"></div>
     </div>
 </body>
 </html>
