@@ -61,7 +61,7 @@
 /** Body */
 
 body {
-    --messagebar-size: 57px;
+    --messagebar-size: 0;
     margin: 0;
     overflow: hidden;
     background-color: var(--bg-color);
@@ -317,13 +317,13 @@ body {
     overflow: hidden;
     padding: 4px;
     align-items: center;
-    position: fixed;
+    position: relative;
     left: 0;
     right: 0;
-    z-index: 500;
-    bottom: 0;
+    top: 0;
+    z-index: 1;
     /* hairline */
-    border-top: var(--hairline-thickness) solid var(--hairline-color);
+    border: var(--hairline-thickness) solid var(--hairline-color);
 }
 
 #message {
@@ -392,18 +392,15 @@ a:hover {
   border: 0;
 }
 
-#file_image_send_container {
-    visibility: hidden;
-    position: fixed;
-    bottom: var(--messagebar-size);
+#data_transfer_send_container {
+    position: relative;
     z-index: 1;
-    display: flex;
+    display: none;
     justify-content: flex-start;
     left: 0;
     right: 0;
-    height: 8em;
-    /*border-top-left-radius: 25px;
-    border-top-right-radius: 25px;*/
+    min-height: 8em;
+    max-height: 8em;
     border: 2px solid lightgray;
     padding: 20px;
     border-bottom: none;
@@ -411,11 +408,11 @@ a:hover {
     overflow-x: overlay;
 }
 
-#file_image_send_container::-webkit-scrollbar {
+#data_transfer_send_container::-webkit-scrollbar {
     height: 10px;
 }
 
-#file_image_send_container::after {
+#data_transfer_send_container::after {
     /*Create the margins with pseudo-elements*/
     /*to solve overflow:scroll and The Right Padding Problem*/
     content: ' ';
@@ -532,7 +529,7 @@ a:hover {
 }
 
 #back_to_bottom_button_container {
-    position: absolute;
+    position: relative;
     z-index: 1;
     display: flex;
     justify-content: center;
@@ -601,6 +598,17 @@ a:hover {
     margin-top: 4px;
 }
 
+/* The container that envelopes the messagebar and file container */
+#send_inteface_container {
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+    padding: 0;
+    margin: 0;
+    z-index: 0;
+    display: table;
+    overflow: auto;
+}
 
 /* General messages */
 

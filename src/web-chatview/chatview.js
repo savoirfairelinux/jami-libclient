@@ -55,7 +55,7 @@ const inviteImage = document.getElementById("invite_image")
 const navbar = document.getElementById("navbar")
 const invitationText = document.getElementById("text")
 var   messages = document.getElementById("messages")
-var   sendContainer = document.getElementById("file_image_send_container")
+var   sendContainer = document.getElementById("data_transfer_send_container")
 var   wrapperOfNavbar = document.getElementById("wrapperOfNavbar")
 
 /* States: allows us to avoid re-doing something if it isn't meaningful */
@@ -579,7 +579,7 @@ function sendMessage() {
         }
 
         sendContainer.innerHTML = ""
-        sendContainer.style.visibility = "hidden"
+        sendContainer.style.display = "none"
     }
 
     var message = messageBarInput.value
@@ -2040,8 +2040,8 @@ function addFile_path(path, name, size) {
         "<button class='btn' onclick='remove(this)'>X</button>" +
         "</div >"
     // At first, visiblity can empty
-    if (sendContainer.style.visibility.length == 0 || sendContainer.style.visibility == "hidden") {
-        sendContainer.style.visibility = "visible"
+    if (sendContainer.style.display.length == 0 || sendContainer.style.display == "none") {
+        sendContainer.style.display = "flex"
     }
     //add html here since display is set to flex, image will change accordingly
     sendContainer.innerHTML += html
@@ -2057,8 +2057,8 @@ function addImage_base64(base64) {
         "<button class='btn' onclick='remove(this)'>X</button>" +
         "</div >"
     // At first, visiblity can empty
-    if (sendContainer.style.visibility.length == 0 || sendContainer.style.visibility == "hidden") {
-        sendContainer.style.visibility = "visible"
+    if (sendContainer.style.display.length == 0 || sendContainer.style.display == "none") {
+        sendContainer.style.display = "flex"
     }
     //add html here since display is set to flex, image will change accordingly
     sendContainer.innerHTML += html
@@ -2071,8 +2071,8 @@ function addImage_path(path) {
         "<button class='btn' onclick='remove(this)'>X</button>" +
         "</div >"
     // At first, visiblity can empty
-    if (sendContainer.style.visibility.length == 0 || sendContainer.style.visibility == "hidden") {
-        sendContainer.style.visibility = "visible"
+    if (sendContainer.style.display.length == 0 || sendContainer.style.display == "none") {
+        sendContainer.style.display = "flex"
     }
     //add html here since display is set to flex, image will change accordingly
     sendContainer.innerHTML += html
@@ -2082,7 +2082,7 @@ function addImage_path(path) {
 function remove(e) {
     e.parentNode.parentNode.removeChild(e.parentNode)
     if (sendContainer.innerHTML.length == 0) {
-        sendContainer.style.visibility = "hidden"
+        sendContainer.style.display = "none"
     }
 }
 
