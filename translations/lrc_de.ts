@@ -407,7 +407,7 @@
     <message>
         <location filename="../src/contactmodel.cpp" line="768"/>
         <source>Registered name not found</source>
-        <translation type="unfinished"/>
+        <translation>Registrierter Name wurde nicht gefunden</translation>
     </message>
     <message>
         <location filename="../src/contactmodel.cpp" line="771"/>
