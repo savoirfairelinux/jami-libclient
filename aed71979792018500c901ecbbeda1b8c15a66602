@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9d204a3a_faa70acd",
+        "filename": "src/api/newcallmodel.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 195,
+      "author": {
+        "id": 225
+      },
+      "writtenOn": "2019-10-15T20:52:42Z",
+      "side": 1,
+      "message": "could we return a callId for a newly created call?",
+      "range": {
+        "startLine": 195,
+        "startChar": 4,
+        "endLine": 195,
+        "endChar": 8
+      },
+      "revId": "aed71979792018500c901ecbbeda1b8c15a66602",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    }
+  ]
+}
