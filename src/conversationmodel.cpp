@@ -361,6 +361,85 @@ ConversationModel::allFilteredConversations() const
     return pimpl_->filteredConversations;
 }
 
+std::map<std::string, std::vector<std::pair<std::string, std::string>>>
+ConversationModel::getPossibleConversationsForConference(std::string convId, std::string filter)
+{
+    auto conversationIdx = pimpl_->indexOf(convId);
+    if (conversationIdx == -1 || !owner.enabled) {
+        return {};
+    }
+    std::map<std::string, std::vector<std::pair<std::string, std::string>>> result;
+    std::vector<std::pair<std::string, std::string>> callsMap, contactsMap;
+
+    auto& conversation = pimpl_->conversations.at(conversationIdx);
+    auto calls = pimpl_->lrc.getCalls();
+    auto conferences = pimpl_->lrc.getConferences();
+    auto contacts = pimpl_->conversations;
+    auto currentAccountID = pimpl_->linked.owner.id;
+    //filter out calls from conference
+    for (const auto& c : conferences) {
+        for (const std::string subcal : pimpl_->lrc.getConferenceSubcalls(c)) {
+            auto position = std::find(calls.begin(), calls.end(), subcal);
+            if (position != calls.end()) {
+                calls.erase(position);
+            }
+        }
+    }
+    for (const auto &account_id : pimpl_->lrc.getAccountModel().getAccountList()) {
+        try {
+            auto &accountInfo = pimpl_->lrc.getAccountModel().getAccountInfo(account_id);
+            auto conversations = accountInfo.conversationModel->getFilteredConversations(accountInfo.profileInfo.type);
+            for (const auto &conv : conversations) {
+                if ((!conv.confId.empty() && conv.confId != conversation.confId &&
+                    std::find(conferences.begin(), conferences.end(), conv.confId) != conferences.end()) ||
+                    (!conv.callId.empty() && conv.callId != conversation.callId &&
+                    std::find(calls.begin(), calls.end(), conv.callId) != calls.end())) {
+                    auto position = std::find(conferences.begin(), conferences.end(), conv.confId);
+                    if (position != conferences.end()) {
+                        conferences.erase(position);
+                    }
+                    if (filter.empty()) {
+                        callsMap.emplace_back ( std::pair<std::string,std::string>(conv.uid, account_id));
+                        continue;
+                    }
+                    for (const auto &participant : conv.participants) {
+                        auto contact = owner.contactModel->getContact(participant);
+                        bool result = contact.profileInfo.alias.find(filter) != std::string::npos ||
+                                      contact.profileInfo.uri.find(filter) != std::string::npos ||
+                                      contact.registeredName.find(filter) != std::string::npos;
+                        if (result) {
+                            callsMap.emplace_back ( std::pair<std::string,std::string>(conv.uid, account_id));
+                        }
+                    }
+                }
+            }
+        } catch (...) {
+           return {};
+        }
+    }
+    for (const auto &conv : contacts) {
+        if(!conv.callId.empty() || !conv.confId.empty()) {
+            continue;
+        }
+        if (filter.empty()) {
+            contactsMap.emplace_back (std::pair<std::string,std::string>(conv.uid, currentAccountID));
+            continue;
+        }
+        for (const auto &participant : conv.participants) {
+            auto contact = owner.contactModel->getContact(participant);
+            bool result = contact.profileInfo.alias.find(filter) != std::string::npos ||
+            contact.profileInfo.uri.find(filter) != std::string::npos ||
+            contact.registeredName.find(filter) != std::string::npos;
+            if (result) {
+                contactsMap.emplace_back (std::pair<std::string,std::string>(conv.uid, currentAccountID));
+            }
+        }
+     }
+     result.insert ( std::pair<std::string, std::vector<std::pair<std::string, std::string>>>("calls", callsMap));
+     result.insert ( std::pair<std::string, std::vector<std::pair<std::string, std::string>>>("contacts", contactsMap));
+    return result;
+}
+
 const ConversationModel::ConversationQueue&
 ConversationModel::getFilteredConversations(const profile::Type& filter, bool forceUpdate, const bool includeBanned) const
 {

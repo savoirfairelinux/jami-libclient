@@ -74,6 +74,8 @@ public:
      * @return conversations filtered with the current filter
      */
     const ConversationQueue& allFilteredConversations() const;
+
+    std::map<std::string, std::vector<std::pair<std::string, std::string>>> getPossibleConversationsForConference(std::string convId, std::string filter);
     /**
      * Get a custom filtered set of conversations
      * @return conversations filtered
