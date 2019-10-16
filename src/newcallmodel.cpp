@@ -429,6 +429,8 @@ NewCallModel::joinCalls(const std::string& callIdA, const std::string& callIdB) 
     } else if (call1.type == call::Type::CONFERENCE || call2.type == call::Type::CONFERENCE) {
         auto call = call1.type == call::Type::CONFERENCE ? callIdB : callIdA;
         auto conf = call1.type == call::Type::CONFERENCE ? callIdA : callIdB;
+        // Unpause conference if conference was not active
+        CallManager::instance().unholdConference(conf.c_str());
         auto accountCall = call1.type == call::Type::CONFERENCE ? accountIdCall2 : accountIdCall1;
         bool joined = CallManager::instance().addParticipant(call.c_str(), conf.c_str());
         if (!joined) {
