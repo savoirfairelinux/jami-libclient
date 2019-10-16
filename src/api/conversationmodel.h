@@ -52,6 +52,19 @@ class Lrc;
 class BehaviorController;
 class NewAccountModel;
 
+enum class ConferenceableItem {
+    CALL,
+    CONTACT
+};
+
+/**
+  * vector of pair of conversation id and accountId.
+  * for calls and contacts contain only one element
+  * for conferences contains multiple entries
+  */
+
+typedef std::vector<std::vector<std::pair<std::string, std::string>>> ConferenceableValue;
+
 /**
   *  @brief Class that manages conversation informations.
   */
@@ -74,6 +87,8 @@ public:
      * @return conversations filtered with the current filter
      */
     const ConversationQueue& allFilteredConversations() const;
+
+    std::map<ConferenceableItem, ConferenceableValue> getConferenceableConversations(std::string convId = "", std::string filter = "") const;
     /**
      * Get a custom filtered set of conversations
      * @return conversations filtered

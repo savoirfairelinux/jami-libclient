@@ -361,6 +361,115 @@ ConversationModel::allFilteredConversations() const
     return pimpl_->filteredConversations;
 }
 
+std::map<ConferenceableItem, ConferenceableValue>
+ConversationModel::getConferenceableConversations(std::string convId, std::string filter) const
+{
+    auto conversationIdx = convId.empty() ? -1 : pimpl_->indexOf(convId);
+    if ((conversationIdx == -1 && !convId.empty()) || !owner.enabled) {
+        return {};
+    }
+    std::map<ConferenceableItem, ConferenceableValue> result;
+    ConferenceableValue callsVector, contactsVector;
+
+    auto currentConfId = conversationIdx == -1 ? "" : pimpl_->conversations.at(conversationIdx).confId;
+    auto currentCallId = conversationIdx == -1 ? "" : pimpl_->conversations.at(conversationIdx).callId;
+    auto calls = pimpl_->lrc.getCalls();
+    auto conferences = pimpl_->lrc.getConferences();
+    auto conversations = pimpl_->conversations;
+    auto currentAccountID = pimpl_->linked.owner.id;
+    //add contacts for current account
+    for (const auto &conv : conversations) {
+        // conversations with calls will be added in call section
+        if(!conv.callId.empty() || !conv.confId.empty()) {
+            continue;
+        }
+        auto contact = owner.contactModel->getContact(conv.participants.front());
+        if(contact.isBanned || contact.profileInfo.type == profile::Type::PENDING) {
+            continue;
+        }
+        std::vector<std::pair<std::string, std::string>> cv;
+        cv.emplace_back (conv.uid, currentAccountID);
+        if (filter.empty()) {
+            contactsVector.emplace_back(cv);
+            continue;
+        }
+        bool result = contact.profileInfo.alias.find(filter) != std::string::npos ||
+                      contact.profileInfo.uri.find(filter) != std::string::npos ||
+                      contact.registeredName.find(filter) != std::string::npos;
+        if (result) {
+            contactsVector.emplace_back(cv);
+        }
+    }
+
+    if (calls.empty() && conferences.empty()) {
+        result.insert(std::pair<ConferenceableItem, ConferenceableValue>(ConferenceableItem::CONTACT, contactsVector));
+        return result;
+    }
+
+    //filter out calls from conference
+    for (const auto& c : conferences) {
+        for (const std::string subcal : pimpl_->lrc.getConferenceSubcalls(c)) {
+            auto position = std::find(calls.begin(), calls.end(), subcal);
+            if (position != calls.end()) {
+                calls.erase(position);
+            }
+        }
+    }
+
+    //found conversations and account for calls and conferences
+    std::map<std::string, std::vector<std::pair<std::string, std::string>>> tempConferences;
+    for (const auto &account_id : pimpl_->lrc.getAccountModel().getAccountList()) {
+        try {
+            auto &accountInfo = pimpl_->lrc.getAccountModel().getAccountInfo(account_id);
+            auto accountConv = accountInfo.conversationModel->getFilteredConversations(accountInfo.profileInfo.type);
+            for (const auto &conv : accountConv) {
+                if ((!conv.confId.empty() && conv.confId != currentConfId &&
+                    std::find(conferences.begin(), conferences.end(), conv.confId) != conferences.end()) ||
+                    (!conv.callId.empty() && conv.callId != currentCallId &&
+                    std::find(calls.begin(), calls.end(), conv.callId) != calls.end())) {
+                    std::vector<std::pair<std::string, std::string>> cv;
+                    cv.emplace_back (conv.uid, account_id);
+                    if (filter.empty()) {
+                        if (conv.confId.empty() && accountInfo.callModel->hasCall(conv.callId)) {
+                            const auto& call = accountInfo.callModel->getCall(conv.callId);
+                            if (call.status == lrc::api::call::Status::PAUSED
+                                || call.status == lrc::api::call::Status::IN_PROGRESS) {
+                                callsVector.emplace_back(cv);
+                            }
+                        } else if (tempConferences.count(conv.confId)) {
+                              tempConferences.find(conv.confId)->second.emplace_back(conv.uid, account_id);
+                        } else {
+                             tempConferences.insert(std::pair<std::string, std::vector<std::pair<std::string, std::string>>>(conv.confId, cv));
+                        }
+                        continue;
+                    }
+                    auto contact = owner.contactModel->getContact(conv.participants.front());
+                    bool result = contact.profileInfo.alias.find(filter) != std::string::npos ||
+                                  contact.profileInfo.uri.find(filter) != std::string::npos ||
+                                  contact.registeredName.find(filter) != std::string::npos;
+                    if (result) {
+                        if (conv.confId.empty()) {
+                            callsVector.emplace_back(cv);
+                        } else if (tempConferences.count(conv.confId)) {
+                            tempConferences.find(conv.confId)->second.emplace_back(conv.uid, account_id);
+                        } else {
+                            tempConferences.insert(std::pair<std::string, std::vector<std::pair<std::string, std::string>>>(conv.confId, cv));
+                        }
+                    }
+                }
+            }
+        } catch (...) {
+           return {};
+        }
+        for(auto it : tempConferences) {
+            callsVector.emplace_back(it.second);
+        }
+    }
+    result.insert(std::pair<ConferenceableItem, ConferenceableValue>(ConferenceableItem::CALL, callsVector));
+    result.insert(std::pair<ConferenceableItem, ConferenceableValue>(ConferenceableItem::CONTACT, contactsVector));
+    return result;
+}
+
 const ConversationModel::ConversationQueue&
 ConversationModel::getFilteredConversations(const profile::Type& filter, bool forceUpdate, const bool includeBanned) const
 {
