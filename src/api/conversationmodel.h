@@ -52,6 +52,13 @@ class Lrc;
 class BehaviorController;
 class NewAccountModel;
 
+enum class ConferencableItem {
+    CALL,
+    CONTACT
+};
+
+typedef std::vector<std::pair<std::string, std::string>> ConferencableValue;
+
 /**
   *  @brief Class that manages conversation informations.
   */
@@ -74,6 +81,8 @@ public:
      * @return conversations filtered with the current filter
      */
     const ConversationQueue& allFilteredConversations() const;
+
+    std::map<ConferencableItem, ConferencableValue> getConferencableConversations(std::string convId, std::string filter);
     /**
      * Get a custom filtered set of conversations
      * @return conversations filtered
