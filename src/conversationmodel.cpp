@@ -171,6 +171,7 @@ public:
     std::string filter;
     profile::Type typeFilter;
     profile::Type customTypeFilter;
+    std::string customFilter;
     std::pair<bool, bool> dirtyConversations {true, true}; ///< true if filteredConversations/customFilteredConversations must be regenerated
     std::map<std::string, std::mutex> interactionsLocks; ///< {convId, mutex}
 
@@ -362,21 +363,25 @@ ConversationModel::allFilteredConversations() const
 }
 
 const ConversationModel::ConversationQueue&
-ConversationModel::getFilteredConversations(const profile::Type& filter, bool forceUpdate, const bool includeBanned) const
+ConversationModel::getFilteredConversations(const profile::Type& typeFilter, std::string filter, bool forceUpdate, const bool includeBanned) const
 {
-    if (pimpl_->customTypeFilter == filter && !pimpl_->dirtyConversations.second && !forceUpdate)
+    if (pimpl_->customTypeFilter == typeFilter && !pimpl_->dirtyConversations.second && !forceUpdate && pimpl_->customFilter == filter)
         return pimpl_->customFilteredConversations;
 
-    pimpl_->customTypeFilter = filter;
+    pimpl_->customTypeFilter = typeFilter;
+    pimpl_->customFilter = filter;
     pimpl_->customFilteredConversations = pimpl_->conversations;
-
     auto it = std::copy_if(
         pimpl_->conversations.begin(), pimpl_->conversations.end(),
         pimpl_->customFilteredConversations.begin(),
         [this, &includeBanned] (const conversation::Info& entry) {
             auto contactInfo = owner.contactModel->getContact(entry.participants.front());
             if (!includeBanned && contactInfo.isBanned) return false;
-            return (contactInfo.profileInfo.type == pimpl_->customTypeFilter);
+            bool result = pimpl_->customFilter.empty() ? true :
+            contactInfo.profileInfo.alias.find(pimpl_->customFilter) != std::string::npos ||
+            contactInfo.profileInfo.uri.find(pimpl_->customFilter) != std::string::npos ||
+            contactInfo.registeredName.find(pimpl_->customFilter) != std::string::npos;
+            return contactInfo.profileInfo.type == pimpl_->customTypeFilter && result;
         });
     pimpl_->customFilteredConversations.resize(std::distance(pimpl_->customFilteredConversations.begin(), it));
     pimpl_->dirtyConversations.second = false;

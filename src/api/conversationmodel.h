@@ -78,7 +78,7 @@ public:
      * Get a custom filtered set of conversations
      * @return conversations filtered
      */
-    const ConversationQueue& getFilteredConversations(const profile::Type& filter = profile::Type::INVALID, bool forceUpdate = false, const bool includeBanned = false) const;
+    const ConversationQueue& getFilteredConversations(const profile::Type& typeFilter = profile::Type::INVALID, std::string filter = "", bool forceUpdate = false, const bool includeBanned = false) const;
     /**
      * Get the conversation at row in the filtered conversations
      * @param  row
