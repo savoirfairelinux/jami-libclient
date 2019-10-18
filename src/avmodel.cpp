@@ -636,9 +636,15 @@ AVModelPimpl::AVModelPimpl(AVModel& linked, const CallbacksHandler& callbacksHan
 {
     std::srand(std::time(nullptr));
     // add preview renderer
-    renderers_.insert(std::make_pair(video::PREVIEW_RENDERER_ID,
-                                     std::make_unique<video::Renderer>(video::PREVIEW_RENDERER_ID,
-                                                                       linked_.getDeviceSettings(linked_.getDefaultDeviceName()),"", useAVFrame_)));
+    try {
+        renderers_.insert(std::make_pair(video::PREVIEW_RENDERER_ID,
+                                         std::make_unique<video::Renderer>(video::PREVIEW_RENDERER_ID,
+                                                                           linked_.getDeviceSettings(linked_.getDefaultDeviceName()),
+                                                                           "",
+                                                                           useAVFrame_)));
+    } catch (const std::out_of_range& e) {
+        qWarning() << "Couldn't setup video input renderer: " << e.what();
+    }
 #ifndef ENABLE_LIBWRAP
     SIZE_RENDERER = renderers_.size();
 #endif
