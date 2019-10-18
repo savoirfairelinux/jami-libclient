@@ -590,14 +590,11 @@ NewCallModelPimpl::setCurrentCall(const std::string& callId)
     // to a current conference
     if (it != pendingConferences_.end()) return;
     std::vector<std::string> filterCalls;
-    if (dontHoldConferences_) {
-        // Do not hold calls in a conference
-        QStringList conferences = CallManager::instance().getConferenceList();
-        for (const auto& confId : conferences) {
-            QStringList callList = CallManager::instance().getParticipantList(confId);
-            foreach(const auto& callId, callList) {
-                filterCalls.emplace_back(callId.toStdString());
-            }
+    QStringList conferences = CallManager::instance().getConferenceList();
+    for (const auto& confId : conferences) {
+        QStringList callList = CallManager::instance().getParticipantList(confId);
+        foreach(const auto& callId, callList) {
+            filterCalls.emplace_back(callId.toStdString());
         }
     }
     for (const auto& cid : Lrc::activeCalls()) {
@@ -605,6 +602,12 @@ NewCallModelPimpl::setCurrentCall(const std::string& callId)
         if (cid != callId && !filtered) {
             CallManager::instance().hold(cid.c_str());
         }
+    }
+    if (dontHoldConferences_) {
+        return;
+    }
+    for (const auto& confId : conferences) {
+        CallManager::instance().holdConference(confId);
     }
 }
 
