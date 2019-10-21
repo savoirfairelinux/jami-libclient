@@ -661,6 +661,7 @@ account::Info::fromDetails(const MapStringString& details)
     confProperties.publishedAddress                     = toStdString(details[ConfProperties::PUBLISHED_ADDRESS]);
     confProperties.userAgent                            = toStdString(details[ConfProperties::USER_AGENT]);
     confProperties.upnpEnabled                          = toBool(details[ConfProperties::UPNP_ENABLED]);
+    confProperties.voicemailNotifyEnabled               = toBool(details[ConfProperties::VOICEMAIL_NOTIFY_ENABLE]);
     confProperties.hasCustomUserAgent                   = toBool(details[ConfProperties::HAS_CUSTOM_USER_AGENT]);
     confProperties.allowIncoming                        = toBool(details[ConfProperties::ALLOW_CERT_FROM_HISTORY])
                                                         | toBool(details[ConfProperties::ALLOW_CERT_FROM_CONTACT])
@@ -763,6 +764,7 @@ account::ConfProperties_t::toDetails() const
     details[ConfProperties::PUBLISHED_ADDRESS]          = toQString(this->publishedAddress);
     details[ConfProperties::USER_AGENT]                 = toQString(this->userAgent);
     details[ConfProperties::UPNP_ENABLED]               = toQString(this->upnpEnabled);
+    details[ConfProperties::VOICEMAIL_NOTIFY_ENABLE]    = toQString(this->voicemailNotifyEnabled);
     details[ConfProperties::HAS_CUSTOM_USER_AGENT]      = toQString(this->hasCustomUserAgent);
     details[ConfProperties::ALLOW_CERT_FROM_HISTORY]    = toQString(this->allowIncoming);
     details[ConfProperties::ALLOW_CERT_FROM_CONTACT]    = toQString(this->allowIncoming);

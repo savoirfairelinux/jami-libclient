@@ -115,6 +115,7 @@ struct ConfProperties_t {
     std::string             publishedAddress;
     std::string             userAgent;
     bool                    upnpEnabled;
+    bool                    voicemailNotifyEnabled;
     bool                    hasCustomUserAgent;
     bool                    allowIncoming;
     std::string             archivePassword;
