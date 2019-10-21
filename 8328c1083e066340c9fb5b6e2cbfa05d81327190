@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1d7adcac_af24bb75",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 430,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2019-10-21T21:50:58Z",
+      "side": 1,
+      "message": "Why do we have a vector if we always have only one emplace_back on thsis vec?\n\nAlso std::vector\u003cstd::pair\u003cstd::string, std::string\u003e\u003e is dirty",
+      "range": {
+        "startLine": 430,
+        "startChar": 20,
+        "endLine": 430,
+        "endChar": 72
+      },
+      "revId": "8328c1083e066340c9fb5b6e2cbfa05d81327190",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    }
+  ]
+}
