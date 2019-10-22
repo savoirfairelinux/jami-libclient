@@ -44,6 +44,7 @@ const optionsButton = document.getElementById("optionsButton")
 const backToBottomBtn = document.getElementById("back_to_bottom_button")
 const backToBottomBtnContainer = document.getElementById("back_to_bottom_button_container")
 const sendFileButton = document.getElementById("sendFileButton")
+const videoRecordButton = document.getElementById("videoRecordButton")
 const aliasField = document.getElementById("nav-contactid-alias")
 const bestIdField = document.getElementById("nav-contactid-bestId")
 const idField = document.getElementById("nav-contactid")
@@ -126,6 +127,7 @@ function set_titles() {
         optionsButton.title = "Options"
         backToBottomBtn.innerHTML = "'Jump to latest' &#9660;"
         sendFileButton.title = "Send File"
+        videoRecordButton.title = "Record video clip"
         acceptButton.title = "Accept"
         refuseButton.title = "Refuse"
         blockButton.title = "Block"
@@ -139,6 +141,7 @@ function set_titles() {
         optionsButton.title = i18n.gettext("Options")
         backToBottomBtn.innerHTML = `${i18n.gettext("Jump to latest")} &#9660;`
         sendFileButton.title = i18n.gettext("Send File")
+        videoRecordButton.title = i18n.gettext("Record video clip")
         acceptButton.title = i18n.gettext("Accept")
         refuseButton.title = i18n.gettext("Refuse")
         blockButton.title = i18n.gettext("Block")
@@ -349,6 +352,21 @@ function displayNavbar(isVisible) {
         document.body.style.setProperty("--navbar-size", "0")
     }
 }
+
+/**
+ * Hide or show record controls, and update body top padding accordingly.
+ *
+ * @param isVisible whether navbar should be displayed or not
+ */
+/* exported displayRecordControls */
+function displayRecordControls(isVisible) {
+    if (isVisible) {
+        videoRecordButton.classList.remove("hiddenState")
+    } else {
+        videoRecordButton.classList.add("hiddenState")
+    }
+}
+
 
 /**
  * Hide or show message bar, and update body bottom padding accordingly.
@@ -625,6 +643,16 @@ function selectFileToSend() {
         window.jsbridge.selectFile()
     } else {
         window.prompt("SEND_FILE")
+    }
+}
+
+/* exported sendFile */
+function videoRecord() {
+    if (use_qt) {
+        window.jsbridge.videoRecord()
+    } else {
+        var rect = videoRecordButton.getBoundingClientRect()
+        window.prompt(`VIDEO_RECORD:${rect.left + rect.width / 2}x${rect.top}`)
     }
 }
 
