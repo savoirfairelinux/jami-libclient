@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "f90ce38d_a9176a89",
+        "filename": "src/api/conversationmodel.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 225
+      },
+      "writtenOn": "2019-10-22T16:00:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9813f9f1_8e31be70",
+      "range": {
+        "startLine": 55,
+        "startChar": 11,
+        "endLine": 55,
+        "endChar": 29
+      },
+      "revId": "7855c6421709fb3c46cfff8be257bdff036cfefb",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5a31791e_a82c311e",
         "filename": "src/api/conversationmodel.h",
         "patchSetId": 9
@@ -48,6 +72,30 @@
     },
     {
       "key": {
+        "uuid": "3ec45db3_11f336a9",
+        "filename": "src/api/conversationmodel.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 225
+      },
+      "writtenOn": "2019-10-22T16:00:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5a31791e_a82c311e",
+      "range": {
+        "startLine": 61,
+        "startChar": 22,
+        "endLine": 61,
+        "endChar": 51
+      },
+      "revId": "7855c6421709fb3c46cfff8be257bdff036cfefb",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "a6123d0c_9a92c5e5",
         "filename": "src/api/conversationmodel.h",
         "patchSetId": 9
@@ -62,6 +110,24 @@
       "revId": "7855c6421709fb3c46cfff8be257bdff036cfefb",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "696e6b1f_d864bc3f",
+        "filename": "src/api/conversationmodel.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 225
+      },
+      "writtenOn": "2019-10-22T16:00:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a6123d0c_9a92c5e5",
+      "revId": "7855c6421709fb3c46cfff8be257bdff036cfefb",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
