@@ -1662,13 +1662,13 @@ ConversationModelPimpl::slotCallStatusChanged(const std::string& callId, int cod
             return conversation.callId == callId;
         });
 
-    if (i == conversations.end()) {
-        // In this case, the user didn't pass through placeCall
-        // This means that a participant was invited to a call
-        // or a call was placed via dbus.
-        // We have to update the model
-        try {
-            auto call = linked.owner.callModel->getCall(callId);
+    try {
+        auto call = linked.owner.callModel->getCall(callId);
+        if (i == conversations.end()) {
+            // In this case, the user didn't pass through placeCall
+            // This means that a participant was invited to a call
+            // or a call was placed via dbus.
+            // We have to update the model
             for (auto& conversation: conversations) {
                 if (conversation.participants.front() == call.peerUri) {
                     conversation.callId = callId;
@@ -1676,10 +1676,11 @@ ConversationModelPimpl::slotCallStatusChanged(const std::string& callId, int cod
                     emit linked.conversationUpdated(conversation.uid);
                 }
             }
-        } catch (std::out_of_range& e) {
-            qDebug() << "ConversationModelPimpl::slotCallStatusChanged can't get inexistant call";
+        } else if (call.status == call::Status::PEER_BUSY) {
+            emit behaviorController.showLeaveMessageView(linked.owner.id, *i);
         }
-        return;
+    } catch (std::out_of_range& e) {
+        qDebug() << "ConversationModelPimpl::slotCallStatusChanged can't get inexistant call";
     }
 }
 
