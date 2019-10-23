@@ -506,7 +506,6 @@ function formatDate(date) {
     const seconds = Math.floor((new Date() - date) / 1000)
     var interval = Math.floor(seconds / (3600 * 24))
 
-
     if (use_qt) {
         if (interval > 5) {
             return date.toLocaleDateString()
@@ -883,7 +882,6 @@ function fileInteraction(message_id, message_direction) {
         internal_mes_wrapper.appendChild(message_wrapper)
     }
 
-
     return internal_mes_wrapper
 }
 
@@ -987,7 +985,6 @@ function updateFileInteraction(message_div, message_object, forceTypeToFile = fa
         }
         return
     }
-
 
     if (isAudio(message_text) && message_delivery_status === "finished" && displayLinksEnabled && !forceTypeToFile) {
         // Replace the old wrapper by the downloaded audio
@@ -1498,7 +1495,6 @@ function buildNewMessage(message_object) {
         }
     }
 
-
     // Build main content
     if (message_type === "data_transfer") {
         if (isImage(message_text) && delivery_status === "finished" && displayLinksEnabled) {
@@ -1583,7 +1579,6 @@ function addSenderImage(message_div, message_type, message_sender_contact_method
         }
     }
 }
-
 
 /**
  * Build a timestamp for passed message object
@@ -2216,7 +2211,6 @@ function remove(e) {
         sendContainer.style.visibility = "hidden"
     }
 }
-
 
 // It's called in qt qwebengine
 function pasteKeyDetected(e) {

@@ -34,7 +34,6 @@
     font-weight: 500;
 }
 
-
 .internal_mes_wrapper {
     margin: 0;
 }
@@ -68,7 +67,6 @@
 .message_in.middle_of_sequence .sender_image {
     margin-top: 0px;
 }
-
 
 .generated_message.message_in .message_wrapper,
 .generated_message.message_out .message_wrapper {
@@ -168,6 +166,14 @@ pre {
 .message:hover:not(.message_type_contact) .menu_interaction {
     display: block;
     opacity: 1;
+}
+
+.message_type_text .internal_mes_wrapper {
+    padding: 0;
+}
+
+.first_of_sequence .internal_mes_wrapper {
+    padding: 0.1em 0 0 0;
 }
 
 .menuoption {
