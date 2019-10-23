@@ -362,7 +362,7 @@ ConversationModel::allFilteredConversations() const
 }
 
 std::map<ConferenceableItem, ConferenceableValue>
-ConversationModel::getConferenceableConversations(std::string convId, std::string filter) const
+ConversationModel::getConferenceableConversations(const std::string& convId, const std::string& filter) const
 {
     auto conversationIdx = pimpl_->indexOf(convId);
     if (conversationIdx == -1 || !owner.enabled) {

@@ -107,7 +107,7 @@ public:
      * @param  search name filter
      * @return filtered conversations
      */
-    std::map<ConferenceableItem, ConferenceableValue> getConferenceableConversations(std::string convId, std::string filter = {}) const;
+    std::map<ConferenceableItem, ConferenceableValue> getConferenceableConversations(const std::string& convId, const std::string& filter = {}) const;
     /**
      * Get a custom filtered set of conversations
      * @return conversations filtered
