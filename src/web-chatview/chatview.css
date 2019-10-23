@@ -83,7 +83,6 @@ body {
     background-color: var(--bg-color);
  }
 
-
 /** Navbar */
 
 .navbar-wrapper {
@@ -250,7 +249,6 @@ body {
   /* enable selection (it is globally disabled in the body) */
   -webkit-user-select: auto;
 }
-
 
 /** Messaging bar */
 
@@ -543,7 +541,6 @@ a:hover {
     padding-bottom: 1.5em !important;
     margin-top: 4px;
 }
-
 
 /* General messages */
 
