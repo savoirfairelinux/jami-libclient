@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1df72434_a2572e92",
+        "filename": "src/web-chatview/chatview.css",
+        "patchSetId": 27
+      },
+      "lineNbr": 482,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2019-10-23T20:46:24Z",
+      "side": 1,
+      "message": "A lot of var can be configured (for darkTheme patch), could you please move what\u0027s themeable in the :root block? (or rebase the patch on the darkTheme patch)",
+      "range": {
+        "startLine": 480,
+        "startChar": 21,
+        "endLine": 482,
+        "endChar": 18
+      },
+      "revId": "5b52bdcdc2fc9d8bd9cc590acf0915cf540ddf68",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    }
+  ]
+}
