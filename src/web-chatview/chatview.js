@@ -45,6 +45,7 @@ const backToBottomBtn = document.getElementById("back_to_bottom_button")
 const backToBottomBtnContainer = document.getElementById("back_to_bottom_button_container")
 const sendFileButton = document.getElementById("sendFileButton")
 const videoRecordButton = document.getElementById("videoRecordButton")
+const audioRecordButton = document.getElementById("audioRecordButton")
 const aliasField = document.getElementById("nav-contactid-alias")
 const bestIdField = document.getElementById("nav-contactid-bestId")
 const idField = document.getElementById("nav-contactid")
@@ -634,10 +635,20 @@ function selectFileToSend() {
 /* exported sendFile */
 function videoRecord() {
     if (use_qt) {
-        window.jsbridge.videoRecord()
+        window.jsbridge.openVideoRecorder(rect.left + rect.width / 2, rect.top)
     } else {
         var rect = videoRecordButton.getBoundingClientRect()
         window.prompt(`VIDEO_RECORD:${rect.left + rect.width / 2}x${rect.top}`)
+    }
+}
+
+function audioRecord() {
+    if (use_qt) {
+        window.jsbridge.openAudioRecorder(rect.left + rect.width / 2, rect.top)
+    } else {
+        window.prompt()
+        var rect = audioRecordButton.getBoundingClientRect()
+        window.prompt(`AUDIO_RECORD:${rect.left + rect.width / 2}x${rect.top}`)
     }
 }
 
