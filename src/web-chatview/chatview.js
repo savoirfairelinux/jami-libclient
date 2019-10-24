@@ -56,7 +56,7 @@ const inviteImage = document.getElementById("invite_image")
 const navbar = document.getElementById("navbar")
 const invitationText = document.getElementById("text")
 var   messages = document.getElementById("messages")
-var   sendContainer = document.getElementById("file_image_send_container")
+var   sendContainer = document.getElementById("data_transfer_send_container")
 var   wrapperOfNavbar = document.getElementById("wrapperOfNavbar")
 
 /* States: allows us to avoid re-doing something if it isn't meaningful */
@@ -97,8 +97,6 @@ if (use_qt) {
     new QWebChannel(qt.webChannelTransport, function (channel) {
         window.jsbridge = channel.objects.jsbridge
     })
-} else {
-    sendContainer.outerHTML = ""
 }
 
 /* i18n manager */
@@ -584,7 +582,7 @@ function sendMessage() {
         }
 
         sendContainer.innerHTML = ""
-        sendContainer.style.visibility = "hidden"
+        sendContainer.style.display = "none"
         reduce_send_container();
     }
 
@@ -2154,12 +2152,13 @@ function addFile_path(path, name, size) {
         "<button class='btn' onclick='remove(this)'>X</button>" +
         "</div >"
     // At first, visiblity can empty
-    if (sendContainer.style.visibility.length == 0 || sendContainer.style.visibility == "hidden") {
+    if (sendContainer.style.display.length == 0 || sendContainer.style.display == "none") {
         grow_send_container()
-        sendContainer.style.visibility = "visible"
+        sendContainer.style.display = "flex"
     }
     //add html here since display is set to flex, image will change accordingly
     sendContainer.innerHTML += html
+    updateMesPos()
 }
 
 /**
@@ -2172,12 +2171,13 @@ function addImage_base64(base64) {
         "<button class='btn' onclick='remove(this)'>X</button>" +
         "</div >"
     // At first, visiblity can empty
-    if (sendContainer.style.visibility.length == 0 || sendContainer.style.visibility == "hidden") {
+    if (sendContainer.style.display.length == 0 || sendContainer.style.display == "none") {
         grow_send_container()
-        sendContainer.style.visibility = "visible"
+        sendContainer.style.display = "flex"
     }
     //add html here since display is set to flex, image will change accordingly
     sendContainer.innerHTML += html
+    updateMesPos()
 }
 
 /**
@@ -2190,37 +2190,43 @@ function addImage_path(path) {
         "<button class='btn' onclick='remove(this)'>X</button>" +
         "</div >"
     // At first, visiblity can empty
-    if (sendContainer.style.visibility.length == 0 || sendContainer.style.visibility == "hidden") {
+    if (sendContainer.style.display.length == 0 || sendContainer.style.display == "none") {
         grow_send_container()
-        sendContainer.style.visibility = "visible"
+        sendContainer.style.display = "flex"
     }
     //add html here since display is set to flex, image will change accordingly
     sendContainer.innerHTML += html
+    updateMesPos()
 }
 
 /**
- * This function adjusts the body paddings so that that the file_image_send_container doesn't
+ * This function adjusts the body paddings so that that the data_transfer_send_container doesn't
  * overlap messages when it grows.
  */
 /* exported grow_send_container */
 function grow_send_container() {
     exec_keeping_scroll_position(function () {
-        var msgbar_size = window.getComputedStyle(document.body).getPropertyValue("--messagebar-size");
-        document.body.style.paddingBottom = (parseInt(msgbar_size) + 158).toString() + "px";
-        //6em
+        backToBottomBtnContainer.style.bottom = "calc(var(--messagebar-size) + 168px)"
     }, [])
 }
 
 /**
- * This function adjusts the body paddings so that that the file_image_send_container will hide
+ * This function adjusts the body paddings so that that the data_transfer_send_container will hide
  * and recover padding bottom
  */
 /* exported grow_send_container */
 function reduce_send_container() {
     exec_keeping_scroll_position(function () {
-        document.body.style.paddingBottom = (parseInt(document.body.style.paddingBottom) - 158).toString() + "px";
+        backToBottomBtnContainer.style.bottom = "var(--messagebar-size)"
         //6em
     }, [])
+}
+
+// This function update the bottom of messages window whenever the send_interface changes size when the scroll is at the end
+function updateMesPos() {
+    if (messages.scrollTop >= messages.scrollHeight - messages.clientHeight - scrollDetectionThresh) {
+        back_to_bottom()
+    }
 }
 
 // Remove current cancel button division  and hide the sendContainer
@@ -2228,7 +2234,7 @@ function remove(e) {
     e.parentNode.parentNode.removeChild(e.parentNode)
     if (sendContainer.innerHTML.length == 0) {
         reduce_send_container()
-        sendContainer.style.visibility = "hidden"
+        sendContainer.style.display = "none"
     }
 }
 
