@@ -29,6 +29,7 @@
 #include <datatransfer_interface.h>
 
 #include <QImage>
+#include <QByteArray>
 #include <QBuffer>
 #include <QJsonObject>
 #include <QJsonDocument>
@@ -221,14 +222,17 @@ setProfile(const std::string& accountId,
     auto vcard = vcard::profileToVcard(profileInfo);
     auto accountLocalPath = getPath() + QString::fromStdString(accountId) + "/";
     QString filePath;
+    QFile file;
     if (isPeer) {
-        filePath = accountLocalPath + "profiles/" + QString::fromStdString(profileInfo.uri) + ".vcf";
+        filePath = accountLocalPath + "profiles/" +
+            QString(QByteArray::fromStdString(profileInfo.uri).toBase64()) + ".vcf";
+        file.setFileName(filePath);
     } else {
         filePath = accountLocalPath + "profile" + ".vcf";
+        file.setFileName(filePath);
     }
-    QFile file(filePath);
     if (!file.open(QIODevice::WriteOnly)) {
-        qWarning() << "Can't open file: " << filePath;
+        qWarning().noquote() << "Can't open file: " << filePath;
         return;
     }
     QTextStream(&file) << QString::fromStdString(vcard);
@@ -298,12 +302,23 @@ buildContactFromProfile(const std::string & accountId,
     QString filePath;
     filePath = accountLocalPath + "profiles/" + QString::fromStdString(peer_uri) + ".vcf";
     QFile file(filePath);
+    bool deleteOld = false;
     if (!file.open(QIODevice::ReadOnly)) {
-        qWarning() << "Can't open file: " << filePath;
-        return { profileInfo, "", true, false };
+        qWarning().noquote() << "Can't open file: " << filePath << ". Trying Base64 file path.";
+        filePath = accountLocalPath + "profiles/" + QString(QByteArray::fromStdString(peer_uri).toBase64()) + ".vcf";
+        file.setFileName(filePath);
+        if (!file.open(QIODevice::ReadOnly)) {
+            qWarning().noquote() << "Can't open file (base64 file path): " << filePath;
+            return { profileInfo, "", true, false };
+        }
+    } else {
+        deleteOld = true;
     }
     QTextStream in(&file);
     QByteArray vcard = in.readAll().toUtf8();
+    if (deleteOld) {
+        file.remove();
+    }
     const auto vCard = lrc::vCard::utils::toHashMap(vcard);
     const auto alias = vCard[vCard::Property::FORMATTED_NAME];
     const auto photo = (vCard.find(vCard::Property::PHOTO_PNG) == vCard.end()) ?
