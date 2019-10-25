@@ -29,6 +29,7 @@
 #include <datatransfer_interface.h>
 
 #include <QImage>
+#include <QByteArray>
 #include <QBuffer>
 #include <QJsonObject>
 #include <QJsonDocument>
@@ -228,7 +229,14 @@ setProfile(const std::string& accountId,
     }
     QFile file(filePath);
     if (!file.open(QIODevice::WriteOnly)) {
-        qWarning() << "Can't open file: " << filePath;
+        qWarning().noquote() << "Can't open file: " << filePath << ". Trying Base64 file path.";
+        filePath = accountLocalPath + "profiles/" + QString(QByteArray::fromStdString(profileInfo.uri).toBase64()) + ".vcf";
+        file.setFileName(filePath);
+        if (!file.open(QIODevice::WriteOnly)) {
+            qWarning().noquote() << "Can't open file (base64 file path): " << filePath;
+            return;
+        }
+        QTextStream(&file) << QString::fromStdString(vcard);
         return;
     }
     QTextStream(&file) << QString::fromStdString(vcard);
@@ -299,8 +307,13 @@ buildContactFromProfile(const std::string & accountId,
     filePath = accountLocalPath + "profiles/" + QString::fromStdString(peer_uri) + ".vcf";
     QFile file(filePath);
     if (!file.open(QIODevice::ReadOnly)) {
-        qWarning() << "Can't open file: " << filePath;
-        return { profileInfo, "", true, false };
+        qWarning().noquote() << "Can't open file: " << filePath << ". Trying Base64 file path.";
+        filePath = accountLocalPath + "profiles/" + QString(QByteArray::fromStdString(peer_uri).toBase64()) + ".vcf";
+        file.setFileName(filePath);
+        if (!file.open(QIODevice::ReadOnly)) {
+            qWarning().noquote() << "Can't open file (base64 file path): " << filePath;
+            return { profileInfo, "", true, false };
+        }
     }
     QTextStream in(&file);
     QByteArray vcard = in.readAll().toUtf8();
