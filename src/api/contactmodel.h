@@ -41,6 +41,7 @@ namespace api
 {
 
 namespace contact { struct Info; }
+namespace profile { struct Info; }
 namespace account { struct Info; }
 namespace datatransfer { struct Info; }
 class NewAccountModel;
@@ -119,7 +120,7 @@ Q_SIGNALS:
      * Connect this signal to know when a contact was added.
      * @param contactUri
      */
-    void contactAdded(const std::string& contactUri) const;
+    void contactAdded(const profile::Info& profileInfo) const;
     /**
      * Connect this signal to know when a pending contact was accepted.
      * @param contactUri
