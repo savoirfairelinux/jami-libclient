@@ -41,6 +41,7 @@ namespace api
 {
 
 namespace contact { struct Info; }
+namespace profile { struct Info; }
 namespace account { struct Info; }
 namespace datatransfer { struct Info; }
 class NewAccountModel;
