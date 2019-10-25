@@ -18,6 +18,8 @@
  ***************************************************************************/
 #include "api/lrc.h"
 
+#include <locale>
+
 #ifndef _MSC_VER
 #include <unistd.h>
 #else
@@ -63,6 +65,8 @@ public:
 
 Lrc::Lrc(MigrationCb willDoMigrationCb, MigrationCb didDoMigrationCb)
 {
+    // Replace locale for timestamps
+    std::locale::global(std::locale(""));
     // Ensure Daemon is running/loaded (especially on non-DBus platforms)
     // before instantiating LRC and its members
     InstanceManager::instance();
