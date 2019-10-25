@@ -183,7 +183,7 @@ public Q_SLOTS:
      * Listen from contactModel when a new contact is added
      * @param uri
      */
-    void slotContactAdded(const std::string& uri);
+    void slotContactAdded(const profile::Info& profileInfo);
     /**
      * Listen from contactModel when a pending contact is accepted
      * @param uri
@@ -1408,33 +1408,32 @@ ConversationModelPimpl::sendContactRequest(const std::string& contactUri)
 }
 
 void
-ConversationModelPimpl::slotContactAdded(const std::string& uri)
+ConversationModelPimpl::slotContactAdded(const lrc::api::profile::Info& profileInfo)
 {
     auto type = linked.owner.profileInfo.type;
     try {
-        auto contact = linked.owner.contactModel->getContact(uri);
+        auto contact = linked.owner.contactModel->getContact(profileInfo.uri);
         type =  contact.profileInfo.type;
     } catch (...) {}
-    profile::Info profileInfo{ uri, {}, {}, type };
     storage::createOrUpdateProfile(linked.owner.id, profileInfo, true);
-    auto conv = storage::getConversationsWithPeer(db, uri);
+    auto conv = storage::getConversationsWithPeer(db, profileInfo.uri);
     if (conv.empty()) {
         // pass conversation UID through only element
-        conv.emplace_back(storage::beginConversationWithPeer(db, uri));
+        conv.emplace_back(storage::beginConversationWithPeer(db, profileInfo.uri));
     }
     // Add the conversation if not already here
     if (indexOf(conv[0]) == -1) {
-        addConversationWith(conv[0], uri);
+        addConversationWith(conv[0], profileInfo.uri);
         emit linked.newConversation(conv[0]);
     }
 
     // delete temporary conversation if it exists and it has the uri of the added contact as uid
-    if (indexOf(uri) >= 0) {
-        conversations.erase(conversations.begin() + indexOf(uri));
+    if (indexOf(profileInfo.uri) >= 0) {
+        conversations.erase(conversations.begin() + indexOf(profileInfo.uri));
     }
 
     sortConversations();
-    emit linked.conversationReady(uri);
+    emit linked.conversationReady(profileInfo.uri);
     emit linked.modelSorted();
 }
 
