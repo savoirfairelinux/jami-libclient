@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a898574d_968b5f51",
+        "filename": "src/api/contactmodel.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2019-10-25T20:38:51Z",
+      "side": 1,
+      "message": "WARN: THIS CHANGES THE API! ALL CLIENTS SHOULD BE CHANGED",
+      "range": {
+        "startLine": 123,
+        "startChar": 4,
+        "endLine": 123,
+        "endChar": 62
+      },
+      "revId": "eeb3230f1c54b028bfbad597672c05af9ac95444",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0db07b2d_b19c3ba3",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1411,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2019-10-25T20:38:51Z",
+      "side": 1,
+      "message": "Why changing that sign if only uri is used?",
+      "range": {
+        "startLine": 1411,
+        "startChar": 40,
+        "endLine": 1411,
+        "endChar": 84
+      },
+      "revId": "eeb3230f1c54b028bfbad597672c05af9ac95444",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    }
+  ]
+}
