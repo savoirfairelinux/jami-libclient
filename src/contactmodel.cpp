@@ -290,7 +290,7 @@ ContactModel::addContact(contact::Info contactInfo)
     }
     if (profile.type == profile::Type::TEMPORARY)
         return;
-    emit contactAdded(profile.uri);
+    emit contactAdded(profile);
 }
 
 void
@@ -643,7 +643,7 @@ ContactModelPimpl::slotContactAdded(const std::string& accountId, const std::str
         linked.owner.conversationModel->refreshFilter();
         emit linked.bannedStatusChanged(contactUri, false);
     } else {
-        emit linked.contactAdded(contactUri);
+        emit linked.contactAdded(contact->second.profileInfo);
     }
 }
 
@@ -785,6 +785,7 @@ ContactModelPimpl::slotIncomingContactRequest(const std::string& accountId,
         return;
 
     auto emitTrust = false;
+    lrc::api::profile::Info profileInfo;
     {
         std::lock_guard<std::mutex> lk(contactsMtx_);
         if (contacts.find(contactUri) == contacts.end()) {
@@ -793,7 +794,7 @@ ContactModelPimpl::slotIncomingContactRequest(const std::string& accountId,
             const auto photo = (vCard.find("PHOTO;ENCODING=BASE64;TYPE=PNG") == vCard.end()) ?
             vCard["PHOTO;ENCODING=BASE64;TYPE=JPEG"] : vCard["PHOTO;ENCODING=BASE64;TYPE=PNG"];
 
-            auto profileInfo = profile::Info {contactUri, photo.toStdString(), alias.toStdString(), profile::Type::PENDING};
+            profileInfo = profile::Info {contactUri, photo.toStdString(), alias.toStdString(), profile::Type::PENDING};
             auto contactInfo = contact::Info {profileInfo, "", false, false, false};
             contacts.emplace(contactUri, contactInfo);
             emitTrust = true;
@@ -802,7 +803,7 @@ ContactModelPimpl::slotIncomingContactRequest(const std::string& accountId,
     }
 
     if (emitTrust) {
-        emit linked.contactAdded(contactUri);
+        emit linked.contactAdded(profileInfo);
         emit behaviorController.newTrustRequest(linked.owner.id, contactUri);
     }
 }
@@ -822,7 +823,7 @@ ContactModelPimpl::slotIncomingCall(const std::string& fromId, const std::string
         }
     }
     if (emitContactAdded) {
-        emit linked.contactAdded(fromId);
+        emit linked.contactAdded(profile::Info{ fromId, {}, {}, linked.owner.profileInfo.type });
         if (linked.owner.profileInfo.type == profile::Type::RING) {
             emit behaviorController.newTrustRequest(linked.owner.id, fromId);
         }
