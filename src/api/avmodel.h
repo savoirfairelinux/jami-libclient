@@ -85,9 +85,9 @@ public:
     std::vector<std::string> getDevices() const;
     /**
      * Retrieve current default video device
-     * @return current default video device name
+     * @return current default video device id
      */
-    std::string getDefaultDeviceName() const;
+    std::string getDefaultDevice() const;
     /**
      * Set new default video device
      * @param name of the device

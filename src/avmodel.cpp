@@ -1,5 +1,5 @@
 /****************************************************************************
- *    Copyright (C) 2018-2019 Savoir-faire Linux Inc.                                  *
+ *    Copyright (C) 2018-2019 Savoir-faire Linux Inc.                       *
  *   Author: Hugo Lefeuvre <hugo.lefeuvre@savoirfairelinux.com>             *
  *   Author: Sébastien Blin <sebastien.blin@savoirfairelinux.com>           *
  *                                                                          *
@@ -197,28 +197,32 @@ AVModel::getDevices() const
 }
 
 std::string
-AVModel::getDefaultDeviceName() const
+AVModel::getDefaultDevice() const
 {
     QString name = VideoManager::instance().getDefaultDevice();
     return name.toStdString();
 }
 
 void
-AVModel::setDefaultDevice(const std::string& name)
+AVModel::setDefaultDevice(const std::string& id)
 {
-    VideoManager::instance().setDefaultDevice(name.c_str());
+    VideoManager::instance().setDefaultDevice(id.c_str());
 }
 
 video::Settings
-AVModel::getDeviceSettings(const std::string& name) const
+AVModel::getDeviceSettings(const std::string& id) const
 {
+    if (id.empty()) {
+        return video::Settings();
+    }
     MapStringString settings = VideoManager::instance()
-        .getSettings(name.c_str());
-    if (settings["name"].toStdString() != name) {
-        throw std::out_of_range("Device " + name + " not found");
+        .getSettings(id.c_str());
+    if (settings["id"].toStdString() != id) {
+        throw std::out_of_range("Device '" + id + "' not found");
     }
     video::Settings result;
     result.name = settings["name"].toStdString();
+    result.id = settings["id"].toStdString();
     result.channel = settings["channel"].toStdString();
     result.size = settings["size"].toStdString();
     result.rate = settings["rate"].toFloat();
@@ -226,11 +230,11 @@ AVModel::getDeviceSettings(const std::string& name) const
 }
 
 video::Capabilities
-AVModel::getDeviceCapabilities(const std::string& name) const
+AVModel::getDeviceCapabilities(const std::string& id) const
 {
     // Channel x Resolution x Framerate
     QMap<QString, QMap<QString, QVector<QString>>> capabilites =
-        VideoManager::instance().getCapabilities(name.c_str());
+        VideoManager::instance().getCapabilities(id.c_str());
     video::Capabilities result;
     for (auto& channel : capabilites.toStdMap()) {
         video::ResRateList channelCapabilities;
@@ -265,9 +269,10 @@ AVModel::setDeviceSettings(video::Settings& settings)
     rate = rate.left(rate.length() - 1);
     newSettings["channel"] = settings.channel.c_str();
     newSettings["name"] = settings.name.c_str();
+    newSettings["id"] = settings.id.c_str();
     newSettings["rate"] = rate;
     newSettings["size"] = settings.size.c_str();
-    VideoManager::instance().applySettings(settings.name.c_str(), newSettings);
+    VideoManager::instance().applySettings(settings.id.c_str(), newSettings);
 
     // If the preview is running, reload it
     // doing this during a call will cause re-invite, this is unwanted
@@ -639,7 +644,7 @@ AVModelPimpl::AVModelPimpl(AVModel& linked, const CallbacksHandler& callbacksHan
     try {
         renderers_.insert(std::make_pair(video::PREVIEW_RENDERER_ID,
                                          std::make_unique<video::Renderer>(video::PREVIEW_RENDERER_ID,
-                                                                           linked_.getDeviceSettings(linked_.getDefaultDeviceName()),
+                                                                           linked_.getDeviceSettings(linked_.getDefaultDevice()),
                                                                            "",
                                                                            useAVFrame_)));
     } catch (const std::out_of_range& e) {
