@@ -396,8 +396,8 @@
     <name>lrc::ContactModelPimpl</name>
     <message>
         <location filename="../src/contactmodel.cpp" line="405"/>
-        <source>Searchingâ¦</source>
-        <translation>Po kërkohetâ¦</translation>
+        <source>Searching…</source>
+        <translation>Po kërkohet…</translation>
     </message>
     <message>
         <location filename="../src/contactmodel.cpp" line="765"/>
@@ -411,8 +411,8 @@
     </message>
     <message>
         <location filename="../src/contactmodel.cpp" line="771"/>
-        <source>Couldn&apos;t lookupâ¦</source>
-        <translation>S’u bë dot kërkimâ¦</translation>
+        <source>Couldn&apos;t lookup…</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
