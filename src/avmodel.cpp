@@ -214,11 +214,12 @@ AVModel::getDeviceSettings(const std::string& name) const
 {
     MapStringString settings = VideoManager::instance()
         .getSettings(name.c_str());
-    if (settings["name"].toStdString() != name) {
+    if (settings["name"].isEmpty()) {
         throw std::out_of_range("Device " + name + " not found");
     }
     video::Settings result;
     result.name = settings["name"].toStdString();
+    result.node = settings["node"].toStdString();
     result.channel = settings["channel"].toStdString();
     result.size = settings["size"].toStdString();
     result.rate = settings["rate"].toFloat();
@@ -265,6 +266,7 @@ AVModel::setDeviceSettings(video::Settings& settings)
     rate = rate.left(rate.length() - 1);
     newSettings["channel"] = settings.channel.c_str();
     newSettings["name"] = settings.name.c_str();
+    newSettings["node"] = settings.node.c_str();
     newSettings["rate"] = rate;
     newSettings["size"] = settings.size.c_str();
     VideoManager::instance().applySettings(settings.name.c_str(), newSettings);

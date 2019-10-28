@@ -95,6 +95,7 @@ struct Settings
 {
     Channel channel = "";
     std::string name = "";
+    std::string node = "";
     Framerate rate = 0;
     Resolution size = "";
 };
