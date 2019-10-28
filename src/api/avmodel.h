@@ -85,20 +85,20 @@ public:
     std::vector<std::string> getDevices() const;
     /**
      * Retrieve current default video device
-     * @return current default video device name
+     * @return current default video device id
      */
-    std::string getDefaultDeviceName() const;
+    std::string getDefaultDevice() const;
     /**
      * Set new default video device
-     * @param name of the device
+     * @param id of the device
      */
-    void setDefaultDevice(const std::string& name);
+    void setDefaultDevice(const std::string& deviceId);
     /**
      * Retrieve current framerate/resolution/etc of a device
-     * @param name of the device
+     * @param id of the device
      * @return settings of the device
      */
-    video::Settings getDeviceSettings(const std::string& name) const;
+    video::Settings getDeviceSettings(const std::string& deviceId) const;
     /**
      * Set device settings
      * @param video::Settings
@@ -106,10 +106,10 @@ public:
     void setDeviceSettings(video::Settings& settings);
     /**
      * Retrieve all framerate/resolution/etc possibilities of a device
-     * @param name of the device
+     * @param id of the device
      * @return possibilities of the device
      */
-    video::Capabilities getDeviceCapabilities(const std::string& name) const;
+    video::Capabilities getDeviceCapabilities(const std::string& deviceId) const;
 
     /**
      * Get supported audio managers
