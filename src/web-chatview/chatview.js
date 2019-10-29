@@ -125,8 +125,9 @@ function set_titles() {
         sendButton.title = "Send"
         optionsButton.title = "Options"
         backToBottomBtn.innerHTML = "'Jump to latest' &#9660;"
-        sendFileButton.title = "Send File"
-        videoRecordButton.title = "Record video clip"
+        sendFileButton.title = "Send file"
+        videoRecordButton.title = "Leave video message"
+        audioRecordButton.title = "Leave audio message"
         acceptButton.title = "Accept"
         refuseButton.title = "Refuse"
         blockButton.title = "Block"
@@ -139,8 +140,9 @@ function set_titles() {
         sendButton.title = i18n.gettext("Send")
         optionsButton.title = i18n.gettext("Options")
         backToBottomBtn.innerHTML = `${i18n.gettext("Jump to latest")} &#9660;`
-        sendFileButton.title = i18n.gettext("Send File")
-        videoRecordButton.title = i18n.gettext("Record video clip")
+        sendFileButton.title = i18n.gettext("Send file")
+        videoRecordButton.title = i18n.gettext("Leave video message")
+        audioRecordButton.title = i18n.gettext("Leave audio message")
         acceptButton.title = i18n.gettext("Accept")
         refuseButton.title = i18n.gettext("Refuse")
         blockButton.title = i18n.gettext("Block")
