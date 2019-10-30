@@ -269,6 +269,12 @@ Q_SIGNALS:
     void audioMeter(const std::string& id, float level);
 
     /**
+     * Emitted when an local recorder is finished 
+     * @param filePath
+     */
+    void recordPlaybackStopped(const std::string& filePath);
+
+    /**
      * Emitted when an audio level is received
      * @param accountId
      * @param newCount
@@ -508,6 +514,12 @@ private Q_SLOTS:
                              int newCount,
                              int oldCount,
                              int urgentCount);
+
+    /**
+     * Emit recordPlaybackStopped
+     * @param filePath
+     */
+    void slotRecordPlaybackStopped(const QString& filePath);
 
 private:
     const api::Lrc& parent;
