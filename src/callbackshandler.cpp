@@ -146,6 +146,12 @@ CallbacksHandler::CallbacksHandler(const Lrc& parent)
             Qt::QueuedConnection);
 
     connect(&CallManager::instance(),
+            &CallManagerInterface::recordPlaybackStopped,
+            this,
+            &CallbacksHandler::slotRecordPlaybackStopped,
+            Qt::QueuedConnection);
+
+    connect(&CallManager::instance(),
             &CallManagerInterface::voiceMailNotify,
             this,
             &CallbacksHandler::slotVoiceMailNotify,
@@ -274,6 +280,12 @@ void
 CallbacksHandler::slotVoiceMailNotify(const QString& accountId, int newCount, int oldCount, int urgentCount)
 {
     emit voiceMailNotify(accountId.toStdString(), newCount, oldCount, urgentCount);
+}
+
+void
+CallbacksHandler::slotRecordPlaybackStopped(const QString& filePath)
+{
+    emit recordPlaybackStopped(filePath.toStdString());
 }
 
 void

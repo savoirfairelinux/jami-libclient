@@ -117,6 +117,11 @@ public Q_SLOTS:
      * @param level Volume in range [0, 1]
      */
     void slotAudioMeter(const std::string& id, float level);
+    /**
+     * Listen from CallbacksHandler when a recorder stopped notice is incoming
+     * @param filePath
+     */
+    void slotRecordPlaybackStopped(const std::string& filePath);
 
 };
 
@@ -659,7 +664,9 @@ AVModelPimpl::AVModelPimpl(AVModel& linked, const CallbacksHandler& callbacksHan
     connect(&callbacksHandler, &CallbacksHandler::callStateChanged,
             this, &AVModelPimpl::slotCallStateChanged);
     connect(&*renderers_[video::PREVIEW_RENDERER_ID], &api::video::Renderer::frameUpdated,
-        this, &AVModelPimpl::slotFrameUpdated);
+            this, &AVModelPimpl::slotFrameUpdated);
+    connect(&callbacksHandler, &CallbacksHandler::recordPlaybackStopped,
+            this, &AVModelPimpl::slotRecordPlaybackStopped);
 
     auto startedPreview = false;
     auto restartRenderers = [&](const QStringList& callList) {
@@ -882,6 +889,12 @@ void
 AVModelPimpl::slotAudioMeter(const std::string& id, float level)
 {
     emit linked_.audioMeter(id, level);
+}
+
+void
+AVModelPimpl::slotRecordPlaybackStopped(const std::string &filePath)
+{
+    emit linked_.recordPlaybackStopped(filePath);
 }
 
 } // namespace lrc
