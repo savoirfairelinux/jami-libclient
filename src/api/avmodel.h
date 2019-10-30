@@ -328,6 +328,11 @@ Q_SIGNALS:
      * @param level Volume in range [0, 1]
      */
     void audioMeter(const std::string& id, float level);
+    /**
+     * local recorder stopped
+     * @param filePath
+     */
+    void recordPlaybackStopped(const std::string& filePath);
 
 private:
     std::unique_ptr<AVModelPimpl> pimpl_;
