@@ -654,6 +654,11 @@ NewCallModelPimpl::slotIncomingCall(const std::string& accountId, const std::str
     callInfo->isAudioOnly = callDetails["AUDIO_ONLY"] == "true" ? true : false;
     calls.emplace(callId, std::move(callInfo));
 
+    if (!linked.owner.confProperties.allowIncoming) {
+        linked.refuse(callId);
+        return;
+    }
+
     emit linked.newIncomingCall(fromId, callId);
 
     // HACK. BECAUSE THE DAEMON DOESN'T HANDLE THIS CASE!
