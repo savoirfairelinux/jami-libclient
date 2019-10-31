@@ -88,3 +88,9 @@
 .oneEntry #nav-contactid-bestId {
   display: none;
 }
+
+video {
+    width: 160px;
+    height: 90px;
+    align-items: center;
+}
