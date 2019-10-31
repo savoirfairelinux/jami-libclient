@@ -1043,7 +1043,18 @@ pre {
 }
 
 audio {
+    max-width: 200px;
     align-self: center;
+}
+
+.no-video-overlay {
+    overflow: visible;
+}
+
+video {
+    max-width: 160px;
+    max-height: 90px;
+    align-items: center;
 }
 
 /* classic screens */
