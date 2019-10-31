@@ -202,3 +202,9 @@ pre {
     border-radius: 16px;
     cursor: auto;
 }
+
+video {
+    width: 320px;
+    height: 180px;
+    align-items: center;
+}
