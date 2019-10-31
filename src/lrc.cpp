@@ -65,8 +65,10 @@ public:
 
 Lrc::Lrc(MigrationCb willDoMigrationCb, MigrationCb didDoMigrationCb)
 {
+#ifndef ENABLE_LIBWRAP
     // Replace locale for timestamps
     std::locale::global(std::locale(""));
+#endif
     // Ensure Daemon is running/loaded (especially on non-DBus platforms)
     // before instantiating LRC and its members
     InstanceManager::instance();
