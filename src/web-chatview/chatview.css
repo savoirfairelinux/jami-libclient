@@ -607,6 +607,15 @@ a:hover {
     max-width: none;
 }
 
+.message_type_audio_video_transfer
+.message_wrapper {
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    width: auto !important;
+    max-width: none;
+}
+
 .transfer_info_wrapper {
     display: flex;
     flex-direction: row;
@@ -1044,6 +1053,16 @@ pre {
 
 audio {
     align-self: center;
+}
+
+.no-video-overlay {
+    overflow: visible;
+}
+
+video {
+    width: 320px;
+    height: 180px;
+    align-items: center;
 }
 
 /* classic screens */
