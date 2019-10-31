@@ -1046,6 +1046,16 @@ audio {
     align-self: center;
 }
 
+.no-video-overlay {
+    overflow: visible;
+}
+
+video {
+    max-width: 160px;
+    max-height: 90px;
+    align-items: center;
+}
+
 /* classic screens */
 @media screen and (max-width: 1920px), screen and (max-height: 1080px) {
   .message_in {
