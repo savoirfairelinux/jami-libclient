@@ -1030,13 +1030,21 @@ function updateFileInteraction(message_div, message_object, forceTypeToFile = fa
 
     if (isAudio(message_text) && message_delivery_status === "finished" && displayLinksEnabled && !forceTypeToFile) {
         // Replace the old wrapper by the downloaded audio
-        var old_wrapper = message_div.querySelector(".internal_mes_wrapper")
+        if (use_qt) {
+            var old_wrapper = message_div.querySelector(".message_wrapper")
+        } else {
+            var old_wrapper = message_div.querySelector(".internal_mes_wrapper")
+        }
         if (old_wrapper) {
             old_wrapper.parentNode.removeChild(old_wrapper)
         }
 
         var errorHandler = function () {
-            var wrapper = message_div.querySelector(".internal_mes_wrapper")
+            if (use_qt) {
+                var wrapper = message_div.querySelector(".message_type_audio_video_transfer")
+            } else {
+                var wrapper = message_div.querySelector(".internal_mes_wrapper")
+            }
             wrapper.parentNode.classList.remove("no-audio-overlay")
             var message_wrapper = message_div.querySelector(".message_wrapper")
             if (message_wrapper) {
@@ -1069,10 +1077,89 @@ function updateFileInteraction(message_div, message_object, forceTypeToFile = fa
         new_wrapper.setAttribute("type", audio_type)
         new_wrapper.setAttribute("class", "audio")
         const internal_mes_wrapper = document.createElement("div")
-        internal_mes_wrapper.setAttribute("class", "internal_mes_wrapper")
+        if (use_qt) {
+            internal_mes_wrapper.setAttribute("class", "message_type_audio_video_transfer", "message_wrapper")
+        } else {
+            internal_mes_wrapper.setAttribute("class", "internal_mes_wrapper")
+        }
+
         internal_mes_wrapper.appendChild(new_wrapper)
-        message_div.insertBefore(internal_mes_wrapper, message_div.querySelector(".menu_interaction"))
+        if (use_qt) {
+            message_div.querySelector(".msg_cell").appendChild(internal_mes_wrapper)
+        } else {
+            message_div.insertBefore(internal_mes_wrapper, message_div.querySelector(".menu_interaction"))
+        }
         internal_mes_wrapper.parentNode.classList.add("no-audio-overlay")
+
+        return
+    }
+
+    if (isVideo(message_text) && message_delivery_status === "finished" && displayLinksEnabled && !forceTypeToFile) {
+        // Replace the old wrapper by the downloaded audio
+        if (use_qt) {
+            var old_wrapper = message_div.querySelector(".message_wrapper")
+        } else {
+            var old_wrapper = message_div.querySelector(".internal_mes_wrapper")
+        }
+
+        if (old_wrapper) {
+            old_wrapper.parentNode.removeChild(old_wrapper)
+        }
+
+        var errorHandler = function () {
+            if (use_qt) {
+                var wrapper = message_div.querySelector(".message_type_audio_video_transfer")
+            } else {
+                var wrapper = message_div.querySelector(".internal_mes_wrapper")
+            }
+            wrapper.parentNode.classList.remove("no-video-overlay")
+            var message_wrapper = message_div.querySelector(".message_wrapper")
+            if (message_wrapper) {
+                message_wrapper.parentNode.removeChild(message_wrapper)
+            }
+
+            var media_wrapper = message_div.querySelector(".video")
+            if (media_wrapper) {
+                media_wrapper.parentNode.removeChild(media_wrapper)
+            }
+
+            var new_interaction = fileInteraction(message_id)
+            var new_message_wrapper = new_interaction.querySelector(".message_wrapper")
+            wrapper.prepend(new_message_wrapper)
+            updateFileInteraction(message_div, message_object, true)
+        }
+
+        const new_wrapper = document.createElement("video")
+        new_wrapper.onerror = errorHandler
+        new_wrapper.setAttribute("src", "file://" + message_text)
+        new_wrapper.setAttribute("controls", "controls")
+        var audio_type = "video/mp4"
+        if (message_text.toLowerCase().match(/\.(mp4)$/)) {
+            audio_type = "video/mp4"
+        } else if (message_text.toLowerCase().match(/\.(avi)$/)) {
+            audio_type = "video/avi"
+        } else if (message_text.toLowerCase().match(/\.(mov)$/)) {
+            audio_type = "video/mov"
+        } else if (message_text.toLowerCase().match(/\.(webm)$/)) {
+            audio_type = "video/webm"
+        } else if (message_text.toLowerCase().match(/\.(rmvb)$/)) {
+            audio_type = "video/rmvb"
+        }
+        new_wrapper.setAttribute("type", audio_type)
+        new_wrapper.setAttribute("class", "video")
+        const internal_mes_wrapper = document.createElement("div")
+        if (use_qt) {
+            internal_mes_wrapper.setAttribute("class", "message_type_audio_video_transfer", "message_wrapper")
+        } else {
+            internal_mes_wrapper.setAttribute("class", "internal_mes_wrapper")
+        }
+        internal_mes_wrapper.appendChild(new_wrapper)
+        if (use_qt) {
+            message_div.querySelector(".msg_cell").appendChild(internal_mes_wrapper)
+        } else {
+            message_div.insertBefore(internal_mes_wrapper, message_div.querySelector(".menu_interaction"))
+        }
+        internal_mes_wrapper.parentNode.classList.add("no-video-overlay")
 
         return
     }
@@ -1148,7 +1235,7 @@ function isImage(file) {
 }
 
 /**
- * Return if a file is an image
+ * Return if a file is an audio
  * @param file
  */
 function isAudio(file) {
@@ -1156,10 +1243,18 @@ function isAudio(file) {
 }
 
 /**
- * Return if a file is a youtube video
+ * Return if a file is an video
  * @param file
  */
 function isVideo(file) {
+    return file.toLowerCase().match(/\.(mp4|avi|webm|mov|rmvb)$/) !== null
+}
+
+/**
+ * Return if a file is a youtube video
+ * @param file
+ */
+function isYoutubeVideo(file) {
     const availableProtocols = ["http:", "https:"]
     const videoHostname = ["youtube.com", "www.youtube.com", "youtu.be"]
     const urlParser = document.createElement("a")
@@ -1577,7 +1672,7 @@ function buildNewMessage(message_object) {
             const links = DOMMsg.querySelectorAll("a")
             if (DOMMsg.childNodes.length && links.length) {
                 var isTextToShow = (DOMMsg.childNodes[0].childNodes.length > 1)
-                const ytid = (isVideo(message_text)) ? youtube_id(message_text) : ""
+                const ytid = (isYoutubeVideo(message_text)) ? youtube_id(message_text) : ""
                 if (!isTextToShow && (ytid || isImage(message_text))) {
                     type = "media"
                     message_div.append(mediaInteraction(message_id, message_direction, message_text, ytid))
