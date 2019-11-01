@@ -25,6 +25,29 @@
     },
     {
       "key": {
+        "uuid": "10b99800_81961af8",
+        "filename": "src/authority/storagehelper.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 241,
+      "author": {
+        "id": 90
+      },
+      "writtenOn": "2019-11-01T17:06:09Z",
+      "side": 1,
+      "message": "This routine should always save with a base64 filename",
+      "range": {
+        "startLine": 231,
+        "startChar": 4,
+        "endLine": 241,
+        "endChar": 5
+      },
+      "revId": "eeb3230f1c54b028bfbad597672c05af9ac95444",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "0db07b2d_b19c3ba3",
         "filename": "src/conversationmodel.cpp",
         "patchSetId": 2
