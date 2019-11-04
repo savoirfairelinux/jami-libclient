@@ -605,6 +605,14 @@ LegacyDatabase::migrateLocalProfiles()
 
         const QStringList accountIds = ConfigurationManager::instance().getAccountList();
         for (auto accountId : accountIds) {
+            // NOTE: If the daemon is down, but dbus answered, id can contains
+            // "Remote peer disconnected", "The name is not activable", etc.
+            // So avoid to migrate useless directories.
+            for (auto& id : accountIds)
+                if (id.indexOf(" ") != -1) {
+                    qWarning() << "Invalid dbus answer. Daemon not running";
+                    return;
+                }
             MapStringString account = ConfigurationManager::instance().
             getAccountDetails(accountId.toStdString().c_str());
             auto accountURI = account[DRing::Account::ConfProperties::USERNAME].contains("ring:") ?
@@ -847,9 +855,16 @@ LegacyDatabase::migrateSchemaFromVersion1()
 void
 LegacyDatabase::linkRingProfilesWithAccounts(bool contactsOnly)
 {
-    const QStringList accountIds =
-    ConfigurationManager::instance().getAccountList();
+    const QStringList accountIds = ConfigurationManager::instance().getAccountList();
     for (auto accountId : accountIds) {
+        // NOTE: If the daemon is down, but dbus answered, id can contains
+        // "Remote peer disconnected", "The name is not activable", etc.
+        // So avoid to migrate useless directories.
+        for (auto& id : accountIds)
+            if (id.indexOf(" ") != -1) {
+                qWarning() << "Invalid dbus answer. Daemon not running";
+                return;
+            }
         MapStringString account = ConfigurationManager::instance().
         getAccountDetails(accountId.toStdString().c_str());
         auto accountURI = account[DRing::Account::ConfProperties::USERNAME].contains("ring:") ?
