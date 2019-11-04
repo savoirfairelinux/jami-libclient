@@ -4,7 +4,7 @@
 // scrollDetectionThresh represents the number of pixels a user can scroll
 // without disabling the automatic go-back-to-bottom when a new message is
 // received
-const scrollDetectionThresh = 200
+const scrollDetectionThresh = 70
 // printHistoryPart loads blocks of messages. Each block contains
 // scrollBuffer messages
 const scrollBuffer = 20
@@ -74,7 +74,7 @@ var canLazyLoad = false
 /* Set the default target to _self and handle with QWebEnginePage::acceptNavigationRequest */
 var linkifyOptions = {}
 if (use_qt) {
-    messageBarInput.onpaste = pasteKeyDetected;
+    messageBarInput.onpaste = pasteKeyDetected
     wrapperOfNavbar.outerHTML = ""
     linkifyOptions = {
         attributes: null,
@@ -326,7 +326,7 @@ function showInvitation(contactAlias, contactId) {
         } else {
             const className = `sender_image_${contactId}`.replace(/@/g, "_").replace(/\./g, "_")
             if (!inviteImage.classList.contains(className)) {
-                inviteImage.classList.add(className);
+                inviteImage.classList.add(className)
             }
             invitationText.innerHTML = "<b>"
                 + i18n.sprintf(i18n.gettext("%s is not in your contacts"), contactAlias)
@@ -601,7 +601,7 @@ function sendMessage() {
 
         sendContainer.innerHTML = ""
         sendContainer.style.display = "none"
-        reduce_send_container();
+        reduce_send_container()
     }
 
     var message = messageBarInput.value
@@ -651,21 +651,19 @@ function selectFileToSend() {
 
 /* exported sendFile */
 function videoRecord() {
+    var rect = videoRecordButton.getBoundingClientRect()
     if (use_qt) {
-        var rect = videoRecordButton.getBoundingClientRect()
         window.jsbridge.openVideoRecorder(rect.left + rect.width / 2, rect.top)
     } else {
-        var rect = videoRecordButton.getBoundingClientRect()
         window.prompt(`VIDEO_RECORD:${rect.left + rect.width / 2}x${rect.top}`)
     }
 }
 
 function audioRecord() {
+    var rect = audioRecordButton.getBoundingClientRect()
     if (use_qt) {
-        var rect = audioRecordButton.getBoundingClientRect()
         window.jsbridge.openAudioRecorder(rect.left + rect.width / 2, rect.top)
     } else {
-        var rect = audioRecordButton.getBoundingClientRect()
         window.prompt(`AUDIO_RECORD:${rect.left + rect.width / 2}x${rect.top}`)
     }
 }
@@ -916,10 +914,10 @@ function fileInteraction(message_id, message_direction) {
     const internal_mes_wrapper = document.createElement("div")
     internal_mes_wrapper.setAttribute("class", "internal_mes_wrapper")
     if(use_qt) {
-        var tbl = buildMsgTable(message_direction);
-        var msg_cell = tbl.querySelector(".msg_cell");
-        msg_cell.appendChild(message_wrapper);
-        internal_mes_wrapper.appendChild(tbl);
+        var tbl = buildMsgTable(message_direction)
+        var msg_cell = tbl.querySelector(".msg_cell")
+        msg_cell.appendChild(message_wrapper)
+        internal_mes_wrapper.appendChild(tbl)
     } else {
         internal_mes_wrapper.appendChild(message_wrapper)
     }
@@ -928,31 +926,31 @@ function fileInteraction(message_id, message_direction) {
 }
 
 function buildMsgTable(message_direction) {
-    var tbl = document.createElement("table");
+    var tbl = document.createElement("table")
 
-    var row0 = document.createElement("tr");
-    var sender_image_cell = document.createElement("td");
+    var row0 = document.createElement("tr")
+    var sender_image_cell = document.createElement("td")
     sender_image_cell.setAttribute("class", "sender_image_cell")
-    var msg_cell = document.createElement("td");
+    var msg_cell = document.createElement("td")
     msg_cell.setAttribute("class", "msg_cell")
 
-    row0.appendChild((message_direction === "in") ? sender_image_cell : msg_cell);
-    row0.appendChild((message_direction === "in") ? msg_cell : sender_image_cell);
+    row0.appendChild((message_direction === "in") ? sender_image_cell : msg_cell)
+    row0.appendChild((message_direction === "in") ? msg_cell : sender_image_cell)
 
-    tbl.appendChild(row0);
+    tbl.appendChild(row0)
 
-    var row1 = document.createElement("tr");
-    var dummy_cell = document.createElement("td");
+    var row1 = document.createElement("tr")
+    var dummy_cell = document.createElement("td")
     dummy_cell.setAttribute("class", "dummy_cell")
-    var timestamp_cell = document.createElement("td");
+    var timestamp_cell = document.createElement("td")
     timestamp_cell.setAttribute("class", "timestamp_cell")
 
-    row1.appendChild((message_direction === "in") ? dummy_cell : timestamp_cell);
-    row1.appendChild((message_direction === "in") ? timestamp_cell : dummy_cell);
+    row1.appendChild((message_direction === "in") ? dummy_cell : timestamp_cell)
+    row1.appendChild((message_direction === "in") ? timestamp_cell : dummy_cell)
 
-    tbl.appendChild(row1);
+    tbl.appendChild(row1)
 
-    return tbl;
+    return tbl
 }
 
 /**
@@ -1030,18 +1028,22 @@ function updateFileInteraction(message_div, message_object, forceTypeToFile = fa
 
     if (isAudio(message_text) && message_delivery_status === "finished" && displayLinksEnabled && !forceTypeToFile) {
         // Replace the old wrapper by the downloaded audio
-        if (use_qt) {
-            var old_wrapper = message_div.querySelector(".message_wrapper")
-        } else {
-            var old_wrapper = message_div.querySelector(".internal_mes_wrapper")
-        }
+        var old_wrapper = message_div.querySelector(".message_wrapper")
         if (old_wrapper) {
             old_wrapper.parentNode.removeChild(old_wrapper)
         }
 
         var errorHandler = function () {
-            var wrapper = message_div.querySelector(".message_type_audio_video_transfer")
-            wrapper.parentNode.classList.remove("no-audio-overlay")
+            var wrapper
+            if (use_qt) {
+                wrapper = message_div.querySelector(".msg_cell")
+            } else {
+                wrapper = message_div.querySelector(".internal_mes_wrapper")
+            }
+            var wrapper_audio_video = message_div.querySelector(".message_type_audio_video_transfer")
+            wrapper_audio_video.parentNode.classList.remove("no-audio-overlay")
+            wrapper_audio_video.parentNode.removeChild(wrapper_audio_video)
+
             var message_wrapper = message_div.querySelector(".message_wrapper")
             if (message_wrapper) {
                 message_wrapper.parentNode.removeChild(message_wrapper)
@@ -1062,44 +1064,48 @@ function updateFileInteraction(message_div, message_object, forceTypeToFile = fa
         new_wrapper.onerror = errorHandler
         new_wrapper.setAttribute("src", "file://" + message_text)
         new_wrapper.setAttribute("controls", "controls")
-        var audio_type = "audio/mpeg"
+        var audio_type = "audio/ogg"
         if (message_text.toLowerCase().match(/\.(ogg)$/)) {
             audio_type = "audio/ogg"
         } else if (message_text.toLowerCase().match(/\.(flac)$/)) {
             audio_type = "audio/flac"
         } else if (message_text.toLowerCase().match(/\.(wav)$/)) {
             audio_type = "audio/wav"
+        } else if (message_text.toLowerCase().match(/\.(mpeg)$/)) {
+            audio_type = "audio/mpeg"
         }
         new_wrapper.setAttribute("type", audio_type)
         new_wrapper.setAttribute("class", "audio")
-        const internal_mes_wrapper = document.createElement("div")
-        internal_mes_wrapper.setAttribute("class", "message_type_audio_video_transfer")
-        internal_mes_wrapper.appendChild(new_wrapper)
+        const audio_video_wrapper = document.createElement("div")
+        audio_video_wrapper.setAttribute("class", "message_type_audio_video_transfer")
+        audio_video_wrapper.appendChild(new_wrapper)
         if (use_qt) {
-            message_div.querySelector(".msg_cell").appendChild(internal_mes_wrapper)
+            message_div.querySelector(".msg_cell").appendChild(audio_video_wrapper)
         } else {
-            message_div.insertBefore(internal_mes_wrapper, message_div.querySelector(".menu_interaction"))
+            message_div.querySelector(".internal_mes_wrapper").insertBefore(audio_video_wrapper, message_div.querySelector(".timestamp"))
         }
-        internal_mes_wrapper.parentNode.classList.add("no-audio-overlay")
-
+        audio_video_wrapper.parentNode.classList.add("no-audio-overlay")
         return
     }
 
     if (isVideo(message_text) && message_delivery_status === "finished" && displayLinksEnabled && !forceTypeToFile) {
         // Replace the old wrapper by the downloaded audio
-        if (use_qt) {
-            var old_wrapper = message_div.querySelector(".message_wrapper")
-        } else {
-            var old_wrapper = message_div.querySelector(".internal_mes_wrapper")
-        }
-
+        var old_wrapper = message_div.querySelector(".message_wrapper")
         if (old_wrapper) {
             old_wrapper.parentNode.removeChild(old_wrapper)
         }
 
         var errorHandler = function () {
-            var wrapper = message_div.querySelector(".message_type_audio_video_transfer")
-                wrapper.parentNode.classList.remove("no-video-overlay")
+            var wrapper
+            if (use_qt) {
+                wrapper = message_div.querySelector(".msg_cell")
+            } else {
+                wrapper = message_div.querySelector(".internal_mes_wrapper")
+            }
+            var wrapper_audio_video = message_div.querySelector(".message_type_audio_video_transfer")
+            wrapper_audio_video.parentNode.classList.remove("no-audio-overlay")
+            wrapper_audio_video.parentNode.removeChild(wrapper_audio_video)
+
             var message_wrapper = message_div.querySelector(".message_wrapper")
             if (message_wrapper) {
                 message_wrapper.parentNode.removeChild(message_wrapper)
@@ -1116,7 +1122,7 @@ function updateFileInteraction(message_div, message_object, forceTypeToFile = fa
             updateFileInteraction(message_div, message_object, true)
         }
 
-        var hideContext = function () {return false;}
+        var hideContext = function () {return false}
         const new_wrapper = document.createElement("video")
         new_wrapper.onerror = errorHandler
         new_wrapper.oncontextmenu = hideContext
@@ -1136,16 +1142,16 @@ function updateFileInteraction(message_div, message_object, forceTypeToFile = fa
         }
         new_wrapper.setAttribute("type", audio_type)
         new_wrapper.setAttribute("class", "video")
-        const internal_mes_wrapper = document.createElement("div")
+        const audio_video_wrapper = document.createElement("div")
 
-        internal_mes_wrapper.setAttribute("class", "message_type_audio_video_transfer")
-        internal_mes_wrapper.appendChild(new_wrapper)
+        audio_video_wrapper.setAttribute("class", "message_type_audio_video_transfer")
+        audio_video_wrapper.appendChild(new_wrapper)
         if (use_qt) {
-            message_div.querySelector(".msg_cell").appendChild(internal_mes_wrapper)
+            message_div.querySelector(".msg_cell").appendChild(audio_video_wrapper)
         } else {
-            message_div.insertBefore(internal_mes_wrapper, message_div.querySelector(".menu_interaction"))
+            message_div.querySelector(".internal_mes_wrapper").insertBefore(audio_video_wrapper, message_div.querySelector(".timestamp"))
         }
-        internal_mes_wrapper.parentNode.classList.add("no-video-overlay")
+        audio_video_wrapper.parentNode.classList.add("no-video-overlay")
         return
     }
 
@@ -1366,10 +1372,10 @@ function textInteraction(message_id, message_direction, htmlText) {
     const internal_mes_wrapper = document.createElement("div")
     internal_mes_wrapper.setAttribute("class", "internal_mes_wrapper")
     if(use_qt) {
-        var tbl = buildMsgTable(message_direction);
-        var msg_cell = tbl.querySelector(".msg_cell");
-        msg_cell.appendChild(message_wrapper);
-        internal_mes_wrapper.appendChild(tbl);
+        var tbl = buildMsgTable(message_direction)
+        var msg_cell = tbl.querySelector(".msg_cell")
+        msg_cell.appendChild(message_wrapper)
+        internal_mes_wrapper.appendChild(tbl)
     } else {
         internal_mes_wrapper.appendChild(message_wrapper)
     }
@@ -1698,11 +1704,11 @@ function addSenderImage(message_div, message_type, message_sender_contact_method
         var sender_image_cell = message_div.querySelector(".sender_image_cell")
         if (sender_image_cell) {
             var message_sender_image = document.createElement("span")
-            var cssSafeStr = message_sender_contact_method.replace(/@/g, "_").replace(/\./g, "_");
+            var cssSafeStr = message_sender_contact_method.replace(/@/g, "_").replace(/\./g, "_")
             message_sender_image.setAttribute("class", `sender_image sender_image_${cssSafeStr}`)
             sender_image_cell.appendChild(message_sender_image)
         } else {
-            console.warn("can't find sender_image_cell");
+            console.warn("can't find sender_image_cell")
         }
     }
 }
@@ -2384,7 +2390,7 @@ function replaceText(text) {
  * @param theme  The dark theme
  */
 function setTheme(theme) {
-    let root = document.documentElement;
+    let root = document.documentElement
     root.setAttribute("style", "\
         --jami-light-blue: rgba(59, 193, 211, 0.3);\
         --jami-dark-blue: #003b4e;\

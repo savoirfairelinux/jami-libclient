@@ -1051,6 +1051,7 @@ pre {
 }
 
 audio {
+    width: 16em;
     align-self: center;
 }
 
@@ -1059,9 +1060,9 @@ audio {
 }
 
 video {
-    width: 320px;
-    height: 180px;
-    align-items: center;
+    width: 16em;
+    height: 9em;
+    align-self: center;
 }
 
 /* classic screens */
