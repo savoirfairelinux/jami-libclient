@@ -339,6 +339,16 @@ NewAccountModelPimpl::NewAccountModelPimpl(NewAccountModel& linked,
 , username_changed(false)
 {
     const QStringList accountIds = ConfigurationManager::instance().getAccountList();
+
+    // NOTE: If the daemon is down, but dbus answered, id can contains
+    // "Remote peer disconnected", "The name is not activable", etc.
+    // So avoid to migrate useless directories.
+    for (auto& id : accountIds)
+        if (id.indexOf(" ") != -1) {
+            qWarning() << "Invalid dbus answer. Daemon not running";
+            return;
+        }
+
     auto accountDbs = authority::storage::migrateIfNeeded(accountIds, willMigrateCb, didMigrateCb);
     for (const auto& id : accountIds) {
         addToAccounts(id.toStdString(), accountDbs.at(accountIds.indexOf(id)));
