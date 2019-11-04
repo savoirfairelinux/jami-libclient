@@ -68,50 +68,50 @@
         <translation>Konektita</translation>
     </message>
     <message>
-        <location filename="../src/authority/storagehelper.cpp" line="135"/>
-        <location filename="../src/authority/storagehelper.cpp" line="856"/>
+        <location filename="../src/authority/storagehelper.cpp" line="136"/>
+        <location filename="../src/authority/storagehelper.cpp" line="871"/>
         <source>Invitation received</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/authority/storagehelper.cpp" line="132"/>
-        <location filename="../src/authority/storagehelper.cpp" line="854"/>
+        <location filename="../src/authority/storagehelper.cpp" line="133"/>
+        <location filename="../src/authority/storagehelper.cpp" line="869"/>
         <source>Contact added</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/authority/storagehelper.cpp" line="106"/>
-        <location filename="../src/authority/storagehelper.cpp" line="112"/>
-        <location filename="../src/authority/storagehelper.cpp" line="852"/>
+        <location filename="../src/authority/storagehelper.cpp" line="107"/>
+        <location filename="../src/authority/storagehelper.cpp" line="113"/>
+        <location filename="../src/authority/storagehelper.cpp" line="867"/>
         <source>Outgoing call</source>
         <translation>Eliranta voko</translation>
     </message>
     <message>
-        <location filename="../src/authority/storagehelper.cpp" line="108"/>
-        <location filename="../src/authority/storagehelper.cpp" line="119"/>
+        <location filename="../src/authority/storagehelper.cpp" line="109"/>
+        <location filename="../src/authority/storagehelper.cpp" line="120"/>
         <source>Incoming call</source>
         <translation>Eniranta voko</translation>
     </message>
     <message>
-        <location filename="../src/authority/storagehelper.cpp" line="115"/>
-        <location filename="../src/authority/storagehelper.cpp" line="850"/>
+        <location filename="../src/authority/storagehelper.cpp" line="116"/>
+        <location filename="../src/authority/storagehelper.cpp" line="865"/>
         <source>Missed outgoing call</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/authority/storagehelper.cpp" line="122"/>
+        <location filename="../src/authority/storagehelper.cpp" line="123"/>
         <source>Missed incoming call</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/authority/storagehelper.cpp" line="137"/>
-        <location filename="../src/authority/storagehelper.cpp" line="858"/>
+        <location filename="../src/authority/storagehelper.cpp" line="138"/>
+        <location filename="../src/authority/storagehelper.cpp" line="873"/>
         <source>Invitation accepted</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/avmodel.cpp" line="312"/>
-        <location filename="../src/avmodel.cpp" line="333"/>
+        <location filename="../src/avmodel.cpp" line="322"/>
+        <location filename="../src/avmodel.cpp" line="343"/>
         <source>default</source>
         <translation type="unfinished"/>
     </message>
