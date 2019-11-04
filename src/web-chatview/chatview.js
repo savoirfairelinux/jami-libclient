@@ -4,7 +4,7 @@
 // scrollDetectionThresh represents the number of pixels a user can scroll
 // without disabling the automatic go-back-to-bottom when a new message is
 // received
-const scrollDetectionThresh = 200
+const scrollDetectionThresh = 70
 // printHistoryPart loads blocks of messages. Each block contains
 // scrollBuffer messages
 const scrollBuffer = 20
@@ -1030,18 +1030,21 @@ function updateFileInteraction(message_div, message_object, forceTypeToFile = fa
 
     if (isAudio(message_text) && message_delivery_status === "finished" && displayLinksEnabled && !forceTypeToFile) {
         // Replace the old wrapper by the downloaded audio
-        if (use_qt) {
-            var old_wrapper = message_div.querySelector(".message_wrapper")
-        } else {
-            var old_wrapper = message_div.querySelector(".internal_mes_wrapper")
-        }
+        var old_wrapper = message_div.querySelector(".message_wrapper")
         if (old_wrapper) {
             old_wrapper.parentNode.removeChild(old_wrapper)
         }
 
         var errorHandler = function () {
-            var wrapper = message_div.querySelector(".message_type_audio_video_transfer")
-            wrapper.parentNode.classList.remove("no-audio-overlay")
+            if (use_qt) {
+                var wrapper = message_div.querySelector(".msg_cell")
+            } else {
+                var wrapper = message_div.querySelector(".internal_mes_wrapper")
+            }
+            var wrapper_audio_video = message_div.querySelector(".message_type_audio_video_transfer")
+            wrapper_audio_video.parentNode.classList.remove("no-audio-overlay")
+            wrapper_audio_video.parentNode.removeChild(wrapper_audio_video)
+
             var message_wrapper = message_div.querySelector(".message_wrapper")
             if (message_wrapper) {
                 message_wrapper.parentNode.removeChild(message_wrapper)
@@ -1072,34 +1075,35 @@ function updateFileInteraction(message_div, message_object, forceTypeToFile = fa
         }
         new_wrapper.setAttribute("type", audio_type)
         new_wrapper.setAttribute("class", "audio")
-        const internal_mes_wrapper = document.createElement("div")
-        internal_mes_wrapper.setAttribute("class", "message_type_audio_video_transfer")
-        internal_mes_wrapper.appendChild(new_wrapper)
+        const audio_video_wrapper = document.createElement("div")
+        audio_video_wrapper.setAttribute("class", "message_type_audio_video_transfer")
+        audio_video_wrapper.appendChild(new_wrapper)
         if (use_qt) {
-            message_div.querySelector(".msg_cell").appendChild(internal_mes_wrapper)
+            message_div.querySelector(".msg_cell").appendChild(audio_video_wrapper)
         } else {
-            message_div.insertBefore(internal_mes_wrapper, message_div.querySelector(".menu_interaction"))
+            message_div.querySelector(".internal_mes_wrapper").insertBefore(audio_video_wrapper, message_div.querySelector(".timestamp"))
         }
-        internal_mes_wrapper.parentNode.classList.add("no-audio-overlay")
-
+        audio_video_wrapper.parentNode.classList.add("no-audio-overlay")
         return
     }
 
     if (isVideo(message_text) && message_delivery_status === "finished" && displayLinksEnabled && !forceTypeToFile) {
         // Replace the old wrapper by the downloaded audio
-        if (use_qt) {
-            var old_wrapper = message_div.querySelector(".message_wrapper")
-        } else {
-            var old_wrapper = message_div.querySelector(".internal_mes_wrapper")
-        }
-
+        var old_wrapper = message_div.querySelector(".message_wrapper")
         if (old_wrapper) {
             old_wrapper.parentNode.removeChild(old_wrapper)
         }
 
         var errorHandler = function () {
-            var wrapper = message_div.querySelector(".message_type_audio_video_transfer")
-                wrapper.parentNode.classList.remove("no-video-overlay")
+            if (use_qt) {
+                var wrapper = message_div.querySelector(".msg_cell")
+            } else {
+                var wrapper = message_div.querySelector(".internal_mes_wrapper")
+            }
+            var wrapper_audio_video = message_div.querySelector(".message_type_audio_video_transfer")
+            wrapper_audio_video.parentNode.classList.remove("no-audio-overlay")
+            wrapper_audio_video.parentNode.removeChild(wrapper_audio_video)
+
             var message_wrapper = message_div.querySelector(".message_wrapper")
             if (message_wrapper) {
                 message_wrapper.parentNode.removeChild(message_wrapper)
@@ -1136,16 +1140,16 @@ function updateFileInteraction(message_div, message_object, forceTypeToFile = fa
         }
         new_wrapper.setAttribute("type", audio_type)
         new_wrapper.setAttribute("class", "video")
-        const internal_mes_wrapper = document.createElement("div")
+        const audio_video_wrapper = document.createElement("div")
 
-        internal_mes_wrapper.setAttribute("class", "message_type_audio_video_transfer")
-        internal_mes_wrapper.appendChild(new_wrapper)
+        audio_video_wrapper.setAttribute("class", "message_type_audio_video_transfer")
+        audio_video_wrapper.appendChild(new_wrapper)
         if (use_qt) {
-            message_div.querySelector(".msg_cell").appendChild(internal_mes_wrapper)
+            message_div.querySelector(".msg_cell").appendChild(audio_video_wrapper)
         } else {
-            message_div.insertBefore(internal_mes_wrapper, message_div.querySelector(".menu_interaction"))
+            message_div.querySelector(".internal_mes_wrapper").insertBefore(audio_video_wrapper, message_div.querySelector(".timestamp"))
         }
-        internal_mes_wrapper.parentNode.classList.add("no-video-overlay")
+        audio_video_wrapper.parentNode.classList.add("no-video-overlay")
         return
     }
 
