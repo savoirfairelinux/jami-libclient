@@ -4,7 +4,7 @@
 // scrollDetectionThresh represents the number of pixels a user can scroll
 // without disabling the automatic go-back-to-bottom when a new message is
 // received
-const scrollDetectionThresh = 200
+const scrollDetectionThresh = 70
 // printHistoryPart loads blocks of messages. Each block contains
 // scrollBuffer messages
 const scrollBuffer = 20
