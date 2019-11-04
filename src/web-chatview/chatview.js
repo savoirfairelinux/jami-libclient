@@ -4,7 +4,7 @@
 // scrollDetectionThresh represents the number of pixels a user can scroll
 // without disabling the automatic go-back-to-bottom when a new message is
 // received
-const scrollDetectionThresh = 200
+const scrollDetectionThresh = 70
 // printHistoryPart loads blocks of messages. Each block contains
 // scrollBuffer messages
 const scrollBuffer = 20
@@ -1030,11 +1030,7 @@ function updateFileInteraction(message_div, message_object, forceTypeToFile = fa
 
     if (isAudio(message_text) && message_delivery_status === "finished" && displayLinksEnabled && !forceTypeToFile) {
         // Replace the old wrapper by the downloaded audio
-        if (use_qt) {
-            var old_wrapper = message_div.querySelector(".message_wrapper")
-        } else {
-            var old_wrapper = message_div.querySelector(".internal_mes_wrapper")
-        }
+        var old_wrapper = message_div.querySelector(".message_wrapper")
         if (old_wrapper) {
             old_wrapper.parentNode.removeChild(old_wrapper)
         }
@@ -1078,7 +1074,7 @@ function updateFileInteraction(message_div, message_object, forceTypeToFile = fa
         if (use_qt) {
             message_div.querySelector(".msg_cell").appendChild(internal_mes_wrapper)
         } else {
-            message_div.insertBefore(internal_mes_wrapper, message_div.querySelector(".menu_interaction"))
+            message_div.querySelector(".internal_mes_wrapper").appendChild(internal_mes_wrapper)
         }
         internal_mes_wrapper.parentNode.classList.add("no-audio-overlay")
 
@@ -1087,12 +1083,7 @@ function updateFileInteraction(message_div, message_object, forceTypeToFile = fa
 
     if (isVideo(message_text) && message_delivery_status === "finished" && displayLinksEnabled && !forceTypeToFile) {
         // Replace the old wrapper by the downloaded audio
-        if (use_qt) {
-            var old_wrapper = message_div.querySelector(".message_wrapper")
-        } else {
-            var old_wrapper = message_div.querySelector(".internal_mes_wrapper")
-        }
-
+        var old_wrapper = message_div.querySelector(".message_wrapper")
         if (old_wrapper) {
             old_wrapper.parentNode.removeChild(old_wrapper)
         }
@@ -1143,7 +1134,7 @@ function updateFileInteraction(message_div, message_object, forceTypeToFile = fa
         if (use_qt) {
             message_div.querySelector(".msg_cell").appendChild(internal_mes_wrapper)
         } else {
-            message_div.insertBefore(internal_mes_wrapper, message_div.querySelector(".menu_interaction"))
+            message_div.querySelector(".internal_mes_wrapper").appendChild(internal_mes_wrapper)
         }
         internal_mes_wrapper.parentNode.classList.add("no-video-overlay")
         return
