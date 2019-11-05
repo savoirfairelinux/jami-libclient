@@ -232,7 +232,7 @@ setProfile(const std::string& accountId,
         file.setFileName(filePath);
     }
     if (!file.open(QIODevice::WriteOnly)) {
-        qWarning().noquote() << "Can't open file: " << filePath;
+        qWarning().noquote() << "Can't open file for writing: " << filePath;
         return;
     }
     QTextStream(&file) << QString::fromStdString(vcard);
@@ -299,26 +299,29 @@ buildContactFromProfile(const std::string & accountId,
     profileInfo.uri = peer_uri;
     profileInfo.type = type;
     auto accountLocalPath = getPath() + QString::fromStdString(accountId) + "/";
-    QString filePath;
-    filePath = accountLocalPath + "profiles/" + QString::fromStdString(peer_uri) + ".vcf";
-    QFile file(filePath);
+    QString b64filePath;
+    b64filePath = accountLocalPath + "profiles/" + QString(QByteArray::fromStdString(peer_uri).toBase64()) + ".vcf";
+    QFile file(b64filePath);
     bool deleteOld = false;
     if (!file.open(QIODevice::ReadOnly)) {
-        qWarning().noquote() << "Can't open file: " << filePath << ". Trying Base64 file path.";
-        filePath = accountLocalPath + "profiles/" + QString(QByteArray::fromStdString(peer_uri).toBase64()) + ".vcf";
+        // try non-base64 path
+        QString filePath = accountLocalPath + "profiles/" + QString::fromStdString(peer_uri) + ".vcf";
         file.setFileName(filePath);
         if (!file.open(QIODevice::ReadOnly)) {
-            qWarning().noquote() << "Can't open file (base64 file path): " << filePath;
+            qWarning().noquote() << "Can't open file: " << filePath;
             return { profileInfo, "", true, false };
         }
-    } else {
-        deleteOld = true;
+        // rename it
+        qWarning().noquote() << "Renaming profile: " << filePath;
+        file.rename(b64filePath);
+        // reopen it
+        if (!file.open(QIODevice::ReadOnly)) {
+            qWarning().noquote() << "Can't open file: " << b64filePath;
+            return { profileInfo, "", true, false };
+        }
     }
     QTextStream in(&file);
     QByteArray vcard = in.readAll().toUtf8();
-    if (deleteOld) {
-        file.remove();
-    }
     const auto vCard = lrc::vCard::utils::toHashMap(vcard);
     const auto alias = vCard[vCard::Property::FORMATTED_NAME];
     const auto photo = (vCard.find(vCard::Property::PHOTO_PNG) == vCard.end()) ?
