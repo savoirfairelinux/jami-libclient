@@ -304,7 +304,6 @@ buildContactFromProfile(const std::string & accountId,
     QFile file(filePath);
     bool deleteOld = false;
     if (!file.open(QIODevice::ReadOnly)) {
-        qWarning().noquote() << "Can't open file: " << filePath << ". Trying Base64 file path.";
         filePath = accountLocalPath + "profiles/" + QString(QByteArray::fromStdString(peer_uri).toBase64()) + ".vcf";
         file.setFileName(filePath);
         if (!file.open(QIODevice::ReadOnly)) {
