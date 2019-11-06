@@ -259,25 +259,31 @@ public:
     const video::Renderer& getRenderer(const std::string& id) const;
 
     /**
-     * Render a file
+     * Render a file to the call id specified
      * @param uri the path of the file
+     * @param callId
+     * @note callId can be omitted to switch the input of the local recorder
      */
-    void setInputFile(const std::string& uri);
+    void setInputFile(const std::string& uri, const std::string& callId = {});
     /**
-     * Change the current device rendered
+     * Change the current device rendered for the call id specified
      * @param id of the camera
-     * @note render a black frame if device not found
+     * @param callId
+     * @note renders a black frame if device not found or empty
+     * @note callId can be omitted to switch the input of the local recorder
      */
-    void switchInputTo(const std::string& id);
+    void switchInputTo(const std::string& id, const std::string& callId = {});
     /**
-     * Render the current display
+     * Render the current display to the call id specified
      * @param idx of the display
      * @param x top left of the area
      * @param y top up of the area
      * @param w width of the area
      * @param h height of the area
+     * @param callId
+     * @note callId can be omitted to switch the input of the local recorder
      */
-    void setDisplay(int idx, int x, int y, int w, int h);
+    void setDisplay(int idx, int x, int y, int w, int h, const std::string& callId = {});
     /**
      * Get informations on the rendered device
      * @param call_id linked call to the renderer

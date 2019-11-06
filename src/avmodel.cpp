@@ -568,46 +568,67 @@ AVModel::getRenderer(const std::string& id) const
 }
 
 void
-AVModel::setInputFile(const std::string& uri)
+AVModel::setInputFile(const std::string& uri,
+                      const std::string& callId)
 {
     QString sep = DRing::Media::VideoProtocolPrefix::SEPARATOR;
-    VideoManager::instance().switchInput(
-        !uri.empty() ? QString("%1%2%3")
-                       .arg(DRing::Media::VideoProtocolPrefix::FILE)
-                       .arg(sep)
-                       .arg(QUrl(uri.c_str()).toLocalFile())
-        : DRing::Media::VideoProtocolPrefix::NONE);
+    auto resource = !uri.empty() ? QString("%1%2%3")
+        .arg(DRing::Media::VideoProtocolPrefix::FILE)
+        .arg(sep)
+        .arg(QUrl(uri.c_str()).toLocalFile())
+        : DRing::Media::VideoProtocolPrefix::NONE;
+    if (callId.empty()) {
+        VideoManager::instance().switchInput(resource);
+    } else {
+        CallManager::instance()
+            .switchInput(QString::fromStdString(callId), resource);
+    }
 }
 
 void
-AVModel::setDisplay(int idx, int x, int y, int w, int h)
+AVModel::setDisplay(int idx, int x, int y, int w, int h,
+                    const std::string& callId)
 {
     QString sep = DRing::Media::VideoProtocolPrefix::SEPARATOR;
-    VideoManager::instance().switchInput(QString("%1%2:%3+%4,%5 %6x%7")
-       .arg(DRing::Media::VideoProtocolPrefix::DISPLAY)
-       .arg(sep)
-       .arg(idx)
-       .arg(x)
-       .arg(y)
-       .arg(w)
-       .arg(h));
+    auto resource = QString("%1%2:%3+%4,%5 %6x%7")
+        .arg(DRing::Media::VideoProtocolPrefix::DISPLAY)
+        .arg(sep)
+        .arg(idx)
+        .arg(x)
+        .arg(y)
+        .arg(w)
+        .arg(h);
+    if (callId.empty()) {
+        VideoManager::instance().switchInput(resource);
+    } else {
+        CallManager::instance()
+            .switchInput(QString::fromStdString(callId), resource);
+    }
+
 }
 
 void
-AVModel::switchInputTo(const std::string& id)
+AVModel::switchInputTo(const std::string& id,
+                       const std::string& callId)
 {
+    QString resource;
     auto devices = getDevices();
     auto deviceAvailable = std::find(
         std::begin(devices), std::end(devices), id);
     if (deviceAvailable != devices.end()) {
         QString sep = DRing::Media::VideoProtocolPrefix::SEPARATOR;
-        VideoManager::instance().switchInput(QString("%1%2%3")
+        resource = QString("%1%2%3")
             .arg(DRing::Media::VideoProtocolPrefix::CAMERA)
             .arg(sep)
-            .arg(id.c_str()));
+            .arg(id.c_str());
     } else {
-        VideoManager::instance()
-            .switchInput(DRing::Media::VideoProtocolPrefix::NONE);
+        resource = QString(DRing::Media::VideoProtocolPrefix::NONE);
+    }
+    if (callId.empty()) {
+        VideoManager::instance().switchInput(resource);
+    } else {
+        CallManager::instance()
+            .switchInput(QString::fromStdString(callId), resource);
     }
 }
 
