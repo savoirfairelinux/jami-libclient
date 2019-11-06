@@ -110,6 +110,11 @@ public:
      * @return possibilities of the device
      */
     video::Capabilities getDeviceCapabilities(const std::string& deviceId) const;
+    /**
+     * Get the deviceId corresponding to a given device friendly name
+     * @return deviceId
+     */
+    std::string getDeviceIdFromName(const std::string& deviceName) const;
 
     /**
      * Get supported audio managers
