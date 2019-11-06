@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "a2d458ef_d4519bfa",
+        "filename": "src/authority/storagehelper.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 305,
+      "author": {
+        "id": 90
+      },
+      "writtenOn": "2019-11-06T14:54:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5178fd44_64b756d6",
+      "range": {
+        "startLine": 305,
+        "startChar": 4,
+        "endLine": 305,
+        "endChar": 27
+      },
+      "revId": "5c19142f4694068dc07ed7f44f4b6d761c48d7a5",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "b45f37aa_230beb67",
         "filename": "src/authority/storagehelper.cpp",
         "patchSetId": 1
@@ -36,6 +60,30 @@
       "writtenOn": "2019-11-05T22:12:55Z",
       "side": 1,
       "message": "Here the file is open, do we need to close it before actually removing it?",
+      "range": {
+        "startLine": 316,
+        "startChar": 8,
+        "endLine": 321,
+        "endChar": 9
+      },
+      "revId": "5c19142f4694068dc07ed7f44f4b6d761c48d7a5",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bf4c1358_a5510407",
+        "filename": "src/authority/storagehelper.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 321,
+      "author": {
+        "id": 90
+      },
+      "writtenOn": "2019-11-06T14:54:00Z",
+      "side": 1,
+      "message": "According to the Qt docs, QFile::rename will close the file first.",
+      "parentUuid": "b45f37aa_230beb67",
       "range": {
         "startLine": 316,
         "startChar": 8,
