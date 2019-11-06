@@ -290,6 +290,22 @@ AVModel::setDeviceSettings(video::Settings& settings)
     }
 }
 
+std::string
+AVModel::getDeviceIdFromName(const std::string& deviceName) const
+{
+    auto devices = getDevices();
+    auto iter = std::find_if(devices.begin(), devices.end(),
+        [this, deviceName](const std::string& d) {
+            auto settings = getDeviceSettings(d);
+            return settings.name == deviceName;
+        });
+    if (iter == devices.end()) {
+        qWarning() << "Couldn't find device: " << deviceName.c_str();
+        return {};
+    }
+    return *iter;
+}
+
 std::vector<std::string>
 AVModel::getSupportedAudioManagers() const
 {
