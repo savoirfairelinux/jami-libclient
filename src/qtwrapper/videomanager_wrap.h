@@ -1,5 +1,5 @@
 /******************************************************************************
- *    Copyright (C) 2014-2019 Savoir-faire Linux Inc.                                 *
+ *    Copyright (C) 2014-2019 Savoir-faire Linux Inc.                         *
  *   Author : Philippe Groarke <philippe.groarke@savoirfairelinux.com>        *
  *   Author : Alexandre Lision <alexandre.lision@savoirfairelinux.com>        *
  *                                                                            *
@@ -67,8 +67,6 @@ Q_SIGNALS:
     void startedDecoding(const QString &id, const QString &shmPath, int width, int height, bool isMixer);
     void stoppedDecoding(const QString &id, const QString &shmPath, bool isMixer);
 };
-
-
 
 /*
  * Proxy class for interface org.ring.Ring.VideoManager

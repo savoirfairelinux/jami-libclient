@@ -1,5 +1,5 @@
 /******************************************************************************
- *    Copyright (C) 2014-2019 Savoir-faire Linux Inc.                                 *
+ *    Copyright (C) 2014-2019 Savoir-faire Linux Inc.                         *
  *   Author : Philippe Groarke <philippe.groarke@savoirfairelinux.com>        *
  *   Author : Alexandre Lision <alexandre.lision@savoirfairelinux.com>        *
  *                                                                            *
@@ -366,6 +366,17 @@ public Q_SLOTS: // METHODS
     void stopSmartInfo()
     {
         DRing::stopSmartInfo();
+    }
+
+    bool switchInput(const QString &callId, const QString &resource)
+    {
+#ifdef ENABLE_VIDEO
+        return DRing::switchInput(callId.toStdString(), resource.toStdString());
+#else
+        Q_UNUSED(callId)
+        Q_UNUSED(resource)
+        return false;
+#endif
     }
 
 Q_SIGNALS: // SIGNALS
