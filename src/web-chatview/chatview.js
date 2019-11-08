@@ -1467,8 +1467,8 @@ function updateCallInteraction(message_div, message_object) {
     const callReceived = "<svg fill=\"#219d55\" height=\"24\" viewBox=\"0 0 24 24\" width=\"24\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M0 0h24v24H0z\" fill=\"none\"/><path d=\"M20 5.41L18.59 4 7 15.59V9H5v10h10v-2H8.41z\"/></svg>"
 
     const message_text = message_object["text"]
-    const message_direction = (message_text.toLowerCase().indexOf("incoming") !== -1) ? "in" : "out"
-    const missed = message_text.indexOf("Missed") !== -1
+    const message_direction = message_object["direction"]
+    const missed = message_text.indexOf("🕽") !== -1
 
     message_div.querySelector(".text").innerText = message_text.substring(2)
 
