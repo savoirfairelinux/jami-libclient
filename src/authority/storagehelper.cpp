@@ -235,7 +235,9 @@ setProfile(const std::string& accountId,
         qWarning().noquote() << "Can't open file for writing: " << filePath;
         return;
     }
-    QTextStream(&file) << QString::fromStdString(vcard);
+    QTextStream in(&file);
+    in.setCodec("UTF-8");
+    in << QString::fromStdString(vcard);
 }
 } // namespace vcard
 
@@ -284,6 +286,7 @@ getAccountAvatar(const std::string& accountId)
         return {};
     }
     QTextStream in(&file);
+    in.setCodec("UTF-8");
     const auto vCard = lrc::vCard::utils::toHashMap(in.readAll().toUtf8());
     const auto photo = (vCard.find(vCard::Property::PHOTO_PNG) == vCard.end()) ?
         vCard[vCard::Property::PHOTO_JPEG] : vCard[vCard::Property::PHOTO_PNG];
@@ -320,6 +323,7 @@ buildContactFromProfile(const std::string & accountId,
         }
     }
     QTextStream in(&file);
+    in.setCodec("UTF-8");
     QByteArray vcard = in.readAll().toUtf8();
     const auto vCard = lrc::vCard::utils::toHashMap(vcard);
     const auto alias = vCard[vCard::Property::FORMATTED_NAME];
