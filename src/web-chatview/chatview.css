@@ -281,7 +281,8 @@ body {
     top: 0;
     z-index: 1;
     /* hairline */
-    border: var(--hairline-thickness) solid var(--hairline-color);
+    border-top: var(--hairline-thickness) solid var(--hairline-color);
+    border-bottom: var(--hairline-thickness) solid var(--hairline-color);
 }
 
 #message {
@@ -1079,7 +1080,6 @@ video {
   .message_type_call {
     padding: 0;
   }
-
 
   .internal_mes_wrapper {
       max-width: 60%;
