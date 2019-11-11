@@ -193,14 +193,14 @@ public Q_SLOTS: // METHODS
 
     QString placeCall(const QString &accountID, const QString &to)
     {
-        emit newCallCreated(accountID, to, to);
+        Q_UNUSED(accountID, to)
         return to;
     }
 
 #ifdef ENABLE_LIBWRAP
     QString placeCall(const QString &accountID, const QString &to, const std::map<std::string, std::string>& VolatileCallDetails)
     {
-        emit newCallCreated(accountID, to, to);
+        Q_UNUSED(accountID, to, VolatileCallDetails)
         return to;
     }
 #else // dbus
@@ -210,7 +210,6 @@ public Q_SLOTS: // METHODS
        return to;
     }
 #endif // ENABLE_LIBWRAP
-
 
     void playDTMF(const QString &key)
     {
@@ -310,7 +309,6 @@ Q_SIGNALS: // SIGNALS
     void conferenceChanged(const QString &confID, const QString &state);
     void updatePlaybackScale(const QString &filepath, int position, int size);
     void conferenceRemoved(const QString &confID);
-    void newCallCreated(const QString &accountID, const QString &callID, const QString &to);
     void recordingStateChanged(const QString &callID, bool recordingState);
     void onRtcpReportReceived(const QString &callID, MapStringInt report);
     void audioMuted(const QString &callID, bool state);

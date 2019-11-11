@@ -108,11 +108,6 @@ public:
                     LOG_DRING_SIGNAL("conferenceRemoved",QString(confID.c_str()));
                     Q_EMIT conferenceRemoved(QString(confID.c_str()));
                 }),
-            exportable_callback<CallSignal::NewCallCreated>(
-                [this] (const std::string &accountID, const std::string &callID, const std::string &to) {
-                    LOG_DRING_SIGNAL3("newCallCreated",QString(accountID.c_str()), QString(callID.c_str()), QString(to.c_str()));
-                    Q_EMIT newCallCreated(QString(accountID.c_str()), QString(callID.c_str()), QString(to.c_str()));
-                }),
             exportable_callback<CallSignal::RecordingStateChanged>(
                 [this] (const std::string &callID, bool recordingState) {
                     LOG_DRING_SIGNAL2("recordingStateChanged",QString(callID.c_str()), recordingState);
@@ -392,7 +387,6 @@ Q_SIGNALS: // SIGNALS
     void conferenceChanged(const QString &confID, const QString &state);
     void updatePlaybackScale(const QString &filepath, int position, int size);
     void conferenceRemoved(const QString &confID);
-    void newCallCreated(const QString &accountID, const QString &callID, const QString &to);
     void recordingStateChanged(const QString &callID, bool recordingState);
     void onRtcpReportReceived(const QString &callID, MapStringInt report);
     void audioMuted(const QString &callID, bool state);
