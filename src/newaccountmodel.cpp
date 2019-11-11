@@ -249,6 +249,8 @@ NewAccountModel::setAlias(const std::string& accountId, const std::string& alias
     auto& accountInfo = account->second.first;
     accountInfo.profileInfo.alias = alias;
 
+    setAccountConfig(accountId, getAccountConfig(accountId));
+
     authority::storage::createOrUpdateProfile(accountInfo.id, accountInfo.profileInfo);
 
     emit profileUpdated(accountId);
