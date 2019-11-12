@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6006e040_e51d2c15",
+        "filename": "src/web-chatview/chatview.js",
+        "patchSetId": 2
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2019-11-12T19:55:25Z",
+      "side": 1,
+      "message": "Remove this",
+      "range": {
+        "startLine": 119,
+        "startChar": 4,
+        "endLine": 119,
+        "endChar": 29
+      },
+      "revId": "b12ba3b786aaabbdd1d47818cd1c2604fab8e7a6",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    }
+  ]
+}
