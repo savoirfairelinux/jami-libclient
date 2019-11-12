@@ -75,7 +75,6 @@ var canLazyLoad = false
 var linkifyOptions = {}
 if (use_qt) {
     messageBarInput.onpaste = pasteKeyDetected
-    wrapperOfNavbar.outerHTML = ""
     linkifyOptions = {
         attributes: null,
         className: "linkified",
@@ -349,6 +348,7 @@ function displayNavbar(isVisible) {
         navbar.classList.remove("hiddenState")
         document.body.style.setProperty("--navbar-size", undefined)
     } else {
+        console.log("hiddenState")
         navbar.classList.add("hiddenState")
         document.body.style.setProperty("--navbar-size", "0")
     }
@@ -369,7 +369,6 @@ function displayRecordControls(isVisible) {
         videoRecordButton.classList.add("hiddenState")
     }
 }
-
 
 /**
  * Hide or show message bar, and update body bottom padding accordingly.
