@@ -707,6 +707,17 @@ function youtube_id(url) {
 }
 
 /**
+ * Emojis in a <pre> without <b> can disappears in a gtk webkit container
+ * So for now, use this workaround.
+ */
+function replace_emojis(text) {
+    let emojis_regex = /(?:[\u2700-\u27bf]|(?:\ud83c[\udde6-\uddff]){2}|[\ud800-\udbff][\udc00-\udfff])[\ufe0e\ufe0f]?(?:[\u0300-\u036f\ufe20-\ufe23\u20d0-\u20f0]|\ud83c[\udffb-\udfff])?(?:\u200d(?:[^\ud800-\udfff]|(?:\ud83c[\udde6-\uddff]){2}|[\ud800-\udbff][\udc00-\udfff])[\ufe0e\ufe0f]?(?:[\u0300-\u036f\ufe20-\ufe23\u20d0-\u20f0]|\ud83c[\udffb-\udfff])?)*/g
+
+    text = text.replace(emojis_regex, (emoji) => "</pre><b>" + emoji + "</b><pre>")
+    return text
+}
+
+/**
  * Returns HTML message from the message text, cleaned and linkified.
  * @param message_text
  */
@@ -716,7 +727,11 @@ function getMessageHtml(message_text) {
     var linkified_message = linkifyHtml(escaped_message, linkifyOptions)  // eslint-disable-line no-undef
 
     const textPart = document.createElement("pre")
-    textPart.innerHTML = linkified_message
+    if (use_qt) {
+        textPart.innerHTML = linkified_message
+    } else {
+        textPart.innerHTML = replace_emojis(linkified_message)
+    }
 
     return textPart.outerHTML
 }
