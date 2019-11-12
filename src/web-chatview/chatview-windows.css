@@ -30,8 +30,12 @@
     --hairline-thickness: 2px;
 }
 
+body {
+    font-family: sans-serif;
+}
+
 #invite_contact_name {
-    font-weight: 500;
+    font-weight: 700;
 }
 
 .internal_mes_wrapper {
@@ -201,4 +205,17 @@ pre {
 
 #message {
     margin: 0 16px 2px 16px;
+}
+
+#nav-contactid-alias {
+    font-weight: 500;
+    font-size: 1em;
+    font-family: 'Segoe UI Emoji';
+}
+
+#nav-contactid-bestId {
+    font-weight: 100;
+    font-size: .7em;
+    font-family: Verdana;
+    color: #c0c0c0;
 }
