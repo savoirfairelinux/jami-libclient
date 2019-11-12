@@ -30,8 +30,31 @@
     --hairline-thickness: 2px;
 }
 
+body {
+    font-family: sans-serif;
+}
+
+#container {
+    max-width: 1000px;
+    margin: auto;
+}
+
+.nav-right {
+    float: right;
+}
+/* classic screens */
+@media screen and (max-width: 1920px), screen and (max-height: 1080px) {
+    .message_in {
+        padding-left: 0px;
+    }
+
+    .message_out {
+        padding-right: 0px;
+    }
+}
+
 #invite_contact_name {
-    font-weight: 500;
+    font-weight: 700;
 }
 
 .internal_mes_wrapper {
@@ -201,4 +224,25 @@ pre {
     display: flex;
     border-radius: 16px;
     cursor: auto;
+}
+
+#sendMessage {
+    padding: 7px;
+}
+
+#message {
+    margin: 0 16px 2px 16px;
+}
+
+#nav-contactid-alias {
+    font-weight: 500;
+    font-size: 1em;
+    font-family: 'Segoe UI Emoji';
+}
+
+#nav-contactid-bestId {
+    font-weight: 100;
+    font-size: .7em;
+    font-family: Verdana;
+    color: #c0c0c0;
 }
