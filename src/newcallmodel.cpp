@@ -654,7 +654,7 @@ NewCallModelPimpl::slotIncomingCall(const std::string& accountId, const std::str
     callInfo->isAudioOnly = callDetails["AUDIO_ONLY"] == "true" ? true : false;
     calls.emplace(callId, std::move(callInfo));
 
-    if (!linked.owner.confProperties.allowIncoming) {
+    if (!linked.owner.confProperties.allowIncoming && linked.owner.profileInfo.type == profile::Type::RING) {
         linked.refuse(callId);
         return;
     }
