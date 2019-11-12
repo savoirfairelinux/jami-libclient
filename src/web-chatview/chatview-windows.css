@@ -207,23 +207,15 @@ pre {
 .nav-button {
     width: 30px;
     height: 30px;
-    margin: 8px;
+    margin: 6px;
     padding: 2px;
-    display: flex;
-    cursor: pointer;
-    align-self: center;
-    border-radius: 16px;
 }
 
 .nav-button.deactivated {
     width: 30px;
     height: 30px;
-    margin: 8px;
+    margin: 6px;
     padding: 2px;
-    align-self: center;
-    display: flex;
-    border-radius: 16px;
-    cursor: auto;
 }
 
 #sendMessage {
