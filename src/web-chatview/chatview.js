@@ -116,47 +116,25 @@ function init_i18n(data) {
 }
 
 function set_titles() {
-    if (use_qt) {
-        backButton.title = "Hide chat view"
-        placeCallButton.title = "Place video call"
-        placeAudioCallButton.title = "Place audio call"
-        addToConversationsButton.title = "Add to conversations"
-        unbanButton.title = "Unban contact"
-        sendButton.title = "Send"
-        optionsButton.title = "Options"
-        backToBottomBtn.innerHTML = "'Jump to latest' &#9660;"
-        sendFileButton.title = "Send file"
-        videoRecordButton.title = "Leave video message"
-        audioRecordButton.title = "Leave audio message"
-        acceptButton.title = "Accept"
-        refuseButton.title = "Refuse"
-        blockButton.title = "Block"
-    } else {
-        backButton.title = i18n.gettext("Hide chat view")
-        placeCallButton.title = i18n.gettext("Place video call")
-        placeAudioCallButton.title = i18n.gettext("Place audio call")
-        addToConversationsButton.title = i18n.gettext("Add to conversations")
-        unbanButton.title = i18n.gettext("Unban contact")
-        sendButton.title = i18n.gettext("Send")
-        optionsButton.title = i18n.gettext("Options")
-        backToBottomBtn.innerHTML = `${i18n.gettext("Jump to latest")} &#9660;`
-        sendFileButton.title = i18n.gettext("Send file")
-        videoRecordButton.title = i18n.gettext("Leave video message")
-        audioRecordButton.title = i18n.gettext("Leave audio message")
-        acceptButton.title = i18n.gettext("Accept")
-        refuseButton.title = i18n.gettext("Refuse")
-        blockButton.title = i18n.gettext("Block")
-    }
+    console.log('set_titles')
+    backButton.title = i18n.gettext("Hide chat view")
+    placeCallButton.title = i18n.gettext("Place video call")
+    placeAudioCallButton.title = i18n.gettext("Place audio call")
+    addToConversationsButton.title = i18n.gettext("Add to conversations")
+    unbanButton.title = i18n.gettext("Unban contact")
+    sendButton.title = i18n.gettext("Send")
+    optionsButton.title = i18n.gettext("Options")
+    backToBottomBtn.innerHTML = `${i18n.gettext("Jump to latest")} &#9660;`
+    sendFileButton.title = i18n.gettext("Send file")
+    videoRecordButton.title = i18n.gettext("Leave video message")
+    audioRecordButton.title = i18n.gettext("Leave audio message")
+    acceptButton.title = i18n.gettext("Accept")
+    refuseButton.title = i18n.gettext("Refuse")
+    blockButton.title = i18n.gettext("Block")
 }
 
 function reset_message_bar_input() {
-    if (use_qt) {
-        messageBarInput.placeholder = "Type a message"
-    }
-    else {
-        messageBarInput.placeholder = i18n.gettext("Type a message")
-    }
-
+    messageBarInput.placeholder = i18n.gettext("Type a message")
 }
 
 function onScrolled_() {
@@ -281,12 +259,7 @@ function update_chatview_frame(accountEnabled, banned, temporary, alias, bestid)
         isTemporary = temporary
         if (temporary) {
             addToConvButton.style.display = "flex"
-            if (use_qt) {
-                messageBarInput.placeholder = "Note: an interaction will create a new contact."
-            }
-            else {
-                messageBarInput.placeholder = i18n.gettext("Note: an interaction will create a new contact.")
-            }
+            messageBarInput.placeholder = i18n.gettext("Note: an interaction will create a new contact.")
         } else {
             addToConvButton.style.display = ""
             reset_message_bar_input()
@@ -320,19 +293,16 @@ function showInvitation(contactAlias, contactId) {
             if (!inviteImage.classList.contains(`sender_image_${contactId}`)) {
                 inviteImage.classList.add(`sender_image_${contactId}`)
             }
-            invitationText.innerHTML = "<span id='invite_contact_name'>" + contactAlias + "</span> is not in your contacts<br/>"
-                + "Note: you can automatically accept this invitation by sending a message."
-            invitation.style.visibility = "visible"
         } else {
             const className = `sender_image_${contactId}`.replace(/@/g, "_").replace(/\./g, "_")
             if (!inviteImage.classList.contains(className)) {
                 inviteImage.classList.add(className)
             }
-            invitationText.innerHTML = "<b>"
-                + i18n.sprintf(i18n.gettext("%s is not in your contacts"), contactAlias)
-                + "</b><br/>"
-                + i18n.gettext("Note: you can automatically accept this invitation by sending a message.")
         }
+        invitationText.innerHTML = "<b>"
+            + i18n.sprintf(i18n.gettext("%s is not in your contacts"), contactAlias)
+            + "</b><br/>"
+            + i18n.gettext("Note: you can automatically accept this invitation by sending a message.")
         hasInvitation = true
         invitation.style.visibility = "visible"
     }
