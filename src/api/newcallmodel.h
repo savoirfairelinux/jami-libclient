@@ -225,6 +225,11 @@ public:
      */
     static std::string getSIPCallStatusString(const short& statusCode);
 
+    /**
+     * Set a call as the current call (hold other calls)
+     */
+    void setCurrentCall(const std::string& callId) const;
+
 Q_SIGNALS:
     /**
      * Emitted when a call state changes
