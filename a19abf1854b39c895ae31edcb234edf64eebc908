@@ -22,6 +22,30 @@
       "revId": "a19abf1854b39c895ae31edcb234edf64eebc908",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "03e3ef29_23788162",
+        "filename": "src/authority/storagehelper.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2019-11-13T15:46:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fa6fcdc5_e72d7aef",
+      "range": {
+        "startLine": 27,
+        "startChar": 0,
+        "endLine": 27,
+        "endChar": 21
+      },
+      "revId": "a19abf1854b39c895ae31edcb234edf64eebc908",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
