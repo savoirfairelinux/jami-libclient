@@ -609,30 +609,48 @@ conversationIdFromInteractionId(Database& db, unsigned int interactionId)
 void clearHistory(Database& db,
                   const std::string& conversationId)
 {
-    db.deleteFrom("interactions",
-                  "conversation=:conversation",
-                  {{":conversation", conversationId}});
+    try {
+        db.deleteFrom("interactions",
+                    "conversation=:conversation",
+                    {{":conversation", conversationId}});
+    } catch (Database::QueryDeleteError& e) {
+        qWarning() << "deleteFrom error: " << e.details().c_str();
+    }
 }
 
 void clearInteractionFromConversation(Database& db,
                                       const std::string& conversationId,
                                       const uint64_t& interactionId)
 {
-    db.deleteFrom("interactions",
-                  "conversation=:conversation AND id=:id",
-                  {{":conversation", conversationId},
-                  {":id", std::to_string(interactionId)}});
+    try {
+        db.deleteFrom("interactions",
+                    "conversation=:conversation AND id=:id",
+                    {{":conversation", conversationId},
+                    {":id", std::to_string(interactionId)}});
+    } catch (Database::QueryDeleteError& e) {
+        qWarning() << "deleteFrom error: " << e.details().c_str();
+    }
 }
 
 void clearAllHistory(Database& db)
 {
-    db.truncateTable("interactions");
+    try {
+        db.deleteFrom("interactions",
+                    "1=1",
+                    {});
+    } catch (Database::QueryDeleteError& e) {
+        qWarning() << "deleteFrom error: " << e.details().c_str();
+    }
 }
 
 void
 deleteObsoleteHistory(Database& db, long int date)
 {
-    db.deleteFrom("interactions", "timestamp<=:date", { {":date", std::to_string(date)} });
+    try {
+        db.deleteFrom("interactions", "timestamp<=:date", { {":date", std::to_string(date)} });
+    } catch (Database::QueryDeleteError& e) {
+        qWarning() << "deleteFrom error: " << e.details().c_str();
+    }
 }
 
 void
@@ -641,11 +659,15 @@ removeContact(Database& db, const std::string& contactUri)
     // Get common conversations
     auto conversations = getConversationsWithPeer(db, contactUri);
     // Remove conversations + interactions
-    for (const auto& conversationId: conversations) {
-        // Remove conversation
-        db.deleteFrom("conversations", "id=:id", {{":id", conversationId}});
-        // clear History
-        db.deleteFrom("interactions", "conversation=:id", {{":id", conversationId}});
+    try {
+        for (const auto& conversationId: conversations) {
+            // Remove conversation
+            db.deleteFrom("conversations", "id=:id", {{":id", conversationId}});
+            // clear History
+            db.deleteFrom("interactions", "conversation=:id", {{":id", conversationId}});
+        }
+    } catch (Database::QueryDeleteError& e) {
+        qWarning() << "deleteFrom error: " << e.details().c_str();
     }
 }
 
