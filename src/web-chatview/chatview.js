@@ -566,8 +566,6 @@ function sendMessage() {
             window.jsbridge.sendFile(file_src[1])
         }
 
-        sendContainer.innerHTML = ""
-        sendContainer.style.display = "none"
         reduce_send_container()
     }
 
@@ -2314,6 +2312,8 @@ function grow_send_container() {
 /* exported grow_send_container */
 function reduce_send_container() {
     exec_keeping_scroll_position(function () {
+        sendContainer.innerHTML = ""
+        sendContainer.style.display = "none"
         backToBottomBtnContainer.style.bottom = "var(--messagebar-size)"
         //6em
     }, [])
@@ -2331,7 +2331,6 @@ function remove(e) {
     e.parentNode.parentNode.removeChild(e.parentNode)
     if (sendContainer.innerHTML.length == 0) {
         reduce_send_container()
-        sendContainer.style.display = "none"
     }
 }
 
@@ -2409,4 +2408,33 @@ function setTheme(theme) {
     if (theme != "") {
         root.setAttribute("style", theme)
     }
+}
+
+/**
+ * Get the content of the send message text field as a string.
+ * This should be called and the client should wait for
+ * saveSendMessageContent before calling clearSendMessageContent
+ * and printHistory when changing conversations.
+ *
+ */
+/* exported requestSendMessageContent */
+function requestSendMessageContent() {
+    if (use_qt) {
+        window.jsbridge.saveSendMessageContent(messageBarInput.value)
+    } else {
+        window.prompt("SAVE:" + messageBarInput.value)
+    }
+}
+
+/**
+ * Sets the content of the send message text field.
+ * Use an empty string to clear.
+ *
+ * * @param contentStr  the content
+ */
+/* exported setSendMessageContent */
+function setSendMessageContent(contentStr) {
+    messageBarInput.value = contentStr
+    grow_text_area();
+    reduce_send_container();
 }
