@@ -45,6 +45,8 @@ namespace lrc
 
 using namespace api;
 
+std::atomic_bool lrc::api::Lrc::holdConferences;
+
 // To judge whether the call is finished or not depending on callState
 bool isFinished(const QString& callState);
 
@@ -65,6 +67,7 @@ public:
 
 Lrc::Lrc(MigrationCb willDoMigrationCb, MigrationCb didDoMigrationCb)
 {
+    lrc::api::Lrc::holdConferences.store(true);
 #ifndef ENABLE_LIBWRAP
     // Replace locale for timestamps
     std::locale::global(std::locale(""));
