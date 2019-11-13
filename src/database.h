@@ -218,14 +218,6 @@ public:
                     const std::string& where,
                     const std::map<std::string, std::string>& bindsWhere);
     /**
-     * Delete all rows from a table(truncate).
-     * @param table where to perfom the action on.
-     * @exception QueryDeleteError delete query failed.
-     *
-     * @note usually, identifiers between where and bindsWhere, are equals.
-     */
-    void truncateTable(const std::string& table);
-    /**
      * Select data from table.
      * @param select column(s) to select.e
      * @param table where to perfom the action on.

@@ -344,18 +344,6 @@ Database::deleteFrom(const std::string& table,                             // "t
         throw QueryDeleteError(query, table, where, bindsWhere);
 }
 
-void
-Database::truncateTable(const std::string& table)
-{
-    QSqlQuery query(db_);
-
-    auto prepareStr = std::string("TRUNCATE TABLE " + table);
-    query.prepare(prepareStr.c_str());
-
-    if (not query.exec())
-        throw QueryTruncateError(query, table);
-}
-
 Database::QueryError::QueryError(const QSqlQuery& query)
     : std::runtime_error(query.lastError().text().toStdString())
     , query(query)
