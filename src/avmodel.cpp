@@ -19,6 +19,7 @@
 #include "api/avmodel.h"
 
 // Std
+#include <algorithm>    // std::sort
 #include <chrono>
 #include <csignal>
 #include <iomanip> // for std::put_time
@@ -249,6 +250,7 @@ AVModel::getDeviceCapabilities(const std::string& deviceId) const
             while (itRates.hasNext()) {
                 rates.emplace_back(itRates.next().toFloat());
             }
+            std::sort(rates.begin(), rates.end(), std::greater<int>());
             channelCapabilities.emplace_back(
                 std::make_pair(resToRates.first.toStdString(), rates));
         }
