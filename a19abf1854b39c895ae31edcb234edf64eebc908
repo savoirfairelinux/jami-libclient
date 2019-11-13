@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fa6fcdc5_e72d7aef",
+        "filename": "src/authority/storagehelper.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 90
+      },
+      "writtenOn": "2019-11-13T15:37:00Z",
+      "side": 1,
+      "message": "this will always be included in storagehelper.h (until it won\u0027t exist at all)",
+      "range": {
+        "startLine": 27,
+        "startChar": 0,
+        "endLine": 27,
+        "endChar": 21
+      },
+      "revId": "a19abf1854b39c895ae31edcb234edf64eebc908",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    }
+  ]
+}
