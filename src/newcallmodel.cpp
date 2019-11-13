@@ -139,12 +139,9 @@ public:
      * Retrieve active conferences from the daemon and init the model
      */
     void initConferencesFromDaemon();
-    /**
-     * Set a call as the current call (hold other calls)
-     */
-    void setCurrentCall(const std::string& callId);
     bool manageCurrentCall_ {true};
     bool dontHoldConferences_ {false};
+    std::string currentCall_ {};
 
     std::map<std::string, std::string> pendingConferences_;
 public Q_SLOTS:
@@ -323,7 +320,7 @@ NewCallModel::togglePause(const std::string& callId) const
     if (call->status == call::Status::PAUSED) {
         if (call->type == call::Type::DIALOG) {
             CallManager::instance().unhold(callId.c_str());
-            pimpl_->setCurrentCall(callId);
+            setCurrentCall(callId);
         } else {
             CallManager::instance().unholdConference(callId.c_str());
         }
@@ -582,19 +579,35 @@ NewCallModelPimpl::initConferencesFromDaemon()
 }
 
 void
-NewCallModelPimpl::setCurrentCall(const std::string& callId)
+NewCallModel::setCurrentCall(const std::string& callId) const
 {
-    if (!manageCurrentCall_) return;
-    auto it = pendingConferences_.find(callId);
+    if (!pimpl_->manageCurrentCall_) return;
+    auto it = pimpl_->pendingConferences_.find(callId);
     // Set current call only if not adding this call
     // to a current conference
-    if (it != pendingConferences_.end()) return;
+    if (it != pimpl_->pendingConferences_.end()) return;
+
+    // Unhold call
+    if (!hasCall(callId)) return;
+    auto& call = pimpl_->calls[callId];
+    if (call->status == call::Status::PAUSED) {
+        auto& call = pimpl_->calls[callId];
+        if (call->type == call::Type::DIALOG) {
+            CallManager::instance().unhold(callId.c_str());
+        } else {
+            CallManager::instance().unholdConference(callId.c_str());
+        }
+    }
+    // The client should be able to set the current call multiple times
+    if (pimpl_->currentCall_ == callId) return;
+    pimpl_->currentCall_ = callId;
+
     std::vector<std::string> filterCalls;
     QStringList conferences = CallManager::instance().getConferenceList();
     for (const auto& confId : conferences) {
         QStringList callList = CallManager::instance().getParticipantList(confId);
-        foreach(const auto& callId, callList) {
-            filterCalls.emplace_back(callId.toStdString());
+        foreach(const auto& cid, callList) {
+            filterCalls.emplace_back(cid.toStdString());
         }
     }
     for (const auto& cid : Lrc::activeCalls()) {
@@ -603,7 +616,7 @@ NewCallModelPimpl::setCurrentCall(const std::string& callId)
             CallManager::instance().hold(cid.c_str());
         }
     }
-    if (dontHoldConferences_) {
+    if (pimpl_->dontHoldConferences_) {
         return;
     }
     for (const auto& confId : conferences) {
@@ -695,17 +708,18 @@ NewCallModelPimpl::slotCallStateChanged(const std::string& callId, const std::st
     // NOTE: signal emission order matters, always emit CallStatusChanged before CallEnded
     emit linked.callStatusChanged(callId, code);
 
-    if (call->status == call::Status::OUTGOING_RINGING) {
-        setCurrentCall(callId);
+    if (call->status == call::Status::OUTGOING_RINGING
+        && linked.owner.profileInfo.type != profile::Type::SIP) {
+        linked.setCurrentCall(callId);
     } else if (call->status == call::Status::ENDED) {
         emit linked.callEnded(callId);
     } else if (call->status == call::Status::IN_PROGRESS) {
         if (previousStatus == call::Status::INCOMING_RINGING
                 || previousStatus == call::Status::OUTGOING_RINGING) {
 
-            if (previousStatus == call::Status::INCOMING_RINGING)
-                    setCurrentCall(callId);
-
+            if (previousStatus == call::Status::INCOMING_RINGING
+                && linked.owner.profileInfo.type != profile::Type::SIP)
+                linked.setCurrentCall(callId);
             call->startTime = std::chrono::steady_clock::now();
             emit linked.callStarted(callId);
             sendProfile(callId);
