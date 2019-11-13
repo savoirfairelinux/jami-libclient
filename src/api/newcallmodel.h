@@ -148,7 +148,8 @@ public:
     void playDTMF(const std::string& callId, const std::string& value) const;
 
     /**
-     * Toggle pause on a call
+     * Toggle pause on a call.
+     * @warn only use this function for SIP calls
      * @param callId
      */
     void togglePause(const std::string& callId) const;
@@ -224,6 +225,15 @@ public:
      * @return status message
      */
     static std::string getSIPCallStatusString(const short& statusCode);
+
+    /**
+     * Set a call as the current call (hold other calls)
+     */
+    void setCurrentCall(const std::string& callId) const;
+    /**
+     * set to manage if conference should be put on hold durin another active call
+     */
+    void doNotHoldConferences(bool doNotHold);
 
 Q_SIGNALS:
     /**

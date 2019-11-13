@@ -1,0 +1,57 @@
+id: fefeab828e213a68
+alias: ""
+enable: true
+type: RING
+allCodecs: 3/1/2/
+mailbox: ""
+autoAnswer: false
+activeCallLimit: -1
+ringtoneEnabled: true
+ringtonePath: /usr/share/ring/ringtones/default.opus
+hasCustomUserAgent: false
+useragent: Jami Daemon
+displayName: ""
+hostname: bootstrap.jami.net
+upnpEnabled: false
+audioPortMax: 32766
+audioPortMin: 16384
+dtmfType: oversip
+interface: default
+publishAddr: ""
+publishPort: 5060
+sameasLocal: true
+videoEnabled: true
+videoPortMax: 65534
+videoPortMin: 49152
+stunEnabled: false
+stunServer: ""
+turnEnabled: true
+turnServer: turn.jami.net
+turnServerUserName: ring
+turnServerPassword: ring
+turnServerRealm: ring
+dhtPort: 8062
+dhtPublicInCalls: true
+allowPeersFromHistory: true
+allowPeersFromContact: true
+allowPeersFromTrusted: true
+Account.peerDiscovery: false
+Account.accountDiscovery: false
+Account.accountPublish: false
+proxyEnabled: false
+proxyServer: dhtproxy.jami.net:[80-100]
+proxyPushToken: ""
+RingNS.uri: ""
+Account.registredName: bfve
+Account.archivePath: archive.gz
+Account.archiveHasPassword: false
+ringAccountReceipt: "{\"id\":\"6e841ea9a329073e7268d4489ca0b0fe202ba6fd\",\"dev\":\"72df4b65a9a1369fd2db9dd5f7e4e5d7569c8895\",\"eth\":\"84f6e4ed9b7aeb9b2cb3c9bf4a95640896a6c25b\",\"announce\":\"gqJpZACjZGF0gqRib2R5hKNzZXEApW93bmVyxQImMIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEA34hzYWciSxMvESq4ThJ5Hiz5tkxXOkNavk7i+BXRf9Wh9CUK7AA0Qj5o32OyA7nIztcqMfHdV6zD5Z9hs2JsX1SS5AMx13AVXAQwUolyoerH6IJGx71ImEATn/kAniaD/Sc2ECHLFAm6FlLl49BCtLKgnzDwBKV5ItWhlaPzo9K4O06JlkfiGnlZbYA9Q2w2QDEpxFSbnSud52Xq3qIQYGMk8jR/PM+GNSAdt2J8MUqrL4MOBRnpiQtHgtYrC9+2Hkzd+HlhfJ9nLdT2g4Cz6UtqLDW4vPjCnvjJiMoiPhEP1+R+tubsUbRmG9bhX86LOE/h/rWne5hl2CbU1lY0y8XXh8L8xMAZ+yL0oFuDwIGIKGa8zLkU14ov/seeVS/lsSbEH8tKo6Uu7hvtf8ir3RCWLkzKGnWHIrmxT2x8fbWjWR+E4e21QZf3BlY4mKRfA6BLwpxHbRfXnpYcNgm4mdz5/vsCvdr65ztvVCoN1qr7YUqsFZ6eI5nvRyZl7LkFg0TQv2HIpMGamhiaEMVJ9zyzTWSvTWd+ZwrghuuvL2aWm2QY7T5ThFWFbRtPvvN2XB0Lg7lllWeoCVVJLK7wLFcbKExWHkv4tmFwffBRk2Vk6FFOBJtXYSM2x1wGkRyoaYRhuTKgmxVeZDWJiqTct85v66Tqimzk35zmSLD7ZpcCAwEAAaR0eXBlAKRkYXRhxBuBo2RldsQUct9LZamhNp/S253V9+Tl11aciJWjc2lnxQIA0KElt/s/yZkUorpruyhY/YOiKCZyKRABR99nF+vN8DkSv8lGMEsrG0jlX1cQfF3M9Pufck9/6MNXVk2kz97DqHBDNuLMGP7x3wTiiQ7MMcHC1MWSZovyUuQYjsHEatd8ba/nlCPIFCjPzr1Y/BvmpgS1h5btdfOq+jDgjEyyXfZMej/0TuwQRsU1jVKUvfLQguxO1vl/XdJ25tkqMhNnRCRUDjPOqUSyu9bqsp4ZsGDn/fmJ65wvwYpiihB5bi+T61+kJuMKQ/bCkAMXpwkP3pVcNMk6nIG4i63i7T9B/wJOUwqiJthgNY4+46e+neDEz4Cb9x/VTLqLUmxAJcs57G2aBuQ5bJyD0+krnzMyEQtxC2Vl8NVhQSegspCFYoAm4z3KtXKllI0wXzki9qrrnTSFyd4WI3X7sNwiDPjAeTSAgAcFgUcI0Ff+rmrDiJefNIuKVXd0Vq+ky0GvFjb0ZVd/t6I+zgQsdBoqgFemSaPRYpI9aQqGcqnzDnJIPIARda6DpXKeyyplVyiF9HWgPE3eqBqFR4Y1Pu5+Rl1vMwd/Juj85ZsUbO1CnlL/Vxjj0drA2idAMXdkJnT3IPTFc9IjxgYIRtByoF80Bibfj8h7f1a6mv23DYEUH4J6RsQ4cWWihtZUQtfxRVJWXEocVqVtRRP24HxO3Sg3yv4iQYQ=\"}"
+ringAccountReceiptSignature: !!binary "zf5euLFiejsRJ47zrhmXdE8i2NJrNX/yrBAmidTwOq+oV24q+F8+xpNmuRo1LINKGLG5HLQ5MnQncajJJc3P0oa/UCMADLoEVRLhd52AvQx9M+o2oMEmC1/MtcmDSWcHrZL5QPYB8wgqVGkJhypbH54rEMP+6J/2sPlTP6ThF5Qcv0I9V5AqPDbxmRRUQL86+2IIe4LqeRk24LPjT+PgUpcUODmWRpRj0gavt/KHOqsy3W/L1mSE3nYXuB4XlNBct2nOyMOvfOl4kULvi/5QarFO2CifvowUpA7mwskyz57eMDzFKqNfo/buJupMNpn3dgXeOYJqGjIDrUbf19wMrzDbjHMZ0X1vYeSiqbMsZHoPebtGEP1j9hh3PgyFrKi5HuMYKOIhFzgJMhnBtXDV6G/WaCDCDBwBO54J8MXM6MPPMdMfntcloJmfiDyD2mJr02OQyT199WAH5Vh5snOMW2tb7fYStEpfC5lQ4hBxFD6vkXq11W/m7MOFCgNjt4FJQXA6rspY2KM5X8f7MOhK0C32+PSp/Kdf2MbpO3uTyykUfvJUTnhmVToqurX5IG6lcE5o7hYK5S7eSH1p2kkKQvQQ4LR5ry5nzuE6r4yz0YN/XcSTAF9aEYWEMvI/G3cKVah/l4rpsSt78/B6Oqu5OCU1HetLeFO1hqF+1popH4s="
+Account.deviceName: SFLs-iPhone-3
+Account.managerUri: ""
+Account.managerUsername: ""
+tls:
+  calist: ""
+  certificate: ring_device.crt
+  password: ""
+  privateKey: ring_device.key
