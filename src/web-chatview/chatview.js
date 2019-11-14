@@ -1612,6 +1612,9 @@ function buildNewMessage(message_object) {
     if (message_type === "data_transfer") {
         if (isImage(message_text) && delivery_status === "finished" && displayLinksEnabled) {
             var errorHandler = function () {
+                if (use_qt) {
+                    return
+                }
                 var wrapper = message_div.querySelector(".internal_mes_wrapper")
                 var message_wrapper = message_div.querySelector(".message_wrapper")
                 if (message_wrapper) {
