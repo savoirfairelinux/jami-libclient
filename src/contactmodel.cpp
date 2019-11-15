@@ -385,11 +385,13 @@ ContactModelPimpl::updateTemporaryMessage(const std::string& mes, const std::str
 void
 ContactModelPimpl::searchRingContact(const URI& query)
 {
+    std::string uriID = query.format(URI::Section::USER_INFO | URI::Section::HOSTNAME | URI::Section::PORT).toStdString();
     if (query.isEmpty()) {
+        // This will remove the temporary item
+        emit linked.modelUpdated(uriID);
         return;
     }
 
-    std::string uriID = query.format(URI::Section::USER_INFO | URI::Section::HOSTNAME | URI::Section::PORT).toStdString();
     if (query.protocolHint() == URI::ProtocolHint::RING) {
         // no lookup, this is a ring infoHash
         for (auto &i : contacts) {
@@ -413,13 +415,14 @@ ContactModelPimpl::searchRingContact(const URI& query)
 void
 ContactModelPimpl::searchSipContact(const URI& query)
 {
+    std::string uriID = query.format(URI::Section::USER_INFO | URI::Section::HOSTNAME | URI::Section::PORT).toStdString();
     if (query.isEmpty()) {
+        // This will remove the temporary item
+        emit linked.modelUpdated(uriID);
         return;
     }
 
-    std::string uriID = query.format(URI::Section::USER_INFO | URI::Section::HOSTNAME | URI::Section::PORT).toStdString();
     auto& temporaryContact = contacts[""];
-
     {
         std::lock_guard<std::mutex> lk(contactsMtx_);
         if (contacts.find(uriID) == contacts.end()) {
