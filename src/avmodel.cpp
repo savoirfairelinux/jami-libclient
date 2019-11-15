@@ -638,8 +638,13 @@ video::RenderedDevice
 AVModel::getCurrentRenderedDevice(const std::string& call_id) const
 {
     video::RenderedDevice result;
-    MapStringString callDetails = CallManager::instance()
-        .getCallDetails(call_id.c_str());
+    MapStringString callDetails;
+    QStringList conferences = CallManager::instance().getConferenceList();
+    if (conferences.indexOf(call_id.c_str()) != -1) {
+        callDetails = CallManager::instance().getConferenceDetails(call_id.c_str());
+    } else {
+        callDetails = CallManager::instance().getCallDetails(call_id.c_str());
+    }
     if (!callDetails.contains("VIDEO_SOURCE")) {
         return result;
     }
