@@ -2344,17 +2344,28 @@ function pasteKeyDetected(e) {
 }
 
 // Set the curser to a target position
-function setCaretPosition(elem, caretPos) {
-    var range
+function setCaretPosition(el, caretPos) {
 
-    if (elem.createTextRange) {
-        range = elem.createTextRange()
-        range.move("character", caretPos)
-        range.select()
-    } else {
-        elem.focus()
-        if (elem.selectionStart !== undefined) {
-            elem.setSelectionRange(caretPos, caretPos)
+    if (el !== null) {
+        el.value = el.value;
+        // this is used to not only get "focus", but
+        // to make sure we don't have it everything selected
+
+        if (el.createTextRange) {
+            var range = el.createTextRange();
+            range.move('character', caretPos);
+            range.select();
+        }
+
+        else {
+            if (el.selectionStart || el.selectionStart === 0) {
+                el.focus();
+                el.setSelectionRange(caretPos, caretPos);
+            }
+
+            else {
+                el.focus();
+            }
         }
     }
 }
@@ -2367,6 +2378,7 @@ function replaceText(text) {
     var output = [currentContent.slice(0, start), text, currentContent.slice(end)].join("")
     input.value = output
     setCaretPosition(input, start + text.length)
+    grow_text_area()
 }
 
 /**
