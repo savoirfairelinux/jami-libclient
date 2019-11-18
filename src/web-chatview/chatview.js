@@ -2344,17 +2344,33 @@ function pasteKeyDetected(e) {
 }
 
 // Set the curser to a target position
-function setCaretPosition(elem, caretPos) {
-    var range
+function setCaretPosition(el, caretPos) {
 
-    if (elem.createTextRange) {
-        range = elem.createTextRange()
-        range.move("character", caretPos)
-        range.select()
-    } else {
-        elem.focus()
-        if (elem.selectionStart !== undefined) {
-            elem.setSelectionRange(caretPos, caretPos)
+    if (el !== null) {
+        el.value = el.value;
+        // ^ this is used to not only get "focus", but
+        // to make sure we don't have it everything -selected-
+        // (it causes an issue in chrome, and having it doesn't hurt any other browser)
+
+        if (el.createTextRange) {
+            var range = el.createTextRange();
+            range.move('character', caretPos);
+            range.select();
+            return true;
+        }
+
+        else {
+            // (el.selectionStart === 0 added for Firefox bug)
+            if (el.selectionStart || el.selectionStart === 0) {
+                el.focus();
+                el.setSelectionRange(caretPos, caretPos);
+                return true;
+            }
+
+            else { // fail city, fortunately this never happens (as far as I've tested) :)
+                el.focus();
+                return false;
+            }
         }
     }
 }
@@ -2367,6 +2383,7 @@ function replaceText(text) {
     var output = [currentContent.slice(0, start), text, currentContent.slice(end)].join("")
     input.value = output
     setCaretPosition(input, start + text.length)
+    grow_text_area()
 }
 
 /**
