@@ -2367,6 +2367,7 @@ function replaceText(text) {
     var output = [currentContent.slice(0, start), text, currentContent.slice(end)].join("")
     input.value = output
     setCaretPosition(input, start + text.length)
+    grow_text_area()
 }
 
 /**
