@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1b9eaa8d_724a285c",
+        "filename": "src/newcallmodel.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 269,
+      "author": {
+        "id": 90
+      },
+      "writtenOn": "2019-11-18T21:59:42Z",
+      "side": 1,
+      "message": "I think this should be application-wide(accountModel?). + doNotHoldConferences -\u003e holdConferences?",
+      "range": {
+        "startLine": 269,
+        "startChar": 14,
+        "endLine": 269,
+        "endChar": 34
+      },
+      "revId": "d4ebc00db1067ff816c2fd0e8f933c9bbe9bcf44",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    }
+  ]
+}
