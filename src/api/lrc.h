@@ -22,6 +22,7 @@
 #include <memory>
 #include <vector>
 #include <string>
+#include <atomic>
 
 // Lrc
 #include "typedefs.h"
@@ -109,6 +110,11 @@ public:
      * Helper: get subcalls list for a conference from daemon
      */
     static std::vector<std::string> getConferenceSubcalls(const std::string& id);
+
+    /**
+     * Preference
+     */
+    static std::atomic_bool holdConferences;
 
   private:
     std::unique_ptr<LrcPimpl> lrcPimpl_;
