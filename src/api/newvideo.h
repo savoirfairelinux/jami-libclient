@@ -136,7 +136,7 @@ public:
      */
     Frame currentFrame() const;
 
-#if defined(ENABLE_LIBWRAP) || (defined __APPLE__)
+#if defined(ENABLE_LIBWRAP)
     /**
      * @return current avframe
      */
