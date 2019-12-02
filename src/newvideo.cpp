@@ -163,7 +163,7 @@ Renderer::currentFrame() const
     return result;
 }
 
-#if defined(ENABLE_LIBWRAP) || (defined __APPLE__)
+#if defined(ENABLE_LIBWRAP)
 std::unique_ptr<AVFrame, void(*)(AVFrame*)>
 Renderer::currentAVFrame() const
 {
