@@ -2442,3 +2442,17 @@ function setSendMessageContent(contentStr) {
     grow_text_area();
     reduce_send_container();
 }
+
+/**
+ * Sets the messageBarInput to be autofocus or not
+ *
+ * * @param setAutoFocus - set if auto focus is on or not
+ */
+/* exported setSendMessageContent */
+function setMessageBarInputAutoFocus(setAutoFocus) {
+    if (setAutoFocus) {
+        messageBarInput.focus()
+    } else {
+        messageBarInput.blur()
+    }
+}
