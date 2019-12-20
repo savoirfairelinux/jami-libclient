@@ -709,42 +709,14 @@ function getMessageHtml(message_text) {
 function getMessageDeliveryStatusText(message_delivery_status) {
     var formatted_delivery_status = message_delivery_status
 
-    if (use_qt) {
-        switch (message_delivery_status) {
-        case "sending":
-        case "ongoing":
-            formatted_delivery_status = "Sending<svg overflow='visible' viewBox='0 -2 16 14' height='16px' width='16px'><circle class='status_circle anim-first' cx='4' cy='12' r='1'/><circle class='status_circle anim-second' cx='8' cy='12' r='1'/><circle class='status_circle anim-third' cx='12' cy='12' r='1'/></svg>"
-            break
-        case "failure":
+    if (message_delivery_status === "failure") {
+        if (use_qt) {
             formatted_delivery_status = "Failure <svg overflow='visible' viewBox='0 -2 16 14' height='16px' width='16px'><path class='status-x x-first' stroke='#AA0000' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' fill='none' d='M4,4 L12,12'/><path class='status-x x-second' stroke='#AA0000' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' fill='none' d='M12,4 L4,12'/></svg>"
-            break
-        case "sent":
-        case "finished":
-        case "unknown":
-        case "read":
-            formatted_delivery_status = ""
-            break
-        default:
-            break
+        } else {
+            formatted_delivery_status = i18n.gettext("Failure") + "<svg overflow='visible' viewBox='0 -2 16 14' height='16px' width='16px'><path class='status-x x-first' stroke='#AA0000' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' fill='none' d='M4,4 L12,12'/><path class='status-x x-second' stroke='#AA0000' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' fill='none' d='M12,4 L4,12'/></svg>"
         }
     } else {
-        switch (message_delivery_status) {
-        case "sending":
-        case "ongoing":
-            formatted_delivery_status = i18n.gettext("Sending") + "<svg overflow='visible' viewBox='0 -2 16 14' height='16px' width='16px'><circle class='status_circle anim-first' cx='4' cy='12' r='1'/><circle class='status_circle anim-second' cx='8' cy='12' r='1'/><circle class='status_circle anim-third' cx='12' cy='12' r='1'/></svg>"
-            break
-        case "failure":
-            formatted_delivery_status = i18n.gettext("Failure") + "<svg overflow='visible' viewBox='0 -2 16 14' height='16px' width='16px'><path class='status-x x-first' stroke='#AA0000' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' fill='none' d='M4,4 L12,12'/><path class='status-x x-second' stroke='#AA0000' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' fill='none' d='M12,4 L4,12'/></svg>"
-            break
-        case "sent":
-        case "finished":
-        case "unknown":
-        case "read":
-            formatted_delivery_status = ""
-            break
-        default:
-            break
-        }
+        formatted_delivery_status = ""
     }
 
     return formatted_delivery_status
@@ -1372,18 +1344,10 @@ function updateTextInteraction(message_div, delivery_status) {
     if (!message_div.querySelector(".message_text")) return // media
     const message_text = message_div.querySelector(".message_text")
     const message_in = message_div.querySelector(".message_in")
-    var sending = message_div.querySelector(".sending")
     switch(delivery_status)
     {
     case "ongoing":
     case "sending":
-        if (!sending) {
-            sending = document.createElement("div")
-            sending.setAttribute("class", "sending")
-            sending.innerHTML = "<svg overflow=\"hidden\" viewBox=\"0 -2 16 14\" height=\"16px\" width=\"16px\"><circle class=\"status_circle anim-first\" cx=\"4\" cy=\"12\" r=\"1\"/><circle class=\"status_circle anim-second\" cx=\"8\" cy=\"12\" r=\"1\"/><circle class=\"status_circle anim-third\" cx=\"12\" cy=\"12\" r=\"1\"/></svg>"
-            // add sending animation to message
-            message_div.insertBefore(sending, message_div.querySelector(".menu_interaction"))
-        }
         message_text.style.color = "#888"
         break
     case "failure":
@@ -1399,7 +1363,6 @@ function updateTextInteraction(message_div, delivery_status) {
             message_text.style.color = "var(--message-in-txt)"
         else
             message_text.style.color = "var(--message-out-txt)"
-        if (sending) sending.style.display = "none"
         break
     case "sent":
     case "finished":
@@ -1409,7 +1372,6 @@ function updateTextInteraction(message_div, delivery_status) {
             message_text.style.color = "var(--message-in-txt)"
         else
             message_text.style.color = "var(--message-out-txt)"
-        if (sending) sending.style.display = "none"
         break
     default:
         break
