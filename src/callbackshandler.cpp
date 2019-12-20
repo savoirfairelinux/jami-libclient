@@ -99,6 +99,12 @@ CallbacksHandler::CallbacksHandler(const Lrc& parent)
             Qt::QueuedConnection);
 
     connect(&ConfigurationManager::instance(),
+            &ConfigurationManagerInterface::volatileAccountDetailsChanged,
+            this,
+            &CallbacksHandler::slotVolatileAccountDetailsChanged,
+            Qt::QueuedConnection);
+
+    connect(&ConfigurationManager::instance(),
             &ConfigurationManagerInterface::accountsChanged,
             this,
             &CallbacksHandler::slotAccountsChanged);
@@ -341,6 +347,13 @@ CallbacksHandler::slotAccountDetailsChanged(const QString& accountId,
                                             const MapStringString& details)
 {
     emit accountDetailsChanged(accountId.toStdString(), convertMap(details));
+}
+
+void
+CallbacksHandler::slotVolatileAccountDetailsChanged(const QString& accountId,
+                                                    const MapStringString& details)
+{
+    emit volatileAccountDetailsChanged(accountId.toStdString(), convertMap(details));
 }
 
 void

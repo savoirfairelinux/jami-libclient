@@ -122,6 +122,13 @@ Q_SIGNALS:
     void accountDetailsChanged(const std::string& accountId,
                                const std::map<std::string,std::string>& details);
     /**
+     * Connect this signal to know when the volatile account details have changed
+     * @param accountId the one who changes
+     * @param details the new details
+     */
+    void volatileAccountDetailsChanged(const std::string& accountId,
+                                       const std::map<std::string,std::string>& details);
+    /**
      * Connect this signal to know when the accounts list changed
      */
     void accountsChanged();
@@ -335,6 +342,13 @@ private Q_SLOTS:
      */
     void slotAccountDetailsChanged(const QString& accountId,
                                    const MapStringString& details);
+    /**
+     * Emit volatileAccountDetailsChanged
+     * @param accountId
+     * @param details
+     */
+    void slotVolatileAccountDetailsChanged(const QString& accountId,
+                                           const MapStringString& details);
     /**
      * Emit accountsChanged
      */
