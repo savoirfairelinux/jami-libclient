@@ -127,6 +127,12 @@ public Q_SLOTS:
     void slotAccountDetailsChanged(const std::string& accountID, const std::map<std::string, std::string>& details);
 
     /**
+     * @param accountId
+     * @param details
+     */
+    void slotVolatileAccountDetailsChanged(const std::string& accountID, const std::map<std::string, std::string>& details);
+
+    /**
      * Emit nameRegistrationEnded
      * @param accountId
      * @param status
@@ -357,6 +363,7 @@ NewAccountModelPimpl::NewAccountModelPimpl(NewAccountModel& linked,
     connect(&callbacksHandler, &CallbacksHandler::accountsChanged, this, &NewAccountModelPimpl::updateAccounts);
     connect(&callbacksHandler, &CallbacksHandler::accountStatusChanged, this, &NewAccountModelPimpl::slotAccountStatusChanged);
     connect(&callbacksHandler, &CallbacksHandler::accountDetailsChanged, this, &NewAccountModelPimpl::slotAccountDetailsChanged);
+    connect(&callbacksHandler, &CallbacksHandler::volatileAccountDetailsChanged, this, &NewAccountModelPimpl::slotVolatileAccountDetailsChanged);
     connect(&callbacksHandler, &CallbacksHandler::exportOnRingEnded, this, &NewAccountModelPimpl::slotExportOnRingEnded);
     connect(&callbacksHandler, &CallbacksHandler::nameRegistrationEnded, this, &NewAccountModelPimpl::slotNameRegistrationEnded);
     connect(&callbacksHandler, &CallbacksHandler::registeredNameFound, this, &NewAccountModelPimpl::slotRegisteredNameFound);
@@ -461,6 +468,22 @@ NewAccountModelPimpl::slotAccountDetailsChanged(const std::string& accountId, co
         emit linked.profileUpdated(accountId);
     }
     emit linked.accountStatusChanged(accountId);
+}
+
+void
+NewAccountModelPimpl::slotVolatileAccountDetailsChanged(const std::string& accountId, const std::map<std::string, std::string>& details)
+{
+    auto account = accounts.find(accountId);
+    if (account == accounts.end()) {
+        throw std::out_of_range("NewAccountModelPimpl::slotVolatileAccountDetailsChanged, can't find " + accountId);
+    }
+    auto& accountInfo = account->second.first;
+
+    auto new_usernameIt = details.find(DRing::Account::VolatileProperties::REGISTERED_NAME);
+    if (new_usernameIt == details.end())
+        return;
+    accountInfo.registeredName = new_usernameIt->second;
+    emit linked.profileUpdated(accountId);
 }
 
 void
