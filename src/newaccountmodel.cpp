@@ -475,7 +475,8 @@ NewAccountModelPimpl::slotVolatileAccountDetailsChanged(const std::string& accou
 {
     auto account = accounts.find(accountId);
     if (account == accounts.end()) {
-        throw std::out_of_range("NewAccountModelPimpl::slotVolatileAccountDetailsChanged, can't find " + accountId);
+        qWarning() << "NewAccountModelPimpl::slotVolatileAccountDetailsChanged, can't find " << accountId.c_str();
+        return;
     }
     auto& accountInfo = account->second.first;
 
