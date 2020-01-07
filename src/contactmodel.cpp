@@ -158,8 +158,9 @@ public Q_SLOTS:
      * Listen from callModel when an incoming call arrives.
      * @param fromId
      * @param callId
+     * @param displayName
      */
-    void slotIncomingCall(const std::string& fromId, const std::string& callId);
+    void slotIncomingCall(const std::string& fromId, const std::string& callId, const std::string& displayname);
 
     /**
      * Listen from callbacksHandler for new account interaction and add pending contact if not present
@@ -811,7 +812,7 @@ ContactModelPimpl::slotIncomingContactRequest(const std::string& accountId,
 }
 
 void
-ContactModelPimpl::slotIncomingCall(const std::string& fromId, const std::string& callId)
+ContactModelPimpl::slotIncomingCall(const std::string& fromId, const std::string& callId, const std::string& displayname)
 {
     bool emitContactAdded = false;
     {
@@ -828,6 +829,12 @@ ContactModelPimpl::slotIncomingCall(const std::string& fromId, const std::string
         emit linked.contactAdded(fromId);
         if (linked.owner.profileInfo.type == profile::Type::RING) {
             emit behaviorController.newTrustRequest(linked.owner.id, fromId);
+        }
+    }
+    if(!displayname.empty()){
+        if (contacts.find(fromId) != contacts.end()) {
+            auto sipContact = contacts[fromId];
+            sipContact.profileInfo.alias = displayname;
         }
     }
 

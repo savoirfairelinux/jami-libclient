@@ -103,10 +103,12 @@ Q_SIGNALS:
      * @param accountId the one who receives the call
      * @param callId the call id
      * @param fromUri the caller uri
+     * @param displayName the display name of incoming call
      */
     void incomingCall(const std::string& accountId,
                       const std::string& callId,
-                      const std::string& fromUri);
+                      const std::string& fromUri,
+                      const std::string& displayName);
     /**
      * Connect this signal to know when a call is updated
      * @param callId the call id
