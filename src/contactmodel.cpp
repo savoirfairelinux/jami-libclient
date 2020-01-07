@@ -82,9 +82,10 @@ public:
      * @note: the contactId must corresponds to a profile in the database.
      * @param contactId
      * @param type
+     * @param displayName
      * @param banned whether contact is banned or not
      */
-    void addToContacts(const std::string& contactId, const profile::Type& type, bool banned = false);
+    void addToContacts(const std::string& contactId, const profile::Type& type, const std::string& displayName = "", bool banned = false);
     /**
      * Helpers for searchContact. Search for a given RING or SIP contact.
      */
@@ -158,8 +159,9 @@ public Q_SLOTS:
      * Listen from callModel when an incoming call arrives.
      * @param fromId
      * @param callId
+     * @param displayName
      */
-    void slotIncomingCall(const std::string& fromId, const std::string& callId);
+    void slotIncomingCall(const std::string& fromId, const std::string& callId, const std::string& displayname);
 
     /**
      * Listen from callbacksHandler for new account interaction and add pending contact if not present
@@ -530,7 +532,7 @@ ContactModelPimpl::fillWithJamiContacts() {
     for (auto contact_info : contacts_vector) {
         std::lock_guard<std::mutex> lk(contactsMtx_);
         bool banned = contact_info["banned"] == "true" ? true : false;
-        addToContacts(contact_info["id"].toStdString(), linked.owner.profileInfo.type, banned);
+        addToContacts(contact_info["id"].toStdString(), linked.owner.profileInfo.type, "", banned);
     }
 
     // Add pending contacts
@@ -637,7 +639,7 @@ ContactModelPimpl::slotContactAdded(const std::string& accountId, const std::str
                 bannedContacts.erase(it);
             }
 
-            addToContacts(contactUri, linked.owner.profileInfo.type, false);
+            addToContacts(contactUri, linked.owner.profileInfo.type, "", false);
         }
     }
 
@@ -701,10 +703,10 @@ ContactModelPimpl::slotContactRemoved(const std::string& accountId, const std::s
 }
 
 void
-ContactModelPimpl::addToContacts(const std::string& contactUri, const profile::Type& type, bool banned)
+ContactModelPimpl::addToContacts(const std::string& contactUri, const profile::Type& type, const std::string& displayName, bool banned)
 {
     // create a vcard if necessary
-    profile::Info profileInfo{ contactUri, {}, {}, linked.owner.profileInfo.type };
+    profile::Info profileInfo{ contactUri, displayName, {}, linked.owner.profileInfo.type };
     storage::createOrUpdateProfile(linked.owner.id, profileInfo, true);
 
     auto contactInfo = storage::buildContactFromProfile(linked.owner.id, contactUri, type);
@@ -811,17 +813,24 @@ ContactModelPimpl::slotIncomingContactRequest(const std::string& accountId,
 }
 
 void
-ContactModelPimpl::slotIncomingCall(const std::string& fromId, const std::string& callId)
+ContactModelPimpl::slotIncomingCall(const std::string& fromId, const std::string& callId, const std::string& displayname)
 {
     bool emitContactAdded = false;
     {
         std::lock_guard<std::mutex> lk(contactsMtx_);
-        if (contacts.find(fromId) == contacts.end()) {
+        auto it = contacts.find(fromId);
+        if (it == contacts.end()) {
             // Contact not found, load profile from database.
             // The conversation model will create an entry and link the incomingCall.
             auto type = (linked.owner.profileInfo.type == profile::Type::RING) ? profile::Type::PENDING : profile::Type::SIP;
-            addToContacts(fromId, type, false);
+            addToContacts(fromId, type, displayname, false);
             emitContactAdded = true;
+        } else {
+            // Update the display name
+            if (!displayname.empty()) {
+                it->second.profileInfo.alias = displayname;
+                storage::createOrUpdateProfile(linked.owner.id, it->second.profileInfo, true);
+            }
         }
     }
     if (emitContactAdded) {
@@ -851,13 +860,13 @@ ContactModelPimpl::slotNewAccountMessage(std::string& accountId,
             if (linked.owner.profileInfo.type == profile::Type::SIP) {
                 std::string potentialContact = sipUriReceivedFilter(from);
                 if (potentialContact.empty()) {
-                    addToContacts(from, profile::Type::SIP, false);
+                    addToContacts(from, profile::Type::SIP, "", false);
                 } else {
                     // equivalent uri exist, use that uri
                     from = potentialContact;
                 }
             } else {
-                addToContacts(from, profile::Type::PENDING, false);
+                addToContacts(from, profile::Type::PENDING, "", false);
                 emitNewTrust = true;
             }
         }
@@ -937,7 +946,7 @@ ContactModelPimpl::slotNewAccountTransfer(long long dringId, datatransfer::Info 
             auto type = (linked.owner.profileInfo.type == profile::Type::RING)
                             ? profile::Type::PENDING
                             : profile::Type::SIP;
-            addToContacts(info.peerUri, type, false);
+            addToContacts(info.peerUri, type, "", false);
             emitNewTrust = (linked.owner.profileInfo.type == profile::Type::RING);
         }
     }

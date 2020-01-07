@@ -149,8 +149,9 @@ public Q_SLOTS:
      * @param accountId account which receives the call
      * @param callId
      * @param fromId peer uri
+     * @param displayname
      */
-    void slotIncomingCall(const std::string& accountId, const std::string& callId, const std::string& fromId);
+    void slotIncomingCall(const std::string& accountId, const std::string& callId, const std::string& fromId, const std::string& displayname);
     /**
      * Listen from CallbacksHandler when a call got a new state
      * @param callId
@@ -649,7 +650,7 @@ NewCallModel::hangupCallsAndConferences()
 }
 
 void
-NewCallModelPimpl::slotIncomingCall(const std::string& accountId, const std::string& callId, const std::string& fromId)
+NewCallModelPimpl::slotIncomingCall(const std::string& accountId, const std::string& callId, const std::string& fromId, const std::string& displayname)
 {
     if (linked.owner.id != accountId) {
         return;
@@ -674,7 +675,7 @@ NewCallModelPimpl::slotIncomingCall(const std::string& accountId, const std::str
         return;
     }
 
-    emit linked.newIncomingCall(fromId, callId);
+    emit linked.newIncomingCall(fromId, callId, displayname);
 
     // HACK. BECAUSE THE DAEMON DOESN'T HANDLE THIS CASE!
     if (linked.owner.confProperties.autoAnswer) {
