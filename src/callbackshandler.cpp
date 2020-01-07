@@ -323,16 +323,22 @@ CallbacksHandler::slotIncomingContactRequest(const QString& accountId,
 void
 CallbacksHandler::slotIncomingCall(const QString &accountId, const QString &callId, const QString &fromUri)
 {
+    std::string displayname;
     if (fromUri.contains("ring.dht")) {
+        auto qDisplayname = fromUri.left(fromUri.indexOf("<") + 1);
+        if (qDisplayname.size() > 2) {
+            displayname = qDisplayname.left(qDisplayname.indexOf("<") - 1).toStdString();
+        }
         auto fromQString = fromUri.right(50);
         fromQString = fromQString.left(40);
-        emit incomingCall(accountId.toStdString(), callId.toStdString(), fromQString.toStdString());
+        emit incomingCall(accountId.toStdString(), callId.toStdString(), fromQString.toStdString(), displayname);
     } else {
-        auto left = fromUri.indexOf("<")+1;
+        auto left = fromUri.indexOf("<") + 1;
         auto right = fromUri.indexOf("@");
         auto fromQString = fromUri.mid(left, right-left);
+        displayname = fromUri.left(fromUri.indexOf("<") - 1).toStdString();
 
-        emit incomingCall(accountId.toStdString(), callId.toStdString(), fromQString.toStdString());
+        emit incomingCall(accountId.toStdString(), callId.toStdString(), fromQString.toStdString(), displayname);
     }
 }
 
