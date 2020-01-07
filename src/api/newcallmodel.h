@@ -251,8 +251,9 @@ Q_SIGNALS:
      * Emitted when a call is incoming
      * @param callId
      * @param fromId the peer uri
+     * @param displayname
      */
-    void newIncomingCall(const std::string& fromId, const std::string& callId) const;
+    void newIncomingCall(const std::string& fromId, const std::string& callId, const std::string& displayname) const;
     /**
      * Emitted when a call is added to a conference
      * @param callId
