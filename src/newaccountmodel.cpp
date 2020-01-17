@@ -188,6 +188,16 @@ NewAccountModel::getAccountList() const
     return accountsId;
 }
 
+VectorMapStringString api::NewAccountModel::getSIPAccountCredentials(const std::string& accountId) const
+{
+    return ConfigurationManager::instance().getCredentials(QString::fromStdString(accountId));
+}
+
+void api::NewAccountModel::setSIPAccountCredentials(const std::string& accountId, VectorMapStringString& infoVect) const
+{
+    ConfigurationManager::instance().setCredentials(accountId.c_str(), infoVect);
+}
+
 void
 NewAccountModel::setAccountEnabled(const std::string& accountId, bool enabled) const
 {
