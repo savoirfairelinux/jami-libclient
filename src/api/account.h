@@ -95,103 +95,104 @@ enum class TlsMethod {
 };
 
 struct ConfProperties_t {
-    std::string             mailbox;
-    std::string             dtmfType;
-    bool                    autoAnswer;
-    int                     activeCallLimit;
-    std::string             hostname;
-    std::string             username;
-    std::string             routeset;
-    std::string             password;
-    std::string             realm;
-    std::string             localInterface;
-    std::string             deviceId;
-    std::string             deviceName;
-    std::string             managerUri;
-    std::string             managerUsername;
-    bool                    publishedSameAsLocal;
-    int                     localPort;
-    int                     publishedPort;
-    std::string             publishedAddress;
-    std::string             userAgent;
-    bool                    upnpEnabled;
-    bool                    hasCustomUserAgent;
-    bool                    allowIncoming;
-    std::string             archivePassword;
-    bool                    archiveHasPassword;
-    std::string             archivePath;
-    std::string             archivePin;
-    bool                    proxyEnabled;
-    std::string             proxyServer;
-    std::string             proxyPushToken;
-    bool                    peerDiscovery;
-    bool                    accountDiscovery;
-    bool                    accountPublish;
-    int                     registrationExpire;
+    std::string                                       mailbox;
+    std::string                                       dtmfType;
+    bool                                              autoAnswer;
+    int                                               activeCallLimit;
+    std::string                                       hostname;
+    std::string                                       username;
+    std::string                                       routeset;
+    std::string                                       password;
+    std::string                                       realm;
+    std::string                                       localInterface;
+    std::string                                       deviceId;
+    std::string                                       deviceName;
+    std::string                                       managerUri;
+    std::string                                       managerUsername;
+    bool                                              publishedSameAsLocal;
+    int                                               localPort;
+    int                                               publishedPort;
+    std::string                                       publishedAddress;
+    std::string                                       userAgent;
+    bool                                              upnpEnabled;
+    bool                                              hasCustomUserAgent;
+    bool                                              allowIncoming;
+    std::string                                       archivePassword;
+    bool                                              archiveHasPassword;
+    std::string                                       archivePath;
+    std::string                                       archivePin;
+    bool                                              proxyEnabled;
+    std::string                                       proxyServer;
+    std::string                                       proxyPushToken;
+    bool                                              peerDiscovery;
+    bool                                              accountDiscovery;
+    bool                                              accountPublish;
+    int                                               registrationExpire;
+    std::vector<std::map<std::string, std::string>>   credentials;
     struct Audio_t {
-        int                 audioPortMax;
-        int                 audioPortMin;
+        int                                           audioPortMax;
+        int                                           audioPortMin;
     } Audio;
     struct Video_t {
-        bool                videoEnabled;
-        int                 videoPortMax;
-        int                 videoPortMin;
+        bool                                          videoEnabled;
+        int                                           videoPortMax;
+        int                                           videoPortMin;
     } Video;
     struct STUN_t {
-        std::string         server;
-        bool                enable;
+        std::string                                   server;
+        bool                                          enable;
     } STUN;
     struct TURN_t {
-        std::string         server;
-        bool                enable;
-        std::string         username;
-        std::string         password;
-        std::string         realm;
+        std::string                                   server;
+        bool                                          enable;
+        std::string                                   username;
+        std::string                                   password;
+        std::string                                   realm;
     } TURN;
     struct Presence_t {
-        bool                presencePublishSupported;
-        bool                presenceSubscribeSupported;
-        bool                presenceEnabled;
+        bool                                          presencePublishSupported;
+        bool                                          presenceSubscribeSupported;
+        bool                                          presenceEnabled;
     } Presence;
     struct Ringtone_t {
-        std::string         ringtonePath;
-        bool                ringtoneEnabled;
+        std::string                                   ringtonePath;
+        bool                                          ringtoneEnabled;
     } Ringtone;
     struct SRTP_t {
-        KeyExchangeProtocol keyExchange;
-        bool                enable;
-        bool                rtpFallback;
+        KeyExchangeProtocol                           keyExchange;
+        bool                                          enable;
+        bool                                          rtpFallback;
     } SRTP;
     struct TLS_t {
-        int                 listenerPort;
-        bool                enable;
-        int                 port;
-        std::string         certificateListFile;
-        std::string         certificateFile;
-        std::string         privateKeyFile;
-        std::string         password;
-        TlsMethod           method;
-        std::string         ciphers;
-        std::string         serverName;
-        bool                verifyServer;
-        bool                verifyClient;
-        bool                requireClientCertificate;
-        int                 negotiationTimeoutSec;
+        int                                           listenerPort;
+        bool                                          enable;
+        int                                           port;
+        std::string                                   certificateListFile;
+        std::string                                   certificateFile;
+        std::string                                   privateKeyFile;
+        std::string                                   password;
+        TlsMethod                                     method;
+        std::string                                   ciphers;
+        std::string                                   serverName;
+        bool                                          verifyServer;
+        bool                                          verifyClient;
+        bool                                          requireClientCertificate;
+        int                                           negotiationTimeoutSec;
     } TLS;
     struct DHT_t {
-        int                 port;
-        bool                PublicInCalls;
-        bool                AllowFromTrusted;
+        int                                           port;
+        bool                                          PublicInCalls;
+        bool                                          AllowFromTrusted;
     } DHT;
     struct RingNS_t {
-        std::string         uri;
-        std::string         account;
+        std::string                                   uri;
+        std::string                                   account;
     } RingNS;
     struct Registration_t {
-        int                 expire;
+        int                                           expire;
     } Registration;
 
-    MapStringString         toDetails() const;
+    MapStringString                                   toDetails() const;
 };
 
 // Possible account export status

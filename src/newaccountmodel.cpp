@@ -222,14 +222,26 @@ NewAccountModel::setAccountConfig(const std::string& accountId,
     if (accountInfo.profileInfo.type == profile::Type::RING) {
         details[ConfProperties::USERNAME] = toQString(accountInfo.profileInfo.uri).prepend((accountInfo.profileInfo.type == profile::Type::RING) ? "ring:" : "");
     } else if (accountInfo.profileInfo.type == profile::Type::SIP) {
-        MapStringString credentials;
-        credentials[ConfProperties::USERNAME] = toQString(confProperties.username);
-        credentials[ConfProperties::PASSWORD] = toQString(confProperties.password);
-        credentials[ConfProperties::REALM] = confProperties.realm.empty()? QString("*") : toQString(confProperties.realm);
-        QVector<MapStringString> credentialsVec;
-        credentialsVec.append(credentials);
-        ConfigurationManager::instance().setCredentials(accountId.c_str(), credentialsVec);
+        VectorMapStringString finalCred;
+
+        std::map<std::string, std::string> credentials;
+        credentials[ConfProperties::USERNAME] = confProperties.username;
+        credentials[ConfProperties::PASSWORD] = confProperties.password;
+        credentials[ConfProperties::REALM] = confProperties.realm.empty() ? "*" : confProperties.realm;
+
+        auto credentialsVec = confProperties.credentials;
+        credentialsVec[0] = credentials;
+        for (auto const &i : credentialsVec) {
+            QMap<QString, QString> credMap;
+            for (auto const &j : i) {
+                credMap[j.first.c_str()] = j.second.c_str();
+            }
+            finalCred.push_back(credMap);
+        }
+
+        ConfigurationManager::instance().setCredentials(accountId.c_str(), finalCred);
         details[ConfProperties::USERNAME] = toQString(confProperties.username);
+        accountInfo.confProperties.credentials = credentialsVec;
     }
     configurationManager.setAccountDetails(QString::fromStdString(accountId), details);
 }
@@ -620,6 +632,18 @@ NewAccountModelPimpl::addToAccounts(const std::string& accountId,
     // Fill account::Info struct with details from daemon
     MapStringString details = ConfigurationManager::instance().getAccountDetails(accountId.c_str());
     newAccInfo.fromDetails(details);
+
+    // Fill account::Info::confProperties credentials
+    std::vector<std::map<std::string, std::string>> credToStore;
+    for (auto const &i : ConfigurationManager::instance().getCredentials(accountId.c_str())) {
+        std::map<std::string, std::string> credMap;
+        for (auto const &j : i.toStdMap()) {
+            credMap[j.first.toStdString()] = j.second.toStdString();
+        }
+        credToStore.push_back(credMap);
+    }
+
+    newAccInfo.confProperties.credentials.swap(credToStore);
 
     // Init models for this account
     newAccInfo.accountModel = &linked;

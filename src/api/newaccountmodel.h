@@ -65,12 +65,14 @@ public:
      * @return a std::vector<std::string>.
      */
     std::vector<std::string> getAccountList() const;
+
     /**
      * get account informations associated to an accountId.
      * @param accountId.
      * @return a const account::Info& structure.
      */
     const account::Info& getAccountInfo(const std::string& accountId) const;
+
     /**
      * flag account corresponding to passed id as freeable.
      */
