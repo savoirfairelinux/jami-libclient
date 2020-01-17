@@ -188,6 +188,16 @@ NewAccountModel::getAccountList() const
     return accountsId;
 }
 
+VectorMapStringString api::NewAccountModel::getSIPAccountCredentials(const std::string& accountId) const
+{
+    return ConfigurationManager::instance().getCredentials(QString::fromStdString(accountId));
+}
+
+void api::NewAccountModel::setSIPAccountCredentials(const std::string& accountId, VectorMapStringString& infoVect) const
+{
+    ConfigurationManager::instance().setCredentials(accountId.c_str(), infoVect);
+}
+
 void
 NewAccountModel::setAccountEnabled(const std::string& accountId, bool enabled) const
 {
@@ -226,8 +236,8 @@ NewAccountModel::setAccountConfig(const std::string& accountId,
         credentials[ConfProperties::USERNAME] = toQString(confProperties.username);
         credentials[ConfProperties::PASSWORD] = toQString(confProperties.password);
         credentials[ConfProperties::REALM] = confProperties.realm.empty()? QString("*") : toQString(confProperties.realm);
-        QVector<MapStringString> credentialsVec;
-        credentialsVec.append(credentials);
+        auto credentialsVec = getSIPAccountCredentials(accountId.c_str());
+        credentialsVec[0] = credentials;
         ConfigurationManager::instance().setCredentials(accountId.c_str(), credentialsVec);
         details[ConfProperties::USERNAME] = toQString(confProperties.username);
     }
