@@ -128,6 +128,7 @@ struct ConfProperties_t {
     bool                    accountDiscovery;
     bool                    accountPublish;
     int                     registrationExpire;
+    VectorMapStringString   credentials;
     struct Audio_t {
         int                 audioPortMax;
         int                 audioPortMin;

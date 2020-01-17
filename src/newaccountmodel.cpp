@@ -226,10 +226,9 @@ NewAccountModel::setAccountConfig(const std::string& accountId,
         credentials[ConfProperties::USERNAME] = toQString(confProperties.username);
         credentials[ConfProperties::PASSWORD] = toQString(confProperties.password);
         credentials[ConfProperties::REALM] = confProperties.realm.empty()? QString("*") : toQString(confProperties.realm);
-        QVector<MapStringString> credentialsVec;
-        credentialsVec.append(credentials);
+        auto credentialsVec = confProperties.credentials;
+        credentialsVec[0] = credentials;
         ConfigurationManager::instance().setCredentials(accountId.c_str(), credentialsVec);
-        details[ConfProperties::USERNAME] = toQString(confProperties.username);
     }
     configurationManager.setAccountDetails(QString::fromStdString(accountId), details);
 }
@@ -620,6 +619,9 @@ NewAccountModelPimpl::addToAccounts(const std::string& accountId,
     // Fill account::Info struct with details from daemon
     MapStringString details = ConfigurationManager::instance().getAccountDetails(accountId.c_str());
     newAccInfo.fromDetails(details);
+
+    // Fill account::Info::confProperties credentials
+    newAccInfo.confProperties.credentials = ConfigurationManager::instance().getCredentials(accountId.c_str());
 
     // Init models for this account
     newAccInfo.accountModel = &linked;
