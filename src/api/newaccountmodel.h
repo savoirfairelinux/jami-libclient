@@ -65,12 +65,28 @@ public:
      * @return a std::vector<std::string>.
      */
     std::vector<std::string> getAccountList() const;
+
+    /**
+     * get sip account credentials information associated to the accountId.
+     * @param accountId.
+     * @return a VectorMapStringString
+     */
+    VectorMapStringString getSIPAccountCredentials(const std::string& accountId) const;
+
+    /**
+     * set sip account credentials information associated to the accountId.
+     * @param accountId.
+     * @return a VectorMapStringString
+     */
+    void setSIPAccountCredentials(const std::string& accountId, VectorMapStringString& infoVect) const;
+
     /**
      * get account informations associated to an accountId.
      * @param accountId.
      * @return a const account::Info& structure.
      */
     const account::Info& getAccountInfo(const std::string& accountId) const;
+
     /**
      * flag account corresponding to passed id as freeable.
      */
