@@ -249,6 +249,14 @@ Q_SIGNALS:
      */
     void migrationEnded(const std::string& accountId, bool ok);
 
+    /**
+     * Emit codecListChanged
+     * @param accountId
+     * @param activated_codec
+     */
+    void activeCodecListChanged(const std::string& accountId, std::vector<unsigned> activated_codec);
+
+
 private:
     std::unique_ptr<NewAccountModelPimpl> pimpl_;
 };

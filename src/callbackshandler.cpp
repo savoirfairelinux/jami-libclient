@@ -115,6 +115,12 @@ CallbacksHandler::CallbacksHandler(const Lrc& parent)
             &CallbacksHandler::slotRegistrationStateChanged,
             Qt::QueuedConnection);
 
+    connect(&ConfigurationManager::instance(),
+            &ConfigurationManagerInterface::activeCodecListChanged,
+            this,
+            &CallbacksHandler::slotActiveCodecListChanged,
+            Qt::QueuedConnection);
+
     connect(&CallManager::instance(),
             &CallManagerInterface::incomingCall,
             this,
@@ -378,6 +384,13 @@ CallbacksHandler::slotRegistrationStateChanged(const QString& accountId,
     (void) detail_str;
     emit accountStatusChanged(accountId.toStdString(), lrc::api::account::to_status(registration_state.toStdString()));
 }
+
+void
+CallbacksHandler::slotActiveCodecListChanged(const QString& accountId, QVector<unsigned> activated_codec)
+{
+    emit activeCodecListChanged(accountId.toStdString(), activated_codec.toStdVector());
+}
+
 
 void
 CallbacksHandler::slotIncomingMessage(const QString& callId,
