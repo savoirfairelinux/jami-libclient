@@ -118,6 +118,14 @@ public:
      */
     void bitrate(const unsigned int& codecid, double bitrate);
 
+Q_SIGNALS:
+    /**
+     * Emit codecListChanged
+     * @param accountId
+     * @param activated_codecs
+     */
+    void activeCodecListChanged(const std::string& accountId, std::vector<unsigned> activated_codec);
+
 private:
     std::unique_ptr<NewCodecModelPimpl> pimpl_;
 };

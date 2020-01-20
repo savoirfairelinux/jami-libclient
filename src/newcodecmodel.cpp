@@ -41,7 +41,7 @@ class NewCodecModelPimpl: public QObject
 {
     Q_OBJECT
 public:
-    NewCodecModelPimpl(const NewCodecModel& linked, const CallbacksHandler& callbacksHandler);
+    NewCodecModelPimpl(NewCodecModel& linked, const CallbacksHandler& callbacksHandler);
     ~NewCodecModelPimpl();
 
     void loadFromDaemon();
@@ -53,13 +53,22 @@ public:
     std::mutex videoCodecsMtx;
 
     const CallbacksHandler& callbacksHandler;
-    const NewCodecModel& linked;
+    NewCodecModel& linked;
 
     void setActiveCodecs();
     void setCodecDetails(const Codec& codec, bool isAudio);
 
 private:
     void addCodec(const unsigned int& id, const QVector<unsigned int>& activeCodecs);
+
+public Q_SLOTS:
+    /**
+     * Emit codecListChanged
+     * @param accountId
+     * @param activated_codecs
+     */
+    void slotActiveCodecListChanged(const std::string& accountId, std::vector<unsigned> activated_codecs);
+
 };
 
 NewCodecModel::NewCodecModel(const account::Info& owner, const CallbacksHandler& callbacksHandler)
@@ -264,11 +273,12 @@ NewCodecModel::bitrate(const unsigned int& codecId, double bitrate)
     pimpl_->setCodecDetails(finalCodec, isAudio);
 }
 
-NewCodecModelPimpl::NewCodecModelPimpl(const NewCodecModel& linked, const CallbacksHandler& callbacksHandler)
+NewCodecModelPimpl::NewCodecModelPimpl(NewCodecModel& linked, const CallbacksHandler& callbacksHandler)
 : linked(linked)
 , callbacksHandler(callbacksHandler)
 {
     codecsList_ = ConfigurationManager::instance().getCodecList();
+    connect(&callbacksHandler, &CallbacksHandler::activeCodecListChanged, this, &NewCodecModelPimpl::slotActiveCodecListChanged);
     loadFromDaemon();
 }
 
@@ -280,22 +290,8 @@ NewCodecModelPimpl::~NewCodecModelPimpl()
 void
 NewCodecModelPimpl::loadFromDaemon()
 {
-    {
-        std::unique_lock<std::mutex> lock(audioCodecsMtx);
-        audioCodecs.clear();
-    }
-    {
-        std::unique_lock<std::mutex> lock(videoCodecsMtx);
-        videoCodecs.clear();
-    }
     QVector<unsigned int> activeCodecs = ConfigurationManager::instance().getActiveCodecList(linked.owner.id.c_str());
-    for (const auto& id : activeCodecs) {
-        addCodec(id, activeCodecs);
-    }
-    for (const auto& id : codecsList_) {
-        if (activeCodecs.indexOf(id) != -1) continue;
-        addCodec(id, activeCodecs);
-    }
+    slotActiveCodecListChanged(linked.owner.id, activeCodecs.toStdVector());
 }
 
 void
@@ -364,6 +360,29 @@ NewCodecModelPimpl::setCodecDetails(const Codec& codec, bool isAudio)
     details[ DRing::Account::ConfProperties::CodecInfo::MAX_QUALITY ] = codec.max_quality.c_str();
     details[ DRing::Account::ConfProperties::CodecInfo::AUTO_QUALITY_ENABLED] = codec.auto_quality_enabled? "true" : "false";
     ConfigurationManager::instance().setCodecDetails(linked.owner.id.c_str(), codec.id, details);
+}
+
+void
+NewCodecModelPimpl::slotActiveCodecListChanged(const std::string& accountID, std::vector<unsigned> activated_codecs)
+{
+    {
+        std::unique_lock<std::mutex> lock(audioCodecsMtx);
+        audioCodecs.clear();
+    }
+    {
+        std::unique_lock<std::mutex> lock(videoCodecsMtx);
+        videoCodecs.clear();
+    }
+
+    for (const auto& id : activated_codecs) {
+        addCodec(id, QVector<unsigned>::fromStdVector(activated_codecs));
+    }
+    for (const auto& id : codecsList_) {
+        if (std::find(activated_codecs.begin(), activated_codecs.end(), id) != activated_codecs.end()) continue;
+        addCodec(id, QVector<unsigned>::fromStdVector(activated_codecs));
+    }
+
+    emit linked.activeCodecListChanged(accountID, activated_codecs);
 }
 
 } // namespace lrc

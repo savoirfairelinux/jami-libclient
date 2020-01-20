@@ -25,6 +25,7 @@
 
 // Qt
 #include <qobject.h>
+#include <QtCore/QVector>
 
 // Lrc
 #include "typedefs.h"
@@ -292,6 +293,13 @@ Q_SIGNALS:
      */
     void voiceMailNotify(const std::string& accountId, int newCount, int oldCount, int urgentCount);
 
+    /**
+     * Emitted activated codec list changed
+     * @param accountId
+     * @param activated_codecs
+     */
+    void activeCodecListChanged(const std::string& accountId, std::vector<unsigned> activated_codecs);
+
 private Q_SLOTS:
     /**
      * Emit newAccountMessage
@@ -367,6 +375,14 @@ private Q_SLOTS:
                                       const QString& registration_state,
                                       unsigned detail_code,
                                       const QString& detail_str);
+
+    /**
+     * Emit codecListChanged
+     * @param accountId
+     * @param activated_codecs
+     */
+    void slotActiveCodecListChanged(const QString& accountId, QVector<unsigned> activated_codecs);
+
     /**
      * Get the URI of the peer and emit incomingCall
      * @param accountId account linked
