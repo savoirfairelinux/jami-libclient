@@ -155,6 +155,13 @@ public Q_SLOTS:
      * @param ok
      */
     void slotMigrationEnded(const std::string& accountId, bool ok);
+
+    /**
+     * Emit codecListChanged
+     * @param accountId
+     * @param activated_codec
+     */
+    void slotActiveCodecListChanged(const std::string& accountId, std::vector<unsigned> activated_codec);
 };
 
 NewAccountModel::NewAccountModel(Lrc& lrc,
@@ -368,6 +375,7 @@ NewAccountModelPimpl::NewAccountModelPimpl(NewAccountModel& linked,
     connect(&callbacksHandler, &CallbacksHandler::nameRegistrationEnded, this, &NewAccountModelPimpl::slotNameRegistrationEnded);
     connect(&callbacksHandler, &CallbacksHandler::registeredNameFound, this, &NewAccountModelPimpl::slotRegisteredNameFound);
     connect(&callbacksHandler, &CallbacksHandler::migrationEnded, this, &NewAccountModelPimpl::slotMigrationEnded);
+    connect(&callbacksHandler, &CallbacksHandler::activeCodecListChanged, this, &NewAccountModelPimpl::slotActiveCodecListChanged);
 }
 
 NewAccountModelPimpl::~NewAccountModelPimpl()
@@ -451,6 +459,16 @@ NewAccountModelPimpl::slotAccountStatusChanged(const std::string& accountID, con
         accountInfo.status = status;
         emit linked.accountStatusChanged(accountID);
     }
+}
+
+void
+NewAccountModelPimpl::slotActiveCodecListChanged(const std::string& accountID, std::vector<unsigned> activated_codec)
+{
+    auto account = accounts.find(accountID);
+    if (account == accounts.end()) {
+        throw std::out_of_range("NewAccountModelPimpl::slotAccountDetailsChanged, can't find " + accountID);
+    }
+    emit linked.activeCodecListChanged(accountID, activated_codec);
 }
 
 void

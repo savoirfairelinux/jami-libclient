@@ -20,6 +20,7 @@
 
 #include <QtCore/QObject>
 #include <QtCore/QByteArray>
+#include <QtCore/QVector>
 #include <QtCore/QList>
 #include <QtCore/QMap>
 #include <QtCore/QTimer>
@@ -171,6 +172,10 @@ public:
             exportable_callback<DebugSignal::MessageSend>(
                 [this](const std::string& message) {
                     Q_EMIT this->debugMessageReceived(message);
+                }),
+            exportable_callback<ConfigurationSignal::ActiveCodecListChanged>(
+                [this] (const std::string& account_id, std::vector<unsigned> activated_codec) {
+                    Q_EMIT this->activeCodecListChanged(QString(account_id.c_str()), QVector<unsigned>::fromStdVector(activated_codec));
                 }),
         };
 
@@ -735,6 +740,7 @@ Q_SIGNALS: // SIGNALS
     void dataTransferEvent(qulonglong transfer_id, uint code);
     void deviceRevocationEnded(const QString& accountId, const QString& deviceId, int status);
     void debugMessageReceived(const std::string& message);
+    void activeCodecListChanged(const QString& accountId, QByteArray& payload);
 };
 
 namespace org { namespace ring { namespace Ring {
