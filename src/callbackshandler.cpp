@@ -256,7 +256,7 @@ CallbacksHandler::slotNewAccountMessage(const QString& accountId,
     }
 
     auto accountId2 = accountId.toStdString();
-    auto from2 = from.toStdString();
+    auto from2 = QString(from).replace("@ring.dht", "").toStdString();
 
     emit newAccountMessage(accountId2, from2, stdPayloads);
 }
@@ -385,10 +385,9 @@ CallbacksHandler::slotIncomingMessage(const QString& callId,
                                       const QMap<QString,QString>& interaction)
 {
     std::string from2;
-    if (from.contains("ring.dht")) {
-        from2 = from.left(40).toStdString();
-    }
-    else {
+    if (from.contains("@ring.dht")) {
+        from2 = QString(from).replace("@ring.dht", "").toStdString();
+    } else {
         auto left = from.indexOf(":")+1;
         auto right = from.indexOf("@");
         from2 = from.mid(left, right-left).toStdString();
