@@ -240,8 +240,9 @@ public Q_SLOTS: // METHODS
         return MapStringString();
     }
 
-    VectorUInt getCodecList()
+    VectorUInt getCodecList(const QString& accountId)
     {
+        Q_UNUSED(accountId)
         return QVector<unsigned int>();
     }
 

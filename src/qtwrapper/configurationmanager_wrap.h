@@ -256,8 +256,8 @@ public Q_SLOTS: // METHODS
         return temp;
     }
 
-    VectorUInt getCodecList() {
-        return QVector<unsigned int>::fromStdVector(DRing::getCodecList());
+    VectorUInt getCodecList(const QString& accountID) {
+        return QVector<unsigned int>::fromStdVector(DRing::getCodecList(accountID.toStdString()));
     }
 
     VectorMapStringString getContacts(const QString &accountID) {

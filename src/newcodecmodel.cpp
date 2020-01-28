@@ -275,7 +275,7 @@ NewCodecModelPimpl::NewCodecModelPimpl(const NewCodecModel& linked, const Callba
 : linked(linked)
 , callbacksHandler(callbacksHandler)
 {
-    QVector<unsigned int> codecsList = ConfigurationManager::instance().getCodecList();
+    QVector<unsigned int> codecsList = ConfigurationManager::instance().getCodecList(linked.owner.id.c_str());
     QVector<unsigned int> activeCodecs = ConfigurationManager::instance().getActiveCodecList(linked.owner.id.c_str());
     for (const auto& id : activeCodecs) {
         addCodec(id, activeCodecs);
