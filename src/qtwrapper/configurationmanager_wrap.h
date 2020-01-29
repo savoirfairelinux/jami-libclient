@@ -126,7 +126,11 @@ public:
             exportable_callback<ConfigurationSignal::DeviceRevocationEnded>(
                 [this] (const std::string &accountId, const std::string &device, int status) {
                     Q_EMIT this->deviceRevocationEnded(QString(accountId.c_str()), QString(device.c_str()), status);
-            }),
+                }),
+            exportable_callback<ConfigurationSignal::AccountAvatarReceived>(
+                [this](const std::string& accountId, const std::string& userPhoto) {
+                    Q_EMIT this->accountAvatarReceived(QString(accountId.c_str()), QString(userPhoto.c_str()));
+                }),
             exportable_callback<ConfigurationSignal::ExportOnRingEnded>(
                 [this] (const std::string &accountId, int status, const std::string &pin) {
                     Q_EMIT this->exportOnRingEnded(QString(accountId.c_str()), status, QString(pin.c_str()));
@@ -734,6 +738,7 @@ Q_SIGNALS: // SIGNALS
     void contactRemoved(const QString &accountID, const QString &uri, bool banned);
     void dataTransferEvent(qulonglong transfer_id, uint code);
     void deviceRevocationEnded(const QString& accountId, const QString& deviceId, int status);
+    void accountAvatarReceived(const QString& accountId, const QString& userPhoto);
     void debugMessageReceived(const QString& message);
 };
 
