@@ -155,6 +155,13 @@ public Q_SLOTS:
      * @param ok
      */
     void slotMigrationEnded(const QString& accountId, bool ok);
+
+    /**
+     * Emit accountAvatarReceived
+     * @param accountId
+     * @param userPhoto
+     */
+    void slotAccountAvatarReceived(const QString& accountId, const QString& userPhoto);
 };
 
 NewAccountModel::NewAccountModel(Lrc& lrc,
@@ -380,6 +387,7 @@ NewAccountModelPimpl::NewAccountModelPimpl(NewAccountModel& linked,
     connect(&callbacksHandler, &CallbacksHandler::nameRegistrationEnded, this, &NewAccountModelPimpl::slotNameRegistrationEnded);
     connect(&callbacksHandler, &CallbacksHandler::registeredNameFound, this, &NewAccountModelPimpl::slotRegisteredNameFound);
     connect(&callbacksHandler, &CallbacksHandler::migrationEnded, this, &NewAccountModelPimpl::slotMigrationEnded);
+    connect(&callbacksHandler, &CallbacksHandler::accountAvatarReceived, this, &NewAccountModelPimpl::slotAccountAvatarReceived);
 }
 
 NewAccountModelPimpl::~NewAccountModelPimpl()
@@ -595,6 +603,12 @@ NewAccountModelPimpl::slotMigrationEnded(const QString& accountId, bool ok)
         accountInfo.status = lrc::api::account::to_status(daemonStatus);
     }
     emit linked.migrationEnded(accountId, ok);
+}
+
+void
+NewAccountModelPimpl::slotAccountAvatarReceived(const QString& accountId, const QString& userPhoto)
+{
+    linked.setAvatar(accountId, userPhoto);
 }
 
 void
