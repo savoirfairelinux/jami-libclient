@@ -852,6 +852,7 @@ Q_SIGNALS: // SIGNALS
     void contactRemoved(const QString &accountId, const QString &uri, bool banned);
     void dataTransferEvent(uint64_t transfer_id, uint32_t code);
     void deviceRevocationEnded(const QString& accountId, const QString& deviceId, int status);
+    void avatarReceived(const QString& accountId, const QString& userPhoto);
     void debugMessageReceived(const std::string& message);
 };
 
