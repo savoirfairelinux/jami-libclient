@@ -207,6 +207,13 @@ Q_SIGNALS:
                                const int status);
 
     /**
+     * Account avatar has been received
+     * @param accountId
+     * @param userPhoto
+     */
+    void avatarReceived(const QString& accountId, const QString& userPhoto);
+
+    /**
      * Emit exportOnRingEnded
      * @param accountId
      * @param status SUCCESS = 0, WRONG_PASSWORD = 1, NETWORK_ERROR = 2
@@ -431,6 +438,13 @@ private Q_SLOTS:
      void slotDeviceRevokationEnded(const QString& accountId,
                                     const QString& deviceId,
                                     const int status);
+
+     /**
+     * Emit account avatar has been received
+     * @param accountId
+     * @param userPhoto
+     */
+     void slotAvatarReceived(const QString& accountId, const QString& userPhoto);
 
     /**
      * Emit exportOnRingEnded
