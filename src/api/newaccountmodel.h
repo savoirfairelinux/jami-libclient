@@ -249,6 +249,12 @@ Q_SIGNALS:
      */
     void migrationEnded(const std::string& accountId, bool ok);
 
+    /**
+     * An avatar has been received
+     * @param accountId
+     */
+    void avatarReceived(const std::string& accountId);
+
 private:
     std::unique_ptr<NewAccountModelPimpl> pimpl_;
 };

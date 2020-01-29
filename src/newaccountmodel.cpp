@@ -155,6 +155,13 @@ public Q_SLOTS:
      * @param ok
      */
     void slotMigrationEnded(const std::string& accountId, bool ok);
+
+    /**
+     * Emit avatarReceived
+     * @param accountId
+     * @param userPhoto
+     */
+    void slotAvatarReceived(const std::string& accountId, const std::string& userPhoto);
 };
 
 NewAccountModel::NewAccountModel(Lrc& lrc,
@@ -368,6 +375,7 @@ NewAccountModelPimpl::NewAccountModelPimpl(NewAccountModel& linked,
     connect(&callbacksHandler, &CallbacksHandler::nameRegistrationEnded, this, &NewAccountModelPimpl::slotNameRegistrationEnded);
     connect(&callbacksHandler, &CallbacksHandler::registeredNameFound, this, &NewAccountModelPimpl::slotRegisteredNameFound);
     connect(&callbacksHandler, &CallbacksHandler::migrationEnded, this, &NewAccountModelPimpl::slotMigrationEnded);
+    connect(&callbacksHandler, &CallbacksHandler::avatarReceived, this, &NewAccountModelPimpl::slotAvatarReceived);
 }
 
 NewAccountModelPimpl::~NewAccountModelPimpl()
@@ -583,6 +591,13 @@ NewAccountModelPimpl::slotMigrationEnded(const std::string& accountId, bool ok)
         accountInfo.status = lrc::api::account::to_status(daemonStatus);
     }
     emit linked.migrationEnded(accountId, ok);
+}
+
+void
+NewAccountModelPimpl::slotAvatarReceived(const std::string& accountId, const std::string& userPhoto)
+{
+    //linked.setAvatar(accountId, userPhoto);
+    emit linked.avatarReceived(accountId);
 }
 
 void
@@ -911,8 +926,6 @@ NewAccountModel::createNewAccount(profile::Type type,
     QString accountId = ConfigurationManager::instance().addAccount(details);
     return accountId.toStdString();
 }
-
-
 
 std::string
 NewAccountModel::connectToAccountManager(const std::string& username,
