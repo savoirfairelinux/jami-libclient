@@ -182,6 +182,12 @@ CallbacksHandler::CallbacksHandler(const Lrc& parent)
             Qt::QueuedConnection);
 
     connect(&ConfigurationManager::instance(),
+            &ConfigurationManagerInterface::accountAvatarReceived,
+            this,
+            &CallbacksHandler::slotAccountAvatarReceived,
+            Qt::QueuedConnection);
+
+    connect(&ConfigurationManager::instance(),
             &ConfigurationManagerInterface::exportOnRingEnded,
             this,
             &CallbacksHandler::slotExportOnRingEnded,
@@ -488,6 +494,13 @@ CallbacksHandler::slotDeviceRevokationEnded(const QString& accountId,
                                             const int status)
 {
     emit deviceRevocationEnded(accountId, deviceId, status);
+}
+
+void
+CallbacksHandler::slotAccountAvatarReceived(const QString& accountId,
+                                            const QString& userPhoto)
+{
+    emit accountAvatarReceived(accountId, userPhoto);
 }
 
 void
