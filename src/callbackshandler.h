@@ -288,6 +288,14 @@ Q_SIGNALS:
      */
     void voiceMailNotify(const QString& accountId, int newCount, int oldCount, int urgentCount);
 
+    /**
+     * Connect this signal to know when a call is updated
+     * @param callId the call id
+     * @param state the new state
+     * @param code
+     */
+    void remoteRecordingChanged(const QString& callId, bool state);
+
 private Q_SLOTS:
     /**
      * Emit newAccountMessage
@@ -530,6 +538,13 @@ private Q_SLOTS:
      * @param filePath
      */
     void slotRecordPlaybackStopped(const QString& filePath);
+
+    /**
+     * Call slotCallStateChanged
+     * @param callId of the conference
+     * @param state, new state
+     */
+    void slotRemoteRecordingChanged(const QString& callId, bool state);
 
 private:
     const api::Lrc& parent;
