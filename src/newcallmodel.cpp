@@ -181,6 +181,12 @@ public Q_SLOTS:
      * @param urgentCount
      */
     void slotVoiceMailNotify(const QString& accountId, int newCount, int oldCount, int urgentCount);
+    /**
+     * Listen from CallbacksHandler when the peer start recording
+     * @param callId
+     * @param state the new state
+     */
+    void remoteRecordingChanged(const QString& callId, bool state);
 };
 
 NewCallModel::NewCallModel(const account::Info& owner, const CallbacksHandler& callbacksHandler)
@@ -501,6 +507,7 @@ NewCallModelPimpl::NewCallModelPimpl(const NewCallModel& linked, const Callbacks
     connect(&callbacksHandler, &CallbacksHandler::incomingVCardChunk, this, &NewCallModelPimpl::slotincomingVCardChunk);
     connect(&callbacksHandler, &CallbacksHandler::conferenceCreated, this , &NewCallModelPimpl::slotConferenceCreated);
     connect(&callbacksHandler, &CallbacksHandler::voiceMailNotify, this, &NewCallModelPimpl::slotVoiceMailNotify);
+    connect(&callbacksHandler, &CallbacksHandler::remoteRecordingChanged, this, &NewCallModelPimpl::remoteRecordingChanged);
 
 #ifndef ENABLE_LIBWRAP
     // Only necessary with dbus since the daemon runs separately
@@ -826,6 +833,26 @@ NewCallModelPimpl::sendProfile(const QString& callId)
         ++i;
         CallManager::instance().sendTextMessage(callId, chunk, false);
     }
+}
+
+void
+NewCallModelPimpl::remoteRecordingChanged(const std::string& callId, bool state)
+{
+    auto callInfo = linked.getCall(callId);
+
+    auto uri = callInfo.peerUri;
+    if (uri.find("ring:") != std::string::npos)
+        uri = uri.substr(std::string("ring:").size());   
+
+    contact::Info contact;
+    try {
+        contact = linked.owner.contactModel->getContact(uri);
+    } catch (const std::out_of_range& e) {
+        qWarning("remoteRecordingChanged contactURI %s not found", uri.c_str());
+        return;
+    }
+    
+    emit linked.remoteRecordingChanged(callId, contact.profileInfo.alias, state);
 }
 
 } // namespace lrc

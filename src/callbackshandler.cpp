@@ -163,6 +163,12 @@ CallbacksHandler::CallbacksHandler(const Lrc& parent)
             &CallbacksHandler::slotVoiceMailNotify,
             Qt::QueuedConnection);
 
+    connect(&CallManager::instance(),
+            &CallManagerInterface::remoteRecordingChanged,
+            this,
+            &CallbacksHandler::slotRemoteRecordingChanged,
+            Qt::QueuedConnection);
+
     connect(&ConfigurationManager::instance(),
             &ConfigurationManagerInterface::dataTransferEvent,
             this,
@@ -543,6 +549,12 @@ void
 CallbacksHandler::slotAudioMeterReceived(const QString& id, float level)
 {
     emit audioMeter(id, level);
+}
+
+void
+CallbacksHandler::slotRemoteRecordingChanged(const QString& callId, bool state)
+{
+    emit remoteRecordingChanged(callId.toStdString(), state);
 }
 
 } // namespace lrc
