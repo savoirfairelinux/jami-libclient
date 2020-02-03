@@ -190,6 +190,12 @@ public Q_SLOTS:
      * @param infos
      */
     void slotOnConferenceInfosUpdated(const QString& confId, const VectorMapStringString& infos);
+    /**
+     * Listen from CallbacksHandler when the peer start recording
+     * @param callId
+     * @param state the new state
+     */
+    void remoteRecordingChanged(const QString& callId, const QString& contactId, bool state);
 };
 
 NewCallModel::NewCallModel(const account::Info& owner, const CallbacksHandler& callbacksHandler)
@@ -515,6 +521,7 @@ NewCallModelPimpl::NewCallModelPimpl(const NewCallModel& linked, const Callbacks
     connect(&callbacksHandler, &CallbacksHandler::conferenceCreated, this , &NewCallModelPimpl::slotConferenceCreated);
     connect(&callbacksHandler, &CallbacksHandler::voiceMailNotify, this, &NewCallModelPimpl::slotVoiceMailNotify);
     connect(&CallManager::instance(), &CallManagerInterface::onConferenceInfosUpdated, this, &NewCallModelPimpl::slotOnConferenceInfosUpdated);
+    connect(&callbacksHandler, &CallbacksHandler::remoteRecordingChanged, this, &NewCallModelPimpl::remoteRecordingChanged);
 
 #ifndef ENABLE_LIBWRAP
     // Only necessary with dbus since the daemon runs separately
@@ -918,6 +925,28 @@ NewCallModelPimpl::sendProfile(const QString& callId)
         ++i;
         CallManager::instance().sendTextMessage(callId, chunk, false);
     }
+}
+
+void
+NewCallModelPimpl::remoteRecordingChanged(const QString& callId, const QString& contactId, bool state)
+{
+    auto it = calls.find(callId);
+    if (it == calls.end() or not it->second)
+        return;
+
+    auto uri = it->second->peerUri;
+    if (uri.contains("ring:"))
+        uri.remove("ring:");
+
+    contact::Info contact;
+    try {
+        contact = linked.owner.contactModel->getContact(uri);
+    } catch (const std::out_of_range& e) {
+        qWarning("remoteRecordingChanged contactURI %s not found", uri);
+        return;
+    }
+
+    emit linked.remoteRecordingChanged(callId, contactId, contact.profileInfo.alias, state);
 }
 
 } // namespace lrc
