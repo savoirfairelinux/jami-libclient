@@ -270,6 +270,14 @@ Q_SIGNALS:
      */
     void voiceMailNotify(const std::string& accountId, int newCount, int oldCount, int urgentCount) const;
 
+     /**
+     * Listen from CallbacksHandler when the peer start recording
+     * @param callId
+     * @param peerName
+     * @param state the new state
+     */
+    void remoteRecordingChanged(const std::string& callId, const std::string& peerName, bool state) const;
+
 private:
     std::unique_ptr<NewCallModelPimpl> pimpl_;
 };
