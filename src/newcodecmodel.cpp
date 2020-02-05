@@ -44,6 +44,9 @@ public:
     NewCodecModelPimpl(const NewCodecModel& linked, const CallbacksHandler& callbacksHandler);
     ~NewCodecModelPimpl();
 
+    void loadFromDaemon();
+
+    QVector<unsigned int> codecsList_;
     std::list<Codec> videoCodecs;
     std::mutex audioCodecsMtx;
     std::list<Codec> audioCodecs;
@@ -144,11 +147,6 @@ NewCodecModel::enable(const unsigned int& codecId, bool enabled)
         }
         if (allDisabled) {
             redraw = true;
-            // Disabling all codecs is not possible and the daemon set enabled all codecs here
-            // So, set all codecs enabled
-            for (auto& codec : pimpl_->videoCodecs) {
-                codec.enabled = true;
-            }
         }
     }
     if (isAudio) {
@@ -165,11 +163,6 @@ NewCodecModel::enable(const unsigned int& codecId, bool enabled)
         }
         if (allDisabled) {
             redraw = true;
-            // Disabling all codecs is not possible and the daemon set enabled all codecs here
-            // So, set all codecs enabled
-            for (auto& codec : pimpl_->audioCodecs) {
-                codec.enabled = true;
-            }
         }
     }
     pimpl_->setActiveCodecs();
@@ -275,20 +268,34 @@ NewCodecModelPimpl::NewCodecModelPimpl(const NewCodecModel& linked, const Callba
 : linked(linked)
 , callbacksHandler(callbacksHandler)
 {
-    QVector<unsigned int> codecsList = ConfigurationManager::instance().getCodecList();
-    QVector<unsigned int> activeCodecs = ConfigurationManager::instance().getActiveCodecList(linked.owner.id.c_str());
-    for (const auto& id : activeCodecs) {
-        addCodec(id, activeCodecs);
-    }
-    for (const auto& id : codecsList) {
-        if (activeCodecs.indexOf(id) != -1) continue;
-        addCodec(id, activeCodecs);
-    }
+    codecsList_ = ConfigurationManager::instance().getCodecList();
+    loadFromDaemon();
 }
 
 NewCodecModelPimpl::~NewCodecModelPimpl()
 {
 
+}
+
+void
+NewCodecModelPimpl::loadFromDaemon()
+{
+    {
+        std::unique_lock<std::mutex> lock(audioCodecsMtx);
+        audioCodecs.clear();
+    }
+    {
+        std::unique_lock<std::mutex> lock(videoCodecsMtx);
+        videoCodecs.clear();
+    }
+    QVector<unsigned int> activeCodecs = ConfigurationManager::instance().getActiveCodecList(linked.owner.id.c_str());
+    for (const auto& id : activeCodecs) {
+        addCodec(id, activeCodecs);
+    }
+    for (const auto& id : codecsList_) {
+        if (activeCodecs.indexOf(id) != -1) continue;
+        addCodec(id, activeCodecs);
+    }
 }
 
 void
@@ -312,6 +319,8 @@ NewCodecModelPimpl::setActiveCodecs()
         }
     }
     ConfigurationManager::instance().setActiveCodecList(linked.owner.id.c_str(), enabledCodecs);
+    // Refresh list from daemon
+    loadFromDaemon();
 }
 
 void
