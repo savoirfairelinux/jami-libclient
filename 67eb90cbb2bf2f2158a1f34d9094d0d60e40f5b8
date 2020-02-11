@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "833ef999_a81c59ff",
+        "filename": "src/newaccountmodel.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 239,
+      "author": {
+        "id": 633
+      },
+      "writtenOn": "2020-02-11T20:32:46Z",
+      "side": 1,
+      "message": "it is qt, so I used append instead, according to the doc, it is relatively faster",
+      "parentUuid": "32336474_63c1c33a",
+      "range": {
+        "startLine": 239,
+        "startChar": 22,
+        "endLine": 239,
+        "endChar": 31
+      },
+      "revId": "67eb90cbb2bf2f2158a1f34d9094d0d60e40f5b8",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "9d56d76e_4e2c3082",
         "filename": "src/newaccountmodel.cpp",
         "patchSetId": 7
@@ -45,6 +69,30 @@
       "revId": "67eb90cbb2bf2f2158a1f34d9094d0d60e40f5b8",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "22455ac7_7ffa092c",
+        "filename": "src/newaccountmodel.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 644,
+      "author": {
+        "id": 633
+      },
+      "writtenOn": "2020-02-11T20:32:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9d56d76e_4e2c3082",
+      "range": {
+        "startLine": 644,
+        "startChar": 20,
+        "endLine": 644,
+        "endChar": 29
+      },
+      "revId": "67eb90cbb2bf2f2158a1f34d9094d0d60e40f5b8",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
