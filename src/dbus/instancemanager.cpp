@@ -22,7 +22,7 @@
 #ifndef _MSC_VER
 #include <unistd.h>
 #else
-#include "../../daemon/MSVC/unistd.h"
+#include "../../daemon/src/compat/msvc/unistd.h"
 #endif // !_MSC_VER
 
 #include "../globalinstances.h"
