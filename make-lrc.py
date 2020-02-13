@@ -125,7 +125,7 @@ def generate(force, qtver, sdk, toolset, arch):
           arch + ' ' + sdk + ' ' + toolset)
     this_dir = os.path.dirname(os.path.realpath(__file__))
     daemon_dir = os.path.dirname(this_dir) + '\\daemon'
-    daemon_bin = daemon_dir + '\\MSVC\\x64\\ReleaseLib_win32\\bin\\dring.lib'
+    daemon_bin = daemon_dir + '\\build-local\\x64\\ReleaseLib_win32\\bin\\dring.lib'
     if not os.path.exists(daemon_bin):
         print("Daemon library not found!")
         sys.exit(1)
