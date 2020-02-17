@@ -18,14 +18,11 @@
  ***************************************************************************/
 #pragma once
 
-// Std
-#include <memory>
-
-// Qt
-#include <qobject.h>
-
-// Lrc
 #include "typedefs.h"
+
+#include <QObject>
+
+#include <memory>
 
 namespace lrc
 {
@@ -61,44 +58,44 @@ Q_SIGNALS:
     /**
      * Emitted when the client should open the chat view.
      */
-    void showChatView(const std::string& accountId, const api::conversation::Info& conversationInfo) const;
+    void showChatView(const QString& accountId, const api::conversation::Info& conversationInfo) const;
     /**
      * Emitted when the client should ask the user whether it wants to leave a message after a failed call.
      */
-    void showLeaveMessageView(const std::string& accountId, const api::conversation::Info& conversationInfo) const;
+    void showLeaveMessageView(const QString& accountId, const api::conversation::Info& conversationInfo) const;
     /**
      * Emitted when the client should open the call view.
      */
-    void showCallView(const std::string& accountId, const api::conversation::Info& conversationInfo) const;
+    void showCallView(const QString& accountId, const api::conversation::Info& conversationInfo) const;
     /**
      * Emitted when the client should open the incoming call view.
      */
-    void showIncomingCallView(const std::string& accountId, const api::conversation::Info& conversationInfo) const;
+    void showIncomingCallView(const QString& accountId, const api::conversation::Info& conversationInfo) const;
     /**
      * Emitted when the client receives a new trust request
      */
-    void newTrustRequest(const std::string& accountId, const std::string& contactUri) const;
+    void newTrustRequest(const QString& accountId, const QString& contactUri) const;
     /**
      * Emitted when a trust request has been accepted, refused or blocked
      */
-    void trustRequestTreated(const std::string& accountId, const std::string& contactUri) const;
+    void trustRequestTreated(const QString& accountId, const QString& contactUri) const;
     /**
      * Emitted when the client receives an unread message to display (text or file for now)
      */
-    void newUnreadInteraction(const std::string& accountId, const std::string& conversation,
+    void newUnreadInteraction(const QString& accountId, const QString& conversation,
         uint64_t interactionId, const interaction::Info& interaction) const;
     /**
      * Emitted when the unread interaction is now read
      */
-     void newReadInteraction(const std::string& accountId, const std::string& conversation, uint64_t interactionId) const;
+     void newReadInteraction(const QString& accountId, const QString& conversation, uint64_t interactionId) const;
      /**
      * Emitted debugMessageReceived
      */
-     void debugMessageReceived(const std::string& message);
+     void debugMessageReceived(const QString& message);
      /**
      * Emitted audioMeter
      */
-     void audioMeter(const std::string& id, float level);
+     void audioMeter(const QString& id, float level);
 
 };
 

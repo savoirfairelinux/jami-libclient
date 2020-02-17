@@ -18,14 +18,11 @@
  ***************************************************************************/
 #pragma once
 
-// Std
+#include "typedefs.h"
+
 #include <memory>
 #include <vector>
-#include <string>
 #include <atomic>
-
-// Lrc
-#include "typedefs.h"
 
 namespace lrc
 {
@@ -94,22 +91,22 @@ public:
     /**
      * Helper: get active call list from daemon
      */
-    static std::vector<std::string> activeCalls();
+    static VectorString activeCalls();
 
     /**
      * Helper: get call list from daemon
      */
-    static std::vector<std::string> getCalls();
+    static VectorString getCalls();
 
     /**
      * Helper: get conference list from daemon
      */
-    static std::vector<std::string> getConferences();
+    static VectorString getConferences();
 
     /**
      * Helper: get subcalls list for a conference from daemon
      */
-    static std::vector<std::string> getConferenceSubcalls(const std::string& id);
+    static VectorString getConferenceSubcalls(const QString& cid);
 
     /**
      * Preference

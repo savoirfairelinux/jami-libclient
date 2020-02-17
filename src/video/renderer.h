@@ -17,7 +17,6 @@
  ***************************************************************************/
 #pragma once
 
-
 //Base
 #include <QtCore/QObject>
 #include "api/newvideo.h"
@@ -31,7 +30,6 @@
 //Qt
 class QMutex;
 struct AVFrame;
-
 
 namespace Video {
 
@@ -89,7 +87,7 @@ public:
    };
 
    //Constructor
-   Renderer (const QByteArray& id,  const QSize& res);
+   Renderer (const QString& id,  const QSize& res);
    virtual ~Renderer();
 
    //Getters

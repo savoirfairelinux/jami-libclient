@@ -43,7 +43,7 @@ class LIB_EXPORT DirectRenderer final : public Renderer {
 public:
 
    //Constructor
-   DirectRenderer (const QByteArray& id, const QSize& res, bool useAVFrame);
+   DirectRenderer (const QString& id, const QSize& res, bool useAVFrame);
    virtual ~DirectRenderer();
 
    //Getter
