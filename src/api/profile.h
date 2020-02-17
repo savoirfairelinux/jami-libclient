@@ -18,8 +18,7 @@
  ***************************************************************************/
 #pragma once
 
-// Std
-#include <string>
+#include <QString>
 
 namespace lrc
 {
@@ -39,7 +38,7 @@ enum class Type {
     COUNT__
 };
 
-static inline const std::string
+static inline const QString
 to_string(const Type& type)
 {
     switch(type) {
@@ -59,7 +58,7 @@ to_string(const Type& type)
 }
 
 static inline Type
-to_type(const std::string& type)
+to_type(const QString& type)
 {
     if (type == "PENDING")
         return Type::PENDING;
@@ -81,9 +80,9 @@ to_type(const std::string& type)
  */
 struct Info
 {
-    std::string uri = "";
-    std::string avatar = "";
-    std::string alias = "";
+    QString uri = "";
+    QString avatar = "";
+    QString alias = "";
     Type type = Type::INVALID;
 };
 

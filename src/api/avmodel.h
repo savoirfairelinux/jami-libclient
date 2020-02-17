@@ -82,23 +82,23 @@ public:
      * Get video devices
      * @return list of devices
      */
-    std::vector<std::string> getDevices() const;
+    VectorString getDevices() const;
     /**
      * Retrieve current default video device
      * @return current default video device id
      */
-    std::string getDefaultDevice() const;
+    QString getDefaultDevice() const;
     /**
      * Set new default video device
      * @param id of the device
      */
-    void setDefaultDevice(const std::string& deviceId);
+    void setDefaultDevice(const QString& deviceId);
     /**
      * Retrieve current framerate/resolution/etc of a device
      * @param id of the device
      * @return settings of the device
      */
-    video::Settings getDeviceSettings(const std::string& deviceId) const;
+    video::Settings getDeviceSettings(const QString& deviceId) const;
     /**
      * Set device settings
      * @param video::Settings
@@ -109,58 +109,58 @@ public:
      * @param id of the device
      * @return possibilities of the device
      */
-    video::Capabilities getDeviceCapabilities(const std::string& deviceId) const;
+    video::Capabilities getDeviceCapabilities(const QString& deviceId) const;
     /**
      * Get the deviceId corresponding to a given device friendly name
      * @return deviceId
      */
-    std::string getDeviceIdFromName(const std::string& deviceName) const;
+    QString getDeviceIdFromName(const QString& deviceName) const;
 
     /**
      * Get supported audio managers
      * @return supported audio managers
      */
-    std::vector<std::string> getSupportedAudioManagers() const;
+    VectorString getSupportedAudioManagers() const;
     /**
      * Get current audio manager
      * @return current audio manager
      */
-    std::string getAudioManager() const;
+    QString getAudioManager() const;
     /**
      * Get current audio outputs
      * @return audio outputs
      */
-    std::vector<std::string> getAudioOutputDevices() const;
+    VectorString getAudioOutputDevices() const;
     /**
      * Get current audio inputs
      * @return audio inputs
      */
-    std::vector<std::string> getAudioInputDevices() const;
+    VectorString getAudioInputDevices() const;
     /**
      * Get current ringtone device
      * @return current ringtone device
      */
-    std::string getRingtoneDevice() const;
+    QString getRingtoneDevice() const;
     /**
      * Get current output device
      * @return current output device
      */
-    std::string getOutputDevice() const;
+    QString getOutputDevice() const;
     /**
      * Get current input device
      * @return current input device
      */
-    std::string getInputDevice() const;
+    QString getInputDevice() const;
     /**
      * Get current state of the audio meter
      * @return current state of the audio meter
      */
-    bool isAudioMeterActive(const std::string& id="") const;
+    bool isAudioMeterActive(const QString& id="") const;
     /**
      * Turn on/off the audio metering feature
      * @param the new state of the meter
      */
-    void setAudioMeterState(bool active, const std::string& id="") const;
+    void setAudioMeterState(bool active, const QString& id="") const;
     /**
      * Starts audio device. Should only be invoked when outside of a call.
      */
@@ -174,43 +174,43 @@ public:
      * @param name of the new audio manager
      * @return if the operation is successful
      */
-    bool setAudioManager(const std::string& name);
+    bool setAudioManager(const QString& name);
     /**
      * Set current ringtone device
      * @param name of the new ringtone device
      */
-    void setRingtoneDevice(const std::string& name);
+    void setRingtoneDevice(const QString& name);
     /**
      * Set current output device
      * @param name of the new output device
      */
-    void setOutputDevice(const std::string& name);
+    void setOutputDevice(const QString& name);
     /**
      * Set current input device
      * @param name of the new input device
      */
-    void setInputDevice(const std::string& name);
+    void setInputDevice(const QString& name);
 
     /**
      * Stop local record at given path
      * @param path
      */
-    void stopLocalRecorder(const std::string& path) const;
+    void stopLocalRecorder(const QString& path) const;
     /**
      * Start a local recorder and return it path.
      * @param audioOnly
      */
-    std::string startLocalRecorder(const bool& audioOnly) const;
+    QString startLocalRecorder(const bool& audioOnly) const;
     /**
      * Get the current recording path
      * @return recording path
      */
-    std::string getRecordPath() const;
+    QString getRecordPath() const;
     /**
      * Sets the recording path
      * @param path recording path
      */
-    void setRecordPath(const std::string& path) const;
+    void setRecordPath(const QString& path) const;
     /**
      * Whether or not to record every call
      * @return always recording
@@ -256,7 +256,7 @@ public:
      * @return the linked renderer
      * @throw std::out_of_range if not found
      */
-    const video::Renderer& getRenderer(const std::string& id) const;
+    const video::Renderer& getRenderer(const QString& id) const;
 
     /**
      * Render a file to the call id specified
@@ -264,7 +264,7 @@ public:
      * @param callId
      * @note callId can be omitted to switch the input of the local recorder
      */
-    void setInputFile(const std::string& uri, const std::string& callId = {});
+    void setInputFile(const QString& uri, const QString& callId = {});
     /**
      * Change the current device rendered for the call id specified
      * @param id of the camera
@@ -272,7 +272,7 @@ public:
      * @note renders a black frame if device not found or empty
      * @note callId can be omitted to switch the input of the local recorder
      */
-    void switchInputTo(const std::string& id, const std::string& callId = {});
+    void switchInputTo(const QString& id, const QString& callId = {});
     /**
      * Render the current display to the call id specified
      * @param idx of the display
@@ -283,13 +283,13 @@ public:
      * @param callId
      * @note callId can be omitted to switch the input of the local recorder
      */
-    void setDisplay(int idx, int x, int y, int w, int h, const std::string& callId = {});
+    void setDisplay(int idx, int x, int y, int w, int h, const QString& callId = {});
     /**
      * Get informations on the rendered device
      * @param call_id linked call to the renderer
      * @return the device rendered
      */
-    video::RenderedDevice getCurrentRenderedDevice(const std::string& call_id) const;
+    video::RenderedDevice getCurrentRenderedDevice(const QString& call_id) const;
 
     /**
      * set to true to receive AVFrames from render
@@ -300,13 +300,13 @@ public:
      * set current using device
      * @ param device name
      */
-    void setCurrentVideoCaptureDevice(std::string &currentVideoCaptureDevice);
+    void setCurrentVideoCaptureDevice(QString &currentVideoCaptureDevice);
 
      /**
      * set current using device
      * @ return current using device name
      */
-    std::string getCurrentVideoCaptureDevice() const;
+    QString getCurrentVideoCaptureDevice() const;
 
      /**
      * clear current using device
@@ -318,17 +318,17 @@ Q_SIGNALS:
      * Emitted when a renderer is started
      * @param id of the renderer
      */
-    void rendererStarted(const std::string& id);
+    void rendererStarted(const QString& id);
     /**
      * Emitted when a renderer is stopped
      * @param id of the renderer
      */
-    void rendererStopped(const std::string& id);
+    void rendererStopped(const QString& id);
     /**
      * Emitted when a new frame is ready
      * @param id
      */
-    void frameUpdated(const std::string& id);
+    void frameUpdated(const QString& id);
     /**
      * Emitted when a device is plugged or unplugged
      */
@@ -338,12 +338,12 @@ Q_SIGNALS:
      * @param id Ringbuffer id
      * @param level Volume in range [0, 1]
      */
-    void audioMeter(const std::string& id, float level);
+    void audioMeter(const QString& id, float level);
     /**
      * local recorder stopped
      * @param filePath
      */
-    void recordPlaybackStopped(const std::string& filePath);
+    void recordPlaybackStopped(const QString& filePath);
 
 private:
     std::unique_ptr<AVModelPimpl> pimpl_;
