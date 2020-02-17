@@ -1,5 +1,5 @@
 /****************************************************************************
- *    Copyright (C) 2017-2020 Savoir-faire Linux Inc.                                  *
+ *    Copyright (C) 2017-2020 Savoir-faire Linux Inc.                       *
  *   Author: Nicolas Jäger <nicolas.jager@savoirfairelinux.com>             *
  *   Author: Sébastien Blin <sebastien.blin@savoirfairelinux.com>           *
  *                                                                          *
@@ -18,22 +18,18 @@
  ***************************************************************************/
 #pragma once
 
-// Std
-#include <memory>
-#include <map>
-#include <string>
-#include <deque>
-
-// Qt
-#include <qobject.h>
-
-// Lrc
 #include "typedefs.h"
 
-// Data
 #include "api/conversation.h"
 #include "api/profile.h"
 #include "api/datatransfer.h"
+
+#include <QObject>
+#include <QVector>
+#include <QMap>
+
+#include <memory>
+#include <deque>
 
 namespace lrc
 {
@@ -59,8 +55,8 @@ enum class ConferenceableItem {
 
 struct AccountConversation
 {
-    std::string convId;
-    std::string accountId;
+    QString convId;
+    QString accountId;
 };
 
 /*
@@ -69,7 +65,7 @@ struct AccountConversation
   * for conferences contains multiple entries
   */
 
-typedef std::vector<std::vector<AccountConversation>> ConferenceableValue;
+typedef QVector<QVector<AccountConversation>> ConferenceableValue;
 
 /**
   *  @brief Class that manages conversation informations.
@@ -99,7 +95,7 @@ public:
      * @param  conversation id
      * @return conversations with given id
      */
-    conversation::Info getConversationForUID(const std::string& uid) const;
+    conversation::Info getConversationForUID(const QString& uid) const;
 
     /**
      * Get conversations that could be added to conference
@@ -107,7 +103,7 @@ public:
      * @param  search name filter
      * @return filtered conversations
      */
-    std::map<ConferenceableItem, ConferenceableValue> getConferenceableConversations(const std::string& convId, const std::string& filter = {}) const;
+    QMap<ConferenceableItem, ConferenceableValue> getConferenceableConversations(const QString& convId, const QString& filter = {}) const;
     /**
      * Get a custom filtered set of conversations
      * @return conversations filtered
@@ -130,39 +126,39 @@ public:
      * @param uid of the conversation to change.
      * @exception std::out_of_range if uid doesn't correspond to an existing conversation
      */
-    void makePermanent(const std::string& uid);
+    void makePermanent(const QString& uid);
     /**
      * Remove a conversation and the contact if it's a dialog
      * @param uid of the conversation
      * @param banned if we want to ban the contact.
      */
-    void removeConversation(const std::string& uid, bool banned=false);
+    void removeConversation(const QString& uid, bool banned=false);
     /**
      * Get the action wanted by the user when they click on the conversation
      * @param uid of the conversation
      */
-    void selectConversation(const std::string& uid) const;
+    void selectConversation(const QString& uid) const;
     /**
      * Call contacts linked to this conversation
      * @param uid of the conversation
      */
-    void placeCall(const std::string& uid);
+    void placeCall(const QString& uid);
     /**
      * Perform an audio call with contacts linked to this conversation
      * @param uid of the conversation
      */
-    void placeAudioOnlyCall(const std::string& uid);
+    void placeAudioOnlyCall(const QString& uid);
     /**
      * Send a message to the conversation
      * @param uid of the conversation
      * @param body of the message
      */
-    void sendMessage(const std::string& uid, const std::string& body);
+    void sendMessage(const QString& uid, const QString& body);
     /**
      * Modify the current filter (will change the result of getFilteredConversations)
      * @param filter the new filter
      */
-    void setFilter(const std::string& filter);
+    void setFilter(const QString& filter);
     /**
      * Modify the current filter (will change the result of getFilteredConversations)
      * @param filter the new filter (example: PENDING, RING)
@@ -174,23 +170,23 @@ public:
      * @param uidA uid of the conversation A
      * @param uidB uid of the conversation B
      */
-    void joinConversations(const std::string& uidA, const std::string& uidB);
+    void joinConversations(const QString& uidA, const QString& uidB);
     /**
      * Clear the history of a conversation
      * @param uid of the conversation
      */
-    void clearHistory(const std::string& uid);
+    void clearHistory(const QString& uid);
     /**
      * change the status of the interaction from UNREAD to READ
      * @param convId, id of the conversation
      * @param msgId, id of the interaction
      */
-    void setInteractionRead(const std::string& convId, const uint64_t& msgId);
+    void setInteractionRead(const QString& convId, const uint64_t& msgId);
     /**
      * Clears the unread text messages of a conversation
      * @param convId, uid of the conversation
      */
-    void clearUnreadInteractions(const std::string& convId);
+    void clearUnreadInteractions(const QString& convId);
     /**
      * clear all history
      */
@@ -200,31 +196,31 @@ public:
      * @param convId
      * @param interactionId
      */
-    void clearInteractionFromConversation(const std::string& convId, const uint64_t& interactionId);
+    void clearInteractionFromConversation(const QString& convId, const uint64_t& interactionId);
     /**
      * Retry to send a message. In fact, will delete the previous interaction and resend a new one.
      * @param convId
      * @param interactionId
      */
-    void retryInteraction(const std::string& convId, const uint64_t& interactionId);
+    void retryInteraction(const QString& convId, const uint64_t& interactionId);
     /**
      * delete obsolete history from the database
      * @param days, number of days from today. Below this date, interactions will be deleted
      */
     void deleteObsoleteHistory(int date);
 
-    void sendFile(const std::string& convUid, const std::string& path, const std::string& filename);
+    void sendFile(const QString& convUid, const QString& path, const QString& filename);
 
-    void acceptTransfer(const std::string& convUid, uint64_t interactionId, const std::string& path);
+    void acceptTransfer(const QString& convUid, uint64_t interactionId, const QString& path);
 
-    void cancelTransfer(const std::string& convUid, uint64_t interactionId);
+    void cancelTransfer(const QString& convUid, uint64_t interactionId);
 
     void getTransferInfo(uint64_t interactionId, api::datatransfer::Info& info);
     /**
      * @param convUid, uid of the conversation
      * @return the number of unread messages for the conversation
      */
-    int getNumberOfUnreadMessagesFor(const std::string& convUid);
+    int getNumberOfUnreadMessagesFor(const QString& convUid);
 
 Q_SIGNALS:
     /**
@@ -233,14 +229,14 @@ Q_SIGNALS:
      * @param interactionId
      * @param interactionInfo
      */
-    void newInteraction(const std::string& uid, uint64_t interactionId, const interaction::Info& interactionInfo) const;
+    void newInteraction(const QString& uid, uint64_t interactionId, const interaction::Info& interactionInfo) const;
     /**
      * Emitted when an interaction got a new status
      * @param convUid conversation which owns the interaction
      * @param interactionId
      * @param msg
      */
-    void interactionStatusUpdated(const std::string& convUid,
+    void interactionStatusUpdated(const QString& convUid,
                                   uint64_t interactionId,
                                   const api::interaction::Info& msg) const;
     /**
@@ -248,18 +244,18 @@ Q_SIGNALS:
      * @param convUid conversation which owns the interaction
      * @param interactionId
      */
-    void interactionRemoved(const std::string& convUid,
+    void interactionRemoved(const QString& convUid,
                             uint64_t interactionId) const;
     /**
      * Emitted when user clear the history of a conversation
      * @param uid
      */
-    void conversationCleared(const std::string& uid) const;
+    void conversationCleared(const QString& uid) const;
     /**
      * Emitted when conversation's participant has been updated
      * @param uid
      */
-    void conversationUpdated(const std::string& uid) const;
+    void conversationUpdated(const QString& uid) const;
     /**
      * Emitted when conversations are sorted by last interaction
      */
@@ -272,12 +268,12 @@ Q_SIGNALS:
      * Emitted when a conversation has been added
      * @param uid
      */
-    void newConversation(const std::string& uid) const;
+    void newConversation(const QString& uid) const;
     /**
      * Emitted when a conversation has been removed
      * @param uid
      */
-    void conversationRemoved(const std::string& uid) const;
+    void conversationRemoved(const QString& uid) const;
     /**
      * Emitted after all history were cleared
      * @note the client must connect this signal to know when update the view of the list
@@ -288,7 +284,7 @@ Q_SIGNALS:
      * be modified
      * @param uid
      */
-    void conversationReady(std::string uid) const;
+    void conversationReady(QString uid) const;
 
 private:
     std::unique_ptr<ConversationModelPimpl> pimpl_;
