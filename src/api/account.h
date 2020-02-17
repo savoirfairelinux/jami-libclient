@@ -18,15 +18,13 @@
  ***************************************************************************/
 #pragma once
 
-// Std
-#include <string>
-#include <memory>
-
-// Data
 #include "profile.h"
 
-// old LRC
 #include "typedefs.h"
+
+#include <memory>
+
+#include <QString>
 
 namespace lrc
 {
@@ -64,7 +62,7 @@ enum class Status {
 };
 
 static inline account::Status
-to_status(const std::string& type)
+to_status(const QString& type)
 {
     if (type == "INITIALIZING")
         return account::Status::INITIALIZING;
@@ -95,40 +93,40 @@ enum class TlsMethod {
 };
 
 struct ConfProperties_t {
-    std::string                                       mailbox;
-    std::string                                       dtmfType;
+    QString                                           mailbox;
+    QString                                           dtmfType;
     bool                                              autoAnswer;
     int                                               activeCallLimit;
-    std::string                                       hostname;
-    std::string                                       username;
-    std::string                                       routeset;
-    std::string                                       password;
-    std::string                                       realm;
-    std::string                                       localInterface;
-    std::string                                       deviceId;
-    std::string                                       deviceName;
-    std::string                                       managerUri;
-    std::string                                       managerUsername;
+    QString                                           hostname;
+    QString                                           username;
+    QString                                           routeset;
+    QString                                           password;
+    QString                                           realm;
+    QString                                           localInterface;
+    QString                                           deviceId;
+    QString                                           deviceName;
+    QString                                           managerUri;
+    QString                                           managerUsername;
     bool                                              publishedSameAsLocal;
     int                                               localPort;
     int                                               publishedPort;
-    std::string                                       publishedAddress;
-    std::string                                       userAgent;
+    QString                                           publishedAddress;
+    QString                                           userAgent;
     bool                                              upnpEnabled;
     bool                                              hasCustomUserAgent;
     bool                                              allowIncoming;
-    std::string                                       archivePassword;
+    QString                                           archivePassword;
     bool                                              archiveHasPassword;
-    std::string                                       archivePath;
-    std::string                                       archivePin;
+    QString                                           archivePath;
+    QString                                           archivePin;
     bool                                              proxyEnabled;
-    std::string                                       proxyServer;
-    std::string                                       proxyPushToken;
+    QString                                           proxyServer;
+    QString                                           proxyPushToken;
     bool                                              peerDiscovery;
     bool                                              accountDiscovery;
     bool                                              accountPublish;
     int                                               registrationExpire;
-    std::vector<std::map<std::string, std::string>>   credentials;
+    VectorMapStringString                             credentials;
     struct Audio_t {
         int                                           audioPortMax;
         int                                           audioPortMin;
@@ -139,15 +137,15 @@ struct ConfProperties_t {
         int                                           videoPortMin;
     } Video;
     struct STUN_t {
-        std::string                                   server;
+        QString                                       server;
         bool                                          enable;
     } STUN;
     struct TURN_t {
-        std::string                                   server;
+        QString                                       server;
         bool                                          enable;
-        std::string                                   username;
-        std::string                                   password;
-        std::string                                   realm;
+        QString                                       username;
+        QString                                       password;
+        QString                                       realm;
     } TURN;
     struct Presence_t {
         bool                                          presencePublishSupported;
@@ -155,7 +153,7 @@ struct ConfProperties_t {
         bool                                          presenceEnabled;
     } Presence;
     struct Ringtone_t {
-        std::string                                   ringtonePath;
+        QString                                       ringtonePath;
         bool                                          ringtoneEnabled;
     } Ringtone;
     struct SRTP_t {
@@ -167,13 +165,13 @@ struct ConfProperties_t {
         int                                           listenerPort;
         bool                                          enable;
         int                                           port;
-        std::string                                   certificateListFile;
-        std::string                                   certificateFile;
-        std::string                                   privateKeyFile;
-        std::string                                   password;
+        QString                                       certificateListFile;
+        QString                                       certificateFile;
+        QString                                       privateKeyFile;
+        QString                                       password;
         TlsMethod                                     method;
-        std::string                                   ciphers;
-        std::string                                   serverName;
+        QString                                       ciphers;
+        QString                                       serverName;
         bool                                          verifyServer;
         bool                                          verifyClient;
         bool                                          requireClientCertificate;
@@ -185,8 +183,8 @@ struct ConfProperties_t {
         bool                                          AllowFromTrusted;
     } DHT;
     struct RingNS_t {
-        std::string                                   uri;
-        std::string                                   account;
+        QString                                       uri;
+        QString                                       account;
     } RingNS;
     struct Registration_t {
         int                                           expire;
@@ -224,7 +222,7 @@ struct Info
 {
     bool freeable = false;
     bool valid = true;
-    std::string registeredName;
+    QString registeredName;
     Status status = account::Status::INVALID;
     std::unique_ptr<lrc::api::ContactModel> contactModel;
     std::unique_ptr<lrc::api::ConversationModel> conversationModel;
@@ -235,7 +233,7 @@ struct Info
     NewAccountModel* accountModel {nullptr};
 
     // daemon config
-    std::string             id;
+    QString                 id;
     profile::Info           profileInfo; // contains: type, alias
     bool                    enabled;
     ConfProperties_t        confProperties;

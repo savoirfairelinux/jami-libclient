@@ -1,5 +1,5 @@
 /****************************************************************************
- *    Copyright (C) 2017-2020 Savoir-faire Linux Inc.                                  *
+ *    Copyright (C) 2017-2020 Savoir-faire Linux Inc.                       *
  *   Author: Nicolas Jäger <nicolas.jager@savoirfairelinux.com>             *
  *   Author: Sébastien Blin <sebastien.blin@savoirfairelinux.com>           *
  *                                                                          *
@@ -36,7 +36,7 @@ namespace daemon
  * @param owner
  * @param contactUri
  */
-void addContact(const api::account::Info& owner, const std::string& contactUri);
+void addContact(const api::account::Info& owner, const QString& contactUri);
 /**
  * Ask the daemon to add contact to the daemon.
  * @param owner
@@ -49,21 +49,21 @@ void addContact(const api::account::Info& owner, const api::contact::Info& conta
  * @param contactInfo
  * @param banned
  */
-void removeContact(const api::account::Info& owner, const std::string& contactUri, bool banned);
+void removeContact(const api::account::Info& owner, const QString& contactUri, bool banned);
 /**
  * Ask the daemon to add a contact from the pending list.
  * @param owner
  * @param contactUri
  * @return if operation succeed
  */
-bool addContactFromPending(const api::account::Info& owner, const std::string& contactUri);
+bool addContactFromPending(const api::account::Info& owner, const QString& contactUri);
 /**
  * Ask the daemon to discard a pending.
  * @param owner
  * @param contactUri
  * @return if operation succeed
  */
-bool discardFromPending(const api::account::Info& owner, const std::string& contactUri);
+bool discardFromPending(const api::account::Info& owner, const QString& contactUri);
 
 } // namespace daemon
 

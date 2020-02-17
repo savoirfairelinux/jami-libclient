@@ -1,5 +1,5 @@
 /****************************************************************************
- *    Copyright (C) 2017-2020 Savoir-faire Linux Inc.                             *
+ *    Copyright (C) 2017-2020 Savoir-faire Linux Inc.                       *
  *   Author: Sébastien Blin <sebastien.blin@savoirfairelinux.com>           *
  *                                                                          *
  *   This library is free software; you can redistribute it and/or          *
@@ -17,24 +17,19 @@
  ***************************************************************************/
 #include "api/newdevicemodel.h"
 
-// std
-#include <list>
-#include <mutex>
-
-// LRC
 #include "api/newaccountmodel.h"
 #include "callbackshandler.h"
 #include "dbus/configurationmanager.h"
 
-// Daemon
 #include <account_const.h>
 
-// Qt
 #include <QObject>
+
+#include <list>
+#include <mutex>
 
 namespace lrc
 {
-
 
 using namespace api;
 
@@ -49,16 +44,16 @@ public:
     const NewDeviceModel& linked;
 
     std::mutex devicesMtx_;
-    std::string currentDeviceId_;
-    std::list<Device> devices_;
+    QString currentDeviceId_;
+    QList<Device> devices_;
 public Q_SLOTS:
     /**
      * Listen from CallbacksHandler to get when a device name changed or a device is added
      * @param accountId interaction receiver.
      * @param devices A map of device IDs with corresponding labels.
      */
-    void slotKnownDevicesChanged(const std::string& accountId,
-                                 const std::map<std::string, std::string> devices);
+    void slotKnownDevicesChanged(const QString& accountId,
+                                 const MapStringString devices);
 
     /**
      * update devices_ when a device is revoked
@@ -66,8 +61,8 @@ public Q_SLOTS:
      * @param deviceId
      * @param status SUCCESS = 0, WRONG_PASSWORD = 1, UNKNOWN_DEVICE = 2
      */
-    void slotDeviceRevocationEnded(const std::string& accountId,
-                                   const std::string& deviceId,
+    void slotDeviceRevocationEnded(const QString& accountId,
+                                   const QString& deviceId,
                                    const int status);
 };
 
@@ -78,14 +73,14 @@ NewDeviceModel::NewDeviceModel(const account::Info& owner, const CallbacksHandle
 
 NewDeviceModel::~NewDeviceModel() {}
 
-std::list<Device>
+QList<Device>
 NewDeviceModel::getAllDevices() const
 {
     return pimpl_->devices_;
 }
 
 Device
-NewDeviceModel::getDevice(const std::string& id) const
+NewDeviceModel::getDevice(const QString& id) const
 {
     std::lock_guard<std::mutex> lock(pimpl_->devicesMtx_);
     auto i = std::find_if(
@@ -100,13 +95,13 @@ NewDeviceModel::getDevice(const std::string& id) const
 }
 
 void
-NewDeviceModel::revokeDevice(const std::string& id, const std::string& password)
+NewDeviceModel::revokeDevice(const QString& id, const QString& password)
 {
-    ConfigurationManager::instance().revokeDevice(owner.id.c_str(), password.c_str(), id.c_str());
+    ConfigurationManager::instance().revokeDevice(owner.id, password, id);
 }
 
 void
-NewDeviceModel::setCurrentDeviceName(const std::string& newName)
+NewDeviceModel::setCurrentDeviceName(const QString& newName)
 {
     // Update deamon config
     auto config = owner.accountModel->getAccountConfig(owner.id);
@@ -126,22 +121,22 @@ NewDeviceModelPimpl::NewDeviceModelPimpl(const NewDeviceModel& linked, const Cal
 , callbacksHandler(callbacksHandler)
 , devices_({})
 {
-    const MapStringString aDetails = ConfigurationManager::instance().getAccountDetails(linked.owner.id.c_str());
-    currentDeviceId_ = aDetails.value(DRing::Account::ConfProperties::RING_DEVICE_ID).toStdString();
-    const MapStringString accountDevices = ConfigurationManager::instance().getKnownRingDevices(linked.owner.id.c_str());
+    const MapStringString aDetails = ConfigurationManager::instance().getAccountDetails(linked.owner.id);
+    currentDeviceId_ = aDetails.value(DRing::Account::ConfProperties::RING_DEVICE_ID);
+    const MapStringString accountDevices = ConfigurationManager::instance().getKnownRingDevices(linked.owner.id);
     auto it = accountDevices.begin();
     while (it != accountDevices.end()) {
         {
             std::lock_guard<std::mutex> lock(devicesMtx_);
             auto device = Device {
-                /* id= */it.key().toStdString(),
-                /* name= */it.value().toStdString(),
-                /* isCurrent= */it.key().toStdString() == currentDeviceId_
+                /* id= */it.key(),
+                /* name= */it.value(),
+                /* isCurrent= */it.key() == currentDeviceId_
             };
             if (device.isCurrent) {
-                devices_.emplace_front(device);
+                devices_.push_back(device);
             } else {
-                devices_.emplace_back(device);
+                devices_.push_back(device);
             }
         }
         ++it;
@@ -162,22 +157,22 @@ NewDeviceModelPimpl::~NewDeviceModelPimpl()
 }
 
 void
-NewDeviceModelPimpl::slotKnownDevicesChanged(const std::string& accountId,
-                                             const std::map<std::string, std::string> devices)
+NewDeviceModelPimpl::slotKnownDevicesChanged(const QString& accountId,
+                                             const MapStringString devices)
 {
     if (accountId != linked.owner.id) return;
     auto devicesMap = devices;
     // Update current devices
-    std::list<std::string> updatedDevices;
+    QStringList updatedDevices;
     {
         std::lock_guard<std::mutex> lock(devicesMtx_);
         for (auto& device : devices_) {
             if (devicesMap.find(device.id) != devicesMap.end()) {
                 if (device.name != devicesMap[device.id]) {
-                    updatedDevices.emplace_back(device.id);
+                    updatedDevices.push_back(device.id);
                     device.name = devicesMap[device.id];
                 }
-                devicesMap.erase(device.id);
+                devicesMap.remove(device.id);
             }
         }
     }
@@ -185,17 +180,17 @@ NewDeviceModelPimpl::slotKnownDevicesChanged(const std::string& accountId,
         emit linked.deviceUpdated(device);
 
     // Add new devices
-    std::list<std::string> addedDevices;
+    QStringList addedDevices;
     {
         std::lock_guard<std::mutex> lock(devicesMtx_);
         auto it = devicesMap.begin();
         while (it != devicesMap.end()) {
-            devices_.emplace_back(Device {
-                /* id= */it->first,
-                /* name= */it->second,
+            devices_.push_back(Device {
+                /* id= */it.key(),
+                /* name= */it.value(),
                 /* isCurrent= */false
             });
-            addedDevices.emplace_back(it->first);
+            addedDevices.push_back(it.key());
             ++it;
         }
     }
@@ -203,10 +198,9 @@ NewDeviceModelPimpl::slotKnownDevicesChanged(const std::string& accountId,
         emit linked.deviceAdded(device);
 }
 
-
 void
-NewDeviceModelPimpl::slotDeviceRevocationEnded(const std::string& accountId,
-                                               const std::string& deviceId,
+NewDeviceModelPimpl::slotDeviceRevocationEnded(const QString& accountId,
+                                               const QString& deviceId,
                                                const int status)
 {
     if (accountId != linked.owner.id) return;

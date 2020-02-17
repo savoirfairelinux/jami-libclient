@@ -31,7 +31,8 @@ Video::RendererPrivate::RendererPrivate(Video::Renderer* parent)
 {
 }
 
-Video::Renderer::Renderer(const QByteArray& id, const QSize& res) : d_ptr(new RendererPrivate(this))
+Video::Renderer::Renderer(const QString& id, const QSize& res)
+    : d_ptr(new RendererPrivate(this))
 {
    setObjectName("Renderer:"+id);
    d_ptr->m_pSize     = res;
