@@ -1,5 +1,5 @@
 /****************************************************************************
- *    Copyright (C) 2019-2020 Savoir-faire Linux Inc.                            *
+ *    Copyright (C) 2019-2020 Savoir-faire Linux Inc.                       *
  *   Author: Mingrui Zhang <mingrui.zhang@savoirfairelinux.com>             *
  *                                                                          *
  *   This library is free software; you can redistribute it and/or          *
@@ -34,12 +34,12 @@ class PeerDiscoveryModelPimpl: public QObject
 public:
     PeerDiscoveryModelPimpl(PeerDiscoveryModel& linked,
                             const CallbacksHandler& callbackHandler,
-                            const std::string& accountID);
+                            const QString& accountID);
     ~PeerDiscoveryModelPimpl();
 
     PeerDiscoveryModel& linked_;
     const CallbacksHandler& callbacksHandler_;
-    const std::string accountID_;
+    const QString accountID_;
 
 public Q_SLOTS:
 
@@ -48,10 +48,10 @@ public Q_SLOTS:
      * @param accountId
      * @param status
      */
-    void slotPeerMapStatusChanged(const std::string& accountID, const std::string& contactUri, int state, const std::string& displayname);
+    void slotPeerMapStatusChanged(const QString& accountID, const QString& contactUri, int state, const QString& displayname);
 };
 
-PeerDiscoveryModel::PeerDiscoveryModel(const CallbacksHandler& callbacksHandler, const std::string& accountID)
+PeerDiscoveryModel::PeerDiscoveryModel(const CallbacksHandler& callbacksHandler, const QString& accountID)
 : QObject()
 , pimpl_(std::make_unique<PeerDiscoveryModelPimpl>(*this, callbacksHandler, accountID))
 {
@@ -63,7 +63,7 @@ PeerDiscoveryModel::~PeerDiscoveryModel()
 
 PeerDiscoveryModelPimpl::PeerDiscoveryModelPimpl(PeerDiscoveryModel& linked,
                                                  const CallbacksHandler& callbacksHandler,
-                                                 const std::string& accountID)
+                                                 const QString& accountID)
 : linked_(linked)
 , callbacksHandler_(callbacksHandler)
 , accountID_(accountID)
@@ -77,11 +77,11 @@ PeerDiscoveryModelPimpl::~PeerDiscoveryModelPimpl()
 }
 
 void
-PeerDiscoveryModelPimpl::slotPeerMapStatusChanged(const std::string& accountID, const std::string& contactUri, int state, const std::string& displayname)
+PeerDiscoveryModelPimpl::slotPeerMapStatusChanged(const QString& accountID, const QString& contactUri, int state, const QString& displayname)
 {
     if(accountID != accountID_){
         return;
-    } 
+    }
     emit linked_.modelChanged(contactUri,state == 0 ? PeerModelChanged::INSERT : PeerModelChanged::REMOVE,displayname);
 
 }
@@ -90,7 +90,7 @@ std::vector<PeerContact>
 PeerDiscoveryModel::getNearbyPeers() const
 {
     std::vector<PeerContact> result;
-    const MapStringString nearbyPeers = ConfigurationManager::instance().getNearbyPeers(QString::fromStdString(pimpl_->accountID_));
+    const MapStringString nearbyPeers = ConfigurationManager::instance().getNearbyPeers(pimpl_->accountID_);
     result.reserve(nearbyPeers.size());
 
     QMap<QString, QString>::const_iterator i = nearbyPeers.constBegin();

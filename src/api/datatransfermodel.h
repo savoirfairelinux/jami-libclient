@@ -17,20 +17,16 @@
  ***************************************************************************/
 #pragma once
 
-// Std
-#include <string>
-#include <memory>
-#include <ios>
-
-// Qt
-#include <qobject.h>
-
-// Data
 #include "api/datatransfer.h"
 #include "api/account.h"
 
-// LRC
 #include "typedefs.h"
+
+#include <QObject>
+
+#include <string>
+#include <memory>
+#include <ios>
 
 namespace lrc {
 
@@ -55,14 +51,14 @@ public:
     DataTransferModel();
     ~DataTransferModel();
 
-    void sendFile(const std::string& account_id, const std::string& peer_uri,
-                  const std::string& file_path, const std::string& display_name);
+    void sendFile(const QString& account_id, const QString& peer_uri,
+                  const QString& file_path, const QString& display_name);
 
     void transferInfo(long long ringId, datatransfer::Info& lrc_info);
 
     void bytesProgress(int interactionId, int64_t& total, int64_t& progress);
 
-    void accept(int interactionId, const std::string& file_path, std::size_t offset);
+    void accept(int interactionId, const QString& file_path, std::size_t offset);
 
     void cancel(int interactionId);
 
@@ -76,7 +72,7 @@ public:
      * Used when images < 20 Mb are automatically accepted and downloaded
      * Should contains the full directory with the end marker (/ on linux for example)
      */
-    std::string downloadDirectory;
+    QString downloadDirectory;
 
 Q_SIGNALS:
     /**
@@ -89,7 +85,7 @@ Q_SIGNALS:
      * @param transfer_id unique identification of incoming data transfer.
      * @param status reported status.
      */
-    void transferStatusChanged(const std::string& uid, datatransfer::Status status);
+    void transferStatusChanged(const QString& uid, datatransfer::Status status);
 
 private:
     class Impl;
