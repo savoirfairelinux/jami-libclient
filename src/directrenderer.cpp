@@ -77,8 +77,8 @@ avframe{nullptr, AVFrameDeleter}
 }
 
 ///Constructor
-Video::DirectRenderer::DirectRenderer(const QByteArray& id, const QSize& res, bool useAVFrame) :
-Renderer(id, res),
+Video::DirectRenderer::DirectRenderer(const QString& id, const QSize& res, bool useAVFrame)
+    : Renderer(id, res),
 d_ptr(std::make_unique<DirectRendererPrivate>(this, useAVFrame))
 {
     setObjectName("Video::DirectRenderer:"+id);

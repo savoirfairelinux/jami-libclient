@@ -1,5 +1,5 @@
 /****************************************************************************
- *    Copyright (C) 2019-2020 Savoir-faire Linux Inc.                            *
+ *    Copyright (C) 2019-2020 Savoir-faire Linux Inc.                       *
  *   Author: Mingrui Zhang <mingrui.zhang@savoirfairelinux.com>             *
  *                                                                          *
  *   This library is free software; you can redistribute it and/or          *
@@ -18,17 +18,16 @@
 
 #pragma once
 
+// Lrc
+#include "typedefs.h"
+
+// Qt
+#include <QObject>
+
 // std
 #include <vector>
 #include <map>
 #include <memory>
-#include <string>
-
-// Qt
-#include <qobject.h>
-
-// Lrc
-#include "typedefs.h"
 
 namespace lrc
 {
@@ -51,7 +50,6 @@ enum class PeerModelChanged
     REMOVE
 };
 
-
 /**
   *  @brief Class that manages local peer discovery info
   */
@@ -59,7 +57,7 @@ class LIB_EXPORT PeerDiscoveryModel : public QObject {
     Q_OBJECT
 public:
 
-    PeerDiscoveryModel(const CallbacksHandler& callbackHandler, const std::string& accountID);
+    PeerDiscoveryModel(const CallbacksHandler& callbackHandler, const QString& accountID);
     ~PeerDiscoveryModel();
     /**
      * get a map of discovered peers account
@@ -71,7 +69,7 @@ Q_SIGNALS:
     /**
      * Connect this signal to know when the status of local peer discovery map changed.
      */
-    void modelChanged(const std::string& contactUri, PeerModelChanged state, const std::string& displayname);
+    void modelChanged(const QString& contactUri, PeerModelChanged state, const QString& displayname);
 
 private:
     std::unique_ptr<PeerDiscoveryModelPimpl> pimpl_;

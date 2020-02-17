@@ -1,5 +1,5 @@
 /****************************************************************************
- *    Copyright (C) 2017-2020 Savoir-faire Linux Inc.                                  *
+ *    Copyright (C) 2017-2020 Savoir-faire Linux Inc.                       *
  *   Author: Nicolas Jäger <nicolas.jager@savoirfairelinux.com>             *
  *   Author: Sébastien Blin <sebastien.blin@savoirfairelinux.com>           *
  *                                                                          *
@@ -18,13 +18,13 @@
  ***************************************************************************/
 #pragma once
 
+// Qt
+#include <QObject>
+
 // std
 #include <string>
 #include <ctime>
 #include <chrono>
-
-// Qt
-#include <QObject>
 
 namespace lrc
 {
@@ -51,37 +51,37 @@ enum class Status {
     CONNECTED
 };
 
-static inline std::string
+static inline QString
 to_string(const call::Status& status)
 {
     switch(status)
     {
     case call::Status::PAUSED:
-        return QObject::tr("Hold").toStdString();
+        return QObject::tr("Hold");
     case call::Status::IN_PROGRESS:
-        return QObject::tr("Talking").toStdString();
+        return QObject::tr("Talking");
     case call::Status::INVALID:
-        return QObject::tr("ERROR").toStdString();
+        return QObject::tr("ERROR");
     case call::Status::INCOMING_RINGING:
-        return QObject::tr("Incoming").toStdString();
+        return QObject::tr("Incoming");
     case call::Status::OUTGOING_RINGING:
-        return QObject::tr("Calling").toStdString();
+        return QObject::tr("Calling");
     case call::Status::CONNECTING:
-        return QObject::tr("Connecting").toStdString();
+        return QObject::tr("Connecting");
     case call::Status::SEARCHING:
-        return QObject::tr("Searching").toStdString();
+        return QObject::tr("Searching");
     case call::Status::INACTIVE:
-        return QObject::tr("Inactive").toStdString();
+        return QObject::tr("Inactive");
     case call::Status::ENDED:
-        return QObject::tr("Finished").toStdString();
+        return QObject::tr("Finished");
     case call::Status::TIMEOUT:
-        return QObject::tr("Timeout").toStdString();
+        return QObject::tr("Timeout");
     case call::Status::PEER_BUSY:
-        return QObject::tr("Peer busy").toStdString();
+        return QObject::tr("Peer busy");
     case call::Status::TERMINATING:
-        return QObject::tr("Finished").toStdString();
+        return QObject::tr("Finished");
     case call::Status::CONNECTED:
-        return QObject::tr("Communication established").toStdString();
+        return QObject::tr("Communication established");
     default:
         return ""; // to remove a build warning, should not happen
     }
@@ -94,7 +94,7 @@ to_string(const call::Status& status)
  * @return
  */
 static inline Status
-to_status(const std::string& status)
+to_status(const QString& status)
 {
     if (status == "INCOMING")
         return Status::INCOMING_RINGING;
@@ -127,11 +127,11 @@ enum class Type {
 
 struct Info
 {
-    std::string id;
+    QString id;
     std::chrono::steady_clock::time_point startTime;
     Status status = Status::INVALID;
     Type type = Type::INVALID;
-    std::string peerUri;
+    QString peerUri;
     bool isOutgoing;
     bool audioMuted = false;
     bool videoMuted = false;
