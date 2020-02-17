@@ -18,18 +18,13 @@
  ***************************************************************************/
 #pragma once
 
-// Std
-#include <memory>
-#include <string>
-#include <map>
-
-// Qt
-#include <qobject.h>
-
-// Lrc
 #include "typedefs.h"
 #include "api/datatransfer.h"
 #include "qtwrapper/conversions_wrap.hpp"
+
+#include <QObject>
+
+#include <memory>
 
 namespace lrc
 {
@@ -63,43 +58,43 @@ Q_SIGNALS:
      * @param from      interaction sender.
      * @param payloads.
      */
-    void newAccountMessage(std::string& accountId,
-                           std::string& msgId,
-                           std::string& from,
-                           std::map<std::string,std::string> payloads);
+    void newAccountMessage(const QString& accountId,
+                           const QString& msgId,
+                           const QString& from,
+                           const MapStringString& payloads);
     /**
      * Connect this signal to get information when a peer is online.
      * @param contactUri the peer.
      * @param present if the peer is online.
      */
-    void newBuddySubscription(const std::string& contactUri, bool present);
+    void newBuddySubscription(const QString& contactUri, bool present);
     /**
      * Connect this signal to get information when peer discovery changes.
      * @param contactUri the peer.
      * @param state is 0 if the peer is added.
      */
-    void newPeerSubscription(const std::string& accountId, const std::string& contactUri, int state, const std::string& displayname);
+    void newPeerSubscription(const QString& accountId, const QString& contactUri, int state, const QString& displayname);
     /**
      * Connect this signal to know when a contact is removed by the daemon.
      * @param accountId the one who lost a contact.
      * @param contactUri the contact removed.
      * @param banned if the contact was banned
      */
-    void contactRemoved(const std::string& accountId, const std::string& contactUri, bool banned);
+    void contactRemoved(const QString& accountId, const QString& contactUri, bool banned);
     /**
      * Connect this signal to know when a contact is added by the daemon.
      * @param accountId the one who got a new contact.
      * @param contactUri the new contact.
      * @param confirmed if the contact is trusted.
      */
-    void contactAdded(const std::string& accountId, const std::string& contactUri, bool confirmed);
+    void contactAdded(const QString& accountId, const QString& contactUri, bool confirmed);
     /**
      * Connect this signal to know when an incoming request is added by the daemon
      * @param accountId the one who got the request
      * @param ringId the peer contact
      * @param payload the VCard
      */
-    void incomingContactRequest(const std::string& accountId, const std::string& ringId, const std::string& payload);
+    void incomingContactRequest(const QString& accountId, const QString& ringId, const QString& payload);
     /**
      * Connect this signal to know when a call arrives
      * @param accountId the one who receives the call
@@ -107,31 +102,31 @@ Q_SIGNALS:
      * @param fromUri the caller uri
      * @param displayName the display name of incoming call
      */
-    void incomingCall(const std::string& accountId,
-                      const std::string& callId,
-                      const std::string& fromUri,
-                      const std::string& displayName);
+    void incomingCall(const QString& accountId,
+                      const QString& callId,
+                      const QString& fromUri,
+                      const QString& displayName);
     /**
      * Connect this signal to know when a call is updated
      * @param callId the call id
      * @param state the new state
      * @param code
      */
-    void callStateChanged(const std::string& callId, const std::string &state, int code);
+    void callStateChanged(const QString& callId, const QString& state, int code);
     /**
      * Connect this signal to know when the account details have changed
      * @param accountId the one who changes
      * @param details the new details
      */
-    void accountDetailsChanged(const std::string& accountId,
-                               const std::map<std::string,std::string>& details);
+    void accountDetailsChanged(const QString& accountId,
+                               const MapStringString& details);
     /**
      * Connect this signal to know when the volatile account details have changed
      * @param accountId the one who changes
      * @param details the new details
      */
-    void volatileAccountDetailsChanged(const std::string& accountId,
-                                       const std::map<std::string,std::string>& details);
+    void volatileAccountDetailsChanged(const QString& accountId,
+                                       const MapStringString& details);
     /**
      * Connect this signal to know when the accounts list changed
      */
@@ -141,7 +136,7 @@ Q_SIGNALS:
      * @param accountId the one who changes
      * @param status the new status
      */
-    void accountStatusChanged(const std::string& accountId, const api::account::Status status);
+    void accountStatusChanged(const QString& accountId, const api::account::Status status);
     /**
      * Connect this signal to know where a VCard is incoming
      * @param callId the call linked to this VCard
@@ -150,31 +145,30 @@ Q_SIGNALS:
      * @param numberOfParts of the VCard
      * @param payload content of the VCard
      */
-    void incomingVCardChunk(const std::string& callId,
-                            const std::string& from,
+    void incomingVCardChunk(const QString& callId,
+                            const QString& from,
                             int part,
                             int numberOfParts,
-                            const std::string& payload);
+                            const QString& payload);
     /**
      * Connect this signal to get incoming text interaction from SIP.
      * @param callId the call linked.
      * @param from interaction sender.
      * @param body the text received.
      */
-    void incomingCallMessage(const std::string& callId,
-                             const std::string& from,
-
-                             const std::string& body) const;
+    void incomingCallMessage(const QString& callId,
+                             const QString& from,
+                             const QString& body) const;
     /**
      * Connect this signal to know when a new conference is created
      * @param callId of the conference
      */
-    void conferenceCreated(const std::string& callId);
+    void conferenceCreated(const QString& callId);
     /**
      * Connect this signal to know when a conference is removed
      * @param callId of the conference
      */
-    void conferenceRemoved(const std::string& callId);
+    void conferenceRemoved(const QString& callId);
     /**
      * Connect this signal to know when a message sent get a new status
      * @param accountId, account linked
@@ -182,9 +176,9 @@ Q_SIGNALS:
      * @param to, peer uri
      * @param status, new status for this message
      */
-    void accountMessageStatusChanged(const std::string& accountId,
+    void accountMessageStatusChanged(const QString& accountId,
                                      const uint64_t id,
-                                     const std::string& to, int status);
+                                     const QString& to, int status);
 
     void transferStatusCreated(long long dringId, api::datatransfer::Info info);
     void transferStatusCanceled(long long dringId, api::datatransfer::Info info);
@@ -201,8 +195,8 @@ Q_SIGNALS:
      * @param accountId interaction receiver.
      * @param devices A map of device IDs with corresponding labels.
      */
-    void knownDevicesChanged(std::string& accountId,
-                             std::map<std::string,std::string> devices);
+    void knownDevicesChanged(const QString& accountId,
+                             const MapStringString& devices);
 
     /**
      * Emit deviceRevocationEnded
@@ -210,8 +204,8 @@ Q_SIGNALS:
      * @param deviceId
      * @param status SUCCESS = 0, WRONG_PASSWORD = 1, UNKNOWN_DEVICE = 2
      */
-    void deviceRevocationEnded(const std::string& accountId,
-                               const std::string& deviceId,
+    void deviceRevocationEnded(const QString& accountId,
+                               const QString& deviceId,
                                const int status);
 
     /**
@@ -220,7 +214,7 @@ Q_SIGNALS:
      * @param status SUCCESS = 0, WRONG_PASSWORD = 1, NETWORK_ERROR = 2
      * @param pin
      */
-    void exportOnRingEnded(const std::string& accountId, int status, const std::string& pin);
+    void exportOnRingEnded(const QString& accountId, int status, const QString& pin);
 
     /**
      * Name registration has ended
@@ -228,7 +222,7 @@ Q_SIGNALS:
      * @param status
      * @param name
      */
-    void nameRegistrationEnded(const std::string& accountId, int status, const std::string& name);
+    void nameRegistrationEnded(const QString& accountId, int status, const QString& name);
 
     /**
      * Name registration has been found
@@ -236,20 +230,20 @@ Q_SIGNALS:
      * @param status
      * @param name
      */
-    void registeredNameFound(const std::string& accountId, int status, const std::string& address, const std::string& name);
+    void registeredNameFound(const QString& accountId, int status, const QString& address, const QString& name);
 
     /**
      * Migration ended
      * @param accountId
      * @param ok if migration succeed
      */
-    void migrationEnded(const std::string& accountId, bool ok);
+    void migrationEnded(const QString& accountId, bool ok);
 
     /**
     * Debug message received
     * @param message
     */
-    void debugMessageReceived(const std::string& message);
+    void debugMessageReceived(const QString& message);
 
     /**
      * Renderer is started
@@ -258,14 +252,14 @@ Q_SIGNALS:
      * @param width
      * @param height
      */
-    void startedDecoding(const std::string& id, const std::string& shmPath, int width, int height);
+    void startedDecoding(const QString& id, const QString& shmPath, int width, int height);
 
     /**
      * Renderer is stopped
      * @param id
      * @param shmrenderer
      */
-    void stoppedDecoding(const std::string& id, const std::string& shmPath);
+    void stoppedDecoding(const QString& id, const QString& shmPath);
 
     /**
      * Emitted when a device is plugged or unplugged
@@ -277,13 +271,13 @@ Q_SIGNALS:
      * @param id of the ringbuffer level
      * @param level
      */
-    void audioMeter(const std::string& id, float level);
+    void audioMeter(const QString& id, float level);
 
     /**
      * Emitted when an local recorder is finished
      * @param filePath
      */
-    void recordPlaybackStopped(const std::string& filePath);
+    void recordPlaybackStopped(const QString& filePath);
 
     /**
      * Emitted when an audio level is received
@@ -292,7 +286,7 @@ Q_SIGNALS:
      * @param oldCount
      * @param urgentCount
      */
-    void voiceMailNotify(const std::string& accountId, int newCount, int oldCount, int urgentCount);
+    void voiceMailNotify(const QString& accountId, int newCount, int oldCount, int urgentCount);
 
 private Q_SLOTS:
     /**
@@ -430,7 +424,7 @@ private Q_SLOTS:
      * @param devices A map of device IDs and corresponding labels
      */
     void slotKnownDevicesChanged(const QString& accountId,
-                                 const QMap<QString, QString>& devices);
+                                 const MapStringString& devices);
 
      /**
       * Emit deviceRevocationEnded
@@ -477,11 +471,7 @@ private Q_SLOTS:
     * emit debugMessageReceived
     * @param message
     */
-#ifdef ENABLE_LIBWRAP
-    void slotDebugMessageReceived(const std::string& message);
-#else
     void slotDebugMessageReceived(const QString& message);
-#endif
 
     /**
      * Renderer is started

@@ -18,12 +18,11 @@
  ***************************************************************************/
 #pragma once
 
-// Std
+#include "interaction.h"
+#include "typedefs.h"
+
 #include <vector>
 #include <map>
-
-// Data
-#include "interaction.h"
 
 namespace lrc
 {
@@ -36,11 +35,11 @@ namespace conversation
 
 struct Info
 {
-    std::string uid = "";
-    std::string accountId;
-    std::vector<std::string> participants;
-    std::string callId;
-    std::string confId;
+    QString uid = "";
+    QString accountId;
+    VectorString participants;
+    QString callId;
+    QString confId;
     std::map<uint64_t, interaction::Info> interactions;
     uint64_t lastMessageUid = 0;
     unsigned int unreadMessages = 0;

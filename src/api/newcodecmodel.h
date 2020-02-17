@@ -1,5 +1,5 @@
 /****************************************************************************
- *    Copyright (C) 2018-2020 Savoir-faire Linux Inc.                                  *
+ *    Copyright (C) 2018-2020 Savoir-faire Linux Inc.                       *
  *   Author: Sébastien Blin <sebastien.blin@savoirfairelinux.com>           *
  *                                                                          *
  *   This library is free software; you can redistribute it and/or          *
@@ -17,18 +17,13 @@
  ***************************************************************************/
 #pragma once
 
-// Std
-#include <memory>
-#include <string>
-#include <list>
-
-// Qt
-#include <qobject.h>
-#include <QObject>
-
-// Lrc
 #include "api/account.h"
 #include "typedefs.h"
+
+#include <QObject>
+#include <QList>
+
+#include <memory>
 
 namespace lrc
 {
@@ -45,15 +40,15 @@ struct Codec
 {
     unsigned int id;
     bool enabled;
-    std::string name;
-    std::string samplerate;
-    std::string bitrate;
-    std::string min_bitrate;
-    std::string max_bitrate;
-    std::string type;
-    std::string quality;
-    std::string min_quality;
-    std::string max_quality;
+    QString name;
+    QString samplerate;
+    QString bitrate;
+    QString min_bitrate;
+    QString max_bitrate;
+    QString type;
+    QString quality;
+    QString min_quality;
+    QString max_quality;
     bool auto_quality_enabled;
 };
 
@@ -72,11 +67,11 @@ public:
     /**
      * @return audio codecs for the account
      */
-    std::list<Codec> getAudioCodecs() const;
+    QList<Codec> getAudioCodecs() const;
     /**
      * @return video codecs for the account
      */
-    std::list<Codec> getVideoCodecs() const;
+    QList<Codec> getVideoCodecs() const;
     /**
      * Set a higher priority to a codec
      * @param codecId

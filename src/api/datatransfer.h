@@ -17,11 +17,13 @@
  ***************************************************************************/
 #pragma once
 
+// LRC
+#include "typedefs.h"
+
 // std
 #include <ctime>
 
-// LRC
-#include "typedefs.h"
+#include <QString>
 
 namespace lrc { namespace api {
 
@@ -40,7 +42,7 @@ enum class Status {
     INVALID
 };
 
-static inline const std::string
+static inline const QString
 to_string(const Status& status)
 {
     switch(status) {
@@ -69,7 +71,7 @@ to_string(const Status& status)
 }
 
 static inline Status
-to_status(const std::string& status)
+to_status(const QString& status)
 {
     if (status == "on_connection")
         return datatransfer::Status::on_connection;
@@ -96,15 +98,15 @@ to_status(const std::string& status)
 
 struct Info
 {
-    std::string uid; ///< long-term and unique identifier (used for historic)
+    QString uid; ///< long-term and unique identifier (used for historic)
     Status status;
     bool isOutgoing;
     std::size_t totalSize;
     std::size_t progress; ///< if status >= on_progress, gives number of bytes tx/rx until now
-    std::string path;
-    std::string displayName;
-    std::string accountId;
-    std::string peerUri;
+    QString path;
+    QString displayName;
+    QString accountId;
+    QString peerUri;
     std::time_t timestamp = 0;
 };
 

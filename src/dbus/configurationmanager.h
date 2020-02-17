@@ -26,6 +26,7 @@
  #else
   #include "configurationmanager_dbus_interface.h"
   #include <QDBusPendingReply>
+  #include "../qtwrapper/conversions_wrap.hpp"
  #endif
 #endif
 #include <typedefs.h>

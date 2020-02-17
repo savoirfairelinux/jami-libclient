@@ -17,18 +17,14 @@
  ***************************************************************************/
 #pragma once
 
-// Std
+#include "api/account.h"
+#include "typedefs.h"
+
+#include <QObject>
+
 #include <memory>
 #include <string>
 #include <list>
-
-// Qt
-#include <qobject.h>
-#include <QObject>
-
-// Lrc
-#include "api/account.h"
-#include "typedefs.h"
 
 namespace lrc
 {
@@ -43,8 +39,8 @@ namespace account { struct Info; }
 
 struct Device
 {
-    std::string id = "";
-    std::string name = "";
+    QString id = "";
+    QString name = "";
     bool isCurrent = false;
 };
 
@@ -72,14 +68,14 @@ public:
      * Get ring devices of an account
      * @return a copy of current devices
      */
-    std::list<Device> getAllDevices() const;
+    QList<Device> getAllDevices() const;
 
     /**
      * Retrieve a device by its id
      * @param id of the device
      * @return the device if found else a device with a null id
      */
-    Device getDevice(const std::string& id) const;
+    Device getDevice(const QString& id) const;
 
     /**
      * Revoke a ring device
@@ -87,7 +83,7 @@ public:
      * @param password of the account's archive
      * @note will emit deviceRevoked when finished
      */
-    void revokeDevice(const std::string& id, const std::string& password);
+    void revokeDevice(const QString& id, const QString& password);
 
     /**
      * Change the name of the current device
@@ -95,25 +91,25 @@ public:
      * @note will emit deviceUpdated when finished
      * @note ring can't change the name of another device
      */
-    void setCurrentDeviceName(const std::string& newName);
+    void setCurrentDeviceName(const QString& newName);
 
 Q_SIGNALS:
     /**
      * Link to this signal to know when a new device is added
      * @param id added device
      */
-    void deviceAdded(const std::string& id) const;
+    void deviceAdded(const QString& id) const;
     /**
      * Link to this signal to know when a device is removed
      * @param id removed device
      * @param Status (SUCCESS, WRONG_PASSWORD, UNKNOWN_DEVICE)
      */
-    void deviceRevoked(const std::string& id, const Status status) const;
+    void deviceRevoked(const QString& id, const Status status) const;
     /**
      * Link to this signal when a device get a new name
      * @param id
      */
-    void deviceUpdated(const std::string& id) const;
+    void deviceUpdated(const QString& id) const;
 
 private:
     std::unique_ptr<NewDeviceModelPimpl> pimpl_;
