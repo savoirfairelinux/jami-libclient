@@ -52,7 +52,7 @@ class ConversationModel;
 class LIB_EXPORT ContactModel : public QObject {
     Q_OBJECT
 public:
-    using ContactInfoMap = std::map<std::string, contact::Info>;
+    using ContactInfoMap = QMap<QString, contact::Info>;
 
     const account::Info& owner;
 
@@ -72,19 +72,19 @@ public:
      * @param contactUri
      * @param banned
      */
-    void removeContact(const std::string& contactUri, bool banned=false);
+    void removeContact(const QString& contactUri, bool banned=false);
     /**
      * get contact information.
      * @param  contactUri
      * @return the contact::Info structure for a contact
      * @throws out_of_range exception if can't find the contact
      */
-    const contact::Info getContact(const std::string& contactUri) const;
+    const contact::Info getContact(const QString& contactUri) const;
     /**
      * get list of banned contacts.
      * @return list of banned contacts uris as string
      */
-    const std::list<std::string>& getBannedContacts() const;
+    const std::list<QString>& getBannedContacts() const;
     /**
      * @return all contacts for this account.
      */
@@ -101,48 +101,48 @@ public:
      * Search a SIP or a Ring contact from a query.
      * @param query
      */
-    void searchContact(const std::string& query);
+    void searchContact(const QString& query);
     /**
      * Send a text interaction to a contact over the Dht.
      * @param contactUri
      * @param body
      * @return id from daemon
      */
-    uint64_t sendDhtMessage(const std::string& uri, const std::string& body) const;
+    uint64_t sendDhtMessage(const QString& uri, const QString& body) const;
 
 Q_SIGNALS:
     /**
      * Connect this signal to know when this model was updated.
      */
-    void modelUpdated(const std::string& uri, bool needsSorted=true) const;
+    void modelUpdated(const QString& uri, bool needsSorted=true) const;
     /**
      * Connect this signal to know when a contact was added.
      * @param contactUri
      */
-    void contactAdded(const std::string& contactUri) const;
+    void contactAdded(const QString& contactUri) const;
     /**
      * Connect this signal to know when a pending contact was accepted.
      * @param contactUri
      */
-    void pendingContactAccepted(const std::string& contactUri) const;
+    void pendingContactAccepted(const QString& contactUri) const;
     /**
      * Connect this signal to know when an account was removed.
      * @param contactUri
      */
-    void contactRemoved(const std::string& contactUri) const;
+    void contactRemoved(const QString& contactUri) const;
     /**
      * Connect this signal to know when an incoming call comes from a pending contact.
      * @param fromId peer profile uri
      * @param callId incoming call id
      */
-    void incomingCallFromPending(const std::string& from, const std::string& callId) const;
+    void incomingCallFromPending(const QString& from, const QString& callId) const;
     /**
      * Connect this signal to know when a text message arrives for this account
      * @param accountId
      * @param from peer uri
      * @param payloads content of the message
      */
-    void newAccountMessage(std::string& accountId, std::string& from, std::map<std::string,std::string> payloads) const;
+    void newAccountMessage(QString& accountId, QString& from, QMap<QString, QString> payloads) const;
     /**
      * Connect this signal to know when a file transfer interaction is incoming
      * @param dringId Daemon's ID for incoming transfer
@@ -154,7 +154,7 @@ Q_SIGNALS:
      * @param contactUri
      * @param banned whether contact was banned or unbanned
      */
-    void bannedStatusChanged(const std::string& contactUri, bool banned) const;
+    void bannedStatusChanged(const QString& contactUri, bool banned) const;
 
 private:
     std::unique_ptr<ContactModelPimpl> pimpl_;

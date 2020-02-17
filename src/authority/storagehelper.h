@@ -53,7 +53,8 @@ QString getPath();
  * @param type of account for which to transform the uri
  * @return formatted uri
  */
-std::string prepareUri(const std::string& uri, api::profile::Type type);
+QString
+prepareUri(const QString& uri, api::profile::Type type);
 
 /**
  * Get a formatted string for a call interaction's body
@@ -61,8 +62,8 @@ std::string prepareUri(const std::string& uri, api::profile::Type type);
  * @param duration of the call
  * @return the formatted and translated call message string
  */
-std::string
-getCallInteractionString(const std::string& authorUri,
+QString
+getCallInteractionString(const QString& authorUri,
                          const std::time_t& duration);
 
 /**
@@ -71,8 +72,8 @@ getCallInteractionString(const std::string& authorUri,
  * @param status
  * @return the formatted and translated call message string
  */
-std::string
-getContactInteractionString(const std::string& authorUri,
+QString
+getContactInteractionString(const QString& authorUri,
                             const api::interaction::Status& status);
 
 namespace vcard
@@ -84,8 +85,9 @@ namespace vcard
  * @param compressImage
  * @return vcard string of the profile
  */
-std::string profileToVcard(const api::profile::Info& profileInfo,
-                           bool compressImage = false);
+QString
+profileToVcard(const api::profile::Info& profileInfo,
+               bool compressImage = false);
 
 } // namespace vcard
 
@@ -93,23 +95,26 @@ std::string profileToVcard(const api::profile::Info& profileInfo,
  * @param  duration
  * @return a human readable call duration (M:ss)
  */
-std::string getFormattedCallDuration(const std::time_t duration);
+QString
+getFormattedCallDuration(const std::time_t duration);
 
 /**
  * Get all conversations with a given participant's URI
  * @param db
  * @param participant_uri
  */
-std::vector<std::string> getConversationsWithPeer(Database& db,
-                                                  const std::string& participant_uri);
+VectorString
+getConversationsWithPeer(Database& db,
+                         const QString& participant_uri);
 
 /**
  * Get all peer participant(s) URIs for a given conversation id
  * @param db
  * @param conversationId
  */
-std::vector<std::string> getPeerParticipantsForConversation(Database& db,
-                                                            const std::string& conversationId);
+VectorString
+getPeerParticipantsForConversation(Database& db,
+                                   const QString& conversationId);
 
 /**
  * Creates or updates a contact or account vCard file with profile data.
@@ -117,7 +122,7 @@ std::vector<std::string> getPeerParticipantsForConversation(Database& db,
  * @param  profileInfo the contact info containing peer profile information
  * @param  isPeer indicates that a the profileInfo is that of a peer
  */
-void createOrUpdateProfile(const std::string& accountId,
+void createOrUpdateProfile(const QString& accountId,
                            const api::profile::Info& profileInfo,
                            const bool isPeer = false);
 
@@ -126,8 +131,8 @@ void createOrUpdateProfile(const std::string& accountId,
  * @param  accountId
  * @return the account's base64 avatar
  */
-std::string
-getAccountAvatar(const std::string& accountId);
+QString
+getAccountAvatar(const QString& accountId);
 
 /**
  * Build a contact info struct from a vCard
@@ -136,8 +141,8 @@ getAccountAvatar(const std::string& accountId);
  * @param  type of contact to build
  * @return the contact info containing peer profile information
  */
-api::contact::Info buildContactFromProfile(const std::string & accountId,
-                                           const std::string& peer_uri,
+api::contact::Info buildContactFromProfile(const QString& accountId,
+                                           const QString& peer_uri,
                                            const api::profile::Type& type);
 
 /**
@@ -145,7 +150,7 @@ api::contact::Info buildContactFromProfile(const std::string & accountId,
  * @param db
  * @return conversations id for all conversations
  */
-std::vector<std::string> getAllConversations(Database& db);
+VectorString getAllConversations(Database& db);
 
 /**
  * Get conversations shared between an account and a contact.
@@ -154,9 +159,9 @@ std::vector<std::string> getAllConversations(Database& db);
  * @param contactProfile the id of the contact in the database
  * @return conversations id for conversations between account and contact
  */
-std::vector<std::string> getConversationsBetween(Database& db,
-                                                 const std::string& accountProfile,
-                                                 const std::string& contactProfile);
+VectorString getConversationsBetween(Database& db,
+                                     const QString& accountProfile,
+                                     const QString& contactProfile);
 
 /**
  * Start a conversation between account and contact. Creates an entry in the conversations table
@@ -166,9 +171,9 @@ std::vector<std::string> getConversationsBetween(Database& db,
  * @param isOutgoing
  * @return conversation_id of the new conversation.
  */
-std::string beginConversationWithPeer(Database& db,
-                                      const std::string& peer_uri,
-                                      const bool isOutgoing = true);
+QString beginConversationWithPeer(Database& db,
+                                  const QString& peer_uri,
+                                  const bool isOutgoing = true);
 
 /**
  * Return interactions from a conversation
@@ -185,7 +190,7 @@ void getHistory(Database& db, api::conversation::Info& conversation);
  * @return the id of the inserted interaction
  */
 int addMessageToConversation(Database& db,
-                             const std::string& conversationId,
+                             const QString& conversationId,
                              const api::interaction::Info& msg);
 
 /**
@@ -197,9 +202,9 @@ int addMessageToConversation(Database& db,
 * @return the id of the inserted interaction
 */
 int addOrUpdateMessage(Database& db,
-                       const std::string& conversationId,
+                       const QString& conversationId,
                        const api::interaction::Info& msg,
-                       const std::string& daemonId);
+                       const QString& daemonId);
 
 /**
 * Add a data transfer entry into interactions linked to a conversation.
@@ -209,7 +214,7 @@ int addOrUpdateMessage(Database& db,
 * @return the id of the inserted interaction
 */
 int addDataTransferToConversation(Database& db,
-                                  const std::string& conversationId,
+                                  const QString& conversationId,
                                   const api::datatransfer::Info& infoFromDaemon);
 
 /**
@@ -219,15 +224,15 @@ int addDataTransferToConversation(Database& db,
  * @param daemonId
  */
 void addDaemonMsgId(Database& db,
-                    const std::string& interactionId,
-                    const std::string& daemonId);
+                    const QString& interactionId,
+                    const QString& daemonId);
 
 /**
  * @param  db
  * @param  id
  * @return the daemon id for an interaction else an empty string
  */
-std::string getDaemonIdByInteractionId(Database& db, const std::string& id);
+std::string getDaemonIdByInteractionId(Database& db, const QString& id);
 
 /**
  * Obtain the id of an interaction of a given daemon_id
@@ -235,7 +240,7 @@ std::string getDaemonIdByInteractionId(Database& db, const std::string& id);
  * @param  id
  * @return the interaction id for a daemon id else an empty string
  */
-std::string getInteractionIdByDaemonId(Database& db, const std::string& daemon_id);
+std::string getInteractionIdByDaemonId(Database& db, const QString& daemon_id);
 
 /**
  * Obtain the extra_data column of an interaction of a given id
@@ -244,8 +249,8 @@ std::string getInteractionIdByDaemonId(Database& db, const std::string& daemon_i
  * @param id
  * @param key
  */
-std::string getInteractionExtraDataById(Database& db, const std::string& id,
-                                        const std::string& key = {});
+QString getInteractionExtraDataById(Database& db, const QString& id,
+                                    const QString& key = {});
 
 /**
  * Change the body of an interaction
@@ -254,7 +259,7 @@ std::string getInteractionExtraDataById(Database& db, const std::string& id,
  * @param newBody
  */
 void updateInteractionBody(Database& db, unsigned int id,
-                           const std::string& newBody);
+                           const QString& newBody);
 
 /**
  * Change the status of an interaction
@@ -279,7 +284,7 @@ void setInteractionRead(Database& db, unsigned int id);
  * @param  conversationId
  */
 void clearHistory(Database& db,
-                  const std::string& conversationId);
+                  const QString& conversationId);
 
 /**
  * Clear interaction from history
@@ -288,7 +293,7 @@ void clearHistory(Database& db,
  * @param  interactionId
  */
 void clearInteractionFromConversation(Database& db,
-                                      const std::string& conversationId,
+                                      const QString& conversationId,
                                       const uint64_t& interactionId);
 
 /**
@@ -310,14 +315,14 @@ void deleteObsoleteHistory(Database& db, long int date);
  * @param db
  * @param contactUri
  */
-void removeContact(Database& db, const std::string& contactUri);
+void removeContact(Database& db, const QString& contactUri);
 
 /**
  * count number of 'UNREAD' from 'interactions' table.
  * @param db
  * @param conversationId
  */
-int countUnreadFromInteractions(Database& db, const std::string& conversationId);
+int countUnreadFromInteractions(Database& db, const QString& conversationId);
 
 /**
  * Retrieve an interaction's conversation id

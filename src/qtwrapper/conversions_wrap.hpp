@@ -124,6 +124,18 @@ toQString(int i) noexcept
     return QString::number(i);
 }
 
+static inline QString
+toQString(unsigned int i) noexcept
+{
+    return QString::number(i);
+}
+
+static inline QString
+toQString(uint64_t i) noexcept
+{
+    return QString::number(i);
+}
+
 static inline bool
 toBool(QString qs) noexcept
 {
@@ -140,6 +152,12 @@ static inline std::string
 toStdString(QString qs) noexcept
 {
     return qs.toStdString();
+}
+
+static inline QString
+toQString(const std::time_t& t) noexcept
+{
+    return QString::fromStdString(std::to_string(t));
 }
 
 #endif //CONVERSIONS_WRAP_H
