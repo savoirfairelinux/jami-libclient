@@ -21,6 +21,8 @@
  ***************************************************************************/
 #pragma once
 
+#include "typedefs.h"
+
 // Qt
 #include <QObject>
 #include <QtCore/QDir>
@@ -69,7 +71,7 @@ public:
          * if nbrOfCols equals three and if the size of payloads equals six,
          * means two rows of data over three columns.
          */
-        std::vector<std::string> payloads; ///< store the values.
+        VectorString payloads; ///< store the values.
     };
 
     /**
@@ -79,7 +81,7 @@ public:
     class QueryError : public std::runtime_error {
     public:
         explicit QueryError(const QSqlQuery& query);
-        virtual std::string details() { return {}; }
+        virtual QString details() { return {}; }
 
         const QSqlQuery query;
     };
@@ -91,14 +93,14 @@ public:
     class QueryInsertError final : public QueryError {
     public:
         explicit QueryInsertError(const QSqlQuery& query,
-                                  const std::string& table,
-                                  const std::map<std::string, std::string>& bindCol,
-                                  const std::map<std::string, std::string>& bindsSet);
-        std::string details() override;
+                                  const QString& table,
+                                  const MapStringString& bindCol,
+                                  const MapStringString& bindsSet);
+        QString details() override;
 
-        const std::string table;
-        const std::map<std::string, std::string> bindCol;
-        const std::map<std::string, std::string> bindsSet;
+        const QString table;
+        const MapStringString bindCol;
+        const MapStringString bindsSet;
     };
 
     /**
@@ -108,18 +110,18 @@ public:
     class QueryUpdateError final : public QueryError {
     public:
         explicit QueryUpdateError(const QSqlQuery& query,
-                                  const std::string& table,
-                                  const std::string& set,
-                                  const std::map<std::string, std::string>& bindsSet,
-                                  const std::string& where,
-                                  const std::map<std::string, std::string>& bindsWhere);
-        std::string details() override;
+                                  const QString& table,
+                                  const QString& set,
+                                  const MapStringString& bindsSet,
+                                  const QString& where,
+                                  const MapStringString& bindsWhere);
+        QString details() override;
 
-        const std::string table;
-        const std::string set;
-        const std::map<std::string, std::string> bindsSet;
-        const std::string where;
-        const std::map<std::string, std::string> bindsWhere;
+        const QString table;
+        const QString set;
+        const MapStringString bindsSet;
+        const QString where;
+        const MapStringString bindsWhere;
     };
 
     /**
@@ -129,16 +131,16 @@ public:
     class QuerySelectError final : public QueryError {
     public:
         explicit QuerySelectError(const QSqlQuery& query,
-                                  const std::string& select,
-                                  const std::string& table,
-                                  const std::string& where,
-                                  const std::map<std::string, std::string>& bindsWhere);
-        std::string details() override;
+                                  const QString& select,
+                                  const QString& table,
+                                  const QString& where,
+                                  const MapStringString& bindsWhere);
+        QString details() override;
 
-        const std::string select;
-        const std::string table;
-        const std::string where;
-        const std::map<std::string, std::string> bindsWhere;
+        const QString select;
+        const QString table;
+        const QString where;
+        const MapStringString bindsWhere;
     };
 
     /**
@@ -148,14 +150,14 @@ public:
     class QueryDeleteError final : public QueryError {
     public:
         explicit QueryDeleteError(const QSqlQuery& query,
-                                  const std::string& table,
-                                  const std::string& where,
-                                  const std::map<std::string, std::string>& bindsWhere);
-        std::string details() override;
+                                  const QString& table,
+                                  const QString& where,
+                                  const MapStringString& bindsWhere);
+        QString details() override;
 
-        const std::string table;
-        const std::string where;
-        const std::map<std::string, std::string> bindsWhere;
+        const QString table;
+        const QString where;
+        const MapStringString bindsWhere;
     };
 
     /**
@@ -165,10 +167,10 @@ public:
     class QueryTruncateError final : public QueryError {
     public:
         explicit QueryTruncateError(const QSqlQuery& query,
-            const std::string& table);
-        std::string details() override;
+            const QString& table);
+        QString details() override;
 
-        const std::string table;
+        const QString table;
     };
 
     /**
@@ -183,9 +185,9 @@ public:
      *
      * @note usually the identifiers has to be the same between bindCol and bindsSet
      */
-    int insertInto(const std::string& table,
-                   const std::map<std::string, std::string>& bindCol,
-                   const std::map<std::string, std::string>& bindsSet);
+    int insertInto(const QString& table,
+                   const MapStringString& bindCol,
+                   const MapStringString& bindsSet);
     /**
      * Update value(s) inside a table.
      * @param table where to perfom the action on.
@@ -199,11 +201,11 @@ public:
      *
      * @note usually, identifiers between set and bindsSet, are equals. The same goes between where and bindsWhere.
      */
-    void update(const std::string& table,
-                const std::string& set,
-                const std::map<std::string, std::string>& bindsSet,
-                const std::string& where,
-                const std::map<std::string, std::string>& bindsWhere);
+    void update(const QString& table,
+                const QString& set,
+                const MapStringString& bindsSet,
+                const QString& where,
+                const MapStringString& bindsWhere);
     /**
      * Delete rows from a table.
      * @param table where to perfom the action on.
@@ -214,9 +216,9 @@ public:
      *
      * @note usually, identifiers between where and bindsWhere, are equals.
      */
-    void deleteFrom(const std::string& table,
-                    const std::string& where,
-                    const std::map<std::string, std::string>& bindsWhere);
+    void deleteFrom(const QString& table,
+                    const QString& where,
+                    const MapStringString& bindsWhere);
     /**
      * Select data from table.
      * @param select column(s) to select.e
@@ -229,10 +231,10 @@ public:
      *
      * @note usually, identifiers between where and bindsWhere, are equals.
      */
-    Database::Result select(const std::string& select,
-                            const std::string& table,
-                            const std::string& where,
-                            const std::map<std::string, std::string>& bindsWhere);
+    Database::Result select(const QString& select,
+                            const QString& table,
+                            const QString& where,
+                            const MapStringString& bindsWhere);
 
     /**
      * Returns the count of an expression.
@@ -242,8 +244,10 @@ public:
      * @param bindsWhere specifies the value(s) to test using the identifier(s). The key is the identifier, it should
      *        begin by ':'. The value is the value to test.
      */
-    int count(const std::string& count, const std::string& table,
-              const std::string& where, const std::map<std::string, std::string>& bindsWhere);
+    int count(const QString& count,
+              const QString& table,
+              const QString& where,
+              const MapStringString& bindsWhere);
 
     QString basePath_;
 
@@ -301,8 +305,8 @@ private:
      */
     void migrateSchemaFromVersion1();
     void linkRingProfilesWithAccounts(bool contactsOnly);
-    void updateProfileAccountForContact(const std::string& contactURI,
-        const std::string& accountID);
+    void updateProfileAccountForContact(const QString& contactURI,
+        const QString& accountID);
 };
 
 namespace DatabaseFactory

@@ -18,9 +18,9 @@
  ***************************************************************************/
 #pragma once
 
-// Std
+#include <QString>
+
 #include <ctime>
-#include <string>
 
 namespace lrc
 {
@@ -40,7 +40,7 @@ enum class Type {
     COUNT__
 };
 
-static inline const std::string
+static inline const QString
 to_string(const Type& type)
 {
     switch(type) {
@@ -60,7 +60,7 @@ to_string(const Type& type)
 }
 
 static inline Type
-to_type(const std::string& type)
+to_type(const QString& type)
 {
     if (type == "TEXT")
         return interaction::Type::TEXT;
@@ -93,7 +93,7 @@ enum class Status {
     COUNT__
 };
 
-static inline const std::string
+static inline const QString
 to_string(const Status& status)
 {
     switch(status) {
@@ -133,7 +133,7 @@ to_string(const Status& status)
 }
 
 static inline Status
-to_status(const std::string& status)
+to_status(const QString& status)
 {
     if (status == "UNKNOWN")
         return Status::UNKNOWN;
@@ -179,8 +179,8 @@ to_status(const std::string& status)
  */
 struct Info
 {
-    std::string authorUri;
-    std::string body;
+    QString authorUri;
+    QString body;
     std::time_t timestamp = 0;
     std::time_t duration = 0;
     Type type = Type::INVALID;
@@ -189,7 +189,7 @@ struct Info
 };
 
 static inline bool isOutgoing(const Info& interaction) {
-    return interaction.authorUri.empty();
+    return interaction.authorUri.isEmpty();
 }
 
 } // namespace interaction

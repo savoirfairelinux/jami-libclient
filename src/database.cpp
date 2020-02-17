@@ -21,10 +21,15 @@
  ***************************************************************************/
 #include "database.h"
 
-// daemon
+#include "api/interaction.h"
+
 #include <account_const.h>
 
-// Qt
+// Lrc for migrations
+#include "dbus/configurationmanager.h"
+#include "vcard.h"
+#include <account_const.h>
+
 #include <QObject>
 #include <QtCore/QDir>
 #include <QtCore/QDebug>
@@ -37,17 +42,10 @@
 #include <QtSql/QSqlRecord>
 #include <QtCore/QVariant>
 #include <QDir>
+#include <QTextStream>
 
-// Std
 #include <sstream>
-
-// Data
-#include "api/interaction.h"
-
-// Lrc for migrations
-#include "dbus/configurationmanager.h"
-#include "vcard.h"
-#include <account_const.h>
+#include <stdexcept>
 
 namespace lrc
 {
@@ -217,28 +215,28 @@ Database::getVersion()
 }
 
 int
-Database::insertInto(const std::string& table,                             // "tests"
-                     const std::map<std::string, std::string>& bindCol,    // {{":id", "id"}, {":forename", "colforname"}, {":name", "colname"}}
-                     const std::map<std::string, std::string>& bindsSet)   // {{":id", "7"}, {":forename", "alice"}, {":name", "cooper"}}
+Database::insertInto(const QString& table,                     // "tests"
+                     const MapStringString& bindCol,    // {{":id", "id"}, {":forename", "colforname"}, {":name", "colname"}}
+                     const MapStringString& bindsSet)   // {{":id", "7"}, {":forename", "alice"}, {":name", "cooper"}}
 {
     QSqlQuery query(db_);
-    std::string columns;
-    std::string binds;
+    QString columns;
+    QString binds;
 
-    for (const auto& entry : bindCol) {
+    for (const auto& entry : bindCol.toStdMap()) {
         columns += entry.second + ",";
         binds += entry.first + ",";
     }
 
     // remove the last ','
-    columns.pop_back();
-    binds.pop_back();
+    columns.chop(1);
+    binds.chop(1);
 
-    auto prepareStr = std::string("INSERT INTO " + table + " (" + columns + ") VALUES (" + binds + ")");
-    query.prepare(prepareStr.c_str());
+    auto prepareStr = "INSERT INTO " + table + " (" + columns + ") VALUES (" + binds + ")";
+    query.prepare(prepareStr);
 
-    for (const auto& entry : bindsSet)
-        query.bindValue(entry.first.c_str(), entry.second.c_str());
+    for (const auto& entry : bindsSet.toStdMap())
+        query.bindValue(entry.first, entry.second);
 
     if (not query.exec())
         throw QueryInsertError(query, table, bindCol, bindsSet);
@@ -253,72 +251,72 @@ Database::insertInto(const std::string& table,                             // "t
 }
 
 void
-Database::update(const std::string& table,                              // "tests"
-                 const std::string& set,                                // "location=:place, phone:=nmbr"
-                 const std::map<std::string, std::string>& bindsSet,    // {{":place", "montreal"}, {":nmbr", "514"}}
-                 const std::string& where,                              // "contact=:name AND id=:id
-                 const std::map<std::string, std::string>& bindsWhere)  // {{":name", "toto"}, {":id", "65"}}
+Database::update(const QString& table,                              // "tests"
+                 const QString& set,                                // "location=:place, phone:=nmbr"
+                 const MapStringString& bindsSet,    // {{":place", "montreal"}, {":nmbr", "514"}}
+                 const QString& where,                              // "contact=:name AND id=:id
+                 const MapStringString& bindsWhere)  // {{":name", "toto"}, {":id", "65"}}
 {
     QSqlQuery query(db_);
 
-    auto prepareStr = std::string("UPDATE " + table + " SET " + set + " WHERE " + where);
-    query.prepare(prepareStr.c_str());
+    auto prepareStr = QString("UPDATE " + table + " SET " + set + " WHERE " + where);
+    query.prepare(prepareStr);
 
-    for (const auto& entry : bindsSet)
-        query.bindValue(entry.first.c_str(), entry.second.c_str());
+    for (const auto& entry : bindsSet.toStdMap())
+        query.bindValue(entry.first, entry.second);
 
-    for (const auto& entry : bindsWhere)
-        query.bindValue(entry.first.c_str(), entry.second.c_str());
+    for (const auto& entry : bindsWhere.toStdMap())
+        query.bindValue(entry.first, entry.second);
 
     if (not query.exec())
         throw QueryUpdateError(query, table, set, bindsSet, where, bindsWhere);
 }
 
 Database::Result
-Database::select(const std::string& select,                            // "id", "body", ...
-                 const std::string& table,                             // "tests"
-                 const std::string& where,                             // "contact=:name AND id=:id
-                 const std::map<std::string, std::string>& bindsWhere) // {{":name", "toto"}, {":id", "65"}}
+Database::select(const QString& select,                            // "id", "body", ...
+                 const QString& table,                             // "tests"
+                 const QString& where,                             // "contact=:name AND id=:id
+                 const MapStringString& bindsWhere) // {{":name", "toto"}, {":id", "65"}}
 {
     QSqlQuery query(db_);
-    std::string columnsSelect;
+    QString columnsSelect;
 
-    auto prepareStr = std::string("SELECT " + select + " FROM " + table +
-                                  (where.empty() ? "" : (" WHERE " + where)));
-    query.prepare(prepareStr.c_str());
+    auto prepareStr = QString("SELECT " + select + " FROM " + table +
+                                  (where.isEmpty() ? "" : (" WHERE " + where)));
+    query.prepare(prepareStr);
 
-    for (const auto& entry : bindsWhere)
-        query.bindValue(entry.first.c_str(), entry.second.c_str());
+    for (const auto& entry : bindsWhere.toStdMap())
+        query.bindValue(entry.first, entry.second);
 
     if (not query.exec())
         throw QuerySelectError(query, select, table, where, bindsWhere);
 
     QSqlRecord rec = query.record();
     const auto col_num = rec.count();
-    Database::Result result = {col_num, std::vector<std::string>()};
+    Database::Result result = {col_num};
 
     // for each row
     while (query.next()) {
         for (int i = 0 ; i < col_num ; i++)
-            result.payloads.emplace_back(query.value(i).toString().toStdString());
+            result.payloads.push_back(query.value(i).toString());
     }
 
     return result;
 }
 
 int
-Database::count(const std::string& count, // "id", "body", ...
-                const std::string& table, // "tests"
-                const std::string& where, // "contact=:name AND id=:id"
-                const std::map<std::string, std::string>& bindsWhere) // {{":name", "toto"}, {":id", "65"}}
+Database::count(const QString& count, // "id", "body", ...
+                const QString& table, // "tests"
+                const QString& where, // "contact=:name AND id=:id"
+                const MapStringString& bindsWhere) // {{":name", "toto"}, {":id", "65"}}
 {
     QSqlQuery query(db_);
-    std::string columnsSelect;
-    auto prepareStr = std::string("SELECT count(" + count + ") FROM " + table + " WHERE " + where);
-    query.prepare(prepareStr.c_str());
+    QString columnsSelect;
+    auto prepareStr = QString("SELECT count(" + count + ") FROM " + table + " WHERE " + where);
+    query.prepare(prepareStr);
 
-    for (const auto& entry : bindsWhere)
-        query.bindValue(entry.first.c_str(), entry.second.c_str());
+    for (const auto& entry : bindsWhere.toStdMap())
+        query.bindValue(entry.first, entry.second);
 
     if (not query.exec())
         throw QueryError(query);
@@ -328,17 +326,17 @@ Database::count(const std::string& count, // "id", "body", ...
 }
 
 void
-Database::deleteFrom(const std::string& table,                             // "tests"
-                     const std::string& where,                             // "contact=:name AND id=:id
-                     const std::map<std::string, std::string>& bindsWhere) // {{":name", "toto"}, {":id", "65"}}
+Database::deleteFrom(const QString& table,                             // "tests"
+                     const QString& where,                             // "contact=:name AND id=:id
+                     const MapStringString& bindsWhere) // {{":name", "toto"}, {":id", "65"}}
 {
     QSqlQuery query(db_);
 
-    auto prepareStr = std::string("DELETE FROM " + table + " WHERE " + where);
-    query.prepare(prepareStr.c_str());
+    auto prepareStr = QString("DELETE FROM " + table + " WHERE " + where);
+    query.prepare(prepareStr);
 
-    for (const auto& entry : bindsWhere)
-        query.bindValue(entry.first.c_str(), entry.second.c_str());
+    for (const auto& entry : bindsWhere.toStdMap())
+        query.bindValue(entry.first, entry.second);
 
     if(not query.exec())
         throw QueryDeleteError(query, table, where, bindsWhere);
@@ -350,110 +348,110 @@ Database::QueryError::QueryError(const QSqlQuery& query)
 {}
 
 Database::QueryInsertError::QueryInsertError(const QSqlQuery& query,
-                                             const std::string& table,
-                                             const std::map<std::string, std::string>& bindCol,
-                                             const std::map<std::string, std::string>& bindsSet)
+                                             const QString& table,
+                                             const MapStringString& bindCol,
+                                             const MapStringString& bindsSet)
     : QueryError(query)
     , table(table), bindCol(bindCol), bindsSet(bindsSet)
 {}
 
-std::string
+QString
 Database::QueryInsertError::details()
 {
-    std::ostringstream oss;
-    oss << "paramaters sent :";
-    oss << "table = " << table.c_str();
-    for (auto& b : bindCol)
-        oss << "   {" << b.first.c_str() << "}, {" << b.second.c_str() <<"}";
-    for (auto& b : bindsSet)
-        oss << "   {" << b.first.c_str() << "}, {" << b.second.c_str() <<"}";
-    return oss.str();
+    QTextStream qts;
+    qts << "paramaters sent :";
+    qts << "table = " << table;
+    for (auto& b : bindCol.toStdMap())
+        qts << "   {" << b.first << "}, {" << b.second <<"}";
+    for (auto& b : bindsSet.toStdMap())
+        qts << "   {" << b.first << "}, {" << b.second <<"}";
+    return qts.readAll();
 }
 
 Database::QueryUpdateError::QueryUpdateError(const QSqlQuery& query,
-                                             const std::string& table,
-                                             const std::string& set,
-                                             const std::map<std::string, std::string>& bindsSet,
-                                             const std::string& where,
-                                             const std::map<std::string, std::string>& bindsWhere)
+                                             const QString& table,
+                                             const QString& set,
+                                             const MapStringString& bindsSet,
+                                             const QString& where,
+                                             const MapStringString& bindsWhere)
     : QueryError(query)
     , table(table), set(set), bindsSet(bindsSet), where(where), bindsWhere(bindsWhere)
 {}
 
-std::string
+QString
 Database::QueryUpdateError::details()
 {
-    std::ostringstream oss;
-    oss << "paramaters sent :";
-    oss << "table = " << table.c_str();
-    oss << "set = " << set.c_str();
-    oss << "bindsSet :";
-    for (auto& b : bindsSet)
-        oss << "   {" << b.first.c_str() << "}, {" << b.second.c_str() <<"}";
-    oss << "where = " << where.c_str();
-    oss << "bindsWhere :";
-    for (auto& b : bindsWhere)
-        oss << "   {" << b.first.c_str() << "}, {" << b.second.c_str() <<"}";
-    return oss.str();
+    QTextStream qts;
+    qts << "paramaters sent :";
+    qts << "table = " << table;
+    qts << "set = " << set;
+    qts << "bindsSet :";
+    for (auto& b : bindsSet.toStdMap())
+        qts << "   {" << b.first << "}, {" << b.second <<"}";
+    qts << "where = " << where;
+    qts << "bindsWhere :";
+    for (auto& b : bindsWhere.toStdMap())
+        qts << "   {" << b.first << "}, {" << b.second <<"}";
+    return qts.readAll();
 }
 
 Database::QuerySelectError::QuerySelectError(const QSqlQuery& query,
-                                             const std::string& select,
-                                             const std::string& table,
-                                             const std::string& where,
-                                             const std::map<std::string, std::string>& bindsWhere)
+                                             const QString& select,
+                                             const QString& table,
+                                             const QString& where,
+                                             const MapStringString& bindsWhere)
     : QueryError(query)
     , select(select), table(table), where(where), bindsWhere(bindsWhere)
 {}
 
-std::string
+QString
 Database::QuerySelectError::details()
 {
-    std::ostringstream oss;
-    oss << "paramaters sent :";
-    oss << "select = " << select.c_str();
-    oss << "table = " << table.c_str();
-    oss << "where = " << where.c_str();
-    oss << "bindsWhere :";
-    for (auto& b : bindsWhere)
-        oss << "   {" << b.first.c_str() << "}, {" << b.second.c_str() <<"}";
-    return oss.str();
+    QTextStream qts;
+    qts << "paramaters sent :";
+    qts << "select = " << select;
+    qts << "table = " << table;
+    qts << "where = " << where;
+    qts << "bindsWhere :";
+    for (auto& b : bindsWhere.toStdMap())
+        qts << "   {" << b.first << "}, {" << b.second << "}";
+    return qts.readAll();
 }
 
 Database::QueryDeleteError::QueryDeleteError(const QSqlQuery& query,
-                                             const std::string& table,
-                                             const std::string& where,
-                                             const std::map<std::string, std::string>& bindsWhere)
+                                             const QString& table,
+                                             const QString& where,
+                                             const MapStringString& bindsWhere)
     : QueryError(query)
     , table(table), where(where), bindsWhere(bindsWhere)
 {}
 
-std::string
+QString
 Database::QueryDeleteError::details()
 {
-    std::ostringstream oss;
-    oss << "paramaters sent :";
-    oss << "table = " << table.c_str();
-    oss << "where = " << where.c_str();
-    oss << "bindsWhere :";
-    for (auto& b : bindsWhere)
-        oss << "   {" << b.first.c_str() << "}, {" << b.second.c_str() <<"}";
-    return oss.str();
+    QTextStream qts;
+    qts << "paramaters sent :";
+    qts << "table = " << table;
+    qts << "where = " << where;
+    qts << "bindsWhere :";
+    for (auto& b : bindsWhere.toStdMap())
+        qts << "   {" << b.first << "}, {" << b.second <<"}";
+    return qts.readAll();
 }
 
 Database::QueryTruncateError::QueryTruncateError(const QSqlQuery& query,
-    const std::string& table)
+    const QString& table)
     : QueryError(query)
     , table(table)
 {}
 
-std::string
+QString
 Database::QueryTruncateError::details()
 {
-    std::ostringstream oss;
-    oss << "paramaters sent :";
-    oss << "table = " << table.c_str();
-    return oss.str();
+    QTextStream qts;
+    qts << "paramaters sent :";
+    qts << "table = " << table;
+    return qts.readAll();
 }
 
 /*****************************************************************************
@@ -614,29 +612,28 @@ LegacyDatabase::migrateLocalProfiles()
                 auto type = account[DRing::Account::ConfProperties::TYPE] == "SIP"? "SIP" : "RING";
 
                 auto uri = account[DRing::Account::ConfProperties::USERNAME].contains("ring:") ?
-                        account[DRing::Account::ConfProperties::USERNAME]
-                        .toStdString().substr(std::string("ring:").size()) :
-                        account[DRing::Account::ConfProperties::USERNAME].toStdString();
+                        account[DRing::Account::ConfProperties::USERNAME].right(QString("ring:").size()) :
+                        account[DRing::Account::ConfProperties::USERNAME];
                 if (select("id", "profiles","uri=:uri", {{":uri", uri}}).payloads.empty()) {
                     insertInto("profiles",
                             {{":uri", "uri"}, {":alias", "alias"},
                             {":photo", "photo"}, {":type", "type"},
                             {":status", "status"}},
-                            {{":uri", uri}, {":alias", alias.toStdString()},
-                            {":photo", avatar.toStdString()}, {":type", type},
+                            {{":uri", uri}, {":alias", alias},
+                            {":photo", avatar}, {":type", type},
                             {":status", "TRUSTED"}});
                     auto profileIds = select("id", "profiles","uri=:uri",
                     {{":uri", uri}}).payloads;
                     if (!profileIds.empty() && select("profile_id", "profiles_accounts",
                     "account_id=:account_id AND is_account=:is_account",
-                    {{":account_id", accountId.toStdString()},
+                    {{":account_id", accountId},
                     {":is_account", "true"}}).payloads.empty()) {
                         insertInto("profiles_accounts",
                                     {{":profile_id", "profile_id"},
                                     {":account_id", "account_id"},
                                     {":is_account", "is_account"}},
                                     {{":profile_id", profileIds[0]},
-                                    {":account_id", accountId.toStdString()},
+                                    {":account_id", accountId},
                                     {":is_account", "true"}});
                     }
                 }
@@ -667,17 +664,17 @@ LegacyDatabase::migratePeerProfiles()
         auto uri = vCard["TEL;other"];
         const auto alias = vCard["FN"];
         const auto avatar = vCard["PHOTO;ENCODING=BASE64;TYPE=PNG"];
-        const std::string type = uri.startsWith("ring:") ? "RING" : "SIP";
+        const QString type = uri.startsWith("ring:") ? "RING" : "SIP";
         if (uri.startsWith("ring:")) {
-            uri = uri.mid(std::string("ring:").size());
+            uri = uri.mid(QString("ring:").size());
         }
 
-        if (select("id", "profiles","uri=:uri", {{":uri", uri.toStdString()}}).payloads.empty()) {
+        if (select("id", "profiles","uri=:uri", {{":uri", uri}}).payloads.empty()) {
             insertInto("profiles",
                        {{":uri", "uri"}, {":alias", "alias"}, {":photo", "photo"}, {":type", "type"},
                        {":status", "status"}},
-                       {{":uri", uri.toStdString()}, {":alias", alias.toStdString()},
-                       {":photo", avatar.toStdString()}, {":type", type},
+                       {{":uri", uri}, {":alias", alias},
+                       {":photo", avatar}, {":type", type},
                        {":status", "TRUSTED"}});
         }
 
@@ -711,26 +708,29 @@ LegacyDatabase::migrateTextHistory()
                 QJsonParseError err;
                 auto loadDoc = QJsonDocument::fromJson(content.toUtf8(), &err).object();
 
-                if (loadDoc.find("peers") == loadDoc.end()) continue;
-                if (loadDoc.find("groups") == loadDoc.end()) continue;
+                if (loadDoc.find("peers") == loadDoc.end())
+                    continue;
+                if (loadDoc.find("groups") == loadDoc.end())
+                    continue;
                 // Load account
                 auto peersObject = loadDoc["peers"].toArray()[0].toObject();
 
                 MapStringString details = ConfigurationManager::instance().getAccountDetails(peersObject["accountId"].toString());
-                if (!details.contains(DRing::Account::ConfProperties::USERNAME)) continue;
+                if (!details.contains(DRing::Account::ConfProperties::USERNAME))
+                    continue;
 
                 auto accountUri = details[DRing::Account::ConfProperties::USERNAME];
                 auto isARingContact = accountUri.startsWith("ring:");
                 if (isARingContact) {
                     accountUri = accountUri.mid(QString("ring:").length());
                 }
-                auto accountIds = select("id", "profiles","uri=:uri", {{":uri", accountUri.toStdString()}}).payloads;
-                auto contactIds = select("id", "profiles","uri=:uri", {{":uri", peersObject["uri"].toString().toStdString()}}).payloads;
+                auto accountIds = select("id", "profiles","uri=:uri", {{":uri", accountUri}}).payloads;
+                auto contactIds = select("id", "profiles","uri=:uri", {{":uri", peersObject["uri"].toString()}}).payloads;
                 if (contactIds.empty()) {
                     insertInto("profiles",
                                {{":uri", "uri"}, {":alias", "alias"}, {":photo", "photo"}, {":type", "type"},
                                {":status", "status"}},
-                               {{":uri", peersObject["uri"].toString().toStdString()}, {":alias", ""},
+                               {{":uri", peersObject["uri"].toString()}, {":alias", ""},
                                {":photo", ""}, {":type", "RING"},
                                {":status", "TRUSTED"}});
                     // NOTE: this profile is in a case where it's not a contact for the daemon but a conversation with an account.
@@ -741,7 +741,7 @@ LegacyDatabase::migrateTextHistory()
                             peersObject["uri"].toString()
                         );
                     }
-                    contactIds = select("id", "profiles","uri=:uri", {{":uri", peersObject["uri"].toString().toStdString()}}).payloads;
+                    contactIds = select("id", "profiles","uri=:uri", {{":uri", peersObject["uri"].toString()}}).payloads;
                 }
                 if (accountIds.empty()) {
                     qDebug() << "Can't find profile for URI: " << peersObject["accountId"].toString() << ". Ignore this file.";
@@ -755,7 +755,7 @@ LegacyDatabase::migrateTextHistory()
                                             account_id=:account_id AND  \
                                             is_account=:is_account",
                                             {{":profile_id", contactId},
-                                            {":account_id", peersObject["accountId"].toString().toStdString()},
+                                            {":account_id", peersObject["accountId"].toString()},
                                             {":is_account", "false"}})
                                             .payloads;
 
@@ -765,7 +765,7 @@ LegacyDatabase::migrateTextHistory()
                                     {":account_id", "account_id"},
                                     {":is_account", "is_account"}},
                                     {{":profile_id", contactId},
-                                    {":account_id", peersObject["accountId"].toString().toStdString()},
+                                    {":account_id", peersObject["accountId"].toString()},
                                     {":is_account", "false"}});
                     }
                     auto accountId = accountIds[0];
@@ -784,7 +784,7 @@ LegacyDatabase::migrateTextHistory()
                                     {{":id", newConversationsId}, {":participant_id", contactId}});
                         QSqlDatabase::database().commit();
                     } catch (QueryInsertError& e) {
-                        qDebug() << e.details().c_str();
+                        qDebug() << e.details();
                         QSqlDatabase::database().rollback();
                     }
 
@@ -803,8 +803,8 @@ LegacyDatabase::migrateTextHistory()
                                         {":status", "status"}},
                                         {{":account_id", accountId}, {":author_id", direction ? accountId : contactId},
                                         {":conversation_id", newConversationsId},
-                                        {":timestamp", std::to_string(messageObject["timestamp"].toInt())},
-                                        {":body", body.toStdString()}, {":type", "TEXT"},
+                                        {":timestamp", messageObject["timestamp"].toString()},
+                                        {":body", body}, {":type", "TEXT"},
                                         {":status", direction ? "SUCCEED" : "READ"}});
                         }
                     }
@@ -856,9 +856,8 @@ LegacyDatabase::linkRingProfilesWithAccounts(bool contactsOnly)
         MapStringString account = ConfigurationManager::instance().
         getAccountDetails(accountId.toStdString().c_str());
         auto accountURI = account[DRing::Account::ConfProperties::USERNAME].contains("ring:") ?
-        account[DRing::Account::ConfProperties::USERNAME]
-       .toStdString().substr(std::string("ring:").size()) :
-       account[DRing::Account::ConfProperties::USERNAME].toStdString();
+            account[DRing::Account::ConfProperties::USERNAME].right(QString("ring:").size()) :
+            account[DRing::Account::ConfProperties::USERNAME];
         auto profileIds = select("id", "profiles","uri=:uri", {{":uri", accountURI}}).payloads;
         if(profileIds.empty()) {
             continue;
@@ -867,12 +866,12 @@ LegacyDatabase::linkRingProfilesWithAccounts(bool contactsOnly)
             //if is_account is true we should have only one profile id for account id
              if (select("profile_id", "profiles_accounts",
                         "account_id=:account_id AND is_account=:is_account",
-                        {{":account_id", accountId.toStdString()},
+                        {{":account_id", accountId},
                         {":is_account", "true"}}).payloads.empty()) {
                             insertInto("profiles_accounts",
                             {{":profile_id", "profile_id"}, {":account_id", "account_id"},
                             {":is_account", "is_account"}},
-                            {{":profile_id", profileIds[0]}, {":account_id", accountId.toStdString()},
+                            {{":profile_id", profileIds[0]}, {":account_id", accountId},
                             {":is_account", "true"}});
              }
         }
@@ -885,14 +884,14 @@ LegacyDatabase::linkRingProfilesWithAccounts(bool contactsOnly)
             //update contacts profiles
             for (auto contact_info : contacts_vector) {
                 auto contactURI = contact_info["id"];
-                updateProfileAccountForContact(contactURI.toStdString(), accountId.toStdString());
+                updateProfileAccountForContact(contactURI, accountId);
             }
             //update pending contacts profiles
             const VectorMapStringString& pending_tr = ConfigurationManager::instance()
             .getTrustRequests(accountId.toStdString().c_str());
             for (auto tr_info : pending_tr) {
                 auto contactURI = tr_info[DRing::Account::TrustRequest::FROM];
-                updateProfileAccountForContact(contactURI.toStdString(), accountId.toStdString());
+                updateProfileAccountForContact(contactURI, accountId);
             }
         } else if (account[DRing::Account::ConfProperties::TYPE] == DRing::Account::ProtocolNames::SIP) {
             // update SIP contacts
@@ -910,13 +909,13 @@ LegacyDatabase::linkRingProfilesWithAccounts(bool contactsOnly)
                                         account_id=:account_id AND  \
                                         is_account=:is_account",
                                         {{":profile_id", participant},
-                                        {":account_id", accountId.toStdString()},
+                                        {":account_id", accountId},
                                         {":is_account", "false"}}).payloads;
                     if (rows.empty()) {
                         insertInto("profiles_accounts",
                         {{":profile_id", "profile_id"}, {":account_id", "account_id"},
                         {":is_account", "is_account"}},
-                        {{":profile_id", participant}, {":account_id", accountId.toStdString()},
+                        {{":profile_id", participant}, {":account_id", accountId},
                         {":is_account", "false"}});
                     }
                 }
@@ -926,8 +925,8 @@ LegacyDatabase::linkRingProfilesWithAccounts(bool contactsOnly)
 }
 
 void
-LegacyDatabase::updateProfileAccountForContact(const std::string& contactURI,
-    const std::string& accountId)
+LegacyDatabase::updateProfileAccountForContact(const QString& contactURI,
+                                               const QString& accountId)
 {
     auto profileIds = select("id", "profiles", "uri=:uri",
         { {":uri", contactURI} })

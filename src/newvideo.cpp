@@ -39,14 +39,14 @@ using namespace api::video;
 class RendererPimpl: public QObject
 {
 public:
-    RendererPimpl(Renderer& linked, const std::string& id,
-        Settings videoSettings, const std::string& shmPath,
+    RendererPimpl(Renderer& linked, const QString& id,
+        Settings videoSettings, const QString& shmPath,
         const bool useAVFrame);
     ~RendererPimpl();
 
     Renderer& linked;
 
-    std::string id_;
+    QString id_;
     Settings videoSettings_;
     QThread thread_;
     bool usingAVFrame_;
@@ -56,7 +56,7 @@ public:
      * @param res the string to convert
      * @return the QSize object
      */
-    static QSize stringToQSize(const std::string& res);
+    static QSize stringToQSize(const QString& res);
 
     std::mutex rendering_mtx_;
 
@@ -79,8 +79,8 @@ namespace api
 namespace video
 {
 
-Renderer::Renderer(const std::string& id, Settings videoSettings,
-    const std::string& shmPath, const bool useAVFrame)
+Renderer::Renderer(const QString& id, Settings videoSettings,
+    const QString& shmPath, const bool useAVFrame)
 : pimpl_(std::make_unique<RendererPimpl>(*this, id, videoSettings, shmPath, useAVFrame))
 {}
 
@@ -96,9 +96,9 @@ Renderer::initThread()
         return;
 #ifdef ENABLE_LIBWRAP
     if(pimpl_->usingAVFrame_) {
-        VideoManager::instance().registerAVSinkTarget(pimpl_->id_.c_str(), pimpl_->renderer->avTarget());
+        VideoManager::instance().registerAVSinkTarget(pimpl_->id_, pimpl_->renderer->avTarget());
     } else {
-        VideoManager::instance().registerSinkTarget(pimpl_->id_.c_str(), pimpl_->renderer->target());
+        VideoManager::instance().registerSinkTarget(pimpl_->id_, pimpl_->renderer->target());
     }
 #endif
     if (!pimpl_->thread_.isRunning())
@@ -106,7 +106,7 @@ Renderer::initThread()
 }
 
 void
-Renderer::update(const std::string& res, const std::string& shmPath)
+Renderer::update(const QString& res, const QString& shmPath)
 {
     if (!pimpl_->thread_.isRunning())
        pimpl_->thread_.start();
@@ -117,9 +117,9 @@ Renderer::update(const std::string& res, const std::string& shmPath)
 
 #ifdef ENABLE_LIBWRAP
     if(pimpl_->usingAVFrame_) {
-        VideoManager::instance().registerAVSinkTarget(pimpl_->id_.c_str(), pimpl_->renderer->avTarget());
+        VideoManager::instance().registerAVSinkTarget(pimpl_->id_, pimpl_->renderer->avTarget());
     } else {
-        VideoManager::instance().registerSinkTarget(pimpl_->id_.c_str(), pimpl_->renderer->target());
+        VideoManager::instance().registerSinkTarget(pimpl_->id_, pimpl_->renderer->target());
     }
 #else //ENABLE_LIBWRAP
     pimpl_->renderer->setShmPath(shmPath.c_str());
@@ -143,7 +143,7 @@ Renderer::useAVFrame(bool useAVFrame) {
 #endif
 }
 
-std::string
+QString
 Renderer::getId() const
 {
     return pimpl_->id_;
@@ -208,8 +208,8 @@ Renderer::stopRendering()
 
 }} // end of api::video
 
-RendererPimpl::RendererPimpl(Renderer& linked, const std::string& id,
-    Settings videoSettings, const std::string& shmPath, bool useAVFrame)
+RendererPimpl::RendererPimpl(Renderer& linked, const QString& id,
+    Settings videoSettings, const QString& shmPath, bool useAVFrame)
 : linked(linked)
 , id_(id)
 , videoSettings_(videoSettings)
@@ -217,14 +217,14 @@ RendererPimpl::RendererPimpl(Renderer& linked, const std::string& id,
 {
     QSize size = stringToQSize(videoSettings.size);
 #ifdef ENABLE_LIBWRAP
-    renderer = std::make_unique<Video::DirectRenderer>(id.c_str(), size, usingAVFrame_);
+    renderer = std::make_unique<Video::DirectRenderer>(id, size, usingAVFrame_);
 #else  // ENABLE_LIBWRAP
-    renderer = std::make_unique<Video::ShmRenderer>(id.c_str(), shmPath.c_str(), size);
+    renderer = std::make_unique<Video::ShmRenderer>(id, shmPath.c_str(), size);
 #endif
     renderer->moveToThread(&thread_);
 
     connect(&*renderer, &Video::Renderer::frameUpdated,
-        this, &RendererPimpl::slotFrameUpdated);
+            this, &RendererPimpl::slotFrameUpdated);
 }
 
 RendererPimpl::~RendererPimpl()
@@ -233,9 +233,9 @@ RendererPimpl::~RendererPimpl()
 }
 
 QSize
-RendererPimpl::stringToQSize(const std::string& res)
+RendererPimpl::stringToQSize(const QString& res)
 {
-    QString sizeStr = res.c_str();
+    QString sizeStr = res;
     auto sizeSplited = sizeStr.split('x');
     if (sizeSplited.size() != 2) return {};
     auto width = sizeSplited.at(0).toInt();
