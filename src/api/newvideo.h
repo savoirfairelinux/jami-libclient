@@ -48,12 +48,12 @@ namespace video
 
 constexpr static const char PREVIEW_RENDERER_ID[] = "local";
 
-using Channel = std::string;
-using Resolution = std::string;
+using Channel = QString;
+using Resolution = QString;
 using Framerate = float;
-using FrameratesList = std::vector<Framerate>;
-using ResRateList = std::vector<std::pair<Resolution, FrameratesList>>;
-using Capabilities = std::map<Channel, ResRateList>;
+using FrameratesList = QVector<Framerate>;
+using ResRateList = QVector<QPair<Resolution, FrameratesList>>;
+using Capabilities = QMap<Channel, ResRateList>;
 
 /**
  * This class is used by Renderer class to expose video data frame
@@ -84,7 +84,7 @@ enum DeviceType
  */
 struct RenderedDevice
 {
-    std::string name;
+    QString name;
     DeviceType type = INVALID;
 };
 
@@ -94,8 +94,8 @@ struct RenderedDevice
 struct Settings
 {
     Channel channel = "";
-    std::string name = "";
-    std::string id = "";
+    QString name = "";
+    QString id = "";
     Framerate rate = 0;
     Resolution size = "";
 };
@@ -103,8 +103,8 @@ struct Settings
 class LIB_EXPORT Renderer : public QObject {
     Q_OBJECT
 public:
-    Renderer(const std::string& id, Settings videoSettings,
-        const std::string& shmPath = "", const bool useAVFrame = false);
+    Renderer(const QString& id, Settings videoSettings,
+        const QString& shmPath = "", const bool useAVFrame = false);
     ~Renderer();
 
     /**
@@ -116,7 +116,7 @@ public:
      * @param res new resolution "wxh"
      * @param shmPath new shmPath
      */
-    void update(const std::string& res, const std::string& shmPath);
+    void update(const QString& res, const QString& shmPath);
     /**
      * Stop renderer and thread
      */
@@ -130,7 +130,7 @@ public:
     /**
      * @return renderer's id
      */
-    std::string getId() const;
+    QString getId() const;
     /**
      * @return current rendered frame
      */
@@ -167,7 +167,7 @@ Q_SIGNALS:
      * Emitted when a new frame is ready
      * @param id
      */
-    void frameUpdated(const std::string& id);
+    void frameUpdated(const QString& id);
 
 private:
     std::unique_ptr<RendererPimpl> pimpl_;
