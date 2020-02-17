@@ -21,10 +21,15 @@
  ***************************************************************************/
 #include "database.h"
 
-// daemon
+#include "api/interaction.h"
+
 #include <account_const.h>
 
-// Qt
+// Lrc for migrations
+#include "dbus/configurationmanager.h"
+#include "vcard.h"
+#include <account_const.h>
+
 #include <QObject>
 #include <QtCore/QDir>
 #include <QtCore/QDebug>
@@ -38,16 +43,7 @@
 #include <QtCore/QVariant>
 #include <QDir>
 
-// Std
 #include <sstream>
-
-// Data
-#include "api/interaction.h"
-
-// Lrc for migrations
-#include "dbus/configurationmanager.h"
-#include "vcard.h"
-#include <account_const.h>
 
 namespace lrc
 {
@@ -217,28 +213,28 @@ Database::getVersion()
 }
 
 int
-Database::insertInto(const std::string& table,                             // "tests"
-                     const std::map<std::string, std::string>& bindCol,    // {{":id", "id"}, {":forename", "colforname"}, {":name", "colname"}}
-                     const std::map<std::string, std::string>& bindsSet)   // {{":id", "7"}, {":forename", "alice"}, {":name", "cooper"}}
+Database::insertInto(const QString& table,                     // "tests"
+                     const QMap<QString, QString>& bindCol,    // {{":id", "id"}, {":forename", "colforname"}, {":name", "colname"}}
+                     const QMap<QString, QString>& bindsSet)   // {{":id", "7"}, {":forename", "alice"}, {":name", "cooper"}}
 {
     QSqlQuery query(db_);
-    std::string columns;
-    std::string binds;
+    QString columns;
+    QString binds;
 
-    for (const auto& entry : bindCol) {
-        columns += entry.second + ",";
-        binds += entry.first + ",";
+    for (const auto& entry : bindCol.keys()) {
+        columns += bindCol.value(entry) + ",";
+        binds += entry + ",";
     }
 
     // remove the last ','
-    columns.pop_back();
-    binds.pop_back();
+    columns.chop(1);
+    binds.chop(1);
 
-    auto prepareStr = std::string("INSERT INTO " + table + " (" + columns + ") VALUES (" + binds + ")");
-    query.prepare(prepareStr.c_str());
+    auto prepareStr = "INSERT INTO " + table + " (" + columns + ") VALUES (" + binds + ")";
+    query.prepare(prepareStr);
 
-    for (const auto& entry : bindsSet)
-        query.bindValue(entry.first.c_str(), entry.second.c_str());
+    for (const auto& entry : bindsSet.keys())
+        query.bindValue(entry, bindsSet.value(entry));
 
     if (not query.exec())
         throw QueryInsertError(query, table, bindCol, bindsSet);
@@ -253,15 +249,15 @@ Database::insertInto(const std::string& table,                             // "t
 }
 
 void
-Database::update(const std::string& table,                              // "tests"
-                 const std::string& set,                                // "location=:place, phone:=nmbr"
-                 const std::map<std::string, std::string>& bindsSet,    // {{":place", "montreal"}, {":nmbr", "514"}}
-                 const std::string& where,                              // "contact=:name AND id=:id
-                 const std::map<std::string, std::string>& bindsWhere)  // {{":name", "toto"}, {":id", "65"}}
+Database::update(const QString& table,                              // "tests"
+                 const QString& set,                                // "location=:place, phone:=nmbr"
+                 const std::map<QString, QString>& bindsSet,    // {{":place", "montreal"}, {":nmbr", "514"}}
+                 const QString& where,                              // "contact=:name AND id=:id
+                 const std::map<QString, QString>& bindsWhere)  // {{":name", "toto"}, {":id", "65"}}
 {
     QSqlQuery query(db_);
 
-    auto prepareStr = std::string("UPDATE " + table + " SET " + set + " WHERE " + where);
+    auto prepareStr = QString("UPDATE " + table + " SET " + set + " WHERE " + where);
     query.prepare(prepareStr.c_str());
 
     for (const auto& entry : bindsSet)
@@ -275,15 +271,15 @@ Database::update(const std::string& table,                              // "test
 }
 
 Database::Result
-Database::select(const std::string& select,                            // "id", "body", ...
-                 const std::string& table,                             // "tests"
-                 const std::string& where,                             // "contact=:name AND id=:id
-                 const std::map<std::string, std::string>& bindsWhere) // {{":name", "toto"}, {":id", "65"}}
+Database::select(const QString& select,                            // "id", "body", ...
+                 const QString& table,                             // "tests"
+                 const QString& where,                             // "contact=:name AND id=:id
+                 const std::map<QString, QString>& bindsWhere) // {{":name", "toto"}, {":id", "65"}}
 {
     QSqlQuery query(db_);
-    std::string columnsSelect;
+    QString columnsSelect;
 
-    auto prepareStr = std::string("SELECT " + select + " FROM " + table +
+    auto prepareStr = QString("SELECT " + select + " FROM " + table +
                                   (where.empty() ? "" : (" WHERE " + where)));
     query.prepare(prepareStr.c_str());
 
@@ -295,7 +291,7 @@ Database::select(const std::string& select,                            // "id", 
 
     QSqlRecord rec = query.record();
     const auto col_num = rec.count();
-    Database::Result result = {col_num, std::vector<std::string>()};
+    Database::Result result = {col_num, std::vector<QString>()};
 
     // for each row
     while (query.next()) {
@@ -307,14 +303,14 @@ Database::select(const std::string& select,                            // "id", 
 }
 
 int
-Database::count(const std::string& count, // "id", "body", ...
-                const std::string& table, // "tests"
-                const std::string& where, // "contact=:name AND id=:id"
-                const std::map<std::string, std::string>& bindsWhere) // {{":name", "toto"}, {":id", "65"}}
+Database::count(const QString& count, // "id", "body", ...
+                const QString& table, // "tests"
+                const QString& where, // "contact=:name AND id=:id"
+                const std::map<QString, QString>& bindsWhere) // {{":name", "toto"}, {":id", "65"}}
 {
     QSqlQuery query(db_);
-    std::string columnsSelect;
-    auto prepareStr = std::string("SELECT count(" + count + ") FROM " + table + " WHERE " + where);
+    QString columnsSelect;
+    auto prepareStr = QString("SELECT count(" + count + ") FROM " + table + " WHERE " + where);
     query.prepare(prepareStr.c_str());
 
     for (const auto& entry : bindsWhere)
@@ -328,13 +324,13 @@ Database::count(const std::string& count, // "id", "body", ...
 }
 
 void
-Database::deleteFrom(const std::string& table,                             // "tests"
-                     const std::string& where,                             // "contact=:name AND id=:id
-                     const std::map<std::string, std::string>& bindsWhere) // {{":name", "toto"}, {":id", "65"}}
+Database::deleteFrom(const QString& table,                             // "tests"
+                     const QString& where,                             // "contact=:name AND id=:id
+                     const std::map<QString, QString>& bindsWhere) // {{":name", "toto"}, {":id", "65"}}
 {
     QSqlQuery query(db_);
 
-    auto prepareStr = std::string("DELETE FROM " + table + " WHERE " + where);
+    auto prepareStr = QString("DELETE FROM " + table + " WHERE " + where);
     query.prepare(prepareStr.c_str());
 
     for (const auto& entry : bindsWhere)
@@ -350,14 +346,14 @@ Database::QueryError::QueryError(const QSqlQuery& query)
 {}
 
 Database::QueryInsertError::QueryInsertError(const QSqlQuery& query,
-                                             const std::string& table,
-                                             const std::map<std::string, std::string>& bindCol,
-                                             const std::map<std::string, std::string>& bindsSet)
+                                             const QString& table,
+                                             const std::map<QString, QString>& bindCol,
+                                             const std::map<QString, QString>& bindsSet)
     : QueryError(query)
     , table(table), bindCol(bindCol), bindsSet(bindsSet)
 {}
 
-std::string
+QString
 Database::QueryInsertError::details()
 {
     std::ostringstream oss;
@@ -371,16 +367,16 @@ Database::QueryInsertError::details()
 }
 
 Database::QueryUpdateError::QueryUpdateError(const QSqlQuery& query,
-                                             const std::string& table,
-                                             const std::string& set,
-                                             const std::map<std::string, std::string>& bindsSet,
-                                             const std::string& where,
-                                             const std::map<std::string, std::string>& bindsWhere)
+                                             const QString& table,
+                                             const QString& set,
+                                             const std::map<QString, QString>& bindsSet,
+                                             const QString& where,
+                                             const std::map<QString, QString>& bindsWhere)
     : QueryError(query)
     , table(table), set(set), bindsSet(bindsSet), where(where), bindsWhere(bindsWhere)
 {}
 
-std::string
+QString
 Database::QueryUpdateError::details()
 {
     std::ostringstream oss;
@@ -398,15 +394,15 @@ Database::QueryUpdateError::details()
 }
 
 Database::QuerySelectError::QuerySelectError(const QSqlQuery& query,
-                                             const std::string& select,
-                                             const std::string& table,
-                                             const std::string& where,
-                                             const std::map<std::string, std::string>& bindsWhere)
+                                             const QString& select,
+                                             const QString& table,
+                                             const QString& where,
+                                             const std::map<QString, QString>& bindsWhere)
     : QueryError(query)
     , select(select), table(table), where(where), bindsWhere(bindsWhere)
 {}
 
-std::string
+QString
 Database::QuerySelectError::details()
 {
     std::ostringstream oss;
@@ -421,14 +417,14 @@ Database::QuerySelectError::details()
 }
 
 Database::QueryDeleteError::QueryDeleteError(const QSqlQuery& query,
-                                             const std::string& table,
-                                             const std::string& where,
-                                             const std::map<std::string, std::string>& bindsWhere)
+                                             const QString& table,
+                                             const QString& where,
+                                             const QMap<QString, QString>& bindsWhere)
     : QueryError(query)
     , table(table), where(where), bindsWhere(bindsWhere)
 {}
 
-std::string
+QString
 Database::QueryDeleteError::details()
 {
     std::ostringstream oss;
@@ -436,13 +432,13 @@ Database::QueryDeleteError::details()
     oss << "table = " << table.c_str();
     oss << "where = " << where.c_str();
     oss << "bindsWhere :";
-    for (auto& b : bindsWhere)
-        oss << "   {" << b.first.c_str() << "}, {" << b.second.c_str() <<"}";
-    return oss.str();
+    for (auto& b : bindsWhere.keys())
+        oss << "   {" << b.c_str() << "}, {" << bindsWhere.value(b).c_str() <<"}";
+    return QString::fromStdString(oss.str());
 }
 
 Database::QueryTruncateError::QueryTruncateError(const QSqlQuery& query,
-    const std::string& table)
+    const QString& table)
     : QueryError(query)
     , table(table)
 {}

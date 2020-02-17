@@ -85,7 +85,7 @@ public:
      * @param displayName
      * @param banned whether contact is banned or not
      */
-    void addToContacts(const std::string& contactId, const profile::Type& type, const std::string& displayName = "", bool banned = false);
+    void addToContacts(const QString& contactId, const profile::Type& type, const QString& displayName = "", bool banned = false);
     /**
      * Helpers for searchContact. Search for a given RING or SIP contact.
      */
@@ -94,12 +94,12 @@ public:
     /**
      * Update temporary item to display a given message about a given uri.
      */
-    void updateTemporaryMessage(const std::string& mes, const std::string& uri);
+    void updateTemporaryMessage(const QString& mes, const QString& uri);
 
     /**
      * Check if equivalent uri exist in contact
      */
-    std::string sipUriReceivedFilter(const std::string& uri);
+    QString sipUriReceivedFilter(const QString& uri);
 
     // Helpers
     const BehaviorController& behaviorController;
@@ -109,7 +109,7 @@ public:
 
     // Containers
     ContactModel::ContactInfoMap contacts;
-    std::list<std::string> bannedContacts;
+    QList<QString> bannedContacts;
     std::mutex contactsMtx_;
     std::mutex bannedContactsMtx_;
 
@@ -119,7 +119,7 @@ public Q_SLOTS:
      * @param contactUri
      * @param status
      */
-    void slotNewBuddySubscription(const std::string& uri, bool status);
+    void slotNewBuddySubscription(const QString& uri, bool status);
 
     /**
      * Listen CallbacksHandler when a contact is added
@@ -127,7 +127,7 @@ public Q_SLOTS:
      * @param contactUri
      * @param confirmed
      */
-    void slotContactAdded(const std::string& accountId, const std::string& contactUri, bool confirmed);
+    void slotContactAdded(const QString& accountId, const QString& contactUri, bool confirmed);
 
     /**
      * Listen CallbacksHandler when a contact is removed
@@ -135,7 +135,7 @@ public Q_SLOTS:
      * @param contactUri
      * @param banned
      */
-    void slotContactRemoved(const std::string& accountId, const std::string& contactUri, bool banned);
+    void slotContactRemoved(const QString& accountId, const QString& contactUri, bool banned);
 
     /**
      * Listen CallbacksHandler when a registeredName is found
@@ -144,7 +144,7 @@ public Q_SLOTS:
      * @param uri of the contact found
      * @param registeredName of the contact found
      */
-    void slotRegisteredNameFound(const std::string& accountId, int status, const std::string& uri, const std::string& registeredName);
+    void slotRegisteredNameFound(const QString& accountId, int status, const QString& uri, const QString& registeredName);
 
     /**
      * Listen CallbacksHandler when an incoming request arrives
@@ -152,16 +152,16 @@ public Q_SLOTS:
      * @param contactUri
      * @param payload VCard of the contact
      */
-    void slotIncomingContactRequest(const std::string& accountId,
-                                    const std::string& contactUri,
-                                    const std::string& payload);
+    void slotIncomingContactRequest(const QString& accountId,
+                                    const QString& contactUri,
+                                    const QString& payload);
     /**
      * Listen from callModel when an incoming call arrives.
      * @param fromId
      * @param callId
      * @param displayName
      */
-    void slotIncomingCall(const std::string& fromId, const std::string& callId, const std::string& displayname);
+    void slotIncomingCall(const QString& fromId, const QString& callId, const QString& displayname);
 
     /**
      * Listen from callbacksHandler for new account interaction and add pending contact if not present
@@ -169,9 +169,9 @@ public Q_SLOTS:
      * @param from
      * @param payloads
      */
-    void slotNewAccountMessage(std::string& accountId,
-                               std::string& from,
-                               std::map<std::string,std::string> payloads);
+    void slotNewAccountMessage(QString& accountId,
+                               QString& from,
+                               QMap<QString,QString> payloads);
 
     /**
      * Listen from callbacksHandler to know when a file transfer interaction is incoming
@@ -230,8 +230,8 @@ ContactModel::addContact(contact::Info contactInfo)
     // If passed contact is a banned contact, call the daemon to unban it
     auto it = std::find(pimpl_->bannedContacts.begin(), pimpl_->bannedContacts.end(), profile.uri);
     if (it != pimpl_->bannedContacts.end()) {
-        qDebug("Unban-ing contact %s", profile.uri.c_str());
-        ConfigurationManager::instance().addContact(owner.id.c_str(), profile.uri.c_str());
+        qDebug("Unban-ing contact %s", profile.uri);
+        ConfigurationManager::instance().addContact(owner.id, profile.uri);
         // bannedContacts will be updated in slotContactAdded
         return;
     }
@@ -243,7 +243,7 @@ ContactModel::addContact(contact::Info contactInfo)
     }
 
     MapStringString details = ConfigurationManager::instance().getContactDetails(
-        owner.id.c_str(), contactInfo.profileInfo.uri.c_str());
+        owner.id, contactInfo.profileInfo.uri);
 
     // if contactInfo is already a contact for the daemon, type should be equals to RING
     // if the user add a temporary item for a SIP account, should be directly transformed
@@ -255,8 +255,8 @@ ContactModel::addContact(contact::Info contactInfo)
     QByteArray vCard = owner.accountModel->accountVCard(owner.id).c_str();
     switch (profile.type) {
     case profile::Type::TEMPORARY:
-        ConfigurationManager::instance().addContact(owner.id.c_str(), profile.uri.c_str());
-        ConfigurationManager::instance().sendTrustRequest(owner.id.c_str(), profile.uri.c_str(), vCard);
+        ConfigurationManager::instance().addContact(owner.id, profile.uri);
+        ConfigurationManager::instance().sendTrustRequest(owner.id, profile.uri, vCard);
         break;
     case profile::Type::PENDING:
         if (daemon::addContactFromPending(owner, profile.uri)) {
@@ -281,13 +281,13 @@ ContactModel::addContact(contact::Info contactInfo)
         std::lock_guard<std::mutex> lk(pimpl_->contactsMtx_);
         auto iter = pimpl_->contacts.find(contactInfo.profileInfo.uri);
         if (iter == pimpl_->contacts.end())
-            pimpl_->contacts.emplace_hint(iter, contactInfo.profileInfo.uri, contactInfo);
+            pimpl_->contacts.insert(iter, contactInfo.profileInfo.uri, contactInfo);
         else {
             // On non-DBus platform, contactInfo.profileInfo.type may be wrong as the contact
             // may be trusted already. We must use Profile::Type from pimpl_->contacts
             // and not from contactInfo so we cannot revert a contact back to PENDING.
-            contactInfo.profileInfo.type = iter->second.profileInfo.type;
-            iter->second.profileInfo = contactInfo.profileInfo;
+            contactInfo.profileInfo.type = iter->profileInfo.type;
+            iter->profileInfo = contactInfo.profileInfo;
         }
     }
     if (profile.type == profile::Type::TEMPORARY)
@@ -296,26 +296,26 @@ ContactModel::addContact(contact::Info contactInfo)
 }
 
 void
-ContactModel::removeContact(const std::string& contactUri, bool banned)
+ContactModel::removeContact(const QString& contactUri, bool banned)
 {
     bool emitContactRemoved = false;
     {
         std::lock_guard<std::mutex> lk(pimpl_->contactsMtx_);
         auto contact = pimpl_->contacts.find(contactUri);
         if (!banned && contact != pimpl_->contacts.end()
-            && contact->second.profileInfo.type == profile::Type::PENDING) {
+            && contact->profileInfo.type == profile::Type::PENDING) {
             // Discard the pending request and remove profile from db if necessary
             if(!daemon::discardFromPending(owner, contactUri)) {
-                qDebug() << "Discard request for account " << owner.id.c_str() << " failed (" << contactUri.c_str() << ")";
+                qDebug() << "Discard request for account " << owner.id << " failed (" << contactUri << ")";
                 return;
             }
-            pimpl_->contacts.erase(contactUri);
+            pimpl_->contacts.remove(contactUri);
             storage::removeContact(pimpl_->db, contactUri);
             emitContactRemoved = true;
         }
         else if (owner.profileInfo.type == profile::Type::SIP) {
             // Remove contact from db
-            pimpl_->contacts.erase(contactUri);
+            pimpl_->contacts.remove(contactUri);
             storage::removeContact(pimpl_->db, contactUri);
             emitContactRemoved = true;
         }
@@ -335,25 +335,25 @@ ContactModel::removeContact(const std::string& contactUri, bool banned)
 }
 
 const contact::Info
-ContactModel::getContact(const std::string& contactUri) const
+ContactModel::getContact(const QString& contactUri) const
 {
     std::lock_guard<std::mutex> lk(pimpl_->contactsMtx_);
     return pimpl_->contacts.at(contactUri);
 }
 
-const std::list<std::string>&
+const std::list<QString>&
 ContactModel::getBannedContacts() const
 {
     return pimpl_->bannedContacts;
 }
 
 void
-ContactModel::searchContact(const std::string& query)
+ContactModel::searchContact(const QString& query)
 {
     // always reset temporary contact
     pimpl_->contacts[""] = {};
 
-    auto uri = URI(QString(query.c_str()));
+    auto uri = URI(query);
 
     auto uriScheme = uri.schemeType();
     if (uri.schemeType() == URI::SchemeType::NONE) {
@@ -370,12 +370,12 @@ ContactModel::searchContact(const std::string& query)
     } else if (uriScheme == URI::SchemeType::RING && owner.profileInfo.type == profile::Type::RING) {
         pimpl_->searchRingContact(uri);
     } else {
-        pimpl_->updateTemporaryMessage(tr("Bad URI scheme").toStdString(), uri.full().toStdString());
+        pimpl_->updateTemporaryMessage(tr("Bad URI scheme"), uri.full());
     }
 }
 
 void
-ContactModelPimpl::updateTemporaryMessage(const std::string& mes, const std::string& uri)
+ContactModelPimpl::updateTemporaryMessage(const QString& mes, const QString& uri)
 {
     std::lock_guard<std::mutex> lk(contactsMtx_);
     auto& temporaryContact = contacts[""];
@@ -387,7 +387,7 @@ ContactModelPimpl::updateTemporaryMessage(const std::string& mes, const std::str
 void
 ContactModelPimpl::searchRingContact(const URI& query)
 {
-    std::string uriID = query.format(URI::Section::USER_INFO | URI::Section::HOSTNAME | URI::Section::PORT).toStdString();
+    QString uriID = query.format(URI::Section::USER_INFO | URI::Section::HOSTNAME | URI::Section::PORT);
     if (query.isEmpty()) {
         // This will remove the temporary item
         emit linked.modelUpdated(uriID);
@@ -397,7 +397,7 @@ ContactModelPimpl::searchRingContact(const URI& query)
     if (query.protocolHint() == URI::ProtocolHint::RING) {
         // no lookup, this is a ring infoHash
         for (auto &i : contacts) {
-            if (i.second.profileInfo.uri == uriID) {
+            if (i.profileInfo.uri == uriID) {
                 return;
             }
         }
@@ -406,10 +406,10 @@ ContactModelPimpl::searchRingContact(const URI& query)
         temporaryContact.profileInfo.alias = uriID;
         temporaryContact.profileInfo.type = profile::Type::TEMPORARY;
     } else {
-        updateTemporaryMessage(tr("Searching…").toStdString(), uriID);
+        updateTemporaryMessage(tr("Searching…"), uriID);
 
         // Default searching
-        ConfigurationManager::instance().lookupName(QString::fromStdString(linked.owner.id), "", QString::fromStdString(uriID));
+        ConfigurationManager::instance().lookupName(linked.owner.id, "", uriID);
     }
     emit linked.modelUpdated(uriID);
 }
@@ -417,7 +417,7 @@ ContactModelPimpl::searchRingContact(const URI& query)
 void
 ContactModelPimpl::searchSipContact(const URI& query)
 {
-    std::string uriID = query.format(URI::Section::USER_INFO | URI::Section::HOSTNAME | URI::Section::PORT).toStdString();
+    QString uriID = query.format(URI::Section::USER_INFO | URI::Section::HOSTNAME | URI::Section::PORT);
     if (query.isEmpty()) {
         // This will remove the temporary item
         emit linked.modelUpdated(uriID);
@@ -437,13 +437,13 @@ ContactModelPimpl::searchSipContact(const URI& query)
 }
 
 uint64_t
-ContactModel::sendDhtMessage(const std::string& contactUri, const std::string& body) const
+ContactModel::sendDhtMessage(const QString& contactUri, const QString& body) const
 {
     // Send interaction
     QMap<QString, QString> payloads;
-    payloads["text/plain"] = body.c_str();
-    auto msgId = ConfigurationManager::instance().sendTextMessage(QString(owner.id.c_str()),
-                                                     QString(contactUri.c_str()),
+    payloads["text/plain"] = body;
+    auto msgId = ConfigurationManager::instance().sendTextMessage(QString(owner.id),
+                                                     QString(contactUri),
                                                      payloads);
     // NOTE: ConversationModel should store the interaction into the database
     return msgId;
@@ -516,7 +516,7 @@ ContactModelPimpl::fillWithSIPContacts()
                                                                 profile::Type::SIP);
             {
                 std::lock_guard<std::mutex> lk(contactsMtx_);
-                contacts.emplace(contactInfo.profileInfo.uri, contactInfo);
+                contacts.insert(contactInfo.profileInfo.uri, contactInfo);
             }
         }
     }
@@ -528,15 +528,15 @@ bool
 ContactModelPimpl::fillWithJamiContacts() {
 
     // Add contacts from daemon
-    const VectorMapStringString& contacts_vector = ConfigurationManager::instance().getContacts(linked.owner.id.c_str());
+    const VectorMapStringString& contacts_vector = ConfigurationManager::instance().getContacts(linked.owner.id);
     for (auto contact_info : contacts_vector) {
         std::lock_guard<std::mutex> lk(contactsMtx_);
         bool banned = contact_info["banned"] == "true" ? true : false;
-        addToContacts(contact_info["id"].toStdString(), linked.owner.profileInfo.type, "", banned);
+        addToContacts(contact_info["id"], linked.owner.profileInfo.type, "", banned);
     }
 
     // Add pending contacts
-    const VectorMapStringString& pending_tr {ConfigurationManager::instance().getTrustRequests(linked.owner.id.c_str())};
+    const VectorMapStringString& pending_tr {ConfigurationManager::instance().getTrustRequests(linked.owner.id)};
     for (const auto& tr_info : pending_tr) {
         // Get pending requests.
         auto payload = tr_info[DRing::Account::TrustRequest::PAYLOAD].toUtf8();
@@ -561,7 +561,7 @@ ContactModelPimpl::fillWithJamiContacts() {
 
         {
             std::lock_guard<std::mutex> lk(contactsMtx_);
-            contacts.emplace(contactUri.toStdString(), contactInfo);
+            contacts.insert(contactUri, contactInfo);
         }
 
         // create profile vcard for contact
@@ -571,21 +571,21 @@ ContactModelPimpl::fillWithJamiContacts() {
     // Update presence
     // TODO fix this map. This is dumb for now. The map contains values as keys, and empty values.
     const VectorMapStringString& subscriptions {
-        PresenceManager::instance().getSubscriptions(linked.owner.id.c_str())
+        PresenceManager::instance().getSubscriptions(linked.owner.id)
     };
     for (const auto& subscription : subscriptions) {
         auto first = true;
-        std::string uri = "";
+        QString uri = "";
         for (const auto& key : subscription) {
             if (first) {
                 first = false;
-                uri = key.toStdString();
+                uri = key;
             } else {
                 {
                     std::lock_guard<std::mutex> lk(contactsMtx_);
                     auto it = contacts.find(uri);
                     if (it != contacts.end()) {
-                        it->second.isPresent = key == "Online";
+                        it->isPresent = key == "Online";
                         linked.modelUpdated(uri, false);
                     }
                 }
@@ -597,13 +597,13 @@ ContactModelPimpl::fillWithJamiContacts() {
 }
 
 void
-ContactModelPimpl::slotNewBuddySubscription(const std::string& contactUri, bool status)
+ContactModelPimpl::slotNewBuddySubscription(const QString& contactUri, bool status)
 {
     {
         std::lock_guard<std::mutex> lk(contactsMtx_);
         auto it = contacts.find(contactUri);
         if (it != contacts.end()) {
-            it->second.isPresent = status;
+            it->isPresent = status;
         } else
             return;
     }
@@ -611,13 +611,13 @@ ContactModelPimpl::slotNewBuddySubscription(const std::string& contactUri, bool 
 }
 
 void
-ContactModelPimpl::slotContactAdded(const std::string& accountId, const std::string& contactUri, bool confirmed)
+ContactModelPimpl::slotContactAdded(const QString& accountId, const QString& contactUri, bool confirmed)
 {
     Q_UNUSED(confirmed)
     if (accountId != linked.owner.id) return;
     auto contact = contacts.find(contactUri);
 
-    if (contact->second.profileInfo.type == profile::Type::PENDING) {
+    if (contact->profileInfo.type == profile::Type::PENDING) {
         emit behaviorController.trustRequestTreated(linked.owner.id, contactUri);
     }
 
@@ -630,7 +630,7 @@ ContactModelPimpl::slotContactAdded(const std::string& accountId, const std::str
         {
             // Check whether contact is banned or not
             std::lock_guard<std::mutex> lk(bannedContactsMtx_);
-            auto it = std::find(bannedContacts.begin(), bannedContacts.end(), contact->second.profileInfo.uri);
+            auto it = std::find(bannedContacts.begin(), bannedContacts.end(), contact->profileInfo.uri);
 
             isBanned = (it != bannedContacts.end());
 
@@ -653,7 +653,7 @@ ContactModelPimpl::slotContactAdded(const std::string& accountId, const std::str
 }
 
 void
-ContactModelPimpl::slotContactRemoved(const std::string& accountId, const std::string& contactUri, bool banned)
+ContactModelPimpl::slotContactRemoved(const QString& accountId, const QString& contactUri, bool banned)
 {
     if (accountId != linked.owner.id)
         return;
@@ -665,22 +665,22 @@ ContactModelPimpl::slotContactRemoved(const std::string& accountId, const std::s
         auto contact = contacts.find(contactUri);
         if (contact == contacts.end()) return;
 
-        if (contact->second.profileInfo.type == profile::Type::PENDING) {
+        if (contact->profileInfo.type == profile::Type::PENDING) {
             emit behaviorController.trustRequestTreated(linked.owner.id, contactUri);
         }
 
-        if (contact->second.profileInfo.type != profile::Type::SIP)
-            PresenceManager::instance().subscribeBuddy(linked.owner.id.c_str(), contactUri.c_str(), false);
+        if (contact->profileInfo.type != profile::Type::SIP)
+            PresenceManager::instance().subscribeBuddy(linked.owner.id, contactUri, false);
 
         if (banned) {
-            contact->second.isBanned = true;
+            contact->isBanned = true;
             // Update bannedContacts index
-            bannedContacts.emplace_back(contact->second.profileInfo.uri);
+            bannedContacts.append(contact->profileInfo.uri);
         } else {
-            if (contact->second.isBanned) {
+            if (contact->isBanned) {
                 // Contact was banned, update bannedContacts
                 std::lock_guard<std::mutex> lk(bannedContactsMtx_);
-                auto it = std::find(bannedContacts.begin(), bannedContacts.end(), contact->second.profileInfo.uri);
+                auto it = std::find(bannedContacts.begin(), bannedContacts.end(), contact->profileInfo.uri);
                 if (it == bannedContacts.end()) {
                     // should not happen
                     qDebug("ContactModel::slotContactsRemoved(): Contact is banned but not present in bannedContacts. This is most likely the result of an earlier bug.");
@@ -689,7 +689,7 @@ ContactModelPimpl::slotContactRemoved(const std::string& accountId, const std::s
                 }
             }
             storage::removeContact(db, contactUri);
-            contacts.erase(contactUri);
+            contacts.remove(contactUri);
         }
     }
 
@@ -703,7 +703,7 @@ ContactModelPimpl::slotContactRemoved(const std::string& accountId, const std::s
 }
 
 void
-ContactModelPimpl::addToContacts(const std::string& contactUri, const profile::Type& type, const std::string& displayName, bool banned)
+ContactModelPimpl::addToContacts(const QString& contactUri, const profile::Type& type, const QString& displayName, bool banned)
 {
     // create a vcard if necessary
     profile::Info profileInfo{ contactUri, displayName, {}, linked.owner.profileInfo.type };
@@ -716,7 +716,7 @@ ContactModelPimpl::addToContacts(const std::string& contactUri, const profile::T
     if (type == profile::Type::RING) {
         ConfigurationManager::instance().lookupAddress(QString::fromStdString(linked.owner.id),
                                                        "", QString::fromStdString(contactUri));
-        PresenceManager::instance().subscribeBuddy(linked.owner.id.c_str(), contactUri.c_str(), !banned);
+        PresenceManager::instance().subscribeBuddy(linked.owner.id, contactUri, !banned);
     } else {
         contactInfo.profileInfo.alias = displayName;
     }
@@ -724,22 +724,22 @@ ContactModelPimpl::addToContacts(const std::string& contactUri, const profile::T
     contactInfo.profileInfo.type = type; // Because PENDING should not be stored in the database
     auto iter = contacts.find(contactInfo.profileInfo.uri);
     if (iter != contacts.end()) {
-        auto info = iter->second;
+        auto info = iter.value();
         contactInfo.registeredName = info.registeredName;
-        iter->second = contactInfo;
+        iter.value() = contactInfo;
     } else
-        contacts.emplace_hint(iter, contactInfo.profileInfo.uri, contactInfo);
+        contacts.insert(iter, contactInfo.profileInfo.uri, contactInfo);
 
     if (banned) {
-        bannedContacts.emplace_back(contactUri);
+        bannedContacts.append(contactUri);
     }
 }
 
 void
-ContactModelPimpl::slotRegisteredNameFound(const std::string& accountId,
+ContactModelPimpl::slotRegisteredNameFound(const QString& accountId,
                                            int status,
-                                           const std::string& uri,
-                                           const std::string& registeredName)
+                                           const QString& uri,
+                                           const QString& registeredName)
 {
     if (accountId != linked.owner.id) return;
 
@@ -784,9 +784,9 @@ ContactModelPimpl::slotRegisteredNameFound(const std::string& accountId,
 }
 
 void
-ContactModelPimpl::slotIncomingContactRequest(const std::string& accountId,
-                                              const std::string& contactUri,
-                                              const std::string& payload)
+ContactModelPimpl::slotIncomingContactRequest(const QString& accountId,
+                                              const QString& contactUri,
+                                              const QString& payload)
 {
     if (linked.owner.id != accountId)
         return;
@@ -795,14 +795,14 @@ ContactModelPimpl::slotIncomingContactRequest(const std::string& accountId,
     {
         std::lock_guard<std::mutex> lk(contactsMtx_);
         if (contacts.find(contactUri) == contacts.end()) {
-            const auto vCard = lrc::vCard::utils::toHashMap(payload.c_str());
+            const auto vCard = lrc::vCard::utils::toHashMap(payload.toUtf8());
             const auto alias = vCard["FN"];
             const auto photo = (vCard.find("PHOTO;ENCODING=BASE64;TYPE=PNG") == vCard.end()) ?
             vCard["PHOTO;ENCODING=BASE64;TYPE=JPEG"] : vCard["PHOTO;ENCODING=BASE64;TYPE=PNG"];
 
-            auto profileInfo = profile::Info {contactUri, photo.toStdString(), alias.toStdString(), profile::Type::PENDING};
+            auto profileInfo = profile::Info {contactUri, photo, alias, profile::Type::PENDING};
             auto contactInfo = contact::Info {profileInfo, "", false, false, false};
-            contacts.emplace(contactUri, contactInfo);
+            contacts.insert(contactUri, contactInfo);
             emitTrust = true;
             storage::createOrUpdateProfile(accountId, profileInfo, true);
         }
@@ -815,7 +815,7 @@ ContactModelPimpl::slotIncomingContactRequest(const std::string& accountId,
 }
 
 void
-ContactModelPimpl::slotIncomingCall(const std::string& fromId, const std::string& callId, const std::string& displayname)
+ContactModelPimpl::slotIncomingCall(const QString& fromId, const QString& callId, const QString& displayname)
 {
     bool emitContactAdded = false;
     {
@@ -829,9 +829,9 @@ ContactModelPimpl::slotIncomingCall(const std::string& fromId, const std::string
             emitContactAdded = true;
         } else {
             // Update the display name
-            if (!displayname.empty()) {
-                it->second.profileInfo.alias = displayname;
-                storage::createOrUpdateProfile(linked.owner.id, it->second.profileInfo, true);
+            if (!displayname.isEmpty()) {
+                it->profileInfo.alias = displayname;
+                storage::createOrUpdateProfile(linked.owner.id, it->profileInfo, true);
             }
         }
     }
@@ -846,9 +846,9 @@ ContactModelPimpl::slotIncomingCall(const std::string& fromId, const std::string
 }
 
 void
-ContactModelPimpl::slotNewAccountMessage(std::string& accountId,
-                                         std::string& from,
-                                         std::map<std::string,std::string> payloads)
+ContactModelPimpl::slotNewAccountMessage(QString& accountId,
+                                         QString& from,
+                                         QMap<QString, QString> payloads)
 {
     if (accountId != linked.owner.id) return;
 
@@ -860,8 +860,8 @@ ContactModelPimpl::slotNewAccountMessage(std::string& accountId,
             // The conversation model will create an entry and link the incomingCall.
 
             if (linked.owner.profileInfo.type == profile::Type::SIP) {
-                std::string potentialContact = sipUriReceivedFilter(from);
-                if (potentialContact.empty()) {
+                QString potentialContact = sipUriReceivedFilter(from);
+                if (potentialContact.isEmpty()) {
                     addToContacts(from, profile::Type::SIP, "", false);
                 } else {
                     // equivalent uri exist, use that uri
@@ -879,15 +879,15 @@ ContactModelPimpl::slotNewAccountMessage(std::string& accountId,
     emit linked.newAccountMessage(accountId, from, payloads);
 }
 
-std::string
-ContactModelPimpl::sipUriReceivedFilter(const std::string& uri)
+QString
+ContactModelPimpl::sipUriReceivedFilter(const QString& uri)
 {
     // this function serves when the uri is not found in the contact list
     // return "" means need to add new contact, else means equivalent uri exist
-    std::string uriCopy = uri;
+    std::string uriCopy = uri.toStdString();
 
     auto pos = uriCopy.find("@");
-    auto ownerHostName = linked.owner.confProperties.hostname;
+    auto ownerHostName = linked.owner.confProperties.hostname.toStdString();
 
     if (pos != std::string::npos) {
         // "@" is found, separate username and hostname
@@ -896,15 +896,15 @@ ContactModelPimpl::sipUriReceivedFilter(const std::string& uri)
         std::string remoteUser = std::move(uriCopy);
 
         if (hostName.compare(ownerHostName) == 0) {
-
-            if (contacts.find(remoteUser) != contacts.end()) {
-                return remoteUser;
+            auto remoteUserQStr = QString::fromStdString(remoteUser);
+            if (contacts.find(remoteUserQStr) != contacts.end()) {
+                return remoteUserQStr;
             }
             if (remoteUser.at(0) == '+') {
                 // "+" - country dial-in codes
                 // maximum 3 digits
                 for (int i = 2; i <= 4; i++) {
-                    std::string tempUserName = remoteUser.substr(i);
+                    QString tempUserName = QString::fromStdString(remoteUser.substr(i));
                     if (contacts.find(tempUserName) != contacts.end()) {
                         return tempUserName;
                     }
@@ -913,12 +913,11 @@ ContactModelPimpl::sipUriReceivedFilter(const std::string& uri)
             } else {
                 // if not "+"  from incoming
                 // sub "+" char from contacts to see if user exit
-                for (auto& i : contacts) {
-                    if (!i.first.empty()) {
+                for (auto& contactUri : contacts.keys()) {
+                    if (!contactUri.isEmpty()) {
                         for (int j = 2; j <= 4; j++) {
-                            std::string tempUserName = i.first.substr(j);
-                            if (tempUserName == remoteUser) {
-                                return i.first;
+                            if (contactUri.right(j) == remoteUserQStr) {
+                                return contactUri;
                             }
                         }
                     }

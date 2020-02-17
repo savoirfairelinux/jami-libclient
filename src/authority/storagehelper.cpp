@@ -56,18 +56,16 @@ QString getPath()
     return dataDir.absolutePath() + "/jami/";
 }
 
-std::string
-prepareUri(const std::string& uri, api::profile::Type type)
+QString
+prepareUri(const QString& uri, api::profile::Type type)
 {
-    URI uriObject(QString::fromStdString(uri));
+    URI uriObject(uri);
     switch (type) {
     case api::profile::Type::SIP:
-        return uriObject.format(URI::Section::USER_INFO | URI::Section::HOSTNAME)
-            .toStdString();
+        return uriObject.format(URI::Section::USER_INFO | URI::Section::HOSTNAME);
         break;
     case api::profile::Type::RING:
-        return uriObject.format(URI::Section::USER_INFO)
-            .toStdString();
+        return uriObject.format(URI::Section::USER_INFO);
         break;
     case api::profile::Type::INVALID:
     case api::profile::Type::PENDING:
@@ -78,7 +76,7 @@ prepareUri(const std::string& uri, api::profile::Type type)
     }
 }
 
-std::string
+QString
 getFormattedCallDuration(const std::time_t duration)
 {
     if (duration == 0) return {};
@@ -95,47 +93,47 @@ getFormattedCallDuration(const std::time_t duration)
     }
     if (seconds < 10) formattedString += "0";
     formattedString += std::to_string(seconds);
-    return formattedString;
+    return QString::fromStdString(formattedString);
 }
 
-std::string
-getCallInteractionString(const std::string& authorUri,
+QString
+getCallInteractionString(const QString& authorUri,
                          const std::time_t& duration)
 {
     if (duration < 0) {
-        if (authorUri.empty()) {
-            return "📞 " + QObject::tr("Outgoing call").toStdString();
+        if (authorUri.isEmpty()) {
+            return "📞 " + QObject::tr("Outgoing call");
         } else {
-            return "📞 " + QObject::tr("Incoming call").toStdString();
+            return "📞 " + QObject::tr("Incoming call");
         }
-    } else if (authorUri.empty()) {
+    } else if (authorUri.isEmpty()) {
         if (duration) {
-            return "📞 " + QObject::tr("Outgoing call").toStdString()
+            return "📞 " + QObject::tr("Outgoing call")
                     + " - " + getFormattedCallDuration(duration);
         } else {
-            return "🕽 " + QObject::tr("Missed outgoing call").toStdString();
+            return "🕽 " + QObject::tr("Missed outgoing call");
         }
     } else {
         if (duration) {
-            return "📞 " + QObject::tr("Incoming call").toStdString()
+            return "📞 " + QObject::tr("Incoming call")
                     + " - " + getFormattedCallDuration(duration);
         } else {
-            return "🕽 " + QObject::tr("Missed incoming call").toStdString();
+            return "🕽 " + QObject::tr("Missed incoming call");
         }
     }
 }
 
-std::string
-getContactInteractionString(const std::string& authorUri,
+QString
+getContactInteractionString(const QString& authorUri,
                             const api::interaction::Status& status)
 {
-    if (authorUri.empty()) {
-        return QObject::tr("Contact added").toStdString();
+    if (authorUri.isEmpty()) {
+        return QObject::tr("Contact added");
     } else {
         if (status == api::interaction::Status::UNKNOWN) {
-            return QObject::tr("Invitation received").toStdString();
+            return QObject::tr("Invitation received");
         } else if (status == api::interaction::Status::SUCCESS) {
-            return QObject::tr("Invitation accepted").toStdString();
+            return QObject::tr("Invitation accepted");
         }
     }
     return {};
@@ -143,17 +141,17 @@ getContactInteractionString(const std::string& authorUri,
 
 namespace vcard
 {
-std::string compressedAvatar(const std::string& image);
-void setProfile(const std::string& accountId,
+QString compressedAvatar(const QString& image);
+void setProfile(const QString& accountId,
                 const api::profile::Info& profileInfo,
                 const bool overwrite,
                 const bool isPeer);
 
-std::string
-compressedAvatar(const std::string& image)
+QString
+compressedAvatar(const QString& image)
 {
     QImage qimage;
-    const bool ret = qimage.loadFromData(QByteArray::fromBase64(image.c_str()), 0);
+    const bool ret = qimage.loadFromData(QByteArray::fromBase64(image.toUtf8()), 0);
     if (!ret) {
         qDebug() << "vCard image loading failed";
         return image;
@@ -163,19 +161,20 @@ compressedAvatar(const std::string& image)
     buffer.open(QIODevice::WriteOnly);
     qimage.scaled({ 128,128 }).save(&buffer, "JPEG", 90);
     auto b64Img = bArray.toBase64().trimmed();
-    return std::string(b64Img.constData(), b64Img.length());
+    return QString::fromLocal8Bit(b64Img.constData(), b64Img.length());
 }
 
-std::string
+QString
 profileToVcard(const api::profile::Info& profileInfo,
                bool compressImage)
 {
     using namespace api;
-    bool compressedImage = std::strncmp(profileInfo.avatar.c_str(), "/9j/", 4) == 0;
+    bool compressedImage = std::strncmp(
+        profileInfo.avatar.toStdString().c_str(), "/9j/", 4) == 0;
     if (compressedImage && !compressImage) {
         compressImage = false;
     }
-    std::string vCardStr = vCard::Delimiter::BEGIN_TOKEN;
+    QString vCardStr = vCard::Delimiter::BEGIN_TOKEN;
     vCardStr += vCard::Delimiter::END_LINE_TOKEN;
     vCardStr += vCard::Property::VERSION;
     vCardStr += ":2.1";
@@ -225,7 +224,7 @@ setProfile(const std::string& accountId,
     QFile file;
     if (isPeer) {
         filePath = accountLocalPath + "profiles/" +
-            QString(QByteArray::fromStdString(profileInfo.uri).toBase64()) + ".vcf";
+            QString(profileInfo.uri.toUtf8().toBase64()) + ".vcf";
         file.setFileName(filePath);
     } else {
         filePath = accountLocalPath + "profile" + ".vcf";
@@ -237,7 +236,7 @@ setProfile(const std::string& accountId,
     }
     QTextStream in(&file);
     in.setCodec("UTF-8");
-    in << QString::fromStdString(vcard);
+    in << vcard;
 }
 } // namespace vcard
 
@@ -549,21 +548,20 @@ std::string getInteractionIdByDaemonId(Database& db, const std::string& daemon_i
     return ids.empty() ? "" : ids[0];
 }
 
-std::string getInteractionExtraDataById(Database& db, const std::string& id,
-                                        const std::string& key)
+QString getInteractionExtraDataById(Database& db, const std::string& id,
+                                    const QString& key)
 {
     auto extra_datas = db.select("extra_data",
                                  "interactions",
                                  "id=:id",
                                  { {":id", id} }).payloads;
-    if (key.empty()) {
+    if (key.isEmpty()) {
         return extra_datas.empty() ? "" : extra_datas[0];
     }
-    std::string value;
+    QString value;
     auto extra_data_str = QString::fromStdString(extra_datas[0]);
     if (!extra_data_str.isEmpty()) {
-        value = readJSONValue(JSONFromString(extra_data_str), QString::fromStdString(key))
-            .toStdString();
+        value = readJSONValue(JSONFromString(extra_data_str), key);
     }
     return value;
 }
@@ -654,7 +652,7 @@ deleteObsoleteHistory(Database& db, long int date)
 }
 
 void
-removeContact(Database& db, const std::string& contactUri)
+removeContact(Database& db, const QString& contactUri)
 {
     // Get common conversations
     auto conversations = getConversationsWithPeer(db, contactUri);
@@ -672,7 +670,7 @@ removeContact(Database& db, const std::string& contactUri)
 }
 
 int
-countUnreadFromInteractions(Database& db, const std::string& conversationId)
+countUnreadFromInteractions(Database& db, const QString& conversationId)
 {
     return db.count("is_read",
                     "interactions",
@@ -776,13 +774,13 @@ enum class msgFlag {
     IS_TEXT
 };
 
-std::string profileToVcard(const lrc::api::profile::Info&, const std::string&);
+QString profileToVcard(const lrc::api::profile::Info&, const QString&);
 uint64_t getTimeFromTimeStr(const std::string&) noexcept;
-std::pair<msgFlag, uint64_t> migrateMessageBody(const std::string&,
+std::pair<msgFlag, uint64_t> migrateMessageBody(const QString&,
                                                 const lrc::api::interaction::Type&);
-std::vector<std::string> getPeerParticipantsForConversationId(lrc::Database&,
-                                                              const std::string&,
-                                                              const std::string&);
+std::vector<QString> getPeerParticipantsForConversationId(lrc::Database&,
+                                                          const QString&,
+                                                          const QString&);
 void migrateAccountDb(const QString&,
                       std::shared_ptr<lrc::Database>,
                       std::shared_ptr<lrc::Database>);
@@ -790,7 +788,7 @@ void migrateAccountDb(const QString&,
 namespace interaction {
 
 static inline api::interaction::Type
-to_type(const std::string& type)
+to_type(const QString& type)
 {
     if (type == "TEXT")
         return api::interaction::Type::TEXT;
@@ -806,8 +804,8 @@ to_type(const std::string& type)
         return api::interaction::Type::INVALID;
 }
 
-static inline std::string
-to_migrated_status_string(const std::string& status)
+static inline QString
+to_migrated_status_string(const QString& status)
 {
     if (status == "FAILED")
         return "FAILURE";
@@ -824,18 +822,19 @@ to_migrated_status_string(const std::string& status)
 
 } // namespace interaction
 
-std::string
+QString
 profileToVcard(const api::profile::Info& profileInfo,
-               const std::string& accountId = {})
+               const QString& accountId = {})
 {
     using namespace api;
-    bool compressedImage = std::strncmp(profileInfo.avatar.c_str(), "/9g=", 4) == 0;;
-    std::string vCardStr = vCard::Delimiter::BEGIN_TOKEN;
+    bool compressedImage = std::strncmp(
+        profileInfo.avatar.toStdString().c_str(), "/9g=", 4) == 0;;
+    QString vCardStr = vCard::Delimiter::BEGIN_TOKEN;
     vCardStr += vCard::Delimiter::END_LINE_TOKEN;
     vCardStr += vCard::Property::VERSION;
     vCardStr += ":2.1";
     vCardStr += vCard::Delimiter::END_LINE_TOKEN;
-    if (!accountId.empty()) {
+    if (!accountId.isEmpty()) {
         vCardStr += vCard::Property::UID;
         vCardStr += ":";
         vCardStr += accountId;
@@ -869,14 +868,15 @@ profileToVcard(const api::profile::Info& profileInfo,
 }
 
 uint64_t
-getTimeFromTimeStr(const std::string& str) noexcept
+getTimeFromTimeStr(const QString& str) noexcept
 {
     uint64_t minutes = 0, seconds = 0;
-    std::size_t delimiterPos = str.find(":");
+    std::string timeStr = str.toStdString();
+    std::size_t delimiterPos = timeStr.find(":");
     if (delimiterPos != std::string::npos) {
         try {
-            minutes = std::stoull(str.substr(0, delimiterPos));
-            seconds = std::stoull(str.substr(delimiterPos + 1));
+            minutes = std::stoull(timeStr.substr(0, delimiterPos));
+            seconds = std::stoull(timeStr.substr(delimiterPos + 1));
         } catch (const std::exception&) {
             return 0;
         }
@@ -885,7 +885,7 @@ getTimeFromTimeStr(const std::string& str) noexcept
 }
 
 std::pair<msgFlag, uint64_t>
-migrateMessageBody(const std::string& body, const api::interaction::Type& type)
+migrateMessageBody(const QString& body, const api::interaction::Type& type)
 {
     uint64_t duration{ 0 };
     // check in english and local to determine the direction of the call
@@ -899,29 +899,29 @@ migrateMessageBody(const std::string& body, const api::interaction::Type& type)
     static QString lir = QObject::tr("Invitation received");
     static QString eia = "Invitation accepted";
     static QString lia = QObject::tr("Invitation accepted");
-    auto qstrBody = QString::fromStdString(body);
+    auto strBody = body.toStdString();
     switch (type) {
     case api::interaction::Type::CALL:
         {
-        bool en_missedOut   = qstrBody.contains(emo);
-        bool en_out         = qstrBody.contains(eo);
-        bool loc_missedOut  = qstrBody.contains(lmo);
-        bool loc_out        = qstrBody.contains(lo);
+        bool en_missedOut   = body.contains(emo);
+        bool en_out         = body.contains(eo);
+        bool loc_missedOut  = body.contains(lmo);
+        bool loc_out        = body.contains(lo);
         bool outgoingCall   = en_missedOut || en_out || loc_missedOut || loc_out;
-        std::size_t dashPos = body.find("-");
+        std::size_t dashPos = strBody.find("-");
         if (dashPos != std::string::npos) {
-            duration = getTimeFromTimeStr(body.substr(dashPos + 2));
+            duration = getTimeFromTimeStr(strBody.substr(dashPos + 2));
         }
         return std::make_pair(msgFlag(outgoingCall),
                               duration);
         }
         break;
     case api::interaction::Type::CONTACT:
-        if (qstrBody.contains(eca) || qstrBody.contains(lca)) {
+        if (body.contains(eca) || body.contains(lca)) {
             return std::make_pair(msgFlag::IS_CONTACT_ADDED, 0);
-        } else if (qstrBody.contains(eir) || qstrBody.contains(lir)) {
+        } else if (body.contains(eir) || body.contains(lir)) {
             return std::make_pair(msgFlag::IS_INVITATION_RECEIVED, 0);
-        } else if (qstrBody.contains(eia) || qstrBody.contains(lia)) {
+        } else if (body.contains(eia) || body.contains(lia)) {
             return std::make_pair(msgFlag::IS_INVITATION_ACCEPTED, 0);
         }
         break;
@@ -935,8 +935,8 @@ migrateMessageBody(const std::string& body, const api::interaction::Type& type)
     return std::make_pair(msgFlag::IS_OUTGOING, 0);
 }
 
-std::vector<std::string>
-getPeerParticipantsForConversationId(Database& db, const std::string& profileId, const std::string& conversationId)
+std::vector<QString>
+getPeerParticipantsForConversationId(Database& db, const QString& profileId, const QString& conversationId)
 {
     return db.select("participant_id",
         "conversations",
@@ -958,19 +958,19 @@ migrateAccountDb(const QString& accountId,
     MapStringString accountDetails = ConfigurationManager::instance().
         getAccountDetails(accountId.toStdString().c_str());
     bool isRingAccount = accountDetails[ConfProperties::TYPE] == "RING";
-    std::map<std::string, std::string> profileIdUriMap;
-    std::map<std::string, std::string> convIdPeerUriMap;
-    std::string accountProfileId;
+    std::map<QString, QString> profileIdUriMap;
+    std::map<QString, QString> convIdPeerUriMap;
+    QString accountProfileId;
 
     // 1. profiles_accounts
     // migrate account's avatar/alias from profiles table to {data_dir}/profile.vcf
-    std::string accountUri;
+    QString accountUri;
     if (isRingAccount) {
         accountUri = accountDetails[DRing::Account::ConfProperties::USERNAME].contains("ring:") ?
-            accountDetails[DRing::Account::ConfProperties::USERNAME].toStdString().substr(std::string("ring:").size()) :
-            accountDetails[DRing::Account::ConfProperties::USERNAME].toStdString();
+            accountDetails[DRing::Account::ConfProperties::USERNAME].right(QString("ring:").size()) :
+            accountDetails[DRing::Account::ConfProperties::USERNAME];
     } else {
-        accountUri = accountDetails[DRing::Account::ConfProperties::USERNAME].toStdString();
+        accountUri = accountDetails[DRing::Account::ConfProperties::USERNAME];
     }
 
     auto accountProfileIds = legacyDb->select(
@@ -1048,7 +1048,7 @@ migrateAccountDb(const QString& accountId,
             qWarning() << "Can't open file: " << profileFilePath;
             continue;
         }
-        QTextStream(&file) << QString::fromStdString(vcard);
+        QTextStream(&file) << vcard;
     }
 
     // 3. conversations
@@ -1110,7 +1110,8 @@ migrateAccountDb(const QString& accountId,
         }
         // migrate body+type ==> msgFlag+duration
         auto migratedMsg = migrateMessageBody(body, type);
-        auto profileUri = it == profileIdUriMap.end() ? "" : it->second;
+        QString profileUri = it == profileIdUriMap.end() ?
+            "" : QString::fromStdString(it->second);
         // clear author uri if outgoing
         switch (migratedMsg.first) {
         case msgFlag::IS_OUTGOING:
@@ -1127,7 +1128,7 @@ migrateAccountDb(const QString& accountId,
                 std::advance(interactionIt, allInteractions.nbrOfCols);
                 continue;
             }
-            profileUri = it->second;
+            profileUri = QString::fromStdString(it->second);
             break;
         }
         case msgFlag::IS_TEXT:
