@@ -1,5 +1,5 @@
 /****************************************************************************
- *    Copyright (C) 2017-2020 Savoir-faire Linux Inc.                                  *
+ *    Copyright (C) 2017-2020 Savoir-faire Linux Inc.                       *
  *   Author: Nicolas Jäger <nicolas.jager@savoirfairelinux.com>             *
  *   Author: Sébastien Blin <sebastien.blin@savoirfairelinux.com>           *
  *                                                                          *
@@ -29,40 +29,33 @@ namespace daemon
 {
 
 void
-addContact(const api::account::Info& owner, const std::string& contactUri)
+addContact(const api::account::Info& owner, const QString& contactUri)
 {
-    ConfigurationManager::instance().addContact(QString(owner.id.c_str()),
-    QString(contactUri.c_str()));
+    ConfigurationManager::instance().addContact(owner.id, contactUri);
 }
 
 void
 addContact(const api::account::Info& owner, const api::contact::Info& contactInfo)
 {
-    ConfigurationManager::instance().addContact(QString(owner.id.c_str()),
-    QString(contactInfo.profileInfo.uri.c_str()));
+    ConfigurationManager::instance().addContact(owner.id, contactInfo.profileInfo.uri);
 }
 
 void
-removeContact(const api::account::Info& owner, const std::string& contactUri, bool banned)
+removeContact(const api::account::Info& owner, const QString& contactUri, bool banned)
 {
-    ConfigurationManager::instance().removeContact(QString(owner.id.c_str()),
-    QString(contactUri.c_str()), banned);
+    ConfigurationManager::instance().removeContact(owner.id, contactUri, banned);
 }
 
 bool
-addContactFromPending(const api::account::Info& owner, const std::string& contactUri)
+addContactFromPending(const api::account::Info& owner, const QString& contactUri)
 {
-    return ConfigurationManager::instance().acceptTrustRequest(QString(owner.id.c_str()),
-    QString(contactUri.c_str()));
+    return ConfigurationManager::instance().acceptTrustRequest(owner.id, contactUri);
 }
 
 bool
-discardFromPending(const api::account::Info& owner, const std::string& contactUri)
+discardFromPending(const api::account::Info& owner, const QString& contactUri)
 {
-    return ConfigurationManager::instance().discardTrustRequest(
-        QString(owner.id.c_str()),
-        QString(contactUri.c_str())
-    );
+    return ConfigurationManager::instance().discardTrustRequest(owner.id, contactUri);
 }
 
 } // namespace daemon

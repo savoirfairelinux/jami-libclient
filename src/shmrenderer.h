@@ -44,7 +44,7 @@ class LIB_EXPORT ShmRenderer final : public Renderer {
 
 public:
    //Constructor
-   ShmRenderer (const QByteArray& id, const QString& shmPath, const QSize& res);
+   ShmRenderer (const QString& id, const QString& shmPath, const QSize& res);
    virtual ~ShmRenderer();
 
    //Mutators

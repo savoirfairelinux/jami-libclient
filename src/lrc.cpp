@@ -144,52 +144,52 @@ Lrc::subscribeToDebugReceived()
     lrcPimpl_->callbackHandler->subscribeToDebugReceived();
 }
 
-std::vector<std::string>
+VectorString
 Lrc::activeCalls()
 {
     QStringList callLists = CallManager::instance().getCallList();
-    std::vector<std::string> result;
+    VectorString result;
     result.reserve(callLists.size());
     for (const auto &call : callLists) {
         MapStringString callDetails = CallManager::instance().getCallDetails(call);
         if(!isFinished(callDetails[QString(DRing::Call::Details::CALL_STATE)]))
-            result.emplace_back(call.toStdString());
+            result.push_back(call);
     }
     return result;
 }
 
-std::vector<std::string>
+VectorString
 Lrc::getCalls()
 {
     QStringList callLists = CallManager::instance().getCallList();
-    std::vector<std::string> result;
+    VectorString result;
     result.reserve(callLists.size());
     for (const auto &call : callLists) {
-        result.emplace_back(call.toStdString());
+        result.push_back(call);
     }
     return result;
 }
 
-std::vector<std::string>
+VectorString
 Lrc::getConferences()
 {
     QStringList conferencesList = CallManager::instance().getConferenceList();
-    std::vector<std::string> result;
+    VectorString result;
     result.reserve(conferencesList.size());
     for (const auto &conf : conferencesList) {
-        result.emplace_back(conf.toStdString());
+        result.push_back(conf);
     }
     return result;
 }
 
-std::vector<std::string>
-Lrc::getConferenceSubcalls(const std::string& cid)
+VectorString
+Lrc::getConferenceSubcalls(const QString& cid)
 {
-    QStringList callList = CallManager::instance().getParticipantList(cid.c_str());
-    std::vector<std::string> result;
+    QStringList callList = CallManager::instance().getParticipantList(cid);
+    VectorString result;
     result.reserve(callList.size());
     foreach(const auto& callId, callList) {
-        result.emplace_back(callId.toStdString());
+        result.push_back(callId);
     }
     return result;
 }

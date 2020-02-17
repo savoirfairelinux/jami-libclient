@@ -19,20 +19,17 @@
  ***************************************************************************/
 #pragma once
 
-// std
+#include "typedefs.h"
+#include "api/account.h"
+
+#include <QObject>
+
 #include <vector>
 #include <map>
 #include <memory>
 #include <string>
 #include <mutex>
 #include <condition_variable>
-
-// Qt
-#include <qobject.h>
-
-// Lrc
-#include "typedefs.h"
-#include "api/account.h"
 
 namespace lrc
 {
@@ -61,43 +58,42 @@ public:
 
     ~NewAccountModel();
     /**
-     * get a list of all acountId.
-     * @return a std::vector<std::string>.
+     * @return a list of all acountId.
      */
-    std::vector<std::string> getAccountList() const;
+    QStringList getAccountList() const;
 
     /**
      * get account informations associated to an accountId.
      * @param accountId.
      * @return a const account::Info& structure.
      */
-    const account::Info& getAccountInfo(const std::string& accountId) const;
+    const account::Info& getAccountInfo(const QString& accountId) const;
 
     /**
      * flag account corresponding to passed id as freeable.
      */
-    void flagFreeable(const std::string& accountId) const;
+    void flagFreeable(const QString& accountId) const;
 
      /**
      * set account enable/disable, save config and do unregister for account
      * @param accountId.
      * @param enabled.
      */
-    void setAccountEnabled(const std::string& accountID, bool enabled) const;
+    void setAccountEnabled(const QString& accountID, bool enabled) const;
 
     /**
      * saves account config to .yml
      * @param accountId.
      * @param reference to the confProperties
      */
-    void setAccountConfig(const std::string& accountID,
+    void setAccountConfig(const QString& accountID,
                           const account::ConfProperties_t& confProperties) const;
     /**
      * gets a copy of the accounts config
      * @param accountId.
      * @return an account::Info::ConfProperties_t structure.
      */
-    account::ConfProperties_t getAccountConfig(const std::string& accountId) const;
+    account::ConfProperties_t getAccountConfig(const QString& accountId) const;
     /**
      * Call exportToFile from the daemon
      * @param accountId
@@ -105,20 +101,20 @@ public:
      * @param password
      * @return if the file is exported with success
      */
-    bool exportToFile(const std::string& accountId, const std::string& path, const std::string& password = {}) const;
+    bool exportToFile(const QString& accountId, const QString& path, const QString& password = {}) const;
     /**
      * Call exportOnRing from the daemon
      * @param accountId
      * @param password
      * @return if the export is initialized
      */
-    bool exportOnRing(const std::string& accountId, const std::string& password) const;
+    bool exportOnRing(const QString& accountId, const QString& password) const;
     /**
      * Call removeAccount from the daemon
      * @param accountId to remove
      * @note will emit accountRemoved
      */
-    void removeAccount(const std::string& accountId) const;
+    void removeAccount(const QString& accountId) const;
     /**
      * Call changeAccountPassword from the daemon
      * @param accountId
@@ -126,23 +122,23 @@ public:
      * @param newPassword
      * @return if the password has been changed
      */
-    bool changeAccountPassword(const std::string& accountId,
-                               const std::string& currentPassword,
-                               const std::string& newPassword) const;
+    bool changeAccountPassword(const QString& accountId,
+                               const QString& currentPassword,
+                               const QString& newPassword) const;
     /**
      * Change the avatar of an account
      * @param accountId
      * @param avatar
      * @throws out_of_range exception if account is not found
      */
-    void setAvatar(const std::string& accountId, const std::string& avatar);
+    void setAvatar(const QString& accountId, const QString& avatar);
     /**
      * Change the alias of an account
      * @param accountId
      * @param alias
      * @throws out_of_range exception if account is not found
      */
-    void setAlias(const std::string& accountId, const std::string& alias);
+    void setAlias(const QString& accountId, const QString& alias);
     /**
      * Try to register a name
      * @param accountId
@@ -150,7 +146,7 @@ public:
      * @param username
      * @return if operation started
      */
-    bool registerName(const std::string& accountId, const std::string& password, const std::string& username);
+    bool registerName(const QString& accountId, const QString& password, const QString& username);
 
     /**
      * Connect to JAMS to retrieve the account
@@ -159,9 +155,9 @@ public:
      * @param serverUri
      * @return the account id
      */
-    static std::string connectToAccountManager(const std::string& username,
-                                               const std::string& password,
-                                               const std::string& serverUri);
+    static QString connectToAccountManager(const QString& username,
+                                               const QString& password,
+                                               const QString& serverUri);
 
     /**
      * Create a new Ring or SIP account
@@ -174,51 +170,51 @@ public:
      * @param uri of the account (for SIP)
      * @return the created account
      */
-    static std::string createNewAccount(profile::Type type,
-                                        const std::string& displayName = "",
-                                        const std::string& archivePath = "",
-                                        const std::string& password = "",
-                                        const std::string& pin = "",
-                                        const std::string& uri = "");
+    static QString createNewAccount(profile::Type type,
+                                    const QString& displayName = "",
+                                    const QString& archivePath = "",
+                                    const QString& password = "",
+                                    const QString& pin = "",
+                                    const QString& uri = "");
 
     /**
      * Set an account to the first position
      */
-    void setTopAccount(const std::string& accountId);
+    void setTopAccount(const QString& accountId);
 
     /**
      * Get the vCard for an account
      * @param id
      * @return vcard of the account
      */
-    std::string accountVCard(const std::string& accountId, bool compressImage = true) const;
+    QString accountVCard(const QString& accountId, bool compressImage = true) const;
 
 Q_SIGNALS:
     /**
      * Connect this signal to know when an invalid account is here
      * @param accountID
      */
-    void invalidAccountDetected(const std::string& accountID);
+    void invalidAccountDetected(const QString& accountID);
     /**
      * Connect this signal to know when the status of an account has changed.
      * @param accountID
      */
-    void accountStatusChanged(const std::string& accountID);
+    void accountStatusChanged(const QString& accountID);
     /**
      * Connect this signal to know when an account was added.
      * @param accountID
      */
-    void accountAdded(const std::string& accountID);
+    void accountAdded(const QString& accountID);
     /**
      * Connect this signal to know when an account was removed.
      * @param accountID
      */
-    void accountRemoved(const std::string& accountID);
+    void accountRemoved(const QString& accountID);
     /**
      * Connect this signal to know when an account was updated.
      * @param accountID
      */
-    void profileUpdated(const std::string& accountID);
+    void profileUpdated(const QString& accountID);
 
     /**
      * Connect this signal to know when an account is exported on the DHT
@@ -226,7 +222,7 @@ Q_SIGNALS:
      * @param status
      * @param pin
      */
-    void exportOnRingEnded(const std::string& accountID, account::ExportOnRingStatus status, const std::string& pin);
+    void exportOnRingEnded(const QString& accountID, account::ExportOnRingStatus status, const QString& pin);
 
     /**
      * Name registration has ended
@@ -234,7 +230,7 @@ Q_SIGNALS:
      * @param status
      * @param name
      */
-    void nameRegistrationEnded(const std::string& accountId, account::RegisterNameStatus status, const std::string& name);
+    void nameRegistrationEnded(const QString& accountId, account::RegisterNameStatus status, const QString& name);
 
     /**
      * Name registration has been found
@@ -242,14 +238,14 @@ Q_SIGNALS:
      * @param status
      * @param name
      */
-    void registeredNameFound(const std::string& accountId, account::LookupStatus status, const std::string& address, const std::string& name);
+    void registeredNameFound(const QString& accountId, account::LookupStatus status, const QString& address, const QString& name);
 
     /**
      * Migration has finished
      * @param accountId
      * @param ok
      */
-    void migrationEnded(const std::string& accountId, bool ok);
+    void migrationEnded(const QString& accountId, bool ok);
 
 private:
     std::unique_ptr<NewAccountModelPimpl> pimpl_;
