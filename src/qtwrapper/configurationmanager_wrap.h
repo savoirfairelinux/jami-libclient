@@ -170,7 +170,7 @@ public:
                 }),
             exportable_callback<DebugSignal::MessageSend>(
                 [this](const std::string& message) {
-                    Q_EMIT this->debugMessageReceived(message);
+                    Q_EMIT this->debugMessageReceived(QString(message.c_str()));
                 }),
         };
 
@@ -521,12 +521,12 @@ public Q_SLOTS: // METHODS
         DRing::setNoiseSuppressState(state);
     }
 
-    bool isAudioMeterActive(const std::string& id) {
-        return DRing::isAudioMeterActive(id);
+    bool isAudioMeterActive(const QString& id) {
+        return DRing::isAudioMeterActive(id.toStdString());
     }
 
-    void setAudioMeterState(const std::string& id, bool state) {
-        DRing::setAudioMeterState(id, state);
+    void setAudioMeterState(const QString& id, bool state) {
+        DRing::setAudioMeterState(id.toStdString(), state);
     }
 
     void setRecordPath(const QString& rec) {
@@ -734,7 +734,7 @@ Q_SIGNALS: // SIGNALS
     void contactRemoved(const QString &accountID, const QString &uri, bool banned);
     void dataTransferEvent(qulonglong transfer_id, uint code);
     void deviceRevocationEnded(const QString& accountId, const QString& deviceId, int status);
-    void debugMessageReceived(const std::string& message);
+    void debugMessageReceived(const QString& message);
 };
 
 namespace org { namespace ring { namespace Ring {

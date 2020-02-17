@@ -1,5 +1,5 @@
 /****************************************************************************
- *    Copyright (C) 2017-2020 Savoir-faire Linux Inc.                             *
+ *    Copyright (C) 2017-2020 Savoir-faire Linux Inc.                       *
  *   Author: Nicolas Jäger <nicolas.jager@savoirfairelinux.com>             *
  *   Author: Sébastien Blin <sebastien.blin@savoirfairelinux.com>           *
  *                                                                          *
@@ -18,20 +18,14 @@
  ***************************************************************************/
 #pragma once
 
-// Std
-#include <memory>
-#include <string>
-#include <map>
-
-// Qt
-#include <qobject.h>
-
-// Data
 #include "api/call.h"
 #include "api/account.h"
-
-// LRC
 #include "typedefs.h"
+
+#include <QObject>
+
+#include <memory>
+#include <map>
 
 namespace Video {
 class Renderer;
@@ -57,7 +51,7 @@ class LIB_EXPORT NewCallModel : public QObject {
     Q_OBJECT
 
 public:
-    using CallInfoMap = std::map<std::string, std::shared_ptr<call::Info>>;
+    using CallInfoMap = std::map<QString, std::shared_ptr<call::Info>>;
 
     const account::Info& owner;
 
@@ -76,7 +70,7 @@ public:
      * @param  isAudioOnly, set to false by default
      * @return the call uid created. Empty string is returned if call couldn't be created.
      */
-    std::string createCall(const std::string& uri, bool isAudioOnly = false);
+    QString createCall(const QString& uri, bool isAudioOnly = false);
 
     /**
      * Get the call from its call id
@@ -84,7 +78,7 @@ public:
      * @return the callInfo
      * @throw out_of_range exception if not found
      */
-    const call::Info& getCall(const std::string& uid) const;
+    const call::Info& getCall(const QString& uid) const;
 
     /**
      * Get the call from the peer uri
@@ -93,7 +87,7 @@ public:
      * @return the callInfo
      * @throw out_of_range exception if not found
      */
-    const call::Info& getCallFromURI(const std::string& uri, bool notOver = false) const;
+    const call::Info& getCallFromURI(const QString& uri, bool notOver = false) const;
 
     /**
      * Get conference from a peer uri
@@ -101,91 +95,91 @@ public:
      * @return the callInfo
      * @throw out_of_range exception if not found
      */
-    const call::Info& getConferenceFromURI(const std::string& uri) const;
+    const call::Info& getConferenceFromURI(const QString& uri) const;
 
     /**
      * @param  callId to test
      * @return true if callId is presend else false.
      */
-    bool hasCall(const std::string& callId) const;
+    bool hasCall(const QString& callId) const;
 
     /**
      * Send a text message to a SIP call
      * @param callId
      * @param body of the message
      */
-    void sendSipMessage(const std::string& callId, const std::string& body) const;
+    void sendSipMessage(const QString& callId, const QString& body) const;
 
     /**
      * Accept a call
      * @param callId
      */
-    void accept(const std::string& callId) const;
+    void accept(const QString& callId) const;
 
     /**
      * Hang up a call
      * @param callId
      */
-    void hangUp(const std::string& callId) const;
+    void hangUp(const QString& callId) const;
 
     /**
      * Refuse a call
      * @param callId
      */
-    void refuse(const std::string& callId) const;
+    void refuse(const QString& callId) const;
 
     /**
      * Toggle audio record on a call
      * @param callId
      */
-    void toggleAudioRecord(const std::string& callId) const;
+    void toggleAudioRecord(const QString& callId) const;
 
     /**
      * Play DTMF in a call
      * @param callId
      * @param value to play
      */
-    void playDTMF(const std::string& callId, const std::string& value) const;
+    void playDTMF(const QString& callId, const QString& value) const;
 
     /**
      * Toggle pause on a call.
      * @warn only use this function for SIP calls
      * @param callId
      */
-    void togglePause(const std::string& callId) const;
+    void togglePause(const QString& callId) const;
 
     /**
      * Toggle a media on a call
      * @param callId
      * @param media {AUDIO, VIDEO}
      */
-    void toggleMedia(const std::string& callId, const NewCallModel::Media media) const;
+    void toggleMedia(const QString& callId, const NewCallModel::Media media) const;
 
     /**
      * Not implemented yet
      */
-    void setQuality(const std::string& callId, const double quality) const;
+    void setQuality(const QString& callId, const double quality) const;
 
     /**
      * Blind transfer. Directly transfer a call to a sip number
      * @param callId: the call to transfer
      * @param to: the sip number (for example: "sip:1412")
      */
-    void transfer(const std::string& callId, const std::string& to) const;
+    void transfer(const QString& callId, const QString& to) const;
 
     /**
      * Perform an attended. Transfer a call to another call
      * @param callIdSrc: the call to transfer
      * @param callIdDest: the destination's call
      */
-    void transferToCall(const std::string& callIdSrc, const std::string& callIdDest) const;
+    void transferToCall(const QString& callIdSrc, const QString& callIdDest) const;
 
     /**
      * Create a conference from 2 calls.
      * @param callIdA uid of the call A
      * @param callIdB uid of the call B
      */
-    void joinCalls(const std::string& callIdA, const std::string& callIdB) const;
+    void joinCalls(const QString& callIdA, const QString& callIdB) const;
 
     /**
      * Call a participant and add it to a call
@@ -194,25 +188,25 @@ public:
      * @param audioOnly If the call is audio only
      * @return id for a new call
      */
-    std::string callAndAddParticipant(const std::string uri, const std::string& callId, bool audioOnly);
+    QString callAndAddParticipant(const QString uri, const QString& callId, bool audioOnly);
 
     /**
      * Not implemented yet
      */
-    void removeParticipant(const std::string& callId, const std::string& participant) const;
+    void removeParticipant(const QString& callId, const QString& participant) const;
 
     /**
      * @param  callId
      * @return a human readable call duration (M:ss)
      */
-    std::string getFormattedCallDuration(const std::string& callId) const;
+    QString getFormattedCallDuration(const QString& callId) const;
 
     /**
      * Get if a call is recording
      * @param callId
      * @return true if the call is recording else false
      */
-    bool isRecording(const std::string& callId) const;
+    bool isRecording(const QString& callId) const;
 
     /**
      * Close all active calls and conferences
@@ -224,42 +218,42 @@ public:
      * @param statusCode
      * @return status message
      */
-    static std::string getSIPCallStatusString(const short& statusCode);
+    static QString getSIPCallStatusString(const short& statusCode);
 
     /**
      * Set a call as the current call (hold other calls)
      */
-    void setCurrentCall(const std::string& callId) const;
+    void setCurrentCall(const QString& callId) const;
 
 Q_SIGNALS:
     /**
      * Emitted when a call state changes
      * @param callId
      */
-    void callStatusChanged(const std::string& callId, int code) const;
+    void callStatusChanged(const QString& callId, int code) const;
     /**
      * Emitted when a call starts
      * @param callId
      */
-    void callStarted(const std::string& callId) const;
+    void callStarted(const QString& callId) const;
     /**
      * Emitted when a call is over
      * @param callId
      */
-    void callEnded(const std::string& callId) const;
+    void callEnded(const QString& callId) const;
     /**
      * Emitted when a call is incoming
      * @param callId
      * @param fromId the peer uri
      * @param displayname
      */
-    void newIncomingCall(const std::string& fromId, const std::string& callId, const std::string& displayname) const;
+    void newIncomingCall(const QString& fromId, const QString& callId, const QString& displayname) const;
     /**
      * Emitted when a call is added to a conference
      * @param callId
      * @param confId
      */
-    void callAddedToConference(const std::string& callId, const std::string& confId) const;
+    void callAddedToConference(const QString& callId, const QString& confId) const;
 
     /**
      * Emitted when a voice mail notice arrives
@@ -268,7 +262,7 @@ Q_SIGNALS:
      * @param oldCount
      * @param urgentCount
      */
-    void voiceMailNotify(const std::string& accountId, int newCount, int oldCount, int urgentCount) const;
+    void voiceMailNotify(const QString& accountId, int newCount, int oldCount, int urgentCount) const;
 
 private:
     std::unique_ptr<NewCallModelPimpl> pimpl_;

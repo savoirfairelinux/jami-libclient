@@ -64,8 +64,6 @@ class DataTransferModel::Impl : public QObject
 public:
     Impl(DataTransferModel& up_link);
 
-    std::vector<std::string> transferIdList() const;
-
     DataTransferModel& upLink;
     std::map<long long, int> dring2lrcIdMap;
     std::map<int, long long> lrc2dringIdMap; // stricly the reverse map of dring2lrcIdMap
@@ -91,21 +89,6 @@ DataTransferModel::DataTransferModel()
 
 DataTransferModel::~DataTransferModel() = default;
 
-std::vector<std::string>
-DataTransferModel::Impl::transferIdList() const
-{
-    VectorULongLong dring_list = ConfigurationManager::instance().dataTransferList();
-    //~ for (auto dring_id : dring_list) {
-         //~ pimpl_->registerTransferId(dring_id);
-    //~ }
-    std::vector<std::string> result;
-    //~ result.reserve(dring_list.size());
-    //~ for (auto& item : pimpl_->lrc2dringIdMap) {
-        //~ result.push_back(item.first);
-    //~ }
-    return result;
-}
-
 void
 DataTransferModel::transferInfo(long long ringId, datatransfer::Info& lrc_info)
 {
@@ -116,10 +99,10 @@ DataTransferModel::transferInfo(long long ringId, datatransfer::Info& lrc_info)
         lrc_info.isOutgoing = !(infoFromDaemon.flags & (1 << uint32_t(DRing::DataTransferFlags::direction)));
         lrc_info.totalSize = infoFromDaemon.totalSize;
         lrc_info.progress = infoFromDaemon.bytesProgress;
-        lrc_info.path = infoFromDaemon.path.toStdString();
-        lrc_info.displayName = infoFromDaemon.displayName.toStdString();
-        lrc_info.accountId = infoFromDaemon.accountId.toStdString();
-        lrc_info.peerUri = infoFromDaemon.peer.toStdString();
+        lrc_info.path = infoFromDaemon.path;
+        lrc_info.displayName = infoFromDaemon.displayName;
+        lrc_info.accountId = infoFromDaemon.accountId;
+        lrc_info.peerUri = infoFromDaemon.peer;
         //lrc_info.timestamp = ?
         return;
     }
@@ -128,15 +111,15 @@ DataTransferModel::transferInfo(long long ringId, datatransfer::Info& lrc_info)
 }
 
 void
-DataTransferModel::sendFile(const std::string& account_id, const std::string& peer_uri,
-                            const std::string& file_path, const std::string& display_name)
+DataTransferModel::sendFile(const QString& account_id, const QString& peer_uri,
+                            const QString& file_path, const QString& display_name)
 {
     DataTransferInfo info;
     qulonglong id;
-    info.accountId = QString::fromStdString(account_id);
-    info.peer = QString::fromStdString(peer_uri);
-    info.path = QString::fromStdString(file_path);
-    info.displayName = QString::fromStdString(display_name);
+    info.accountId = account_id;
+    info.peer = peer_uri;
+    info.path = file_path;
+    info.displayName = display_name;
     info.bytesProgress = 0;
     if (ConfigurationManager::instance().sendFile(info, id) != 0) {
         qDebug() << "DataTransferModel::sendFile(), error";
@@ -154,11 +137,11 @@ DataTransferModel::bytesProgress(int interactionId, int64_t& total, int64_t& pro
 
 void
 DataTransferModel::accept(int interactionId,
-                          const std::string& file_path,
+                          const QString& file_path,
                           std::size_t offset)
 {
     auto dring_id = pimpl_->lrc2dringIdMap.at(interactionId);
-    ConfigurationManager::instance().acceptFileTransfer(dring_id, QString::fromStdString(file_path), offset);
+    ConfigurationManager::instance().acceptFileTransfer(dring_id, file_path, offset);
 }
 
 void

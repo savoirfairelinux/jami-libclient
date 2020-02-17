@@ -18,11 +18,9 @@
  ***************************************************************************/
 #pragma once
 
-// Std
-#include <string>
-
-// Data
 #include "profile.h"
+
+#include <QString>
 
 namespace lrc
 {
@@ -43,7 +41,7 @@ namespace contact
 struct Info
 {
     profile::Info profileInfo;
-    std::string registeredName;
+    QString registeredName;
     bool isTrusted = false;
     bool isPresent = false;
     bool isBanned = false;
