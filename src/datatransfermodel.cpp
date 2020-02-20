@@ -32,6 +32,7 @@
 
 // Qt
 #include <QUuid>
+#include <QFileInfo>
 
 namespace lrc { namespace api {
 
@@ -64,6 +65,8 @@ class DataTransferModel::Impl : public QObject
 public:
     Impl(DataTransferModel& up_link);
 
+    QString getUniqueFilePath(const QString& filename);
+
     DataTransferModel& upLink;
     std::map<long long, int> dring2lrcIdMap;
     std::map<int, long long> lrc2dringIdMap; // stricly the reverse map of dring2lrcIdMap
@@ -74,10 +77,30 @@ DataTransferModel::Impl::Impl(DataTransferModel& up_link)
     , upLink {up_link}
 {}
 
+QString
+DataTransferModel::Impl::getUniqueFilePath(const QString& filename)
+{
+    if (!QFile::exists(filename)) {
+        return filename;
+    }
+    QString base(filename);
+    QString ext = QFileInfo(filename).completeSuffix();
+    if (!ext.isEmpty()) {
+        ext = ext.prepend(".");
+    }
+    base.chop(ext.size());
+    QString ret;
+    for (int suffix = 1;; suffix++) {
+        ret = QString("%1 (%2)%3").arg(base).arg(suffix).arg(ext);
+        if (!QFile::exists(ret)) {
+            return ret;
+        }
+    }
+}
+
 void
 DataTransferModel::registerTransferId(long long dringId, int interactionId)
 {
-
     pimpl_->dring2lrcIdMap.emplace(dringId, interactionId);
     pimpl_->lrc2dringIdMap.emplace(interactionId, dringId);
 }
@@ -135,13 +158,15 @@ DataTransferModel::bytesProgress(int interactionId, int64_t& total, int64_t& pro
                                                                reinterpret_cast<qlonglong&>(progress));
 }
 
-void
+QString
 DataTransferModel::accept(int interactionId,
                           const QString& file_path,
                           std::size_t offset)
 {
+    auto unique_file_path = pimpl_->getUniqueFilePath(file_path);
     auto dring_id = pimpl_->lrc2dringIdMap.at(interactionId);
-    ConfigurationManager::instance().acceptFileTransfer(dring_id, file_path, offset);
+    ConfigurationManager::instance().acceptFileTransfer(dring_id, unique_file_path, offset);
+    return unique_file_path;
 }
 
 void
