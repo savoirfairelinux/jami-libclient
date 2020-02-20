@@ -58,7 +58,7 @@ public:
 
     void bytesProgress(int interactionId, int64_t& total, int64_t& progress);
 
-    void accept(int interactionId, const QString& file_path, std::size_t offset);
+    QString accept(int interactionId, const QString& file_path, std::size_t offset);
 
     void cancel(int interactionId);
 
