@@ -97,8 +97,8 @@ def build_project(msbuild, msbuild_args, proj, env_vars):
     p = subprocess.Popen(cmd, shell=True,
                          stdout=sys.stdout,
                          env=env_vars)
-    _, perr = p.communicate()
-    if perr:
+    _, _ = p.communicate()
+    if p.returncode:
         print("Build failed when building ", proj)
         sys.exit(1)
 
@@ -151,8 +151,8 @@ def generate(force, qtver, sdk, toolset, arch):
     cmd.extend(cmake_options)
     p = subprocess.Popen(cmd, shell=True,
                          stdout=subprocess.PIPE)
-    _, perr = p.communicate()
-    if perr:
+    _, _ = p.communicate()
+    if p.returncode:
         print("Couldn't generate!")
         sys.exit(1)
 
