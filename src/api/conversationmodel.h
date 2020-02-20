@@ -211,6 +211,8 @@ public:
 
     void sendFile(const QString& convUid, const QString& path, const QString& filename);
 
+    void acceptTransfer(const QString & convUid, uint64_t interactionId);
+
     void acceptTransfer(const QString& convUid, uint64_t interactionId, const QString& path);
 
     void cancelTransfer(const QString& convUid, uint64_t interactionId);

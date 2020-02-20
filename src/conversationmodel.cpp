@@ -2026,6 +2026,14 @@ ConversationModel::sendFile(const QString& convUid,
 }
 
 void
+ConversationModel::acceptTransfer(const QString& convUid, uint64_t interactionId)
+{
+    lrc::api::datatransfer::Info info = {};
+    getTransferInfo(interactionId, info);
+    acceptTransfer(convUid, interactionId, info.displayName);
+}
+
+void
 ConversationModel::acceptTransfer(const QString& convUid, uint64_t interactionId, const QString& path)
 {
     pimpl_->acceptTransfer(convUid, interactionId, path);
@@ -2175,31 +2183,17 @@ ConversationModelPimpl::slotTransferStatusAwaitingHost(long long dringId, datatr
         if (emitUpdated) {
             dirtyConversations = {true, true};
             emit linked.interactionStatusUpdated(convId, interactionId, itCopy);
-            // If it's an accepted file type and less than 20 MB, accept transfer.
-
-            // TODO: Use Qt functions
-
-            auto extensionIdx = info.displayName.toStdString().find_last_of(".");
-            if (extensionIdx == std::string::npos)
-                return;
-            auto extension = QString(info.displayName).remove(0, extensionIdx);
+            // Only accept if contact is added
             try {
-                auto contactInfo = linked.owner.contactModel->getContact(conversations[conversationIdx].participants.front());
-                // Only accept if contact is added
+                auto contactUri = conversations[conversationIdx].participants.front();
+                auto contactInfo = linked.owner.contactModel->getContact(contactUri);
                 if (contactInfo.profileInfo.type != profile::Type::RING) return;
             } catch (...) {
                 return;
             }
-            auto destinationDir = lrc.getDataTransferModel().downloadDirectory;
-            if (info.totalSize < 20 * 1024 * 1024 && !destinationDir.isEmpty()) {
-                auto wantedFilename = destinationDir + info.displayName;
-                auto duplicate = 0;
-                while (std::ifstream(wantedFilename.toStdString()).good()) {
-                    ++duplicate;
-                    wantedFilename = destinationDir + info.displayName.left(extensionIdx) +
-                        " (" + toQString(duplicate) + ")" + extension.toLower();
-                }
-                acceptTransfer(convId, interactionId, wantedFilename);
+            // If it's an accepted file type and less than 20 MB, accept transfer.
+            if (info.totalSize < 20 * 1024 * 1024 && info.displayName.contains(".")) {
+                acceptTransfer(convId, interactionId, info.displayName);
             }
         }
     }
@@ -2208,8 +2202,17 @@ ConversationModelPimpl::slotTransferStatusAwaitingHost(long long dringId, datatr
 void
 ConversationModelPimpl::acceptTransfer(const QString& convUid, uint64_t interactionId, const QString& path)
 {
-    lrc.getDataTransferModel().accept(interactionId, path, 0);
-    storage::updateInteractionBody(db, interactionId, path);
+    auto destinationDir = lrc.getDataTransferModel().downloadDirectory;
+    if (destinationDir.isEmpty()) {
+        return;
+    }
+#ifdef Q_OS_WIN
+    if (destinationDir.right(1) != '/') {
+        destinationDir += "/";
+    }
+#endif
+    auto acceptedFilePath = lrc.getDataTransferModel().accept(interactionId, destinationDir + path, 0);
+    storage::updateInteractionBody(db, interactionId, acceptedFilePath);
     storage::updateInteractionStatus(db, interactionId, interaction::Status::TRANSFER_ACCEPTED);
 
     // prepare interaction Info and emit signal for the client
@@ -2221,7 +2224,7 @@ ConversationModelPimpl::acceptTransfer(const QString& convUid, uint64_t interact
         auto& interactions = conversations[conversationIdx].interactions;
         auto it = interactions.find(interactionId);
         if (it != interactions.end()) {
-            it->second.body = path;
+            it->second.body = acceptedFilePath;
             it->second.status = interaction::Status::TRANSFER_ACCEPTED;
             emitUpdated = true;
             itCopy = it->second;
