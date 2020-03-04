@@ -246,6 +246,7 @@ CallbacksHandler::subscribeToDebugReceived()
 
 void
 CallbacksHandler::slotNewAccountMessage(const QString& accountId,
+                                        const QString& msgId,
                                         const QString& from,
                                         const QMap<QString,QString>& payloads)
 {
@@ -257,8 +258,9 @@ CallbacksHandler::slotNewAccountMessage(const QString& accountId,
 
     auto accountId2 = accountId.toStdString();
     auto from2 = QString(from).replace("@ring.dht", "").toStdString();
+    auto msgId2 = QString(msgId).toStdString();
 
-    emit newAccountMessage(accountId2, from2, stdPayloads);
+    emit newAccountMessage(accountId2, msgId2, from2, stdPayloads);
 }
 
 void

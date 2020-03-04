@@ -166,10 +166,12 @@ public Q_SLOTS:
     /**
      * Listen from callbacksHandler for new account interaction and add pending contact if not present
      * @param accountId
+     * @param msgId
      * @param from
      * @param payloads
      */
     void slotNewAccountMessage(std::string& accountId,
+                               std::string& msgId,
                                std::string& from,
                                std::map<std::string,std::string> payloads);
 
@@ -847,6 +849,7 @@ ContactModelPimpl::slotIncomingCall(const std::string& fromId, const std::string
 
 void
 ContactModelPimpl::slotNewAccountMessage(std::string& accountId,
+                                         std::string& msgId,
                                          std::string& from,
                                          std::map<std::string,std::string> payloads)
 {
@@ -876,7 +879,7 @@ ContactModelPimpl::slotNewAccountMessage(std::string& accountId,
     if (emitNewTrust) {
         emit behaviorController.newTrustRequest(linked.owner.id, from);
     }
-    emit linked.newAccountMessage(accountId, from, payloads);
+    emit linked.newAccountMessage(accountId, msgId, from, payloads);
 }
 
 std::string

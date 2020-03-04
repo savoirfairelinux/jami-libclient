@@ -141,8 +141,8 @@ public:
                     Q_EMIT this->registeredNameFound(QString(accountId.c_str()), status, QString(address.c_str()), QString(name.c_str()));
                 }),
             exportable_callback<ConfigurationSignal::IncomingAccountMessage>(
-                [this] (const std::string& account_id, const std::string& from, const std::map<std::string, std::string>& payloads) {
-                    Q_EMIT this->incomingAccountMessage(QString(account_id.c_str()), QString(from.c_str()), convertMap(payloads));
+                [this] (const std::string& account_id, const std::string& msgId, const std::string& from, const std::map<std::string, std::string>& payloads) {
+                    Q_EMIT this->incomingAccountMessage(QString(account_id.c_str()), QString(msgId.c_str()), QString(from.c_str()), convertMap(payloads));
                 }),
             exportable_callback<ConfigurationSignal::MediaParametersChanged>(
                 [this] (const std::string& account_id) {
@@ -722,7 +722,7 @@ Q_SIGNALS: // SIGNALS
     void incomingTrustRequest(const QString& accountId, const QString& from, const QByteArray& payload, qulonglong timeStamp);
     void knownDevicesChanged(const QString& accountId, const MapStringString& devices);
     void exportOnRingEnded(const QString& accountId, int status, const QString& pin);
-    void incomingAccountMessage(const QString& accountId, const QString& from, const MapStringString& payloads);
+    void incomingAccountMessage(const QString& accountId, const QString msgId, const QString& from, const MapStringString& payloads);
     void mediaParametersChanged(const QString& accountId);
     void audioDeviceEvent();
     void audioMeter(const QString& id, float level);

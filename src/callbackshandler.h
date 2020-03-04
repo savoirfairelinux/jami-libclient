@@ -59,10 +59,12 @@ Q_SIGNALS:
     /**
      * Connect this signal to get incoming text interaction from the DHT.
      * @param accountId interaction receiver.
-     * @param from interaction sender.
+     * @param msgId     interaction's id.
+     * @param from      interaction sender.
      * @param payloads.
      */
     void newAccountMessage(std::string& accountId,
+                           std::string& msgId,
                            std::string& from,
                            std::map<std::string,std::string> payloads);
     /**
@@ -296,10 +298,12 @@ private Q_SLOTS:
     /**
      * Emit newAccountMessage
      * @param accountId
+     * @param msgId
      * @param from
      * @param payloads of the interaction
      */
     void slotNewAccountMessage(const QString& accountId,
+                               const QString& msgId,
                                const QString& from,
                                const QMap<QString,QString>& payloads);
     /**

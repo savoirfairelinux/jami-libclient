@@ -139,10 +139,14 @@ Q_SIGNALS:
     /**
      * Connect this signal to know when a text message arrives for this account
      * @param accountId
+     * @param msgId     Interaction's id
      * @param from peer uri
      * @param payloads content of the message
      */
-    void newAccountMessage(std::string& accountId, std::string& from, std::map<std::string,std::string> payloads) const;
+    void newAccountMessage(std::string& accountId,
+                           std::string& msgId,
+                           std::string& from,
+                           std::map<std::string,std::string> payloads) const;
     /**
      * Connect this signal to know when a file transfer interaction is incoming
      * @param dringId Daemon's ID for incoming transfer

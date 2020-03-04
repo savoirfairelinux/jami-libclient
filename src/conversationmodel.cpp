@@ -115,10 +115,11 @@ public:
      * @param from the author uri
      * @param body the content of the message
      * @param timestamp the timestamp of the message
+     * @return msgId generated (in db)
      */
-    void addIncomingMessage(const std::string& from,
-                            const std::string& body,
-                            const uint64_t& timestamp = 0);
+    int addIncomingMessage(const std::string& from,
+                           const std::string& body,
+                           const uint64_t& timestamp = 0);
     /**
      * Change the status of an interaction. Listen from callbacksHandler
      * @param accountId, account linked
@@ -218,10 +219,12 @@ public Q_SLOTS:
     /**
      * Listen from CallbacksHandler for new incoming interactions;
      * @param accountId
+     * @param msgId
      * @param from uri
      * @param payloads body
      */
     void slotNewAccountMessage(std::string& accountId,
+                               std::string& msgId,
                                std::string& from,
                                std::map<std::string,std::string> payloads);
     /**
@@ -1765,6 +1768,7 @@ ConversationModelPimpl::addOrUpdateCallMessage(const std::string& callId,
 
 void
 ConversationModelPimpl::slotNewAccountMessage(std::string& accountId,
+                                              std::string& msgId,
                                               std::string& from,
                                               std::map<std::string,std::string> payloads)
 {
@@ -1773,7 +1777,8 @@ ConversationModelPimpl::slotNewAccountMessage(std::string& accountId,
 
     for (const auto &payload : payloads) {
         if (payload.first.find("text/plain") != std::string::npos) {
-            addIncomingMessage(from, payload.second);
+            auto dbId = addIncomingMessage(from, payload.second);
+            storage::addDaemonMsgId(db, std::to_string(dbId), msgId);
         }
     }
 }
@@ -1801,7 +1806,7 @@ ConversationModelPimpl::slotIncomingCallMessage(const std::string& callId, const
 
 }
 
-void
+int
 ConversationModelPimpl::addIncomingMessage(const std::string& from,
                                            const std::string& body,
                                            const uint64_t& timestamp)
@@ -1832,6 +1837,7 @@ ConversationModelPimpl::addIncomingMessage(const std::string& from,
     emit linked.newInteraction(convIds[0], msgId, msg);
     sortConversations();
     emit linked.modelSorted();
+    return msgId;
 }
 
 void
