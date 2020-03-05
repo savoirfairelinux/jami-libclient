@@ -376,6 +376,12 @@ function grow_text_area() {
         var total_size = parseInt(msgbar_size) + parseInt(new_height) - parseInt(old_height)
 
         document.body.style.setProperty("--messagebar-size", total_size.toString() + "px")
+
+        if (use_qt) {
+            window.jsbridge.onComposing(messageBarInput.value.length !== 0)
+        } else {
+            window.prompt(`ON_COMPOSING:${messageBarInput.value.length !== 0}`)
+        }
     }, [])
 }
 
@@ -389,6 +395,7 @@ function grow_text_area() {
 function process_messagebar_keydown(key) {
     key = key || event
     var map = {}
+
     map[key.keyCode] = key.type == "keydown"
     if (key.ctrlKey && map[13]) {
         messageBarInput.value += "\n"
@@ -2135,7 +2142,7 @@ function setSenderImage(set_sender_image_object)
     if (use_qt) {
         var sender_contact_method = set_sender_image_object["sender_contact_method"].replace(/@/g, "_").replace(/\./g, "_"),
             sender_image = set_sender_image_object["sender_image"],
-            sender_image_id = "sender_image_" + sender_contact_method,
+            contactUri = "sender_image_" + sender_contact_method,
             invite_sender_image_id = "invite_sender_image_" + sender_contact_method,
             currentSenderImage = document.getElementById(sender_image_id), // Remove the currently set sender image
             style, invite_style
@@ -2158,15 +2165,57 @@ function setSenderImage(set_sender_image_object)
 
     style.type = "text/css"
     style.id = sender_image_id
-    style.innerHTML = "." + sender_image_id + " {content: url(data:image/png;base64," + sender_image + ");height: 2.25em;width: 2.25em;}"
+    style.innerHTML = "." + sender_image_id + " {content: url(data:image/png;base64," + sender_image + ");height: 32px; width: 32px;}"
     document.head.appendChild(style)
 
     invite_style = document.createElement("style")
 
     invite_style.type = "text/css"
     invite_style.id = invite_sender_image_id
-    invite_style.innerHTML = "." + invite_sender_image_id + " {content: url(data:image/png;base64," + sender_image + ");height: 48px;width: 48px;}"
+    invite_style.innerHTML = "." + invite_sender_image_id + " {content: url(data:image/png;base64," + sender_image + ");height: 48px; width: 48px;}"
     document.head.appendChild(invite_style)
+}
+
+/**
+ * Show Typing indicator
+ */
+/* exported showTypingIndicator */
+function showTypingIndicator(contactUri, isTyping) {
+
+    var message_div = messages.lastChild.querySelector("#message_typing")
+    if (!isTyping) {
+        if (message_div) {
+            message_div.style.display = 'none'
+        }
+    } else {
+        if (message_div) {
+            message_div.parentNode.removeChild(message_div)
+        }
+        message_div = buildNewMessage({
+            "id":"typing",
+            "type":"text",
+            "text":"",
+            "direction":"in",
+            "delivery_status":"",
+            "sender_contact_method": contactUri
+        })
+
+        var previousMessage = messages.lastChild.lastChild
+        messages.lastChild.appendChild(message_div)
+        computeSequencing(previousMessage, message_div, null, true)
+        if (previousMessage) {
+            previousMessage.classList.remove("last_message")
+        }
+        message_div.classList.add("last_message")
+        let msg_text = message_div.querySelector(".message_text")
+        msg_text.innerHTML = " \
+                        <div class=\"typing-indicator\"> \
+                            <span></span> \
+                            <span></span> \
+                            <span></span> \
+                        </div>"
+    }
+    updateMesPos()
 }
 
 /**
