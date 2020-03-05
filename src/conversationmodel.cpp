@@ -244,6 +244,13 @@ public Q_SLOTS:
      * @param confId
      */
     void slotConferenceRemoved(const QString& confId);
+    /**
+     * Listen for when a contact is composing
+     * @param accountId
+     * @param contactUri
+     * @param isComposing
+     */
+    void slotComposingStatusChanged(const QString& accountId, const QString& contactUri, bool isComposing);
 
     void slotTransferStatusCreated(long long dringId, api::datatransfer::Info info);
     void slotTransferStatusCanceled(long long dringId, api::datatransfer::Info info);
@@ -1204,6 +1211,10 @@ ConversationModelPimpl::ConversationModelPimpl(const ConversationModel& linked,
             &CallbacksHandler::conferenceRemoved,
             this,
             &ConversationModelPimpl::slotConferenceRemoved);
+    connect(&ConfigurationManager::instance(),
+            &ConfigurationManagerInterface::composingStatusChanged,
+            this,
+            &ConversationModelPimpl::slotComposingStatusChanged);
 
     // data transfer
     connect(&*linked.owner.contactModel, &ContactModel::newAccountTransfer,
@@ -1278,6 +1289,8 @@ ConversationModelPimpl::~ConversationModelPimpl()
                this, &ConversationModelPimpl::slotCallAddedToConference);
     disconnect(&callbacksHandler, &CallbacksHandler::conferenceRemoved,
                this, &ConversationModelPimpl::slotConferenceRemoved);
+    disconnect(&ConfigurationManager::instance(), &ConfigurationManagerInterface::composingStatusChanged,
+               this, &ConversationModelPimpl::slotComposingStatusChanged);
 
     // data transfer
     disconnect(&*linked.owner.contactModel, &ContactModel::newAccountTransfer,
@@ -1927,10 +1940,31 @@ ConversationModelPimpl::slotConferenceRemoved(const QString& confId)
     }
 }
 
+void
+ConversationModelPimpl::slotComposingStatusChanged(const QString& accountId, const QString& contactUri, bool isComposing)
+{
+    if (accountId != linked.owner.id) return;
+    // Check conversation's validity
+    auto convIds = storage::getConversationsWithPeer(db, contactUri);
+    if (convIds.empty()) return;
+    emit linked.composingStatusChanged(convIds.front(), contactUri, isComposing);
+}
+
 int
 ConversationModelPimpl::getNumberOfUnreadMessagesFor(const QString& uid)
 {
     return storage::countUnreadFromInteractions(db, uid);
+}
+
+void
+ConversationModel::setIsComposing(const QString& uid, bool isComposing)
+{
+    auto conversationIdx = pimpl_->indexOf(uid);
+    if (conversationIdx == -1 || !owner.enabled)
+        return;
+
+    const auto peerUri = pimpl_->conversations[conversationIdx].participants.front();
+    ConfigurationManager::instance().setIsComposing(owner.id, peerUri, isComposing);
 }
 
 void

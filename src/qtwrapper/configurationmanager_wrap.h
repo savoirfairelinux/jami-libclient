@@ -172,6 +172,10 @@ public:
                 [this](const std::string& message) {
                     Q_EMIT this->debugMessageReceived(QString(message.c_str()));
                 }),
+            exportable_callback<ConfigurationSignal::ComposingStatusChanged>(
+                [this](const std::string& account_id, const std::string& from, int status) {
+                    Q_EMIT this->composingStatusChanged(QString(account_id.c_str()), QString(from.c_str()), status > 0 ? true : false);
+                }),
         };
 
         dataXferHandlers = {
@@ -705,6 +709,10 @@ public Q_SLOTS: // METHODS
         DRing::pushNotificationReceived(from.toStdString(), convertMap(data));
     }
 
+    void setIsComposing(const QString& accountId, const QString& contactId, bool isComposing) {
+        DRing::setIsComposing(accountId.toStdString(), contactId.toStdString(), isComposing);
+    }
+
 Q_SIGNALS: // SIGNALS
     void volumeChanged(const QString& device, double value);
     void accountsChanged();
@@ -735,6 +743,7 @@ Q_SIGNALS: // SIGNALS
     void dataTransferEvent(qulonglong transfer_id, uint code);
     void deviceRevocationEnded(const QString& accountId, const QString& deviceId, int status);
     void debugMessageReceived(const QString& message);
+    void composingStatusChanged(const QString& accountId, const QString& contactId, bool isComposing);
 };
 
 namespace org { namespace ring { namespace Ring {
