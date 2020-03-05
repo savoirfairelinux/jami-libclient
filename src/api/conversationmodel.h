@@ -221,6 +221,12 @@ public:
      * @return the number of unread messages for the conversation
      */
     int getNumberOfUnreadMessagesFor(const QString& convUid);
+    /**
+     * Send a composing status
+     * @param uid           conversation's id
+     * @param isComposing   if is composing
+     */
+    void setIsComposing(const QString& uid, bool isComposing);
 
 Q_SIGNALS:
     /**
@@ -285,6 +291,13 @@ Q_SIGNALS:
      * @param uid
      */
     void conversationReady(QString uid) const;
+    /**
+     * Emitted when a contact in a conversation is composing a message
+     * @param uid           conversation's id
+     * @param contactUri    contact's uri
+     * @param isComposing   if contact is composing a message
+     */
+    void composingStatusChanged(const QString& uid, const QString& contactUri, bool isComposing) const;
 
 private:
     std::unique_ptr<ConversationModelPimpl> pimpl_;
