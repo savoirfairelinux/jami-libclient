@@ -1634,12 +1634,14 @@ function buildNewMessage(message_object) {
         message_div.appendChild(temp)
     }
 
-    var message_dropdown = buildMessageDropdown(message_id)
-    if (message_type !== "call" && message_type !== "contact") {
-        message_div.appendChild(message_dropdown)
-    } else {
-        var wrapper = message_div.querySelector(".message_wrapper")
-        wrapper.insertBefore(message_dropdown, wrapper.firstChild)
+    if (message_id !== 'typing') {
+        var message_dropdown = buildMessageDropdown(message_id)
+        if (message_type !== "call" && message_type !== "contact") {
+            message_div.appendChild(message_dropdown)
+        } else {
+            var wrapper = message_div.querySelector(".message_wrapper")
+            wrapper.insertBefore(message_dropdown, wrapper.firstChild)
+        }
     }
 
     if(use_qt) {
