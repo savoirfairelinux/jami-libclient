@@ -398,7 +398,7 @@ NewAccountModelPimpl::updateAccounts()
     for (auto& it : accounts) {
         auto& accountInfo = it.second.first;
         if (!accountIds.contains(accountInfo.id)) {
-            qDebug() << QString("detected account removal %s").arg(accountInfo.id);
+            qDebug() << QString("detected account removal %1").arg(accountInfo.id);
             toBeRemoved.push_back(accountInfo.id);
         }
     }
@@ -414,7 +414,7 @@ NewAccountModelPimpl::updateAccounts()
         // "Remote peer disconnected", "The name is not activable", etc.
         // So avoid to create useless directories.
         if (account == accounts.end() && id.indexOf(" ") == -1) {
-            qDebug() << QString("detected new account %s").arg(id);
+            qWarning() << QString("detected new account %1").arg(id);
             addToAccounts(id);
             auto updatedAccount = accounts.find(id);
             if (updatedAccount == accounts.end()) {

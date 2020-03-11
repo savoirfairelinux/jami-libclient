@@ -700,7 +700,7 @@ NewCallModelPimpl::slotCallStateChanged(const QString& callId, const QString& st
         return;
     }
 
-    qDebug() << QString("slotCallStateChanged (call: %s), from %s to %s")
+    qDebug() << QString("slotCallStateChanged (call: %1), from %2 to %3")
         .arg(callId)
         .arg(call::to_string(previousStatus))
         .arg(call::to_string(status));

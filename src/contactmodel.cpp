@@ -214,6 +214,7 @@ ContactModel::hasPendingRequests() const
 int
 ContactModel::pendingRequestCount() const
 {
+    if (!pimpl_) return 0;
     std::lock_guard<std::mutex> lk(pimpl_->contactsMtx_);
     int pendingRequestCount = 0;
     std::for_each(pimpl_->contacts.begin(), pimpl_->contacts.end(),
@@ -232,7 +233,7 @@ ContactModel::addContact(contact::Info contactInfo)
     // If passed contact is a banned contact, call the daemon to unban it
     auto it = std::find(pimpl_->bannedContacts.begin(), pimpl_->bannedContacts.end(), profile.uri);
     if (it != pimpl_->bannedContacts.end()) {
-        qDebug() << QString("Unban-ing contact %s").arg(profile.uri);
+        qDebug() << QString("Unban-ing contact %1").arg(profile.uri);
         ConfigurationManager::instance().addContact(owner.id, profile.uri);
         // bannedContacts will be updated in slotContactAdded
         return;
