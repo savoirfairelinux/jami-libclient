@@ -2152,6 +2152,7 @@ function setSenderImage(set_sender_image_object)
         var sender_contact_method = set_sender_image_object["sender_contact_method"].replace(/@/g, "_").replace(/\./g, "_"),
             sender_image = set_sender_image_object["sender_image"],
             contactUri = "sender_image_" + sender_contact_method,
+            sender_image_id = contactUri
             invite_sender_image_id = "invite_sender_image_" + sender_contact_method,
             currentSenderImage = document.getElementById(sender_image_id), // Remove the currently set sender image
             style, invite_style
