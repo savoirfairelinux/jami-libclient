@@ -1736,13 +1736,11 @@ function addOrUpdateMessage(message_object, new_message, insert_after = true, me
             messages_div.appendChild(message_div)
             computeSequencing(previousMessage, message_div, null, insert_after)
             if (previousMessage) {
-                previousMessage.classList.remove("last_message")
-                console.log(previousMessage)
                 if (previousMessage.id === "message_typing") {
                     previousMessage.parentNode.removeChild(previousMessage)
-                    console.log(previousMessage)
                     message_div.parentNode.appendChild(previousMessage)
                 } else {
+                    previousMessage.classList.remove("last_message")
                     message_div.classList.add("last_message")
                 }
             }
@@ -2151,7 +2149,7 @@ function setSenderImage(set_sender_image_object)
     if (use_qt) {
         var sender_contact_method = set_sender_image_object["sender_contact_method"].replace(/@/g, "_").replace(/\./g, "_"),
             sender_image = set_sender_image_object["sender_image"],
-            contactUri = "sender_image_" + sender_contact_method,
+            sender_image_id = "sender_image_" + sender_contact_method,
             invite_sender_image_id = "invite_sender_image_" + sender_contact_method,
             currentSenderImage = document.getElementById(sender_image_id), // Remove the currently set sender image
             style, invite_style
@@ -2192,14 +2190,11 @@ function setSenderImage(set_sender_image_object)
 function showTypingIndicator(contactUri, isTyping) {
 
     var message_div = messages.lastChild.querySelector("#message_typing")
-    if (!isTyping) {
-        if (message_div) {
-            message_div.style.display = 'none'
-        }
-    } else {
+    if (isTyping === 0) {
         if (message_div) {
             message_div.parentNode.removeChild(message_div)
         }
+    } else if (!message_div) {
         message_div = buildNewMessage({
             "id":"typing",
             "type":"text",
