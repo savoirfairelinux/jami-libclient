@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "84dee2dd_d5cef817",
+        "filename": "src/web-chatview/chatview.js",
+        "patchSetId": 2
+      },
+      "lineNbr": 2193,
+      "author": {
+        "id": 633
+      },
+      "writtenOn": "2020-03-11T20:27:04Z",
+      "side": 1,
+      "message": "on qt, js engine does not seems to recognize it,\nI will change it to \u003d\u003d\u003d",
+      "parentUuid": "6b5266be_ce5e0f13",
+      "range": {
+        "startLine": 2193,
+        "startChar": 4,
+        "endLine": 2193,
+        "endChar": 24
+      },
+      "revId": "70198a04e467e43545b7e4530a021a1342c93a55",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1bf6cb45_b00bd6f2",
         "filename": "src/web-chatview/chatview.js",
         "patchSetId": 2
@@ -45,6 +69,30 @@
       "revId": "70198a04e467e43545b7e4530a021a1342c93a55",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ab95c03e_13d14ce5",
+        "filename": "src/web-chatview/chatview.js",
+        "patchSetId": 2
+      },
+      "lineNbr": 2198,
+      "author": {
+        "id": 633
+      },
+      "writtenOn": "2020-03-11T20:27:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1bf6cb45_b00bd6f2",
+      "range": {
+        "startLine": 2197,
+        "startChar": 0,
+        "endLine": 2198,
+        "endChar": 27
+      },
+      "revId": "70198a04e467e43545b7e4530a021a1342c93a55",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
