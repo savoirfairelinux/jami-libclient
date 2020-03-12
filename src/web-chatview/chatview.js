@@ -2192,7 +2192,32 @@ function showTypingIndicator(contactUri, isTyping) {
     var message_div = messages.lastChild.querySelector("#message_typing")
     if (isTyping === 0) {
         if (message_div) {
+            var previousMessage = message_div.previousElementSibling
             message_div.parentNode.removeChild(message_div)
+
+            if (previousMessage) {
+                previousMessage.classList.add("last_message")
+
+                var previous_previous_message = previousMessage.previousElementSibling
+                if (previous_previous_message && previousMessage.className.indexOf("message_in") >= 0) {
+                    // check if previous_previous_message is a incoming message
+                    if (previous_previous_message.className.indexOf("message_in") >= 0) {
+                        // prepare to remove the time stamp
+                        var previous_previous_timestamp = previous_previous_message.querySelector(".timestamp")
+                        var previous_timestamp = previousMessage.querySelector(".timestamp")
+                        if (previous_previous_timestamp &&
+                            previous_previous_timestamp.className === previous_timestamp.className &&
+                            previous_previous_timestamp.innerHTML === previous_timestamp.innerHTML) {
+                            previous_previous_timestamp.parentNode.removeChild(previous_previous_timestamp)
+                            computeSequencing(previous_previous_message, previousMessage, null, true)
+                        } else {
+                            computeSequencing(null, previousMessage, null, true)
+                        }
+                    } else {
+                        computeSequencing(null, previousMessage, null, true)
+                    }
+                }
+            }
         }
     } else if (!message_div) {
         message_div = buildNewMessage({
@@ -2206,11 +2231,20 @@ function showTypingIndicator(contactUri, isTyping) {
 
         var previousMessage = messages.lastChild.lastChild
         messages.lastChild.appendChild(message_div)
-        computeSequencing(previousMessage, message_div, null, true)
+        // make it as a single message
+        computeSequencing(null, message_div, null, true)
         if (previousMessage) {
             previousMessage.classList.remove("last_message")
         }
         message_div.classList.add("last_message")
+
+        if (use_qt) {
+            // make indicator size the same as sender image
+            message_div.querySelector(".message_text").style.minHeight = "16px"
+            message_div.querySelector(".message_text").style.display = "flex"
+            message_div.querySelector(".message_text").style.alignItems = "center"
+        }
+
         let msg_text = message_div.querySelector(".message_text")
         msg_text.innerHTML = " \
                         <div class=\"typing-indicator\"> \
