@@ -238,3 +238,9 @@ pre {
     font-family: Verdana;
     color: #c0c0c0;
 }
+
+#typing_indicator_container {
+    display: none;
+    padding-bottom: 1.5em !important;
+    margin-top: 4px;
+}

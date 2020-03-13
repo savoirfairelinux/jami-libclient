@@ -2189,35 +2189,67 @@ function setSenderImage(set_sender_image_object)
 /* exported showTypingIndicator */
 function showTypingIndicator(contactUri, isTyping) {
 
-    var message_div = messages.lastChild.querySelector("#message_typing")
-    if (isTyping === 0) {
-        if (message_div) {
-            message_div.parentNode.removeChild(message_div)
-        }
-    } else if (!message_div) {
-        message_div = buildNewMessage({
-            "id":"typing",
-            "type":"text",
-            "text":"",
-            "direction":"in",
-            "delivery_status":"",
-            "sender_contact_method": contactUri
-        })
+    if (use_qt) {
+        var typing_indicator_container_div = document.getElementById("typing_indicator_container")
 
-        var previousMessage = messages.lastChild.lastChild
-        messages.lastChild.appendChild(message_div)
-        computeSequencing(previousMessage, message_div, null, true)
-        if (previousMessage) {
-            previousMessage.classList.remove("last_message")
+        if (isTyping === 0) {
+            typing_indicator_container_div.style.display = "none";
+        } else if (typing_indicator_container_div.style.display !== "block") {
+            typing_indicator_container_div.style.display = "block";
+            var message_div = typing_indicator_container_div.querySelector("#message_typing")
+
+            if (!message_div){
+                message_div = buildNewMessage({
+                    "id":"typing",
+                    "type":"text",
+                    "text":"",
+                    "direction":"in",
+                    "delivery_status":"",
+                    "sender_contact_method": contactUri
+                })
+                message_div.classList.add("single_message")
+                let msg_text = message_div.querySelector(".message_text")
+                msg_text.innerHTML = " \
+                                <div class=\"typing-indicator\"> \
+                                    <span></span> \
+                                    <span></span> \
+                                    <span></span> \
+                                </div>"
+                typing_indicator_container_div.appendChild(message_div)
+            }
         }
-        message_div.classList.add("last_message")
-        let msg_text = message_div.querySelector(".message_text")
-        msg_text.innerHTML = " \
-                        <div class=\"typing-indicator\"> \
-                            <span></span> \
-                            <span></span> \
-                            <span></span> \
-                        </div>"
+    } else {
+        var message_div = messages.lastChild.querySelector("#message_typing")
+
+        if (isTyping === 0) {
+            if (message_div) {
+                message_div.parentNode.removeChild(message_div)
+            }
+        } else if (!message_div) {
+            message_div = buildNewMessage({
+                "id":"typing",
+                "type":"text",
+                "text":"",
+                "direction":"in",
+                "delivery_status":"",
+                "sender_contact_method": contactUri
+            })
+
+            var previousMessage = messages.lastChild.lastChild
+            messages.lastChild.appendChild(message_div)
+            computeSequencing(previousMessage, message_div, null, true)
+            if (previousMessage) {
+                previousMessage.classList.remove("last_message")
+            }
+            message_div.classList.add("last_message")
+            let msg_text = message_div.querySelector(".message_text")
+            msg_text.innerHTML = " \
+                            <div class=\"typing-indicator\"> \
+                                <span></span> \
+                                <span></span> \
+                                <span></span> \
+                            </div>"
+        }
     }
     updateMesPos()
 }
