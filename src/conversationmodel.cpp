@@ -1888,7 +1888,7 @@ ConversationModelPimpl::slotUpdateInteractionStatus(const QString& accountId,
         newStatus = interaction::Status::TRANSFER_CANCELED;
         break;
     case DRing::Account::MessageStates::SENT:
-    case DRing::Account::MessageStates::READ:
+    case DRing::Account::MessageStates::DISPLAYED:
         newStatus = interaction::Status::SUCCESS;
         break;
     case DRing::Account::MessageStates::FAILURE:
