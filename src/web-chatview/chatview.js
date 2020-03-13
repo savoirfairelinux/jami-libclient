@@ -96,6 +96,11 @@ if (use_qt) {
     }
     new QWebChannel(qt.webChannelTransport, function (channel) {
         window.jsbridge = channel.objects.jsbridge
+
+        // connect to a signal
+        window.jsbridge.someSignal.connect(function() {
+            console.log("connection-established")
+        });
     })
 }
 
