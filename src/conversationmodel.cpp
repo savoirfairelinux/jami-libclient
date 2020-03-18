@@ -2192,7 +2192,7 @@ ConversationModelPimpl::slotTransferStatusAwaitingHost(long long dringId, datatr
                 return;
             }
             // If it's an accepted file type and less than 20 MB, accept transfer.
-            if (info.totalSize < 20 * 1024 * 1024 && info.displayName.contains(".")) {
+            if (info.totalSize < 20 * 1024 * 1024) {
                 acceptTransfer(convId, interactionId, info.displayName);
             }
         }
