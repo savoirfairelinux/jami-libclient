@@ -717,6 +717,10 @@ public Q_SLOTS: // METHODS
         DRing::setIsComposing(accountId.toStdString(), contactId.toStdString(), isComposing);
     }
 
+    bool setMessageDisplayed(const QString& accountId, const QString& contactId, const QString& messageId, int status) {
+        DRing::setMessageDisplayed(accountId.toStdString(), contactId.toStdString(), messageId.toStdString(), status);
+    }
+
 Q_SIGNALS: // SIGNALS
     void volumeChanged(const QString& device, double value);
     void accountsChanged();
