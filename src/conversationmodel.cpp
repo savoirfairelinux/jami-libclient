@@ -111,14 +111,16 @@ public:
                                 const std::time_t& duration = -1);
     /**
      * Add a new message from a peer in the database
-     * @param from the author uri
-     * @param body the content of the message
-     * @param timestamp the timestamp of the message
+     * @param from          the author uri
+     * @param body          the content of the message
+     * @param timestamp     the timestamp of the message
+     * @param daemonId      the daemon id
      * @return msgId generated (in db)
      */
     int addIncomingMessage(const QString& from,
                            const QString& body,
-                           const uint64_t& timestamp = 0);
+                           const uint64_t& timestamp = 0,
+                           const QString& daemonId = "");
     /**
      * Change the status of an interaction. Listen from callbacksHandler
      * @param accountId, account linked
@@ -1121,6 +1123,8 @@ ConversationModel::setInteractionRead(const QString& convId,
     }
     if (emitUpdated) {
         pimpl_->dirtyConversations = {true, true};
+        auto daemonId = storage::getDaemonIdByInteractionId(pimpl_->db, QString::number(interactionId));
+        ConfigurationManager::instance().setMessageDisplayed(owner.id, pimpl_->conversations[conversationIdx].participants.front(), daemonId, 3);
         storage::setInteractionRead(pimpl_->db, interactionId);
         emit interactionStatusUpdated(convId, interactionId, itCopy);
         emit pimpl_->behaviorController.newReadInteraction(owner.id, convId, interactionId);
@@ -1794,8 +1798,7 @@ ConversationModelPimpl::slotNewAccountMessage(const QString& accountId,
 
     for (const auto &payload : payloads.keys()) {
         if (payload.contains("text/plain")) {
-            auto dbId = addIncomingMessage(from, payloads.value(payload));
-            storage::addDaemonMsgId(db, QString::number(dbId), msgId);
+            addIncomingMessage(from, payloads.value(payload), 0, msgId);
         }
     }
 }
@@ -1826,7 +1829,8 @@ ConversationModelPimpl::slotIncomingCallMessage(const QString& callId, const QSt
 int
 ConversationModelPimpl::addIncomingMessage(const QString& from,
                                            const QString& body,
-                                           const uint64_t& timestamp)
+                                           const uint64_t& timestamp,
+                                           const QString& daemonId)
 {
     auto convIds = storage::getConversationsWithPeer(db, from);
     if (convIds.empty()) {
@@ -1836,6 +1840,9 @@ ConversationModelPimpl::addIncomingMessage(const QString& from,
                                   timestamp == 0 ? std::time(nullptr) : static_cast<time_t>(timestamp), 0,
                                   interaction::Type::TEXT, interaction::Status::SUCCESS, false};
     auto msgId = storage::addMessageToConversation(db, convIds[0], msg);
+    if (!daemonId.isEmpty()) {
+        storage::addDaemonMsgId(db, QString::number(msgId), daemonId);
+    }
     auto conversationIdx = indexOf(convIds[0]);
     // Add the conversation if not already here
     if (conversationIdx == -1) {
