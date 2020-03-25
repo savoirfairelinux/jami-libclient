@@ -159,8 +159,7 @@ QString URIPimpl::strip(const QString& uri, URI::SchemeType& schemeType, QString
 {
     if (uri.isEmpty())
         return {};
-
-    std::regex uri_regex = std::regex("[a-zA-Z][a-zA-Z0-9+.-]*:");
+    std::regex uri_regex = std::regex("(^sip:)|(^sips:)|(^ring:)");
     std::string uri_to_match = uri.toStdString();
     std::smatch match;
 

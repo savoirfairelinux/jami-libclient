@@ -362,7 +362,7 @@ ContactModel::searchContact(const QString& query)
     auto uri = URI(query);
 
     auto uriScheme = uri.schemeType();
-    if (uri.schemeType() == URI::SchemeType::NONE) {
+    if (uriScheme == URI::SchemeType::NONE) {
         // uri has no scheme, default to current account scheme
         if (owner.profileInfo.type == profile::Type::SIP) {
             uriScheme = URI::SchemeType::SIP;
@@ -371,7 +371,7 @@ ContactModel::searchContact(const QString& query)
         }
     }
 
-    if (uriScheme == URI::SchemeType::SIP && owner.profileInfo.type == profile::Type::SIP) {
+    if ((uriScheme == URI::SchemeType::SIP || uriScheme == URI::SchemeType::SIPS) && owner.profileInfo.type == profile::Type::SIP) {
         pimpl_->searchSipContact(uri);
     } else if (uriScheme == URI::SchemeType::RING && owner.profileInfo.type == profile::Type::RING) {
         pimpl_->searchRingContact(uri);
