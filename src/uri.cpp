@@ -159,8 +159,7 @@ QString URIPimpl::strip(const QString& uri, URI::SchemeType& schemeType, QString
 {
     if (uri.isEmpty())
         return {};
-
-    std::regex uri_regex = std::regex("[a-zA-Z][a-zA-Z0-9+.-]*:");
+    std::regex uri_regex = std::regex("(^sip:)|(^sips:)|(^ring:)|(^jami:)");
     std::string uri_to_match = uri.toStdString();
     std::smatch match;
 
@@ -172,11 +171,29 @@ QString URIPimpl::strip(const QString& uri, URI::SchemeType& schemeType, QString
 
     schemeType = URI::SchemeType::UNRECOGNIZED;
     auto it = std::find_if(schemeNames.begin(), schemeNames.end(), [&scheme] (auto& it) {
+        if (it.second == "ring:" && scheme == "jami:")
+            return true;
         return it.second == scheme;
     });
 
     if (it != URIPimpl::schemeNames.end())
         schemeType = it->first;
+    if (schemeType == URI::SchemeType::NONE) {
+        // no match, check if it includes x..x:..: format
+        std::regex uri_regex_unrecognized = std::regex("[a-zA-Z][a-zA-Z0-9+.-]*:");
+        std::string uri_to_match_unrecognized = uri_to_match;
+        std::smatch match_unrecognized;
+
+        if (std::regex_search(uri_to_match_unrecognized, match_unrecognized, uri_regex_unrecognized)) {
+            if (match_unrecognized.ready()) {
+                std::string scheme_unrecognized = match_unrecognized.str(0).c_str();
+                if (!scheme_unrecognized.empty()) {
+                    // match x..x:..: format
+                    schemeType = URI::SchemeType::UNRECOGNIZED;
+                }
+            }
+        }
+    }
 
     return uri.mid(scheme.size(), uri.size());
 }
