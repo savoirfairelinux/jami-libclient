@@ -362,16 +362,17 @@ ContactModel::searchContact(const QString& query)
     auto uri = URI(query);
 
     auto uriScheme = uri.schemeType();
-    if (uri.schemeType() == URI::SchemeType::NONE) {
-        // uri has no scheme, default to current account scheme
-        if (owner.profileInfo.type == profile::Type::SIP) {
-            uriScheme = URI::SchemeType::SIP;
-        } else if (owner.profileInfo.type == profile::Type::RING) {
+    if (static_cast<int>(uriScheme) > 2 && owner.profileInfo.type == profile::Type::SIP) {
+        // sip account do not care if schemeType is NONE, or UNRECOGNIZED (enum value > 2)
+        uriScheme = URI::SchemeType::SIP;
+    }
+    if (uriScheme == URI::SchemeType::NONE) {
+        if (owner.profileInfo.type == profile::Type::RING) {
             uriScheme = URI::SchemeType::RING;
         }
     }
 
-    if (uriScheme == URI::SchemeType::SIP && owner.profileInfo.type == profile::Type::SIP) {
+    if ((uriScheme == URI::SchemeType::SIP || uriScheme == URI::SchemeType::SIPS) && owner.profileInfo.type == profile::Type::SIP) {
         pimpl_->searchSipContact(uri);
     } else if (uriScheme == URI::SchemeType::RING && owner.profileInfo.type == profile::Type::RING) {
         pimpl_->searchRingContact(uri);
