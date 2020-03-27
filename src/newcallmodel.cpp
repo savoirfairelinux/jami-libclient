@@ -425,6 +425,7 @@ NewCallModel::joinCalls(const QString& callIdA, const QString& callIdB) const
         // Unpause conference if conference was not active
         CallManager::instance().unholdConference(conf);
         auto accountCall = call1.type == call::Type::CONFERENCE ? accountIdCall2 : accountIdCall1;
+
         bool joined = CallManager::instance().addParticipant(call, conf);
         if (!joined) {
             qWarning() << "Call: " << call << " couldn't join conference " << conf;
@@ -440,8 +441,13 @@ NewCallModel::joinCalls(const QString& callIdA, const QString& callIdB) const
             } catch (...) {}
         } else
             emit callAddedToConference(call, conf);
-    }
-    else {
+
+        // Remove from pendingConferences_
+        auto it = pimpl_->pendingConferences_.find(call);
+        if (it != pimpl_->pendingConferences_.end()) {
+            pimpl_->pendingConferences_.erase(call);
+        }
+    } else {
         CallManager::instance().joinParticipant(callIdA, callIdB);
         // NOTE: This will trigger slotConferenceCreated.
     }
@@ -617,8 +623,11 @@ NewCallModel::setCurrentCall(const QString& callId) const
         return;
     }
     for (const auto& confId : conferences) {
-        if (callId != confId)
-            CallManager::instance().holdConference(confId);
+        if (callId != confId) {
+            QStringList callList = CallManager::instance().getParticipantList(callId);
+            if (callList.indexOf(callId) == -1)
+                CallManager::instance().holdConference(confId);
+        }
     }
 }
 
@@ -728,7 +737,6 @@ NewCallModelPimpl::slotCallStateChanged(const QString& callId, const QString& st
         auto it = pendingConferences_.find(callId);
         if (it != pendingConferences_.end()) {
             linked.joinCalls(it->second, it->first);
-            pendingConferences_.erase(it);
         }
     }
 }
@@ -800,7 +808,13 @@ NewCallModelPimpl::slotConferenceCreated(const QString& confId)
     QStringList callList = CallManager::instance().getParticipantList(confId);
     foreach(const auto& call, callList) {
         emit linked.callAddedToConference(call, confId);
+        // Remove acll from pendingConferences_
+        auto it = pendingConferences_.find(call);
+        if (it != pendingConferences_.end()) {
+            pendingConferences_.erase(it);
+        }
     }
+
 }
 
 void
