@@ -103,6 +103,12 @@ public:
      */
     void updateAccounts();
 
+    /**
+     * Update accountInfo with details from daemon
+     * @param account       account to update
+     */
+    void updateAccountDetails(account::Info& account);
+
 public Q_SLOTS:
 
     /**
@@ -439,6 +445,32 @@ NewAccountModelPimpl::updateAccounts()
 }
 
 void
+NewAccountModelPimpl::updateAccountDetails(account::Info& accountInfo)
+{
+    // Fill account::Info struct with details from daemon
+    MapStringString details = ConfigurationManager::instance().getAccountDetails(accountInfo.id);
+    accountInfo.fromDetails(details);
+
+    // Fill account::Info::confProperties credentials
+    VectorMapStringString credGet = ConfigurationManager::instance().getCredentials(accountInfo.id);
+    VectorMapStringString credToStore;
+    for (auto const &i : credGet.toStdVector()) {
+        MapStringString credMap;
+        for (auto const &j : i.toStdMap()) {
+            credMap[j.first] = j.second;
+        }
+        credToStore.push_back(credMap);
+    }
+
+    accountInfo.confProperties.credentials.swap(credToStore);
+
+    MapStringString volatileDetails = ConfigurationManager::instance().getVolatileAccountDetails(accountInfo.id);
+    QString daemonStatus = volatileDetails[DRing::Account::ConfProperties::Registration::STATUS];
+    accountInfo.status = lrc::api::account::to_status(daemonStatus);
+}
+
+
+void
 NewAccountModelPimpl::slotAccountStatusChanged(const QString& accountID, const api::account::Status status)
 {
     if (status == api::account::Status::INVALID) {
@@ -460,8 +492,8 @@ NewAccountModelPimpl::slotAccountStatusChanged(const QString& accountID, const a
             // Detect when a new account is generated (keys are ready). During
             // the generation, a Ring account got the "INITIALIZING" status.
             // When keys are generated, the status will change.
-            accounts.erase(accountID);
-            addToAccounts(accountID);
+            // The account is already added and initialized. Just update details from daemon
+            updateAccountDetails(accountInfo);
             emit linked.accountAdded(accountID);
         } else if (!accountInfo.profileInfo.uri.isEmpty()) {
             accountInfo.status = status;
@@ -642,23 +674,7 @@ NewAccountModelPimpl::addToAccounts(const QString& accountId,
     account::Info& newAccInfo = (it.first)->second.first;
     newAccInfo.id = accountId;
     newAccInfo.profileInfo.avatar = authority::storage::getAccountAvatar(accountId);
-
-    // Fill account::Info struct with details from daemon
-    MapStringString details = ConfigurationManager::instance().getAccountDetails(accountId);
-    newAccInfo.fromDetails(details);
-
-    // Fill account::Info::confProperties credentials
-    VectorMapStringString credGet = ConfigurationManager::instance().getCredentials(accountId);
-    VectorMapStringString credToStore;
-    for (auto const &i : credGet.toStdVector()) {
-        MapStringString credMap;
-        for (auto const &j : i.toStdMap()) {
-            credMap[j.first] = j.second;
-        }
-        credToStore.push_back(credMap);
-    }
-
-    newAccInfo.confProperties.credentials.swap(credToStore);
+    updateAccountDetails(newAccInfo);
 
     // Init models for this account
     newAccInfo.accountModel = &linked;
@@ -669,9 +685,6 @@ NewAccountModelPimpl::addToAccounts(const QString& accountId,
     newAccInfo.deviceModel = std::make_unique<NewDeviceModel>(newAccInfo, callbacksHandler);
     newAccInfo.codecModel = std::make_unique<NewCodecModel>(newAccInfo, callbacksHandler);
 
-    MapStringString volatileDetails = ConfigurationManager::instance().getVolatileAccountDetails(accountId);
-    auto daemonStatus = volatileDetails[DRing::Account::ConfProperties::Registration::STATUS];
-    newAccInfo.status = lrc::api::account::to_status(daemonStatus);
 }
 
 void
