@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "60de642b_0ee422ee",
+        "filename": "src/uri.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2020-03-30T18:50:45Z",
+      "side": 1,
+      "message": "Why this is useful, we can be more generic",
+      "range": {
+        "startLine": 161,
+        "startChar": 18,
+        "endLine": 162,
+        "endChar": 67
+      },
+      "revId": "7fdeaf7a5c804e13338eb14aa31f3c5aeb7a383e",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    }
+  ]
+}
