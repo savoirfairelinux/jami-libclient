@@ -621,7 +621,7 @@ NewCallModel::setCurrentCall(const QString& callId) const
     }
     for (const auto& confId : conferences) {
         if (callId != confId) {
-            QStringList callList = CallManager::instance().getParticipantList(callId);
+            QStringList callList = CallManager::instance().getParticipantList(confId);
             if (callList.indexOf(callId) == -1)
                 CallManager::instance().holdConference(confId);
         }
