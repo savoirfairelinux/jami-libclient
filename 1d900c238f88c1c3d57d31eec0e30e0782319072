@@ -1,0 +1,8 @@
+Code-Review+1: Andreas Traczyk <andreas.traczyk@savoirfairelinux.com>
+Code-Review+2: Yang Wang <yang.wang@savoirfairelinux.com>
+Verified+1: Jenkins CI <jenkins@ring-packaging.cx>
+Submitted-by: Sébastien Blin <sebastien.blin@savoirfairelinux.com>
+Submitted-at: Tue, 31 Mar 2020 16:26:34 -0400
+Reviewed-on: https://review.jami.net/c/ring-lrc/+/13893
+Project: ring-lrc
+Branch: refs/heads/master
