@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "4b58b2ca_87333ec4",
+        "filename": "src/contactmodel.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 370,
+      "author": {
+        "id": 633
+      },
+      "writtenOn": "2020-03-31T19:52:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c0e2e863_1cc689a3",
+      "range": {
+        "startLine": 369,
+        "startChar": 4,
+        "endLine": 370,
+        "endChar": 12
+      },
+      "revId": "5dbc9b280607e923da2d9a313ff1f7f1b7aadeb0",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9672b7e4_6c89d71d",
         "filename": "src/contactmodel.cpp",
         "patchSetId": 2
@@ -36,6 +60,30 @@
       "writtenOn": "2020-03-31T19:04:51Z",
       "side": 1,
       "message": "else if",
+      "range": {
+        "startLine": 375,
+        "startChar": 4,
+        "endLine": 375,
+        "endChar": 6
+      },
+      "revId": "5dbc9b280607e923da2d9a313ff1f7f1b7aadeb0",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f699249e_99b54613",
+        "filename": "src/contactmodel.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 375,
+      "author": {
+        "id": 633
+      },
+      "writtenOn": "2020-03-31T19:52:43Z",
+      "side": 1,
+      "message": "I think here is fine,\nthe if loop previously is to assign uriScheme for some specical cases,\nbut here is the final check of uriScheme",
+      "parentUuid": "9672b7e4_6c89d71d",
       "range": {
         "startLine": 375,
         "startChar": 4,
