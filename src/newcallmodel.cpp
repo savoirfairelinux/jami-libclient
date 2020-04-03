@@ -714,10 +714,7 @@ NewCallModelPimpl::slotCallStateChanged(const QString& callId, const QString& st
     // NOTE: signal emission order matters, always emit CallStatusChanged before CallEnded
     emit linked.callStatusChanged(callId, code);
 
-    if (call->status == call::Status::OUTGOING_RINGING
-        && linked.owner.profileInfo.type != profile::Type::SIP) {
-        linked.setCurrentCall(callId);
-    } else if (call->status == call::Status::ENDED) {
+    if (call->status == call::Status::ENDED) {
         emit linked.callEnded(callId);
     } else if (call->status == call::Status::IN_PROGRESS) {
         if (previousStatus == call::Status::INCOMING_RINGING
