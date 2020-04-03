@@ -235,6 +235,9 @@ NewAccountModel::setAccountConfig(const QString& accountId,
     if (accountInfo.profileInfo.type == profile::Type::RING) {
         details[ConfProperties::USERNAME] = accountInfo.profileInfo.uri.prepend((accountInfo.profileInfo.type == profile::Type::RING) ? "ring:" : "");
     } else if (accountInfo.profileInfo.type == profile::Type::SIP) {
+        details[ConfProperties::PUBLISHED_ADDRESS] = confProperties.publishedAddress;
+        details[ConfProperties::PUBLISHED_PORT] = QString::number(confProperties.publishedPort);
+
         VectorMapStringString finalCred;
 
         MapStringString credentials;
