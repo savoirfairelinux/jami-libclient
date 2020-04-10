@@ -1124,7 +1124,9 @@ ConversationModel::setInteractionRead(const QString& convId,
     if (emitUpdated) {
         pimpl_->dirtyConversations = {true, true};
         auto daemonId = storage::getDaemonIdByInteractionId(pimpl_->db, QString::number(interactionId));
-        ConfigurationManager::instance().setMessageDisplayed(owner.id, pimpl_->conversations[conversationIdx].participants.front(), daemonId, 3);
+        if (owner.profileInfo.type != profile::Type::SIP) {
+            ConfigurationManager::instance().setMessageDisplayed(owner.id, pimpl_->conversations[conversationIdx].participants.front(), daemonId, 3);
+        }
         storage::setInteractionRead(pimpl_->db, interactionId);
         emit interactionStatusUpdated(convId, interactionId, itCopy);
         emit pimpl_->behaviorController.newReadInteraction(owner.id, convId, interactionId);
