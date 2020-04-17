@@ -204,6 +204,12 @@ public:
      */
     void retryInteraction(const QString& convId, const uint64_t& interactionId);
     /**
+     * @param convId
+     * @param interactionId
+     * @return whether the interaction is last displayed for the conversation
+     */
+    bool isLastDisplayed(const QString& convId, const uint64_t& interactionId);
+    /**
      * delete obsolete history from the database
      * @param days, number of days from today. Below this date, interactions will be deleted
      */
