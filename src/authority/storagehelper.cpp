@@ -420,6 +420,17 @@ getHistory(Database& db, api::conversation::Info& conversation)
                 });
             conversation.interactions.emplace(std::stoull(payloads[i].toStdString()), std::move(msg));
             conversation.lastMessageUid = std::stoull(payloads[i].toStdString());
+            if (status != api::interaction::Status::DISPLAYED ||
+                !payloads[i + 1].isEmpty()) {
+                continue;
+            }
+            auto lastReadInteraction = conversation.interactions
+                                       .find(conversation.lastDisplayedMessageUid);
+            auto timestamp = std::stoi(payloads[i + 3].toStdString());
+            if (lastReadInteraction == conversation.interactions.end() ||
+                lastReadInteraction->second.timestamp < timestamp) {
+                conversation.lastDisplayedMessageUid = std::stoull(payloads[i].toStdString());
+            }
         }
     }
 }
