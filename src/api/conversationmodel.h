@@ -204,6 +204,13 @@ public:
      */
     void retryInteraction(const QString& convId, const uint64_t& interactionId);
     /**
+     * @param convId
+     * @param interactionId
+     * @param participant uri
+     * @return whether the interaction is last displayed for the conversation
+     */
+    bool isLastDisplayed(const QString& convId, const uint64_t& interactionId, const QString participant);
+    /**
      * delete obsolete history from the database
      * @param days, number of days from today. Below this date, interactions will be deleted
      */
@@ -300,6 +307,15 @@ Q_SIGNALS:
      * @param isComposing   if contact is composing a message
      */
     void composingStatusChanged(const QString& uid, const QString& contactUri, bool isComposing) const;
+    /**
+     * Emitted when last displayed interaction changed
+     * @param uid of conversation
+     * @param participant URI
+     * @param previousUid uid of a previous displayed interaction
+     * @param newdUid uid of a new displayed interaction
+     */
+    void displayedInteractionChanged(const QString& uid, const QString& participantURI,
+                                     const uint64_t previousUid, const uint64_t newdUid) const;
 
 private:
     std::unique_ptr<ConversationModelPimpl> pimpl_;
