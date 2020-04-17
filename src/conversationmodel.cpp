@@ -999,6 +999,9 @@ ConversationModel::clearInteractionFromConversation(const QString& convId, const
 
     auto erased_keys = 0;
     bool lastInteractionUpdated = false;
+    bool updateDisplayedUid = false;
+    uint64_t newDisplayedUid = 0;
+    QString participantURI = "";
     {
         std::lock_guard<std::mutex> lk(pimpl_->interactionsLocks[convId]);
         try
@@ -1006,6 +1009,23 @@ ConversationModel::clearInteractionFromConversation(const QString& convId, const
             auto& conversation = pimpl_->conversations.at(conversationIdx);
             storage::clearInteractionFromConversation(pimpl_->db, convId, interactionId);
             erased_keys = conversation.interactions.erase(interactionId);
+            auto messageId = conversation.lastDisplayedMessageUid
+                             .find(conversation.participants.front());
+
+            if (messageId != conversation.lastDisplayedMessageUid.end() &&
+                messageId->second == interactionId) {
+                // Update lastDisplayedMessageUid
+                for (auto iter = conversation.interactions.find(interactionId); iter != conversation.interactions.end(); --iter) {
+                    if (isOutgoing(iter->second) && iter->first != interactionId) {
+                        newDisplayedUid = iter->first;
+                        break;
+                    }
+                }
+                updateDisplayedUid = true;
+                participantURI = conversation.participants.front();
+                conversation.lastDisplayedMessageUid
+                            .at(conversation.participants.front()) = newDisplayedUid;
+            }
 
             if (conversation.lastMessageUid == interactionId) {
                 // Update lastMessageUid
@@ -1019,6 +1039,9 @@ ConversationModel::clearInteractionFromConversation(const QString& convId, const
         } catch (const std::out_of_range& e) {
             qDebug() << "can't clear interaction from conversation: " << e.what();
         }
+    }
+    if (updateDisplayedUid) {
+        emit displayedInteractionChanged(convId, participantURI, interactionId, newDisplayedUid);
     }
     if (erased_keys > 0) {
         pimpl_->dirtyConversations.first = true;
@@ -1077,6 +1100,20 @@ ConversationModel::retryInteraction(const QString& convId, const uint64_t& inter
         // send file
         QFileInfo f(body);
         sendFile(convId, body, f.fileName());
+    }
+}
+
+bool
+ConversationModel::isLastDisplayed(const QString& convId, const uint64_t& interactionId, const QString participant)
+{
+    auto conversationIdx = pimpl_->indexOf(convId);
+    if (conversationIdx == -1)
+        return false;
+    try {
+        auto& conversation = pimpl_->conversations.at(conversationIdx);
+        return conversation.lastDisplayedMessageUid.find(participant)->second == interactionId;
+    } catch (const std::out_of_range& e) {
+        return false;
     }
 }
 
@@ -1901,11 +1938,13 @@ ConversationModelPimpl::slotUpdateInteractionStatus(const QString& accountId,
         newStatus = interaction::Status::TRANSFER_CANCELED;
         break;
     case DRing::Account::MessageStates::SENT:
-    case DRing::Account::MessageStates::DISPLAYED:
         newStatus = interaction::Status::SUCCESS;
         break;
     case DRing::Account::MessageStates::FAILURE:
         newStatus = interaction::Status::FAILURE;
+        break;
+    case DRing::Account::MessageStates::DISPLAYED:
+        newStatus = interaction::Status::DISPLAYED;
         break;
     case DRing::Account::MessageStates::UNKNOWN:
     default:
@@ -1925,15 +1964,33 @@ ConversationModelPimpl::slotUpdateInteractionStatus(const QString& accountId,
         auto conversationIdx = indexOf(convIds[0]);
         interaction::Info itCopy;
         bool emitUpdated = false;
+        bool updateDisplayedUid = false;
+        uint64_t oldDisplayedUid = 0;
         if (conversationIdx != -1) {
             std::lock_guard<std::mutex> lk(interactionsLocks[conversations[conversationIdx].uid]);
             auto& interactions = conversations[conversationIdx].interactions;
             auto it = interactions.find(msgId);
+            auto messageId = conversations[conversationIdx].lastDisplayedMessageUid.find(peer_uri);
             if (it != interactions.end()) {
                 it->second.status = newStatus;
+                if (messageId != conversations[conversationIdx].lastDisplayedMessageUid.end()) {
+                    auto lastDisplayedIt = interactions.find(messageId->second);
+                    bool interactionDisplayed = newStatus == interaction::Status::DISPLAYED
+                                                             && isOutgoing(it->second);
+                    bool interactionIsLast = lastDisplayedIt == interactions.end() ||
+                          lastDisplayedIt->second.timestamp < it->second.timestamp;
+                    updateDisplayedUid = interactionDisplayed && interactionIsLast;
+                    if (updateDisplayedUid) {
+                        oldDisplayedUid = messageId->second;
+                        conversations[conversationIdx].lastDisplayedMessageUid.at(peer_uri) = it->first;
+                    }
+                }
                 emitUpdated = true;
                 itCopy = it->second;
             }
+        }
+        if (updateDisplayedUid) {
+            emit linked.displayedInteractionChanged(convIds[0], peer_uri, oldDisplayedUid, msgId);
         }
         if (emitUpdated) {
             dirtyConversations = { true, true };
