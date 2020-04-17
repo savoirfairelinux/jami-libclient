@@ -1148,6 +1148,10 @@ ConversationModel::clearUnreadInteractions(const QString& convId) {
                           if (!it.second.isRead) {
                               emitUpdated = true;
                               it.second.isRead = true;
+                              if (owner.profileInfo.type != profile::Type::SIP) {
+                                auto daemonId = storage::getDaemonIdByInteractionId(pimpl_->db, QString::number(it.first));
+                                ConfigurationManager::instance().setMessageDisplayed(owner.id, pimpl_->conversations[conversationIdx].participants.front(), daemonId, 3);
+                              }
                               storage::setInteractionRead(pimpl_->db, it.first);
                           }
                       });
