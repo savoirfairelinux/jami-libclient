@@ -42,6 +42,7 @@ struct Info
     QString confId;
     std::map<uint64_t, interaction::Info> interactions;
     uint64_t lastMessageUid = 0;
+    uint64_t lastDisplayedMessageUid = 0;
     unsigned int unreadMessages = 0;
 };
 

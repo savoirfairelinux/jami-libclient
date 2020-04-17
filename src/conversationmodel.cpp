@@ -1007,6 +1007,18 @@ ConversationModel::clearInteractionFromConversation(const QString& convId, const
             storage::clearInteractionFromConversation(pimpl_->db, convId, interactionId);
             erased_keys = conversation.interactions.erase(interactionId);
 
+            if (conversation.lastDisplayedMessageUid == interactionId) {
+                // Update lastDisplayedMessageUid
+                auto newLastDisplayedId = 0;
+                for (auto iter = conversation.interactions.find(interactionId); iter != conversation.interactions.end(); --iter) {
+                    if (isOutgoing(iter->second) && iter->first != interactionId) {
+                        newLastDisplayedId = iter->first;
+                        break;
+                    }
+                }
+                conversation.lastDisplayedMessageUid = newLastDisplayedId;
+            }
+
             if (conversation.lastMessageUid == interactionId) {
                 // Update lastMessageUid
                 auto newLastId = 0;
@@ -1077,6 +1089,20 @@ ConversationModel::retryInteraction(const QString& convId, const uint64_t& inter
         // send file
         QFileInfo f(body);
         sendFile(convId, body, f.fileName());
+    }
+}
+
+bool
+ConversationModel::isLastDisplayed(const QString& convId, const uint64_t& interactionId)
+{
+    auto conversationIdx = pimpl_->indexOf(convId);
+    if (conversationIdx == -1)
+        return false;
+    try {
+        auto& conversation = pimpl_->conversations.at(conversationIdx);
+        return conversation.lastDisplayedMessageUid == interactionId;
+    } catch (const std::out_of_range& e) {
+        return false;
     }
 }
 
@@ -1901,11 +1927,13 @@ ConversationModelPimpl::slotUpdateInteractionStatus(const QString& accountId,
         newStatus = interaction::Status::TRANSFER_CANCELED;
         break;
     case DRing::Account::MessageStates::SENT:
-    case DRing::Account::MessageStates::DISPLAYED:
         newStatus = interaction::Status::SUCCESS;
         break;
     case DRing::Account::MessageStates::FAILURE:
         newStatus = interaction::Status::FAILURE;
+        break;
+    case DRing::Account::MessageStates::DISPLAYED:
+        newStatus = interaction::Status::DISPLAYED;
         break;
     case DRing::Account::MessageStates::UNKNOWN:
     default:
@@ -1929,8 +1957,18 @@ ConversationModelPimpl::slotUpdateInteractionStatus(const QString& accountId,
             std::lock_guard<std::mutex> lk(interactionsLocks[conversations[conversationIdx].uid]);
             auto& interactions = conversations[conversationIdx].interactions;
             auto it = interactions.find(msgId);
+            auto lastDisplayedIt = interactions
+                                  .find(conversations[conversationIdx]
+                                  .lastDisplayedMessageUid);
             if (it != interactions.end()) {
                 it->second.status = newStatus;
+                bool interactionDisplayed = newStatus == interaction::Status::DISPLAYED
+                && isOutgoing(it->second);
+                bool interactionIsLast = lastDisplayedIt == interactions.end() || lastDisplayedIt->second.timestamp < it->second.timestamp;
+                bool update = interactionDisplayed && interactionIsLast;
+                if (update) {
+                    conversations[conversationIdx].lastDisplayedMessageUid = it->first;
+                }
                 emitUpdated = true;
                 itCopy = it->second;
             }
