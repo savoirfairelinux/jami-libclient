@@ -80,6 +80,7 @@ enum class Status {
     SENDING,
     FAILURE,
     SUCCESS,
+    DISPLAYED,
     TRANSFER_CREATED,
     TRANSFER_ACCEPTED,
     TRANSFER_CANCELED,
@@ -105,6 +106,8 @@ to_string(const Status& status)
         return "FAILURE";
     case Status::SUCCESS:
         return "SUCCESS";
+    case Status::DISPLAYED:
+        return "DISPLAYED";
     case Status::TRANSFER_CREATED:
         return "TRANSFER_CREATED";
     case Status::TRANSFER_ACCEPTED:
@@ -143,6 +146,8 @@ to_status(const QString& status)
         return Status::FAILURE;
     else if (status == "SUCCESS")
         return Status::SUCCESS;
+    else if (status == "DISPLAYED")
+        return Status::DISPLAYED;
     else if (status == "TRANSFER_CREATED")
         return Status::TRANSFER_CREATED;
     else if (status == "TRANSFER_ACCEPTED")
