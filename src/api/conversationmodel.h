@@ -128,6 +128,11 @@ public:
      */
     void makePermanent(const QString& uid);
     /**
+     * Create a conversation
+     * @return the conversation id
+     */
+    std::string startConversation();
+    /**
      * Remove a conversation and the contact if it's a dialog
      * @param uid of the conversation
      * @param banned if we want to ban the contact.

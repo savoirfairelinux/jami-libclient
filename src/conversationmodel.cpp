@@ -570,6 +570,14 @@ ConversationModel::makePermanent(const QString& uid)
     pimpl_->sendContactRequest(conversation.participants.front());
 }
 
+std::string
+ConversationModel::startConversation()
+{
+    QString id = ConfigurationManager::instance().startConversation(owner.id);
+    // TODO VCard?
+    return id.toStdString();
+}
+
 void
 ConversationModel::selectConversation(const QString& uid) const
 {
