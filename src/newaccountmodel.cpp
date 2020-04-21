@@ -743,6 +743,30 @@ account::Info::fromDetails(const MapStringString& details)
     confProperties.deviceName                           = details[ConfProperties::RING_DEVICE_NAME];
     confProperties.publishedSameAsLocal                 = toBool(details[ConfProperties::PUBLISHED_SAMEAS_LOCAL]);
     confProperties.localPort                            = toInt(details[ConfProperties::LOCAL_PORT]);
+    auto rewrite_level = toStdString(details[ConfProperties::ALLOW_CONTACT_REWRITE]);
+    if (rewrite_level == "DISABLE") {
+        confProperties.allowContactRewrite              = account::AllowContactRewrite::DISABLE;
+    } else if (rewrite_level == "ALWAYS") {
+        confProperties.allowContactRewrite              = account::AllowContactRewrite::ALWAYS;
+    } else {
+        if (rewrite_level != "ENABLE") {
+            qDebug("fromDetails ALLOW_CONTACT_REWRITE: %s; illegal value\n",
+                    details[ConfProperties::ALLOW_CONTACT_REWRITE].toStdString().c_str());
+        }
+        confProperties.allowContactRewrite              = account::AllowContactRewrite::ENABLE;
+    }
+    auto rewrite_method = toStdString(details[ConfProperties::CONTACT_REWRITE_METHOD]);
+    if (rewrite_method == "UNREGISTER") {
+        confProperties.contactRewriteMethod             = account::ContactRewriteMethod::UNREGISTER;
+    } else {
+        if (rewrite_method != "UPDATE" &&
+            rewrite_method != "NO_UNREG")
+        {
+            qDebug("fromDetails CONTACT_REWRITE_METHOD: %s; illegal value\n",
+                    details[ConfProperties::CONTACT_REWRITE_METHOD].toStdString().c_str());
+        }
+        confProperties.contactRewriteMethod             = account::ContactRewriteMethod::NO_UNREG;
+    }
     confProperties.publishedPort                        = toInt(details[ConfProperties::PUBLISHED_PORT]);
     confProperties.publishedAddress                     = details[ConfProperties::PUBLISHED_ADDRESS];
     confProperties.userAgent                            = details[ConfProperties::USER_AGENT];
@@ -845,6 +869,27 @@ account::ConfProperties_t::toDetails() const
     details[ConfProperties::LOCAL_INTERFACE]            = this->localInterface;
     details[ConfProperties::PUBLISHED_SAMEAS_LOCAL]     = toQString(this->publishedSameAsLocal);
     details[ConfProperties::LOCAL_PORT]                 = toQString(this->localPort);
+    switch (this->allowContactRewrite) {
+    case account::AllowContactRewrite::DISABLE:
+        details[ConfProperties::ALLOW_CONTACT_REWRITE]  = "DISABLE";
+        break;
+    case account::AllowContactRewrite::ENABLE:
+        details[ConfProperties::ALLOW_CONTACT_REWRITE]  = "ENABLE";
+        break;
+    case account::AllowContactRewrite::ALWAYS:
+    default:
+        details[ConfProperties::ALLOW_CONTACT_REWRITE]  = "ALWAYS";
+        break;
+    }
+    switch (this->contactRewriteMethod) {
+    case account::ContactRewriteMethod::UNREGISTER:
+        details[ConfProperties::CONTACT_REWRITE_METHOD] = "UNREGISTER";
+        break;
+    case account::ContactRewriteMethod::NO_UNREG:
+    default:
+        details[ConfProperties::CONTACT_REWRITE_METHOD] = "NO_UNREG";
+        break;
+    }
     details[ConfProperties::PUBLISHED_PORT]             = toQString(this->publishedPort);
     details[ConfProperties::PUBLISHED_ADDRESS]          = this->publishedAddress;
     details[ConfProperties::USER_AGENT]                 = this->userAgent;
