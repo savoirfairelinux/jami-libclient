@@ -92,6 +92,12 @@ enum class TlsMethod {
     TLSv1_2
 };
 
+enum class ContactRewriteLevel {
+    DISABLE = 0,
+    ENABLE  = 1,
+    ALWAYS  = 2
+};
+
 struct ConfProperties_t {
     QString                                           mailbox;
     QString                                           dtmfType;
@@ -109,6 +115,7 @@ struct ConfProperties_t {
     QString                                           managerUsername;
     bool                                              publishedSameAsLocal;
     int                                               localPort;
+    ContactRewriteLevel                               contactRewriteLevel;
     int                                               publishedPort;
     QString                                           publishedAddress;
     QString                                           userAgent;

@@ -743,6 +743,16 @@ account::Info::fromDetails(const MapStringString& details)
     confProperties.deviceName                           = details[ConfProperties::RING_DEVICE_NAME];
     confProperties.publishedSameAsLocal                 = toBool(details[ConfProperties::PUBLISHED_SAMEAS_LOCAL]);
     confProperties.localPort                            = toInt(details[ConfProperties::LOCAL_PORT]);
+    auto level = toStdString(details[ConfProperties::CONTACT_REWRITE_LEVEL]);
+    if (level == "DISABLE") {
+        confProperties.contactRewriteLevel              = account::ContactRewriteLevel::DISABLE;
+    } else if (level == "ENABLE") {
+        confProperties.contactRewriteLevel              = account::ContactRewriteLevel::ENABLE;
+    } else if (level == "ALWAYS") {
+        confProperties.contactRewriteLevel              = account::ContactRewriteLevel::ALWAYS;
+    } else {
+        confProperties.contactRewriteLevel              = account::ContactRewriteLevel::ALWAYS;
+    }
     confProperties.publishedPort                        = toInt(details[ConfProperties::PUBLISHED_PORT]);
     confProperties.publishedAddress                     = details[ConfProperties::PUBLISHED_ADDRESS];
     confProperties.userAgent                            = details[ConfProperties::USER_AGENT];
@@ -845,6 +855,18 @@ account::ConfProperties_t::toDetails() const
     details[ConfProperties::LOCAL_INTERFACE]            = this->localInterface;
     details[ConfProperties::PUBLISHED_SAMEAS_LOCAL]     = toQString(this->publishedSameAsLocal);
     details[ConfProperties::LOCAL_PORT]                 = toQString(this->localPort);
+    switch (this->contactRewriteLevel) {
+    case account::ContactRewriteLevel::DISABLE:
+        details[ConfProperties::CONTACT_REWRITE_LEVEL]  = "DISABLE";
+        break;
+    case account::ContactRewriteLevel::ENABLE:
+        details[ConfProperties::CONTACT_REWRITE_LEVEL]  = "ENABLE";
+        break;
+    case account::ContactRewriteLevel::ALWAYS:
+    default:
+        details[ConfProperties::CONTACT_REWRITE_LEVEL]  = "ALWAYS";
+        break;
+    }
     details[ConfProperties::PUBLISHED_PORT]             = toQString(this->publishedPort);
     details[ConfProperties::PUBLISHED_ADDRESS]          = this->publishedAddress;
     details[ConfProperties::USER_AGENT]                 = this->userAgent;
