@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d6dd3a2d_c78f2c69",
+        "filename": "src/api/conversation.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2020-04-22T15:25:48Z",
+      "side": 1,
+      "message": "I am thinking about swarm chat. Imho, we should store lastDisplayedMessages as a Map. Where each participant uri is the key, and the value the messageId.\n\nThis needs that the participant should be passed for isLastDisplayed/displayedInteractionChanged",
+      "range": {
+        "startLine": 44,
+        "startChar": 32,
+        "endLine": 45,
+        "endChar": 41
+      },
+      "revId": "85881923f7497cb44d7f903b03f4f4f37e55b634",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "04666f18_bcdcad3f",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1003,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2020-04-22T15:25:48Z",
+      "side": 1,
+      "message": "should be initialized",
+      "range": {
+        "startLine": 1003,
+        "startChar": 26,
+        "endLine": 1003,
+        "endChar": 29
+      },
+      "revId": "85881923f7497cb44d7f903b03f4f4f37e55b634",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "93d6fb9e_ba86ab08",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1014,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2020-04-22T15:25:48Z",
+      "side": 1,
+      "message": "ununsed",
+      "range": {
+        "startLine": 1014,
+        "startChar": 17,
+        "endLine": 1014,
+        "endChar": 44
+      },
+      "revId": "85881923f7497cb44d7f903b03f4f4f37e55b634",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    }
+  ]
+}
