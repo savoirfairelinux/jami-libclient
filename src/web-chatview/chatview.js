@@ -2181,6 +2181,14 @@ function setSenderImage(set_sender_image_object)
     invite_style.id = invite_sender_image_id
     invite_style.innerHTML = "." + invite_sender_image_id + " {content: url(data:image/png;base64," + sender_image + ");height: 48px; width: 48px;}"
     document.head.appendChild(invite_style)
+
+    if (use_qt) {
+        var typing_indicator_container_div = document.getElementById("typing_indicator_container")
+        var sender_image_span = typing_indicator_container_div.querySelector(".sender_image_cell")
+        if (sender_image_span) {
+            sender_image_span.childNodes[0].setAttribute("class", "sender_image " + sender_image_id)
+        }
+    }
 }
 
 /**
