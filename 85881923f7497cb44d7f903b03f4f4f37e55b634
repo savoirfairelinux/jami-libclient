@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "fd30fca6_41359969",
+        "filename": "src/api/conversation.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 225
+      },
+      "writtenOn": "2020-04-22T17:31:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d6dd3a2d_c78f2c69",
+      "range": {
+        "startLine": 44,
+        "startChar": 32,
+        "endLine": 45,
+        "endChar": 41
+      },
+      "revId": "85881923f7497cb44d7f903b03f4f4f37e55b634",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "04666f18_bcdcad3f",
         "filename": "src/conversationmodel.cpp",
         "patchSetId": 4
@@ -48,6 +72,30 @@
     },
     {
       "key": {
+        "uuid": "04a1f37e_1c714984",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1003,
+      "author": {
+        "id": 225
+      },
+      "writtenOn": "2020-04-22T17:31:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "04666f18_bcdcad3f",
+      "range": {
+        "startLine": 1003,
+        "startChar": 26,
+        "endLine": 1003,
+        "endChar": 29
+      },
+      "revId": "85881923f7497cb44d7f903b03f4f4f37e55b634",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "93d6fb9e_ba86ab08",
         "filename": "src/conversationmodel.cpp",
         "patchSetId": 4
@@ -68,6 +116,30 @@
       "revId": "85881923f7497cb44d7f903b03f4f4f37e55b634",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a730bb4c_7101bd47",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1014,
+      "author": {
+        "id": 225
+      },
+      "writtenOn": "2020-04-22T17:31:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "93d6fb9e_ba86ab08",
+      "range": {
+        "startLine": 1014,
+        "startChar": 17,
+        "endLine": 1014,
+        "endChar": 44
+      },
+      "revId": "85881923f7497cb44d7f903b03f4f4f37e55b634",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
