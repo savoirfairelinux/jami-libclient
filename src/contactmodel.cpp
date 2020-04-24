@@ -615,12 +615,16 @@ ContactModelPimpl::slotNewBuddySubscription(const QString& contactUri, bool stat
 void
 ContactModelPimpl::slotContactAdded(const QString& accountId, const QString& contactUri, bool confirmed)
 {
-    Q_UNUSED(confirmed)
     if (accountId != linked.owner.id) return;
     auto contact = contacts.find(contactUri);
+    auto oldPresence = contact->isPresent;
 
     if (contact->profileInfo.type == profile::Type::PENDING) {
         emit behaviorController.trustRequestTreated(linked.owner.id, contactUri);
+    } else if (contact->profileInfo.type == profile::Type::RING && !contact->isBanned && confirmed) {
+        // This means that the peer accepted the trust request. We don't need to re-add the contact
+        // a second time (and this reset the presence to false).
+        return;
     }
 
     bool isBanned = false;
