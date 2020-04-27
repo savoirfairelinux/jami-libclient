@@ -74,6 +74,11 @@ public:
      */
     QString downloadDirectory;
 
+    /**
+     *  Creates APPDATA/received and return the path
+     */
+    static QString createDefaultDirectory();
+
 Q_SIGNALS:
     /**
      * Connect this signal to know when a data transfer is incoming.

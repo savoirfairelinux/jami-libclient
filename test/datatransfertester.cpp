@@ -22,7 +22,7 @@
 #include <algorithm>
 
 // Qt
-#include <QString>
+#include <QString>#
 #include "utils/waitforsignalhelper.h"
 
 // Lrc
