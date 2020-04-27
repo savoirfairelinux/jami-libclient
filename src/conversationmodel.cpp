@@ -2157,9 +2157,10 @@ ConversationModel::getNumberOfUnreadMessagesFor(const QString& convUid)
 }
 
 bool
-ConversationModelPimpl::usefulDataFromDataTransfer(long long dringId, const datatransfer::Info&,
+ConversationModelPimpl::usefulDataFromDataTransfer(long long dringId, const datatransfer::Info& info,
                                                    int& interactionId, QString& convId)
 {
+    if (info.accountId != linked.owner.id) return false;
     try {
         interactionId = lrc.getDataTransferModel().getInteractionIdFromDringId(dringId);
     } catch (const std::out_of_range& e) {
@@ -2254,16 +2255,19 @@ ConversationModelPimpl::slotTransferStatusAwaitingHost(long long dringId, datatr
             dirtyConversations = {true, true};
             emit linked.interactionStatusUpdated(convId, interactionId, itCopy);
             // Only accept if contact is added
-            try {
-                auto contactUri = conversations[conversationIdx].participants.front();
-                auto contactInfo = linked.owner.contactModel->getContact(contactUri);
-                if (contactInfo.profileInfo.type != profile::Type::RING) return;
-            } catch (...) {
-                return;
+            if (!lrc.getDataTransferModel().acceptFromUnstrusted) {
+                try {
+                    auto contactUri = conversations[conversationIdx].participants.front();
+                    auto contactInfo = linked.owner.contactModel->getContact(contactUri);
+                    if (contactInfo.profileInfo.type == profile::Type::PENDING) return;
+                } catch (...) {
+                    return;
+                }
             }
             // If it's an accepted file type and less than 20 MB, accept transfer.
-            if (info.totalSize < 20 * 1024 * 1024) {
-                acceptTransfer(convId, interactionId, info.displayName);
+            if (lrc.getDataTransferModel().automaticAcceptTransfer) {
+                if (lrc.getDataTransferModel().acceptBehindMb == 0 || info.totalSize < lrc.getDataTransferModel().acceptBehindMb * 1024 * 1024)
+                    acceptTransfer(convId, interactionId, info.displayName);
             }
         }
     }
