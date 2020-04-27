@@ -31,8 +31,9 @@
 #include <type_traits>
 
 // Qt
-#include <QUuid>
 #include <QFileInfo>
+#include <QtCore/QStandardPaths>
+#include <QUuid>
 
 namespace lrc { namespace api {
 
@@ -186,6 +187,16 @@ long long
 DataTransferModel::getDringIdFromInteractionId(int interactionId)
 {
     return pimpl_->lrc2dringIdMap.at(interactionId);
+}
+
+QString
+DataTransferModel::createDefaultDirectory()
+{
+    auto defaultDirectory = QStandardPaths::writableLocation(QStandardPaths::DownloadLocation) + "/Jami";
+    QDir dir(defaultDirectory);
+    if (!dir.exists())
+        dir.mkpath(".");
+    return defaultDirectory;
 }
 
 }} // namespace lrc::api
