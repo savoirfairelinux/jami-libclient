@@ -310,9 +310,17 @@ SET( libringclient_LIB_SRCS
   src/pixmapmanipulatordefault.cpp
   src/dbuserrorhandlerdefault.cpp
 
+  # smartlist
+  src/smartlist.cpp
+  src/collections/searchResultList.cpp
+  src/collections/peerDiscovery.cpp
+  src/collections/conversationList.cpp
+  src/collections/trustRequestList.cpp
+
   #Other
   src/avmodel.cpp
   src/pluginmodel.cpp
+  src/collection.cpp
   src/namedirectory.cpp
   src/smartinfohub.cpp
 )
@@ -331,6 +339,13 @@ SET( libringclient_LIB_HDRS
 )
 
 SET(libringclient_api_LIB_HDRS
+  src/api/collection.h
+  src/api/element.h
+  src/api/smartlist.h
+  src/api/collections/searchResultList.h
+  src/api/collections/peerDiscovery.h
+  src/api/collections/conversationList.h
+  src/api/collections/trustRequestList.h
   src/api/interaction.h
   src/api/conversation.h
   src/api/contact.h

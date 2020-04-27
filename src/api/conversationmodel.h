@@ -45,6 +45,7 @@ namespace account { struct Info; }
 namespace interaction { struct Info; }
 
 class Lrc;
+class SmartList;
 class BehaviorController;
 class NewAccountModel;
 
