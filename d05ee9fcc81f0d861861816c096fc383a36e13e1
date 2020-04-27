@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "63ddd346_ed11a24e",
+        "filename": "src/api/element.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2020-04-27T16:24:37Z",
+      "side": 1,
+      "message": "not in the right patch ?",
+      "range": {
+        "startLine": 34,
+        "startChar": 1,
+        "endLine": 34,
+        "endChar": 6
+      },
+      "revId": "d05ee9fcc81f0d861861816c096fc383a36e13e1",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0c822979_63043a0e",
+        "filename": "src/api/smartlist.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2020-04-27T16:24:37Z",
+      "side": 1,
+      "message": "not in the right patch ?",
+      "revId": "d05ee9fcc81f0d861861816c096fc383a36e13e1",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e86ea46d_9be8ba79",
+        "filename": "test/datatransfertester.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2020-04-27T16:24:37Z",
+      "side": 1,
+      "message": "typo",
+      "range": {
+        "startLine": 25,
+        "startChar": 18,
+        "endLine": 25,
+        "endChar": 19
+      },
+      "revId": "d05ee9fcc81f0d861861816c096fc383a36e13e1",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    }
+  ]
+}
