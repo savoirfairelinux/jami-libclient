@@ -18,6 +18,7 @@
 
 // LRC
 #include "api/datatransfermodel.h"
+#include "authority/storagehelper.h"
 
 // Dbus
 #include "dbus/configurationmanager.h"
@@ -186,6 +187,16 @@ long long
 DataTransferModel::getDringIdFromInteractionId(int interactionId)
 {
     return pimpl_->lrc2dringIdMap.at(interactionId);
+}
+
+QString
+DataTransferModel::createDefaultDirectory()
+{
+    auto defaultDirectory = authority::storage::getPath() + "received";
+    QDir dir(defaultDirectory);
+    if (!dir.exists())
+        dir.mkpath(".");
+    return defaultDirectory;
 }
 
 }} // namespace lrc::api
