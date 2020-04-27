@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "16cc93cf_7b7aac7a",
+        "filename": "src/datatransfermodel.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 199,
+      "author": {
+        "id": 225
+      },
+      "writtenOn": "2020-04-27T22:21:31Z",
+      "side": 1,
+      "message": "should we handle mkpath fails?",
+      "revId": "c5e5eb0ff28a65619a70cd8264deec2b766f10d2",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    }
+  ]
+}
