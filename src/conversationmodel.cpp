@@ -30,6 +30,7 @@
 #include "api/call.h"
 #include "api/datatransfer.h"
 #include "api/datatransfermodel.h"
+#include "api/smartlist.h"
 #include "callbackshandler.h"
 #include "authority/storagehelper.h"
 #include "uri.h"
@@ -175,6 +176,8 @@ public:
     profile::Type customTypeFilter;
     std::pair<bool, bool> dirtyConversations {true, true}; ///< true if filteredConversations/customFilteredConversations must be regenerated
     std::map<QString, std::mutex> interactionsLocks; ///< {convId, mutex}
+
+    std::unique_ptr<SmartList> smartList_;
 
 public Q_SLOTS:
     /**
@@ -1212,6 +1215,7 @@ ConversationModelPimpl::ConversationModelPimpl(const ConversationModel& linked,
 , typeFilter(profile::Type::INVALID)
 , customTypeFilter(profile::Type::INVALID)
 , behaviorController(behaviorController)
+, smartList_(std::make_unique<SmartList>(linked.owner.id))
 {
     initConversations();
 
