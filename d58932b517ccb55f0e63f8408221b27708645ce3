@@ -22,6 +22,30 @@
       "revId": "d58932b517ccb55f0e63f8408221b27708645ce3",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fd85359a_7df9074d",
+        "filename": "src/authority/storagehelper.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 225
+      },
+      "writtenOn": "2020-04-29T19:02:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0c719ad1_e5c99658",
+      "range": {
+        "startLine": 158,
+        "startChar": 0,
+        "endLine": 160,
+        "endChar": 6
+      },
+      "revId": "d58932b517ccb55f0e63f8408221b27708645ce3",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
