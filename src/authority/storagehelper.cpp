@@ -155,6 +155,9 @@ compressedAvatar(const QString& image)
     // for a QGuiApplication for QFontDatabase
     auto ret = qimage.loadFromData(QByteArray::fromBase64(image.toUtf8()), "JPEG");
     if (!ret) ret = qimage.loadFromData(QByteArray::fromBase64(image.toUtf8()), "PNG");
+#ifdef ENABLE_LIBWRAP && !ret
+    ret = qimage.loadFromData(QByteArray::fromBase64(image.toUtf8()), 0);
+#endif
     if (!ret) {
         qDebug() << "vCard image loading failed";
         return image;
