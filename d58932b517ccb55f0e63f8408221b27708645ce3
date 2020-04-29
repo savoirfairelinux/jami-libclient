@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "0c719ad1_e5c99658",
+        "filename": "src/authority/storagehelper.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2020-04-29T18:48:04Z",
+      "side": 1,
+      "message": "#ifdef ENABLE_LIBWRAP\n    auto ret \u003d qimage.loadFromData(QByteArray::fromBase64(image.toUtf8()));\n#else\n    // Avoid to use all formats. Some seems bugguy, like libpbf, asking\n    // for a QGuiApplication for QFontDatabase\n    auto ret \u003d qimage.loadFromData(QByteArray::fromBase64(image.toUtf8()), \"JPEG\");\n    if (!ret) ret \u003d qimage.loadFromData(QByteArray::fromBase64(image.toUtf8()), \"PNG\");\n#endif",
+      "range": {
+        "startLine": 158,
+        "startChar": 0,
+        "endLine": 160,
+        "endChar": 6
+      },
+      "revId": "d58932b517ccb55f0e63f8408221b27708645ce3",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    }
+  ]
+}
