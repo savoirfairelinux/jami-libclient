@@ -1,5 +1,5 @@
 /****************************************************************************
- *    Copyright (C) 2017-2020 Savoir-faire Linux Inc.                             *
+ *    Copyright (C) 2017-2020 Savoir-faire Linux Inc.                       *
  *   Author: Nicolas Jäger <nicolas.jager@savoirfairelinux.com>             *
  *   Author: Sébastien Blin <sebastien.blin@savoirfairelinux.com>           *
  *                                                                          *
@@ -42,12 +42,19 @@ class PeerDiscoveryModel;
 
 namespace account
 {
+#if QT_VERSION >= QT_VERSION_CHECK(5, 8, 0)
+Q_NAMESPACE
+Q_CLASSINFO("RegisterEnumClassesUnscoped", "false")
+#endif
 
 enum class Type {
     INVALID,
     RING,
     SIP
 };
+#if QT_VERSION >= QT_VERSION_CHECK(5, 8, 0)
+Q_ENUM_NS(Type)
+#endif
 
 #pragma push_macro("REGISTERED")
 #undef REGISTERED
@@ -60,6 +67,9 @@ enum class Status {
     TRYING,
     REGISTERED
 };
+#if QT_VERSION >= QT_VERSION_CHECK(5, 8, 0)
+Q_ENUM_NS(Status)
+#endif
 
 static inline account::Status
 to_status(const QString& type)
@@ -84,6 +94,9 @@ enum class KeyExchangeProtocol {
     NONE,
     SDES
 };
+#if QT_VERSION >= QT_VERSION_CHECK(5, 8, 0)
+Q_ENUM_NS(KeyExchangeProtocol)
+#endif
 
 enum class TlsMethod {
     DEFAULT,
@@ -91,6 +104,9 @@ enum class TlsMethod {
     TLSv1_1,
     TLSv1_2
 };
+#if QT_VERSION >= QT_VERSION_CHECK(5, 8, 0)
+Q_ENUM_NS(TlsMethod)
+#endif
 
 struct ConfProperties_t {
     QString                                           mailbox;
@@ -201,6 +217,9 @@ enum class ExportOnRingStatus {
     NETWORK_ERROR = 2,
     INVALID
 };
+#if QT_VERSION >= QT_VERSION_CHECK(5, 8, 0)
+Q_ENUM_NS(ExportOnRingStatus)
+#endif
 
 enum class RegisterNameStatus {
     SUCCESS = 0,
@@ -210,6 +229,9 @@ enum class RegisterNameStatus {
     NETWORK_ERROR = 4,
     INVALID
 };
+#if QT_VERSION >= QT_VERSION_CHECK(5, 8, 0)
+Q_ENUM_NS(RegisterNameStatus)
+#endif
 
 enum class LookupStatus {
     SUCCESS = 0,
@@ -218,6 +240,9 @@ enum class LookupStatus {
     ERROR = 3,
     INVALID
 };
+#if QT_VERSION >= QT_VERSION_CHECK(5, 8, 0)
+Q_ENUM_NS(LookupStatus)
+#endif
 
 struct Info
 {
