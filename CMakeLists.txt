@@ -511,7 +511,7 @@ ENDIF()
 
 IF(NOT ${ENABLE_STATIC} MATCHES false)
     message(STATUS "Configuring as static lib")
-    add_library( ringclient_static  STATIC ${libringclient_LIB_SRCS} ${LIB_HEADER_MOC} )
+    add_library( ringclient_static  STATIC ${libringclient_LIB_SRCS} ${libringclient_api_LIB_HDRS} ${LIB_HEADER_MOC} )
     target_link_libraries(ringclient_static Qt5::Core)
     target_link_libraries(ringclient_static Qt5::Gui)
     target_link_libraries( ringclient_static
