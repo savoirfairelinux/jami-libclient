@@ -28,6 +28,10 @@
 namespace lrc { namespace api {
 
 namespace datatransfer {
+#if QT_VERSION >= QT_VERSION_CHECK(5, 8, 0)
+Q_NAMESPACE
+Q_CLASSINFO("RegisterEnumClassesUnscoped", "false")
+#endif
 
 enum class Status {
     on_connection, // outgoing tx: wait for connection/acceptance, incoming tx: wait for local acceptance
@@ -41,6 +45,9 @@ enum class Status {
     unsupported, // error: unable to do the transfer (generic error)
     INVALID
 };
+#if QT_VERSION >= QT_VERSION_CHECK(5, 8, 0)
+Q_ENUM_NS(Status)
+#endif
 
 static inline const QString
 to_string(const Status& status)
