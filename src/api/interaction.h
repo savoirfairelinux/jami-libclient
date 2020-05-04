@@ -30,6 +30,10 @@ namespace api
 
 namespace interaction
 {
+#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
+Q_NAMESPACE
+Q_CLASSINFO("RegisterEnumClassesUnscoped", "false")
+#endif
 
 enum class Type {
     INVALID,
@@ -39,6 +43,9 @@ enum class Type {
     DATA_TRANSFER,
     COUNT__
 };
+#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
+Q_ENUM_NS(Type)
+#endif
 
 static inline const QString
 to_string(const Type& type)
@@ -93,6 +100,9 @@ enum class Status {
     TRANSFER_FINISHED,
     COUNT__
 };
+#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
+Q_ENUM_NS(Status)
+#endif
 
 static inline const QString
 to_string(const Status& status)
