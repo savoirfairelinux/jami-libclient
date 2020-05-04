@@ -34,6 +34,8 @@ namespace api
 
 namespace call
 {
+Q_NAMESPACE
+Q_CLASSINFO("RegisterEnumClassesUnscoped", "false")
 
 enum class Status {
     INVALID,
@@ -50,6 +52,7 @@ enum class Status {
     TERMINATING,
     CONNECTED
 };
+Q_ENUM_NS(Status)
 
 static inline QString
 to_string(const call::Status& status)
@@ -124,6 +127,7 @@ enum class Type {
     DIALOG,
     CONFERENCE
 };
+Q_ENUM_NS(Type)
 
 struct Info
 {

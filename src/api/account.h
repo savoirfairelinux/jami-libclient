@@ -1,5 +1,5 @@
 /****************************************************************************
- *    Copyright (C) 2017-2020 Savoir-faire Linux Inc.                             *
+ *    Copyright (C) 2017-2020 Savoir-faire Linux Inc.                       *
  *   Author: Nicolas Jäger <nicolas.jager@savoirfairelinux.com>             *
  *   Author: Sébastien Blin <sebastien.blin@savoirfairelinux.com>           *
  *                                                                          *
@@ -42,12 +42,15 @@ class PeerDiscoveryModel;
 
 namespace account
 {
+Q_NAMESPACE
+Q_CLASSINFO("RegisterEnumClassesUnscoped", "false")
 
 enum class Type {
     INVALID,
     RING,
     SIP
 };
+Q_ENUM_NS(Type)
 
 #pragma push_macro("REGISTERED")
 #undef REGISTERED
@@ -60,6 +63,7 @@ enum class Status {
     TRYING,
     REGISTERED
 };
+Q_ENUM_NS(Status)
 
 static inline account::Status
 to_status(const QString& type)
@@ -84,6 +88,7 @@ enum class KeyExchangeProtocol {
     NONE,
     SDES
 };
+Q_ENUM_NS(KeyExchangeProtocol)
 
 enum class TlsMethod {
     DEFAULT,
@@ -91,6 +96,7 @@ enum class TlsMethod {
     TLSv1_1,
     TLSv1_2
 };
+Q_ENUM_NS(TlsMethod)
 
 struct ConfProperties_t {
     QString                                           mailbox;
@@ -200,6 +206,7 @@ enum class ExportOnRingStatus {
     NETWORK_ERROR = 2,
     INVALID
 };
+Q_ENUM_NS(ExportOnRingStatus)
 
 enum class RegisterNameStatus {
     SUCCESS = 0,
@@ -209,6 +216,7 @@ enum class RegisterNameStatus {
     NETWORK_ERROR = 4,
     INVALID
 };
+Q_ENUM_NS(RegisterNameStatus)
 
 enum class LookupStatus {
     SUCCESS = 0,
@@ -217,6 +225,7 @@ enum class LookupStatus {
     ERROR = 3,
     INVALID
 };
+Q_ENUM_NS(LookupStatus)
 
 struct Info
 {

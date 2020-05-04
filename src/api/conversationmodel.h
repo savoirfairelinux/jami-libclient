@@ -40,6 +40,8 @@ class Database;
 
 namespace api
 {
+Q_NAMESPACE
+Q_CLASSINFO("RegisterEnumClassesUnscoped", "false")
 
 namespace account { struct Info; }
 namespace interaction { struct Info; }
@@ -52,6 +54,7 @@ enum class ConferenceableItem {
     CALL,
     CONTACT
 };
+Q_ENUM_NS(ConferenceableItem)
 
 struct AccountConversation
 {
