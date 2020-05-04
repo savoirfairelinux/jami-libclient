@@ -26,6 +26,7 @@ class Account;
 class LIB_EXPORT NameDirectory : public QObject
 {
     Q_OBJECT
+    Q_CLASSINFO("RegisterEnumClassesUnscoped", "false")
 public:
 
     //Register name status
@@ -34,18 +35,20 @@ public:
         WRONG_PASSWORD = 1,
         INVALID_NAME = 2,
         ALREADY_TAKEN = 3,
-        NETWORK_ERROR = 4
+        NETWORK_ERROR = 4,
+        INVALID
     };
-    Q_ENUMS(RegisterNameStatus)
+    Q_ENUM(RegisterNameStatus)
 
     //Lookup name status
     enum class LookupStatus {
         SUCCESS = 0,
         INVALID_NAME = 1,
         NOT_FOUND = 2,
-        ERROR = 3
+        ERROR = 3,
+        INVALID
     };
-    Q_ENUMS(LookupStatus)
+    Q_ENUM(LookupStatus)
 
     //Singleton
     static NameDirectory& instance();

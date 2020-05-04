@@ -101,7 +101,7 @@ public:
      * @param password
      * @return if the file is exported with success
      */
-    bool exportToFile(const QString& accountId, const QString& path, const QString& password = {}) const;
+    Q_INVOKABLE bool exportToFile(const QString& accountId, const QString& path, const QString& password = {}) const;
     /**
      * Call exportOnRing from the daemon
      * @param accountId
