@@ -1,5 +1,5 @@
 /****************************************************************************
- *    Copyright (C) 2018-2020 Savoir-faire Linux Inc.                                  *
+ *    Copyright (C) 2018-2020 Savoir-faire Linux Inc.                       *
  *   Author: Sébastien Blin <sebastien.blin@savoirfairelinux.com>           *
  *                                                                          *
  *   This library is free software; you can redistribute it and/or          *
@@ -45,6 +45,8 @@ namespace api
 
 namespace video
 {
+Q_NAMESPACE
+Q_CLASSINFO("RegisterEnumClassesUnscoped", "false")
 
 constexpr static const char PREVIEW_RENDERER_ID[] = "local";
 
@@ -71,13 +73,14 @@ struct Frame {
    unsigned int         width   { 0       };
 };
 
-enum DeviceType
+enum class DeviceType
 {
     CAMERA,
     DISPLAY,
     FILE,
     INVALID
 };
+Q_ENUM_NS(DeviceType)
 
 /**
  * This class describes the current rendered device
@@ -85,7 +88,7 @@ enum DeviceType
 struct RenderedDevice
 {
     QString name;
-    DeviceType type = INVALID;
+    DeviceType type = DeviceType::INVALID;
 };
 
 /**
