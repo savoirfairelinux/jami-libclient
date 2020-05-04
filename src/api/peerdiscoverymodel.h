@@ -37,6 +37,8 @@ class PeerDiscoveryModelPimpl;
 
 namespace api
 {
+Q_NAMESPACE
+Q_CLASSINFO("RegisterEnumClassesUnscoped", "false")
 
 struct PeerContact
 {
@@ -49,6 +51,7 @@ enum class PeerModelChanged
     INSERT,
     REMOVE
 };
+Q_ENUM_NS(PeerModelChanged)
 
 /**
   *  @brief Class that manages local peer discovery info
