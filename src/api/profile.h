@@ -18,6 +18,7 @@
  ***************************************************************************/
 #pragma once
 
+#include <QObject>
 #include <QString>
 
 namespace lrc
@@ -28,6 +29,10 @@ namespace api
 
 namespace profile
 {
+#if QT_VERSION >= QT_VERSION_CHECK(5, 8, 0)
+Q_NAMESPACE
+Q_CLASSINFO("RegisterEnumClassesUnscoped", "false")
+#endif
 
 enum class Type {
     INVALID,
@@ -37,6 +42,9 @@ enum class Type {
     TEMPORARY,
     COUNT__
 };
+#if QT_VERSION >= QT_VERSION_CHECK(5, 8, 0)
+Q_ENUM_NS(Type)
+#endif
 
 static inline const QString
 to_string(const Type& type)

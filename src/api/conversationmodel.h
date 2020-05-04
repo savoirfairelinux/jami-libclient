@@ -40,6 +40,10 @@ class Database;
 
 namespace api
 {
+#if QT_VERSION >= QT_VERSION_CHECK(5, 8, 0)
+Q_NAMESPACE
+Q_CLASSINFO("RegisterEnumClassesUnscoped", "false")
+#endif
 
 namespace account { struct Info; }
 namespace interaction { struct Info; }
@@ -52,6 +56,9 @@ enum class ConferenceableItem {
     CALL,
     CONTACT
 };
+#if QT_VERSION >= QT_VERSION_CHECK(5, 8, 0)
+Q_ENUM_NS(ConferenceableItem)
+#endif
 
 struct AccountConversation
 {
