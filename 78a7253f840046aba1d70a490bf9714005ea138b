@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "2af453d4_7c1b9e0a",
+        "filename": "src/api/newaccountmodel.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2020-05-06T20:01:36Z",
+      "side": 1,
+      "message": "This is still a bad design imho.\n\n2 solutions:\n\n_ Change the details later. Maybe we don\u0027t need it for now. Moreover config is returned by the AccountManager (preferred imho)\n_ rename the argument with map\u003cstring, string\u003e to be more generic. We shouldn\u0027t care about a ringtone path at this point",
+      "range": {
+        "startLine": 162,
+        "startChar": 43,
+        "endLine": 162,
+        "endChar": 75
+      },
+      "revId": "78a7253f840046aba1d70a490bf9714005ea138b",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    }
+  ]
+}
