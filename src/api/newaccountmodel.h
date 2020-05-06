@@ -153,11 +153,13 @@ public:
      * @param username
      * @param password
      * @param serverUri
+     * @param config
      * @return the account id
      */
     static QString connectToAccountManager(const QString& username,
-                                               const QString& password,
-                                               const QString& serverUri);
+                                           const QString& password,
+                                           const QString& serverUri,
+                                           const MapStringString& config = MapStringString());
 
     /**
      * Create a new Ring or SIP account
@@ -168,6 +170,7 @@ public:
      * @param password of the archive (unused for SIP)
      * @param pin of the archive (unused for SIP)
      * @param uri of the account (for SIP)
+     * @param config
      * @return the created account
      */
     static QString createNewAccount(profile::Type type,
@@ -175,7 +178,8 @@ public:
                                     const QString& archivePath = "",
                                     const QString& password = "",
                                     const QString& pin = "",
-                                    const QString& uri = "");
+                                    const QString& uri = "",
+                                    const MapStringString& config = MapStringString());
 
     /**
      * Set an account to the first position
