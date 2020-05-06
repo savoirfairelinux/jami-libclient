@@ -942,7 +942,8 @@ NewAccountModel::createNewAccount(profile::Type type,
                                   const QString& archivePath,
                                   const QString& password,
                                   const QString& pin,
-                                  const QString& uri)
+                                  const QString& uri,
+                                  const MapStringString& supplementalAccountConfig)
 {
 
     MapStringString details = type == profile::Type::SIP?
@@ -956,8 +957,12 @@ NewAccountModel::createNewAccount(profile::Type type,
     details[ConfProperties::ARCHIVE_PASSWORD] = password;
     details[ConfProperties::ARCHIVE_PIN] = pin;
     details[ConfProperties::ARCHIVE_PATH] = archivePath;
-    if (type == profile::Type::SIP) {
+    if (type == profile::Type::SIP)
         details[ConfProperties::USERNAME] = uri;
+    if (!supplementalAccountConfig.isEmpty()) {
+        for (MapStringString::const_iterator it = supplementalAccountConfig.begin(); it != supplementalAccountConfig.end(); it++) {
+            details[it.key()] = it.value();
+        }
     }
 
     QString accountId = ConfigurationManager::instance().addAccount(details);
@@ -967,7 +972,8 @@ NewAccountModel::createNewAccount(profile::Type type,
 QString
 NewAccountModel::connectToAccountManager(const QString& username,
                                          const QString& password,
-                                         const QString& serverUri)
+                                         const QString& serverUri,
+                                         const MapStringString& supplementalAccountConfig)
 {
     MapStringString details = ConfigurationManager::instance().getAccountTemplate("RING");
     using namespace DRing::Account;
@@ -975,6 +981,11 @@ NewAccountModel::connectToAccountManager(const QString& username,
     details[ConfProperties::MANAGER_URI] = serverUri;
     details[ConfProperties::MANAGER_USERNAME] = username;
     details[ConfProperties::ARCHIVE_PASSWORD] = password;
+    if (!supplementalAccountConfig.isEmpty()) {
+        for (MapStringString::const_iterator it = supplementalAccountConfig.begin(); it != supplementalAccountConfig.end(); it++) {
+            details[it.key()] = it.value();
+        }
+    }
 
     QString accountId = ConfigurationManager::instance().addAccount(details);
     return accountId;
