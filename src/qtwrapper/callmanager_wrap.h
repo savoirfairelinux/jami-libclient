@@ -236,14 +236,14 @@ public Q_SLOTS: // METHODS
         return temp;
     }
 
-    bool hangUp(const QString &callID)
+    bool hangUp(const QString &callID, bool busy = false)
     {
-        return DRing::hangUp(callID.toStdString());
+        return DRing::hangUp(callID.toStdString(), busy);
     }
 
-    bool hangUpConference(const QString &confID)
+    bool hangUpConference(const QString &confID, bool busy = false)
     {
-        return DRing::hangUpConference(confID.toStdString());
+        return DRing::hangUpConference(confID.toStdString(), busy);
     }
 
     bool hold(const QString &callID)

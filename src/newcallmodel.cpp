@@ -271,14 +271,22 @@ void
 NewCallModel::hangUp(const QString& callId) const
 {
     if (!hasCall(callId)) return;
+    auto hasActiveCall = false;
+    for (const auto& cid : Lrc::activeCalls()) {
+        if (cid != callId) {
+            hasActiveCall = true;
+            break;
+        }
+    }
+    qWarning() << "###" <<hasActiveCall;
     auto& call = pimpl_->calls[callId];
     switch(call->type)
     {
     case call::Type::DIALOG:
-        CallManager::instance().hangUp(callId);
+        CallManager::instance().hangUp(callId, hasActiveCall);
         break;
     case call::Type::CONFERENCE:
-        CallManager::instance().hangUpConference(callId);
+        CallManager::instance().hangUpConference(callId, hasActiveCall);
         break;
     case call::Type::INVALID:
     default:
@@ -642,11 +650,11 @@ NewCallModel::hangupCallsAndConferences()
 {
     QStringList conferences = CallManager::instance().getConferenceList();
     for (const auto& conf : conferences) {
-        CallManager::instance().hangUpConference(conf);
+        CallManager::instance().hangUpConference(conf, false);
     }
     QStringList calls = CallManager::instance().getCallList();
     for (const auto &call : calls) {
-        CallManager::instance().hangUp(call);
+        CallManager::instance().hangUp(call, false);
     }
 }
 

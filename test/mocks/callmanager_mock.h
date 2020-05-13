@@ -148,13 +148,13 @@ public Q_SLOTS: // METHODS
         return confID.split(",");
     }
 
-    bool hangUp(const QString &callID)
+    bool hangUp(const QString &callID, bool busy = false)
     {
         emit callStateChanged(callID, "OVER", -1);
         return true;
     }
 
-    bool hangUpConference(const QString &confID)
+    bool hangUpConference(const QString &confID, bool busy = false)
     {
         Q_UNUSED(confID)
         return false;
