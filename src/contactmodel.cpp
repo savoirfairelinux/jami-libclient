@@ -551,10 +551,11 @@ ContactModelPimpl::fillWithJamiContacts() {
 
         const auto vCard = lrc::vCard::utils::toHashMap(payload);
         const auto alias = vCard["FN"];
-        const auto photo = (vCard.find("PHOTO;ENCODING=BASE64;TYPE=PNG") != vCard.end()) ?
-            vCard["PHOTO;ENCODING=BASE64;TYPE=PNG"] :
-            vCard["PHOTO;ENCODING=BASE64;TYPE=JPEG"];
-
+        QByteArray photo;
+        for (const auto& key: vCard.keys()) {
+            if (key.contains("PHOTO"))
+                photo = vCard[key];
+        }
         contactInfo.profileInfo.type = profile::Type::PENDING;
         if (!alias.isEmpty()) contactInfo.profileInfo.alias = alias.constData();
         if (!photo.isEmpty()) contactInfo.profileInfo.avatar = photo.constData();
@@ -711,7 +712,7 @@ void
 ContactModelPimpl::addToContacts(const QString& contactUri, const profile::Type& type, const QString& displayName, bool banned)
 {
     // create a vcard if necessary
-    profile::Info profileInfo{ contactUri, displayName, {}, linked.owner.profileInfo.type };
+    profile::Info profileInfo{ contactUri, {}, displayName, linked.owner.profileInfo.type };
     storage::createOrUpdateProfile(linked.owner.id, profileInfo, true);
 
     auto contactInfo = storage::buildContactFromProfile(linked.owner.id, contactUri, type);
@@ -801,9 +802,11 @@ ContactModelPimpl::slotIncomingContactRequest(const QString& accountId,
         if (contacts.find(contactUri) == contacts.end()) {
             const auto vCard = lrc::vCard::utils::toHashMap(payload.toUtf8());
             const auto alias = vCard["FN"];
-            const auto photo = (vCard.find("PHOTO;ENCODING=BASE64;TYPE=PNG") == vCard.end()) ?
-            vCard["PHOTO;ENCODING=BASE64;TYPE=JPEG"] : vCard["PHOTO;ENCODING=BASE64;TYPE=PNG"];
-
+            QByteArray photo;
+            for (const auto& key: vCard.keys()) {
+                if (key.contains("PHOTO"))
+                    photo = vCard[key];
+            }
             auto profileInfo = profile::Info {contactUri, photo, alias, profile::Type::PENDING};
             auto contactInfo = contact::Info {profileInfo, "", false, false, false};
             contacts.insert(contactUri, contactInfo);

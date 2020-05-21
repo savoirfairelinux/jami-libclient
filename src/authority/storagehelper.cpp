@@ -333,10 +333,10 @@ buildContactFromProfile(const QString & accountId,
     QByteArray vcard = in.readAll().toUtf8();
     const auto vCard = lrc::vCard::utils::toHashMap(vcard);
     const auto alias = vCard[vCard::Property::FORMATTED_NAME];
-    const auto photo = (vCard.find(vCard::Property::PHOTO_PNG) == vCard.end()) ?
-        vCard[vCard::Property::PHOTO_JPEG] : vCard[vCard::Property::PHOTO_PNG];
-
-    profileInfo.avatar = photo;
+    for (const auto& key: vCard.keys()) {
+        if (key.contains("PHOTO"))
+            profileInfo.avatar = vCard[key];
+    }
     profileInfo.alias = alias;
     return { profileInfo, "", true, false };
 }
