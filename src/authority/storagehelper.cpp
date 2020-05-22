@@ -103,23 +103,21 @@ getCallInteractionString(const QString& authorUri,
 {
     if (duration < 0) {
         if (authorUri.isEmpty()) {
-            return "📞 " + QObject::tr("Outgoing call");
+            return QObject::tr("Outgoing call");
         } else {
-            return "📞 " + QObject::tr("Incoming call");
+            return QObject::tr("Incoming call");
         }
     } else if (authorUri.isEmpty()) {
         if (duration) {
-            return "📞 " + QObject::tr("Outgoing call")
-                    + " - " + getFormattedCallDuration(duration);
+            return QObject::tr("Outgoing call") + " - " + getFormattedCallDuration(duration);
         } else {
-            return "🕽 " + QObject::tr("Missed outgoing call");
+            return QObject::tr("Missed outgoing call");
         }
     } else {
         if (duration) {
-            return "📞 " + QObject::tr("Incoming call")
-                    + " - " + getFormattedCallDuration(duration);
+            return QObject::tr("Incoming call") + " - " + getFormattedCallDuration(duration);
         } else {
-            return "🕽 " + QObject::tr("Missed incoming call");
+            return QObject::tr("Missed incoming call");
         }
     }
 }
