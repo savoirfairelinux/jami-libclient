@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a603a465_52f6da93",
+        "filename": "src/web-chatview/chatview.js",
+        "patchSetId": 2
+      },
+      "lineNbr": 1420,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2020-05-22T14:57:06Z",
+      "side": 1,
+      "message": "you can\u0027t use this assumptions, Missed will be traducted",
+      "range": {
+        "startLine": 1420,
+        "startChar": 32,
+        "endLine": 1420,
+        "endChar": 56
+      },
+      "revId": "3f41bdd5349115d12ed7442312d1d68c5d2dbbe4",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    }
+  ]
+}
