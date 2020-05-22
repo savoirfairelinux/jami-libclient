@@ -1417,9 +1417,9 @@ function updateCallInteraction(message_div, message_object) {
 
     const message_text = message_object["text"]
     const message_direction = message_object["direction"]
-    const missed = message_text.indexOf("🕽") !== -1
+    const missed = message_text.indexOf("Missed") !== -1
 
-    message_div.querySelector(".text").innerText = message_text.substring(2)
+    message_div.querySelector(".text").innerText = message_text
 
     var left_buttons = message_div.querySelector(".left_buttons")
     left_buttons.innerHTML = ""
