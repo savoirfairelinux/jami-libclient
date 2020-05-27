@@ -132,7 +132,12 @@ def generate(force, qtver, sdk, toolset, arch):
     # we just assume Qt is installed in the default folder
     qt_dir = 'C:\\Qt\\' + qtver
     cmake_gen = getCMakeGenerator(getLatestVSVersion())
-    qt_cmake_dir = qt_dir + '\\msvc2017_64\\lib\\cmake\\'
+
+    qtFolderDir = "msvc2017_64"
+    qtverSplit = qtver.split('.')
+    if((int(qtverSplit[0]) >= 6) or((int(qtverSplit[0]) == 5) and (int(qtverSplit[1]) >= 15))):
+        qtFolderDir = "msvc2019_64"
+    qt_cmake_dir = qt_dir + '\\'+ qtFolderDir +'\\lib\\cmake\\'
     cmake_options = [
         '-DQt5Core_DIR=' + qt_cmake_dir + 'Qt5Core',
         '-DQt5Sql_DIR=' + qt_cmake_dir + 'Qt5Sql',
