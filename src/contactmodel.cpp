@@ -181,6 +181,14 @@ public Q_SLOTS:
      * @param transferInfo DataTransferInfo structure from daemon
      */
     void slotNewAccountTransfer(long long dringId, datatransfer::Info info);
+
+    /**
+     * Listen from daemon to know when a VCard is received
+     * @param accountId
+     * @param peer
+     * @param vCard
+     */
+    void slotProfileReceived(const QString& accountId, const QString& peer, const QString& vCard);
 };
 
 using namespace authority;
@@ -484,6 +492,8 @@ ContactModelPimpl::ContactModelPimpl(const ContactModel& linked,
             this, &ContactModelPimpl::slotNewAccountMessage);
     connect(&callbacksHandler, &CallbacksHandler::transferStatusCreated,
             this, &ContactModelPimpl::slotNewAccountTransfer);
+    connect(&ConfigurationManager::instance(), &ConfigurationManagerInterface::profileReceived,
+            this, &ContactModelPimpl::slotProfileReceived);
 }
 
 ContactModelPimpl::~ContactModelPimpl()
@@ -504,6 +514,8 @@ ContactModelPimpl::~ContactModelPimpl()
                this, &ContactModelPimpl::slotNewAccountMessage);
     disconnect(&callbacksHandler, &CallbacksHandler::transferStatusCreated,
                this, &ContactModelPimpl::slotNewAccountTransfer);
+    disconnect(&ConfigurationManager::instance(), &ConfigurationManagerInterface::profileReceived,
+               this, &ContactModelPimpl::slotProfileReceived);
 }
 
 bool
@@ -968,6 +980,28 @@ ContactModelPimpl::slotNewAccountTransfer(long long dringId, datatransfer::Info 
 
     emit linked.newAccountTransfer(dringId, info);
 }
+
+void
+ContactModelPimpl::slotProfileReceived(const QString& accountId, const QString& peer, const QString& vCard)
+{
+    if (accountId != linked.owner.id) return;
+
+    profile::Info profileInfo;
+    profileInfo.uri = peer;
+    profileInfo.type = profile::Type::RING;
+
+    for (auto& e : QString(vCard).split( "\n" ))
+        if (e.contains("PHOTO"))
+            profileInfo.avatar = e.split( ":" )[1];
+        else if (e.contains("FN"))
+            profileInfo.alias = e.split( ":" )[1];
+
+    contact::Info contactInfo;
+    contactInfo.profileInfo = profileInfo;
+
+    linked.owner.contactModel->addContact(contactInfo);
+}
+
 
 } // namespace lrc
 
