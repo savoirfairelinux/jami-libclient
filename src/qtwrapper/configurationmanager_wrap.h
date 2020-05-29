@@ -168,6 +168,10 @@ public:
                 [this] (const std::string& account_id, const std::string& uri, const bool& confirmed) {
                     Q_EMIT this->contactAdded(QString(account_id.c_str()), QString(uri.c_str()), confirmed);
                 }),
+            exportable_callback<ConfigurationSignal::ProfileReceived>(
+                    [this] (const std::string& accountID, const std::string& peer, const std::string& vCard) {
+                        Q_EMIT this->profileReceived(QString(accountID.c_str()), QString(peer.c_str()), QString(vCard.c_str()));
+            }),
             exportable_callback<ConfigurationSignal::ContactRemoved>(
                 [this] (const std::string& account_id, const std::string& uri, const bool& banned) {
                     Q_EMIT this->contactRemoved(QString(account_id.c_str()), QString(uri.c_str()), banned);
@@ -748,6 +752,7 @@ Q_SIGNALS: // SIGNALS
     void migrationEnded(const QString &accountID, const QString &result);
     void contactAdded(const QString &accountID, const QString &uri, bool banned);
     void contactRemoved(const QString &accountID, const QString &uri, bool banned);
+    void profileReceived(const QString &accountID, const QString &peer, const QString &vCard);
     void dataTransferEvent(qulonglong transfer_id, uint code);
     void deviceRevocationEnded(const QString& accountId, const QString& deviceId, int status);
     void accountAvatarReceived(const QString& accountId, const QString& userPhoto);
