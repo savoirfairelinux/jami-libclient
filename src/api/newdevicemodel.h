@@ -114,6 +114,6 @@ Q_SIGNALS:
 private:
     std::unique_ptr<NewDeviceModelPimpl> pimpl_;
 };
-
+Q_DECLARE_METATYPE(NewDeviceModel*)
 } // namespace api
 } // namespace lrc
