@@ -212,7 +212,7 @@ struct ConfProperties_t {
 // Possible account export status
 enum class ExportOnRingStatus {
     SUCCESS = 0,
-    WRONG_PASSWORD = 1 ,
+    WRONG_PASSWORD = 1,
     NETWORK_ERROR = 2,
     INVALID
 };
@@ -255,7 +255,7 @@ struct Info
     std::unique_ptr<lrc::api::NewDeviceModel> deviceModel;
     std::unique_ptr<lrc::api::NewCodecModel> codecModel;
     std::unique_ptr<lrc::api::PeerDiscoveryModel> peerDiscoveryModel;
-    NewAccountModel* accountModel {nullptr};
+    NewAccountModel* accountModel{ nullptr };
 
     // daemon config
     QString                 id;
@@ -269,4 +269,4 @@ struct Info
 
 } // namespace account
 } // namespace api
-} // namespace lrc
+}; // namespace lrc
