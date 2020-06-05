@@ -116,6 +116,6 @@ public:
 private:
     std::unique_ptr<NewCodecModelPimpl> pimpl_;
 };
-
+Q_DECLARE_METATYPE(NewCodecModel*)
 } // namespace api
 } // namespace lrc
