@@ -18,7 +18,7 @@
  ***************************************************************************/
 #pragma once
 
-// std
+ // std
 #include <memory>
 #include <string>
 #include <vector>
@@ -49,222 +49,215 @@ public:
      * Get if hardware decoding is enabled
      * @return hardware decoding enabled
      */
-    bool getDecodingAccelerated() const;
+    Q_INVOKABLE bool getDecodingAccelerated() const;
     /**
      * Enable/disable hardware decoding
      * @param if hardware decoding enabled
      */
-    void setDecodingAccelerated(bool accelerate);
-
+    Q_INVOKABLE void setDecodingAccelerated(bool accelerate);
     /**
      * Get if hardware encoding is enabled
      * @return hardware encoding enabled
      */
-    bool getEncodingAccelerated() const;
+    Q_INVOKABLE bool getEncodingAccelerated() const;
     /**
      * Enable/disable hardware encoding
      * @param if hardware encoding enabled
      */
-    void setEncodingAccelerated(bool accelerate);
-
+    Q_INVOKABLE void setEncodingAccelerated(bool accelerate);
     /**
      * Get if hardware acceleration is enabled
      * @return hardware acceleration enabled
      */
-    bool getHardwareAcceleration() const;
+    Q_INVOKABLE bool getHardwareAcceleration() const;
     /**
      * Enable/disable hardware acceleration
      * @param if hardware acceleration enabled
      */
-    void setHardwareAcceleration(bool accelerate);
-
+    Q_INVOKABLE void setHardwareAcceleration(bool accelerate);
     /**
      * Get video devices
      * @return list of devices
      */
-    VectorString getDevices() const;
+    Q_INVOKABLE QVector<QString> getDevices() const;
     /**
      * Retrieve current default video device
      * @return current default video device id
      */
-    QString getDefaultDevice() const;
+    Q_INVOKABLE QString getDefaultDevice() const;
     /**
      * Set new default video device
      * @param id of the device
      */
-    void setDefaultDevice(const QString& deviceId);
+    Q_INVOKABLE void setDefaultDevice(const QString& deviceId);
     /**
      * Retrieve current framerate/resolution/etc of a device
      * @param id of the device
      * @return settings of the device
      */
-    video::Settings getDeviceSettings(const QString& deviceId) const;
+    Q_INVOKABLE video::Settings getDeviceSettings(const QString& deviceId) const;
     /**
      * Set device settings
      * @param video::Settings
      */
-    void setDeviceSettings(video::Settings& settings);
+    Q_INVOKABLE void setDeviceSettings(video::Settings& settings);
     /**
      * Retrieve all framerate/resolution/etc possibilities of a device
      * @param id of the device
      * @return possibilities of the device
      */
-    video::Capabilities getDeviceCapabilities(const QString& deviceId) const;
+    Q_INVOKABLE video::Capabilities getDeviceCapabilities(const QString& deviceId) const;
     /**
      * Get the deviceId corresponding to a given device friendly name
      * @return deviceId
      */
-    QString getDeviceIdFromName(const QString& deviceName) const;
-
+    Q_INVOKABLE QString getDeviceIdFromName(const QString& deviceName) const;
     /**
      * Get supported audio managers
      * @return supported audio managers
      */
-    VectorString getSupportedAudioManagers() const;
+    Q_INVOKABLE VectorString getSupportedAudioManagers() const;
     /**
      * Get current audio manager
      * @return current audio manager
      */
-    QString getAudioManager() const;
+    Q_INVOKABLE QString getAudioManager() const;
     /**
      * Get current audio outputs
      * @return audio outputs
      */
-    VectorString getAudioOutputDevices() const;
+    Q_INVOKABLE QVector<QString> getAudioOutputDevices() const;
     /**
      * Get current audio inputs
      * @return audio inputs
      */
-    VectorString getAudioInputDevices() const;
+    Q_INVOKABLE QVector<QString> getAudioInputDevices() const;
     /**
      * Get current ringtone device
      * @return current ringtone device
      */
-    QString getRingtoneDevice() const;
+    Q_INVOKABLE QString getRingtoneDevice() const;
     /**
      * Get current output device
      * @return current output device
      */
-    QString getOutputDevice() const;
+    Q_INVOKABLE QString getOutputDevice() const;
     /**
      * Get current input device
      * @return current input device
      */
-    QString getInputDevice() const;
+    Q_INVOKABLE QString getInputDevice() const;
     /**
      * Get current state of the audio meter
      * @return current state of the audio meter
      */
-    bool isAudioMeterActive(const QString& id="") const;
+    Q_INVOKABLE bool isAudioMeterActive(const QString& id = "") const;
     /**
      * Turn on/off the audio metering feature
      * @param the new state of the meter
      */
-    void setAudioMeterState(bool active, const QString& id="") const;
+    Q_INVOKABLE void setAudioMeterState(bool active, const QString& id = "") const;
     /**
      * Starts audio device. Should only be invoked when outside of a call.
      */
-    void startAudioDevice() const;
+    Q_INVOKABLE void startAudioDevice() const;
     /**
      * Stops audio device. Should only be invoked when outside of a call.
      */
-    void stopAudioDevice() const;
+    Q_INVOKABLE void stopAudioDevice() const;
     /**
      * Set current audio manager
      * @param name of the new audio manager
      * @return if the operation is successful
      */
-    bool setAudioManager(const QString& name);
+    Q_INVOKABLE bool setAudioManager(const QString& name);
     /**
      * Set current ringtone device
      * @param name of the new ringtone device
      */
-    void setRingtoneDevice(const QString& name);
+    Q_INVOKABLE void setRingtoneDevice(const QString& name);
     /**
      * Set current output device
      * @param name of the new output device
      */
-    void setOutputDevice(const QString& name);
+    Q_INVOKABLE void setOutputDevice(const QString& name);
     /**
      * Set current input device
      * @param name of the new input device
      */
-    void setInputDevice(const QString& name);
-
+    Q_INVOKABLE void setInputDevice(const QString& name);
     /**
      * Stop local record at given path
      * @param path
      */
-    void stopLocalRecorder(const QString& path) const;
+    Q_INVOKABLE void stopLocalRecorder(const QString& path) const;
     /**
      * Start a local recorder and return it path.
      * @param audioOnly
      */
-    QString startLocalRecorder(const bool& audioOnly) const;
+    Q_INVOKABLE QString startLocalRecorder(const bool& audioOnly) const;
     /**
      * Get the current recording path
      * @return recording path
      */
-    QString getRecordPath() const;
+    Q_INVOKABLE QString getRecordPath() const;
     /**
      * Sets the recording path
      * @param path recording path
      */
-    void setRecordPath(const QString& path) const;
+    Q_INVOKABLE void setRecordPath(const QString& path) const;
     /**
      * Whether or not to record every call
      * @return always recording
      */
-    bool getAlwaysRecord() const;
+    Q_INVOKABLE bool getAlwaysRecord() const;
     /**
      * Sets whether or not to record every call
      * @param rec always recording
      */
-    void setAlwaysRecord(const bool& rec) const;
+    Q_INVOKABLE void setAlwaysRecord(const bool& rec) const;
     /**
      * Whether or not local video is recorded
      * @return recording preview
      */
-    bool getRecordPreview() const;
+    Q_INVOKABLE bool getRecordPreview() const;
     /**
      * Sets whether or not to record local video
      * @param rec recording preview
      */
-    void setRecordPreview(const bool& rec) const;
+    Q_INVOKABLE void setRecordPreview(const bool& rec) const;
     /**
      * Gets the quality used while recording
      * @return recording quality
      */
-    int getRecordQuality() const;
+    Q_INVOKABLE int getRecordQuality() const;
     /**
      * Sets the recording quality
      * @param quality recording quality
      */
-    void setRecordQuality(const int& quality) const;
-
+    Q_INVOKABLE void setRecordQuality(const int& quality) const;
     /**
      * Start preview renderer. This will start the camera
      */
-    void startPreview();
+    Q_INVOKABLE void startPreview();
     /**
      * Stop preview renderer and the camera.
      */
-    void stopPreview();
+    Q_INVOKABLE void stopPreview();
     /**
      * Get a renderer from a call
      * @param id the callid or "local"
      * @return the linked renderer
      * @throw std::out_of_range if not found
      */
-    const video::Renderer& getRenderer(const QString& id) const;
-
+    Q_INVOKABLE const video::Renderer& getRenderer(const QString& id) const;
     /**
      * Render a file to the call id specified
      * @param uri the path of the file
      * @param callId
      * @note callId can be omitted to switch the input of the local recorder
      */
-    void setInputFile(const QString& uri, const QString& callId = {});
+    Q_INVOKABLE void setInputFile(const QString& uri, const QString& callId = {});
     /**
      * Change the current device rendered for the call id specified
      * @param id of the camera
@@ -272,7 +265,7 @@ public:
      * @note renders a black frame if device not found or empty
      * @note callId can be omitted to switch the input of the local recorder
      */
-    void switchInputTo(const QString& id, const QString& callId = {});
+    Q_INVOKABLE void switchInputTo(const QString& id, const QString& callId = {});
     /**
      * Render the current display to the call id specified
      * @param idx of the display
@@ -283,35 +276,31 @@ public:
      * @param callId
      * @note callId can be omitted to switch the input of the local recorder
      */
-    void setDisplay(int idx, int x, int y, int w, int h, const QString& callId = {});
+    Q_INVOKABLE void setDisplay(int idx, int x, int y, int w, int h, const QString& callId = {});
     /**
      * Get informations on the rendered device
      * @param call_id linked call to the renderer
      * @return the device rendered
      */
-    video::RenderedDevice getCurrentRenderedDevice(const QString& call_id) const;
-
+    Q_INVOKABLE video::RenderedDevice getCurrentRenderedDevice(const QString& call_id) const;
     /**
      * set to true to receive AVFrames from render
      */
-    void useAVFrame(bool useAVFrame);
-
-     /**
-     * set current using device
-     * @ param device name
-     */
-    void setCurrentVideoCaptureDevice(QString &currentVideoCaptureDevice);
-
-     /**
-     * set current using device
-     * @ return current using device name
-     */
-    QString getCurrentVideoCaptureDevice() const;
-
-     /**
-     * clear current using device
-     */
-    void clearCurrentVideoCaptureDevice();
+    Q_INVOKABLE void useAVFrame(bool useAVFrame);
+    /**
+    * set current using device
+    * @ param device name
+    */
+    Q_INVOKABLE void setCurrentVideoCaptureDevice(const QString& currentVideoCaptureDevice);
+    /**
+    * set current using device
+    * @ return current using device name
+    */
+    Q_INVOKABLE QString getCurrentVideoCaptureDevice() const;
+    /**
+    * clear current using device
+    */
+    Q_INVOKABLE void clearCurrentVideoCaptureDevice();
 
 Q_SIGNALS:
     /**
@@ -348,6 +337,9 @@ Q_SIGNALS:
 private:
     std::unique_ptr<AVModelPimpl> pimpl_;
 };
+#if QT_VERSION >= QT_VERSION_CHECK(5, 8, 0)
+Q_DECLARE_METATYPE(AVModel*)
+#endif
 
 } // namespace api
 } // namespace lrc
