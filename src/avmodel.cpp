@@ -132,7 +132,7 @@ uint32_t AVModelPimpl::SIZE_RENDERER = 0;
 #endif
 
 AVModel::AVModel(const CallbacksHandler& callbacksHandler)
-: QObject()
+: QObject(nullptr)
 , pimpl_(std::make_unique<AVModelPimpl>(*this, callbacksHandler))
 {
 #ifndef ENABLE_LIBWRAP

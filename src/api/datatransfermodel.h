@@ -51,22 +51,22 @@ public:
     DataTransferModel();
     ~DataTransferModel();
 
-    void sendFile(const QString& account_id, const QString& peer_uri,
-                  const QString& file_path, const QString& display_name);
+    Q_INVOKABLE void sendFile(const QString& account_id, const QString& peer_uri,
+                              const QString& file_path, const QString& display_name);
 
-    void transferInfo(long long ringId, datatransfer::Info& lrc_info);
+    Q_INVOKABLE void transferInfo(long long ringId, datatransfer::Info& lrc_info);
 
-    void bytesProgress(int interactionId, int64_t& total, int64_t& progress);
+    Q_INVOKABLE void bytesProgress(int interactionId, int64_t& total, int64_t& progress);
 
-    QString accept(int interactionId, const QString& file_path, std::size_t offset);
+    Q_INVOKABLE QString accept(int interactionId, const QString& file_path, std::size_t offset);
 
-    void cancel(int interactionId);
+    Q_INVOKABLE void cancel(int interactionId);
 
-    void registerTransferId(long long dringId, int interactionId);
+    Q_INVOKABLE void registerTransferId(long long dringId, int interactionId);
 
-    int getInteractionIdFromDringId(long long dringId);
+    Q_INVOKABLE int getInteractionIdFromDringId(long long dringId);
 
-    long long getDringIdFromInteractionId(int interactionId);
+    Q_INVOKABLE long long getDringIdFromInteractionId(int interactionId);
 
     /**
      * Used when images < 20 Mb are automatically accepted and downloaded
@@ -77,7 +77,7 @@ public:
     /**
      *  Creates APPDATA/received and return the path
      */
-    static QString createDefaultDirectory();
+    Q_INVOKABLE static QString createDefaultDirectory();
 
     /**
      * Accept transfer from untrusted contacts
@@ -111,5 +111,6 @@ private:
     class Impl;
     std::unique_ptr<Impl> pimpl_;
 };
+Q_DECLARE_METATYPE(DataTransferModel*)
 
 }} // namespace lrc::api
