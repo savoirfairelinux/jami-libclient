@@ -49,7 +49,7 @@ Q_ENUM_NS(Type)
 static inline const QString
 to_string(const Type& type)
 {
-    switch(type) {
+    switch (type) {
     case Type::RING:
         return "RING";
     case Type::SIP:
@@ -88,6 +88,14 @@ to_type(const QString& type)
  */
 struct Info
 {
+private:
+    Q_GADGET;
+    Q_PROPERTY(QString uri_qml MEMBER uri);
+    Q_PROPERTY(QString avatar_qml MEMBER avatar);
+    Q_PROPERTY(QString alias_qml MEMBER alias);
+    Q_PROPERTY(Type type_qml MEMBER type);
+
+public:
     QString uri = "";
     QString avatar = "";
     QString alias = "";

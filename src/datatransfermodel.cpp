@@ -108,7 +108,7 @@ DataTransferModel::registerTransferId(long long dringId, int interactionId)
 }
 
 DataTransferModel::DataTransferModel()
-    : QObject()
+    : QObject(nullptr)
     , pimpl_ { std::make_unique<Impl>(*this) }
 {}
 
