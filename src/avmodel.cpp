@@ -18,7 +18,7 @@
  ***************************************************************************/
 #include "api/avmodel.h"
 
-// Std
+ // Std
 #include <algorithm>    // std::sort
 #include <chrono>
 #include <csignal>
@@ -50,7 +50,7 @@ namespace lrc
 
 using namespace api;
 
-class AVModelPimpl: public QObject
+class AVModelPimpl : public QObject
 {
     Q_OBJECT
 public:
@@ -66,7 +66,7 @@ public:
     // store if a renderers is for a finished call
     std::map<QString, bool> finishedRenderers_;
     bool useAVFrame_ = false;
-    QString currentVideoCaptureDevice_ {};
+    QString currentVideoCaptureDevice_{};
 
 #ifndef ENABLE_LIBWRAP
     // TODO: Init Video Renderers from daemon (see: https://git.jami.net/savoirfairelinux/ring-daemon/issues/59)
@@ -102,7 +102,7 @@ public Q_SLOTS:
      * @param state the new state
      * @param code unused
      */
-    void slotCallStateChanged(const QString& id, const QString &state, int code);
+    void slotCallStateChanged(const QString& id, const QString& state, int code);
     /**
      * Detect when the current frame is updated
      * @param id
@@ -132,8 +132,8 @@ uint32_t AVModelPimpl::SIZE_RENDERER = 0;
 #endif
 
 AVModel::AVModel(const CallbacksHandler& callbacksHandler)
-: QObject()
-, pimpl_(std::make_unique<AVModelPimpl>(*this, callbacksHandler))
+    : QObject(nullptr)
+    , pimpl_(std::make_unique<AVModelPimpl>(*this, callbacksHandler))
 {
 #ifndef ENABLE_LIBWRAP
     // Because the client uses DBUS, if a crash occurs, the daemon will not
@@ -190,7 +190,7 @@ AVModel::setHardwareAcceleration(bool accelerate)
     setEncodingAccelerated(accelerate);
 }
 
-VectorString
+QVector<QString>
 AVModel::getDevices() const
 {
     QStringList devices = VideoManager::instance()
@@ -199,7 +199,7 @@ AVModel::getDevices() const
     for (const auto& device : devices) {
         result.push_back(device);
     }
-    return result;
+    return (QVector<QString>)result;
 }
 
 QString
@@ -255,10 +255,10 @@ AVModel::getDeviceCapabilities(const QString& deviceId) const
         // sort by resolution widths
         std::sort(channelCapabilities.begin(), channelCapabilities.end(),
             [](const QPair<video::Resolution, video::FrameratesList>& lhs,
-               const QPair<video::Resolution, video::FrameratesList>& rhs) {
-                auto lhsWidth = lhs.first.left(lhs.first.indexOf("x")).toLongLong();
-                auto rhsWidth = rhs.first.left(rhs.first.indexOf("x")).toLongLong();
-                return lhsWidth > rhsWidth;
+                const QPair<video::Resolution, video::FrameratesList>& rhs) {
+                    auto lhsWidth = lhs.first.left(lhs.first.indexOf("x")).toLongLong();
+                    auto rhsWidth = rhs.first.left(rhs.first.indexOf("x")).toLongLong();
+                    return lhsWidth > rhsWidth;
             });
         result.insert(channel.first, channelCapabilities);
     }
@@ -323,7 +323,7 @@ AVModel::getAudioManager() const
     return ConfigurationManager::instance().getAudioManager();
 }
 
-VectorString
+QVector<QString>
 AVModel::getAudioOutputDevices() const
 {
     QStringList devices = ConfigurationManager::instance()
@@ -341,10 +341,10 @@ AVModel::getAudioOutputDevices() const
     for (const auto& device : devices) {
         result.push_back(device);
     }
-    return result;
+    return (QVector<QString>)result;
 }
 
-VectorString
+QVector<QString>
 AVModel::getAudioInputDevices() const
 {
     QStringList devices = ConfigurationManager::instance()
@@ -362,7 +362,7 @@ AVModel::getAudioInputDevices() const
     for (const auto& device : devices) {
         result.push_back(device);
     }
-    return result;
+    return (QVector<QString>)result;
 }
 
 QString
@@ -440,20 +440,20 @@ AVModel::setInputDevice(const QString& name)
 void
 AVModel::stopLocalRecorder(const QString& path) const
 {
-   if (path.isEmpty()) {
-      qWarning("stopLocalRecorder: can't stop non existing recording");
-      return;
-   }
+    if (path.isEmpty()) {
+        qWarning("stopLocalRecorder: can't stop non existing recording");
+        return;
+    }
 
-   VideoManager::instance().stopLocalRecorder(path);
+    VideoManager::instance().stopLocalRecorder(path);
 }
 
 QString
 AVModel::startLocalRecorder(const bool& audioOnly) const
 {
-   const QString path = pimpl_->getRecordingPath();
-   const QString finalPath = VideoManager::instance().startLocalRecorder(audioOnly, path);
-   return finalPath;
+    const QString path = pimpl_->getRecordingPath();
+    const QString finalPath = VideoManager::instance().startLocalRecorder(audioOnly, path);
+    return finalPath;
 }
 
 QString
@@ -563,7 +563,7 @@ AVModel::getRenderer(const QString& id) const
 
 void
 AVModel::setInputFile(const QString& uri,
-                      const QString& callId)
+    const QString& callId)
 {
     QString sep = DRing::Media::VideoProtocolPrefix::SEPARATOR;
     auto resource = !uri.isEmpty() ? QString("%1%2%3")
@@ -573,7 +573,8 @@ AVModel::setInputFile(const QString& uri,
         : DRing::Media::VideoProtocolPrefix::NONE;
     if (callId.isEmpty()) {
         VideoManager::instance().switchInput(resource);
-    } else {
+    }
+    else {
         CallManager::instance()
             .switchInput(callId, resource);
     }
@@ -581,7 +582,7 @@ AVModel::setInputFile(const QString& uri,
 
 void
 AVModel::setDisplay(int idx, int x, int y, int w, int h,
-                    const QString& callId)
+    const QString& callId)
 {
     QString sep = DRing::Media::VideoProtocolPrefix::SEPARATOR;
     auto resource = QString("%1%2:%3+%4,%5 %6x%7")
@@ -594,7 +595,8 @@ AVModel::setDisplay(int idx, int x, int y, int w, int h,
         .arg(h);
     if (callId.isEmpty()) {
         VideoManager::instance().switchInput(resource);
-    } else {
+    }
+    else {
         CallManager::instance()
             .switchInput(callId, resource);
     }
@@ -603,7 +605,7 @@ AVModel::setDisplay(int idx, int x, int y, int w, int h,
 
 void
 AVModel::switchInputTo(const QString& id,
-                       const QString& callId)
+    const QString& callId)
 {
     QString resource;
     auto devices = getDevices();
@@ -615,12 +617,14 @@ AVModel::switchInputTo(const QString& id,
             .arg(DRing::Media::VideoProtocolPrefix::CAMERA)
             .arg(sep)
             .arg(id);
-    } else {
+    }
+    else {
         resource = QString(DRing::Media::VideoProtocolPrefix::NONE);
     }
     if (callId.isEmpty()) {
         VideoManager::instance().switchInput(resource);
-    } else {
+    }
+    else {
         CallManager::instance()
             .switchInput(callId, resource);
     }
@@ -634,7 +638,8 @@ AVModel::getCurrentRenderedDevice(const QString& call_id) const
     QStringList conferences = CallManager::instance().getConferenceList();
     if (conferences.indexOf(call_id) != -1) {
         callDetails = CallManager::instance().getConferenceDetails(call_id);
-    } else {
+    }
+    else {
         callDetails = CallManager::instance().getCallDetails(call_id);
     }
     if (!callDetails.contains("VIDEO_SOURCE")) {
@@ -646,11 +651,13 @@ AVModel::getCurrentRenderedDevice(const QString& call_id) const
         result.type = video::DeviceType::CAMERA;
         result.name = source
             .right(sourceSize - QString("camera://").size());
-    } else if (source.startsWith("file://")) {
+    }
+    else if (source.startsWith("file://")) {
         result.type = video::DeviceType::FILE;
         result.name = source
-            .right(sourceSize -QString("file://").size());
-    } else if (source.startsWith("display://")) {
+            .right(sourceSize - QString("file://").size());
+    }
+    else if (source.startsWith("display://")) {
         result.type = video::DeviceType::DISPLAY;
         result.name = source
             .right(sourceSize - QString("display://").size());
@@ -659,7 +666,7 @@ AVModel::getCurrentRenderedDevice(const QString& call_id) const
 }
 
 void
-AVModel::setCurrentVideoCaptureDevice(QString &currentVideoCaptureDevice)
+AVModel::setCurrentVideoCaptureDevice(QString& currentVideoCaptureDevice)
 {
     pimpl_->currentVideoCaptureDevice_ = currentVideoCaptureDevice;
 }
@@ -677,37 +684,38 @@ AVModel::clearCurrentVideoCaptureDevice()
 }
 
 AVModelPimpl::AVModelPimpl(AVModel& linked, const CallbacksHandler& callbacksHandler)
-: linked_(linked)
-, callbacksHandler(callbacksHandler)
+    : linked_(linked)
+    , callbacksHandler(callbacksHandler)
 {
     std::srand(std::time(nullptr));
     // add preview renderer
     try {
         renderers_.insert(std::make_pair(video::PREVIEW_RENDERER_ID,
-                                         std::make_unique<video::Renderer>(video::PREVIEW_RENDERER_ID,
-                                                                           linked_.getDeviceSettings(linked_.getDefaultDevice()),
-                                                                           "",
-                                                                           useAVFrame_)));
-    } catch (const std::out_of_range& e) {
+            std::make_unique<video::Renderer>(video::PREVIEW_RENDERER_ID,
+                linked_.getDeviceSettings(linked_.getDefaultDevice()),
+                "",
+                useAVFrame_)));
+    }
+    catch (const std::out_of_range& e) {
         qWarning() << "Couldn't setup video input renderer: " << e.what();
     }
 #ifndef ENABLE_LIBWRAP
     SIZE_RENDERER = renderers_.size();
 #endif
     connect(&callbacksHandler, &CallbacksHandler::deviceEvent,
-            this, &AVModelPimpl::slotDeviceEvent);
+        this, &AVModelPimpl::slotDeviceEvent);
     connect(&callbacksHandler, &CallbacksHandler::audioMeter,
-            this, &AVModelPimpl::slotAudioMeter);
+        this, &AVModelPimpl::slotAudioMeter);
     connect(&callbacksHandler, &CallbacksHandler::startedDecoding,
-            this, &AVModelPimpl::startedDecoding);
+        this, &AVModelPimpl::startedDecoding);
     connect(&callbacksHandler, &CallbacksHandler::stoppedDecoding,
-            this, &AVModelPimpl::stoppedDecoding);
+        this, &AVModelPimpl::stoppedDecoding);
     connect(&callbacksHandler, &CallbacksHandler::callStateChanged,
-            this, &AVModelPimpl::slotCallStateChanged);
+        this, &AVModelPimpl::slotCallStateChanged);
     connect(&*renderers_[video::PREVIEW_RENDERER_ID], &api::video::Renderer::frameUpdated,
-            this, &AVModelPimpl::slotFrameUpdated);
+        this, &AVModelPimpl::slotFrameUpdated);
     connect(&callbacksHandler, &CallbacksHandler::recordPlaybackStopped,
-            this, &AVModelPimpl::slotRecordPlaybackStopped);
+        this, &AVModelPimpl::slotRecordPlaybackStopped);
 
     auto startedPreview = false;
     auto restartRenderers = [&](const QStringList& callList) {
@@ -727,7 +735,7 @@ AVModelPimpl::AVModelPimpl(AVModel& linked, const CallbacksHandler& callbacksHan
     restartRenderers(CallManager::instance().getCallList());
     restartRenderers(CallManager::instance().getConferenceList());
     if (startedPreview)
-        restartRenderers({"local"});
+        restartRenderers({ "local" });
 }
 
 QString
@@ -777,7 +785,8 @@ AVModelPimpl::startedDecoding(const QString& id, const QString& shmPath, int wid
             renderers_.at(id)->initThread();
             connect(&*renderers_[id], &api::video::Renderer::frameUpdated,
                 this, &AVModelPimpl::slotFrameUpdated);
-        } else {
+        }
+        else {
             (*search).second->update(res, shmPath);
         }
         renderers_.at(id)->startRendering();
@@ -821,11 +830,11 @@ AVModelPimpl::stoppedDecoding(const QString& id, const QString& shmPath)
 }
 
 void
-AVModelPimpl::slotCallStateChanged(const QString& id, const QString &state, int code)
+AVModelPimpl::slotCallStateChanged(const QString& id, const QString& state, int code)
 {
     Q_UNUSED(code)
-    if (call::to_status(state) != call::Status::ENDED)
-        return;
+        if (call::to_status(state) != call::Status::ENDED)
+            return;
     std::lock_guard<std::mutex> lk(renderers_mtx_);
     auto search = renderers_.find(id);
     auto searchFinished = finishedRenderers_.find(id);
@@ -842,7 +851,8 @@ AVModelPimpl::slotCallStateChanged(const QString& id, const QString &state, int 
         SIZE_RENDERER = renderers_.size();
 #endif
         finishedRenderers_.erase(id);
-    } else {
+    }
+    else {
         finishedRenderers_.at(id) = true;
     }
 }
@@ -871,15 +881,15 @@ AVModelPimpl::getDevice(int type) const
     QString result = "";
     VectorString devices;
     switch (type) {
-        case 1: // INPUT
-            devices = linked_.getAudioInputDevices();
-            break;
-        case 0: // OUTPUT
-        case 2: // RINGTONE
-            devices = linked_.getAudioOutputDevices();
-            break;
-        default:
-            break;
+    case 1: // INPUT
+        devices = linked_.getAudioInputDevices();
+        break;
+    case 0: // OUTPUT
+    case 2: // RINGTONE
+        devices = linked_.getAudioOutputDevices();
+        break;
+    default:
+        break;
     }
     QStringList currentDevicesIdx = ConfigurationManager::instance()
         .getCurrentAudioDevicesIndex();
@@ -907,7 +917,8 @@ AVModelPimpl::getDevice(int type) const
             }
         }
         return "";
-    } catch (std::bad_alloc& ba) {
+    }
+    catch (std::bad_alloc& ba) {
         qWarning() << "bad_alloc caught: " << ba.what();
         return "";
     }
@@ -933,7 +944,7 @@ AVModelPimpl::slotAudioMeter(const QString& id, float level)
 }
 
 void
-AVModelPimpl::slotRecordPlaybackStopped(const QString &filePath)
+AVModelPimpl::slotRecordPlaybackStopped(const QString& filePath)
 {
     emit linked_.recordPlaybackStopped(filePath);
 }
