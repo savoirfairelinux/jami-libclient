@@ -18,7 +18,7 @@
 
 #pragma once
 
-// Lrc
+ // Lrc
 #include "typedefs.h"
 
 // Qt
@@ -74,6 +74,6 @@ Q_SIGNALS:
 private:
     std::unique_ptr<PeerDiscoveryModelPimpl> pimpl_;
 };
-
+Q_DECLARE_METATYPE(PeerDiscoveryModel*)
 } // namespace api
 } // namespace lrc
