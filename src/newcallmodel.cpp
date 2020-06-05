@@ -185,7 +185,8 @@ public Q_SLOTS:
 };
 
 NewCallModel::NewCallModel(const account::Info& owner, const CallbacksHandler& callbacksHandler)
-: owner(owner)
+: QObject(nullptr)
+, owner(owner)
 , pimpl_(std::make_unique<NewCallModelPimpl>(*this, callbacksHandler))
 {
 }

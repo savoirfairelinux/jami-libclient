@@ -27,9 +27,11 @@ NameDirectoryPrivate::NameDirectoryPrivate(NameDirectory* q) : q_ptr(q)
     ConfigurationManagerInterface& configurationManager = ConfigurationManager::instance();
 
     connect(&configurationManager, &ConfigurationManagerInterface::nameRegistrationEnded, this,
-            &NameDirectoryPrivate::slotNameRegistrationEnded, Qt::QueuedConnection);
+        &NameDirectoryPrivate::slotNameRegistrationEnded, Qt::QueuedConnection);
     connect(&configurationManager, &ConfigurationManagerInterface::registeredNameFound, this,
-            &NameDirectoryPrivate::slotRegisteredNameFound, Qt::QueuedConnection);
+        &NameDirectoryPrivate::slotRegisteredNameFound, Qt::QueuedConnection);
+    connect(&configurationManager, &ConfigurationManagerInterface::exportOnRingEnded, this,
+        &NameDirectoryPrivate::slotExportOnRingEnded, Qt::QueuedConnection);
 }
 
 NameDirectory::NameDirectory() : QObject(QCoreApplication::instance()), d_ptr(new NameDirectoryPrivate(this))
@@ -48,7 +50,7 @@ void NameDirectoryPrivate::slotNameRegistrationEnded(const QString& accountId, i
 {
     qDebug() << "Name registration ended. Account:" << accountId << "status:" << status << "name:" << name;
 
-   emit q_ptr->nameRegistrationEnded(static_cast<NameDirectory::RegisterNameStatus>(status), name);
+    emit q_ptr->nameRegistrationEnded(static_cast<NameDirectory::RegisterNameStatus>(status), name);
 }
 
 //Registered Name found
@@ -68,7 +70,14 @@ void NameDirectoryPrivate::slotRegisteredNameFound(const QString& accountId, int
             break;
     }
 
-    emit q_ptr->registeredNameFound( static_cast<NameDirectory::LookupStatus>(status), address, name);
+    emit q_ptr->registeredNameFound(static_cast<NameDirectory::LookupStatus>(status), address, name);
+}
+
+//Export account has ended with pin generated
+void NameDirectoryPrivate::slotExportOnRingEnded(const QString& accountId, int status, const QString& pin) {
+    qDebug() << "Export on ring ended for account: " << accountId << "status: " << status << "PIN: " << pin;
+
+    emit q_ptr->exportOnRingEnded(static_cast<NameDirectory::ExportOnRingStatus>(status), pin);
 }
 
 //Lookup a name

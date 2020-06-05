@@ -83,7 +83,7 @@ public:
      * @param password of the account's archive
      * @note will emit deviceRevoked when finished
      */
-    void revokeDevice(const QString& id, const QString& password);
+    Q_INVOKABLE void revokeDevice(const QString& id, const QString& password);
 
     /**
      * Change the name of the current device
@@ -91,7 +91,7 @@ public:
      * @note will emit deviceUpdated when finished
      * @note ring can't change the name of another device
      */
-    void setCurrentDeviceName(const QString& newName);
+    Q_INVOKABLE void setCurrentDeviceName(const QString& newName);
 
 Q_SIGNALS:
     /**
@@ -114,6 +114,8 @@ Q_SIGNALS:
 private:
     std::unique_ptr<NewDeviceModelPimpl> pimpl_;
 };
-
+#if QT_VERSION >= QT_VERSION_CHECK(5, 8, 0)
+Q_DECLARE_METATYPE(NewDeviceModel*)
+#endif
 } // namespace api
 } // namespace lrc
