@@ -117,3 +117,4 @@ private:
 
 } // namespace api
 } // namespace lrc
+Q_DECLARE_METATYPE(lrc::api::NewDeviceModel*)

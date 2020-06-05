@@ -18,7 +18,7 @@
 
 #pragma once
 
-// Lrc
+ // Lrc
 #include "typedefs.h"
 
 // Qt
@@ -77,3 +77,4 @@ private:
 
 } // namespace api
 } // namespace lrc
+Q_DECLARE_METATYPE(lrc::api::PeerDiscoveryModel*)
