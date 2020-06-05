@@ -27,7 +27,7 @@ namespace lrc
 using namespace api;
 
 BehaviorController::BehaviorController()
-: QObject()
+: QObject(nullptr)
 {
 }
 
