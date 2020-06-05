@@ -35,12 +35,12 @@ class Lrc;
 
 namespace conversation
 {
-    struct Info;
+struct Info;
 }
 
 namespace interaction
 {
-    struct Info;
+struct Info;
 }
 
 /**
@@ -87,17 +87,19 @@ Q_SIGNALS:
     /**
      * Emitted when the unread interaction is now read
      */
-     void newReadInteraction(const QString& accountId, const QString& conversation, uint64_t interactionId) const;
-     /**
-     * Emitted debugMessageReceived
-     */
-     void debugMessageReceived(const QString& message);
-     /**
-     * Emitted audioMeter
-     */
-     void audioMeter(const QString& id, float level);
+    void newReadInteraction(const QString& accountId, const QString& conversation, uint64_t interactionId) const;
+    /**
+    * Emitted debugMessageReceived
+    */
+    void debugMessageReceived(const QString& message);
+    /**
+    * Emitted audioMeter
+    */
+    void audioMeter(const QString& id, float level);
 
 };
-
 } // namespace api
 } // namespace lrc
+#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
+Q_DECLARE_METATYPE(lrc::api::BehaviorController*)
+#endif

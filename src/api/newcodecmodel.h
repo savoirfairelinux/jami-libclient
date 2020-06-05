@@ -116,6 +116,8 @@ public:
 private:
     std::unique_ptr<NewCodecModelPimpl> pimpl_;
 };
-
 } // namespace api
 } // namespace lrc
+#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
+Q_DECLARE_METATYPE(lrc::api::NewCodecModel*)
+#endif

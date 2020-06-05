@@ -49,7 +49,7 @@ Q_ENUM_NS(Type)
 static inline const QString
 to_string(const Type& type)
 {
-    switch(type) {
+    switch (type) {
     case Type::RING:
         return "RING";
     case Type::SIP:

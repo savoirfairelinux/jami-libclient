@@ -534,7 +534,7 @@ ENDIF()
 
 if (ENABLE_SHARED)
     message(STATUS "Configuring as shared lib")
-    add_library(ringclient SHARED ${libringclient_LIB_SRCS} ${LIB_HEADER_MOC} )
+    add_library(ringclient SHARED ${libringclient_LIB_SRCS} ${libringclient_api_LIB_HDRS} ${LIB_HEADER_MOC} )
     target_link_libraries(ringclient Qt5::Core Qt5::Gui)
 endif()
 
