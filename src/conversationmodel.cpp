@@ -271,7 +271,7 @@ ConversationModel::ConversationModel(const account::Info& owner,
                                      Database& db,
                                      const CallbacksHandler& callbacksHandler,
                                      const BehaviorController& behaviorController)
-: QObject()
+: QObject(nullptr)
 , pimpl_(std::make_unique<ConversationModelPimpl>(*this, lrc, db, callbacksHandler, behaviorController))
 , owner(owner)
 {
