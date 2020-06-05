@@ -52,9 +52,9 @@ public:
     const account::Info& owner;
 
     ContactModel(const account::Info& owner,
-                 Database& db,
-                 const CallbacksHandler& callbacksHandler,
-                 const BehaviorController& behaviorController);
+        Database& db,
+        const CallbacksHandler& callbacksHandler,
+        const BehaviorController& behaviorController);
     ~ContactModel();
 
     /**
@@ -67,7 +67,7 @@ public:
      * @param contactUri
      * @param banned
      */
-    void removeContact(const QString& contactUri, bool banned=false);
+    void removeContact(const QString& contactUri, bool banned = false);
     /**
      * get contact information.
      * @param  contactUri
@@ -79,7 +79,7 @@ public:
      * get list of banned contacts.
      * @return list of banned contacts uris as string
      */
-    const QList<QString>& getBannedContacts() const;
+    Q_INVOKABLE const QList<QString>& getBannedContacts() const;
     /**
      * @return all contacts for this account.
      */
@@ -109,7 +109,7 @@ Q_SIGNALS:
     /**
      * Connect this signal to know when this model was updated.
      */
-    void modelUpdated(const QString& uri, bool needsSorted=true) const;
+    void modelUpdated(const QString& uri, bool needsSorted = true) const;
     /**
      * Connect this signal to know when a contact was added.
      * @param contactUri
@@ -139,9 +139,9 @@ Q_SIGNALS:
      * @param payloads content of the message
      */
     void newAccountMessage(const QString& accountId,
-                           const QString& msgId,
-                           const QString& from,
-                           const MapStringString& payloads) const;
+        const QString& msgId,
+        const QString& from,
+        const MapStringString& payloads) const;
     /**
      * Connect this signal to know when a file transfer interaction is incoming
      * @param dringId Daemon's ID for incoming transfer
@@ -158,6 +158,8 @@ Q_SIGNALS:
 private:
     std::unique_ptr<ContactModelPimpl> pimpl_;
 };
-
+#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
+Q_DECLARE_METATYPE(ContactModel*)
+#endif
 } // namespace api
 } // namespace lrc
