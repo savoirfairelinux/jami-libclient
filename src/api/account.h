@@ -109,6 +109,10 @@ Q_ENUM_NS(TlsMethod)
 #endif
 
 struct ConfProperties_t {
+private:
+    Q_GADGET;
+
+public:
     QString                                           mailbox;
     QString                                           dtmfType;
     bool                                              autoAnswer;
@@ -212,7 +216,7 @@ struct ConfProperties_t {
 // Possible account export status
 enum class ExportOnRingStatus {
     SUCCESS = 0,
-    WRONG_PASSWORD = 1 ,
+    WRONG_PASSWORD = 1,
     NETWORK_ERROR = 2,
     INVALID
 };
@@ -245,6 +249,18 @@ Q_ENUM_NS(LookupStatus)
 
 struct Info
 {
+private:
+    Q_GADGET;
+    Q_PROPERTY(bool freeable_qml MEMBER freeable);
+    Q_PROPERTY(bool valid_qml MEMBER valid);
+    Q_PROPERTY(QString registeredName_qml MEMBER registeredName);
+    Q_PROPERTY(Status status_qml MEMBER status);
+    Q_PROPERTY(QString id_qml MEMBER id);
+    Q_PROPERTY(profile::Info profileInfo_qml READ getProfileInfo);
+    Q_PROPERTY(bool enabled_qml MEMBER enabled);
+    Q_PROPERTY(NewAccountModel* accountModel_qml MEMBER accountModel);
+
+public:
     bool freeable = false;
     bool valid = true;
     QString registeredName;
@@ -255,7 +271,7 @@ struct Info
     std::unique_ptr<lrc::api::NewDeviceModel> deviceModel;
     std::unique_ptr<lrc::api::NewCodecModel> codecModel;
     std::unique_ptr<lrc::api::PeerDiscoveryModel> peerDiscoveryModel;
-    NewAccountModel* accountModel {nullptr};
+    NewAccountModel* accountModel{ nullptr };
 
     // daemon config
     QString                 id;
@@ -265,6 +281,11 @@ struct Info
 
     // load/save
     void                    fromDetails(const MapStringString& details);
+
+    // Q_PROPERTY  getters  and setters
+    profile::Info getProfileInfo() {
+        return profileInfo;
+    }
 };
 
 } // namespace account

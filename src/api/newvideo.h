@@ -17,7 +17,7 @@
  ***************************************************************************/
 #pragma once
 
-// Std
+ // Std
 #include <map>
 #include <memory>
 #include <string>
@@ -67,12 +67,12 @@ using Capabilities = QMap<Channel, ResRateList>;
  * If shared data is carried, only "ptr" and "size" are set.
  */
 struct Frame {
-   uint8_t*             ptr     { nullptr };
-   std::size_t          size    { 0       };
-   std::vector<uint8_t> storage {         };
-   // Next variables are currently used with DirectRenderer only
-   unsigned int         height  { 0       };
-   unsigned int         width   { 0       };
+    uint8_t* ptr{ nullptr };
+    std::size_t          size{ 0 };
+    std::vector<uint8_t> storage{         };
+    // Next variables are currently used with DirectRenderer only
+    unsigned int         height{ 0 };
+    unsigned int         width{ 0 };
 };
 
 enum class DeviceType
@@ -89,7 +89,7 @@ Q_ENUM_NS(DeviceType)
 /**
  * This class describes the current rendered device
  */
-struct RenderedDevice
+    struct RenderedDevice
 {
     QString name;
     DeviceType type = DeviceType::INVALID;
@@ -100,12 +100,21 @@ struct RenderedDevice
  */
 struct Settings
 {
+private:
+    Q_GADGET;
+    Q_PROPERTY(QString channel_qml MEMBER channel);
+    Q_PROPERTY(QString name_qml MEMBER name);
+    Q_PROPERTY(QString id_qml MEMBER id);
+    Q_PROPERTY(float rate_qml MEMBER rate);
+    Q_PROPERTY(QString size_qml MEMBER size);
+public:
     Channel channel = "";
     QString name = "";
     QString id = "";
     Framerate rate = 0;
     Resolution size = "";
 };
+Q_DECLARE_METATYPE(Settings*)
 
 class LIB_EXPORT Renderer : public QObject {
     Q_OBJECT
