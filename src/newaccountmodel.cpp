@@ -176,7 +176,7 @@ NewAccountModel::NewAccountModel(Lrc& lrc,
                                  const BehaviorController& behaviorController,
                                  MigrationCb& willMigrateCb,
                                  MigrationCb& didMigrateCb)
-: QObject()
+: QObject(nullptr)
 , pimpl_(std::make_unique<NewAccountModelPimpl>(*this, lrc, callbacksHandler, behaviorController,
                                                 willMigrateCb, didMigrateCb))
 {
