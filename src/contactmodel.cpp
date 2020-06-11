@@ -618,6 +618,7 @@ ContactModelPimpl::slotContactAdded(const QString& accountId, const QString& con
 {
     if (accountId != linked.owner.id) return;
     auto contact = contacts.find(contactUri);
+    if (contact == contacts.end()) return;
 
     if (contact->profileInfo.type == profile::Type::PENDING) {
         emit behaviorController.trustRequestTreated(linked.owner.id, contactUri);
