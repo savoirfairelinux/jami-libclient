@@ -618,13 +618,14 @@ ContactModelPimpl::slotContactAdded(const QString& accountId, const QString& con
 {
     if (accountId != linked.owner.id) return;
     auto contact = contacts.find(contactUri);
-
-    if (contact->profileInfo.type == profile::Type::PENDING) {
-        emit behaviorController.trustRequestTreated(linked.owner.id, contactUri);
-    } else if (contact->profileInfo.type == profile::Type::RING && !contact->isBanned && confirmed) {
-        // This means that the peer accepted the trust request. We don't need to re-add the contact
-        // a second time (and this reset the presence to false).
-        return;
+    if (contact != contacts.end()) {
+        if (contact->profileInfo.type == profile::Type::PENDING) {
+            emit behaviorController.trustRequestTreated(linked.owner.id, contactUri);
+        } else if (contact->profileInfo.type == profile::Type::RING && !contact->isBanned && confirmed) {
+            // This means that the peer accepted the trust request. We don't need to re-add the contact
+            // a second time (and this reset the presence to false).
+            return;
+        }
     }
 
     bool isBanned = false;
@@ -636,7 +637,7 @@ ContactModelPimpl::slotContactAdded(const QString& accountId, const QString& con
         {
             // Check whether contact is banned or not
             std::lock_guard<std::mutex> lk(bannedContactsMtx_);
-            auto it = std::find(bannedContacts.begin(), bannedContacts.end(), contact->profileInfo.uri);
+            auto it = std::find(bannedContacts.begin(), bannedContacts.end(), contactUri);
 
             isBanned = (it != bannedContacts.end());
 
