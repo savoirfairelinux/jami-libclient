@@ -104,6 +104,7 @@ void
 DataTransferModel::registerTransferId(long long dringId, int interactionId)
 {
     pimpl_->dring2lrcIdMap.emplace(dringId, interactionId);
+    pimpl_->lrc2dringIdMap.erase(interactionId); // Because a file transfer can be retried
     pimpl_->lrc2dringIdMap.emplace(interactionId, dringId);
 }
 
