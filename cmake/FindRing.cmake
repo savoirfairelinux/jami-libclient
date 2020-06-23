@@ -25,6 +25,15 @@ FIND_LIBRARY(ring_BIN NAMES ring
    PATHS ${CMAKE_INSTALL_PREFIX}/bin
 )
 
+IF(${ring_BIN} MATCHES "")
+   FIND_LIBRARY(ring_BIN NAMES jami
+      PATHS ${RING_BUILD_DIR}/.libs
+      PATHS ${CMAKE_INSTALL_PREFIX}/lib
+      PATHS ${CMAKE_INSTALL_PREFIX}/libexec
+      PATHS ${CMAKE_INSTALL_PREFIX}/bin
+   )
+ENDIF()
+
 # Try a static version too
 IF(${ring_BIN} MATCHES "")
    SET(CMAKE_FIND_LIBRARY_SUFFIXES ".a;.lib")
@@ -34,6 +43,14 @@ IF(${ring_BIN} MATCHES "")
       PATHS ${CMAKE_INSTALL_PREFIX}/lib
       PATHS ${CMAKE_INSTALL_PREFIX}/libexec
    )
+   
+   IF(${ring_BIN} MATCHES "")
+      FIND_LIBRARY(ring_BIN NAMES jami
+         PATHS ${RING_BUILD_DIR}/.libs
+         PATHS ${CMAKE_INSTALL_PREFIX}/lib
+         PATHS ${CMAKE_INSTALL_PREFIX}/libexec
+      )
+   ENDIF()
 
 IF(NOT ${CMAKE_SYSTEM_NAME} MATCHES "Windows")
    ADD_DEFINITIONS(-fPIC)
