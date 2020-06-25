@@ -2285,6 +2285,9 @@ ConversationModelPimpl::acceptTransfer(const QString& convUid, uint64_t interact
         destinationDir += "/";
     }
 #endif
+    QDir dir = QFileInfo(destinationDir + path).absoluteDir();
+    if (!dir.exists())
+        dir.mkpath(".");
     auto acceptedFilePath = lrc.getDataTransferModel().accept(interactionId, destinationDir + path, 0);
     storage::updateInteractionBody(db, interactionId, acceptedFilePath);
     storage::updateInteractionStatus(db, interactionId, interaction::Status::TRANSFER_ACCEPTED);
