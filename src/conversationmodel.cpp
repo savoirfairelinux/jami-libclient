@@ -1177,22 +1177,25 @@ ConversationModel::clearUnreadInteractions(const QString& convId) {
         return;
     }
     bool emitUpdated = false;
+    QString lastDisplayed;
     {
         std::lock_guard<std::mutex> lk(pimpl_->interactionsLocks[convId]);
         auto& interactions = pimpl_->conversations[conversationIdx].interactions;
         std::for_each(interactions.begin(), interactions.end(),
-                      [&] (decltype(*interactions.begin())& it) {
-                          if (!it.second.isRead) {
-                              emitUpdated = true;
-                              it.second.isRead = true;
-                              if (owner.profileInfo.type != profile::Type::SIP) {
-                                auto daemonId = storage::getDaemonIdByInteractionId(pimpl_->db, QString::number(it.first));
-                                ConfigurationManager::instance().setMessageDisplayed(owner.id, pimpl_->conversations[conversationIdx].participants.front(), daemonId, 3);
-                              }
-                              storage::setInteractionRead(pimpl_->db, it.first);
-                          }
-                      });
+                        [&] (decltype(*interactions.begin())& it) {
+                            if (!it.second.isRead) {
+                                emitUpdated = true;
+                                it.second.isRead = true;
+                                if (owner.profileInfo.type != profile::Type::SIP)
+                                lastDisplayed = storage::getDaemonIdByInteractionId(pimpl_->db, QString::number(it.first));
+                                storage::setInteractionRead(pimpl_->db, it.first);
+                            }
+                        });
     }
+    if (!lastDisplayed.isEmpty())
+        ConfigurationManager::instance().setMessageDisplayed(
+            owner.id, pimpl_->conversations[conversationIdx].participants.front(), lastDisplayed, 3
+        );
     if (emitUpdated) {
         pimpl_->conversations[conversationIdx].unreadMessages = 0;
         pimpl_->dirtyConversations = {true, true};
