@@ -36,6 +36,7 @@ class BehaviorController;
 class NewAccountModel;
 class DataTransferModel;
 class AVModel;
+class PluginModel;
 
 class LIB_EXPORT Lrc {
 public:
@@ -69,6 +70,12 @@ public:
      * @return a AVModel&.
      */
     AVModel& getAVModel() const;
+
+    /**
+     * get a reference on the PLUGIN controller.
+     * @return a PluginModel&.
+     */
+    PluginModel& getPluginModel() const;
 
     /**
      * Inform the daemon that the connectivity changed
