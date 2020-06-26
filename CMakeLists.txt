@@ -238,6 +238,12 @@ IF(NOT (${ENABLE_VIDEO} MATCHES false))
    add_definitions( -DENABLE_VIDEO=true )
 ENDIF(NOT (${ENABLE_VIDEO} MATCHES false))
 
+IF(NOT (${ENABLE_PLUGIN} MATCHES false))
+   MESSAGE(STATUS "PLUGIN enabled")
+   SET(ENABLE_PLUGIN 1 CACHE BOOLEAN "Enable plugin")
+   add_definitions( -DENABLE_PLUGIN=true )
+ENDIF(NOT (${ENABLE_PLUGIN} MATCHES false))
+
 # ADD_DEFINITIONS(-DQT_DISABLE_DEPRECATED_BEFORE=1)
 
 if (CHK_FREEABLE_BEFORE_ERASE_ACCOUNT)
@@ -297,6 +303,7 @@ SET( libringclient_LIB_SRCS
   src/dbus/instancemanager.cpp
   src/dbus/videomanager.cpp
   src/dbus/presencemanager.cpp
+  src/dbus/pluginmanager.cpp
 
   #Default interface implementations
   src/globalinstances.cpp
@@ -305,6 +312,7 @@ SET( libringclient_LIB_SRCS
 
   #Other
   src/avmodel.cpp
+  src/pluginmodel.cpp
   src/namedirectory.cpp
   src/smartinfohub.cpp
 )
@@ -330,6 +338,7 @@ SET(libringclient_api_LIB_HDRS
   src/api/account.h
   src/api/lrc.h
   src/api/avmodel.h
+  src/api/pluginmodel.h
   src/api/newaccountmodel.h
   src/api/peerdiscoverymodel.h
   src/api/newcallmodel.h
@@ -442,6 +451,21 @@ ELSE()
       video_dbus_interface
    )
 
+   # plugin manager interface
+   SET ( plugin_xml  ${dbus_xml_introspecs_path}/cx.ring.Ring.PluginManagerInterface.xml )
+
+   SET_SOURCE_FILES_PROPERTIES(
+      ${plugin_xml}
+      PROPERTIES
+      CLASSNAME PluginManagerInterface
+      INCLUDE ${dbus_metatype_path}
+   )
+
+   QT5_ADD_DBUS_INTERFACE(
+      libringclient_LIB_SRCS
+      ${plugin_xml}
+      plugin_dbus_interface
+   )
 
    # instance interface
    SET ( instance_xml  ${dbus_xml_introspecs_path}/cx.ring.Ring.Instance.xml )
@@ -477,6 +501,7 @@ IF(${ENABLE_LIBWRAP} MATCHES true AND ${ENABLE_TEST} MATCHES false)
       src/qtwrapper/instancemanager_wrap.h
       src/qtwrapper/presencemanager_wrap.h
       src/qtwrapper/videomanager_wrap.h
+      src/qtwrapper/pluginmanager_wrap.h
    )
 ENDIF()
 
@@ -590,6 +615,11 @@ INSTALL( FILES ${libringclient_LIB_HDRS} ${libringclient_extra_LIB_HDRS}
 
 INSTALL( FILES ${libringclient_video_LIB_HDRS}
   DESTINATION ${INCLUDE_INSTALL_DIR}/libringclient/video
+  COMPONENT Devel
+)
+
+INSTALL( FILES ${libringclient_plugin_LIB_HDRS}
+  DESTINATION ${INCLUDE_INSTALL_DIR}/libringclient/plugin
   COMPONENT Devel
 )
 
