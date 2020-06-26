@@ -1,7 +1,8 @@
 /****************************************************************************
- *    Copyright (C) 2017-2020 Savoir-faire Linux Inc.                             *
+ *    Copyright (C) 2017-2020 Savoir-faire Linux Inc.                       *
  *   Author: Nicolas Jäger <nicolas.jager@savoirfairelinux.com>             *
  *   Author: Sébastien Blin <sebastien.blin@savoirfairelinux.com>           *
+ *   Author : Aline Gondim Santos <aline.gondimsantos@savoirfairelinux.com> *
  *                                                                          *
  *   This library is free software; you can redistribute it and/or          *
  *   modify it under the terms of the GNU Lesser General Public             *
@@ -36,6 +37,7 @@ class BehaviorController;
 class NewAccountModel;
 class DataTransferModel;
 class AVModel;
+class PluginModel;
 
 class LIB_EXPORT Lrc {
 public:
@@ -69,6 +71,12 @@ public:
      * @return a AVModel&.
      */
     AVModel& getAVModel() const;
+
+    /**
+     * get a reference on the PLUGIN controller.
+     * @return a PluginModel&.
+     */
+    PluginModel& getPluginModel() const;
 
     /**
      * Inform the daemon that the connectivity changed

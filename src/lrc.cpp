@@ -2,6 +2,7 @@
  *    Copyright (C) 2017-2020 Savoir-faire Linux Inc.                       *
  *   Author : Nicolas Jäger <nicolas.jager@savoirfairelinux.com>            *
  *   Author : Sébastien Blin <sebastien.blin@savoirfairelinux.com>          *
+ *   Author : Aline Gondim Santos <aline.gondimsantos@savoirfairelinux.com> *
  *                                                                          *
  *   This library is free software; you can redistribute it and/or          *
  *   modify it under the terms of the GNU Lesser General Public             *
@@ -30,6 +31,7 @@
 
 // Models and database
 #include "api/avmodel.h"
+#include "api/pluginmodel.h"
 #include "api/behaviorcontroller.h"
 #include "api/datatransfermodel.h"
 #include "api/newaccountmodel.h"
@@ -62,6 +64,7 @@ public:
     std::unique_ptr<NewAccountModel> accountModel;
     std::unique_ptr<DataTransferModel> dataTransferModel;
     std::unique_ptr<AVModel> AVModel_;
+    std::unique_ptr<PluginModel> PluginModel_;
 
 };
 
@@ -110,6 +113,12 @@ AVModel&
 Lrc::getAVModel() const
 {
     return *lrcPimpl_->AVModel_;
+}
+
+PluginModel&
+Lrc::getPluginModel() const
+{
+    return *lrcPimpl_->PluginModel_;
 }
 
 void
@@ -215,6 +224,7 @@ LrcPimpl::LrcPimpl(Lrc& linked, MigrationCb& willMigrateCb, MigrationCb& didMigr
 , accountModel(std::make_unique<NewAccountModel>(linked, *callbackHandler, *behaviorController, willMigrateCb, didMigrateCb))
 , dataTransferModel {std::make_unique<DataTransferModel>()}
 , AVModel_ {std::make_unique<AVModel>(*callbackHandler)}
+, PluginModel_{std::make_unique<PluginModel>()}
 {
 }
 
