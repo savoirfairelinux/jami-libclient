@@ -20,6 +20,7 @@
 
 #include "api/call.h"
 #include "api/account.h"
+#include "api/profile.h"
 #include "typedefs.h"
 
 #include <QObject>
@@ -40,8 +41,15 @@ class NewCallModelPimpl;
 namespace api
 {
 
-namespace account { struct Info; }
-namespace call { struct Info; }
+namespace account {
+struct Info; }
+namespace call {
+#if QT_VERSION >= QT_VERSION_CHECK(5, 8, 0)
+Q_NAMESPACE
+Q_CLASSINFO("RegisterEnumClassesUnscoped", "false")
+#endif
+struct Info; }
+
 class NewAccountModel;
 
 /**
