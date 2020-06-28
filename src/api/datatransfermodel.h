@@ -38,6 +38,10 @@ namespace api {
 class BehaviorController;
 
 namespace datatransfer {
+#if QT_VERSION >= QT_VERSION_CHECK(5, 8, 0)
+Q_NAMESPACE
+Q_CLASSINFO("RegisterEnumClassesUnscoped", "false")
+#endif
 class Info;
 } // namespace datatransfer
 
