@@ -182,4 +182,4 @@ private:
 
 } // namespace video
 } // namespace api
-}; // namespace lrc
+} // namespace lrc
