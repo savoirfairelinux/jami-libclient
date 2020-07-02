@@ -270,4 +270,4 @@ struct Info
 
 } // namespace account
 } // namespace api
-}; // namespace lrc
+} // namespace lrc
