@@ -98,9 +98,8 @@ Q_SIGNALS:
     void audioMeter(const QString& id, float level);
 
 };
-#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
-Q_DECLARE_METATYPE(BehaviorController*)
-#endif
-
 } // namespace api
 } // namespace lrc
+#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
+Q_DECLARE_METATYPE(lrc::api::BehaviorController*)
+#endif

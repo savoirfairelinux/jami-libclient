@@ -282,8 +282,8 @@ Q_SIGNALS:
 private:
     std::unique_ptr<NewCallModelPimpl> pimpl_;
 };
-#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
-Q_DECLARE_METATYPE(NewCallModel*)
-#endif
 } // namespace api
 } // namespace lrc
+#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
+Q_DECLARE_METATYPE(lrc::api::NewCallModel*)
+#endif

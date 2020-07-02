@@ -327,8 +327,8 @@ Q_SIGNALS:
 private:
     std::unique_ptr<ConversationModelPimpl> pimpl_;
 };
-#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
-Q_DECLARE_METATYPE(ConversationModel*)
-#endif
 } // namespace api
 } // namespace lrc
+#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
+Q_DECLARE_METATYPE(lrc::api::ConversationModel*)
+#endif

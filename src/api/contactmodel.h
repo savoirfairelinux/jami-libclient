@@ -158,8 +158,8 @@ Q_SIGNALS:
 private:
     std::unique_ptr<ContactModelPimpl> pimpl_;
 };
-#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
-Q_DECLARE_METATYPE(ContactModel*)
-#endif
 } // namespace api
 } // namespace lrc
+#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
+Q_DECLARE_METATYPE(lrc::api::ContactModel*)
+#endif

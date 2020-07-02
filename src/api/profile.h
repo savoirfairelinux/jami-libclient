@@ -96,4 +96,4 @@ struct Info
 
 } // namespace profile
 } // namespace api
-}; // namespace lrc
+} // namespace lrc
