@@ -45,8 +45,8 @@ class Info;
  *  @brief Class that manages data transfer.
  */
 class LIB_EXPORT DataTransferModel : public QObject {
-    Q_OBJECT;
-    Q_PROPERTY(QString downloadDirectory_qml MEMBER downloadDirectory);
+    Q_OBJECT
+    Q_PROPERTY(QString downloadDirectory_qml MEMBER downloadDirectory)
 public:
     DataTransferModel();
     ~DataTransferModel();
@@ -111,8 +111,8 @@ private:
     class Impl;
     std::unique_ptr<Impl> pimpl_;
 };
-#if QT_VERSION >= QT_VERSION_CHECK(5, 8, 0)
-Q_DECLARE_METATYPE(DataTransferModel*)
-#endif
 }
 } // namespace lrc::api
+#if QT_VERSION >= QT_VERSION_CHECK(5, 8, 0)
+Q_DECLARE_METATYPE(lrc::api::DataTransferModel*)
+#endif
