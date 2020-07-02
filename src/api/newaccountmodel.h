@@ -246,8 +246,8 @@ Q_SIGNALS:
 private:
     std::unique_ptr<NewAccountModelPimpl> pimpl_;
 };
-#if QT_VERSION >= QT_VERSION_CHECK(5, 8, 0)
-Q_DECLARE_METATYPE(NewAccountModel*)
-#endif
 } // namespace api
 } // namespace lrc
+#if QT_VERSION >= QT_VERSION_CHECK(5, 8, 0)
+Q_DECLARE_METATYPE(lrc::api::NewAccountModel*)
+#endif

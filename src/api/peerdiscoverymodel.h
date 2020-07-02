@@ -74,8 +74,8 @@ Q_SIGNALS:
 private:
     std::unique_ptr<PeerDiscoveryModelPimpl> pimpl_;
 };
-#if QT_VERSION >= QT_VERSION_CHECK(5, 8, 0)
-Q_DECLARE_METATYPE(PeerDiscoveryModel*)
-#endif
 } // namespace api
 } // namespace lrc
+#if QT_VERSION >= QT_VERSION_CHECK(5, 8, 0)
+Q_DECLARE_METATYPE(lrc::api::PeerDiscoveryModel*)
+#endif
