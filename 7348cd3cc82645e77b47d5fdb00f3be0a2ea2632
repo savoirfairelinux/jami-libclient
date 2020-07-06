@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "954abc86_f405f237",
+        "filename": "src/api/pluginmodel.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 859
+      },
+      "writtenOn": "2020-07-06T18:56:44Z",
+      "side": 1,
+      "message": "Others files header are all with \"library\", should it really be changed? Also they have GLPL (wich is the COPYING file), not GPL.",
+      "parentUuid": "ecc1bdba_fd1c7b30",
+      "range": {
+        "startLine": 5,
+        "startChar": 0,
+        "endLine": 17,
+        "endChar": 68
+      },
+      "revId": "7348cd3cc82645e77b47d5fdb00f3be0a2ea2632",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "123d6ddb_e36cbf76",
         "filename": "src/api/pluginmodel.h",
         "patchSetId": 9
@@ -36,6 +60,30 @@
       "writtenOn": "2020-07-06T14:00:03Z",
       "side": 1,
       "message": "Question for the near future:\n\nWhere will be stored the plugin settings. Also do you want to make the plugin configurable there? Same for the patch for the gnome client",
+      "range": {
+        "startLine": 38,
+        "startChar": 0,
+        "endLine": 58,
+        "endChar": 1
+      },
+      "revId": "7348cd3cc82645e77b47d5fdb00f3be0a2ea2632",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8e9c5e7a_eb307cec",
+        "filename": "src/api/pluginmodel.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 859
+      },
+      "writtenOn": "2020-07-06T18:56:44Z",
+      "side": 1,
+      "message": "Each plugins have default settings and any modifications are saved inside plugin\u0027s installation path.\nThe api for those settings are going to be exposed in a next iteration.\nIt will add new views for the individual plugins settings.",
+      "parentUuid": "123d6ddb_e36cbf76",
       "range": {
         "startLine": 38,
         "startChar": 0,
@@ -94,6 +142,30 @@
     },
     {
       "key": {
+        "uuid": "1a57169e_3780a0b0",
+        "filename": "src/newcallmodel.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 720,
+      "author": {
+        "id": 859
+      },
+      "writtenOn": "2020-07-06T18:56:44Z",
+      "side": 1,
+      "message": "It will be handled in a next api modification",
+      "parentUuid": "be2d2e28_5b174f0d",
+      "range": {
+        "startLine": 719,
+        "startChar": 38,
+        "endLine": 720,
+        "endChar": 49
+      },
+      "revId": "7348cd3cc82645e77b47d5fdb00f3be0a2ea2632",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "433f821d_7806ddcb",
         "filename": "src/pluginmodel.cpp",
         "patchSetId": 9
@@ -114,6 +186,30 @@
       "revId": "7348cd3cc82645e77b47d5fdb00f3be0a2ea2632",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b8d50911_eccc5ce7",
+        "filename": "src/pluginmodel.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 859
+      },
+      "writtenOn": "2020-07-06T18:56:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "433f821d_7806ddcb",
+      "range": {
+        "startLine": 47,
+        "startChar": 19,
+        "endLine": 56,
+        "endChar": 2
+      },
+      "revId": "7348cd3cc82645e77b47d5fdb00f3be0a2ea2632",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     },
     {
       "key": {
@@ -140,6 +236,30 @@
     },
     {
       "key": {
+        "uuid": "0f9243a2_6c1be267",
+        "filename": "src/pluginmodel.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 859
+      },
+      "writtenOn": "2020-07-06T18:56:44Z",
+      "side": 1,
+      "message": "Tried, but build throws convert error.\nInsteade used VectorString::fromList",
+      "parentUuid": "4d76858f_74005919",
+      "range": {
+        "startLine": 77,
+        "startChar": 4,
+        "endLine": 77,
+        "endChar": 15
+      },
+      "revId": "7348cd3cc82645e77b47d5fdb00f3be0a2ea2632",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "949a5a26_3f10ab0d",
         "filename": "src/pluginmodel.cpp",
         "patchSetId": 9
@@ -160,6 +280,30 @@
       "revId": "7348cd3cc82645e77b47d5fdb00f3be0a2ea2632",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "237cccfc_fb92e83c",
+        "filename": "src/pluginmodel.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 859
+      },
+      "writtenOn": "2020-07-06T18:56:44Z",
+      "side": 1,
+      "message": "there is no such method for VectorString",
+      "parentUuid": "949a5a26_3f10ab0d",
+      "range": {
+        "startLine": 80,
+        "startChar": 15,
+        "endLine": 80,
+        "endChar": 24
+      },
+      "revId": "7348cd3cc82645e77b47d5fdb00f3be0a2ea2632",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     },
     {
       "key": {
@@ -186,6 +330,30 @@
     },
     {
       "key": {
+        "uuid": "38f616d1_af3d1de2",
+        "filename": "src/pluginmodel.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 859
+      },
+      "writtenOn": "2020-07-06T18:56:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "13038ca3_a8aa5e9c",
+      "range": {
+        "startLine": 95,
+        "startChar": 4,
+        "endLine": 95,
+        "endChar": 20
+      },
+      "revId": "7348cd3cc82645e77b47d5fdb00f3be0a2ea2632",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "f08d8479_350422f2",
         "filename": "src/pluginmodel.cpp",
         "patchSetId": 9
@@ -209,6 +377,30 @@
     },
     {
       "key": {
+        "uuid": "c5835fa6_6ac1d510",
+        "filename": "src/pluginmodel.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 859
+      },
+      "writtenOn": "2020-07-06T18:56:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f08d8479_350422f2",
+      "range": {
+        "startLine": 112,
+        "startChar": 16,
+        "endLine": 112,
+        "endChar": 40
+      },
+      "revId": "7348cd3cc82645e77b47d5fdb00f3be0a2ea2632",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "3eda58a8_f5fdd9c8",
         "filename": "src/qtwrapper/pluginmanager_wrap.h",
         "patchSetId": 9
@@ -229,6 +421,30 @@
       "revId": "7348cd3cc82645e77b47d5fdb00f3be0a2ea2632",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8e891077_27b10e24",
+        "filename": "src/qtwrapper/pluginmanager_wrap.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 859
+      },
+      "writtenOn": "2020-07-06T18:56:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3eda58a8_f5fdd9c8",
+      "range": {
+        "startLine": 57,
+        "startChar": 25,
+        "endLine": 61,
+        "endChar": 11
+      },
+      "revId": "7348cd3cc82645e77b47d5fdb00f3be0a2ea2632",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
