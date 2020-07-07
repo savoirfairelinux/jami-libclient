@@ -238,6 +238,30 @@
     },
     {
       "key": {
+        "uuid": "17269c61_b86c9da3",
+        "filename": "src/newcallmodel.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 720,
+      "author": {
+        "id": 859
+      },
+      "writtenOn": "2020-07-07T13:48:17Z",
+      "side": 1,
+      "message": "The idea is to link the callMediaHandler to the callID. That way,this untoggle won\u0027t be needed and will be erased.",
+      "parentUuid": "b123ff51_7fa5dd8f",
+      "range": {
+        "startLine": 719,
+        "startChar": 38,
+        "endLine": 720,
+        "endChar": 49
+      },
+      "revId": "7348cd3cc82645e77b47d5fdb00f3be0a2ea2632",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "433f821d_7806ddcb",
         "filename": "src/pluginmodel.cpp",
         "patchSetId": 9
@@ -391,6 +415,30 @@
       "side": 1,
       "message": "Yeah np, fromList is what you needed there. The for was useless ;)",
       "parentUuid": "237cccfc_fb92e83c",
+      "range": {
+        "startLine": 80,
+        "startChar": 15,
+        "endLine": 80,
+        "endChar": 24
+      },
+      "revId": "7348cd3cc82645e77b47d5fdb00f3be0a2ea2632",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "01394cf2_f5bd741a",
+        "filename": "src/pluginmodel.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 859
+      },
+      "writtenOn": "2020-07-07T13:48:17Z",
+      "side": 1,
+      "message": "BTW, I looked other *model.cpp and they use the loop. Maybe you would like to modify them as well?",
+      "parentUuid": "d02bded7_49224d4c",
       "range": {
         "startLine": 80,
         "startChar": 15,
