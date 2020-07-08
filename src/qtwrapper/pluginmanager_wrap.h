@@ -122,17 +122,17 @@ public Q_SLOTS: // METHODS
 #endif
     }
 
-    void toggleCallMediaHandler(const QString& id, bool toggle)
+    void toggleCallMediaHandler(const QString& callID, const QString& id, bool toggle)
     {
 #ifdef ENABLE_PLUGIN
-        DRing::toggleCallMediaHandler(id.toStdString(), toggle);
+        DRing::toggleCallMediaHandler(callID.toStdString(), id.toStdString(), toggle);
 #endif
     }
 
-    MapStringString getCallMediaHandlerStatus()
+    MapStringString getCallMediaHandlerStatus(const QString& callID)
     {
 #ifdef ENABLE_PLUGIN
-        return convertMap(DRing::getCallMediaHandlerStatus());
+        return convertMap(DRing::getCallMediaHandlerStatus(callID.toStdString()));
 #else
         MapStringString temp;
         return temp;
