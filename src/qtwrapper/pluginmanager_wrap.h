@@ -86,14 +86,14 @@ public Q_SLOTS: // METHODS
         return convertStringList(DRing::listCallMediaHandlers());
     }
 
-    void toggleCallMediaHandler(const QString& id, bool toggle)
+    void toggleCallMediaHandler(const QString& callID, const QString& id, bool toggle)
     {
-        DRing::toggleCallMediaHandler(id.toStdString(), toggle);
+        DRing::toggleCallMediaHandler(callID.toStdString(), id.toStdString(), toggle);
     }
 
-    MapStringString getCallMediaHandlerStatus()
+    MapStringString getCallMediaHandlerStatus(const QString& callID)
     {
-        return convertMap(DRing::getCallMediaHandlerStatus());
+        return convertMap(DRing::getCallMediaHandlerStatus(callID.toStdString()));
     }
 
     MapStringString getCallMediaHandlerDetails(const QString& id)
