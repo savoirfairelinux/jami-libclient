@@ -1,20 +1,20 @@
-/****************************************************************************
- *    Copyright (C) 2018-2020 Savoir-faire Linux Inc.                       *
- *   Author: Aline Gondim Santos <aline.gondimsantos@savoirfairelinux.com>  *
- *                                                                          *
- *   This library is free software; you can redistribute it and/or          *
- *   modify it under the terms of the GNU Lesser General Public             *
- *   License as published by the Free Software Foundation; either           *
- *   version 2.1 of the License, or (at your option) any later version.     *
- *                                                                          *
- *   This library is distributed in the hope that it will be useful,        *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of         *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU      *
- *   Lesser General Public License for more details.                        *
- *                                                                          *
- *   You should have received a copy of the GNU General Public License      *
- *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
- ***************************************************************************/
+/**
+ *    Copyright (C) 2020 Savoir-faire Linux Inc.
+ *   Author: Aline Gondim Santos <aline.gondimsantos@savoirfairelinux.com>
+ *
+ *   This library is free software; you can redistribute it and/or
+ *   modify it under the terms of the GNU Lesser General Public
+ *   License as published by the Free Software Foundation; either
+ *   version 2.1 of the License, or (at your option) any later version.
+ *
+ *   This library is distributed in the hope that it will be useful,
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *   Lesser General Public License for more details.
+ *
+ *   You should have received a copy of the GNU General Public License
+ *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 #include "api/pluginmodel.h"
 
 // Std
@@ -136,10 +136,10 @@ void
 PluginModel::toggleCallMediaHandler(const QString& id)
 {
     MapStringString toggleInfo = PluginManager::instance().getCallMediaHandlerStatus();
-    if (toggleInfo["state"] == "true"){
-        PluginManager::instance().toggleCallMediaHandler(toggleInfo["name"], false);
+    if (toggleInfo["name"] == id){
+        PluginManager::instance().toggleCallMediaHandler(id, false);
     }
-    if (!id.isEmpty() && id != toggleInfo["name"]) {
+	else {
         PluginManager::instance().toggleCallMediaHandler(id, true);
     }
 }

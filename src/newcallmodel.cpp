@@ -770,11 +770,6 @@ NewCallModelPimpl::slotCallStateChanged(const QString& callId, const QString& st
 
     if (call->status == call::Status::ENDED) {
         emit linked.callEnded(callId);
-        // NOTE: this line stops all mediaHandlers after the end of any call.
-        // The mediaHandler will be linked with the callID soon and each mediaHandler
-        // will be activated/deactivated with respect to the callID.
-        // This modification will allow to remove the next line.
-        PluginModel().toggleCallMediaHandler("");
     } else if (call->status == call::Status::IN_PROGRESS) {
         if (previousStatus == call::Status::INCOMING_RINGING
                 || previousStatus == call::Status::OUTGOING_RINGING) {
