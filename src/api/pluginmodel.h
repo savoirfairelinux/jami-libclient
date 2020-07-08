@@ -124,13 +124,13 @@ public:
     /**
      * Toggle media handler
      */
-    Q_INVOKABLE void toggleCallMediaHandler(const QString& id);
+    Q_INVOKABLE void toggleCallMediaHandler(const QString& callID, const QString& id);
 
     /**
      * Verify if there is an active plugin media handler
      * @return Map with name and status
      */
-    Q_INVOKABLE MapStringString getCallMediaHandlerStatus();
+    Q_INVOKABLE MapStringString getCallMediaHandlerStatus(const QString& callID);
 
     /**
      * Get details of installed plugins media handlers

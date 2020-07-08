@@ -62,9 +62,9 @@ public Q_SLOTS: // METHODS
 
     QStringList listCallMediaHandlers();
 
-    void toggleCallMediaHandler(const QString& id, bool toggle);
+    void toggleCallMediaHandler(const QString& callID, const QString& id, bool toggle);
 
-    MapStringString getCallMediaHandlerStatus();
+    MapStringString getCallMediaHandlerStatus(const QString& callID);
 
     MapStringString getCallMediaHandlerDetails(const QString& id);
 

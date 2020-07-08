@@ -133,21 +133,21 @@ PluginModel::listCallMediaHandlers() const
 }
 
 void
-PluginModel::toggleCallMediaHandler(const QString& id)
+PluginModel::toggleCallMediaHandler(const QString& callID, const QString& id)
 {
-    MapStringString toggleInfo = PluginManager::instance().getCallMediaHandlerStatus();
-    if (toggleInfo["state"] == "true"){
-        PluginManager::instance().toggleCallMediaHandler(toggleInfo["name"], false);
+    MapStringString toggleInfo = PluginManager::instance().getCallMediaHandlerStatus(callID);
+    if (!toggleInfo["name"].isEmpty()){
+        PluginManager::instance().toggleCallMediaHandler(callID, toggleInfo["name"], false);
     }
-    if (!id.isEmpty() && id != toggleInfo["name"]) {
-        PluginManager::instance().toggleCallMediaHandler(id, true);
+    if (toggleInfo["name"] != id){
+        PluginManager::instance().toggleCallMediaHandler(callID, id, true);
     }
 }
 
 MapStringString
-PluginModel::getCallMediaHandlerStatus()
+PluginModel::getCallMediaHandlerStatus(const QString& callID)
 {
-    return PluginManager::instance().getCallMediaHandlerStatus();
+    return PluginManager::instance().getCallMediaHandlerStatus(callID);
 }
 
 plugin::MediaHandlerDetails
