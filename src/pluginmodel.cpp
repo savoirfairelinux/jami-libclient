@@ -168,6 +168,30 @@ PluginModel::getCallMediaHandlerDetails(const QString& id)
     return result;
 }
 
+VectorMapStringString
+PluginModel::getPluginPreferences(const QString& path)
+{
+    return PluginManager::instance().getPluginPreferences(path);
+}
+
+bool
+PluginModel::setPluginPreference(const QString& path, const QString& key, const QString& value)
+{
+    return PluginManager::instance().setPluginPreference(path, key, value);
+}
+
+MapStringString
+PluginModel::getPluginPreferencesValues(const QString& path)
+{
+    return PluginManager::instance().getPluginPreferencesValues(path);
+}
+
+bool
+PluginModel::resetPluginPreferencesValues(const QString& path)
+{
+    return PluginManager::instance().resetPluginPreferencesValues(path);
+}
+
 } // namespace lrc
 
 #include "api/moc_pluginmodel.cpp"

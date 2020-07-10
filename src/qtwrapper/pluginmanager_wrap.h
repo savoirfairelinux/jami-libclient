@@ -165,6 +165,44 @@ public Q_SLOTS: // METHODS
 #endif
     }
 
+    VectorMapStringString getPluginPreferences(const QString& path)
+    {
+        VectorMapStringString temp;
+#ifdef ENABLE_PLUGIN
+        for (auto x : DRing::getPluginPreferences(path.toStdString())) {
+            temp.push_back(convertMap(x));
+        }
+#endif
+        return temp;
+    }
+
+    bool setPluginPreference(const QString& path, const QString& key, const QString& value)
+    {
+#ifdef ENABLE_PLUGIN
+        return DRing::setPluginPreference(path.toStdString(), key.toStdString(), value.toStdString());
+#else
+        return false;
+#endif
+    }
+
+    MapStringString getPluginPreferencesValues(const QString& path)
+    {
+#ifdef ENABLE_PLUGIN
+        return convertMap(DRing::getPluginPreferencesValues(path.toStdString()));
+#else
+        MapStringString temp;
+        return temp;
+#endif
+    }
+
+    bool resetPluginPreferencesValues(const QString& path)
+    {
+#ifdef ENABLE_PLUGIN
+        return DRing::resetPluginPreferencesValues(path.toStdString());
+#else
+        return false;
+#endif
+    }
 };
 
 namespace org {
