@@ -1,20 +1,20 @@
-/****************************************************************************
- *    Copyright (C) 2018-2020 Savoir-faire Linux Inc.                       *
- *   Author: Aline Gondim Santos <aline.gondimsantos@savoirfairelinux.com>  *
- *                                                                          *
- *   This library is free software; you can redistribute it and/or          *
- *   modify it under the terms of the GNU Lesser General Public             *
- *   License as published by the Free Software Foundation; either           *
- *   version 2.1 of the License, or (at your option) any later version.     *
- *                                                                          *
- *   This library is distributed in the hope that it will be useful,        *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of         *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU      *
- *   Lesser General Public License for more details.                        *
- *                                                                          *
- *   You should have received a copy of the GNU General Public License      *
- *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
- ***************************************************************************/
+/*!
+ *    Copyright (C) 2018-2020 Savoir-faire Linux Inc.
+ *   Author: Aline Gondim Santos <aline.gondimsantos@savoirfairelinux.com>
+ *
+ *   This library is free software; you can redistribute it and/or
+ *   modify it under the terms of the GNU Lesser General Public
+ *   License as published by the Free Software Foundation; either
+ *   version 2.1 of the License, or (at your option) any later version.
+ *
+ *   This library is distributed in the hope that it will be useful,
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *   Lesser General Public License for more details.
+ *
+ *   You should have received a copy of the GNU General Public License
+ *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 #pragma once
 
 // std
@@ -93,31 +93,31 @@ public:
 
     /**
      * Install plugin
-     * @return plugin installed
+     * @return true if plugin was succesfully installed
      */
     Q_INVOKABLE bool installPlugin(const QString& jplPath, bool force);
 
     /**
      * Uninstall plugin
-     * @return plugin uninstalled
+     * @return true if plugin was succesfully uninstalled
      */
     Q_INVOKABLE bool uninstallPlugin(const QString& rootPath);
 
     /**
      * Load plugin
-     * @return plugin loaded
+     * @return true if plugin was succesfully loaded
      */
     Q_INVOKABLE bool loadPlugin(const QString& path);
 
     /**
      * Unload plugin
-     * @return plugin unloaded
+     * @return true if plugin was succesfully unloaded
      */
     Q_INVOKABLE bool unloadPlugin(const QString& path);
 
     /**
-     * List available Media Handlers
-     * @return List of available Media Handlers
+     * List all plugins Media Handlers
+     * @return List of all plugins Media Handlers
      */
     Q_INVOKABLE VectorString listCallMediaHandlers() const;
 
@@ -133,10 +133,35 @@ public:
     Q_INVOKABLE MapStringString getCallMediaHandlerStatus();
 
     /**
-     * Get details of available media handler
+     * Get details of installed plugins media handlers
      * @return Media Handler Details
      */
     Q_INVOKABLE plugin::MediaHandlerDetails getCallMediaHandlerDetails(const QString& id);
+
+    /**
+     * Get preferences map of installed plugin
+     * @return Plugin preferences infos vector
+     */
+    Q_INVOKABLE VectorMapStringString getPluginPreferences(const QString& path);
+
+    /**
+     * Modify preference of installed plugin
+     * @return true if preference was succesfully modified
+     */
+    Q_INVOKABLE bool setPluginPreference(const QString& path, const QString& key, const QString& value);
+
+    /**
+     * Get preferences values of installed plugin
+     * @return Plugin preferences map
+     */
+    Q_INVOKABLE MapStringString getPluginPreferencesValues(const QString& path);
+
+    /**
+     * Reste preferences values of installed plugin to default values
+     * @return true if preference was succesfully reset
+     */
+    Q_INVOKABLE bool resetPluginPreferencesValues(const QString& path);
+
 };
 
 } // namespace api
