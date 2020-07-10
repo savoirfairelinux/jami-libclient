@@ -111,6 +111,29 @@ public Q_SLOTS: // METHODS
         return DRing::getPluginsEnabled();
     }
 
+    VectorMapStringString getPluginPreferences(const QString& path)
+    {
+        VectorMapStringString temp;
+        for (auto x : DRing::getPluginPreferences(path.toStdString())) {
+            temp.push_back(convertMap(x));
+        }
+        return temp;
+    }
+
+    bool setPluginPreference(const QString& path, const QString& key, const QString& value)
+    {
+        return DRing::togglePlugin(path.toStdString(), key.toStdString(), value.toStdString());
+    }
+
+    MapStringString getPluginPreferencesValues(const QString& path)
+    {
+        return convertMap(DRing::getPluginPreferencesValues(path.toStdString()));
+    }
+
+    bool resetPluginPreferencesValues(const std::string& path)
+    {
+        return DRing::resetPluginPreferencesValues(path.toStdString());
+    }
 };
 
 namespace org {
