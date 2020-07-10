@@ -137,6 +137,31 @@ public:
      * @return Media Handler Details
      */
     Q_INVOKABLE plugin::MediaHandlerDetails getCallMediaHandlerDetails(const QString& id);
+
+    /**
+     * Get preferences map of available plugin
+     * @return Plugin preferences infos vector
+     */
+    Q_INVOKABLE VectorMapStringString getPluginPreferences(const QString& path);
+
+    /**
+     * Modify preference of available plugin
+     * @return bool if preference was succesfully modified
+     */
+    Q_INVOKABLE bool setPluginPreference(const QString& path, const QString& key, const QString& value);
+
+    /**
+     * Get preferences values of available plugin
+     * @return Plugin preferences map
+     */
+    Q_INVOKABLE MapStringString getPluginPreferencesValues(const QString& path);
+
+    /**
+     * Reste preferences values of available plugin to default values
+     * @return bool if preference was succesfully reset
+     */
+    Q_INVOKABLE bool resetPluginPreferencesValues(const QString& path);
+
 };
 
 } // namespace api
