@@ -27,7 +27,9 @@
 #include <QtCore/QTimer>
 
 #include "typedefs.h"
+#ifdef ENABLE_PLUGIN
 #include <plugin_manager_interface.h>
+#endif
 #include "conversions_wrap.hpp"
 
 
@@ -46,69 +48,121 @@ public Q_SLOTS: // METHODS
 
     bool loadPlugin(const QString& path)
     {
+#ifdef ENABLE_PLUGIN
         return DRing::loadPlugin(path.toStdString());
+#else
+        return false;
+#endif
     }
 
     bool unloadPlugin(const QString& path)
     {
+#ifdef ENABLE_PLUGIN
         return DRing::unloadPlugin(path.toStdString());
+#else
+        return false;
+#endif
     }
 
     MapStringString getPluginDetails(const QString& path)
     {
-        MapStringString temp =
-            convertMap(DRing::getPluginDetails(path.toStdString()));
+#ifdef ENABLE_PLUGIN
+        return convertMap(DRing::getPluginDetails(path.toStdString()));
+#else
+        MapStringString temp;
         return temp;
+#endif
     }
 
     QStringList listAvailablePlugins()
     {
+#ifdef ENABLE_PLUGIN
         return convertStringList(DRing::listAvailablePlugins());
+#else
+        QStringList temp;
+        return temp;
+#endif
     }
 
     QStringList listLoadedPlugins()
     {
+#ifdef ENABLE_PLUGIN
         return convertStringList(DRing::listLoadedPlugins());
+#else
+        QStringList temp;
+        return temp;
+#endif
     }
 
     int installPlugin(const QString& jplPath, bool force)
     {
+#ifdef ENABLE_PLUGIN
         return DRing::installPlugin(jplPath.toStdString(), force);
+#else
+        return 0;
+#endif
     }
 
     int uninstallPlugin(const QString& pluginRootPath)
     {
+#ifdef ENABLE_PLUGIN
         return DRing::uninstallPlugin(pluginRootPath.toStdString());
+#else
+        return 0;
+#endif
     }
 
     QStringList listCallMediaHandlers()
     {
+#ifdef ENABLE_PLUGIN
         return convertStringList(DRing::listCallMediaHandlers());
+#else
+        QStringList temp;
+        return temp;
+#endif
     }
 
     void toggleCallMediaHandler(const QString& id, bool toggle)
     {
+#ifdef ENABLE_PLUGIN
         DRing::toggleCallMediaHandler(id.toStdString(), toggle);
+#endif
     }
 
     MapStringString getCallMediaHandlerStatus()
     {
+#ifdef ENABLE_PLUGIN
         return convertMap(DRing::getCallMediaHandlerStatus());
+#else
+        MapStringString temp;
+        return temp;
+#endif
     }
 
     MapStringString getCallMediaHandlerDetails(const QString& id)
     {
+#ifdef ENABLE_PLUGIN
         return convertMap(DRing::getCallMediaHandlerDetails(id.toStdString()));
+#else
+        MapStringString temp;
+        return temp;
+#endif
     }
 
     void setPluginsEnabled(bool enable)
     {
+#ifdef ENABLE_PLUGIN
         DRing::setPluginsEnabled(enable);
+#endif
     }
 
     bool getPluginsEnabled()
     {
+#ifdef ENABLE_PLUGIN
         return DRing::getPluginsEnabled();
+#else
+        return false;
+#endif
     }
 
 };
