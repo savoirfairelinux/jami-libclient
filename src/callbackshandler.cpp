@@ -402,7 +402,7 @@ CallbacksHandler::slotIncomingMessage(const QString& callId,
                                     pieces2[1].toInt(),
                                     pieces3[1].toInt(),
                                     e.second);
-        } else { // we consider it as an usual message interaction
+        } else if (e.first.contains("text/plain")) { // we consider it as an usual message interaction
             emit incomingCallMessage(callId, from2, e.second);
         }
     }
