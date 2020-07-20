@@ -65,78 +65,78 @@ public:
      * Enable/disable plugins
      * @param if plugin enabled
      */
-    void setPluginsEnabled(bool enable);
+    Q_INVOKABLE void setPluginsEnabled(bool enable);
 
     /**
      * Get if plugins are enabled
      * @return plugins enabled
      */
-    bool getPluginsEnabled() const;
+    Q_INVOKABLE bool getPluginsEnabled() const;
 
     /**
      * Get list of installed plugins
      * @return plugins installed
      */
-    VectorString listAvailablePlugins() const;
+    Q_INVOKABLE VectorString listAvailablePlugins() const;
 
     /**
      * Get list of loaded plugins
      * @return plugins loaded
      */
-    VectorString listLoadedPlugins() const;
+    Q_INVOKABLE VectorString listLoadedPlugins() const;
 
     /**
      * Get details of installed plugin
      * @return plugin Details
      */
-    plugin::PluginDetails getPluginDetails(const QString& path);
+    Q_INVOKABLE plugin::PluginDetails getPluginDetails(const QString& path);
 
     /**
      * Install plugin
      * @return plugin installed
      */
-    bool installPlugin(const QString& jplPath, bool force);
+    Q_INVOKABLE bool installPlugin(const QString& jplPath, bool force);
 
     /**
      * Uninstall plugin
      * @return plugin uninstalled
      */
-    bool uninstallPlugin(const QString& rootPath);
+    Q_INVOKABLE bool uninstallPlugin(const QString& rootPath);
 
     /**
      * Load plugin
      * @return plugin loaded
      */
-    bool loadPlugin(const QString& path);
+    Q_INVOKABLE bool loadPlugin(const QString& path);
 
     /**
      * Unload plugin
      * @return plugin unloaded
      */
-    bool unloadPlugin(const QString& path);
+    Q_INVOKABLE bool unloadPlugin(const QString& path);
 
     /**
      * List available Media Handlers
      * @return List of available Media Handlers
      */
-    VectorString listCallMediaHandlers() const;
+    Q_INVOKABLE VectorString listCallMediaHandlers() const;
 
     /**
      * Toggle media handler
      */
-    void toggleCallMediaHandler(const QString& id);
+    Q_INVOKABLE void toggleCallMediaHandler(const QString& id);
 
     /**
      * Verify if there is an active plugin media handler
      * @return Map with name and status
      */
-    MapStringString getCallMediaHandlerStatus();
+    Q_INVOKABLE MapStringString getCallMediaHandlerStatus();
 
     /**
      * Get details of available media handler
      * @return Media Handler Details
      */
-    plugin::MediaHandlerDetails getCallMediaHandlerDetails(const QString& id);
+    Q_INVOKABLE plugin::MediaHandlerDetails getCallMediaHandlerDetails(const QString& id);
 };
 
 } // namespace api
