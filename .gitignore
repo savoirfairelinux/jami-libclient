@@ -1,6 +1,7 @@
 .DS_Store
 build/
 build-local/
+build-qml/
 
 msvc/
 translations/*.qm
