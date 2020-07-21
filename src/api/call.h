@@ -125,6 +125,12 @@ enum class Type {
     CONFERENCE
 };
 
+enum class Layout {
+    GRID,
+    ONE_WITH_SMALL,
+    ONE
+};
+
 struct Info
 {
     QString id;
@@ -136,6 +142,7 @@ struct Info
     bool audioMuted = false;
     bool videoMuted = false;
     bool isAudioOnly = false;
+    Layout layout = Layout::GRID;
 };
 
 static inline bool
