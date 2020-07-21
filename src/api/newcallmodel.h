@@ -225,6 +225,16 @@ public:
      */
     void setCurrentCall(const QString& callId) const;
 
+    /**
+     * Change the conference layout
+     */
+    void setConferenceLayout(const QString& confId, const call::Layout& layout);
+
+    /**
+     * Set the shown participant
+     */
+    void setActiveParticipant(const QString& confId, const QString& participant);
+
 Q_SIGNALS:
     /**
      * Emitted when a call state changes
