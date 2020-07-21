@@ -363,6 +363,16 @@ public Q_SLOTS: // METHODS
         DRing::stopSmartInfo();
     }
 
+    void setConferenceLayout(const QString& confId, int layout)
+    {
+        DRing::setConferenceLayout(confId.toStdString(), layout);
+    }
+
+    void setActiveParticipant(const QString& confId, const QString& callId)
+    {
+        DRing::setActiveParticipant(confId.toStdString(), callId.toStdString());
+    }
+
     bool switchInput(const QString &callId, const QString &resource)
     {
 #ifdef ENABLE_VIDEO

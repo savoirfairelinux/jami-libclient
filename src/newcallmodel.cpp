@@ -630,6 +630,33 @@ NewCallModel::setCurrentCall(const QString& callId) const
 }
 
 void
+NewCallModel::setConferenceLayout(const QString& confId, const call::Layout& layout)
+{
+    auto call = pimpl_->calls.find(confId);
+    if (call != pimpl_->calls.end()) {
+        switch (layout) {
+            case call::Layout::GRID:
+                CallManager::instance().setConferenceLayout(confId, 0);
+                break;
+            case call::Layout::ONE_WITH_SMALL:
+                CallManager::instance().setConferenceLayout(confId, 1);
+                break;
+            case call::Layout::ONE:
+                CallManager::instance().setConferenceLayout(confId, 2);
+                break;
+        }
+        call->second->layout = layout;
+    }
+}
+
+void
+NewCallModel::setActiveParticipant(const QString& confId, const QString& participant)
+{
+    CallManager::instance().setActiveParticipant(confId, participant);
+}
+
+
+void
 NewCallModel::sendSipMessage(const QString& callId, const QString& body) const
 {
     MapStringString payloads;
