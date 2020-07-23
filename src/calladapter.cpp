@@ -150,7 +150,10 @@ CallAdapter::slotShowIncomingCallView(const QString &accountId, const conversati
         /*
          * Show incoming call page only.
          */
-        emit showIncomingCallPage(accountId, convInfo.uid);
+        auto accountProperties = LRCInstance::accountModel().getAccountConfig(accountId);
+        if (!accountProperties.autoAnswer && !accountProperties.isRendezVous) {
+            emit showIncomingCallPage(accountId, convInfo.uid);
+        }
         return;
     }
 
@@ -165,11 +168,7 @@ CallAdapter::slotShowIncomingCallView(const QString &accountId, const conversati
     } else {
         auto selectedAccountId = LRCInstance::getCurrentAccountInfo().id;
         auto accountProperties = LRCInstance::accountModel().getAccountConfig(selectedAccountId);
-        if (accountProperties.autoAnswer) {
-            /*
-             * TODO: Auto answer
-             */
-        } else {
+        if (!accountProperties.autoAnswer && !accountProperties.isRendezVous) {
             emit showIncomingCallPage(accountId, convInfo.uid);
         }
     }

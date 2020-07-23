@@ -381,6 +381,12 @@ SettingsAdaptor::getAccountConfig_DHT_PublicInCalls()
 }
 
 bool
+SettingsAdaptor::getAccountConfig_RendezVous()
+{
+    return getAccountConfig().isRendezVous;
+}
+
+bool
 SettingsAdaptor::getAccountConfig_AutoAnswer()
 {
     return getAccountConfig().autoAnswer;
@@ -655,6 +661,15 @@ SettingsAdaptor::setCallsUntrusted(bool state)
     confProps.DHT.PublicInCalls = state;
     LRCInstance::accountModel().setAccountConfig(LRCInstance::getCurrAccId(), confProps);
 }
+
+void
+SettingsAdaptor::setIsRendezVous(bool state)
+{
+    auto confProps = LRCInstance::accountModel().getAccountConfig(LRCInstance::getCurrAccId());
+    confProps.isRendezVous = state;
+    LRCInstance::accountModel().setAccountConfig(LRCInstance::getCurrAccId(), confProps);
+}
+
 
 void
 SettingsAdaptor::setAutoAnswerCalls(bool state)
