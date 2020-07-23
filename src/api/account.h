@@ -96,6 +96,7 @@ struct ConfProperties_t {
     QString                                           mailbox;
     QString                                           dtmfType;
     bool                                              autoAnswer;
+    bool                                              isRendezVous;
     int                                               activeCallLimit;
     QString                                           hostname;
     QString                                           username;
