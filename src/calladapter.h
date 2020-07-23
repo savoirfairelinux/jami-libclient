@@ -1,6 +1,7 @@
 /*
  * Copyright (C) 2020 by Savoir-faire Linux
  * Author: Mingrui Zhang <mingrui.zhang@savoirfairelinux.com>
+ * Author: Sébastien Blin <sebastien.blin@savoirfairelinux.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -53,6 +54,7 @@ public:
     Q_INVOKABLE void muteThisCallToggle();
     Q_INVOKABLE void recordThisCallToggle();
     Q_INVOKABLE void videoPauseThisCallToggle();
+    Q_INVOKABLE bool isRecordingThisCall();
 
 signals:
     void showOutgoingCallPage(const QString &accountId, const QString &convUid);
@@ -106,8 +108,7 @@ private:
     /*
      * For Call Overlay
      */
-    void setTime(const QString &accountId, const QString &convUid);
     void updateCallOverlay(const lrc::api::conversation::Info &convInfo);
-
+    void setTime(const QString &accountId, const QString &convUid);
     QTimer *oneSecondTimer_;
 };

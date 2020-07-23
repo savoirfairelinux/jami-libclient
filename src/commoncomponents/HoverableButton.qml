@@ -19,6 +19,7 @@
 import QtQuick 2.14
 import QtQuick.Controls 2.14
 import net.jami.Models 1.0
+import QtGraphicalEffects 1.15
 
 
 /*
@@ -30,6 +31,9 @@ import net.jami.Models 1.0
  */
 Button {
     id: hoverableButton
+
+    checkable: true
+    checked: false
 
     property int fontPointSize: 9
     property int buttonImageHeight: hoverableButtonBackground.height - 10
@@ -43,6 +47,11 @@ Button {
 
     property alias radius: hoverableButtonBackground.radius
     property alias source: hoverableButtonImage.source
+    property var checkedImage: null
+    property var baseImage: null
+    property var checkedColor: null
+    property var baseColor: null
+    property alias color: hoverableButton.baseColor
 
     font.pointSize: fontPointSize
 
@@ -64,18 +73,31 @@ Button {
             fillMode: Image.PreserveAspectFit
             mipmap: true
             asynchronous: true
+
+            source: hoverableButton.checked && checkedImage? checkedImage : baseImage
+
+            layer {
+                enabled: true
+                effect: ColorOverlay {
+                    id: overlay
+                    color: hoverableButton.checked && checkedColor?
+                        checkedColor :
+                        (baseColor? baseColor : "transparent")
+                }
+            }
         }
 
         MouseArea {
             anchors.fill: parent
 
-            hoverEnabled: true
+            hoverEnabled: false
 
             onPressed: {
                 hoverableButtonBackground.color = onPressColor
             }
             onReleased: {
                 hoverableButtonBackground.color = onReleaseColor
+                hoverableButton.toggle()
                 hoverableButton.clicked()
             }
             onEntered: {

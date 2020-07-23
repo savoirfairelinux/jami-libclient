@@ -31,9 +31,7 @@ Rectangle {
     property string bestName: "Best Name"
     property string bestId: "Best Id"
 
-    property var corrspondingMessageWebView: null
-
-    signal audioCallPageBackButtonIsClicked
+    property var linkedWebview: null
 
     function updateUI(accountId, convUid) {
         contactImgSource = "data:image/png;base64," + ClientWrapper.utilsAdaptor.getContactImageString(
@@ -44,19 +42,19 @@ Rectangle {
         bestId = (bestName !== id) ? id : ""
     }
 
-    function setAudioCallPageCorrspondingMessageWebView(webViewId) {
-        corrspondingMessageWebView = webViewId
-        corrspondingMessageWebView.needToHideConversationInCall.disconnect(
+    function setLinkedWebview(webViewId) {
+        linkedWebview = webViewId
+        linkedWebview.needToHideConversationInCall.disconnect(
                     closeInCallConversation)
-        corrspondingMessageWebView.needToHideConversationInCall.connect(
+        linkedWebview.needToHideConversationInCall.connect(
                     closeInCallConversation)
     }
 
     function closeInCallConversation() {
         if (inAudioCallMessageWebViewStack.visible) {
-            corrspondingMessageWebView.resetMessagingHeaderBackButtonSource(
+            linkedWebview.resetMessagingHeaderBackButtonSource(
                         true)
-            corrspondingMessageWebView.setMessagingHeaderButtonsVisible(true)
+            linkedWebview.setMessagingHeaderButtonsVisible(true)
             inAudioCallMessageWebViewStack.visible = false
             inAudioCallMessageWebViewStack.clear()
         }
@@ -109,7 +107,7 @@ Rectangle {
                                                             isVideoMuted,
                                                             isRecording, isSIP,
                                                             isConferenceCall)
-                        audioCallOverlay.bestName = bestName
+                        audioCallPageRect.bestName = bestName
                     }
 
                     function onShowOnHoldLabel(isPaused) {
@@ -118,34 +116,22 @@ Rectangle {
                     }
                 }
 
-                onBackButtonIsClicked: {
-                    if (inAudioCallMessageWebViewStack.visible) {
-                        corrspondingMessageWebView.resetMessagingHeaderBackButtonSource(
-                                    true)
-                        corrspondingMessageWebView.setMessagingHeaderButtonsVisible(
-                                    true)
-                        inAudioCallMessageWebViewStack.visible = false
-                        inAudioCallMessageWebViewStack.clear()
-                    }
-                    audioCallPageRect.audioCallPageBackButtonIsClicked()
-                }
-
                 onOverlayChatButtonClicked: {
                     if (inAudioCallMessageWebViewStack.visible) {
-                        corrspondingMessageWebView.resetMessagingHeaderBackButtonSource(
+                        linkedWebview.resetMessagingHeaderBackButtonSource(
                                     true)
-                        corrspondingMessageWebView.setMessagingHeaderButtonsVisible(
+                        linkedWebview.setMessagingHeaderButtonsVisible(
                                     true)
                         inAudioCallMessageWebViewStack.visible = false
                         inAudioCallMessageWebViewStack.clear()
                     } else {
-                        corrspondingMessageWebView.resetMessagingHeaderBackButtonSource(
+                        linkedWebview.resetMessagingHeaderBackButtonSource(
                                     false)
-                        corrspondingMessageWebView.setMessagingHeaderButtonsVisible(
+                        linkedWebview.setMessagingHeaderButtonsVisible(
                                     false)
                         inAudioCallMessageWebViewStack.visible = true
                         inAudioCallMessageWebViewStack.push(
-                                    corrspondingMessageWebView)
+                                    linkedWebview)
                     }
                 }
             }

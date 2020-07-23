@@ -54,11 +54,7 @@ function createVideoDeviceContextMenuItemObjects(deviceName, setChecked, last) {
 function finishCreation(deviceName, setChecked, last) {
     videoDeviceContextMenuItemObject = videoDeviceContextMenuItemComponent.createObject()
     if (videoDeviceContextMenuItemObject === null) {
-
-
-        /*
-         * Error Handling.
-         */
+        // Error Handling.
         console.log("Error creating video context menu object")
     }
 
@@ -72,7 +68,7 @@ function finishCreation(deviceName, setChecked, last) {
      * Push into the storage array, and insert it into context menu.
      */
     itemArray.push(videoDeviceContextMenuItemObject)
-    videoContextMenuObject.insertItem(1, videoDeviceContextMenuItemObject)
+    videoContextMenuObject.insertItem(3 /* The button is at pos 3 in the menu */, videoDeviceContextMenuItemObject)
 
 
     /*

@@ -44,9 +44,6 @@ Rectangle {
     property string responsibleConvUid: ""
     property string responsibleAccountId: ""
 
-    signal outgoingCallPageBackButtonIsClicked
-    signal callPageBackButtonIsClicked
-
     function needToCloseInCallConversationAndPotentialWindow() {
         audioCallPage.closeInCallConversation()
         videoCallPage.closeInCallConversation()
@@ -58,13 +55,12 @@ Rectangle {
         audioCallPage.closeContextMenuAndRelatedWindows()
 
         VideoCallFullScreenWindowContainerCreation.closeVideoCallFullScreenWindowContainer()
-        videoCallPage.setCallOverlayBackButtonVisible(true)
         videoCallPage.closeContextMenuAndRelatedWindows()
     }
 
-    function setCorrspondingMessageWebView(webViewId) {
-        audioCallPage.setAudioCallPageCorrspondingMessageWebView(webViewId)
-        videoCallPage.setVideoCallPageCorrspondingMessageWebView(webViewId)
+    function setLinkedWebview(webViewId) {
+        audioCallPage.setLinkedWebview(webViewId)
+        videoCallPage.setLinkedWebview(webViewId)
     }
 
     function updateCorrspondingUI() {
@@ -172,10 +168,6 @@ Rectangle {
         id: audioCallPage
 
         property int stackNumber: 0
-
-        onAudioCallPageBackButtonIsClicked: {
-            callStackViewWindow.callPageBackButtonIsClicked()
-        }
     }
 
     OutgoingCallPage {
@@ -186,32 +178,24 @@ Rectangle {
         onCallCancelButtonIsClicked: {
             CallAdapter.hangUpACall(responsibleAccountId, responsibleConvUid)
         }
-
-        onBackButtonIsClicked: {
-            callStackViewWindow.outgoingCallPageBackButtonIsClicked()
-        }
     }
 
     VideoCallPage {
         id: videoCallPage
 
         property int stackNumber: 2
-
-        onVideoCallPageBackButtonIsClicked: {
-            callStackViewWindow.callPageBackButtonIsClicked()
-        }
+        property bool isFullscreen: false
 
         onNeedToShowInFullScreen: {
+            isFullscreen = !isFullscreen
             VideoCallFullScreenWindowContainerCreation.createvideoCallFullScreenWindowContainerObject()
 
             if (!VideoCallFullScreenWindowContainerCreation.checkIfVisible()) {
                 VideoCallFullScreenWindowContainerCreation.setAsContainerChild(
                             videoCallPage)
-                videoCallPage.setCallOverlayBackButtonVisible(false)
                 VideoCallFullScreenWindowContainerCreation.showVideoCallFullScreenWindowContainer()
             } else {
                 videoCallPage.parent = callStackMainView
-                videoCallPage.setCallOverlayBackButtonVisible(true)
                 VideoCallFullScreenWindowContainerCreation.closeVideoCallFullScreenWindowContainer()
             }
         }

@@ -34,7 +34,6 @@ Rectangle {
     property string bestId: "Best Id"
 
     signal callCancelButtonIsClicked
-    signal backButtonIsClicked
 
     function updateUI(accountId, convUid) {
         contactImgSource = "data:image/png;base64," + ClientWrapper.utilsAdaptor.getContactImageString(
@@ -56,26 +55,6 @@ Rectangle {
         anchors.fill: parent
         propagateComposedEvents: false
         acceptedButtons: Qt.RightButton
-    }
-
-    TintedButton {
-        id: backTintedButton
-
-        anchors.top: outgoingCallPageRect.top
-        anchors.topMargin: 10
-        anchors.left: outgoingCallPageRect.left
-        anchors.leftMargin: 5
-
-        width: 30
-        height: 30
-
-        tintColor: JamiTheme.buttonTintedBlue
-        normalPixmapSource: "qrc:/images/icons/ic_arrow_back_white_24dp.png"
-        selectedPixmapSource: "qrc:/images/icons/ic_arrow_back_white_24dp.png"
-
-        onClicked: {
-            outgoingCallPageRect.backButtonIsClicked()
-        }
     }
 
     ColumnLayout {

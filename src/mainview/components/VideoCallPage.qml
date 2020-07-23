@@ -2,6 +2,7 @@
 /*
  * Copyright (C) 2020 by Savoir-faire Linux
  * Author: Mingrui Zhang <mingrui.zhang@savoirfairelinux.com>
+ * Author: Sébastien Blin <sebastien.blin@savoirfairelinux.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,12 +33,12 @@ Rectangle {
     property string bestId: "Best Id"
     property variant clickPos: "1,1"
     property int previewMargin: 15
+    property int previewMarginY: previewMargin + 56
     property int previewToX: 0
     property int previewToY: 0
 
-    property var corrspondingMessageWebView: null
+    property var linkedWebview: null
 
-    signal videoCallPageBackButtonIsClicked
     signal needToShowInFullScreen
 
     function updateUI(accountId, convUid) {
@@ -51,27 +52,25 @@ Rectangle {
         distantRenderer.setRendererId(id)
     }
 
-    function setVideoCallPageCorrspondingMessageWebView(webViewId) {
-        corrspondingMessageWebView = webViewId
-        corrspondingMessageWebView.needToHideConversationInCall.disconnect(
+    function setLinkedWebview(webViewId) {
+        linkedWebview = webViewId
+        linkedWebview.needToHideConversationInCall.disconnect(
                     closeInCallConversation)
-        corrspondingMessageWebView.needToHideConversationInCall.connect(
+        linkedWebview.needToHideConversationInCall.connect(
                     closeInCallConversation)
     }
 
     function closeInCallConversation() {
         if (inVideoCallMessageWebViewStack.visible) {
-            corrspondingMessageWebView.resetMessagingHeaderBackButtonSource(
+            linkedWebview.resetMessagingHeaderBackButtonSource(
                         true)
-            corrspondingMessageWebView.setMessagingHeaderButtonsVisible(true)
+            linkedWebview.setMessagingHeaderButtonsVisible(true)
             inVideoCallMessageWebViewStack.visible = false
             inVideoCallMessageWebViewStack.clear()
         }
     }
 
     function closeContextMenuAndRelatedWindows() {
-        videoCallPageContextMenu.closePotentialWindows()
-        videoCallPageContextMenu.close()
         videoCallOverlay.closePotentialContactPicker()
     }
 
@@ -99,7 +98,7 @@ Rectangle {
                     return videoCallPageMainRect.width - previewRenderer.width - previewMargin
                 })
                 previewToY = Qt.binding(function () {
-                    return videoCallPageMainRect.height - previewRenderer.height - previewMargin
+                    return videoCallPageMainRect.height - previewRenderer.height - previewMarginY
                 })
             } else {
 
@@ -110,7 +109,7 @@ Rectangle {
                 previewToX = Qt.binding(function () {
                     return videoCallPageMainRect.width - previewRenderer.width - previewMargin
                 })
-                previewToY = previewMargin
+                previewToY = previewMarginY
             }
         } else {
             if (previewRendererCenter.y >= distantRendererCenter.y) {
@@ -121,7 +120,7 @@ Rectangle {
                  */
                 previewToX = previewMargin
                 previewToY = Qt.binding(function () {
-                    return videoCallPageMainRect.height - previewRenderer.height - previewMargin
+                    return videoCallPageMainRect.height - previewRenderer.height - previewMarginY
                 })
             } else {
 
@@ -130,14 +129,10 @@ Rectangle {
                  * Top left.
                  */
                 previewToX = previewMargin
-                previewToY = previewMargin
+                previewToY = previewMarginY
             }
         }
         previewRenderer.state = "geoChanging"
-    }
-
-    function setCallOverlayBackButtonVisible(visible) {
-        videoCallOverlay.setBackTintedButtonVisible(visible)
     }
 
     anchors.fill: parent
@@ -155,181 +150,181 @@ Rectangle {
             color: SplitHandle.pressed ? JamiTheme.pressColor : (SplitHandle.hovered ? JamiTheme.hoverColor : JamiTheme.tabbarBorderColor)
         }
 
+
         Rectangle {
             id: videoCallPageMainRect
-
             SplitView.preferredHeight: (videoCallPageRect.height / 3) * 2
             SplitView.minimumHeight: videoCallPageRect.height / 2 + 20
             SplitView.fillWidth: true
 
-            CallOverlay {
-                id: videoCallOverlay
-
+            MouseArea {
                 anchors.fill: parent
+                hoverEnabled: true
+                propagateComposedEvents: true
 
-                Connections {
-                    target: CallAdapter
+                acceptedButtons: Qt.LeftButton
 
-                    function onUpdateTimeText(time) {
-                        videoCallOverlay.timeText = time
-                    }
-
-                    function onUpdateOverlay(isPaused, isAudioOnly, isAudioMuted, isVideoMuted, isRecording, isSIP, isConferenceCall, bestName) {
-                        videoCallOverlay.showOnHoldImage(isPaused)
-                        videoCallOverlay.updateButtonStatus(isPaused,
-                                                            isAudioOnly,
-                                                            isAudioMuted,
-                                                            isVideoMuted,
-                                                            isRecording, isSIP,
-                                                            isConferenceCall)
-                        videoCallOverlay.bestName = bestName
-                    }
-
-                    function onShowOnHoldLabel(isPaused) {
-                        videoCallOverlay.showOnHoldImage(isPaused)
-                    }
+                onDoubleClicked: {
+                    needToShowInFullScreen()
                 }
 
-                onBackButtonIsClicked: {
-                    if (inVideoCallMessageWebViewStack.visible) {
-                        corrspondingMessageWebView.resetMessagingHeaderBackButtonSource(
-                                    true)
-                        corrspondingMessageWebView.setMessagingHeaderButtonsVisible(
-                                    true)
-                        inVideoCallMessageWebViewStack.visible = false
-                        inVideoCallMessageWebViewStack.clear()
-                    }
-                    videoCallPageRect.videoCallPageBackButtonIsClicked()
-                }
+                CallOverlay {
+                    id: videoCallOverlay
 
-                onOverlayChatButtonClicked: {
-                    if (inVideoCallMessageWebViewStack.visible) {
-                        corrspondingMessageWebView.resetMessagingHeaderBackButtonSource(
-                                    true)
-                        corrspondingMessageWebView.setMessagingHeaderButtonsVisible(
-                                    true)
-                        inVideoCallMessageWebViewStack.visible = false
-                        inVideoCallMessageWebViewStack.clear()
-                    } else {
-                        corrspondingMessageWebView.resetMessagingHeaderBackButtonSource(
-                                    false)
-                        corrspondingMessageWebView.setMessagingHeaderButtonsVisible(
-                                    false)
-                        inVideoCallMessageWebViewStack.visible = true
-                        inVideoCallMessageWebViewStack.push(
-                                    corrspondingMessageWebView)
-                    }
-                }
-            }
+                    anchors.fill: parent
 
-            DistantRenderer {
-                id: distantRenderer
+                    Connections {
+                        target: CallAdapter
 
-                anchors.centerIn: videoCallPageMainRect
-                z: -1
+                        function onUpdateTimeText(time) {
+                            videoCallOverlay.timeText = time
+                            videoCallOverlay.setRecording(CallAdapter.isRecordingThisCall())
+                        }
 
-                width: videoCallPageMainRect.width
-                height: videoCallPageMainRect.height
-            }
+                        function onUpdateOverlay(isPaused, isAudioOnly, isAudioMuted, isVideoMuted, isRecording, isSIP, isConferenceCall, bestName) {
+                            videoCallOverlay.showOnHoldImage(isPaused)
+                            videoCallOverlay.updateButtonStatus(isPaused,
+                                                                isAudioOnly,
+                                                                isAudioMuted,
+                                                                isVideoMuted,
+                                                                isRecording, isSIP,
+                                                                isConferenceCall)
+                            videoCallPageRect.bestName = bestName
+                        }
 
-            VideoCallPreviewRenderer {
-                id: previewRenderer
-
-
-                /*
-                 * Property is used in the {} expression for height (extra dependency),
-                 * it will not affect the true height expression, since expression
-                 * at last will be taken only, but it will force the height to update
-                 * and reevaluate getPreviewImageScalingFactor().
-                 */
-                property int previewImageScalingFactorUpdated: 0
-
-                Connections {
-                    target: CallAdapter
-
-                    function onPreviewVisibilityNeedToChange(visible) {
-                        previewRenderer.visible = visible
-                    }
-                }
-
-                width: videoCallPageMainRect.width / 4
-                height: {
-                    previewImageScalingFactorUpdated
-                    return previewRenderer.width * previewRenderer.getPreviewImageScalingFactor()
-                }
-                x: videoCallPageMainRect.width - previewRenderer.width - previewMargin
-                y: videoCallPageMainRect.height - previewRenderer.height - previewMargin
-                z: -1
-
-                states: [
-                    State {
-                        name: "geoChanging"
-                        PropertyChanges {
-                            target: previewRenderer
-                            x: previewToX
-                            y: previewToY
+                        function onShowOnHoldLabel(isPaused) {
+                            videoCallOverlay.showOnHoldImage(isPaused)
                         }
                     }
-                ]
 
-                transitions: Transition {
-                    PropertyAnimation {
-                        properties: "x,y"
-                        easing.type: Easing.OutExpo
-                        duration: 250
+                    onOverlayChatButtonClicked: {
+                        if (inVideoCallMessageWebViewStack.visible) {
+                            linkedWebview.resetMessagingHeaderBackButtonSource(
+                                        true)
+                            linkedWebview.setMessagingHeaderButtonsVisible(
+                                        true)
+                            inVideoCallMessageWebViewStack.visible = false
+                            inVideoCallMessageWebViewStack.clear()
+                        } else {
+                            linkedWebview.resetMessagingHeaderBackButtonSource(
+                                        false)
+                            linkedWebview.setMessagingHeaderButtonsVisible(
+                                        false)
+                            inVideoCallMessageWebViewStack.visible = true
+                            inVideoCallMessageWebViewStack.push(
+                                        linkedWebview)
+                        }
+                    }
+                }
 
-                        onStopped: {
+                DistantRenderer {
+                    id: distantRenderer
+
+                    anchors.centerIn: videoCallPageMainRect
+                    z: -1
+
+                    width: videoCallPageMainRect.width
+                    height: videoCallPageMainRect.height
+                }
+
+                VideoCallPreviewRenderer {
+                    id: previewRenderer
+
+
+                    /*
+                    * Property is used in the {} expression for height (extra dependency),
+                    * it will not affect the true height expression, since expression
+                    * at last will be taken only, but it will force the height to update
+                    * and reevaluate getPreviewImageScalingFactor().
+                    */
+                    property int previewImageScalingFactorUpdated: 0
+
+                    Connections {
+                        target: CallAdapter
+
+                        onPreviewVisibilityNeedToChange: previewRenderer.visible = visible
+                    }
+
+                    width: videoCallPageMainRect.width / 4
+                    height: {
+                        previewImageScalingFactorUpdated
+                        return previewRenderer.width * previewRenderer.getPreviewImageScalingFactor()
+                    }
+                    x: videoCallPageMainRect.width - previewRenderer.width - previewMargin
+                    y: videoCallPageMainRect.height - previewRenderer.height - previewMargin - 56 /* Avoid overlay */
+                    z: -1
+
+                    states: [
+                        State {
+                            name: "geoChanging"
+                            PropertyChanges {
+                                target: previewRenderer
+                                x: previewToX
+                                y: previewToY
+                            }
+                        }
+                    ]
+
+                    transitions: Transition {
+                        PropertyAnimation {
+                            properties: "x,y"
+                            easing.type: Easing.OutExpo
+                            duration: 250
+
+                            onStopped: {
+                                previewRenderer.state = ""
+                            }
+                        }
+                    }
+
+                    MouseArea {
+                        id: dragMouseArea
+
+                        anchors.fill: previewRenderer
+
+                        onPressed: {
+                            clickPos = Qt.point(mouse.x, mouse.y)
+                        }
+
+                        onReleased: {
                             previewRenderer.state = ""
+                            previewMagneticSnap()
+                        }
+
+                        onPositionChanged: {
+
+
+                            /*
+                            * Calculate mouse position relative change.
+                            */
+                            var delta = Qt.point(mouse.x - clickPos.x,
+                                                mouse.y - clickPos.y)
+                            var deltaW = previewRenderer.x + delta.x + previewRenderer.width
+                            var deltaH = previewRenderer.y + delta.y + previewRenderer.height
+
+
+                            /*
+                            * Check if the previewRenderer exceeds the border of videoCallPageMainRect.
+                            */
+                            if (deltaW < videoCallPageMainRect.width
+                                    && previewRenderer.x + delta.x > 1)
+                                previewRenderer.x += delta.x
+                            if (deltaH < videoCallPageMainRect.height
+                                    && previewRenderer.y + delta.y > 1)
+                                previewRenderer.y += delta.y
                         }
                     }
-                }
 
-                MouseArea {
-                    id: dragMouseArea
-
-                    anchors.fill: previewRenderer
-
-                    onPressed: {
-                        clickPos = Qt.point(mouse.x, mouse.y)
+                    onPreviewImageAvailable: {
+                        previewImageScalingFactorUpdated++
+                        previewImageScalingFactorUpdated--
                     }
-
-                    onReleased: {
-                        previewRenderer.state = ""
-                        previewMagneticSnap()
-                    }
-
-                    onPositionChanged: {
-
-
-                        /*
-                         * Calculate mouse position relative change.
-                         */
-                        var delta = Qt.point(mouse.x - clickPos.x,
-                                             mouse.y - clickPos.y)
-                        var deltaW = previewRenderer.x + delta.x + previewRenderer.width
-                        var deltaH = previewRenderer.y + delta.y + previewRenderer.height
-
-
-                        /*
-                         * Check if the previewRenderer exceeds the border of videoCallPageMainRect.
-                         */
-                        if (deltaW < videoCallPageMainRect.width
-                                && previewRenderer.x + delta.x > 1)
-                            previewRenderer.x += delta.x
-                        if (deltaH < videoCallPageMainRect.height
-                                && previewRenderer.y + delta.y > 1)
-                            previewRenderer.y += delta.y
-                    }
-                }
-
-                onPreviewImageAvailable: {
-                    previewImageScalingFactorUpdated++
-                    previewImageScalingFactorUpdated--
                 }
             }
 
             color: "transparent"
         }
+
 
         StackView {
             id: inVideoCallMessageWebViewStack
@@ -343,32 +338,8 @@ Rectangle {
         }
     }
 
-    VideoCallPageContextMenu {
-        id: videoCallPageContextMenu
-
-        onFullScreenNeeded: {
-            videoCallPageRect.needToShowInFullScreen()
-        }
-    }
-
-    MouseArea {
-        anchors.fill: parent
-
-        propagateComposedEvents: true
-        acceptedButtons: Qt.RightButton
-
-        onClicked: {
-
-
-            /*
-             * Make menu pos at mouse.
-             */
-            var relativeMousePos = mapToItem(videoCallPageRect,
-                                             mouse.x, mouse.y)
-            videoCallPageContextMenu.x = relativeMousePos.x
-            videoCallPageContextMenu.y = relativeMousePos.y
-            videoCallPageContextMenu.activate()
-        }
+    onBestNameChanged: {
+        ContactAdapter.setCalleeDisplayName(bestName)
     }
 
     color: "black"

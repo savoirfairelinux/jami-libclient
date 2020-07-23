@@ -31,60 +31,26 @@ GeneralMenuItem {
 
     property int contextMenuPreferredWidth: 250
 
-    itemName: qsTr("No video device")
     leftBorderWidth: commonBorderWidth
     rightBorderWidth: commonBorderWidth
 
     TextMetrics {
         id: textMetrics
-        font: deviceNameText.font
         elide: Text.ElideMiddle
         elideWidth: contextMenuPreferredWidth
                     - videoCallPageContextMenuDeviceItem.implicitIndicatorWidth
         text: videoCallPageContextMenuDeviceItem.itemName
     }
 
-    contentItem: Text {
-        id: deviceNameText
+    itemName: textMetrics.elidedText.length !== 0 ?
+        textMetrics.elidedText :
+        qsTr("No video device")
 
-        leftPadding: 30
-        rightPadding: videoCallPageContextMenuDeviceItem.arrow.width
+    indicator: null
 
-        horizontalAlignment: Text.AlignLeft
-        verticalAlignment: Text.AlignVCenter
-
-        font.pointSize: JamiTheme.textFontSize - 3
-        text: textMetrics.elidedText
-    }
-
-    indicator: Item {
-        id: selectItem
-
-        anchors.left: parent.left
-        anchors.verticalCenter: parent.verticalCenter
-
-        implicitWidth: 32
-        implicitHeight: 32
-
-        Rectangle {
-            id: selectRect
-
-            width: selectItem.width / 2
-            height: selectItem.height / 2
-            anchors.centerIn: parent
-            visible: videoCallPageContextMenuDeviceItem.checkable
-            border.color: JamiTheme.selectionGreen
-            radius: 3
-            Rectangle {
-                width: selectRect.width / 2
-                height: selectRect.height / 2
-                anchors.centerIn: parent
-                visible: videoCallPageContextMenuDeviceItem.checked
-                color: JamiTheme.selectionGreen
-                radius: 2
-            }
-        }
-    }
+    iconSource: videoCallPageContextMenuDeviceItem.checked ?
+        "qrc:/images/icons/check_box-24px.svg" :
+        "qrc:/images/icons/check_box_outline_blank-24px.svg"
 
     onClicked: {
         var deviceName = videoCallPageContextMenuDeviceItem.itemName

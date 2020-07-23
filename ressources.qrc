@@ -32,22 +32,23 @@
         <file>images/icons/ic_arrow_tab_next_black_9dp_2x.png</file>
         <file>images/icons/ic_arrow_tab_previous_black_9dp_2x.png</file>
         <file>images/icons/ic_block_24px.svg</file>
-        <file>images/icons/ic_call_transfer_white_24px.png</file>
+        <file>images/icons/phone_forwarded-24px.svg</file>
         <file>images/icons/ic_chat_black_24dp_2x.png</file>
         <file>images/icons/ic_chat_white_24dp.png</file>
+        <file>images/icons/more_vert-24px.svg</file>
         <file>images/icons/ic_check_white_18dp_2x.png</file>
         <file>images/icons/ic_clear_24px.svg</file>
         <file>images/icons/ic_close_white_24dp.png</file>
         <file>images/icons/ic_content_copy.svg</file>
         <file>images/icons/ic_delete_black_18dp_2x.png</file>
         <file>images/icons/ic_done_white_24dp.png</file>
-        <file>images/icons/ic_exit_full_screen_black.png</file>
         <file>images/icons/ic_folder_black_18dp_2x.png</file>
-        <file>images/icons/ic_full_screen_black.png</file>
+        <file>images/icons/open_in_full-24px.svg</file>
+        <file>images/icons/close_fullscreen-24px.svg</file>
         <file>images/icons/ic_group_add_white_24dp.png</file>
-        <file>images/icons/ic_high_quality_white_24dp.png</file>
         <file>images/icons/ic_mic_off_white_24dp.png</file>
-        <file>images/icons/ic_pause_white_24dp.png</file>
+        <file>images/icons/pause_circle_outline-24px.svg</file>
+        <file>images/icons/play_circle_outline-24px.svg</file>
         <file>images/icons/ic_pause_white_100px.png</file>
         <file>images/icons/ic_person_add_black_24dp_2x.png</file>
         <file>images/icons/ic_person_add_white_24dp.png</file>
@@ -62,6 +63,7 @@
         <file>images/icons/ic_videocam_off_white_24dp.png</file>
         <file>images/icons/ic_videocam_white.png</file>
         <file>images/icons/ic_voicemail_white_24dp_2x.png</file>
+        <file>images/icons/ic_call_end_white_24px.svg</file>
         <file>images/icons/round-add-24px.svg</file>
         <file>images/icons/round-arrow_drop_down-24px.svg</file>
         <file>images/icons/round-arrow_drop_up-24px.svg</file>
@@ -89,6 +91,9 @@
         <file>images/icons/ic_show_password.png</file>
         <file>images/icons/baseline-desktop_windows-24px.svg</file>
         <file>images/icons/baseline-people-24px.svg</file>
+        <file>images/icons/ic_high_quality_24px.svg</file>
+        <file>images/icons/insert_photo-24px.svg</file>
+        <file>images/icons/screen_share-24px.svg</file>
         <file>images/icons/round-add_a_photo-24px.svg</file>
         <file>images/icons/ic_mic_white_24dp.png</file>
         <file>images/icons/icon-keypad-24.png</file>
@@ -104,6 +109,8 @@
         <file>images/icons/av_icons/send-24px.svg</file>
         <file>images/icons/av_icons/stop-24px.svg</file>
         <file>images/icons/av_icons/mic-24px.svg</file>
+        <file>images/icons/check_box-24px.svg</file>
+        <file>images/icons/check_box_outline_blank-24px.svg</file>
         <file>images/icons/ic_close_black_24dp.png</file>
         <file>images/icons/extension_24dp.svg</file>
         <file>images/icons/settings_backup_restore-black-18dp.svg</file>

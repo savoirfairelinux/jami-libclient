@@ -66,6 +66,7 @@
         <file>src/mainview/js/incomingcallpagecreation.js</file>
         <file>src/mainview/components/ContactSearchBar.qml</file>
         <file>src/mainview/components/VideoCallPage.qml</file>
+        <file>src/mainview/components/CallAdvancedOptions.qml</file>
         <file>src/mainview/components/ChangeLogScrollView.qml</file>
         <file>src/mainview/components/ProjectCreditsScrollView.qml</file>
         <file>src/mainview/components/AccountComboBoxPopup.qml</file>
@@ -75,9 +76,9 @@
         <file>src/mainview/components/WelcomePageQrDialog.qml</file>
         <file>src/commoncomponents/GeneralMenuItem.qml</file>
         <file>src/mainview/components/ConversationSmartListContextMenu.qml</file>
+        <file>src/mainview/components/CallViewContextMenu.qml</file>
         <file>src/commoncomponents/GeneralMenuSeparator.qml</file>
         <file>src/mainview/components/UserProfile.qml</file>
-        <file>src/mainview/components/VideoCallPageContextMenu.qml</file>
         <file>src/mainview/js/videodevicecontextmenuitemcreation.js</file>
         <file>src/mainview/components/VideoCallPageContextMenuDeviceItem.qml</file>
         <file>src/mainview/components/SelectScreen.qml</file>

@@ -113,12 +113,14 @@ Window {
 
         function onCloseCallStack(accountId, convUid) {
 
-
+            var responsibleCallId = ClientWrapper.utilsAdaptor.getCallId(
+                    callStackView.responsibleAccountId, callStackView.responsibleConvUid)
+            var callId = ClientWrapper.utilsAdaptor.getCallId(
+                    callStackView.responsibleAccountId, convUid)
             /*
              * Check if call stack view is on any of the stackview.
              */
-            if (callStackView.responsibleAccountId === accountId
-                    && callStackView.responsibleConvUid === convUid) {
+            if (responsibleCallId === callId || responsibleCallId.length === 0) {
                 if (welcomeViewStack.find(function (item, index) {
                     return item.objectName === "callStackViewObject"
                 }) || sidePanelViewStack.find(function (item, index) {
@@ -156,7 +158,7 @@ Window {
             communicationPageMessageWebView.headerUserUserNameLabelText = (name !== id) ? id : ""
 
             callStackView.needToCloseInCallConversationAndPotentialWindow()
-            callStackView.setCorrspondingMessageWebView(
+            callStackView.setLinkedWebview(
                         communicationPageMessageWebView)
 
             callStackView.responsibleAccountId = accountId
@@ -283,7 +285,7 @@ Window {
              * Set up chatview.
              */
             MessagesAdapter.setupChatView(currentUID)
-            callStackView.setCorrspondingMessageWebView(
+            callStackView.setLinkedWebview(
                         communicationPageMessageWebView)
 
             if (welcomeViewStack.find(function (item, index) {
@@ -363,22 +365,6 @@ Window {
         visible: false
 
         objectName: "callStackViewObject"
-
-        onCallPageBackButtonIsClicked: {
-            mainViewWindowSidePanel.deselectConversationSmartList()
-            if (welcomeViewStack.visible)
-                welcomeViewStack.pop(welcomePage)
-            else if (sidePanelViewStack.visible)
-                sidePanelViewStack.pop(mainViewWindowSidePanel)
-        }
-
-        onOutgoingCallPageBackButtonIsClicked: {
-            mainViewWindowSidePanel.deselectConversationSmartList()
-            if (welcomeViewStack.visible)
-                welcomeViewStack.pop(welcomePage)
-            else if (sidePanelViewStack.visible)
-                sidePanelViewStack.pop(mainViewWindowSidePanel)
-        }
     }
 
     WelcomePage {
