@@ -39,6 +39,7 @@
 
 // Ring daemon
 #include <media_const.h>
+#include <account_const.h>
 
 // Qt
 #include <QObject>
@@ -614,7 +615,12 @@ NewCallModel::setCurrentCall(const QString& callId) const
     for (const auto& cid : Lrc::activeCalls()) {
         auto filtered = std::find(filterCalls.begin(), filterCalls.end(), cid) != filterCalls.end();
         if (cid != callId && !filtered) {
-            CallManager::instance().hold(cid);
+            // Only hold calls for a non rendez-vous point
+            MapStringString callDetails = CallManager::instance().getCallDetails(callId);
+            auto accountId = callDetails["ACCOUNTID"];
+            MapStringString detailsMap = ConfigurationManager::instance().getAccountDetails(accountId);
+            if (detailsMap[DRing::Account::ConfProperties::ISRENDEZVOUS] == "FALSE")
+                CallManager::instance().hold(cid);
         }
     }
     if (!lrc::api::Lrc::holdConferences) {
@@ -622,6 +628,10 @@ NewCallModel::setCurrentCall(const QString& callId) const
     }
     for (const auto& confId : conferences) {
         if (callId != confId) {
+            MapStringString confDetails = CallManager::instance().getConferenceDetails(confId);
+            // Only hold conference if attached
+            if (confDetails["CALL_STATE"] == "ACTIVE_DETACHED")
+                continue;
             QStringList callList = CallManager::instance().getParticipantList(confId);
             if (callList.indexOf(callId) == -1)
                 CallManager::instance().holdConference(confId);
@@ -682,6 +692,11 @@ void
 NewCallModelPimpl::slotIncomingCall(const QString& accountId, const QString& callId, const QString& fromId, const QString& displayname)
 {
     if (linked.owner.id != accountId) {
+        return;
+    }
+    if (linked.owner.confProperties.isRendezVous) {
+        // Do not notify for calls if rendez vous because it's in a detached
+        // mode and auto answer is managed by the daemon
         return;
     }
 
