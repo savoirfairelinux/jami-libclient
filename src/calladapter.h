@@ -24,6 +24,7 @@
 
 #include <QObject>
 #include <QString>
+#include <QVariant>
 
 class CallAdapter : public QmlAdapterBase
 {
@@ -44,17 +45,23 @@ public:
     Q_INVOKABLE void refuseACall(const QString &accountId, const QString &convUid);
     Q_INVOKABLE void acceptACall(const QString &accountId, const QString &convUid);
 
-    Q_INVOKABLE void connectCallStatusChanged(const QString &accountId);
+    Q_INVOKABLE void connectCallModel(const QString &accountId);
 
     /*
      * For Call Overlay
      */
+    Q_INVOKABLE void hangupCall(const QString& uri);
+    Q_INVOKABLE void maximizeParticipant(const QString& uri, bool isActive);
+    Q_INVOKABLE void minimizeParticipant();
     Q_INVOKABLE void hangUpThisCall();
+    Q_INVOKABLE bool isCurrentMaster() const;
+    Q_INVOKABLE int  getCurrentLayoutType() const;
     Q_INVOKABLE void holdThisCallToggle();
     Q_INVOKABLE void muteThisCallToggle();
     Q_INVOKABLE void recordThisCallToggle();
     Q_INVOKABLE void videoPauseThisCallToggle();
     Q_INVOKABLE bool isRecordingThisCall();
+    Q_INVOKABLE QVariantList getConferencesInfos();
 
 signals:
     void showOutgoingCallPage(const QString &accountId, const QString &convUid);
@@ -66,6 +73,7 @@ signals:
     void closePotentialIncomingCallPageWindow(const QString &accountId, const QString &convUid);
     void callStatusChanged(const QString &status, const QString &accountId, const QString &convUid);
     void updateConversationSmartList();
+    void updateParticipantsInfos(const QVariantList& infos, const QString &accountId, const QString &callId);
 
     void incomingCallNeedToSetupMainView(const QString &accountId, const QString &convUid);
     void previewVisibilityNeedToChange(bool visible);
@@ -103,6 +111,7 @@ private:
     QString convUid_;
 
     QMetaObject::Connection callStatusChangedConnection_;
+    QMetaObject::Connection onParticipantsChangedConnection_;
     QMetaObject::Connection closeIncomingCallPageConnection_;
 
     /*

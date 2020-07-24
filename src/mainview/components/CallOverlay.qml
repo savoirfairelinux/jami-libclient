@@ -35,6 +35,9 @@ Rectangle {
 
     signal overlayChatButtonClicked
 
+    property var participantOverlays: []
+    property var participantComponent: Qt.createComponent("ParticipantOverlay.qml")
+
     function setRecording(isRecording) {
         callViewContextMenu.isRecording = isRecording
         recordingRect.visible = isRecording
@@ -52,12 +55,51 @@ Rectangle {
                                                isConferenceCall)
     }
 
+    function updateMaster() {
+        callOverlayButtonGroup.updateMaster()
+    }
+
     function showOnHoldImage(visible) {
         onHoldImage.visible = visible
     }
 
     function closePotentialContactPicker() {
         ContactPickerCreation.closeContactPicker()
+    }
+
+    function handleParticipantsInfo(infos) {
+        videoCallOverlay.updateMaster()
+        var isMaster = CallAdapter.isCurrentMaster()
+        for (var p in participantOverlays) {
+            if (participantOverlays[p])
+                participantOverlays[p].destroy()
+        }
+        participantOverlays = []
+        if (infos.length == 0) {
+            previewRenderer.visible = true
+        } else {
+            previewRenderer.visible = false
+            for (var infoVariant in infos) {
+                var hover = participantComponent.createObject(callOverlayRectMouseArea, {
+                    x: distantRenderer.getXOffset() + infos[infoVariant].x * distantRenderer.getScaledWidth(),
+                    y: distantRenderer.getYOffset() + infos[infoVariant].y * distantRenderer.getScaledHeight(),
+                    width: infos[infoVariant].w * distantRenderer.getScaledWidth(),
+                    height: infos[infoVariant].h * distantRenderer.getScaledHeight(),
+                    visible: infos[infoVariant].w != 0 && infos[infoVariant].h != 0
+                })
+                if (!hover) {
+                    console.log("Error when creating the hover")
+                    return
+                }
+                hover.setParticipantName(infos[infoVariant].bestName)
+                hover.active = infos[infoVariant].active;
+                hover.isLocal = infos[infoVariant].isLocal;
+                hover.setMenuVisible(isMaster)
+                hover.uri = infos[infoVariant].uri
+                hover.injectedContextMenu = participantContextMenu
+                participantOverlays.push(hover)
+            }
+        }
     }
 
     anchors.fill: parent
@@ -313,10 +355,9 @@ Rectangle {
         id: callOverlayRectMouseArea
 
         anchors.top: callOverlayRect.top
-        anchors.topMargin: 50
 
         width: callOverlayRect.width
-        height: callOverlayRect.height - callOverlayButtonGroup.height - 50
+        height: callOverlayRect.height
 
         hoverEnabled: true
         propagateComposedEvents: true
@@ -369,5 +410,9 @@ Rectangle {
                         callOverlayRect.width / 2, callOverlayRect.height / 2)
             ContactPickerCreation.openContactPicker()
         }
+    }
+
+    ParticipantContextMenu {
+        id: participantContextMenu
     }
 }

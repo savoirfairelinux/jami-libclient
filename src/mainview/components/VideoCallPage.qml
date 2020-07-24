@@ -42,6 +42,8 @@ Rectangle {
     signal needToShowInFullScreen
 
     function updateUI(accountId, convUid) {
+        videoCallOverlay.handleParticipantsInfo(CallAdapter.getConferencesInfos())
+
         bestName = ClientWrapper.utilsAdaptor.getBestName(accountId, convUid)
 
         var id = ClientWrapper.utilsAdaptor.getBestId(accountId, convUid)
@@ -72,6 +74,15 @@ Rectangle {
 
     function closeContextMenuAndRelatedWindows() {
         videoCallOverlay.closePotentialContactPicker()
+    }
+
+    function handleParticipantsInfo(infos) {
+        if (infos.length === 0) {
+            bestName = ClientWrapper.utilsAdaptor.getBestName(accountId, convUid)
+        } else {
+            bestName = ""
+        }
+        videoCallOverlay.handleParticipantsInfo(infos)
     }
 
     function previewMagneticSnap() {
@@ -225,6 +236,10 @@ Rectangle {
 
                     width: videoCallPageMainRect.width
                     height: videoCallPageMainRect.height
+
+                    onOffsetChanged: {
+                        videoCallOverlay.handleParticipantsInfo(CallAdapter.getConferencesInfos())
+                    }
                 }
 
                 VideoCallPreviewRenderer {

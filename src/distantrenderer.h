@@ -34,6 +34,13 @@ public:
     ~DistantRenderer();
 
     Q_INVOKABLE void setRendererId(const QString &id);
+    Q_INVOKABLE int getXOffset() const;
+    Q_INVOKABLE int getYOffset() const;
+    Q_INVOKABLE double getScaledWidth() const;
+    Q_INVOKABLE double getScaledHeight() const;
+
+signals:
+    void offsetChanged();
 
 private:
     void paint(QPainter *painter);
@@ -42,4 +49,8 @@ private:
      * Unique DistantRenderId for each call.
      */
     QString distantRenderId_;
+    int xOffset_ {0};
+    int yOffset_ {0};
+    double scaledWidth_ {0};
+    double scaledHeight_ {0};
 };

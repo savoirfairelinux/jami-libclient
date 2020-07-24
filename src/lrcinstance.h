@@ -229,7 +229,7 @@ public:
     {
         return getConversation(
             !accountId.isEmpty() ? accountId : getCurrAccId(),
-            [&](const conversation::Info &conv) -> bool { return callId == conv.callId; },
+            [&](const conversation::Info &conv) -> bool { return callId == conv.callId or callId == conv.confId; },
             filtered);
     }
     static const conversation::Info &
