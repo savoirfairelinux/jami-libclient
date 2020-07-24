@@ -722,7 +722,7 @@ public Q_SLOTS: // METHODS
     }
 
     bool setMessageDisplayed(const QString& accountId, const QString& contactId, const QString& messageId, int status) {
-        DRing::setMessageDisplayed(accountId.toStdString(), contactId.toStdString(), messageId.toStdString(), status);
+        return DRing::setMessageDisplayed(accountId.toStdString(), contactId.toStdString(), messageId.toStdString(), status);
     }
 
 Q_SIGNALS: // SIGNALS
