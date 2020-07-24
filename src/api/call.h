@@ -26,6 +26,8 @@
 #include <ctime>
 #include <chrono>
 
+#include "typedefs.h"
+
 namespace lrc
 {
 
@@ -153,6 +155,7 @@ struct Info
     bool videoMuted = false;
     bool isAudioOnly = false;
     Layout layout = Layout::GRID;
+    VectorMapStringString participantsInfos = {};
 };
 
 static inline bool
