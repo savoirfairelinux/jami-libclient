@@ -118,6 +118,11 @@ public:
                     LOG_DRING_SIGNAL2("onRtcpReportReceived",QString(callID.c_str()), convertStringInt(report));
                     Q_EMIT onRtcpReportReceived(QString(callID.c_str()), convertStringInt(report));
                 }),
+            exportable_callback<CallSignal::OnConferenceInfosUpdated>(
+                [this] (const std::string& confId, const std::vector<std::map<std::string, std::string>>& infos) {
+                    LOG_DRING_SIGNAL3("onConferenceInfosUpdated",QString(confId.c_str()),convertVecMap(infos));
+                    Q_EMIT onConferenceInfosUpdated(QString(confId.c_str()), convertVecMap(infos));
+                }),
             exportable_callback<CallSignal::PeerHold>(
                 [this] (const std::string &callID, bool state) {
                     LOG_DRING_SIGNAL2("peerHold",QString(callID.c_str()), state);
@@ -198,6 +203,14 @@ public Q_SLOTS: // METHODS
         MapStringString temp =
             convertMap(DRing::getConferenceDetails(
                 callID.toStdString()));
+        return temp;
+    }
+
+    VectorMapStringString getConferenceInfos(const QString &confId)
+    {
+        VectorMapStringString temp =
+            convertMap(DRing::getConferenceInfos(
+                confId.toStdString()));
         return temp;
     }
 
