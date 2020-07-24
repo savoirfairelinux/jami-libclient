@@ -36,6 +36,7 @@
 #include "dbus/callmanager.h"
 #include "vcard.h"
 #include "video/renderer.h"
+#include "typedefs.h"
 
 // Ring daemon
 #include <media_const.h>
@@ -182,6 +183,12 @@ public Q_SLOTS:
      * @param urgentCount
      */
     void slotVoiceMailNotify(const QString& accountId, int newCount, int oldCount, int urgentCount);
+    /**
+     * Listen from CallManager when a conference layout is updated
+     * @param confId
+     * @param infos
+     */
+    void slotOnConferenceInfosUpdated(const QString& confId, const VectorMapStringString& infos);
 };
 
 NewCallModel::NewCallModel(const account::Info& owner, const CallbacksHandler& callbacksHandler)
@@ -506,6 +513,7 @@ NewCallModelPimpl::NewCallModelPimpl(const NewCallModel& linked, const Callbacks
     connect(&callbacksHandler, &CallbacksHandler::incomingVCardChunk, this, &NewCallModelPimpl::slotincomingVCardChunk);
     connect(&callbacksHandler, &CallbacksHandler::conferenceCreated, this , &NewCallModelPimpl::slotConferenceCreated);
     connect(&callbacksHandler, &CallbacksHandler::voiceMailNotify, this, &NewCallModelPimpl::slotVoiceMailNotify);
+    connect(&CallManager::instance(), &CallManagerInterface::onConferenceInfosUpdated, this, &NewCallModelPimpl::slotOnConferenceInfosUpdated);
 
 #ifndef ENABLE_LIBWRAP
     // Only necessary with dbus since the daemon runs separately
@@ -543,6 +551,8 @@ NewCallModelPimpl::initCallFromDaemon()
             callInfo->videoMuted = details["VIDEO_MUTED"] == "true";
             callInfo->audioMuted = details["AUDIO_MUTED"] == "true";
             callInfo->type = call::Type::DIALOG;
+            VectorMapStringString infos = CallManager::instance().getConferenceInfos(callId);
+            callInfo->participantsInfos = infos;
             calls.emplace(callId, std::move(callInfo));
             // NOTE/BUG: the videorenderer can't know that the client has restarted
             // So, for now, a user will have to manually restart the medias until
@@ -575,6 +585,8 @@ NewCallModelPimpl::initConferencesFromDaemon()
         }
         if (!isForThisAccount) break;
         callInfo->type = call::Type::CONFERENCE;
+        VectorMapStringString infos = CallManager::instance().getConferenceInfos(callId);
+        callInfo->participantsInfos = infos;
         calls.emplace(callId, std::move(callInfo));
     }
 }
@@ -818,6 +830,23 @@ NewCallModelPimpl::slotVoiceMailNotify(const QString& accountId, int newCount, i
     emit linked.voiceMailNotify(accountId, newCount, oldCount, urgentCount);
 }
 
+void
+NewCallModelPimpl::slotOnConferenceInfosUpdated(const QString& confId, const VectorMapStringString& infos)
+{
+    auto it = calls.find(confId);
+    if (it == calls.end() or not it->second)
+        return;
+
+    qDebug() << "New conference layout received for call " << confId;
+
+    // if Jami, remove @ring.dht
+    it->second->participantsInfos = infos;
+    for (auto& i: it->second->participantsInfos)
+        i["uri"].replace("@ring.dht", "");
+
+    emit linked.onParticipantsChanged(confId);
+}
+
 bool
 NewCallModel::hasCall(const QString& callId) const
 {
@@ -836,7 +865,7 @@ NewCallModelPimpl::slotConferenceCreated(const QString& confId)
     QStringList callList = CallManager::instance().getParticipantList(confId);
     foreach(const auto& call, callList) {
         emit linked.callAddedToConference(call, confId);
-        // Remove acll from pendingConferences_
+        // Remove call from pendingConferences_
         pendingConferences_.erase(call);
     }
 
