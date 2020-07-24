@@ -242,6 +242,11 @@ Q_SIGNALS:
      */
     void callStatusChanged(const QString& callId, int code) const;
     /**
+     * Emitted when the rendered image changed
+     * @param confId
+     */
+    void onParticipantsChanged(const QString& confId) const;
+    /**
      * Emitted when a call starts
      * @param callId
      */
