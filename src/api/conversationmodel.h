@@ -95,7 +95,7 @@ public:
      * @param  conversation id
      * @return conversations with given id
      */
-    conversation::Info getConversationForUID(const QString& uid) const;
+    conversation::Info& getConversationForUID(const QString& uid);
 
     /**
      * Get conversations that could be added to conference
@@ -115,6 +115,32 @@ public:
      * @return a copy of the conversation
      */
     conversation::Info filteredConversation(unsigned int row) const;
+
+    /**
+     * Get the searchResults
+     * @return a searchResult
+     */
+    const ConversationQueue&  getSearchResults() const;
+
+    /**
+     * Update the searchResults
+     * @param new status
+     */
+    void updateSearchStatus(const QString& status) const;
+
+    /**
+     * Get the searchStatus
+     * @return a searchStatus
+     */
+    const QString&  getSearchStatus() const;
+
+    /**
+     * Get the conversation at row in the search results
+     * @param  row
+     * @return a copy of the conversation
+     */
+    conversation::Info filteredSearchResult(unsigned int row) const;
+
     /**
      * Emit a filterChanged signal to force the client to refresh the filter. For instance
      * this is required when a contact was banned or un-banned.
