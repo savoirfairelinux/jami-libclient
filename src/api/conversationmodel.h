@@ -95,7 +95,7 @@ public:
      * @param  conversation id
      * @return conversations with given id
      */
-    conversation::Info getConversationForUID(const QString& uid) const;
+    conversation::Info& getConversationForUID(const QString& uid);
 
     /**
      * Get conversations that could be added to conference
@@ -115,6 +115,26 @@ public:
      * @return a copy of the conversation
      */
     conversation::Info filteredConversation(unsigned int row) const;
+
+    /**
+     * Get the searchResults
+     * @return a searchResult
+     */
+    const ConversationQueue&  getAllSearchResults() const;
+
+    /**
+     * Get the conversation at row in the search results
+     * @param  row
+     * @return a copy of the conversation
+     */
+    conversation::Info searchearchResultForRow(unsigned int row) const;
+
+    /**
+     * Update the searchResults
+     * @param new status
+     */
+    void updateSearchStatus(const QString& status) const;
+
     /**
      * Emit a filterChanged signal to force the client to refresh the filter. For instance
      * this is required when a contact was banned or un-banned.
@@ -316,6 +336,16 @@ Q_SIGNALS:
      */
     void displayedInteractionChanged(const QString& uid, const QString& participantURI,
                                      const uint64_t previousUid, const uint64_t newdUid) const;
+
+    /**
+     * Emitted when search status changed
+     * @param status
+     */
+    void searchStatusChanged(const QString& status) const;
+    /**
+     * Emitted when search result updated
+     */
+    void searchResultUpdated() const;
 
 private:
     std::unique_ptr<ConversationModelPimpl> pimpl_;
