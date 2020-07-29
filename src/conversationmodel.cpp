@@ -77,11 +77,26 @@ public:
      */
     int indexOf(const QString& uid) const;
     /**
+     * return a conversation info from conversation uid.
+     * @param conversation uid.
+     * @param searchResultIncluded if need to search in contacts and userSearch.
+     * @return an conversation::Info.
+     */
+    conversation::Info getConversation(const QString& uid, const bool searchResultIncluded = false) const;
+
+    /**
      * return a conversation index from conversations or -1 if no index is found.
      * @param uri of the contact to search.
      * @return an int.
      */
     int indexOfContact(const QString& uri) const;
+    /**
+     * return a conversation info from participant uri.
+     * @param participant uri.
+     * @param searchResultIncluded if need to search in contacts and userSearch.
+     * @return an conversation::Info.
+     */
+    conversation::Info getConversationForContact(const QString& uid, const bool searchResultIncluded = false) const;
     /**
      * Initialize conversations_ and filteredConversations_
      */
@@ -169,7 +184,9 @@ public:
 
     ConversationModel::ConversationQueue conversations; ///< non-filtered conversations
     ConversationModel::ConversationQueue filteredConversations;
+    ConversationModel::ConversationQueue searchResults;
     ConversationModel::ConversationQueue customFilteredConversations;
+    QString searchStatus;
     QString filter;
     profile::Type typeFilter;
     profile::Type customTypeFilter;
@@ -505,6 +522,18 @@ ConversationModel::getConferenceableConversations(const QString& convId, const Q
 }
 
 const ConversationModel::ConversationQueue&
+ConversationModel::getSearchResults() const
+{
+    return pimpl_->searchResults;
+}
+
+const QString&
+ConversationModel::getSearchStatus() const
+{
+    return pimpl_->searchStatus;
+}
+
+const ConversationModel::ConversationQueue&
 ConversationModel::getFilteredConversations(const profile::Type& filter, bool forceUpdate, const bool includeBanned) const
 {
     if (pimpl_->customTypeFilter == filter && !pimpl_->dirtyConversations.second && !forceUpdate)
@@ -543,7 +572,19 @@ ConversationModel::getConversationForUID(const QString& uid) const
 conversation::Info
 ConversationModel::filteredConversation(const unsigned int row) const
 {
-    const auto& conversations = allFilteredConversations();
+    const auto& conversations = pimpl_->filteredConversations;
+    if (row >= conversations.size())
+        return conversation::Info();
+
+    auto conversationInfo = conversations.at(row);
+
+    return conversationInfo;
+}
+
+conversation::Info
+ConversationModel::filteredSearchResult(const unsigned int row) const
+{
+    const auto& conversations = pimpl_->searchResults;
     if (row >= conversations.size())
         return conversation::Info();
 
@@ -555,11 +596,10 @@ ConversationModel::filteredConversation(const unsigned int row) const
 void
 ConversationModel::makePermanent(const QString& uid)
 {
-    auto conversationIdx = pimpl_->indexOf(uid);
-    if (conversationIdx == -1 || !owner.enabled)
-        return;
-
-    auto& conversation = pimpl_->conversations.at(conversationIdx);
+    auto conversation = pimpl_->getConversation(uid, true);
+    if (conversation.uid.isEmpty()) {
+      return;
+    }
     if (conversation.participants.empty()) {
         // Should not
         qDebug() << "ConversationModel::addConversation can't add a conversation with no participant";
@@ -574,17 +614,16 @@ void
 ConversationModel::selectConversation(const QString& uid) const
 {
     // Get conversation
-    auto conversationIdx = pimpl_->indexOf(uid);
-
-    if (conversationIdx == -1)
-        return;
+    auto conversation = pimpl_->getConversation(uid, true);
+    if (conversation.uid.isEmpty()) {
+      return;
+    }
 
     if (uid.isEmpty() && owner.contactModel->getContact("").profileInfo.uri.isEmpty()) {
         // if we select the temporary contact, check if its a valid contact.
         return;
     }
 
-    auto& conversation = pimpl_->conversations.at(conversationIdx);
     bool callEnded = true;
     if (!conversation.callId.isEmpty()) {
         try  {
@@ -672,12 +711,10 @@ ConversationModel::deleteObsoleteHistory(int days)
 void
 ConversationModelPimpl::placeCall(const QString& uid, bool isAudioOnly)
 {
-    auto conversationIdx = indexOf(uid);
-
-    if (conversationIdx == -1 || !linked.owner.enabled)
-        return;
-
-    auto& conversation = conversations.at(conversationIdx);
+    auto conversation = getConversation(uid, true);
+    if (conversation.uid.isEmpty()) {
+      return;
+    }
     if (conversation.participants.empty()) {
         // Should not
         qDebug() << "ConversationModel::placeCall can't call a conversation without participant";
@@ -785,12 +822,10 @@ ConversationModel::placeCall(const QString& uid)
 void
 ConversationModel::sendMessage(const QString& uid, const QString& body)
 {
-    // FIXME potential race condition between index check and at() call
-    auto conversationIdx = pimpl_->indexOf(uid);
-    if (conversationIdx == -1 || !owner.enabled)
-        return;
-
-    auto& conversation = pimpl_->conversations.at(conversationIdx);
+    auto conversation = pimpl_->getConversation(uid, true);
+    if (conversation.uid.isEmpty()) {
+      return;
+    }
 
     if (conversation.participants.empty()) {
         // Should not
@@ -917,6 +952,12 @@ ConversationModel::refreshFilter()
 {
     pimpl_->dirtyConversations = {true, true};
     emit filterChanged();
+}
+
+void
+ConversationModel::updateSearchStatus(const QString& status) const
+{
+    pimpl_->searchStatus = status;
 }
 
 void
@@ -1503,6 +1544,10 @@ ConversationModelPimpl::slotContactAdded(const QString& contactUri)
     if (indexOf(profileInfo.uri) >= 0) {
         conversations.erase(conversations.begin() + indexOf(profileInfo.uri));
     }
+    for (unsigned int i = 0; i < searchResults.size(); ++i) {
+        if (searchResults.at(i).uid == profileInfo.uri)
+        searchResults.erase(searchResults.begin() + i);
+    }
 
     sortConversations();
     emit linked.conversationReady(profileInfo.uri);
@@ -1564,74 +1609,53 @@ ConversationModelPimpl::slotContactRemoved(const QString& uri)
 void
 ConversationModelPimpl::slotContactModelUpdated(const QString& uri, bool needsSorted)
 {
-    // We don't create newConversationItem if we already filter on pending
-    conversation::Info newConversationItem;
-    if (!filter.isEmpty()) {
-        // Create a conversation with the temporary item
-        conversation::Info conversationInfo;
-        auto& temporaryContact = linked.owner.contactModel->getContact("");
-        conversationInfo.uid = temporaryContact.profileInfo.uri;
-        conversationInfo.participants.push_back("");
-        conversationInfo.accountId = linked.owner.id;
+    auto conversation = getConversationForContact(uri, true);
+    //precense updated
+    if (!needsSorted) {
+        dirtyConversations = {true, true};
+        if (!conversation.uid.isEmpty()) {
+            emit linked.conversationUpdated(conversation.uid);
+        }
+        return;
+    }
 
-        // if temporary contact is already present, its alias is not empty (namely "Searching ..."),
-        // or its registeredName is set because it was found on the nameservice.
-        if (not temporaryContact.profileInfo.alias.isEmpty() || not temporaryContact.registeredName.isEmpty()) {
-            if (!conversations.empty()) {
-                auto firstContactUri = conversations.front().participants.front();
-                //if first conversation has uri it is already a contact
-                // then we must add temporary item
-                if (not firstContactUri.isEmpty()) {
-                    conversations.emplace_front(conversationInfo);
-                } else if (not conversationInfo.uid.isEmpty()) {
-                    // If firstContactUri is empty it means that we have to update
-                    // this element as it is the temporary.
-                    // Only when we have found an uri.
-                    conversations.front() = conversationInfo;
-                } else if (not conversations.front().uid.isEmpty()) {
-                    //update conversation when uri not found
-                    //but conversation have uri from previous search
-                    conversations.front() = conversationInfo;
-                }
-            } else {
-                // no conversation, add temporaryItem
-                conversations.emplace_front(conversationInfo);
-            }
-            dirtyConversations = {true, true};
-            if (needsSorted) {
-                emit linked.modelSorted();
-            } else {
-                emit linked.conversationUpdated(conversations.front().uid);
-            }
+    if (filter.isEmpty()) {
+        if (searchResults.empty()) {
             return;
         }
-    } else {
-        // No filter, so we can remove the newConversationItem
-        if (!conversations.empty()) {
-            auto firstContactUri = conversations.front().participants.front();
+        searchResults.clear();
+        dirtyConversations = {true, true};
+        emit linked.modelSorted();
+        return;
+    }
+    bool isJamsAccount = !linked.owner.confProperties.managerUri.isEmpty();
+    if (isJamsAccount) {
+        searchResults.clear();
+        auto users = linked.owner.contactModel->getSearchResults();
+        for (auto& user : users) {
+            conversation::Info conversationInfo;
+            conversationInfo.uid = user.profileInfo.uri;
+            conversationInfo.participants.push_back(user.profileInfo.uri);
+            conversationInfo.accountId = linked.owner.id;
+            searchResults.emplace_front(conversationInfo);
+        }
+        dirtyConversations = {true, true};
+        emit linked.modelSorted();
+        return;
+    }
 
-            if (firstContactUri.isEmpty() && needsSorted) {
-                conversations.pop_front();
-                dirtyConversations = {true, true};
-                emit linked.modelSorted();
-                return;
-            }
-        }
+    conversation::Info conversationInfo;
+    auto& temporaryContact = linked.owner.contactModel->getSearchResults().first();
+    conversationInfo.uid = temporaryContact.profileInfo.uri;
+    conversationInfo.participants.push_back(temporaryContact.profileInfo.uri);
+    conversationInfo.accountId = linked.owner.id;
+    qDebug() << conversationInfo.uid;
+    //add conversation if not exists
+   if (conversation.uid.isEmpty()) {
+        searchResults.emplace_front(conversationInfo);
     }
-    // trigger dirtyConversation in all cases to flush emptied temporary element due to filtered contact present in list
-    // TL:DR : avoid duplicates and empty elements
     dirtyConversations = {true, true};
-    int index = indexOfContact(uri);
-    if (index != -1) {
-        if (!conversations.empty() && conversations.front().participants.front().isEmpty() &&
-            needsSorted) {
-            // In this case, contact is present in list, so temporary item does not longer exists
-            emit linked.modelSorted();
-        } else {
-            // In this case, a presence is updated
-            emit linked.conversationUpdated(conversations.at(index).uid);
-        }
-    }
+    emit linked.modelSorted();
 }
 
 void
@@ -1693,6 +1717,36 @@ ConversationModelPimpl::indexOf(const QString& uid) const
         if (conversations.at(i).uid == uid) return i;
     }
     return -1;
+}
+
+conversation::Info
+ConversationModelPimpl::getConversation(const QString& uid, const bool searchResultIncluded) const
+{
+  for (unsigned int i = 0; i < conversations.size(); ++i) {
+      if (conversations.at(i).uid == uid) return conversations.at(i);
+  }
+  if (!searchResultIncluded) {
+    return {};
+  }
+  for (unsigned int i = 0; i < searchResults.size(); ++i) {
+      if (searchResults.at(i).uid == uid) return searchResults.at(i);
+  }
+  return {};
+}
+
+conversation::Info
+ConversationModelPimpl::getConversationForContact(const QString& uri, const bool searchResultIncluded) const
+{
+  for (unsigned int i = 0; i < conversations.size(); ++i) {
+      if (conversations.at(i).participants.front() == uri) return conversations.at(i);
+  }
+  if (!searchResultIncluded) {
+    return {};
+  }
+  for (unsigned int i = 0; i < searchResults.size(); ++i) {
+      if (searchResults.at(i).participants.front() == uri) return searchResults.at(i);
+  }
+  return {};
 }
 
 int
@@ -2045,11 +2099,12 @@ ConversationModel::sendFile(const QString& convUid,
                             const QString& path,
                             const QString& filename)
 {
-    auto conversationIdx = pimpl_->indexOf(convUid);
-    if (conversationIdx == -1 || !owner.enabled)
-        return;
+    auto conversation = pimpl_->getConversation(convUid, true);
+    if (conversation.uid.isEmpty()) {
+      return;
+    }
 
-    const auto peerUri = pimpl_->conversations[conversationIdx].participants.front();
+    const auto peerUri = conversation.participants.front();
     bool isTemporary = peerUri.isEmpty();
 
     /* It is necessary to make a copy of convUid since it may very well point to
@@ -2063,7 +2118,8 @@ ConversationModel::sendFile(const QString& convUid,
     auto cb = std::function<void(QString)>(
         [this, isTemporary, peerUri, path, filename](QString convId) {
             int contactIndex;
-            if (isTemporary && (contactIndex = pimpl_->indexOfContact(convId)) < 0) {
+            auto conversation = pimpl_->getConversation(convId, true);
+            if (isTemporary && (conversation.uid.isEmpty())) {
                 qDebug() << "Can't send file: Other participant is not a contact (removed while sending file ?)";
                 return;
             }
