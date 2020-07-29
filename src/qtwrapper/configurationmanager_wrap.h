@@ -184,6 +184,10 @@ public:
                 [this](const std::string& account_id, const std::string& from, int status) {
                     Q_EMIT this->composingStatusChanged(QString(account_id.c_str()), QString(from.c_str()), status > 0 ? true : false);
                 }),
+            exportable_callback<ConfigurationSignal::UserSearchEnded>(
+                [this](const std::string& account_id, int status, const std::string& query, const std::vector<std::map<std::string, std::string>>& results) {
+                    Q_EMIT this->userSearchEnded(QString(account_id.c_str()), status > 0 ? true : false, QString(query.c_str()), convertVecMap(results));
+                }),
         };
 
         dataXferHandlers = {
@@ -725,6 +729,10 @@ public Q_SLOTS: // METHODS
         return DRing::setMessageDisplayed(accountId.toStdString(), contactId.toStdString(), messageId.toStdString(), status);
     }
 
+    bool searchUser(const QString& accountId, const QString& query) {
+        return DRing::searchUser(accountId.toStdString(), query.toStdString());
+    }
+
 Q_SIGNALS: // SIGNALS
     void volumeChanged(const QString& device, double value);
     void accountsChanged();
@@ -758,6 +766,7 @@ Q_SIGNALS: // SIGNALS
     void accountProfileReceived(const QString& accountId, const QString& displayName, const QString& userPhoto);
     void debugMessageReceived(const QString& message);
     void composingStatusChanged(const QString& accountId, const QString& contactId, bool isComposing);
+    void userSearchEnded(const QString& accountId, bool status, const QString& query, VectorMapStringString results);
 };
 
 namespace org { namespace ring { namespace Ring {

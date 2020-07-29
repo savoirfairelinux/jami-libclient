@@ -115,6 +115,14 @@ public:
      * @return a copy of the conversation
      */
     conversation::Info filteredConversation(unsigned int row) const;
+
+    /**
+     * Get the conversation at row in the search results
+     * @param  row
+     * @return a copy of the conversation
+     */
+    conversation::Info filteredSearchResult(unsigned int row) const;
+
     /**
      * Emit a filterChanged signal to force the client to refresh the filter. For instance
      * this is required when a contact was banned or un-banned.
