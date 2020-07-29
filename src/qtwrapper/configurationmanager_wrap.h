@@ -725,6 +725,10 @@ public Q_SLOTS: // METHODS
         return DRing::setMessageDisplayed(accountId.toStdString(), contactId.toStdString(), messageId.toStdString(), status);
     }
 
+    void searchUser(const QString& accountId, const QString& query) {
+        DRing::searchUser(accountId.toStdString(), query.toStdString());
+    }
+
 Q_SIGNALS: // SIGNALS
     void volumeChanged(const QString& device, double value);
     void accountsChanged();
