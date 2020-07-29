@@ -41,6 +41,7 @@
 #include "callbackshandler.h"
 #include "uri.h"
 #include "vcard.h"
+#include "typedefs.h"
 
 #include "authority/daemon.h"
 #include "authority/storagehelper.h"
@@ -91,10 +92,12 @@ public:
      */
     void searchRingContact(const URI& query);
     void searchSipContact(const URI& query);
+    void jamsSearch(const URI& query);
+
     /**
      * Update temporary item to display a given message about a given uri.
      */
-    void updateTemporaryMessage(const QString& mes, const QString& uri);
+    void updateTemporaryMessage(const QString& mes);
 
     /**
      * Check if equivalent uri exist in contact
@@ -109,7 +112,9 @@ public:
 
     // Containers
     ContactModel::ContactInfoMap contacts;
+    ContactModel::ContactInfoMap searchResult;
     QList<QString> bannedContacts;
+    QString query;
     std::mutex contactsMtx_;
     std::mutex bannedContactsMtx_;
 
@@ -189,6 +194,15 @@ public Q_SLOTS:
      * @param vCard
      */
     void slotProfileReceived(const QString& accountId, const QString& peer, const QString& vCard);
+
+    /**
+     * Listen from daemon to know when a user search completed
+     * @param accountId
+     * @param status
+     * @param query
+     * @param result
+     */
+    void slotUserSearchEnded(const QString& accountId, bool status, const QString& query, const VectorMapStringString& result);
 };
 
 using namespace authority;
@@ -348,10 +362,12 @@ const contact::Info
 ContactModel::getContact(const QString& contactUri) const
 {
     std::lock_guard<std::mutex> lk(pimpl_->contactsMtx_);
-    if (!pimpl_->contacts.contains(contactUri)) {
-        throw std::out_of_range("Contact out of range");
+    if (pimpl_->contacts.contains(contactUri)) {
+        return pimpl_->contacts.value(contactUri);
+    } else if (pimpl_->searchResult.contains(contactUri)) {
+        return pimpl_->searchResult.value(contactUri);
     }
-    return pimpl_->contacts.value(contactUri);
+    throw std::out_of_range("Contact out of range");
 }
 
 const QList<QString>&
@@ -360,13 +376,20 @@ ContactModel::getBannedContacts() const
     return pimpl_->bannedContacts;
 }
 
+ContactModel::ContactInfoMap
+ContactModel::getSearchResults() const
+{
+    return pimpl_->searchResult;
+}
+
 void
 ContactModel::searchContact(const QString& query)
 {
     // always reset temporary contact
-    pimpl_->contacts[""] = {};
+    pimpl_->searchResult.clear();
 
     auto uri = URI(query);
+    pimpl_->query = query;
 
     auto uriScheme = uri.schemeType();
     if (static_cast<int>(uriScheme) > 2 && owner.profileInfo.type == profile::Type::SIP) {
@@ -379,20 +402,20 @@ ContactModel::searchContact(const QString& query)
     if ((uriScheme == URI::SchemeType::SIP || uriScheme == URI::SchemeType::SIPS) && owner.profileInfo.type == profile::Type::SIP) {
         pimpl_->searchSipContact(uri);
     } else if (uriScheme == URI::SchemeType::RING && owner.profileInfo.type == profile::Type::RING) {
-        pimpl_->searchRingContact(uri);
+        bool isJamsAccount = !owner.confProperties.managerUri.isEmpty();
+        if (isJamsAccount)
+            pimpl_->jamsSearch(uri);
+        else
+            pimpl_->searchRingContact(uri);
     } else {
-        pimpl_->updateTemporaryMessage(tr("Bad URI scheme"), uri.full());
+        pimpl_->updateTemporaryMessage(tr("Bad URI scheme"));
     }
 }
 
 void
-ContactModelPimpl::updateTemporaryMessage(const QString& mes, const QString& uri)
+ContactModelPimpl::updateTemporaryMessage(const QString& mes)
 {
-    std::lock_guard<std::mutex> lk(contactsMtx_);
-    auto& temporaryContact = contacts[""];
-    temporaryContact.profileInfo.alias = mes;
-    temporaryContact.profileInfo.type = profile::Type::TEMPORARY;
-    temporaryContact.registeredName = uri;
+    linked.owner.conversationModel->updateSearchStatus(mes);
 }
 
 void
@@ -402,6 +425,7 @@ ContactModelPimpl::searchRingContact(const URI& query)
     if (query.isEmpty()) {
         // This will remove the temporary item
         emit linked.modelUpdated(uriID);
+        updateTemporaryMessage("");
         return;
     }
 
@@ -412,17 +436,30 @@ ContactModelPimpl::searchRingContact(const URI& query)
                 return;
             }
         }
-        auto& temporaryContact = contacts[""];
+        auto& temporaryContact = searchResult[uriID];
         temporaryContact.profileInfo.uri = uriID;
         temporaryContact.profileInfo.alias = uriID;
         temporaryContact.profileInfo.type = profile::Type::TEMPORARY;
+        emit linked.modelUpdated(uriID);
     } else {
-        updateTemporaryMessage(tr("Searching…"), uriID);
+        updateTemporaryMessage(tr("Searching…"));
 
         // Default searching
         ConfigurationManager::instance().lookupName(linked.owner.id, "", uriID);
     }
-    emit linked.modelUpdated(uriID);
+}
+
+void
+ContactModelPimpl::jamsSearch(const URI& query)
+{
+    QString uriID = query.format(URI::Section::USER_INFO | URI::Section::HOSTNAME | URI::Section::PORT);
+    if (query.isEmpty()) {
+        emit linked.modelUpdated(uriID);
+        updateTemporaryMessage("");
+        return;
+    }
+    updateTemporaryMessage(tr("Searching…"));
+    ConfigurationManager::instance().searchUser(linked.owner.id, uriID);
 }
 
 void
@@ -432,10 +469,11 @@ ContactModelPimpl::searchSipContact(const URI& query)
     if (query.isEmpty()) {
         // This will remove the temporary item
         emit linked.modelUpdated(uriID);
+        updateTemporaryMessage("");
         return;
     }
 
-    auto& temporaryContact = contacts[""];
+    auto& temporaryContact = searchResult[query];
     {
         std::lock_guard<std::mutex> lk(contactsMtx_);
         if (contacts.find(uriID) == contacts.end()) {
@@ -469,6 +507,7 @@ ContactModelPimpl::ContactModelPimpl(const ContactModel& linked,
 , behaviorController(behaviorController)
 , callbacksHandler(callbacksHandler)
 {
+    qRegisterMetaType<VectorMapStringString>("VectorMapStringString");
     // Init contacts map
     if (linked.owner.profileInfo.type == profile::Type::SIP)
         fillWithSIPContacts();
@@ -494,6 +533,8 @@ ContactModelPimpl::ContactModelPimpl(const ContactModel& linked,
             this, &ContactModelPimpl::slotNewAccountTransfer);
     connect(&ConfigurationManager::instance(), &ConfigurationManagerInterface::profileReceived,
             this, &ContactModelPimpl::slotProfileReceived);
+    connect(&ConfigurationManager::instance(), &ConfigurationManagerInterface::userSearchEnded,
+            this, &ContactModelPimpl::slotUserSearchEnded);
 }
 
 ContactModelPimpl::~ContactModelPimpl()
@@ -516,6 +557,8 @@ ContactModelPimpl::~ContactModelPimpl()
                this, &ContactModelPimpl::slotNewAccountTransfer);
     disconnect(&ConfigurationManager::instance(), &ConfigurationManagerInterface::profileReceived,
                this, &ContactModelPimpl::slotProfileReceived);
+    disconnect(&ConfigurationManager::instance(), &ConfigurationManagerInterface::userSearchEnded,
+               this, &ContactModelPimpl::slotUserSearchEnded);
 }
 
 bool
@@ -760,41 +803,44 @@ ContactModelPimpl::slotRegisteredNameFound(const QString& accountId,
 {
     if (accountId != linked.owner.id) return;
 
-    auto& temporaryContact = contacts[""];
     if (status == 0 /* SUCCESS */) {
         std::lock_guard<std::mutex> lk(contactsMtx_);
 
         if (contacts.find(uri) != contacts.end()) {
             // update contact and remove temporary item
             contacts[uri].registeredName = registeredName;
-            temporaryContact = {};
+            searchResult.clear();
         } else {
-            if (temporaryContact.registeredName != uri && temporaryContact.registeredName != registeredName) {
+            if ((query != uri && query != registeredName) || query.isEmpty()) {
                 // we are notified that a previous lookup ended
                 return;
             }
-
-            // update temporary item
+            updateTemporaryMessage("");
+            auto& temporaryContact = searchResult[uri];
             lrc::api::profile::Info profileInfo = {uri, "", "", profile::Type::TEMPORARY};
             temporaryContact = {profileInfo, registeredName, false, false};
         }
     } else {
-        if (temporaryContact.registeredName != uri && temporaryContact.registeredName != registeredName) {
+        if (contacts.find(uri) != contacts.end()) {
+            // it was lookup for contact
+            return;
+        }
+        if ((query != uri && query != registeredName) || query.isEmpty()) {
             // we are notified that a previous lookup ended
             return;
         }
-
         switch (status) {
         case 1 /* INVALID */:
-            updateTemporaryMessage(tr("Invalid ID"), registeredName);
+            updateTemporaryMessage(tr("Invalid ID"));
             break;
         case 2 /* NOT FOUND */:
-            updateTemporaryMessage(tr("Registered name not found"), registeredName);
+            updateTemporaryMessage(tr("Registered name not found"));
             break;
         case 3 /* ERROR */:
-            updateTemporaryMessage(tr("Couldn't lookup…"), registeredName);
+            updateTemporaryMessage(tr("Couldn't lookup…"));
             break;
         }
+        return;
     }
 
     emit linked.modelUpdated(uri);
@@ -1009,6 +1055,25 @@ ContactModelPimpl::slotProfileReceived(const QString& accountId, const QString& 
     linked.owner.contactModel->addContact(contactInfo);
 }
 
+void
+ContactModelPimpl::slotUserSearchEnded(const QString& accountId, bool status, const QString& query, const VectorMapStringString& result)
+{
+    if (accountId != linked.owner.id) return;
+    searchResult.clear();
+    updateTemporaryMessage("");
+    for (auto& resultInfo : result) {
+          profile::Info profileInfo;
+          profileInfo.uri = resultInfo.value("jamiId");
+          profileInfo.type = profile::Type::RING;
+          profileInfo.avatar = resultInfo.value("profilePicture");
+          profileInfo.alias = resultInfo.value("firstName") + " " + resultInfo.value("lastName");
+          contact::Info contactInfo;
+          contactInfo.profileInfo = profileInfo;
+          contactInfo.registeredName = resultInfo.value("username");
+          searchResult.insert(resultInfo.value("jamiId"), contactInfo);
+    }
+    emit linked.modelUpdated(query);
+}
 
 } // namespace lrc
 
