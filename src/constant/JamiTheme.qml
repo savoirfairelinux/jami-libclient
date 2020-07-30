@@ -39,6 +39,8 @@ Item {
     property string transparentColor: "transparent"
     property string presenceGreen: "#4cd964"
     property string notificationRed: "#ff3b30"
+    property string backgroundColor: lightGrey_
+    property string backgroundDarkColor: lightGreyTab_
 
     property string screenSelectionBorderGreen: "green"
 
@@ -73,13 +75,15 @@ Item {
 
     property int splitViewHandlePreferedWidth: 4
     property int textFontSize: 9
+    property int titleFontSize: 16
+    property int menuFontSize: 12
 
 
     /*
      * Place holder text.
      */
     property string contactSearchBarPlaceHolderConversationText: qsTr("Find or start a conversation")
-    property string contactSearchBarPlaceHolderInivitionText: qsTr("Search your received invitations")
+    property string contactSearchBarPlaceHolderInivitionText: qsTr("Search your invitations")
 
     // Jami theme colors
     function rgb256(r, g, b) {
@@ -87,8 +91,10 @@ Item {
     }
 
     property color blue_: "#109ede"
+    property color blueLogo_: rgb256(0, 7, 71)
     property color lightBlue_: "#c1ebf0"
     property color lightGrey_: rgb256(242, 242, 242)
+    property color lightGreyTab_: rgb256(220, 220, 220)
     property color imGrey_: "#dedee0"
     property color imBlue_: "#cfebf5"
     property color lightBlack_: rgb256(63, 63, 63)

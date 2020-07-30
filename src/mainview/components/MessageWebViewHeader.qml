@@ -54,7 +54,7 @@ Rectangle {
             id: backToWelcomeViewButton
 
             Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
-            Layout.leftMargin: 10
+            Layout.leftMargin: 16
             Layout.preferredWidth: buttonPreferredSize
             Layout.preferredHeight: buttonPreferredSize
 
@@ -83,22 +83,24 @@ Rectangle {
             Layout.preferredWidth: messagingHeaderRect.width
                                    - backToWelcomeViewButton.width - buttonGroup.width - 45
             Layout.preferredHeight: messagingHeaderRect.height
-            Layout.leftMargin: 10
+            Layout.leftMargin: 16
 
             color: "transparent"
 
             ColumnLayout {
                 id: userNameOrIdColumnLayout
+                Layout.alignment: Qt.AlignVCenter
+                anchors.fill: parent
 
                 Label {
                     id: userAliasLabel
 
-                    Layout.alignment: Qt.AlignVCenter
+                    Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
                     Layout.preferredWidth: userNameOrIdRect.width
                     Layout.preferredHeight: textMetricsuserAliasLabel.boundingRect.height
-                    Layout.topMargin: userNameOrIdRect.height / 2 - userAliasLabel.height - 4
+                    Layout.topMargin: userUserNameLabel.text == "" ? 0 : 10
 
-                    font.pointSize: JamiTheme.textFontSize - 1
+                    font.pointSize: JamiTheme.menuFontSize
 
                     horizontalAlignment: Text.AlignLeft
                     verticalAlignment: Text.AlignVCenter
@@ -117,17 +119,17 @@ Rectangle {
 
                 Label {
                     id: userUserNameLabel
-
-                    Layout.alignment: Qt.AlignVCenter
+                    visible: (text != "")
+                    Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
                     Layout.preferredWidth: userNameOrIdRect.width
                     Layout.preferredHeight: textMetricsuserUserNameLabel.boundingRect.height
+                    Layout.bottomMargin: 10
 
-                    font.pointSize: JamiTheme.textFontSize - 2
-                    color: JamiTheme.faddedFontColor
+                    font.pointSize: JamiTheme.textFontSize
+                    color: JamiTheme.faddedLastInteractionFontColor
 
                     horizontalAlignment: Text.AlignLeft
                     verticalAlignment: Text.AlignVCenter
-
                     text: textMetricsuserUserNameLabel.elidedText
                 }
 
@@ -148,7 +150,7 @@ Rectangle {
             Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
             Layout.preferredWidth: buttonPreferredSize * 3 + 18
             Layout.preferredHeight: buttonPreferredSize
-            Layout.rightMargin: 20
+            Layout.rightMargin: 16
 
             color: "transparent"
 
@@ -156,6 +158,7 @@ Rectangle {
                 id: startAAudioCallButton
 
                 anchors.right: startAVideoCallButton.left
+                anchors.rightMargin: 16
                 anchors.verticalCenter: buttonGroup.verticalCenter
 
                 height: buttonPreferredSize
@@ -175,8 +178,8 @@ Rectangle {
             HoverableButton {
                 id: startAVideoCallButton
 
-                anchors.right: sendContactRequestButton.left
-                anchors.leftMargin: 5
+                anchors.right: sendContactRequestButton.visible ? sendContactRequestButton.left : buttonGroup.right
+                anchors.rightMargin: 16
                 anchors.verticalCenter: buttonGroup.verticalCenter
 
                 height: buttonPreferredSize
@@ -196,7 +199,6 @@ Rectangle {
             HoverableButton {
                 id: sendContactRequestButton
 
-                anchors.leftMargin: 5
                 anchors.right: buttonGroup.right
                 anchors.rightMargin: 8
                 anchors.verticalCenter: buttonGroup.verticalCenter
@@ -206,7 +208,7 @@ Rectangle {
 
                 visible: sendContactRequestButtonVisible
                 radius: 30
-                source: "qrc:/images/icons/ic_person_add_black_24dp_2x.png"
+                source: "qrc:/images/icons/person_add-24px.svg"
                 backgroundColor: "white"
                 onExitColor: "white"
 

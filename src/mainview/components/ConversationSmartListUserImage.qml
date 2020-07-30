@@ -24,8 +24,8 @@ import net.jami.Models 1.0
 Image {
     id: userImage
 
-    width: 50
-    height: 50
+    width: 40
+    height: 40
 
     fillMode: Image.PreserveAspectFit
     source: "data:image/png;base64," + Picture
@@ -35,9 +35,9 @@ Image {
         id: presenseRect
 
         anchors.right: userImage.right
-        anchors.rightMargin: 1
+        anchors.rightMargin: -2
         anchors.bottom: userImage.bottom
-        anchors.bottomMargin: 2
+        anchors.bottomMargin: -2
 
         width: 14
         height: 14
@@ -57,16 +57,16 @@ Image {
         }
 
         radius: 30
-        color: "white"
+        color: JamiTheme.backgroundColor
     }
 
     Rectangle {
         id: unreadMessageCountRect
 
         anchors.right: userImage.right
-        anchors.rightMargin: 1
+        anchors.rightMargin: -2
         anchors.top: userImage.top
-        anchors.topMargin: 2
+        anchors.topMargin: -2
 
         width: 14
         height: 14
@@ -80,6 +80,7 @@ Image {
 
             text: UnreadMessagesCount > 9 ? "···" : UnreadMessagesCount
             color: "white"
+            font.pointSize: JamiTheme.textFontSize
         }
 
         radius: 30

@@ -21,8 +21,10 @@ import QtQuick.Controls 2.14
 import QtQuick.Layouts 1.14
 import QtQuick.Controls.Styles 1.4
 import QtQuick.Dialogs 1.3
-import QtGraphicalEffects 1.0
 import net.jami.Models 1.0
+import QtGraphicalEffects 1.15
+import QtQuick.Shapes 1.15
+
 import "../../commoncomponents"
 
 
@@ -34,7 +36,7 @@ Rectangle {
         REC_SUCCESS
     }
 
-    id:recBox
+    id: recBox
     color: "#FFFFFF"
     width: 320
     height: 240
@@ -47,22 +49,45 @@ Rectangle {
     property int state: RecordBox.States.INIT
     property bool isVideo: false
     property bool previewAvailable: false
+    property int preferredWidth: 320
+    property int preferredHeight: 240
+    property int btnSize: 40
 
-    property int h_offset: -65
-    property int v_offset: -65
+    property int offset: 3
+    property int curveRadius: 6
+    property int x_offset: 0
+    property int y_offset: 0
 
     function openRecorder(set_x, set_y, vid) {
+
         focus = true
         visible = true
-        x = set_x+(width/2)+h_offset
-        y = set_y-(height/2)+v_offset
+        isVideo = vid
+
+        x_offset = (isVideo ? -34 : -80)
+        scaleHeight()
+        y_offset = -64-height
 
         updateState(RecordBox.States.INIT)
 
-        isVideo = vid
         if (isVideo){
             ClientWrapper.accountAdaptor.startPreviewing(false)
             previewAvailable = true
+        }
+    }
+
+    function scaleHeight(){
+        height = preferredHeight
+        if (isVideo) {
+            var device = ClientWrapper.avmodel.getDefaultDevice()
+            var settings = ClientWrapper.settingsAdaptor.get_Video_Settings_Size(device)
+            var res = settings.split("x")
+            var aspectRatio = res[1]/res[0]
+            if (aspectRatio) {
+                height = preferredWidth*aspectRatio
+            } else {
+                console.error("Could not scale recording video preview")
+            }
         }
     }
 
@@ -73,7 +98,7 @@ Rectangle {
     }
 
     onVisibleChanged: {
-        if(!visible) {
+        if (!visible) {
             closeRecorder()
         }
     }
@@ -140,6 +165,57 @@ Rectangle {
         target: ClientWrapper.renderManager
     }
 
+    Shape {
+        id: backgroundShape
+        width: recBox.width
+        height: recBox.height
+        anchors.centerIn: parent
+        x: -offset
+        y: -offset
+        ShapePath {
+            fillColor: "white"
+
+            strokeWidth: 1
+            strokeColor: JamiTheme.tabbarBorderColor
+
+            startX: -offset+curveRadius; startY: -offset
+            joinStyle: ShapePath.RoundJoin
+
+            PathLine { x: width+offset-curveRadius; y: -offset }
+
+            PathArc {
+                x: width+offset; y: -offset+curveRadius
+                radiusX: curveRadius; radiusY: curveRadius
+            }
+
+            PathLine { x: width+offset; y: height+offset-curveRadius }
+
+            PathArc {
+                x: width+offset-curveRadius; y: height+offset
+                radiusX: curveRadius; radiusY: curveRadius
+            }
+
+            PathLine { x: width/2+10; y: height+offset }
+            PathLine { x: width/2; y: height+offset+10 }
+            PathLine { x: width/2-10; y: height+offset }
+
+
+            PathLine { x: -offset+curveRadius; y: height+offset }
+
+            PathArc {
+                x: -offset; y: height+offset-curveRadius
+                radiusX: curveRadius; radiusY: curveRadius
+            }
+
+            PathLine { x: -offset; y: -offset+curveRadius }
+
+            PathArc {
+                x: -offset+curveRadius; y: -offset
+                radiusX: curveRadius; radiusY: curveRadius
+            }
+        }
+    }
+
     Rectangle {
         id: rectBox
         visible: (isVideo && previewAvailable)
@@ -184,30 +260,25 @@ Rectangle {
         text: "00:00"
         color: (isVideo ? "white" : "black")
         font.pointSize: (isVideo ? 12 : 20)
-        anchors.horizontalCenter: parent.horizontalCenter
-        anchors.horizontalCenterOffset: (isVideo ? 100 : 0)
-        anchors.verticalCenter: parent.verticalCenter
-        anchors.verticalCenterOffset: (isVideo ? 100 : 0)
-    }
 
+        anchors.centerIn: recordButton
+        anchors.horizontalCenterOffset: (isVideo ? 100 : 0)
+        anchors.verticalCenterOffset: (isVideo ? 0 : -100)
+    }
 
     HoverableRadiusButton {
         id: recordButton
-        Layout.maximumWidth: 30
-        Layout.preferredWidth: 30
-        Layout.minimumWidth: 30
 
-        Layout.maximumHeight: 30
-        Layout.preferredHeight: 30
-        Layout.minimumHeight: 30
+        width: btnSize
+        height: btnSize
+
+        anchors.horizontalCenter: recBox.horizontalCenter
+        anchors.bottom: recBox.bottom
+        anchors.bottomMargin: 5
 
         buttonImageHeight: height
         buttonImageWidth: height
         backgroundColor: isVideo? "#000000cc" : "white"
-
-        anchors.horizontalCenter: parent.horizontalCenter
-        anchors.bottom: parent.bottom
-        anchors.bottomMargin: 5
 
         radius: height / 2
 
@@ -223,21 +294,17 @@ Rectangle {
 
     HoverableRadiusButton {
         id: btnStop
-        Layout.maximumWidth: 30
-        Layout.preferredWidth: 30
-        Layout.minimumWidth: 30
 
-        Layout.maximumHeight: 30
-        Layout.preferredHeight: 30
-        Layout.minimumHeight: 30
+        width: btnSize
+        height: btnSize
+
+        anchors.horizontalCenter: recBox.horizontalCenter
+        anchors.bottom: recBox.bottom
+        anchors.bottomMargin: 5
 
         buttonImageHeight: height
         buttonImageWidth: height
         backgroundColor: isVideo? "#000000cc" : "white"
-
-        anchors.horizontalCenter: parent.horizontalCenter
-        anchors.bottom: parent.bottom
-        anchors.bottomMargin: 5
 
         radius: height / 2
 
@@ -253,23 +320,18 @@ Rectangle {
 
     HoverableRadiusButton {
         id: btnRestart
-        Layout.maximumWidth: 30
-        Layout.preferredWidth: 30
-        Layout.minimumWidth: 30
 
-        Layout.maximumHeight: 30
-        Layout.preferredHeight: 30
-        Layout.minimumHeight: 30
+        width: btnSize
+        height: btnSize
+
+        anchors.horizontalCenter: recBox.horizontalCenter
+        anchors.horizontalCenterOffset: -25
+        anchors.bottom: recBox.bottom
+        anchors.bottomMargin: 5
 
         buttonImageHeight: height
         buttonImageWidth: height
         backgroundColor: isVideo? "#000000cc" : "white"
-
-        anchors.horizontalCenter: parent.horizontalCenter
-        anchors.right: btnRestart.left
-        anchors.rightMargin: 5
-        anchors.bottom: parent.bottom
-        anchors.bottomMargin: 5
 
         radius: height / 2
 
@@ -285,22 +347,18 @@ Rectangle {
 
     HoverableRadiusButton {
         id: btnSend
-        Layout.maximumWidth: 30
-        Layout.preferredWidth: 30
-        Layout.minimumWidth: 30
 
-        Layout.maximumHeight: 30
-        Layout.preferredHeight: 30
-        Layout.minimumHeight: 30
+        width: btnSize
+        height: btnSize
+
+        anchors.horizontalCenter: recBox.horizontalCenter
+        anchors.horizontalCenterOffset: 25
+        anchors.bottom: parent.bottom
+        anchors.bottomMargin: 5
 
         buttonImageHeight: height
         buttonImageWidth: height
         backgroundColor: isVideo? "#000000cc" : "white"
-
-        anchors.left: btnRestart.right
-        anchors.leftMargin: 5
-        anchors.bottom: parent.bottom
-        anchors.bottomMargin: 5
 
         radius: height / 2
 
@@ -316,3 +374,4 @@ Rectangle {
         }
     }
 }
+

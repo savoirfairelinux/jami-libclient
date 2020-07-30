@@ -19,6 +19,7 @@
 import QtQuick 2.14
 import QtQuick.Controls 2.14
 import QtQuick.Layouts 1.14
+import QtGraphicalEffects 1.12
 import net.jami.Models 1.0
 
 Rectangle {
@@ -44,9 +45,8 @@ Rectangle {
         fakeFocus.forceActiveFocus()
     }
 
-    border.color: JamiTheme.pressColor
-    radius: 10
-    color: contactSearchBar.activeFocus ? "white" : JamiTheme.contactSearchBarPlaceHolderGreyBackground
+    radius: height/2
+    color: "white"
 
     FocusScope {
         id: fakeFocus
@@ -57,7 +57,7 @@ Rectangle {
 
         anchors.verticalCenter: contactSearchBarRect.verticalCenter
         anchors.left: contactSearchBarRect.left
-        anchors.leftMargin: 5
+        anchors.leftMargin: 8
 
         width: 20
         height: 20
@@ -65,6 +65,12 @@ Rectangle {
         fillMode: Image.PreserveAspectFit
         mipmap: true
         source: "qrc:/images/icons/ic_baseline-search-24px.svg"
+    }
+
+    ColorOverlay {
+        anchors.fill: searchIconImage
+        source: searchIconImage
+        color: JamiTheme.contactSearchBarPlaceHolderTextFontColor
     }
 
     TextField {
@@ -85,10 +91,10 @@ Rectangle {
 
             anchors.verticalCenter: contactSearchBar.verticalCenter
             anchors.left: contactSearchBar.left
-            anchors.leftMargin: 5
+            anchors.leftMargin: 10
 
             text: qsTr("Find or start a conversation")
-            font.pointSize: JamiTheme.textFontSize - 1
+            font.pointSize: JamiTheme.textFontSize
             color: JamiTheme.contactSearchBarPlaceHolderTextFontColor
             visible: !contactSearchBar.text && !contactSearchBar.activeFocus
         }

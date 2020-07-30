@@ -64,11 +64,11 @@ ComboBox {
         id: userImageRoot
 
         anchors.left: accountComboBox.left
-        anchors.leftMargin: 5
+        anchors.leftMargin: 16
         anchors.verticalCenter: accountComboBox.verticalCenter
 
-        width: accountComboBox.height - 10
-        height: accountComboBox.height - 10
+        width: 30
+        height: 30
 
         fillMode: Image.PreserveAspectFit
 
@@ -90,12 +90,12 @@ ComboBox {
             id: presenseRect
 
             anchors.right: userImageRoot.right
-            anchors.rightMargin: 1
+            anchors.rightMargin: -2
             anchors.bottom: userImageRoot.bottom
-            anchors.bottomMargin: 2
+            anchors.bottomMargin: -2
 
-            width: 14
-            height: 14
+            width: 12
+            height: 12
 
 
             /*
@@ -123,7 +123,7 @@ ComboBox {
             }
 
             radius: 30
-            color: "white"
+            color: JamiTheme.backgroundColor
         }
     }
 
@@ -131,33 +131,45 @@ ComboBox {
         id: textUserAliasRoot
 
         anchors.left: userImageRoot.right
-        anchors.leftMargin: 10
+        anchors.leftMargin: 16
         anchors.top: rootItemBackground.top
-        anchors.topMargin: 5
+        anchors.topMargin: 16
 
         text: textMetricsUserAliasRoot.elidedText
         font.pointSize: JamiTheme.textFontSize
     }
 
+    Image {
+        anchors.left: textUserAliasRoot.right
+        anchors.verticalCenter: textUserAliasRoot.verticalCenter
+
+        width: 24
+        height: 24
+
+        fillMode: Image.PreserveAspectFit
+        mipmap: true
+        source: "qrc:/images/icons/round-arrow_drop_down-24px.svg"
+    }
+
+
     Text {
         id: textUsernameRoot
 
         anchors.left: userImageRoot.right
-        anchors.leftMargin: 10
+        anchors.leftMargin: 16
         anchors.top: textUserAliasRoot.bottom
-        anchors.topMargin: 5
 
         text: textMetricsUsernameRoot.elidedText
         font.pointSize: JamiTheme.textFontSize
-        color: JamiTheme.faddedFontColor
+        color: JamiTheme.faddedLastInteractionFontColor
     }
 
     TextMetrics {
         id: textMetricsUserAliasRoot
 
         font: textUserAliasRoot.font
-        elide: Text.ElideMiddle
-        elideWidth: accountComboBox.width - userImageRoot.width - settingsButton.width - 25
+        elide: Text.ElideRight
+        elideWidth: accountComboBox.width - userImageRoot.width - settingsButton.width - qrCodeGenerateButton.width - 55
 
 
         /*
@@ -177,8 +189,8 @@ ComboBox {
         id: textMetricsUsernameRoot
 
         font: textUsernameRoot.font
-        elide: Text.ElideMiddle
-        elideWidth: accountComboBox.width - userImageRoot.width - settingsButton.width - 25
+        elide: Text.ElideRight
+        elideWidth: accountComboBox.width - userImageRoot.width - settingsButton.width - qrCodeGenerateButton.width - 55
 
 
         /*
@@ -194,6 +206,28 @@ ComboBox {
         }
     }
 
+
+
+    HoverableButton {
+        id: qrCodeGenerateButton
+
+        anchors.right: settingsButton.left
+        anchors.rightMargin: 10
+        anchors.verticalCenter: accountComboBox.verticalCenter
+
+        buttonImageHeight: height - 8
+        buttonImageWidth: width - 8
+        radius: height / 2
+        width: 24
+        height: 24
+
+        source: "qrc:/images/qrcode.png"
+        backgroundColor: "white"
+        onClicked: {
+            qrDialog.open()
+        }
+    }
+
     HoverableButton {
         id: settingsButton
 
@@ -203,11 +237,12 @@ ComboBox {
 
         buttonImageHeight: height - 8
         buttonImageWidth: width - 8
-        source: "qrc:/images/icons/round-settings-24px.svg"
         radius: height / 2
         width: 25
         height: 25
 
+        source: "qrc:/images/icons/round-settings-24px.svg"
+        backgroundColor: "white"
         onClicked: {
             settingBtnClicked()
         }
@@ -218,8 +253,7 @@ ComboBox {
 
         implicitWidth: accountComboBox.width
         implicitHeight: accountComboBox.height
-
-        border.width: 0
+        color: JamiTheme.backgroundColor
     }
 
     MouseArea {
@@ -231,14 +265,21 @@ ComboBox {
         propagateComposedEvents: true
 
         onPressed: {
-            if (isMouseOnSettingsButton(mouse)) {
+            if (isMouseOnButton(mouse, qrCodeGenerateButton)) {
+                qrCodeGenerateButton.backgroundColor = JamiTheme.pressColor
+                qrCodeGenerateButton.clicked()
+            }if (isMouseOnButton(mouse, settingsButton)) {
                 settingsButton.backgroundColor = JamiTheme.pressColor
                 settingsButton.clicked()
-            } else
+            } else {
                 rootItemBackground.color = JamiTheme.pressColor
+            }
         }
+
         onReleased: {
-            if (isMouseOnSettingsButton(mouse)) {
+            if (isMouseOnButton(mouse, qrCodeGenerateButton)) {
+                qrCodeGenerateButton.backgroundColor = JamiTheme.releaseColor
+            } else if (isMouseOnButton(mouse, settingsButton)) {
                 settingsButton.backgroundColor = JamiTheme.releaseColor
             } else {
                 rootItemBackground.color = JamiTheme.releaseColor
@@ -253,31 +294,28 @@ ComboBox {
             rootItemBackground.color = JamiTheme.hoverColor
         }
         onExited: {
-            rootItemBackground.color = "white"
+            rootItemBackground.color = JamiTheme.backgroundColor
         }
         onMouseXChanged: {
-
-
             /*
-             * Manually making settings button hover.
+             * Manually making button hover.
              */
-            if (isMouseOnSettingsButton(mouse)) {
-                settingsButton.backgroundColor = JamiTheme.hoverColor
-                rootItemBackground.color = "white"
-            } else {
-                settingsButton.backgroundColor = "white"
-                rootItemBackground.color = JamiTheme.hoverColor
-            }
+            qrCodeGenerateButton.backgroundColor = (isMouseOnButton(mouse, qrCodeGenerateButton)) ?
+                        JamiTheme.hoverColor : "white"
+
+            settingsButton.backgroundColor = (isMouseOnButton(mouse, settingsButton)) ?
+                        JamiTheme.hoverColor : "white"
         }
-        function isMouseOnSettingsButton(mouse) {
+
+        function isMouseOnButton(mouse, button) {
             var mousePos = mapToItem(comboBoxRootMouseArea, mouse.x, mouse.y)
-            var settingsButtonPos = mapToItem(comboBoxRootMouseArea,
-                                              settingsButton.x,
-                                              settingsButton.y)
-            if ((mousePos.x >= settingsButtonPos.x
-                 && mousePos.x <= settingsButtonPos.x + settingsButton.width)
-                    && (mousePos.y >= settingsButtonPos.y
-                        && mousePos.y <= settingsButtonPos.y + settingsButton.height))
+            var qrButtonPos = mapToItem(comboBoxRootMouseArea,
+                                              button.x,
+                                              button.y)
+            if ((mousePos.x >= qrButtonPos.x
+                 && mousePos.x <= qrButtonPos.x + button.width)
+                    && (mousePos.y >= qrButtonPos.y
+                        && mousePos.y <= qrButtonPos.y + button.height))
                 return true
             return false
         }

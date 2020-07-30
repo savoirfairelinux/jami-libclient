@@ -39,7 +39,7 @@
         <file>images/icons/ic_clear_24px.svg</file>
         <file>images/icons/ic_close_white_24dp.png</file>
         <file>images/icons/ic_content_copy.svg</file>
-        <file>images/icons/ic_delete_black_18dp_2x.png</file>        
+        <file>images/icons/ic_delete_black_18dp_2x.png</file>
         <file>images/icons/ic_done_white_24dp.png</file>
         <file>images/icons/ic_exit_full_screen_black.png</file>
         <file>images/icons/ic_folder_black_18dp_2x.png</file>
@@ -107,5 +107,8 @@
         <file>images/icons/ic_close_black_24dp.png</file>
         <file>images/icons/extension_24dp.svg</file>
         <file>images/icons/settings_backup_restore-black-18dp.svg</file>
+        <file>images/icons/person-24px.svg</file>
+        <file>images/icons/drafts-24px.svg</file>
+        <file>images/icons/person_add-24px.svg</file>
     </qresource>
 </RCC>

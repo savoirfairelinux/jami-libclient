@@ -19,8 +19,8 @@
 import QtQuick 2.14
 import QtQuick.Controls 2.14
 import QtQuick.Layouts 1.14
+import QtGraphicalEffects 1.0
 import net.jami.Models 1.0
-
 
 /*
  * General menu item.
@@ -33,8 +33,8 @@ MenuItem {
 
     property string itemName: ""
     property string iconSource: ""
-    property int preferredWidth: 150
-    property int preferredHeight: 30
+    property int preferredWidth: 220
+    property int preferredHeight: 48
     property int topBorderWidth: 0
     property int bottomBorderWidth: 0
     property int leftBorderWidth: 0
@@ -46,27 +46,27 @@ MenuItem {
         id: menuItemContentRect
 
         anchors.fill: parent
-
         Image {
             id: contextMenuItemImage
 
             anchors.left: menuItemContentRect.left
-            anchors.leftMargin: 5
+            anchors.leftMargin: (visible ? 24 : 0)
             anchors.verticalCenter: menuItemContentRect.verticalCenter
 
-            width: 25
-            height: 25
+            width: (visible ? 24 : 0)
+            height: (visible ? 24 : 0)
 
             visible: false
             fillMode: Image.PreserveAspectFit
             mipmap: true
+            opacity: 0.7
         }
 
         Text {
             id: contextMenuItemText
 
             anchors.left: contextMenuItemImage.right
-            anchors.leftMargin: 5
+            anchors.leftMargin: 20
             anchors.verticalCenter: menuItemContentRect.verticalCenter
             width: textMetrics.boundingRect.width
             height: 30
@@ -74,13 +74,13 @@ MenuItem {
             TextMetrics {
                 id: textMetrics
                 font: contextMenuItemText.font
-                elide: Text.ElideMiddle
-                elideWidth: contextMenuItemImage.visible ? (preferredWidth - contextMenuItemImage.width - 5) : preferredWidth
+                elide: Text.ElideRight
+                elideWidth: contextMenuItemImage.visible ? (preferredWidth - contextMenuItemImage.width - 58) : preferredWidth - 24
                 text: itemName
             }
 
             text: textMetrics.elidedText
-            font.pointSize: JamiTheme.textFontSize - 3
+            font.pointSize: JamiTheme.textFontSize
             horizontalAlignment: Text.AlignLeft
             verticalAlignment: Text.AlignVCenter
         }

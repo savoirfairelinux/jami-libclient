@@ -29,7 +29,7 @@ import "../../commoncomponents"
 Rectangle {
     id: messageWebViewRect
 
-    property int messageWebViewHeaderPreferredHeight: 60
+    property int messageWebViewHeaderPreferredHeight: 64
     property string headerUserAliasLabelText: ""
     property string headerUserUserNameLabelText: ""
 
@@ -57,8 +57,6 @@ Rectangle {
     function resetMessagingHeaderBackButtonSource(reset) {
         messageWebViewHeader.resetBackToWelcomeViewButtonSource(reset)
     }
-
-    anchors.fill: parent
 
     JamiFileDialog {
         id: jamiFileDialog

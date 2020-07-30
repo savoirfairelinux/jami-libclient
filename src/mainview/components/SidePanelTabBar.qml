@@ -19,7 +19,9 @@
 import QtQuick 2.14
 import QtQuick.Controls 2.14
 import QtQuick.Layouts 1.14
+import QtGraphicalEffects 1.12
 import net.jami.Models 1.0
+import "../../commoncomponents"
 
 TabBar {
     id: tabBar
@@ -30,29 +32,26 @@ TabBar {
     property alias invitationTabWidth: pageTwo.width
     property alias converstationTabHeight: pageOne.height
     property alias invitationTabHeight: pageTwo.height
+    property real opacityDegree: 0.5
 
     visible: tabBarVisible
 
     currentIndex: 0
 
     TabButton {
+
         id: pageOne
-
-        width: tabBar.width / 2 - tabButtonShrinkSize
-        height: textConvElement.height + 10
-
         down: true
 
         Rectangle {
             id: totalUnreadMessagesCountRect
 
-            anchors.right: pageOne.right
-            anchors.rightMargin: 5
-            anchors.bottom: pageOne.bottom
-            anchors.bottomMargin: pageOne.height - totalUnreadMessagesCountRect.height / 2
+            anchors.centerIn: buttonRectOne
+            anchors.verticalCenterOffset : -20
+            anchors.horizontalCenterOffset : 15
 
-            width: 14
-            height: 14
+            width: 16
+            height: 16
 
             visible: totalUnreadMessagesCount > 0
 
@@ -63,38 +62,71 @@ TabBar {
 
                 text: totalUnreadMessagesCount > 9 ? "···" : totalUnreadMessagesCount
                 color: "white"
+                font.pointSize: JamiTheme.textFontSize
             }
-
             radius: 30
             color: JamiTheme.notificationRed
+
         }
 
         background: Rectangle {
-            id: buttonRectOne
 
-            radius: 10
-            width: pageOne.width + 2
-            color: pageOne.down ? "white" : JamiTheme.releaseColor
-            border.color: JamiTheme.tabbarBorderColor
+            id: buttonRectOne
+            width: tabBar.width / 2 + 1
+            height: tabBar.height
+            color: JamiTheme.backgroundColor
+
+            Image {
+                id: imgRectOne
+                anchors.horizontalCenter: buttonRectOne.horizontalCenter
+                anchors.top: buttonRectOne.top
+                anchors.topMargin: 12
+
+                width: 24
+                height: 24
+
+                fillMode: Image.PreserveAspectFit
+                mipmap: true
+                source: "qrc:/images/icons/baseline-people-24px.svg"
+                //opacity: enabled ? 0.8 : 0.3
+                opacity: pageOne.down == true ? 1.0 : opacityDegree
+            }
+
+            ColorOverlay {
+                anchors.fill: imgRectOne
+                source: imgRectOne
+                color: JamiTheme.blueLogo_
+                opacity: pageOne.down == true ? 1.0 : opacityDegree
+            }
 
             Text {
                 id: textConvElement
 
-                anchors.centerIn: buttonRectOne
+                anchors.horizontalCenter: buttonRectOne.horizontalCenter
+                anchors.bottom: buttonRectOne.bottom
+                anchors.bottomMargin: 12
 
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
 
-                text: qsTr("Converstation")
+                text: qsTr("CONVERSATIONS")
                 font.pointSize: JamiTheme.textFontSize
-                opacity: enabled ? 1.0 : 0.3
+                opacity: pageOne.down == true ? 1.0 : opacityDegree
+                color: JamiTheme.blueLogo_
+            }
+
+            Rectangle {
+                id: markerTabOne
+                width: buttonRectOne.width
+                anchors.bottom: buttonRectOne.bottom
+                height: 2
+                color: pageOne.down == true ? JamiTheme.blueLogo_ : "transparent"
             }
 
             MouseArea {
                 anchors.fill: parent
                 hoverEnabled: true
                 onPressed: {
-                    buttonRectOne.color = JamiTheme.pressColor
                     ConversationsAdapter.setConversationFilter("")
                     contactSearchBar.setPlaceholderString(
                                 JamiTheme.contactSearchBarPlaceHolderConversationText)
@@ -104,36 +136,31 @@ TabBar {
                     forceReselectConversationSmartListCurrentIndex()
                 }
                 onReleased: {
-                    buttonRectOne.color = JamiTheme.releaseColor
+                    buttonRectOne.color = JamiTheme.backgroundColor
                 }
                 onEntered: {
                     buttonRectOne.color = JamiTheme.hoverColor
                 }
                 onExited: {
-                    buttonRectOne.color = Qt.binding(function () {
-                        return pageOne.down ? "white" : JamiTheme.releaseColor
-                    })
+                    buttonRectOne.color = JamiTheme.backgroundColor
                 }
             }
         }
     }
 
     TabButton {
-        id: pageTwo
 
-        width: tabBar.width / 2 - tabButtonShrinkSize
-        height: textInvElement.height + 10
+        id: pageTwo
 
         Rectangle {
             id: pendingRequestCountRect
 
-            anchors.right: pageTwo.right
-            anchors.rightMargin: 5
-            anchors.bottom: pageTwo.bottom
-            anchors.bottomMargin: pageTwo.height - pendingRequestCountRect.height / 2
+            anchors.centerIn: buttonRectTwo
+            anchors.verticalCenterOffset : -20
+            anchors.horizontalCenterOffset : 15
 
-            width: 14
-            height: 14
+            width: 16
+            height: 16
 
             visible: pendingRequestCount > 0
 
@@ -143,9 +170,9 @@ TabBar {
                 anchors.centerIn: pendingRequestCountRect
 
                 text: pendingRequestCount > 9 ? "···" : pendingRequestCount
-                color: "white"
+                color: JamiTheme.backgroundColor
+                font.pointSize: JamiTheme.textFontSize
             }
-
             radius: 30
             color: JamiTheme.notificationRed
         }
@@ -153,29 +180,63 @@ TabBar {
         background: Rectangle {
             id: buttonRectTwo
 
-            radius: 10
-            color: pageTwo.down ? "white" : JamiTheme.releaseColor
-            border.color: JamiTheme.tabbarBorderColor
+            width: tabBar.width / 2
+            height: tabBar.height
+            color: JamiTheme.backgroundColor
+
+            Image {
+                id: imgRectTwo
+                anchors.horizontalCenter: buttonRectTwo.horizontalCenter
+                anchors.top: buttonRectTwo.top
+                anchors.topMargin: 10
+
+                width: 24
+                height: 24
+
+                fillMode: Image.PreserveAspectFit
+                mipmap: true
+                source: "qrc:/images/icons/drafts-24px.svg"
+                //opacity: enabled ? 0.8 : 0.3
+                opacity: pageTwo.down == true ? 1.0 : opacityDegree
+            }
+
+            ColorOverlay {
+                anchors.fill: imgRectTwo
+                source: imgRectTwo
+                color: JamiTheme.blueLogo_
+                opacity: pageTwo.down == true ? 1.0 : opacityDegree
+            }
 
             Text {
                 id: textInvElement
 
-                anchors.centerIn: buttonRectTwo
+                anchors.horizontalCenter: buttonRectTwo.horizontalCenter
+                anchors.bottom: buttonRectTwo.bottom
+                anchors.bottomMargin: 12
 
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
 
                 font.pointSize: JamiTheme.textFontSize
 
-                text: qsTr("Invitation")
-                opacity: enabled ? 1.0 : 0.3
+                text: qsTr("INVITATIONS")
+                //opacity: enabled ? 1.0 : 0.3
+                opacity: pageTwo.down == true ? 1.0 : opacityDegree
+                color: JamiTheme.blueLogo_
+            }
+
+            Rectangle {
+                id: markerTabTwo
+                width: buttonRectTwo.width
+                anchors.bottom: buttonRectTwo.bottom
+                height: 2
+                color: pageTwo.down == true ? JamiTheme.blueLogo_ : "transparent"
             }
 
             MouseArea {
                 anchors.fill: parent
                 hoverEnabled: true
                 onPressed: {
-                    buttonRectTwo.color = JamiTheme.pressColor
                     ConversationsAdapter.setConversationFilter("PENDING")
                     contactSearchBar.setPlaceholderString(
                                 JamiTheme.contactSearchBarPlaceHolderInivitionText)
@@ -183,15 +244,13 @@ TabBar {
                     pageOne.down = false
                 }
                 onReleased: {
-                    buttonRectTwo.color = JamiTheme.releaseColor
+                    buttonRectTwo.color = JamiTheme.backgroundColor
                 }
                 onEntered: {
                     buttonRectTwo.color = JamiTheme.hoverColor
                 }
                 onExited: {
-                    buttonRectTwo.color = Qt.binding(function () {
-                        return pageTwo.down ? "white" : JamiTheme.releaseColor
-                    })
+                    buttonRectTwo.color = JamiTheme.backgroundColor
                 }
             }
         }

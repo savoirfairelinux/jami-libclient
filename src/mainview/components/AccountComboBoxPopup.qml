@@ -62,7 +62,7 @@ Popup {
                 id: userImage
 
                 anchors.left: parent.left
-                anchors.leftMargin: 5
+                anchors.leftMargin: 10
                 anchors.verticalCenter: parent.verticalCenter
 
                 width: 30
@@ -85,7 +85,7 @@ Popup {
                 anchors.left: userImage.right
                 anchors.leftMargin: 10
                 anchors.top: itemCoboBackground.top
-                anchors.topMargin: 5
+                anchors.topMargin: 15
 
                 text: textMetricsUserAliasPopup.elidedText
                 font.pointSize: JamiTheme.textFontSize
@@ -97,33 +97,31 @@ Popup {
                 anchors.left: userImage.right
                 anchors.leftMargin: 10
                 anchors.top: textUserAliasPopup.bottom
-                anchors.topMargin: 5
 
                 text: textMetricsUsernamePopup.elidedText
                 font.pointSize: JamiTheme.textFontSize
-                color: JamiTheme.faddedFontColor
+                color: JamiTheme.faddedLastInteractionFontColor
             }
 
             TextMetrics {
                 id: textMetricsUserAliasPopup
-                elide: Text.ElideMiddle
+                elide: Text.ElideRight
                 elideWidth: accountComboBox.width - userImage.width - settingsButton.width - 30
                 text: Alias
             }
 
             TextMetrics {
                 id: textMetricsUsernamePopup
-                elide: Text.ElideMiddle
+                elide: Text.ElideRight
                 elideWidth: accountComboBox.width - userImage.width - settingsButton.width - 30
                 text: Username
             }
 
             background: Rectangle {
                 id: itemCoboBackground
-
+                color: JamiTheme.backgroundColor
                 implicitWidth: accountComboBox.width
                 implicitHeight: accountComboBox.height
-                border.width: 0
             }
 
             MouseArea {
@@ -142,7 +140,7 @@ Popup {
                     itemCoboBackground.color = JamiTheme.hoverColor
                 }
                 onExited: {
-                    itemCoboBackground.color = "white"
+                    itemCoboBackground.color = JamiTheme.backgroundColor
                 }
             }
         }
@@ -154,8 +152,8 @@ Popup {
             implicitHeight: accountComboBox.height
 
             text: qsTr("Add Account") + "+"
-            backgroundColor: "white"
-            onExitColor: "white"
+            backgroundColor: JamiTheme.backgroundColor
+            onExitColor: JamiTheme.backgroundColor
 
             onClicked: {
                 comboBoxPopup.close()
@@ -167,12 +165,12 @@ Popup {
     }
     background: Rectangle {
         id: accountComboBoxPopup
-
+        color: JamiTheme.backgroundColor
         CustomBorder {
             commonBorder: false
-            lBorderwidth: 0
+            lBorderwidth: 1
             rBorderwidth: 1
-            tBorderwidth: 0
+            tBorderwidth: 1
             bBorderwidth: 1
             borderColor: JamiTheme.tabbarBorderColor
         }

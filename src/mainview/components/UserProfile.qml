@@ -32,14 +32,14 @@ Dialog {
     property string registeredNameText: ""
     property string idText: ""
 
+    property int preferredImgSize: 80
     modal: true
-
 
     /*
      * Content height + margin.
      */
-    contentHeight: userProfileDialogUpperPartColumnLayout.implicitHeight + 30
-
+    contentHeight: userProfileDialogLayout.implicitHeight + 60
+    contentWidth: userProfileDialogLayout.implicitWidth + 60
 
     /*
      * Fake focus to make sure that text edit lose focus on close.
@@ -48,25 +48,25 @@ Dialog {
         id: fakeFocusTextEdit
     }
 
-    ColumnLayout {
-        id: userProfileDialogUpperPartColumnLayout
+    contentItem: GridLayout {
 
-        anchors.centerIn: parent
-
-        spacing: 15
+        id: userProfileDialogLayout
+        columns: 2
+        rowSpacing: 10
+        columnSpacing: 10
 
         Image {
             id: contactImage
 
-            Layout.alignment: Qt.AlignCenter
+            Layout.alignment: Qt.AlignRight
+            Layout.preferredWidth: 130
 
-            width: 150
-            height: 150
+            sourceSize.width: preferredImgSize
+            sourceSize.height: preferredImgSize
 
             fillMode: Image.PreserveAspectFit
             mipmap: true
         }
-
 
         /*
          * Visible when user alias is not empty or equals to id.
@@ -74,20 +74,41 @@ Dialog {
         Text {
             id: contactAlias
 
-            Layout.alignment: Qt.AlignCenter
+            Layout.alignment: Qt.AlignLeft
 
-            font.pointSize: JamiTheme.textFontSize
+            font.pointSize: JamiTheme.titleFontSize
             text: textMetricsContactAliasText.elidedText
             visible: aliasText ? (aliasText === idText ? false : true) : false
+
             TextMetrics {
                 id: textMetricsContactAliasText
                 font: contactAlias.font
                 text: aliasText
-                elideWidth: userProfileDialog.width - 30
+                elideWidth: userProfileDialog.width-160
                 elide: Qt.ElideMiddle
             }
         }
 
+        Item {
+            Layout.columnSpan: 2
+            height: 20
+        }
+
+        Text {
+            Layout.alignment: Qt.AlignRight
+            font.pointSize: JamiTheme.menuFontSize
+            text: qsTr("Informations")
+        }
+
+        Item { Layout.fillWidth: true }
+
+        Text {
+            Layout.alignment: Qt.AlignRight
+            font.pointSize: JamiTheme.textFontSize
+            text: qsTr("Username")
+            visible: registeredNameText ? (registeredNameText === aliasText ? false : true) : false
+            color: JamiTheme.faddedFontColor
+        }
 
         /*
          * Visible when user name is not empty or equals to alias.
@@ -95,57 +116,67 @@ Dialog {
         Text {
             id: contactDisplayName
 
-            Layout.alignment: Qt.AlignCenter
+            Layout.alignment: Qt.AlignLeft
 
-            font.pointSize: JamiTheme.textFontSize - 1
+            font.pointSize: JamiTheme.textFontSize
             text: textMetricsContactDisplayNameText.elidedText
             visible: registeredNameText ? (registeredNameText === aliasText ? false : true) : false
-            color: JamiTheme.faddedFontColor
 
             TextMetrics {
                 id: textMetricsContactDisplayNameText
                 font: contactDisplayName.font
                 text: registeredNameText
-                elideWidth: userProfileDialog.width - 30
+                elideWidth: userProfileDialog.width-160
                 elide: Qt.ElideMiddle
             }
+        }
+
+        Text {
+            Layout.alignment: Qt.AlignRight
+            font.pointSize: JamiTheme.textFontSize
+            text: qsTr("ID")
+            color: JamiTheme.faddedFontColor
         }
 
         TextEdit {
             id: contactId
 
-            Layout.alignment: Qt.AlignCenter
-
-            horizontalAlignment: Text.AlignHCenter
-            verticalAlignment: Text.AlignVCenter
+            Layout.alignment: Qt.AlignLeft
 
             selectByMouse: true
             readOnly: true
-            font.pointSize: JamiTheme.textFontSize - 1
+            font.pointSize: JamiTheme.textFontSize
             text: textMetricsContactIdText.elidedText
 
             TextMetrics {
                 id: textMetricsContactIdText
                 font: contactId.font
                 text: idText
-                elideWidth: userProfileDialog.width - 30
+                elideWidth: userProfileDialog.width-160
                 elide: Qt.ElideMiddle
             }
+        }
+
+        Text {
+            Layout.alignment: Qt.AlignRight
+            font.pointSize: JamiTheme.textFontSize
+            text: qsTr("QR Code")
+            color: JamiTheme.faddedFontColor
         }
 
         Image {
             id: contactQrImage
 
-            Layout.alignment: Qt.AlignBottom | Qt.AlignCenter
-
-            width: 150
-            height: 150
+            Layout.alignment: Qt.AlignBottom | Qt.AlignLeft
 
             fillMode: Image.PreserveAspectFit
-            sourceSize.width: 150
-            sourceSize.height: 150
+            sourceSize.width: preferredImgSize
+            sourceSize.height: preferredImgSize
             mipmap: true
         }
+
+        Item { height: 20 }
+
     }
 
     background: Rectangle {

@@ -29,8 +29,6 @@ Rectangle {
     property int currentAccountIndex: 0
     property int buttonPreferredSize: 30
 
-    anchors.fill: parent
-
     Rectangle {
         id: welcomeRectComponentsGroup
 
@@ -81,7 +79,7 @@ Rectangle {
                 Layout.preferredHeight: 50
 
                 wrapMode: Text.WordWrap
-                font.pointSize: JamiTheme.textFontSize - 1
+                font.pointSize: JamiTheme.textFontSize
 
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
@@ -117,7 +115,7 @@ Rectangle {
                         Layout.preferredWidth: welcomeRectComponentsGroup.width
                         Layout.preferredHeight: 30
 
-                        font.pointSize: JamiTheme.textFontSize
+                        font.pointSize: JamiTheme.textFontSize + 1
 
                         horizontalAlignment: Text.AlignHCenter
                         verticalAlignment: Text.AlignVCenter
@@ -136,89 +134,22 @@ Rectangle {
                         }
                     }
 
-                    RowLayout {
-                        id: jamiRegisteredNameRowLayout
+                    HoverableButton {
+                        id: copyRegisterednameButton
 
                         Layout.alignment: Qt.AlignCenter
-                        Layout.preferredWidth: buttonPreferredSize * 2 + 20
-                        Layout.preferredHeight: 30
+                        Layout.preferredWidth: buttonPreferredSize
+                        Layout.preferredHeight: buttonPreferredSize
 
-                        HoverableButton {
-                            id: copyRegisterednameButton
+                        radius: 30
+                        source: "qrc:/images/icons/ic_content_copy.svg"
 
-                            Layout.alignment: Qt.AlignCenter
-                            Layout.preferredWidth: buttonPreferredSize
-                            Layout.preferredHeight: buttonPreferredSize
-
-                            radius: 30
-                            source: "qrc:/images/icons/ic_content_copy.svg"
-
-                            onClicked: {
-                                ClientWrapper.utilsAdaptor.setText(
-                                            textMetricsjamiRegisteredNameText.text)
-                            }
-                        }
-
-                        HoverableButton {
-                            id: qrCodeGenerateButton
-
-                            Layout.alignment: Qt.AlignCenter
-                            Layout.preferredWidth: buttonPreferredSize
-                            Layout.preferredHeight: buttonPreferredSize
-
-                            radius: 30
-                            source: "qrc:/images/qrcode.png"
-
-                            onClicked: {
-                                qrDialog.open()
-                            }
+                        onClicked: {
+                            ClientWrapper.utilsAdaptor.setText(
+                                        textMetricsjamiRegisteredNameText.text)
                         }
                     }
                 }
-            }
-
-            Image {
-                id: sipImage
-
-                Layout.alignment: Qt.AlignCenter
-                Layout.preferredWidth: 200
-                Layout.preferredHeight: 200
-
-
-                /*
-                 * Check if account type is ring.
-                 */
-                visible: accountListModel.data(accountListModel.index(
-                                                   currentAccountIndex, 0),
-                                               260) === 1 ? false : true
-                fillMode: Image.PreserveAspectFit
-
-
-                /*
-                 * Requested size.
-                 */
-                sourceSize.width: 200
-                sourceSize.height: 200
-                mipmap: true
-            }
-        }
-
-        HoverableButton {
-            id: aboutButton
-
-            anchors.horizontalCenter: welcomeRectComponentsGroup.horizontalCenter
-            anchors.bottom: welcomeRectComponentsGroup.bottom
-            anchors.bottomMargin: 5
-
-            width: 80
-            height: buttonPreferredSize
-
-            text: qsTr("About")
-            fontPointSize: JamiTheme.textFontSize
-            radius: 10
-
-            onClicked: {
-                aboutPopUpDialog.open()
             }
         }
     }

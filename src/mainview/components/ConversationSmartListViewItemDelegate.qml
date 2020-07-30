@@ -25,7 +25,9 @@ import "../../commoncomponents"
 
 ItemDelegate {
     id: smartListItemDelegate
+    height: 72
 
+    property int lastInteractionPreferredWidth: 80
     Connections {
         target: conversationSmartListView
 
@@ -48,7 +50,7 @@ ItemDelegate {
                     || conversationSmartListView.currentIndex !== index) {
                 itemSmartListBackground.color = Qt.binding(function () {
                     return InCall ? Qt.lighter(JamiTheme.selectionBlue,
-                                               1.8) : "white"
+                                               1.8) : JamiTheme.backgroundColor
                 })
             } else {
                 itemSmartListBackground.color = Qt.binding(function () {
@@ -73,134 +75,82 @@ ItemDelegate {
 
         anchors.left: parent.left
         anchors.verticalCenter: parent.verticalCenter
-        anchors.leftMargin: 10
+        anchors.leftMargin: 16
     }
 
-    Rectangle {
-        id: conversationSmartListUserInfoRect
 
+    RowLayout {
+        id: rowUsernameAndLastInteractionDate
         anchors.left: conversationSmartListUserImage.right
-        anchors.leftMargin: 10
+        anchors.leftMargin: 16
         anchors.top: parent.top
+        anchors.topMargin: 16
+        anchors.right: parent.right
+        anchors.rightMargin: 10
 
-        width: LastInteractionDate ? (parent.width - conversationSmartListUserImage.width - 20)
-                                     / 2 : parent.width - conversationSmartListUserImage.width - 20
-        height: parent.height
+        Text {
+            id: conversationSmartListUserName
+            Layout.alignment: Qt.AlignLeft
 
-        color: "transparent"
+            TextMetrics {
+                id: textMetricsConversationSmartListUserName
+                font: conversationSmartListUserName.font
+                elide: Text.ElideRight
+                elideWidth: LastInteractionDate ? (smartListItemDelegate.width - lastInteractionPreferredWidth - conversationSmartListUserImage.width-32) :
+                                                  smartListItemDelegate.width - lastInteractionPreferredWidth
+                text: DisplayName
+            }
+            text: textMetricsConversationSmartListUserName.elidedText
+            font.pointSize: JamiTheme.menuFontSize
+        }
 
-        ColumnLayout {
-            id: conversationSmartListUserInfoColumnLayout
-
-            anchors.fill: parent
-
-            Text {
-                id: conversationSmartListUserName
-
-                Layout.alignment: Qt.AlignLeft
-
-                TextMetrics {
-                    id: textMetricsConversationSmartListUserName
-                    font: conversationSmartListUserName.font
-                    elide: Text.ElideMiddle
-                    elideWidth: conversationSmartListUserInfoRect.width
-                    text: DisplayName
-                }
-
-                text: textMetricsConversationSmartListUserName.elidedText
-                font.pointSize: JamiTheme.textFontSize
+        Text {
+            id: conversationSmartListUserLastInteractionDate
+            Layout.alignment: Qt.AlignRight
+            TextMetrics {
+                id: textMetricsConversationSmartListUserLastInteractionDate
+                font: conversationSmartListUserLastInteractionDate.font
+                elide: Text.ElideRight
+                elideWidth: lastInteractionPreferredWidth
+                text: LastInteractionDate
             }
 
-            Text {
-                id: conversationSmartListUserId
-
-                Layout.alignment: Qt.AlignLeft
-
-                fontSizeMode: Text.Fit
-                color: JamiTheme.faddedFontColor
-
-                TextMetrics {
-                    id: textMetricsConversationSmartListUserId
-                    font: conversationSmartListUserId.font
-                    elide: Text.ElideMiddle
-                    elideWidth: conversationSmartListUserInfoRect.width
-                    text: DisplayID == DisplayName ? "" : DisplayID
-                }
-
-                text: textMetricsConversationSmartListUserId.elidedText
-                font.pointSize: JamiTheme.textFontSize
-            }
+            text: textMetricsConversationSmartListUserLastInteractionDate.elidedText
+            font.pointSize: JamiTheme.textFontSize
+            color: JamiTheme.faddedLastInteractionFontColor
         }
     }
 
-    Rectangle {
-        id: conversationSmartListUserLastInteractionRect
 
-        anchors.left: conversationSmartListUserInfoRect.right
-        anchors.top: parent.top
+    Text {
+        id: conversationSmartListUserLastInteractionMessage
+        anchors.left: conversationSmartListUserImage.right
+        anchors.leftMargin: 16
+        anchors.bottom: rowUsernameAndLastInteractionDate.bottom
+        anchors.bottomMargin: -20
 
-        width: (parent.width - conversationSmartListUserImage.width - 20) / 2 - 10
-        height: parent.height
-
-        color: "transparent"
-
-        ColumnLayout {
-            id: conversationSmartListUserLastInteractionColumnLayout
-
-            anchors.fill: parent
-
-            Text {
-                id: conversationSmartListUserLastInteractionDate
-
-                Layout.alignment: Qt.AlignRight
-
-                TextMetrics {
-                    id: textMetricsConversationSmartListUserLastInteractionDate
-                    font: conversationSmartListUserLastInteractionDate.font
-                    elideWidth: conversationSmartListUserLastInteractionRect.width
-                    elide: Text.ElideRight
-                    text: LastInteractionDate
-                }
-
-                text: textMetricsConversationSmartListUserLastInteractionDate.elidedText
-                font.pointSize: JamiTheme.textFontSize
-                color: JamiTheme.faddedFontColor
-            }
-
-            Text {
-                id: conversationSmartListUserLastInteractionMessage
-
-                Layout.alignment: Qt.AlignRight
-
-                fontSizeMode: Text.Fit
-
-                TextMetrics {
-                    id: textMetricsConversationSmartListUserLastInteractionMessage
-                    font: conversationSmartListUserLastInteractionMessage.font
-                    elideWidth: conversationSmartListUserLastInteractionRect.width
-                    elide: Text.ElideRight
-                    text: InCall ? CallStateStr : (Draft ? Draft : LastInteraction)
-                }
-
-                font.family: "Segoe UI Emoji"
-                font.hintingPreference: Font.PreferNoHinting
-                text: textMetricsConversationSmartListUserLastInteractionMessage.elidedText
-                font.pointSize: JamiTheme.textFontSize
-                color: Draft ? JamiTheme.draftRed : JamiTheme.faddedLastInteractionFontColor
-            }
+        TextMetrics {
+            id: textMetricsConversationSmartListUserLastInteractionMessage
+            font: conversationSmartListUserLastInteractionMessage.font
+            elide: Text.ElideRight
+            elideWidth: LastInteractionDate ? (smartListItemDelegate.width - lastInteractionPreferredWidth - conversationSmartListUserImage.width-32) :
+                                              smartListItemDelegate.width - lastInteractionPreferredWidth
+            text: InCall ? CallStateStr : (Draft ? Draft : LastInteraction)
         }
+
+        font.hintingPreference: Font.PreferNoHinting
+        text: textMetricsConversationSmartListUserLastInteractionMessage.elidedText
+        font.pointSize: JamiTheme.textFontSize
+        color: Draft ? JamiTheme.draftRed : JamiTheme.faddedLastInteractionFontColor
     }
+
+
 
     background: Rectangle {
         id: itemSmartListBackground
-
-        color: InCall ? Qt.lighter(JamiTheme.selectionBlue, 1.8) : "white"
-
+        color: InCall ? Qt.lighter(JamiTheme.selectionBlue, 1.8) : JamiTheme.backgroundColor
         implicitWidth: conversationSmartListView.width
-        implicitHeight: Math.max(
-                            conversationSmartListUserName.height
-                            + textMetricsConversationSmartListUserId.height + 10,
-                            conversationSmartListUserImage.height + 10)
+        implicitHeight: parent.height
         border.width: 0
     }
 
@@ -244,7 +194,7 @@ ItemDelegate {
                 userProfile.registeredNameText = DisplayID
                 userProfile.idText = URI
                 userProfile.contactPicBase64 = Picture
-                smartListContextMenu.open()
+                smartListContextMenu.openMenu()
             } else if (mouse.button === Qt.LeftButton) {
                 conversationSmartListView.currentIndex = index
                 conversationSmartListView.needToSelectItems(index)
@@ -262,7 +212,7 @@ ItemDelegate {
                         || conversationSmartListView.currentIndex === -1) {
                     itemSmartListBackground.color = Qt.binding(function () {
                         return InCall ? Qt.lighter(JamiTheme.selectionBlue,
-                                                   1.8) : "white"
+                                                   1.8) : JamiTheme.backgroundColor
                     })
                 } else {
                     itemSmartListBackground.color = Qt.binding(function () {

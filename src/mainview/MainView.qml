@@ -43,6 +43,11 @@ Window {
     property int welcomePageGroupPreferedWidth: 250
     property int aboutPopUpPreferedWidth: 250
 
+    property int savedSidePanelViewMinWidth: 0
+    property int savedSidePanelViewMaxWidth: 0
+    property int savedWelcomeViewMinWidth: 0
+    property int savedWelcomeViewMaxWidth: 0
+    property bool hiddenView: false
 
     /*
      * To calculate tab bar bottom border hidden rect left margin.
@@ -184,18 +189,21 @@ Window {
             handle: Rectangle {
                 implicitWidth: JamiTheme.splitViewHandlePreferedWidth
                 implicitHeight: splitView.height
-                color: SplitHandle.pressed ? JamiTheme.pressColor : (SplitHandle.hovered ? JamiTheme.hoverColor : JamiTheme.tabbarBorderColor)
+                color:"transparent"
+                Rectangle {
+                    implicitWidth: 1
+                    implicitHeight: splitView.height
+                    color: SplitHandle.pressed ? JamiTheme.pressColor : (SplitHandle.hovered ? JamiTheme.hoverColor : JamiTheme.tabbarBorderColor)
+                }
             }
 
             StackView {
                 id: sidePanelViewStack
 
-                property int maximumWidth: sidePanelViewStackPreferedWidth + 100
-
                 initialItem: mainViewWindowSidePanel
 
+                SplitView.maximumWidth: splitView.width - sidePanelViewStackPreferedWidth
                 SplitView.minimumWidth: sidePanelViewStackPreferedWidth
-                SplitView.maximumWidth: maximumWidth
                 SplitView.fillHeight: true
 
                 clip: true
@@ -206,7 +214,8 @@ Window {
 
                 initialItem: welcomePage
 
-                SplitView.maximumWidth: splitView.width - sidePanelViewStack.width
+                SplitView.maximumWidth: hiddenView ? splitView.width : splitView.width - sidePanelViewStackPreferedWidth
+                SplitView.minimumWidth: sidePanelViewStackPreferedWidth
                 SplitView.fillHeight: true
 
                 clip: true
@@ -408,6 +417,18 @@ Window {
         }
 
         Component.onCompleted: {
+            sidePanelViewStack.SplitView.maximumWidth = Qt.binding(function() {
+                return (hiddenView ? splitView.width : splitView.width - sidePanelViewStackPreferedWidth)
+            })
+
+            recordBox.x = Qt.binding(function() {
+                var i = (welcomeViewStack.width > 1000 ? Math.round((welcomeViewStack.width-1000)*0.5) : 0)
+                return sidePanelViewStack.width + recordBox.x_offset + i
+            })
+
+            recordBox.y = Qt.binding(function() {
+                return sidePanelViewStack.height + recordBox.y_offset
+            })
 
 
             /*
@@ -427,7 +448,7 @@ Window {
                 + welcomePageGroupPreferedWidth - 5
                 && welcomeViewStack.visible) {
             welcomeViewStack.visible = false
-
+            hiddenView = true
 
             /*
              * The find callback function is called for each item in the stack.
@@ -436,17 +457,17 @@ Window {
                         function (item, index) {
                             return index > 0
                         })
+
             if (inWelcomeViewStack) {
                 recursionStackViewItemMove(welcomeViewStack, sidePanelViewStack)
             }
-
-            sidePanelViewStack.maximumWidth = splitView.width
 
             mainViewWindow.update()
         } else if (mainViewWindow.width >= sidePanelViewStackPreferedWidth
                    + welcomePageGroupPreferedWidth + 5
                    && !welcomeViewStack.visible) {
             welcomeViewStack.visible = true
+            hiddenView = false
 
             var inSidePanelViewStack = sidePanelViewStack.find(
                         function (item, index) {
@@ -455,8 +476,6 @@ Window {
             if (inSidePanelViewStack) {
                 recursionStackViewItemMove(sidePanelViewStack, welcomeViewStack)
             }
-
-            sidePanelViewStack.maximumWidth = sidePanelViewStackPreferedWidth + 100
 
             mainViewWindow.update()
         }
