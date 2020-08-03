@@ -209,11 +209,12 @@ Q_SIGNALS:
                                const int status);
 
     /**
-     * Account avatar has been received
+     * Account profile has been received
      * @param accountId
+     * @param displayName
      * @param userPhoto
      */
-    void accountAvatarReceived(const QString& accountId, const QString& userPhoto);
+    void accountProfileReceived(const QString& accountId, const QString& displayName, const QString& userPhoto);
 
     /**
      * Emit exportOnRingEnded
@@ -446,9 +447,10 @@ private Q_SLOTS:
      /**
      * Emit account avatar has been received
      * @param accountId
+     * @param displayName
      * @param userPhoto
      */
-     void slotAccountAvatarReceived(const QString& accountId, const QString& userPhoto);
+     void slotAccountProfileReceived(const QString& accountId, const QString& displayName, const QString& userPhoto);
 
     /**
      * Emit exportOnRingEnded

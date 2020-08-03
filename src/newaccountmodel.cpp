@@ -163,11 +163,12 @@ public Q_SLOTS:
     void slotMigrationEnded(const QString& accountId, bool ok);
 
     /**
-     * Emit accountAvatarReceived
+     * Emit accountProfileReceived
      * @param accountId
+     * @param displayName
      * @param userPhoto
      */
-    void slotAccountAvatarReceived(const QString& accountId, const QString& userPhoto);
+    void slotAccountProfileReceived(const QString& accountId, const QString& displayName, const QString& userPhoto);
 };
 
 NewAccountModel::NewAccountModel(Lrc& lrc,
@@ -393,7 +394,7 @@ NewAccountModelPimpl::NewAccountModelPimpl(NewAccountModel& linked,
     connect(&callbacksHandler, &CallbacksHandler::nameRegistrationEnded, this, &NewAccountModelPimpl::slotNameRegistrationEnded);
     connect(&callbacksHandler, &CallbacksHandler::registeredNameFound, this, &NewAccountModelPimpl::slotRegisteredNameFound);
     connect(&callbacksHandler, &CallbacksHandler::migrationEnded, this, &NewAccountModelPimpl::slotMigrationEnded);
-    connect(&callbacksHandler, &CallbacksHandler::accountAvatarReceived, this, &NewAccountModelPimpl::slotAccountAvatarReceived);
+    connect(&callbacksHandler, &CallbacksHandler::accountProfileReceived, this, &NewAccountModelPimpl::slotAccountProfileReceived);
 }
 
 NewAccountModelPimpl::~NewAccountModelPimpl()
@@ -638,9 +639,17 @@ NewAccountModelPimpl::slotMigrationEnded(const QString& accountId, bool ok)
 }
 
 void
-NewAccountModelPimpl::slotAccountAvatarReceived(const QString& accountId, const QString& userPhoto)
+NewAccountModelPimpl::slotAccountProfileReceived(const QString& accountId, const QString& displayName, const QString& userPhoto)
 {
-    linked.setAvatar(accountId, userPhoto);
+    auto account = accounts.find(accountId);
+    if (account == accounts.end()) return;
+    auto& accountInfo = account->second.first;
+    accountInfo.profileInfo.avatar = userPhoto;
+    accountInfo.profileInfo.alias = displayName;
+
+    authority::storage::createOrUpdateProfile(accountInfo.id, accountInfo.profileInfo);
+
+    emit linked.profileUpdated(accountId);
 }
 
 void

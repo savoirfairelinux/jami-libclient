@@ -127,9 +127,9 @@ public:
                 [this] (const std::string &accountId, const std::string &device, int status) {
                     Q_EMIT this->deviceRevocationEnded(QString(accountId.c_str()), QString(device.c_str()), status);
                 }),
-            exportable_callback<ConfigurationSignal::AccountAvatarReceived>(
-                [this](const std::string& accountId, const std::string& userPhoto) {
-                    Q_EMIT this->accountAvatarReceived(QString(accountId.c_str()), QString(userPhoto.c_str()));
+            exportable_callback<ConfigurationSignal::AccountProfileReceived>(
+                [this](const std::string& accountId, const std::string& displayName, const std::string& userPhoto) {
+                    Q_EMIT this->accountProfileReceived(QString(accountId.c_str()), QString(displayName.c_str()), QString(userPhoto.c_str()));
                 }),
             exportable_callback<ConfigurationSignal::ExportOnRingEnded>(
                 [this] (const std::string &accountId, int status, const std::string &pin) {
@@ -755,7 +755,7 @@ Q_SIGNALS: // SIGNALS
     void profileReceived(const QString &accountID, const QString &peer, const QString &vCard);
     void dataTransferEvent(qulonglong transfer_id, uint code);
     void deviceRevocationEnded(const QString& accountId, const QString& deviceId, int status);
-    void accountAvatarReceived(const QString& accountId, const QString& userPhoto);
+    void accountProfileReceived(const QString& accountId, const QString& displayName, const QString& userPhoto);
     void debugMessageReceived(const QString& message);
     void composingStatusChanged(const QString& accountId, const QString& contactId, bool isComposing);
 };
