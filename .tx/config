@@ -1,9 +1,8 @@
 [main]
 host = https://www.transifex.com
 
-[jami.lrc_en_ts]
-file_filter = translations/lrc_<lang>.ts
-source_file = translations/lrc_en.ts
+[jami.ring_client_windowsts]
+file_filter = translations/ring_client_windows_<lang>.ts
+source_file = translations/ring_client_windows.ts
 source_lang = en
 type = TS
-

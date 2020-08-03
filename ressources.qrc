@@ -1,0 +1,111 @@
+<RCC>
+    <qresource prefix="/">
+        <file>images/icons/outline-info-24px.svg</file>
+        <file>images/icons/baseline-camera_alt-24px.svg</file>
+        <file>images/icons/baseline-refresh-24px.svg</file>
+        <file>images/jami_rolling_spinner.gif</file>
+        <file>images/icons/baseline-close-24px.svg</file>
+        <file>images/icons/baseline-done-24px.svg</file>
+        <file>images/icons/baseline-error_outline-24px.svg</file>
+        <file>stylesheet.css</file>
+        <file>stylesheet.linux.css</file>
+        <file>changelog.html</file>
+        <file>projectcredits.html</file>
+        <file>images/ajax-loader.gif</file>
+        <file>images/default_avatar_overlay.svg</file>
+        <file>images/FontAwesome.otf</file>
+        <file>images/logo-jami-standard-coul.png</file>
+        <file>images/qrcode.png</file>
+        <file>images/jami.ico</file>
+        <file>images/jami.png</file>
+        <file>images/spike.png</file>
+        <file>images/waiting.gif</file>
+        <file>images/icons/ic_add_black_18dp_2x.png</file>
+        <file>images/icons/info-24px.svg</file>
+        <file>images/icons/ic_arrow_back_24px.svg</file>
+        <file>images/icons/ic_arrow_back_white_24dp.png</file>
+        <file>images/icons/ic_arrow_drop_down_black_9dp_2x.png</file>
+        <file>images/icons/ic_arrow_drop_down_black_18dp_2x.png</file>
+        <file>images/icons/ic_arrow_drop_up_black_9dp_2x.png</file>
+        <file>images/icons/ic_arrow_drop_up_black_18dp_2x.png</file>
+        <file>images/icons/ic_arrow_forward_white_48dp_2x.png</file>
+        <file>images/icons/ic_arrow_tab_next_black_9dp_2x.png</file>
+        <file>images/icons/ic_arrow_tab_previous_black_9dp_2x.png</file>
+        <file>images/icons/ic_block_24px.svg</file>
+        <file>images/icons/ic_call_transfer_white_24px.png</file>
+        <file>images/icons/ic_chat_black_24dp_2x.png</file>
+        <file>images/icons/ic_chat_white_24dp.png</file>
+        <file>images/icons/ic_check_white_18dp_2x.png</file>
+        <file>images/icons/ic_clear_24px.svg</file>
+        <file>images/icons/ic_close_white_24dp.png</file>
+        <file>images/icons/ic_content_copy.svg</file>
+        <file>images/icons/ic_delete_black_18dp_2x.png</file>        
+        <file>images/icons/ic_done_white_24dp.png</file>
+        <file>images/icons/ic_exit_full_screen_black.png</file>
+        <file>images/icons/ic_folder_black_18dp_2x.png</file>
+        <file>images/icons/ic_full_screen_black.png</file>
+        <file>images/icons/ic_group_add_white_24dp.png</file>
+        <file>images/icons/ic_high_quality_white_24dp.png</file>
+        <file>images/icons/ic_mic_off_white_24dp.png</file>
+        <file>images/icons/ic_pause_white_24dp.png</file>
+        <file>images/icons/ic_pause_white_100px.png</file>
+        <file>images/icons/ic_person_add_black_24dp_2x.png</file>
+        <file>images/icons/ic_person_add_white_24dp.png</file>
+        <file>images/icons/ic_phone_24px.svg</file>
+        <file>images/icons/ic_photo_camera_white_24dp_2x.png</file>
+        <file>images/icons/ic_baseline-search-24px.svg</file>
+        <file>images/icons/ic_send_24px.svg</file>
+        <file>images/icons/ic_send_white_24dp.png</file>
+        <file>images/icons/ic_settings_white_48dp_2x.png</file>
+        <file>images/icons/ic_share_black_48dp_2x.png</file>
+        <file>images/icons/ic_video_call_24px.svg</file>
+        <file>images/icons/ic_videocam_off_white_24dp.png</file>
+        <file>images/icons/ic_videocam_white.png</file>
+        <file>images/icons/ic_voicemail_white_24dp_2x.png</file>
+        <file>images/icons/round-add-24px.svg</file>
+        <file>images/icons/round-arrow_drop_down-24px.svg</file>
+        <file>images/icons/round-arrow_drop_up-24px.svg</file>
+        <file>images/icons/round-arrow_right-24px.svg</file>
+        <file>images/icons/round-close-24px.svg</file>
+        <file>images/icons/round-edit-24px.svg</file>
+        <file>images/icons/round-folder-24px.svg</file>
+        <file>images/icons/round-remove_circle-24px.svg</file>
+        <file>images/icons/round-settings-24px.svg</file>
+        <file>images/icons/round-undo-24px.svg</file>
+        <file alias="chatview.css">../lrc/src/web-chatview/chatview.css</file>
+        <file alias="chatview.html">../lrc/src/web-chatview/chatview.html</file>
+        <file alias="chatview.js">../lrc/src/web-chatview/chatview.js</file>
+        <file alias="jed.js">../lrc/src/web-chatview/jed.js</file>
+        <file alias="linkify.js">../lrc/src/web-chatview/linkify.js</file>
+        <file alias="linkify-html.js">../lrc/src/web-chatview/linkify-html.js</file>
+        <file alias="linkify-string.js">../lrc/src/web-chatview/linkify-string.js</file>
+        <file alias="qwebchannel.js">../lrc/src/web-chatview/qwebchannel.js</file>
+        <file alias="chatview-windows.css">../lrc/src/web-chatview/chatview-windows.css</file>
+        <file>images/icons/round-check_circle-24px.svg</file>
+        <file>images/icons/round-error-24px.svg</file>
+        <file>images/icons/round-save_alt-24px.svg</file>
+        <file>images/jami_eclipse_spinner.gif</file>
+        <file>images/icons/ic_hide_password.png</file>
+        <file>images/icons/ic_show_password.png</file>
+        <file>images/icons/baseline-desktop_windows-24px.svg</file>
+        <file>images/icons/baseline-people-24px.svg</file>
+        <file>images/icons/round-add_a_photo-24px.svg</file>
+        <file>images/icons/ic_mic_white_24dp.png</file>
+        <file>images/icons/icon-keypad-24.png</file>
+        <file>images/icons/ic_play_white_24dp.png</file>
+        <file>images/icons/icon-keypad-24-2x.png</file>
+        <file>images/icons/ic_voicemail_black_24dp_2x_.png</file>
+        <file>images/icons/av_icons/delete-24px.svg</file>
+        <file>images/icons/av_icons/fiber_manual_record-24px.svg</file>
+        <file>images/icons/av_icons/play_circle_outline-24px.svg</file>
+        <file>images/icons/av_icons/re-record-24px.svg</file>
+        <file>images/icons/av_icons/stop-24px-red.svg</file>
+        <file>images/icons/av_icons/pause-24px.svg</file>
+        <file>images/icons/av_icons/send-24px.svg</file>
+        <file>images/icons/av_icons/stop-24px.svg</file>
+        <file>images/icons/av_icons/mic-24px.svg</file>
+        <file>images/icons/ic_close_black_24dp.png</file>
+        <file>images/icons/extension_24dp.svg</file>
+        <file>images/icons/settings_backup_restore-black-18dp.svg</file>
+    </qresource>
+</RCC>

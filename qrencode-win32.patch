@@ -1,0 +1,243 @@
+From 261d830b9b4126d76519db0e6b6b51b5a730eb40 Mon Sep 17 00:00:00 2001
+From: Andreas Traczyk <andreas.traczyk@savoirfairelinux.com>
+Date: Tue, 4 Dec 2018 17:42:43 -0500
+Subject: [PATCH] b
+
+---
+ .../vc8/qrcodelib/qrcodelib.vcxproj           | 129 +++++++++++++++++-
+ 1 file changed, 125 insertions(+), 4 deletions(-)
+
+diff --git a/qrencode-win32/vc8/qrcodelib/qrcodelib.vcxproj b/qrencode-win32/vc8/qrcodelib/qrcodelib.vcxproj
+index aabc6b6..8d8293b 100644
+--- a/qrencode-win32/vc8/qrcodelib/qrcodelib.vcxproj
++++ b/qrencode-win32/vc8/qrcodelib/qrcodelib.vcxproj
+@@ -5,45 +5,84 @@
+       <Configuration>Debug-Dll</Configuration>
+       <Platform>Win32</Platform>
+     </ProjectConfiguration>
++    <ProjectConfiguration Include="Debug-Dll|x64">
++      <Configuration>Debug-Dll</Configuration>
++      <Platform>x64</Platform>
++    </ProjectConfiguration>
+     <ProjectConfiguration Include="Debug-Lib|Win32">
+       <Configuration>Debug-Lib</Configuration>
+       <Platform>Win32</Platform>
+     </ProjectConfiguration>
++    <ProjectConfiguration Include="Debug-Lib|x64">
++      <Configuration>Debug-Lib</Configuration>
++      <Platform>x64</Platform>
++    </ProjectConfiguration>
+     <ProjectConfiguration Include="Release-Dll|Win32">
+       <Configuration>Release-Dll</Configuration>
+       <Platform>Win32</Platform>
+     </ProjectConfiguration>
++    <ProjectConfiguration Include="Release-Dll|x64">
++      <Configuration>Release-Dll</Configuration>
++      <Platform>x64</Platform>
++    </ProjectConfiguration>
+     <ProjectConfiguration Include="Release-Lib|Win32">
+       <Configuration>Release-Lib</Configuration>
+       <Platform>Win32</Platform>
+     </ProjectConfiguration>
++    <ProjectConfiguration Include="Release-Lib|x64">
++      <Configuration>Release-Lib</Configuration>
++      <Platform>x64</Platform>
++    </ProjectConfiguration>
+   </ItemGroup>
+   <PropertyGroup Label="Globals">
+     <ProjectGuid>{9A90BF5C-84B0-41F6-B83C-C20EADC1F46C}</ProjectGuid>
+     <RootNamespace>qrcodelib</RootNamespace>
+     <Keyword>Win32Proj</Keyword>
++    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
+   </PropertyGroup>
+   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release-Lib|Win32'" Label="Configuration">
+     <ConfigurationType>StaticLibrary</ConfigurationType>
+-    <PlatformToolset>v110_xp</PlatformToolset>
++    <PlatformToolset>$(DefaultPlatformToolset)</PlatformToolset>
++    <CharacterSet>MultiByte</CharacterSet>
++    <WholeProgramOptimization>true</WholeProgramOptimization>
++  </PropertyGroup>
++  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release-Lib|x64'" Label="Configuration">
++    <ConfigurationType>StaticLibrary</ConfigurationType>
++    <PlatformToolset>$(DefaultPlatformToolset)</PlatformToolset>
+     <CharacterSet>MultiByte</CharacterSet>
+     <WholeProgramOptimization>true</WholeProgramOptimization>
+   </PropertyGroup>
+   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug-Lib|Win32'" Label="Configuration">
+     <ConfigurationType>StaticLibrary</ConfigurationType>
+-    <PlatformToolset>v110_xp</PlatformToolset>
++    <PlatformToolset>$(DefaultPlatformToolset)</PlatformToolset>
++    <CharacterSet>MultiByte</CharacterSet>
++  </PropertyGroup>
++  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug-Lib|x64'" Label="Configuration">
++    <ConfigurationType>StaticLibrary</ConfigurationType>
++    <PlatformToolset>$(DefaultPlatformToolset)</PlatformToolset>
+     <CharacterSet>MultiByte</CharacterSet>
+   </PropertyGroup>
+   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release-Dll|Win32'" Label="Configuration">
+     <ConfigurationType>DynamicLibrary</ConfigurationType>
+-    <PlatformToolset>v110_xp</PlatformToolset>
++    <PlatformToolset>$(DefaultPlatformToolset)</PlatformToolset>
++    <CharacterSet>MultiByte</CharacterSet>
++    <WholeProgramOptimization>true</WholeProgramOptimization>
++  </PropertyGroup>
++  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release-Dll|x64'" Label="Configuration">
++    <ConfigurationType>DynamicLibrary</ConfigurationType>
++    <PlatformToolset>$(DefaultPlatformToolset)</PlatformToolset>
+     <CharacterSet>MultiByte</CharacterSet>
+     <WholeProgramOptimization>true</WholeProgramOptimization>
+   </PropertyGroup>
+   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug-Dll|Win32'" Label="Configuration">
+     <ConfigurationType>DynamicLibrary</ConfigurationType>
+-    <PlatformToolset>v110_xp</PlatformToolset>
++    <PlatformToolset>$(DefaultPlatformToolset)</PlatformToolset>
++    <CharacterSet>MultiByte</CharacterSet>
++  </PropertyGroup>
++  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug-Dll|x64'" Label="Configuration">
++    <ConfigurationType>DynamicLibrary</ConfigurationType>
++    <PlatformToolset>$(DefaultPlatformToolset)</PlatformToolset>
+     <CharacterSet>MultiByte</CharacterSet>
+   </PropertyGroup>
+   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+@@ -52,15 +91,27 @@
+   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release-Lib|Win32'" Label="PropertySheets">
+     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+   </ImportGroup>
++  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release-Lib|x64'" Label="PropertySheets">
++    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
++  </ImportGroup>
+   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug-Lib|Win32'" Label="PropertySheets">
+     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+   </ImportGroup>
++  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug-Lib|x64'" Label="PropertySheets">
++    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
++  </ImportGroup>
+   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release-Dll|Win32'" Label="PropertySheets">
+     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+   </ImportGroup>
++  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release-Dll|x64'" Label="PropertySheets">
++    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
++  </ImportGroup>
+   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug-Dll|Win32'" Label="PropertySheets">
+     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+   </ImportGroup>
++  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug-Dll|x64'" Label="PropertySheets">
++    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
++  </ImportGroup>
+   <PropertyGroup Label="UserMacros" />
+   <PropertyGroup>
+     <_ProjectFileVersion>11.0.50727.1</_ProjectFileVersion>
+@@ -70,11 +121,17 @@
+     <IntDir>../.build/$(ProjectName)/$(Configuration)\</IntDir>
+     <LinkIncremental>true</LinkIncremental>
+   </PropertyGroup>
++  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug-Dll|x64'">
++    <LinkIncremental>true</LinkIncremental>
++  </PropertyGroup>
+   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release-Dll|Win32'">
+     <OutDir>../.build/$(Configuration)\</OutDir>
+     <IntDir>../.build/$(ProjectName)/$(Configuration)\</IntDir>
+     <LinkIncremental>false</LinkIncremental>
+   </PropertyGroup>
++  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release-Dll|x64'">
++    <LinkIncremental>false</LinkIncremental>
++  </PropertyGroup>
+   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug-Lib|Win32'">
+     <OutDir>../.build/$(Configuration)\</OutDir>
+     <IntDir>../.build/$(ProjectName)/$(Configuration)\</IntDir>
+@@ -104,6 +161,26 @@
+       <TargetMachine>MachineX86</TargetMachine>
+     </Link>
+   </ItemDefinitionGroup>
++  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug-Dll|x64'">
++    <ClCompile>
++      <Optimization>Disabled</Optimization>
++      <AdditionalIncludeDirectories>.\;..\qrcode;..\qrcode\png;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
++      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;QRCODELIB_EXPORTS;HAVE_CONFIG_H;%(PreprocessorDefinitions)</PreprocessorDefinitions>
++      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
++      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
++      <PrecompiledHeader>
++      </PrecompiledHeader>
++      <WarningLevel>Level3</WarningLevel>
++      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
++    </ClCompile>
++    <Link>
++      <AdditionalDependencies>libpng15d.lib;%(AdditionalDependencies)</AdditionalDependencies>
++      <AdditionalLibraryDirectories>..\qrcode\png;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
++      <ModuleDefinitionFile>qrcodelib.def</ModuleDefinitionFile>
++      <GenerateDebugInformation>true</GenerateDebugInformation>
++      <SubSystem>Windows</SubSystem>
++    </Link>
++  </ItemDefinitionGroup>
+   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release-Dll|Win32'">
+     <ClCompile>
+       <AdditionalIncludeDirectories>.\;..\qrcode;..\qrcode\png;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+@@ -124,6 +201,26 @@
+       <TargetMachine>MachineX86</TargetMachine>
+     </Link>
+   </ItemDefinitionGroup>
++  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release-Dll|x64'">
++    <ClCompile>
++      <AdditionalIncludeDirectories>.\;..\qrcode;..\qrcode\png;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
++      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;QRCODELIB_EXPORTS;HAVE_CONFIG_H;%(PreprocessorDefinitions)</PreprocessorDefinitions>
++      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
++      <PrecompiledHeader>
++      </PrecompiledHeader>
++      <WarningLevel>Level3</WarningLevel>
++      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
++    </ClCompile>
++    <Link>
++      <AdditionalDependencies>libpng15.lib;%(AdditionalDependencies)</AdditionalDependencies>
++      <AdditionalLibraryDirectories>..\qrcode\png;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
++      <ModuleDefinitionFile>qrcodelib.def</ModuleDefinitionFile>
++      <GenerateDebugInformation>true</GenerateDebugInformation>
++      <SubSystem>Windows</SubSystem>
++      <OptimizeReferences>true</OptimizeReferences>
++      <EnableCOMDATFolding>true</EnableCOMDATFolding>
++    </Link>
++  </ItemDefinitionGroup>
+   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug-Lib|Win32'">
+     <ClCompile>
+       <Optimization>Disabled</Optimization>
+@@ -137,6 +234,19 @@
+       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+     </ClCompile>
+   </ItemDefinitionGroup>
++  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug-Lib|x64'">
++    <ClCompile>
++      <Optimization>Disabled</Optimization>
++      <AdditionalIncludeDirectories>.\;..\qrcode;..\qrcode\png;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
++      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;QRCODELIB_EXPORTS;HAVE_CONFIG_H;%(PreprocessorDefinitions)</PreprocessorDefinitions>
++      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
++      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
++      <PrecompiledHeader>
++      </PrecompiledHeader>
++      <WarningLevel>Level3</WarningLevel>
++      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
++    </ClCompile>
++  </ItemDefinitionGroup>
+   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release-Lib|Win32'">
+     <ClCompile>
+       <AdditionalIncludeDirectories>.\;..\qrcode;..\qrcode\png;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+@@ -147,6 +257,17 @@
+       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+     </ClCompile>
+   </ItemDefinitionGroup>
++  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release-Lib|x64'">
++    <ClCompile>
++      <AdditionalIncludeDirectories>.\;..\qrcode;..\qrcode\png;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
++      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;QRCODELIB_EXPORTS;HAVE_CONFIG_H;%(PreprocessorDefinitions)</PreprocessorDefinitions>
++      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
++      <PrecompiledHeader>
++      </PrecompiledHeader>
++      <WarningLevel>Level3</WarningLevel>
++      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
++    </ClCompile>
++  </ItemDefinitionGroup>
+   <ItemGroup>
+     <ClCompile Include="qrcodelib.cpp" />
+     <ClCompile Include="..\..\bitstream.c" />
+-- 
+2.19.0.windows.1
+

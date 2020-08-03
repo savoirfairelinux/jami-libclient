@@ -1,0 +1,86 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Generated with WiX's heat tool using the command:
+    heat.exe dir x64\Release -ag -cg ProductComponents -dr APPLICATIONFOLDER -srd -var var.ReleaseDir -out JamiInstaller\Components.wxs
+    Includes:
+        - the api-ms-win dlls missing parts of vc merge module for windows 7 support
+        - Jami.exe with a named Id so we can reference it in Product.wxs to launch after install
+
+    We run heat in the prebuild step on x64\Release without Jami.exe (instead of an XSLT file), to harvest everything else.
+-->
+<?include Config.wxi?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+    <Fragment>
+        <ComponentGroup Id="StandardComponents">
+            <Component Id="cmp9C61F84AF9761955FBF397AFAE21C11B" Directory="APPLICATIONFOLDER" Guid="*">
+                <File Id="fil2089BEC9A7AB899CED5A5EE501789299" KeyPath="yes" Source="$(var.UcrtDir)\api-ms-win-core-file-l1-2-0.dll" />
+            </Component>
+            <Component Id="cmp03BB2697EE10869C4A329E3EA987EFAA" Directory="APPLICATIONFOLDER" Guid="*">
+                <File Id="fil44C27F2C97596734BB3BEB7C21F7B71C" KeyPath="yes" Source="$(var.UcrtDir)\api-ms-win-core-file-l2-1-0.dll" />
+            </Component>
+            <Component Id="cmp6B6AA7AEA5A4D324A4EE7DAE1B1193E0" Directory="APPLICATIONFOLDER" Guid="*">
+                <File Id="fil1D16BE23D323A1E37FC1FC7354A9305F" KeyPath="yes" Source="$(var.UcrtDir)\api-ms-win-core-localization-l1-2-0.dll" />
+            </Component>
+            <Component Id="cmpB5454FB66442C9BFD2145AE30B32D7A9" Directory="APPLICATIONFOLDER" Guid="*">
+                <File Id="fil031B78DF53F7A3AC109410907624FC3E" KeyPath="yes" Source="$(var.UcrtDir)\api-ms-win-core-processthreads-l1-1-1.dll" />
+            </Component>
+            <Component Id="cmp9F6D22CD9B1739E4F75F92F3A07E4CA1" Directory="APPLICATIONFOLDER" Guid="*">
+                <File Id="filE9A3672FA504AA8E518DD72A02CD3E77" KeyPath="yes" Source="$(var.UcrtDir)\api-ms-win-core-synch-l1-2-0.dll" />
+            </Component>
+            <Component Id="cmp9451422B7074D46F019614C3DE73BD17" Directory="APPLICATIONFOLDER" Guid="*">
+                <File Id="fil3C902CA2889BB8855D285C3FBABB334F" KeyPath="yes" Source="$(var.UcrtDir)\api-ms-win-core-timezone-l1-1-0.dll" />
+            </Component>
+            <Component Id="cmp349250459EC2D8C328EED5138B073E7A" Directory="APPLICATIONFOLDER" Guid="*">
+                <File Id="fil2466F3D9FBA095A007D0909040D4D688" KeyPath="yes" Source="$(var.UcrtDir)\api-ms-win-crt-conio-l1-1-0.dll" />
+            </Component>
+            <Component Id="cmpCC880F2B054A87EF5FC68232652231BF" Directory="APPLICATIONFOLDER" Guid="*">
+                <File Id="fil605A691486569535A1C3548F7DCE753C" KeyPath="yes" Source="$(var.UcrtDir)\api-ms-win-crt-convert-l1-1-0.dll" />
+            </Component>
+            <Component Id="cmpD6CB40D5A5AFF2161B7B4B4F06F03301" Directory="APPLICATIONFOLDER" Guid="*">
+                <File Id="fil09AE032A32E2E542A232F7941AC77320" KeyPath="yes" Source="$(var.UcrtDir)\api-ms-win-crt-environment-l1-1-0.dll" />
+            </Component>
+            <Component Id="cmpC02538029646A27A9F786AD690EB3C8E" Directory="APPLICATIONFOLDER" Guid="*">
+                <File Id="fil7DE9C3CADCA188356922B0CBD8E313E7" KeyPath="yes" Source="$(var.UcrtDir)\api-ms-win-crt-filesystem-l1-1-0.dll" />
+            </Component>
+            <Component Id="cmp8E50197B377636123F0F1F94FFB004E7" Directory="APPLICATIONFOLDER" Guid="*">
+                <File Id="fil584F158D11B8A380C73F1EFE8BBA92B4" KeyPath="yes" Source="$(var.UcrtDir)\api-ms-win-crt-heap-l1-1-0.dll" />
+            </Component>
+            <Component Id="cmp7F729C94A363C73DC4D91B6F48E4F859" Directory="APPLICATIONFOLDER" Guid="*">
+                <File Id="fil4BE19B924B98D56F3155B66496D574E5" KeyPath="yes" Source="$(var.UcrtDir)\api-ms-win-crt-locale-l1-1-0.dll" />
+            </Component>
+            <Component Id="cmp7C573E66B0904BA73880788F7057AF88" Directory="APPLICATIONFOLDER" Guid="*">
+                <File Id="filE8495C446FA1237E92562498D20261AA" KeyPath="yes" Source="$(var.UcrtDir)\api-ms-win-crt-math-l1-1-0.dll" />
+            </Component>
+            <Component Id="cmp7A91CED53D8F6E5F20F2049B3B5CD143" Directory="APPLICATIONFOLDER" Guid="*">
+                <File Id="fil06951EB208628753677745AF15CC12A5" KeyPath="yes" Source="$(var.UcrtDir)\api-ms-win-crt-multibyte-l1-1-0.dll" />
+            </Component>
+            <Component Id="cmp1CE713C705A95306A1D246AC3AB9DE25" Directory="APPLICATIONFOLDER" Guid="*">
+                <File Id="fil8D102BB81768F998470C34797459E306" KeyPath="yes" Source="$(var.UcrtDir)\api-ms-win-crt-private-l1-1-0.dll" />
+            </Component>
+            <Component Id="cmp35840DFBF4D6AE827AFC4EF2A17BB3EB" Directory="APPLICATIONFOLDER" Guid="*">
+                <File Id="filC6C457BD901F940DCB673D271728F9FE" KeyPath="yes" Source="$(var.UcrtDir)\api-ms-win-crt-process-l1-1-0.dll" />
+            </Component>
+            <Component Id="cmpEBB86BDA48FE3B9E2043C1A80D26ACD5" Directory="APPLICATIONFOLDER" Guid="*">
+                <File Id="filE1B2095225B01DEFA5DA9895B432FBCB" KeyPath="yes" Source="$(var.UcrtDir)\api-ms-win-crt-runtime-l1-1-0.dll" />
+            </Component>
+            <Component Id="cmp80C8534B553078EA8B86F100FF542776" Directory="APPLICATIONFOLDER" Guid="*">
+                <File Id="filDAFE58019AD70832B8304DCEA534B5EE" KeyPath="yes" Source="$(var.UcrtDir)\api-ms-win-crt-stdio-l1-1-0.dll" />
+            </Component>
+            <Component Id="cmpCFC348111B5343749A2273A62421C07C" Directory="APPLICATIONFOLDER" Guid="*">
+                <File Id="fil1F1B38DB330CA413655F715578D4BE1A" KeyPath="yes" Source="$(var.UcrtDir)\api-ms-win-crt-string-l1-1-0.dll" />
+            </Component>
+            <Component Id="cmp7D5450E04EC419244107942A00DF7DDF" Directory="APPLICATIONFOLDER" Guid="*">
+                <File Id="filEB03BCF3155C5BAE2C2EDBF036EB659D" KeyPath="yes" Source="$(var.UcrtDir)\api-ms-win-crt-time-l1-1-0.dll" />
+            </Component>
+            <Component Id="cmp5456679BDCC818B2E9476B416F71AAA5" Directory="APPLICATIONFOLDER" Guid="*">
+                <File Id="fil5B120DD384CABED37DFC2652C6462666" KeyPath="yes" Source="$(var.UcrtDir)\api-ms-win-crt-utility-l1-1-0.dll" />
+            </Component>
+            <Component Id="cmpF23755F862A15FFCBD109C85599B7F20" Directory="APPLICATIONFOLDER" Guid="*">
+                <File Id="filD6887AD9110E4A8D49143C9A8F0B5843" KeyPath="yes" Source="$(var.UcrtDir)\ucrtbase.dll" />
+            </Component>
+            <Component Id="cmp9CFEE34E3A162AB05264E8B756EC1DEC" Directory="APPLICATIONFOLDER" Guid="*">
+                <File Id="fileMain.exe" KeyPath="yes" Source="$(var.ReleaseDir)\Jami.exe" />
+            </Component>
+        </ComponentGroup>
+    </Fragment>
+</Wix>

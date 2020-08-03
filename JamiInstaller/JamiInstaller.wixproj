@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" InitialTargets="EnsureWixToolsetInstalled" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x64</Platform>
+    <ProductVersion>3.10</ProductVersion>
+    <ProjectGuid>dbbfbc55-1c20-4d21-ae3b-6e8b14c4fe48</ProjectGuid>
+    <SchemaVersion>2.0</SchemaVersion>
+    <OutputName Condition="'$(Configuration)' == 'Release'">jami.release.$(Platform)</OutputName>
+    <OutputName Condition="'$(Configuration)' == 'Beta'">jami.beta.$(Platform)</OutputName>
+    <OutputType>Package</OutputType>
+    <Name>JamiInstaller</Name>
+    <InstallerPlatform>x64</InstallerPlatform>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x64' ">
+    <OutputPath>bin\$(Configuration)\</OutputPath>
+    <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
+    <DefineConstants>HarvestPath=..\x64\Release</DefineConstants>
+    <SuppressPdbOutput>True</SuppressPdbOutput>
+    <CompilerAdditionalOptions>
+    </CompilerAdditionalOptions>
+    <WixVariables>
+    </WixVariables>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Beta|x64' ">
+    <OutputPath>bin\$(Configuration)\</OutputPath>
+    <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
+    <DefineConstants>HarvestPath=..\x64\Beta</DefineConstants>
+    <SuppressPdbOutput>True</SuppressPdbOutput>
+    <CompilerAdditionalOptions>
+    </CompilerAdditionalOptions>
+    <WixVariables>
+    </WixVariables>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Product.wxs" />
+    <Compile Include="StandardComponents.wxs" />
+    <Compile Include="Components.wxs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Config.wxi" />
+    <Content Include="HarvestFilter.xslt" />
+    <Content Include="JamiInstaller.wax" />
+    <Content Include="main-banner.bmp" />
+    <Content Include="top-banner.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <WixExtension Include="WixUtilExtension">
+      <HintPath>$(WixExtDir)\WixUtilExtension.dll</HintPath>
+      <Name>WixUtilExtension</Name>
+    </WixExtension>
+    <WixExtension Include="WixUIExtension">
+      <HintPath>$(WixExtDir)\WixUIExtension.dll</HintPath>
+      <Name>WixUIExtension</Name>
+    </WixExtension>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Localization.wxl" />
+  </ItemGroup>
+  <Import Project="$(WixTargetsPath)" Condition=" '$(WixTargetsPath)' != '' " />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\WiX\v3.x\Wix.targets" Condition=" '$(WixTargetsPath)' == '' AND Exists('$(MSBuildExtensionsPath32)\Microsoft\WiX\v3.x\Wix.targets') " />
+  <Target Name="EnsureWixToolsetInstalled" Condition=" '$(WixTargetsImported)' != 'true' ">
+    <Error Text="The WiX Toolset v3.11 (or newer) build tools must be installed to build this project. To download the WiX Toolset, see http://wixtoolset.org/releases/" />
+  </Target>
+  <Target Name="BeforeBuild">
+    <HeatDirectory Directory="..\x64\$(Configuration)" PreprocessorVariable="var.HarvestPath" OutputFile="Components.wxs" ComponentGroupName="HeatGenerated" DirectoryRefId="APPLICATIONFOLDER" AutogenerateGuids="true" ToolPath="$(WixToolPath)" SuppressFragments="true" SuppressRegistry="true" SuppressRootDirectory="true" Transforms="HarvestFilter.xslt" />
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+</Project>
