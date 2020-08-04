@@ -856,8 +856,16 @@ NewCallModelPimpl::slotOnConferenceInfosUpdated(const QString& confId, const Vec
 
     // if Jami, remove @ring.dht
     it->second->participantsInfos = infos;
-    for (auto& i: it->second->participantsInfos)
+    for (auto& i: it->second->participantsInfos) {
         i["uri"].replace("@ring.dht", "");
+        if (i["uri"].isEmpty()) {
+            if (it->second->type == call::Type::CONFERENCE) {
+                i["uri"] = linked.owner.profileInfo.uri;
+            } else {
+                i["uri"] = it->second->peerUri.replace("ring:", "");
+            }
+        }
+    }
 
     emit linked.onParticipantsChanged(confId);
 }
