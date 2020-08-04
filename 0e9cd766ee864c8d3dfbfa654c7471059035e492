@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bdda2e92_a266718b",
+        "filename": "src/api/pluginmodel.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 90
+      },
+      "writtenOn": "2020-08-04T22:12:53Z",
+      "side": 1,
+      "message": "Qt style doxygen:\n\n/*!\n *\n */\n\nor:\n\n//!\n\nhttps://doc.qt.io/qt-5/qtwritingstyle-cpp.html\n\nNo need to change it now, just FYI. A patch should be done to better the doxygen for lrc and the qt-client at a later time.",
+      "range": {
+        "startLine": 141,
+        "startChar": 6,
+        "endLine": 141,
+        "endChar": 7
+      },
+      "revId": "0e9cd766ee864c8d3dfbfa654c7471059035e492",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1e95d1a7_b5c05890",
+        "filename": "src/api/pluginmodel.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 90
+      },
+      "writtenOn": "2020-08-04T22:12:53Z",
+      "side": 1,
+      "message": "What do you mean by available(Here and elsewhere in the comments)?",
+      "range": {
+        "startLine": 142,
+        "startChar": 30,
+        "endLine": 142,
+        "endChar": 39
+      },
+      "revId": "0e9cd766ee864c8d3dfbfa654c7471059035e492",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bd5820c7_ca935855",
+        "filename": "src/api/pluginmodel.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 90
+      },
+      "writtenOn": "2020-08-04T22:12:53Z",
+      "side": 1,
+      "message": "true",
+      "range": {
+        "startLine": 149,
+        "startChar": 15,
+        "endLine": 149,
+        "endChar": 19
+      },
+      "revId": "0e9cd766ee864c8d3dfbfa654c7471059035e492",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "38021a09_8adf7ccf",
+        "filename": "src/qtwrapper/pluginmanager_wrap.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 171,
+      "author": {
+        "id": 90
+      },
+      "writtenOn": "2020-08-04T22:12:53Z",
+      "side": 1,
+      "message": "I think we should find a better compile-time pattern that can help reduce conditional code like this. Yet again, food for thought.",
+      "range": {
+        "startLine": 171,
+        "startChar": 0,
+        "endLine": 171,
+        "endChar": 20
+      },
+      "revId": "0e9cd766ee864c8d3dfbfa654c7471059035e492",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    }
+  ]
+}
