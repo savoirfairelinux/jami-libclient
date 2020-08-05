@@ -71,12 +71,16 @@ Popup {
                 fillMode: Image.PreserveAspectFit
                 mipmap: true
 
-
                 /*
                  * Role::Picture
                  */
-                source: "data:image/png;base64," + accountListModel.data(
-                            accountListModel.index(index, 0), 259)
+                source: {
+                    var data = accountListModel.data(accountListModel.index(index, 0), 259)
+                    if (data === undefined) {
+                        return ""
+                    }
+                    return "data:image/png;base64," + data
+                }
             }
 
             Text {
@@ -145,15 +149,17 @@ Popup {
             }
         }
 
-        footer: HoverableButton {
+        footer: Button {
             id: comboBoxFooterItem
 
             implicitWidth: accountComboBox.width
             implicitHeight: accountComboBox.height
 
+            background: Rectangle {
+                color: comboBoxFooterItem.hovered? JamiTheme.releaseColor : JamiTheme.backgroundColor
+            }
+
             text: qsTr("Add Account") + "+"
-            backgroundColor: JamiTheme.backgroundColor
-            onExitColor: JamiTheme.backgroundColor
 
             onClicked: {
                 comboBoxPopup.close()

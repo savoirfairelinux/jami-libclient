@@ -335,7 +335,11 @@ SettingsAdaptor::clearCurrentAvatar()
 lrc::api::account::ConfProperties_t
 SettingsAdaptor::getAccountConfig()
 {
-    return LRCInstance::accountModel().getAccountConfig(LRCInstance::getCurrAccId());
+    lrc::api::account::ConfProperties_t res;
+    try {
+        res = LRCInstance::accountModel().getAccountConfig(LRCInstance::getCurrAccId());
+    } catch (...) {}
+    return res;
 }
 
 QString

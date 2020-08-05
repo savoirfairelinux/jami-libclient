@@ -20,18 +20,23 @@ import QtQuick 2.14
 import QtQuick.Layouts 1.3
 import QtQuick.Controls 2.14
 import Qt.labs.platform 1.1
+import net.jami.Models 1.0
 
 import "../../constant"
 import "../../commoncomponents"
 
-ColumnLayout {
+Rectangle {
+    id: root
+
     property alias text_passwordFromBackupEditAlias: passwordFromBackupEdit.text
     property string fileImportBtnText: qsTr("Archive(none)")
 
-    signal importFromFile_Dialog_Accepted(string fileDir)
+    property string filePath: ""
+    property string errorText: ""
 
     function clearAllTextFields() {
         passwordFromBackupEdit.clear()
+        errorText = ""
         fileImportBtnText = qsTr("Archive(none)")
     }
 
@@ -42,135 +47,137 @@ ColumnLayout {
         title: qsTr("Open File")
         folder: StandardPaths.writableLocation(StandardPaths.HomeLocation) + "/Desktop"
 
-        nameFilters: [qsTr("Jami archive files") + " (*.gz)", qsTr(
-                "All files") + " (*)"]
+        nameFilters: [qsTr("Jami archive files") + " (*.gz)", qsTr("All files") + " (*)"]
 
         onAccepted: {
-            importFromFile_Dialog_Accepted(file)
+            filePath = file
+            if (file.length != 0) {
+                fileImportBtnText = ClientWrapper.utilsAdaptor.toFileInfoName(file)
+            } else {
+                fileImportBtnText = qsTr("Archive(none)")
+            }
         }
     }
 
-    Layout.fillWidth: true
-    Layout.fillHeight: true
+    anchors.fill: parent
 
-    Item {
-        Layout.alignment: Qt.AlignHCenter
-        Layout.fillWidth: true
-        Layout.fillHeight: true
-    }
+    color: JamiTheme.backgroundColor
+
+    signal leavePage
+    signal importAccount
 
     ColumnLayout {
-        Layout.alignment: Qt.AlignCenter
-        Layout.maximumWidth: 366
-
         spacing: 12
 
-        RowLayout {
-            Layout.fillWidth: true
-            Layout.maximumHeight: 24
-            spacing: 0
+        anchors.verticalCenter: parent.verticalCenter
+        anchors.horizontalCenter: root.horizontalCenter
+        Layout.preferredWidth: parent.width
+        Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
 
-            Item {
-                Layout.alignment: Qt.AlignVCenter
-                Layout.fillWidth: true
-                Layout.fillHeight: true
-            }
+        Text {
+            anchors.left: connectBtn.left
+            anchors.right: connectBtn.right
 
-            Label {
-                id: importFromBackupLabel
-                Layout.minimumHeight: 24
-                Layout.minimumWidth: 234
-                text: qsTr("Import from backup")
-                font.pointSize: 13
-                font.kerning: true
-                horizontalAlignment: Qt.AlignLeft
-                verticalAlignment: Qt.AlignVCenter
-            }
-
-            HoverableRadiusButton {
-                id: backupInfoBtn
-
-                buttonImageHeight: height
-                buttonImageWidth: width
-
-                Layout.alignment: Qt.AlignVCenter
-                Layout.minimumWidth: 24
-                Layout.preferredWidth: 24
-                Layout.maximumWidth: 24
-
-                Layout.minimumHeight: 24
-                Layout.preferredHeight: 24
-                Layout.maximumHeight: 24
-
-                radius: height / 2
-                icon.source: "/images/icons/info-24px.svg"
-                icon.height: 24
-                icon.width: 24
-
-                backgroundColor: JamiTheme.releaseColor
-                onClicked: {
-                    backupInfoLabel.visible = !backupInfoLabel.visible
-                }
-            }
-            Item {
-                Layout.alignment: Qt.AlignVCenter
-                Layout.fillWidth: true
-                Layout.fillHeight: true
-            }
+            text: qsTr("Import from backup")
+            font.pointSize: JamiTheme.menuFontSize
         }
 
-        HoverableGradientButton {
+        MaterialButton {
             id: fileImportBtn
 
-            Layout.alignment: Qt.AlignHCenter
-            Layout.maximumWidth: 256
-            Layout.preferredWidth: 256
-
-            Layout.maximumHeight: 30
-            Layout.preferredHeight: 30
-            Layout.minimumHeight: 30
-
             text: fileImportBtnText
-            font.pointSize: 10
-            font.kerning: true
-
-            radius: height / 2
-            backgroundColor: JamiTheme.releaseColor
+            toolTipText: qsTr("Import your account's archive")
+            source: "qrc:/images/icons/round-folder-24px.svg"
+            color: JamiTheme.buttonTintedGrey
 
             onClicked: {
                 importFromFile_Dialog.open()
             }
         }
 
-        InfoLineEdit {
+        Text {
+            anchors.left: connectBtn.left
+            anchors.right: connectBtn.right
+
+            text: qsTr("You can obtain an archive by clicking on \"Export account\" in the account settings. This will create a .gz file on your device.")
+            wrapMode: Text.Wrap
+        }
+
+        MaterialLineEdit {
             id: passwordFromBackupEdit
 
-            Layout.alignment: Qt.AlignHCenter
-
             selectByMouse: true
-            echoMode: TextInput.Password
             placeholderText: qsTr("Password")
+            font.pointSize: 10
+            font.kerning: true
+
+            echoMode: TextInput.Password
+
+            borderColorMode: MaterialLineEdit.NORMAL
+
+            fieldLayoutWidth: connectBtn.width
+        }
+
+        MaterialButton {
+            id: connectBtn
+            text: qsTr("CONNECT FROM BACKUP")
+            color: filePath.length === 0?
+                JamiTheme.buttonTintedGreyInactive : JamiTheme.buttonTintedGrey
+
+            onClicked: {
+                errorText = ""
+                importAccount()
+            }
         }
 
         Label {
-            id: backupInfoLabel
+            text: errorText
 
+            anchors.left: connectBtn.left
+            anchors.right: connectBtn.right
             Layout.alignment: Qt.AlignHCenter
-            Layout.maximumWidth: 366
-            Layout.preferredWidth: 366
 
-            text: qsTr("You can obtain an archive by clicking on \"Export account\" in the account settings. This will create a .gz file on your device.")
-            wrapMode: Text.WordWrap
-            horizontalAlignment: Text.AlignHCenter
-            verticalAlignment: Text.AlignVCenter
+            font.pointSize: JamiTheme.textFontSize
+            color: "red"
 
-            visible: false
+            height: 32
         }
     }
 
-    Item {
-        Layout.alignment: Qt.AlignHCenter
-        Layout.fillWidth: true
-        Layout.fillHeight: true
+    HoverableButton {
+        id: cancelButton
+        z: 2
+
+        anchors.right: parent.right
+        anchors.top: parent.top
+
+        rightPadding: 90
+        topPadding: 90
+
+        Layout.preferredWidth: 96
+        Layout.preferredHeight: 96
+
+        backgroundColor: "transparent"
+        onEnterColor: "transparent"
+        onPressColor: "transparent"
+        onReleaseColor: "transparent"
+        onExitColor: "transparent"
+
+        buttonImageHeight: 48
+        buttonImageWidth: 48
+        source: "qrc:/images/icons/ic_close_white_24dp.png"
+        radius: 48
+        baseColor: "#7c7c7c"
+        toolTipText: qsTr("Return to welcome page")
+
+        Action {
+            enabled: parent.visible
+            shortcut: StandardKey.Cancel
+            onTriggered: leavePage()
+        }
+
+        onClicked: {
+            leavePage()
+        }
     }
 }

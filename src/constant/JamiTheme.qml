@@ -54,6 +54,8 @@ Item {
 
     property string hangUpButtonTintedRed: "#ff0000"
     property string buttonTintedBlue: "#00aaff"
+    property string buttonTintedGrey: "#999"
+    property string buttonTintedGreyInactive: "#bbb"
 
     property string selectionBlue: "#109ede"
     property string selectionGreen: "#21be2b"
@@ -99,6 +101,7 @@ Item {
     }
 
     property color blue_: "#109ede"
+    property color wizardBlueButtons: "#28b1ed"
     property color blueLogo_: rgb256(0, 7, 71)
     property color lightBlue_: "#c1ebf0"
     property color lightGrey_: rgb256(242, 242, 242)

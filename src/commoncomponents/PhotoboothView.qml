@@ -100,15 +100,16 @@ ColumnLayout{
             id: avatarLabelBackground
 
             anchors.fill: parent
-            color: "transparent"
+            color: "grey"
+            radius: height / 2
 
             Image{
                 id: avatarImg
 
                 anchors.fill: parent
-                source: {
+                source:  {
                     if(imgBase64.length === 0){
-                        return ""
+                        return "qrc:/images/default_avatar_overlay.svg"
                     } else {
                         return "data:image/png;base64," + imgBase64
                     }

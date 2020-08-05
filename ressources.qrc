@@ -22,6 +22,8 @@
         <file>images/waiting.gif</file>
         <file>images/icons/ic_add_black_18dp_2x.png</file>
         <file>images/icons/info-24px.svg</file>
+        <file>images/icons/backup-24px.svg</file>
+        <file>images/icons/devices-24px.svg</file>
         <file>images/icons/ic_arrow_back_24px.svg</file>
         <file>images/icons/ic_arrow_back_white_24dp.png</file>
         <file>images/icons/ic_arrow_drop_down_black_9dp_2x.png</file>
@@ -42,7 +44,6 @@
         <file>images/icons/ic_content_copy.svg</file>
         <file>images/icons/ic_delete_black_18dp_2x.png</file>
         <file>images/icons/ic_done_white_24dp.png</file>
-        <file>images/icons/ic_folder_black_18dp_2x.png</file>
         <file>images/icons/open_in_full-24px.svg</file>
         <file>images/icons/close_fullscreen-24px.svg</file>
         <file>images/icons/ic_group_add_white_24dp.png</file>
@@ -109,13 +110,12 @@
         <file>images/icons/av_icons/send-24px.svg</file>
         <file>images/icons/av_icons/stop-24px.svg</file>
         <file>images/icons/av_icons/mic-24px.svg</file>
-        <file>images/icons/check_box-24px.svg</file>
-        <file>images/icons/check_box_outline_blank-24px.svg</file>
         <file>images/icons/ic_close_black_24dp.png</file>
         <file>images/icons/extension_24dp.svg</file>
         <file>images/icons/settings_backup_restore-black-18dp.svg</file>
         <file>images/icons/person-24px.svg</file>
         <file>images/icons/drafts-24px.svg</file>
         <file>images/icons/person_add-24px.svg</file>
+        <file>images/icons/router-24px.svg</file>
     </qresource>
 </RCC>

@@ -1,0 +1,82 @@
+/*
+ * Copyright (C) 2020 by Savoir-faire Linux
+ * Author: Sébastien blin <sebastien.blin@savoirfairelinux.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
+import QtQuick 2.14
+import QtQuick.Layouts 1.3
+import QtQuick.Controls 2.14
+import QtGraphicalEffects 1.15
+
+Button {
+    id: root
+
+    property alias source: root.icon.source
+    property string toolTipText: ""
+    property var color: "transparent"
+    property var outlined: false
+
+    Layout.alignment: Qt.AlignCenter
+    Layout.preferredWidth: 400
+    Layout.preferredHeight: 36
+
+    font.kerning: true
+
+    icon.source: ""
+    icon.height: 18
+    icon.width: 18
+
+    contentItem: Item {
+        Rectangle {
+            anchors.fill: parent
+            color: "transparent"
+            Image {
+                source: root.icon.source
+                width: root.icon.width
+                height: root.icon.height
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.left: parent.left
+                anchors.leftMargin: 16
+                layer {
+                    enabled: true
+                    effect: ColorOverlay {
+                        id: overlay
+                        color: outlined ? root.color : "white"
+                    }
+                }
+            }
+            Text {
+                text: root.text
+                color: outlined? root.color : "white"
+                font: root.font
+                anchors.centerIn: parent
+                horizontalAlignment: Text.AlignHCenter
+            }
+        }
+    }
+
+    ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
+    ToolTip.visible: hovered && (toolTipText.length > 0)
+    ToolTip.text: toolTipText
+
+    background: Rectangle {
+        id: backgroundRect
+        anchors.fill: parent
+        color: !outlined ? root.color : "transparent"
+        border.color: outlined ? root.color : "transparent"
+        radius: 4
+    }
+}

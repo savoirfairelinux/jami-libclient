@@ -51,7 +51,7 @@ GridLayout {
 
     Layout.leftMargin: 32
 
-    InfoLineEdit {
+    MaterialLineEdit {
         id: passwordEdit
 
         visible: visibleCollapsble
@@ -83,7 +83,7 @@ GridLayout {
         Layout.minimumHeight: 30
     }
 
-    InfoLineEdit {
+    MaterialLineEdit {
         id: confirmPasswordEdit
 
         visible: visibleCollapsble

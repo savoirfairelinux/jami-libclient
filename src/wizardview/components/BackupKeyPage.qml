@@ -23,10 +23,13 @@ import Qt.labs.platform 1.1
 
 import "../../constant"
 import "../../commoncomponents"
+import "../../settingsview/components"
 
-ColumnLayout {
+Rectangle {
+    id: root
+
     signal neverShowAgainBoxClicked(bool isChecked)
-    signal skip_Btn_Clicked
+    signal leavePage
     signal export_Btn_FileDialogAccepted(bool accepted, string folderDir)
 
     /*
@@ -58,143 +61,133 @@ ColumnLayout {
         }
     }
 
-    Layout.fillWidth: true
-    Layout.fillHeight: true
+    anchors.fill: parent
 
-    Item {
-        Layout.alignment: Qt.AlignHCenter
-        Layout.fillWidth: true
-        Layout.fillHeight: true
-    }
+    color: JamiTheme.backgroundColor
 
-    /*
-     * Main layout for BackupKeyPage which consists of the buttons and "never show again" check box
-     */
     ColumnLayout {
-        Layout.alignment: Qt.AlignCenter
-        Layout.maximumWidth: 366
-
         spacing: 12
 
-        Label {
-            id: backupKeysLabel
-            Layout.alignment: Qt.AlignHCenter
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.verticalCenter: parent.verticalCenter
+        Layout.preferredWidth: backupBtn.width
+        Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
 
-            Layout.maximumWidth: 366
-            Layout.maximumHeight: 21
-            Layout.preferredWidth: 366
-            Layout.preferredHeight: 21
+        RowLayout {
+            spacing: 12
+            height: 48
 
-            text: qsTr("Backup your account")
-            font.pointSize: 13
-            font.kerning: true
+            anchors.left: backupBtn.left
+            anchors.right: backupBtn.right
+
+            Label {
+                text: qsTr("Backup your account!")
+
+                font.pointSize: JamiTheme.textFontSize + 3
+            }
+
+            Label {
+                text: qsTr("Recommended")
+                color: "white"
+                padding: 8
+                anchors.right: parent.right
+
+                background: Rectangle {
+                    color: "#aed581"
+                    radius: 24
+                    anchors.fill: parent
+                }
+            }
         }
+
         Label {
-            id: backupInfoLabel1
-            Layout.maximumWidth: 366
-            Layout.maximumHeight: 57
-            Layout.preferredWidth: 366
-            Layout.preferredHeight: 57
+            text: qsTr("This account only exists on this device. If you lost your device or uninstall the application, your account will be deleted. You can backup your account now or later.")
+            wrapMode: Text.Wrap
+            anchors.left: backupBtn.left
+            anchors.right: backupBtn.right
 
-            text: qsTr("This account only exists on this device. If you lost your device or uninstall the application,your account will be deleted. You can backup your account now or later.")
-            wrapMode: Text.WordWrap
-            horizontalAlignment: Text.AlignJustify
-            verticalAlignment: Text.AlignVCenter
+            font.pointSize: JamiTheme.textFontSize
         }
-        CheckBox {
-            id: neverShowAgainBox
-            checked: false
 
-            Layout.maximumWidth: 366
-            Layout.maximumHeight: 19
-            Layout.preferredWidth: 366
-            Layout.preferredHeight: 19
+        RowLayout {
+            spacing: 12
+            height: 48
 
-            indicator.implicitWidth: 10
-            indicator.implicitHeight:10
+            anchors.right: backupBtn.right
+            anchors.left: backupBtn.left
 
-            text: qsTr("Never show me this again")
-            font.pointSize: 8
+            Label {
+                text: qsTr("Never show me this again")
+
+                font.pointSize: JamiTheme.textFontSize
+            }
+
+            Switch {
+                id: passwordSwitch
+                Layout.alignment: Qt.AlignRight
+
+                onToggled: {
+                    neverShowAgainBoxClicked(checked)
+                }
+            }
+        }
+
+        MaterialButton {
+            id: backupBtn
+            text: qsTr("BACKUP ACCOUNT")
+            color: JamiTheme.buttonTintedGrey
 
             onClicked: {
-                neverShowAgainBoxClicked(checked)
+                exportBtn_Dialog.open()
+                leavePage()
             }
         }
-        RowLayout {
-            Layout.fillWidth: true
-            Layout.maximumHeight: 20
 
-            Item {
-                Layout.alignment: Qt.AlignVCenter
-                Layout.fillHeight: true
-                Layout.maximumWidth: 40
-                Layout.minimumWidth: 10
-            }
+        MaterialButton {
+            text: qsTr("SKIP")
+            color: JamiTheme.buttonTintedGrey
+            outlined: true
 
-            HoverableGradientButton {
-                id: exportBtn
-
-                Layout.alignment: Qt.AlignVCenter
-                Layout.minimumWidth: 85
-                Layout.preferredWidth: 85
-                Layout.maximumWidth: 85
-
-                Layout.minimumHeight: 30
-                Layout.preferredHeight: 30
-                Layout.maximumHeight: 30
-
-                text: qsTr("Export")
-                font.kerning: true
-                fontPointSize: 10
-                radius: height / 2
-                backgroundColor: JamiTheme.releaseColor
-
-                onClicked: {
-                    exportBtn_Dialog.open()
-                }
-            }
-
-            Item {
-                Layout.alignment: Qt.AlignVCenter
-                Layout.fillWidth: true
-                Layout.fillHeight: true
-            }
-
-            HoverableGradientButton {
-                id: skipBtn
-
-                Layout.alignment: Qt.AlignVCenter
-                Layout.minimumWidth: 85
-                Layout.preferredWidth: 85
-                Layout.maximumWidth: 85
-
-                Layout.minimumHeight: 30
-                Layout.preferredHeight: 30
-                Layout.maximumHeight: 30
-
-                text: qsTr("Skip")
-                fontPointSize: 10
-                font.kerning: true
-                radius: height / 2
-                backgroundColor: JamiTheme.releaseColor
-
-                onClicked: {
-                    skip_Btn_Clicked()
-                }
-            }
-
-            Item {
-                Layout.alignment: Qt.AlignVCenter
-                Layout.fillHeight: true
-                Layout.maximumWidth: 40
-                Layout.minimumWidth: 10
+            onClicked: {
+                leavePage()
             }
         }
     }
 
-    Item {
-        Layout.alignment: Qt.AlignHCenter
-        Layout.fillWidth: true
-        Layout.fillHeight: true
+    HoverableButton {
+        id: cancelButton
+        z: 2
+
+        anchors.right: parent.right
+        anchors.top: parent.top
+
+        rightPadding: 90
+        topPadding: 90
+
+        Layout.preferredWidth: 96
+        Layout.preferredHeight: 96
+
+        backgroundColor: "transparent"
+        onEnterColor: "transparent"
+        onPressColor: "transparent"
+        onReleaseColor: "transparent"
+        onExitColor: "transparent"
+
+        buttonImageHeight: 48
+        buttonImageWidth: 48
+        source: "qrc:/images/icons/ic_close_white_24dp.png"
+        radius: 48
+        baseColor: "#7c7c7c"
+        toolTipText: qsTr("Close")
+
+        Action {
+            enabled: parent.visible
+            shortcut: StandardKey.Cancel
+            onTriggered: leavePage()
+        }
+
+        onClicked: {
+            leavePage()
+        }
     }
 }

@@ -29,6 +29,7 @@
         <file>src/commoncomponents/HoverableRadiusButton.qml</file>
         <file>src/commoncomponents/PasswordDialog.qml</file>
         <file>src/commoncomponents/InfoLineEdit.qml</file>
+        <file>src/commoncomponents/MaterialLineEdit.qml</file>
         <file>src/commoncomponents/PhotoboothView.qml</file>
         <file>src/commoncomponents/LookupStatusLabel.qml</file>
         <file>src/commoncomponents/ListViewJami.qml</file>
@@ -43,6 +44,7 @@
         <file>src/wizardview/components/ImportFromDevicePage.qml</file>
         <file>src/wizardview/components/ConnectToAccountManagerPage.qml</file>
         <file>src/wizardview/components/SpinnerPage.qml</file>
+        <file>src/wizardview/components/ProfilePage.qml</file>
         <file>src/wizardview/components/CollapsiblePasswordWidget.qml</file>
         <file>src/MainApplicationWindow.qml</file>
         <file>src/mainview/MainView.qml</file>
@@ -97,6 +99,7 @@
         <file>src/mainview/components/ContactPickerItemDelegate.qml</file>
         <file>src/wizardview/components/HoverableGradientButton.qml</file>
         <file>src/commoncomponents/AccountMigrationDialog.qml</file>
+        <file>src/commoncomponents/MaterialButton.qml</file>
         <file>src/mainview/components/RecordBox.qml</file>
         <file>src/commoncomponents/ElidedTextLabel.qml</file>
     </qresource>

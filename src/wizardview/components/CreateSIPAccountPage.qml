@@ -23,14 +23,16 @@ import QtQuick.Controls 2.14
 import "../../constant"
 import "../../commoncomponents"
 
-ColumnLayout {
-    property alias text_sipFullNameEditAlias: sipFullNameEdit.text
+
+Rectangle {
+    id: root
+
     property alias text_sipServernameEditAlias: sipServernameEdit.text
     property alias text_sipProxyEditAlias: sipProxyEdit.text
     property alias text_sipUsernameEditAlias: sipUsernameEdit.text
     property alias text_sipPasswordEditAlias: sipPasswordEdit.text
 
-    property alias boothImgBase64: setSIPAvatarWidget.imgBase64
+    property /*alias*/ var boothImgBase64: null//setSIPAvatarWidget.imgBase64
 
     function initializeOnShowUp() {
         clearAllTextFields()
@@ -41,123 +43,54 @@ ColumnLayout {
         sipPasswordEdit.clear()
         sipServernameEdit.clear()
         sipProxyEdit.clear()
-        sipFullNameEdit.clear()
         sipUsernameEdit.clear()
     }
 
-    function startBooth(){
-        setSIPAvatarWidget.startBooth()
-    }
+    signal createAccount
+    signal leavePage
 
-    function stopBooth(){
-        setSIPAvatarWidget.stopBooth()
-    }
+    anchors.fill: parent
 
-    Layout.fillWidth: true
-    Layout.fillHeight: true
-
-    spacing: 6
-
-    Item {
-        Layout.fillHeight: true
-        Layout.fillWidth: true
-    }
-
-    Label {
-        id: sipProfileSectionLabel
-
-        Layout.maximumWidth: 368
-        Layout.preferredWidth: 368
-        Layout.maximumHeight: 21
-        Layout.preferredHeight: 21
-
-        Layout.alignment: Qt.AlignHCenter
-
-        text: qsTr("Profile")
-        font.pointSize: 13
-        font.kerning: true
-
-        horizontalAlignment: Text.AlignHCenter
-        verticalAlignment: Text.AlignVCenter
-    }
-
-    PhotoboothView{
-        id: setSIPAvatarWidget
-
-        Layout.alignment: Qt.AlignHCenter
-
-        Layout.maximumWidth: 261
-        Layout.preferredWidth: 261
-        Layout.minimumWidth: 261
-        Layout.maximumHeight: 261
-        Layout.preferredHeight: 261
-        Layout.minimumHeight: 261
-    }
-
-    RowLayout {
-        spacing: 0
-        Layout.alignment: Qt.AlignHCenter
-        Layout.maximumHeight: 30
-
-        Item {
-            Layout.fillWidth: true
-            Layout.maximumHeight: 10
-        }
-
-        InfoLineEdit {
-            id: sipFullNameEdit
-
-            fieldLayoutWidth : 261
-            Layout.alignment: Qt.AlignCenter
-            selectByMouse: true
-            placeholderText: qsTr("Profile name")
-            font.pointSize: 10
-            font.kerning: true
-        }
-
-        Item {
-            Layout.fillHeight: true
-            Layout.fillWidth: true
-        }
-    }
-    Item {
-        Layout.fillHeight: true
-        Layout.fillWidth: true
-    }
-
-    Label {
-        id: sipAccountSectionLabel
-        Layout.maximumWidth: 368
-        Layout.preferredWidth: 368
-        Layout.maximumHeight: 21
-        Layout.preferredHeight: 21
-
-        Layout.alignment: Qt.AlignHCenter
-
-        text: qsTr("SIP Account")
-        font.pointSize: 12
-        font.kerning: true
-
-        horizontalAlignment: Text.AlignHCenter
-        verticalAlignment: Text.AlignVCenter
-    }
+    color: JamiTheme.backgroundColor
 
     ColumnLayout {
-        Layout.alignment: Qt.AlignHCenter
-        spacing: 7
+        spacing: 12
 
-        Item {
-            Layout.fillWidth: true
-            Layout.alignment: Qt.AlignHCenter
-            Layout.maximumHeight: 40
-            Layout.minimumHeight: 30
-            Layout.preferredHeight: 40
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.verticalCenter: parent.verticalCenter
+        Layout.preferredWidth: createAccountButton.width
+        Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
+
+        RowLayout {
+            spacing: 12
+            height: 48
+
+            anchors.left: createAccountButton.left
+            anchors.right: createAccountButton.right
+
+            Label {
+                text: qsTr("Configure an existing SIP account")
+            }
+
+            Label {
+                text: qsTr("Required")
+                color: "#ff1f62"
+                padding: 8
+
+                background: Rectangle {
+                    color: "#fee4e9"
+                    radius: 24
+                    anchors.fill: parent
+                }
+            }
         }
 
-        InfoLineEdit {
+        MaterialLineEdit {
             id: sipServernameEdit
+
+            fieldLayoutWidth: createAccountButton.width
+
             Layout.alignment: Qt.AlignHCenter
-            fieldLayoutWidth: 261
 
             selectByMouse: true
             placeholderText: qsTr("Server")
@@ -165,10 +98,12 @@ ColumnLayout {
             font.kerning: true
         }
 
-        InfoLineEdit {
+        MaterialLineEdit {
             id: sipProxyEdit
+
+            fieldLayoutWidth: createAccountButton.width
+
             Layout.alignment: Qt.AlignHCenter
-            fieldLayoutWidth: 261
 
             selectByMouse: true
             placeholderText: qsTr("Proxy")
@@ -176,10 +111,12 @@ ColumnLayout {
             font.kerning: true
         }
 
-        InfoLineEdit {
+        MaterialLineEdit {
             id: sipUsernameEdit
+
+            fieldLayoutWidth: createAccountButton.width
+
             Layout.alignment: Qt.AlignHCenter
-            fieldLayoutWidth: 261
 
             selectByMouse: true
             placeholderText: qsTr("Username")
@@ -187,16 +124,65 @@ ColumnLayout {
             font.kerning: true
         }
 
-        InfoLineEdit {
+        MaterialLineEdit {
             id: sipPasswordEdit
+
+            fieldLayoutWidth: createAccountButton.width
+
             Layout.alignment: Qt.AlignHCenter
-            fieldLayoutWidth: 261
 
             selectByMouse: true
             echoMode: TextInput.Password
             placeholderText: qsTr("Password")
             font.pointSize: 10
             font.kerning: true
+        }
+
+        MaterialButton {
+            id: createAccountButton
+            text: qsTr("CREATE SIP ACCOUNT")
+            color: JamiTheme.wizardBlueButtons
+
+            onClicked: {
+                createAccount()
+            }
+        }
+    }
+
+    HoverableButton {
+        id: cancelButton
+        z: 2
+
+        anchors.right: parent.right
+        anchors.top: parent.top
+
+        rightPadding: 90
+        topPadding: 90
+
+        Layout.preferredWidth: 96
+        Layout.preferredHeight: 96
+
+        backgroundColor: "transparent"
+        onEnterColor: "transparent"
+        onPressColor: "transparent"
+        onReleaseColor: "transparent"
+        onExitColor: "transparent"
+
+        buttonImageHeight: 48
+        buttonImageWidth: 48
+        source: "qrc:/images/icons/ic_close_white_24dp.png"
+        radius: 48
+        baseColor: "#7c7c7c"
+        toolTipText: qsTr("Return to welcome page")
+
+        Action {
+            enabled: parent.visible
+            shortcut: StandardKey.Cancel
+            onTriggered: leavePage()
+        }
+
+        onClicked: {
+            leavePage()
         }
     }
 }

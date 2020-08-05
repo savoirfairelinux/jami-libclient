@@ -49,6 +49,7 @@ Button {
     property string onEnterColor: JamiTheme.hoverColor
     property string onExitColor: backgroundColor
     property string textColor: "white"
+    property string tooltipText: ""
 
     property string toolTipText: ""
 

@@ -59,10 +59,6 @@ ApplicationWindow {
         Connections {
             target: mainViewLoader.item
 
-            function onNeedToAddNewAccount() {
-                wizardView.show()
-            }
-
             function onCloseApp() {
                 Qt.quit()
             }
@@ -74,26 +70,36 @@ ApplicationWindow {
         }
     }
 
-    WizardView {
+    Window {
         id: wizardView
 
-        onNeedToShowMainViewWindow: {
-            mainViewLoader.newAddedAccountIndex = accountIndex
-            if (mainViewLoader.source.toString() !== "qrc:/src/mainview/MainView.qml") {
-                mainViewLoader.loaded.disconnect(slotNewAccountAdded)
-                mainViewLoader.loaded.connect(slotNewAccountAdded)
-                mainViewLoader.setSource("qrc:/src/mainview/MainView.qml")
-            } else {
-                slotNewAccountAdded()
-            }
-        }
+        title: "Jami"
 
-        onWizardViewIsClosed: {
-            if (mainViewLoader.source.toString() !== "qrc:/src/mainview/MainView.qml") {
-                Qt.quit()
+        minimumWidth: 400
+        minimumHeight: 600
+
+        WizardView {
+            anchors.fill: parent
+            onNeedToShowMainViewWindow: {
+                mainViewLoader.newAddedAccountIndex = accountIndex
+                if (mainViewLoader.source.toString() !== "qrc:/src/mainview/MainView.qml") {
+                    mainViewLoader.loaded.disconnect(slotNewAccountAdded)
+                    mainViewLoader.loaded.connect(slotNewAccountAdded)
+                    mainViewLoader.setSource("qrc:/src/mainview/MainView.qml")
+                } else {
+                    slotNewAccountAdded()
+                }
+                wizardView.close()
+            }
+
+            onWizardViewIsClosed: {
+                if (mainViewLoader.source.toString() !== "qrc:/src/mainview/MainView.qml") {
+                    Qt.quit()
+                }
             }
         }
     }
+
 
     Component.onCompleted: {
         if(!startAccountMigration()){

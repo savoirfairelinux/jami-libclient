@@ -23,9 +23,12 @@ import QtQuick.Controls 2.14
 import "../../constant"
 import "../../commoncomponents"
 
-ColumnLayout {
+Rectangle {
+    id: root
+
     property alias text_pinFromDeviceAlias: pinFromDevice.text
     property alias text_passwordFromDeviceAlias: passwordFromDevice.text
+    property string errorText: ""
 
     function initializeOnShowUp() {
         clearAllTextFields()
@@ -36,107 +39,125 @@ ColumnLayout {
         passwordFromDevice.clear()
     }
 
-    Layout.fillWidth: true
-    Layout.fillHeight: true
+    anchors.fill: parent
 
-    Item {
-        Layout.alignment: Qt.AlignHCenter
-        Layout.preferredHeight: 40
-        Layout.fillWidth: true
-        Layout.fillHeight: true
-    }
+    color: JamiTheme.backgroundColor
+
+    signal leavePage
+    signal importAccount
 
     ColumnLayout {
-        Layout.alignment: Qt.AlignCenter
-        Layout.fillWidth: true
-
         spacing: 12
 
-        RowLayout {
-            Layout.fillWidth: true
-            Layout.maximumHeight: 24
-            spacing: 0
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.verticalCenter: parent.verticalCenter
+        Layout.preferredWidth: parent.width
+        Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
 
-            Item {
-                Layout.alignment: Qt.AlignVCenter
-                Layout.fillWidth: true
-                Layout.fillHeight: true
-            }
+        Text {
+            anchors.left: connectBtn.left
+            anchors.right: connectBtn.right
 
-            Label {
-                id: importFromDeviceLabel
-                Layout.minimumHeight: 24
-                Layout.minimumWidth: 234
-                text: qsTr("Import from device")
-                font.pointSize: 13
-                font.kerning: true
-            }
-
-            HoverableRadiusButton {
-                id: pinInfoBtn
-
-                buttonImageHeight: height
-                buttonImageWidth: width
-
-                Layout.alignment: Qt.AlignVCenter
-                Layout.minimumWidth: 24
-                Layout.maximumWidth: 24
-                Layout.minimumHeight: 24
-                Layout.maximumHeight: 24
-
-                radius: height / 2
-                icon.source: "/images/icons/info-24px.svg"
-                backgroundColor: JamiTheme.releaseColor
-
-                onClicked: {
-                    pinInfoLabel.visible = !pinInfoLabel.visible
-                }
-            }
-            Item {
-                Layout.alignment: Qt.AlignVCenter
-                Layout.fillWidth: true
-                Layout.fillHeight: true
-            }
+            text: qsTr("Enter your main Jami account password")
+            font.pointSize: JamiTheme.menuFontSize
         }
-        InfoLineEdit {
-            id: pinFromDevice
 
-            Layout.alignment: Qt.AlignHCenter
+        MaterialLineEdit {
+            id: passwordFromDevice
+
+            selectByMouse: true
+            placeholderText: qsTr("Password")
+            font.pointSize: 10
+            font.kerning: true
+
+            echoMode: TextInput.Password
+
+            borderColorMode: MaterialLineEdit.NORMAL
+
+            fieldLayoutWidth: connectBtn.width
+        }
+
+        Text {
+            anchors.left: connectBtn.left
+            anchors.right: connectBtn.right
+
+            text: qsTr("Enter the PIN from another configured Jami account. Use the \"export Jami account\" feature to obtain a PIN")
+            wrapMode: Text.Wrap
+        }
+
+        MaterialLineEdit {
+            id: pinFromDevice
 
             selectByMouse: true
             placeholderText: qsTr("PIN")
+            font.pointSize: 10
+            font.kerning: true
+
+            borderColorMode: MaterialLineEdit.NORMAL
+
+            fieldLayoutWidth: connectBtn.width
         }
 
-        InfoLineEdit {
-            id: passwordFromDevice
+        MaterialButton {
+            id: connectBtn
+            text: qsTr("CONNECT FROM ANOTHER DEVICE")
+            color: pinFromDevice.text.length === 0?
+                JamiTheme.buttonTintedGreyInactive : JamiTheme.buttonTintedGrey
 
-            Layout.alignment: Qt.AlignHCenter
-
-            selectByMouse: true
-            echoMode: TextInput.Password
-            placeholderText: qsTr("Password")
+            onClicked: {
+                errorText = ""
+                importAccount()
+            }
         }
 
         Label {
-            id: pinInfoLabel
+            text: errorText
 
+            anchors.left: connectBtn.left
+            anchors.right: connectBtn.right
             Layout.alignment: Qt.AlignHCenter
-            Layout.minimumWidth: 256
-            Layout.maximumWidth: 256
 
-            text: qsTr("To obtain a PIN (valid for 10 minutes), you need to open the account settings on the other device and click on \"Link to another device\".")
-            wrapMode: Text.WordWrap
-            horizontalAlignment: Text.AlignHCenter
-            verticalAlignment: Text.AlignVCenter
+            font.pointSize: JamiTheme.textFontSize
+            color: "red"
 
-            visible: false
+            height: 32
         }
     }
 
-    Item {
-        Layout.alignment: Qt.AlignHCenter
-        Layout.preferredHeight: 40
-        Layout.fillWidth: true
-        Layout.fillHeight: true
+    HoverableButton {
+        id: cancelButton
+        z: 2
+
+        anchors.right: parent.right
+        anchors.top: parent.top
+
+        rightPadding: 90
+        topPadding: 90
+
+        Layout.preferredWidth: 96
+        Layout.preferredHeight: 96
+
+        backgroundColor: "transparent"
+        onEnterColor: "transparent"
+        onPressColor: "transparent"
+        onReleaseColor: "transparent"
+        onExitColor: "transparent"
+
+        buttonImageHeight: 48
+        buttonImageWidth: 48
+        source: "qrc:/images/icons/ic_close_white_24dp.png"
+        radius: 48
+        baseColor: "#7c7c7c"
+        toolTipText: qsTr("Return to welcome page")
+
+        Shortcut {
+            sequence: StandardKey.Cancel
+            enabled: parent.visible
+            onActivated: leavePage()
+        }
+
+        onClicked: {
+            leavePage()
+        }
     }
 }

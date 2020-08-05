@@ -26,20 +26,14 @@ import "../../commoncomponents"
 Rectangle {
     id: root
 
-    property alias text_usernameManagerEditAlias: usernameManagerEdit.text
-    property alias text_passwordManagerEditAlias: passwordManagerEdit.text
-    property alias text_accountManagerEditAlias: accountManagerEdit.text
-    property string errorText: ""
-
     function initializeOnShowUp() {
         clearAllTextFields()
+        boothImgBase64 = ""
+        readyToSaveDetails = false
     }
 
     function clearAllTextFields() {
-        usernameManagerEdit.clear()
-        passwordManagerEdit.clear()
-        accountManagerEdit.clear()
-        errorText = ""
+        aliasEdit.clear()
     }
 
     anchors.fill: parent
@@ -47,7 +41,12 @@ Rectangle {
     color: JamiTheme.backgroundColor
 
     signal leavePage
-    signal createAccount
+    signal saveProfile
+
+    property var readyToSaveDetails: false
+    property var showBottom: false
+    property alias boothImgBase64: setAvatarWidget.imgBase64
+    property alias displayName: aliasEdit.text
 
     ColumnLayout {
         spacing: 12
@@ -57,112 +56,127 @@ Rectangle {
         Layout.preferredWidth: parent.width
         Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
 
+
         RowLayout {
             spacing: 12
             height: 48
 
-            Layout.fillWidth: true
-            anchors.left: connectBtn.left
-            anchors.right: connectBtn.right
+            Layout.preferredWidth: saveProfileBtn.width
 
             Label {
-                text: qsTr("Enter URL of management server")
+                text: qsTr("Profile is only shared with contacts")
+
+                font.pointSize: JamiTheme.textFontSize + 3
             }
 
             Label {
-                text: qsTr("Required")
-                color: "#ff1f62"
+                text: qsTr("Optional")
+                color: "white"
+                Layout.alignment: Qt.AlignRight
                 padding: 8
-                anchors.right: parent.right
 
                 background: Rectangle {
-                    color: "#fee4e9"
+                    color: "#28b1ed"
                     radius: 24
                     anchors.fill: parent
                 }
             }
         }
 
+        PhotoboothView {
+            id: setAvatarWidget
+
+            Layout.alignment: Qt.AlignHCenter
+
+            Layout.maximumWidth: 256
+            Layout.preferredWidth: 256
+            Layout.minimumWidth: 256
+            Layout.maximumHeight: 256
+            Layout.preferredHeight: 256
+            Layout.minimumHeight: 256
+        }
+
         MaterialLineEdit {
-            id: accountManagerEdit
+            id: aliasEdit
 
             selectByMouse: true
-            placeholderText: qsTr("Jami management server URL")
+            placeholderText: qsTr("Enter your name")
             font.pointSize: 10
             font.kerning: true
 
             borderColorMode: MaterialLineEdit.NORMAL
 
-            fieldLayoutWidth: connectBtn.width
-        }
-
-        Text {
-            anchors.left: connectBtn.left
-            anchors.right: connectBtn.right
-
-            text: qsTr("Enter your organization credentials")
-            wrapMode: Text.Wrap
-        }
-
-        MaterialLineEdit {
-            id: usernameManagerEdit
-
-            selectByMouse: true
-            placeholderText: qsTr("Username")
-            font.pointSize: 10
-            font.kerning: true
-
-            borderColorMode: MaterialLineEdit.NORMAL
-
-            fieldLayoutWidth: connectBtn.width
-        }
-
-        MaterialLineEdit {
-            id: passwordManagerEdit
-
-            selectByMouse: true
-            placeholderText: qsTr("Password")
-            font.pointSize: 10
-            font.kerning: true
-
-            echoMode: TextInput.Password
-
-            borderColorMode: MaterialLineEdit.NORMAL
-
-            fieldLayoutWidth: connectBtn.width
+            fieldLayoutWidth: saveProfileBtn.width
         }
 
         MaterialButton {
-            id: connectBtn
-            text: qsTr("CONNECT")
-            enabled: accountManagerEdit.text.length !== 0
-                && usernameManagerEdit.text.length !== 0
-                && passwordManagerEdit.text.length !== 0
+            id: saveProfileBtn
+            enabled: readyToSaveDetails
+            text: enabled? qsTr("Save Profile") : qsTr("Generating account…")
             color: enabled? JamiTheme.wizardBlueButtons : JamiTheme.buttonTintedGreyInactive
 
             onClicked: {
-                errorText = ""
-                createAccount()
+                saveProfile()
             }
         }
 
-        Label {
-            text: errorText
+        MaterialButton {
+            text: qsTr("SKIP")
+            enabled: saveProfileBtn.enabled
+            color: enabled? JamiTheme.buttonTintedGrey : JamiTheme.buttonTintedGreyInactive
+            outlined: true
 
-            anchors.left: connectBtn.left
-            anchors.right: connectBtn.right
+            onClicked: {
+                leavePage()
+            }
+        }
+
+        RowLayout {
+            id: bottomLayout
+            height: 48
+            spacing: 12
+            visible: showBottom
+
+            Layout.preferredWidth: saveProfileBtn.width
+            Layout.topMargin: 12
             Layout.alignment: Qt.AlignHCenter
 
-            font.pointSize: JamiTheme.textFontSize
-            color: "red"
+            Item {
+                Layout.fillWidth: true
+            }
 
-            height: 32
+            Rectangle {
+                color: "grey"
+                radius: height / 2
+                height: 12
+                width: 12
+            }
+
+            Rectangle {
+                color: "grey"
+                radius: height / 2
+                height: 12
+                width: 12
+            }
+
+            Rectangle {
+                color: JamiTheme.wizardBlueButtons
+                radius: height / 2
+                height: 12
+                width: 12
+            }
+
+            Item {
+                Layout.fillWidth: true
+            }
         }
+
     }
 
     HoverableButton {
         id: cancelButton
         z: 2
+        visible: readyToSaveDetails
 
         anchors.right: parent.right
         anchors.top: parent.top
@@ -184,7 +198,7 @@ Rectangle {
         source: "qrc:/images/icons/ic_close_white_24dp.png"
         radius: 48
         baseColor: "#7c7c7c"
-        toolTipText: qsTr("Return to welcome page")
+        toolTipText: qsTr("Close")
 
         Action {
             enabled: parent.visible

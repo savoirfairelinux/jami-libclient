@@ -240,7 +240,9 @@ ColumnLayout {
     JamiFileDialog {
         id: privateKey_Dialog
 
-        property string oldPath : ClientWrapper.settingsAdaptor.getAccountConfig_TLS_PrivateKeyFile()
+        property string oldPath : {
+            return ClientWrapper.settingsAdaptor.getAccountConfig_TLS_PrivateKeyFile()
+        }
         property string openPath : oldPath === "" ? (ClientWrapper.utilsAdaptor.getCurrentPath() + "/ringtones/") : (ClientWrapper.utilsAdaptor.toFileAbsolutepath(oldPath))
 
         mode: JamiFileDialog.OpenFile

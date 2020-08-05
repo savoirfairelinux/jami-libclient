@@ -29,6 +29,7 @@ import net.jami.Models 1.0
  * Import qml component files.
  */
 import "components"
+import "../wizardview"
 import "../settingsview"
 import "../settingsview/components"
 
@@ -40,7 +41,7 @@ Window {
 
     property int mainViewWindowPreferredWidth: 650
     property int mainViewWindowPreferredHeight: 600
-    property int sidePanelViewStackPreferredWidth: 250
+    property int sidePanelViewStackPreferredWidth: 400
     property int mainViewStackPreferredWidth: 250
     property int aboutPopUpPreferredWidth: 250
 
@@ -59,9 +60,8 @@ Window {
     property bool needToShowCallStack: false
     property bool needToCloseCallStack: false
 
-    signal noAccountIsAvailable
-    signal needToAddNewAccount
     signal closeApp
+    signal noAccountIsAvailable
 
     function pushCallStackView(){
         if (mainViewStack.visible) {
@@ -229,6 +229,28 @@ Window {
             MessagesAdapter.setupChatView(convUid)
         }
     }
+
+    WizardView {
+            id: wizardView
+
+            anchors.fill: parent
+
+            onNeedToShowMainViewWindow: {
+                mainViewLoader.newAddedAccountIndex = accountIndex
+                if (mainViewLoader.source.toString() !== "qrc:/src/mainview/MainView.qml") {
+                    mainViewLoader.loaded.disconnect(slotNewAccountAdded)
+                    mainViewLoader.loaded.connect(slotNewAccountAdded)
+                    mainViewLoader.setSource("qrc:/src/mainview/MainView.qml")
+                } else {
+                    slotNewAccountAdded()
+                }
+                mainViewStackLayout.currentIndex = 0
+            }
+
+            onWizardViewIsClosed: {
+                mainViewStackLayout.currentIndex = 0
+            }
+        }
 
     StackLayout {
         id: mainViewStackLayout
@@ -519,7 +541,7 @@ Window {
         }
 
         onNeedToAddNewAccount: {
-            mainViewWindow.needToAddNewAccount()
+            mainViewStackLayout.currentIndex = 2
         }
     }
 
@@ -592,6 +614,20 @@ Window {
         }
 
         Component.onCompleted: {
+
+            sidePanelViewStack.SplitView.maximumWidth = Qt.binding(function() {
+                return (hiddenView ? splitView.width : splitView.width - sidePanelViewStackPreferedWidth)
+            })
+
+            recordBox.x = Qt.binding(function() {
+                var i = (welcomeViewStack.width > 1000 ? Math.round((welcomeViewStack.width-1000)*0.5) : 0)
+                return sidePanelViewStack.width + recordBox.x_offset + i
+            })
+
+            recordBox.y = Qt.binding(function() {
+                return sidePanelViewStack.height + recordBox.y_offset
+            })
+
 
             /*
              * Set qml MessageWebView object pointer to c++.
