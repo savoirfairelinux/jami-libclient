@@ -284,6 +284,7 @@ public:
     setSelectedAccountId(const QString &accountId = {})
     {
         instance().selectedAccountId_ = accountId;
+        emit instance().currentAccountChanged();
         QSettings settings("jami.net", "Jami");
         settings.setValue(SettingsKey::selectedAccount, accountId);
 
@@ -454,6 +455,7 @@ public:
 
 signals:
     void accountListChanged();
+    void currentAccountChanged();
 
 private:
     LRCInstance(migrateCallback willMigrateCb = {}, migrateCallback didMigrateCb = {})

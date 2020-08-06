@@ -42,10 +42,20 @@ CallAdapter::initQmlObject()
             &BehaviorController::showIncomingCallView,
             this,
             &CallAdapter::slotShowIncomingCallView);
+    connect(&LRCInstance::instance(),
+            &LRCInstance::currentAccountChanged,
+            this,
+            &CallAdapter::slotAccountChanged);
     connect(&LRCInstance::behaviorController(),
             &BehaviorController::showCallView,
             this,
             &CallAdapter::slotShowCallView);
+}
+
+void
+CallAdapter::slotAccountChanged()
+{
+    connectCallModel(LRCInstance::getCurrAccId());
 }
 
 void

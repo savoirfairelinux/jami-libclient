@@ -47,6 +47,9 @@ signals:
     void showChatView(const QString &accountId, const QString &convUid);
     void showConversationTabs(bool visible);
 
+public slots:
+    void slotAccountChanged();
+
 private:
     void initQmlObject() override;
     void setConversationFilter(lrc::api::profile::Type filter);

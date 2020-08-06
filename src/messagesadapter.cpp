@@ -41,6 +41,16 @@ MessagesAdapter::~MessagesAdapter() {}
 void
 MessagesAdapter::initQmlObject()
 {
+    connect(&LRCInstance::instance(),
+            &LRCInstance::currentAccountChanged,
+            this,
+            &MessagesAdapter::slotAccountChanged);
+    connectConversationModel();
+}
+
+void
+MessagesAdapter::slotAccountChanged()
+{
     connectConversationModel();
 }
 
