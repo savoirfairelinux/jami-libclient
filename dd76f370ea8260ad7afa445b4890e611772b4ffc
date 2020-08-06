@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "26493428_4a4352bc",
+        "filename": "src/api/account.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 234,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2020-08-06T15:56:36Z",
+      "side": 1,
+      "message": "undefined references for lrc::api::account::qt_getEnumMetaObject(lrc::api::account::RegisterNameStatus) and same for the other enum.\n\nWe declare 2 enum with the same Q_ENUM_NS, Those two enums are also present in NameDirectory.h Imho we can remove these ones and rename in other parts of the code",
+      "range": {
+        "startLine": 214,
+        "startChar": 0,
+        "endLine": 234,
+        "endChar": 6
+      },
+      "revId": "dd76f370ea8260ad7afa445b4890e611772b4ffc",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bb65bde4_16bd8024",
+        "filename": "src/api/interaction.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2020-08-06T15:56:36Z",
+      "side": 1,
+      "message": "Missing #include \u003cQObject\u003e",
+      "range": {
+        "startLine": 32,
+        "startChar": 1,
+        "endLine": 35,
+        "endChar": 24
+      },
+      "revId": "dd76f370ea8260ad7afa445b4890e611772b4ffc",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    }
+  ]
+}
