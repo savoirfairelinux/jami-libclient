@@ -106,7 +106,7 @@ Dialog {
             Layout.alignment: Qt.AlignRight
             font.pointSize: JamiTheme.textFontSize
             text: qsTr("Username")
-            visible: registeredNameText ? (registeredNameText === aliasText ? false : true) : false
+            visible: registeredNameText ? (registeredNameText === idText ? false : true) : false
             color: JamiTheme.faddedFontColor
         }
 
@@ -120,7 +120,7 @@ Dialog {
 
             font.pointSize: JamiTheme.textFontSize
             text: textMetricsContactDisplayNameText.elidedText
-            visible: registeredNameText ? (registeredNameText === aliasText ? false : true) : false
+            visible: registeredNameText ? (registeredNameText === idText ? false : true) : false
 
             TextMetrics {
                 id: textMetricsContactDisplayNameText
