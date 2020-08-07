@@ -611,6 +611,8 @@ Window {
                         font.pointSize: 10
                         font.kerning: true
 
+                        toolTipText: qsTr("Previous page button")
+
                         onClicked: {
                             // stop photobooth previewing
                             if(controlPanelStackView.currentIndex == controlPanelStackView.createAccountPageId) {
@@ -662,6 +664,8 @@ Window {
                         font.pointSize: 10
                         font.kerning: true
 
+                        toolTipText: qsTr("Cancel account create/link")
+
                         onClicked: {
                             wizardViewWindow.hide()
                             needToShowMainViewWindow(addedAccountIndex)
@@ -695,6 +699,8 @@ Window {
                         text: qsTr("Next")
                         font.pointSize: 10
                         font.kerning: true
+
+                        toolTipText: qsTr("Next page button")
 
                         onClicked: {
                             // stop photobooth previewing

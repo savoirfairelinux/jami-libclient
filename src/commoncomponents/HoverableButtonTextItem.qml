@@ -46,10 +46,16 @@ Button {
     property alias radius: hoverableButtonBackground.radius
     property alias source: hoverableButtonImage.source
 
+    property string toolTipText: ""
+
     font.pointSize: fontPointSize
     font.kerning:  true
 
     hoverEnabled: true
+
+    ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
+    ToolTip.visible: hovered && (toolTipText.length > 0)
+    ToolTip.text: toolTipText
 
     contentItem: Text {
             text: hoverableButton.text

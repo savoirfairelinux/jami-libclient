@@ -190,6 +190,8 @@ Rectangle {
                 source: "qrc:/images/icons/ic_close_white_24dp.png"
                 radius: 30
 
+                toolTipText: qsTr("Cancel the call")
+
                 onClicked: {
                     outgoingCallPageRect.callCancelButtonIsClicked()
                 }

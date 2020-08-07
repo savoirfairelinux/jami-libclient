@@ -28,6 +28,12 @@ import "../../constant"
 ComboBox {
     id: control
 
+    property string tooltipText:""
+
+    ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
+    ToolTip.visible: hovered && (tooltipText.length > 0)
+    ToolTip.text: tooltipText
+
     delegate: ItemDelegate {
         width: control.width
         contentItem: Text {

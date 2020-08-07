@@ -32,6 +32,8 @@ RowLayout {
     property int heightOfLayout: 30
     property int fontPointSize: 13
 
+    property string tooltipText: ""
+
     property alias toggleSwitch: switchOfLayout
     property alias checked: switchOfLayout.checked
 
@@ -65,6 +67,11 @@ RowLayout {
         Layout.minimumHeight: heightOfSwitch
         Layout.preferredHeight: heightOfSwitch
         Layout.maximumHeight: heightOfSwitch
+
+        hoverEnabled: true
+        ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
+        ToolTip.visible: hovered && (tooltipText.length > 0)
+        ToolTip.text: tooltipText
 
         onToggled: {
             switchToggled()

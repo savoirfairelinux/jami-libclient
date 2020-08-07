@@ -102,6 +102,8 @@ ColumnLayout {
             font.kerning: true
             radius: height / 2
 
+            toolTipText: qsTr("Create new Jami account")
+
             onClicked: {
                 welcomePageRedirectPage(1)
             }
@@ -125,6 +127,8 @@ ColumnLayout {
             backgroundColor: JamiTheme.releaseColor
             radius: height / 2
 
+            toolTipText: qsTr("Import account from other device")
+
             onClicked: {
                 welcomePageRedirectPage(5)
             }
@@ -147,6 +151,8 @@ ColumnLayout {
 
             backgroundColor: JamiTheme.releaseColor
             radius: height / 2
+
+            toolTipText: qsTr("Import account from backup file")
 
             onClicked: {
                 welcomePageRedirectPage(3)
@@ -175,6 +181,12 @@ ColumnLayout {
                 radius: height /2
             }
 
+            hoverEnabled: true
+
+            ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
+            ToolTip.visible: hovered
+            ToolTip.text: qsTr("Show advanced options")
+
             onClicked: {
                 connectAccountManagerButton.visible = !connectAccountManagerButton.visible
                 newSIPAccountButton.visible = !newSIPAccountButton.visible
@@ -200,6 +212,8 @@ ColumnLayout {
             backgroundColor: JamiTheme.releaseColor
             radius: height / 2
 
+            toolTipText: qsTr("Login to account manager")
+
             onClicked: {
                 welcomePageRedirectPage(6)
             }
@@ -223,6 +237,8 @@ ColumnLayout {
 
             radius: height / 2
             backgroundColor: JamiTheme.releaseColor
+
+            toolTipText: qsTr("Create new SIP account")
 
             onClicked: {
                 welcomePageRedirectPage(2)

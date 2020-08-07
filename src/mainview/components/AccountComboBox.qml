@@ -221,6 +221,9 @@ ComboBox {
         width: 24
         height: 24
 
+        toolTipText: qsTr("Press to display QR code")
+        hoverEnabled: true
+
         source: "qrc:/images/qrcode.png"
         backgroundColor: "white"
         onClicked: {
@@ -243,6 +246,9 @@ ComboBox {
 
         source: !mainViewWindow.inSettingsView ? "qrc:/images/icons/round-settings-24px.svg" :
                                                  "qrc:/images/icons/round-close-24px.svg"
+        toolTipText: !mainViewWindow.inSettingsView ?qsTr("Press to toggle to settings page") : qsTr("Press to toggle to call page")
+        hoverEnabled: true
+
         backgroundColor: "white"
         onClicked: {
             settingBtnClicked()

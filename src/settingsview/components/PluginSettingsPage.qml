@@ -74,6 +74,8 @@ Rectangle {
                 backgroundColor: "white"
                 onExitColor: "white"
 
+                toolTipText: qsTr("Toggle to display side panel")
+                hoverEnabled: true
                 visible: mainViewWindow.sidePanelHidden
 
                 onClicked: {

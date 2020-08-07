@@ -122,6 +122,8 @@ Rectangle {
                 backgroundColor: "white"
                 onExitColor: "white"
 
+                toolTipText: qsTr("Toggle to display side panel")
+                hoverEnabled: true
                 visible: mainViewWindow.sidePanelHidden
 
                 onClicked: {
@@ -420,6 +422,7 @@ Rectangle {
                         Layout.maximumHeight: JamiTheme.preferredFieldHeight
 
                         text: qsTr("Delete Account")
+                        toolTipText: qsTr("Delete this account")
                         font.pointSize: JamiTheme.textFontSize
                         font.kerning: true
                         radius: height / 2

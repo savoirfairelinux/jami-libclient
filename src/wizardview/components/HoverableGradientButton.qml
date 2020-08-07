@@ -50,15 +50,20 @@ Button {
     property string onExitColor: backgroundColor
     property string textColor: "white"
 
+    property string toolTipText: ""
+
     property alias radius: hoverableButtonBackground.radius
 
-    property bool isHovering: false
     property bool isBeingPressed: false
 
     radius: height / 2
     font.pointSize: fontPointSize
     font.kerning:  true
     hoverEnabled: true
+
+    ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
+    ToolTip.visible: hovered && (toolTipText.length > 0)
+    ToolTip.text: toolTipText
 
     contentItem: Text {
             text: hoverableButton.text
@@ -89,11 +94,9 @@ Button {
             }
             onEntered: {
                 hoverableButtonBackground.color = onEnterColor
-                isHovering = true
             }
             onExited: {
                 hoverableButtonBackground.color = onExitColor
-                isHovering = false
             }
         }
     }
@@ -114,7 +117,7 @@ Button {
                 if(isBeingPressed){
                     return startColorPressed
                 } else {
-                    if(isHovering){
+                    if(hoverableButton.hovered){
                         return startColorHovered
                     } else {
                         return startColor
@@ -130,7 +133,7 @@ Button {
                     if(isBeingPressed){
                         return endColorPressed
                     } else {
-                        if(isHovering){
+                        if(hoverableButton.hovered){
                             return endColorHovered
                         } else {
                             return endColor
