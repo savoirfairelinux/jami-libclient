@@ -11,7 +11,7 @@ import re
 
 # vs help
 win_sdk_default = '10.0.16299.0'
-win_toolset_default = 'v141'
+win_toolset_default = 'v142'
 
 vs_where_path = os.path.join(
     os.environ['ProgramFiles(x86)'], 'Microsoft Visual Studio', 'Installer', 'vswhere.exe'
@@ -19,15 +19,17 @@ vs_where_path = os.path.join(
 
 host_is_64bit = (False, True)[platform.machine().endswith('64')]
 
+
 def execute_cmd(cmd, with_shell=False, env_vars={}):
     if(bool(env_vars)):
         p = subprocess.Popen(cmd, shell=with_shell,
-                            stdout=sys.stdout,
-                            env=env_vars)
+                             stdout=sys.stdout,
+                             env=env_vars)
     else:
         p = subprocess.Popen(cmd, shell=with_shell)
     _, _ = p.communicate()
     return p.returncode
+
 
 def getLatestVSVersion():
     args = [
@@ -52,7 +54,8 @@ def findVSLatestDir():
         '-property installationPath'
     ]
     cmd = [vs_where_path] + args
-    output = subprocess.check_output(' '.join(cmd)).decode('utf-8', errors='ignore')
+    output = subprocess.check_output(
+        ' '.join(cmd)).decode('utf-8', errors='ignore')
     if output:
         return output.splitlines()[0]
     else:
@@ -76,6 +79,7 @@ def getVSEnv(arch='x64', platform='', version=''):
     out = stdout.decode('utf-8', errors='ignore').split("\r\n")[5:-1]
     return dict(s.split('=', 1) for s in out)
 
+
 def getVSEnvCmd(arch='x64', platform='', version=''):
     vcEnvInit = [findVSLatestDir() + r'\VC\Auxiliary\Build\"vcvarsall.bat']
     if platform != '':
@@ -87,6 +91,7 @@ def getVSEnvCmd(arch='x64', platform='', version=''):
     vcEnvInit = 'call \"' + ' '.join(vcEnvInit)
     return vcEnvInit
 
+
 def build_project(msbuild, msbuild_args, proj, env_vars):
     args = []
     args.extend(msbuild_args)
@@ -97,12 +102,14 @@ def build_project(msbuild, msbuild_args, proj, env_vars):
         print("Build failed when building ", proj)
         sys.exit(1)
 
+
 def replace_vs_prop(filename, prop, val):
     p = re.compile(r'(?s)<' + prop + r'\s?.*?>(.*?)<\/' + prop + r'>')
     val = r'<' + prop + r'>' + val + r'</' + prop + r'>'
     with fileinput.FileInput(filename, inplace=True) as file:
         for line in file:
             print(re.sub(p, val, line), end='')
+
 
 def deps(arch, toolset, qtver):
     print('Deps Qt Client Release|' + arch)
@@ -117,11 +124,13 @@ def deps(arch, toolset, qtver):
         print("Git clone failed when cloning from https://github.com/BlueDragon747/qrencode-win32.git")
         sys.exit(1)
     if(execute_cmd("cd qrencode-win32 && git checkout d6495a2aa74d058d54ae0f1b9e9e545698de66ce && " + apply_cmd + ' ..\\qrencode-win32.patch', True)):
-        print("Qrencode-win32 set up error")
+        print("qrencode-win32 set up error")
         sys.exit(1)
 
     print('Building qrcodelib')
-    build(arch, '', '', 'Release-Lib', '\\qrencode-win32\\qrencode-win32\\vc8\\qrcodelib\\qrcodelib.vcxproj', qtver, False)
+    build(arch, '', '', 'Release-Lib',
+          '\\qrencode-win32\\qrencode-win32\\vc8\\qrcodelib\\qrcodelib.vcxproj', qtver, False)
+
 
 def build(arch, toolset, sdk_version, config_str, project_path_under_current_path, qtver, force_option=True):
     configuration_type = 'StaticLibrary'
@@ -129,7 +138,7 @@ def build(arch, toolset, sdk_version, config_str, project_path_under_current_pat
     qtFolderDir = "msvc2017_64"
     qtverSplit = qtver.split('.')
 
-    if((int(qtverSplit[0]) >= 6) or((int(qtverSplit[0]) == 5) and (int(qtverSplit[1]) >= 15))):
+    if((int(qtverSplit[0]) >= 6) or ((int(qtverSplit[0]) == 5) and (int(qtverSplit[1]) >= 15))):
         qtFolderDir = "msvc2019_64"
 
     if (config_str == 'Release'):
@@ -190,6 +199,7 @@ def build(arch, toolset, sdk_version, config_str, project_path_under_current_pat
 
     build_project(msbuild, msbuild_args, qt_client_proj_path, vs_env_vars)
 
+
 def parse_args():
     ap = argparse.ArgumentParser(description="Windows Jami-lrc build tool")
     ap.add_argument(
@@ -237,13 +247,17 @@ def main():
         deps(parsed_args.arch, parsed_args.toolset, parsed_args.qtver)
 
     if parsed_args.build:
-        build(parsed_args.arch, parsed_args.toolset, parsed_args.sdk, 'Release', '\\jami-qt.vcxproj', parsed_args.qtver)
+        build(parsed_args.arch, parsed_args.toolset, parsed_args.sdk,
+              'Release', '\\jami-qt.vcxproj', parsed_args.qtver)
 
     if parsed_args.beta:
-        build(parsed_args.arch, parsed_args.toolset, parsed_args.sdk, 'Beta', '\\jami-qt.vcxproj', parsed_args.qtver)
+        build(parsed_args.arch, parsed_args.toolset, parsed_args.sdk,
+              'Beta', '\\jami-qt.vcxproj', parsed_args.qtver)
 
     if parsed_args.releasecompile:
-        build(parsed_args.arch, parsed_args.toolset, parsed_args.sdk, 'ReleaseCompile', '\\jami-qt.vcxproj', parsed_args.qtver)
+        build(parsed_args.arch, parsed_args.toolset, parsed_args.sdk,
+              'ReleaseCompile', '\\jami-qt.vcxproj', parsed_args.qtver)
+
 
 if __name__ == '__main__':
     main()

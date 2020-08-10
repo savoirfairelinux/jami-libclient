@@ -81,22 +81,18 @@ unix {
     TARGET = jami-qt
     TEMPLATE = app
 
-    QT += quick quickwidgets widgets xml multimedia multimediawidgets network webenginewidgets svg quickcontrols2 webengine webenginecore sql dbus
+    QT += quick quickwidgets widgets xml multimedia multimediawidgets network \
+          webenginewidgets svg quickcontrols2 webengine webenginecore sql dbus
 
-    #check Qt version
-    QT_VERSION = $$[QT_VERSION]
-    QT_VERSION = $$split(QT_VERSION, ".")
-    QT_VER_MAJ = $$member(QT_VERSION, 0)
-    QT_VER_MIN = $$member(QT_VERSION, 1)
-
-    lessThan(QT_VER_MIN, 12) {
+    # Maj/min versions can be checked(if needed) using:
+    # equals(QT_MAJOR_VERSION, 5):lessThan(QT_MINOR_VERSION, 12) {}
+    versionAtLeast(QT_VERSION, 5.12.0) {
+        CONFIG += c++17
+    } else {
         QMAKE_CXXFLAGS += -std=c++17
     }
-    greaterThan(QT_VER_MIN, 12) | equals(QT_VER_MIN, 12) {
-        CONFIG += c++17
-    }
 
-    isEmpty(LRC) { LRC=../../install/lrc/ }
+    isEmpty(LRC) { LRC=$$PWD/../install/lrc/ }
 
     INCLUDEPATH += $${LRC}/include/libringclient
     INCLUDEPATH += $${LRC}/include
@@ -104,6 +100,10 @@ unix {
 
     LIBS += -L$${LRC}/lib -lringclient
     LIBS += -lqrencode
+
+    isEmpty(PREFIX) { PREFIX = /tmp/$${TARGET}/bin }
+    target.path = $$PREFIX/bin
+    INSTALLS += target
 }
 
 # Input
@@ -147,6 +147,7 @@ HEADERS += ./src/smartlistmodel.h \
         ./src/videoformatfpsmodel.h \
         ./src/videoformatresolutionmodel.h \
         ./src/audiomanagerlistmodel.h
+
 SOURCES += ./src/bannedlistmodel.cpp \
         ./src/accountlistmodel.cpp \
         ./src/runguard.cpp \
@@ -182,5 +183,6 @@ SOURCES += ./src/bannedlistmodel.cpp \
         ./src/videoformatfpsmodel.cpp \
         ./src/videoformatresolutionmodel.cpp \
         ./src/audiomanagerlistmodel.cpp
+
 RESOURCES += ./ressources.qrc \
              ./qml.qrc
