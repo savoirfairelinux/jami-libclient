@@ -57,24 +57,23 @@ ItemDelegate {
     RowLayout{
         anchors.fill: parent
 
-        spacing: 7
+        spacing: 8
 
         Label{
             id: labelContactAvatar
 
             Layout.alignment: Qt.AlignVCenter
 
-            Layout.leftMargin: 7
-            Layout.topMargin: 7
-            Layout.bottomMargin: 7
+            Layout.leftMargin: 16
+            Layout.rightMargin: 16
 
-            Layout.minimumWidth: 48
-            Layout.preferredWidth: 48
-            Layout.maximumWidth: 48
+            Layout.minimumWidth: 32
+            Layout.preferredWidth: 32
+            Layout.maximumWidth: 32
 
-            Layout.minimumHeight: 48
-            Layout.preferredHeight: 48
-            Layout.maximumHeight: 48
+            Layout.minimumHeight: 32
+            Layout.preferredHeight: 32
+            Layout.maximumHeight: 32
 
             background: Rectangle{
                 anchors.fill: parent
@@ -100,44 +99,34 @@ ItemDelegate {
             }
         }
 
-        Item{
-            Layout.minimumWidth: 8
-            Layout.preferredWidth: 8
-            Layout.maximumWidth: 8
-
-            Layout.minimumHeight: 20
-            Layout.preferredHeight: 20
-            Layout.maximumHeight: 20
-        }
-
         ColumnLayout{
             Layout.fillWidth: true
             Layout.fillHeight: true
 
-            Layout.topMargin: 7
-            Layout.bottomMargin: 7
-
             Layout.alignment: Qt.AlignVCenter
-
-            spacing: 7
 
             Label{
                 id: labelContactName
 
                 Layout.fillWidth: true
-                Layout.minimumWidth: 0
-                Layout.maximumWidth: 16777215
 
-                Layout.minimumHeight: 30
-                Layout.preferredHeight: 30
-                Layout.maximumHeight: 30
+                Layout.minimumHeight: 24
+                Layout.preferredHeight: 24
+                Layout.maximumHeight: 24
 
-                font.pointSize: 8
+                font.pointSize: JamiTheme.textFontSize
                 font.kerning: true
 
                 horizontalAlignment: Text.AlignLeft
                 verticalAlignment: Text.AlignVCenter
 
+                text: labelContactNameElidedText.elidedText
+            }
+
+            TextMetrics {
+                id: labelContactNameElidedText
+                elide: Text.ElideRight
+                elideWidth: deviceItemDelegate.width - 80
                 text: contactName === "" ? qsTr("name") : contactName
             }
 
@@ -145,19 +134,24 @@ ItemDelegate {
                 id: labelContactId
 
                 Layout.fillWidth: true
-                Layout.minimumWidth: 0
-                Layout.maximumWidth: 16777215
 
-                Layout.minimumHeight: 30
-                Layout.preferredHeight: 30
-                Layout.maximumHeight: 30
+                Layout.minimumHeight: 24
+                Layout.preferredHeight: 24
+                Layout.maximumHeight: 24
 
-                font.pointSize: 8
+                font.pointSize: JamiTheme.textFontSize
                 font.kerning: true
 
                 horizontalAlignment: Qt.AlignLeft
                 verticalAlignment: Qt.AlignVCenter
 
+                text: labelContactIdElidedText.elidedText
+            }
+
+            TextMetrics {
+                id: labelContactIdElidedText
+                elide: Text.ElideRight
+                elideWidth: deviceItemDelegate.width - 80
                 text: contactID === "" ? qsTr("id") : contactID
             }
         }
@@ -165,24 +159,27 @@ ItemDelegate {
         HoverableRadiusButton{
             id: btnReAddContact
 
-            Layout.topMargin: 7
-            Layout.bottomMargin: 7
+            Layout.alignment: Qt.AlignVCenter | Qt.AlignRight
+            Layout.rightMargin: 8
 
-            Layout.minimumWidth: 30
-            Layout.preferredWidth: 30
-            Layout.maximumWidth: 30
+            Layout.minimumWidth: 32
+            Layout.preferredWidth: 32
+            Layout.maximumWidth: 32
 
-            Layout.minimumHeight: 30
-            Layout.preferredHeight: 30
-            Layout.maximumHeight: 30
+            Layout.minimumHeight: 32
+            Layout.preferredHeight: 32
+            Layout.maximumHeight: 32
 
-            font.pointSize: 8
-            font.kerning: true
+            buttonImageHeight: height - 8
+            buttonImageWidth: width - 8
 
-            buttonImageHeight: height
-            buttonImageWidth: height
+            source: "qrc:/images/icons/ic_person_add_black_24dp_2x.png"
 
-            source:"qrc:/images/icons/ic_person_add_black_24dp_2x.png"
+            radius: height / 2
+            width: 25
+            height: 25
+
+            backgroundColor: "transparent"
 
             ToolTip.visible: isHovering
             ToolTip.text: qsTr("Add as contact")
@@ -190,16 +187,6 @@ ItemDelegate {
             onClicked: {
                 btnReAddContactClicked()
             }
-        }
-
-        Item{
-            Layout.rightMargin: 7
-
-            Layout.minimumWidth: 8
-            Layout.preferredWidth: 8
-            Layout.maximumWidth: 8
-
-            Layout.minimumHeight: 20
         }
     }
 }

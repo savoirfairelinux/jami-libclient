@@ -332,93 +332,100 @@ ColumnLayout {
         }
     }
 
-    spacing: 6
-    Layout.preferredWidth: 532
-    Layout.maximumWidth: 532
+    id: advancedSIPSettingsViewLayout
+    Layout.fillWidth: true
+    spacing: 24
 
-    Item {
-        Layout.fillWidth: true
-
-        Layout.minimumHeight: 24
-        Layout.preferredHeight: 24
-        Layout.maximumHeight: 24
-    }
+    property int preferredColumnWidth : sipAccountViewRect.width / 2 - 50
+    property int preferredSettingsWidth: sipAccountViewRect.width - 80
 
     // call setting section
     ColumnLayout {
-        spacing: 6
+
+        spacing: 8
         Layout.fillWidth: true
 
-        Label {
+        ElidedTextLabel {
             Layout.fillWidth: true
 
-            Layout.minimumHeight: 27
-            Layout.preferredHeight: 27
-            Layout.maximumHeight: 27
+            Layout.minimumHeight: JamiTheme.preferredFieldHeight
+            Layout.preferredHeight: JamiTheme.preferredFieldHeight
+            Layout.maximumHeight: JamiTheme.preferredFieldHeight
 
-            text: qsTr("Call Settings")
-
-            font.pointSize: 13
-            font.kerning: true
-
-            horizontalAlignment: Text.AlignLeft
-            verticalAlignment: Text.AlignVCenter
+            eText: qsTr("Call Settings")
+            fontSize: JamiTheme.headerFontSize
+            maxWidth: preferredColumnWidth
         }
 
         ColumnLayout {
-            spacing: 6
             Layout.fillWidth: true
-            Layout.leftMargin: 20
+            Layout.leftMargin: JamiTheme.preferredMarginSize
 
             ToggleSwitch {
                 id: checkBoxAutoAnswerSIP
-                labelText: qsTr("Auto Answer Call")
-                fontPointSize: 10
 
-                Layout.leftMargin: 20
+                labelText: autoAnswerCallsText.elidedText
+                fontPointSize: JamiTheme.settingsFontSize
 
                 onSwitchToggled: {
                     ClientWrapper.settingsAdaptor.setAutoAnswerCalls(checked)
                 }
             }
 
+            TextMetrics {
+                id: autoAnswerCallsText
+                elide: Text.ElideRight
+                elideWidth: preferredColumnWidth
+                text: qsTr("Auto Answer Calls")
+            }
+
+            ToggleSwitch {
+                id: checkBoxCustomRingtoneSIP
+
+                labelText: enableCustomRingtoneSIPElidedText.elidedText
+                fontPointSize: JamiTheme.settingsFontSize
+
+                onSwitchToggled: {
+                    ClientWrapper.settingsAdaptor.setEnableRingtone(checked)
+                    btnRingtoneSIP.enabled = checked
+                }
+            }
+
+            TextMetrics {
+                id: enableCustomRingtoneSIPElidedText
+                elide: Text.ElideRight
+                elideWidth: preferredColumnWidth
+                text: qsTr("Enable Custom Ringtone")
+            }
+
+
             RowLayout {
                 Layout.fillWidth: true
-                Layout.leftMargin: 20
-                Layout.maximumHeight: 30
 
-                ToggleSwitch {
-                    id: checkBoxCustomRingtoneSIP
-                    labelText: qsTr("Enable Custom Ringtone")
-                    fontPointSize: 10
-
-                    Layout.maximumWidth: 164
-                    Layout.preferredWidth: 164
-                    Layout.minimumWidth: 164
-
-                    onSwitchToggled: {
-                        ClientWrapper.settingsAdaptor.setEnableRingtone(checked)
-                        btnRingtoneSIP.enabled = checked
-                    }
-                }
-
-                Item {
-                    Layout.fillHeight: true
+                ElidedTextLabel {
                     Layout.fillWidth: true
+
+                    Layout.minimumHeight: JamiTheme.preferredFieldHeight
+                    Layout.preferredHeight: JamiTheme.preferredFieldHeight
+                    Layout.maximumHeight: JamiTheme.preferredFieldHeight
+
+                    eText: qsTr("Select Custom Ringtone")
+                    maxWidth: preferredColumnWidth
+                    fontSize: JamiTheme.settingsFontSize
                 }
 
                 HoverableRadiusButton {
                     id: btnRingtoneSIP
 
+                    Layout.minimumWidth: preferredColumnWidth
+                    Layout.preferredWidth: preferredColumnWidth
+                    Layout.maximumWidth: preferredColumnWidth
+
+                    Layout.minimumHeight: JamiTheme.preferredFieldHeight
+                    Layout.preferredHeight: JamiTheme.preferredFieldHeight
+                    Layout.maximumHeight: JamiTheme.preferredFieldHeight
+
                     radius: height / 2
-
-                    Layout.maximumWidth: 164
-                    Layout.preferredWidth: 164
-                    Layout.minimumWidth: 164
-
-                    Layout.maximumHeight: 30
-                    Layout.preferredHeight: 30
-                    Layout.minimumHeight: 30
 
                     icon.source: "qrc:/images/icons/round-folder-24px.svg"
                     icon.width: 16
@@ -432,63 +439,37 @@ ColumnLayout {
         }
     }
 
-    Item {
-        Layout.fillWidth: true
-
-        Layout.minimumHeight: 20
-        Layout.preferredHeight: 20
-        Layout.maximumHeight: 20
-    }
-
     // voice mail section
     ColumnLayout {
-        spacing: 6
+        spacing: 8
         Layout.fillWidth: true
 
-        Label {
+        ElidedTextLabel {
             Layout.fillWidth: true
 
-            Layout.minimumHeight: 27
-            Layout.preferredHeight: 27
-            Layout.maximumHeight: 27
+            Layout.minimumHeight: JamiTheme.preferredFieldHeight
+            Layout.preferredHeight: JamiTheme.preferredFieldHeight
+            Layout.maximumHeight: JamiTheme.preferredFieldHeight
 
-            text: qsTr("Voicemail")
-
-            font.pointSize: 13
-            font.kerning: true
-
-            horizontalAlignment: Text.AlignLeft
-            verticalAlignment: Text.AlignVCenter
-        }
-
-        Item {
-            Layout.fillWidth: true
-
-            Layout.minimumHeight: 13
-            Layout.preferredHeight: 13
-            Layout.maximumHeight: 13
+            eText: qsTr("Voicemail")
+            fontSize: JamiTheme.headerFontSize
+            maxWidth: preferredColumnWidth
         }
 
         RowLayout {
             Layout.fillWidth: true
-            Layout.leftMargin: 20
-            Layout.maximumHeight: 30
+            Layout.maximumHeight: JamiTheme.preferredFieldHeight
+            Layout.leftMargin: JamiTheme.preferredMarginSize
 
-            Label {
-                Layout.maximumWidth: 162
-                Layout.preferredWidth: 162
-                Layout.minimumWidth: 162
+            ElidedTextLabel {
+                Layout.fillWidth: true
+                Layout.minimumHeight: JamiTheme.preferredFieldHeight
+                Layout.preferredHeight: JamiTheme.preferredFieldHeight
+                Layout.maximumHeight: JamiTheme.preferredFieldHeight
 
-                Layout.minimumHeight: 28
-                Layout.preferredHeight: 28
-                Layout.maximumHeight: 28
-
-                text: qsTr("Voicemail Dial Code")
-                font.pointSize: 10
-                font.kerning: true
-
-                horizontalAlignment: Text.AlignLeft
-                verticalAlignment: Text.AlignVCenter
+                eText: qsTr("Voicemail Dial Code")
+                fontSize: JamiTheme.settingsFontSize
+                maxWidth: preferredColumnWidth
             }
 
             Item {
@@ -499,12 +480,12 @@ ColumnLayout {
             InfoLineEdit {
                 id: lineEditVoiceMailDialCode
 
-                fieldLayoutWidth: 250
+                fieldLayoutWidth: preferredColumnWidth
+                fieldLayoutHeight: JamiTheme.preferredFieldHeight
 
-                font.pointSize: 10
+                font.pointSize: JamiTheme.settingsFontSize
                 font.kerning: true
 
-                horizontalAlignment: Text.AlignLeft
                 verticalAlignment: Text.AlignVCenter
 
                 onEditingFinished: {
@@ -514,62 +495,32 @@ ColumnLayout {
         }
     }
 
-    Item {
-        Layout.fillWidth: true
-
-        Layout.minimumHeight: 20
-        Layout.preferredHeight: 20
-        Layout.maximumHeight: 20
-    }
-
     // security section
     ColumnLayout {
-        spacing: 6
+        spacing: 8
         Layout.fillWidth: true
 
-        Label {
+        ElidedTextLabel {
             Layout.fillWidth: true
 
-            Layout.minimumHeight: 27
-            Layout.preferredHeight: 27
-            Layout.maximumHeight: 27
+            Layout.minimumHeight: JamiTheme.preferredFieldHeight
+            Layout.preferredHeight: JamiTheme.preferredFieldHeight
+            Layout.maximumHeight: JamiTheme.preferredFieldHeight
 
-            text: qsTr("Security")
-
-            font.pointSize: 13
-            font.kerning: true
-
-            horizontalAlignment: Text.AlignLeft
-            verticalAlignment: Text.AlignVCenter
+            eText: qsTr("Security")
+            fontSize: JamiTheme.headerFontSize
+            maxWidth: preferredColumnWidth
         }
 
-        Item {
+        ColumnLayout {
             Layout.fillWidth: true
+            Layout.leftMargin: JamiTheme.preferredMarginSize
 
-            Layout.maximumHeight: 13
-            Layout.preferredHeight: 13
-            Layout.minimumHeight: 13
-        }
-
-        GridLayout {
-            Layout.leftMargin: 20
-            Layout.fillWidth: true
-
-            rowSpacing: 6
-            columnSpacing: 6
-
-            rows: 14
-            columns: 3
-
-            // First row
-            ToggleSwitch{
+            ToggleSwitch {
                 id: encryptMediaStreamsToggle
 
-                labelText: qsTr("Encrypt Media Streams(SRTP)")
-                fontPointSize: 10
-
-                Layout.row: 0
-                Layout.column: 0
+                labelText: encryptMediaStreamsText.elidedText
+                fontPointSize: JamiTheme.settingsFontSize
 
                 onSwitchToggled: {
                     ClientWrapper.settingsAdaptor.setUseSRTP(checked)
@@ -578,78 +529,54 @@ ColumnLayout {
                 }
             }
 
-            Item{
-                Layout.fillHeight: true
-
-                Layout.maximumWidth: 20
-                Layout.preferredWidth: 20
-                Layout.minimumWidth: 20
-
-                Layout.row: 0
-                Layout.column: 1
+            TextMetrics {
+                id: encryptMediaStreamsText
+                elide: Text.ElideRight
+                elideWidth: preferredColumnWidth
+                text: qsTr("Encrypt Media Streams (SRTP)")
             }
 
-            // second row
-            ToggleSwitch{
+            ToggleSwitch {
                 id: enableSDESToggle
 
-                labelText: qsTr("Enable SDES(Key Exchange)")
-                fontPointSize: 10
-
-                Layout.row: 1
-                Layout.column: 0
+                labelText: enableSDESText.elidedText
+                fontPointSize: JamiTheme.settingsFontSize
 
                 onSwitchToggled: {
                     ClientWrapper.settingsAdaptor.setUseSDES(checked)
                 }
             }
 
-            Item{
-                Layout.fillHeight: true
-
-                Layout.maximumWidth: 20
-                Layout.preferredWidth: 20
-                Layout.minimumWidth: 20
-
-                Layout.row: 1
-                Layout.column: 1
+            TextMetrics {
+                id: enableSDESText
+                elide: Text.ElideRight
+                elideWidth: preferredColumnWidth
+                text: qsTr("Enable SDES(Key Exchange)")
             }
 
-            // third row
-            ToggleSwitch{
+            ToggleSwitch {
                 id: fallbackRTPToggle
 
-                labelText: qsTr("Can Fallback on RTP")
-                fontPointSize: 10
-
-                Layout.row: 2
-                Layout.column: 0
+                labelText: fallbackRTPText.elidedText
+                fontPointSize: JamiTheme.settingsFontSize
 
                 onSwitchToggled: {
                     ClientWrapper.settingsAdaptor.setUseRTPFallback(checked)
                 }
             }
 
-            Item{
-                Layout.fillHeight: true
-
-                Layout.maximumWidth: 20
-                Layout.preferredWidth: 20
-                Layout.minimumWidth: 20
-
-                Layout.row: 2
-                Layout.column: 1
+            TextMetrics {
+                id: fallbackRTPText
+                elide: Text.ElideRight
+                elideWidth: preferredColumnWidth
+                text: qsTr("Can Fallback on RTP")
             }
 
-            // fourth row
-            ToggleSwitch{
+            ToggleSwitch {
                 id: encryptNegotitationToggle
 
-                labelText: qsTr("Encrypt Negotiation(TLS)")
-                fontPointSize: 10
-
-                Layout.row: 3
-                Layout.column: 0
+                labelText: encryptNegotitationText.elidedText
+                fontPointSize: JamiTheme.settingsFontSize
 
                 onSwitchToggled: {
                     ClientWrapper.settingsAdaptor.setUseTLS(checked)
@@ -660,754 +587,453 @@ ColumnLayout {
                 }
             }
 
-            Item{
-                Layout.fillHeight: true
-
-                Layout.maximumWidth: 20
-                Layout.preferredWidth: 20
-                Layout.minimumWidth: 20
-
-                Layout.row: 3
-                Layout.column: 1
+            TextMetrics {
+                id: encryptNegotitationText
+                elide: Text.ElideRight
+                elideWidth: preferredColumnWidth
+                text: qsTr("Encrypt Negotiation (TLS)")
             }
 
-            // fifth row
-            RowLayout{
-                spacing: 6
-                Layout.maximumHeight: 30
+            GridLayout {
+                Layout.fillWidth: true
 
-                Layout.row: 4
-                Layout.column: 0
+                rowSpacing: 8
+                columnSpacing: 8
 
-                Item{
-                    Layout.fillHeight: true
+                rows: 4
+                columns: 2
 
-                    Layout.maximumWidth: 20
-                    Layout.preferredWidth: 20
-                    Layout.minimumWidth: 20
+                ElidedTextLabel {
+                    Layout.fillWidth: true
+
+                    Layout.minimumHeight: JamiTheme.preferredFieldHeight
+                    Layout.preferredHeight: JamiTheme.preferredFieldHeight
+                    Layout.maximumHeight: JamiTheme.preferredFieldHeight
+
+                    eText: qsTr("CA Certificate")
+                    fontSize: JamiTheme.settingsFontSize
+                    maxWidth: preferredColumnWidth
                 }
 
-                Label{
-                    Layout.maximumHeight: 30
-                    Layout.preferredHeight: 30
-                    Layout.minimumHeight: 30
+                HoverableRadiusButton {
+                    id: btnSIPCACert
 
-                    Layout.maximumWidth: 209
-                    Layout.preferredWidth: 209
-                    Layout.minimumWidth: 209
+                    Layout.minimumWidth: preferredColumnWidth
+                    Layout.preferredWidth: preferredColumnWidth
+                    Layout.maximumWidth: preferredColumnWidth
+                    Layout.minimumHeight: JamiTheme.preferredFieldHeight
+                    Layout.preferredHeight: JamiTheme.preferredFieldHeight
+                    Layout.maximumHeight: JamiTheme.preferredFieldHeight
 
-                    text: qsTr("CA Certificate")
+                    radius: height / 2
 
-                    font.pointSize: 10
+                    icon.source: "qrc:/images/icons/round-folder-24px.svg"
+                    icon.width: 16
+                    icon.height: 16
+
+                    onClicked: {
+                        caCert_Dialog_SIP.open()
+                    }
+                }
+
+                ElidedTextLabel {
+                    Layout.fillWidth: true
+
+                    Layout.minimumHeight: JamiTheme.preferredFieldHeight
+                    Layout.preferredHeight: JamiTheme.preferredFieldHeight
+                    Layout.maximumHeight: JamiTheme.preferredFieldHeight
+
+                    eText: qsTr("User Certificate")
+                    fontSize: JamiTheme.settingsFontSize
+                    maxWidth: preferredColumnWidth
+                }
+
+                HoverableRadiusButton {
+                    id: btnSIPUserCert
+
+                    Layout.minimumWidth: preferredColumnWidth
+                    Layout.preferredWidth: preferredColumnWidth
+                    Layout.maximumWidth: preferredColumnWidth
+
+                    Layout.minimumHeight: JamiTheme.preferredFieldHeight
+                    Layout.preferredHeight: JamiTheme.preferredFieldHeight
+                    Layout.maximumHeight: JamiTheme.preferredFieldHeight
+
+                    radius: height / 2
+
+                    icon.source: "qrc:/images/icons/round-folder-24px.svg"
+                    icon.width: 16
+                    icon.height: 16
+
+                    onClicked: {
+                        userCert_Dialog_SIP.open()
+                    }
+                }
+
+                ElidedTextLabel {
+                    Layout.fillWidth: true
+
+                    Layout.minimumHeight: JamiTheme.preferredFieldHeight
+                    Layout.preferredHeight: JamiTheme.preferredFieldHeight
+                    Layout.maximumHeight: JamiTheme.preferredFieldHeight
+
+                    eText: qsTr("Private Key")
+                    fontSize: JamiTheme.settingsFontSize
+                    maxWidth: preferredColumnWidth
+                }
+
+                HoverableRadiusButton {
+                    id: btnSIPPrivateKey
+
+                    Layout.minimumWidth: preferredColumnWidth
+                    Layout.preferredWidth: preferredColumnWidth
+                    Layout.maximumWidth: preferredColumnWidth
+
+                    Layout.minimumHeight: JamiTheme.preferredFieldHeight
+                    Layout.preferredHeight: JamiTheme.preferredFieldHeight
+                    Layout.maximumHeight: JamiTheme.preferredFieldHeight
+
+                    radius: height / 2
+
+                    icon.source: "qrc:/images/icons/round-folder-24px.svg"
+                    icon.width: 16
+                    icon.height: 16
+
+                    onClicked: {
+                        privateKey_Dialog_SIP.open()
+                    }
+                }
+
+                // Private key password
+                ElidedTextLabel {
+                    Layout.fillWidth: true
+
+                    Layout.minimumHeight: JamiTheme.preferredFieldHeight
+                    Layout.preferredHeight: JamiTheme.preferredFieldHeight
+                    Layout.maximumHeight: JamiTheme.preferredFieldHeight
+
+                    eText: qsTr("Private Key Password")
+                    fontSize: JamiTheme.settingsFontSize
+                    maxWidth: preferredColumnWidth
+                }
+
+
+                InfoLineEdit {
+                    id: lineEditSIPCertPassword
+
+                    fieldLayoutWidth: preferredColumnWidth
+                    fieldLayoutHeight: JamiTheme.preferredFieldHeight
+
+                    font.pointSize: JamiTheme.settingsFontSize
                     font.kerning: true
 
                     horizontalAlignment: Text.AlignLeft
                     verticalAlignment: Text.AlignVCenter
+                    echoMode: TextInput.Password
+
+                    onEditingFinished: {
+                        ClientWrapper.settingsAdaptor.lineEditSIPCertPasswordLineEditTextChanged(text)
+                    }
                 }
             }
 
-            Item{
-                Layout.fillHeight: true
-
-                Layout.maximumWidth: 20
-                Layout.preferredWidth: 20
-                Layout.minimumWidth: 20
-
-                Layout.row: 4
-                Layout.column: 1
-            }
-
-            HoverableRadiusButton{
-                id: btnSIPCACert
-
-                Layout.maximumHeight: 30
-                Layout.preferredHeight: 30
-                Layout.minimumHeight: 30
-
-                Layout.maximumWidth: 250
-                Layout.preferredWidth: 250
-                Layout.minimumWidth: 250
-
-                radius: height / 2
-
-                icon.source: "qrc:/images/icons/round-folder-24px.svg"
-                icon.width: 16
-                icon.height: 16
-
-                Layout.row: 4
-                Layout.column: 2
-
-                onClicked: {
-                    caCert_Dialog_SIP.open()
-                }
-            }
-
-            // sixth row
-            RowLayout{
-                spacing: 6
-                Layout.maximumHeight: 30
-
-                Layout.row: 5
-                Layout.column: 0
-
-                Item{
-                    Layout.fillHeight: true
-
-                    Layout.maximumWidth: 20
-                    Layout.preferredWidth: 20
-                    Layout.minimumWidth: 20
-                }
-
-                Label{
-                    Layout.maximumHeight: 30
-                    Layout.preferredHeight: 30
-                    Layout.minimumHeight: 30
-
-                    Layout.maximumWidth: 209
-                    Layout.preferredWidth: 209
-                    Layout.minimumWidth: 209
-
-                    text: qsTr("User Certificate")
-
-                    font.pointSize: 10
-                    font.kerning: true
-
-                    horizontalAlignment: Text.AlignLeft
-                    verticalAlignment: Text.AlignVCenter
-                }
-            }
-
-            Item{
-                Layout.fillHeight: true
-
-                Layout.maximumWidth: 20
-                Layout.preferredWidth: 20
-                Layout.minimumWidth: 20
-
-                Layout.row: 5
-                Layout.column: 1
-            }
-
-            HoverableRadiusButton{
-                id: btnSIPUserCert
-
-                Layout.maximumHeight: 30
-                Layout.preferredHeight: 30
-                Layout.minimumHeight: 30
-
-                Layout.maximumWidth: 250
-                Layout.preferredWidth: 250
-                Layout.minimumWidth: 250
-
-                radius: height / 2
-
-                icon.source: "qrc:/images/icons/round-folder-24px.svg"
-                icon.width: 16
-                icon.height: 16
-
-                Layout.row: 5
-                Layout.column: 2
-
-                onClicked: {
-                    userCert_Dialog_SIP.open()
-                }
-            }
-
-            // seventh row
-            RowLayout{
-                spacing: 6
-                Layout.maximumHeight: 30
-
-                Layout.row: 6
-                Layout.column: 0
-
-                Item{
-                    Layout.fillHeight: true
-
-                    Layout.maximumWidth: 20
-                    Layout.preferredWidth: 20
-                    Layout.minimumWidth: 20
-                }
-
-                Label{
-                    Layout.maximumHeight: 30
-                    Layout.preferredHeight: 30
-                    Layout.minimumHeight: 30
-
-                    Layout.maximumWidth: 209
-                    Layout.preferredWidth: 209
-                    Layout.minimumWidth: 209
-
-                    text: qsTr("Private Key")
-
-                    font.pointSize: 10
-                    font.kerning: true
-
-                    horizontalAlignment: Text.AlignLeft
-                    verticalAlignment: Text.AlignVCenter
-                }
-            }
-
-            Item{
-                Layout.fillHeight: true
-
-                Layout.maximumWidth: 20
-                Layout.preferredWidth: 20
-                Layout.minimumWidth: 20
-
-                Layout.row: 6
-                Layout.column: 1
-            }
-
-            HoverableRadiusButton{
-                id: btnSIPPrivateKey
-
-                Layout.maximumHeight: 30
-                Layout.preferredHeight: 30
-                Layout.minimumHeight: 30
-
-                Layout.maximumWidth: 250
-                Layout.preferredWidth: 250
-                Layout.minimumWidth: 250
-
-                radius: height / 2
-
-                icon.source: "qrc:/images/icons/round-folder-24px.svg"
-                icon.width: 16
-                icon.height: 16
-
-                Layout.row: 6
-                Layout.column: 2
-
-                onClicked: {
-                    privateKey_Dialog_SIP.open()
-                }
-            }
-
-            // eight row
-            RowLayout{
-                spacing: 6
-                Layout.maximumHeight: 30
-
-                Layout.row: 7
-                Layout.column: 0
-
-                Item{
-                    Layout.fillHeight: true
-
-                    Layout.maximumWidth: 20
-                    Layout.preferredWidth: 20
-                    Layout.minimumWidth: 20
-                }
-
-                Label{
-                    Layout.maximumHeight: 30
-                    Layout.preferredHeight: 30
-                    Layout.minimumHeight: 30
-
-                    Layout.maximumWidth: 209
-                    Layout.preferredWidth: 209
-                    Layout.minimumWidth: 209
-
-                    text: qsTr("Private Key Password")
-
-                    font.pointSize: 10
-                    font.kerning: true
-
-                    horizontalAlignment: Text.AlignLeft
-                    verticalAlignment: Text.AlignVCenter
-                }
-            }
-
-            Item{
-                Layout.fillHeight: true
-
-                Layout.maximumWidth: 20
-                Layout.preferredWidth: 20
-                Layout.minimumWidth: 20
-
-                Layout.row: 7
-                Layout.column: 1
-            }
-
-            InfoLineEdit {
-                id: lineEditSIPCertPassword
-
-                Layout.alignment: Qt.AlignCenter
-
-                fieldLayoutWidth: 250
-                fieldLayoutHeight: 29
-
-                font.pointSize: 10
-                font.kerning: true
-
-                horizontalAlignment: Text.AlignLeft
-                verticalAlignment: Text.AlignVCenter
-
-                echoMode: TextInput.Password
-
-                Layout.row: 7
-                Layout.column: 2
-
-                onEditingFinished: {
-                    ClientWrapper.settingsAdaptor.lineEditSIPCertPasswordLineEditTextChanged(text)
-                }
-            }
-
-            // nineth row
-            ToggleSwitch{
+            ToggleSwitch {
                 id: verifyIncomingCertificatesServerToogle
 
-                labelText: qsTr("Verify Certificates(Server Side)")
-                fontPointSize: 10
-
-                Layout.row: 8
-                Layout.column: 0
+                labelText: verifyIncomingCertificatesServerText.elidedText
+                fontPointSize: JamiTheme.settingsFontSize
 
                 onSwitchToggled: {
                     ClientWrapper.settingsAdaptor.setVerifyCertificatesServer(checked)
                 }
             }
 
-            Item{
-                Layout.fillHeight: true
-
-                Layout.maximumWidth: 20
-                Layout.preferredWidth: 20
-                Layout.minimumWidth: 20
-
-                Layout.row: 8
-                Layout.column: 1
+            TextMetrics {
+                id: verifyIncomingCertificatesServerText
+                elide: Text.ElideRight
+                elideWidth: preferredColumnWidth
+                text: qsTr("Verify Certificates (Server Side)")
             }
 
-            // tenth row
-            ToggleSwitch{
+            ToggleSwitch {
                 id: verifyIncomingCertificatesClientToogle
 
-                labelText: qsTr("Verify Certificates(Client Side)")
-                fontPointSize: 10
-
-                Layout.row: 9
-                Layout.column: 0
+                labelText: verifyIncomingCertificatesClientText.elidedText
+                fontPointSize: JamiTheme.settingsFontSize
 
                 onSwitchToggled: {
                     ClientWrapper.settingsAdaptor.setVerifyCertificatesClient(checked)
                 }
             }
 
-            Item{
-                Layout.fillHeight: true
-
-                Layout.maximumWidth: 20
-                Layout.preferredWidth: 20
-                Layout.minimumWidth: 20
-
-                Layout.row: 9
-                Layout.column: 1
+            TextMetrics {
+                id: verifyIncomingCertificatesClientText
+                elide: Text.ElideRight
+                elideWidth: preferredColumnWidth
+                text: qsTr("Verify Certificates (Client Side)")
             }
 
-            //eleventh row
-            ToggleSwitch{
+            ToggleSwitch {
                 id: requireCeritificateForTLSIncomingToggle
 
-                labelText: qsTr("TLS Connections Require Certificate")
-                fontPointSize: 10
-
-                Layout.row: 10
-                Layout.column: 0
+                labelText: requireCeritificateForTLSIncomingText.elidedText
+                fontPointSize: JamiTheme.settingsFontSize
 
                 onSwitchToggled: {
                     ClientWrapper.settingsAdaptor.setRequireCertificatesIncomingTLS(checked)
                 }
             }
 
-            Item{
-                Layout.fillHeight: true
-
-                Layout.maximumWidth: 20
-                Layout.preferredWidth: 20
-                Layout.minimumWidth: 20
-
-                Layout.row:10
-                Layout.column: 1
+            TextMetrics {
+                id: requireCeritificateForTLSIncomingText
+                elide: Text.ElideRight
+                elideWidth: preferredColumnWidth
+                text: qsTr("TLS Connections Require Certificate")
             }
 
-            // twelveth row
-            Label{
+
+            GridLayout {
                 Layout.fillWidth: true
 
-                Layout.maximumHeight: 30
-                Layout.preferredHeight: 30
-                Layout.minimumHeight: 30
+                rowSpacing: 8
+                columnSpacing: 8
 
-                text: qsTr("TLS Protocol Method")
-                font.pointSize: 10
-                font.kerning: true
+                rows: 3
+                columns: 2
 
-                horizontalAlignment: Text.AlignLeft
-                verticalAlignment: Text.AlignVCenter
+                ElidedTextLabel {
+                    Layout.fillWidth: true
+                    Layout.maximumHeight: JamiTheme.preferredFieldHeight
+                    Layout.preferredHeight: JamiTheme.preferredFieldHeight
+                    Layout.minimumHeight: JamiTheme.preferredFieldHeight
 
-                Layout.row: 11
-                Layout.column: 0
-            }
-
-            Item{
-                Layout.fillHeight: true
-
-                Layout.maximumWidth: 20
-                Layout.preferredWidth: 20
-                Layout.minimumWidth: 20
-
-                Layout.row: 11
-                Layout.column: 1
-            }
-
-            SettingParaCombobox{
-                id:tlsProtocolComboBox
-
-                Layout.maximumWidth: 252
-                Layout.preferredWidth: 252
-                Layout.minimumWidth: 252
-
-                Layout.maximumHeight: 29
-                Layout.minimumHeight: 29
-                Layout.preferredHeight: 29
-
-                Layout.alignment: Qt.AlignCenter
-
-                font.pointSize: 10
-                font.kerning: true
-
-                Layout.row: 11
-                Layout.column: 2
-
-                textRole: "textDisplay"
-
-                model: ListModel{
-                    ListElement{textDisplay: "Default"; firstArg: "Default"; secondArg: 0}
-                    ListElement{textDisplay: "TLSv1"; firstArg: "TLSv1"; secondArg: 1}
-                    ListElement{textDisplay: "TLSv1.1"; firstArg: "TLSv1.1"; secondArg: 2}
-                    ListElement{textDisplay: "TLSv1.2"; firstArg: "TLSv1.2"; secondArg: 3}
+                    eText: qsTr("TLS Protocol Method")
+                    fontSize: JamiTheme.settingsFontSize
+                    maxWidth: preferredColumnWidth
                 }
 
-                onActivated: {
-                    var indexOfOption = tlsProtocolComboBox.model.get(index).secondArg
-                    ClientWrapper.settingsAdaptor.tlsProtocolComboBoxIndexChanged(parseInt(indexOfOption))
+                SettingParaCombobox {
+                    id: tlsProtocolComboBox
+
+                    Layout.minimumWidth: preferredColumnWidth
+                    Layout.preferredWidth: preferredColumnWidth
+                    Layout.maximumWidth: preferredColumnWidth
+                    Layout.maximumHeight: JamiTheme.preferredFieldHeight
+                    Layout.minimumHeight: JamiTheme.preferredFieldHeight
+                    Layout.preferredHeight: JamiTheme.preferredFieldHeight
+
+                    font.pointSize: JamiTheme.settingsFontSize
+                    font.kerning: true
+
+                    textRole: "textDisplay"
+
+                    model: ListModel {
+                        ListElement{textDisplay: "Default"; firstArg: "Default"; secondArg: 0}
+                        ListElement{textDisplay: "TLSv1"; firstArg: "TLSv1"; secondArg: 1}
+                        ListElement{textDisplay: "TLSv1.1"; firstArg: "TLSv1.1"; secondArg: 2}
+                        ListElement{textDisplay: "TLSv1.2"; firstArg: "TLSv1.2"; secondArg: 3}
+                    }
+
+                    onActivated: {
+                        var indexOfOption = tlsProtocolComboBox.model.get(index).secondArg
+                        ClientWrapper.settingsAdaptor.tlsProtocolComboBoxIndexChanged(parseInt(indexOfOption))
+                    }
                 }
-            }
 
-            // 13th row
-            Label{
-                Layout.fillWidth: true
+                ElidedTextLabel {
+                    Layout.fillWidth: true
+                    Layout.maximumHeight: JamiTheme.preferredFieldHeight
+                    Layout.preferredHeight: JamiTheme.preferredFieldHeight
+                    Layout.minimumHeight: JamiTheme.preferredFieldHeight
 
-                Layout.maximumHeight: 30
-                Layout.preferredHeight: 30
-                Layout.minimumHeight: 30
-
-                text: qsTr("Outgoing TLS Server Name")
-                font.pointSize: 10
-                font.kerning: true
-
-                horizontalAlignment: Text.AlignLeft
-                verticalAlignment: Text.AlignVCenter
-
-                Layout.row: 12
-                Layout.column: 0
-            }
-
-            Item{
-                Layout.fillHeight: true
-
-                Layout.maximumWidth: 20
-                Layout.preferredWidth: 20
-                Layout.minimumWidth: 20
-
-                Layout.row: 12
-                Layout.column: 1
-            }
-
-            InfoLineEdit {
-                id: outgoingTLSServerNameLineEdit
-
-                Layout.alignment: Qt.AlignCenter
-
-                fieldLayoutWidth: 250
-                fieldLayoutHeight: 29
-
-                font.pointSize: 10
-                font.kerning: true
-
-                horizontalAlignment: Text.AlignLeft
-                verticalAlignment: Text.AlignVCenter
-
-                Layout.row: 12
-                Layout.column: 2
-
-                onEditingFinished: {
-                    ClientWrapper.settingsAdaptor.outgoingTLSServerNameLineEditTextChanged(text)
+                    eText: qsTr("Outgoing TLS Server Name")
+                    fontSize: JamiTheme.settingsFontSize
+                    maxWidth: preferredColumnWidth
                 }
-            }
 
-            // 14th row
-            Label{
-                Layout.fillWidth: true
+                InfoLineEdit {
+                    id: outgoingTLSServerNameLineEdit
 
-                Layout.maximumHeight: 30
-                Layout.preferredHeight: 30
-                Layout.minimumHeight: 30
+                    fieldLayoutWidth: preferredColumnWidth
+                    fieldLayoutHeight: JamiTheme.preferredFieldHeight
 
-                text: qsTr("Negotiation Timeout(seconds)")
-                font.pointSize: 10
-                font.kerning: true
-
-                horizontalAlignment: Text.AlignLeft
-                verticalAlignment: Text.AlignVCenter
-
-                Layout.row: 13
-                Layout.column: 0
-            }
-
-            Item{
-                Layout.fillHeight: true
-
-                Layout.maximumWidth: 20
-                Layout.preferredWidth: 20
-                Layout.minimumWidth: 20
-
-                Layout.row: 13
-                Layout.column: 1
-            }
-
-            SpinBox{
-                id:negotiationTimeoutSpinBox
-
-                Layout.maximumWidth: 252
-                Layout.preferredWidth: 252
-                Layout.minimumWidth: 252
-
-                Layout.maximumHeight: 30
-                Layout.minimumHeight: 30
-                Layout.preferredHeight: 30
-
-                Layout.alignment: Qt.AlignCenter
-
-                font.pointSize: 10
-                font.kerning: true
-
-                from: 0
-                to: 3000
-                stepSize: 1
-
-                Layout.row: 13
-                Layout.column: 2
-
-                onValueModified: {
-                    ClientWrapper.settingsAdaptor.negotiationTimeoutSpinBoxValueChanged(value)
-                }
-            }
-        }
-    }
-
-    Item{
-            Layout.fillWidth: true
-
-            Layout.maximumHeight: 20
-            Layout.preferredHeight: 20
-            Layout.minimumHeight: 20
-        }
-
-    // connectivity section
-    ColumnLayout{
-            spacing: 6
-            Layout.fillWidth: true
-
-            Label {
-                Layout.fillWidth: true
-
-                Layout.minimumHeight: 27
-                Layout.preferredHeight: 27
-                Layout.maximumHeight: 27
-
-                text: qsTr("Connectivity")
-
-                font.pointSize: 13
-                font.kerning: true
-
-                horizontalAlignment: Text.AlignLeft
-                verticalAlignment: Text.AlignVCenter
-            }
-
-            Item {
-                Layout.fillWidth: true
-
-                Layout.maximumHeight: 10
-                Layout.preferredHeight: 10
-                Layout.minimumHeight: 10
-            }
-
-            GridLayout{
-                Layout.leftMargin: 20
-                Layout.fillWidth: true
-
-                rowSpacing: 6
-                columnSpacing: 6
-
-                rows: 9
-                columns: 3
-
-                // 1st row
-                Label{
-                    Layout.minimumWidth: 286
-                    Layout.preferredWidth: 286
-
-                    Layout.minimumHeight: 28
-                    Layout.preferredHeight: 28
-                    Layout.maximumHeight: 28
-
-                    text: qsTr("Registration Expire Timeout(seconds)")
-                    font.pointSize: 10
+                    font.pointSize: JamiTheme.settingsFontSize
                     font.kerning: true
 
                     horizontalAlignment: Text.AlignLeft
                     verticalAlignment: Text.AlignVCenter
 
-                    Layout.row: 0
-                    Layout.column: 0
+                    onEditingFinished: {
+                        ClientWrapper.settingsAdaptor.outgoingTLSServerNameLineEditTextChanged(text)
+                    }
                 }
 
-                Item{
-                    Layout.fillHeight: true
+                ElidedTextLabel {
+                    Layout.fillWidth: true
+                    Layout.maximumHeight: JamiTheme.preferredFieldHeight
+                    Layout.preferredHeight: JamiTheme.preferredFieldHeight
+                    Layout.minimumHeight: JamiTheme.preferredFieldHeight
 
-                    Layout.maximumWidth: 20
-                    Layout.preferredWidth: 20
-                    Layout.minimumWidth: 20
-
-                    Layout.row: 0
-                    Layout.column: 1
+                    eText: qsTr("Negotiation Timeout (seconds)")
+                    fontSize: JamiTheme.settingsFontSize
+                    maxWidth: preferredColumnWidth
                 }
 
-                SpinBox{
-                    id: registrationExpireTimeoutSpinBox
+                SpinBox {
+                    id: negotiationTimeoutSpinBox
 
-                    Layout.maximumWidth: 250
-                    Layout.preferredWidth: 250
-                    Layout.minimumWidth: 250
+                    Layout.maximumWidth: preferredColumnWidth
+                    Layout.minimumWidth: preferredColumnWidth
+                    Layout.preferredWidth: preferredColumnWidth
+                    Layout.maximumHeight: JamiTheme.preferredFieldHeight
+                    Layout.minimumHeight: JamiTheme.preferredFieldHeight
+                    Layout.preferredHeight: JamiTheme.preferredFieldHeight
 
-                    Layout.maximumHeight: 30
-                    Layout.minimumHeight: 30
-                    Layout.preferredHeight: 30
-
-                    Layout.alignment: Qt.AlignCenter
-
-                    font.pointSize: 10
+                    font.pointSize: JamiTheme.settingsFontSize
                     font.kerning: true
 
                     from: 0
                     to: 3000
                     stepSize: 1
 
-                    Layout.row: 0
-                    Layout.column: 2
+                    up.indicator.width: (width < 200) ? (width / 5) : 40
+                    down.indicator.width: (width < 200) ? (width / 5) : 40
 
                     onValueModified: {
-                        ClientWrapper.settingsAdaptor.registrationTimeoutSpinBoxValueChanged(value)
+                        ClientWrapper.settingsAdaptor.negotiationTimeoutSpinBoxValueChanged(value)
                     }
                 }
+            }
+        }
+    }
 
-                // 2nd row
-                Label{
-                    Layout.minimumWidth: 286
-                    Layout.preferredWidth: 286
+    // connectivity section
+    ColumnLayout {
+        spacing: 8
+        Layout.fillWidth: true
 
-                    Layout.minimumHeight: 28
-                    Layout.preferredHeight: 28
-                    Layout.maximumHeight: 28
+        ElidedTextLabel {
+            Layout.fillWidth: true
 
-                    text: qsTr("Newtwork interface")
-                    font.pointSize: 10
-                    font.kerning: true
+            Layout.minimumHeight: JamiTheme.preferredFieldHeight
+            Layout.preferredHeight: JamiTheme.preferredFieldHeight
+            Layout.maximumHeight: JamiTheme.preferredFieldHeight
 
-                    horizontalAlignment: Text.AlignLeft
-                    verticalAlignment: Text.AlignVCenter
+            eText: qsTr("Connectivity")
+            fontSize: JamiTheme.headerFontSize
+            maxWidth: preferredSettingsWidth
+        }
 
-                    Layout.row: 1
-                    Layout.column: 0
+        GridLayout {
+            Layout.fillWidth: true
+            Layout.leftMargin: JamiTheme.preferredMarginSize
+
+            rowSpacing: 8
+            columnSpacing: 8
+
+            rows: 9
+            columns: 2
+
+            ElidedTextLabel {
+                Layout.fillWidth: true
+                Layout.minimumHeight: JamiTheme.preferredFieldHeight
+                Layout.preferredHeight: JamiTheme.preferredFieldHeight
+                Layout.maximumHeight: JamiTheme.preferredFieldHeight
+
+                eText: qsTr("Registration Expire Timeout (seconds)")
+                fontSize: JamiTheme.settingsFontSize
+                maxWidth: preferredColumnWidth
+            }
+
+
+            SpinBox {
+                id: registrationExpireTimeoutSpinBox
+
+                Layout.maximumWidth: preferredColumnWidth
+                Layout.minimumWidth: preferredColumnWidth
+                Layout.preferredWidth: preferredColumnWidth
+                Layout.maximumHeight: JamiTheme.preferredFieldHeight
+                Layout.minimumHeight: JamiTheme.preferredFieldHeight
+                Layout.preferredHeight: JamiTheme.preferredFieldHeight
+
+                Layout.alignment: Qt.AlignCenter
+
+                font.pointSize: JamiTheme.buttonFontSize
+                font.kerning: true
+
+                from: 0
+                to: 3000
+                stepSize: 1
+
+                up.indicator.width: (width < 200) ? (width / 5) : 40
+                down.indicator.width: (width < 200) ? (width / 5) : 40
+
+                onValueModified: {
+                    ClientWrapper.settingsAdaptor.registrationTimeoutSpinBoxValueChanged(value)
                 }
+            }
 
-                Item{
-                    Layout.fillHeight: true
+            // 2nd row
+            ElidedTextLabel {
+                Layout.fillWidth: true
+                Layout.minimumHeight: JamiTheme.preferredFieldHeight
+                Layout.preferredHeight: JamiTheme.preferredFieldHeight
+                Layout.maximumHeight: JamiTheme.preferredFieldHeight
 
-                    Layout.maximumWidth: 20
-                    Layout.preferredWidth: 20
-                    Layout.minimumWidth: 20
+                eText: qsTr("Newtwork interface")
+                fontSize: JamiTheme.settingsFontSize
+                maxWidth: preferredColumnWidth
+            }
 
-                    Layout.row: 1
-                    Layout.column: 1
+            SpinBox {
+                id: networkInterfaceSpinBox
+
+                Layout.maximumWidth: preferredColumnWidth
+                Layout.minimumWidth: preferredColumnWidth
+                Layout.preferredWidth: preferredColumnWidth
+                Layout.maximumHeight: JamiTheme.preferredFieldHeight
+                Layout.minimumHeight: JamiTheme.preferredFieldHeight
+                Layout.preferredHeight: JamiTheme.preferredFieldHeight
+
+                Layout.alignment: Qt.AlignCenter
+
+                font.pointSize: JamiTheme.buttonFontSize
+                font.kerning: true
+
+                from: 0
+                to: 65536
+                stepSize: 1
+
+                up.indicator.width: (width < 200) ? (width / 5) : 40
+                down.indicator.width: (width < 200) ? (width / 5) : 40
+
+                onValueModified: {
+                    ClientWrapper.settingsAdaptor.networkInterfaceSpinBoxValueChanged(value)
                 }
-
-                SpinBox{
-                    id: networkInterfaceSpinBox
-
-                    Layout.maximumWidth: 250
-                    Layout.preferredWidth: 250
-                    Layout.minimumWidth: 250
-
-                    Layout.maximumHeight: 30
-                    Layout.minimumHeight: 30
-                    Layout.preferredHeight: 30
-
-                    Layout.alignment: Qt.AlignCenter
-
-                    font.pointSize: 10
-                    font.kerning: true
-
-                    from: 0
-                    to: 65536
-                    stepSize: 1
-
-                    Layout.row: 1
-                    Layout.column: 2
-
-                    onValueModified: {
-                        ClientWrapper.settingsAdaptor.networkInterfaceSpinBoxValueChanged(value)
-                    }
-                }
+            }
 
             // 3rd row
-            ToggleSwitch{
+            ToggleSwitch {
                 id: checkBoxUPnPSIP
 
                 labelText: qsTr("Use UPnP")
-                fontPointSize: 10
+                fontPointSize: JamiTheme.settingsFontSize
 
-                Layout.row: 2
-                Layout.column: 0
+                Layout.columnSpan: 2
 
                 onSwitchToggled: {
                     ClientWrapper.settingsAdaptor.setUseUPnP(checked)
                 }
             }
 
-            Item{
-                Layout.fillHeight: true
-
-                Layout.maximumWidth: 20
-                Layout.preferredWidth: 20
-                Layout.minimumWidth: 20
-
-                Layout.row: 2
-                Layout.column: 1
-            }
-
             // 4th row
-            ToggleSwitch{
+            ToggleSwitch {
                 id: checkBoxTurnEnableSIP
 
                 labelText: qsTr("Use TURN")
-                fontPointSize: 10
+                fontPointSize: JamiTheme.settingsFontSize
 
-                Layout.row: 3
-                Layout.column: 0
+                Layout.columnSpan: 2
 
                 onSwitchToggled: {
                     ClientWrapper.settingsAdaptor.setUseTURN(checked)
@@ -1418,80 +1044,29 @@ ColumnLayout {
                 }
             }
 
-            Item{
-                Layout.fillHeight: true
-
-                Layout.maximumWidth: 20
-                Layout.preferredWidth: 20
-                Layout.minimumWidth: 20
-
-                Layout.row: 3
-                Layout.column: 1
-            }
-
             // 5th row
-            RowLayout{
-                spacing: 6
-                Layout.maximumHeight: 30
+            ElidedTextLabel {
+                Layout.fillWidth: true
+                Layout.maximumHeight: JamiTheme.preferredFieldHeight
+                Layout.preferredHeight: JamiTheme.preferredFieldHeight
+                Layout.minimumHeight: JamiTheme.preferredFieldHeight
 
-                Layout.row: 4
-                Layout.column: 0
-
-                Item{
-                    Layout.fillHeight: true
-
-                    Layout.maximumWidth: 20
-                    Layout.preferredWidth: 20
-                    Layout.minimumWidth: 20
-                }
-
-                Label{
-                    Layout.maximumHeight: 27
-                    Layout.preferredHeight: 27
-                    Layout.minimumHeight: 27
-
-                    Layout.maximumWidth: 260
-                    Layout.preferredWidth: 260
-                    Layout.minimumWidth: 260
-
-                    text: qsTr("TURN Address")
-
-                    font.pointSize: 10
-                    font.kerning: true
-
-                    horizontalAlignment: Text.AlignLeft
-                    verticalAlignment: Text.AlignVCenter
-                }
+                text: qsTr("TURN Address")
+                fontSize: JamiTheme.settingsFontSize
+                maxWidth: preferredColumnWidth
             }
-
-            Item{
-                Layout.fillHeight: true
-
-                Layout.maximumWidth: 20
-                Layout.preferredWidth: 20
-                Layout.minimumWidth: 20
-
-                Layout.row: 4
-                Layout.column: 1
-            }
-
 
             InfoLineEdit {
                 id: lineEditTurnAddressSIP
 
-                Layout.alignment: Qt.AlignCenter
+                fieldLayoutWidth: preferredColumnWidth
+                fieldLayoutHeight: JamiTheme.preferredFieldHeight
 
-                fieldLayoutWidth: 250
-                fieldLayoutHeight: 29
-
-                font.pointSize: 10
+                font.pointSize: JamiTheme.settingsFontSize
                 font.kerning: true
 
                 horizontalAlignment: Text.AlignLeft
                 verticalAlignment: Text.AlignVCenter
-
-                Layout.row: 4
-                Layout.column: 2
 
                 onEditingFinished: {
                     ClientWrapper.settingsAdaptor.setTURNAddress(text)
@@ -1499,135 +1074,56 @@ ColumnLayout {
             }
 
             // 6th row
-            RowLayout{
-                spacing: 6
-                Layout.maximumHeight: 30
+            ElidedTextLabel {
+                Layout.fillWidth: true
+                Layout.maximumHeight: JamiTheme.preferredFieldHeight
+                Layout.preferredHeight: JamiTheme.preferredFieldHeight
+                Layout.minimumHeight: JamiTheme.preferredFieldHeight
 
-                Layout.row: 5
-                Layout.column: 0
-
-                Item{
-                    Layout.fillHeight: true
-
-                    Layout.maximumWidth: 20
-                    Layout.preferredWidth: 20
-                    Layout.minimumWidth: 20
-                }
-
-                Label{
-                    Layout.maximumHeight: 27
-                    Layout.preferredHeight: 27
-                    Layout.minimumHeight: 27
-
-                    Layout.maximumWidth: 260
-                    Layout.preferredWidth: 260
-                    Layout.minimumWidth: 260
-
-                    text: qsTr("TURN Username")
-
-                    font.pointSize: 10
-                    font.kerning: true
-
-                    horizontalAlignment: Text.AlignLeft
-                    verticalAlignment: Text.AlignVCenter
-                }
-            }
-
-            Item{
-                Layout.fillHeight: true
-
-                Layout.maximumWidth: 20
-                Layout.preferredWidth: 20
-                Layout.minimumWidth: 20
-
-                Layout.row: 5
-                Layout.column: 1
+                eText: qsTr("TURN Username")
+                fontSize: JamiTheme.settingsFontSize
+                maxWidth: preferredColumnWidth
             }
 
             InfoLineEdit {
                 id: lineEditTurnUsernameSIP
 
-                Layout.alignment: Qt.AlignCenter
+                fieldLayoutWidth: preferredColumnWidth
+                fieldLayoutHeight: JamiTheme.preferredFieldHeight
 
-                fieldLayoutWidth: 250
-                fieldLayoutHeight: 29
-
-                font.pointSize: 10
+                font.pointSize: JamiTheme.settingsFontSize
                 font.kerning: true
 
                 horizontalAlignment: Text.AlignLeft
                 verticalAlignment: Text.AlignVCenter
-
-                Layout.row: 5
-                Layout.column: 2
 
                 onEditingFinished: {
                     ClientWrapper.settingsAdaptor.setTURNUsername(text)
                 }
             }
 
-            // 7th row
-            RowLayout{
-                spacing: 6
-                Layout.maximumHeight: 30
+            ElidedTextLabel {
+                Layout.fillWidth: true
+                Layout.maximumHeight: JamiTheme.preferredFieldHeight
+                Layout.preferredHeight: JamiTheme.preferredFieldHeight
+                Layout.minimumHeight: JamiTheme.preferredFieldHeight
 
-                Layout.row: 6
-                Layout.column: 0
-
-                Item{
-                    Layout.fillHeight: true
-
-                    Layout.maximumWidth: 20
-                    Layout.preferredWidth: 20
-                    Layout.minimumWidth: 20
-                }
-
-                Label{
-                    Layout.maximumHeight: 27
-                    Layout.preferredHeight: 27
-                    Layout.minimumHeight: 27
-
-                    Layout.maximumWidth: 260
-                    Layout.preferredWidth: 260
-                    Layout.minimumWidth: 260
-
-                    text: qsTr("TURN Password")
-
-                    font.pointSize: 10
-                    font.kerning: true
-
-                    horizontalAlignment: Text.AlignLeft
-                    verticalAlignment: Text.AlignVCenter
-                }
-            }
-
-            Item{
-                Layout.fillHeight: true
-
-                Layout.maximumWidth: 20
-                Layout.preferredWidth: 20
-                Layout.minimumWidth: 20
-
-                Layout.row: 6
-                Layout.column: 1
+                eText: qsTr("TURN Password")
+                fontSize: JamiTheme.settingsFontSize
+                maxWidth: preferredColumnWidth
             }
 
             InfoLineEdit {
                 id: lineEditTurnPsswdSIP
 
-                Layout.alignment: Qt.AlignCenter
+                fieldLayoutWidth: preferredColumnWidth
+                fieldLayoutHeight: JamiTheme.preferredFieldHeight
 
-                fieldLayoutWidth: 250
-                fieldLayoutHeight: 29
-
-                font.pointSize: 10
+                font.pointSize: JamiTheme.settingsFontSize
                 font.kerning: true
 
                 horizontalAlignment: Text.AlignLeft
                 verticalAlignment: Text.AlignVCenter
-
-                Layout.row: 6
-                Layout.column: 2
 
                 echoMode: TextInput.Password
 
@@ -1637,67 +1133,28 @@ ColumnLayout {
             }
 
             // 8th row
-            RowLayout{
-                spacing: 6
-                Layout.maximumHeight: 30
+            ElidedTextLabel {
+                Layout.fillWidth: true
+                Layout.maximumHeight: JamiTheme.preferredFieldHeight
+                Layout.preferredHeight: JamiTheme.preferredFieldHeight
+                Layout.minimumHeight: JamiTheme.preferredFieldHeight
 
-                Layout.row: 7
-                Layout.column: 0
-
-                Item{
-                    Layout.fillHeight: true
-
-                    Layout.maximumWidth: 20
-                    Layout.preferredWidth: 20
-                    Layout.minimumWidth: 20
-                }
-
-                Label{
-                    Layout.maximumHeight: 27
-                    Layout.preferredHeight: 27
-                    Layout.minimumHeight: 27
-
-                    Layout.maximumWidth: 260
-                    Layout.preferredWidth: 260
-                    Layout.minimumWidth: 260
-
-                    text: qsTr("TURN Realm")
-
-                    font.pointSize: 10
-                    font.kerning: true
-
-                    horizontalAlignment: Text.AlignLeft
-                    verticalAlignment: Text.AlignVCenter
-                }
-            }
-
-            Item{
-                Layout.fillHeight: true
-
-                Layout.maximumWidth: 20
-                Layout.preferredWidth: 20
-                Layout.minimumWidth: 20
-
-                Layout.row: 7
-                Layout.column: 1
+                eText: qsTr("TURN Realm")
+                fontSize: JamiTheme.settingsFontSize
+                maxWidth: preferredColumnWidth
             }
 
             InfoLineEdit {
                 id: lineEditTurnRealmSIP
 
-                Layout.alignment: Qt.AlignCenter
+                fieldLayoutWidth: preferredColumnWidth
+                fieldLayoutHeight: JamiTheme.preferredFieldHeight
 
-                fieldLayoutWidth: 250
-                fieldLayoutHeight: 29
-
-                font.pointSize: 10
+                font.pointSize: JamiTheme.settingsFontSize
                 font.kerning: true
 
                 horizontalAlignment: Text.AlignLeft
                 verticalAlignment: Text.AlignVCenter
-
-                Layout.row: 7
-                Layout.column: 2
 
                 onEditingFinished: {
                     ClientWrapper.settingsAdaptor.setTURNRealm(text)
@@ -1705,14 +1162,13 @@ ColumnLayout {
             }
 
             // 9th row
-            ToggleSwitch{
+            ToggleSwitch {
                 id: checkBoxSTUNEnableSIP
 
                 labelText: qsTr("Use STUN")
-                fontPointSize: 10
+                fontPointSize: JamiTheme.settingsFontSize
 
-                Layout.row: 8
-                Layout.column: 0
+                Layout.columnSpan: 2
 
                 onSwitchToggled: {
                     ClientWrapper.settingsAdaptor.setUseSTUN(checked)
@@ -1720,33 +1176,29 @@ ColumnLayout {
                 }
             }
 
-            Item{
-                Layout.fillHeight: true
+            // 10th row
+            ElidedTextLabel {
+                Layout.fillWidth: true
+                Layout.maximumHeight: JamiTheme.preferredFieldHeight
+                Layout.preferredHeight: JamiTheme.preferredFieldHeight
+                Layout.minimumHeight: JamiTheme.preferredFieldHeight
 
-                Layout.maximumWidth: 20
-                Layout.preferredWidth: 20
-                Layout.minimumWidth: 20
-
-                Layout.row: 8
-                Layout.column: 1
+                eText: qsTr("STUN Address")
+                fontSize: JamiTheme.settingsFontSize
+                maxWidth: preferredColumnWidth
             }
 
             InfoLineEdit {
                 id: lineEditSTUNAddressSIP
 
-                Layout.alignment: Qt.AlignCenter
+                fieldLayoutWidth: preferredColumnWidth
+                fieldLayoutHeight: JamiTheme.preferredFieldHeight
 
-                fieldLayoutWidth: 250
-                fieldLayoutHeight: 29
-
-                font.pointSize: 10
+                font.pointSize: JamiTheme.settingsFontSize
                 font.kerning: true
 
                 horizontalAlignment: Text.AlignLeft
                 verticalAlignment: Text.AlignVCenter
-
-                Layout.row: 8
-                Layout.column: 2
 
                 onEditingFinished: {
                     ClientWrapper.settingsAdaptor.setSTUNAddress(text)
@@ -1755,800 +1207,582 @@ ColumnLayout {
         }
     }
 
-        Item{
-            Layout.fillWidth: true
 
-            Layout.maximumHeight: 20
-            Layout.preferredHeight: 20
-            Layout.minimumHeight: 20
+    // public address section
+    ColumnLayout {
+        spacing: 8
+        Layout.fillWidth: true
+
+        ElidedTextLabel {
+            Layout.fillWidth: true
+            Layout.minimumHeight: JamiTheme.preferredFieldHeight
+            Layout.preferredHeight: JamiTheme.preferredFieldHeight
+            Layout.maximumHeight: JamiTheme.preferredFieldHeight
+
+            text: qsTr("Public Address")
+            fontSize: JamiTheme.headerFontSize
+            maxWidth: preferredSettingsWidth
         }
 
-        // public address section
-        ColumnLayout{
-            spacing: 6
+        GridLayout {
             Layout.fillWidth: true
+            Layout.leftMargin: JamiTheme.preferredMarginSize
 
-            Label {
+            rowSpacing: 8
+            columnSpacing: 8
+
+            rows: 3
+            columns: 2
+
+            // 1st row
+            ToggleSwitch {
+                id: checkBoxCustomAddressPort
+
+                labelText: checkBoxCustomAddressPortText.elidedText
+                fontPointSize: JamiTheme.settingsFontSize
+
+                Layout.columnSpan: 2
+
+                onSwitchToggled: {
+                    ClientWrapper.settingsAdaptor.setUseCustomAddressAndPort(checked)
+                    lineEditSIPCustomAddress.enabled = checked
+                    customPortSIPSpinBox.enabled = checked
+                }
+            }
+
+            TextMetrics {
+                id: checkBoxCustomAddressPortText
+                elide: Text.ElideRight
+                elideWidth: preferredColumnWidth
+                text: qsTr("Use Custom Address/Port")
+            }
+
+            //2nd row
+            ElidedTextLabel {
+                Layout.leftMargin: JamiTheme.preferredMarginSize
+
                 Layout.fillWidth: true
+                Layout.maximumHeight: JamiTheme.preferredFieldHeight
+                Layout.preferredHeight: JamiTheme.preferredFieldHeight
+                Layout.minimumHeight: JamiTheme.preferredFieldHeight
 
-                Layout.minimumHeight: 27
-                Layout.preferredHeight: 27
-                Layout.maximumHeight: 27
+                eText: qsTr("Address")
+                fontSize: JamiTheme.settingsFontSize
+                maxWidth: preferredColumnWidth
+            }
 
-                text: qsTr("Public Address")
+            InfoLineEdit {
+                id: lineEditSIPCustomAddress
 
-                font.pointSize: 13
+                fieldLayoutWidth: preferredColumnWidth
+                fieldLayoutHeight: JamiTheme.preferredFieldHeight
+
+                font.pointSize: JamiTheme.settingsFontSize
                 font.kerning: true
 
                 horizontalAlignment: Text.AlignLeft
                 verticalAlignment: Text.AlignVCenter
+
+                onEditingFinished: {
+                    ClientWrapper.settingsAdaptor.lineEditSIPCustomAddressLineEditTextChanged(text)
+                }
             }
 
-            Item {
-                Layout.fillWidth: true
+            //3rd row
+            ElidedTextLabel {
+                Layout.leftMargin: JamiTheme.preferredMarginSize
 
-                Layout.maximumHeight: 10
-                Layout.preferredHeight: 10
-                Layout.minimumHeight: 10
+                Layout.fillWidth: true
+                Layout.maximumHeight: JamiTheme.preferredFieldHeight
+                Layout.preferredHeight: JamiTheme.preferredFieldHeight
+                Layout.minimumHeight: JamiTheme.preferredFieldHeight
+
+                eText: qsTr("Port")
+                fontSize: JamiTheme.settingsFontSize
+                maxWidth: preferredColumnWidth
             }
 
-            GridLayout{
-                Layout.leftMargin: 20
-                Layout.fillWidth: true
+            SpinBox {
+                id: customPortSIPSpinBox
 
-                rowSpacing: 6
-                columnSpacing: 6
+                Layout.maximumWidth: preferredColumnWidth
+                Layout.minimumWidth: preferredColumnWidth
+                Layout.preferredWidth: preferredColumnWidth
+                Layout.maximumHeight: JamiTheme.preferredFieldHeight
+                Layout.minimumHeight: JamiTheme.preferredFieldHeight
+                Layout.preferredHeight: JamiTheme.preferredFieldHeight
 
-                rows: 3
-                columns: 3
+                Layout.alignment: Qt.AlignCenter
 
-                // 1st row
-                ToggleSwitch{
-                    id: checkBoxCustomAddressPort
+                font.pointSize: JamiTheme.settingsFontSize
+                font.kerning: true
 
-                    Layout.maximumWidth: 88
-                    labelText: qsTr("Use Custom Address/Port")
-                    fontPointSize: 10
+                from: 0
+                to: 65535
+                stepSize: 1
 
-                    Layout.row: 0
-                    Layout.column: 0
+                up.indicator.width: (width < 200) ? (width / 5) : 40
+                down.indicator.width: (width < 200) ? (width / 5) : 40
 
-                    onSwitchToggled: {
-                        ClientWrapper.settingsAdaptor.setUseCustomAddressAndPort(checked)
-                        lineEditSIPCustomAddress.enabled = checked
-                        customPortSIPSpinBox.enabled = checked
-                    }
-                }
-
-                Item{
-                    Layout.fillHeight: true
-                    Layout.fillWidth: true
-
-                    Layout.row: 0
-                    Layout.column: 1
-                }
-
-                //2nd row
-                Label{
-                    Layout.leftMargin: 26
-
-                    Layout.maximumHeight: 27
-                    Layout.preferredHeight: 27
-                    Layout.minimumHeight: 27
-
-                    Layout.maximumWidth: 60
-                    Layout.preferredWidth: 60
-                    Layout.minimumWidth: 60
-
-                    text: qsTr("Address")
-                    font.pointSize: 10
-                    font.kerning: true
-
-                    horizontalAlignment: Text.AlignLeft
-                    verticalAlignment: Text.AlignVCenter
-
-                    Layout.row: 1
-                    Layout.column: 0
-                }
-
-                Item{
-                    Layout.fillHeight: true
-                    Layout.fillWidth: true
-
-                    Layout.row: 1
-                    Layout.column: 1
-                }
-
-                InfoLineEdit {
-                    id: lineEditSIPCustomAddress
-
-                    Layout.alignment: Qt.AlignCenter
-
-                    fieldLayoutWidth: 250
-                    fieldLayoutHeight: 29
-
-                    font.pointSize: 10
-                    font.kerning: true
-
-                    horizontalAlignment: Text.AlignLeft
-                    verticalAlignment: Text.AlignVCenter
-
-                    Layout.row: 1
-                    Layout.column: 2
-
-                    onEditingFinished: {
-                        ClientWrapper.settingsAdaptor.lineEditSIPCustomAddressLineEditTextChanged(text)
-                    }
-                }
-
-                //3rd row
-                Label{
-                    Layout.leftMargin: 26
-
-                    Layout.maximumHeight: 27
-                    Layout.preferredHeight: 27
-                    Layout.minimumHeight: 27
-
-                    Layout.maximumWidth: 60
-                    Layout.preferredWidth: 60
-                    Layout.minimumWidth: 60
-
-                    text: qsTr("Port")
-                    font.pointSize: 10
-                    font.kerning: true
-
-                    horizontalAlignment: Text.AlignLeft
-                    verticalAlignment: Text.AlignVCenter
-
-                    Layout.row: 2
-                    Layout.column: 0
-                }
-
-                Item{
-                    Layout.fillHeight: true
-                    Layout.fillWidth: true
-
-                    Layout.row: 2
-                    Layout.column: 1
-                }
-
-                SpinBox{
-                    id: customPortSIPSpinBox
-
-                    Layout.maximumWidth: 250
-                    Layout.preferredWidth: 250
-                    Layout.minimumWidth: 250
-
-                    Layout.maximumHeight: 30
-                    Layout.minimumHeight: 30
-                    Layout.preferredHeight: 30
-
-                    Layout.alignment: Qt.AlignCenter
-
-                    font.pointSize: 10
-                    font.kerning: true
-
-                    from: 0
-                    to: 65535
-                    stepSize: 1
-
-                    Layout.row: 2
-                    Layout.column: 2
-
-                    onValueModified: {
-                        ClientWrapper.settingsAdaptor.customPortSIPSpinBoxValueChanged(value)
-                    }
+                onValueModified: {
+                    ClientWrapper.settingsAdaptor.customPortSIPSpinBoxValueChanged(value)
                 }
             }
         }
+    }
 
-        // media section
-        ColumnLayout{
-            spacing: 6
+    // media section
+    ColumnLayout {
+        spacing: 8
+        Layout.fillWidth: true
+
+        Label {
             Layout.fillWidth: true
+            Layout.minimumHeight: JamiTheme.preferredFieldHeight
+            Layout.preferredHeight: JamiTheme.preferredFieldHeight
+            Layout.maximumHeight: JamiTheme.preferredFieldHeight
 
-            Label {
-                Layout.fillWidth: true
+            text: qsTr("Media")
 
-                Layout.minimumHeight: 27
-                Layout.preferredHeight: 27
-                Layout.maximumHeight: 27
+            font.pointSize: JamiTheme.headerFontSize
+            font.kerning: true
 
-                text: qsTr("Media")
+            horizontalAlignment: Text.AlignLeft
+            verticalAlignment: Text.AlignVCenter
+        }
 
-                font.pointSize: 13
-                font.kerning: true
+        ColumnLayout {
+            spacing: 8
+            Layout.fillWidth: true
+            Layout.leftMargin: JamiTheme.preferredMarginSize
 
-                horizontalAlignment: Text.AlignLeft
-                verticalAlignment: Text.AlignVCenter
-            }
+            ToggleSwitch {
+                id: videoCheckBoxSIP
 
-            Item {
-                Layout.fillWidth: true
+                labelText: videoCheckBoxSIPText.elidedText
+                fontPointSize: JamiTheme.settingsFontSize
 
-                Layout.maximumHeight: 10
-                Layout.preferredHeight: 10
-                Layout.minimumHeight: 10
-            }
-
-            ColumnLayout {
-                spacing: 6
-                Layout.fillWidth: true
-
-                ToggleSwitch {
-                    id: videoCheckBoxSIP
-
-                    Layout.leftMargin: 20
-
-                    labelText: qsTr("Enable Video")
-                    fontPointSize: 10
-
-                    onSwitchToggled: {
-                        ClientWrapper.settingsAdaptor.setVideoState(checked)
-                    }
+                onSwitchToggled: {
+                    ClientWrapper.settingsAdaptor.setVideoState(checked)
                 }
+            }
 
-                RowLayout {
-                    spacing: 6
+            TextMetrics {
+                id: videoCheckBoxSIPText
+                elide: Text.ElideRight
+                elideWidth: preferredColumnWidth
+                text: qsTr("Enable Video")
+            }
+
+
+            RowLayout {
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+
+                ColumnLayout {
                     Layout.fillWidth: true
-                    Layout.leftMargin: 20
+                    Layout.fillHeight: true
 
-                    ColumnLayout {
-                        spacing: 6
-                        Layout.maximumWidth: 348
+                    RowLayout {
+                        Layout.fillWidth: true
+                        Layout.fillHeight: true
+                        Layout.maximumHeight: JamiTheme.preferredFieldHeight
 
-                        RowLayout {
-                            spacing: 6
+                        ElidedTextLabel {
                             Layout.fillWidth: true
 
-                            Layout.maximumHeight: 30
+                            Layout.minimumHeight: JamiTheme.preferredFieldHeight
+                            Layout.preferredHeight: JamiTheme.preferredFieldHeight
+                            Layout.maximumHeight: JamiTheme.preferredFieldHeight
 
-                            Label {
-                                Layout.fillWidth: true
+                            maxWidth: preferredColumnWidth - 50
+                            eText:  qsTr("Video Codecs")
+                            fontSize: JamiTheme.settingsFontSize
+                        }
 
-                                Layout.minimumHeight: 30
-                                Layout.preferredHeight: 30
-                                Layout.maximumHeight: 30
 
-                                text: qsTr("Video Codecs")
-                                font.pointSize: 10
-                                font.kerning: true
+                        HoverableRadiusButton {
+                            id: videoDownPushButtonSIP
 
-                                horizontalAlignment: Text.AlignLeft
-                                verticalAlignment: Text.AlignVCenter
-                            }
+                            Layout.minimumWidth: 24
+                            Layout.preferredWidth: 24
+                            Layout.maximumWidth: 24
 
-                            Item {
-                                Layout.fillHeight: true
+                            Layout.minimumHeight: 24
+                            Layout.preferredHeight: 24
+                            Layout.maximumHeight: 24
 
-                                Layout.minimumWidth: 20
-                                Layout.preferredWidth: 20
-                                Layout.maximumWidth: 20
-                            }
+                            buttonImageHeight: height
+                            buttonImageWidth: height
+                            radius: height / 2
 
-                            HoverableRadiusButton {
-                                id: videoDownPushButtonSIP
+                            icon.source: "qrc:/images/icons/round-arrow_drop_down-24px.svg"
+                            icon.width: 24
+                            icon.height: 24
 
-                                Layout.minimumWidth: 30
-                                Layout.preferredWidth: 30
-                                Layout.maximumWidth: 30
-
-                                Layout.minimumHeight: 30
-                                Layout.preferredHeight: 30
-                                Layout.maximumHeight: 30
-
-                                radius: height / 2
-                                scale: 1
-
-                                buttonImageHeight: height
-                                buttonImageWidth: height
-
-                                font.pointSize: 9
-                                font.kerning: true
-
-                                icon.source: "qrc:/images/icons/round-arrow_drop_down-24px.svg"
-                                icon.width: 32
-                                icon.height: 32
-
-                                onClicked: {
-                                    decreaseVideoCodecPriority()
-                                }
-                            }
-
-                            HoverableRadiusButton {
-                                id: videoUpPushButtonSIP
-
-                                Layout.minimumWidth: 30
-                                Layout.preferredWidth: 30
-                                Layout.maximumWidth: 30
-
-                                Layout.minimumHeight: 30
-                                Layout.preferredHeight: 30
-                                Layout.maximumHeight: 30
-
-                                radius: height / 2
-
-                                buttonImageHeight: height
-                                buttonImageWidth: height
-
-                                font.pointSize: 9
-                                font.kerning: true
-
-                                icon.source: "qrc:/images/icons/round-arrow_drop_up-24px.svg"
-                                icon.width: 32
-                                icon.height: 32
-
-                                onClicked: {
-                                    increaseVideoCodecPriority()
-                                }
+                            onClicked: {
+                                decreaseVideoCodecPriority()
                             }
                         }
 
-                        ListViewJami {
-                            id: videoListWidgetSIP
+                        HoverableRadiusButton {
+                            id: videoUpPushButtonSIP
 
-                            Layout.minimumWidth: 348
-                            Layout.preferredWidth: 348
-                            Layout.maximumWidth: 348
+                            Layout.minimumWidth: 24
+                            Layout.preferredWidth: 24
+                            Layout.maximumWidth: 24
 
-                            Layout.minimumHeight: 192
-                            Layout.preferredHeight: 192
-                            Layout.maximumHeight: 192
+                            Layout.minimumHeight: 24
+                            Layout.preferredHeight: 24
+                            Layout.maximumHeight: 24
 
-                            model: videoCodecListModelSIP
+                            buttonImageHeight: height
+                            buttonImageWidth: height
+                            radius: height / 2
 
-                            delegate: VideoCodecDelegate {
-                                id: videoCodecDelegate
+                            icon.source: "qrc:/images/icons/round-arrow_drop_up-24px.svg"
+                            icon.width: 24
+                            icon.height: 24
 
-                                width: videoListWidgetSIP.width
-                                height: videoListWidgetSIP.height / 4
-
-                                videoCodecName : VideoCodecName
-                                isEnabled : IsEnabled
-                                videoCodecId: VideoCodecID
-
-                                onClicked: {
-                                    videoListWidgetSIP.currentIndex = index
-                                }
-
-                                onVideoCodecStateChange:{
-                                    ClientWrapper.settingsAdaptor.videoCodecsStateChange(idToSet , isToBeEnabled)
-                                    updateVideoCodecs()
-                                }
+                            onClicked: {
+                                increaseVideoCodecPriority()
                             }
                         }
                     }
 
-                    ColumnLayout {
-                        spacing: 6
-                        Layout.maximumWidth: 348
+                    ListViewJami {
+                        id: videoListWidgetSIP
 
-                        RowLayout {
-                            spacing: 6
+                        Layout.minimumWidth: preferredColumnWidth
+                        Layout.preferredWidth: preferredColumnWidth
+                        Layout.maximumWidth: preferredColumnWidth
+
+                        Layout.minimumHeight: 192
+                        Layout.preferredHeight: 192
+                        Layout.maximumHeight: 192
+
+                        model: videoCodecListModelSIP
+
+                        delegate: VideoCodecDelegate {
+                            id: videoCodecDelegate
+
+                            width: videoListWidgetSIP.width
+                            height: videoListWidgetSIP.height / 4
+
+                            videoCodecName : VideoCodecName
+                            isEnabled : IsEnabled
+                            videoCodecId: VideoCodecID
+
+                            onClicked: {
+                                videoListWidget.currentIndex = index
+                            }
+
+                            onVideoCodecStateChange:{
+                                ClientWrapper.settingsAdaptor.videoCodecsStateChange(idToSet , isToBeEnabled)
+                                updateVideoCodecs()
+                            }
+                        }
+                    }
+                }
+
+                ColumnLayout {
+                    Layout.fillWidth: true
+
+                    RowLayout {
+                        Layout.fillWidth: true
+                        Layout.maximumHeight: JamiTheme.preferredFieldHeight
+
+                        ElidedTextLabel {
                             Layout.fillWidth: true
 
-                            Layout.maximumHeight: 30
+                            Layout.minimumHeight: JamiTheme.preferredFieldHeight
+                            Layout.preferredHeight: JamiTheme.preferredFieldHeight
+                            Layout.maximumHeight: JamiTheme.preferredFieldHeight
 
-                            Label {
-                                Layout.fillWidth: true
+                            maxWidth: preferredColumnWidth - 50
+                            eText:  qsTr("Audio Codecs")
+                            fontSize: JamiTheme.settingsFontSize
+                        }
 
-                                Layout.minimumHeight: 30
-                                Layout.preferredHeight: 30
-                                Layout.maximumHeight: 30
 
-                                text: qsTr("Audio Codecs")
-                                font.pointSize: 10
-                                font.kerning: true
+                        HoverableRadiusButton {
+                            id: audioDownPushButtonSIP
 
-                                horizontalAlignment: Text.AlignLeft
-                                verticalAlignment: Text.AlignVCenter
-                            }
+                            Layout.minimumWidth: 24
+                            Layout.preferredWidth: 24
+                            Layout.maximumWidth: 24
 
-                            Item {
-                                Layout.fillHeight: true
+                            Layout.minimumHeight: 24
+                            Layout.preferredHeight: 24
+                            Layout.maximumHeight: 24
 
-                                Layout.minimumWidth: 20
-                                Layout.preferredWidth: 20
-                                Layout.maximumWidth: 20
-                            }
+                            radius: height / 2
+                            buttonImageHeight: height
+                            buttonImageWidth: height
 
-                            HoverableRadiusButton {
-                                id: audioDownPushButtonSIP
+                            icon.source: "qrc:/images/icons/round-arrow_drop_down-24px.svg"
+                            icon.width: 24
+                            icon.height: 24
 
-                                Layout.minimumWidth: 30
-                                Layout.preferredWidth: 30
-                                Layout.maximumWidth: 30
-
-                                Layout.minimumHeight: 30
-                                Layout.preferredHeight: 30
-                                Layout.maximumHeight: 30
-
-                                radius: height / 2
-
-                                buttonImageHeight: height
-                                buttonImageWidth: height
-
-                                font.pointSize: 9
-                                font.kerning: true
-
-                                icon.source: "qrc:/images/icons/round-arrow_drop_down-24px.svg"
-                                icon.width: 32
-                                icon.height: 32
-
-                                onClicked: {
-                                    decreaseAudioCodecPriority()
-                                }
-                            }
-
-                            HoverableRadiusButton {
-                                id: audioUpPushButtonSIP
-
-                                Layout.minimumWidth: 30
-                                Layout.preferredWidth: 30
-                                Layout.maximumWidth: 30
-
-                                Layout.minimumHeight: 30
-                                Layout.preferredHeight: 30
-                                Layout.maximumHeight: 30
-
-                                radius: height / 2
-
-                                buttonImageHeight: height
-                                buttonImageWidth: height
-
-                                font.pointSize: 9
-                                font.kerning: true
-
-                                icon.source: "qrc:/images/icons/round-arrow_drop_up-24px.svg"
-                                icon.width: 32
-                                icon.height: 32
-
-                                onClicked: {
-                                    increaseAudioCodecPriority()
-                                }
+                            onClicked: {
+                                decreaseAudioCodecPriority()
                             }
                         }
 
-                        ListViewJami {
-                            id: audioListWidgetSIP
+                        HoverableRadiusButton {
+                            id: audioUpPushButtonSIP
 
-                            Layout.minimumWidth: 348
-                            Layout.preferredWidth: 348
-                            Layout.maximumWidth: 348
+                            Layout.minimumWidth: 24
+                            Layout.preferredWidth: 24
+                            Layout.maximumWidth: 24
 
-                            Layout.minimumHeight: 192
-                            Layout.preferredHeight: 192
-                            Layout.maximumHeight: 192
+                            Layout.minimumHeight: 24
+                            Layout.preferredHeight: 24
+                            Layout.maximumHeight: 24
 
-                            model: audioCodecListModelSIP
+                            radius: height / 2
+                            buttonImageHeight: height
+                            buttonImageWidth: height
 
-                            delegate: AudioCodecDelegate {
-                                id: audioCodecDelegate
+                            icon.source: "qrc:/images/icons/round-arrow_drop_up-24px.svg"
+                            icon.width: 24
+                            icon.height: 24
 
-                                width: audioListWidgetSIP.width
-                                height: audioListWidgetSIP.height / 4
+                            onClicked: {
+                                increaseAudioCodecPriority()
+                            }
+                        }
+                    }
 
-                                layer.mipmap: false
-                                clip: true
+                    ListViewJami {
+                        id: audioListWidgetSIP
 
-                                audioCodecName : AudioCodecName
-                                isEnabled : IsEnabled
-                                audioCodecId: AudioCodecID
-                                samplerRate: Samplerate
+                        Layout.minimumWidth: preferredColumnWidth
+                        Layout.preferredWidth: preferredColumnWidth
+                        Layout.maximumWidth: preferredColumnWidth
 
-                                onClicked: {
-                                    audioListWidgetSIP.currentIndex = index
-                                }
+                        Layout.minimumHeight: 192
+                        Layout.preferredHeight: 192
+                        Layout.maximumHeight: 192
 
-                                onAudioCodecStateChange:{
-                                    ClientWrapper.settingsAdaptor.audioCodecsStateChange(idToSet , isToBeEnabled)
-                                    updateAudioCodecs()
-                                }
+                        model: audioCodecListModelSIP
+
+                        delegate: AudioCodecDelegate {
+                            id: audioCodecDelegate
+
+                            width: audioListWidgetSIP.width
+                            height: audioListWidgetSIP.height / 4
+
+                            layer.mipmap: false
+                            clip: true
+
+                            audioCodecName : AudioCodecName
+                            isEnabled : IsEnabled
+                            audioCodecId: AudioCodecID
+                            samplerRate: Samplerate
+
+                            onClicked: {
+                                audioListWidget.currentIndex = index
+                            }
+
+                            onAudioCodecStateChange:{
+                                ClientWrapper.settingsAdaptor.audioCodecsStateChange(idToSet , isToBeEnabled)
+                                updateAudioCodecs()
                             }
                         }
                     }
                 }
             }
+        }
+    }
 
+    // SDP Session
+    ColumnLayout {
+        spacing: 8
+        Layout.fillWidth: true
+
+        ElidedTextLabel {
+            Layout.fillWidth: true
+            Layout.minimumHeight: JamiTheme.preferredFieldHeight
+            Layout.preferredHeight: JamiTheme.preferredFieldHeight
+            Layout.maximumHeight: JamiTheme.preferredFieldHeight
+
+            eText: qsTr("SDP Session Negotiation (ICE Fallback)")
+            fontSize: JamiTheme.headerFontSize
+            maxWidth: preferredSettingsWidth
         }
 
-        Item {
+        ElidedTextLabel {
             Layout.fillWidth: true
+            Layout.minimumHeight: JamiTheme.preferredFieldHeight
+            Layout.preferredHeight: JamiTheme.preferredFieldHeight
+            Layout.maximumHeight: JamiTheme.preferredFieldHeight
+            Layout.leftMargin: JamiTheme.preferredMarginSize
 
-            Layout.maximumHeight: 20
-            Layout.preferredHeight: 20
-            Layout.minimumHeight: 20
+            eText: qsTr("Only used during negotiation in case ICE is not supported")
+            fontSize: JamiTheme.settingsFontSize
+            maxWidth: preferredSettingsWidth
         }
 
-        ColumnLayout{
-            spacing: 6
+        GridLayout {
             Layout.fillWidth: true
+            Layout.leftMargin: JamiTheme.preferredMarginSize
 
-            Label {
+            rowSpacing: 8
+            columnSpacing: 8
+
+            rows: 4
+            columns: 2
+
+            // 1st row
+            ElidedTextLabel {
                 Layout.fillWidth: true
+                Layout.minimumHeight: JamiTheme.preferredFieldHeight
+                Layout.preferredHeight: JamiTheme.preferredFieldHeight
+                Layout.maximumHeight: JamiTheme.preferredFieldHeight
 
-                Layout.minimumHeight: 27
-                Layout.preferredHeight: 27
-                Layout.maximumHeight: 27
+                eText: qsTr("Audio RTP Min Port")
+                fontSize: JamiTheme.settingsFontSize
+                maxWidth: preferredColumnWidth
+            }
 
-                text: qsTr("SDP Session Negotiation(ICE Fallback)")
+            SpinBox {
+                id:audioRTPMinPortSpinBox
 
-                font.pointSize: 13
+                Layout.maximumWidth: preferredColumnWidth
+                Layout.minimumWidth: preferredColumnWidth
+                Layout.preferredWidth: preferredColumnWidth
+                Layout.maximumHeight: JamiTheme.preferredFieldHeight
+                Layout.minimumHeight: JamiTheme.preferredFieldHeight
+                Layout.preferredHeight: JamiTheme.preferredFieldHeight
+
+                font.pointSize: JamiTheme.settingsFontSize
                 font.kerning: true
 
-                horizontalAlignment: Text.AlignLeft
-                verticalAlignment: Text.AlignVCenter
+                from: 0
+                to: 65535
+                stepSize: 1
+
+                up.indicator.width: (width < 200) ? (width / 5) : 40
+                down.indicator.width: (width < 200) ? (width / 5) : 40
+
+                onValueModified: {
+                    audioRTPMinPortSpinBoxEditFinished(value)
+                }
             }
 
-            Label {
+            // 2nd row
+            ElidedTextLabel {
                 Layout.fillWidth: true
+                Layout.minimumHeight: JamiTheme.preferredFieldHeight
+                Layout.preferredHeight: JamiTheme.preferredFieldHeight
+                Layout.maximumHeight: JamiTheme.preferredFieldHeight
 
-                Layout.minimumHeight: 21
-                Layout.preferredHeight: 21
-                Layout.maximumHeight: 21
+                eText: qsTr("Audio RTP Max Port")
+                fontSize: JamiTheme.settingsFontSize
+                maxWidth: preferredColumnWidth
+            }
 
-                text: qsTr("Only used during negotiation in case ICE is not supported")
+            SpinBox {
+                id:audioRTPMaxPortSpinBox
 
-                font.pointSize: 10
+                Layout.maximumWidth: preferredColumnWidth
+                Layout.minimumWidth: preferredColumnWidth
+                Layout.preferredWidth: preferredColumnWidth
+                Layout.maximumHeight: JamiTheme.preferredFieldHeight
+                Layout.minimumHeight: JamiTheme.preferredFieldHeight
+                Layout.preferredHeight: JamiTheme.preferredFieldHeight
+
+                font.pointSize: JamiTheme.settingsFontSize
                 font.kerning: true
 
-                horizontalAlignment: Text.AlignLeft
-                verticalAlignment: Text.AlignVCenter
+                from: 0
+                to: 65535
+                stepSize: 1
+
+                up.indicator.width: (width < 200) ? (width / 5) : 40
+                down.indicator.width: (width < 200) ? (width / 5) : 40
+
+                onValueModified: {
+                    audioRTPMaxPortSpinBoxEditFinished(value)
+                }
             }
 
-            Item {
+            // 3rd row
+            ElidedTextLabel {
                 Layout.fillWidth: true
+                Layout.minimumHeight: JamiTheme.preferredFieldHeight
+                Layout.preferredHeight: JamiTheme.preferredFieldHeight
+                Layout.maximumHeight: JamiTheme.preferredFieldHeight
 
-                Layout.maximumHeight: 10
-                Layout.preferredHeight: 10
-                Layout.minimumHeight: 10
+                eText: qsTr("Video RTP Min Port")
+                fontSize: JamiTheme.settingsFontSize
+                maxWidth: preferredColumnWidth
             }
 
-            GridLayout{
-                Layout.leftMargin: 20
+            SpinBox {
+                id:videoRTPMinPortSpinBox
+
+                Layout.maximumWidth: preferredColumnWidth
+                Layout.minimumWidth: preferredColumnWidth
+                Layout.preferredWidth: preferredColumnWidth
+                Layout.maximumHeight: JamiTheme.preferredFieldHeight
+                Layout.minimumHeight: JamiTheme.preferredFieldHeight
+                Layout.preferredHeight: JamiTheme.preferredFieldHeight
+
+                font.pointSize: JamiTheme.settingsFontSize
+                font.kerning: true
+
+                from: 0
+                to: 65535
+                stepSize: 1
+
+                up.indicator.width: (width < 200) ? (width / 5) : 40
+                down.indicator.width: (width < 200) ? (width / 5) : 40
+
+                onValueModified: {
+                    videoRTPMinPortSpinBoxEditFinished(value)
+                }
+            }
+
+            // 4th row
+            ElidedTextLabel {
                 Layout.fillWidth: true
+                Layout.minimumHeight: JamiTheme.preferredFieldHeight
+                Layout.preferredHeight: JamiTheme.preferredFieldHeight
+                Layout.maximumHeight: JamiTheme.preferredFieldHeight
 
-                rowSpacing: 6
-                columnSpacing: 6
+                eText: qsTr("Video RTP Max Port")
+                fontSize: JamiTheme.settingsFontSize
+                maxWidth: preferredColumnWidth
+            }
 
-                rows: 4
-                columns: 3
+            SpinBox {
+                id:videoRTPMaxPortSpinBox
 
-                // 1st row
-                Label{
-                    Layout.minimumWidth: 162
-                    Layout.preferredWidth: 162
-                    Layout.maximumWidth: 162
+                Layout.maximumWidth: preferredColumnWidth
+                Layout.minimumWidth: preferredColumnWidth
+                Layout.preferredWidth: preferredColumnWidth
+                Layout.maximumHeight: JamiTheme.preferredFieldHeight
+                Layout.minimumHeight: JamiTheme.preferredFieldHeight
+                Layout.preferredHeight: JamiTheme.preferredFieldHeight
 
-                    Layout.minimumHeight: 28
-                    Layout.preferredHeight: 28
-                    Layout.maximumHeight: 28
+                font.pointSize: JamiTheme.settingsFontSize
+                font.kerning: true
 
-                    text: qsTr("Audio RTP Min Port")
-                    font.pointSize: 10
-                    font.kerning: true
+                from: 0
+                to: 65535
+                stepSize: 1
 
-                    horizontalAlignment: Text.AlignLeft
-                    verticalAlignment: Text.AlignVCenter
+                up.indicator.width: (width < 200) ? (width / 5) : 40
+                down.indicator.width: (width < 200) ? (width / 5) : 40
 
-                    Layout.row: 0
-                    Layout.column: 0
-                }
-
-                Item{
-                    Layout.fillHeight: true
-                    Layout.fillWidth: true
-
-                    Layout.row: 0
-                    Layout.column: 1
-                }
-
-                SpinBox{
-                    id:audioRTPMinPortSpinBox
-
-                    Layout.minimumWidth: 250
-                    Layout.preferredWidth: 250
-                    Layout.maximumWidth: 250
-
-                    Layout.minimumHeight: 30
-                    Layout.preferredHeight: 30
-                    Layout.maximumHeight: 30
-
-                    font.pointSize: 10
-                    font.kerning: true
-
-                    from: 0
-                    to: 65535
-                    stepSize: 1
-
-                    Layout.row: 0
-                    Layout.column: 2
-
-                    onValueModified: {
-                        audioRTPMinPortSpinBoxEditFinished(value)
-                    }
-                }
-
-                // 2nd row
-                Label{
-                    Layout.minimumWidth: 162
-                    Layout.preferredWidth: 162
-                    Layout.maximumWidth: 162
-
-                    Layout.minimumHeight: 28
-                    Layout.preferredHeight: 28
-                    Layout.maximumHeight: 28
-
-                    text: qsTr("Audio RTP Max Port")
-                    font.pointSize: 10
-                    font.kerning: true
-
-                    horizontalAlignment: Text.AlignLeft
-                    verticalAlignment: Text.AlignVCenter
-
-                    Layout.row: 1
-                    Layout.column: 0
-                }
-
-                Item{
-                    Layout.fillHeight: true
-                    Layout.fillWidth: true
-
-                    Layout.row: 1
-                    Layout.column: 1
-                }
-
-                SpinBox{
-                    id:audioRTPMaxPortSpinBox
-
-                    Layout.minimumWidth: 250
-                    Layout.preferredWidth: 250
-                    Layout.maximumWidth: 250
-
-                    Layout.minimumHeight: 30
-                    Layout.preferredHeight: 30
-                    Layout.maximumHeight: 30
-
-                    font.pointSize: 10
-                    font.kerning: true
-
-                    from: 0
-                    to: 65535
-                    stepSize: 1
-
-                    Layout.row: 1
-                    Layout.column: 2
-
-                    onValueModified: {
-                        audioRTPMaxPortSpinBoxEditFinished(value)
-                    }
-                }
-
-                // 3rd row
-                Label{
-                    Layout.minimumWidth: 162
-                    Layout.preferredWidth: 162
-                    Layout.maximumWidth: 162
-
-                    Layout.minimumHeight: 28
-                    Layout.preferredHeight: 28
-                    Layout.maximumHeight: 28
-
-                    text: qsTr("Video RTP Min Port")
-                    font.pointSize: 10
-                    font.kerning: true
-
-                    horizontalAlignment: Text.AlignLeft
-                    verticalAlignment: Text.AlignVCenter
-
-                    Layout.row: 2
-                    Layout.column: 0
-                }
-
-                Item{
-                    Layout.fillHeight: true
-                    Layout.fillWidth: true
-
-                    Layout.row: 2
-                    Layout.column: 1
-                }
-
-                SpinBox{
-                    id:videoRTPMinPortSpinBox
-
-                    Layout.minimumWidth: 250
-                    Layout.preferredWidth: 250
-                    Layout.maximumWidth: 250
-
-                    Layout.minimumHeight: 30
-                    Layout.preferredHeight: 30
-                    Layout.maximumHeight: 30
-
-                    font.pointSize: 10
-                    font.kerning: true
-
-                    from: 0
-                    to: 65535
-                    stepSize: 1
-
-                    Layout.row: 2
-                    Layout.column: 2
-
-                    onValueModified: {
-                        videoRTPMinPortSpinBoxEditFinished(value)
-                    }
-                }
-
-                // 4th row
-                Label{
-                    Layout.minimumWidth: 162
-                    Layout.preferredWidth: 162
-                    Layout.maximumWidth: 162
-
-                    Layout.minimumHeight: 28
-                    Layout.preferredHeight: 28
-                    Layout.maximumHeight: 28
-
-                    text: qsTr("Video RTP Max Port")
-                    font.pointSize: 10
-                    font.kerning: true
-
-                    horizontalAlignment: Text.AlignLeft
-                    verticalAlignment: Text.AlignVCenter
-
-                    Layout.row: 3
-                    Layout.column: 0
-                }
-
-                Item{
-                    Layout.fillHeight: true
-                    Layout.fillWidth: true
-
-                    Layout.row: 3
-                    Layout.column: 1
-                }
-
-                SpinBox{
-                    id:videoRTPMaxPortSpinBox
-
-                    Layout.minimumWidth: 250
-                    Layout.preferredWidth: 250
-                    Layout.maximumWidth: 250
-
-                    Layout.minimumHeight: 30
-                    Layout.preferredHeight: 30
-                    Layout.maximumHeight: 30
-
-                    font.pointSize: 10
-                    font.kerning: true
-
-                    from: 0
-                    to: 65535
-                    stepSize: 1
-
-                    Layout.row: 3
-                    Layout.column: 2
-
-                    onValueModified: {
-                        videoRTPMaxPortSpinBoxEditFinished(value)
-                    }
+                onValueModified: {
+                    videoRTPMaxPortSpinBoxEditFinished(value)
                 }
             }
         }
-
-        // spacers
-        Item {
-            Layout.fillWidth: true
-
-            Layout.maximumHeight: 48
-            Layout.preferredHeight: 48
-            Layout.minimumHeight: 48
-        }
-
-        Item {
-            Layout.fillHeight: true
-            Layout.fillWidth: true
-        }
+    }
 }
 
 

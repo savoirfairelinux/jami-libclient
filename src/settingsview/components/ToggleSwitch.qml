@@ -23,9 +23,10 @@ import QtQuick.Controls.Universal 2.12
 import QtQuick.Layouts 1.3
 import QtGraphicalEffects 1.14
 import QtQuick.Controls.Styles 1.4
+import "../../commoncomponents"
 
 RowLayout {
-    property string labelText: value
+    property string labelText: ""
     property int widthOfSwitch: 50
     property int heightOfSwitch: 10
     property int heightOfLayout: 30
@@ -36,13 +37,26 @@ RowLayout {
 
     signal switchToggled
 
-    spacing: 18
+    spacing: 8
     Layout.fillWidth: true
-    Layout.maximumHeight: 30
+    Layout.maximumHeight: 32
+
+    ElidedTextLabel {
+        Layout.fillWidth: true
+
+        Layout.minimumHeight: heightOfLayout
+        Layout.preferredHeight: heightOfLayout
+        Layout.maximumHeight: heightOfLayout
+
+        eText: qsTr(labelText)
+        fontSize: fontPointSize
+        maxWidth: parent.width - widthOfSwitch
+
+    }
 
     Switch {
         id: switchOfLayout
-        Layout.alignment: Qt.AlignVCenter
+        Layout.alignment: Qt.AlignVCenter | Qt.AlignRight
 
         Layout.maximumWidth: widthOfSwitch
         Layout.preferredWidth: widthOfSwitch
@@ -55,20 +69,5 @@ RowLayout {
         onToggled: {
             switchToggled()
         }
-    }
-
-    Label {
-        Layout.fillWidth: true
-
-        Layout.minimumHeight: heightOfLayout
-        Layout.preferredHeight: heightOfLayout
-        Layout.maximumHeight: heightOfLayout
-
-        text: qsTr(labelText)
-        font.pointSize: fontPointSize
-        font.kerning: true
-
-        horizontalAlignment: Text.AlignLeft
-        verticalAlignment: Text.AlignVCenter
     }
 }

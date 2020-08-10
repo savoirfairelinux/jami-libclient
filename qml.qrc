@@ -95,5 +95,6 @@
         <file>src/wizardview/components/HoverableGradientButton.qml</file>
         <file>src/commoncomponents/AccountMigrationDialog.qml</file>
         <file>src/mainview/components/RecordBox.qml</file>
+        <file>src/commoncomponents/ElidedTextLabel.qml</file>
     </qresource>
 </RCC>

@@ -75,8 +75,16 @@ Item {
 
     property int splitViewHandlePreferredWidth: 4
     property int textFontSize: 9
+    property int settingsFontSize: 10
+    property int buttonFontSize: 9
+    property int headerFontSize: 13
     property int titleFontSize: 16
     property int menuFontSize: 12
+
+    property int maximumWidthSettingsView: 800
+    property int preferredButtonWidth: 200
+    property int preferredFieldHeight: 32
+    property int preferredMarginSize: 16
 
 
     /*

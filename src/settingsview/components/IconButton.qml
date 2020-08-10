@@ -56,9 +56,9 @@ Button {
         setCheckedState(true, true)
     }
 
-    Layout.minimumHeight: 60
-    Layout.preferredHeight: 60
-    Layout.maximumHeight: 60
+    Layout.minimumHeight: 64
+    Layout.preferredHeight: 64
+    Layout.maximumHeight: 64
 
     Layout.fillWidth: true
 
@@ -92,7 +92,7 @@ Button {
                 Layout.fillHeight: true
                 Layout.fillWidth: true
 
-                font.pointSize: 11
+                font.pointSize: JamiTheme.textFontSize+2
                 font.kerning: true
 
                 horizontalAlignment: Text.AlignLeft

@@ -82,7 +82,7 @@ Rectangle {
             var device = ClientWrapper.avmodel.getDefaultDevice()
             var settings = ClientWrapper.settingsAdaptor.get_Video_Settings_Size(device)
             var res = settings.split("x")
-            var aspectRatio = res[1]/res[0]
+            var aspectRatio = res[1] / res[0]
             if (aspectRatio) {
                 height = preferredWidth*aspectRatio
             } else {

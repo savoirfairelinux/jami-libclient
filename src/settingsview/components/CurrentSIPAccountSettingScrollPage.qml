@@ -27,9 +27,12 @@ import net.jami.Models 1.0
 import "../../commoncomponents"
 
 Rectangle {
+    id: sipAccountViewRect
     signal navigateToMainView
     signal navigateToNewWizardView
     signal backArrowClicked
+
+    property int preferredColumnWidth : sipAccountViewRect.width / 2 - 50
 
     function updateAccountInfoDisplayed() {
         displaySIPNameLineEdit.text = ClientWrapper.settingsAdaptor.getCurrentAccount_Profile_Info_Alias()
@@ -54,7 +57,7 @@ Rectangle {
     function setAvatar() {
         currentSIPAccountAvatar.setAvatarPixmap(
                     ClientWrapper.settingsAdaptor.getAvatarImage_Base64(
-                        currentSIPAccountAvatar.boothWidht),
+                        currentSIPAccountAvatar.boothWidth),
                     ClientWrapper.settingsAdaptor.getIsDefaultAvatar())
     }
 
@@ -91,47 +94,30 @@ Rectangle {
     }
 
     Layout.fillHeight: true
-    Layout.fillWidth: true
+    Layout.maximumWidth: JamiTheme.maximumWidthSettingsView
+    anchors.centerIn: parent
 
     ColumnLayout {
-        anchors.fill: parent
-        spacing: 0
-
-        Item {
-            Layout.fillWidth: true
-
-            Layout.maximumHeight: 10
-            Layout.minimumHeight: 10
-            Layout.preferredHeight: 10
-
-            Layout.alignment: Qt.AlignTop
-        }
+        anchors.fill: sipAccountViewRect
 
         RowLayout {
-            spacing: 6
-
-            Layout.alignment: Qt.AlignTop
-
+            id: sipAccountPageTitle
+            Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
+            Layout.leftMargin: JamiTheme.preferredMarginSize
             Layout.fillWidth: true
-            Layout.maximumHeight: 31
-            Layout.minimumHeight: 0
-            Layout.preferredHeight: accountPageTitleSIP.height
-
-            Item {
-                Layout.fillHeight: true
-
-                Layout.maximumWidth: 48
-                Layout.preferredWidth: 48
-                Layout.minimumWidth: 48
-            }
+            Layout.maximumHeight: 64
+            Layout.minimumHeight: 64
+            Layout.preferredHeight: 64
 
             HoverableButton {
+                id: backToSettingsMenuButton
 
                 Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
-                Layout.preferredWidth: 30
-                Layout.preferredHeight: 30
+                Layout.preferredWidth: JamiTheme.preferredFieldHeight
+                Layout.preferredHeight: JamiTheme.preferredFieldHeight
+                Layout.rightMargin: JamiTheme.preferredMarginSize
 
-                radius: 30
+                radius: 32
                 source: "qrc:/images/icons/ic_arrow_back_24px.svg"
                 backgroundColor: "white"
                 onExitColor: "white"
@@ -143,510 +129,376 @@ Rectangle {
                 }
             }
 
-            Label {
-                id: accountPageTitleSIP
-
-                Layout.preferredWidth: 133
-
-                Layout.preferredHeight: 31
-                Layout.minimumHeight: 25
-
-                text: qsTr("SIP Account")
-
-                font.pointSize: 15
-                font.kerning: true
-
-                horizontalAlignment: Text.AlignLeft
-                verticalAlignment: Text.AlignVCenter
-            }
-
-            Item {
+            ElidedTextLabel {
                 Layout.fillWidth: true
-                Layout.fillHeight: true
+                Layout.maximumHeight: JamiTheme.preferredFieldHeight
+                Layout.preferredHeight: JamiTheme.preferredFieldHeight
+                Layout.minimumHeight: JamiTheme.preferredFieldHeight
+
+                eText: qsTr("Account Settings")
+                fontSize: JamiTheme.titleFontSize
+                maxWidth: !backToSettingsMenuButton.visible ? sipAccountViewRect.width - 100 :
+                                                              sipAccountViewRect.width - backToSettingsMenuButton.width - 100
+
             }
         }
 
         ScrollView {
-            id: accountSIPScrollView
+            id: sipAccountScrollView
 
-            property ScrollBar hScrollBar: ScrollBar.horizontal
             property ScrollBar vScrollBar: ScrollBar.vertical
 
             Layout.fillHeight: true
             Layout.fillWidth: true
+            Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
 
-            ScrollBar.horizontal.policy: ScrollBar.AsNeeded
+            width: sipAccountViewRect.width
+            height: sipAccountViewRect.height - sipAccountPageTitle.height
+
+            ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
             ScrollBar.vertical.policy: ScrollBar.AsNeeded
 
-            font.pointSize: 8
-            font.kerning: true
             clip: true
 
             ColumnLayout {
                 id: accountSIPLayout
 
                 Layout.fillHeight: true
-                Layout.maximumWidth: 598
+                Layout.preferredWidth: sipAccountViewRect.width
+                Layout.alignment: Qt.AlignHCenter
 
-                Item {
-                    Layout.fillHeight: true
+                spacing: 24
 
-                    Layout.maximumWidth: 30
-                    Layout.preferredWidth: 30
-                    Layout.minimumWidth: 30
+                ToggleSwitch {
+                    id: accountSIPEnableCheckBox
+
+                    Layout.topMargin: JamiTheme.preferredMarginSize
+                    Layout.leftMargin: JamiTheme.preferredMarginSize
+
+                    labelText: qsTr("Enable")
+                    fontPointSize: JamiTheme.headerFontSize
+
+                    onSwitchToggled: {
+                        setAccEnableSlot(checked)
+                    }
                 }
 
                 ColumnLayout {
-                    spacing: 6
-                    Layout.fillHeight: true
                     Layout.fillWidth: true
+                    Layout.fillHeight: true
+                    Layout.leftMargin: JamiTheme.preferredMarginSize
+                    spacing: 8
 
-                    Layout.leftMargin: 48
+                    Label {
+                        Layout.fillWidth: true
 
-                    Item {
-                        Layout.fillHeight: true
+                        Layout.maximumHeight: JamiTheme.preferredFieldHeight
+                        Layout.preferredHeight: JamiTheme.preferredFieldHeight
+                        Layout.minimumHeight: JamiTheme.preferredFieldHeight
 
-                        Layout.maximumWidth: 24
-                        Layout.preferredWidth: 24
-                        Layout.minimumWidth: 24
+                        text: qsTr("Profile")
+                        font.pointSize: JamiTheme.headerFontSize
+                        font.kerning: true
+
+                        horizontalAlignment: Text.AlignLeft
+                        verticalAlignment: Text.AlignVCenter
                     }
 
-                    ToggleSwitch {
-                        id: accountSIPEnableCheckBox
+                    PhotoboothView {
+                        id: currentSIPAccountAvatar
 
-                        labelText: qsTr("Enable")
-                        fontPointSize: 10
+                        Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
 
-                        onSwitchToggled: {
-                            setAccEnableSlot(checked)
+                        boothWidth: Math.min(224, sipAccountViewRect.width - 100)
+
+                        Layout.maximumWidth: boothWidth+50
+                        Layout.preferredWidth: boothWidth+50
+                        Layout.minimumWidth: boothWidth+50
+                        Layout.maximumHeight: boothWidth+50
+                        Layout.preferredHeight: boothWidth+50
+                        Layout.minimumHeight: boothWidth+50
+
+                        onImageAcquired: {
+                            ClientWrapper.settingsAdaptor.setCurrAccAvatar(imgBase64)
+                        }
+
+                        onImageCleared: {
+                            ClientWrapper.settingsAdaptor.clearCurrentAvatar()
+                            setAvatar()
                         }
                     }
 
-                    Item {
-                        Layout.fillHeight: true
+                    InfoLineEdit {
+                        id: displaySIPNameLineEdit
 
-                        Layout.maximumWidth: 20
-                        Layout.preferredWidth: 20
-                        Layout.minimumWidth: 20
+                        Layout.maximumWidth: JamiTheme.preferredButtonWidth
+                        Layout.minimumHeight: JamiTheme.preferredFieldHeight
+                        Layout.preferredHeight: JamiTheme.preferredFieldHeight
+                        Layout.maximumHeight: JamiTheme.preferredFieldHeight
+
+                        Layout.alignment: Qt.AlignHCenter
+
+                        font.pointSize: JamiTheme.textFontSize
+                        font.kerning: true
+
+                        horizontalAlignment: Text.AlignHCenter
+                        verticalAlignment: Text.AlignVCenter
+
+                        onEditingFinished: {
+                            ClientWrapper.accountAdaptor.setCurrAccDisplayName(
+                                        displaySIPNameLineEdit.text)
+                        }
                     }
+                }
 
-                    ColumnLayout {
+
+                ColumnLayout {
+                    Layout.fillWidth: true
+                    Layout.alignment: Qt.AlignHCenter
+                    Layout.leftMargin: JamiTheme.preferredMarginSize
+                    spacing: 8
+
+                    ElidedTextLabel {
                         Layout.fillWidth: true
 
-                        Label {
+                        Layout.maximumHeight: JamiTheme.preferredFieldHeight
+                        Layout.preferredHeight: JamiTheme.preferredFieldHeight
+                        Layout.minimumHeight: JamiTheme.preferredFieldHeight
+
+                        eText: qsTr("Identity")
+                        maxWidth: sipAccountViewRect.width - 72
+                        fontSize: JamiTheme.headerFontSize
+                    }
+
+
+                    GridLayout {
+                        rows: 4
+                        columns: 2
+                        flow: GridLayout.LeftToRight
+                        rowSpacing: 8
+                        columnSpacing: 6
+
+                        Layout.fillWidth: true
+                        Layout.leftMargin: JamiTheme.preferredMarginSize
+
+                        // user name
+                        ElidedTextLabel {
                             Layout.fillWidth: true
+                            Layout.maximumHeight: JamiTheme.preferredFieldHeight
+                            Layout.preferredHeight: JamiTheme.preferredFieldHeight
+                            Layout.minimumHeight: JamiTheme.preferredFieldHeight
 
-                            Layout.maximumHeight: 21
-                            Layout.preferredHeight: 21
-                            Layout.minimumHeight: 21
+                            eText: qsTr("Username")
+                            fontSize: JamiTheme.settingsFontSize
+                            maxWidth: preferredColumnWidth
+                        }
 
-                            text: qsTr("Profile")
-                            font.pointSize: 13
+                        InfoLineEdit {
+                            id: usernameSIP
+
+                            fieldLayoutWidth: preferredColumnWidth
+
+                            font.pointSize: JamiTheme.settingsFontSize // Albert: buttonSize?
                             font.kerning: true
 
                             horizontalAlignment: Text.AlignLeft
                             verticalAlignment: Text.AlignVCenter
-                        }
 
-                        Item {
-                            Layout.fillWidth: true
-
-                            Layout.maximumHeight: 10
-                            Layout.preferredHeight: 10
-                            Layout.minimumHeight: 10
-                        }
-
-                        ColumnLayout {
-                            Layout.fillWidth: true
-                            layoutDirection: Qt.LeftToRight
-
-                            spacing: 6
-
-                            PhotoboothView {
-                                id: currentSIPAccountAvatar
-
-                                Layout.alignment: Qt.AlignHCenter
-
-                                Layout.maximumWidth: 261
-                                Layout.preferredWidth: 261
-                                Layout.minimumWidth: 261
-                                Layout.maximumHeight: 261
-                                Layout.preferredHeight: 261
-                                Layout.minimumHeight: 261
-
-                                Layout.leftMargin: 20
-
-                                onImageAcquired: {
-                                    ClientWrapper.settingsAdaptor.setCurrAccAvatar(imgBase64)
-                                }
-
-                                onImageCleared: {
-                                    ClientWrapper.settingsAdaptor.clearCurrentAvatar()
-                                    setAvatar()
-                                }
-                            }
-
-                            InfoLineEdit {
-                                id: displaySIPNameLineEdit
-
-                                fieldLayoutWidth: 261
-
-                                Layout.leftMargin: 20
-
-                                font.pointSize: 10
-                                font.kerning: true
-
-                                horizontalAlignment: Text.AlignHCenter
-                                verticalAlignment: Text.AlignVCenter
-
-                                onEditingFinished: {
-                                    ClientWrapper.accountAdaptor.setCurrAccDisplayName(
-                                                displaySIPNameLineEdit.text)
-                                }
+                            onEditingFinished: {
+                                ClientWrapper.settingsAdaptor.setAccountConfig_Username(
+                                            usernameSIP.text)
                             }
                         }
-                    }
 
-                    Item {
-                        Layout.fillWidth: true
-
-                        Layout.maximumHeight: 20
-                        Layout.preferredHeight: 20
-                        Layout.minimumHeight: 20
-                    }
-
-                    ColumnLayout {
-                        Layout.fillWidth: true
-                        spacing: 6
-
-                        Label {
+                        // host name
+                        ElidedTextLabel {
                             Layout.fillWidth: true
+                            Layout.maximumHeight: JamiTheme.preferredFieldHeight
+                            Layout.preferredHeight: JamiTheme.preferredFieldHeight
+                            Layout.minimumHeight: JamiTheme.preferredFieldHeight
 
-                            Layout.maximumHeight: 27
-                            Layout.preferredHeight: 27
-                            Layout.minimumHeight: 27
+                            eText: qsTr("Hostname")
+                            fontSize: JamiTheme.settingsFontSize
+                            maxWidth: preferredColumnWidth
+                        }
 
-                            text: qsTr("Identity")
-                            font.pointSize: 13
+                        InfoLineEdit {
+                            id: hostnameSIP
+
+                            fieldLayoutWidth: preferredColumnWidth
+
+                            font.pointSize: JamiTheme.settingsFontSize // Albert: button?
                             font.kerning: true
 
                             horizontalAlignment: Text.AlignLeft
                             verticalAlignment: Text.AlignVCenter
-                        }
 
-                        Item {
-                            Layout.fillWidth: true
-
-                            Layout.maximumHeight: 10
-                            Layout.preferredHeight: 10
-                            Layout.minimumHeight: 10
-                        }
-
-                        ColumnLayout {
-                            Layout.fillWidth: true
-                            spacing: 6
-
-                            GridLayout {
-                                rows: 4
-                                columns: 2
-                                flow: GridLayout.LeftToRight
-                                rowSpacing: 14
-                                columnSpacing: 6
-
-                                Layout.fillWidth: true
-
-                                Layout.leftMargin: 20
-
-                                // user name
-                                Label {
-                                    Layout.maximumWidth: 76
-                                    Layout.preferredWidth: 76
-                                    Layout.minimumWidth: 76
-
-                                    Layout.maximumHeight: 30
-                                    Layout.preferredHeight: 30
-                                    Layout.minimumHeight: 30
-
-                                    text: qsTr("Username")
-                                    font.pointSize: 10
-                                    font.kerning: true
-
-                                    horizontalAlignment: Text.AlignLeft
-                                    verticalAlignment: Text.AlignVCenter
-                                }
-
-                                InfoLineEdit {
-                                    id: usernameSIP
-
-                                    fieldLayoutWidth: 300
-
-                                    font.pointSize: 10
-                                    font.kerning: true
-
-                                    horizontalAlignment: Text.AlignLeft
-                                    verticalAlignment: Text.AlignVCenter
-
-                                    onEditingFinished: {
-                                        ClientWrapper.settingsAdaptor.setAccountConfig_Username(
-                                                    usernameSIP.text)
-                                    }
-                                }
-
-                                // host name
-                                Label {
-                                    Layout.maximumWidth: 76
-                                    Layout.preferredWidth: 76
-                                    Layout.minimumWidth: 76
-
-                                    Layout.maximumHeight: 30
-                                    Layout.preferredHeight: 30
-                                    Layout.minimumHeight: 30
-
-                                    text: qsTr("Hostname")
-                                    font.pointSize: 10
-                                    font.kerning: true
-
-                                    horizontalAlignment: Text.AlignLeft
-                                    verticalAlignment: Text.AlignVCenter
-                                }
-
-                                InfoLineEdit {
-                                    id: hostnameSIP
-
-                                    fieldLayoutWidth: 300
-
-                                    font.pointSize: 10
-                                    font.kerning: true
-
-                                    horizontalAlignment: Text.AlignLeft
-                                    verticalAlignment: Text.AlignVCenter
-
-                                    onEditingFinished: {
-                                        ClientWrapper.settingsAdaptor.setAccountConfig_Hostname(
-                                                    hostnameSIP.text)
-                                    }
-                                }
-
-                                // proxy
-                                Label {
-                                    Layout.maximumWidth: 76
-                                    Layout.preferredWidth: 76
-                                    Layout.minimumWidth: 76
-
-                                    Layout.maximumHeight: 30
-                                    Layout.preferredHeight: 30
-                                    Layout.minimumHeight: 30
-
-                                    text: qsTr("Proxy")
-                                    font.pointSize: 10
-                                    font.kerning: true
-
-                                    horizontalAlignment: Text.AlignLeft
-                                    verticalAlignment: Text.AlignVCenter
-                                }
-
-                                InfoLineEdit {
-                                    id: proxySIP
-
-                                    fieldLayoutWidth: 300
-
-                                    font.pointSize: 10
-                                    font.kerning: true
-
-                                    horizontalAlignment: Text.AlignLeft
-                                    verticalAlignment: Text.AlignVCenter
-
-                                    onEditingFinished: {
-                                        ClientWrapper.settingsAdaptor.setAccountConfig_ProxyServer(
-                                                    proxySIP.text)
-                                    }
-                                }
-
-                                // password
-                                Label {
-                                    Layout.maximumWidth: 76
-                                    Layout.preferredWidth: 76
-                                    Layout.minimumWidth: 76
-
-                                    Layout.maximumHeight: 30
-                                    Layout.preferredHeight: 30
-                                    Layout.minimumHeight: 30
-
-                                    text: qsTr("Password")
-                                    font.pointSize: 10
-                                    font.kerning: true
-
-                                    horizontalAlignment: Text.AlignLeft
-                                    verticalAlignment: Text.AlignVCenter
-                                }
-
-                                InfoLineEdit {
-                                    id: passSIPlineEdit
-
-                                    fieldLayoutWidth: 300
-
-                                    font.pointSize: 10
-                                    font.kerning: true
-
-                                    echoMode: TextInput.Password
-                                    horizontalAlignment: Text.AlignLeft
-                                    verticalAlignment: Text.AlignVCenter
-
-                                    onEditingFinished: {
-                                        ClientWrapper.settingsAdaptor.setAccountConfig_Password(
-                                                    passSIPlineEdit.text)
-                                    }
-                                }
-                            }
-
-                            Item {
-                                Layout.fillWidth: true
-
-                                Layout.maximumHeight: 10
-                                Layout.preferredHeight: 10
-                                Layout.minimumHeight: 10
-                            }
-
-                            RowLayout {
-                                Layout.fillWidth: true
-                                Layout.maximumHeight: 30
-                                Layout.leftMargin: 20
-
-                                HoverableButtonTextItem {
-                                    id: btnSIPDeletAccount
-
-                                    backgroundColor: "red"
-                                    onEnterColor: Qt.rgba(150 / 256, 0, 0, 0.7)
-                                    onDisabledBackgroundColor: Qt.rgba(
-                                                                   255 / 256,
-                                                                   0, 0, 0.8)
-                                    onPressColor: backgroundColor
-                                    textColor: "white"
-
-                                    Layout.maximumWidth: 261
-                                    Layout.preferredWidth: 261
-                                    Layout.minimumWidth: 261
-
-                                    Layout.maximumHeight: 30
-                                    Layout.preferredHeight: 30
-                                    Layout.minimumHeight: 30
-
-                                    radius: height / 2
-
-                                    text: qsTr("Delete Account")
-                                    font.pointSize: 10
-                                    font.kerning: true
-
-                                    onClicked: {
-                                        delAccountSlot()
-                                    }
-                                }
-
-                                Item {
-                                    Layout.fillHeight: true
-                                    Layout.fillWidth: true
-                                }
+                            onEditingFinished: {
+                                ClientWrapper.settingsAdaptor.setAccountConfig_Hostname(
+                                            hostnameSIP.text)
                             }
                         }
-                    }
 
-                    Item {
-                        Layout.fillWidth: true
-
-                        Layout.maximumHeight: 40
-                        Layout.preferredHeight: 40
-                        Layout.minimumHeight: 40
-                    }
-
-                    RowLayout {
-                        Layout.fillWidth: true
-
-                        Layout.minimumHeight: 30
-                        Layout.preferredHeight: 30
-                        Layout.maximumHeight: 30
-
-                        Layout.minimumWidth: 598
-                        Layout.preferredWidth: 598
-
-                        Item {
+                        // proxy
+                        ElidedTextLabel {
                             Layout.fillWidth: true
-                            Layout.fillHeight: true
+                            Layout.maximumHeight: JamiTheme.preferredFieldHeight
+                            Layout.preferredHeight: JamiTheme.preferredFieldHeight
+                            Layout.minimumHeight: JamiTheme.preferredFieldHeight
+
+                            text: qsTr("Proxy")
+                            font.pointSize: JamiTheme.settingsFontSize
+                            maxWidth: preferredColumnWidth
                         }
 
-                        HoverableRadiusButton {
-                            id: advancedAccountSettingsSIPButton
+                        InfoLineEdit {
+                            id: proxySIP
 
-                            Layout.minimumWidth: 180
+                            fieldLayoutWidth: preferredColumnWidth
 
-                            Layout.minimumHeight: 30
-                            Layout.preferredHeight: 30
-                            Layout.maximumHeight: 30
-
-                            radius: height / 2
-
-                            text: qsTr("Advanced Account Settings")
-                            font.pointSize: 10
+                            font.pointSize: JamiTheme.settingsFontSize // Albert
                             font.kerning: true
 
-                            icon.source: {
-                                if (advanceSIPSettingsView.visible) {
-                                    return "qrc:/images/icons/round-arrow_drop_up-24px.svg"
-                                } else {
-                                    return "qrc:/images/icons/round-arrow_drop_down-24px.svg"
-                                }
-                            }
+                            horizontalAlignment: Text.AlignLeft
+                            verticalAlignment: Text.AlignVCenter
 
-                            icon.height: 24
-                            icon.width: 24
-
-                            onClicked: {
-                                advanceSIPSettingsView.visible = !advanceSIPSettingsView.visible
-                                if(advanceSIPSettingsView.visible){
-                                    advanceSIPSettingsView.updateAccountInfoDisplayedAdvanceSIP()
-                                    var coor = advancedAccountSettingsSIPButton.mapToItem(accountSIPLayout,advancedAccountSettingsSIPButton.x,advancedAccountSettingsSIPButton.y)
-                                     accountSIPScrollView.vScrollBar.position  = coor.y / accountSIPLayout.height
-                                } else {
-                                     accountSIPScrollView.vScrollBar.position = 0
-                                }
+                            onEditingFinished: {
+                                ClientWrapper.settingsAdaptor.setAccountConfig_ProxyServer(
+                                            proxySIP.text)
                             }
                         }
 
-                        Item {
+                        // password
+                        ElidedTextLabel {
                             Layout.fillWidth: true
-                            Layout.fillHeight: true
+                            Layout.maximumHeight: JamiTheme.preferredFieldHeight
+                            Layout.preferredHeight: JamiTheme.preferredFieldHeight
+                            Layout.minimumHeight: JamiTheme.preferredFieldHeight
+
+                            eText: qsTr("Password")
+                            fontSize: JamiTheme.settingsFontSize
+                            maxWidth: preferredColumnWidth
+                        }
+
+                        InfoLineEdit {
+                            id: passSIPlineEdit
+
+                            fieldLayoutWidth: preferredColumnWidth
+
+                            font.pointSize: JamiTheme.settingsFontSize
+                            font.kerning: true
+
+                            echoMode: TextInput.Password
+                            horizontalAlignment: Text.AlignLeft
+                            verticalAlignment: Text.AlignVCenter
+
+                            onEditingFinished: {
+                                ClientWrapper.settingsAdaptor.setAccountConfig_Password(
+                                            passSIPlineEdit.text)
+                            }
                         }
                     }
+
+
+                    HoverableButtonTextItem {
+                        id: btnDeletAccount
+
+                        backgroundColor: "red"
+                        onEnterColor: Qt.rgba(150 / 256, 0, 0, 0.7)
+                        onDisabledBackgroundColor: Qt.rgba(
+                                                        255 / 256,
+                                                        0, 0, 0.8)
+                        onPressColor: backgroundColor
+                        textColor: "white"
+
+                        Layout.alignment: Qt.AlignHCenter
+                        Layout.minimumWidth: JamiTheme.preferredButtonWidth
+                        Layout.preferredWidth: JamiTheme.preferredButtonWidth
+                        Layout.maximumWidth: JamiTheme.preferredButtonWidth
+                        Layout.minimumHeight: JamiTheme.preferredFieldHeight
+                        Layout.preferredHeight: JamiTheme.preferredFieldHeight
+                        Layout.maximumHeight: JamiTheme.preferredFieldHeight
+
+                        text: qsTr("Delete Account")
+                        font.pointSize: JamiTheme.textFontSize
+                        font.kerning: true
+                        radius: height / 2
+
+                        onClicked: {
+                            delAccountSlot()
+                        }
+                    }
+                }
+
+                RowLayout {
+                    id: rowAdvancedSettingsBtn
+                    Layout.fillWidth: true
+                    Layout.leftMargin: JamiTheme.preferredMarginSize
+
+                    ElidedTextLabel {
+
+                        id: lblAdvancedAccountSettings
+
+                        Layout.fillWidth: true
+                        Layout.maximumHeight: JamiTheme.preferredFieldHeight
+                        Layout.preferredHeight: JamiTheme.preferredFieldHeight
+                        Layout.minimumHeight: JamiTheme.preferredFieldHeight
+
+                        eText: qsTr("Advanced Account Settings")
+                        fontSize: JamiTheme.headerFontSize
+                        maxWidth: sipAccountViewRect.width - advancedAccountSettingsSIPButton.width - 80
+                    }
+
+                    HoverableRadiusButton {
+                        id: advancedAccountSettingsSIPButton
+
+                        Layout.leftMargin: JamiTheme.preferredMarginSize
+
+                        Layout.minimumWidth: JamiTheme.preferredFieldHeight
+                        Layout.preferredWidth: JamiTheme.preferredFieldHeight
+                        Layout.maximumWidth: JamiTheme.preferredFieldHeight
+                        Layout.minimumHeight: JamiTheme.preferredFieldHeight
+                        Layout.preferredHeight: JamiTheme.preferredFieldHeight
+                        Layout.maximumHeight: JamiTheme.preferredFieldHeight
+
+                        Layout.alignment: Qt.AlignHCenter
+
+                        radius: height / 2
+
+                        icon.source: {
+                            if (advanceSIPSettingsView.visible) {
+                                return "qrc:/images/icons/round-arrow_drop_up-24px.svg"
+                            } else {
+                                return "qrc:/images/icons/round-arrow_drop_down-24px.svg"
+                            }
+                        }
+
+                        onClicked: {
+                            advanceSIPSettingsView.visible = !advanceSIPSettingsView.visible
+                            if(advanceSIPSettingsView.visible){
+                                advanceSIPSettingsView.updateAccountInfoDisplayedAdvanceSIP()
+                                sipAccountScrollView.vScrollBar.position  = rowAdvancedSettingsBtn.y / accountSIPLayout.height
+                            } else {
+                                sipAccountScrollView.vScrollBar.position = 0
+                            }
+                        }
+                    }
+                }
+
+                // instantiate advance setting page
+                AdvancedSIPSettingsView {
+                    id: advanceSIPSettingsView
+                    Layout.leftMargin: JamiTheme.preferredMarginSize
+                    visible: false
                 }
 
                 Item {
-                    Layout.fillWidth: true
-
-                    Layout.minimumHeight: 48
-                    Layout.preferredHeight: 48
-                    Layout.maximumHeight: 48
-                }
-
-                ColumnLayout {
-                    spacing: 6
+                    Layout.preferredWidth: sipAccountViewRect.width - 32
+                    Layout.minimumWidth: sipAccountViewRect.width - 32
+                    Layout.maximumWidth: JamiTheme.maximumWidthSettingsView - 32
                     Layout.fillHeight: true
-                    Layout.fillWidth: true
-
-                    Layout.leftMargin: 30
-
-                    // instantiate advance setting page
-                    AdvancedSIPSettingsView {
-                        id: advanceSIPSettingsView
-
-                        Layout.leftMargin: 10
-                        visible: false
-                    }
                 }
             }
-        }
-
-        Item {
-            Layout.fillHeight: true
-            Layout.fillWidth: true
         }
     }
 }

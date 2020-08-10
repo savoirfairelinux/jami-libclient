@@ -45,6 +45,7 @@ Rectangle {
     property bool registeredIdNeedsSet: false
 
     property int refreshVariable : 0
+    property int preferredColumnWidth : accountViewRect.width / 2 - 50
 
     signal navigateToMainView
     signal navigateToNewWizardView
@@ -54,6 +55,7 @@ Rectangle {
         refreshVariable++
         refreshVariable--
     }
+
 
     Connections {
         id: btnRegisterNameClickConnection
@@ -93,12 +95,11 @@ Rectangle {
             currentRegisteredID.text = ""
         }
 
-        currentRingID.text = ClientWrapper.settingsAdaptor.getCurrentAccount_Profile_Info_Uri()
+        currentRingIDText.text = ClientWrapper.settingsAdaptor.getCurrentAccount_Profile_Info_Uri()
 
         // update device list view
         updateAndShowDevicesSlot()
 
-        bannedContactsListWidget.visible = false
         bannedContactsLayoutWidget.visible = (bannedListModel.rowCount() > 0)
 
         if (advanceSettingsView.visible) {
@@ -124,7 +125,7 @@ Rectangle {
     function setAvatar() {
         currentAccountAvatar.setAvatarPixmap(
                     ClientWrapper.settingsAdaptor.getAvatarImage_Base64(
-                        currentAccountAvatar.boothWidht),
+                        currentAccountAvatar.boothWidth),
                     ClientWrapper.settingsAdaptor.getIsDefaultAvatar())
     }
 
@@ -132,13 +133,13 @@ Rectangle {
         currentAccountAvatar.stopBooth()
     }
 
-    function toggleBannedContacts(){
+    function toggleBannedContacts() {
         var bannedContactsVisible = bannedContactsListWidget.visible
         bannedContactsListWidget.visible = !bannedContactsVisible
         updateAndShowBannedContactsSlot()
     }
 
-    function unban(index){
+    function unban(index) {
         ClientWrapper.settingsAdaptor.unbanContact(index)
         updateAndShowBannedContactsSlot()
     }
@@ -446,48 +447,30 @@ Rectangle {
     }
 
     Layout.fillHeight: true
-    Layout.fillWidth: true
+    Layout.maximumWidth: JamiTheme.maximumWidthSettingsView
+    anchors.centerIn: parent
 
     ColumnLayout {
-        anchors.fill: parent
-        spacing: 0
-
-        Item {
-            Layout.fillWidth: true
-
-            Layout.maximumHeight: 10
-            Layout.minimumHeight: 10
-            Layout.preferredHeight: 10
-
-            Layout.alignment: Qt.AlignTop
-        }
+        anchors.fill: accountViewRect
 
         RowLayout {
-            spacing: 6
-
-            Layout.alignment: Qt.AlignTop
-
+            id: accountPageTitle
+            Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
+            Layout.leftMargin: JamiTheme.preferredMarginSize
             Layout.fillWidth: true
-            Layout.maximumHeight: 30
-            Layout.minimumHeight: 30
-            Layout.preferredHeight: accountPageTitle.height
-
-            Item {
-                Layout.fillHeight: true
-
-                Layout.maximumWidth: 30
-                Layout.preferredWidth: 30
-                Layout.minimumWidth: 30
-            }
-
+            Layout.maximumHeight: 64
+            Layout.minimumHeight: 64
+            Layout.preferredHeight: 64
 
             HoverableButton {
+                id: backToSettingsMenuButton
 
                 Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
-                Layout.preferredWidth: 30
-                Layout.preferredHeight: 30
+                Layout.preferredWidth: JamiTheme.preferredFieldHeight
+                Layout.preferredHeight: JamiTheme.preferredFieldHeight
+                Layout.rightMargin: JamiTheme.preferredMarginSize
 
-                radius: 30
+                radius: 32
                 source: "qrc:/images/icons/ic_arrow_back_24px.svg"
                 backgroundColor: "white"
                 onExitColor: "white"
@@ -499,899 +482,727 @@ Rectangle {
                 }
             }
 
-
-            Label {
-                id: accountPageTitle
-
-                Layout.preferredWidth: 117
-
-                Layout.maximumHeight: 25
-                Layout.preferredHeight: 25
-                Layout.minimumHeight: 25
-
-                text: qsTr("Jami Account")
-
-                font.pointSize: 15
-                font.kerning: true
-
-                horizontalAlignment: Text.AlignLeft
-                verticalAlignment: Text.AlignVCenter
-            }
-
-            Item {
+            ElidedTextLabel {
                 Layout.fillWidth: true
-                Layout.fillHeight: true
+                Layout.maximumHeight: JamiTheme.preferredFieldHeight
+                Layout.preferredHeight: JamiTheme.preferredFieldHeight
+                Layout.minimumHeight: JamiTheme.preferredFieldHeight
+
+                eText: qsTr("Account Settings")
+                fontSize: JamiTheme.titleFontSize
+                maxWidth: !backToSettingsMenuButton.visible ? accountViewRect.width - 100 :
+                                                              accountViewRect.width - backToSettingsMenuButton.width - 100
+
             }
         }
 
         ScrollView {
-            id: accoutScrollView
+            id: accountScrollView
 
-            property ScrollBar hScrollBar: ScrollBar.horizontal
             property ScrollBar vScrollBar: ScrollBar.vertical
 
             Layout.fillHeight: true
             Layout.fillWidth: true
+            Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
 
-            ScrollBar.horizontal.policy: ScrollBar.AsNeeded
+            width: accountViewRect.width
+            height: accountViewRect.height - accountPageTitle.height
+
+            ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
             ScrollBar.vertical.policy: ScrollBar.AsNeeded
 
-            font.pointSize: 8
-            font.kerning: true
             clip: true
 
+            /*
+             * ScrollView Layout
+             */
             ColumnLayout {
-                id: accoutnViewLayout
+                id: accountViewLayout
 
                 Layout.fillHeight: true
-                Layout.maximumWidth: 625
+                Layout.preferredWidth: accountViewRect.width
+                Layout.alignment: Qt.AlignHCenter
 
-                Item {
-                    Layout.fillHeight: true
+                spacing: 24
 
-                    Layout.maximumWidth: 30
-                    Layout.preferredWidth: 30
-                    Layout.minimumWidth: 30
+                ToggleSwitch {
+                    id: accountEnableCheckBox
+
+                    Layout.topMargin: JamiTheme.preferredMarginSize
+                    Layout.leftMargin: JamiTheme.preferredMarginSize
+
+                    labelText: qsTr("Enable")
+                    fontPointSize: JamiTheme.headerFontSize
+
+                    onSwitchToggled: {
+                        setAccEnableSlot(checked)
+                    }
                 }
 
+                /*
+                 * Profile
+                 */
                 ColumnLayout {
-                    spacing: 6
-                    Layout.fillHeight: true
                     Layout.fillWidth: true
+                    Layout.fillHeight: true
+                    Layout.leftMargin: JamiTheme.preferredMarginSize
+                    spacing: 8
 
-                    Layout.leftMargin: 30
+                    Label {
+                        Layout.fillWidth: true
 
-                    Item {
-                        Layout.fillHeight: true
+                        Layout.maximumHeight: JamiTheme.preferredFieldHeight
+                        Layout.preferredHeight: JamiTheme.preferredFieldHeight
+                        Layout.minimumHeight: JamiTheme.preferredFieldHeight
 
-                        Layout.maximumWidth: 24
-                        Layout.preferredWidth: 24
-                        Layout.minimumWidth: 24
+                        text: qsTr("Profile")
+                        font.pointSize: JamiTheme.headerFontSize
+                        font.kerning: true
+
+                        horizontalAlignment: Text.AlignLeft
+                        verticalAlignment: Text.AlignVCenter
                     }
 
-                    ToggleSwitch {
-                        id: accountEnableCheckBox
+                    PhotoboothView {
+                        id: currentAccountAvatar
 
-                        labelText: qsTr("Enable")
-                        fontPointSize: 11
+                        Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
 
-                        onSwitchToggled: {
-                            setAccEnableSlot(checked)
+                        boothWidth: Math.min(224, accountViewRect.width - 100)
+
+                        Layout.maximumWidth: boothWidth+50
+                        Layout.preferredWidth: boothWidth+50
+                        Layout.minimumWidth: boothWidth+50
+                        Layout.maximumHeight: boothWidth+50
+                        Layout.preferredHeight: boothWidth+50
+                        Layout.minimumHeight: boothWidth+50
+
+                        onImageAcquired: {
+                            ClientWrapper.settingsAdaptor.setCurrAccAvatar(imgBase64)
+                        }
+
+                        onImageCleared: {
+                            ClientWrapper.settingsAdaptor.clearCurrentAvatar()
+                            setAvatar()
                         }
                     }
 
-                    Item {
-                        Layout.fillHeight: true
+                    InfoLineEdit {
+                        id: displayNameLineEdit
 
-                        Layout.maximumWidth: 20
-                        Layout.preferredWidth: 20
-                        Layout.minimumWidth: 20
+                        Layout.maximumWidth: JamiTheme.preferredButtonWidth
+                        Layout.minimumHeight: JamiTheme.preferredFieldHeight
+                        Layout.preferredHeight: JamiTheme.preferredFieldHeight
+                        Layout.maximumHeight: JamiTheme.preferredFieldHeight
+
+                        Layout.alignment: Qt.AlignHCenter
+
+                        font.pointSize: JamiTheme.textFontSize
+                        font.kerning: true
+
+                        horizontalAlignment: Text.AlignHCenter
+                        verticalAlignment: Text.AlignVCenter
+
+                        onEditingFinished: {
+                            ClientWrapper.accountAdaptor.setCurrAccDisplayName(
+                                        displayNameLineEdit.text)
+                        }
                     }
+                }
 
-                    ColumnLayout {
+                /*
+                 * Identity
+                 */
+                ColumnLayout {
+                    Layout.fillWidth: true
+                    Layout.alignment: Qt.AlignHCenter
+                    Layout.leftMargin: JamiTheme.preferredMarginSize
+                    spacing: 8
+
+                    ElidedTextLabel {
                         Layout.fillWidth: true
 
+                        Layout.maximumHeight: JamiTheme.preferredFieldHeight
+                        Layout.preferredHeight: JamiTheme.preferredFieldHeight
+                        Layout.minimumHeight: JamiTheme.preferredFieldHeight
+
+                        eText: qsTr("Identity")
+                        maxWidth: accountViewRect.width - 72
+                        fontSize: JamiTheme.headerFontSize
+                    }
+
+                    RowLayout {
+                        spacing: 8
+                        Layout.fillWidth: true
+                        Layout.minimumHeight: JamiTheme.preferredFieldHeight
+                        Layout.preferredHeight: JamiTheme.preferredFieldHeight
+                        Layout.maximumHeight: JamiTheme.preferredFieldHeight
+                        Layout.leftMargin: JamiTheme.preferredMarginSize
+
                         Label {
+                            id: idLabel
                             Layout.fillWidth: true
+                            Layout.minimumHeight: JamiTheme.preferredFieldHeight
+                            Layout.preferredHeight: JamiTheme.preferredFieldHeight
+                            Layout.maximumHeight: JamiTheme.preferredFieldHeight
 
-                            Layout.maximumHeight: 21
-                            Layout.preferredHeight: 21
-                            Layout.minimumHeight: 21
-
-                            text: qsTr("Profile")
-                            font.pointSize: 13
+                            text: qsTr("Id")
+                            font.pointSize: JamiTheme.settingsFontSize
                             font.kerning: true
 
                             horizontalAlignment: Text.AlignLeft
                             verticalAlignment: Text.AlignVCenter
                         }
 
-                        Item {
+                        TextField {
+                            id: currentRingID
+
+                            property var backgroundColor: "transparent"
+                            property var borderColor: "transparent"
+
                             Layout.fillWidth: true
-
-                            Layout.maximumHeight: 10
-                            Layout.preferredHeight: 10
-                            Layout.minimumHeight: 10
-                        }
-
-                        ColumnLayout {
-                            Layout.fillWidth: true
-                            layoutDirection: Qt.LeftToRight
-
-                            spacing: 6
-
-                            PhotoboothView {
-                                id: currentAccountAvatar
-
-                                Layout.alignment: Qt.AlignHCenter
-
-                                Layout.maximumWidth: 261
-                                Layout.preferredWidth: 261
-                                Layout.minimumWidth: 261
-                                Layout.maximumHeight: 261
-                                Layout.preferredHeight: 261
-                                Layout.minimumHeight: 261
-
-                                Layout.leftMargin: 20
-
-                                onImageAcquired: {
-                                    ClientWrapper.settingsAdaptor.setCurrAccAvatar(imgBase64)
-                                }
-
-                                onImageCleared: {
-                                    ClientWrapper.settingsAdaptor.clearCurrentAvatar()
-                                    setAvatar()
-                                }
-                            }
-
-                            InfoLineEdit {
-                                id: displayNameLineEdit
-
-                                fieldLayoutWidth: 261
-
-                                Layout.leftMargin: 20
-
-                                font.pointSize: 10
-                                font.kerning: true
-
-                                horizontalAlignment: Text.AlignHCenter
-                                verticalAlignment: Text.AlignVCenter
-
-                                onEditingFinished: {
-                                    ClientWrapper.accountAdaptor.setCurrAccDisplayName(
-                                                displayNameLineEdit.text)
-                                }
-                            }
-                        }
-                    }
-
-                    Item {
-                        Layout.fillHeight: true
-
-                        Layout.maximumWidth: 20
-                        Layout.preferredWidth: 20
-                        Layout.minimumWidth: 20
-                    }
-
-                    ColumnLayout {
-                        Layout.fillWidth: true
-
-                        Label {
-                            Layout.fillWidth: true
-
-                            Layout.maximumHeight: 21
-                            Layout.preferredHeight: 21
-                            Layout.minimumHeight: 21
-
-                            text: qsTr("Identity")
-                            font.pointSize: 13
-                            font.kerning: true
-
-                            horizontalAlignment: Text.AlignLeft
-                            verticalAlignment: Text.AlignVCenter
-                        }
-
-                        Item {
                             Layout.fillHeight: true
 
-                            Layout.maximumWidth: 10
-                            Layout.preferredWidth: 10
-                            Layout.minimumWidth: 10
-                        }
-
-                        ColumnLayout {
-                            spacing: 7
-
-                            Layout.fillWidth: true
-
-                            RowLayout {
-                                spacing: 6
-                                Layout.fillWidth: true
-                                Layout.maximumHeight: 30
-
-                                Layout.leftMargin: 20
-
-                                Layout.maximumWidth: 625
-
-                                Label {
-                                    Layout.maximumWidth: 13
-                                    Layout.preferredWidth: 13
-                                    Layout.minimumWidth: 13
-
-                                    Layout.minimumHeight: 30
-                                    Layout.preferredHeight: 30
-                                    Layout.maximumHeight: 30
-
-                                    text: qsTr("Id")
-                                    font.pointSize: 10
-                                    font.kerning: true
-
-                                    horizontalAlignment: Text.AlignLeft
-                                    verticalAlignment: Text.AlignVCenter
-                                }
-
-                                TextField {
-                                    id: currentRingID
-
-                                    property var backgroundColor: "transparent"
-                                    property var borderColor: "transparent"
-
-                                    Layout.fillWidth: true
-
-                                    Layout.minimumHeight: 30
-                                    Layout.preferredHeight: 30
-                                    Layout.maximumHeight: 30
-
-                                    font.pointSize: 10
-                                    font.kerning: true
-                                    font.bold: true
-
-                                    readOnly: true
-                                    selectByMouse: true
-
-                                    text: { refreshVariable
-                                            return ClientWrapper.settingsAdaptor.getCurrentAccount_Profile_Info_Uri()}
-
-                                    horizontalAlignment: Text.AlignLeft
-                                    verticalAlignment: Text.AlignVCenter
-
-                                    background: Rectangle {
-                                        anchors.fill: parent
-                                        radius: 0
-                                        border.color: currentRingID.borderColor
-                                        border.width: 0
-                                        color: currentRingID.backgroundColor
-                                    }
-                                }
-                            }
-
-                            RowLayout {
-                                spacing: 6
-                                Layout.fillWidth: true
-                                Layout.maximumHeight: 32
-
-                                Layout.leftMargin: 20
-
-                                layoutDirection: Qt.LeftToRight
-
-                                Label {
-                                    id: lblRegisteredName
-
-                                    Layout.maximumWidth: 127
-                                    Layout.preferredWidth: 127
-                                    Layout.minimumWidth: 127
-
-                                    Layout.minimumHeight: 32
-                                    Layout.preferredHeight: 32
-                                    Layout.maximumHeight: 32
-
-                                    text: qsTr("Registered name")
-
-                                    font.pointSize: 10
-                                    font.kerning: true
-
-                                    horizontalAlignment: Text.AlignLeft
-                                    verticalAlignment: Text.AlignVCenter
-                                }
-
-                                RowLayout {
-                                    spacing: 6
-                                    Layout.fillWidth: true
-                                    Layout.maximumHeight: 30
-                                    Layout.alignment: Qt.AlignVCenter
-
-                                    TextField {
-                                        id: currentRegisteredID
-
-                                        Layout.maximumWidth: 300
-                                        Layout.preferredWidth: 300
-                                        Layout.minimumWidth: 300
-
-                                        Layout.minimumHeight: 30
-                                        Layout.preferredHeight: 30
-                                        Layout.maximumHeight: 30
-
-                                        placeholderText: { refreshVariable
-                                                           var result = registeredIdNeedsSet ? qsTr("Type here to register a username") : ""
-                                                           return result}
-
-                                        text: {
-                                            refreshVariable
-                                            if (!registeredIdNeedsSet){
-                                                return ClientWrapper.settingsAdaptor.get_CurrentAccountInfo_RegisteredName()
-                                            } else {
-                                                return ""
-                                            }
-                                        }
-                                        selectByMouse: true
-                                        readOnly: { refreshVariable
-                                                    return !registeredIdNeedsSet}
-
-                                        font.pointSize: 10
-                                        font.kerning: true
-                                        font.bold: { refreshVariable
-                                            return !registeredIdNeedsSet}
-
-                                        horizontalAlignment: Text.AlignLeft
-                                        verticalAlignment: Text.AlignVCenter
-
-                                        background: Rectangle {
-                                            anchors.fill: parent
-                                            radius: {refreshVariable
-                                                     var result = registeredIdNeedsSet ? height / 2 : 0
-                                                     return result}
-                                            border.color: "transparent"
-                                            border.width: {refreshVariable
-                                                           var result = registeredIdNeedsSet ? 2 : 0
-                                                           return result}
-                                            color: {refreshVariable
-                                                    var result = registeredIdNeedsSet ? Qt.rgba(
-                                                                              240 / 256, 240 / 256,
-                                                                              240 / 256,
-                                                                              1.0) : "transparent"
-                                                    return result}
-                                        }
-
-                                        onTextEdited: {
-                                            verifyRegisteredNameSlot()
-                                        }
-
-                                        onEditingFinished: {
-                                            verifyRegisteredNameSlot()
-                                        }
-                                    }
-
-                                    LookupStatusLabel {
-                                        id: lookupStatusLabel
-
-                                        visible:{refreshVariable
-                                                 var result = registeredIdNeedsSet
-                                                 && (regNameUi
-                                                     !== CurrentAccountSettingsScrollPage.BLANK)
-                                                    return result}
-
-                                        MouseArea {
-                                            id: lookupStatusLabelArea
-                                            anchors.fill: parent
-                                            property bool isHovering: false
-
-                                            onEntered: isHovering = true
-                                            onExited: isHovering = false
-
-                                            hoverEnabled: true
-                                        }
-
-                                        ToolTip.visible: lookupStatusLabelArea.isHovering
-                                        ToolTip.text: {
-                                            switch (regNameUi) {
-                                            case CurrentAccountSettingsScrollPage.BLANK:
-                                                return qsTr("")
-                                            case CurrentAccountSettingsScrollPage.INVALIDFORM:
-                                                return qsTr("A registered name should not have any spaces and must be at least three letters long")
-                                            case CurrentAccountSettingsScrollPage.TAKEN:
-                                                return qsTr("This name is already taken")
-                                            case CurrentAccountSettingsScrollPage.FREE:
-                                                return qsTr("Register this name")
-                                            case CurrentAccountSettingsScrollPage.SEARCHING:
-                                                return qsTr("")
-                                            default:
-                                                return qsTr("")
-                                            }
-                                        }
-
-                                        lookupStatusState: {
-                                            switch (regNameUi) {
-                                            case CurrentAccountSettingsScrollPage.BLANK:
-                                                return "Blank"
-                                            case CurrentAccountSettingsScrollPage.INVALIDFORM:
-                                                return "Invalid"
-                                            case CurrentAccountSettingsScrollPage.TAKEN:
-                                                return "Taken"
-                                            case CurrentAccountSettingsScrollPage.FREE:
-                                                return "Free"
-                                            case CurrentAccountSettingsScrollPage.SEARCHING:
-                                                return "Searching"
-                                            default:
-                                                return "Blank"
-                                            }
-                                        }
-                                    }
-
-                                    HoverableRadiusButton {
-                                        id: btnRegisterName
-
-                                        visible: {refreshVariable
-                                                    var result = registeredIdNeedsSet
-                                                 && (regNameUi
-                                                     === CurrentAccountSettingsScrollPage.FREE)
-                                                    return result}
-
-                                        Layout.maximumWidth: 80
-                                        Layout.preferredWidth: 80
-                                        Layout.minimumWidth: 80
-
-                                        Layout.minimumHeight: 30
-                                        Layout.preferredHeight: 30
-                                        Layout.maximumHeight: 30
-
-                                        text: qsTr("Register")
-                                        font.pointSize: 10
-                                        font.kerning: true
-
-                                        radius: height / 2
-                                    }
-
-                                    Item {
-                                        Layout.fillHeight: true
-                                        Layout.fillWidth: true
-                                    }
-                                }
-                            }
-
-                            RowLayout {
-                                spacing: 6
-                                Layout.fillWidth: true
-                                Layout.maximumHeight: 30
-
-                                Layout.leftMargin: 20
-
-                                HoverableButtonTextItem {
-                                    id: passwdPushButton
-
-                                    visible: ClientWrapper.settingsAdaptor.getAccountConfig_Manageruri() === ""
-
-                                    Layout.maximumWidth: 261
-                                    Layout.preferredWidth: 261
-                                    Layout.minimumWidth: 261
-
-                                    Layout.minimumHeight: 30
-                                    Layout.preferredHeight: 30
-                                    Layout.maximumHeight: 30
-                                    text: ClientWrapper.accountAdaptor.hasPassword() ? qsTr("Change Password") : qsTr("Set Password")
-
-                                    font.pointSize: 10
-                                    font.kerning: true
-
-                                    radius: height / 2
-
-                                    onClicked: {
-                                        passwordClicked()
-                                    }
-                                }
-
-                                Item {
-                                    Layout.fillHeight: true
-                                    Layout.fillWidth: true
-                                }
-                            }
-
-                            RowLayout {
-                                spacing: 6
-                                Layout.fillWidth: true
-                                Layout.maximumHeight: 30
-
-                                Layout.leftMargin: 20
-
-                                HoverableButtonTextItem {
-                                    id: btnExportAccount
-
-                                    visible: ClientWrapper.settingsAdaptor.getAccountConfig_Manageruri() === ""
-
-                                    Layout.maximumWidth: 261
-                                    Layout.preferredWidth: 261
-                                    Layout.minimumWidth: 261
-
-                                    Layout.minimumHeight: 30
-                                    Layout.preferredHeight: 30
-                                    Layout.maximumHeight: 30
-
-                                    text: qsTr("Export Account")
-                                    font.pointSize: 10
-                                    font.kerning: true
-
-                                    radius: height / 2
-
-                                    onClicked: {
-                                        exportAccountSlot()
-                                    }
-                                }
-
-                                Item {
-                                    Layout.fillHeight: true
-                                    Layout.fillWidth: true
-                                }
-                            }
-
-                            RowLayout {
-                                spacing: 6
-                                Layout.fillWidth: true
-                                Layout.maximumHeight: 30
-
-                                Layout.leftMargin: 20
-
-                                HoverableButtonTextItem {
-                                    id: btnDeletAccount
-
-                                    backgroundColor: "red"
-                                    onEnterColor: Qt.rgba(150 / 256, 0, 0, 0.7)
-                                    onDisabledBackgroundColor: Qt.rgba(
-                                                                   255 / 256,
-                                                                   0, 0, 0.8)
-                                    onPressColor: backgroundColor
-                                    textColor: "white"
-
-                                    Layout.maximumWidth: 261
-                                    Layout.preferredWidth: 261
-                                    Layout.minimumWidth: 261
-
-                                    Layout.minimumHeight: 30
-                                    Layout.preferredHeight: 30
-                                    Layout.maximumHeight: 30
-
-                                    text: qsTr("Delete Account")
-                                    font.pointSize: 10
-                                    font.kerning: true
-
-                                    radius: height / 2
-
-                                    onClicked: {
-                                        delAccountSlot()
-                                    }
-                                }
-
-                                Item {
-                                    Layout.fillHeight: true
-                                    Layout.fillWidth: true
-                                }
-                            }
-                        }
-                    }
-
-                    Item {
-                        Layout.fillWidth: true
-
-                        Layout.minimumHeight: 20
-                        Layout.preferredHeight: 20
-                        Layout.maximumHeight: 20
-                    }
-
-                    ColumnLayout {
-                        Layout.fillWidth: true
-
-                        Label {
-                            Layout.fillWidth: true
-
-                            Layout.maximumHeight: 27
-                            Layout.preferredHeight: 27
-                            Layout.minimumHeight: 27
-
-                            text: qsTr("Linked Device")
-                            font.pointSize: 13
+                            font.pointSize: JamiTheme.textFontSize
                             font.kerning: true
+                            font.bold: true
+
+                            readOnly: true
+                            selectByMouse: true
+
+                            text: { currentRingIDText.elidedText }
+
+                            horizontalAlignment: Text.AlignRight
+                            verticalAlignment: Text.AlignVCenter
+
+                            background: Rectangle {
+                                anchors.fill: parent
+                                radius: 0
+                                border.color: currentRingID.borderColor
+                                border.width: 0
+                                color: currentRingID.backgroundColor
+                            }
+
+                            TextMetrics {
+                                id: currentRingIDText
+
+                                elide: Text.ElideRight
+                                elideWidth: accountViewRect.width - idLabel.width -JamiTheme.preferredMarginSize*3
+
+                                text: { refreshVariable
+                                    return ClientWrapper.settingsAdaptor.getCurrentAccount_Profile_Info_Uri()
+                                }
+                            }
+                        }
+                    }
+
+                    RowLayout {
+                        spacing: 8
+                        Layout.fillWidth: true
+                        Layout.minimumHeight: JamiTheme.preferredFieldHeight
+                        Layout.preferredHeight: JamiTheme.preferredFieldHeight
+                        Layout.maximumHeight: JamiTheme.preferredFieldHeight
+                        Layout.leftMargin: JamiTheme.preferredMarginSize
+
+                        ElidedTextLabel {
+                            id: lblRegisteredName
+                            Layout.fillWidth: true
+                            Layout.minimumHeight: JamiTheme.preferredFieldHeight
+                            Layout.preferredHeight: JamiTheme.preferredFieldHeight
+                            Layout.maximumHeight: JamiTheme.preferredFieldHeight
+
+                            eText: qsTr("Registered name")
+                            fontSize: JamiTheme.settingsFontSize
+                            maxWidth: 160
+                        }
+
+                        TextField {
+                            id: currentRegisteredID
+                            Layout.minimumWidth: preferredColumnWidth
+                            Layout.preferredWidth: preferredColumnWidth
+                            Layout.maximumWidth: preferredColumnWidth
+                            Layout.minimumHeight: JamiTheme.preferredFieldHeight
+                            Layout.preferredHeight: JamiTheme.preferredFieldHeight
+                            Layout.maximumHeight: JamiTheme.preferredFieldHeight
+
+                            placeholderText: { refreshVariable
+                                               var result = registeredIdNeedsSet ? qsTr("Type here to register a username") : ""
+                                               return result}
+
+                            text: {
+                                refreshVariable
+                                if (!registeredIdNeedsSet){
+                                    return ClientWrapper.settingsAdaptor.get_CurrentAccountInfo_RegisteredName()
+                                } else {
+                                    return ""
+                                }
+                            }
+                            selectByMouse: true
+                            readOnly: { refreshVariable
+                                        return !registeredIdNeedsSet}
+
+                            font.pointSize: JamiTheme.settingsFontSize
+                            font.kerning: true
+                            font.bold: { refreshVariable
+                                return !registeredIdNeedsSet}
 
                             horizontalAlignment: Text.AlignLeft
                             verticalAlignment: Text.AlignVCenter
-                        }
 
-                        Item {
-                            Layout.fillHeight: true
-
-                            Layout.maximumWidth: 10
-                            Layout.preferredWidth: 10
-                            Layout.minimumWidth: 10
-                        }
-
-                        ColumnLayout {
-                            spacing: 7
-
-                            Layout.fillWidth: true
-
-                            ListViewJami {
-                                id: settingsListView
-
-                                Layout.leftMargin: 20
-
-                                Layout.fillWidth: true
-
-                                Layout.minimumWidth: 580
-                                Layout.preferredWidth: 605
-
-                                Layout.minimumHeight: 164
-                                Layout.preferredHeight: 164
-                                Layout.maximumHeight: 164
-
-                                model: deviceItemListModel
-
-                                delegate: DeviceItemDelegate{
-                                    id: settingsListDelegate
-
-                                    width: settingsListView.width
-                                    height: 85
-
-                                    deviceName : DeviceName
-                                    deviceId: DeviceID
-                                    isCurrent: IsCurrent
-
-                                    onClicked: {
-                                        settingsListView.currentIndex = index
-                                    }
-
-                                    onBtnRemoveDeviceClicked:{
-                                        removeDeviceSlot(index)
-                                    }
-                                }
+                            background: Rectangle {
+                                anchors.fill: parent
+                                radius: {refreshVariable
+                                         var result = registeredIdNeedsSet ? height / 2 : 0
+                                         return result}
+                                border.color: "transparent"
+                                border.width: {refreshVariable
+                                               var result = registeredIdNeedsSet ? 2 : 0
+                                               return result}
+                                color: {refreshVariable
+                                        var result = registeredIdNeedsSet ? Qt.rgba(
+                                                                  240 / 256, 240 / 256,
+                                                                  240 / 256,
+                                                                  1.0) : "transparent"
+                                        return result}
                             }
 
-                            HoverableRadiusButton {
-                                id: linkDevPushButton
+                            onTextEdited: {
+                                verifyRegisteredNameSlot()
+                            }
 
-                                visible: ClientWrapper.settingsAdaptor.getAccountConfig_Manageruri() === ""
-
-                                Layout.leftMargin: 20
-
-                                Layout.fillWidth: true
-
-                                Layout.maximumHeight: 30
-                                Layout.preferredHeight: 30
-                                Layout.minimumHeight: 30
-
-                                radius: height / 2
-
-                                text: qsTr("+Link Another Device")
-                                font.pointSize: 10
-                                font.kerning: true
-
-                                onClicked: {
-                                    showLinkDevSlot()
-                                }
+                            onEditingFinished: {
+                                verifyRegisteredNameSlot()
                             }
                         }
-                    }
-
-                    Item {
-                        Layout.fillWidth: true
-
-                        Layout.minimumHeight: 20
-                        Layout.preferredHeight: 20
-                        Layout.maximumHeight: 20
-                    }
-
-                    // banned list view
-                    ColumnLayout {
-                        id: bannedContactsLayoutWidget
-
-                        Layout.fillWidth: true
-                        spacing: 6
-
-                        RowLayout {
-                            Layout.leftMargin: 9
-                            Layout.rightMargin: 8
-                            Layout.topMargin: 1
-
-                            Layout.fillWidth: true
-                            Layout.maximumHeight: 30
-
-                            Label {
-                                Layout.preferredWidth: 164
-                                Layout.minimumWidth: 164
-
-                                Layout.minimumHeight: 30
-                                Layout.preferredHeight: 30
-                                Layout.maximumHeight: 30
-
-                                text: qsTr("Banned Contact")
-                                font.pointSize: 13
-                                font.kerning: true
-
-                                horizontalAlignment: Text.AlignLeft
-                                verticalAlignment: Text.AlignVCenter
-                            }
-
-                            Item {
-                                Layout.fillHeight: true
-
-                                Layout.maximumWidth: 10
-                                Layout.preferredWidth: 10
-                                Layout.minimumWidth: 10
-                            }
-
-                            HoverableRadiusButton {
-                                id: bannedContactsBtn
-
-                                Layout.maximumWidth: 30
-                                Layout.preferredWidth: 30
-                                Layout.minimumWidth: 30
-
-                                Layout.minimumHeight: 30
-                                Layout.preferredHeight: 30
-                                Layout.maximumHeight: 30
-
-                                buttonImageHeight: height
-                                buttonImageWidth: height
-
-                                radius: height / 2
-
-                                icon.source: bannedContactsListWidget.visible? "qrc:/images/icons/round-arrow_drop_up-24px.svg" : "qrc:/images/icons/round-arrow_drop_down-24px.svg"
-                                icon.height: 32
-                                icon.width: 32
-
-                                onClicked: {
-                                    toggleBannedContacts()
-                                }
-                            }
-
-                            Item {
-                                Layout.fillHeight: true
-                                Layout.fillWidth: true
-                            }
-                        }
-
-                        ColumnLayout {
-                            id: bannedContactsListWidget
-
-                            spacing: 6
-
-                            Layout.leftMargin: 9
-                            Layout.rightMargin: 8
-                            Layout.bottomMargin: 9
-                            Item {
-                                Layout.fillWidth: true
-
-                                Layout.minimumHeight: 10
-                                Layout.preferredHeight: 10
-                                Layout.maximumHeight: 10
-                            }
-
-                            ListViewJami {
-                                id: bannedListWidget
-
-                                Layout.leftMargin: 20
-                                Layout.fillWidth: true
-
-                                Layout.minimumWidth: 580
-
-                                Layout.minimumHeight: 150
-                                Layout.preferredHeight: 150
-                                Layout.maximumHeight: 150
-
-                                model: bannedListModel
-
-                                delegate: BannedItemDelegate{
-                                    id: bannedListDelegate
-
-                                    width: bannedListWidget.width
-                                    height: 74
-
-                                    contactName : ContactName
-                                    contactID: ContactID
-                                    contactPicture_base64: ContactPicture
-
-                                    onClicked: {
-                                        bannedListWidget.currentIndex = index
-                                    }
-
-                                    onBtnReAddContactClicked: {
-                                        unban(index)
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-                    Item {
-                        Layout.fillWidth: true
-
-                        Layout.minimumHeight: 20
-                        Layout.preferredHeight: 20
-                        Layout.maximumHeight: 20
                     }
 
                     RowLayout {
                         Layout.fillWidth: true
+                        Layout.alignment: Qt.AlignRight
+                        visible:{refreshVariable
+                                 var result = registeredIdNeedsSet
+                                 && (regNameUi
+                                     !== CurrentAccountSettingsScrollPage.BLANK)
+                                    return result}
 
-                        Layout.minimumHeight: 30
-                        Layout.preferredHeight: 30
-                        Layout.maximumHeight: 30
-
-                        Item {
+                        LookupStatusLabel {
+                            id: lookupStatusLabel
                             Layout.fillWidth: true
-                            Layout.fillHeight: true
+
+
+
+                            MouseArea {
+                                id: lookupStatusLabelArea
+                                anchors.fill: parent
+                                property bool isHovering: false
+
+                                onEntered: isHovering = true
+                                onExited: isHovering = false
+
+                                hoverEnabled: true
+                            }
+
+                            ToolTip.visible: lookupStatusLabelArea.isHovering
+                            ToolTip.text: {
+                                switch (regNameUi) {
+                                case CurrentAccountSettingsScrollPage.BLANK:
+                                    return qsTr("")
+                                case CurrentAccountSettingsScrollPage.INVALIDFORM:
+                                    return qsTr("A registered name should not have any spaces and must be at least three letters long")
+                                case CurrentAccountSettingsScrollPage.TAKEN:
+                                    return qsTr("This name is already taken")
+                                case CurrentAccountSettingsScrollPage.FREE:
+                                    return qsTr("Register this name")
+                                case CurrentAccountSettingsScrollPage.SEARCHING:
+                                    return qsTr("")
+                                default:
+                                    return qsTr("")
+                                }
+                            }
+
+                            lookupStatusState: {
+                                switch (regNameUi) {
+                                case CurrentAccountSettingsScrollPage.BLANK:
+                                    return "Blank"
+                                case CurrentAccountSettingsScrollPage.INVALIDFORM:
+                                    return "Invalid"
+                                case CurrentAccountSettingsScrollPage.TAKEN:
+                                    return "Taken"
+                                case CurrentAccountSettingsScrollPage.FREE:
+                                    return "Free"
+                                case CurrentAccountSettingsScrollPage.SEARCHING:
+                                    return "Searching"
+                                default:
+                                    return "Blank"
+                                }
+                            }
                         }
 
-                        HoverableRadiusButton {
-                            id: advancedAccountSettingsPButton
+                        HoverableButtonTextItem {
+                            id: btnRegisterName
 
-                            Layout.minimumWidth: 180
+                            visible: {refreshVariable
+                                        var result = registeredIdNeedsSet
+                                     && (regNameUi
+                                         === CurrentAccountSettingsScrollPage.FREE)
+                                        return result}
 
-                            Layout.minimumHeight: 30
-                            Layout.preferredHeight: 30
-                            Layout.maximumHeight: 30
+                            Layout.minimumWidth: preferredColumnWidth
+                            Layout.preferredWidth: preferredColumnWidth
+                            Layout.maximumWidth: preferredColumnWidth
+                            Layout.minimumHeight: JamiTheme.preferredFieldHeight
+                            Layout.preferredHeight: JamiTheme.preferredFieldHeight
+                            Layout.maximumHeight: JamiTheme.preferredFieldHeight
+
+                            text: qsTr("Register")
+                            font.pointSize: JamiTheme.buttonFontSize
+                            font.kerning: true
+
+                            radius: height / 2
+                        }
+                    }
+                }
+
+                /*
+                 * Buttons Pwd, Export, Delete
+                 */
+                ColumnLayout {
+                    Layout.fillWidth: true
+                    Layout.alignment: Qt.AlignHCenter
+                    Layout.leftMargin: JamiTheme.preferredMarginSize
+                    spacing: 8
+
+                    HoverableButtonTextItem {
+                        id: passwdPushButton
+
+                        visible: ClientWrapper.settingsAdaptor.getAccountConfig_Manageruri() === ""
+
+                        Layout.alignment: Qt.AlignHCenter
+                        Layout.minimumWidth: JamiTheme.preferredButtonWidth
+                        Layout.preferredWidth: JamiTheme.preferredButtonWidth
+                        Layout.maximumWidth: JamiTheme.preferredButtonWidth
+                        Layout.minimumHeight: JamiTheme.preferredFieldHeight
+                        Layout.preferredHeight: JamiTheme.preferredFieldHeight
+                        Layout.maximumHeight: JamiTheme.preferredFieldHeight
+
+                        text: ClientWrapper.accountAdaptor.hasPassword() ? qsTr("Change Password") : qsTr("Set Password")
+
+                        font.pointSize: JamiTheme.textFontSize
+                        font.kerning: true
+
+                        radius: height / 2
+
+                        onClicked: {
+                            passwordClicked()
+                        }
+                    }
+
+                    HoverableButtonTextItem {
+                        id: btnExportAccount
+
+                        visible: ClientWrapper.settingsAdaptor.getAccountConfig_Manageruri() === ""
+
+                        Layout.alignment: Qt.AlignHCenter
+                        Layout.minimumWidth: JamiTheme.preferredButtonWidth
+                        Layout.preferredWidth: JamiTheme.preferredButtonWidth
+                        Layout.maximumWidth: JamiTheme.preferredButtonWidth
+                        Layout.minimumHeight: JamiTheme.preferredFieldHeight
+                        Layout.preferredHeight: JamiTheme.preferredFieldHeight
+                        Layout.maximumHeight: JamiTheme.preferredFieldHeight
+
+                        text: qsTr("Export Account")
+                        font.pointSize: JamiTheme.textFontSize
+                        font.kerning: true
+
+                        radius: height / 2
+
+                        onClicked: {
+                            exportAccountSlot()
+                        }
+                    }
+
+                   HoverableButtonTextItem {
+                        id: btnDeletAccount
+
+                        backgroundColor: "red"
+                        onEnterColor: Qt.rgba(150 / 256, 0, 0, 0.7)
+                        onDisabledBackgroundColor: Qt.rgba(
+                                                       255 / 256,
+                                                       0, 0, 0.8)
+                        onPressColor: backgroundColor
+                        textColor: "white"
+
+                        Layout.alignment: Qt.AlignHCenter
+                        Layout.minimumWidth: JamiTheme.preferredButtonWidth
+                        Layout.preferredWidth: JamiTheme.preferredButtonWidth
+                        Layout.maximumWidth: JamiTheme.preferredButtonWidth
+                        Layout.minimumHeight: JamiTheme.preferredFieldHeight
+                        Layout.preferredHeight: JamiTheme.preferredFieldHeight
+                        Layout.maximumHeight: JamiTheme.preferredFieldHeight
+
+                        text: qsTr("Delete Account")
+                        font.pointSize: JamiTheme.textFontSize
+                        font.kerning: true
+
+                        radius: height / 2
+
+                        onClicked: {
+                            delAccountSlot()
+                        }
+                    }
+                }
+
+                /*
+                 Linked devices
+                 */
+                ColumnLayout {
+                    Layout.fillWidth: true
+                    Layout.leftMargin: JamiTheme.preferredMarginSize
+
+                    Label {
+                        Layout.minimumHeight: JamiTheme.preferredFieldHeight
+                        Layout.preferredHeight: JamiTheme.preferredFieldHeight
+                        Layout.maximumHeight: JamiTheme.preferredFieldHeight
+
+                        text: qsTr("Linked Devices")
+
+                        font.pointSize: JamiTheme.headerFontSize
+                        font.kerning: true
+                    }
+
+                    ColumnLayout {
+                        id: linkedDevicesLayout
+                        Layout.fillWidth: true
+
+                        ListViewJami {
+                            id: settingsListView
+
+                            Layout.fillWidth: true
+
+                            Layout.minimumHeight: 160
+                            Layout.preferredHeight: 160
+                            Layout.maximumHeight: 160
+
+                            model: deviceItemListModel
+
+                            delegate: DeviceItemDelegate{
+                                id: settingsListDelegate
+
+                                width: settingsListView.width
+                                height: 72
+
+                                deviceName : DeviceName
+                                deviceId: DeviceID
+                                isCurrent: IsCurrent
+
+                                onClicked: {
+                                    settingsListView.currentIndex = index
+                                }
+
+                                onBtnRemoveDeviceClicked:{
+                                    removeDeviceSlot(index)
+                                }
+                            }
+                        }
+
+                        HoverableButtonTextItem {
+                            id: linkDevPushButton
+
+                            visible: ClientWrapper.settingsAdaptor.getAccountConfig_Manageruri() === ""
+
+                            Layout.maximumWidth: JamiTheme.preferredButtonWidth
+                            Layout.preferredWidth: JamiTheme.preferredButtonWidth
+                            Layout.minimumWidth: JamiTheme.preferredButtonWidth
+
+                            Layout.maximumHeight: JamiTheme.preferredFieldHeight
+                            Layout.preferredHeight: JamiTheme.preferredFieldHeight
+                            Layout.minimumHeight: JamiTheme.preferredFieldHeight
+                            Layout.alignment: Qt.AlignHCenter
 
                             radius: height / 2
 
-                            text: qsTr("Advanced Account Settings")
-                            font.pointSize: 10
+                            text: qsTr("+ Link Another Device")
+                            font.pointSize: JamiTheme.textFontSize
                             font.kerning: true
 
-                            icon.source: {
-                                if (advanceSettingsView.visible) {
-                                    return "qrc:/images/icons/round-arrow_drop_up-24px.svg"
-                                } else {
-                                    return "qrc:/images/icons/round-arrow_drop_down-24px.svg"
-                                }
-                            }
-
-                            icon.height: 24
-                            icon.width: 24
-
                             onClicked: {
-                                advanceSettingsView.visible = !advanceSettingsView.visible
-                                if (advanceSettingsView.visible) {
-                                    advanceSettingsView.updateAccountInfoDisplayedAdvance()
-                                    var mappedCoor = advancedAccountSettingsPButton.mapToItem(accoutnViewLayout,advancedAccountSettingsPButton.x,advancedAccountSettingsPButton.y)
-                                    accoutScrollView.vScrollBar.position = mappedCoor.y / accoutnViewLayout.height
-                                } else {
-                                    accoutScrollView.vScrollBar.position = 0
+                                showLinkDevSlot()
+                            }
+                        }
+                    }
+                }
+
+                /*
+                 * Banned contacts
+                 */
+                ColumnLayout {
+                    id: bannedContactsLayoutWidget
+
+                    Layout.fillWidth: true
+                    Layout.leftMargin: JamiTheme.preferredMarginSize
+                    Layout.alignment: Qt.AlignHCenter
+
+                    spacing: 8
+
+                    RowLayout {
+                        Layout.fillWidth: true
+
+                        ElidedTextLabel {
+
+                            id: lblBannedContacts
+
+                            Layout.fillWidth: true
+                            Layout.maximumHeight: JamiTheme.preferredFieldHeight
+                            Layout.preferredHeight: JamiTheme.preferredFieldHeight
+                            Layout.minimumHeight: JamiTheme.preferredFieldHeight
+
+                            eText: qsTr("Banned Contacts")
+                            fontSize: JamiTheme.headerFontSize
+                            maxWidth: accountViewRect.width - bannedContactsBtn.width -JamiTheme.preferredMarginSize*4
+                        }
+
+                        HoverableButtonTextItem {
+                            id: bannedContactsBtn
+
+                            Layout.alignment: Qt.AlignRight
+
+                            Layout.maximumWidth: JamiTheme.preferredFieldHeight
+                            Layout.preferredWidth: JamiTheme.preferredFieldHeight
+                            Layout.minimumWidth: JamiTheme.preferredFieldHeight
+
+                            Layout.minimumHeight: JamiTheme.preferredFieldHeight
+                            Layout.preferredHeight: JamiTheme.preferredFieldHeight
+                            Layout.maximumHeight: JamiTheme.preferredFieldHeight
+
+                            radius: height / 2
+
+                            source: bannedContactsListWidget.visible? "qrc:/images/icons/round-arrow_drop_up-24px.svg" :
+                                                                      "qrc:/images/icons/round-arrow_drop_down-24px.svg"
+                            onClicked: {
+                                toggleBannedContacts()
+                            }
+                        }
+                    }
+
+
+                    ColumnLayout {
+                        id: bannedContactsListWidget
+
+                        spacing: 8
+                        visible: false
+
+                        ListViewJami {
+                            id: bannedListWidget
+
+                            Layout.fillWidth: true
+
+                            Layout.minimumHeight: 160
+                            Layout.preferredHeight: 160
+                            Layout.maximumHeight: 160
+
+                            model: bannedListModel
+
+                            delegate: BannedItemDelegate{
+                                id: bannedListDelegate
+
+                                width: bannedListWidget.width
+                                height: 74
+
+                                contactName : ContactName
+                                contactID: ContactID
+                                contactPicture_base64: ContactPicture
+
+                                onClicked: {
+                                    bannedListWidget.currentIndex = index
+                                }
+
+                                onBtnReAddContactClicked: {
+                                    unban(index)
                                 }
                             }
                         }
+                    }
+                }
 
-                        Item {
-                            Layout.fillWidth: true
-                            Layout.fillHeight: true
+                /*
+                 * Advanced Settigs Button
+                 */
+
+                RowLayout {
+                    id: rowAdvancedSettingsBtn
+                    Layout.fillWidth: true
+                    Layout.leftMargin: JamiTheme.preferredMarginSize
+
+                    ElidedTextLabel {
+
+                        id: lblAdvancedAccountSettings
+
+                        Layout.fillWidth: true
+                        Layout.maximumHeight: JamiTheme.preferredFieldHeight
+                        Layout.preferredHeight: JamiTheme.preferredFieldHeight
+                        Layout.minimumHeight: JamiTheme.preferredFieldHeight
+
+                        eText: qsTr("Advanced Account Settings")
+
+                        fontSize: JamiTheme.headerFontSize
+                        maxWidth: accountViewRect.width - advancedAccountSettingsPButton.width -JamiTheme.preferredMarginSize*4
+                    }
+
+                    HoverableButtonTextItem {
+                        id: advancedAccountSettingsPButton
+
+                        Layout.leftMargin: JamiTheme.preferredMarginSize
+
+                        Layout.minimumWidth: JamiTheme.preferredFieldHeight
+                        Layout.preferredWidth: JamiTheme.preferredFieldHeight
+                        Layout.maximumWidth: JamiTheme.preferredFieldHeight
+                        Layout.minimumHeight: JamiTheme.preferredFieldHeight
+                        Layout.preferredHeight: JamiTheme.preferredFieldHeight
+                        Layout.maximumHeight: JamiTheme.preferredFieldHeight
+
+                        Layout.alignment: Qt.AlignHCenter
+
+                        radius: height / 2
+
+                        source: {
+                            if (advanceSettingsView.visible) {
+                                return "qrc:/images/icons/round-arrow_drop_up-24px.svg"
+                            } else {
+                                return "qrc:/images/icons/round-arrow_drop_down-24px.svg"
+                            }
+                        }
+
+                        onClicked: {
+                            advanceSettingsView.visible = !advanceSettingsView.visible
+                            if (advanceSettingsView.visible) {
+                                advanceSettingsView.updateAccountInfoDisplayedAdvance()
+                                accountScrollView.vScrollBar.position = rowAdvancedSettingsBtn.y / accountViewLayout.height
+                            } else {
+                                accountScrollView.vScrollBar.position = 0
+                            }
                         }
                     }
                 }
 
-                Item {
-                    Layout.fillWidth: true
-
-                    Layout.minimumHeight: 48
-                    Layout.preferredHeight: 48
-                    Layout.maximumHeight: 48
+                /*
+                 * Advanced Settings
+                 */
+                AdvancedSettingsView {
+                    id: advanceSettingsView
+                    Layout.leftMargin: JamiTheme.preferredMarginSize
+                    visible: false
                 }
 
-                ColumnLayout {
-                    spacing: 6
+                /*
+                 * To keep max width
+                 */
+                Item {
+                    Layout.preferredWidth: accountViewRect.width - 32
+                    Layout.minimumWidth: accountViewRect.width - 32
+                    Layout.maximumWidth: JamiTheme.maximumWidthSettingsView - 32
                     Layout.fillHeight: true
-                    Layout.fillWidth: true
-
-                    Layout.leftMargin: 30
-
-                    // instantiate advance setting page
-                    AdvancedSettingsView {
-                        id: advanceSettingsView
-
-                        Layout.leftMargin: 10
-                        visible: false
-                    }
                 }
             }
-        }
-
-        Item {
-            Layout.fillHeight: true
-            Layout.fillWidth: true
         }
     }
 }

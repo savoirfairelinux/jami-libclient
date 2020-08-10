@@ -23,6 +23,7 @@ import QtQuick.Controls.Universal 2.12
 import QtQuick.Layouts 1.3
 import QtGraphicalEffects 1.14
 import QtQuick.Controls.Styles 1.4
+import "../../constant"
 
 ComboBox {
     id: control
@@ -63,7 +64,7 @@ ComboBox {
             context.lineTo(width, 0);
             context.lineTo(width / 2, height);
             context.closePath();
-            context.fillStyle = control.pressed ? "#17a81a" : "#21be2b";
+            context.fillStyle = control.pressed ? JamiTheme.pressColor : "black";
             context.fill();
         }
     }
