@@ -37,7 +37,6 @@ Rectangle {
     signal accountSignalsReconnect(string accountId)
     signal needToUpdateConversationForAddedContact
     signal needToAddNewAccount
-    signal settingBtnClicked_AccountComboBox
 
 
     /*
@@ -117,67 +116,16 @@ Rectangle {
         conversationSmartListView.updateConversationSmartListView()
     }
 
+    function updateSmartList(accountId) {
+        conversationSmartListView.currentIndex = -1
+        conversationSmartListView.updateSmartList(accountId)
+    }
 
     /*
      * Intended -> since strange behavior will happen without this for stackview.
      */
     anchors.top: parent.top
-
-    AccountComboBox {
-        id: accountComboBox
-
-        anchors.top: sidePanelRect.top
-        width: sidePanelRect.width
-        height: 64
-
-        currentIndex: 0
-
-        Connections {
-            target: ClientWrapper.accountAdaptor
-
-            function onAccountSignalsReconnect(accountId) {
-                CallAdapter.connectCallStatusChanged(accountId)
-                ConversationsAdapter.accountChangedSetUp(accountId)
-                sidePanelRect.accountSignalsReconnect(accountId)
-            }
-
-            function onUpdateConversationForAddedContact() {
-                sidePanelRect.needToUpdateConversationForAddedContact()
-            }
-
-            function onAccountStatusChanged() {
-                accountComboBox.updateAccountListModel()
-            }
-        }
-
-        onSettingBtnClicked: {
-            settingBtnClicked_AccountComboBox()
-        }
-
-        onAccountChanged: {
-            ClientWrapper.accountAdaptor.accountChanged(index)
-            refreshAccountComboBox(0)
-            sidePanelRect.accountComboBoxNeedToShowWelcomePage(0)
-        }
-
-        onNeedToUpdateSmartList: {
-            conversationSmartListView.currentIndex = -1
-            conversationSmartListView.updateSmartList(accountId)
-        }
-
-        onNeedToBackToWelcomePage: {
-            sidePanelRect.accountComboBoxNeedToShowWelcomePage(index)
-        }
-
-        onNewAccountButtonClicked: {
-            sidePanelRect.needToAddNewAccount()
-        }
-
-        Component.onCompleted: {
-            ClientWrapper.accountAdaptor.setQmlObject(this)
-            ClientWrapper.accountAdaptor.accountChanged(0)
-        }
-    }
+    anchors.fill: parent
 
     /*
      * Search bar container to embed search label
@@ -186,7 +134,7 @@ Rectangle {
         id: contactSearchBar
         width: sidePanelRect.width - 26
         height: 35
-        anchors.top: accountComboBox.bottom
+        anchors.top: sidePanelRect.top
         anchors.topMargin: 10
         anchors.left: sidePanelRect.left
         anchors.leftMargin: 16
@@ -211,8 +159,8 @@ Rectangle {
         anchors.top: tabBarVisible ? sidePanelTabBar.bottom : contactSearchBar.bottom
         anchors.topMargin: tabBarVisible ? 0 : 10
         width: parent.width
-        height: tabBarVisible ? sidePanelRect.height - sidePanelTabBar.height - contactSearchBar.height - accountComboBox.height - 20 :
-                                sidePanelRect.height - contactSearchBar.height - accountComboBox.height - 20
+        height: tabBarVisible ? sidePanelRect.height - sidePanelTabBar.height - contactSearchBar.height - 20 :
+                                sidePanelRect.height - contactSearchBar.height - 20
 
         Connections {
             target: ConversationsAdapter

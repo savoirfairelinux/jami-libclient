@@ -24,6 +24,7 @@ import QtQuick.Layouts 1.3
 import QtGraphicalEffects 1.14
 import QtQuick.Controls.Styles 1.4
 import net.jami.Models 1.0
+import "../../commoncomponents"
 
 Rectangle {
     id: avSettingPage
@@ -216,6 +217,7 @@ Rectangle {
     }
 
     property bool previewAvailable: false
+    signal backArrowClicked
 
     Connections{
         target: ClientWrapper.avmodel
@@ -267,18 +269,47 @@ Rectangle {
                     Layout.maximumHeight: 10
                 }
 
-                Label {
+                RowLayout {
+
+                    Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
+                    Layout.leftMargin: 16
                     Layout.fillWidth: true
-                    Layout.minimumHeight: 25
-                    Layout.preferredHeight: 25
-                    Layout.maximumHeight: 25
+                    Layout.maximumHeight: 64
+                    Layout.minimumHeight: 64
+                    Layout.preferredHeight: 64
 
-                    text: qsTr("Audio / Video")
-                    font.pointSize: 15
-                    font.kerning: true
+                    HoverableButton {
 
-                    horizontalAlignment: Text.AlignLeft
-                    verticalAlignment: Text.AlignVCenter
+                        Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
+                        Layout.preferredWidth: 30
+                        Layout.preferredHeight: 30
+
+                        radius: 30
+                        source: "qrc:/images/icons/ic_arrow_back_24px.svg"
+                        backgroundColor: "white"
+                        onExitColor: "white"
+
+                        visible: mainViewWindow.sidePanelHidden
+
+                        onClicked: {
+                            backArrowClicked()
+                        }
+                    }
+
+
+                    Label {
+                        Layout.fillWidth: true
+                        Layout.minimumHeight: 25
+                        Layout.preferredHeight: 25
+                        Layout.maximumHeight: 25
+
+                        text: qsTr("Audio / Video")
+                        font.pointSize: 15
+                        font.kerning: true
+
+                        horizontalAlignment: Text.AlignLeft
+                        verticalAlignment: Text.AlignVCenter
+                    }
                 }
 
                 Item {

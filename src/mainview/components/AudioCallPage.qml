@@ -75,7 +75,7 @@ Rectangle {
 
         handle: Rectangle {
             implicitWidth: audioCallPageRect.width
-            implicitHeight: JamiTheme.splitViewHandlePreferedWidth
+            implicitHeight: JamiTheme.splitViewHandlePreferredWidth
             color: SplitHandle.pressed ? JamiTheme.pressColor : (SplitHandle.hovered ? JamiTheme.hoverColor : JamiTheme.tabbarBorderColor)
         }
 

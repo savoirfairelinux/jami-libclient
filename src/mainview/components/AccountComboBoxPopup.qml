@@ -40,9 +40,9 @@ Popup {
      */
     implicitHeight: {
         comboBoxPopup.visible
-        return Math.min(accountComboBox.height * Math.min(
-                                 5, accountListModel.rowCount() + 1),
-                             sidePanelRect.height)
+        return Math.min(accountComboBox.height *
+                        Math.min(5, accountListModel.rowCount() + 1),
+                        mainViewSidePanelRect.height)
     }
     padding: 0
 

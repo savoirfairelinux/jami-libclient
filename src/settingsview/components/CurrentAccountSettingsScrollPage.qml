@@ -48,6 +48,7 @@ Rectangle {
 
     signal navigateToMainView
     signal navigateToNewWizardView
+    signal backArrowClicked
 
     function refreshRelevantUI(){
         refreshVariable++
@@ -478,6 +479,26 @@ Rectangle {
                 Layout.preferredWidth: 30
                 Layout.minimumWidth: 30
             }
+
+
+            HoverableButton {
+
+                Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
+                Layout.preferredWidth: 30
+                Layout.preferredHeight: 30
+
+                radius: 30
+                source: "qrc:/images/icons/ic_arrow_back_24px.svg"
+                backgroundColor: "white"
+                onExitColor: "white"
+
+                visible: mainViewWindow.sidePanelHidden
+
+                onClicked: {
+                    backArrowClicked()
+                }
+            }
+
 
             Label {
                 id: accountPageTitle

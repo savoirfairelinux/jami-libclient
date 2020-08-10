@@ -29,6 +29,7 @@ import "components"
 Rectangle {
     id: settingsViewWindow
 
+
     enum SettingsMenu{
         Account,
         General,
@@ -144,9 +145,10 @@ Rectangle {
     signal settingsViewWindowNeedToShowMainViewWindow(bool accountDeleted)
     signal settingsViewWindowNeedToShowNewWizardWindow
 
-    property int textFontSize: 9
+    signal settingsBackArrowClicked
 
     visible: true
+    anchors.fill: parent
 
     Rectangle {
         id: settingsViewRect
@@ -161,130 +163,86 @@ Rectangle {
             }
         }
 
-        SplitView {
+        StackLayout {
             anchors.fill: parent
-            orientation: Qt.Horizontal
 
-            handle: Rectangle {
-                    implicitWidth: 3
-                    implicitHeight: 3
-                    color: JamiTheme.lightGrey_
-                }
+            id: rightSettingsWidget
 
-            Rectangle {
-                id: leftSettingsWidget
+            property int pageIdCurrentAccountSettingsScrollPage: 0
+            property int pageIdCurrentSIPAccountSettingScrollPage: 1
+            property int pageIdGeneralSettingsPage: 2
+            property int pageIdAvSettingPage: 3
+            property int pageIdPluginSettingsPage: 4
 
-                SplitView.minimumWidth: 200
-                SplitView.preferredWidth: 200
-                SplitView.maximumWidth: parent.width / 2
-                SplitView.fillHeight: true
-                LeftPanelView {
-                    id: leftPanelView
-
-                    contentViewportWidth: leftSettingsWidget.width
-                    contentViewPortHeight: leftSettingsWidget.height
-
-                    onBtnExitClicked:{
-                        leaveSettingsSlot()
-                    }
-
-                    Connections {
-                        target: leftPanelView.btnAccountSettings
-                        function onCheckedToggledForRightPanel(checked) {
-                            setSelected(SettingsView.Account)
+            currentIndex: {
+                switch(selectedMenu){
+                    case SettingsView.Account:
+                        if(settingsViewRect.isSIP){
+                            return pageIdCurrentSIPAccountSettingScrollPage
+                        } else {
+                            return pageIdCurrentAccountSettingsScrollPage
                         }
-                    }
-                    Connections {
-                        target: leftPanelView.btnGeneralSettings
-                        function onCheckedToggledForRightPanel(checked) {
-                            setSelected(SettingsView.General)
-                        }
-                    }
-                    Connections {
-                        target: leftPanelView.btnMediaSettings
-                        function onCheckedToggledForRightPanel(checked) {
-                            setSelected(SettingsView.Media)
-                        }
-                    }
-                    Connections {
-                        target: leftPanelView.btnPluginSettings
-                        function onCheckedToggledForRightPanel(checked) {
-                            setSelected(SettingsView.Plugin)
-                        }
-                    }
+                    case SettingsView.General:
+                        return pageIdGeneralSettingsPage
+                    case SettingsView.Media:
+                        return pageIdAvSettingPage
+                    case SettingsView.Plugin:
+                        return pageIdPluginSettingsPage
                 }
             }
 
-            StackLayout {
-                id: rightSettingsWidget
+            // current account setting scroll page, index 0
+            CurrentAccountSettingsScrollPage {
+                id: currentAccountSettingsScrollWidget
 
-                property int pageIdCurrentAccountSettingsScrollPage: 0
-                property int pageIdCurrentSIPAccountSettingScrollPage: 1
-                property int pageIdGeneralSettingsPage: 2
-                property int pageIdAvSettingPage: 3
-                property int pageIdPluginSettingsPage: 4
-
-                currentIndex: {
-                    switch(selectedMenu){
-                        case SettingsView.Account:
-                            if(settingsViewRect.isSIP){
-                                return pageIdCurrentSIPAccountSettingScrollPage
-                            } else {
-                                return pageIdCurrentAccountSettingsScrollPage
-                            }
-                        case SettingsView.General:
-                            return pageIdGeneralSettingsPage
-                        case SettingsView.Media:
-                            return pageIdAvSettingPage
-                        case SettingsView.Plugin:
-                            return pageIdPluginSettingsPage
-                    }
+                onNavigateToMainView: {
+                    leaveSettingsSlot(true)
                 }
 
-                SplitView.fillWidth: true
-                SplitView.fillHeight: true
+                onNavigateToNewWizardView: {
+                    leaveSettingsSlot(true, false)
+                }
+            }
 
-                // current account setting scroll page, index 0
-                CurrentAccountSettingsScrollPage {
-                    id: currentAccountSettingsScrollWidget
+            // current SIP account setting scroll page, index 1
+            CurrentSIPAccountSettingScrollPage {
+                id: currentSIPAccountSettingsScrollWidget
 
-                    onNavigateToMainView:{
-                        leaveSettingsSlot(true)
-                    }
-
-                    onNavigateToNewWizardView: {
-                        leaveSettingsSlot(true, false)
-                    }
+                onNavigateToMainView: {
+                    leaveSettingsSlot(true)
                 }
 
-                // current SIP account setting scroll page, index 1
-                CurrentSIPAccountSettingScrollPage {
-                    id: currentSIPAccountSettingsScrollWidget
-
-                    onNavigateToMainView: {
-                        leaveSettingsSlot(true)
-                    }
-
-                    onNavigateToNewWizardView: {
-                        leaveSettingsSlot(true, false)
-                    }
+                onNavigateToNewWizardView: {
+                    leaveSettingsSlot(true, false)
                 }
+            }
 
-                // general setting page, index 2
-                GeneralSettingsPage {
-                    id: generalSettings
-                }
+            // general setting page, index 2
+            GeneralSettingsPage {
+                id: generalSettings
+            }
 
-                // av setting page, index 3
-                AvSettingPage {
-                    id: avSettings
-                }
+            // av setting page, index 3
+            AvSettingPage {
+                id: avSettings
+            }
 
-                // plugin setting page, index 4
-                PluginSettingsPage {
-                    id: pluginSettings
-                }
+            // plugin setting page, index 4
+            PluginSettingsPage {
+                id: pluginSettings
             }
         }
+    }
+
+
+    /*
+     * Back button signal redirection
+     */
+    Component.onCompleted: {
+        currentAccountSettingsScrollWidget.backArrowClicked.connect(settingsBackArrowClicked)
+        currentSIPAccountSettingsScrollWidget.backArrowClicked.connect(settingsBackArrowClicked)
+        generalSettings.backArrowClicked.connect(settingsBackArrowClicked)
+        avSettings.backArrowClicked.connect(settingsBackArrowClicked)
+        pluginSettings.backArrowClicked.connect(settingsBackArrowClicked)
     }
 }

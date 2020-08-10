@@ -28,13 +28,14 @@ Rectangle {
 
     property int currentAccountIndex: 0
     property int buttonPreferredSize: 30
+    anchors.fill: parent
 
     Rectangle {
         id: welcomeRectComponentsGroup
 
         anchors.centerIn: parent
 
-        width: Math.max(welcomePageGroupPreferedWidth, welcomeRect.width - 100)
+        width: Math.max(mainViewStackPreferredWidth, welcomeRect.width - 100)
         height: mainViewWindow.minimumHeight
 
         ColumnLayout {

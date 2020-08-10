@@ -45,28 +45,56 @@ Rectangle {
     Layout.fillHeight: true
     Layout.fillWidth: true
 
+    signal backArrowClicked
+
     ColumnLayout {
         anchors.fill: parent
         spacing: 6
 
         width: parent.width
         height: parent.height
-        
-        Label {
-            width: parent.width
-            height: parent.height
 
-            Layout.leftMargin: 35
-            Layout.topMargin: 15
-            Layout.alignment: Qt.AlignTop
+        RowLayout {
 
-            text: qsTr("Plugin")
+            Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
+            Layout.leftMargin: 16
+            Layout.fillWidth: true
+            Layout.maximumHeight: 64
+            Layout.minimumHeight: 64
+            Layout.preferredHeight: 64
 
-            font.pointSize: 15
-            font.kerning: true
+            HoverableButton {
 
-            horizontalAlignment: Text.AlignBottom
-            verticalAlignment: Text.AlignVCenter
+                Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
+                Layout.preferredWidth: 30
+                Layout.preferredHeight: 30
+
+                radius: 30
+                source: "qrc:/images/icons/ic_arrow_back_24px.svg"
+                backgroundColor: "white"
+                onExitColor: "white"
+
+                visible: mainViewWindow.sidePanelHidden
+
+                onClicked: {
+                    backArrowClicked()
+                }
+            }
+
+            Label {
+                Layout.fillWidth: true
+                Layout.minimumHeight: 25
+                Layout.preferredHeight: 25
+                Layout.maximumHeight: 25
+
+                text: qsTr("Plugin")
+
+                font.pointSize: 15
+                font.kerning: true
+
+                horizontalAlignment: Text.AlignLeft
+                verticalAlignment: Text.AlignVCenter
+            }
         }
 
         ScrollView {
@@ -96,7 +124,7 @@ Rectangle {
 
                     onSwitchToggled: {
                         slotSetPluginEnabled(checked)
-                
+
                         pluginListSettingsView.visible = checked
                         if (!checked) {
                             pluginListPreferencesView.visible = checked
@@ -111,7 +139,7 @@ Rectangle {
                     Layout.fillHeight: true
                     width:380
                     height:100
-                
+
                     // instantiate plugin list setting page
                     PluginListSettingsView {
                         id: pluginListSettingsView

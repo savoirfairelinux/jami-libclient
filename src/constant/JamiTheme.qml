@@ -73,7 +73,7 @@ Item {
     property string faddedFontColor: "#c0c0c0"
     property string faddedLastInteractionFontColor: "#505050"
 
-    property int splitViewHandlePreferedWidth: 4
+    property int splitViewHandlePreferredWidth: 4
     property int textFontSize: 9
     property int titleFontSize: 16
     property int menuFontSize: 12

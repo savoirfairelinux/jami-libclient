@@ -30,58 +30,119 @@ import net.jami.Models 1.0
  */
 import "components"
 import "../settingsview"
+import "../settingsview/components"
 
 Window {
     id: mainViewWindow
 
-    property int minWidth: sidePanelViewStackPreferedWidth
+    property int minWidth: sidePanelViewStackPreferredWidth
     property int minHeight: aboutPopUpDialog.contentHeight
 
-    property int mainViewWindowPreferedWidth: 650
-    property int mainViewWindowPreferedHeight: 600
-    property int sidePanelViewStackPreferedWidth: 250
-    property int welcomePageGroupPreferedWidth: 250
-    property int aboutPopUpPreferedWidth: 250
+    property int mainViewWindowPreferredWidth: 650
+    property int mainViewWindowPreferredHeight: 600
+    property int sidePanelViewStackPreferredWidth: 250
+    property int mainViewStackPreferredWidth: 250
+    property int aboutPopUpPreferredWidth: 250
 
     property int savedSidePanelViewMinWidth: 0
     property int savedSidePanelViewMaxWidth: 0
     property int savedWelcomeViewMinWidth: 0
     property int savedWelcomeViewMaxWidth: 0
-    property bool hiddenView: false
+    property bool sidePanelHidden: false
 
     /*
      * To calculate tab bar bottom border hidden rect left margin.
      */
     property int tabBarLeftMargin: 8
     property int tabButtonShrinkSize: 8
+    property bool inSettingsView: false
+    property bool needToShowCallStack: false
+    property bool needToCloseCallStack: false
 
     signal noAccountIsAvailable
     signal needToAddNewAccount
     signal closeApp
 
+    function pushCallStackView(){
+        if (mainViewStack.visible) {
+            mainViewStack.pop(null, StackView.Immediate)
+            mainViewStack.push(callStackView, StackView.Immediate)
+        } else {
+            sidePanelViewStack.pop(null, StackView.Immediate)
+            sidePanelViewStack.push(callStackView, StackView.Immediate)
+        }
+    }
+
+    function pushCommunicationMessageWebView(){
+        if (mainViewStack.visible) {
+            mainViewStack.pop(null, StackView.Immediate)
+            mainViewStack.push(communicationPageMessageWebView,
+                                  StackView.Immediate)
+        } else {
+            sidePanelViewStack.pop(null, StackView.Immediate)
+            sidePanelViewStack.push(
+                        communicationPageMessageWebView,
+                        StackView.Immediate)
+        }
+    }
+
     function newAccountAdded(index) {
         mainViewWindowSidePanel.refreshAccountComboBox(index)
     }
 
-    function recursionStackViewItemMove(stackOne, stackTwo) {
-
+    function recursionStackViewItemMove(stackOne, stackTwo, depth=1) {
 
         /*
          * Move all items (expect the bottom item) to stacktwo by the same order in stackone.
          */
-        if (stackOne.depth === 1) {
+        if (stackOne.depth === depth) {
             return
         }
 
         var tempItem = stackOne.pop(StackView.Immediate)
-        recursionStackViewItemMove(stackOne, stackTwo)
+        recursionStackViewItemMove(stackOne, stackTwo, depth)
         stackTwo.push(tempItem, StackView.Immediate)
+    }
+
+    function toggleSettingsView() {
+
+        if (!inSettingsView) {
+
+            if (sidePanelHidden){
+                recursionStackViewItemMove(sidePanelViewStack, mainViewStack, 1)
+                mainViewStack.push(settingsView, StackView.Immediate)
+                sidePanelViewStack.push(leftPanelSettingsView, StackView.Immediate)
+                recursionStackViewItemMove(mainViewStack, sidePanelViewStack, 1)
+            } else {
+                mainViewStack.push(settingsView, StackView.Immediate)
+                sidePanelViewStack.push(leftPanelSettingsView, StackView.Immediate)
+            }
+
+        } else {
+
+            if (!sidePanelHidden) {
+                sidePanelViewStack.pop(mainViewWindowSidePanel, StackView.Immediate)
+                mainViewStack.pop(StackView.Immediate)
+            } else {
+                recursionStackViewItemMove(sidePanelViewStack, mainViewStack, 2)
+                sidePanelViewStack.pop(StackView.Immediate)
+                mainViewStack.pop(StackView.Immediate)
+                recursionStackViewItemMove(mainViewStack, sidePanelViewStack, 1)
+            }
+
+            if (needToCloseCallStack) {
+                pushCommunicationMessageWebView()
+                needToShowCallStack = false
+                needToCloseCallStack = false
+            }
+        }
+        inSettingsView = !inSettingsView
     }
 
     title: "Jami"
     visible: true
-    width: mainViewWindowPreferedWidth
-    height: mainViewWindowPreferedHeight
+    width: mainViewWindowPreferredWidth
+    height: mainViewWindowPreferredHeight
     minimumWidth: minWidth
     minimumHeight: minHeight
 
@@ -89,6 +150,8 @@ Window {
         target: CallAdapter
 
         function onShowCallStack(accountId, convUid, forceReset) {
+
+            needToShowCallStack = true
             if (forceReset) {
                 callStackView.responsibleAccountId = accountId
                 callStackView.responsibleConvUid = convUid
@@ -101,13 +164,7 @@ Window {
              */
             if (callStackView.responsibleAccountId === accountId
                     && callStackView.responsibleConvUid === convUid) {
-                if (welcomeViewStack.visible) {
-                    welcomeViewStack.pop(null, StackView.Immediate)
-                    welcomeViewStack.push(callStackView, StackView.Immediate)
-                } else {
-                    sidePanelViewStack.pop(null, StackView.Immediate)
-                    sidePanelViewStack.push(callStackView, StackView.Immediate)
-                }
+                pushCallStackView()
             }
         }
 
@@ -120,22 +177,20 @@ Window {
             /*
              * Check if call stack view is on any of the stackview.
              */
-            if (responsibleCallId === callId || responsibleCallId.length === 0) {
-                if (welcomeViewStack.find(function (item, index) {
+            if (callStackView.responsibleAccountId === accountId
+                    && callStackView.responsibleConvUid === convUid) {
+                if (mainViewStack.find(function (item, index) {
                     return item.objectName === "callStackViewObject"
                 }) || sidePanelViewStack.find(function (item, index) {
                     return item.objectName === "callStackViewObject"
-                })) {
+                }) || (inSettingsView && needToShowCallStack)) {
                     callStackView.needToCloseInCallConversationAndPotentialWindow()
-                    if (welcomeViewStack.visible) {
-                        welcomeViewStack.pop(null, StackView.Immediate)
-                        welcomeViewStack.push(communicationPageMessageWebView,
-                                              StackView.Immediate)
+
+                    if (!inSettingsView) {
+                        pushCommunicationMessageWebView()
+                        needToShowCallStack = false
                     } else {
-                        sidePanelViewStack.pop(null, StackView.Immediate)
-                        sidePanelViewStack.push(
-                                    communicationPageMessageWebView,
-                                    StackView.Immediate)
+                        needToCloseCallStack = true
                     }
                 }
             }
@@ -143,12 +198,15 @@ Window {
 
         function onIncomingCallNeedToSetupMainView(accountId, convUid) {
 
-
             /*
              * Set up the call stack view that is needed by call overlay.
              */
-            welcomeViewStack.pop(null, StackView.Immediate)
-            sidePanelViewStack.pop(null, StackView.Immediate)
+            if (!inSettingsView) {
+                mainViewStack.pop(null, StackView.Immediate)
+                sidePanelViewStack.pop(null, StackView.Immediate)
+            } else {
+                toggleSettingsView()
+            }
 
             var index = ClientWrapper.utilsAdaptor.getCurrAccList().indexOf(accountId)
             var name = ClientWrapper.utilsAdaptor.getBestName(accountId, convUid)
@@ -189,7 +247,7 @@ Window {
             height: mainViewWindow.height
 
             handle: Rectangle {
-                implicitWidth: JamiTheme.splitViewHandlePreferedWidth
+                implicitWidth: JamiTheme.splitViewHandlePreferredWidth
                 implicitHeight: splitView.height
                 color:"transparent"
                 Rectangle {
@@ -199,45 +257,108 @@ Window {
                 }
             }
 
-            StackView {
-                id: sidePanelViewStack
-
-                initialItem: mainViewWindowSidePanel
-
-                SplitView.maximumWidth: splitView.width - sidePanelViewStackPreferedWidth
-                SplitView.minimumWidth: sidePanelViewStackPreferedWidth
+            Rectangle {
+                id: mainViewSidePanelRect
+                SplitView.minimumWidth: sidePanelViewStackPreferredWidth
+                SplitView.maximumWidth: (sidePanelHidden ? splitView.width :
+                                                      splitView.width - sidePanelViewStackPreferredWidth)
                 SplitView.fillHeight: true
 
-                clip: true
+                /*
+                 * AccountComboBox is always visible
+                 */
+                AccountComboBox {
+                    id: accountComboBox
+
+                    anchors.top: mainViewSidePanelRect.top
+                    width: mainViewSidePanelRect.width
+                    height: 64
+
+                    visible: (mainViewWindowSidePanel.visible || leftPanelSettingsView.visible)
+
+                    currentIndex: 0
+
+                    Connections {
+                        target: ClientWrapper.accountAdaptor
+
+                        function onAccountSignalsReconnect(accountId) {
+                            CallAdapter.connectCallModel(accountId)
+                            ConversationsAdapter.accountChangedSetUp(accountId)
+                            mainViewWindowSidePanel.accountSignalsReconnect(accountId)
+                        }
+
+                        function onUpdateConversationForAddedContact() {
+                            mainViewWindowSidePanel.needToUpdateConversationForAddedContact()
+                        }
+
+                        function onAccountStatusChanged() {
+                            accountComboBox.updateAccountListModel()
+                        }
+                    }
+
+                    onSettingBtnClicked: {
+                        toggleSettingsView()
+                    }
+
+                    onAccountChanged: {
+                        ClientWrapper.accountAdaptor.accountChanged(index)
+                        mainViewWindowSidePanel.refreshAccountComboBox(0)
+                        settingsView.slotAccountListChanged()
+                        settingsView.setSelected(settingsView.selectedMenu, true)
+
+                        if (needToShowCallStack
+                                && callStackView.responsibleAccountId === ClientWrapper.utilsAdaptor.getCurrAccId()){
+                            if (!ClientWrapper.accountAdaptor.hasVideoCall()) {
+                                pushCommunicationMessageWebView()
+                                needToShowCallStack = false
+                            } else if (needToShowCallStack) {
+                                pushCallStackView()
+                            }
+                        }
+                    }
+
+                    onNeedToUpdateSmartList: {
+                        mainViewWindowSidePanel.updateSmartList(accountId)
+                    }
+
+                    onNeedToBackToWelcomePage: {
+                        if (!inSettingsView)
+                            mainViewWindowSidePanel.accountComboBoxNeedToShowWelcomePage(index)
+                    }
+
+                    onNewAccountButtonClicked: {
+                        mainViewWindowSidePanel.needToAddNewAccount()
+                    }
+
+                    Component.onCompleted: {
+                        ClientWrapper.accountAdaptor.setQmlObject(this)
+                    }
+                }
+
+                StackView {
+                    id: sidePanelViewStack
+
+                    initialItem: mainViewWindowSidePanel
+
+                    anchors.top: accountComboBox.visible ? accountComboBox.bottom : mainViewSidePanelRect.top
+                    width: mainViewSidePanelRect.width
+                    height: accountComboBox.visible ? mainViewSidePanelRect.height - accountComboBox.height :
+                                                      mainViewSidePanelRect.height
+
+                    clip: true
+                }
             }
 
             StackView {
-                id: welcomeViewStack
+                id: mainViewStack
 
                 initialItem: welcomePage
 
-                SplitView.maximumWidth: hiddenView ? splitView.width : splitView.width - sidePanelViewStackPreferedWidth
-                SplitView.minimumWidth: sidePanelViewStackPreferedWidth
+                SplitView.maximumWidth: sidePanelHidden ? splitView.width : splitView.width - sidePanelViewStackPreferredWidth
+                SplitView.minimumWidth: sidePanelViewStackPreferredWidth
                 SplitView.fillHeight: true
 
                 clip: true
-            }
-        }
-
-        SettingsView {
-            id: settingsView
-
-            Layout.fillWidth: true
-            Layout.fillHeight: true
-
-            onSettingsViewWindowNeedToShowMainViewWindow: {
-                mainViewWindowSidePanel.refreshAccountComboBox(
-                            accountDeleted ? 0 : -1)
-                mainViewStackLayout.currentIndex = 0
-            }
-
-            onSettingsViewWindowNeedToShowNewWizardWindow: {
-                mainViewWindow.noAccountIsAvailable()
             }
         }
     }
@@ -246,12 +367,54 @@ Window {
         id: accountListModel
     }
 
+
+    LeftPanelView {
+        id: leftPanelSettingsView
+        visible: false
+        contentViewportWidth: mainViewSidePanelRect.width
+        contentViewPortHeight: mainViewSidePanelRect.height
+
+        Connections {
+            target: leftPanelSettingsView.btnAccountSettings
+            function onCheckedToggledForRightPanel(checked) {
+                settingsView.setSelected(SettingsView.Account)
+                if (sidePanelHidden) {
+                    recursionStackViewItemMove(mainViewStack, sidePanelViewStack, 1)
+                }
+            }
+        }
+        Connections {
+            target: leftPanelSettingsView.btnGeneralSettings
+            function onCheckedToggledForRightPanel(checked) {
+                settingsView.setSelected(SettingsView.General)
+                if (sidePanelHidden) {
+                    recursionStackViewItemMove(mainViewStack, sidePanelViewStack, 1)
+                }
+            }
+        }
+        Connections {
+            target: leftPanelSettingsView.btnMediaSettings
+            function onCheckedToggledForRightPanel(checked) {
+                settingsView.setSelected(SettingsView.Media)
+                if (sidePanelHidden) {
+                    recursionStackViewItemMove(mainViewStack, sidePanelViewStack, 1)
+                }
+            }
+        }
+        Connections {
+            target: leftPanelSettingsView.btnPluginSettings
+            function onCheckedToggledForRightPanel(checked) {
+                settingsView.setSelected(SettingsView.Plugin)
+                if (sidePanelHidden) {
+                    recursionStackViewItemMove(mainViewStack, sidePanelViewStack, 1)
+                }
+            }
+        }
+    }
+
+
     SidePanel {
         id: mainViewWindowSidePanel
-
-        onSettingBtnClicked_AccountComboBox: {
-            mainViewStackLayout.currentIndex = 1
-        }
 
         onConversationSmartListNeedToAccessMessageWebView: {
 
@@ -288,7 +451,7 @@ Window {
             callStackView.setLinkedWebview(
                         communicationPageMessageWebView)
 
-            if (welcomeViewStack.find(function (item, index) {
+            if (mainViewStack.find(function (item, index) {
                 return item.objectName === "communicationPageMessageWebView"
             }) || sidePanelViewStack.find(function (item, index) {
                 return item.objectName === "communicationPageMessageWebView"
@@ -301,24 +464,24 @@ Window {
             /*
              * Push messageWebView or callStackView onto the correct stackview
              */
-            welcomeViewStack.pop(null, StackView.Immediate)
+            mainViewStack.pop(null, StackView.Immediate)
             sidePanelViewStack.pop(null, StackView.Immediate)
 
-            if (sidePanelViewStack.visible && welcomeViewStack.visible) {
+            if (sidePanelViewStack.visible && mainViewStack.visible) {
                 if (callStackViewShouldShow) {
-                    welcomeViewStack.push(callStackView)
+                    mainViewStack.push(callStackView)
                 } else {
-                    welcomeViewStack.push(communicationPageMessageWebView)
+                    mainViewStack.push(communicationPageMessageWebView)
                 }
             } else if (sidePanelViewStack.visible
-                       && !welcomeViewStack.visible) {
+                       && !mainViewStack.visible) {
                 if (callStackViewShouldShow) {
                     sidePanelViewStack.push(callStackView)
                 } else {
                     sidePanelViewStack.push(communicationPageMessageWebView)
                 }
             } else if (!sidePanelViewStack.visible
-                       && !welcomeViewStack.visible) {
+                       && !mainViewStack.visible) {
                 if (callStackViewShouldShow) {
                     sidePanelViewStack.push(callStackView)
                 } else {
@@ -329,17 +492,18 @@ Window {
 
         onAccountComboBoxNeedToShowWelcomePage: {
 
-
             /*
              * If the item argument is specified, all items down to (but not including) item will be popped.
              */
-            welcomeViewStack.pop(welcomePage)
-            welcomePage.currentAccountIndex = index
-            qrDialog.currentAccountIndex = index
+            if (!inSettingsView) {
+                mainViewStack.pop(welcomePage)
+                welcomePage.currentAccountIndex = index
+                qrDialog.currentAccountIndex = index
+            }
         }
 
         onConversationSmartListViewNeedToShowWelcomePage: {
-            welcomeViewStack.pop(welcomePage)
+            mainViewStack.pop(welcomePage)
             welcomePage.currentAccountIndex = 0
             qrDialog.currentAccountIndex = 0
         }
@@ -365,11 +529,36 @@ Window {
         visible: false
 
         objectName: "callStackViewObject"
+
     }
 
     WelcomePage {
         id: welcomePage
         visible: false
+    }
+
+    SettingsView {
+        id: settingsView
+
+        visible: false
+
+        width: Math.max(mainViewStackPreferredWidth, mainViewStack.width - 100)
+        height: mainViewWindow.minimumHeight
+
+        onSettingsViewWindowNeedToShowMainViewWindow: {
+            mainViewWindowSidePanel.refreshAccountComboBox(
+                        accountDeleted ? 0 : -1)
+            toggleSettingsView()
+        }
+
+        onSettingsViewWindowNeedToShowNewWizardWindow: {
+            mainViewWindow.noAccountIsAvailable()
+        }
+
+        onSettingsBackArrowClicked: {
+            mainViewStack.pop(StackView.Immediate)
+            recursionStackViewItemMove(sidePanelViewStack, mainViewStack, 2)
+        }
     }
 
     MessageWebView {
@@ -394,28 +583,15 @@ Window {
         onNeedToGoBackToWelcomeView: {
             mainViewWindowSidePanel.deselectConversationSmartList()
             if (communicationPageMessageWebView.visible
-                    && !welcomeViewStack.visible) {
+                    && !mainViewStack.visible) {
                 sidePanelViewStack.pop()
             } else if (communicationPageMessageWebView.visible
-                       && welcomeViewStack.visible) {
-                welcomeViewStack.pop()
+                       && mainViewStack.visible) {
+                mainViewStack.pop()
             }
         }
 
         Component.onCompleted: {
-            sidePanelViewStack.SplitView.maximumWidth = Qt.binding(function() {
-                return (hiddenView ? splitView.width : splitView.width - sidePanelViewStackPreferedWidth)
-            })
-
-            recordBox.x = Qt.binding(function() {
-                var i = (welcomeViewStack.width > 1000 ? Math.round((welcomeViewStack.width-1000)*0.5) : 0)
-                return sidePanelViewStack.width + recordBox.x_offset + i
-            })
-
-            recordBox.y = Qt.binding(function() {
-                return sidePanelViewStack.height + recordBox.y_offset
-            })
-
 
             /*
              * Set qml MessageWebView object pointer to c++.
@@ -430,37 +606,37 @@ Window {
         /*
          * Hide unnecessary stackview when width is changed.
          */
-        if (mainViewWindow.width < sidePanelViewStackPreferedWidth
-                + welcomePageGroupPreferedWidth - 5
-                && welcomeViewStack.visible) {
-            welcomeViewStack.visible = false
-            hiddenView = true
+        if (mainViewWindow.width < sidePanelViewStackPreferredWidth
+                + mainViewStackPreferredWidth - 5
+                && mainViewStack.visible) {
+            mainViewStack.visible = false
+            sidePanelHidden = true
 
             /*
              * The find callback function is called for each item in the stack.
              */
-            var inWelcomeViewStack = welcomeViewStack.find(
+            var inWelcomeViewStack = mainViewStack.find(
                         function (item, index) {
                             return index > 0
                         })
 
             if (inWelcomeViewStack) {
-                recursionStackViewItemMove(welcomeViewStack, sidePanelViewStack)
+                recursionStackViewItemMove(mainViewStack, sidePanelViewStack)
             }
 
             mainViewWindow.update()
-        } else if (mainViewWindow.width >= sidePanelViewStackPreferedWidth
-                   + welcomePageGroupPreferedWidth + 5
-                   && !welcomeViewStack.visible) {
-            welcomeViewStack.visible = true
-            hiddenView = false
+        } else if (mainViewWindow.width >= sidePanelViewStackPreferredWidth
+                   + mainViewStackPreferredWidth + 5
+                   && !mainViewStack.visible) {
+            mainViewStack.visible = true
+            sidePanelHidden = false
 
             var inSidePanelViewStack = sidePanelViewStack.find(
                         function (item, index) {
                             return index > 0
                         })
             if (inSidePanelViewStack) {
-                recursionStackViewItemMove(sidePanelViewStack, welcomeViewStack)
+                recursionStackViewItemMove(sidePanelViewStack, mainViewStack, (inSettingsView ? 2 : 1))
             }
 
             mainViewWindow.update()
@@ -472,7 +648,7 @@ Window {
 
         x: Math.round((mainViewWindow.width - width) / 2)
         y: Math.round((mainViewWindow.height - height) / 2)
-        width: Math.max(mainViewWindow.width / 2, aboutPopUpPreferedWidth)
+        width: Math.max(mainViewWindow.width / 2, aboutPopUpPreferredWidth)
         height: aboutPopUpDialog.contentHeight
     }
 
@@ -488,6 +664,17 @@ Window {
     RecordBox{
         id: recordBox
         visible: false
+
+        Component.onCompleted: {
+            recordBox.x = Qt.binding(function() {
+                var i = (mainViewStack.width > 1000 ? Math.round((mainViewStack.width-1000)*0.5) : 0)
+                return sidePanelViewStack.width + recordBox.x_offset + i
+            })
+
+            recordBox.y = Qt.binding(function() {
+                return mainViewStack.height + recordBox.y_offset
+            })
+        }
     }
 
     UserProfile {
@@ -495,7 +682,7 @@ Window {
 
         x: Math.round((mainViewWindow.width - width) / 2)
         y: Math.round((mainViewWindow.height - height) / 2)
-        width: Math.max(mainViewWindow.width / 2, aboutPopUpPreferedWidth)
+        width: Math.max(mainViewWindow.width / 2, aboutPopUpPreferredWidth)
         height: userProfile.contentHeight
     }
 

@@ -241,7 +241,8 @@ ComboBox {
         width: 25
         height: 25
 
-        source: "qrc:/images/icons/round-settings-24px.svg"
+        source: !mainViewWindow.inSettingsView ? "qrc:/images/icons/round-settings-24px.svg" :
+                                                 "qrc:/images/icons/round-close-24px.svg"
         backgroundColor: "white"
         onClicked: {
             settingBtnClicked()

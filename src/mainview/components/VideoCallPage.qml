@@ -157,7 +157,7 @@ Rectangle {
 
         handle: Rectangle {
             implicitWidth: videoCallPageRect.width
-            implicitHeight: JamiTheme.splitViewHandlePreferedWidth
+            implicitHeight: JamiTheme.splitViewHandlePreferredWidth
             color: SplitHandle.pressed ? JamiTheme.pressColor : (SplitHandle.hovered ? JamiTheme.hoverColor : JamiTheme.tabbarBorderColor)
         }
 

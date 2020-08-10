@@ -29,6 +29,7 @@ import "../../commoncomponents"
 Rectangle {
     signal navigateToMainView
     signal navigateToNewWizardView
+    signal backArrowClicked
 
     function updateAccountInfoDisplayed() {
         displaySIPNameLineEdit.text = ClientWrapper.settingsAdaptor.getCurrentAccount_Profile_Info_Alias()
@@ -122,6 +123,24 @@ Rectangle {
                 Layout.maximumWidth: 48
                 Layout.preferredWidth: 48
                 Layout.minimumWidth: 48
+            }
+
+            HoverableButton {
+
+                Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
+                Layout.preferredWidth: 30
+                Layout.preferredHeight: 30
+
+                radius: 30
+                source: "qrc:/images/icons/ic_arrow_back_24px.svg"
+                backgroundColor: "white"
+                onExitColor: "white"
+
+                visible: mainViewWindow.sidePanelHidden
+
+                onClicked: {
+                    backArrowClicked()
+                }
             }
 
             Label {
