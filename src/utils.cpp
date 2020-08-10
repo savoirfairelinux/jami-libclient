@@ -4,6 +4,7 @@
  * Author: Andreas Traczyk <andreas.traczyk@savoirfairelinux.com>
  * Author: Isa Nanic <isa.nanic@savoirfairelinux.com
  * Author: Mingrui Zhang <mingrui.zhang@savoirfairelinux.com>
+ * Author: Aline Gondim Santos   <aline.gondimsantos@savoirfairelinux.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -1079,4 +1080,11 @@ QString
 UtilsAdapter::getCurrentPath()
 {
     return QDir::currentPath();
+}
+
+bool
+UtilsAdapter::checkShowPluginsButton()
+{
+    return LRCInstance::pluginModel().getPluginsEnabled()
+           && (LRCInstance::pluginModel().listLoadedPlugins().size() > 0);
 }

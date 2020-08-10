@@ -3,6 +3,7 @@
  * Copyright (C) 2020 by Savoir-faire Linux
  * Author: Mingrui Zhang <mingrui.zhang@savoirfairelinux.com>
  * Author: Sébastien Blin <sebastien.blin@savoirfairelinux.com>
+ * Author: Aline Gondim Santos   <aline.gondimsantos@savoirfairelinux.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,6 +26,7 @@ import QtQml 2.14
 import net.jami.Models 1.0
 
 import "../js/contactpickercreation.js" as ContactPickerCreation
+import "../js/mediahandlerpickercreation.js" as MediaHandlerPickerCreation
 
 import "../../commoncomponents"
 
@@ -67,6 +69,10 @@ Rectangle {
         ContactPickerCreation.closeContactPicker()
     }
 
+    function closePotentialMediaHandlerPicker() {
+        MediaHandlerPickerCreation.closeMediaHandlerPicker()
+    }
+    
     function handleParticipantsInfo(infos) {
         videoCallOverlay.updateMaster()
         var isMaster = CallAdapter.isCurrentMaster()
@@ -389,10 +395,14 @@ Rectangle {
     onWidthChanged: {
         ContactPickerCreation.calculateCurrentGeo(callOverlayRect.width / 2,
                                                   callOverlayRect.height / 2)
+        MediaHandlerPickerCreation.calculateCurrentGeo(callOverlayRect.width / 2,
+                                                  callOverlayRect.height / 2)
     }
 
     onHeightChanged: {
         ContactPickerCreation.calculateCurrentGeo(callOverlayRect.width / 2,
+                                                  callOverlayRect.height / 2)
+        MediaHandlerPickerCreation.calculateCurrentGeo(callOverlayRect.width / 2,
                                                   callOverlayRect.height / 2)
     }
 
@@ -409,6 +419,14 @@ Rectangle {
             ContactPickerCreation.calculateCurrentGeo(
                         callOverlayRect.width / 2, callOverlayRect.height / 2)
             ContactPickerCreation.openContactPicker()
+        }
+
+        onPluginItemClicked: {
+            // Create media handler picker - PLUGINS
+            MediaHandlerPickerCreation.createMediaHandlerPickerObjects(callOverlayRect)
+            MediaHandlerPickerCreation.calculateCurrentGeo(
+                        callOverlayRect.width / 2, callOverlayRect.height / 2)
+            MediaHandlerPickerCreation.openMediaHandlerPicker()
         }
     }
 

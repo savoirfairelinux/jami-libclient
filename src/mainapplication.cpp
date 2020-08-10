@@ -3,6 +3,7 @@
  * Author: Edric Ladent Milaret <edric.ladent-milaret@savoirfairelinux.com>
  * Author: Andreas Traczyk <andreas.traczyk@savoirfairelinux.com>
  * Author: Mingrui Zhang <mingrui.zhang@savoirfairelinux.com>
+ * Author: Aline Gondim Santos   <aline.gondimsantos@savoirfairelinux.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,9 +33,11 @@
 #include "calladapter.h"
 #include "clientwrapper.h"
 #include "contactadapter.h"
+#include "mediahandleradapter.h"
 #include "conversationsadapter.h"
 #include "deviceitemlistmodel.h"
 #include "pluginitemlistmodel.h"
+#include "mediahandleritemlistmodel.h"
 #include "preferenceitemlistmodel.h"
 #include "distantrenderer.h"
 #include "globalinstances.h"
@@ -296,6 +299,7 @@ MainApplication::qmlInitialization()
     QML_REGISTERTYPE(AccountListModel, 1, 0);
     QML_REGISTERTYPE(DeviceItemListModel, 1, 0);
     QML_REGISTERTYPE(PluginItemListModel, 1, 0);
+    QML_REGISTERTYPE(MediaHandlerItemListModel, 1, 0);
     QML_REGISTERTYPE(PreferenceItemListModel, 1, 0);
     QML_REGISTERTYPE(BannedListModel, 1, 0);
     QML_REGISTERTYPE(VideoCodecListModel, 1, 0);
@@ -330,6 +334,7 @@ MainApplication::qmlInitialization()
     QML_REGISTERSINGLETONTYPE(ConversationsAdapter, 1, 0);
     QML_REGISTERSINGLETONTYPE(AvAdapter, 1, 0);
     QML_REGISTERSINGLETONTYPE(ContactAdapter, 1, 0);
+    QML_REGISTERSINGLETONTYPE(MediaHandlerAdapter, 1, 0);
     QML_REGISTERSINGLETONTYPE(ClientWrapper, 1, 0);
 
     //QML_REGISTERSINGLETONTYPE_WITH_INSTANCE(AccountAdapter, 1, 0);

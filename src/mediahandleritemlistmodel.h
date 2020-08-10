@@ -24,23 +24,16 @@
 
 #include "lrcinstance.h"
 
-class PreferenceItemListModel : public QAbstractListModel
+class MediaHandlerItemListModel : public QAbstractListModel
 {
     Q_OBJECT
 
-    Q_PROPERTY(QString pluginId READ pluginId WRITE setPluginId)
 public:
-    enum Role { PreferenceKey = Qt::UserRole + 1, PreferenceName, PreferenceSummary, PreferenceType, PreferenceDefaultValue, PreferenceEntries, PreferenceEntryValues};
-
-    typedef enum {
-    LIST,
-    DEFAULT,
-    } Type;
-
+    enum Role { MediaHandlerName = Qt::UserRole + 1, MediaHandlerId, MediaHandlerIcon, IsLoaded };
     Q_ENUM(Role)
 
-    explicit PreferenceItemListModel(QObject *parent = 0);
-    ~PreferenceItemListModel();
+    explicit MediaHandlerItemListModel(QObject *parent = 0);
+    ~MediaHandlerItemListModel();
 
     /*
      * QAbstractListModel override.
@@ -57,14 +50,7 @@ public:
     Qt::ItemFlags flags(const QModelIndex &index) const;
 
     /*
-     * This function is to reset the model when there's new plugin added or modified.
+     * This function is to reset the model when there's new account added.
      */
     Q_INVOKABLE void reset();
-
-    QString pluginId() const;
-    void setPluginId(const QString &pluginId);
-// signals:
-//     void pluginIdChanged();
-private:
-    QString pluginId_;
 };

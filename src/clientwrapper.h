@@ -1,6 +1,7 @@
 /*
  * Copyright (C) 2019-2020 by Savoir-faire Linux
  * Author: Yang Wang   <yang.wang@savoirfairelinux.com>
+ * Author: Aline Gondim Santos   <aline.gondimsantos@savoirfairelinux.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,9 +26,11 @@
 #include "bannedlistmodel.h"
 #include "calladapter.h"
 #include "contactadapter.h"
+#include "mediahandleradapter.h"
 #include "conversationsadapter.h"
 #include "deviceitemlistmodel.h"
 #include "pluginitemlistmodel.h"
+#include "mediahandleritemlistmodel.h"
 #include "preferenceitemlistmodel.h"
 #include "distantrenderer.h"
 #include "globalinstances.h"

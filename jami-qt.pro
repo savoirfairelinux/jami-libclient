@@ -136,9 +136,11 @@ HEADERS += ./src/smartlistmodel.h \
         ./src/qmladapterbase.h \
         ./src/avadapter.h \
         ./src/contactadapter.h \
+        ./src/mediahandleradapter.h \
         ./src/settingsadaptor.h \
         ./src/deviceitemlistmodel.h \
         ./src/pluginitemlistmodel.h \
+        ./src/mediahandleritemlistmodel.h \
         ./src/preferenceitemlistmodel.h \
         ./src/audiocodeclistmodel.h \
         ./src/videocodeclistmodel.h \
@@ -172,9 +174,11 @@ SOURCES += ./src/bannedlistmodel.cpp \
         ./src/qmladapterbase.cpp \
         ./src/avadapter.cpp \
         ./src/contactadapter.cpp \
+        ./src/mediahandleradapter.cpp \
         ./src/settingsadaptor.cpp \
         ./src/deviceitemlistmodel.cpp \
         ./src/pluginitemlistmodel.cpp \
+        ./src/mediahandleritemlistmodel.cpp \
         ./src/preferenceitemlistmodel.cpp \
         ./src/audiocodeclistmodel.cpp \
         ./src/videocodeclistmodel.cpp \

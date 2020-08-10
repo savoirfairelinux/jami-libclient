@@ -17,6 +17,7 @@
         <file>src/settingsview/components/SettingParaCombobox.qml</file>
         <file>src/settingsview/components/DeviceItemDelegate.qml</file>
         <file>src/settingsview/components/PluginItemDelegate.qml</file>
+        <file>src/mainview/components/MediaHandlerItemDelegate.qml</file>
         <file>src/settingsview/components/PreferenceItemDelegate.qml</file>
         <file>src/settingsview/components/BannedItemDelegate.qml</file>
         <file>src/settingsview/components/VideoCodecDelegate.qml</file>
@@ -90,7 +91,9 @@
         <file>src/mainview/js/videocallfullscreenwindowcontainercreation.js</file>
         <file>src/mainview/components/VideoCallFullScreenWindowContainer.qml</file>
         <file>src/mainview/components/ContactPicker.qml</file>
+        <file>src/mainview/components/MediaHandlerPicker.qml</file>
         <file>src/mainview/js/contactpickercreation.js</file>
+        <file>src/mainview/js/mediahandlerpickercreation.js</file>
         <file>src/mainview/components/ContactPickerItemDelegate.qml</file>
         <file>src/wizardview/components/HoverableGradientButton.qml</file>
         <file>src/commoncomponents/AccountMigrationDialog.qml</file>

@@ -1,6 +1,6 @@
-/*
- * Copyright (C) 2019-2020 by Savoir-faire Linux
- * Author: Yang Wang   <yang.wang@savoirfairelinux.com>
+/**
+ * Copyright (C) 2020 by Savoir-faire Linux
+ * Author: Aline Gondim Santos   <aline.gondimsantos@savoirfairelinux.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -72,7 +72,7 @@ Rectangle {
     function getSize(pluginId, show){
         size = 50 * ClientWrapper.pluginModel.getPluginPreferences(pluginId).length
         if (show) {
-            height = 200 + size            
+            height = 200 + size
             pluginPreferenceView.height = size
         } else {
             height = 25

@@ -4,6 +4,7 @@
  * Author: Andreas Traczyk <andreas.traczyk@savoirfairelinux.com>
  * Author: Isa Nanic <isa.nanic@savoirfairelinux.com>
  * Author: Mingrui Zhang   <mingrui.zhang@savoirfairelinux.com>
+ * Author: Aline Gondim Santos   <aline.gondimsantos@savoirfairelinux.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -553,6 +554,8 @@ public:
                                          Qt::SmoothTransformation);
         return QString::fromLatin1(Utils::QImageToByteArray(croppedImage).toBase64().data());
     }
+
+    Q_INVOKABLE bool checkShowPluginsButton();
 
 private:
     QClipboard *clipboard_;
