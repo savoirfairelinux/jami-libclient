@@ -73,13 +73,19 @@ SET(CMAKE_AUTOMOC TRUE)
 SET(LOCAL_CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/")
 SET(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${LOCAL_CMAKE_MODULE_PATH})
 
-SET(QT5_MODULE_PATH ${QT5_PATH}/lib/cmake)
-
 FIND_PACKAGE(Ring REQUIRED)
-FIND_PACKAGE(Qt5Core REQUIRED)
-FIND_PACKAGE(Qt5LinguistTools) # translations
-FIND_PACKAGE(Qt5Sql REQUIRED)
-FIND_PACKAGE(Qt5Gui REQUIRED)
+
+if ("${QT_MIN_VER}" and "${QT_MIN_VER}" STRGREATER_EQUAL "5.15")
+   message("Using custom Qt version.")
+   find_package(Qt5 ${QT_MIN_VER} REQUIRED
+                COMPONENTS Core DBus Sql Gui LinguistTools
+                PATHS ${QT5_PATH} NO_DEFAULT_PATH)
+   set(CMAKE_INSTALL_RPATH_USE_LINK_PATH true)
+else()
+   find_package(Qt5 COMPONENTS
+                Core DBus Sql Gui LinguistTools
+                REQUIRED)
+endif()
 
 IF(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
    MESSAGE(STATUS "PLUGIN enabled")
