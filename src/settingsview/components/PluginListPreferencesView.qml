@@ -70,7 +70,8 @@ Rectangle {
     }
 
     function getSize(pluginId, show){
-        size = 50 * ClientWrapper.pluginModel.getPluginPreferences(pluginId).length
+        preferenceItemListModel.pluginId = pluginId
+        size = 50 * preferenceItemListModel.preferencesCount
         if (show) {
             height = 200 + size
             pluginPreferenceView.height = size

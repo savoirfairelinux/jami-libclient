@@ -21,14 +21,14 @@
 
 std::map<QString, int> mapType {{QString("List"), PreferenceItemListModel::Type::LIST}};
 
-PreferenceItemListModel::PreferenceItemListModel(QObject *parent)
+PreferenceItemListModel::PreferenceItemListModel(QObject* parent)
     : QAbstractListModel(parent)
 {}
 
 PreferenceItemListModel::~PreferenceItemListModel() {}
 
 int
-PreferenceItemListModel::rowCount(const QModelIndex &parent) const
+PreferenceItemListModel::rowCount(const QModelIndex& parent) const
 {
     if (!parent.isValid()) {
         /*
@@ -43,7 +43,7 @@ PreferenceItemListModel::rowCount(const QModelIndex &parent) const
 }
 
 int
-PreferenceItemListModel::columnCount(const QModelIndex &parent) const
+PreferenceItemListModel::columnCount(const QModelIndex& parent) const
 {
     Q_UNUSED(parent);
     /*
@@ -53,36 +53,35 @@ PreferenceItemListModel::columnCount(const QModelIndex &parent) const
 }
 
 QVariant
-PreferenceItemListModel::data(const QModelIndex &index, int role) const
+PreferenceItemListModel::data(const QModelIndex& index, int role) const
 {
     auto preferenceList = LRCInstance::pluginModel().getPluginPreferences(pluginId_);
     if (!index.isValid() || preferenceList.size() <= index.row()) {
         return QVariant();
-    }    
+    }
 
     auto details = preferenceList.at(index.row());
     int type = Type::DEFAULT;
     auto it = mapType.find(details["type"]);
-    if (it != mapType.end())
-    {
+    if (it != mapType.end()) {
         type = mapType[details["type"]];
     }
 
     switch (role) {
-        case Role::PreferenceKey:
-            return QVariant(details["key"]);
-        case Role::PreferenceName:
-            return QVariant(details["title"]);
-        case Role::PreferenceSummary:
-            return QVariant(details["summary"]);
-        case Role::PreferenceType:
-            return QVariant(type);
-        case Role::PreferenceDefaultValue:
-            return QVariant(details["defaultValue"]);
-        case Role::PreferenceEntries:
-            return QVariant(details["entries"]);
-        case Role::PreferenceEntryValues:
-            return QVariant(details["entryValues"]);
+    case Role::PreferenceKey:
+        return QVariant(details["key"]);
+    case Role::PreferenceName:
+        return QVariant(details["title"]);
+    case Role::PreferenceSummary:
+        return QVariant(details["summary"]);
+    case Role::PreferenceType:
+        return QVariant(type);
+    case Role::PreferenceDefaultValue:
+        return QVariant(details["defaultValue"]);
+    case Role::PreferenceEntries:
+        return QVariant(details["entries"]);
+    case Role::PreferenceEntryValues:
+        return QVariant(details["entryValues"]);
     }
     return QVariant();
 }
@@ -98,12 +97,12 @@ PreferenceItemListModel::roleNames() const
     roles[PreferenceDefaultValue] = "PreferenceDefaultValue";
     roles[PreferenceEntries] = "PreferenceEntries";
     roles[PreferenceEntryValues] = "PreferenceEntryValues";
-    
+
     return roles;
 }
 
 QModelIndex
-PreferenceItemListModel::index(int row, int column, const QModelIndex &parent) const
+PreferenceItemListModel::index(int row, int column, const QModelIndex& parent) const
 {
     Q_UNUSED(parent);
     if (column != 0) {
@@ -117,14 +116,14 @@ PreferenceItemListModel::index(int row, int column, const QModelIndex &parent) c
 }
 
 QModelIndex
-PreferenceItemListModel::parent(const QModelIndex &child) const
+PreferenceItemListModel::parent(const QModelIndex& child) const
 {
     Q_UNUSED(child);
     return QModelIndex();
 }
 
 Qt::ItemFlags
-PreferenceItemListModel::flags(const QModelIndex &index) const
+PreferenceItemListModel::flags(const QModelIndex& index) const
 {
     auto flags = QAbstractItemModel::flags(index) | Qt::ItemNeverHasChildren | Qt::ItemIsSelectable;
     if (!index.isValid()) {
@@ -147,7 +146,13 @@ PreferenceItemListModel::pluginId() const
 }
 
 void
-PreferenceItemListModel::setPluginId(const QString &pluginId)
+PreferenceItemListModel::setPluginId(const QString& pluginId)
 {
     pluginId_ = pluginId;
+}
+
+int
+PreferenceItemListModel::preferencesCount()
+{
+    return LRCInstance::pluginModel().getPluginPreferences(pluginId_).size();
 }

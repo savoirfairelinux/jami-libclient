@@ -29,32 +29,41 @@ class PreferenceItemListModel : public QAbstractListModel
     Q_OBJECT
 
     Q_PROPERTY(QString pluginId READ pluginId WRITE setPluginId)
+    Q_PROPERTY(int preferencesCount READ preferencesCount)
 public:
-    enum Role { PreferenceKey = Qt::UserRole + 1, PreferenceName, PreferenceSummary, PreferenceType, PreferenceDefaultValue, PreferenceEntries, PreferenceEntryValues};
+    enum Role {
+        PreferenceKey = Qt::UserRole + 1,
+        PreferenceName,
+        PreferenceSummary,
+        PreferenceType,
+        PreferenceDefaultValue,
+        PreferenceEntries,
+        PreferenceEntryValues
+    };
 
     typedef enum {
-    LIST,
-    DEFAULT,
+        LIST,
+        DEFAULT,
     } Type;
 
     Q_ENUM(Role)
 
-    explicit PreferenceItemListModel(QObject *parent = 0);
+    explicit PreferenceItemListModel(QObject* parent = 0);
     ~PreferenceItemListModel();
 
     /*
      * QAbstractListModel override.
      */
-    int rowCount(const QModelIndex &parent = QModelIndex()) const override;
-    int columnCount(const QModelIndex &parent) const override;
-    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
+    int rowCount(const QModelIndex& parent = QModelIndex()) const override;
+    int columnCount(const QModelIndex& parent) const override;
+    QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override;
     /*
      * Override role name as access point in qml.
      */
     QHash<int, QByteArray> roleNames() const override;
-    QModelIndex index(int row, int column = 0, const QModelIndex &parent = QModelIndex()) const;
-    QModelIndex parent(const QModelIndex &child) const;
-    Qt::ItemFlags flags(const QModelIndex &index) const;
+    QModelIndex index(int row, int column = 0, const QModelIndex& parent = QModelIndex()) const;
+    QModelIndex parent(const QModelIndex& child) const;
+    Qt::ItemFlags flags(const QModelIndex& index) const;
 
     /*
      * This function is to reset the model when there's new plugin added or modified.
@@ -62,9 +71,9 @@ public:
     Q_INVOKABLE void reset();
 
     QString pluginId() const;
-    void setPluginId(const QString &pluginId);
-// signals:
-//     void pluginIdChanged();
+    void setPluginId(const QString& pluginId);
+    int preferencesCount();
+
 private:
     QString pluginId_;
 };
