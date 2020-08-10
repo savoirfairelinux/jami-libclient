@@ -12,7 +12,7 @@ import re
 
 # vs help
 win_sdk_default = '10.0.16299.0'
-win_toolset_default = 'v141'
+win_toolset_default = 'v142'
 
 vs_where_path = os.path.join(
     os.environ['ProgramFiles(x86)'], 'Microsoft Visual Studio', 'Installer', 'vswhere.exe'
@@ -135,9 +135,9 @@ def generate(force, qtver, sdk, toolset, arch):
 
     qtFolderDir = "msvc2017_64"
     qtverSplit = qtver.split('.')
-    if((int(qtverSplit[0]) >= 6) or((int(qtverSplit[0]) == 5) and (int(qtverSplit[1]) >= 15))):
+    if((int(qtverSplit[0]) >= 6) or ((int(qtverSplit[0]) == 5) and (int(qtverSplit[1]) >= 15))):
         qtFolderDir = "msvc2019_64"
-    qt_cmake_dir = qt_dir + '\\'+ qtFolderDir +'\\lib\\cmake\\'
+    qt_cmake_dir = qt_dir + '\\' + qtFolderDir + '\\lib\\cmake\\'
     cmake_options = [
         '-DQt5Core_DIR=' + qt_cmake_dir + 'Qt5Core',
         '-DQt5Sql_DIR=' + qt_cmake_dir + 'Qt5Sql',
@@ -224,7 +224,7 @@ def parse_args():
         '-p', '--purge', action='store_true',
         help='Purges the build directory')
     ap.add_argument(
-        '-q', '--qtver', default='5.9.4',
+        '-q', '--qtver', default='5.15.0',
         help='Sets the Qt version to build with')
     ap.add_argument(
         '-g', '--gen', action='store_true',
