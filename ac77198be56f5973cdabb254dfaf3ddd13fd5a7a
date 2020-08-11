@@ -95,6 +95,29 @@
     },
     {
       "key": {
+        "uuid": "dec70c71_1d46bc2a",
+        "filename": "src/contactmodel.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 1073,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2020-08-11T17:55:02Z",
+      "side": 1,
+      "message": "profileInfo.uri",
+      "range": {
+        "startLine": 1073,
+        "startChar": 30,
+        "endLine": 1073,
+        "endChar": 56
+      },
+      "revId": "ac77198be56f5973cdabb254dfaf3ddd13fd5a7a",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "d93d66e3_ef9dc7f9",
         "filename": "src/conversationmodel.cpp",
         "patchSetId": 15
