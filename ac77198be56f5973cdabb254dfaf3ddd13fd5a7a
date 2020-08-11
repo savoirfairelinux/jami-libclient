@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1eaf7801_12ac9e96",
+        "filename": "src/api/conversationmodel.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2020-08-11T17:29:03Z",
+      "side": 1,
+      "message": "incorrect name",
+      "range": {
+        "startLine": 130,
+        "startChar": 23,
+        "endLine": 130,
+        "endChar": 46
+      },
+      "revId": "ac77198be56f5973cdabb254dfaf3ddd13fd5a7a",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "66eca05d_07baeed8",
+        "filename": "src/contactmodel.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 1066,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2020-08-11T17:29:03Z",
+      "side": 1,
+      "message": "because it will be \"uri\", we can also check \"uri\"",
+      "range": {
+        "startLine": 1066,
+        "startChar": 27,
+        "endLine": 1066,
+        "endChar": 54
+      },
+      "revId": "ac77198be56f5973cdabb254dfaf3ddd13fd5a7a",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1369fc22_137d040e",
+        "filename": "src/contactmodel.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 1067,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2020-08-11T17:29:03Z",
+      "side": 1,
+      "message": "we should do a patch to rename to ::JAMI",
+      "range": {
+        "startLine": 1067,
+        "startChar": 45,
+        "endLine": 1067,
+        "endChar": 49
+      },
+      "revId": "ac77198be56f5973cdabb254dfaf3ddd13fd5a7a",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d93d66e3_ef9dc7f9",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 1529,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2020-08-11T17:29:03Z",
+      "side": 1,
+      "message": "indent",
+      "range": {
+        "startLine": 1527,
+        "startChar": 51,
+        "endLine": 1529,
+        "endChar": 47
+      },
+      "revId": "ac77198be56f5973cdabb254dfaf3ddd13fd5a7a",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "304d83b7_9655d97f",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 1592,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2020-08-11T17:29:03Z",
+      "side": 1,
+      "message": "typo",
+      "range": {
+        "startLine": 1592,
+        "startChar": 6,
+        "endLine": 1592,
+        "endChar": 14
+      },
+      "revId": "ac77198be56f5973cdabb254dfaf3ddd13fd5a7a",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    }
+  ]
+}
