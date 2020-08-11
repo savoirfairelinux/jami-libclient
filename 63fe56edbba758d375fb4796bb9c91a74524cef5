@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "668ee504_4b0c9031",
+        "filename": "src/contactmodel.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 1071,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2020-08-11T14:50:57Z",
+      "side": 1,
+      "message": "use URI from results. Username is not relevant here. Note that contact might be part of another organisation (or be self-signed).",
+      "range": {
+        "startLine": 1063,
+        "startChar": 0,
+        "endLine": 1071,
+        "endChar": 73
+      },
+      "revId": "63fe56edbba758d375fb4796bb9c91a74524cef5",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    }
+  ]
+}
