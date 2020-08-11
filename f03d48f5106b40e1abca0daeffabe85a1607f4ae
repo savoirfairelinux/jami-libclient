@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3f116c3e_066ab31e",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 551,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2020-08-11T20:25:37Z",
+      "side": 1,
+      "message": "crash if not found (because immediately destroy)",
+      "range": {
+        "startLine": 551,
+        "startChar": 0,
+        "endLine": 551,
+        "endChar": 2
+      },
+      "revId": "f03d48f5106b40e1abca0daeffabe85a1607f4ae",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    }
+  ]
+}
