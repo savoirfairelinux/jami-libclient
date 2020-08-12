@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "e38eeb46_c8026f10",
+        "filename": "src/contactmodel.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 817,
+      "author": {
+        "id": 225
+      },
+      "writtenOn": "2020-08-12T15:58:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bc09d32b_592383d7",
+      "range": {
+        "startLine": 817,
+        "startChar": 12,
+        "endLine": 817,
+        "endChar": 39
+      },
+      "revId": "63d5f31f41526d643b68a6fbe924eb92955b124f",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "c3c2ad25_f09dbd6d",
         "filename": "src/contactmodel.cpp",
         "patchSetId": 17
@@ -45,6 +69,30 @@
       "revId": "63d5f31f41526d643b68a6fbe924eb92955b124f",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a0a1892f_303e16e7",
+        "filename": "src/contactmodel.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 823,
+      "author": {
+        "id": 225
+      },
+      "writtenOn": "2020-08-12T15:58:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c3c2ad25_f09dbd6d",
+      "range": {
+        "startLine": 823,
+        "startChar": 12,
+        "endLine": 823,
+        "endChar": 49
+      },
+      "revId": "63d5f31f41526d643b68a6fbe924eb92955b124f",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
