@@ -45,6 +45,30 @@
       "revId": "f03d48f5106b40e1abca0daeffabe85a1607f4ae",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6ada3e82_3f5a8d9d",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 1693,
+      "author": {
+        "id": 225
+      },
+      "writtenOn": "2020-08-12T13:39:59Z",
+      "side": 1,
+      "message": "I added bool to return value to indicate if conversation was found",
+      "parentUuid": "68bfe4be_77e1d201",
+      "range": {
+        "startLine": 1690,
+        "startChar": 19,
+        "endLine": 1693,
+        "endChar": 5
+      },
+      "revId": "f03d48f5106b40e1abca0daeffabe85a1607f4ae",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
     }
   ]
 }
