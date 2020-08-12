@@ -22,6 +22,30 @@
       "revId": "bfeda51f0db196fa55613d1fdf1c569e745ae3b3",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "990a415d_60b2e43c",
+        "filename": "CMakeLists.txt",
+        "patchSetId": 3
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 90
+      },
+      "writtenOn": "2020-08-12T18:38:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "019bfdbe_03916b2c",
+      "range": {
+        "startLine": 77,
+        "startChar": 0,
+        "endLine": 78,
+        "endChar": 22
+      },
+      "revId": "bfeda51f0db196fa55613d1fdf1c569e745ae3b3",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
