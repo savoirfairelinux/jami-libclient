@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9d81323a_d1b7880e",
+        "filename": "src/api/conversationmodel.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2020-08-13T13:29:02Z",
+      "side": 1,
+      "message": "typo \"search results\"",
+      "range": {
+        "startLine": 120,
+        "startChar": 15,
+        "endLine": 120,
+        "endChar": 28
+      },
+      "revId": "5ff17d017b2ecae4e98393411745819d9edd3f8c",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0c27d83e_b6660830",
+        "filename": "src/api/conversationmodel.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 346,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2020-08-13T13:29:02Z",
+      "side": 1,
+      "message": "typo",
+      "range": {
+        "startLine": 346,
+        "startChar": 29,
+        "endLine": 346,
+        "endChar": 39
+      },
+      "revId": "5ff17d017b2ecae4e98393411745819d9edd3f8c",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d3fbb8ab_52ca24db",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2020-08-13T13:29:02Z",
+      "side": 1,
+      "message": "we can go for std::optional imho, just change the cmake. we\u0027re moving to cpp17",
+      "range": {
+        "startLine": 99,
+        "startChar": 4,
+        "endLine": 99,
+        "endChar": 40
+      },
+      "revId": "5ff17d017b2ecae4e98393411745819d9edd3f8c",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c0c3ffaf_ee9e7003",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 581,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2020-08-13T13:29:02Z",
+      "side": 1,
+      "message": "return result.at(row)",
+      "range": {
+        "startLine": 579,
+        "startChar": 3,
+        "endLine": 581,
+        "endChar": 28
+      },
+      "revId": "5ff17d017b2ecae4e98393411745819d9edd3f8c",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e7dd67d2_312c545d",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 1719,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2020-08-13T13:29:02Z",
+      "side": 1,
+      "message": "I really don\u0027t like this pair. Cause the ref will always be invalid :(",
+      "range": {
+        "startLine": 1716,
+        "startChar": 5,
+        "endLine": 1719,
+        "endChar": 48
+      },
+      "revId": "5ff17d017b2ecae4e98393411745819d9edd3f8c",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    }
+  ]
+}
