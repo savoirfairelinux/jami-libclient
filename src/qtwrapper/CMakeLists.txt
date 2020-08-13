@@ -40,21 +40,13 @@ IF(NOT (${ENABLE_PLUGIN} MATCHES "true"))
    SET(ENABLE_PLUGIN 0 CACHE BOOLEAN "Disable plugin")
 ENDIF(NOT (${ENABLE_PLUGIN} MATCHES "true"))
 
-IF(ENABLE_PLUGIN)
-   MESSAGE("Adding pluginmanager.cpp")
-   SET(plugin_SRC pluginmanager.cpp)
-ELSE()
-   MESSAGE("Adding pluginmanagerMock.cpp")
-   SET(plugin_SRC pluginmanagerMock.cpp)
-ENDIF()
-
 INCLUDE_DIRECTORIES(SYSTEM ${Qt5Core_INCLUDE_DIRS} )
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR})
 INCLUDE_DIRECTORIES(${ring_INCLUDE_DIRS})
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR}/../)
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR}/../dbus)
 
-ADD_LIBRARY( qtwrapper STATIC ${libqtwrapper_LIB_SRCS} ${plugin_SRC})
+ADD_LIBRARY( qtwrapper STATIC ${libqtwrapper_LIB_SRCS})
 
 
 IF(NOT ${ring_BIN} MATCHES "ring_BIN-NOTFOUND")
