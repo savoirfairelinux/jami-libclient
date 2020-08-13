@@ -238,6 +238,4 @@ public:
     Q_INVOKABLE void set_FileUserCert(QString text);
     Q_INVOKABLE void set_FilePrivateKey(QString text);
 };
-#if QT_VERSION >= QT_VERSION_CHECK(5, 8, 0)
 Q_DECLARE_METATYPE(SettingsAdaptor *)
-#endif

@@ -472,6 +472,4 @@ private:
     MapStringString contentDrafts_;
     MapStringString lastConferencees_;
 };
-#if QT_VERSION >= QT_VERSION_CHECK(5, 8, 0)
 Q_DECLARE_METATYPE(LRCInstance *)
-#endif
