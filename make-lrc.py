@@ -133,12 +133,9 @@ def generate(force, qtver, sdk, toolset, arch):
     qt_dir = 'C:\\Qt\\' + qtver
     cmake_gen = getCMakeGenerator(getLatestVSVersion())
 
-    qtFolderDir = "msvc2017_64"
-    qtverSplit = qtver.split('.')
-    if((int(qtverSplit[0]) >= 6) or ((int(qtverSplit[0]) == 5) and (int(qtverSplit[1]) >= 15))):
-        qtFolderDir = "msvc2019_64"
-    qt_cmake_dir = qt_dir + '\\' + qtFolderDir + '\\lib\\cmake\\'
+    qt_cmake_dir = qt_dir + '\\msvc2019_64\\lib\\cmake\\'
     cmake_options = [
+        '-DQt5_DIR=' + qt_cmake_dir + 'Qt5',
         '-DQt5Core_DIR=' + qt_cmake_dir + 'Qt5Core',
         '-DQt5Sql_DIR=' + qt_cmake_dir + 'Qt5Sql',
         '-DQt5LinguistTools_DIR=' + qt_cmake_dir + 'Qt5LinguistTools',
