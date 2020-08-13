@@ -9,11 +9,15 @@ param (
 write-host "Copying runtime files..." -ForegroundColor Green
 
 # default values
-$qtver = If ($qtver) {$qtver} Else {"5.9.4"}
+$qtver = If ($qtver) {$qtver} Else {"5.15.0"}
 $mode  = If ($mode)  {$mode} Else {"Release"}
 
 $qtverSplit1, $qtverSplit2 ,$qtverSplit3 = $qtver.Split('.')
-$qtMsvcDir = If((([int]$qtverSplit1) -ge 6) -OR ( (([int]$qtverSplit1) -eq 5) -AND (([int]$qtverSplit2) -ge 15))){"msvc2019_64"} Else{"msvc2017_64"}
+$qtMsvcDir = If((([int]$qtverSplit1) -ge 6) -OR ( (([int]$qtverSplit1) -eq 5) -AND (([int]$qtverSplit2) -ge 15))) {
+    "msvc2019_64"
+} Else {
+    "msvc2017_64"
+}
 
 $QtDir = "C:\Qt\$qtver\$qtMsvcDir"
 

@@ -111,7 +111,7 @@ def replace_vs_prop(filename, prop, val):
             print(re.sub(p, val, line), end='')
 
 
-def deps(arch, toolset, qtver):
+def deps(arch, toolset):
     print('Deps Qt Client Release|' + arch)
 
     # Fetch QRencode
@@ -133,6 +133,8 @@ def deps(arch, toolset, qtver):
 
 
 def build(arch, toolset, sdk_version, config_str, project_path_under_current_path, qtver, force_option=True):
+    print("Building with Qt " + qtver)
+
     configuration_type = 'StaticLibrary'
 
     qtFolderDir = "msvc2017_64"
@@ -224,7 +226,7 @@ def parse_args():
         '-t', '--toolset', default=win_toolset_default, type=str,
         help='Use specified platform toolset version')
     ap.add_argument(
-        '-q', '--qtver', default='5.9.4',
+        '-q', '--qtver', default='5.15.0',
         help='Sets the version of Qmake')
 
     parsed_args = ap.parse_args()
@@ -244,7 +246,7 @@ def main():
     parsed_args = parse_args()
 
     if parsed_args.deps:
-        deps(parsed_args.arch, parsed_args.toolset, parsed_args.qtver)
+        deps(parsed_args.arch, parsed_args.toolset)
 
     if parsed_args.build:
         build(parsed_args.arch, parsed_args.toolset, parsed_args.sdk,
