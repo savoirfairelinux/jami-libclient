@@ -187,6 +187,30 @@
       "revId": "0e9cd766ee864c8d3dfbfa654c7471059035e492",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0a82e6b6_6485f2c4",
+        "filename": "src/qtwrapper/pluginmanager_wrap.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 171,
+      "author": {
+        "id": 90
+      },
+      "writtenOn": "2020-08-13T17:49:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8068fb87_024f72a5",
+      "range": {
+        "startLine": 171,
+        "startChar": 0,
+        "endLine": 171,
+        "endChar": 20
+      },
+      "revId": "0e9cd766ee864c8d3dfbfa654c7471059035e492",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
