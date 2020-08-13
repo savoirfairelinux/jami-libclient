@@ -188,6 +188,8 @@ Rectangle {
                         return pageIdAvSettingPage
                     case SettingsView.Plugin:
                         return pageIdPluginSettingsPage
+                    case SettingsView.Plugin:
+                        return pageIdPluginSettingsPage
                 }
             }
 

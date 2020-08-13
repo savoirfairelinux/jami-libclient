@@ -708,4 +708,95 @@ Window {
         mainViewWindow.hide()
         mainViewWindow.closeApp()
     }
+
+    Shortcut {
+        sequence: "Ctrl+M"
+        context: Qt.ApplicationShortcut
+        onActivated: {
+            if (!inSettingsView) {
+                toggleSettingsView()
+            }
+            leftPanelSettingsView.btnMediaSettings.clicked()
+        }
+    }
+
+    Shortcut {
+        sequence: "Ctrl+G"
+        context: Qt.ApplicationShortcut
+        onActivated: {
+            if (!inSettingsView) {
+                toggleSettingsView()
+            }
+            leftPanelSettingsView.btnGeneralSettings.clicked()
+        }
+    }
+
+    Shortcut {
+        sequence: "Ctrl+I"
+        context: Qt.ApplicationShortcut
+        onActivated: {
+            if (!inSettingsView) {
+                toggleSettingsView()
+            }
+            leftPanelSettingsView.btnAccountSettings.clicked()
+        }
+    }
+
+    Shortcut {
+        sequence: "Ctrl+P"
+        context: Qt.ApplicationShortcut
+        onActivated: {
+            if (!inSettingsView) {
+                toggleSettingsView()
+            }
+            leftPanelSettingsView.btnPluginSettings.clicked()
+        }
+    }
+
+    Shortcut {
+        sequence: "F10"
+        context: Qt.ApplicationShortcut
+        onActivated: {
+            shortcutsTable.open()
+        }
+    }
+
+    Shortcut {
+        sequence: "F11"
+        context: Qt.ApplicationShortcut
+        onActivated: {
+            if (mainViewWindow.visibility !== 5) // 5 = FullScreen
+                mainViewWindow.visibility = "FullScreen"
+            else
+                mainViewWindow.visibility = "Windowed"
+        }
+    }
+
+    Shortcut {
+        sequence: "Ctrl+D"
+        context: Qt.ApplicationShortcut
+        onActivated: CallAdapter.hangUpThisCall()
+    }
+
+    Shortcut {
+        sequence: "Ctrl+Shift+A"
+        context: Qt.ApplicationShortcut
+        onActivated: {
+            ClientWrapper.utilsAdaptor.makePermanentCurrentConv()
+            communicationPageMessageWebView.setSendContactRequestButtonVisible(false)
+        }
+    }
+
+    Shortcut {
+        sequence: "Ctrl+Shift+N"
+        context: Qt.ApplicationShortcut
+        onActivated: mainViewWindowSidePanel.needToAddNewAccount()
+    }
+
+    KeyBoardShortcutTable {
+        id: shortcutsTable
+
+        x: Math.round((mainViewWindow.width - width) / 2)
+        y: Math.round((mainViewWindow.height - height) / 2)
+    }
 }

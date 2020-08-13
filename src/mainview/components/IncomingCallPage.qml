@@ -339,4 +339,24 @@ Window {
     }
 
     color: "transparent"
+
+    Shortcut {
+        sequence: "Ctrl+Y"
+        context: Qt.ApplicationShortcut
+        onActivated: {
+            incomingCallPage.close()
+            CallAdapter.acceptACall(responsibleAccountId,
+                                    responsibleConvUid)
+        }
+    }
+
+    Shortcut {
+        sequence: "Ctrl+Shift+D"
+        context: Qt.ApplicationShortcut
+        onActivated: {
+            incomingCallPage.close()
+            CallAdapter.refuseACall(responsibleAccountId,
+                                    responsibleConvUid)
+        }
+    }
 }

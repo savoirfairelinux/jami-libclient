@@ -988,6 +988,18 @@ UtilsAdapter::getCurrAccId()
     return LRCInstance::getCurrAccId();
 }
 
+const QString
+UtilsAdapter::getCurrConvId()
+{
+    return LRCInstance::getCurrentConvUid();
+}
+
+void
+UtilsAdapter::makePermanentCurrentConv()
+{
+    LRCInstance::getCurrentConversationModel()->makePermanent(LRCInstance::getCurrentConvUid());
+}
+
 const QStringList
 UtilsAdapter::getCurrAccList()
 {

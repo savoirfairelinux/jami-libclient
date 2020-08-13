@@ -97,4 +97,74 @@ ListView {
     }
 
     ScrollIndicator.vertical: ScrollIndicator {}
+
+    Shortcut {
+        sequence: "Ctrl+Shift+X"
+        context: Qt.ApplicationShortcut
+        enabled: conversationSmartListView.visible
+        onActivated: {
+            CallAdapter.placeCall()
+        }
+    }
+
+    Shortcut {
+        sequence: "Ctrl+Shift+C"
+        context: Qt.ApplicationShortcut
+        enabled: conversationSmartListView.visible
+        onActivated: {
+            CallAdapter.placeAudioOnlyCall()
+        }
+    }
+
+    Shortcut {
+        sequence: "Ctrl+Shift+L"
+        context: Qt.ApplicationShortcut
+        enabled: conversationSmartListView.visible
+        onActivated: {
+            ClientWrapper.utilsAdaptor.clearConversationHistory(ClientWrapper.utilsAdaptor.getCurrAccId(),
+                                                  ClientWrapper.utilsAdaptor.getCurrConvId())
+        }
+    }
+
+    Shortcut {
+        sequence: "Ctrl+Shift+B"
+        context: Qt.ApplicationShortcut
+        enabled: conversationSmartListView.visible
+        onActivated: {
+            ClientWrapper.utilsAdaptor.removeConversation(ClientWrapper.utilsAdaptor.getCurrAccId(),
+                                            ClientWrapper.utilsAdaptor.getCurrConvId(), true)
+            conversationSmartListView.needToBackToWelcomePage()
+        }
+    }
+
+    Shortcut {
+        sequence: "Ctrl+Shift+Delete"
+        context: Qt.ApplicationShortcut
+        enabled: conversationSmartListView.visible
+        onActivated: {
+            ClientWrapper.utilsAdaptor.removeConversation(ClientWrapper.utilsAdaptor.getCurrAccId(),
+                                            ClientWrapper.utilsAdaptor.getCurrConvId(), false)
+        }
+    }
+
+    Shortcut {
+        sequence: "Ctrl+Down"
+        context: Qt.ApplicationShortcut
+        enabled: conversationSmartListView.visible
+        onActivated: {
+            if (currentIndex + 1 >= count) return
+            conversationSmartListView.currentIndex += 1
+        }
+    }
+
+    Shortcut {
+        sequence: "Ctrl+Up"
+        context: Qt.ApplicationShortcut
+        enabled: conversationSmartListView.visible
+        onActivated: {
+            if (currentIndex <= 0) return
+            conversationSmartListView.currentIndex -= 1
+        }
+    }
+
 }

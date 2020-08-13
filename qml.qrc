@@ -5,6 +5,8 @@
         <file>src/settingsview/components/LeftPanelView.qml</file>
         <file>src/settingsview/components/AvSettingPage.qml</file>
         <file>src/settingsview/components/GeneralSettingsPage.qml</file>
+        <file>src/settingsview/components/KeyBoardShortcutTable.qml</file>
+        <file>src/settingsview/components/KeyBoardShortcutKey.qml</file>
         <file>src/settingsview/components/PluginSettingsPage.qml</file>
         <file>src/settingsview/components/PluginListSettingsView.qml</file>
         <file>src/settingsview/components/PluginListPreferencesView.qml</file>

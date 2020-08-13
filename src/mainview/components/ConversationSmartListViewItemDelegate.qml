@@ -57,6 +57,8 @@ ItemDelegate {
                     return InCall ? Qt.lighter(JamiTheme.selectionBlue,
                                                1.8) : JamiTheme.releaseColor
                 })
+                conversationSmartListView.needToSelectItems(UID)
+                conversationSmartListView.needToGrabFocus()
             }
         }
 
@@ -200,8 +202,6 @@ ItemDelegate {
                 smartListContextMenu.openMenu()
             } else if (mouse.button === Qt.LeftButton) {
                 conversationSmartListView.currentIndex = index
-                conversationSmartListView.needToSelectItems(UID)
-                conversationSmartListView.needToGrabFocus()
             }
         }
         onEntered: {

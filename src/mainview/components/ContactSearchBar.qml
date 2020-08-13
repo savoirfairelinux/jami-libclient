@@ -110,4 +110,10 @@ Rectangle {
                         contactSearchBar.text)
         }
     }
+
+    Shortcut {
+        sequence: "Ctrl+F"
+        context: Qt.ApplicationShortcut
+        onActivated: contactSearchBar.forceActiveFocus()
+    }
 }

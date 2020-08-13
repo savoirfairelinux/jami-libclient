@@ -76,6 +76,16 @@ TabBar {
             height: tabBar.height
             color: JamiTheme.backgroundColor
 
+            function showConversations() {
+                ConversationsAdapter.setConversationFilter("")
+                contactSearchBar.setPlaceholderString(
+                            JamiTheme.contactSearchBarPlaceHolderConversationText)
+                pageOne.down = true
+                pageTwo.down = false
+                setCurrentUidSmartListModelIndex()
+                forceReselectConversationSmartListCurrentIndex()
+            }
+
             Image {
                 id: imgRectOne
                 anchors.horizontalCenter: buttonRectOne.horizontalCenter
@@ -127,13 +137,7 @@ TabBar {
                 anchors.fill: parent
                 hoverEnabled: true
                 onPressed: {
-                    ConversationsAdapter.setConversationFilter("")
-                    contactSearchBar.setPlaceholderString(
-                                JamiTheme.contactSearchBarPlaceHolderConversationText)
-                    pageOne.down = true
-                    pageTwo.down = false
-                    setCurrentUidSmartListModelIndex()
-                    forceReselectConversationSmartListCurrentIndex()
+                    buttonRectOne.showConversations()
                 }
                 onReleased: {
                     buttonRectOne.color = JamiTheme.backgroundColor
@@ -143,6 +147,15 @@ TabBar {
                 }
                 onExited: {
                     buttonRectOne.color = JamiTheme.backgroundColor
+                }
+            }
+
+            Shortcut {
+                sequence: "Ctrl+L"
+                context: Qt.ApplicationShortcut
+                enabled: buttonRectOne.visible
+                onActivated: {
+                    buttonRectOne.showConversations()
                 }
             }
         }
@@ -183,6 +196,14 @@ TabBar {
             width: tabBar.width / 2
             height: tabBar.height
             color: JamiTheme.backgroundColor
+
+            function showRequests() {
+                ConversationsAdapter.setConversationFilter("PENDING")
+                contactSearchBar.setPlaceholderString(
+                            JamiTheme.contactSearchBarPlaceHolderInivitionText)
+                pageTwo.down = true
+                pageOne.down = false
+            }
 
             Image {
                 id: imgRectTwo
@@ -237,11 +258,7 @@ TabBar {
                 anchors.fill: parent
                 hoverEnabled: true
                 onPressed: {
-                    ConversationsAdapter.setConversationFilter("PENDING")
-                    contactSearchBar.setPlaceholderString(
-                                JamiTheme.contactSearchBarPlaceHolderInivitionText)
-                    pageTwo.down = true
-                    pageOne.down = false
+                    buttonRectTwo.showRequests()
                 }
                 onReleased: {
                     buttonRectTwo.color = JamiTheme.backgroundColor
@@ -251,6 +268,15 @@ TabBar {
                 }
                 onExited: {
                     buttonRectTwo.color = JamiTheme.backgroundColor
+                }
+            }
+
+            Shortcut {
+                sequence: "Ctrl+R"
+                context: Qt.ApplicationShortcut
+                enabled: buttonRectTwo.visible
+                onActivated: {
+                    buttonRectTwo.showRequests()
                 }
             }
         }
