@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ef0c1a72_2d800592",
+        "filename": "src/qtwrapper/pluginmanager.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 90
+      },
+      "writtenOn": "2020-08-13T17:47:02Z",
+      "side": 1,
+      "message": "maybe you can use the same copyright notice from `src/api/pluginmodel.h`;\nit\u0027s not susceptible to corruption when the date is modified via shell commands.",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 17,
+        "endChar": 79
+      },
+      "revId": "23b2dcfa3880445d2b6be2a36bf4f8d07b75f07d",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6668fcaa_be2c595e",
+        "filename": "src/qtwrapper/pluginmanagerMock.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 90
+      },
+      "writtenOn": "2020-08-13T17:47:02Z",
+      "side": 1,
+      "message": "how about pluginmanager_mock ??",
+      "revId": "23b2dcfa3880445d2b6be2a36bf4f8d07b75f07d",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "babf0095_f3bc19dd",
+        "filename": "src/qtwrapper/pluginmanagerMock.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 90
+      },
+      "writtenOn": "2020-08-13T17:47:02Z",
+      "side": 1,
+      "message": "same here",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 17,
+        "endChar": 79
+      },
+      "revId": "23b2dcfa3880445d2b6be2a36bf4f8d07b75f07d",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "29be4e10_8d02eda8",
+        "filename": "src/qtwrapper/pluginmanager_wrap.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 90
+      },
+      "writtenOn": "2020-08-13T17:47:02Z",
+      "side": 1,
+      "message": "maybe here too",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 17,
+        "endChar": 79
+      },
+      "revId": "23b2dcfa3880445d2b6be2a36bf4f8d07b75f07d",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    }
+  ]
+}
