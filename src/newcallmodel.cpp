@@ -876,6 +876,9 @@ NewCallModelPimpl::slotConferenceCreated(const QString& confId)
     callInfo->status =  call::Status::IN_PROGRESS;
     callInfo->type =  call::Type::CONFERENCE;
     callInfo->startTime = std::chrono::steady_clock::now();
+    callInfo->participantsInfos = CallManager::instance().getConferenceInfos(confId);
+    for (auto& i: callInfo->participantsInfos)
+        i["uri"].replace("@ring.dht", "");
     calls[confId] = callInfo;
     QStringList callList = CallManager::instance().getParticipantList(confId);
     foreach(const auto& call, callList) {
