@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "8fcceaea_fdd7c370",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 859
+      },
+      "writtenOn": "2020-08-13T18:07:20Z",
+      "side": 1,
+      "message": "There is no specific issue related to this patch",
+      "parentUuid": "4367231f_9e6e9bfd",
+      "revId": "23b2dcfa3880445d2b6be2a36bf4f8d07b75f07d",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "7a8d4b02_cc864c94",
         "filename": "/COMMIT_MSG",
         "patchSetId": 8
@@ -39,6 +57,30 @@
       "revId": "23b2dcfa3880445d2b6be2a36bf4f8d07b75f07d",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fff3989f_e9461fb0",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 859
+      },
+      "writtenOn": "2020-08-13T18:07:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7a8d4b02_cc864c94",
+      "range": {
+        "startLine": 7,
+        "startChar": 27,
+        "endLine": 7,
+        "endChar": 29
+      },
+      "revId": "23b2dcfa3880445d2b6be2a36bf4f8d07b75f07d",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     },
     {
       "key": {
