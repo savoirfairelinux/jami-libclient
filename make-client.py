@@ -111,7 +111,7 @@ def replace_vs_prop(filename, prop, val):
             print(re.sub(p, val, line), end='')
 
 
-def deps(arch, toolset):
+def deps(arch, toolset, qtver):
     print('Deps Qt Client Release|' + arch)
 
     # Fetch QRencode
@@ -246,7 +246,7 @@ def main():
     parsed_args = parse_args()
 
     if parsed_args.deps:
-        deps(parsed_args.arch, parsed_args.toolset)
+        deps(parsed_args.arch, parsed_args.toolset, parsed_args.qtver)
 
     if parsed_args.build:
         build(parsed_args.arch, parsed_args.toolset, parsed_args.sdk,
