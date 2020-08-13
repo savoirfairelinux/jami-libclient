@@ -2,6 +2,46 @@
   "comments": [
     {
       "key": {
+        "uuid": "4367231f_9e6e9bfd",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 90
+      },
+      "writtenOn": "2020-08-13T17:58:57Z",
+      "side": 1,
+      "message": "add a short description and issue number if possible pls",
+      "revId": "23b2dcfa3880445d2b6be2a36bf4f8d07b75f07d",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7a8d4b02_cc864c94",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 90
+      },
+      "writtenOn": "2020-08-13T17:58:57Z",
+      "side": 1,
+      "message": "this should be API imo",
+      "range": {
+        "startLine": 7,
+        "startChar": 27,
+        "endLine": 7,
+        "endChar": 29
+      },
+      "revId": "23b2dcfa3880445d2b6be2a36bf4f8d07b75f07d",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "ef0c1a72_2d800592",
         "filename": "src/qtwrapper/pluginmanager.cpp",
         "patchSetId": 8
