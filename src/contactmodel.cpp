@@ -114,7 +114,7 @@ public:
     ContactModel::ContactInfoMap contacts;
     ContactModel::ContactInfoMap searchResult;
     QList<QString> bannedContacts;
-    QString query;
+    QString searchQuery;
     std::mutex contactsMtx_;
     std::mutex bannedContactsMtx_;
 
@@ -389,7 +389,7 @@ ContactModel::searchContact(const QString& query)
     pimpl_->searchResult.clear();
 
     auto uri = URI(query);
-    pimpl_->query = query;
+    pimpl_->searchQuery = query;
 
     auto uriScheme = uri.schemeType();
     if (static_cast<int>(uriScheme) > 2 && owner.profileInfo.type == profile::Type::SIP) {
@@ -818,7 +818,7 @@ ContactModelPimpl::slotRegisteredNameFound(const QString& accountId,
             contacts[uri].registeredName = registeredName;
             searchResult.clear();
         } else {
-            if ((query != uri && query != registeredName) || query.isEmpty()) {
+            if ((searchQuery != uri && searchQuery != registeredName) || searchQuery.isEmpty()) {
                 // we are notified that a previous lookup ended
                 return;
             }
@@ -834,7 +834,7 @@ ContactModelPimpl::slotRegisteredNameFound(const QString& accountId,
                 return;
             }
         }
-        if ((query != uri && query != registeredName) || query.isEmpty()) {
+        if ((searchQuery != uri && searchQuery != registeredName) || searchQuery.isEmpty()) {
             // we are notified that a previous lookup ended
             return;
         }
@@ -1067,16 +1067,18 @@ ContactModelPimpl::slotProfileReceived(const QString& accountId, const QString& 
 void
 ContactModelPimpl::slotUserSearchEnded(const QString& accountId, int status, const QString& query, const VectorMapStringString& result)
 {
-    if (query != query) return;
+    if (searchQuery != query) return;
     if (accountId != linked.owner.id) return;
     searchResult.clear();
-       switch (status) {
+    switch (status) {
        case 0:/* SUCCESS */
            break;
        case 3:/* ERROR */
            updateTemporaryMessage("could not find contact matching search");
+           emit linked.modelUpdated(query);
            return;
        default:
+           emit linked.modelUpdated(query);
            return;
     }
     updateTemporaryMessage("");
