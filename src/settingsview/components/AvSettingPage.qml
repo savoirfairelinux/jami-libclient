@@ -27,7 +27,7 @@ import net.jami.Models 1.0
 import "../../commoncomponents"
 
 Rectangle {
-    id: avSettingsRect
+    id: root
 
     AudioInputDeviceModel{
         id: audioInputDeviceModel
@@ -237,6 +237,7 @@ Rectangle {
 
     Connections{
         target: ClientWrapper.avmodel
+        enabled: root.visible
 
         function onAudioMeter(id, level){
             slotAudioMeter(id,level)
@@ -245,6 +246,7 @@ Rectangle {
 
     Connections{
         target: ClientWrapper.renderManager
+        enabled: root.visible
 
         function onVideoDeviceListChanged(){
             slotVideoDeviceListChanged()
@@ -256,7 +258,7 @@ Rectangle {
     anchors.centerIn: parent
 
     ColumnLayout {
-        anchors.fill: avSettingsRect
+        anchors.fill: root
 
         RowLayout {
             id: avSettingsTitle
@@ -313,8 +315,8 @@ Rectangle {
 
             Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
 
-            width: avSettingsRect.width
-            height: avSettingsRect.height - avSettingsTitle.height
+            width: root.width
+            height: root.height - avSettingsTitle.height
 
             ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
             ScrollBar.vertical.policy: ScrollBar.AsNeeded
@@ -731,8 +733,8 @@ Rectangle {
                 }
 
                 Item {
-                    Layout.preferredWidth: avSettingsRect.width - 32
-                    Layout.minimumWidth: avSettingsRect.width - 32
+                    Layout.preferredWidth: root.width - 32
+                    Layout.minimumWidth: root.width - 32
                     Layout.maximumWidth: JamiTheme.maximumWidthSettingsView - 32
                     Layout.fillHeight: true
                 }
