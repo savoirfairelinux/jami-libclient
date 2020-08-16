@@ -99,37 +99,27 @@ Rectangle {
 
             Rectangle {
                 id: jamiRegisteredNameRect
-
                 Layout.alignment: Qt.AlignCenter
                 Layout.preferredWidth: welcomeRectComponentsGroup.width
                 Layout.preferredHeight: 65
                 Layout.bottomMargin: 5
-
                 visible: accountListModel.data(accountListModel.index(
                                                    0, 0),
                                                260) === 1
                 ColumnLayout {
                     id: jamiRegisteredNameRectColumnLayout
-
                     spacing: 0
-
                     Text {
                         id: jamiRegisteredNameText
-
                         Layout.alignment: Qt.AlignCenter
                         Layout.preferredWidth: welcomeRectComponentsGroup.width
                         Layout.preferredHeight: 30
-
                         font.pointSize: JamiTheme.textFontSize + 1
-
                         horizontalAlignment: Text.AlignHCenter
                         verticalAlignment: Text.AlignVCenter
-
                         text: textMetricsjamiRegisteredNameText.elidedText
-
                         TextMetrics {
                             id: textMetricsjamiRegisteredNameText
-
                             font: jamiRegisteredNameText.font
                             text: accountListModel.data(
                                       accountListModel.index(
@@ -138,17 +128,13 @@ Rectangle {
                             elide: Qt.ElideMiddle
                         }
                     }
-
                     HoverableButton {
                         id: copyRegisterednameButton
-
                         Layout.alignment: Qt.AlignCenter
                         Layout.preferredWidth: buttonPreferredSize
                         Layout.preferredHeight: buttonPreferredSize
-
                         radius: 30
                         source: "qrc:/images/icons/ic_content_copy.svg"
-
                         onClicked: {
                             ClientWrapper.utilsAdaptor.setText(
                                         textMetricsjamiRegisteredNameText.text)
@@ -156,6 +142,24 @@ Rectangle {
                     }
                 }
             }
+        }
+    }
+
+
+    Button {
+        anchors.bottom: parent.bottom
+        anchors.horizontalCenter: parent.horizontalCenter
+        background: Rectangle {
+            color: "transparent"
+        }
+        anchors.bottomMargin: 12
+        contentItem: Text {
+            text: qsTr("About Jami")
+            color: "grey"
+        }
+
+        onClicked: {
+            aboutPopUpDialog.open()
         }
     }
 

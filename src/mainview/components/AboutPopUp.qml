@@ -241,22 +241,11 @@ Dialog {
 
                     anchors.fill: parent
 
-                    HoverableButton {
+                    MaterialButton {
                         id: changeLogButton
-
-                        Layout.alignment: Qt.AlignCenter
-                        Layout.preferredWidth: textMetricschangeLogButton.boundingRect.width + 20
-                        Layout.preferredHeight: 30
-
-                        radius: 10
-                        fontPointSize: JamiTheme.textFontSize - 2
-                        text: textMetricschangeLogButton.text
-
-                        TextMetrics {
-                            id: textMetricschangeLogButton
-                            font: changeLogButton.font
-                            text: qsTr("Change Log")
-                        }
+                        text: qsTr("Changelog")
+                        color: projectCreditsScrollView.visible? JamiTheme.buttonTintedGreyInactive : JamiTheme.buttonTintedGrey
+                        Layout.preferredWidth: 100
 
                         onClicked: {
                             if (changeLogOrCreditsStack.depth > 1) {
@@ -265,16 +254,11 @@ Dialog {
                         }
                     }
 
-                    HoverableButton {
+                    MaterialButton {
                         id: creditsButton
-
-                        Layout.alignment: Qt.AlignCenter
-                        Layout.preferredWidth: changeLogButton.width
-                        Layout.preferredHeight: 30
-
-                        radius: 10
-                        fontPointSize: JamiTheme.textFontSize - 2
-                        text: qsTr("Credits")
+                        text: qsTr("Credit")
+                        color: projectCreditsScrollView.visible? JamiTheme.buttonTintedGrey : JamiTheme.buttonTintedGreyInactive
+                        Layout.preferredWidth: 100
 
                         onClicked: {
                             if (changeLogOrCreditsStack.depth == 1) {
