@@ -19,3 +19,6 @@ changelog.html
 obj/
 build/
 build-local/
+*.vcxproj
+*.vcxproj.filters
+*qmlcache.qrc
