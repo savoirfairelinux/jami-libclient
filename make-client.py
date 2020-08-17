@@ -137,28 +137,28 @@ def build(arch, toolset, sdk_version, config_str, project_path_under_current_pat
 
     configuration_type = 'StaticLibrary'
 
-    qtFolderDir = "msvc2017_64"
-    qtverSplit = qtver.split('.')
+    qtFolderDir = "msvc2019_64"
 
-    if((int(qtverSplit[0]) >= 6) or ((int(qtverSplit[0]) == 5) and (int(qtverSplit[1]) >= 15))):
-        qtFolderDir = "msvc2019_64"
+    vs_env_vars = {}
+    vs_env_vars.update(getVSEnv())
 
+    qmake_cmd = "C:\\Qt\\" + qtver + "\\" + qtFolderDir + "\\bin\\qmake.exe"
     if (config_str == 'Release'):
         print('Generating project using qmake ' + config_str + '|' + arch)
-        if(execute_cmd("C:\\Qt\\" + qtver + "\\" + qtFolderDir + "\\bin\\qmake.exe " + "-tp vc jami-qt.pro -o jami-qt.vcxproj")):
+        if(execute_cmd(qmake_cmd + " -tp vc jami-qt.pro -o jami-qt.vcxproj", False, vs_env_vars)):
             print("Qmake vcxproj file generate error")
             sys.exit(1)
         configuration_type = 'Application'
     elif (config_str == 'Beta'):
         print('Generating project using qmake ' + config_str + '|' + arch)
-        if(execute_cmd("C:\\Qt\\" + qtver + "\\" + qtFolderDir + "\\bin\\qmake.exe " + "-tp vc jami-qt.pro -o jami-qt.vcxproj CONFIG+=Beta")):
-            print("Beat: Qmake vcxproj file generate error")
+        if(execute_cmd(qmake_cmd + " -tp vc jami-qt.pro -o jami-qt.vcxproj CONFIG+=Beta", False, vs_env_vars)):
+            print("Beta: Qmake vcxproj file generate error")
             sys.exit(1)
         config_str = 'Release'
         configuration_type = 'Application'
     elif (config_str == 'ReleaseCompile'):
         print('Generating project using qmake ' + config_str + '|' + arch)
-        if(execute_cmd("C:\\Qt\\" + qtver + "\\" + qtFolderDir + "\\bin\\qmake.exe " + "-tp vc jami-qt.pro -o jami-qt.vcxproj CONFIG+=ReleaseCompile")):
+        if(execute_cmd(qmake_cmd + " -tp vc jami-qt.pro -o jami-qt.vcxproj CONFIG+=ReleaseCompile", False, vs_env_vars)):
             print("ReleaseCompile: Qmake vcxproj file generate error")
             sys.exit(1)
         config_str = 'Release'
@@ -167,8 +167,6 @@ def build(arch, toolset, sdk_version, config_str, project_path_under_current_pat
     # but will be outputted into x64/Beta folder (for Beta Only)
 
     print('Building projects in ' + config_str + '|' + arch)
-    vs_env_vars = {}
-    vs_env_vars.update(getVSEnv())
     this_dir = os.path.dirname(os.path.realpath(__file__))
     qt_client_proj_path = this_dir + project_path_under_current_path
 
