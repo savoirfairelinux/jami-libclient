@@ -167,7 +167,7 @@ Dialog {
                         Layout.maximumHeight: 30
                         Layout.fillWidth: true
 
-                        visible: purpose === PasswordDialog.ChangePassword
+                        visible: purpose === PasswordDialog.ChangePassword || purpose === PasswordDialog.ExportAccount
                         echoMode: TextInput.Password
                         font.pointSize: 10
                         font.kerning: true
