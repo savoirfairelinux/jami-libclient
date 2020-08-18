@@ -110,7 +110,7 @@ ItemDelegate {
             Layout.preferredHeight: 30
             Layout.maximumHeight: 30
 
-            ToolTip.visible: isHovering
+            ToolTip.visible: hovered
             ToolTip.text: {
                 return qsTr("On/Off")
             }

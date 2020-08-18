@@ -36,13 +36,13 @@ public:
         PreferenceName,
         PreferenceSummary,
         PreferenceType,
-        PreferenceDefaultValue,
-        PreferenceEntries,
-        PreferenceEntryValues
+        PluginId,
+        PreferenceCurrentValue
     };
 
     typedef enum {
         LIST,
+        USERLIST,
         DEFAULT,
     } Type;
 

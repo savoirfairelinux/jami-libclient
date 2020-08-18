@@ -1,6 +1,6 @@
-/*
+/**
  * Copyright (C) 2019-2020 by Savoir-faire Linux
- * Author: Yang Wang   <yang.wang@savoirfairelinux.com>
+ * Author: Aline Gondim Santos   <aline.gondimsantos@savoirfairelinux.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,28 +27,30 @@
 class PluginItemListModel : public QAbstractListModel
 {
     Q_OBJECT
+    Q_PROPERTY(int pluginsCount READ pluginsCount)
 
 public:
     enum Role { PluginName = Qt::UserRole + 1, PluginId, PluginIcon, IsLoaded };
     Q_ENUM(Role)
 
-    explicit PluginItemListModel(QObject *parent = 0);
+    explicit PluginItemListModel(QObject* parent = 0);
     ~PluginItemListModel();
 
     /*
      * QAbstractListModel override.
      */
-    int rowCount(const QModelIndex &parent = QModelIndex()) const override;
-    int columnCount(const QModelIndex &parent) const override;
-    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
+    int rowCount(const QModelIndex& parent = QModelIndex()) const override;
+    int columnCount(const QModelIndex& parent) const override;
+    QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override;
     /*
      * Override role name as access point in qml.
      */
     QHash<int, QByteArray> roleNames() const override;
-    QModelIndex index(int row, int column = 0, const QModelIndex &parent = QModelIndex()) const;
-    QModelIndex parent(const QModelIndex &child) const;
-    Qt::ItemFlags flags(const QModelIndex &index) const;
+    QModelIndex index(int row, int column = 0, const QModelIndex& parent = QModelIndex()) const;
+    QModelIndex parent(const QModelIndex& child) const;
+    Qt::ItemFlags flags(const QModelIndex& index) const;
 
+    int pluginsCount();
     /*
      * This function is to reset the model when there's new account added.
      */

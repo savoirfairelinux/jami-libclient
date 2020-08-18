@@ -22,15 +22,17 @@ import QtQuick.Controls 2.14
 import QtQuick.Controls.Universal 2.12
 import QtQuick.Layouts 1.3
 import Qt.labs.platform 1.1
+import QtQuick.Dialogs 1.3
 import QtGraphicalEffects 1.14
 import net.jami.Models 1.0
 import "../../commoncomponents"
 
 Rectangle {
-    id: pluginListPreferencesViewRect
+    id: root
 
     enum Type {
         LIST,
+        USERLIST,
         DEFAULT
     }
 
@@ -40,15 +42,15 @@ Rectangle {
     property string pluginIcon: ""
     property string pluginId: ""
     property bool isLoaded: false
-    property int size: 0
 
     visible: false
 
-    function updatePreferenceListDisplayed(show){
+    function updatePreferenceListDisplayed(){
         // settings
-        getSize(pluginId, show)
         preferenceItemListModel.pluginId = pluginId
         preferenceItemListModel.reset()
+        var size = 50 * preferenceItemListModel.preferencesCount
+        pluginPreferenceView.height = size
     }
 
     function resetPluginSlot(){
@@ -56,8 +58,15 @@ Rectangle {
     }
 
     function resetPlugin(){
-        ClientWrapper.pluginModel.resetPluginPreferencesValues(pluginId, isLoaded)
+        if (isLoaded){
+            ClientWrapper.pluginModel.unloadPlugin(pluginId)
+            ClientWrapper.pluginModel.resetPluginPreferencesValues(pluginId)
+            ClientWrapper.pluginModel.loadPlugin(pluginId)
+        } else {
+            ClientWrapper.pluginModel.resetPluginPreferencesValues(pluginId)
+        }
         updatePluginList()
+        updatePreferenceListDisplayed()
     }
 
     function uninstallPluginSlot(){
@@ -69,153 +78,59 @@ Rectangle {
         updatePluginList()
     }
 
-    function getSize(pluginId, show){
-        preferenceItemListModel.pluginId = pluginId
-        size = 50 * preferenceItemListModel.preferencesCount
-        if (show) {
-            height = 200 + size
-            pluginPreferenceView.height = size
-        } else {
-            height = 25
-        }
-    }
-
-    function editPreferenceSlot(preferenceType, preferenceName, preferenceEntryValues){
-        switch (preferenceType){
-            case PluginListPreferencesView.LIST:
-                console.log("LIST")
-                editListMessageBox.preferenceName = preferenceName
-                editListMessageBox.preferenceEntryValues =  preferenceEntryValues
-                editListMessageBox.open()
-                break
-            case PluginListPreferencesView.DEFAULT:
-                console.log("Unrecognizable Type")
-                break
-            default:
-                console.log("Unrecognizable Type")
-                break
-        }
-    }
-
     function setPreference(pluginId, preferenceKey, preferenceNewValue)
     {
-        ClientWrapper.pluginModel.setPluginPreferences(pluginId, preferenceKey, preferenceNewValue, isLoaded)
-        preferenceItemListModel.reset()
+        if (isLoaded){
+            ClientWrapper.pluginModel.unloadPlugin(pluginId)
+            ClientWrapper.pluginModel.setPluginPreference(pluginId, preferenceKey, preferenceNewValue)
+            ClientWrapper.pluginModel.loadPlugin(pluginId)
+        }
+        else {
+            ClientWrapper.pluginModel.setPluginPreference(pluginId, preferenceKey, preferenceNewValue)
+        }
     }
 
-    MessageBox{
+    MessageDialog{
         id: uninstallPluginMessageBox
 
         title:qsTr("Uninstall plugin")
         text :qsTr("Are you sure you wish to uninstall " + pluginName + " ?")
+        icon: StandardIcon.Warning
         standardButtons: StandardButton.Ok | StandardButton.Cancel
-
-        onYes: {
-            accepted()
-        }
-
-        onNo:{
-            rejected()
-        }
-
-        onDiscard: {
-            rejected()
-        }
 
         onAccepted: {
             uninstallPlugin()
-            pluginListPreferencesViewRect.visible = false
+            root.visible = false
         }
-
-        onRejected: {}
     }
 
-    MessageBox{
+    MessageDialog{
         id: resetPluginMessageBox
 
         title:qsTr("Reset preferences")
         text :qsTr("Are you sure you wish to reset "+ pluginName + " preferences?")
-
+        icon: StandardIcon.Warning
         standardButtons: StandardButton.Ok | StandardButton.Cancel
 
-        onYes: {
-            accepted()
-        }
-
-        onNo:{
-            rejected()
-        }
-
-        onDiscard: {
-            rejected()
-        }
-
-        onAccepted: {
-            resetPlugin()
-        }
-
-        onRejected: {}
-    }
-
-    MessageBox{
-        id: editListMessageBox
-
-        property string preferenceName: ""
-        property var preferenceEntryValues: []
-        
-        title:qsTr("Edit " + preferenceName)
-        text :qsTr(preferenceName + " options: " + preferenceEntryValues)
-
-        standardButtons: StandardButton.Ok | StandardButton.Cancel
-
-        onYes: {
-            accepted()
-        }
-
-        onNo:{
-            rejected()
-        }
-
-        onDiscard: {
-            rejected()
-        }
-
-        onAccepted: {
-            // setPreference(pluginId, preferenceItemDelegate.preferenceKey, preferenceItemDelegate.preferenceNewValue)
-        }
-
-        onRejected: {}
+        onAccepted: resetPlugin()
     }
 
     PreferenceItemListModel {
         id: preferenceItemListModel
     }
 
-    Layout.fillHeight: true
-    Layout.fillWidth: true
-
     ColumnLayout {
-        spacing: 6
-        Layout.fillHeight: true
-        Layout.maximumWidth: 580
-        Layout.preferredWidth: 580
-        Layout.minimumWidth: 580
+        anchors.left: root.left
+        anchors.right: root.right
 
         Label{
             Layout.alignment: Qt.AlignHCenter
-
-            Layout.minimumWidth: 30
-            Layout.preferredWidth: 30
-            Layout.maximumWidth: 30
-            Layout.minimumHeight: 30
-            Layout.preferredHeight: 30
-            Layout.maximumHeight: 30
-
             background: Rectangle{
-                anchors.fill: parent
                 Image {
-                    anchors.fill: parent
+                    anchors.centerIn: parent
                     source: "file:"+pluginIcon
+                    height: 35
+                    width: 35
                 }
             }
         }
@@ -223,13 +138,9 @@ Rectangle {
         Label {
             Layout.alignment: Qt.AlignHCenter
             Layout.topMargin: 10
-            Layout.fillWidth: true
-            Layout.minimumHeight: 25
-            Layout.preferredHeight: 25
-            Layout.maximumHeight: 25
 
             text: qsTr(pluginName + "\npreferences")
-            font.pointSize: 13
+            font.pointSize: JamiTheme.headerFontSize
             font.kerning: true
 
             horizontalAlignment: Text.AlignHCenter
@@ -237,21 +148,12 @@ Rectangle {
         }
 
         RowLayout {
-            spacing: 6
-            Layout.fillWidth: true
             Layout.topMargin: 10
-            Layout.maximumHeight: 30
-            Layout.preferredHeight: 30
-            Layout.minimumHeight: 30
+            height: 30
 
             HoverableRadiusButton {
                 id: resetButton
-
-                Layout.maximumWidth: 157
-                Layout.preferredWidth: 157
-                Layout.minimumWidth: 157
-
-                Layout.fillHeight: true
+                Layout.fillWidth: true
 
                 radius: height / 2
 
@@ -259,8 +161,8 @@ Rectangle {
                 icon.height: 24
                 icon.width: 24
 
-                text: qsTr("Reset")
-                fontPointSize: 10
+                text: qsTr("  Reset  ")
+                fontPointSize: JamiTheme.settingsFontSize
                 font.kerning: true
 
                 onClicked: {
@@ -270,12 +172,7 @@ Rectangle {
 
             HoverableRadiusButton {
                 id: uninstallButton
-
-                Layout.maximumWidth: 157
-                Layout.preferredWidth: 157
-                Layout.minimumWidth: 157
-
-                Layout.fillHeight: true
+                Layout.fillWidth: true
 
                 radius: height / 2
 
@@ -284,25 +181,19 @@ Rectangle {
                 icon.width: 24
 
                 text: qsTr("Uninstall")
-                fontPointSize: 10
+                fontPointSize: JamiTheme.settingsFontSize
                 font.kerning: true
 
-                onClicked: {
-                    uninstallPluginSlot()
-                }
+                onClicked: uninstallPluginSlot()
             }
         }
 
-        ListViewJami {
+        ListView {
             id: pluginPreferenceView
 
-            Layout.minimumWidth: 320
-            Layout.preferredWidth: 320
-            Layout.maximumWidth: 320
-
+            Layout.fillWidth: true
             Layout.minimumHeight: 0
-            Layout.preferredHeight: height
-            Layout.maximumHeight: 1000
+            Layout.preferredHeight: childrenRect.height + 30
 
             model: preferenceItemListModel
 
@@ -312,23 +203,27 @@ Rectangle {
                 width: pluginPreferenceView.width
                 height: 50
 
-                preferenceKey : PreferenceKey
                 preferenceName: PreferenceName
                 preferenceSummary: PreferenceSummary
                 preferenceType: PreferenceType
-                preferenceDefaultValue: PreferenceDefaultValue
-                preferenceEntries: PreferenceEntries
-                preferenceEntryValues: PreferenceEntryValues
+                preferenceCurrentValue: PreferenceCurrentValue
+                pluginId: PluginId
+                pluginListPreferenceModel: PluginListPreferenceModel{
+                    id: pluginListPreferenceModel
+                    preferenceKey : PreferenceKey
+                    pluginId: PluginId
+                }
 
                 onClicked: {
                     pluginPreferenceView.currentIndex = index
                 }
                 onBtnPreferenceClicked: {
-                    console.log("edit preference ", preferenceName)
-                    console.log("preference type ", preferenceType)
-                    console.log("preference entry values ", preferenceEntryValues.length)
-                    editPreferenceSlot(preferenceType, preferenceName, preferenceEntryValues)
+                    setPreference(pluginListPreferenceModel.pluginId,
+                                  pluginListPreferenceModel.preferenceKey,
+                                  pluginListPreferenceModel.preferenceNewValue)
+                    updatePreferenceListDisplayed()
                 }
+                onPreferenceAdded: preferenceItemListModel.reset()
             }
         }
     }

@@ -37,7 +37,6 @@ MediaHandlerAdapter::getMediaHandlerSelectableModel()
     return QVariant::fromValue(mediaHandlerListModel_.get());
 }
 
-
 void
 MediaHandlerAdapter::initQmlObject()
 {}

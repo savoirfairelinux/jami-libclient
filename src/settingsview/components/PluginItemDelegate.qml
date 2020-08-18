@@ -28,7 +28,7 @@ import net.jami.Models 1.0
 import "../../commoncomponents"
 
 ItemDelegate {
-    id: pluginItemDelegate
+    id: root
 
     property string pluginName : ""
     property string pluginId: ""
@@ -38,79 +38,45 @@ ItemDelegate {
     signal btnLoadPluginToggled
     signal btnPreferencesPluginClicked
 
-    highlighted: ListView.isCurrentItem
-
     RowLayout{
         anchors.fill: parent
 
         Label{
-            Layout.leftMargin: 7
-            Layout.bottomMargin: 7
-
-            Layout.minimumWidth: 30
-            Layout.preferredWidth: 30
-            Layout.maximumWidth: 30
-
-            Layout.minimumHeight: 30
-            Layout.preferredHeight: 30
-            Layout.maximumHeight: 30
+            id: pluginImage
+            Layout.leftMargin: 8
+            Layout.alignment: Qt.AlignLeft | Qt.AlingVCenter
+            Layout.fillHeight: true
+            width: 30
 
             background: Rectangle{
                 anchors.fill: parent
                 Image {
-                    anchors.fill: parent
+                    anchors.centerIn: parent
                     source: "file:"+pluginIcon
+                    width: 30
+                    height: 30
                 }
             }
         }
 
-        ColumnLayout{
+        Label{
+            id: labelDeviceId
             Layout.fillWidth: true
-            Layout.fillHeight: true
+            Layout.leftMargin: 8
 
-            Layout.leftMargin: 7
-            Layout.topMargin: 7
-            Layout.bottomMargin: 7
-
-            RowLayout{
-
-                Layout.minimumHeight: 30
-
-                Label{
-                    id: labelDeviceId
-
-                    Layout.minimumHeight: 20
-
-                    font.pointSize: 10
-                    font.kerning: true
-                    text: pluginName === "" ? pluginId : pluginName
-                }
-
-                Item{
-                    Layout.fillWidth: true
-
-                    Layout.minimumWidth: 0
-                    Layout.minimumHeight: 20
-                }
-            }
+            font.pointSize: JamiTheme.settingsFontSize
+            font.kerning: true
+            text: pluginName === "" ? pluginId : pluginName
         }
 
         Switch {
             id: loadSwitch
             property bool isHovering: false
+            Layout.rightMargin: 8
+            Layout.fillHeight: true
+            width: 20
 
-            Layout.bottomMargin: 7
-            Layout.rightMargin: 15
-
-            Layout.maximumWidth: 30
-            Layout.preferredWidth: 30
-            Layout.minimumWidth: 30
-
-            Layout.minimumHeight: 30
-            Layout.preferredHeight: 30
-            Layout.maximumHeight: 30
-
-            ToolTip.visible: isHovering
+            ToolTip.visible: hovered
             ToolTip.text: {
                 return qsTr("Load/Unload")
             }
@@ -144,17 +110,11 @@ ItemDelegate {
         HoverableRadiusButton{
             id: btnPreferencesPlugin
 
-            Layout.bottomMargin: 7
-            Layout.rightMargin: 7
-            Layout.alignment: Qt.AlignRight
+            backgroundColor: "white"
 
-            Layout.minimumWidth: 30
-            Layout.preferredWidth: 30
-            Layout.maximumWidth: 30
-
-            Layout.minimumHeight: 30
-            Layout.preferredHeight: 30
-            Layout.maximumHeight: 30
+            Layout.alignment: Qt.AlingVCenter | Qt.AlignRight
+            Layout.rightMargin: 8
+            Layout.preferredHeight: 25
 
             buttonImageHeight: height
             buttonImageWidth: height
@@ -163,9 +123,9 @@ ItemDelegate {
                 return "qrc:/images/icons/round-settings-24px.svg"
             }
 
-            ToolTip.visible: isHovering
+            ToolTip.visible: hovered
             ToolTip.text: {
-                return qsTr("Edit preferences")
+                return qsTr("Show preferences")
             }
 
             onClicked: {

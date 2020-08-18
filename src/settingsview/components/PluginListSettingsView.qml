@@ -1,6 +1,6 @@
-/*
+/**
  * Copyright (C) 2019-2020 by Savoir-faire Linux
- * Author: Yang Wang   <yang.wang@savoirfairelinux.com>
+ * Author: Aline Gondim Sanots  <aline.gondimsantos@savoirfairelinux.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,23 +27,21 @@ import net.jami.Models 1.0
 import "../../commoncomponents"
 
 Rectangle {
-    id: pluginListSettingsViewRect
+    id: root
 
     property PluginListPreferencesView pluginListPreferencesView
+
     visible: false
-    signal scrollView
 
     function updatePluginListDisplayed() {
         // settings
+        pluginItemListModel.reset()
+        var size = 50 * pluginItemListModel.pluginsCount
+        pluginListView.height = size + 15
     }
 
     function openPluginFileSlot(){
         pluginPathDialog.open()
-    }
-
-    function updateAndShowPluginsSlot()
-    {
-        pluginItemListModel.reset()
     }
 
     function loadPluginSlot(pluginId, isLoaded){
@@ -54,21 +52,28 @@ Rectangle {
             loaded = ClientWrapper.pluginModel.loadPlugin(pluginId)
         if(pluginListPreferencesView.pluginId === pluginId)
             pluginListPreferencesView.isLoaded = loaded
-        updateAndShowPluginsSlot()
+        updatePluginListDisplayed()
     }
 
     function openPreferencesPluginSlot(pluginName, pluginIcon, pluginId, isLoaded){
-        updateAndShowPluginPreferenceSlot(pluginName, pluginIcon, pluginId, isLoaded)
+        if (pluginListPreferencesView.pluginId == pluginId || pluginListPreferencesView.pluginId == "")
+            pluginListPreferencesView.visible = !pluginListPreferencesView.visible
+
+        if(!pluginListPreferencesView.visible){
+            pluginListPreferencesView.pluginId = ""
+        } else{
+            pluginListPreferencesView.pluginName = pluginName
+            pluginListPreferencesView.pluginIcon = pluginIcon
+            pluginListPreferencesView.pluginId = pluginId
+            pluginListPreferencesView.isLoaded = isLoaded
+        }
+        pluginListPreferencesView.updatePreferenceListDisplayed()
     }
 
-    function updateAndShowPluginPreferenceSlot(pluginName, pluginIcon, pluginId, isLoaded){
-        pluginListPreferencesView.pluginName = pluginName
-        pluginListPreferencesView.pluginIcon = pluginIcon
-        pluginListPreferencesView.pluginId = pluginId
-        pluginListPreferencesView.isLoaded = isLoaded
-        pluginListPreferencesView.updatePreferenceListDisplayed(!pluginListPreferencesView.visible)
-        pluginListPreferencesView.visible = !pluginListPreferencesView.visible
-        scrollView()
+    function hidePreferences(){
+        pluginListPreferencesView.pluginId = ""
+        pluginListPreferencesView.visible = false
+        pluginListPreferencesView.updatePreferenceListDisplayed()
     }
 
     JamiFileDialog {
@@ -92,106 +97,76 @@ Rectangle {
         onAccepted: {
             var url = ClientWrapper.utilsAdaptor.getAbsPath(file.toString())
             ClientWrapper.pluginModel.installPlugin(url, true)
-            updateAndShowPluginsSlot()
+            updatePluginListDisplayed()
         }
     }
 
-    PluginItemListModel {
-        id: pluginItemListModel
-    }
-
-    Layout.fillHeight: true
-    Layout.fillWidth: true
-
     ColumnLayout {
         id: pluginListViewLayout
-
-        Layout.fillHeight: true
-        Layout.maximumWidth: 580
-        Layout.preferredWidth: 580
-        Layout.minimumWidth: 580
+        anchors.left: root.left
+        anchors.right: root.right
 
         Label {
             Layout.fillWidth: true
-            Layout.minimumHeight: 25
             Layout.preferredHeight: 25
-            Layout.maximumHeight: 25
 
             text: qsTr("Installed plugins")
-            font.pointSize: 13
+            font.pointSize: JamiTheme.headerFontSize
             font.kerning: true
 
             horizontalAlignment: Text.AlignLeft
             verticalAlignment: Text.AlignVCenter
         }
 
-        ColumnLayout {
-            spacing: 6
+        HoverableRadiusButton {
+            id: installButton
 
             Layout.fillWidth: true
-            Layout.topMargin: 6
+            Layout.preferredHeight: 30
 
-            HoverableRadiusButton {
-                id: installButton
+            radius: height / 2
 
-                Layout.leftMargin: 20
+            text: qsTr("+ Install plugin")
+            fontPointSize: JamiTheme.settingsFontSize
+            font.kerning: true
 
-                Layout.maximumWidth: 320
-                Layout.preferredWidth: 320
-                Layout.minimumWidth: 320
+            onClicked: {
+                openPluginFileSlot()
+            }
+        }
 
-                Layout.minimumHeight: 30
-                Layout.preferredHeight: 30
-                Layout.maximumHeight: 30
+        ListView {
+            id: pluginListView
 
-                radius: height / 2
+            Layout.fillWidth: true
+            Layout.minimumHeight: 0
+            Layout.preferredHeight: childrenRect.height
 
-                text: qsTr("+ Install plugin")
-                fontPointSize: 10
-                font.kerning: true
+            model: PluginItemListModel{
+                id: pluginItemListModel
+            }
+
+            delegate: PluginItemDelegate{
+                id: pluginItemDelegate
+
+                width: pluginListView.width
+                height: 50
+
+                pluginName : PluginName
+                pluginId: PluginId
+                pluginIcon: PluginIcon
+                isLoaded: IsLoaded
 
                 onClicked: {
-                    openPluginFileSlot()
+                    pluginListView.currentIndex = index
                 }
-            }   
 
-            ListViewJami {
-                id: pluginListView
+                onBtnLoadPluginToggled:{
+                    loadPluginSlot(pluginId, isLoaded)
+                }
 
-                Layout.leftMargin: 20
-
-                Layout.minimumWidth: 320
-                Layout.preferredWidth: 320
-                Layout.maximumWidth: 320
-
-                Layout.minimumHeight: 175
-                Layout.preferredHeight: 175
-                Layout.maximumHeight: 175
-
-                model: pluginItemListModel
-
-                delegate: PluginItemDelegate{
-                    id: pluginItemDelegate
-
-                    width: pluginListView.width
-                    height: 50
-
-                    pluginName : PluginName
-                    pluginId: PluginId
-                    pluginIcon: PluginIcon
-                    isLoaded: IsLoaded
-
-                    onClicked: {
-                        pluginListView.currentIndex = index
-                    }
-
-                    onBtnLoadPluginToggled:{
-                        loadPluginSlot(pluginId, isLoaded)
-                    }
-
-                    onBtnPreferencesPluginClicked:{
-                        openPreferencesPluginSlot(pluginName, pluginIcon, pluginId, isLoaded)
-                    }
+                onBtnPreferencesPluginClicked:{
+                    openPreferencesPluginSlot(pluginName, pluginIcon, pluginId, isLoaded)
                 }
             }
         }

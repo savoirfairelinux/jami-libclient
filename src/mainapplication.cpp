@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright (C) 2015-2020 by Savoir-faire Linux
  * Author: Edric Ladent Milaret <edric.ladent-milaret@savoirfairelinux.com>
  * Author: Andreas Traczyk <andreas.traczyk@savoirfairelinux.com>
@@ -28,6 +28,7 @@
 #include "audioinputdevicemodel.h"
 #include "audiomanagerlistmodel.h"
 #include "audiooutputdevicemodel.h"
+#include "pluginlistpreferencemodel.h"
 #include "avadapter.h"
 #include "bannedlistmodel.h"
 #include "calladapter.h"
@@ -70,7 +71,7 @@
 #include <gnutls/gnutls.h>
 #endif
 
-MainApplication::MainApplication(int &argc, char **argv)
+MainApplication::MainApplication(int& argc, char** argv)
     : QApplication(argc, argv)
     , engine_(new QQmlApplicationEngine())
 {
@@ -127,18 +128,18 @@ MainApplication::vsConsoleDebug()
      */
     QObject::connect(&LRCInstance::behaviorController(),
                      &lrc::api::BehaviorController::debugMessageReceived,
-                     [](const QString &message) {
+                     [](const QString& message) {
                          OutputDebugStringA((message + "\n").toStdString().c_str());
                      });
 #endif
 }
 
 void
-MainApplication::fileDebug(QFile *debugFile)
+MainApplication::fileDebug(QFile* debugFile)
 {
     QObject::connect(&LRCInstance::behaviorController(),
                      &lrc::api::BehaviorController::debugMessageReceived,
-                     [debugFile](const QString &message) {
+                     [debugFile](const QString& message) {
                          if (debugFile->open(QIODevice::WriteOnly | QIODevice::Append)) {
                              auto msg = (message + "\n").toStdString().c_str();
                              debugFile->write(msg, qstrlen(msg));
@@ -156,15 +157,15 @@ MainApplication::exitApp()
 #endif
 }
 
-char **
-MainApplication::parseInputArgument(int &argc, char *argv[], char *argToParse)
+char**
+MainApplication::parseInputArgument(int& argc, char* argv[], char* argToParse)
 {
     /*
      * Forcefully append argToParse.
      */
     int oldArgc = argc;
     argc = argc + 1 + 1;
-    char **newArgv = new char *[argc];
+    char** newArgv = new char*[argc];
     for (int i = 0; i < oldArgc; i++) {
         newArgv[i] = argv[i];
     }
@@ -191,8 +192,8 @@ MainApplication::loadTranslations()
     const auto locale_name = QLocale::system().name();
     const auto locale_lang = locale_name.split('_')[0];
 
-    QTranslator *qtTranslator_lang = new QTranslator(this);
-    QTranslator *qtTranslator_name = new QTranslator(this);
+    QTranslator* qtTranslator_lang = new QTranslator(this);
+    QTranslator* qtTranslator_name = new QTranslator(this);
     if (locale_name != locale_lang) {
         if (qtTranslator_lang->load("qt_" + locale_lang,
                                     QLibraryInfo::location(QLibraryInfo::TranslationsPath)))
@@ -202,8 +203,8 @@ MainApplication::loadTranslations()
                             QLibraryInfo::location(QLibraryInfo::TranslationsPath));
     installTranslator(qtTranslator_name);
 
-    QTranslator *lrcTranslator_lang = new QTranslator(this);
-    QTranslator *lrcTranslator_name = new QTranslator(this);
+    QTranslator* lrcTranslator_lang = new QTranslator(this);
+    QTranslator* lrcTranslator_name = new QTranslator(this);
     if (locale_name != locale_lang) {
         if (lrcTranslator_lang->load(appDir + "share/libringclient/translations/lrc_" + locale_lang))
             installTranslator(lrcTranslator_lang);
@@ -211,8 +212,8 @@ MainApplication::loadTranslations()
     if (lrcTranslator_name->load(appDir + "share/libringclient/translations/lrc_" + locale_name))
         installTranslator(lrcTranslator_name);
 
-    QTranslator *mainTranslator_lang = new QTranslator(this);
-    QTranslator *mainTranslator_name = new QTranslator(this);
+    QTranslator* mainTranslator_lang = new QTranslator(this);
+    QTranslator* mainTranslator_name = new QTranslator(this);
     if (locale_name != locale_lang) {
         if (mainTranslator_lang->load(appDir + "share/ring/translations/ring_client_windows_"
                                       + locale_lang))
@@ -251,7 +252,7 @@ MainApplication::initLrc()
 }
 
 void
-MainApplication::processInputArgument(bool &startMinimized)
+MainApplication::processInputArgument(bool& startMinimized)
 {
     debugFile_ = std::make_unique<QFile>(getDebugFilePath());
     QString uri = "";
@@ -311,6 +312,7 @@ MainApplication::qmlInitialization()
     QML_REGISTERTYPE(VideoInputDeviceModel, 1, 0);
     QML_REGISTERTYPE(VideoFormatResolutionModel, 1, 0);
     QML_REGISTERTYPE(VideoFormatFpsModel, 1, 0);
+    QML_REGISTERTYPE(PluginListPreferenceModel, 1, 0);
     /*
      * Register QQuickItem type.
      */
@@ -337,8 +339,8 @@ MainApplication::qmlInitialization()
     QML_REGISTERSINGLETONTYPE(MediaHandlerAdapter, 1, 0);
     QML_REGISTERSINGLETONTYPE(ClientWrapper, 1, 0);
 
-    //QML_REGISTERSINGLETONTYPE_WITH_INSTANCE(AccountAdapter, 1, 0);
-    //QML_REGISTERSINGLETONTYPE_WITH_INSTANCE(UtilsAdapter, 1, 0);
+    // QML_REGISTERSINGLETONTYPE_WITH_INSTANCE(AccountAdapter, 1, 0);
+    // QML_REGISTERSINGLETONTYPE_WITH_INSTANCE(UtilsAdapter, 1, 0);
     QML_REGISTERUNCREATABLE(AccountAdapter, 1, 0);
     QML_REGISTERUNCREATABLE(UtilsAdapter, 1, 0);
     QML_REGISTERUNCREATABLE(SettingsAdaptor, 1, 0);
@@ -438,7 +440,7 @@ MainApplication::applicationSetup()
     /*
      * Process input argument.
      */
-    bool startMinimized{false};
+    bool startMinimized {false};
     processInputArgument(startMinimized);
 
     /*

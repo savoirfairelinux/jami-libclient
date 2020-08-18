@@ -149,6 +149,7 @@ HEADERS += ./src/smartlistmodel.h \
         ./src/audioinputdevicemodel.h \
         ./src/videoinputdevicemodel.h \
         ./src/audiooutputdevicemodel.h \
+        ./src/pluginlistpreferencemodel.h \
         ./src/videoformatfpsmodel.h \
         ./src/videoformatresolutionmodel.h \
         ./src/audiomanagerlistmodel.h
@@ -187,6 +188,7 @@ SOURCES += ./src/bannedlistmodel.cpp \
         ./src/audioinputdevicemodel.cpp \
         ./src/videoinputdevicemodel.cpp \
         ./src/audiooutputdevicemodel.cpp \
+        ./src/pluginlistpreferencemodel.cpp \
         ./src/videoformatfpsmodel.cpp \
         ./src/videoformatresolutionmodel.cpp \
         ./src/audiomanagerlistmodel.cpp
