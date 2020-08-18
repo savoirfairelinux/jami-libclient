@@ -37,7 +37,7 @@ public:
     Q_INVOKABLE void selectConversation(const QString &accountId,
                                         const QString &convUid,
                                         bool preventSendingSignal = true);
-    Q_INVOKABLE void selectConversation(int index);
+    Q_INVOKABLE void selectConversation(const QString &uid);
     Q_INVOKABLE void deselectConversation();
     Q_INVOKABLE void accountChangedSetUp(const QString &accountId);
     Q_INVOKABLE void updateConversationsFilterWidget();
@@ -46,6 +46,7 @@ public:
 signals:
     void showChatView(const QString &accountId, const QString &convUid);
     void showConversationTabs(bool visible);
+    void showSearchStatus(const QString &status);
 
 public slots:
     void slotAccountChanged();
@@ -75,4 +76,6 @@ private:
     QMetaObject::Connection selectedCallChanged_;
     QMetaObject::Connection smartlistSelectionConnection_;
     QMetaObject::Connection interactionRemovedConnection_;
+    QMetaObject::Connection searchStatusChangedConnection_;
+    QMetaObject::Connection searchResultUpdatedConnection_;
 };

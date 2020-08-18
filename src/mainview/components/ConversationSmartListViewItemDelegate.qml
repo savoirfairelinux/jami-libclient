@@ -84,13 +84,15 @@ ItemDelegate {
         anchors.left: conversationSmartListUserImage.right
         anchors.leftMargin: 16
         anchors.top: parent.top
-        anchors.topMargin: 16
+        anchors.topMargin: conversationSmartListUserLastInteractionMessage.text !== "" ?
+                               16 : parent.height/2-conversationSmartListUserName.height/2
         anchors.right: parent.right
         anchors.rightMargin: 10
 
         Text {
             id: conversationSmartListUserName
-            Layout.alignment: Qt.AlignLeft
+            Layout.alignment: conversationSmartListUserLastInteractionMessage.text !== "" ?
+                                  Qt.AlignLeft : Qt.AlignLeft | Qt.AlignVCenter
 
             TextMetrics {
                 id: textMetricsConversationSmartListUserName
@@ -197,7 +199,7 @@ ItemDelegate {
                 smartListContextMenu.openMenu()
             } else if (mouse.button === Qt.LeftButton) {
                 conversationSmartListView.currentIndex = index
-                conversationSmartListView.needToSelectItems(index)
+                conversationSmartListView.needToSelectItems(UID)
                 conversationSmartListView.needToGrabFocus()
             }
         }

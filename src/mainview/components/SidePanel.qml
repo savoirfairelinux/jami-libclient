@@ -152,12 +152,68 @@ Rectangle {
         height: tabBarVisible ? 64 : 0
     }
 
+    Rectangle {
+        id: searchStatusRect
+
+        visible: lblSearchStatus.text !== ""
+
+        anchors.top: tabBarVisible ? sidePanelTabBar.bottom : contactSearchBar.bottom
+        anchors.topMargin: tabBarVisible ? 0 : 10
+        width: parent.width
+        height: 72
+
+        color: "transparent"
+
+        Image {
+            id: searchIcon
+            anchors.left: searchStatusRect.left
+            anchors.leftMargin: 24
+            anchors.verticalCenter: searchStatusRect.verticalCenter
+            width: 24
+            height: 24
+
+            fillMode: Image.PreserveAspectFit
+            mipmap: true
+            source: "qrc:/images/icons/ic_baseline-search-24px.svg"
+        }
+
+        Label {
+            id: lblSearchStatus
+
+            anchors.verticalCenter: searchStatusRect.verticalCenter
+            anchors.left: searchIcon.right
+            anchors.leftMargin: 24
+            width: searchStatusRect.width - searchIcon.width - 24*2 - 8
+            text: ""
+            wrapMode: Text.WordWrap
+            font.pointSize: JamiTheme.menuFontSize
+        }
+
+        MouseArea {
+            id: mouseAreaSearchRect
+
+            anchors.fill: parent
+            hoverEnabled: true
+
+            onReleased: {
+                searchStatusRect.color = JamiTheme.releaseColor
+            }
+
+            onEntered: {
+                searchStatusRect.color = JamiTheme.hoverColor
+            }
+
+            onExited: {
+                searchStatusRect.color = JamiTheme.backgroundColor
+            }
+        }
+    }
 
     ConversationSmartListView {
         id: conversationSmartListView
 
-        anchors.top: tabBarVisible ? sidePanelTabBar.bottom : contactSearchBar.bottom
-        anchors.topMargin: tabBarVisible ? 0 : 10
+        anchors.top: searchStatusRect.visible ? searchStatusRect.bottom : (tabBarVisible ? sidePanelTabBar.bottom : contactSearchBar.bottom)
+        anchors.topMargin: (tabBarVisible || searchStatusRect.visible) ? 0 : 10
         width: parent.width
         height: tabBarVisible ? sidePanelRect.height - sidePanelTabBar.height - contactSearchBar.height - 20 :
                                 sidePanelRect.height - contactSearchBar.height - 20
@@ -175,10 +231,14 @@ Rectangle {
                 updatePendingRequestCount()
                 updateTotalUnreadMessagesCount()
             }
+
+            function onShowSearchStatus(status) {
+                lblSearchStatus.text = status
+            }
         }
 
         onNeedToSelectItems: {
-            ConversationsAdapter.selectConversation(index)
+            ConversationsAdapter.selectConversation(conversationUid)
         }
 
         onNeedToBackToWelcomePage: {

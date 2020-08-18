@@ -616,7 +616,7 @@ Utils::isInteractionGenerated(const lrc::api::interaction::Type &type)
 bool
 Utils::isContactValid(const QString &contactUid, const lrc::api::ConversationModel &model)
 {
-    auto contact = model.owner.contactModel->getContact(contactUid);
+    const auto contact = model.owner.contactModel->getContact(contactUid);
     return (contact.profileInfo.type == lrc::api::profile::Type::PENDING
             || contact.profileInfo.type == lrc::api::profile::Type::TEMPORARY
             || contact.profileInfo.type == lrc::api::profile::Type::RING
@@ -638,7 +638,8 @@ Utils::conversationPhoto(const QString &convUid,
                          const lrc::api::account::Info &accountInfo,
                          bool filtered)
 {
-    auto convInfo = LRCInstance::getConversationFromConvUid(convUid, accountInfo.id, filtered);
+    auto* convModel = LRCInstance::getCurrentConversationModel();
+    const auto convInfo = convModel->getConversationForUID(convUid);
     if (!convInfo.uid.isEmpty()) {
         return GlobalInstances::pixmapManipulator()
             .decorationRole(convInfo, accountInfo)
@@ -934,17 +935,15 @@ Utils::humanFileSize(qint64 fileSize)
 const QString
 UtilsAdapter::getBestName(const QString &accountId, const QString &uid)
 {
-    auto convModel = LRCInstance::getAccountInfo(accountId).conversationModel.get();
-    return Utils::bestNameForConversation(LRCInstance::getConversationFromConvUid(uid, accountId),
-                                          *convModel);
+    auto* convModel = LRCInstance::getAccountInfo(accountId).conversationModel.get();
+    return Utils::bestNameForConversation(convModel->getConversationForUID(uid), *convModel);
 }
 
 const QString
 UtilsAdapter::getBestId(const QString &accountId, const QString &uid)
 {
-    auto convModel = LRCInstance::getAccountInfo(accountId).conversationModel.get();
-    return Utils::bestIdForConversation(LRCInstance::getConversationFromConvUid(uid, accountId),
-                                        *convModel);
+    auto* convModel = LRCInstance::getAccountInfo(accountId).conversationModel.get();
+    return Utils::bestIdForConversation(convModel->getConversationForUID(uid), *convModel);
 }
 
 int
@@ -952,11 +951,11 @@ UtilsAdapter::getTotalUnreadMessages()
 {
     int totalUnreadMessages{0};
     if (LRCInstance::getCurrentAccountInfo().profileInfo.type != lrc::api::profile::Type::SIP) {
-        auto convModel = LRCInstance::getCurrentConversationModel();
+        auto* convModel = LRCInstance::getCurrentConversationModel();
         auto ringConversations = convModel->getFilteredConversations(lrc::api::profile::Type::RING);
         std::for_each(ringConversations.begin(),
                       ringConversations.end(),
-                      [&totalUnreadMessages, convModel](const auto &conversation) {
+                      [&totalUnreadMessages](const auto &conversation) {
                           totalUnreadMessages += conversation.unreadMessages;
                       });
     }
@@ -1009,8 +1008,8 @@ UtilsAdapter::getAccountListSize()
 void
 UtilsAdapter::setCurrentCall(const QString &accountId, const QString &convUid)
 {
-    auto convInfo = LRCInstance::getConversationFromConvUid(convUid, accountId);
     auto &accInfo = LRCInstance::getAccountInfo(accountId);
+    const auto convInfo = accInfo.conversationModel->getConversationForUID(convUid);
     accInfo.callModel->setCurrentCall(convInfo.callId);
 }
 
@@ -1037,7 +1036,9 @@ UtilsAdapter::hasVideoCall()
 const QString
 UtilsAdapter::getCallId(const QString &accountId, const QString &convUid)
 {
-    auto convInfo = LRCInstance::getConversationFromConvUid(convUid, accountId);
+    auto &accInfo = LRCInstance::getAccountInfo(accountId);
+    const auto convInfo = accInfo.conversationModel->getConversationForUID(convUid);
+
     if (convInfo.uid.isEmpty()) {
         return "";
     }

@@ -386,7 +386,9 @@ AccountAdapter::connectAccount(const QString &accountId)
                                [this, accountId](const QString &contactUri) {
                                    auto &accInfo = LRCInstance::accountModel().getAccountInfo(
                                        accountId);
-                                   auto conversation = LRCInstance::getCurrentConversation();
+                                   auto* convModel = LRCInstance::getCurrentConversationModel();
+                                   const auto conversation = convModel->getConversationForUID(
+                                       LRCInstance::getCurrentConvUid());
                                    if (conversation.uid.isEmpty()) {
                                        return;
                                    }

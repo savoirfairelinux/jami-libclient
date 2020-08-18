@@ -98,7 +98,7 @@ Rectangle {
                     Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
                     Layout.preferredWidth: userNameOrIdRect.width
                     Layout.preferredHeight: textMetricsuserAliasLabel.boundingRect.height
-                    Layout.topMargin: userUserNameLabel.text == "" ? 0 : 10
+                    Layout.topMargin: userUserNameLabel.text === "" ? 0 : 10
 
                     font.pointSize: JamiTheme.menuFontSize
 
@@ -119,7 +119,7 @@ Rectangle {
 
                 Label {
                     id: userUserNameLabel
-                    visible: (text != "")
+                    visible: (text !== "")
                     Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
                     Layout.preferredWidth: userNameOrIdRect.width
                     Layout.preferredHeight: textMetricsuserUserNameLabel.boundingRect.height

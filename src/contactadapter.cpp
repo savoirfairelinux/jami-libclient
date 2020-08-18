@@ -91,8 +91,9 @@ void
 ContactAdapter::contactSelected(int index)
 {
     auto contactIndex = selectableProxyModel_->index(index, 0);
-    auto callModel = LRCInstance::getCurrentCallModel();
-    auto conversation = LRCInstance::getCurrentConversation();
+    auto* callModel = LRCInstance::getCurrentCallModel();
+    auto* convModel = LRCInstance::getCurrentConversationModel();
+    const auto conversation = convModel->getConversationForUID(LRCInstance::getCurrentConvUid());
 
     if (contactIndex.isValid()) {
         switch (listModeltype_) {
@@ -100,15 +101,15 @@ ContactAdapter::contactSelected(int index)
             /*
              * Conference.
              */
-            auto sectionName = contactIndex.data(SmartListModel::Role::SectionName).value<QString>();
+            const auto sectionName = contactIndex.data(SmartListModel::Role::SectionName).value<QString>();
             if (!sectionName.isEmpty()) {
                 smartListModel_->toggleSection(sectionName);
                 return;
             }
 
-            auto convUid = contactIndex.data(SmartListModel::Role::UID).value<QString>();
-            auto accId = contactIndex.data(SmartListModel::Role::AccountId).value<QString>();
-            auto callId = LRCInstance::getCallIdForConversationUid(convUid, accId);
+            const auto convUid = contactIndex.data(SmartListModel::Role::UID).value<QString>();
+            const auto accId = contactIndex.data(SmartListModel::Role::AccountId).value<QString>();
+            const auto callId = LRCInstance::getCallIdForConversationUid(convUid, accId);
 
             if (!callId.isEmpty()) {
                 if (conversation.uid.isEmpty()) {
@@ -119,7 +120,7 @@ ContactAdapter::contactSelected(int index)
 
                 callModel->joinCalls(thisCallId, callId);
             } else {
-                auto contactUri = contactIndex.data(SmartListModel::Role::URI).value<QString>();
+                const auto contactUri = contactIndex.data(SmartListModel::Role::URI).value<QString>();
                 auto call = LRCInstance::getCallInfoForConversation(conversation);
                 if (!call) {
                     return;
@@ -131,12 +132,12 @@ ContactAdapter::contactSelected(int index)
             /*
              * SIP Transfer.
              */
-            auto contactUri = contactIndex.data(SmartListModel::Role::URI).value<QString>();
+            const auto contactUri = contactIndex.data(SmartListModel::Role::URI).value<QString>();
 
             if (conversation.uid.isEmpty()) {
                 return;
             }
-            auto callId = conversation.confId.isEmpty() ? conversation.callId : conversation.confId;
+            const auto callId = conversation.confId.isEmpty() ? conversation.callId : conversation.confId;
 
             QString destCallId;
 
@@ -144,7 +145,7 @@ ContactAdapter::contactSelected(int index)
                 /*
                  * Check if the call exist - (check non-finished calls).
                  */
-                auto callInfo = callModel->getCallFromURI(contactUri, true);
+                const auto callInfo = callModel->getCallFromURI(contactUri, true);
                 destCallId = callInfo.id;
             } catch (std::exception &e) {
                 qDebug().noquote() << e.what();

@@ -156,7 +156,8 @@ public:
     static QString
     getCallIdForConversationUid(const QString &convUid, const QString &accountId)
     {
-        auto convInfo = LRCInstance::getConversationFromConvUid(convUid, accountId);
+        auto &accInfo = LRCInstance::getAccountInfo(accountId);
+        auto convInfo = accInfo.conversationModel->getConversationForUID(convUid);
         if (convInfo.uid.isEmpty()) {
             return {};
         }
@@ -233,16 +234,6 @@ public:
             filtered);
     }
     static const conversation::Info &
-    getConversationFromConvUid(const QString &convUid,
-                               const QString &accountId = {},
-                               bool filtered = false)
-    {
-        return getConversation(
-            !accountId.isEmpty() ? accountId : getCurrAccId(),
-            [&](const conversation::Info &conv) -> bool { return convUid == conv.uid; },
-            filtered);
-    }
-    static const conversation::Info &
     getConversationFromPeerUri(const QString &peerUri,
                                const QString &accountId = {},
                                bool filtered = false)
@@ -251,11 +242,6 @@ public:
             !accountId.isEmpty() ? accountId : getCurrAccId(),
             [&](const conversation::Info &conv) -> bool { return peerUri == conv.participants[0]; },
             filtered);
-    }
-    static const conversation::Info &
-    getCurrentConversation()
-    {
-        return getConversationFromConvUid(getCurrentConvUid());
     }
 
     static ConversationModel *

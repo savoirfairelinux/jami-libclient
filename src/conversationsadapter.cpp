@@ -36,8 +36,7 @@ ConversationsAdapter::initQmlObject()
 {
     conversationSmartListModel_ = new SmartListModel(LRCInstance::getCurrAccId(), this);
 
-    QMetaObject::invokeMethod(qmlObj_,
-                              "setModel",
+    QMetaObject::invokeMethod(qmlObj_, "setModel",
                               Q_ARG(QVariant, QVariant::fromValue(conversationSmartListModel_)));
 
     connect(&LRCInstance::behaviorController(),
@@ -71,30 +70,25 @@ ConversationsAdapter::selectConversation(const QString &accountId,
                                          const QString &convUid,
                                          bool preventSendingSignal)
 {
-    selectConversation(LRCInstance::getConversationFromConvUid(convUid, accountId),
-                       preventSendingSignal);
+    auto &accInfo = LRCInstance::getAccountInfo(accountId);
+    const auto convInfo = accInfo.conversationModel->getConversationForUID(convUid);
+
+    selectConversation(convInfo, preventSendingSignal);
 }
 
 void
-ConversationsAdapter::selectConversation(int index)
+ConversationsAdapter::selectConversation(const QString &convUid)
 {
-    auto convModel = LRCInstance::getCurrentConversationModel();
-
+    auto* convModel = LRCInstance::getCurrentConversationModel();
     if (convModel == nullptr) {
         return;
     }
 
-    const auto item = convModel->filteredConversation(index);
+    const auto &conversation = convModel->getConversationForUID(convUid);
 
-    if (selectConversation(item, false)) {
-        auto convUid = conversationSmartListModel_
-                           ->data(conversationSmartListModel_->index(index, 0),
-                                  static_cast<int>(SmartListModel::Role::UID))
-                           .toString();
-        auto &conversation = LRCInstance::getConversationFromConvUid(convUid);
-        /*
-         * If it is calling, show callview (can use showChatView signal, since it will be determined on qml).
-         */
+    if (selectConversation(conversation, false)) {
+
+        // If it is calling, show callview (can use showChatView signal, since it will be determined on qml).
         if (!conversation.uid.isEmpty()
             && LRCInstance::getCurrentCallModel()->hasCall(conversation.callId)) {
             emit showChatView(LRCInstance::getCurrAccId(), conversation.uid);
@@ -106,11 +100,9 @@ bool
 ConversationsAdapter::selectConversation(const lrc::api::conversation::Info &item,
                                          bool preventSendingSignal)
 {
-    /*
-     * accInfo.conversationModel->selectConversation(item.uid) only emit ui
-     * behavior control signals, but sometimes we do not want that,
-     * preventSendingSignal boolean can help us to determine.
-     */
+    // accInfo.conversationModel->selectConversation(item.uid) only emit ui
+    // behavior control signals, but sometimes we do not want that,
+    // preventSendingSignal boolean can help us to determine.
     if (LRCInstance::getCurrentConvUid() == item.uid) {
         return false;
     } else if (item.participants.size() > 0) {
@@ -143,9 +135,7 @@ ConversationsAdapter::deselectConversation()
 void
 ConversationsAdapter::accountChangedSetUp(const QString &accountId)
 {
-    /*
-     * Should be called when current account is changed.
-     */
+    // Should be called when current account is changed.
     auto &accountInfo = LRCInstance::accountModel().getAccountInfo(accountId);
     currentTypeFilter_ = accountInfo.profileInfo.type;
     LRCInstance::getCurrentConversationModel()->setFilter(accountInfo.profileInfo.type);
@@ -157,9 +147,7 @@ ConversationsAdapter::accountChangedSetUp(const QString &accountId)
 void
 ConversationsAdapter::updateConversationsFilterWidget()
 {
-    /*
-     * Update status of "Conversations" and "Invitations".
-     */
+    // Update status of "Conversations" and "Invitations".
     auto invites = LRCInstance::getCurrentAccountInfo().contactModel->pendingRequestCount();
     if (invites == 0 && currentTypeFilter_ == lrc::api::profile::Type::PENDING) {
         currentTypeFilter_ = lrc::api::profile::Type::RING;
@@ -171,10 +159,8 @@ ConversationsAdapter::updateConversationsFilterWidget()
 void
 ConversationsAdapter::setConversationFilter(const QString &type)
 {
-    /*
-     * Set conversation filter according to type,
-     * type needs to be recognizable by lrc::api::profile::to_type.
-     */
+    // Set conversation filter according to type,
+    // type needs to be recognizable by lrc::api::profile::to_type.
     if (type.isEmpty()) {
         if (LRCInstance::getCurrentAccountInfo().profileInfo.type == lrc::api::profile::Type::RING)
             setConversationFilter(lrc::api::profile::Type::RING);
@@ -198,10 +184,8 @@ ConversationsAdapter::setConversationFilter(lrc::api::profile::Type filter)
 bool
 ConversationsAdapter::connectConversationModel()
 {
-    /*
-     * Signal connections
-     */
-    auto currentConversationModel = LRCInstance::getCurrentAccountInfo().conversationModel.get();
+    // Signal connections
+    auto currentConversationModel = LRCInstance::getCurrentConversationModel();
 
     QObject::disconnect(modelSortedConnection_);
     QObject::disconnect(modelUpdatedConnection_);
@@ -211,81 +195,98 @@ ConversationsAdapter::connectConversationModel()
     QObject::disconnect(conversationClearedConnection);
     QObject::disconnect(newInteractionConnection_);
     QObject::disconnect(interactionRemovedConnection_);
+    QObject::disconnect(searchStatusChangedConnection_);
+    QObject::disconnect(searchResultUpdatedConnection_);
 
-    modelSortedConnection_ = QObject::connect(
-        currentConversationModel, &lrc::api::ConversationModel::modelSorted, [this]() {
-            updateConversationsFilterWidget();
-            QMetaObject::invokeMethod(qmlObj_, "updateConversationSmartListView");
-            auto convUid = LRCInstance::getCurrentConversation().uid;
-            auto convModel = LRCInstance::getCurrentConversationModel();
-            auto &conversation = LRCInstance::getConversationFromConvUid(convUid);
-            if (conversation.uid.isEmpty()) {
-                return;
-            }
-            auto contactURI = conversation.participants[0];
-            if (contactURI.isEmpty()
-                || convModel->owner.contactModel->getContact(contactURI).profileInfo.type
-                       == lrc::api::profile::Type::TEMPORARY) {
-                return;
-            }
-            QMetaObject::invokeMethod(qmlObj_, "modelSorted", Q_ARG(QVariant, contactURI));
-        });
+    modelSortedConnection_ = QObject::connect(currentConversationModel,
+                                              &lrc::api::ConversationModel::modelSorted,
+                                              [this]() {
+        conversationSmartListModel_->fillConversationsList();
+        updateConversationsFilterWidget();
+        QMetaObject::invokeMethod(qmlObj_, "updateConversationSmartListView");
+        auto* convModel = LRCInstance::getCurrentConversationModel();
+        const auto conversation = convModel->getConversationForUID(LRCInstance::getCurrentConvUid());
 
-    modelUpdatedConnection_
-        = QObject::connect(currentConversationModel,
-                           &lrc::api::ConversationModel::conversationUpdated,
-                           [this](const QString &convUid) {
-                               Q_UNUSED(convUid);
-                               updateConversationsFilterWidget();
-                               QMetaObject::invokeMethod(qmlObj_, "updateConversationSmartListView");
-                           });
+        if (conversation.uid.isEmpty() || conversation.participants.isEmpty()) {
+            return;
+        }
+        const auto contactURI = conversation.participants[0];
+        if (contactURI.isEmpty()
+            || convModel->owner.contactModel->getContact(contactURI).profileInfo.type
+                   == lrc::api::profile::Type::TEMPORARY) {
+            return;
+        }
+        QMetaObject::invokeMethod(qmlObj_, "modelSorted", Q_ARG(QVariant, contactURI));
+    });
 
-    filterChangedConnection_ = QObject::connect(
-        currentConversationModel, &lrc::api::ConversationModel::filterChanged, [this]() {
-            QMetaObject::invokeMethod(qmlObj_,
-                                      "updateSmartList",
-                                      Q_ARG(QVariant, LRCInstance::getCurrAccId()));
-            updateConversationsFilterWidget();
-            QMetaObject::invokeMethod(qmlObj_, "updateConversationSmartListView");
-        });
+    modelUpdatedConnection_ = QObject::connect(currentConversationModel,
+                                               &lrc::api::ConversationModel::conversationUpdated,
+                                               [this](const QString &convUid) {
+        conversationSmartListModel_->updateConversation(convUid);
+        updateConversationsFilterWidget();
+        QMetaObject::invokeMethod(qmlObj_, "updateConversationSmartListView");
+    });
 
-    newConversationConnection_
-        = QObject::connect(currentConversationModel,
-                           &lrc::api::ConversationModel::newConversation,
-                           [this](const QString &convUid) {
-                               QMetaObject::invokeMethod(qmlObj_,
-                                                         "updateSmartList",
-                                                         Q_ARG(QVariant,
-                                                               LRCInstance::getCurrAccId()));
-                               updateConversationForNewContact(convUid);
-                           });
+    filterChangedConnection_ = QObject::connect(currentConversationModel,
+                                                &lrc::api::ConversationModel::filterChanged,
+                                                [this]() {
+        conversationSmartListModel_->fillConversationsList();
+        QMetaObject::invokeMethod(qmlObj_,
+                                  "updateSmartList",
+                                  Q_ARG(QVariant, LRCInstance::getCurrAccId()));
+        updateConversationsFilterWidget();
+        QMetaObject::invokeMethod(qmlObj_, "updateConversationSmartListView");
+    });
 
-    conversationRemovedConnection_
-        = QObject::connect(currentConversationModel,
-                           &lrc::api::ConversationModel::conversationRemoved,
-                           [this]() { backToWelcomePage(); });
+    newConversationConnection_ = QObject::connect(currentConversationModel,
+                                                  &lrc::api::ConversationModel::newConversation,
+                                                  [this](const QString &convUid) {
+        conversationSmartListModel_->fillConversationsList();
+        QMetaObject::invokeMethod(qmlObj_,
+                                  "updateSmartList",
+                                    Q_ARG(QVariant, LRCInstance::getCurrAccId()));
+        updateConversationForNewContact(convUid);
+    });
 
-    conversationClearedConnection
-        = QObject::connect(currentConversationModel,
-                           &lrc::api::ConversationModel::conversationCleared,
-                           [this](const QString &convUid) {
-                               /*
-                                * If currently selected,
-                                * switch to welcome screen (deselecting current smartlist item ).
-                                */
-                               if (convUid != LRCInstance::getCurrentConvUid()) {
-                                   return;
-                               }
-                               backToWelcomePage();
-                           });
+    conversationRemovedConnection_ = QObject::connect(currentConversationModel,
+                                                      &lrc::api::ConversationModel::conversationRemoved,
+                                                      [this]() {
+        conversationSmartListModel_->fillConversationsList();
+        backToWelcomePage();
+    });
 
-    newInteractionConnection_
-        = QObject::connect(currentConversationModel,
-                           &lrc::api::ConversationModel::newInteraction,
-                           [this] {
-                               updateConversationsFilterWidget();
-                               QMetaObject::invokeMethod(qmlObj_, "updateConversationSmartListView");
-                           });
+    conversationClearedConnection = QObject::connect(currentConversationModel,
+                                                     &lrc::api::ConversationModel::conversationCleared,
+                                                     [this](const QString &convUid) {
+        // If currently selected, switch to welcome screen (deselecting current smartlist item ).
+        if (convUid != LRCInstance::getCurrentConvUid()) {
+            return;
+        }
+        backToWelcomePage();
+    });
+
+    newInteractionConnection_ = QObject::connect(currentConversationModel,
+                                                 &lrc::api::ConversationModel::newInteraction,
+                                                 [this] {
+        conversationSmartListModel_->fillConversationsList();
+        updateConversationsFilterWidget();
+        QMetaObject::invokeMethod(qmlObj_, "updateConversationSmartListView");
+    });
+
+    searchStatusChangedConnection_ = QObject::connect(currentConversationModel,
+                                                      &lrc::api::ConversationModel::searchStatusChanged,
+                                                      [this](const QString &status) {
+        emit showSearchStatus(status);
+    });
+
+    searchResultUpdatedConnection_ = QObject::connect(currentConversationModel,
+                                                      &lrc::api::ConversationModel::searchResultUpdated,
+                                                      [this]() {
+        conversationSmartListModel_->fillConversationsList();
+        QMetaObject::invokeMethod(qmlObj_, "updateSmartList",
+                                  Q_ARG(QVariant, LRCInstance::getCurrAccId()));
+        QMetaObject::invokeMethod(qmlObj_, "updateConversationSmartListView");
+    });
 
     currentConversationModel->setFilter("");
     return true;
@@ -294,15 +295,15 @@ ConversationsAdapter::connectConversationModel()
 void
 ConversationsAdapter::updateConversationForNewContact(const QString &convUid)
 {
-    auto convModel = LRCInstance::getCurrentConversationModel();
+    auto* convModel = LRCInstance::getCurrentConversationModel();
     if (convModel == nullptr) {
         return;
     }
-    auto selectedUid = LRCInstance::getCurrentConvUid();
-    auto &conversation = LRCInstance::getConversationFromConvUid(convUid, {}, true);
-    if (!conversation.uid.isEmpty()) {
+    const auto selectedUid = LRCInstance::getCurrentConvUid();
+    const auto conversation = convModel->getConversationForUID(convUid);
+    if (!conversation.uid.isEmpty() && !conversation.participants.isEmpty()) {
         try {
-            auto contact = convModel->owner.contactModel->getContact(conversation.participants[0]);
+            const auto contact = convModel->owner.contactModel->getContact(conversation.participants[0]);
             if (!contact.profileInfo.uri.isEmpty() && contact.profileInfo.uri == selectedUid) {
                 LRCInstance::setSelectedConvId(convUid);
                 convModel->selectConversation(convUid);

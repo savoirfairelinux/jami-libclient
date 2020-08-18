@@ -136,13 +136,13 @@ Rectangle {
     }
 
     function stopRecording() {
-        if (pathRecorder !=  "") {
+        if (pathRecorder !== "") {
             ClientWrapper.avmodel.stopLocalRecorder(pathRecorder)
         }
     }
 
     function sendRecord() {
-        if (pathRecorder != "") {
+        if (pathRecorder !== "") {
             MessagesAdapter.sendFile(pathRecorder)
         }
     }

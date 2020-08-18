@@ -37,7 +37,8 @@ AvAdapter::initQmlObject()
 QVariantMap
 AvAdapter::populateVideoDeviceContextMenuItem()
 {
-    auto conversation = LRCInstance::getCurrentConversation();
+    auto* convModel = LRCInstance::getCurrentConversationModel();
+    const auto conversation = convModel->getConversationForUID(LRCInstance::getCurrentConvUid());
     auto call = LRCInstance::getCallInfoForConversation(conversation);
     if (!call) {
         return QVariantMap();
