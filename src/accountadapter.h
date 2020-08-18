@@ -74,22 +74,14 @@ public:
     Q_INVOKABLE bool savePassword(QString accountId, QString oldPassword, QString newPassword);
     Q_INVOKABLE void startAudioMeter(bool async);
     Q_INVOKABLE void stopAudioMeter(bool async);
-    Q_INVOKABLE void startPreviewing(bool force);
-    Q_INVOKABLE void stopPreviewing();
+    Q_INVOKABLE void startPreviewing(bool force = false, bool async = true);
+    Q_INVOKABLE void stopPreviewing(bool async = true);
     Q_INVOKABLE bool hasVideoCall();
     Q_INVOKABLE bool isPreviewing();
     Q_INVOKABLE void setCurrAccDisplayName(QString text);
     Q_INVOKABLE void setSelectedAccountId(QString accountId = {});
     Q_INVOKABLE void setSelectedConvId(QString accountId = {});
 
-    /*
-     * lrc model instances getter
-     */
-    Q_INVOKABLE lrc::api::NewAccountModel *accoundModel();
-    Q_INVOKABLE lrc::api::AVModel *avModel();
-    Q_INVOKABLE lrc::api::DataTransferModel *dataTransferModel();
-
-    Q_INVOKABLE RenderManager *getRenderManager();
 signals:
 
     /*

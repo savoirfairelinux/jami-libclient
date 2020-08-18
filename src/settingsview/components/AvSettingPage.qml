@@ -103,13 +103,13 @@ Rectangle {
         } catch(err){console.warn("Exception: " + err.message)}
     }
 
-    function startPreviewing(force = false){
-        ClientWrapper.accountAdaptor.startPreviewing(force)
+    function startPreviewing(force = false, async = true){
+        ClientWrapper.accountAdaptor.startPreviewing(force, async)
         previewAvailable = true
     }
 
-    function stopPreviewing(){
-        ClientWrapper.accountAdaptor.stopPreviewing()
+    function stopPreviewing(async = true){
+        ClientWrapper.accountAdaptor.stopPreviewing(async)
     }
 
     function startAudioMeter(async = true){
@@ -130,7 +130,7 @@ Rectangle {
     }
 
     function slotSetHardwareAccel(state){
-        ClientWrapper.accountAdaptor.avModel().setHardwareAcceleration(state)
+        ClientWrapper.avmodel.setHardwareAcceleration(state)
         startPreviewing(true)
     }
 

@@ -238,16 +238,16 @@ AccountAdapter::stopAudioMeter(bool async)
 }
 
 void
-AccountAdapter::startPreviewing(bool force)
+AccountAdapter::startPreviewing(bool force, bool async)
 {
-    LRCInstance::renderer()->startPreviewing(force);
+    LRCInstance::renderer()->startPreviewing(force, async);
 }
 
 void
-AccountAdapter::stopPreviewing()
+AccountAdapter::stopPreviewing(bool async)
 {
     if (!LRCInstance::hasVideoCall() && LRCInstance::renderer()->isPreviewing()) {
-        LRCInstance::renderer()->stopPreviewing();
+        LRCInstance::renderer()->stopPreviewing(async);
     }
 }
 
@@ -261,12 +261,6 @@ bool
 AccountAdapter::isPreviewing()
 {
     return LRCInstance::renderer()->isPreviewing();
-}
-
-RenderManager *
-AccountAdapter::getRenderManager()
-{
-    return LRCInstance::renderer();
 }
 
 void
@@ -317,24 +311,6 @@ AccountAdapter::setArchivePasswordAsync(const QString &accountID, const QString 
         config.archivePassword = password;
         LRCInstance::accountModel().setAccountConfig(accountID, config);
     });
-}
-
-lrc::api::NewAccountModel *
-AccountAdapter::accoundModel()
-{
-    return &(LRCInstance::accountModel());
-}
-
-lrc::api::AVModel *
-AccountAdapter::avModel()
-{
-    return &(LRCInstance::avModel());
-}
-
-lrc::api::DataTransferModel *
-AccountAdapter::dataTransferModel()
-{
-    return &(LRCInstance::dataTransferModel());
 }
 
 void

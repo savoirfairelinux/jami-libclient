@@ -261,7 +261,7 @@ Rectangle {
                 return
             } else {
                 if (exportPath.length > 0) {
-                    var isSuccessful = ClientWrapper.accountAdaptor.accoundModel().exportToFile(ClientWrapper.utilsAdaptor.getCurrAccId(), exportPath,"")
+                    var isSuccessful = ClientWrapper.accountModel.exportToFile(ClientWrapper.utilsAdaptor.getCurrAccId(), exportPath,"")
                     var title = isSuccessful ? qsTr("Success") : qsTr("Error")
                     var iconMode = isSuccessful ? StandardIcon.Information : StandardIcon.Critical
                     var info = isSuccessful ? qsTr("Export Successful") : qsTr("Export Failed")

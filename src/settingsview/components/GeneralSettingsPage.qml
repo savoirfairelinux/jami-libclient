@@ -145,7 +145,6 @@ Rectangle {
     property string downloadPath: ClientWrapper.settingsAdaptor.getDir_Download()
 
     // recording
-    //property AVModel avmodel: ClientWrapper.accountAdaptor.avModel()
     property string recordPath: ClientWrapper.settingsAdaptor.getDir_Document()
 
     property int preferredColumnWidth : generalSettingsScrollView.width / 2 - 50
