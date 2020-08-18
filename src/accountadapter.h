@@ -114,5 +114,6 @@ private:
     QMetaObject::Connection accountStatusChangedConnection_;
     QMetaObject::Connection contactAddedConnection_;
     QMetaObject::Connection addedToConferenceConnection_;
+    QMetaObject::Connection accountProfileChangedConnection_;
 };
 Q_DECLARE_METATYPE(AccountAdapter *)

@@ -67,7 +67,6 @@ ItemDelegate {
         id: layoutDeviceItemDelegate
         anchors.fill: parent
         spacing: 8
-
         Image {
             Layout.leftMargin: 16
             Layout.alignment: Qt.AlignVCenter
@@ -90,15 +89,16 @@ ItemDelegate {
 
             RowLayout {
                 Layout.fillWidth: true
-                Layout.alignment: Qt.AlignVCenter
+                spacing: 0
+                Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
 
                 InfoLineEdit {
                     id: editDeviceName
 
-                    Layout.preferredWidth: col.width - 100
-                    Layout.maximumWidth: col.width - 100
-                    Layout.minimumWidth: col.width - 100
-                    fieldLayoutWidth: col.width - 100
+                    Layout.preferredWidth: deviceItemDelegate.width - 112
+                    Layout.maximumWidth: deviceItemDelegate.width - 112
+                    Layout.minimumWidth: deviceItemDelegate.width - 112
+                    fieldLayoutWidth: deviceItemDelegate.width - 112
 
                     Layout.minimumHeight: 24
                     Layout.preferredHeight: 24
@@ -124,30 +124,9 @@ ItemDelegate {
                     id: elidedTextDeviceName
 
                     elide: Text.ElideRight
-                    elideWidth: deviceItemDelegate.width - 80
+                    elideWidth: deviceItemDelegate.width - 112
 
                     text: deviceName
-                }
-
-                Label {
-                    id: labelThisDevice
-                    Layout.fillWidth: true
-                    Layout.rightMargin: 16
-                    Layout.minimumHeight: 24
-                    Layout.preferredHeight: 24
-                    Layout.maximumHeight: 24
-
-                    Layout.alignment: Qt.AlignRight
-                    horizontalAlignment: Text.AlignRight
-                    verticalAlignment: Text.AlignVCenter
-
-                    visible: isCurrent
-
-                    font.pointSize: JamiTheme.textFontSize
-                    font.kerning: true
-                    font.italic: true
-                    color: "green"
-                    text:  qsTr("this device")
                 }
             }
 
@@ -155,12 +134,13 @@ ItemDelegate {
                 id: labelDeviceId
 
                 Layout.fillWidth: true
+                Layout.leftMargin: 12
 
                 Layout.minimumHeight: 24
                 Layout.preferredHeight: 24
                 Layout.maximumHeight: 24
 
-                maxWidth: deviceItemDelegate.width - 80
+                maxWidth: deviceItemDelegate.width - 112
                 eText: deviceId === "" ? qsTr("Device Id") : deviceId
             }
 
@@ -191,7 +171,9 @@ ItemDelegate {
 
             source: {
                 if(isCurrent) {
-                    var path = editable ? "qrc:/images/icons/round-edit-24px.svg" : "qrc:/images/icons/round-save_alt-24px.svg"
+                    var path = editable ?
+                        "qrc:/images/icons/round-save_alt-24px.svg" :
+                        "qrc:/images/icons/round-edit-24px.svg"
                     return path
                 } else {
                     return "qrc:/images/icons/round-remove_circle-24px.svg"

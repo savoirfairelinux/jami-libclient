@@ -109,7 +109,7 @@ Rectangle {
     }
 
     // slots
-    function leaveSettingsSlot(accountDeleted = false, showMainView = true){
+    function leaveSettingsSlot(showMainView){
         avSettings.stopAudioMeter()
         avSettings.stopPreviewing()
         if(!settingsViewRect.isSIP){
@@ -118,7 +118,7 @@ Rectangle {
             currentSIPAccountSettingsScrollWidget.stopBooth()
         }
         if (showMainView)
-            settingsViewWindowNeedToShowMainViewWindow(accountDeleted)
+            settingsViewWindowNeedToShowMainViewWindow()
         else
             settingsViewWindowNeedToShowNewWizardWindow()
     }
@@ -142,7 +142,7 @@ Rectangle {
     /*
      * signal to redirect the page to main view
      */
-    signal settingsViewWindowNeedToShowMainViewWindow(bool accountDeleted)
+    signal settingsViewWindowNeedToShowMainViewWindow()
     signal settingsViewWindowNeedToShowNewWizardWindow
 
     signal settingsBackArrowClicked
@@ -200,7 +200,7 @@ Rectangle {
                 }
 
                 onNavigateToNewWizardView: {
-                    leaveSettingsSlot(true, false)
+                    leaveSettingsSlot(false)
                 }
             }
 
@@ -213,7 +213,7 @@ Rectangle {
                 }
 
                 onNavigateToNewWizardView: {
-                    leaveSettingsSlot(true, false)
+                    leaveSettingsSlot(false)
                 }
             }
 

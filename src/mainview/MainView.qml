@@ -219,7 +219,7 @@ Window {
             callStackView.responsibleConvUid = convUid
             callStackView.updateCorrspondingUI()
 
-            mainViewWindowSidePanel.needToChangeToAccount(accountId, index)
+            mainViewWindowSidePanel.refreshAccountComboBox(index)
             ConversationsAdapter.selectConversation(accountId, convUid)
 
             MessagesAdapter.setupChatView(convUid)
@@ -549,8 +549,7 @@ Window {
         height: mainViewWindow.minimumHeight
 
         onSettingsViewWindowNeedToShowMainViewWindow: {
-            mainViewWindowSidePanel.refreshAccountComboBox(
-                        accountDeleted ? 0 : -1)
+            mainViewWindowSidePanel.refreshAccountComboBox(0)
             toggleSettingsView()
         }
 

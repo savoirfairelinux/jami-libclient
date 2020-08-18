@@ -56,26 +56,6 @@ Rectangle {
         refreshVariable--
     }
 
-
-    Connections {
-        id: btnRegisterNameClickConnection
-        target: btnRegisterName
-
-        enabled: {
-            refreshVariable
-            switch (regNameUi) {
-            case CurrentAccountSettingsScrollPage.FREE:
-                return true
-            default:
-                return false
-            }
-        }
-
-        function onClicked() {
-            slotRegisterName()
-        }
-    }
-
     function updateAccountInfoDisplayed() {
         setAvatar()
 
@@ -529,6 +509,7 @@ Rectangle {
                 ToggleSwitch {
                     id: accountEnableCheckBox
 
+                    Layout.fillWidth: true
                     Layout.topMargin: JamiTheme.preferredMarginSize
                     Layout.leftMargin: JamiTheme.preferredMarginSize
 
@@ -546,7 +527,6 @@ Rectangle {
                 ColumnLayout {
                     Layout.fillWidth: true
                     Layout.fillHeight: true
-                    Layout.leftMargin: JamiTheme.preferredMarginSize
                     spacing: 8
 
                     Label {
@@ -555,6 +535,7 @@ Rectangle {
                         Layout.maximumHeight: JamiTheme.preferredFieldHeight
                         Layout.preferredHeight: JamiTheme.preferredFieldHeight
                         Layout.minimumHeight: JamiTheme.preferredFieldHeight
+                        Layout.leftMargin: JamiTheme.preferredMarginSize
 
                         text: qsTr("Profile")
                         font.pointSize: JamiTheme.headerFontSize
@@ -588,10 +569,10 @@ Rectangle {
                         }
                     }
 
-                    InfoLineEdit {
+                    MaterialLineEdit {
                         id: displayNameLineEdit
 
-                        Layout.maximumWidth: JamiTheme.preferredButtonWidth
+                        Layout.maximumWidth: JamiTheme.preferredFieldWidth
                         Layout.minimumHeight: JamiTheme.preferredFieldHeight
                         Layout.preferredHeight: JamiTheme.preferredFieldHeight
                         Layout.maximumHeight: JamiTheme.preferredFieldHeight
@@ -603,6 +584,7 @@ Rectangle {
 
                         horizontalAlignment: Text.AlignHCenter
                         verticalAlignment: Text.AlignVCenter
+                        padding: 8
 
                         onEditingFinished: {
                             ClientWrapper.accountAdaptor.setCurrAccDisplayName(
@@ -688,7 +670,7 @@ Rectangle {
                                 id: currentRingIDText
 
                                 elide: Text.ElideRight
-                                elideWidth: accountViewRect.width - idLabel.width -JamiTheme.preferredMarginSize*3
+                                elideWidth: accountViewRect.width - idLabel.width -JamiTheme.preferredMarginSize*4
 
                                 text: { refreshVariable
                                     return ClientWrapper.settingsAdaptor.getCurrentAccount_Profile_Info_Uri()
@@ -714,10 +696,10 @@ Rectangle {
 
                             eText: qsTr("Registered name")
                             fontSize: JamiTheme.settingsFontSize
-                            maxWidth: 160
+                            maxWidth: preferredColumnWidth
                         }
 
-                        TextField {
+                        MaterialLineEdit {
                             id: currentRegisteredID
                             Layout.minimumWidth: preferredColumnWidth
                             Layout.preferredWidth: preferredColumnWidth
@@ -727,7 +709,8 @@ Rectangle {
                             Layout.maximumHeight: JamiTheme.preferredFieldHeight
 
                             placeholderText: { refreshVariable
-                                               var result = registeredIdNeedsSet ? qsTr("Type here to register a username") : ""
+                                               var result = registeredIdNeedsSet ?
+                                                   qsTr("Type here to register a username") : ""
                                                return result}
 
                             text: {
@@ -747,24 +730,28 @@ Rectangle {
                             font.bold: { refreshVariable
                                 return !registeredIdNeedsSet}
 
-                            horizontalAlignment: Text.AlignLeft
+                            horizontalAlignment: registeredIdNeedsSet ?
+                                                Text.AlignLeft :
+                                                Text.AlignRight
                             verticalAlignment: Text.AlignVCenter
+                            padding: 8
 
-                            background: Rectangle {
-                                anchors.fill: parent
-                                radius: {refreshVariable
-                                         var result = registeredIdNeedsSet ? height / 2 : 0
-                                         return result}
-                                border.color: "transparent"
-                                border.width: {refreshVariable
-                                               var result = registeredIdNeedsSet ? 2 : 0
-                                               return result}
-                                color: {refreshVariable
-                                        var result = registeredIdNeedsSet ? Qt.rgba(
-                                                                  240 / 256, 240 / 256,
-                                                                  240 / 256,
-                                                                  1.0) : "transparent"
-                                        return result}
+                            borderColorMode: {
+                                switch (regNameUi) {
+                                case CurrentAccountSettingsScrollPage.INVALIDFORM:
+                                case CurrentAccountSettingsScrollPage.TAKEN:
+                                    return InfoLineEdit.ERROR
+                                case CurrentAccountSettingsScrollPage.FREE:
+                                    return InfoLineEdit.RIGHT
+                                case CurrentAccountSettingsScrollPage.BLANK:
+                                case CurrentAccountSettingsScrollPage.SEARCHING:
+                                default:
+                                    return InfoLineEdit.NORMAL
+                                }
+                            }
+
+                            onImageClicked: {
+                                slotRegisterName()
                             }
 
                             onTextEdited: {
@@ -776,94 +763,6 @@ Rectangle {
                             }
                         }
                     }
-
-                    RowLayout {
-                        Layout.fillWidth: true
-                        Layout.alignment: Qt.AlignRight
-                        visible:{refreshVariable
-                                 var result = registeredIdNeedsSet
-                                 && (regNameUi
-                                     !== CurrentAccountSettingsScrollPage.BLANK)
-                                    return result}
-
-                        LookupStatusLabel {
-                            id: lookupStatusLabel
-                            Layout.fillWidth: true
-
-
-
-                            MouseArea {
-                                id: lookupStatusLabelArea
-                                anchors.fill: parent
-                                property bool isHovering: false
-
-                                onEntered: isHovering = true
-                                onExited: isHovering = false
-
-                                hoverEnabled: true
-                            }
-
-                            ToolTip.visible: lookupStatusLabelArea.isHovering
-                            ToolTip.text: {
-                                switch (regNameUi) {
-                                case CurrentAccountSettingsScrollPage.BLANK:
-                                    return qsTr("")
-                                case CurrentAccountSettingsScrollPage.INVALIDFORM:
-                                    return qsTr("A registered name should not have any spaces and must be at least three letters long")
-                                case CurrentAccountSettingsScrollPage.TAKEN:
-                                    return qsTr("This name is already taken")
-                                case CurrentAccountSettingsScrollPage.FREE:
-                                    return qsTr("Register this name")
-                                case CurrentAccountSettingsScrollPage.SEARCHING:
-                                    return qsTr("")
-                                default:
-                                    return qsTr("")
-                                }
-                            }
-
-                            lookupStatusState: {
-                                switch (regNameUi) {
-                                case CurrentAccountSettingsScrollPage.BLANK:
-                                    return "Blank"
-                                case CurrentAccountSettingsScrollPage.INVALIDFORM:
-                                    return "Invalid"
-                                case CurrentAccountSettingsScrollPage.TAKEN:
-                                    return "Taken"
-                                case CurrentAccountSettingsScrollPage.FREE:
-                                    return "Free"
-                                case CurrentAccountSettingsScrollPage.SEARCHING:
-                                    return "Searching"
-                                default:
-                                    return "Blank"
-                                }
-                            }
-                        }
-
-                        HoverableButtonTextItem {
-                            id: btnRegisterName
-
-                            visible: {refreshVariable
-                                        var result = registeredIdNeedsSet
-                                     && (regNameUi
-                                         === CurrentAccountSettingsScrollPage.FREE)
-                                        return result}
-
-                            Layout.minimumWidth: preferredColumnWidth
-                            Layout.preferredWidth: preferredColumnWidth
-                            Layout.maximumWidth: preferredColumnWidth
-                            Layout.minimumHeight: JamiTheme.preferredFieldHeight
-                            Layout.preferredHeight: JamiTheme.preferredFieldHeight
-                            Layout.maximumHeight: JamiTheme.preferredFieldHeight
-
-                            text: qsTr("Register")
-                            font.pointSize: JamiTheme.buttonFontSize
-                            font.kerning: true
-
-                            toolTipText: qsTr("Register the name as typed")
-
-                            radius: height / 2
-                        }
-                    }
                 }
 
                 /*
@@ -872,87 +771,84 @@ Rectangle {
                 ColumnLayout {
                     Layout.fillWidth: true
                     Layout.alignment: Qt.AlignHCenter
-                    Layout.leftMargin: JamiTheme.preferredMarginSize
                     spacing: 8
 
-                    HoverableButtonTextItem {
+                    MaterialButton {
                         id: passwdPushButton
-
                         visible: ClientWrapper.settingsAdaptor.getAccountConfig_Manageruri() === ""
 
-                        Layout.alignment: Qt.AlignHCenter
-                        Layout.minimumWidth: JamiTheme.preferredButtonWidth
-                        Layout.preferredWidth: JamiTheme.preferredButtonWidth
-                        Layout.maximumWidth: JamiTheme.preferredButtonWidth
-                        Layout.minimumHeight: JamiTheme.preferredFieldHeight
+                        color: JamiTheme.buttonTintedBlack
+                        hoveredColor: JamiTheme.buttonTintedBlackHovered
+                        pressedColor: JamiTheme.buttonTintedBlackPressed
+                        outlined: true
+
+                        Layout.minimumHeight:  JamiTheme.preferredFieldHeight
                         Layout.preferredHeight: JamiTheme.preferredFieldHeight
                         Layout.maximumHeight: JamiTheme.preferredFieldHeight
+                        Layout.minimumWidth:  JamiTheme.preferredFieldWidth
+                        Layout.preferredWidth: JamiTheme.preferredFieldWidth
+                        Layout.maximumWidth: JamiTheme.preferredFieldWidth
+                        Layout.alignment: Qt.AlignHCenter
 
-                        text: ClientWrapper.accountAdaptor.hasPassword() ? qsTr("Change Password") : qsTr("Set Password")
+                        toolTipText: ClientWrapper.accountAdaptor.hasPassword() ?
+                                    qsTr("Change the current password") :
+                                    qsTr("Currently no password, press this button to set a password")
+                        text: ClientWrapper.accountAdaptor.hasPassword() ? qsTr("Change Password") :
+                                                                           qsTr("Set Password")
 
-                        toolTipText: ClientWrapper.accountAdaptor.hasPassword() ? qsTr("Change the current password") : qsTr("Currently no password, press this button to set a password")
-                        font.pointSize: JamiTheme.textFontSize
-                        font.kerning: true
-
-                        radius: height / 2
+                        source: "qrc:/images/icons/round-edit-24px.svg"
 
                         onClicked: {
                             passwordClicked()
                         }
                     }
 
-                    HoverableButtonTextItem {
+                    MaterialButton {
                         id: btnExportAccount
-
                         visible: ClientWrapper.settingsAdaptor.getAccountConfig_Manageruri() === ""
 
-                        Layout.alignment: Qt.AlignHCenter
-                        Layout.minimumWidth: JamiTheme.preferredButtonWidth
-                        Layout.preferredWidth: JamiTheme.preferredButtonWidth
-                        Layout.maximumWidth: JamiTheme.preferredButtonWidth
-                        Layout.minimumHeight: JamiTheme.preferredFieldHeight
+                        color: JamiTheme.buttonTintedBlack
+                        hoveredColor: JamiTheme.buttonTintedBlackHovered
+                        pressedColor: JamiTheme.buttonTintedBlackPressed
+                        outlined: true
+
+                        Layout.minimumHeight:  JamiTheme.preferredFieldHeight
                         Layout.preferredHeight: JamiTheme.preferredFieldHeight
                         Layout.maximumHeight: JamiTheme.preferredFieldHeight
+                        Layout.minimumWidth:  JamiTheme.preferredFieldWidth
+                        Layout.preferredWidth: JamiTheme.preferredFieldWidth
+                        Layout.maximumWidth: JamiTheme.preferredFieldWidth
+                        Layout.alignment: Qt.AlignHCenter
 
                         toolTipText: qsTr("Press this button to export account to a .gz file")
-
                         text: qsTr("Export Account")
-                        font.pointSize: JamiTheme.textFontSize
-                        font.kerning: true
 
-                        radius: height / 2
+                        source: "qrc:/images/icons/round-save_alt-24px.svg"
 
                         onClicked: {
                             exportAccountSlot()
                         }
                     }
 
-                   HoverableButtonTextItem {
-                        id: btnDeletAccount
+                    MaterialButton {
+                        id: btnDeleteAccount
 
-                        backgroundColor: "red"
-                        onEnterColor: Qt.rgba(150 / 256, 0, 0, 0.7)
-                        onDisabledBackgroundColor: Qt.rgba(
-                                                       255 / 256,
-                                                       0, 0, 0.8)
-                        onPressColor: backgroundColor
-                        textColor: "white"
+                        color: JamiTheme.buttonTintedRed
+                        hoveredColor: JamiTheme.buttonTintedRedHovered
+                        pressedColor: JamiTheme.buttonTintedRedPressed
 
-                        Layout.alignment: Qt.AlignHCenter
-                        Layout.minimumWidth: JamiTheme.preferredButtonWidth
-                        Layout.preferredWidth: JamiTheme.preferredButtonWidth
-                        Layout.maximumWidth: JamiTheme.preferredButtonWidth
-                        Layout.minimumHeight: JamiTheme.preferredFieldHeight
+                        Layout.minimumHeight:  JamiTheme.preferredFieldHeight
                         Layout.preferredHeight: JamiTheme.preferredFieldHeight
                         Layout.maximumHeight: JamiTheme.preferredFieldHeight
+                        Layout.minimumWidth:  JamiTheme.preferredFieldWidth
+                        Layout.preferredWidth: JamiTheme.preferredFieldWidth
+                        Layout.maximumWidth: JamiTheme.preferredFieldWidth
+                        Layout.alignment: Qt.AlignHCenter
 
                         toolTipText: qsTr("Press this button to delete this account")
-
                         text: qsTr("Delete Account")
-                        font.pointSize: JamiTheme.textFontSize
-                        font.kerning: true
 
-                        radius: height / 2
+                        source: "qrc:/images/icons/delete_forever-24px.svg"
 
                         onClicked: {
                             delAccountSlot()
@@ -1013,25 +909,29 @@ Rectangle {
                             }
                         }
 
-                        HoverableButtonTextItem {
+
+                        MaterialButton {
                             id: linkDevPushButton
 
                             visible: ClientWrapper.settingsAdaptor.getAccountConfig_Manageruri() === ""
 
-                            Layout.maximumWidth: JamiTheme.preferredButtonWidth
-                            Layout.preferredWidth: JamiTheme.preferredButtonWidth
-                            Layout.minimumWidth: JamiTheme.preferredButtonWidth
-
-                            Layout.maximumHeight: JamiTheme.preferredFieldHeight
+                            Layout.minimumHeight:  JamiTheme.preferredFieldHeight
                             Layout.preferredHeight: JamiTheme.preferredFieldHeight
-                            Layout.minimumHeight: JamiTheme.preferredFieldHeight
-                            Layout.alignment: Qt.AlignHCenter
+                            Layout.maximumHeight: JamiTheme.preferredFieldHeight
+                            Layout.minimumWidth:  JamiTheme.preferredFieldWidth
+                            Layout.preferredWidth: JamiTheme.preferredFieldWidth
+                            Layout.maximumWidth: JamiTheme.preferredFieldWidth
+                            Layout.alignment: Qt.AlignCenter
 
-                            radius: height / 2
-
+                            color: JamiTheme.buttonTintedBlack
+                            hoveredColor: JamiTheme.buttonTintedBlackHovered
+                            pressedColor: JamiTheme.buttonTintedBlackPressed
+                            outlined: true
                             toolTipText: qsTr("Press to link one more device with this account")
 
-                            text: qsTr("+ Link Another Device")
+                            source: "qrc:/images/icons/round-add-24px.svg"
+
+                            text: qsTr("Link Another Device")
                             font.pointSize: JamiTheme.textFontSize
                             font.kerning: true
 
@@ -1068,7 +968,8 @@ Rectangle {
 
                             eText: qsTr("Banned Contacts")
                             fontSize: JamiTheme.headerFontSize
-                            maxWidth: accountViewRect.width - bannedContactsBtn.width -JamiTheme.preferredMarginSize*4
+                            maxWidth: accountViewRect.width - bannedContactsBtn.width
+                                      - JamiTheme.preferredMarginSize*4
                         }
 
                         HoverableButtonTextItem {
@@ -1088,8 +989,9 @@ Rectangle {
 
                             toolTipText: qsTr("press to open or hide display of banned contact")
 
-                            source: bannedContactsListWidget.visible? "qrc:/images/icons/round-arrow_drop_up-24px.svg" :
-                                                                      "qrc:/images/icons/round-arrow_drop_down-24px.svg"
+                            source: bannedContactsListWidget.visible?
+                                        "qrc:/images/icons/round-arrow_drop_up-24px.svg" :
+                                        "qrc:/images/icons/round-arrow_drop_down-24px.svg"
                             onClicked: {
                                 toggleBannedContacts()
                             }
@@ -1157,7 +1059,8 @@ Rectangle {
                         eText: qsTr("Advanced Account Settings")
 
                         fontSize: JamiTheme.headerFontSize
-                        maxWidth: accountViewRect.width - advancedAccountSettingsPButton.width -JamiTheme.preferredMarginSize*4
+                        maxWidth: accountViewRect.width - advancedAccountSettingsPButton.width
+                                  - JamiTheme.preferredMarginSize*6
                     }
 
                     HoverableButtonTextItem {
@@ -1190,7 +1093,8 @@ Rectangle {
                             advanceSettingsView.visible = !advanceSettingsView.visible
                             if (advanceSettingsView.visible) {
                                 advanceSettingsView.updateAccountInfoDisplayedAdvance()
-                                accountScrollView.vScrollBar.position = rowAdvancedSettingsBtn.y / accountViewLayout.height
+                                accountScrollView.vScrollBar.position =
+                                        rowAdvancedSettingsBtn.y / accountViewLayout.height
                             } else {
                                 accountScrollView.vScrollBar.position = 0
                             }

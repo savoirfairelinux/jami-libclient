@@ -118,20 +118,24 @@ Rectangle {
             verticalAlignment: Text.AlignVCenter
         }
 
-        HoverableRadiusButton {
+        MaterialButton {
             id: installButton
 
-            Layout.fillWidth: true
-            Layout.preferredHeight: 30
+	    Layout.fillWidth: false
+	    color: JamiTheme.buttonTintedBlack
+            hoveredColor: JamiTheme.buttonTintedBlackHovered
+            pressedColor: JamiTheme.buttonTintedBlackPressed
+            outlined: true
+            toolTipText: qsTr("Press to add new plugins")
 
-            radius: height / 2
+            source: "qrc:/images/icons/round-add-24px.svg"
 
-            text: qsTr("+ Install plugin")
-            fontPointSize: JamiTheme.settingsFontSize
+            text: qsTr("Install Plugin")
+            font.pointSize: JamiTheme.textFontSize
             font.kerning: true
 
             onClicked: {
-                openPluginFileSlot()
+              openPluginFileSlot()
             }
         }
 
@@ -172,4 +176,3 @@ Rectangle {
         }
     }
 }
- 

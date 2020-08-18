@@ -373,6 +373,16 @@ AccountAdapter::connectAccount(const QString &accountId)
 
         QObject::disconnect(accountStatusChangedConnection_);
         QObject::disconnect(contactAddedConnection_);
+        QObject::disconnect(accountProfileChangedConnection_);
+        QObject::disconnect(addedToConferenceConnection_);
+
+        accountProfileChangedConnection_
+            = QObject::connect(&LRCInstance::accountModel(),
+                &lrc::api::NewAccountModel::profileUpdated,
+                [this](const QString& accountId) {
+                    if (LRCInstance::getCurrAccId() == accountId)
+                        emit accountStatusChanged();
+                });
 
         accountStatusChangedConnection_
             = QObject::connect(accInfo.accountModel,
@@ -401,7 +411,7 @@ AccountAdapter::connectAccount(const QString &accountId)
                                        emit updateConversationForAddedContact();
                                    }
                                });
-        QObject::disconnect(addedToConferenceConnection_);
+
         addedToConferenceConnection_
             = QObject::connect(accInfo.callModel.get(),
                                &NewCallModel::callAddedToConference,

@@ -346,7 +346,7 @@ Rectangle {
                                 maxWidth: preferredColumnWidth
                             }
 
-                            HoverableRadiusButton {
+                            MaterialButton {
                                 id: downloadButton
 
                                 Layout.maximumWidth: preferredColumnWidth
@@ -359,15 +359,12 @@ Rectangle {
 
                                 Layout.alignment: Qt.AlignRight
 
-                                radius: height / 2
-
-                                icon.source: "qrc:/images/icons/round-folder-24px.svg"
-                                icon.height: 24
-                                icon.width: 24
-
                                 toolTipText: qsTr("Press to choose download folder path")
                                 text: downloadPath
-                                fontPointSize: JamiTheme.buttonFontSize
+                                source: "qrc:/images/icons/round-folder-24px.svg"
+                                color: JamiTheme.buttonTintedGrey
+                                hoveredColor: JamiTheme.buttonTintedGreyHovered
+                                pressedColor: JamiTheme.buttonTintedGreyPressed
 
                                 onClicked: {
                                     openDownloadFolderSlot()
@@ -516,10 +513,9 @@ Rectangle {
                                 verticalAlignment: Text.AlignVCenter
                             }
 
-                            HoverableRadiusButton {
+                            MaterialButton {
                                 id: recordPathButton
 
-                                Layout.leftMargin: JamiTheme.preferredMarginSize
                                 Layout.maximumWidth: preferredColumnWidth
                                 Layout.preferredWidth: preferredColumnWidth
                                 Layout.minimumWidth: preferredColumnWidth
@@ -530,15 +526,12 @@ Rectangle {
 
                                 Layout.alignment: Qt.AlignRight
 
-                                radius: height / 2
-
-                                icon.source: "qrc:/images/icons/round-folder-24px.svg"
-                                icon.height: 24
-                                icon.width: 24
-
                                 toolTipText: qsTr("Press to choose record folder path")
                                 text: recordPath
-                                fontPointSize: JamiTheme.buttonFontSize
+                                source: "qrc:/images/icons/round-folder-24px.svg"
+                                color: JamiTheme.buttonTintedGrey
+                                hoveredColor: JamiTheme.buttonTintedGreyHovered
+                                pressedColor: JamiTheme.buttonTintedGreyPressed
 
                                 onClicked: {
                                     openRecordFolderSlot()
@@ -597,9 +590,9 @@ Rectangle {
                             id: checkUpdateButton
 
                             Layout.alignment: Qt.AlignHCenter
-                            Layout.maximumWidth: JamiTheme.preferredButtonWidth
-                            Layout.preferredWidth: JamiTheme.preferredButtonWidth
-                            Layout.minimumWidth: JamiTheme.preferredButtonWidth
+                            Layout.maximumWidth: JamiTheme.preferredFieldWidth
+                            Layout.preferredWidth: JamiTheme.preferredFieldWidth
+                            Layout.minimumWidth: JamiTheme.preferredFieldWidth
                             Layout.minimumHeight: JamiTheme.preferredFieldHeight
                             Layout.preferredHeight: JamiTheme.preferredFieldHeight
                             Layout.maximumHeight: JamiTheme.preferredFieldHeight
@@ -619,9 +612,9 @@ Rectangle {
                             id: installBetaButton
 
                             Layout.alignment: Qt.AlignHCenter
-                            Layout.maximumWidth: JamiTheme.preferredButtonWidth
-                            Layout.preferredWidth: JamiTheme.preferredButtonWidth
-                            Layout.minimumWidth: JamiTheme.preferredButtonWidth
+                            Layout.maximumWidth: JamiTheme.preferredFieldWidth
+                            Layout.preferredWidth: JamiTheme.preferredFieldWidth
+                            Layout.minimumWidth: JamiTheme.preferredFieldWidth
                             Layout.minimumHeight: JamiTheme.preferredFieldHeight
                             Layout.preferredHeight: JamiTheme.preferredFieldHeight
                             Layout.maximumHeight: JamiTheme.preferredFieldHeight

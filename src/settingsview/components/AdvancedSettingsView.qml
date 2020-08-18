@@ -362,7 +362,7 @@ ColumnLayout {
                     fontSize: JamiTheme.settingsFontSize
                 }
 
-                HoverableRadiusButton {
+                MaterialButton {
                     id: btnRingtone
 
                     Layout.minimumWidth: preferredColumnWidth
@@ -372,11 +372,10 @@ ColumnLayout {
                     Layout.preferredHeight: JamiTheme.preferredFieldHeight
                     Layout.maximumHeight: JamiTheme.preferredFieldHeight
 
-                    radius: height / 2
-
-                    icon.source: "qrc:/images/icons/round-folder-24px.svg"
-                    icon.width: 16
-                    icon.height: 16
+                    source: "qrc:/images/icons/round-folder-24px.svg"
+                    color: JamiTheme.buttonTintedGrey
+                    hoveredColor: JamiTheme.buttonTintedGreyHovered
+                    pressedColor: JamiTheme.buttonTintedGreyPressed
 
                     onClicked: {
                         ringtonePath_Dialog.open()
@@ -433,11 +432,12 @@ ColumnLayout {
                 Layout.fillWidth: true
             }
 
-            InfoLineEdit {
+            MaterialLineEdit {
                 id: lineEditNameServer
 
                 fieldLayoutWidth: preferredColumnWidth
                 fieldLayoutHeight: JamiTheme.preferredFieldHeight
+                padding: 8
 
                 font.pointSize: JamiTheme.settingsFontSize
                 font.kerning: true
@@ -497,11 +497,12 @@ ColumnLayout {
                     maxWidth: preferredColumnWidth
                 }
 
-                InfoLineEdit {
+                MaterialLineEdit {
                     id: lineEditProxy
 
                     fieldLayoutWidth: preferredColumnWidth
                     fieldLayoutHeight: JamiTheme.preferredFieldHeight
+                    padding: 8
 
                     font.pointSize: JamiTheme.settingsFontSize
                     font.kerning: true
@@ -534,11 +535,12 @@ ColumnLayout {
                     Layout.fillWidth: true
                 }
 
-                InfoLineEdit {
+                MaterialLineEdit {
                     id: lineEditBootstrap
 
                     fieldLayoutWidth: preferredColumnWidth
                     fieldLayoutHeight: JamiTheme.preferredFieldHeight
+                    padding: 8
 
                     font.pointSize: JamiTheme.settingsFontSize
                     font.kerning: true
@@ -593,7 +595,7 @@ ColumnLayout {
                     maxWidth: preferredColumnWidth
                 }
 
-                HoverableRadiusButton {
+                MaterialButton {
                     id: btnCACert
 
                     Layout.minimumWidth: preferredColumnWidth
@@ -604,11 +606,10 @@ ColumnLayout {
                     Layout.preferredHeight: JamiTheme.preferredFieldHeight
                     Layout.maximumHeight: JamiTheme.preferredFieldHeight
 
-                    radius: height / 2
-
-                    icon.source: "qrc:/images/icons/round-folder-24px.svg"
-                    icon.width: 16
-                    icon.height: 16
+                    source: "qrc:/images/icons/round-folder-24px.svg"
+                    color: JamiTheme.buttonTintedGrey
+                    hoveredColor: JamiTheme.buttonTintedGreyHovered
+                    pressedColor: JamiTheme.buttonTintedGreyPressed
 
                     onClicked: {
                         caCert_Dialog.open()
@@ -627,7 +628,7 @@ ColumnLayout {
                     maxWidth: preferredColumnWidth
                 }
 
-                HoverableRadiusButton {
+                MaterialButton {
                     id: btnUserCert
 
                     Layout.minimumWidth: preferredColumnWidth
@@ -638,11 +639,10 @@ ColumnLayout {
                     Layout.preferredHeight: JamiTheme.preferredFieldHeight
                     Layout.maximumHeight: JamiTheme.preferredFieldHeight
 
-                    radius: height / 2
-
-                    icon.source: "qrc:/images/icons/round-folder-24px.svg"
-                    icon.width: 16
-                    icon.height: 16
+                    source: "qrc:/images/icons/round-folder-24px.svg"
+                    color: JamiTheme.buttonTintedGrey
+                    hoveredColor: JamiTheme.buttonTintedGreyHovered
+                    pressedColor: JamiTheme.buttonTintedGreyPressed
 
                     onClicked: {
                         userCert_Dialog.open()
@@ -661,12 +661,8 @@ ColumnLayout {
                     maxWidth: preferredColumnWidth
                 }
 
-
-
-                HoverableRadiusButton {
+                MaterialButton {
                     id: btnPrivateKey
-
-                    radius: height / 2
 
                     Layout.minimumWidth: preferredColumnWidth
                     Layout.preferredWidth: preferredColumnWidth
@@ -676,9 +672,10 @@ ColumnLayout {
                     Layout.preferredHeight: JamiTheme.preferredFieldHeight
                     Layout.maximumHeight: JamiTheme.preferredFieldHeight
 
-                    icon.source: "qrc:/images/icons/round-folder-24px.svg"
-                    icon.width: 16
-                    icon.height: 16
+                    source: "qrc:/images/icons/round-folder-24px.svg"
+                    color: JamiTheme.buttonTintedGrey
+                    hoveredColor: JamiTheme.buttonTintedGreyHovered
+                    pressedColor: JamiTheme.buttonTintedGreyPressed
 
                     onClicked: {
                         privateKey_Dialog.open()
@@ -698,11 +695,12 @@ ColumnLayout {
                 }
 
 
-                InfoLineEdit {
+                MaterialLineEdit {
                     id: lineEditCertPassword
 
                     fieldLayoutWidth: preferredColumnWidth
                     fieldLayoutHeight: JamiTheme.preferredFieldHeight
+                    padding: 8
 
                     font.pointSize: JamiTheme.settingsFontSize
                     font.kerning: true
@@ -797,10 +795,11 @@ ColumnLayout {
                     maxWidth: preferredColumnWidth
                 }
 
-                InfoLineEdit {
+                MaterialLineEdit {
                     id: lineEditTurnAddress
                     fieldLayoutWidth: preferredColumnWidth
                     fieldLayoutHeight: JamiTheme.preferredFieldHeight
+                    padding: 8
 
                     font.pointSize: JamiTheme.settingsFontSize
                     font.kerning: true
@@ -829,11 +828,12 @@ ColumnLayout {
                     maxWidth: preferredColumnWidth
                 }
 
-                InfoLineEdit {
+                MaterialLineEdit {
                     id: lineEditTurnUsername
 
                     fieldLayoutWidth: preferredColumnWidth
                     fieldLayoutHeight: JamiTheme.preferredFieldHeight
+                    padding: 8
 
                     font.pointSize: JamiTheme.settingsFontSize
                     font.kerning: true
@@ -861,12 +861,13 @@ ColumnLayout {
                     maxWidth: preferredColumnWidth
                 }
 
-                InfoLineEdit {
+                MaterialLineEdit {
                     id: lineEditTurnPassword
                     layer.mipmap: false
 
                     fieldLayoutWidth: preferredColumnWidth
                     fieldLayoutHeight: JamiTheme.preferredFieldHeight
+                    padding: 8
 
                     font.pointSize: JamiTheme.settingsFontSize
                     font.kerning: true
@@ -913,11 +914,12 @@ ColumnLayout {
                     maxWidth: preferredColumnWidth
                 }
 
-                InfoLineEdit {
+                MaterialLineEdit {
                     id: lineEditSTUNAddress
 
                     fieldLayoutWidth: preferredColumnWidth
                     fieldLayoutHeight: JamiTheme.preferredFieldHeight
+                    padding: 8
 
                     font.pointSize: JamiTheme.settingsFontSize
                     font.kerning: true

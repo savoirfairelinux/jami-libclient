@@ -40,14 +40,27 @@ Dialog {
     property string path: ""
     property int purpose: PasswordDialog.ChangePassword
 
-    title: {
-        switch(purpose){
-        case PasswordDialog.ExportAccount:
-            return qsTr("Enter the password of this account")
-        case PasswordDialog.ChangePassword:
-            return qsTr("Changing password")
-        case PasswordDialog.SetPassword:
-            return qsTr("Set password")
+    header : Rectangle {
+        width: parent.width
+        height: 64
+        color: "transparent"
+        Text {
+            anchors.left: parent.left
+            anchors.leftMargin: 24
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: 24
+
+            text: {
+                switch(purpose){
+                case PasswordDialog.ExportAccount:
+                    return qsTr("Enter the password of this account")
+                case PasswordDialog.ChangePassword:
+                    return qsTr("Changing password")
+                case PasswordDialog.SetPassword:
+                    return qsTr("Set password")
+                }
+            }
+            font.pointSize: JamiTheme.headerFontSize
         }
     }
 
@@ -55,6 +68,8 @@ Dialog {
         purpose = purposeIn
         path = exportPathIn
         currentPasswordEdit.clear()
+        passwordEdit.borderColorMode = InfoLineEdit.NORMAL
+        confirmPasswordEdit.borderColorMode = InfoLineEdit.NORMAL
         passwordEdit.clear()
         confirmPasswordEdit.clear()
         passwordDialog.open()
@@ -100,29 +115,23 @@ Dialog {
             success = ClientWrapper.accountAdaptor.exportToFile(ClientWrapper.utilsAdaptor.getCurrAccId(),path,currentPasswordEdit.text)
         }
 
-        spinnerMovie.playing = false
-        spinnerLabel.visible = false
         if (success) {
             haveDone(successCode, passwordDialog.purpose)
         } else {
-            currentPasswordEdit.clear()
             btnChangePasswordConfirm.enabled = false
-            wrongPasswordLabel.visible = true
+            currentPasswordEdit.borderColorMode = InfoLineEdit.ERROR
         }
     }
     function savePasswordQML() {
         var success = false
         success = ClientWrapper.accountAdaptor.savePassword(ClientWrapper.utilsAdaptor.getCurrAccId(),currentPasswordEdit.text, passwordEdit.text)
 
-        spinnerMovie.playing = false
-        spinnerLabel.visible = false
         if (success) {
             ClientWrapper.accountAdaptor.setArchiveHasPassword(passwordEdit.text.length !== 0)
             haveDone(successCode, passwordDialog.purpose)
         } else {
-            currentPasswordEdit.clear()
+            currentPasswordEdit.borderColorMode = InfoLineEdit.ERROR
             btnChangePasswordConfirm.enabled = false
-            wrongPasswordLabel.visible = true
         }
     }
 
@@ -131,24 +140,20 @@ Dialog {
     anchors.centerIn: parent.Center
     x: (parent.width - width) / 2
     y: (parent.height - height) / 2
+    height: contentLayout.implicitHeight + 64 + 16
 
-    contentItem: Rectangle{
-        implicitWidth: 440
-        implicitHeight: 270
+    contentItem: Rectangle {
+        implicitWidth: 280
 
         ColumnLayout {
+            id: contentLayout
             anchors.fill: parent
-            spacing: 7
+            spacing: 8
 
             ColumnLayout {
-                Layout.topMargin: 11
-                Layout.leftMargin: 40
-                Layout.rightMargin: 40
                 Layout.alignment: Qt.AlignHCenter
                 Layout.fillWidth: true
 
-                Layout.preferredWidth: 360
-                Layout.maximumWidth: 360
                 spacing: 7
 
                 ColumnLayout {
@@ -156,21 +161,16 @@ Dialog {
 
                     Layout.alignment: Qt.AlignHCenter
 
-                    Layout.preferredWidth: 356
-                    Layout.maximumWidth: 356
-
-                    InfoLineEdit {
+                    MaterialLineEdit {
                         id: currentPasswordEdit
 
-                        Layout.minimumHeight: 30
-                        Layout.preferredHeight: 30
-                        Layout.maximumHeight: 30
+                        Layout.maximumHeight: visible ?
+                                                48 :
+                                                0
                         Layout.fillWidth: true
 
                         visible: purpose === PasswordDialog.ChangePassword || purpose === PasswordDialog.ExportAccount
                         echoMode: TextInput.Password
-                        font.pointSize: 10
-                        font.kerning: true
                         horizontalAlignment: Text.AlignLeft
                         verticalAlignment: Text.AlignVCenter
 
@@ -184,31 +184,9 @@ Dialog {
                             if (currentPasswordEdit.text.length == 0) {
                                 btnChangePasswordConfirm.enabled = false
                             } else {
-                                wrongPasswordLabel.visible = false
                                 btnChangePasswordConfirm.enabled = true
                             }
                         }
-                    }
-
-                    Label {
-                        id: wrongPasswordLabel
-
-                        Layout.alignment: Qt.AlignHCenter
-
-                        Layout.minimumHeight: 12
-                        Layout.preferredHeight: 12
-                        Layout.maximumHeight: 12
-                        Layout.fillWidth: true
-
-                        font.pointSize: 8
-                        font.kerning: true
-                        horizontalAlignment: Text.AlignHCenter
-                        verticalAlignment: Text.AlignVCenter
-
-                        text: qsTr("Current Password Incorrect")
-                        color: "red"
-
-                        visible: false
                     }
                 }
 
@@ -220,16 +198,14 @@ Dialog {
                     Layout.maximumHeight: 8
                 }
 
-                InfoLineEdit {
+                MaterialLineEdit {
                     id: passwordEdit
 
-                    fieldLayoutHeight: 30
+                    fieldLayoutHeight: 48
                     layoutFillwidth: true
 
                     visible: purpose === PasswordDialog.ChangePassword || purpose === PasswordDialog.SetPassword
                     echoMode: TextInput.Password
-                    font.pointSize: 10
-                    font.kerning: true
                     horizontalAlignment: Text.AlignLeft
                     verticalAlignment: Text.AlignVCenter
 
@@ -248,16 +224,14 @@ Dialog {
                     Layout.maximumHeight: 8
                 }
 
-                InfoLineEdit {
+                MaterialLineEdit {
                     id: confirmPasswordEdit
 
-                    fieldLayoutHeight: 30
+                    fieldLayoutHeight: 48
                     layoutFillwidth: true
 
                     visible: purpose === PasswordDialog.ChangePassword || purpose === PasswordDialog.SetPassword
                     echoMode: TextInput.Password
-                    font.pointSize: 10
-                    font.kerning: true
                     horizontalAlignment: Text.AlignLeft
                     verticalAlignment: Text.AlignVCenter
 
@@ -269,98 +243,42 @@ Dialog {
                 }
             }
 
-            Label {
-                id: spinnerLabel
-
-                visible: false
-
-                Layout.fillWidth: true
-
-                Layout.minimumHeight: 20
-                Layout.preferredHeight: 20
-                Layout.maximumHeight: 20
-
-                background: Rectangle {
-                    anchors.fill: parent
-                    AnimatedImage {
-                        id: spinnerMovie
-
-                        anchors.fill: parent
-
-                        source: "qrc:/images/ajax-loader.gif"
-
-                        playing: spinnerLabel.visible
-                        paused: false
-                        fillMode: Image.PreserveAspectFit
-                        mipmap: true
-                    }
-                }
-            }
-
             RowLayout {
-                spacing: 7
+                spacing: 8
 
-                Layout.bottomMargin: 11
                 Layout.fillWidth: true
 
-                Layout.leftMargin: 30
-                Layout.rightMargin: 30
+                Layout.alignment: Qt.AlignRight
 
-            HoverableRadiusButton {
-                id: btnChangePasswordConfirm
+                Button {
+                    id: btnChangePasswordConfirm
 
-                    Layout.maximumWidth: 130
-                    Layout.preferredWidth: 130
-                    Layout.minimumWidth: 130
+                    contentItem: Text {
+                        text: qsTr("CONFIRM")
+                        color: JamiTheme.buttonTintedBlue
+                    }
 
-                    Layout.minimumHeight: 30
-                    Layout.preferredHeight: 30
-                    Layout.maximumHeight: 30
-
-                    text: qsTr("Confirm")
-                    font.pointSize: 10
-                    font.kerning: true
-
-                    radius: height / 2
-
-                    enabled: false
+                    background: Rectangle {
+                        color: "transparent"
+                    }
 
                     onClicked: {
-                        spinnerLabel.visible = true
-                        spinnerMovie.playing = true
                         timerToOperate.restart()
                     }
                 }
 
-                Item {
-                    Layout.fillWidth: true
-                    Layout.fillHeight: true
-                }
 
-                HoverableButtonTextItem {
+                Button {
                     id: btnChangePasswordCancel
 
-                    Layout.maximumWidth: 130
-                    Layout.preferredWidth: 130
-                    Layout.minimumWidth: 130
+                    contentItem: Text {
+                        text: qsTr("CANCEL")
+                        color: JamiTheme.buttonTintedBlue
+                    }
 
-                    Layout.minimumHeight: 30
-                    Layout.preferredHeight: 30
-                    Layout.maximumHeight: 30
-
-                    backgroundColor: "red"
-                    onEnterColor: Qt.rgba(150 / 256, 0, 0, 0.7)
-                    onDisabledBackgroundColor: Qt.rgba(
-                                                   255 / 256,
-                                                   0, 0, 0.8)
-                    onPressColor: backgroundColor
-                    textColor: "white"
-
-                    text: qsTr("Cancel")
-                    font.pointSize: 10
-                    font.kerning: true
-
-                    radius: height / 2
+                    background: Rectangle {
+                        color: "transparent"
+                    }
 
                     onClicked: {
                         passwordDialog.reject()

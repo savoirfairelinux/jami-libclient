@@ -34,7 +34,7 @@ ItemDelegate {
 
     signal videoCodecStateChange(string idToSet , bool isToBeEnabled)
 
-    property int checkBoxWidth: 10
+    property int checkBoxWidth: 24
 
     highlighted: ListView.isCurrentItem
 
@@ -58,13 +58,15 @@ ItemDelegate {
             tristate: false
             checkState: isEnabled ? Qt.Checked : Qt.Unchecked
 
-            indicator.implicitWidth: checkBoxWidth
-            indicator.implicitHeight:checkBoxWidth
-
-            indicator.layer.textureSize.width: checkBoxWidth
-            indicator.layer.textureSize.height: checkBoxWidth
-
             text: ""
+            indicator: Image {
+                anchors.centerIn: parent
+                width: checkBoxWidth
+                height: checkBoxWidth
+                source: checkBoxIsEnabled.checked ?
+                    "qrc:/images/icons/check_box-24px.svg" :
+                    "qrc:/images/icons/check_box_outline_blank-24px.svg"
+            }
 
             nextCheckState: function() {
                     var result

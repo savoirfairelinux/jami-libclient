@@ -125,7 +125,23 @@ Dialog {
     x: (parent.width - width) / 2
     y: (parent.height - height) / 2
 
-    title: qsTr("Link another device")
+    header : Rectangle {
+        width: parent.width
+        height: 64
+        color: "transparent"
+        Text {
+            anchors.left: parent.left
+            anchors.leftMargin: 24
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: 24
+
+            text: qsTr("Link another device")
+            font.pointSize: JamiTheme.headerFontSize
+        }
+    }
+
+    height: contentItem.implicitHeight + 64 + 8
+    width: contentItem.implicitWidth + 24
 
     onClosed: {
         if(infoLabel.isSucessState){
@@ -136,7 +152,7 @@ Dialog {
     }
 
     contentItem: Rectangle{
-        implicitWidth: 365
+        implicitWidth: 280
         implicitHeight: 208
 
         StackLayout{
@@ -321,77 +337,25 @@ Dialog {
                 Layout.fillWidth: true
                 Layout.fillHeight: true
 
-                Layout.leftMargin: 11
-                Layout.rightMargin: 11
-                Layout.topMargin: 11
-                Layout.bottomMargin: 11
-
                 ColumnLayout{
                     anchors.fill: parent
-                    spacing: 7
+                    spacing: 8
 
                     Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
 
-                    Item{
-                        Layout.alignment: Qt.AlignHCenter
 
-                        Layout.fillHeight: true
-                        Layout.minimumHeight: 40
+                    Label{
+                        Layout.alignment: Qt.AlignLeft
 
-                        Layout.maximumWidth: 20
-                        Layout.preferredWidth: 20
-                        Layout.minimumWidth: 20
-                    }
-
-                    RowLayout{
-                        Layout.fillWidth: true
-                        spacing: 0
-
+                        Layout.minimumHeight: 0
+                        Layout.preferredHeight: 30
                         Layout.maximumHeight: 30
+                        Layout.leftMargin: 16
 
-                        Item{
-                            Layout.fillWidth: true
-
-                            Layout.maximumHeight: 20
-                            Layout.preferredHeight: 20
-                            Layout.minimumHeight: 20
-                        }
-
-                        Label{
-                            Layout.alignment: Qt.AlignHCenter
-
-                            Layout.maximumWidth: 0
-                            Layout.preferredWidth: 341
-
-                            Layout.minimumHeight: 0
-                            Layout.preferredHeight: 30
-                            Layout.maximumHeight: 30
-
-                            wrapMode: Text.Wrap
-                            text: qsTr("Exporting Account")
-                            font.pointSize: 8
-                            font.kerning: true
-                            horizontalAlignment: Text.AlignHCenter
-                            verticalAlignment: Text.AlignVCenter
-                        }
-
-                        Item{
-                            Layout.fillWidth: true
-
-                            Layout.maximumHeight: 20
-                            Layout.preferredHeight: 20
-                            Layout.minimumHeight: 20
-                        }
-                    }
-
-                    Item{
-                        Layout.alignment: Qt.AlignHCenter
-
-                        Layout.fillHeight: true
-
-                        Layout.maximumWidth: 20
-                        Layout.preferredWidth: 20
-                        Layout.minimumWidth: 20
+                        wrapMode: Text.Wrap
+                        text: qsTr("Exporting Account")
+                        horizontalAlignment: Text.AlignLeft
+                        verticalAlignment: Text.AlignVCenter
                     }
 
                     RowLayout{
@@ -464,64 +428,31 @@ Dialog {
                 Layout.fillWidth: true
                 Layout.fillHeight: true
 
-                Layout.leftMargin: 11
-                Layout.rightMargin: 11
-                Layout.topMargin: 11
-                Layout.bottomMargin: 11
-
                 ColumnLayout{
                     anchors.fill: parent
-                    spacing: 7
+                    spacing: 8
 
                     Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
 
-                    Item{
-                        Layout.fillHeight: true
-
-                        Layout.maximumWidth: 20
-                        Layout.preferredWidth: 20
-                        Layout.minimumWidth: 20
-                    }
-
                     RowLayout{
-                        spacing: 7
+                        spacing: 8
 
-                        Layout.alignment: Qt.AlignHCenter
+                        Layout.alignment: Qt.AlignLeft
                         Layout.fillWidth: true
-
-                        Item{
-                            Layout.fillWidth: true
-
-                            Layout.maximumHeight: 20
-                            Layout.preferredHeight: 20
-                            Layout.minimumHeight: 20
-                        }
+                        Layout.leftMargin: 16
 
                         Label{
                             id: yourPinLabel
 
-                            Layout.alignment: Qt.AlignHCenter
+                            Layout.alignment: Qt.AlignLeft
 
                             Layout.preferredHeight: 25
 
                             wrapMode: Text.Wrap
                             text: "Your PIN is:"
-                            font.pointSize: 8
                             font.kerning: true
                             horizontalAlignment: Text.AlignHCenter
                             verticalAlignment: Text.AlignVCenter
-                        }
-
-                        Item{
-                            Layout.alignment: Qt.AlignHCenter
-
-                            Layout.maximumWidth: 20
-                            Layout.preferredWidth: 20
-                            Layout.minimumWidth: 20
-
-                            Layout.maximumHeight: 20
-                            Layout.preferredHeight: 20
-                            Layout.minimumHeight: 20
                         }
 
                         Label{
@@ -539,112 +470,60 @@ Dialog {
                             verticalAlignment: Text.AlignVCenter
                         }
 
-                        Item{
-                            Layout.fillWidth: true
+                    }
 
-                            Layout.maximumHeight: 20
-                            Layout.preferredHeight: 20
-                            Layout.minimumHeight: 20
+                    Label {
+                        id: infoLabel
+
+                        property bool isSucessState: false
+                        property int borderWidth : isSucessState? 1 : 0
+                        property int borderRadius : isSucessState? 15 : 0
+                        property string backgroundColor : isSucessState? "whitesmoke" : "transparent"
+                        property string borderColor : isSucessState? "lightgray" : "transparent"
+                        color: isSucessState ? "#2b5084" : "black"
+                        padding: isSucessState ? 8 : 0
+
+                        Layout.alignment: Qt.AlignLeft
+                        Layout.leftMargin: 12
+                        Layout.preferredWidth: 280 - 32
+                        Layout.preferredHeight: 50
+
+                        wrapMode: Text.Wrap
+                        text: qsTr("This pin and the account password should be entered in your device within 10 minutes.")
+                        font.pointSize: 8
+                        font.kerning: true
+
+                        horizontalAlignment: Text.AlignHCenter
+                        verticalAlignment: Text.AlignVCenter
+
+                        background: Rectangle{
+                            id: infoLabelBackground
+
+                            anchors.fill: parent
+                            border.width: infoLabel.borderWidth
+                            border.color: infoLabel.borderColor
+                            radius: infoLabel.borderRadius
+                            color: infoLabel.backgroundColor
                         }
                     }
 
-                    RowLayout{
-                        spacing: 7
+                    RowLayout {
+                        spacing: 8
 
-                        Layout.alignment: Qt.AlignHCenter
-                        Layout.fillWidth: true
+                        width: 280
+                        Layout.alignment: Qt.AlignRight
 
-                        Item{
-                            Layout.fillWidth: true
-
-                            Layout.maximumHeight: 20
-                            Layout.preferredHeight: 20
-                            Layout.minimumHeight: 20
-                        }
-
-                        Label{
-                            id: infoLabel
-
-                            property bool isSucessState: false
-                            property int borderWidth : isSucessState? 1 : 0
-                            property int borderRadius : isSucessState? 15 : 0
-                            property string backgroundColor : isSucessState? "whitesmoke" : "transparent"
-                            property string borderColor : isSucessState? "lightgray" : "transparent"
-                            color: isSucessState ? "#2b5084" : "black"
-                            padding: isSucessState ? 8 : 0
-
-                            Layout.alignment: Qt.AlignHCenter
-                            Layout.preferredWidth: 320
-                            Layout.preferredHeight: 50
-
-                            wrapMode: Text.Wrap
-                            text: qsTr("This pin and the account password should be entered in your device within 10 minutes.")
-                            font.pointSize: 8
-                            font.kerning: true
-
-                            horizontalAlignment: Text.AlignHCenter
-                            verticalAlignment: Text.AlignVCenter
-
-                            background: Rectangle{
-                                id: infoLabelBackground
-
-                                anchors.fill: parent
-                                border.width: infoLabel.borderWidth
-                                border.color: infoLabel.borderColor
-                                radius: infoLabel.borderRadius
-                                color: infoLabel.backgroundColor
-                            }
-                        }
-
-                        Item{
-                            Layout.fillWidth: true
-
-                            Layout.maximumHeight: 20
-                            Layout.preferredHeight: 20
-                            Layout.minimumHeight: 20
-                        }
-                    }
-
-                    Item{
-                        Layout.fillHeight: true
-
-                        Layout.maximumWidth: 20
-                        Layout.preferredWidth: 20
-                        Layout.minimumWidth: 20
-                    }
-
-                    RowLayout{
-                        spacing: 7
-
-                        Layout.alignment: Qt.AlignHCenter
-                        Layout.fillWidth: true
-
-                        Item{
-                            Layout.fillWidth: true
-
-                            Layout.maximumHeight: 20
-                            Layout.preferredHeight: 20
-                            Layout.minimumHeight: 20
-                        }
-
-                        HoverableRadiusButton{
+                        Button {
                             id: btnCloseExportDialog
 
-                            Layout.alignment: Qt.AlignHCenter
+                            contentItem: Text {
+                                text: qsTr("CLOSE")
+                                color: JamiTheme.buttonTintedBlue
+                            }
 
-                            Layout.maximumWidth: 130
-                            Layout.preferredWidth: 130
-                            Layout.minimumWidth: 130
-
-                            Layout.maximumHeight: 30
-                            Layout.preferredHeight: 30
-                            Layout.minimumHeight: 30
-
-                            radius: height /2
-
-                            text: qsTr("Close")
-                            font.pointSize: 10
-                            font.kerning: true
+                            background: Rectangle {
+                                color: "transparent"
+                            }
 
                             onClicked: {
                                 if(infoLabel.isSucessState){
@@ -654,22 +533,6 @@ Dialog {
                                 }
                             }
                         }
-
-                        Item{
-                            Layout.fillWidth: true
-
-                            Layout.maximumHeight: 20
-                            Layout.preferredHeight: 20
-                            Layout.minimumHeight: 20
-                        }
-                    }
-
-                    Item{
-                        Layout.fillHeight: true
-
-                        Layout.maximumWidth: 20
-                        Layout.preferredWidth: 20
-                        Layout.minimumWidth: 20
                     }
                 }
             }

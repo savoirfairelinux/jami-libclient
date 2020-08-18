@@ -31,8 +31,6 @@ ComboBox {
     signal newAccountButtonClicked
     signal settingBtnClicked
 
-    currentIndex: 0
-
     function backToWelcomePage() {
         needToBackToWelcomePage()
     }
@@ -40,6 +38,19 @@ ComboBox {
     // Reset accountListModel.
     function resetAccountListModel() {
         accountListModel.reset()
+    }
+
+    Connections {
+        target: accountListModel
+
+        function onModelReset() {
+            userImageRoot.source = "data:image/png;base64," + accountListModel.data(
+                        accountListModel.index(0, 0), 259)
+            currentAccountPresenseCycle.accountStatus =
+                    accountListModel.data(accountListModel.index(0, 0), 261)
+            textMetricsUserAliasRoot.text = accountListModel.data(accountListModel.index(0,0), 257)
+            textMetricsUsernameRoot.text = accountListModel.data(accountListModel.index(0,0), 258)
+        }
     }
 
     Image {
@@ -55,14 +66,8 @@ ComboBox {
         fillMode: Image.PreserveAspectFit
 
         // Base 64 format
-        source: {
-            if (currentIndex !== -1)
-                return "data:image/png;base64," + accountListModel.data(
-                            accountListModel.index(
-                                accountComboBox.currentIndex, 0), 259)
-            else
-                return source
-        }
+        source: "data:image/png;base64," + accountListModel.data(
+                            accountListModel.index(0, 0), 259)
         mipmap: true
 
         AccountPresenceCycle {
@@ -73,16 +78,7 @@ ComboBox {
             anchors.bottom: userImageRoot.bottom
             anchors.bottomMargin: -2
 
-            // Visible when account is registered.
-            visible: {
-                if (currentIndex !== -1)
-                    return accountListModel.data(
-                                accountListModel.index(
-                                    accountComboBox.currentIndex, 0), 261)
-                            === Account.Status.REGISTERED
-                else
-                    return visible
-            }
+            accountStatus: accountListModel.data(accountListModel.index(0, 0), 261)
         }
     }
 
@@ -133,14 +129,7 @@ ComboBox {
                     - arrowDropDown.width - qrCodeGenerateButton.width - 55
 
         // Role::Alias
-        text: {
-            if (currentIndex !== -1)
-                return accountListModel.data(accountListModel.index(
-                                                 accountComboBox.currentIndex,
-                                                 0), 257)
-            else
-                return text
-        }
+        text: accountListModel.data(accountListModel.index(0,0), 257)
     }
 
     TextMetrics {
@@ -154,14 +143,7 @@ ComboBox {
 
 
         // Role::Username
-        text: {
-            if (currentIndex !== -1)
-                return accountListModel.data(accountListModel.index(
-                                                 accountComboBox.currentIndex,
-                                                 0), 258)
-            else
-                return text
-        }
+        text: accountListModel.data(accountListModel.index(0,0), 258)
     }
 
     HoverableButton {

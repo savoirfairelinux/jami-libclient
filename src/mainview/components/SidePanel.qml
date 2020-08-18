@@ -77,30 +77,9 @@ Rectangle {
         sidePanelTabBar.invitationTabDown = false
     }
 
-    function needToChangeToAccount(accountId, index) {
-        if (index !== -1) {
-            accountComboBox.currentIndex = index
-            ClientWrapper.accountAdaptor.accountChanged(index)
-            accountChangedUIReset()
-        }
-    }
+    function refreshAccountComboBox(index) {
+        ClientWrapper.accountAdaptor.accountChanged(index)
 
-    function refreshAccountComboBox(index = -1) {
-
-
-        /*
-         * To make sure that the ui is refreshed for accountComboBox.
-         * Note: when index in -1, it means to maintain the
-         *       current account selection.
-         */
-        var currentIndex = accountComboBox.currentIndex
-        if (accountComboBox.currentIndex === index)
-            accountComboBox.currentIndex = -1
-        accountComboBox.currentIndex = index
-        if (index !== -1)
-            ClientWrapper.accountAdaptor.accountChanged(index)
-        else
-            accountComboBox.currentIndex = currentIndex
         accountComboBox.update()
         accountChangedUIReset()
         accountComboBox.resetAccountListModel()

@@ -19,8 +19,12 @@ TextField {
 
     property int borderColorMode: InfoLineEdit.NORMAL
     property var iconSource: {
+        if (readOnly) {
+            return ""
+        }
         switch(borderColorMode){
         case InfoLineEdit.RIGHT:
+            return "qrc:/images/icons/round-check_circle-24px.svg"
         case InfoLineEdit.NORMAL:
             return ""
         case InfoLineEdit.ERROR:
@@ -29,15 +33,20 @@ TextField {
     }
     property var backgroundColor: JamiTheme.rgb256(240,240,240)
     property var borderColor: {
+        if (!enabled) {
+            return "transparent"
+        }
         switch(borderColorMode){
         case InfoLineEdit.NORMAL:
-            return "black"
+            return "#333"
         case InfoLineEdit.RIGHT:
             return "green"
         case InfoLineEdit.ERROR:
             return "red"
         }
     }
+
+    signal imageClicked
 
     Layout.minimumHeight: fieldLayoutHeight
     Layout.preferredHeight: fieldLayoutHeight
@@ -73,12 +82,23 @@ TextField {
                 color: borderColor
             }
         }
+
+        MouseArea {
+            anchors.fill: parent
+            hoverEnabled: true
+            acceptedButtons: Qt.LeftButton
+            enabled: borderColorMode === InfoLineEdit.RIGHT
+
+            onReleased: {
+                imageClicked()
+            }
+        }
     }
 
     background: Rectangle {
         anchors.fill: parent
         radius: 4
-        border.color: readOnly? "black" : borderColor
+        border.color: readOnly? "transparent" : borderColor
         color: readOnly? "transparent" : backgroundColor
     }
 }

@@ -39,6 +39,7 @@ Item {
     property string transparentColor: "transparent"
     property string presenceGreen: "#4cd964"
     property string notificationRed: "#ff3b30"
+    property string unPresenceOrange: "orange"
     property string backgroundColor: lightGrey_
     property string backgroundDarkColor: lightGreyTab_
 
@@ -60,6 +61,12 @@ Item {
     property string buttonTintedGreyHovered: "#777"
     property string buttonTintedGreyPressed: "#777"
     property string buttonTintedGreyInactive: "#bbb"
+    property string buttonTintedBlack: "#333"
+    property string buttonTintedBlackHovered: "#111"
+    property string buttonTintedBlackPressed: "#000"
+    property string buttonTintedRed: "red"
+    property string buttonTintedRedHovered: "#c00"
+    property string buttonTintedRedPressed: "#b00"
 
     property string selectionBlue: "#109ede"
     property string selectionGreen: "#21be2b"
@@ -91,7 +98,7 @@ Item {
     property int menuFontSize: 12
 
     property int maximumWidthSettingsView: 800
-    property int preferredButtonWidth: 200
+    property int preferredFieldWidth: 216
     property int preferredFieldHeight: 32
     property int preferredMarginSize: 16
 
