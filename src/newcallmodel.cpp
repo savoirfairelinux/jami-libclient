@@ -631,9 +631,7 @@ NewCallModel::setCurrentCall(const QString& callId) const
             // Only hold calls for a non rendez-vous point
             MapStringString callDetails = CallManager::instance().getCallDetails(callId);
             auto accountId = callDetails["ACCOUNTID"];
-            MapStringString detailsMap = ConfigurationManager::instance().getAccountDetails(accountId);
-            if (detailsMap[DRing::Account::ConfProperties::ISRENDEZVOUS] == "FALSE")
-                CallManager::instance().hold(cid);
+            CallManager::instance().hold(cid);
         }
     }
     if (!lrc::api::Lrc::holdConferences) {
