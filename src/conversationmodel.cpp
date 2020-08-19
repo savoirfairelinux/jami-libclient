@@ -1612,6 +1612,7 @@ ConversationModelPimpl::slotContactModelUpdated(const QString& uri, bool needsSo
 
     if (filter.isEmpty()) {
         if (searchResults.empty()) {
+            emit linked.modelSorted();
             return;
         }
         searchResults.clear();
