@@ -3,31 +3,28 @@ param (
     [string]$mode,
     [string]$qtver,
     [string]$daemonDir,
-    [string]$lrcDir
+    [string]$lrcDir,
+    [string]$outDir
 );
 
-write-host "Copying runtime files..." -ForegroundColor Green
+write-host "Copying deployment files..." -ForegroundColor Green
 
 # default values
-$qtver = If ($qtver) {$qtver} Else {"5.15.0"}
-$mode  = If ($mode)  {$mode} Else {"Release"}
+$qtver = If ($qtver) { $qtver } Else { "5.15.0" }
+$mode = If ($mode) { $mode } Else { "Release" }
 
-$qtverSplit1, $qtverSplit2 ,$qtverSplit3 = $qtver.Split('.')
-$qtMsvcDir = If((([int]$qtverSplit1) -ge 6) -OR ( (([int]$qtverSplit1) -eq 5) -AND (([int]$qtverSplit2) -ge 15))) {
-    "msvc2019_64"
-} Else {
-    "msvc2017_64"
-}
+$qtverSplit1, $qtverSplit2 , $qtverSplit3 = $qtver.Split('.')
+$qtMsvcDir = "msvc2019_64"
 
 $QtDir = "C:\Qt\$qtver\$qtMsvcDir"
 
-$ClientDir = split-path -parent $MyInvocation.MyCommand.Definition
+$clientDir = split-path -parent $MyInvocation.MyCommand.Definition
 
-$OutDir = $ClientDir + "\x64\" + $mode
-If(!(test-path $OutDir)) { New-Item -ItemType directory -Path $OutDir -Force }
+if (!$outDir) { $outDir = $clientDir + "\x64\" + $mode }
+If (!(test-path $outDir)) { New-Item -ItemType directory -Path $outDir -Force }
 
-if (!$daemonDir) { $daemonDir = $ClientDir + '\..\daemon' }
-if (!$lrcDir) { $lrcDir = $ClientDir + '\..\lrc' }
+if (!$daemonDir) { $daemonDir = $clientDir + '\..\daemon' }
+if (!$lrcDir) { $lrcDir = $clientDir + '\..\lrc' }
 
 write-host "********************************************************************************" -ForegroundColor Magenta
 write-host "using daemonDir:    " $daemonDir -ForegroundColor Magenta
@@ -46,25 +43,25 @@ $FilesToCopy = @(
     "$daemonDir\contrib\build\ffmpeg\Build\win32\x64\bin\avfilter-7.dll",
     "$daemonDir\contrib\build\openssl\out32dll\libeay32.dll",
     "$daemonDir\contrib\build\openssl\out32dll\ssleay32.dll",
-    "$ClientDir\qt.conf",
-    "$ClientDir\images\jami.ico",
-    "$ClientDir\License.rtf"
-    )
+    "$clientDir\qt.conf",
+    "$clientDir\images\jami.ico",
+    "$clientDir\License.rtf"
+)
 foreach ($i in $FilesToCopy) {
-    write-host "copying: " $i " => " $OutDir -ForegroundColor Cyan
-    Copy-Item -Path $i -Recurse -Destination $OutDir -Force -Container
+    write-host "copying: " $i " => " $outDir -ForegroundColor Cyan
+    Copy-Item -Path $i -Recurse -Destination $outDir -Force -Container
 }
 
 ############
 # qt
 ############
-$windeployqt = "$QtDir\bin\windeployqt.exe --qmldir $ClientDir\src --release $OutDir\Jami.exe"
-iex $windeployqt
+$windeployqt = "$QtDir\bin\windeployqt.exe --qmldir $clientDir\src --release $outDir\Jami.exe"
+Invoke-Expression $windeployqt
 
 # ringtones
-$CopyDir = $OutDir + "\ringtones"
-If(!(test-path $CopyDir)) { New-Item -ItemType directory -Path $CopyDir -Force }
-$RingtonePath = "$ClientDir\..\daemon\ringtones"
+$CopyDir = $outDir + "\ringtones"
+If (!(test-path $CopyDir)) { New-Item -ItemType directory -Path $CopyDir -Force }
+$RingtonePath = "$clientDir\..\daemon\ringtones"
 write-host "copying ringtones..."
 Get-ChildItem -Path $RingtonePath -Include *.ul, *.ogg, *.wav, *.opus -Recurse | ForEach-Object {
     write-host "copying ringtone: " $_.FullName " => " $CopyDir -ForegroundColor Cyan
@@ -79,8 +76,8 @@ $lrcTSPath = "$lrcDir\translations"
 Get-ChildItem -Path $lrcTSPath -Include *.ts -Recurse | ForEach-Object {
     & $lrelease $_.FullName
 }
-$CopyDir = $OutDir + "\share\libringclient\translations"
-If(!(test-path $CopyDir)) { New-Item -ItemType directory -Path $CopyDir -Force }
+$CopyDir = $outDir + "\share\libringclient\translations"
+If (!(test-path $CopyDir)) { New-Item -ItemType directory -Path $CopyDir -Force }
 write-host "copying lrc translations..."
 Get-ChildItem -Path $lrcTSPath -Include *.qm -Recurse | ForEach-Object {
     write-host "copying translation file: " $_.FullName " => " $CopyDir -ForegroundColor Cyan
@@ -88,12 +85,12 @@ Get-ChildItem -Path $lrcTSPath -Include *.qm -Recurse | ForEach-Object {
 }
 
 # client translations
-$clientTSPath = "$ClientDir\translations"
+$clientTSPath = "$clientDir\translations"
 Get-ChildItem -Path $clientTSPath -Include *.ts -Recurse | ForEach-Object {
     & $lrelease $_.FullName
 }
-$CopyDir = $OutDir + "\share\ring\translations"
-If(!(test-path $CopyDir)) { New-Item -ItemType directory -Path $CopyDir -Force }
+$CopyDir = $outDir + "\share\ring\translations"
+If (!(test-path $CopyDir)) { New-Item -ItemType directory -Path $CopyDir -Force }
 write-host "copying client translations..."
 Get-ChildItem -Path $clientTSPath -Include *.qm -Recurse | ForEach-Object {
     write-host "copying translation file: " $_.FullName " => " $CopyDir -ForegroundColor Cyan
