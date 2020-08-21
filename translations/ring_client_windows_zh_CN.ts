@@ -1,1606 +1,1923 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="zh_CN" version="2.0">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="zh_CN">
 <context>
-    <name>AboutDialog</name>
+    <name>AboutPopUp</name>
     <message>
-        <location filename="../aboutdialog.ui" line="435"/>
-        <location filename="../aboutdialog.ui" line="465"/>
-        <source>About</source>
-        <translation>关于</translation>
-    </message>
-    <message>
-        <location filename="../aboutdialog.ui" line="462"/>
-        <source>about button</source>
-        <translation>关于按钮</translation>
-    </message>
-    <message>
-        <location filename="../aboutdialog.ui" line="478"/>
-        <source>credits button</source>
-        <translation>致谢按钮</translation>
-    </message>
-    <message>
-        <location filename="../aboutdialog.ui" line="481"/>
-        <source>Credits</source>
-        <translation>致谢</translation>
-    </message>
-    <message>
-        <location filename="../aboutdialog.ui" line="547"/>
-        <source>Free as in Freedom</source>
-        <translation>&quot;Free as in Freedom&quot;</translation>
-    </message>
-    <message>
-        <location filename="../aboutdialog.ui" line="563"/>
-        <source>The Microsoft Windows client for Jami.
-Jami is a secured and distributed communication software.</source>
-        <translation>Jami 的 Microsoft Windows 客户端。
-Jami 是一款加密、分布式的通讯软件。</translation>
-    </message>
-    <message>
-        <location filename="../aboutdialog.cpp" line="32"/>
+        <location filename="../src/mainview/components/AboutPopUp.qml" line="90"/>
         <source>version</source>
         <translation>版本</translation>
     </message>
     <message>
-        <location filename="../aboutdialog.cpp" line="39"/>
-        <source>Created by:</source>
-        <translation>开发者：</translation>
+        <location filename="../src/mainview/components/AboutPopUp.qml" line="113"/>
+        <source>Free as in Freedom</source>
+        <translation>&quot;Free as in Freedom&quot;</translation>
     </message>
     <message>
-        <location filename="../aboutdialog.cpp" line="73"/>
-        <source>Artwork by:</source>
-        <translation>美工设计：</translation>
+        <location filename="../src/mainview/components/AboutPopUp.qml" line="135"/>
+        <source>The Microsoft Windows client for Jami.
+Jami is a secured and distributed communciation software.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../aboutdialog.cpp" line="77"/>
-        <source>Based on the SFLPhone project</source>
-        <translation>基于 SFLPhone 项目</translation>
+        <location filename="../src/mainview/components/AboutPopUp.qml" line="258"/>
+        <source>Change Log</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mainview/components/AboutPopUp.qml" line="277"/>
+        <source>Credits</source>
+        <translation>致谢</translation>
     </message>
 </context>
 <context>
-    <name>AccountItemDelegate</name>
+    <name>AccountComboBoxPopup</name>
     <message>
-        <location filename="../accountitemdelegate.cpp" line="91"/>
+        <location filename="../src/mainview/components/AccountComboBoxPopup.qml" line="154"/>
         <source>Add Account</source>
         <translation>添加账户</translation>
     </message>
 </context>
 <context>
-    <name>AdvancedSIPSettingsWidget</name>
+    <name>AccountMigrationDialog</name>
     <message>
-        <location filename="../advancedsipsettingwidget.ui" line="14"/>
-        <source>Form</source>
-        <translation>表单</translation>
+        <location filename="../src/commoncomponents/AccountMigrationDialog.qml" line="272"/>
+        <source>Account Migration Required</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../advancedsipsettingwidget.ui" line="55"/>
-        <source>Call Settings</source>
-        <translation>呼叫设置</translation>
+        <location filename="../src/commoncomponents/AccountMigrationDialog.qml" line="308"/>
+        <source>This account is malformed. Please enter your password</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../advancedsipsettingwidget.ui" line="102"/>
-        <source>Auto Answer Calls</source>
-        <translation>自动接听来电</translation>
+        <location filename="../src/commoncomponents/AccountMigrationDialog.qml" line="446"/>
+        <source>Alias</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../advancedsipsettingwidget.ui" line="130"/>
-        <source>Enable Custom Ringtone</source>
-        <translation> 启用自定义铃声</translation>
-    </message>
-    <message>
-        <location filename="../advancedsipsettingwidget.ui" line="191"/>
-        <source>Connectivity</source>
-        <translation>连接性</translation>
-    </message>
-    <message>
-        <location filename="../advancedsipsettingwidget.ui" line="281"/>
-        <source>STUN Address</source>
-        <translation>STUN地址</translation>
-    </message>
-    <message>
-        <location filename="../advancedsipsettingwidget.ui" line="293"/>
-        <source>Use STUN</source>
-        <translation>使用STUN</translation>
-    </message>
-    <message>
-        <location filename="../advancedsipsettingwidget.ui" line="317"/>
-        <source>Use UPnP</source>
-        <translation>使用UPnP</translation>
-    </message>
-    <message>
-        <location filename="../advancedsipsettingwidget.ui" line="329"/>
-        <source>Use TURN</source>
-        <translation>使用TURN</translation>
-    </message>
-    <message>
-        <location filename="../advancedsipsettingwidget.ui" line="359"/>
-        <source>TURN Password</source>
-        <translation>TURN密码</translation>
-    </message>
-    <message>
-        <location filename="../advancedsipsettingwidget.ui" line="391"/>
-        <source>TURN Username</source>
-        <translation>TURN用户名</translation>
-    </message>
-    <message>
-        <location filename="../advancedsipsettingwidget.ui" line="423"/>
-        <source>TURN Address</source>
-        <translation>TURN地址</translation>
-    </message>
-    <message>
-        <location filename="../advancedsipsettingwidget.ui" line="464"/>
-        <source>Media</source>
-        <translation>媒体</translation>
-    </message>
-    <message>
-        <location filename="../advancedsipsettingwidget.ui" line="515"/>
-        <source>Enable Video</source>
-        <translation>启用视频</translation>
-    </message>
-    <message>
-        <location filename="../advancedsipsettingwidget.ui" line="539"/>
-        <source>Video Codecs</source>
-        <translation>视频编码</translation>
-    </message>
-    <message>
-        <location filename="../advancedsipsettingwidget.ui" line="692"/>
-        <source>Audio Codecs</source>
-        <translation>音频编码</translation>
-    </message>
-    <message>
-        <location filename="../advancedsipsettingwidget.cpp" line="142"/>
-        <source>Audio Files (*.wav *.ogg *.opus *.mp3 *aiff *wma)</source>
-        <translation>音频文件(*.wav *.ogg *.opus *.mp3 *aiff *wma)</translation>
-    </message>
-    <message>
-        <location filename="../advancedsipsettingwidget.cpp" line="151"/>
-        <source>Add a custom ringtone</source>
-        <translation>添加自定义铃声</translation>
-    </message>
-</context>
-<context>
-    <name>AdvancedSettingsWidget</name>
-    <message>
-        <location filename="../advancedsettingswidget.ui" line="14"/>
-        <source>Form</source>
-        <translation>表单</translation>
-    </message>
-    <message>
-        <location filename="../advancedsettingswidget.ui" line="61"/>
-        <source>Call Settings</source>
-        <translation>呼叫设置</translation>
-    </message>
-    <message>
-        <location filename="../advancedsettingswidget.ui" line="108"/>
-        <source>Allow Calls From Untrusted Peers</source>
-        <translation>允许未被信任的用户来电</translation>
-    </message>
-    <message>
-        <location filename="../advancedsettingswidget.ui" line="133"/>
-        <source>Auto Answer Calls</source>
-        <translation>自动接听来电</translation>
-    </message>
-    <message>
-        <location filename="../advancedsettingswidget.ui" line="161"/>
-        <source>Enable Custom Ringtone</source>
-        <translation> 启用自定义铃声</translation>
-    </message>
-    <message>
-        <location filename="../advancedsettingswidget.cpp" line="188"/>
-        <source>Add a custom ringtone</source>
-        <translation>添加自定义铃声</translation>
-    </message>
-    <message>
-        <location filename="../advancedsettingswidget.ui" line="225"/>
-        <source>Name Server</source>
-        <translation>名称服务器</translation>
-    </message>
-    <message>
-        <location filename="../advancedsettingswidget.ui" line="275"/>
-        <source>Address</source>
-        <translation>地址：</translation>
-    </message>
-    <message>
-        <location filename="../advancedsettingswidget.ui" line="351"/>
-        <source>OpenDHT Configuration</source>
-        <translation>OpenDHT配置</translation>
-    </message>
-    <message>
-        <location filename="../advancedsettingswidget.ui" line="398"/>
-        <source>Enable Proxy</source>
-        <translation>启用代理</translation>
-    </message>
-    <message>
-        <location filename="../advancedsettingswidget.ui" line="454"/>
-        <source>Bootstrap</source>
-        <translation>初始服务器</translation>
-    </message>
-    <message>
-        <location filename="../advancedsettingswidget.ui" line="530"/>
-        <source>Security</source>
-        <translation>安全</translation>
-    </message>
-    <message>
-        <location filename="../advancedsettingswidget.ui" line="571"/>
-        <source>Private Key Password</source>
-        <translation>私钥密码</translation>
-    </message>
-    <message>
-        <location filename="../advancedsettingswidget.ui" line="583"/>
-        <source>User Certificate</source>
-        <translation>用户证书</translation>
-    </message>
-    <message>
-        <location filename="../advancedsettingswidget.ui" line="622"/>
-        <source>Private Key</source>
-        <translation>私钥</translation>
-    </message>
-    <message>
-        <location filename="../advancedsettingswidget.ui" line="634"/>
-        <source>CA Certificate</source>
-        <translation>颁发机构证书</translation>
-    </message>
-    <message>
-        <location filename="../advancedsettingswidget.ui" line="766"/>
-        <source>Connectivity</source>
-        <translation>连接性</translation>
-    </message>
-    <message>
-        <location filename="../advancedsettingswidget.ui" line="868"/>
-        <source>Use STUN</source>
-        <translation>使用STUN</translation>
-    </message>
-    <message>
-        <location filename="../advancedsettingswidget.ui" line="856"/>
-        <source>STUN Address</source>
-        <translation>STUN地址</translation>
-    </message>
-    <message>
-        <location filename="../advancedsettingswidget.ui" line="892"/>
-        <source>Use UPnP</source>
-        <translation>使用UPnP</translation>
-    </message>
-    <message>
-        <location filename="../advancedsettingswidget.ui" line="904"/>
-        <source>Use TURN</source>
-        <translation>使用TURN</translation>
-    </message>
-    <message>
-        <location filename="../advancedsettingswidget.ui" line="934"/>
-        <source>TURN Password</source>
-        <translation>TURN密码</translation>
-    </message>
-    <message>
-        <location filename="../advancedsettingswidget.ui" line="966"/>
-        <source>TURN Username</source>
-        <translation>TURN用户名</translation>
-    </message>
-    <message>
-        <location filename="../advancedsettingswidget.ui" line="998"/>
-        <source>TURN Address</source>
-        <translation>TURN地址</translation>
-    </message>
-    <message>
-        <location filename="../advancedsettingswidget.ui" line="1039"/>
-        <source>Media</source>
-        <translation>媒体</translation>
-    </message>
-    <message>
-        <location filename="../advancedsettingswidget.ui" line="1090"/>
-        <source>Enable Video</source>
-        <translation>启用视频</translation>
-    </message>
-    <message>
-        <location filename="../advancedsettingswidget.ui" line="1267"/>
-        <source>Audio Codecs</source>
-        <translation>音频编码</translation>
-    </message>
-    <message>
-        <location filename="../advancedsettingswidget.ui" line="1114"/>
-        <source>Video Codecs</source>
-        <translation>视频编码</translation>
-    </message>
-    <message>
-        <location filename="../advancedsettingswidget.cpp" line="181"/>
-        <source>Audio Files (*.wav *.ogg *.opus *.mp3 *aiff *wma)</source>
-        <translation>音频文件(*.wav *.ogg *.opus *.mp3 *aiff *wma)</translation>
-    </message>
-</context>
-<context>
-    <name>AnimatedOverlay</name>
-    <message>
-        <location filename="../animatedoverlay.ui" line="14"/>
-        <source>Form</source>
-        <translation>表单</translation>
-    </message>
-</context>
-<context>
-    <name>BannedItemWidget</name>
-    <message>
-        <location filename="../banneditemwidget.ui" line="14"/>
-        <source>Form</source>
-        <translation>表单</translation>
-    </message>
-    <message>
-        <location filename="../banneditemwidget.ui" line="80"/>
-        <source>name</source>
-        <translation>姓名</translation>
-    </message>
-    <message>
-        <location filename="../banneditemwidget.ui" line="104"/>
-        <source>id</source>
-        <translation>id</translation>
-    </message>
-</context>
-<context>
-    <name>CallWidget</name>
-    <message>
-        <location filename="../callwidget.ui" line="184"/>
-        <source>Show conversations</source>
-        <translation>显示会话</translation>
-    </message>
-    <message>
-        <location filename="../callwidget.ui" line="187"/>
-        <source>Conversations</source>
-        <translation>会话</translation>
-    </message>
-    <message>
-        <location filename="../callwidget.ui" line="368"/>
-        <source>Search contact text input</source>
-        <translation>搜索联系人文本输入 </translation>
-    </message>
-    <message>
-        <location filename="../callwidget.ui" line="653"/>
-        <source>Jami is free software for universal communication which respects the freedoms and privacy of its users.</source>
-        <translation>Jami是一种自由通信软件，它尊重用户的自由和隐私。</translation>
-    </message>
-    <message>
-        <location filename="../callwidget.ui" line="693"/>
-        <source>
- This is your ID.
-Copy and share it with your friends!
-                                      </source>
-        <translation>
-这是您的ID。
-复制并发送给您的朋友！
-</translation>
-    </message>
-    <message>
-        <location filename="../callwidget.ui" line="806"/>
-        <source>Show ring ID QR code</source>
-        <translation>显示RingID二维码</translation>
-    </message>
-    <message>
-        <location filename="../callwidget.ui" line="857"/>
-        <source>Share ring ID button</source>
-        <translation>分享ring ID按钮</translation>
-    </message>
-    <message>
-        <location filename="../callwidget.ui" line="915"/>
-        <source>Double-click to copy</source>
-        <translation>双击复制</translation>
-    </message>
-    <message>
-        <location filename="../callwidget.ui" line="956"/>
-        <source>Error while generating QR Code</source>
-        <translation>创建二维码时产生错误</translation>
-    </message>
-    <message>
-        <location filename="../callwidget.ui" line="1184"/>
-        <location filename="../callwidget.ui" line="1434"/>
-        <source>best name</source>
-        <translation>最佳名字</translation>
-    </message>
-    <message>
-        <location filename="../callwidget.ui" line="1208"/>
-        <source>best Id</source>
-        <translation>最佳Id</translation>
-    </message>
-    <message>
-        <location filename="../callwidget.ui" line="1734"/>
-        <source>Back to homepage button</source>
-        <translation>返回主页按钮</translation>
-    </message>
-    <message>
-        <location filename="../callwidget.ui" line="1943"/>
-        <source>Add to contacts</source>
-        <translation>加入通讯录</translation>
-    </message>
-    <message>
-        <location filename="../callwidget.ui" line="202"/>
-        <source>Show invites</source>
-        <translation>显示邀请</translation>
-    </message>
-    <message>
-        <location filename="../callwidget.ui" line="205"/>
-        <source>Invites</source>
-        <translation>邀请</translation>
-    </message>
-    <message>
-        <location filename="../callwidget.ui" line="377"/>
-        <location filename="../callwidget.cpp" line="552"/>
-        <source>Find a new or existing contact</source>
-        <translation>查找新的或现有的联系人 </translation>
-    </message>
-    <message>
-        <location filename="../callwidget.ui" line="1444"/>
-        <source>Wants to talk to you!</source>
-        <translation>想要与您通信！</translation>
-    </message>
-    <message>
-        <location filename="../callwidget.ui" line="1517"/>
-        <source>Answer incoming call button</source>
-        <translation>接听来电按钮 </translation>
-    </message>
-    <message>
-        <location filename="../callwidget.ui" line="1589"/>
-        <source>Ignore incoming call button</source>
-        <translation>忽略来电按钮 </translation>
-    </message>
-    <message>
-        <location filename="../callwidget.ui" line="1539"/>
-        <source>Answer</source>
-        <translation>应答</translation>
-    </message>
-    <message>
-        <location filename="../callwidget.ui" line="1617"/>
-        <source>Ignore</source>
-        <translation>忽略</translation>
-    </message>
-    <message>
-        <location filename="../callwidget.ui" line="1280"/>
-        <source>Cancel outgoing call</source>
-        <translation>取消拨出的电话</translation>
-    </message>
-    <message>
-        <location filename="../callwidget.ui" line="1305"/>
-        <source>Cancel</source>
-        <translation>取消</translation>
-    </message>
-    <message>
-        <location filename="../callwidget.cpp" line="332"/>
-        <source>Start video call</source>
-        <translation>发起视频通话</translation>
-    </message>
-    <message>
-        <location filename="../callwidget.cpp" line="343"/>
-        <source>Start audio call</source>
-        <translation>发起语音通话</translation>
-    </message>
-    <message>
-        <location filename="../callwidget.cpp" line="354"/>
-        <source>Clear conversation</source>
-        <translation>清除会话</translation>
-    </message>
-    <message>
-        <location filename="../callwidget.cpp" line="361"/>
-        <source>Remove contact</source>
-        <translation>删除联系人</translation>
-    </message>
-    <message>
-        <location filename="../callwidget.cpp" line="373"/>
-        <source>Block contact</source>
-        <translation>屏蔽联系人</translation>
-    </message>
-    <message>
-        <location filename="../callwidget.cpp" line="384"/>
-        <source>Copy number</source>
-        <translation>复制号码</translation>
-    </message>
-    <message>
-        <location filename="../callwidget.cpp" line="561"/>
-        <source>Search your received invitations</source>
-        <translation>搜索收到的邀请 </translation>
-    </message>
-    <message>
-        <location filename="../callwidget.cpp" line="943"/>
-        <source>Contact me on Jami</source>
-        <translation>在Jami上联系我</translation>
-    </message>
-    <message>
-        <location filename="../callwidget.cpp" line="943"/>
-        <source>My Id is : </source>
-        <translation>我的ID是：</translation>
-    </message>
-    <message>
-        <location filename="../callwidget.cpp" line="847"/>
-        <source>%1</source>
-        <comment>%1 is the contact username</comment>
-        <translation>%1</translation>
-    </message>
-    <message>
-        <location filename="../callwidget.cpp" line="852"/>
-        <source>%1</source>
-        <comment>%1 is the contact unique identifier</comment>
-        <translation>%1</translation>
-    </message>
-    <message>
-        <location filename="../callwidget.cpp" line="675"/>
-        <source>Call incoming from %1</source>
-        <translation>来电：%1</translation>
-    </message>
-</context>
-<context>
-    <name>DeleteAccountDialog</name>
-    <message>
-        <location filename="../deleteaccountdialog.ui" line="35"/>
-        <source>Account deletion</source>
-        <translation>删除账户</translation>
-    </message>
-    <message>
-        <location filename="../deleteaccountdialog.ui" line="58"/>
-        <source>Do you really want to delete the following account?</source>
-        <translation>确定删除以下账户吗？</translation>
-    </message>
-    <message>
-        <location filename="../deleteaccountdialog.ui" line="153"/>
-        <source>If this account hasn&apos;t been exported, or added to another device, it will be irrevocably lost.</source>
-        <translation>如果此账户尚未导出或添加到其他设备，它将不可挽回地丢失。</translation>
-    </message>
-    <message>
-        <location filename="../deleteaccountdialog.ui" line="235"/>
-        <source>Permanently delete account</source>
-        <translation>永久删除账户 </translation>
-    </message>
-    <message>
-        <location filename="../deleteaccountdialog.ui" line="241"/>
-        <source>Delete</source>
-        <translation>删除</translation>
-    </message>
-    <message>
-        <location filename="../deleteaccountdialog.ui" line="278"/>
-        <source>Cancel account deletion</source>
-        <translation>取消账户删除 </translation>
-    </message>
-    <message>
-        <location filename="../deleteaccountdialog.ui" line="284"/>
-        <source>Cancel</source>
-        <translation>取消</translation>
-    </message>
-</context>
-<context>
-    <name>DeviceItemWidget</name>
-    <message>
-        <location filename="../deviceitemwidget.ui" line="14"/>
-        <source>Form</source>
-        <translation>表单</translation>
-    </message>
-    <message>
-        <location filename="../deviceitemwidget.ui" line="105"/>
-        <source>Device Id</source>
-        <translation>设备ID</translation>
-    </message>
-    <message>
-        <location filename="../deviceitemwidget.ui" line="143"/>
-        <source>this device</source>
-        <translation>该设备</translation>
-    </message>
-</context>
-<context>
-    <name>InviteButtonsWidget</name>
-    <message>
-        <location filename="../invitebuttonswidget.ui" line="83"/>
-        <source>Accept</source>
-        <translation>接听</translation>
-    </message>
-    <message>
-        <location filename="../invitebuttonswidget.ui" line="131"/>
-        <source>Refuse</source>
-        <translation>拒接</translation>
-    </message>
-    <message>
-        <location filename="../invitebuttonswidget.ui" line="179"/>
-        <source>Block</source>
-        <translation>屏蔽</translation>
-    </message>
-</context>
-<context>
-    <name>LinkDeviceDialog</name>
-    <message>
-        <location filename="../linkdevicedialog.ui" line="14"/>
-        <source>Dialog</source>
-        <translation>对话框</translation>
-    </message>
-    <message>
-        <location filename="../linkdevicedialog.ui" line="62"/>
-        <source>Enter your account password</source>
-        <translation>输入您的账户密码 </translation>
-    </message>
-    <message>
-        <location filename="../linkdevicedialog.ui" line="117"/>
-        <source>Password</source>
-        <translation>密码</translation>
-    </message>
-    <message>
-        <location filename="../linkdevicedialog.ui" line="184"/>
-        <source>Ok</source>
-        <translation>确定</translation>
-    </message>
-    <message>
-        <location filename="../linkdevicedialog.ui" line="218"/>
-        <source>Cancel</source>
-        <translation>取消</translation>
-    </message>
-    <message>
-        <location filename="../linkdevicedialog.ui" line="279"/>
-        <source>Exporting account</source>
-        <translation>正导出账户</translation>
-    </message>
-    <message>
-        <location filename="../linkdevicedialog.ui" line="402"/>
-        <source>Your PIN is</source>
-        <translation>您的PIN码是 </translation>
-    </message>
-    <message>
-        <location filename="../linkdevicedialog.ui" line="432"/>
-        <source>PIN</source>
-        <translation>PIN</translation>
-    </message>
-    <message>
-        <location filename="../linkdevicedialog.ui" line="477"/>
-        <source>This pin and the account password should be entered in your device within 10 minutes.</source>
-        <translation>您需在 10 分钟内在您的设备上输入此 PIN 码和账户密码。</translation>
-    </message>
-    <message>
-        <location filename="../linkdevicedialog.ui" line="553"/>
-        <source>Close</source>
-        <translation>关闭</translation>
-    </message>
-    <message>
-        <location filename="../linkdevicedialog.cpp" line="34"/>
-        <source>Link Another Device</source>
-        <translation>连结其他设备</translation>
-    </message>
-    <message>
-        <location filename="../linkdevicedialog.cpp" line="96"/>
-        <source>Incorrect password</source>
-        <translation>密码错误</translation>
-    </message>
-    <message>
-        <location filename="../linkdevicedialog.cpp" line="110"/>
-        <source>Something went wrong.
-Please try again later.</source>
-        <translation>有些不对劲。
-请稍后再试 </translation>
-    </message>
-</context>
-<context>
-    <name>MainWindow</name>
-    <message>
-        <location filename="../mainwindow.cpp" line="83"/>
-        <source>Settings</source>
-        <translation>设置</translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.cpp" line="94"/>
-        <source>Exit</source>
-        <translation>退出</translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.cpp" line="111"/>
-        <source>About</source>
-        <translation>关于</translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.ui" line="435"/>
-        <source>Jami</source>
-        <translation>Jami</translation>
-    </message>
-</context>
-<context>
-    <name>NameRegistrationDialog</name>
-    <message>
-        <location filename="../nameregistrationdialog.ui" line="35"/>
-        <source>Set Registered Name</source>
-        <translation>设置注册名称 </translation>
-    </message>
-    <message>
-        <location filename="../nameregistrationdialog.ui" line="163"/>
-        <source>Enter your account password</source>
-        <translation>输入您的账户密码  </translation>
-    </message>
-    <message>
-        <location filename="../nameregistrationdialog.ui" line="244"/>
-        <source>Password text input</source>
-        <translation>密码文本输入</translation>
-    </message>
-    <message>
-        <location filename="../nameregistrationdialog.ui" line="250"/>
-        <source>Password text entry</source>
-        <translation>密码文本条目</translation>
-    </message>
-    <message>
-        <location filename="../nameregistrationdialog.ui" line="256"/>
-        <source>Password</source>
-        <translation>密码</translation>
-    </message>
-    <message>
-        <location filename="../nameregistrationdialog.ui" line="323"/>
-        <source>Register</source>
-        <translation>注册</translation>
-    </message>
-    <message>
-        <location filename="../nameregistrationdialog.ui" line="357"/>
-        <source>Cancel</source>
-        <translation>取消</translation>
-    </message>
-    <message>
-        <location filename="../nameregistrationdialog.ui" line="424"/>
-        <source>Registering Name</source>
-        <translation>正在注册名称</translation>
-    </message>
-    <message>
-        <location filename="../nameregistrationdialog.ui" line="548"/>
-        <source>Something went wrong</source>
-        <translation>有些不对劲 </translation>
-    </message>
-    <message>
-        <location filename="../nameregistrationdialog.ui" line="618"/>
-        <source>Close</source>
-        <translation>关闭</translation>
-    </message>
-    <message>
-        <location filename="../nameregistrationdialog.cpp" line="82"/>
-        <source>Incorrect password</source>
-        <translation>密码错误</translation>
-    </message>
-    <message>
-        <location filename="../nameregistrationdialog.cpp" line="85"/>
-        <source>Network error</source>
-        <translation>网络错误</translation>
-    </message>
-</context>
-<context>
-    <name>NewWizardWidget</name>
-    <message>
-        <location filename="../newwizardwidget.ui" line="14"/>
-        <source>Form</source>
-        <translation>表单</translation>
-    </message>
-    <message>
-        <location filename="../newwizardwidget.ui" line="141"/>
-        <source>Welcome Label</source>
-        <translation>欢迎标签 </translation>
-    </message>
-    <message>
-        <location filename="../newwizardwidget.ui" line="147"/>
-        <source> Welcome to</source>
-        <translation>欢迎来到</translation>
-    </message>
-    <message>
-        <location filename="../newwizardwidget.ui" line="185"/>
-        <source>Welcome Logo</source>
-        <translation>欢迎图标</translation>
-    </message>
-    <message>
-        <location filename="../newwizardwidget.ui" line="239"/>
-        <source>Create Jami account button</source>
-        <translation>创建Jami账户按钮</translation>
-    </message>
-    <message>
-        <location filename="../newwizardwidget.ui" line="245"/>
-        <source>Push button for Jami account creation start trigger</source>
-        <translation>按下Jami账户创建按钮开始触发</translation>
-    </message>
-    <message>
-        <location filename="../newwizardwidget.ui" line="251"/>
-        <source>Create a Jami account</source>
-        <translation>创建一个Jami账户</translation>
-    </message>
-    <message>
-        <location filename="../newwizardwidget.ui" line="282"/>
-        <source>Link device button</source>
-        <translation>连结设备按钮</translation>
-    </message>
-    <message>
-        <location filename="../newwizardwidget.ui" line="288"/>
-        <source>Push button for device linkage start trigger</source>
-        <translation>按下设备连结按钮开始触发</translation>
-    </message>
-    <message>
-        <location filename="../newwizardwidget.ui" line="291"/>
-        <source>Link this device to an account</source>
-        <translation>将此设备与一个账户进行连接</translation>
-    </message>
-    <message>
-        <location filename="../newwizardwidget.ui" line="328"/>
-        <source>Create Jami SIP account button</source>
-        <translation>创建 Jami SIP 账户按钮 </translation>
-    </message>
-    <message>
-        <location filename="../newwizardwidget.ui" line="334"/>
-        <source>Push button for Jami SIP account creation start trigger</source>
-        <translation>按下 Jami SIP 账户创建按钮开始触发</translation>
-    </message>
-    <message>
-        <location filename="../newwizardwidget.ui" line="340"/>
-        <source>Create a SIP account</source>
-        <translation>创建 SIP 账户</translation>
-    </message>
-    <message>
-        <location filename="../newwizardwidget.ui" line="405"/>
-        <source>Link this device to an existing account</source>
-        <translation>将此设备与已有账户进行连接</translation>
-    </message>
-    <message>
-        <location filename="../newwizardwidget.ui" line="469"/>
-        <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:14px; color:#555555;&quot;&gt;To link this device to another account, you first &lt;/span&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:14px; font-weight:600; color:#555555;&quot;&gt;need to obtain a PIN&lt;/span&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:14px; color:#555555;&quot;&gt; code. To generate the PIN code:&lt;/span&gt;&lt;/p&gt;
-&lt;ol style=&quot;margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; -qt-list-indent: 1;&quot;&gt;&lt;li style=&quot; font-family:'Ubuntu'; font-size:14px; color:#555555;&quot; style=&quot; margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:14px;&quot;&gt;Go to the &lt;/span&gt;&lt;span style=&quot; font-size:14px; font-weight:600;&quot;&gt;Account management setting&lt;/span&gt;&lt;span style=&quot; font-size:14px;&quot;&gt; of a previous device&lt;/span&gt;&lt;/li&gt;
-&lt;li style=&quot; font-family:'Ubuntu'; font-size:14px; color:#555555;&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:14px;&quot;&gt;Choose the &lt;/span&gt;&lt;span style=&quot; font-size:14px; font-weight:600;&quot;&gt;Jami account&lt;/span&gt;&lt;span style=&quot; font-size:14px;&quot;&gt; you want to use&lt;/span&gt;&lt;/li&gt;
-&lt;li style=&quot; font-family:'Ubuntu'; font-size:14px; color:#555555;&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:14px;&quot;&gt;Go to the &lt;/span&gt;&lt;span style=&quot; font-size:14px; font-weight:600;&quot;&gt;Devices&lt;/span&gt;&lt;span style=&quot; font-size:14px;&quot;&gt; tab&lt;/span&gt;&lt;/li&gt;
-&lt;li style=&quot; font-family:'Ubuntu'; font-size:14px; color:#555555;&quot; style=&quot; margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:14px;&quot;&gt;Select &lt;/span&gt;&lt;span style=&quot; font-size:14px; font-weight:600;&quot;&gt;Add a device&lt;/span&gt;&lt;/li&gt;&lt;/ol&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:14px; color:#555555;&quot;&gt;You will get the necessary PIN to complete this form. The PIN is only valid for &lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:14px; font-weight:600; color:#555555;&quot;&gt;10 minutes&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:10px; color:#555555;&quot;&gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:14px; color:#555555;&quot;&gt;要将此设备关联到账户，首先您 &lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:14px; font-weight:600; color:#555555;&quot;&gt; 需要获取 PIN&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:14px; color:#555555;&quot;&gt; 码。 要生成 PIN 码：&lt;/span&gt;&lt;/p&gt;
-&lt;ol style=&quot;margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; -qt-list-indent: 1;&quot;&gt;&lt;li style=&quot; font-family:&apos;Ubuntu&apos;; font-size:14px; color:#555555;&quot; style=&quot; margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:14px;&quot;&gt;需前往 &lt;/span&gt;&lt;span style=&quot; font-size:14px; font-weight:600;&quot;&gt;先前设备的&lt;/span&gt;&lt;span style=&quot; font-size:14px;&quot;&gt; 账户管理设置中&lt;/span&gt;&lt;/li&gt;
-&lt;li style=&quot; font-family:&apos;Ubuntu&apos;; font-size:14px; color:#555555;&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:14px;&quot;&gt;选择 &lt;/span&gt;&lt;span style=&quot; font-size:14px; font-weight:600;&quot;&gt;您要使用的&lt;/span&gt;&lt;span style=&quot; font-size:14px;&quot;&gt; Jami 账户&lt;/span&gt;&lt;/li&gt;
-&lt;li style=&quot; font-family:&apos;Ubuntu&apos;; font-size:14px; color:#555555;&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:14px;&quot;&gt;到 &lt;/span&gt;&lt;span style=&quot; font-size:14px; font-weight:600;&quot;&gt;设备&lt;/span&gt;&lt;span style=&quot; font-size:14px;&quot;&gt; 选项卡下&lt;/span&gt;&lt;/li&gt;
-&lt;li style=&quot; font-family:&apos;Ubuntu&apos;; font-size:14px; color:#555555;&quot; style=&quot; margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:14px;&quot;&gt;选择 &lt;/span&gt;&lt;span style=&quot; font-size:14px; font-weight:600;&quot;&gt;添加设备&lt;/span&gt;&lt;/li&gt;&lt;/ol&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:14px; color:#555555;&quot;&gt;您会得到填写本栏所需的 PIN 码。PIN 码有效期为 &lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:14px; font-weight:600; color:#555555;&quot;&gt;10 分钟&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:10px; color:#555555;&quot;&gt;。&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-        <location filename="../newwizardwidget.ui" line="531"/>
-        <source>Enter your pin:</source>
-        <translation>输入您的PIN：</translation>
-    </message>
-    <message>
-        <location filename="../newwizardwidget.ui" line="599"/>
-        <source>Or import a file:</source>
-        <translation>或导入一个文件：</translation>
-    </message>
-    <message>
-        <location filename="../newwizardwidget.ui" line="626"/>
-        <source>Link from exported account archive file</source>
-        <translation>用导出账户的存档文件进行设备连结</translation>
-    </message>
-    <message>
-        <location filename="../newwizardwidget.ui" line="629"/>
-        <location filename="../newwizardwidget.cpp" line="83"/>
-        <location filename="../newwizardwidget.cpp" line="218"/>
-        <source>(None)</source>
-        <translation>（无）</translation>
-    </message>
-    <message>
-        <location filename="../newwizardwidget.ui" line="705"/>
-        <source>Password:</source>
-        <translation>密码：</translation>
-    </message>
-    <message>
-        <location filename="../newwizardwidget.ui" line="799"/>
-        <location filename="../newwizardwidget.ui" line="1586"/>
-        <source>Profile</source>
-        <translation>账户资料</translation>
-    </message>
-    <message>
-        <location filename="../newwizardwidget.ui" line="953"/>
-        <location filename="../newwizardwidget.ui" line="1767"/>
-        <source>Profile name</source>
-        <translation>个人资料名称</translation>
-    </message>
-    <message>
-        <location filename="../newwizardwidget.ui" line="1027"/>
-        <source>Account</source>
-        <translation>账户</translation>
-    </message>
-    <message>
-        <location filename="../newwizardwidget.ui" line="1136"/>
-        <source>Register your username.
-This will reserve the username so that only you can use it.
-Your friends will be able to call you with your usename
-instead of using your ID.</source>
-        <translation>用你的用户名注册
-这将保留用户名，以便只有您可以使用它
-您的朋友可以使用您的用户名给您打电话
-而非用你的ID</translation>
-    </message>
-    <message>
-        <location filename="../newwizardwidget.ui" line="1142"/>
-        <source>Public username checkbox</source>
-        <translation>公开用户名的复选框 </translation>
-    </message>
-    <message>
-        <location filename="../newwizardwidget.ui" line="1145"/>
-        <source>Checkbox selecting if the user wants a public username</source>
-        <translation>如果用户想要公开的用户名就勾选这个复选框</translation>
-    </message>
-    <message>
-        <location filename="../newwizardwidget.ui" line="1148"/>
-        <source>Register public username</source>
-        <translation>注册公共用户名</translation>
-    </message>
-    <message>
-        <location filename="../newwizardwidget.ui" line="1367"/>
-        <source>Public username edit</source>
-        <translation>编辑公开用户名</translation>
-    </message>
-    <message>
-        <location filename="../newwizardwidget.ui" line="1373"/>
-        <source>Choose your username</source>
-        <translation>设置您的用户名</translation>
-    </message>
-    <message>
-        <location filename="../newwizardwidget.ui" line="1289"/>
-        <source>Password text input</source>
-        <translation>密码文本输入 </translation>
-    </message>
-    <message>
-        <location filename="../newwizardwidget.ui" line="1295"/>
-        <source>Password text entry</source>
-        <translation>密码文本条目 </translation>
-    </message>
-    <message>
-        <location filename="../newwizardwidget.ui" line="1301"/>
-        <location filename="../newwizardwidget.ui" line="2213"/>
-        <source>Password</source>
-        <translation>密码</translation>
-    </message>
-    <message>
-        <location filename="../newwizardwidget.ui" line="1211"/>
-        <location filename="../newwizardwidget.ui" line="1217"/>
-        <source>Password confirmation text input</source>
-        <translation>确认密码文本输入</translation>
-    </message>
-    <message>
-        <location filename="../newwizardwidget.ui" line="1223"/>
-        <source>Confirm password</source>
-        <translation>确认密码</translation>
-    </message>
-    <message>
-        <location filename="../newwizardwidget.ui" line="1814"/>
-        <source>SIP Account</source>
-        <translation>SIP 账户</translation>
-    </message>
-    <message>
-        <location filename="../newwizardwidget.ui" line="1973"/>
-        <source>SIP Server edit</source>
-        <translation>编辑SIP服务器</translation>
-    </message>
-    <message>
-        <location filename="../newwizardwidget.ui" line="1979"/>
-        <source>Server</source>
-        <translation>服务器</translation>
-    </message>
-    <message>
-        <location filename="../newwizardwidget.ui" line="2045"/>
-        <source>SIP proxy input</source>
-        <translation>输入SIP代理</translation>
-    </message>
-    <message>
-        <location filename="../newwizardwidget.ui" line="2051"/>
-        <source>SIP proxy text entry</source>
-        <translation>SIP代理文本条目</translation>
-    </message>
-    <message>
-        <location filename="../newwizardwidget.ui" line="2057"/>
-        <source>Proxy</source>
-        <translation>代理</translation>
-    </message>
-    <message>
-        <location filename="../newwizardwidget.ui" line="2123"/>
-        <source>SIP username input</source>
-        <translation>SIP用户名输入 </translation>
-    </message>
-    <message>
-        <location filename="../newwizardwidget.ui" line="2129"/>
-        <source>SIP Password text entry</source>
-        <translation>SIP密码文本条目</translation>
-    </message>
-    <message>
-        <location filename="../newwizardwidget.ui" line="2135"/>
+        <location filename="../src/commoncomponents/AccountMigrationDialog.qml" line="519"/>
         <source>Username</source>
         <translation>用户名</translation>
     </message>
     <message>
-        <location filename="../newwizardwidget.ui" line="2201"/>
-        <location filename="../newwizardwidget.ui" line="2207"/>
-        <source>SIP Password text input</source>
-        <translation>SIP密码文本输入</translation>
-    </message>
-    <message utf8="true">
-        <location filename="../newwizardwidget.ui" line="2282"/>
-        <source>Generating your Jami account…</source>
-        <translation>正在生成您的Jami账户…</translation>
+        <location filename="../src/commoncomponents/AccountMigrationDialog.qml" line="592"/>
+        <source>Manager Uri</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../newwizardwidget.ui" line="2356"/>
-        <source>Previous page button</source>
-        <translation>上一页按钮 </translation>
+        <location filename="../src/commoncomponents/AccountMigrationDialog.qml" line="665"/>
+        <location filename="../src/commoncomponents/AccountMigrationDialog.qml" line="705"/>
+        <source>Password</source>
+        <translation>密码</translation>
     </message>
     <message>
-        <location filename="../newwizardwidget.ui" line="2362"/>
-        <source>push button to access previous page of wizard</source>
-        <translation>按按钮访问向导的上一页</translation>
+        <location filename="../src/commoncomponents/AccountMigrationDialog.qml" line="769"/>
+        <source>Migrate</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../newwizardwidget.ui" line="2365"/>
-        <source>Previous</source>
-        <translation>上一步</translation>
+        <location filename="../src/commoncomponents/AccountMigrationDialog.qml" line="808"/>
+        <source>Delete</source>
+        <translation>删除</translation>
     </message>
     <message>
-        <location filename="../newwizardwidget.ui" line="2396"/>
-        <source>Cancel account create/link</source>
-        <translation>取消账户创建/连结</translation>
-    </message>
-    <message>
-        <location filename="../newwizardwidget.ui" line="2402"/>
-        <source>push button to cancel account creation or linking</source>
-        <translation>按按钮取消账户创建或连结</translation>
-    </message>
-    <message>
-        <location filename="../newwizardwidget.ui" line="2405"/>
-        <source>Back</source>
-        <translation>上一步</translation>
-    </message>
-    <message>
-        <location filename="../newwizardwidget.ui" line="2442"/>
-        <source>Next page Button</source>
-        <translation>下一页按钮 </translation>
-    </message>
-    <message>
-        <location filename="../newwizardwidget.ui" line="2448"/>
-        <source>Push button to access next page of wizard</source>
-        <translation>按按钮来访问向导的下一页</translation>
-    </message>
-    <message>
-        <location filename="../newwizardwidget.ui" line="2451"/>
-        <source>Next</source>
-        <translation>下一步</translation>
-    </message>
-    <message>
-        <location filename="../newwizardwidget.cpp" line="75"/>
-        <source>Open File</source>
-        <translation>打开文件</translation>
-    </message>
-    <message>
-        <location filename="../newwizardwidget.cpp" line="77"/>
-        <source>Jami archive files (*.gz); All files (*)</source>
-        <translation>Jami档案文件 (*.gz); 所有文件 (*)</translation>
-    </message>
-    <message>
-        <location filename="../newwizardwidget.cpp" line="123"/>
-        <source>Your account needs to be migrated. Enter your password.</source>
-        <translation>您的Ring账户可以被更新。\n请输入您的密码。</translation>
-    </message>
-    <message>
-        <location filename="../newwizardwidget.cpp" line="419"/>
+        <location filename="../src/commoncomponents/AccountMigrationDialog.qml" line="948"/>
         <source>Migrating your Jami account...</source>
         <translation>正在迁移您的Jami账户…</translation>
     </message>
     <message>
-        <location filename="../newwizardwidget.cpp" line="412"/>
-        <source>Importing account archive...</source>
-        <translation>正导入账户存档...</translation>
-    </message>
-    <message>
-        <location filename="../newwizardwidget.cpp" line="404"/>
-        <source>Generating your Jami account...</source>
-        <translation>正在生成您的Jami账户…</translation>
-    </message>
-    <message>
-        <location filename="../newwizardwidget.cpp" line="422"/>
-        <source>Generating your SIP account...</source>
-        <translation>正在生成您的SIP账户…</translation>
-    </message>
-    <message>
-        <location filename="../newwizardwidget.cpp" line="533"/>
-        <source>Error creating account</source>
-        <translation>创建账户时发生错误</translation>
+        <location filename="../src/commoncomponents/AccountMigrationDialog.qml" line="948"/>
+        <source>Migration Failed</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>PasswordDialog</name>
+    <name>AdvancedSIPSettingsView</name>
     <message>
-        <location filename="../passworddialog.ui" line="32"/>
-        <source>Change Account Password</source>
-        <translation>更改账户密码</translation>
+        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="205"/>
+        <source>Add a custom ringtone</source>
+        <translation>添加自定义铃声</translation>
     </message>
     <message>
-        <location filename="../passworddialog.ui" line="97"/>
-        <source>Enter Current Password</source>
-        <translation>输入当前密码</translation>
+        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="237"/>
+        <source>Select a new ringtone</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../passworddialog.ui" line="169"/>
-        <source>Enter New Password</source>
-        <translation>输入新密码</translation>
+        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="240"/>
+        <source>Audio Files</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../passworddialog.ui" line="190"/>
-        <source>Confirm New Password</source>
-        <translation>确认新密码</translation>
+        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="240"/>
+        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="266"/>
+        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="292"/>
+        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="318"/>
+        <source>All files</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../passworddialog.ui" line="247"/>
-        <source>Confirm</source>
-        <translation>确认</translation>
+        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="264"/>
+        <source>Select a CA certificate</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../passworddialog.ui" line="290"/>
-        <source>Cancel</source>
-        <translation>取消</translation>
+        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="266"/>
+        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="292"/>
+        <source>Certificate File</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../passworddialog.ui" line="143"/>
-        <source>Current Password Incorrect</source>
-        <translation>当前密码错误</translation>
+        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="290"/>
+        <source>Select a user certificate</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="316"/>
+        <source>Select a private key</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="318"/>
+        <source>Key File</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="359"/>
+        <source>Call Settings</source>
+        <translation>呼叫设置</translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="375"/>
+        <source>Auto Answer Call</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="568"/>
+        <source>Encrypt Media Streams(SRTP)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="648"/>
+        <source>Encrypt Negotiation(TLS)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="961"/>
+        <source>Verify Certificates(Server Side)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="987"/>
+        <source>Verify Certificates(Client Side)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="1159"/>
+        <source>Negotiation Timeout(seconds)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="1267"/>
+        <source>Registration Expire Timeout(seconds)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="2274"/>
+        <source>SDP Session Negotiation(ICE Fallback)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="392"/>
+        <source>Enable Custom Ringtone</source>
+        <translation> 启用自定义铃声</translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="455"/>
+        <source>Voicemail</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="486"/>
+        <source>Voicemail Dial Code</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="537"/>
+        <source>Security</source>
+        <translation>安全</translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="596"/>
+        <source>Enable SDES(Key Exchange)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="622"/>
+        <source>Can Fallback on RTP</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="699"/>
+        <source>CA Certificate</source>
+        <translation>颁发机构证书</translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="770"/>
+        <source>User Certificate</source>
+        <translation>用户证书</translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="841"/>
+        <source>Private Key</source>
+        <translation>私钥</translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="912"/>
+        <source>Private Key Password</source>
+        <translation>私钥密码</translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="1013"/>
+        <source>TLS Connections Require Certificate</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="1043"/>
+        <source>TLS Protocol Method</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="1107"/>
+        <source>Outgoing TLS Server Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="1231"/>
+        <source>Connectivity</source>
+        <translation>连接性</translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="1326"/>
+        <source>Newtwork interface</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="1380"/>
+        <source>Use UPnP</source>
+        <translation>使用UPnP</translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="1406"/>
+        <source>Use TURN</source>
+        <translation>使用TURN</translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="1457"/>
+        <source>TURN Address</source>
+        <translation>TURN地址</translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="1526"/>
+        <source>TURN Username</source>
+        <translation>TURN用户名</translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="1594"/>
+        <source>TURN Password</source>
+        <translation>TURN密码</translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="1664"/>
+        <source>TURN Realm</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="1711"/>
+        <source>Use STUN</source>
+        <translation>使用STUN</translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="1778"/>
+        <source>Public Address</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="1810"/>
+        <source>Use Custom Address/Port</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="1843"/>
+        <source>Address</source>
+        <translation>地址：</translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="1896"/>
+        <source>Port</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="1957"/>
+        <source>Media</source>
+        <translation>媒体</translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="1983"/>
+        <source>Enable Video</source>
+        <translation>启用视频</translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="2013"/>
+        <source>Video Codecs</source>
+        <translation>视频编码</translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="2139"/>
+        <source>Audio Codecs</source>
+        <translation>音频编码</translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="2290"/>
+        <source>Only used during negotiation in case ICE is not supported</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="2327"/>
+        <source>Audio RTP Min Port</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="2382"/>
+        <source>Audio RTP Max Port</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="2437"/>
+        <source>Video RTP Min Port</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="2492"/>
+        <source>Video RTP Max Port</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>PhotoBoothDialog</name>
+    <name>AdvancedSettingsView</name>
     <message>
-        <location filename="../photoboothdialog.ui" line="14"/>
-        <source>Photobooth</source>
-        <translation>Photobooth</translation>
+        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="135"/>
+        <source>Add a custom ringtone</source>
+        <translation>添加自定义铃声</translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="167"/>
+        <source>Select a new ringtone</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="170"/>
+        <source>Audio Files</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="170"/>
+        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="196"/>
+        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="222"/>
+        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="248"/>
+        <source>All files</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="194"/>
+        <source>Select a CA certificate</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="196"/>
+        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="222"/>
+        <source>Certificate File</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="220"/>
+        <source>Select a user certificate</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="246"/>
+        <source>Select a private key</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="248"/>
+        <source>Key File</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="289"/>
+        <source>Call Settings</source>
+        <translation>呼叫设置</translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="314"/>
+        <source>Allow incoming calls from unknown contacts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="328"/>
+        <source>Auto Answer Calls</source>
+        <translation>自动接听来电</translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="345"/>
+        <source>Enable Custom Ringtone</source>
+        <translation> 启用自定义铃声</translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="398"/>
+        <source>Name Server</source>
+        <translation>名称服务器</translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="426"/>
+        <source>Address</source>
+        <translation>地址：</translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="478"/>
+        <source>OpenDHT Configuration</source>
+        <translation>OpenDHT配置</translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="506"/>
+        <source>Enable proxy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="553"/>
+        <source>Bootstrap</source>
+        <translation>初始服务器</translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="594"/>
+        <source>Security</source>
+        <translation>安全</translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="631"/>
+        <source>CA Certificate</source>
+        <translation>颁发机构证书</translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="669"/>
+        <source>User Certificate</source>
+        <translation>用户证书</translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="707"/>
+        <source>Private Key</source>
+        <translation>私钥</translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="745"/>
+        <source>Private Key Password</source>
+        <translation>私钥密码</translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="790"/>
+        <source>Connectivity</source>
+        <translation>连接性</translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="826"/>
+        <source>Auto Connect On Local Network</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="852"/>
+        <source>Use UPnP</source>
+        <translation>使用UPnP</translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="878"/>
+        <source>Use TURN</source>
+        <translation>使用TURN</translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="897"/>
+        <source>TURN Address</source>
+        <translation>TURN地址</translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="937"/>
+        <source>TURN Username</source>
+        <translation>TURN用户名</translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="977"/>
+        <source>TURN Password</source>
+        <translation>TURN密码</translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="1015"/>
+        <source>Use STUN</source>
+        <translation>使用STUN</translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="1036"/>
+        <source>STUN Address</source>
+        <translation>STUN地址</translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="1069"/>
+        <source>Media</source>
+        <translation>媒体</translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="1094"/>
+        <source>Enable Video</source>
+        <translation>启用视频</translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="1125"/>
+        <source>Video Codecs</source>
+        <translation>视频编码</translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="1249"/>
+        <source>Audio Codecs</source>
+        <translation>音频编码</translation>
     </message>
 </context>
 <context>
-    <name>PhotoboothWidget</name>
+    <name>AvSettingPage</name>
     <message>
-        <location filename="../photoboothwidget.ui" line="20"/>
-        <source>Form</source>
-        <translation>表单</translation>
+        <location filename="../src/settingsview/components/AvSettingPage.qml" line="306"/>
+        <source>Audio / Video</source>
+        <translation>音频/视频</translation>
     </message>
     <message>
-        <location filename="../photoboothwidget.ui" line="120"/>
-        <source>Photobooth display</source>
-        <translation>照片展台展示</translation>
+        <location filename="../src/settingsview/components/AvSettingPage.qml" line="332"/>
+        <source>Audio</source>
+        <translation>音频</translation>
     </message>
     <message>
-        <location filename="../photoboothwidget.cpp" line="92"/>
-        <source>Choose File</source>
-        <translation>选择文件</translation>
+        <location filename="../src/settingsview/components/AvSettingPage.qml" line="366"/>
+        <source>Microphone</source>
+        <translation>麦克风</translation>
     </message>
     <message>
-        <location filename="../photoboothwidget.cpp" line="94"/>
-        <source>Image Files (*.jpg *.jpeg *.png)</source>
-        <translation>图像文件（* .jpg * .jpeg * .png） </translation>
+        <location filename="../src/settingsview/components/AvSettingPage.qml" line="443"/>
+        <source>Output Device</source>
+        <translation>输出设备</translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/AvSettingPage.qml" line="495"/>
+        <source>Ringtone Device</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/AvSettingPage.qml" line="549"/>
+        <source>Audio Manager</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/AvSettingPage.qml" line="606"/>
+        <source>Video</source>
+        <translation>视频</translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/AvSettingPage.qml" line="641"/>
+        <source>Device</source>
+        <translation>设备</translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/AvSettingPage.qml" line="695"/>
+        <source>Resolution</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/AvSettingPage.qml" line="748"/>
+        <source>Fps</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/AvSettingPage.qml" line="831"/>
+        <source>Preview unavailable</source>
+        <translation>预览不可用</translation>
     </message>
 </context>
 <context>
-    <name>PrivateBridging</name>
+    <name>BackupKeyPage</name>
     <message>
-        <location filename="../messagewebview.cpp" line="374"/>
-        <source>Choose File</source>
-        <translation>选择文件</translation>
+        <location filename="../src/wizardview/components/BackupKeyPage.qml" line="40"/>
+        <source>Export Account Here</source>
+        <translation>此处导出账户</translation>
     </message>
     <message>
-        <location filename="../messagewebview.cpp" line="374"/>
-        <source>Files (*)</source>
-        <translation>文件 (*)</translation>
+        <location filename="../src/wizardview/components/BackupKeyPage.qml" line="43"/>
+        <source>Jami archive files</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/wizardview/components/BackupKeyPage.qml" line="43"/>
+        <source>All files</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/wizardview/components/BackupKeyPage.qml" line="88"/>
+        <source>Backup your account</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/wizardview/components/BackupKeyPage.qml" line="99"/>
+        <source>This account only exists on this device. If you lost your device or uninstall the application,your account will be deleted. You can backup your account now or later.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/wizardview/components/BackupKeyPage.qml" line="146"/>
+        <source>Export</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/wizardview/components/BackupKeyPage.qml" line="175"/>
+        <source>Skip</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/wizardview/components/BackupKeyPage.qml" line="116"/>
+        <source>Never show me this again</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>QObject</name>
+    <name>BannedItemDelegate</name>
     <message>
-        <location filename="../utils.cpp" line="183"/>
-        <source>No default mail client found</source>
-        <translation>未找到默认邮件客户端</translation>
+        <location filename="../src/settingsview/components/BannedItemDelegate.qml" line="141"/>
+        <source>name</source>
+        <translation>姓名</translation>
     </message>
     <message>
-        <location filename="../deviceitemwidget.cpp" line="43"/>
-        <location filename="../deviceitemwidget.cpp" line="85"/>
-        <source>Edit Device Name</source>
-        <translation>编辑设备名</translation>
+        <location filename="../src/settingsview/components/BannedItemDelegate.qml" line="161"/>
+        <source>id</source>
+        <translation>id</translation>
     </message>
     <message>
-        <location filename="../deviceitemwidget.cpp" line="44"/>
-        <source>Unlink Device From Account</source>
-        <translation>取消设备与账户的链接</translation>
-    </message>
-    <message>
-        <location filename="../deviceitemwidget.cpp" line="80"/>
-        <source>Save new device name</source>
-        <translation>保存新设备名称 </translation>
-    </message>
-    <message>
-        <location filename="../banneditemwidget.cpp" line="39"/>
+        <location filename="../src/settingsview/components/BannedItemDelegate.qml" line="188"/>
         <source>Add as contact</source>
         <translation>添加为联系人 </translation>
     </message>
 </context>
 <context>
-    <name>RingButton</name>
+    <name>CallAdapter</name>
     <message>
-        <location filename="../ringbutton.ui" line="140"/>
-        <source>Select folder</source>
-        <translation>选择文件夹</translation>
+        <location filename="../src/calladapter.cpp" line="258"/>
+        <location filename="../src/calladapter.cpp" line="307"/>
+        <source>me</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>SettingsWidget</name>
+    <name>CallAdvancedOptions</name>
     <message>
-        <location filename="../settingswidget.ui" line="14"/>
-        <source>Form</source>
-        <translation>表单</translation>
+        <location filename="../src/mainview/components/CallAdvancedOptions.qml" line="92"/>
+        <source>Add to conference</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settingswidget.ui" line="141"/>
-        <source>Settings</source>
-        <translation>设置</translation>
+        <location filename="../src/mainview/components/CallAdvancedOptions.qml" line="92"/>
+        <source>Transfer this call</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settingswidget.ui" line="229"/>
-        <source>Account</source>
-        <translation>账户</translation>
-    </message>
-    <message>
-        <location filename="../settingswidget.ui" line="267"/>
-        <location filename="../settingswidget.ui" line="503"/>
-        <source>General</source>
-        <translation>通用</translation>
-    </message>
-    <message>
-        <location filename="../settingswidget.ui" line="305"/>
-        <location filename="../settingswidget.ui" line="3416"/>
-        <source>Audio / Video</source>
-        <translation>音频/视频</translation>
-    </message>
-    <message>
-        <location filename="../settingswidget.ui" line="542"/>
-        <source>System</source>
-        <translation>系统</translation>
-    </message>
-    <message>
-        <location filename="../settingswidget.ui" line="610"/>
-        <source>Enable desktop notifications</source>
-        <translation>启用桌面通知</translation>
-    </message>
-    <message>
-        <location filename="../settingswidget.ui" line="653"/>
-        <source>Keep minimized on close</source>
-        <translation>退出时保持窗口最小化</translation>
-    </message>
-    <message>
-        <location filename="../settingswidget.ui" line="678"/>
-        <source>Download folder</source>
-        <translation>下载文件夹</translation>
-    </message>
-    <message>
-        <location filename="../settingswidget.ui" line="811"/>
-        <source>Save in</source>
-        <translation>保存至</translation>
-    </message>
-    <message>
-        <location filename="../settingswidget.ui" line="904"/>
-        <source>Always Recording</source>
-        <translation>总是录音</translation>
-    </message>
-    <message>
-        <location filename="../settingswidget.ui" line="943"/>
-        <source>Updates</source>
-        <translation>更新</translation>
-    </message>
-    <message>
-        <location filename="../settingswidget.ui" line="1008"/>
-        <source>Check for updates automatically every</source>
-        <translation>自动检查更新：每</translation>
-    </message>
-    <message>
-        <location filename="../settingswidget.ui" line="1032"/>
-        <source>Interval between update checks in days selector</source>
-        <translation>每隔几天检查更新</translation>
-    </message>
-    <message>
-        <location filename="../settingswidget.ui" line="1038"/>
-        <source> days</source>
-        <translation>天</translation>
-    </message>
-    <message>
-        <location filename="../settingswidget.ui" line="1081"/>
-        <source>Check for updates now button</source>
-        <translation>现在检查更新按钮</translation>
-    </message>
-    <message>
-        <location filename="../settingswidget.ui" line="1084"/>
-        <source>Check for updates now</source>
-        <translation>立即检查更新</translation>
-    </message>
-    <message>
-        <location filename="../settingswidget.ui" line="3027"/>
-        <source>Password</source>
-        <translation>密码</translation>
-    </message>
-    <message>
-        <location filename="../settingswidget.ui" line="1418"/>
-        <location filename="../settingswidget.ui" line="2729"/>
-        <source>Enable</source>
-        <translation>启用</translation>
-    </message>
-    <message>
-        <location filename="../settingswidget.ui" line="607"/>
-        <source>toggle enable notifications</source>
-        <translation>是否启用通知 </translation>
-    </message>
-    <message>
-        <location filename="../settingswidget.ui" line="650"/>
-        <source>Toggle keep minimized on close</source>
-        <translation>是否在关闭时保持最小化</translation>
-    </message>
-    <message>
-        <location filename="../settingswidget.ui" line="764"/>
-        <source>Call Recordings</source>
-        <translation>通话录音</translation>
-    </message>
-    <message>
-        <location filename="../settingswidget.ui" line="1005"/>
-        <source>Toggle automatic updates</source>
-        <translation>是否自动更新应用</translation>
-    </message>
-    <message>
-        <location filename="../settingswidget.ui" line="1231"/>
-        <source>Jami Account</source>
-        <translation>Jami账户</translation>
-    </message>
-    <message>
-        <location filename="../settingswidget.ui" line="1453"/>
-        <location filename="../settingswidget.ui" line="2761"/>
-        <source>Profile</source>
-        <translation>资料</translation>
-    </message>
-    <message>
-        <location filename="../settingswidget.ui" line="1567"/>
-        <location filename="../settingswidget.ui" line="2875"/>
-        <source>Identity</source>
-        <translation>身份</translation>
-    </message>
-    <message>
-        <location filename="../settingswidget.ui" line="1614"/>
-        <source>Id</source>
-        <translation>ID</translation>
-    </message>
-    <message>
-        <location filename="../settingswidget.ui" line="1673"/>
-        <source>Registered name</source>
-        <translation>已注册名称</translation>
-    </message>
-    <message>
-        <location filename="../settingswidget.ui" line="1721"/>
-        <source>Type here to register a username</source>
-        <translation>在此处输入注册用户名 </translation>
-    </message>
-    <message>
-        <location filename="../settingswidget.ui" line="1755"/>
-        <source>Register</source>
-        <translation>注册</translation>
-    </message>
-    <message>
-        <location filename="../settingswidget.ui" line="1827"/>
-        <source>Change Password</source>
-        <translation>更改用户名</translation>
-    </message>
-    <message>
-        <location filename="../settingswidget.ui" line="1868"/>
-        <source>Export Account</source>
-        <translation>导出账户</translation>
-    </message>
-    <message>
-        <location filename="../settingswidget.ui" line="1909"/>
-        <location filename="../settingswidget.ui" line="3089"/>
-        <source>Delete Account</source>
-        <translation>删除账户</translation>
-    </message>
-    <message>
-        <location filename="../settingswidget.ui" line="1973"/>
-        <source>Linked Devices</source>
-        <translation>连结的设备</translation>
-    </message>
-    <message>
-        <location filename="../settingswidget.ui" line="2078"/>
-        <source>Link Another Device</source>
-        <translation>连结其他设备</translation>
-    </message>
-    <message>
-        <location filename="../settingswidget.ui" line="2142"/>
-        <source>Banned Contacts</source>
-        <translation>已屏蔽的联系人</translation>
-    </message>
-    <message>
-        <location filename="../settingswidget.ui" line="3788"/>
-        <source>Format</source>
-        <translation>格式</translation>
-    </message>
-    <message>
-        <location filename="../settingswidget.ui" line="3831"/>
-        <source>Video device framerate selector</source>
-        <translation>选择视频设备帧率</translation>
-    </message>
-    <message>
-        <location filename="../settingswidget.ui" line="3967"/>
-        <source>Preview unavailable</source>
-        <translation>预览不可用</translation>
-    </message>
-    <message>
-        <location filename="../settingswidget.ui" line="2359"/>
-        <location filename="../settingswidget.ui" line="3187"/>
-        <source>Advanced Account Settings</source>
-        <translation>高级账户设置</translation>
-    </message>
-    <message>
-        <location filename="../settingswidget.ui" line="2554"/>
-        <source>SIP Account</source>
-        <translation>SIP 账户</translation>
-    </message>
-    <message>
-        <location filename="../settingswidget.ui" line="2925"/>
-        <source>Username</source>
-        <translation>用户名</translation>
-    </message>
-    <message>
-        <location filename="../settingswidget.ui" line="2958"/>
-        <source>Hostname</source>
-        <translation>主机名</translation>
-    </message>
-    <message>
-        <location filename="../settingswidget.ui" line="2991"/>
-        <source>Proxy</source>
-        <translation>代理</translation>
-    </message>
-    <message>
-        <location filename="../settingswidget.ui" line="3461"/>
-        <source>Audio</source>
-        <translation>音频</translation>
-    </message>
-    <message>
-        <location filename="../settingswidget.ui" line="3511"/>
-        <source>Microphone</source>
-        <translation>麦克风</translation>
-    </message>
-    <message>
-        <location filename="../settingswidget.ui" line="3551"/>
-        <source>Audio input device selector</source>
-        <translation>选择音频输入设备</translation>
-    </message>
-    <message>
-        <location filename="../settingswidget.ui" line="3585"/>
-        <source>Output Device</source>
-        <translation>输出设备</translation>
-    </message>
-    <message>
-        <location filename="../settingswidget.ui" line="3625"/>
-        <source>Choose the output device</source>
-        <translation>选择输出设备</translation>
-    </message>
-    <message>
-        <location filename="../settingswidget.ui" line="3682"/>
-        <source>Video</source>
-        <translation>视频</translation>
-    </message>
-    <message>
-        <location filename="../settingswidget.ui" line="3720"/>
-        <source>Device</source>
-        <translation>设备</translation>
-    </message>
-    <message>
-        <location filename="../settingswidget.ui" line="3766"/>
-        <source>Video device selector</source>
-        <translation>选择视频设备</translation>
-    </message>
-    <message>
-        <location filename="../settingswidget.cpp" line="459"/>
-        <source>A registered name should not have any spaces and must be at least three letters long</source>
-        <translation>注册名称不得有空格，并且必须至少包含三个字母 </translation>
-    </message>
-    <message>
-        <location filename="../settingswidget.cpp" line="466"/>
-        <source>This name is already taken</source>
-        <translation>这个名字已被占用</translation>
-    </message>
-    <message>
-        <location filename="../settingswidget.cpp" line="92"/>
-        <location filename="../settingswidget.cpp" line="110"/>
-        <source>Enter an alias</source>
-        <translation>输入别名</translation>
-    </message>
-    <message>
-        <location filename="../settingswidget.cpp" line="473"/>
-        <source>Register this name</source>
-        <translation>注册这个名字 </translation>
-    </message>
-    <message>
-        <location filename="../settingswidget.cpp" line="550"/>
-        <source>Remove Device</source>
-        <translation>删除设备</translation>
-    </message>
-    <message>
-        <location filename="../settingswidget.cpp" line="551"/>
-        <source>Enter this account&apos;s password to confirm the removal of this device</source>
-        <translation>输入此账户的密码，以确认删除该设备</translation>
-    </message>
-    <message>
-        <location filename="../settingswidget.cpp" line="558"/>
-        <source>Are you sure you wish to remove this device?</source>
-        <translation>您确定要删除此设备吗？ </translation>
-    </message>
-    <message>
-        <location filename="../settingswidget.cpp" line="589"/>
-        <source>Export Account Here</source>
-        <translation>此处导出账户</translation>
-    </message>
-    <message>
-        <location filename="../settingswidget.cpp" line="887"/>
-        <source>Select A Folder For Your Downloads</source>
-        <translation>为您下载的文件选择一个文件夹</translation>
-    </message>
-    <message>
-        <location filename="../settingswidget.cpp" line="904"/>
-        <source>Select A Folder For Your Recordings</source>
-        <translation>为你的录音挑选一个文件夹</translation>
+        <location filename="../src/mainview/components/CallAdvancedOptions.qml" line="110"/>
+        <source>Search contacts</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>VideoOverlay</name>
+    <name>CallViewContextMenu</name>
     <message>
-        <location filename="../videooverlay.ui" line="419"/>
-        <source>Call on Hold</source>
-        <translation>通话等待中</translation>
+        <location filename="../src/mainview/components/CallViewContextMenu.qml" line="100"/>
+        <source>Resume call</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../videooverlay.ui" line="89"/>
-        <source>Hold / Unhold</source>
-        <translation>等待/取消等待</translation>
+        <location filename="../src/mainview/components/CallViewContextMenu.qml" line="100"/>
+        <source>Hold call</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../videooverlay.ui" line="124"/>
-        <source>Chat</source>
-        <translation>聊天</translation>
+        <location filename="../src/mainview/components/CallViewContextMenu.qml" line="117"/>
+        <source>Transfer call</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../videooverlay.ui" line="162"/>
-        <source>Mute Mic</source>
-        <translation>将麦克风静音</translation>
+        <location filename="../src/mainview/components/CallViewContextMenu.qml" line="143"/>
+        <source>Stop recording</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../videooverlay.ui" line="244"/>
-        <source>Record call</source>
-        <translation>录制通话</translation>
+        <location filename="../src/mainview/components/CallViewContextMenu.qml" line="143"/>
+        <source>Start recording</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../videooverlay.ui" line="325"/>
-        <source>Name label</source>
-        <translation>名称标签</translation>
+        <location filename="../src/mainview/components/CallViewContextMenu.qml" line="157"/>
+        <source>Exit full screen</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../videooverlay.ui" line="390"/>
-        <source>Time elapsed</source>
-        <translation>用时</translation>
+        <location filename="../src/mainview/components/CallViewContextMenu.qml" line="157"/>
+        <source>Full screen mode</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../videooverlay.ui" line="393"/>
-        <source>00:00</source>
-        <translation>00:00</translation>
-    </message>
-    <message>
-        <location filename="../videooverlay.ui" line="57"/>
-        <source>Hangup</source>
-        <translation>挂断</translation>
-    </message>
-    <message>
-        <location filename="../videooverlay.ui" line="203"/>
-        <source>Mute Video</source>
-        <translation>关闭视频</translation>
-    </message>
-</context>
-<context>
-    <name>VideoView</name>
-    <message>
-        <location filename="../videoview.cpp" line="271"/>
+        <location filename="../src/mainview/components/CallViewContextMenu.qml" line="200"/>
         <source>Share entire screen</source>
         <translation>共享整个屏幕</translation>
     </message>
     <message>
-        <location filename="../videoview.cpp" line="274"/>
+        <location filename="../src/mainview/components/CallViewContextMenu.qml" line="221"/>
         <source>Share screen area</source>
         <translation>共享屏幕区域</translation>
     </message>
     <message>
-        <location filename="../videoview.cpp" line="281"/>
+        <location filename="../src/mainview/components/CallViewContextMenu.qml" line="244"/>
         <source>Share file</source>
         <translation>共享文件</translation>
+    </message>
+</context>
+<context>
+    <name>CollapsiblePasswordWidget</name>
+    <message>
+        <location filename="../src/wizardview/components/CollapsiblePasswordWidget.qml" line="68"/>
+        <source>Password</source>
+        <translation>密码</translation>
+    </message>
+    <message>
+        <location filename="../src/wizardview/components/CollapsiblePasswordWidget.qml" line="100"/>
+        <source>Confirm Password</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ConnectToAccountManagerPage</name>
+    <message>
+        <location filename="../src/wizardview/components/ConnectToAccountManagerPage.qml" line="63"/>
+        <source>Sign in</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/wizardview/components/ConnectToAccountManagerPage.qml" line="74"/>
+        <source>Username</source>
+        <translation>用户名</translation>
+    </message>
+    <message>
+        <location filename="../src/wizardview/components/ConnectToAccountManagerPage.qml" line="83"/>
+        <source>Password</source>
+        <translation>密码</translation>
+    </message>
+    <message>
+        <location filename="../src/wizardview/components/ConnectToAccountManagerPage.qml" line="92"/>
+        <source>Account Manager</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ContactPicker</name>
+    <message>
+        <location filename="../src/mainview/components/ContactPicker.qml" line="91"/>
+        <source>Add to conference</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mainview/components/ContactPicker.qml" line="91"/>
+        <source>Transfer this call</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mainview/components/ContactPicker.qml" line="109"/>
+        <source>Search contacts</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ContactSearchBar</name>
+    <message>
+        <location filename="../src/mainview/components/ContactSearchBar.qml" line="96"/>
+        <source>Find or start a conversation</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ConversationSmartListContextMenu</name>
+    <message>
+        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="56"/>
+        <source>Start video call</source>
+        <translation>发起视频通话</translation>
+    </message>
+    <message>
+        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="72"/>
+        <source>Start audio call</source>
+        <translation>发起语音通话</translation>
+    </message>
+    <message>
+        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="88"/>
+        <source>Clear conversation</source>
+        <translation>清除会话</translation>
+    </message>
+    <message>
+        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="103"/>
+        <source>Remove contact</source>
+        <translation>删除联系人</translation>
+    </message>
+    <message>
+        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="127"/>
+        <source>Block contact</source>
+        <translation>屏蔽联系人</translation>
+    </message>
+    <message>
+        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="151"/>
+        <source>Profile</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>CreateAccountPage</name>
+    <message>
+        <location filename="../src/wizardview/components/CreateAccountPage.qml" line="104"/>
+        <source>Profile</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/wizardview/components/CreateAccountPage.qml" line="143"/>
+        <source>Profile name</source>
+        <translation>个人资料名称</translation>
+    </message>
+    <message>
+        <location filename="../src/wizardview/components/CreateAccountPage.qml" line="176"/>
+        <source>Account</source>
+        <translation>账户</translation>
+    </message>
+    <message>
+        <location filename="../src/wizardview/components/CreateAccountPage.qml" line="205"/>
+        <source>Register public username</source>
+        <translation>注册公共用户名</translation>
+    </message>
+    <message>
+        <location filename="../src/wizardview/components/CreateAccountPage.qml" line="236"/>
+        <source>Choose your username</source>
+        <translation>设置您的用户名</translation>
+    </message>
+    <message>
+        <location filename="../src/wizardview/components/CreateAccountPage.qml" line="290"/>
+        <source>Choose a password for enhanced security</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>CreateSIPAccountPage</name>
+    <message>
+        <location filename="../src/wizardview/components/CreateSIPAccountPage.qml" line="76"/>
+        <source>Profile</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/wizardview/components/CreateSIPAccountPage.qml" line="113"/>
+        <source>Profile name</source>
+        <translation>个人资料名称</translation>
+    </message>
+    <message>
+        <location filename="../src/wizardview/components/CreateSIPAccountPage.qml" line="137"/>
+        <source>SIP Account</source>
+        <translation>SIP 账户</translation>
+    </message>
+    <message>
+        <location filename="../src/wizardview/components/CreateSIPAccountPage.qml" line="163"/>
+        <source>Server</source>
+        <translation>服务器</translation>
+    </message>
+    <message>
+        <location filename="../src/wizardview/components/CreateSIPAccountPage.qml" line="174"/>
+        <source>Proxy</source>
+        <translation>代理</translation>
+    </message>
+    <message>
+        <location filename="../src/wizardview/components/CreateSIPAccountPage.qml" line="185"/>
+        <source>Username</source>
+        <translation>用户名</translation>
+    </message>
+    <message>
+        <location filename="../src/wizardview/components/CreateSIPAccountPage.qml" line="197"/>
+        <source>Password</source>
+        <translation>密码</translation>
+    </message>
+</context>
+<context>
+    <name>CurrentAccountSettingsScrollPage</name>
+    <message>
+        <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="249"/>
+        <source>Export Account Here</source>
+        <translation>此处导出账户</translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="252"/>
+        <source>Jami archive files</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="252"/>
+        <source>All files</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="264"/>
+        <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="290"/>
+        <source>Success</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="264"/>
+        <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="290"/>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="266"/>
+        <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="296"/>
+        <source>Export Successful</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="266"/>
+        <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="296"/>
+        <source>Export Failed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="299"/>
+        <source>Password Changed Successfully</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="299"/>
+        <source>Password Change Failed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="302"/>
+        <source>Password Set Successfully</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="302"/>
+        <source>Password Set Failed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="303"/>
+        <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="970"/>
+        <source>Change Password</source>
+        <translation>更改用户名</translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="303"/>
+        <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="970"/>
+        <source>Set Password</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="384"/>
+        <source>Remove Device</source>
+        <translation>删除设备</translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="385"/>
+        <source>Are you sure you wish to remove this device?</source>
+        <translation>您确定要删除此设备吗？ </translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="512"/>
+        <source>Jami Account</source>
+        <translation>Jami账户</translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="1088"/>
+        <source>Linked Device</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="1160"/>
+        <source>+Link Another Device</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="1202"/>
+        <source>Banned Contact</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="575"/>
+        <source>Enable</source>
+        <translation>启用</translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="601"/>
+        <source>Profile</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="686"/>
+        <source>Identity</source>
+        <translation>身份</translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="725"/>
+        <source>Id</source>
+        <translation>ID</translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="788"/>
+        <source>Registered name</source>
+        <translation>已注册名称</translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="815"/>
+        <source>Type here to register a username</source>
+        <translation>在此处输入注册用户名 </translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="816"/>
+        <source></source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="890"/>
+        <source>A registered name should not have any spaces and must be at least three letters long</source>
+        <translation>注册名称不得有空格，并且必须至少包含三个字母 </translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="892"/>
+        <source>This name is already taken</source>
+        <translation>这个名字已被占用</translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="894"/>
+        <source>Register this name</source>
+        <translation>注册这个名字 </translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="937"/>
+        <source>Register</source>
+        <translation>注册</translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="1008"/>
+        <source>Export Account</source>
+        <translation>导出账户</translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="1051"/>
+        <source>Delete Account</source>
+        <translation>删除账户</translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="1332"/>
+        <source>Advanced Account Settings</source>
+        <translation>高级账户设置</translation>
+    </message>
+</context>
+<context>
+    <name>CurrentSIPAccountSettingScrollPage</name>
+    <message>
+        <location filename="../src/settingsview/components/CurrentSIPAccountSettingScrollPage.qml" line="154"/>
+        <source>SIP Account</source>
+        <translation>SIP 账户</translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/CurrentSIPAccountSettingScrollPage.qml" line="217"/>
+        <source>Enable</source>
+        <translation>启用</translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/CurrentSIPAccountSettingScrollPage.qml" line="243"/>
+        <source>Profile</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/CurrentSIPAccountSettingScrollPage.qml" line="329"/>
+        <source>Identity</source>
+        <translation>身份</translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/CurrentSIPAccountSettingScrollPage.qml" line="370"/>
+        <source>Username</source>
+        <translation>用户名</translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/CurrentSIPAccountSettingScrollPage.qml" line="405"/>
+        <source>Hostname</source>
+        <translation>主机名</translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/CurrentSIPAccountSettingScrollPage.qml" line="440"/>
+        <source>Proxy</source>
+        <translation>代理</translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/CurrentSIPAccountSettingScrollPage.qml" line="475"/>
+        <source>Password</source>
+        <translation>密码</translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/CurrentSIPAccountSettingScrollPage.qml" line="536"/>
+        <source>Delete Account</source>
+        <translation>删除账户</translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/CurrentSIPAccountSettingScrollPage.qml" line="587"/>
+        <source>Advanced Account Settings</source>
+        <translation>高级账户设置</translation>
+    </message>
+</context>
+<context>
+    <name>DeleteAccountDialog</name>
+    <message>
+        <location filename="../src/commoncomponents/DeleteAccountDialog.qml" line="52"/>
+        <source>Account deletion</source>
+        <translation>删除账户</translation>
+    </message>
+    <message>
+        <location filename="../src/commoncomponents/DeleteAccountDialog.qml" line="77"/>
+        <source>Do you really want to delete the following account?</source>
+        <translation>确定删除以下账户吗？</translation>
+    </message>
+    <message>
+        <location filename="../src/commoncomponents/DeleteAccountDialog.qml" line="135"/>
+        <source>If this account hasn&apos;t been exported, or added to another device, it will be irrevocably lost.</source>
+        <translation>如果此账户尚未导出或添加到其他设备，它将不可挽回地丢失。</translation>
+    </message>
+    <message>
+        <location filename="../src/commoncomponents/DeleteAccountDialog.qml" line="182"/>
+        <source>Delete</source>
+        <translation>删除</translation>
+    </message>
+    <message>
+        <location filename="../src/commoncomponents/DeleteAccountDialog.qml" line="222"/>
+        <source>Cancel</source>
+        <translation>取消</translation>
+    </message>
+</context>
+<context>
+    <name>DeviceItemDelegate</name>
+    <message>
+        <location filename="../src/settingsview/components/DeviceItemDelegate.qml" line="157"/>
+        <source>this device</source>
+        <translation>该设备</translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/DeviceItemDelegate.qml" line="135"/>
+        <source>Device Id</source>
+        <translation>设备ID</translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/DeviceItemDelegate.qml" line="192"/>
+        <source>Edit Device Name</source>
+        <translation>编辑设备名</translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/DeviceItemDelegate.qml" line="194"/>
+        <source>Save new device name</source>
+        <translation>保存新设备名称 </translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/DeviceItemDelegate.qml" line="197"/>
+        <source>Unlink Device From Account</source>
+        <translation>取消设备与账户的链接</translation>
+    </message>
+</context>
+<context>
+    <name>GeneralSettingsPage</name>
+    <message>
+        <location filename="../src/settingsview/components/GeneralSettingsPage.qml" line="99"/>
+        <source>Select A Folder For Your Downloads</source>
+        <translation>为您下载的文件选择一个文件夹</translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/GeneralSettingsPage.qml" line="123"/>
+        <source>Select A Folder For Your Recordings</source>
+        <translation>为你的录音挑选一个文件夹</translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/GeneralSettingsPage.qml" line="215"/>
+        <source>General</source>
+        <translation>通用</translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/GeneralSettingsPage.qml" line="235"/>
+        <source>System</source>
+        <translation>系统</translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/GeneralSettingsPage.qml" line="367"/>
+        <source>Call Recording</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/GeneralSettingsPage.qml" line="308"/>
+        <source>Download folder</source>
+        <translation>下载文件夹</translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/GeneralSettingsPage.qml" line="426"/>
+        <source>Quality</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/GeneralSettingsPage.qml" line="458"/>
+        <source>VALUE </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/GeneralSettingsPage.qml" line="506"/>
+        <source>Save in</source>
+        <translation>保存至</translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/GeneralSettingsPage.qml" line="566"/>
+        <source>Updates</source>
+        <translation>更新</translation>
+    </message>
+</context>
+<context>
+    <name>ImportFromBackupPage</name>
+    <message>
+        <location filename="../src/wizardview/components/ImportFromBackupPage.qml" line="29"/>
+        <location filename="../src/wizardview/components/ImportFromBackupPage.qml" line="35"/>
+        <source>Archive(none)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/wizardview/components/ImportFromBackupPage.qml" line="42"/>
+        <source>Open File</source>
+        <translation>打开文件</translation>
+    </message>
+    <message>
+        <location filename="../src/wizardview/components/ImportFromBackupPage.qml" line="45"/>
+        <source>Jami archive files</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/wizardview/components/ImportFromBackupPage.qml" line="45"/>
+        <source>All files</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/wizardview/components/ImportFromBackupPage.qml" line="83"/>
+        <source>Import from backup</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/wizardview/components/ImportFromBackupPage.qml" line="162"/>
+        <source>You can obtain an archive by clicking on &quot;Export account&quot; in the account settings. This will create a .gz file on your device.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/wizardview/components/ImportFromBackupPage.qml" line="152"/>
+        <source>Password</source>
+        <translation>密码</translation>
+    </message>
+</context>
+<context>
+    <name>ImportFromDevicePage</name>
+    <message>
+        <location filename="../src/wizardview/components/ImportFromDevicePage.qml" line="70"/>
+        <source>Import from device</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/wizardview/components/ImportFromDevicePage.qml" line="117"/>
+        <source>Password</source>
+        <translation>密码</translation>
+    </message>
+    <message>
+        <location filename="../src/wizardview/components/ImportFromDevicePage.qml" line="127"/>
+        <source>To obtain a PIN (valid for 10 minutes), you need to open the account settings on the other device and click on &quot;Link to another device&quot;.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/wizardview/components/ImportFromDevicePage.qml" line="107"/>
+        <source>PIN</source>
+        <translation>PIN</translation>
+    </message>
+</context>
+<context>
+    <name>IncomingCallPage</name>
+    <message>
+        <location filename="../src/mainview/components/IncomingCallPage.qml" line="293"/>
+        <source>Answer</source>
+        <translation>应答</translation>
+    </message>
+    <message>
+        <location filename="../src/mainview/components/IncomingCallPage.qml" line="334"/>
+        <source>Ignore</source>
+        <translation>忽略</translation>
+    </message>
+</context>
+<context>
+    <name>JamiTheme</name>
+    <message>
+        <location filename="../src/constant/JamiTheme.qml" line="85"/>
+        <source>Find or start a conversation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiTheme.qml" line="86"/>
+        <source>Search your invitations</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>LeftPanelView</name>
+    <message>
+        <location filename="../src/settingsview/components/LeftPanelView.qml" line="61"/>
+        <source>Account</source>
+        <translation>账户</translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/LeftPanelView.qml" line="74"/>
+        <source>General</source>
+        <translation>通用</translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/LeftPanelView.qml" line="87"/>
+        <source>Audio/Video</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/LeftPanelView.qml" line="100"/>
+        <source>Plugins</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>LinkDeviceDialog</name>
+    <message>
+        <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="178"/>
+        <source>Enter your account password</source>
+        <translation>输入您的账户密码 </translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="208"/>
+        <source>Password</source>
+        <translation>密码</translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="287"/>
+        <source>Cancel</source>
+        <translation>取消</translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="31"/>
+        <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="87"/>
+        <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="581"/>
+        <source>This pin and the account password should be entered in your device within 10 minutes.</source>
+        <translation>您需在 10 分钟内在您的设备上输入此 PIN 码和账户密码。</translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="100"/>
+        <source>Error connecting to the network.
+Please try again later.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="104"/>
+        <source>Something went wrong.
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="128"/>
+        <source>Link another device</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="248"/>
+        <source>Register</source>
+        <translation>注册</translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="371"/>
+        <source>Exporting Account</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="645"/>
+        <source>Close</source>
+        <translation>关闭</translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="96"/>
+        <source>Incorrect password</source>
+        <translation>密码错误</translation>
+    </message>
+</context>
+<context>
+    <name>NameRegistrationDialog</name>
+    <message>
+        <location filename="../src/settingsview/components/NameRegistrationDialog.qml" line="101"/>
+        <source>Set Registered Name</source>
+        <translation>设置注册名称 </translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/NameRegistrationDialog.qml" line="147"/>
+        <source>Enter your account password</source>
+        <translation>输入您的账户密码  </translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/NameRegistrationDialog.qml" line="177"/>
+        <source>Password</source>
+        <translation>密码</translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/NameRegistrationDialog.qml" line="218"/>
+        <source>Register</source>
+        <translation>注册</translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/NameRegistrationDialog.qml" line="257"/>
+        <source>Cancel</source>
+        <translation>取消</translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/NameRegistrationDialog.qml" line="341"/>
+        <source>Registering Name</source>
+        <translation>正在注册名称</translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/NameRegistrationDialog.qml" line="34"/>
+        <location filename="../src/settingsview/components/NameRegistrationDialog.qml" line="474"/>
+        <source>Something went wrong</source>
+        <translation>有些不对劲 </translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/NameRegistrationDialog.qml" line="525"/>
+        <source>Close</source>
+        <translation>关闭</translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/NameRegistrationDialog.qml" line="81"/>
+        <source>Incorrect password</source>
+        <translation>密码错误</translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/NameRegistrationDialog.qml" line="85"/>
+        <source>Network error</source>
+        <translation>网络错误</translation>
+    </message>
+</context>
+<context>
+    <name>OutgoingCallPage</name>
+    <message>
+        <location filename="../src/mainview/components/OutgoingCallPage.qml" line="204"/>
+        <source>Cancel</source>
+        <translation>取消</translation>
+    </message>
+</context>
+<context>
+    <name>ParticipantContextMenu</name>
+    <message>
+        <location filename="../src/mainview/components/ParticipantContextMenu.qml" line="79"/>
+        <source>Hangup</source>
+        <translation>挂断</translation>
+    </message>
+    <message>
+        <location filename="../src/mainview/components/ParticipantContextMenu.qml" line="93"/>
+        <source>Maximize participant</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mainview/components/ParticipantContextMenu.qml" line="107"/>
+        <source>Minimize participant</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>PasswordDialog</name>
+    <message>
+        <location filename="../src/commoncomponents/PasswordDialog.qml" line="46"/>
+        <source>Enter the password of this account</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/commoncomponents/PasswordDialog.qml" line="48"/>
+        <source>Changing password</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/commoncomponents/PasswordDialog.qml" line="50"/>
+        <source>Set password</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/commoncomponents/PasswordDialog.qml" line="177"/>
+        <source>Enter Current Password</source>
+        <translation>输入当前密码</translation>
+    </message>
+    <message>
+        <location filename="../src/commoncomponents/PasswordDialog.qml" line="236"/>
+        <source>Enter New Password</source>
+        <translation>输入新密码</translation>
+    </message>
+    <message>
+        <location filename="../src/commoncomponents/PasswordDialog.qml" line="264"/>
+        <source>Confirm New Password</source>
+        <translation>确认新密码</translation>
+    </message>
+    <message>
+        <location filename="../src/commoncomponents/PasswordDialog.qml" line="320"/>
+        <source>Confirm</source>
+        <translation>确认</translation>
+    </message>
+    <message>
+        <location filename="../src/commoncomponents/PasswordDialog.qml" line="359"/>
+        <source>Cancel</source>
+        <translation>取消</translation>
+    </message>
+    <message>
+        <location filename="../src/commoncomponents/PasswordDialog.qml" line="208"/>
+        <source>Current Password Incorrect</source>
+        <translation>当前密码错误</translation>
+    </message>
+</context>
+<context>
+    <name>PhotoboothView</name>
+    <message>
+        <location filename="../src/commoncomponents/PhotoboothView.qml" line="55"/>
+        <source>Choose an image to be the avatar</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/commoncomponents/PhotoboothView.qml" line="58"/>
+        <source>Image Files</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/commoncomponents/PhotoboothView.qml" line="58"/>
+        <source>All files</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>PluginItemDelegate</name>
+    <message>
+        <location filename="../src/settingsview/components/PluginItemDelegate.qml" line="115"/>
+        <source>Load/Unload</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/PluginItemDelegate.qml" line="168"/>
+        <source>Edit preferences</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>PluginListPreferencesView</name>
+    <message>
+        <location filename="../src/settingsview/components/PluginListPreferencesView.qml" line="108"/>
+        <source>Uninstall plugin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/PluginListPreferencesView.qml" line="135"/>
+        <source>Reset preferences</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/PluginListPreferencesView.qml" line="261"/>
+        <source>Reset</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/PluginListPreferencesView.qml" line="285"/>
+        <source>Uninstall</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>PluginListSettingsView</name>
+    <message>
+        <location filename="../src/settingsview/components/PluginListSettingsView.qml" line="78"/>
+        <source>Select A Plugin to Install</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/PluginListSettingsView.qml" line="81"/>
+        <source>Plugin Files</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/PluginListSettingsView.qml" line="81"/>
+        <source>All files</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/PluginListSettingsView.qml" line="120"/>
+        <source>Installed plugins</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/PluginListSettingsView.qml" line="149"/>
+        <source>+ Install plugin</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>PluginSettingsPage</name>
+    <message>
+        <location filename="../src/settingsview/components/PluginSettingsPage.qml" line="90"/>
+        <source>Plugin</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>PreferenceItemDelegate</name>
+    <message>
+        <location filename="../src/settingsview/components/PreferenceItemDelegate.qml" line="94"/>
+        <source>Modify preference</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>QObject</name>
+    <message>
+        <location filename="../src/utils.cpp" line="259"/>
+        <source>No default mail client found</source>
+        <translation>未找到默认邮件客户端</translation>
+    </message>
+    <message>
+        <location filename="../src/videoinputdevicemodel.cpp" line="68"/>
+        <location filename="../src/videoinputdevicemodel.cpp" line="70"/>
+        <source>No Device</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>RecordBox</name>
+    <message>
+        <location filename="../src/mainview/components/RecordBox.qml" line="244"/>
+        <source>Preview unavailable</source>
+        <translation>预览不可用</translation>
+    </message>
+</context>
+<context>
+    <name>RevokeDevicePasswordDialog</name>
+    <message>
+        <location filename="../src/settingsview/components/RevokeDevicePasswordDialog.qml" line="45"/>
+        <source>Enter this account&apos;s password to confirm the removal of this device</source>
+        <translation>输入此账户的密码，以确认删除该设备</translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/RevokeDevicePasswordDialog.qml" line="86"/>
+        <source>Password</source>
+        <translation>密码</translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/RevokeDevicePasswordDialog.qml" line="125"/>
+        <source>Okay</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/RevokeDevicePasswordDialog.qml" line="164"/>
+        <source>Cancel</source>
+        <translation>取消</translation>
+    </message>
+</context>
+<context>
+    <name>SelectScreen</name>
+    <message>
+        <location filename="../src/mainview/components/SelectScreen.qml" line="97"/>
+        <source>Choose A Screen to Share</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mainview/components/SelectScreen.qml" line="190"/>
+        <location filename="../src/mainview/components/SelectScreen.qml" line="254"/>
+        <source>Screen</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mainview/components/SelectScreen.qml" line="297"/>
+        <source>Share Screen</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>SidePanelTabBar</name>
+    <message>
+        <location filename="../src/mainview/components/SidePanelTabBar.qml" line="112"/>
+        <source>CONVERSATIONS</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mainview/components/SidePanelTabBar.qml" line="222"/>
+        <source>INVITATIONS</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>SmartListModel</name>
+    <message>
+        <location filename="../src/smartlistmodel.cpp" line="63"/>
+        <location filename="../src/smartlistmodel.cpp" line="103"/>
+        <location filename="../src/smartlistmodel.cpp" line="111"/>
+        <location filename="../src/smartlistmodel.cpp" line="177"/>
+        <location filename="../src/smartlistmodel.cpp" line="186"/>
+        <location filename="../src/smartlistmodel.cpp" line="187"/>
+        <source>Calls</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/smartlistmodel.cpp" line="64"/>
+        <location filename="../src/smartlistmodel.cpp" line="104"/>
+        <location filename="../src/smartlistmodel.cpp" line="121"/>
+        <location filename="../src/smartlistmodel.cpp" line="178"/>
+        <location filename="../src/smartlistmodel.cpp" line="188"/>
+        <location filename="../src/smartlistmodel.cpp" line="189"/>
+        <source>Contacts</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>UserProfile</name>
+    <message>
+        <location filename="../src/mainview/components/UserProfile.qml" line="100"/>
+        <source>Informations</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mainview/components/UserProfile.qml" line="108"/>
+        <source>Username</source>
+        <translation>用户名</translation>
+    </message>
+    <message>
+        <location filename="../src/mainview/components/UserProfile.qml" line="137"/>
+        <source>ID</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mainview/components/UserProfile.qml" line="163"/>
+        <source>QR Code</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>UtilsAdapter</name>
+    <message>
+        <location filename="../src/utils.cpp" line="412"/>
+        <source>Created by:</source>
+        <translation>开发者：</translation>
+    </message>
+    <message>
+        <location filename="../src/utils.cpp" line="418"/>
+        <source>Artwork by:</source>
+        <translation>美工设计：</translation>
+    </message>
+    <message>
+        <location filename="../src/utils.cpp" line="426"/>
+        <source>Based on the SFLPhone project</source>
+        <translation>基于 SFLPhone 项目</translation>
+    </message>
+</context>
+<context>
+    <name>VideoCallPageContextMenuDeviceItem</name>
+    <message>
+        <location filename="../src/mainview/components/VideoCallPageContextMenuDeviceItem.qml" line="47"/>
+        <source>No video device</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>WelcomePage</name>
+    <message>
+        <location filename="../src/mainview/components/WelcomePage.qml" line="72"/>
+        <source>Jami is a free software for universal communication which repects the freedoms and privacy of its user.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mainview/components/WelcomePage.qml" line="91"/>
+        <source>This is your ID.
+Copy and share it with your friends</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>WelcomePageLayout</name>
+    <message>
+        <location filename="../src/wizardview/components/WelcomePageLayout.qml" line="50"/>
+        <source>Welcome to</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/wizardview/components/WelcomePageLayout.qml" line="100"/>
+        <source>Create local account</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/wizardview/components/WelcomePageLayout.qml" line="121"/>
+        <source>Import from device</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/wizardview/components/WelcomePageLayout.qml" line="144"/>
+        <source>Import from backup</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/wizardview/components/WelcomePageLayout.qml" line="167"/>
+        <source>Show Advanced</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/wizardview/components/WelcomePageLayout.qml" line="195"/>
+        <source>Connect to account manager</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/wizardview/components/WelcomePageLayout.qml" line="219"/>
+        <source>Add a new SIP account</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>WizardView</name>
+    <message>
+        <location filename="../src/wizardview/WizardView.qml" line="192"/>
+        <source>Generating your Jami account...</source>
+        <translation>正在生成您的Jami账户…</translation>
+    </message>
+    <message>
+        <location filename="../src/wizardview/WizardView.qml" line="202"/>
+        <source>Importing account archive...</source>
+        <translation>正导入账户存档...</translation>
+    </message>
+    <message>
+        <location filename="../src/wizardview/WizardView.qml" line="219"/>
+        <source>Migrating your Jami account...</source>
+        <translation>正在迁移您的Jami账户…</translation>
+    </message>
+    <message>
+        <location filename="../src/wizardview/WizardView.qml" line="223"/>
+        <source>Generating your SIP account...</source>
+        <translation>正在生成您的SIP账户…</translation>
+    </message>
+    <message>
+        <location filename="../src/wizardview/WizardView.qml" line="238"/>
+        <source>Connecting to account manager...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/wizardview/WizardView.qml" line="363"/>
+        <source>Success</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/wizardview/WizardView.qml" line="363"/>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/wizardview/WizardView.qml" line="364"/>
+        <source>Export Successful</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/wizardview/WizardView.qml" line="364"/>
+        <source>Export Failed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/wizardview/WizardView.qml" line="507"/>
+        <source>Archive(none)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/wizardview/WizardView.qml" line="610"/>
+        <source>Previous</source>
+        <translation>上一步</translation>
+    </message>
+    <message>
+        <location filename="../src/wizardview/WizardView.qml" line="661"/>
+        <source>Back</source>
+        <translation>上一步</translation>
+    </message>
+    <message>
+        <location filename="../src/wizardview/WizardView.qml" line="695"/>
+        <source>Next</source>
+        <translation>下一步</translation>
     </message>
 </context>
 </TS>
