@@ -308,19 +308,24 @@ CallAdapter::connectCallModel(const QString& accountId)
                     data["h"] = participant["h"].toInt();
                     data["uri"] = participant["uri"];
                     data["active"] = participant["active"] == "true";
+                    data["videoMuted"] = participant["videoMuted"] == "true";
+                    data["audioMuted"] = participant["audioMuted"] == "true";
                     auto bestName = participant["uri"];
                     data["isLocal"] = false;
                     auto& accInfo = LRCInstance::accountModel().getAccountInfo(accountId_);
                     if (bestName == accInfo.profileInfo.uri) {
                         bestName = tr("me");
                         data["isLocal"] = true;
+                        if (participant["videoMuted"] == "true")
+                            data["avatar"] = accInfo.profileInfo.avatar;
                     } else {
                         try {
                             auto& contact = LRCInstance::getCurrentAccountInfo()
                                                 .contactModel->getContact(participant["uri"]);
                             bestName = Utils::bestNameForContact(contact);
-                        } catch (...) {
-                        }
+                            if (participant["videoMuted"] == "true")
+                                data["avatar"] = contact.profileInfo.avatar;
+                        } catch (...) {}
                     }
                     data["bestName"] = bestName;
                     map.push_back(QVariant(data));

@@ -37,6 +37,16 @@ Rectangle {
         participantName.text = name
     }
 
+    function setAvatar(avatar) {
+        if (avatar === "") {
+            opacity = 0
+            contactImage.source = ""
+        } else {
+            opacity = 1
+            contactImage.source = "data:image/png;base64," + avatar
+        }
+    }
+
     function setMenuVisible(isVisible) {
         optionsButton.visible = isVisible
     }
@@ -52,6 +62,31 @@ Rectangle {
         hoverEnabled: true
         propagateComposedEvents: true
         acceptedButtons: Qt.LeftButton
+
+        Image {
+            id: contactImage
+
+            anchors.centerIn: parent
+
+            height:  Math.min(parent.width / 2, parent.height / 2)
+            width:  Math.min(parent.width / 2, parent.height / 2)
+
+            fillMode: Image.PreserveAspectFit
+            source: ""
+            asynchronous: true
+
+            layer.enabled: true
+            layer.effect: OpacityMask {
+                maskSource: Rectangle{
+                    width: contactImage.width
+                    height: contactImage.height
+                    radius: {
+                        var size = ((contactImage.width <= contactImage.height)? contactImage.width:contactImage.height)
+                        return size /2
+                    }
+                }
+            }
+        }
 
         RowLayout {
             id: bottomLabel
@@ -130,11 +165,13 @@ Rectangle {
         }
 
         onEntered: {
-            root.state = "entered"
+            if (contactImage.status === Image.Null)
+                root.state = "entered"
         }
 
         onExited: {
-            root.state = "exited"
+            if (contactImage.status === Image.Null)
+                root.state = "exited"
         }
     }
 

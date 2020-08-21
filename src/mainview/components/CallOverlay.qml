@@ -97,11 +97,16 @@ Rectangle {
                     console.log("Error when creating the hover")
                     return
                 }
+
                 hover.setParticipantName(infos[infoVariant].bestName)
                 hover.active = infos[infoVariant].active;
                 hover.isLocal = infos[infoVariant].isLocal;
                 hover.setMenuVisible(isMaster)
                 hover.uri = infos[infoVariant].uri
+                if (infos[infoVariant].videoMuted)
+                    hover.setAvatar(infos[infoVariant].avatar)
+                else
+                    hover.setAvatar("")
                 hover.injectedContextMenu = participantContextMenu
                 participantOverlays.push(hover)
             }
