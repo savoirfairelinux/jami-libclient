@@ -32,7 +32,7 @@
         <source>The Microsoft Windows client for Jami.
 Jami is a secured and distributed communication software.</source>
         <translation>Jami 的 Microsoft Windows 客户端。
-Jami 是一款加密、分布式的通讯软件。</translation>
+Jami 是一款安全的分布式通讯软件。</translation>
     </message>
     <message>
         <location filename="../aboutdialog.cpp" line="32"/>
@@ -93,37 +93,37 @@ Jami 是一款加密、分布式的通讯软件。</translation>
     <message>
         <location filename="../advancedsipsettingwidget.ui" line="281"/>
         <source>STUN Address</source>
-        <translation>STUN地址</translation>
+        <translation>STUN 地址</translation>
     </message>
     <message>
         <location filename="../advancedsipsettingwidget.ui" line="293"/>
         <source>Use STUN</source>
-        <translation>使用STUN</translation>
+        <translation>使用 STUN</translation>
     </message>
     <message>
         <location filename="../advancedsipsettingwidget.ui" line="317"/>
         <source>Use UPnP</source>
-        <translation>使用UPnP</translation>
+        <translation>使用 UPnP</translation>
     </message>
     <message>
         <location filename="../advancedsipsettingwidget.ui" line="329"/>
         <source>Use TURN</source>
-        <translation>使用TURN</translation>
+        <translation>使用 TURN</translation>
     </message>
     <message>
         <location filename="../advancedsipsettingwidget.ui" line="359"/>
         <source>TURN Password</source>
-        <translation>TURN密码</translation>
+        <translation>TURN 密码</translation>
     </message>
     <message>
         <location filename="../advancedsipsettingwidget.ui" line="391"/>
         <source>TURN Username</source>
-        <translation>TURN用户名</translation>
+        <translation>TURN 用户名</translation>
     </message>
     <message>
         <location filename="../advancedsipsettingwidget.ui" line="423"/>
         <source>TURN Address</source>
-        <translation>TURN地址</translation>
+        <translation>TURN 地址</translation>
     </message>
     <message>
         <location filename="../advancedsipsettingwidget.ui" line="464"/>
@@ -148,7 +148,7 @@ Jami 是一款加密、分布式的通讯软件。</translation>
     <message>
         <location filename="../advancedsipsettingwidget.cpp" line="142"/>
         <source>Audio Files (*.wav *.ogg *.opus *.mp3 *aiff *wma)</source>
-        <translation>音频文件(*.wav *.ogg *.opus *.mp3 *aiff *wma)</translation>
+        <translation>音频文件 (*.wav *.ogg *.opus *.mp3 *aiff *wma)</translation>
     </message>
     <message>
         <location filename="../advancedsipsettingwidget.cpp" line="151"/>
@@ -201,7 +201,7 @@ Jami 是一款加密、分布式的通讯软件。</translation>
     <message>
         <location filename="../advancedsettingswidget.ui" line="351"/>
         <source>OpenDHT Configuration</source>
-        <translation>OpenDHT配置</translation>
+        <translation>OpenDHT 配置</translation>
     </message>
     <message>
         <location filename="../advancedsettingswidget.ui" line="398"/>
@@ -246,37 +246,37 @@ Jami 是一款加密、分布式的通讯软件。</translation>
     <message>
         <location filename="../advancedsettingswidget.ui" line="868"/>
         <source>Use STUN</source>
-        <translation>使用STUN</translation>
+        <translation>使用 STUN</translation>
     </message>
     <message>
         <location filename="../advancedsettingswidget.ui" line="856"/>
         <source>STUN Address</source>
-        <translation>STUN地址</translation>
+        <translation>STUN 地址</translation>
     </message>
     <message>
         <location filename="../advancedsettingswidget.ui" line="892"/>
         <source>Use UPnP</source>
-        <translation>使用UPnP</translation>
+        <translation>使用 UPnP</translation>
     </message>
     <message>
         <location filename="../advancedsettingswidget.ui" line="904"/>
         <source>Use TURN</source>
-        <translation>使用TURN</translation>
+        <translation>使用 TURN</translation>
     </message>
     <message>
         <location filename="../advancedsettingswidget.ui" line="934"/>
         <source>TURN Password</source>
-        <translation>TURN密码</translation>
+        <translation>TURN 密码</translation>
     </message>
     <message>
         <location filename="../advancedsettingswidget.ui" line="966"/>
         <source>TURN Username</source>
-        <translation>TURN用户名</translation>
+        <translation>TURN 用户名</translation>
     </message>
     <message>
         <location filename="../advancedsettingswidget.ui" line="998"/>
         <source>TURN Address</source>
-        <translation>TURN地址</translation>
+        <translation>TURN 地址</translation>
     </message>
     <message>
         <location filename="../advancedsettingswidget.ui" line="1039"/>
@@ -301,7 +301,7 @@ Jami 是一款加密、分布式的通讯软件。</translation>
     <message>
         <location filename="../advancedsettingswidget.cpp" line="181"/>
         <source>Audio Files (*.wav *.ogg *.opus *.mp3 *aiff *wma)</source>
-        <translation>音频文件(*.wav *.ogg *.opus *.mp3 *aiff *wma)</translation>
+        <translation>音频文件 (*.wav *.ogg *.opus *.mp3 *aiff *wma)</translation>
     </message>
 </context>
 <context>
@@ -350,7 +350,7 @@ Jami 是一款加密、分布式的通讯软件。</translation>
     <message>
         <location filename="../callwidget.ui" line="653"/>
         <source>Jami is free software for universal communication which respects the freedoms and privacy of its users.</source>
-        <translation>Jami是一种自由通信软件，它尊重用户的自由和隐私。</translation>
+        <translation>Jami 是用于普遍通信的自由软件，尊重用户的自由和隐私。</translation>
     </message>
     <message>
         <location filename="../callwidget.ui" line="693"/>
@@ -360,18 +360,17 @@ Copy and share it with your friends!
                                       </source>
         <translation>
 这是您的ID。
-复制并发送给您的朋友！
-</translation>
+复制并发送给您的朋友！</translation>
     </message>
     <message>
         <location filename="../callwidget.ui" line="806"/>
         <source>Show ring ID QR code</source>
-        <translation>显示RingID二维码</translation>
+        <translation>显示 ring ID 二维码</translation>
     </message>
     <message>
         <location filename="../callwidget.ui" line="857"/>
         <source>Share ring ID button</source>
-        <translation>分享ring ID按钮</translation>
+        <translation>分享 ring ID 按钮</translation>
     </message>
     <message>
         <location filename="../callwidget.ui" line="915"/>
@@ -392,7 +391,7 @@ Copy and share it with your friends!
     <message>
         <location filename="../callwidget.ui" line="1208"/>
         <source>best Id</source>
-        <translation>最佳Id</translation>
+        <translation>最佳 Id</translation>
     </message>
     <message>
         <location filename="../callwidget.ui" line="1734"/>
@@ -438,7 +437,7 @@ Copy and share it with your friends!
     <message>
         <location filename="../callwidget.ui" line="1539"/>
         <source>Answer</source>
-        <translation>应答</translation>
+        <translation>接听</translation>
     </message>
     <message>
         <location filename="../callwidget.ui" line="1617"/>
@@ -493,12 +492,12 @@ Copy and share it with your friends!
     <message>
         <location filename="../callwidget.cpp" line="943"/>
         <source>Contact me on Jami</source>
-        <translation>在Jami上联系我</translation>
+        <translation>在 Jami 上联系我</translation>
     </message>
     <message>
         <location filename="../callwidget.cpp" line="943"/>
         <source>My Id is : </source>
-        <translation>我的ID是：</translation>
+        <translation>我的 id 是：</translation>
     </message>
     <message>
         <location filename="../callwidget.cpp" line="847"/>
@@ -566,7 +565,7 @@ Copy and share it with your friends!
     <message>
         <location filename="../deviceitemwidget.ui" line="105"/>
         <source>Device Id</source>
-        <translation>设备ID</translation>
+        <translation>设备 id</translation>
     </message>
     <message>
         <location filename="../deviceitemwidget.ui" line="143"/>
@@ -579,7 +578,7 @@ Copy and share it with your friends!
     <message>
         <location filename="../invitebuttonswidget.ui" line="83"/>
         <source>Accept</source>
-        <translation>接听</translation>
+        <translation>接收</translation>
     </message>
     <message>
         <location filename="../invitebuttonswidget.ui" line="131"/>
@@ -627,7 +626,7 @@ Copy and share it with your friends!
     <message>
         <location filename="../linkdevicedialog.ui" line="402"/>
         <source>Your PIN is</source>
-        <translation>您的PIN码是 </translation>
+        <translation>您的 PIN 码是 </translation>
     </message>
     <message>
         <location filename="../linkdevicedialog.ui" line="432"/>
@@ -658,7 +657,7 @@ Copy and share it with your friends!
         <location filename="../linkdevicedialog.cpp" line="110"/>
         <source>Something went wrong.
 Please try again later.</source>
-        <translation>有些不对劲。
+        <translation>出错了。
 请稍后再试 </translation>
     </message>
 </context>
@@ -730,7 +729,7 @@ Please try again later.</source>
     <message>
         <location filename="../nameregistrationdialog.ui" line="548"/>
         <source>Something went wrong</source>
-        <translation>有些不对劲 </translation>
+        <translation>出错了</translation>
     </message>
     <message>
         <location filename="../nameregistrationdialog.ui" line="618"/>
@@ -773,17 +772,17 @@ Please try again later.</source>
     <message>
         <location filename="../newwizardwidget.ui" line="239"/>
         <source>Create Jami account button</source>
-        <translation>创建Jami账户按钮</translation>
+        <translation>创建 Jami 账户按钮</translation>
     </message>
     <message>
         <location filename="../newwizardwidget.ui" line="245"/>
         <source>Push button for Jami account creation start trigger</source>
-        <translation>按下Jami账户创建按钮开始触发</translation>
+        <translation>按下 Jami 账户创建按钮开始触发</translation>
     </message>
     <message>
         <location filename="../newwizardwidget.ui" line="251"/>
         <source>Create a Jami account</source>
-        <translation>创建一个Jami账户</translation>
+        <translation>创建 Jami 账户</translation>
     </message>
     <message>
         <location filename="../newwizardwidget.ui" line="282"/>
@@ -846,7 +845,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../newwizardwidget.ui" line="531"/>
         <source>Enter your pin:</source>
-        <translation>输入您的PIN：</translation>
+        <translation>输入您的 PIN：</translation>
     </message>
     <message>
         <location filename="../newwizardwidget.ui" line="599"/>
@@ -896,12 +895,12 @@ instead of using your ID.</source>
         <translation>用你的用户名注册
 这将保留用户名，以便只有您可以使用它
 您的朋友可以使用您的用户名给您打电话
-而非用你的ID</translation>
+而非用你的 ID</translation>
     </message>
     <message>
         <location filename="../newwizardwidget.ui" line="1142"/>
         <source>Public username checkbox</source>
-        <translation>公开用户名的复选框 </translation>
+        <translation>公开用户名复选框</translation>
     </message>
     <message>
         <location filename="../newwizardwidget.ui" line="1145"/>
@@ -958,7 +957,7 @@ instead of using your ID.</source>
     <message>
         <location filename="../newwizardwidget.ui" line="1973"/>
         <source>SIP Server edit</source>
-        <translation>编辑SIP服务器</translation>
+        <translation>编辑 SIP 服务器</translation>
     </message>
     <message>
         <location filename="../newwizardwidget.ui" line="1979"/>
@@ -968,12 +967,12 @@ instead of using your ID.</source>
     <message>
         <location filename="../newwizardwidget.ui" line="2045"/>
         <source>SIP proxy input</source>
-        <translation>输入SIP代理</translation>
+        <translation>输入 SIP 代理</translation>
     </message>
     <message>
         <location filename="../newwizardwidget.ui" line="2051"/>
         <source>SIP proxy text entry</source>
-        <translation>SIP代理文本条目</translation>
+        <translation>SIP 代理文本条目</translation>
     </message>
     <message>
         <location filename="../newwizardwidget.ui" line="2057"/>
@@ -983,12 +982,12 @@ instead of using your ID.</source>
     <message>
         <location filename="../newwizardwidget.ui" line="2123"/>
         <source>SIP username input</source>
-        <translation>SIP用户名输入 </translation>
+        <translation>SIP 用户名输入 </translation>
     </message>
     <message>
         <location filename="../newwizardwidget.ui" line="2129"/>
         <source>SIP Password text entry</source>
-        <translation>SIP密码文本条目</translation>
+        <translation>SIP 密码文本条目</translation>
     </message>
     <message>
         <location filename="../newwizardwidget.ui" line="2135"/>
@@ -999,12 +998,12 @@ instead of using your ID.</source>
         <location filename="../newwizardwidget.ui" line="2201"/>
         <location filename="../newwizardwidget.ui" line="2207"/>
         <source>SIP Password text input</source>
-        <translation>SIP密码文本输入</translation>
+        <translation>SIP 密码文本输入</translation>
     </message>
     <message utf8="true">
         <location filename="../newwizardwidget.ui" line="2282"/>
         <source>Generating your Jami account…</source>
-        <translation>正在生成您的Jami账户…</translation>
+        <translation>正在生成您的 Jami 账户…</translation>
     </message>
     <message>
         <location filename="../newwizardwidget.ui" line="2356"/>
@@ -1044,7 +1043,7 @@ instead of using your ID.</source>
     <message>
         <location filename="../newwizardwidget.ui" line="2448"/>
         <source>Push button to access next page of wizard</source>
-        <translation>按按钮来访问向导的下一页</translation>
+        <translation>按按钮访问向导的下一页</translation>
     </message>
     <message>
         <location filename="../newwizardwidget.ui" line="2451"/>
@@ -1059,17 +1058,17 @@ instead of using your ID.</source>
     <message>
         <location filename="../newwizardwidget.cpp" line="77"/>
         <source>Jami archive files (*.gz); All files (*)</source>
-        <translation>Jami档案文件 (*.gz); 所有文件 (*)</translation>
+        <translation>Jami 档案文件 (*.gz); 所有文件 (*)</translation>
     </message>
     <message>
         <location filename="../newwizardwidget.cpp" line="123"/>
         <source>Your account needs to be migrated. Enter your password.</source>
-        <translation>您的Ring账户可以被更新。\n请输入您的密码。</translation>
+        <translation>您的账户需要迁移。请输入您的密码。</translation>
     </message>
     <message>
         <location filename="../newwizardwidget.cpp" line="419"/>
         <source>Migrating your Jami account...</source>
-        <translation>正在迁移您的Jami账户…</translation>
+        <translation>正在迁移您的 Jami 账户…</translation>
     </message>
     <message>
         <location filename="../newwizardwidget.cpp" line="412"/>
@@ -1079,12 +1078,12 @@ instead of using your ID.</source>
     <message>
         <location filename="../newwizardwidget.cpp" line="404"/>
         <source>Generating your Jami account...</source>
-        <translation>正在生成您的Jami账户…</translation>
+        <translation>正在生成您的 Jami 账户…</translation>
     </message>
     <message>
         <location filename="../newwizardwidget.cpp" line="422"/>
         <source>Generating your SIP account...</source>
-        <translation>正在生成您的SIP账户…</translation>
+        <translation>正在生成您的 SIP 账户…</translation>
     </message>
     <message>
         <location filename="../newwizardwidget.cpp" line="533"/>
@@ -1334,7 +1333,7 @@ instead of using your ID.</source>
     <message>
         <location filename="../settingswidget.ui" line="1231"/>
         <source>Jami Account</source>
-        <translation>Jami账户</translation>
+        <translation>Jami 账户</translation>
     </message>
     <message>
         <location filename="../settingswidget.ui" line="1453"/>
