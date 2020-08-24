@@ -5,7 +5,7 @@
         <location filename="../aboutdialog.ui" line="435"/>
         <location filename="../aboutdialog.ui" line="465"/>
         <source>About</source>
-        <translation>عن</translation>
+        <translation>عن RING</translation>
     </message>
     <message>
         <location filename="../aboutdialog.ui" line="462"/>
@@ -20,7 +20,7 @@
     <message>
         <location filename="../aboutdialog.ui" line="481"/>
         <source>Credits</source>
-        <translation>الأطراف الداعمة</translation>
+        <translation>الأطراف المصممة</translation>
     </message>
     <message>
         <location filename="../aboutdialog.ui" line="547"/>
@@ -41,7 +41,7 @@ Jami is a secured and distributed communication software.</source>
     <message>
         <location filename="../aboutdialog.cpp" line="39"/>
         <source>Created by:</source>
-        <translation>قام بإنشاءه:</translation>
+        <translation>أحدثه:</translation>
     </message>
     <message>
         <location filename="../aboutdialog.cpp" line="73"/>
@@ -403,7 +403,7 @@ Copy and share it with your friends!
     <message>
         <location filename="../callwidget.ui" line="202"/>
         <source>Show invites</source>
-        <translation>رؤية الدعوات</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../callwidget.ui" line="205"/>
@@ -449,7 +449,7 @@ Copy and share it with your friends!
     <message>
         <location filename="../callwidget.ui" line="1305"/>
         <source>Cancel</source>
-        <translation>إلغاء</translation>
+        <translation>ألغِ</translation>
     </message>
     <message>
         <location filename="../callwidget.cpp" line="332"/>
@@ -459,7 +459,7 @@ Copy and share it with your friends!
     <message>
         <location filename="../callwidget.cpp" line="343"/>
         <source>Start audio call</source>
-        <translation>بدأ مكالمة صوتية</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../callwidget.cpp" line="354"/>
@@ -1530,7 +1530,7 @@ instead of using your ID.</source>
     <message>
         <location filename="../videooverlay.ui" line="124"/>
         <source>Chat</source>
-        <translation>محادثة كتابية</translation>
+        <translation>دردشة</translation>
     </message>
     <message>
         <location filename="../videooverlay.ui" line="162"/>
@@ -1560,12 +1560,12 @@ instead of using your ID.</source>
     <message>
         <location filename="../videooverlay.ui" line="57"/>
         <source>Hangup</source>
-        <translation>إنهاء المكالمة</translation>
+        <translation>أنهي المحادثة</translation>
     </message>
     <message>
         <location filename="../videooverlay.ui" line="203"/>
         <source>Mute Video</source>
-        <translation>كتم الفيديو</translation>
+        <translation>أبكم الفيديو</translation>
     </message>
 </context>
 <context>
@@ -1583,7 +1583,7 @@ instead of using your ID.</source>
     <message>
         <location filename="../videoview.cpp" line="281"/>
         <source>Share file</source>
-        <translation>مشاركة ملف</translation>
+        <translation>تقاسم الوثيقة</translation>
     </message>
 </context>
 </TS>

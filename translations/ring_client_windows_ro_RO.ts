@@ -25,34 +25,33 @@
     <message>
         <location filename="../aboutdialog.ui" line="547"/>
         <source>Free as in Freedom</source>
-        <translation>Liber ca în Libertate</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../aboutdialog.ui" line="563"/>
         <source>The Microsoft Windows client for Jami.
 Jami is a secured and distributed communication software.</source>
-        <translation>Jami pentru Microsoft Windows.
-Jami e un program pentru comunicații sigure și distribuite.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../aboutdialog.cpp" line="32"/>
         <source>version</source>
-        <translation>versiune</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../aboutdialog.cpp" line="39"/>
         <source>Created by:</source>
-        <translation>Creat de:</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../aboutdialog.cpp" line="73"/>
         <source>Artwork by:</source>
-        <translation>Grafică de:</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../aboutdialog.cpp" line="77"/>
         <source>Based on the SFLPhone project</source>
-        <translation>Bazat pe proiectul SFLPhone</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -60,7 +59,7 @@ Jami e un program pentru comunicații sigure și distribuite.</translation>
     <message>
         <location filename="../accountitemdelegate.cpp" line="91"/>
         <source>Add Account</source>
-        <translation>Adaugă un Cont</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -68,22 +67,22 @@ Jami e un program pentru comunicații sigure și distribuite.</translation>
     <message>
         <location filename="../advancedsipsettingwidget.ui" line="14"/>
         <source>Form</source>
-        <translation>Formular</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../advancedsipsettingwidget.ui" line="55"/>
         <source>Call Settings</source>
-        <translation>Reglările Apelului</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../advancedsipsettingwidget.ui" line="102"/>
         <source>Auto Answer Calls</source>
-        <translation>Răspunde Automat la Apeluri</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../advancedsipsettingwidget.ui" line="130"/>
         <source>Enable Custom Ringtone</source>
-        <translation>Activează o Sonerie Personalizată</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../advancedsipsettingwidget.ui" line="191"/>
@@ -93,7 +92,7 @@ Jami e un program pentru comunicații sigure și distribuite.</translation>
     <message>
         <location filename="../advancedsipsettingwidget.ui" line="281"/>
         <source>STUN Address</source>
-        <translation>Adresă STUN</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../advancedsipsettingwidget.ui" line="293"/>
@@ -103,7 +102,7 @@ Jami e un program pentru comunicații sigure și distribuite.</translation>
     <message>
         <location filename="../advancedsipsettingwidget.ui" line="317"/>
         <source>Use UPnP</source>
-        <translation>Folosește UPnP</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../advancedsipsettingwidget.ui" line="329"/>
@@ -113,17 +112,17 @@ Jami e un program pentru comunicații sigure și distribuite.</translation>
     <message>
         <location filename="../advancedsipsettingwidget.ui" line="359"/>
         <source>TURN Password</source>
-        <translation>Parolă TURN</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../advancedsipsettingwidget.ui" line="391"/>
         <source>TURN Username</source>
-        <translation>Nume de utilizator TURN</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../advancedsipsettingwidget.ui" line="423"/>
         <source>TURN Address</source>
-        <translation>Adresă TURN</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../advancedsipsettingwidget.ui" line="464"/>
@@ -138,12 +137,12 @@ Jami e un program pentru comunicații sigure și distribuite.</translation>
     <message>
         <location filename="../advancedsipsettingwidget.ui" line="539"/>
         <source>Video Codecs</source>
-        <translation>Codec video</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../advancedsipsettingwidget.ui" line="692"/>
         <source>Audio Codecs</source>
-        <translation>Codec audio</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../advancedsipsettingwidget.cpp" line="142"/>
@@ -153,7 +152,7 @@ Jami e un program pentru comunicații sigure și distribuite.</translation>
     <message>
         <location filename="../advancedsipsettingwidget.cpp" line="151"/>
         <source>Add a custom ringtone</source>
-        <translation>Adaugă o sonerie personalizată</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -161,37 +160,37 @@ Jami e un program pentru comunicații sigure și distribuite.</translation>
     <message>
         <location filename="../advancedsettingswidget.ui" line="14"/>
         <source>Form</source>
-        <translation>Formular</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../advancedsettingswidget.ui" line="61"/>
         <source>Call Settings</source>
-        <translation>Reglările Apelului</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../advancedsettingswidget.ui" line="108"/>
         <source>Allow Calls From Untrusted Peers</source>
-        <translation>Permite apelurile de la persoanele necunoscute</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../advancedsettingswidget.ui" line="133"/>
         <source>Auto Answer Calls</source>
-        <translation>Răspunde Automat la Apeluri</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../advancedsettingswidget.ui" line="161"/>
         <source>Enable Custom Ringtone</source>
-        <translation>Activează o Sonerie Personalizată</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../advancedsettingswidget.cpp" line="188"/>
         <source>Add a custom ringtone</source>
-        <translation>Adaugă o sonerie personalizată</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../advancedsettingswidget.ui" line="225"/>
         <source>Name Server</source>
-        <translation>Server de Nume</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../advancedsettingswidget.ui" line="275"/>
@@ -201,17 +200,17 @@ Jami e un program pentru comunicații sigure și distribuite.</translation>
     <message>
         <location filename="../advancedsettingswidget.ui" line="351"/>
         <source>OpenDHT Configuration</source>
-        <translation>Configurare OpenDHT</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../advancedsettingswidget.ui" line="398"/>
         <source>Enable Proxy</source>
-        <translation>Activează Proxy</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../advancedsettingswidget.ui" line="454"/>
         <source>Bootstrap</source>
-        <translation>Server de conectare</translation>
+        <translation>Pornire</translation>
     </message>
     <message>
         <location filename="../advancedsettingswidget.ui" line="530"/>
@@ -231,12 +230,12 @@ Jami e un program pentru comunicații sigure și distribuite.</translation>
     <message>
         <location filename="../advancedsettingswidget.ui" line="622"/>
         <source>Private Key</source>
-        <translation>Cheie Privată</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../advancedsettingswidget.ui" line="634"/>
         <source>CA Certificate</source>
-        <translation>Certificat CA</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../advancedsettingswidget.ui" line="766"/>
@@ -251,12 +250,12 @@ Jami e un program pentru comunicații sigure și distribuite.</translation>
     <message>
         <location filename="../advancedsettingswidget.ui" line="856"/>
         <source>STUN Address</source>
-        <translation>Adresă STUN</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../advancedsettingswidget.ui" line="892"/>
         <source>Use UPnP</source>
-        <translation>Folosește UPnP</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../advancedsettingswidget.ui" line="904"/>
@@ -266,17 +265,17 @@ Jami e un program pentru comunicații sigure și distribuite.</translation>
     <message>
         <location filename="../advancedsettingswidget.ui" line="934"/>
         <source>TURN Password</source>
-        <translation>Parolă TURN</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../advancedsettingswidget.ui" line="966"/>
         <source>TURN Username</source>
-        <translation>Nume de utilizator TURN</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../advancedsettingswidget.ui" line="998"/>
         <source>TURN Address</source>
-        <translation>Adresă TURN</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../advancedsettingswidget.ui" line="1039"/>
@@ -291,12 +290,12 @@ Jami e un program pentru comunicații sigure și distribuite.</translation>
     <message>
         <location filename="../advancedsettingswidget.ui" line="1267"/>
         <source>Audio Codecs</source>
-        <translation>Codec audio</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../advancedsettingswidget.ui" line="1114"/>
         <source>Video Codecs</source>
-        <translation>Codec video</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../advancedsettingswidget.cpp" line="181"/>
@@ -309,7 +308,7 @@ Jami e un program pentru comunicații sigure și distribuite.</translation>
     <message>
         <location filename="../animatedoverlay.ui" line="14"/>
         <source>Form</source>
-        <translation>Formular</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -317,17 +316,17 @@ Jami e un program pentru comunicații sigure și distribuite.</translation>
     <message>
         <location filename="../banneditemwidget.ui" line="14"/>
         <source>Form</source>
-        <translation>Formular</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../banneditemwidget.ui" line="80"/>
         <source>name</source>
-        <translation>nume</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../banneditemwidget.ui" line="104"/>
         <source>id</source>
-        <translation>ID</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -335,7 +334,7 @@ Jami e un program pentru comunicații sigure și distribuite.</translation>
     <message>
         <location filename="../callwidget.ui" line="184"/>
         <source>Show conversations</source>
-        <translation>Arată conversațiile</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../callwidget.ui" line="187"/>
@@ -345,7 +344,7 @@ Jami e un program pentru comunicații sigure și distribuite.</translation>
     <message>
         <location filename="../callwidget.ui" line="368"/>
         <source>Search contact text input</source>
-        <translation>Scrie pentru a căuta contactul</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../callwidget.ui" line="653"/>
@@ -358,10 +357,7 @@ Jami e un program pentru comunicații sigure și distribuite.</translation>
  This is your ID.
 Copy and share it with your friends!
                                       </source>
-        <translation>
- Acesta e ID-ul tău.
-Copiază-l și distribuie-l prietenilor!
-                                      </translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../callwidget.ui" line="806"/>
@@ -376,7 +372,7 @@ Copiază-l și distribuie-l prietenilor!
     <message>
         <location filename="../callwidget.ui" line="915"/>
         <source>Double-click to copy</source>
-        <translation>Dublu clic pentru a copia</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../callwidget.ui" line="956"/>
@@ -387,12 +383,12 @@ Copiază-l și distribuie-l prietenilor!
         <location filename="../callwidget.ui" line="1184"/>
         <location filename="../callwidget.ui" line="1434"/>
         <source>best name</source>
-        <translation>nume bun</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../callwidget.ui" line="1208"/>
         <source>best Id</source>
-        <translation>ID bun</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../callwidget.ui" line="1734"/>
@@ -407,23 +403,23 @@ Copiază-l și distribuie-l prietenilor!
     <message>
         <location filename="../callwidget.ui" line="202"/>
         <source>Show invites</source>
-        <translation>Arată invitațiile</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../callwidget.ui" line="205"/>
         <source>Invites</source>
-        <translation>Invitații</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../callwidget.ui" line="377"/>
         <location filename="../callwidget.cpp" line="552"/>
         <source>Find a new or existing contact</source>
-        <translation>Caută un contact nou sau existent</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../callwidget.ui" line="1444"/>
         <source>Wants to talk to you!</source>
-        <translation>Vrea să vorbească cu tine!</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../callwidget.ui" line="1517"/>
@@ -438,7 +434,7 @@ Copiază-l și distribuie-l prietenilor!
     <message>
         <location filename="../callwidget.ui" line="1539"/>
         <source>Answer</source>
-        <translation>Răspunde</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../callwidget.ui" line="1617"/>
@@ -488,7 +484,7 @@ Copiază-l și distribuie-l prietenilor!
     <message>
         <location filename="../callwidget.cpp" line="561"/>
         <source>Search your received invitations</source>
-        <translation>Caută invitațiile primite</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../callwidget.cpp" line="943"/>
@@ -498,19 +494,19 @@ Copiază-l și distribuie-l prietenilor!
     <message>
         <location filename="../callwidget.cpp" line="943"/>
         <source>My Id is : </source>
-        <translation>ID-ul meu:</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../callwidget.cpp" line="847"/>
         <source>%1</source>
         <comment>%1 is the contact username</comment>
-        <translation>%1</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../callwidget.cpp" line="852"/>
         <source>%1</source>
         <comment>%1 is the contact unique identifier</comment>
-        <translation>%1</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../callwidget.cpp" line="675"/>
@@ -523,22 +519,22 @@ Copiază-l și distribuie-l prietenilor!
     <message>
         <location filename="../deleteaccountdialog.ui" line="35"/>
         <source>Account deletion</source>
-        <translation>Șterge contul</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../deleteaccountdialog.ui" line="58"/>
         <source>Do you really want to delete the following account?</source>
-        <translation>Chiar vrei să ștergi acest cont?</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../deleteaccountdialog.ui" line="153"/>
         <source>If this account hasn&apos;t been exported, or added to another device, it will be irrevocably lost.</source>
-        <translation>Dacă acest cont nu a fost exportat sau asociat altui dispozitiv, va fi pierdut definitiv.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../deleteaccountdialog.ui" line="235"/>
         <source>Permanently delete account</source>
-        <translation>Șterge definitiv contul</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../deleteaccountdialog.ui" line="241"/>
@@ -548,7 +544,7 @@ Copiază-l și distribuie-l prietenilor!
     <message>
         <location filename="../deleteaccountdialog.ui" line="278"/>
         <source>Cancel account deletion</source>
-        <translation>Renunță la ștergerea contului</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../deleteaccountdialog.ui" line="284"/>
@@ -561,12 +557,12 @@ Copiază-l și distribuie-l prietenilor!
     <message>
         <location filename="../deviceitemwidget.ui" line="14"/>
         <source>Form</source>
-        <translation>Formular</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../deviceitemwidget.ui" line="105"/>
         <source>Device Id</source>
-        <translation>ID-ul dispozitivului</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../deviceitemwidget.ui" line="143"/>
@@ -597,12 +593,12 @@ Copiază-l și distribuie-l prietenilor!
     <message>
         <location filename="../linkdevicedialog.ui" line="14"/>
         <source>Dialog</source>
-        <translation>Dialog</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../linkdevicedialog.ui" line="62"/>
         <source>Enter your account password</source>
-        <translation>Introdu parola contului</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../linkdevicedialog.ui" line="117"/>
@@ -622,7 +618,7 @@ Copiază-l și distribuie-l prietenilor!
     <message>
         <location filename="../linkdevicedialog.ui" line="279"/>
         <source>Exporting account</source>
-        <translation>Se exportă contul</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../linkdevicedialog.ui" line="402"/>
@@ -652,14 +648,13 @@ Copiază-l și distribuie-l prietenilor!
     <message>
         <location filename="../linkdevicedialog.cpp" line="96"/>
         <source>Incorrect password</source>
-        <translation>Parolă greșită</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../linkdevicedialog.cpp" line="110"/>
         <source>Something went wrong.
 Please try again later.</source>
-        <translation>Ceva n-a mers bine.
-Încearcă din nou mai tîrziu.</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -672,7 +667,7 @@ Please try again later.</source>
     <message>
         <location filename="../mainwindow.cpp" line="94"/>
         <source>Exit</source>
-        <translation>Ieșire</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="111"/>
@@ -690,22 +685,22 @@ Please try again later.</source>
     <message>
         <location filename="../nameregistrationdialog.ui" line="35"/>
         <source>Set Registered Name</source>
-        <translation>Alege Numele de Utilizator</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../nameregistrationdialog.ui" line="163"/>
         <source>Enter your account password</source>
-        <translation>Introdu parola contului</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../nameregistrationdialog.ui" line="244"/>
         <source>Password text input</source>
-        <translation>Introdu textul parolei</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../nameregistrationdialog.ui" line="250"/>
         <source>Password text entry</source>
-        <translation>Introdu textul parolei</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../nameregistrationdialog.ui" line="256"/>
@@ -725,12 +720,12 @@ Please try again later.</source>
     <message>
         <location filename="../nameregistrationdialog.ui" line="424"/>
         <source>Registering Name</source>
-        <translation>Se înscrie Numele</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../nameregistrationdialog.ui" line="548"/>
         <source>Something went wrong</source>
-        <translation>Ceva n-a mers bine</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../nameregistrationdialog.ui" line="618"/>
@@ -740,7 +735,7 @@ Please try again later.</source>
     <message>
         <location filename="../nameregistrationdialog.cpp" line="82"/>
         <source>Incorrect password</source>
-        <translation>Parolă greșită</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../nameregistrationdialog.cpp" line="85"/>
@@ -753,22 +748,22 @@ Please try again later.</source>
     <message>
         <location filename="../newwizardwidget.ui" line="14"/>
         <source>Form</source>
-        <translation>Formular</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../newwizardwidget.ui" line="141"/>
         <source>Welcome Label</source>
-        <translation>Etichetă de bun venit</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../newwizardwidget.ui" line="147"/>
         <source> Welcome to</source>
-        <translation>Bine ai venit pe</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../newwizardwidget.ui" line="185"/>
         <source>Welcome Logo</source>
-        <translation>Simbol de bun venit</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../newwizardwidget.ui" line="239"/>
@@ -778,7 +773,7 @@ Please try again later.</source>
     <message>
         <location filename="../newwizardwidget.ui" line="245"/>
         <source>Push button for Jami account creation start trigger</source>
-        <translation>butonul Declanșează crearea contului Jami</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../newwizardwidget.ui" line="251"/>
@@ -793,7 +788,7 @@ Please try again later.</source>
     <message>
         <location filename="../newwizardwidget.ui" line="288"/>
         <source>Push button for device linkage start trigger</source>
-        <translation>butonul Declanșează asocierea dispozitivului</translation>
+        <translation>Apasă butonul pentru a începe asocierea dispozitivului</translation>
     </message>
     <message>
         <location filename="../newwizardwidget.ui" line="291"/>
@@ -808,12 +803,12 @@ Please try again later.</source>
     <message>
         <location filename="../newwizardwidget.ui" line="334"/>
         <source>Push button for Jami SIP account creation start trigger</source>
-        <translation>butonul Declanșează crearea contului Jami SIP</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../newwizardwidget.ui" line="340"/>
         <source>Create a SIP account</source>
-        <translation>Creează un cont SIP</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../newwizardwidget.ui" line="405"/>
@@ -893,45 +888,42 @@ p, li { white-space: pre-wrap; }
 This will reserve the username so that only you can use it.
 Your friends will be able to call you with your usename
 instead of using your ID.</source>
-        <translation>Înscrie numele de utilizator.
-Acesta va fi rezervat și numai tu îl vei putea folosi.
-Prietenii tăi îl vor putea folosi în locul ID-ului tău,
-atunci cînd vor să te sune.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../newwizardwidget.ui" line="1142"/>
         <source>Public username checkbox</source>
-        <translation>Căsuța numelui de utilizator public</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../newwizardwidget.ui" line="1145"/>
         <source>Checkbox selecting if the user wants a public username</source>
-        <translation>Bifează căsuța, dacă dorești un nume de utilizator public</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../newwizardwidget.ui" line="1148"/>
         <source>Register public username</source>
-        <translation>Înscrie numele de utilizator public</translation>
+        <translation>Înregistrează numele de utilizator public</translation>
     </message>
     <message>
         <location filename="../newwizardwidget.ui" line="1367"/>
         <source>Public username edit</source>
-        <translation>Modifică numele de utilizator public</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../newwizardwidget.ui" line="1373"/>
         <source>Choose your username</source>
-        <translation>Alege numele de utilizator</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../newwizardwidget.ui" line="1289"/>
         <source>Password text input</source>
-        <translation>Introdu textul parolei</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../newwizardwidget.ui" line="1295"/>
         <source>Password text entry</source>
-        <translation>Introdu textul parolei</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../newwizardwidget.ui" line="1301"/>
@@ -943,7 +935,7 @@ atunci cînd vor să te sune.</translation>
         <location filename="../newwizardwidget.ui" line="1211"/>
         <location filename="../newwizardwidget.ui" line="1217"/>
         <source>Password confirmation text input</source>
-        <translation>Introdu confirmarea parolei</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../newwizardwidget.ui" line="1223"/>
@@ -953,27 +945,27 @@ atunci cînd vor să te sune.</translation>
     <message>
         <location filename="../newwizardwidget.ui" line="1814"/>
         <source>SIP Account</source>
-        <translation>Cont SIP</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../newwizardwidget.ui" line="1973"/>
         <source>SIP Server edit</source>
-        <translation>Modifică Serverul SIP</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../newwizardwidget.ui" line="1979"/>
         <source>Server</source>
-        <translation>Server</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../newwizardwidget.ui" line="2045"/>
         <source>SIP proxy input</source>
-        <translation>Introdu proxy SIP</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../newwizardwidget.ui" line="2051"/>
         <source>SIP proxy text entry</source>
-        <translation>Introdu textul proxy SIP</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../newwizardwidget.ui" line="2057"/>
@@ -983,12 +975,12 @@ atunci cînd vor să te sune.</translation>
     <message>
         <location filename="../newwizardwidget.ui" line="2123"/>
         <source>SIP username input</source>
-        <translation>Introdu numele de utilizator SIP</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../newwizardwidget.ui" line="2129"/>
         <source>SIP Password text entry</source>
-        <translation>Introdu Parola SIP</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../newwizardwidget.ui" line="2135"/>
@@ -999,7 +991,7 @@ atunci cînd vor să te sune.</translation>
         <location filename="../newwizardwidget.ui" line="2201"/>
         <location filename="../newwizardwidget.ui" line="2207"/>
         <source>SIP Password text input</source>
-        <translation>Introdu Parola SIP</translation>
+        <translation type="unfinished"/>
     </message>
     <message utf8="true">
         <location filename="../newwizardwidget.ui" line="2282"/>
@@ -1014,7 +1006,7 @@ atunci cînd vor să te sune.</translation>
     <message>
         <location filename="../newwizardwidget.ui" line="2362"/>
         <source>push button to access previous page of wizard</source>
-        <translation>butonul Accesează pagina precedentă a asistentului</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../newwizardwidget.ui" line="2365"/>
@@ -1029,7 +1021,7 @@ atunci cînd vor să te sune.</translation>
     <message>
         <location filename="../newwizardwidget.ui" line="2402"/>
         <source>push button to cancel account creation or linking</source>
-        <translation>butonul Renunță la crearea sau asocierea contului</translation>
+        <translation>apasă butonul pentru a renunța la crearea sau asocierea contului</translation>
     </message>
     <message>
         <location filename="../newwizardwidget.ui" line="2405"/>
@@ -1044,7 +1036,7 @@ atunci cînd vor să te sune.</translation>
     <message>
         <location filename="../newwizardwidget.ui" line="2448"/>
         <source>Push button to access next page of wizard</source>
-        <translation>butonul Accesează pagina următoare a asistentului</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../newwizardwidget.ui" line="2451"/>
@@ -1064,12 +1056,12 @@ atunci cînd vor să te sune.</translation>
     <message>
         <location filename="../newwizardwidget.cpp" line="123"/>
         <source>Your account needs to be migrated. Enter your password.</source>
-        <translation>Contul tău trebuie transferat. Introdu parola.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../newwizardwidget.cpp" line="419"/>
         <source>Migrating your Jami account...</source>
-        <translation>Se transferă contul tău Jami...</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../newwizardwidget.cpp" line="412"/>
@@ -1089,7 +1081,7 @@ atunci cînd vor să te sune.</translation>
     <message>
         <location filename="../newwizardwidget.cpp" line="533"/>
         <source>Error creating account</source>
-        <translation>Eroare la crearea contului</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1097,27 +1089,27 @@ atunci cînd vor să te sune.</translation>
     <message>
         <location filename="../passworddialog.ui" line="32"/>
         <source>Change Account Password</source>
-        <translation>Schimbă Parola Contului </translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../passworddialog.ui" line="97"/>
         <source>Enter Current Password</source>
-        <translation>Introdu Parola Actuală</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../passworddialog.ui" line="169"/>
         <source>Enter New Password</source>
-        <translation>Introdu Parola Nouă</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../passworddialog.ui" line="190"/>
         <source>Confirm New Password</source>
-        <translation>Confirmă Noua Parolă</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../passworddialog.ui" line="247"/>
         <source>Confirm</source>
-        <translation>Confirmă</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../passworddialog.ui" line="290"/>
@@ -1127,7 +1119,7 @@ atunci cînd vor să te sune.</translation>
     <message>
         <location filename="../passworddialog.ui" line="143"/>
         <source>Current Password Incorrect</source>
-        <translation>Parola Actuală e Greșită</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1135,7 +1127,7 @@ atunci cînd vor să te sune.</translation>
     <message>
         <location filename="../photoboothdialog.ui" line="14"/>
         <source>Photobooth</source>
-        <translation>Poză automată</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1143,12 +1135,12 @@ atunci cînd vor să te sune.</translation>
     <message>
         <location filename="../photoboothwidget.ui" line="20"/>
         <source>Form</source>
-        <translation>Formular</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../photoboothwidget.ui" line="120"/>
         <source>Photobooth display</source>
-        <translation>Arată poza automată</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../photoboothwidget.cpp" line="92"/>
@@ -1179,13 +1171,13 @@ atunci cînd vor să te sune.</translation>
     <message>
         <location filename="../utils.cpp" line="183"/>
         <source>No default mail client found</source>
-        <translation>Programul de e-mail nu a fost găsit</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../deviceitemwidget.cpp" line="43"/>
         <location filename="../deviceitemwidget.cpp" line="85"/>
         <source>Edit Device Name</source>
-        <translation>Modifică Numele Dispozitivului</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../deviceitemwidget.cpp" line="44"/>
@@ -1195,12 +1187,12 @@ atunci cînd vor să te sune.</translation>
     <message>
         <location filename="../deviceitemwidget.cpp" line="80"/>
         <source>Save new device name</source>
-        <translation>Salvează noul nume al dispozitivului</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../banneditemwidget.cpp" line="39"/>
         <source>Add as contact</source>
-        <translation>Adaugă la contacte</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1208,7 +1200,7 @@ atunci cînd vor să te sune.</translation>
     <message>
         <location filename="../ringbutton.ui" line="140"/>
         <source>Select folder</source>
-        <translation>Alege dosarul</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1216,7 +1208,7 @@ atunci cînd vor să te sune.</translation>
     <message>
         <location filename="../settingswidget.ui" line="14"/>
         <source>Form</source>
-        <translation>Formular</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../settingswidget.ui" line="141"/>
@@ -1238,7 +1230,7 @@ atunci cînd vor să te sune.</translation>
         <location filename="../settingswidget.ui" line="305"/>
         <location filename="../settingswidget.ui" line="3416"/>
         <source>Audio / Video</source>
-        <translation>Audio / Video</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../settingswidget.ui" line="542"/>
@@ -1248,12 +1240,12 @@ atunci cînd vor să te sune.</translation>
     <message>
         <location filename="../settingswidget.ui" line="610"/>
         <source>Enable desktop notifications</source>
-        <translation>Activează notificările</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../settingswidget.ui" line="653"/>
         <source>Keep minimized on close</source>
-        <translation>Ține-l deschis în ascuns la închidere</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../settingswidget.ui" line="678"/>
@@ -1263,32 +1255,32 @@ atunci cînd vor să te sune.</translation>
     <message>
         <location filename="../settingswidget.ui" line="811"/>
         <source>Save in</source>
-        <translation>Salvează în</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../settingswidget.ui" line="904"/>
         <source>Always Recording</source>
-        <translation>Înregistrează Mereu</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../settingswidget.ui" line="943"/>
         <source>Updates</source>
-        <translation>Actualizări</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../settingswidget.ui" line="1008"/>
         <source>Check for updates automatically every</source>
-        <translation>Caută automat actualizări o dată la</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../settingswidget.ui" line="1032"/>
         <source>Interval between update checks in days selector</source>
-        <translation>Intervalul de timp dintre căutările de actualizare</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../settingswidget.ui" line="1038"/>
         <source> days</source>
-        <translation>zile</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../settingswidget.ui" line="1081"/>
@@ -1298,7 +1290,7 @@ atunci cînd vor să te sune.</translation>
     <message>
         <location filename="../settingswidget.ui" line="1084"/>
         <source>Check for updates now</source>
-        <translation>Caută actualizări acum</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../settingswidget.ui" line="3027"/>
@@ -1314,27 +1306,27 @@ atunci cînd vor să te sune.</translation>
     <message>
         <location filename="../settingswidget.ui" line="607"/>
         <source>toggle enable notifications</source>
-        <translation>Act/Dez notificările</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../settingswidget.ui" line="650"/>
         <source>Toggle keep minimized on close</source>
-        <translation>Act/Dez Ține-l deschis în ascuns la închidere</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../settingswidget.ui" line="764"/>
         <source>Call Recordings</source>
-        <translation>Înregistrări de Apeluri</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../settingswidget.ui" line="1005"/>
         <source>Toggle automatic updates</source>
-        <translation>Act/Dez actualizările automate</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../settingswidget.ui" line="1231"/>
         <source>Jami Account</source>
-        <translation>Cont Jami</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../settingswidget.ui" line="1453"/>
@@ -1351,17 +1343,17 @@ atunci cînd vor să te sune.</translation>
     <message>
         <location filename="../settingswidget.ui" line="1614"/>
         <source>Id</source>
-        <translation>ID</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../settingswidget.ui" line="1673"/>
         <source>Registered name</source>
-        <translation>Nume înscris</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../settingswidget.ui" line="1721"/>
         <source>Type here to register a username</source>
-        <translation>Scrie aici numele de utilizator</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../settingswidget.ui" line="1755"/>
@@ -1382,7 +1374,7 @@ atunci cînd vor să te sune.</translation>
         <location filename="../settingswidget.ui" line="1909"/>
         <location filename="../settingswidget.ui" line="3089"/>
         <source>Delete Account</source>
-        <translation>Șterge Contul</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../settingswidget.ui" line="1973"/>
@@ -1402,12 +1394,12 @@ atunci cînd vor să te sune.</translation>
     <message>
         <location filename="../settingswidget.ui" line="3788"/>
         <source>Format</source>
-        <translation>Format</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../settingswidget.ui" line="3831"/>
         <source>Video device framerate selector</source>
-        <translation>Selector de imagini/sec. pt. dispozitivul video</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../settingswidget.ui" line="3967"/>
@@ -1418,12 +1410,12 @@ atunci cînd vor să te sune.</translation>
         <location filename="../settingswidget.ui" line="2359"/>
         <location filename="../settingswidget.ui" line="3187"/>
         <source>Advanced Account Settings</source>
-        <translation>Reglări Avansate ale Contului</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../settingswidget.ui" line="2554"/>
         <source>SIP Account</source>
-        <translation>Cont SIP</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../settingswidget.ui" line="2925"/>
@@ -1448,22 +1440,22 @@ atunci cînd vor să te sune.</translation>
     <message>
         <location filename="../settingswidget.ui" line="3511"/>
         <source>Microphone</source>
-        <translation>Microfon</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../settingswidget.ui" line="3551"/>
         <source>Audio input device selector</source>
-        <translation>Selector de dispozitiv audio de intrare</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../settingswidget.ui" line="3585"/>
         <source>Output Device</source>
-        <translation>Dispozitiv de ieșire</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../settingswidget.ui" line="3625"/>
         <source>Choose the output device</source>
-        <translation>Alege dispozitivul de ieșire</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../settingswidget.ui" line="3682"/>
@@ -1478,58 +1470,58 @@ atunci cînd vor să te sune.</translation>
     <message>
         <location filename="../settingswidget.ui" line="3766"/>
         <source>Video device selector</source>
-        <translation>Selector de dispozitiv video</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../settingswidget.cpp" line="459"/>
         <source>A registered name should not have any spaces and must be at least three letters long</source>
-        <translation>Un nume de utilizator nu trebuie să aibă spații și trebuie să conțină cel puțin trei litere</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../settingswidget.cpp" line="466"/>
         <source>This name is already taken</source>
-        <translation>Acest nume a fost ales deja</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../settingswidget.cpp" line="92"/>
         <location filename="../settingswidget.cpp" line="110"/>
         <source>Enter an alias</source>
-        <translation>Introdu un alias</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../settingswidget.cpp" line="473"/>
         <source>Register this name</source>
-        <translation>Înscrie acest nume</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../settingswidget.cpp" line="550"/>
         <source>Remove Device</source>
-        <translation>Elimină Dispozitivul</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../settingswidget.cpp" line="551"/>
         <source>Enter this account&apos;s password to confirm the removal of this device</source>
-        <translation>Introdu parola acestui cont pentru a confirma eliminarea acestui dispozitiv</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../settingswidget.cpp" line="558"/>
         <source>Are you sure you wish to remove this device?</source>
-        <translation>Sigur vrei să elimini acest dispozitiv?</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../settingswidget.cpp" line="589"/>
         <source>Export Account Here</source>
-        <translation>Exportă Contul Aici</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../settingswidget.cpp" line="887"/>
         <source>Select A Folder For Your Downloads</source>
-        <translation>Alege un Dosar pentru Descărcările Tale</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../settingswidget.cpp" line="904"/>
         <source>Select A Folder For Your Recordings</source>
-        <translation>Alege un Dosar pentru Înregistrările Tale</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1537,12 +1529,12 @@ atunci cînd vor să te sune.</translation>
     <message>
         <location filename="../videooverlay.ui" line="419"/>
         <source>Call on Hold</source>
-        <translation>Apel în Așteptare</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../videooverlay.ui" line="89"/>
         <source>Hold / Unhold</source>
-        <translation>Așteptare / Reia apelul</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../videooverlay.ui" line="124"/>
@@ -1552,22 +1544,22 @@ atunci cînd vor să te sune.</translation>
     <message>
         <location filename="../videooverlay.ui" line="162"/>
         <source>Mute Mic</source>
-        <translation>Oprește Microfonul</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../videooverlay.ui" line="244"/>
         <source>Record call</source>
-        <translation>Înregistrează apelul</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../videooverlay.ui" line="325"/>
         <source>Name label</source>
-        <translation>Eticheta numelui</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../videooverlay.ui" line="390"/>
         <source>Time elapsed</source>
-        <translation>Timpul scurs</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../videooverlay.ui" line="393"/>
@@ -1577,7 +1569,7 @@ atunci cînd vor să te sune.</translation>
     <message>
         <location filename="../videooverlay.ui" line="57"/>
         <source>Hangup</source>
-        <translation>Închide</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../videooverlay.ui" line="203"/>
@@ -1590,12 +1582,12 @@ atunci cînd vor să te sune.</translation>
     <message>
         <location filename="../videoview.cpp" line="271"/>
         <source>Share entire screen</source>
-        <translation>Distribuie tot ecranul</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../videoview.cpp" line="274"/>
         <source>Share screen area</source>
-        <translation>Distribuie zona ecranului</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../videoview.cpp" line="281"/>

@@ -1058,7 +1058,7 @@ instead of using your ID.</source>
     <message>
         <location filename="../newwizardwidget.cpp" line="412"/>
         <source>Importing account archive...</source>
-        <translation>Importuje se archiv s účtem…</translation>
+        <translation>Zavádí se archiv s účtem…</translation>
     </message>
     <message>
         <location filename="../newwizardwidget.cpp" line="404"/>
@@ -1360,7 +1360,7 @@ instead of using your ID.</source>
     <message>
         <location filename="../settingswidget.ui" line="1868"/>
         <source>Export Account</source>
-        <translation>Exportovat účet</translation>
+        <translation>Vyvést účet</translation>
     </message>
     <message>
         <location filename="../settingswidget.ui" line="1909"/>
@@ -1503,7 +1503,7 @@ instead of using your ID.</source>
     <message>
         <location filename="../settingswidget.cpp" line="589"/>
         <source>Export Account Here</source>
-        <translation>Exportovat účet sem</translation>
+        <translation>Vyvést účet sem</translation>
     </message>
     <message>
         <location filename="../settingswidget.cpp" line="887"/>
