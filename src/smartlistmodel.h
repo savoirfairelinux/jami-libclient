@@ -55,7 +55,7 @@ public:
         InCall,
         IsAudioOnly,
         CallStackViewShouldShow,
-        CallStateStr,
+        CallState,
         SectionName,
         AccountId,
         Draft

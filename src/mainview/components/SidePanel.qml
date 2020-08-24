@@ -31,7 +31,7 @@ Rectangle {
     property int pendingRequestCount: 0
     property int totalUnreadMessagesCount: 0
 
-    signal conversationSmartListNeedToAccessMessageWebView(string currentUserDisplayName, string currentUserAlias, string currentUID, bool callStackViewShouldShow, bool isAudioOnly, string callStateStr)
+    signal conversationSmartListNeedToAccessMessageWebView(string currentUserDisplayName, string currentUserAlias, string currentUID, bool callStackViewShouldShow, bool isAudioOnly, string callState)
     signal accountComboBoxNeedToShowWelcomePage()
     signal conversationSmartListViewNeedToShowWelcomePage
     signal needToUpdateConversationForAddedContact
@@ -86,6 +86,7 @@ Rectangle {
     }
 
     function refreshAccountComboBox(index = -1) {
+
 
         /*
          * To make sure that the ui is refreshed for accountComboBox.
@@ -242,7 +243,7 @@ Rectangle {
             sidePanelRect.conversationSmartListNeedToAccessMessageWebView(
                         currentUserDisplayName, currentUserAlias,
                         currentUID, callStackViewShouldShow,
-                        isAudioOnly, callStateStr)
+                        isAudioOnly, callState)
         }
 
         onNeedToGrabFocus: {

@@ -93,7 +93,7 @@ Rectangle {
             callStackMainView.pop(itemToFind, StackView.Immediate)
         }
         if (currentCallStatus)
-            outgoingCallPage.callStatusPresentation = currentCallStatus
+            outgoingCallPage.callStatus = currentCallStatus
     }
 
     function showVideoCallPage(callId) {
@@ -158,7 +158,7 @@ Rectangle {
 
         function onCallStatusChanged(status, accountId, convUid) {
             if (responsibleConvUid === convUid && responsibleAccountId === accountId) {
-                outgoingCallPage.callStatusPresentation = status
+                outgoingCallPage.callStatus = status
             }
         }
 

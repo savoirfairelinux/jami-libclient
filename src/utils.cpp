@@ -1046,6 +1046,14 @@ UtilsAdapter::getCallId(const QString &accountId, const QString &convUid)
     return call->id;
 }
 
+const QString
+UtilsAdapter::getCallStatusStr(int statusInt)
+{
+    const auto status = static_cast<lrc::api::call::Status>(statusInt);
+    return lrc::api::call::to_string(status);
+}
+
+
 // returns true if name is valid registered name
 bool
 UtilsAdapter::validateRegNameForm(const QString &regName)

@@ -28,7 +28,7 @@ Rectangle {
     id: outgoingCallPageRect
 
     property int buttonPreferredSize: 50
-    property string callStatusPresentation: "outgoing"
+    property int callStatus: 0
     property string contactImgSource: ""
     property string bestName: "Best Name"
     property string bestId: "Best Id"
@@ -160,7 +160,7 @@ Rectangle {
                     horizontalAlignment: Text.AlignHCenter
                     verticalAlignment: Text.AlignVCenter
 
-                    text: callStatusPresentation + "..."
+                    text: ClientWrapper.utilsAdaptor.getCallStatusStr(callStatus) + "..."
                     color: Qt.lighter("white", 1.5)
                 }
             }

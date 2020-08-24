@@ -65,7 +65,7 @@ ItemDelegate {
                 conversationSmartListView.needToAccessMessageWebView(
                             DisplayID == DisplayName ? "" : DisplayID,
                             DisplayName, UID, CallStackViewShouldShow,
-                            IsAudioOnly, CallStateStr)
+                            IsAudioOnly, CallState)
             }
         }
     }
@@ -137,7 +137,7 @@ ItemDelegate {
             elide: Text.ElideRight
             elideWidth: LastInteractionDate ? (smartListItemDelegate.width - lastInteractionPreferredWidth - conversationSmartListUserImage.width-32) :
                                               smartListItemDelegate.width - lastInteractionPreferredWidth
-            text: InCall ? CallStateStr : (Draft ? Draft : LastInteraction)
+            text: InCall ? ClientWrapper.utilsAdaptor.getCallStatusStr(CallState) : (Draft ? Draft : LastInteraction)
         }
 
         font.hintingPreference: Font.PreferNoHinting
