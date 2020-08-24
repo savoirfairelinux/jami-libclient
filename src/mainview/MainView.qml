@@ -36,12 +36,12 @@ import "../settingsview/components"
 Window {
     id: mainViewWindow
 
-    property int minWidth: sidePanelViewStackPreferredWidth
+    property int minWidth: 400
     property int minHeight: aboutPopUpDialog.contentHeight
 
     property int mainViewWindowPreferredWidth: 650
     property int mainViewWindowPreferredHeight: 600
-    property int sidePanelViewStackPreferredWidth: 400
+    property int sidePanelViewStackPreferredWidth: 250
     property int mainViewStackPreferredWidth: 250
     property int aboutPopUpPreferredWidth: 250
 
