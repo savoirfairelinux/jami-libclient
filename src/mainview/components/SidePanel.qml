@@ -32,7 +32,7 @@ Rectangle {
     property int totalUnreadMessagesCount: 0
 
     signal conversationSmartListNeedToAccessMessageWebView(string currentUserDisplayName, string currentUserAlias, string currentUID, bool callStackViewShouldShow, bool isAudioOnly, string callStateStr)
-    signal accountComboBoxNeedToShowWelcomePage(int index)
+    signal accountComboBoxNeedToShowWelcomePage()
     signal conversationSmartListViewNeedToShowWelcomePage
     signal accountSignalsReconnect(string accountId)
     signal needToUpdateConversationForAddedContact
@@ -87,8 +87,6 @@ Rectangle {
     }
 
     function refreshAccountComboBox(index = -1) {
-        accountComboBox.resetAccountListModel()
-
 
         /*
          * To make sure that the ui is refreshed for accountComboBox.
@@ -105,6 +103,7 @@ Rectangle {
             accountComboBox.currentIndex = currentIndex
         accountComboBox.update()
         accountChangedUIReset()
+        accountComboBox.resetAccountListModel()
     }
 
     function deselectConversationSmartList() {

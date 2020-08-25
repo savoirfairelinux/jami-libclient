@@ -39,20 +39,7 @@ MessagesAdapter::MessagesAdapter(QObject *parent)
 MessagesAdapter::~MessagesAdapter() {}
 
 void
-MessagesAdapter::initQmlObject()
-{
-    connect(&LRCInstance::instance(),
-            &LRCInstance::currentAccountChanged,
-            this,
-            &MessagesAdapter::slotAccountChanged);
-    connectConversationModel();
-}
-
-void
-MessagesAdapter::slotAccountChanged()
-{
-    connectConversationModel();
-}
+MessagesAdapter::initQmlObject() {}
 
 void
 MessagesAdapter::setupChatView(const QString &uid)

@@ -25,10 +25,14 @@ import "../../commoncomponents"
 
 Rectangle {
     id: welcomeRect
-
-    property int currentAccountIndex: 0
     property int buttonPreferredSize: 30
     anchors.fill: parent
+
+    function updateWelcomePage(){
+        jamiShareWithFriendText.visible = accountListModel.data(accountListModel.index(0, 0), 260) === 1
+        jamiRegisteredNameRect.visible = accountListModel.data(accountListModel.index(0, 0), 260) === 1
+        textMetricsjamiRegisteredNameText.text = accountListModel.data(accountListModel.index(0, 0), 258)
+    }
 
     Rectangle {
         id: welcomeRectComponentsGroup
@@ -86,8 +90,9 @@ Rectangle {
                 verticalAlignment: Text.AlignVCenter
 
                 visible: accountListModel.data(accountListModel.index(
-                                                   currentAccountIndex, 0),
+                                                   0, 0),
                                                260) === 1
+
                 text: qsTr("This is your ID.\nCopy and share it with your friends")
                 color: JamiTheme.faddedFontColor
             }
@@ -101,9 +106,8 @@ Rectangle {
                 Layout.bottomMargin: 5
 
                 visible: accountListModel.data(accountListModel.index(
-                                                   currentAccountIndex, 0),
+                                                   0, 0),
                                                260) === 1
-
                 ColumnLayout {
                     id: jamiRegisteredNameRectColumnLayout
 
@@ -162,5 +166,9 @@ Rectangle {
         tBorderwidth: 0
         bBorderwidth: 0
         borderColor: JamiTheme.tabbarBorderColor
+    }
+
+    Component.onCompleted: {
+        updateWelcomePage()
     }
 }

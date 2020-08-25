@@ -301,8 +301,8 @@ Window {
 
                         function onAccountSignalsReconnect(accountId) {
                             CallAdapter.connectCallModel(accountId)
-                            ConversationsAdapter.accountChangedSetUp(accountId)
                             mainViewWindowSidePanel.accountSignalsReconnect(accountId)
+                            ConversationsAdapter.accountChangedSetUp(accountId)
                         }
 
                         function onUpdateConversationForAddedContact() {
@@ -319,8 +319,7 @@ Window {
                     }
 
                     onAccountChanged: {
-                        ClientWrapper.accountAdaptor.accountChanged(index)
-                        mainViewWindowSidePanel.refreshAccountComboBox(0)
+                        mainViewWindowSidePanel.refreshAccountComboBox(index)
                         settingsView.slotAccountListChanged()
                         settingsView.setSelected(settingsView.selectedMenu, true)
 
@@ -341,7 +340,7 @@ Window {
 
                     onNeedToBackToWelcomePage: {
                         if (!inSettingsView)
-                            mainViewWindowSidePanel.accountComboBoxNeedToShowWelcomePage(index)
+                            mainViewWindowSidePanel.accountComboBoxNeedToShowWelcomePage()
                     }
 
                     onNewAccountButtonClicked: {
@@ -515,15 +514,15 @@ Window {
              */
             if (!inSettingsView) {
                 mainViewStack.pop(welcomePage)
-                welcomePage.currentAccountIndex = index
-                qrDialog.currentAccountIndex = index
+                welcomePage.updateWelcomePage()
+                qrDialog.updateQrDialog()
             }
         }
 
         onConversationSmartListViewNeedToShowWelcomePage: {
             mainViewStack.pop(welcomePage)
-            welcomePage.currentAccountIndex = 0
-            qrDialog.currentAccountIndex = 0
+            welcomePage.updateWelcomePage()
+            qrDialog.updateQrDialog()
         }
 
         onAccountSignalsReconnect: {

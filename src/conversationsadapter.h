@@ -48,9 +48,6 @@ signals:
     void showConversationTabs(bool visible);
     void showSearchStatus(const QString &status);
 
-public slots:
-    void slotAccountChanged();
-
 private:
     void initQmlObject() override;
     void setConversationFilter(lrc::api::profile::Type filter);

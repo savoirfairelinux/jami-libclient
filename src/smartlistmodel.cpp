@@ -65,8 +65,7 @@ SmartListModel::rowCount(const QModelIndex &parent) const
             }
             return rowCount;
         }
-        return accInfo.conversationModel->allFilteredConversations().size()
-                + accInfo.conversationModel->getAllSearchResults().size();
+        return conversations_.size();
     }
     return 0;
 }

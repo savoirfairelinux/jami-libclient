@@ -44,18 +44,6 @@ ConversationsAdapter::initQmlObject()
             [this](const QString &accountId, lrc::api::conversation::Info convInfo) {
                 emit showChatView(accountId, convInfo.uid);
             });
-    connect(&LRCInstance::instance(),
-            &LRCInstance::currentAccountChanged,
-            this,
-            &ConversationsAdapter::slotAccountChanged);
-
-    connectConversationModel();
-}
-
-void
-ConversationsAdapter::slotAccountChanged()
-{
-    connectConversationModel();
 }
 
 void
@@ -139,7 +127,6 @@ ConversationsAdapter::accountChangedSetUp(const QString &accountId)
     auto &accountInfo = LRCInstance::accountModel().getAccountInfo(accountId);
     currentTypeFilter_ = accountInfo.profileInfo.type;
     LRCInstance::getCurrentConversationModel()->setFilter(accountInfo.profileInfo.type);
-    updateConversationsFilterWidget();
 
     connectConversationModel();
 }

@@ -91,7 +91,6 @@ public slots:
     void slotUpdateDraft(const QString &content);
     void slotMessagesCleared();
     void slotMessagesLoaded();
-    void slotAccountChanged();
 
 private:
     void initQmlObject() override final;
