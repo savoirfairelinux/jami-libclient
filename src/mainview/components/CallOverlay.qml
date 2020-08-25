@@ -110,6 +110,12 @@ Rectangle {
 
     anchors.fill: parent
 
+    SipInputPanel {
+        id: sipInputPanel
+
+        x: callOverlayRect.width / 2 - sipInputPanel.width / 2
+        y: callOverlayRect.height / 2 - sipInputPanel.height / 2
+    }
 
     /*
      * Timer to decide when overlay fade out.

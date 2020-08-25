@@ -31,7 +31,7 @@ class CallAdapter : public QmlAdapterBase
     Q_OBJECT
 
 public:
-    explicit CallAdapter(QObject *parent = nullptr);
+    explicit CallAdapter(QObject* parent = nullptr);
     ~CallAdapter();
 
     /*
@@ -41,11 +41,12 @@ public:
 
     Q_INVOKABLE void placeAudioOnlyCall();
     Q_INVOKABLE void placeCall();
-    Q_INVOKABLE void hangUpACall(const QString &accountId, const QString &convUid);
-    Q_INVOKABLE void refuseACall(const QString &accountId, const QString &convUid);
-    Q_INVOKABLE void acceptACall(const QString &accountId, const QString &convUid);
+    Q_INVOKABLE void hangUpACall(const QString& accountId, const QString& convUid);
+    Q_INVOKABLE void refuseACall(const QString& accountId, const QString& convUid);
+    Q_INVOKABLE void acceptACall(const QString& accountId, const QString& convUid);
 
-    Q_INVOKABLE void connectCallModel(const QString &accountId);
+    Q_INVOKABLE void connectCallModel(const QString& accountId);
+    Q_INVOKABLE void sipInputPanelPlayDTMF(const QString& key);
 
     /*
      * For Call Overlay
@@ -55,7 +56,7 @@ public:
     Q_INVOKABLE void minimizeParticipant();
     Q_INVOKABLE void hangUpThisCall();
     Q_INVOKABLE bool isCurrentMaster() const;
-    Q_INVOKABLE int  getCurrentLayoutType() const;
+    Q_INVOKABLE int getCurrentLayoutType() const;
     Q_INVOKABLE void holdThisCallToggle();
     Q_INVOKABLE void muteThisCallToggle();
     Q_INVOKABLE void recordThisCallToggle();
@@ -64,24 +65,26 @@ public:
     Q_INVOKABLE QVariantList getConferencesInfos();
 
 signals:
-    void showOutgoingCallPage(const QString &accountId, const QString &convUid);
-    void showIncomingCallPage(const QString &accountId, const QString &convUid);
-    void showAudioCallPage(const QString &accountId, const QString &convUid);
-    void showVideoCallPage(const QString &accountId, const QString &convUid, const QString &callId);
-    void showCallStack(const QString &accountId, const QString &convUid, bool forceReset = false);
-    void closeCallStack(const QString &accountId, const QString &convUid);
-    void closePotentialIncomingCallPageWindow(const QString &accountId, const QString &convUid);
-    void callStatusChanged(const QString &status, const QString &accountId, const QString &convUid);
+    void showOutgoingCallPage(const QString& accountId, const QString& convUid);
+    void showIncomingCallPage(const QString& accountId, const QString& convUid);
+    void showAudioCallPage(const QString& accountId, const QString& convUid);
+    void showVideoCallPage(const QString& accountId, const QString& convUid, const QString& callId);
+    void showCallStack(const QString& accountId, const QString& convUid, bool forceReset = false);
+    void closeCallStack(const QString& accountId, const QString& convUid);
+    void closePotentialIncomingCallPageWindow(const QString& accountId, const QString& convUid);
+    void callStatusChanged(const QString& status, const QString& accountId, const QString& convUid);
     void updateConversationSmartList();
-    void updateParticipantsInfos(const QVariantList& infos, const QString &accountId, const QString &callId);
+    void updateParticipantsInfos(const QVariantList& infos,
+                                 const QString& accountId,
+                                 const QString& callId);
 
-    void incomingCallNeedToSetupMainView(const QString &accountId, const QString &convUid);
+    void incomingCallNeedToSetupMainView(const QString& accountId, const QString& convUid);
     void previewVisibilityNeedToChange(bool visible);
 
     /*
      * For Call Overlay
      */
-    void updateTimeText(const QString &time);
+    void updateTimeText(const QString& time);
     void showOnHoldLabel(bool isPaused);
     void updateOverlay(bool isPaused,
                        bool isAudioOnly,
@@ -90,17 +93,17 @@ signals:
                        bool isRecording,
                        bool isSIP,
                        bool isConferenceCall,
-                       const QString &bestName);
+                       const QString& bestName);
 
 public slots:
-    void slotShowIncomingCallView(const QString &accountId,
-                                  const lrc::api::conversation::Info &convInfo);
-    void slotShowCallView(const QString &accountId, const lrc::api::conversation::Info &convInfo);
+    void slotShowIncomingCallView(const QString& accountId,
+                                  const lrc::api::conversation::Info& convInfo);
+    void slotShowCallView(const QString& accountId, const lrc::api::conversation::Info& convInfo);
     void slotAccountChanged();
 
 private:
-    void updateCall(const QString &convUid = {},
-                    const QString &accountId = {},
+    void updateCall(const QString& convUid = {},
+                    const QString& accountId = {},
                     bool forceCallOnly = false);
     bool shouldShowPreview(bool force);
 
@@ -117,7 +120,7 @@ private:
     /*
      * For Call Overlay
      */
-    void updateCallOverlay(const lrc::api::conversation::Info &convInfo);
-    void setTime(const QString &accountId, const QString &convUid);
-    QTimer *oneSecondTimer_;
+    void updateCallOverlay(const lrc::api::conversation::Info& convInfo);
+    void setTime(const QString& accountId, const QString& convUid);
+    QTimer* oneSecondTimer_;
 };

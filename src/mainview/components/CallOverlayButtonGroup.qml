@@ -50,8 +50,6 @@ Rectangle {
         root.isSip = isSIP
         noVideoButton.visible = !isAudioOnly
         addToConferenceButton.visible = !isSIP && isMaster
-        transferCallButton.visible = isSIP
-        sipInputPanelButton.visible = isSIP
 
         noMicButton.checked = isAudioMuted
         noVideoButton.checked = isVideoMuted

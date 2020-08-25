@@ -27,7 +27,7 @@
 #include "globalsystemtray.h"
 #include "utils.h"
 
-CallAdapter::CallAdapter(QObject *parent)
+CallAdapter::CallAdapter(QObject* parent)
     : QmlAdapterBase(parent)
     , oneSecondTimer_(new QTimer(this))
 {}
@@ -78,7 +78,7 @@ CallAdapter::placeCall()
 }
 
 void
-CallAdapter::hangUpACall(const QString &accountId, const QString &convUid)
+CallAdapter::hangUpACall(const QString& accountId, const QString& convUid)
 {
     auto* convModel = LRCInstance::getCurrentConversationModel();
     const auto convInfo = convModel->getConversationForUID(convUid);
@@ -88,7 +88,7 @@ CallAdapter::hangUpACall(const QString &accountId, const QString &convUid)
 }
 
 void
-CallAdapter::refuseACall(const QString &accountId, const QString &convUid)
+CallAdapter::refuseACall(const QString& accountId, const QString& convUid)
 {
     auto* convModel = LRCInstance::getCurrentConversationModel();
     const auto convInfo = convModel->getConversationForUID(convUid);
@@ -98,20 +98,20 @@ CallAdapter::refuseACall(const QString &accountId, const QString &convUid)
 }
 
 void
-CallAdapter::acceptACall(const QString &accountId, const QString &convUid)
+CallAdapter::acceptACall(const QString& accountId, const QString& convUid)
 {
     emit incomingCallNeedToSetupMainView(accountId, convUid);
     auto* convModel = LRCInstance::getCurrentConversationModel();
     const auto convInfo = convModel->getConversationForUID(convUid);
     if (!convInfo.uid.isEmpty()) {
         LRCInstance::getAccountInfo(accountId).callModel->accept(convInfo.callId);
-        auto &accInfo = LRCInstance::getAccountInfo(convInfo.accountId);
+        auto& accInfo = LRCInstance::getAccountInfo(convInfo.accountId);
         accInfo.callModel->setCurrentCall(convInfo.callId);
     }
 }
 
 void
-CallAdapter::slotShowIncomingCallView(const QString &accountId, const conversation::Info &convInfo)
+CallAdapter::slotShowIncomingCallView(const QString& accountId, const conversation::Info& convInfo)
 {
     auto* callModel = LRCInstance::getCurrentCallModel();
 
@@ -119,17 +119,17 @@ CallAdapter::slotShowIncomingCallView(const QString &accountId, const conversati
         /*
          * Connection to close potential incoming call page when it is not current account.
          */
-        auto &accInfo = LRCInstance::accountModel().getAccountInfo(accountId);
+        auto& accInfo = LRCInstance::accountModel().getAccountInfo(accountId);
 
         QObject::disconnect(closeIncomingCallPageConnection_);
 
         closeIncomingCallPageConnection_
             = QObject::connect(accInfo.callModel.get(),
                                &lrc::api::NewCallModel::callStatusChanged,
-                               [this, accountId, uid = convInfo.uid](const QString &callId) {
-                                   auto &accInfo = LRCInstance::accountModel().getAccountInfo(
+                               [this, accountId, uid = convInfo.uid](const QString& callId) {
+                                   auto& accInfo = LRCInstance::accountModel().getAccountInfo(
                                        accountId);
-                                   auto &callModel = accInfo.callModel;
+                                   auto& callModel = accInfo.callModel;
                                    auto call = callModel->getCall(callId);
 
                                    switch (call.status) {
@@ -182,18 +182,18 @@ CallAdapter::slotShowIncomingCallView(const QString &accountId, const conversati
 }
 
 void
-CallAdapter::slotShowCallView(const QString &accountId, const lrc::api::conversation::Info &convInfo)
+CallAdapter::slotShowCallView(const QString& accountId, const lrc::api::conversation::Info& convInfo)
 {
     updateCall(convInfo.uid, accountId);
 }
 
 void
-CallAdapter::updateCall(const QString &convUid, const QString &accountId, bool forceCallOnly)
+CallAdapter::updateCall(const QString& convUid, const QString& accountId, bool forceCallOnly)
 {
     accountId_ = accountId.isEmpty() ? accountId_ : accountId;
     convUid_ = convUid.isEmpty() ? convUid_ : convUid;
 
-    auto *convModel = LRCInstance::getCurrentConversationModel();
+    auto* convModel = LRCInstance::getCurrentConversationModel();
     const auto convInfo = convModel->getConversationForUID(convUid_);
     if (convInfo.uid.isEmpty()) {
         return;
@@ -223,7 +223,7 @@ CallAdapter::updateCall(const QString &convUid, const QString &accountId, bool f
 bool
 CallAdapter::shouldShowPreview(bool force)
 {
-    bool shouldShowPreview{false};
+    bool shouldShowPreview {false};
     auto* convModel = LRCInstance::getCurrentConversationModel();
     const auto convInfo = convModel->getConversationForUID(convUid_);
     if (convInfo.uid.isEmpty()) {
@@ -245,11 +245,11 @@ CallAdapter::getConferencesInfos()
     const auto convInfo = convModel->getConversationForUID(convUid_);
     if (convInfo.uid.isEmpty())
         return map;
-    auto callId = convInfo.confId.isEmpty()? convInfo.callId : convInfo.confId;
+    auto callId = convInfo.confId.isEmpty() ? convInfo.callId : convInfo.confId;
     if (!callId.isEmpty()) {
         try {
             auto call = LRCInstance::getCurrentCallModel()->getCall(callId);
-            for (const auto& participant: call.participantsInfos) {
+            for (const auto& participant : call.participantsInfos) {
                 QJsonObject data;
                 data["x"] = participant["x"].toInt();
                 data["y"] = participant["y"].toInt();
@@ -257,31 +257,34 @@ CallAdapter::getConferencesInfos()
                 data["h"] = participant["h"].toInt();
                 data["active"] = participant["active"] == "true";
                 auto bestName = participant["uri"];
-                auto &accInfo = LRCInstance::accountModel().getAccountInfo(accountId_);
+                auto& accInfo = LRCInstance::accountModel().getAccountInfo(accountId_);
                 data["isLocal"] = false;
                 if (bestName == accInfo.profileInfo.uri) {
                     bestName = tr("me");
                     data["isLocal"] = true;
                 } else {
                     try {
-                        auto &contact = LRCInstance::getCurrentAccountInfo().contactModel->getContact(participant["uri"]);
+                        auto& contact = LRCInstance::getCurrentAccountInfo()
+                                            .contactModel->getContact(participant["uri"]);
                         bestName = Utils::bestNameForContact(contact);
-                    } catch (...) {}
+                    } catch (...) {
+                    }
                 }
                 data["bestName"] = bestName;
 
                 map.push_back(QVariant(data));
             }
             return map;
-        } catch (...) {}
+        } catch (...) {
+        }
     }
     return map;
 }
 
 void
-CallAdapter::connectCallModel(const QString &accountId)
+CallAdapter::connectCallModel(const QString& accountId)
 {
-    auto &accInfo = LRCInstance::accountModel().getAccountInfo(accountId);
+    auto& accInfo = LRCInstance::accountModel().getAccountInfo(accountId);
 
     QObject::disconnect(callStatusChangedConnection_);
     QObject::disconnect(onParticipantsChangedConnection_);
@@ -289,15 +292,15 @@ CallAdapter::connectCallModel(const QString &accountId)
     onParticipantsChangedConnection_ = QObject::connect(
         accInfo.callModel.get(),
         &lrc::api::NewCallModel::onParticipantsChanged,
-        [this, accountId](const QString &confId) {
-            auto &accInfo = LRCInstance::accountModel().getAccountInfo(accountId);
-            auto &callModel = accInfo.callModel;
+        [this, accountId](const QString& confId) {
+            auto& accInfo = LRCInstance::accountModel().getAccountInfo(accountId);
+            auto& callModel = accInfo.callModel;
             auto call = callModel->getCall(confId);
             const auto convInfo = LRCInstance::getConversationFromCallId(confId);
             if (!convInfo.uid.isEmpty()) {
                 // Convert to QML
                 QVariantList map;
-                for (const auto& participant: call.participantsInfos) {
+                for (const auto& participant : call.participantsInfos) {
                     QJsonObject data;
                     data["x"] = participant["x"].toInt();
                     data["y"] = participant["y"].toInt();
@@ -307,29 +310,31 @@ CallAdapter::connectCallModel(const QString &accountId)
                     data["active"] = participant["active"] == "true";
                     auto bestName = participant["uri"];
                     data["isLocal"] = false;
-                    auto &accInfo = LRCInstance::accountModel().getAccountInfo(accountId_);
+                    auto& accInfo = LRCInstance::accountModel().getAccountInfo(accountId_);
                     if (bestName == accInfo.profileInfo.uri) {
                         bestName = tr("me");
                         data["isLocal"] = true;
                     } else {
                         try {
-                            auto &contact = LRCInstance::getCurrentAccountInfo().contactModel->getContact(participant["uri"]);
+                            auto& contact = LRCInstance::getCurrentAccountInfo()
+                                                .contactModel->getContact(participant["uri"]);
                             bestName = Utils::bestNameForContact(contact);
-                        } catch (...) {}
+                        } catch (...) {
+                        }
                     }
                     data["bestName"] = bestName;
                     map.push_back(QVariant(data));
                 }
                 emit updateParticipantsInfos(map, accountId, confId);
             }
-    });
+        });
 
     callStatusChangedConnection_ = QObject::connect(
         accInfo.callModel.get(),
         &lrc::api::NewCallModel::callStatusChanged,
-        [this, accountId](const QString &callId) {
-            auto &accInfo = LRCInstance::accountModel().getAccountInfo(accountId);
-            auto &callModel = accInfo.callModel;
+        [this, accountId](const QString& callId) {
+            auto& accInfo = LRCInstance::accountModel().getAccountInfo(accountId);
+            auto& callModel = accInfo.callModel;
             const auto call = callModel->getCall(callId);
 
             /*
@@ -357,7 +362,7 @@ CallAdapter::connectCallModel(const QString &accountId)
                  * If it's a conference, change the smartlist index
                  * to the next remaining participant.
                  */
-                bool forceCallOnly{false};
+                bool forceCallOnly {false};
                 if (!convInfo.confId.isEmpty()) {
                     auto callList = LRCInstance::getAPI().getConferenceSubcalls(convInfo.confId);
                     if (callList.empty()) {
@@ -366,7 +371,7 @@ CallAdapter::connectCallModel(const QString &accountId)
                         callList.append(lastConferencee);
                         forceCallOnly = true;
                     }
-                    for (const auto &callId : callList) {
+                    for (const auto& callId : callList) {
                         if (!callModel->hasCall(callId)) {
                             continue;
                         }
@@ -408,17 +413,28 @@ CallAdapter::connectCallModel(const QString &accountId)
         });
 }
 
+void
+CallAdapter::sipInputPanelPlayDTMF(const QString& key)
+{
+    auto callId = LRCInstance::getCallIdForConversationUid(convUid_, accountId_);
+    if (callId.isEmpty() || !LRCInstance::getCurrentCallModel()->hasCall(callId)) {
+        return;
+    }
+
+    LRCInstance::getCurrentCallModel()->playDTMF(callId, key);
+}
+
 /*
  * For Call Overlay
  */
 void
-CallAdapter::updateCallOverlay(const lrc::api::conversation::Info &convInfo)
+CallAdapter::updateCallOverlay(const lrc::api::conversation::Info& convInfo)
 {
     setTime(accountId_, convUid_);
     QObject::disconnect(oneSecondTimer_);
     QObject::connect(oneSecondTimer_, &QTimer::timeout, [this] { setTime(accountId_, convUid_); });
     oneSecondTimer_->start(20);
-    auto &accInfo = LRCInstance::accountModel().getAccountInfo(accountId_);
+    auto& accInfo = LRCInstance::accountModel().getAccountInfo(accountId_);
 
     auto call = LRCInstance::getCallInfoForConversation(convInfo);
     if (!call) {
@@ -450,13 +466,13 @@ CallAdapter::hangupCall(const QString& uri)
         auto callModel = LRCInstance::getAccountInfo(accountId_).callModel.get();
         if (callModel->hasCall(convInfo.callId)) {
             /*
-            * Store the last remaining participant of the conference,
-            * so we can switch the smartlist index after termination.
-            */
+             * Store the last remaining participant of the conference,
+             * so we can switch the smartlist index after termination.
+             */
             if (!convInfo.confId.isEmpty()) {
                 auto callList = LRCInstance::getAPI().getConferenceSubcalls(convInfo.confId);
                 if (callList.size() == 2) {
-                    for (const auto &cId : callList) {
+                    for (const auto& cId : callList) {
                         if (cId != convInfo.callId) {
                             LRCInstance::instance().pushLastConferencee(convInfo.confId, cId);
                         }
@@ -487,21 +503,23 @@ CallAdapter::maximizeParticipant(const QString& uri, bool isActive)
     try {
         const auto call = callModel->getCall(confId);
         switch (call.layout) {
-            case lrc::api::call::Layout::GRID:
-                callModel->setActiveParticipant(confId, callId);
-                callModel->setConferenceLayout(confId, lrc::api::call::Layout::ONE_WITH_SMALL);
-                break;
-            case lrc::api::call::Layout::ONE_WITH_SMALL:
-                callModel->setActiveParticipant(confId, callId);
-                callModel->setConferenceLayout(confId,
-                    isActive? lrc::api::call::Layout::ONE : lrc::api::call::Layout::ONE_WITH_SMALL);
-                break;
-            case lrc::api::call::Layout::ONE:
-                callModel->setActiveParticipant(confId, callId);
-                callModel->setConferenceLayout(confId, lrc::api::call::Layout::GRID);
-                break;
+        case lrc::api::call::Layout::GRID:
+            callModel->setActiveParticipant(confId, callId);
+            callModel->setConferenceLayout(confId, lrc::api::call::Layout::ONE_WITH_SMALL);
+            break;
+        case lrc::api::call::Layout::ONE_WITH_SMALL:
+            callModel->setActiveParticipant(confId, callId);
+            callModel->setConferenceLayout(confId,
+                                           isActive ? lrc::api::call::Layout::ONE
+                                                    : lrc::api::call::Layout::ONE_WITH_SMALL);
+            break;
+        case lrc::api::call::Layout::ONE:
+            callModel->setActiveParticipant(confId, callId);
+            callModel->setConferenceLayout(confId, lrc::api::call::Layout::GRID);
+            break;
         };
-    } catch (...) {}
+    } catch (...) {
+    }
 }
 
 void
@@ -514,16 +532,17 @@ CallAdapter::minimizeParticipant()
     try {
         auto call = callModel->getCall(confId);
         switch (call.layout) {
-            case lrc::api::call::Layout::GRID:
-                break;
-            case lrc::api::call::Layout::ONE_WITH_SMALL:
-                callModel->setConferenceLayout(confId, lrc::api::call::Layout::GRID);
-                break;
-            case lrc::api::call::Layout::ONE:
-                callModel->setConferenceLayout(confId, lrc::api::call::Layout::ONE_WITH_SMALL);
-                break;
+        case lrc::api::call::Layout::GRID:
+            break;
+        case lrc::api::call::Layout::ONE_WITH_SMALL:
+            callModel->setConferenceLayout(confId, lrc::api::call::Layout::GRID);
+            break;
+        case lrc::api::call::Layout::ONE:
+            callModel->setConferenceLayout(confId, lrc::api::call::Layout::ONE_WITH_SMALL);
+            break;
         };
-    } catch (...) {}
+    } catch (...) {
+    }
 }
 
 void
@@ -544,11 +563,11 @@ CallAdapter::hangUpThisCall()
 bool
 CallAdapter::isRecordingThisCall()
 {
-    auto &accInfo = LRCInstance::accountModel().getAccountInfo(accountId_);
-    auto &convModel = accInfo.conversationModel;
+    auto& accInfo = LRCInstance::accountModel().getAccountInfo(accountId_);
+    auto& convModel = accInfo.conversationModel;
     const auto convInfo = convModel->getConversationForUID(convUid_);
     return accInfo.callModel->isRecording(convInfo.confId)
-    || accInfo.callModel->isRecording(convInfo.callId);
+           || accInfo.callModel->isRecording(convInfo.callId);
 }
 
 bool
@@ -565,7 +584,8 @@ CallAdapter::isCurrentMaster() const
                 auto call = callModel->getCall(convInfo.callId);
                 return call.participantsInfos.size() == 0;
             }
-        } catch (...) {}
+        } catch (...) {
+        }
     }
     return true;
 }
@@ -580,7 +600,8 @@ CallAdapter::getCurrentLayoutType() const
         try {
             auto call = callModel->getCall(convInfo.confId);
             return Utils::toUnderlyingValue(call.layout);
-        } catch (...) {}
+        } catch (...) {
+        }
     }
     return -1;
 }
@@ -640,7 +661,7 @@ CallAdapter::videoPauseThisCallToggle()
 }
 
 void
-CallAdapter::setTime(const QString &accountId, const QString &convUid)
+CallAdapter::setTime(const QString& accountId, const QString& convUid)
 {
     const auto callId = LRCInstance::getCallIdForConversationUid(convUid, accountId);
     if (callId.isEmpty() || !LRCInstance::getCurrentCallModel()->hasCall(callId)) {

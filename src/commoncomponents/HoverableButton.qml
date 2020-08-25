@@ -28,6 +28,8 @@ import QtGraphicalEffects 1.15
  * 2. Radius control (rounded)
  * 3. Text content or image content
  * 4. Can use OnClicked slot to implement some click logic
+ *
+ * Note: if use text property directly, buttonTextColor will not work.
  */
 Button {
     id: hoverableButton
@@ -38,6 +40,9 @@ Button {
     property int fontPointSize: 9
     property int buttonImageHeight: hoverableButtonBackground.height - 10
     property int buttonImageWidth: hoverableButtonBackground.width - 10
+
+    property string buttonText: ""
+    property string buttonTextColor: "black"
 
     property string backgroundColor: JamiTheme.releaseColor
     property string onPressColor: JamiTheme.pressColor
@@ -57,6 +62,8 @@ Button {
     font.pointSize: fontPointSize
 
     hoverEnabled: true
+
+    text: "<font color=" + "'" + buttonTextColor + "'>" + buttonText + "</font>"
 
     ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
     ToolTip.visible: hovered && (toolTipText.length > 0)
@@ -79,7 +86,12 @@ Button {
             mipmap: true
             asynchronous: true
 
-            source: hoverableButton.checked && checkedImage? checkedImage : baseImage
+            source: {
+                if (checkable && checkedImage)
+                    return hoverableButton.checked ? checkedImage : baseImage
+                else
+                    return ""
+            }
 
             layer {
                 enabled: true
