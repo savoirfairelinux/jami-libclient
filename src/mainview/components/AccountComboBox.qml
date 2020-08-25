@@ -140,6 +140,8 @@ ComboBox {
     }
 
     Image {
+        id: arrowDropDown
+
         anchors.left: textUserAliasRoot.right
         anchors.verticalCenter: textUserAliasRoot.verticalCenter
 
@@ -169,7 +171,8 @@ ComboBox {
 
         font: textUserAliasRoot.font
         elide: Text.ElideRight
-        elideWidth: accountComboBox.width - userImageRoot.width - settingsButton.width - qrCodeGenerateButton.width - 55
+        elideWidth: accountComboBox.width - userImageRoot.width - settingsButton.width
+                    - arrowDropDown.width - qrCodeGenerateButton.width - 55
 
 
         /*
@@ -190,7 +193,8 @@ ComboBox {
 
         font: textUsernameRoot.font
         elide: Text.ElideRight
-        elideWidth: accountComboBox.width - userImageRoot.width - settingsButton.width - qrCodeGenerateButton.width - 55
+        elideWidth: accountComboBox.width - userImageRoot.width - settingsButton.width
+                    - qrCodeGenerateButton.width - 55
 
 
         /*
