@@ -509,6 +509,7 @@ NewCallModelPimpl::NewCallModelPimpl(const NewCallModel& linked, const Callbacks
 : linked(linked)
 , callbacksHandler(callbacksHandler)
 {
+    qRegisterMetaType<VectorMapStringString>("VectorMapStringString");
     connect(&callbacksHandler, &CallbacksHandler::incomingCall, this, &NewCallModelPimpl::slotIncomingCall);
     connect(&callbacksHandler, &CallbacksHandler::callStateChanged, this, &NewCallModelPimpl::slotCallStateChanged);
     connect(&callbacksHandler, &CallbacksHandler::incomingVCardChunk, this, &NewCallModelPimpl::slotincomingVCardChunk);
@@ -525,6 +526,12 @@ NewCallModelPimpl::NewCallModelPimpl(const NewCallModel& linked, const Callbacks
 
 NewCallModelPimpl::~NewCallModelPimpl()
 {
+    disconnect(&callbacksHandler, &CallbacksHandler::incomingCall, this, &NewCallModelPimpl::slotIncomingCall);
+    disconnect(&callbacksHandler, &CallbacksHandler::callStateChanged, this, &NewCallModelPimpl::slotCallStateChanged);
+    disconnect(&callbacksHandler, &CallbacksHandler::incomingVCardChunk, this, &NewCallModelPimpl::slotincomingVCardChunk);
+    disconnect(&callbacksHandler, &CallbacksHandler::conferenceCreated, this , &NewCallModelPimpl::slotConferenceCreated);
+     disconnect(&callbacksHandler, &CallbacksHandler::voiceMailNotify, this, &NewCallModelPimpl::slotVoiceMailNotify);
+     disconnect(&CallManager::instance(), &CallManagerInterface::onConferenceInfosUpdated, this, &NewCallModelPimpl::slotOnConferenceInfosUpdated);
 
 }
 
