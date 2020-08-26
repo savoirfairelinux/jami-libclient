@@ -110,7 +110,7 @@ Dialog {
                 TextMetrics {
                     id: textMetricsjamiSlogansText
                     font: jamiSlogansText.font
-                    text: qsTr("Free as in Freedom")
+                    text: qsTr("Together")
                 }
             }
 
@@ -132,7 +132,7 @@ Dialog {
                 /*
                  * TextMetrics does not work for multi-line.
                  */
-                text: qsTr("The Microsoft Windows client for Jami.\nJami is a secured and distributed communciation software.")
+                text: qsTr("The Qt client for Jami.\nJami is a secured and distributed communication software.")
             }
 
             Label {
