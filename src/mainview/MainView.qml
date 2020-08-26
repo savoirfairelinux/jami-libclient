@@ -592,21 +592,29 @@ Window {
                        && mainViewStack.visible) {
                 mainViewStack.pop()
             }
+            recordBox.visible = false
         }
 
         Component.onCompleted: {
 
             sidePanelViewStack.SplitView.maximumWidth = Qt.binding(function() {
-                return (hiddenView ? splitView.width : splitView.width - sidePanelViewStackPreferedWidth)
+                return (hiddenView ? splitView.width :
+                                     splitView.width - sidePanelViewStackPreferedWidth)
             })
 
             recordBox.x = Qt.binding(function() {
-                var i = (welcomeViewStack.width > 1000 ? Math.round((welcomeViewStack.width-1000)*0.5) : 0)
-                return sidePanelViewStack.width + recordBox.x_offset + i
+                var i = ((mainViewStack.visible && mainViewStack.width > 1000) ?
+                             Math.round((mainViewStack.width-1000)*0.5) :
+                             0)
+                return mainViewStack.visible ?
+                            sidePanelViewStack.width + recordBox.x_offset + i :
+                            recordBox.x_offset + i
+
             })
 
             recordBox.y = Qt.binding(function() {
-                return sidePanelViewStack.height + recordBox.y_offset
+                return mainViewStack.visible ? mainViewStack.height + recordBox.y_offset :
+                                               sidePanelViewStack.height + recordBox.y_offset
             })
 
 
@@ -681,17 +689,6 @@ Window {
     RecordBox{
         id: recordBox
         visible: false
-
-        Component.onCompleted: {
-            recordBox.x = Qt.binding(function() {
-                var i = (mainViewStack.width > 1000 ? Math.round((mainViewStack.width-1000)*0.5) : 0)
-                return sidePanelViewStack.width + recordBox.x_offset + i
-            })
-
-            recordBox.y = Qt.binding(function() {
-                return mainViewStack.height + recordBox.y_offset
-            })
-        }
     }
 
     UserProfile {
