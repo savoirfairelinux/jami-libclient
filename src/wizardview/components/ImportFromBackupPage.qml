@@ -89,6 +89,8 @@ Rectangle {
             toolTipText: qsTr("Import your account's archive")
             source: "qrc:/images/icons/round-folder-24px.svg"
             color: JamiTheme.buttonTintedGrey
+            hoveredColor: JamiTheme.buttonTintedGreyHovered
+            pressedColor: JamiTheme.buttonTintedGreyPressed
 
             onClicked: {
                 importFromFile_Dialog.open()
@@ -123,6 +125,8 @@ Rectangle {
             text: qsTr("CONNECT FROM BACKUP")
             color: filePath.length === 0?
                 JamiTheme.buttonTintedGreyInactive : JamiTheme.buttonTintedGrey
+            hoveredColor: JamiTheme.buttonTintedGreyHovered
+            pressedColor: JamiTheme.buttonTintedGreyPressed
 
             onClicked: {
                 errorText = ""

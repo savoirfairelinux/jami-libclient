@@ -103,6 +103,8 @@ Rectangle {
             text: qsTr("CONNECT FROM ANOTHER DEVICE")
             color: pinFromDevice.text.length === 0?
                 JamiTheme.buttonTintedGreyInactive : JamiTheme.buttonTintedGrey
+            hoveredColor: JamiTheme.buttonTintedGreyHovered
+            pressedColor: JamiTheme.buttonTintedGreyPressed
 
             onClicked: {
                 errorText = ""

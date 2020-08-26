@@ -245,6 +245,8 @@ Dialog {
                         id: changeLogButton
                         text: qsTr("Changelog")
                         color: projectCreditsScrollView.visible? JamiTheme.buttonTintedGreyInactive : JamiTheme.buttonTintedGrey
+                        hoveredColor: JamiTheme.buttonTintedGreyHovered
+                        pressedColor: JamiTheme.buttonTintedGreyPressed
                         Layout.preferredWidth: 100
 
                         onClicked: {
@@ -258,6 +260,8 @@ Dialog {
                         id: creditsButton
                         text: qsTr("Credit")
                         color: projectCreditsScrollView.visible? JamiTheme.buttonTintedGrey : JamiTheme.buttonTintedGreyInactive
+                        hoveredColor: JamiTheme.buttonTintedGreyHovered
+                        pressedColor: JamiTheme.buttonTintedGreyPressed
                         Layout.preferredWidth: 100
 
                         onClicked: {

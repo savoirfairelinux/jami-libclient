@@ -142,6 +142,8 @@ Rectangle {
             id: createAccountButton
             text: qsTr("CREATE SIP ACCOUNT")
             color: JamiTheme.wizardBlueButtons
+            hoveredColor: JamiTheme.buttonTintedBlueHovered
+            pressedColor: JamiTheme.buttonTintedBluePressed
 
             onClicked: {
                 createAccount()

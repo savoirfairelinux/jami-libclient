@@ -114,6 +114,8 @@ Rectangle {
             enabled: readyToSaveDetails
             text: enabled? qsTr("Save Profile") : qsTr("Generating account…")
             color: enabled? JamiTheme.wizardBlueButtons : JamiTheme.buttonTintedGreyInactive
+            hoveredColor: JamiTheme.buttonTintedBlueHovered
+            pressedColor: JamiTheme.buttonTintedBluePressed
 
             onClicked: {
                 saveProfile()
@@ -124,6 +126,8 @@ Rectangle {
             text: qsTr("SKIP")
             enabled: saveProfileBtn.enabled
             color: enabled? JamiTheme.buttonTintedGrey : JamiTheme.buttonTintedGreyInactive
+            hoveredColor: JamiTheme.buttonTintedGreyHovered
+            pressedColor: JamiTheme.buttonTintedGreyPressed
             outlined: true
 
             onClicked: {

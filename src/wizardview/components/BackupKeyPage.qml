@@ -136,6 +136,8 @@ Rectangle {
             id: backupBtn
             text: qsTr("BACKUP ACCOUNT")
             color: JamiTheme.buttonTintedGrey
+            hoveredColor: JamiTheme.buttonTintedGreyHovered
+            pressedColor: JamiTheme.buttonTintedGreyPressed
 
             onClicked: {
                 exportBtn_Dialog.open()
@@ -146,6 +148,8 @@ Rectangle {
         MaterialButton {
             text: qsTr("SKIP")
             color: JamiTheme.buttonTintedGrey
+            hoveredColor: JamiTheme.buttonTintedGreyHovered
+            pressedColor: JamiTheme.buttonTintedGreyPressed
             outlined: true
 
             onClicked: {

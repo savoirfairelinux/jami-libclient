@@ -85,6 +85,8 @@ ColumnLayout {
             toolTipText: qsTr("Create new Jami account")
             source: "qrc:/images/default_avatar_overlay.svg"
             color: JamiTheme.buttonTintedBlue
+            hoveredColor: JamiTheme.buttonTintedBlueHovered
+            pressedColor: JamiTheme.buttonTintedBluePressed
 
             onClicked: {
                 welcomePageRedirectPage(1)
@@ -104,6 +106,8 @@ ColumnLayout {
             toolTipText: qsTr("Import account from other device")
             source: "qrc:/images/icons/devices-24px.svg"
             color: JamiTheme.buttonTintedBlue
+            hoveredColor: JamiTheme.buttonTintedBlueHovered
+            pressedColor: JamiTheme.buttonTintedBluePressed
 
             onClicked: {
                 welcomePageRedirectPage(5)
@@ -123,6 +127,8 @@ ColumnLayout {
             toolTipText: qsTr("Import account from backup file")
             source: "qrc:/images/icons/backup-24px.svg"
             color: JamiTheme.buttonTintedBlue
+            hoveredColor: JamiTheme.buttonTintedBlueHovered
+            pressedColor: JamiTheme.buttonTintedBluePressed
 
             onClicked: {
                 welcomePageRedirectPage(3)
@@ -141,6 +147,8 @@ ColumnLayout {
             text: qsTr("SHOW ADVANCED")
             toolTipText: qsTr("Show advanced options")
             color: JamiTheme.buttonTintedBlue
+            hoveredColor: JamiTheme.buttonTintedBlueHovered
+            pressedColor: JamiTheme.buttonTintedBluePressed
             outlined: true
 
             hoverEnabled: true
@@ -169,6 +177,8 @@ ColumnLayout {
             toolTipText: qsTr("Login to account manager")
             source: "qrc:/images/icons/router-24px.svg"
             color: JamiTheme.buttonTintedBlue
+            hoveredColor: JamiTheme.buttonTintedBlueHovered
+            pressedColor: JamiTheme.buttonTintedBluePressed
 
             onClicked: {
                 welcomePageRedirectPage(6)
@@ -188,6 +198,8 @@ ColumnLayout {
             toolTipText: qsTr("Create new SIP account")
             source: "qrc:/images/default_avatar_overlay.svg"
             color: JamiTheme.buttonTintedBlue
+            hoveredColor: JamiTheme.buttonTintedBlueHovered
+            pressedColor: JamiTheme.buttonTintedBluePressed
 
             onClicked: {
                 welcomePageRedirectPage(2)

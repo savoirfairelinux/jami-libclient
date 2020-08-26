@@ -27,6 +27,8 @@ Button {
     property alias source: root.icon.source
     property string toolTipText: ""
     property var color: "transparent"
+    property var hoveredColor: undefined
+    property var pressedColor: undefined
     property var outlined: false
 
     Layout.alignment: Qt.AlignCenter
@@ -38,6 +40,7 @@ Button {
     icon.source: ""
     icon.height: 18
     icon.width: 18
+    hoverEnabled: hoverColor !== undefined
 
     contentItem: Item {
         Rectangle {
@@ -54,13 +57,29 @@ Button {
                     enabled: true
                     effect: ColorOverlay {
                         id: overlay
-                        color: outlined ? root.color : "white"
+                        color:{
+                            if (!outlined)
+                                return "white"
+                            if (hovered && root.hoveredColor)
+                                return root.hoveredColor
+                            if (checked && root.pressedColor)
+                                return root.pressedColor
+                            return root.color
+                        }
                     }
                 }
             }
             Text {
                 text: root.text
-                color: outlined? root.color : "white"
+                color: {
+                    if (!outlined)
+                        return "white"
+                    if (hovered && root.hoveredColor)
+                        return root.hoveredColor
+                    if (checked && root.pressedColor)
+                        return root.pressedColor
+                    return root.color
+                }
                 font: root.font
                 anchors.centerIn: parent
                 horizontalAlignment: Text.AlignHCenter
@@ -75,8 +94,24 @@ Button {
     background: Rectangle {
         id: backgroundRect
         anchors.fill: parent
-        color: !outlined ? root.color : "transparent"
-        border.color: outlined ? root.color : "transparent"
+        color: {
+            if (outlined)
+                return "transparent"
+            if (hovered && root.hoveredColor)
+                return root.hoveredColor
+            if (checked && root.pressedColor)
+                return root.pressedColor
+            return root.color
+        }
+        border.color: {
+            if (!outlined)
+                return "transparent"
+            if (hovered && root.hoveredColor)
+                return root.hoveredColor
+            if (checked && root.pressedColor)
+                return root.pressedColor
+            return root.color
+        }
         radius: 4
     }
 }

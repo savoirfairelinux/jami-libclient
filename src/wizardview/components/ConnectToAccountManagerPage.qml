@@ -139,6 +139,8 @@ Rectangle {
                 && usernameManagerEdit.text.length !== 0
                 && passwordManagerEdit.text.length !== 0
             color: enabled? JamiTheme.wizardBlueButtons : JamiTheme.buttonTintedGreyInactive
+            hoveredColor: JamiTheme.buttonTintedBlueHovered
+            pressedColor: JamiTheme.buttonTintedBluePressed
 
             onClicked: {
                 errorText = ""

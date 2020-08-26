@@ -163,6 +163,8 @@ Rectangle {
                 color: nameRegistrationUIState === WizardView.FREE?
                         JamiTheme.buttonTintedGrey
                         : JamiTheme.buttonTintedGreyInactive
+                hoveredColor: JamiTheme.buttonTintedGreyHovered
+                pressedColor: JamiTheme.buttonTintedGreyPressed
 
                 onClicked: {
                     if (nameRegistrationUIState === WizardView.FREE)
@@ -173,6 +175,8 @@ Rectangle {
             MaterialButton {
                 text: qsTr("SKIP CHOOSING USERNAME")
                 color: JamiTheme.buttonTintedGrey
+                hoveredColor: JamiTheme.buttonTintedGreyHovered
+                pressedColor: JamiTheme.buttonTintedGreyPressed
                 outlined: true
 
                 onClicked: {
@@ -281,6 +285,8 @@ Rectangle {
                 color: !passwordSwitch.checked ||
                     (passwordEdit.text === passwordConfirmEdit.text && passwordEdit.text.length !== 0)?
                     JamiTheme.wizardBlueButtons : JamiTheme.buttonTintedGreyInactive
+                hoveredColor: JamiTheme.buttonTintedBlueHovered
+                pressedColor: JamiTheme.buttonTintedBluePressed
 
                 onClicked: {
                     createAccount()
