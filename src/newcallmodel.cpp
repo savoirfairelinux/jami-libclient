@@ -705,11 +705,12 @@ NewCallModelPimpl::slotIncomingCall(const QString& accountId, const QString& cal
     if (linked.owner.id != accountId) {
         return;
     }
-    if (linked.owner.confProperties.isRendezVous) {
-        // Do not notify for calls if rendez vous because it's in a detached
-        // mode and auto answer is managed by the daemon
-        return;
-    }
+    // TODO: uncomment this. For now, the rendez-vous account is showing calls
+    //if (linked.owner.confProperties.isRendezVous) {
+    //    // Do not notify for calls if rendez vous because it's in a detached
+    //    // mode and auto answer is managed by the daemon
+    //    return;
+    //}
 
     // do not use auto here (QDBusPendingReply<MapStringString>)
     MapStringString callDetails = CallManager::instance().getCallDetails(callId);
@@ -780,8 +781,10 @@ NewCallModelPimpl::slotCallStateChanged(const QString& callId, const QString& st
                 || previousStatus == call::Status::OUTGOING_RINGING) {
 
             if (previousStatus == call::Status::INCOMING_RINGING
-                && linked.owner.profileInfo.type != profile::Type::SIP)
+                && linked.owner.profileInfo.type != profile::Type::SIP
+                && !linked.owner.confProperties.isRendezVous) { // TODO remove this when we want to not show calls in rendez-vous
                 linked.setCurrentCall(callId);
+            }
             call->startTime = std::chrono::steady_clock::now();
             emit linked.callStarted(callId);
             sendProfile(callId);
@@ -866,6 +869,14 @@ NewCallModelPimpl::slotOnConferenceInfosUpdated(const QString& confId, const Vec
     }
 
     emit linked.onParticipantsChanged(confId);
+
+    // TODO: remove when the rendez-vous UI will be done
+    // For now, the rendez-vous account can see ongoing calls
+    // And must be notified when a new
+    QStringList callList = CallManager::instance().getParticipantList(confId);
+    foreach(const auto& call, callList) {
+        emit linked.callAddedToConference(call, confId);
+    }
 }
 
 bool
