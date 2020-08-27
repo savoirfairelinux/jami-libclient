@@ -299,12 +299,6 @@ Window {
                     Connections {
                         target: ClientWrapper.accountAdaptor
 
-                        function onAccountSignalsReconnect(accountId) {
-                            CallAdapter.connectCallModel(accountId)
-                            mainViewWindowSidePanel.accountSignalsReconnect(accountId)
-                            ConversationsAdapter.accountChangedSetUp(accountId)
-                        }
-
                         function onUpdateConversationForAddedContact() {
                             mainViewWindowSidePanel.needToUpdateConversationForAddedContact()
                         }
@@ -332,10 +326,6 @@ Window {
                                 pushCallStackView()
                             }
                         }
-                    }
-
-                    onNeedToUpdateSmartList: {
-                        mainViewWindowSidePanel.updateSmartList(accountId)
                     }
 
                     onNeedToBackToWelcomePage: {
@@ -523,10 +513,6 @@ Window {
             mainViewStack.pop(welcomePage)
             welcomePage.updateWelcomePage()
             qrDialog.updateQrDialog()
-        }
-
-        onAccountSignalsReconnect: {
-            MessagesAdapter.accountChangedSetUp(accountId)
         }
 
         onNeedToUpdateConversationForAddedContact: {

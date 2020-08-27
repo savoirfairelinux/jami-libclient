@@ -410,7 +410,5 @@ SmartListModel::flags(const QModelIndex &index) const
 void
 SmartListModel::setAccount(const QString &accountId)
 {
-    beginResetModel();
     accountId_ = accountId;
-    endResetModel();
 }

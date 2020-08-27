@@ -335,10 +335,10 @@ AccountAdapter::setSelectedAccount(const QString &accountId)
 {
     LRCInstance::setSelectedAccountId(accountId);
 
-    backToWelcomePage();
-
     connectAccount(accountId);
     emit accountSignalsReconnect(accountId);
+
+    backToWelcomePage();
 }
 
 void

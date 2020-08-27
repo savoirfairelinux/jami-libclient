@@ -34,7 +34,6 @@ Rectangle {
     signal conversationSmartListNeedToAccessMessageWebView(string currentUserDisplayName, string currentUserAlias, string currentUID, bool callStackViewShouldShow, bool isAudioOnly, string callStateStr)
     signal accountComboBoxNeedToShowWelcomePage()
     signal conversationSmartListViewNeedToShowWelcomePage
-    signal accountSignalsReconnect(string accountId)
     signal needToUpdateConversationForAddedContact
     signal needToAddNewAccount
 
@@ -113,11 +112,6 @@ Rectangle {
 
     function forceUpdateConversationSmartListView() {
         conversationSmartListView.updateConversationSmartListView()
-    }
-
-    function updateSmartList(accountId) {
-        conversationSmartListView.currentIndex = -1
-        conversationSmartListView.updateSmartList(accountId)
     }
 
     /*

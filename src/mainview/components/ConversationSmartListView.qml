@@ -74,14 +74,6 @@ ListView {
         conversationSmartListView.needToBackToWelcomePage()
     }
 
-
-    /*
-     * Update smartlist to accountId.
-     */
-    function updateSmartList(accountId) {
-        conversationSmartListView.model.setAccount(accountId)
-    }
-
     ConversationSmartListContextMenu {
         id: smartListContextMenu
     }

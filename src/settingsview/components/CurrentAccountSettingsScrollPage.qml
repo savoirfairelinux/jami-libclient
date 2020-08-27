@@ -333,7 +333,6 @@ Rectangle {
         y: (parent.height - height) / 2
 
         onAccepted: {
-            ClientWrapper.accountAdaptor.setSelectedAccountId()
             ClientWrapper.accountAdaptor.setSelectedConvId()
 
             if(ClientWrapper.utilsAdaptor.getAccountListSize() > 0){

@@ -35,7 +35,6 @@ public:
     Q_INVOKABLE void setupChatView(const QString &uid);
     Q_INVOKABLE void connectConversationModel();
     Q_INVOKABLE void sendContactRequest();
-    Q_INVOKABLE void accountChangedSetUp(const QString &accountId);
     Q_INVOKABLE void updateConversationForAddedContact();
 
     /*

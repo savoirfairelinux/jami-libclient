@@ -147,14 +147,6 @@ MessagesAdapter::sendContactRequest()
 }
 
 void
-MessagesAdapter::accountChangedSetUp(const QString &accountId)
-{
-    Q_UNUSED(accountId)
-
-    connectConversationModel();
-}
-
-void
 MessagesAdapter::updateConversationForAddedContact()
 {
     auto* convModel = LRCInstance::getCurrentConversationModel();
