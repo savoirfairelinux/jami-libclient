@@ -108,5 +108,6 @@
         <file>src/commoncomponents/js/contextmenugenerator.js</file>
         <file>src/commoncomponents/BaseContextMenu.qml</file>
         <file>src/mainview/components/AccountPresenceCycle.qml</file>
+        <file>src/commoncomponents/Scaffold.qml</file>
     </qresource>
 </RCC>
