@@ -613,6 +613,12 @@ ConversationModel::selectConversation(const QString& uid) const
                 callEnded = call.status == call::Status::ENDED;
             } catch (...) {}
         }
+        if (!conversation.confId.isEmpty()
+        && owner.confProperties.isRendezVous) {
+            // If we are on a rendez vous account and we select the conversation,
+            // attach to the call.
+            CallManager::instance().unholdConference(conversation.confId);
+        }
 
         if (not callEnded and not conversation.confId.isEmpty()) {
             emit pimpl_->behaviorController.showCallView(owner.id, conversation);
@@ -1946,7 +1952,11 @@ ConversationModelPimpl::slotCallAddedToConference(const QString& callId, const Q
         if (conversation.callId == callId || conversation.confId == confId) {
             conversation.confId = confId;
             dirtyConversations = {true, true};
-            emit linked.selectConversation(conversation.uid);
+
+            // Refresh the conference status only if attached
+            MapStringString confDetails = CallManager::instance().getConferenceDetails(confId);
+            if (confDetails["CALL_STATE"] == "ACTIVE_ATTACHED")
+                emit linked.selectConversation(conversation.uid);
         }
     }
 }
