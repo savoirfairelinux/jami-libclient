@@ -170,10 +170,6 @@ Window {
 
         function onCloseCallStack(accountId, convUid) {
 
-            var responsibleCallId = ClientWrapper.utilsAdaptor.getCallId(
-                    callStackView.responsibleAccountId, callStackView.responsibleConvUid)
-            var callId = ClientWrapper.utilsAdaptor.getCallId(
-                    callStackView.responsibleAccountId, convUid)
             /*
              * Check if call stack view is on any of the stackview.
              */
