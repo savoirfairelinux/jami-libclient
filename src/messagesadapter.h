@@ -41,9 +41,9 @@ public:
     /*
      * JS Q_INVOKABLE.
      */
-    Q_INVOKABLE void acceptInvitation();
-    Q_INVOKABLE void refuseInvitation();
-    Q_INVOKABLE void blockConversation();
+    Q_INVOKABLE void acceptInvitation(const QString &convUid = "");
+    Q_INVOKABLE void refuseInvitation(const QString &convUid = "");
+    Q_INVOKABLE void blockConversation(const QString &convUid = "");
     Q_INVOKABLE void setNewMessagesContent(const QString &path);
     Q_INVOKABLE void sendMessage(const QString &message);
     Q_INVOKABLE void sendImage(const QString &message);

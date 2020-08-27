@@ -230,7 +230,7 @@ Rectangle {
 
             onClicked: {
                 var rectPos = mapToItem(callStackViewWindow, optionsButton.x, optionsButton.y)
-                callViewContextMenu.activate()
+                callViewContextMenu.openMenu()
                 callViewContextMenu.x = rectPos.x + optionsButton.width/2 - callViewContextMenu.width/2
                 callViewContextMenu.y = rectPos.y - 12 - callViewContextMenu.height
             }

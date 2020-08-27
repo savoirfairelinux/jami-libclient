@@ -112,18 +112,14 @@ Rectangle {
                         var layout = CallAdapter.getCurrentLayoutType()
                         var showMaximized = layout !== 2
                         var showMinimized = !(layout === 0 || (layout === 1 && !active))
-                        injectedContextMenu.showHangup(!root.isLocal)
-                        injectedContextMenu.showMaximize(showMaximized)
-                        injectedContextMenu.showMinimize(showMinimized)
-                        injectedContextMenu.setHeight(
-                            (root.isLocal ? 0 : 1)
-                            + (showMaximized ? 1 : 0)
-                            + (showMinimized ? 1 : 0))
+                        injectedContextMenu.showHangup = !root.isLocal
+                        injectedContextMenu.showMaximize = showMaximized
+                        injectedContextMenu.showMinimize = showMinimized
                         injectedContextMenu.uri = uri
                         injectedContextMenu.active = active
                         injectedContextMenu.x = mousePos.x
                         injectedContextMenu.y = mousePos.y - injectedContextMenu.height
-                        injectedContextMenu.open()
+                        injectedContextMenu.openMenu()
                     }
                 }
             }

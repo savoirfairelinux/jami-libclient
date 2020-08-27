@@ -180,7 +180,7 @@ ItemDelegate {
                 itemSmartListBackground.color = JamiTheme.releaseColor
             }
             if (mouse.button === Qt.RightButton) {
-
+                smartListContextMenu.parent = mouseAreaSmartListItemDelegate
 
                 /*
                  * Make menu pos at mouse.
@@ -191,6 +191,7 @@ ItemDelegate {
                 smartListContextMenu.y = relativeMousePos.y
                 smartListContextMenu.responsibleAccountId = ClientWrapper.utilsAdaptor.getCurrAccId()
                 smartListContextMenu.responsibleConvUid = UID
+                smartListContextMenu.contactType = ContactType
                 userProfile.responsibleConvUid = UID
                 userProfile.aliasText = DisplayName
                 userProfile.registeredNameText = DisplayID
@@ -224,9 +225,5 @@ ItemDelegate {
                 }
             }
         }
-    }
-
-    ConversationSmartListContextMenu {
-        id: smartListContextMenu
     }
 }

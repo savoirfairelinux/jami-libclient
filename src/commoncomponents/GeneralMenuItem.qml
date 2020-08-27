@@ -35,8 +35,7 @@ MenuItem {
     property string iconSource: ""
     property int preferredWidth: 220
     property int preferredHeight: 48
-    property int topBorderWidth: 0
-    property int bottomBorderWidth: 0
+
     property int leftBorderWidth: 0
     property int rightBorderWidth: 0
 
@@ -99,8 +98,6 @@ MenuItem {
         id: contextMenuBackgroundRect
 
         anchors.fill: parent
-        anchors.topMargin: topBorderWidth
-        anchors.bottomMargin: bottomBorderWidth
         anchors.leftMargin: leftBorderWidth
         anchors.rightMargin: rightBorderWidth
 
@@ -132,8 +129,8 @@ MenuItem {
             commonBorder: false
             lBorderwidth: leftBorderWidth
             rBorderwidth: rightBorderWidth
-            tBorderwidth: topBorderWidth
-            bBorderwidth: bottomBorderWidth
+            tBorderwidth: 0
+            bBorderwidth: 0
             borderColor: JamiTheme.tabbarBorderColor
         }
     }

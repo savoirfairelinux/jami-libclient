@@ -1,4 +1,3 @@
-
 /*
  * Copyright (C) 2020 by Savoir-faire Linux
  * Author: Mingrui Zhang <mingrui.zhang@savoirfairelinux.com>
@@ -16,6 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+
 import QtQuick 2.14
 import QtQuick.Controls 2.14
 import QtGraphicalEffects 1.12
@@ -23,157 +23,88 @@ import net.jami.Models 1.0
 
 import "../../commoncomponents"
 
-Menu {
-    id: contextMenu
+import "../../commoncomponents/js/contextmenugenerator.js" as ContextMenuGenerator
+
+Item {
+    id: root
+
     property string responsibleAccountId: ""
     property string responsibleConvUid: ""
-
-    property int generalMenuSeparatorCount: 0
-    property int commonBorderWidth: 1
-    font.pointSize: JamiTheme.menuFontSize
+    property int contactType: Profile.Type.INVALID
 
     function openMenu(){
-        visible = true
-        visible = false
-        visible = true
-    }
+        ContextMenuGenerator.addMenuItem(qsTr("Start video call"),
+                                         "qrc:/images/icons/ic_video_call_24px.svg",
+                                         function (){
+                                             ConversationsAdapter.selectConversation(
+                                                         responsibleAccountId,
+                                                         responsibleConvUid, false)
+                                             CallAdapter.placeCall()
+                                         })
+        ContextMenuGenerator.addMenuItem(qsTr("Start audio call"),
+                                         "qrc:/images/icons/ic_phone_24px.svg",
+                                         function (){
+                                             ConversationsAdapter.selectConversation(
+                                                         responsibleAccountId,
+                                                         responsibleConvUid, false)
+                                             CallAdapter.placeAudioOnlyCall()
+                                         })
+        ContextMenuGenerator.addMenuItem(qsTr("Clear conversation"),
+                                         "qrc:/images/icons/ic_clear_24px.svg",
+                                         function (){
+                                             ClientWrapper.utilsAdaptor.clearConversationHistory(
+                                                         responsibleAccountId,
+                                                         responsibleConvUid)
+                                         })
 
-    GeneralMenuSeparator {
-        preferredWidth: startVideoCallItem.preferredWidth
-        preferredHeight: 8
-        separatorColor: "transparent"
-        Component.onCompleted: {
-            generalMenuSeparatorCount++
+        if (contactType === Profile.Type.RING || contactType === Profile.Type.SIP) {
+            ContextMenuGenerator.addMenuItem(qsTr("Remove contact"),
+                                             "qrc:/images/icons/round-remove_circle-24px.svg",
+                                             function (){
+                                                 ClientWrapper.utilsAdaptor.removeConversation(
+                                                             responsibleAccountId,
+                                                             responsibleConvUid)
+                                             })
         }
-    }
 
-    /*
-     * All GeneralMenuItems should remain the same width / height.
-     */
-    GeneralMenuItem {
-        id: startVideoCallItem
+        if (contactType === Profile.Type.RING || contactType === Profile.Type.PENDING) {
+            ContextMenuGenerator.addMenuSeparator()
 
-        itemName: qsTr("Start video call")
-        iconSource: "qrc:/images/icons/ic_video_call_24px.svg"
-        leftBorderWidth: commonBorderWidth
-        rightBorderWidth: commonBorderWidth
+            if (contactType === Profile.Type.PENDING) {
+                ContextMenuGenerator.addMenuItem(qsTr("Accept request"),
+                                                 "qrc:/images/icons/person_add-24px.svg",
+                                                 function (){
+                                                     MessagesAdapter.acceptInvitation(
+                                                                 responsibleConvUid)
+                                                 })
+                ContextMenuGenerator.addMenuItem(qsTr("Decline request"),
+                                                 "qrc:/images/icons/round-close-24px.svg",
+                                                 function (){
+                                                     MessagesAdapter.refuseInvitation(
+                                                                 responsibleConvUid)
+                                                 })
+            }
+            ContextMenuGenerator.addMenuItem(qsTr("Block contact"),
+                                             "qrc:/images/icons/ic_block_24px.svg",
+                                             function (){
+                                                 MessagesAdapter.blockConversation(
+                                                             responsibleConvUid)
+                                             })
 
-        onClicked: {
-            contextMenu.close()
-            ConversationsAdapter.selectConversation(responsibleAccountId,
-                                                    responsibleConvUid, false)
-            CallAdapter.placeCall()
+            ContextMenuGenerator.addMenuSeparator()
+            ContextMenuGenerator.addMenuItem(qsTr("Profile"),
+                                             "qrc:/images/icons/person-24px.svg",
+                                             function (){
+                                                 userProfile.open()
+                                             })
         }
+
+        root.height = ContextMenuGenerator.getMenu().height
+        root.width = ContextMenuGenerator.getMenu().width
+        ContextMenuGenerator.getMenu().open()
     }
 
-    GeneralMenuItem {
-        id: startAudioCallItem
-
-        itemName: qsTr("Start audio call")
-        iconSource: "qrc:/images/icons/ic_phone_24px.svg"
-        leftBorderWidth: commonBorderWidth
-        rightBorderWidth: commonBorderWidth
-
-        onClicked: {
-            contextMenu.close()
-            ConversationsAdapter.selectConversation(responsibleAccountId,
-                                                    responsibleConvUid, false)
-            CallAdapter.placeAudioOnlyCall()
-        }
-    }
-
-    GeneralMenuItem {
-        id: clearConversationItem
-
-        itemName: qsTr("Clear conversation")
-        iconSource: "qrc:/images/icons/ic_clear_24px.svg"
-        leftBorderWidth: commonBorderWidth
-        rightBorderWidth: commonBorderWidth
-
-        onClicked: {
-            contextMenu.close()
-            ClientWrapper.utilsAdaptor.clearConversationHistory(responsibleAccountId,
-                                                  responsibleConvUid)
-        }
-    }
-
-    GeneralMenuItem {
-        id: removeContactItem
-
-        itemName: qsTr("Remove contact")
-        iconSource: "qrc:/images/icons/round-remove_circle-24px.svg"
-        leftBorderWidth: commonBorderWidth
-        rightBorderWidth: commonBorderWidth
-
-        onClicked: {
-            contextMenu.close()
-            ClientWrapper.utilsAdaptor.removeConversation(responsibleAccountId,
-                                            responsibleConvUid)
-        }
-    }
-
-    GeneralMenuSeparator {
-        preferredWidth: startVideoCallItem.preferredWidth
-        preferredHeight: commonBorderWidth
-
-        Component.onCompleted: {
-            generalMenuSeparatorCount++
-        }
-    }
-
-    GeneralMenuItem {
-        id: blockContactItem
-
-        itemName: qsTr("Block contact")
-        iconSource: "qrc:/images/icons/ic_block_24px.svg"
-        leftBorderWidth: commonBorderWidth
-        rightBorderWidth: commonBorderWidth
-
-        onClicked: {
-            contextMenu.close()
-            ClientWrapper.utilsAdaptor.removeConversation(responsibleAccountId,
-                                            responsibleConvUid, true)
-        }
-    }
-
-    GeneralMenuSeparator {
-        preferredWidth: startVideoCallItem.preferredWidth
-        preferredHeight: commonBorderWidth
-
-        Component.onCompleted: {
-            generalMenuSeparatorCount++
-        }
-    }
-
-    GeneralMenuItem {
-        id: profileItem
-
-        itemName: qsTr("Profile")
-        iconSource: "qrc:/images/icons/person-24px.svg"
-        leftBorderWidth: commonBorderWidth
-        rightBorderWidth: commonBorderWidth
-
-        onClicked: {
-            contextMenu.close()
-            userProfile.open()
-        }
-    }
-
-    GeneralMenuSeparator {
-        preferredWidth: startVideoCallItem.preferredWidth
-        preferredHeight: 8
-        separatorColor: "transparent"
-        Component.onCompleted: {
-            generalMenuSeparatorCount++
-        }
-    }
-
-    background: Rectangle {
-        implicitWidth: startVideoCallItem.preferredWidth
-        implicitHeight: startVideoCallItem.preferredHeight
-                        * (contextMenu.count - generalMenuSeparatorCount)
-
-        border.width: commonBorderWidth
-        border.color: JamiTheme.tabbarBorderColor
+    Component.onCompleted: {
+        ContextMenuGenerator.createBaseContextMenuObjects(root)
     }
 }

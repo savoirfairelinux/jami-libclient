@@ -82,6 +82,10 @@ ListView {
         conversationSmartListView.model.setAccount(accountId)
     }
 
+    ConversationSmartListContextMenu {
+        id: smartListContextMenu
+    }
+
     Connections {
         target: CallAdapter
 

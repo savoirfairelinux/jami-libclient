@@ -40,24 +40,28 @@ function setVideoContextMenuObject(obj) {
     videoContextMenuObject = obj
 }
 
-function createVideoDeviceContextMenuItemObjects(deviceName, setChecked, last) {
+function createVideoDeviceContextMenuItemObjects(deviceName, setChecked) {
 
     videoDeviceContextMenuItemComponent = Qt.createComponent(
                 "../components/VideoCallPageContextMenuDeviceItem.qml")
     if (videoDeviceContextMenuItemComponent.status === Component.Ready)
-        finishCreation(deviceName, setChecked, last)
+        finishCreation(deviceName, setChecked)
     else if (videoDeviceContextMenuItemComponent.status === Component.Error)
         console.log("Error loading component:",
                     videoDeviceContextMenuItemComponent.errorString())
 }
 
-function finishCreation(deviceName, setChecked, last) {
+function finishCreation(deviceName, setChecked) {
     videoDeviceContextMenuItemObject = videoDeviceContextMenuItemComponent.createObject()
     if (videoDeviceContextMenuItemObject === null) {
         // Error Handling.
         console.log("Error creating video context menu object")
     }
 
+    videoDeviceContextMenuItemObject.leftBorderWidth =
+            videoContextMenuObject.commonBorderWidth
+    videoDeviceContextMenuItemObject.rightBorderWidth =
+            videoContextMenuObject.commonBorderWidth
     videoDeviceContextMenuItemObject.itemName = deviceName
     videoDeviceContextMenuItemObject.checkable = true
     videoDeviceContextMenuItemObject.checked = setChecked
@@ -68,14 +72,11 @@ function finishCreation(deviceName, setChecked, last) {
      * Push into the storage array, and insert it into context menu.
      */
     itemArray.push(videoDeviceContextMenuItemObject)
-    videoContextMenuObject.insertItem(3 /* The button is at pos 3 in the menu */, videoDeviceContextMenuItemObject)
+    videoContextMenuObject.addItem(videoDeviceContextMenuItemObject)
 
-
-    /*
-     * If it is the last device context menu item, open the context menu.
-     */
-    if (last)
-        videoContextMenuObject.open()
+    videoDeviceContextMenuItemObject.clicked.connect(function () {
+        videoContextMenuObject.close()
+    })
 }
 
 function removeCreatedItems() {

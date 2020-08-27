@@ -23,6 +23,8 @@
         <file>images/icons/ic_add_black_18dp_2x.png</file>
         <file>images/icons/info-24px.svg</file>
         <file>images/icons/backup-24px.svg</file>
+        <file>images/icons/check_box_outline_blank-24px.svg</file>
+        <file>images/icons/check_box-24px.svg</file>
         <file>images/icons/devices-24px.svg</file>
         <file>images/icons/ic_arrow_back_24px.svg</file>
         <file>images/icons/ic_arrow_back_white_24dp.png</file>
@@ -52,8 +54,6 @@
         <file>images/icons/pause_circle_outline-24px.svg</file>
         <file>images/icons/play_circle_outline-24px.svg</file>
         <file>images/icons/ic_pause_white_100px.png</file>
-        <file>images/icons/ic_person_add_black_24dp_2x.png</file>
-        <file>images/icons/ic_person_add_white_24dp.png</file>
         <file>images/icons/ic_phone_24px.svg</file>
         <file>images/icons/ic_photo_camera_white_24dp_2x.png</file>
         <file>images/icons/ic_baseline-search-24px.svg</file>

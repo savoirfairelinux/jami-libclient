@@ -173,7 +173,7 @@ ItemDelegate {
             buttonImageHeight: height - 8
             buttonImageWidth: width - 8
 
-            source: "qrc:/images/icons/ic_person_add_black_24dp_2x.png"
+            source: "qrc:/images/icons/person_add-24px.svg"
 
             radius: height / 2
             width: 25

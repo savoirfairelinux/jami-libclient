@@ -633,24 +633,24 @@ MessagesAdapter::contactIsComposing(const QString &uid, const QString &contactUr
 }
 
 void
-MessagesAdapter::acceptInvitation()
+MessagesAdapter::acceptInvitation(const QString &convUid)
 {
-    const auto convUid = LRCInstance::getCurrentConvUid();
-    LRCInstance::getCurrentConversationModel()->makePermanent(convUid);
+    const auto currentConvUid = convUid.isEmpty() ? LRCInstance::getCurrentConvUid() : convUid;
+    LRCInstance::getCurrentConversationModel()->makePermanent(currentConvUid);
 }
 
 void
-MessagesAdapter::refuseInvitation()
+MessagesAdapter::refuseInvitation(const QString &convUid)
 {
-    auto convUid = LRCInstance::getCurrentConvUid();
-    LRCInstance::getCurrentConversationModel()->removeConversation(convUid, false);
+    const auto currentConvUid = convUid.isEmpty() ? LRCInstance::getCurrentConvUid() : convUid;
+    LRCInstance::getCurrentConversationModel()->removeConversation(currentConvUid, false);
     setInvitation(false);
 }
 
 void
-MessagesAdapter::blockConversation()
+MessagesAdapter::blockConversation(const QString &convUid)
 {
-    auto convUid = LRCInstance::getCurrentConvUid();
-    LRCInstance::getCurrentConversationModel()->removeConversation(convUid, true);
+    const auto currentConvUid = convUid.isEmpty() ? LRCInstance::getCurrentConvUid() : convUid;
+    LRCInstance::getCurrentConversationModel()->removeConversation(currentConvUid, true);
     setInvitation(false);
 }

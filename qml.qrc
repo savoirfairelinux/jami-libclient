@@ -103,5 +103,7 @@
         <file>src/mainview/components/RecordBox.qml</file>
         <file>src/commoncomponents/ElidedTextLabel.qml</file>
         <file>src/mainview/components/SipInputPanel.qml</file>
+        <file>src/commoncomponents/js/contextmenugenerator.js</file>
+        <file>src/commoncomponents/BaseContextMenu.qml</file>
     </qresource>
 </RCC>
