@@ -197,12 +197,7 @@ QString
 Utils::GetRingtonePath()
 {
 #ifdef Q_OS_WIN
-    TCHAR workingDirectory[MAX_PATH];
-    GetCurrentDirectory(MAX_PATH, workingDirectory);
-
-    QString ringtonePath = QString::fromWCharArray(workingDirectory);
-    ringtonePath += QStringLiteral("\\ringtones\\default.opus");
-    return ringtonePath;
+    return QCoreApplication::applicationDirPath() + "\\ringtones\\default.opus";
 #else
     return QString("/usr/local");
 #endif
