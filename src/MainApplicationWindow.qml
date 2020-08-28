@@ -65,6 +65,7 @@ ApplicationWindow {
 
             function onNoAccountIsAvailable() {
                 mainViewLoader.setSource("")
+                wizardViewForApplicationStart.changePageQML(0)
                 wizardView.show()
             }
         }
@@ -79,6 +80,8 @@ ApplicationWindow {
         minimumHeight: 600
 
         WizardView {
+            id: wizardViewForApplicationStart
+
             anchors.fill: parent
             onNeedToShowMainViewWindow: {
                 mainViewLoader.newAddedAccountIndex = accountIndex

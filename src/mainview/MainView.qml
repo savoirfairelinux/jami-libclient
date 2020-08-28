@@ -227,26 +227,26 @@ Window {
     }
 
     WizardView {
-            id: wizardView
+        id: wizardView
 
-            anchors.fill: parent
+        anchors.fill: parent
 
-            onNeedToShowMainViewWindow: {
-                mainViewLoader.newAddedAccountIndex = accountIndex
-                if (mainViewLoader.source.toString() !== "qrc:/src/mainview/MainView.qml") {
-                    mainViewLoader.loaded.disconnect(slotNewAccountAdded)
-                    mainViewLoader.loaded.connect(slotNewAccountAdded)
-                    mainViewLoader.setSource("qrc:/src/mainview/MainView.qml")
-                } else {
-                    slotNewAccountAdded()
-                }
-                mainViewStackLayout.currentIndex = 0
+        onNeedToShowMainViewWindow: {
+            mainViewLoader.newAddedAccountIndex = accountIndex
+            if (mainViewLoader.source.toString() !== "qrc:/src/mainview/MainView.qml") {
+                mainViewLoader.loaded.disconnect(slotNewAccountAdded)
+                mainViewLoader.loaded.connect(slotNewAccountAdded)
+                mainViewLoader.setSource("qrc:/src/mainview/MainView.qml")
+            } else {
+                slotNewAccountAdded()
             }
-
-            onWizardViewIsClosed: {
-                mainViewStackLayout.currentIndex = 0
-            }
+            mainViewStackLayout.currentIndex = 0
         }
+
+        onWizardViewIsClosed: {
+            mainViewStackLayout.currentIndex = 0
+        }
+    }
 
     StackLayout {
         id: mainViewStackLayout
