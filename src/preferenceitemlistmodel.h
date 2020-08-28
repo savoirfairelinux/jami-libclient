@@ -1,6 +1,6 @@
 /**
  * Copyright (C) 2020 by Savoir-faire Linux
- * Author: Aline Gondim Santos   <aline.gondimsantos@savoirfairelinux.com>
+ * Author: Aline Gondim Santos <aline.gondimsantos@savoirfairelinux.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,6 +29,7 @@ class PreferenceItemListModel : public QAbstractListModel
     Q_OBJECT
 
     Q_PROPERTY(QString pluginId READ pluginId WRITE setPluginId)
+    Q_PROPERTY(QString mediaHandlerName READ mediaHandlerName WRITE setMediaHandlerName)
     Q_PROPERTY(int preferencesCount READ preferencesCount)
 public:
     enum Role {
@@ -72,8 +73,12 @@ public:
 
     QString pluginId() const;
     void setPluginId(const QString& pluginId);
+    QString mediaHandlerName() const;
+    void setMediaHandlerName(const QString mediaHandlerName);
     int preferencesCount();
 
 private:
     QString pluginId_;
+    QString mediaHandlerName_ = "";
+    VectorMapStringString preferenceList_;
 };

@@ -1,6 +1,6 @@
 /**
  * Copyright (C) 2020 by Savoir-faire Linux
- * Author: Aline Gondim Santos   <aline.gondimsantos@savoirfairelinux.com>
+ * Author: Aline Gondim Santos <aline.gondimsantos@savoirfairelinux.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,101 +24,225 @@ import net.jami.Models 1.0
 import "../../commoncomponents"
 
 Popup {
-    id: mediahandlerPickerPopup
-
+    id: root
     function toggleMediaHandlerSlot(mediaHandlerId, isLoaded) {
         ClientWrapper.pluginModel.toggleCallMediaHandler(mediaHandlerId, !isLoaded)
         mediahandlerPickerListView.model = MediaHandlerAdapter.getMediaHandlerSelectableModel()
     }
 
-    contentWidth: 350
-    contentHeight: mediahandlerPickerPopupRectColumnLayout.height + 50
-
-    padding: 0
+    width: 350
+    height: contentItem.height
 
     modal: true
 
-    contentItem: Rectangle {
-        id: mediahandlerPickerPopupRect
+    contentItem: StackLayout {
+        id: stack
+        currentIndex: 0
+        height: childrenRect.height
 
-        width: 250
+        Rectangle {
+            id: mediahandlerPickerPopupRect
+            width: root.width
+            height: childrenRect.height + 50
+            color: "white"
+            radius: 10
 
-        HoverableButton {
-            id: closeButton
+            HoverableButton {
+                id: closeButton
 
-            anchors.top: mediahandlerPickerPopupRect.top
-            anchors.topMargin: 5
-            anchors.right: mediahandlerPickerPopupRect.right
-            anchors.rightMargin: 5
+                anchors.top: mediahandlerPickerPopupRect.top
+                anchors.topMargin: 5
+                anchors.right: mediahandlerPickerPopupRect.right
+                anchors.rightMargin: 5
 
-            width: 30
-            height: 30
+                width: 30
+                height: 30
 
-            radius: 30
-            source: "qrc:/images/icons/round-close-24px.svg"
+                radius: 30
+                source: "qrc:/images/icons/round-close-24px.svg"
 
-            onClicked: {
-                mediahandlerPickerPopup.close()
-            }
-        }
-
-        ColumnLayout {
-            id: mediahandlerPickerPopupRectColumnLayout
-
-            anchors.top: mediahandlerPickerPopupRect.top
-            anchors.topMargin: 15
-
-            Text {
-                id: mediahandlerPickerTitle
-
-                Layout.alignment: Qt.AlignCenter
-                Layout.preferredWidth: mediahandlerPickerPopupRect.width
-                Layout.preferredHeight: 30
-
-                font.pointSize: JamiTheme.textFontSize
-                font.bold: true
-
-                horizontalAlignment: Text.AlignHCenter
-                verticalAlignment: Text.AlignVCenter
-
-                text: qsTr("Choose plugin")
+                onClicked: {
+                    root.close()
+                }
             }
 
-            ListView {
-                id: mediahandlerPickerListView
+            ColumnLayout {
+                id: mediahandlerPickerPopupRectColumnLayout
 
-                Layout.alignment: Qt.AlignCenter
-                Layout.preferredWidth: mediahandlerPickerPopupRect.width
-                Layout.preferredHeight: 200
+                anchors.top: mediahandlerPickerPopupRect.top
+                anchors.topMargin: 15
+                height: 230
 
-                model: MediaHandlerAdapter.getMediaHandlerSelectableModel()
+                Text {
+                    id: mediahandlerPickerTitle
 
-                clip: true
+                    Layout.alignment: Qt.AlignCenter
+                    Layout.preferredWidth: mediahandlerPickerPopupRect.width
+                    Layout.preferredHeight: 30
 
-                delegate: MediaHandlerItemDelegate {
-                    id: mediaHandlerItemDelegate
-                    visible: ClientWrapper.pluginModel.getPluginsEnabled()
-                    width: mediahandlerPickerListView.width
-                    height: 50
+                    font.pointSize: JamiTheme.textFontSize
+                    font.bold: true
 
-                    mediaHandlerName : MediaHandlerName
-                    mediaHandlerId: MediaHandlerId
-                    mediaHandlerIcon: MediaHandlerIcon
-                    isLoaded: IsLoaded
+                    horizontalAlignment: Text.AlignHCenter
+                    verticalAlignment: Text.AlignVCenter
 
-                    onBtnLoadMediaHandlerToggled: {
-                        toggleMediaHandlerSlot(mediaHandlerId, isLoaded)
-                    }
-
+                    text: qsTr("Choose plugin")
                 }
 
-                ScrollIndicator.vertical: ScrollIndicator {}
+                ListView {
+                    id: mediahandlerPickerListView
+
+                    Layout.alignment: Qt.AlignCenter
+                    Layout.preferredWidth: mediahandlerPickerPopupRect.width
+                    Layout.preferredHeight: 200
+
+                    model: MediaHandlerAdapter.getMediaHandlerSelectableModel()
+
+                    clip: true
+
+                    delegate: MediaHandlerItemDelegate {
+                        id: mediaHandlerItemDelegate
+                        visible: ClientWrapper.pluginModel.getPluginsEnabled()
+                        width: mediahandlerPickerListView.width
+                        height: 50
+
+                        mediaHandlerName : MediaHandlerName
+                        mediaHandlerId: MediaHandlerId
+                        mediaHandlerIcon: MediaHandlerIcon
+                        isLoaded: IsLoaded
+                        pluginId: PluginId
+
+                        onBtnLoadMediaHandlerToggled: {
+                            toggleMediaHandlerSlot(mediaHandlerId, isLoaded)
+                        }
+
+                        onOpenPreferences: {
+                            mediahandlerPreferencePickerListView.pluginId = pluginId
+                            mediahandlerPreferencePickerListView.mediaHandlerName = mediaHandlerName
+                            mediahandlerPreferencePickerListView.model = MediaHandlerAdapter.getMediaHandlerPreferencesModel(pluginId, mediaHandlerName)
+                            stack.currentIndex = 1
+                        }
+                    }
+
+                    ScrollIndicator.vertical: ScrollIndicator {}
+                }
             }
         }
 
-        radius: 10
-        color: "white"
+        Rectangle {
+            id: mediahandlerPreferencePopupRect2
+            width: root.width
+            height: childrenRect.height + 50
+            color: "white"
+            radius: 10
+
+            HoverableButton {
+                id: backButton
+                anchors.top: mediahandlerPreferencePopupRect2.top
+                anchors.topMargin: 5
+                anchors.left: mediahandlerPreferencePopupRect2.left
+                anchors.leftMargin: 5
+
+                width: 30
+                height: 30
+
+                radius: 30
+                source: "qrc:/images/icons/ic_arrow_back_24px.svg"
+                toolTipText: qsTr("Go back to plugins list")
+                hoverEnabled: true
+                onClicked: {
+                    stack.currentIndex = 0
+                }
+            }
+
+            HoverableButton {
+                id: closeButton2
+
+                anchors.top: mediahandlerPreferencePopupRect2.top
+                anchors.topMargin: 5
+                anchors.right: mediahandlerPreferencePopupRect2.right
+                anchors.rightMargin: 5
+
+                width: 30
+                height: 30
+
+                radius: 30
+                source: "qrc:/images/icons/round-close-24px.svg"
+
+                onClicked: {
+                    stack.currentIndex = 0
+                    root.close()
+                }
+            }
+
+            ColumnLayout {
+
+                anchors.top: mediahandlerPreferencePopupRect2.top
+                anchors.topMargin: 15
+                height: 230
+
+                Text {
+                    Layout.alignment: Qt.AlignCenter
+                    Layout.preferredWidth: mediahandlerPreferencePopupRect2.width
+                    Layout.preferredHeight: 30
+
+                    font.pointSize: JamiTheme.textFontSize
+                    font.bold: true
+
+                    horizontalAlignment: Text.AlignHCenter
+                    verticalAlignment: Text.AlignVCenter
+
+                    text: qsTr("Preference")
+                }
+
+                ListView {
+                    id: mediahandlerPreferencePickerListView
+                    Layout.alignment: Qt.AlignCenter
+                    Layout.preferredWidth: mediahandlerPickerPopupRect.width
+                    Layout.preferredHeight: 200
+
+                    property string pluginId: ""
+                    property string mediaHandlerName: ""
+
+                    model: MediaHandlerAdapter.getMediaHandlerPreferencesModel(pluginId, mediaHandlerName)
+
+                    clip: true
+
+                    delegate: PreferenceItemDelegate {
+                        id: mediaHandlerPreferenceDelegate
+                        width: mediahandlerPreferencePickerListView.width
+                        height: 50
+
+                        preferenceName: PreferenceName
+                        preferenceSummary: PreferenceSummary
+                        preferenceType: PreferenceType
+                        preferenceCurrentValue: PreferenceCurrentValue
+                        pluginId: PluginId
+                        pluginListPreferenceModel: PluginListPreferenceModel{
+                            id: pluginListPreferenceModel
+                            preferenceKey : PreferenceKey
+                            pluginId: PluginId
+                        }
+
+                        onClicked:  mediahandlerPreferencePickerListView.currentIndex = index
+
+                        onBtnPreferenceClicked: {
+                            ClientWrapper.pluginModel.setPluginPreference(pluginListPreferenceModel.pluginId,
+                                                                            pluginListPreferenceModel.preferenceKey,
+                                                                            pluginListPreferenceModel.preferenceNewValue)
+                            mediahandlerPreferencePickerListView.model = MediaHandlerAdapter.getMediaHandlerPreferencesModel(pluginId, mediahandlerPreferencePickerListView.mediaHandlerName)
+                        }
+
+                        onPreferenceAdded: mediahandlerPreferencePickerListView.model = MediaHandlerAdapter.getMediaHandlerPreferencesModel(pluginId, mediahandlerPreferencePickerListView.mediaHandlerName)
+                    }
+
+                    ScrollIndicator.vertical: ScrollIndicator {}
+                }
+            }
+        }
     }
+
+    onAboutToHide: stack.currentIndex = 0
 
     onAboutToShow: {
         // Reset the model on each show.

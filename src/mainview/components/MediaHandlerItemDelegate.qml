@@ -1,6 +1,6 @@
 /**
  * Copyright (C) 2020 by Savoir-faire Linux
- * Author: Aline Gondim Santos   <aline.gondimsantos@savoirfairelinux.com>
+ * Author: Aline Gondim Santos <aline.gondimsantos@savoirfairelinux.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,81 +34,50 @@ ItemDelegate {
     property string mediaHandlerId: ""
     property string mediaHandlerIcon: ""
     property bool isLoaded: false
+    property string pluginId: ""
 
     signal btnLoadMediaHandlerToggled
-
-    highlighted: ListView.isCurrentItem
+    signal openPreferences
 
     RowLayout{
         anchors.fill: parent
 
         Label{
             Layout.leftMargin: 8
-            Layout.bottomMargin: 8
+            Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
 
-            Layout.minimumWidth: 30
-            Layout.preferredWidth: 30
-            Layout.maximumWidth: 30
-
-            Layout.minimumHeight: 30
-            Layout.preferredHeight: 30
-            Layout.maximumHeight: 30
+            width: 30
 
             background: Rectangle{
-                anchors.fill: parent
                 Image {
-                    anchors.fill: parent
+                    anchors.centerIn: parent
                     source: "file:" + mediaHandlerIcon
+                    width: 30
+                    height: 30
                 }
             }
         }
 
-        ColumnLayout{
-            Layout.fillWidth: true
-            Layout.fillHeight: true
-
+        Label{
+            id: labelDeviceId
             Layout.leftMargin: 8
-            Layout.topMargin: 8
-            Layout.bottomMargin: 8
+            Layout.fillWidth: true
+            Layout.alignment: Qt.AlignVCenter
 
-            RowLayout{
-
-                Layout.minimumHeight: 30
-
-                Label{
-                    id: labelDeviceId
-
-                    Layout.minimumHeight: 20
-
-                    font.pointSize: 10
-                    font.kerning: true
-                    text: mediaHandlerName === "" ? mediaHandlerId : mediaHandlerName
-                }
-
-                Item{
-                    Layout.fillWidth: true
-
-                    Layout.minimumWidth: 0
-                    Layout.minimumHeight: 20
-                }
-            }
+            font.pointSize: JamiTheme.settingsFontSize
+            font.kerning: true
+            text: mediaHandlerName === "" ? mediaHandlerId : mediaHandlerName
         }
 
         Switch {
             id: loadSwitch
             property bool isHovering: false
 
-            Layout.bottomMargin: 8
-            Layout.rightMargin: 22
-            Layout.alignment: Qt.AlignRight
+            Layout.rightMargin: 8
+            Layout.alignment: Qt.AlignVCenter
 
-            Layout.maximumWidth: 30
-            Layout.preferredWidth: 30
-            Layout.minimumWidth: 30
-
-            Layout.minimumHeight: 30
-            Layout.preferredHeight: 30
-            Layout.maximumHeight: 30
+            width: 30
+            height: 30
 
             ToolTip.visible: hovered
             ToolTip.text: {
@@ -138,6 +107,32 @@ ItemDelegate {
                         loadSwitch.isHovering = false
                     }
                 }
+            }
+        }
+
+         HoverableRadiusButton{
+            id: btnPreferencesMediaHandler
+
+            backgroundColor: "white"
+
+            Layout.alignment: Qt.AlingVCenter | Qt.AlignRight
+            Layout.rightMargin: 8
+            Layout.preferredHeight: 25
+
+            buttonImageHeight: height
+            buttonImageWidth: height
+
+            source:{
+                return "qrc:/images/icons/round-settings-24px.svg"
+            }
+
+            ToolTip.visible: hovered
+            ToolTip.text: {
+                return qsTr(pluginId)
+            }
+
+            onClicked: {
+                openPreferences()
             }
         }
     }

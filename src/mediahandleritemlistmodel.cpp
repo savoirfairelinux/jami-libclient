@@ -1,6 +1,6 @@
 /**
  * Copyright (C) 2020 by Savoir-faire Linux
- * Author: Aline Gondim Santos   <aline.gondimsantos@savoirfairelinux.com>
+ * Author: Aline Gondim Santos <aline.gondimsantos@savoirfairelinux.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,14 +18,14 @@
 
 #include "mediahandleritemlistmodel.h"
 
-MediaHandlerItemListModel::MediaHandlerItemListModel(QObject *parent)
+MediaHandlerItemListModel::MediaHandlerItemListModel(QObject* parent)
     : QAbstractListModel(parent)
 {}
 
 MediaHandlerItemListModel::~MediaHandlerItemListModel() {}
 
 int
-MediaHandlerItemListModel::rowCount(const QModelIndex &parent) const
+MediaHandlerItemListModel::rowCount(const QModelIndex& parent) const
 {
     if (!parent.isValid()) {
         /*
@@ -40,7 +40,7 @@ MediaHandlerItemListModel::rowCount(const QModelIndex &parent) const
 }
 
 int
-MediaHandlerItemListModel::columnCount(const QModelIndex &parent) const
+MediaHandlerItemListModel::columnCount(const QModelIndex& parent) const
 {
     Q_UNUSED(parent);
     /*
@@ -50,7 +50,7 @@ MediaHandlerItemListModel::columnCount(const QModelIndex &parent) const
 }
 
 QVariant
-MediaHandlerItemListModel::data(const QModelIndex &index, int role) const
+MediaHandlerItemListModel::data(const QModelIndex& index, int role) const
 {
     auto mediahandlerList = LRCInstance::pluginModel().listCallMediaHandlers();
     if (!index.isValid() || mediahandlerList.size() <= index.row()) {
@@ -63,16 +63,21 @@ MediaHandlerItemListModel::data(const QModelIndex &index, int role) const
     bool loaded = false;
     if (status["name"] == details.id)
         loaded = true;
+    if (!details.pluginId.isEmpty()) {
+        details.pluginId.remove(details.pluginId.size() - 5, 5);
+    }
 
     switch (role) {
-        case Role::MediaHandlerName:
-            return QVariant(details.name);
-        case Role::MediaHandlerId:
-            return QVariant(mediahandlerList.at(index.row()));
-        case Role::MediaHandlerIcon:
-            return QVariant(details.iconPath);
-        case Role::IsLoaded:
-            return QVariant(loaded);
+    case Role::MediaHandlerName:
+        return QVariant(details.name);
+    case Role::MediaHandlerId:
+        return QVariant(mediahandlerList.at(index.row()));
+    case Role::MediaHandlerIcon:
+        return QVariant(details.iconPath);
+    case Role::IsLoaded:
+        return QVariant(loaded);
+    case Role::PluginId:
+        return QVariant(details.pluginId);
     }
     return QVariant();
 }
@@ -85,12 +90,13 @@ MediaHandlerItemListModel::roleNames() const
     roles[MediaHandlerId] = "MediaHandlerId";
     roles[MediaHandlerIcon] = "MediaHandlerIcon";
     roles[IsLoaded] = "IsLoaded";
+    roles[PluginId] = "PluginId";
 
     return roles;
 }
 
 QModelIndex
-MediaHandlerItemListModel::index(int row, int column, const QModelIndex &parent) const
+MediaHandlerItemListModel::index(int row, int column, const QModelIndex& parent) const
 {
     Q_UNUSED(parent);
     if (column != 0) {
@@ -104,14 +110,14 @@ MediaHandlerItemListModel::index(int row, int column, const QModelIndex &parent)
 }
 
 QModelIndex
-MediaHandlerItemListModel::parent(const QModelIndex &child) const
+MediaHandlerItemListModel::parent(const QModelIndex& child) const
 {
     Q_UNUSED(child);
     return QModelIndex();
 }
 
 Qt::ItemFlags
-MediaHandlerItemListModel::flags(const QModelIndex &index) const
+MediaHandlerItemListModel::flags(const QModelIndex& index) const
 {
     auto flags = QAbstractItemModel::flags(index) | Qt::ItemNeverHasChildren | Qt::ItemIsSelectable;
     if (!index.isValid()) {

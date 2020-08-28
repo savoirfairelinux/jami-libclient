@@ -1,6 +1,6 @@
-/*
+/**
  * Copyright (C) 2019-2020 by Savoir-faire Linux
- * Author: Yang Wang   <yang.wang@savoirfairelinux.com>
+ * Author: Aline Gondim Santos <aline.gondimsantos@savoirfairelinux.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -45,11 +45,9 @@ ItemDelegate {
             id: pluginImage
             Layout.leftMargin: 8
             Layout.alignment: Qt.AlignLeft | Qt.AlingVCenter
-            Layout.fillHeight: true
             width: 30
 
             background: Rectangle{
-                anchors.fill: parent
                 Image {
                     anchors.centerIn: parent
                     source: "file:"+pluginIcon
@@ -73,7 +71,6 @@ ItemDelegate {
             id: loadSwitch
             property bool isHovering: false
             Layout.rightMargin: 8
-            Layout.fillHeight: true
             width: 20
 
             ToolTip.visible: hovered
@@ -90,7 +87,6 @@ ItemDelegate {
                 id: switchBackground
                 MouseArea {
                     id: btnMouseArea
-                    anchors.fill: parent
                     hoverEnabled: true
                     onPressed: {
                     }
@@ -124,13 +120,9 @@ ItemDelegate {
             }
 
             ToolTip.visible: hovered
-            ToolTip.text: {
-                return qsTr("Show preferences")
-            }
+            ToolTip.text: qsTr("Show preferences")
 
-            onClicked: {
-                btnPreferencesPluginClicked()
-            }
+            onClicked: btnPreferencesPluginClicked()
         }
     }
 }

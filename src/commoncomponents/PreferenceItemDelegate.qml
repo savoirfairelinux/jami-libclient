@@ -1,6 +1,6 @@
-/*
- * Copyright (C) 2019-2020 by Savoir-faire Linux
- * Author: Yang Wang   <yang.wang@savoirfairelinux.com>
+/**
+ * Copyright (C) 2020 by Savoir-faire Linux
+ * Author: Aline Gondim Santos <aline.gondimsantos@savoirfairelinux.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,16 +16,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import QtQuick 2.15
+import QtQuick 2.14
 import QtQuick.Window 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Controls.Universal 2.12
 import QtQuick.Layouts 1.3
 import QtGraphicalEffects 1.14
 import QtQuick.Controls.Styles 1.4
+import Qt.labs.platform 1.1
+import QtQuick.Dialogs 1.3
 import net.jami.Models 1.0
 
-import "../../commoncomponents"
+import "../commoncomponents"
 
 ItemDelegate {
     id: root
@@ -71,19 +73,19 @@ ItemDelegate {
         }
     }
 
-    JamiFileDialog {
+    FileDialog {
         id: preferenceFilePathDialog
 
         property string preferenceKey: ""
         property PluginListPreferenceModel pluginListPreferenceModel
 
-        mode: JamiFileDialog.OpenFile
+        title: qsTr("Please choose a file")
         folder: StandardPaths.writableLocation(StandardPaths.DownloadLocation)
 
         onRejected: preferenceAdded()
 
         onAccepted: {
-            var url = ClientWrapper.utilsAdaptor.getAbsPath(file.toString())
+            var url = ClientWrapper.utilsAdaptor.getAbsPath(fileUrl.toString())
             ClientWrapper.pluginModel.addValueToPreference(pluginId, preferenceKey, url)
             pluginListPreferenceModel.populateLists()
             pluginListPreferenceModel.getCurrentSettingIndex()
@@ -103,7 +105,7 @@ ItemDelegate {
             font.pointSize: JamiTheme.settingsFontSize
             font.kerning: true
             font.bold: true
-            text: pluginName === "" ? pluginId : pluginName
+            text: preferenceName
         }
 
         HoverableRadiusButton{

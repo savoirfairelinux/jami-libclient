@@ -1,6 +1,6 @@
 /**
  * Copyright (C) 2020 by Savoir-faire Linux
- * Author: Aline Gondim Santos   <aline.gondimsantos@savoirfairelinux.com>
+ * Author: Aline Gondim Santos <aline.gondimsantos@savoirfairelinux.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,7 +33,7 @@ PreferenceItemListModel::rowCount(const QModelIndex& parent) const
 {
     if (!parent.isValid()) {
         /// Count.
-        return LRCInstance::pluginModel().getPluginPreferences(pluginId_).size();
+        return preferenceList_.size();
     }
     /// A valid QModelIndex returns 0 as no entry has sub-elements.
     return 0;
@@ -50,12 +50,11 @@ PreferenceItemListModel::columnCount(const QModelIndex& parent) const
 QVariant
 PreferenceItemListModel::data(const QModelIndex& index, int role) const
 {
-    auto preferenceList = LRCInstance::pluginModel().getPluginPreferences(pluginId_);
-    if (!index.isValid() || preferenceList.size() <= index.row()) {
+    if (!index.isValid() || preferenceList_.size() <= index.row()) {
         return QVariant();
     }
 
-    auto details = preferenceList.at(index.row());
+    auto details = preferenceList_.at(index.row());
     int type = Type::DEFAULT;
     auto it = mapType.find(details["type"]);
     if (it != mapType.end()) {
@@ -142,10 +141,49 @@ void
 PreferenceItemListModel::setPluginId(const QString& pluginId)
 {
     pluginId_ = pluginId;
+    preferencesCount();
+}
+
+QString
+PreferenceItemListModel::mediaHandlerName() const
+{
+    return mediaHandlerName_;
+}
+
+void
+PreferenceItemListModel::setMediaHandlerName(const QString mediaHandlerName)
+{
+    mediaHandlerName_ = mediaHandlerName;
 }
 
 int
 PreferenceItemListModel::preferencesCount()
 {
-    return LRCInstance::pluginModel().getPluginPreferences(pluginId_).size();
+    if (!preferenceList_.isEmpty())
+        return preferenceList_.size();
+    if (mediaHandlerName_.isEmpty()) {
+        preferenceList_ = LRCInstance::pluginModel().getPluginPreferences(pluginId_);
+        return preferenceList_.size();
+    } else {
+        auto preferences = LRCInstance::pluginModel().getPluginPreferences(pluginId_);
+        for (auto& preference : preferences) {
+            std::string scope = preference["scope"].toStdString();
+            std::string delimiter = ",";
+
+            size_t pos = 0;
+            std::string token;
+            while ((pos = scope.find(delimiter)) != std::string::npos) {
+                token = scope.substr(0, pos);
+                if (token == mediaHandlerName_.toStdString()) {
+                    preferenceList_.push_back(preference);
+                    break;
+                }
+                scope.erase(0, pos + delimiter.length());
+            }
+            token = scope.substr(0, pos);
+            if (token == mediaHandlerName_.toStdString())
+                preferenceList_.push_back(preference);
+        }
+        return preferenceList_.size();
+    }
 }

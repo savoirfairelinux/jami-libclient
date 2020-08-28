@@ -1,6 +1,6 @@
 /**
  * Copyright (C) 2020 by Savoir-faire Linux
- * Author: Aline Gondim Santos   <aline.gondimsantos@savoirfairelinux.com>
+ * Author: Aline Gondim Santos <aline.gondimsantos@savoirfairelinux.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,9 +20,9 @@
 
 #include "lrcinstance.h"
 
-MediaHandlerAdapter::MediaHandlerAdapter(QObject *parent)
+MediaHandlerAdapter::MediaHandlerAdapter(QObject* parent)
     : QmlAdapterBase(parent)
-{ }
+{}
 
 MediaHandlerAdapter::~MediaHandlerAdapter() {}
 
@@ -35,6 +35,31 @@ MediaHandlerAdapter::getMediaHandlerSelectableModel()
     mediaHandlerListModel_.reset(new MediaHandlerItemListModel(this));
 
     return QVariant::fromValue(mediaHandlerListModel_.get());
+}
+
+QVariant
+MediaHandlerAdapter::getMediaHandlerPreferencesModel(QString pluginId, QString mediaHandlerName)
+{
+    /*
+     * Called from qml every time contact picker refreshes.
+     */
+    mediaHandlerPreferenceItemListModel_.reset(new PreferenceItemListModel(this));
+    mediaHandlerPreferenceItemListModel_->setMediaHandlerName(mediaHandlerName);
+    mediaHandlerPreferenceItemListModel_->setPluginId(pluginId);
+
+    return QVariant::fromValue(mediaHandlerPreferenceItemListModel_.get());
+}
+
+QVariant
+MediaHandlerAdapter::getMediaHandlerPreferencesSelectableModel(QString pluginId)
+{
+    /*
+     * Called from qml every time contact picker refreshes.
+     */
+    mediaHandlerListPreferenceModel_.reset(new MediaHandlerListPreferenceModel(this));
+    mediaHandlerListPreferenceModel_->setPluginId(pluginId);
+
+    return QVariant::fromValue(mediaHandlerListPreferenceModel_.get());
 }
 
 void

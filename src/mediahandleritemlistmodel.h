@@ -1,6 +1,6 @@
 /**
  * Copyright (C) 2020 by Savoir-faire Linux
- * Author: Aline Gondim Santos   <aline.gondimsantos@savoirfairelinux.com>
+ * Author: Aline Gondim Santos <aline.gondimsantos@savoirfairelinux.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,25 +29,31 @@ class MediaHandlerItemListModel : public QAbstractListModel
     Q_OBJECT
 
 public:
-    enum Role { MediaHandlerName = Qt::UserRole + 1, MediaHandlerId, MediaHandlerIcon, IsLoaded };
+    enum Role {
+        MediaHandlerName = Qt::UserRole + 1,
+        MediaHandlerId,
+        MediaHandlerIcon,
+        IsLoaded,
+        PluginId
+    };
     Q_ENUM(Role)
 
-    explicit MediaHandlerItemListModel(QObject *parent = 0);
+    explicit MediaHandlerItemListModel(QObject* parent = 0);
     ~MediaHandlerItemListModel();
 
     /*
      * QAbstractListModel override.
      */
-    int rowCount(const QModelIndex &parent = QModelIndex()) const override;
-    int columnCount(const QModelIndex &parent) const override;
-    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
+    int rowCount(const QModelIndex& parent = QModelIndex()) const override;
+    int columnCount(const QModelIndex& parent) const override;
+    QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override;
     /*
      * Override role name as access point in qml.
      */
     QHash<int, QByteArray> roleNames() const override;
-    QModelIndex index(int row, int column = 0, const QModelIndex &parent = QModelIndex()) const;
-    QModelIndex parent(const QModelIndex &child) const;
-    Qt::ItemFlags flags(const QModelIndex &index) const;
+    QModelIndex index(int row, int column = 0, const QModelIndex& parent = QModelIndex()) const;
+    QModelIndex parent(const QModelIndex& child) const;
+    Qt::ItemFlags flags(const QModelIndex& index) const;
 
     /*
      * This function is to reset the model when there's new account added.

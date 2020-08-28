@@ -14,11 +14,11 @@
         <file>src/settingsview/components/AdvancedSettingsView.qml</file>
         <file>src/settingsview/components/AdvancedSIPSettingsView.qml</file>
         <file>src/settingsview/components/LevelMeter.qml</file>
-        <file>src/settingsview/components/SettingParaCombobox.qml</file>
+        <file>src/commoncomponents/SettingParaCombobox.qml</file>
         <file>src/settingsview/components/DeviceItemDelegate.qml</file>
         <file>src/settingsview/components/PluginItemDelegate.qml</file>
         <file>src/mainview/components/MediaHandlerItemDelegate.qml</file>
-        <file>src/settingsview/components/PreferenceItemDelegate.qml</file>
+        <file>src/commoncomponents/PreferenceItemDelegate.qml</file>
         <file>src/settingsview/components/BannedItemDelegate.qml</file>
         <file>src/settingsview/components/VideoCodecDelegate.qml</file>
         <file>src/settingsview/components/AudioCodecDelegate.qml</file>

@@ -3,7 +3,7 @@
  * Author: Edric Ladent Milaret <edric.ladent-milaret@savoirfairelinux.com>
  * Author: Andreas Traczyk <andreas.traczyk@savoirfairelinux.com>
  * Author: Mingrui Zhang <mingrui.zhang@savoirfairelinux.com>
- * Author: Aline Gondim Santos   <aline.gondimsantos@savoirfairelinux.com>
+ * Author: Aline Gondim Santos <aline.gondimsantos@savoirfairelinux.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,6 +29,7 @@
 #include "audiomanagerlistmodel.h"
 #include "audiooutputdevicemodel.h"
 #include "pluginlistpreferencemodel.h"
+#include "mediahandlerlistpreferencemodel.h"
 #include "avadapter.h"
 #include "bannedlistmodel.h"
 #include "calladapter.h"
@@ -313,6 +314,7 @@ MainApplication::qmlInitialization()
     QML_REGISTERTYPE(VideoFormatResolutionModel, 1, 0);
     QML_REGISTERTYPE(VideoFormatFpsModel, 1, 0);
     QML_REGISTERTYPE(PluginListPreferenceModel, 1, 0);
+    QML_REGISTERTYPE(MediaHandlerListPreferenceModel, 1, 0);
     /*
      * Register QQuickItem type.
      */
