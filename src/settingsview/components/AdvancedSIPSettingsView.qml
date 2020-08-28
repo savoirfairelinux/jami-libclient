@@ -200,7 +200,7 @@ ColumnLayout {
     function changeRingtonePath(url){
         if(url.length !== 0) {
             ClientWrapper.settingsAdaptor.set_RingtonePath(url)
-            btnRingtoneSIP.text = ClientWrapper.utilsAdaptor.toFileInfoName(ClientWrapper.settingsAdaptor.getAccountConfig_Ringtone_RingtonePath())
+            btnRingtoneSIP.text = ClientWrapper.utilsAdaptor.toFileInfoName(url)
         } else if (ClientWrapper.settingsAdaptor.getAccountConfig_Ringtone_RingtonePath().length === 0){
             btnRingtoneSIP.text = qsTr("Add a custom ringtone")
         }
@@ -209,21 +209,21 @@ ColumnLayout {
     function changeFileCACert(url){
         if(url.length !== 0) {
             ClientWrapper.settingsAdaptor.set_FileCACert(url)
-            btnSIPCACert.text = ClientWrapper.utilsAdaptor.toFileInfoName(ClientWrapper.settingsAdaptor.getAccountConfig_TLS_CertificateListFile())
+            btnSIPCACert.text = ClientWrapper.utilsAdaptor.toFileInfoName(url)
         }
     }
 
     function changeFileUserCert(url){
         if(url.length !== 0) {
             ClientWrapper.settingsAdaptor.set_FileUserCert(url)
-            btnSIPUserCert.text = ClientWrapper.utilsAdaptor.toFileInfoName(ClientWrapper.settingsAdaptor.getAccountConfig_TLS_CertificateFile())
+            btnSIPUserCert.text = ClientWrapper.utilsAdaptor.toFileInfoName(url)
         }
     }
 
     function changeFilePrivateKey(url){
         if(url.length !== 0) {
             ClientWrapper.settingsAdaptor.set_FilePrivateKey(url)
-            btnSIPPrivateKey.text = ClientWrapper.utilsAdaptor.toFileInfoName(ClientWrapper.settingsAdaptor.getAccountConfig_TLS_PrivateKeyFile())
+            btnSIPPrivateKey.text = ClientWrapper.utilsAdaptor.toFileInfoName(url)
         }
     }
 
