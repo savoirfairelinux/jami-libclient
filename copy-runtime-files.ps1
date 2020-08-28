@@ -7,7 +7,18 @@ param (
     [string]$outDir
 );
 
-write-host "Copying deployment files..." -ForegroundColor Green
+$clientDir = split-path -parent $MyInvocation.MyCommand.Definition
+$stamp = (git rev-parse HEAD).Substring(0, 8)
+$stampFile = $clientDir + "\.deploy.stamp"
+If (test-path $stampFile) {
+    if($stamp = (Get-Content -Path $stampFile)) {
+        write-host "deployment stamp up-to-date" $outDir -ForegroundColor Cyan
+        exit 0
+    }
+}
+
+if (!$outDir) { $outDir = $clientDir + "\x64\" + $mode }
+If (!(test-path $outDir)) { New-Item -ItemType directory -Path $outDir -Force }
 
 # default values
 $qtver = If ($qtver) { $qtver } Else { "5.15.0" }
@@ -18,15 +29,11 @@ $qtMsvcDir = "msvc2019_64"
 
 $QtDir = "C:\Qt\$qtver\$qtMsvcDir"
 
-$clientDir = split-path -parent $MyInvocation.MyCommand.Definition
-
-if (!$outDir) { $outDir = $clientDir + "\x64\" + $mode }
-If (!(test-path $outDir)) { New-Item -ItemType directory -Path $outDir -Force }
-
 if (!$daemonDir) { $daemonDir = $clientDir + '\..\daemon' }
 if (!$lrcDir) { $lrcDir = $clientDir + '\..\lrc' }
 
 write-host "********************************************************************************" -ForegroundColor Magenta
+write-host "copying deployment files..." -ForegroundColor Green
 write-host "using daemonDir:    " $daemonDir -ForegroundColor Magenta
 write-host "using lrcDir:       " $lrcDir -ForegroundColor Magenta
 write-host "using QtDir:        " $QtDir -ForegroundColor Magenta
@@ -99,4 +106,5 @@ Get-ChildItem -Path $clientTSPath -Include *.qm -Recurse | ForEach-Object {
     Copy-Item -Path $_.FullName -Destination $CopyDir -Force –Recurse
 }
 
+New-Item -Path $stampFile -ItemType "file" -Value $stamp -Force
 write-host "copy completed" -NoNewline -ForegroundColor Green

@@ -22,3 +22,5 @@ build-local/
 *.vcxproj
 *.vcxproj.filters
 *qmlcache.qrc
+
+.deploy.stamp
