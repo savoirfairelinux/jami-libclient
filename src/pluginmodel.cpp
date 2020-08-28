@@ -18,7 +18,7 @@
 #include "api/pluginmodel.h"
 
 // Std
-#include <algorithm>    // std::sort
+#include <algorithm> // std::sort
 #include <chrono>
 #include <csignal>
 #include <iomanip> // for std::put_time
@@ -35,17 +35,15 @@
 
 // Ring daemon
 
-
 // LRC
 #include "dbus/pluginmanager.h"
 
-namespace lrc
-{
+namespace lrc {
 
 using namespace api;
 
 PluginModel::PluginModel()
-: QObject()
+    : QObject()
 {}
 
 PluginModel::~PluginModel() {}
@@ -82,8 +80,7 @@ PluginModel::getPluginDetails(const QString& path)
     }
     MapStringString details = PluginManager::instance().getPluginDetails(path);
     plugin::PluginDetails result;
-    if (!details.empty())
-    {
+    if (!details.empty()) {
         result.name = details["name"];
         result.path = path;
         result.iconPath = details["iconPath"];
@@ -100,8 +97,7 @@ PluginModel::getPluginDetails(const QString& path)
 bool
 PluginModel::installPlugin(const QString& jplPath, bool force)
 {
-    if (getPluginsEnabled())
-    {
+    if (getPluginsEnabled()) {
         return PluginManager::instance().installPlugin(jplPath, force);
     }
     return false;
@@ -136,10 +132,9 @@ void
 PluginModel::toggleCallMediaHandler(const QString& id)
 {
     MapStringString toggleInfo = PluginManager::instance().getCallMediaHandlerStatus();
-    if (toggleInfo["name"] == id){
+    if (toggleInfo["name"] == id) {
         PluginManager::instance().toggleCallMediaHandler(id, false);
-    }
-	else {
+    } else {
         PluginManager::instance().toggleCallMediaHandler(id, true);
     }
 }
@@ -158,11 +153,11 @@ PluginModel::getCallMediaHandlerDetails(const QString& id)
     }
     MapStringString mediaHandlerDetails = PluginManager::instance().getCallMediaHandlerDetails(id);
     plugin::MediaHandlerDetails result;
-    if (!mediaHandlerDetails.empty())
-    {
+    if (!mediaHandlerDetails.empty()) {
         result.id = id;
         result.iconPath = mediaHandlerDetails["iconPath"];
         result.name = mediaHandlerDetails["name"];
+        result.pluginId = mediaHandlerDetails["pluginId"];
     }
 
     return result;
@@ -194,8 +189,8 @@ PluginModel::resetPluginPreferencesValues(const QString& path)
 
 bool
 PluginModel::addValueToPreference(const QString& pluginId,
-    const QString& preferenceKey,
-    const QString& value)
+                                  const QString& preferenceKey,
+                                  const QString& value)
 {
     return PluginManager::instance().addValueToPreference(pluginId, preferenceKey, value);
 }

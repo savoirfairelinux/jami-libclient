@@ -28,34 +28,33 @@
 // LRC
 #include "typedefs.h"
 
-namespace lrc
+namespace lrc {
+
+namespace api {
+
+namespace plugin {
+/**
+ * This class describes current plugin Details
+ */
+struct PluginDetails
 {
+    QString name = "";
+    QString path = "";
+    QString iconPath = "";
+    bool loaded = false;
+};
 
-namespace api
+struct MediaHandlerDetails
 {
+    QString id = "";
+    QString name = "";
+    QString iconPath = "";
+    QString pluginId = "";
+};
+} // namespace plugin
 
-namespace plugin
+class LIB_EXPORT PluginModel : public QObject
 {
-    /**
-     * This class describes current plugin Details
-     */
-    struct PluginDetails
-    {
-        QString name = "";
-        QString path = "";
-        QString iconPath = "";
-        bool loaded = false;
-    };
-
-    struct MediaHandlerDetails
-    {
-        QString id = "";
-        QString name = "";
-        QString iconPath = "";
-    };
-}
-
-class LIB_EXPORT PluginModel : public QObject {
     Q_OBJECT
 public:
     PluginModel();
@@ -148,7 +147,9 @@ public:
      * Modify preference of installed plugin
      * @return true if preference was succesfully modified
      */
-    Q_INVOKABLE bool setPluginPreference(const QString& path, const QString& key, const QString& value);
+    Q_INVOKABLE bool setPluginPreference(const QString& path,
+                                         const QString& key,
+                                         const QString& value);
 
     /**
      * Get preferences values of installed plugin
@@ -163,14 +164,13 @@ public:
     Q_INVOKABLE bool resetPluginPreferencesValues(const QString& path);
 
     /**
-    * Add a possible value to a preference that can be edited by the user
-    * the only possibility at the moment is USERLIST option
-    * @return if addition was successfull
-    */
+     * Add a possible value to a preference that can be edited by the user
+     * the only possibility at the moment is USERLIST option
+     * @return if addition was successfull
+     */
     Q_INVOKABLE bool addValueToPreference(const QString& pluginId,
                                           const QString& preferenceKey,
                                           const QString& value);
-
 };
 
 } // namespace api
