@@ -244,7 +244,7 @@ Rectangle {
                     inputParaObject = {}
                     inputParaObject["password"] = text_passwordEditAlias
                     ClientWrapper.accountAdaptor.createJamiAccount(
-                        text_usernameEditAlias.text,
+                        createAccountPage.text_usernameEditAlias,
                         inputParaObject,
                         createAccountPage.boothImgBase64,
                         true)
