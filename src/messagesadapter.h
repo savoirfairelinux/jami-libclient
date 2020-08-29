@@ -49,6 +49,7 @@ public:
     Q_INVOKABLE void sendFile(const QString &message);
     Q_INVOKABLE void retryInteraction(const QString &arg);
     Q_INVOKABLE void deleteInteraction(const QString &arg);
+    Q_INVOKABLE void openUrl(const QString &url);
     Q_INVOKABLE void openFile(const QString &arg);
     Q_INVOKABLE void acceptFile(const QString &arg);
     Q_INVOKABLE void refuseFile(const QString &arg);

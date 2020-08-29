@@ -333,6 +333,14 @@ MessagesAdapter::openFile(const QString &arg)
 }
 
 void
+MessagesAdapter::openUrl(const QString &url)
+{
+    if (!QDesktopServices::openUrl(url)) {
+        qDebug() << "Couldn't open url: " << url;
+    }
+}
+
+void
 MessagesAdapter::acceptFile(const QString &arg)
 {
     try {

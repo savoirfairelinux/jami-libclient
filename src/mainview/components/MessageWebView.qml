@@ -232,6 +232,13 @@ Rectangle {
             }
         }
 
+        onNavigationRequested: {
+            if(request.navigationType === WebEngineView.LinkClickedNavigation) {
+                MessagesAdapter.openUrl(request.url)
+                request.action = WebEngineView.IgnoreRequest
+            }
+        }
+
         onLoadingChanged: {
             if (loadRequest.status == WebEngineView.LoadSucceededStatus) {
                 messageWebView.runJavaScript(ClientWrapper.utilsAdaptor.getStyleSheet(
