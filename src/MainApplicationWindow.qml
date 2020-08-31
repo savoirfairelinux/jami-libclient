@@ -95,10 +95,12 @@ ApplicationWindow {
                 wizardView.close()
             }
 
-            onWizardViewIsClosed: {
-                if (mainViewLoader.source.toString() !== "qrc:/src/mainview/MainView.qml") {
-                    Qt.quit()
-                }
+            onWizardViewIsClosed: parent.close()
+        }
+
+        onClosing: {
+            if (mainViewLoader.source.toString() !== "qrc:/src/mainview/MainView.qml") {
+                Qt.quit()
             }
         }
     }
