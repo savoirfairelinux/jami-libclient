@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9eee86a3_aa590320",
+        "filename": "src/callbackshandler.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 571,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2020-08-31T17:52:22Z",
+      "side": 1,
+      "message": "uri",
+      "range": {
+        "startLine": 571,
+        "startChar": 40,
+        "endLine": 571,
+        "endChar": 49
+      },
+      "revId": "074ea69b26c98d37c5a7a62695a2b13acde46b40",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d1d54ba0_6fed8fdc",
+        "filename": "src/newcallmodel.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 939,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2020-08-31T17:52:22Z",
+      "side": 1,
+      "message": "same with jami:",
+      "range": {
+        "startLine": 938,
+        "startChar": 8,
+        "endLine": 939,
+        "endChar": 28
+      },
+      "revId": "074ea69b26c98d37c5a7a62695a2b13acde46b40",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    }
+  ]
+}
