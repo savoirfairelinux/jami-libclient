@@ -559,7 +559,7 @@ Jami is a secured and distributed communciation software.</source>
     <message>
         <location filename="../src/settingsview/components/AvSettingPage.qml" line="332"/>
         <source>Audio</source>
-        <translation type="unfinished"/>
+        <translation>Audio</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/AvSettingPage.qml" line="366"/>
@@ -584,12 +584,12 @@ Jami is a secured and distributed communciation software.</source>
     <message>
         <location filename="../src/settingsview/components/AvSettingPage.qml" line="606"/>
         <source>Video</source>
-        <translation type="unfinished"/>
+        <translation>Video</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/AvSettingPage.qml" line="641"/>
         <source>Device</source>
-        <translation type="unfinished"/>
+        <translation>Dispositivo</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/AvSettingPage.qml" line="695"/>
@@ -858,7 +858,7 @@ Jami is a secured and distributed communciation software.</source>
     <message>
         <location filename="../src/wizardview/components/CreateAccountPage.qml" line="176"/>
         <source>Account</source>
-        <translation type="unfinished"/>
+        <translation>Cuenta</translation>
     </message>
     <message>
         <location filename="../src/wizardview/components/CreateAccountPage.qml" line="205"/>
@@ -1309,7 +1309,7 @@ Jami is a secured and distributed communciation software.</source>
     <message>
         <location filename="../src/wizardview/components/ImportFromDevicePage.qml" line="107"/>
         <source>PIN</source>
-        <translation type="unfinished"/>
+        <translation>PIN</translation>
     </message>
 </context>
 <context>
@@ -1343,7 +1343,7 @@ Jami is a secured and distributed communciation software.</source>
     <message>
         <location filename="../src/settingsview/components/LeftPanelView.qml" line="61"/>
         <source>Account</source>
-        <translation type="unfinished"/>
+        <translation>Cuenta</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/LeftPanelView.qml" line="74"/>
@@ -1482,7 +1482,7 @@ Please try again later.</source>
     <message>
         <location filename="../src/mainview/components/OutgoingCallPage.qml" line="204"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Cancelar</translation>
     </message>
 </context>
 <context>
@@ -1691,7 +1691,7 @@ Please try again later.</source>
     <message>
         <location filename="../src/settingsview/components/RevokeDevicePasswordDialog.qml" line="164"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Cancelar</translation>
     </message>
 </context>
 <context>
@@ -1915,7 +1915,7 @@ Copy and share it with your friends</source>
     <message>
         <location filename="../src/wizardview/WizardView.qml" line="695"/>
         <source>Next</source>
-        <translation type="unfinished"/>
+        <translation>Siguiente</translation>
     </message>
 </context>
 </TS>

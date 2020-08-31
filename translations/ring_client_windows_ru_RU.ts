@@ -4,12 +4,12 @@
     <message>
         <location filename="../src/mainview/components/AboutPopUp.qml" line="90"/>
         <source>version</source>
-        <translation type="unfinished"/>
+        <translation>Версия</translation>
     </message>
     <message>
         <location filename="../src/mainview/components/AboutPopUp.qml" line="113"/>
         <source>Free as in Freedom</source>
-        <translation type="unfinished"/>
+        <translation>Свобода</translation>
     </message>
     <message>
         <location filename="../src/mainview/components/AboutPopUp.qml" line="135"/>
@@ -25,7 +25,7 @@ Jami is a secured and distributed communciation software.</source>
     <message>
         <location filename="../src/mainview/components/AboutPopUp.qml" line="277"/>
         <source>Credits</source>
-        <translation type="unfinished"/>
+        <translation>Авторы</translation>
     </message>
 </context>
 <context>
@@ -33,7 +33,7 @@ Jami is a secured and distributed communciation software.</source>
     <message>
         <location filename="../src/mainview/components/AccountComboBoxPopup.qml" line="154"/>
         <source>Add Account</source>
-        <translation type="unfinished"/>
+        <translation>Добавить аккаунт</translation>
     </message>
 </context>
 <context>
@@ -51,12 +51,12 @@ Jami is a secured and distributed communciation software.</source>
     <message>
         <location filename="../src/commoncomponents/AccountMigrationDialog.qml" line="446"/>
         <source>Alias</source>
-        <translation type="unfinished"/>
+        <translation>Псевдоним</translation>
     </message>
     <message>
         <location filename="../src/commoncomponents/AccountMigrationDialog.qml" line="519"/>
         <source>Username</source>
-        <translation type="unfinished"/>
+        <translation>Имя пользователя</translation>
     </message>
     <message>
         <location filename="../src/commoncomponents/AccountMigrationDialog.qml" line="592"/>
@@ -67,7 +67,7 @@ Jami is a secured and distributed communciation software.</source>
         <location filename="../src/commoncomponents/AccountMigrationDialog.qml" line="665"/>
         <location filename="../src/commoncomponents/AccountMigrationDialog.qml" line="705"/>
         <source>Password</source>
-        <translation type="unfinished"/>
+        <translation>Пароль</translation>
     </message>
     <message>
         <location filename="../src/commoncomponents/AccountMigrationDialog.qml" line="769"/>
@@ -77,12 +77,12 @@ Jami is a secured and distributed communciation software.</source>
     <message>
         <location filename="../src/commoncomponents/AccountMigrationDialog.qml" line="808"/>
         <source>Delete</source>
-        <translation type="unfinished"/>
+        <translation>Удалить</translation>
     </message>
     <message>
         <location filename="../src/commoncomponents/AccountMigrationDialog.qml" line="948"/>
         <source>Migrating your Jami account...</source>
-        <translation type="unfinished"/>
+        <translation>Миграция вашего Jami аккаунта...</translation>
     </message>
     <message>
         <location filename="../src/commoncomponents/AccountMigrationDialog.qml" line="948"/>
@@ -95,7 +95,7 @@ Jami is a secured and distributed communciation software.</source>
     <message>
         <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="205"/>
         <source>Add a custom ringtone</source>
-        <translation type="unfinished"/>
+        <translation>Добавить свой рингтон</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="237"/>
@@ -124,7 +124,7 @@ Jami is a secured and distributed communciation software.</source>
         <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="266"/>
         <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="292"/>
         <source>Certificate File</source>
-        <translation type="unfinished"/>
+        <translation>Файл сертификата</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="290"/>
@@ -144,7 +144,7 @@ Jami is a secured and distributed communciation software.</source>
     <message>
         <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="359"/>
         <source>Call Settings</source>
-        <translation type="unfinished"/>
+        <translation>Настройки вызова</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="375"/>
@@ -189,12 +189,12 @@ Jami is a secured and distributed communciation software.</source>
     <message>
         <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="392"/>
         <source>Enable Custom Ringtone</source>
-        <translation type="unfinished"/>
+        <translation>Включить свой рингтон</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="455"/>
         <source>Voicemail</source>
-        <translation type="unfinished"/>
+        <translation>Голосовая почта</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="486"/>
@@ -204,7 +204,7 @@ Jami is a secured and distributed communciation software.</source>
     <message>
         <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="537"/>
         <source>Security</source>
-        <translation type="unfinished"/>
+        <translation>Безопасность</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="596"/>
@@ -219,22 +219,22 @@ Jami is a secured and distributed communciation software.</source>
     <message>
         <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="699"/>
         <source>CA Certificate</source>
-        <translation type="unfinished"/>
+        <translation>Сертификат удостоверяющего центра</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="770"/>
         <source>User Certificate</source>
-        <translation type="unfinished"/>
+        <translation>Сертификат пользователя</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="841"/>
         <source>Private Key</source>
-        <translation type="unfinished"/>
+        <translation>Приватный Ключ</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="912"/>
         <source>Private Key Password</source>
-        <translation type="unfinished"/>
+        <translation>Пароль закрытого ключа</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="1013"/>
@@ -254,7 +254,7 @@ Jami is a secured and distributed communciation software.</source>
     <message>
         <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="1231"/>
         <source>Connectivity</source>
-        <translation type="unfinished"/>
+        <translation>Связь</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="1326"/>
@@ -264,27 +264,27 @@ Jami is a secured and distributed communciation software.</source>
     <message>
         <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="1380"/>
         <source>Use UPnP</source>
-        <translation type="unfinished"/>
+        <translation>Использовать UPnP</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="1406"/>
         <source>Use TURN</source>
-        <translation type="unfinished"/>
+        <translation>Использовать TURN</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="1457"/>
         <source>TURN Address</source>
-        <translation type="unfinished"/>
+        <translation>TURN Адрес </translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="1526"/>
         <source>TURN Username</source>
-        <translation type="unfinished"/>
+        <translation>TURN Имя пользователя</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="1594"/>
         <source>TURN Password</source>
-        <translation type="unfinished"/>
+        <translation>TURN Пароль</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="1664"/>
@@ -294,7 +294,7 @@ Jami is a secured and distributed communciation software.</source>
     <message>
         <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="1711"/>
         <source>Use STUN</source>
-        <translation type="unfinished"/>
+        <translation>Использовать STUN</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="1778"/>
@@ -309,32 +309,32 @@ Jami is a secured and distributed communciation software.</source>
     <message>
         <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="1843"/>
         <source>Address</source>
-        <translation type="unfinished"/>
+        <translation>Адрес</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="1896"/>
         <source>Port</source>
-        <translation type="unfinished"/>
+        <translation>Порт</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="1957"/>
         <source>Media</source>
-        <translation type="unfinished"/>
+        <translation>Медиа</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="1983"/>
         <source>Enable Video</source>
-        <translation type="unfinished"/>
+        <translation>Включить видео</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="2013"/>
         <source>Video Codecs</source>
-        <translation type="unfinished"/>
+        <translation>Видеокодеки</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="2139"/>
         <source>Audio Codecs</source>
-        <translation type="unfinished"/>
+        <translation>Аудиокодеки</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="2290"/>
@@ -367,7 +367,7 @@ Jami is a secured and distributed communciation software.</source>
     <message>
         <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="135"/>
         <source>Add a custom ringtone</source>
-        <translation type="unfinished"/>
+        <translation>Добавить свой рингтон</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="167"/>
@@ -396,7 +396,7 @@ Jami is a secured and distributed communciation software.</source>
         <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="196"/>
         <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="222"/>
         <source>Certificate File</source>
-        <translation type="unfinished"/>
+        <translation>Файл сертификата</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="220"/>
@@ -416,7 +416,7 @@ Jami is a secured and distributed communciation software.</source>
     <message>
         <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="289"/>
         <source>Call Settings</source>
-        <translation type="unfinished"/>
+        <translation>Настройки вызова</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="314"/>
@@ -426,27 +426,27 @@ Jami is a secured and distributed communciation software.</source>
     <message>
         <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="328"/>
         <source>Auto Answer Calls</source>
-        <translation type="unfinished"/>
+        <translation>Автоматический ответ на вызов</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="345"/>
         <source>Enable Custom Ringtone</source>
-        <translation type="unfinished"/>
+        <translation>Включить свой рингтон</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="398"/>
         <source>Name Server</source>
-        <translation type="unfinished"/>
+        <translation>Имя Сервера</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="426"/>
         <source>Address</source>
-        <translation type="unfinished"/>
+        <translation>Адрес</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="478"/>
         <source>OpenDHT Configuration</source>
-        <translation type="unfinished"/>
+        <translation>Конфигурация OpenDHT</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="506"/>
@@ -456,37 +456,37 @@ Jami is a secured and distributed communciation software.</source>
     <message>
         <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="553"/>
         <source>Bootstrap</source>
-        <translation type="unfinished"/>
+        <translation>Начальная загрузка</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="594"/>
         <source>Security</source>
-        <translation type="unfinished"/>
+        <translation>Безопасность</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="631"/>
         <source>CA Certificate</source>
-        <translation type="unfinished"/>
+        <translation>Сертификат удостоверяющего центра</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="669"/>
         <source>User Certificate</source>
-        <translation type="unfinished"/>
+        <translation>Сертификат пользователя</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="707"/>
         <source>Private Key</source>
-        <translation type="unfinished"/>
+        <translation>Приватный Ключ</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="745"/>
         <source>Private Key Password</source>
-        <translation type="unfinished"/>
+        <translation>Пароль закрытого ключа</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="790"/>
         <source>Connectivity</source>
-        <translation type="unfinished"/>
+        <translation>Связь</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="826"/>
@@ -496,57 +496,57 @@ Jami is a secured and distributed communciation software.</source>
     <message>
         <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="852"/>
         <source>Use UPnP</source>
-        <translation type="unfinished"/>
+        <translation>Использовать UPnP</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="878"/>
         <source>Use TURN</source>
-        <translation type="unfinished"/>
+        <translation>Использовать TURN</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="897"/>
         <source>TURN Address</source>
-        <translation type="unfinished"/>
+        <translation>TURN Адрес </translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="937"/>
         <source>TURN Username</source>
-        <translation type="unfinished"/>
+        <translation>TURN Имя пользователя</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="977"/>
         <source>TURN Password</source>
-        <translation type="unfinished"/>
+        <translation>TURN Пароль</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="1015"/>
         <source>Use STUN</source>
-        <translation type="unfinished"/>
+        <translation>Использовать STUN</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="1036"/>
         <source>STUN Address</source>
-        <translation type="unfinished"/>
+        <translation>STUN Адрес</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="1069"/>
         <source>Media</source>
-        <translation type="unfinished"/>
+        <translation>Медиа</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="1094"/>
         <source>Enable Video</source>
-        <translation type="unfinished"/>
+        <translation>Включить видео</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="1125"/>
         <source>Video Codecs</source>
-        <translation type="unfinished"/>
+        <translation>Видеокодеки</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="1249"/>
         <source>Audio Codecs</source>
-        <translation type="unfinished"/>
+        <translation>Аудиокодеки</translation>
     </message>
 </context>
 <context>
@@ -554,22 +554,22 @@ Jami is a secured and distributed communciation software.</source>
     <message>
         <location filename="../src/settingsview/components/AvSettingPage.qml" line="306"/>
         <source>Audio / Video</source>
-        <translation type="unfinished"/>
+        <translation>Аудио / Видео</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/AvSettingPage.qml" line="332"/>
         <source>Audio</source>
-        <translation type="unfinished"/>
+        <translation>Звук</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/AvSettingPage.qml" line="366"/>
         <source>Microphone</source>
-        <translation type="unfinished"/>
+        <translation>Микрофон</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/AvSettingPage.qml" line="443"/>
         <source>Output Device</source>
-        <translation type="unfinished"/>
+        <translation>Устройства Вывода</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/AvSettingPage.qml" line="495"/>
@@ -584,17 +584,17 @@ Jami is a secured and distributed communciation software.</source>
     <message>
         <location filename="../src/settingsview/components/AvSettingPage.qml" line="606"/>
         <source>Video</source>
-        <translation type="unfinished"/>
+        <translation>Видео</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/AvSettingPage.qml" line="641"/>
         <source>Device</source>
-        <translation type="unfinished"/>
+        <translation>Устройство</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/AvSettingPage.qml" line="695"/>
         <source>Resolution</source>
-        <translation type="unfinished"/>
+        <translation>Разрешение</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/AvSettingPage.qml" line="748"/>
@@ -604,7 +604,7 @@ Jami is a secured and distributed communciation software.</source>
     <message>
         <location filename="../src/settingsview/components/AvSettingPage.qml" line="831"/>
         <source>Preview unavailable</source>
-        <translation type="unfinished"/>
+        <translation>Предварительный просмотр недоступен</translation>
     </message>
 </context>
 <context>
@@ -612,7 +612,7 @@ Jami is a secured and distributed communciation software.</source>
     <message>
         <location filename="../src/wizardview/components/BackupKeyPage.qml" line="40"/>
         <source>Export Account Here</source>
-        <translation type="unfinished"/>
+        <translation>Экспортировать Аккаунт</translation>
     </message>
     <message>
         <location filename="../src/wizardview/components/BackupKeyPage.qml" line="43"/>
@@ -637,17 +637,17 @@ Jami is a secured and distributed communciation software.</source>
     <message>
         <location filename="../src/wizardview/components/BackupKeyPage.qml" line="146"/>
         <source>Export</source>
-        <translation type="unfinished"/>
+        <translation>Экспорт</translation>
     </message>
     <message>
         <location filename="../src/wizardview/components/BackupKeyPage.qml" line="175"/>
         <source>Skip</source>
-        <translation type="unfinished"/>
+        <translation>Пропустить</translation>
     </message>
     <message>
         <location filename="../src/wizardview/components/BackupKeyPage.qml" line="116"/>
         <source>Never show me this again</source>
-        <translation type="unfinished"/>
+        <translation>Никогда не показывать мне это снова</translation>
     </message>
 </context>
 <context>
@@ -655,17 +655,17 @@ Jami is a secured and distributed communciation software.</source>
     <message>
         <location filename="../src/settingsview/components/BannedItemDelegate.qml" line="141"/>
         <source>name</source>
-        <translation type="unfinished"/>
+        <translation>имя</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/BannedItemDelegate.qml" line="161"/>
         <source>id</source>
-        <translation type="unfinished"/>
+        <translation>идентификатор</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/BannedItemDelegate.qml" line="188"/>
         <source>Add as contact</source>
-        <translation type="unfinished"/>
+        <translation>Добавить как контакт</translation>
     </message>
 </context>
 <context>
@@ -715,7 +715,7 @@ Jami is a secured and distributed communciation software.</source>
     <message>
         <location filename="../src/mainview/components/CallViewContextMenu.qml" line="143"/>
         <source>Stop recording</source>
-        <translation type="unfinished"/>
+        <translation>Остановить запись</translation>
     </message>
     <message>
         <location filename="../src/mainview/components/CallViewContextMenu.qml" line="143"/>
@@ -735,17 +735,17 @@ Jami is a secured and distributed communciation software.</source>
     <message>
         <location filename="../src/mainview/components/CallViewContextMenu.qml" line="200"/>
         <source>Share entire screen</source>
-        <translation type="unfinished"/>
+        <translation>Транслировать весь экран</translation>
     </message>
     <message>
         <location filename="../src/mainview/components/CallViewContextMenu.qml" line="221"/>
         <source>Share screen area</source>
-        <translation type="unfinished"/>
+        <translation>Общий доступ к экрану</translation>
     </message>
     <message>
         <location filename="../src/mainview/components/CallViewContextMenu.qml" line="244"/>
         <source>Share file</source>
-        <translation type="unfinished"/>
+        <translation>Поделится файлом</translation>
     </message>
 </context>
 <context>
@@ -753,7 +753,7 @@ Jami is a secured and distributed communciation software.</source>
     <message>
         <location filename="../src/wizardview/components/CollapsiblePasswordWidget.qml" line="68"/>
         <source>Password</source>
-        <translation type="unfinished"/>
+        <translation>Пароль</translation>
     </message>
     <message>
         <location filename="../src/wizardview/components/CollapsiblePasswordWidget.qml" line="100"/>
@@ -771,12 +771,12 @@ Jami is a secured and distributed communciation software.</source>
     <message>
         <location filename="../src/wizardview/components/ConnectToAccountManagerPage.qml" line="74"/>
         <source>Username</source>
-        <translation type="unfinished"/>
+        <translation>Имя пользователя</translation>
     </message>
     <message>
         <location filename="../src/wizardview/components/ConnectToAccountManagerPage.qml" line="83"/>
         <source>Password</source>
-        <translation type="unfinished"/>
+        <translation>Пароль</translation>
     </message>
     <message>
         <location filename="../src/wizardview/components/ConnectToAccountManagerPage.qml" line="92"/>
@@ -815,32 +815,32 @@ Jami is a secured and distributed communciation software.</source>
     <message>
         <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="56"/>
         <source>Start video call</source>
-        <translation type="unfinished"/>
+        <translation>Начать видеозвонок </translation>
     </message>
     <message>
         <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="72"/>
         <source>Start audio call</source>
-        <translation type="unfinished"/>
+        <translation>Начать аудиозвонок</translation>
     </message>
     <message>
         <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="88"/>
         <source>Clear conversation</source>
-        <translation type="unfinished"/>
+        <translation>Очистить переписку</translation>
     </message>
     <message>
         <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="103"/>
         <source>Remove contact</source>
-        <translation type="unfinished"/>
+        <translation>Удалить контакт</translation>
     </message>
     <message>
         <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="127"/>
         <source>Block contact</source>
-        <translation type="unfinished"/>
+        <translation>Заблокировать контакт</translation>
     </message>
     <message>
         <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="151"/>
         <source>Profile</source>
-        <translation type="unfinished"/>
+        <translation>Профиль</translation>
     </message>
 </context>
 <context>
@@ -848,27 +848,27 @@ Jami is a secured and distributed communciation software.</source>
     <message>
         <location filename="../src/wizardview/components/CreateAccountPage.qml" line="104"/>
         <source>Profile</source>
-        <translation type="unfinished"/>
+        <translation>Профиль</translation>
     </message>
     <message>
         <location filename="../src/wizardview/components/CreateAccountPage.qml" line="143"/>
         <source>Profile name</source>
-        <translation type="unfinished"/>
+        <translation>Имя профиля</translation>
     </message>
     <message>
         <location filename="../src/wizardview/components/CreateAccountPage.qml" line="176"/>
         <source>Account</source>
-        <translation type="unfinished"/>
+        <translation>Учётная запись</translation>
     </message>
     <message>
         <location filename="../src/wizardview/components/CreateAccountPage.qml" line="205"/>
         <source>Register public username</source>
-        <translation type="unfinished"/>
+        <translation>Зарегистрировать общедоступное имя пользователя</translation>
     </message>
     <message>
         <location filename="../src/wizardview/components/CreateAccountPage.qml" line="236"/>
         <source>Choose your username</source>
-        <translation type="unfinished"/>
+        <translation>Выберите ваше имя пользователя</translation>
     </message>
     <message>
         <location filename="../src/wizardview/components/CreateAccountPage.qml" line="290"/>
@@ -881,37 +881,37 @@ Jami is a secured and distributed communciation software.</source>
     <message>
         <location filename="../src/wizardview/components/CreateSIPAccountPage.qml" line="76"/>
         <source>Profile</source>
-        <translation type="unfinished"/>
+        <translation>Профиль</translation>
     </message>
     <message>
         <location filename="../src/wizardview/components/CreateSIPAccountPage.qml" line="113"/>
         <source>Profile name</source>
-        <translation type="unfinished"/>
+        <translation>Имя профиля</translation>
     </message>
     <message>
         <location filename="../src/wizardview/components/CreateSIPAccountPage.qml" line="137"/>
         <source>SIP Account</source>
-        <translation type="unfinished"/>
+        <translation>Учетная запись SIP</translation>
     </message>
     <message>
         <location filename="../src/wizardview/components/CreateSIPAccountPage.qml" line="163"/>
         <source>Server</source>
-        <translation type="unfinished"/>
+        <translation>Сервер</translation>
     </message>
     <message>
         <location filename="../src/wizardview/components/CreateSIPAccountPage.qml" line="174"/>
         <source>Proxy</source>
-        <translation type="unfinished"/>
+        <translation>Прокси</translation>
     </message>
     <message>
         <location filename="../src/wizardview/components/CreateSIPAccountPage.qml" line="185"/>
         <source>Username</source>
-        <translation type="unfinished"/>
+        <translation>Имя пользователя</translation>
     </message>
     <message>
         <location filename="../src/wizardview/components/CreateSIPAccountPage.qml" line="197"/>
         <source>Password</source>
-        <translation type="unfinished"/>
+        <translation>Пароль</translation>
     </message>
 </context>
 <context>
@@ -919,7 +919,7 @@ Jami is a secured and distributed communciation software.</source>
     <message>
         <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="249"/>
         <source>Export Account Here</source>
-        <translation type="unfinished"/>
+        <translation>Экспортировать Аккаунт</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="252"/>
@@ -935,13 +935,13 @@ Jami is a secured and distributed communciation software.</source>
         <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="264"/>
         <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="290"/>
         <source>Success</source>
-        <translation type="unfinished"/>
+        <translation>Успешно</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="264"/>
         <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="290"/>
         <source>Error</source>
-        <translation type="unfinished"/>
+        <translation>Ошибка</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="266"/>
@@ -979,7 +979,7 @@ Jami is a secured and distributed communciation software.</source>
         <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="303"/>
         <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="970"/>
         <source>Change Password</source>
-        <translation type="unfinished"/>
+        <translation>Изменить Пароль</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="303"/>
@@ -990,17 +990,17 @@ Jami is a secured and distributed communciation software.</source>
     <message>
         <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="384"/>
         <source>Remove Device</source>
-        <translation type="unfinished"/>
+        <translation>Удалить устройство</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="385"/>
         <source>Are you sure you wish to remove this device?</source>
-        <translation type="unfinished"/>
+        <translation>Вы уверены, что хотите удалить это устройство?</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="512"/>
         <source>Jami Account</source>
-        <translation type="unfinished"/>
+        <translation>Jami Аккаунт</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="1088"/>
@@ -1020,32 +1020,32 @@ Jami is a secured and distributed communciation software.</source>
     <message>
         <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="575"/>
         <source>Enable</source>
-        <translation type="unfinished"/>
+        <translation>Включить</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="601"/>
         <source>Profile</source>
-        <translation type="unfinished"/>
+        <translation>Профиль</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="686"/>
         <source>Identity</source>
-        <translation type="unfinished"/>
+        <translation>Идентичность</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="725"/>
         <source>Id</source>
-        <translation type="unfinished"/>
+        <translation>Идентификатор</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="788"/>
         <source>Registered name</source>
-        <translation type="unfinished"/>
+        <translation>Зарегистрированное имя</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="815"/>
         <source>Type here to register a username</source>
-        <translation type="unfinished"/>
+        <translation>Напишите здесь чтобы зарегистрировать имя пользователя</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="816"/>
@@ -1055,37 +1055,37 @@ Jami is a secured and distributed communciation software.</source>
     <message>
         <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="890"/>
         <source>A registered name should not have any spaces and must be at least three letters long</source>
-        <translation type="unfinished"/>
+        <translation>Зарегистрированное имя не должно содержать пробелов и должно иметь не менее трех букв</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="892"/>
         <source>This name is already taken</source>
-        <translation type="unfinished"/>
+        <translation>Это имя уже занято</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="894"/>
         <source>Register this name</source>
-        <translation type="unfinished"/>
+        <translation>Зарегистрировать это имя</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="937"/>
         <source>Register</source>
-        <translation type="unfinished"/>
+        <translation>Зарегистрировать</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="1008"/>
         <source>Export Account</source>
-        <translation type="unfinished"/>
+        <translation>Экспортировать Аккаунт</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="1051"/>
         <source>Delete Account</source>
-        <translation type="unfinished"/>
+        <translation>Удалить Аккаунт</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="1332"/>
         <source>Advanced Account Settings</source>
-        <translation type="unfinished"/>
+        <translation>Дополнительные Настройки Аккаунта</translation>
     </message>
 </context>
 <context>
@@ -1093,52 +1093,52 @@ Jami is a secured and distributed communciation software.</source>
     <message>
         <location filename="../src/settingsview/components/CurrentSIPAccountSettingScrollPage.qml" line="154"/>
         <source>SIP Account</source>
-        <translation type="unfinished"/>
+        <translation>Учетная запись SIP</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/CurrentSIPAccountSettingScrollPage.qml" line="217"/>
         <source>Enable</source>
-        <translation type="unfinished"/>
+        <translation>Включить</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/CurrentSIPAccountSettingScrollPage.qml" line="243"/>
         <source>Profile</source>
-        <translation type="unfinished"/>
+        <translation>Профиль</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/CurrentSIPAccountSettingScrollPage.qml" line="329"/>
         <source>Identity</source>
-        <translation type="unfinished"/>
+        <translation>Идентичность</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/CurrentSIPAccountSettingScrollPage.qml" line="370"/>
         <source>Username</source>
-        <translation type="unfinished"/>
+        <translation>Имя пользователя</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/CurrentSIPAccountSettingScrollPage.qml" line="405"/>
         <source>Hostname</source>
-        <translation type="unfinished"/>
+        <translation>Имя компьютера</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/CurrentSIPAccountSettingScrollPage.qml" line="440"/>
         <source>Proxy</source>
-        <translation type="unfinished"/>
+        <translation>Прокси</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/CurrentSIPAccountSettingScrollPage.qml" line="475"/>
         <source>Password</source>
-        <translation type="unfinished"/>
+        <translation>Пароль</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/CurrentSIPAccountSettingScrollPage.qml" line="536"/>
         <source>Delete Account</source>
-        <translation type="unfinished"/>
+        <translation>Удалить Аккаунт</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/CurrentSIPAccountSettingScrollPage.qml" line="587"/>
         <source>Advanced Account Settings</source>
-        <translation type="unfinished"/>
+        <translation>Дополнительные Настройки Аккаунта</translation>
     </message>
 </context>
 <context>
@@ -1174,27 +1174,27 @@ Jami is a secured and distributed communciation software.</source>
     <message>
         <location filename="../src/settingsview/components/DeviceItemDelegate.qml" line="157"/>
         <source>this device</source>
-        <translation type="unfinished"/>
+        <translation>это устройство</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/DeviceItemDelegate.qml" line="135"/>
         <source>Device Id</source>
-        <translation type="unfinished"/>
+        <translation>Id Устройства</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/DeviceItemDelegate.qml" line="192"/>
         <source>Edit Device Name</source>
-        <translation type="unfinished"/>
+        <translation>Изменить Имя Устройства</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/DeviceItemDelegate.qml" line="194"/>
         <source>Save new device name</source>
-        <translation type="unfinished"/>
+        <translation>Сохранить новое имя устройства</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/DeviceItemDelegate.qml" line="197"/>
         <source>Unlink Device From Account</source>
-        <translation type="unfinished"/>
+        <translation>Отвязать Устройство От Аккаунта</translation>
     </message>
 </context>
 <context>
@@ -1202,22 +1202,22 @@ Jami is a secured and distributed communciation software.</source>
     <message>
         <location filename="../src/settingsview/components/GeneralSettingsPage.qml" line="99"/>
         <source>Select A Folder For Your Downloads</source>
-        <translation type="unfinished"/>
+        <translation>Выберите папку для загрузок</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/GeneralSettingsPage.qml" line="123"/>
         <source>Select A Folder For Your Recordings</source>
-        <translation type="unfinished"/>
+        <translation>Выберите Папку Для Ваших Записей</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/GeneralSettingsPage.qml" line="215"/>
         <source>General</source>
-        <translation type="unfinished"/>
+        <translation>Основные</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/GeneralSettingsPage.qml" line="235"/>
         <source>System</source>
-        <translation type="unfinished"/>
+        <translation>Система</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/GeneralSettingsPage.qml" line="367"/>
@@ -1227,12 +1227,12 @@ Jami is a secured and distributed communciation software.</source>
     <message>
         <location filename="../src/settingsview/components/GeneralSettingsPage.qml" line="308"/>
         <source>Download folder</source>
-        <translation type="unfinished"/>
+        <translation>Папка для загрузок</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/GeneralSettingsPage.qml" line="426"/>
         <source>Quality</source>
-        <translation type="unfinished"/>
+        <translation>Качество</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/GeneralSettingsPage.qml" line="458"/>
@@ -1242,12 +1242,12 @@ Jami is a secured and distributed communciation software.</source>
     <message>
         <location filename="../src/settingsview/components/GeneralSettingsPage.qml" line="506"/>
         <source>Save in</source>
-        <translation type="unfinished"/>
+        <translation>Сохранить в</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/GeneralSettingsPage.qml" line="566"/>
         <source>Updates</source>
-        <translation type="unfinished"/>
+        <translation>Обновления</translation>
     </message>
 </context>
 <context>
@@ -1261,7 +1261,7 @@ Jami is a secured and distributed communciation software.</source>
     <message>
         <location filename="../src/wizardview/components/ImportFromBackupPage.qml" line="42"/>
         <source>Open File</source>
-        <translation type="unfinished"/>
+        <translation>Открыть файл</translation>
     </message>
     <message>
         <location filename="../src/wizardview/components/ImportFromBackupPage.qml" line="45"/>
@@ -1286,7 +1286,7 @@ Jami is a secured and distributed communciation software.</source>
     <message>
         <location filename="../src/wizardview/components/ImportFromBackupPage.qml" line="152"/>
         <source>Password</source>
-        <translation type="unfinished"/>
+        <translation>Пароль</translation>
     </message>
 </context>
 <context>
@@ -1299,7 +1299,7 @@ Jami is a secured and distributed communciation software.</source>
     <message>
         <location filename="../src/wizardview/components/ImportFromDevicePage.qml" line="117"/>
         <source>Password</source>
-        <translation type="unfinished"/>
+        <translation>Пароль</translation>
     </message>
     <message>
         <location filename="../src/wizardview/components/ImportFromDevicePage.qml" line="127"/>
@@ -1309,7 +1309,7 @@ Jami is a secured and distributed communciation software.</source>
     <message>
         <location filename="../src/wizardview/components/ImportFromDevicePage.qml" line="107"/>
         <source>PIN</source>
-        <translation type="unfinished"/>
+        <translation>PIN</translation>
     </message>
 </context>
 <context>
@@ -1317,12 +1317,12 @@ Jami is a secured and distributed communciation software.</source>
     <message>
         <location filename="../src/mainview/components/IncomingCallPage.qml" line="293"/>
         <source>Answer</source>
-        <translation type="unfinished"/>
+        <translation>Ответ</translation>
     </message>
     <message>
         <location filename="../src/mainview/components/IncomingCallPage.qml" line="334"/>
         <source>Ignore</source>
-        <translation type="unfinished"/>
+        <translation>Игнорировать</translation>
     </message>
 </context>
 <context>
@@ -1343,17 +1343,17 @@ Jami is a secured and distributed communciation software.</source>
     <message>
         <location filename="../src/settingsview/components/LeftPanelView.qml" line="61"/>
         <source>Account</source>
-        <translation type="unfinished"/>
+        <translation>Учётная запись</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/LeftPanelView.qml" line="74"/>
         <source>General</source>
-        <translation type="unfinished"/>
+        <translation>Основные</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/LeftPanelView.qml" line="87"/>
         <source>Audio/Video</source>
-        <translation type="unfinished"/>
+        <translation>Звук/Видео</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/LeftPanelView.qml" line="100"/>
@@ -1400,12 +1400,12 @@ Please try again later.</source>
     <message>
         <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="128"/>
         <source>Link another device</source>
-        <translation type="unfinished"/>
+        <translation>Привязать другое устройство</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="248"/>
         <source>Register</source>
-        <translation type="unfinished"/>
+        <translation>Зарегистрировать</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="371"/>
@@ -1482,7 +1482,7 @@ Please try again later.</source>
     <message>
         <location filename="../src/mainview/components/OutgoingCallPage.qml" line="204"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Отмена</translation>
     </message>
 </context>
 <context>
@@ -1490,7 +1490,7 @@ Please try again later.</source>
     <message>
         <location filename="../src/mainview/components/ParticipantContextMenu.qml" line="79"/>
         <source>Hangup</source>
-        <translation type="unfinished"/>
+        <translation>Разъединить</translation>
     </message>
     <message>
         <location filename="../src/mainview/components/ParticipantContextMenu.qml" line="93"/>
@@ -1518,7 +1518,7 @@ Please try again later.</source>
     <message>
         <location filename="../src/commoncomponents/PasswordDialog.qml" line="50"/>
         <source>Set password</source>
-        <translation type="unfinished"/>
+        <translation>Задать пароль</translation>
     </message>
     <message>
         <location filename="../src/commoncomponents/PasswordDialog.qml" line="177"/>
@@ -1668,7 +1668,7 @@ Please try again later.</source>
     <message>
         <location filename="../src/mainview/components/RecordBox.qml" line="244"/>
         <source>Preview unavailable</source>
-        <translation type="unfinished"/>
+        <translation>Предварительный просмотр недоступен</translation>
     </message>
 </context>
 <context>
@@ -1676,12 +1676,12 @@ Please try again later.</source>
     <message>
         <location filename="../src/settingsview/components/RevokeDevicePasswordDialog.qml" line="45"/>
         <source>Enter this account&apos;s password to confirm the removal of this device</source>
-        <translation type="unfinished"/>
+        <translation>Введите пароль вашего аккаунта чтобы подтвердить его удаление из устройства.</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/RevokeDevicePasswordDialog.qml" line="86"/>
         <source>Password</source>
-        <translation type="unfinished"/>
+        <translation>Пароль</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/RevokeDevicePasswordDialog.qml" line="125"/>
@@ -1691,7 +1691,7 @@ Please try again later.</source>
     <message>
         <location filename="../src/settingsview/components/RevokeDevicePasswordDialog.qml" line="164"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Отмена</translation>
     </message>
 </context>
 <context>
@@ -1736,7 +1736,7 @@ Please try again later.</source>
         <location filename="../src/smartlistmodel.cpp" line="186"/>
         <location filename="../src/smartlistmodel.cpp" line="187"/>
         <source>Calls</source>
-        <translation type="unfinished"/>
+        <translation>Звонки</translation>
     </message>
     <message>
         <location filename="../src/smartlistmodel.cpp" line="64"/>
@@ -1746,7 +1746,7 @@ Please try again later.</source>
         <location filename="../src/smartlistmodel.cpp" line="188"/>
         <location filename="../src/smartlistmodel.cpp" line="189"/>
         <source>Contacts</source>
-        <translation type="unfinished"/>
+        <translation>Контакты</translation>
     </message>
 </context>
 <context>
@@ -1759,12 +1759,12 @@ Please try again later.</source>
     <message>
         <location filename="../src/mainview/components/UserProfile.qml" line="108"/>
         <source>Username</source>
-        <translation type="unfinished"/>
+        <translation>Имя пользователя</translation>
     </message>
     <message>
         <location filename="../src/mainview/components/UserProfile.qml" line="137"/>
         <source>ID</source>
-        <translation type="unfinished"/>
+        <translation>ID</translation>
     </message>
     <message>
         <location filename="../src/mainview/components/UserProfile.qml" line="163"/>
@@ -1777,17 +1777,17 @@ Please try again later.</source>
     <message>
         <location filename="../src/utils.cpp" line="412"/>
         <source>Created by:</source>
-        <translation type="unfinished"/>
+        <translation>Создано: </translation>
     </message>
     <message>
         <location filename="../src/utils.cpp" line="418"/>
         <source>Artwork by:</source>
-        <translation type="unfinished"/>
+        <translation>Художник: </translation>
     </message>
     <message>
         <location filename="../src/utils.cpp" line="426"/>
         <source>Based on the SFLPhone project</source>
-        <translation type="unfinished"/>
+        <translation>Основано на SFLPhone проекте</translation>
     </message>
 </context>
 <context>
@@ -1817,7 +1817,7 @@ Copy and share it with your friends</source>
     <message>
         <location filename="../src/wizardview/components/WelcomePageLayout.qml" line="50"/>
         <source>Welcome to</source>
-        <translation type="unfinished"/>
+        <translation>Добро пожаловать в</translation>
     </message>
     <message>
         <location filename="../src/wizardview/components/WelcomePageLayout.qml" line="100"/>
@@ -1847,7 +1847,7 @@ Copy and share it with your friends</source>
     <message>
         <location filename="../src/wizardview/components/WelcomePageLayout.qml" line="219"/>
         <source>Add a new SIP account</source>
-        <translation type="unfinished"/>
+        <translation>Создать новый аккаунт SIP</translation>
     </message>
 </context>
 <context>
@@ -1855,22 +1855,22 @@ Copy and share it with your friends</source>
     <message>
         <location filename="../src/wizardview/WizardView.qml" line="192"/>
         <source>Generating your Jami account...</source>
-        <translation type="unfinished"/>
+        <translation>Генерация вашего Jami аккаунта...</translation>
     </message>
     <message>
         <location filename="../src/wizardview/WizardView.qml" line="202"/>
         <source>Importing account archive...</source>
-        <translation type="unfinished"/>
+        <translation>Импорт архива аккаунта...</translation>
     </message>
     <message>
         <location filename="../src/wizardview/WizardView.qml" line="219"/>
         <source>Migrating your Jami account...</source>
-        <translation type="unfinished"/>
+        <translation>Миграция вашего Jami аккаунта...</translation>
     </message>
     <message>
         <location filename="../src/wizardview/WizardView.qml" line="223"/>
         <source>Generating your SIP account...</source>
-        <translation type="unfinished"/>
+        <translation>Генерация вашего SIP аккаунта...</translation>
     </message>
     <message>
         <location filename="../src/wizardview/WizardView.qml" line="238"/>
@@ -1880,12 +1880,12 @@ Copy and share it with your friends</source>
     <message>
         <location filename="../src/wizardview/WizardView.qml" line="363"/>
         <source>Success</source>
-        <translation type="unfinished"/>
+        <translation>Успешно</translation>
     </message>
     <message>
         <location filename="../src/wizardview/WizardView.qml" line="363"/>
         <source>Error</source>
-        <translation type="unfinished"/>
+        <translation>Ошибка</translation>
     </message>
     <message>
         <location filename="../src/wizardview/WizardView.qml" line="364"/>
@@ -1905,17 +1905,17 @@ Copy and share it with your friends</source>
     <message>
         <location filename="../src/wizardview/WizardView.qml" line="610"/>
         <source>Previous</source>
-        <translation type="unfinished"/>
+        <translation>Назад</translation>
     </message>
     <message>
         <location filename="../src/wizardview/WizardView.qml" line="661"/>
         <source>Back</source>
-        <translation type="unfinished"/>
+        <translation>Назад</translation>
     </message>
     <message>
         <location filename="../src/wizardview/WizardView.qml" line="695"/>
         <source>Next</source>
-        <translation type="unfinished"/>
+        <translation>Далее</translation>
     </message>
 </context>
 </TS>

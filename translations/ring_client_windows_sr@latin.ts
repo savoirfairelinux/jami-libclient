@@ -25,7 +25,7 @@ Jami is a secured and distributed communciation software.</source>
     <message>
         <location filename="../src/mainview/components/AboutPopUp.qml" line="277"/>
         <source>Credits</source>
-        <translation type="unfinished"/>
+        <translation>Zasluge</translation>
     </message>
 </context>
 <context>
@@ -1482,7 +1482,7 @@ Please try again later.</source>
     <message>
         <location filename="../src/mainview/components/OutgoingCallPage.qml" line="204"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Otkaži</translation>
     </message>
 </context>
 <context>
@@ -1691,7 +1691,7 @@ Please try again later.</source>
     <message>
         <location filename="../src/settingsview/components/RevokeDevicePasswordDialog.qml" line="164"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Otkaži</translation>
     </message>
 </context>
 <context>
@@ -1910,7 +1910,7 @@ Copy and share it with your friends</source>
     <message>
         <location filename="../src/wizardview/WizardView.qml" line="661"/>
         <source>Back</source>
-        <translation type="unfinished"/>
+        <translation>Nazad</translation>
     </message>
     <message>
         <location filename="../src/wizardview/WizardView.qml" line="695"/>

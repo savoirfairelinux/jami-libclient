@@ -559,7 +559,7 @@ Jami is a secured and distributed communciation software.</source>
     <message>
         <location filename="../src/settingsview/components/AvSettingPage.qml" line="332"/>
         <source>Audio</source>
-        <translation type="unfinished"/>
+        <translation>கேள்விமாற்றி</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/AvSettingPage.qml" line="366"/>
@@ -584,7 +584,7 @@ Jami is a secured and distributed communciation software.</source>
     <message>
         <location filename="../src/settingsview/components/AvSettingPage.qml" line="606"/>
         <source>Video</source>
-        <translation type="unfinished"/>
+        <translation>காணொளி</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/AvSettingPage.qml" line="641"/>
@@ -1212,7 +1212,7 @@ Jami is a secured and distributed communciation software.</source>
     <message>
         <location filename="../src/settingsview/components/GeneralSettingsPage.qml" line="215"/>
         <source>General</source>
-        <translation type="unfinished"/>
+        <translation>பொது</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/GeneralSettingsPage.qml" line="235"/>
@@ -1348,7 +1348,7 @@ Jami is a secured and distributed communciation software.</source>
     <message>
         <location filename="../src/settingsview/components/LeftPanelView.qml" line="74"/>
         <source>General</source>
-        <translation type="unfinished"/>
+        <translation>பொது</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/LeftPanelView.qml" line="87"/>

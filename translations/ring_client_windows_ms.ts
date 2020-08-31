@@ -4,7 +4,7 @@
     <message>
         <location filename="../src/mainview/components/AboutPopUp.qml" line="90"/>
         <source>version</source>
-        <translation type="unfinished"/>
+        <translation>versi</translation>
     </message>
     <message>
         <location filename="../src/mainview/components/AboutPopUp.qml" line="113"/>
@@ -25,7 +25,7 @@ Jami is a secured and distributed communciation software.</source>
     <message>
         <location filename="../src/mainview/components/AboutPopUp.qml" line="277"/>
         <source>Credits</source>
-        <translation type="unfinished"/>
+        <translation>Kredit</translation>
     </message>
 </context>
 <context>
@@ -51,12 +51,12 @@ Jami is a secured and distributed communciation software.</source>
     <message>
         <location filename="../src/commoncomponents/AccountMigrationDialog.qml" line="446"/>
         <source>Alias</source>
-        <translation type="unfinished"/>
+        <translation>Nama panggilan</translation>
     </message>
     <message>
         <location filename="../src/commoncomponents/AccountMigrationDialog.qml" line="519"/>
         <source>Username</source>
-        <translation type="unfinished"/>
+        <translation>Nama pengguna</translation>
     </message>
     <message>
         <location filename="../src/commoncomponents/AccountMigrationDialog.qml" line="592"/>
@@ -67,7 +67,7 @@ Jami is a secured and distributed communciation software.</source>
         <location filename="../src/commoncomponents/AccountMigrationDialog.qml" line="665"/>
         <location filename="../src/commoncomponents/AccountMigrationDialog.qml" line="705"/>
         <source>Password</source>
-        <translation type="unfinished"/>
+        <translation>Kara laluan</translation>
     </message>
     <message>
         <location filename="../src/commoncomponents/AccountMigrationDialog.qml" line="769"/>
@@ -77,7 +77,7 @@ Jami is a secured and distributed communciation software.</source>
     <message>
         <location filename="../src/commoncomponents/AccountMigrationDialog.qml" line="808"/>
         <source>Delete</source>
-        <translation type="unfinished"/>
+        <translation>Hapus</translation>
     </message>
     <message>
         <location filename="../src/commoncomponents/AccountMigrationDialog.qml" line="948"/>
@@ -124,7 +124,7 @@ Jami is a secured and distributed communciation software.</source>
         <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="266"/>
         <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="292"/>
         <source>Certificate File</source>
-        <translation type="unfinished"/>
+        <translation>Fail Certificate</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="290"/>
@@ -204,7 +204,7 @@ Jami is a secured and distributed communciation software.</source>
     <message>
         <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="537"/>
         <source>Security</source>
-        <translation type="unfinished"/>
+        <translation>Penyulitan</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="596"/>
@@ -234,7 +234,7 @@ Jami is a secured and distributed communciation software.</source>
     <message>
         <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="912"/>
         <source>Private Key Password</source>
-        <translation type="unfinished"/>
+        <translation>Kata laluan untuk fail Private Key</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="1013"/>
@@ -269,7 +269,7 @@ Jami is a secured and distributed communciation software.</source>
     <message>
         <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="1406"/>
         <source>Use TURN</source>
-        <translation type="unfinished"/>
+        <translation>Guna TURN</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="1457"/>
@@ -314,17 +314,17 @@ Jami is a secured and distributed communciation software.</source>
     <message>
         <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="1896"/>
         <source>Port</source>
-        <translation type="unfinished"/>
+        <translation>Port</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="1957"/>
         <source>Media</source>
-        <translation type="unfinished"/>
+        <translation>Media</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="1983"/>
         <source>Enable Video</source>
-        <translation type="unfinished"/>
+        <translation>Aktifkan panggilan video</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="2013"/>
@@ -396,7 +396,7 @@ Jami is a secured and distributed communciation software.</source>
         <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="196"/>
         <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="222"/>
         <source>Certificate File</source>
-        <translation type="unfinished"/>
+        <translation>Fail Certificate</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="220"/>
@@ -456,12 +456,12 @@ Jami is a secured and distributed communciation software.</source>
     <message>
         <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="553"/>
         <source>Bootstrap</source>
-        <translation type="unfinished"/>
+        <translation>Bootstrap</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="594"/>
         <source>Security</source>
-        <translation type="unfinished"/>
+        <translation>Penyulitan</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="631"/>
@@ -481,7 +481,7 @@ Jami is a secured and distributed communciation software.</source>
     <message>
         <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="745"/>
         <source>Private Key Password</source>
-        <translation type="unfinished"/>
+        <translation>Kata laluan untuk fail Private Key</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="790"/>
@@ -501,7 +501,7 @@ Jami is a secured and distributed communciation software.</source>
     <message>
         <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="878"/>
         <source>Use TURN</source>
-        <translation type="unfinished"/>
+        <translation>Guna TURN</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="897"/>
@@ -531,12 +531,12 @@ Jami is a secured and distributed communciation software.</source>
     <message>
         <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="1069"/>
         <source>Media</source>
-        <translation type="unfinished"/>
+        <translation>Media</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="1094"/>
         <source>Enable Video</source>
-        <translation type="unfinished"/>
+        <translation>Aktifkan panggilan video</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="1125"/>
@@ -559,7 +559,7 @@ Jami is a secured and distributed communciation software.</source>
     <message>
         <location filename="../src/settingsview/components/AvSettingPage.qml" line="332"/>
         <source>Audio</source>
-        <translation type="unfinished"/>
+        <translation>Bunyi</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/AvSettingPage.qml" line="366"/>
@@ -584,7 +584,7 @@ Jami is a secured and distributed communciation software.</source>
     <message>
         <location filename="../src/settingsview/components/AvSettingPage.qml" line="606"/>
         <source>Video</source>
-        <translation type="unfinished"/>
+        <translation>Video</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/AvSettingPage.qml" line="641"/>
@@ -637,7 +637,7 @@ Jami is a secured and distributed communciation software.</source>
     <message>
         <location filename="../src/wizardview/components/BackupKeyPage.qml" line="146"/>
         <source>Export</source>
-        <translation type="unfinished"/>
+        <translation>Eksport</translation>
     </message>
     <message>
         <location filename="../src/wizardview/components/BackupKeyPage.qml" line="175"/>
@@ -753,7 +753,7 @@ Jami is a secured and distributed communciation software.</source>
     <message>
         <location filename="../src/wizardview/components/CollapsiblePasswordWidget.qml" line="68"/>
         <source>Password</source>
-        <translation type="unfinished"/>
+        <translation>Kara laluan</translation>
     </message>
     <message>
         <location filename="../src/wizardview/components/CollapsiblePasswordWidget.qml" line="100"/>
@@ -771,12 +771,12 @@ Jami is a secured and distributed communciation software.</source>
     <message>
         <location filename="../src/wizardview/components/ConnectToAccountManagerPage.qml" line="74"/>
         <source>Username</source>
-        <translation type="unfinished"/>
+        <translation>Nama pengguna</translation>
     </message>
     <message>
         <location filename="../src/wizardview/components/ConnectToAccountManagerPage.qml" line="83"/>
         <source>Password</source>
-        <translation type="unfinished"/>
+        <translation>Kara laluan</translation>
     </message>
     <message>
         <location filename="../src/wizardview/components/ConnectToAccountManagerPage.qml" line="92"/>
@@ -858,7 +858,7 @@ Jami is a secured and distributed communciation software.</source>
     <message>
         <location filename="../src/wizardview/components/CreateAccountPage.qml" line="176"/>
         <source>Account</source>
-        <translation type="unfinished"/>
+        <translation>Akaun</translation>
     </message>
     <message>
         <location filename="../src/wizardview/components/CreateAccountPage.qml" line="205"/>
@@ -901,17 +901,17 @@ Jami is a secured and distributed communciation software.</source>
     <message>
         <location filename="../src/wizardview/components/CreateSIPAccountPage.qml" line="174"/>
         <source>Proxy</source>
-        <translation type="unfinished"/>
+        <translation>Proksi</translation>
     </message>
     <message>
         <location filename="../src/wizardview/components/CreateSIPAccountPage.qml" line="185"/>
         <source>Username</source>
-        <translation type="unfinished"/>
+        <translation>Nama pengguna</translation>
     </message>
     <message>
         <location filename="../src/wizardview/components/CreateSIPAccountPage.qml" line="197"/>
         <source>Password</source>
-        <translation type="unfinished"/>
+        <translation>Kara laluan</translation>
     </message>
 </context>
 <context>
@@ -941,7 +941,7 @@ Jami is a secured and distributed communciation software.</source>
         <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="264"/>
         <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="290"/>
         <source>Error</source>
-        <translation type="unfinished"/>
+        <translation>Gagal</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="266"/>
@@ -1070,7 +1070,7 @@ Jami is a secured and distributed communciation software.</source>
     <message>
         <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="937"/>
         <source>Register</source>
-        <translation type="unfinished"/>
+        <translation>Daftar</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="1008"/>
@@ -1113,22 +1113,22 @@ Jami is a secured and distributed communciation software.</source>
     <message>
         <location filename="../src/settingsview/components/CurrentSIPAccountSettingScrollPage.qml" line="370"/>
         <source>Username</source>
-        <translation type="unfinished"/>
+        <translation>Nama pengguna</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/CurrentSIPAccountSettingScrollPage.qml" line="405"/>
         <source>Hostname</source>
-        <translation type="unfinished"/>
+        <translation>Alamat server</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/CurrentSIPAccountSettingScrollPage.qml" line="440"/>
         <source>Proxy</source>
-        <translation type="unfinished"/>
+        <translation>Proksi</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/CurrentSIPAccountSettingScrollPage.qml" line="475"/>
         <source>Password</source>
-        <translation type="unfinished"/>
+        <translation>Kara laluan</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/CurrentSIPAccountSettingScrollPage.qml" line="536"/>
@@ -1212,12 +1212,12 @@ Jami is a secured and distributed communciation software.</source>
     <message>
         <location filename="../src/settingsview/components/GeneralSettingsPage.qml" line="215"/>
         <source>General</source>
-        <translation type="unfinished"/>
+        <translation>Utama</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/GeneralSettingsPage.qml" line="235"/>
         <source>System</source>
-        <translation type="unfinished"/>
+        <translation>Sistem</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/GeneralSettingsPage.qml" line="367"/>
@@ -1286,7 +1286,7 @@ Jami is a secured and distributed communciation software.</source>
     <message>
         <location filename="../src/wizardview/components/ImportFromBackupPage.qml" line="152"/>
         <source>Password</source>
-        <translation type="unfinished"/>
+        <translation>Kara laluan</translation>
     </message>
 </context>
 <context>
@@ -1299,7 +1299,7 @@ Jami is a secured and distributed communciation software.</source>
     <message>
         <location filename="../src/wizardview/components/ImportFromDevicePage.qml" line="117"/>
         <source>Password</source>
-        <translation type="unfinished"/>
+        <translation>Kara laluan</translation>
     </message>
     <message>
         <location filename="../src/wizardview/components/ImportFromDevicePage.qml" line="127"/>
@@ -1343,17 +1343,17 @@ Jami is a secured and distributed communciation software.</source>
     <message>
         <location filename="../src/settingsview/components/LeftPanelView.qml" line="61"/>
         <source>Account</source>
-        <translation type="unfinished"/>
+        <translation>Akaun</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/LeftPanelView.qml" line="74"/>
         <source>General</source>
-        <translation type="unfinished"/>
+        <translation>Utama</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/LeftPanelView.qml" line="87"/>
         <source>Audio/Video</source>
-        <translation type="unfinished"/>
+        <translation>Audio/Video</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/LeftPanelView.qml" line="100"/>
@@ -1405,7 +1405,7 @@ Please try again later.</source>
     <message>
         <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="248"/>
         <source>Register</source>
-        <translation type="unfinished"/>
+        <translation>Daftar</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="371"/>
@@ -1482,7 +1482,7 @@ Please try again later.</source>
     <message>
         <location filename="../src/mainview/components/OutgoingCallPage.qml" line="204"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Batal</translation>
     </message>
 </context>
 <context>
@@ -1681,7 +1681,7 @@ Please try again later.</source>
     <message>
         <location filename="../src/settingsview/components/RevokeDevicePasswordDialog.qml" line="86"/>
         <source>Password</source>
-        <translation type="unfinished"/>
+        <translation>Kara laluan</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/RevokeDevicePasswordDialog.qml" line="125"/>
@@ -1691,7 +1691,7 @@ Please try again later.</source>
     <message>
         <location filename="../src/settingsview/components/RevokeDevicePasswordDialog.qml" line="164"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Batal</translation>
     </message>
 </context>
 <context>
@@ -1736,7 +1736,7 @@ Please try again later.</source>
         <location filename="../src/smartlistmodel.cpp" line="186"/>
         <location filename="../src/smartlistmodel.cpp" line="187"/>
         <source>Calls</source>
-        <translation type="unfinished"/>
+        <translation>Panggilan</translation>
     </message>
     <message>
         <location filename="../src/smartlistmodel.cpp" line="64"/>
@@ -1746,7 +1746,7 @@ Please try again later.</source>
         <location filename="../src/smartlistmodel.cpp" line="188"/>
         <location filename="../src/smartlistmodel.cpp" line="189"/>
         <source>Contacts</source>
-        <translation type="unfinished"/>
+        <translation>Kenalan</translation>
     </message>
 </context>
 <context>
@@ -1759,7 +1759,7 @@ Please try again later.</source>
     <message>
         <location filename="../src/mainview/components/UserProfile.qml" line="108"/>
         <source>Username</source>
-        <translation type="unfinished"/>
+        <translation>Nama pengguna</translation>
     </message>
     <message>
         <location filename="../src/mainview/components/UserProfile.qml" line="137"/>
@@ -1777,17 +1777,17 @@ Please try again later.</source>
     <message>
         <location filename="../src/utils.cpp" line="412"/>
         <source>Created by:</source>
-        <translation type="unfinished"/>
+        <translation>Dicipta oleh:</translation>
     </message>
     <message>
         <location filename="../src/utils.cpp" line="418"/>
         <source>Artwork by:</source>
-        <translation type="unfinished"/>
+        <translation>Kerja seni oleh:</translation>
     </message>
     <message>
         <location filename="../src/utils.cpp" line="426"/>
         <source>Based on the SFLPhone project</source>
-        <translation type="unfinished"/>
+        <translation>Berdasarkan projek </translation>
     </message>
 </context>
 <context>
@@ -1885,7 +1885,7 @@ Copy and share it with your friends</source>
     <message>
         <location filename="../src/wizardview/WizardView.qml" line="363"/>
         <source>Error</source>
-        <translation type="unfinished"/>
+        <translation>Gagal</translation>
     </message>
     <message>
         <location filename="../src/wizardview/WizardView.qml" line="364"/>
