@@ -18,6 +18,9 @@
 // Based on: https://stackoverflow.com/a/28172162
 
 #include "runguard.h"
+
+#include "lrcinstance.h"
+
 #include <QCryptographicHash>
 
 namespace {
@@ -52,9 +55,7 @@ RunGuard::~RunGuard()
 void
 RunGuard::tryRestorePrimaryInstance()
 {
-    /*
-     * TODO: relaunch application
-     */
+    emit LRCInstance::instance().restoreAppRequested();
 }
 
 bool

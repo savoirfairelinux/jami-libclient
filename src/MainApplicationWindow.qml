@@ -123,4 +123,14 @@ ApplicationWindow {
             duration: 500
         }
     }
+
+    Connections {
+        target: ClientWrapper.lrcInstance
+        onRestoreAppRequested: {
+            if (mainViewLoader.item)
+                mainViewLoader.item.show()
+            else
+                wizardView.show()
+        }
+    }
 }
