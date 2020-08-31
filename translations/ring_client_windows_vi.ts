@@ -1,4 +1,4 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="sr@latin" version="2.1">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="vi" version="2.1">
 <context>
     <name>AboutPopUp</name>
     <message>
@@ -9,7 +9,7 @@
     <message>
         <location filename="../src/mainview/components/AboutPopUp.qml" line="113"/>
         <source>Free as in Freedom</source>
-        <translation type="unfinished"/>
+        <translation>Vừa tự do, vừa miễn phí</translation>
     </message>
     <message>
         <location filename="../src/mainview/components/AboutPopUp.qml" line="135"/>
@@ -815,12 +815,12 @@ Jami is a secured and distributed communciation software.</source>
     <message>
         <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="56"/>
         <source>Start video call</source>
-        <translation type="unfinished"/>
+        <translation>Bắt đầu cuộc gọi hình ảnh</translation>
     </message>
     <message>
         <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="72"/>
         <source>Start audio call</source>
-        <translation type="unfinished"/>
+        <translation>Bắt đầu cuộc gọi âm thanh</translation>
     </message>
     <message>
         <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="88"/>
@@ -1166,7 +1166,7 @@ Jami is a secured and distributed communciation software.</source>
     <message>
         <location filename="../src/commoncomponents/DeleteAccountDialog.qml" line="222"/>
         <source>Cancel</source>
-        <translation>Otkaži</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1376,7 +1376,7 @@ Jami is a secured and distributed communciation software.</source>
     <message>
         <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="287"/>
         <source>Cancel</source>
-        <translation>Otkaži</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="31"/>
@@ -1448,7 +1448,7 @@ Please try again later.</source>
     <message>
         <location filename="../src/settingsview/components/NameRegistrationDialog.qml" line="257"/>
         <source>Cancel</source>
-        <translation>Otkaži</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/settingsview/components/NameRegistrationDialog.qml" line="341"/>
@@ -1543,7 +1543,7 @@ Please try again later.</source>
     <message>
         <location filename="../src/commoncomponents/PasswordDialog.qml" line="359"/>
         <source>Cancel</source>
-        <translation>Otkaži</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/commoncomponents/PasswordDialog.qml" line="208"/>
@@ -1777,17 +1777,17 @@ Please try again later.</source>
     <message>
         <location filename="../src/utils.cpp" line="412"/>
         <source>Created by:</source>
-        <translation type="unfinished"/>
+        <translation>Được tạo bởi:</translation>
     </message>
     <message>
         <location filename="../src/utils.cpp" line="418"/>
         <source>Artwork by:</source>
-        <translation type="unfinished"/>
+        <translation>Đồ hoạ bởi:</translation>
     </message>
     <message>
         <location filename="../src/utils.cpp" line="426"/>
         <source>Based on the SFLPhone project</source>
-        <translation type="unfinished"/>
+        <translation>Được dựa trên dự án SFLPhone</translation>
     </message>
 </context>
 <context>
@@ -1855,7 +1855,7 @@ Copy and share it with your friends</source>
     <message>
         <location filename="../src/wizardview/WizardView.qml" line="192"/>
         <source>Generating your Jami account...</source>
-        <translation type="unfinished"/>
+        <translation>Đang tạo tài khoản Jami cho bạn...</translation>
     </message>
     <message>
         <location filename="../src/wizardview/WizardView.qml" line="202"/>
