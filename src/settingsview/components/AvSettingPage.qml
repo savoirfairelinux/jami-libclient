@@ -253,6 +253,13 @@ Rectangle {
         }
     }
 
+    onVisibleChanged: {
+        if (!visible) {
+            stopPreviewing()
+            stopAudioMeter()
+        }
+    }
+
     Layout.fillHeight: true
     Layout.maximumWidth: JamiTheme.maximumWidthSettingsView
     anchors.centerIn: parent
