@@ -335,7 +335,8 @@ SmartListModel::getConversationItemData(const conversation::Info& item,
             return QVariant(callModel->hasCall(convInfo.callId)
                             && ((!call.isOutgoing
                                  && (call.status == lrc::api::call::Status::IN_PROGRESS
-                                     || call.status == lrc::api::call::Status::PAUSED))
+                                     || call.status == lrc::api::call::Status::PAUSED
+                                     || call.status == lrc::api::call::Status::INCOMING_RINGING))
                                 || call.isOutgoing));
         }
         return QVariant(false);

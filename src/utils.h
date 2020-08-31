@@ -45,7 +45,7 @@
 #include <windows.h>
 #undef ERROR
 #else
-#define LPCWSTR char*
+#define LPCWSTR char *
 #endif
 
 #include "api/account.h"
@@ -58,8 +58,8 @@ namespace Utils {
 /*
  * App/System
  */
-bool CreateStartupLink(const std::wstring& wstrAppName);
-void DeleteStartupLink(const std::wstring& wstrAppName);
+bool CreateStartupLink(const std::wstring &wstrAppName);
+void DeleteStartupLink(const std::wstring &wstrAppName);
 bool CreateLink(LPCWSTR lpszPathObj, LPCWSTR lpszPathLink);
 bool CheckStartupLink(const std::wstring& wstrAppName);
 const char* WinGetEnv(const char* name);
@@ -69,14 +69,14 @@ QString GetISODate();
 void showSystemNotification(QWidget* widget,
                             const QString& message,
                             long delay = 5000,
-                            const QString& triggeredAccountId = "");
-void showSystemNotification(QWidget* widget,
-                            const QString& sender,
-                            const QString& message,
+                            const QString &triggeredAccountId = "");
+void showSystemNotification(QWidget *widget,
+                            const QString &sender,
+                            const QString &message,
                             long delay = 5000,
-                            const QString& triggeredAccountId = "");
-QSize getRealSize(QScreen* screen);
-void forceDeleteAsync(const QString& path);
+                            const QString &triggeredAccountId = "");
+QSize getRealSize(QScreen *screen);
+void forceDeleteAsync(const QString &path);
 QString getChangeLog();
 QString getProjectCredits();
 void removeOldVersions();
@@ -90,8 +90,8 @@ static constexpr bool isBeta = true;
 static constexpr bool isBeta = false;
 #endif
 void cleanUpdateFiles();
-void checkForUpdates(bool withUI, QWidget* parent = nullptr);
-void applyUpdates(bool updateToBeta, QWidget* parent = nullptr);
+void checkForUpdates(bool withUI, QWidget *parent = nullptr);
+void applyUpdates(bool updateToBeta, QWidget *parent = nullptr);
 
 /*
  * LRC helpers
@@ -118,8 +118,8 @@ bool getReplyMessageBox(QWidget* widget, const QString& title, const QString& te
 static const QSize defaultAvatarSize {128, 128};
 QString getContactImageString(const QString& accountId, const QString& uid);
 QImage getCirclePhoto(const QImage original, int sizePhoto);
-QImage conversationPhoto(const QString& convUid,
-                         const lrc::api::account::Info& accountInfo,
+QImage conversationPhoto(const QString &convUid,
+                         const lrc::api::account::Info &accountInfo,
                          bool filtered = false);
 QColor getAvatarColor(const QString& canonicalUri);
 QImage fallbackAvatar(const QString& canonicalUriStr,

@@ -1,0 +1,154 @@
+/*
+ * Copyright (C) 2020 by Savoir-faire Linux
+ * Author: Albert Babí <albert.babi@savoirfairelinux.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+import QtQuick 2.14
+import QtQuick.Controls 2.14
+import QtQuick.Layouts 1.14
+import QtQuick.Controls.Universal 2.12
+import net.jami.Models 1.0
+import net.jami.Adapters 1.0
+
+import "../../commoncomponents"
+
+// Common element for IncomingCallPage and OutgoingCallPage
+Rectangle {
+    id: userInfoCallRect
+
+    property int buttonPreferredSize: 48
+    property string contactImgSource: ""
+    property string bestName: "Best Name"
+    property string bestId: "Best Id"
+
+    function updateUI(accountId, convUid) {
+        contactImgSource = "data:image/png;base64," + UtilsAdapter.getContactImageString(
+                    accountId, convUid)
+        bestName = UtilsAdapter.getBestName(accountId, convUid)
+        var id = UtilsAdapter.getBestId(accountId, convUid)
+        bestId = (bestName !== id) ? id : ""
+    }
+
+    color: "black"
+
+    ColumnLayout {
+        id: userInfoCallColumnLayout
+
+        anchors.fill: parent
+
+        HoverableButton {
+            id: backButton
+
+            Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
+            Layout.preferredWidth: JamiTheme.preferredFieldHeight
+            Layout.preferredHeight: JamiTheme.preferredFieldHeight
+            Layout.rightMargin: JamiTheme.preferredMarginSize
+            Layout.topMargin: JamiTheme.preferredMarginSize
+            Layout.leftMargin: JamiTheme.preferredMarginSize
+
+            radius: 32
+            source: "qrc:/images/icons/arrow_back-white-24dp.svg"
+            backgroundColor: "transparent"
+            onExitColor: "transparent"
+            onEnterColor: JamiTheme.lightGrey_
+            toolTipText: qsTr("Toggle to display side panel")
+            hoverEnabled: true
+
+            visible: mainViewWindow.sidePanelHidden
+
+            onClicked: {
+                mainViewWindow.showWelcomeView() // TODO: refactor with msg manager
+            }
+        }
+
+        Image {
+            id: contactImg
+
+            Layout.alignment: Qt.AlignCenter
+            Layout.topMargin: 48
+
+            Layout.preferredWidth: 100
+            Layout.preferredHeight: 100
+
+            fillMode: Image.PreserveAspectFit
+            source: contactImgSource
+            asynchronous: true
+        }
+
+        Rectangle {
+            id: userInfoCallPageTextRect
+
+            Layout.alignment: Qt.AlignCenter
+            Layout.topMargin: 8
+
+            Layout.preferredWidth: userInfoCallRect.width
+            Layout.preferredHeight: jamiBestNameText.height + jamiBestIdText.height + 100
+
+            color: "transparent"
+
+            ColumnLayout {
+                id: userInfoCallPageTextRectColumnLayout
+
+                Text {
+                    id: jamiBestNameText
+
+                    Layout.alignment: Qt.AlignCenter
+                    Layout.preferredWidth: userInfoCallPageTextRect.width
+                    Layout.preferredHeight: 48
+
+                    font.pointSize: JamiTheme.headerFontSize
+
+                    horizontalAlignment: Text.AlignHCenter
+                    verticalAlignment: Text.AlignVCenter
+
+                    text: textMetricsjamiBestNameText.elidedText
+                    color: "white"
+
+                    TextMetrics {
+                        id: textMetricsjamiBestNameText
+                        font: jamiBestNameText.font
+                        text: bestName
+                        elideWidth: userInfoCallPageTextRect.width - 48
+                        elide: Qt.ElideMiddle
+                    }
+                }
+
+                Text {
+                    id: jamiBestIdText
+
+                    Layout.alignment: Qt.AlignCenter
+                    Layout.preferredWidth: userInfoCallPageTextRect.width
+                    Layout.preferredHeight: 32
+
+                    font.pointSize: JamiTheme.textFontSize
+
+                    horizontalAlignment: Text.AlignHCenter
+                    verticalAlignment: Text.AlignVCenter
+
+                    text: textMetricsjamiBestIdText.elidedText
+                    color: Qt.lighter("white", 1.5)
+
+                    TextMetrics {
+                        id: textMetricsjamiBestIdText
+                        font: jamiBestIdText.font
+                        text: bestId
+                        elideWidth: userInfoCallPageTextRect.width - 48
+                        elide: Qt.ElideMiddle
+                    }
+                }
+            }
+        }
+    }
+}

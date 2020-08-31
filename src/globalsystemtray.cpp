@@ -33,13 +33,13 @@ GlobalSystemTray::getTriggeredAccountId()
 }
 
 void
-GlobalSystemTray::setPossibleOnGoingConversationInfo(const lrc::api::conversation::Info& convInfo)
+GlobalSystemTray::setPossibleOnGoingConversationUid(const QString& convUid)
 {
-    triggeredOnGoingConvInfo_ = convInfo;
+    triggeredOnGoingConvUid_ = convUid;
 }
 
-const lrc::api::conversation::Info&
-GlobalSystemTray::getPossibleOnGoingConversationInfo()
+const QString&
+GlobalSystemTray::getPossibleOnGoingConversationUid()
 {
-    return triggeredOnGoingConvInfo_;
+    return triggeredOnGoingConvUid_;
 }

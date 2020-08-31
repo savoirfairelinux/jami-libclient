@@ -25,312 +25,127 @@ import net.jami.Models 1.0
 
 import "../../commoncomponents"
 
-
-// IncomingCallPage as a seperate window,
-// exist at the right bottom, as a notification to user that
-// a call is incoming.
-Window {
+Rectangle {
     id: incomingCallPage
 
-    property int minWidth: 300
-    property int minHeight: 400
+    property int buttonPreferredSize: 48
 
+    signal callCancelButtonIsClicked
+    signal callAcceptButtonIsClicked
 
-    // The unique identifier for incomingCallPage
-    property string responsibleAccountId: ""
-    property string responsibleConvUid: ""
+    color: "black"
 
-    property string contactImgSource: ""
-    property string bestName: "Best Name"
-    property string bestId: "Best Id"
-
-    property int buttonPreferredSize: 50
-    property variant clickPos: "1,1"
-
-    function updateUI() {
-        incomingCallPage.contactImgSource = "data:image/png;base64,"
-                + UtilsAdapter.getContactImageString(responsibleAccountId,
-                                                     responsibleConvUid)
-        incomingCallPage.bestName = UtilsAdapter.getBestName(
-                    responsibleAccountId, responsibleConvUid)
-        var id = UtilsAdapter.getBestId(responsibleAccountId,
-                                        responsibleConvUid)
-        incomingCallPage.bestId = (incomingCallPage.bestName !== id) ? id : ""
+    function updateUI(accountId, convUid) {
+        userInfoIncomingCallPage.updateUI(accountId, convUid)
     }
 
-    function updatePositionToRightBottom() {
-
-
-        // Screen right bottom,
-        // since the qt screen.virtualY, virtualX does not work properly,
-        // we need to calculate the screen x, y ourselves, by
-        // using to fact that window will always be in the middle if no x or y
-        // specificed.
-        // ex: https://doc.qt.io/qt-5/qscreen.html#geometry-prop
-        var virtualX = (incomingCallPage.x + width / 2) - screen.width / 2
-        incomingCallPage.x = virtualX + screen.width - width
-        incomingCallPage.y = screen.height - height - 50
+    // Prevent right click propagate to VideoCallPage.
+    MouseArea {
+        anchors.fill: parent
+        propagateComposedEvents: false
+        acceptedButtons: Qt.RightButton
     }
 
-    minimumWidth: minWidth
-    minimumHeight: minHeight
-
-    maximumWidth: minWidth + 300
-    maximumHeight: minHeight + 300
-
-    flags: Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint
-    screen: Qt.application.screens[0]
-
-    Rectangle {
-        id: incomingCallPageColumnLayoutMainRect
+    ColumnLayout {
+        id: incomingCallPageColumnLayout
 
         anchors.fill: parent
 
-        radius: 15
-        color: "black"
-
-
-        // Simulate window drag. (top with height 30).
-        MouseArea {
-            id: dragMouseArea
-
-            anchors.left: incomingCallPageColumnLayoutMainRect.left
-            anchors.top: incomingCallPageColumnLayoutMainRect.top
-
-            width: incomingCallPageColumnLayoutMainRect.width - closeButton.width - 10
-            height: 30
-
-            onPressed: {
-                clickPos = Qt.point(mouse.x, mouse.y)
-            }
-
-            onPositionChanged: {
-                var delta = Qt.point(mouse.x - clickPos.x, mouse.y - clickPos.y)
-                incomingCallPage.x += delta.x
-                incomingCallPage.y += delta.y
-            }
+        // Common elements with OutgoingCallPage
+        UserInfoCallPage {
+            id: userInfoIncomingCallPage
+            Layout.fillWidth: true
+            Layout.fillHeight: true
         }
 
-        HoverableButton {
-            id: closeButton
+        Text {
+            id: talkToYouText
 
-            anchors.top: incomingCallPageColumnLayoutMainRect.top
-            anchors.topMargin: 10
-            anchors.right: incomingCallPageColumnLayoutMainRect.right
-            anchors.rightMargin: 10
+            Layout.alignment: Qt.AlignCenter
+            Layout.preferredWidth: incomingCallPage.width
+            Layout.preferredHeight: 32
 
-            width: 30
-            height: 30
+            font.pointSize: JamiTheme.textFontSize
 
-            radius: 30
-            source: "qrc:/images/icons/ic_close_white_24dp.png"
-            backgroundColor: "black"
-            onEnterColor: JamiTheme.closeButtonLighterBlack
-            onExitColor: "black"
-            onPressColor: JamiTheme.declineButtonPressedRed
-            onReleaseColor: "black"
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
+            color: "white"
 
-            onClicked: {
-                incomingCallPage.close()
-                CallAdapter.refuseACall(responsibleAccountId,
-                                        responsibleConvUid)
-            }
+            text: "is calling you"
         }
 
-        ColumnLayout {
-            id: incomingCallPageColumnLayout
+        RowLayout {
+            id: incomingCallPageRowLayout
 
-            anchors.fill: parent
+            Layout.alignment: Qt.AlignHCenter | Qt.AlignBottom
+            Layout.bottomMargin: 48
+            Layout.topMargin: 48
 
-            Image {
-                id: contactImg
+            Layout.preferredWidth: incomingCallPage.width - 200
+            Layout.maximumWidth: 200
+            Layout.preferredHeight: buttonPreferredSize
 
-                Layout.alignment: Qt.AlignCenter
-                Layout.topMargin: 30
+            ColumnLayout {
+                id: callAnswerButtonColumnLayout
 
-                Layout.preferredWidth: 100
-                Layout.preferredHeight: 100
+                Layout.alignment: Qt.AlignLeft
 
-                fillMode: Image.PreserveAspectFit
-                source: contactImgSource
-            }
+                HoverableButton {
+                    id: callAnswerButton
 
-            Rectangle {
-                id: incomingCallPageTextRect
+                    Layout.alignment: Qt.AlignCenter
 
-                Layout.alignment: Qt.AlignCenter
-                Layout.topMargin: 5
+                    Layout.preferredWidth: buttonPreferredSize
+                    Layout.preferredHeight: buttonPreferredSize
 
-                Layout.preferredWidth: incomingCallPage.width
-                Layout.preferredHeight: jamiBestNameText.height + jamiBestIdText.height
-                                        + talkToYouText.height + 20
+                    backgroundColor: JamiTheme.acceptButtonGreen
+                    onEnterColor: JamiTheme.acceptButtonHoverGreen
+                    onPressColor: JamiTheme.acceptButtonPressedGreen
+                    onReleaseColor: JamiTheme.acceptButtonHoverGreen
+                    onExitColor: JamiTheme.acceptButtonGreen
 
-                ColumnLayout {
-                    id: incomingCallPageTextRectColumnLayout
+                    buttonImageHeight: buttonPreferredSize / 2
+                    buttonImageWidth: buttonPreferredSize / 2
+                    source: "qrc:/images/icons/ic_check_white_18dp_2x.png"
+                    radius: 32
 
-                    Text {
-                        id: jamiBestNameText
-
-                        Layout.alignment: Qt.AlignCenter
-                        Layout.preferredWidth: incomingCallPageTextRect.width
-                        Layout.preferredHeight: 50
-
-                        font.pointSize: JamiTheme.textFontSize + 3
-
-                        horizontalAlignment: Text.AlignHCenter
-                        verticalAlignment: Text.AlignVCenter
-
-                        text: textMetricsjamiBestNameText.elidedText
-                        color: "white"
-
-                        TextMetrics {
-                            id: textMetricsjamiBestNameText
-                            font: jamiBestNameText.font
-                            text: bestName
-                            elideWidth: incomingCallPageTextRect.width - 30
-                            elide: Qt.ElideMiddle
-                        }
-                    }
-
-                    Text {
-                        id: jamiBestIdText
-
-                        Layout.alignment: Qt.AlignCenter
-                        Layout.preferredWidth: incomingCallPageTextRect.width
-                        Layout.preferredHeight: 30
-
-                        font.pointSize: JamiTheme.textFontSize
-
-                        horizontalAlignment: Text.AlignHCenter
-                        verticalAlignment: Text.AlignVCenter
-
-                        text: textMetricsjamiBestIdText.elidedText
-                        color: "white"
-
-                        TextMetrics {
-                            id: textMetricsjamiBestIdText
-                            font: jamiBestIdText.font
-                            text: bestId
-                            elideWidth: incomingCallPageTextRect.width - 30
-                            elide: Qt.ElideMiddle
-                        }
-                    }
-
-                    Text {
-                        id: talkToYouText
-
-                        Layout.alignment: Qt.AlignCenter
-                        Layout.preferredWidth: incomingCallPageTextRect.width
-                        Layout.preferredHeight: 30
-
-                        font.pointSize: JamiTheme.textFontSize
-
-                        horizontalAlignment: Text.AlignHCenter
-                        verticalAlignment: Text.AlignVCenter
-                        color: "white"
-
-                        text: "is calling you"
+                    onClicked: {
+                        callAcceptButtonIsClicked()
                     }
                 }
-
-                color: "transparent"
             }
 
-            RowLayout {
-                id: incomingCallPageRowLayout
+            ColumnLayout {
+                id: callDeclineButtonColumnLayout
 
-                Layout.alignment: Qt.AlignHCenter | Qt.AlignBottom
-                Layout.bottomMargin: 5
+                Layout.alignment: Qt.AlignRight
 
-                Layout.preferredWidth: incomingCallPage.width - 100
-                Layout.preferredHeight: buttonPreferredSize
+                HoverableButton {
+                    id: callDeclineButton
 
-                ColumnLayout {
-                    id: callAnswerButtonColumnLayout
+                    Layout.alignment: Qt.AlignCenter
 
-                    Layout.alignment: Qt.AlignLeft
+                    Layout.preferredWidth: buttonPreferredSize
+                    Layout.preferredHeight: buttonPreferredSize
 
-                    HoverableButton {
-                        id: callAnswerButton
+                    backgroundColor: JamiTheme.declineButtonRed
+                    onEnterColor: JamiTheme.declineButtonHoverRed
+                    onPressColor: JamiTheme.declineButtonPressedRed
+                    onReleaseColor: JamiTheme.declineButtonHoverRed
+                    onExitColor: JamiTheme.declineButtonRed
 
-                        Layout.alignment: Qt.AlignCenter
+                    buttonImageHeight: buttonPreferredSize / 2
+                    buttonImageWidth: buttonPreferredSize / 2
+                    source: "qrc:/images/icons/ic_close_white_24dp.png"
+                    radius: 32
 
-                        Layout.preferredWidth: buttonPreferredSize
-                        Layout.preferredHeight: buttonPreferredSize
-
-                        backgroundColor: JamiTheme.acceptButtonGreen
-                        onEnterColor: JamiTheme.acceptButtonHoverGreen
-                        onPressColor: JamiTheme.acceptButtonPressedGreen
-                        onReleaseColor: JamiTheme.acceptButtonHoverGreen
-                        onExitColor: JamiTheme.acceptButtonGreen
-
-                        buttonImageHeight: buttonPreferredSize / 2
-                        buttonImageWidth: buttonPreferredSize / 2
-                        source: "qrc:/images/icons/ic_check_white_18dp_2x.png"
-                        radius: 30
-
-                        onClicked: {
-                            incomingCallPage.close()
-                            CallAdapter.acceptACall(responsibleAccountId,
-                                                    responsibleConvUid)
-                        }
-                    }
-
-                    Text {
-                        id: answerText
-
-                        Layout.alignment: Qt.AlignCenter
-
-                        font.pointSize: JamiTheme.textFontSize - 2
-                        text: qsTr("Answer")
-                    }
-                }
-
-                ColumnLayout {
-                    id: callDeclineButtonColumnLayout
-
-                    Layout.alignment: Qt.AlignRight
-
-                    HoverableButton {
-                        id: callDeclineButton
-
-                        Layout.alignment: Qt.AlignCenter
-
-                        Layout.preferredWidth: buttonPreferredSize
-                        Layout.preferredHeight: buttonPreferredSize
-
-                        backgroundColor: JamiTheme.declineButtonRed
-                        onEnterColor: JamiTheme.declineButtonHoverRed
-                        onPressColor: JamiTheme.declineButtonPressedRed
-                        onReleaseColor: JamiTheme.declineButtonHoverRed
-                        onExitColor: JamiTheme.declineButtonRed
-
-                        buttonImageHeight: buttonPreferredSize / 2
-                        buttonImageWidth: buttonPreferredSize / 2
-                        source: "qrc:/images/icons/ic_close_white_24dp.png"
-                        radius: 30
-
-                        onClicked: {
-                            incomingCallPage.close()
-                            CallAdapter.refuseACall(responsibleAccountId,
-                                                    responsibleConvUid)
-                        }
-                    }
-
-                    Text {
-                        id: ignoreText
-
-                        Layout.alignment: Qt.AlignCenter
-
-                        font.pointSize: JamiTheme.textFontSize - 2
-                        text: qsTr("Ignore")
+                    onClicked: {
+                        callCancelButtonIsClicked()
                     }
                 }
             }
         }
     }
-
-    color: "transparent"
 
     Shortcut {
         sequence: "Ctrl+Y"

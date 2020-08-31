@@ -151,6 +151,31 @@ Rectangle {
 
             anchors.fill: parent
 
+            HoverableButton {
+                id: backButton
+
+                Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
+                Layout.preferredWidth: JamiTheme.preferredFieldHeight
+                Layout.preferredHeight: JamiTheme.preferredFieldHeight
+                Layout.rightMargin: JamiTheme.preferredMarginSize
+                Layout.topMargin: JamiTheme.preferredMarginSize
+                Layout.leftMargin: JamiTheme.preferredMarginSize
+
+                radius: 32
+                source: "qrc:/images/icons/arrow_back-white-24dp.svg"
+                backgroundColor: "transparent"
+                onExitColor: "transparent"
+                onEnterColor: JamiTheme.lightGrey_
+                toolTipText: qsTr("Toggle to display side panel")
+                hoverEnabled: true
+
+                visible: mainViewWindow.sidePanelHidden
+
+                onClicked: {
+                    mainViewWindow.showWelcomeView() // TODO: refactor with msg manager
+                }
+            }
+
             Text {
                 id: jamiBestNameText
 

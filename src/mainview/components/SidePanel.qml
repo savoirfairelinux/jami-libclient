@@ -32,7 +32,7 @@ Rectangle {
     property int pendingRequestCount: 0
     property int totalUnreadMessagesCount: 0
 
-    signal conversationSmartListNeedToAccessMessageWebView(string currentUserDisplayName, string currentUserAlias, string currentUID, bool callStackViewShouldShow, bool isAudioOnly, string callState)
+    signal conversationSmartListNeedToAccessMessageWebView(string currentUserDisplayName, string currentUserAlias, string currentUID, bool callStackViewShouldShow, bool isAudioOnly, int callState)
     signal accountComboBoxNeedToShowWelcomePage()
     signal conversationSmartListViewNeedToShowWelcomePage
     signal needToUpdateConversationForAddedContact
@@ -188,8 +188,7 @@ Rectangle {
             target: ConversationsAdapter
 
             function onShowChatView(accountId, convUid) {
-                conversationSmartListView.needToShowChatView(accountId,
-                                                             convUid)
+                conversationSmartListView.needToShowChatView(accountId, convUid)
             }
 
             function onShowConversationTabs(visible) {

@@ -41,13 +41,13 @@ public:
 
     const QString& getTriggeredAccountId();
 
-    void setPossibleOnGoingConversationInfo(const lrc::api::conversation::Info& convInfo);
+    void setPossibleOnGoingConversationUid(const QString& convUid);
 
-    const lrc::api::conversation::Info& getPossibleOnGoingConversationInfo();
+    const QString& getPossibleOnGoingConversationUid();
 
 private:
     GlobalSystemTray();
 
     QString triggeredAccountId_;
-    lrc::api::conversation::Info triggeredOnGoingConvInfo_;
+    QString triggeredOnGoingConvUid_;
 };

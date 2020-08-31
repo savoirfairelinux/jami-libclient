@@ -25,7 +25,6 @@ import net.jami.Models 1.0
 import net.jami.Adapters 1.0
 
 // Import qml component files.
-
 import "components"
 import "../wizardview"
 import "../settingsview"
@@ -47,43 +46,85 @@ Window {
     property int savedSidePanelViewMaxWidth: 0
     property int savedWelcomeViewMinWidth: 0
     property int savedWelcomeViewMaxWidth: 0
-    property bool sidePanelHidden: false
+    property bool sidePanelHidden: !mainViewStack.visible
 
     // To calculate tab bar bottom border hidden rect left margin.
     property int tabBarLeftMargin: 8
     property int tabButtonShrinkSize: 8
     property bool inSettingsView: false
-    property bool needToShowCallStack: false
-    property bool needToCloseCallStack: false
 
     signal closeApp
     signal noAccountIsAvailable
 
-    function pushCallStackView(){
-        if (mainViewStack.visible) {
-            mainViewStack.pop(null, StackView.Immediate)
-            mainViewStack.push(callStackView, StackView.Immediate)
-        } else {
-            sidePanelViewStack.pop(null, StackView.Immediate)
-            sidePanelViewStack.push(callStackView, StackView.Immediate)
+    function showWelcomeView() {
+        mainViewWindowSidePanel.deselectConversationSmartList()
+        if (communicationPageMessageWebView.visible || callStackView.visible) {
+            sidePanelViewStack.pop(StackView.Immediate)
+            if (!sidePanelHidden) {
+                mainViewStack.pop(welcomePage, StackView.Immediate)
+            }
         }
     }
 
-    function pushCommunicationMessageWebView(){
-        if (mainViewStack.visible) {
-            mainViewStack.pop(null, StackView.Immediate)
-            mainViewStack.push(communicationPageMessageWebView,
-                                  StackView.Immediate)
+    function setCallStackView() {
+
+        mainViewWindowSidePanel.deselectConversationSmartList()
+
+        var currentAccount = AccountAdapter.currentAccountId
+        var currentCallConv = UtilsAdapter.getCallConvForAccount(currentAccount)
+
+        ConversationsAdapter.selectConversation(currentCallConv)
+        var callId = UtilsAdapter.getCallId(currentAccount, currentCallConv)
+        var callStatus = UtilsAdapter.getCallStatus(callId)
+
+        switch (callStatus) {
+        case Call.Status.INCOMING_RINGING:
+            callStackView.showIncomingCallPage(currentAccount, currentCallConv)
+            break
+        case Call.Status.OUTGOING_RINGING:
+            callStackView.showOutgoingCallPage()
+            break
+        default:
+            if (UtilsAdapter.hasVideoCall()) {
+                callStackView.showVideoCallPage(callId)
+            } else {
+                callStackView.showAudioCallPage()
+            }
+        }
+
+        pushCallStackView()
+
+        callStackView.responsibleAccountId = currentAccount
+        callStackView.responsibleConvUid = currentCallConv
+        callStackView.updateCorrespondingUI()
+    }
+
+
+    function pushCallStackView() {
+        if (sidePanelHidden) {
+            sidePanelViewStack.push(callStackView, StackView.Immediate)
         } else {
-            sidePanelViewStack.pop(null, StackView.Immediate)
-            sidePanelViewStack.push(
-                        communicationPageMessageWebView,
-                        StackView.Immediate)
+            sidePanelViewStack.pop(StackView.Immediate)
+            mainViewStack.pop(null, StackView.Immediate)
+            mainViewStack.push(callStackView, StackView.Immediate)
+        }
+    }
+
+    function pushCommunicationMessageWebView() {
+        if (sidePanelHidden) {
+            sidePanelViewStack.push(communicationPageMessageWebView, StackView.Immediate)
+        } else {
+            mainViewStack.pop(null, StackView.Immediate)
+            mainViewStack.push(communicationPageMessageWebView, StackView.Immediate)
         }
     }
 
     function newAccountAdded(index) {
         mainViewWindowSidePanel.refreshAccountComboBox(index)
+    }
+
+    function currentAccountIsCalling() {
+        return UtilsAdapter.hasCall(AccountAdapter.currentAccountId)
     }
 
     function recursionStackViewItemMove(stackOne, stackTwo, depth=1) {
@@ -111,28 +152,25 @@ Window {
                 mainViewStack.push(settingsView, StackView.Immediate)
                 sidePanelViewStack.push(leftPanelSettingsView, StackView.Immediate)
             }
-            ConversationsAdapter.disconnectConversationModel()
 
         } else {
 
-            ConversationsAdapter.connectConversationModel(false)
-            ConversationsAdapter.refill() // to be sure to have latest informations
-            mainViewWindowSidePanel.forceUpdateConversationSmartListView()
-
-            if (!sidePanelHidden) {
-                sidePanelViewStack.pop(mainViewWindowSidePanel, StackView.Immediate)
-                mainViewStack.pop(StackView.Immediate)
-            } else {
+            if (sidePanelHidden) {
                 recursionStackViewItemMove(sidePanelViewStack, mainViewStack, 2)
                 sidePanelViewStack.pop(StackView.Immediate)
                 mainViewStack.pop(StackView.Immediate)
                 recursionStackViewItemMove(mainViewStack, sidePanelViewStack, 1)
             }
 
-            if (needToCloseCallStack) {
-                pushCommunicationMessageWebView()
-                needToShowCallStack = false
-                needToCloseCallStack = false
+            if (currentAccountIsCalling()) {
+                setCallStackView()
+            } else {
+                mainViewWindowSidePanel.deselectConversationSmartList()
+
+                sidePanelViewStack.pop(StackView.Immediate)
+                if (!sidePanelHidden) {
+                    mainViewStack.pop(welcomePage, StackView.Immediate)
+                }
             }
         }
         inSettingsView = !inSettingsView
@@ -150,12 +188,10 @@ Window {
 
         function onShowCallStack(accountId, convUid, forceReset) {
 
-            needToShowCallStack = true
             if (forceReset) {
                 callStackView.responsibleAccountId = accountId
                 callStackView.responsibleConvUid = convUid
             }
-
 
             // Check if it is coming from the current responsible call,
             // and push views onto the correct stackview
@@ -166,7 +202,6 @@ Window {
         }
 
         function onCloseCallStack(accountId, convUid) {
-
             // Check if call stack view is on any of the stackview.
             if (callStackView.responsibleAccountId === accountId
                     && callStackView.responsibleConvUid === convUid) {
@@ -174,20 +209,16 @@ Window {
                     return item.objectName === "callStackViewObject"
                 }) || sidePanelViewStack.find(function (item, index) {
                     return item.objectName === "callStackViewObject"
-                }) || (inSettingsView && needToShowCallStack)) {
-                    callStackView.needToCloseInCallConversationAndPotentialWindow()
-
+                })) {
                     if (!inSettingsView) {
+                        callStackView.needToCloseInCallConversationAndPotentialWindow()
                         pushCommunicationMessageWebView()
-                        needToShowCallStack = false
-                    } else {
-                        needToCloseCallStack = true
                     }
                 }
             }
         }
 
-        function onIncomingCallNeedToSetupMainView(accountId, convUid) {
+        function onIncomingCallNeedToSetupMainView(accountId, convUid, fromNotification) {
 
             // Set up the call stack view that is needed by call overlay.
             if (!inSettingsView) {
@@ -205,16 +236,14 @@ Window {
             communicationPageMessageWebView.headerUserUserNameLabelText = (name !== id) ? id : ""
 
             callStackView.needToCloseInCallConversationAndPotentialWindow()
-            callStackView.setLinkedWebview(
-                        communicationPageMessageWebView)
+            callStackView.setLinkedWebview(communicationPageMessageWebView)
 
             callStackView.responsibleAccountId = accountId
             callStackView.responsibleConvUid = convUid
-            callStackView.updateCorrspondingUI()
+            callStackView.updateCorrespondingUI()
 
             mainViewWindowSidePanel.refreshAccountComboBox(index)
-            ConversationsAdapter.selectConversation(accountId, convUid)
-
+            ConversationsAdapter.selectConversation(accountId, convUid, !fromNotification)
             MessagesAdapter.setupChatView(convUid)
         }
     }
@@ -264,7 +293,9 @@ Window {
                 Rectangle {
                     implicitWidth: 1
                     implicitHeight: splitView.height
-                    color: SplitHandle.pressed ? JamiTheme.pressColor : (SplitHandle.hovered ? JamiTheme.hoverColor : JamiTheme.tabbarBorderColor)
+                    color: SplitHandle.pressed ? JamiTheme.pressColor :
+                                                 (SplitHandle.hovered ? JamiTheme.hoverColor :
+                                                                        JamiTheme.tabbarBorderColor)
                 }
             }
 
@@ -272,8 +303,9 @@ Window {
                 id: mainViewSidePanelRect
                 SplitView.minimumWidth: sidePanelViewStackPreferredWidth
                 SplitView.maximumWidth: (sidePanelHidden ? splitView.width :
-                                                      splitView.width - sidePanelViewStackPreferredWidth)
+                                                           splitView.width - sidePanelViewStackPreferredWidth)
                 SplitView.fillHeight: true
+
 
                 // AccountComboBox is always visible
                 AccountComboBox {
@@ -304,24 +336,26 @@ Window {
                     }
 
                     onAccountChanged: {
+                        mainViewWindowSidePanel.deselectConversationSmartList()
+
                         mainViewWindowSidePanel.refreshAccountComboBox(index)
+
                         settingsView.slotAccountListChanged()
                         settingsView.setSelected(settingsView.selectedMenu, true)
 
-                        if (needToShowCallStack
-                                && callStackView.responsibleAccountId === UtilsAdapter.getCurrAccId()){
-                            if (!AccountAdapter.hasVideoCall()) {
-                                pushCommunicationMessageWebView()
-                                needToShowCallStack = false
-                            } else if (needToShowCallStack) {
-                                pushCallStackView()
+                        if (!inSettingsView) {
+                            if (currentAccountIsCalling()) {
+                                setCallStackView()
+                            } else {
+                                showWelcomeView()
                             }
                         }
                     }
 
                     onNeedToBackToWelcomePage: {
-                        if (!inSettingsView)
+                        if (!inSettingsView && !currentAccountIsCalling()) {
                             mainViewWindowSidePanel.accountComboBoxNeedToShowWelcomePage()
+                        }
                     }
 
                     onNewAccountButtonClicked: {
@@ -338,7 +372,8 @@ Window {
 
                     initialItem: mainViewWindowSidePanel
 
-                    anchors.top: accountComboBox.visible ? accountComboBox.bottom : mainViewSidePanelRect.top
+                    anchors.top: accountComboBox.visible ? accountComboBox.bottom :
+                                                           mainViewSidePanelRect.top
                     width: mainViewSidePanelRect.width
                     height: accountComboBox.visible ? mainViewSidePanelRect.height - accountComboBox.height :
                                                       mainViewSidePanelRect.height
@@ -352,7 +387,8 @@ Window {
 
                 initialItem: welcomePage
 
-                SplitView.maximumWidth: sidePanelHidden ? splitView.width : splitView.width - sidePanelViewStackPreferredWidth
+                SplitView.maximumWidth: sidePanelHidden ? splitView.width :
+                                                          splitView.width - sidePanelViewStackPreferredWidth
                 SplitView.minimumWidth: sidePanelViewStackPreferredWidth
                 SplitView.fillHeight: true
 
@@ -410,7 +446,6 @@ Window {
         }
     }
 
-
     SidePanel {
         id: mainViewWindowSidePanel
 
@@ -422,11 +457,11 @@ Window {
             callStackView.needToCloseInCallConversationAndPotentialWindow()
             callStackView.responsibleAccountId = UtilsAdapter.getCurrAccId()
             callStackView.responsibleConvUid = currentUID
-            callStackView.updateCorrspondingUI()
+            callStackView.updateCorrespondingUI()
 
             if (callStackViewShouldShow) {
                 if (callState === Call.Status.IN_PROGRESS || callState === Call.Status.PAUSED) {
-                    UtilsAdapter.setCurrentCall(UtilsAdapter.getCurrAccId(), currentUID)
+                    UtilsAdapter.setCurrentCall(AccountAdapter.currentAccountId, currentUID)
                     if (isAudioOnly)
                         callStackView.showAudioCallPage()
                     else
@@ -434,15 +469,17 @@ Window {
                                     UtilsAdapter.getCallId(
                                         callStackView.responsibleAccountId,
                                         callStackView.responsibleConvUid))
+                } else if (callState === Call.Status.INCOMING_RINGING) {
+                    callStackView.showIncomingCallPage(AccountAdapter.currentAccountId,
+                                                       currentUID)
                 } else {
-                    callStackView.showOutgoingCallPage(callStateStr)
+                    callStackView.showOutgoingCallPage()
                 }
             }
 
             // Set up chatview.
             MessagesAdapter.setupChatView(currentUID)
-            callStackView.setLinkedWebview(
-                        communicationPageMessageWebView)
+            callStackView.setLinkedWebview(communicationPageMessageWebView)
 
             if (mainViewStack.find(function (item, index) {
                 return item.objectName === "communicationPageMessageWebView"
@@ -452,7 +489,6 @@ Window {
                 if (!callStackViewShouldShow)
                     return
             }
-
 
             // Push messageWebView or callStackView onto the correct stackview
             mainViewStack.pop(null, StackView.Immediate)
@@ -483,13 +519,13 @@ Window {
 
         onAccountComboBoxNeedToShowWelcomePage: {
             // If the item argument is specified, all items down to (but not including) item will be popped.
-            if (!inSettingsView) {
-                mainViewStack.pop(welcomePage)
+            if (!inSettingsView && !currentAccountIsCalling()) {
+                showWelcomeView()
             }
         }
 
         onConversationSmartListViewNeedToShowWelcomePage: {
-            mainViewStack.pop(welcomePage)
+            showWelcomeView()
         }
 
         onNeedToUpdateConversationForAddedContact: {
@@ -559,22 +595,15 @@ Window {
         }
 
         onNeedToGoBackToWelcomeView: {
-            mainViewWindowSidePanel.deselectConversationSmartList()
-            if (communicationPageMessageWebView.visible
-                    && !mainViewStack.visible) {
-                sidePanelViewStack.pop()
-            } else if (communicationPageMessageWebView.visible
-                       && mainViewStack.visible) {
-                mainViewStack.pop()
-            }
+            showWelcomeView()
             recordBox.visible = false
         }
 
         Component.onCompleted: {
 
             sidePanelViewStack.SplitView.maximumWidth = Qt.binding(function() {
-                return (hiddenView ? splitView.width :
-                                     splitView.width - sidePanelViewStackPreferedWidth)
+                return (sidePanelHidden ? splitView.width :
+                                          splitView.width - sidePanelViewStackPreferredWidth)
             })
 
             recordBox.x = Qt.binding(function() {
@@ -592,7 +621,6 @@ Window {
                                                sidePanelViewStack.height + recordBox.y_offset
             })
 
-
             // Set qml MessageWebView object pointer to c++.
             MessagesAdapter.setQmlObject(this)
         }
@@ -604,7 +632,6 @@ Window {
                 + mainViewStackPreferredWidth - 5
                 && mainViewStack.visible) {
             mainViewStack.visible = false
-            sidePanelHidden = true
 
             // The find callback function is called for each item in the stack.
             var inWelcomeViewStack = mainViewStack.find(
@@ -621,7 +648,6 @@ Window {
                    + mainViewStackPreferredWidth + 5
                    && !mainViewStack.visible) {
             mainViewStack.visible = true
-            sidePanelHidden = false
 
             var inSidePanelViewStack = sidePanelViewStack.find(
                         function (item, index) {
@@ -630,6 +656,9 @@ Window {
             if (inSidePanelViewStack) {
                 recursionStackViewItemMove(sidePanelViewStack, mainViewStack, (inSettingsView ? 2 : 1))
             }
+
+            if (!inSettingsView && currentAccountIsCalling())
+                pushCallStackView()
 
             mainViewWindow.update()
         }

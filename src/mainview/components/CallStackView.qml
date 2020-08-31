@@ -32,6 +32,12 @@ Rectangle {
 
     anchors.fill: parent
 
+    Shortcut {
+        sequence: "Ctrl+D"
+        context: Qt.ApplicationShortcut
+        onActivated: CallAdapter.hangUpThisCall()
+    }
+
     // When selected conversation is changed,
     // these values will also be changed.
     property string responsibleConvUid: ""
@@ -40,7 +46,6 @@ Rectangle {
     function needToCloseInCallConversationAndPotentialWindow() {
         audioCallPage.closeInCallConversation()
         videoCallPage.closeInCallConversation()
-
 
         // Close potential window, context menu releated windows.
         audioCallPage.closeContextMenuAndRelatedWindows()
@@ -54,9 +59,10 @@ Rectangle {
         videoCallPage.setLinkedWebview(webViewId)
     }
 
-    function updateCorrspondingUI() {
+    function updateCorrespondingUI() {
         audioCallPage.updateUI(responsibleAccountId, responsibleConvUid)
         outgoingCallPage.updateUI(responsibleAccountId, responsibleConvUid)
+        incomingCallPage.updateUI(responsibleAccountId, responsibleConvUid)
         videoCallPage.updateUI(responsibleAccountId, responsibleConvUid)
     }
 
@@ -73,7 +79,7 @@ Rectangle {
         audioCallPage.updateUI(responsibleAccountId, responsibleConvUid)
     }
 
-    function showOutgoingCallPage(currentCallStatus) {
+    function showOutgoingCallPage() {
         var itemToFind = callStackMainView.find(function (item) {
             return item.stackNumber === 1
         })
@@ -83,8 +89,21 @@ Rectangle {
         } else {
             callStackMainView.pop(itemToFind, StackView.Immediate)
         }
-        if (currentCallStatus)
-            outgoingCallPage.callStatus = currentCallStatus
+    }
+
+    function showIncomingCallPage(accountId, convUid) {
+        var itemToFind = callStackMainView.find(function (item) {
+            return item.stackNumber === 3
+        })
+
+        if (!itemToFind) {
+            callStackMainView.push(incomingCallPage, StackView.Immediate)
+        } else {
+            callStackMainView.pop(itemToFind, StackView.Immediate)
+        }
+        responsibleAccountId = accountId
+        responsibleConvUid = convUid
+        incomingCallPage.updateUI(accountId, convUid)
     }
 
     function showVideoCallPage(callId) {
@@ -106,7 +125,6 @@ Rectangle {
 
         function onShowOutgoingCallPage(accountId, convUid) {
 
-
             // Need to check whether it is the current selected conversation.
             if (responsibleConvUid === convUid
                     && responsibleAccountId === accountId) {
@@ -115,18 +133,7 @@ Rectangle {
         }
 
         function onShowIncomingCallPage(accountId, convUid) {
-
-
-            // Check is done within the js.
-            IncomingCallPageCreation.createincomingCallPageWindowObjects(
-                        accountId, convUid)
-            IncomingCallPageCreation.showIncomingCallPageWindow(accountId,
-                                                                convUid)
-        }
-
-        function onClosePotentialIncomingCallPageWindow(accountId, convUid) {
-            IncomingCallPageCreation.closeIncomingCallPageWindow(accountId,
-                                                                 convUid)
+            showIncomingCallPage(accountId, convUid)
         }
 
         function onShowAudioCallPage(accountId, convUid) {
@@ -193,6 +200,20 @@ Rectangle {
             }
 
             videoCallPage.handleParticipantsInfo(CallAdapter.getConferencesInfos())
+        }
+    }
+
+    IncomingCallPage {
+        id: incomingCallPage
+
+        property int stackNumber: 3
+
+        onCallAcceptButtonIsClicked: {
+            CallAdapter.acceptACall(responsibleAccountId, responsibleConvUid)
+        }
+
+        onCallCancelButtonIsClicked: {
+            CallAdapter.hangUpACall(responsibleAccountId, responsibleConvUid)
         }
     }
 
