@@ -12,7 +12,7 @@ xmlns:wix="http://schemas.microsoft.com/wix/2006/wi">
     </xsl:template>
 
     <xsl:key name="service-search" match="wix:Component[contains(wix:File/@Source, 'Jami.exe')]" use="@Id" />
-    <xsl:key name="vc-service-search" match="wix:Component[contains(wix:File/@Source, 'vcredist_x64.exe')]" use="@Id" />
+    <xsl:key name="vc-service-search" match="wix:Component[contains(wix:File/@Source, 'redist') and contains(wix:File/@Source, 'vc')]" use="@Id" />
     <xsl:key name="pdb-search" match="wix:Component[contains(wix:File/@Source, '.pdb')]" use="@Id" />
     <xsl:key name="lib-search" match="wix:Component[contains(wix:File/@Source, 'Jami.lib')]" use="@Id" />
     <xsl:key name="exp-search" match="wix:Component[contains(wix:File/@Source, 'Jami.exp')]" use="@Id" />
