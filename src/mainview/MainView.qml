@@ -304,7 +304,7 @@ Window {
                         }
 
                         function onAccountStatusChanged() {
-                            accountComboBox.updateAccountListModel()
+                            accountComboBox.resetAccountListModel()
                         }
                     }
 

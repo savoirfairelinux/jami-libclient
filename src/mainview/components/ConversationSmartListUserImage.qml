@@ -31,33 +31,14 @@ Image {
     source: "data:image/png;base64," + Picture
     mipmap: true
 
-    Rectangle {
-        id: presenseRect
+    AccountPresenceCycle {
+        id: conversationAccountPresenseCycle
 
         anchors.right: userImage.right
-        anchors.rightMargin: -2
         anchors.bottom: userImage.bottom
         anchors.bottomMargin: -2
 
-        width: 14
-        height: 14
-
         visible: Presence
-
-        Rectangle {
-            id: presenseCycle
-
-            anchors.centerIn: presenseRect
-
-            width: 10
-            height: 10
-
-            radius: 30
-            color: JamiTheme.presenceGreen
-        }
-
-        radius: 30
-        color: JamiTheme.backgroundColor
     }
 
     Rectangle {

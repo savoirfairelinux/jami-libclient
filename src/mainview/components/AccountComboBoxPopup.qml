@@ -57,7 +57,6 @@ Popup {
         model: accountListModel
         implicitHeight: contentHeight
         delegate: ItemDelegate {
-
             Image {
                 id: userImage
 
@@ -66,7 +65,7 @@ Popup {
                 anchors.verticalCenter: parent.verticalCenter
 
                 width: 30
-                height: parent.height
+                height: 30
 
                 fillMode: Image.PreserveAspectFit
                 mipmap: true
@@ -80,6 +79,22 @@ Popup {
                         return ""
                     }
                     return "data:image/png;base64," + data
+                }
+
+                AccountPresenceCycle {
+                    id: accountPresenseCycle
+
+                    anchors.right: userImage.right
+                    anchors.rightMargin: -2
+                    anchors.bottom: userImage.bottom
+                    anchors.bottomMargin: -2
+
+                    // Visible when account is registered.
+                    visible: {
+                        return accountListModel.data(
+                                    accountListModel.index(index, 0), 261)
+                                === Account.Status.REGISTERED
+                    }
                 }
             }
 

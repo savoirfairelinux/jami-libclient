@@ -1,4 +1,3 @@
-
 /*
  * Copyright (C) 2020 by Savoir-faire Linux
  * Author: Mingrui Zhang <mingrui.zhang@savoirfairelinux.com>
@@ -16,6 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+
 import QtQuick 2.14
 import QtQuick.Controls 2.14
 import QtQuick.Layouts 1.14
@@ -35,13 +35,6 @@ ComboBox {
 
     function backToWelcomePage() {
         needToBackToWelcomePage()
-    }
-
-    // Refresh every item in accountListModel.
-    function updateAccountListModel() {
-        accountListModel.dataChanged(accountListModel.index(0, 0),
-                                     accountListModel.index(
-                                         accountListModel.rowCount() - 1, 0))
     }
 
     // Reset accountListModel.
@@ -72,41 +65,24 @@ ComboBox {
         }
         mipmap: true
 
-        Rectangle {
-            id: presenseRect
+        AccountPresenceCycle {
+            id: currentAccountPresenseCycle
 
             anchors.right: userImageRoot.right
             anchors.rightMargin: -2
             anchors.bottom: userImageRoot.bottom
             anchors.bottomMargin: -2
 
-            width: 12
-            height: 12
-
-            // Visible when account is registered, enum REGISTERED == 5.
+            // Visible when account is registered.
             visible: {
                 if (currentIndex !== -1)
                     return accountListModel.data(
                                 accountListModel.index(
-                                    accountComboBox.currentIndex, 0), 261) === 5
+                                    accountComboBox.currentIndex, 0), 261)
+                            === Account.Status.REGISTERED
                 else
                     return visible
             }
-
-            Rectangle {
-                id: presenseCycle
-
-                anchors.centerIn: presenseRect
-
-                width: 10
-                height: 10
-
-                radius: 30
-                color: JamiTheme.presenceGreen
-            }
-
-            radius: 30
-            color: JamiTheme.backgroundColor
         }
     }
 
