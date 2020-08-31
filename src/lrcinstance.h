@@ -259,9 +259,10 @@ public:
     static const QString &
     getCurrAccId()
     {
-        auto accountList = accountModel().getAccountList();
-        if (instance().selectedAccountId_.isEmpty() && accountList.size()) {
-            instance().selectedAccountId_ = accountList.at(0);
+        if (instance().selectedAccountId_.isEmpty()) {
+            auto accountList = accountModel().getAccountList();
+            if (accountList.size())
+                instance().selectedAccountId_ = accountList.at(0);
         }
         return instance().selectedAccountId_;
     };
