@@ -82,12 +82,8 @@ AccountAdapter::createJamiAccount(QString registeredName,
         &LRCInstance::accountModel(),
         &lrc::api::NewAccountModel::accountAdded,
         [this, registeredName, settings, isCreating, photoBoothImgBase64](const QString &accountId) {
-            QSettings qSettings("jami.net", "Jami");
-            if (not qSettings.contains(SettingsKey::neverShowMeAgain)) {
-                qSettings.setValue(SettingsKey::neverShowMeAgain, false);
-            }
-            auto showBackup = isCreating && !settings.value(SettingsKey::neverShowMeAgain).toBool();
-
+            auto showBackup = isCreating &&
+                    !AppSettingsManager::getValue(Settings::Key::NeverShowMeAgain).toBool();
             if (!registeredName.isEmpty()) {
                 Utils::oneShotConnect(&LRCInstance::accountModel(),
                                       &lrc::api::NewAccountModel::nameRegistrationEnded,
@@ -311,13 +307,6 @@ AccountAdapter::setArchivePasswordAsync(const QString &accountID, const QString 
         config.archivePassword = password;
         LRCInstance::accountModel().setAccountConfig(accountID, config);
     });
-}
-
-void
-AccountAdapter::settingsNeverShowAgain(bool checked)
-{
-    QSettings settings("jami.net", "Jami");
-    settings.setValue(SettingsKey::neverShowMeAgain, checked);
 }
 
 void

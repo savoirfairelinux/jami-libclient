@@ -1,4 +1,4 @@
-/**
+/*!
  * Copyright (C) 2015-2020 by Savoir-faire Linux
  * Author: Edric Ladent Milaret <edric.ladent-milaret@savoirfairelinux.com>
  * Author: Andreas Traczyk <andreas.traczyk@savoirfairelinux.com>
@@ -21,48 +21,18 @@
 
 #include "mainapplication.h"
 
-#include "accountadapter.h"
-#include "accountlistmodel.h"
-#include "accountstomigratelistmodel.h"
-#include "audiocodeclistmodel.h"
-#include "audioinputdevicemodel.h"
-#include "audiomanagerlistmodel.h"
-#include "audiooutputdevicemodel.h"
-#include "pluginlistpreferencemodel.h"
-#include "mediahandlerlistpreferencemodel.h"
-#include "avadapter.h"
-#include "bannedlistmodel.h"
-#include "calladapter.h"
-#include "clientwrapper.h"
-#include "contactadapter.h"
-#include "mediahandleradapter.h"
-#include "conversationsadapter.h"
-#include "deviceitemlistmodel.h"
-#include "pluginitemlistmodel.h"
-#include "mediahandleritemlistmodel.h"
-#include "preferenceitemlistmodel.h"
-#include "distantrenderer.h"
+#include "appsettingsmanager.h"
 #include "globalinstances.h"
 #include "globalsystemtray.h"
-#include "messagesadapter.h"
-#include "namedirectory.h"
-#include "pixbufmanipulator.h"
-#include "previewrenderer.h"
+#include "qmlregister.h"
 #include "qrimageprovider.h"
-#include "settingsadaptor.h"
+#include "pixbufmanipulator.h"
 #include "tintedbuttonimageprovider.h"
-#include "utils.h"
-#include "version.h"
-#include "videocodeclistmodel.h"
-#include "videoformatfpsmodel.h"
-#include "videoformatresolutionmodel.h"
-#include "videoinputdevicemodel.h"
 
 #include <QAction>
 #include <QFontDatabase>
 #include <QMenu>
 #include <QQmlContext>
-#include <QtWebEngine>
 
 #include <locale.h>
 
@@ -74,44 +44,17 @@
 #include <gnutls/gnutls.h>
 #endif
 
-MainApplication::MainApplication(int& argc, char** argv)
-    : QApplication(argc, argv)
-    , engine_(new QQmlApplicationEngine())
-{
-    QObject::connect(this, &QApplication::aboutToQuit, [this] { exitApp(); });
-}
-
-void
-MainApplication::applicationInitialization()
-{
-    /*
-     * Some attributes are needed to be set before the creation of the application.
-     */
-    QApplication::setApplicationName("Ring");
-    QApplication::setOrganizationDomain("jami.net");
-    QApplication::setAttribute(Qt::AA_EnableHighDpiScaling, true);
-    QApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
-    QApplication::setQuitOnLastWindowClosed(false);
-    QCoreApplication::setAttribute(Qt::AA_UseOpenGLES);
-#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
-    QApplication::setHighDpiScaleFactorRoundingPolicy(
-        Qt::HighDpiScaleFactorRoundingPolicy::RoundPreferFloor);
-    /*
-     * Initialize QtWebEngine.
-     */
-    QtWebEngine::initialize();
-#endif
-}
-
-void
-MainApplication::consoleDebug()
+static void
+consoleDebug()
 {
 #ifdef Q_OS_WIN
     AllocConsole();
     SetConsoleCP(CP_UTF8);
 
-    freopen("CONOUT$", "w", stdout);
-    freopen("CONOUT$", "w", stderr);
+    FILE* fpstdout = stdout;
+    freopen_s(&fpstdout, "CONOUT$", "w", stdout);
+    FILE* fpstderr = stderr;
+    freopen_s(&fpstderr, "CONOUT$", "w", stderr);
 
     COORD coordInfo;
     coordInfo.X = 130;
@@ -122,8 +65,8 @@ MainApplication::consoleDebug()
 #endif
 }
 
-void
-MainApplication::vsConsoleDebug()
+static void
+vsConsoleDebug()
 {
 #ifdef _MSC_VER
     /*
@@ -137,8 +80,16 @@ MainApplication::vsConsoleDebug()
 #endif
 }
 
-void
-MainApplication::fileDebug(QFile* debugFile)
+static QString
+getDebugFilePath()
+{
+    QDir logPath(QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation));
+    logPath.cdUp();
+    return QString(logPath.absolutePath() + "/jami/jami.log");
+}
+
+static void
+fileDebug(QFile* debugFile)
 {
     QObject::connect(&LRCInstance::behaviorController(),
                      &lrc::api::BehaviorController::debugMessageReceived,
@@ -151,41 +102,44 @@ MainApplication::fileDebug(QFile* debugFile)
                      });
 }
 
+MainApplication::MainApplication(int& argc, char** argv)
+    : QApplication(argc, argv)
+    , engine_(new QQmlApplicationEngine())
+{
+    QObject::connect(this, &QApplication::aboutToQuit, [this] { cleanup(); });
+}
+
 void
-MainApplication::exitApp()
+MainApplication::init()
 {
-    GlobalSystemTray::instance().hide();
-#ifdef Q_OS_WIN
-    FreeConsole();
+#ifdef Q_OS_LINUX
+    if (!getenv("QT_QPA_PLATFORMTHEME"))
+        setenv("QT_QPA_PLATFORMTHEME", "gtk3", true);
 #endif
-}
 
-char**
-MainApplication::parseInputArgument(int& argc, char* argv[], char* argToParse)
-{
-    /*
-     * Forcefully append argToParse.
-     */
-    int oldArgc = argc;
-    argc = argc + 1 + 1;
-    char** newArgv = new char*[argc];
-    for (int i = 0; i < oldArgc; i++) {
-        newArgv[i] = argv[i];
+    for (auto string : QCoreApplication::arguments()) {
+        if (string == "-d" || string == "--debug") {
+            consoleDebug();
+        }
     }
-    newArgv[oldArgc] = argToParse;
-    newArgv[oldArgc + 1] = nullptr;
-    return newArgv;
-}
 
-QString
-MainApplication::getDebugFilePath()
-{
-    QDir logPath(QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation));
-    /*
-     * Since logPath will be .../Ring, we use cdUp to remove it.
-     */
-    logPath.cdUp();
-    return QString(logPath.absolutePath() + "/jami/jami.log");
+    Utils::removeOldVersions();
+    loadTranslations();
+    setApplicationFont();
+
+#if defined _MSC_VER && !COMPILE_ONLY
+    gnutls_global_init();
+#endif
+
+    GlobalInstances::setPixmapManipulator(std::make_unique<PixbufManipulator>());
+    initLrc();
+
+    bool startMinimized {false};
+    parseArguments(startMinimized);
+
+    initSettings();
+    initSystray();
+    initQmlEngine();
 }
 
 void
@@ -244,7 +198,7 @@ MainApplication::initLrc()
                 this->processEvents();
             }
         },
-        [this, &isMigrating] {
+        [&isMigrating] {
             while (!isMigrating) {
                 std::this_thread::sleep_for(std::chrono::milliseconds(10));
             }
@@ -255,9 +209,8 @@ MainApplication::initLrc()
 }
 
 void
-MainApplication::processInputArgument(bool& startMinimized)
+MainApplication::parseArguments(bool& startMinimized)
 {
-    debugFile_ = std::make_unique<QFile>(getDebugFilePath());
     QString uri = "";
 
     for (auto string : QCoreApplication::arguments()) {
@@ -267,6 +220,8 @@ MainApplication::processInputArgument(bool& startMinimized)
             if (string == "-m" || string == "--minimized") {
                 startMinimized = true;
             }
+#ifdef Q_OS_WINDOWS
+            debugFile_.reset(new QFile(getDebugFilePath()));
             auto dbgFile = string == "-f" || string == "--file";
             auto dbgConsole = string == "-c" || string == "--vsconsole";
             if (dbgFile || dbgConsole) {
@@ -275,12 +230,11 @@ MainApplication::processInputArgument(bool& startMinimized)
                     debugFile_->close();
                     fileDebug(debugFile_.get());
                 }
-#ifdef _MSC_VER
                 if (dbgConsole) {
                     vsConsoleDebug();
                 }
-#endif
             }
+#endif
         }
     }
 }
@@ -295,171 +249,27 @@ MainApplication::setApplicationFont()
 }
 
 void
-MainApplication::qmlInitialization()
+MainApplication::initQmlEngine()
 {
-    /*
-     * Register accountListModel type.
-     */
-    QML_REGISTERTYPE(AccountListModel, 1, 0);
-    QML_REGISTERTYPE(DeviceItemListModel, 1, 0);
-    QML_REGISTERTYPE(PluginItemListModel, 1, 0);
-    QML_REGISTERTYPE(MediaHandlerItemListModel, 1, 0);
-    QML_REGISTERTYPE(PreferenceItemListModel, 1, 0);
-    QML_REGISTERTYPE(BannedListModel, 1, 0);
-    QML_REGISTERTYPE(VideoCodecListModel, 1, 0);
-    QML_REGISTERTYPE(AudioCodecListModel, 1, 0);
-    QML_REGISTERTYPE(AccountsToMigrateListModel, 1, 0);
-    QML_REGISTERTYPE(AudioInputDeviceModel, 1, 0);
-    QML_REGISTERTYPE(AudioOutputDeviceModel, 1, 0);
-    QML_REGISTERTYPE(AudioManagerListModel, 1, 0);
-    QML_REGISTERTYPE(VideoInputDeviceModel, 1, 0);
-    QML_REGISTERTYPE(VideoFormatResolutionModel, 1, 0);
-    QML_REGISTERTYPE(VideoFormatFpsModel, 1, 0);
-    QML_REGISTERTYPE(PluginListPreferenceModel, 1, 0);
-    QML_REGISTERTYPE(MediaHandlerListPreferenceModel, 1, 0);
-    /*
-     * Register QQuickItem type.
-     */
-    QML_REGISTERTYPE(PreviewRenderer, 1, 0);
-    QML_REGISTERTYPE(VideoCallPreviewRenderer, 1, 0);
-    QML_REGISTERTYPE(DistantRenderer, 1, 0);
-    QML_REGISTERTYPE(PhotoboothPreviewRender, 1, 0)
+    registerTypes();
 
-    /*
-     * Adapter - qmlRegisterSingletonType.
-     * Note: in future, if lrc is fully compatible with qml (C++ struct
-     *       is readable in qml), the adapters can be optimized away.
-     */
-    QML_REGISTERSINGLETONTYPE_URL(QStringLiteral("qrc:/src/constant/JamiTheme.qml"),
-                                  JamiTheme,
-                                  1,
-                                  0);
-    QML_REGISTERSINGLETONTYPE(CallAdapter, 1, 0);
-
-    QML_REGISTERSINGLETONTYPE(MessagesAdapter, 1, 0);
-    QML_REGISTERSINGLETONTYPE(ConversationsAdapter, 1, 0);
-    QML_REGISTERSINGLETONTYPE(AvAdapter, 1, 0);
-    QML_REGISTERSINGLETONTYPE(ContactAdapter, 1, 0);
-    QML_REGISTERSINGLETONTYPE(MediaHandlerAdapter, 1, 0);
-    QML_REGISTERSINGLETONTYPE(ClientWrapper, 1, 0);
-
-    // QML_REGISTERSINGLETONTYPE_WITH_INSTANCE(AccountAdapter, 1, 0);
-    // QML_REGISTERSINGLETONTYPE_WITH_INSTANCE(UtilsAdapter, 1, 0);
-    QML_REGISTERUNCREATABLE(AccountAdapter, 1, 0);
-    QML_REGISTERUNCREATABLE(UtilsAdapter, 1, 0);
-    QML_REGISTERUNCREATABLE(SettingsAdaptor, 1, 0);
-    QML_REGISTERUNCREATABLE(NameDirectory, 1, 0);
-    QML_REGISTERUNCREATABLE(LRCInstance, 1, 0);
-
-    /*
-     * Lrc models - qmlRegisterUncreatableType & Q_DECLARE_METATYPE.
-     * This to make lrc models recognizable in qml.
-     */
-    QML_REGISTERUNCREATABLE_IN_NAMESPACE(NewAccountModel, lrc::api, 1, 0);
-    QML_REGISTERUNCREATABLE_IN_NAMESPACE(BehaviorController, lrc::api, 1, 0);
-    QML_REGISTERUNCREATABLE_IN_NAMESPACE(DataTransferModel, lrc::api, 1, 0);
-    QML_REGISTERUNCREATABLE_IN_NAMESPACE(AVModel, lrc::api, 1, 0);
-    QML_REGISTERUNCREATABLE_IN_NAMESPACE(ContactModel, lrc::api, 1, 0);
-    QML_REGISTERUNCREATABLE_IN_NAMESPACE(ConversationModel, lrc::api, 1, 0);
-    QML_REGISTERUNCREATABLE_IN_NAMESPACE(NewCallModel, lrc::api, 1, 0);
-    QML_REGISTERUNCREATABLE_IN_NAMESPACE(PluginModel, lrc::api, 1, 0);
-    QML_REGISTERUNCREATABLE_IN_NAMESPACE(NewDeviceModel, lrc::api, 1, 0);
-    QML_REGISTERUNCREATABLE_IN_NAMESPACE(NewCodecModel, lrc::api, 1, 0);
-    QML_REGISTERUNCREATABLE_IN_NAMESPACE(PeerDiscoveryModel, lrc::api, 1, 0);
-
-    /*
-     * Client models - qmlRegisterUncreatableType & Q_DECLARE_METATYPE.
-     * This to make client models recognizable in qml.
-     */
-    QML_REGISTERUNCREATABLE(RenderManager, 1, 0);
-
-    /*
-     * Namespaces - qmlRegisterUncreatableMetaObject.
-     */
-    QML_REGISTERNAMESPACE(lrc::api::staticMetaObject, "Lrc", 1, 0);
-    QML_REGISTERNAMESPACE(lrc::api::account::staticMetaObject, "Account", 1, 0);
-    QML_REGISTERNAMESPACE(lrc::api::call::staticMetaObject, "Call", 1, 0);
-    QML_REGISTERNAMESPACE(lrc::api::datatransfer::staticMetaObject, "Datatransfer", 1, 0);
-    QML_REGISTERNAMESPACE(lrc::api::interaction::staticMetaObject, "Interaction", 1, 0);
-    QML_REGISTERNAMESPACE(lrc::api::video::staticMetaObject, "Video", 1, 0);
-    QML_REGISTERNAMESPACE(lrc::api::profile::staticMetaObject, "Profile", 1, 0);
-
-    /*
-     * Add image provider.
-     */
     engine_->addImageProvider(QLatin1String("qrImage"), new QrImageProvider());
     engine_->addImageProvider(QLatin1String("tintedPixmap"), new TintedButtonImageProvider());
 
     engine_->load(QUrl(QStringLiteral("qrc:/src/MainApplicationWindow.qml")));
 }
 
-MainApplication::~MainApplication() {}
-
-bool
-MainApplication::applicationSetup()
+void
+MainApplication::initSettings()
 {
-#ifdef Q_OS_LINUX
-    if (!getenv("QT_QPA_PLATFORMTHEME"))
-        setenv("QT_QPA_PLATFORMTHEME", "gtk3", true);
-#endif
+    AppSettingsManager::instance().initValues();
+    auto downloadPath = AppSettingsManager::instance().getValue(Settings::Key::DownloadPath);
+    LRCInstance::dataTransferModel().downloadDirectory = downloadPath.toString() + "/";
+}
 
-    /*
-     * Start debug console.
-     */
-    for (auto string : QCoreApplication::arguments()) {
-        if (string == "-d" || string == "--debug") {
-            consoleDebug();
-        }
-    }
-
-    /*
-     * Remove old version files.
-     */
-    Utils::removeOldVersions();
-
-    /*
-     * Load translations.
-     */
-    loadTranslations();
-
-    /*
-     * Set font.
-     */
-    setApplicationFont();
-
-#if defined _MSC_VER && !COMPILE_ONLY
-    gnutls_global_init();
-#endif
-
-    /*
-     * Init pixmap manipulator.
-     */
-    GlobalInstances::setPixmapManipulator(std::make_unique<PixbufManipulator>());
-
-    /*
-     * Init lrc and its possible migration ui.
-     */
-    initLrc();
-
-    /*
-     * Process input argument.
-     */
-    bool startMinimized {false};
-    processInputArgument(startMinimized);
-
-    /*
-     * Create jami.net settings in Registry if it is not presented.
-     */
-    QSettings settings("jami.net", "Jami");
-
-    /*
-     * Initialize qml components.
-     */
-    qmlInitialization();
-
-    /*
-     * Systray menu.
-     */
+void
+MainApplication::initSystray()
+{
     GlobalSystemTray& sysIcon = GlobalSystemTray::instance();
     sysIcon.setIcon(QIcon(":images/jami.png"));
 
@@ -467,18 +277,27 @@ MainApplication::applicationSetup()
 
     QAction* exitAction = new QAction(tr("Exit"), this);
     connect(exitAction, &QAction::triggered,
-            [this] {
-                QCoreApplication::exit();
+            [this]{
+                engine_->quit();
+                cleanup();
             });
-
-     connect(&sysIcon, &QSystemTrayIcon::activated,
-             [this](QSystemTrayIcon::ActivationReason reason) {
-                 emit LRCInstance::instance().restoreAppRequested();
-             });
+    connect(&sysIcon, &QSystemTrayIcon::activated,
+            [](QSystemTrayIcon::ActivationReason reason) {
+                if (reason != QSystemTrayIcon::ActivationReason::Context)
+                    emit LRCInstance::instance().restoreAppRequested();
+            });
 
     systrayMenu->addAction(exitAction);
     sysIcon.setContextMenu(systrayMenu);
     sysIcon.show();
+}
 
-    return true;
+void
+MainApplication::cleanup()
+{
+    GlobalSystemTray::instance().hide();
+#ifdef Q_OS_WIN
+    FreeConsole();
+#endif
+    QApplication::exit(0);
 }

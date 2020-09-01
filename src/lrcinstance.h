@@ -26,7 +26,7 @@
 
 #include "accountlistmodel.h"
 #include "rendermanager.h"
-#include "settingskey.h"
+#include "appsettingsmanager.h"
 #include "utils.h"
 
 #include "api/account.h"
@@ -271,8 +271,6 @@ public:
     setSelectedAccountId(const QString &accountId = {})
     {
         instance().selectedAccountId_ = accountId;
-        QSettings settings("jami.net", "Jami");
-        settings.setValue(SettingsKey::selectedAccount, accountId);
 
         // Last selected account should be set as preferred.
         accountModel().setTopAccount(accountId);
@@ -304,7 +302,7 @@ public:
         }
     };
 
-    static const int
+    static int
     getCurrentAccountIndex()
     {
         for (int i = 0; i < accountModel().getAccountList().size(); i++) {

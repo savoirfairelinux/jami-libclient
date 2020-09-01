@@ -35,13 +35,13 @@ Rectangle {
     property int preferredColumnWidth : sipAccountViewRect.width / 2 - 50
 
     function updateAccountInfoDisplayed() {
-        displaySIPNameLineEdit.text = ClientWrapper.settingsAdaptor.getCurrentAccount_Profile_Info_Alias()
-        usernameSIP.text = ClientWrapper.settingsAdaptor.getAccountConfig_Username()
-        hostnameSIP.text = ClientWrapper.settingsAdaptor.getAccountConfig_Hostname()
-        passSIPlineEdit.text = ClientWrapper.settingsAdaptor.getAccountConfig_Password()
-        proxySIP.text = ClientWrapper.settingsAdaptor.getAccountConfig_ProxyServer()
+        displaySIPNameLineEdit.text = SettingsAdapter.getCurrentAccount_Profile_Info_Alias()
+        usernameSIP.text = SettingsAdapter.getAccountConfig_Username()
+        hostnameSIP.text = SettingsAdapter.getAccountConfig_Hostname()
+        passSIPlineEdit.text = SettingsAdapter.getAccountConfig_Password()
+        proxySIP.text = SettingsAdapter.getAccountConfig_ProxyServer()
 
-        accountSIPEnableCheckBox.checked = ClientWrapper.settingsAdaptor.get_CurrentAccountInfo_Enabled()
+        accountSIPEnableCheckBox.checked = SettingsAdapter.get_CurrentAccountInfo_Enabled()
 
         setAvatar()
 
@@ -56,9 +56,9 @@ Rectangle {
 
     function setAvatar() {
         currentSIPAccountAvatar.setAvatarPixmap(
-                    ClientWrapper.settingsAdaptor.getAvatarImage_Base64(
+                   SettingsAdapter.getAvatarImage_Base64(
                         currentSIPAccountAvatar.boothWidth),
-                    ClientWrapper.settingsAdaptor.getIsDefaultAvatar())
+                   SettingsAdapter.getIsDefaultAvatar())
     }
 
     function stopBooth() {
@@ -220,11 +220,11 @@ Rectangle {
                         Layout.minimumHeight: boothWidth+50
 
                         onImageAcquired: {
-                            ClientWrapper.settingsAdaptor.setCurrAccAvatar(imgBase64)
+                           SettingsAdapter.setCurrAccAvatar(imgBase64)
                         }
 
                         onImageCleared: {
-                            ClientWrapper.settingsAdaptor.clearCurrentAvatar()
+                           SettingsAdapter.clearCurrentAvatar()
                             setAvatar()
                         }
                     }
@@ -313,7 +313,7 @@ Rectangle {
                             padding: 8
 
                             onEditingFinished: {
-                                ClientWrapper.settingsAdaptor.setAccountConfig_Username(
+                               SettingsAdapter.setAccountConfig_Username(
                                             usernameSIP.text)
                             }
                         }
@@ -348,7 +348,7 @@ Rectangle {
                             padding: 8
 
                             onEditingFinished: {
-                                ClientWrapper.settingsAdaptor.setAccountConfig_Hostname(
+                               SettingsAdapter.setAccountConfig_Hostname(
                                             hostnameSIP.text)
                             }
                         }
@@ -383,7 +383,7 @@ Rectangle {
                             padding: 8
 
                             onEditingFinished: {
-                                ClientWrapper.settingsAdaptor.setAccountConfig_ProxyServer(
+                               SettingsAdapter.setAccountConfig_ProxyServer(
                                             proxySIP.text)
                             }
                         }
@@ -419,7 +419,7 @@ Rectangle {
                             padding: 8
 
                             onEditingFinished: {
-                                ClientWrapper.settingsAdaptor.setAccountConfig_Password(
+                               SettingsAdapter.setAccountConfig_Password(
                                             passSIPlineEdit.text)
                             }
                         }

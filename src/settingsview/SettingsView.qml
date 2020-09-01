@@ -23,6 +23,7 @@ import QtQuick.Controls.Universal 2.12
 import QtQuick.Layouts 1.3
 import QtGraphicalEffects 1.14
 import net.jami.Models 1.0
+import net.jami.Adapters 1.0
 
 import "components"
 
@@ -44,7 +45,7 @@ Rectangle {
     }
 
     function setSelected(sel, recovery = false){
-        profileType = ClientWrapper.settingsAdaptor.getCurrentAccount_Profile_Info_Type()
+        profileType = SettingsAdapter.getCurrentAccount_Profile_Info_Type()
 
         if(selectedMenu === sel && (!recovery)){return}
         switch(sel){
@@ -135,7 +136,7 @@ Rectangle {
             ClientWrapper.avmodel.setCurrentVideoCaptureDevice(device)
         }
     }
-    property int profileType: ClientWrapper.settingsAdaptor.getCurrentAccount_Profile_Info_Type()
+    property int profileType: SettingsAdapter.getCurrentAccount_Profile_Info_Type()
 
 
     property int selectedMenu: SettingsView.Account

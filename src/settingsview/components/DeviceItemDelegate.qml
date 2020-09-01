@@ -57,7 +57,7 @@ ItemDelegate {
     function toggleEditable() {
         editable = !editable
         if (editable) {
-            ClientWrapper.settingsAdaptor.setDeviceName(elidedTextDeviceName.text)
+           SettingsAdapter.setDeviceName(elidedTextDeviceName.text)
         }
     }
 

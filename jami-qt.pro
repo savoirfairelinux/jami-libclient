@@ -6,7 +6,7 @@ win32-msvc {
 
     CONFIG += suppress_vcproj_warnings c++17 qtquickcompiler
 
-    QTQUICK_COMPILER_SKIPPED_RESOURCES += ./ressources.qrc
+    QTQUICK_COMPILER_SKIPPED_RESOURCES += ./resources.qrc
 
     # compiler options
     QMAKE_CXXFLAGS += /wd"4068" /wd"4099" /wd"4189" /wd"4267" /wd"4577" /wd"4467" /wd"4715" /wd"4828"
@@ -118,7 +118,7 @@ HEADERS += ./src/smartlistmodel.h \
         ./src/runguard.h \
         ./src/lrcinstance.h \
         ./src/globalsystemtray.h \
-        ./src/settingskey.h \
+        ./src/appsettingsmanager.h \
         ./src/webchathelpers.h \
         ./src/pixbufmanipulator.h \
         ./src/rendermanager.h \
@@ -137,7 +137,7 @@ HEADERS += ./src/smartlistmodel.h \
         ./src/avadapter.h \
         ./src/contactadapter.h \
         ./src/mediahandleradapter.h \
-        ./src/settingsadaptor.h \
+        ./src/settingsadapter.h \
         ./src/deviceitemlistmodel.h \
         ./src/pluginitemlistmodel.h \
         ./src/mediahandleritemlistmodel.h \
@@ -153,7 +153,8 @@ HEADERS += ./src/smartlistmodel.h \
         ./src/mediahandlerlistpreferencemodel.h \
         ./src/videoformatfpsmodel.h \
         ./src/videoformatresolutionmodel.h \
-        ./src/audiomanagerlistmodel.h
+        ./src/audiomanagerlistmodel.h \
+        src/qmlregister.h
 
 SOURCES += ./src/bannedlistmodel.cpp \
         ./src/accountlistmodel.cpp \
@@ -177,7 +178,7 @@ SOURCES += ./src/bannedlistmodel.cpp \
         ./src/avadapter.cpp \
         ./src/contactadapter.cpp \
         ./src/mediahandleradapter.cpp \
-        ./src/settingsadaptor.cpp \
+        ./src/settingsadapter.cpp \
         ./src/deviceitemlistmodel.cpp \
         ./src/pluginitemlistmodel.cpp \
         ./src/mediahandleritemlistmodel.cpp \
@@ -193,7 +194,8 @@ SOURCES += ./src/bannedlistmodel.cpp \
         ./src/mediahandlerlistpreferencemodel.cpp \
         ./src/videoformatfpsmodel.cpp \
         ./src/videoformatresolutionmodel.cpp \
-        ./src/audiomanagerlistmodel.cpp
+        ./src/audiomanagerlistmodel.cpp \
+        src/qmlregister.cpp
 
-RESOURCES += ./ressources.qrc \
+RESOURCES += ./resources.qrc \
              ./qml.qrc

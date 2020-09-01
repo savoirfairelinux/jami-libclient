@@ -92,7 +92,7 @@ Rectangle {
 
     function setFormatListForCurrentDevice(){
         var device = ClientWrapper.avmodel.getCurrentVideoCaptureDevice()
-        if(ClientWrapper.settingsAdaptor.get_DeviceCapabilitiesSize(device) === 0){
+        if(ClientWrapper.SettingsAdapter.get_DeviceCapabilitiesSize(device) === 0){
             return
         }
 
@@ -208,7 +208,7 @@ Rectangle {
         }
 
         try{
-            ClientWrapper.settingsAdaptor.set_Video_Settings_Rate_And_Resolution(ClientWrapper.avmodel.getCurrentVideoCaptureDevice(),rate,resolution)
+           SettingsAdapter.set_Video_Settings_Rate_And_Resolution(ClientWrapper.avmodel.getCurrentVideoCaptureDevice(),rate,resolution)
             updatePreviewRatio(resolution)
         } catch(error){console.warn(error.message)}
     }

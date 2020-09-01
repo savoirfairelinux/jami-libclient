@@ -24,6 +24,8 @@ import QtQuick.Layouts 1.3
 import Qt.labs.platform 1.1
 import QtGraphicalEffects 1.14
 import net.jami.Models 1.0
+import net.jami.Adapters 1.0
+import net.jami.Enums 1.0
 import "../../commoncomponents"
 
 Rectangle {
@@ -31,34 +33,34 @@ Rectangle {
 
     function populateGeneralSettings(){
         // settings
-        closeOrMinCheckBox.checked = ClientWrapper.settingsAdaptor.getSettingsValue_CloseOrMinimized()
+        closeOrMinCheckBox.checked = SettingsAdapter.getAppValue(Settings.MinimizeOnClose)
         applicationOnStartUpCheckBox.checked = ClientWrapper.utilsAdaptor.checkStartupLink()
-        notificationCheckBox.checked = ClientWrapper.settingsAdaptor.getSettingsValue_EnableNotifications()
+        notificationCheckBox.checked = SettingsAdapter.getAppValue(Settings.EnableNotifications)
 
         alwaysRecordingCheckBox.checked = ClientWrapper.avmodel.getAlwaysRecord()
         recordPreviewCheckBox.checked = ClientWrapper.avmodel.getRecordPreview()
         recordQualityValueLabel.text = ClientWrapper.utilsAdaptor.getRecordQualityString(ClientWrapper.avmodel.getRecordQuality() / 100)
         recordQualitySlider.value = ClientWrapper.avmodel.getRecordQuality() / 100
 
-        ClientWrapper.avmodel.setRecordPath(ClientWrapper.settingsAdaptor.getDir_Document())
+        ClientWrapper.avmodel.setRecordPath(ClientWrapper.SettingsAdapter.getDir_Document())
 
-        autoUpdateCheckBox.checked = ClientWrapper.settingsAdaptor.getSettingsValue_AutoUpdate()
+        autoUpdateCheckBox.checked = SettingsAdapter.getAppValue(Settings.Key.AutoUpdate)
     }
 
-    function slotSetNotifications(state){
-        ClientWrapper.settingsAdaptor.setNotifications(state)
+    function setEnableNotifications(state) {
+        SettingsAdapter.setAppValue(Settings.Key.EnableNotifications, state)
     }
 
-    function slotSetClosedOrMin(state){
-        ClientWrapper.settingsAdaptor.setClosedOrMin(state)
+    function setMinimizeOnClose(state) {
+        SettingsAdapter.setAppValue(Settings.Key.MinimizeOnClose, state)
     }
 
     function slotSetRunOnStartUp(state){
-        ClientWrapper.settingsAdaptor.setRunOnStartUp(state)
+        SettingsAdapter.setRunOnStartUp(state)
     }
 
-    function slotSetUpdateAutomatic(state){
-        ClientWrapper.settingsAdaptor.setUpdateAutomatic(state)
+    function setAutoUpdate(state) {
+        SettingsAdapter.setAppValue(Settings.Key.AutoUpdate, state)
     }
 
     function slotAlwaysRecordingClicked(state){
@@ -142,10 +144,10 @@ Rectangle {
     function installBetaSlot(){}
 
     // settings
-    property string downloadPath: ClientWrapper.settingsAdaptor.getDir_Download()
+    property string downloadPath: SettingsAdapter.getDir_Download()
 
     // recording
-    property string recordPath: ClientWrapper.settingsAdaptor.getDir_Document()
+    property string recordPath: SettingsAdapter.getDir_Document()
 
     property int preferredColumnWidth : generalSettingsScrollView.width / 2 - 50
     property int preferredSettingsWidth : generalSettingsScrollView.width - 100
@@ -154,7 +156,7 @@ Rectangle {
 
     onDownloadPathChanged: {
         if(downloadPath === "") return
-        ClientWrapper.settingsAdaptor.setDownloadPath(downloadPath)
+       SettingsAdapter.setDownloadPath(downloadPath)
     }
 
     onRecordPathChanged: {
@@ -276,7 +278,7 @@ Rectangle {
                             tooltipText: qsTr("toggle enable notifications")
 
                             onSwitchToggled: {
-                                slotSetNotifications(checked)
+                                setEnableNotifications(checked)
                             }
                         }
 
@@ -297,7 +299,7 @@ Rectangle {
                             tooltipText: qsTr("toggle keep minimized on close")
 
                             onSwitchToggled: {
-                                slotSetClosedOrMin(checked)
+                                setMinimizeOnClose(checked)
                             }
                         }
 
@@ -575,7 +577,7 @@ Rectangle {
                             tooltipText: qsTr("toggle automatic updates")
 
                             onSwitchToggled: {
-                                slotSetUpdateAutomatic(checked)
+                                setAutoUpdate(checked)
                             }
                         }
 

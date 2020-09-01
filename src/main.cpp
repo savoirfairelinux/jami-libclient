@@ -1,4 +1,4 @@
-/*
+/*!
  * Copyright (C) 2015-2020 by Savoir-faire Linux
  * Author: Edric Ladent Milaret <edric.ladent-milaret@savoirfairelinux.com>
  * Author: Andreas Traczyk <andreas.traczyk@savoirfairelinux.com>
@@ -21,10 +21,27 @@
 #include "mainapplication.h"
 #include "runguard.h"
 
-#include <clocale>
 #include <QCryptographicHash>
+#include <QtWebEngine>
 
 #include <clocale>
+
+static char**
+parseInputArgument(int& argc, char* argv[], char* argToParse)
+{
+    /*
+     * Forcefully append argToParse.
+     */
+    int oldArgc = argc;
+    argc = argc + 1 + 1;
+    char** newArgv = new char*[argc];
+    for (int i = 0; i < oldArgc; i++) {
+        newArgv[i] = argv[i];
+    }
+    newArgv[oldArgc] = argToParse;
+    newArgv[oldArgc + 1] = nullptr;
+    return newArgv;
+}
 
 int
 main(int argc, char *argv[])
@@ -33,13 +50,24 @@ main(int argc, char *argv[])
 #ifdef Q_OS_LINUX
     setenv("QT_QPA_PLATFORMTHEME", "gtk3", true);
 #endif
+#ifdef Q_OS_WIN
+    QApplication::setApplicationName("Ring");
+#else
+    QApplication::setApplicationName("Jami");
+#endif
+    QApplication::setOrganizationDomain("jami.net");
+    QApplication::setAttribute(Qt::AA_EnableHighDpiScaling, true);
+    QApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
+    QApplication::setQuitOnLastWindowClosed(false);
+    QCoreApplication::setAttribute(Qt::AA_UseOpenGLES);
+    QApplication::setHighDpiScaleFactorRoundingPolicy(
+        Qt::HighDpiScaleFactorRoundingPolicy::RoundPreferFloor);
+    QtWebEngine::initialize();
 
-    MainApplication::applicationInitialization();
-
+    // Allow QtWebEngine to load local resources.
     char ARG_DISABLE_WEB_SECURITY[] = "--disable-web-security";
-    auto newArgv = MainApplication::parseInputArgument(argc, argv, ARG_DISABLE_WEB_SECURITY);
-
-    MainApplication a(argc, newArgv);
+    auto newArgv = parseInputArgument(argc, argv, ARG_DISABLE_WEB_SECURITY);
+    MainApplication app(argc, newArgv);
 
     /*
      * Runguard to make sure that only one instance runs at a time.
@@ -50,22 +78,15 @@ main(int argc, char *argv[])
     appData.addData(QApplication::organizationDomain().toUtf8());
     RunGuard guard(appData.result());
     if (!guard.tryToRun()) {
-        /*
-         * No need to exitApp since app is not set up.
-         */
         return 0;
     }
 
-    if (!a.applicationSetup()) {
-        guard.release();
-        a.exitApp();
-        return 0;
-    }
+    app.init();
 
     /*
      * Exec the application.
      */
-    auto ret = a.exec();
+    auto ret = app.exec();
 
     guard.release();
     return ret;

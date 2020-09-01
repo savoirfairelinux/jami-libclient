@@ -31,7 +31,6 @@ public:
     instance()
     {
         static GlobalSystemTray *instance_ = new GlobalSystemTray();
-
         return *instance_;
     }
 

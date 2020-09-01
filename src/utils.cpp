@@ -176,14 +176,19 @@ Utils::removeOldVersions()
      */
     QSettings(hkcuSoftwareKey + "jami.net\\Ring", QSettings::NativeFormat).remove("");
     QSettings(hkcuSoftwareKey + "ring.cx", QSettings::NativeFormat).remove("");
+
     /*
      * 2. Unset Ring as a startup application.
      */
     if (Utils::CheckStartupLink(TEXT("Ring"))) {
         qDebug() << "Found startup link for Ring. Removing it and killing Ring.exe.";
         Utils::DeleteStartupLink(TEXT("Ring"));
-        QProcess::execute("taskkill /im Ring.exe /f");
+        QProcess process;
+        process.start("taskkill", QStringList()
+                      << "/im" << "Ring.exe" << "/f");
+        process.waitForFinished();
     }
+
     /*
      * 3. Remove registry entries for winsparkle(both Jami-x64 and Ring-x64).
      */
@@ -306,12 +311,13 @@ Utils::showSystemNotification(QWidget *widget,
                               long delay,
                               const QString &triggeredAccountId)
 {
-    QSettings settings("jami.net", "Jami");
-    if (settings.value(SettingsKey::enableNotifications).toBool()) {
-        GlobalSystemTray::instance().setTriggeredAccountId(triggeredAccountId);
-        GlobalSystemTray::instance().showMessage(message, "", QIcon(":images/jami.png"));
-        QApplication::alert(widget, delay);
+    if (!AppSettingsManager::getValue(Settings::Key::EnableNotifications).toBool()) {
+        qWarning() << "Notifications are disabled";
+        return;
     }
+    GlobalSystemTray::instance().setTriggeredAccountId(triggeredAccountId);
+    GlobalSystemTray::instance().showMessage(message, "", QIcon(":images/jami.png"));
+    QApplication::alert(widget, delay);
 }
 
 void
@@ -321,12 +327,13 @@ Utils::showSystemNotification(QWidget *widget,
                               long delay,
                               const QString &triggeredAccountId)
 {
-    QSettings settings("jami.net", "Jami");
-    if (settings.value(SettingsKey::enableNotifications).toBool()) {
-        GlobalSystemTray::instance().setTriggeredAccountId(triggeredAccountId);
-        GlobalSystemTray::instance().showMessage(sender, message, QIcon(":images/jami.png"));
-        QApplication::alert(widget, delay);
+    if (!AppSettingsManager::getValue(Settings::Key::EnableNotifications).toBool()) {
+        qWarning() << "Notifications are disabled";
+        return;
     }
+    GlobalSystemTray::instance().setTriggeredAccountId(triggeredAccountId);
+    GlobalSystemTray::instance().showMessage(sender, message, QIcon(":images/jami.png"));
+    QApplication::alert(widget, delay);
 }
 
 QSize

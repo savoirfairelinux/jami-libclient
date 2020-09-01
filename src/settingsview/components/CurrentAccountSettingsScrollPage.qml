@@ -26,6 +26,7 @@ import QtQuick.Controls.Styles 1.4
 import QtQuick.Dialogs 1.3
 import Qt.labs.platform 1.1
 import net.jami.Models 1.0
+import net.jami.Adapters 1.0
 
 import "../../commoncomponents"
 
@@ -59,23 +60,23 @@ Rectangle {
     function updateAccountInfoDisplayed() {
         setAvatar()
 
-        accountEnableCheckBox.checked = ClientWrapper.settingsAdaptor.get_CurrentAccountInfo_Enabled()
-        displayNameLineEdit.text = ClientWrapper.settingsAdaptor.getCurrentAccount_Profile_Info_Alias()
+        accountEnableCheckBox.checked = SettingsAdapter.get_CurrentAccountInfo_Enabled()
+        displayNameLineEdit.text = SettingsAdapter.getCurrentAccount_Profile_Info_Alias()
 
-        var showLocalAccountConfig = (ClientWrapper.settingsAdaptor.getAccountConfig_Manageruri() === "")
+        var showLocalAccountConfig = (ClientWrapper.SettingsAdapter.getAccountConfig_Manageruri() === "")
         passwdPushButton.visible = showLocalAccountConfig
         btnExportAccount.visible = showLocalAccountConfig
         linkDevPushButton.visible = showLocalAccountConfig
 
-        registeredIdNeedsSet = (ClientWrapper.settingsAdaptor.get_CurrentAccountInfo_RegisteredName() === "")
+        registeredIdNeedsSet = (ClientWrapper.SettingsAdapter.get_CurrentAccountInfo_RegisteredName() === "")
 
         if(!registeredIdNeedsSet){
-            currentRegisteredID.text = ClientWrapper.settingsAdaptor.get_CurrentAccountInfo_RegisteredName()
+            currentRegisteredID.text = SettingsAdapter.get_CurrentAccountInfo_RegisteredName()
         } else {
             currentRegisteredID.text = ""
         }
 
-        currentRingIDText.text = ClientWrapper.settingsAdaptor.getCurrentAccount_Profile_Info_Uri()
+        currentRingIDText.text = SettingsAdapter.getCurrentAccount_Profile_Info_Uri()
 
         // update device list view
         updateAndShowDevicesSlot()
@@ -104,9 +105,9 @@ Rectangle {
 
     function setAvatar() {
         currentAccountAvatar.setAvatarPixmap(
-                    ClientWrapper.settingsAdaptor.getAvatarImage_Base64(
+                   SettingsAdapter.getAvatarImage_Base64(
                         currentAccountAvatar.boothWidth),
-                    ClientWrapper.settingsAdaptor.getIsDefaultAvatar())
+                   SettingsAdapter.getIsDefaultAvatar())
     }
 
     function stopBooth() {
@@ -120,7 +121,7 @@ Rectangle {
     }
 
     function unban(index) {
-        ClientWrapper.settingsAdaptor.unbanContact(index)
+       SettingsAdapter.unbanContact(index)
         updateAndShowBannedContactsSlot()
     }
 
@@ -160,7 +161,7 @@ Rectangle {
 
     // slots
     function verifyRegisteredNameSlot() {
-        if (ClientWrapper.settingsAdaptor.get_CurrentAccountInfo_RegisteredName() !== "") {
+        if (ClientWrapper.SettingsAdapter.get_CurrentAccountInfo_RegisteredName() !== "") {
             regNameUi = CurrentAccountSettingsScrollPage.BLANK
         } else {
             registeredName = ClientWrapper.utilsAdaptor.stringSimplifier(
@@ -410,7 +411,7 @@ Rectangle {
     }
 
     function updateAndShowDevicesSlot() {
-        if(ClientWrapper.settingsAdaptor.getAccountConfig_Manageruri() === ""){
+        if(ClientWrapper.SettingsAdapter.getAccountConfig_Manageruri() === ""){
             linkDevPushButton.visible = true
         }
 
@@ -560,11 +561,11 @@ Rectangle {
                         Layout.minimumHeight: boothWidth+50
 
                         onImageAcquired: {
-                            ClientWrapper.settingsAdaptor.setCurrAccAvatar(imgBase64)
+                           SettingsAdapter.setCurrAccAvatar(imgBase64)
                         }
 
                         onImageCleared: {
-                            ClientWrapper.settingsAdaptor.clearCurrentAvatar()
+                           SettingsAdapter.clearCurrentAvatar()
                             setAvatar()
                         }
                     }
@@ -673,7 +674,7 @@ Rectangle {
                                 elideWidth: accountViewRect.width - idLabel.width -JamiTheme.preferredMarginSize*4
 
                                 text: { refreshVariable
-                                    return ClientWrapper.settingsAdaptor.getCurrentAccount_Profile_Info_Uri()
+                                    return ClientWrapper.SettingsAdapter.getCurrentAccount_Profile_Info_Uri()
                                 }
                             }
                         }
@@ -716,7 +717,7 @@ Rectangle {
                             text: {
                                 refreshVariable
                                 if (!registeredIdNeedsSet){
-                                    return ClientWrapper.settingsAdaptor.get_CurrentAccountInfo_RegisteredName()
+                                    return ClientWrapper.SettingsAdapter.get_CurrentAccountInfo_RegisteredName()
                                 } else {
                                     return ""
                                 }
@@ -775,7 +776,8 @@ Rectangle {
 
                     MaterialButton {
                         id: passwdPushButton
-                        visible: ClientWrapper.settingsAdaptor.getAccountConfig_Manageruri() === ""
+
+                        visible: SettingsAdapter.getAccountConfig_Manageruri() === ""
 
                         color: JamiTheme.buttonTintedBlack
                         hoveredColor: JamiTheme.buttonTintedBlackHovered
@@ -805,7 +807,8 @@ Rectangle {
 
                     MaterialButton {
                         id: btnExportAccount
-                        visible: ClientWrapper.settingsAdaptor.getAccountConfig_Manageruri() === ""
+
+                        visible: SettingsAdapter.getAccountConfig_Manageruri() === ""
 
                         color: JamiTheme.buttonTintedBlack
                         hoveredColor: JamiTheme.buttonTintedBlackHovered
@@ -913,7 +916,7 @@ Rectangle {
                         MaterialButton {
                             id: linkDevPushButton
 
-                            visible: ClientWrapper.settingsAdaptor.getAccountConfig_Manageruri() === ""
+                            visible: SettingsAdapter.getAccountConfig_Manageruri() === ""
 
                             Layout.minimumHeight:  JamiTheme.preferredFieldHeight
                             Layout.preferredHeight: JamiTheme.preferredFieldHeight

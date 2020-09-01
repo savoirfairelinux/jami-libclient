@@ -40,7 +40,7 @@
 #include "pixbufmanipulator.h"
 #include "previewrenderer.h"
 #include "qrimageprovider.h"
-#include "settingsadaptor.h"
+#include "settingsadapter.h"
 #include "utils.h"
 #include "version.h"
 #include "videocodeclistmodel.h"
@@ -52,7 +52,7 @@ class ClientWrapper : public QObject
     Q_OBJECT
 
     Q_PROPERTY(UtilsAdapter *utilsAdaptor READ getUtilsAdapter NOTIFY utilsAdaptorChanged)
-    Q_PROPERTY(SettingsAdaptor *settingsAdaptor READ getSettingsAdaptor NOTIFY settingsAdaptorChanged)
+    Q_PROPERTY(SettingsAdapter *SettingsAdapter READ getSettingsAdapter NOTIFY SettingsAdapterChanged)
     Q_PROPERTY(NameDirectory *nameDirectory READ getNameDirectory NOTIFY nameDirectoryChanged)
     Q_PROPERTY(LRCInstance *lrcInstance READ getLRCInstance NOTIFY lrcInstanceChanged)
     Q_PROPERTY(AccountAdapter *accountAdaptor READ getAccountAdapter NOTIFY accountAdaptorChanged)
@@ -68,7 +68,7 @@ public:
 
     NameDirectory *getNameDirectory();
     UtilsAdapter *getUtilsAdapter();
-    SettingsAdaptor *getSettingsAdaptor();
+    SettingsAdapter *getSettingsAdapter();
     LRCInstance *getLRCInstance();
     AccountAdapter *getAccountAdapter();
 
@@ -83,7 +83,7 @@ public:
 
 signals:
     void utilsAdaptorChanged();
-    void settingsAdaptorChanged();
+    void SettingsAdapterChanged();
     void nameDirectoryChanged();
     void lrcInstanceChanged();
     void accountAdaptorChanged();

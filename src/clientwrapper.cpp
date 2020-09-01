@@ -42,10 +42,10 @@ ClientWrapper::getUtilsAdapter()
     return &(UtilsAdapter::instance());
 }
 
-SettingsAdaptor *
-ClientWrapper::getSettingsAdaptor()
+SettingsAdapter *
+ClientWrapper::getSettingsAdapter()
 {
-    return &(SettingsAdaptor::instance());
+    return &(SettingsAdapter::instance());
 }
 
 LRCInstance *
@@ -93,11 +93,11 @@ ClientWrapper::getDataTransferModel()
 lrc::api::ContactModel *
 ClientWrapper::getContactModel()
 {
-    return getSettingsAdaptor()->getCurrentAccountInfo().contactModel.get();
+    return getSettingsAdapter()->getCurrentAccountInfo().contactModel.get();
 }
 
 lrc::api::NewDeviceModel *
 ClientWrapper::getDeviceModel()
 {
-    return getSettingsAdaptor()->getCurrentAccountInfo().deviceModel.get();
+    return getSettingsAdapter()->getCurrentAccountInfo().deviceModel.get();
 }

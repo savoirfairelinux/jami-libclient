@@ -23,6 +23,7 @@ import QtQuick.Controls.Universal 2.12
 import QtQuick.Layouts 1.3
 import QtGraphicalEffects 1.14
 import net.jami.Models 1.0
+import net.jami.Adapters 1.0
 
 import "../commoncomponents"
 import "../constant"
@@ -330,7 +331,7 @@ Rectangle {
                     id: backupKeysPage
 
                     onNeverShowAgainBoxClicked: {
-                        ClientWrapper.accountAdaptor.settingsNeverShowAgain(isChecked)
+                        SettingsAdapter.setValue(Settings.NeverShowMeAgain, isChecked)
                     }
 
                     onExport_Btn_FileDialogAccepted: {
@@ -422,7 +423,7 @@ Rectangle {
                 }
 
                 onSaveProfile: {
-                    ClientWrapper.settingsAdaptor.setCurrAccAvatar(profilePage.boothImgBase64)
+                   SettingsAdapter.setCurrAccAvatar(profilePage.boothImgBase64)
                     ClientWrapper.accountAdaptor.setCurrAccDisplayName(profilePage.displayName)
                     leave()
                 }

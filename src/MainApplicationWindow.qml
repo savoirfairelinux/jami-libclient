@@ -5,13 +5,15 @@ import QtQuick.Layouts 1.14
 import QtQuick.Controls.Universal 2.12
 import QtGraphicalEffects 1.14
 import net.jami.Models 1.0
+import net.jami.Adapters 1.0
+import net.jami.Enums 1.0
 
 import "mainview"
 import "wizardview"
 import "commoncomponents"
 
 ApplicationWindow {
-    id: mainApplicationWindow
+    id: root
 
     AccountMigrationDialog{
         id: accountMigrationDialog
@@ -20,6 +22,21 @@ ApplicationWindow {
 
         onAccountMigrationFinished:{
             startClientByMainview()
+        }
+    }
+
+    function close() {
+        // If we're in the onboarding wizard or 'MinimizeOnClose'
+        // is set, then we can quit
+        if (!SettingsAdapter.getAppValue(Settings.MinimizeOnClose) ||
+            !ClientWrapper.utilsAdaptor.getAccountListSize()) {
+            Qt.quit()
+        } else {
+            // hide to the systray
+            if (mainViewLoader.item)
+                mainViewLoader.item.hide()
+            else
+                wizardView.hide()
         }
     }
 
@@ -60,7 +77,7 @@ ApplicationWindow {
             target: mainViewLoader.item
 
             function onCloseApp() {
-                Qt.quit()
+                root.close()
             }
 
             function onNoAccountIsAvailable() {
@@ -98,13 +115,14 @@ ApplicationWindow {
             onWizardViewIsClosed: parent.close()
         }
 
+        // @disable-check M16
         onClosing: {
             if (mainViewLoader.source.toString() !== "qrc:/src/mainview/MainView.qml") {
-                Qt.quit()
+                root.close()
             }
         }
+        // @enable-check M16
     }
-
 
     Component.onCompleted: {
         if(!startAccountMigration()){
@@ -113,9 +131,8 @@ ApplicationWindow {
     }
 
     overlay.modal: ColorOverlay {
-        source: mainApplicationWindow.contentItem
+        source: root.contentItem
         color: "transparent"
-
 
         /*
          * Color animation for overlay when pop up is shown.
@@ -128,6 +145,7 @@ ApplicationWindow {
 
     Connections {
         target: ClientWrapper.lrcInstance
+
         onRestoreAppRequested: {
             if (mainViewLoader.item)
                 mainViewLoader.item.show()

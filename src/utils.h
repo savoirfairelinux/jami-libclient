@@ -69,53 +69,6 @@ static constexpr bool isBeta = false;
 namespace Utils {
 
 /*
- * Qml type register.
- */
-#define QML_REGISTERSINGLETONTYPE(T, MAJ, MIN) \
-    qmlRegisterSingletonType<T>("net.jami.Models", \
-                                MAJ, \
-                                MIN, \
-                                #T, \
-                                [](QQmlEngine *e, QJSEngine *se) -> QObject * { \
-                                    Q_UNUSED(e); \
-                                    Q_UNUSED(se); \
-                                    T *obj = new T(); \
-                                    return obj; \
-                                });
-#define QML_REGISTERSINGLETONTYPE_WITH_INSTANCE(T, MAJ, MIN) \
-    qmlRegisterSingletonType<T>("net.jami.Models", \
-                                MAJ, \
-                                MIN, \
-                                #T, \
-                                [](QQmlEngine *e, QJSEngine *se) -> QObject * { \
-                                    Q_UNUSED(e); \
-                                    Q_UNUSED(se); \
-                                    return &(T::instance()); \
-                                });
-
-#define QML_REGISTERSINGLETONTYPE_URL(URL, T, MAJ, MIN) \
-    qmlRegisterSingletonType(QUrl(URL), "net.jami.Models", MAJ, MIN, #T);
-
-#define QML_REGISTERTYPE(T, MAJ, MIN) qmlRegisterType<T>("net.jami.Models", MAJ, MIN, #T);
-
-#define QML_REGISTERNAMESPACE(T, NAME, MAJ, MIN) \
-    qmlRegisterUncreatableMetaObject(T, "net.jami.Models", MAJ, MIN, NAME, "")
-
-#define QML_REGISTERUNCREATABLE(T, MAJ, MIN) \
-    qmlRegisterUncreatableType<T>("net.jami.Models", \
-                                  MAJ, \
-                                  MIN, \
-                                  #T, \
-                                  "Don't try to add to a qml definition of " #T);
-
-#define QML_REGISTERUNCREATABLE_IN_NAMESPACE(T, NAMESPACE, MAJ, MIN) \
-    qmlRegisterUncreatableType<NAMESPACE::T>("net.jami.Models", \
-                                             MAJ, \
-                                             MIN, \
-                                             #T, \
-                                             "Don't try to add to a qml definition of " #T);
-
-/*
  * System.
  */
 bool CreateStartupLink(const std::wstring &wstrAppName);

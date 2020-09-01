@@ -57,7 +57,6 @@ public:
     /*
      * Setting related
      */
-    Q_INVOKABLE void settingsNeverShowAgain(bool checked);
     Q_INVOKABLE void passwordSetStatusMessageBox(bool success, QString title, QString infoToDisplay);
     /*
      * conf property

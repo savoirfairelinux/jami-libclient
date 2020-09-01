@@ -26,48 +26,49 @@ import QtQuick.Controls.Styles 1.4
 import QtQuick.Dialogs 1.3
 import Qt.labs.platform 1.1
 import net.jami.Models 1.0
+import net.jami.Adapters 1.0
 
 import "../../commoncomponents"
 
 ColumnLayout {
     function updateAccountInfoDisplayedAdvance() {
         //Call Settings
-        checkAutoConnectOnLocalNetwork.checked = ClientWrapper.settingsAdaptor.getAccountConfig_PeerDiscovery()
-        checkBoxUntrusted.checked = ClientWrapper.settingsAdaptor.getAccountConfig_DHT_PublicInCalls()
-        checkBoxRdv.checked = ClientWrapper.settingsAdaptor.getAccountConfig_RendezVous()
-        checkBoxAutoAnswer.checked = ClientWrapper.settingsAdaptor.getAccountConfig_AutoAnswer()
-        checkBoxCustomRingtone.checked = ClientWrapper.settingsAdaptor.getAccountConfig_Ringtone_RingtoneEnabled()
+        checkAutoConnectOnLocalNetwork.checked = SettingsAdapter.getAccountConfig_PeerDiscovery()
+        checkBoxUntrusted.checked = SettingsAdapter.getAccountConfig_DHT_PublicInCalls()
+        checkBoxRdv.checked = SettingsAdapter.getAccountConfig_RendezVous()
+        checkBoxAutoAnswer.checked = SettingsAdapter.getAccountConfig_AutoAnswer()
+        checkBoxCustomRingtone.checked = SettingsAdapter.getAccountConfig_Ringtone_RingtoneEnabled()
 
         // Name Server
-        lineEditNameServer.text = ClientWrapper.settingsAdaptor.getAccountConfig_RingNS_Uri()
+        lineEditNameServer.text = SettingsAdapter.getAccountConfig_RingNS_Uri()
 
         //OpenDHT Config
-        checkBoxEnableProxy.checked = ClientWrapper.settingsAdaptor.getAccountConfig_ProxyEnabled()
-        lineEditProxy.text = ClientWrapper.settingsAdaptor.getAccountConfig_ProxyServer()
-        lineEditBootstrap.text = ClientWrapper.settingsAdaptor.getAccountConfig_Hostname()
+        checkBoxEnableProxy.checked = SettingsAdapter.getAccountConfig_ProxyEnabled()
+        lineEditProxy.text = SettingsAdapter.getAccountConfig_ProxyServer()
+        lineEditBootstrap.text = SettingsAdapter.getAccountConfig_Hostname()
 
         // Security
-        btnCACert.text = ClientWrapper.utilsAdaptor.toFileInfoName(ClientWrapper.settingsAdaptor.getAccountConfig_TLS_CertificateListFile())
-        btnUserCert.text = ClientWrapper.utilsAdaptor.toFileInfoName(ClientWrapper.settingsAdaptor.getAccountConfig_TLS_CertificateFile())
-        btnPrivateKey.text = ClientWrapper.utilsAdaptor.toFileInfoName(ClientWrapper.settingsAdaptor.getAccountConfig_TLS_PrivateKeyFile())
+        btnCACert.text = ClientWrapper.utilsAdaptor.toFileInfoName(ClientWrapper.SettingsAdapter.getAccountConfig_TLS_CertificateListFile())
+        btnUserCert.text = ClientWrapper.utilsAdaptor.toFileInfoName(ClientWrapper.SettingsAdapter.getAccountConfig_TLS_CertificateFile())
+        btnPrivateKey.text = ClientWrapper.utilsAdaptor.toFileInfoName(ClientWrapper.SettingsAdapter.getAccountConfig_TLS_PrivateKeyFile())
 
         // Connectivity
-        checkBoxUPnP.checked = ClientWrapper.settingsAdaptor.getAccountConfig_UpnpEnabled()
-        checkBoxTurnEnable.checked = ClientWrapper.settingsAdaptor.getAccountConfig_TURN_Enabled()
-        lineEditTurnAddress.text = ClientWrapper.settingsAdaptor.getAccountConfig_TURN_Server()
-        lineEditTurnUsername.text = ClientWrapper.settingsAdaptor.getAccountConfig_TURN_Username()
-        lineEditTurnPassword.text = ClientWrapper.settingsAdaptor.getAccountConfig_TURN_Password()
-        checkBoxSTUNEnable.checked = ClientWrapper.settingsAdaptor.getAccountConfig_STUN_Enabled()
-        lineEditSTUNAddress.text = ClientWrapper.settingsAdaptor.getAccountConfig_STUN_Server()
+        checkBoxUPnP.checked = SettingsAdapter.getAccountConfig_UpnpEnabled()
+        checkBoxTurnEnable.checked = SettingsAdapter.getAccountConfig_TURN_Enabled()
+        lineEditTurnAddress.text = SettingsAdapter.getAccountConfig_TURN_Server()
+        lineEditTurnUsername.text = SettingsAdapter.getAccountConfig_TURN_Username()
+        lineEditTurnPassword.text = SettingsAdapter.getAccountConfig_TURN_Password()
+        checkBoxSTUNEnable.checked = SettingsAdapter.getAccountConfig_STUN_Enabled()
+        lineEditSTUNAddress.text = SettingsAdapter.getAccountConfig_STUN_Server()
         // codecs
-        videoCheckBox.checked = ClientWrapper.settingsAdaptor.getAccountConfig_Video_Enabled()
+        videoCheckBox.checked = SettingsAdapter.getAccountConfig_Video_Enabled()
             // update audio and video codec, make sure this change does not trigger item change events
         updateAudioCodecs();
         updateVideoCodecs();
-        btnRingtone.enabled = ClientWrapper.settingsAdaptor.getAccountConfig_Ringtone_RingtoneEnabled()
-        btnRingtone.text = ClientWrapper.utilsAdaptor.toFileInfoName(ClientWrapper.settingsAdaptor.getAccountConfig_Ringtone_RingtonePath())
-        lineEditProxy.enabled = ClientWrapper.settingsAdaptor.getAccountConfig_ProxyEnabled()
-        lineEditSTUNAddress.enabled = ClientWrapper.settingsAdaptor.getAccountConfig_STUN_Enabled()
+        btnRingtone.enabled = SettingsAdapter.getAccountConfig_Ringtone_RingtoneEnabled()
+        btnRingtone.text = ClientWrapper.utilsAdaptor.toFileInfoName(ClientWrapper.SettingsAdapter.getAccountConfig_Ringtone_RingtonePath())
+        lineEditProxy.enabled = SettingsAdapter.getAccountConfig_ProxyEnabled()
+        lineEditSTUNAddress.enabled = SettingsAdapter.getAccountConfig_STUN_Enabled()
     }
 
     function updateAudioCodecs(){
@@ -88,7 +89,7 @@ ColumnLayout {
         var index = audioListWidget.currentIndex
         var codecId = audioCodecListModel.data(audioCodecListModel.index(index,0), AudioCodecListModel.AudioCodecID)
 
-        ClientWrapper.settingsAdaptor.decreaseAudioCodecPriority(codecId)
+       SettingsAdapter.decreaseAudioCodecPriority(codecId)
         audioListWidget.currentIndex = index + 1
         updateAudioCodecs()
     }
@@ -97,7 +98,7 @@ ColumnLayout {
         var index = audioListWidget.currentIndex
         var codecId = audioCodecListModel.data(audioCodecListModel.index(index,0), AudioCodecListModel.AudioCodecID)
 
-        ClientWrapper.settingsAdaptor.increaseAudioCodecPriority(codecId)
+       SettingsAdapter.increaseAudioCodecPriority(codecId)
         audioListWidget.currentIndex = index - 1
         updateAudioCodecs()
     }
@@ -106,7 +107,7 @@ ColumnLayout {
         var index = videoListWidget.currentIndex
         var codecId = videoCodecListModel.data(videoCodecListModel.index(index,0), VideoCodecListModel.VideoCodecID)
 
-        ClientWrapper.settingsAdaptor.decreaseVideoCodecPriority(codecId)
+       SettingsAdapter.decreaseVideoCodecPriority(codecId)
         videoListWidget.currentIndex = index + 1
         updateVideoCodecs()
     }
@@ -115,7 +116,7 @@ ColumnLayout {
         var index = videoListWidget.currentIndex
         var codecId = videoCodecListModel.data(videoCodecListModel.index(index,0), VideoCodecListModel.VideoCodecID)
 
-        ClientWrapper.settingsAdaptor.increaseVideoCodecPriority(codecId)
+       SettingsAdapter.increaseVideoCodecPriority(codecId)
         videoListWidget.currentIndex = index - 1
         updateVideoCodecs()
     }
@@ -130,30 +131,30 @@ ColumnLayout {
 
     function changeRingtonePath(url){
         if(url.length !== 0) {
-            ClientWrapper.settingsAdaptor.set_RingtonePath(url)
+           SettingsAdapter.set_RingtonePath(url)
             btnRingtone.text = ClientWrapper.utilsAdaptor.toFileInfoName(url)
-        } else if (ClientWrapper.settingsAdaptor.getAccountConfig_Ringtone_RingtonePath().length === 0){
+        } else if (ClientWrapper.SettingsAdapter.getAccountConfig_Ringtone_RingtonePath().length === 0){
             btnRingtone.text = qsTr("Add a custom ringtone")
         }
     }
 
     function changeFileCACert(url){
         if(url.length !== 0) {
-            ClientWrapper.settingsAdaptor.set_FileCACert(url)
+           SettingsAdapter.set_FileCACert(url)
             btnCACert.text = ClientWrapper.utilsAdaptor.toFileInfoName(url)
         }
     }
 
     function changeFileUserCert(url){
         if(url.length !== 0) {
-            ClientWrapper.settingsAdaptor.set_FileUserCert(url)
+           SettingsAdapter.set_FileUserCert(url)
             btnUserCert.text = ClientWrapper.utilsAdaptor.toFileInfoName(url)
         }
     }
 
     function changeFilePrivateKey(url){
         if(url.length !== 0) {
-            ClientWrapper.settingsAdaptor.set_FilePrivateKey(url)
+           SettingsAdapter.set_FilePrivateKey(url)
             btnPrivateKey.text = ClientWrapper.utilsAdaptor.toFileInfoName(url)
         }
     }
@@ -161,7 +162,7 @@ ColumnLayout {
     JamiFileDialog {
         id: ringtonePath_Dialog
 
-        property string oldPath : ClientWrapper.settingsAdaptor.getAccountConfig_Ringtone_RingtonePath()
+        property string oldPath : SettingsAdapter.getAccountConfig_Ringtone_RingtonePath()
         property string openPath : oldPath === "" ? (ClientWrapper.utilsAdaptor.getCurrentPath() + "/ringtones/") : (ClientWrapper.utilsAdaptor.toFileAbsolutepath(oldPath))
 
         mode: JamiFileDialog.OpenFile
@@ -188,7 +189,7 @@ ColumnLayout {
     JamiFileDialog {
         id: caCert_Dialog
 
-        property string oldPath : ClientWrapper.settingsAdaptor.getAccountConfig_TLS_CertificateListFile()
+        property string oldPath : SettingsAdapter.getAccountConfig_TLS_CertificateListFile()
         property string openPath : oldPath === "" ? (ClientWrapper.utilsAdaptor.getCurrentPath() + "/ringtones/") : (ClientWrapper.utilsAdaptor.toFileAbsolutepath(oldPath))
 
         mode: JamiFileDialog.OpenFile
@@ -214,7 +215,7 @@ ColumnLayout {
     JamiFileDialog {
         id: userCert_Dialog
 
-        property string oldPath : ClientWrapper.settingsAdaptor.getAccountConfig_TLS_CertificateFile()
+        property string oldPath : SettingsAdapter.getAccountConfig_TLS_CertificateFile()
         property string openPath : oldPath === "" ? (ClientWrapper.utilsAdaptor.getCurrentPath() + "/ringtones/") : (ClientWrapper.utilsAdaptor.toFileAbsolutepath(oldPath))
 
         mode: JamiFileDialog.OpenFile
@@ -241,7 +242,7 @@ ColumnLayout {
         id: privateKey_Dialog
 
         property string oldPath : {
-            return ClientWrapper.settingsAdaptor.getAccountConfig_TLS_PrivateKeyFile()
+            return ClientWrapper.SettingsAdapter.getAccountConfig_TLS_PrivateKeyFile()
         }
         property string openPath : oldPath === "" ? (ClientWrapper.utilsAdaptor.getCurrentPath() + "/ringtones/") : (ClientWrapper.utilsAdaptor.toFileAbsolutepath(oldPath))
 
@@ -298,7 +299,7 @@ ColumnLayout {
                 fontPointSize: JamiTheme.settingsFontSize
 
                 onSwitchToggled: {
-                    ClientWrapper.settingsAdaptor.setCallsUntrusted(checked)
+                   SettingsAdapter.setCallsUntrusted(checked)
                 }
             }
 
@@ -318,7 +319,7 @@ ColumnLayout {
                 fontPointSize: JamiTheme.settingsFontSize
 
                 onSwitchToggled: {
-                    ClientWrapper.settingsAdaptor.setAutoAnswerCalls(checked)
+                   SettingsAdapter.setAutoAnswerCalls(checked)
                 }
             }
 
@@ -336,7 +337,7 @@ ColumnLayout {
                 fontPointSize: JamiTheme.settingsFontSize
 
                 onSwitchToggled: {
-                    ClientWrapper.settingsAdaptor.setEnableRingtone(checked)
+                   SettingsAdapter.setEnableRingtone(checked)
                     btnRingtone.enabled = checked
                 }
             }
@@ -390,7 +391,7 @@ ColumnLayout {
                 fontPointSize: 10
 
                 onSwitchToggled: {
-                    ClientWrapper.settingsAdaptor.setIsRendezVous(checked)
+                   SettingsAdapter.setIsRendezVous(checked)
                 }
             }
         }
@@ -445,7 +446,7 @@ ColumnLayout {
                 verticalAlignment: Text.AlignVCenter
 
                 onEditingFinished: {
-                    ClientWrapper.settingsAdaptor.setNameServer(text)
+                   SettingsAdapter.setNameServer(text)
                 }
             }
         }
@@ -478,7 +479,7 @@ ColumnLayout {
                 fontPointSize: JamiTheme.settingsFontSize
 
                 onSwitchToggled: {
-                    ClientWrapper.settingsAdaptor.setEnableProxy(checked)
+                   SettingsAdapter.setEnableProxy(checked)
                     lineEditProxy.enabled = checked
                 }
             }
@@ -511,7 +512,7 @@ ColumnLayout {
                     verticalAlignment: Text.AlignVCenter
 
                     onEditingFinished: {
-                        ClientWrapper.settingsAdaptor.setProxyAddress(text)
+                       SettingsAdapter.setProxyAddress(text)
                     }
                 }
             }
@@ -549,7 +550,7 @@ ColumnLayout {
                     verticalAlignment: Text.AlignVCenter
 
                     onEditingFinished: {
-                        ClientWrapper.settingsAdaptor.setBootstrapAddress(text)
+                       SettingsAdapter.setBootstrapAddress(text)
                     }
                 }
             }
@@ -743,7 +744,7 @@ ColumnLayout {
                 fontPointSize: JamiTheme.settingsFontSize
 
                 onSwitchToggled: {
-                    ClientWrapper.settingsAdaptor.setAutoConnectOnLocalNetwork(checked)
+                   SettingsAdapter.setAutoConnectOnLocalNetwork(checked)
                 }
             }
 
@@ -763,7 +764,7 @@ ColumnLayout {
                 fontPointSize: JamiTheme.settingsFontSize
 
                 onSwitchToggled: {
-                    ClientWrapper.settingsAdaptor.setUseUPnP(checked)
+                   SettingsAdapter.setUseUPnP(checked)
                 }
             }
 
@@ -776,7 +777,7 @@ ColumnLayout {
                 fontPointSize: JamiTheme.settingsFontSize
 
                 onSwitchToggled: {
-                    ClientWrapper.settingsAdaptor.setUseTURN(checked)
+                   SettingsAdapter.setUseTURN(checked)
                 }
             }
 
@@ -808,7 +809,7 @@ ColumnLayout {
                     verticalAlignment: Text.AlignVCenter
 
                     onEditingFinished: {
-                        ClientWrapper.settingsAdaptor.setTURNAddress(text)
+                       SettingsAdapter.setTURNAddress(text)
                     }
                 }
             }
@@ -842,7 +843,7 @@ ColumnLayout {
                     verticalAlignment: Text.AlignVCenter
 
                     onEditingFinished: {
-                        ClientWrapper.settingsAdaptor.setTURNUsername(text)
+                       SettingsAdapter.setTURNUsername(text)
                     }
                 }
             }
@@ -877,7 +878,7 @@ ColumnLayout {
                     echoMode: TextInput.Password
 
                     onEditingFinished: {
-                        ClientWrapper.settingsAdaptor.setTURNPassword(text)
+                       SettingsAdapter.setTURNPassword(text)
                     }
                 }
             }
@@ -892,7 +893,7 @@ ColumnLayout {
                 fontPointSize: JamiTheme.settingsFontSize
 
                 onSwitchToggled: {
-                    ClientWrapper.settingsAdaptor.setUseSTUN(checked)
+                   SettingsAdapter.setUseSTUN(checked)
                     lineEditSTUNAddress.enabled = checked
                 }
             }
@@ -930,7 +931,7 @@ ColumnLayout {
                     verticalAlignment: Text.AlignVCenter
 
                     onEditingFinished: {
-                        ClientWrapper.settingsAdaptor.setSTUNAddress(text)
+                       SettingsAdapter.setSTUNAddress(text)
                     }
                 }
             }
@@ -966,7 +967,7 @@ ColumnLayout {
                 fontPointSize: JamiTheme.settingsFontSize
 
                 onSwitchToggled: {
-                    ClientWrapper.settingsAdaptor.setVideoState(checked)
+                   SettingsAdapter.setVideoState(checked)
                 }
             }
 
@@ -1068,7 +1069,7 @@ ColumnLayout {
                             }
 
                             onVideoCodecStateChange:{
-                                ClientWrapper.settingsAdaptor.videoCodecsStateChange(idToSet , isToBeEnabled)
+                               SettingsAdapter.videoCodecsStateChange(idToSet , isToBeEnabled)
                                 updateVideoCodecs()
                             }
                         }
@@ -1171,7 +1172,7 @@ ColumnLayout {
                             }
 
                             onAudioCodecStateChange:{
-                                ClientWrapper.settingsAdaptor.audioCodecsStateChange(idToSet , isToBeEnabled)
+                               SettingsAdapter.audioCodecsStateChange(idToSet , isToBeEnabled)
                                 updateAudioCodecs()
                             }
                         }
