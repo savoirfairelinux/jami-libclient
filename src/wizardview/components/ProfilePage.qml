@@ -48,6 +48,7 @@ Rectangle {
     property var showBottom: false
     property alias boothImgBase64: setAvatarWidget.imgBase64
     property alias displayName: aliasEdit.text
+    property bool isRdv: false
 
     ColumnLayout {
         spacing: layoutSpacing
@@ -100,7 +101,7 @@ Rectangle {
             Layout.alignment: Qt.AlignCenter
 
             selectByMouse: true
-            placeholderText: qsTr("Enter your name")
+            placeholderText: isRdv ? qsTr("Enter the rendez-vous's name") : qsTr("Enter your name")
             font.pointSize: 9
             font.kerning: true
 
@@ -118,8 +119,7 @@ Rectangle {
 
             enabled: !spinnerTriggered
             normalText: qsTr("Save Profile")
-            spinnerTriggeredtext: qsTr("Generating account…")
-
+            spinnerTriggeredtext: root.isRdv ? qsTr("Generating rendez-vous…") : qsTr("Generating account…")
             onClicked: saveProfile()
         }
 

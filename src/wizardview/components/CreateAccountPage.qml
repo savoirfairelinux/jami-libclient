@@ -31,12 +31,14 @@ Rectangle {
 
     property alias text_usernameEditAlias: usernameEdit.text
     property alias nameRegistrationUIState: usernameEdit.nameRegistrationState
+    property bool isRendezVous: false
     property alias text_passwordEditAlias: passwordEdit.text
 
     signal createAccount
     signal leavePage
 
-    function initializeOnShowUp() {
+    function initializeOnShowUp(isRdv) {
+        isRendezVous = isRdv
         createAccountStack.currentIndex = 0
         clearAllTextFields()
         passwordSwitch.checked = false
@@ -108,7 +110,7 @@ Rectangle {
                 Layout.preferredWidth: usernameEdit.width
 
                 Label {
-                    text: qsTr("Choose a username")
+                    text: isRendezVous ? qsTr("Choose a name for your rendez-vous") : qsTr("Choose a username for your account")
                     font.pointSize: JamiTheme.textFontSize + 3
                 }
 
@@ -135,7 +137,7 @@ Rectangle {
                 Layout.preferredWidth:  chooseUsernameButton.width
                 Layout.alignment: Qt.AlignHCenter
 
-                placeholderText: qsTr("Choose your username")
+                placeholderText: isRendezVous ? qsTr("Choose a name") : qsTr("Choose your username")
             }
 
             Label {
@@ -150,9 +152,9 @@ Rectangle {
                     case UsernameLineEdit.NameRegistrationState.FREE:
                         return ""
                     case UsernameLineEdit.NameRegistrationState.INVALID:
-                        return qsTr("Invalid username")
+                        return isRendezVous ? qsTr("Invalid name") : qsTr("Invalid username")
                     case UsernameLineEdit.NameRegistrationState.TAKEN:
-                        return qsTr("Username already taken")
+                        return isRendezVous ? qsTr("Name already taken") : qsTr("Username already taken")
                     }
                 }
                 font.pointSize: JamiTheme.textFontSize
@@ -166,7 +168,8 @@ Rectangle {
                 Layout.preferredWidth: preferredWidth
                 Layout.preferredHeight: preferredHeight
 
-                text: qsTr("CHOOSE USERNAME")
+                fontCapitalization: Font.AllUppercase
+                text: isRendezVous ? qsTr("Choose name") : qsTr("Choose username")
                 enabled: nameRegistrationUIState === UsernameLineEdit.NameRegistrationState.FREE
                 color: nameRegistrationUIState === UsernameLineEdit.NameRegistrationState.FREE ?
                            JamiTheme.wizardBlueButtons :
@@ -292,7 +295,8 @@ Rectangle {
                              && passwordEdit.text.length !== 0)
                 }
 
-                text: qsTr("CREATE ACCOUNT")
+                fontCapitalization: Font.AllUppercase
+                text: isRendezVous ? qsTr("Create rendez-vous") : qsTr("Create account")
                 enabled: checkEnable()
                 color: checkEnable() ? JamiTheme.wizardBlueButtons :
                                        JamiTheme.buttonTintedGreyInactive

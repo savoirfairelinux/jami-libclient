@@ -48,7 +48,8 @@ Rectangle {
         BACKUPKEYSPAGE,
         IMPORTFROMDEVICEPAGE,
         CONNECTTOACCOUNTMANAGERPAGE,
-        PROFILEPAGE
+        PROFILEPAGE,
+        CREATERENDEZVOUS
     }
 
     readonly property int layoutSpacing: 12
@@ -56,6 +57,7 @@ Rectangle {
     property int textFontSize: 9
     property int wizardMode: WizardView.CREATE
     property int addedAccountIndex: -1
+    property bool isRdv: false
     property bool showBackUp: false
     property bool showProfile: false
     property bool showBottom: false
@@ -84,8 +86,10 @@ Rectangle {
             if (showProfile) {
                 changePageQML(WizardView.WizardViewPageIndex.PROFILEPAGE)
                 profilePage.readyToSaveDetails()
+                profilePage.isRdv = isRdv
             } else if (controlPanelStackView.currentIndex === WizardView.WizardViewPageIndex.PROFILEPAGE) {
                 profilePage.readyToSaveDetails()
+                profilePage.isRdv = isRdv
             } else if (showBackUp) {
                 changePageQML(WizardView.WizardViewPageIndex.BACKUPKEYSPAGE)
             } else {
@@ -116,6 +120,7 @@ Rectangle {
         controlPanelStackView.currentIndex = pageIndex
         if (pageIndex === WizardView.WizardViewPageIndex.WELCOMEPAGE) {
             fileToImport = ""
+            isRdv = false
             createAccountPage.nameRegistrationUIState = UsernameLineEdit.NameRegistrationState.BLANK
         } else if (pageIndex === WizardView.WizardViewPageIndex.CREATEACCOUNTPAGE) {
             createAccountPage.initializeOnShowUp()
@@ -131,6 +136,10 @@ Rectangle {
         } else if (pageIndex === WizardView.WizardViewPageIndex.PROFILEPAGE) {
             profilePage.initializeOnShowUp()
             profilePage.showBottom = showBottom
+        } else if (pageIndex === WizardView.WizardViewPageIndex.CREATERENDEZVOUS) {
+            isRdv = true
+            controlPanelStackView.currentIndex = WizardView.WizardViewPageIndex.CREATEACCOUNTPAGE
+            createAccountPage.initializeOnShowUp(true)
         }
     }
 
@@ -189,13 +198,14 @@ Rectangle {
 
             onCreateAccount: {
                 inputParaObject = {}
+                inputParaObject["isRendezVous"] = isRdv
                 inputParaObject["password"] = text_passwordEditAlias
                 AccountAdapter.createJamiAccount(
                     createAccountPage.text_usernameEditAlias,
                     inputParaObject,
                     createAccountPage.boothImgBase64,
                     true)
-                showBackUp = true
+                showBackUp = !isRdv
                 showBottom = true
                 changePageQML(WizardView.WizardViewPageIndex.PROFILEPAGE)
             }
