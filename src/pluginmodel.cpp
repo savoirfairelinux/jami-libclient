@@ -187,14 +187,6 @@ PluginModel::resetPluginPreferencesValues(const QString& path)
     return PluginManager::instance().resetPluginPreferencesValues(path);
 }
 
-bool
-PluginModel::addValueToPreference(const QString& pluginId,
-                                  const QString& preferenceKey,
-                                  const QString& value)
-{
-    return PluginManager::instance().addValueToPreference(pluginId, preferenceKey, value);
-}
-
 } // namespace lrc
 
 #include "api/moc_pluginmodel.cpp"

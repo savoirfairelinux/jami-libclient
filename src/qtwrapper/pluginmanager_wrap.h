@@ -79,10 +79,6 @@ public Q_SLOTS: // METHODS
     MapStringString getPluginPreferencesValues(const QString& path);
 
     bool resetPluginPreferencesValues(const QString& path);
-
-    bool addValueToPreference(const QString& pluginId,
-                              const QString& preferenceKey,
-                              const QString& value);
 };
 
 namespace org {

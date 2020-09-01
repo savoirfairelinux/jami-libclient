@@ -158,19 +158,10 @@ public:
     Q_INVOKABLE MapStringString getPluginPreferencesValues(const QString& path);
 
     /**
-     * Reset preferences values of installed plugin to default values
+     * Reste preferences values of installed plugin to default values
      * @return true if preference was succesfully reset
      */
     Q_INVOKABLE bool resetPluginPreferencesValues(const QString& path);
-
-    /**
-     * Add a possible value to a preference that can be edited by the user
-     * the only possibility at the moment is USERLIST option
-     * @return if addition was successfull
-     */
-    Q_INVOKABLE bool addValueToPreference(const QString& pluginId,
-                                          const QString& preferenceKey,
-                                          const QString& value);
 };
 
 } // namespace api
