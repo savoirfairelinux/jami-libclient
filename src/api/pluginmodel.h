@@ -158,7 +158,7 @@ public:
     Q_INVOKABLE MapStringString getPluginPreferencesValues(const QString& path);
 
     /**
-     * Reset preferences values of installed plugin to default values
+     * Reste preferences values of installed plugin to default values
      * @return true if preference was succesfully reset
      */
     Q_INVOKABLE bool resetPluginPreferencesValues(const QString& path);
