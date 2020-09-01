@@ -128,6 +128,7 @@ Rectangle {
     Connections {
         id: accountConnections_ContactModel
         target: ClientWrapper.contactModel
+        enabled: accountViewRect.visible
 
         function onModelUpdated(uri, needsSorted) {
             updateAndShowBannedContactsSlot()
@@ -145,6 +146,7 @@ Rectangle {
     Connections {
         id: accountConnections_DeviceModel
         target: ClientWrapper.deviceModel
+        enabled: accountViewRect.visible
 
         function onDeviceAdded(id) {
             updateAndShowDevicesSlot()

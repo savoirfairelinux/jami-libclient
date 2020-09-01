@@ -33,12 +33,14 @@ public:
     explicit ConversationsAdapter(QObject *parent = nullptr);
     ~ConversationsAdapter();
 
-    Q_INVOKABLE bool connectConversationModel();
+    Q_INVOKABLE bool connectConversationModel(bool updateFilter = true);
+    Q_INVOKABLE void disconnectConversationModel();
     Q_INVOKABLE void selectConversation(const QString &accountId,
                                         const QString &convUid,
                                         bool preventSendingSignal = true);
     Q_INVOKABLE void selectConversation(const QString &uid);
     Q_INVOKABLE void deselectConversation();
+    Q_INVOKABLE void refill();
     Q_INVOKABLE void accountChangedSetUp(const QString &accountId);
     Q_INVOKABLE void updateConversationsFilterWidget();
     Q_INVOKABLE void setConversationFilter(const QString &type);
