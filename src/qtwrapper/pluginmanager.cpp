@@ -124,13 +124,3 @@ PluginManagerInterface::resetPluginPreferencesValues(const QString& path)
 {
     return DRing::resetPluginPreferencesValues(path.toStdString());
 }
-
-bool
-PluginManagerInterface::addValueToPreference(const QString& pluginId,
-                                           const QString& preferenceKey,
-                                           const QString& value)
-{
-    return DRing::addValueToPreference(pluginId.toStdString(),
-                                       preferenceKey.toStdString(),
-                                       value.toStdString());
-}
