@@ -287,6 +287,15 @@ Q_SIGNALS:
                          int oldCount,
                          int urgentCount) const;
 
+     /**
+     * Listen from CallbacksHandler when the peer start recording
+     * @param callId
+     * @param contactId
+     * @param peerName
+     * @param state the new state
+     */
+    void remoteRecordingChanged(const QString& callId, const QSet<QString>& peerRec, bool state) const;
+
 private:
     std::unique_ptr<NewCallModelPimpl> pimpl_;
 };
