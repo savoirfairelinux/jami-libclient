@@ -197,6 +197,12 @@ public Q_SLOTS:
      * @param infos
      */
     void slotOnConferenceInfosUpdated(const QString& confId, const VectorMapStringString& infos);
+    /**
+     * Listen from CallbacksHandler when the peer start recording
+     * @param callId
+     * @param state the new state
+     */
+    void remoteRecordingChanged(const QString& callId, const QString& peerNumber, bool state);
 };
 
 NewCallModel::NewCallModel(const account::Info& owner, const CallbacksHandler& callbacksHandler)
@@ -559,6 +565,10 @@ NewCallModelPimpl::NewCallModelPimpl(const NewCallModel& linked,
             &CallManagerInterface::onConferenceInfosUpdated,
             this,
             &NewCallModelPimpl::slotOnConferenceInfosUpdated);
+    connect(&callbacksHandler,
+            &CallbacksHandler::remoteRecordingChanged,
+            this,
+            &NewCallModelPimpl::remoteRecordingChanged);
 
 #ifndef ENABLE_LIBWRAP
     // Only necessary with dbus since the daemon runs separately
@@ -1015,6 +1025,33 @@ NewCallModelPimpl::sendProfile(const QString& callId)
         ++i;
         CallManager::instance().sendTextMessage(callId, chunk, false);
     }
+}
+
+void
+NewCallModelPimpl::remoteRecordingChanged(const QString& callId, const QString& peerNumber, bool state)
+{
+    auto it = calls.find(callId);
+    if (it == calls.end() or not it->second)
+        return;
+
+    auto uri = peerNumber;
+
+    if (uri.contains("ring:"))
+        uri.remove("ring:");
+    if (uri.contains("jami:"))
+        uri.remove("jami:");
+    if (uri.contains("@ring.dht"))
+        uri.remove("@ring.dht");
+
+    // Add peer to peerRec set
+    if (state && not it->second->peerRec.contains(uri))
+        it->second->peerRec.insert(uri);
+
+    // remove peer from peerRec set
+    if (!state && it->second->peerRec.contains(uri))
+        it->second->peerRec.remove(uri);
+
+    emit linked.remoteRecordingChanged(callId, it->second->peerRec, state);
 }
 
 } // namespace lrc
