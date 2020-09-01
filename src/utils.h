@@ -49,7 +49,7 @@
 #include <windows.h>
 #undef ERROR
 #else
-#define LPCWSTR char *
+#define LPCWSTR char*
 #endif
 
 #include "api/account.h"
@@ -57,8 +57,8 @@
 #include "api/contactmodel.h"
 #include "api/conversationmodel.h"
 
-static const QSize IMAGE_SIZE{128, 128};
-static float CURRENT_SCALING_RATIO{1.0};
+static const QSize IMAGE_SIZE {128, 128};
+static float CURRENT_SCALING_RATIO {1.0};
 
 #ifdef BETA
 static constexpr bool isBeta = true;
@@ -71,30 +71,30 @@ namespace Utils {
 /*
  * System.
  */
-bool CreateStartupLink(const std::wstring &wstrAppName);
-void DeleteStartupLink(const std::wstring &wstrAppName);
+bool CreateStartupLink(const std::wstring& wstrAppName);
+void DeleteStartupLink(const std::wstring& wstrAppName);
 bool CreateLink(LPCWSTR lpszPathObj, LPCWSTR lpszPathLink);
-bool CheckStartupLink(const std::wstring &wstrAppName);
+bool CheckStartupLink(const std::wstring& wstrAppName);
 void removeOldVersions();
-const char *WinGetEnv(const char *name);
+const char* WinGetEnv(const char* name);
 QString GetRingtonePath();
 QString GenGUID();
 QString GetISODate();
-void InvokeMailto(const QString &subject,
-                  const QString &body,
-                  const QString &attachement = QString());
-void setStackWidget(QStackedWidget *stack, QWidget *widget);
-void showSystemNotification(QWidget *widget,
-                            const QString &message,
+void InvokeMailto(const QString& subject,
+                  const QString& body,
+                  const QString& attachement = QString());
+void setStackWidget(QStackedWidget* stack, QWidget* widget);
+void showSystemNotification(QWidget* widget,
+                            const QString& message,
                             long delay = 5000,
-                            const QString &triggeredAccountId = "");
-void showSystemNotification(QWidget *widget,
-                            const QString &sender,
-                            const QString &message,
+                            const QString& triggeredAccountId = "");
+void showSystemNotification(QWidget* widget,
+                            const QString& sender,
+                            const QString& message,
                             long delay = 5000,
-                            const QString &triggeredAccountId = "");
-QSize getRealSize(QScreen *screen);
-void forceDeleteAsync(const QString &path);
+                            const QString& triggeredAccountId = "");
+QSize getRealSize(QScreen* screen);
+void forceDeleteAsync(const QString& path);
 QString getChangeLog();
 QString getProjectCredits();
 float getCurrentScalingRatio();
@@ -104,56 +104,56 @@ void setCurrentScalingRatio(float ratio);
  * Updates.
  */
 void cleanUpdateFiles();
-void checkForUpdates(bool withUI, QWidget *parent = nullptr);
-void applyUpdates(bool updateToBeta, QWidget *parent = nullptr);
+void checkForUpdates(bool withUI, QWidget* parent = nullptr);
+void applyUpdates(bool updateToBeta, QWidget* parent = nullptr);
 
 /*
  * Names.
  */
-QString bestIdForConversation(const lrc::api::conversation::Info &conv,
-                              const lrc::api::ConversationModel &model);
-QString bestIdForAccount(const lrc::api::account::Info &account);
-QString bestNameForAccount(const lrc::api::account::Info &account);
-QString bestIdForContact(const lrc::api::contact::Info &contact);
-QString bestNameForContact(const lrc::api::contact::Info &contact);
-QString bestNameForConversation(const lrc::api::conversation::Info &conv,
-                                const lrc::api::ConversationModel &model);
+QString bestIdForConversation(const lrc::api::conversation::Info& conv,
+                              const lrc::api::ConversationModel& model);
+QString bestIdForAccount(const lrc::api::account::Info& account);
+QString bestNameForAccount(const lrc::api::account::Info& account);
+QString bestIdForContact(const lrc::api::contact::Info& contact);
+QString bestNameForContact(const lrc::api::contact::Info& contact);
+QString bestNameForConversation(const lrc::api::conversation::Info& conv,
+                                const lrc::api::ConversationModel& model);
 /*
  * Returns empty string if only infoHash is available.
  */
-QString secondBestNameForAccount(const lrc::api::account::Info &account);
-lrc::api::profile::Type profileType(const lrc::api::conversation::Info &conv,
-                                    const lrc::api::ConversationModel &model);
+QString secondBestNameForAccount(const lrc::api::account::Info& account);
+lrc::api::profile::Type profileType(const lrc::api::conversation::Info& conv,
+                                    const lrc::api::ConversationModel& model);
 
 /*
  * Interactions.
  */
-std::string formatTimeString(const std::time_t &timestamp);
-bool isInteractionGenerated(const lrc::api::interaction::Type &interaction);
-bool isContactValid(const QString &contactUid, const lrc::api::ConversationModel &model);
-bool getReplyMessageBox(QWidget *widget, const QString &title, const QString &text);
+std::string formatTimeString(const std::time_t& timestamp);
+bool isInteractionGenerated(const lrc::api::interaction::Type& interaction);
+bool isContactValid(const QString& contactUid, const lrc::api::ConversationModel& model);
+bool getReplyMessageBox(QWidget* widget, const QString& title, const QString& text);
 
 /*
  * Image.
  */
-QString getContactImageString(const QString &accountId, const QString &uid);
+QString getContactImageString(const QString& accountId, const QString& uid);
 QImage getCirclePhoto(const QImage original, int sizePhoto);
-QImage conversationPhoto(const QString &convUid,
-                         const lrc::api::account::Info &accountInfo,
+QImage conversationPhoto(const QString& convUid,
+                         const lrc::api::account::Info& accountInfo,
                          bool filtered = false);
-QColor getAvatarColor(const QString &canonicalUri);
+QColor getAvatarColor(const QString& canonicalUri);
 QImage fallbackAvatar(const QSize size,
-                      const QString &canonicalUriStr,
-                      const QString &letterStr = QString());
-QImage fallbackAvatar(const QSize size, const std::string &alias, const std::string &uri);
+                      const QString& canonicalUriStr,
+                      const QString& letterStr = QString());
+QImage fallbackAvatar(const QSize size, const std::string& alias, const std::string& uri);
 QByteArray QImageToByteArray(QImage image);
-QByteArray QByteArrayFromFile(const QString &filename);
-QPixmap generateTintedPixmap(const QString &filename, QColor color);
-QPixmap generateTintedPixmap(const QPixmap &pix, QColor color);
-QImage scaleAndFrame(const QImage photo, const QSize &size = IMAGE_SIZE);
-QImage accountPhoto(const lrc::api::account::Info &accountInfo, const QSize &size = IMAGE_SIZE);
-QImage cropImage(const QImage &img);
-QPixmap pixmapFromSvg(const QString &svg_resource, const QSize &size);
+QByteArray QByteArrayFromFile(const QString& filename);
+QPixmap generateTintedPixmap(const QString& filename, QColor color);
+QPixmap generateTintedPixmap(const QPixmap& pix, QColor color);
+QImage scaleAndFrame(const QImage photo, const QSize& size = IMAGE_SIZE);
+QImage accountPhoto(const lrc::api::account::Info& accountInfo, const QSize& size = IMAGE_SIZE);
+QImage cropImage(const QImage& img);
+QPixmap pixmapFromSvg(const QString& svg_resource, const QSize& size);
 QImage setupQRCode(QString ringID, int margin);
 
 /*
@@ -161,9 +161,9 @@ QImage setupQRCode(QString ringID, int margin);
  */
 template<typename T>
 void
-fillRoundRectPath(QPainter &painter,
-                  const T &brushType,
-                  const QRect &rectToDraw,
+fillRoundRectPath(QPainter& painter,
+                  const T& brushType,
+                  const QRect& rectToDraw,
                   qreal cornerRadius,
                   int xTransFormOffset = 0,
                   int yTransFormOffset = 0)
@@ -196,10 +196,10 @@ class OneShotDisconnectConnection : public QObject
     Q_OBJECT
 
 public:
-    explicit OneShotDisconnectConnection(const QObject *sender,
-                                         const char *signal,
-                                         QMetaObject::Connection *connection,
-                                         QObject *parent = nullptr)
+    explicit OneShotDisconnectConnection(const QObject* sender,
+                                         const char* signal,
+                                         QMetaObject::Connection* connection,
+                                         QObject* parent = nullptr)
         : QObject(parent)
     {
         connection_ = connection;
@@ -223,8 +223,7 @@ public:
     }
 
 public slots:
-    void
-    slotOneShotDisconnectConnection()
+    void slotOneShotDisconnectConnection()
     {
         if (connection_) {
             QObject::disconnect(*connection_);
@@ -238,19 +237,19 @@ public slots:
     }
 
 private:
-    QMetaObject::Connection *connection_;
-    QMetaObject::Connection *disconnectConnection_;
+    QMetaObject::Connection* connection_;
+    QMetaObject::Connection* disconnectConnection_;
 };
 
 template<typename Func1, typename Func2>
 void
-oneShotConnect(const typename QtPrivate::FunctionPointer<Func1>::Object *sender,
+oneShotConnect(const typename QtPrivate::FunctionPointer<Func1>::Object* sender,
                Func1 signal,
                Func2 slot)
 {
-    QMetaObject::Connection *const connection = new QMetaObject::Connection;
+    QMetaObject::Connection* const connection = new QMetaObject::Connection;
     *connection = QObject::connect(sender, signal, slot);
-    QMetaObject::Connection *const disconnectConnection = new QMetaObject::Connection;
+    QMetaObject::Connection* const disconnectConnection = new QMetaObject::Connection;
     *disconnectConnection = QObject::connect(sender, signal, [connection, disconnectConnection] {
         if (connection) {
             QObject::disconnect(*connection);
@@ -265,14 +264,14 @@ oneShotConnect(const typename QtPrivate::FunctionPointer<Func1>::Object *sender,
 
 template<typename Func1, typename Func2>
 void
-oneShotConnect(const typename QtPrivate::FunctionPointer<Func1>::Object *sender,
+oneShotConnect(const typename QtPrivate::FunctionPointer<Func1>::Object* sender,
                Func1 signal,
-               const typename QtPrivate::FunctionPointer<Func2>::Object *receiver,
+               const typename QtPrivate::FunctionPointer<Func2>::Object* receiver,
                Func2 slot)
 {
-    QMetaObject::Connection *const connection = new QMetaObject::Connection;
+    QMetaObject::Connection* const connection = new QMetaObject::Connection;
     *connection = QObject::connect(sender, signal, receiver, slot);
-    QMetaObject::Connection *const disconnectConnection = new QMetaObject::Connection;
+    QMetaObject::Connection* const disconnectConnection = new QMetaObject::Connection;
     *disconnectConnection = QObject::connect(sender, signal, [connection, disconnectConnection] {
         if (connection) {
             QObject::disconnect(*connection);
@@ -286,11 +285,11 @@ oneShotConnect(const typename QtPrivate::FunctionPointer<Func1>::Object *sender,
 }
 
 inline void
-oneShotConnect(const QObject *sender, const char *signal, const QObject *receiver, const char *slot)
+oneShotConnect(const QObject* sender, const char* signal, const QObject* receiver, const char* slot)
 {
-    QMetaObject::Connection *const connection = new QMetaObject::Connection;
+    QMetaObject::Connection* const connection = new QMetaObject::Connection;
     *connection = QObject::connect(sender, signal, receiver, slot);
-    OneShotDisconnectConnection *disconnectConnection = new OneShotDisconnectConnection(sender,
+    OneShotDisconnectConnection* disconnectConnection = new OneShotDisconnectConnection(sender,
                                                                                         signal,
                                                                                         connection);
     Q_UNUSED(disconnectConnection)
@@ -299,33 +298,29 @@ oneShotConnect(const QObject *sender, const char *signal, const QObject *receive
 template<class T>
 class Blocker
 {
-    T *blocked;
+    T* blocked;
     bool previous;
 
 public:
-    Blocker(T *blocked)
+    Blocker(T* blocked)
         : blocked(blocked)
         , previous(blocked->blockSignals(true))
     {}
     ~Blocker() { blocked->blockSignals(previous); }
-    T *
-    operator->()
-    {
-        return blocked;
-    }
+    T* operator->() { return blocked; }
 };
 
 template<class T>
 inline Blocker<T>
-whileBlocking(T *blocked)
+whileBlocking(T* blocked)
 {
     return Blocker<T>(blocked);
 }
 
 template<typename T>
 void
-setElidedText(T *object,
-              const QString &text,
+setElidedText(T* object,
+              const QString& text,
               Qt::TextElideMode mode = Qt::ElideMiddle,
               int padding = 32)
 {
@@ -355,48 +350,30 @@ class UtilsAdapter : public QObject
 {
     Q_OBJECT
 public:
-    explicit UtilsAdapter(QObject *parent = nullptr)
+    explicit UtilsAdapter(QObject* parent = nullptr)
         : QObject(parent)
     {
         clipboard_ = QApplication::clipboard();
     }
     ~UtilsAdapter() {}
 
-    ///Singleton
-    static UtilsAdapter &instance();
+    /// Singleton
+    static UtilsAdapter& instance();
 
-    Q_INVOKABLE const QString
-    getChangeLog()
-    {
-        return Utils::getChangeLog();
-    }
+    Q_INVOKABLE const QString getChangeLog() { return Utils::getChangeLog(); }
 
-    Q_INVOKABLE const QString
-    getProjectCredits()
-    {
-        return Utils::getProjectCredits();
-    }
+    Q_INVOKABLE const QString getProjectCredits() { return Utils::getProjectCredits(); }
 
-    Q_INVOKABLE const QString
-    getVersionStr()
-    {
-        return QString(VERSION_STRING);
-    }
+    Q_INVOKABLE const QString getVersionStr() { return QString(VERSION_STRING); }
 
-    Q_INVOKABLE void
-    setText(QString text)
-    {
-        clipboard_->setText(text, QClipboard::Clipboard);
-    }
+    Q_INVOKABLE void setText(QString text) { clipboard_->setText(text, QClipboard::Clipboard); }
 
-    Q_INVOKABLE const QString
-    qStringFromFile(const QString &filename)
+    Q_INVOKABLE const QString qStringFromFile(const QString& filename)
     {
         return Utils::QByteArrayFromFile(filename);
     }
 
-    Q_INVOKABLE const QString
-    getStyleSheet(const QString &name, const QString &source)
+    Q_INVOKABLE const QString getStyleSheet(const QString& name, const QString& source)
     {
         auto simplifiedCSS = source.simplified().replace("'", "\"");
         QString s = QString::fromLatin1("(function() {"
@@ -410,88 +387,66 @@ public:
         return s;
     }
 
-    Q_INVOKABLE const QString
-    getCachePath()
+    Q_INVOKABLE const QString getCachePath()
     {
         QDir dataDir(QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation));
         dataDir.cdUp();
         return dataDir.absolutePath() + "/jami";
     }
-    Q_INVOKABLE bool
-    createStartupLink()
-    {
-        return Utils::CreateStartupLink(L"Jami");
-    }
-    Q_INVOKABLE QString
-    GetRingtonePath()
-    {
-        return Utils::GetRingtonePath();
-    }
-    Q_INVOKABLE bool
-    checkStartupLink()
-    {
-        return Utils::CheckStartupLink(L"Jami");
-    }
+    Q_INVOKABLE bool createStartupLink() { return Utils::CreateStartupLink(L"Jami"); }
+    Q_INVOKABLE QString GetRingtonePath() { return Utils::GetRingtonePath(); }
+    Q_INVOKABLE bool checkStartupLink() { return Utils::CheckStartupLink(L"Jami"); }
 
-    Q_INVOKABLE const QString
-    getContactImageString(const QString &accountId, const QString &uid)
+    Q_INVOKABLE const QString getContactImageString(const QString& accountId, const QString& uid)
     {
         return Utils::getContactImageString(accountId, uid);
     }
 
-    Q_INVOKABLE void removeConversation(const QString &accountId,
-                                        const QString &uid,
+    Q_INVOKABLE void removeConversation(const QString& accountId,
+                                        const QString& uid,
                                         bool banContact = false);
-    Q_INVOKABLE void clearConversationHistory(const QString &accountId, const QString &uid);
-    Q_INVOKABLE void setConversationFilter(const QString &filter);
+    Q_INVOKABLE void clearConversationHistory(const QString& accountId, const QString& uid);
+    Q_INVOKABLE void setConversationFilter(const QString& filter);
     Q_INVOKABLE int getTotalUnreadMessages();
     Q_INVOKABLE int getTotalPendingRequest();
-    Q_INVOKABLE const QString getBestName(const QString &accountId, const QString &uid);
-    Q_INVOKABLE const QString getBestId(const QString &accountId, const QString &uid);
+    Q_INVOKABLE const QString getBestName(const QString& accountId, const QString& uid);
+    Q_INVOKABLE const QString getBestId(const QString& accountId, const QString& uid);
 
     Q_INVOKABLE const QString getCurrAccId();
     Q_INVOKABLE const QString getCurrConvId();
     Q_INVOKABLE void makePermanentCurrentConv();
     Q_INVOKABLE const QStringList getCurrAccList();
     Q_INVOKABLE int getAccountListSize();
-    Q_INVOKABLE void setCurrentCall(const QString &accountId, const QString &convUid);
+    Q_INVOKABLE void setCurrentCall(const QString& accountId, const QString& convUid);
     Q_INVOKABLE void startPreviewing(bool force);
     Q_INVOKABLE void stopPreviewing();
     Q_INVOKABLE bool hasVideoCall();
-    Q_INVOKABLE const QString getCallId(const QString &accountId, const QString &convUid);
+    Q_INVOKABLE const QString getCallId(const QString& accountId, const QString& convUid);
     Q_INVOKABLE const QString getCallStatusStr(int statusInt);
     Q_INVOKABLE QString getStringUTF8(QString string);
-    Q_INVOKABLE bool validateRegNameForm(const QString &regName);
+    Q_INVOKABLE bool validateRegNameForm(const QString& regName);
     Q_INVOKABLE QString getRecordQualityString(int value);
     Q_INVOKABLE QString getCurrentPath();
-    Q_INVOKABLE QString
-    stringSimplifier(QString input)
-    {
-        return input.simplified();
-    }
+    Q_INVOKABLE QString stringSimplifier(QString input) { return input.simplified(); }
 
-    Q_INVOKABLE QString
-    toNativeSeparators(QString inputDir)
+    Q_INVOKABLE QString toNativeSeparators(QString inputDir)
     {
         return QDir::toNativeSeparators(inputDir);
     }
 
-    Q_INVOKABLE QString
-    toFileInfoName(QString inputFileName)
+    Q_INVOKABLE QString toFileInfoName(QString inputFileName)
     {
         QFileInfo fi(inputFileName);
         return fi.fileName();
     }
 
-    Q_INVOKABLE QString
-    toFileAbsolutepath(QString inputFileName)
+    Q_INVOKABLE QString toFileAbsolutepath(QString inputFileName)
     {
         QFileInfo fi(inputFileName);
         return fi.absolutePath();
     }
 
-    Q_INVOKABLE QString
-    getAbsPath(QString path)
+    Q_INVOKABLE QString getAbsPath(QString path)
     {
 #ifdef Q_OS_WIN
         return path.replace("file:///", "").replace("\n", "").replace("\r", "");
@@ -500,8 +455,7 @@ public:
 #endif
     }
 
-    Q_INVOKABLE QString
-    getCroppedImageBase64FromFile(QString fileName, int size)
+    Q_INVOKABLE QString getCroppedImageBase64FromFile(QString fileName, int size)
     {
         auto image = Utils::cropImage(QImage(fileName));
         auto croppedImage = image.scaled(size,
@@ -513,7 +467,21 @@ public:
 
     Q_INVOKABLE bool checkShowPluginsButton();
 
+    Q_INVOKABLE QString fileName(const QString& path)
+    {
+        QFileInfo fi(path);
+        return fi.fileName();
+    }
+
+    Q_INVOKABLE QString getExt(const QString& path)
+    {
+        QFileInfo fi(path);
+        return fi.completeSuffix();
+    }
+
+    Q_INVOKABLE bool isImage(const QString& fileExt) const;
+
 private:
-    QClipboard *clipboard_;
+    QClipboard* clipboard_;
 };
-Q_DECLARE_METATYPE(UtilsAdapter *)
+Q_DECLARE_METATYPE(UtilsAdapter*)

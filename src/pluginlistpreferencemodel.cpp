@@ -33,7 +33,9 @@ PluginListPreferenceModel::populateLists()
     const auto preferences = LRCInstance::pluginModel().getPluginPreferences(pluginId_);
     for (const auto& preference : preferences) {
         if (preference["key"] == preferenceKey_) {
-            preferenceList_ = preference["entries"].split(",");
+            if (preference.find("entries") != preference.end()
+                && preference.find("entryValues") != preference.end())
+                preferenceList_ = preference["entries"].split(",");
             preferenceValuesList_ = preference["entryValues"].split(",");
             break;
         }

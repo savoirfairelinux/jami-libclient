@@ -19,31 +19,32 @@
 #pragma once
 
 #include "qmladapterbase.h"
+#include "pluginitemlistmodel.h"
 #include "mediahandleritemlistmodel.h"
-#include "mediahandlerlistpreferencemodel.h"
+#include "pluginlistpreferencemodel.h"
 #include "preferenceitemlistmodel.h"
 
 #include <QObject>
 #include <QSortFilterProxyModel>
 #include <QString>
 
-class MediaHandlerAdapter final : public QmlAdapterBase
+class PluginAdapter final : public QmlAdapterBase
 {
     Q_OBJECT
 public:
-    explicit MediaHandlerAdapter(QObject* parent = nullptr);
-    ~MediaHandlerAdapter() = default;
+    explicit PluginAdapter(QObject* parent = nullptr);
+    ~PluginAdapter() = default;
 
 protected:
     void safeInit() override {};
 
     Q_INVOKABLE QVariant getMediaHandlerSelectableModel();
-    Q_INVOKABLE QVariant getMediaHandlerPreferencesModel(QString pluginId, QString mediaHandlerName);
-    Q_INVOKABLE QVariant getMediaHandlerPreferencesSelectableModel(QString pluginId);
+    Q_INVOKABLE QVariant getPluginSelectableModel();
+    Q_INVOKABLE QVariant getPluginPreferencesModel(const QString& pluginId,
+                                                   const QString& mediaHandlerName = "");
 
 private:
     std::unique_ptr<MediaHandlerItemListModel> mediaHandlerListModel_;
-    std::unique_ptr<PreferenceItemListModel> mediaHandlerPreferenceItemListModel_;
-    std::unique_ptr<MediaHandlerListPreferenceModel> mediaHandlerListPreferenceModel_;
-
+    std::unique_ptr<PreferenceItemListModel> preferenceItemListModel_;
+    std::unique_ptr<PluginItemListModel> pluginItemListModel_;
 };

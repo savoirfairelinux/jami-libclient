@@ -120,7 +120,7 @@ ItemDelegate {
             }
 
             ToolTip.visible: hovered
-            ToolTip.text: qsTr("Show preferences")
+            ToolTip.text: qsTr("Show/Hide preferences")
 
             onClicked: btnPreferencesPluginClicked()
         }

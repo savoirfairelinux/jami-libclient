@@ -34,35 +34,35 @@ ItemDelegate {
 
     enum Type {
         LIST,
-        USERLIST,
+        PATH,
         DEFAULT
     }
 
     property string preferenceName: ""
     property string preferenceSummary: ""
+    property string preferenceKey: ""
     property int preferenceType: -1
     property string preferenceCurrentValue: ""
     property string preferenceNewValue: ""
     property string pluginId: ""
+    property string currentPath: ""
+    property bool isImage: false
+    property var fileFilters: []
     property PluginListPreferenceModel pluginListPreferenceModel
 
     signal btnPreferenceClicked
-    signal preferenceAdded
 
     function getNewPreferenceValueSlot(index){
-        pluginListPreferenceModel.idx = index
-        preferenceNewValue = pluginListPreferenceModel.preferenceNewValue
         switch (preferenceType){
             case PreferenceItemDelegate.LIST:
+                pluginListPreferenceModel.idx = index
+                preferenceNewValue = pluginListPreferenceModel.preferenceNewValue
                 btnPreferenceClicked()
                 break
-            case PreferenceItemDelegate.USERLIST:
+            case PreferenceItemDelegate.PATH:
                 if(index == 0){
-                    preferenceFilePathDialog.pluginListPreferenceModel = pluginListPreferenceModel
                     preferenceFilePathDialog.title = qsTr("Select An Image to " + preferenceName)
-                    preferenceFilePathDialog.nameFilters = [qsTr("PNG Files") + " (*.png)", qsTr(
-                "All files") + " (*)"]
-                    preferenceFilePathDialog.preferenceKey = pluginListPreferenceModel.preferenceKey
+                    preferenceFilePathDialog.nameFilters = fileFilters
                     preferenceFilePathDialog.open()
                 }
                 else
@@ -76,36 +76,28 @@ ItemDelegate {
     FileDialog {
         id: preferenceFilePathDialog
 
-        property string preferenceKey: ""
-        property PluginListPreferenceModel pluginListPreferenceModel
-
         title: qsTr("Please choose a file")
-        folder: StandardPaths.writableLocation(StandardPaths.DownloadLocation)
-
-        onRejected: preferenceAdded()
+        folder: "file://" + currentPath
 
         onAccepted: {
             var url = ClientWrapper.utilsAdaptor.getAbsPath(fileUrl.toString())
-            ClientWrapper.pluginModel.addValueToPreference(pluginId, preferenceKey, url)
-            pluginListPreferenceModel.populateLists()
-            pluginListPreferenceModel.getCurrentSettingIndex()
-            preferenceAdded()
+            preferenceNewValue = url
+            btnPreferenceClicked()
         }
     }
 
     RowLayout{
         anchors.fill: parent
 
-        Label{
-            visible: preferenceType === PreferenceItemDelegate.DEFAULT
-            Layout.fillWidth: true
-            Layout.alignment: Qt.AlingVCenter | Qt.AligntLeft
+        Label {
+            Layout.preferredWidth: root.width / 2
+            Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
             Layout.leftMargin: 8
 
-            font.pointSize: JamiTheme.settingsFontSize
-            font.kerning: true
-            font.bold: true
             text: preferenceName
+            font.pointSize: JamiTheme.settingsFontSize
+            ToolTip.visible: hovered
+            ToolTip.text: preferenceSummary
         }
 
         HoverableRadiusButton{
@@ -135,19 +127,6 @@ ItemDelegate {
             }
         }
 
-        Label {
-            visible: preferenceType === PreferenceItemDelegate.LIST
-            Layout.preferredWidth: root.width / 2
-            Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
-            Layout.leftMargin: 8
-
-            text: preferenceName
-            font.pointSize: JamiTheme.settingsFontSize
-            ToolTip.visible: hovered
-            ToolTip.text: preferenceSummary
-        }
-
-
         SettingParaCombobox {
             id: listPreferenceComboBox
             visible: preferenceType === PreferenceItemDelegate.LIST
@@ -167,35 +146,29 @@ ItemDelegate {
             }
         }
 
-        Label {
-            visible: preferenceType === PreferenceItemDelegate.USERLIST
-            Layout.preferredWidth: root.width / 2
-            Layout.leftMargin: 8
-            Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
-
-            text: preferenceName
-            font.pointSize: JamiTheme.settingsFontSize
-            ToolTip.visible: hovered
-            ToolTip.text: preferenceSummary
-        }
-
-
-        SettingParaCombobox {
-            id: userListPreferenceComboBox
-            visible: preferenceType === PreferenceItemDelegate.USERLIST
-            Layout.preferredWidth: root.width / 2 - 8
+        HoverableRadiusButton {
+            id: pathPreferenceButton
+            visible: preferenceType === PreferenceItemDelegate.PATH
+            Layout.preferredWidth: root.width / 2 - 16
+            Layout.maximumWidth: root.width / 2 - 16
             Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
-            Layout.rightMargin: 8
+            Layout.rightMargin: 30
+            Layout.preferredHeight: 30
 
-            font.pointSize: JamiTheme.settingsFontSize
-            font.kerning: true
+            radius: height / 2
 
-            model: pluginListPreferenceModel
-            currentIndex: pluginListPreferenceModel.getCurrentSettingIndex()
-            textRole: qsTr("PreferenceValue")
-            tooltipText: qsTr("Choose the preference")
-            onActivated: {
-                getNewPreferenceValueSlot(index)
+            icon.source: "qrc:/images/icons/round-folder-24px.svg"
+            icon.height: 24
+            icon.width: 24
+
+            toolTipText: qsTr("Press to choose an image file")
+            text: {
+                return ClientWrapper.utilsAdaptor.fileName(preferenceCurrentValue)
+            }
+            fontPointSize: JamiTheme.buttonFontSize
+
+            onClicked: {
+                getNewPreferenceValueSlot(0)
             }
         }
     }

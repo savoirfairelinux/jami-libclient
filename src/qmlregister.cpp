@@ -32,9 +32,8 @@
 #include "conversationsadapter.h"
 #include "deviceitemlistmodel.h"
 #include "distantrenderer.h"
-#include "mediahandleradapter.h"
+#include "pluginadapter.h"
 #include "mediahandleritemlistmodel.h"
-#include "mediahandlerlistpreferencemodel.h"
 #include "messagesadapter.h"
 #include "namedirectory.h"
 #include "preferenceitemlistmodel.h"
@@ -117,7 +116,6 @@ void registerTypes()
     QML_REGISTERTYPE(VideoFormatResolutionModel, 1, 0);
     QML_REGISTERTYPE(VideoFormatFpsModel, 1, 0);
     QML_REGISTERTYPE(PluginListPreferenceModel, 1, 0);
-    QML_REGISTERTYPE(MediaHandlerListPreferenceModel, 1, 0);
 
     /*
      * Register QQuickItem type.
@@ -141,7 +139,7 @@ void registerTypes()
     QML_REGISTERSINGLETONTYPE("net.jami.Models", ConversationsAdapter, 1, 0);
     QML_REGISTERSINGLETONTYPE("net.jami.Models", AvAdapter, 1, 0);
     QML_REGISTERSINGLETONTYPE("net.jami.Models", ContactAdapter, 1, 0);
-    QML_REGISTERSINGLETONTYPE("net.jami.Models", MediaHandlerAdapter, 1, 0);
+    QML_REGISTERSINGLETONTYPE("net.jami.Models", PluginAdapter, 1, 0);
     QML_REGISTERSINGLETONTYPE("net.jami.Models", ClientWrapper, 1, 0);
 
 

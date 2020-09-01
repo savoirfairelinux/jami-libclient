@@ -136,7 +136,7 @@ HEADERS += ./src/smartlistmodel.h \
         ./src/qmladapterbase.h \
         ./src/avadapter.h \
         ./src/contactadapter.h \
-        ./src/mediahandleradapter.h \
+        ./src/pluginadapter.h \
         ./src/settingsadapter.h \
         ./src/deviceitemlistmodel.h \
         ./src/pluginitemlistmodel.h \
@@ -150,7 +150,6 @@ HEADERS += ./src/smartlistmodel.h \
         ./src/videoinputdevicemodel.h \
         ./src/audiooutputdevicemodel.h \
         ./src/pluginlistpreferencemodel.h \
-        ./src/mediahandlerlistpreferencemodel.h \
         ./src/videoformatfpsmodel.h \
         ./src/videoformatresolutionmodel.h \
         ./src/audiomanagerlistmodel.h \
@@ -176,7 +175,7 @@ SOURCES += ./src/bannedlistmodel.cpp \
         ./src/previewrenderer.cpp \
         ./src/avadapter.cpp \
         ./src/contactadapter.cpp \
-        ./src/mediahandleradapter.cpp \
+        ./src/pluginadapter.cpp \
         ./src/settingsadapter.cpp \
         ./src/deviceitemlistmodel.cpp \
         ./src/pluginitemlistmodel.cpp \
@@ -190,7 +189,6 @@ SOURCES += ./src/bannedlistmodel.cpp \
         ./src/videoinputdevicemodel.cpp \
         ./src/audiooutputdevicemodel.cpp \
         ./src/pluginlistpreferencemodel.cpp \
-        ./src/mediahandlerlistpreferencemodel.cpp \
         ./src/videoformatfpsmodel.cpp \
         ./src/videoformatresolutionmodel.cpp \
         ./src/audiomanagerlistmodel.cpp \

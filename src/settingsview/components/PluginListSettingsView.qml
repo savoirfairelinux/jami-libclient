@@ -33,13 +33,6 @@ Rectangle {
 
     visible: false
 
-    function updatePluginListDisplayed() {
-        // settings
-        pluginItemListModel.reset()
-        var size = 50 * pluginItemListModel.pluginsCount
-        pluginListView.height = size + 15
-    }
-
     function openPluginFileSlot(){
         pluginPathDialog.open()
     }
@@ -52,7 +45,6 @@ Rectangle {
             loaded = ClientWrapper.pluginModel.loadPlugin(pluginId)
         if(pluginListPreferencesView.pluginId === pluginId)
             pluginListPreferencesView.isLoaded = loaded
-        updatePluginListDisplayed()
     }
 
     function openPreferencesPluginSlot(pluginName, pluginIcon, pluginId, isLoaded){
@@ -67,13 +59,11 @@ Rectangle {
             pluginListPreferencesView.pluginId = pluginId
             pluginListPreferencesView.isLoaded = isLoaded
         }
-        pluginListPreferencesView.updatePreferenceListDisplayed()
     }
 
     function hidePreferences(){
         pluginListPreferencesView.pluginId = ""
         pluginListPreferencesView.visible = false
-        pluginListPreferencesView.updatePreferenceListDisplayed()
     }
 
     JamiFileDialog {
@@ -97,7 +87,6 @@ Rectangle {
         onAccepted: {
             var url = ClientWrapper.utilsAdaptor.getAbsPath(file.toString())
             ClientWrapper.pluginModel.installPlugin(url, true)
-            updatePluginListDisplayed()
         }
     }
 
@@ -122,8 +111,8 @@ Rectangle {
             id: installButton
 
             Layout.alignment: Qt.AlignCenter
-            Layout.preferredWidth: preferredWidth
-            Layout.preferredHeight: preferredHeight
+            Layout.preferredWidth: JamiTheme.preferredFieldWidth
+            Layout.preferredHeight: JamiTheme.preferredFieldHeight
 
             color: JamiTheme.buttonTintedBlack
             hoveredColor: JamiTheme.buttonTintedBlackHovered
@@ -149,9 +138,7 @@ Rectangle {
             Layout.minimumHeight: 0
             Layout.preferredHeight: childrenRect.height
 
-            model: PluginItemListModel{
-                id: pluginItemListModel
-            }
+            model: PluginAdapter.getPluginSelectableModel()
 
             delegate: PluginItemDelegate{
                 id: pluginItemDelegate

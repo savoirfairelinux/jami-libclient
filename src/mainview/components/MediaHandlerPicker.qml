@@ -27,7 +27,7 @@ Popup {
     id: root
     function toggleMediaHandlerSlot(mediaHandlerId, isLoaded) {
         ClientWrapper.pluginModel.toggleCallMediaHandler(mediaHandlerId, !isLoaded)
-        mediahandlerPickerListView.model = MediaHandlerAdapter.getMediaHandlerSelectableModel()
+        mediahandlerPickerListView.model = PluginAdapter.getMediaHandlerSelectableModel()
     }
 
     width: 350
@@ -96,7 +96,7 @@ Popup {
                     Layout.preferredWidth: mediahandlerPickerPopupRect.width
                     Layout.preferredHeight: 200
 
-                    model: MediaHandlerAdapter.getMediaHandlerSelectableModel()
+                    model: PluginAdapter.getMediaHandlerSelectableModel()
 
                     clip: true
 
@@ -119,7 +119,7 @@ Popup {
                         onOpenPreferences: {
                             mediahandlerPreferencePickerListView.pluginId = pluginId
                             mediahandlerPreferencePickerListView.mediaHandlerName = mediaHandlerName
-                            mediahandlerPreferencePickerListView.model = MediaHandlerAdapter.getMediaHandlerPreferencesModel(pluginId, mediaHandlerName)
+                            mediahandlerPreferencePickerListView.model = PluginAdapter.getPluginPreferencesModel(pluginId, mediaHandlerName)
                             stack.currentIndex = 1
                         }
                     }
@@ -204,20 +204,24 @@ Popup {
                     property string pluginId: ""
                     property string mediaHandlerName: ""
 
-                    model: MediaHandlerAdapter.getMediaHandlerPreferencesModel(pluginId, mediaHandlerName)
+                    model: PluginAdapter.getPluginPreferencesModel(pluginId, mediaHandlerName)
 
                     clip: true
 
                     delegate: PreferenceItemDelegate {
                         id: mediaHandlerPreferenceDelegate
                         width: mediahandlerPreferencePickerListView.width
-                        height: 50
+                        height: childrenRect.height
 
                         preferenceName: PreferenceName
                         preferenceSummary: PreferenceSummary
                         preferenceType: PreferenceType
                         preferenceCurrentValue: PreferenceCurrentValue
                         pluginId: PluginId
+                        currentPath: CurrentPath
+                        preferenceKey : PreferenceKey
+                        fileFilters: FileFilters
+                        isImage: IsImage
                         pluginListPreferenceModel: PluginListPreferenceModel{
                             id: pluginListPreferenceModel
                             preferenceKey : PreferenceKey
@@ -227,13 +231,9 @@ Popup {
                         onClicked:  mediahandlerPreferencePickerListView.currentIndex = index
 
                         onBtnPreferenceClicked: {
-                            ClientWrapper.pluginModel.setPluginPreference(pluginListPreferenceModel.pluginId,
-                                                                            pluginListPreferenceModel.preferenceKey,
-                                                                            pluginListPreferenceModel.preferenceNewValue)
-                            mediahandlerPreferencePickerListView.model = MediaHandlerAdapter.getMediaHandlerPreferencesModel(pluginId, mediahandlerPreferencePickerListView.mediaHandlerName)
+                            ClientWrapper.pluginModel.setPluginPreference(pluginId, preferenceKey, preferenceNewValue)
+                            mediahandlerPreferencePickerListView.model = PluginAdapter.getPluginPreferencesModel(pluginId, mediahandlerPreferencePickerListView.mediaHandlerName)
                         }
-
-                        onPreferenceAdded: mediahandlerPreferencePickerListView.model = MediaHandlerAdapter.getMediaHandlerPreferencesModel(pluginId, mediahandlerPreferencePickerListView.mediaHandlerName)
                     }
 
                     ScrollIndicator.vertical: ScrollIndicator {}
@@ -246,7 +246,7 @@ Popup {
 
     onAboutToShow: {
         // Reset the model on each show.
-        mediahandlerPickerListView.model = MediaHandlerAdapter.getMediaHandlerSelectableModel()
+        mediahandlerPickerListView.model = PluginAdapter.getMediaHandlerSelectableModel()
     }
 
     background: Rectangle {

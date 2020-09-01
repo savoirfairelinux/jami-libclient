@@ -117,5 +117,6 @@
         <file>images/icons/drafts-24px.svg</file>
         <file>images/icons/person_add-24px.svg</file>
         <file>images/icons/router-24px.svg</file>
+        <file>images/icons/insert_drive_file-24dp.svg</file>
     </qresource>
 </RCC>

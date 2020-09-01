@@ -17,10 +17,11 @@
  */
 
 #include "preferenceitemlistmodel.h"
+#include "utils.h"
 #include <map>
 
 std::map<QString, int> mapType {{QString("List"), PreferenceItemListModel::Type::LIST},
-                                {QString("UserList"), PreferenceItemListModel::Type::USERLIST}};
+                                {QString("Path"), PreferenceItemListModel::Type::PATH}};
 
 PreferenceItemListModel::PreferenceItemListModel(QObject* parent)
     : QAbstractListModel(parent)
@@ -55,14 +56,27 @@ PreferenceItemListModel::data(const QModelIndex& index, int role) const
     }
 
     auto details = preferenceList_.at(index.row());
-    int type = Type::DEFAULT;
-    auto it = mapType.find(details["type"]);
-    if (it != mapType.end()) {
-        type = mapType[details["type"]];
-    }
     QString preferenceCurrent = LRCInstance::pluginModel().getPluginPreferencesValues(
         pluginId_)[details["key"]];
 
+    int type = Type::DEFAULT;
+    QString currentPath = "";
+    QStringList acceptedFiles = {};
+    bool checkImage = false;
+    auto it = mapType.find(details["type"]);
+    if (it != mapType.end()) {
+        type = mapType[details["type"]];
+        if (type == Type::PATH) {
+            currentPath = preferenceCurrent;
+            currentPath.truncate(preferenceCurrent.lastIndexOf("/"));
+            QStringList mimeTypeList = details["mimeType"].split(',');
+            for (auto& mimeType : mimeTypeList) {
+                QString fileExt = mimeType.mid(mimeType.lastIndexOf("/") + 1);
+                acceptedFiles.append((fileExt.toUpper() + " Files") + " (*." + fileExt + ")");
+                checkImage = UtilsAdapter().isImage(fileExt);
+            }
+        }
+    }
     switch (role) {
     case Role::PreferenceKey:
         return QVariant(details["key"]);
@@ -76,6 +90,12 @@ PreferenceItemListModel::data(const QModelIndex& index, int role) const
         return QVariant(pluginId_);
     case Role::PreferenceCurrentValue:
         return QVariant(preferenceCurrent);
+    case Role::CurrentPath:
+        return QVariant(currentPath);
+    case Role::FileFilters:
+        return QVariant(acceptedFiles);
+    case Role::IsImage:
+        return QVariant(checkImage);
     }
     return QVariant();
 }
@@ -90,6 +110,9 @@ PreferenceItemListModel::roleNames() const
     roles[PreferenceType] = "PreferenceType";
     roles[PluginId] = "PluginId";
     roles[PreferenceCurrentValue] = "PreferenceCurrentValue";
+    roles[CurrentPath] = "CurrentPath";
+    roles[FileFilters] = "FileFilters";
+    roles[IsImage] = "IsImage";
     return roles;
 }
 
@@ -167,21 +190,8 @@ PreferenceItemListModel::preferencesCount()
     } else {
         auto preferences = LRCInstance::pluginModel().getPluginPreferences(pluginId_);
         for (auto& preference : preferences) {
-            std::string scope = preference["scope"].toStdString();
-            std::string delimiter = ",";
-
-            size_t pos = 0;
-            std::string token;
-            while ((pos = scope.find(delimiter)) != std::string::npos) {
-                token = scope.substr(0, pos);
-                if (token == mediaHandlerName_.toStdString()) {
-                    preferenceList_.push_back(preference);
-                    break;
-                }
-                scope.erase(0, pos + delimiter.length());
-            }
-            token = scope.substr(0, pos);
-            if (token == mediaHandlerName_.toStdString())
+            QStringList scopeList = preference["scope"].split(",");
+            if (scopeList.contains(mediaHandlerName_))
                 preferenceList_.push_back(preference);
         }
         return preferenceList_.size();

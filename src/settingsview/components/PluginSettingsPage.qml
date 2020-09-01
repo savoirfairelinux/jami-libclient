@@ -33,9 +33,6 @@ Rectangle {
         // settings
         enabledplugin.checked = ClientWrapper.pluginModel.getPluginsEnabled()
         pluginListSettingsView.visible = enabledplugin.checked
-        if (pluginListSettingsView.visible) {
-            pluginListSettingsView.updatePluginListDisplayed()
-        }
     }
 
     function slotSetPluginEnabled(state){
@@ -114,9 +111,7 @@ Rectangle {
                         slotSetPluginEnabled(checked)
 
                         pluginListSettingsView.visible = checked
-                        if (pluginListSettingsView.visible) {
-                            pluginListSettingsView.updatePluginListDisplayed()
-                        } else {
+                        if (!pluginListSettingsView.visible) {
                             ClientWrapper.pluginModel.toggleCallMediaHandler("", true)
                             pluginListSettingsView.hidePreferences()
                         }
@@ -144,10 +139,6 @@ Rectangle {
                     Layout.rightMargin: 16
                     Layout.minimumHeight: 0
                     Layout.preferredHeight: childrenRect.height
-
-                    onUpdatePluginList:{
-                        pluginListSettingsView.updatePluginListDisplayed()
-                    }
                 }
             }
         }

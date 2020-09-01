@@ -26,7 +26,7 @@
 #include "bannedlistmodel.h"
 #include "calladapter.h"
 #include "contactadapter.h"
-#include "mediahandleradapter.h"
+#include "pluginadapter.h"
 #include "conversationsadapter.h"
 #include "deviceitemlistmodel.h"
 #include "pluginitemlistmodel.h"
