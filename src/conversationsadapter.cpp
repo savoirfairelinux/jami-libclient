@@ -190,7 +190,6 @@ ConversationsAdapter::connectConversationModel()
     QObject::disconnect(newConversationConnection_);
     QObject::disconnect(conversationRemovedConnection_);
     QObject::disconnect(conversationClearedConnection);
-    QObject::disconnect(newInteractionConnection_);
     QObject::disconnect(interactionRemovedConnection_);
     QObject::disconnect(searchStatusChangedConnection_);
     QObject::disconnect(searchResultUpdatedConnection_);
@@ -256,14 +255,6 @@ ConversationsAdapter::connectConversationModel()
             return;
         }
         backToWelcomePage();
-    });
-
-    newInteractionConnection_ = QObject::connect(currentConversationModel,
-                                                 &lrc::api::ConversationModel::newInteraction,
-                                                 [this] {
-        conversationSmartListModel_->fillConversationsList();
-        updateConversationsFilterWidget();
-        QMetaObject::invokeMethod(qmlObj_, "updateConversationSmartListView");
     });
 
     searchStatusChangedConnection_ = QObject::connect(currentConversationModel,
