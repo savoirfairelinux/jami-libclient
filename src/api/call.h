@@ -156,6 +156,7 @@ struct Info
     bool isAudioOnly = false;
     Layout layout = Layout::GRID;
     VectorMapStringString participantsInfos = {};
+    VectorString peerRec {};
 };
 
 static inline bool
