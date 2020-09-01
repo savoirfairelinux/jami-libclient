@@ -170,6 +170,17 @@ public:
                 [this](const std::map<std::string, std::string>& info) {
                     LOG_DRING_SIGNAL("smartInfo", "");
                     Q_EMIT smartInfo(convertMap(info));
+                }),
+            exportable_callback<CallSignal::RemoteRecordingChanged>([this] (const std::string &callID,
+                                                                            const std::string &contactId,
+                                                                            bool state) {
+                    LOG_DRING_SIGNAL3("remoteRecordingChanged",
+                                      QString(callID.c_str()),
+                                      QString(contactId.c_str()),
+                                      state);
+                    Q_EMIT remoteRecordingChanged(QString(callID.c_str()),
+                                                  QString(contactId.c_str()),
+                                                  state);
                 })};
     }
 
