@@ -190,6 +190,12 @@ public Q_SLOTS:
      * @param infos
      */
     void slotOnConferenceInfosUpdated(const QString& confId, const VectorMapStringString& infos);
+    /**
+     * Listen from CallbacksHandler when the peer start recording
+     * @param callId
+     * @param state the new state
+     */
+    void remoteRecordingChanged(const QString& callId, const QString& peerNumber, bool state);
 };
 
 NewCallModel::NewCallModel(const account::Info& owner, const CallbacksHandler& callbacksHandler)
@@ -515,6 +521,7 @@ NewCallModelPimpl::NewCallModelPimpl(const NewCallModel& linked, const Callbacks
     connect(&callbacksHandler, &CallbacksHandler::conferenceCreated, this , &NewCallModelPimpl::slotConferenceCreated);
     connect(&callbacksHandler, &CallbacksHandler::voiceMailNotify, this, &NewCallModelPimpl::slotVoiceMailNotify);
     connect(&CallManager::instance(), &CallManagerInterface::onConferenceInfosUpdated, this, &NewCallModelPimpl::slotOnConferenceInfosUpdated);
+    connect(&callbacksHandler, &CallbacksHandler::remoteRecordingChanged, this, &NewCallModelPimpl::remoteRecordingChanged);
 
 #ifndef ENABLE_LIBWRAP
     // Only necessary with dbus since the daemon runs separately
@@ -924,6 +931,45 @@ NewCallModelPimpl::sendProfile(const QString& callId)
         ++i;
         CallManager::instance().sendTextMessage(callId, chunk, false);
     }
+}
+
+void
+NewCallModelPimpl::remoteRecordingChanged(const QString& callId, const QString& peerNumber, bool state)
+{
+    auto it = calls.find(callId);
+    if (it == calls.end() or not it->second)
+        return;
+
+    auto bestName = peerNumber;
+
+    if (bestName.contains("ring:"))
+        bestName.remove("ring:");
+    if (bestName.contains("jami:"))
+        bestName.remove("jami:");
+    if (bestName.contains("@ring.dht"))
+        bestName.remove("@ring.dht");
+
+    // Find alias
+    contact::Info contact;
+    try {
+        contact = linked.owner.contactModel->getContact(bestName);
+    } catch (const std::out_of_range& e) {
+        qWarning("remoteRecordingChanged contactURI %s not found", bestName.toStdString().c_str());
+        return;
+    }
+    if (not contact.profileInfo.alias.isEmpty())
+        bestName = contact.profileInfo.alias;
+
+    // Add peer to peerRec vector
+    if (state && not it->second->peerRec.contains(bestName))
+        it->second->peerRec.push_back(bestName);
+
+    // remove peer from peerRec vector
+    auto it_Rec = std::find(it->second->peerRec.begin(), it->second->peerRec.end(), bestName);
+    if (!state && it_Rec != it->second->peerRec.end())
+        it->second->peerRec.erase(it_Rec);
+
+    emit linked.remoteRecordingChanged(callId, bestName, state);
 }
 
 } // namespace lrc
