@@ -180,7 +180,7 @@ ItemDelegate {
                 }
             }
 
-            ToolTip.visible: isHovering
+            ToolTip.visible: hovered
             ToolTip.text: {
                 if(isCurrent) {
                     if (editable) {

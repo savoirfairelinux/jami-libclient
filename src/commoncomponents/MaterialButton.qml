@@ -40,7 +40,7 @@ Button {
     icon.source: ""
     icon.height: 18
     icon.width: 18
-    hoverEnabled: hoverColor !== undefined
+    hoverEnabled: hoveredColor !== undefined
 
     contentItem: Item {
         Rectangle {

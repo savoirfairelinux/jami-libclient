@@ -181,7 +181,7 @@ ItemDelegate {
 
             backgroundColor: "transparent"
 
-            ToolTip.visible: isHovering
+            ToolTip.visible: hovered
             ToolTip.text: qsTr("Add as contact")
 
             onClicked: {
