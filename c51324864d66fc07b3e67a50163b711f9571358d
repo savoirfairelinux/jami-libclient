@@ -1,0 +1,8 @@
+Code-Review+2: Pierre Lespagnol <pierre.lespagnol@savoirfairelinux.com>
+Code-Review+1: Mohamed Chibani <mohamed.chibani@savoirfairelinux.com>
+Verified+1: Jenkins CI <jenkins@ring-packaging.cx>
+Submitted-by: Adrien Béraud <adrien.beraud@savoirfairelinux.com>
+Submitted-at: Wed, 02 Sep 2020 11:28:50 -0400
+Reviewed-on: https://review.jami.net/c/ring-lrc/+/15352
+Project: ring-lrc
+Branch: refs/heads/master
