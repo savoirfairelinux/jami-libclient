@@ -223,11 +223,12 @@ NewAccountModel::setAccountEnabled(const QString& accountId, bool enabled) const
 
 void
 NewAccountModel::setAccountConfig(const QString& accountId,
-                                  const account::ConfProperties_t& confProperties) const
+                                  const MapStringString& propertiesMap) const
 {
+    auto details = propertiesMap;
     auto& accountInfo = pimpl_->getAccountInfo(accountId);
     auto& configurationManager = ConfigurationManager::instance();
-    MapStringString details = confProperties.toDetails();
+
     // Set values from Info. No need to include ID and TYPE. SIP accounts may modify the USERNAME
     // TODO: move these into the ConfProperties_t struct ?
     using namespace DRing::Account;
@@ -245,32 +246,51 @@ NewAccountModel::setAccountConfig(const QString& accountId,
         VectorMapStringString finalCred;
 
         MapStringString credentials;
-        credentials[ConfProperties::USERNAME] = confProperties.username;
-        credentials[ConfProperties::PASSWORD] = confProperties.password;
-        credentials[ConfProperties::REALM] = confProperties.realm.isEmpty() ? "*"
-                                                                            : confProperties.realm;
+        credentials[ConfProperties::USERNAME] = details.value(ConfProperties::USERNAME);
+        credentials[ConfProperties::PASSWORD] = details.value(ConfProperties::PASSWORD);
+        credentials[ConfProperties::REALM] = details.value(ConfProperties::REALM).isEmpty() ? "*"
+                                                                                            : details.value(ConfProperties::REALM);
 
-        auto credentialsVec = confProperties.credentials;
+        auto& credentialsVec = accountInfo.confProperties.credentials;
         credentialsVec[0] = credentials;
-        for (auto const& i : credentialsVec) {
-            QMap<QString, QString> credMap;
-            for (auto const& j : i.toStdMap()) {
-                credMap[j.first] = j.second;
-            }
-            finalCred.append(credMap);
-        }
-
-        ConfigurationManager::instance().setCredentials(accountId, finalCred);
-        details[ConfProperties::USERNAME] = confProperties.username;
-        accountInfo.confProperties.credentials.swap(credentialsVec);
+        ConfigurationManager::instance().setCredentials(accountId, credentialsVec);
     }
     configurationManager.setAccountDetails(accountId, details);
+}
+
+void
+NewAccountModel::setAccountConfig(const QString& accountId,
+                                  const account::ConfProperties_t& confProperties) const
+{
+    setAccountConfig(accountId, confProperties.toDetails());
+}
+
+void
+NewAccountModel::setAccountConfig(const QString& accountId,
+                                  const QVariantMap& propertiesMap) const
+{
+    MapStringString details;
+    for (auto it = propertiesMap.begin(); it != propertiesMap.end(); ++it)
+        details[it.key()] = it.value().toString();
+
+    setAccountConfig(accountId, details);
 }
 
 account::ConfProperties_t
 NewAccountModel::getAccountConfig(const QString& accountId) const
 {
     return getAccountInfo(accountId).confProperties;
+}
+
+QVariantMap
+NewAccountModel::getAccountConfigMap(const QString& accountId) const
+{
+    QVariantMap variantMap;
+    MapStringString stringMap = getAccountConfig(accountId).toDetails();
+    for(auto it = stringMap.begin(); it != stringMap.end(); ++it)
+        variantMap[it.key()] = it.value();
+
+    return variantMap;
 }
 
 void
