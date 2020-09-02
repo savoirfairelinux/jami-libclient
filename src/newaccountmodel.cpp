@@ -223,54 +223,74 @@ NewAccountModel::setAccountEnabled(const QString& accountId, bool enabled) const
 
 void
 NewAccountModel::setAccountConfig(const QString& accountId,
-                                  const account::ConfProperties_t& confProperties) const
+                                  MapStringString& propertiesMap) const
 {
     auto& accountInfo = pimpl_->getAccountInfo(accountId);
     auto& configurationManager = ConfigurationManager::instance();
-    MapStringString details = confProperties.toDetails();
+
     // Set values from Info. No need to include ID and TYPE. SIP accounts may modify the USERNAME
     // TODO: move these into the ConfProperties_t struct ?
     using namespace DRing::Account;
-    qDebug("UPNP_ENABLED: %s\n", details[ConfProperties::UPNP_ENABLED].toStdString().c_str());
-    details[ConfProperties::ENABLED] = accountInfo.enabled ? QString("true") : QString("false");
-    details[ConfProperties::ALIAS] = accountInfo.profileInfo.alias;
-    details[ConfProperties::DISPLAYNAME] = accountInfo.profileInfo.alias;
-    details[ConfProperties::TYPE] = (accountInfo.profileInfo.type == profile::Type::RING)
+    qDebug("UPNP_ENABLED: %s\n", propertiesMap[ConfProperties::UPNP_ENABLED].toStdString().c_str());
+    propertiesMap[ConfProperties::ENABLED] = accountInfo.enabled ? QString("true") : QString("false");
+    propertiesMap[ConfProperties::ALIAS] = accountInfo.profileInfo.alias;
+    propertiesMap[ConfProperties::DISPLAYNAME] = accountInfo.profileInfo.alias;
+    propertiesMap[ConfProperties::TYPE] = (accountInfo.profileInfo.type == profile::Type::RING)
                                         ? QString(ProtocolNames::RING)
                                         : QString(ProtocolNames::SIP);
     if (accountInfo.profileInfo.type == profile::Type::RING) {
-        details[ConfProperties::USERNAME] = accountInfo.profileInfo.uri.prepend(
+        propertiesMap[ConfProperties::USERNAME] = accountInfo.profileInfo.uri.prepend(
             (accountInfo.profileInfo.type == profile::Type::RING) ? "ring:" : "");
     } else if (accountInfo.profileInfo.type == profile::Type::SIP) {
         VectorMapStringString finalCred;
 
         MapStringString credentials;
-        credentials[ConfProperties::USERNAME] = confProperties.username;
-        credentials[ConfProperties::PASSWORD] = confProperties.password;
-        credentials[ConfProperties::REALM] = confProperties.realm.isEmpty() ? "*"
-                                                                            : confProperties.realm;
+        credentials[ConfProperties::USERNAME] = propertiesMap.value(ConfProperties::USERNAME);
+        credentials[ConfProperties::PASSWORD] = propertiesMap.value(ConfProperties::PASSWORD);
+        credentials[ConfProperties::REALM] = propertiesMap.value(ConfProperties::REALM).isEmpty() ? "*"
+                                                                                            : propertiesMap.value(ConfProperties::REALM);
 
-        auto credentialsVec = confProperties.credentials;
+        auto& credentialsVec = accountInfo.confProperties.credentials;
         credentialsVec[0] = credentials;
-        for (auto const& i : credentialsVec) {
-            QMap<QString, QString> credMap;
-            for (auto const& j : i.toStdMap()) {
-                credMap[j.first] = j.second;
-            }
-            finalCred.append(credMap);
-        }
-
-        ConfigurationManager::instance().setCredentials(accountId, finalCred);
-        details[ConfProperties::USERNAME] = confProperties.username;
-        accountInfo.confProperties.credentials.swap(credentialsVec);
+        ConfigurationManager::instance().setCredentials(accountId, credentialsVec);
     }
-    configurationManager.setAccountDetails(accountId, details);
+    configurationManager.setAccountDetails(accountId, propertiesMap);
+}
+
+void
+NewAccountModel::setAccountConfig(const QString& accountId,
+                                  const account::ConfProperties_t& confProperties) const
+{
+    auto details = confProperties.toDetails();
+    setAccountConfig(accountId, details);
+}
+
+void
+NewAccountModel::setAccountConfig(const QString& accountId,
+                                  const QVariantMap& propertiesMap) const
+{
+    MapStringString details;
+    for (auto it = propertiesMap.begin(); it != propertiesMap.end(); ++it)
+        details[it.key()] = it.value().toString();
+
+    setAccountConfig(accountId, details);
 }
 
 account::ConfProperties_t
 NewAccountModel::getAccountConfig(const QString& accountId) const
 {
     return getAccountInfo(accountId).confProperties;
+}
+
+QVariantMap
+NewAccountModel::getAccountConfigMap(const QString& accountId) const
+{
+    QVariantMap variantMap;
+    MapStringString stringMap = getAccountConfig(accountId).toDetails();
+    for(auto it = stringMap.begin(); it != stringMap.end(); ++it)
+        variantMap[it.key()] = it.value();
+
+    return variantMap;
 }
 
 void
@@ -918,6 +938,7 @@ account::ConfProperties_t::toDetails() const
     details[ConfProperties::ACTIVE_CALL_LIMIT] = toQString(this->activeCallLimit);
     details[ConfProperties::HOSTNAME] = this->hostname;
     details[ConfProperties::ROUTE] = this->routeset;
+    details[ConfProperties::USERNAME] = this->username;
     details[ConfProperties::PASSWORD] = this->password;
     details[ConfProperties::REALM] = this->realm;
     details[ConfProperties::RING_DEVICE_ID] = this->deviceId;
