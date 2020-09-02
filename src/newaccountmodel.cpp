@@ -260,6 +260,46 @@ NewAccountModel::setAccountConfig(const QString& accountId,
     configurationManager.setAccountDetails(accountId, details);
 }
 
+void
+NewAccountModel::setAccountConfig(const QString& accountId,
+                                  const QVariantMap& propertiesMap) const
+{
+    auto account = pimpl_->accounts.find(accountId);
+    if (account == pimpl_->accounts.end()) {
+        throw std::out_of_range("NewAccountModel::save, can't find " + accountId.toStdString());
+    }
+    auto& accountInfo = account->second.first;
+    auto& configurationManager = ConfigurationManager::instance();
+    MapStringString details;
+
+    for (auto it = propertiesMap.begin(); it != propertiesMap.end(); ++it)
+        details[it.key()] = it.value().toString();
+
+    // Set values from Info. No need to include ID and TYPE. SIP accounts may modify the USERNAME
+    // TODO: move these into the ConfProperties_t struct ?
+    using namespace DRing::Account;
+    qDebug("UPNP_ENABLED: %s\n", details[ConfProperties::UPNP_ENABLED].toStdString().c_str());
+    details[ConfProperties::ENABLED]                    = accountInfo.enabled ? QString("true") : QString ("false");
+    details[ConfProperties::ALIAS]                      = accountInfo.profileInfo.alias;
+    details[ConfProperties::DISPLAYNAME]                = accountInfo.profileInfo.alias;
+    details[ConfProperties::TYPE]                       = (accountInfo.profileInfo.type == profile::Type::RING) ? QString(ProtocolNames::RING) : QString(ProtocolNames::SIP);
+    if (accountInfo.profileInfo.type == profile::Type::RING) {
+        details[ConfProperties::USERNAME] = accountInfo.profileInfo.uri.prepend((accountInfo.profileInfo.type == profile::Type::RING) ? "ring:" : "");
+    } else if (accountInfo.profileInfo.type == profile::Type::SIP) {
+        VectorMapStringString finalCred;
+
+        MapStringString credentials;
+        credentials[ConfProperties::USERNAME] = details.value(ConfProperties::USERNAME);
+        credentials[ConfProperties::PASSWORD] = details.value(ConfProperties::PASSWORD);
+        credentials[ConfProperties::REALM] = details.value(ConfProperties::REALM).isEmpty() ? "*" : details.value(ConfProperties::REALM);
+
+        QVector<MapStringString> credentialsVec;
+        credentialsVec.append(credentials);
+        ConfigurationManager::instance().setCredentials(accountId, credentialsVec);
+    }
+    configurationManager.setAccountDetails(accountId, details);
+}
+
 account::ConfProperties_t
 NewAccountModel::getAccountConfig(const QString& accountId) const
 {
@@ -269,6 +309,17 @@ NewAccountModel::getAccountConfig(const QString& accountId) const
     }
     auto& accountInfo = account->second.first;
     return accountInfo.confProperties;
+}
+
+QVariantMap
+NewAccountModel::getAccountConfigMap(const QString& accountId) const
+{
+    QVariantMap variantMap;
+    MapStringString stringMap = getAccountConfig(accountId).toDetails();
+    for(auto it = stringMap.begin(); it != stringMap.end(); ++it)
+        variantMap[it.key()] = it.value();
+
+    return variantMap;
 }
 
 void
