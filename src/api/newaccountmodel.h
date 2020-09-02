@@ -84,11 +84,26 @@ public:
     Q_INVOKABLE void setAccountConfig(const QString& accountID,
                                       const account::ConfProperties_t& confProperties) const;
     /**
+     * saves account config to .yml from QVariant map
+     * @param accountId.
+     * @param configuration map
+     */
+    Q_INVOKABLE void setAccountConfig(const QString& accountID,
+                                      const QVariantMap& propertiesMap) const;
+    /**
      * gets a copy of the accounts config
      * @param accountId.
      * @return an account::Info::ConfProperties_t structure.
      */
     Q_INVOKABLE account::ConfProperties_t getAccountConfig(const QString& accountId) const;
+
+    /**
+     * gets a copy of the account config and create a configuration map
+     * @param accountId.
+     * @return Account config in QMap format
+     */
+    Q_INVOKABLE QVariantMap getAccountConfigMap(const QString& accountId) const;
+
     /**
      * Call exportToFile from the daemon
      * @param accountId
@@ -268,6 +283,14 @@ Q_SIGNALS:
 
 private:
     std::unique_ptr<NewAccountModelPimpl> pimpl_;
+
+    /**
+     * Internal method to save account config
+     * @param accountId.
+     * @param configuration map
+     */
+    void setAccountConfig(const QString& accountID,
+                          MapStringString& propertiesMap) const;
 };
 } // namespace api
 } // namespace lrc
