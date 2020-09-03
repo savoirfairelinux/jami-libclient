@@ -351,15 +351,9 @@ Rectangle {
                             MaterialButton {
                                 id: downloadButton
 
-                                Layout.maximumWidth: preferredColumnWidth
-                                Layout.preferredWidth: preferredColumnWidth
-                                Layout.minimumWidth: preferredColumnWidth
-
-                                Layout.minimumHeight: JamiTheme.preferredFieldHeight
-                                Layout.preferredHeight: JamiTheme.preferredFieldHeight
-                                Layout.maximumHeight: JamiTheme.preferredFieldHeight
-
                                 Layout.alignment: Qt.AlignRight
+                                Layout.preferredWidth: preferredColumnWidth
+                                Layout.preferredHeight: JamiTheme.preferredFieldHeight
 
                                 toolTipText: qsTr("Press to choose download folder path")
                                 text: downloadPath
@@ -518,15 +512,9 @@ Rectangle {
                             MaterialButton {
                                 id: recordPathButton
 
-                                Layout.maximumWidth: preferredColumnWidth
-                                Layout.preferredWidth: preferredColumnWidth
-                                Layout.minimumWidth: preferredColumnWidth
-
-                                Layout.minimumHeight: JamiTheme.preferredFieldHeight
-                                Layout.preferredHeight: JamiTheme.preferredFieldHeight
-                                Layout.maximumHeight: JamiTheme.preferredFieldHeight
-
                                 Layout.alignment: Qt.AlignRight
+                                Layout.preferredWidth: preferredColumnWidth
+                                Layout.preferredHeight: JamiTheme.preferredFieldHeight
 
                                 toolTipText: qsTr("Press to choose record folder path")
                                 text: recordPath

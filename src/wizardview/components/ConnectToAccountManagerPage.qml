@@ -42,38 +42,34 @@ Rectangle {
         errorText = ""
     }
 
-    anchors.fill: parent
-
     color: JamiTheme.backgroundColor
 
     signal leavePage
     signal createAccount
 
     ColumnLayout {
-        spacing: 12
+        spacing: layoutSpacing
 
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.verticalCenter: parent.verticalCenter
-        Layout.preferredWidth: parent.width
-        Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
 
         RowLayout {
-            spacing: 12
-            height: 48
+            spacing: layoutSpacing
 
-            Layout.fillWidth: true
-            anchors.left: connectBtn.left
-            anchors.right: connectBtn.right
+            Layout.alignment: Qt.AlignCenter
+            Layout.preferredWidth: connectBtn.width
 
             Label {
                 text: qsTr("Enter URL of management server")
+                font.pointSize: JamiTheme.textFontSize + 3
             }
 
             Label {
+                Layout.alignment: Qt.AlignRight
+
                 text: qsTr("Required")
                 color: "#ff1f62"
                 padding: 8
-                anchors.right: parent.right
 
                 background: Rectangle {
                     color: "#fee4e9"
@@ -86,19 +82,20 @@ Rectangle {
         MaterialLineEdit {
             id: accountManagerEdit
 
+            Layout.preferredHeight: fieldLayoutHeight
+            Layout.preferredWidth: connectBtn.width
+            Layout.alignment: Qt.AlignCenter
+
             selectByMouse: true
             placeholderText: qsTr("Jami management server URL")
-            font.pointSize: 10
+            font.pointSize: 9
             font.kerning: true
 
             borderColorMode: MaterialLineEdit.NORMAL
-
-            fieldLayoutWidth: connectBtn.width
         }
 
-        Text {
-            anchors.left: connectBtn.left
-            anchors.right: connectBtn.right
+        Label {
+            Layout.alignment: Qt.AlignLeft
 
             text: qsTr("Enter your organization credentials")
             wrapMode: Text.Wrap
@@ -107,33 +104,42 @@ Rectangle {
         MaterialLineEdit {
             id: usernameManagerEdit
 
+            Layout.preferredHeight: fieldLayoutHeight
+            Layout.preferredWidth: connectBtn.width
+            Layout.alignment: Qt.AlignCenter
+
             selectByMouse: true
             placeholderText: qsTr("Username")
-            font.pointSize: 10
+            font.pointSize: 9
             font.kerning: true
 
             borderColorMode: MaterialLineEdit.NORMAL
-
-            fieldLayoutWidth: connectBtn.width
         }
 
         MaterialLineEdit {
             id: passwordManagerEdit
 
+            Layout.preferredHeight: fieldLayoutHeight
+            Layout.preferredWidth: connectBtn.width
+            Layout.alignment: Qt.AlignCenter
+
             selectByMouse: true
             placeholderText: qsTr("Password")
-            font.pointSize: 10
+            font.pointSize: 9
             font.kerning: true
 
             echoMode: TextInput.Password
 
             borderColorMode: MaterialLineEdit.NORMAL
-
-            fieldLayoutWidth: connectBtn.width
         }
 
         MaterialButton {
             id: connectBtn
+
+            Layout.alignment: Qt.AlignCenter
+            Layout.preferredWidth: preferredWidth
+            Layout.preferredHeight: preferredHeight
+
             text: qsTr("CONNECT")
             enabled: accountManagerEdit.text.length !== 0
                 && usernameManagerEdit.text.length !== 0
@@ -149,53 +155,29 @@ Rectangle {
         }
 
         Label {
-            text: errorText
+            Layout.alignment: Qt.AlignCenter
 
-            anchors.left: connectBtn.left
-            anchors.right: connectBtn.right
-            Layout.alignment: Qt.AlignHCenter
+            visible: errorText.length !== 0
+            text: errorText
 
             font.pointSize: JamiTheme.textFontSize
             color: "red"
-
-            height: 32
-        }
-    }
-
-    HoverableButton {
-        id: cancelButton
-        z: 2
-
-        anchors.right: parent.right
-        anchors.top: parent.top
-
-        rightPadding: 90
-        topPadding: 90
-
-        Layout.preferredWidth: 96
-        Layout.preferredHeight: 96
-
-        backgroundColor: "transparent"
-        onEnterColor: "transparent"
-        onPressColor: "transparent"
-        onReleaseColor: "transparent"
-        onExitColor: "transparent"
-
-        buttonImageHeight: 48
-        buttonImageWidth: 48
-        source: "qrc:/images/icons/ic_close_white_24dp.png"
-        radius: 48
-        baseColor: "#7c7c7c"
-        toolTipText: qsTr("Return to welcome page")
-
-        Action {
-            enabled: parent.visible
-            shortcut: StandardKey.Cancel
-            onTriggered: leavePage()
         }
 
-        onClicked: {
-            leavePage()
+        MaterialButton {
+            id: backButton
+
+            Layout.alignment: Qt.AlignCenter
+            Layout.preferredWidth: preferredWidth
+            Layout.preferredHeight: preferredHeight
+
+            text: qsTr("BACK")
+            color: JamiTheme.buttonTintedGrey
+            hoveredColor: JamiTheme.buttonTintedGreyHovered
+            pressedColor: JamiTheme.buttonTintedGreyPressed
+            outlined: true
+
+            onClicked: leavePage()
         }
     }
 }

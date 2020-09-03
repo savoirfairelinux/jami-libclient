@@ -36,8 +36,6 @@ Rectangle {
         aliasEdit.clear()
     }
 
-    anchors.fill: parent
-
     color: JamiTheme.backgroundColor
 
     signal leavePage
@@ -49,30 +47,28 @@ Rectangle {
     property alias displayName: aliasEdit.text
 
     ColumnLayout {
-        spacing: 12
+        spacing: layoutSpacing
 
+        width: parent.width
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.verticalCenter: parent.verticalCenter
-        Layout.preferredWidth: parent.width
-        Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
-
 
         RowLayout {
-            spacing: 12
-            height: 48
+            spacing: layoutSpacing
 
             Layout.preferredWidth: saveProfileBtn.width
+            Layout.alignment: Qt.AlignCenter
 
             Label {
                 text: qsTr("Profile is only shared with contacts")
-
                 font.pointSize: JamiTheme.textFontSize + 3
             }
 
             Label {
+                Layout.alignment: Qt.AlignRight
+
                 text: qsTr("Optional")
                 color: "white"
-                Layout.alignment: Qt.AlignRight
                 padding: 8
 
                 background: Rectangle {
@@ -86,22 +82,23 @@ Rectangle {
         PhotoboothView {
             id: setAvatarWidget
 
-            Layout.alignment: Qt.AlignHCenter
+            Layout.alignment: Qt.AlignCenter
+            Layout.preferredWidth: preferredWidth
+            Layout.preferredHeight: preferredWidth
 
-            Layout.maximumWidth: 256
-            Layout.preferredWidth: 256
-            Layout.minimumWidth: 256
-            Layout.maximumHeight: 256
-            Layout.preferredHeight: 256
-            Layout.minimumHeight: 256
+            boothWidth: 200
         }
 
         MaterialLineEdit {
             id: aliasEdit
 
+            Layout.preferredHeight: fieldLayoutHeight
+            Layout.preferredWidth: fieldLayoutWidth
+            Layout.alignment: Qt.AlignCenter
+
             selectByMouse: true
             placeholderText: qsTr("Enter your name")
-            font.pointSize: 10
+            font.pointSize: 9
             font.kerning: true
 
             borderColorMode: MaterialLineEdit.NORMAL
@@ -111,6 +108,11 @@ Rectangle {
 
         MaterialButton {
             id: saveProfileBtn
+
+            Layout.alignment: Qt.AlignCenter
+            Layout.preferredWidth: preferredWidth
+            Layout.preferredHeight: preferredHeight
+
             enabled: readyToSaveDetails
             text: enabled? qsTr("Save Profile") : qsTr("Generating account…")
             color: enabled? JamiTheme.wizardBlueButtons : JamiTheme.buttonTintedGreyInactive
@@ -123,6 +125,10 @@ Rectangle {
         }
 
         MaterialButton {
+            Layout.alignment: Qt.AlignCenter
+            Layout.preferredWidth: preferredWidth
+            Layout.preferredHeight: preferredHeight
+
             text: qsTr("SKIP")
             enabled: saveProfileBtn.enabled
             color: enabled? JamiTheme.buttonTintedGrey : JamiTheme.buttonTintedGreyInactive
@@ -134,84 +140,15 @@ Rectangle {
                 leavePage()
             }
         }
-
-        RowLayout {
-            id: bottomLayout
-            height: 48
-            spacing: 12
-            visible: showBottom
-
-            Layout.preferredWidth: saveProfileBtn.width
-            Layout.topMargin: 12
-            Layout.alignment: Qt.AlignHCenter
-
-            Item {
-                Layout.fillWidth: true
-            }
-
-            Rectangle {
-                color: "grey"
-                radius: height / 2
-                height: 12
-                width: 12
-            }
-
-            Rectangle {
-                color: "grey"
-                radius: height / 2
-                height: 12
-                width: 12
-            }
-
-            Rectangle {
-                color: JamiTheme.wizardBlueButtons
-                radius: height / 2
-                height: 12
-                width: 12
-            }
-
-            Item {
-                Layout.fillWidth: true
-            }
-        }
-
     }
 
-    HoverableButton {
-        id: cancelButton
-        z: 2
-        visible: readyToSaveDetails
+    AccountCreationStepIndicator {
+        anchors.bottom: root.bottom
+        anchors.bottomMargin: 30
+        anchors.horizontalCenter: root.horizontalCenter
 
-        anchors.right: parent.right
-        anchors.top: parent.top
-
-        rightPadding: 90
-        topPadding: 90
-
-        Layout.preferredWidth: 96
-        Layout.preferredHeight: 96
-
-        backgroundColor: "transparent"
-        onEnterColor: "transparent"
-        onPressColor: "transparent"
-        onReleaseColor: "transparent"
-        onExitColor: "transparent"
-
-        buttonImageHeight: 48
-        buttonImageWidth: 48
-        source: "qrc:/images/icons/ic_close_white_24dp.png"
-        radius: 48
-        baseColor: "#7c7c7c"
-        toolTipText: qsTr("Close")
-
-        Action {
-            enabled: parent.visible
-            shortcut: StandardKey.Cancel
-            onTriggered: leavePage()
-        }
-
-        onClicked: {
-            leavePage()
-        }
+        spacing: layoutSpacing
+        steps: 3
+        currentStep: 3
     }
 }

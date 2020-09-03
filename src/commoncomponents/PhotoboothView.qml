@@ -13,6 +13,7 @@ ColumnLayout{
     property string imgBase64: ""
     property string fileName: ""
 
+    readonly property int preferredWidth: boothWidth + buttonsRowLayout.height
     property int boothWidth: 224
 
     signal imageAcquired
@@ -73,27 +74,13 @@ ColumnLayout{
 
     spacing: 0
 
-    Layout.maximumWidth: boothWidth
-    Layout.preferredWidth: boothWidth
-    Layout.minimumWidth: boothWidth
-
-    Layout.maximumHeight: 0
-
-    Layout.alignment: Qt.AlignHCenter
-
     Label{
         id: avatarLabel
 
         visible: !takePhotoState
 
-        Layout.maximumWidth: boothWidth
         Layout.preferredWidth: boothWidth
-        Layout.minimumWidth: boothWidth
-
-        Layout.maximumHeight: boothWidth
         Layout.preferredHeight: boothWidth
-        Layout.minimumHeight: boothWidth
-
         Layout.alignment: Qt.AlignHCenter
 
         background: Rectangle {
@@ -140,13 +127,8 @@ ColumnLayout{
         focus: visible
 
         Layout.alignment: Qt.AlignHCenter
-        Layout.maximumWidth: boothWidth
         Layout.preferredWidth: boothWidth
-        Layout.minimumWidth: boothWidth
-
-        Layout.maximumHeight: boothWidth
         Layout.preferredHeight: boothWidth
-        Layout.minimumHeight: boothWidth
 
         layer.enabled: true
         layer.effect: OpacityMask {
@@ -177,16 +159,15 @@ ColumnLayout{
         }
     }
 
-
     RowLayout{
-        Layout.fillWidth: true
-        Layout.minimumHeight: 30
-        Layout.maximumHeight: 30
+        id: buttonsRowLayout
 
-        Item{
-            Layout.fillWidth: true
-            Layout.fillHeight: true
-        }
+        Layout.fillWidth: true
+        Layout.alignment: Qt.AlignHCenter
+        Layout.preferredHeight: 30
+        Layout.topMargin: 5
+
+        spacing: 15
 
         HoverableButton {
             id: takePhotoButton
@@ -195,13 +176,9 @@ ColumnLayout{
             property string addPhotoIconUrl: "qrc:/images/icons/round-add_a_photo-24px.svg"
             property string refreshIconUrl: "qrc:/images/icons/baseline-refresh-24px.svg"
 
-            Layout.maximumWidth: 30
             Layout.preferredWidth: 30
-            Layout.minimumWidth: 30
-
-            Layout.minimumHeight: 30
             Layout.preferredHeight: 30
-            Layout.maximumHeight: 30
+            Layout.alignment: Qt.AlignHCenter
 
             text: ""
             font.pointSize: 10
@@ -244,24 +221,12 @@ ColumnLayout{
             }
         }
 
-        Item{
-            Layout.fillHeight: true
-
-            Layout.minimumWidth: 6
-            Layout.preferredWidth: 6
-            Layout.maximumWidth: 6
-        }
-
         HoverableButton {
             id: importButton
 
-            Layout.maximumWidth: 30
             Layout.preferredWidth: 30
-            Layout.minimumWidth: 30
-
-            Layout.minimumHeight: 30
             Layout.preferredHeight: 30
-            Layout.maximumHeight: 30
+            Layout.alignment: Qt.AlignHCenter
 
             text: ""
             font.pointSize: 10
@@ -275,11 +240,6 @@ ColumnLayout{
             onClicked: {
                 importFromFileToAvatar_Dialog.open()
             }
-        }
-
-        Item{
-            Layout.fillWidth: true
-            Layout.fillHeight: true
         }
     }
 }

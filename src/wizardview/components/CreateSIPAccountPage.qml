@@ -23,7 +23,6 @@ import QtQuick.Controls 2.14
 import "../../constant"
 import "../../commoncomponents"
 
-
 Rectangle {
     id: root
 
@@ -32,7 +31,7 @@ Rectangle {
     property alias text_sipUsernameEditAlias: sipUsernameEdit.text
     property alias text_sipPasswordEditAlias: sipPasswordEdit.text
 
-    property /*alias*/ var boothImgBase64: null//setSIPAvatarWidget.imgBase64
+    property var boothImgBase64: null
 
     function initializeOnShowUp() {
         clearAllTextFields()
@@ -49,36 +48,33 @@ Rectangle {
     signal createAccount
     signal leavePage
 
-    anchors.fill: parent
-
     color: JamiTheme.backgroundColor
 
     ColumnLayout {
-        spacing: 12
+        spacing: layoutSpacing
 
-        anchors.horizontalCenter: parent.horizontalCenter
-        anchors.verticalCenter: parent.verticalCenter
-        Layout.preferredWidth: createAccountButton.width
-        Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
+        anchors.centerIn: parent
 
         RowLayout {
-            spacing: 12
-            height: 48
+            spacing: layoutSpacing
 
-            anchors.left: createAccountButton.left
-            anchors.right: createAccountButton.right
+            Layout.alignment: Qt.AlignCenter
+            Layout.preferredWidth: createAccountButton.width
 
             Label {
                 text: qsTr("Configure an existing SIP account")
+                font.pointSize: JamiTheme.textFontSize + 3
             }
 
             Label {
-                text: qsTr("Required")
-                color: "#ff1f62"
+                Layout.alignment: Qt.AlignRight
+
+                text: qsTr("Optional")
+                color: "white"
                 padding: 8
 
                 background: Rectangle {
-                    color: "#fee4e9"
+                    color: "#28b1ed"
                     radius: 24
                     anchors.fill: parent
                 }
@@ -88,58 +84,63 @@ Rectangle {
         MaterialLineEdit {
             id: sipServernameEdit
 
-            fieldLayoutWidth: createAccountButton.width
-
-            Layout.alignment: Qt.AlignHCenter
+            Layout.alignment: Qt.AlignCenter
+            Layout.preferredHeight: fieldLayoutHeight
+            Layout.preferredWidth: createAccountButton.width
 
             selectByMouse: true
             placeholderText: qsTr("Server")
-            font.pointSize: 10
+            font.pointSize: 9
             font.kerning: true
         }
 
         MaterialLineEdit {
             id: sipProxyEdit
 
-            fieldLayoutWidth: createAccountButton.width
-
-            Layout.alignment: Qt.AlignHCenter
+            Layout.alignment: Qt.AlignCenter
+            Layout.preferredHeight: fieldLayoutHeight
+            Layout.preferredWidth: createAccountButton.width
 
             selectByMouse: true
             placeholderText: qsTr("Proxy")
-            font.pointSize: 10
+            font.pointSize: 9
             font.kerning: true
         }
 
         MaterialLineEdit {
             id: sipUsernameEdit
 
-            fieldLayoutWidth: createAccountButton.width
-
-            Layout.alignment: Qt.AlignHCenter
+            Layout.alignment: Qt.AlignCenter
+            Layout.preferredHeight: fieldLayoutHeight
+            Layout.preferredWidth: createAccountButton.width
 
             selectByMouse: true
             placeholderText: qsTr("Username")
-            font.pointSize: 10
+            font.pointSize: 9
             font.kerning: true
         }
 
         MaterialLineEdit {
             id: sipPasswordEdit
 
-            fieldLayoutWidth: createAccountButton.width
-
-            Layout.alignment: Qt.AlignHCenter
+            Layout.alignment: Qt.AlignCenter
+            Layout.preferredHeight: fieldLayoutHeight
+            Layout.preferredWidth: createAccountButton.width
 
             selectByMouse: true
             echoMode: TextInput.Password
             placeholderText: qsTr("Password")
-            font.pointSize: 10
+            font.pointSize: 9
             font.kerning: true
         }
 
         MaterialButton {
             id: createAccountButton
+
+            Layout.alignment: Qt.AlignCenter
+            Layout.preferredWidth: preferredWidth
+            Layout.preferredHeight: preferredHeight
+
             text: qsTr("CREATE SIP ACCOUNT")
             color: JamiTheme.wizardBlueButtons
             hoveredColor: JamiTheme.buttonTintedBlueHovered
@@ -149,42 +150,21 @@ Rectangle {
                 createAccount()
             }
         }
-    }
 
-    HoverableButton {
-        id: cancelButton
-        z: 2
+        MaterialButton {
+            id: backButton
 
-        anchors.right: parent.right
-        anchors.top: parent.top
+            Layout.alignment: Qt.AlignCenter
+            Layout.preferredWidth: createAccountButton.width / 2
+            Layout.preferredHeight: preferredHeight
 
-        rightPadding: 90
-        topPadding: 90
+            text: qsTr("BACK")
+            color: JamiTheme.buttonTintedGrey
+            hoveredColor: JamiTheme.buttonTintedGreyHovered
+            pressedColor: JamiTheme.buttonTintedGreyPressed
+            outlined: true
 
-        Layout.preferredWidth: 96
-        Layout.preferredHeight: 96
-
-        backgroundColor: "transparent"
-        onEnterColor: "transparent"
-        onPressColor: "transparent"
-        onReleaseColor: "transparent"
-        onExitColor: "transparent"
-
-        buttonImageHeight: 48
-        buttonImageWidth: 48
-        source: "qrc:/images/icons/ic_close_white_24dp.png"
-        radius: 48
-        baseColor: "#7c7c7c"
-        toolTipText: qsTr("Return to welcome page")
-
-        Action {
-            enabled: parent.visible
-            shortcut: StandardKey.Cancel
-            onTriggered: leavePage()
-        }
-
-        onClicked: {
-            leavePage()
+            onClicked: leavePage()
         }
     }
 }

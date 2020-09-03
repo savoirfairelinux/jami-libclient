@@ -128,10 +128,12 @@ void registerTypes()
     QML_REGISTERTYPE(PhotoboothPreviewRender, 1, 0)
 
     /*
-     * Adaptors - qmlRegisterSingletonType.
+     * Adaptors and qml singleton components - qmlRegisterSingletonType.
      */
     QML_REGISTERSINGLETONTYPE_URL(QStringLiteral("qrc:/src/constant/JamiTheme.qml"),
                                   JamiTheme, 1, 0);
+    QML_REGISTERSINGLETONTYPE_URL(QStringLiteral("qrc:/src/constant/JamiQmlUtils.qml"),
+                                  JamiQmlUtils, 1, 0);
 
     QML_REGISTERSINGLETONTYPE("net.jami.Models", CallAdapter, 1, 0);
     QML_REGISTERSINGLETONTYPE("net.jami.Models", MessagesAdapter, 1, 0);

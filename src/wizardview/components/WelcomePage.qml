@@ -26,44 +26,38 @@ import net.jami.Models 1.0
 import "../../constant"
 import "../../commoncomponents"
 
-ColumnLayout {
-    anchors.fill: parent
-    anchors.verticalCenter: parent.verticalCenter
-    anchors.horizontalCenter: parent.horizontalCenter
+Rectangle {
+    id: root
 
     signal welcomePageRedirectPage(int toPageIndex)
     signal leavePage
 
-    Item {
-        // put a spacer to make the buttons closs to the middle
-        Layout.preferredHeight: 48
-        Layout.fillWidth: true
-        Layout.fillHeight: true
-    }
-    RowLayout {
-        Layout.fillWidth: true
-        Layout.alignment: Qt.AlignHCenter
-        Label {
+    color: JamiTheme.backgroundColor
+
+    ColumnLayout {
+        anchors.centerIn: parent
+
+        Text {
             id: welcomeLabel
-            Layout.maximumHeight: 40
+
             Layout.alignment: Qt.AlignCenter
+            Layout.preferredHeight: contentHeight
+
             text: qsTr("Welcome to")
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
+
             font.pointSize: 30
             font.kerning: true
         }
-    }
-    RowLayout {
-        Layout.fillWidth: true
-        Layout.alignment: Qt.AlignHCenter
+
         Label {
             id: welcomeLogo
+
             Layout.alignment: Qt.AlignCenter
-            Layout.minimumWidth: 100
-            Layout.minimumHeight: 100
-            Layout.maximumWidth: 16777215
-            Layout.maximumHeight: 16777215
             Layout.preferredWidth: 300
             Layout.preferredHeight: 150
+
             color: "transparent"
             background: Image {
                 id: logoIMG
@@ -72,14 +66,14 @@ ColumnLayout {
                 mipmap: true
             }
         }
-    }
-    RowLayout {
-        spacing: 8
-        Layout.fillWidth: true
-        Layout.maximumHeight: 36
-        Layout.alignment: Qt.AlignHCenter
+
         MaterialButton {
             id: newAccountButton
+
+            Layout.alignment: Qt.AlignCenter
+            Layout.topMargin: 8
+            Layout.preferredWidth: preferredWidth
+            Layout.preferredHeight: preferredHeight
 
             text: qsTr("CREATE A JAMI ACCOUNT")
             toolTipText: qsTr("Create new Jami account")
@@ -92,15 +86,14 @@ ColumnLayout {
                 welcomePageRedirectPage(1)
             }
         }
-    }
-    RowLayout {
-        spacing: 8
-        Layout.fillWidth: true
 
-        Layout.maximumHeight: 36
-        Layout.alignment: Qt.AlignHCenter
         MaterialButton {
             id: fromDeviceButton
+
+            Layout.alignment: Qt.AlignCenter
+            Layout.topMargin: 8
+            Layout.preferredWidth: preferredWidth
+            Layout.preferredHeight: preferredHeight
 
             text: qsTr("IMPORT FROM ANOTHER DEVICE")
             toolTipText: qsTr("Import account from other device")
@@ -113,15 +106,14 @@ ColumnLayout {
                 welcomePageRedirectPage(5)
             }
         }
-    }
-    RowLayout {
-        spacing: 8
-        Layout.fillWidth: true
 
-        Layout.maximumHeight: 36
-        Layout.alignment: Qt.AlignHCenter
         MaterialButton {
             id: fromBackupButton
+
+            Layout.alignment: Qt.AlignCenter
+            Layout.topMargin: 8
+            Layout.preferredWidth: preferredWidth
+            Layout.preferredHeight: preferredHeight
 
             text: qsTr("CONNECT FROM BACKUP")
             toolTipText: qsTr("Import account from backup file")
@@ -134,15 +126,14 @@ ColumnLayout {
                 welcomePageRedirectPage(3)
             }
         }
-    }
-    RowLayout {
-        spacing: 8
-        Layout.fillWidth: true
 
-        Layout.maximumHeight: 36
-        Layout.alignment: Qt.AlignHCenter
         MaterialButton {
             id: showAdvancedButton
+
+            Layout.alignment: Qt.AlignCenter
+            Layout.topMargin: 8
+            Layout.preferredWidth: preferredWidth
+            Layout.preferredHeight: preferredHeight
 
             text: qsTr("SHOW ADVANCED")
             toolTipText: qsTr("Show advanced options")
@@ -162,15 +153,15 @@ ColumnLayout {
                 newSIPAccountButton.visible = !newSIPAccountButton.visible
             }
         }
-    }
-    RowLayout {
-        spacing: 8
-        Layout.fillWidth: true
-        Layout.alignment: Qt.AlignHCenter
 
-        Layout.maximumHeight: 36
         MaterialButton {
             id: connectAccountManagerButton
+
+            Layout.alignment: Qt.AlignCenter
+            Layout.topMargin: 8
+            Layout.preferredWidth: preferredWidth
+            Layout.preferredHeight: preferredHeight
+
             visible: false
 
             text: qsTr("CONNECT TO MANAGEMENT SERVER")
@@ -184,14 +175,15 @@ ColumnLayout {
                 welcomePageRedirectPage(6)
             }
         }
-    }
-    RowLayout {
-        spacing: 8
-        Layout.fillWidth: true
-        Layout.alignment: Qt.AlignHCenter
-        Layout.maximumHeight: 36
+
         MaterialButton {
             id: newSIPAccountButton
+
+            Layout.alignment: Qt.AlignCenter
+            Layout.topMargin: 8
+            Layout.preferredWidth: preferredWidth
+            Layout.preferredHeight: preferredHeight
+
             visible: false
 
             text: qsTr("CREATE A SIP ACCOUNT")
@@ -204,53 +196,6 @@ ColumnLayout {
             onClicked: {
                 welcomePageRedirectPage(2)
             }
-        }
-    }
-    Item {
-        // put a spacer to make the buttons closs to the middle
-        Layout.fillHeight: true
-        Layout.preferredHeight: 65
-        Layout.fillWidth: true
-    }
-
-    HoverableButton {
-        id: cancelButton
-        z: 2
-
-        visible: {
-            return ClientWrapper.utilsAdaptor.getAccountListSize() > 0
-        }
-
-        anchors.right: parent.right
-        anchors.top: parent.top
-
-        rightPadding: 40
-        topPadding: 40
-
-        Layout.preferredWidth: 96
-        Layout.preferredHeight: 96
-
-        backgroundColor: "transparent"
-        onEnterColor: "transparent"
-        onPressColor: "transparent"
-        onReleaseColor: "transparent"
-        onExitColor: "transparent"
-
-        buttonImageHeight: 48
-        buttonImageWidth: 48
-        source: "qrc:/images/icons/ic_close_white_24dp.png"
-        radius: 48
-        baseColor: "#7c7c7c"
-        toolTipText: qsTr("Close")
-
-        Action {
-            enabled: parent.visible
-            shortcut: StandardKey.Cancel
-            onTriggered: leavePage()
-        }
-
-        onClicked: {
-            leavePage()
         }
     }
 }

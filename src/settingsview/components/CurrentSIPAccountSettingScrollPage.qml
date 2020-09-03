@@ -232,12 +232,9 @@ Rectangle {
                     MaterialLineEdit {
                         id: displaySIPNameLineEdit
 
-                        Layout.maximumWidth: JamiTheme.preferredFieldWidth
-                        Layout.minimumHeight: JamiTheme.preferredFieldHeight
+                        Layout.alignment: Qt.AlignCenter
                         Layout.preferredHeight: JamiTheme.preferredFieldHeight
-                        Layout.maximumHeight: JamiTheme.preferredFieldHeight
-
-                        Layout.alignment: Qt.AlignHCenter
+                        Layout.preferredWidth: JamiTheme.preferredFieldWidth
 
                         font.pointSize: JamiTheme.textFontSize
                         font.kerning: true
@@ -298,7 +295,9 @@ Rectangle {
                         MaterialLineEdit {
                             id: usernameSIP
 
-                            fieldLayoutWidth: preferredColumnWidth
+                            Layout.alignment: Qt.AlignCenter
+                            Layout.preferredHeight: JamiTheme.preferredFieldHeight
+                            Layout.preferredWidth: preferredColumnWidth
 
                             font.pointSize: JamiTheme.settingsFontSize // Albert: buttonSize?
                             font.kerning: true
@@ -306,10 +305,6 @@ Rectangle {
                             horizontalAlignment: Text.AlignLeft
                             verticalAlignment: Text.AlignVCenter
 
-                            Layout.maximumWidth: preferredColumnWidth
-                            Layout.minimumHeight: JamiTheme.preferredFieldHeight
-                            Layout.preferredHeight: JamiTheme.preferredFieldHeight
-                            Layout.maximumHeight: JamiTheme.preferredFieldHeight
                             padding: 8
 
                             onEditingFinished: {
@@ -333,7 +328,9 @@ Rectangle {
                         MaterialLineEdit {
                             id: hostnameSIP
 
-                            fieldLayoutWidth: preferredColumnWidth
+                            Layout.alignment: Qt.AlignCenter
+                            Layout.preferredHeight: JamiTheme.preferredFieldHeight
+                            Layout.preferredWidth: preferredColumnWidth
 
                             font.pointSize: JamiTheme.settingsFontSize
                             font.kerning: true
@@ -341,10 +338,6 @@ Rectangle {
                             horizontalAlignment: Text.AlignLeft
                             verticalAlignment: Text.AlignVCenter
 
-                            Layout.maximumWidth: preferredColumnWidth
-                            Layout.minimumHeight: JamiTheme.preferredFieldHeight
-                            Layout.preferredHeight: JamiTheme.preferredFieldHeight
-                            Layout.maximumHeight: JamiTheme.preferredFieldHeight
                             padding: 8
 
                             onEditingFinished: {
@@ -368,7 +361,9 @@ Rectangle {
                         MaterialLineEdit {
                             id: proxySIP
 
-                            fieldLayoutWidth: preferredColumnWidth
+                            Layout.alignment: Qt.AlignCenter
+                            Layout.preferredHeight: JamiTheme.preferredFieldHeight
+                            Layout.preferredWidth: preferredColumnWidth
 
                             font.pointSize: JamiTheme.settingsFontSize // Albert
                             font.kerning: true
@@ -376,10 +371,6 @@ Rectangle {
                             horizontalAlignment: Text.AlignLeft
                             verticalAlignment: Text.AlignVCenter
 
-                            Layout.maximumWidth: preferredColumnWidth
-                            Layout.minimumHeight: JamiTheme.preferredFieldHeight
-                            Layout.preferredHeight: JamiTheme.preferredFieldHeight
-                            Layout.maximumHeight: JamiTheme.preferredFieldHeight
                             padding: 8
 
                             onEditingFinished: {
@@ -403,7 +394,9 @@ Rectangle {
                         MaterialLineEdit {
                             id: passSIPlineEdit
 
-                            fieldLayoutWidth: preferredColumnWidth
+                            Layout.alignment: Qt.AlignCenter
+                            Layout.preferredHeight: JamiTheme.preferredFieldHeight
+                            Layout.preferredWidth: preferredColumnWidth
 
                             font.pointSize: JamiTheme.settingsFontSize
                             font.kerning: true
@@ -412,10 +405,6 @@ Rectangle {
                             horizontalAlignment: Text.AlignLeft
                             verticalAlignment: Text.AlignVCenter
 
-                            Layout.maximumWidth: preferredColumnWidth
-                            Layout.minimumHeight: JamiTheme.preferredFieldHeight
-                            Layout.preferredHeight: JamiTheme.preferredFieldHeight
-                            Layout.maximumHeight: JamiTheme.preferredFieldHeight
                             padding: 8
 
                             onEditingFinished: {
@@ -427,18 +416,13 @@ Rectangle {
 
 
                     MaterialButton {
+                        Layout.alignment: Qt.AlignHCenter
+                        Layout.preferredWidth: JamiTheme.preferredFieldWidth
+                        Layout.preferredHeight: JamiTheme.preferredFieldHeight
+
                         color: JamiTheme.buttonTintedRed
                         hoveredColor: JamiTheme.buttonTintedRedHovered
                         pressedColor: JamiTheme.buttonTintedRedPressed
-
-                        Layout.alignment: Qt.AlignHCenter
-
-                        Layout.minimumWidth: JamiTheme.preferredFieldWidth
-                        Layout.preferredWidth: JamiTheme.preferredFieldWidth
-                        Layout.maximumWidth: JamiTheme.preferredFieldWidth
-                        Layout.minimumHeight: JamiTheme.preferredFieldHeight
-                        Layout.preferredHeight: JamiTheme.preferredFieldHeight
-                        Layout.maximumHeight: JamiTheme.preferredFieldHeight
 
                         toolTipText: qsTr("Press this button to delete this account")
                         text: qsTr("Delete Account")

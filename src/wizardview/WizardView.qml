@@ -30,7 +30,7 @@ import "../constant"
 import "components"
 
 Rectangle {
-    id: wizardViewWindow
+    id: root
 
     enum Mode {
         CREATE,
@@ -47,6 +47,8 @@ Rectangle {
         FREE,
         SEARCHING
     }
+
+    readonly property int layoutSpacing: 12
 
     property int textFontSize: 9
     property int wizardMode: WizardView.CREATE
@@ -66,8 +68,6 @@ Rectangle {
     signal wizardViewIsClosed
 
     visible: true
-    anchors.fill: parent
-
 
     Component.onCompleted: {
         changePageQML(controlPanelStackView.welcomePageStackId)
@@ -148,9 +148,6 @@ Rectangle {
             registeredNameFoundConnection.enabled = true
         } else if (pageIndex == controlPanelStackView.createSIPAccountPageId) {
             createSIPAccountPage.initializeOnShowUp()
-            btnNext.enabled = true
-            // start photo booth
-            createSIPAccountPage.startBooth()
         } else if (pageIndex == controlPanelStackView.importFromDevicePageId) {
             importFromDevicePage.initializeOnShowUp()
         } else if (pageIndex == controlPanelStackView.spinnerPageId) {
@@ -158,11 +155,9 @@ Rectangle {
             createAccountPage.isToSetPassword_checkState_choosePasswordCheckBox = false
         } else if (pageIndex == controlPanelStackView.connectToAccountManagerPageId) {
             connectToAccountManagerPage.initializeOnShowUp()
-            btnNext.enabled = false
         } else if (pageIndex == controlPanelStackView.importFromBackupPageId) {
             importFromBackupPage.clearAllTextFields()
             fileToImport = ""
-            btnNext.enabled = false
         } else if (pageIndex == controlPanelStackView.profilePageId) {
             profilePage.initializeOnShowUp()
             profilePage.showBottom = showBottom
@@ -203,234 +198,229 @@ Rectangle {
         onClicked: forceActiveFocus()
     }
 
-    ScrollView {
-        id: frame
-        clip: true
+    StackLayout {
+        id: controlPanelStackView
+
         anchors.fill: parent
 
-        StackLayout {
-            id: controlPanelStackView
-            currentIndex: welcomePageStackId
-            height: wizardView.height
-            width: wizardView.width
+        currentIndex: welcomePageStackId
 
-            property int welcomePageStackId: 0
-            property int createAccountPageId: 1
-            property int createSIPAccountPageId: 2
-            property int importFromBackupPageId: 3
-            property int backupKeysPageId: 4
-            property int importFromDevicePageId: 5
-            property int connectToAccountManagerPageId: 6
-            property int spinnerPageId: 7
-            property int profilePageId: 8
+        property int welcomePageStackId: 0
+        property int createAccountPageId: 1
+        property int createSIPAccountPageId: 2
+        property int importFromBackupPageId: 3
+        property int backupKeysPageId: 4
+        property int importFromDevicePageId: 5
+        property int connectToAccountManagerPageId: 6
+        property int spinnerPageId: 7
+        property int profilePageId: 8
 
-            WelcomePageLayout {
-                // welcome page, index 0
-                id: welcomePage
+        WelcomePage {
+            // welcome page, index 0
+            id: welcomePage
 
-                onWelcomePageRedirectPage: {
-                    changePageQML(toPageIndex)
-                }
-
-                onLeavePage: {
-                    wizardViewIsClosed()
-                }
+            onWelcomePageRedirectPage: {
+                changePageQML(toPageIndex)
             }
 
-            CreateAccountPage {
-                // create account page, index 1
-                id: createAccountPage
+            onLeavePage: {
+                wizardViewIsClosed()
+            }
+        }
 
-                onCreateAccount: {
-                    inputParaObject = {}
-                    inputParaObject["password"] = text_passwordEditAlias
-                    ClientWrapper.accountAdaptor.createJamiAccount(
-                        createAccountPage.text_usernameEditAlias,
-                        inputParaObject,
-                        createAccountPage.boothImgBase64,
-                        true)
-                    showBackUp = true
-                    showBottom = true
-                    changePageQML(controlPanelStackView.profilePageId)
+        CreateAccountPage {
+            // create account page, index 1
+            id: createAccountPage
+
+            onCreateAccount: {
+                inputParaObject = {}
+                inputParaObject["password"] = text_passwordEditAlias
+                ClientWrapper.accountAdaptor.createJamiAccount(
+                    createAccountPage.text_usernameEditAlias,
+                    inputParaObject,
+                    createAccountPage.boothImgBase64,
+                    true)
+                showBackUp = true
+                showBottom = true
+                changePageQML(controlPanelStackView.profilePageId)
+            }
+
+            onText_usernameEditAliasChanged: {
+                lookupTimer.restart()
+            }
+
+            onLeavePage: {
+                changePageQML(controlPanelStackView.welcomePageStackId)
+            }
+
+            Timer {
+                id: lookupTimer
+
+                repeat: false
+                triggeredOnStart: false
+                interval: 200
+
+                onTriggered: {
+                    registeredName = createAccountPage.text_usernameEditAlias
+                    if (registeredName.length !== 0) {
+                        createAccountPage.nameRegistrationUIState = WizardView.SEARCHING
+                        ClientWrapper.nameDirectory.lookupName("", registeredName)
+                    } else {
+                        createAccountPage.nameRegistrationUIState = WizardView.BLANK
+                    }
                 }
+            }
+        }
 
-                onText_usernameEditAliasChanged: {
-                    lookupTimer.restart()
-                }
+        CreateSIPAccountPage {
+            // create SIP account page, index 2
+            id: createSIPAccountPage
 
-                onLeavePage: {
-                    changePageQML(controlPanelStackView.welcomePageStackId)
-                }
+            onLeavePage: {
+                changePageQML(controlPanelStackView.welcomePageStackId)
+            }
 
-                Timer {
-                    id: lookupTimer
+            onCreateAccount: {
+                inputParaObject = {}
+                inputParaObject["hostname"] = createSIPAccountPage.text_sipServernameEditAlias
+                inputParaObject["username"] = createSIPAccountPage.text_sipUsernameEditAlias
+                inputParaObject["password"] = createSIPAccountPage.text_sipPasswordEditAlias
+                inputParaObject["proxy"] = createSIPAccountPage.text_sipProxyEditAlias
+                createSIPAccountPage.clearAllTextFields()
 
-                    repeat: false
-                    triggeredOnStart: false
-                    interval: 200
+                ClientWrapper.accountAdaptor.createSIPAccount(inputParaObject, "")
+                showBackUp = false
+                showBottom = false
+                changePageQML(controlPanelStackView.profilePageId)
+                controlPanelStackView.profilePage.readyToSaveDetails = true
+            }
+        }
 
-                    onTriggered: {
-                        registeredName = createAccountPage.text_usernameEditAlias
-                        if (registeredName.length !== 0) {
-                            createAccountPage.nameRegistrationUIState = WizardView.SEARCHING
-                            ClientWrapper.nameDirectory.lookupName("", registeredName)
-                        } else {
-                            createAccountPage.nameRegistrationUIState = WizardView.BLANK
+        ImportFromBackupPage {
+            // import from backup page, index 3
+            id: importFromBackupPage
+
+            onLeavePage: {
+                changePageQML(controlPanelStackView.welcomePageStackId)
+            }
+
+            onImportAccount: {
+                inputParaObject = {}
+                inputParaObject["archivePath"] = ClientWrapper.utilsAdaptor.getAbsPath(importFromBackupPage.filePath)
+                inputParaObject["password"] = importFromBackupPage.text_passwordFromBackupEditAlias
+                importFromBackupPage.clearAllTextFields()
+                showBackUp = false
+                showBottom = false
+                showProfile = true
+                ClientWrapper.accountAdaptor.createJamiAccount(
+                    "", inputParaObject, "", false)
+            }
+        }
+
+        BackupKeyPage {
+            // backup keys page, index 4
+            id: backupKeysPage
+
+            onNeverShowAgainBoxClicked: {
+                SettingsAdapter.setValue(Settings.NeverShowMeAgain, isChecked)
+            }
+
+            onExport_Btn_FileDialogAccepted: {
+                if (accepted) {
+                    // is there password? If so, go to password dialog, else, go to following directly
+                    if (ClientWrapper.accountAdaptor.hasPassword()) {
+                        passwordDialog.path = ClientWrapper.utilsAdaptor.getAbsPath(folderDir)
+                        passwordDialog.open()
+                        return
+                    } else {
+                        if (folderDir.length > 0) {
+                            ClientWrapper.accountAdaptor.exportToFile(
+                                        ClientWrapper.utilsAdaptor.getCurrAccId(),
+                                        ClientWrapper.utilsAdaptor.getAbsPath(folderDir))
                         }
                     }
                 }
+
+                changePageQML(controlPanelStackView.welcomePageStackId)
+                needToShowMainViewWindow(addedAccountIndex)
+                ClientWrapper.lrcInstance.accountListChanged()
             }
 
-            CreateSIPAccountPage {
-                // create SIP account page, index 2
-                id: createSIPAccountPage
+            onLeavePage: {
+                changePageQML(controlPanelStackView.welcomePageStackId)
+                needToShowMainViewWindow(addedAccountIndex)
+                ClientWrapper.lrcInstance.accountListChanged()
+            }
+        }
 
-                onLeavePage: {
+        ImportFromDevicePage {
+            // import from device page, index 5
+            id: importFromDevicePage
+
+            onLeavePage: {
+                changePageQML(controlPanelStackView.welcomePageStackId)
+            }
+
+            onImportAccount: {
+                inputParaObject = {}
+                inputParaObject["archivePin"] = importFromDevicePage.text_pinFromDeviceAlias
+                inputParaObject["password"] = importFromDevicePage.text_passwordFromDeviceAlias
+
+                showProfile = true
+                showBackUp = false
+                showBottom = false
+                ClientWrapper.accountAdaptor.createJamiAccount(
+                    "", inputParaObject, "", false)
+            }
+        }
+
+        ConnectToAccountManagerPage {
+            // connect to account manager Page, index 6
+            id: connectToAccountManagerPage
+
+            onCreateAccount: {
+                inputParaObject = {}
+                inputParaObject["username"]
+                        = connectToAccountManagerPage.text_usernameManagerEditAlias
+                inputParaObject["password"]
+                        = connectToAccountManagerPage.text_passwordManagerEditAlias
+                inputParaObject["manager"]
+                        = connectToAccountManagerPage.text_accountManagerEditAlias
+                ClientWrapper.accountAdaptor.createJAMSAccount(inputParaObject)
+            }
+
+            onLeavePage: {
+                changePageQML(controlPanelStackView.welcomePageStackId)
+            }
+        }
+
+        SpinnerPage {
+            // spinner Page, index 7
+            id: spinnerPage
+        }
+
+        ProfilePage {
+            // profile Page, index 8
+            id: profilePage
+
+            function leave() {
+                if (showBackUp)
+                    changePageQML(controlPanelStackView.backupKeysPageId)
+                else {
                     changePageQML(controlPanelStackView.welcomePageStackId)
-                }
-
-                onCreateAccount: {
-                    inputParaObject = {}
-                    inputParaObject["hostname"] = createSIPAccountPage.text_sipServernameEditAlias
-                    inputParaObject["username"] = createSIPAccountPage.text_sipUsernameEditAlias
-                    inputParaObject["password"] = createSIPAccountPage.text_sipPasswordEditAlias
-                    inputParaObject["proxy"] = createSIPAccountPage.text_sipProxyEditAlias
-                    createSIPAccountPage.clearAllTextFields()
-
-                    ClientWrapper.accountAdaptor.createSIPAccount(inputParaObject, "")
-                    showBackUp = false
-                    showBottom = false
-                    changePageQML(controlPanelStackView.profilePageId)
-                    controlPanelStackView.profilePage.readyToSaveDetails = true
+                    needToShowMainViewWindow(addedAccountIndex)
+                    ClientWrapper.lrcInstance.accountListChanged()
                 }
             }
 
-            ImportFromBackupPage {
-                // import from backup page, index 3
-                id: importFromBackupPage
-
-                onLeavePage: {
-                    changePageQML(controlPanelStackView.welcomePageStackId)
-                }
-
-                onImportAccount: {
-                    inputParaObject = {}
-                    inputParaObject["archivePath"] = ClientWrapper.utilsAdaptor.getAbsPath(importFromBackupPage.filePath)
-                    inputParaObject["password"] = importFromBackupPage.text_passwordFromBackupEditAlias
-                    importFromBackupPage.clearAllTextFields()
-                    showBackUp = false
-                    showBottom = false
-                    showProfile = true
-                    ClientWrapper.accountAdaptor.createJamiAccount(
-                        "", inputParaObject, "", false)
-                }
+            onSaveProfile: {
+                SettingsAdapter.setCurrAccAvatar(profilePage.boothImgBase64)
+                ClientWrapper.accountAdaptor.setCurrAccDisplayName(profilePage.displayName)
+                leave()
             }
 
-            BackupKeyPage {
-                    // backup keys page, index 4
-                    id: backupKeysPage
-
-                    onNeverShowAgainBoxClicked: {
-                        SettingsAdapter.setValue(Settings.NeverShowMeAgain, isChecked)
-                    }
-
-                    onExport_Btn_FileDialogAccepted: {
-                        if (accepted) {
-                            // is there password? If so, go to password dialog, else, go to following directly
-                            if (ClientWrapper.accountAdaptor.hasPassword()) {
-                                passwordDialog.path = ClientWrapper.utilsAdaptor.getAbsPath(folderDir)
-                                passwordDialog.open()
-                                return
-                            } else {
-                                if (folderDir.length > 0) {
-                                    ClientWrapper.accountAdaptor.exportToFile(
-                                                ClientWrapper.utilsAdaptor.getCurrAccId(),
-                                                ClientWrapper.utilsAdaptor.getAbsPath(folderDir))
-                                }
-                            }
-                        }
-
-                        changePageQML(controlPanelStackView.welcomePageStackId)
-                        needToShowMainViewWindow(addedAccountIndex)
-                        ClientWrapper.lrcInstance.accountListChanged()
-                    }
-
-                    onLeavePage: {
-                        changePageQML(controlPanelStackView.welcomePageStackId)
-                        needToShowMainViewWindow(addedAccountIndex)
-                        ClientWrapper.lrcInstance.accountListChanged()
-                    }
-            }
-
-            ImportFromDevicePage {
-                // import from device page, index 5
-                id: importFromDevicePage
-
-                onLeavePage: {
-                    changePageQML(controlPanelStackView.welcomePageStackId)
-                }
-
-                onImportAccount: {
-                    inputParaObject = {}
-                    inputParaObject["archivePin"] = importFromDevicePage.text_pinFromDeviceAlias
-                    inputParaObject["password"] = importFromDevicePage.text_passwordFromDeviceAlias
-
-                    showProfile = true
-                    showBackUp = false
-                    showBottom = false
-                    ClientWrapper.accountAdaptor.createJamiAccount(
-                        "", inputParaObject, "", false)
-                }
-            }
-
-            ConnectToAccountManagerPage {
-                // connect to account manager Page, index 6
-                id: connectToAccountManagerPage
-
-                onCreateAccount: {
-                    inputParaObject = {}
-                    inputParaObject["username"]
-                            = connectToAccountManagerPage.text_usernameManagerEditAlias
-                    inputParaObject["password"]
-                            = connectToAccountManagerPage.text_passwordManagerEditAlias
-                    inputParaObject["manager"]
-                            = connectToAccountManagerPage.text_accountManagerEditAlias
-                    ClientWrapper.accountAdaptor.createJAMSAccount(inputParaObject)
-                }
-
-                onLeavePage: {
-                    changePageQML(controlPanelStackView.welcomePageStackId)
-                }
-            }
-
-            SpinnerPage {
-                // spinner Page, index 7
-                id: spinnerPage
-            }
-
-            ProfilePage {
-                // profile Page, index 8
-                id: profilePage
-
-                function leave() {
-                    if (showBackUp)
-                        changePageQML(controlPanelStackView.backupKeysPageId)
-                    else {
-                        changePageQML(controlPanelStackView.welcomePageStackId)
-                        needToShowMainViewWindow(addedAccountIndex)
-                        ClientWrapper.lrcInstance.accountListChanged()
-                    }
-                }
-
-                onSaveProfile: {
-                   SettingsAdapter.setCurrAccAvatar(profilePage.boothImgBase64)
-                    ClientWrapper.accountAdaptor.setCurrAccDisplayName(profilePage.displayName)
-                    leave()
-                }
-
-                onLeavePage: {
-                    leave()
-                }
+            onLeavePage: {
+                leave()
             }
         }
     }

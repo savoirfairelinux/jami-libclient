@@ -575,12 +575,9 @@ Rectangle {
                     MaterialLineEdit {
                         id: displayNameLineEdit
 
-                        Layout.maximumWidth: JamiTheme.preferredFieldWidth
-                        Layout.minimumHeight: JamiTheme.preferredFieldHeight
+                        Layout.alignment: Qt.AlignCenter
                         Layout.preferredHeight: JamiTheme.preferredFieldHeight
-                        Layout.maximumHeight: JamiTheme.preferredFieldHeight
-
-                        Layout.alignment: Qt.AlignHCenter
+                        Layout.preferredWidth: JamiTheme.preferredFieldWidth
 
                         font.pointSize: JamiTheme.textFontSize
                         font.kerning: true
@@ -704,12 +701,10 @@ Rectangle {
 
                         MaterialLineEdit {
                             id: currentRegisteredID
-                            Layout.minimumWidth: preferredColumnWidth
-                            Layout.preferredWidth: preferredColumnWidth
-                            Layout.maximumWidth: preferredColumnWidth
-                            Layout.minimumHeight: JamiTheme.preferredFieldHeight
+
+                            Layout.alignment: Qt.AlignCenter
                             Layout.preferredHeight: JamiTheme.preferredFieldHeight
-                            Layout.maximumHeight: JamiTheme.preferredFieldHeight
+                            Layout.preferredWidth: preferredColumnWidth
 
                             placeholderText: { refreshVariable
                                                var result = registeredIdNeedsSet ?
@@ -779,20 +774,16 @@ Rectangle {
                     MaterialButton {
                         id: passwdPushButton
 
+                        Layout.alignment: Qt.AlignHCenter
+                        Layout.preferredWidth: JamiTheme.preferredFieldWidth
+                        Layout.preferredHeight: JamiTheme.preferredFieldHeight
+
                         visible: SettingsAdapter.getAccountConfig_Manageruri() === ""
 
                         color: JamiTheme.buttonTintedBlack
                         hoveredColor: JamiTheme.buttonTintedBlackHovered
                         pressedColor: JamiTheme.buttonTintedBlackPressed
                         outlined: true
-
-                        Layout.minimumHeight:  JamiTheme.preferredFieldHeight
-                        Layout.preferredHeight: JamiTheme.preferredFieldHeight
-                        Layout.maximumHeight: JamiTheme.preferredFieldHeight
-                        Layout.minimumWidth:  JamiTheme.preferredFieldWidth
-                        Layout.preferredWidth: JamiTheme.preferredFieldWidth
-                        Layout.maximumWidth: JamiTheme.preferredFieldWidth
-                        Layout.alignment: Qt.AlignHCenter
 
                         toolTipText: ClientWrapper.accountAdaptor.hasPassword() ?
                                     qsTr("Change the current password") :
@@ -810,20 +801,16 @@ Rectangle {
                     MaterialButton {
                         id: btnExportAccount
 
+                        Layout.alignment: Qt.AlignHCenter
+                        Layout.preferredWidth: JamiTheme.preferredFieldWidth
+                        Layout.preferredHeight: JamiTheme.preferredFieldHeight
+
                         visible: SettingsAdapter.getAccountConfig_Manageruri() === ""
 
                         color: JamiTheme.buttonTintedBlack
                         hoveredColor: JamiTheme.buttonTintedBlackHovered
                         pressedColor: JamiTheme.buttonTintedBlackPressed
                         outlined: true
-
-                        Layout.minimumHeight:  JamiTheme.preferredFieldHeight
-                        Layout.preferredHeight: JamiTheme.preferredFieldHeight
-                        Layout.maximumHeight: JamiTheme.preferredFieldHeight
-                        Layout.minimumWidth:  JamiTheme.preferredFieldWidth
-                        Layout.preferredWidth: JamiTheme.preferredFieldWidth
-                        Layout.maximumWidth: JamiTheme.preferredFieldWidth
-                        Layout.alignment: Qt.AlignHCenter
 
                         toolTipText: qsTr("Press this button to export account to a .gz file")
                         text: qsTr("Export Account")
@@ -838,17 +825,13 @@ Rectangle {
                     MaterialButton {
                         id: btnDeleteAccount
 
+                        Layout.alignment: Qt.AlignHCenter
+                        Layout.preferredWidth: JamiTheme.preferredFieldWidth
+                        Layout.preferredHeight: JamiTheme.preferredFieldHeight
+
                         color: JamiTheme.buttonTintedRed
                         hoveredColor: JamiTheme.buttonTintedRedHovered
                         pressedColor: JamiTheme.buttonTintedRedPressed
-
-                        Layout.minimumHeight:  JamiTheme.preferredFieldHeight
-                        Layout.preferredHeight: JamiTheme.preferredFieldHeight
-                        Layout.maximumHeight: JamiTheme.preferredFieldHeight
-                        Layout.minimumWidth:  JamiTheme.preferredFieldWidth
-                        Layout.preferredWidth: JamiTheme.preferredFieldWidth
-                        Layout.maximumWidth: JamiTheme.preferredFieldWidth
-                        Layout.alignment: Qt.AlignHCenter
 
                         toolTipText: qsTr("Press this button to delete this account")
                         text: qsTr("Delete Account")
@@ -918,15 +901,11 @@ Rectangle {
                         MaterialButton {
                             id: linkDevPushButton
 
-                            visible: SettingsAdapter.getAccountConfig_Manageruri() === ""
-
-                            Layout.minimumHeight:  JamiTheme.preferredFieldHeight
-                            Layout.preferredHeight: JamiTheme.preferredFieldHeight
-                            Layout.maximumHeight: JamiTheme.preferredFieldHeight
-                            Layout.minimumWidth:  JamiTheme.preferredFieldWidth
-                            Layout.preferredWidth: JamiTheme.preferredFieldWidth
-                            Layout.maximumWidth: JamiTheme.preferredFieldWidth
                             Layout.alignment: Qt.AlignCenter
+                            Layout.preferredWidth: JamiTheme.preferredFieldWidth
+                            Layout.preferredHeight: JamiTheme.preferredFieldHeight
+
+                            visible: SettingsAdapter.getAccountConfig_Manageruri() === ""
 
                             color: JamiTheme.buttonTintedBlack
                             hoveredColor: JamiTheme.buttonTintedBlackHovered

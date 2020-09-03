@@ -48,9 +48,14 @@ Rectangle {
         passwordConfirmEdit.clear()
     }
 
-    anchors.fill: parent
-
     color: JamiTheme.backgroundColor
+
+    Shortcut {
+        context: Qt.ApplicationShortcut
+        sequence: "Esc"
+        enabled: !root.activeFocus
+        onActivated: leavePage()
+    }
 
     /*
     * JamiFileDialog for exporting account
@@ -83,32 +88,33 @@ Rectangle {
 
     StackLayout {
         id: createAccountStack
+
         anchors.verticalCenter: root.verticalCenter
         anchors.horizontalCenter: root.horizontalCenter
 
         ColumnLayout {
-            spacing: 12
+            spacing: layoutSpacing
 
-            anchors.verticalCenter: parent.verticalCenter
             Layout.preferredWidth: root.width
-            Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
+            Layout.alignment: Qt.AlignCenter
 
             RowLayout {
-                spacing: 12
-                height: 48
+                spacing: layoutSpacing
 
-                Layout.fillWidth: true
-                anchors.left: usernameEdit.left
+                Layout.alignment: Qt.AlignCenter
+                Layout.preferredWidth: usernameEdit.width
 
                 Label {
-                    text: qsTr("Choose a username for your account")
+                    text: qsTr("Choose a username")
+                    font.pointSize: JamiTheme.textFontSize + 3
                 }
 
                 Label {
+                    Layout.alignment: Qt.AlignRight
+
                     text: qsTr("Recommended")
                     color: "white"
                     padding: 8
-                    anchors.right: parent.right
 
                     background: Rectangle {
                         color: "#aed581"
@@ -121,19 +127,32 @@ Rectangle {
             MaterialLineEdit {
                 id: usernameEdit
 
+                Layout.topMargin: 15
+                Layout.preferredHeight: fieldLayoutHeight
+                Layout.preferredWidth: fieldLayoutWidth
+                Layout.alignment: Qt.AlignHCenter
+
                 selectByMouse: true
                 placeholderText: qsTr("Choose your username")
-                font.pointSize: 10
+                font.pointSize: 9
                 font.kerning: true
 
-                borderColorMode: nameRegistrationUIState === WizardView.BLANK ? MaterialLineEdit.NORMAL
-                                : nameRegistrationUIState >= WizardView.FREE ? MaterialLineEdit.NORMAL : MaterialLineEdit.ERROR
+                borderColorMode: {
+                    if (nameRegistrationUIState === WizardView.BLANK)
+                        return MaterialLineEdit.NORMAL
+                    else
+                        return nameRegistrationUIState >= WizardView.FREE ?
+                                    MaterialLineEdit.NORMAL : MaterialLineEdit.ERROR
+                }
 
                 fieldLayoutWidth: chooseUsernameButton.width
-                Layout.topMargin: 32
             }
 
             Label {
+                Layout.alignment: Qt.AlignHCenter
+
+                visible: text.length !==0
+
                 text: {
                     switch(nameRegistrationUIState){
                     case WizardView.BLANK:
@@ -146,19 +165,17 @@ Rectangle {
                         return qsTr("Username already taken")
                     }
                 }
-
-                anchors.left: usernameEdit.left
-                anchors.right: usernameEdit.right
-                Layout.alignment: Qt.AlignHCenter
-
                 font.pointSize: JamiTheme.textFontSize
                 color: "red"
-
-                height: 32
             }
 
             MaterialButton {
                 id: chooseUsernameButton
+
+                Layout.alignment: Qt.AlignCenter
+                Layout.preferredWidth: preferredWidth
+                Layout.preferredHeight: preferredHeight
+
                 text: qsTr("CHOOSE USERNAME")
                 color: nameRegistrationUIState === WizardView.FREE?
                         JamiTheme.buttonTintedGrey
@@ -172,43 +189,70 @@ Rectangle {
                 }
             }
 
-            MaterialButton {
-                text: qsTr("SKIP CHOOSING USERNAME")
-                color: JamiTheme.buttonTintedGrey
-                hoveredColor: JamiTheme.buttonTintedGreyHovered
-                pressedColor: JamiTheme.buttonTintedGreyPressed
-                outlined: true
+            Row {
+                id: skipAndBackButtonsRow
 
-                onClicked: {
-                    createAccountStack.currentIndex = createAccountStack.currentIndex + 1
+                Layout.alignment: Qt.AlignCenter
+                Layout.preferredWidth: chooseUsernameButton.preferredWidth
+                Layout.preferredHeight: chooseUsernameButton.preferredHeight
+
+                spacing: layoutSpacing
+
+                Repeater {
+                    model: 2
+
+                    MaterialButton {
+                        width: (skipAndBackButtonsRow.width -
+                                skipAndBackButtonsRow.spacing) / 2
+                        height: skipAndBackButtonsRow.height
+
+                        text: modelData === 0 ? qsTr("BACK") : qsTr("SKIP")
+                        color: JamiTheme.buttonTintedGrey
+                        hoveredColor: JamiTheme.buttonTintedGreyHovered
+                        pressedColor: JamiTheme.buttonTintedGreyPressed
+                        outlined: true
+
+                        onClicked: {
+                            if (modelData === 0)
+                                leavePage()
+                            else
+                                createAccountStack.currentIndex =
+                                        createAccountStack.currentIndex + 1
+                        }
+                    }
                 }
             }
         }
 
         ColumnLayout {
-            spacing: 12
+            spacing: layoutSpacing
 
-            anchors.verticalCenter: parent.verticalCenter
             Layout.preferredWidth: root.width
-            Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
+            Layout.alignment: Qt.AlignCenter
 
             RowLayout {
-                spacing: 12
-                height: 48
+                spacing: layoutSpacing
 
-                anchors.right: createAccountButton.right
-                anchors.left: createAccountButton.left
+                Layout.alignment: Qt.AlignCenter
+                Layout.preferredWidth: usernameEdit.width
 
                 Label {
-                    text: qsTr("Encrypt account with password")
-
+                    text: qsTr("Create a password")
                     font.pointSize: JamiTheme.textFontSize + 3
+
+                    Switch {
+                        id: passwordSwitch
+
+                        anchors.left: parent.right
+                        anchors.verticalCenter: parent.verticalCenter
+                    }
                 }
 
                 Label {
+                    Layout.alignment: Qt.AlignRight
+
                     text: qsTr("Optional")
                     color: "white"
-                    anchors.right: parent.right
                     padding: 8
 
                     background: Rectangle {
@@ -219,147 +263,99 @@ Rectangle {
                 }
             }
 
-            RowLayout {
-                spacing: 12
-                height: 48
-
-                anchors.right: createAccountButton.right
-                anchors.left: createAccountButton.left
-
-                Label {
-                    text: qsTr("Choose a password to encrypt the account key on this device")
-
-                    font.pointSize: JamiTheme.textFontSize
-                }
-
-                Switch {
-                    id: passwordSwitch
-                    Layout.alignment: Qt.AlignRight
-                }
-            }
-
             MaterialLineEdit {
                 id: passwordEdit
 
-                visible: passwordSwitch.checked
-
-                fieldLayoutWidth: createAccountButton.width
-
+                Layout.preferredHeight: fieldLayoutHeight
+                Layout.preferredWidth: createAccountButton.width
                 Layout.alignment: Qt.AlignHCenter
+
+                visible: passwordSwitch.checked
 
                 selectByMouse: true
                 echoMode: TextInput.Password
                 placeholderText: qsTr("Password")
-                font.pointSize: 10
+                font.pointSize: 9
                 font.kerning: true
             }
 
             MaterialLineEdit {
                 id: passwordConfirmEdit
 
-                visible: passwordSwitch.checked
-
-                fieldLayoutWidth: createAccountButton.width
-
+                Layout.preferredHeight: fieldLayoutHeight
+                Layout.preferredWidth: createAccountButton.width
                 Layout.alignment: Qt.AlignHCenter
+
+                visible: passwordSwitch.checked
 
                 selectByMouse: true
                 echoMode: TextInput.Password
                 placeholderText: qsTr("Confirm password")
-                font.pointSize: 10
+                font.pointSize: 9
                 font.kerning: true
             }
 
             Label {
-                anchors.right: createAccountButton.right
-                anchors.left: createAccountButton.left
+                Layout.alignment: Qt.AlignLeft
+                Layout.topMargin: 10
+                Layout.leftMargin: (root.width - createAccountButton.width) / 2
 
                 text: qsTr("Note that the password cannot be recovered")
-
                 font.pointSize: JamiTheme.textFontSize
             }
 
             MaterialButton {
                 id: createAccountButton
+
+                Layout.alignment: Qt.AlignCenter
+                Layout.topMargin: 10
+                Layout.preferredWidth: preferredWidth
+                Layout.preferredHeight: preferredHeight
+
+                function checkEnable() {
+                    return !passwordSwitch.checked ||
+                            (passwordEdit.text === passwordConfirmEdit.text
+                             && passwordEdit.text.length !== 0)
+                }
+
                 text: qsTr("CREATE ACCOUNT")
-                color: !passwordSwitch.checked ||
-                    (passwordEdit.text === passwordConfirmEdit.text && passwordEdit.text.length !== 0)?
-                    JamiTheme.wizardBlueButtons : JamiTheme.buttonTintedGreyInactive
+                enabled: checkEnable()
+                color: checkEnable() ? JamiTheme.wizardBlueButtons :
+                                       JamiTheme.buttonTintedGreyInactive
                 hoveredColor: JamiTheme.buttonTintedBlueHovered
                 pressedColor: JamiTheme.buttonTintedBluePressed
 
                 onClicked: {
                     createAccount()
-                    createAccountStack.currentIndex = createAccountStack.currentIndex + 1
+                    createAccountStack.currentIndex += 1
                 }
+            }
+
+            MaterialButton {
+                id: backButton
+
+                Layout.alignment: Qt.AlignCenter
+                Layout.preferredWidth: preferredWidth
+                Layout.preferredHeight: preferredHeight
+
+                text: qsTr("BACK")
+                color: JamiTheme.buttonTintedGrey
+                hoveredColor: JamiTheme.buttonTintedGreyHovered
+                pressedColor: JamiTheme.buttonTintedGreyPressed
+                outlined: true
+
+                onClicked: createAccountStack.currentIndex -= 1
             }
         }
     }
 
-    RowLayout {
-        spacing: 12
-        height: 48
-
-        anchors.top: createAccountStack.bottom
+    AccountCreationStepIndicator {
+        anchors.bottom: root.bottom
+        anchors.bottomMargin: 30
         anchors.horizontalCenter: root.horizontalCenter
-        Layout.alignment: Qt.AlignHCenter
 
-        Rectangle {
-            color: usernameEdit.visible? JamiTheme.wizardBlueButtons : "grey"
-            radius: height / 2
-            height: 12
-            width: 12
-        }
-
-        Rectangle {
-            color: createAccountButton.visible? JamiTheme.wizardBlueButtons : "grey"
-            radius: height / 2
-            height: 12
-            width: 12
-        }
-
-        Rectangle {
-            color: "grey"
-            radius: height / 2
-            height: 12
-            width: 12
-        }
-    }
-
-    HoverableButton {
-        id: cancelButton
-        z: 2
-
-        anchors.right: parent.right
-        anchors.top: parent.top
-
-        rightPadding: 90
-        topPadding: 90
-
-        Layout.preferredWidth: 96
-        Layout.preferredHeight: 96
-
-        backgroundColor: "transparent"
-        onEnterColor: "transparent"
-        onPressColor: "transparent"
-        onReleaseColor: "transparent"
-        onExitColor: "transparent"
-
-        buttonImageHeight: 48
-        buttonImageWidth: 48
-        source: "qrc:/images/icons/ic_close_white_24dp.png"
-        radius: 48
-        baseColor: "#7c7c7c"
-        toolTipText: qsTr("Return to welcome page")
-
-        Shortcut {
-            sequence: StandardKey.Cancel
-            enabled: parent.visible
-            onActivated: leavePage()
-        }
-
-        onClicked: {
-            leavePage()
-        }
+        spacing: layoutSpacing
+        steps: 3
+        currentStep: usernameEdit.visible ? 1 : 2
     }
 }

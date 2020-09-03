@@ -38,7 +38,7 @@
         <file>src/commoncomponents/DeleteAccountDialog.qml</file>
         <file>src/commoncomponents/MessageBox.qml</file>
         <file>src/wizardview/WizardView.qml</file>
-        <file>src/wizardview/components/WelcomePageLayout.qml</file>
+        <file>src/wizardview/components/WelcomePage.qml</file>
         <file>src/wizardview/components/CreateAccountPage.qml</file>
         <file>src/wizardview/components/CreateSIPAccountPage.qml</file>
         <file>src/wizardview/components/ImportFromBackupPage.qml</file>
@@ -109,5 +109,7 @@
         <file>src/commoncomponents/BaseContextMenu.qml</file>
         <file>src/mainview/components/AccountPresenceCycle.qml</file>
         <file>src/commoncomponents/Scaffold.qml</file>
+        <file>src/constant/JamiQmlUtils.qml</file>
+        <file>src/wizardview/components/AccountCreationStepIndicator.qml</file>
     </qresource>
 </RCC>

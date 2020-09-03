@@ -121,8 +121,11 @@ Rectangle {
         MaterialButton {
             id: installButton
 
-	    Layout.fillWidth: false
-	    color: JamiTheme.buttonTintedBlack
+            Layout.alignment: Qt.AlignCenter
+            Layout.preferredWidth: preferredWidth
+            Layout.preferredHeight: preferredHeight
+
+            color: JamiTheme.buttonTintedBlack
             hoveredColor: JamiTheme.buttonTintedBlackHovered
             pressedColor: JamiTheme.buttonTintedBlackPressed
             outlined: true

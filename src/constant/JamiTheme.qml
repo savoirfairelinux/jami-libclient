@@ -1,4 +1,3 @@
-
 /*
  * Copyright (C) 2020 by Savoir-faire Linux
  * Author: Mingrui Zhang <mingrui.zhang@savoirfairelinux.com>
@@ -17,21 +16,13 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
-/*
- * JamiTheme as a singleton is to provide global property entry
- * https://doc.qt.io/qt-5/qqmlengine.html#qmlRegisterSingletonType-3
- */
+// JamiTheme as a singleton is to provide global theme property entry.
 pragma Singleton
 
 import QtQuick 2.14
 
 Item {
-
-
-    /*
-     * Color strings.
-     */
+    // Color strings.
     property string hoverColor: "#c7c7c7"
     property string pressColor: "#c0c0c0"
     property string releaseColor: "#e0e0e0"
@@ -83,9 +74,10 @@ Item {
     property string sipInputButtonHoverColor: "#4477aa"
     property string sipInputButtonPressColor: "#5588bb"
 
-    /*
-     * Font.
-     */
+    property string accountCreationOtherStepColor: "grey"
+    property string accountCreationCurrentStepColor: "#28b1ed"
+
+    // Font.
     property string faddedFontColor: "#c0c0c0"
     property string faddedLastInteractionFontColor: "#505050"
 
@@ -102,10 +94,7 @@ Item {
     property int preferredFieldHeight: 32
     property int preferredMarginSize: 16
 
-
-    /*
-     * Place holder text.
-     */
+    // Place holder text.
     property string contactSearchBarPlaceHolderConversationText: qsTr("Find or start a conversation")
     property string contactSearchBarPlaceHolderInivitionText: qsTr("Search your invitations")
 

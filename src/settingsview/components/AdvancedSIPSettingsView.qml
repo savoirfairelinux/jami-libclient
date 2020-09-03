@@ -418,13 +418,9 @@ ColumnLayout {
                 MaterialButton {
                     id: btnRingtoneSIP
 
-                    Layout.minimumWidth: preferredColumnWidth
+                    Layout.alignment: Qt.AlignCenter
                     Layout.preferredWidth: preferredColumnWidth
-                    Layout.maximumWidth: preferredColumnWidth
-
-                    Layout.minimumHeight: JamiTheme.preferredFieldHeight
                     Layout.preferredHeight: JamiTheme.preferredFieldHeight
-                    Layout.maximumHeight: JamiTheme.preferredFieldHeight
 
                     source: "qrc:/images/icons/round-folder-24px.svg"
                     color: JamiTheme.buttonTintedGrey
@@ -480,8 +476,10 @@ ColumnLayout {
             MaterialLineEdit {
                 id: lineEditVoiceMailDialCode
 
-                fieldLayoutWidth: preferredColumnWidth
-                fieldLayoutHeight: JamiTheme.preferredFieldHeight
+                Layout.alignment: Qt.AlignCenter
+                Layout.preferredHeight: JamiTheme.preferredFieldHeight
+                Layout.preferredWidth: preferredColumnWidth
+
                 padding: 8
 
                 font.pointSize: JamiTheme.settingsFontSize
@@ -619,12 +617,9 @@ ColumnLayout {
                 MaterialButton {
                     id: btnSIPCACert
 
-                    Layout.minimumWidth: preferredColumnWidth
+                    Layout.alignment: Qt.AlignCenter
                     Layout.preferredWidth: preferredColumnWidth
-                    Layout.maximumWidth: preferredColumnWidth
-                    Layout.minimumHeight: JamiTheme.preferredFieldHeight
                     Layout.preferredHeight: JamiTheme.preferredFieldHeight
-                    Layout.maximumHeight: JamiTheme.preferredFieldHeight
 
                     source: "qrc:/images/icons/round-folder-24px.svg"
                     color: JamiTheme.buttonTintedGrey
@@ -651,13 +646,9 @@ ColumnLayout {
                 MaterialButton {
                     id: btnSIPUserCert
 
-                    Layout.minimumWidth: preferredColumnWidth
+                    Layout.alignment: Qt.AlignCenter
                     Layout.preferredWidth: preferredColumnWidth
-                    Layout.maximumWidth: preferredColumnWidth
-
-                    Layout.minimumHeight: JamiTheme.preferredFieldHeight
                     Layout.preferredHeight: JamiTheme.preferredFieldHeight
-                    Layout.maximumHeight: JamiTheme.preferredFieldHeight
 
                     source: "qrc:/images/icons/round-folder-24px.svg"
                     color: JamiTheme.buttonTintedGrey
@@ -684,13 +675,9 @@ ColumnLayout {
                 MaterialButton {
                     id: btnSIPPrivateKey
 
-                    Layout.minimumWidth: preferredColumnWidth
+                    Layout.alignment: Qt.AlignCenter
                     Layout.preferredWidth: preferredColumnWidth
-                    Layout.maximumWidth: preferredColumnWidth
-
-                    Layout.minimumHeight: JamiTheme.preferredFieldHeight
                     Layout.preferredHeight: JamiTheme.preferredFieldHeight
-                    Layout.maximumHeight: JamiTheme.preferredFieldHeight
 
                     source: "qrc:/images/icons/round-folder-24px.svg"
                     color: JamiTheme.buttonTintedGrey
@@ -719,8 +706,10 @@ ColumnLayout {
                 MaterialLineEdit {
                     id: lineEditSIPCertPassword
 
-                    fieldLayoutWidth: preferredColumnWidth
-                    fieldLayoutHeight: JamiTheme.preferredFieldHeight
+                    Layout.alignment: Qt.AlignCenter
+                    Layout.preferredHeight: JamiTheme.preferredFieldHeight
+                    Layout.preferredWidth: preferredColumnWidth
+
                     padding: 8
 
                     font.pointSize: JamiTheme.settingsFontSize
@@ -853,8 +842,10 @@ ColumnLayout {
                 MaterialLineEdit {
                     id: outgoingTLSServerNameLineEdit
 
-                    fieldLayoutWidth: preferredColumnWidth
-                    fieldLayoutHeight: JamiTheme.preferredFieldHeight
+                    Layout.alignment: Qt.AlignCenter
+                    Layout.preferredHeight: JamiTheme.preferredFieldHeight
+                    Layout.preferredWidth: preferredColumnWidth
+
                     padding: 8
 
                     font.pointSize: JamiTheme.settingsFontSize
@@ -1059,8 +1050,10 @@ ColumnLayout {
             MaterialLineEdit {
                 id: lineEditTurnAddressSIP
 
-                fieldLayoutWidth: preferredColumnWidth
-                fieldLayoutHeight: JamiTheme.preferredFieldHeight
+                Layout.alignment: Qt.AlignCenter
+                Layout.preferredHeight: JamiTheme.preferredFieldHeight
+                Layout.preferredWidth: preferredColumnWidth
+
                 padding: 8
 
                 font.pointSize: JamiTheme.settingsFontSize
@@ -1089,8 +1082,10 @@ ColumnLayout {
             MaterialLineEdit {
                 id: lineEditTurnUsernameSIP
 
-                fieldLayoutWidth: preferredColumnWidth
-                fieldLayoutHeight: JamiTheme.preferredFieldHeight
+                Layout.alignment: Qt.AlignCenter
+                Layout.preferredHeight: JamiTheme.preferredFieldHeight
+                Layout.preferredWidth: preferredColumnWidth
+
                 padding: 8
 
                 font.pointSize: JamiTheme.settingsFontSize
@@ -1118,8 +1113,10 @@ ColumnLayout {
             MaterialLineEdit {
                 id: lineEditTurnPsswdSIP
 
-                fieldLayoutWidth: preferredColumnWidth
-                fieldLayoutHeight: JamiTheme.preferredFieldHeight
+                Layout.alignment: Qt.AlignCenter
+                Layout.preferredHeight: JamiTheme.preferredFieldHeight
+                Layout.preferredWidth: preferredColumnWidth
+
                 padding: 8
 
                 font.pointSize: JamiTheme.settingsFontSize
@@ -1150,8 +1147,10 @@ ColumnLayout {
             MaterialLineEdit {
                 id: lineEditTurnRealmSIP
 
-                fieldLayoutWidth: preferredColumnWidth
-                fieldLayoutHeight: JamiTheme.preferredFieldHeight
+                Layout.alignment: Qt.AlignCenter
+                Layout.preferredHeight: JamiTheme.preferredFieldHeight
+                Layout.preferredWidth: preferredColumnWidth
+
                 padding: 8
 
                 font.pointSize: JamiTheme.settingsFontSize
@@ -1195,8 +1194,10 @@ ColumnLayout {
             MaterialLineEdit {
                 id: lineEditSTUNAddressSIP
 
-                fieldLayoutWidth: preferredColumnWidth
-                fieldLayoutHeight: JamiTheme.preferredFieldHeight
+                Layout.alignment: Qt.AlignCenter
+                Layout.preferredHeight: JamiTheme.preferredFieldHeight
+                Layout.preferredWidth: preferredColumnWidth
+
                 padding: 8
 
                 font.pointSize: JamiTheme.settingsFontSize
@@ -1279,8 +1280,10 @@ ColumnLayout {
             MaterialLineEdit {
                 id: lineEditSIPCustomAddress
 
-                fieldLayoutWidth: preferredColumnWidth
-                fieldLayoutHeight: JamiTheme.preferredFieldHeight
+                Layout.alignment: Qt.AlignCenter
+                Layout.preferredHeight: JamiTheme.preferredFieldHeight
+                Layout.preferredWidth: preferredColumnWidth
+
                 padding: 8
 
                 font.pointSize: JamiTheme.settingsFontSize

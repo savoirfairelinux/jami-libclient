@@ -366,12 +366,9 @@ ColumnLayout {
                 MaterialButton {
                     id: btnRingtone
 
-                    Layout.minimumWidth: preferredColumnWidth
+                    Layout.alignment: Qt.AlignCenter
                     Layout.preferredWidth: preferredColumnWidth
-                    Layout.maximumWidth: preferredColumnWidth
-                    Layout.minimumHeight: JamiTheme.preferredFieldHeight
                     Layout.preferredHeight: JamiTheme.preferredFieldHeight
-                    Layout.maximumHeight: JamiTheme.preferredFieldHeight
 
                     source: "qrc:/images/icons/round-folder-24px.svg"
                     color: JamiTheme.buttonTintedGrey
@@ -436,8 +433,10 @@ ColumnLayout {
             MaterialLineEdit {
                 id: lineEditNameServer
 
-                fieldLayoutWidth: preferredColumnWidth
-                fieldLayoutHeight: JamiTheme.preferredFieldHeight
+                Layout.alignment: Qt.AlignCenter
+                Layout.preferredHeight: JamiTheme.preferredFieldHeight
+                Layout.preferredWidth: preferredColumnWidth
+
                 padding: 8
 
                 font.pointSize: JamiTheme.settingsFontSize
@@ -501,8 +500,10 @@ ColumnLayout {
                 MaterialLineEdit {
                     id: lineEditProxy
 
-                    fieldLayoutWidth: preferredColumnWidth
-                    fieldLayoutHeight: JamiTheme.preferredFieldHeight
+                    Layout.alignment: Qt.AlignCenter
+                    Layout.preferredHeight: JamiTheme.preferredFieldHeight
+                    Layout.preferredWidth: preferredColumnWidth
+
                     padding: 8
 
                     font.pointSize: JamiTheme.settingsFontSize
@@ -539,8 +540,10 @@ ColumnLayout {
                 MaterialLineEdit {
                     id: lineEditBootstrap
 
-                    fieldLayoutWidth: preferredColumnWidth
-                    fieldLayoutHeight: JamiTheme.preferredFieldHeight
+                    Layout.alignment: Qt.AlignCenter
+                    Layout.preferredHeight: JamiTheme.preferredFieldHeight
+                    Layout.preferredWidth: preferredColumnWidth
+
                     padding: 8
 
                     font.pointSize: JamiTheme.settingsFontSize
@@ -599,13 +602,9 @@ ColumnLayout {
                 MaterialButton {
                     id: btnCACert
 
-                    Layout.minimumWidth: preferredColumnWidth
-                    Layout.preferredWidth: preferredColumnWidth
-                    Layout.maximumWidth: preferredColumnWidth
-
-                    Layout.minimumHeight: JamiTheme.preferredFieldHeight
+                    Layout.alignment: Qt.AlignCenter
                     Layout.preferredHeight: JamiTheme.preferredFieldHeight
-                    Layout.maximumHeight: JamiTheme.preferredFieldHeight
+                    Layout.preferredWidth: preferredColumnWidth
 
                     source: "qrc:/images/icons/round-folder-24px.svg"
                     color: JamiTheme.buttonTintedGrey
@@ -632,13 +631,9 @@ ColumnLayout {
                 MaterialButton {
                     id: btnUserCert
 
-                    Layout.minimumWidth: preferredColumnWidth
-                    Layout.preferredWidth: preferredColumnWidth
-                    Layout.maximumWidth: preferredColumnWidth
-
-                    Layout.minimumHeight: JamiTheme.preferredFieldHeight
+                    Layout.alignment: Qt.AlignCenter
                     Layout.preferredHeight: JamiTheme.preferredFieldHeight
-                    Layout.maximumHeight: JamiTheme.preferredFieldHeight
+                    Layout.preferredWidth: preferredColumnWidth
 
                     source: "qrc:/images/icons/round-folder-24px.svg"
                     color: JamiTheme.buttonTintedGrey
@@ -665,13 +660,9 @@ ColumnLayout {
                 MaterialButton {
                     id: btnPrivateKey
 
-                    Layout.minimumWidth: preferredColumnWidth
-                    Layout.preferredWidth: preferredColumnWidth
-                    Layout.maximumWidth: preferredColumnWidth
-
-                    Layout.minimumHeight: JamiTheme.preferredFieldHeight
+                    Layout.alignment: Qt.AlignCenter
                     Layout.preferredHeight: JamiTheme.preferredFieldHeight
-                    Layout.maximumHeight: JamiTheme.preferredFieldHeight
+                    Layout.preferredWidth: preferredColumnWidth
 
                     source: "qrc:/images/icons/round-folder-24px.svg"
                     color: JamiTheme.buttonTintedGrey
@@ -699,8 +690,10 @@ ColumnLayout {
                 MaterialLineEdit {
                     id: lineEditCertPassword
 
-                    fieldLayoutWidth: preferredColumnWidth
-                    fieldLayoutHeight: JamiTheme.preferredFieldHeight
+                    Layout.alignment: Qt.AlignCenter
+                    Layout.preferredHeight: JamiTheme.preferredFieldHeight
+                    Layout.preferredWidth: preferredColumnWidth
+
                     padding: 8
 
                     font.pointSize: JamiTheme.settingsFontSize
@@ -798,8 +791,11 @@ ColumnLayout {
 
                 MaterialLineEdit {
                     id: lineEditTurnAddress
-                    fieldLayoutWidth: preferredColumnWidth
-                    fieldLayoutHeight: JamiTheme.preferredFieldHeight
+
+                    Layout.alignment: Qt.AlignCenter
+                    Layout.preferredHeight: JamiTheme.preferredFieldHeight
+                    Layout.preferredWidth: preferredColumnWidth
+
                     padding: 8
 
                     font.pointSize: JamiTheme.settingsFontSize
@@ -832,8 +828,10 @@ ColumnLayout {
                 MaterialLineEdit {
                     id: lineEditTurnUsername
 
-                    fieldLayoutWidth: preferredColumnWidth
-                    fieldLayoutHeight: JamiTheme.preferredFieldHeight
+                    Layout.alignment: Qt.AlignCenter
+                    Layout.preferredHeight: JamiTheme.preferredFieldHeight
+                    Layout.preferredWidth: preferredColumnWidth
+
                     padding: 8
 
                     font.pointSize: JamiTheme.settingsFontSize
@@ -864,11 +862,13 @@ ColumnLayout {
 
                 MaterialLineEdit {
                     id: lineEditTurnPassword
-                    layer.mipmap: false
 
-                    fieldLayoutWidth: preferredColumnWidth
-                    fieldLayoutHeight: JamiTheme.preferredFieldHeight
+                    Layout.alignment: Qt.AlignCenter
+                    Layout.preferredHeight: JamiTheme.preferredFieldHeight
+                    Layout.preferredWidth: preferredColumnWidth
+
                     padding: 8
+                    layer.mipmap: false
 
                     font.pointSize: JamiTheme.settingsFontSize
                     font.kerning: true
@@ -918,8 +918,10 @@ ColumnLayout {
                 MaterialLineEdit {
                     id: lineEditSTUNAddress
 
-                    fieldLayoutWidth: preferredColumnWidth
-                    fieldLayoutHeight: JamiTheme.preferredFieldHeight
+                    Layout.alignment: Qt.AlignCenter
+                    Layout.preferredHeight: JamiTheme.preferredFieldHeight
+                    Layout.preferredWidth: preferredColumnWidth
+
                     padding: 8
 
                     font.pointSize: JamiTheme.settingsFontSize

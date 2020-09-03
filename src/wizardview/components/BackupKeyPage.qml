@@ -61,36 +61,31 @@ Rectangle {
         }
     }
 
-    anchors.fill: parent
-
     color: JamiTheme.backgroundColor
 
     ColumnLayout {
-        spacing: 12
+        spacing: layoutSpacing
 
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.verticalCenter: parent.verticalCenter
-        Layout.preferredWidth: backupBtn.width
-        Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
 
         RowLayout {
-            spacing: 12
-            height: 48
+            spacing: layoutSpacing
 
-            anchors.left: backupBtn.left
-            anchors.right: backupBtn.right
+            Layout.alignment: Qt.AlignCenter
+            Layout.preferredWidth: backupBtn.width
 
             Label {
                 text: qsTr("Backup your account!")
-
                 font.pointSize: JamiTheme.textFontSize + 3
             }
 
             Label {
+                Layout.alignment: Qt.AlignRight
+
                 text: qsTr("Recommended")
                 color: "white"
                 padding: 8
-                anchors.right: parent.right
 
                 background: Rectangle {
                     color: "#aed581"
@@ -101,24 +96,33 @@ Rectangle {
         }
 
         Label {
-            text: qsTr("This account only exists on this device. If you lost your device or uninstall the application, your account will be deleted. You can backup your account now or later.")
-            wrapMode: Text.Wrap
-            anchors.left: backupBtn.left
-            anchors.right: backupBtn.right
+            property int preferredHeight: 0
 
+            Layout.alignment: Qt.AlignCenter
+            Layout.preferredWidth: backupBtn.width
+            Layout.preferredHeight: preferredHeight
+
+            text: qsTr("This account only exists on this device. " +
+                       "If you lost your device or uninstall the application, " +
+                       "your account will be deleted. " +
+                       "You can backup your account now or later.")
+            wrapMode: Text.WordWrap
             font.pointSize: JamiTheme.textFontSize
+
+            onFontChanged: {
+                var boundingRect = JamiQmlUtils.getTextBoundingRect(font, text)
+                preferredHeight = (boundingRect.width / backupBtn.preferredWidth)
+                        * boundingRect.height
+            }
         }
 
         RowLayout {
-            spacing: 12
-            height: 48
+            spacing: layoutSpacing
 
-            anchors.right: backupBtn.right
-            anchors.left: backupBtn.left
+            Layout.alignment: Qt.AlignCenter
 
             Label {
                 text: qsTr("Never show me this again")
-
                 font.pointSize: JamiTheme.textFontSize
             }
 
@@ -134,6 +138,11 @@ Rectangle {
 
         MaterialButton {
             id: backupBtn
+
+            Layout.alignment: Qt.AlignCenter
+            Layout.preferredWidth: preferredWidth
+            Layout.preferredHeight: preferredHeight
+
             text: qsTr("BACKUP ACCOUNT")
             color: JamiTheme.buttonTintedGrey
             hoveredColor: JamiTheme.buttonTintedGreyHovered
@@ -146,6 +155,10 @@ Rectangle {
         }
 
         MaterialButton {
+            Layout.alignment: Qt.AlignCenter
+            Layout.preferredWidth: preferredWidth
+            Layout.preferredHeight: preferredHeight
+
             text: qsTr("SKIP")
             color: JamiTheme.buttonTintedGrey
             hoveredColor: JamiTheme.buttonTintedGreyHovered
@@ -155,43 +168,6 @@ Rectangle {
             onClicked: {
                 leavePage()
             }
-        }
-    }
-
-    HoverableButton {
-        id: cancelButton
-        z: 2
-
-        anchors.right: parent.right
-        anchors.top: parent.top
-
-        rightPadding: 90
-        topPadding: 90
-
-        Layout.preferredWidth: 96
-        Layout.preferredHeight: 96
-
-        backgroundColor: "transparent"
-        onEnterColor: "transparent"
-        onPressColor: "transparent"
-        onReleaseColor: "transparent"
-        onExitColor: "transparent"
-
-        buttonImageHeight: 48
-        buttonImageWidth: 48
-        source: "qrc:/images/icons/ic_close_white_24dp.png"
-        radius: 48
-        baseColor: "#7c7c7c"
-        toolTipText: qsTr("Close")
-
-        Action {
-            enabled: parent.visible
-            shortcut: StandardKey.Cancel
-            onTriggered: leavePage()
-        }
-
-        onClicked: {
-            leavePage()
         }
     }
 }

@@ -39,24 +39,20 @@ Rectangle {
         passwordFromDevice.clear()
     }
 
-    anchors.fill: parent
-
     color: JamiTheme.backgroundColor
 
     signal leavePage
     signal importAccount
 
     ColumnLayout {
-        spacing: 12
+        spacing: layoutSpacing
 
+        // Prevent possible anchor loop detected on centerIn.
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.verticalCenter: parent.verticalCenter
-        Layout.preferredWidth: parent.width
-        Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
 
         Text {
-            anchors.left: connectBtn.left
-            anchors.right: connectBtn.right
+            Layout.alignment: Qt.AlignCenter
 
             text: qsTr("Enter your main Jami account password")
             font.pointSize: JamiTheme.menuFontSize
@@ -65,41 +61,60 @@ Rectangle {
         MaterialLineEdit {
             id: passwordFromDevice
 
+            Layout.preferredHeight: fieldLayoutHeight
+            Layout.preferredWidth: connectBtn.width
+            Layout.alignment: Qt.AlignCenter
+
             selectByMouse: true
             placeholderText: qsTr("Password")
-            font.pointSize: 10
+            font.pointSize: 9
             font.kerning: true
 
             echoMode: TextInput.Password
 
             borderColorMode: MaterialLineEdit.NORMAL
-
-            fieldLayoutWidth: connectBtn.width
         }
 
         Text {
-            anchors.left: connectBtn.left
-            anchors.right: connectBtn.right
+            property int preferredHeight: layoutSpacing
 
-            text: qsTr("Enter the PIN from another configured Jami account. Use the \"export Jami account\" feature to obtain a PIN")
+            Layout.alignment: Qt.AlignCenter
+            Layout.preferredWidth: connectBtn.width
+            Layout.preferredHeight: preferredHeight
+
+            text: qsTr("Enter the PIN from another configured Jami account. " +
+                       "Use the \"export Jami account\" feature to obtain a PIN")
             wrapMode: Text.Wrap
+
+            onTextChanged: {
+                var boundingRect = JamiQmlUtils.getTextBoundingRect(font, text)
+                preferredHeight += (boundingRect.width / connectBtn.preferredWidth)
+                        * boundingRect.height
+            }
         }
 
         MaterialLineEdit {
             id: pinFromDevice
 
+            Layout.preferredHeight: fieldLayoutHeight
+            Layout.preferredWidth: connectBtn.width
+            Layout.alignment: Qt.AlignCenter
+
             selectByMouse: true
             placeholderText: qsTr("PIN")
-            font.pointSize: 10
+            font.pointSize: 9
             font.kerning: true
 
             borderColorMode: MaterialLineEdit.NORMAL
-
-            fieldLayoutWidth: connectBtn.width
         }
 
         MaterialButton {
             id: connectBtn
+
+            Layout.alignment: Qt.AlignCenter
+            Layout.preferredWidth: preferredWidth
+            Layout.preferredHeight: preferredHeight
+
             text: qsTr("CONNECT FROM ANOTHER DEVICE")
             color: pinFromDevice.text.length === 0?
                 JamiTheme.buttonTintedGreyInactive : JamiTheme.buttonTintedGrey
@@ -113,53 +128,30 @@ Rectangle {
         }
 
         Label {
-            text: errorText
+            Layout.alignment: Qt.AlignCenter
 
-            anchors.left: connectBtn.left
-            anchors.right: connectBtn.right
-            Layout.alignment: Qt.AlignHCenter
+            visible: errorText.length !== 0
+
+            text: errorText
 
             font.pointSize: JamiTheme.textFontSize
             color: "red"
-
-            height: 32
-        }
-    }
-
-    HoverableButton {
-        id: cancelButton
-        z: 2
-
-        anchors.right: parent.right
-        anchors.top: parent.top
-
-        rightPadding: 90
-        topPadding: 90
-
-        Layout.preferredWidth: 96
-        Layout.preferredHeight: 96
-
-        backgroundColor: "transparent"
-        onEnterColor: "transparent"
-        onPressColor: "transparent"
-        onReleaseColor: "transparent"
-        onExitColor: "transparent"
-
-        buttonImageHeight: 48
-        buttonImageWidth: 48
-        source: "qrc:/images/icons/ic_close_white_24dp.png"
-        radius: 48
-        baseColor: "#7c7c7c"
-        toolTipText: qsTr("Return to welcome page")
-
-        Shortcut {
-            sequence: StandardKey.Cancel
-            enabled: parent.visible
-            onActivated: leavePage()
         }
 
-        onClicked: {
-            leavePage()
+        MaterialButton {
+            id: backButton
+
+            Layout.alignment: Qt.AlignCenter
+            Layout.preferredWidth: connectBtn.width / 2
+            Layout.preferredHeight: preferredHeight
+
+            text: qsTr("BACK")
+            color: JamiTheme.buttonTintedGrey
+            hoveredColor: JamiTheme.buttonTintedGreyHovered
+            pressedColor: JamiTheme.buttonTintedGreyPressed
+            outlined: true
+
+            onClicked: leavePage()
         }
     }
 }

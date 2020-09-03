@@ -17,7 +17,6 @@
  */
 
 import QtQuick 2.14
-import QtQuick.Layouts 1.3
 import QtQuick.Controls 2.14
 import QtGraphicalEffects 1.15
 
@@ -31,9 +30,8 @@ Button {
     property var pressedColor: undefined
     property var outlined: false
 
-    Layout.alignment: Qt.AlignCenter
-    Layout.preferredWidth: 400
-    Layout.preferredHeight: 36
+    property var preferredWidth: 400
+    property var preferredHeight: 36
 
     font.kerning: true
 

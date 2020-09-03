@@ -48,17 +48,6 @@ TextField {
 
     signal imageClicked
 
-    Layout.minimumHeight: fieldLayoutHeight
-    Layout.preferredHeight: fieldLayoutHeight
-    Layout.maximumHeight: fieldLayoutHeight
-
-    Layout.minimumWidth: fieldLayoutWidth
-    Layout.maximumWidth: fieldLayoutWidth
-    Layout.preferredWidth: fieldLayoutWidth
-
-    Layout.fillWidth: layoutFillwidth
-    Layout.alignment: Qt.AlignHCenter
-
     wrapMode: Text.Wrap
     readOnly: false
     selectByMouse: true
