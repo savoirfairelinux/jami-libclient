@@ -135,6 +135,7 @@ void registerTypes()
     QML_REGISTERSINGLETONTYPE_URL(QStringLiteral("qrc:/src/constant/JamiQmlUtils.qml"),
                                   JamiQmlUtils, 1, 0);
 
+    QML_REGISTERSINGLETONTYPE("net.jami.Models", AccountAdapter, 1, 0);
     QML_REGISTERSINGLETONTYPE("net.jami.Models", CallAdapter, 1, 0);
     QML_REGISTERSINGLETONTYPE("net.jami.Models", MessagesAdapter, 1, 0);
     QML_REGISTERSINGLETONTYPE("net.jami.Models", ConversationsAdapter, 1, 0);
@@ -167,7 +168,6 @@ void registerTypes()
      * qmlRegisterUncreatableType & Q_DECLARE_METATYPE to expose models in qml.
      */
     QML_REGISTERUNCREATABLE("net.jami.Models", RenderManager, 1, 0);
-    QML_REGISTERUNCREATABLE("net.jami.Models", AccountAdapter, 1, 0);
     QML_REGISTERUNCREATABLE("net.jami.Models", UtilsAdapter, 1, 0);
     QML_REGISTERUNCREATABLE("net.jami.Models", NameDirectory, 1, 0);
     QML_REGISTERUNCREATABLE("net.jami.Models", LRCInstance, 1, 0);

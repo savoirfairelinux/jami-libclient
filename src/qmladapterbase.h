@@ -28,20 +28,27 @@ class QmlAdapterBase : public QObject
 {
     Q_OBJECT
 public:
-    explicit QmlAdapterBase(QObject *parent = nullptr);
-    ~QmlAdapterBase();
+    explicit QmlAdapterBase(QObject *parent = nullptr)
+        : QObject(parent)
+        , qmlObj_(nullptr) {};
+
+    virtual ~QmlAdapterBase() = default;
 
     /*
      * This function should be called in the Component.onCompleted slot
      * in the qml component that this adapter should attach to.
      */
-    Q_INVOKABLE void setQmlObject(QObject *obj);
+    Q_INVOKABLE void setQmlObject(QObject *obj)
+    {
+        qmlObj_ = obj;
+        safeInit();
+    };
 
 protected:
     /*
-     *Once the qml object is set, custom actions can be done in this function.
+     * Once the qml object is set, Qml method invokation can be done
      */
-    virtual void initQmlObject() = 0;
+    virtual void safeInit() = 0;
 
     /*
      * Object pointer.

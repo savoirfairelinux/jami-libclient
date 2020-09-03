@@ -91,7 +91,7 @@ Rectangle {
     }
 
     function forceUpdateConversationSmartListView() {
-        conversationSmartListView.updateConversationSmartListView()
+        conversationSmartListView.updateListView()
     }
 
     /*

@@ -1,7 +1,7 @@
-
 /*
  * Copyright (C) 2020 by Savoir-faire Linux
  * Author: Mingrui Zhang <mingrui.zhang@savoirfairelinux.com>
+ * Author: Andreas Traczyk <andreas.traczyk@savoirfairelinux.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,13 +16,14 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+
 import QtQuick 2.14
 import QtQuick.Controls 2.14
 import QtQuick.Layouts 1.14
 import net.jami.Models 1.0
 
 ListView {
-    id: conversationSmartListView
+    id: root
 
     signal needToAccessMessageWebView(string currentUserDisplayName, string currentUserAlias, string currentUID, bool callStackViewShouldShow, bool isAudioOnly, int callState)
     signal needToSelectItems(string conversationUid)
@@ -34,44 +35,13 @@ ListView {
     signal currentIndexIsChanged
     signal forceUpdatePotentialInvalidItem
 
-
-    /*
-     * When model is sorted, we need to reset to focus (currentIndex)
-     * to the real conversation that we focused.
-     */
-    function modelSorted(contactURIToCompare) {
-        var conversationSmartListViewModel = conversationSmartListView.model
-        conversationSmartListView.currentIndex = -1
-        updateConversationSmartListView()
-        for (var i = 0; i < count; i++) {
-            if (conversationSmartListViewModel.data(
-                        conversationSmartListViewModel.index(i, 0),
-                        261) === contactURIToCompare) {
-                conversationSmartListView.currentIndex = i
-                break
-            }
-        }
-    }
-
-
-    /*
-     * Refresh all item within model.
-     */
-    function updateConversationSmartListView() {
-        var conversationSmartListViewModel = conversationSmartListView.model
-        conversationSmartListViewModel.dataChanged(
-                    conversationSmartListViewModel.index(0, 0),
-                    conversationSmartListViewModel.index(
-                        conversationSmartListViewModel.rowCount() - 1, 0))
-        conversationSmartListView.forceUpdatePotentialInvalidItem()
-    }
-
-    function setModel(model) {
-        conversationSmartListView.model = model
-    }
-
-    function backToWelcomePage() {
-        conversationSmartListView.needToBackToWelcomePage()
+    // Refresh all items within the model.
+    function updateListView() {
+        root.model.dataChanged(
+                    root.model.index(0, 0),
+                    root.model.index(
+                    root.model.rowCount() - 1, 0))
+        root.forceUpdatePotentialInvalidItem()
     }
 
     ConversationSmartListContextMenu {
@@ -79,15 +49,45 @@ ListView {
     }
 
     Connections {
+        target: ConversationsAdapter
+
+        function onModelChanged(model) {
+            root.model = model
+        }
+
+        // When the model has been sorted, we need to adjust the focus (currentIndex)
+        // to the previously focused conversation item.
+        function onModelSorted(uri) {
+            root.currentIndex = -1
+            updateListView()
+            for (var i = 0; i < count; i++) {
+                if (root.model.data(
+                    root.model.index(i, 0), 261) === uri) {
+                    root.currentIndex = i
+                    break
+                }
+            }
+        }
+
+        function onUpdateListViewRequested() {
+            updateListView()
+        }
+
+        function onNavigateToWelcomePageRequested() {
+            root.needToBackToWelcomePage()
+        }
+    }
+
+    Connections {
         target: CallAdapter
 
         function onUpdateConversationSmartList() {
-            updateConversationSmartListView()
+            updateListView()
         }
     }
 
     onCurrentIndexChanged: {
-        conversationSmartListView.currentIndexIsChanged()
+        root.currentIndexIsChanged()
     }
 
     clip: true
@@ -101,7 +101,7 @@ ListView {
     Shortcut {
         sequence: "Ctrl+Shift+X"
         context: Qt.ApplicationShortcut
-        enabled: conversationSmartListView.visible
+        enabled: root.visible
         onActivated: {
             CallAdapter.placeCall()
         }
@@ -110,7 +110,7 @@ ListView {
     Shortcut {
         sequence: "Ctrl+Shift+C"
         context: Qt.ApplicationShortcut
-        enabled: conversationSmartListView.visible
+        enabled: root.visible
         onActivated: {
             CallAdapter.placeAudioOnlyCall()
         }
@@ -119,7 +119,7 @@ ListView {
     Shortcut {
         sequence: "Ctrl+Shift+L"
         context: Qt.ApplicationShortcut
-        enabled: conversationSmartListView.visible
+        enabled: root.visible
         onActivated: {
             ClientWrapper.utilsAdaptor.clearConversationHistory(ClientWrapper.utilsAdaptor.getCurrAccId(),
                                                   ClientWrapper.utilsAdaptor.getCurrConvId())
@@ -129,18 +129,18 @@ ListView {
     Shortcut {
         sequence: "Ctrl+Shift+B"
         context: Qt.ApplicationShortcut
-        enabled: conversationSmartListView.visible
+        enabled: root.visible
         onActivated: {
             ClientWrapper.utilsAdaptor.removeConversation(ClientWrapper.utilsAdaptor.getCurrAccId(),
                                             ClientWrapper.utilsAdaptor.getCurrConvId(), true)
-            conversationSmartListView.needToBackToWelcomePage()
+            root.needToBackToWelcomePage()
         }
     }
 
     Shortcut {
         sequence: "Ctrl+Shift+Delete"
         context: Qt.ApplicationShortcut
-        enabled: conversationSmartListView.visible
+        enabled: root.visible
         onActivated: {
             ClientWrapper.utilsAdaptor.removeConversation(ClientWrapper.utilsAdaptor.getCurrAccId(),
                                             ClientWrapper.utilsAdaptor.getCurrConvId(), false)
@@ -150,21 +150,22 @@ ListView {
     Shortcut {
         sequence: "Ctrl+Down"
         context: Qt.ApplicationShortcut
-        enabled: conversationSmartListView.visible
+        enabled: root.visible
         onActivated: {
-            if (currentIndex + 1 >= count) return
-            conversationSmartListView.currentIndex += 1
+            if (currentIndex + 1 >= count)
+                return
+            root.currentIndex += 1
         }
     }
 
     Shortcut {
         sequence: "Ctrl+Up"
         context: Qt.ApplicationShortcut
-        enabled: conversationSmartListView.visible
+        enabled: root.visible
         onActivated: {
-            if (currentIndex <= 0) return
-            conversationSmartListView.currentIndex -= 1
+            if (currentIndex <= 0)
+                return
+            root.currentIndex -= 1
         }
     }
-
 }

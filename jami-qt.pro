@@ -174,7 +174,6 @@ SOURCES += ./src/bannedlistmodel.cpp \
         ./src/conversationsadapter.cpp \
         ./src/distantrenderer.cpp \
         ./src/previewrenderer.cpp \
-        ./src/qmladapterbase.cpp \
         ./src/avadapter.cpp \
         ./src/contactadapter.cpp \
         ./src/mediahandleradapter.cpp \

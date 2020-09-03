@@ -30,12 +30,6 @@
 CallAdapter::CallAdapter(QObject* parent)
     : QmlAdapterBase(parent)
     , oneSecondTimer_(new QTimer(this))
-{}
-
-CallAdapter::~CallAdapter() {}
-
-void
-CallAdapter::initQmlObject()
 {
     connectCallModel(LRCInstance::getCurrAccId());
 

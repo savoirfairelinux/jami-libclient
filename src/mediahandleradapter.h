@@ -1,4 +1,4 @@
-/**
+/*!
  * Copyright (C) 2020 by Savoir-faire Linux
  * Author: Aline Gondim Santos <aline.gondimsantos@savoirfairelinux.com>
  *
@@ -19,7 +19,6 @@
 #pragma once
 
 #include "qmladapterbase.h"
-//#include "smartlistmodel.h"
 #include "mediahandleritemlistmodel.h"
 #include "mediahandlerlistpreferencemodel.h"
 #include "preferenceitemlistmodel.h"
@@ -28,22 +27,23 @@
 #include <QSortFilterProxyModel>
 #include <QString>
 
-class MediaHandlerAdapter : public QmlAdapterBase
+class MediaHandlerAdapter final : public QmlAdapterBase
 {
     Q_OBJECT
-
 public:
     explicit MediaHandlerAdapter(QObject* parent = nullptr);
-    ~MediaHandlerAdapter();
+    ~MediaHandlerAdapter() = default;
+
+protected:
+    void safeInit() override {};
 
     Q_INVOKABLE QVariant getMediaHandlerSelectableModel();
     Q_INVOKABLE QVariant getMediaHandlerPreferencesModel(QString pluginId, QString mediaHandlerName);
     Q_INVOKABLE QVariant getMediaHandlerPreferencesSelectableModel(QString pluginId);
 
 private:
-    void initQmlObject();
-
     std::unique_ptr<MediaHandlerItemListModel> mediaHandlerListModel_;
     std::unique_ptr<PreferenceItemListModel> mediaHandlerPreferenceItemListModel_;
     std::unique_ptr<MediaHandlerListPreferenceModel> mediaHandlerListPreferenceModel_;
+
 };

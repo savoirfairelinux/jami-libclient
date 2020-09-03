@@ -28,12 +28,6 @@ AvAdapter::AvAdapter(QObject *parent)
     : QmlAdapterBase(parent)
 {}
 
-AvAdapter::~AvAdapter() {}
-
-void
-AvAdapter::initQmlObject()
-{}
-
 QVariantMap
 AvAdapter::populateVideoDeviceContextMenuItem()
 {

@@ -1,4 +1,4 @@
-/*
+/*!
  * Copyright (C) 2020 by Savoir-faire Linux
  * Author: Mingrui Zhang <mingrui.zhang@savoirfairelinux.com>
  *
@@ -25,14 +25,17 @@
 #include <QObject>
 #include <QString>
 
-class ConversationsAdapter : public QmlAdapterBase
+class ConversationsAdapter final : public QmlAdapterBase
 {
     Q_OBJECT
-
 public:
     explicit ConversationsAdapter(QObject *parent = nullptr);
-    ~ConversationsAdapter();
+    ~ConversationsAdapter() = default;
 
+protected:
+    void safeInit() override;
+
+public:
     Q_INVOKABLE bool connectConversationModel(bool updateFilter = true);
     Q_INVOKABLE void disconnectConversationModel();
     Q_INVOKABLE void selectConversation(const QString &accountId,
@@ -50,8 +53,12 @@ signals:
     void showConversationTabs(bool visible);
     void showSearchStatus(const QString &status);
 
+    void modelChanged(const QVariant& model);
+    void modelSorted(const QVariant& uri);
+    void updateListViewRequested();
+    void navigateToWelcomePageRequested();
+
 private:
-    void initQmlObject() override;
     void setConversationFilter(lrc::api::profile::Type filter);
     void backToWelcomePage();
     bool selectConversation(const lrc::api::conversation::Info &item,

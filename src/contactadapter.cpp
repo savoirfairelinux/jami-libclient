@@ -1,4 +1,4 @@
-/*
+/*!
  * Copyright (C) 2020 by Savoir-faire Linux
  * Author: Edric Ladent Milaret <edric.ladent-milaret@savoirfairelinux.com>
  * Author: Andreas Traczyk <andreas.traczyk@savoirfairelinux.com>
@@ -27,8 +27,6 @@ ContactAdapter::ContactAdapter(QObject *parent)
 {
     selectableProxyModel_.reset(new SelectableProxyModel(smartListModel_.get()));
 }
-
-ContactAdapter::~ContactAdapter() {}
 
 QVariant
 ContactAdapter::getContactSelectableModel(int type)
@@ -175,7 +173,3 @@ ContactAdapter::setCalleeDisplayName(const QString &name)
 {
     calleeDisplayName_ = name;
 }
-
-void
-ContactAdapter::initQmlObject()
-{}

@@ -1,4 +1,4 @@
-/*
+/*!
  * Copyright (C) 2020 by Savoir-faire Linux
  * Author: Edric Ladent Milaret <edric.ladent-milaret@savoirfairelinux.com>
  * Author: Anthony L�onard <anthony.leonard@savoirfairelinux.com>
@@ -29,15 +29,12 @@ ConversationsAdapter::ConversationsAdapter(QObject *parent)
     : QmlAdapterBase(parent)
 {}
 
-ConversationsAdapter::~ConversationsAdapter() {}
-
 void
-ConversationsAdapter::initQmlObject()
+ConversationsAdapter::safeInit()
 {
     conversationSmartListModel_ = new SmartListModel(LRCInstance::getCurrAccId(), this);
 
-    QMetaObject::invokeMethod(qmlObj_, "setModel",
-                              Q_ARG(QVariant, QVariant::fromValue(conversationSmartListModel_)));
+    emit modelChanged(QVariant::fromValue(conversationSmartListModel_));
 
     connect(&LRCInstance::behaviorController(),
             &BehaviorController::showChatView,
@@ -57,7 +54,7 @@ void
 ConversationsAdapter::backToWelcomePage()
 {
     deselectConversation();
-    QMetaObject::invokeMethod(qmlObj_, "backToWelcomePage");
+    emit navigateToWelcomePageRequested();
 }
 
 void
@@ -198,7 +195,7 @@ ConversationsAdapter::connectConversationModel(bool updateFilter)
                                               [this]() {
         conversationSmartListModel_->fillConversationsList();
         updateConversationsFilterWidget();
-        QMetaObject::invokeMethod(qmlObj_, "updateConversationSmartListView");
+        emit updateListViewRequested();
         auto* convModel = LRCInstance::getCurrentConversationModel();
         const auto conversation = convModel->getConversationForUID(LRCInstance::getCurrentConvUid());
 
@@ -211,7 +208,7 @@ ConversationsAdapter::connectConversationModel(bool updateFilter)
                    == lrc::api::profile::Type::TEMPORARY) {
             return;
         }
-        QMetaObject::invokeMethod(qmlObj_, "modelSorted", Q_ARG(QVariant, contactURI));
+        emit modelSorted(QVariant::fromValue(contactURI));
     });
 
     modelUpdatedConnection_ = QObject::connect(currentConversationModel,
@@ -219,7 +216,7 @@ ConversationsAdapter::connectConversationModel(bool updateFilter)
                                                [this](const QString &convUid) {
         conversationSmartListModel_->updateConversation(convUid);
         updateConversationsFilterWidget();
-        QMetaObject::invokeMethod(qmlObj_, "updateConversationSmartListView");
+        emit updateListViewRequested();
     });
 
     filterChangedConnection_ = QObject::connect(currentConversationModel,
@@ -228,7 +225,7 @@ ConversationsAdapter::connectConversationModel(bool updateFilter)
         conversationSmartListModel_->fillConversationsList();
         conversationSmartListModel_->setAccount(LRCInstance::getCurrAccId());
         updateConversationsFilterWidget();
-        QMetaObject::invokeMethod(qmlObj_, "updateConversationSmartListView");
+        emit updateListViewRequested();
     });
 
     newConversationConnection_ = QObject::connect(currentConversationModel,
@@ -265,9 +262,10 @@ ConversationsAdapter::connectConversationModel(bool updateFilter)
     searchResultUpdatedConnection_ = QObject::connect(currentConversationModel,
                                                       &lrc::api::ConversationModel::searchResultUpdated,
                                                       [this]() {
+
         conversationSmartListModel_->fillConversationsList();
         conversationSmartListModel_->setAccount(LRCInstance::getCurrAccId());
-        QMetaObject::invokeMethod(qmlObj_, "updateConversationSmartListView");
+        emit updateListViewRequested();
     });
 
     if (updateFilter) currentConversationModel->setFilter("");

@@ -26,19 +26,18 @@
 #include <QString>
 #include <QVariant>
 
-class CallAdapter : public QmlAdapterBase
+class CallAdapter final : public QmlAdapterBase
 {
     Q_OBJECT
 
 public:
     explicit CallAdapter(QObject* parent = nullptr);
-    ~CallAdapter();
+    ~CallAdapter() = default;
 
-    /*
-     * This is needed to be public since it has to be recognized by qml.
-     */
-    Q_INVOKABLE void initQmlObject() override;
+protected:
+    void safeInit() override {};
 
+public:
     Q_INVOKABLE void placeAudioOnlyCall();
     Q_INVOKABLE void placeCall();
     Q_INVOKABLE void hangUpACall(const QString& accountId, const QString& convUid);

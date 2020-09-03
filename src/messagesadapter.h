@@ -1,4 +1,4 @@
-/*
+/*!
  * Copyright (C) 2020 by Savoir-faire Linux
  * Author: Mingrui Zhang   <mingrui.zhang@savoirfairelinux.com>
  *
@@ -24,13 +24,15 @@
 #include <QObject>
 #include <QString>
 
-class MessagesAdapter : public QmlAdapterBase
+class MessagesAdapter final : public QmlAdapterBase
 {
     Q_OBJECT
-
 public:
     explicit MessagesAdapter(QObject *parent = 0);
-    ~MessagesAdapter();
+    ~MessagesAdapter() = default;
+
+protected:
+    void safeInit() override;
 
     Q_INVOKABLE void setupChatView(const QString &uid);
     Q_INVOKABLE void connectConversationModel();
@@ -93,7 +95,6 @@ public slots:
     void slotMessagesLoaded();
 
 private:
-    void initQmlObject() override final;
     void setConversationProfileData(const lrc::api::conversation::Info &convInfo);
     void newInteraction(const QString &accountId,
                         const QString &convUid,

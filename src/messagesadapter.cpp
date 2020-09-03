@@ -1,7 +1,7 @@
-/*
+/*!
  * Copyright (C) 2020 by Savoir-faire Linux
  * Author: Edric Ladent Milaret <edric.ladent-milaret@savoirfairelinux.com>
- * Author: Anthony L�onard <anthony.leonard@savoirfairelinux.com>
+ * Author: Anthony Léonard <anthony.leonard@savoirfairelinux.com>
  * Author: Olivier Soldano <olivier.soldano@savoirfairelinux.com>
  * Author: Andreas Traczyk <andreas.traczyk@savoirfairelinux.com>
  * Author: Isa Nanic <isa.nanic@savoirfairelinux.com>
@@ -22,9 +22,9 @@
  */
 
 #include "messagesadapter.h"
-#include "webchathelpers.h"
 
 #include "utils.h"
+#include "webchathelpers.h"
 
 #include <QDesktopServices>
 #include <QFileInfo>
@@ -36,10 +36,8 @@ MessagesAdapter::MessagesAdapter(QObject *parent)
     : QmlAdapterBase(parent)
 {}
 
-MessagesAdapter::~MessagesAdapter() {}
-
 void
-MessagesAdapter::initQmlObject() {
+MessagesAdapter::safeInit() {
     connect(&LRCInstance::instance(),
             &LRCInstance::currentAccountChanged,
             [this](){

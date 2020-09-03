@@ -24,13 +24,16 @@
 #include <QVariant>
 #include <QString>
 
-class AvAdapter : public QmlAdapterBase
+class AvAdapter final : public QmlAdapterBase
 {
     Q_OBJECT
 
 public:
     explicit AvAdapter(QObject *parent = nullptr);
-    ~AvAdapter();
+    ~AvAdapter() = default;
+
+protected:
+    void safeInit() override {};
 
     /*
      * Return needed info for populating video device context menu item.
@@ -62,6 +65,4 @@ public:
      */
     Q_INVOKABLE void shareScreenArea(int screenNumber, int x, int y, int width, int height);
 
-private:
-    void initQmlObject() override;
 };

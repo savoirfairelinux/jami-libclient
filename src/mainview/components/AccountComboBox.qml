@@ -27,13 +27,9 @@ ComboBox {
     id: accountComboBox
 
     signal accountChanged(int index)
-    signal needToBackToWelcomePage()
+    signal needToBackToWelcomePage
     signal newAccountButtonClicked
     signal settingBtnClicked
-
-    function backToWelcomePage() {
-        needToBackToWelcomePage()
-    }
 
     // Reset accountListModel.
     function resetAccountListModel() {
@@ -50,6 +46,14 @@ ComboBox {
                     accountListModel.data(accountListModel.index(0, 0), 261)
             textMetricsUserAliasRoot.text = accountListModel.data(accountListModel.index(0,0), 257)
             textMetricsUsernameRoot.text = accountListModel.data(accountListModel.index(0,0), 258)
+        }
+    }
+
+    Connections {
+        target: ClientWrapper.accountAdaptor
+
+        function onNavigateToWelcomePageRequested() {
+            needToBackToWelcomePage()
         }
     }
 

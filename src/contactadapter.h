@@ -1,4 +1,4 @@
-/*
+/*!
  * Copyright (C) 2020 by Savoir-faire Linux
  * Author: Mingrui Zhang <mingrui.zhang@savoirfairelinux.com>
  *
@@ -34,7 +34,7 @@
  *
  * Additionally, user need to setFilterRegExp to be able to get input QRegExp from FilterPredicate.
  */
-class SelectableProxyModel : public QSortFilterProxyModel
+class SelectableProxyModel final : public QSortFilterProxyModel
 {
 public:
     using FilterPredicate = std::function<bool(const QModelIndex &, const QRegExp &)>;
@@ -68,13 +68,16 @@ private:
     std::function<bool(const QModelIndex &, const QRegExp &)> filterPredicate_;
 };
 
-class ContactAdapter : public QmlAdapterBase
+class ContactAdapter final : public QmlAdapterBase
 {
     Q_OBJECT
 
 public:
     explicit ContactAdapter(QObject *parent = nullptr);
-    ~ContactAdapter();
+    ~ContactAdapter() = default;
+
+protected:
+    void safeInit() override {};
 
     Q_INVOKABLE QVariant getContactSelectableModel(int type);
     Q_INVOKABLE void setSearchFilter(const QString &filter);
@@ -82,8 +85,6 @@ public:
     Q_INVOKABLE void setCalleeDisplayName(const QString &name);
 
 private:
-    void initQmlObject() override;
-
     SmartListModel::Type listModeltype_;
 
     /*

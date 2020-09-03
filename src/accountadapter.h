@@ -27,13 +27,18 @@
 #include "lrcinstance.h"
 #include "utils.h"
 
-class AccountAdapter : public QmlAdapterBase
+class AccountAdapter final : public QmlAdapterBase
 {
     Q_OBJECT
 
 public:
     explicit AccountAdapter(QObject *parent = 0);
-    ~AccountAdapter();
+    ~AccountAdapter() = default;
+
+protected:
+    void safeInit() override;
+
+public:
     //Singleton
     static AccountAdapter &instance();
 
@@ -94,9 +99,9 @@ signals:
      */
     void reportFailure();
     void accountAdded(bool showBackUp, int index);
+    void navigateToWelcomePageRequested();
 
 private:
-    void initQmlObject() override final;
     void setSelectedAccount(const QString &accountId);
     void backToWelcomePage();
     void deselectConversation();

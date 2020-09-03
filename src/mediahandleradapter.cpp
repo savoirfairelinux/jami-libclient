@@ -24,8 +24,6 @@ MediaHandlerAdapter::MediaHandlerAdapter(QObject* parent)
     : QmlAdapterBase(parent)
 {}
 
-MediaHandlerAdapter::~MediaHandlerAdapter() {}
-
 QVariant
 MediaHandlerAdapter::getMediaHandlerSelectableModel()
 {
@@ -61,7 +59,3 @@ MediaHandlerAdapter::getMediaHandlerPreferencesSelectableModel(QString pluginId)
 
     return QVariant::fromValue(mediaHandlerListPreferenceModel_.get());
 }
-
-void
-MediaHandlerAdapter::initQmlObject()
-{}

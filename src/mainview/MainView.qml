@@ -704,10 +704,6 @@ Window {
         height: userProfile.contentHeight
     }
 
-    Component.onCompleted: {
-        CallAdapter.initQmlObject()
-    }
-
     onClosing: {
         close.accepted = false
         mainViewWindow.hide()

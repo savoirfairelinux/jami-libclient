@@ -30,8 +30,6 @@ AccountAdapter::AccountAdapter(QObject *parent)
     : QmlAdapterBase(parent)
 {}
 
-AccountAdapter::~AccountAdapter() {}
-
 AccountAdapter &
 AccountAdapter::instance()
 {
@@ -40,7 +38,7 @@ AccountAdapter::instance()
 }
 
 void
-AccountAdapter::initQmlObject()
+AccountAdapter::safeInit()
 {
     setSelectedAccount(LRCInstance::getCurrAccId());
 }
@@ -334,7 +332,7 @@ void
 AccountAdapter::backToWelcomePage()
 {
     deselectConversation();
-    QMetaObject::invokeMethod(qmlObj_, "backToWelcomePage");
+    emit navigateToWelcomePageRequested();
 }
 
 void
