@@ -1949,7 +1949,7 @@ void
 ConversationModelPimpl::slotCallAddedToConference(const QString& callId, const QString& confId)
 {
     for (auto& conversation: conversations) {
-        if (conversation.callId == callId || conversation.confId == confId) {
+        if (conversation.callId == callId && conversation.confId != confId) {
             conversation.confId = confId;
             dirtyConversations = {true, true};
 
