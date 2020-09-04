@@ -28,21 +28,32 @@
 #undef REGISTERED
 #include "../daemon/src/dring/account_const.h"
 
-AccountAdapter::AccountAdapter(QObject *parent)
+AccountAdapter::AccountAdapter(QObject* parent)
     : QmlAdapterBase(parent)
 {}
-
-AccountAdapter &
-AccountAdapter::instance()
-{
-    static auto instance = new AccountAdapter;
-    return *instance;
-}
 
 void
 AccountAdapter::safeInit()
 {
-    setSelectedAccount(LRCInstance::getCurrAccId());
+    setSelectedAccountId(LRCInstance::getCurrAccId());
+}
+
+lrc::api::NewAccountModel*
+AccountAdapter::getModel()
+{
+    return &(LRCInstance::accountModel());
+}
+
+lrc::api::ContactModel*
+AccountAdapter::getContactModel()
+{
+    return LRCInstance::getCurrentAccountInfo().contactModel.get();
+}
+
+lrc::api::NewDeviceModel*
+AccountAdapter::getDeviceModel()
+{
+    return LRCInstance::getCurrentAccountInfo().deviceModel.get();
 }
 
 void
@@ -50,7 +61,7 @@ AccountAdapter::accountChanged(int index)
 {
     auto accountList = LRCInstance::accountModel().getAccountList();
     if (accountList.size() > index)
-        setSelectedAccount(accountList.at(index));
+        setSelectedAccountId(accountList.at(index));
 }
 
 void
@@ -58,13 +69,13 @@ AccountAdapter::connectFailure()
 {
     Utils::oneShotConnect(&LRCInstance::accountModel(),
                           &lrc::api::NewAccountModel::accountRemoved,
-                          [this](const QString &accountId) {
+                          [this](const QString& accountId) {
                               Q_UNUSED(accountId);
                               emit reportFailure();
                           });
     Utils::oneShotConnect(&LRCInstance::accountModel(),
                           &lrc::api::NewAccountModel::invalidAccountDetected,
-                          [this](const QString &accountId) {
+                          [this](const QString& accountId) {
                               Q_UNUSED(accountId);
                               emit reportFailure();
                           });
@@ -72,16 +83,17 @@ AccountAdapter::connectFailure()
 
 void
 AccountAdapter::createJamiAccount(QString registeredName,
-                                  const QVariantMap &settings,
+                                  const QVariantMap& settings,
                                   QString photoBoothImgBase64,
                                   bool isCreating)
 {
     Utils::oneShotConnect(
         &LRCInstance::accountModel(),
         &lrc::api::NewAccountModel::accountAdded,
-        [this, registeredName, settings, isCreating, photoBoothImgBase64](const QString &accountId) {
-            auto showBackup = isCreating &&
-                    !AppSettingsManager::getValue(Settings::Key::NeverShowMeAgain).toBool();
+        [this, registeredName, settings, isCreating, photoBoothImgBase64](const QString& accountId) {
+            auto showBackup = isCreating
+                              && !AppSettingsManager::getValue(Settings::Key::NeverShowMeAgain)
+                                      .toBool();
             if (!registeredName.isEmpty()) {
                 Utils::oneShotConnect(&LRCInstance::accountModel(),
                                       &lrc::api::NewAccountModel::nameRegistrationEnded,
@@ -129,11 +141,11 @@ AccountAdapter::createJamiAccount(QString registeredName,
 }
 
 void
-AccountAdapter::createSIPAccount(const QVariantMap &settings, QString photoBoothImgBase64)
+AccountAdapter::createSIPAccount(const QVariantMap& settings, QString photoBoothImgBase64)
 {
     Utils::oneShotConnect(&LRCInstance::accountModel(),
                           &lrc::api::NewAccountModel::accountAdded,
-                          [this, settings, photoBoothImgBase64](const QString &accountId) {
+                          [this, settings, photoBoothImgBase64](const QString& accountId) {
                               auto confProps = LRCInstance::accountModel().getAccountConfig(
                                   accountId);
                               // set SIP details
@@ -178,11 +190,11 @@ AccountAdapter::createSIPAccount(const QVariantMap &settings, QString photoBooth
 }
 
 void
-AccountAdapter::createJAMSAccount(const QVariantMap &settings)
+AccountAdapter::createJAMSAccount(const QVariantMap& settings)
 {
     Utils::oneShotConnect(&LRCInstance::accountModel(),
                           &lrc::api::NewAccountModel::accountAdded,
-                          [this](const QString &accountId) {
+                          [this](const QString& accountId) {
                               Q_UNUSED(accountId)
                               if (!LRCInstance::accountModel().getAccountList().size())
                                   return;
@@ -214,9 +226,9 @@ AccountAdapter::deleteCurrentAccount()
 }
 
 bool
-AccountAdapter::savePassword(const QString accountId,
-                             const QString oldPassword,
-                             const QString newPassword)
+AccountAdapter::savePassword(const QString& accountId,
+                             const QString& oldPassword,
+                             const QString& newPassword)
 {
     return LRCInstance::accountModel().changeAccountPassword(accountId, oldPassword, newPassword);
 }
@@ -260,21 +272,15 @@ AccountAdapter::isPreviewing()
 }
 
 void
-AccountAdapter::setCurrAccDisplayName(QString text)
+AccountAdapter::setCurrAccDisplayName(const QString& text)
 {
     LRCInstance::setCurrAccDisplayName(text);
 }
 
 void
-AccountAdapter::setSelectedAccountId(QString accountId)
+AccountAdapter::setSelectedConvId(const QString& convId)
 {
-    LRCInstance::setSelectedAccountId(accountId);
-}
-
-void
-AccountAdapter::setSelectedConvId(QString accountId)
-{
-    LRCInstance::setSelectedConvId(accountId);
+    LRCInstance::setSelectedConvId(convId);
 }
 
 bool
@@ -292,15 +298,15 @@ AccountAdapter::setArchiveHasPassword(bool isHavePassword)
     LRCInstance::accountModel().setAccountConfig(LRCInstance::getCurrAccId(), confProps);
 }
 bool
-AccountAdapter::exportToFile(const QString &accountId,
-                             const QString &path,
-                             const QString &password) const
+AccountAdapter::exportToFile(const QString& accountId,
+                             const QString& path,
+                             const QString& password) const
 {
     return LRCInstance::accountModel().exportToFile(accountId, path, password);
 }
 
 void
-AccountAdapter::setArchivePasswordAsync(const QString &accountID, const QString &password)
+AccountAdapter::setArchivePasswordAsync(const QString& accountID, const QString& password)
 {
     QtConcurrent::run([accountID, password] {
         auto config = LRCInstance::accountModel().getAccountConfig(accountID);
@@ -320,12 +326,18 @@ AccountAdapter::passwordSetStatusMessageBox(bool success, QString title, QString
 }
 
 void
-AccountAdapter::setSelectedAccount(const QString &accountId)
+AccountAdapter::setSelectedAccountId(const QString& accountId)
 {
     LRCInstance::setSelectedAccountId(accountId);
 
+    setProperty("currentAccountId", accountId);
+    auto accountType = LRCInstance::getAccountInfo(accountId).profileInfo.type;
+    setProperty("currentAccountType", lrc::api::profile::to_string(accountType));
+
     connectAccount(accountId);
-    emit accountSignalsReconnect(accountId);
+
+    emit contactModelChanged();
+    emit deviceModelChanged();
 
     backToWelcomePage();
 }
@@ -355,10 +367,10 @@ AccountAdapter::deselectConversation()
 }
 
 void
-AccountAdapter::connectAccount(const QString &accountId)
+AccountAdapter::connectAccount(const QString& accountId)
 {
     try {
-        auto &accInfo = LRCInstance::accountModel().getAccountInfo(accountId);
+        auto& accInfo = LRCInstance::accountModel().getAccountInfo(accountId);
 
         QObject::disconnect(accountStatusChangedConnection_);
         QObject::disconnect(contactAddedConnection_);
@@ -367,11 +379,11 @@ AccountAdapter::connectAccount(const QString &accountId)
 
         accountProfileChangedConnection_
             = QObject::connect(&LRCInstance::accountModel(),
-                &lrc::api::NewAccountModel::profileUpdated,
-                [this](const QString& accountId) {
-                    if (LRCInstance::getCurrAccId() == accountId)
-                        emit accountStatusChanged();
-                });
+                               &lrc::api::NewAccountModel::profileUpdated,
+                               [this](const QString& accountId) {
+                                   if (LRCInstance::getCurrAccId() == accountId)
+                                       emit accountStatusChanged();
+                               });
 
         accountStatusChangedConnection_
             = QObject::connect(accInfo.accountModel,
@@ -381,8 +393,8 @@ AccountAdapter::connectAccount(const QString &accountId)
         contactAddedConnection_
             = QObject::connect(accInfo.contactModel.get(),
                                &lrc::api::ContactModel::contactAdded,
-                               [this, accountId](const QString &contactUri) {
-                                   auto &accInfo = LRCInstance::accountModel().getAccountInfo(
+                               [this, accountId](const QString& contactUri) {
+                                   auto& accInfo = LRCInstance::accountModel().getAccountInfo(
                                        accountId);
                                    auto* convModel = LRCInstance::getCurrentConversationModel();
                                    const auto conversation = convModel->getConversationForUID(
@@ -404,7 +416,7 @@ AccountAdapter::connectAccount(const QString &accountId)
         addedToConferenceConnection_
             = QObject::connect(accInfo.callModel.get(),
                                &NewCallModel::callAddedToConference,
-                               [](const QString &callId, const QString &confId) {
+                               [](const QString& callId, const QString& confId) {
                                    Q_UNUSED(callId);
                                    LRCInstance::renderer()->addDistantRenderer(confId);
                                });

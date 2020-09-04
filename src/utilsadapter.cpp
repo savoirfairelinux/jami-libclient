@@ -60,13 +60,13 @@ UtilsAdapter::setText(QString text)
 }
 
 const QString
-UtilsAdapter::qStringFromFile(const QString &filename)
+UtilsAdapter::qStringFromFile(const QString& filename)
 {
     return Utils::QByteArrayFromFile(filename);
 }
 
 const QString
-UtilsAdapter::getStyleSheet(const QString &name, const QString &source)
+UtilsAdapter::getStyleSheet(const QString& name, const QString& source)
 {
     auto simplifiedCSS = source.simplified().replace("'", "\"");
     QString s = QString::fromLatin1("(function() {"
@@ -106,20 +106,29 @@ UtilsAdapter::checkStartupLink()
 }
 
 const QString
-UtilsAdapter::getContactImageString(const QString &accountId, const QString &uid)
+UtilsAdapter::getContactImageString(const QString& accountId, const QString& uid)
 {
     return Utils::getContactImageString(accountId, uid);
 }
 
 const QString
-UtilsAdapter::getBestName(const QString &accountId, const QString &uid)
+UtilsAdapter::getBestName(const QString& accountId, const QString& uid)
 {
     auto* convModel = LRCInstance::getAccountInfo(accountId).conversationModel.get();
     return Utils::bestNameForConversation(convModel->getConversationForUID(uid), *convModel);
 }
 
+QString
+UtilsAdapter::getBestId(const QString& accountId)
+{
+    if (accountId.isEmpty())
+        return {};
+    auto& accountInfo = LRCInstance::getAccountInfo(accountId);
+    return Utils::bestIdForAccount(accountInfo);
+}
+
 const QString
-UtilsAdapter::getBestId(const QString &accountId, const QString &uid)
+UtilsAdapter::getBestId(const QString& accountId, const QString& uid)
 {
     auto* convModel = LRCInstance::getAccountInfo(accountId).conversationModel.get();
     return Utils::bestIdForConversation(convModel->getConversationForUID(uid), *convModel);
@@ -128,13 +137,13 @@ UtilsAdapter::getBestId(const QString &accountId, const QString &uid)
 int
 UtilsAdapter::getTotalUnreadMessages()
 {
-    int totalUnreadMessages{0};
+    int totalUnreadMessages {0};
     if (LRCInstance::getCurrentAccountInfo().profileInfo.type != lrc::api::profile::Type::SIP) {
         auto* convModel = LRCInstance::getCurrentConversationModel();
         auto ringConversations = convModel->getFilteredConversations(lrc::api::profile::Type::RING);
         std::for_each(ringConversations.begin(),
                       ringConversations.end(),
-                      [&totalUnreadMessages](const auto &conversation) {
+                      [&totalUnreadMessages](const auto& conversation) {
                           totalUnreadMessages += conversation.unreadMessages;
                       });
     }
@@ -144,24 +153,24 @@ UtilsAdapter::getTotalUnreadMessages()
 int
 UtilsAdapter::getTotalPendingRequest()
 {
-    auto &accountInfo = LRCInstance::getCurrentAccountInfo();
+    auto& accountInfo = LRCInstance::getCurrentAccountInfo();
     return accountInfo.contactModel->pendingRequestCount();
 }
 
 void
-UtilsAdapter::setConversationFilter(const QString &filter)
+UtilsAdapter::setConversationFilter(const QString& filter)
 {
     LRCInstance::getCurrentConversationModel()->setFilter(filter);
 }
 
 void
-UtilsAdapter::clearConversationHistory(const QString &accountId, const QString &uid)
+UtilsAdapter::clearConversationHistory(const QString& accountId, const QString& uid)
 {
     LRCInstance::getAccountInfo(accountId).conversationModel->clearHistory(uid);
 }
 
 void
-UtilsAdapter::removeConversation(const QString &accountId, const QString &uid, bool banContact)
+UtilsAdapter::removeConversation(const QString& accountId, const QString& uid, bool banContact)
 {
     LRCInstance::getAccountInfo(accountId).conversationModel->removeConversation(uid, banContact);
 }
@@ -197,9 +206,9 @@ UtilsAdapter::getAccountListSize()
 }
 
 void
-UtilsAdapter::setCurrentCall(const QString &accountId, const QString &convUid)
+UtilsAdapter::setCurrentCall(const QString& accountId, const QString& convUid)
 {
-    auto &accInfo = LRCInstance::getAccountInfo(accountId);
+    auto& accInfo = LRCInstance::getAccountInfo(accountId);
     const auto convInfo = accInfo.conversationModel->getConversationForUID(convUid);
     accInfo.callModel->setCurrentCall(convInfo.callId);
 }
@@ -225,9 +234,9 @@ UtilsAdapter::hasVideoCall()
 }
 
 const QString
-UtilsAdapter::getCallId(const QString &accountId, const QString &convUid)
+UtilsAdapter::getCallId(const QString& accountId, const QString& convUid)
 {
-    auto &accInfo = LRCInstance::getAccountInfo(accountId);
+    auto& accInfo = LRCInstance::getAccountInfo(accountId);
     const auto convInfo = accInfo.conversationModel->getConversationForUID(convUid);
 
     if (convInfo.uid.isEmpty()) {
@@ -249,10 +258,9 @@ UtilsAdapter::getCallStatusStr(int statusInt)
     return lrc::api::call::to_string(status);
 }
 
-
 // returns true if name is valid registered name
 bool
-UtilsAdapter::validateRegNameForm(const QString &regName)
+UtilsAdapter::validateRegNameForm(const QString& regName)
 {
     QRegularExpression regExp(" ");
 

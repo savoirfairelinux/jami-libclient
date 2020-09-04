@@ -37,12 +37,12 @@ Rectangle {
         applicationOnStartUpCheckBox.checked = UtilsAdapter.checkStartupLink()
         notificationCheckBox.checked = SettingsAdapter.getAppValue(Settings.EnableNotifications)
 
-        alwaysRecordingCheckBox.checked = ClientWrapper.avmodel.getAlwaysRecord()
-        recordPreviewCheckBox.checked = ClientWrapper.avmodel.getRecordPreview()
-        recordQualityValueLabel.text = UtilsAdapter.getRecordQualityString(ClientWrapper.avmodel.getRecordQuality() / 100)
-        recordQualitySlider.value = ClientWrapper.avmodel.getRecordQuality() / 100
+        alwaysRecordingCheckBox.checked = AVModel.getAlwaysRecord()
+        recordPreviewCheckBox.checked = AVModel.getRecordPreview()
+        recordQualityValueLabel.text = UtilsAdapter.getRecordQualityString(AVModel.getRecordQuality() / 100)
+        recordQualitySlider.value = AVModel.getRecordQuality() / 100
 
-        ClientWrapper.avmodel.setRecordPath(ClientWrapper.SettingsAdapter.getDir_Document())
+        AVModel.setRecordPath(SettingsAdapter.getDir_Document())
 
         autoUpdateCheckBox.checked = SettingsAdapter.getAppValue(Settings.Key.AutoUpdate)
     }
@@ -64,11 +64,11 @@ Rectangle {
     }
 
     function slotAlwaysRecordingClicked(state){
-        ClientWrapper.avmodel.setAlwaysRecord(state)
+        AVModel.setAlwaysRecord(state)
     }
 
     function slotRecordPreviewClicked(state){
-        ClientWrapper.avmodel.setRecordPreview(state)
+        AVModel.setRecordPreview(state)
     }
 
     function slotRecordQualitySliderValueChanged(value){
@@ -88,7 +88,7 @@ Rectangle {
 
     function slotRecordQualitySliderSliderReleased(){
         var value = recordQualitySlider.value
-        ClientWrapper.avmodel.setRecordQuality(value * 100)
+        AVModel.setRecordQuality(value * 100)
     }
 
     function openDownloadFolderSlot(){
@@ -146,8 +146,8 @@ Rectangle {
     onRecordPathChanged: {
         if(recordPath === "") return
 
-        if(ClientWrapper.avmodel){
-            ClientWrapper.avmodel.setRecordPath(recordPath)
+        if(AVModel){
+            AVModel.setRecordPath(recordPath)
         }
     }
 

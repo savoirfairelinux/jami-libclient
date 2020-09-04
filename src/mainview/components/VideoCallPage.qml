@@ -246,7 +246,9 @@ Rectangle {
                     Connections {
                         target: CallAdapter
 
-                        onPreviewVisibilityNeedToChange: previewRenderer.visible = visible
+                        function onPreviewVisibilityNeedToChange(visible) {
+                            previewRenderer.visible = visible
+                        }
                     }
 
                     width: videoCallPageMainRect.width / 4

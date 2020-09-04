@@ -21,6 +21,7 @@ import QtQuick.Controls 2.14
 import QtQuick.Layouts 1.14
 import QtQuick.Controls.Styles 1.4
 import net.jami.Models 1.0
+import net.jami.Adapters 1.0
 
 import "../constant"
 
@@ -113,7 +114,7 @@ Dialog {
     function exportAccountQML() {
         var success = false
         if (path.length > 0) {
-            success = ClientWrapper.accountAdaptor.exportToFile(
+            success = AccountAdapter.exportToFile(
                         UtilsAdapter.getCurrAccId(),
                         path,
                         currentPasswordEdit.text)
@@ -129,13 +130,13 @@ Dialog {
 
     function savePasswordQML() {
         var success = false
-        success = ClientWrapper.accountAdaptor.savePassword(
+        success = AccountAdapter.savePassword(
                     UtilsAdapter.getCurrAccId(),
                     currentPasswordEdit.text,
                     passwordEdit.text)
         if (success) {
-            ClientWrapper.accountAdaptor.setArchiveHasPassword(passwordEdit.text.length !== 0)
-            haveDone(successCode, root.purpose)
+            AccountAdapter.setArchiveHasPassword(passwordEdit.text.length !== 0)
+            haveDone(successCode, passwordDialog.purpose)
         } else {
             currentPasswordEdit.borderColorMode = InfoLineEdit.ERROR
             btnChangePasswordConfirm.enabled = false

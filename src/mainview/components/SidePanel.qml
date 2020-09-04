@@ -75,7 +75,7 @@ Rectangle {
     }
 
     function refreshAccountComboBox(index) {
-        ClientWrapper.accountAdaptor.accountChanged(index)
+        AccountAdapter.accountChanged(index)
 
         accountComboBox.update()
         accountChangedUIReset()

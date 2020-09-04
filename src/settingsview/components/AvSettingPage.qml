@@ -24,6 +24,8 @@ import QtQuick.Layouts 1.3
 import QtGraphicalEffects 1.14
 import QtQuick.Controls.Styles 1.4
 import net.jami.Models 1.0
+import net.jami.Adapters 1.0
+
 import "../../commoncomponents"
 
 Rectangle {
@@ -37,7 +39,7 @@ Rectangle {
     signal backArrowClicked
 
     Connections{
-        target: ClientWrapper.avmodel
+        target: AVModel
         enabled: root.visible
 
         function onAudioMeter(id, level){
@@ -46,7 +48,7 @@ Rectangle {
     }
 
     Connections{
-        target: ClientWrapper.renderManager
+        target: RenderManager
         enabled: root.visible
 
         function onVideoDeviceListChanged(){
@@ -75,7 +77,7 @@ Rectangle {
         }
 
         populateVideoSettings()
-        var encodeAccel = ClientWrapper.avmodel.getHardwareAcceleration()
+        var encodeAccel = AVModel.getHardwareAcceleration()
         hardwareAccelControl.checked = encodeAccel
     }
 
@@ -99,8 +101,8 @@ Rectangle {
     }
 
     function setFormatListForCurrentDevice(){
-        var device = ClientWrapper.avmodel.getCurrentVideoCaptureDevice()
-        if(ClientWrapper.SettingsAdapter.get_DeviceCapabilitiesSize(device) === 0){
+        var device = AVModel.getCurrentVideoCaptureDevice()
+        if(SettingsAdapter.get_DeviceCapabilitiesSize(device) === 0){
             return
         }
 
@@ -112,22 +114,22 @@ Rectangle {
     }
 
     function startPreviewing(force = false, async = true){
-        ClientWrapper.accountAdaptor.startPreviewing(force, async)
+        AccountAdapter.startPreviewing(force, async)
         previewAvailable = true
     }
 
     function stopPreviewing(async = true){
-        ClientWrapper.accountAdaptor.stopPreviewing(async)
+        AccountAdapter.stopPreviewing(async)
     }
 
     function startAudioMeter(async = true){
         audioInputMeter.start()
-        ClientWrapper.accountAdaptor.startAudioMeter(async)
+        AccountAdapter.startAudioMeter(async)
     }
 
     function stopAudioMeter(async = true){
         audioInputMeter.stop()
-        ClientWrapper.accountAdaptor.stopAudioMeter(async)
+        AccountAdapter.stopAudioMeter(async)
     }
 
     // slots for av page
@@ -138,7 +140,7 @@ Rectangle {
     }
 
     function slotSetHardwareAccel(state){
-        ClientWrapper.avmodel.setHardwareAcceleration(state)
+        AVModel.setHardwareAcceleration(state)
         startPreviewing(true)
     }
 
@@ -146,7 +148,7 @@ Rectangle {
         stopAudioMeter(false)
         var selectedAudioManager = audioManagerComboBox.model.data(audioManagerComboBox.model.index(
                                                         index, 0), AudioManagerListModel.AudioManagerID)
-        ClientWrapper.avmodel.setAudioManager(selectedAudioManager)
+        AVModel.setAudioManager(selectedAudioManager)
         startAudioMeter(false)
     }
 
@@ -154,7 +156,7 @@ Rectangle {
         stopAudioMeter(false)
         var selectedRingtoneDeviceName = audioOutputDeviceModel.data(audioOutputDeviceModel.index(
                                                         index, 0), AudioOutputDeviceModel.Device_ID)
-        ClientWrapper.avmodel.setRingtoneDevice(selectedRingtoneDeviceName)
+        AVModel.setRingtoneDevice(selectedRingtoneDeviceName)
         startAudioMeter(false)
     }
 
@@ -162,7 +164,7 @@ Rectangle {
         stopAudioMeter(false)
         var selectedOutputDeviceName = audioOutputDeviceModel.data(audioOutputDeviceModel.index(
                                                         index, 0), AudioOutputDeviceModel.Device_ID)
-        ClientWrapper.avmodel.setOutputDevice(selectedOutputDeviceName)
+        AVModel.setOutputDevice(selectedOutputDeviceName)
         startAudioMeter(false)
     }
 
@@ -171,7 +173,7 @@ Rectangle {
         var selectedInputDeviceName = audioInputComboBox.model.data(audioInputComboBox.model.index(
                                                         index, 0), AudioInputDeviceModel.Device_ID)
 
-        ClientWrapper.avmodel.setInputDevice(selectedInputDeviceName)
+        AVModel.setInputDevice(selectedInputDeviceName)
         startAudioMeter(false)
     }
 
@@ -190,8 +192,8 @@ Rectangle {
                 return
             }
 
-            ClientWrapper.avmodel.setCurrentVideoCaptureDevice(deviceId)
-            ClientWrapper.avmodel.setDefaultDevice(deviceId)
+            AVModel.setCurrentVideoCaptureDevice(deviceId)
+            AVModel.setDefaultDevice(deviceId)
             setFormatListForCurrentDevice()
             startPreviewing(true)
         } catch(err){console.warn(err.message)}
@@ -216,7 +218,7 @@ Rectangle {
         }
 
         try{
-           SettingsAdapter.set_Video_Settings_Rate_And_Resolution(ClientWrapper.avmodel.getCurrentVideoCaptureDevice(),rate,resolution)
+           SettingsAdapter.set_Video_Settings_Rate_And_Resolution(AVModel.getCurrentVideoCaptureDevice(),rate,resolution)
             updatePreviewRatio(resolution)
         } catch(error){console.warn(error.message)}
     }

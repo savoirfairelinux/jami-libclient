@@ -27,7 +27,6 @@
 #include "avadapter.h"
 #include "bannedlistmodel.h"
 #include "calladapter.h"
-#include "clientwrapper.h"
 #include "contactadapter.h"
 #include "conversationsadapter.h"
 #include "deviceitemlistmodel.h"
@@ -51,127 +50,109 @@
 #include <QMetaType>
 #include <QQmlEngine>
 
+// clang-format off
 #define QML_REGISTERSINGLETONTYPE(N, T, MAJ, MIN) \
     qmlRegisterSingletonType<T>(N, MAJ, MIN, #T, \
-                                [](QQmlEngine *e, QJSEngine *se) -> QObject * { \
-                                    Q_UNUSED(e); \
-                                    Q_UNUSED(se); \
-                                    T *obj = new T(); \
-                                    return obj; \
+                                [](QQmlEngine* e, QJSEngine* se) -> QObject* { \
+                                    Q_UNUSED(e); Q_UNUSED(se); \
+                                    T* obj = new T(); return obj; \
                                 });
+
 #define QML_REGISTERSINGLETONTYPE_WITH_INSTANCE(T, MAJ, MIN) \
-    qmlRegisterSingletonType<T>("net.jami.Models", \
-                                MAJ, \
-                                MIN, \
-                                #T, \
-                                [](QQmlEngine *e, QJSEngine *se) -> QObject * { \
-                                    Q_UNUSED(e); \
-                                    Q_UNUSED(se); \
+    qmlRegisterSingletonType<T>("net.jami.Models", MAJ, MIN, #T, \
+                                [](QQmlEngine* e, QJSEngine* se) -> QObject* { \
+                                    Q_UNUSED(e); Q_UNUSED(se); \
                                     return &(T::instance()); \
                                 });
 
-#define QML_REGISTERSINGLETONTYPE_URL(URL, T, MAJ, MIN) \
-    qmlRegisterSingletonType(QUrl(URL), "net.jami.Models", MAJ, MIN, #T);
+#define QML_REGISTERSINGLETONTYPE_CUSTOM(N, T, MAJ, MIN, P) \
+    qmlRegisterSingletonType<T>(N, MAJ, MIN, #T, \
+                                [](QQmlEngine* e, QJSEngine* se) -> QObject* { \
+                                    Q_UNUSED(e); Q_UNUSED(se); \
+                                    return P; \
+                                });
 
-#define QML_REGISTERTYPE(T, MAJ, MIN) qmlRegisterType<T>("net.jami.Models", MAJ, MIN, #T);
+#define QML_REGISTERSINGLETONTYPE_URL(URL, T, MAJ, MIN) \
+    qmlRegisterSingletonType(QUrl(QStringLiteral(URL)), "net.jami.Models", MAJ, MIN, #T);
+
+#define QML_REGISTERTYPE(N, T, MAJ, MIN) qmlRegisterType<T>(N, MAJ, MIN, #T);
 
 #define QML_REGISTERNAMESPACE(T, NAME, MAJ, MIN) \
     qmlRegisterUncreatableMetaObject(T, "net.jami.Models", MAJ, MIN, NAME, "")
 
 #define QML_REGISTERUNCREATABLE(N, T, MAJ, MIN) \
-    qmlRegisterUncreatableType<T>(N, \
-                                  MAJ, \
-                                  MIN, \
-                                  #T, \
-                                  "Don't try to add to a qml definition of " #T);
+    qmlRegisterUncreatableType<T>(N, MAJ, MIN, #T, "Don't try to add to a qml definition of " #T);
 
 #define QML_REGISTERUNCREATABLE_IN_NAMESPACE(T, NAMESPACE, MAJ, MIN) \
     qmlRegisterUncreatableType<NAMESPACE::T>("net.jami.Models", \
-                                             MAJ, \
-                                             MIN, \
-                                             #T, \
+                                             MAJ, MIN, #T, \
                                              "Don't try to add to a qml definition of " #T);
 
 /*!
  * This function will expose custom types to the QML engine.
  */
-void registerTypes()
+void
+registerTypes()
 {
     /*
-     * Register QAbstractListModel type.
+     * QAbstractListModels
      */
-    QML_REGISTERTYPE(AccountListModel, 1, 0);
-    QML_REGISTERTYPE(DeviceItemListModel, 1, 0);
-    QML_REGISTERTYPE(PluginItemListModel, 1, 0);
-    QML_REGISTERTYPE(MediaHandlerItemListModel, 1, 0);
-    QML_REGISTERTYPE(PreferenceItemListModel, 1, 0);
-    QML_REGISTERTYPE(BannedListModel, 1, 0);
-    QML_REGISTERTYPE(VideoCodecListModel, 1, 0);
-    QML_REGISTERTYPE(AudioCodecListModel, 1, 0);
-    QML_REGISTERTYPE(AccountsToMigrateListModel, 1, 0);
-    QML_REGISTERTYPE(AudioInputDeviceModel, 1, 0);
-    QML_REGISTERTYPE(AudioOutputDeviceModel, 1, 0);
-    QML_REGISTERTYPE(AudioManagerListModel, 1, 0);
-    QML_REGISTERTYPE(VideoInputDeviceModel, 1, 0);
-    QML_REGISTERTYPE(VideoFormatResolutionModel, 1, 0);
-    QML_REGISTERTYPE(VideoFormatFpsModel, 1, 0);
-    QML_REGISTERTYPE(PluginListPreferenceModel, 1, 0);
+    QML_REGISTERTYPE("net.jami.Models", AccountListModel, 1, 0);
+    QML_REGISTERTYPE("net.jami.Models", DeviceItemListModel, 1, 0);
+    QML_REGISTERTYPE("net.jami.Models", PluginItemListModel, 1, 0);
+    QML_REGISTERTYPE("net.jami.Models", MediaHandlerItemListModel, 1, 0);
+    QML_REGISTERTYPE("net.jami.Models", PreferenceItemListModel, 1, 0);
+    QML_REGISTERTYPE("net.jami.Models", BannedListModel, 1, 0);
+    QML_REGISTERTYPE("net.jami.Models", VideoCodecListModel, 1, 0);
+    QML_REGISTERTYPE("net.jami.Models", AudioCodecListModel, 1, 0);
+    QML_REGISTERTYPE("net.jami.Models", AccountsToMigrateListModel, 1, 0);
+    QML_REGISTERTYPE("net.jami.Models", AudioInputDeviceModel, 1, 0);
+    QML_REGISTERTYPE("net.jami.Models", AudioOutputDeviceModel, 1, 0);
+    QML_REGISTERTYPE("net.jami.Models", AudioManagerListModel, 1, 0);
+    QML_REGISTERTYPE("net.jami.Models", VideoInputDeviceModel, 1, 0);
+    QML_REGISTERTYPE("net.jami.Models", VideoFormatResolutionModel, 1, 0);
+    QML_REGISTERTYPE("net.jami.Models", VideoFormatFpsModel, 1, 0);
+    QML_REGISTERTYPE("net.jami.Models", PluginListPreferenceModel, 1, 0);
 
     /*
-     * Register QQuickItem type.
+     * QQuickItems
      */
-    QML_REGISTERTYPE(PreviewRenderer, 1, 0);
-    QML_REGISTERTYPE(VideoCallPreviewRenderer, 1, 0);
-    QML_REGISTERTYPE(DistantRenderer, 1, 0);
-    QML_REGISTERTYPE(PhotoboothPreviewRender, 1, 0)
+    QML_REGISTERTYPE("net.jami.Models", PreviewRenderer, 1, 0);
+    QML_REGISTERTYPE("net.jami.Models", VideoCallPreviewRenderer, 1, 0);
+    QML_REGISTERTYPE("net.jami.Models", DistantRenderer, 1, 0);
+    QML_REGISTERTYPE("net.jami.Models", PhotoboothPreviewRender, 1, 0)
 
     /*
-     * Adaptors and qml singleton components - qmlRegisterSingletonType.
+     * Adaptors
      */
-    QML_REGISTERSINGLETONTYPE_URL(QStringLiteral("qrc:/src/constant/JamiTheme.qml"),
-                                  JamiTheme, 1, 0);
-    QML_REGISTERSINGLETONTYPE_URL(QStringLiteral("qrc:/src/constant/JamiQmlUtils.qml"),
-                                  JamiQmlUtils, 1, 0);
-
-    QML_REGISTERSINGLETONTYPE("net.jami.Models", AccountAdapter, 1, 0);
     QML_REGISTERSINGLETONTYPE("net.jami.Models", CallAdapter, 1, 0);
     QML_REGISTERSINGLETONTYPE("net.jami.Models", MessagesAdapter, 1, 0);
     QML_REGISTERSINGLETONTYPE("net.jami.Models", ConversationsAdapter, 1, 0);
     QML_REGISTERSINGLETONTYPE("net.jami.Models", AvAdapter, 1, 0);
     QML_REGISTERSINGLETONTYPE("net.jami.Models", ContactAdapter, 1, 0);
     QML_REGISTERSINGLETONTYPE("net.jami.Models", PluginAdapter, 1, 0);
-    QML_REGISTERSINGLETONTYPE("net.jami.Models", ClientWrapper, 1, 0);
-
+    QML_REGISTERSINGLETONTYPE("net.jami.Adapters", AccountAdapter, 1, 0);
     QML_REGISTERSINGLETONTYPE("net.jami.Adapters", UtilsAdapter, 1, 0);
     QML_REGISTERSINGLETONTYPE("net.jami.Adapters", SettingsAdapter, 1, 0);
 
-    QML_REGISTERUNCREATABLE("net.jami.Enums", Settings, 1, 0);
+    QML_REGISTERSINGLETONTYPE_CUSTOM("net.jami.Models", AVModel, 1, 0, &LRCInstance::avModel())
+    QML_REGISTERSINGLETONTYPE_CUSTOM("net.jami.Models", PluginModel, 1, 0, &LRCInstance::pluginModel())
+    QML_REGISTERSINGLETONTYPE_CUSTOM("net.jami.Models", RenderManager, 1, 0, LRCInstance::renderer())
 
     /*
-     * Lrc models - qmlRegisterUncreatableType & Q_DECLARE_METATYPE.
-     * This to make lrc models recognizable in qml.
+     * Qml singleton components
      */
-    QML_REGISTERUNCREATABLE_IN_NAMESPACE(NewAccountModel, lrc::api, 1, 0);
-    QML_REGISTERUNCREATABLE_IN_NAMESPACE(BehaviorController, lrc::api, 1, 0);
-    QML_REGISTERUNCREATABLE_IN_NAMESPACE(DataTransferModel, lrc::api, 1, 0);
-    QML_REGISTERUNCREATABLE_IN_NAMESPACE(AVModel, lrc::api, 1, 0);
-    QML_REGISTERUNCREATABLE_IN_NAMESPACE(ContactModel, lrc::api, 1, 0);
-    QML_REGISTERUNCREATABLE_IN_NAMESPACE(ConversationModel, lrc::api, 1, 0);
-    QML_REGISTERUNCREATABLE_IN_NAMESPACE(NewCallModel, lrc::api, 1, 0);
-    QML_REGISTERUNCREATABLE_IN_NAMESPACE(PluginModel, lrc::api, 1, 0);
-    QML_REGISTERUNCREATABLE_IN_NAMESPACE(NewDeviceModel, lrc::api, 1, 0);
-    QML_REGISTERUNCREATABLE_IN_NAMESPACE(NewCodecModel, lrc::api, 1, 0);
-    QML_REGISTERUNCREATABLE_IN_NAMESPACE(PeerDiscoveryModel, lrc::api, 1, 0);
+    QML_REGISTERSINGLETONTYPE_URL("qrc:/src/constant/JamiTheme.qml", JamiTheme, 1, 0);
+    QML_REGISTERSINGLETONTYPE_URL("qrc:/src/constant/JamiQmlUtils.qml", JamiQmlUtils, 1, 0);
 
     /*
-     * qmlRegisterUncreatableType & Q_DECLARE_METATYPE to expose models in qml.
+     * C++ singletons
      */
-    QML_REGISTERUNCREATABLE("net.jami.Models", RenderManager, 1, 0);
-    QML_REGISTERUNCREATABLE("net.jami.Models", NameDirectory, 1, 0);
-    QML_REGISTERUNCREATABLE("net.jami.Models", LRCInstance, 1, 0);
+    QML_REGISTERSINGLETONTYPE_WITH_INSTANCE(LRCInstance, 1, 0);
+    QML_REGISTERSINGLETONTYPE_WITH_INSTANCE(NameDirectory, 1, 0);
 
     /*
-     * qmlRegisterUncreatableMetaObject to expose namespaces in qml
+     * lrc namespaces, models, and singletons
      */
     QML_REGISTERNAMESPACE(lrc::api::staticMetaObject, "Lrc", 1, 0);
     QML_REGISTERNAMESPACE(lrc::api::account::staticMetaObject, "Account", 1, 0);
@@ -180,4 +161,23 @@ void registerTypes()
     QML_REGISTERNAMESPACE(lrc::api::interaction::staticMetaObject, "Interaction", 1, 0);
     QML_REGISTERNAMESPACE(lrc::api::video::staticMetaObject, "Video", 1, 0);
     QML_REGISTERNAMESPACE(lrc::api::profile::staticMetaObject, "Profile", 1, 0);
+
+    /*
+     * same as QML_REGISTERUNCREATABLE but omit the namespace in Qml
+     */
+    QML_REGISTERUNCREATABLE_IN_NAMESPACE(NewAccountModel, lrc::api, 1, 0);
+    QML_REGISTERUNCREATABLE_IN_NAMESPACE(BehaviorController, lrc::api, 1, 0);
+    QML_REGISTERUNCREATABLE_IN_NAMESPACE(DataTransferModel, lrc::api, 1, 0);
+    QML_REGISTERUNCREATABLE_IN_NAMESPACE(ContactModel, lrc::api, 1, 0);
+    QML_REGISTERUNCREATABLE_IN_NAMESPACE(ConversationModel, lrc::api, 1, 0);
+    QML_REGISTERUNCREATABLE_IN_NAMESPACE(NewCallModel, lrc::api, 1, 0);
+    QML_REGISTERUNCREATABLE_IN_NAMESPACE(NewDeviceModel, lrc::api, 1, 0);
+    QML_REGISTERUNCREATABLE_IN_NAMESPACE(NewCodecModel, lrc::api, 1, 0);
+    QML_REGISTERUNCREATABLE_IN_NAMESPACE(PeerDiscoveryModel, lrc::api, 1, 0);
+
+    /*
+     * Enums
+     */
+    QML_REGISTERUNCREATABLE("net.jami.Enums", Settings, 1, 0);
 }
+// clang-format on

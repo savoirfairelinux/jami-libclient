@@ -31,12 +31,12 @@ Rectangle {
 
     function populatePluginSettings(){
         // settings
-        enabledplugin.checked = ClientWrapper.pluginModel.getPluginsEnabled()
+        enabledplugin.checked = PluginModel.getPluginsEnabled()
         pluginListSettingsView.visible = enabledplugin.checked
     }
 
     function slotSetPluginEnabled(state){
-        ClientWrapper.pluginModel.setPluginsEnabled(state)
+        PluginModel.setPluginsEnabled(state)
     }
 
     signal backArrowClicked
@@ -110,7 +110,7 @@ Rectangle {
 
                         pluginListSettingsView.visible = checked
                         if (!pluginListSettingsView.visible) {
-                            ClientWrapper.pluginModel.toggleCallMediaHandler("", true)
+                            PluginModel.toggleCallMediaHandler("", true)
                             pluginListSettingsView.hidePreferences()
                         }
                     }

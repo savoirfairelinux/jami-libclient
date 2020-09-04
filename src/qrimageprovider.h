@@ -38,15 +38,14 @@ public:
     enum class QrType { Account, Contact };
 
     /*
-    * Id should be string like account_0 (account index),
-    * or contact_xxx (uid).
-    * Cannot use getCurrentAccId to replace account index,
-    * since we need to keep each image id unique.
-    */
-    QPair<QrType, QString>
-    getIndexFromID(const QString &id)
+     * Id should be string like account_0 (account index),
+     * or contact_xxx (uid).
+     * Cannot use getCurrentAccId to replace account index,
+     * since we need to keep each image id unique.
+     */
+    QPair<QrType, QString> getIndexFromID(const QString& id)
     {
-        auto list = id.split('_', QString::SkipEmptyParts);
+        auto list = id.split('_', Qt::SkipEmptyParts);
         if (list.size() < 2)
             return QPair(QrType::Account, "");
         if (list.contains("account") && list.size() > 1) {
@@ -65,8 +64,7 @@ public:
         return QPair(QrType::Account, "");
     }
 
-    QImage
-    requestImage(const QString &id, QSize *size, const QSize &requestedSize) override
+    QImage requestImage(const QString& id, QSize* size, const QSize& requestedSize) override
     {
         Q_UNUSED(size);
 
@@ -84,7 +82,7 @@ public:
             if (accountList.size() <= accountIndex)
                 return QImage();
 
-            auto &accountInfo = LRCInstance::accountModel().getAccountInfo(
+            auto& accountInfo = LRCInstance::accountModel().getAccountInfo(
                 accountList.at(accountIndex));
             uri = accountInfo.profileInfo.uri;
         }

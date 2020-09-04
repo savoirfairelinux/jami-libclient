@@ -26,6 +26,7 @@ import QtQuick.Controls.Styles 1.4
 import Qt.labs.platform 1.1
 import QtQuick.Dialogs 1.3
 import net.jami.Models 1.0
+import net.jami.Adapters 1.0
 
 import "../commoncomponents"
 
@@ -162,9 +163,7 @@ ItemDelegate {
             icon.width: 24
 
             toolTipText: qsTr("Press to choose an image file")
-            text: {
-                return ClientWrapper.utilsAdaptor.fileName(preferenceCurrentValue)
-            }
+            text: UtilsAdapter.fileName(preferenceCurrentValue)
             fontPointSize: JamiTheme.buttonFontSize
 
             onClicked: {

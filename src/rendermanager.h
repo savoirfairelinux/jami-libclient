@@ -46,7 +46,8 @@ class FrameWrapper final : public QObject
     Q_OBJECT;
 
 public:
-    FrameWrapper(AVModel &avModel, const QString &id = video::PREVIEW_RENDERER_ID);
+    FrameWrapper(AVModel &avModel,
+                 const QString &id = video::PREVIEW_RENDERER_ID);
     ~FrameWrapper();
 
     /*

@@ -21,6 +21,7 @@ import QtQuick.Controls 2.14
 import QtQuick.Layouts 1.14
 import QtQuick.Controls.Styles 1.4
 import net.jami.Models 1.0
+import net.jami.Adapters 1.0
 
 import "../../commoncomponents"
 
@@ -33,7 +34,7 @@ Dialog {
         registerdName = registerNameIn
         lblRegistrationError.text = qsTr("Something went wrong")
         passwordEdit.clear()
-        if(ClientWrapper.accountAdaptor.hasPassword()){
+        if(AccountAdapter.hasPassword()){
             stackedWidget.currentIndex = 0
         } else {
             startRegistration()
@@ -49,7 +50,7 @@ Dialog {
 
     function slotStartNameRegistration(){
         var password = passwordEdit.text
-        ClientWrapper.accountModel.registerName(UtilsAdapter.getCurrAccId(), password, registerdName)
+        AccountAdapter.model.registerName(UtilsAdapter.getCurrAccId(), password, registerdName)
     }
 
     function startSpinner(){
@@ -70,7 +71,7 @@ Dialog {
     }
 
     Connections{
-        target: ClientWrapper.nameDirectory
+        target: NameDirectory
 
         function onNameRegistrationEnded(status, name){
             if(status === NameDirectory.RegisterNameStatus.SUCCESS){

@@ -23,6 +23,7 @@ import QtQuick.Controls.Universal 2.12
 import QtQuick.Layouts 1.3
 import QtGraphicalEffects 1.14
 import net.jami.Models 1.0
+import net.jami.Adapters 1.0
 
 import "../../commoncomponents"
 
@@ -67,7 +68,7 @@ Rectangle {
 
     // slots
     function setAccEnableSlot(state) {
-        ClientWrapper.accountModel.setAccountEnabled(UtilsAdapter.getCurrAccId(), state)
+        AccountAdapter.model.setAccountEnabled(UtilsAdapter.getCurrAccId(), state)
     }
 
     function delAccountSlot() {
@@ -80,7 +81,7 @@ Rectangle {
         anchors.centerIn: parent.Center
 
         onAccepted: {
-            ClientWrapper.accountAdaptor.setSelectedConvId()
+            AccountAdapter.setSelectedConvId()
 
             if(UtilsAdapter.getAccountListSize() > 0){
                 navigateToMainView()
@@ -212,7 +213,7 @@ Rectangle {
                         padding: 8
 
                         onEditingFinished: {
-                            ClientWrapper.accountAdaptor.setCurrAccDisplayName(
+                            AccountAdapter.setCurrAccDisplayName(
                                         displaySIPNameLineEdit.text)
                         }
                     }

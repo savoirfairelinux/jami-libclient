@@ -25,12 +25,6 @@ import net.jami.Adapters 1.0
 Dialog {
     id: userQrImageDialog
 
-    property string accountIdStr: UtilsAdapter.getCurrAccId()
-
-    function updateQrDialog() {
-        accountIdStr = UtilsAdapter.getCurrAccId()
-    }
-
     // When dialog is opened, trigger mainViewWindow overlay which is defined in overlay.model.
     // (model : true is necessary)
     modal: true
@@ -43,14 +37,12 @@ Dialog {
 
         anchors.centerIn: parent
 
-        width: 250
-        height: 250
+        width: 256
+        height: 256
+        smooth: false
 
         fillMode: Image.PreserveAspectFit
-        source: "image://qrImage/account_" + accountIdStr
-        sourceSize.width: 260
-        sourceSize.height: 260
-        mipmap: true
+        source: "image://qrImage/account_" + AccountAdapter.currentAccountId
     }
 
     background: Rectangle {

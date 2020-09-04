@@ -52,9 +52,9 @@ ColumnLayout {
         lineEditBootstrap.text = SettingsAdapter.getAccountConfig_Hostname()
 
         // Security
-        btnCACert.text = UtilsAdapter.toFileInfoName(ClientWrapper.SettingsAdapter.getAccountConfig_TLS_CertificateListFile())
-        btnUserCert.text = UtilsAdapter.toFileInfoName(ClientWrapper.SettingsAdapter.getAccountConfig_TLS_CertificateFile())
-        btnPrivateKey.text = UtilsAdapter.toFileInfoName(ClientWrapper.SettingsAdapter.getAccountConfig_TLS_PrivateKeyFile())
+        btnCACert.text = UtilsAdapter.toFileInfoName(SettingsAdapter.getAccountConfig_TLS_CertificateListFile())
+        btnUserCert.text = UtilsAdapter.toFileInfoName(SettingsAdapter.getAccountConfig_TLS_CertificateFile())
+        btnPrivateKey.text = UtilsAdapter.toFileInfoName(SettingsAdapter.getAccountConfig_TLS_PrivateKeyFile())
 
         // Connectivity
         checkBoxUPnP.checked = SettingsAdapter.getAccountConfig_UpnpEnabled()
@@ -70,7 +70,7 @@ ColumnLayout {
         updateAudioCodecs();
         updateVideoCodecs();
         btnRingtone.enabled = SettingsAdapter.getAccountConfig_Ringtone_RingtoneEnabled()
-        btnRingtone.text = UtilsAdapter.toFileInfoName(ClientWrapper.SettingsAdapter.getAccountConfig_Ringtone_RingtonePath())
+        btnRingtone.text = UtilsAdapter.toFileInfoName(SettingsAdapter.getAccountConfig_Ringtone_RingtonePath())
         lineEditProxy.enabled = SettingsAdapter.getAccountConfig_ProxyEnabled()
         lineEditSTUNAddress.enabled = SettingsAdapter.getAccountConfig_STUN_Enabled()
     }
@@ -129,7 +129,7 @@ ColumnLayout {
         if(url.length !== 0) {
            SettingsAdapter.set_RingtonePath(url)
             btnRingtone.text = UtilsAdapter.toFileInfoName(url)
-        } else if (ClientWrapper.SettingsAdapter.getAccountConfig_Ringtone_RingtonePath().length === 0){
+        } else if (SettingsAdapter.getAccountConfig_Ringtone_RingtonePath().length === 0){
             btnRingtone.text = qsTr("Add a custom ringtone")
         }
     }
@@ -214,7 +214,7 @@ ColumnLayout {
         id: privateKey_Dialog
 
         property string oldPath : {
-            return ClientWrapper.SettingsAdapter.getAccountConfig_TLS_PrivateKeyFile()
+            return SettingsAdapter.getAccountConfig_TLS_PrivateKeyFile()
         }
         property string openPath : oldPath === "" ? (UtilsAdapter.getCurrentPath() + "/ringtones/") : (UtilsAdapter.toFileAbsolutepath(oldPath))
 

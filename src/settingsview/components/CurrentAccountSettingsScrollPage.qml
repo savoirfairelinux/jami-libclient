@@ -48,12 +48,12 @@ Rectangle {
         accountEnableCheckBox.checked = SettingsAdapter.get_CurrentAccountInfo_Enabled()
         displayNameLineEdit.text = SettingsAdapter.getCurrentAccount_Profile_Info_Alias()
 
-        var showLocalAccountConfig = (ClientWrapper.SettingsAdapter.getAccountConfig_Manageruri() === "")
+        var showLocalAccountConfig = (SettingsAdapter.getAccountConfig_Manageruri() === "")
         passwdPushButton.visible = showLocalAccountConfig
         btnExportAccount.visible = showLocalAccountConfig
         linkDevPushButton.visible = showLocalAccountConfig
 
-        registeredIdNeedsSet = (ClientWrapper.SettingsAdapter.get_CurrentAccountInfo_RegisteredName() === "")
+        registeredIdNeedsSet = (SettingsAdapter.get_CurrentAccountInfo_RegisteredName() === "")
 
         if(!registeredIdNeedsSet){
             currentRegisteredID.text = SettingsAdapter.get_CurrentAccountInfo_RegisteredName()
@@ -111,8 +111,8 @@ Rectangle {
 
     Connections {
         id: accountConnections_ContactModel
-        target: ClientWrapper.contactModel
-        enabled: root.visible
+        target: AccountAdapter.contactModel
+        enabled: accountViewRect.visible
 
         function onModelUpdated(uri, needsSorted) {
             updateAndShowBannedContactsSlot()
@@ -129,8 +129,8 @@ Rectangle {
 
     Connections {
         id: accountConnections_DeviceModel
-        target: ClientWrapper.deviceModel
-        enabled: root.visible
+        target: AccountAdapter.deviceModel
+        enabled: accountViewRect.visible
 
         function onDeviceAdded(id) {
             updateAndShowDevicesSlot()
@@ -146,7 +146,7 @@ Rectangle {
     }
 
     function setAccEnableSlot(state) {
-        ClientWrapper.accountModel.setAccountEnabled(UtilsAdapter.getCurrAccId(), state)
+        AccountAdapter.model.setAccountEnabled(UtilsAdapter.getCurrAccId(), state)
     }
 
     // JamiFileDialog for exporting account
@@ -164,12 +164,12 @@ Rectangle {
         onAccepted: {
             // is there password? If so, go to password dialog, else, go to following directly
             var exportPath = UtilsAdapter.getAbsPath(file.toString())
-            if (ClientWrapper.accountAdaptor.hasPassword()) {
+            if (AccountAdapter.hasPassword()) {
                 passwordDialog.openDialog(PasswordDialog.ExportAccount,exportPath)
                 return
             } else {
                 if (exportPath.length > 0) {
-                    var isSuccessful = ClientWrapper.accountModel.exportToFile(UtilsAdapter.getCurrAccId(), exportPath,"")
+                    var isSuccessful = AccountAdapter.model.exportToFile(UtilsAdapter.getCurrAccId(), exportPath,"")
                     var title = isSuccessful ? qsTr("Success") : qsTr("Error")
                     var iconMode = isSuccessful ? StandardIcon.Information : StandardIcon.Critical
                     var info = isSuccessful ? qsTr("Export Successful") : qsTr("Export Failed")
@@ -212,7 +212,7 @@ Rectangle {
     }
 
     function passwordClicked() {
-        if (ClientWrapper.accountAdaptor.hasPassword()){
+        if (AccountAdapter.hasPassword()){
             passwordDialog.openDialog(PasswordDialog.ChangePassword)
         } else {
             passwordDialog.openDialog(PasswordDialog.SetPassword)
@@ -229,7 +229,7 @@ Rectangle {
         anchors.centerIn: parent.Center
 
         onAccepted: {
-            ClientWrapper.accountAdaptor.setSelectedConvId()
+            AccountAdapter.setSelectedConvId()
 
             if(UtilsAdapter.getAccountListSize() > 0){
                 navigateToMainView()
@@ -289,8 +289,8 @@ Rectangle {
     }
 
     function removeDeviceSlot(index){
-        var idOfDevice = settingsListView.model.data(settingsListView.model.index(index,0), DeviceItemListModel.DeviceID)
-        if(ClientWrapper.accountAdaptor.hasPassword()){
+        var idOfDevice = deviceItemListModel.data(deviceItemListModel.index(index,0), DeviceItemListModel.DeviceID)
+        if(AccountAdapter.hasPassword()){
             revokeDevicePasswordDialog.openRevokeDeviceDialog(idOfDevice)
         } else {
             revokeDeviceMessageBox.idOfDev = idOfDevice
@@ -299,7 +299,7 @@ Rectangle {
     }
 
     function revokeDeviceWithIDAndPassword(idDevice, password){
-        ClientWrapper.deviceModel.revokeDevice(idDevice, password)
+        AccountAdapter.deviceModel.revokeDevice(idDevice, password)
         updateAndShowDevicesSlot()
     }
 
@@ -313,7 +313,7 @@ Rectangle {
     }
 
     function updateAndShowDevicesSlot() {
-        if(ClientWrapper.SettingsAdapter.getAccountConfig_Manageruri() === ""){
+        if(SettingsAdapter.getAccountConfig_Manageruri() === ""){
             linkDevPushButton.visible = true
         }
 
@@ -450,7 +450,7 @@ Rectangle {
                         padding: 8
 
                         onEditingFinished: {
-                            ClientWrapper.accountAdaptor.setCurrAccDisplayName(
+                            AccountAdapter.setCurrAccDisplayName(
                                         displayNameLineEdit.text)
                         }
                     }
@@ -525,7 +525,7 @@ Rectangle {
                                 elide: Text.ElideRight
                                 elideWidth: root.width - idLabel.width -JamiTheme.preferredMarginSize*4
 
-                                text: ClientWrapper.SettingsAdapter.getCurrentAccount_Profile_Info_Uri()
+                                text: SettingsAdapter.getCurrentAccount_Profile_Info_Uri()
                             }
                         }
                     }
@@ -556,7 +556,7 @@ Rectangle {
                                                  qsTr("Type here to register a username") : ""
                             text: {
                                 if (!registeredIdNeedsSet)
-                                    return ClientWrapper.SettingsAdapter.get_CurrentAccountInfo_RegisteredName()
+                                    return SettingsAdapter.get_CurrentAccountInfo_RegisteredName()
                                 else
                                     return ""
                             }
@@ -615,10 +615,10 @@ Rectangle {
                         pressedColor: JamiTheme.buttonTintedBlackPressed
                         outlined: true
 
-                        toolTipText: ClientWrapper.accountAdaptor.hasPassword() ?
+                        toolTipText: AccountAdapter.hasPassword() ?
                                     qsTr("Change the current password") :
                                     qsTr("Currently no password, press this button to set a password")
-                        text: ClientWrapper.accountAdaptor.hasPassword() ? qsTr("Change Password") :
+                        text: AccountAdapter.hasPassword() ? qsTr("Change Password") :
                                                                            qsTr("Set Password")
 
                         source: "qrc:/images/icons/round-edit-24px.svg"

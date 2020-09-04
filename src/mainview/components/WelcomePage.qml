@@ -1,4 +1,3 @@
-
 /*
  * Copyright (C) 2020 by Savoir-faire Linux
  * Author: Mingrui Zhang <mingrui.zhang@savoirfairelinux.com>
@@ -16,23 +15,21 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+
 import QtQuick 2.14
 import QtQuick.Controls 2.14
 import QtQuick.Layouts 1.14
 import net.jami.Models 1.0
+import net.jami.Adapters 1.0
 
 import "../../commoncomponents"
 
 Rectangle {
     id: welcomeRect
-    property int buttonPreferredSize: 30
+
     anchors.fill: parent
 
-    function updateWelcomePage(){
-        jamiShareWithFriendText.visible = accountListModel.data(accountListModel.index(0, 0), 260) === 1
-        jamiRegisteredNameRect.visible = accountListModel.data(accountListModel.index(0, 0), 260) === 1
-        textMetricsjamiRegisteredNameText.text = accountListModel.data(accountListModel.index(0, 0), 258)
-    }
+    property int buttonPreferredSize: 30
 
     Rectangle {
         id: welcomeRectComponentsGroup
@@ -89,9 +86,7 @@ Rectangle {
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
 
-                visible: accountListModel.data(accountListModel.index(
-                                                   0, 0),
-                                               260) === 1
+                visible: AccountAdapter.currentAccountType === Profile.Type.RING
 
                 text: qsTr("This is your ID.\nCopy and share it with your friends")
                 color: JamiTheme.faddedFontColor
@@ -99,13 +94,14 @@ Rectangle {
 
             Rectangle {
                 id: jamiRegisteredNameRect
+
                 Layout.alignment: Qt.AlignCenter
                 Layout.preferredWidth: welcomeRectComponentsGroup.width
                 Layout.preferredHeight: 65
                 Layout.bottomMargin: 5
-                visible: accountListModel.data(accountListModel.index(
-                                                   0, 0),
-                                               260) === 1
+
+                visible: AccountAdapter.currentAccountType === Profile.Type.RING
+
                 ColumnLayout {
                     id: jamiRegisteredNameRectColumnLayout
                     spacing: 0
@@ -121,9 +117,7 @@ Rectangle {
                         TextMetrics {
                             id: textMetricsjamiRegisteredNameText
                             font: jamiRegisteredNameText.font
-                            text: accountListModel.data(
-                                      accountListModel.index(
-                                          currentAccountIndex, 0), 258)
+                            text: UtilsAdapter.getBestId(AccountAdapter.currentAccountId)
                             elideWidth: welcomeRectComponentsGroup.width
                             elide: Qt.ElideMiddle
                         }
@@ -170,9 +164,5 @@ Rectangle {
         tBorderwidth: 0
         bBorderwidth: 0
         borderColor: JamiTheme.tabbarBorderColor
-    }
-
-    Component.onCompleted: {
-        updateWelcomePage()
     }
 }

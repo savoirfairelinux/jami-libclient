@@ -36,7 +36,7 @@ MaterialLineEdit {
     Connections {
         id: registeredNameFoundConnection
 
-        target: ClientWrapper.nameDirectory
+        target: NameDirectory
 
         function onRegisteredNameFound(status, address, name) {
             if (text === name) {
@@ -66,7 +66,7 @@ MaterialLineEdit {
         onTriggered: {
             if (text.length !== 0 && readOnly === false) {
                 nameRegistrationState = UsernameLineEdit.NameRegistrationState.SEARCHING
-                ClientWrapper.nameDirectory.lookupName("", text)
+                NameDirectory.lookupName("", text)
             } else {
                 nameRegistrationState = UsernameLineEdit.NameRegistrationState.BLANK
             }

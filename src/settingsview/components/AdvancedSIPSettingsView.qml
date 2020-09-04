@@ -48,13 +48,13 @@ ColumnLayout {
         enableSDESToggle.enabled = SettingsAdapter.getAccountConfig_SRTP_Enabled()
         fallbackRTPToggle.enabled = SettingsAdapter.getAccountConfig_SRTP_Enabled()
 
-        btnSIPCACert.text = UtilsAdapter.toFileInfoName(ClientWrapper.SettingsAdapter.getAccountConfig_TLS_CertificateListFile())
-        btnSIPUserCert.text = UtilsAdapter.toFileInfoName(ClientWrapper.SettingsAdapter.getAccountConfig_TLS_CertificateFile())
-        btnSIPPrivateKey.text = UtilsAdapter.toFileInfoName(ClientWrapper.SettingsAdapter.getAccountConfig_TLS_PrivateKeyFile())
+        btnSIPCACert.text = UtilsAdapter.toFileInfoName(SettingsAdapter.getAccountConfig_TLS_CertificateListFile())
+        btnSIPUserCert.text = UtilsAdapter.toFileInfoName(SettingsAdapter.getAccountConfig_TLS_CertificateFile())
+        btnSIPPrivateKey.text = UtilsAdapter.toFileInfoName(SettingsAdapter.getAccountConfig_TLS_PrivateKeyFile())
         lineEditSIPCertPassword.text = SettingsAdapter.getAccountConfig_TLS_Password()
 
         encryptMediaStreamsToggle.checked = SettingsAdapter.getAccountConfig_SRTP_Enabled()
-        enableSDESToggle.checked = (ClientWrapper.SettingsAdapter.getAccountConfig_SRTP_KeyExchange()  === Account.KeyExchangeProtocol.SDES)
+        enableSDESToggle.checked = (SettingsAdapter.getAccountConfig_SRTP_KeyExchange()  === Account.KeyExchangeProtocol.SDES)
         fallbackRTPToggle.checked = SettingsAdapter.getAccountConfig_SRTP_RtpFallback()
         encryptNegotitationToggle.checked = SettingsAdapter.getAccountConfig_TLS_Enable()
         verifyIncomingCertificatesServerToogle.checked = SettingsAdapter.getAccountConfig_TLS_VerifyServer()
@@ -96,7 +96,7 @@ ColumnLayout {
         updateAudioCodecs()
         updateVideoCodecs()
         btnRingtoneSIP.enabled = SettingsAdapter.getAccountConfig_Ringtone_RingtoneEnabled()
-        btnRingtoneSIP.text = UtilsAdapter.toFileInfoName(ClientWrapper.SettingsAdapter.getAccountConfig_Ringtone_RingtonePath())
+        btnRingtoneSIP.text = UtilsAdapter.toFileInfoName(SettingsAdapter.getAccountConfig_Ringtone_RingtonePath())
         lineEditSTUNAddressSIP.enabled = SettingsAdapter.getAccountConfig_STUN_Enabled()
 
         // SDP session negotiation ports
@@ -161,7 +161,7 @@ ColumnLayout {
 
     // slots
     function audioRTPMinPortSpinBoxEditFinished(value){
-        if (ClientWrapper.SettingsAdapter.getAccountConfig_Audio_AudioPortMax() < value) {
+        if (SettingsAdapter.getAccountConfig_Audio_AudioPortMax() < value) {
             audioRTPMinPortSpinBox.value = SettingsAdapter.getAccountConfig_Audio_AudioPortMin()
             return
         }
@@ -177,7 +177,7 @@ ColumnLayout {
     }
 
     function videoRTPMinPortSpinBoxEditFinished(value){
-        if (ClientWrapper.SettingsAdapter.getAccountConfig_Video_VideoPortMax() < value) {
+        if (SettingsAdapter.getAccountConfig_Video_VideoPortMax() < value) {
             videoRTPMinPortSpinBox.value = SettingsAdapter.getAccountConfig_Video_VideoPortMin()
             return
         }
@@ -197,7 +197,7 @@ ColumnLayout {
         if(url.length !== 0) {
            SettingsAdapter.set_RingtonePath(url)
             btnRingtoneSIP.text = UtilsAdapter.toFileInfoName(url)
-        } else if (ClientWrapper.SettingsAdapter.getAccountConfig_Ringtone_RingtonePath().length === 0){
+        } else if (SettingsAdapter.getAccountConfig_Ringtone_RingtonePath().length === 0){
             btnRingtoneSIP.text = qsTr("Add a custom ringtone")
         }
     }

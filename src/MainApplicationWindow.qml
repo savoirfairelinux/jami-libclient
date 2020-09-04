@@ -143,7 +143,7 @@ ApplicationWindow {
     }
 
     Connections {
-        target: ClientWrapper.lrcInstance
+        target: LRCInstance
 
         function onRestoreAppRequested() {
             if (mainViewLoader.item)

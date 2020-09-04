@@ -31,47 +31,43 @@ class UtilsAdapter final : public QObject
 {
     Q_OBJECT
 public:
-    explicit UtilsAdapter(QObject *parent = nullptr);
+    explicit UtilsAdapter(QObject* parent = nullptr);
     ~UtilsAdapter() = default;
 
     Q_INVOKABLE const QString getChangeLog();
     Q_INVOKABLE const QString getProjectCredits();
     Q_INVOKABLE const QString getVersionStr();
     Q_INVOKABLE void setText(QString text);
-    Q_INVOKABLE const QString qStringFromFile(const QString &filename);
-    Q_INVOKABLE const QString getStyleSheet(const QString &name,
-                                            const QString &source);
+    Q_INVOKABLE const QString qStringFromFile(const QString& filename);
+    Q_INVOKABLE const QString getStyleSheet(const QString& name, const QString& source);
     Q_INVOKABLE const QString getCachePath();
     Q_INVOKABLE bool createStartupLink();
     Q_INVOKABLE QString GetRingtonePath();
     Q_INVOKABLE bool checkStartupLink();
-    Q_INVOKABLE const QString getContactImageString(const QString &accountId,
-                                                    const QString &uid);
-    Q_INVOKABLE void removeConversation(const QString &accountId,
-                                        const QString &uid,
+    Q_INVOKABLE const QString getContactImageString(const QString& accountId, const QString& uid);
+    Q_INVOKABLE void removeConversation(const QString& accountId,
+                                        const QString& uid,
                                         bool banContact = false);
-    Q_INVOKABLE void clearConversationHistory(const QString &accountId,
-                                              const QString &uid);
-    Q_INVOKABLE void setConversationFilter(const QString &filter);
+    Q_INVOKABLE void clearConversationHistory(const QString& accountId, const QString& uid);
+    Q_INVOKABLE void setConversationFilter(const QString& filter);
     Q_INVOKABLE int getTotalUnreadMessages();
     Q_INVOKABLE int getTotalPendingRequest();
-    Q_INVOKABLE const QString getBestName(const QString &accountId,
-                                          const QString &uid);
-    Q_INVOKABLE const QString getBestId(const QString &accountId,
-                                        const QString &uid);
+    Q_INVOKABLE const QString getBestName(const QString& accountId, const QString& uid);
+    Q_INVOKABLE QString getBestId(const QString& accountId);
+    Q_INVOKABLE const QString getBestId(const QString& accountId, const QString& uid);
     Q_INVOKABLE const QString getCurrAccId();
     Q_INVOKABLE const QString getCurrConvId();
     Q_INVOKABLE void makePermanentCurrentConv();
     Q_INVOKABLE const QStringList getCurrAccList();
     Q_INVOKABLE int getAccountListSize();
-    Q_INVOKABLE void setCurrentCall(const QString &accountId, const QString &convUid);
+    Q_INVOKABLE void setCurrentCall(const QString& accountId, const QString& convUid);
     Q_INVOKABLE void startPreviewing(bool force);
     Q_INVOKABLE void stopPreviewing();
     Q_INVOKABLE bool hasVideoCall();
-    Q_INVOKABLE const QString getCallId(const QString &accountId, const QString &convUid);
+    Q_INVOKABLE const QString getCallId(const QString& accountId, const QString& convUid);
     Q_INVOKABLE const QString getCallStatusStr(int statusInt);
     Q_INVOKABLE QString getStringUTF8(QString string);
-    Q_INVOKABLE bool validateRegNameForm(const QString &regName);
+    Q_INVOKABLE bool validateRegNameForm(const QString& regName);
     Q_INVOKABLE QString getRecordQualityString(int value);
     Q_INVOKABLE QString getCurrentPath();
     Q_INVOKABLE QString stringSimplifier(QString input);
@@ -86,6 +82,6 @@ public:
     Q_INVOKABLE bool isImage(const QString& fileExt);
 
 private:
-    QClipboard *clipboard_;
+    QClipboard* clipboard_;
 };
-Q_DECLARE_METATYPE(UtilsAdapter *)
+Q_DECLARE_METATYPE(UtilsAdapter*)

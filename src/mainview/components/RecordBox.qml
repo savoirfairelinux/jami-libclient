@@ -21,9 +21,10 @@ import QtQuick.Controls 2.14
 import QtQuick.Layouts 1.14
 import QtQuick.Controls.Styles 1.4
 import QtQuick.Dialogs 1.3
-import net.jami.Models 1.0
 import QtGraphicalEffects 1.15
 import QtQuick.Shapes 1.15
+import net.jami.Models 1.0
+import net.jami.Adapters 1.0
 
 import "../../commoncomponents"
 
@@ -71,7 +72,7 @@ Rectangle {
         updateState(RecordBox.States.INIT)
 
         if (isVideo){
-            ClientWrapper.accountAdaptor.startPreviewing(false)
+            AccountAdapter.startPreviewing(false)
             previewAvailable = true
         }
     }
@@ -79,7 +80,7 @@ Rectangle {
     function scaleHeight(){
         height = preferredHeight
         if (isVideo) {
-            var device = ClientWrapper.avmodel.getDefaultDevice()
+            var device = AVModel.getDefaultDevice()
             var settings = SettingsAdapter.get_Video_Settings_Size(device)
             var res = settings.split("x")
             var aspectRatio = res[1] / res[0]
@@ -104,8 +105,8 @@ Rectangle {
     }
 
     function closeRecorder() {
-        if (isVideo && ClientWrapper.accountAdaptor.isPreviewing()) {
-            ClientWrapper.accountAdaptor.stopPreviewing()
+        if (isVideo && AccountAdapter.isPreviewing()) {
+            AccountAdapter.stopPreviewing()
         }
         stopRecording()
         visible = false
@@ -129,7 +130,7 @@ Rectangle {
 
     function startRecording() {
         timer.start()
-        pathRecorder = ClientWrapper.avmodel.startLocalRecorder(!isVideo)
+        pathRecorder = AVModel.startLocalRecorder(!isVideo)
         if (pathRecorder == "") {
             timer.stop()
         }
@@ -137,7 +138,7 @@ Rectangle {
 
     function stopRecording() {
         if (pathRecorder !== "") {
-            ClientWrapper.avmodel.stopLocalRecorder(pathRecorder)
+            AVModel.stopLocalRecorder(pathRecorder)
         }
     }
 
@@ -158,11 +159,6 @@ Rectangle {
         var sec = (s < 10) ? "0" + String(s) : String(s)
 
         time.text = min + ":" + sec;
-    }
-
-
-    Connections{
-        target: ClientWrapper.renderManager
     }
 
     Shape {

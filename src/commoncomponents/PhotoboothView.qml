@@ -5,6 +5,7 @@ import QtQuick.Controls.Styles 1.4
 import Qt.labs.platform 1.1
 import QtGraphicalEffects 1.0
 import net.jami.Models 1.0
+import net.jami.Adapters 1.0
 
 ColumnLayout {
     property bool takePhotoState: false
@@ -21,14 +22,14 @@ ColumnLayout {
 
     function startBooth(force = false){
         hasAvatar = false
-        ClientWrapper.accountAdaptor.startPreviewing(force)
+        AccountAdapter.startPreviewing(force)
         takePhotoState = true
     }
 
     function stopBooth(){
         try{
-            if(!ClientWrapper.accountAdaptor.hasVideoCall()) {
-                ClientWrapper.accountAdaptor.stopPreviewing()
+            if(!AccountAdapter.hasVideoCall()) {
+                AccountAdapter.stopPreviewing()
             }
         } catch(erro){console.log("Exception: " +  erro.message)}
 
