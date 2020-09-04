@@ -1,4 +1,4 @@
-/**
+/*!
  * Copyright (C) 2020 by Savoir-faire Linux
  * Author: Aline Gondim Santos <aline.gondimsantos@savoirfairelinux.com>
  *
@@ -17,7 +17,9 @@
  */
 
 #include "preferenceitemlistmodel.h"
+
 #include "utils.h"
+
 #include <map>
 
 std::map<QString, int> mapType {{QString("List"), PreferenceItemListModel::Type::LIST},
@@ -73,7 +75,7 @@ PreferenceItemListModel::data(const QModelIndex& index, int role) const
             for (auto& mimeType : mimeTypeList) {
                 QString fileExt = mimeType.mid(mimeType.lastIndexOf("/") + 1);
                 acceptedFiles.append((fileExt.toUpper() + " Files") + " (*." + fileExt + ")");
-                checkImage = UtilsAdapter().isImage(fileExt);
+                checkImage = Utils::isImage(fileExt);
             }
         }
     }

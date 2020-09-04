@@ -67,7 +67,7 @@ Rectangle {
 
     // slots
     function setAccEnableSlot(state) {
-        ClientWrapper.accountModel.setAccountEnabled(ClientWrapper.utilsAdaptor.getCurrAccId(), state)
+        ClientWrapper.accountModel.setAccountEnabled(UtilsAdapter.getCurrAccId(), state)
     }
 
     function delAccountSlot() {
@@ -82,7 +82,7 @@ Rectangle {
         onAccepted: {
             ClientWrapper.accountAdaptor.setSelectedConvId()
 
-            if(ClientWrapper.utilsAdaptor.getAccountListSize() > 0){
+            if(UtilsAdapter.getAccountListSize() > 0){
                 navigateToMainView()
             } else {
                 navigateToNewWizardView()

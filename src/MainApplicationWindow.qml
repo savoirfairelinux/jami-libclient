@@ -29,7 +29,7 @@ ApplicationWindow {
         // If we're in the onboarding wizard or 'MinimizeOnClose'
         // is set, then we can quit
         if (!SettingsAdapter.getAppValue(Settings.MinimizeOnClose) ||
-            !ClientWrapper.utilsAdaptor.getAccountListSize()) {
+            !UtilsAdapter.getAccountListSize()) {
             Qt.quit()
         } else {
             // hide to the systray
@@ -53,7 +53,7 @@ ApplicationWindow {
         setX(Screen.width / 2 - width / 2)
         setY(Screen.height / 2 - height / 2)
 
-        if (!ClientWrapper.utilsAdaptor.getAccountListSize()) {
+        if (!UtilsAdapter.getAccountListSize()) {
             wizardView.show()
         } else {
             mainViewLoader.setSource("qrc:/src/mainview/MainView.qml")

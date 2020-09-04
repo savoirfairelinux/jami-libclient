@@ -136,7 +136,7 @@ Rectangle {
                         radius: 30
                         source: "qrc:/images/icons/ic_content_copy.svg"
                         onClicked: {
-                            ClientWrapper.utilsAdaptor.setText(
+                            UtilsAdapter.setText(
                                         textMetricsjamiRegisteredNameText.text)
                         }
                     }

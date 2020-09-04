@@ -22,6 +22,7 @@ import QtQuick.Layouts 1.3
 import QtQuick.Controls 2.14
 import QtGraphicalEffects 1.15
 import net.jami.Models 1.0
+import net.jami.Adapters 1.0
 
 import "../../constant"
 import "../../commoncomponents"
@@ -212,14 +213,14 @@ Rectangle {
             target: ClientWrapper.lrcInstance
 
             function onAccountListChanged() {
-                backButton.visible = ClientWrapper.utilsAdaptor.getAccountListSize()
+                backButton.visible = UtilsAdapter.getAccountListSize()
             }
         }
 
         width: 35
         height: 35
 
-        visible: ClientWrapper.utilsAdaptor.getAccountListSize()
+        visible: UtilsAdapter.getAccountListSize()
         radius: 30
 
         backgroundColor: root.color

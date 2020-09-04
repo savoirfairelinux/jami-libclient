@@ -596,7 +596,7 @@ CallAdapter::getCurrentLayoutType() const
         auto* callModel = LRCInstance::getAccountInfo(accountId_).callModel.get();
         try {
             auto call = callModel->getCall(convInfo.confId);
-            return Utils::toUnderlyingValue(call.layout);
+            return static_cast<int>(call.layout);
         } catch (...) {
         }
     }

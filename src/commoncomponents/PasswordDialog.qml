@@ -112,8 +112,11 @@ Dialog {
 
     function exportAccountQML() {
         var success = false
-        if(path.length > 0){
-            success = ClientWrapper.accountAdaptor.exportToFile(ClientWrapper.utilsAdaptor.getCurrAccId(),path,currentPasswordEdit.text)
+        if (path.length > 0) {
+            success = ClientWrapper.accountAdaptor.exportToFile(
+                        UtilsAdapter.getCurrAccId(),
+                        path,
+                        currentPasswordEdit.text)
         }
 
         if (success) {
@@ -126,8 +129,10 @@ Dialog {
 
     function savePasswordQML() {
         var success = false
-        success = ClientWrapper.accountAdaptor.savePassword(ClientWrapper.utilsAdaptor.getCurrAccId(),currentPasswordEdit.text, passwordEdit.text)
-
+        success = ClientWrapper.accountAdaptor.savePassword(
+                    UtilsAdapter.getCurrAccId(),
+                    currentPasswordEdit.text,
+                    passwordEdit.text)
         if (success) {
             ClientWrapper.accountAdaptor.setArchiveHasPassword(passwordEdit.text.length !== 0)
             haveDone(successCode, root.purpose)

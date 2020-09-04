@@ -22,20 +22,10 @@
 
 #include "utils.h"
 
-#ifdef Q_OS_WIN
-#include <lmcons.h>
-#include <shlguid.h>
-#include <shlobj.h>
-#include <shlwapi.h>
-#include <shobjidl.h>
-#include <windows.h>
-#endif
-
 #include "globalsystemtray.h"
 #include "jamiavatartheme.h"
 #include "lrcinstance.h"
 #include "pixbufmanipulator.h"
-#include "version.h"
 
 #include <globalinstances.h>
 #include <qrencode.h>
@@ -53,6 +43,15 @@
 #include <QSvgRenderer>
 #include <QTranslator>
 #include <QtConcurrent/QtConcurrent>
+
+#ifdef Q_OS_WIN
+#include <lmcons.h>
+#include <shlguid.h>
+#include <shlobj.h>
+#include <shlwapi.h>
+#include <shobjidl.h>
+#include <windows.h>
+#endif
 
 bool
 Utils::CreateStartupLink(const std::wstring& wstrAppName)
@@ -246,24 +245,6 @@ Utils::GetISODate()
 #endif
 }
 
-void
-Utils::InvokeMailto(const QString& subject, const QString& body, const QString& attachement)
-{
-#ifdef Q_OS_WIN
-    HKEY hKey;
-    LONG lRes = RegOpenKeyExW(HKEY_CLASSES_ROOT, L"mailto", 0, KEY_READ, &hKey);
-    if (lRes != ERROR_FILE_NOT_FOUND) {
-        auto addr = QString("mailto:?subject=%1&body=%2").arg(subject).arg(body);
-        if (not attachement.isEmpty())
-            addr += QString("&attachement=%1").arg(attachement);
-        ShellExecute(nullptr, L"open", addr.toStdWString().c_str(), NULL, NULL, SW_SHOWNORMAL);
-    } else {
-        QErrorMessage errorMessage;
-        errorMessage.showMessage(QObject::tr("No default mail client found"));
-    }
-#endif
-}
-
 QString
 Utils::getContactImageString(const QString& accountId, const QString& uid)
 {
@@ -300,16 +281,8 @@ Utils::getCirclePhoto(const QImage original, int sizePhoto)
 }
 
 void
-Utils::setStackWidget(QStackedWidget* stack, QWidget* widget)
-{
-    if (stack->indexOf(widget) != -1 && stack->currentWidget() != widget) {
-        stack->setCurrentWidget(widget);
-    }
-}
-
-void
-Utils::showSystemNotification(QWidget* widget,
-                              const QString& message,
+Utils::showSystemNotification(QWidget *widget,
+                              const QString &message,
                               long delay,
                               const QString& triggeredAccountId)
 {
@@ -373,13 +346,6 @@ Utils::forceDeleteAsync(const QString& path)
     });
 }
 
-UtilsAdapter&
-UtilsAdapter::instance()
-{
-    static auto instance = new UtilsAdapter;
-    return *instance;
-}
-
 QString
 Utils::getChangeLog()
 {
@@ -414,13 +380,13 @@ Utils::getProjectCredits()
             credits += "<h3 align=\"center\" style=\" margin-top:0px; "
                        + QString("margin-bottom:0px; margin-left:0px; margin-right:0px; ")
                        + "-qt-block-indent:0; text-indent:0px;\"><span style=\" font-weight:600;\">"
-                       + UtilsAdapter::tr("Created by:") + "</span></h3>";
+                       + QObject::tr("Created by:") + "</span></h3>";
         } else if (currentLine.contains("Marianne Forget")) {
             credits
                 += "<h3 align=\"center\" style=\" margin-top:0px; margin-bottom:0px; "
                    + QString(
                        "margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">")
-                   + "<span style=\" font-weight:600;\">" + UtilsAdapter::tr("Artwork by:")
+                   + "<span style=\" font-weight:600;\">" + QObject::tr("Artwork by:")
                    + "</span></h3>";
         }
         credits += currentLine;
@@ -428,7 +394,7 @@ Utils::getProjectCredits()
     credits += "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; "
                + QString(
                    "margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">")
-               + UtilsAdapter::tr("Based on the SFLPhone project") + "</p>";
+               + QObject::tr("Based on the SFLPhone project") + "</p>";
 
     return credits;
 }
@@ -548,7 +514,8 @@ Utils::bestNameForConversation(const lrc::api::conversation::Info& conv,
 }
 
 /*
- * Returns empty string if only infoHash is available, second best identifier otherwise.
+ * Returns empty string if only infoHash is available,
+ * second best identifier otherwise.
  */
 QString
 Utils::secondBestNameForAccount(const lrc::api::account::Info& account)
@@ -557,23 +524,14 @@ Utils::secondBestNameForAccount(const lrc::api::account::Info& account)
     auto registeredName = removeEndlines(account.registeredName);
     auto infoHash = account.profileInfo.uri;
 
-    if (!alias.length() == 0) {
-        /*
-         * If alias exists.
-         */
-        if (!registeredName.length() == 0) {
-            /*
-             * If registeredName exists.
-             */
+    if (alias.length() != 0) {
+       if (registeredName.length() != 0) {
             return registeredName;
         } else {
             return infoHash;
         }
     } else {
-        if (!registeredName.length() == 0) {
-            /*
-             * If registeredName exists.
-             */
+        if (registeredName.length() != 0) {
             return infoHash;
         } else {
             return "";
@@ -593,6 +551,7 @@ Utils::profileType(const lrc::api::conversation::Info& conv,
     }
 }
 
+// TODO: use Qt for this
 std::string
 Utils::formatTimeString(const std::time_t& timestamp)
 {
@@ -673,7 +632,9 @@ Utils::getAvatarColor(const QString& canonicalUri)
  * color.
  */
 QImage
-Utils::fallbackAvatar(const QSize size, const QString& canonicalUriStr, const QString& letterStr)
+Utils::fallbackAvatar(const QString &canonicalUriStr,
+                      const QString &letterStr,
+                      const QSize &size)
 {
     /*
      * We start with a transparent avatar.
@@ -743,9 +704,13 @@ Utils::fallbackAvatar(const QSize size, const QString& canonicalUriStr, const QS
 }
 
 QImage
-Utils::fallbackAvatar(const QSize size, const std::string& alias, const std::string& uri)
+Utils::fallbackAvatar(const std::string &alias,
+                      const std::string &uri,
+                      const QSize &size)
 {
-    return fallbackAvatar(size, QString::fromStdString(uri), QString::fromStdString(alias));
+    return fallbackAvatar(QString::fromStdString(uri),
+                          QString::fromStdString(alias),
+                          size);
 }
 
 QByteArray
@@ -761,7 +726,6 @@ Utils::QImageToByteArray(QImage image)
 QImage
 Utils::cropImage(const QImage& img)
 {
-    QRect rect;
     auto w = img.width();
     auto h = img.height();
     if (w > h) {
@@ -784,17 +748,17 @@ Utils::pixmapFromSvg(const QString& svg_resource, const QSize& size)
 QImage
 Utils::setupQRCode(QString ringID, int margin)
 {
-    auto rcode = QRcode_encodeString(ringID.toStdString().c_str(),
+    auto qrcode = QRcode_encodeString(ringID.toStdString().c_str(),
                                      0,            // Let the version be decided by libqrencode
                                      QR_ECLEVEL_L, // Lowest level of error correction
                                      QR_MODE_8,    // 8-bit data mode
                                      1);
-    if (not rcode) {
-        qWarning() << "Failed to generate QR code: " << strerror(errno);
+    if (not qrcode) {
+        qWarning() << "Failed to generate QR code";
         return QImage();
     }
 
-    int qrwidth = rcode->width + margin * 2;
+    int qrwidth = qrcode->width + margin * 2;
     QImage result(QSize(qrwidth, qrwidth), QImage::Format_Mono);
     QPainter painter;
     painter.begin(&result);
@@ -802,31 +766,19 @@ Utils::setupQRCode(QString ringID, int margin)
     painter.setPen(QPen(Qt::black, 0.1, Qt::SolidLine, Qt::FlatCap, Qt::MiterJoin));
     painter.setBrush(Qt::black);
     painter.fillRect(QRect(0, 0, qrwidth, qrwidth), Qt::white);
-    unsigned char* p;
-    p = rcode->data;
-    for (int y = 0; y < rcode->width; y++) {
-        unsigned char* row = (p + (y * rcode->width));
-        for (int x = 0; x < rcode->width; x++) {
+    unsigned char *p;
+    p = qrcode->data;
+    for (int y = 0; y < qrcode->width; y++) {
+        unsigned char *row = (p + (y * qrcode->width));
+        for (int x = 0; x < qrcode->width; x++) {
             if (*(row + x) & 0x1) {
                 painter.drawRect(margin + x, margin + y, 1, 1);
             }
         }
     }
     painter.end();
-    QRcode_free(rcode);
+    QRcode_free(qrcode);
     return result;
-}
-
-float
-Utils::getCurrentScalingRatio()
-{
-    return CURRENT_SCALING_RATIO;
-}
-
-void
-Utils::setCurrentScalingRatio(float ratio)
-{
-    CURRENT_SCALING_RATIO = ratio;
 }
 
 QString
@@ -910,7 +862,7 @@ Utils::accountPhoto(const lrc::api::account::Info& accountInfo, const QSize& siz
         QString letterStr = bestId == bestName ? QString() : bestName;
         QString prefix = accountInfo.profileInfo.type == lrc::api::profile::Type::RING ? "ring:"
                                                                                        : "sip:";
-        photo = fallbackAvatar(size, prefix + accountInfo.profileInfo.uri, letterStr);
+        photo = fallbackAvatar(prefix + accountInfo.profileInfo.uri, letterStr, size);
     }
     return scaleAndFrame(photo, size);
 }
@@ -937,171 +889,7 @@ Utils::humanFileSize(qint64 fileSize)
     return QString::number(fileSizeF) + " " + units[unit_position];
 }
 
-const QString
-UtilsAdapter::getBestName(const QString& accountId, const QString& uid)
-{
-    auto* convModel = LRCInstance::getAccountInfo(accountId).conversationModel.get();
-    return Utils::bestNameForConversation(convModel->getConversationForUID(uid), *convModel);
-}
-
-const QString
-UtilsAdapter::getBestId(const QString& accountId, const QString& uid)
-{
-    auto* convModel = LRCInstance::getAccountInfo(accountId).conversationModel.get();
-    return Utils::bestIdForConversation(convModel->getConversationForUID(uid), *convModel);
-}
-
-int
-UtilsAdapter::getTotalUnreadMessages()
-{
-    int totalUnreadMessages {0};
-    if (LRCInstance::getCurrentAccountInfo().profileInfo.type != lrc::api::profile::Type::SIP) {
-        auto* convModel = LRCInstance::getCurrentConversationModel();
-        auto ringConversations = convModel->getFilteredConversations(lrc::api::profile::Type::RING);
-        std::for_each(ringConversations.begin(),
-                      ringConversations.end(),
-                      [&totalUnreadMessages](const auto& conversation) {
-                          totalUnreadMessages += conversation.unreadMessages;
-                      });
-    }
-    return totalUnreadMessages;
-}
-
-int
-UtilsAdapter::getTotalPendingRequest()
-{
-    auto& accountInfo = LRCInstance::getCurrentAccountInfo();
-    return accountInfo.contactModel->pendingRequestCount();
-}
-
-void
-UtilsAdapter::setConversationFilter(const QString& filter)
-{
-    LRCInstance::getCurrentConversationModel()->setFilter(filter);
-}
-
-void
-UtilsAdapter::clearConversationHistory(const QString& accountId, const QString& uid)
-{
-    LRCInstance::getAccountInfo(accountId).conversationModel->clearHistory(uid);
-}
-
-void
-UtilsAdapter::removeConversation(const QString& accountId, const QString& uid, bool banContact)
-{
-    LRCInstance::getAccountInfo(accountId).conversationModel->removeConversation(uid, banContact);
-}
-
-const QString
-UtilsAdapter::getCurrAccId()
-{
-    return LRCInstance::getCurrAccId();
-}
-
-const QString
-UtilsAdapter::getCurrConvId()
-{
-    return LRCInstance::getCurrentConvUid();
-}
-
-void
-UtilsAdapter::makePermanentCurrentConv()
-{
-    LRCInstance::getCurrentConversationModel()->makePermanent(LRCInstance::getCurrentConvUid());
-}
-
-const QStringList
-UtilsAdapter::getCurrAccList()
-{
-    return LRCInstance::accountModel().getAccountList();
-}
-
-int
-UtilsAdapter::getAccountListSize()
-{
-    return getCurrAccList().size();
-}
-
-void
-UtilsAdapter::setCurrentCall(const QString& accountId, const QString& convUid)
-{
-    auto& accInfo = LRCInstance::getAccountInfo(accountId);
-    const auto convInfo = accInfo.conversationModel->getConversationForUID(convUid);
-    accInfo.callModel->setCurrentCall(convInfo.callId);
-}
-
-void
-UtilsAdapter::startPreviewing(bool force)
-{
-    LRCInstance::renderer()->startPreviewing(force);
-}
-
-void
-UtilsAdapter::stopPreviewing()
-{
-    if (!LRCInstance::hasVideoCall()) {
-        LRCInstance::renderer()->stopPreviewing();
-    }
-}
-
-bool
-UtilsAdapter::hasVideoCall()
-{
-    return LRCInstance::hasVideoCall();
-}
-
-const QString
-UtilsAdapter::getCallId(const QString& accountId, const QString& convUid)
-{
-    auto& accInfo = LRCInstance::getAccountInfo(accountId);
-    const auto convInfo = accInfo.conversationModel->getConversationForUID(convUid);
-
-    if (convInfo.uid.isEmpty()) {
-        return "";
-    }
-
-    auto call = LRCInstance::getCallInfoForConversation(convInfo, false);
-    if (!call) {
-        return "";
-    }
-
-    return call->id;
-}
-
-const QString
-UtilsAdapter::getCallStatusStr(int statusInt)
-{
-    const auto status = static_cast<lrc::api::call::Status>(statusInt);
-    return lrc::api::call::to_string(status);
-}
-
-QString
-UtilsAdapter::getStringUTF8(QString string)
-{
-    return string.toUtf8();
-}
-
-QString
-UtilsAdapter::getRecordQualityString(int value)
-{
-    return value ? QString::number(static_cast<float>(value) / 100, 'f', 1) + " Mbps" : "Default";
-}
-
-QString
-UtilsAdapter::getCurrentPath()
-{
-    return QDir::currentPath();
-}
-
-bool
-UtilsAdapter::checkShowPluginsButton()
-{
-    return LRCInstance::pluginModel().getPluginsEnabled()
-           && (LRCInstance::pluginModel().listLoadedPlugins().size() > 0);
-}
-
-bool
-UtilsAdapter::isImage(const QString& fileExt) const
+bool Utils::isImage(const QString &fileExt)
 {
     if (fileExt == "png" || fileExt == "jpg" || fileExt == "jpeg")
         return true;

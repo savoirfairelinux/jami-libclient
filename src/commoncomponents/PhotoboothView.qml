@@ -61,12 +61,13 @@ ColumnLayout {
 
         onAccepted: {
             fileName = file
-            if(fileName.length === 0) {
+            if (fileName.length === 0) {
                 imageCleared()
                 return
             }
-            imgBase64 = ClientWrapper.utilsAdaptor.getCroppedImageBase64FromFile(
-                        ClientWrapper.utilsAdaptor.getAbsPath(fileName),boothWidth)
+            imgBase64 = UtilsAdapter.getCroppedImageBase64FromFile(
+                            UtilsAdapter.getAbsPath(fileName),
+                            boothWidth)
             imageAcquired()
             stopBooth()
         }

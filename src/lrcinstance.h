@@ -208,10 +208,10 @@ public:
                     return *conv;
                 }
             } else {
-                for (int i = Utils::toUnderlyingValue(profile::Type::RING);
-                     i <= Utils::toUnderlyingValue(profile::Type::TEMPORARY);
+                for (int i = static_cast<int>(profile::Type::RING);
+                     i <= static_cast<int>(profile::Type::TEMPORARY);
                      ++i) {
-                    auto filter = Utils::toEnum<profile::Type>(i);
+                    auto filter = static_cast<profile::Type>(i);
                     auto &convs = convModel->getFilteredConversations(filter);
                     auto conv = std::find_if(convs.begin(), convs.end(), pred);
                     if (conv != convs.end()) {

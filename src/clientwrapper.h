@@ -41,7 +41,6 @@
 #include "previewrenderer.h"
 #include "qrimageprovider.h"
 #include "settingsadapter.h"
-#include "utils.h"
 #include "version.h"
 #include "videocodeclistmodel.h"
 
@@ -51,7 +50,6 @@ class ClientWrapper : public QObject
 {
     Q_OBJECT
 
-    Q_PROPERTY(UtilsAdapter *utilsAdaptor READ getUtilsAdapter NOTIFY utilsAdaptorChanged)
     Q_PROPERTY(SettingsAdapter *SettingsAdapter READ getSettingsAdapter NOTIFY SettingsAdapterChanged)
     Q_PROPERTY(NameDirectory *nameDirectory READ getNameDirectory NOTIFY nameDirectoryChanged)
     Q_PROPERTY(LRCInstance *lrcInstance READ getLRCInstance NOTIFY lrcInstanceChanged)
@@ -67,7 +65,6 @@ public:
     explicit ClientWrapper(QObject *parent = nullptr);
 
     NameDirectory *getNameDirectory();
-    UtilsAdapter *getUtilsAdapter();
     SettingsAdapter *getSettingsAdapter();
     LRCInstance *getLRCInstance();
     AccountAdapter *getAccountAdapter();
@@ -82,7 +79,6 @@ public:
     lrc::api::PluginModel *getPluginModel();
 
 signals:
-    void utilsAdaptorChanged();
     void SettingsAdapterChanged();
     void nameDirectoryChanged();
     void lrcInstanceChanged();

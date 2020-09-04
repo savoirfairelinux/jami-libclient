@@ -1,4 +1,3 @@
-
 /*
  * Copyright (C) 2020 by Savoir-faire Linux
  * Author: Mingrui Zhang <mingrui.zhang@savoirfairelinux.com>
@@ -16,15 +15,16 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+
 import QtQuick 2.14
 import QtQuick.Controls 2.14
 import QtQuick.Layouts 1.14
 import QtWebEngine 1.10
 import QtWebChannel 1.14
 import net.jami.Models 1.0
+import net.jami.Adapters 1.0
 
 import "../../commoncomponents"
-
 
 Rectangle {
     id: messageWebViewRect
@@ -66,7 +66,7 @@ Rectangle {
         onAccepted: {
             var filePaths = jamiFileDialog.files
             for (var index = 0; index < filePaths.length; ++index) {
-                var path = ClientWrapper.utilsAdaptor.getAbsPath(filePaths[index])
+                var path = UtilsAdapter.getAbsPath(filePaths[index])
                 MessagesAdapter.setNewMessagesContent(path)
             }
         }
@@ -77,7 +77,7 @@ Rectangle {
         DropArea{
             anchors.fill: parent
             onDropped: {
-                var path = ClientWrapper.utilsAdaptor.getAbsPath(drop.text.toString())
+                var path = UtilsAdapter.getAbsPath(drop.text.toString())
                 MessagesAdapter.setNewMessagesContent(path)
             }
         }
@@ -223,7 +223,7 @@ Rectangle {
         DropArea{
             anchors.fill: parent
             onDropped: {
-                var path = ClientWrapper.utilsAdaptor.getAbsPath(drop.text.toString())
+                var path = UtilsAdapter.getAbsPath(drop.text.toString())
                 MessagesAdapter.setNewMessagesContent(path)
             }
         }
@@ -237,33 +237,33 @@ Rectangle {
 
         onLoadingChanged: {
             if (loadRequest.status == WebEngineView.LoadSucceededStatus) {
-                messageWebView.runJavaScript(ClientWrapper.utilsAdaptor.getStyleSheet(
+                messageWebView.runJavaScript(UtilsAdapter.getStyleSheet(
                                                  "chatcss",
-                                                 ClientWrapper.utilsAdaptor.qStringFromFile(
+                                                 UtilsAdapter.qStringFromFile(
                                                      ":/chatview.css")))
-                messageWebView.runJavaScript(ClientWrapper.utilsAdaptor.getStyleSheet(
+                messageWebView.runJavaScript(UtilsAdapter.getStyleSheet(
                                                  "chatwin",
-                                                 ClientWrapper.utilsAdaptor.qStringFromFile(
+                                                 UtilsAdapter.qStringFromFile(
                                                      ":/chatview-windows.css")))
 
-                messageWebView.runJavaScript(ClientWrapper.utilsAdaptor.qStringFromFile(
+                messageWebView.runJavaScript(UtilsAdapter.qStringFromFile(
                                                  ":/jed.js"))
-                messageWebView.runJavaScript(ClientWrapper.utilsAdaptor.qStringFromFile(
+                messageWebView.runJavaScript(UtilsAdapter.qStringFromFile(
                                                  ":/linkify.js"))
-                messageWebView.runJavaScript(ClientWrapper.utilsAdaptor.qStringFromFile(
+                messageWebView.runJavaScript(UtilsAdapter.qStringFromFile(
                                                  ":/linkify-html.js"))
-                messageWebView.runJavaScript(ClientWrapper.utilsAdaptor.qStringFromFile(
+                messageWebView.runJavaScript(UtilsAdapter.qStringFromFile(
                                                  ":/linkify-string.js"))
-                messageWebView.runJavaScript(ClientWrapper.utilsAdaptor.qStringFromFile(
+                messageWebView.runJavaScript(UtilsAdapter.qStringFromFile(
                                                  ":/qwebchannel.js"))
-                messageWebView.runJavaScript(ClientWrapper.utilsAdaptor.qStringFromFile(
+                messageWebView.runJavaScript(UtilsAdapter.qStringFromFile(
                                                  ":/chatview.js"))
                 messageWebView.runJavaScript("init_i18n();")
                 messageWebView.runJavaScript("displayNavbar(false);")
             }
         }
         Component.onCompleted: {
-            messageWebView.loadHtml(ClientWrapper.utilsAdaptor.qStringFromFile(
+            messageWebView.loadHtml(UtilsAdapter.qStringFromFile(
                                         ":/chatview.html"), ":/chatview.html")
             messageWebView.url = "qrc:/chatview.html"
         }
@@ -274,8 +274,8 @@ Rectangle {
     WebEngineProfile {
         id: messageWebViewProfile
 
-        cachePath: ClientWrapper.utilsAdaptor.getCachePath()
-        persistentStoragePath: ClientWrapper.utilsAdaptor.getCachePath()
+        cachePath: UtilsAdapter.getCachePath()
+        persistentStoragePath: UtilsAdapter.getCachePath()
         persistentCookiesPolicy: WebEngineProfile.NoPersistentCookies
         httpCacheType: WebEngineProfile.NoCache
         httpUserAgent: "jami-windows"

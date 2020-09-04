@@ -22,6 +22,7 @@
 
 #include "lrcinstance.h"
 
+#include <QApplication>
 #include <QScreen>
 
 AvAdapter::AvAdapter(QObject *parent)

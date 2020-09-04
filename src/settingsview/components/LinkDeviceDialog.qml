@@ -50,8 +50,8 @@ Dialog {
         timerForExport.restart()
     }
 
-    function slotExportOnRing() {
-        ClientWrapper.accountModel.exportOnRing(ClientWrapper.utilsAdaptor.getCurrAccId(),passwordEdit.text)
+    function slotExportOnRing(){
+        ClientWrapper.accountModel.exportOnRing(UtilsAdapter.getCurrAccId(),passwordEdit.text)
     }
 
     Timer{

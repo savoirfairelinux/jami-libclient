@@ -153,7 +153,9 @@ HEADERS += ./src/smartlistmodel.h \
         ./src/videoformatfpsmodel.h \
         ./src/videoformatresolutionmodel.h \
         ./src/audiomanagerlistmodel.h \
-        src/qmlregister.h
+        src/qmlregister.h \
+        src/qtutils.h \
+        src/utilsadapter.h
 
 SOURCES += ./src/bannedlistmodel.cpp \
         ./src/accountlistmodel.cpp \
@@ -192,7 +194,8 @@ SOURCES += ./src/bannedlistmodel.cpp \
         ./src/videoformatfpsmodel.cpp \
         ./src/videoformatresolutionmodel.cpp \
         ./src/audiomanagerlistmodel.cpp \
-        src/qmlregister.cpp
+        src/qmlregister.cpp \
+        src/utilsadapter.cpp
 
 RESOURCES += ./resources.qrc \
              ./qml.qrc

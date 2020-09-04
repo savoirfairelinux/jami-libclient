@@ -294,14 +294,14 @@ SmartListModel::getConversationItemData(const conversation::Info &item,
     case Role::LastInteractionType: {
         if (!item.interactions.empty()) {
             return QVariant(
-                Utils::toUnderlyingValue(item.interactions.at(item.lastMessageUid).type));
+                static_cast<int>(item.interactions.at(item.lastMessageUid).type));
         }
         return QVariant(0);
     }
     case Role::ContactType: {
         if (!item.participants.isEmpty()) {
             auto &contact = contactModel->getContact(item.participants[0]);
-            return QVariant(Utils::toUnderlyingValue(contact.profileInfo.type));
+            return QVariant(static_cast<int>(contact.profileInfo.type));
         }
         return QVariant(0);
     }
@@ -397,7 +397,7 @@ Qt::ItemFlags
 SmartListModel::flags(const QModelIndex &index) const
 {
     auto flags = QAbstractItemModel::flags(index) | Qt::ItemNeverHasChildren | Qt::ItemIsSelectable;
-    auto type = Utils::toEnum<lrc::api::profile::Type>(data(index, Role::ContactType).value<int>());
+    auto type = static_cast<lrc::api::profile::Type>(data(index, Role::ContactType).value<int>());
     auto uid = data(index, Role::UID).value<QString>();
     if (!index.isValid()) {
         return QAbstractItemModel::flags(index);

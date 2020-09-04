@@ -23,6 +23,8 @@
 
 #include "accountadapter.h"
 
+#include "qtutils.h"
+
 #undef REGISTERED
 #include "../daemon/src/dring/account_const.h"
 
@@ -58,14 +60,12 @@ AccountAdapter::connectFailure()
                           &lrc::api::NewAccountModel::accountRemoved,
                           [this](const QString &accountId) {
                               Q_UNUSED(accountId);
-
                               emit reportFailure();
                           });
     Utils::oneShotConnect(&LRCInstance::accountModel(),
                           &lrc::api::NewAccountModel::invalidAccountDetected,
                           [this](const QString &accountId) {
                               Q_UNUSED(accountId);
-
                               emit reportFailure();
                           });
 }
@@ -113,7 +113,7 @@ AccountAdapter::createJamiAccount(QString registeredName,
 
     connectFailure();
 
-    QtConcurrent::run([this, settings] {
+    QtConcurrent::run([settings] {
         QMap<QString, QString> additionalAccountConfig;
         additionalAccountConfig.insert(DRing::Account::ConfProperties::Ringtone::PATH,
                                        Utils::GetRingtonePath());
@@ -162,7 +162,7 @@ AccountAdapter::createSIPAccount(const QVariantMap &settings, QString photoBooth
 
     connectFailure();
 
-    QtConcurrent::run([this, settings] {
+    QtConcurrent::run([settings] {
         QMap<QString, QString> additionalAccountConfig;
         additionalAccountConfig.insert(DRing::Account::ConfProperties::Ringtone::PATH,
                                        Utils::GetRingtonePath());
@@ -194,7 +194,7 @@ AccountAdapter::createJAMSAccount(const QVariantMap &settings)
 
     connectFailure();
 
-    QtConcurrent::run([this, settings] {
+    QtConcurrent::run([settings] {
         QMap<QString, QString> additionalAccountConfig;
         additionalAccountConfig.insert(DRing::Account::ConfProperties::Ringtone::PATH,
                                        Utils::GetRingtonePath());
@@ -302,7 +302,7 @@ AccountAdapter::exportToFile(const QString &accountId,
 void
 AccountAdapter::setArchivePasswordAsync(const QString &accountID, const QString &password)
 {
-    QtConcurrent::run([this, accountID, password] {
+    QtConcurrent::run([accountID, password] {
         auto config = LRCInstance::accountModel().getAccountConfig(accountID);
         config.archivePassword = password;
         LRCInstance::accountModel().setAccountConfig(accountID, config);
@@ -404,7 +404,7 @@ AccountAdapter::connectAccount(const QString &accountId)
         addedToConferenceConnection_
             = QObject::connect(accInfo.callModel.get(),
                                &NewCallModel::callAddedToConference,
-                               [this](const QString &callId, const QString &confId) {
+                               [](const QString &callId, const QString &confId) {
                                    Q_UNUSED(callId);
                                    LRCInstance::renderer()->addDistantRenderer(confId);
                                });

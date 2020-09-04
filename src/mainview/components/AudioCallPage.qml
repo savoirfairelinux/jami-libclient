@@ -1,4 +1,3 @@
-
 /*
  * Copyright (C) 2020 by Savoir-faire Linux
  * Author: Mingrui Zhang <mingrui.zhang@savoirfairelinux.com>
@@ -16,11 +15,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+
 import QtQuick 2.14
 import QtQuick.Controls 2.14
 import QtQuick.Layouts 1.14
 import QtQuick.Controls.Universal 2.12
 import net.jami.Models 1.0
+import net.jami.Adapters 1.0
 
 import "../../commoncomponents"
 
@@ -34,11 +35,11 @@ Rectangle {
     property var linkedWebview: null
 
     function updateUI(accountId, convUid) {
-        contactImgSource = "data:image/png;base64," + ClientWrapper.utilsAdaptor.getContactImageString(
+        contactImgSource = "data:image/png;base64," + UtilsAdapter.getContactImageString(
                     accountId, convUid)
-        bestName = ClientWrapper.utilsAdaptor.getBestName(accountId, convUid)
+        bestName = UtilsAdapter.getBestName(accountId, convUid)
 
-        var id = ClientWrapper.utilsAdaptor.getBestId(accountId, convUid)
+        var id = UtilsAdapter.getBestId(accountId, convUid)
         bestId = (bestName !== id) ? id : ""
     }
 

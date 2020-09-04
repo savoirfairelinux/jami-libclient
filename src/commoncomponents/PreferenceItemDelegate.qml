@@ -80,7 +80,7 @@ ItemDelegate {
         folder: "file://" + currentPath
 
         onAccepted: {
-            var url = ClientWrapper.utilsAdaptor.getAbsPath(fileUrl.toString())
+            var url = UtilsAdapter.getAbsPath(fileUrl.toString())
             preferenceNewValue = url
             btnPreferenceClicked()
         }

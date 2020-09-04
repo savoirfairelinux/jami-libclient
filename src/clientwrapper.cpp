@@ -36,12 +36,6 @@ ClientWrapper::getNameDirectory()
     return &(NameDirectory::instance());
 }
 
-UtilsAdapter *
-ClientWrapper::getUtilsAdapter()
-{
-    return &(UtilsAdapter::instance());
-}
-
 SettingsAdapter *
 ClientWrapper::getSettingsAdapter()
 {

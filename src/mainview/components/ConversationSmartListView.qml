@@ -121,8 +121,8 @@ ListView {
         context: Qt.ApplicationShortcut
         enabled: root.visible
         onActivated: {
-            ClientWrapper.utilsAdaptor.clearConversationHistory(ClientWrapper.utilsAdaptor.getCurrAccId(),
-                                                  ClientWrapper.utilsAdaptor.getCurrConvId())
+            UtilsAdapter.clearConversationHistory(UtilsAdapter.getCurrAccId(),
+                                                  UtilsAdapter.getCurrConvId())
         }
     }
 
@@ -131,8 +131,9 @@ ListView {
         context: Qt.ApplicationShortcut
         enabled: root.visible
         onActivated: {
-            ClientWrapper.utilsAdaptor.removeConversation(ClientWrapper.utilsAdaptor.getCurrAccId(),
-                                            ClientWrapper.utilsAdaptor.getCurrConvId(), true)
+            UtilsAdapter.removeConversation(UtilsAdapter.getCurrAccId(),
+                                            UtilsAdapter.getCurrConvId(),
+                                            true)
             root.needToBackToWelcomePage()
         }
     }
@@ -142,8 +143,9 @@ ListView {
         context: Qt.ApplicationShortcut
         enabled: root.visible
         onActivated: {
-            ClientWrapper.utilsAdaptor.removeConversation(ClientWrapper.utilsAdaptor.getCurrAccId(),
-                                            ClientWrapper.utilsAdaptor.getCurrConvId(), false)
+            UtilsAdapter.removeConversation(UtilsAdapter.getCurrAccId(),
+                                            UtilsAdapter.getCurrConvId(),
+                                            false)
         }
     }
 

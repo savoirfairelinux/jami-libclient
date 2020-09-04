@@ -63,7 +63,7 @@ Rectangle {
         onAccepted: {
             filePath = file
             if (file.length != 0) {
-                fileImportBtnText = ClientWrapper.utilsAdaptor.toFileInfoName(file)
+                fileImportBtnText = UtilsAdapter.toFileInfoName(file)
             } else {
                 fileImportBtnText = qsTr("Archive(none)")
             }

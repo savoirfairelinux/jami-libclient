@@ -237,7 +237,7 @@ Rectangle {
 
             onImportAccount: {
                 inputParaObject = {}
-                inputParaObject["archivePath"] = ClientWrapper.utilsAdaptor.getAbsPath(importFromBackupPage.filePath)
+                inputParaObject["archivePath"] = UtilsAdapter.getAbsPath(importFromBackupPage.filePath)
                 inputParaObject["password"] = importFromBackupPage.text_passwordFromBackupEditAlias
                 showBackUp = false
                 showBottom = false
@@ -258,14 +258,14 @@ Rectangle {
                 if (accepted) {
                     // is there password? If so, go to password dialog, else, go to following directly
                     if (ClientWrapper.accountAdaptor.hasPassword()) {
-                        passwordDialog.path = ClientWrapper.utilsAdaptor.getAbsPath(folderDir)
+                        passwordDialog.path = UtilsAdapter.getAbsPath(folderDir)
                         passwordDialog.open()
                         return
                     } else {
                         if (folderDir.length > 0) {
                             ClientWrapper.accountAdaptor.exportToFile(
-                                        ClientWrapper.utilsAdaptor.getCurrAccId(),
-                                        ClientWrapper.utilsAdaptor.getAbsPath(folderDir))
+                                        UtilsAdapter.getCurrAccId(),
+                                        UtilsAdapter.getAbsPath(folderDir))
                         }
                     }
                 }

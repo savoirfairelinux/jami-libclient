@@ -23,9 +23,11 @@
 
 #include "messagesadapter.h"
 
-#include "utils.h"
+#include "qtutils.h"
 #include "webchathelpers.h"
 
+#include <QApplication>
+#include <QClipboard>
 #include <QDesktopServices>
 #include <QFileInfo>
 #include <QImageReader>

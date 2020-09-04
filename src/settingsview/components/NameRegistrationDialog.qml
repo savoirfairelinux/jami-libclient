@@ -49,7 +49,7 @@ Dialog {
 
     function slotStartNameRegistration(){
         var password = passwordEdit.text
-        ClientWrapper.accountModel.registerName(ClientWrapper.utilsAdaptor.getCurrAccId(), password, registerdName)
+        ClientWrapper.accountModel.registerName(UtilsAdapter.getCurrAccId(), password, registerdName)
     }
 
     function startSpinner(){

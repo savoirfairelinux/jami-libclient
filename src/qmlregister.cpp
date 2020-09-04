@@ -41,7 +41,7 @@
 #include "pluginlistpreferencemodel.h"
 #include "previewrenderer.h"
 #include "settingsadapter.h"
-#include "utils.h"
+#include "utilsadapter.h"
 #include "version.h"
 #include "videocodeclistmodel.h"
 #include "videoformatfpsmodel.h"
@@ -142,8 +142,9 @@ void registerTypes()
     QML_REGISTERSINGLETONTYPE("net.jami.Models", PluginAdapter, 1, 0);
     QML_REGISTERSINGLETONTYPE("net.jami.Models", ClientWrapper, 1, 0);
 
-
+    QML_REGISTERSINGLETONTYPE("net.jami.Adapters", UtilsAdapter, 1, 0);
     QML_REGISTERSINGLETONTYPE("net.jami.Adapters", SettingsAdapter, 1, 0);
+
     QML_REGISTERUNCREATABLE("net.jami.Enums", Settings, 1, 0);
 
     /*
@@ -166,7 +167,6 @@ void registerTypes()
      * qmlRegisterUncreatableType & Q_DECLARE_METATYPE to expose models in qml.
      */
     QML_REGISTERUNCREATABLE("net.jami.Models", RenderManager, 1, 0);
-    QML_REGISTERUNCREATABLE("net.jami.Models", UtilsAdapter, 1, 0);
     QML_REGISTERUNCREATABLE("net.jami.Models", NameDirectory, 1, 0);
     QML_REGISTERUNCREATABLE("net.jami.Models", LRCInstance, 1, 0);
 

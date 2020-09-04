@@ -1,4 +1,3 @@
-
 /*
  * Copyright (C) 2020 by Savoir-faire Linux
  * Author: Mingrui Zhang <mingrui.zhang@savoirfairelinux.com>
@@ -16,19 +15,20 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+
 import QtQuick 2.14
 import QtQuick.Controls 2.14
 import QtQuick.Layouts 1.14
 import net.jami.Models 1.0
-
+import net.jami.Adapters 1.0
 
 Dialog {
     id: userQrImageDialog
 
-    property string accountIdStr: ClientWrapper.utilsAdaptor.getCurrAccId()
+    property string accountIdStr: UtilsAdapter.getCurrAccId()
 
     function updateQrDialog() {
-        accountIdStr = ClientWrapper.utilsAdaptor.getCurrAccId()
+        accountIdStr = UtilsAdapter.getCurrAccId()
     }
 
     // When dialog is opened, trigger mainViewWindow overlay which is defined in overlay.model.

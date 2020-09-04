@@ -34,12 +34,12 @@ Rectangle {
     function populateGeneralSettings(){
         // settings
         closeOrMinCheckBox.checked = SettingsAdapter.getAppValue(Settings.MinimizeOnClose)
-        applicationOnStartUpCheckBox.checked = ClientWrapper.utilsAdaptor.checkStartupLink()
+        applicationOnStartUpCheckBox.checked = UtilsAdapter.checkStartupLink()
         notificationCheckBox.checked = SettingsAdapter.getAppValue(Settings.EnableNotifications)
 
         alwaysRecordingCheckBox.checked = ClientWrapper.avmodel.getAlwaysRecord()
         recordPreviewCheckBox.checked = ClientWrapper.avmodel.getRecordPreview()
-        recordQualityValueLabel.text = ClientWrapper.utilsAdaptor.getRecordQualityString(ClientWrapper.avmodel.getRecordQuality() / 100)
+        recordQualityValueLabel.text = UtilsAdapter.getRecordQualityString(ClientWrapper.avmodel.getRecordQuality() / 100)
         recordQualitySlider.value = ClientWrapper.avmodel.getRecordQuality() / 100
 
         ClientWrapper.avmodel.setRecordPath(ClientWrapper.SettingsAdapter.getDir_Document())
@@ -72,7 +72,7 @@ Rectangle {
     }
 
     function slotRecordQualitySliderValueChanged(value){
-        recordQualityValueLabel.text = ClientWrapper.utilsAdaptor.getRecordQualityString(value)
+        recordQualityValueLabel.text = UtilsAdapter.getRecordQualityString(value)
         updateRecordQualityTimer.restart()
     }
 
@@ -102,7 +102,7 @@ Rectangle {
         currentFolder: StandardPaths.writableLocation(StandardPaths.DownloadLocation)
 
         onAccepted: {
-            var dir = ClientWrapper.utilsAdaptor.getAbsPath(folder.toString())
+            var dir = UtilsAdapter.getAbsPath(folder.toString())
             downloadPath = dir
         }
     }
@@ -118,7 +118,7 @@ Rectangle {
         currentFolder: StandardPaths.writableLocation(StandardPaths.HomeLocation)
 
         onAccepted: {
-            var dir = ClientWrapper.utilsAdaptor.getAbsPath(folder.toString())
+            var dir = UtilsAdapter.getAbsPath(folder.toString())
             recordPath = dir
         }
     }

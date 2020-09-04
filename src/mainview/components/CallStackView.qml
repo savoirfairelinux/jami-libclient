@@ -149,7 +149,7 @@ Rectangle {
         }
 
         function onUpdateParticipantsInfos(infos, accountId, callId) {
-            var responsibleCallId = ClientWrapper.utilsAdaptor.getCallId(responsibleAccountId, responsibleConvUid)
+            var responsibleCallId = UtilsAdapter.getCallId(responsibleAccountId, responsibleConvUid)
             if (responsibleCallId === callId) {
                 videoCallPage.handleParticipantsInfo(infos)
             }

@@ -62,7 +62,7 @@ public:
     static QString toString(Key key)
     {
         return QMetaEnum::fromType<Key>().valueToKey(
-                    Utils::toUnderlyingValue(key));
+                    static_cast<int>(key));
     }
     static QVariant defaultValue(const Key key)
     {
@@ -88,8 +88,7 @@ class AppSettingsManager : public QObject
 public:
     virtual ~AppSettingsManager() = default;
 
-    static AppSettingsManager&
-    instance()
+    static AppSettingsManager &instance()
     {
         static AppSettingsManager *instance_ =
                 new AppSettingsManager(nullptr);
@@ -120,9 +119,9 @@ public:
     initValues()
     {
         for (int i = 0;
-             i < Utils::toUnderlyingValue(Settings::Key::COUNT__);
+             i < static_cast<int>(Settings::Key::COUNT__);
              ++i) {
-            auto key = Utils::toEnum<Settings::Key>(i);
+            auto key = static_cast<Settings::Key>(i);
             if (!instance().settings_->contains(Settings::toString(key)))
                 setValue(key, Settings::defaultValue(key));
         }

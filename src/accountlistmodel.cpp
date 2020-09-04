@@ -75,9 +75,9 @@ AccountListModel::data(const QModelIndex &index, int role) const
         return QVariant(Utils::secondBestNameForAccount(accountInfo));
     case Role::Type:
         return QVariant(
-            Utils::toUnderlyingValue<lrc::api::profile::Type>(accountInfo.profileInfo.type));
+            static_cast<int>(accountInfo.profileInfo.type));
     case Role::Status:
-        return QVariant(Utils::toUnderlyingValue<lrc::api::account::Status>(accountInfo.status));
+        return QVariant(static_cast<int>(accountInfo.status));
     case Role::Picture:
         return QString::fromLatin1(
             Utils::QImageToByteArray(Utils::accountPhoto(accountInfo)).toBase64().data());

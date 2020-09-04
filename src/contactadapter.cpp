@@ -34,7 +34,7 @@ ContactAdapter::getContactSelectableModel(int type)
     /*
      * Called from qml every time contact picker refreshes.
      */
-    listModeltype_ = Utils::toEnum<SmartListModel::Type>(type);
+    listModeltype_ = static_cast<SmartListModel::Type>(type);
     smartListModel_.reset(new SmartListModel(LRCInstance::getCurrAccId(),
                                              this,
                                              listModeltype_,
