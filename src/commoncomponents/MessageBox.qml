@@ -30,8 +30,6 @@ MessageDialog {
     width: 300
     height: 200
 
-    onRejected: {}
-
     function openWithParameters(titleToDisplay, infoToDisplay, infoIconMode = StandardIcon.Information, buttons = StandardButton.Ok){
         title = titleToDisplay
         text = infoToDisplay

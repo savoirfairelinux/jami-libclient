@@ -24,13 +24,11 @@ import QtQuick.Controls.Universal 2.12
 import net.jami.Models 1.0
 
 
-/*
- * ScreenRubberBand as a seperate frameless window,
- * is to simulate the whole screen area and provide the user
- * the ability to select certain area of it.
- *
- * Typically, it is used for video screen sharing.
- */
+// ScreenRubberBand as a seperate frameless window,
+// is to simulate the whole screen area and provide the user
+// the ability to select certain area of it.
+
+// Typically, it is used for video screen sharing.
 Window {
     id: screenRubberBandWindow
 
@@ -39,17 +37,13 @@ Window {
     flags: Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint | Qt.WA_TranslucentBackground
 
 
-    /*
-     * Opacity with 0.7 window that will fill the entire screen,
-     * provide the users to select the area that they
-     * want to share.
-     */
+    // Opacity with 0.7 window that will fill the entire screen,
+    // provide the users to select the area that they
+    // want to share.
     color: Qt.rgba(0, 0, 0, 0.7)
 
 
-    /*
-     * Rect for selection.
-     */
+    // Rect for selection.
     Rectangle {
         id: recSelect
 
@@ -74,9 +68,7 @@ Window {
         cursorShape: Qt.CrossCursor
 
 
-        /*
-         * Geo changing for user selection.
-         */
+        // Geo changing for user selection.
         onPressed: {
             originalX = mouseX
             originalY = mouseY

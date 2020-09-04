@@ -1,4 +1,3 @@
-
 /*
  * Copyright (C) 2020 by Savoir-faire Linux
  * Author: Mingrui Zhang <mingrui.zhang@savoirfairelinux.com>

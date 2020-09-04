@@ -26,11 +26,9 @@ import net.jami.Models 1.0
 import "../../commoncomponents"
 
 
-/*
- * IncomingCallPage as a seperate window,
- * exist at the right bottom, as a notification to user that
- * a call is incoming.
- */
+// IncomingCallPage as a seperate window,
+// exist at the right bottom, as a notification to user that
+// a call is incoming.
 Window {
     id: incomingCallPage
 
@@ -38,9 +36,7 @@ Window {
     property int minHeight: 400
 
 
-    /*
-     * The unique identifier for incomingCallPage
-     */
+    // The unique identifier for incomingCallPage
     property string responsibleAccountId: ""
     property string responsibleConvUid: ""
 
@@ -65,14 +61,12 @@ Window {
     function updatePositionToRightBottom() {
 
 
-        /*
-         * Screen right bottom,
-         * since the qt screen.virtualY, virtualX does not work properly,
-         * we need to calculate the screen x, y ourselves, by
-         * using to fact that window will always be in the middle if no x or y
-         * specificed.
-         * ex: https://doc.qt.io/qt-5/qscreen.html#geometry-prop
-         */
+        // Screen right bottom,
+        // since the qt screen.virtualY, virtualX does not work properly,
+        // we need to calculate the screen x, y ourselves, by
+        // using to fact that window will always be in the middle if no x or y
+        // specificed.
+        // ex: https://doc.qt.io/qt-5/qscreen.html#geometry-prop
         var virtualX = (incomingCallPage.x + width / 2) - screen.width / 2
         incomingCallPage.x = virtualX + screen.width - width
         incomingCallPage.y = screen.height - height - 50
@@ -96,9 +90,7 @@ Window {
         color: "black"
 
 
-        /*
-         * Simulate window drag. (top with height 30).
-         */
+        // Simulate window drag. (top with height 30).
         MouseArea {
             id: dragMouseArea
 

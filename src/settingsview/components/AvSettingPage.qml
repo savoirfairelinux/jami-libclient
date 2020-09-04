@@ -29,41 +29,49 @@ import "../../commoncomponents"
 Rectangle {
     id: root
 
-    AudioInputDeviceModel{
-        id: audioInputDeviceModel
+    property int preferredColumnWidth: root.width / 2 - 50
+    property int preferredSettingsWidth: root.width - 100
+    property real aspectRatio: 0.75
+    property bool previewAvailable: false
+
+    signal backArrowClicked
+
+    Connections{
+        target: ClientWrapper.avmodel
+        enabled: root.visible
+
+        function onAudioMeter(id, level){
+            slotAudioMeter(id,level)
+        }
     }
 
-    AudioOutputDeviceModel{
-        id: audioOutputDeviceModel
+    Connections{
+        target: ClientWrapper.renderManager
+        enabled: root.visible
+
+        function onVideoDeviceListChanged(){
+            slotVideoDeviceListChanged()
+        }
     }
 
-    AudioManagerListModel{
-        id: audioManagerListModel
-    }
-
-    VideoInputDeviceModel{
-        id: videoInputDeviceModel
-    }
-
-    VideoFormatResolutionModel{
-        id: videoFormatResolutionModel
-    }
-
-    VideoFormatFpsModel{
-        id: videoFormatFpsModel
+    onVisibleChanged: {
+        if (!visible) {
+            stopPreviewing()
+            stopAudioMeter()
+        }
     }
 
     function populateAVSettings(){
-        audioInputDeviceModel.reset()
+        audioInputComboBox.model.reset()
         audioOutputDeviceModel.reset()
 
-        inputComboBox.currentIndex = audioInputDeviceModel.getCurrentSettingIndex()
+        audioInputComboBox.currentIndex = audioInputComboBox.model.getCurrentSettingIndex()
         outputComboBox.currentIndex = audioOutputDeviceModel.getCurrentSettingIndex()
         ringtoneDeviceComboBox.currentIndex = audioOutputDeviceModel.getCurrentRingtoneDeviceIndex()
 
-        audioManagerRowLayout.visible = (audioManagerListModel.rowCount() > 0)
-        if(audioManagerListModel.rowCount() > 0){
-        audioManagerComboBox.currentIndex = audioManagerListModel.getCurrentSettingIndex()
+        audioManagerRowLayout.visible = (audioManagerComboBox.model.rowCount() > 0)
+        if(audioManagerComboBox.model.rowCount() > 0){
+        audioManagerComboBox.currentIndex = audioManagerComboBox.model.getCurrentSettingIndex()
         }
 
         populateVideoSettings()
@@ -72,16 +80,16 @@ Rectangle {
     }
 
     function populateVideoSettings() {
-        videoInputDeviceModel.reset()
+        deviceBox.model.reset()
 
-        deviceBox.enabled = (videoInputDeviceModel.deviceCount() > 0)
-        resolutionBox.enabled = (videoInputDeviceModel.deviceCount() > 0)
-        fpsBox.enabled = (videoInputDeviceModel.deviceCount() > 0)
-        labelVideoDevice.enabled = (videoInputDeviceModel.deviceCount() > 0)
-        labelVideoResolution.enabled = (videoInputDeviceModel.deviceCount() > 0)
-        labelVideoFps.enabled = (videoInputDeviceModel.deviceCount() > 0)
+        deviceBox.enabled = (deviceBox.model.deviceCount() > 0)
+        resolutionBox.enabled = (deviceBox.model.deviceCount() > 0)
+        fpsBox.enabled = (deviceBox.model.deviceCount() > 0)
+        labelVideoDevice.enabled = (deviceBox.model.deviceCount() > 0)
+        labelVideoResolution.enabled = (deviceBox.model.deviceCount() > 0)
+        labelVideoFps.enabled = (deviceBox.model.deviceCount() > 0)
 
-        deviceBox.currentIndex = videoInputDeviceModel.getCurrentSettingIndex()
+        deviceBox.currentIndex = deviceBox.model.getCurrentSettingIndex()
         slotDeviceBoxCurrentIndexChanged(deviceBox.currentIndex)
 
         try{
@@ -97,8 +105,8 @@ Rectangle {
         }
 
         try{
-            videoFormatResolutionModel.reset()
-            resolutionBox.currentIndex = videoFormatResolutionModel.getCurrentSettingIndex()
+            resolutionBox.model.reset()
+            resolutionBox.currentIndex = resolutionBox.model.getCurrentSettingIndex()
             slotFormatCurrentIndexChanged(resolutionBox.currentIndex,true)
         } catch(err){console.warn("Exception: " + err.message)}
     }
@@ -136,7 +144,7 @@ Rectangle {
 
     function slotAudioManagerIndexChanged(index){
         stopAudioMeter(false)
-        var selectedAudioManager = audioManagerListModel.data(audioManagerListModel.index(
+        var selectedAudioManager = audioManagerComboBox.model.data(audioManagerComboBox.model.index(
                                                         index, 0), AudioManagerListModel.AudioManagerID)
         ClientWrapper.avmodel.setAudioManager(selectedAudioManager)
         startAudioMeter(false)
@@ -160,7 +168,7 @@ Rectangle {
 
     function slotAudioInputIndexChanged(index){
         stopAudioMeter(false)
-        var selectedInputDeviceName = audioInputDeviceModel.data(audioInputDeviceModel.index(
+        var selectedInputDeviceName = audioInputComboBox.model.data(audioInputComboBox.model.index(
                                                         index, 0), AudioInputDeviceModel.Device_ID)
 
         ClientWrapper.avmodel.setInputDevice(selectedInputDeviceName)
@@ -168,14 +176,14 @@ Rectangle {
     }
 
     function slotDeviceBoxCurrentIndexChanged(index){
-        if(videoInputDeviceModel.deviceCount() <= 0){
+        if(deviceBox.model.deviceCount() <= 0){
             return
         }
 
         try{
-            var deviceId = videoInputDeviceModel.data(videoInputDeviceModel.index(
+            var deviceId = deviceBox.model.data(deviceBox.model.index(
                                                           index, 0), VideoInputDeviceModel.DeviceId)
-            var deviceName = videoInputDeviceModel.data(videoInputDeviceModel.index(
+            var deviceName = deviceBox.model.data(deviceBox.model.index(
                                                             index, 0), VideoInputDeviceModel.DeviceName)
             if(deviceId.length === 0){
                 console.warn("Couldn't find device: " + deviceName)
@@ -193,17 +201,17 @@ Rectangle {
         var resolution
         var rate
         if(isResolutionIndex){
-            resolution = videoFormatResolutionModel.data(videoFormatResolutionModel.index(
+            resolution = resolutionBox.model.data(resolutionBox.model.index(
                                                                  index, 0), VideoFormatResolutionModel.Resolution)
-            videoFormatFpsModel.currentResolution = resolution
-            fpsBox.currentIndex = videoFormatFpsModel.getCurrentSettingIndex()
-            rate = videoFormatFpsModel.data(videoFormatFpsModel.index(
+            fpsBox.model.currentResolution = resolution
+            fpsBox.currentIndex = fpsBox.model.getCurrentSettingIndex()
+            rate = fpsBox.model.data(fpsBox.model.index(
                                                        fpsBox.currentIndex, 0), VideoFormatFpsModel.FPS)
         } else {
-            resolution = videoFormatResolutionModel.data(videoFormatResolutionModel.index(
+            resolution = resolutionBox.model.data(resolutionBox.model.index(
                                                                  resolutionBox.currentIndex, 0), VideoFormatResolutionModel.Resolution)
-            videoFormatFpsModel.currentResolution = resolution
-            rate = videoFormatFpsModel.data(videoFormatFpsModel.index(
+            fpsBox.model.currentResolution = resolution
+            rate = fpsBox.model.data(fpsBox.model.index(
                                                        index, 0), VideoFormatFpsModel.FPS)
         }
 
@@ -227,42 +235,9 @@ Rectangle {
         }
     }
 
-    property int preferredColumnWidth: avSettingsScrollView.width / 2 - 50
-    property int preferredSettingsWidth: avSettingsScrollView.width - 100
-
-    property real aspectRatio: 0.75
-
-    property bool previewAvailable: false
-    signal backArrowClicked
-
-    Connections{
-        target: ClientWrapper.avmodel
-        enabled: root.visible
-
-        function onAudioMeter(id, level){
-            slotAudioMeter(id,level)
-        }
+    AudioOutputDeviceModel{
+        id: audioOutputDeviceModel
     }
-
-    Connections{
-        target: ClientWrapper.renderManager
-        enabled: root.visible
-
-        function onVideoDeviceListChanged(){
-            slotVideoDeviceListChanged()
-        }
-    }
-
-    onVisibleChanged: {
-        if (!visible) {
-            stopPreviewing()
-            stopAudioMeter()
-        }
-    }
-
-    Layout.fillHeight: true
-    Layout.maximumWidth: JamiTheme.maximumWidthSettingsView
-    anchors.centerIn: parent
 
     ColumnLayout {
         anchors.fill: root
@@ -272,19 +247,15 @@ Rectangle {
             Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
             Layout.leftMargin: JamiTheme.preferredMarginSize
             Layout.fillWidth: true
-            Layout.maximumHeight: 64
-            Layout.minimumHeight: 64
             Layout.preferredHeight: 64
 
             HoverableButton {
                 id: backToSettingsMenuButton
 
-                Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
                 Layout.preferredWidth: JamiTheme.preferredFieldHeight
                 Layout.preferredHeight: JamiTheme.preferredFieldHeight
-                Layout.rightMargin: JamiTheme.preferredMarginSize
 
-                radius: 30
+                radius: JamiTheme.preferredFieldHeight
                 source: "qrc:/images/icons/ic_arrow_back_24px.svg"
                 backgroundColor: "white"
                 onExitColor: "white"
@@ -300,9 +271,6 @@ Rectangle {
 
             Label {
                 Layout.fillWidth: true
-                Layout.minimumHeight: JamiTheme.preferredFieldHeight
-                Layout.preferredHeight: JamiTheme.preferredFieldHeight
-                Layout.maximumHeight: JamiTheme.preferredFieldHeight
 
                 text: qsTr("Audio / Video")
                 font.pointSize: JamiTheme.titleFontSize
@@ -317,362 +285,296 @@ Rectangle {
 
         ScrollView {
             id: avSettingsScrollView
+
             property ScrollBar vScrollBar: ScrollBar.vertical
+            ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
+            ScrollBar.vertical.policy: ScrollBar.AsNeeded
 
             Layout.fillHeight: true
             Layout.fillWidth: true
 
-            Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
-
-            width: root.width
-            height: root.height - avSettingsTitle.height
-
-            ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
-            ScrollBar.vertical.policy: ScrollBar.AsNeeded
-
+            focus: true
             clip: true
 
             ColumnLayout {
-                Layout.fillHeight: true
-                Layout.fillWidth: true
-                Layout.alignment: Qt.AlignHCenter
-
-                spacing: 24
+                width: root.width
 
                 // Audio
                 ColumnLayout {
-                    spacing: 8
                     Layout.fillWidth: true
                     Layout.leftMargin: JamiTheme.preferredMarginSize
+                    Layout.rightMargin: JamiTheme.preferredMarginSize
 
                     ElidedTextLabel {
                         Layout.fillWidth: true
-                        Layout.minimumHeight: JamiTheme.preferredFieldHeight
                         Layout.preferredHeight: JamiTheme.preferredFieldHeight
-                        Layout.maximumHeight: JamiTheme.preferredFieldHeight
 
                         eText: qsTr("Audio")
                         fontSize: JamiTheme.headerFontSize
-                        maxWidth: preferredColumnWidth
+                        maxWidth: width
                     }
 
-                    ColumnLayout {
+                    RowLayout {
                         Layout.fillWidth: true
+                        Layout.maximumHeight: JamiTheme.preferredFieldHeight
                         Layout.leftMargin: JamiTheme.preferredMarginSize
 
-                        RowLayout {
+                        ElidedTextLabel {
                             Layout.fillWidth: true
-                            Layout.maximumHeight: JamiTheme.preferredFieldHeight
+                            Layout.fillHeight: true
 
-                            ElidedTextLabel {
-                                Layout.fillWidth: true
-                                Layout.minimumHeight: JamiTheme.preferredFieldHeight
-                                Layout.preferredHeight: JamiTheme.preferredFieldHeight
-                                Layout.maximumHeight: JamiTheme.preferredFieldHeight
-
-                                eText: qsTr("Microphone")
-                                fontSize: JamiTheme.settingsFontSize
-                                maxWidth: preferredColumnWidth
-                            }
-
-
-                            SettingParaCombobox {
-                                id: inputComboBox
-
-                                Layout.maximumWidth: preferredColumnWidth
-                                Layout.preferredWidth: preferredColumnWidth
-                                Layout.minimumWidth: preferredColumnWidth
-                                Layout.minimumHeight: JamiTheme.preferredFieldHeight
-                                Layout.preferredHeight: JamiTheme.preferredFieldHeight
-                                Layout.maximumHeight: JamiTheme.preferredFieldHeight
-
-                                font.pointSize: JamiTheme.buttonFontSize
-                                font.kerning: true
-
-                                model: audioInputDeviceModel
-                                textRole: "ID_UTF8"
-                                tooltipText: qsTr("Audio input device selector")
-                                onActivated: {
-                                    slotAudioInputIndexChanged(index)
-                                }
-                            }
+                            eText: qsTr("Microphone")
+                            fontSize: JamiTheme.settingsFontSize
+                            maxWidth: width
                         }
 
-                        // the audio level meter
-                        LevelMeter {
-                            id: audioInputMeter
 
-                            Layout.minimumWidth: preferredSettingsWidth
-                            Layout.preferredWidth: preferredSettingsWidth
-                            Layout.maximumWidth: preferredSettingsWidth
-                            Layout.minimumHeight: JamiTheme.preferredFieldHeight
+                        SettingParaCombobox {
+                            id: audioInputComboBox
+
+                            Layout.preferredWidth: preferredColumnWidth
                             Layout.preferredHeight: JamiTheme.preferredFieldHeight
-                            Layout.maximumHeight: JamiTheme.preferredFieldHeight
 
-                            indeterminate: false
-                            from: 0
-                            to: 100
-                        }
+                            font.pointSize: JamiTheme.buttonFontSize
+                            font.kerning: true
 
-                        RowLayout {
-                            Layout.fillWidth: true
-                            Layout.maximumHeight: JamiTheme.preferredFieldHeight
-
-                            ElidedTextLabel {
-                                Layout.fillWidth: true
-                                Layout.minimumHeight: JamiTheme.preferredFieldHeight
-                                Layout.preferredHeight: JamiTheme.preferredFieldHeight
-                                Layout.maximumHeight: JamiTheme.preferredFieldHeight
-
-                                eText: qsTr("Output Device")
-                                fontSize: JamiTheme.settingsFontSize
-                                maxWidth: preferredColumnWidth
-                            }
-
-
-                            SettingParaCombobox {
-                                id: outputComboBox
-
-                                Layout.maximumWidth: preferredColumnWidth
-                                Layout.preferredWidth: preferredColumnWidth
-                                Layout.minimumWidth: preferredColumnWidth
-                                Layout.minimumHeight: JamiTheme.preferredFieldHeight
-                                Layout.preferredHeight: JamiTheme.preferredFieldHeight
-                                Layout.maximumHeight: JamiTheme.preferredFieldHeight
-
-                                font.pointSize: JamiTheme.settingsFontSize
-                                font.kerning: true
-
-                                model: audioOutputDeviceModel
-                                textRole: "ID_UTF8"
-                                tooltipText: qsTr("Choose the audio output device")
-                                onActivated: {
-                                    slotAudioOutputIndexChanged(index)
-                                }
+                            model: AudioInputDeviceModel {}
+                            textRole: "ID_UTF8"
+                            tooltipText: qsTr("Audio input device selector")
+                            onActivated: {
+                                slotAudioInputIndexChanged(index)
                             }
                         }
+                    }
 
-                        RowLayout {
+                    // the audio level meter
+                    LevelMeter {
+                        id: audioInputMeter
+
+                        Layout.alignment: Qt.AlignHCenter
+                        Layout.preferredWidth: preferredSettingsWidth
+                        Layout.preferredHeight: JamiTheme.preferredFieldHeight
+
+                        indeterminate: false
+                        from: 0
+                        to: 100
+                    }
+
+                    RowLayout {
+                        Layout.fillWidth: true
+                        Layout.maximumHeight: JamiTheme.preferredFieldHeight
+                        Layout.leftMargin: JamiTheme.preferredMarginSize
+
+                        ElidedTextLabel {
                             Layout.fillWidth: true
-                            Layout.maximumHeight: JamiTheme.preferredFieldHeight
 
-                            ElidedTextLabel {
-
-                                Layout.fillWidth: true
-                                Layout.minimumHeight: JamiTheme.preferredFieldHeight
-                                Layout.preferredHeight: JamiTheme.preferredFieldHeight
-                                Layout.maximumHeight: JamiTheme.preferredFieldHeight
-
-                                eText: qsTr("Ringtone Device")
-                                font.pointSize: JamiTheme.settingsFontSize
-                                maxWidth: preferredColumnWidth
-                            }
-
-
-                            SettingParaCombobox {
-                                id: ringtoneDeviceComboBox
-
-                                Layout.maximumWidth: preferredColumnWidth
-                                Layout.preferredWidth: preferredColumnWidth
-                                Layout.minimumWidth: preferredColumnWidth
-                                Layout.minimumHeight: JamiTheme.preferredFieldHeight
-                                Layout.preferredHeight: JamiTheme.preferredFieldHeight
-                                Layout.maximumHeight: JamiTheme.preferredFieldHeight
-
-                                font.pointSize: JamiTheme.buttonFontSize
-                                font.kerning: true
-
-                                model: audioOutputDeviceModel
-
-                                textRole: "ID_UTF8"
-                                tooltipText: qsTr("Choose the ringtone output device")
-                                onActivated: {
-                                    slotRingtoneDeviceIndexChanged(index)
-                                }
-                            }
+                            eText: qsTr("Output Device")
+                            fontSize: JamiTheme.settingsFontSize
+                            maxWidth: width
                         }
 
-                        RowLayout {
-                            id: audioManagerRowLayout
 
-                            Layout.fillWidth: true
-                            Layout.maximumHeight: JamiTheme.preferredFieldHeight
+                        SettingParaCombobox {
+                            id: outputComboBox
 
-                            ElidedTextLabel {
-                                Layout.fillWidth: true
-                                Layout.minimumHeight: JamiTheme.preferredFieldHeight
-                                Layout.preferredHeight: JamiTheme.preferredFieldHeight
-                                Layout.maximumHeight: JamiTheme.preferredFieldHeight
+                            Layout.preferredWidth: preferredColumnWidth
+                            Layout.preferredHeight: JamiTheme.preferredFieldHeight
 
-                                text: qsTr("Audio Manager")
-                                fontSize: JamiTheme.settingsFontSize
-                                maxWidth: preferredColumnWidth
+                            font.pointSize: JamiTheme.settingsFontSize
+                            font.kerning: true
+
+                            model: audioOutputDeviceModel
+                            textRole: "ID_UTF8"
+                            tooltipText: qsTr("Choose the audio output device")
+                            onActivated: {
+                                slotAudioOutputIndexChanged(index)
                             }
+                        }
+                    }
 
-                            SettingParaCombobox {
-                                id: audioManagerComboBox
+                    RowLayout {
+                        Layout.fillWidth: true
+                        Layout.maximumHeight: JamiTheme.preferredFieldHeight
+                        Layout.leftMargin: JamiTheme.preferredMarginSize
 
-                                Layout.maximumWidth: preferredColumnWidth
-                                Layout.preferredWidth: preferredColumnWidth
-                                Layout.minimumWidth: preferredColumnWidth
-                                Layout.minimumHeight: JamiTheme.preferredFieldHeight
-                                Layout.preferredHeight: JamiTheme.preferredFieldHeight
-                                Layout.maximumHeight: JamiTheme.preferredFieldHeight
+                        ElidedTextLabel {
+                            Layout.fillWidth: true
 
-                                font.pointSize: JamiTheme.buttonFontSize
-                                font.kerning: true
+                            eText: qsTr("Ringtone Device")
+                            font.pointSize: JamiTheme.settingsFontSize
+                            maxWidth: width
+                        }
 
-                                model: audioManagerListModel
 
-                                textRole: "ID_UTF8"
+                        SettingParaCombobox {
+                            id: ringtoneDeviceComboBox
 
-                                onActivated: {
-                                    slotAudioManagerIndexChanged(index)
-                                }
+                            Layout.preferredWidth: preferredColumnWidth
+                            Layout.preferredHeight: JamiTheme.preferredFieldHeight
+
+                            font.pointSize: JamiTheme.settingsFontSize
+                            font.kerning: true
+
+                            model: audioOutputDeviceModel
+
+                            textRole: "ID_UTF8"
+                            tooltipText: qsTr("Choose the ringtone output device")
+                            onActivated: {
+                                slotRingtoneDeviceIndexChanged(index)
+                            }
+                        }
+                    }
+
+                    RowLayout {
+                        id: audioManagerRowLayout
+
+                        Layout.fillWidth: true
+                        Layout.maximumHeight: JamiTheme.preferredFieldHeight
+                        Layout.leftMargin: JamiTheme.preferredMarginSize
+
+                        ElidedTextLabel {
+                            Layout.fillWidth: true
+
+                            text: qsTr("Audio Manager")
+                            fontSize: JamiTheme.settingsFontSize
+                            maxWidth: width
+                        }
+
+                        SettingParaCombobox {
+                            id: audioManagerComboBox
+
+                            Layout.preferredWidth: preferredColumnWidth
+                            Layout.preferredHeight: JamiTheme.preferredFieldHeight
+
+                            font.pointSize: JamiTheme.buttonFontSize
+                            font.kerning: true
+
+                            model: AudioManagerListModel {}
+
+                            textRole: "ID_UTF8"
+
+                            onActivated: {
+                                slotAudioManagerIndexChanged(index)
                             }
                         }
                     }
                 }
 
                 ColumnLayout {
-                    spacing: 8
                     Layout.fillWidth: true
                     Layout.leftMargin: JamiTheme.preferredMarginSize
+                    Layout.rightMargin: JamiTheme.preferredMarginSize
 
                     ElidedTextLabel {
                         Layout.fillWidth: true
-                        Layout.minimumHeight: JamiTheme.preferredFieldHeight
                         Layout.preferredHeight: JamiTheme.preferredFieldHeight
-                        Layout.maximumHeight: JamiTheme.preferredFieldHeight
 
                         eText: qsTr("Video")
                         fontSize: JamiTheme.headerFontSize
                         maxWidth: preferredSettingsWidth
                     }
 
-                    ColumnLayout {
-                        Layout.leftMargin: 16
+                    RowLayout {
+                        Layout.fillWidth: true
+                        Layout.maximumHeight: JamiTheme.preferredFieldHeight
+                        Layout.leftMargin: JamiTheme.preferredMarginSize
 
-                        RowLayout {
+                        ElidedTextLabel {
+                            id: labelVideoDevice
+
                             Layout.fillWidth: true
-                            Layout.maximumHeight: JamiTheme.preferredFieldHeight
 
-                            ElidedTextLabel {
-                                id: labelVideoDevice
-
-                                Layout.fillWidth: true
-                                Layout.minimumHeight: JamiTheme.preferredFieldHeight
-                                Layout.preferredHeight: JamiTheme.preferredFieldHeight
-                                Layout.maximumHeight: JamiTheme.preferredFieldHeight
-
-                                eText: qsTr("Device")
-                                fontSize: JamiTheme.settingsFontSize
-                                maxWidth: preferredColumnWidth
-                            }
-
-
-                            SettingParaCombobox {
-                                id: deviceBox
-
-                                Layout.maximumWidth: preferredColumnWidth
-                                Layout.preferredWidth: preferredColumnWidth
-                                Layout.minimumWidth: preferredColumnWidth
-                                Layout.minimumHeight: JamiTheme.preferredFieldHeight
-                                Layout.preferredHeight: JamiTheme.preferredFieldHeight
-                                Layout.maximumHeight: JamiTheme.preferredFieldHeight
-
-                                font.pointSize: JamiTheme.buttonFontSize
-                                font.kerning: true
-
-                                model: videoInputDeviceModel
-
-                                textRole: "DeviceName_UTF8"
-                                tooltipText: qsTr("Video device selector")
-                                onActivated: {
-                                    slotDeviceBoxCurrentIndexChanged(index)
-                                }
-                            }
+                            eText: qsTr("Device")
+                            fontSize: JamiTheme.settingsFontSize
+                            maxWidth: width
                         }
 
-                        RowLayout {
-                            Layout.fillWidth: true
-                            Layout.maximumHeight: JamiTheme.preferredFieldHeight
 
-                            ElidedTextLabel {
-                                id: labelVideoResolution
+                        SettingParaCombobox {
+                            id: deviceBox
 
-                                Layout.fillWidth: true
-                                Layout.minimumHeight: JamiTheme.preferredFieldHeight
-                                Layout.preferredHeight: JamiTheme.preferredFieldHeight
-                                Layout.maximumHeight: JamiTheme.preferredFieldHeight
+                            Layout.preferredWidth: preferredColumnWidth
+                            Layout.preferredHeight: JamiTheme.preferredFieldHeight
 
-                                eText: qsTr("Resolution")
-                                fontSize: JamiTheme.settingsFontSize
-                                maxWidth: preferredColumnWidth
-                            }
+                            font.pointSize: JamiTheme.buttonFontSize
+                            font.kerning: true
 
-                            SettingParaCombobox {
-                                id: resolutionBox
+                            model: VideoInputDeviceModel {}
 
-                                Layout.maximumWidth: preferredColumnWidth
-                                Layout.preferredWidth: preferredColumnWidth
-                                Layout.minimumWidth: preferredColumnWidth
-                                Layout.minimumHeight: JamiTheme.preferredFieldHeight
-                                Layout.preferredHeight: JamiTheme.preferredFieldHeight
-                                Layout.maximumHeight: JamiTheme.preferredFieldHeight
-
-                                font.pointSize: JamiTheme.buttonFontSize
-                                font.kerning: true
-
-                                model: videoFormatResolutionModel
-                                textRole: "Resolution_UTF8"
-
-                                tooltipText: qsTr("Video device resolution selector")
-
-                                onActivated: {
-                                    slotFormatCurrentIndexChanged(index,true)
-                                }
+                            textRole: "DeviceName_UTF8"
+                            tooltipText: qsTr("Video device selector")
+                            onActivated: {
+                                slotDeviceBoxCurrentIndexChanged(index)
                             }
                         }
+                    }
 
-                        RowLayout {
+                    RowLayout {
+                        Layout.fillWidth: true
+                        Layout.maximumHeight: JamiTheme.preferredFieldHeight
+                        Layout.leftMargin: JamiTheme.preferredMarginSize
+
+                        ElidedTextLabel {
+                            id: labelVideoResolution
+
                             Layout.fillWidth: true
-                            Layout.maximumHeight: JamiTheme.preferredFieldHeight
 
-                            ElidedTextLabel {
-                                id: labelVideoFps
+                            eText: qsTr("Resolution")
+                            fontSize: JamiTheme.settingsFontSize
+                            maxWidth: width
+                        }
 
-                                Layout.fillWidth: true
-                                Layout.minimumHeight: JamiTheme.preferredFieldHeight
-                                Layout.preferredHeight: JamiTheme.preferredFieldHeight
-                                Layout.maximumHeight: JamiTheme.preferredFieldHeight
+                        SettingParaCombobox {
+                            id: resolutionBox
 
-                                eText: qsTr("Fps")
-                                fontSize: JamiTheme.settingsFontSize
-                                maxWidth: preferredColumnWidth
+                            Layout.preferredWidth: preferredColumnWidth
+                            Layout.preferredHeight: JamiTheme.preferredFieldHeight
+
+                            font.pointSize: JamiTheme.buttonFontSize
+                            font.kerning: true
+
+                            model: VideoFormatResolutionModel {}
+                            textRole: "Resolution_UTF8"
+
+                            tooltipText: qsTr("Video device resolution selector")
+
+                            onActivated: {
+                                slotFormatCurrentIndexChanged(index,true)
                             }
+                        }
+                    }
 
-                            SettingParaCombobox {
-                                id: fpsBox
+                    RowLayout {
+                        Layout.fillWidth: true
+                        Layout.maximumHeight: JamiTheme.preferredFieldHeight
+                        Layout.leftMargin: JamiTheme.preferredMarginSize
 
-                                Layout.maximumWidth: preferredColumnWidth
-                                Layout.preferredWidth: preferredColumnWidth
-                                Layout.minimumWidth: preferredColumnWidth
-                                Layout.minimumHeight: JamiTheme.preferredFieldHeight
-                                Layout.preferredHeight: JamiTheme.preferredFieldHeight
-                                Layout.maximumHeight: JamiTheme.preferredFieldHeight
+                        ElidedTextLabel {
+                            id: labelVideoFps
 
-                                font.pointSize: JamiTheme.buttonFontSize
-                                font.kerning: true
+                            Layout.fillWidth: true
 
-                                model: videoFormatFpsModel
-                                textRole: "FPS_ToDisplay_UTF8"
+                            eText: qsTr("Fps")
+                            fontSize: JamiTheme.settingsFontSize
+                            maxWidth: width
+                        }
 
-                                tooltipText: qsTr("Video device fps selector")
+                        SettingParaCombobox {
+                            id: fpsBox
 
-                                onActivated: {
-                                    slotFormatCurrentIndexChanged(index,false)
-                                }
+                            Layout.preferredWidth: preferredColumnWidth
+                            Layout.preferredHeight: JamiTheme.preferredFieldHeight
+
+                            font.pointSize: JamiTheme.buttonFontSize
+                            font.kerning: true
+
+                            model: VideoFormatFpsModel {}
+                            textRole: "FPS_ToDisplay_UTF8"
+
+                            tooltipText: qsTr("Video device fps selector")
+
+                            onActivated: {
+                                slotFormatCurrentIndexChanged(index,false)
                             }
                         }
                     }
@@ -703,15 +605,12 @@ Rectangle {
                     }
                 }
 
-
                 Label {
                     visible: !previewAvailable
 
                     Layout.fillWidth: true
 
-                    Layout.minimumHeight: JamiTheme.preferredFieldHeight
                     Layout.preferredHeight: JamiTheme.preferredFieldHeight
-                    Layout.maximumHeight: JamiTheme.preferredFieldHeight
 
                     text: qsTr("Preview unavailable")
                     font.pointSize: JamiTheme.settingsFontSize
@@ -727,27 +626,15 @@ Rectangle {
 
                     Layout.fillWidth: true
                     Layout.leftMargin: JamiTheme.preferredMarginSize
+                    Layout.rightMargin: JamiTheme.preferredMarginSize
+                    Layout.bottomMargin: JamiTheme.preferredMarginSize
 
-                    labelText: hwAccelText.elidedText
+                    labelText: qsTr("Enable hardware acceleration")
                     fontPointSize: JamiTheme.settingsFontSize
 
                     onSwitchToggled: {
                         slotSetHardwareAccel(checked)
                     }
-                }
-
-                TextMetrics {
-                    id: hwAccelText
-                    elide: Text.ElideRight
-                    elideWidth: preferredSettingsWidth - 50
-                    text: qsTr("Enable hardware acceleration")
-                }
-
-                Item {
-                    Layout.preferredWidth: root.width - 32
-                    Layout.minimumWidth: root.width - 32
-                    Layout.maximumWidth: JamiTheme.maximumWidthSettingsView - 32
-                    Layout.fillHeight: true
                 }
             }
         }

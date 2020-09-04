@@ -27,15 +27,11 @@ Dialog {
     id: aboutPopUp
 
 
-    /*
-     * When dialog is opened, trigger mainViewWindow overlay which is defined in overlay.model (model : true is necessary).
-     */
+    // When dialog is opened, trigger mainViewWindow overlay which is defined in overlay.model (model : true is necessary).
     modal: true
 
 
-    /*
-     * Content height + margin.
-     */
+    // Content height + margin.
     contentHeight: aboutPopUpContentRectColumnLayout.height + 5 * 7
 
     ProjectCreditsScrollView {
@@ -129,9 +125,7 @@ Dialog {
                 verticalAlignment: Text.AlignVCenter
 
 
-                /*
-                 * TextMetrics does not work for multi-line.
-                 */
+                // TextMetrics does not work for multi-line.
                 text: qsTr("The Qt client for Jami.\nJami is a secured and distributed communication software.")
             }
 
@@ -141,9 +135,7 @@ Dialog {
                 Layout.alignment: Qt.AlignCenter
 
 
-                /*
-                 * Strangely, hoveredLink works badly when width grows too large
-                 */
+                // Strangely, hoveredLink works badly when width grows too large
                 Layout.preferredWidth: 50
                 Layout.preferredHeight: textMetricsjamiDeclarationHyperText.boundingRect.height
                 Layout.topMargin: 5
@@ -167,9 +159,7 @@ Dialog {
                     anchors.fill: parent
 
 
-                    /*
-                     * We don't want to eat clicks on the Text.
-                     */
+                    // We don't want to eat clicks on the Text.
                     acceptedButtons: Qt.NoButton
                     cursorShape: parent.hoveredLink ? Qt.PointingHandCursor : Qt.ArrowCursor
                 }

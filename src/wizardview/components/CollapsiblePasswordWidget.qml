@@ -23,10 +23,7 @@ import QtQuick.Controls 2.14
 import "../../constant"
 import "../../commoncomponents"
 
-/*
- * an independent widget that keeps the password's textfields, including password field and confirm password field
- */
-
+// An independent widget that keeps the password's textfields, including password field and confirm password field
 GridLayout {
     id: root
 

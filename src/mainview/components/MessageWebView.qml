@@ -111,16 +111,12 @@ Rectangle {
         id: jsBridgeObject
 
 
-        /*
-         * ID, under which this object will be known at chatview.js side.
-         */
+        // ID, under which this object will be known at chatview.js side.
         WebChannel.id: "jsbridge"
 
 
-        /*
-         * Functions that are exposed, return code can be derived from js side
-         * by setting callback function.
-         */
+        // Functions that are exposed, return code can be derived from js side
+        // by setting callback function.
         function deleteInteraction(arg) {
             MessagesAdapter.deleteInteraction(arg)
         }
@@ -274,9 +270,7 @@ Rectangle {
     }
 
 
-    /*
-     * Provide WebEngineProfile.
-     */
+    // Provide WebEngineProfile.
     WebEngineProfile {
         id: messageWebViewProfile
 
@@ -288,9 +282,7 @@ Rectangle {
     }
 
 
-    /*
-     * Provide WebChannel by registering jsBridgeObject.
-     */
+    // Provide WebChannel by registering jsBridgeObject.
     WebChannel {
         id: messageWebViewChannel
         registeredObjects: [jsBridgeObject]

@@ -26,9 +26,8 @@ import net.jami.Models 1.0
 
 import "../constant"
 import "../wizardview/components"
-/*
- * Account Migration Dialog for migrating account
- */
+
+// Account Migration Dialog for migrating account
 
 Window{
     id: accountMigrationDialog

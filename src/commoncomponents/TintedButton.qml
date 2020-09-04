@@ -24,29 +24,21 @@ Button {
     id: tintedButton
 
 
-    /*
-     * TintColor, color for the pixmap when button is hovered.
-     */
+    // TintColor, color for the pixmap when button is hovered.
     property string tintColor: "white"
 
 
-    /*
-     * NormalPixmapSource - icons in normal state (non-toggled).
-     * SelectedPixmapSource - icons once button is toggled.
-     */
+    // NormalPixmapSource - icons in normal state (non-toggled).
+    // SelectedPixmapSource - icons once button is toggled.
     property string normalPixmapSource: ""
     property string selectedPixmapSource: ""
 
 
-    /*
-     * IsSelected property is to help set button current state manually.
-     */
+    // IsSelected property is to help set button current state manually.
     property bool isSelected: false
 
 
-    /*
-     * ButtonEntered signal is to help call overlay change its opacity
-     */
+    // ButtonEntered signal is to help call overlay change its opacity
     signal buttonEntered
 
     function setChecked(checked) {
@@ -100,9 +92,7 @@ Button {
             onEntered: {
 
 
-                /*
-                 * Tinted.
-                 */
+                // Tinted.
                 if (isSelected) {
                     tintedButtonImage.source = "image://tintedPixmap/"
                             + selectedPixmapSource.replace(

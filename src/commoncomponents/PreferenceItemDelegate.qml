@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2020 by Savoir-faire Linux
  * Author: Aline Gondim Santos <aline.gondimsantos@savoirfairelinux.com>
  *
@@ -100,7 +100,7 @@ ItemDelegate {
             ToolTip.text: preferenceSummary
         }
 
-        HoverableRadiusButton{
+        HoverableRadiusButton {
             id: btnPreference
             visible: preferenceType === PreferenceItemDelegate.DEFAULT
             backgroundColor: "white"
@@ -113,7 +113,7 @@ ItemDelegate {
             buttonImageHeight: 20
             buttonImageWidth: 20
 
-            source:{
+            source: {
                 return "qrc:/images/icons/round-settings-24px.svg"
             }
 

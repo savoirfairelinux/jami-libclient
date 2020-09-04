@@ -22,9 +22,10 @@ import QtQuick.Layouts 1.14
 import QtQuick.Controls.Styles 1.4
 import net.jami.Models 1.0
 import net.jami.Adapters 1.0
+import "../constant"
 
 Dialog {
-    id: deleteAccountDialog
+    id: root
 
     property int profileType: SettingsAdapter.getCurrentAccount_Profile_Info_Type()
 
@@ -49,139 +50,113 @@ Dialog {
         }
     }
 
-    visible: false
-    title: qsTr("Account deletion")
+    header : Rectangle {
+        width: parent.width
+        height: 64
+        color: "transparent"
+        Text {
+            anchors.fill: parent
+            anchors.leftMargin: JamiTheme.preferredMarginSize
+            anchors.topMargin: JamiTheme.preferredMarginSize
 
-    contentItem: Rectangle{
-        implicitWidth: 400
-        implicitHeight: 300
+            text: qsTr("Account deletion")
+            font.pointSize: JamiTheme.headerFontSize
+            wrapMode: Text.Wrap
+        }
+    }
+
+    visible: false
+    x: (parent.width - width) / 2
+    y: (parent.height - height) / 2
+
+    contentItem: Rectangle {
+        implicitHeight: contentLayout.implicitHeight + 64 + JamiTheme.preferredMarginSize
+        implicitWidth: 350
 
         ColumnLayout{
+            id: contentLayout
             anchors.fill: parent
-            spacing: 7
+            anchors.centerIn: parent
 
-            Layout.alignment: Qt.AlignCenter
-
-            Label{
+            Label {
                 id: labelDeletion
 
-                Layout.topMargin: 11
-                Layout.leftMargin: 11
-                Layout.rightMargin: 11
-
+                Layout.fillWidth: true
+                Layout.preferredHeight: 30
                 Layout.alignment: Qt.AlignHCenter
-                font.pointSize: 8
+
+                font.pointSize: JamiTheme.textFontSize
                 font.kerning: true
                 horizontalAlignment: Text.AlignHCenter
-                verticalAlignment: Text.AlignVCenter
                 wrapMode: Text.Wrap
                 text:qsTr("Do you really want to delete the following account?")
             }
 
-            Label{
+            Label {
                 id: labelBestId
 
-                Layout.leftMargin: 11
-                Layout.rightMargin: 11
-
+                Layout.topMargin: 5
+                Layout.fillWidth: true
+                Layout.preferredHeight: 30
                 Layout.alignment: Qt.AlignHCenter
-                font.pointSize: 8
+
+                font.pointSize: JamiTheme.textFontSize
                 font.kerning: true
                 font.bold: true
                 horizontalAlignment: Text.AlignHCenter
-                verticalAlignment: Text.AlignVCenter
                 wrapMode: Text.Wrap
 
                 text: SettingsAdapter.getAccountBestName()
             }
 
-            Label{
+            Label {
                 id: labelAccountHash
 
-                Layout.leftMargin: 11
-                Layout.rightMargin: 11
-
                 Layout.alignment: Qt.AlignHCenter
-                font.pointSize: 8
+                Layout.preferredHeight: 30
+
+                font.pointSize: JamiTheme.textFontSize
                 font.kerning: true
                 horizontalAlignment: Text.AlignHCenter
-                verticalAlignment: Text.AlignVCenter
                 wrapMode: Text.Wrap
                 text: SettingsAdapter.getCurrentAccount_Profile_Info_Uri()
             }
 
-            Item{
-                Layout.fillWidth: true
-
-                Layout.leftMargin: 11
-                Layout.rightMargin: 11
-
-                Layout.maximumHeight: 5
-                Layout.preferredHeight: 5
-                Layout.minimumHeight: 5
-            }
-
-            Label{
+            Label {
                 id: labelWarning
 
-                Layout.leftMargin: 11
-                Layout.rightMargin: 11
-
-                Layout.preferredWidth: 300
+                Layout.topMargin: 5
+                Layout.preferredHeight: 30
+                Layout.fillWidth: true
+                Layout.alignment: Qt.AlignHCenter
 
                 visible: ! isSIP
 
-                Layout.alignment: Qt.AlignHCenter
                 wrapMode: Text.Wrap
                 text: qsTr("If this account hasn't been exported, or added to another device, it will be irrevocably lost.")
-                font.pointSize: 8
+                font.pointSize: JamiTheme.textFontSize
                 font.kerning: true
                 horizontalAlignment: Text.AlignHCenter
-                verticalAlignment: Text.AlignVCenter
                 color: "red"
             }
 
-            Item{
+            RowLayout {
+                Layout.topMargin: JamiTheme.preferredMarginSize / 2
+                Layout.bottomMargin: 5
+                Layout.preferredHeight: 30
                 Layout.fillWidth: true
+                Layout.alignment: Qt.AlignHCenter
 
-                Layout.leftMargin: 11
-                Layout.rightMargin: 11
-
-                Layout.maximumHeight: 10
-                Layout.preferredHeight: 10
-                Layout.minimumHeight: 10
-            }
-
-            RowLayout{
-                spacing: 7
-
-                Layout.leftMargin: 11
-                Layout.rightMargin: 11
-
-                Item{
-                    Layout.fillWidth: true
-                    Layout.minimumWidth: 40
-
-                    Layout.maximumHeight: 20
-                    Layout.preferredHeight: 20
-                    Layout.minimumHeight: 20
-                }
-
-                HoverableRadiusButton{
+                HoverableRadiusButton {
                     id: btnDeleteAccept
 
+                    Layout.fillWidth: true
                     Layout.maximumWidth: 130
-                    Layout.preferredWidth: 130
-                    Layout.minimumWidth: 130
 
-                    Layout.maximumHeight: 30
-                    Layout.preferredHeight: 30
-                    Layout.minimumHeight: 30
-
-                    radius: height /2
+                    radius: height / 2
 
                     text: qsTr("Delete")
-                    font.pointSize: 10
+                    font.pointSize: JamiTheme.buttonFontSize
                     font.kerning: true
 
                     onClicked: {
@@ -190,25 +165,12 @@ Dialog {
                     }
                 }
 
-                Item{
-                    Layout.fillWidth: true
-                    Layout.minimumWidth: 40
-
-                    Layout.maximumHeight: 20
-                    Layout.preferredHeight: 20
-                    Layout.minimumHeight: 20
-                }
-
-                HoverableButtonTextItem{
+                HoverableButtonTextItem {
                     id: btnDeleteCancel
 
+                    Layout.leftMargin: 20
+                    Layout.fillWidth: true
                     Layout.maximumWidth: 130
-                    Layout.preferredWidth: 130
-                    Layout.minimumWidth: 130
-
-                    Layout.maximumHeight: 30
-                    Layout.preferredHeight: 30
-                    Layout.minimumHeight: 30
 
                     backgroundColor: "red"
                     onEnterColor: Qt.rgba(150 / 256, 0, 0, 0.7)
@@ -218,37 +180,16 @@ Dialog {
                     onPressColor: backgroundColor
                     textColor: "white"
 
-                    radius: height /2
+                    radius: height / 2
 
                     text: qsTr("Cancel")
-                    font.pointSize: 10
+                    font.pointSize: JamiTheme.buttonFontSize
                     font.kerning: true
 
                     onClicked: {
                         reject()
                     }
                 }
-
-                Item{
-                    Layout.fillWidth: true
-                    Layout.minimumWidth: 40
-
-                    Layout.maximumHeight: 20
-                    Layout.preferredHeight: 20
-                    Layout.minimumHeight: 20
-                }
-            }
-
-            Item{
-                Layout.fillWidth: true
-
-                Layout.maximumHeight: 5
-                Layout.preferredHeight: 5
-                Layout.minimumHeight: 5
-
-                Layout.leftMargin: 11
-                Layout.rightMargin: 11
-                Layout.bottomMargin: 11
             }
         }
     }

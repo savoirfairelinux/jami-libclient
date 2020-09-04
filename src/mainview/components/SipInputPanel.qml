@@ -24,16 +24,12 @@ import net.jami.Models 1.0
 
 import "../../commoncomponents"
 
-/*
- * SipInputPanel is a key pad that is designed to be
- * used in sip calls.
- */
+// SipInputPanel is a key pad that is designed to be
+// used in sip calls.
 Popup {
     id: sipInputPanelPopUp
 
-    /*
-     * Space between sipInputPanelRect and grid layout
-     */
+    // Space between sipInputPanelRect and grid layout
     property int sipPanelPadding: 20
 
     contentWidth: sipInputPanelRectGridLayout.implicitWidth + 20

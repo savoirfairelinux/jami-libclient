@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2020 by Savoir-faire Linux
  * Author: Mingrui Zhang <mingrui.zhang@savoirfairelinux.com>
  * Author: Sébastien Blin <sebastien.blin@savoirfairelinux.com>
@@ -129,9 +129,7 @@ Item {
     function generateDeviceMenuItem() {
         var deviceContextMenuInfoMap = AvAdapter.populateVideoDeviceContextMenuItem()
 
-        /*
-         * Somehow, the map size is undefined, so use this instead.
-         */
+        // Somehow, the map size is undefined, so use this instead.
         var mapSize = deviceContextMenuInfoMap["size"]
 
         if (mapSize === 0)
@@ -166,19 +164,19 @@ Item {
         })
     }
 
-    /* TODO: In the future we want to implement this
+    // TODO: In the future we want to implement this
 
-    GeneralMenuItem {
-        id: advancedInfosItem
+    // GeneralMenuItem {
+    //     id: advancedInfosItem
 
-        itemName: qsTr("Advanced informations")
-        iconSource: "qrc:/images/icons/info-24px.svg"
-        leftBorderWidth: commonBorderWidth
-        rightBorderWidth: commonBorderWidth
+    //     itemName: qsTr("Advanced informations")
+    //     iconSource: "qrc:/images/icons/info-24px.svg"
+    //     leftBorderWidth: commonBorderWidth
+    //     rightBorderWidth: commonBorderWidth
 
-        onClicked: {
-            root.close()
-        }
-    }*/
+    //     onClicked: {
+    //         root.close()
+    //     }
+    // }
 }
 

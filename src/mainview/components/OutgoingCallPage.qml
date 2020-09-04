@@ -48,9 +48,7 @@ Rectangle {
     color: "black"
 
 
-    /*
-     * Prevent right click propagate to VideoCallPage.
-     */
+    // Prevent right click propagate to VideoCallPage.
     MouseArea {
         anchors.fill: parent
         propagateComposedEvents: false

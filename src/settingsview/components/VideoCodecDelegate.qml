@@ -26,34 +26,27 @@ import QtQuick.Controls.Styles 1.4
 import net.jami.Models 1.0
 
 ItemDelegate {
-    id: videoCodecDelegate
+    id: root
 
     property string videoCodecName : ""
     property bool isEnabled : false
     property int videoCodecId
+    property int checkBoxWidth: 24
 
     signal videoCodecStateChange(string idToSet , bool isToBeEnabled)
 
-    property int checkBoxWidth: 24
-
     highlighted: ListView.isCurrentItem
 
-    RowLayout{
+    RowLayout {
         anchors.fill: parent
-
-        spacing: 10
 
         CheckBox{
             id: checkBoxIsEnabled
 
             Layout.leftMargin: 20
-
             Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
             Layout.fillHeight: true
-
-            Layout.minimumWidth: checkBoxWidth
             Layout.preferredWidth: checkBoxWidth
-            Layout.maximumWidth: checkBoxWidth
 
             tristate: false
             checkState: isEnabled ? Qt.Checked : Qt.Unchecked
@@ -72,7 +65,7 @@ ItemDelegate {
                     var result
                     var result_bool
 
-                    if (checkState === Qt.Checked){
+                    if (checkState === Qt.Checked) {
                         result = Qt.Unchecked
                         result_bool = false
                     } else {
@@ -84,17 +77,18 @@ ItemDelegate {
                 }
         }
 
-        Label{
+        Label {
             id: formatNameLabel
-
-            Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
-            horizontalAlignment: Text.AlignLeft
-            verticalAlignment: Text.AlignVCenter
 
             Layout.fillWidth: true
             Layout.fillHeight: true
+            Layout.rightMargin: JamiTheme.preferredMarginSize / 2
+            Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
 
             text: videoCodecName
+            elide: Text.ElideRight
+            horizontalAlignment: Text.AlignLeft
+            verticalAlignment: Text.AlignVCenter
             font.pointSize: 8
             font.kerning: true
         }

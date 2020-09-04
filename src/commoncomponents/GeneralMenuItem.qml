@@ -22,12 +22,10 @@ import QtQuick.Layouts 1.14
 import QtGraphicalEffects 1.0
 import net.jami.Models 1.0
 
-/*
- * General menu item.
- * Can control top, bottom, left, right border width.
- * Use onClicked slot to simulate item click event.
- * Can have image icon at the left of the text.
- */
+// General menu item.
+// Can control top, bottom, left, right border width.
+// Use onClicked slot to simulate item click event.
+// Can have image icon at the left of the text.
 MenuItem {
     id: menuItem
 

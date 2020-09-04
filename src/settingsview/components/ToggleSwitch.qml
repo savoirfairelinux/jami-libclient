@@ -24,8 +24,10 @@ import QtQuick.Layouts 1.3
 import QtGraphicalEffects 1.14
 import QtQuick.Controls.Styles 1.4
 import "../../commoncomponents"
+import "../../constant"
 
 RowLayout {
+    id: root
     property string labelText: ""
     property int widthOfSwitch: 50
     property int heightOfSwitch: 10
@@ -39,34 +41,25 @@ RowLayout {
 
     signal switchToggled
 
-    spacing: 8
-    Layout.fillWidth: true
-    Layout.maximumHeight: 32
-
-    ElidedTextLabel {
+    Text {
         Layout.fillWidth: true
-
-        Layout.minimumHeight: heightOfLayout
         Layout.preferredHeight: heightOfLayout
-        Layout.maximumHeight: heightOfLayout
+        Layout.rightMargin: JamiTheme.preferredMarginSize
 
-        eText: qsTr(labelText)
-        fontSize: fontPointSize
-        maxWidth: parent.width - widthOfSwitch
-
+        text: qsTr(labelText)
+        font.pointSize: fontPointSize
+        font.kerning: true
+        elide: Text.ElideRight
+        horizontalAlignment: Text.AlignLeft
+        verticalAlignment: Text.AlignVCenter
     }
 
     Switch {
         id: switchOfLayout
         Layout.alignment: Qt.AlignVCenter | Qt.AlignRight
 
-        Layout.maximumWidth: widthOfSwitch
         Layout.preferredWidth: widthOfSwitch
-        Layout.minimumWidth: widthOfSwitch
-
-        Layout.minimumHeight: heightOfSwitch
         Layout.preferredHeight: heightOfSwitch
-        Layout.maximumHeight: heightOfSwitch
 
         hoverEnabled: true
         ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval

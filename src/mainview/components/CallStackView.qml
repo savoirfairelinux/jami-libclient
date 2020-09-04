@@ -31,10 +31,8 @@ Rectangle {
 
     anchors.fill: parent
 
-    /*
-     * When selected conversation is changed,
-     * these values will also be changed.
-     */
+    // When selected conversation is changed,
+    // these values will also be changed.
     property string responsibleConvUid: ""
     property string responsibleAccountId: ""
 
@@ -43,9 +41,7 @@ Rectangle {
         videoCallPage.closeInCallConversation()
 
 
-        /*
-         * Close potential window, context menu releated windows.
-         */
+        // Close potential window, context menu releated windows.
         audioCallPage.closeContextMenuAndRelatedWindows()
 
         VideoCallFullScreenWindowContainerCreation.closeVideoCallFullScreenWindowContainer()
@@ -110,9 +106,7 @@ Rectangle {
         function onShowOutgoingCallPage(accountId, convUid) {
 
 
-            /*
-             * Need to check whether it is the current selected conversation.
-             */
+            // Need to check whether it is the current selected conversation.
             if (responsibleConvUid === convUid
                     && responsibleAccountId === accountId) {
                 showOutgoingCallPage()
@@ -122,9 +116,7 @@ Rectangle {
         function onShowIncomingCallPage(accountId, convUid) {
 
 
-            /*
-             * Check is done within the js.
-             */
+            // Check is done within the js.
             IncomingCallPageCreation.createincomingCallPageWindowObjects(
                         accountId, convUid)
             IncomingCallPageCreation.showIncomingCallPageWindow(accountId,

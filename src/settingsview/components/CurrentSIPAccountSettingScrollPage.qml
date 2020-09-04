@@ -27,12 +27,12 @@ import net.jami.Models 1.0
 import "../../commoncomponents"
 
 Rectangle {
-    id: sipAccountViewRect
+    id: root
     signal navigateToMainView
     signal navigateToNewWizardView
     signal backArrowClicked
 
-    property int preferredColumnWidth : sipAccountViewRect.width / 2 - 50
+    property int preferredColumnWidth : root.width / 2 - 50
 
     function updateAccountInfoDisplayed() {
         displaySIPNameLineEdit.text = SettingsAdapter.getCurrentAccount_Profile_Info_Alias()
@@ -74,12 +74,10 @@ Rectangle {
         deleteAccountDialog_SIP.open()
     }
 
-    DeleteAccountDialog{
+    DeleteAccountDialog {
         id: deleteAccountDialog_SIP
 
         anchors.centerIn: parent.Center
-        x: (parent.width - width) / 2
-        y: (parent.height - height) / 2
 
         onAccepted: {
             ClientWrapper.accountAdaptor.setSelectedConvId()
@@ -92,35 +90,24 @@ Rectangle {
         }
     }
 
-    Layout.fillHeight: true
-    Layout.maximumWidth: JamiTheme.maximumWidthSettingsView
-    anchors.centerIn: parent
-
     ColumnLayout {
-        anchors.fill: sipAccountViewRect
+        anchors.fill: root
 
         RowLayout {
             id: sipAccountPageTitle
             Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
             Layout.leftMargin: JamiTheme.preferredMarginSize
-            Layout.fillWidth: true
-            Layout.maximumHeight: 64
             Layout.minimumHeight: 64
-            Layout.preferredHeight: 64
 
             HoverableButton {
                 id: backToSettingsMenuButton
 
-                Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
                 Layout.preferredWidth: JamiTheme.preferredFieldHeight
-                Layout.preferredHeight: JamiTheme.preferredFieldHeight
-                Layout.rightMargin: JamiTheme.preferredMarginSize
 
-                radius: 32
+                radius: JamiTheme.preferredFieldHeight
                 source: "qrc:/images/icons/ic_arrow_back_24px.svg"
                 backgroundColor: "white"
                 onExitColor: "white"
-
                 toolTipText: qsTr("Toggle to display side panel")
                 hoverEnabled: true
                 visible: mainViewWindow.sidePanelHidden
@@ -130,17 +117,16 @@ Rectangle {
                 }
             }
 
-            ElidedTextLabel {
+            Label {
                 Layout.fillWidth: true
-                Layout.maximumHeight: JamiTheme.preferredFieldHeight
-                Layout.preferredHeight: JamiTheme.preferredFieldHeight
-                Layout.minimumHeight: JamiTheme.preferredFieldHeight
 
-                eText: qsTr("Account Settings")
-                fontSize: JamiTheme.titleFontSize
-                maxWidth: !backToSettingsMenuButton.visible ? sipAccountViewRect.width - 100 :
-                                                              sipAccountViewRect.width - backToSettingsMenuButton.width - 100
+                text: qsTr("Account Settings")
 
+                font.pointSize: JamiTheme.titleFontSize
+                font.kerning: true
+
+                horizontalAlignment: Text.AlignLeft
+                verticalAlignment: Text.AlignVCenter
             }
         }
 
@@ -151,30 +137,20 @@ Rectangle {
 
             Layout.fillHeight: true
             Layout.fillWidth: true
-            Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
-
-            width: sipAccountViewRect.width
-            height: sipAccountViewRect.height - sipAccountPageTitle.height
-
-            ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
-            ScrollBar.vertical.policy: ScrollBar.AsNeeded
 
             clip: true
 
             ColumnLayout {
                 id: accountSIPLayout
 
-                Layout.fillHeight: true
-                Layout.preferredWidth: sipAccountViewRect.width
-                Layout.alignment: Qt.AlignHCenter
-
-                spacing: 24
+                width: root.width
 
                 ToggleSwitch {
                     id: accountSIPEnableCheckBox
 
                     Layout.topMargin: JamiTheme.preferredMarginSize
                     Layout.leftMargin: JamiTheme.preferredMarginSize
+                    Layout.rightMargin: JamiTheme.preferredMarginSize
 
                     labelText: qsTr("Enable")
                     fontPointSize: JamiTheme.headerFontSize
@@ -188,14 +164,11 @@ Rectangle {
                     Layout.fillWidth: true
                     Layout.fillHeight: true
                     Layout.leftMargin: JamiTheme.preferredMarginSize
-                    spacing: 8
+                    Layout.rightMargin: JamiTheme.preferredMarginSize
 
                     Label {
                         Layout.fillWidth: true
-
-                        Layout.maximumHeight: JamiTheme.preferredFieldHeight
                         Layout.preferredHeight: JamiTheme.preferredFieldHeight
-                        Layout.minimumHeight: JamiTheme.preferredFieldHeight
 
                         text: qsTr("Profile")
                         font.pointSize: JamiTheme.headerFontSize
@@ -208,16 +181,11 @@ Rectangle {
                     PhotoboothView {
                         id: currentSIPAccountAvatar
 
-                        Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
+                        Layout.alignment: Qt.AlignCenter
 
-                        boothWidth: Math.min(224, sipAccountViewRect.width - 100)
+                        boothWidth: Math.min(224, root.width - 100) + 50
 
-                        Layout.maximumWidth: boothWidth+50
-                        Layout.preferredWidth: boothWidth+50
-                        Layout.minimumWidth: boothWidth+50
-                        Layout.maximumHeight: boothWidth+50
-                        Layout.preferredHeight: boothWidth+50
-                        Layout.minimumHeight: boothWidth+50
+                        Layout.preferredWidth: boothWidth
 
                         onImageAcquired: {
                            SettingsAdapter.setCurrAccAvatar(imgBase64)
@@ -250,22 +218,18 @@ Rectangle {
                     }
                 }
 
-
                 ColumnLayout {
                     Layout.fillWidth: true
                     Layout.alignment: Qt.AlignHCenter
                     Layout.leftMargin: JamiTheme.preferredMarginSize
-                    spacing: 8
+                    Layout.rightMargin: JamiTheme.preferredMarginSize
 
                     ElidedTextLabel {
                         Layout.fillWidth: true
-
-                        Layout.maximumHeight: JamiTheme.preferredFieldHeight
                         Layout.preferredHeight: JamiTheme.preferredFieldHeight
-                        Layout.minimumHeight: JamiTheme.preferredFieldHeight
 
                         eText: qsTr("Identity")
-                        maxWidth: sipAccountViewRect.width - 72
+                        maxWidth: root.width - 72
                         fontSize: JamiTheme.headerFontSize
                     }
 
@@ -274,8 +238,6 @@ Rectangle {
                         rows: 4
                         columns: 2
                         flow: GridLayout.LeftToRight
-                        rowSpacing: 8
-                        columnSpacing: 6
 
                         Layout.fillWidth: true
                         Layout.leftMargin: JamiTheme.preferredMarginSize
@@ -283,9 +245,7 @@ Rectangle {
                         // user name
                         ElidedTextLabel {
                             Layout.fillWidth: true
-                            Layout.maximumHeight: JamiTheme.preferredFieldHeight
                             Layout.preferredHeight: JamiTheme.preferredFieldHeight
-                            Layout.minimumHeight: JamiTheme.preferredFieldHeight
 
                             eText: qsTr("Username")
                             fontSize: JamiTheme.settingsFontSize
@@ -299,7 +259,7 @@ Rectangle {
                             Layout.preferredHeight: JamiTheme.preferredFieldHeight
                             Layout.preferredWidth: preferredColumnWidth
 
-                            font.pointSize: JamiTheme.settingsFontSize // Albert: buttonSize?
+                            font.pointSize: JamiTheme.settingsFontSize
                             font.kerning: true
 
                             horizontalAlignment: Text.AlignLeft
@@ -316,9 +276,7 @@ Rectangle {
                         // host name
                         ElidedTextLabel {
                             Layout.fillWidth: true
-                            Layout.maximumHeight: JamiTheme.preferredFieldHeight
                             Layout.preferredHeight: JamiTheme.preferredFieldHeight
-                            Layout.minimumHeight: JamiTheme.preferredFieldHeight
 
                             eText: qsTr("Hostname")
                             fontSize: JamiTheme.settingsFontSize
@@ -349,9 +307,7 @@ Rectangle {
                         // proxy
                         ElidedTextLabel {
                             Layout.fillWidth: true
-                            Layout.maximumHeight: JamiTheme.preferredFieldHeight
                             Layout.preferredHeight: JamiTheme.preferredFieldHeight
-                            Layout.minimumHeight: JamiTheme.preferredFieldHeight
 
                             text: qsTr("Proxy")
                             font.pointSize: JamiTheme.settingsFontSize
@@ -365,7 +321,7 @@ Rectangle {
                             Layout.preferredHeight: JamiTheme.preferredFieldHeight
                             Layout.preferredWidth: preferredColumnWidth
 
-                            font.pointSize: JamiTheme.settingsFontSize // Albert
+                            font.pointSize: JamiTheme.settingsFontSize
                             font.kerning: true
 
                             horizontalAlignment: Text.AlignLeft
@@ -382,9 +338,7 @@ Rectangle {
                         // password
                         ElidedTextLabel {
                             Layout.fillWidth: true
-                            Layout.maximumHeight: JamiTheme.preferredFieldHeight
                             Layout.preferredHeight: JamiTheme.preferredFieldHeight
-                            Layout.minimumHeight: JamiTheme.preferredFieldHeight
 
                             eText: qsTr("Password")
                             fontSize: JamiTheme.settingsFontSize
@@ -439,38 +393,33 @@ Rectangle {
                     id: rowAdvancedSettingsBtn
                     Layout.fillWidth: true
                     Layout.leftMargin: JamiTheme.preferredMarginSize
+                    Layout.rightMargin: JamiTheme.preferredMarginSize
+                    Layout.bottomMargin: 8
 
                     ElidedTextLabel {
-
                         id: lblAdvancedAccountSettings
 
                         Layout.fillWidth: true
-                        Layout.maximumHeight: JamiTheme.preferredFieldHeight
                         Layout.preferredHeight: JamiTheme.preferredFieldHeight
-                        Layout.minimumHeight: JamiTheme.preferredFieldHeight
 
                         eText: qsTr("Advanced Account Settings")
                         fontSize: JamiTheme.headerFontSize
-                        maxWidth: sipAccountViewRect.width - advancedAccountSettingsSIPButton.width - 80
+                        maxWidth: root.width - advancedAccountSettingsSIPButton.width
+                                  - JamiTheme.preferredMarginSize * 6
                     }
 
-                    HoverableRadiusButton {
+                    HoverableButtonTextItem {
                         id: advancedAccountSettingsSIPButton
 
-                        Layout.leftMargin: JamiTheme.preferredMarginSize
-
-                        Layout.minimumWidth: JamiTheme.preferredFieldHeight
                         Layout.preferredWidth: JamiTheme.preferredFieldHeight
-                        Layout.maximumWidth: JamiTheme.preferredFieldHeight
-                        Layout.minimumHeight: JamiTheme.preferredFieldHeight
                         Layout.preferredHeight: JamiTheme.preferredFieldHeight
-                        Layout.maximumHeight: JamiTheme.preferredFieldHeight
-
                         Layout.alignment: Qt.AlignHCenter
 
                         radius: height / 2
 
-                        icon.source: {
+                        toolTipText: qsTr("Press to display or hide advance settings")
+
+                        source: {
                             if (advanceSIPSettingsView.visible) {
                                 return "qrc:/images/icons/round-arrow_drop_up-24px.svg"
                             } else {
@@ -493,15 +442,12 @@ Rectangle {
                 // instantiate advance setting page
                 AdvancedSIPSettingsView {
                     id: advanceSIPSettingsView
+                    Layout.fillWidth: true
                     Layout.leftMargin: JamiTheme.preferredMarginSize
+                    Layout.rightMargin: JamiTheme.preferredMarginSize
+                    Layout.bottomMargin: JamiTheme.preferredMarginSize
                     visible: false
-                }
-
-                Item {
-                    Layout.preferredWidth: sipAccountViewRect.width - 32
-                    Layout.minimumWidth: sipAccountViewRect.width - 32
-                    Layout.maximumWidth: JamiTheme.maximumWidthSettingsView - 32
-                    Layout.fillHeight: true
+                    itemWidth: preferredColumnWidth
                 }
             }
         }

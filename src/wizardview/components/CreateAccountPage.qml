@@ -57,9 +57,7 @@ Rectangle {
         onActivated: leavePage()
     }
 
-    /*
-    * JamiFileDialog for exporting account
-    */
+    // JamiFileDialog for exporting account
     JamiFileDialog {
         id: exportBtn_Dialog
 

@@ -28,7 +28,7 @@ import net.jami.Models 1.0
 import "../../commoncomponents"
 
 ItemDelegate {
-    id: deviceItemDelegate
+    id: root
 
     property string deviceName : ""
     property string deviceId : ""
@@ -64,108 +64,71 @@ ItemDelegate {
     highlighted: ListView.isCurrentItem
 
     RowLayout {
-        id: layoutDeviceItemDelegate
-        anchors.fill: parent
-        spacing: 8
+        anchors.fill: root
+
         Image {
-            Layout.leftMargin: 16
+            id: deviceImage
+            Layout.leftMargin: JamiTheme.preferredMarginSize
             Layout.alignment: Qt.AlignVCenter
 
-            Layout.minimumWidth: 24
             Layout.preferredWidth: 24
-            Layout.maximumWidth: 24
-
-            Layout.minimumHeight: 24
             Layout.preferredHeight: 24
-            Layout.maximumHeight: 24
             source: "qrc:/images/icons/baseline-desktop_windows-24px.svg"
         }
 
         ColumnLayout {
-            id: col
             Layout.fillWidth: true
             Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
-            Layout.leftMargin: 16
+            Layout.leftMargin: JamiTheme.preferredMarginSize
 
-            RowLayout {
+            InfoLineEdit {
+                id: editDeviceName
+                implicitWidth: parent.width
                 Layout.fillWidth: true
-                spacing: 0
-                Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
+                Layout.preferredHeight: 30
+                Layout.alignment: Qt.AlignLeft
+                font.pointSize: JamiTheme.textFontSize
+                font.kerning: true
 
-                InfoLineEdit {
-                    id: editDeviceName
+                wrapMode: Text.NoWrap
+                readOnly: !editable
+                backgroundColor: "white"
+                text: elidedTextDeviceName.elidedText
+            }
 
-                    Layout.preferredWidth: deviceItemDelegate.width - 112
-                    Layout.maximumWidth: deviceItemDelegate.width - 112
-                    Layout.minimumWidth: deviceItemDelegate.width - 112
-                    fieldLayoutWidth: deviceItemDelegate.width - 112
+            TextMetrics {
+                id: elidedTextDeviceName
 
-                    Layout.minimumHeight: 24
-                    Layout.preferredHeight: 24
-                    Layout.maximumHeight: 24
-
-                    fieldLayoutHeight: 24
-
-                    Layout.alignment: Qt.AlignLeft
-                    font.pointSize: JamiTheme.textFontSize
-                    font.kerning: true
-
-                    horizontalAlignment: Text.AlignLeft
-                    verticalAlignment: Text.AlignVCenter
-
-                    readOnly: !editable
-
-                    backgroundColor: "white"
-
-                    text: elidedTextDeviceName.elidedText
-                }
-
-                TextMetrics {
-                    id: elidedTextDeviceName
-
-                    elide: Text.ElideRight
-                    elideWidth: deviceItemDelegate.width - 112
-
-                    text: deviceName
-                }
+                elide: Text.ElideRight
+                elideWidth: root.width - btnEditDevice.width - deviceImage.width - 8
+                text: deviceName
             }
 
             ElidedTextLabel {
                 id: labelDeviceId
 
-                Layout.fillWidth: true
-                Layout.leftMargin: 12
-
-                Layout.minimumHeight: 24
                 Layout.preferredHeight: 24
-                Layout.maximumHeight: 24
+                Layout.leftMargin: 8
 
-                maxWidth: deviceItemDelegate.width - 112
+                maxWidth: root.width - btnEditDevice.width - deviceImage.width
                 eText: deviceId === "" ? qsTr("Device Id") : deviceId
             }
-
         }
 
         HoverableRadiusButton {
             id: btnEditDevice
 
-            Layout.alignment: Qt.AlignVCenter | Qt.AlignRight
+            Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
             Layout.rightMargin: 8
-
-            Layout.minimumWidth: 32
-            Layout.preferredWidth: 32
-            Layout.maximumWidth: 32
-
-            Layout.minimumHeight: 32
-            Layout.preferredHeight: 32
-            Layout.maximumHeight: 32
+            Layout.preferredWidth: JamiTheme.preferredFieldHeight
+            Layout.preferredHeight: JamiTheme.preferredFieldHeight
 
             buttonImageHeight: height - 8
             buttonImageWidth: width - 8
 
             radius: height / 2
-            width: 25
-            height: 25
+            width: 24
+            height: 24
 
             backgroundColor: "transparent"
 

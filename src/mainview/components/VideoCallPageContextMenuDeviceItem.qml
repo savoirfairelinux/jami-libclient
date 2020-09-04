@@ -22,9 +22,7 @@ import net.jami.Models 1.0
 
 import "../../commoncomponents"
 
-/*
- * Menu item wrapper for video device checkable item.
- */
+// Menu item wrapper for video device checkable item.
 GeneralMenuItem {
     id: videoCallPageContextMenuDeviceItem
 

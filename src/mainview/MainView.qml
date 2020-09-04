@@ -1,4 +1,3 @@
-
 /*
  * Copyright (C) 2020 by Savoir-faire Linux
  * Author: Mingrui Zhang <mingrui.zhang@savoirfairelinux.com>
@@ -24,10 +23,8 @@ import QtQuick.Controls.Universal 2.12
 import QtGraphicalEffects 1.14
 import net.jami.Models 1.0
 
+// Import qml component files.
 
-/*
- * Import qml component files.
- */
 import "components"
 import "../wizardview"
 import "../settingsview"
@@ -51,9 +48,7 @@ Window {
     property int savedWelcomeViewMaxWidth: 0
     property bool sidePanelHidden: false
 
-    /*
-     * To calculate tab bar bottom border hidden rect left margin.
-     */
+    // To calculate tab bar bottom border hidden rect left margin.
     property int tabBarLeftMargin: 8
     property int tabButtonShrinkSize: 8
     property bool inSettingsView: false
@@ -92,9 +87,7 @@ Window {
 
     function recursionStackViewItemMove(stackOne, stackTwo, depth=1) {
 
-        /*
-         * Move all items (expect the bottom item) to stacktwo by the same order in stackone.
-         */
+        // Move all items (expect the bottom item) to stacktwo by the same order in stackone.
         if (stackOne.depth === depth) {
             return
         }
@@ -163,10 +156,8 @@ Window {
             }
 
 
-            /*
-             * Check if it is coming from the current responsible call,
-             * and push views onto the correct stackview
-             */
+            // Check if it is coming from the current responsible call,
+            // and push views onto the correct stackview
             if (callStackView.responsibleAccountId === accountId
                     && callStackView.responsibleConvUid === convUid) {
                 pushCallStackView()
@@ -175,9 +166,7 @@ Window {
 
         function onCloseCallStack(accountId, convUid) {
 
-            /*
-             * Check if call stack view is on any of the stackview.
-             */
+            // Check if call stack view is on any of the stackview.
             if (callStackView.responsibleAccountId === accountId
                     && callStackView.responsibleConvUid === convUid) {
                 if (mainViewStack.find(function (item, index) {
@@ -199,9 +188,7 @@ Window {
 
         function onIncomingCallNeedToSetupMainView(accountId, convUid) {
 
-            /*
-             * Set up the call stack view that is needed by call overlay.
-             */
+            // Set up the call stack view that is needed by call overlay.
             if (!inSettingsView) {
                 mainViewStack.pop(null, StackView.Immediate)
                 sidePanelViewStack.pop(null, StackView.Immediate)
@@ -287,9 +274,7 @@ Window {
                                                       splitView.width - sidePanelViewStackPreferredWidth)
                 SplitView.fillHeight: true
 
-                /*
-                 * AccountComboBox is always visible
-                 */
+                // AccountComboBox is always visible
                 AccountComboBox {
                     id: accountComboBox
 
@@ -455,10 +440,7 @@ Window {
                 }
             }
 
-
-            /*
-             * Set up chatview.
-             */
+            // Set up chatview.
             MessagesAdapter.setupChatView(currentUID)
             callStackView.setLinkedWebview(
                         communicationPageMessageWebView)
@@ -473,9 +455,7 @@ Window {
             }
 
 
-            /*
-             * Push messageWebView or callStackView onto the correct stackview
-             */
+            // Push messageWebView or callStackView onto the correct stackview
             mainViewStack.pop(null, StackView.Immediate)
             sidePanelViewStack.pop(null, StackView.Immediate)
 
@@ -503,10 +483,7 @@ Window {
         }
 
         onAccountComboBoxNeedToShowWelcomePage: {
-
-            /*
-             * If the item argument is specified, all items down to (but not including) item will be popped.
-             */
+            // If the item argument is specified, all items down to (but not including) item will be popped.
             if (!inSettingsView) {
                 mainViewStack.pop(welcomePage)
                 welcomePage.updateWelcomePage()
@@ -535,9 +512,7 @@ Window {
         id: callStackView
 
         visible: false
-
         objectName: "callStackViewObject"
-
     }
 
     WelcomePage {
@@ -547,6 +522,7 @@ Window {
 
     SettingsView {
         id: settingsView
+        anchors.fill: parent
 
         visible: false
 
@@ -622,28 +598,20 @@ Window {
             })
 
 
-            /*
-             * Set qml MessageWebView object pointer to c++.
-             */
+            // Set qml MessageWebView object pointer to c++.
             MessagesAdapter.setQmlObject(this)
         }
     }
 
     onWidthChanged: {
-
-
-        /*
-         * Hide unnecessary stackview when width is changed.
-         */
+        // Hide unnecessary stackview when width is changed.
         if (mainViewWindow.width < sidePanelViewStackPreferredWidth
                 + mainViewStackPreferredWidth - 5
                 && mainViewStack.visible) {
             mainViewStack.visible = false
             sidePanelHidden = true
 
-            /*
-             * The find callback function is called for each item in the stack.
-             */
+            // The find callback function is called for each item in the stack.
             var inWelcomeViewStack = mainViewStack.find(
                         function (item, index) {
                             return index > 0

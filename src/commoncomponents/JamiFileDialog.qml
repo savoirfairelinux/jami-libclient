@@ -1,4 +1,3 @@
-
 /*
  * Copyright (C) 2020 by Savoir-faire Linux
  * Author: Mingrui Zhang <mingrui.zhang@savoirfairelinux.com>
@@ -20,12 +19,9 @@ import QtQuick 2.14
 import Qt.labs.platform 1.1
 
 FileDialog {
-    id: fileDialog
+    id: root
 
-
-    /*
-     * Use enum to avoid importing Qt.labs.platform when using JamiFileDialog.
-     */
+    // Use enum to avoid importing Qt.labs.platform when using JamiFileDialog.
     property int mode: JamiFileDialog.Mode.OpenFile
 
     enum Mode {
@@ -39,13 +35,13 @@ FileDialog {
     onModeChanged: {
         switch(mode) {
           case JamiFileDialog.Mode.OpenFile:
-              fileDialog.fileMode = FileDialog.OpenFile
+              root.fileMode = FileDialog.OpenFile
               break
           case JamiFileDialog.Mode.OpenFiles:
-              fileDialog.fileMode = FileDialog.OpenFiles
+              root.fileMode = FileDialog.OpenFiles
               break
           default:
-              fileDialog.fileMode = FileDialog.SaveFile
+              root.fileMode = FileDialog.SaveFile
         }
     }
 }

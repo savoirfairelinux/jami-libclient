@@ -29,21 +29,10 @@ TextField{
         }
     }
 
-    Layout.minimumHeight: fieldLayoutHeight
-    Layout.preferredHeight: fieldLayoutHeight
-    Layout.maximumHeight: fieldLayoutHeight
-
-    Layout.minimumWidth: fieldLayoutWidth
-    Layout.maximumWidth: fieldLayoutWidth
-    Layout.preferredWidth: fieldLayoutWidth
-
-    Layout.fillWidth: layoutFillwidth
-    Layout.alignment: Qt.AlignHCenter
-
     wrapMode: Text.Wrap
     readOnly: false
     selectByMouse: true
-    font.pointSize: 10
+    font.pointSize: JamiTheme.settingsFontSize
     font.kerning: true
     horizontalAlignment: Text.AlignLeft
     verticalAlignment: Text.AlignVCenter

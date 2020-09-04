@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2020 by Savoir-faire Linux
  * Author: Aline Gondim Santos   <aline.gondimsantos@savoirfairelinux.com>
  *
@@ -109,10 +109,10 @@ Rectangle {
 
         Label{
             Layout.alignment: Qt.AlignHCenter
-            background: Rectangle{
+            background: Rectangle {
                 Image {
                     anchors.centerIn: parent
-                    source: "file:"+pluginIcon
+                    source: pluginIcon === "" ? "" : "file:" + pluginIcon
                     height: 35
                     width: 35
                 }

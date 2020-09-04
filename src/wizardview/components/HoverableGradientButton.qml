@@ -22,13 +22,12 @@ import QtGraphicalEffects 1.15
 import net.jami.Models 1.0
 
 
-/*
- * HoverableButton contains the following configurable properties:
- * 1. Color changes on different button state
- * 2. Radius control (rounded)
- * 3. Text content or image content
- * 4. Can use OnClicked slot to implement some click logic
- */
+//
+// HoverableButton contains the following configurable properties:
+// 1. Color changes on different button state
+// 2. Radius control (rounded)
+// 3. Text content or image content
+// 4. Can use OnClicked slot to implement some click logic
 Button {
     id: hoverableButton
     property int fontPointSize: 9

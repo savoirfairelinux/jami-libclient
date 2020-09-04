@@ -35,9 +35,7 @@ Popup {
     implicitWidth: accountComboBox.width - 1
 
 
-    /*
-     * Hack - limite the accounts that can be shown.
-     */
+    // Hack - limite the accounts that can be shown.
     implicitHeight: {
         comboBoxPopup.visible
         return Math.min(accountComboBox.height *
@@ -50,9 +48,7 @@ Popup {
         id: comboBoxPopupListView
 
 
-        /*
-         * In list view, index is an interger.
-         */
+        // In list view, index is an interger.
         clip: true
         model: accountListModel
         implicitHeight: contentHeight
@@ -70,9 +66,7 @@ Popup {
                 fillMode: Image.PreserveAspectFit
                 mipmap: true
 
-                /*
-                 * Role::Picture
-                 */
+                // Role::Picture
                 source: {
                     var data = accountListModel.data(accountListModel.index(index, 0), 259)
                     if (data === undefined) {

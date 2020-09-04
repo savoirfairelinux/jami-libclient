@@ -122,9 +122,7 @@ Rectangle {
         y: callOverlayRect.height / 2 - sipInputPanel.height / 2
     }
 
-    /*
-     * Timer to decide when overlay fade out.
-     */
+    // Timer to decide when overlay fade out.
     Timer {
         id: callOverlayTimer
         interval: 5000
@@ -220,11 +218,9 @@ Rectangle {
         color: "transparent"
 
 
-        /*
-         * Rect states: "entered" state should make overlay fade in,
-         *              "freezed" state should make overlay fade out.
-         * Combine with PropertyAnimation of opacity.
-         */
+        // Rect states: "entered" state should make overlay fade in,
+        //              "freezed" state should make overlay fade out.
+        // Combine with PropertyAnimation of opacity.
         states: [
             State {
                 name: "entered"
@@ -283,9 +279,7 @@ Rectangle {
         }
 
         onAddToConferenceButtonClicked: {
-            /*
-             * Create contact picker - conference.
-             */
+            // Create contact picker - conference.
             ContactPickerCreation.createContactPickerObjects(
                         ContactPicker.ContactPickerType.JAMICONFERENCE,
                         callOverlayRect)
@@ -321,9 +315,7 @@ Rectangle {
     }
 
 
-    /*
-     * MouseAreas to make sure that overlay states are correctly set.
-     */
+    // MouseAreas to make sure that overlay states are correctly set.
     MouseArea {
         id: callOverlayButtonGroupLeftSideMouseArea
 
@@ -421,9 +413,7 @@ Rectangle {
         id: callViewContextMenu
 
         onTransferCallButtonClicked: {
-            /*
-             * Create contact picker - sip transfer.
-             */
+            // Create contact picker - sip transfer.
             ContactPickerCreation.createContactPickerObjects(
                         ContactPicker.ContactPickerType.SIPTRANSFER,
                         callOverlayRect)

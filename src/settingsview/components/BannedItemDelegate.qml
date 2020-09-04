@@ -28,7 +28,7 @@ import net.jami.Models 1.0
 import "../../commoncomponents"
 
 ItemDelegate {
-    id: deviceItemDelegate
+    id: root
 
     property string contactName : ""
     property string contactID: ""
@@ -54,39 +54,30 @@ ItemDelegate {
 
     highlighted: ListView.isCurrentItem
 
-    RowLayout{
+    RowLayout {
         anchors.fill: parent
 
-        spacing: 8
-
-        Label{
+        Label {
             id: labelContactAvatar
 
             Layout.alignment: Qt.AlignVCenter
+            Layout.leftMargin: JamiTheme.preferredMarginSize
+            Layout.rightMargin: JamiTheme.preferredMarginSize
+            Layout.preferredWidth: JamiTheme.preferredFieldHeight
+            Layout.preferredHeight: JamiTheme.preferredFieldHeight
 
-            Layout.leftMargin: 16
-            Layout.rightMargin: 16
-
-            Layout.minimumWidth: 32
-            Layout.preferredWidth: 32
-            Layout.maximumWidth: 32
-
-            Layout.minimumHeight: 32
-            Layout.preferredHeight: 32
-            Layout.maximumHeight: 32
-
-            background: Rectangle{
+            background: Rectangle {
                 anchors.fill: parent
                 color: "transparent"
                 Image {
                     id: avatarImg
 
                     anchors.fill: parent
-                    source: "data:image/png;base64," + contactPicture_base64
+                    source: contactPicture_base64 === "" ? "" : "data:image/png;base64," + contactPicture_base64
                     fillMode: Image.PreserveAspectCrop
                     layer.enabled: true
                     layer.effect: OpacityMask {
-                        maskSource: Rectangle{
+                        maskSource: Rectangle {
                             width: avatarImg.width
                             height: avatarImg.height
                             radius: {
@@ -102,7 +93,6 @@ ItemDelegate {
         ColumnLayout{
             Layout.fillWidth: true
             Layout.fillHeight: true
-
             Layout.alignment: Qt.AlignVCenter
 
             Label{
@@ -110,23 +100,14 @@ ItemDelegate {
 
                 Layout.fillWidth: true
 
-                Layout.minimumHeight: 24
                 Layout.preferredHeight: 24
-                Layout.maximumHeight: 24
 
                 font.pointSize: JamiTheme.textFontSize
                 font.kerning: true
 
                 horizontalAlignment: Text.AlignLeft
                 verticalAlignment: Text.AlignVCenter
-
-                text: labelContactNameElidedText.elidedText
-            }
-
-            TextMetrics {
-                id: labelContactNameElidedText
                 elide: Text.ElideRight
-                elideWidth: deviceItemDelegate.width - 80
                 text: contactName === "" ? qsTr("name") : contactName
             }
 
@@ -144,14 +125,7 @@ ItemDelegate {
 
                 horizontalAlignment: Qt.AlignLeft
                 verticalAlignment: Qt.AlignVCenter
-
-                text: labelContactIdElidedText.elidedText
-            }
-
-            TextMetrics {
-                id: labelContactIdElidedText
                 elide: Text.ElideRight
-                elideWidth: deviceItemDelegate.width - 80
                 text: contactID === "" ? qsTr("id") : contactID
             }
         }
@@ -162,13 +136,8 @@ ItemDelegate {
             Layout.alignment: Qt.AlignVCenter | Qt.AlignRight
             Layout.rightMargin: 8
 
-            Layout.minimumWidth: 32
-            Layout.preferredWidth: 32
-            Layout.maximumWidth: 32
-
-            Layout.minimumHeight: 32
-            Layout.preferredHeight: 32
-            Layout.maximumHeight: 32
+            Layout.preferredWidth: JamiTheme.preferredFieldHeight
+            Layout.preferredHeight: JamiTheme.preferredFieldHeight
 
             buttonImageHeight: height - 8
             buttonImageWidth: width - 8

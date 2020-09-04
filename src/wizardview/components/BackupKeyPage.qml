@@ -32,9 +32,7 @@ Rectangle {
     signal leavePage
     signal export_Btn_FileDialogAccepted(bool accepted, string folderDir)
 
-    /*
-     * JamiFileDialog for exporting account
-     */
+    // JamiFileDialog for exporting account
     JamiFileDialog {
         id: exportBtn_Dialog
 

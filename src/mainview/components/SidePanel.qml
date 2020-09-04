@@ -38,9 +38,7 @@ Rectangle {
     signal needToAddNewAccount
 
 
-    /*
-     * Hack -> force redraw.
-     */
+    // Hack -> force redraw.
     function forceReselectConversationSmartListCurrentIndex() {
         var index = conversationSmartListView.currentIndex
         conversationSmartListView.currentIndex = -1
@@ -48,9 +46,7 @@ Rectangle {
     }
 
 
-    /*
-     * For contact request conv to be focused correctly.
-     */
+    // For contact request conv to be focused correctly.
     function setCurrentUidSmartListModelIndex() {
         conversationSmartListView.currentIndex
                 = conversationSmartListView.model.currentUidSmartListModelIndex(
@@ -94,15 +90,11 @@ Rectangle {
         conversationSmartListView.updateListView()
     }
 
-    /*
-     * Intended -> since strange behavior will happen without this for stackview.
-     */
+    // Intended -> since strange behavior will happen without this for stackview.
     anchors.top: parent.top
     anchors.fill: parent
 
-    /*
-     * Search bar container to embed search label
-     */
+    // Search bar container to embed search label
     ContactSearchBar {
         id: contactSearchBar
         width: sidePanelRect.width - 26

@@ -29,10 +29,8 @@ import "../../commoncomponents"
 Rectangle {
     id: root
 
-    /*
-     * ButtonCounts here is to make sure that flow layout margin is calculated correctly,
-     * since no other methods can make buttons at the layout center.
-     */
+    // ButtonCounts here is to make sure that flow layout margin is calculated correctly,
+    // since no other methods can make buttons at the layout center.
     property int buttonPreferredSize: 24
     property var isMaster: true
     property var isSip: false

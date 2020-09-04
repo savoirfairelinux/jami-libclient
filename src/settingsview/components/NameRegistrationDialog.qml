@@ -105,7 +105,7 @@ Dialog {
     }
 
     contentItem: Rectangle{
-        implicitWidth: 365
+        implicitWidth: 350
         implicitHeight: 208
 
         StackLayout{

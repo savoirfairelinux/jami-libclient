@@ -27,12 +27,9 @@ import "../js/screenrubberbandcreation.js" as ScreenRubberBandCreation
 
 import "../../commoncomponents"
 
-
-/*
- * SelectScreenWindow as a seperate window,
- * is to make user aware of which screen they want to share,
- * during the video call, if the context menu item is selected.
- */
+// SelectScreenWindow as a seperate window,
+// is to make user aware of which screen they want to share,
+// during the video call, if the context menu item is selected.
 Window {
     id: selectScreenWindow
 
@@ -42,15 +39,11 @@ Window {
     property int selectedScreenNumber: -1
 
 
-    /*
-     * Decide whether to show screen area or entire screen.
-     */
+    // Decide whether to show screen area or entire screen.
     property bool selectArea: false
 
 
-    /*
-     * How many rows the ScrollView should have.
-     */
+    // How many rows the ScrollView should have.
     function calculateRepeaterModel() {
         var numberOfScreens = Qt.application.screens.length
 
@@ -75,9 +68,7 @@ Window {
     title: "Screen sharing"
 
 
-    /*
-     * Note: Qt.application.screens[0] is the app's current existing screen.
-     */
+    // Note: Qt.application.screens[0] is the app's current existing screen.
     screen: Qt.application.screens[0]
 
     Rectangle {
@@ -110,9 +101,7 @@ Window {
             ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
 
 
-            /*
-             * Column of rows repeater (two screen captures in a row).
-             */
+            // Column of rows repeater (two screen captures in a row).
             Column {
                 id: screenSelectionScrollViewColumn
 
@@ -134,20 +123,16 @@ Window {
                             function onSelectedScreenNumberChanged() {
 
 
-                                /*
-                                 * Recover from green state.
-                                 */
+                                // Recover from green state.
                                 screenSelectionRectOdd.borderColor = JamiTheme.tabbarBorderColor
                                 screenSelectionRectEven.borderColor = JamiTheme.tabbarBorderColor
                             }
                         }
 
 
-                        /*
-                         * To make sure that two screen captures in one row,
-                         * a repeater of two rect is needed, which one in charge
-                         * of odd number screen, one in charge of even number screen.
-                         */
+                        // To make sure that two screen captures in one row,
+                        // a repeater of two rect is needed, which one in charge
+                        // of odd number screen, one in charge of even number screen.
                         Rectangle {
                             id: screenSelectionRectOdd
 
@@ -305,9 +290,7 @@ Window {
                 ScreenRubberBandCreation.showScreenRubberBandWindow()
 
 
-                /*
-                 * Destory selectScreenWindow once screenRubberBand is closed.
-                 */
+                // Destory selectScreenWindow once screenRubberBand is closed.
                 ScreenRubberBandCreation.connectOnClosingEvent(function () {
                     selectScreenWindow.close()
                 })

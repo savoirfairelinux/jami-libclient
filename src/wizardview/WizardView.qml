@@ -61,9 +61,7 @@ Rectangle {
 
     property var inputParaObject: ({})
 
-    /*
-     * signal to redirect the page to main view
-     */
+    // signal to redirect the page to main view
     signal needToShowMainViewWindow(int accountIndex)
     signal wizardViewIsClosed
 
@@ -168,8 +166,6 @@ Rectangle {
         id: passwordDialog
 
         anchors.centerIn: parent.Center
-        x: (parent.width - width) / 2
-        y: (parent.height - height) / 2
 
         visible: false
         purpose: PasswordDialog.ExportAccount

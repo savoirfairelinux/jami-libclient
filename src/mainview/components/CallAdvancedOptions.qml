@@ -31,9 +31,7 @@ Popup {
     property int type: ContactPicker.ContactPickerType.JAMICONFERENCE
 
 
-    /*
-     * Important to keep it one, since enum in c++ starts at one for conferences.
-     */
+    // Important to keep it one, since enum in c++ starts at one for conferences.
     enum ContactPickerType {
         JAMICONFERENCE = 1,
         SIPTRANSFER

@@ -20,11 +20,11 @@ import QtQuick 2.15
 import QtQuick.Controls 2.14
 import QtQuick.Layouts 1.14
 import QtQuick.Controls.Styles 1.4
-
+import "../../constant"
 import "../../commoncomponents"
 
 Dialog {
-    id: revokeDevicePasswordDialog
+    id: root
 
     property string deviceId : ""
 
@@ -33,160 +33,95 @@ Dialog {
     function openRevokeDeviceDialog(deviceIdIn){
         deviceId = deviceIdIn
         passwordEdit.clear()
-        revokeDevicePasswordDialog.open()
+        root.open()
+    }
+
+    header : Rectangle {
+        width: parent.width
+        height: 64
+        color: "transparent"
+        Text {
+            anchors.fill: parent
+            anchors.leftMargin: JamiTheme.preferredMarginSize
+            anchors.topMargin: JamiTheme.preferredMarginSize
+
+            text: qsTr("Enter this account's password to confirm the removal of this device")
+            wrapMode: Text.Wrap
+            font.pointSize: JamiTheme.headerFontSize
+        }
     }
 
     visible: false
-
-    anchors.centerIn: parent.Center
     x: (parent.width - width) / 2
     y: (parent.height - height) / 2
 
-    title: qsTr("Enter this account's password to confirm the removal of this device")
-
-    onClosed: {
-        reject()
-    }
-
-    onAccepted:{
+    onAccepted: {
         revokeDeviceWithPassword(deviceId,passwordEdit.text)
     }
 
-    contentItem: Rectangle{
-        implicitWidth: 365
-        implicitHeight: 120
+    contentItem: Rectangle {
+        implicitWidth: 350
+        implicitHeight: contentLayout.implicitHeight + 64 + JamiTheme.preferredMarginSize
 
-        ColumnLayout{
+        ColumnLayout {
+            id: contentLayout
             anchors.fill: parent
-            spacing: 7
+            anchors.centerIn: parent
 
-            Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
-
-            Item{
-                Layout.fillHeight: true
-
-                Layout.maximumWidth: 20
-                Layout.preferredWidth: 20
-                Layout.minimumWidth: 20
-            }
-
-            InfoLineEdit{
+            MaterialLineEdit {
                 id: passwordEdit
 
+                Layout.preferredHeight: 48
+                Layout.fillWidth: true
                 Layout.alignment: Qt.AlignHCenter
-
-                Layout.minimumWidth: 294
-                Layout.preferredWidth: 294
-
-                Layout.preferredHeight: 30
-                Layout.minimumHeight: 30
+                Layout.maximumWidth: 300
 
                 echoMode: TextInput.Password
+                horizontalAlignment: Text.AlignLeft
+                verticalAlignment: Text.AlignVCenter
 
                 placeholderText: qsTr("Password")
             }
 
-            Item{
-                Layout.fillHeight: true
+            RowLayout {
+                Layout.topMargin: JamiTheme.preferredMarginSize / 2
+                Layout.alignment: Qt.AlignRight
 
-                Layout.maximumWidth: 20
-                Layout.preferredWidth: 20
-                Layout.minimumWidth: 20
-            }
+                Button {
+                    id: btnChangePasswordConfirm
 
-            RowLayout{
-                spacing: 7
+                    contentItem: Text {
+                        text: qsTr("CONFIRM")
+                        color: JamiTheme.buttonTintedBlue
+                    }
 
-                Layout.alignment: Qt.AlignHCenter
-
-                Layout.fillWidth: true
-
-                Item{
-                    Layout.fillWidth: true
-
-                    Layout.maximumHeight: 20
-                    Layout.preferredHeight: 20
-                    Layout.minimumHeight: 20
-                }
-
-                HoverableRadiusButton{
-                    id: btnOkay
-
-                    Layout.maximumWidth: 130
-                    Layout.preferredWidth: 130
-                    Layout.minimumWidth: 130
-
-                    Layout.maximumHeight: 30
-                    Layout.preferredHeight: 30
-                    Layout.minimumHeight: 30
-
-                    radius: height /2
-
-                    text: qsTr("Okay")
-                    font.pointSize: 10
-                    font.kerning: true
+                    background: Rectangle {
+                        color: "transparent"
+                    }
 
                     onClicked: {
-                        accept()
+                        timerToOperate.restart()
                     }
                 }
 
-                Item{
-                    Layout.fillWidth: true
-                    Layout.minimumWidth: 40
 
-                    Layout.maximumHeight: 20
-                    Layout.preferredHeight: 20
-                    Layout.minimumHeight: 20
-                }
+                Button {
+                    id: btnChangePasswordCancel
+                    Layout.leftMargin: JamiTheme.preferredMarginSize / 2
 
-                HoverableButtonTextItem {
-                    id: btnCancel
+                    contentItem: Text {
+                        text: qsTr("CANCEL")
+                        color: JamiTheme.buttonTintedBlue
+                    }
 
-                    Layout.maximumWidth: 130
-                    Layout.preferredWidth: 130
-                    Layout.minimumWidth: 130
-
-                    Layout.maximumHeight: 30
-                    Layout.preferredHeight: 30
-                    Layout.minimumHeight: 30
-
-                    backgroundColor: "red"
-                    onEnterColor: Qt.rgba(150 / 256, 0, 0, 0.7)
-                    onDisabledBackgroundColor: Qt.rgba(
-                                                   255 / 256,
-                                                   0, 0, 0.8)
-                    onPressColor: backgroundColor
-                    textColor: "white"
-
-                    radius: height /2
-
-                    text: qsTr("Cancel")
-                    font.pointSize: 10
-                    font.kerning: true
+                    background: Rectangle {
+                        color: "transparent"
+                    }
 
                     onClicked: {
-                        reject()
+                        root.reject()
                     }
                 }
-
-                Item{
-                    Layout.fillWidth: true
-                    Layout.minimumWidth: 40
-
-                    Layout.maximumHeight: 20
-                    Layout.preferredHeight: 20
-                    Layout.minimumHeight: 20
-                }
-
-            }
-
-            Item{
-                Layout.fillHeight: true
-
-                Layout.maximumWidth: 20
-                Layout.preferredWidth: 20
-                Layout.minimumWidth: 20
             }
         }
     }

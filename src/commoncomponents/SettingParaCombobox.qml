@@ -26,7 +26,7 @@ import QtQuick.Controls.Styles 1.4
 import "../constant"
 
 ComboBox {
-    id: control
+    id: root
 
     property string tooltipText:""
 
@@ -35,30 +35,32 @@ ComboBox {
     ToolTip.text: tooltipText
 
     delegate: ItemDelegate {
-        width: control.width
+        width: root.width
         contentItem: Text {
             text: {
-                var currentItem = control.delegateModel.items.get(index)
-                return  currentItem.model[control.textRole].toString()
+                if (index < 0)
+                    return qsTr("")
+                var currentItem = root.delegateModel.items.get(index)
+                return  currentItem.model[root.textRole].toString()
             }
             color: "black"
-            font: control.font
+            font: root.font
             elide: Text.ElideRight
             verticalAlignment: Text.AlignVCenter
         }
-        highlighted: control.highlightedIndex === index
+        highlighted: root.highlightedIndex === index
     }
 
     indicator: Canvas {
         id: canvas
-        x: control.width - width - control.rightPadding
-        y: control.topPadding + (control.availableHeight - height) / 2
+        x: root.width - width - root.rightPadding
+        y: root.topPadding + (root.availableHeight - height) / 2
         width: 12
         height: 8
         contextType: "2d"
 
         Connections {
-            target: control
+            target: root
             function onPressedChanged(){
                 canvas.requestPaint()
             }
@@ -70,17 +72,17 @@ ComboBox {
             context.lineTo(width, 0);
             context.lineTo(width / 2, height);
             context.closePath();
-            context.fillStyle = control.pressed ? JamiTheme.pressColor : "black";
+            context.fillStyle = root.pressed ? JamiTheme.pressColor : "black";
             context.fill();
         }
     }
 
     contentItem: Text {
         leftPadding: 0
-        rightPadding: control.indicator.width + control.spacing
+        rightPadding: root.indicator.width + root.spacing
 
-        text: control.displayText
-        font: control.font
+        text: root.displayText
+        font: root.font
         color: "black"
         verticalAlignment: Text.AlignVCenter
         elide: Text.ElideRight
@@ -90,21 +92,21 @@ ComboBox {
         implicitWidth: 120
         implicitHeight: 40
         border.color: "white"
-        border.width: control.visualFocus ? 2 : 1
+        border.width: root.visualFocus ? 2 : 1
         radius: 2
     }
 
     popup: Popup {
-        y: control.height - 1
-        width: control.width
+        y: root.height - 1
+        width: root.width
         implicitHeight: contentItem.implicitHeight
         padding: 1
 
         contentItem: ListView {
             clip: true
             implicitHeight: contentHeight
-            model:  control.delegateModel
-            currentIndex: control.highlightedIndex
+            model:  root.delegateModel
+            currentIndex: root.highlightedIndex
 
             ScrollIndicator.vertical: ScrollIndicator { }
         }

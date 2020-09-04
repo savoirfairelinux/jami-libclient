@@ -19,10 +19,8 @@
 import QtQuick 2.14
 
 
-/*
- * Inspired by
- * https://stackoverflow.com/questions/16534489/qml-control-border-width-and-color-on-any-one-side-of-rectangle-element
- */
+// Inspired by
+// https://stackoverflow.com/questions/16534489/qml-control-border-width-and-color-on-any-one-side-of-rectangle-element
 Rectangle {
 
     property bool commonBorder: true

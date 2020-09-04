@@ -88,9 +88,7 @@ Rectangle {
     function previewMagneticSnap() {
 
 
-        /*
-         * Calculate the position where the previewRenderer should attach to.
-         */
+        // Calculate the position where the previewRenderer should attach to.
         var previewRendererCenter = Qt.point(
                     previewRenderer.x + previewRenderer.width / 2,
                     previewRenderer.y + previewRenderer.height / 2)
@@ -102,9 +100,7 @@ Rectangle {
             if (previewRendererCenter.y >= distantRendererCenter.y) {
 
 
-                /*
-                 * Bottom right.
-                 */
+                // Bottom right.
                 previewToX = Qt.binding(function () {
                     return videoCallPageMainRect.width - previewRenderer.width - previewMargin
                 })
@@ -114,9 +110,7 @@ Rectangle {
             } else {
 
 
-                /*
-                 * Top right.
-                 */
+                // Top right.
                 previewToX = Qt.binding(function () {
                     return videoCallPageMainRect.width - previewRenderer.width - previewMargin
                 })
@@ -126,9 +120,7 @@ Rectangle {
             if (previewRendererCenter.y >= distantRendererCenter.y) {
 
 
-                /*
-                 * Bottom left.
-                 */
+                // Bottom left.
                 previewToX = previewMargin
                 previewToY = Qt.binding(function () {
                     return videoCallPageMainRect.height - previewRenderer.height - previewMarginY
@@ -136,9 +128,7 @@ Rectangle {
             } else {
 
 
-                /*
-                 * Top left.
-                 */
+                // Top left.
                 previewToX = previewMargin
                 previewToY = previewMarginY
             }
@@ -246,12 +236,10 @@ Rectangle {
                     id: previewRenderer
 
 
-                    /*
-                    * Property is used in the {} expression for height (extra dependency),
-                    * it will not affect the true height expression, since expression
-                    * at last will be taken only, but it will force the height to update
-                    * and reevaluate getPreviewImageScalingFactor().
-                    */
+                    // Property is used in the {} expression for height (extra dependency),
+                    // it will not affect the true height expression, since expression
+                    // at last will be taken only, but it will force the height to update
+                    // and reevaluate getPreviewImageScalingFactor().
                     property int previewImageScalingFactorUpdated: 0
 
                     Connections {
@@ -266,7 +254,7 @@ Rectangle {
                         return previewRenderer.width * previewRenderer.getPreviewImageScalingFactor()
                     }
                     x: videoCallPageMainRect.width - previewRenderer.width - previewMargin
-                    y: videoCallPageMainRect.height - previewRenderer.height - previewMargin - 56 /* Avoid overlay */
+                    y: videoCallPageMainRect.height - previewRenderer.height - previewMargin - 56 // Avoid overlay
                     z: -1
 
                     states: [
@@ -309,18 +297,14 @@ Rectangle {
                         onPositionChanged: {
 
 
-                            /*
-                            * Calculate mouse position relative change.
-                            */
+                            // Calculate mouse position relative change.
                             var delta = Qt.point(mouse.x - clickPos.x,
                                                 mouse.y - clickPos.y)
                             var deltaW = previewRenderer.x + delta.x + previewRenderer.width
                             var deltaH = previewRenderer.y + delta.y + previewRenderer.height
 
 
-                            /*
-                            * Check if the previewRenderer exceeds the border of videoCallPageMainRect.
-                            */
+                            // Check if the previewRenderer exceeds the border of videoCallPageMainRect.
                             if (deltaW < videoCallPageMainRect.width
                                     && previewRenderer.x + delta.x > 1)
                                 previewRenderer.x += delta.x

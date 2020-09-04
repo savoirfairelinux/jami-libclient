@@ -77,9 +77,7 @@ Rectangle {
             Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
 
 
-            /*
-             * Width + margin.
-             */
+            // Width + margin.
             Layout.preferredWidth: messagingHeaderRect.width
                                    - backToWelcomeViewButton.width - buttonGroup.width - 45
             Layout.preferredHeight: messagingHeaderRect.height

@@ -35,15 +35,11 @@ Dialog {
     property int preferredImgSize: 80
     modal: true
 
-    /*
-     * Content height + margin.
-     */
+    // Content height + margin.
     contentHeight: userProfileDialogLayout.implicitHeight + 60
     contentWidth: userProfileDialogLayout.implicitWidth + 60
 
-    /*
-     * Fake focus to make sure that text edit lose focus on close.
-     */
+    // Fake focus to make sure that text edit lose focus on close.
     FocusScope {
         id: fakeFocusTextEdit
     }
@@ -68,9 +64,7 @@ Dialog {
             mipmap: true
         }
 
-        /*
-         * Visible when user alias is not empty or equals to id.
-         */
+        // Visible when user alias is not empty or equals to id.
         Text {
             id: contactAlias
 
@@ -110,9 +104,7 @@ Dialog {
             color: JamiTheme.faddedFontColor
         }
 
-        /*
-         * Visible when user name is not empty or equals to alias.
-         */
+        // Visible when user name is not empty or equals to alias.
         Text {
             id: contactDisplayName
 

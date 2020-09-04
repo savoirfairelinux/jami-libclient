@@ -6,7 +6,7 @@ import Qt.labs.platform 1.1
 import QtGraphicalEffects 1.0
 import net.jami.Models 1.0
 
-ColumnLayout{
+ColumnLayout {
     property bool takePhotoState: false
     property bool hasAvatar: false
     property bool isDefaultIcon: false
@@ -72,9 +72,7 @@ ColumnLayout{
         }
     }
 
-    spacing: 0
-
-    Label{
+    Label {
         id: avatarLabel
 
         visible: !takePhotoState
@@ -90,11 +88,11 @@ ColumnLayout{
             color: "grey"
             radius: height / 2
 
-            Image{
+            Image {
                 id: avatarImg
 
                 anchors.fill: parent
-                source:  {
+                source: {
                     if(imgBase64.length === 0){
                         return "qrc:/images/default_avatar_overlay.svg"
                     } else {
@@ -104,7 +102,7 @@ ColumnLayout{
                 fillMode: Image.PreserveAspectCrop
                 layer.enabled: true
                 layer.effect: OpacityMask {
-                    maskSource: Rectangle{
+                    maskSource: Rectangle {
                         width: avatarImg.width
                         height: avatarImg.height
                         radius: {
@@ -117,12 +115,13 @@ ColumnLayout{
         }
     }
 
-    PhotoboothPreviewRender{
+    PhotoboothPreviewRender {
         id:previewWidget
 
         onHideBooth:{
             stopBooth()
         }
+
         visible: takePhotoState
         focus: visible
 
@@ -132,7 +131,7 @@ ColumnLayout{
 
         layer.enabled: true
         layer.effect: OpacityMask {
-            maskSource: Rectangle{
+            maskSource: Rectangle {
                 width: previewWidget.width
                 height: previewWidget.height
                 radius: {
@@ -142,7 +141,7 @@ ColumnLayout{
             }
         }
 
-        Label{
+        Label {
             id: flashOverlay
 
             anchors.fill: previewWidget
@@ -159,15 +158,13 @@ ColumnLayout{
         }
     }
 
-    RowLayout{
+    RowLayout {
         id: buttonsRowLayout
 
         Layout.fillWidth: true
         Layout.alignment: Qt.AlignHCenter
         Layout.preferredHeight: 30
-        Layout.topMargin: 5
-
-        spacing: 15
+        Layout.topMargin: JamiTheme.preferredMarginSize / 2
 
         HoverableButton {
             id: takePhotoButton
