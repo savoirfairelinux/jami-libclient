@@ -57,6 +57,11 @@ Rectangle {
         onActivated: leavePage()
     }
 
+    onVisibleChanged: {
+        if (visible && createAccountStack.currentIndex === 0)
+            usernameEdit.focus = true
+    }
+
     // JamiFileDialog for exporting account
     JamiFileDialog {
         id: exportBtn_Dialog
@@ -127,7 +132,7 @@ Rectangle {
 
                 Layout.topMargin: 15
                 Layout.preferredHeight: fieldLayoutHeight
-                Layout.preferredWidth: fieldLayoutWidth
+                Layout.preferredWidth:  chooseUsernameButton.width
                 Layout.alignment: Qt.AlignHCenter
 
                 selectByMouse: true
@@ -136,14 +141,18 @@ Rectangle {
                 font.kerning: true
 
                 borderColorMode: {
-                    if (nameRegistrationUIState === WizardView.BLANK)
+                    switch (nameRegistrationUIState){
+                    case WizardView.BLANK:
                         return MaterialLineEdit.NORMAL
-                    else
-                        return nameRegistrationUIState >= WizardView.FREE ?
-                                    MaterialLineEdit.NORMAL : MaterialLineEdit.ERROR
+                    case WizardView.INVALID:
+                    case WizardView.TAKEN:
+                        return MaterialLineEdit.ERROR
+                    case WizardView.FREE:
+                        return MaterialLineEdit.RIGHT
+                    case WizardView.SEARCHING:
+                        return MaterialLineEdit.SEARCHING
+                    }
                 }
-
-                fieldLayoutWidth: chooseUsernameButton.width
             }
 
             Label {
@@ -175,11 +184,11 @@ Rectangle {
                 Layout.preferredHeight: preferredHeight
 
                 text: qsTr("CHOOSE USERNAME")
-                color: nameRegistrationUIState === WizardView.FREE?
-                        JamiTheme.buttonTintedGrey
-                        : JamiTheme.buttonTintedGreyInactive
-                hoveredColor: JamiTheme.buttonTintedGreyHovered
-                pressedColor: JamiTheme.buttonTintedGreyPressed
+                enabled: nameRegistrationUIState === WizardView.FREE
+                color: nameRegistrationUIState === WizardView.FREE ? JamiTheme.wizardBlueButtons :
+                                                                     JamiTheme.buttonTintedGreyInactive
+                hoveredColor: JamiTheme.buttonTintedBlueHovered
+                pressedColor: JamiTheme.buttonTintedBluePressed
 
                 onClicked: {
                     if (nameRegistrationUIState === WizardView.FREE)
@@ -187,38 +196,21 @@ Rectangle {
                 }
             }
 
-            Row {
-                id: skipAndBackButtonsRow
+            MaterialButton {
+                id: skipButton
 
                 Layout.alignment: Qt.AlignCenter
-                Layout.preferredWidth: chooseUsernameButton.preferredWidth
-                Layout.preferredHeight: chooseUsernameButton.preferredHeight
+                Layout.preferredWidth: preferredWidth
+                Layout.preferredHeight: preferredHeight
 
-                spacing: layoutSpacing
+                text: qsTr("SKIP")
+                color: JamiTheme.buttonTintedGrey
+                hoveredColor: JamiTheme.buttonTintedGreyHovered
+                pressedColor: JamiTheme.buttonTintedGreyPressed
+                outlined: true
 
-                Repeater {
-                    model: 2
-
-                    MaterialButton {
-                        width: (skipAndBackButtonsRow.width -
-                                skipAndBackButtonsRow.spacing) / 2
-                        height: skipAndBackButtonsRow.height
-
-                        text: modelData === 0 ? qsTr("BACK") : qsTr("SKIP")
-                        color: JamiTheme.buttonTintedGrey
-                        hoveredColor: JamiTheme.buttonTintedGreyHovered
-                        pressedColor: JamiTheme.buttonTintedGreyPressed
-                        outlined: true
-
-                        onClicked: {
-                            if (modelData === 0)
-                                leavePage()
-                            else
-                                createAccountStack.currentIndex =
-                                        createAccountStack.currentIndex + 1
-                        }
-                    }
-                }
+                onClicked: createAccountStack.currentIndex =
+                           createAccountStack.currentIndex + 1
             }
         }
 
@@ -328,22 +320,32 @@ Rectangle {
                     createAccountStack.currentIndex += 1
                 }
             }
+        }
+    }
 
-            MaterialButton {
-                id: backButton
+    HoverableButton {
+        id: backButton
 
-                Layout.alignment: Qt.AlignCenter
-                Layout.preferredWidth: preferredWidth
-                Layout.preferredHeight: preferredHeight
+        anchors.left: parent.left
+        anchors.top: parent.top
+        anchors.margins: 20
 
-                text: qsTr("BACK")
-                color: JamiTheme.buttonTintedGrey
-                hoveredColor: JamiTheme.buttonTintedGreyHovered
-                pressedColor: JamiTheme.buttonTintedGreyPressed
-                outlined: true
+        width: 35
+        height: 35
 
-                onClicked: createAccountStack.currentIndex -= 1
-            }
+        radius: 30
+
+        backgroundColor: root.color
+        onExitColor: root.color
+
+        source: "qrc:/images/icons/ic_arrow_back_24px.svg"
+        toolTipText: qsTr("Back")
+
+        onClicked: {
+            if (createAccountStack.currentIndex == 0)
+                leavePage()
+            else
+                createAccountStack.currentIndex -= 1
         }
     }
 

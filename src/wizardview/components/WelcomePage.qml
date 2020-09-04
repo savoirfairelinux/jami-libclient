@@ -37,6 +37,8 @@ Rectangle {
     ColumnLayout {
         anchors.centerIn: parent
 
+        spacing: layoutSpacing
+
         Text {
             id: welcomeLabel
 
@@ -71,11 +73,11 @@ Rectangle {
             id: newAccountButton
 
             Layout.alignment: Qt.AlignCenter
-            Layout.topMargin: 8
             Layout.preferredWidth: preferredWidth
             Layout.preferredHeight: preferredHeight
 
-            text: qsTr("CREATE A JAMI ACCOUNT")
+            text: qsTr("Create a jami account")
+            fontCapitalization: Font.AllUppercase
             toolTipText: qsTr("Create new Jami account")
             source: "qrc:/images/default_avatar_overlay.svg"
             color: JamiTheme.buttonTintedBlue
@@ -91,11 +93,11 @@ Rectangle {
             id: fromDeviceButton
 
             Layout.alignment: Qt.AlignCenter
-            Layout.topMargin: 8
             Layout.preferredWidth: preferredWidth
             Layout.preferredHeight: preferredHeight
 
-            text: qsTr("IMPORT FROM ANOTHER DEVICE")
+            text: qsTr("Import from another device")
+            fontCapitalization: Font.AllUppercase
             toolTipText: qsTr("Import account from other device")
             source: "qrc:/images/icons/devices-24px.svg"
             color: JamiTheme.buttonTintedBlue
@@ -111,11 +113,11 @@ Rectangle {
             id: fromBackupButton
 
             Layout.alignment: Qt.AlignCenter
-            Layout.topMargin: 8
             Layout.preferredWidth: preferredWidth
             Layout.preferredHeight: preferredHeight
 
-            text: qsTr("CONNECT FROM BACKUP")
+            text: qsTr("Connect from backup")
+            fontCapitalization: Font.AllUppercase
             toolTipText: qsTr("Import account from backup file")
             source: "qrc:/images/icons/backup-24px.svg"
             color: JamiTheme.buttonTintedBlue
@@ -131,11 +133,11 @@ Rectangle {
             id: showAdvancedButton
 
             Layout.alignment: Qt.AlignCenter
-            Layout.topMargin: 8
             Layout.preferredWidth: preferredWidth
             Layout.preferredHeight: preferredHeight
 
-            text: qsTr("SHOW ADVANCED")
+            text: qsTr("Show advanced")
+            fontCapitalization: Font.AllUppercase
             toolTipText: qsTr("Show advanced options")
             color: JamiTheme.buttonTintedBlue
             hoveredColor: JamiTheme.buttonTintedBlueHovered
@@ -158,13 +160,13 @@ Rectangle {
             id: connectAccountManagerButton
 
             Layout.alignment: Qt.AlignCenter
-            Layout.topMargin: 8
             Layout.preferredWidth: preferredWidth
             Layout.preferredHeight: preferredHeight
 
             visible: false
 
-            text: qsTr("CONNECT TO MANAGEMENT SERVER")
+            text: qsTr("Connect to management server")
+            fontCapitalization: Font.AllUppercase
             toolTipText: qsTr("Login to account manager")
             source: "qrc:/images/icons/router-24px.svg"
             color: JamiTheme.buttonTintedBlue
@@ -180,13 +182,13 @@ Rectangle {
             id: newSIPAccountButton
 
             Layout.alignment: Qt.AlignCenter
-            Layout.topMargin: 8
             Layout.preferredWidth: preferredWidth
             Layout.preferredHeight: preferredHeight
 
             visible: false
 
-            text: qsTr("CREATE A SIP ACCOUNT")
+            text: qsTr("Create a sip account")
+            fontCapitalization: Font.AllUppercase
             toolTipText: qsTr("Create new SIP account")
             source: "qrc:/images/default_avatar_overlay.svg"
             color: JamiTheme.buttonTintedBlue
@@ -197,5 +199,35 @@ Rectangle {
                 welcomePageRedirectPage(2)
             }
         }
+    }
+
+    HoverableButton {
+        id: backButton
+
+        anchors.left: parent.left
+        anchors.top: parent.top
+        anchors.margins: 20
+
+        Connections {
+            target: ClientWrapper.lrcInstance
+
+            function onAccountListChanged() {
+                backButton.visible = ClientWrapper.utilsAdaptor.getAccountListSize()
+            }
+        }
+
+        width: 35
+        height: 35
+
+        visible: ClientWrapper.utilsAdaptor.getAccountListSize()
+        radius: 30
+
+        backgroundColor: root.color
+        onExitColor: root.color
+
+        source: "qrc:/images/icons/ic_arrow_back_24px.svg"
+        toolTipText: qsTr("Back")
+
+        onClicked: leavePage()
     }
 }

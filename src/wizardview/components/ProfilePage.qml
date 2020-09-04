@@ -29,11 +29,15 @@ Rectangle {
     function initializeOnShowUp() {
         clearAllTextFields()
         boothImgBase64 = ""
-        readyToSaveDetails = false
+        saveProfileBtn.spinnerTriggered = true
     }
 
     function clearAllTextFields() {
         aliasEdit.clear()
+    }
+
+    function readyToSaveDetails() {
+        saveProfileBtn.spinnerTriggered = false
     }
 
     color: JamiTheme.backgroundColor
@@ -41,7 +45,6 @@ Rectangle {
     signal leavePage
     signal saveProfile
 
-    property var readyToSaveDetails: false
     property var showBottom: false
     property alias boothImgBase64: setAvatarWidget.imgBase64
     property alias displayName: aliasEdit.text
@@ -106,22 +109,18 @@ Rectangle {
             fieldLayoutWidth: saveProfileBtn.width
         }
 
-        MaterialButton {
+        SpinnerButton {
             id: saveProfileBtn
 
             Layout.alignment: Qt.AlignCenter
             Layout.preferredWidth: preferredWidth
             Layout.preferredHeight: preferredHeight
 
-            enabled: readyToSaveDetails
-            text: enabled? qsTr("Save Profile") : qsTr("Generating account…")
-            color: enabled? JamiTheme.wizardBlueButtons : JamiTheme.buttonTintedGreyInactive
-            hoveredColor: JamiTheme.buttonTintedBlueHovered
-            pressedColor: JamiTheme.buttonTintedBluePressed
+            enabled: !spinnerTriggered
+            normalText: qsTr("Save Profile")
+            spinnerTriggeredtext: qsTr("Generating account…")
 
-            onClicked: {
-                saveProfile()
-            }
+            onClicked: saveProfile()
         }
 
         MaterialButton {

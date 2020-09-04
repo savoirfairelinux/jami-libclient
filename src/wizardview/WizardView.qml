@@ -48,6 +48,17 @@ Rectangle {
         SEARCHING
     }
 
+    enum WizardViewPageIndex {
+        WELCOMEPAGE = 0,
+        CREATEACCOUNTPAGE,
+        CREATESIPACCOUNTPAGE,
+        IMPORTFROMBACKUPPAGE,
+        BACKUPKEYSPAGE,
+        IMPORTFROMDEVICEPAGE,
+        CONNECTTOACCOUNTMANAGERPAGE,
+        PROFILEPAGE
+    }
+
     readonly property int layoutSpacing: 12
 
     property int textFontSize: 9
@@ -66,9 +77,10 @@ Rectangle {
     signal wizardViewIsClosed
 
     visible: true
+    color: JamiTheme.backgroundColor
 
     Component.onCompleted: {
-        changePageQML(controlPanelStackView.welcomePageStackId)
+        changePageQML(WizardView.WizardViewPageIndex.WELCOMEPAGE)
     }
 
     Connections{
@@ -78,85 +90,77 @@ Rectangle {
             addedAccountIndex = index
             ClientWrapper.accountAdaptor.accountChanged(index)
             if (showProfile) {
-                changePageQML(controlPanelStackView.profilePageId)
-                profilePage.readyToSaveDetails = true
-            } else if (controlPanelStackView.currentIndex == controlPanelStackView.profilePageId) {
-                ClientWrapper.lrcInstance.accountListChanged()
-                profilePage.readyToSaveDetails = true
+                changePageQML(WizardView.WizardViewPageIndex.PROFILEPAGE)
+                profilePage.readyToSaveDetails()
+            } else if (controlPanelStackView.currentIndex === WizardView.WizardViewPageIndex.PROFILEPAGE) {
+                profilePage.readyToSaveDetails()
             } else if (showBackUp) {
-                changePageQML(controlPanelStackView.backupKeysPageId)
+                changePageQML(WizardView.WizardViewPageIndex.BACKUPKEYSPAGE)
             } else {
-                changePageQML(controlPanelStackView.welcomePageStackId)
+                changePageQML(WizardView.WizardViewPageIndex.WELCOMEPAGE)
                 needToShowMainViewWindow(addedAccountIndex)
-                ClientWrapper.lrcInstance.accountListChanged()
             }
         }
 
         // reportFailure
         function onReportFailure() {
-            if (controlPanelStackView.currentIndex == controlPanelStackView.importFromDevicePageId) {
-                importFromDevicePage.errorText = qsTr("Error when creating your account. Check your credentials")
-            } else if (controlPanelStackView.currentIndex == controlPanelStackView.importFromBackupPageId) {
-                importFromBackupPage.errorText = qsTr("Error when creating your account. Check your credentials")
-            } else if (controlPanelStackView.currentIndex == controlPanelStackView.connectToAccountManagerPageId) {
-                connectToAccountManagerPage.errorText = qsTr("Error when creating your account. Check your credentials")
+            var errorMessage = qsTr("Error when creating your account. Check your credentials")
+
+            switch(controlPanelStackView.currentIndex) {
+            case WizardView.WizardViewPageIndex.IMPORTFROMDEVICEPAGE:
+                importFromDevicePage.errorOccured(errorMessage)
+                break
+            case WizardView.WizardViewPageIndex.IMPORTFROMBACKUPPAGE:
+                importFromBackupPage.errorOccured(errorMessage)
+                break
+            case WizardView.WizardViewPageIndex.CONNECTTOACCOUNTMANAGERPAGE:
+                connectToAccountManagerPage.errorOccured(errorMessage)
+                break
             }
         }
     }
 
     Connections {
         id: registeredNameFoundConnection
+
         target: ClientWrapper.nameDirectory
-        enabled: false
 
         function onRegisteredNameFound(status, address, name) {
-            slotRegisteredNameFound(status, address, name)
-        }
-    }
-
-    function slotRegisteredNameFound(status, address, name) {
-        if (name.length != 0 && name.length < 3) {
-            createAccountPage.nameRegistrationUIState = WizardView.INVALID
-        } else if (registeredName === name) {
-            switch (status) {
-            case NameDirectory.LookupStatus.NOT_FOUND:
-            case NameDirectory.LookupStatus.ERROR:
-                createAccountPage.nameRegistrationUIState = WizardView.FREE
-                break
-            case NameDirectory.LookupStatus.INVALID_NAME:
-            case NameDirectory.LookupStatus.INVALID:
-                createAccountPage.nameRegistrationUIState = WizardView.INVALID
-                break
-            case NameDirectory.LookupStatus.SUCCESS:
-                createAccountPage.nameRegistrationUIState = WizardView.TAKEN
-                break
+            if (registeredName === name) {
+                switch(status) {
+                case NameDirectory.LookupStatus.NOT_FOUND:
+                    createAccountPage.nameRegistrationUIState = WizardView.FREE
+                    break
+                case NameDirectory.LookupStatus.ERROR:
+                case NameDirectory.LookupStatus.INVALID_NAME:
+                case NameDirectory.LookupStatus.INVALID:
+                    createAccountPage.nameRegistrationUIState = WizardView.INVALID
+                    break
+                case NameDirectory.LookupStatus.SUCCESS:
+                    createAccountPage.nameRegistrationUIState = WizardView.TAKEN
+                    break
+                }
             }
         }
     }
 
     function changePageQML(pageIndex) {
         controlPanelStackView.currentIndex = pageIndex
-        if (pageIndex == controlPanelStackView.welcomePageStackId) {
+        if (pageIndex === WizardView.WizardViewPageIndex.WELCOMEPAGE) {
             fileToImport = ""
-            registeredNameFoundConnection.enabled = true
             createAccountPage.nameRegistrationUIState = WizardView.BLANK
-        } else if (pageIndex == controlPanelStackView.createAccountPageId) {
+        } else if (pageIndex === WizardView.WizardViewPageIndex.CREATEACCOUNTPAGE) {
             createAccountPage.initializeOnShowUp()
-            // connection between register name found and its slot
-            registeredNameFoundConnection.enabled = true
-        } else if (pageIndex == controlPanelStackView.createSIPAccountPageId) {
+        } else if (pageIndex === WizardView.WizardViewPageIndex.CREATESIPACCOUNTPAGE) {
             createSIPAccountPage.initializeOnShowUp()
-        } else if (pageIndex == controlPanelStackView.importFromDevicePageId) {
+        } else if (pageIndex === WizardView.WizardViewPageIndex.IMPORTFROMDEVICEPAGE) {
             importFromDevicePage.initializeOnShowUp()
-        } else if (pageIndex == controlPanelStackView.spinnerPageId) {
-            createAccountPage.nameRegistrationUIState = WizardView.BLANK
-            createAccountPage.isToSetPassword_checkState_choosePasswordCheckBox = false
-        } else if (pageIndex == controlPanelStackView.connectToAccountManagerPageId) {
+        } else if (pageIndex === WizardView.WizardViewPageIndex.CONNECTTOACCOUNTMANAGERPAGE) {
             connectToAccountManagerPage.initializeOnShowUp()
-        } else if (pageIndex == controlPanelStackView.importFromBackupPageId) {
+        } else if (pageIndex === WizardView.WizardViewPageIndex.IMPORTFROMBACKUPPAGE) {
             importFromBackupPage.clearAllTextFields()
             fileToImport = ""
-        } else if (pageIndex == controlPanelStackView.profilePageId) {
+        } else if (pageIndex === WizardView.WizardViewPageIndex.PROFILEPAGE) {
             profilePage.initializeOnShowUp()
             profilePage.showBottom = showBottom
         }
@@ -183,7 +187,6 @@ Rectangle {
                 if (success) {
                     console.log("Account Export Succeed")
                     needToShowMainViewWindow(addedAccountIndex)
-                    ClientWrapper.lrcInstance.accountListChanged()
                 }
             }
         }
@@ -199,20 +202,9 @@ Rectangle {
 
         anchors.fill: parent
 
-        currentIndex: welcomePageStackId
-
-        property int welcomePageStackId: 0
-        property int createAccountPageId: 1
-        property int createSIPAccountPageId: 2
-        property int importFromBackupPageId: 3
-        property int backupKeysPageId: 4
-        property int importFromDevicePageId: 5
-        property int connectToAccountManagerPageId: 6
-        property int spinnerPageId: 7
-        property int profilePageId: 8
+        currentIndex: WizardView.WizardViewPageIndex.WELCOMEPAGE
 
         WelcomePage {
-            // welcome page, index 0
             id: welcomePage
 
             onWelcomePageRedirectPage: {
@@ -225,7 +217,6 @@ Rectangle {
         }
 
         CreateAccountPage {
-            // create account page, index 1
             id: createAccountPage
 
             onCreateAccount: {
@@ -238,22 +229,19 @@ Rectangle {
                     true)
                 showBackUp = true
                 showBottom = true
-                changePageQML(controlPanelStackView.profilePageId)
+                changePageQML(WizardView.WizardViewPageIndex.PROFILEPAGE)
             }
 
-            onText_usernameEditAliasChanged: {
-                lookupTimer.restart()
-            }
+            onText_usernameEditAliasChanged: lookupTimer.restart()
 
             onLeavePage: {
-                changePageQML(controlPanelStackView.welcomePageStackId)
+                changePageQML(WizardView.WizardViewPageIndex.WELCOMEPAGE)
             }
 
             Timer {
                 id: lookupTimer
 
                 repeat: false
-                triggeredOnStart: false
                 interval: 200
 
                 onTriggered: {
@@ -269,11 +257,10 @@ Rectangle {
         }
 
         CreateSIPAccountPage {
-            // create SIP account page, index 2
             id: createSIPAccountPage
 
             onLeavePage: {
-                changePageQML(controlPanelStackView.welcomePageStackId)
+                changePageQML(WizardView.WizardViewPageIndex.WELCOMEPAGE)
             }
 
             onCreateAccount: {
@@ -287,24 +274,22 @@ Rectangle {
                 ClientWrapper.accountAdaptor.createSIPAccount(inputParaObject, "")
                 showBackUp = false
                 showBottom = false
-                changePageQML(controlPanelStackView.profilePageId)
-                controlPanelStackView.profilePage.readyToSaveDetails = true
+                changePageQML(WizardView.WizardViewPageIndex.PROFILEPAGE)
+                controlPanelStackView.profilePage.readyToSaveDetails()
             }
         }
 
         ImportFromBackupPage {
-            // import from backup page, index 3
             id: importFromBackupPage
 
             onLeavePage: {
-                changePageQML(controlPanelStackView.welcomePageStackId)
+                changePageQML(WizardView.WizardViewPageIndex.WELCOMEPAGE)
             }
 
             onImportAccount: {
                 inputParaObject = {}
                 inputParaObject["archivePath"] = ClientWrapper.utilsAdaptor.getAbsPath(importFromBackupPage.filePath)
                 inputParaObject["password"] = importFromBackupPage.text_passwordFromBackupEditAlias
-                importFromBackupPage.clearAllTextFields()
                 showBackUp = false
                 showBottom = false
                 showProfile = true
@@ -314,7 +299,6 @@ Rectangle {
         }
 
         BackupKeyPage {
-            // backup keys page, index 4
             id: backupKeysPage
 
             onNeverShowAgainBoxClicked: {
@@ -337,24 +321,21 @@ Rectangle {
                     }
                 }
 
-                changePageQML(controlPanelStackView.welcomePageStackId)
+                changePageQML(WizardView.WizardViewPageIndex.WELCOMEPAGE)
                 needToShowMainViewWindow(addedAccountIndex)
-                ClientWrapper.lrcInstance.accountListChanged()
             }
 
             onLeavePage: {
-                changePageQML(controlPanelStackView.welcomePageStackId)
+                changePageQML(WizardView.WizardViewPageIndex.WELCOMEPAGE)
                 needToShowMainViewWindow(addedAccountIndex)
-                ClientWrapper.lrcInstance.accountListChanged()
             }
         }
 
         ImportFromDevicePage {
-            // import from device page, index 5
             id: importFromDevicePage
 
             onLeavePage: {
-                changePageQML(controlPanelStackView.welcomePageStackId)
+                changePageQML(WizardView.WizardViewPageIndex.WELCOMEPAGE)
             }
 
             onImportAccount: {
@@ -371,7 +352,6 @@ Rectangle {
         }
 
         ConnectToAccountManagerPage {
-            // connect to account manager Page, index 6
             id: connectToAccountManagerPage
 
             onCreateAccount: {
@@ -386,26 +366,19 @@ Rectangle {
             }
 
             onLeavePage: {
-                changePageQML(controlPanelStackView.welcomePageStackId)
+                changePageQML(WizardView.WizardViewPageIndex.WELCOMEPAGE)
             }
         }
 
-        SpinnerPage {
-            // spinner Page, index 7
-            id: spinnerPage
-        }
-
         ProfilePage {
-            // profile Page, index 8
             id: profilePage
 
             function leave() {
                 if (showBackUp)
-                    changePageQML(controlPanelStackView.backupKeysPageId)
+                    changePageQML(WizardView.WizardViewPageIndex.BACKUPKEYSPAGE)
                 else {
-                    changePageQML(controlPanelStackView.welcomePageStackId)
+                    changePageQML(WizardView.WizardViewPageIndex.WELCOMEPAGE)
                     needToShowMainViewWindow(addedAccountIndex)
-                    ClientWrapper.lrcInstance.accountListChanged()
                 }
             }
 
@@ -420,6 +393,4 @@ Rectangle {
             }
         }
     }
-
-    color: JamiTheme.backgroundColor
 }

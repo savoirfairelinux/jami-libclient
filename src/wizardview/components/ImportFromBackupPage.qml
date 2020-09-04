@@ -34,11 +34,22 @@ Rectangle {
     property string filePath: ""
     property string errorText: ""
 
+    signal leavePage
+    signal importAccount
+
     function clearAllTextFields() {
+        connectBtn.spinnerTriggered = false
         passwordFromBackupEdit.clear()
         errorText = ""
         fileImportBtnText = qsTr("Archive(none)")
     }
+
+    function errorOccured(errorMessage) {
+        errorText = errorMessage
+        connectBtn.spinnerTriggered = false
+    }
+
+    color: JamiTheme.backgroundColor
 
     JamiFileDialog {
         id: importFromFile_Dialog
@@ -58,11 +69,6 @@ Rectangle {
             }
         }
     }
-
-    color: JamiTheme.backgroundColor
-
-    signal leavePage
-    signal importAccount
 
     ColumnLayout {
         spacing: layoutSpacing
@@ -91,7 +97,10 @@ Rectangle {
             hoveredColor: JamiTheme.buttonTintedGreyHovered
             pressedColor: JamiTheme.buttonTintedGreyPressed
 
-            onClicked: importFromFile_Dialog.open()
+            onClicked: {
+                errorText = ""
+                importFromFile_Dialog.open()
+            }
         }
 
         Text {
@@ -128,26 +137,31 @@ Rectangle {
             font.kerning: true
 
             echoMode: TextInput.Password
-
             borderColorMode: MaterialLineEdit.NORMAL
+
+            onTextChanged: errorText = ""
         }
 
-        MaterialButton {
+        SpinnerButton {
             id: connectBtn
 
             Layout.alignment: Qt.AlignCenter
             Layout.preferredWidth: preferredWidth
             Layout.preferredHeight: preferredHeight
 
-            text: qsTr("CONNECT FROM BACKUP")
-            color: filePath.length === 0 ?
-                JamiTheme.buttonTintedGreyInactive : JamiTheme.buttonTintedGrey
-            enabled: !(filePath.length === 0)
-            hoveredColor: JamiTheme.buttonTintedGreyHovered
-            pressedColor: JamiTheme.buttonTintedGreyPressed
+            spinnerTriggeredtext: qsTr("Generating account…")
+            normalText: qsTr("CONNECT FROM BACKUP")
+
+            enabled: {
+                if (spinnerTriggered)
+                    return false
+                if (!(filePath.length === 0) && errorText.length === 0)
+                    return true
+                return false
+            }
 
             onClicked: {
-                errorText = ""
+                spinnerTriggered = true
                 importAccount()
             }
         }
@@ -161,21 +175,26 @@ Rectangle {
             font.pointSize: JamiTheme.textFontSize
             color: "red"
         }
+    }
 
-        MaterialButton {
-            id: backButton
+    HoverableButton {
+        id: backButton
 
-            Layout.alignment: Qt.AlignCenter
-            Layout.preferredWidth: connectBtn.width / 2
-            Layout.preferredHeight: preferredHeight
+        anchors.left: parent.left
+        anchors.top: parent.top
+        anchors.margins: 20
 
-            text: qsTr("BACK")
-            color: JamiTheme.buttonTintedGrey
-            hoveredColor: JamiTheme.buttonTintedGreyHovered
-            pressedColor: JamiTheme.buttonTintedGreyPressed
-            outlined: true
+        width: 35
+        height: 35
 
-            onClicked: leavePage()
-        }
+        radius: 30
+
+        backgroundColor: root.color
+        onExitColor: root.color
+
+        source: "qrc:/images/icons/ic_arrow_back_24px.svg"
+        toolTipText: qsTr("Back to welcome page")
+
+        onClicked: leavePage()
     }
 }

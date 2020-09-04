@@ -45,7 +45,6 @@
         <file>src/wizardview/components/BackupKeyPage.qml</file>
         <file>src/wizardview/components/ImportFromDevicePage.qml</file>
         <file>src/wizardview/components/ConnectToAccountManagerPage.qml</file>
-        <file>src/wizardview/components/SpinnerPage.qml</file>
         <file>src/wizardview/components/ProfilePage.qml</file>
         <file>src/wizardview/components/CollapsiblePasswordWidget.qml</file>
         <file>src/MainApplicationWindow.qml</file>
@@ -111,5 +110,6 @@
         <file>src/commoncomponents/Scaffold.qml</file>
         <file>src/constant/JamiQmlUtils.qml</file>
         <file>src/wizardview/components/AccountCreationStepIndicator.qml</file>
+        <file>src/commoncomponents/SpinnerButton.qml</file>
     </qresource>
 </RCC>

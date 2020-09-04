@@ -31,21 +31,32 @@ Rectangle {
     property alias text_accountManagerEditAlias: accountManagerEdit.text
     property string errorText: ""
 
+    signal leavePage
+    signal createAccount
+
     function initializeOnShowUp() {
         clearAllTextFields()
     }
 
     function clearAllTextFields() {
+        connectBtn.spinnerTriggered = false
         usernameManagerEdit.clear()
         passwordManagerEdit.clear()
         accountManagerEdit.clear()
         errorText = ""
     }
 
+    function errorOccured(errorMessage) {
+        connectBtn.spinnerTriggered = false
+        errorText = errorMessage
+    }
+
     color: JamiTheme.backgroundColor
 
-    signal leavePage
-    signal createAccount
+    onVisibleChanged: {
+        if (visible)
+            accountManagerEdit.focus = true
+    }
 
     ColumnLayout {
         spacing: layoutSpacing
@@ -92,6 +103,8 @@ Rectangle {
             font.kerning: true
 
             borderColorMode: MaterialLineEdit.NORMAL
+
+            onTextChanged: errorText = ""
         }
 
         Label {
@@ -114,6 +127,8 @@ Rectangle {
             font.kerning: true
 
             borderColorMode: MaterialLineEdit.NORMAL
+
+            onTextChanged: errorText = ""
         }
 
         MaterialLineEdit {
@@ -129,27 +144,28 @@ Rectangle {
             font.kerning: true
 
             echoMode: TextInput.Password
-
             borderColorMode: MaterialLineEdit.NORMAL
+
+            onTextChanged: errorText = ""
         }
 
-        MaterialButton {
+        SpinnerButton {
             id: connectBtn
 
             Layout.alignment: Qt.AlignCenter
             Layout.preferredWidth: preferredWidth
             Layout.preferredHeight: preferredHeight
 
-            text: qsTr("CONNECT")
+            spinnerTriggeredtext: qsTr("Generating account…")
+            normalText: qsTr("CONNECT")
+
             enabled: accountManagerEdit.text.length !== 0
-                && usernameManagerEdit.text.length !== 0
-                && passwordManagerEdit.text.length !== 0
-            color: enabled? JamiTheme.wizardBlueButtons : JamiTheme.buttonTintedGreyInactive
-            hoveredColor: JamiTheme.buttonTintedBlueHovered
-            pressedColor: JamiTheme.buttonTintedBluePressed
+                     && usernameManagerEdit.text.length !== 0
+                     && passwordManagerEdit.text.length !== 0
+                     && !spinnerTriggered
 
             onClicked: {
-                errorText = ""
+                spinnerTriggered = true
                 createAccount()
             }
         }
@@ -163,21 +179,26 @@ Rectangle {
             font.pointSize: JamiTheme.textFontSize
             color: "red"
         }
+    }
 
-        MaterialButton {
-            id: backButton
+    HoverableButton {
+        id: backButton
 
-            Layout.alignment: Qt.AlignCenter
-            Layout.preferredWidth: preferredWidth
-            Layout.preferredHeight: preferredHeight
+        anchors.left: parent.left
+        anchors.top: parent.top
+        anchors.margins: 20
 
-            text: qsTr("BACK")
-            color: JamiTheme.buttonTintedGrey
-            hoveredColor: JamiTheme.buttonTintedGreyHovered
-            pressedColor: JamiTheme.buttonTintedGreyPressed
-            outlined: true
+        width: 35
+        height: 35
 
-            onClicked: leavePage()
-        }
+        radius: 30
+
+        backgroundColor: root.color
+        onExitColor: root.color
+
+        source: "qrc:/images/icons/ic_arrow_back_24px.svg"
+        toolTipText: qsTr("Back to welcome page")
+
+        onClicked: leavePage()
     }
 }

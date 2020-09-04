@@ -105,7 +105,6 @@ Rectangle {
 
         function onAccountListChanged(){
             slotAccountListChanged()
-            accountListChangedConnection.enabled = false
         }
     }
 
@@ -126,11 +125,10 @@ Rectangle {
 
     function slotAccountListChanged(){
         var accountList = ClientWrapper.accountModel.getAccountList()
-        if(accountList.length === 0) {
-            setSelected(SettingsView.Account)
-        } else {
-            currentAccountSettingsScrollWidget.disconnectAccountConnections()
-        }
+        if(accountList.length === 0)
+            return
+
+        currentAccountSettingsScrollWidget.disconnectAccountConnections()
         var device = ClientWrapper.avmodel.getDefaultDevice()
         if(device.length === 0){
             ClientWrapper.avmodel.setCurrentVideoCaptureDevice(device)

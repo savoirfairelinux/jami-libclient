@@ -30,19 +30,30 @@ Rectangle {
     property alias text_passwordFromDeviceAlias: passwordFromDevice.text
     property string errorText: ""
 
+    signal leavePage
+    signal importAccount
+
     function initializeOnShowUp() {
         clearAllTextFields()
     }
 
     function clearAllTextFields() {
+        connectBtn.spinnerTriggered = false
         pinFromDevice.clear()
         passwordFromDevice.clear()
     }
 
+    function errorOccured(errorMessage) {
+        errorText = errorMessage
+        connectBtn.spinnerTriggered = false
+    }
+
     color: JamiTheme.backgroundColor
 
-    signal leavePage
-    signal importAccount
+    onVisibleChanged: {
+        if (visible)
+            pinFromDevice.focus = true
+    }
 
     ColumnLayout {
         spacing: layoutSpacing
@@ -71,8 +82,9 @@ Rectangle {
             font.kerning: true
 
             echoMode: TextInput.Password
-
             borderColorMode: MaterialLineEdit.NORMAL
+
+            onTextChanged: errorText = ""
         }
 
         Text {
@@ -83,7 +95,7 @@ Rectangle {
             Layout.preferredHeight: preferredHeight
 
             text: qsTr("Enter the PIN from another configured Jami account. " +
-                       "Use the \"export Jami account\" feature to obtain a PIN")
+                       "Use the \"Link Another Device\" feature to obtain a PIN")
             wrapMode: Text.Wrap
 
             onTextChanged: {
@@ -106,23 +118,24 @@ Rectangle {
             font.kerning: true
 
             borderColorMode: MaterialLineEdit.NORMAL
+
+            onTextChanged: errorText = ""
         }
 
-        MaterialButton {
+        SpinnerButton {
             id: connectBtn
 
             Layout.alignment: Qt.AlignCenter
             Layout.preferredWidth: preferredWidth
             Layout.preferredHeight: preferredHeight
 
-            text: qsTr("CONNECT FROM ANOTHER DEVICE")
-            color: pinFromDevice.text.length === 0?
-                JamiTheme.buttonTintedGreyInactive : JamiTheme.buttonTintedGrey
-            hoveredColor: JamiTheme.buttonTintedGreyHovered
-            pressedColor: JamiTheme.buttonTintedGreyPressed
+            spinnerTriggeredtext: qsTr("Generating account…")
+            normalText: qsTr("CONNECT FROM ANOTHER DEVICE")
+
+            enabled: pinFromDevice.text.length !== 0 && !spinnerTriggered
 
             onClicked: {
-                errorText = ""
+                spinnerTriggered = true
                 importAccount()
             }
         }
@@ -137,21 +150,26 @@ Rectangle {
             font.pointSize: JamiTheme.textFontSize
             color: "red"
         }
+    }
 
-        MaterialButton {
-            id: backButton
+    HoverableButton {
+        id: backButton
 
-            Layout.alignment: Qt.AlignCenter
-            Layout.preferredWidth: connectBtn.width / 2
-            Layout.preferredHeight: preferredHeight
+        anchors.left: parent.left
+        anchors.top: parent.top
+        anchors.margins: 20
 
-            text: qsTr("BACK")
-            color: JamiTheme.buttonTintedGrey
-            hoveredColor: JamiTheme.buttonTintedGreyHovered
-            pressedColor: JamiTheme.buttonTintedGreyPressed
-            outlined: true
+        width: 35
+        height: 35
 
-            onClicked: leavePage()
-        }
+        radius: 30
+
+        backgroundColor: root.color
+        onExitColor: root.color
+
+        source: "qrc:/images/icons/ic_arrow_back_24px.svg"
+        toolTipText: qsTr("Back to welcome page")
+
+        onClicked: leavePage()
     }
 }

@@ -86,6 +86,7 @@ AccountAdapter::createJamiAccount(QString registeredName,
                 Utils::oneShotConnect(&LRCInstance::accountModel(),
                                       &lrc::api::NewAccountModel::nameRegistrationEnded,
                                       [this, showBackup](const QString &accountId) {
+                                          emit LRCInstance::instance().accountListChanged();
                                           emit accountAdded(showBackup,
                                                             LRCInstance::accountModel()
                                                                 .getAccountList()
@@ -95,6 +96,7 @@ AccountAdapter::createJamiAccount(QString registeredName,
                                                          settings["password"].toString(),
                                                          registeredName);
             } else {
+                emit LRCInstance::instance().accountListChanged();
                 emit accountAdded(showBackup,
                                   LRCInstance::accountModel().getAccountList().indexOf(accountId));
             }
@@ -152,6 +154,7 @@ AccountAdapter::createSIPAccount(const QVariantMap &settings, QString photoBooth
                                                                    accountId);
                               }
 
+                              emit LRCInstance::instance().accountListChanged();
                               emit accountAdded(false,
                                                 LRCInstance::accountModel().getAccountList().indexOf(
                                                     accountId));
@@ -171,8 +174,6 @@ AccountAdapter::createSIPAccount(const QVariantMap &settings, QString photoBooth
                                                      "",
                                                      settings["username"].toString(),
                                                      additionalAccountConfig);
-        QThread::sleep(2);
-        emit LRCInstance::instance().accountListChanged();
     });
 }
 
@@ -209,6 +210,7 @@ void
 AccountAdapter::deleteCurrentAccount()
 {
     LRCInstance::accountModel().removeAccount(LRCInstance::getCurrAccId());
+    emit LRCInstance::instance().accountListChanged();
 }
 
 bool
