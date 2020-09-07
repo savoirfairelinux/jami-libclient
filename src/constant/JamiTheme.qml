@@ -83,6 +83,7 @@ Item {
 
     property int splitViewHandlePreferredWidth: 4
     property int textFontSize: 9
+    property int tinyFontSize: 7
     property int settingsFontSize: 9
     property int buttonFontSize: 9
     property int headerFontSize: 13
@@ -93,6 +94,8 @@ Item {
     property int preferredFieldWidth: 256
     property int preferredFieldHeight: 32
     property int preferredMarginSize: 16
+    property int preferredDialogWidth: 400
+    property int preferredDialogHeight: 300
 
     // Jami theme colors
     function rgb256(r, g, b) {

@@ -15,56 +15,28 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 import QtQuick 2.9
 import QtQuick.Controls 2.2
 import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
 import QtQuick.Layouts 1.3
+import net.jami.Models 1.0
 
 import "../../constant"
+import "../../commoncomponents"
 
-Dialog {
+BaseDialog {
     id: root
-    modal: true
 
-    width: rectangle.width + 24
-    height: rectangle.height + 24
+    visible: false
+    title: qsTr("Shortcuts")
 
-    Rectangle {
-        id: rectangle
+    contentItem: Rectangle {
+        id: shortcutsTableContentRect
 
-        property int minWidth: 1200
-        property int minHeight: 500
-
-        implicitWidth: minWidth
-        implicitHeight: minHeight
-        color: "white"
-        radius: 30
-
-        Rectangle {
-            width: 500
-            height: t_metrics_title.tightBoundingRect.height + 15
-            color: "#e0e0e0"
-            radius: 8
-            anchors.top: parent.top
-            anchors.topMargin: 10
-            anchors.horizontalCenter: parent.horizontalCenter
-            Text {
-                id : titleText
-                anchors.centerIn: parent
-                anchors.leftMargin: 10
-                font.family: "Arial"
-                font.pointSize: 12
-                font.bold: true
-                text: "Shortcuts"
-                color: "black"
-            }
-            TextMetrics {
-                id:     t_metrics_title
-                font:   titleText.font
-                text:   titleText.text
-            }
-        }
+        implicitWidth: 800
+        implicitHeight: 600
 
         ListModel {
             id: keyboardGeneralShortcutsModel
@@ -80,27 +52,27 @@ Dialog {
             }
             ListElement {
                 Shortcut: "Ctrl+R"
-                Description: "Requests list"
+                Description: qsTr("Requests list")
                 KeyLength: 2
             }
             ListElement {
                 Shortcut: "Ctrl+↑"
-                Description: "Previous conversation"
+                Description: qsTr("Previous conversation")
                 KeyLength: 2
             }
             ListElement {
                 Shortcut: "Ctrl+↓"
-                Description: "Next conversation"
+                Description: qsTr("Next conversation")
                 KeyLength: 2
             }
             ListElement {
                 Shortcut: "Ctrl+F"
-                Description: "Search bar"
+                Description: qsTr("Search bar")
                 KeyLength: 2
             }
             ListElement {
                 Shortcut: "F11"
-                Description: "Fullscreen"
+                Description: qsTr("Fullscreen")
                 KeyLength: 1
             }
         }
@@ -108,12 +80,12 @@ Dialog {
             id: keyboardConversationShortcutsModel
             ListElement {
                 Shortcut: "Shift+Ctrl+C"
-                Description: "Start an audio call"
+                Description: qsTr("Start an audio call")
                 KeyLength: 3
             }
             ListElement {
                 Shortcut: "Shift+Ctrl+X"
-                Description: "Start a video call"
+                Description: qsTr("Start a video call")
                 KeyLength: 3
             }
             ListElement {
@@ -136,27 +108,27 @@ Dialog {
             id: keyboardSettingsShortcutsModel
             ListElement {
                 Shortcut: "Ctrl+M"
-                Description: "Media settings"
+                Description: qsTr("Media settings")
                 KeyLength: 2
             }
             ListElement {
                 Shortcut: "Ctrl+G"
-                Description: "General Settings"
+                Description: qsTr("General settings")
                 KeyLength: 2
             }
             ListElement {
                 Shortcut: "Ctrl+I"
-                Description: "Account Settings"
+                Description: qsTr("Account settings")
                 KeyLength: 2
             }
             ListElement {
                 Shortcut: "Ctrl+Shift+N"
-                Description: "Open account creation wizard"
+                Description: qsTr("Open account creation wizard")
                 KeyLength: 3
             }
             ListElement {
                 Shortcut: "F10"
-                Description: "Open window"
+                Description: qsTr("Open window")
                 KeyLength: 1
             }
         }
@@ -184,17 +156,19 @@ Dialog {
             Rectangle {
                 id: cellRectWithThreeKeys
 
-                implicitWidth: minWidth /2
+                implicitWidth: minWidth / 2
                 implicitHeight: 50
                 anchors.left: parent.left
-                anchors.leftMargin: 50
+                anchors.leftMargin: 20
                 color: "white"
                 border.color: "white"
+
                 Rectangle {
                     id: containerRectWithThreeKeys
 
                     implicitWidth: parent.width - 10
                     implicitHeight: 50
+
                     anchors.horizontalCenter: parent.horizontalCenter
                     anchors.verticalCenter: parent.verticalCenter
 
@@ -257,7 +231,7 @@ Dialog {
             id: descriptionDelegate
 
             Rectangle {
-                implicitWidth: minWidth /2
+                implicitWidth: root.width / 2
                 implicitHeight: 50
 
                 color: "white"
@@ -268,7 +242,7 @@ Dialog {
                     anchors.left: parent.left
                     anchors.leftMargin: 10
                     font.family: "Arial"
-                    font.pointSize: 10
+                    font.pointSize: JamiTheme.textFontSize
                     text: styleData.value
                 }
             }
@@ -313,6 +287,7 @@ Dialog {
                                     Loader {
                                         property variant modelData: model
                                         sourceComponent: shortcutDelegateWithThreeKeys
+                                        asynchronous: true
                                     }
                                 }
                             }
@@ -333,7 +308,7 @@ Dialog {
                                     height: [t_metrics_general.tightBoundingRect.height + 10, 0][styleData.column % 2]
                                     width: [parent.width, 0][styleData.column % 2]
                                     color: "white"
-                                    radius: 10
+                                    radius: 4
                                     anchors.top: parent.top
                                     anchors.topMargin: 5
                                     Text {
@@ -342,7 +317,7 @@ Dialog {
                                         anchors.left: parent.left
                                         anchors.leftMargin: 10
                                         font.family: "Arial"
-                                        font.pointSize: 12
+                                        font.pointSize: JamiTheme.headerFontSize
                                         text: styleData.column % 2 ? "" : "General"
                                         color: "black"
                                     }
@@ -376,6 +351,7 @@ Dialog {
                                     Loader {
                                         property variant modelData: model
                                         sourceComponent: shortcutDelegateWithThreeKeys
+                                        asynchronous: true
                                     }
                                 }
                             }
@@ -396,7 +372,7 @@ Dialog {
                                     height: [t_metrics_conversations.tightBoundingRect.height + 10, 0][styleData.column % 2]
                                     width: [parent.width, 0][styleData.column % 2]
                                     color: "white"
-                                    radius: 10
+                                    radius: 4
                                     anchors.top: parent.top
                                     anchors.topMargin: 5
                                     Text {
@@ -405,7 +381,7 @@ Dialog {
                                         anchors.left: parent.left
                                         anchors.leftMargin: 10
                                         font.family: "Arial"
-                                        font.pointSize: 12
+                                        font.pointSize: JamiTheme.headerFontSize
                                         text: styleData.column % 2 ? "" : JamiStrings.conversations
                                         color: "black"
                                     }
@@ -441,6 +417,7 @@ Dialog {
                                     Loader {
                                         property variant modelData: model
                                         sourceComponent: shortcutDelegateWithThreeKeys
+                                        asynchronous: true
                                     }
                                 }
                             }
@@ -461,7 +438,7 @@ Dialog {
                                     height: [t_metrics_calls.tightBoundingRect.height + 10, 0][styleData.column % 2]
                                     width: [parent.width, 0][styleData.column % 2]
                                     color: "white"
-                                    radius: 10
+                                    radius: 4
                                     anchors.top: parent.top
                                     anchors.topMargin: 5
                                     Text {
@@ -504,6 +481,7 @@ Dialog {
                                     Loader {
                                         property variant modelData: model
                                         sourceComponent: shortcutDelegateWithThreeKeys
+                                        asynchronous: true
                                     }
                                 }
                             }
@@ -524,7 +502,7 @@ Dialog {
                                     height: [t_metrics_settings.tightBoundingRect.height + 10, 0][styleData.column % 2]
                                     width: [parent.width, 0][styleData.column % 2]
                                     color: "white"
-                                    radius: 10
+                                    radius: 4
                                     anchors.top: parent.top
                                     anchors.topMargin: 5
                                     Text {
@@ -549,19 +527,21 @@ Dialog {
                 }
             }
         }
+
         TabBar {
             id: tabBar
             anchors.horizontalCenter: parent.horizontalCenter
+
             anchors.bottom: parent.bottom
-            anchors.bottomMargin: 15
-            width: 240
+            anchors.bottomMargin: parent.height - 500  // Forced postion below table
+
+            width: JamiTheme.preferredFieldWidth * 2
+            height: JamiTheme.preferredFieldHeight
+
             currentIndex: 0
             TabButton {
                 id: pageOne
-
-                width: tabBar.width / 2
-                height: 30
-
+                width: JamiTheme.preferredFieldWidth
                 text: "1"
                 down: true
                 // customize tab button
@@ -576,8 +556,9 @@ Dialog {
                 // customize tab button
                 background: Rectangle {
                     id: buttonRectOne
-
-                    radius: 10
+                    implicitWidth: JamiTheme.preferredFieldWidth
+                    implicitHeight: JamiTheme.preferredFieldHeight
+                    radius: 4
                     color: pageOne.down ? "#e0e0e0" :"#fdfdfd"
                     MouseArea {
                         anchors.fill: parent
@@ -591,11 +572,8 @@ Dialog {
             }
             TabButton {
                 id: pageTwo
-
-                width: tabBar.width / 2
-                height: 30
-
                 text: "2"
+                width: JamiTheme.preferredFieldWidth
                 contentItem: Text {
                     text: pageTwo.text
                     font: pageTwo.font
@@ -607,8 +585,10 @@ Dialog {
 
                 background: Rectangle {
                     id: buttonRectTwo
+                    implicitWidth: JamiTheme.preferredFieldWidth
+                    implicitHeight: JamiTheme.preferredFieldHeight
 
-                    radius: 10
+                    radius: 4
                     color: pageTwo.down ? "#e0e0e0" :"#fdfdfd"
                     MouseArea {
                         anchors.fill: parent
@@ -619,6 +599,28 @@ Dialog {
                         onExited: { buttonRectTwo.color = Qt.binding(function() { return pageTwo.down ? "#e0e0e0" :"#fdfdfd" }); }
                     }
                 }
+            }
+        }
+
+        MaterialButton {
+            id: btnClose
+
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: JamiTheme.preferredMarginSize
+            anchors.horizontalCenter: parent.horizontalCenter
+
+            width: JamiTheme.preferredFieldWidth / 2
+            height: JamiTheme.preferredFieldHeight
+
+            color: JamiTheme.buttonTintedBlack
+            hoveredColor: JamiTheme.buttonTintedBlackHovered
+            pressedColor: JamiTheme.buttonTintedBlackPressed
+            outlined: true
+
+            text: JamiStrings.close
+
+            onClicked: {
+                close()
             }
         }
     }

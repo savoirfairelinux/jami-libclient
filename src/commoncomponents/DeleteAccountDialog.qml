@@ -22,9 +22,11 @@ import QtQuick.Layouts 1.14
 import QtQuick.Controls.Styles 1.4
 import net.jami.Models 1.0
 import net.jami.Adapters 1.0
-import "../constant"
 
-Dialog {
+import "../constant"
+import "../commoncomponents"
+
+BaseDialog {
     id: root
 
     property int profileType: SettingsAdapter.getCurrentAccount_Profile_Info_Type()
@@ -38,156 +40,139 @@ Dialog {
         }
     }
 
-    onOpened: {
+    signal accepted
+
+    function openDialog() {
         profileType = SettingsAdapter.getCurrentAccount_Profile_Info_Type()
         labelBestId.text = SettingsAdapter.getAccountBestName()
         labelAccountHash.text = SettingsAdapter.getCurrentAccount_Profile_Info_Uri()
+        open()
     }
 
-    onVisibleChanged: {
-        if(!visible){
-            reject()
-        }
-    }
-
-    header : Rectangle {
-        width: parent.width
-        height: 64
-        color: "transparent"
-        Text {
-            anchors.fill: parent
-            anchors.leftMargin: JamiTheme.preferredMarginSize
-            anchors.topMargin: JamiTheme.preferredMarginSize
-
-            text: qsTr("Account deletion")
-            font.pointSize: JamiTheme.headerFontSize
-            wrapMode: Text.Wrap
-        }
-    }
-
-    visible: false
-    x: (parent.width - width) / 2
-    y: (parent.height - height) / 2
+    title: JamiStrings.deleteAccount
 
     contentItem: Rectangle {
-        implicitHeight: contentLayout.implicitHeight + 64 + JamiTheme.preferredMarginSize
-        implicitWidth: 350
+        id: deleteAccountContentRect
 
-        ColumnLayout{
-            id: contentLayout
-            anchors.fill: parent
+        implicitWidth: JamiTheme.preferredDialogWidth
+        implicitHeight: JamiTheme.preferredDialogHeight
+
+        ColumnLayout {
             anchors.centerIn: parent
+            anchors.fill: parent
+            anchors.margins: JamiTheme.preferredMarginSize
 
             Label {
                 id: labelDeletion
 
-                Layout.fillWidth: true
-                Layout.preferredHeight: 30
                 Layout.alignment: Qt.AlignHCenter
+                Layout.preferredWidth: deleteAccountContentRect.width - JamiTheme.preferredMarginSize * 2
+
+                text: JamiStrings.confirmDeleteQuestion
 
                 font.pointSize: JamiTheme.textFontSize
                 font.kerning: true
+
                 horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
                 wrapMode: Text.Wrap
-                text: JamiStrings.confirmDeleteQuestion
             }
 
             Label {
                 id: labelBestId
 
-                Layout.topMargin: 5
-                Layout.fillWidth: true
-                Layout.preferredHeight: 30
                 Layout.alignment: Qt.AlignHCenter
+                Layout.preferredWidth: deleteAccountContentRect.width - JamiTheme.preferredMarginSize * 2
+
+                text: SettingsAdapter.getAccountBestName()
 
                 font.pointSize: JamiTheme.textFontSize
                 font.kerning: true
                 font.bold: true
-                horizontalAlignment: Text.AlignHCenter
-                wrapMode: Text.Wrap
 
-                text: SettingsAdapter.getAccountBestName()
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+                wrapMode: Text.Wrap
             }
 
             Label {
                 id: labelAccountHash
 
                 Layout.alignment: Qt.AlignHCenter
-                Layout.preferredHeight: 30
+                Layout.preferredWidth: deleteAccountContentRect.width - JamiTheme.preferredMarginSize * 2
+
+                text: SettingsAdapter.getCurrentAccount_Profile_Info_Uri()
 
                 font.pointSize: JamiTheme.textFontSize
                 font.kerning: true
+
                 horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
                 wrapMode: Text.Wrap
-                text: SettingsAdapter.getCurrentAccount_Profile_Info_Uri()
             }
 
             Label {
                 id: labelWarning
 
-                Layout.topMargin: 5
-                Layout.preferredHeight: 30
-                Layout.fillWidth: true
+                visible: !isSIP
+
                 Layout.alignment: Qt.AlignHCenter
+                Layout.preferredWidth: deleteAccountContentRect.width - JamiTheme.preferredMarginSize * 2
 
-                visible: ! isSIP
-
-                wrapMode: Text.Wrap
                 text: JamiStrings.deleteAccountInfos
+
                 font.pointSize: JamiTheme.textFontSize
                 font.kerning: true
+
                 horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+                wrapMode: Text.Wrap
+
                 color: "red"
             }
 
             RowLayout {
-                Layout.topMargin: JamiTheme.preferredMarginSize / 2
-                Layout.bottomMargin: 5
-                Layout.preferredHeight: 30
+                spacing: 16
                 Layout.fillWidth: true
-                Layout.alignment: Qt.AlignHCenter
+                Layout.alignment: Qt.AlignCenter
 
-                HoverableRadiusButton {
-                    id: btnDeleteAccept
+                MaterialButton {
+                    id: btnDelete
 
-                    Layout.fillWidth: true
-                    Layout.maximumWidth: 130
+                    Layout.alignment: Qt.AlignHCenter
+                    Layout.preferredWidth: JamiTheme.preferredFieldWidth / 2 - 8
+                    Layout.preferredHeight: JamiTheme.preferredFieldHeight
 
-                    radius: height / 2
+                    color: JamiTheme.buttonTintedRed
+                    hoveredColor: JamiTheme.buttonTintedRedHovered
+                    pressedColor: JamiTheme.buttonTintedRedPressed
+                    outlined: true
 
                     text: qsTr("Delete")
-                    font.pointSize: JamiTheme.buttonFontSize
-                    font.kerning: true
 
                     onClicked: {
                         AccountAdapter.deleteCurrentAccount()
-                        accept()
+                        accepted()
+                        close()
                     }
                 }
 
-                HoverableButtonTextItem {
-                    id: btnDeleteCancel
+                MaterialButton {
+                    id: btnCancel
 
-                    Layout.leftMargin: 20
-                    Layout.fillWidth: true
-                    Layout.maximumWidth: 130
+                    Layout.alignment: Qt.AlignHCenter
+                    Layout.preferredWidth: JamiTheme.preferredFieldWidth / 2 - 8
+                    Layout.preferredHeight: JamiTheme.preferredFieldHeight
 
-                    backgroundColor: "red"
-                    onEnterColor: Qt.rgba(150 / 256, 0, 0, 0.7)
-                    onDisabledBackgroundColor: Qt.rgba(
-                                                   255 / 256,
-                                                   0, 0, 0.8)
-                    onPressColor: backgroundColor
-                    textColor: "white"
-
-                    radius: height / 2
+                    color: JamiTheme.buttonTintedBlack
+                    hoveredColor: JamiTheme.buttonTintedBlackHovered
+                    pressedColor: JamiTheme.buttonTintedBlackPressed
+                    outlined: true
 
                     text: qsTr("Cancel")
-                    font.pointSize: JamiTheme.buttonFontSize
-                    font.kerning: true
 
                     onClicked: {
-                        reject()
+                        close()
                     }
                 }
             }

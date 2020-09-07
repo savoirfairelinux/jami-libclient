@@ -55,6 +55,7 @@ Rectangle {
         linkedDevices.updateAndShowDevicesSlot()
         bannedContacts.setVisibility()
         advancedSettings.updateAdvancedAccountInfos()
+        setPasswordButtonText()
     }
 
     function passwordClicked() {
@@ -85,10 +86,28 @@ Rectangle {
         bannedContacts.connectCurrentAccount(false)
     }
 
+
+    function setPasswordButtonText() {
+        var hasPassword = AccountAdapter.hasPassword()
+        passwdPushButton.toolTipText = hasPassword ?
+                    JamiStrings.changeCurrentPassword :
+                    JamiStrings.setAPassword
+
+        passwdPushButton.text = hasPassword ?
+                    JamiStrings.changePassword :
+                    JamiStrings.setPassword
+    }
+
+    MessageBox {
+        id: msgDialog
+
+        onAccepted: {
+            setPasswordButtonText()
+        }
+    }
+
     DeleteAccountDialog {
         id: deleteAccountDialog
-
-        anchors.centerIn: parent.Center
 
         onAccepted: {
             AccountAdapter.setSelectedConvId()
@@ -104,10 +123,7 @@ Rectangle {
     PasswordDialog {
         id: passwordDialog
 
-        anchors.centerIn: parent.Center
-
         onDoneSignal: {
-            var success = (code === successCode)
             var title = success ? qsTr("Success") : qsTr("Error")
             var iconMode = success ? StandardIcon.Information : StandardIcon.Critical
 
@@ -125,7 +141,7 @@ Rectangle {
                     break
             }
 
-            MessageBox.openWithParameters(title,info, iconMode, StandardButton.Ok)
+            msgDialog.openWithParameters(title,info, iconMode, StandardButton.Ok)
         }
     }
 
@@ -152,7 +168,7 @@ Rectangle {
                     var title = isSuccessful ? qsTr("Success") : qsTr("Error")
                     var iconMode = isSuccessful ? StandardIcon.Information : StandardIcon.Critical
                     var info = isSuccessful ? JamiStrings.backupSuccessful : JamiStrings.backupFailed
-                    MessageBox.openWithParameters(title,info, iconMode, StandardButton.Ok)
+                    msgDialog.openWithParameters(title,info, iconMode, StandardButton.Ok)
                 }
             }
         }

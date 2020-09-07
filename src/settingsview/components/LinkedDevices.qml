@@ -79,15 +79,11 @@ ColumnLayout {
     LinkDeviceDialog {
         id: linkDeviceDialog
 
-        anchors.centerIn: parent.Center
-
         onAccepted: updateAndShowDevicesSlot()
     }
 
     RevokeDevicePasswordDialog{
         id: revokeDevicePasswordDialog
-
-        anchors.centerIn: parent.Center
 
         onRevokeDeviceWithPassword: revokeDeviceWithIDAndPassword(idOfDevice, password)
     }

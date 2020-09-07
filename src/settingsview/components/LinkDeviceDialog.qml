@@ -1,6 +1,7 @@
 /*
  * Copyright (C) 2020 by Savoir-faire Linux
  * Author: Yang Wang <yang.wang@savoirfairelinux.com>
+ * Author: Albert Babí <albert.babi@savoirfairelinux.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,20 +24,21 @@ import QtQuick.Controls.Styles 1.4
 import net.jami.Models 1.0
 import net.jami.Adapters 1.0
 
+import "../../constant"
 import "../../commoncomponents"
 
-Dialog {
+BaseDialog {
     id: root
 
     function openLinkDeviceDialog() {
         infoLabel.text = JamiStrings.pinTimerInfos
         passwordEdit.clear()
-        root.open()
         if(AccountAdapter.hasPassword()) {
             stackedWidget.currentIndex = 0
         } else {
             setGeneratingPage()
         }
+        open()
     }
 
     function setGeneratingPage() {
@@ -67,7 +69,7 @@ Dialog {
         }
     }
 
-    Timer{
+    Timer {
         id: timeOut
 
         repeat: false
@@ -78,17 +80,17 @@ Dialog {
         }
     }
 
-    function setExportPage(status, pin){
+    function setExportPage(status, pin) {
         timeOut.stop()
 
-        if(status === NameDirectory.ExportOnRingStatus.SUCCESS) {
-            infoLabel.isSucessState = true
+        if (status === NameDirectory.ExportOnRingStatus.SUCCESS) {
+            infoLabel.success = true
             yourPinLabel.visible = true
             exportedPIN.visible = true
             infoLabel.text = JamiStrings.pinTimerInfos
             exportedPIN.text = pin
         } else {
-            infoLabel.isSucessState = false
+            infoLabel.success = false
             yourPinLabel.visible = false
             exportedPIN.visible = false
 
@@ -110,7 +112,11 @@ Dialog {
         stackedWidget.currentIndex = 2
     }
 
+    signal accepted
+
     property int exportTimeout : 20000
+
+    title: JamiStrings.addDevice
 
     Connections {
         target: NameDirectory
@@ -120,63 +126,31 @@ Dialog {
         }
     }
 
-    visible: false
-
-    x: (parent.width - width) / 2
-    y: (parent.height - height) / 2
-
-    header : Rectangle {
-        width: parent.width
-        height: 64
-        color: "transparent"
-        Text {
-            anchors.fill: parent
-            anchors.leftMargin: JamiTheme.preferredMarginSize
-            anchors.topMargin: JamiTheme.preferredMarginSize
-
-            text: JamiStrings.linkAnotherDevice
-            font.pointSize: JamiTheme.headerFontSize
-            wrapMode: Text.Wrap
-        }
-    }
-
-    onClosed: {
-        if(infoLabel.isSucessState) {
-            accept()
-        } else {
-            reject()
-        }
-    }
-
     contentItem: Rectangle {
-        implicitWidth: 350
-        implicitHeight: 210
+        id: linkDeviceContentRect
+
+        implicitWidth: JamiTheme.preferredDialogWidth
+        implicitHeight: JamiTheme.preferredDialogHeight
 
         StackLayout {
             id: stackedWidget
+            anchors.centerIn: parent
             anchors.fill: parent
-            currentIndex: 2
+            anchors.margins: JamiTheme.preferredMarginSize
 
+            // Index = 0
             Rectangle {
-                id: passwordConfirmPage
-
                 Layout.fillWidth: true
                 Layout.fillHeight: true
 
-                Layout.alignment: Qt.AlignCenter
-                Layout.leftMargin: JamiTheme.preferredMarginSize
-                Layout.rightMargin: JamiTheme.preferredMarginSize
-                Layout.bottomMargin: JamiTheme.preferredMarginSize
-
                 ColumnLayout {
-                    anchors.fill: parent
+                    anchors.centerIn: parent
+                    spacing: 16
 
                     Label {
-                        Layout.topMargin: JamiTheme.preferredMarginSize
-                        Layout.fillWidth: true
                         Layout.alignment: Qt.AlignHCenter
-                        wrapMode: Text.Wrap
-                        text: qsTr("Enter your account password")
+                        text: JamiStrings.enterAccountPassword
+                        font.pointSize: JamiTheme.textFontSize
                         font.kerning: true
                         horizontalAlignment: Text.AlignHCenter
                         verticalAlignment: Text.AlignVCenter
@@ -185,84 +159,85 @@ Dialog {
                     MaterialLineEdit {
                         id: passwordEdit
 
+                        Layout.alignment: Qt.AlignCenter
+                        Layout.preferredWidth: JamiTheme.preferredFieldWidth
                         Layout.preferredHeight: 48
-                        Layout.fillWidth: true
-                        Layout.alignment: Qt.AlignHCenter
-                        Layout.maximumWidth: 300
 
                         echoMode: TextInput.Password
                         horizontalAlignment: Text.AlignLeft
                         verticalAlignment: Text.AlignVCenter
 
-                        placeholderText: qsTr("Password")
+                        placeholderText: JamiStrings.enterCurrentPassword
+
+                        borderColorMode: InfoLineEdit.NORMAL
+
+                        onTextChanged: {
+                            btnConfirm.enabled = text.length > 0
+                        }
                     }
 
                     RowLayout {
-                        Layout.topMargin: JamiTheme.preferredMarginSize
-                        Layout.preferredHeight: 30
+                        Layout.alignment: Qt.AlignCenter
                         Layout.fillWidth: true
-                        Layout.alignment: Qt.AlignHCenter
+                        spacing: 16
 
-                        HoverableRadiusButton {
-                            id: btnPasswordOk
+                        MaterialButton {
+                            id: btnConfirm
 
-                            Layout.preferredWidth: 130
+                            Layout.alignment: Qt.AlignHCenter
+                            Layout.preferredWidth: JamiTheme.preferredFieldWidth / 2 - 8
+                            Layout.preferredHeight: JamiTheme.preferredFieldHeight
 
-                            radius: height / 2
+                            color: enabled? JamiTheme.buttonTintedBlack : JamiTheme.buttonTintedGrey
+                            hoveredColor: JamiTheme.buttonTintedBlackHovered
+                            pressedColor: JamiTheme.buttonTintedBlackPressed
+                            outlined: true
+                            enabled: false
 
                             text: qsTr("Register")
-                            font.pointSize: 10
-                            font.kerning: true
 
                             onClicked: {
                                 setGeneratingPage()
                             }
                         }
 
-                        HoverableButtonTextItem {
+                        MaterialButton {
                             id: btnCancel
 
-                            Layout.leftMargin: 20
-                            Layout.preferredWidth: 130
+                            Layout.alignment: Qt.AlignHCenter
+                            Layout.preferredWidth: JamiTheme.preferredFieldWidth / 2 - 8
+                            Layout.preferredHeight: JamiTheme.preferredFieldHeight
 
-                            backgroundColor: "red"
-                            onEnterColor: Qt.rgba(150 / 256, 0, 0, 0.7)
-                            onDisabledBackgroundColor: Qt.rgba(
-                                                           255 / 256,
-                                                           0, 0, 0.8)
-                            onPressColor: backgroundColor
-                            textColor: "white"
-
-                            radius: height / 2
+                            color: JamiTheme.buttonTintedBlack
+                            hoveredColor: JamiTheme.buttonTintedBlackHovered
+                            pressedColor: JamiTheme.buttonTintedBlackPressed
+                            outlined: true
+                            enabled: true
 
                             text: qsTr("Cancel")
-                            font.pointSize: 10
-                            font.kerning: true
 
                             onClicked: {
-                                reject()
+                                close()
                             }
                         }
                     }
                 }
             }
 
+            // Index = 1
             Rectangle {
-                id: exportingPage
-
                 Layout.fillWidth: true
                 Layout.fillHeight: true
 
                 ColumnLayout {
-                    anchors.fill: parent
                     anchors.centerIn: parent
+                    spacing: 16
 
                     Label {
-                        Layout.alignment: Qt.AlignLeft
-                        Layout.leftMargin: JamiTheme.preferredMarginSize
-
-                        wrapMode: Text.Wrap
-                        text: qsTr("Exporting Account")
+                        Layout.alignment: Qt.AlignCenter
+                        text: JamiStrings.backupAccount
+                        font.pointSize: JamiTheme.headerFontSize
+                        font.kerning: true
                         horizontalAlignment: Text.AlignLeft
                         verticalAlignment: Text.AlignVCenter
                     }
@@ -270,18 +245,16 @@ Dialog {
                     Label {
                         id: exportingSpinner
 
-                        Layout.alignment: Qt.AlignHCenter
-                        Layout.preferredWidth: parent.width - JamiTheme.preferredMarginSize * 2
+                        Layout.alignment: Qt.AlignCenter
+
+                        Layout.preferredWidth: 96
+                        Layout.preferredHeight: 96
 
                         background: Rectangle {
-                            anchors.fill: parent
                             AnimatedImage {
                                 id: spinnerMovie
-
                                 anchors.fill: parent
-
                                 source: "qrc:/images/jami_eclipse_spinner.gif"
-
                                 playing: exportingSpinner.visible
                                 paused: false
                                 fillMode: Image.PreserveAspectFit
@@ -292,28 +265,27 @@ Dialog {
                 }
             }
 
+            // Index = 2
             Rectangle {
-                id: exportedPage
-
                 Layout.fillWidth: true
                 Layout.fillHeight: true
 
                 ColumnLayout {
-                    anchors.fill: parent
                     anchors.centerIn: parent
+                    spacing: 16
 
                     RowLayout {
-                        Layout.alignment: Qt.AlignLeft
-                        Layout.preferredWidth: parent.width - JamiTheme.preferredMarginSize * 2
-                        Layout.leftMargin: JamiTheme.preferredMarginSize
+                        Layout.alignment: Qt.AlignCenter
+                        Layout.fillWidth: true
+                        Layout.margins: JamiTheme.preferredMarginSize
+                        spacing: 16
 
                         Label {
                             id: yourPinLabel
 
-                            Layout.alignment: Qt.AlignLeft
-
-                            wrapMode: Text.Wrap
-                            text: "Your PIN is:"
+                            Layout.alignment: Qt.AlignHCenter
+                            text: qsTr("Your PIN is:")
+                            font.pointSize: JamiTheme.headerFontSize
                             font.kerning: true
                             horizontalAlignment: Text.AlignHCenter
                             verticalAlignment: Text.AlignVCenter
@@ -321,12 +293,9 @@ Dialog {
 
                         Label {
                             id: exportedPIN
-
-                            Layout.leftMargin: JamiTheme.preferredMarginSize / 2
-
-                            wrapMode: Text.Wrap
-                            text: "PIN"
-                            font.pointSize: JamiTheme.menuFontSize
+                            Layout.alignment: Qt.AlignHCenter
+                            text: qsTr("PIN")
+                            font.pointSize: JamiTheme.headerFontSize
                             font.kerning: true
                             horizontalAlignment: Text.AlignHCenter
                             verticalAlignment: Text.AlignVCenter
@@ -336,29 +305,27 @@ Dialog {
                     Label {
                         id: infoLabel
 
-                        property bool isSucessState: false
-                        property int borderWidth : isSucessState? 1 : 0
-                        property int borderRadius : isSucessState? 15 : 0
-                        property string backgroundColor : isSucessState? "whitesmoke" : "transparent"
-                        property string borderColor : isSucessState? "lightgray" : "transparent"
-                        color: isSucessState ? "#2b5084" : "black"
-                        padding: isSucessState ? 8 : 0
-
-                        Layout.alignment: Qt.AlignLeft
-                        Layout.leftMargin: JamiTheme.preferredMarginSize
-                        Layout.preferredWidth: parent.width - JamiTheme.preferredMarginSize * 2
+                        property bool success: false
+                        property int borderWidth : success? 1 : 0
+                        property int borderRadius : success? 15 : 0
+                        property string backgroundColor : success? "whitesmoke" : "transparent"
+                        property string borderColor : success? "lightgray" : "transparent"
+                        color: success ? "#2b5084" : "black"
+                        padding: success ? 8 : 0
 
                         wrapMode: Text.Wrap
-                        text: JamiStrings.pinTimerInfos
-                        font.pointSize: 8
+                        text: qsTr("This pin and the account password should be entered in your device within 10 minutes.")
+                        font.pointSize: JamiTheme.textFontSize
                         font.kerning: true
 
+                        Layout.maximumWidth: linkDeviceContentRect.width - JamiTheme.preferredMarginSize * 2
+
+                        Layout.alignment: Qt.AlignCenter
                         horizontalAlignment: Text.AlignHCenter
                         verticalAlignment: Text.AlignVCenter
 
                         background: Rectangle{
                             id: infoLabelBackground
-
                             anchors.fill: parent
                             border.width: infoLabel.borderWidth
                             border.color: infoLabel.borderColor
@@ -367,29 +334,26 @@ Dialog {
                         }
                     }
 
-                    RowLayout {
-                        Layout.alignment: Qt.AlignRight
-                        Layout.fillWidth: true
+                    MaterialButton {
+                        id: btnCloseExportDialog
 
-                        Button {
-                            id: btnCloseExportDialog
+                        Layout.alignment: Qt.AlignHCenter
+                        Layout.preferredWidth: JamiTheme.preferredFieldWidth / 2 - 8
+                        Layout.preferredHeight: JamiTheme.preferredFieldHeight
 
-                            contentItem: Text {
-                                text: JamiStrings.close
-                                color: JamiTheme.buttonTintedBlue
+                        color: enabled? JamiTheme.buttonTintedBlack : JamiTheme.buttonTintedGrey
+                        hoveredColor: JamiTheme.buttonTintedBlackHovered
+                        pressedColor: JamiTheme.buttonTintedBlackPressed
+                        outlined: true
+                        enabled: true
+
+                        text: JamiStrings.close
+
+                        onClicked: {
+                            if (infoLabel.success) {
+                                accepted()
                             }
-
-                            background: Rectangle {
-                                color: "transparent"
-                            }
-
-                            onClicked: {
-                                if(infoLabel.isSucessState) {
-                                    accept()
-                                } else {
-                                    reject()
-                                }
-                            }
+                            close()
                         }
                     }
                 }
@@ -397,3 +361,4 @@ Dialog {
         }
     }
 }
+

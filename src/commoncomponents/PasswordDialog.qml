@@ -26,8 +26,7 @@ import net.jami.Adapters 1.0
 import "../constant"
 
 // PasswordDialog for changing password and exporting account
-
-Dialog {
+BaseDialog {
     id: root
 
     enum PasswordEnteringPurpose {
@@ -35,38 +34,13 @@ Dialog {
         ExportAccount,
         SetPassword
     }
-    readonly property int successCode: 200
-    signal doneSignal(int code, int currentPurpose)
 
     property string path: ""
     property int purpose: PasswordDialog.ChangePassword
 
-    header : Rectangle {
-        id: dialogHeader
-        width: parent.width
-        height: 64
-        color: "transparent"
-        Text {
-            anchors.fill: parent
-            anchors.leftMargin: JamiTheme.preferredMarginSize
-            anchors.topMargin: JamiTheme.preferredMarginSize
+    signal doneSignal(bool success, int currentPurpose)
 
-            text: {
-                switch(purpose){
-                case PasswordDialog.ExportAccount:
-                    return JamiStrings.enterPassword
-                case PasswordDialog.ChangePassword:
-                    return qsTr("Changing password")
-                case PasswordDialog.SetPassword:
-                    return qsTr("Set password")
-                }
-            }
-            font.pointSize: JamiTheme.headerFontSize
-            wrapMode: Text.Wrap
-        }
-    }
-
-    function openDialog(purposeIn, exportPathIn = ""){
+    function openDialog(purposeIn, exportPathIn = "") {
         purpose = purposeIn
         path = exportPathIn
         currentPasswordEdit.clear()
@@ -74,40 +48,22 @@ Dialog {
         confirmPasswordEdit.borderColorMode = InfoLineEdit.NORMAL
         passwordEdit.clear()
         confirmPasswordEdit.clear()
-        root.open()
-    }
-
-    function haveDone(code, currentPurpose) {
-        done(code)
-        doneSignal(code, currentPurpose)
+        validatePassword()
+        open()
     }
 
     function validatePassword() {
-        var acceptablePassword =  (passwordEdit.text === confirmPasswordEdit.text)
-        btnChangePasswordConfirm.enabled = acceptablePassword
-
-        if (acceptablePassword) {
-            passwordEdit.borderColorMode = InfoLineEdit.RIGHT
-            confirmPasswordEdit.borderColorMode = InfoLineEdit.RIGHT
-            return
-        }
-
-        passwordEdit.borderColorMode = InfoLineEdit.ERROR
-        confirmPasswordEdit.borderColorMode = InfoLineEdit.ERROR
-    }
-
-    Timer{
-        id: timerToOperate
-
-        interval: 200
-        repeat: false
-
-        onTriggered: {
-            if ((purpose === PasswordDialog.ChangePassword) || (purpose === PasswordDialog.SetPassword)) {
-                savePasswordQML()
-            } else if(purpose === PasswordDialog.ExportAccount) {
-                exportAccountQML()
-            }
+        switch (purpose) {
+        case PasswordDialog.ExportAccount:
+            btnConfirm.enabled = currentPasswordEdit.length > 0
+            break
+        case PasswordDialog.SetPassword:
+            btnConfirm.enabled = passwordEdit.length > 0 &&
+                    passwordEdit.text === confirmPasswordEdit.text
+            break
+        default:
+            btnConfirm.enabled = currentPasswordEdit.length > 0 &&
+                    passwordEdit.text === confirmPasswordEdit.text
         }
     }
 
@@ -119,13 +75,8 @@ Dialog {
                         path,
                         currentPasswordEdit.text)
         }
-
-        if (success) {
-            haveDone(successCode, root.purpose)
-        } else {
-            btnChangePasswordConfirm.enabled = false
-            currentPasswordEdit.borderColorMode = InfoLineEdit.ERROR
-        }
+        doneSignal(success, purpose)
+        close()
     }
 
     function savePasswordQML() {
@@ -136,134 +87,144 @@ Dialog {
                     passwordEdit.text)
         if (success) {
             AccountAdapter.setArchiveHasPassword(passwordEdit.text.length !== 0)
-            haveDone(successCode, passwordDialog.purpose)
-        } else {
-            currentPasswordEdit.borderColorMode = InfoLineEdit.ERROR
-            btnChangePasswordConfirm.enabled = false
+        }
+        doneSignal(success, purpose)
+        close()
+    }
+
+    title: {
+        switch(purpose){
+        case PasswordDialog.ExportAccount:
+            return JamiStrings.enterPassword
+        case PasswordDialog.ChangePassword:
+            return JamiStrings.changePassword
+        case PasswordDialog.SetPassword:
+            return JamiStrings.setPassword
         }
     }
 
-    visible: false
-    x: (parent.width - width) / 2
-    y: (parent.height - height) / 2
+    Timer {
+        id: timerToOperate
+
+        interval: 200
+        repeat: false
+
+        onTriggered: {
+            if (purpose === PasswordDialog.ExportAccount) {
+                exportAccountQML()
+            } else {
+                savePasswordQML()
+            }
+        }
+    }
 
     contentItem: Rectangle {
-        implicitHeight: contentLayout.implicitHeight + dialogHeader.height + JamiTheme.preferredMarginSize
-        implicitWidth: 350
+        id: passwordDialogContentRect
+
+        implicitWidth: JamiTheme.preferredDialogWidth
+        implicitHeight: JamiTheme.preferredDialogHeight
 
         ColumnLayout {
-            id: contentLayout
+            anchors.centerIn: parent
             anchors.fill: parent
+            anchors.margins: JamiTheme.preferredMarginSize
 
-            ColumnLayout {
+            MaterialLineEdit {
+                id: currentPasswordEdit
+
                 Layout.alignment: Qt.AlignHCenter
+                Layout.preferredWidth: JamiTheme.preferredFieldWidth
+                Layout.preferredHeight: visible ? 48 : 0
 
-                MaterialLineEdit {
-                    id: currentPasswordEdit
+                visible: purpose === PasswordDialog.ChangePassword ||
+                         purpose === PasswordDialog.ExportAccount
+                echoMode: TextInput.Password
+                placeholderText: JamiStrings.enterCurrentPassword
 
-                    Layout.maximumHeight: visible ?
-                                            48 :
-                                            0
-                    Layout.fillWidth: true
-
-                    visible: purpose === PasswordDialog.ChangePassword || purpose === PasswordDialog.ExportAccount
-                    echoMode: TextInput.Password
-                    horizontalAlignment: Text.AlignLeft
-                    verticalAlignment: Text.AlignVCenter
-
-                    placeholderText: JamiStrings.enterCurrentPassword
-
-                    onTextChanged: {
-                        if (purpose === PasswordDialog.ChangePassword) {
-                            validatePassword()
-                        }
-
-                        if (currentPasswordEdit.text.length == 0) {
-                            btnChangePasswordConfirm.enabled = false
-                        } else {
-                            btnChangePasswordConfirm.enabled = true
-                        }
-                    }
+                onTextChanged: {
+                    validatePassword()
                 }
+            }
 
-                MaterialLineEdit {
-                    id: passwordEdit
+            MaterialLineEdit {
+                id: passwordEdit
 
-                    Layout.fillWidth: true
-                    Layout.topMargin: JamiTheme.preferredMarginSize / 2
-                    fieldLayoutHeight: 48
+                Layout.alignment: Qt.AlignHCenter
+                Layout.preferredWidth: JamiTheme.preferredFieldWidth
+                Layout.preferredHeight: visible ? 48 : 0
 
-                    visible: purpose === PasswordDialog.ChangePassword || purpose === PasswordDialog.SetPassword
-                    echoMode: TextInput.Password
-                    horizontalAlignment: Text.AlignLeft
-                    verticalAlignment: Text.AlignVCenter
+                visible: purpose === PasswordDialog.ChangePassword ||
+                         purpose === PasswordDialog.SetPassword
+                echoMode: TextInput.Password
 
-                    placeholderText: JamiStrings.enterNewPassword
+                placeholderText: JamiStrings.enterNewPassword
 
-                    onTextChanged: {
-                        validatePassword()
-                    }
+                onTextChanged: {
+                    validatePassword()
                 }
+            }
 
-                MaterialLineEdit {
-                    id: confirmPasswordEdit
+            MaterialLineEdit {
+                id: confirmPasswordEdit
 
-                    Layout.fillWidth: true
-                    Layout.topMargin: JamiTheme.preferredMarginSize / 2
-                    fieldLayoutHeight: 48
-                    layoutFillwidth: true
+                Layout.alignment: Qt.AlignHCenter
+                Layout.preferredWidth: JamiTheme.preferredFieldWidth
+                Layout.preferredHeight: visible ? 48 : 0
 
-                    visible: purpose === PasswordDialog.ChangePassword || purpose === PasswordDialog.SetPassword
-                    echoMode: TextInput.Password
-                    horizontalAlignment: Text.AlignLeft
-                    verticalAlignment: Text.AlignVCenter
+                visible: purpose === PasswordDialog.ChangePassword ||
+                         purpose === PasswordDialog.SetPassword
+                echoMode: TextInput.Password
 
-                    placeholderText: JamiStrings.confirmNewPassword
+                placeholderText: JamiStrings.confirmNewPassword
 
-                    onTextChanged: {
-                        validatePassword()
-                    }
+                onTextChanged: {
+                    validatePassword()
                 }
             }
 
             RowLayout {
-                Layout.topMargin: JamiTheme.preferredMarginSize / 2
-                Layout.alignment: Qt.AlignRight
+                spacing: 16
+                Layout.fillWidth: true
+                Layout.alignment: Qt.AlignCenter
 
-                Button {
-                    id: btnChangePasswordConfirm
+                MaterialButton {
+                    id: btnConfirm
 
-                    contentItem: Text {
-                        text: JamiStrings.confirm
-                        color: JamiTheme.buttonTintedBlue
-                        font.capitalization: Font.AllUppercase
-                    }
+                    Layout.alignment: Qt.AlignHCenter
+                    Layout.preferredWidth: JamiTheme.preferredFieldWidth / 2 - 8
+                    Layout.preferredHeight: JamiTheme.preferredFieldHeight
 
-                    background: Rectangle {
-                        color: "transparent"
-                    }
+                    color: enabled? JamiTheme.buttonTintedBlack : JamiTheme.buttonTintedGrey
+                    hoveredColor: JamiTheme.buttonTintedBlackHovered
+                    pressedColor: JamiTheme.buttonTintedBlackPressed
+                    outlined: true
+                    enabled: purpose === PasswordDialog.SetPassword
+
+                    text: (purpose === PasswordDialog.ExportAccount) ? JamiStrings.exportAccount :
+                                                                      JamiStrings.change
 
                     onClicked: {
+                        btnConfirm.enabled = false
                         timerToOperate.restart()
                     }
                 }
 
+                MaterialButton {
+                    id: btnCancel
 
-                Button {
-                    id: btnChangePasswordCancel
-                    Layout.leftMargin: JamiTheme.preferredMarginSize / 2
+                    Layout.alignment: Qt.AlignHCenter
+                    Layout.preferredWidth: JamiTheme.preferredFieldWidth / 2 - 8
+                    Layout.preferredHeight: JamiTheme.preferredFieldHeight
 
-                    contentItem: Text {
-                        text: qsTr("CANCEL")
-                        color: JamiTheme.buttonTintedBlue
-                    }
+                    color: JamiTheme.buttonTintedBlack
+                    hoveredColor: JamiTheme.buttonTintedBlackHovered
+                    pressedColor: JamiTheme.buttonTintedBlackPressed
+                    outlined: true
 
-                    background: Rectangle {
-                        color: "transparent"
-                    }
+                    text: qsTr("Cancel")
 
                     onClicked: {
-                        root.reject()
+                        close()
                     }
                 }
             }

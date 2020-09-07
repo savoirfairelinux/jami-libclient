@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2020 by Savoir-faire Linux
- * Author: Albert Babí <albert.babig@savoirfairelinux.com>
+ * Author: Albert Babí <albert.babi@savoirfairelinux.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,38 +16,13 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import QtQuick 2.14
-import QtQuick.Controls 1.4
+import QtQuick 2.15
+import QtQuick.Dialogs 1.2
 
 import "../constant"
 
-Label {
+Dialog {
     id: root
 
-    property string eText : ""
-    property int maxWidth: 100
-    property int fontSize: JamiTheme.textFontSize
-    property int textWidth: 0
-
-    font.pointSize: fontSize
-    font.kerning: true
-
-    text: elided.elidedText
-
-    horizontalAlignment: Text.AlignLeft
-    verticalAlignment: Text.AlignVCenter
-    color: "black"
-
-    TextMetrics {
-        id: elided
-
-        font: root.font
-        elide: Text.ElideRight
-        elideWidth: maxWidth
-        text: eText
-
-        onTextChanged: {
-            textWidth = elided.boundingRect.width
-        }
-    }
+    visible: false
 }

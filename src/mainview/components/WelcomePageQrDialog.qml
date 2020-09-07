@@ -17,41 +17,65 @@
  */
 
 import QtQuick 2.14
-import QtQuick.Controls 2.14
+import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.14
 import net.jami.Models 1.0
 import net.jami.Adapters 1.0
 
-Dialog {
-    id: userQrImageDialog
+import "../../constant"
+import "../../commoncomponents"
 
-    // When dialog is opened, trigger mainViewWindow overlay which is defined in overlay.model.
-    // (model : true is necessary)
-    modal: true
+BaseDialog {
+    id: root
 
-    //Content height + margin.
-    contentHeight: userQrImage.height + 30
+    title: JamiStrings.accountQr
 
-    Image {
-        id: userQrImage
+    contentItem: Rectangle {
+        id: content
 
-        anchors.centerIn: parent
+        implicitWidth: userQrImage.width + JamiTheme.preferredMarginSize * 2
+        implicitHeight: 352 // Qr + btn + margins
 
-        width: 256
-        height: 256
-        smooth: false
+        ColumnLayout {
 
-        fillMode: Image.PreserveAspectFit
-        source: {
-            if (AccountAdapter.currentAccountId &&
-                    AccountAdapter.currentAccountType === Profile.Type.RING)
-                return "image://qrImage/account_" + AccountAdapter.currentAccountId
-            return ""
+            anchors.centerIn: parent
+            anchors.fill: parent
+
+            Image {
+                id: userQrImage
+
+                Layout.alignment: Qt.AlignCenter
+                Layout.preferredWidth: 256
+                Layout.preferredHeight: 256
+
+                smooth: false
+
+                fillMode: Image.PreserveAspectFit
+                source: {
+                    if (AccountAdapter.currentAccountId)
+                        return "image://qrImage/account_" + AccountAdapter.currentAccountId
+                    return ""
+                }
+            }
+
+            MaterialButton {
+                id: btnClose
+
+                Layout.alignment: Qt.AlignHCenter
+                Layout.preferredWidth: JamiTheme.preferredFieldWidth / 2
+                Layout.preferredHeight: JamiTheme.preferredFieldHeight
+                Layout.bottomMargin: JamiTheme.preferredMarginSize
+
+                text: JamiStrings.close
+                color: enabled? JamiTheme.buttonTintedBlack : JamiTheme.buttonTintedGrey
+                hoveredColor: JamiTheme.buttonTintedBlackHovered
+                pressedColor: JamiTheme.buttonTintedBlackPressed
+                outlined: true
+
+                onClicked: {
+                    close()
+                }
+            }
         }
-    }
-
-    background: Rectangle {
-        border.width: 0
-        radius: 10
     }
 }

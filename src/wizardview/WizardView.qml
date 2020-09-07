@@ -146,15 +146,11 @@ Rectangle {
     PasswordDialog {
         id: passwordDialog
 
-        anchors.centerIn: parent.Center
-
         visible: false
         purpose: PasswordDialog.ExportAccount
 
         onDoneSignal: {
             if (currentPurpose === passwordDialog.ExportAccount) {
-                var success = (code === successCode)
-
                 var title = success ? qsTr("Success") : qsTr("Error")
                 var info = success ? JamiStrings.backupSuccessful : JamiStrings.backupFailed
 

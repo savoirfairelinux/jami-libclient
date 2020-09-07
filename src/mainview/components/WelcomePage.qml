@@ -1,3 +1,4 @@
+
 /*
  * Copyright (C) 2020 by Savoir-faire Linux
  * Author: Mingrui Zhang <mingrui.zhang@savoirfairelinux.com>
@@ -26,10 +27,8 @@ import "../../commoncomponents"
 
 Rectangle {
     id: welcomeRect
-
-    anchors.fill: parent
-
     property int buttonPreferredSize: 30
+    anchors.fill: parent
 
     Rectangle {
         id: welcomeRectComponentsGroup
@@ -48,7 +47,7 @@ Rectangle {
                 Layout.alignment: Qt.AlignCenter
                 Layout.preferredWidth: welcomeRectComponentsGroup.width
                 Layout.preferredHeight: 100
-                Layout.topMargin: 50
+                Layout.topMargin: 32
                 Layout.bottomMargin: 10
 
                 fillMode: Image.PreserveAspectFit
@@ -61,7 +60,7 @@ Rectangle {
 
                 Layout.alignment: Qt.AlignCenter
                 Layout.preferredWidth: welcomeRectComponentsGroup.width
-                Layout.preferredHeight: 100
+                Layout.preferredHeight: 80
                 Layout.bottomMargin: 5
 
                 wrapMode: Text.WordWrap
@@ -122,6 +121,7 @@ Rectangle {
                             elide: Qt.ElideMiddle
                         }
                     }
+
                     HoverableButton {
                         id: copyRegisterednameButton
                         Layout.alignment: Qt.AlignCenter
@@ -139,14 +139,17 @@ Rectangle {
         }
     }
 
-
     Button {
+        id: btnAbout
+
         anchors.bottom: parent.bottom
+        anchors.bottomMargin: 10
         anchors.horizontalCenter: parent.horizontalCenter
+
         background: Rectangle {
             color: "transparent"
         }
-        anchors.bottomMargin: 12
+
         contentItem: Text {
             text: qsTr("About Jami")
             color: "grey"

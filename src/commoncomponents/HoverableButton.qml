@@ -18,9 +18,8 @@
  */
 import QtQuick 2.14
 import QtQuick.Controls 2.14
-import net.jami.Models 1.0
 import QtGraphicalEffects 1.15
-
+import "../constant"
 
 // HoverableButton contains the following configurable properties:
 // 1. Color changes on different button state

@@ -42,7 +42,7 @@ Rectangle {
         connectBtn.spinnerTriggered = false
         passwordFromBackupEdit.clear()
         errorText = ""
-        fileImportBtnText = JamiString.archive
+        fileImportBtnText = JamiStrings.archive
     }
 
     function errorOccured(errorMessage) {
@@ -63,10 +63,10 @@ Rectangle {
 
         onAccepted: {
             filePath = file
-            if (file.length != 0) {
+            if (file.length !== "") {
                 fileImportBtnText = UtilsAdapter.toFileInfoName(file)
             } else {
-                fileImportBtnText = JamiString.archive
+                fileImportBtnText = JamiStrings.archive
             }
         }
     }

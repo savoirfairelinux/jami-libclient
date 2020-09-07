@@ -34,13 +34,12 @@ Window {
     id: mainViewWindow
 
     property int minWidth: settingsViewPreferredWidth
-    property int minHeight: aboutPopUpDialog.contentHeight
+    property int minHeight: 400
 
     property int mainViewWindowPreferredWidth: 650
     property int mainViewWindowPreferredHeight: 600
     property int sidePanelViewStackPreferredWidth: 250
     property int mainViewStackPreferredWidth: 250
-    property int aboutPopUpPreferredWidth: 400
     property int settingsViewPreferredWidth: 445
     property int onWidthChangedTriggerDistance: 5
 
@@ -461,7 +460,7 @@ Window {
                     callStackView.showIncomingCallPage(AccountAdapter.currentAccountId,
                                                        currentUID)
                 } else {
-                    callStackView.showOutgoingCallPage()
+                    callStackView.showOutgoingCallPage(callState)
                 }
             }
 
@@ -649,20 +648,10 @@ Window {
 
     AboutPopUp {
         id: aboutPopUpDialog
-
-        x: Math.round((mainViewWindow.width - width) / 2)
-        y: Math.round((mainViewWindow.height - height) / 2)
-        width: aboutPopUpPreferredWidth
-        height: aboutPopUpDialog.contentHeight
     }
 
     WelcomePageQrDialog {
         id: qrDialog
-
-        x: Math.round((mainViewWindow.width - width) / 2)
-        y: Math.round((mainViewWindow.height - height) / 2)
-        width: qrDialog.contentHeight
-        height: qrDialog.contentHeight
     }
 
     RecordBox{
@@ -672,11 +661,6 @@ Window {
 
     UserProfile {
         id: userProfile
-
-        x: Math.round((mainViewWindow.width - width) / 2)
-        y: Math.round((mainViewWindow.height - height) / 2)
-        width: Math.max(mainViewWindow.width / 2, aboutPopUpPreferredWidth)
-        height: userProfile.contentHeight
     }
 
     onClosing: {
@@ -771,8 +755,5 @@ Window {
 
     KeyBoardShortcutTable {
         id: shortcutsTable
-
-        x: Math.round((mainViewWindow.width - width) / 2)
-        y: Math.round((mainViewWindow.height - height) / 2)
     }
 }
