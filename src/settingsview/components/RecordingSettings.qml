@@ -1,0 +1,188 @@
+/*
+ * Copyright (C) 2020 by Savoir-faire Linux
+ * Author: Aline Gondim Santos <aline.gondimsantos@savoirfairelinux.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+import QtQuick 2.15
+import QtQuick.Window 2.14
+import QtQuick.Controls 2.15
+import QtQuick.Controls.Universal 2.12
+import QtQuick.Layouts 1.3
+import QtGraphicalEffects 1.14
+import QtQuick.Controls.Styles 1.4
+import net.jami.Models 1.0
+import net.jami.Adapters 1.0
+import Qt.labs.platform 1.1
+import "../../commoncomponents"
+
+ColumnLayout {
+    id:root
+
+    property int itemWidth
+    property string recordPath: SettingsAdapter.getDir_Document()
+
+    onRecordPathChanged: {
+        if(recordPath === "") return
+
+        if(AVModel){
+            AVModel.setRecordPath(recordPath)
+        }
+    }
+
+    FolderDialog {
+        id: recordPathDialog
+
+        title: qsTr("Select A Folder For Your Recordings")
+        currentFolder: StandardPaths.writableLocation(StandardPaths.HomeLocation)
+
+        onAccepted: {
+            var dir = UtilsAdapter.getAbsPath(folder.toString())
+            recordPath = dir
+        }
+    }
+
+    Timer{
+        id: updateRecordQualityTimer
+
+        interval: 500
+
+        onTriggered: AVModel.setRecordQuality(recordQualitySlider.value * 100)
+    }
+
+    ElidedTextLabel {
+        Layout.fillWidth: true
+
+        eText: qsTr("Call Recording")
+        font.pointSize: JamiTheme.headerFontSize
+        maxWidth: width
+    }
+
+    ToggleSwitch {
+        id: alwaysRecordingCheckBox
+        Layout.fillWidth: true
+        Layout.leftMargin: JamiTheme.preferredMarginSize
+
+        checked: AVModel.getAlwaysRecord()
+
+        labelText: qsTr("Always record calls")
+        fontPointSize: JamiTheme.settingsFontSize
+
+        onSwitchToggled: AVModel.setAlwaysRecord(checked)
+    }
+
+    ToggleSwitch {
+        id: recordPreviewCheckBox
+        Layout.fillWidth: true
+        Layout.leftMargin: JamiTheme.preferredMarginSize
+
+        checked: AVModel.getRecordPreview()
+
+        labelText: qsTr("Record preview video for a call")
+        fontPointSize: JamiTheme.settingsFontSize
+
+        onSwitchToggled: AVModel.setRecordPreview(checked)
+    }
+
+    RowLayout {
+        Layout.fillWidth: true
+        Layout.preferredHeight: JamiTheme.preferredFieldHeight
+        Layout.leftMargin: JamiTheme.preferredMarginSize
+
+        Text {
+            Layout.fillWidth: true
+            Layout.rightMargin: JamiTheme.preferredMarginSize / 2
+
+            text: qsTr("Quality")
+            font.pointSize: JamiTheme.settingsFontSize
+            font.kerning: true
+            elide: Text.ElideRight
+            horizontalAlignment: Text.AlignLeft
+            verticalAlignment: Text.AlignVCenter
+        }
+
+        Text {
+            id: recordQualityValueLabel
+
+            Layout.alignment: Qt.AlignRight
+            Layout.fillHeight: true
+            Layout.fillWidth: true
+            Layout.rightMargin: JamiTheme.preferredMarginSize / 2
+
+            text: UtilsAdapter.getRecordQualityString(AVModel.getRecordQuality() / 100)
+
+            font.pointSize: JamiTheme.settingsFontSize
+            font.kerning: true
+
+            horizontalAlignment: Text.AlignRight
+            verticalAlignment: Text.AlignVCenter
+        }
+
+        Slider {
+            id: recordQualitySlider
+
+            Layout.maximumWidth: itemWidth
+            Layout.alignment: Qt.AlignRight
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+
+            value: AVModel.getRecordQuality() / 100
+
+            from: 0
+            to: 500
+            stepSize: 1
+
+            onMoved: {
+                recordQualityValueLabel.text = UtilsAdapter.getRecordQualityString(value)
+                updateRecordQualityTimer.restart()
+            }
+        }
+    }
+
+    RowLayout {
+        Layout.fillWidth: true
+        Layout.preferredHeight: JamiTheme.preferredFieldHeight
+        Layout.leftMargin: JamiTheme.preferredMarginSize
+
+        Label {
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+
+            text: qsTr("Save in")
+            font.pointSize: JamiTheme.settingsFontSize
+            font.kerning: true
+
+            horizontalAlignment: Text.AlignLeft
+            verticalAlignment: Text.AlignVCenter
+        }
+
+        MaterialButton {
+            id: recordPathButton
+
+            Layout.alignment: Qt.AlignRight
+            Layout.fillHeight: true
+            Layout.preferredWidth: itemWidth
+
+            toolTipText: qsTr("Press to choose record folder path")
+            text: recordPath
+            source: "qrc:/images/icons/round-folder-24px.svg"
+            color: JamiTheme.buttonTintedGrey
+            hoveredColor: JamiTheme.buttonTintedGreyHovered
+            pressedColor: JamiTheme.buttonTintedGreyPressed
+
+            onClicked: recordPathDialog.open()
+        }
+    }
+}

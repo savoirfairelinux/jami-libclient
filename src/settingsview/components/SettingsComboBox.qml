@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2019-2020 by Savoir-faire Linux
- * Author: Yang Wang   <yang.wang@savoirfairelinux.com>
+ * Author: Aline Gondim Santos <aline.gondimsantos@savoirfairelinux.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,46 +28,55 @@ import "../../constant"
 
 RowLayout {
     id: root
+
     property string labelText: ""
-    property int widthOfSwitch: 50
-    property int heightOfSwitch: 10
-    property int heightOfLayout: 30
+    property var comboModel
     property int fontPointSize: JamiTheme.headerFontSize
+    property int heightOfLayout: 30
+    property int widthOfComboBox: 50
+    property int modelIndex
+    property string tipText: ""
+    property string role: ""
 
-    property string tooltipText: ""
+    signal indexChanged
 
-    property alias toggleSwitch: switchOfLayout
-    property alias checked: switchOfLayout.checked
+    function setCurrentIndex(index) {
+        comboBoxOfLayout.currentIndex = index
+        modelIndex = index
+    }
 
-    signal switchToggled
+    function setEnabled(status) {
+        comboBoxOfLayout.enabled = status
+        label.enabled = status
+    }
 
-    Text {
+    ElidedTextLabel {
+        id: label
         Layout.fillWidth: true
         Layout.preferredHeight: heightOfLayout
         Layout.rightMargin: JamiTheme.preferredMarginSize
 
         text: qsTr(labelText)
-        font.pointSize: fontPointSize
-        font.kerning: true
-        elide: Text.ElideRight
-        horizontalAlignment: Text.AlignLeft
-        verticalAlignment: Text.AlignVCenter
+        fontSize: JamiTheme.settingsFontSize
+        maxWidth: width
     }
 
-    Switch {
-        id: switchOfLayout
-        Layout.alignment: Qt.AlignVCenter | Qt.AlignRight
+    SettingParaCombobox {
+        id: comboBoxOfLayout
+        Layout.preferredWidth: widthOfComboBox
+        Layout.preferredHeight: JamiTheme.preferredFieldHeight
 
-        Layout.preferredWidth: widthOfSwitch
-        Layout.preferredHeight: heightOfSwitch
+        font.pointSize: JamiTheme.buttonFontSize
+        font.kerning: true
 
-        hoverEnabled: true
-        ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
-        ToolTip.visible: hovered && (tooltipText.length > 0)
-        ToolTip.text: tooltipText
+        model: comboModel
 
-        onToggled: {
-            switchToggled()
+        textRole: role
+        tooltipText: tipText
+
+        onActivated: {
+            root.modelIndex = index
+            indexChanged()
         }
     }
 }

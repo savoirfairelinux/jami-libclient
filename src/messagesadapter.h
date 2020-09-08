@@ -87,6 +87,7 @@ protected:
 
 signals:
     void needToUpdateSmartList();
+    void contactBanned();
 
 public slots:
     void slotSendMessageContentSaved(const QString& content);

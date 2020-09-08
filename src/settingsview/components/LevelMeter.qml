@@ -20,7 +20,7 @@ import QtQuick 2.15
 import QtQuick.Controls 2.15
 
 ProgressBar {
-    id: levelMeter
+    id: root
 
     value: {
         return clamp(rmsLevel * 300.0, 0.0, 100.0)
@@ -28,19 +28,19 @@ ProgressBar {
 
     property real rmsLevel: 0
 
-    function clamp(num,a,b){
+    function clamp(num,a,b) {
         return Math.max(Math.min(num, Math.max(a, b)), Math.min(a, b))
     }
 
-    function start(){
+    function start() {
         rmsLevel = 0
     }
 
-    function stop(){
+    function stop() {
 
     }
 
-    function setLevel(rmsLevelIn){
+    function setLevel(rmsLevelIn) {
         rmsLevel = rmsLevelIn
     }
 

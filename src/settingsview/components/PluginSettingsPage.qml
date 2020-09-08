@@ -29,13 +29,12 @@ import "../../commoncomponents"
 Rectangle {
     id: root
 
-    function populatePluginSettings(){
-        // settings
+    function populatePluginSettings() {
         enabledplugin.checked = PluginModel.getPluginsEnabled()
         pluginListSettingsView.visible = enabledplugin.checked
     }
 
-    function slotSetPluginEnabled(state){
+    function slotSetPluginEnabled(state) {
         PluginModel.setPluginsEnabled(state)
     }
 
@@ -44,43 +43,15 @@ Rectangle {
     ColumnLayout {
         anchors.fill: root
 
-        RowLayout {
-            id: pageTitle
+        SettingsHeader {
             Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
             Layout.leftMargin: JamiTheme.preferredMarginSize
             Layout.fillWidth: true
             Layout.preferredHeight: 64
 
-            HoverableButton {
-                id: backToSettingsMenuButton
+            title: qsTr("Plugin")
 
-                Layout.preferredWidth: JamiTheme.preferredFieldHeight
-                Layout.preferredHeight: JamiTheme.preferredFieldHeight
-
-                radius: JamiTheme.preferredFieldHeight
-                source: "qrc:/images/icons/ic_arrow_back_24px.svg"
-                backgroundColor: "white"
-                onExitColor: "white"
-                toolTipText: qsTr("Toggle to display side panel")
-                hoverEnabled: true
-                visible: mainViewWindow.sidePanelHidden
-
-                onClicked: {
-                    backArrowClicked()
-                }
-            }
-
-            Label {
-                Layout.fillWidth: true
-
-                text: qsTr("Plugin")
-
-                font.pointSize: JamiTheme.titleFontSize
-                font.kerning: true
-
-                horizontalAlignment: Text.AlignLeft
-                verticalAlignment: Text.AlignVCenter
-            }
+            onBackArrowClicked: root.backArrowClicked()
         }
 
         ScrollView {

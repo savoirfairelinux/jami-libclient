@@ -143,8 +143,7 @@ HEADERS += \
         src/pluginitemlistmodel.h \
         src/mediahandleritemlistmodel.h \
         src/preferenceitemlistmodel.h \
-        src/audiocodeclistmodel.h \
-        src/videocodeclistmodel.h \
+        src/mediacodeclistmodel.h \
         src/accountstomigratelistmodel.h \
         src/audioinputdevicemodel.h \
         src/videoinputdevicemodel.h \
@@ -184,8 +183,7 @@ SOURCES += \
         src/pluginitemlistmodel.cpp \
         src/mediahandleritemlistmodel.cpp \
         src/preferenceitemlistmodel.cpp \
-        src/audiocodeclistmodel.cpp \
-        src/videocodeclistmodel.cpp \
+        src/mediacodeclistmodel.cpp \
         src/accountstomigratelistmodel.cpp \
         src/audioinputdevicemodel.cpp \
         src/videoinputdevicemodel.cpp \

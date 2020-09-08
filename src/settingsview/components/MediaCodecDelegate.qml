@@ -1,6 +1,6 @@
 /*
- * Copyright (C) 2019-2020 by Savoir-faire Linux
- * Author: Yang Wang   <yang.wang@savoirfairelinux.com>
+ * Copyright (C) 2020 by Savoir-faire Linux
+ * Author: Aline Gondim Santos <aline.gondimsantos@savoirfairelinux.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,19 +28,21 @@ import net.jami.Models 1.0
 ItemDelegate {
     id: root
 
-    property string videoCodecName : ""
+    property string mediaCodecName : ""
     property bool isEnabled : false
-    property int videoCodecId
+    property int mediaCodecId
+    property string samplerRate: ""
     property int checkBoxWidth: 24
+    property int mediaType
 
-    signal videoCodecStateChange(string idToSet , bool isToBeEnabled)
+    signal mediaCodecStateChange(string idToSet , bool isToBeEnabled)
 
     highlighted: ListView.isCurrentItem
 
     RowLayout {
         anchors.fill: parent
 
-        CheckBox{
+        CheckBox {
             id: checkBoxIsEnabled
 
             Layout.leftMargin: 20
@@ -72,7 +74,7 @@ ItemDelegate {
                         result = Qt.Checked
                         result_bool = true
                     }
-                    videoCodecStateChange(videoCodecId,result_bool)
+                    mediaCodecStateChange(mediaCodecId, result_bool)
                     return result
                 }
         }
@@ -80,12 +82,17 @@ ItemDelegate {
         Label {
             id: formatNameLabel
 
+            Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
             Layout.fillWidth: true
             Layout.fillHeight: true
             Layout.rightMargin: JamiTheme.preferredMarginSize / 2
-            Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
 
-            text: videoCodecName
+            text: {
+                if (mediaType == MediaSettings.VIDEO)
+                    return mediaCodecName
+                else if (mediaType == MediaSettings.AUDIO)
+                    return mediaCodecName + " " + samplerRate + " Hz"
+            }
             elide: Text.ElideRight
             horizontalAlignment: Text.AlignLeft
             verticalAlignment: Text.AlignVCenter

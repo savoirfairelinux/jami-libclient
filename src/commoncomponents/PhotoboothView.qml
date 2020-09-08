@@ -14,7 +14,6 @@ ColumnLayout {
     property string imgBase64: ""
     property string fileName: ""
 
-    readonly property int preferredWidth: boothWidth + buttonsRowLayout.height
     property int boothWidth: 224
 
     signal imageAcquired
@@ -79,7 +78,8 @@ ColumnLayout {
 
         visible: !takePhotoState
 
-        Layout.preferredWidth: boothWidth
+        Layout.fillWidth: true
+        Layout.maximumWidth: boothWidth
         Layout.preferredHeight: boothWidth
         Layout.alignment: Qt.AlignHCenter
 
@@ -150,7 +150,7 @@ ColumnLayout {
             visible: false
             color: "#fff"
 
-            OpacityAnimator on opacity{
+            OpacityAnimator on opacity {
                 id: flashAnimation
 
                 from: 1
@@ -165,7 +165,7 @@ ColumnLayout {
 
         Layout.fillWidth: true
         Layout.alignment: Qt.AlignHCenter
-        Layout.preferredHeight: 30
+        Layout.preferredHeight: JamiTheme.preferredFieldHeight
         Layout.topMargin: JamiTheme.preferredMarginSize / 2
 
         HoverableButton {
@@ -175,8 +175,8 @@ ColumnLayout {
             property string addPhotoIconUrl: "qrc:/images/icons/round-add_a_photo-24px.svg"
             property string refreshIconUrl: "qrc:/images/icons/baseline-refresh-24px.svg"
 
-            Layout.preferredWidth: 30
-            Layout.preferredHeight: 30
+            Layout.preferredWidth: JamiTheme.preferredFieldHeight
+            Layout.preferredHeight: JamiTheme.preferredFieldHeight
             Layout.alignment: Qt.AlignHCenter
 
             text: ""
@@ -223,8 +223,8 @@ ColumnLayout {
         HoverableButton {
             id: importButton
 
-            Layout.preferredWidth: 30
-            Layout.preferredHeight: 30
+            Layout.preferredWidth: JamiTheme.preferredFieldHeight
+            Layout.preferredHeight: JamiTheme.preferredFieldHeight
             Layout.alignment: Qt.AlignHCenter
 
             text: ""

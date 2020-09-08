@@ -26,7 +26,7 @@ import net.jami.Adapters 1.0
 import "../../commoncomponents"
 
 Dialog {
-    id: nameRegistrationDialog
+    id: root
 
     property string registerdName : ""
 
@@ -40,7 +40,7 @@ Dialog {
             startRegistration()
         }
 
-        nameRegistrationDialog.open()
+        root.open()
     }
 
     function startRegistration(){

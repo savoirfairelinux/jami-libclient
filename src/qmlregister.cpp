@@ -20,7 +20,7 @@
 
 #include "accountadapter.h"
 #include "accountstomigratelistmodel.h"
-#include "audiocodeclistmodel.h"
+#include "mediacodeclistmodel.h"
 #include "audioinputdevicemodel.h"
 #include "audiomanagerlistmodel.h"
 #include "audiooutputdevicemodel.h"
@@ -42,7 +42,6 @@
 #include "settingsadapter.h"
 #include "utilsadapter.h"
 #include "version.h"
-#include "videocodeclistmodel.h"
 #include "videoformatfpsmodel.h"
 #include "videoformatresolutionmodel.h"
 #include "videoinputdevicemodel.h"
@@ -103,8 +102,7 @@ registerTypes()
     QML_REGISTERTYPE("net.jami.Models", MediaHandlerItemListModel, 1, 0);
     QML_REGISTERTYPE("net.jami.Models", PreferenceItemListModel, 1, 0);
     QML_REGISTERTYPE("net.jami.Models", BannedListModel, 1, 0);
-    QML_REGISTERTYPE("net.jami.Models", VideoCodecListModel, 1, 0);
-    QML_REGISTERTYPE("net.jami.Models", AudioCodecListModel, 1, 0);
+    QML_REGISTERTYPE("net.jami.Models", MediaCodecListModel, 1, 0);
     QML_REGISTERTYPE("net.jami.Models", AccountsToMigrateListModel, 1, 0);
     QML_REGISTERTYPE("net.jami.Models", AudioInputDeviceModel, 1, 0);
     QML_REGISTERTYPE("net.jami.Models", AudioOutputDeviceModel, 1, 0);

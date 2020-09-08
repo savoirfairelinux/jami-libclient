@@ -3,18 +3,43 @@
         <file>src/settingsview/SettingsView.qml</file>
         <file>src/settingsview/components/IconButton.qml</file>
         <file>src/settingsview/components/LeftPanelView.qml</file>
+        <file>src/settingsview/components/SettingsHeader.qml</file>
+        <file>src/settingsview/components/SystemSettings.qml</file>
+        <file>src/settingsview/components/RecordingSettings.qml</file>
+        <file>src/settingsview/components/UpdateSettings.qml</file>
         <file>src/settingsview/components/AvSettingPage.qml</file>
+        <file>src/settingsview/components/AudioSettings.qml</file>
+        <file>src/settingsview/components/VideoSettings.qml</file>
         <file>src/settingsview/components/GeneralSettingsPage.qml</file>
         <file>src/settingsview/components/KeyBoardShortcutTable.qml</file>
         <file>src/settingsview/components/KeyBoardShortcutKey.qml</file>
         <file>src/settingsview/components/PluginSettingsPage.qml</file>
         <file>src/settingsview/components/PluginListSettingsView.qml</file>
         <file>src/settingsview/components/PluginListPreferencesView.qml</file>
-        <file>src/settingsview/components/CurrentAccountSettingsScrollPage.qml</file>
-        <file>src/settingsview/components/CurrentSIPAccountSettingScrollPage.qml</file>
+        <file>src/settingsview/components/CurrentAccountSettings.qml</file>
+        <file>src/settingsview/components/UserIdentity.qml</file>
+        <file>src/settingsview/components/JamiUserIdentity.qml</file>
+        <file>src/settingsview/components/SIPUserIdentity.qml</file>
+        <file>src/settingsview/components/AccountProfile.qml</file>
+        <file>src/settingsview/components/LinkedDevices.qml</file>
+        <file>src/settingsview/components/BannedContacts.qml</file>
+        <file>src/settingsview/components/AdvancedSettings.qml</file>
+        <file>src/settingsview/components/AdvancedJamiSecuritySettings.qml</file>
+        <file>src/settingsview/components/AdvancedSIPSecuritySettings.qml</file>
+        <file>src/settingsview/components/AdvancedMediaSettings.qml</file>
+        <file>src/settingsview/components/MediaSettings.qml</file>
+        <file>src/settingsview/components/AdvancedSDPSettings.qml</file>
+        <file>src/settingsview/components/AdvancedNameServerSettings.qml</file>
+        <file>src/settingsview/components/AdvancedVoiceMailSettings.qml</file>
+        <file>src/settingsview/components/AdvancedOpenDHTSettings.qml</file>
+        <file>src/settingsview/components/AdvancedPublicAddressSettings.qml</file>
+        <file>src/settingsview/components/AdvancedConnectivitySettings.qml</file>
+        <file>src/settingsview/components/AdvancedCallSettings.qml</file>
+        <file>src/settingsview/components/SettingMaterialButton.qml</file>
         <file>src/settingsview/components/ToggleSwitch.qml</file>
-        <file>src/settingsview/components/AdvancedSettingsView.qml</file>
-        <file>src/settingsview/components/AdvancedSIPSettingsView.qml</file>
+        <file>src/settingsview/components/SettingSpinBox.qml</file>
+        <file>src/settingsview/components/SettingsComboBox.qml</file>
+        <file>src/settingsview/components/SettingsMaterialLineEdit.qml</file>
         <file>src/settingsview/components/LevelMeter.qml</file>
         <file>src/commoncomponents/SettingParaCombobox.qml</file>
         <file>src/settingsview/components/DeviceItemDelegate.qml</file>
@@ -22,8 +47,7 @@
         <file>src/mainview/components/MediaHandlerItemDelegate.qml</file>
         <file>src/commoncomponents/PreferenceItemDelegate.qml</file>
         <file>src/settingsview/components/BannedItemDelegate.qml</file>
-        <file>src/settingsview/components/VideoCodecDelegate.qml</file>
-        <file>src/settingsview/components/AudioCodecDelegate.qml</file>
+        <file>src/settingsview/components/MediaCodecDelegate.qml</file>
         <file>src/settingsview/components/NameRegistrationDialog.qml</file>
         <file>src/settingsview/components/LinkDeviceDialog.qml</file>
         <file>src/settingsview/components/RevokeDevicePasswordDialog.qml</file>

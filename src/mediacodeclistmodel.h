@@ -1,6 +1,6 @@
 /*
- * Copyright (C) 2019-2020 by Savoir-faire Linux
- * Author: Yang Wang   <yang.wang@savoirfairelinux.com>
+ * Copyright (C) 2020 by Savoir-faire Linux
+ * Author: Aline Gondim Santos <aline.gondimsantos@savoirfairelinux.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,15 +27,17 @@
 
 #include "lrcinstance.h"
 
-class VideoCodecListModel : public QAbstractListModel
+class MediaCodecListModel : public QAbstractListModel
 {
     Q_OBJECT
+    Q_PROPERTY(int mediaType READ mediaType WRITE setMediaType)
 public:
-    enum Role { VideoCodecName = Qt::UserRole + 1, IsEnabled, VideoCodecID };
+    enum MediaType { VIDEO, AUDIO };
+    enum Role { MediaCodecName = Qt::UserRole + 1, IsEnabled, MediaCodecID, Samplerate };
     Q_ENUM(Role)
 
-    explicit VideoCodecListModel(QObject* parent = 0);
-    ~VideoCodecListModel();
+    explicit MediaCodecListModel(QObject* parent = 0);
+    ~MediaCodecListModel();
 
     /*
      * QAbstractListModel override.
@@ -50,4 +52,10 @@ public:
     QModelIndex index(int row, int column = 0, const QModelIndex& parent = QModelIndex()) const;
     QModelIndex parent(const QModelIndex& child) const;
     Qt::ItemFlags flags(const QModelIndex& index) const;
+
+    int mediaType();
+    void setMediaType(int mediaType);
+
+private:
+    int mediaType_;
 };
