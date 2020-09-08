@@ -111,5 +111,6 @@
         <file>src/constant/JamiQmlUtils.qml</file>
         <file>src/wizardview/components/AccountCreationStepIndicator.qml</file>
         <file>src/commoncomponents/SpinnerButton.qml</file>
+        <file>src/commoncomponents/UsernameLineEdit.qml</file>
     </qresource>
 </RCC>

@@ -19,7 +19,6 @@
 import QtQuick 2.14
 import QtQuick.Controls 2.14
 import QtGraphicalEffects 1.15
-import QtQuick.Layouts 1.15
 
 import "../constant"
 
@@ -27,7 +26,7 @@ Button {
     id: root
 
     property alias fontCapitalization: buttonText.font.capitalization
-    property alias source: root.icon.source
+    property alias source: buttonImage.source
     property string toolTipText: ""
     property var color: "transparent"
     property var hoveredColor: undefined
@@ -37,14 +36,13 @@ Button {
 
     property var preferredWidth: 400
     property var preferredHeight: 36
+    property var minimumIconTextSpacing: 10
+    property var iconPreferredHeight: 18
+    property var iconPreferredWidth: 18
 
     property int elide: Text.ElideRight
 
     font.kerning: true
-
-    icon.source: ""
-    icon.height: 18
-    icon.width: 18
 
     hoverEnabled: hoveredColor !== undefined
 
@@ -52,65 +50,78 @@ Button {
         Rectangle {
             anchors.fill: parent
             color: "transparent"
-            RowLayout {
-                anchors.fill: parent
-                anchors.centerIn: parent
 
-                AnimatedImage {
-                    Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
-                    Layout.leftMargin: 8
-                    Layout.preferredHeight: root.icon.height
-                    Layout.preferredWidth: root.icon.width
+            AnimatedImage {
+                id: buttonAnimatedImage
 
-                    source: animatedImageSource
-                    playing: true
-                    paused: false
-                    fillMode: Image.PreserveAspectFit
-                    mipmap: true
-                    visible: animatedImageSource !== ""
-                }
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.left: parent.left
+                anchors.leftMargin: JamiTheme.preferredMarginSize / 2
 
-                Image {
-                    source: root.icon.source
-                    Layout.preferredWidth: root.icon.width
-                    Layout.preferredHeight: root.icon.height
-                    Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
-                    Layout.leftMargin: JamiTheme.preferredMarginSize / 2
-                    layer {
-                        enabled: true
-                        effect: ColorOverlay {
-                            id: overlay
-                            color:{
-                                if (!outlined)
-                                    return "white"
-                                if (hovered && root.hoveredColor)
-                                    return root.hoveredColor
-                                if (checked && root.pressedColor)
-                                    return root.pressedColor
-                                return root.color
-                            }
+                height: iconPreferredHeight
+                width: iconPreferredWidth
+
+                source: animatedImageSource
+                playing: true
+                paused: false
+                fillMode: Image.PreserveAspectFit
+                mipmap: true
+                visible: animatedImageSource.length !== 0
+            }
+
+            Image {
+                id: buttonImage
+
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.left: parent.left
+                anchors.leftMargin: JamiTheme.preferredMarginSize / 2
+
+                height: iconPreferredHeight
+                width: iconPreferredWidth
+
+                visible: source.toString().length !== 0
+                layer {
+                    enabled: true
+                    effect: ColorOverlay {
+                        id: overlay
+                        color:{
+                            if (!outlined)
+                                return "white"
+                            if (hovered && root.hoveredColor)
+                                return root.hoveredColor
+                            if (checked && root.pressedColor)
+                                return root.pressedColor
+                            return root.color
                         }
                     }
                 }
-                Text {
-                    id: buttonText
+            }
 
-                    Layout.rightMargin: root.icon.width + JamiTheme.preferredMarginSize / 2
-                    text: root.text
-                    elide: root.elide
-                    color: {
-                        if (!outlined)
-                            return "white"
-                        if (hovered && root.hoveredColor)
-                            return root.hoveredColor
-                        if (checked && root.pressedColor)
-                            return root.pressedColor
-                        return root.color
-                    }
-                    font: root.font
-                    Layout.fillWidth: true
-                    horizontalAlignment: Text.AlignHCenter
+            Text {
+                id: buttonText
+
+                anchors.centerIn: parent
+
+                width: {
+                    var iconWidth = (buttonAnimatedImage.visible || buttonImage.visible) ?
+                                iconPreferredWidth : 0
+                    return (parent.width / 2 - iconWidth -
+                            JamiTheme.preferredMarginSize / 2 - minimumIconTextSpacing) * 2
                 }
+
+                text: root.text
+                elide: root.elide
+                color: {
+                    if (!outlined)
+                        return "white"
+                    if (hovered && root.hoveredColor)
+                        return root.hoveredColor
+                    if (checked && root.pressedColor)
+                        return root.pressedColor
+                    return root.color
+                }
+                font: root.font
+                horizontalAlignment: Text.AlignHCenter
             }
         }
     }

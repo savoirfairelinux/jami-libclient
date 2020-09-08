@@ -33,29 +33,14 @@ import "../../commoncomponents"
 Rectangle {
     id: root
 
-    enum RegName {
-        BLANK,
-        INVALIDFORM,
-        TAKEN,
-        FREE,
-        SEARCHING
-    }
-
-    property int regNameUi: CurrentAccountSettingsScrollPage.BLANK
     property string registeredName: ""
     property bool registeredIdNeedsSet: false
 
-    property int refreshVariable : 0
     property int preferredColumnWidth : root.width / 2 - 50
 
     signal navigateToMainView
     signal navigateToNewWizardView
     signal backArrowClicked
-
-    function refreshRelevantUI(){
-        refreshVariable++
-        refreshVariable--
-    }
 
     function updateAccountInfoDisplayed() {
         setAvatar()
@@ -86,7 +71,6 @@ Rectangle {
         if (advanceSettingsView.visible) {
             advanceSettingsView.updateAccountInfoDisplayedAdvance()
         }
-        refreshRelevantUI()
     }
 
     function connectCurrentAccount() {
@@ -158,63 +142,6 @@ Rectangle {
 
         function onDeviceUpdated(id) {
             updateAndShowDevicesSlot()
-        }
-    }
-
-    // slots
-    function verifyRegisteredNameSlot() {
-        if (ClientWrapper.SettingsAdapter.get_CurrentAccountInfo_RegisteredName() !== "") {
-            regNameUi = CurrentAccountSettingsScrollPage.BLANK
-        } else {
-            registeredName = ClientWrapper.utilsAdaptor.stringSimplifier(
-                        currentRegisteredID.text)
-            if (registeredName !== "") {
-                if (ClientWrapper.utilsAdaptor.validateRegNameForm(registeredName)) {
-                    regNameUi = CurrentAccountSettingsScrollPage.SEARCHING
-                    lookUpLabelTimer.restart()
-                } else {
-                    regNameUi = CurrentAccountSettingsScrollPage.INVALIDFORM
-                }
-            } else {
-                regNameUi = CurrentAccountSettingsScrollPage.BLANK
-            }
-        }
-    }
-
-    Timer {
-        id: lookUpLabelTimer
-
-        interval: 300
-        onTriggered: {
-            beforeNameLookup()
-        }
-    }
-
-    function beforeNameLookup() {
-        ClientWrapper.nameDirectory.lookupName("", registeredName)
-    }
-
-    Connections {
-        target: ClientWrapper.nameDirectory
-        enabled: true
-
-        function onRegisteredNameFound(status, address, name) {
-            afterNameLookup(status, name)
-        }
-    }
-
-    function afterNameLookup(status, regName) {
-        if (registeredName === regName && regName.length > 2) {
-            switch (status) {
-            case NameDirectory.LookupStatus.NOT_FOUND:
-                regNameUi = CurrentAccountSettingsScrollPage.FREE
-                break
-            default:
-                regNameUi = CurrentAccountSettingsScrollPage.TAKEN
-                break
-            }
-        } else {
-            regNameUi = CurrentAccountSettingsScrollPage.BLANK
         }
     }
 
@@ -317,12 +244,9 @@ Rectangle {
 
         onAccepted: {
             registeredIdNeedsSet = false
+            currentRegisteredID.nameRegistrationState =
+                    UsernameLineEdit.NameRegistrationState.BLANK
         }
-    }
-
-    function slotRegisterName() {
-        refreshRelevantUI()
-        nameRegistrationDialog.openNameRegistrationDialog(registeredName)
     }
 
     LinkDeviceDialog{
@@ -582,7 +506,7 @@ Rectangle {
                             readOnly: true
                             selectByMouse: true
 
-                            text: { currentRingIDText.elidedText }
+                            text: currentRingIDText.elidedText
 
                             horizontalAlignment: Text.AlignRight
                             verticalAlignment: Text.AlignVCenter
@@ -601,9 +525,7 @@ Rectangle {
                                 elide: Text.ElideRight
                                 elideWidth: root.width - idLabel.width -JamiTheme.preferredMarginSize*4
 
-                                text: { refreshVariable
-                                    return ClientWrapper.SettingsAdapter.getCurrentAccount_Profile_Info_Uri()
-                                }
+                                text: ClientWrapper.SettingsAdapter.getCurrentAccount_Profile_Info_Uri()
                             }
                         }
                     }
@@ -623,67 +545,52 @@ Rectangle {
                             maxWidth: width
                         }
 
-                        MaterialLineEdit {
+                        UsernameLineEdit {
                             id: currentRegisteredID
 
                             Layout.alignment: Qt.AlignRight
                             Layout.preferredHeight: JamiTheme.preferredFieldHeight
                             Layout.fillWidth: true
 
-                            placeholderText: { refreshVariable
-                                               var result = true ?
-                                                   qsTr("Type here to register a username") : ""
-                                               return result}
-
+                            placeholderText: registeredIdNeedsSet ?
+                                                 qsTr("Type here to register a username") : ""
                             text: {
-                                refreshVariable
-                                if (!registeredIdNeedsSet){
+                                if (!registeredIdNeedsSet)
                                     return ClientWrapper.SettingsAdapter.get_CurrentAccountInfo_RegisteredName()
-                                } else {
+                                else
                                     return ""
-                                }
                             }
-                            selectByMouse: true
-                            readOnly: { refreshVariable
-                                        return !registeredIdNeedsSet}
-
-                            font.pointSize: JamiTheme.settingsFontSize
-                            font.kerning: true
-                            font.bold: { refreshVariable
-                                return !registeredIdNeedsSet}
+                            readOnly: !registeredIdNeedsSet
+                            font.bold: !registeredIdNeedsSet
 
                             horizontalAlignment: registeredIdNeedsSet ?
                                                 Text.AlignLeft :
                                                 Text.AlignRight
                             verticalAlignment: Text.AlignVCenter
                             padding: 8
-
-                            borderColorMode: {
-                                switch (regNameUi) {
-                                case CurrentAccountSettingsScrollPage.INVALIDFORM:
-                                case CurrentAccountSettingsScrollPage.TAKEN:
-                                    return InfoLineEdit.ERROR
-                                case CurrentAccountSettingsScrollPage.FREE:
-                                    return InfoLineEdit.RIGHT
-                                case CurrentAccountSettingsScrollPage.BLANK:
-                                case CurrentAccountSettingsScrollPage.SEARCHING:
-                                default:
-                                    return InfoLineEdit.NORMAL
-                                }
-                            }
-
-                            onImageClicked: {
-                                slotRegisterName()
-                            }
-
-                            onTextEdited: {
-                                verifyRegisteredNameSlot()
-                            }
-
-                            onEditingFinished: {
-                                verifyRegisteredNameSlot()
-                            }
                         }
+                    }
+
+                    MaterialButton {
+                        id: btnRegisterName
+
+                        Layout.alignment: Qt.AlignVCenter | Qt.AlignRight
+                        Layout.rightMargin: currentRegisteredID.width / 2 - width / 2
+                        Layout.preferredWidth: 120
+                        Layout.preferredHeight: 30
+
+                        visible: registeredIdNeedsSet &&
+                                 currentRegisteredID.nameRegistrationState ===
+                                 UsernameLineEdit.NameRegistrationState.FREE
+
+                        text: qsTr("Register")
+                        toolTipText: qsTr("Register the username")
+                        color: JamiTheme.buttonTintedGrey
+                        hoveredColor: JamiTheme.buttonTintedGreyHovered
+                        pressedColor: JamiTheme.buttonTintedGreyPressed
+
+                        onClicked: nameRegistrationDialog.openNameRegistrationDialog(
+                                       currentRegisteredID.text)
                     }
                 }
 

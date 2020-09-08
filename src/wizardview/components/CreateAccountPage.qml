@@ -30,7 +30,7 @@ Rectangle {
     id: root
 
     property alias text_usernameEditAlias: usernameEdit.text
-    property int nameRegistrationUIState: WizardView.BLANK
+    property alias nameRegistrationUIState: usernameEdit.nameRegistrationState
     property alias text_passwordEditAlias: passwordEdit.text
 
     signal createAccount
@@ -127,7 +127,7 @@ Rectangle {
                 }
             }
 
-            MaterialLineEdit {
+            UsernameLineEdit {
                 id: usernameEdit
 
                 Layout.topMargin: 15
@@ -135,24 +135,7 @@ Rectangle {
                 Layout.preferredWidth:  chooseUsernameButton.width
                 Layout.alignment: Qt.AlignHCenter
 
-                selectByMouse: true
                 placeholderText: qsTr("Choose your username")
-                font.pointSize: 9
-                font.kerning: true
-
-                borderColorMode: {
-                    switch (nameRegistrationUIState){
-                    case WizardView.BLANK:
-                        return MaterialLineEdit.NORMAL
-                    case WizardView.INVALID:
-                    case WizardView.TAKEN:
-                        return MaterialLineEdit.ERROR
-                    case WizardView.FREE:
-                        return MaterialLineEdit.RIGHT
-                    case WizardView.SEARCHING:
-                        return MaterialLineEdit.SEARCHING
-                    }
-                }
             }
 
             Label {
@@ -162,13 +145,13 @@ Rectangle {
 
                 text: {
                     switch(nameRegistrationUIState){
-                    case WizardView.BLANK:
-                    case WizardView.SEARCHING:
-                    case WizardView.FREE:
+                    case UsernameLineEdit.NameRegistrationState.BLANK:
+                    case UsernameLineEdit.NameRegistrationState.SEARCHING:
+                    case UsernameLineEdit.NameRegistrationState.FREE:
                         return ""
-                    case WizardView.INVALID:
+                    case UsernameLineEdit.NameRegistrationState.INVALID:
                         return qsTr("Invalid username")
-                    case WizardView.TAKEN:
+                    case UsernameLineEdit.NameRegistrationState.TAKEN:
                         return qsTr("Username already taken")
                     }
                 }
@@ -184,14 +167,15 @@ Rectangle {
                 Layout.preferredHeight: preferredHeight
 
                 text: qsTr("CHOOSE USERNAME")
-                enabled: nameRegistrationUIState === WizardView.FREE
-                color: nameRegistrationUIState === WizardView.FREE ? JamiTheme.wizardBlueButtons :
-                                                                     JamiTheme.buttonTintedGreyInactive
+                enabled: nameRegistrationUIState === UsernameLineEdit.NameRegistrationState.FREE
+                color: nameRegistrationUIState === UsernameLineEdit.NameRegistrationState.FREE ?
+                           JamiTheme.wizardBlueButtons :
+                           JamiTheme.buttonTintedGreyInactive
                 hoveredColor: JamiTheme.buttonTintedBlueHovered
                 pressedColor: JamiTheme.buttonTintedBluePressed
 
                 onClicked: {
-                    if (nameRegistrationUIState === WizardView.FREE)
+                    if (nameRegistrationUIState === UsernameLineEdit.NameRegistrationState.FREE)
                         createAccountStack.currentIndex = createAccountStack.currentIndex + 1
                 }
             }

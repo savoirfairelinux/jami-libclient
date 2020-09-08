@@ -40,14 +40,6 @@ Rectangle {
         CONNECTMANAGER
     }
 
-    enum NameRegistrationState {
-        BLANK,
-        INVALID,
-        TAKEN,
-        FREE,
-        SEARCHING
-    }
-
     enum WizardViewPageIndex {
         WELCOMEPAGE = 0,
         CREATEACCOUNTPAGE,
@@ -120,35 +112,11 @@ Rectangle {
         }
     }
 
-    Connections {
-        id: registeredNameFoundConnection
-
-        target: ClientWrapper.nameDirectory
-
-        function onRegisteredNameFound(status, address, name) {
-            if (registeredName === name) {
-                switch(status) {
-                case NameDirectory.LookupStatus.NOT_FOUND:
-                    createAccountPage.nameRegistrationUIState = WizardView.FREE
-                    break
-                case NameDirectory.LookupStatus.ERROR:
-                case NameDirectory.LookupStatus.INVALID_NAME:
-                case NameDirectory.LookupStatus.INVALID:
-                    createAccountPage.nameRegistrationUIState = WizardView.INVALID
-                    break
-                case NameDirectory.LookupStatus.SUCCESS:
-                    createAccountPage.nameRegistrationUIState = WizardView.TAKEN
-                    break
-                }
-            }
-        }
-    }
-
     function changePageQML(pageIndex) {
         controlPanelStackView.currentIndex = pageIndex
         if (pageIndex === WizardView.WizardViewPageIndex.WELCOMEPAGE) {
             fileToImport = ""
-            createAccountPage.nameRegistrationUIState = WizardView.BLANK
+            createAccountPage.nameRegistrationUIState = UsernameLineEdit.NameRegistrationState.BLANK
         } else if (pageIndex === WizardView.WizardViewPageIndex.CREATEACCOUNTPAGE) {
             createAccountPage.initializeOnShowUp()
         } else if (pageIndex === WizardView.WizardViewPageIndex.CREATESIPACCOUNTPAGE) {
@@ -232,27 +200,8 @@ Rectangle {
                 changePageQML(WizardView.WizardViewPageIndex.PROFILEPAGE)
             }
 
-            onText_usernameEditAliasChanged: lookupTimer.restart()
-
             onLeavePage: {
                 changePageQML(WizardView.WizardViewPageIndex.WELCOMEPAGE)
-            }
-
-            Timer {
-                id: lookupTimer
-
-                repeat: false
-                interval: 200
-
-                onTriggered: {
-                    registeredName = createAccountPage.text_usernameEditAlias
-                    if (registeredName.length !== 0) {
-                        createAccountPage.nameRegistrationUIState = WizardView.SEARCHING
-                        ClientWrapper.nameDirectory.lookupName("", registeredName)
-                    } else {
-                        createAccountPage.nameRegistrationUIState = WizardView.BLANK
-                    }
-                }
             }
         }
 
