@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="ro_RO" version="2.1">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="ro_RO">
 <context>
     <name>AboutPopUp</name>
     <message>
@@ -8,31 +10,66 @@
     </message>
     <message>
         <location filename="../src/mainview/components/AboutPopUp.qml" line="113"/>
-        <source>Free as in Freedom</source>
-        <translation>Liber ca în Libertate</translation>
+        <source>Together</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/mainview/components/AboutPopUp.qml" line="135"/>
+        <source>The Qt client for Jami.
+Jami is a secured and distributed communication software.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mainview/components/AboutPopUp.qml" line="246"/>
+        <source>Changelog</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mainview/components/AboutPopUp.qml" line="261"/>
+        <source>Credit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Free as in Freedom</source>
+        <translation type="vanished">Liber ca în Libertate</translation>
+    </message>
+    <message>
         <source>The Microsoft Windows client for Jami.
 Jami is a secured and distributed communciation software.</source>
-        <translation>Jami pentru Microsoft Windows.
+        <translation type="vanished">Jami pentru Microsoft Windows.
 Jami e un program pentru comunicații sigure și distribuite.</translation>
     </message>
     <message>
-        <location filename="../src/mainview/components/AboutPopUp.qml" line="258"/>
         <source>Change Log</source>
-        <translation>Jurnalul Schimbărilor</translation>
+        <translation type="vanished">Jurnalul Schimbărilor</translation>
     </message>
     <message>
-        <location filename="../src/mainview/components/AboutPopUp.qml" line="277"/>
         <source>Credits</source>
-        <translation>Merite</translation>
+        <translation type="vanished">Merite</translation>
+    </message>
+</context>
+<context>
+    <name>AccountComboBox</name>
+    <message>
+        <location filename="../src/mainview/components/AccountComboBox.qml" line="166"/>
+        <source>Press to display QR code</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mainview/components/AccountComboBox.qml" line="191"/>
+        <source>Press to toggle to settings page</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mainview/components/AccountComboBox.qml" line="191"/>
+        <source>Press to toggle to call page</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>AccountComboBoxPopup</name>
     <message>
-        <location filename="../src/mainview/components/AccountComboBoxPopup.qml" line="154"/>
+        <location filename="../src/mainview/components/AccountComboBoxPopup.qml" line="172"/>
         <source>Add Account</source>
         <translation>Adaugă un Cont</translation>
     </message>
@@ -94,559 +131,700 @@ Jami e un program pentru comunicații sigure și distribuite.</translation>
 <context>
     <name>AdvancedSIPSettingsView</name>
     <message>
-        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="205"/>
+        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="206"/>
         <source>Add a custom ringtone</source>
         <translation>Adaugă o sonerie personalizată</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="237"/>
+        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="238"/>
         <source>Select a new ringtone</source>
         <translation>Alege o sonerie nouă</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="240"/>
+        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="241"/>
         <source>Audio Files</source>
         <translation>Fișiere Audio</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="240"/>
-        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="266"/>
-        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="292"/>
-        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="318"/>
+        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="241"/>
+        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="267"/>
+        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="293"/>
+        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="319"/>
         <source>All files</source>
         <translation>Toate fișierele</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="264"/>
+        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="265"/>
         <source>Select a CA certificate</source>
         <translation>Alege un certificat CA</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="266"/>
-        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="292"/>
+        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="267"/>
+        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="293"/>
         <source>Certificate File</source>
         <translation>Certificat</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="290"/>
+        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="291"/>
         <source>Select a user certificate</source>
         <translation>Alege un certificat de utilizator</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="316"/>
+        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="317"/>
         <source>Select a private key</source>
         <translation>Alege o cheie privată</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="318"/>
+        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="319"/>
         <source>Key File</source>
         <translation>Cheie Privată</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="359"/>
+        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="356"/>
         <source>Call Settings</source>
         <translation>Reglările Apelului</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="375"/>
         <source>Auto Answer Call</source>
-        <translation>Răspuns Automat la Apel</translation>
+        <translation type="vanished">Răspuns Automat la Apel</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="568"/>
         <source>Encrypt Media Streams(SRTP)</source>
-        <translation>Cifrează fluxurile Media (SRTP)</translation>
+        <translation type="vanished">Cifrează fluxurile Media (SRTP)</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="648"/>
-        <source>Encrypt Negotiation(TLS)</source>
-        <translation type="unfinished"/>
+        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="380"/>
+        <source>Auto Answer Calls</source>
+        <translation type="unfinished">Răspuns Automat la Apeluri</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="961"/>
-        <source>Verify Certificates(Server Side)</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="987"/>
-        <source>Verify Certificates(Client Side)</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="1159"/>
-        <source>Negotiation Timeout(seconds)</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="1267"/>
-        <source>Registration Expire Timeout(seconds)</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="2274"/>
-        <source>SDP Session Negotiation(ICE Fallback)</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="392"/>
+        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="399"/>
         <source>Enable Custom Ringtone</source>
         <translation>Activează o Sonerie Personalizată</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="455"/>
+        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="413"/>
+        <source>Select Custom Ringtone</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="450"/>
         <source>Voicemail</source>
         <translation>Mesagerie Vocală</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="486"/>
+        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="466"/>
         <source>Voicemail Dial Code</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="537"/>
+        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="509"/>
         <source>Security</source>
         <translation>Protecție</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="596"/>
+        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="535"/>
+        <source>Encrypt Media Streams (SRTP)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="553"/>
         <source>Enable SDES(Key Exchange)</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="622"/>
+        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="571"/>
         <source>Can Fallback on RTP</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="699"/>
+        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="593"/>
+        <source>Encrypt Negotiation (TLS)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="612"/>
         <source>CA Certificate</source>
         <translation>Certificat CA</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="770"/>
+        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="641"/>
         <source>User Certificate</source>
         <translation>Certificat de utilizator</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="841"/>
+        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="670"/>
         <source>Private Key</source>
         <translation>Cheie Privată</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="912"/>
+        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="700"/>
         <source>Private Key Password</source>
         <translation>Parola Cheii Private</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="1013"/>
+        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="743"/>
+        <source>Verify Certificates (Server Side)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="761"/>
+        <source>Verify Certificates (Client Side)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="779"/>
         <source>TLS Connections Require Certificate</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="1043"/>
+        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="798"/>
         <source>TLS Protocol Method</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="1107"/>
+        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="837"/>
         <source>Outgoing TLS Server Name</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="1231"/>
+        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="868"/>
+        <source>Negotiation Timeout (seconds)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="913"/>
         <source>Connectivity</source>
         <translation>Conectare</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="1326"/>
-        <source>Newtwork interface</source>
-        <translation type="unfinished"/>
+        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="934"/>
+        <source>Registration Expire Timeout (seconds)</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="1380"/>
+        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="974"/>
+        <source>Newtwork interface</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="1010"/>
         <source>Use UPnP</source>
         <translation>Folosește UPnP</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="1406"/>
+        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="1024"/>
         <source>Use TURN</source>
         <translation>Folosește TURN</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="1457"/>
+        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="1045"/>
         <source>TURN Address</source>
         <translation>Adresă TURN</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="1526"/>
+        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="1077"/>
         <source>TURN Username</source>
         <translation>Nume de utilizator TURN</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="1594"/>
+        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="1108"/>
         <source>TURN Password</source>
         <translation>Parolă TURN</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="1664"/>
+        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="1142"/>
         <source>TURN Realm</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="1711"/>
+        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="1171"/>
         <source>Use STUN</source>
         <translation>Folosește STUN</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="1778"/>
+        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="1189"/>
+        <source>STUN Address</source>
+        <translation type="unfinished">Adresă STUN</translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="1228"/>
         <source>Public Address</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="1810"/>
+        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="1263"/>
         <source>Use Custom Address/Port</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="1843"/>
+        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="1275"/>
         <source>Address</source>
         <translation>Adresă</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="1896"/>
+        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="1309"/>
         <source>Port</source>
         <translation>Port</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="1957"/>
+        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="1354"/>
         <source>Media</source>
         <translation>Media</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="1983"/>
+        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="1383"/>
         <source>Enable Video</source>
         <translation>Activează Video</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="2013"/>
+        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="1408"/>
         <source>Video Codecs</source>
         <translation>Codec video</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="2139"/>
+        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="1512"/>
         <source>Audio Codecs</source>
         <translation>Codec audio</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="2290"/>
+        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="1619"/>
+        <source>SDP Session Negotiation (ICE Fallback)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="1631"/>
         <source>Only used during negotiation in case ICE is not supported</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="2327"/>
+        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="1653"/>
         <source>Audio RTP Min Port</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="2382"/>
+        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="1690"/>
         <source>Audio RTP Max Port</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="2437"/>
+        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="1727"/>
         <source>Video RTP Min Port</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="2492"/>
+        <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="1764"/>
         <source>Video RTP Max Port</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>AdvancedSettingsView</name>
     <message>
-        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="135"/>
+        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="137"/>
         <source>Add a custom ringtone</source>
         <translation>Adaugă o sonerie personalizată</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="167"/>
+        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="169"/>
         <source>Select a new ringtone</source>
         <translation>Alege o sonerie nouă</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="170"/>
+        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="172"/>
         <source>Audio Files</source>
         <translation>Fișiere Audio</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="170"/>
-        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="196"/>
-        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="222"/>
-        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="248"/>
+        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="172"/>
+        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="198"/>
+        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="224"/>
+        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="252"/>
         <source>All files</source>
         <translation>Toate fișierele</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="194"/>
+        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="196"/>
         <source>Select a CA certificate</source>
         <translation>Alege un certificat CA</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="196"/>
-        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="222"/>
+        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="198"/>
+        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="224"/>
         <source>Certificate File</source>
         <translation>Certificat</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="220"/>
+        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="222"/>
         <source>Select a user certificate</source>
         <translation>Alege un certificat de utilizator</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="246"/>
+        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="250"/>
         <source>Select a private key</source>
         <translation>Alege o cheie privată</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="248"/>
+        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="252"/>
         <source>Key File</source>
         <translation>Cheie Privată</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="289"/>
+        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="286"/>
         <source>Call Settings</source>
         <translation>Reglările Apelului</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="314"/>
+        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="310"/>
         <source>Allow incoming calls from unknown contacts</source>
         <translation>Permite apelurile primite de la contacte necunoscute</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="328"/>
+        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="330"/>
         <source>Auto Answer Calls</source>
         <translation>Răspuns Automat la Apeluri</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="345"/>
+        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="349"/>
         <source>Enable Custom Ringtone</source>
         <translation>Activează o Sonerie Personalizată</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="398"/>
+        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="361"/>
+        <source>Select Custom Ringtone</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="387"/>
+        <source>(Experimental) Rendez-vous: turn your account into a conference room</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="407"/>
         <source>Name Server</source>
         <translation>Server de Nume</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="426"/>
+        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="423"/>
         <source>Address</source>
         <translation>Adresă</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="478"/>
+        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="465"/>
         <source>OpenDHT Configuration</source>
         <translation>Configurare OpenDHT</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="506"/>
+        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="477"/>
         <source>Enable proxy</source>
         <translation>Activează proxy</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="553"/>
+        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="495"/>
+        <source>Proxy Address</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="530"/>
         <source>Bootstrap</source>
         <translation>Server de conectare</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="594"/>
+        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="573"/>
         <source>Security</source>
         <translation>Protecție</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="631"/>
+        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="597"/>
         <source>CA Certificate</source>
         <translation>Certificat CA</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="669"/>
+        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="626"/>
         <source>User Certificate</source>
         <translation>Certificat de utilizator</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="707"/>
+        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="655"/>
         <source>Private Key</source>
         <translation>Cheie Privată</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="745"/>
+        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="684"/>
         <source>Private Key Password</source>
         <translation>Parola Cheii Private</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="790"/>
+        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="722"/>
         <source>Connectivity</source>
         <translation>Conectare</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="826"/>
+        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="748"/>
         <source>Auto Connect On Local Network</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="852"/>
+        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="756"/>
         <source>Use UPnP</source>
         <translation>Folosește UPnP</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="878"/>
+        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="769"/>
         <source>Use TURN</source>
         <translation>Folosește TURN</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="897"/>
+        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="787"/>
         <source>TURN Address</source>
         <translation>Adresă TURN</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="937"/>
+        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="823"/>
         <source>TURN Username</source>
         <translation>Nume de utilizator TURN</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="977"/>
+        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="858"/>
         <source>TURN Password</source>
         <translation>Parolă TURN</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="1015"/>
+        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="892"/>
         <source>Use STUN</source>
         <translation>Folosește STUN</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="1036"/>
+        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="913"/>
+        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="930"/>
         <source>STUN Address</source>
         <translation>Adresă STUN</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="1069"/>
+        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="953"/>
         <source>Media</source>
         <translation>Media</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="1094"/>
+        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="968"/>
         <source>Enable Video</source>
         <translation>Activează Video</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="1125"/>
+        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="996"/>
         <source>Video Codecs</source>
         <translation>Codec video</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="1249"/>
+        <location filename="../src/settingsview/components/AdvancedSettingsView.qml" line="1095"/>
         <source>Audio Codecs</source>
         <translation>Codec audio</translation>
     </message>
 </context>
 <context>
+    <name>AlertDialog</name>
+    <message>
+        <location filename="../x64/Release/QtWebEngine/Controls2Delegates/AlertDialog.qml" line="50"/>
+        <source>Alert Dialog</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../x64/Release/QtWebEngine/Controls2Delegates/AlertDialog.qml" line="94"/>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>AuthenticationDialog</name>
+    <message>
+        <location filename="../x64/Release/QtWebEngine/Controls1Delegates/AuthenticationDialog.qml" line="51"/>
+        <location filename="../x64/Release/QtWebEngine/Controls2Delegates/AuthenticationDialog.qml" line="50"/>
+        <source>Authentication Required</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../x64/Release/QtWebEngine/Controls1Delegates/AuthenticationDialog.qml" line="84"/>
+        <location filename="../x64/Release/QtWebEngine/Controls2Delegates/AuthenticationDialog.qml" line="92"/>
+        <source>Username:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../x64/Release/QtWebEngine/Controls1Delegates/AuthenticationDialog.qml" line="97"/>
+        <location filename="../x64/Release/QtWebEngine/Controls2Delegates/AuthenticationDialog.qml" line="105"/>
+        <source>Password:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../x64/Release/QtWebEngine/Controls1Delegates/AuthenticationDialog.qml" line="118"/>
+        <source>&amp;Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../x64/Release/QtWebEngine/Controls1Delegates/AuthenticationDialog.qml" line="125"/>
+        <source>&amp;Log In</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../x64/Release/QtWebEngine/Controls2Delegates/AuthenticationDialog.qml" line="126"/>
+        <source>Cancel</source>
+        <translation type="unfinished">Renunță</translation>
+    </message>
+    <message>
+        <location filename="../x64/Release/QtWebEngine/Controls2Delegates/AuthenticationDialog.qml" line="130"/>
+        <source>Log In</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>AvSettingPage</name>
     <message>
-        <location filename="../src/settingsview/components/AvSettingPage.qml" line="306"/>
+        <location filename="../src/settingsview/components/AvSettingPage.qml" line="291"/>
+        <source>Toggle to display side panel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/AvSettingPage.qml" line="307"/>
         <source>Audio / Video</source>
         <translation>Audio / Video</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/AvSettingPage.qml" line="332"/>
+        <location filename="../src/settingsview/components/AvSettingPage.qml" line="354"/>
         <source>Audio</source>
         <translation>Audio</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/AvSettingPage.qml" line="366"/>
+        <location filename="../src/settingsview/components/AvSettingPage.qml" line="373"/>
         <source>Microphone</source>
         <translation>Microfon</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/AvSettingPage.qml" line="443"/>
+        <location filename="../src/settingsview/components/AvSettingPage.qml" line="394"/>
+        <source>Audio input device selector</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/AvSettingPage.qml" line="427"/>
         <source>Output Device</source>
         <translation>Dispozitiv de ieșire</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/AvSettingPage.qml" line="495"/>
+        <location filename="../src/settingsview/components/AvSettingPage.qml" line="448"/>
+        <source>Choose the audio output device</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/AvSettingPage.qml" line="466"/>
         <source>Ringtone Device</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/AvSettingPage.qml" line="549"/>
+        <location filename="../src/settingsview/components/AvSettingPage.qml" line="488"/>
+        <source>Choose the ringtone output device</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/AvSettingPage.qml" line="507"/>
         <source>Audio Manager</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/AvSettingPage.qml" line="606"/>
+        <location filename="../src/settingsview/components/AvSettingPage.qml" line="548"/>
         <source>Video</source>
         <translation>Video</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/AvSettingPage.qml" line="641"/>
+        <location filename="../src/settingsview/components/AvSettingPage.qml" line="568"/>
         <source>Device</source>
         <translation>Dispozitiv</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/AvSettingPage.qml" line="695"/>
+        <location filename="../src/settingsview/components/AvSettingPage.qml" line="590"/>
+        <source>Video device selector</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/AvSettingPage.qml" line="609"/>
         <source>Resolution</source>
         <translation>Claritate</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/AvSettingPage.qml" line="748"/>
-        <source>Fps</source>
-        <translation type="unfinished"/>
+        <location filename="../src/settingsview/components/AvSettingPage.qml" line="630"/>
+        <source>Video device resolution selector</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/AvSettingPage.qml" line="831"/>
+        <location filename="../src/settingsview/components/AvSettingPage.qml" line="650"/>
+        <source>Fps</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/AvSettingPage.qml" line="671"/>
+        <source>Video device fps selector</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/AvSettingPage.qml" line="716"/>
         <source>Preview unavailable</source>
         <translation>Previzualizare indisponibilă</translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/AvSettingPage.qml" line="743"/>
+        <source>Enable hardware acceleration</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>BackupKeyPage</name>
     <message>
-        <location filename="../src/wizardview/components/BackupKeyPage.qml" line="40"/>
+        <location filename="../src/wizardview/components/BackupKeyPage.qml" line="43"/>
         <source>Export Account Here</source>
         <translation>Exportă Contul Aici</translation>
     </message>
     <message>
-        <location filename="../src/wizardview/components/BackupKeyPage.qml" line="43"/>
+        <location filename="../src/wizardview/components/BackupKeyPage.qml" line="46"/>
         <source>Jami archive files</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/wizardview/components/BackupKeyPage.qml" line="43"/>
+        <location filename="../src/wizardview/components/BackupKeyPage.qml" line="46"/>
         <source>All files</source>
         <translation>Toate fișierele</translation>
     </message>
     <message>
-        <location filename="../src/wizardview/components/BackupKeyPage.qml" line="88"/>
-        <source>Backup your account</source>
-        <translation>Fă o copie de rezervă a contului</translation>
+        <location filename="../src/wizardview/components/BackupKeyPage.qml" line="79"/>
+        <source>Backup your account!</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/wizardview/components/BackupKeyPage.qml" line="99"/>
-        <source>This account only exists on this device. If you lost your device or uninstall the application,your account will be deleted. You can backup your account now or later.</source>
-        <translation type="unfinished"/>
+        <location filename="../src/wizardview/components/BackupKeyPage.qml" line="86"/>
+        <source>Recommended</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/wizardview/components/BackupKeyPage.qml" line="105"/>
+        <source>This account only exists on this device. If you lost your device or uninstall the application, your account will be deleted. You can backup your account now or later.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/wizardview/components/BackupKeyPage.qml" line="146"/>
-        <source>Export</source>
-        <translation type="unfinished"/>
+        <source>BACKUP ACCOUNT</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/wizardview/components/BackupKeyPage.qml" line="175"/>
+        <location filename="../src/wizardview/components/BackupKeyPage.qml" line="162"/>
+        <source>SKIP</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Backup your account</source>
+        <translation type="vanished">Fă o copie de rezervă a contului</translation>
+    </message>
+    <message>
         <source>Skip</source>
-        <translation>Omite</translation>
+        <translation type="vanished">Omite</translation>
     </message>
     <message>
-        <location filename="../src/wizardview/components/BackupKeyPage.qml" line="116"/>
+        <location filename="../src/wizardview/components/BackupKeyPage.qml" line="125"/>
         <source>Never show me this again</source>
         <translation>Nu îmi mai arăta asta</translation>
     </message>
@@ -654,17 +832,17 @@ Jami e un program pentru comunicații sigure și distribuite.</translation>
 <context>
     <name>BannedItemDelegate</name>
     <message>
-        <location filename="../src/settingsview/components/BannedItemDelegate.qml" line="141"/>
+        <location filename="../src/settingsview/components/BannedItemDelegate.qml" line="130"/>
         <source>name</source>
         <translation>nume</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/BannedItemDelegate.qml" line="161"/>
+        <location filename="../src/settingsview/components/BannedItemDelegate.qml" line="155"/>
         <source>id</source>
         <translation>ID</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/BannedItemDelegate.qml" line="188"/>
+        <location filename="../src/settingsview/components/BannedItemDelegate.qml" line="185"/>
         <source>Add as contact</source>
         <translation>Adaugă la contacte</translation>
     </message>
@@ -672,10 +850,10 @@ Jami e un program pentru comunicații sigure și distribuite.</translation>
 <context>
     <name>CallAdapter</name>
     <message>
-        <location filename="../src/calladapter.cpp" line="258"/>
-        <location filename="../src/calladapter.cpp" line="307"/>
+        <location filename="../src/calladapter.cpp" line="257"/>
+        <location filename="../src/calladapter.cpp" line="311"/>
         <source>me</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -688,65 +866,123 @@ Jami e un program pentru comunicații sigure și distribuite.</translation>
     <message>
         <location filename="../src/mainview/components/CallAdvancedOptions.qml" line="92"/>
         <source>Transfer this call</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/mainview/components/CallAdvancedOptions.qml" line="110"/>
         <source>Search contacts</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>CallOverlayButtonGroup</name>
+    <message>
+        <location filename="../src/mainview/components/CallOverlayButtonGroup.qml" line="98"/>
+        <source>Press to mute the call</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mainview/components/CallOverlayButtonGroup.qml" line="98"/>
+        <source>Press to unmute the call</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mainview/components/CallOverlayButtonGroup.qml" line="123"/>
+        <source>Press to hang up the call</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mainview/components/CallOverlayButtonGroup.qml" line="150"/>
+        <source>Press to pause the call</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mainview/components/CallOverlayButtonGroup.qml" line="150"/>
+        <source>Press to resume the call</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mainview/components/CallOverlayButtonGroup.qml" line="180"/>
+        <source>Press to add more contact into conference call</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mainview/components/CallOverlayButtonGroup.qml" line="205"/>
+        <source>Press to toggle open the chatview</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mainview/components/CallOverlayButtonGroup.qml" line="229"/>
+        <source>Press to open chat options</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>CallViewContextMenu</name>
     <message>
-        <location filename="../src/mainview/components/CallViewContextMenu.qml" line="100"/>
+        <location filename="../src/mainview/components/CallViewContextMenu.qml" line="46"/>
         <source>Resume call</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainview/components/CallViewContextMenu.qml" line="100"/>
+        <location filename="../src/mainview/components/CallViewContextMenu.qml" line="46"/>
         <source>Hold call</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainview/components/CallViewContextMenu.qml" line="117"/>
+        <location filename="../src/mainview/components/CallViewContextMenu.qml" line="53"/>
+        <source>Sip Input Panel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mainview/components/CallViewContextMenu.qml" line="58"/>
         <source>Transfer call</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainview/components/CallViewContextMenu.qml" line="143"/>
+        <location filename="../src/mainview/components/CallViewContextMenu.qml" line="68"/>
         <source>Stop recording</source>
         <translation>Oprește înregistrarea</translation>
     </message>
     <message>
-        <location filename="../src/mainview/components/CallViewContextMenu.qml" line="143"/>
+        <location filename="../src/mainview/components/CallViewContextMenu.qml" line="69"/>
         <source>Start recording</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainview/components/CallViewContextMenu.qml" line="157"/>
+        <location filename="../src/mainview/components/CallViewContextMenu.qml" line="74"/>
         <source>Exit full screen</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainview/components/CallViewContextMenu.qml" line="157"/>
+        <location filename="../src/mainview/components/CallViewContextMenu.qml" line="75"/>
         <source>Full screen mode</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainview/components/CallViewContextMenu.qml" line="200"/>
+        <location filename="../src/mainview/components/CallViewContextMenu.qml" line="89"/>
         <source>Share entire screen</source>
         <translation>Distribuie tot ecranul</translation>
     </message>
     <message>
-        <location filename="../src/mainview/components/CallViewContextMenu.qml" line="221"/>
+        <location filename="../src/mainview/components/CallViewContextMenu.qml" line="99"/>
         <source>Share screen area</source>
         <translation>Distribuie zona ecranului</translation>
     </message>
     <message>
-        <location filename="../src/mainview/components/CallViewContextMenu.qml" line="244"/>
+        <location filename="../src/mainview/components/CallViewContextMenu.qml" line="111"/>
         <source>Share file</source>
         <translation>Distribuie fișierul</translation>
+    </message>
+    <message>
+        <location filename="../src/mainview/components/CallViewContextMenu.qml" line="118"/>
+        <source>Toggle plugin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mainview/components/CallViewContextMenu.qml" line="139"/>
+        <source>No video device</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -759,30 +995,72 @@ Jami e un program pentru comunicații sigure și distribuite.</translation>
     <message>
         <location filename="../src/wizardview/components/CollapsiblePasswordWidget.qml" line="100"/>
         <source>Confirm Password</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ConfirmDialog</name>
+    <message>
+        <location filename="../x64/Release/QtWebEngine/Controls2Delegates/ConfirmDialog.qml" line="50"/>
+        <source>Alert Dialog</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../x64/Release/QtWebEngine/Controls2Delegates/ConfirmDialog.qml" line="102"/>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../x64/Release/QtWebEngine/Controls2Delegates/ConfirmDialog.qml" line="106"/>
+        <source>Cancel</source>
+        <translation type="unfinished">Renunță</translation>
     </message>
 </context>
 <context>
     <name>ConnectToAccountManagerPage</name>
     <message>
-        <location filename="../src/wizardview/components/ConnectToAccountManagerPage.qml" line="63"/>
         <source>Sign in</source>
-        <translation>Autentificare</translation>
+        <translation type="vanished">Autentificare</translation>
     </message>
     <message>
-        <location filename="../src/wizardview/components/ConnectToAccountManagerPage.qml" line="74"/>
+        <location filename="../src/wizardview/components/ConnectToAccountManagerPage.qml" line="63"/>
+        <source>Enter URL of management server</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/wizardview/components/ConnectToAccountManagerPage.qml" line="70"/>
+        <source>Required</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/wizardview/components/ConnectToAccountManagerPage.qml" line="90"/>
+        <source>Jami management server URL</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/wizardview/components/ConnectToAccountManagerPage.qml" line="100"/>
+        <source>Enter your organization credentials</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/wizardview/components/ConnectToAccountManagerPage.qml" line="112"/>
         <source>Username</source>
         <translation>Nume de Utilizator</translation>
     </message>
     <message>
-        <location filename="../src/wizardview/components/ConnectToAccountManagerPage.qml" line="83"/>
+        <location filename="../src/wizardview/components/ConnectToAccountManagerPage.qml" line="127"/>
         <source>Password</source>
         <translation>Parolă</translation>
     </message>
     <message>
-        <location filename="../src/wizardview/components/ConnectToAccountManagerPage.qml" line="92"/>
-        <source>Account Manager</source>
-        <translation type="unfinished"/>
+        <location filename="../src/wizardview/components/ConnectToAccountManagerPage.qml" line="143"/>
+        <source>CONNECT</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/wizardview/components/ConnectToAccountManagerPage.qml" line="174"/>
+        <source>BACK</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -795,12 +1073,12 @@ Jami e un program pentru comunicații sigure și distribuite.</translation>
     <message>
         <location filename="../src/mainview/components/ContactPicker.qml" line="91"/>
         <source>Transfer this call</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/mainview/components/ContactPicker.qml" line="109"/>
         <source>Search contacts</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -814,32 +1092,42 @@ Jami e un program pentru comunicații sigure și distribuite.</translation>
 <context>
     <name>ConversationSmartListContextMenu</name>
     <message>
-        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="56"/>
+        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="36"/>
         <source>Start video call</source>
         <translation>Începe un apel video</translation>
     </message>
     <message>
-        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="72"/>
+        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="44"/>
         <source>Start audio call</source>
         <translation>Începe un apel audio</translation>
     </message>
     <message>
-        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="88"/>
+        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="52"/>
         <source>Clear conversation</source>
         <translation>Șterge conversația</translation>
     </message>
     <message>
-        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="103"/>
+        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="61"/>
         <source>Remove contact</source>
         <translation>Șterge contactul</translation>
     </message>
     <message>
-        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="127"/>
+        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="74"/>
+        <source>Accept request</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="80"/>
+        <source>Decline request</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="87"/>
         <source>Block contact</source>
         <translation>Blochează contactul</translation>
     </message>
     <message>
-        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="151"/>
+        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="95"/>
         <source>Profile</source>
         <translation>Profil</translation>
     </message>
@@ -847,244 +1135,373 @@ Jami e un program pentru comunicații sigure și distribuite.</translation>
 <context>
     <name>CreateAccountPage</name>
     <message>
-        <location filename="../src/wizardview/components/CreateAccountPage.qml" line="104"/>
         <source>Profile</source>
-        <translation>Profil</translation>
+        <translation type="vanished">Profil</translation>
     </message>
     <message>
-        <location filename="../src/wizardview/components/CreateAccountPage.qml" line="143"/>
         <source>Profile name</source>
-        <translation>Numele profilului</translation>
+        <translation type="vanished">Numele profilului</translation>
     </message>
     <message>
-        <location filename="../src/wizardview/components/CreateAccountPage.qml" line="176"/>
         <source>Account</source>
-        <translation>Cont</translation>
+        <translation type="vanished">Cont</translation>
     </message>
     <message>
-        <location filename="../src/wizardview/components/CreateAccountPage.qml" line="205"/>
         <source>Register public username</source>
-        <translation>Înscrie numele de utilizator public</translation>
+        <translation type="vanished">Înscrie numele de utilizator public</translation>
     </message>
     <message>
-        <location filename="../src/wizardview/components/CreateAccountPage.qml" line="236"/>
+        <location filename="../src/wizardview/components/CreateAccountPage.qml" line="68"/>
+        <source>Export Account Here</source>
+        <translation type="unfinished">Exportă Contul Aici</translation>
+    </message>
+    <message>
+        <location filename="../src/wizardview/components/CreateAccountPage.qml" line="71"/>
+        <source>Jami archive files</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/wizardview/components/CreateAccountPage.qml" line="71"/>
+        <source>All files</source>
+        <translation type="unfinished">Toate fișierele</translation>
+    </message>
+    <message>
+        <location filename="../src/wizardview/components/CreateAccountPage.qml" line="108"/>
+        <source>Choose a username</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/wizardview/components/CreateAccountPage.qml" line="115"/>
+        <source>Recommended</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/wizardview/components/CreateAccountPage.qml" line="136"/>
         <source>Choose your username</source>
         <translation>Alege numele de utilizator</translation>
     </message>
     <message>
-        <location filename="../src/wizardview/components/CreateAccountPage.qml" line="290"/>
-        <source>Choose a password for enhanced security</source>
-        <translation type="unfinished"/>
+        <location filename="../src/wizardview/components/CreateAccountPage.qml" line="163"/>
+        <source>Invalid username</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/wizardview/components/CreateAccountPage.qml" line="165"/>
+        <source>Username already taken</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/wizardview/components/CreateAccountPage.qml" line="179"/>
+        <source>CHOOSE USERNAME</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/wizardview/components/CreateAccountPage.qml" line="209"/>
+        <location filename="../src/wizardview/components/CreateAccountPage.qml" line="341"/>
+        <source>BACK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/wizardview/components/CreateAccountPage.qml" line="209"/>
+        <source>SKIP</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/wizardview/components/CreateAccountPage.qml" line="240"/>
+        <source>Create a password</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/wizardview/components/CreateAccountPage.qml" line="254"/>
+        <source>Optional</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/wizardview/components/CreateAccountPage.qml" line="277"/>
+        <source>Password</source>
+        <translation type="unfinished">Parolă</translation>
+    </message>
+    <message>
+        <location filename="../src/wizardview/components/CreateAccountPage.qml" line="293"/>
+        <source>Confirm password</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/wizardview/components/CreateAccountPage.qml" line="303"/>
+        <source>Note that the password cannot be recovered</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/wizardview/components/CreateAccountPage.qml" line="321"/>
+        <source>CREATE ACCOUNT</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>CreateSIPAccountPage</name>
     <message>
-        <location filename="../src/wizardview/components/CreateSIPAccountPage.qml" line="76"/>
         <source>Profile</source>
-        <translation>Profil</translation>
+        <translation type="vanished">Profil</translation>
     </message>
     <message>
-        <location filename="../src/wizardview/components/CreateSIPAccountPage.qml" line="113"/>
         <source>Profile name</source>
-        <translation>Numele profilului</translation>
+        <translation type="vanished">Numele profilului</translation>
     </message>
     <message>
-        <location filename="../src/wizardview/components/CreateSIPAccountPage.qml" line="137"/>
         <source>SIP Account</source>
-        <translation>Cont SIP</translation>
+        <translation type="vanished">Cont SIP</translation>
     </message>
     <message>
-        <location filename="../src/wizardview/components/CreateSIPAccountPage.qml" line="163"/>
+        <location filename="../src/wizardview/components/CreateSIPAccountPage.qml" line="65"/>
+        <source>Configure an existing SIP account</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/wizardview/components/CreateSIPAccountPage.qml" line="72"/>
+        <source>Optional</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/wizardview/components/CreateSIPAccountPage.qml" line="92"/>
         <source>Server</source>
         <translation>Server</translation>
     </message>
     <message>
-        <location filename="../src/wizardview/components/CreateSIPAccountPage.qml" line="174"/>
+        <location filename="../src/wizardview/components/CreateSIPAccountPage.qml" line="105"/>
         <source>Proxy</source>
         <translation>Proxy</translation>
     </message>
     <message>
-        <location filename="../src/wizardview/components/CreateSIPAccountPage.qml" line="185"/>
+        <location filename="../src/wizardview/components/CreateSIPAccountPage.qml" line="118"/>
         <source>Username</source>
         <translation>Nume de Utilizator</translation>
     </message>
     <message>
-        <location filename="../src/wizardview/components/CreateSIPAccountPage.qml" line="197"/>
+        <location filename="../src/wizardview/components/CreateSIPAccountPage.qml" line="132"/>
         <source>Password</source>
         <translation>Parolă</translation>
+    </message>
+    <message>
+        <location filename="../src/wizardview/components/CreateSIPAccountPage.qml" line="144"/>
+        <source>CREATE SIP ACCOUNT</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/wizardview/components/CreateSIPAccountPage.qml" line="161"/>
+        <source>BACK</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>CurrentAccountSettingsScrollPage</name>
     <message>
-        <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="249"/>
+        <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="233"/>
         <source>Export Account Here</source>
         <translation>Exportă Contul Aici</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="252"/>
+        <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="236"/>
         <source>Jami archive files</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="252"/>
+        <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="236"/>
         <source>All files</source>
         <translation>Toate fișierele</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="264"/>
-        <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="290"/>
+        <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="248"/>
+        <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="274"/>
         <source>Success</source>
         <translation>Succes</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="264"/>
-        <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="290"/>
+        <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="248"/>
+        <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="274"/>
         <source>Error</source>
         <translation>Eroare</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="266"/>
-        <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="296"/>
+        <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="250"/>
+        <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="280"/>
         <source>Export Successful</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="266"/>
-        <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="296"/>
+        <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="250"/>
+        <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="280"/>
         <source>Export Failed</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="299"/>
+        <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="283"/>
         <source>Password Changed Successfully</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="299"/>
+        <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="283"/>
         <source>Password Change Failed</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="302"/>
+        <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="286"/>
         <source>Password Set Successfully</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="302"/>
+        <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="286"/>
         <source>Password Set Failed</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="303"/>
-        <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="970"/>
+        <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="287"/>
+        <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="791"/>
         <source>Change Password</source>
         <translation>Schimbă Parola</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="303"/>
-        <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="970"/>
+        <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="287"/>
+        <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="792"/>
         <source>Set Password</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="384"/>
+        <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="367"/>
         <source>Remove Device</source>
         <translation>Elimină Dispozitivul</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="385"/>
+        <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="368"/>
         <source>Are you sure you wish to remove this device?</source>
         <translation>Sigur vrei să elimini acest dispozitiv?</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="512"/>
+        <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="459"/>
+        <source>Toggle to display side panel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="475"/>
+        <source>Account Settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="789"/>
+        <source>Change the current password</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="790"/>
+        <source>Currently no password, press this button to set a password</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="815"/>
+        <source>Press this button to export account to a .gz file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="1066"/>
+        <source>Press to display or hide advance settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Jami Account</source>
-        <translation>Cont Jami</translation>
+        <translation type="vanished">Cont Jami</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="1088"/>
-        <source>Linked Device</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="1160"/>
-        <source>+Link Another Device</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="1202"/>
-        <source>Banned Contact</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="575"/>
+        <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="519"/>
         <source>Enable</source>
         <translation>Activează</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="601"/>
+        <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="543"/>
         <source>Profile</source>
         <translation>Profil</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="686"/>
+        <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="612"/>
         <source>Identity</source>
         <translation>Identitate</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="725"/>
+        <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="632"/>
         <source>Id</source>
         <translation>ID</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="788"/>
+        <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="697"/>
         <source>Registered name</source>
         <translation>Nume înscris</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="815"/>
+        <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="711"/>
         <source>Type here to register a username</source>
         <translation>Scrie aici numele de utilizator</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="816"/>
-        <source/>
-        <translation type="unfinished"/>
+        <source></source>
+        <translation></translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="890"/>
         <source>A registered name should not have any spaces and must be at least three letters long</source>
-        <translation>Un nume de utilizator nu trebuie să aibă spații și trebuie să conțină cel puțin trei litere</translation>
+        <translation type="vanished">Un nume de utilizator nu trebuie să aibă spații și trebuie să conțină cel puțin trei litere</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="892"/>
         <source>This name is already taken</source>
-        <translation>Acest nume a fost ales deja</translation>
+        <translation type="vanished">Acest nume a fost ales deja</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="894"/>
         <source>Register this name</source>
-        <translation>Înscrie acest nume</translation>
+        <translation type="vanished">Înscrie acest nume</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="937"/>
         <source>Register</source>
-        <translation>Înscrie-te</translation>
+        <translation type="vanished">Înscrie-te</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="1008"/>
+        <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="816"/>
         <source>Export Account</source>
         <translation>Exportă Contul</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="1051"/>
+        <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="836"/>
+        <source>Press this button to delete this account</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="837"/>
         <source>Delete Account</source>
         <translation>Șterge Contul</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="1332"/>
+        <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="859"/>
+        <source>Linked Devices</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="914"/>
+        <source>Press to link one more device with this account</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="918"/>
+        <source>Link Another Device</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="953"/>
+        <source>Banned Contacts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="974"/>
+        <source>press to open or hide display of banned contact</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="1043"/>
         <source>Advanced Account Settings</source>
         <translation>Reglări Avansate ale Contului</translation>
     </message>
@@ -1092,80 +1509,420 @@ Jami e un program pentru comunicații sigure și distribuite.</translation>
 <context>
     <name>CurrentSIPAccountSettingScrollPage</name>
     <message>
-        <location filename="../src/settingsview/components/CurrentSIPAccountSettingScrollPage.qml" line="154"/>
         <source>SIP Account</source>
-        <translation>Cont SIP</translation>
+        <translation type="vanished">Cont SIP</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/CurrentSIPAccountSettingScrollPage.qml" line="217"/>
+        <location filename="../src/settingsview/components/CurrentSIPAccountSettingScrollPage.qml" line="124"/>
+        <source>Toggle to display side panel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/CurrentSIPAccountSettingScrollPage.qml" line="139"/>
+        <source>Account Settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/CurrentSIPAccountSettingScrollPage.qml" line="179"/>
         <source>Enable</source>
         <translation>Activează</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/CurrentSIPAccountSettingScrollPage.qml" line="243"/>
+        <location filename="../src/settingsview/components/CurrentSIPAccountSettingScrollPage.qml" line="200"/>
         <source>Profile</source>
         <translation>Profil</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/CurrentSIPAccountSettingScrollPage.qml" line="329"/>
+        <location filename="../src/settingsview/components/CurrentSIPAccountSettingScrollPage.qml" line="267"/>
         <source>Identity</source>
         <translation>Identitate</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/CurrentSIPAccountSettingScrollPage.qml" line="370"/>
+        <location filename="../src/settingsview/components/CurrentSIPAccountSettingScrollPage.qml" line="290"/>
         <source>Username</source>
         <translation>Nume de Utilizator</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/CurrentSIPAccountSettingScrollPage.qml" line="405"/>
+        <location filename="../src/settingsview/components/CurrentSIPAccountSettingScrollPage.qml" line="323"/>
         <source>Hostname</source>
         <translation>Numele serverului</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/CurrentSIPAccountSettingScrollPage.qml" line="440"/>
+        <location filename="../src/settingsview/components/CurrentSIPAccountSettingScrollPage.qml" line="356"/>
         <source>Proxy</source>
         <translation>Proxy</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/CurrentSIPAccountSettingScrollPage.qml" line="475"/>
+        <location filename="../src/settingsview/components/CurrentSIPAccountSettingScrollPage.qml" line="389"/>
         <source>Password</source>
         <translation>Parolă</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/CurrentSIPAccountSettingScrollPage.qml" line="536"/>
+        <location filename="../src/settingsview/components/CurrentSIPAccountSettingScrollPage.qml" line="427"/>
+        <source>Press this button to delete this account</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/CurrentSIPAccountSettingScrollPage.qml" line="428"/>
         <source>Delete Account</source>
         <translation>Șterge Contul</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/CurrentSIPAccountSettingScrollPage.qml" line="587"/>
+        <location filename="../src/settingsview/components/CurrentSIPAccountSettingScrollPage.qml" line="452"/>
         <source>Advanced Account Settings</source>
         <translation>Reglări Avansate ale Contului</translation>
     </message>
 </context>
 <context>
+    <name>DefaultColorDialog</name>
+    <message>
+        <location filename="../x64/Release/QtQuick/Dialogs/DefaultColorDialog.qml" line="281"/>
+        <source>Hue</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../x64/Release/QtQuick/Dialogs/DefaultColorDialog.qml" line="302"/>
+        <source>Saturation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../x64/Release/QtQuick/Dialogs/DefaultColorDialog.qml" line="318"/>
+        <source>Luminosity</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../x64/Release/QtQuick/Dialogs/DefaultColorDialog.qml" line="336"/>
+        <source>Alpha</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../x64/Release/QtQuick/Dialogs/DefaultColorDialog.qml" line="395"/>
+        <source>Cancel</source>
+        <translation type="unfinished">Renunță</translation>
+    </message>
+    <message>
+        <location filename="../x64/Release/QtQuick/Dialogs/DefaultColorDialog.qml" line="400"/>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>DefaultDialogWrapper</name>
+    <message>
+        <location filename="../x64/Release/QtQuick/Dialogs/DefaultDialogWrapper.qml" line="109"/>
+        <source>Show Details...</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>DefaultFileDialog</name>
+    <message>
+        <location filename="../x64/Release/QtQuick/Dialogs/DefaultFileDialog.qml" line="148"/>
+        <source>Go up to the folder containing this one</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../x64/Release/QtQuick/Dialogs/DefaultFileDialog.qml" line="271"/>
+        <source>Remove favorite</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../x64/Release/QtQuick/Dialogs/DefaultFileDialog.qml" line="313"/>
+        <source>Add the current directory as a favorite</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../x64/Release/QtQuick/Dialogs/DefaultFileDialog.qml" line="351"/>
+        <source>Filename</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../x64/Release/QtQuick/Dialogs/DefaultFileDialog.qml" line="378"/>
+        <source>Type</source>
+        <comment>file type (extension)</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../x64/Release/QtQuick/Dialogs/DefaultFileDialog.qml" line="401"/>
+        <source>Size</source>
+        <comment>file size</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../x64/Release/QtQuick/Dialogs/DefaultFileDialog.qml" line="404"/>
+        <source>Modified</source>
+        <comment>last-modified time</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../x64/Release/QtQuick/Dialogs/DefaultFileDialog.qml" line="405"/>
+        <source>Accessed</source>
+        <comment>last-accessed time</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../x64/Release/QtQuick/Dialogs/DefaultFileDialog.qml" line="470"/>
+        <source>Cancel</source>
+        <translation type="unfinished">Renunță</translation>
+    </message>
+    <message>
+        <location filename="../x64/Release/QtQuick/Dialogs/DefaultFileDialog.qml" line="475"/>
+        <source>Choose</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../x64/Release/QtQuick/Dialogs/DefaultFileDialog.qml" line="475"/>
+        <source>Open</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../x64/Release/QtQuick/Dialogs/DefaultFileDialog.qml" line="475"/>
+        <source>Save</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>DefaultFontDialog</name>
+    <message>
+        <location filename="../x64/Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="120"/>
+        <source>Font</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../x64/Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="121"/>
+        <location filename="../x64/Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="202"/>
+        <source>Weight</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../x64/Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="122"/>
+        <location filename="../x64/Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="276"/>
+        <source>Size</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../x64/Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="135"/>
+        <source>Font Family</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../x64/Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="205"/>
+        <source>Thin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../x64/Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="206"/>
+        <source>ExtraLight</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../x64/Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="207"/>
+        <source>Light</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../x64/Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="208"/>
+        <source>Normal</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../x64/Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="209"/>
+        <source>Medium</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../x64/Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="210"/>
+        <source>DemiBold</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../x64/Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="211"/>
+        <source>Bold</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../x64/Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="212"/>
+        <source>ExtraBold</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../x64/Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="213"/>
+        <source>Black</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../x64/Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="303"/>
+        <source>Style</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../x64/Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="306"/>
+        <source>Italic</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../x64/Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="312"/>
+        <source>Underline</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../x64/Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="318"/>
+        <source>Overline</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../x64/Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="324"/>
+        <source>Strikeout</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../x64/Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="329"/>
+        <source>Writing System</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../x64/Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="338"/>
+        <source>Sample</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../x64/Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="390"/>
+        <source>Cancel</source>
+        <translation type="unfinished">Renunță</translation>
+    </message>
+    <message>
+        <location filename="../x64/Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="394"/>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>DefaultMessageDialog</name>
+    <message>
+        <location filename="../x64/Release/QtQuick/Dialogs/DefaultMessageDialog.qml" line="142"/>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../x64/Release/QtQuick/Dialogs/DefaultMessageDialog.qml" line="148"/>
+        <source>Open</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../x64/Release/QtQuick/Dialogs/DefaultMessageDialog.qml" line="154"/>
+        <source>Save</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../x64/Release/QtQuick/Dialogs/DefaultMessageDialog.qml" line="160"/>
+        <source>Save All</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../x64/Release/QtQuick/Dialogs/DefaultMessageDialog.qml" line="166"/>
+        <source>Retry</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../x64/Release/QtQuick/Dialogs/DefaultMessageDialog.qml" line="172"/>
+        <source>Ignore</source>
+        <translation type="unfinished">Ignoră</translation>
+    </message>
+    <message>
+        <location filename="../x64/Release/QtQuick/Dialogs/DefaultMessageDialog.qml" line="178"/>
+        <source>Apply</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../x64/Release/QtQuick/Dialogs/DefaultMessageDialog.qml" line="184"/>
+        <source>Yes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../x64/Release/QtQuick/Dialogs/DefaultMessageDialog.qml" line="190"/>
+        <source>Yes to All</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../x64/Release/QtQuick/Dialogs/DefaultMessageDialog.qml" line="196"/>
+        <source>No</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../x64/Release/QtQuick/Dialogs/DefaultMessageDialog.qml" line="202"/>
+        <source>No to All</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../x64/Release/QtQuick/Dialogs/DefaultMessageDialog.qml" line="208"/>
+        <source>Discard</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../x64/Release/QtQuick/Dialogs/DefaultMessageDialog.qml" line="214"/>
+        <source>Reset</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../x64/Release/QtQuick/Dialogs/DefaultMessageDialog.qml" line="220"/>
+        <source>Restore Defaults</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../x64/Release/QtQuick/Dialogs/DefaultMessageDialog.qml" line="226"/>
+        <source>Cancel</source>
+        <translation type="unfinished">Renunță</translation>
+    </message>
+    <message>
+        <location filename="../x64/Release/QtQuick/Dialogs/DefaultMessageDialog.qml" line="232"/>
+        <source>Abort</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../x64/Release/QtQuick/Dialogs/DefaultMessageDialog.qml" line="238"/>
+        <source>Close</source>
+        <translation type="unfinished">Închide</translation>
+    </message>
+    <message>
+        <location filename="../x64/Release/QtQuick/Dialogs/DefaultMessageDialog.qml" line="244"/>
+        <source>Show Details...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../x64/Release/QtQuick/Dialogs/DefaultMessageDialog.qml" line="250"/>
+        <source>Help</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../x64/Release/QtQuick/Dialogs/DefaultMessageDialog.qml" line="306"/>
+        <source>Hide Details</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>DeleteAccountDialog</name>
     <message>
-        <location filename="../src/commoncomponents/DeleteAccountDialog.qml" line="52"/>
+        <location filename="../src/commoncomponents/DeleteAccountDialog.qml" line="53"/>
         <source>Account deletion</source>
         <translation>Șterge contul</translation>
     </message>
     <message>
-        <location filename="../src/commoncomponents/DeleteAccountDialog.qml" line="77"/>
+        <location filename="../src/commoncomponents/DeleteAccountDialog.qml" line="78"/>
         <source>Do you really want to delete the following account?</source>
         <translation>Chiar vrei să ștergi acest cont?</translation>
     </message>
     <message>
-        <location filename="../src/commoncomponents/DeleteAccountDialog.qml" line="135"/>
+        <location filename="../src/commoncomponents/DeleteAccountDialog.qml" line="136"/>
         <source>If this account hasn&apos;t been exported, or added to another device, it will be irrevocably lost.</source>
         <translation>Dacă acest cont nu a fost exportat sau asociat altui dispozitiv, va fi pierdut definitiv.</translation>
     </message>
     <message>
-        <location filename="../src/commoncomponents/DeleteAccountDialog.qml" line="182"/>
+        <location filename="../src/commoncomponents/DeleteAccountDialog.qml" line="183"/>
         <source>Delete</source>
         <translation>Șterge</translation>
     </message>
     <message>
-        <location filename="../src/commoncomponents/DeleteAccountDialog.qml" line="222"/>
+        <location filename="../src/commoncomponents/DeleteAccountDialog.qml" line="223"/>
         <source>Cancel</source>
         <translation>Renunță</translation>
     </message>
@@ -1173,80 +1930,207 @@ Jami e un program pentru comunicații sigure și distribuite.</translation>
 <context>
     <name>DeviceItemDelegate</name>
     <message>
-        <location filename="../src/settingsview/components/DeviceItemDelegate.qml" line="157"/>
         <source>this device</source>
-        <translation>acest dispozitiv</translation>
+        <translation type="vanished">acest dispozitiv</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/DeviceItemDelegate.qml" line="135"/>
+        <location filename="../src/settingsview/components/DeviceItemDelegate.qml" line="144"/>
         <source>Device Id</source>
         <translation>ID-ul dispozitivului</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/DeviceItemDelegate.qml" line="192"/>
+        <location filename="../src/settingsview/components/DeviceItemDelegate.qml" line="187"/>
         <source>Edit Device Name</source>
         <translation>Modifică Numele Dispozitivului</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/DeviceItemDelegate.qml" line="194"/>
+        <location filename="../src/settingsview/components/DeviceItemDelegate.qml" line="189"/>
         <source>Save new device name</source>
         <translation>Salvează noul nume al dispozitivului</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/DeviceItemDelegate.qml" line="197"/>
+        <location filename="../src/settingsview/components/DeviceItemDelegate.qml" line="192"/>
         <source>Unlink Device From Account</source>
         <translation>Disociază dispozitivul de cont</translation>
     </message>
 </context>
 <context>
+    <name>EditMenu_base</name>
+    <message>
+        <location filename="../x64/Release/QtQuick/Controls/Private/EditMenu_base.qml" line="51"/>
+        <source>&amp;Undo</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../x64/Release/QtQuick/Controls/Private/EditMenu_base.qml" line="62"/>
+        <source>&amp;Redo</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../x64/Release/QtQuick/Controls/Private/EditMenu_base.qml" line="73"/>
+        <source>Cu&amp;t</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../x64/Release/QtQuick/Controls/Private/EditMenu_base.qml" line="87"/>
+        <source>&amp;Copy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../x64/Release/QtQuick/Controls/Private/EditMenu_base.qml" line="101"/>
+        <source>&amp;Paste</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../x64/Release/QtQuick/Controls/Private/EditMenu_base.qml" line="112"/>
+        <source>Delete</source>
+        <translation type="unfinished">Șterge</translation>
+    </message>
+    <message>
+        <location filename="../x64/Release/QtQuick/Controls/Private/EditMenu_base.qml" line="123"/>
+        <source>Clear</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../x64/Release/QtQuick/Controls/Private/EditMenu_base.qml" line="134"/>
+        <source>Select All</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>GeneralSettingsPage</name>
     <message>
-        <location filename="../src/settingsview/components/GeneralSettingsPage.qml" line="99"/>
+        <location filename="../src/settingsview/components/GeneralSettingsPage.qml" line="101"/>
         <source>Select A Folder For Your Downloads</source>
         <translation>Alege un Dosar pentru Descărcările Tale</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/GeneralSettingsPage.qml" line="123"/>
+        <location filename="../src/settingsview/components/GeneralSettingsPage.qml" line="125"/>
         <source>Select A Folder For Your Recordings</source>
         <translation>Alege un Dosar pentru Înregistrările Tale</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/GeneralSettingsPage.qml" line="215"/>
+        <location filename="../src/settingsview/components/GeneralSettingsPage.qml" line="198"/>
+        <source>Toggle to display side panel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/GeneralSettingsPage.qml" line="213"/>
         <source>General</source>
         <translation>Generale</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/GeneralSettingsPage.qml" line="235"/>
+        <location filename="../src/settingsview/components/GeneralSettingsPage.qml" line="259"/>
         <source>System</source>
         <translation>Sistem</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/GeneralSettingsPage.qml" line="367"/>
+        <location filename="../src/settingsview/components/GeneralSettingsPage.qml" line="278"/>
+        <source>toggle enable notifications</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/GeneralSettingsPage.qml" line="289"/>
+        <source>Enable desktop notifications</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/GeneralSettingsPage.qml" line="299"/>
+        <source>toggle keep minimized on close</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/GeneralSettingsPage.qml" line="310"/>
+        <source>Keep minimize on close</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/GeneralSettingsPage.qml" line="320"/>
+        <source>toggle run application on system startup</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/GeneralSettingsPage.qml" line="331"/>
+        <source>Run On Startup</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/GeneralSettingsPage.qml" line="346"/>
+        <source>Downloads folder</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/GeneralSettingsPage.qml" line="358"/>
+        <source>Press to choose download folder path</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/GeneralSettingsPage.qml" line="385"/>
         <source>Call Recording</source>
         <translation>Înregistrare Apel</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/GeneralSettingsPage.qml" line="308"/>
+        <location filename="../src/settingsview/components/GeneralSettingsPage.qml" line="410"/>
+        <source>Always record calls</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/GeneralSettingsPage.qml" line="429"/>
+        <source>Record preview video for a call</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/GeneralSettingsPage.qml" line="565"/>
+        <source>toggle automatic updates</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/GeneralSettingsPage.qml" line="576"/>
+        <source>Check for updates automatically</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/GeneralSettingsPage.qml" line="592"/>
+        <source>Check for updates now</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/GeneralSettingsPage.qml" line="614"/>
+        <source>Install the latest beta version</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/GeneralSettingsPage.qml" line="615"/>
+        <source>Beta Install</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Download folder</source>
-        <translation>Dosarul descărcării</translation>
+        <translation type="vanished">Dosarul descărcării</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/GeneralSettingsPage.qml" line="426"/>
+        <location filename="../src/settingsview/components/GeneralSettingsPage.qml" line="444"/>
         <source>Quality</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/GeneralSettingsPage.qml" line="458"/>
+        <location filename="../src/settingsview/components/GeneralSettingsPage.qml" line="463"/>
         <source>VALUE </source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/GeneralSettingsPage.qml" line="506"/>
+        <location filename="../src/settingsview/components/GeneralSettingsPage.qml" line="504"/>
         <source>Save in</source>
         <translation>Salvează în</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/GeneralSettingsPage.qml" line="566"/>
+        <location filename="../src/settingsview/components/GeneralSettingsPage.qml" line="519"/>
+        <source>Press to choose record folder path</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/GeneralSettingsPage.qml" line="547"/>
+        <location filename="../src/settingsview/components/GeneralSettingsPage.qml" line="593"/>
         <source>Updates</source>
         <translation>Actualizări</translation>
     </message>
@@ -1254,61 +2138,95 @@ Jami e un program pentru comunicații sigure și distribuite.</translation>
 <context>
     <name>ImportFromBackupPage</name>
     <message>
-        <location filename="../src/wizardview/components/ImportFromBackupPage.qml" line="29"/>
-        <location filename="../src/wizardview/components/ImportFromBackupPage.qml" line="35"/>
+        <location filename="../src/wizardview/components/ImportFromBackupPage.qml" line="32"/>
+        <location filename="../src/wizardview/components/ImportFromBackupPage.qml" line="40"/>
+        <location filename="../src/wizardview/components/ImportFromBackupPage.qml" line="57"/>
         <source>Archive(none)</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/wizardview/components/ImportFromBackupPage.qml" line="42"/>
+        <location filename="../src/wizardview/components/ImportFromBackupPage.qml" line="47"/>
         <source>Open File</source>
         <translation>Deschide fișierul</translation>
     </message>
     <message>
-        <location filename="../src/wizardview/components/ImportFromBackupPage.qml" line="45"/>
+        <location filename="../src/wizardview/components/ImportFromBackupPage.qml" line="50"/>
         <source>Jami archive files</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/wizardview/components/ImportFromBackupPage.qml" line="45"/>
+        <location filename="../src/wizardview/components/ImportFromBackupPage.qml" line="50"/>
         <source>All files</source>
         <translation>Toate fișierele</translation>
     </message>
     <message>
-        <location filename="../src/wizardview/components/ImportFromBackupPage.qml" line="83"/>
+        <location filename="../src/wizardview/components/ImportFromBackupPage.qml" line="76"/>
         <source>Import from backup</source>
         <translation>Importă dintr-o copie de rezervă</translation>
     </message>
     <message>
-        <location filename="../src/wizardview/components/ImportFromBackupPage.qml" line="162"/>
+        <location filename="../src/wizardview/components/ImportFromBackupPage.qml" line="88"/>
+        <source>Import your account&apos;s archive</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/wizardview/components/ImportFromBackupPage.qml" line="106"/>
         <source>You can obtain an archive by clicking on &quot;Export account&quot; in the account settings. This will create a .gz file on your device.</source>
         <translation>Poți obține o arhivă făcînd clic pe &quot;Exportă contul&quot; în reglările contului. Asta va crea un fișier .gz pe dispozitiv.</translation>
     </message>
     <message>
-        <location filename="../src/wizardview/components/ImportFromBackupPage.qml" line="152"/>
+        <location filename="../src/wizardview/components/ImportFromBackupPage.qml" line="126"/>
         <source>Password</source>
         <translation>Parolă</translation>
+    </message>
+    <message>
+        <location filename="../src/wizardview/components/ImportFromBackupPage.qml" line="142"/>
+        <source>CONNECT FROM BACKUP</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/wizardview/components/ImportFromBackupPage.qml" line="172"/>
+        <source>BACK</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>ImportFromDevicePage</name>
     <message>
-        <location filename="../src/wizardview/components/ImportFromDevicePage.qml" line="70"/>
         <source>Import from device</source>
-        <translation>Importă din dispozitiv</translation>
+        <translation type="vanished">Importă din dispozitiv</translation>
     </message>
     <message>
-        <location filename="../src/wizardview/components/ImportFromDevicePage.qml" line="117"/>
+        <location filename="../src/wizardview/components/ImportFromDevicePage.qml" line="57"/>
+        <source>Enter your main Jami account password</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/wizardview/components/ImportFromDevicePage.qml" line="69"/>
         <source>Password</source>
         <translation>Parolă</translation>
     </message>
     <message>
-        <location filename="../src/wizardview/components/ImportFromDevicePage.qml" line="127"/>
-        <source>To obtain a PIN (valid for 10 minutes), you need to open the account settings on the other device and click on &quot;Link to another device&quot;.</source>
-        <translation>Pentru a obține un cod PIN (valabil 10 minute), trebuie să deschizi reglările contului pe celălalt dispozitiv și să faci clic pe &quot;Asociază alt dispozitiv&quot;.</translation>
+        <location filename="../src/wizardview/components/ImportFromDevicePage.qml" line="85"/>
+        <source>Enter the PIN from another configured Jami account. Use the &quot;export Jami account&quot; feature to obtain a PIN</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/wizardview/components/ImportFromDevicePage.qml" line="107"/>
+        <location filename="../src/wizardview/components/ImportFromDevicePage.qml" line="118"/>
+        <source>CONNECT FROM ANOTHER DEVICE</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/wizardview/components/ImportFromDevicePage.qml" line="148"/>
+        <source>BACK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>To obtain a PIN (valid for 10 minutes), you need to open the account settings on the other device and click on &quot;Link to another device&quot;.</source>
+        <translation type="vanished">Pentru a obține un cod PIN (valabil 10 minute), trebuie să deschizi reglările contului pe celălalt dispozitiv și să faci clic pe &quot;Asociază alt dispozitiv&quot;.</translation>
+    </message>
+    <message>
+        <location filename="../src/wizardview/components/ImportFromDevicePage.qml" line="104"/>
         <source>PIN</source>
         <translation>PIN</translation>
     </message>
@@ -1329,14 +2247,127 @@ Jami e un program pentru comunicații sigure și distribuite.</translation>
 <context>
     <name>JamiTheme</name>
     <message>
-        <location filename="../src/constant/JamiTheme.qml" line="85"/>
+        <location filename="../src/constant/JamiTheme.qml" line="98"/>
         <source>Find or start a conversation</source>
         <translation>Caută sau începe o conversație</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiTheme.qml" line="86"/>
+        <location filename="../src/constant/JamiTheme.qml" line="99"/>
         <source>Search your invitations</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>KeyBoardShortcutTable</name>
+    <message>
+        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="71"/>
+        <source>Open account list</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="76"/>
+        <source>Focus conversations list</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="81"/>
+        <source>Focus requests list</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="86"/>
+        <source>Focus the previous conversation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="91"/>
+        <source>Focus the next conversation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="96"/>
+        <source>Focus search bar</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="101"/>
+        <source>Toggle fullscreen</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="109"/>
+        <source>Start an audio call</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="114"/>
+        <source>Start an video call</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="119"/>
+        <source>Clear history</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="124"/>
+        <source>Block contact</source>
+        <translation type="unfinished">Blochează contactul</translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="129"/>
+        <source>Accept contact request</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="137"/>
+        <source>Toggle media settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="142"/>
+        <source>Toggle general settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="147"/>
+        <source>Toggle account settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="152"/>
+        <source>Open account creation&apos;s wizard</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="157"/>
+        <source>Open this window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="165"/>
+        <source>Answer an incoming call</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="170"/>
+        <source>Hangup current call</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="175"/>
+        <source>Decline the call request</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="560"/>
+        <source>1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="590"/>
+        <source>2</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1354,7 +2385,7 @@ Jami e un program pentru comunicații sigure și distribuite.</translation>
     <message>
         <location filename="../src/settingsview/components/LeftPanelView.qml" line="87"/>
         <source>Audio/Video</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/LeftPanelView.qml" line="100"/>
@@ -1365,24 +2396,24 @@ Jami e un program pentru comunicații sigure și distribuite.</translation>
 <context>
     <name>LinkDeviceDialog</name>
     <message>
-        <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="178"/>
+        <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="194"/>
         <source>Enter your account password</source>
         <translation>Introdu parola contului</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="208"/>
+        <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="224"/>
         <source>Password</source>
         <translation>Parolă</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="287"/>
+        <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="303"/>
         <source>Cancel</source>
         <translation>Renunță</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="31"/>
         <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="87"/>
-        <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="581"/>
+        <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="492"/>
         <source>This pin and the account password should be entered in your device within 10 minutes.</source>
         <translation>Acest cod PIN și parola contului trebuie introduse în dispozitiv în 10 minute.</translation>
     </message>
@@ -1390,38 +2421,76 @@ Jami e un program pentru comunicații sigure și distribuite.</translation>
         <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="100"/>
         <source>Error connecting to the network.
 Please try again later.</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="104"/>
         <source>Something went wrong.
 </source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="128"/>
+        <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="138"/>
         <source>Link another device</source>
         <translation>Asociază alt dispozitiv</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="248"/>
+        <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="264"/>
         <source>Register</source>
         <translation>Înscrie-te</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="371"/>
+        <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="356"/>
         <source>Exporting Account</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="645"/>
+        <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="520"/>
+        <source>CLOSE</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Close</source>
-        <translation>Închide</translation>
+        <translation type="vanished">Închide</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="96"/>
         <source>Incorrect password</source>
         <translation>Parolă greșită</translation>
+    </message>
+</context>
+<context>
+    <name>MainApplication</name>
+    <message>
+        <location filename="../src/mainapplication.cpp" line="278"/>
+        <source>Exit</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>MediaHandlerItemDelegate</name>
+    <message>
+        <location filename="../src/mainview/components/MediaHandlerItemDelegate.qml" line="84"/>
+        <source>On/Off</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>MediaHandlerPicker</name>
+    <message>
+        <location filename="../src/mainview/components/MediaHandlerPicker.qml" line="89"/>
+        <source>Choose plugin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mainview/components/MediaHandlerPicker.qml" line="151"/>
+        <source>Go back to plugins list</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mainview/components/MediaHandlerPicker.qml" line="195"/>
+        <source>Preference</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1481,7 +2550,12 @@ Please try again later.</source>
 <context>
     <name>OutgoingCallPage</name>
     <message>
-        <location filename="../src/mainview/components/OutgoingCallPage.qml" line="204"/>
+        <location filename="../src/mainview/components/OutgoingCallPage.qml" line="193"/>
+        <source>Cancel the call</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mainview/components/OutgoingCallPage.qml" line="206"/>
         <source>Cancel</source>
         <translation>Renunță</translation>
     </message>
@@ -1489,35 +2563,39 @@ Please try again later.</source>
 <context>
     <name>ParticipantContextMenu</name>
     <message>
-        <location filename="../src/mainview/components/ParticipantContextMenu.qml" line="79"/>
         <source>Hangup</source>
-        <translation>Închide</translation>
+        <translation type="vanished">Închide</translation>
     </message>
     <message>
-        <location filename="../src/mainview/components/ParticipantContextMenu.qml" line="93"/>
+        <location filename="../src/mainview/components/ParticipantContextMenu.qml" line="41"/>
+        <source>Hang up</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mainview/components/ParticipantContextMenu.qml" line="48"/>
         <source>Maximize participant</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainview/components/ParticipantContextMenu.qml" line="107"/>
+        <location filename="../src/mainview/components/ParticipantContextMenu.qml" line="54"/>
         <source>Minimize participant</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>PasswordDialog</name>
     <message>
-        <location filename="../src/commoncomponents/PasswordDialog.qml" line="46"/>
+        <location filename="../src/commoncomponents/PasswordDialog.qml" line="56"/>
         <source>Enter the password of this account</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/commoncomponents/PasswordDialog.qml" line="48"/>
+        <location filename="../src/commoncomponents/PasswordDialog.qml" line="58"/>
         <source>Changing password</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/commoncomponents/PasswordDialog.qml" line="50"/>
+        <location filename="../src/commoncomponents/PasswordDialog.qml" line="60"/>
         <source>Set password</source>
         <translation>Alege parola</translation>
     </message>
@@ -1527,117 +2605,155 @@ Please try again later.</source>
         <translation>Introdu Parola Actuală</translation>
     </message>
     <message>
-        <location filename="../src/commoncomponents/PasswordDialog.qml" line="236"/>
+        <location filename="../src/commoncomponents/PasswordDialog.qml" line="212"/>
         <source>Enter New Password</source>
         <translation>Introdu Parola Nouă</translation>
     </message>
     <message>
-        <location filename="../src/commoncomponents/PasswordDialog.qml" line="264"/>
+        <location filename="../src/commoncomponents/PasswordDialog.qml" line="238"/>
         <source>Confirm New Password</source>
         <translation>Confirmă Noua Parolă</translation>
     </message>
     <message>
-        <location filename="../src/commoncomponents/PasswordDialog.qml" line="320"/>
+        <location filename="../src/commoncomponents/PasswordDialog.qml" line="257"/>
+        <source>CONFIRM</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/commoncomponents/PasswordDialog.qml" line="275"/>
+        <source>CANCEL</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Confirm</source>
-        <translation>Confirmă</translation>
+        <translation type="vanished">Confirmă</translation>
     </message>
     <message>
-        <location filename="../src/commoncomponents/PasswordDialog.qml" line="359"/>
         <source>Cancel</source>
-        <translation>Renunță</translation>
+        <translation type="vanished">Renunță</translation>
     </message>
     <message>
-        <location filename="../src/commoncomponents/PasswordDialog.qml" line="208"/>
         <source>Current Password Incorrect</source>
-        <translation>Parola Actuală e Greșită</translation>
+        <translation type="vanished">Parola Actuală e Greșită</translation>
     </message>
 </context>
 <context>
     <name>PhotoboothView</name>
     <message>
-        <location filename="../src/commoncomponents/PhotoboothView.qml" line="55"/>
+        <location filename="../src/commoncomponents/PhotoboothView.qml" line="56"/>
         <source>Choose an image to be the avatar</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/commoncomponents/PhotoboothView.qml" line="58"/>
+        <location filename="../src/commoncomponents/PhotoboothView.qml" line="59"/>
         <source>Image Files</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/commoncomponents/PhotoboothView.qml" line="58"/>
+        <location filename="../src/commoncomponents/PhotoboothView.qml" line="59"/>
         <source>All files</source>
         <translation>Toate fișierele</translation>
+    </message>
+    <message>
+        <location filename="../src/commoncomponents/PhotoboothView.qml" line="187"/>
+        <location filename="../src/commoncomponents/PhotoboothView.qml" line="201"/>
+        <source>Press this button to take photo</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/commoncomponents/PhotoboothView.qml" line="193"/>
+        <source>Press this button to finish taking photo</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/commoncomponents/PhotoboothView.qml" line="198"/>
+        <source>Press this button to retake photo</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/commoncomponents/PhotoboothView.qml" line="238"/>
+        <source>Import avatar from image file</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>PluginItemDelegate</name>
     <message>
-        <location filename="../src/settingsview/components/PluginItemDelegate.qml" line="115"/>
+        <location filename="../src/settingsview/components/PluginItemDelegate.qml" line="78"/>
         <source>Load/Unload</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/PluginItemDelegate.qml" line="168"/>
-        <source>Edit preferences</source>
-        <translation type="unfinished"/>
+        <location filename="../src/settingsview/components/PluginItemDelegate.qml" line="123"/>
+        <source>Show preferences</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>PluginListPreferencesView</name>
     <message>
-        <location filename="../src/settingsview/components/PluginListPreferencesView.qml" line="108"/>
+        <location filename="../src/settingsview/components/PluginListPreferencesView.qml" line="96"/>
         <source>Uninstall plugin</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/PluginListPreferencesView.qml" line="135"/>
+        <location filename="../src/settingsview/components/PluginListPreferencesView.qml" line="110"/>
         <source>Reset preferences</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/PluginListPreferencesView.qml" line="261"/>
-        <source>Reset</source>
-        <translation type="unfinished"/>
+        <location filename="../src/settingsview/components/PluginListPreferencesView.qml" line="164"/>
+        <source>  Reset  </source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/PluginListPreferencesView.qml" line="285"/>
+        <location filename="../src/settingsview/components/PluginListPreferencesView.qml" line="183"/>
         <source>Uninstall</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>PluginListSettingsView</name>
     <message>
-        <location filename="../src/settingsview/components/PluginListSettingsView.qml" line="78"/>
+        <location filename="../src/settingsview/components/PluginListSettingsView.qml" line="83"/>
         <source>Select A Plugin to Install</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/PluginListSettingsView.qml" line="81"/>
+        <location filename="../src/settingsview/components/PluginListSettingsView.qml" line="86"/>
         <source>Plugin Files</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/PluginListSettingsView.qml" line="81"/>
+        <location filename="../src/settingsview/components/PluginListSettingsView.qml" line="86"/>
         <source>All files</source>
         <translation>Toate fișierele</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/PluginListSettingsView.qml" line="120"/>
+        <location filename="../src/settingsview/components/PluginListSettingsView.qml" line="113"/>
         <source>Installed plugins</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/PluginListSettingsView.qml" line="149"/>
-        <source>+ Install plugin</source>
-        <translation type="unfinished"/>
+        <location filename="../src/settingsview/components/PluginListSettingsView.qml" line="132"/>
+        <source>Press to add new plugins</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/PluginListSettingsView.qml" line="136"/>
+        <source>Install Plugin</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>PluginSettingsPage</name>
     <message>
-        <location filename="../src/settingsview/components/PluginSettingsPage.qml" line="90"/>
+        <location filename="../src/settingsview/components/PluginSettingsPage.qml" line="68"/>
+        <source>Toggle to display side panel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/PluginSettingsPage.qml" line="80"/>
         <source>Plugin</source>
         <translation>Extensie</translation>
     </message>
@@ -1645,15 +2761,95 @@ Please try again later.</source>
 <context>
     <name>PreferenceItemDelegate</name>
     <message>
-        <location filename="../src/settingsview/components/PreferenceItemDelegate.qml" line="94"/>
-        <source>Modify preference</source>
-        <translation type="unfinished"/>
+        <location filename="../src/commoncomponents/PreferenceItemDelegate.qml" line="63"/>
+        <source>PNG Files</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/commoncomponents/PreferenceItemDelegate.qml" line="63"/>
+        <source>All files</source>
+        <translation type="unfinished">Toate fișierele</translation>
+    </message>
+    <message>
+        <location filename="../src/commoncomponents/PreferenceItemDelegate.qml" line="82"/>
+        <source>Please choose a file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/commoncomponents/PreferenceItemDelegate.qml" line="130"/>
+        <source>Edit preference</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/commoncomponents/PreferenceItemDelegate.qml" line="163"/>
+        <location filename="../src/commoncomponents/PreferenceItemDelegate.qml" line="195"/>
+        <source>PreferenceValue</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/commoncomponents/PreferenceItemDelegate.qml" line="164"/>
+        <location filename="../src/commoncomponents/PreferenceItemDelegate.qml" line="196"/>
+        <source>Choose the preference</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ProfilePage</name>
+    <message>
+        <location filename="../src/wizardview/components/ProfilePage.qml" line="63"/>
+        <source>Profile is only shared with contacts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/wizardview/components/ProfilePage.qml" line="70"/>
+        <source>Optional</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/wizardview/components/ProfilePage.qml" line="100"/>
+        <source>Enter your name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/wizardview/components/ProfilePage.qml" line="117"/>
+        <source>Save Profile</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/wizardview/components/ProfilePage.qml" line="117"/>
+        <source>Generating account…</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/wizardview/components/ProfilePage.qml" line="132"/>
+        <source>SKIP</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>PromptDialog</name>
+    <message>
+        <location filename="../x64/Release/QtWebEngine/Controls1Delegates/PromptDialog.qml" line="79"/>
+        <location filename="../x64/Release/QtWebEngine/Controls2Delegates/PromptDialog.qml" line="104"/>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../x64/Release/QtWebEngine/Controls1Delegates/PromptDialog.qml" line="88"/>
+        <location filename="../x64/Release/QtWebEngine/Controls2Delegates/PromptDialog.qml" line="108"/>
+        <source>Cancel</source>
+        <translation type="unfinished">Renunță</translation>
+    </message>
+    <message>
+        <location filename="../x64/Release/QtWebEngine/Controls2Delegates/PromptDialog.qml" line="52"/>
+        <source>Prompt Dialog</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/utils.cpp" line="259"/>
+        <location filename="../src/utils.cpp" line="260"/>
         <source>No default mail client found</source>
         <translation>Programul de e-mail nu a fost găsit</translation>
     </message>
@@ -1661,7 +2857,19 @@ Please try again later.</source>
         <location filename="../src/videoinputdevicemodel.cpp" line="68"/>
         <location filename="../src/videoinputdevicemodel.cpp" line="70"/>
         <source>No Device</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Created by:</source>
+        <translation type="obsolete">Creat de:</translation>
+    </message>
+    <message>
+        <source>Artwork by:</source>
+        <translation type="obsolete">Grafică de:</translation>
+    </message>
+    <message>
+        <source>Based on the SFLPhone project</source>
+        <translation type="obsolete">Bazat pe proiectul SFLPhone</translation>
     </message>
 </context>
 <context>
@@ -1687,7 +2895,7 @@ Please try again later.</source>
     <message>
         <location filename="../src/settingsview/components/RevokeDevicePasswordDialog.qml" line="125"/>
         <source>Okay</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/RevokeDevicePasswordDialog.qml" line="164"/>
@@ -1700,31 +2908,31 @@ Please try again later.</source>
     <message>
         <location filename="../src/mainview/components/SelectScreen.qml" line="97"/>
         <source>Choose A Screen to Share</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/mainview/components/SelectScreen.qml" line="190"/>
         <location filename="../src/mainview/components/SelectScreen.qml" line="254"/>
         <source>Screen</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/mainview/components/SelectScreen.qml" line="297"/>
         <source>Share Screen</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>SidePanelTabBar</name>
     <message>
-        <location filename="../src/mainview/components/SidePanelTabBar.qml" line="112"/>
+        <location filename="../src/mainview/components/SidePanelTabBar.qml" line="122"/>
         <source>CONVERSATIONS</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainview/components/SidePanelTabBar.qml" line="222"/>
+        <location filename="../src/mainview/components/SidePanelTabBar.qml" line="243"/>
         <source>INVITATIONS</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1733,9 +2941,9 @@ Please try again later.</source>
         <location filename="../src/smartlistmodel.cpp" line="63"/>
         <location filename="../src/smartlistmodel.cpp" line="103"/>
         <location filename="../src/smartlistmodel.cpp" line="111"/>
-        <location filename="../src/smartlistmodel.cpp" line="177"/>
-        <location filename="../src/smartlistmodel.cpp" line="186"/>
-        <location filename="../src/smartlistmodel.cpp" line="187"/>
+        <location filename="../src/smartlistmodel.cpp" line="178"/>
+        <location filename="../src/smartlistmodel.cpp" line="216"/>
+        <location filename="../src/smartlistmodel.cpp" line="217"/>
         <source>Calls</source>
         <translation>Apeluri</translation>
     </message>
@@ -1743,9 +2951,9 @@ Please try again later.</source>
         <location filename="../src/smartlistmodel.cpp" line="64"/>
         <location filename="../src/smartlistmodel.cpp" line="104"/>
         <location filename="../src/smartlistmodel.cpp" line="121"/>
-        <location filename="../src/smartlistmodel.cpp" line="178"/>
-        <location filename="../src/smartlistmodel.cpp" line="188"/>
-        <location filename="../src/smartlistmodel.cpp" line="189"/>
+        <location filename="../src/smartlistmodel.cpp" line="179"/>
+        <location filename="../src/smartlistmodel.cpp" line="218"/>
+        <location filename="../src/smartlistmodel.cpp" line="219"/>
         <source>Contacts</source>
         <translation>Contacte</translation>
     </message>
@@ -1776,17 +2984,17 @@ Please try again later.</source>
 <context>
     <name>UtilsAdapter</name>
     <message>
-        <location filename="../src/utils.cpp" line="412"/>
+        <location filename="../src/utils.cpp" line="415"/>
         <source>Created by:</source>
         <translation>Creat de:</translation>
     </message>
     <message>
-        <location filename="../src/utils.cpp" line="418"/>
+        <location filename="../src/utils.cpp" line="421"/>
         <source>Artwork by:</source>
         <translation>Grafică de:</translation>
     </message>
     <message>
-        <location filename="../src/utils.cpp" line="426"/>
+        <location filename="../src/utils.cpp" line="429"/>
         <source>Based on the SFLPhone project</source>
         <translation>Bazat pe proiectul SFLPhone</translation>
     </message>
@@ -1794,129 +3002,179 @@ Please try again later.</source>
 <context>
     <name>VideoCallPageContextMenuDeviceItem</name>
     <message>
-        <location filename="../src/mainview/components/VideoCallPageContextMenuDeviceItem.qml" line="47"/>
+        <location filename="../src/mainview/components/VideoCallPageContextMenuDeviceItem.qml" line="43"/>
         <source>No video device</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>WelcomePage</name>
     <message>
-        <location filename="../src/mainview/components/WelcomePage.qml" line="72"/>
+        <location filename="../src/mainview/components/WelcomePage.qml" line="76"/>
         <source>Jami is a free software for universal communication which repects the freedoms and privacy of its user.</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainview/components/WelcomePage.qml" line="91"/>
+        <location filename="../src/mainview/components/WelcomePage.qml" line="96"/>
         <source>This is your ID.
 Copy and share it with your friends</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mainview/components/WelcomePage.qml" line="157"/>
+        <source>About Jami</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/wizardview/components/WelcomePage.qml" line="46"/>
+        <source>Welcome to</source>
+        <translation type="unfinished">Bine ai venit pe</translation>
+    </message>
+    <message>
+        <location filename="../src/wizardview/components/WelcomePage.qml" line="78"/>
+        <source>CREATE A JAMI ACCOUNT</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/wizardview/components/WelcomePage.qml" line="79"/>
+        <source>Create new Jami account</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/wizardview/components/WelcomePage.qml" line="98"/>
+        <source>IMPORT FROM ANOTHER DEVICE</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/wizardview/components/WelcomePage.qml" line="99"/>
+        <source>Import account from other device</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/wizardview/components/WelcomePage.qml" line="118"/>
+        <source>CONNECT FROM BACKUP</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/wizardview/components/WelcomePage.qml" line="119"/>
+        <source>Import account from backup file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/wizardview/components/WelcomePage.qml" line="138"/>
+        <source>SHOW ADVANCED</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/wizardview/components/WelcomePage.qml" line="139"/>
+        <location filename="../src/wizardview/components/WelcomePage.qml" line="149"/>
+        <source>Show advanced options</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/wizardview/components/WelcomePage.qml" line="167"/>
+        <source>CONNECT TO MANAGEMENT SERVER</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/wizardview/components/WelcomePage.qml" line="168"/>
+        <source>Login to account manager</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/wizardview/components/WelcomePage.qml" line="189"/>
+        <source>CREATE A SIP ACCOUNT</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/wizardview/components/WelcomePage.qml" line="190"/>
+        <source>Create new SIP account</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>WelcomePageLayout</name>
     <message>
-        <location filename="../src/wizardview/components/WelcomePageLayout.qml" line="50"/>
         <source>Welcome to</source>
-        <translation>Bine ai venit pe</translation>
+        <translation type="vanished">Bine ai venit pe</translation>
     </message>
     <message>
-        <location filename="../src/wizardview/components/WelcomePageLayout.qml" line="100"/>
         <source>Create local account</source>
-        <translation>Creează un cont local</translation>
+        <translation type="vanished">Creează un cont local</translation>
     </message>
     <message>
-        <location filename="../src/wizardview/components/WelcomePageLayout.qml" line="121"/>
         <source>Import from device</source>
-        <translation>Importă din dispozitiv</translation>
+        <translation type="vanished">Importă din dispozitiv</translation>
     </message>
     <message>
-        <location filename="../src/wizardview/components/WelcomePageLayout.qml" line="144"/>
         <source>Import from backup</source>
-        <translation>Importă dintr-o copie de rezervă</translation>
+        <translation type="vanished">Importă dintr-o copie de rezervă</translation>
     </message>
     <message>
-        <location filename="../src/wizardview/components/WelcomePageLayout.qml" line="167"/>
-        <source>Show Advanced</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/wizardview/components/WelcomePageLayout.qml" line="195"/>
         <source>Connect to account manager</source>
-        <translation>Conectează-te la Administrare cont</translation>
+        <translation type="vanished">Conectează-te la Administrare cont</translation>
     </message>
     <message>
-        <location filename="../src/wizardview/components/WelcomePageLayout.qml" line="219"/>
         <source>Add a new SIP account</source>
-        <translation>Adaugă un cont SIP nou</translation>
+        <translation type="vanished">Adaugă un cont SIP nou</translation>
     </message>
 </context>
 <context>
     <name>WizardView</name>
     <message>
-        <location filename="../src/wizardview/WizardView.qml" line="192"/>
         <source>Generating your Jami account...</source>
-        <translation>Se creează contul tău Jami...</translation>
+        <translation type="vanished">Se creează contul tău Jami...</translation>
     </message>
     <message>
-        <location filename="../src/wizardview/WizardView.qml" line="202"/>
         <source>Importing account archive...</source>
-        <translation>Se importă arhiva contului...</translation>
+        <translation type="vanished">Se importă arhiva contului...</translation>
     </message>
     <message>
-        <location filename="../src/wizardview/WizardView.qml" line="219"/>
         <source>Migrating your Jami account...</source>
-        <translation>Se transferă contul tău Jami...</translation>
+        <translation type="vanished">Se transferă contul tău Jami...</translation>
     </message>
     <message>
-        <location filename="../src/wizardview/WizardView.qml" line="223"/>
         <source>Generating your SIP account...</source>
-        <translation>Se creează contul tău SIP...</translation>
+        <translation type="vanished">Se creează contul tău SIP...</translation>
     </message>
     <message>
-        <location filename="../src/wizardview/WizardView.qml" line="238"/>
-        <source>Connecting to account manager...</source>
-        <translation type="unfinished"/>
+        <location filename="../src/wizardview/WizardView.qml" line="100"/>
+        <location filename="../src/wizardview/WizardView.qml" line="102"/>
+        <location filename="../src/wizardview/WizardView.qml" line="104"/>
+        <source>Error when creating your account. Check your credentials</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/wizardview/WizardView.qml" line="363"/>
+        <location filename="../src/wizardview/WizardView.qml" line="181"/>
         <source>Success</source>
         <translation>Succes</translation>
     </message>
     <message>
-        <location filename="../src/wizardview/WizardView.qml" line="363"/>
+        <location filename="../src/wizardview/WizardView.qml" line="181"/>
         <source>Error</source>
         <translation>Eroare</translation>
     </message>
     <message>
-        <location filename="../src/wizardview/WizardView.qml" line="364"/>
+        <location filename="../src/wizardview/WizardView.qml" line="182"/>
         <source>Export Successful</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/wizardview/WizardView.qml" line="364"/>
+        <location filename="../src/wizardview/WizardView.qml" line="182"/>
         <source>Export Failed</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/wizardview/WizardView.qml" line="507"/>
-        <source>Archive(none)</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/wizardview/WizardView.qml" line="610"/>
         <source>Previous</source>
-        <translation>Înapoi</translation>
+        <translation type="vanished">Înapoi</translation>
     </message>
     <message>
-        <location filename="../src/wizardview/WizardView.qml" line="661"/>
         <source>Back</source>
-        <translation>Înapoi</translation>
+        <translation type="vanished">Înapoi</translation>
     </message>
     <message>
-        <location filename="../src/wizardview/WizardView.qml" line="695"/>
         <source>Next</source>
-        <translation>Înainte</translation>
+        <translation type="vanished">Înainte</translation>
     </message>
 </context>
 </TS>
