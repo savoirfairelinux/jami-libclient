@@ -11,4 +11,4 @@ $QtDir = "C:\Qt\$qtver\$qtMsvcDir"
 $tsFileNames = Get-ChildItem -Path "$clientDir\translations" -Recurse -Include *.ts
 $lupdate = "$QtDir\bin\lupdate.exe"
 
-Invoke-Expression("$lupdate $clientDir -ts $tsFileNames")
+Invoke-Expression("$lupdate $clientDir\src -ts $tsFileNames -no-obsolete")
