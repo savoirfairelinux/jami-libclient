@@ -29,24 +29,6 @@ Jami is a secured and distributed communication software.</source>
         <source>Credit</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <source>Free as in Freedom</source>
-        <translation type="vanished">Liber ca în Libertate</translation>
-    </message>
-    <message>
-        <source>The Microsoft Windows client for Jami.
-Jami is a secured and distributed communciation software.</source>
-        <translation type="vanished">Jami pentru Microsoft Windows.
-Jami e un program pentru comunicații sigure și distribuite.</translation>
-    </message>
-    <message>
-        <source>Change Log</source>
-        <translation type="vanished">Jurnalul Schimbărilor</translation>
-    </message>
-    <message>
-        <source>Credits</source>
-        <translation type="vanished">Merite</translation>
-    </message>
 </context>
 <context>
     <name>AccountComboBox</name>
@@ -183,14 +165,6 @@ Jami e un program pentru comunicații sigure și distribuite.</translation>
         <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="356"/>
         <source>Call Settings</source>
         <translation>Reglările Apelului</translation>
-    </message>
-    <message>
-        <source>Auto Answer Call</source>
-        <translation type="vanished">Răspuns Automat la Apel</translation>
-    </message>
-    <message>
-        <source>Encrypt Media Streams(SRTP)</source>
-        <translation type="vanished">Cifrează fluxurile Media (SRTP)</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/AdvancedSIPSettingsView.qml" line="380"/>
@@ -622,60 +596,6 @@ Jami e un program pentru comunicații sigure și distribuite.</translation>
     </message>
 </context>
 <context>
-    <name>AlertDialog</name>
-    <message>
-        <location filename="../x64/Release/QtWebEngine/Controls2Delegates/AlertDialog.qml" line="50"/>
-        <source>Alert Dialog</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtWebEngine/Controls2Delegates/AlertDialog.qml" line="94"/>
-        <source>OK</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>AuthenticationDialog</name>
-    <message>
-        <location filename="../x64/Release/QtWebEngine/Controls1Delegates/AuthenticationDialog.qml" line="51"/>
-        <location filename="../x64/Release/QtWebEngine/Controls2Delegates/AuthenticationDialog.qml" line="50"/>
-        <source>Authentication Required</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtWebEngine/Controls1Delegates/AuthenticationDialog.qml" line="84"/>
-        <location filename="../x64/Release/QtWebEngine/Controls2Delegates/AuthenticationDialog.qml" line="92"/>
-        <source>Username:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtWebEngine/Controls1Delegates/AuthenticationDialog.qml" line="97"/>
-        <location filename="../x64/Release/QtWebEngine/Controls2Delegates/AuthenticationDialog.qml" line="105"/>
-        <source>Password:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtWebEngine/Controls1Delegates/AuthenticationDialog.qml" line="118"/>
-        <source>&amp;Cancel</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtWebEngine/Controls1Delegates/AuthenticationDialog.qml" line="125"/>
-        <source>&amp;Log In</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtWebEngine/Controls2Delegates/AuthenticationDialog.qml" line="126"/>
-        <source>Cancel</source>
-        <translation type="unfinished">Renunță</translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtWebEngine/Controls2Delegates/AuthenticationDialog.qml" line="130"/>
-        <source>Log In</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>AvSettingPage</name>
     <message>
         <location filename="../src/settingsview/components/AvSettingPage.qml" line="291"/>
@@ -814,14 +734,6 @@ Jami e un program pentru comunicații sigure și distribuite.</translation>
         <location filename="../src/wizardview/components/BackupKeyPage.qml" line="162"/>
         <source>SKIP</source>
         <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Backup your account</source>
-        <translation type="vanished">Fă o copie de rezervă a contului</translation>
-    </message>
-    <message>
-        <source>Skip</source>
-        <translation type="vanished">Omite</translation>
     </message>
     <message>
         <location filename="../src/wizardview/components/BackupKeyPage.qml" line="125"/>
@@ -999,29 +911,7 @@ Jami e un program pentru comunicații sigure și distribuite.</translation>
     </message>
 </context>
 <context>
-    <name>ConfirmDialog</name>
-    <message>
-        <location filename="../x64/Release/QtWebEngine/Controls2Delegates/ConfirmDialog.qml" line="50"/>
-        <source>Alert Dialog</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtWebEngine/Controls2Delegates/ConfirmDialog.qml" line="102"/>
-        <source>OK</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtWebEngine/Controls2Delegates/ConfirmDialog.qml" line="106"/>
-        <source>Cancel</source>
-        <translation type="unfinished">Renunță</translation>
-    </message>
-</context>
-<context>
     <name>ConnectToAccountManagerPage</name>
-    <message>
-        <source>Sign in</source>
-        <translation type="vanished">Autentificare</translation>
-    </message>
     <message>
         <location filename="../src/wizardview/components/ConnectToAccountManagerPage.qml" line="63"/>
         <source>Enter URL of management server</source>
@@ -1135,22 +1025,6 @@ Jami e un program pentru comunicații sigure și distribuite.</translation>
 <context>
     <name>CreateAccountPage</name>
     <message>
-        <source>Profile</source>
-        <translation type="vanished">Profil</translation>
-    </message>
-    <message>
-        <source>Profile name</source>
-        <translation type="vanished">Numele profilului</translation>
-    </message>
-    <message>
-        <source>Account</source>
-        <translation type="vanished">Cont</translation>
-    </message>
-    <message>
-        <source>Register public username</source>
-        <translation type="vanished">Înscrie numele de utilizator public</translation>
-    </message>
-    <message>
         <location filename="../src/wizardview/components/CreateAccountPage.qml" line="68"/>
         <source>Export Account Here</source>
         <translation type="unfinished">Exportă Contul Aici</translation>
@@ -1239,18 +1113,6 @@ Jami e un program pentru comunicații sigure și distribuite.</translation>
 </context>
 <context>
     <name>CreateSIPAccountPage</name>
-    <message>
-        <source>Profile</source>
-        <translation type="vanished">Profil</translation>
-    </message>
-    <message>
-        <source>Profile name</source>
-        <translation type="vanished">Numele profilului</translation>
-    </message>
-    <message>
-        <source>SIP Account</source>
-        <translation type="vanished">Cont SIP</translation>
-    </message>
     <message>
         <location filename="../src/wizardview/components/CreateSIPAccountPage.qml" line="65"/>
         <source>Configure an existing SIP account</source>
@@ -1406,10 +1268,6 @@ Jami e un program pentru comunicații sigure și distribuite.</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Jami Account</source>
-        <translation type="vanished">Cont Jami</translation>
-    </message>
-    <message>
         <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="519"/>
         <source>Enable</source>
         <translation>Activează</translation>
@@ -1443,22 +1301,6 @@ Jami e un program pentru comunicații sigure și distribuite.</translation>
         <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="816"/>
         <source></source>
         <translation></translation>
-    </message>
-    <message>
-        <source>A registered name should not have any spaces and must be at least three letters long</source>
-        <translation type="vanished">Un nume de utilizator nu trebuie să aibă spații și trebuie să conțină cel puțin trei litere</translation>
-    </message>
-    <message>
-        <source>This name is already taken</source>
-        <translation type="vanished">Acest nume a fost ales deja</translation>
-    </message>
-    <message>
-        <source>Register this name</source>
-        <translation type="vanished">Înscrie acest nume</translation>
-    </message>
-    <message>
-        <source>Register</source>
-        <translation type="vanished">Înscrie-te</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="816"/>
@@ -1508,10 +1350,6 @@ Jami e un program pentru comunicații sigure și distribuite.</translation>
 </context>
 <context>
     <name>CurrentSIPAccountSettingScrollPage</name>
-    <message>
-        <source>SIP Account</source>
-        <translation type="vanished">Cont SIP</translation>
-    </message>
     <message>
         <location filename="../src/settingsview/components/CurrentSIPAccountSettingScrollPage.qml" line="124"/>
         <source>Toggle to display side panel</source>
@@ -1574,332 +1412,6 @@ Jami e un program pentru comunicații sigure și distribuite.</translation>
     </message>
 </context>
 <context>
-    <name>DefaultColorDialog</name>
-    <message>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultColorDialog.qml" line="281"/>
-        <source>Hue</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultColorDialog.qml" line="302"/>
-        <source>Saturation</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultColorDialog.qml" line="318"/>
-        <source>Luminosity</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultColorDialog.qml" line="336"/>
-        <source>Alpha</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultColorDialog.qml" line="395"/>
-        <source>Cancel</source>
-        <translation type="unfinished">Renunță</translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultColorDialog.qml" line="400"/>
-        <source>OK</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>DefaultDialogWrapper</name>
-    <message>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultDialogWrapper.qml" line="109"/>
-        <source>Show Details...</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>DefaultFileDialog</name>
-    <message>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultFileDialog.qml" line="148"/>
-        <source>Go up to the folder containing this one</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultFileDialog.qml" line="271"/>
-        <source>Remove favorite</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultFileDialog.qml" line="313"/>
-        <source>Add the current directory as a favorite</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultFileDialog.qml" line="351"/>
-        <source>Filename</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultFileDialog.qml" line="378"/>
-        <source>Type</source>
-        <comment>file type (extension)</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultFileDialog.qml" line="401"/>
-        <source>Size</source>
-        <comment>file size</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultFileDialog.qml" line="404"/>
-        <source>Modified</source>
-        <comment>last-modified time</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultFileDialog.qml" line="405"/>
-        <source>Accessed</source>
-        <comment>last-accessed time</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultFileDialog.qml" line="470"/>
-        <source>Cancel</source>
-        <translation type="unfinished">Renunță</translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultFileDialog.qml" line="475"/>
-        <source>Choose</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultFileDialog.qml" line="475"/>
-        <source>Open</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultFileDialog.qml" line="475"/>
-        <source>Save</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>DefaultFontDialog</name>
-    <message>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="120"/>
-        <source>Font</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="121"/>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="202"/>
-        <source>Weight</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="122"/>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="276"/>
-        <source>Size</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="135"/>
-        <source>Font Family</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="205"/>
-        <source>Thin</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="206"/>
-        <source>ExtraLight</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="207"/>
-        <source>Light</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="208"/>
-        <source>Normal</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="209"/>
-        <source>Medium</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="210"/>
-        <source>DemiBold</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="211"/>
-        <source>Bold</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="212"/>
-        <source>ExtraBold</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="213"/>
-        <source>Black</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="303"/>
-        <source>Style</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="306"/>
-        <source>Italic</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="312"/>
-        <source>Underline</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="318"/>
-        <source>Overline</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="324"/>
-        <source>Strikeout</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="329"/>
-        <source>Writing System</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="338"/>
-        <source>Sample</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="390"/>
-        <source>Cancel</source>
-        <translation type="unfinished">Renunță</translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="394"/>
-        <source>OK</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>DefaultMessageDialog</name>
-    <message>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultMessageDialog.qml" line="142"/>
-        <source>OK</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultMessageDialog.qml" line="148"/>
-        <source>Open</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultMessageDialog.qml" line="154"/>
-        <source>Save</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultMessageDialog.qml" line="160"/>
-        <source>Save All</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultMessageDialog.qml" line="166"/>
-        <source>Retry</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultMessageDialog.qml" line="172"/>
-        <source>Ignore</source>
-        <translation type="unfinished">Ignoră</translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultMessageDialog.qml" line="178"/>
-        <source>Apply</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultMessageDialog.qml" line="184"/>
-        <source>Yes</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultMessageDialog.qml" line="190"/>
-        <source>Yes to All</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultMessageDialog.qml" line="196"/>
-        <source>No</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultMessageDialog.qml" line="202"/>
-        <source>No to All</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultMessageDialog.qml" line="208"/>
-        <source>Discard</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultMessageDialog.qml" line="214"/>
-        <source>Reset</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultMessageDialog.qml" line="220"/>
-        <source>Restore Defaults</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultMessageDialog.qml" line="226"/>
-        <source>Cancel</source>
-        <translation type="unfinished">Renunță</translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultMessageDialog.qml" line="232"/>
-        <source>Abort</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultMessageDialog.qml" line="238"/>
-        <source>Close</source>
-        <translation type="unfinished">Închide</translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultMessageDialog.qml" line="244"/>
-        <source>Show Details...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultMessageDialog.qml" line="250"/>
-        <source>Help</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultMessageDialog.qml" line="306"/>
-        <source>Hide Details</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>DeleteAccountDialog</name>
     <message>
         <location filename="../src/commoncomponents/DeleteAccountDialog.qml" line="53"/>
@@ -1930,10 +1442,6 @@ Jami e un program pentru comunicații sigure și distribuite.</translation>
 <context>
     <name>DeviceItemDelegate</name>
     <message>
-        <source>this device</source>
-        <translation type="vanished">acest dispozitiv</translation>
-    </message>
-    <message>
         <location filename="../src/settingsview/components/DeviceItemDelegate.qml" line="144"/>
         <source>Device Id</source>
         <translation>ID-ul dispozitivului</translation>
@@ -1952,49 +1460,6 @@ Jami e un program pentru comunicații sigure și distribuite.</translation>
         <location filename="../src/settingsview/components/DeviceItemDelegate.qml" line="192"/>
         <source>Unlink Device From Account</source>
         <translation>Disociază dispozitivul de cont</translation>
-    </message>
-</context>
-<context>
-    <name>EditMenu_base</name>
-    <message>
-        <location filename="../x64/Release/QtQuick/Controls/Private/EditMenu_base.qml" line="51"/>
-        <source>&amp;Undo</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Controls/Private/EditMenu_base.qml" line="62"/>
-        <source>&amp;Redo</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Controls/Private/EditMenu_base.qml" line="73"/>
-        <source>Cu&amp;t</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Controls/Private/EditMenu_base.qml" line="87"/>
-        <source>&amp;Copy</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Controls/Private/EditMenu_base.qml" line="101"/>
-        <source>&amp;Paste</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Controls/Private/EditMenu_base.qml" line="112"/>
-        <source>Delete</source>
-        <translation type="unfinished">Șterge</translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Controls/Private/EditMenu_base.qml" line="123"/>
-        <source>Clear</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Controls/Private/EditMenu_base.qml" line="134"/>
-        <source>Select All</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2105,10 +1570,6 @@ Jami e un program pentru comunicații sigure și distribuite.</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Download folder</source>
-        <translation type="vanished">Dosarul descărcării</translation>
-    </message>
-    <message>
         <location filename="../src/settingsview/components/GeneralSettingsPage.qml" line="444"/>
         <source>Quality</source>
         <translation type="unfinished"></translation>
@@ -2193,10 +1654,6 @@ Jami e un program pentru comunicații sigure și distribuite.</translation>
 <context>
     <name>ImportFromDevicePage</name>
     <message>
-        <source>Import from device</source>
-        <translation type="vanished">Importă din dispozitiv</translation>
-    </message>
-    <message>
         <location filename="../src/wizardview/components/ImportFromDevicePage.qml" line="57"/>
         <source>Enter your main Jami account password</source>
         <translation type="unfinished"></translation>
@@ -2220,10 +1677,6 @@ Jami e un program pentru comunicații sigure și distribuite.</translation>
         <location filename="../src/wizardview/components/ImportFromDevicePage.qml" line="148"/>
         <source>BACK</source>
         <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>To obtain a PIN (valid for 10 minutes), you need to open the account settings on the other device and click on &quot;Link to another device&quot;.</source>
-        <translation type="vanished">Pentru a obține un cod PIN (valabil 10 minute), trebuie să deschizi reglările contului pe celălalt dispozitiv și să faci clic pe &quot;Asociază alt dispozitiv&quot;.</translation>
     </message>
     <message>
         <location filename="../src/wizardview/components/ImportFromDevicePage.qml" line="104"/>
@@ -2450,10 +1903,6 @@ Please try again later.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Close</source>
-        <translation type="vanished">Închide</translation>
-    </message>
-    <message>
         <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="96"/>
         <source>Incorrect password</source>
         <translation>Parolă greșită</translation>
@@ -2563,10 +2012,6 @@ Please try again later.</source>
 <context>
     <name>ParticipantContextMenu</name>
     <message>
-        <source>Hangup</source>
-        <translation type="vanished">Închide</translation>
-    </message>
-    <message>
         <location filename="../src/mainview/components/ParticipantContextMenu.qml" line="41"/>
         <source>Hang up</source>
         <translation type="unfinished"></translation>
@@ -2623,18 +2068,6 @@ Please try again later.</source>
         <location filename="../src/commoncomponents/PasswordDialog.qml" line="275"/>
         <source>CANCEL</source>
         <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Confirm</source>
-        <translation type="vanished">Confirmă</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation type="vanished">Renunță</translation>
-    </message>
-    <message>
-        <source>Current Password Incorrect</source>
-        <translation type="vanished">Parola Actuală e Greșită</translation>
     </message>
 </context>
 <context>
@@ -2827,26 +2260,6 @@ Please try again later.</source>
     </message>
 </context>
 <context>
-    <name>PromptDialog</name>
-    <message>
-        <location filename="../x64/Release/QtWebEngine/Controls1Delegates/PromptDialog.qml" line="79"/>
-        <location filename="../x64/Release/QtWebEngine/Controls2Delegates/PromptDialog.qml" line="104"/>
-        <source>OK</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtWebEngine/Controls1Delegates/PromptDialog.qml" line="88"/>
-        <location filename="../x64/Release/QtWebEngine/Controls2Delegates/PromptDialog.qml" line="108"/>
-        <source>Cancel</source>
-        <translation type="unfinished">Renunță</translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtWebEngine/Controls2Delegates/PromptDialog.qml" line="52"/>
-        <source>Prompt Dialog</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>QObject</name>
     <message>
         <location filename="../src/utils.cpp" line="260"/>
@@ -2858,18 +2271,6 @@ Please try again later.</source>
         <location filename="../src/videoinputdevicemodel.cpp" line="70"/>
         <source>No Device</source>
         <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Created by:</source>
-        <translation type="obsolete">Creat de:</translation>
-    </message>
-    <message>
-        <source>Artwork by:</source>
-        <translation type="obsolete">Grafică de:</translation>
-    </message>
-    <message>
-        <source>Based on the SFLPhone project</source>
-        <translation type="obsolete">Bazat pe proiectul SFLPhone</translation>
     </message>
 </context>
 <context>
@@ -3093,50 +2494,7 @@ Copy and share it with your friends</source>
     </message>
 </context>
 <context>
-    <name>WelcomePageLayout</name>
-    <message>
-        <source>Welcome to</source>
-        <translation type="vanished">Bine ai venit pe</translation>
-    </message>
-    <message>
-        <source>Create local account</source>
-        <translation type="vanished">Creează un cont local</translation>
-    </message>
-    <message>
-        <source>Import from device</source>
-        <translation type="vanished">Importă din dispozitiv</translation>
-    </message>
-    <message>
-        <source>Import from backup</source>
-        <translation type="vanished">Importă dintr-o copie de rezervă</translation>
-    </message>
-    <message>
-        <source>Connect to account manager</source>
-        <translation type="vanished">Conectează-te la Administrare cont</translation>
-    </message>
-    <message>
-        <source>Add a new SIP account</source>
-        <translation type="vanished">Adaugă un cont SIP nou</translation>
-    </message>
-</context>
-<context>
     <name>WizardView</name>
-    <message>
-        <source>Generating your Jami account...</source>
-        <translation type="vanished">Se creează contul tău Jami...</translation>
-    </message>
-    <message>
-        <source>Importing account archive...</source>
-        <translation type="vanished">Se importă arhiva contului...</translation>
-    </message>
-    <message>
-        <source>Migrating your Jami account...</source>
-        <translation type="vanished">Se transferă contul tău Jami...</translation>
-    </message>
-    <message>
-        <source>Generating your SIP account...</source>
-        <translation type="vanished">Se creează contul tău SIP...</translation>
-    </message>
     <message>
         <location filename="../src/wizardview/WizardView.qml" line="100"/>
         <location filename="../src/wizardview/WizardView.qml" line="102"/>
@@ -3163,18 +2521,6 @@ Copy and share it with your friends</source>
         <location filename="../src/wizardview/WizardView.qml" line="182"/>
         <source>Export Failed</source>
         <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Previous</source>
-        <translation type="vanished">Înapoi</translation>
-    </message>
-    <message>
-        <source>Back</source>
-        <translation type="vanished">Înapoi</translation>
-    </message>
-    <message>
-        <source>Next</source>
-        <translation type="vanished">Înainte</translation>
     </message>
 </context>
 </TS>

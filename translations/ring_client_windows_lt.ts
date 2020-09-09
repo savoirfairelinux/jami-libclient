@@ -29,10 +29,6 @@ Jami is a secured and distributed communication software.</source>
         <source>Credit</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <source>Credits</source>
-        <translation type="vanished">Padėkos</translation>
-    </message>
 </context>
 <context>
     <name>AccountComboBox</name>
@@ -600,60 +596,6 @@ Jami is a secured and distributed communication software.</source>
     </message>
 </context>
 <context>
-    <name>AlertDialog</name>
-    <message>
-        <location filename="../x64/Release/QtWebEngine/Controls2Delegates/AlertDialog.qml" line="50"/>
-        <source>Alert Dialog</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtWebEngine/Controls2Delegates/AlertDialog.qml" line="94"/>
-        <source>OK</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>AuthenticationDialog</name>
-    <message>
-        <location filename="../x64/Release/QtWebEngine/Controls1Delegates/AuthenticationDialog.qml" line="51"/>
-        <location filename="../x64/Release/QtWebEngine/Controls2Delegates/AuthenticationDialog.qml" line="50"/>
-        <source>Authentication Required</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtWebEngine/Controls1Delegates/AuthenticationDialog.qml" line="84"/>
-        <location filename="../x64/Release/QtWebEngine/Controls2Delegates/AuthenticationDialog.qml" line="92"/>
-        <source>Username:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtWebEngine/Controls1Delegates/AuthenticationDialog.qml" line="97"/>
-        <location filename="../x64/Release/QtWebEngine/Controls2Delegates/AuthenticationDialog.qml" line="105"/>
-        <source>Password:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtWebEngine/Controls1Delegates/AuthenticationDialog.qml" line="118"/>
-        <source>&amp;Cancel</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtWebEngine/Controls1Delegates/AuthenticationDialog.qml" line="125"/>
-        <source>&amp;Log In</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtWebEngine/Controls2Delegates/AuthenticationDialog.qml" line="126"/>
-        <source>Cancel</source>
-        <translation type="unfinished">Atsisakyti</translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtWebEngine/Controls2Delegates/AuthenticationDialog.qml" line="130"/>
-        <source>Log In</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>AvSettingPage</name>
     <message>
         <location filename="../src/settingsview/components/AvSettingPage.qml" line="291"/>
@@ -792,14 +734,6 @@ Jami is a secured and distributed communication software.</source>
         <location filename="../src/wizardview/components/BackupKeyPage.qml" line="162"/>
         <source>SKIP</source>
         <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Export</source>
-        <translation type="vanished">Eksportuoti</translation>
-    </message>
-    <message>
-        <source>Skip</source>
-        <translation type="vanished">Praleisti</translation>
     </message>
     <message>
         <location filename="../src/wizardview/components/BackupKeyPage.qml" line="125"/>
@@ -977,29 +911,7 @@ Jami is a secured and distributed communication software.</source>
     </message>
 </context>
 <context>
-    <name>ConfirmDialog</name>
-    <message>
-        <location filename="../x64/Release/QtWebEngine/Controls2Delegates/ConfirmDialog.qml" line="50"/>
-        <source>Alert Dialog</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtWebEngine/Controls2Delegates/ConfirmDialog.qml" line="102"/>
-        <source>OK</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtWebEngine/Controls2Delegates/ConfirmDialog.qml" line="106"/>
-        <source>Cancel</source>
-        <translation type="unfinished">Atsisakyti</translation>
-    </message>
-</context>
-<context>
     <name>ConnectToAccountManagerPage</name>
-    <message>
-        <source>Sign in</source>
-        <translation type="vanished">Prisijungti</translation>
-    </message>
     <message>
         <location filename="../src/wizardview/components/ConnectToAccountManagerPage.qml" line="63"/>
         <source>Enter URL of management server</source>
@@ -1113,22 +1025,6 @@ Jami is a secured and distributed communication software.</source>
 <context>
     <name>CreateAccountPage</name>
     <message>
-        <source>Profile</source>
-        <translation type="vanished">Profilis</translation>
-    </message>
-    <message>
-        <source>Profile name</source>
-        <translation type="vanished">Profilio pavadinimas</translation>
-    </message>
-    <message>
-        <source>Account</source>
-        <translation type="vanished">Paskyra</translation>
-    </message>
-    <message>
-        <source>Register public username</source>
-        <translation type="vanished">Registruoti viešąjį naudotojo vardą</translation>
-    </message>
-    <message>
         <location filename="../src/wizardview/components/CreateAccountPage.qml" line="68"/>
         <source>Export Account Here</source>
         <translation type="unfinished">Eksportuoti paskyrą čia</translation>
@@ -1217,18 +1113,6 @@ Jami is a secured and distributed communication software.</source>
 </context>
 <context>
     <name>CreateSIPAccountPage</name>
-    <message>
-        <source>Profile</source>
-        <translation type="vanished">Profilis</translation>
-    </message>
-    <message>
-        <source>Profile name</source>
-        <translation type="vanished">Profilio pavadinimas</translation>
-    </message>
-    <message>
-        <source>SIP Account</source>
-        <translation type="vanished">SIP paskyra</translation>
-    </message>
     <message>
         <location filename="../src/wizardview/components/CreateSIPAccountPage.qml" line="65"/>
         <source>Configure an existing SIP account</source>
@@ -1384,10 +1268,6 @@ Jami is a secured and distributed communication software.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Jami Account</source>
-        <translation type="vanished">Jami paskyra</translation>
-    </message>
-    <message>
         <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="519"/>
         <source>Enable</source>
         <translation>Įjungti</translation>
@@ -1421,22 +1301,6 @@ Jami is a secured and distributed communication software.</source>
         <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="816"/>
         <source></source>
         <translation></translation>
-    </message>
-    <message>
-        <source>A registered name should not have any spaces and must be at least three letters long</source>
-        <translation type="vanished">Registruotame varde negali būti tarpų ir jis privalo būti bent 3 raidžių ilgio</translation>
-    </message>
-    <message>
-        <source>This name is already taken</source>
-        <translation type="vanished">Šis vardas jau yra užimtas</translation>
-    </message>
-    <message>
-        <source>Register this name</source>
-        <translation type="vanished">Registruoti šį vardą</translation>
-    </message>
-    <message>
-        <source>Register</source>
-        <translation type="vanished">Registruoti</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="816"/>
@@ -1486,10 +1350,6 @@ Jami is a secured and distributed communication software.</source>
 </context>
 <context>
     <name>CurrentSIPAccountSettingScrollPage</name>
-    <message>
-        <source>SIP Account</source>
-        <translation type="vanished">SIP paskyra</translation>
-    </message>
     <message>
         <location filename="../src/settingsview/components/CurrentSIPAccountSettingScrollPage.qml" line="124"/>
         <source>Toggle to display side panel</source>
@@ -1552,332 +1412,6 @@ Jami is a secured and distributed communication software.</source>
     </message>
 </context>
 <context>
-    <name>DefaultColorDialog</name>
-    <message>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultColorDialog.qml" line="281"/>
-        <source>Hue</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultColorDialog.qml" line="302"/>
-        <source>Saturation</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultColorDialog.qml" line="318"/>
-        <source>Luminosity</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultColorDialog.qml" line="336"/>
-        <source>Alpha</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultColorDialog.qml" line="395"/>
-        <source>Cancel</source>
-        <translation type="unfinished">Atsisakyti</translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultColorDialog.qml" line="400"/>
-        <source>OK</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>DefaultDialogWrapper</name>
-    <message>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultDialogWrapper.qml" line="109"/>
-        <source>Show Details...</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>DefaultFileDialog</name>
-    <message>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultFileDialog.qml" line="148"/>
-        <source>Go up to the folder containing this one</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultFileDialog.qml" line="271"/>
-        <source>Remove favorite</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultFileDialog.qml" line="313"/>
-        <source>Add the current directory as a favorite</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultFileDialog.qml" line="351"/>
-        <source>Filename</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultFileDialog.qml" line="378"/>
-        <source>Type</source>
-        <comment>file type (extension)</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultFileDialog.qml" line="401"/>
-        <source>Size</source>
-        <comment>file size</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultFileDialog.qml" line="404"/>
-        <source>Modified</source>
-        <comment>last-modified time</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultFileDialog.qml" line="405"/>
-        <source>Accessed</source>
-        <comment>last-accessed time</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultFileDialog.qml" line="470"/>
-        <source>Cancel</source>
-        <translation type="unfinished">Atsisakyti</translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultFileDialog.qml" line="475"/>
-        <source>Choose</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultFileDialog.qml" line="475"/>
-        <source>Open</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultFileDialog.qml" line="475"/>
-        <source>Save</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>DefaultFontDialog</name>
-    <message>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="120"/>
-        <source>Font</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="121"/>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="202"/>
-        <source>Weight</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="122"/>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="276"/>
-        <source>Size</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="135"/>
-        <source>Font Family</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="205"/>
-        <source>Thin</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="206"/>
-        <source>ExtraLight</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="207"/>
-        <source>Light</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="208"/>
-        <source>Normal</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="209"/>
-        <source>Medium</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="210"/>
-        <source>DemiBold</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="211"/>
-        <source>Bold</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="212"/>
-        <source>ExtraBold</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="213"/>
-        <source>Black</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="303"/>
-        <source>Style</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="306"/>
-        <source>Italic</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="312"/>
-        <source>Underline</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="318"/>
-        <source>Overline</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="324"/>
-        <source>Strikeout</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="329"/>
-        <source>Writing System</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="338"/>
-        <source>Sample</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="390"/>
-        <source>Cancel</source>
-        <translation type="unfinished">Atsisakyti</translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultFontDialog.qml" line="394"/>
-        <source>OK</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>DefaultMessageDialog</name>
-    <message>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultMessageDialog.qml" line="142"/>
-        <source>OK</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultMessageDialog.qml" line="148"/>
-        <source>Open</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultMessageDialog.qml" line="154"/>
-        <source>Save</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultMessageDialog.qml" line="160"/>
-        <source>Save All</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultMessageDialog.qml" line="166"/>
-        <source>Retry</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultMessageDialog.qml" line="172"/>
-        <source>Ignore</source>
-        <translation type="unfinished">Nepaisyti</translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultMessageDialog.qml" line="178"/>
-        <source>Apply</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultMessageDialog.qml" line="184"/>
-        <source>Yes</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultMessageDialog.qml" line="190"/>
-        <source>Yes to All</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultMessageDialog.qml" line="196"/>
-        <source>No</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultMessageDialog.qml" line="202"/>
-        <source>No to All</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultMessageDialog.qml" line="208"/>
-        <source>Discard</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultMessageDialog.qml" line="214"/>
-        <source>Reset</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultMessageDialog.qml" line="220"/>
-        <source>Restore Defaults</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultMessageDialog.qml" line="226"/>
-        <source>Cancel</source>
-        <translation type="unfinished">Atsisakyti</translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultMessageDialog.qml" line="232"/>
-        <source>Abort</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultMessageDialog.qml" line="238"/>
-        <source>Close</source>
-        <translation type="unfinished">Užverti</translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultMessageDialog.qml" line="244"/>
-        <source>Show Details...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultMessageDialog.qml" line="250"/>
-        <source>Help</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Dialogs/DefaultMessageDialog.qml" line="306"/>
-        <source>Hide Details</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>DeleteAccountDialog</name>
     <message>
         <location filename="../src/commoncomponents/DeleteAccountDialog.qml" line="53"/>
@@ -1908,10 +1442,6 @@ Jami is a secured and distributed communication software.</source>
 <context>
     <name>DeviceItemDelegate</name>
     <message>
-        <source>this device</source>
-        <translation type="vanished">šis įrenginys</translation>
-    </message>
-    <message>
         <location filename="../src/settingsview/components/DeviceItemDelegate.qml" line="144"/>
         <source>Device Id</source>
         <translation>Įrenginio ID</translation>
@@ -1930,49 +1460,6 @@ Jami is a secured and distributed communication software.</source>
         <location filename="../src/settingsview/components/DeviceItemDelegate.qml" line="192"/>
         <source>Unlink Device From Account</source>
         <translation>Atsieti įrenginį nuo paskyros</translation>
-    </message>
-</context>
-<context>
-    <name>EditMenu_base</name>
-    <message>
-        <location filename="../x64/Release/QtQuick/Controls/Private/EditMenu_base.qml" line="51"/>
-        <source>&amp;Undo</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Controls/Private/EditMenu_base.qml" line="62"/>
-        <source>&amp;Redo</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Controls/Private/EditMenu_base.qml" line="73"/>
-        <source>Cu&amp;t</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Controls/Private/EditMenu_base.qml" line="87"/>
-        <source>&amp;Copy</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Controls/Private/EditMenu_base.qml" line="101"/>
-        <source>&amp;Paste</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Controls/Private/EditMenu_base.qml" line="112"/>
-        <source>Delete</source>
-        <translation type="unfinished">Ištrinti</translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Controls/Private/EditMenu_base.qml" line="123"/>
-        <source>Clear</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtQuick/Controls/Private/EditMenu_base.qml" line="134"/>
-        <source>Select All</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2083,10 +1570,6 @@ Jami is a secured and distributed communication software.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Download folder</source>
-        <translation type="vanished">Atsiuntimų aplankas</translation>
-    </message>
-    <message>
         <location filename="../src/settingsview/components/GeneralSettingsPage.qml" line="444"/>
         <source>Quality</source>
         <translation>Kokybė</translation>
@@ -2170,10 +1653,6 @@ Jami is a secured and distributed communication software.</source>
 </context>
 <context>
     <name>ImportFromDevicePage</name>
-    <message>
-        <source>Import from device</source>
-        <translation type="vanished">Importuoti iš įrenginio</translation>
-    </message>
     <message>
         <location filename="../src/wizardview/components/ImportFromDevicePage.qml" line="57"/>
         <source>Enter your main Jami account password</source>
@@ -2424,10 +1903,6 @@ Please try again later.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Close</source>
-        <translation type="vanished">Užverti</translation>
-    </message>
-    <message>
         <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="96"/>
         <source>Incorrect password</source>
         <translation>Neteisingas slaptažodis</translation>
@@ -2537,10 +2012,6 @@ Please try again later.</source>
 <context>
     <name>ParticipantContextMenu</name>
     <message>
-        <source>Hangup</source>
-        <translation type="vanished">Padėti ragelį</translation>
-    </message>
-    <message>
         <location filename="../src/mainview/components/ParticipantContextMenu.qml" line="41"/>
         <source>Hang up</source>
         <translation type="unfinished"></translation>
@@ -2597,18 +2068,6 @@ Please try again later.</source>
         <location filename="../src/commoncomponents/PasswordDialog.qml" line="275"/>
         <source>CANCEL</source>
         <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Confirm</source>
-        <translation type="vanished">Patvirtinti</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation type="vanished">Atsisakyti</translation>
-    </message>
-    <message>
-        <source>Current Password Incorrect</source>
-        <translation type="vanished">Dabartinis slaptažodis neteisingas</translation>
     </message>
 </context>
 <context>
@@ -2801,26 +2260,6 @@ Please try again later.</source>
     </message>
 </context>
 <context>
-    <name>PromptDialog</name>
-    <message>
-        <location filename="../x64/Release/QtWebEngine/Controls1Delegates/PromptDialog.qml" line="79"/>
-        <location filename="../x64/Release/QtWebEngine/Controls2Delegates/PromptDialog.qml" line="104"/>
-        <source>OK</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtWebEngine/Controls1Delegates/PromptDialog.qml" line="88"/>
-        <location filename="../x64/Release/QtWebEngine/Controls2Delegates/PromptDialog.qml" line="108"/>
-        <source>Cancel</source>
-        <translation type="unfinished">Atsisakyti</translation>
-    </message>
-    <message>
-        <location filename="../x64/Release/QtWebEngine/Controls2Delegates/PromptDialog.qml" line="52"/>
-        <source>Prompt Dialog</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>QObject</name>
     <message>
         <location filename="../src/utils.cpp" line="260"/>
@@ -2832,18 +2271,6 @@ Please try again later.</source>
         <location filename="../src/videoinputdevicemodel.cpp" line="70"/>
         <source>No Device</source>
         <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Created by:</source>
-        <translation type="obsolete">Sukūrė:</translation>
-    </message>
-    <message>
-        <source>Artwork by:</source>
-        <translation type="obsolete">Apipavidalino:</translation>
-    </message>
-    <message>
-        <source>Based on the SFLPhone project</source>
-        <translation type="obsolete">Pagrįsta SFLPhone projektu</translation>
     </message>
 </context>
 <context>
@@ -3067,38 +2494,7 @@ Copy and share it with your friends</source>
     </message>
 </context>
 <context>
-    <name>WelcomePageLayout</name>
-    <message>
-        <source>Welcome to</source>
-        <translation type="vanished">Sveiki atvykę į</translation>
-    </message>
-    <message>
-        <source>Import from device</source>
-        <translation type="vanished">Importuoti iš įrenginio</translation>
-    </message>
-    <message>
-        <source>Import from backup</source>
-        <translation type="vanished">Importuoti iš atsarginės kopijos</translation>
-    </message>
-    <message>
-        <source>Add a new SIP account</source>
-        <translation type="vanished">Pridėti naują SIP paskyrą</translation>
-    </message>
-</context>
-<context>
     <name>WizardView</name>
-    <message>
-        <source>Generating your Jami account...</source>
-        <translation type="vanished">Kuriama jūsų Jami paskyra...</translation>
-    </message>
-    <message>
-        <source>Importing account archive...</source>
-        <translation type="vanished">Importuojamas paskyros archyvas...</translation>
-    </message>
-    <message>
-        <source>Migrating your Jami account...</source>
-        <translation type="vanished">Perkeliama jūsų Jami paskyra...</translation>
-    </message>
     <message>
         <location filename="../src/wizardview/WizardView.qml" line="100"/>
         <location filename="../src/wizardview/WizardView.qml" line="102"/>
@@ -3125,18 +2521,6 @@ Copy and share it with your friends</source>
         <location filename="../src/wizardview/WizardView.qml" line="182"/>
         <source>Export Failed</source>
         <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Previous</source>
-        <translation type="vanished">Ankstesnis</translation>
-    </message>
-    <message>
-        <source>Back</source>
-        <translation type="vanished">Atgal</translation>
-    </message>
-    <message>
-        <source>Next</source>
-        <translation type="vanished">Kitas</translation>
     </message>
 </context>
 </TS>
