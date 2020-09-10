@@ -28,7 +28,7 @@ class QmlAdapterBase : public QObject
 {
     Q_OBJECT
 public:
-    explicit QmlAdapterBase(QObject *parent = nullptr)
+    explicit QmlAdapterBase(QObject* parent = nullptr)
         : QObject(parent)
         , qmlObj_(nullptr) {};
 
@@ -38,7 +38,7 @@ public:
      * This function should be called in the Component.onCompleted slot
      * in the qml component that this adapter should attach to.
      */
-    Q_INVOKABLE void setQmlObject(QObject *obj)
+    Q_INVOKABLE void setQmlObject(QObject* obj)
     {
         qmlObj_ = obj;
         safeInit();
@@ -53,5 +53,5 @@ protected:
     /*
      * Object pointer.
      */
-    QObject *qmlObj_;
+    QObject* qmlObj_;
 };

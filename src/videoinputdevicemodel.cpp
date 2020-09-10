@@ -18,14 +18,14 @@
 
 #include "videoinputdevicemodel.h"
 
-VideoInputDeviceModel::VideoInputDeviceModel(QObject *parent)
+VideoInputDeviceModel::VideoInputDeviceModel(QObject* parent)
     : QAbstractListModel(parent)
 {}
 
 VideoInputDeviceModel::~VideoInputDeviceModel() {}
 
 int
-VideoInputDeviceModel::rowCount(const QModelIndex &parent) const
+VideoInputDeviceModel::rowCount(const QModelIndex& parent) const
 {
     if (!parent.isValid()) {
         /*
@@ -45,7 +45,7 @@ VideoInputDeviceModel::rowCount(const QModelIndex &parent) const
 }
 
 int
-VideoInputDeviceModel::columnCount(const QModelIndex &parent) const
+VideoInputDeviceModel::columnCount(const QModelIndex& parent) const
 {
     Q_UNUSED(parent);
     /*
@@ -55,7 +55,7 @@ VideoInputDeviceModel::columnCount(const QModelIndex &parent) const
 }
 
 QVariant
-VideoInputDeviceModel::data(const QModelIndex &index, int role) const
+VideoInputDeviceModel::data(const QModelIndex& index, int role) const
 {
     auto deviceList = LRCInstance::avModel().getDevices();
     if (!index.isValid()) {
@@ -108,7 +108,7 @@ VideoInputDeviceModel::roleNames() const
 }
 
 QModelIndex
-VideoInputDeviceModel::index(int row, int column, const QModelIndex &parent) const
+VideoInputDeviceModel::index(int row, int column, const QModelIndex& parent) const
 {
     Q_UNUSED(parent);
     if (column != 0) {
@@ -122,14 +122,14 @@ VideoInputDeviceModel::index(int row, int column, const QModelIndex &parent) con
 }
 
 QModelIndex
-VideoInputDeviceModel::parent(const QModelIndex &child) const
+VideoInputDeviceModel::parent(const QModelIndex& child) const
 {
     Q_UNUSED(child);
     return QModelIndex();
 }
 
 Qt::ItemFlags
-VideoInputDeviceModel::flags(const QModelIndex &index) const
+VideoInputDeviceModel::flags(const QModelIndex& index) const
 {
     auto flags = QAbstractItemModel::flags(index) | Qt::ItemNeverHasChildren | Qt::ItemIsSelectable;
     if (!index.isValid()) {

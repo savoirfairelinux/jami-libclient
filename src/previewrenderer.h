@@ -29,11 +29,11 @@ class PreviewRenderer : public QQuickPaintedItem
 {
     Q_OBJECT
 public:
-    explicit PreviewRenderer(QQuickItem *parent = 0);
+    explicit PreviewRenderer(QQuickItem* parent = 0);
     ~PreviewRenderer();
 
 protected:
-    void paint(QPainter *painter) override;
+    void paint(QPainter* painter) override;
 
 private:
     QMetaObject::Connection previewFrameUpdatedConnection_;
@@ -44,7 +44,7 @@ class VideoCallPreviewRenderer : public PreviewRenderer
 {
     Q_OBJECT
 public:
-    explicit VideoCallPreviewRenderer(QQuickItem *parent = 0);
+    explicit VideoCallPreviewRenderer(QQuickItem* parent = 0);
     virtual ~VideoCallPreviewRenderer();
 
     Q_INVOKABLE qreal getPreviewImageScalingFactor();
@@ -53,14 +53,14 @@ signals:
     void previewImageAvailable();
 
 private:
-    void paint(QPainter *painter) override final;
+    void paint(QPainter* painter) override final;
 };
 
 class PhotoboothPreviewRender : public PreviewRenderer
 {
     Q_OBJECT
 public:
-    explicit PhotoboothPreviewRender(QQuickItem *parent = 0);
+    explicit PhotoboothPreviewRender(QQuickItem* parent = 0);
     virtual ~PhotoboothPreviewRender();
 
     QImage takePhoto();
@@ -70,5 +70,5 @@ signals:
     void hideBooth();
 
 private:
-    void paint(QPainter *painter) override final;
+    void paint(QPainter* painter) override final;
 };

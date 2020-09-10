@@ -18,14 +18,14 @@
 
 #include "videoformatfpsmodel.h"
 
-VideoFormatFpsModel::VideoFormatFpsModel(QObject *parent)
+VideoFormatFpsModel::VideoFormatFpsModel(QObject* parent)
     : QAbstractListModel(parent)
 {
     try {
         QString currentDeviceId = LRCInstance::avModel().getCurrentVideoCaptureDevice();
         auto currentSettings = LRCInstance::avModel().getDeviceSettings(currentDeviceId);
         currentResolution_ = currentSettings.size;
-    } catch (const std::exception &e) {
+    } catch (const std::exception& e) {
         qWarning() << "Constructor of VideoFormatFpsModel, exception: " << e.what();
     }
 }
@@ -33,7 +33,7 @@ VideoFormatFpsModel::VideoFormatFpsModel(QObject *parent)
 VideoFormatFpsModel::~VideoFormatFpsModel() {}
 
 int
-VideoFormatFpsModel::rowCount(const QModelIndex &parent) const
+VideoFormatFpsModel::rowCount(const QModelIndex& parent) const
 {
     if (!parent.isValid()) {
         /*
@@ -65,7 +65,7 @@ VideoFormatFpsModel::rowCount(const QModelIndex &parent) const
                 auto fpsList = channelCaps[indexOfCurrentResolutionInResRateList].second;
                 return fpsList.size();
             }
-        } catch (const std::exception &e) {
+        } catch (const std::exception& e) {
             qWarning() << e.what();
         }
         return 0;
@@ -77,7 +77,7 @@ VideoFormatFpsModel::rowCount(const QModelIndex &parent) const
 }
 
 int
-VideoFormatFpsModel::columnCount(const QModelIndex &parent) const
+VideoFormatFpsModel::columnCount(const QModelIndex& parent) const
 {
     Q_UNUSED(parent);
     /*
@@ -87,7 +87,7 @@ VideoFormatFpsModel::columnCount(const QModelIndex &parent) const
 }
 
 QVariant
-VideoFormatFpsModel::data(const QModelIndex &index, int role) const
+VideoFormatFpsModel::data(const QModelIndex& index, int role) const
 {
     try {
         QString currentDeviceId = LRCInstance::avModel().getCurrentVideoCaptureDevice();
@@ -124,7 +124,7 @@ VideoFormatFpsModel::data(const QModelIndex &index, int role) const
             return QVariant(rateDisplayUtf8.toUtf8());
         }
 
-    } catch (const std::exception &e) {
+    } catch (const std::exception& e) {
         qWarning() << e.what();
     }
 
@@ -141,7 +141,7 @@ VideoFormatFpsModel::roleNames() const
 }
 
 QModelIndex
-VideoFormatFpsModel::index(int row, int column, const QModelIndex &parent) const
+VideoFormatFpsModel::index(int row, int column, const QModelIndex& parent) const
 {
     Q_UNUSED(parent);
     if (column != 0) {
@@ -155,14 +155,14 @@ VideoFormatFpsModel::index(int row, int column, const QModelIndex &parent) const
 }
 
 QModelIndex
-VideoFormatFpsModel::parent(const QModelIndex &child) const
+VideoFormatFpsModel::parent(const QModelIndex& child) const
 {
     Q_UNUSED(child);
     return QModelIndex();
 }
 
 Qt::ItemFlags
-VideoFormatFpsModel::flags(const QModelIndex &index) const
+VideoFormatFpsModel::flags(const QModelIndex& index) const
 {
     auto flags = QAbstractItemModel::flags(index) | Qt::ItemNeverHasChildren | Qt::ItemIsSelectable;
     if (!index.isValid()) {
@@ -192,7 +192,7 @@ VideoFormatFpsModel::getCurrentSettingIndex()
             resultRowIndex = resultList[0].row();
         }
 
-    } catch (const std::exception &e) {
+    } catch (const std::exception& e) {
         qWarning() << e.what();
     }
 

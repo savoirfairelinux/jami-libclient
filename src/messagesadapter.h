@@ -28,13 +28,13 @@ class MessagesAdapter final : public QmlAdapterBase
 {
     Q_OBJECT
 public:
-    explicit MessagesAdapter(QObject *parent = 0);
+    explicit MessagesAdapter(QObject* parent = 0);
     ~MessagesAdapter() = default;
 
 protected:
     void safeInit() override;
 
-    Q_INVOKABLE void setupChatView(const QString &uid);
+    Q_INVOKABLE void setupChatView(const QString& uid);
     Q_INVOKABLE void connectConversationModel();
     Q_INVOKABLE void sendContactRequest();
     Q_INVOKABLE void updateConversationForAddedContact();
@@ -42,19 +42,19 @@ protected:
     /*
      * JS Q_INVOKABLE.
      */
-    Q_INVOKABLE void acceptInvitation(const QString &convUid = "");
-    Q_INVOKABLE void refuseInvitation(const QString &convUid = "");
-    Q_INVOKABLE void blockConversation(const QString &convUid = "");
-    Q_INVOKABLE void setNewMessagesContent(const QString &path);
-    Q_INVOKABLE void sendMessage(const QString &message);
-    Q_INVOKABLE void sendImage(const QString &message);
-    Q_INVOKABLE void sendFile(const QString &message);
-    Q_INVOKABLE void retryInteraction(const QString &arg);
-    Q_INVOKABLE void deleteInteraction(const QString &arg);
-    Q_INVOKABLE void openUrl(const QString &url);
-    Q_INVOKABLE void openFile(const QString &arg);
-    Q_INVOKABLE void acceptFile(const QString &arg);
-    Q_INVOKABLE void refuseFile(const QString &arg);
+    Q_INVOKABLE void acceptInvitation(const QString& convUid = "");
+    Q_INVOKABLE void refuseInvitation(const QString& convUid = "");
+    Q_INVOKABLE void blockConversation(const QString& convUid = "");
+    Q_INVOKABLE void setNewMessagesContent(const QString& path);
+    Q_INVOKABLE void sendMessage(const QString& message);
+    Q_INVOKABLE void sendImage(const QString& message);
+    Q_INVOKABLE void sendFile(const QString& message);
+    Q_INVOKABLE void retryInteraction(const QString& arg);
+    Q_INVOKABLE void deleteInteraction(const QString& arg);
+    Q_INVOKABLE void openUrl(const QString& url);
+    Q_INVOKABLE void openFile(const QString& arg);
+    Q_INVOKABLE void acceptFile(const QString& arg);
+    Q_INVOKABLE void refuseFile(const QString& arg);
     Q_INVOKABLE void pasteKeyDetected();
     Q_INVOKABLE void onComposing(bool isComposing);
 
@@ -68,38 +68,38 @@ protected:
      */
     void setMessagesVisibility(bool visible);
     void requestSendMessageContent();
-    void setInvitation(bool show, const QString &contactUri = "", const QString &contactId = "");
+    void setInvitation(bool show, const QString& contactUri = "", const QString& contactId = "");
     void clear();
-    void printHistory(lrc::api::ConversationModel &conversationModel,
+    void printHistory(lrc::api::ConversationModel& conversationModel,
                       const std::map<uint64_t, lrc::api::interaction::Info> interactions);
-    void setSenderImage(const QString &sender, const QString &senderImage);
-    void printNewInteraction(lrc::api::ConversationModel &conversationModel,
+    void setSenderImage(const QString& sender, const QString& senderImage);
+    void printNewInteraction(lrc::api::ConversationModel& conversationModel,
                              uint64_t msgId,
-                             const lrc::api::interaction::Info &interaction);
-    void updateInteraction(lrc::api::ConversationModel &conversationModel,
+                             const lrc::api::interaction::Info& interaction);
+    void updateInteraction(lrc::api::ConversationModel& conversationModel,
                            uint64_t msgId,
-                           const lrc::api::interaction::Info &interaction);
-    void setMessagesImageContent(const QString &path, bool isBased64 = false);
-    void setMessagesFileContent(const QString &path);
+                           const lrc::api::interaction::Info& interaction);
+    void setMessagesImageContent(const QString& path, bool isBased64 = false);
+    void setMessagesFileContent(const QString& path);
     void removeInteraction(uint64_t interactionId);
-    void setSendMessageContent(const QString &content);
-    void contactIsComposing(const QString &uid, const QString &contactUri, bool isComposing);
+    void setSendMessageContent(const QString& content);
+    void contactIsComposing(const QString& uid, const QString& contactUri, bool isComposing);
 
 signals:
     void needToUpdateSmartList();
 
 public slots:
-    void slotSendMessageContentSaved(const QString &content);
-    void slotUpdateDraft(const QString &content);
+    void slotSendMessageContentSaved(const QString& content);
+    void slotUpdateDraft(const QString& content);
     void slotMessagesCleared();
     void slotMessagesLoaded();
 
 private:
-    void setConversationProfileData(const lrc::api::conversation::Info &convInfo);
-    void newInteraction(const QString &accountId,
-                        const QString &convUid,
+    void setConversationProfileData(const lrc::api::conversation::Info& convInfo);
+    void newInteraction(const QString& accountId,
+                        const QString& convUid,
                         uint64_t interactionId,
-                        const interaction::Info &interaction);
+                        const interaction::Info& interaction);
 
     QString LastConvUid_;
 

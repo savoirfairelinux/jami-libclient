@@ -18,14 +18,14 @@
 
 #include "audiomanagerlistmodel.h"
 
-AudioManagerListModel::AudioManagerListModel(QObject *parent)
+AudioManagerListModel::AudioManagerListModel(QObject* parent)
     : QAbstractListModel(parent)
 {}
 
 AudioManagerListModel::~AudioManagerListModel() {}
 
 int
-AudioManagerListModel::rowCount(const QModelIndex &parent) const
+AudioManagerListModel::rowCount(const QModelIndex& parent) const
 {
     if (!parent.isValid()) {
         /*
@@ -40,7 +40,7 @@ AudioManagerListModel::rowCount(const QModelIndex &parent) const
 }
 
 int
-AudioManagerListModel::columnCount(const QModelIndex &parent) const
+AudioManagerListModel::columnCount(const QModelIndex& parent) const
 {
     Q_UNUSED(parent);
     /*
@@ -50,7 +50,7 @@ AudioManagerListModel::columnCount(const QModelIndex &parent) const
 }
 
 QVariant
-AudioManagerListModel::data(const QModelIndex &index, int role) const
+AudioManagerListModel::data(const QModelIndex& index, int role) const
 {
     auto managerList = LRCInstance::avModel().getSupportedAudioManagers();
     if (!index.isValid() || managerList.size() <= index.row()) {
@@ -76,7 +76,7 @@ AudioManagerListModel::roleNames() const
 }
 
 QModelIndex
-AudioManagerListModel::index(int row, int column, const QModelIndex &parent) const
+AudioManagerListModel::index(int row, int column, const QModelIndex& parent) const
 {
     Q_UNUSED(parent);
     if (column != 0) {
@@ -90,14 +90,14 @@ AudioManagerListModel::index(int row, int column, const QModelIndex &parent) con
 }
 
 QModelIndex
-AudioManagerListModel::parent(const QModelIndex &child) const
+AudioManagerListModel::parent(const QModelIndex& child) const
 {
     Q_UNUSED(child);
     return QModelIndex();
 }
 
 Qt::ItemFlags
-AudioManagerListModel::flags(const QModelIndex &index) const
+AudioManagerListModel::flags(const QModelIndex& index) const
 {
     auto flags = QAbstractItemModel::flags(index) | Qt::ItemNeverHasChildren | Qt::ItemIsSelectable;
     if (!index.isValid()) {

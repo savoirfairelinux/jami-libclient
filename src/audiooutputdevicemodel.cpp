@@ -18,14 +18,14 @@
 
 #include "audiooutputdevicemodel.h"
 
-AudioOutputDeviceModel::AudioOutputDeviceModel(QObject *parent)
+AudioOutputDeviceModel::AudioOutputDeviceModel(QObject* parent)
     : QAbstractListModel(parent)
 {}
 
 AudioOutputDeviceModel::~AudioOutputDeviceModel() {}
 
 int
-AudioOutputDeviceModel::rowCount(const QModelIndex &parent) const
+AudioOutputDeviceModel::rowCount(const QModelIndex& parent) const
 {
     if (!parent.isValid()) {
         /*
@@ -40,7 +40,7 @@ AudioOutputDeviceModel::rowCount(const QModelIndex &parent) const
 }
 
 int
-AudioOutputDeviceModel::columnCount(const QModelIndex &parent) const
+AudioOutputDeviceModel::columnCount(const QModelIndex& parent) const
 {
     Q_UNUSED(parent);
     /*
@@ -50,7 +50,7 @@ AudioOutputDeviceModel::columnCount(const QModelIndex &parent) const
 }
 
 QVariant
-AudioOutputDeviceModel::data(const QModelIndex &index, int role) const
+AudioOutputDeviceModel::data(const QModelIndex& index, int role) const
 {
     auto deviceList = LRCInstance::avModel().getAudioOutputDevices();
     if (!index.isValid() || deviceList.size() <= index.row()) {
@@ -76,7 +76,7 @@ AudioOutputDeviceModel::roleNames() const
 }
 
 QModelIndex
-AudioOutputDeviceModel::index(int row, int column, const QModelIndex &parent) const
+AudioOutputDeviceModel::index(int row, int column, const QModelIndex& parent) const
 {
     Q_UNUSED(parent);
     if (column != 0) {
@@ -90,14 +90,14 @@ AudioOutputDeviceModel::index(int row, int column, const QModelIndex &parent) co
 }
 
 QModelIndex
-AudioOutputDeviceModel::parent(const QModelIndex &child) const
+AudioOutputDeviceModel::parent(const QModelIndex& child) const
 {
     Q_UNUSED(child);
     return QModelIndex();
 }
 
 Qt::ItemFlags
-AudioOutputDeviceModel::flags(const QModelIndex &index) const
+AudioOutputDeviceModel::flags(const QModelIndex& index) const
 {
     auto flags = QAbstractItemModel::flags(index) | Qt::ItemNeverHasChildren | Qt::ItemIsSelectable;
     if (!index.isValid()) {

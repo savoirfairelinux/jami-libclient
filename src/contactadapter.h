@@ -37,23 +37,21 @@
 class SelectableProxyModel final : public QSortFilterProxyModel
 {
 public:
-    using FilterPredicate = std::function<bool(const QModelIndex &, const QRegExp &)>;
+    using FilterPredicate = std::function<bool(const QModelIndex&, const QRegExp&)>;
 
-    explicit SelectableProxyModel(QAbstractItemModel *parent)
+    explicit SelectableProxyModel(QAbstractItemModel* parent)
         : QSortFilterProxyModel(parent)
     {
         setSourceModel(parent);
     }
     ~SelectableProxyModel() {}
 
-    void
-    setPredicate(FilterPredicate filterPredicate)
+    void setPredicate(FilterPredicate filterPredicate)
     {
         filterPredicate_ = filterPredicate;
     }
 
-    virtual bool
-    filterAcceptsRow(int source_row, const QModelIndex &source_parent) const
+    virtual bool filterAcceptsRow(int source_row, const QModelIndex& source_parent) const
     {
         /*
          * Accept all contacts in conversation list filtered with account type, except those in a call.
@@ -65,7 +63,7 @@ public:
     }
 
 private:
-    std::function<bool(const QModelIndex &, const QRegExp &)> filterPredicate_;
+    std::function<bool(const QModelIndex&, const QRegExp&)> filterPredicate_;
 };
 
 class ContactAdapter final : public QmlAdapterBase
@@ -73,16 +71,16 @@ class ContactAdapter final : public QmlAdapterBase
     Q_OBJECT
 
 public:
-    explicit ContactAdapter(QObject *parent = nullptr);
+    explicit ContactAdapter(QObject* parent = nullptr);
     ~ContactAdapter() = default;
 
 protected:
     void safeInit() override {};
 
     Q_INVOKABLE QVariant getContactSelectableModel(int type);
-    Q_INVOKABLE void setSearchFilter(const QString &filter);
+    Q_INVOKABLE void setSearchFilter(const QString& filter);
     Q_INVOKABLE void contactSelected(int index);
-    Q_INVOKABLE void setCalleeDisplayName(const QString &name);
+    Q_INVOKABLE void setCalleeDisplayName(const QString& name);
 
 private:
     SmartListModel::Type listModeltype_;

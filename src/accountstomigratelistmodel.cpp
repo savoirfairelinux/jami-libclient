@@ -18,14 +18,14 @@
 
 #include "accountstomigratelistmodel.h"
 
-AccountsToMigrateListModel::AccountsToMigrateListModel(QObject *parent)
+AccountsToMigrateListModel::AccountsToMigrateListModel(QObject* parent)
     : QAbstractListModel(parent)
 {}
 
 AccountsToMigrateListModel::~AccountsToMigrateListModel() {}
 
 int
-AccountsToMigrateListModel::rowCount(const QModelIndex &parent) const
+AccountsToMigrateListModel::rowCount(const QModelIndex& parent) const
 {
     if (!parent.isValid()) {
         /*
@@ -35,7 +35,7 @@ AccountsToMigrateListModel::rowCount(const QModelIndex &parent) const
 
         int countAccountToMigrate = 0;
 
-        for (const QString &i : accountList) {
+        for (const QString& i : accountList) {
             auto accountStatus = LRCInstance::accountModel().getAccountInfo(i).status;
             if (accountStatus == lrc::api::account::Status::ERROR_NEED_MIGRATION) {
                 countAccountToMigrate++;
@@ -51,7 +51,7 @@ AccountsToMigrateListModel::rowCount(const QModelIndex &parent) const
 }
 
 int
-AccountsToMigrateListModel::columnCount(const QModelIndex &parent) const
+AccountsToMigrateListModel::columnCount(const QModelIndex& parent) const
 {
     Q_UNUSED(parent);
     /*
@@ -61,7 +61,7 @@ AccountsToMigrateListModel::columnCount(const QModelIndex &parent) const
 }
 
 QVariant
-AccountsToMigrateListModel::data(const QModelIndex &index, int role) const
+AccountsToMigrateListModel::data(const QModelIndex& index, int role) const
 {
     auto accountList = LRCInstance::accountModel().getAccountList();
     if (!index.isValid() || accountList.size() <= index.row()) {
@@ -79,7 +79,7 @@ AccountsToMigrateListModel::data(const QModelIndex &index, int role) const
 
     QString accountId = accountToMigrateList.at(index.row());
 
-    auto &avatarInfo = LRCInstance::accountModel().getAccountInfo(accountId);
+    auto& avatarInfo = LRCInstance::accountModel().getAccountInfo(accountId);
 
     switch (role) {
     case Role::Account_ID:
@@ -113,7 +113,7 @@ AccountsToMigrateListModel::roleNames() const
 }
 
 QModelIndex
-AccountsToMigrateListModel::index(int row, int column, const QModelIndex &parent) const
+AccountsToMigrateListModel::index(int row, int column, const QModelIndex& parent) const
 {
     Q_UNUSED(parent);
     if (column != 0) {
@@ -127,14 +127,14 @@ AccountsToMigrateListModel::index(int row, int column, const QModelIndex &parent
 }
 
 QModelIndex
-AccountsToMigrateListModel::parent(const QModelIndex &child) const
+AccountsToMigrateListModel::parent(const QModelIndex& child) const
 {
     Q_UNUSED(child);
     return QModelIndex();
 }
 
 Qt::ItemFlags
-AccountsToMigrateListModel::flags(const QModelIndex &index) const
+AccountsToMigrateListModel::flags(const QModelIndex& index) const
 {
     auto flags = QAbstractItemModel::flags(index) | Qt::ItemNeverHasChildren | Qt::ItemIsSelectable;
     if (!index.isValid()) {

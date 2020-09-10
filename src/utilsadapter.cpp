@@ -30,7 +30,7 @@
 #include <QClipboard>
 #include <QFileInfo>
 
-UtilsAdapter::UtilsAdapter(QObject *parent)
+UtilsAdapter::UtilsAdapter(QObject* parent)
     : QObject(parent)
     , clipboard_(QApplication::clipboard())
 {}

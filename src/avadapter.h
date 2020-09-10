@@ -29,7 +29,7 @@ class AvAdapter final : public QmlAdapterBase
     Q_OBJECT
 
 public:
-    explicit AvAdapter(QObject *parent = nullptr);
+    explicit AvAdapter(QObject* parent = nullptr);
     ~AvAdapter() = default;
 
 protected:
@@ -43,7 +43,7 @@ protected:
     /*
      * Preview video input switching.
      */
-    Q_INVOKABLE void onVideoContextMenuDeviceItemClicked(const QString &deviceName);
+    Q_INVOKABLE void onVideoContextMenuDeviceItemClicked(const QString& deviceName);
 
     /*
      * Share the screen specificed by screen number.
@@ -58,11 +58,10 @@ protected:
     /*
      * Share a media file.
      */
-    Q_INVOKABLE void shareFile(const QString &filePath);
+    Q_INVOKABLE void shareFile(const QString& filePath);
 
     /*
      * Select screen area to display.
      */
     Q_INVOKABLE void shareScreenArea(int screenNumber, int x, int y, int width, int height);
-
 };

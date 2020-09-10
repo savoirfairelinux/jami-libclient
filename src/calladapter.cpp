@@ -319,7 +319,8 @@ CallAdapter::connectCallModel(const QString& accountId)
                             bestName = Utils::bestNameForContact(contact);
                             if (participant["videoMuted"] == "true")
                                 data["avatar"] = contact.profileInfo.avatar;
-                        } catch (...) {}
+                        } catch (...) {
+                        }
                     }
                     data["bestName"] = bestName;
                     map.push_back(QVariant(data));

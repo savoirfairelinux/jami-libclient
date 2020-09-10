@@ -26,7 +26,7 @@ class ConnectivityMonitor : public QObject
     Q_OBJECT
 
 public:
-    explicit ConnectivityMonitor(QObject *parent = 0);
+    explicit ConnectivityMonitor(QObject* parent = 0);
     ~ConnectivityMonitor();
 
     bool isOnline();
@@ -37,10 +37,10 @@ signals:
 private:
     void destroy();
 
-    struct INetworkListManager *pNetworkListManager_;
-    struct IConnectionPointContainer *pCPContainer_;
-    struct IConnectionPoint *pConnectPoint_;
-    class NetworkEventHandler *netEventHandler_;
+    struct INetworkListManager* pNetworkListManager_;
+    struct IConnectionPointContainer* pCPContainer_;
+    struct IConnectionPoint* pConnectPoint_;
+    class NetworkEventHandler* netEventHandler_;
     unsigned long cookie_;
 };
 #endif // Q_OS_WIN

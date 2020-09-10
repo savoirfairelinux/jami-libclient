@@ -1,5 +1,6 @@
 #pragma once
 
+// clang-format off
 #define BUILD_YEAR_CH0 (__DATE__[ 7])
 #define BUILD_YEAR_CH1 (__DATE__[ 8])
 #define BUILD_YEAR_CH2 (__DATE__[ 9])
@@ -55,3 +56,4 @@ const char VERSION_STRING[] = {
     BUILD_MIN_CH0, BUILD_MIN_CH1,
     '\0'
 };
+// clang-format on

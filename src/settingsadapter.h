@@ -31,10 +31,10 @@ class SettingsAdapter : public QObject
 {
     Q_OBJECT
 public:
-    explicit SettingsAdapter(QObject *parent = nullptr);
+    explicit SettingsAdapter(QObject* parent = nullptr);
 
-    //Singleton
-    static SettingsAdapter &instance();
+    // Singleton
+    static SettingsAdapter& instance();
     /*
      * getters of directories
      */
@@ -50,38 +50,38 @@ public:
     /*
      * getters of devices' Info and options
      */
-    Q_INVOKABLE lrc::api::video::Capabilities get_DeviceCapabilities(const QString &device);
+    Q_INVOKABLE lrc::api::video::Capabilities get_DeviceCapabilities(const QString& device);
     Q_INVOKABLE lrc::api::video::ResRateList get_ResRateList(lrc::api::video::Channel channel,
                                                              QString device);
-    Q_INVOKABLE int get_DeviceCapabilitiesSize(const QString &device);
+    Q_INVOKABLE int get_DeviceCapabilitiesSize(const QString& device);
 
     /*
      * getters of resolution and frame rates of current device
      */
-    Q_INVOKABLE QVector<QString> getResolutions(const QString &device);
-    Q_INVOKABLE QVector<int> getFrameRates(const QString &device);
+    Q_INVOKABLE QVector<QString> getResolutions(const QString& device);
+    Q_INVOKABLE QVector<int> getFrameRates(const QString& device);
 
     /*
      * getters and setters: lrc video::setting
      */
-    Q_INVOKABLE QString get_Video_Settings_Channel(const QString &deviceId);
-    Q_INVOKABLE QString get_Video_Settings_Name(const QString &deviceId);
-    Q_INVOKABLE QString get_Video_Settings_Id(const QString &deviceId);
-    Q_INVOKABLE qreal get_Video_Settings_Rate(const QString &deviceId);
-    Q_INVOKABLE QString get_Video_Settings_Size(const QString &deviceId);
+    Q_INVOKABLE QString get_Video_Settings_Channel(const QString& deviceId);
+    Q_INVOKABLE QString get_Video_Settings_Name(const QString& deviceId);
+    Q_INVOKABLE QString get_Video_Settings_Id(const QString& deviceId);
+    Q_INVOKABLE qreal get_Video_Settings_Rate(const QString& deviceId);
+    Q_INVOKABLE QString get_Video_Settings_Size(const QString& deviceId);
 
-    Q_INVOKABLE void set_Video_Settings_Rate_And_Resolution(const QString &deviceId,
+    Q_INVOKABLE void set_Video_Settings_Rate_And_Resolution(const QString& deviceId,
                                                             qreal rate,
-                                                            const QString &resolution);
+                                                            const QString& resolution);
 
     /*
      * getters and setters of current account Info
      */
-    const Q_INVOKABLE lrc::api::account::Info &getCurrentAccountInfo();
-    const Q_INVOKABLE lrc::api::profile::Info &getCurrentAccount_Profile_Info();
+    const Q_INVOKABLE lrc::api::account::Info& getCurrentAccountInfo();
+    const Q_INVOKABLE lrc::api::profile::Info& getCurrentAccount_Profile_Info();
 
-    Q_INVOKABLE lrc::api::ContactModel *getContactModel();
-    Q_INVOKABLE lrc::api::NewDeviceModel *getDeviceModel();
+    Q_INVOKABLE lrc::api::ContactModel* getContactModel();
+    Q_INVOKABLE lrc::api::NewDeviceModel* getDeviceModel();
 
     Q_INVOKABLE QString get_CurrentAccountInfo_RegisteredName();
     Q_INVOKABLE QString get_CurrentAccountInfo_Id();
@@ -211,7 +211,7 @@ public:
     Q_INVOKABLE void videoRTPMinPortSpinBoxEditFinished(int value);
     Q_INVOKABLE void videoRTPMaxPortSpinBoxEditFinished(int value);
 
-    Q_INVOKABLE void tlsProtocolComboBoxIndexChanged(const int &index);
+    Q_INVOKABLE void tlsProtocolComboBoxIndexChanged(const int& index);
 
     Q_INVOKABLE void setDeviceName(QString text);
 
@@ -230,6 +230,5 @@ public:
     Q_INVOKABLE void set_FileCACert(QString text);
     Q_INVOKABLE void set_FileUserCert(QString text);
     Q_INVOKABLE void set_FilePrivateKey(QString text);
-
 };
-Q_DECLARE_METATYPE(SettingsAdapter *)
+Q_DECLARE_METATYPE(SettingsAdapter*)

@@ -28,13 +28,13 @@ namespace Utils {
 
 template<typename Func1, typename Func2>
 void
-oneShotConnect(const typename QtPrivate::FunctionPointer<Func1>::Object *sender,
+oneShotConnect(const typename QtPrivate::FunctionPointer<Func1>::Object* sender,
                Func1 signal,
                Func2 slot)
 {
-    QMetaObject::Connection *const connection = new QMetaObject::Connection;
+    QMetaObject::Connection* const connection = new QMetaObject::Connection;
     *connection = QObject::connect(sender, signal, slot);
-    QMetaObject::Connection *const disconnectConnection = new QMetaObject::Connection;
+    QMetaObject::Connection* const disconnectConnection = new QMetaObject::Connection;
     *disconnectConnection = QObject::connect(sender, signal, [connection, disconnectConnection] {
         if (connection) {
             QObject::disconnect(*connection);
@@ -49,14 +49,14 @@ oneShotConnect(const typename QtPrivate::FunctionPointer<Func1>::Object *sender,
 
 template<typename Func1, typename Func2>
 void
-oneShotConnect(const typename QtPrivate::FunctionPointer<Func1>::Object *sender,
+oneShotConnect(const typename QtPrivate::FunctionPointer<Func1>::Object* sender,
                Func1 signal,
-               const typename QtPrivate::FunctionPointer<Func2>::Object *receiver,
+               const typename QtPrivate::FunctionPointer<Func2>::Object* receiver,
                Func2 slot)
 {
-    QMetaObject::Connection *const connection = new QMetaObject::Connection;
+    QMetaObject::Connection* const connection = new QMetaObject::Connection;
     *connection = QObject::connect(sender, signal, receiver, slot);
-    QMetaObject::Connection *const disconnectConnection = new QMetaObject::Connection;
+    QMetaObject::Connection* const disconnectConnection = new QMetaObject::Connection;
     *disconnectConnection = QObject::connect(sender, signal, [connection, disconnectConnection] {
         if (connection) {
             QObject::disconnect(*connection);
@@ -73,24 +73,20 @@ class OneShotConnection final : public QObject
 {
     Q_OBJECT
 public:
-    explicit OneShotConnection(const QObject *sender,
-                               const char *signal,
-                               QMetaObject::Connection *connection,
-                               QObject *parent = nullptr)
+    explicit OneShotConnection(const QObject* sender,
+                               const char* signal,
+                               QMetaObject::Connection* connection,
+                               QObject* parent = nullptr)
         : QObject(parent)
     {
         connection_ = connection;
         disconnectConnection_ = new QMetaObject::Connection;
-        *disconnectConnection_ = QObject::connect(sender,
-                                                  signal,
-                                                  this,
-                                                  SLOT(onTriggered()));
+        *disconnectConnection_ = QObject::connect(sender, signal, this, SLOT(onTriggered()));
     }
     ~OneShotConnection() = default;
 
 public slots:
-    void
-    onTriggered()
+    void onTriggered()
     {
         if (connection_) {
             QObject::disconnect(*connection_);
@@ -104,17 +100,16 @@ public slots:
     }
 
 private:
-    QMetaObject::Connection *connection_;
-    QMetaObject::Connection *disconnectConnection_;
-
+    QMetaObject::Connection* connection_;
+    QMetaObject::Connection* disconnectConnection_;
 };
 
 inline void
-oneShotConnect(const QObject *sender, const char *signal, const QObject *receiver, const char *slot)
+oneShotConnect(const QObject* sender, const char* signal, const QObject* receiver, const char* slot)
 {
-    QMetaObject::Connection *const connection = new QMetaObject::Connection;
+    QMetaObject::Connection* const connection = new QMetaObject::Connection;
     *connection = QObject::connect(sender, signal, receiver, slot);
-     new OneShotConnection(sender, signal, connection);
+    new OneShotConnection(sender, signal, connection);
 }
 
-}
+} // namespace Utils

@@ -20,12 +20,12 @@
 
 #include "api/newdevicemodel.h"
 
-SettingsAdapter::SettingsAdapter(QObject *parent)
+SettingsAdapter::SettingsAdapter(QObject* parent)
     : QObject(parent)
 {}
 
-///Singleton
-SettingsAdapter &
+/// Singleton
+SettingsAdapter&
 SettingsAdapter::instance()
 {
     static auto instance = new SettingsAdapter;
@@ -42,7 +42,8 @@ SettingsAdapter::getDir_Document()
 QString
 SettingsAdapter::getDir_Download()
 {
-    QString downloadPath = QDir::toNativeSeparators(LRCInstance::dataTransferModel().downloadDirectory);
+    QString downloadPath = QDir::toNativeSeparators(
+        LRCInstance::dataTransferModel().downloadDirectory);
     if (downloadPath.isEmpty()) {
         downloadPath = lrc::api::DataTransferModel::createDefaultDirectory();
         setDownloadPath(downloadPath);
@@ -98,13 +99,13 @@ SettingsAdapter::get_ResRateList(lrc::api::video::Channel channel, QString devic
 }
 
 int
-SettingsAdapter::get_DeviceCapabilitiesSize(const QString &device)
+SettingsAdapter::get_DeviceCapabilitiesSize(const QString& device)
 {
     return get_DeviceCapabilities(device).size();
 }
 
 QVector<QString>
-SettingsAdapter::getResolutions(const QString &device)
+SettingsAdapter::getResolutions(const QString& device)
 {
     QVector<QString> resolutions;
 
@@ -122,7 +123,7 @@ SettingsAdapter::getResolutions(const QString &device)
 }
 
 QVector<int>
-SettingsAdapter::getFrameRates(const QString &device)
+SettingsAdapter::getFrameRates(const QString& device)
 {
     QVector<int> rates;
 
@@ -140,13 +141,13 @@ SettingsAdapter::getFrameRates(const QString &device)
 }
 
 lrc::api::video::Capabilities
-SettingsAdapter::get_DeviceCapabilities(const QString &device)
+SettingsAdapter::get_DeviceCapabilities(const QString& device)
 {
     return LRCInstance::avModel().getDeviceCapabilities(device);
 }
 
 QString
-SettingsAdapter::get_Video_Settings_Channel(const QString &deviceId)
+SettingsAdapter::get_Video_Settings_Channel(const QString& deviceId)
 {
     auto settings = LRCInstance::avModel().getDeviceSettings(deviceId);
 
@@ -154,7 +155,7 @@ SettingsAdapter::get_Video_Settings_Channel(const QString &deviceId)
 }
 
 QString
-SettingsAdapter::get_Video_Settings_Name(const QString &deviceId)
+SettingsAdapter::get_Video_Settings_Name(const QString& deviceId)
 {
     auto settings = LRCInstance::avModel().getDeviceSettings(deviceId);
 
@@ -162,7 +163,7 @@ SettingsAdapter::get_Video_Settings_Name(const QString &deviceId)
 }
 
 QString
-SettingsAdapter::get_Video_Settings_Id(const QString &deviceId)
+SettingsAdapter::get_Video_Settings_Id(const QString& deviceId)
 {
     auto settings = LRCInstance::avModel().getDeviceSettings(deviceId);
 
@@ -170,7 +171,7 @@ SettingsAdapter::get_Video_Settings_Id(const QString &deviceId)
 }
 
 qreal
-SettingsAdapter::get_Video_Settings_Rate(const QString &deviceId)
+SettingsAdapter::get_Video_Settings_Rate(const QString& deviceId)
 {
     auto settings = LRCInstance::avModel().getDeviceSettings(deviceId);
 
@@ -178,7 +179,7 @@ SettingsAdapter::get_Video_Settings_Rate(const QString &deviceId)
 }
 
 QString
-SettingsAdapter::get_Video_Settings_Size(const QString &deviceId)
+SettingsAdapter::get_Video_Settings_Size(const QString& deviceId)
 {
     auto settings = LRCInstance::avModel().getDeviceSettings(deviceId);
 
@@ -186,9 +187,9 @@ SettingsAdapter::get_Video_Settings_Size(const QString &deviceId)
 }
 
 void
-SettingsAdapter::set_Video_Settings_Rate_And_Resolution(const QString &deviceId,
+SettingsAdapter::set_Video_Settings_Rate_And_Resolution(const QString& deviceId,
                                                         qreal rate,
-                                                        const QString &resolution)
+                                                        const QString& resolution)
 {
     auto settings = LRCInstance::avModel().getDeviceSettings(deviceId);
     settings.rate = rate;
@@ -196,25 +197,25 @@ SettingsAdapter::set_Video_Settings_Rate_And_Resolution(const QString &deviceId,
     LRCInstance::avModel().setDeviceSettings(settings);
 }
 
-const lrc::api::account::Info &
+const lrc::api::account::Info&
 SettingsAdapter::getCurrentAccountInfo()
 {
     return LRCInstance::getCurrentAccountInfo();
 }
 
-const Q_INVOKABLE lrc::api::profile::Info &
+const Q_INVOKABLE lrc::api::profile::Info&
 SettingsAdapter::getCurrentAccount_Profile_Info()
 {
     return LRCInstance::getCurrentAccountInfo().profileInfo;
 }
 
-lrc::api::ContactModel *
+lrc::api::ContactModel*
 SettingsAdapter::getContactModel()
 {
     return getCurrentAccountInfo().contactModel.get();
 }
 
-lrc::api::NewDeviceModel *
+lrc::api::NewDeviceModel*
 SettingsAdapter::getDeviceModel()
 {
     return getCurrentAccountInfo().deviceModel.get();
@@ -265,7 +266,7 @@ SettingsAdapter::getAccountBestName()
 QString
 SettingsAdapter::getAvatarImage_Base64(int avatarSize)
 {
-    auto &accountInfo = LRCInstance::getCurrentAccountInfo();
+    auto& accountInfo = LRCInstance::getCurrentAccountInfo();
     auto avatar = Utils::accountPhoto(accountInfo, {avatarSize, avatarSize});
 
     return QString::fromLatin1(Utils::QImageToByteArray(avatar).toBase64().data());
@@ -274,7 +275,7 @@ SettingsAdapter::getAvatarImage_Base64(int avatarSize)
 bool
 SettingsAdapter::getIsDefaultAvatar()
 {
-    auto &accountInfo = LRCInstance::getCurrentAccountInfo();
+    auto& accountInfo = LRCInstance::getCurrentAccountInfo();
 
     return accountInfo.profileInfo.avatar.isEmpty();
 }
@@ -305,7 +306,8 @@ SettingsAdapter::getAccountConfig()
     lrc::api::account::ConfProperties_t res;
     try {
         res = LRCInstance::accountModel().getAccountConfig(LRCInstance::getCurrAccId());
-    } catch (...) {}
+    } catch (...) {
+    }
     return res;
 }
 
@@ -641,7 +643,6 @@ SettingsAdapter::setIsRendezVous(bool state)
     LRCInstance::accountModel().setAccountConfig(LRCInstance::getCurrAccId(), confProps);
 }
 
-
 void
 SettingsAdapter::setAutoAnswerCalls(bool state)
 {
@@ -924,7 +925,7 @@ SettingsAdapter::videoRTPMaxPortSpinBoxEditFinished(int value)
 }
 
 void
-SettingsAdapter::tlsProtocolComboBoxIndexChanged(const int &index)
+SettingsAdapter::tlsProtocolComboBoxIndexChanged(const int& index)
 {
     auto confProps = LRCInstance::accountModel().getAccountConfig(LRCInstance::getCurrAccId());
 

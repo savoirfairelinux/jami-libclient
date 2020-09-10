@@ -24,28 +24,28 @@
 class BannedListModel : public QAbstractListModel
 {
     Q_OBJECT
-    BannedListModel(const BannedListModel &cpy);
+    BannedListModel(const BannedListModel& cpy);
 
 public:
     enum Role { ContactName = Qt::UserRole + 1, ContactID, ContactPicture };
     Q_ENUM(Role)
 
-    explicit BannedListModel(QObject *parent = nullptr);
+    explicit BannedListModel(QObject* parent = nullptr);
     ~BannedListModel();
 
     /*
      * QAbstractListModel override.
      */
-    int rowCount(const QModelIndex &parent = QModelIndex()) const override;
-    int columnCount(const QModelIndex &parent) const override;
-    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
+    int rowCount(const QModelIndex& parent = QModelIndex()) const override;
+    int columnCount(const QModelIndex& parent) const override;
+    QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override;
     /*
      * Override role name as access point in qml.
      */
     QHash<int, QByteArray> roleNames() const override;
-    QModelIndex index(int row, int column = 0, const QModelIndex &parent = QModelIndex()) const;
-    QModelIndex parent(const QModelIndex &child) const;
-    Qt::ItemFlags flags(const QModelIndex &index) const;
+    QModelIndex index(int row, int column = 0, const QModelIndex& parent = QModelIndex()) const;
+    QModelIndex parent(const QModelIndex& child) const;
+    Qt::ItemFlags flags(const QModelIndex& index) const;
 
     /*
      * This function is to reset the model when there's new account added.

@@ -21,7 +21,7 @@
 
 #include "lrcinstance.h"
 
-PreviewRenderer::PreviewRenderer(QQuickItem *parent)
+PreviewRenderer::PreviewRenderer(QQuickItem* parent)
     : QQuickPaintedItem(parent)
 {
     setAntialiasing(true);
@@ -44,7 +44,7 @@ PreviewRenderer::~PreviewRenderer()
 }
 
 void
-PreviewRenderer::paint(QPainter *painter)
+PreviewRenderer::paint(QPainter* painter)
 {
     auto previewImage = LRCInstance::renderer()->getPreviewFrame();
     if (previewImage) {
@@ -60,7 +60,7 @@ PreviewRenderer::paint(QPainter *painter)
          * auto parent = qobject_cast<QWidget*>(this->parent());
          * auto xPos = (parent->width() - previewWidth) / 2;
          * setGeometry(QRect(QPoint(xPos, this->pos().y()), QSize(previewWidth, previewHeight)));
-        */
+         */
         setWidth(previewWidth);
         setHeight(previewHeight);
 
@@ -70,7 +70,7 @@ PreviewRenderer::paint(QPainter *painter)
     }
 }
 
-VideoCallPreviewRenderer::VideoCallPreviewRenderer(QQuickItem *parent)
+VideoCallPreviewRenderer::VideoCallPreviewRenderer(QQuickItem* parent)
     : PreviewRenderer(parent)
 {}
 
@@ -88,7 +88,7 @@ VideoCallPreviewRenderer::getPreviewImageScalingFactor()
 }
 
 void
-VideoCallPreviewRenderer::paint(QPainter *painter)
+VideoCallPreviewRenderer::paint(QPainter* painter)
 {
     auto previewImage = LRCInstance::renderer()->getPreviewFrame();
 
@@ -102,7 +102,7 @@ VideoCallPreviewRenderer::paint(QPainter *painter)
     }
 }
 
-PhotoboothPreviewRender::PhotoboothPreviewRender(QQuickItem *parent)
+PhotoboothPreviewRender::PhotoboothPreviewRender(QQuickItem* parent)
     : PreviewRenderer(parent)
 {
     connect(LRCInstance::renderer(), &RenderManager::previewRenderingStopped, [this]() {
@@ -131,7 +131,7 @@ PhotoboothPreviewRender::takeCroppedPhotoToBase64(int size)
 }
 
 void
-PhotoboothPreviewRender::paint(QPainter *painter)
+PhotoboothPreviewRender::paint(QPainter* painter)
 {
     painter->setRenderHint(QPainter::Antialiasing, true);
 

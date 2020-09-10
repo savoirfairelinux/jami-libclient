@@ -30,10 +30,10 @@ class DistantRenderer : public QQuickPaintedItem
 {
     Q_OBJECT
 public:
-    explicit DistantRenderer(QQuickItem *parent = 0);
+    explicit DistantRenderer(QQuickItem* parent = 0);
     ~DistantRenderer();
 
-    Q_INVOKABLE void setRendererId(const QString &id);
+    Q_INVOKABLE void setRendererId(const QString& id);
     Q_INVOKABLE int getXOffset() const;
     Q_INVOKABLE int getYOffset() const;
     Q_INVOKABLE double getScaledWidth() const;
@@ -43,7 +43,7 @@ signals:
     void offsetChanged();
 
 private:
-    void paint(QPainter *painter);
+    void paint(QPainter* painter);
 
     /*
      * Unique DistantRenderId for each call.

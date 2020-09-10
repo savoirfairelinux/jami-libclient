@@ -61,13 +61,13 @@ namespace Utils {
 bool CreateStartupLink(const std::wstring& wstrAppName);
 void DeleteStartupLink(const std::wstring& wstrAppName);
 bool CreateLink(LPCWSTR lpszPathObj, LPCWSTR lpszPathLink);
-bool CheckStartupLink(const std::wstring &wstrAppName);
-const char *WinGetEnv(const char *name);
+bool CheckStartupLink(const std::wstring& wstrAppName);
+const char* WinGetEnv(const char* name);
 QString GetRingtonePath();
 QString GenGUID();
 QString GetISODate();
-void showSystemNotification(QWidget *widget,
-                            const QString &message,
+void showSystemNotification(QWidget* widget,
+                            const QString& message,
                             long delay = 5000,
                             const QString& triggeredAccountId = "");
 void showSystemNotification(QWidget* widget,
@@ -96,46 +96,47 @@ void applyUpdates(bool updateToBeta, QWidget* parent = nullptr);
 /*
  * LRC helpers
  */
-QString bestIdForConversation(const lrc::api::conversation::Info &conv,
-                              const lrc::api::ConversationModel &model);
-QString bestIdForAccount(const lrc::api::account::Info &account);
-QString bestNameForAccount(const lrc::api::account::Info &account);
-QString bestIdForContact(const lrc::api::contact::Info &contact);
-QString bestNameForContact(const lrc::api::contact::Info &contact);
-QString bestNameForConversation(const lrc::api::conversation::Info &conv,
-                                const lrc::api::ConversationModel &model);
-QString secondBestNameForAccount(const lrc::api::account::Info &account);
-lrc::api::profile::Type profileType(const lrc::api::conversation::Info &conv,
-                                    const lrc::api::ConversationModel &model);
-std::string formatTimeString(const std::time_t &timestamp);
-bool isInteractionGenerated(const lrc::api::interaction::Type &interaction);
-bool isContactValid(const QString &contactUid, const lrc::api::ConversationModel &model);
-bool getReplyMessageBox(QWidget *widget, const QString &title, const QString &text);
+QString bestIdForConversation(const lrc::api::conversation::Info& conv,
+                              const lrc::api::ConversationModel& model);
+QString bestIdForAccount(const lrc::api::account::Info& account);
+QString bestNameForAccount(const lrc::api::account::Info& account);
+QString bestIdForContact(const lrc::api::contact::Info& contact);
+QString bestNameForContact(const lrc::api::contact::Info& contact);
+QString bestNameForConversation(const lrc::api::conversation::Info& conv,
+                                const lrc::api::ConversationModel& model);
+QString secondBestNameForAccount(const lrc::api::account::Info& account);
+lrc::api::profile::Type profileType(const lrc::api::conversation::Info& conv,
+                                    const lrc::api::ConversationModel& model);
+std::string formatTimeString(const std::time_t& timestamp);
+bool isInteractionGenerated(const lrc::api::interaction::Type& interaction);
+bool isContactValid(const QString& contactUid, const lrc::api::ConversationModel& model);
+bool getReplyMessageBox(QWidget* widget, const QString& title, const QString& text);
 
 /*
  * Image manipulation
  */
-static const QSize defaultAvatarSize { 128, 128 };
-QString getContactImageString(const QString &accountId, const QString &uid);
+static const QSize defaultAvatarSize {128, 128};
+QString getContactImageString(const QString& accountId, const QString& uid);
 QImage getCirclePhoto(const QImage original, int sizePhoto);
 QImage conversationPhoto(const QString& convUid,
                          const lrc::api::account::Info& accountInfo,
                          bool filtered = false);
-QColor getAvatarColor(const QString &canonicalUri);
-QImage fallbackAvatar(const QString &canonicalUriStr,
-                      const QString &letterStr = QString(),
-                      const QSize &size = defaultAvatarSize);
-QImage fallbackAvatar(const std::string &alias,
-                      const std::string &uri,
-                      const QSize &size = defaultAvatarSize);
+QColor getAvatarColor(const QString& canonicalUri);
+QImage fallbackAvatar(const QString& canonicalUriStr,
+                      const QString& letterStr = QString(),
+                      const QSize& size = defaultAvatarSize);
+QImage fallbackAvatar(const std::string& alias,
+                      const std::string& uri,
+                      const QSize& size = defaultAvatarSize);
 QByteArray QImageToByteArray(QImage image);
-QByteArray QByteArrayFromFile(const QString &filename);
-QPixmap generateTintedPixmap(const QString &filename, QColor color);
-QPixmap generateTintedPixmap(const QPixmap &pix, QColor color);
-QImage scaleAndFrame(const QImage photo, const QSize &size = defaultAvatarSize);
-QImage accountPhoto(const lrc::api::account::Info &accountInfo, const QSize &size = defaultAvatarSize);
-QImage cropImage(const QImage &img);
-QPixmap pixmapFromSvg(const QString &svg_resource, const QSize &size);
+QByteArray QByteArrayFromFile(const QString& filename);
+QPixmap generateTintedPixmap(const QString& filename, QColor color);
+QPixmap generateTintedPixmap(const QPixmap& pix, QColor color);
+QImage scaleAndFrame(const QImage photo, const QSize& size = defaultAvatarSize);
+QImage accountPhoto(const lrc::api::account::Info& accountInfo,
+                    const QSize& size = defaultAvatarSize);
+QImage cropImage(const QImage& img);
+QPixmap pixmapFromSvg(const QString& svg_resource, const QSize& size);
 QImage setupQRCode(QString ringID, int margin);
 bool isImage(const QString& fileExt);
 
@@ -146,5 +147,3 @@ QString formattedTime(int seconds);
 QString humanFileSize(qint64 fileSize);
 
 } // namespace Utils
-
-

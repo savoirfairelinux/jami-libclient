@@ -18,14 +18,14 @@
 
 #include "videoformatresolutionmodel.h"
 
-VideoFormatResolutionModel::VideoFormatResolutionModel(QObject *parent)
+VideoFormatResolutionModel::VideoFormatResolutionModel(QObject* parent)
     : QAbstractListModel(parent)
 {}
 
 VideoFormatResolutionModel::~VideoFormatResolutionModel() {}
 
 int
-VideoFormatResolutionModel::rowCount(const QModelIndex &parent) const
+VideoFormatResolutionModel::rowCount(const QModelIndex& parent) const
 {
     if (!parent.isValid()) {
         /*
@@ -43,7 +43,7 @@ VideoFormatResolutionModel::rowCount(const QModelIndex &parent) const
             auto channelCaps = deviceCapabilities[currentChannel];
 
             return channelCaps.size();
-        } catch (const std::exception &e) {
+        } catch (const std::exception& e) {
             qWarning() << e.what();
             return 0;
         }
@@ -55,7 +55,7 @@ VideoFormatResolutionModel::rowCount(const QModelIndex &parent) const
 }
 
 int
-VideoFormatResolutionModel::columnCount(const QModelIndex &parent) const
+VideoFormatResolutionModel::columnCount(const QModelIndex& parent) const
 {
     Q_UNUSED(parent);
     /*
@@ -65,7 +65,7 @@ VideoFormatResolutionModel::columnCount(const QModelIndex &parent) const
 }
 
 QVariant
-VideoFormatResolutionModel::data(const QModelIndex &index, int role) const
+VideoFormatResolutionModel::data(const QModelIndex& index, int role) const
 {
     try {
         QString currentDeviceId = LRCInstance::avModel().getCurrentVideoCaptureDevice();
@@ -88,7 +88,7 @@ VideoFormatResolutionModel::data(const QModelIndex &index, int role) const
             return QVariant(channelCaps.at(index.row()).first.toUtf8());
         }
 
-    } catch (const std::exception &e) {
+    } catch (const std::exception& e) {
         qWarning() << e.what();
     }
 
@@ -105,7 +105,7 @@ VideoFormatResolutionModel::roleNames() const
 }
 
 QModelIndex
-VideoFormatResolutionModel::index(int row, int column, const QModelIndex &parent) const
+VideoFormatResolutionModel::index(int row, int column, const QModelIndex& parent) const
 {
     Q_UNUSED(parent);
     if (column != 0) {
@@ -119,14 +119,14 @@ VideoFormatResolutionModel::index(int row, int column, const QModelIndex &parent
 }
 
 QModelIndex
-VideoFormatResolutionModel::parent(const QModelIndex &child) const
+VideoFormatResolutionModel::parent(const QModelIndex& child) const
 {
     Q_UNUSED(child);
     return QModelIndex();
 }
 
 Qt::ItemFlags
-VideoFormatResolutionModel::flags(const QModelIndex &index) const
+VideoFormatResolutionModel::flags(const QModelIndex& index) const
 {
     auto flags = QAbstractItemModel::flags(index) | Qt::ItemNeverHasChildren | Qt::ItemIsSelectable;
     if (!index.isValid()) {
@@ -156,7 +156,7 @@ VideoFormatResolutionModel::getCurrentSettingIndex()
             resultRowIndex = resultList[0].row();
         }
 
-    } catch (const std::exception &e) {
+    } catch (const std::exception& e) {
         qWarning() << e.what();
     }
 

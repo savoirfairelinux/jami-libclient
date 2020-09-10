@@ -281,8 +281,8 @@ Utils::getCirclePhoto(const QImage original, int sizePhoto)
 }
 
 void
-Utils::showSystemNotification(QWidget *widget,
-                              const QString &message,
+Utils::showSystemNotification(QWidget* widget,
+                              const QString& message,
                               long delay,
                               const QString& triggeredAccountId)
 {
@@ -525,7 +525,7 @@ Utils::secondBestNameForAccount(const lrc::api::account::Info& account)
     auto infoHash = account.profileInfo.uri;
 
     if (alias.length() != 0) {
-       if (registeredName.length() != 0) {
+        if (registeredName.length() != 0) {
             return registeredName;
         } else {
             return infoHash;
@@ -632,9 +632,7 @@ Utils::getAvatarColor(const QString& canonicalUri)
  * color.
  */
 QImage
-Utils::fallbackAvatar(const QString &canonicalUriStr,
-                      const QString &letterStr,
-                      const QSize &size)
+Utils::fallbackAvatar(const QString& canonicalUriStr, const QString& letterStr, const QSize& size)
 {
     /*
      * We start with a transparent avatar.
@@ -704,13 +702,9 @@ Utils::fallbackAvatar(const QString &canonicalUriStr,
 }
 
 QImage
-Utils::fallbackAvatar(const std::string &alias,
-                      const std::string &uri,
-                      const QSize &size)
+Utils::fallbackAvatar(const std::string& alias, const std::string& uri, const QSize& size)
 {
-    return fallbackAvatar(QString::fromStdString(uri),
-                          QString::fromStdString(alias),
-                          size);
+    return fallbackAvatar(QString::fromStdString(uri), QString::fromStdString(alias), size);
 }
 
 QByteArray
@@ -749,10 +743,10 @@ QImage
 Utils::setupQRCode(QString ringID, int margin)
 {
     auto qrcode = QRcode_encodeString(ringID.toStdString().c_str(),
-                                     0,            // Let the version be decided by libqrencode
-                                     QR_ECLEVEL_L, // Lowest level of error correction
-                                     QR_MODE_8,    // 8-bit data mode
-                                     1);
+                                      0,            // Let the version be decided by libqrencode
+                                      QR_ECLEVEL_L, // Lowest level of error correction
+                                      QR_MODE_8,    // 8-bit data mode
+                                      1);
     if (not qrcode) {
         qWarning() << "Failed to generate QR code";
         return QImage();
@@ -766,10 +760,10 @@ Utils::setupQRCode(QString ringID, int margin)
     painter.setPen(QPen(Qt::black, 0.1, Qt::SolidLine, Qt::FlatCap, Qt::MiterJoin));
     painter.setBrush(Qt::black);
     painter.fillRect(QRect(0, 0, qrwidth, qrwidth), Qt::white);
-    unsigned char *p;
+    unsigned char* p;
     p = qrcode->data;
     for (int y = 0; y < qrcode->width; y++) {
-        unsigned char *row = (p + (y * qrcode->width));
+        unsigned char* row = (p + (y * qrcode->width));
         for (int x = 0; x < qrcode->width; x++) {
             if (*(row + x) & 0x1) {
                 painter.drawRect(margin + x, margin + y, 1, 1);
@@ -889,7 +883,8 @@ Utils::humanFileSize(qint64 fileSize)
     return QString::number(fileSizeF) + " " + units[unit_position];
 }
 
-bool Utils::isImage(const QString &fileExt)
+bool
+Utils::isImage(const QString& fileExt)
 {
     if (fileExt == "png" || fileExt == "jpg" || fileExt == "jpeg")
         return true;

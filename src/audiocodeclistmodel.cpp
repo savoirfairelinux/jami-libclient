@@ -18,14 +18,14 @@
 
 #include "audiocodeclistmodel.h"
 
-AudioCodecListModel::AudioCodecListModel(QObject *parent)
+AudioCodecListModel::AudioCodecListModel(QObject* parent)
     : QAbstractListModel(parent)
 {}
 
 AudioCodecListModel::~AudioCodecListModel() {}
 
 int
-AudioCodecListModel::rowCount(const QModelIndex &parent) const
+AudioCodecListModel::rowCount(const QModelIndex& parent) const
 {
     if (!parent.isValid()) {
         return LRCInstance::getCurrentAccountInfo().codecModel->getAudioCodecs().size();
@@ -34,7 +34,7 @@ AudioCodecListModel::rowCount(const QModelIndex &parent) const
 }
 
 int
-AudioCodecListModel::columnCount(const QModelIndex &parent) const
+AudioCodecListModel::columnCount(const QModelIndex& parent) const
 {
     Q_UNUSED(parent);
     /*
@@ -44,7 +44,7 @@ AudioCodecListModel::columnCount(const QModelIndex &parent) const
 }
 
 QVariant
-AudioCodecListModel::data(const QModelIndex &index, int role) const
+AudioCodecListModel::data(const QModelIndex& index, int role) const
 {
     auto audioCodecList = LRCInstance::getCurrentAccountInfo().codecModel->getAudioCodecs();
     if (!index.isValid() || audioCodecList.size() <= index.row()) {
@@ -76,7 +76,7 @@ AudioCodecListModel::roleNames() const
 }
 
 QModelIndex
-AudioCodecListModel::index(int row, int column, const QModelIndex &parent) const
+AudioCodecListModel::index(int row, int column, const QModelIndex& parent) const
 {
     Q_UNUSED(parent);
     if (column != 0) {
@@ -90,14 +90,14 @@ AudioCodecListModel::index(int row, int column, const QModelIndex &parent) const
 }
 
 QModelIndex
-AudioCodecListModel::parent(const QModelIndex &child) const
+AudioCodecListModel::parent(const QModelIndex& child) const
 {
     Q_UNUSED(child);
     return QModelIndex();
 }
 
 Qt::ItemFlags
-AudioCodecListModel::flags(const QModelIndex &index) const
+AudioCodecListModel::flags(const QModelIndex& index) const
 {
     auto flags = QAbstractItemModel::flags(index) | Qt::ItemNeverHasChildren | Qt::ItemIsSelectable
                  | Qt::ItemIsUserCheckable | Qt::ItemIsEnabled;

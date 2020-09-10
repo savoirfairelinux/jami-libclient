@@ -276,16 +276,14 @@ MainApplication::initSystray()
     QMenu* systrayMenu = new QMenu();
 
     QAction* exitAction = new QAction(tr("Exit"), this);
-    connect(exitAction, &QAction::triggered,
-            [this]{
-                engine_->quit();
-                cleanup();
-            });
-    connect(&sysIcon, &QSystemTrayIcon::activated,
-            [](QSystemTrayIcon::ActivationReason reason) {
-                if (reason != QSystemTrayIcon::ActivationReason::Context)
-                    emit LRCInstance::instance().restoreAppRequested();
-            });
+    connect(exitAction, &QAction::triggered, [this] {
+        engine_->quit();
+        cleanup();
+    });
+    connect(&sysIcon, &QSystemTrayIcon::activated, [](QSystemTrayIcon::ActivationReason reason) {
+        if (reason != QSystemTrayIcon::ActivationReason::Context)
+            emit LRCInstance::instance().restoreAppRequested();
+    });
 
     systrayMenu->addAction(exitAction);
     sysIcon.setContextMenu(systrayMenu);

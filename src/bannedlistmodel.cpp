@@ -20,14 +20,14 @@
 #include "bannedlistmodel.h"
 #include "lrcinstance.h"
 
-BannedListModel::BannedListModel(QObject *parent)
+BannedListModel::BannedListModel(QObject* parent)
     : QAbstractListModel(parent)
 {}
 
 BannedListModel::~BannedListModel() {}
 
 int
-BannedListModel::rowCount(const QModelIndex &parent) const
+BannedListModel::rowCount(const QModelIndex& parent) const
 {
     if (!parent.isValid()) {
         return LRCInstance::getCurrentAccountInfo().contactModel->getBannedContacts().size();
@@ -36,7 +36,7 @@ BannedListModel::rowCount(const QModelIndex &parent) const
 }
 
 int
-BannedListModel::columnCount(const QModelIndex &parent) const
+BannedListModel::columnCount(const QModelIndex& parent) const
 {
     Q_UNUSED(parent);
     /*
@@ -46,7 +46,7 @@ BannedListModel::columnCount(const QModelIndex &parent) const
 }
 
 QVariant
-BannedListModel::data(const QModelIndex &index, int role) const
+BannedListModel::data(const QModelIndex& index, int role) const
 {
     auto contactList = LRCInstance::getCurrentAccountInfo().contactModel->getBannedContacts();
     if (!index.isValid() || contactList.size() <= index.row()) {
@@ -82,7 +82,7 @@ BannedListModel::roleNames() const
 }
 
 QModelIndex
-BannedListModel::index(int row, int column, const QModelIndex &parent) const
+BannedListModel::index(int row, int column, const QModelIndex& parent) const
 {
     Q_UNUSED(parent);
     if (column != 0) {
@@ -96,14 +96,14 @@ BannedListModel::index(int row, int column, const QModelIndex &parent) const
 }
 
 QModelIndex
-BannedListModel::parent(const QModelIndex &child) const
+BannedListModel::parent(const QModelIndex& child) const
 {
     Q_UNUSED(child);
     return QModelIndex();
 }
 
 Qt::ItemFlags
-BannedListModel::flags(const QModelIndex &index) const
+BannedListModel::flags(const QModelIndex& index) const
 {
     auto flags = QAbstractItemModel::flags(index) | Qt::ItemNeverHasChildren | Qt::ItemIsSelectable;
     if (!index.isValid()) {

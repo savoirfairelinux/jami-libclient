@@ -44,7 +44,7 @@ parseInputArgument(int& argc, char* argv[], char* argToParse)
 }
 
 int
-main(int argc, char *argv[])
+main(int argc, char* argv[])
 {
     setlocale(LC_ALL, "en_US.utf8");
 #ifdef Q_OS_LINUX
@@ -72,7 +72,7 @@ main(int argc, char *argv[])
     /*
      * Runguard to make sure that only one instance runs at a time.
      * Note: needs to be after the creation of the application
-    */
+     */
     QCryptographicHash appData(QCryptographicHash::Sha256);
     appData.addData(QApplication::applicationName().toUtf8());
     appData.addData(QApplication::organizationDomain().toUtf8());

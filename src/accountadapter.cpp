@@ -97,7 +97,7 @@ AccountAdapter::createJamiAccount(QString registeredName,
             if (!registeredName.isEmpty()) {
                 Utils::oneShotConnect(&LRCInstance::accountModel(),
                                       &lrc::api::NewAccountModel::nameRegistrationEnded,
-                                      [this, showBackup](const QString &accountId) {
+                                      [this, showBackup](const QString& accountId) {
                                           emit LRCInstance::instance().accountListChanged();
                                           emit accountAdded(showBackup,
                                                             LRCInstance::accountModel()

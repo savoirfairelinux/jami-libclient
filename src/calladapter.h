@@ -55,7 +55,7 @@ public:
     Q_INVOKABLE void minimizeParticipant();
     Q_INVOKABLE void hangUpThisCall();
     Q_INVOKABLE bool isCurrentMaster() const;
-    Q_INVOKABLE int  getCurrentLayoutType() const;
+    Q_INVOKABLE int getCurrentLayoutType() const;
     Q_INVOKABLE void holdThisCallToggle();
     Q_INVOKABLE void muteThisCallToggle();
     Q_INVOKABLE void recordThisCallToggle();
@@ -83,7 +83,7 @@ signals:
     /*
      * For Call Overlay
      */
-    void updateTimeText(const QString &time);
+    void updateTimeText(const QString& time);
     void showOnHoldLabel(bool isPaused);
     void updateOverlay(bool isPaused,
                        bool isAudioOnly,

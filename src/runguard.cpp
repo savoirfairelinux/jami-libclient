@@ -26,7 +26,7 @@
 namespace {
 
 QString
-generateKeyHash(const QString &key, const QString &salt)
+generateKeyHash(const QString& key, const QString& salt)
 {
     QByteArray data;
 
@@ -39,7 +39,7 @@ generateKeyHash(const QString &key, const QString &salt)
 
 } // namespace
 
-RunGuard::RunGuard(const QString &key)
+RunGuard::RunGuard(const QString& key)
     : key_(key)
     , memLockKey_(generateKeyHash(key, "_memLockKey"))
     , sharedmemKey_(generateKeyHash(key, "_sharedmemKey"))

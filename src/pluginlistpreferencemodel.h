@@ -36,22 +36,22 @@ public:
     enum Role { PreferenceValue = Qt::UserRole + 1, PreferenceEntryValue };
     Q_ENUM(Role)
 
-    explicit PluginListPreferenceModel(QObject *parent = 0);
+    explicit PluginListPreferenceModel(QObject* parent = 0);
     ~PluginListPreferenceModel();
 
     /*
      * QAbstractListModel override.
      */
-    int rowCount(const QModelIndex &parent = QModelIndex()) const override;
-    int columnCount(const QModelIndex &parent) const override;
-    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
+    int rowCount(const QModelIndex& parent = QModelIndex()) const override;
+    int columnCount(const QModelIndex& parent) const override;
+    QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override;
     /*
      * Override role name as access point in qml.
      */
     QHash<int, QByteArray> roleNames() const override;
-    QModelIndex index(int row, int column = 0, const QModelIndex &parent = QModelIndex()) const;
-    QModelIndex parent(const QModelIndex &child) const;
-    Qt::ItemFlags flags(const QModelIndex &index) const;
+    QModelIndex index(int row, int column = 0, const QModelIndex& parent = QModelIndex()) const;
+    QModelIndex parent(const QModelIndex& child) const;
+    Qt::ItemFlags flags(const QModelIndex& index) const;
 
     /*
      * This function is to reset the model when there's new account added.
@@ -64,18 +64,31 @@ public:
 
     Q_INVOKABLE void populateLists();
 
-    void setPreferenceNewValue(const QString preferenceNewValue) { preferenceNewValue_ = preferenceNewValue; }
-    void setPreferenceKey(const QString preferenceKey) { preferenceKey_ = preferenceKey; }
+    void setPreferenceNewValue(const QString preferenceNewValue)
+    {
+        preferenceNewValue_ = preferenceNewValue;
+    }
+    void setPreferenceKey(const QString preferenceKey)
+    {
+        preferenceKey_ = preferenceKey;
+    }
     void setPluginId(const QString pluginId)
     {
         pluginId_ = pluginId;
         populateLists();
     }
 
-    void setIdx(const int index) { idx_ = index; }
+    void setIdx(const int index)
+    {
+        idx_ = index;
+    }
 
-    int idx() { return idx_; }
-    QString preferenceCurrentValue() {
+    int idx()
+    {
+        return idx_;
+    }
+    QString preferenceCurrentValue()
+    {
         return LRCInstance::pluginModel().getPluginPreferencesValues(pluginId_)[preferenceKey_];
     }
 
@@ -84,12 +97,20 @@ public:
         preferenceNewValue_ = preferenceValuesList_[idx_];
         return preferenceNewValue_;
     }
-    QString preferenceKey() { return preferenceKey_; }
-    QString pluginId() { return pluginId_; }
-    int optSize() { return preferenceValuesList_.size(); }
+    QString preferenceKey()
+    {
+        return preferenceKey_;
+    }
+    QString pluginId()
+    {
+        return pluginId_;
+    }
+    int optSize()
+    {
+        return preferenceValuesList_.size();
+    }
 
 private:
-
     QString pluginId_ = "";
     QString preferenceKey_ = "";
     QString preferenceNewValue_ = "";

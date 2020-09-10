@@ -28,30 +28,27 @@ class NetworkEventHandler : public INetworkListManagerEvents
 {
 public:
     NetworkEventHandler()
-        : m_lRefCnt(1){};
-    virtual ~NetworkEventHandler(){};
+        : m_lRefCnt(1) {};
+    virtual ~NetworkEventHandler() {};
 
-    HRESULT STDMETHODCALLTYPE
-    QueryInterface(REFIID riid, void **ppvObject)
+    HRESULT STDMETHODCALLTYPE QueryInterface(REFIID riid, void** ppvObject)
     {
         HRESULT hr = S_OK;
         if (IsEqualIID(riid, IID_IUnknown)) {
-            *ppvObject = (IUnknown *) this;
+            *ppvObject = (IUnknown*) this;
         } else if (IsEqualIID(riid, IID_INetworkListManagerEvents)) {
-            *ppvObject = (INetworkListManagerEvents *) this;
+            *ppvObject = (INetworkListManagerEvents*) this;
         } else {
             hr = E_NOINTERFACE;
         }
 
         return hr;
     };
-    ULONG STDMETHODCALLTYPE
-    AddRef()
+    ULONG STDMETHODCALLTYPE AddRef()
     {
         return (ULONG) InterlockedIncrement(&m_lRefCnt);
     };
-    ULONG STDMETHODCALLTYPE
-    Release()
+    ULONG STDMETHODCALLTYPE Release()
     {
         LONG res = InterlockedDecrement(&m_lRefCnt);
         if (res == 0) {
@@ -60,8 +57,7 @@ public:
         return (ULONG) res;
     };
 
-    virtual HRESULT STDMETHODCALLTYPE
-    ConnectivityChanged(NLM_CONNECTIVITY newConnectivity)
+    virtual HRESULT STDMETHODCALLTYPE ConnectivityChanged(NLM_CONNECTIVITY newConnectivity)
     {
         qDebug() << "connectivity changed: " << newConnectivity;
         if (connectivityChangedCb_) {
@@ -70,8 +66,7 @@ public:
         return S_OK;
     };
 
-    void
-    setOnConnectivityChangedCallBack(std::function<void()> &&cb)
+    void setOnConnectivityChangedCallBack(std::function<void()>&& cb)
     {
         connectivityChangedCb_ = cb;
     };
@@ -82,24 +77,24 @@ private:
     std::function<void()> connectivityChangedCb_;
 };
 
-ConnectivityMonitor::ConnectivityMonitor(QObject *parent)
+ConnectivityMonitor::ConnectivityMonitor(QObject* parent)
     : QObject(parent)
 {
     CoInitialize(NULL);
 
-    IUnknown *pUnknown = NULL;
+    IUnknown* pUnknown = NULL;
 
     HRESULT hr = CoCreateInstance(CLSID_NetworkListManager,
                                   NULL,
                                   CLSCTX_ALL,
                                   IID_IUnknown,
-                                  (void **) &pUnknown);
+                                  (void**) &pUnknown);
     if (FAILED(hr)) {
         return;
     }
 
     pNetworkListManager_ = NULL;
-    hr = pUnknown->QueryInterface(IID_INetworkListManager, (void **) &pNetworkListManager_);
+    hr = pUnknown->QueryInterface(IID_INetworkListManager, (void**) &pNetworkListManager_);
     if (FAILED(hr)) {
         destroy();
         pUnknown->Release();
@@ -108,7 +103,7 @@ ConnectivityMonitor::ConnectivityMonitor(QObject *parent)
 
     pCPContainer_ = NULL;
     hr = pNetworkListManager_->QueryInterface(IID_IConnectionPointContainer,
-                                              (void **) &pCPContainer_);
+                                              (void**) &pCPContainer_);
     if (FAILED(hr)) {
         destroy();
         pUnknown->Release();
@@ -121,7 +116,7 @@ ConnectivityMonitor::ConnectivityMonitor(QObject *parent)
         cookie_ = NULL;
         netEventHandler_ = new NetworkEventHandler;
         netEventHandler_->setOnConnectivityChangedCallBack([this] { emit connectivityChanged(); });
-        hr = pConnectPoint_->Advise((IUnknown *) netEventHandler_, &cookie_);
+        hr = pConnectPoint_->Advise((IUnknown*) netEventHandler_, &cookie_);
     } else {
         destroy();
     }

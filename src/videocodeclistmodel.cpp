@@ -20,14 +20,14 @@
 
 #include <QList>
 
-VideoCodecListModel::VideoCodecListModel(QObject *parent)
+VideoCodecListModel::VideoCodecListModel(QObject* parent)
     : QAbstractListModel(parent)
 {}
 
 VideoCodecListModel::~VideoCodecListModel() {}
 
 int
-VideoCodecListModel::rowCount(const QModelIndex &parent) const
+VideoCodecListModel::rowCount(const QModelIndex& parent) const
 {
     if (!parent.isValid()) {
         /*
@@ -51,7 +51,7 @@ VideoCodecListModel::rowCount(const QModelIndex &parent) const
 }
 
 int
-VideoCodecListModel::columnCount(const QModelIndex &parent) const
+VideoCodecListModel::columnCount(const QModelIndex& parent) const
 {
     Q_UNUSED(parent);
     /*
@@ -61,7 +61,7 @@ VideoCodecListModel::columnCount(const QModelIndex &parent) const
 }
 
 QVariant
-VideoCodecListModel::data(const QModelIndex &index, int role) const
+VideoCodecListModel::data(const QModelIndex& index, int role) const
 {
     auto videoCodecList = LRCInstance::getCurrentAccountInfo().codecModel->getVideoCodecs();
     if (!index.isValid() || videoCodecList.size() <= index.row()) {
@@ -98,7 +98,7 @@ VideoCodecListModel::roleNames() const
 }
 
 QModelIndex
-VideoCodecListModel::index(int row, int column, const QModelIndex &parent) const
+VideoCodecListModel::index(int row, int column, const QModelIndex& parent) const
 {
     Q_UNUSED(parent);
     if (column != 0) {
@@ -112,14 +112,14 @@ VideoCodecListModel::index(int row, int column, const QModelIndex &parent) const
 }
 
 QModelIndex
-VideoCodecListModel::parent(const QModelIndex &child) const
+VideoCodecListModel::parent(const QModelIndex& child) const
 {
     Q_UNUSED(child);
     return QModelIndex();
 }
 
 Qt::ItemFlags
-VideoCodecListModel::flags(const QModelIndex &index) const
+VideoCodecListModel::flags(const QModelIndex& index) const
 {
     auto flags = QAbstractItemModel::flags(index) | Qt::ItemNeverHasChildren | Qt::ItemIsSelectable
                  | Qt::ItemIsUserCheckable | Qt::ItemIsEnabled;

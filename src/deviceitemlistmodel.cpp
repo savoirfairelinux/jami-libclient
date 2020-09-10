@@ -18,14 +18,14 @@
 
 #include "deviceitemlistmodel.h"
 
-DeviceItemListModel::DeviceItemListModel(QObject *parent)
+DeviceItemListModel::DeviceItemListModel(QObject* parent)
     : QAbstractListModel(parent)
 {}
 
 DeviceItemListModel::~DeviceItemListModel() {}
 
 int
-DeviceItemListModel::rowCount(const QModelIndex &parent) const
+DeviceItemListModel::rowCount(const QModelIndex& parent) const
 {
     if (!parent.isValid()) {
         /*
@@ -40,7 +40,7 @@ DeviceItemListModel::rowCount(const QModelIndex &parent) const
 }
 
 int
-DeviceItemListModel::columnCount(const QModelIndex &parent) const
+DeviceItemListModel::columnCount(const QModelIndex& parent) const
 {
     Q_UNUSED(parent);
     /*
@@ -50,7 +50,7 @@ DeviceItemListModel::columnCount(const QModelIndex &parent) const
 }
 
 QVariant
-DeviceItemListModel::data(const QModelIndex &index, int role) const
+DeviceItemListModel::data(const QModelIndex& index, int role) const
 {
     auto deviceList = LRCInstance::getCurrentAccountInfo().deviceModel->getAllDevices();
     if (!index.isValid() || deviceList.size() <= index.row()) {
@@ -79,7 +79,7 @@ DeviceItemListModel::roleNames() const
 }
 
 QModelIndex
-DeviceItemListModel::index(int row, int column, const QModelIndex &parent) const
+DeviceItemListModel::index(int row, int column, const QModelIndex& parent) const
 {
     Q_UNUSED(parent);
     if (column != 0) {
@@ -93,14 +93,14 @@ DeviceItemListModel::index(int row, int column, const QModelIndex &parent) const
 }
 
 QModelIndex
-DeviceItemListModel::parent(const QModelIndex &child) const
+DeviceItemListModel::parent(const QModelIndex& child) const
 {
     Q_UNUSED(child);
     return QModelIndex();
 }
 
 Qt::ItemFlags
-DeviceItemListModel::flags(const QModelIndex &index) const
+DeviceItemListModel::flags(const QModelIndex& index) const
 {
     auto flags = QAbstractItemModel::flags(index) | Qt::ItemNeverHasChildren | Qt::ItemIsSelectable;
     if (!index.isValid()) {

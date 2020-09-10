@@ -27,14 +27,14 @@
 #include "pixbufmanipulator.h"
 #include "utils.h"
 
-AccountListModel::AccountListModel(QObject *parent)
+AccountListModel::AccountListModel(QObject* parent)
     : QAbstractListModel(parent)
 {}
 
 AccountListModel::~AccountListModel() {}
 
 int
-AccountListModel::rowCount(const QModelIndex &parent) const
+AccountListModel::rowCount(const QModelIndex& parent) const
 {
     if (!parent.isValid()) {
         /*
@@ -49,7 +49,7 @@ AccountListModel::rowCount(const QModelIndex &parent) const
 }
 
 int
-AccountListModel::columnCount(const QModelIndex &parent) const
+AccountListModel::columnCount(const QModelIndex& parent) const
 {
     Q_UNUSED(parent);
     /*
@@ -59,14 +59,14 @@ AccountListModel::columnCount(const QModelIndex &parent) const
 }
 
 QVariant
-AccountListModel::data(const QModelIndex &index, int role) const
+AccountListModel::data(const QModelIndex& index, int role) const
 {
     auto accountList = LRCInstance::accountModel().getAccountList();
     if (!index.isValid() || accountList.size() <= index.row()) {
         return QVariant();
     }
 
-    auto &accountInfo = LRCInstance::accountModel().getAccountInfo(accountList.at(index.row()));
+    auto& accountInfo = LRCInstance::accountModel().getAccountInfo(accountList.at(index.row()));
 
     switch (role) {
     case Role::Alias:
@@ -74,8 +74,7 @@ AccountListModel::data(const QModelIndex &index, int role) const
     case Role::Username:
         return QVariant(Utils::secondBestNameForAccount(accountInfo));
     case Role::Type:
-        return QVariant(
-            static_cast<int>(accountInfo.profileInfo.type));
+        return QVariant(static_cast<int>(accountInfo.profileInfo.type));
     case Role::Status:
         return QVariant(static_cast<int>(accountInfo.status));
     case Role::Picture:
@@ -101,7 +100,7 @@ AccountListModel::roleNames() const
 }
 
 QModelIndex
-AccountListModel::index(int row, int column, const QModelIndex &parent) const
+AccountListModel::index(int row, int column, const QModelIndex& parent) const
 {
     Q_UNUSED(parent);
     if (column != 0) {
@@ -115,14 +114,14 @@ AccountListModel::index(int row, int column, const QModelIndex &parent) const
 }
 
 QModelIndex
-AccountListModel::parent(const QModelIndex &child) const
+AccountListModel::parent(const QModelIndex& child) const
 {
     Q_UNUSED(child);
     return QModelIndex();
 }
 
 Qt::ItemFlags
-AccountListModel::flags(const QModelIndex &index) const
+AccountListModel::flags(const QModelIndex& index) const
 {
     auto flags = QAbstractItemModel::flags(index) | Qt::ItemNeverHasChildren | Qt::ItemIsSelectable;
     if (!index.isValid()) {

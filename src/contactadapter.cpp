@@ -22,7 +22,7 @@
 
 #include "lrcinstance.h"
 
-ContactAdapter::ContactAdapter(QObject *parent)
+ContactAdapter::ContactAdapter(QObject* parent)
     : QmlAdapterBase(parent)
 {
     selectableProxyModel_.reset(new SelectableProxyModel(smartListModel_.get()));
@@ -46,12 +46,12 @@ ContactAdapter::getContactSelectableModel(int type)
      */
     switch (listModeltype_) {
     case SmartListModel::Type::CONFERENCE:
-        selectableProxyModel_->setPredicate([this](const QModelIndex &index, const QRegExp &) {
+        selectableProxyModel_->setPredicate([this](const QModelIndex& index, const QRegExp&) {
             return index.data(SmartListModel::Presence).toBool();
         });
         break;
     case SmartListModel::Type::TRANSFER:
-        selectableProxyModel_->setPredicate([this](const QModelIndex &index, const QRegExp &regexp) {
+        selectableProxyModel_->setPredicate([this](const QModelIndex& index, const QRegExp& regexp) {
             /*
              * Regex to remove current callee.
              */
@@ -76,7 +76,7 @@ ContactAdapter::getContactSelectableModel(int type)
 }
 
 void
-ContactAdapter::setSearchFilter(const QString &filter)
+ContactAdapter::setSearchFilter(const QString& filter)
 {
     if (listModeltype_ == SmartListModel::Type::CONFERENCE) {
         smartListModel_->setConferenceableFilter(filter);
@@ -99,7 +99,8 @@ ContactAdapter::contactSelected(int index)
             /*
              * Conference.
              */
-            const auto sectionName = contactIndex.data(SmartListModel::Role::SectionName).value<QString>();
+            const auto sectionName = contactIndex.data(SmartListModel::Role::SectionName)
+                                         .value<QString>();
             if (!sectionName.isEmpty()) {
                 smartListModel_->toggleSection(sectionName);
                 return;
@@ -135,7 +136,8 @@ ContactAdapter::contactSelected(int index)
             if (conversation.uid.isEmpty()) {
                 return;
             }
-            const auto callId = conversation.confId.isEmpty() ? conversation.callId : conversation.confId;
+            const auto callId = conversation.confId.isEmpty() ? conversation.callId
+                                                              : conversation.confId;
 
             QString destCallId;
 
@@ -145,7 +147,7 @@ ContactAdapter::contactSelected(int index)
                  */
                 const auto callInfo = callModel->getCallFromURI(contactUri, true);
                 destCallId = callInfo.id;
-            } catch (std::exception &e) {
+            } catch (std::exception& e) {
                 qDebug().noquote() << e.what();
                 destCallId = "";
             }
@@ -169,7 +171,7 @@ ContactAdapter::contactSelected(int index)
 }
 
 void
-ContactAdapter::setCalleeDisplayName(const QString &name)
+ContactAdapter::setCalleeDisplayName(const QString& name)
 {
     calleeDisplayName_ = name;
 }

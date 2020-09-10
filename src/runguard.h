@@ -30,7 +30,7 @@ class RunGuard : public QObject
     Q_OBJECT;
 
 public:
-    RunGuard(const QString &key);
+    RunGuard(const QString& key);
     ~RunGuard();
 
     bool isAnotherRunning();
@@ -48,8 +48,8 @@ private:
     QSharedMemory sharedMem_;
     QSystemSemaphore memLock_;
 
-    QLocalSocket *socket_;
-    QLocalServer *server_;
+    QLocalSocket* socket_;
+    QLocalServer* server_;
 
     Q_DISABLE_COPY(RunGuard)
 };

@@ -76,19 +76,23 @@ public:
         instance(willMigrate, didMigrate);
     }
 
-    static Lrc& getAPI() {
+    static Lrc& getAPI()
+    {
         return *(instance().lrc_);
     }
 
-    static RenderManager* renderer() {
+    static RenderManager* renderer()
+    {
         return instance().renderer_.get();
     }
 
-    static void connectivityChanged() {
+    static void connectivityChanged()
+    {
         instance().lrc_->connectivityChanged();
     }
 
-    static NewAccountModel& accountModel() {
+    static NewAccountModel& accountModel()
+    {
         return instance().lrc_->getAccountModel();
     }
 

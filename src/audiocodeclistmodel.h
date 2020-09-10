@@ -34,20 +34,20 @@ public:
     enum Role { AudioCodecName = Qt::UserRole + 1, IsEnabled, AudioCodecID, Samplerate };
     Q_ENUM(Role)
 
-    explicit AudioCodecListModel(QObject *parent = 0);
+    explicit AudioCodecListModel(QObject* parent = 0);
     ~AudioCodecListModel();
 
     /*
      * QAbstractListModel override.
      */
-    int rowCount(const QModelIndex &parent = QModelIndex()) const override;
-    int columnCount(const QModelIndex &parent) const override;
-    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
+    int rowCount(const QModelIndex& parent = QModelIndex()) const override;
+    int columnCount(const QModelIndex& parent) const override;
+    QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override;
     /*
      * Override role name as access point in qml.
      */
     QHash<int, QByteArray> roleNames() const override;
-    QModelIndex index(int row, int column = 0, const QModelIndex &parent = QModelIndex()) const;
-    QModelIndex parent(const QModelIndex &child) const;
-    Qt::ItemFlags flags(const QModelIndex &index) const;
+    QModelIndex index(int row, int column = 0, const QModelIndex& parent = QModelIndex()) const;
+    QModelIndex parent(const QModelIndex& child) const;
+    Qt::ItemFlags flags(const QModelIndex& index) const;
 };

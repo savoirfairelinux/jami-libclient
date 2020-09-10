@@ -40,7 +40,7 @@
 #undef interface
 
 QVariant
-PixbufManipulator::personPhoto(const QByteArray &data, const QString &type)
+PixbufManipulator::personPhoto(const QByteArray& data, const QString& type)
 {
     QImage avatar;
     const bool ret = avatar.loadFromData(QByteArray::fromBase64(data), type.toLatin1());
@@ -52,8 +52,8 @@ PixbufManipulator::personPhoto(const QByteArray &data, const QString &type)
 }
 
 QVariant
-PixbufManipulator::numberCategoryIcon(const QVariant &p,
-                                      const QSize &size,
+PixbufManipulator::numberCategoryIcon(const QVariant& p,
+                                      const QSize& size,
                                       bool displayPresence,
                                       bool isPresent)
 {
@@ -65,7 +65,7 @@ PixbufManipulator::numberCategoryIcon(const QVariant &p,
 }
 
 QByteArray
-PixbufManipulator::toByteArray(const QVariant &pxm)
+PixbufManipulator::toByteArray(const QVariant& pxm)
 {
     auto image = pxm.value<QImage>();
     QByteArray ba = Utils::QImageToByteArray(image);
@@ -73,22 +73,22 @@ PixbufManipulator::toByteArray(const QVariant &pxm)
 }
 
 QVariant
-PixbufManipulator::userActionIcon(const UserActionElement &state) const
+PixbufManipulator::userActionIcon(const UserActionElement& state) const
 {
     Q_UNUSED(state)
     return QVariant();
 }
 
 QVariant
-PixbufManipulator::decorationRole(const QModelIndex &index)
+PixbufManipulator::decorationRole(const QModelIndex& index)
 {
     Q_UNUSED(index)
     return QVariant();
 }
 
 QVariant
-PixbufManipulator::decorationRole(const lrc::api::conversation::Info &conversationInfo,
-                                  const lrc::api::account::Info &accountInfo)
+PixbufManipulator::decorationRole(const lrc::api::conversation::Info& conversationInfo,
+                                  const lrc::api::account::Info& accountInfo)
 {
     QImage photo;
     auto contacts = conversationInfo.participants;

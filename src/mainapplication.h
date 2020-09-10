@@ -32,7 +32,7 @@ class MainApplication : public QApplication
     Q_OBJECT
 
 public:
-    explicit MainApplication(int &argc, char **argv);
+    explicit MainApplication(int& argc, char** argv);
     ~MainApplication() = default;
 
     void init();
@@ -40,7 +40,7 @@ public:
 private:
     void loadTranslations();
     void initLrc();
-    void parseArguments(bool &startMinimized);
+    void parseArguments(bool& startMinimized);
     void setApplicationFont();
     void initQmlEngine();
     void initSettings();
@@ -49,6 +49,5 @@ private:
 
 private:
     QScopedPointer<QFile> debugFile_;
-    QQmlApplicationEngine *engine_;
-
+    QQmlApplicationEngine* engine_;
 };

@@ -25,7 +25,7 @@
 #include <QApplication>
 #include <QScreen>
 
-AvAdapter::AvAdapter(QObject *parent)
+AvAdapter::AvAdapter(QObject* parent)
     : QmlAdapterBase(parent)
 {}
 
@@ -64,7 +64,7 @@ AvAdapter::populateVideoDeviceContextMenuItem()
 }
 
 void
-AvAdapter::onVideoContextMenuDeviceItemClicked(const QString &deviceName)
+AvAdapter::onVideoContextMenuDeviceItemClicked(const QString& deviceName)
 {
     auto deviceId = LRCInstance::avModel().getDeviceIdFromName(deviceName);
     if (deviceId.isEmpty()) {
@@ -78,7 +78,7 @@ AvAdapter::onVideoContextMenuDeviceItemClicked(const QString &deviceName)
 void
 AvAdapter::shareEntireScreen(int screenNumber)
 {
-    QScreen *screen = qApp->screens().at(screenNumber);
+    QScreen* screen = qApp->screens().at(screenNumber);
     if (!screen)
         return;
     QRect rect = screen ? screen->geometry() : qApp->primaryScreen()->geometry();
@@ -88,7 +88,7 @@ AvAdapter::shareEntireScreen(int screenNumber)
 const QString
 AvAdapter::captureScreen(int screenNumber)
 {
-    QScreen *screen = qApp->screens().at(screenNumber);
+    QScreen* screen = qApp->screens().at(screenNumber);
     if (!screen)
         return QString("");
     /*
@@ -103,7 +103,7 @@ AvAdapter::captureScreen(int screenNumber)
 }
 
 void
-AvAdapter::shareFile(const QString &filePath)
+AvAdapter::shareFile(const QString& filePath)
 {
     LRCInstance::avModel().setInputFile(filePath);
 }
@@ -111,7 +111,7 @@ AvAdapter::shareFile(const QString &filePath)
 void
 AvAdapter::shareScreenArea(int screenNumber, int x, int y, int width, int height)
 {
-    QScreen *screen = qApp->screens().at(screenNumber);
+    QScreen* screen = qApp->screens().at(screenNumber);
     if (!screen)
         return;
     QRect rect = screen ? screen->geometry() : qApp->primaryScreen()->geometry();

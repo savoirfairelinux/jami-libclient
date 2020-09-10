@@ -22,15 +22,14 @@
 #include "webchathelpers.h"
 
 QJsonObject
-buildInteractionJson(lrc::api::ConversationModel &conversationModel,
+buildInteractionJson(lrc::api::ConversationModel& conversationModel,
                      const uint64_t msgId,
-                     const lrc::api::interaction::Info &inter)
+                     const lrc::api::interaction::Info& inter)
 {
-
     QRegExp reg(".(jpeg|jpg|gif|png)$");
     auto interaction = inter;
-    if (interaction.type == lrc::api::interaction::Type::DATA_TRANSFER &&
-            interaction.body.toLower().contains(reg)) {
+    if (interaction.type == lrc::api::interaction::Type::DATA_TRANSFER
+        && interaction.body.toLower().contains(reg)) {
         interaction.body = "file://" + interaction.body;
     }
 
@@ -125,20 +124,20 @@ buildInteractionJson(lrc::api::ConversationModel &conversationModel,
 }
 
 QString
-interactionToJsonInteractionObject(lrc::api::ConversationModel &conversationModel,
+interactionToJsonInteractionObject(lrc::api::ConversationModel& conversationModel,
                                    const uint64_t msgId,
-                                   const lrc::api::interaction::Info &interaction)
+                                   const lrc::api::interaction::Info& interaction)
 {
     auto interactionObject = buildInteractionJson(conversationModel, msgId, interaction);
     return QString(QJsonDocument(interactionObject).toJson(QJsonDocument::Compact));
 }
 
 QString
-interactionsToJsonArrayObject(lrc::api::ConversationModel &conversationModel,
+interactionsToJsonArrayObject(lrc::api::ConversationModel& conversationModel,
                               const std::map<uint64_t, lrc::api::interaction::Info> interactions)
 {
     QJsonArray array;
-    for (const auto &interaction : interactions) {
+    for (const auto& interaction : interactions) {
         auto interactionObject = buildInteractionJson(conversationModel,
                                                       interaction.first,
                                                       interaction.second);

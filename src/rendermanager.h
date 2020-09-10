@@ -46,8 +46,7 @@ class FrameWrapper final : public QObject
     Q_OBJECT;
 
 public:
-    FrameWrapper(AVModel &avModel,
-                 const QString &id = video::PREVIEW_RENDERER_ID);
+    FrameWrapper(AVModel& avModel, const QString& id = video::PREVIEW_RENDERER_ID);
     ~FrameWrapper();
 
     /*
@@ -66,7 +65,7 @@ public:
      * Get the most recently rendered frame as a QImage.
      * @return the rendered image of this object's id
      */
-    QImage *getFrame();
+    QImage* getFrame();
 
     /*
      * Check if the object is updating actively.
@@ -78,34 +77,34 @@ signals:
      * Emitted once in slotRenderingStarted.
      * @param id of the renderer
      */
-    void renderingStarted(const QString &id);
+    void renderingStarted(const QString& id);
     /*
      * Emitted each time a frame is ready to be displayed.
      * @param id of the renderer
      */
-    void frameUpdated(const QString &id);
+    void frameUpdated(const QString& id);
     /*
      * Emitted once in slotRenderingStopped.
      * @param id of the renderer
      */
-    void renderingStopped(const QString &id);
+    void renderingStopped(const QString& id);
 
 private slots:
     /*
      * Used to listen to AVModel::rendererStarted.
      * @param id of the renderer
      */
-    void slotRenderingStarted(const QString &id = video::PREVIEW_RENDERER_ID);
+    void slotRenderingStarted(const QString& id = video::PREVIEW_RENDERER_ID);
     /*
      * Used to listen to AVModel::frameUpdated.
      * @param id of the renderer
      */
-    void slotFrameUpdated(const QString &id = video::PREVIEW_RENDERER_ID);
+    void slotFrameUpdated(const QString& id = video::PREVIEW_RENDERER_ID);
     /*
      * Used to listen to AVModel::renderingStopped.
      * @param id of the renderer
      */
-    void slotRenderingStopped(const QString &id = video::PREVIEW_RENDERER_ID);
+    void slotRenderingStopped(const QString& id = video::PREVIEW_RENDERER_ID);
 
 private:
     /*
@@ -116,7 +115,7 @@ private:
     /*
      * A pointer to the lrc renderer object.
      */
-    video::Renderer *renderer_;
+    video::Renderer* renderer_;
 
     /*
      * A local copy of the renderer's current frame.
@@ -146,7 +145,7 @@ private:
     /*
      * Convenience ref to avmodel
      */
-    AVModel &avModel_;
+    AVModel& avModel_;
 
     /*
      * Connections to the underlying renderer signals in avmodel
@@ -166,7 +165,7 @@ class RenderManager final : public QObject
     Q_OBJECT;
 
 public:
-    explicit RenderManager(AVModel &avModel);
+    explicit RenderManager(AVModel& avModel);
     ~RenderManager();
 
     /*
@@ -177,7 +176,7 @@ public:
      * Get the most recently rendered preview frame as a QImage.
      * @return the rendered preview image
      */
-    QImage *getPreviewFrame();
+    QImage* getPreviewFrame();
     /*
      * Start capturing and rendering preview frames.
      * @param force if the capture device should be started
@@ -195,19 +194,19 @@ public:
      * as a QImage.
      * @return the rendered preview image
      */
-    QImage *getFrame(const QString &id);
+    QImage* getFrame(const QString& id);
     /*
      * Add and connect a distant renderer for a given id
      * to a FrameWrapper object
      * @param id
      */
-    void addDistantRenderer(const QString &id);
+    void addDistantRenderer(const QString& id);
     /*
      * Disconnect and remove a FrameWrapper object connected to a
      * distant renderer for a given id
      * @param id
      */
-    void removeDistantRenderer(const QString &id);
+    void removeDistantRenderer(const QString& id);
 
 signals:
     /*
@@ -233,17 +232,17 @@ signals:
     /*
      * Emitted when a distant renderer is started for a given id.
      */
-    void distantRenderingStarted(const QString &id);
+    void distantRenderingStarted(const QString& id);
 
     /*
      * Emitted when a distant renderer has a new frame ready for a given id.
      */
-    void distantFrameUpdated(const QString &id);
+    void distantFrameUpdated(const QString& id);
 
     /*
      * Emitted when a distant renderer is stopped for a given id.
      */
-    void distantRenderingStopped(const QString &id);
+    void distantRenderingStopped(const QString& id);
 
 private slots:
     /*
@@ -276,6 +275,6 @@ private:
     /*
      * Convenience ref to avmodel.
      */
-    AVModel &avModel_;
+    AVModel& avModel_;
 };
-Q_DECLARE_METATYPE(RenderManager *)
+Q_DECLARE_METATYPE(RenderManager*)

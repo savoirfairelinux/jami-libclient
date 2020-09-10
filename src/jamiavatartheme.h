@@ -21,23 +21,23 @@
 #pragma once
 
 namespace JamiAvatarTheme {
-static const QColor defaultAvatarColor_ = {"#ff9e9e9e"}; //Grey
-static const QColor avatarColors_[]{
-    {"#fff44336"}, //Red
-    {"#ffe91e63"}, //Pink
-    {"#ff9c27b0"}, //Purple
-    {"#ff673ab7"}, //Deep Purple
-    {"#ff3f51b5"}, //Indigo
-    {"#ff2196f3"}, //Blue
-    {"#ff00bcd4"}, //Cyan
-    {"#ff009688"}, //Teal
-    {"#ff4caf50"}, //Green
-    {"#ff8bc34a"}, //Light Green
-    {"#ff9e9e9e"}, //Grey
-    {"#ffcddc39"}, //Lime
-    {"#ffffc107"}, //Amber
-    {"#ffff5722"}, //Deep Orange
-    {"#ff795548"}, //Brown
-    {"#ff607d8b"}  //Blue Grey
+static const QColor defaultAvatarColor_ = {"#ff9e9e9e"}; // Grey
+static const QColor avatarColors_[] {
+    {"#fff44336"}, // Red
+    {"#ffe91e63"}, // Pink
+    {"#ff9c27b0"}, // Purple
+    {"#ff673ab7"}, // Deep Purple
+    {"#ff3f51b5"}, // Indigo
+    {"#ff2196f3"}, // Blue
+    {"#ff00bcd4"}, // Cyan
+    {"#ff009688"}, // Teal
+    {"#ff4caf50"}, // Green
+    {"#ff8bc34a"}, // Light Green
+    {"#ff9e9e9e"}, // Grey
+    {"#ffcddc39"}, // Lime
+    {"#ffffc107"}, // Amber
+    {"#ffff5722"}, // Deep Orange
+    {"#ff795548"}, // Brown
+    {"#ff607d8b"}  // Blue Grey
 };
 } // namespace JamiAvatarTheme

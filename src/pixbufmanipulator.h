@@ -32,18 +32,18 @@ QByteArray QImageToByteArray(QImage image);
 class PixbufManipulator : public Interfaces::PixmapManipulatorI
 {
 public:
-    QVariant personPhoto(const QByteArray &data, const QString &type = "PNG") override;
+    QVariant personPhoto(const QByteArray& data, const QString& type = "PNG") override;
 
     /*
      * TODO: the following methods return an empty QVariant/QByteArray.
      */
-    QVariant numberCategoryIcon(const QVariant &p,
-                                const QSize &size,
+    QVariant numberCategoryIcon(const QVariant& p,
+                                const QSize& size,
                                 bool displayPresence = false,
                                 bool isPresent = false) override;
-    QByteArray toByteArray(const QVariant &pxm) override;
-    QVariant userActionIcon(const UserActionElement &state) const override;
-    QVariant decorationRole(const QModelIndex &index) override;
-    QVariant decorationRole(const lrc::api::conversation::Info &conversation,
-                            const lrc::api::account::Info &accountInfo) override;
+    QByteArray toByteArray(const QVariant& pxm) override;
+    QVariant userActionIcon(const UserActionElement& state) const override;
+    QVariant decorationRole(const QModelIndex& index) override;
+    QVariant decorationRole(const lrc::api::conversation::Info& conversation,
+                            const lrc::api::account::Info& accountInfo) override;
 };
