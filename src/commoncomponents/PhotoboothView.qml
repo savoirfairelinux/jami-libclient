@@ -16,6 +16,10 @@ ColumnLayout {
 
     property int boothWidth: 224
 
+    readonly property int size: boothWidth +
+                                buttonsRowLayout.height +
+                                JamiTheme.preferredMarginSize / 2
+
     signal imageAcquired
     signal imageCleared
 
@@ -48,6 +52,8 @@ ColumnLayout {
             stopBooth()
         }
     }
+
+    spacing: 0
 
     JamiFileDialog{
         id: importFromFileToAvatar_Dialog

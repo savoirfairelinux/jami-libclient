@@ -87,8 +87,8 @@ Rectangle {
             id: setAvatarWidget
 
             Layout.alignment: Qt.AlignCenter
-            Layout.preferredWidth: JamiTheme.preferredFieldHeight + boothWidth
-            Layout.preferredHeight: JamiTheme.preferredFieldHeight + boothWidth
+            Layout.preferredWidth: size
+            Layout.preferredHeight: size
 
             boothWidth: 200
         }
