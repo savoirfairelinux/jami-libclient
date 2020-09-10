@@ -883,6 +883,15 @@ NewCallModel::hasCall(const QString& callId) const
 void
 NewCallModelPimpl::slotConferenceCreated(const QString& confId)
 {
+    // Detect if conference is created for this account
+    QStringList callList = CallManager::instance().getParticipantList(confId);
+    auto hasConference = false;
+    foreach(const auto& call, callList) {
+        hasConference |= linked.hasCall(call);
+    }
+    if (!hasConference)
+        return;
+
     auto callInfo = std::make_shared<call::Info>();
     callInfo->id = confId;
     callInfo->status =  call::Status::IN_PROGRESS;
@@ -892,7 +901,6 @@ NewCallModelPimpl::slotConferenceCreated(const QString& confId)
     for (auto& i: callInfo->participantsInfos)
         i["uri"].replace("@ring.dht", "");
     calls[confId] = callInfo;
-    QStringList callList = CallManager::instance().getParticipantList(confId);
     foreach(const auto& call, callList) {
         emit linked.callAddedToConference(call, confId);
         // Remove call from pendingConferences_
