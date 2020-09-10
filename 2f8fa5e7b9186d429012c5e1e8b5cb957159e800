@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "daa8f48f_8d1240f5",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 633
+      },
+      "writtenOn": "2020-09-10T14:37:34Z",
+      "side": 1,
+      "message": "commit message usually starts with xxx: xxxxxxx\n\nlike in here we can have -\u003e newaccountmodel: xxxxxxx",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 3
+      },
+      "revId": "2f8fa5e7b9186d429012c5e1e8b5cb957159e800",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "310aade2_1f434fe8",
+        "filename": "src/newaccountmodel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 219,
+      "author": {
+        "id": 633
+      },
+      "writtenOn": "2020-09-10T14:37:34Z",
+      "side": 1,
+      "message": "Hi Édouard,\n\nI think since most part of the logic here are similar to what you added,\n\nyou can have some common logic shared by creating a common function.",
+      "range": {
+        "startLine": 217,
+        "startChar": 0,
+        "endLine": 219,
+        "endChar": 88
+      },
+      "revId": "2f8fa5e7b9186d429012c5e1e8b5cb957159e800",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a23a14e4_e24b13c8",
+        "filename": "src/newaccountmodel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 260,
+      "author": {
+        "id": 633
+      },
+      "writtenOn": "2020-09-10T14:37:34Z",
+      "side": 1,
+      "message": "Same for this part, the logic here should be the same as the overloaded setAccountConfig,\n\n\nbut I think here, there are some logics that should be deleted before, but it was wrongly kept.\n\n\nSo I think I should be changed to\n\n        MapStringString credentials;\n        credentials[ConfProperties::USERNAME] \u003d confProperties.username;\n        credentials[ConfProperties::PASSWORD] \u003d confProperties.password;\n        credentials[ConfProperties::REALM] \u003d confProperties.realm.isEmpty() ? \"*\" : confProperties.realm;\n\n        auto credentialsVec \u003d confProperties.credentials;\n        credentialsVec[0] \u003d credentials;\n\n        ConfigurationManager::instance().setCredentials(accountId, credentialsVec);\n        details[ConfProperties::USERNAME] \u003d confProperties.username;\n        accountInfo.confProperties.credentials.swap(credentialsVec);\n\n\nI tested, should be working, feel free to change anything illogical",
+      "range": {
+        "startLine": 239,
+        "startChar": 0,
+        "endLine": 260,
+        "endChar": 63
+      },
+      "revId": "2f8fa5e7b9186d429012c5e1e8b5cb957159e800",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "05c51c44_dc746f38",
+        "filename": "src/newaccountmodel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 300,
+      "author": {
+        "id": 633
+      },
+      "writtenOn": "2020-09-10T14:37:34Z",
+      "side": 1,
+      "message": "As mentioned in previous comment, logic here should be the same as previous function",
+      "range": {
+        "startLine": 289,
+        "startChar": 8,
+        "endLine": 300,
+        "endChar": 63
+      },
+      "revId": "2f8fa5e7b9186d429012c5e1e8b5cb957159e800",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    }
+  ]
+}
