@@ -789,6 +789,8 @@ NewCallModelPimpl::slotCallStateChanged(const QString& callId, const QString& st
         if (it != pendingConferences_.end()) {
             linked.joinCalls(it->second, it->first);
         }
+    } else if (call->status == call::Status::PAUSED) {
+        currentCall_ = "";
     }
 }
 
