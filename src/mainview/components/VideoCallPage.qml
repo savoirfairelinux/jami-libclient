@@ -222,7 +222,7 @@ Rectangle {
                 DistantRenderer {
                     id: distantRenderer
 
-                    anchors.centerIn: videoCallPageMainRect
+                    anchors.centerIn: parent
                     z: -1
 
                     width: videoCallPageMainRect.width

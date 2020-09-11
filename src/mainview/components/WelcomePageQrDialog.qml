@@ -42,7 +42,11 @@ Dialog {
         smooth: false
 
         fillMode: Image.PreserveAspectFit
-        source: "image://qrImage/account_" + AccountAdapter.currentAccountId
+        source: {
+            if (AccountAdapter.currentAccountId)
+                return "image://qrImage/account_" + AccountAdapter.currentAccountId
+            return ""
+        }
     }
 
     background: Rectangle {

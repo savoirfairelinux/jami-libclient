@@ -76,27 +76,26 @@ ColumnLayout {
     }
 
     ElidedTextLabel {
-        Layout.fillWidth: true
+        Layout.preferredWidth: textWidth
         Layout.preferredHeight: JamiTheme.preferredFieldHeight
 
         eText: JamiStrings.sdpSettingsTitle
         fontSize: JamiTheme.headerFontSize
-        maxWidth: width
-    }
-
-    ElidedTextLabel {
-        Layout.fillWidth: true
-        Layout.preferredHeight: JamiTheme.preferredFieldHeight
-        Layout.leftMargin: JamiTheme.preferredMarginSize
-
-        eText: JamiStrings.sdpSettingsSubtitle
-        fontSize: JamiTheme.settingsFontSize
-        maxWidth: width
+        maxWidth: root.width
     }
 
     ColumnLayout {
         Layout.fillWidth: true
         Layout.leftMargin: JamiTheme.preferredMarginSize
+
+        ElidedTextLabel {
+            Layout.preferredWidth: textWidth
+            Layout.preferredHeight: JamiTheme.preferredFieldHeight
+
+            eText: JamiStrings.sdpSettingsSubtitle
+            fontSize: JamiTheme.settingsFontSize
+            maxWidth: parent.width - JamiTheme.preferredMarginSize
+        }
 
         SettingSpinBox {
             id: audioRTPMinPortSpinBox
