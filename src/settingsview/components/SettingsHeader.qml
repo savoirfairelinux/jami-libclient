@@ -1,4 +1,4 @@
-/*!
+/*
  * Copyright (C) 2020 by Savoir-faire Linux
  * Author: Aline Gondim Santos <aline.gondimsantos@savoirfairelinux.com>
  *
@@ -42,7 +42,7 @@ RowLayout {
         source: "qrc:/images/icons/ic_arrow_back_24px.svg"
         backgroundColor: "white"
         onExitColor: "white"
-        toolTipText: qsTr("Toggle to display side panel")
+        toolTipText: JamiStrings.back
         hoverEnabled: true
 
         visible: mainViewWindow.sidePanelHidden

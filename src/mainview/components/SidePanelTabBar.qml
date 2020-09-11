@@ -79,7 +79,7 @@ TabBar {
             function showConversations() {
                 ConversationsAdapter.setConversationFilter("")
                 contactSearchBar.setPlaceholderString(
-                            JamiTheme.contactSearchBarPlaceHolderConversationText)
+                            JamiStrings.contactSearchConversation)
                 pageOne.down = true
                 pageTwo.down = false
                 setCurrentUidSmartListModelIndex()
@@ -119,7 +119,7 @@ TabBar {
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
 
-                text: qsTr("CONVERSATIONS")
+                text: JamiStrings.conversations
                 font.pointSize: JamiTheme.textFontSize
                 opacity: pageOne.down == true ? 1.0 : opacityDegree
                 color: JamiTheme.blueLogo_
@@ -200,7 +200,7 @@ TabBar {
             function showRequests() {
                 ConversationsAdapter.setConversationFilter("PENDING")
                 contactSearchBar.setPlaceholderString(
-                            JamiTheme.contactSearchBarPlaceHolderInivitionText)
+                            JamiStrings.contactSearchInvitations)
                 pageTwo.down = true
                 pageOne.down = false
             }
@@ -240,7 +240,7 @@ TabBar {
 
                 font.pointSize: JamiTheme.textFontSize
 
-                text: qsTr("INVITATIONS")
+                text: JamiStrings.invitations
                 //opacity: enabled ? 1.0 : 0.3
                 opacity: pageTwo.down == true ? 1.0 : opacityDegree
                 color: JamiTheme.blueLogo_

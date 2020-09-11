@@ -115,7 +115,7 @@ ColumnLayout {
 
             radius: height / 2
 
-            toolTipText: qsTr("press to open or hide display of banned contact")
+            toolTipText: JamiStrings.tipBannedContacts
 
             source: bannedListWidget.visible?
                         "qrc:/images/icons/round-arrow_drop_up-24px.svg" :

@@ -97,7 +97,7 @@ ColumnLayout {
         Layout.fillWidth: true
         Layout.preferredHeight: JamiTheme.preferredFieldHeight
 
-        eText: qsTr("Audio")
+        eText: JamiStrings.audio
         fontSize: JamiTheme.headerFontSize
         maxWidth: width
     }
@@ -109,11 +109,11 @@ ColumnLayout {
         Layout.maximumHeight: JamiTheme.preferredFieldHeight
         Layout.leftMargin: JamiTheme.preferredMarginSize
 
-        labelText: qsTr("Microphone")
+        labelText: JamiStrings.microphone
         fontPointSize: JamiTheme.settingsFontSize
         comboModel: AudioInputDeviceModel {}
         widthOfComboBox: itemWidth
-        tipText: qsTr("Audio input device selector")
+        tipText: JamiStrings.selectAudioInputDevice
         role: "ID_UTF8"
 
         onIndexChanged: {
@@ -144,11 +144,11 @@ ColumnLayout {
         Layout.maximumHeight: JamiTheme.preferredFieldHeight
         Layout.leftMargin: JamiTheme.preferredMarginSize
 
-        labelText: qsTr("Output Device")
+        labelText: JamiStrings.outputDevice
         fontPointSize: JamiTheme.settingsFontSize
         comboModel: audioOutputDeviceModel
         widthOfComboBox: itemWidth
-        tipText: qsTr("Choose the audio output device")
+        tipText: JamiStrings.selectAudioOutputDevice
         role: "ID_UTF8"
 
         onIndexChanged: {
@@ -166,11 +166,11 @@ ColumnLayout {
         Layout.maximumHeight: JamiTheme.preferredFieldHeight
         Layout.leftMargin: JamiTheme.preferredMarginSize
 
-        labelText: qsTr("Ringtone Device")
+        labelText: JamiStrings.ringtoneDevice
         fontPointSize: JamiTheme.settingsFontSize
         comboModel: audioOutputDeviceModel
         widthOfComboBox: itemWidth
-        tipText: qsTr("Choose the ringtone output device")
+        tipText: JamiStrings.selectRingtoneOutputDevice
         role: "ID_UTF8"
 
         onIndexChanged: {
@@ -188,7 +188,7 @@ ColumnLayout {
         Layout.maximumHeight: JamiTheme.preferredFieldHeight
         Layout.leftMargin: JamiTheme.preferredMarginSize
 
-        labelText: qsTr("Audio Manager")
+        labelText: JamiStrings.audioManager
         fontPointSize: JamiTheme.settingsFontSize
         comboModel: AudioManagerListModel {}
         widthOfComboBox: itemWidth

@@ -21,6 +21,8 @@ import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
 import QtQuick.Layouts 1.3
 
+import "../../constant"
+
 Dialog {
     id: root
     modal: true
@@ -78,27 +80,27 @@ Dialog {
             }
             ListElement {
                 Shortcut: "Ctrl+R"
-                Description: qsTr("Focus requests list")
+                Description: "Requests list"
                 KeyLength: 2
             }
             ListElement {
                 Shortcut: "Ctrl+↑"
-                Description: qsTr("Focus the previous conversation")
+                Description: "Previous conversation"
                 KeyLength: 2
             }
             ListElement {
                 Shortcut: "Ctrl+↓"
-                Description: qsTr("Focus the next conversation")
+                Description: "Next conversation"
                 KeyLength: 2
             }
             ListElement {
                 Shortcut: "Ctrl+F"
-                Description: qsTr("Focus search bar")
+                Description: "Search bar"
                 KeyLength: 2
             }
             ListElement {
                 Shortcut: "F11"
-                Description: qsTr("Toggle fullscreen")
+                Description: "Fullscreen"
                 KeyLength: 1
             }
         }
@@ -106,12 +108,12 @@ Dialog {
             id: keyboardConversationShortcutsModel
             ListElement {
                 Shortcut: "Shift+Ctrl+C"
-                Description: qsTr("Start an audio call")
+                Description: "Start an audio call"
                 KeyLength: 3
             }
             ListElement {
                 Shortcut: "Shift+Ctrl+X"
-                Description: qsTr("Start an video call")
+                Description: "Start a video call"
                 KeyLength: 3
             }
             ListElement {
@@ -134,27 +136,27 @@ Dialog {
             id: keyboardSettingsShortcutsModel
             ListElement {
                 Shortcut: "Ctrl+M"
-                Description: qsTr("Toggle media settings")
+                Description: "Media settings"
                 KeyLength: 2
             }
             ListElement {
                 Shortcut: "Ctrl+G"
-                Description: qsTr("Toggle general settings")
+                Description: "General Settings"
                 KeyLength: 2
             }
             ListElement {
                 Shortcut: "Ctrl+I"
-                Description: qsTr("Toggle account settings")
+                Description: "Account Settings"
                 KeyLength: 2
             }
             ListElement {
                 Shortcut: "Ctrl+Shift+N"
-                Description: qsTr("Open account creation's wizard")
+                Description: "Open account creation wizard"
                 KeyLength: 3
             }
             ListElement {
                 Shortcut: "F10"
-                Description: qsTr("Open this window")
+                Description: "Open window"
                 KeyLength: 1
             }
         }
@@ -404,7 +406,7 @@ Dialog {
                                         anchors.leftMargin: 10
                                         font.family: "Arial"
                                         font.pointSize: 12
-                                        text: styleData.column % 2 ? "" : "Conversations"
+                                        text: styleData.column % 2 ? "" : JamiStrings.conversations
                                         color: "black"
                                     }
                                     TextMetrics {

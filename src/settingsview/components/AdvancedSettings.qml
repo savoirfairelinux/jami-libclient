@@ -76,7 +76,7 @@ ColumnLayout {
 
             radius: height / 2
 
-            toolTipText: qsTr("Press to display or hide advance settings")
+            toolTipText: JamiStrings.tipAdvancedSettingsDisplay
 
             source: {
                 if (advancedSettingsView.visible) {

@@ -54,7 +54,7 @@ Dialog {
             text: {
                 switch(purpose){
                 case PasswordDialog.ExportAccount:
-                    return qsTr("Enter the password of this account")
+                    return JamiStrings.enterPassword
                 case PasswordDialog.ChangePassword:
                     return qsTr("Changing password")
                 case PasswordDialog.SetPassword:
@@ -171,7 +171,7 @@ Dialog {
                     horizontalAlignment: Text.AlignLeft
                     verticalAlignment: Text.AlignVCenter
 
-                    placeholderText: qsTr("Enter Current Password")
+                    placeholderText: JamiStrings.enterCurrentPassword
 
                     onTextChanged: {
                         if (purpose === PasswordDialog.ChangePassword) {
@@ -198,7 +198,7 @@ Dialog {
                     horizontalAlignment: Text.AlignLeft
                     verticalAlignment: Text.AlignVCenter
 
-                    placeholderText: qsTr("Enter New Password")
+                    placeholderText: JamiStrings.enterNewPassword
 
                     onTextChanged: {
                         validatePassword()
@@ -218,7 +218,7 @@ Dialog {
                     horizontalAlignment: Text.AlignLeft
                     verticalAlignment: Text.AlignVCenter
 
-                    placeholderText: qsTr("Confirm New Password")
+                    placeholderText: JamiStrings.confirmNewPassword
 
                     onTextChanged: {
                         validatePassword()
@@ -234,8 +234,9 @@ Dialog {
                     id: btnChangePasswordConfirm
 
                     contentItem: Text {
-                        text: qsTr("CONFIRM")
+                        text: JamiStrings.confirm
                         color: JamiTheme.buttonTintedBlue
+                        font.capitalization: Font.AllUppercase
                     }
 
                     background: Rectangle {

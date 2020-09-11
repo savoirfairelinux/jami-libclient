@@ -136,7 +136,7 @@ ColumnLayout {
         Layout.fillWidth: true
         Layout.preferredHeight: JamiTheme.preferredFieldHeight
 
-        eText: qsTr("Video")
+        eText: JamiStrings.video
         fontSize: JamiTheme.headerFontSize
         maxWidth: itemWidth * 2
     }
@@ -148,11 +148,11 @@ ColumnLayout {
         Layout.maximumHeight: JamiTheme.preferredFieldHeight
         Layout.leftMargin: JamiTheme.preferredMarginSize
 
-        labelText: qsTr("Device")
+        labelText: JamiStrings.device
         fontPointSize: JamiTheme.settingsFontSize
         comboModel: VideoInputDeviceModel {}
         widthOfComboBox: itemWidth
-        tipText: qsTr("Video device selector")
+        tipText: JamiStrings.selectVideoDevice
         role: "DeviceName_UTF8"
 
         onIndexChanged: {
@@ -167,11 +167,11 @@ ColumnLayout {
         Layout.maximumHeight: JamiTheme.preferredFieldHeight
         Layout.leftMargin: JamiTheme.preferredMarginSize
 
-        labelText: qsTr("Resolution")
+        labelText: JamiStrings.resolution
         fontPointSize: JamiTheme.settingsFontSize
         comboModel: VideoFormatResolutionModel {}
         widthOfComboBox: itemWidth
-        tipText: qsTr("Video device resolution selector")
+        tipText: JamiStrings.selectVideoResolution
         role: "Resolution_UTF8"
 
         onIndexChanged: {
@@ -186,11 +186,11 @@ ColumnLayout {
         Layout.maximumHeight: JamiTheme.preferredFieldHeight
         Layout.leftMargin: JamiTheme.preferredMarginSize
 
-        labelText: qsTr("Fps")
+        labelText: JamiStrings.fps
         fontPointSize: JamiTheme.settingsFontSize
         comboModel: VideoFormatFpsModel {}
         widthOfComboBox: itemWidth
-        tipText: qsTr("Video device fps selector")
+        tipText: JamiStrings.selectFPS
         role: "FPS_ToDisplay_UTF8"
 
         onIndexChanged: {
@@ -205,7 +205,7 @@ ColumnLayout {
         Layout.fillWidth: true
         Layout.leftMargin: JamiTheme.preferredMarginSize
 
-        labelText: qsTr("Enable hardware acceleration")
+        labelText: JamiStrings.enableHWAccel
         fontPointSize: JamiTheme.settingsFontSize
 
         onSwitchToggled: {
@@ -248,7 +248,7 @@ ColumnLayout {
         Layout.preferredHeight: JamiTheme.preferredFieldHeight
         Layout.bottomMargin: JamiTheme.preferredMarginSize
 
-        text: qsTr("Preview unavailable")
+        text: JamiStrings.previewUnavailable
         font.pointSize: JamiTheme.settingsFontSize
         font.kerning: true
 

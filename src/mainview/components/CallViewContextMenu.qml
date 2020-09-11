@@ -43,19 +43,19 @@ Item {
 
     function openMenu(){
         if (isSIP){
-            ContextMenuGenerator.addMenuItem(isPaused ? qsTr("Resume call") : qsTr("Hold call"),
+            ContextMenuGenerator.addMenuItem(isPaused ? JamiStrings.resume : JamiStrings.hold,
                                              isPaused ?
                                                  "qrc:/images/icons/play_circle_outline-24px.svg" :
                                                  "qrc:/images/icons/pause_circle_outline-24px.svg",
                                              function (){
                                                  CallAdapter.holdThisCallToggle()
                                              })
-            ContextMenuGenerator.addMenuItem(qsTr("Sip Input Panel"),
+            ContextMenuGenerator.addMenuItem(JamiStrings.sipInputPanel,
                                              "qrc:/images/icons/ic_keypad.svg",
                                              function (){
                                                  sipInputPanel.open()
                                              })
-            ContextMenuGenerator.addMenuItem(qsTr("Transfer call"),
+            ContextMenuGenerator.addMenuItem(JamiStrings.transferCall,
                                              "qrc:/images/icons/phone_forwarded-24px.svg",
                                              function (){
                                                  root.transferCallButtonClicked()
@@ -65,14 +65,14 @@ Item {
         }
 
         if (!isAudioOnly) {
-            ContextMenuGenerator.addMenuItem(isRecording ? qsTr("Stop recording") :
-                                                           qsTr("Start recording"),
+            ContextMenuGenerator.addMenuItem(isRecording ? JamiStrings.stopRec :
+                                                           JamiStrings.startRec,
                                              "qrc:/images/icons/ic_video_call_24px.svg",
                                              function (){
                                                   CallAdapter.recordThisCallToggle()
                                              })
-            ContextMenuGenerator.addMenuItem(videoCallPage.isFullscreen ? qsTr("Exit full screen") :
-                                                                          qsTr("Full screen mode"),
+            ContextMenuGenerator.addMenuItem(videoCallPage.isFullscreen ? JamiStrings.exitFullScreen :
+                                                                          JamiStrings.fullScreen,
                                              videoCallPage.isFullscreen ?
                                                  "qrc:/images/icons/close_fullscreen-24px.svg" :
                                                  "qrc:/images/icons/open_in_full-24px.svg",
@@ -86,7 +86,7 @@ Item {
 
             ContextMenuGenerator.addMenuSeparator()
 
-            ContextMenuGenerator.addMenuItem(qsTr("Share entire screen"),
+            ContextMenuGenerator.addMenuItem(JamiStrings.shareScreen,
                                              "qrc:/images/icons/screen_share-24px.svg",
                                              function (){
                                                  if (Qt.application.screens.length === 1) {
@@ -96,7 +96,7 @@ Item {
                                                      SelectScreenWindowCreation.showSelectScreenWindow()
                                                  }
                                              })
-            ContextMenuGenerator.addMenuItem(qsTr("Share screen area"),
+            ContextMenuGenerator.addMenuItem(JamiStrings.shareScreenArea,
                                              "qrc:/images/icons/screen_share-24px.svg",
                                              function (){
                                                  if (Qt.application.screens.length === 1) {
@@ -108,14 +108,14 @@ Item {
                                                      SelectScreenWindowCreation.showSelectScreenWindow()
                                                  }
                                              })
-            ContextMenuGenerator.addMenuItem(qsTr("Share file"),
+            ContextMenuGenerator.addMenuItem(JamiStrings.shareFile,
                                              "qrc:/images/icons/insert_photo-24px.svg",
                                              function (){
                                                   jamiFileDialog.open()
                                              })
         }
 
-        ContextMenuGenerator.addMenuItem(qsTr("Toggle plugin"),
+        ContextMenuGenerator.addMenuItem(JamiStrings.viewPlugin,
                                          "qrc:/images/icons/extension_24dp.svg",
                                          function (){
                                               root.pluginItemClicked()
@@ -134,7 +134,7 @@ Item {
 
         if (mapSize === 0)
             VideoDeviceContextMenuItemCreation.createVideoDeviceContextMenuItemObjects(
-                        qsTr("No video device"), false)
+                        JamiStrings.noVideoDevice, false)
 
         for (var deviceName in deviceContextMenuInfoMap) {
             if (deviceName === "size")

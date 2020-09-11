@@ -89,7 +89,7 @@ Dialog {
                 font.kerning: true
                 horizontalAlignment: Text.AlignHCenter
                 wrapMode: Text.Wrap
-                text:qsTr("Do you really want to delete the following account?")
+                text: JamiStrings.confirmDeleteQuestion
             }
 
             Label {
@@ -133,7 +133,7 @@ Dialog {
                 visible: ! isSIP
 
                 wrapMode: Text.Wrap
-                text: qsTr("If this account hasn't been exported, or added to another device, it will be irrevocably lost.")
+                text: JamiStrings.deleteAccountInfos
                 font.pointSize: JamiTheme.textFontSize
                 font.kerning: true
                 horizontalAlignment: Text.AlignHCenter

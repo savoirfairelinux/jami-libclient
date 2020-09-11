@@ -93,7 +93,7 @@ Rectangle {
             checkedColor: JamiTheme.declineButtonPressedRed
             radius: 30
 
-            toolTipText: !checked ? qsTr("Press to mute the call") : qsTr("Press to unmute the call")
+            toolTipText: !checked ? JamiStrings.mute : JamiStrings.unmute
 
             onClicked: {
                 CallAdapter.muteThisCallToggle()
@@ -118,7 +118,7 @@ Rectangle {
             color: "white"
             radius: 30
 
-            toolTipText: qsTr("Press to hang up the call")
+            toolTipText: JamiStrings.hangup
 
             onClicked: {
                 CallAdapter.hangUpThisCall()
@@ -145,7 +145,7 @@ Rectangle {
             checkedColor: JamiTheme.declineButtonPressedRed
             radius: 30
 
-            toolTipText: !checked ? qsTr("Press to pause the call") : qsTr("Press to resume the call")
+            toolTipText: !checked ? JamiStrings.pause : JamiStrings.resume
 
             onClicked: {
                 CallAdapter.videoPauseThisCallToggle()
@@ -175,7 +175,7 @@ Rectangle {
             source: "qrc:/images/icons/ic_group_add_white_24dp.png"
             radius: 30
 
-            toolTipText: qsTr("Press to add more contact into conference call")
+            toolTipText: JamiStrings.addParticipants
 
             onClicked: {
                 root.addToConferenceButtonClicked()
@@ -200,7 +200,7 @@ Rectangle {
             source: "qrc:/images/icons/ic_chat_white_24dp.png"
             radius: 30
 
-            toolTipText: qsTr("Press to toggle open the chatview")
+            toolTipText: JamiStrings.chat
 
             onClicked: {
                 root.chatButtonClicked()
@@ -224,7 +224,7 @@ Rectangle {
             source: "qrc:/images/icons/more_vert-24px.svg"
             radius: 30
 
-            toolTipText: qsTr("Press to open chat options")
+            toolTipText: JamiStrings.moreOptions
 
             onClicked: {
                 var rectPos = mapToItem(callStackViewWindow, optionsButton.x, optionsButton.y)

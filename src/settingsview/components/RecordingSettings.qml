@@ -45,7 +45,7 @@ ColumnLayout {
     FolderDialog {
         id: recordPathDialog
 
-        title: qsTr("Select A Folder For Your Recordings")
+        title: JamiStrings.selectFolder
         currentFolder: StandardPaths.writableLocation(StandardPaths.HomeLocation)
 
         onAccepted: {
@@ -90,7 +90,7 @@ ColumnLayout {
 
         checked: AVModel.getRecordPreview()
 
-        labelText: qsTr("Record preview video for a call")
+        labelText: JamiStrings.recordCall
         fontPointSize: JamiTheme.settingsFontSize
 
         onSwitchToggled: AVModel.setRecordPreview(checked)
@@ -175,7 +175,7 @@ ColumnLayout {
             Layout.fillHeight: true
             Layout.preferredWidth: itemWidth
 
-            toolTipText: qsTr("Press to choose record folder path")
+            toolTipText: JamiStrings.tipRecordFolder
             text: recordPath
             source: "qrc:/images/icons/round-folder-24px.svg"
             color: JamiTheme.buttonTintedGrey

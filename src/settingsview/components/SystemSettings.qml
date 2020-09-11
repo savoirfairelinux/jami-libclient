@@ -1,4 +1,4 @@
-/*!
+/*
  * Copyright (C) 2020 by Savoir-faire Linux
  * Author: Aline Gondim Santos <aline.gondimsantos@savoirfairelinux.com>
  *
@@ -43,7 +43,7 @@ ColumnLayout {
     FolderDialog {
         id: downloadPathDialog
 
-        title: qsTr("Select A Folder For Your Downloads")
+        title: JamiStrings.selectFolder
         currentFolder: StandardPaths.writableLocation(StandardPaths.DownloadLocation)
 
         onAccepted: {
@@ -73,7 +73,7 @@ ColumnLayout {
         labelText: qsTr("Enable desktop notifications")
         fontPointSize: JamiTheme.settingsFontSize
 
-        tooltipText: qsTr("toggle enable notifications")
+        tooltipText: JamiStrings.enableNotifications
 
         onSwitchToggled: SettingsAdapter.setAppValue(Settings.Key.EnableNotifications, checked)
     }
@@ -84,10 +84,8 @@ ColumnLayout {
         Layout.leftMargin: JamiTheme.preferredMarginSize
         checked: SettingsAdapter.getAppValue(Settings.MinimizeOnClose)
 
-        labelText: qsTr("Keep minimize on close")
+        labelText: JamiStrings.keepMinimized
         fontPointSize: JamiTheme.settingsFontSize
-
-        tooltipText: qsTr("toggle keep minimized on close")
 
         onSwitchToggled: SettingsAdapter.setAppValue(Settings.Key.MinimizeOnClose, checked)
     }
@@ -99,10 +97,10 @@ ColumnLayout {
 
         checked: UtilsAdapter.checkStartupLink()
 
-        labelText: qsTr("Run On Startup")
+        labelText: JamiStrings.runStartup
         fontPointSize: JamiTheme.settingsFontSize
 
-        tooltipText: qsTr("toggle run application on system startup")
+        tooltipText: JamiStrings.tipRunStartup
 
         onSwitchToggled: SettingsAdapter.setRunOnStartUp(checked)
     }
@@ -116,7 +114,7 @@ ColumnLayout {
             Layout.fillWidth: true
             Layout.fillHeight: true
 
-            text: qsTr("Downloads folder")
+            text: JamiStrings.downloadFolder
             font.pointSize: JamiTheme.settingsFontSize
             font.kerning: true
 
@@ -131,7 +129,7 @@ ColumnLayout {
             Layout.preferredWidth: itemWidth
             Layout.fillHeight: true
 
-            toolTipText: qsTr("Press to choose download folder path")
+            toolTipText: JamiStrings.tipChooseDownloadFolder
             text: downloadPath
             source: "qrc:/images/icons/round-folder-24px.svg"
             color: JamiTheme.buttonTintedGrey

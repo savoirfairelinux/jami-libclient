@@ -70,7 +70,7 @@ Rectangle {
 
         mode: JamiFileDialog.SaveFile
 
-        title: qsTr("Export Account Here")
+        title: JamiStrings.backupAccountHere
         folder: StandardPaths.writableLocation(StandardPaths.HomeLocation) + "/Desktop"
 
         nameFilters: [qsTr("Jami archive files") + " (*.gz)", qsTr(
@@ -117,7 +117,7 @@ Rectangle {
                 Label {
                     Layout.alignment: Qt.AlignRight
 
-                    text: qsTr("Recommended")
+                    text: JamiStrings.recommended
                     color: "white"
                     padding: 8
 
@@ -169,7 +169,7 @@ Rectangle {
                 Layout.preferredHeight: preferredHeight
 
                 fontCapitalization: Font.AllUppercase
-                text: isRendezVous ? qsTr("Choose name") : qsTr("Choose username")
+                text: isRendezVous ? JamiStrings.chooseName : JamiStrings.chooseUsername
                 enabled: nameRegistrationUIState === UsernameLineEdit.NameRegistrationState.FREE
                 color: nameRegistrationUIState === UsernameLineEdit.NameRegistrationState.FREE ?
                            JamiTheme.wizardBlueButtons :
@@ -190,7 +190,7 @@ Rectangle {
                 Layout.preferredWidth: preferredWidth
                 Layout.preferredHeight: preferredHeight
 
-                text: qsTr("SKIP")
+                text: JamiStrings.skip
                 color: JamiTheme.buttonTintedGrey
                 hoveredColor: JamiTheme.buttonTintedGreyHovered
                 pressedColor: JamiTheme.buttonTintedGreyPressed
@@ -214,7 +214,7 @@ Rectangle {
                 Layout.preferredWidth: usernameEdit.width
 
                 Label {
-                    text: qsTr("Create a password")
+                    text: JamiStrings.createPassword
                     font.pointSize: JamiTheme.textFontSize + 3
 
                     Switch {
@@ -228,7 +228,7 @@ Rectangle {
                 Label {
                     Layout.alignment: Qt.AlignRight
 
-                    text: qsTr("Optional")
+                    text: JamiStrings.optional
                     color: "white"
                     padding: 8
 
@@ -251,7 +251,7 @@ Rectangle {
 
                 selectByMouse: true
                 echoMode: TextInput.Password
-                placeholderText: qsTr("Password")
+                placeholderText: JamiStrings.password
                 font.pointSize: 9
                 font.kerning: true
             }
@@ -267,7 +267,7 @@ Rectangle {
 
                 selectByMouse: true
                 echoMode: TextInput.Password
-                placeholderText: qsTr("Confirm password")
+                placeholderText: JamiStrings.confirmPassword
                 font.pointSize: 9
                 font.kerning: true
             }
@@ -277,7 +277,7 @@ Rectangle {
                 Layout.topMargin: 10
                 Layout.leftMargin: (root.width - createAccountButton.width) / 2
 
-                text: qsTr("Note that the password cannot be recovered")
+                text: JamiStrings.notePasswordRecovery
                 font.pointSize: JamiTheme.textFontSize
             }
 
@@ -296,7 +296,7 @@ Rectangle {
                 }
 
                 fontCapitalization: Font.AllUppercase
-                text: isRendezVous ? qsTr("Create rendez-vous") : qsTr("Create account")
+                text: isRendezVous ? JamiStrings.createRV : JamiStrings.createAccount
                 enabled: checkEnable()
                 color: checkEnable() ? JamiTheme.wizardBlueButtons :
                                        JamiTheme.buttonTintedGreyInactive
@@ -327,7 +327,7 @@ Rectangle {
         onExitColor: root.color
 
         source: "qrc:/images/icons/ic_arrow_back_24px.svg"
-        toolTipText: qsTr("Back")
+        toolTipText: JamiStrings.back
 
         onClicked: {
             if (createAccountStack.currentIndex == 0)

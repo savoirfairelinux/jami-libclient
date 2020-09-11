@@ -29,6 +29,7 @@ import net.jami.Models 1.0
 import net.jami.Adapters 1.0
 
 import "../../commoncomponents"
+import "../../constant"
 
 Rectangle {
     id: root
@@ -113,14 +114,14 @@ Rectangle {
             var info
             switch(currentPurpose) {
                 case PasswordDialog.ExportAccount:
-                    info = success ? qsTr("Export Successful") : qsTr("Export Failed")
+                    info = success ? JamiStrings.backupSuccessful : JamiStrings.backupFailed
                     break
                 case PasswordDialog.ChangePassword:
-                    info = success ? qsTr("Password Changed Successfully") : qsTr("Password Change Failed")
+                    info = success ? JamiStrings.changePasswordSuccess : JamiStrings.changePasswordFailed
                     break
                 case PasswordDialog.SetPassword:
-                    info = success ? qsTr("Password Set Successfully") : qsTr("Password Set Failed")
-                    passwdPushButton.text = success ? qsTr("Change Password") : qsTr("Set Password")
+                    info = success ? JamiStrings.setPasswordSuccess : JamiStrings.setPasswordFailed
+                    passwdPushButton.text = success ? JamiStrings.changePassword : JamiStrings.setPassword
                     break
             }
 
@@ -133,7 +134,7 @@ Rectangle {
 
         mode: JamiFileDialog.SaveFile
 
-        title: qsTr("Export Account Here")
+        title: JamiStrings.backupAccountHere
         folder: StandardPaths.writableLocation(StandardPaths.DesktopLocation)
 
         nameFilters: [qsTr("Jami archive files") + " (*.gz)", qsTr(
@@ -150,7 +151,7 @@ Rectangle {
                     var isSuccessful = AccountAdapter.model.exportToFile(UtilsAdapter.getCurrAccId(), exportPath,"")
                     var title = isSuccessful ? qsTr("Success") : qsTr("Error")
                     var iconMode = isSuccessful ? StandardIcon.Information : StandardIcon.Critical
-                    var info = isSuccessful ? qsTr("Export Successful") : qsTr("Export Failed")
+                    var info = isSuccessful ? JamiStrings.backupSuccessful : JamiStrings.backupFailed
                     MessageBox.openWithParameters(title,info, iconMode, StandardButton.Ok)
                 }
             }
@@ -196,7 +197,7 @@ Rectangle {
                     Layout.leftMargin: JamiTheme.preferredMarginSize
                     Layout.rightMargin: JamiTheme.preferredMarginSize
 
-                    labelText: qsTr("Enable")
+                    labelText: JamiStrings.enableAccount
                     fontPointSize: JamiTheme.headerFontSize
 
                     onSwitchToggled: AccountAdapter.model.setAccountEnabled(UtilsAdapter.getCurrAccId(), checked)
@@ -237,10 +238,8 @@ Rectangle {
                     outlined: true
 
                     toolTipText: AccountAdapter.hasPassword() ?
-                                qsTr("Change the current password") :
-                                qsTr("Currently no password, press this button to set a password")
-                    text: AccountAdapter.hasPassword() ? qsTr("Change Password") :
-                                                                        qsTr("Set Password")
+                                JamiStrings.changeCurrentPassword : JamiStrings.setAPassword
+                    text: AccountAdapter.hasPassword() ? JamiStrings.changePassword : JamiStrings.setPassword
 
                     source: "qrc:/images/icons/round-edit-24px.svg"
 
@@ -262,8 +261,8 @@ Rectangle {
                     pressedColor: JamiTheme.buttonTintedBlackPressed
                     outlined: true
 
-                    toolTipText: qsTr("Press this button to export account to a .gz file")
-                    text: qsTr("Export Account")
+                    toolTipText: JamiStrings.tipBackupAccount
+                    text: JamiStrings.backupAccountBtn
 
                     source: "qrc:/images/icons/round-save_alt-24px.svg"
 
@@ -283,8 +282,7 @@ Rectangle {
                     hoveredColor: JamiTheme.buttonTintedRedHovered
                     pressedColor: JamiTheme.buttonTintedRedPressed
 
-                    toolTipText: qsTr("Press this button to delete this account")
-                    text: qsTr("Delete Account")
+                    text: JamiStrings.deleteAccount
 
                     source: "qrc:/images/icons/delete_forever-24px.svg"
 

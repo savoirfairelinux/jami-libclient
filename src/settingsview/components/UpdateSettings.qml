@@ -88,7 +88,7 @@ ColumnLayout {
         radius: height / 2
 
         toolTipText: qsTr("Install the latest beta version")
-        text: qsTr("Beta Install")
+        text: JamiStrings.betaInstall
         fontPointSize: JamiTheme.buttonFontSize
 
         onClicked: {

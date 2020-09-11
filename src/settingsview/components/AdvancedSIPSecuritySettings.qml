@@ -89,7 +89,7 @@ ColumnLayout {
         property string openPath : oldPath === "" ? (UtilsAdapter.getCurrentPath() + "/ringtones/") : (UtilsAdapter.toFileAbsolutepath(oldPath))
 
         mode: JamiFileDialog.OpenFile
-        title: qsTr("Select a CA certificate")
+        title: JamiStrings.selectCACert
         folder: openPath
         nameFilters: [qsTr("Certificate File") + " (*.crt)", qsTr(
                 "All files") + " (*)"]
@@ -107,7 +107,7 @@ ColumnLayout {
         property string openPath : oldPath === "" ? (UtilsAdapter.getCurrentPath() + "/ringtones/") : (UtilsAdapter.toFileAbsolutepath(oldPath))
 
         mode: JamiFileDialog.OpenFile
-        title: qsTr("Select a user certificate")
+        title: JamiStrings.selectUserCert
         folder: openPath
         nameFilters: [qsTr("Certificate File") + " (*.crt)", qsTr(
                 "All files") + " (*)"]
@@ -125,7 +125,7 @@ ColumnLayout {
         property string openPath : oldPath === "" ? (UtilsAdapter.getCurrentPath() + "/ringtones/") : (UtilsAdapter.toFileAbsolutepath(oldPath))
 
         mode: JamiFileDialog.OpenFile
-        title: qsTr("Select a private key")
+        title: JamiStrings.selectPrivateKey
         folder: openPath
         nameFilters: [qsTr("Key File") + " (*.key)", qsTr(
                 "All files") + " (*)"]
@@ -140,7 +140,7 @@ ColumnLayout {
         Layout.fillWidth: true
         Layout.preferredHeight: JamiTheme.preferredFieldHeight
 
-        eText: qsTr("Security")
+        eText: JamiStrings.security
         fontSize: JamiTheme.headerFontSize
         maxWidth: width
     }
@@ -152,7 +152,7 @@ ColumnLayout {
         ToggleSwitch {
             id: encryptMediaStreamsToggle
 
-            labelText: qsTr("Encrypt Media Streams (SRTP)")
+            labelText: JamiStrings.encryptMediaStream
             fontPointSize: JamiTheme.settingsFontSize
 
             onSwitchToggled: {
@@ -165,7 +165,7 @@ ColumnLayout {
         ToggleSwitch {
             id: enableSDESToggle
 
-            labelText: qsTr("Enable SDES(Key Exchange)")
+            labelText: JamiStrings.enableSDES
             fontPointSize: JamiTheme.settingsFontSize
 
             onSwitchToggled: {
@@ -176,7 +176,7 @@ ColumnLayout {
         ToggleSwitch {
             id: fallbackRTPToggle
 
-            labelText: qsTr("Can Fallback on RTP")
+            labelText: JamiStrings.fallbackRTP
             fontPointSize: JamiTheme.settingsFontSize
 
             onSwitchToggled: {
@@ -187,7 +187,7 @@ ColumnLayout {
         ToggleSwitch {
             id: encryptNegotitationToggle
 
-            labelText: qsTr("Encrypt Negotiation (TLS)")
+            labelText: JamiStrings.encryptNegotiation
             fontPointSize: JamiTheme.settingsFontSize
 
             onSwitchToggled: {
@@ -204,7 +204,7 @@ ColumnLayout {
             Layout.fillWidth: true
             Layout.preferredHeight: JamiTheme.preferredFieldHeight
 
-            titleField: qsTr("CA Certificate")
+            titleField: JamiStrings.caCertificate
             source: "qrc:/images/icons/round-folder-24px.svg"
             itemWidth: root.itemWidth
             onClick: caCert_Dialog_SIP.open()
@@ -215,7 +215,7 @@ ColumnLayout {
             Layout.fillWidth: true
             Layout.preferredHeight: JamiTheme.preferredFieldHeight
 
-            titleField: qsTr("User Certificate")
+            titleField: JamiStrings.userCertificate
             source: "qrc:/images/icons/round-folder-24px.svg"
             itemWidth: root.itemWidth
             onClick: userCert_Dialog_SIP.open()
@@ -226,7 +226,7 @@ ColumnLayout {
             Layout.fillWidth: true
             Layout.preferredHeight: JamiTheme.preferredFieldHeight
 
-            titleField: qsTr("Private Key")
+            titleField: JamiStrings.privateKey
             source: "qrc:/images/icons/round-folder-24px.svg"
             itemWidth: root.itemWidth
             onClick: privateKey_Dialog_SIP.open()
@@ -239,7 +239,7 @@ ColumnLayout {
             Layout.fillWidth: true
             Layout.preferredHeight: JamiTheme.preferredFieldHeight
             itemWidth: root.itemWidth
-            titleField: qsTr("Private Key Password")
+            titleField: JamiStrings.privateKeyPassword
 
             onEditFinished: SettingsAdapter.lineEditSIPCertPasswordLineEditTextChanged(textField)
         }
@@ -247,7 +247,7 @@ ColumnLayout {
         ToggleSwitch {
             id: verifyIncomingCertificatesServerToogle
 
-            labelText: qsTr("Verify Certificates (Server Side)")
+            labelText: JamiStrings.verifyCertificatesServer
             fontPointSize: JamiTheme.settingsFontSize
 
             onSwitchToggled: {
@@ -258,7 +258,7 @@ ColumnLayout {
         ToggleSwitch {
             id: verifyIncomingCertificatesClientToogle
 
-            labelText: qsTr("Verify Certificates (Client Side)")
+            labelText: JamiStrings.verifyCertificatesClient
             fontPointSize: JamiTheme.settingsFontSize
 
             onSwitchToggled: {
@@ -269,7 +269,7 @@ ColumnLayout {
         ToggleSwitch {
             id: requireCeritificateForTLSIncomingToggle
 
-            labelText: qsTr("TLS Connections Require Certificate")
+            labelText: JamiStrings.tlsRequireConnections
             fontPointSize: JamiTheme.settingsFontSize
 
             onSwitchToggled: {
@@ -284,7 +284,7 @@ ColumnLayout {
             Layout.preferredHeight: JamiTheme.preferredFieldHeight
             Layout.rightMargin: JamiTheme.preferredMarginSize
 
-            labelText: qsTr("TLS Protocol Method")
+            labelText: JamiStrings.tlsProtocol
             fontPointSize: JamiTheme.settingsFontSize
             comboModel: ListModel {
                 ListElement{textDisplay: "Default"; firstArg: "Default"; secondArg: 0}
@@ -293,7 +293,7 @@ ColumnLayout {
                 ListElement{textDisplay: "TLSv1.2"; firstArg: "TLSv1.2"; secondArg: 3}
             }
             widthOfComboBox: root.itemWidth
-            tipText: qsTr("Audio input device selector")
+            tipText: JamiStrings.audioDeviceSelector
             role: "textDisplay"
 
             onIndexChanged: {
@@ -308,7 +308,7 @@ ColumnLayout {
             Layout.fillWidth: true
             Layout.preferredHeight: JamiTheme.preferredFieldHeight
             itemWidth: root.itemWidth
-            titleField: qsTr("Outgoing TLS Server Name")
+            titleField: JamiStrings.tlsServerName
 
             onEditFinished: SettingsAdapter.outgoingTLSServerNameLineEditTextChanged(textField)
         }
@@ -317,7 +317,7 @@ ColumnLayout {
             id: negotiationTimeoutSpinBox
             Layout.fillWidth: true
 
-            title: qsTr("Negotiation Timeout (seconds)")
+            title: JamiStrings.negotiationTimeOut
             itemWidth: root.itemWidth
             bottomValue: 0
             topValue: 3000

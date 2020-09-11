@@ -29,7 +29,7 @@ Rectangle {
     id: root
 
     property alias text_passwordFromBackupEditAlias: passwordFromBackupEdit.text
-    property string fileImportBtnText: qsTr("Archive(none)")
+    property string fileImportBtnText: JamiStrings.archive
 
     property string filePath: ""
     property string errorText: ""
@@ -41,7 +41,7 @@ Rectangle {
         connectBtn.spinnerTriggered = false
         passwordFromBackupEdit.clear()
         errorText = ""
-        fileImportBtnText = qsTr("Archive(none)")
+        fileImportBtnText = JamiString.archive
     }
 
     function errorOccured(errorMessage) {
@@ -55,7 +55,7 @@ Rectangle {
         id: importFromFile_Dialog
 
         mode: JamiFileDialog.OpenFile
-        title: qsTr("Open File")
+        title: JamiStrings.openFile
         folder: StandardPaths.writableLocation(StandardPaths.HomeLocation) + "/Desktop"
 
         nameFilters: [qsTr("Jami archive files") + " (*.gz)", qsTr("All files") + " (*)"]
@@ -65,7 +65,7 @@ Rectangle {
             if (file.length != 0) {
                 fileImportBtnText = UtilsAdapter.toFileInfoName(file)
             } else {
-                fileImportBtnText = qsTr("Archive(none)")
+                fileImportBtnText = JamiString.archive
             }
         }
     }
@@ -91,7 +91,7 @@ Rectangle {
             Layout.preferredHeight: preferredHeight
 
             text: fileImportBtnText
-            toolTipText: qsTr("Import your account's archive")
+            toolTipText: JamiStrings.importAccountArchive
             source: "qrc:/images/icons/round-folder-24px.svg"
             color: JamiTheme.buttonTintedGrey
             hoveredColor: JamiTheme.buttonTintedGreyHovered
@@ -112,9 +112,7 @@ Rectangle {
             Layout.preferredWidth: fileImportBtn.width
             Layout.preferredHeight: preferredHeight
 
-            text: qsTr("You can obtain an archive by clicking on \"Export account\" " +
-                       "in the account settings. " +
-                       "This will create a .gz file on your device.")
+            text: JamiStrings.importAccountExplanation
             wrapMode: Text.Wrap
 
             onTextChanged: {
@@ -150,7 +148,7 @@ Rectangle {
             Layout.preferredHeight: preferredHeight
 
             spinnerTriggeredtext: qsTr("Generating account…")
-            normalText: qsTr("CONNECT FROM BACKUP")
+            normalText: JamiStrings.connectFromBackup
 
             enabled: {
                 if (spinnerTriggered)

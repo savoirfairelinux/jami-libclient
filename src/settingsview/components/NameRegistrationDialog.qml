@@ -99,7 +99,7 @@ Dialog {
     x: (parent.width - width) / 2
     y: (parent.height - height) / 2
 
-    title: qsTr("Set Registered Name")
+    title: JamiStrings.setUsername
 
     onClosed: {
         reject()
@@ -339,7 +339,7 @@ Dialog {
                             Layout.maximumHeight: 30
 
                             wrapMode: Text.Wrap
-                            text: qsTr("Registering Name")
+                            text: JamiStrings.registeringName
                             font.pointSize: 8
                             font.kerning: true
                             horizontalAlignment: Text.AlignHCenter
@@ -523,7 +523,7 @@ Dialog {
 
                             radius: height /2
 
-                            text: qsTr("Close")
+                            text: JamiStrings.close
                             font.pointSize: 10
                             font.kerning: true
 

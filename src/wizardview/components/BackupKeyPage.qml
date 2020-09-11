@@ -38,7 +38,7 @@ Rectangle {
 
         mode: JamiFileDialog.SaveFile
 
-        title: qsTr("Export Account Here")
+        title: JamiStrings.backupAccountHere
         folder: StandardPaths.writableLocation(StandardPaths.HomeLocation) + "/Desktop"
 
         nameFilters: [qsTr("Jami archive files") + " (*.gz)", qsTr(
@@ -74,14 +74,14 @@ Rectangle {
             Layout.preferredWidth: backupBtn.width
 
             Label {
-                text: qsTr("Backup your account!")
+                text: JamiStrings.backupAccount
                 font.pointSize: JamiTheme.textFontSize + 3
             }
 
             Label {
                 Layout.alignment: Qt.AlignRight
 
-                text: qsTr("Recommended")
+                text: JamiStrings.recommended
                 color: "white"
                 padding: 8
 
@@ -100,10 +100,7 @@ Rectangle {
             Layout.preferredWidth: backupBtn.width
             Layout.preferredHeight: preferredHeight
 
-            text: qsTr("This account only exists on this device. " +
-                       "If you lost your device or uninstall the application, " +
-                       "your account will be deleted. " +
-                       "You can backup your account now or later.")
+            text: JamiStrings.backupAccountInfos
             wrapMode: Text.WordWrap
             font.pointSize: JamiTheme.textFontSize
 
@@ -120,7 +117,7 @@ Rectangle {
             Layout.alignment: Qt.AlignCenter
 
             Label {
-                text: qsTr("Never show me this again")
+                text: JamiStrings.neverShowAgain
                 font.pointSize: JamiTheme.textFontSize
             }
 
@@ -141,7 +138,7 @@ Rectangle {
             Layout.preferredWidth: preferredWidth
             Layout.preferredHeight: preferredHeight
 
-            text: qsTr("BACKUP ACCOUNT")
+            text: JamiStrings.backupAccountBtn
             color: JamiTheme.buttonTintedGrey
             hoveredColor: JamiTheme.buttonTintedGreyHovered
             pressedColor: JamiTheme.buttonTintedGreyPressed
@@ -157,7 +154,7 @@ Rectangle {
             Layout.preferredWidth: preferredWidth
             Layout.preferredHeight: preferredHeight
 
-            text: qsTr("SKIP")
+            text: JamiStrings.skip
             color: JamiTheme.buttonTintedGrey
             hoveredColor: JamiTheme.buttonTintedGreyHovered
             pressedColor: JamiTheme.buttonTintedGreyPressed

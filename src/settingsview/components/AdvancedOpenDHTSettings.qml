@@ -35,6 +35,7 @@ ColumnLayout {
     property int itemWidth
 
     function updateOpenDHTSettingsInfos() {
+        checkAutoConnectOnLocalNetwork.checked = SettingsAdapter.getAccountConfig_PeerDiscovery()
         checkBoxEnableProxy.checked = SettingsAdapter.getAccountConfig_ProxyEnabled()
         lineEditProxy.setText(SettingsAdapter.getAccountConfig_ProxyServer())
         lineEditBootstrap.setText(SettingsAdapter.getAccountConfig_Hostname())
@@ -50,7 +51,7 @@ ColumnLayout {
         horizontalAlignment: Text.AlignLeft
         verticalAlignment: Text.AlignVCenter
 
-        text: qsTr("OpenDHT Configuration")
+        text: JamiStrings.openDHTConfig
         elide: Text.ElideRight
     }
 
@@ -59,9 +60,24 @@ ColumnLayout {
         Layout.leftMargin: JamiTheme.preferredMarginSize
 
         ToggleSwitch {
+            id: checkAutoConnectOnLocalNetwork
+            visible: !root.isSIP
+
+            Layout.fillWidth: true
+
+            labelText: JamiStrings.enablePeerDiscovery
+            tooltipText: JamiStrings.tooltipPeerDiscovery
+            fontPointSize: JamiTheme.settingsFontSize
+
+            onSwitchToggled: {
+                SettingsAdapter.setAutoConnectOnLocalNetwork(checked)
+            }
+        }
+
+        ToggleSwitch {
             id: checkBoxEnableProxy
 
-            labelText: qsTr("Enable proxy")
+            labelText: JamiStrings.enableProxy
             fontPointSize: JamiTheme.settingsFontSize
 
             onSwitchToggled: {
@@ -76,7 +92,7 @@ ColumnLayout {
             Layout.fillWidth: true
             Layout.preferredHeight: JamiTheme.preferredFieldHeight
             itemWidth: root.itemWidth
-            titleField: qsTr("Proxy Address")
+            titleField: JamiStrings.proxyAddress
 
             onEditFinished: SettingsAdapter.setProxyAddress(textField)
         }
@@ -87,7 +103,7 @@ ColumnLayout {
             Layout.fillWidth: true
             Layout.preferredHeight: JamiTheme.preferredFieldHeight
             itemWidth: root.itemWidth
-            titleField: qsTr("Bootstrap")
+            titleField: JamiStrings.bootstrap
 
             onEditFinished: SettingsAdapter.setBootstrapAddress(textField)
         }

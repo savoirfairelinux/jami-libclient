@@ -77,7 +77,7 @@ ItemDelegate {
     FileDialog {
         id: preferenceFilePathDialog
 
-        title: qsTr("Please choose a file")
+        title: JamiStrings.selectFile
         folder: "file://" + currentPath
 
         onAccepted: {
@@ -140,7 +140,7 @@ ItemDelegate {
 
             model: pluginListPreferenceModel
             currentIndex: pluginListPreferenceModel.getCurrentSettingIndex()
-            textRole: qsTr("PreferenceValue")
+            textRole: "PreferenceValue"
             tooltipText: qsTr("Choose the preference")
             onActivated: {
                 getNewPreferenceValueSlot(index)

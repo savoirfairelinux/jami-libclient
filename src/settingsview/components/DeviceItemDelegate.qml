@@ -148,12 +148,12 @@ ItemDelegate {
             ToolTip.text: {
                 if(isCurrent) {
                     if (editable) {
-                        return qsTr("Edit Device Name")
+                        return JamiStrings.editDeviceName
                     } else {
                         return qsTr("Save new device name")
                     }
                 } else {
-                    return qsTr("Unlink Device From Account")
+                    return JamiStrings.unlinkDevice
                 }
             }
 

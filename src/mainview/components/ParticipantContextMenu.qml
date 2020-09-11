@@ -38,7 +38,7 @@ Item {
 
     function openMenu(){
         if (showHangup)
-            ContextMenuGenerator.addMenuItem(qsTr("Hang up"),
+            ContextMenuGenerator.addMenuItem(JamiStrings.hangup,
                                              "qrc:/images/icons/ic_call_end_white_24px.svg",
                                              function (){
                                                  CallAdapter.hangupCall(uri)

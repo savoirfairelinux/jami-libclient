@@ -152,11 +152,11 @@ ColumnLayout {
         hoveredColor: JamiTheme.buttonTintedBlackHovered
         pressedColor: JamiTheme.buttonTintedBlackPressed
         outlined: true
-        toolTipText: qsTr("Press to link one more device with this account")
+        toolTipText: JamiStrings.tipLinkNewDevice
 
         source: "qrc:/images/icons/round-add-24px.svg"
 
-        text: qsTr("Link Another Device")
+        text: JamiStrings.linkAnotherDevice
 
         onClicked: linkDeviceDialog.openLinkDeviceDialog()
     }

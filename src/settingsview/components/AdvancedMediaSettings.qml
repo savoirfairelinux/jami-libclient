@@ -42,7 +42,7 @@ ColumnLayout {
         Layout.fillWidth: true
         Layout.preferredHeight: JamiTheme.preferredFieldHeight
 
-        text: qsTr("Media")
+        text: JamiStrings.media
         font.pointSize: JamiTheme.headerFontSize
         font.kerning: true
 
@@ -57,7 +57,7 @@ ColumnLayout {
         ToggleSwitch {
             id: videoCheckBox
 
-            labelText: qsTr("Enable Video")
+            labelText: JamiStrings.enableVideo
             fontPointSize: JamiTheme.settingsFontSize
 
             onSwitchToggled: SettingsAdapter.setVideoState(checked)

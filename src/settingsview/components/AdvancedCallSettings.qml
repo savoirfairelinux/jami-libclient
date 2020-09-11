@@ -50,7 +50,7 @@ ColumnLayout {
            SettingsAdapter.set_RingtonePath(url)
             btnRingtone.setText(UtilsAdapter.toFileInfoName(url))
         } else if (SettingsAdapter.getAccountConfig_Ringtone_RingtonePath().length === 0){
-            btnRingtone.setText(qsTr("Add a custom ringtone"))
+            btnRingtone.setText(JamiStrings.addCustomRingtone)
         }
     }
 
@@ -61,7 +61,7 @@ ColumnLayout {
         property string openPath : oldPath === "" ? (UtilsAdapter.getCurrentPath() + "/ringtones/") : (UtilsAdapter.toFileAbsolutepath(oldPath))
 
         mode: JamiFileDialog.OpenFile
-        title: qsTr("Select a new ringtone")
+        title: JamiStrings.selectNewRingtone
         folder: openPath
 
         nameFilters: [qsTr("Audio Files") + " (*.wav *.ogg *.opus *.mp3 *.aiff *.wma)", qsTr(
@@ -76,7 +76,7 @@ ColumnLayout {
     ElidedTextLabel {
         Layout.fillWidth: true
 
-        eText: qsTr("Call Settings")
+        eText: JamiStrings.callSettings
         fontSize: JamiTheme.headerFontSize
         maxWidth: width
     }
@@ -89,7 +89,7 @@ ColumnLayout {
             id: checkBoxUntrusted
             visible: !root.isSIP
 
-            labelText: qsTr("Allow incoming calls from unknown contacts")
+            labelText: JamiStrings.allowCallsUnknownContacs
             fontPointSize: JamiTheme.settingsFontSize
 
             onSwitchToggled: {
@@ -100,7 +100,7 @@ ColumnLayout {
         ToggleSwitch {
             id: checkBoxAutoAnswer
 
-            labelText: qsTr("Auto Answer Calls")
+            labelText: JamiStrings.autoAnswerCalls
             fontPointSize: JamiTheme.settingsFontSize
 
             onSwitchToggled: {
@@ -111,7 +111,7 @@ ColumnLayout {
         ToggleSwitch {
             id: checkBoxCustomRingtone
 
-            labelText: qsTr("Enable Custom Ringtone")
+            labelText: JamiStrings.enableCustomRingtone
             fontPointSize: JamiTheme.settingsFontSize
 
             onSwitchToggled: {
@@ -125,7 +125,7 @@ ColumnLayout {
             Layout.fillWidth: true
             Layout.preferredHeight: JamiTheme.preferredFieldHeight
 
-            titleField: qsTr("Select Custom Ringtone")
+            titleField: JamiStrings.selectCustomRingtone
             source: "qrc:/images/icons/round-folder-24px.svg"
             itemWidth: root.itemWidth
             onClick: ringtonePath_Dialog.open()
@@ -135,7 +135,7 @@ ColumnLayout {
             id: checkBoxRdv
             visible: !isSIP
 
-            labelText: qsTr("(Experimental) Rendez-vous: turn your account into a conference room")
+            labelText: JamiStrings.rendezVous
             fontPointSize: JamiTheme.settingsFontSize
 
             onSwitchToggled: {

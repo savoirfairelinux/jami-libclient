@@ -117,7 +117,7 @@ Rectangle {
             Layout.preferredWidth: preferredWidth
             Layout.preferredHeight: preferredHeight
 
-            text: qsTr("Import from another device")
+            text: JamiStrings.linkFromAnotherDevice
             fontCapitalization: Font.AllUppercase
             toolTipText: qsTr("Import account from other device")
             source: "qrc:/images/icons/devices-24px.svg"
@@ -137,7 +137,7 @@ Rectangle {
             Layout.preferredWidth: preferredWidth
             Layout.preferredHeight: preferredHeight
 
-            text: qsTr("Connect from backup")
+            text: JamiStrings.connectFromBackup
             fontCapitalization: Font.AllUppercase
             toolTipText: qsTr("Import account from backup file")
             source: "qrc:/images/icons/backup-24px.svg"
@@ -157,9 +157,9 @@ Rectangle {
             Layout.preferredWidth: preferredWidth
             Layout.preferredHeight: preferredHeight
 
-            text: qsTr("Show advanced")
+            text: JamiStrings.advancedFeatures
             fontCapitalization: Font.AllUppercase
-            toolTipText: qsTr("Show advanced options")
+            toolTipText: JamiStrings.showAdvancedFeatures
             color: JamiTheme.buttonTintedBlue
             hoveredColor: JamiTheme.buttonTintedBlueHovered
             pressedColor: JamiTheme.buttonTintedBluePressed
@@ -169,7 +169,7 @@ Rectangle {
 
             ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
             ToolTip.visible: hovered
-            ToolTip.text: qsTr("Show advanced options")
+            ToolTip.text: JamiStrings.showAdvancedFeatures
 
             onClicked: {
                 connectAccountManagerButton.visible = !connectAccountManagerButton.visible
@@ -186,9 +186,9 @@ Rectangle {
 
             visible: false
 
-            text: qsTr("Connect to management server")
+            text: JamiStrings.connectJAMSServer
             fontCapitalization: Font.AllUppercase
-            toolTipText: qsTr("Login to account manager")
+            toolTipText: JamiStrings.createFromJAMS
             source: "qrc:/images/icons/router-24px.svg"
             color: JamiTheme.buttonTintedBlue
             hoveredColor: JamiTheme.buttonTintedBlueHovered
@@ -208,7 +208,7 @@ Rectangle {
 
             visible: false
 
-            text: qsTr("Create a sip account")
+            text: JamiStrings.addSIPAccount
             fontCapitalization: Font.AllUppercase
             toolTipText: qsTr("Create new SIP account")
             source: "qrc:/images/default_avatar_overlay.svg"
@@ -247,7 +247,7 @@ Rectangle {
         onExitColor: root.color
 
         source: "qrc:/images/icons/ic_arrow_back_24px.svg"
-        toolTipText: qsTr("Back")
+        toolTipText: JamiStrings.back
 
         onClicked: leavePage()
     }

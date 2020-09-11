@@ -142,6 +142,7 @@ registerTypes()
      */
     QML_REGISTERSINGLETONTYPE_URL("qrc:/src/constant/JamiTheme.qml", JamiTheme, 1, 0);
     QML_REGISTERSINGLETONTYPE_URL("qrc:/src/constant/JamiQmlUtils.qml", JamiQmlUtils, 1, 0);
+    QML_REGISTERSINGLETONTYPE_URL("qrc:/src/constant/JamiStrings.qml", JamiStrings, 1, 0);
 
     /*
      * C++ singletons

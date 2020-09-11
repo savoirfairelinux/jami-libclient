@@ -126,7 +126,7 @@ Dialog {
         Text {
             Layout.alignment: Qt.AlignRight
             font.pointSize: JamiTheme.textFontSize
-            text: qsTr("ID")
+            text: JamiStrings.identifier
             color: JamiTheme.faddedFontColor
         }
 
@@ -152,7 +152,7 @@ Dialog {
         Text {
             Layout.alignment: Qt.AlignRight
             font.pointSize: JamiTheme.textFontSize
-            text: qsTr("QR Code")
+            text: JamiStrings.qrCode
             color: JamiTheme.faddedFontColor
         }
 

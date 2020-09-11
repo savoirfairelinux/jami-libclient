@@ -29,7 +29,7 @@ Dialog {
     id: root
 
     function openLinkDeviceDialog() {
-        infoLabel.text = qsTr("This pin and the account password should be entered in your device within 10 minutes.")
+        infoLabel.text = JamiStrings.pinTimerInfos
         passwordEdit.clear()
         root.open()
         if(AccountAdapter.hasPassword()) {
@@ -85,7 +85,7 @@ Dialog {
             infoLabel.isSucessState = true
             yourPinLabel.visible = true
             exportedPIN.visible = true
-            infoLabel.text = qsTr("This pin and the account password should be entered in your device within 10 minutes.")
+            infoLabel.text = JamiStrings.pinTimerInfos
             exportedPIN.text = pin
         } else {
             infoLabel.isSucessState = false
@@ -134,7 +134,7 @@ Dialog {
             anchors.leftMargin: JamiTheme.preferredMarginSize
             anchors.topMargin: JamiTheme.preferredMarginSize
 
-            text: qsTr("Link another device")
+            text: JamiStrings.linkAnotherDevice
             font.pointSize: JamiTheme.headerFontSize
             wrapMode: Text.Wrap
         }
@@ -349,7 +349,7 @@ Dialog {
                         Layout.preferredWidth: parent.width - JamiTheme.preferredMarginSize * 2
 
                         wrapMode: Text.Wrap
-                        text: qsTr("This pin and the account password should be entered in your device within 10 minutes.")
+                        text: JamiStrings.pinTimerInfos
                         font.pointSize: 8
                         font.kerning: true
 
@@ -375,7 +375,7 @@ Dialog {
                             id: btnCloseExportDialog
 
                             contentItem: Text {
-                                text: qsTr("CLOSE")
+                                text: JamiStrings.close
                                 color: JamiTheme.buttonTintedBlue
                             }
 

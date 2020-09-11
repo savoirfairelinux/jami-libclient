@@ -49,7 +49,7 @@ ColumnLayout {
         horizontalAlignment: Text.AlignLeft
         verticalAlignment: Text.AlignVCenter
 
-        text: qsTr("Public Address")
+        text: JamiStrings.publicAddress
         elide: Text.ElideRight
     }
 
@@ -60,7 +60,7 @@ ColumnLayout {
         ToggleSwitch {
             id: checkBoxCustomAddressPort
 
-            labelText: qsTr("Use Custom Address/Port")
+            labelText: JamiStrings.useCustomAddress
             fontPointSize: JamiTheme.settingsFontSize
 
             onSwitchToggled: {
@@ -76,7 +76,7 @@ ColumnLayout {
             Layout.fillWidth: true
             Layout.preferredHeight: JamiTheme.preferredFieldHeight
             itemWidth: root.itemWidth
-            titleField: qsTr("Address")
+            titleField: JamiStrings.address
 
             onEditFinished: SettingsAdapter.lineEditSIPCustomAddressLineEditTextChanged(textField)
         }
@@ -84,7 +84,7 @@ ColumnLayout {
         SettingSpinBox {
             id: customPortSIPSpinBox
 
-            title: qsTr("Port")
+            title: JamiStrings.port
             itemWidth: root.itemWidth
             bottomValue: 0
             topValue: 65535

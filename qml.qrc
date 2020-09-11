@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/">
+        <file>src/constant/JamiStrings.qml</file>
         <file>src/settingsview/SettingsView.qml</file>
         <file>src/settingsview/components/IconButton.qml</file>
         <file>src/settingsview/components/LeftPanelView.qml</file>

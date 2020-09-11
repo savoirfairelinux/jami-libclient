@@ -45,7 +45,7 @@ Dialog {
             anchors.leftMargin: JamiTheme.preferredMarginSize
             anchors.topMargin: JamiTheme.preferredMarginSize
 
-            text: qsTr("Enter this account's password to confirm the removal of this device")
+            text: JamiStrings.confirmRemovalRequest
             wrapMode: Text.Wrap
             font.pointSize: JamiTheme.headerFontSize
         }

@@ -70,7 +70,7 @@ Rectangle {
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
 
-                text: qsTr("Jami is a free software for universal communication which repects the freedoms and privacy of its user.")
+                text: JamiStrings.description
             }
 
             Label {
@@ -88,7 +88,7 @@ Rectangle {
 
                 visible: AccountAdapter.currentAccountType === Profile.Type.RING
 
-                text: qsTr("This is your ID.\nCopy and share it with your friends")
+                text: JamiStrings.shareInvite
                 color: JamiTheme.faddedFontColor
             }
 

@@ -85,7 +85,7 @@ Window {
 
             font.pointSize: JamiTheme.textFontSize + 2
             font.bold: true
-            text: qsTr("Choose A Screen to Share")
+            text: JamiStrings.selectScreen
         }
 
         ScrollView {
@@ -279,7 +279,7 @@ Window {
 
         visible: selectedScreenNumber != -1
 
-        text: qsTr("Share Screen")
+        text: JamiStrings.shareScreen
         radius: 10
 
         onClicked: {

@@ -67,14 +67,14 @@ Rectangle {
             Layout.preferredWidth: createAccountButton.width
 
             Label {
-                text: qsTr("Configure an existing SIP account")
+                text: JamiStrings.configureExistingSIP
                 font.pointSize: JamiTheme.textFontSize + 3
             }
 
             Label {
                 Layout.alignment: Qt.AlignRight
 
-                text: qsTr("Optional")
+                text: JamiStrings.optional
                 color: "white"
                 padding: 8
 
@@ -94,7 +94,7 @@ Rectangle {
             Layout.preferredWidth: createAccountButton.width
 
             selectByMouse: true
-            placeholderText: qsTr("Server")
+            placeholderText: JamiStrings.server
             font.pointSize: 9
             font.kerning: true
         }
@@ -107,7 +107,7 @@ Rectangle {
             Layout.preferredWidth: createAccountButton.width
 
             selectByMouse: true
-            placeholderText: qsTr("Proxy")
+            placeholderText: JamiStrings.proxy
             font.pointSize: 9
             font.kerning: true
         }
@@ -120,7 +120,7 @@ Rectangle {
             Layout.preferredWidth: createAccountButton.width
 
             selectByMouse: true
-            placeholderText: qsTr("Username")
+            placeholderText: JamiStrings.username
             font.pointSize: 9
             font.kerning: true
         }
@@ -134,7 +134,7 @@ Rectangle {
 
             selectByMouse: true
             echoMode: TextInput.Password
-            placeholderText: qsTr("Password")
+            placeholderText: JamiStrings.password
             font.pointSize: 9
             font.kerning: true
         }
@@ -146,7 +146,7 @@ Rectangle {
             Layout.preferredWidth: preferredWidth
             Layout.preferredHeight: preferredHeight
 
-            text: qsTr("CREATE SIP ACCOUNT")
+            text: JamiStrings.createSIPAccount
             color: JamiTheme.wizardBlueButtons
             hoveredColor: JamiTheme.buttonTintedBlueHovered
             pressedColor: JamiTheme.buttonTintedBluePressed
@@ -173,7 +173,7 @@ Rectangle {
         onExitColor: root.color
 
         source: "qrc:/images/icons/ic_arrow_back_24px.svg"
-        toolTipText: qsTr("Back to welcome page")
+        toolTipText: JamiStrings.backToWelcome
 
         onClicked: leavePage()
     }

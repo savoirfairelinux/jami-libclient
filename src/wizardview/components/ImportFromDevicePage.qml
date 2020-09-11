@@ -65,7 +65,7 @@ Rectangle {
         Text {
             Layout.alignment: Qt.AlignCenter
 
-            text: qsTr("Enter your main Jami account password")
+            text: JamiStrings.mainAccountPassword
             font.pointSize: JamiTheme.menuFontSize
         }
 
@@ -94,8 +94,7 @@ Rectangle {
             Layout.preferredWidth: connectBtn.width
             Layout.preferredHeight: preferredHeight
 
-            text: qsTr("Enter the PIN from another configured Jami account. " +
-                       "Use the \"Link Another Device\" feature to obtain a PIN")
+            text: JamiStrings.enterPIN
             wrapMode: Text.Wrap
 
             onTextChanged: {
@@ -130,7 +129,7 @@ Rectangle {
             Layout.preferredHeight: preferredHeight
 
             spinnerTriggeredtext: qsTr("Generating account…")
-            normalText: qsTr("CONNECT FROM ANOTHER DEVICE")
+            normalText: JamiStrings.connectFromAnotherDevice
 
             enabled: pinFromDevice.text.length !== 0 && !spinnerTriggered
 

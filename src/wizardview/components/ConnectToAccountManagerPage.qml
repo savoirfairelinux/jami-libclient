@@ -71,14 +71,14 @@ Rectangle {
             Layout.preferredWidth: connectBtn.width
 
             Label {
-                text: qsTr("Enter URL of management server")
+                text: JamiStrings.enterJAMSURL
                 font.pointSize: JamiTheme.textFontSize + 3
             }
 
             Label {
                 Layout.alignment: Qt.AlignRight
 
-                text: qsTr("Required")
+                text: JamiStrings.required
                 color: "#ff1f62"
                 padding: 8
 
@@ -98,7 +98,7 @@ Rectangle {
             Layout.alignment: Qt.AlignCenter
 
             selectByMouse: true
-            placeholderText: qsTr("Jami management server URL")
+            placeholderText: JamiStrings.jamiManagementServerURL
             font.pointSize: 9
             font.kerning: true
 
@@ -110,7 +110,7 @@ Rectangle {
         Label {
             Layout.alignment: Qt.AlignLeft
 
-            text: qsTr("Enter your organization credentials")
+            text: JamiStrings.jamsCredentials
             wrapMode: Text.Wrap
         }
 
@@ -122,7 +122,7 @@ Rectangle {
             Layout.alignment: Qt.AlignCenter
 
             selectByMouse: true
-            placeholderText: qsTr("Username")
+            placeholderText: JamiStrings.username
             font.pointSize: 9
             font.kerning: true
 
@@ -139,7 +139,7 @@ Rectangle {
             Layout.alignment: Qt.AlignCenter
 
             selectByMouse: true
-            placeholderText: qsTr("Password")
+            placeholderText: JamiStrings.password
             font.pointSize: 9
             font.kerning: true
 
@@ -156,8 +156,8 @@ Rectangle {
             Layout.preferredWidth: preferredWidth
             Layout.preferredHeight: preferredHeight
 
-            spinnerTriggeredtext: qsTr("Generating account…")
-            normalText: qsTr("CONNECT")
+            spinnerTriggeredtext: JamiStrings.generatingAccount
+            normalText: JamiStrings.connect
 
             enabled: accountManagerEdit.text.length !== 0
                      && usernameManagerEdit.text.length !== 0
@@ -197,7 +197,7 @@ Rectangle {
         onExitColor: root.color
 
         source: "qrc:/images/icons/ic_arrow_back_24px.svg"
-        toolTipText: qsTr("Back to welcome page")
+        toolTipText: JamiStrings.backToWelcome
 
         onClicked: leavePage()
     }

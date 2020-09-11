@@ -63,7 +63,7 @@ ColumnLayout {
         Label {
             id: idLabel
 
-            text: qsTr("Id")
+            text: JamiStrings.identifier
             font.pointSize: JamiTheme.settingsFontSize
             font.kerning: true
 
@@ -117,7 +117,7 @@ ColumnLayout {
         ElidedTextLabel {
             Layout.fillWidth: true
 
-            eText: qsTr("Registered name")
+            eText: JamiStrings.username
             fontSize: JamiTheme.settingsFontSize
             maxWidth: width
         }
@@ -132,7 +132,7 @@ ColumnLayout {
             wrapMode: Text.NoWrap
 
             placeholderText: registeredIdNeedsSet ?
-                                    qsTr("Type here to register a username") : ""
+                                    JamiStrings.registerUsername : ""
             text: {
                 if (!registeredIdNeedsSet)
                     return SettingsAdapter.get_CurrentAccountInfo_RegisteredName()

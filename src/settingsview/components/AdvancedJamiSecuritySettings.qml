@@ -71,7 +71,7 @@ ColumnLayout {
         property string openPath : oldPath === "" ? (UtilsAdapter.getCurrentPath() + "/ringtones/") : (UtilsAdapter.toFileAbsolutepath(oldPath))
 
         mode: JamiFileDialog.OpenFile
-        title: qsTr("Select a CA certificate")
+        title: JamiStrings.selectCACert
         folder: openPath
         nameFilters: [qsTr("Certificate File") + " (*.crt)", qsTr(
                 "All files") + " (*)"]
@@ -89,7 +89,7 @@ ColumnLayout {
         property string openPath : oldPath === "" ? (UtilsAdapter.getCurrentPath() + "/ringtones/") : (UtilsAdapter.toFileAbsolutepath(oldPath))
 
         mode: JamiFileDialog.OpenFile
-        title: qsTr("Select a user certificate")
+        title: JamiStrings.selectUserCert
         folder: openPath
         nameFilters: [qsTr("Certificate File") + " (*.crt)", qsTr(
                 "All files") + " (*)"]
@@ -109,7 +109,7 @@ ColumnLayout {
         property string openPath : oldPath === "" ? (UtilsAdapter.getCurrentPath() + "/ringtones/") : (UtilsAdapter.toFileAbsolutepath(oldPath))
 
         mode: JamiFileDialog.OpenFile
-        title: qsTr("Select a private key")
+        title: JamiStrings.selectPrivateKey
         folder: openPath
         nameFilters: [qsTr("Key File") + " (*.key)", qsTr(
                 "All files") + " (*)"]
@@ -124,7 +124,7 @@ ColumnLayout {
         Layout.fillWidth: true
         Layout.preferredHeight: JamiTheme.preferredFieldHeight
 
-        eText: qsTr("Security")
+        eText: JamiStrings.security
         fontSize: JamiTheme.headerFontSize
         maxWidth: width
     }
@@ -138,7 +138,7 @@ ColumnLayout {
             Layout.fillWidth: true
             Layout.preferredHeight: JamiTheme.preferredFieldHeight
 
-            titleField: qsTr("CA Certificate")
+            titleField: JamiStrings.caCertificate
             source: "qrc:/images/icons/round-folder-24px.svg"
             itemWidth: root.itemWidth
             onClick: caCert_Dialog.open()
@@ -149,7 +149,7 @@ ColumnLayout {
             Layout.fillWidth: true
             Layout.preferredHeight: JamiTheme.preferredFieldHeight
 
-            titleField: qsTr("User Certificate")
+            titleField: JamiStrings.userCertificate
             source: "qrc:/images/icons/round-folder-24px.svg"
             itemWidth: root.itemWidth
             onClick: userCert_Dialog.open()
@@ -160,7 +160,7 @@ ColumnLayout {
             Layout.fillWidth: true
             Layout.preferredHeight: JamiTheme.preferredFieldHeight
 
-            titleField: qsTr("Private Key")
+            titleField: JamiStrings.privateKey
             source: "qrc:/images/icons/round-folder-24px.svg"
             itemWidth: root.itemWidth
             onClick: privateKey_Dialog.open()
@@ -172,7 +172,7 @@ ColumnLayout {
             Layout.fillWidth: true
             Layout.preferredHeight: JamiTheme.preferredFieldHeight
             itemWidth: root.itemWidth
-            titleField: qsTr("Private Key Password")
+            titleField: JamiStrings.privateKeyPassword
         }
     }
 }

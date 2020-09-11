@@ -65,9 +65,9 @@ VideoInputDeviceModel::data(const QModelIndex& index, int role) const
     if (deviceList.size() == 0 && index.row() == 0) {
         switch (role) {
         case Role::DeviceName:
-            return QVariant(QObject::tr("No Device"));
+            return QVariant(QObject::tr("No device"));
         case Role::DeviceName_UTF8:
-            return QVariant(QObject::tr("No Device").toUtf8());
+            return QVariant(QObject::tr("No device").toUtf8());
         }
     }
 

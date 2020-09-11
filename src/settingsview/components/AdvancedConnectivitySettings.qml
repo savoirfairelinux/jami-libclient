@@ -36,7 +36,6 @@ ColumnLayout {
     property bool isSIP
 
     function updateConnectivityAccountInfos() {
-        checkAutoConnectOnLocalNetwork.checked = SettingsAdapter.getAccountConfig_PeerDiscovery()
         registrationExpireTimeoutSpinBox.setValue(SettingsAdapter.getAccountConfig_Registration_Expire())
         networkInterfaceSpinBox.setValue(SettingsAdapter.getAccountConfig_Localport())
         checkBoxUPnP.checked = SettingsAdapter.getAccountConfig_UpnpEnabled()
@@ -56,7 +55,7 @@ ColumnLayout {
         Layout.fillWidth: true
         Layout.preferredHeight: JamiTheme.preferredFieldHeight
 
-        eText: qsTr("Connectivity")
+        eText: JamiStrings.connectivity
         fontSize: JamiTheme.headerFontSize
         maxWidth: width
     }
@@ -65,25 +64,11 @@ ColumnLayout {
         Layout.fillWidth: true
         Layout.leftMargin: JamiTheme.preferredMarginSize
 
-        ToggleSwitch {
-            id: checkAutoConnectOnLocalNetwork
-            visible: !root.isSIP
-
-            Layout.fillWidth: true
-
-            labelText: qsTr("Auto Connect On Local Network")
-            fontPointSize: JamiTheme.settingsFontSize
-
-            onSwitchToggled: {
-                SettingsAdapter.setAutoConnectOnLocalNetwork(checked)
-            }
-        }
-
         SettingSpinBox {
             id: registrationExpireTimeoutSpinBox
             visible: isSIP
 
-            title: qsTr("Registration Expire Timeout (seconds)")
+            title: JamiStrings.registrationTimeOut
             itemWidth: root.itemWidth
             bottomValue: 0
             topValue: 3000
@@ -96,7 +81,7 @@ ColumnLayout {
             id: networkInterfaceSpinBox
             visible: isSIP
 
-            title: qsTr("Newtwork interface")
+            title: JamiStrings.networkInterface
             itemWidth: root.itemWidth
             bottomValue: 0
             topValue: 65536
@@ -110,7 +95,7 @@ ColumnLayout {
 
             Layout.fillWidth: true
 
-            labelText: qsTr("Use UPnP")
+            labelText: JamiStrings.useUPnP
             fontPointSize: JamiTheme.settingsFontSize
 
             onSwitchToggled: SettingsAdapter.setUseUPnP(checked)
@@ -121,7 +106,7 @@ ColumnLayout {
 
             Layout.fillWidth: true
 
-            labelText: qsTr("Use TURN")
+            labelText: JamiStrings.useTURN
             fontPointSize: JamiTheme.settingsFontSize
 
             onSwitchToggled: {
@@ -141,7 +126,7 @@ ColumnLayout {
             Layout.fillWidth: true
             Layout.preferredHeight: JamiTheme.preferredFieldHeight
             itemWidth: root.itemWidth
-            titleField: qsTr("TURN Address")
+            titleField: JamiStrings.turnAdress
             onEditFinished: SettingsAdapter.setTURNAddress(textField)
         }
 
@@ -151,7 +136,7 @@ ColumnLayout {
             Layout.fillWidth: true
             Layout.preferredHeight: JamiTheme.preferredFieldHeight
             itemWidth: root.itemWidth
-            titleField: qsTr("TURN Username")
+            titleField: JamiStrings.turnUsername
             onEditFinished: SettingsAdapter.setTURNUsername(textField)
         }
 
@@ -161,7 +146,7 @@ ColumnLayout {
             Layout.fillWidth: true
             Layout.preferredHeight: JamiTheme.preferredFieldHeight
             itemWidth: root.itemWidth
-            titleField: qsTr("TURN Password")
+            titleField: JamiStrings.turnPassword
             onEditFinished: SettingsAdapter.setTURNPassword(textField)
         }
 
@@ -172,7 +157,7 @@ ColumnLayout {
             Layout.fillWidth: true
             Layout.preferredHeight: JamiTheme.preferredFieldHeight
             itemWidth: root.itemWidth
-            titleField: qsTr("TURN Realm")
+            titleField: JamiStrings.turnRealm
             onEditFinished: SettingsAdapter.setTURNRealm(textField)
         }
 
@@ -181,7 +166,7 @@ ColumnLayout {
 
             Layout.fillWidth: true
 
-            labelText: qsTr("Use STUN")
+            labelText: JamiStrings.useSTUN
             fontPointSize: JamiTheme.settingsFontSize
 
             onSwitchToggled: {
@@ -196,7 +181,7 @@ ColumnLayout {
             Layout.fillWidth: true
             Layout.preferredHeight: JamiTheme.preferredFieldHeight
             itemWidth: root.itemWidth
-            titleField: qsTr("STUN Address")
+            titleField: JamiStrings.stunAdress
             onEditFinished: SettingsAdapter.setSTUNAddress(textField)
         }
     }

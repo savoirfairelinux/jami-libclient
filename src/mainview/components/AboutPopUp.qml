@@ -23,6 +23,7 @@ import net.jami.Models 1.0
 import net.jami.Adapters 1.0
 
 import "../../commoncomponents"
+import "../../constant"
 
 Dialog {
     id: aboutPopUp
@@ -83,7 +84,7 @@ Dialog {
                 TextMetrics {
                     id: textMetricsjamiVersionText
                     font: jamiVersionText.font
-                    text: qsTr("version") + ": " + UtilsAdapter.getVersionStr()
+                    text: JamiStrings.version + ": " + UtilsAdapter.getVersionStr()
                 }
             }
 
@@ -106,7 +107,7 @@ Dialog {
                 TextMetrics {
                     id: textMetricsjamiSlogansText
                     font: jamiSlogansText.font
-                    text: qsTr("Together")
+                    text: JamiStrings.slogan
                 }
             }
 
@@ -126,7 +127,7 @@ Dialog {
 
 
                 // TextMetrics does not work for multi-line.
-                text: qsTr("The Qt client for Jami.\nJami is a secured and distributed communication software.")
+                text: JamiStrings.declaration
             }
 
             Label {
@@ -223,7 +224,7 @@ Dialog {
 
                 Layout.alignment: Qt.AlignCenter
                 Layout.preferredWidth: aboutPopUpContentRect.width
-                Layout.preferredHeight: 30
+                Layout.preferredHeight: JamiTheme.preferredFieldHeight
                 Layout.bottomMargin: 10
 
                 RowLayout {
@@ -233,7 +234,8 @@ Dialog {
 
                     MaterialButton {
                         id: changeLogButton
-                        text: qsTr("Changelog")
+                        Layout.preferredHeight: JamiTheme.preferredFieldHeight
+                        text: JamiStrings.changelog
                         color: projectCreditsScrollView.visible? JamiTheme.buttonTintedGreyInactive : JamiTheme.buttonTintedGrey
                         hoveredColor: JamiTheme.buttonTintedGreyHovered
                         pressedColor: JamiTheme.buttonTintedGreyPressed
@@ -248,7 +250,8 @@ Dialog {
 
                     MaterialButton {
                         id: creditsButton
-                        text: qsTr("Credit")
+                        Layout.preferredHeight: JamiTheme.preferredFieldHeight
+                        text: JamiStrings.credits
                         color: projectCreditsScrollView.visible? JamiTheme.buttonTintedGrey : JamiTheme.buttonTintedGreyInactive
                         hoveredColor: JamiTheme.buttonTintedGreyHovered
                         pressedColor: JamiTheme.buttonTintedGreyPressed

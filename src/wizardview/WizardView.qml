@@ -100,7 +100,7 @@ Rectangle {
 
         // reportFailure
         function onReportFailure() {
-            var errorMessage = qsTr("Error when creating your account. Check your credentials")
+            var errorMessage = JamiStrings.errorCreateAccount
 
             switch(controlPanelStackView.currentIndex) {
             case WizardView.WizardViewPageIndex.IMPORTFROMDEVICEPAGE:
@@ -156,8 +156,7 @@ Rectangle {
                 var success = (code === successCode)
 
                 var title = success ? qsTr("Success") : qsTr("Error")
-                var info = success ? qsTr("Export Successful") : qsTr(
-                                         "Export Failed")
+                var info = success ? JamiStrings.backupSuccessful : JamiStrings.backupFailed
 
                 AccountAdapter.passwordSetStatusMessageBox(success,
                                                          title, info)

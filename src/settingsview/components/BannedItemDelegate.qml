@@ -108,7 +108,7 @@ ItemDelegate {
                 horizontalAlignment: Text.AlignLeft
                 verticalAlignment: Text.AlignVCenter
                 elide: Text.ElideRight
-                text: contactName === "" ? qsTr("name") : contactName
+                text: contactName === "" ? JamiStrings.name : contactName
             }
 
             Label{
@@ -126,7 +126,7 @@ ItemDelegate {
                 horizontalAlignment: Qt.AlignLeft
                 verticalAlignment: Qt.AlignVCenter
                 elide: Text.ElideRight
-                text: contactID === "" ? qsTr("id") : contactID
+                text: contactID === "" ? JamiStrings.identifier : contactID
             }
         }
 
@@ -151,7 +151,7 @@ ItemDelegate {
             backgroundColor: "transparent"
 
             ToolTip.visible: hovered
-            ToolTip.text: qsTr("Add as contact")
+            ToolTip.text: reinstateContact
 
             onClicked: {
                 btnReAddContactClicked()

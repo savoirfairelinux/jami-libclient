@@ -17,6 +17,7 @@
  */
 import QtQuick 2.14
 import Qt.labs.platform 1.1
+import "../constant"
 
 FileDialog {
     id: root
@@ -30,7 +31,7 @@ FileDialog {
         SaveFile
     }
 
-    title: "Please choose a file"
+    title: JamiStrings.selectFile
 
     onModeChanged: {
         switch(mode) {

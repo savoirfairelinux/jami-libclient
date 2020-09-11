@@ -42,7 +42,7 @@ ColumnLayout {
         Layout.fillWidth: true
         Layout.preferredHeight: JamiTheme.preferredFieldHeight
 
-        eText: qsTr("Voicemail")
+        eText: JamiStrings.voiceMail
         fontSize: JamiTheme.headerFontSize
         maxWidth: width
     }
@@ -54,7 +54,7 @@ ColumnLayout {
         Layout.leftMargin: JamiTheme.preferredMarginSize
         Layout.preferredHeight: JamiTheme.preferredFieldHeight
         itemWidth: root.itemWidth
-        titleField: qsTr("Voicemail Dial Code")
+        titleField: JamiStrings.voiceMailDialCode
 
         onEditFinished: SettingsAdapter.lineEditVoiceMailDialCodeEditFinished(textField)
     }

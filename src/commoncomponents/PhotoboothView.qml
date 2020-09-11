@@ -53,7 +53,7 @@ ColumnLayout {
         id: importFromFileToAvatar_Dialog
 
         mode: JamiFileDialog.OpenFile
-        title: qsTr("Choose an image to be the avatar")
+        title: JamiStrings.chooseAvatarImage
         folder: StandardPaths.writableLocation(StandardPaths.PicturesLocation)
 
         nameFilters: [ qsTr("Image Files") + " (*.png *.jpg *.jpeg)",qsTr(
@@ -234,7 +234,7 @@ ColumnLayout {
             radius: height / 6
             source: "qrc:/images/icons/round-folder-24px.svg"
 
-            toolTipText: qsTr("Import avatar from image file")
+            toolTipText: JamiStrings.importFromFile
 
             onClicked: {
                 importFromFileToAvatar_Dialog.open()

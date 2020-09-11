@@ -241,14 +241,14 @@ Window{
                     ScrollBar.horizontal.policy: ScrollBar.AsNeeded
                     ScrollBar.vertical.policy: ScrollBar.AsNeeded
 
-                ColumnLayout{
+                ColumnLayout {
                     spacing: 7
 
                     width: stackedWidget.width
                     height: stackedWidget.height
                     Layout.alignment: Qt.AlignHCenter
 
-                    RowLayout{
+                    RowLayout {
                         Layout.fillWidth: true
 
                         Item{
@@ -259,7 +259,7 @@ Window{
                             Layout.maximumHeight: 20
                         }
 
-                        Label{
+                        Label {
                             id: accountMigrationLabel
 
                             Layout.alignment: Qt.AlignHCenter
@@ -269,7 +269,7 @@ Window{
                             font.kerning: true
                             wrapMode:Text.Wrap
 
-                            text: qsTr("Account Migration Required")
+                            text: JamiStrings.authenticationRequired
 
                             horizontalAlignment: Text.AlignLeft
                             verticalAlignment: Text.AlignVCenter
@@ -305,7 +305,7 @@ Window{
                             font.kerning: true
                             wrapMode:Text.Wrap
 
-                            text: qsTr("This account is malformed. Please enter your password")
+                            text: JamiStrings.migrationReason
 
                             horizontalAlignment: Text.AlignLeft
                             verticalAlignment: Text.AlignVCenter
@@ -443,7 +443,7 @@ Window{
                             Layout.preferredWidth: 92
                             Layout.preferredHeight: 30
 
-                            text: qsTr("Alias")
+                            text: JamiStrings.alias
                             font.pointSize: 10
                             font.kerning: true
 
@@ -516,7 +516,7 @@ Window{
                             Layout.preferredWidth: 92
                             Layout.preferredHeight: 30
 
-                            text: qsTr("Username")
+                            text: JamiStrings.username
                             font.pointSize: 10
                             font.kerning: true
 
@@ -589,7 +589,7 @@ Window{
                             Layout.preferredWidth: 92
                             Layout.preferredHeight: 30
 
-                            text: qsTr("Manager Uri")
+                            text: JamiStrings.jamsServer
                             font.pointSize: 10
                             font.kerning: true
 
@@ -662,7 +662,7 @@ Window{
                             Layout.preferredWidth: 92
                             Layout.preferredHeight: 30
 
-                            text: qsTr("Password")
+                            text: JamiStrings.password
                             font.pointSize: 10
                             font.kerning: true
 
@@ -702,7 +702,7 @@ Window{
 
                             echoMode: TextInput.Password
 
-                            placeholderText: qsTr("Password")
+                            placeholderText: JamiStrings.password
 
                             onTextChanged: {
                                 if(text.length === 0){
@@ -766,7 +766,7 @@ Window{
                             Layout.preferredHeight: 30
                             Layout.minimumHeight: 30
 
-                            text: qsTr("Migrate")
+                            text: JamiStrings.authenticate
                             font.pointSize: 10
                             font.kerning: true
 
@@ -805,7 +805,7 @@ Window{
                             Layout.preferredHeight: 30
                             Layout.minimumHeight: 30
 
-                            text: qsTr("Delete")
+                            text: JamiStrings.deleteAccount
                             font.pointSize: 10
                             font.kerning: true
 
@@ -945,7 +945,7 @@ Window{
                             Layout.fillWidth: true
 
                             color: successState? "black" : "red"
-                            text: successState? qsTr("Migrating your Jami account...") : qsTr("Migration Failed")
+                            text: successState? JamiStrings.inProgress : JamiStrings.authenticationFailed
                             font.pointSize: 11
                             font.kerning: true
 

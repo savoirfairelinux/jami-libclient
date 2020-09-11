@@ -118,7 +118,7 @@ Rectangle {
             Layout.preferredHeight: preferredHeight
 
             enabled: !spinnerTriggered
-            normalText: qsTr("Save Profile")
+            normalText: JamiStrings.saveProfile
             spinnerTriggeredtext: root.isRdv ? qsTr("Generating rendez-vous…") : qsTr("Generating account…")
             onClicked: saveProfile()
         }
@@ -128,7 +128,7 @@ Rectangle {
             Layout.preferredWidth: preferredWidth
             Layout.preferredHeight: preferredHeight
 
-            text: qsTr("SKIP")
+            text: JamiStrings.skip
             enabled: saveProfileBtn.enabled
             color: enabled? JamiTheme.buttonTintedGrey : JamiTheme.buttonTintedGreyInactive
             hoveredColor: JamiTheme.buttonTintedGreyHovered

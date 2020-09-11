@@ -79,7 +79,7 @@ ColumnLayout {
         Layout.fillWidth: true
         Layout.preferredHeight: JamiTheme.preferredFieldHeight
 
-        eText: qsTr("SDP Session Negotiation (ICE Fallback)")
+        eText: JamiStrings.sdpSettingsTitle
         fontSize: JamiTheme.headerFontSize
         maxWidth: width
     }
@@ -89,7 +89,7 @@ ColumnLayout {
         Layout.preferredHeight: JamiTheme.preferredFieldHeight
         Layout.leftMargin: JamiTheme.preferredMarginSize
 
-        eText: qsTr("Only used during negotiation in case ICE is not supported")
+        eText: JamiStrings.sdpSettingsSubtitle
         fontSize: JamiTheme.settingsFontSize
         maxWidth: width
     }
@@ -101,7 +101,7 @@ ColumnLayout {
         SettingSpinBox {
             id: audioRTPMinPortSpinBox
 
-            title: qsTr("Audio RTP Min Port")
+            title: JamiStrings.audioRTPMinPort
             itemWidth: root.itemWidth
             bottomValue: 0
             topValue: 65535
@@ -113,7 +113,7 @@ ColumnLayout {
         SettingSpinBox {
             id: audioRTPMaxPortSpinBox
 
-            title: qsTr("Audio RTP Max Port")
+            title: JamiStrings.audioRTPMaxPort
             itemWidth: root.itemWidth
             bottomValue: 0
             topValue: 65535
@@ -125,7 +125,7 @@ ColumnLayout {
         SettingSpinBox {
             id: videoRTPMinPortSpinBox
 
-            title: qsTr("Video RTP Min Port")
+            title: JamiStrings.videoRTPMinPort
             itemWidth: root.itemWidth
             bottomValue: 0
             topValue: 65535
@@ -137,7 +137,7 @@ ColumnLayout {
         SettingSpinBox {
             id: videoRTPMaxPortSpinBox
 
-            title: qsTr("Video RTP Max Port")
+            title: JamiStrings.videoRTPMaxPort
             itemWidth: root.itemWidth
             bottomValue: 0
             topValue: 65535

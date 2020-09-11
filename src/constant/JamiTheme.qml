@@ -94,10 +94,6 @@ Item {
     property int preferredFieldHeight: 32
     property int preferredMarginSize: 16
 
-    // Place holder text.
-    property string contactSearchBarPlaceHolderConversationText: qsTr("Find or start a conversation")
-    property string contactSearchBarPlaceHolderInivitionText: qsTr("Search your invitations")
-
     // Jami theme colors
     function rgb256(r, g, b) {
         return Qt.rgba(r / 256, g / 256, b / 256, 1)
