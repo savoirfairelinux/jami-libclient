@@ -133,6 +133,7 @@ MainApplication::init()
 
     GlobalInstances::setPixmapManipulator(std::make_unique<PixbufManipulator>());
     initLrc();
+    initConnectivityMonitor();
 
     bool startMinimized {false};
     parseArguments(startMinimized);
@@ -206,6 +207,17 @@ MainApplication::initLrc()
         });
     LRCInstance::subscribeToDebugReceived();
     LRCInstance::getAPI().holdConferences = false;
+}
+
+void
+MainApplication::initConnectivityMonitor()
+{
+#ifdef Q_OS_WIN
+    connectivityMonitor_.reset(new ConnectivityMonitor(this));
+    connect(connectivityMonitor_.get(), &ConnectivityMonitor::connectivityChanged, [this] {
+        LRCInstance::connectivityChanged();
+    });
+#endif // Q_OS_WIN
 }
 
 void

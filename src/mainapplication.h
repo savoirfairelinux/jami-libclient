@@ -20,6 +20,8 @@
 
 #pragma once
 
+#include "connectivitymonitor.h"
+
 #include <QFile>
 #include <QApplication>
 #include <QQmlApplicationEngine>
@@ -40,6 +42,7 @@ public:
 private:
     void loadTranslations();
     void initLrc();
+    void initConnectivityMonitor();
     void parseArguments(bool& startMinimized);
     void setApplicationFont();
     void initQmlEngine();
@@ -48,6 +51,9 @@ private:
     void cleanup();
 
 private:
+#ifdef Q_OS_WIN
+    QScopedPointer<ConnectivityMonitor> connectivityMonitor_;
+#endif // Q_OS_WIN
     QScopedPointer<QFile> debugFile_;
     QQmlApplicationEngine* engine_;
 };
