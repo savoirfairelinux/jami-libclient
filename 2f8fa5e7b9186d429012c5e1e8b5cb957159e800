@@ -49,6 +49,30 @@
     },
     {
       "key": {
+        "uuid": "3aad7e4d_19956090",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 889
+      },
+      "writtenOn": "2020-09-11T21:19:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "daa8f48f_8d1240f5",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 3
+      },
+      "revId": "2f8fa5e7b9186d429012c5e1e8b5cb957159e800",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "310aade2_1f434fe8",
         "filename": "src/newaccountmodel.cpp",
         "patchSetId": 1
@@ -83,6 +107,30 @@
       "writtenOn": "2020-09-11T20:24:12Z",
       "side": 1,
       "message": "Ack",
+      "parentUuid": "310aade2_1f434fe8",
+      "range": {
+        "startLine": 217,
+        "startChar": 0,
+        "endLine": 219,
+        "endChar": 88
+      },
+      "revId": "2f8fa5e7b9186d429012c5e1e8b5cb957159e800",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5b916e2f_76142180",
+        "filename": "src/newaccountmodel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 219,
+      "author": {
+        "id": 889
+      },
+      "writtenOn": "2020-09-11T21:19:23Z",
+      "side": 1,
+      "message": "Done",
       "parentUuid": "310aade2_1f434fe8",
       "range": {
         "startLine": 217,
@@ -143,6 +191,30 @@
     },
     {
       "key": {
+        "uuid": "da7abc28_c791dffe",
+        "filename": "src/newaccountmodel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 260,
+      "author": {
+        "id": 889
+      },
+      "writtenOn": "2020-09-11T21:19:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a23a14e4_e24b13c8",
+      "range": {
+        "startLine": 239,
+        "startChar": 0,
+        "endLine": 260,
+        "endChar": 63
+      },
+      "revId": "2f8fa5e7b9186d429012c5e1e8b5cb957159e800",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "05c51c44_dc746f38",
         "filename": "src/newaccountmodel.cpp",
         "patchSetId": 1
@@ -177,6 +249,30 @@
       "writtenOn": "2020-09-11T20:24:12Z",
       "side": 1,
       "message": "Ack",
+      "parentUuid": "05c51c44_dc746f38",
+      "range": {
+        "startLine": 289,
+        "startChar": 8,
+        "endLine": 300,
+        "endChar": 63
+      },
+      "revId": "2f8fa5e7b9186d429012c5e1e8b5cb957159e800",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "0d814991_e4653640",
+        "filename": "src/newaccountmodel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 300,
+      "author": {
+        "id": 889
+      },
+      "writtenOn": "2020-09-11T21:19:23Z",
+      "side": 1,
+      "message": "Done",
       "parentUuid": "05c51c44_dc746f38",
       "range": {
         "startLine": 289,

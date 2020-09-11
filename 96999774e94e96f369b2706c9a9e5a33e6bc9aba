@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "0ba1917a_d1356eb4",
+        "filename": "src/newaccountmodel.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 221,
+      "author": {
+        "id": 889
+      },
+      "writtenOn": "2020-09-11T21:19:23Z",
+      "side": 1,
+      "message": "Yeah, that would probably be better. I made it a copy to keep the behavior constent with the other overloads that have const specifiers on their arguments. We could make this particular overload private and drop the const specifier and avoid the copy.",
+      "parentUuid": "f9f5f0cc_6445ba8b",
+      "range": {
+        "startLine": 221,
+        "startChar": 4,
+        "endLine": 221,
+        "endChar": 33
+      },
+      "revId": "96999774e94e96f369b2706c9a9e5a33e6bc9aba",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "19e55fd5_eb41debc",
         "filename": "src/newaccountmodel.cpp",
         "patchSetId": 2
@@ -36,6 +60,30 @@
       "writtenOn": "2020-09-11T20:23:43Z",
       "side": 1,
       "message": "If removing these two lines, will it affect anything?\n\n        details[ConfProperties::USERNAME] \u003d confProperties.username;\n        accountInfo.confProperties.credentials.swap(credentialsVec);\n\ncause originally it existed in the function, I am not sure what they do though",
+      "range": {
+        "startLine": 250,
+        "startChar": 1,
+        "endLine": 250,
+        "endChar": 83
+      },
+      "revId": "96999774e94e96f369b2706c9a9e5a33e6bc9aba",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "439aa3ca_8c634c40",
+        "filename": "src/newaccountmodel.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 250,
+      "author": {
+        "id": 889
+      },
+      "writtenOn": "2020-09-11T21:19:23Z",
+      "side": 1,
+      "message": "`details[ConfProperties::USERNAME] \u003d confProperties.username;`\nThis one is redundant since the username will now always be copied. In this case `details` is a copy to the `propertiesMap`\n\n`accountInfo.confProperties.credentials.swap(credentialsVec);`\nThe `credentialsVec` is a reference to `accountInfo.confProperties.credentials` after the change. So it is modified directly in the previous statements.\n\nI will conduct additional testing to make sure this is working as intended.",
+      "parentUuid": "19e55fd5_eb41debc",
       "range": {
         "startLine": 250,
         "startChar": 1,
