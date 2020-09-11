@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f9f5f0cc_6445ba8b",
+        "filename": "src/newaccountmodel.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 221,
+      "author": {
+        "id": 633
+      },
+      "writtenOn": "2020-09-11T20:23:43Z",
+      "side": 1,
+      "message": "I think we can just name propertiesMap as details so that we do not make a copy",
+      "range": {
+        "startLine": 221,
+        "startChar": 4,
+        "endLine": 221,
+        "endChar": 33
+      },
+      "revId": "96999774e94e96f369b2706c9a9e5a33e6bc9aba",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "19e55fd5_eb41debc",
+        "filename": "src/newaccountmodel.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 250,
+      "author": {
+        "id": 633
+      },
+      "writtenOn": "2020-09-11T20:23:43Z",
+      "side": 1,
+      "message": "If removing these two lines, will it affect anything?\n\n        details[ConfProperties::USERNAME] \u003d confProperties.username;\n        accountInfo.confProperties.credentials.swap(credentialsVec);\n\ncause originally it existed in the function, I am not sure what they do though",
+      "range": {
+        "startLine": 250,
+        "startChar": 1,
+        "endLine": 250,
+        "endChar": 83
+      },
+      "revId": "96999774e94e96f369b2706c9a9e5a33e6bc9aba",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    }
+  ]
+}
