@@ -45,7 +45,7 @@ RowLayout {
         toolTipText: JamiStrings.back
         hoverEnabled: true
 
-        visible: mainViewWindow.sidePanelHidden
+        visible: mainViewWindow.sidePanelOnly
 
         onClicked: {
             backArrowClicked()

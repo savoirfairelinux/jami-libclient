@@ -169,7 +169,7 @@ Rectangle {
                 toolTipText: qsTr("Toggle to display side panel")
                 hoverEnabled: true
 
-                visible: mainViewWindow.sidePanelHidden
+                visible: mainViewWindow.sidePanelOnly
 
                 onClicked: {
                     mainViewWindow.showWelcomeView() // TODO: refactor with msg manager

@@ -119,7 +119,6 @@ ConversationsAdapter::deselectConversation()
         return;
     }
 
-    currentConversationModel->selectConversation("");
     LRCInstance::setSelectedConvId();
 }
 
