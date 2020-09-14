@@ -22,6 +22,7 @@ import QtQuick.Controls 2.14
 import QtQuick.Layouts 1.14
 import QtQuick.Controls.Universal 2.12
 import net.jami.Models 1.0
+import net.jami.Adapters 1.0
 
 import "../../commoncomponents"
 
