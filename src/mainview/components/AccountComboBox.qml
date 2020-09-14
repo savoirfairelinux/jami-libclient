@@ -161,16 +161,19 @@ ComboBox {
         buttonImageHeight: height - 8
         buttonImageWidth: width - 8
         radius: height / 2
+
         width: 24
         height: 24
 
+        visible: AccountAdapter.currentAccountType === Profile.Type.RING
         toolTipText: JamiStrings.displayQRCode
         hoverEnabled: true
 
         source: "qrc:/images/qrcode.png"
         backgroundColor: "white"
         onClicked: {
-            qrDialog.open()
+            if (visible)
+                qrDialog.open()
         }
     }
 
@@ -187,9 +190,12 @@ ComboBox {
         width: 25
         height: 25
 
-        source: !mainViewWindow.inSettingsView ? "qrc:/images/icons/round-settings-24px.svg" :
-                                                 "qrc:/images/icons/round-close-24px.svg"
-        toolTipText: !mainViewWindow.inSettingsView ? JamiStrings.openSettings : JamiStrings.closeSettings
+        source: !mainViewWindow.inSettingsView ?
+                    "qrc:/images/icons/round-settings-24px.svg" :
+                    "qrc:/images/icons/round-close-24px.svg"
+        toolTipText: !mainViewWindow.inSettingsView ?
+                         JamiStrings.openSettings :
+                         JamiStrings.closeSettings
         hoverEnabled: true
 
         backgroundColor: "white"

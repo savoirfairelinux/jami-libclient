@@ -43,7 +43,8 @@ Dialog {
 
         fillMode: Image.PreserveAspectFit
         source: {
-            if (AccountAdapter.currentAccountId)
+            if (AccountAdapter.currentAccountId &&
+                    AccountAdapter.currentAccountType === Profile.Type.RING)
                 return "image://qrImage/account_" + AccountAdapter.currentAccountId
             return ""
         }
