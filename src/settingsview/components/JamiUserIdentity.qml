@@ -56,12 +56,16 @@ ColumnLayout {
     }
 
     // Identity
-    RowLayout {
+    Row {
         Layout.fillWidth: true
         Layout.preferredHeight: JamiTheme.preferredFieldHeight
 
+        spacing: width - idLabel.width - currentRingID.width
+
         Label {
             id: idLabel
+
+            anchors.verticalCenter: parent.verticalCenter
 
             text: JamiStrings.identifier
             font.pointSize: JamiTheme.settingsFontSize
@@ -77,12 +81,15 @@ ColumnLayout {
             property var backgroundColor: "transparent"
             property var borderColor: "transparent"
 
-            Layout.fillWidth: true
+            anchors.verticalCenter: parent.verticalCenter
+
+            height: JamiTheme.preferredFieldHeight
 
             font.pointSize: JamiTheme.textFontSize
             font.kerning: true
             font.bold: true
 
+            padding: 0
             readOnly: true
             selectByMouse: true
 
@@ -102,35 +109,49 @@ ColumnLayout {
             TextMetrics {
                 id: currentRingIDText
 
+                font: currentRingID.font
                 elide: Text.ElideRight
-                elideWidth: root.width - idLabel.width -JamiTheme.preferredMarginSize*4
+                elideWidth: root.width - idLabel.width -
+                            JamiTheme.preferredMarginSize * 4
 
                 text: SettingsAdapter.getCurrentAccount_Profile_Info_Uri()
             }
         }
     }
 
-    RowLayout {
+    Row {
         Layout.fillWidth: true
         Layout.preferredHeight: JamiTheme.preferredFieldHeight
 
-        ElidedTextLabel {
-            Layout.fillWidth: true
+        spacing: width - lblRegisteredName.width - currentRegisteredID.width
 
-            eText: JamiStrings.username
-            fontSize: JamiTheme.settingsFontSize
-            maxWidth: width
+        Label {
+            id: lblRegisteredName
+
+            anchors.verticalCenter: parent.verticalCenter
+
+            text: JamiStrings.username
+            font.pointSize: JamiTheme.settingsFontSize
+            font.kerning: true
+
+            horizontalAlignment: Text.AlignLeft
+            verticalAlignment: Text.AlignVCenter
         }
 
         UsernameLineEdit {
             id: currentRegisteredID
 
-            Layout.alignment: Qt.AlignRight
-            Layout.fillWidth: true
-            Layout.preferredWidth: itemWidth
-            implicitWidth: itemWidth
-            wrapMode: Text.NoWrap
+            anchors.verticalCenter: parent.verticalCenter
 
+            height: JamiTheme.preferredFieldHeight
+            width: {
+                var maximumWidth = parent.width - lblRegisteredName.width
+                        - JamiTheme.preferredMarginSize
+                return fieldLayoutWidth < maximumWidth ?
+                            fieldLayoutWidth : maximumWidth
+            }
+
+            wrapMode: Text.NoWrap
             placeholderText: registeredIdNeedsSet ?
                                     JamiStrings.registerUsername : ""
             text: {
