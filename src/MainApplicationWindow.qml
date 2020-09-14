@@ -145,11 +145,31 @@ ApplicationWindow {
     Connections {
         target: LRCInstance
 
+        function restore(window) {
+            window.show()
+            window.raise();
+            window.requestActivate()
+        }
+
         function onRestoreAppRequested() {
-            if (mainViewLoader.item)
-                mainViewLoader.item.show()
-            else
-                wizardView.show()
+            var window = mainViewLoader.item ? mainViewLoader.item : wizardView
+            restore(window)
+        }
+
+        function onNotificationClicked(forceToTop) {
+            var window = mainViewLoader.item ? mainViewLoader.item : wizardView
+            // This is a hack to bring the window to the front which is normally done
+            // with QWindow::requestActivate but is thwarted for qml windows by the
+            // notification being clicked. Native solutions are preferable.
+            if (forceToTop && (!window.visible
+                    || window.visibility & Qt.WindowMinimized
+                    || window.visibility === Qt.WindowNoState)) {
+                var tmpFlags = window.flags
+                window.hide()
+                window.flags = Qt.WindowStaysOnTopHint
+                window.flags = tmpFlags
+            }
+            restore(window)
         }
     }
 }

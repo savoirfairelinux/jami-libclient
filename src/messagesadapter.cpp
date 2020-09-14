@@ -23,7 +23,9 @@
 
 #include "messagesadapter.h"
 
+#include "globalsystemtray.h"
 #include "qtutils.h"
+#include "utils.h"
 #include "webchathelpers.h"
 
 #include <QApplication>
@@ -469,22 +471,11 @@ MessagesAdapter::newInteraction(const QString& accountId,
 {
     Q_UNUSED(interactionId);
     try {
+        if (convUid.isEmpty() || convUid != LRCInstance::getCurrentConvUid()) {
+            return;
+        }
         auto& accountInfo = LRCInstance::getAccountInfo(accountId);
         auto& convModel = accountInfo.conversationModel;
-        const auto conversation = convModel->getConversationForUID(convUid);
-
-        if (conversation.uid.isEmpty()) {
-            return;
-        }
-        if (!interaction.authorUri.isEmpty()
-            && (!QApplication::focusWindow() || LRCInstance::getCurrAccId() != accountId)) {
-            /*
-             * TODO: Notification from other accounts.
-             */
-        }
-        if (convUid != LRCInstance::getCurrentConvUid()) {
-            return;
-        }
         convModel->clearUnreadInteractions(convUid);
         printNewInteraction(*convModel, interactionId, interaction);
     } catch (...) {

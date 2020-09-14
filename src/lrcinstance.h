@@ -226,6 +226,16 @@ public:
         return invalid;
     }
 
+    static const conversation::Info& getConversationFromConvUid(const QString& convUid,
+                                                                const QString& accountId = {},
+                                                                bool filtered = false)
+    {
+        return getConversation(
+            !accountId.isEmpty() ? accountId : getCurrAccId(),
+            [&](const conversation::Info& conv) -> bool { return convUid == conv.uid; },
+            filtered);
+    }
+
     static const conversation::Info& getConversationFromCallId(const QString& callId,
                                                                const QString& accountId = {},
                                                                bool filtered = false)
@@ -431,6 +441,8 @@ signals:
     void accountListChanged();
     void currentAccountChanged();
     void restoreAppRequested();
+    void notificationClicked(bool forceToTop = false);
+    void updateSmartList();
 
 private:
     LRCInstance(migrateCallback willMigrateCb = {}, migrateCallback didMigrateCb = {})

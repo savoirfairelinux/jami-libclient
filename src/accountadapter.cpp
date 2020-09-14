@@ -35,7 +35,16 @@ AccountAdapter::AccountAdapter(QObject* parent)
 void
 AccountAdapter::safeInit()
 {
-    setSelectedAccountId(LRCInstance::getCurrAccId());
+    connect(&LRCInstance::instance(),
+            &LRCInstance::currentAccountChanged,
+            this,
+            &AccountAdapter::onCurrentAccountChanged);
+
+    backToWelcomePage();
+
+    auto accountId = LRCInstance::getCurrAccId();
+    setProperties(accountId);
+    connectAccount(accountId);
 }
 
 lrc::api::NewAccountModel*
@@ -60,8 +69,10 @@ void
 AccountAdapter::accountChanged(int index)
 {
     auto accountList = LRCInstance::accountModel().getAccountList();
-    if (accountList.size() > index)
-        setSelectedAccountId(accountList.at(index));
+    if (accountList.size() > index) {
+        LRCInstance::setSelectedAccountId(accountList.at(index));
+        backToWelcomePage();
+    }
 }
 
 void
@@ -121,8 +132,6 @@ AccountAdapter::createJamiAccount(QString registeredName,
             } else {
                 LRCInstance::setAvatarForAccount(QPixmap::fromImage(avatarImg), accountId);
             }
-
-
         });
 
     connectFailure();
@@ -287,6 +296,14 @@ AccountAdapter::setSelectedConvId(const QString& convId)
     LRCInstance::setSelectedConvId(convId);
 }
 
+void
+AccountAdapter::onCurrentAccountChanged()
+{
+    auto accountId = LRCInstance::getCurrAccId();
+    setProperties(accountId);
+    connectAccount(accountId);
+}
+
 bool
 AccountAdapter::hasPassword()
 {
@@ -330,23 +347,6 @@ AccountAdapter::passwordSetStatusMessageBox(bool success, QString title, QString
 }
 
 void
-AccountAdapter::setSelectedAccountId(const QString& accountId)
-{
-    LRCInstance::setSelectedAccountId(accountId);
-
-    setProperty("currentAccountId", accountId);
-    auto accountType = LRCInstance::getAccountInfo(accountId).profileInfo.type;
-    setProperty("currentAccountType", lrc::api::profile::to_string(accountType));
-
-    connectAccount(accountId);
-
-    emit contactModelChanged();
-    emit deviceModelChanged();
-
-    backToWelcomePage();
-}
-
-void
 AccountAdapter::backToWelcomePage()
 {
     deselectConversation();
@@ -366,7 +366,6 @@ AccountAdapter::deselectConversation()
         return;
     }
 
-    currentConversationModel->selectConversation("");
     LRCInstance::setSelectedConvId();
 }
 
@@ -427,4 +426,14 @@ AccountAdapter::connectAccount(const QString& accountId)
     } catch (...) {
         qWarning() << "Couldn't get account: " << accountId;
     }
+}
+
+void
+AccountAdapter::setProperties(const QString& accountId)
+{
+    setProperty("currentAccountId", accountId);
+    auto accountType = LRCInstance::getAccountInfo(accountId).profileInfo.type;
+    setProperty("currentAccountType", lrc::api::profile::to_string(accountType));
+    emit contactModelChanged();
+    emit deviceModelChanged();
 }

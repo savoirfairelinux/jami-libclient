@@ -22,32 +22,32 @@
 
 #include <QSystemTrayIcon>
 
-class GlobalSystemTray : public QSystemTrayIcon
+class GlobalSystemTray final : public QSystemTrayIcon
 {
     Q_OBJECT
 
 public:
+    ~GlobalSystemTray() = default;
     static GlobalSystemTray& instance()
     {
         static GlobalSystemTray* instance_ = new GlobalSystemTray();
         return *instance_;
     }
 
-    /*
-     * Remember the last triggering account for the notification,
-     * safe since user cannot activate previous notifications.
-     */
-    void setTriggeredAccountId(const QString& accountId);
+    inline static QString notificationAccountId {};
+    inline static QString notificationConvUid {};
 
-    const QString& getTriggeredAccountId();
-
-    void setPossibleOnGoingConversationUid(const QString& convUid);
-
-    const QString& getPossibleOnGoingConversationUid();
+    template<typename Func>
+    static void connectClicked(Func&& onClicked)
+    {
+        auto& instance_ = instance();
+        instance_.disconnect(instance_.messageClicked_);
+        instance_.connect(&instance_, &QSystemTrayIcon::messageClicked, onClicked);
+    }
 
 private:
-    GlobalSystemTray();
+    explicit GlobalSystemTray()
+        : QSystemTrayIcon() {};
 
-    QString triggeredAccountId_;
-    QString triggeredOnGoingConvUid_;
+    QMetaObject::Connection messageClicked_;
 };

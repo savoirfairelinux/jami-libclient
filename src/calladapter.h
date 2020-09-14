@@ -78,7 +78,8 @@ signals:
                                  const QString& accountId,
                                  const QString& callId);
 
-    void incomingCallNeedToSetupMainView(const QString& accountId, const QString& convUid,
+    void incomingCallNeedToSetupMainView(const QString& accountId,
+                                         const QString& convUid,
                                          bool fromNotification = false);
     void previewVisibilityNeedToChange(bool visible);
 
@@ -107,7 +108,7 @@ private:
                     const QString& accountId = {},
                     bool forceCallOnly = false);
     bool shouldShowPreview(bool force);
-    void showNotification(const QString& accountId, const lrc::api::conversation::Info& convInfo);
+    void showNotification(const QString& accountId, const QString& convUid);
 
     /*
      * Current conf/call info.

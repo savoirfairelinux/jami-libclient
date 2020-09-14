@@ -59,6 +59,10 @@ signals:
 
 private slots:
     void onCurrentAccountIdChanged();
+    void onNewUnreadInteraction(const QString& accountId,
+                                const QString& convUid,
+                                uint64_t interactionId,
+                                const interaction::Info& interaction);
 
 private:
     void setConversationFilter(lrc::api::profile::Type filter);

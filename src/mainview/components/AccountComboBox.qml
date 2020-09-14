@@ -25,7 +25,7 @@ import net.jami.Adapters 1.0
 import "../../commoncomponents"
 
 ComboBox {
-    id: accountComboBox
+    id: root
 
     signal accountChanged(int index)
     signal needToBackToWelcomePage
@@ -61,9 +61,9 @@ ComboBox {
     Image {
         id: userImageRoot
 
-        anchors.left: accountComboBox.left
+        anchors.left: root.left
         anchors.leftMargin: 16
-        anchors.verticalCenter: accountComboBox.verticalCenter
+        anchors.verticalCenter: root.verticalCenter
 
         width: 30
         height: 30
@@ -130,7 +130,7 @@ ComboBox {
 
         font: textUserAliasRoot.font
         elide: Text.ElideRight
-        elideWidth: accountComboBox.width - userImageRoot.width - settingsButton.width
+        elideWidth: root.width - userImageRoot.width - settingsButton.width
                     - arrowDropDown.width - qrCodeGenerateButton.width - 55
 
         // Role::Alias
@@ -142,7 +142,7 @@ ComboBox {
 
         font: textUsernameRoot.font
         elide: Text.ElideRight
-        elideWidth: accountComboBox.width - userImageRoot.width - settingsButton.width
+        elideWidth: root.width - userImageRoot.width - settingsButton.width
                     - qrCodeGenerateButton.width - 55
 
 
@@ -156,7 +156,7 @@ ComboBox {
 
         anchors.right: settingsButton.left
         anchors.rightMargin: 10
-        anchors.verticalCenter: accountComboBox.verticalCenter
+        anchors.verticalCenter: root.verticalCenter
 
         buttonImageHeight: height - 8
         buttonImageWidth: width - 8
@@ -180,9 +180,9 @@ ComboBox {
     HoverableButton {
         id: settingsButton
 
-        anchors.right: accountComboBox.right
+        anchors.right: root.right
         anchors.rightMargin: 10
-        anchors.verticalCenter: accountComboBox.verticalCenter
+        anchors.verticalCenter: root.verticalCenter
 
         buttonImageHeight: height - 8
         buttonImageWidth: width - 8
@@ -207,8 +207,8 @@ ComboBox {
     background: Rectangle {
         id: rootItemBackground
 
-        implicitWidth: accountComboBox.width
-        implicitHeight: accountComboBox.height
+        implicitWidth: root.width
+        implicitHeight: root.height
         color: JamiTheme.backgroundColor
     }
 
@@ -240,9 +240,9 @@ ComboBox {
             } else {
                 rootItemBackground.color = JamiTheme.releaseColor
                 if (comboBoxPopup.opened) {
-                    accountComboBox.popup.close()
+                    root.popup.close()
                 } else {
-                    accountComboBox.popup.open()
+                    root.popup.open()
                 }
             }
         }
@@ -291,11 +291,11 @@ ComboBox {
         }
 
         onAccountNeedToChange: {
-            accountComboBox.accountChanged(index)
+            root.accountChanged(index)
         }
 
         onNewAccountButtonClicked: {
-            accountComboBox.newAccountButtonClicked()
+            root.newAccountButtonClicked()
         }
     }
 

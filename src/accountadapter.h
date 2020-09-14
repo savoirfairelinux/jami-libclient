@@ -32,10 +32,8 @@ class AccountAdapter final : public QmlAdapterBase
     Q_OBJECT
 
     Q_PROPERTY(lrc::api::NewAccountModel* model READ getModel NOTIFY modelChanged)
-
     Q_PROPERTY(lrc::api::ContactModel* contactModel READ getContactModel NOTIFY contactModelChanged)
     Q_PROPERTY(lrc::api::NewDeviceModel* deviceModel READ getDeviceModel NOTIFY deviceModelChanged)
-
     Q_PROPERTY(QString currentAccountId MEMBER currentAccountId_ NOTIFY currentAccountIdChanged)
     Q_PROPERTY(lrc::api::profile::Type currentAccountType MEMBER currentAccountType_ NOTIFY
                    currentAccountTypeChanged)
@@ -62,6 +60,7 @@ public:
 protected:
     void safeInit() override;
 
+public:
     /*
      * Change to account corresponding to combox box index.
      */
@@ -105,7 +104,6 @@ protected:
     Q_INVOKABLE bool hasVideoCall();
     Q_INVOKABLE bool isPreviewing();
     Q_INVOKABLE void setCurrAccDisplayName(const QString& text);
-    Q_INVOKABLE void setSelectedAccountId(const QString& accountId = {});
     Q_INVOKABLE void setSelectedConvId(const QString& convId = {});
 
 signals:
@@ -121,10 +119,13 @@ signals:
     void navigateToWelcomePageRequested();
     void accountAdded(bool showBackUp, int index);
 
+private slots:
+    void onCurrentAccountChanged();
+
 private:
-    QString currentAccountId_;
-    lrc::api::profile::Type currentAccountType_;
-    int accountListSize_;
+    QString currentAccountId_ {};
+    lrc::api::profile::Type currentAccountType_ {};
+    int accountListSize_ {};
 
     void backToWelcomePage();
     void deselectConversation();
@@ -133,8 +134,14 @@ private:
      * Make account signal connections.
      */
     void connectAccount(const QString& accountId);
+
     /*
-     * Implement what to do when creat accout fails.
+     * Make account signal connections.
+     */
+    void setProperties(const QString& accountId);
+
+    /*
+     * Implement what to do when account creation fails.
      */
     void connectFailure();
 

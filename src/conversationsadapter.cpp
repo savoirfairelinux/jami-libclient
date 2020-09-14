@@ -24,6 +24,9 @@
 #include "conversationsadapter.h"
 
 #include "utils.h"
+#include "qtutils.h"
+
+#include <QApplication>
 
 ConversationsAdapter::ConversationsAdapter(QObject* parent)
     : QmlAdapterBase(parent)
@@ -41,6 +44,11 @@ ConversationsAdapter::safeInit()
             [this](const QString& accountId, lrc::api::conversation::Info convInfo) {
                 emit showChatView(accountId, convInfo.uid);
             });
+
+    connect(&LRCInstance::behaviorController(),
+            &BehaviorController::newUnreadInteraction,
+            this,
+            &ConversationsAdapter::onNewUnreadInteraction);
 
     connect(&LRCInstance::instance(),
             &LRCInstance::currentAccountChanged,
@@ -88,20 +96,33 @@ ConversationsAdapter::selectConversation(const QString& convUid)
 }
 
 bool
-ConversationsAdapter::selectConversation(const lrc::api::conversation::Info& item,
+ConversationsAdapter::selectConversation(const lrc::api::conversation::Info& convInfo,
                                          bool preventSendingSignal)
 {
     // accInfo.conversationModel->selectConversation(item.uid) only emit ui
     // behavior control signals, but sometimes we do not want that,
     // preventSendingSignal boolean can help us to determine.
-    if (LRCInstance::getCurrentConvUid() == item.uid) {
+    if (LRCInstance::getCurrentConvUid() == convInfo.uid
+        && LRCInstance::getCurrAccId() == convInfo.accountId) {
         return false;
-    } else if (item.participants.size() > 0) {
-        auto& accInfo = LRCInstance::getAccountInfo(item.accountId);
-        LRCInstance::setSelectedConvId(item.uid);
-        if (!preventSendingSignal)
-            accInfo.conversationModel->selectConversation(item.uid);
-        accInfo.conversationModel->clearUnreadInteractions(item.uid);
+    } else if (convInfo.participants.size() > 0) {
+        // If the account is not currently selected, do that first, then
+        // proceed to select the conversation.
+        auto selectConversation = [convInfo, preventSendingSignal] {
+            auto& accInfo = LRCInstance::getAccountInfo(convInfo.accountId);
+            LRCInstance::setSelectedConvId(convInfo.uid);
+            if (!preventSendingSignal)
+                accInfo.conversationModel->selectConversation(convInfo.uid);
+            accInfo.conversationModel->clearUnreadInteractions(convInfo.uid);
+        };
+        if (convInfo.accountId != LRCInstance::getCurrAccId()) {
+            Utils::oneShotConnect(&LRCInstance::instance(),
+                                  &LRCInstance::currentAccountChanged,
+                                  [selectConversation] { selectConversation(); });
+            LRCInstance::setSelectedAccountId(convInfo.accountId);
+        } else {
+            selectConversation();
+        }
         return true;
     }
 }
@@ -136,6 +157,38 @@ ConversationsAdapter::onCurrentAccountIdChanged()
 
     disconnectConversationModel();
     connectConversationModel();
+}
+
+void
+ConversationsAdapter::onNewUnreadInteraction(const QString& accountId,
+                                             const QString& convUid,
+                                             uint64_t interactionId,
+                                             const interaction::Info& interaction)
+{
+    Q_UNUSED(interactionId)
+    if (!interaction.authorUri.isEmpty()
+        && (!QApplication::focusWindow() || accountId != LRCInstance::getCurrAccId()
+            || convUid != LRCInstance::getCurrentConvUid())) {
+        auto& accInfo = LRCInstance::getAccountInfo(accountId);
+        auto& contact = accInfo.contactModel->getContact(interaction.authorUri);
+        auto from = Utils::bestNameForContact(contact);
+        auto onClicked = [this, accountId, convUid, uri = interaction.authorUri] {
+#ifdef Q_OS_WINDOWS
+            emit LRCInstance::instance().notificationClicked();
+#else
+            emit LRCInstance::instance().notificationClicked(true);
+#endif
+            auto convInfo = LRCInstance::getConversationFromConvUid(convUid, accountId);
+            if (!convInfo.uid.isEmpty()) {
+                selectConversation(convInfo, false);
+                emit LRCInstance::instance().updateSmartList();
+                emit modelSorted(uri);
+            }
+        };
+
+        Utils::showNotification(interaction.body, from, accountId, convUid, onClicked);
+        return;
+    }
 }
 
 void
@@ -282,8 +335,11 @@ ConversationsAdapter::disconnectConversationModel()
     QObject::disconnect(modelSortedConnection_);
     QObject::disconnect(modelUpdatedConnection_);
     QObject::disconnect(filterChangedConnection_);
+    QObject::disconnect(newConversationConnection_);
     QObject::disconnect(conversationRemovedConnection_);
     QObject::disconnect(conversationClearedConnection);
+    QObject::disconnect(selectedCallChanged_);
+    QObject::disconnect(smartlistSelectionConnection_);
     QObject::disconnect(interactionRemovedConnection_);
     QObject::disconnect(searchStatusChangedConnection_);
     QObject::disconnect(searchResultUpdatedConnection_);

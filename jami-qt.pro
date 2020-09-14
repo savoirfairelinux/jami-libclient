@@ -162,7 +162,6 @@ SOURCES += \
         src/runguard.cpp \
         src/webchathelpers.cpp \
         src/main.cpp \
-        src/globalsystemtray.cpp \
         src/smartlistmodel.cpp \
         src/utils.cpp \
         src/pixbufmanipulator.cpp \
