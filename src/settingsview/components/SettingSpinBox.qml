@@ -61,6 +61,7 @@ RowLayout {
         verticalAlignment: Text.AlignVCenter
     }
 
+    // TODO: use TextField
     SpinBox {
         id: spinBox
 
@@ -68,15 +69,20 @@ RowLayout {
         Layout.preferredHeight: JamiTheme.preferredFieldHeight
         Layout.alignment: Qt.AlignCenter
 
+        font.family: "Monospace"
         font.pointSize: JamiTheme.buttonFontSize
         font.kerning: true
 
         from: root.bottomValue
         to: root.topValue
-        stepSize: root.step
 
-        up.indicator.width: (width < 200) ? (width / 5) : 40
-        down.indicator.width: (width < 200) ? (width / 5) : 40
+        editable: true
+        up.indicator.width: 0
+        down.indicator.width: 0
+
+        textFromValue: function(value, locale) {
+            return Number(value)
+        }
 
         onValueModified: {
             root.valueField = value
