@@ -150,6 +150,7 @@ Rectangle {
                 onClicked: {
                     MessagesAdapter.sendContactRequest()
                     CallAdapter.placeAudioOnlyCall()
+                    communicationPageMessageWebView.setSendContactRequestButtonVisible(false)
                 }
             }
 
@@ -171,6 +172,7 @@ Rectangle {
                 onClicked: {
                     MessagesAdapter.sendContactRequest()
                     CallAdapter.placeCall()
+                    communicationPageMessageWebView.setSendContactRequestButtonVisible(false)
                 }
             }
 

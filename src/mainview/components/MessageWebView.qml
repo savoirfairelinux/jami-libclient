@@ -152,14 +152,17 @@ Rectangle {
 
         function acceptInvitation() {
             MessagesAdapter.acceptInvitation()
+            messageWebViewHeader.sendContactRequestButtonVisible = false
         }
 
         function refuseInvitation() {
             MessagesAdapter.refuseInvitation()
+            messageWebViewHeader.sendContactRequestButtonVisible = false
         }
 
         function blockConversation() {
             MessagesAdapter.blockConversation()
+            messageWebViewHeader.sendContactRequestButtonVisible = false
         }
 
         function emitMessagesCleared() {

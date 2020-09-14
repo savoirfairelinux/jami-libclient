@@ -61,8 +61,6 @@ Rectangle {
 
     function accountChangedUIReset() {
         contactSearchBar.clearText()
-        sidePanelTabBar.converstationTabDown = true
-        sidePanelTabBar.invitationTabDown = false
     }
 
     function refreshAccountComboBox(index) {
@@ -78,6 +76,10 @@ Rectangle {
 
     function forceUpdateConversationSmartListView() {
         conversationSmartListView.updateListView()
+    }
+
+    function selectTab(tabIndex) {
+        sidePanelTabBar.selectTab(tabIndex)
     }
 
     // Intended -> since strange behavior will happen without this for stackview.

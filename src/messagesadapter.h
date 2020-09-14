@@ -88,6 +88,7 @@ protected:
 signals:
     void needToUpdateSmartList();
     void contactBanned();
+    void navigateToWelcomePageRequested();
 
 public slots:
     void slotSendMessageContentSaved(const QString& content);

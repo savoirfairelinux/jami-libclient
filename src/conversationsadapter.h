@@ -28,6 +28,9 @@
 class ConversationsAdapter final : public QmlAdapterBase
 {
     Q_OBJECT
+
+    Q_PROPERTY(lrc::api::profile::Type currentTypeFilter MEMBER currentTypeFilter_ NOTIFY
+                   currentTypeFilterChanged)
 public:
     explicit ConversationsAdapter(QObject* parent = nullptr);
     ~ConversationsAdapter() = default;
@@ -42,7 +45,6 @@ public:
     Q_INVOKABLE void deselectConversation();
     Q_INVOKABLE void refill();
     Q_INVOKABLE void updateConversationsFilterWidget();
-    Q_INVOKABLE void setConversationFilter(const QString& type);
 
 signals:
     void showConversation(const QString& accountId, const QString& convUid);
@@ -53,6 +55,7 @@ signals:
     void modelSorted(const QVariant& uri);
     void updateListViewRequested();
     void navigateToWelcomePageRequested();
+    void currentTypeFilterChanged();
 
 private slots:
     void onCurrentAccountIdChanged();
@@ -62,7 +65,6 @@ private slots:
                                 const interaction::Info& interaction);
 
 private:
-    void setConversationFilter(lrc::api::profile::Type filter);
     void backToWelcomePage();
     void updateConversationForNewContact(const QString& convUid);
 

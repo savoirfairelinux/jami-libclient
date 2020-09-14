@@ -43,6 +43,7 @@ Item {
                                                              responsibleAccountId,
                                                              responsibleConvUid, false)
                                                  CallAdapter.placeCall()
+                                                 communicationPageMessageWebView.setSendContactRequestButtonVisible(false)
                                              })
             ContextMenuGenerator.addMenuItem(qsTr("Start audio call"),
                                              "qrc:/images/icons/ic_phone_24px.svg",
@@ -51,6 +52,7 @@ Item {
                                                              responsibleAccountId,
                                                              responsibleConvUid, false)
                                                  CallAdapter.placeAudioOnlyCall()
+                                                 communicationPageMessageWebView.setSendContactRequestButtonVisible(false)
                                              })
 
             ContextMenuGenerator.addMenuItem(qsTr("Clear conversation"),
@@ -80,7 +82,8 @@ Item {
                                              })
         }
 
-        if ((contactType === Profile.Type.RING || contactType === Profile.Type.PENDING)) {
+        if ((contactType === Profile.Type.RING || contactType === Profile.Type.PENDING
+             || contactType === Profile.Type.TEMPORARY)) {
             if (contactType === Profile.Type.PENDING || !hasCall) {
                 ContextMenuGenerator.addMenuSeparator()
             }
@@ -91,7 +94,10 @@ Item {
                                                  function (){
                                                      MessagesAdapter.acceptInvitation(
                                                                  responsibleConvUid)
+                                                     communicationPageMessageWebView.
+                                                     setSendContactRequestButtonVisible(false)
                                                  })
+
                 ContextMenuGenerator.addMenuItem(JamiStrings.declineContactRequest,
                                                  "qrc:/images/icons/round-close-24px.svg",
                                                  function (){

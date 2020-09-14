@@ -156,6 +156,7 @@ Rectangle {
             incomingCallPage.close()
             CallAdapter.acceptACall(responsibleAccountId,
                                     responsibleConvUid)
+            communicationPageMessageWebView.setSendContactRequestButtonVisible(false)
         }
     }
 

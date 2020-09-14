@@ -175,6 +175,7 @@ ItemDelegate {
                                                         UID,
                                                         false)
                 CallAdapter.placeCall()
+                communicationPageMessageWebView.setSendContactRequestButtonVisible(false)
             }
         }
         onReleased: {

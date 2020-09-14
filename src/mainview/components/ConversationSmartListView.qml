@@ -89,6 +89,7 @@ ListView {
         enabled: root.visible
         onActivated: {
             CallAdapter.placeCall()
+            communicationPageMessageWebView.setSendContactRequestButtonVisible(false)
         }
     }
 
@@ -98,6 +99,7 @@ ListView {
         enabled: root.visible
         onActivated: {
             CallAdapter.placeAudioOnlyCall()
+            communicationPageMessageWebView.setSendContactRequestButtonVisible(false)
         }
     }
 

@@ -104,6 +104,7 @@ public:
     Q_INVOKABLE bool isPreviewing();
     Q_INVOKABLE void setCurrAccDisplayName(const QString& text);
     Q_INVOKABLE void setSelectedConvId(const QString& convId = {});
+    Q_INVOKABLE lrc::api::profile::Type getCurrentAccountType();
 
 signals:
     /*

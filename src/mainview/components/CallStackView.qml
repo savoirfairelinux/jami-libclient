@@ -192,6 +192,8 @@ Rectangle {
 
         onCallAcceptButtonIsClicked: {
             CallAdapter.acceptACall(responsibleAccountId, responsibleConvUid)
+            communicationPageMessageWebView.setSendContactRequestButtonVisible(false)
+            mainViewWindowSidePanel.selectTab(SidePanelTabBar.Conversations)
         }
 
         onCallCancelButtonIsClicked: {

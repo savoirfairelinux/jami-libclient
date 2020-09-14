@@ -124,6 +124,7 @@ Window {
         return UtilsAdapter.hasCall(AccountAdapter.currentAccountId)
     }
 
+    // Only called onWidthChanged
     function recursionStackViewItemMove(stackOne, stackTwo, depth=1) {
         // Move all items (expect the bottom item) to stacktwo by the same order in stackone.
         if (stackOne.depth === depth) {
@@ -461,7 +462,7 @@ Window {
                 mainViewWindowSidePanel.forceUpdateConversationSmartListView()
             }
 
-            function onContactBanned() {
+            function onNavigateToWelcomePageRequested() {
                 backToMainView()
             }
         }

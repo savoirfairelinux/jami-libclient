@@ -100,6 +100,18 @@ CallAdapter::acceptACall(const QString& accountId, const QString& convUid)
         LRCInstance::getAccountInfo(accountId).callModel->accept(convInfo.callId);
         auto& accInfo = LRCInstance::getAccountInfo(convInfo.accountId);
         accInfo.callModel->setCurrentCall(convInfo.callId);
+
+        auto contactUri = convInfo.participants.front();
+        if (contactUri.isEmpty()) {
+            return;
+        }
+        try {
+            auto& contact = accInfo.contactModel->getContact(contactUri);
+            if (contact.profileInfo.type == lrc::api::profile::Type::PENDING) {
+                LRCInstance::getCurrentConversationModel()->makePermanent(convInfo.uid);
+            }
+        } catch (...) {
+        }
     }
 }
 
@@ -294,7 +306,9 @@ CallAdapter::showNotification(const QString& accountId, const QString& convUid)
 #else
         emit LRCInstance::instance().notificationClicked(true);
 #endif
-        callSetupMainViewRequired(convInfo.accountId, convInfo.uid);
+        if (!convInfo.uid.isEmpty()) {
+            emit callSetupMainViewRequired(convInfo.accountId, convInfo.uid);
+        }
     };
     emit LRCInstance::instance().updateSmartList();
     Utils::showNotification(tr("is calling you"), from, accountId, convUid, onClicked);
