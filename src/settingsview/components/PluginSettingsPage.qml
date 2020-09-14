@@ -41,7 +41,10 @@ Rectangle {
     signal backArrowClicked
 
     ColumnLayout {
-        anchors.fill: root
+        anchors.centerIn: root
+
+        height: root.height
+        width: Math.min(JamiTheme.maximumWidthSettingsView, root.width)
 
         SettingsHeader {
             Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
@@ -56,15 +59,15 @@ Rectangle {
 
         ScrollView {
             id: pluginScrollView
+
             Layout.fillHeight: true
             Layout.fillWidth: true
 
             focus: true
-
             clip: true
 
             ColumnLayout {
-                width: root.width
+                width: pluginScrollView.width
 
                 ToggleSwitch {
                     id: enabledplugin

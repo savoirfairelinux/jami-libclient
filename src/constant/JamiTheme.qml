@@ -89,7 +89,7 @@ Item {
     property int titleFontSize: 16
     property int menuFontSize: 12
 
-    property int maximumWidthSettingsView: 800
+    property int maximumWidthSettingsView: 600
     property int preferredFieldWidth: 256
     property int preferredFieldHeight: 32
     property int preferredMarginSize: 16

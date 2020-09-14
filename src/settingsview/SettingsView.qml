@@ -179,8 +179,7 @@ Rectangle {
                 id: pageIdCurrentAccountSettings
 
                 Layout.fillHeight: true
-                Layout.maximumWidth: JamiTheme.maximumWidthSettingsView
-                Layout.alignment: Qt.AlignCenter
+                Layout.fillWidth: true
 
                 isSIP: settingsViewRect.isSIP
 
@@ -198,8 +197,7 @@ Rectangle {
                 id: generalSettings
 
                 Layout.fillHeight: true
-                Layout.maximumWidth: JamiTheme.maximumWidthSettingsView
-                Layout.alignment: Qt.AlignCenter
+                Layout.fillWidth: true
             }
 
             // av setting page, index 2
@@ -207,16 +205,15 @@ Rectangle {
                 id: avSettings
 
                 Layout.fillHeight: true
-                Layout.maximumWidth: JamiTheme.maximumWidthSettingsView
-                Layout.alignment: Qt.AlignCenter
+                Layout.fillWidth: true
             }
 
             // plugin setting page, index 3
             PluginSettingsPage {
                 id: pluginSettings
+
                 Layout.fillHeight: true
-                Layout.maximumWidth: JamiTheme.maximumWidthSettingsView
-                Layout.alignment: Qt.AlignCenter
+                Layout.fillWidth: true
             }
         }
     }

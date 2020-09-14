@@ -31,12 +31,15 @@ import "../../commoncomponents"
 Rectangle {
     id: root
 
-    property int preferredColumnWidth : root.width / 2 - 50
+    property int preferredColumnWidth : Math.min(root.width / 2 - 50, 350)
 
     signal backArrowClicked
 
     ColumnLayout {
-        anchors.fill: root
+        anchors.centerIn: root
+
+        height: root.height
+        width: Math.min(JamiTheme.maximumWidthSettingsView, root.width)
 
         SettingsHeader {
             Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
@@ -59,7 +62,7 @@ Rectangle {
             clip: true
 
             ColumnLayout {
-                width: root.width
+                width: generalSettingsScrollView.width
 
                 // system setting panel
                 SystemSettings {

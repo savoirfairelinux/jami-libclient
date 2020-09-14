@@ -129,7 +129,7 @@ ColumnLayout {
         id: audioInputMeter
 
         Layout.alignment: Qt.AlignHCenter
-        Layout.preferredWidth: itemWidth * 2
+        Layout.preferredWidth: itemWidth * 1.5
         Layout.preferredHeight: JamiTheme.preferredFieldHeight
 
         indeterminate: false

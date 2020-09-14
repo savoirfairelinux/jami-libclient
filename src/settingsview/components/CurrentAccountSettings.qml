@@ -36,7 +36,7 @@ Rectangle {
 
     property bool isSIP
 
-    property int preferredColumnWidth : root.width / 2 - 50
+    property int preferredColumnWidth : Math.min(root.width / 2 - 50, 350)
 
     signal navigateToMainView
     signal navigateToNewWizardView
@@ -159,7 +159,10 @@ Rectangle {
     }
 
     ColumnLayout {
-        anchors.fill: root
+        anchors.centerIn: root
+
+        height: root.height
+        width: Math.min(JamiTheme.maximumWidthSettingsView, root.width)
 
         SettingsHeader {
             Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
@@ -188,7 +191,7 @@ Rectangle {
             ColumnLayout {
                 id: accountLayout
 
-                width: root.width
+                width: scrollView.width
 
                 ToggleSwitch {
                     id: accountEnableCheckBox
