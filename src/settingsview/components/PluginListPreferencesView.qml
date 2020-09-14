@@ -43,12 +43,14 @@ Rectangle {
 
     visible: false
 
-    function resetPluginSlot(){
+    signal uninstalled
+
+    function resetPluginSlot() {
         resetPluginMessageBox.open()
     }
 
-    function resetPlugin(){
-        if (isLoaded){
+    function resetPlugin() {
+        if (isLoaded) {
             PluginModel.unloadPlugin(pluginId)
             PluginModel.resetPluginPreferencesValues(pluginId)
             PluginModel.loadPlugin(pluginId)
@@ -58,27 +60,26 @@ Rectangle {
         pluginPreferenceView.model = PluginAdapter.getPluginPreferencesModel(pluginId)
     }
 
-    function uninstallPluginSlot(){
+    function uninstallPluginSlot() {
         uninstallPluginMessageBox.open()
     }
 
-    function uninstallPlugin(){
+    function uninstallPlugin() {
         PluginModel.uninstallPlugin(pluginId)
+        uninstalled()
     }
 
     function setPreference(pluginId, preferenceKey, preferenceNewValue)
     {
-        if (isLoaded){
+        if (isLoaded) {
             PluginModel.unloadPlugin(pluginId)
             PluginModel.setPluginPreference(pluginId, preferenceKey, preferenceNewValue)
             PluginModel.loadPlugin(pluginId)
-        }
-        else {
+        } else
             PluginModel.setPluginPreference(pluginId, preferenceKey, preferenceNewValue)
-        }
     }
 
-    MessageDialog{
+    MessageDialog {
         id: uninstallPluginMessageBox
 
         title:qsTr("Uninstall plugin")
@@ -92,7 +93,7 @@ Rectangle {
         }
     }
 
-    MessageDialog{
+    MessageDialog {
         id: resetPluginMessageBox
 
         title:qsTr("Reset preferences")

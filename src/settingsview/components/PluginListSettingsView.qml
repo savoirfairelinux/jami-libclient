@@ -24,6 +24,7 @@ import QtQuick.Layouts 1.3
 import Qt.labs.platform 1.1
 import QtGraphicalEffects 1.14
 import net.jami.Models 1.0
+import net.jami.Adapters 1.0
 import "../../commoncomponents"
 
 Rectangle {
@@ -31,29 +32,37 @@ Rectangle {
 
     property PluginListPreferencesView pluginListPreferencesView
 
+    Connections {
+        target: pluginListPreferencesView
+
+        function onUninstalled() {
+            pluginListView.model = PluginAdapter.getPluginSelectableModel()
+        }
+    }
+
     visible: false
 
-    function openPluginFileSlot(){
+    function openPluginFileSlot() {
         pluginPathDialog.open()
     }
 
-    function loadPluginSlot(pluginId, isLoaded){
+    function loadPluginSlot(pluginId, isLoaded) {
         var loaded = false
         if (isLoaded)
             PluginModel.unloadPlugin(pluginId)
         else
             loaded = PluginModel.loadPlugin(pluginId)
-        if(pluginListPreferencesView.pluginId === pluginId)
+        if (pluginListPreferencesView.pluginId === pluginId)
             pluginListPreferencesView.isLoaded = loaded
     }
 
-    function openPreferencesPluginSlot(pluginName, pluginIcon, pluginId, isLoaded){
+    function openPreferencesPluginSlot(pluginName, pluginIcon, pluginId, isLoaded) {
         if (pluginListPreferencesView.pluginId == pluginId || pluginListPreferencesView.pluginId == "")
             pluginListPreferencesView.visible = !pluginListPreferencesView.visible
 
-        if(!pluginListPreferencesView.visible){
+        if (!pluginListPreferencesView.visible) {
             pluginListPreferencesView.pluginId = ""
-        } else{
+        } else {
             pluginListPreferencesView.pluginName = pluginName
             pluginListPreferencesView.pluginIcon = pluginIcon
             pluginListPreferencesView.pluginId = pluginId
@@ -61,7 +70,7 @@ Rectangle {
         }
     }
 
-    function hidePreferences(){
+    function hidePreferences() {
         pluginListPreferencesView.pluginId = ""
         pluginListPreferencesView.visible = false
     }
@@ -79,6 +88,7 @@ Rectangle {
         onAccepted: {
             var url = UtilsAdapter.getAbsPath(file.toString())
             PluginModel.installPlugin(url, true)
+            pluginListView.model = PluginAdapter.getPluginSelectableModel()
         }
     }
 
@@ -117,9 +127,7 @@ Rectangle {
 
             text: qsTr("Install Plugin")
 
-            onClicked: {
-              openPluginFileSlot()
-            }
+            onClicked: openPluginFileSlot()
         }
 
         ListView {
@@ -131,28 +139,25 @@ Rectangle {
 
             model: PluginAdapter.getPluginSelectableModel()
 
-            delegate: PluginItemDelegate{
+            delegate: PluginItemDelegate {
                 id: pluginItemDelegate
 
                 width: pluginListView.width
                 height: 50
 
-                pluginName : PluginName
+                pluginName: PluginName
                 pluginId: PluginId
                 pluginIcon: PluginIcon
                 isLoaded: IsLoaded
 
-                onClicked: {
-                    pluginListView.currentIndex = index
-                }
+                onClicked: pluginListView.currentIndex = index
 
-                onBtnLoadPluginToggled:{
+                onBtnLoadPluginToggled: {
                     loadPluginSlot(pluginId, isLoaded)
+                    pluginListView.model = PluginAdapter.getPluginSelectableModel()
                 }
 
-                onBtnPreferencesPluginClicked:{
-                    openPreferencesPluginSlot(pluginName, pluginIcon, pluginId, isLoaded)
-                }
+                onBtnPreferencesPluginClicked: openPreferencesPluginSlot(pluginName, pluginIcon, pluginId, isLoaded)
             }
         }
     }
