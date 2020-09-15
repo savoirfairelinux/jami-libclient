@@ -1273,9 +1273,7 @@ ConversationModelPimpl::ConversationModelPimpl(const ConversationModel& linked,
             this, &ConversationModelPimpl::slotUpdateInteractionStatus);
 
     // Call related
-    connect(&*linked.owner.callModel, &NewCallModel::newIncomingCall,
-            this, &ConversationModelPimpl::slotIncomingCall);
-    connect(&*linked.owner.contactModel, &ContactModel::incomingCallFromPending,
+    connect(&*linked.owner.contactModel, &ContactModel::incomingCall,
             this, &ConversationModelPimpl::slotIncomingCall);
     connect(&*linked.owner.callModel,
             &lrc::api::NewCallModel::callStatusChanged,
@@ -1361,9 +1359,7 @@ ConversationModelPimpl::~ConversationModelPimpl()
                this, &ConversationModelPimpl::slotUpdateInteractionStatus);
 
     // Call related
-    disconnect(&*linked.owner.callModel, &NewCallModel::newIncomingCall,
-               this, &ConversationModelPimpl::slotIncomingCall);
-    disconnect(&*linked.owner.contactModel, &ContactModel::incomingCallFromPending,
+    disconnect(&*linked.owner.contactModel, &ContactModel::incomingCall,
                this, &ConversationModelPimpl::slotIncomingCall);
     disconnect(&*linked.owner.callModel, &lrc::api::NewCallModel::callStatusChanged,
                this, &ConversationModelPimpl::slotCallStatusChanged);

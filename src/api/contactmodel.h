@@ -127,11 +127,11 @@ Q_SIGNALS:
      */
     void contactRemoved(const QString& contactUri) const;
     /**
-     * Connect this signal to know when an incoming call comes from a pending contact.
+     * Connect this signal to know when a call is incoming.
      * @param fromId peer profile uri
      * @param callId incoming call id
      */
-    void incomingCallFromPending(const QString& from, const QString& callId) const;
+    void incomingCall(const QString& from, const QString& callId) const;
     /**
      * Connect this signal to know when a text message arrives for this account
      * @param accountId
