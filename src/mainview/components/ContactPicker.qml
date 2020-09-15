@@ -101,11 +101,6 @@ Popup {
                 onContactSearchBarTextChanged: {
                     ContactAdapter.setSearchFilter(text)
                 }
-
-                Component.onCompleted: {
-                    contactPickerContactSearchBar.setPlaceholderString(
-                                qsTr("Search contacts"))
-                }
             }
 
             ListView {

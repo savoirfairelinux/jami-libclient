@@ -68,8 +68,6 @@ Rectangle {
 
     function accountChangedUIReset() {
         contactSearchBar.clearText()
-        contactSearchBar.setPlaceholderString(
-                    JamiStrings.contactSearchConversation)
         sidePanelTabBar.converstationTabDown = true
         sidePanelTabBar.invitationTabDown = false
     }

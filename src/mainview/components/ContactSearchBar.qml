@@ -27,11 +27,6 @@ Rectangle {
 
     signal contactSearchBarTextChanged(string text)
 
-    function setPlaceholderString(str) {
-        placeholderTextForSearchBar.text = str
-    }
-
-
     // Hack - there is no real way now to make TextField lose its focus,
     // unless transfer it to other component.
     function clearFocus() {
@@ -80,22 +75,12 @@ Rectangle {
         width: contactSearchBarRect.width - searchIconImage.width - 10
         height: contactSearchBarRect.height - 5
 
-        font.pointSize: JamiTheme.textFontSize - 1
+        font.pointSize: JamiTheme.textFontSize
         selectByMouse: true
         selectionColor: JamiTheme.contactSearchBarPlaceHolderTextFontColor
 
-        Text {
-            id: placeholderTextForSearchBar
-
-            anchors.verticalCenter: contactSearchBar.verticalCenter
-            anchors.left: contactSearchBar.left
-            anchors.leftMargin: 10
-
-            text: JamiStrings.contactSearchConversation
-            font.pointSize: JamiTheme.textFontSize
-            color: JamiTheme.contactSearchBarPlaceHolderTextFontColor
-            visible: !contactSearchBar.text && !contactSearchBar.activeFocus
-        }
+        placeholderText: JamiStrings.contactSearchConversation
+        placeholderTextColor: JamiTheme.contactSearchBarPlaceHolderTextFontColor
 
         background: Rectangle {
             id: searchBarBackground
