@@ -918,7 +918,7 @@ ContactModelPimpl::slotIncomingCall(const QString& fromId, const QString& callId
         }
     }
 
-    emit linked.incomingCallFromPending(fromId, callId);
+    emit linked.incomingCall(fromId, callId);
 }
 
 void
