@@ -1491,12 +1491,12 @@ Copy and share it with your friends!</source>
 <context>
     <name>JamiUserIdentity</name>
     <message>
-        <location filename="../src/settingsview/components/JamiUserIdentity.qml" line="165"/>
+        <location filename="../src/settingsview/components/JamiUserIdentity.qml" line="186"/>
         <source>Register</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/JamiUserIdentity.qml" line="166"/>
+        <location filename="../src/settingsview/components/JamiUserIdentity.qml" line="187"/>
         <source>Register the username</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1541,16 +1541,6 @@ Copy and share it with your friends!</source>
     <message>
         <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="177"/>
         <source>Decline the call request</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="562"/>
-        <source>1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="592"/>
-        <source>2</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1755,28 +1745,28 @@ Please try again later.</source>
 <context>
     <name>PhotoboothView</name>
     <message>
-        <location filename="../src/commoncomponents/PhotoboothView.qml" line="59"/>
+        <location filename="../src/commoncomponents/PhotoboothView.qml" line="65"/>
         <source>Image Files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/commoncomponents/PhotoboothView.qml" line="59"/>
+        <location filename="../src/commoncomponents/PhotoboothView.qml" line="65"/>
         <source>All files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/commoncomponents/PhotoboothView.qml" line="186"/>
-        <location filename="../src/commoncomponents/PhotoboothView.qml" line="200"/>
+        <location filename="../src/commoncomponents/PhotoboothView.qml" line="192"/>
+        <location filename="../src/commoncomponents/PhotoboothView.qml" line="206"/>
         <source>Press this button to take photo</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/commoncomponents/PhotoboothView.qml" line="192"/>
+        <location filename="../src/commoncomponents/PhotoboothView.qml" line="198"/>
         <source>Press this button to finish taking photo</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/commoncomponents/PhotoboothView.qml" line="197"/>
+        <location filename="../src/commoncomponents/PhotoboothView.qml" line="203"/>
         <source>Press this button to retake photo</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1797,17 +1787,17 @@ Please try again later.</source>
 <context>
     <name>PluginListPreferencesView</name>
     <message>
-        <location filename="../src/settingsview/components/PluginListPreferencesView.qml" line="84"/>
+        <location filename="../src/settingsview/components/PluginListPreferencesView.qml" line="85"/>
         <source>Uninstall plugin</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/PluginListPreferencesView.qml" line="98"/>
+        <location filename="../src/settingsview/components/PluginListPreferencesView.qml" line="99"/>
         <source>Reset preferences</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/PluginListPreferencesView.qml" line="167"/>
+        <location filename="../src/settingsview/components/PluginListPreferencesView.qml" line="168"/>
         <source>Uninstall</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1815,22 +1805,22 @@ Please try again later.</source>
 <context>
     <name>PluginListSettingsView</name>
     <message>
-        <location filename="../src/settingsview/components/PluginListSettingsView.qml" line="76"/>
+        <location filename="../src/settingsview/components/PluginListSettingsView.qml" line="85"/>
         <source>Plugin Files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/PluginListSettingsView.qml" line="76"/>
+        <location filename="../src/settingsview/components/PluginListSettingsView.qml" line="85"/>
         <source>All files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/PluginListSettingsView.qml" line="94"/>
+        <location filename="../src/settingsview/components/PluginListSettingsView.qml" line="104"/>
         <source>Installed plugins</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/PluginListSettingsView.qml" line="114"/>
+        <location filename="../src/settingsview/components/PluginListSettingsView.qml" line="124"/>
         <source>Press to add new plugins</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2004,7 +1994,7 @@ Please try again later.</source>
     <message>
         <location filename="../src/commoncomponents/SettingParaCombobox.qml" line="42"/>
         <source></source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>

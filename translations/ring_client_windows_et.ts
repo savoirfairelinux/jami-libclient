@@ -1,4 +1,4 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="sl" version="2.1">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="et" version="2.1">
 <context>
     <name>AccountComboBoxPopup</name>
     <message>
@@ -12,7 +12,7 @@
     <message>
         <location filename="../src/settingsview/components/AccountProfile.qml" line="66"/>
         <source>Profile</source>
-        <translation>Profil</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -34,7 +34,7 @@
         <location filename="../src/settingsview/components/AdvancedJamiSecuritySettings.qml" line="76"/>
         <location filename="../src/settingsview/components/AdvancedJamiSecuritySettings.qml" line="94"/>
         <source>Certificate File</source>
-        <translation>Datoteka certifikata</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/settingsview/components/AdvancedJamiSecuritySettings.qml" line="76"/>
@@ -59,7 +59,7 @@
     <message>
         <location filename="../src/settingsview/components/AdvancedNameServerSettings.qml" line="61"/>
         <source>Address</source>
-        <translation>Naslov</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -68,7 +68,7 @@
         <location filename="../src/settingsview/components/AdvancedSIPSecuritySettings.qml" line="94"/>
         <location filename="../src/settingsview/components/AdvancedSIPSecuritySettings.qml" line="112"/>
         <source>Certificate File</source>
-        <translation>Datoteka certifikata</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/settingsview/components/AdvancedSIPSecuritySettings.qml" line="94"/>
@@ -109,7 +109,7 @@
     <message>
         <location filename="../src/settingsview/components/BannedContacts.qml" line="105"/>
         <source>Banned Contacts</source>
-        <translation>Zavrnjeni stiki</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -131,7 +131,7 @@
     <message>
         <location filename="../src/mainview/components/CallAdvancedOptions.qml" line="90"/>
         <source>Add to conference</source>
-        <translation>Dodaj v konferenco</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mainview/components/CallAdvancedOptions.qml" line="90"/>
@@ -157,7 +157,7 @@
     <message>
         <location filename="../src/wizardview/components/CollapsiblePasswordWidget.qml" line="65"/>
         <source>Password</source>
-        <translation>Geslo</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/wizardview/components/CollapsiblePasswordWidget.qml" line="97"/>
@@ -170,7 +170,7 @@
     <message>
         <location filename="../src/mainview/components/ContactPicker.qml" line="89"/>
         <source>Add to conference</source>
-        <translation>Dodaj v konferenco</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mainview/components/ContactPicker.qml" line="89"/>
@@ -203,7 +203,7 @@
     <message>
         <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="61"/>
         <source>Remove contact</source>
-        <translation>Odstrani stik</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="74"/>
@@ -218,12 +218,12 @@
     <message>
         <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="87"/>
         <source>Block contact</source>
-        <translation type="unfinished"/>
+        <translation>Blokeeri kontakt</translation>
     </message>
     <message>
         <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="95"/>
         <source>Profile</source>
-        <translation>Profil</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -251,7 +251,7 @@
     <message>
         <location filename="../src/wizardview/components/CreateAccountPage.qml" line="140"/>
         <source>Choose your username</source>
-        <translation>Izberi svoje uporabniško ime:</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/wizardview/components/CreateAccountPage.qml" line="140"/>
@@ -261,7 +261,7 @@
     <message>
         <location filename="../src/wizardview/components/CreateAccountPage.qml" line="155"/>
         <source>Invalid username</source>
-        <translation>Neveljavno uporabniško ime</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/wizardview/components/CreateAccountPage.qml" line="155"/>
@@ -271,7 +271,7 @@
     <message>
         <location filename="../src/wizardview/components/CreateAccountPage.qml" line="157"/>
         <source>Username already taken</source>
-        <translation>Uporabniško ime je že oddano</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/wizardview/components/CreateAccountPage.qml" line="157"/>
@@ -285,13 +285,13 @@
         <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="111"/>
         <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="152"/>
         <source>Success</source>
-        <translation>Uspeh</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="111"/>
         <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="152"/>
         <source>Error</source>
-        <translation>Napaka</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="140"/>
@@ -327,12 +327,12 @@
     <message>
         <location filename="../src/commoncomponents/DeleteAccountDialog.qml" line="158"/>
         <source>Delete</source>
-        <translation>Pobriši</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/commoncomponents/DeleteAccountDialog.qml" line="185"/>
         <source>Cancel</source>
-        <translation>Prekliči</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -353,7 +353,7 @@
     <message>
         <location filename="../src/settingsview/components/GeneralSettingsPage.qml" line="47"/>
         <source>General</source>
-        <translation>Splošno</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -371,7 +371,7 @@
     <message>
         <location filename="../src/wizardview/components/ImportFromBackupPage.qml" line="82"/>
         <source>Import from backup</source>
-        <translation type="unfinished"/>
+        <translation>Impordi varundatud failist</translation>
     </message>
     <message>
         <location filename="../src/wizardview/components/ImportFromBackupPage.qml" line="150"/>
@@ -386,7 +386,7 @@
     <message>
         <location filename="../src/wizardview/components/ImportFromBackupPage.qml" line="133"/>
         <source>Password</source>
-        <translation>Geslo</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -394,7 +394,7 @@
     <message>
         <location filename="../src/wizardview/components/ImportFromDevicePage.qml" line="80"/>
         <source>Password</source>
-        <translation>Geslo</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/wizardview/components/ImportFromDevicePage.qml" line="131"/>
@@ -409,7 +409,7 @@
     <message>
         <location filename="../src/wizardview/components/ImportFromDevicePage.qml" line="115"/>
         <source>PIN</source>
-        <translation>PIN</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -437,7 +437,7 @@
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="32"/>
         <source>Version</source>
-        <translation>Različica</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="33"/>
@@ -457,7 +457,7 @@
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="36"/>
         <source>Credits</source>
-        <translation>Zasluge</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="39"/>
@@ -497,7 +497,7 @@
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="48"/>
         <source>Delete account</source>
-        <translation>Pobriši račun</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="49"/>
@@ -512,17 +512,17 @@
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="51"/>
         <source>Password</source>
-        <translation>Geslo</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="52"/>
         <source>Username</source>
-        <translation>Uporabnik</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="53"/>
         <source>Alias</source>
-        <translation>Alias</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="56"/>
@@ -577,7 +577,7 @@
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="70"/>
         <source>Security</source>
-        <translation>Varnost</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="71"/>
@@ -602,22 +602,22 @@
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="75"/>
         <source>CA certificate</source>
-        <translation>CA Certifikat</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="76"/>
         <source>User certificate</source>
-        <translation>Osebni certifikat</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="77"/>
         <source>Private key</source>
-        <translation>Zasebni ključ</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="78"/>
         <source>Private key password</source>
-        <translation>Geslo zasebnega ključa</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="79"/>
@@ -637,7 +637,7 @@
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="82"/>
         <source>TLS protocol method</source>
-        <translation>Metoda TLS protokola</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="83"/>
@@ -652,7 +652,7 @@
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="85"/>
         <source>Negotiation timeout (seconds)</source>
-        <translation>Čas usklajevanja (sek)</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="86"/>
@@ -672,17 +672,17 @@
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="91"/>
         <source>Connectivity</source>
-        <translation>Povezljivost</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="92"/>
         <source>Registration expire timeout (seconds)</source>
-        <translation>Časovna omejitev prijave (sek)</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="93"/>
         <source>Network interface</source>
-        <translation>Mrežni vmesnik</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="94"/>
@@ -692,22 +692,22 @@
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="95"/>
         <source>Use TURN</source>
-        <translation>Uporabi TURN</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="96"/>
         <source>TURN address</source>
-        <translation>TURN naslov</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="97"/>
         <source>TURN username</source>
-        <translation>TURN uporabnik</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="98"/>
         <source>TURN password</source>
-        <translation>TURN geslo</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="99"/>
@@ -717,12 +717,12 @@
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="100"/>
         <source>Use STUN</source>
-        <translation>Uporabi STUN</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="101"/>
         <source>STUN address</source>
-        <translation>STUN naslov</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="104"/>
@@ -737,17 +737,17 @@
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="106"/>
         <source>Address</source>
-        <translation>Naslov</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="107"/>
         <source>Port</source>
-        <translation>Vrata</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="110"/>
         <source>Media</source>
-        <translation>Vsebine</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="111"/>
@@ -757,7 +757,7 @@
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="114"/>
         <source>SDP Session Negotiation (ICE Fallback)</source>
-        <translation>Dogovarjanje seje SDP (ICE Fallback)</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="115"/>
@@ -817,7 +817,7 @@
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="130"/>
         <source>Back</source>
-        <translation>Nazaj</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="133"/>
@@ -827,7 +827,7 @@
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="136"/>
         <source>Audio</source>
-        <translation>Avdio</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="137"/>
@@ -867,7 +867,7 @@
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="146"/>
         <source>Video</source>
-        <translation>Video</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="147"/>
@@ -877,12 +877,12 @@
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="148"/>
         <source>Device</source>
-        <translation>Naprava</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="149"/>
         <source>Resolution</source>
-        <translation>Resolucija</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="150"/>
@@ -977,7 +977,7 @@
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="177"/>
         <source>Pause</source>
-        <translation>Pavza</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="178"/>
@@ -992,7 +992,7 @@
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="180"/>
         <source>Chat</source>
-        <translation>Pogovor</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="181"/>
@@ -1002,7 +1002,7 @@
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="184"/>
         <source>Hold</source>
-        <translation>Čakanje</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="185"/>
@@ -1012,7 +1012,7 @@
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="186"/>
         <source>Transfer call</source>
-        <translation>Preveži klic</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="187"/>
@@ -1042,12 +1042,12 @@
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="192"/>
         <source>Share screen area</source>
-        <translation>Deli območje zaslona</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="193"/>
         <source>Share file</source>
-        <translation>Deli datoteko</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="194"/>
@@ -1117,12 +1117,12 @@
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="211"/>
         <source>Create account</source>
-        <translation>Ustvari račun</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="212"/>
         <source>Confirm password</source>
-        <translation>Potrdi geslo</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="213"/>
@@ -1137,7 +1137,7 @@
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="217"/>
         <source>Proxy</source>
-        <translation>Proxy</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="218"/>
@@ -1277,12 +1277,12 @@
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="261"/>
         <source>Enable notifications</source>
-        <translation>Omogoči obvestila</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="262"/>
         <source>Keep minimized on close</source>
-        <translation>Minimiziraj ob zaprtju</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="263"/>
@@ -1367,7 +1367,7 @@
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="295"/>
         <source>Close</source>
-        <translation>Zapri</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="298"/>
@@ -1453,7 +1453,7 @@ Copy and share it with your friends!</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="330"/>
         <source>Link this device to an existing account</source>
-        <translation>Poveži to napravo k obstoječemu računu</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="331"/>
@@ -1491,7 +1491,7 @@ Copy and share it with your friends!</source>
     <message>
         <location filename="../src/settingsview/components/JamiUserIdentity.qml" line="186"/>
         <source>Register</source>
-        <translation>Prijavi se</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/settingsview/components/JamiUserIdentity.qml" line="187"/>
@@ -1514,12 +1514,12 @@ Copy and share it with your friends!</source>
     <message>
         <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="121"/>
         <source>Clear history</source>
-        <translation>Pobriši zgodovino</translation>
+        <translation>Kustuta ajalugu</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="126"/>
         <source>Block contact</source>
-        <translation type="unfinished"/>
+        <translation>Blokeeri kontakt</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="131"/>
@@ -1547,17 +1547,17 @@ Copy and share it with your friends!</source>
     <message>
         <location filename="../src/settingsview/components/LeftPanelView.qml" line="61"/>
         <source>Account</source>
-        <translation>Račun</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/settingsview/components/LeftPanelView.qml" line="74"/>
         <source>General</source>
-        <translation>Splošno</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/settingsview/components/LeftPanelView.qml" line="87"/>
         <source>Audio/Video</source>
-        <translation>Avdio/Video</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/settingsview/components/LeftPanelView.qml" line="100"/>
@@ -1575,12 +1575,12 @@ Copy and share it with your friends!</source>
     <message>
         <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="197"/>
         <source>Password</source>
-        <translation>Geslo</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="238"/>
         <source>Cancel</source>
-        <translation>Prekliči</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="101"/>
@@ -1597,7 +1597,7 @@ Please try again later.</source>
     <message>
         <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="213"/>
         <source>Register</source>
-        <translation>Prijavi se</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="265"/>
@@ -1633,7 +1633,7 @@ Please try again later.</source>
     <message>
         <location filename="../src/mainapplication.cpp" line="290"/>
         <source>Exit</source>
-        <translation>Izhod</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1672,17 +1672,17 @@ Please try again later.</source>
     <message>
         <location filename="../src/settingsview/components/NameRegistrationDialog.qml" line="178"/>
         <source>Password</source>
-        <translation>Geslo</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/settingsview/components/NameRegistrationDialog.qml" line="219"/>
         <source>Register</source>
-        <translation>Prijavi se</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/settingsview/components/NameRegistrationDialog.qml" line="258"/>
         <source>Cancel</source>
-        <translation>Prekliči</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/settingsview/components/NameRegistrationDialog.qml" line="35"/>
@@ -1698,7 +1698,7 @@ Please try again later.</source>
     <message>
         <location filename="../src/settingsview/components/NameRegistrationDialog.qml" line="86"/>
         <source>Network error</source>
-        <translation>Napaka mreže</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1887,17 +1887,17 @@ Please try again later.</source>
     <message>
         <location filename="../src/utils.cpp" line="383"/>
         <source>Created by:</source>
-        <translation>Ustvarjalci:</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/utils.cpp" line="389"/>
         <source>Artwork by:</source>
-        <translation>Grafična podoba:</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/utils.cpp" line="397"/>
         <source>Based on the SFLPhone project</source>
-        <translation>Osnovano na projeku SFLPhone</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/videoinputdevicemodel.cpp" line="68"/>
@@ -1929,7 +1929,7 @@ Please try again later.</source>
     <message>
         <location filename="../src/settingsview/components/RecordingSettings.qml" line="108"/>
         <source>Quality</source>
-        <translation>Kvaliteta</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/settingsview/components/RecordingSettings.qml" line="163"/>
@@ -1942,7 +1942,7 @@ Please try again later.</source>
     <message>
         <location filename="../src/settingsview/components/RevokeDevicePasswordDialog.qml" line="83"/>
         <source>Password</source>
-        <translation>Geslo</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/settingsview/components/RevokeDevicePasswordDialog.qml" line="94"/>
@@ -1960,22 +1960,22 @@ Please try again later.</source>
     <message>
         <location filename="../src/settingsview/components/SIPUserIdentity.qml" line="49"/>
         <source>Username</source>
-        <translation>Uporabnik</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/settingsview/components/SIPUserIdentity.qml" line="60"/>
         <source>Hostname</source>
-        <translation>Strežnik</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/settingsview/components/SIPUserIdentity.qml" line="71"/>
         <source>Proxy</source>
-        <translation>Proxy</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/settingsview/components/SIPUserIdentity.qml" line="82"/>
         <source>Password</source>
-        <translation>Geslo</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -2005,7 +2005,7 @@ Please try again later.</source>
         <location filename="../src/smartlistmodel.cpp" line="216"/>
         <location filename="../src/smartlistmodel.cpp" line="217"/>
         <source>Calls</source>
-        <translation>Klici</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/smartlistmodel.cpp" line="64"/>
@@ -2015,7 +2015,7 @@ Please try again later.</source>
         <location filename="../src/smartlistmodel.cpp" line="218"/>
         <location filename="../src/smartlistmodel.cpp" line="219"/>
         <source>Contacts</source>
-        <translation>Stiki</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -2023,7 +2023,7 @@ Please try again later.</source>
     <message>
         <location filename="../src/settingsview/components/SystemSettings.qml" line="58"/>
         <source>System</source>
-        <translation>Sistem</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/settingsview/components/SystemSettings.qml" line="73"/>
@@ -2052,7 +2052,7 @@ Please try again later.</source>
     <message>
         <location filename="../src/settingsview/components/UpdateSettings.qml" line="72"/>
         <source>Check for updates now</source>
-        <translation>Preveri posodobitve zdaj</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/settingsview/components/UpdateSettings.qml" line="90"/>
@@ -2065,7 +2065,7 @@ Please try again later.</source>
     <message>
         <location filename="../src/settingsview/components/UserIdentity.qml" line="49"/>
         <source>Identity</source>
-        <translation>Identiteta</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -2086,7 +2086,7 @@ Please try again later.</source>
     <message>
         <location filename="../src/mainview/components/UserProfile.qml" line="102"/>
         <source>Username</source>
-        <translation>Uporabnik</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -2107,7 +2107,7 @@ Please try again later.</source>
     <message>
         <location filename="../src/wizardview/components/WelcomePage.qml" line="49"/>
         <source>Welcome to</source>
-        <translation>Dobrodošli v</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/wizardview/components/WelcomePage.qml" line="80"/>
@@ -2150,12 +2150,12 @@ Please try again later.</source>
     <message>
         <location filename="../src/wizardview/WizardView.qml" line="158"/>
         <source>Success</source>
-        <translation>Uspeh</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/wizardview/WizardView.qml" line="158"/>
         <source>Error</source>
-        <translation>Napaka</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 </TS>
