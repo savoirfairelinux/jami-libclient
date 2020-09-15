@@ -79,7 +79,7 @@ ColumnLayout {
         Layout.fillWidth: true
         Layout.alignment: Qt.AlignCenter
 
-        boothWidth: Math.min(224, root.width - 100) + 50
+        boothWidth: 180
 
         onImageAcquired: SettingsAdapter.setCurrAccAvatar(imgBase64)
 
