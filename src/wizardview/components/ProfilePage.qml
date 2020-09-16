@@ -101,7 +101,7 @@ Rectangle {
             Layout.alignment: Qt.AlignCenter
 
             selectByMouse: true
-            placeholderText: isRdv ? qsTr("Enter the rendez-vous's name") : qsTr("Enter your name")
+            placeholderText: isRdv ? JamiStrings.enterRVName : qsTr("Enter your name")
             font.pointSize: 9
             font.kerning: true
 
@@ -119,7 +119,7 @@ Rectangle {
 
             enabled: !spinnerTriggered
             normalText: JamiStrings.saveProfile
-            spinnerTriggeredtext: root.isRdv ? qsTr("Generating rendez-vous…") : qsTr("Generating account…")
+            spinnerTriggeredtext: root.isRdv ? JamiStrings.generatingRV : qsTr("Generating account…")
             onClicked: saveProfile()
         }
 

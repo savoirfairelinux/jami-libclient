@@ -110,7 +110,7 @@ Rectangle {
                 Layout.preferredWidth: usernameEdit.width
 
                 Label {
-                    text: isRendezVous ? qsTr("Choose a name for your rendez-vous") : qsTr("Choose a username for your account")
+                    text: isRendezVous ? JamiStrings.chooseNameRV : qsTr("Choose a username for your account")
                     font.pointSize: JamiTheme.textFontSize + 3
                 }
 

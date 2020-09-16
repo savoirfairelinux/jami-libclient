@@ -97,9 +97,9 @@ Rectangle {
             Layout.preferredWidth: preferredWidth
             Layout.preferredHeight: preferredHeight
 
-            text: qsTr("Create a rendez-vous")
+            text: JamiStrings.createRV
             fontCapitalization: Font.AllUppercase
-            toolTipText: qsTr("Create new rendez-vous")
+            toolTipText: JamiStrings.createNewRV
             source: "qrc:/images/icons/groups-24px.svg"
             color: JamiTheme.buttonTintedBlue
             hoveredColor: JamiTheme.buttonTintedBlueHovered

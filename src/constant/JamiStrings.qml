@@ -207,11 +207,12 @@ Item {
     property string chooseName: qsTr("Choose name")
     property string chooseUsername: qsTr("Choose username")
     property string createPassword: qsTr("Create password")
-    property string createRV: qsTr("Create rendez-vous")
+    property string createRV: qsTr("Create rendezvous")
     property string createAccount: qsTr("Create account")
     property string confirmPassword: qsTr("Confirm password")
     property string notePasswordRecovery: qsTr("Note that the password cannot be recovered")
     property string optional: qsTr("Optional")
+    property string chooseNameRV: qsTr("Choose a name for your rendezvous")
 
     // CreateSIPAccountPage
     property string proxy: qsTr("Proxy")
@@ -315,6 +316,8 @@ Item {
 
     // ProfilePage
     property string saveProfile: qsTr("Save profile")
+    property string enterRVName: qsTr("Enter the rendezvous's name")
+    property string generatingRV: qsTr("Generating rendezvous…")
 
     // RevokeDevicePasswordDialog
     property string confirmRemovalRequest: qsTr("Enter the account password to confirm the removal of this device")
@@ -334,4 +337,5 @@ Item {
     property string createFromJAMS: qsTr("Create account from Jami Account Manager Server (JAMS)")
     property string addSIPAccount: qsTr("Add a SIP account")
     property string errorCreateAccount: qsTr("Error while creating your account. Check your credentials.")
+    property string createNewRV: qsTr("Create new rendezvous")
 }
