@@ -74,70 +74,51 @@ Rectangle {
         Rectangle {
             id: userNameOrIdRect
 
-            Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
-
-
+            Layout.alignment: Qt.AlignLeft | Qt.AlignTop
             // Width + margin.
             Layout.preferredWidth: messagingHeaderRect.width
                                    - backToWelcomeViewButton.width - buttonGroup.width - 45
-            Layout.preferredHeight: messagingHeaderRect.height
+            Layout.fillHeight: true
+            Layout.topMargin: 7
+            Layout.bottomMargin: 7
             Layout.leftMargin: 16
 
             color: "transparent"
 
             ColumnLayout {
                 id: userNameOrIdColumnLayout
-                Layout.alignment: Qt.AlignVCenter
+
                 anchors.fill: parent
 
-                Label {
+                spacing: 0
+
+                ElidedTextLabel {
                     id: userAliasLabel
 
                     Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
-                    Layout.preferredWidth: userNameOrIdRect.width
-                    Layout.preferredHeight: textMetricsuserAliasLabel.boundingRect.height
-                    Layout.topMargin: userUserNameLabel.text === "" ? 0 : 10
 
-                    font.pointSize: JamiTheme.menuFontSize
+                    font.pointSize: JamiTheme.textFontSize + 2
 
                     horizontalAlignment: Text.AlignLeft
                     verticalAlignment: Text.AlignVCenter
 
-                    text: textMetricsuserAliasLabel.elidedText
-                }
-
-                TextMetrics {
-                    id: textMetricsuserAliasLabel
-
-                    font: userAliasLabel.font
                     text: userAliasLabelText
-                    elideWidth: userNameOrIdRect.width
-                    elide: Qt.ElideMiddle
+                    maxWidth: userNameOrIdRect.width
                 }
 
-                Label {
+                ElidedTextLabel {
                     id: userUserNameLabel
-                    visible: (text !== "")
-                    Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
-                    Layout.preferredWidth: userNameOrIdRect.width
-                    Layout.preferredHeight: textMetricsuserUserNameLabel.boundingRect.height
-                    Layout.bottomMargin: 10
 
+                    Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
+
+                    visible: text !== ""
                     font.pointSize: JamiTheme.textFontSize
                     color: JamiTheme.faddedLastInteractionFontColor
 
                     horizontalAlignment: Text.AlignLeft
                     verticalAlignment: Text.AlignVCenter
-                    text: textMetricsuserUserNameLabel.elidedText
-                }
-
-                TextMetrics {
-                    id: textMetricsuserUserNameLabel
-
-                    font: userUserNameLabel.font
                     text: userUserNameLabelText
-                    elideWidth: userNameOrIdRect.width
-                    elide: Qt.ElideMiddle
+                    maxWidth: userNameOrIdRect.width
                 }
             }
         }
