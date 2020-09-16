@@ -25,56 +25,34 @@ import net.jami.Adapters 1.0
 import "../../constant"
 import "../../commoncomponents"
 
-BaseDialog {
+ModalPopup {
     id: root
 
-    title: JamiStrings.accountQr
+    modal: true
 
-    contentItem: Rectangle {
-        id: content
+    //Content height + margin.
+    property int size: userQrImage.height + 30
+    width: size
+    height: size
 
-        implicitWidth: userQrImage.width + JamiTheme.preferredMarginSize * 2
-        implicitHeight: 352 // Qr + btn + margins
+    Item {
+        anchors.fill: parent
 
-        ColumnLayout {
+        Image {
+            id: userQrImage
 
             anchors.centerIn: parent
-            anchors.fill: parent
 
-            Image {
-                id: userQrImage
+            width: 256
+            height: 256
+            smooth: false
 
-                Layout.alignment: Qt.AlignCenter
-                Layout.preferredWidth: 256
-                Layout.preferredHeight: 256
-
-                smooth: false
-
-                fillMode: Image.PreserveAspectFit
-                source: {
-                    if (AccountAdapter.currentAccountId)
-                        return "image://qrImage/account_" + AccountAdapter.currentAccountId
-                    return ""
-                }
-            }
-
-            MaterialButton {
-                id: btnClose
-
-                Layout.alignment: Qt.AlignHCenter
-                Layout.preferredWidth: JamiTheme.preferredFieldWidth / 2
-                Layout.preferredHeight: JamiTheme.preferredFieldHeight
-                Layout.bottomMargin: JamiTheme.preferredMarginSize
-
-                text: JamiStrings.close
-                color: enabled? JamiTheme.buttonTintedBlack : JamiTheme.buttonTintedGrey
-                hoveredColor: JamiTheme.buttonTintedBlackHovered
-                pressedColor: JamiTheme.buttonTintedBlackPressed
-                outlined: true
-
-                onClicked: {
-                    close()
-                }
+            fillMode: Image.PreserveAspectFit
+            source: {
+                if (AccountAdapter.currentAccountId &&
+                        AccountAdapter.currentAccountType === Profile.Type.RING)
+                    return "image://qrImage/account_" + AccountAdapter.currentAccountId
+                return ""
             }
         }
     }

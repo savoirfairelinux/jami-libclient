@@ -139,5 +139,6 @@
         <file>src/commoncomponents/UsernameLineEdit.qml</file>
         <file>src/mainview/components/UserInfoCallPage.qml</file>
         <file>src/commoncomponents/BaseDialog.qml</file>
+        <file>src/commoncomponents/ModalPopup.qml</file>
     </qresource>
 </RCC>
