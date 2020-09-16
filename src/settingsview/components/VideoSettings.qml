@@ -155,7 +155,7 @@ ColumnLayout {
         id: deviceComboBoxSetting
 
         Layout.fillWidth: true
-        Layout.maximumHeight: JamiTheme.preferredFieldHeight
+        Layout.preferredHeight: JamiTheme.preferredFieldHeight
         Layout.leftMargin: JamiTheme.preferredMarginSize
 
         labelText: JamiStrings.device
@@ -174,7 +174,7 @@ ColumnLayout {
         id: resolutionComboBoxSetting
 
         Layout.fillWidth: true
-        Layout.maximumHeight: JamiTheme.preferredFieldHeight
+        Layout.preferredHeight: JamiTheme.preferredFieldHeight
         Layout.leftMargin: JamiTheme.preferredMarginSize
 
         labelText: JamiStrings.resolution
@@ -193,7 +193,7 @@ ColumnLayout {
         id: fpsComboBoxSetting
 
         Layout.fillWidth: true
-        Layout.maximumHeight: JamiTheme.preferredFieldHeight
+        Layout.preferredHeight: JamiTheme.preferredFieldHeight
         Layout.leftMargin: JamiTheme.preferredMarginSize
 
         labelText: JamiStrings.fps
@@ -227,22 +227,21 @@ ColumnLayout {
     // video Preview
     Rectangle {
         id: rectBox
+
         Layout.alignment: Qt.AlignHCenter
-        Layout.maximumHeight: width * aspectRatio
-        Layout.minimumHeight: width * aspectRatio
         Layout.preferredHeight: width * aspectRatio
 
         Layout.minimumWidth: 200
         Layout.maximumWidth: 400
         Layout.preferredWidth: itemWidth * 2
         Layout.bottomMargin: JamiTheme.preferredMarginSize
+
         color: "white"
         radius: 5
 
         PreviewRenderer {
             id: previewWidget
             anchors.fill: rectBox
-            anchors.centerIn: rectBox
 
             layer.enabled: true
             layer.effect: OpacityMask {

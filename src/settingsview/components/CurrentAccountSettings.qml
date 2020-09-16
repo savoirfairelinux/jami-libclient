@@ -36,11 +36,13 @@ Rectangle {
 
     property bool isSIP
 
+    property int contentWidth: currentAccountSettingsColumnLayout.width
+    property int preferredHeight: currentAccountSettingsColumnLayout.implicitHeight
     property int preferredColumnWidth : Math.min(root.width / 2 - 50, 350)
 
     signal navigateToMainView
     signal navigateToNewWizardView
-    signal backArrowClicked
+    signal advancedSettingsToggled(bool settingsVisible)
 
     function isPhotoBoothOpened() {
         return accountProfile.isPhotoBoothOpened()
@@ -86,6 +88,9 @@ Rectangle {
         bannedContacts.connectCurrentAccount(false)
     }
 
+    function getAdvancedSettingsScrollPosition() {
+        return advancedSettings.y / currentAccountSettingsColumnLayout.height
+    }
 
     function setPasswordButtonText() {
         var hasPassword = AccountAdapter.hasPassword()
@@ -175,176 +180,148 @@ Rectangle {
     }
 
     ColumnLayout {
+        id: currentAccountSettingsColumnLayout
+
         anchors.centerIn: root
 
         height: root.height
         width: Math.min(JamiTheme.maximumWidthSettingsView, root.width)
 
-        SettingsHeader {
-            Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
+        ToggleSwitch {
+            id: accountEnableCheckBox
+
+            Layout.topMargin: JamiTheme.preferredMarginSize
             Layout.leftMargin: JamiTheme.preferredMarginSize
-            Layout.fillWidth: true
-            Layout.preferredHeight: 64
+            Layout.rightMargin: JamiTheme.preferredMarginSize
 
-            title: qsTr("Account Settings")
+            labelText: JamiStrings.enableAccount
+            fontPointSize: JamiTheme.headerFontSize
 
-            onBackArrowClicked: root.backArrowClicked()
+            onSwitchToggled: AccountAdapter.model.setAccountEnabled(
+                                 AccountAdapter.currentAccountId, checked)
         }
 
-        ScrollView {
-            id: scrollView
+        AccountProfile {
+            id: accountProfile
 
-            property ScrollBar vScrollBar: ScrollBar.vertical
-            ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
-            ScrollBar.vertical.policy: ScrollBar.AsNeeded
-
-            Layout.fillHeight: true
             Layout.fillWidth: true
+            Layout.topMargin: JamiTheme.preferredMarginSize
+            Layout.leftMargin: JamiTheme.preferredMarginSize
+            Layout.rightMargin: JamiTheme.preferredMarginSize
+        }
 
-            focus: true
-            clip: true
+        UserIdentity {
+            id: userIdentity
+            isSIP: root.isSIP
 
-            ColumnLayout {
-                id: accountLayout
+            Layout.fillWidth: true
+            Layout.alignment: Qt.AlignHCenter
+            Layout.leftMargin: JamiTheme.preferredMarginSize
+            Layout.rightMargin: JamiTheme.preferredMarginSize
 
-                width: scrollView.width
+            itemWidth: preferredColumnWidth
+        }
 
-                ToggleSwitch {
-                    id: accountEnableCheckBox
+        MaterialButton {
+            id: passwdPushButton
 
-                    Layout.topMargin: JamiTheme.preferredMarginSize
-                    Layout.leftMargin: JamiTheme.preferredMarginSize
-                    Layout.rightMargin: JamiTheme.preferredMarginSize
+            visible: !isSIP && SettingsAdapter.getAccountConfig_Manageruri() === ""
+            Layout.alignment: Qt.AlignHCenter
+            Layout.preferredWidth: JamiTheme.preferredFieldWidth
+            Layout.preferredHeight: JamiTheme.preferredFieldHeight
 
-                    labelText: JamiStrings.enableAccount
-                    fontPointSize: JamiTheme.headerFontSize
+            color: JamiTheme.buttonTintedBlack
+            hoveredColor: JamiTheme.buttonTintedBlackHovered
+            pressedColor: JamiTheme.buttonTintedBlackPressed
+            outlined: true
 
-                    onSwitchToggled: AccountAdapter.model.setAccountEnabled(
-                                         AccountAdapter.currentAccountId, checked)
-                }
+            toolTipText: AccountAdapter.hasPassword() ?
+                        JamiStrings.changeCurrentPassword : JamiStrings.setAPassword
+            text: AccountAdapter.hasPassword() ? JamiStrings.changePassword : JamiStrings.setPassword
 
-                AccountProfile {
-                    id: accountProfile
+            source: "qrc:/images/icons/round-edit-24px.svg"
 
-                    Layout.fillWidth: true
-                    Layout.topMargin: JamiTheme.preferredMarginSize
-                    Layout.leftMargin: JamiTheme.preferredMarginSize
-                    Layout.rightMargin: JamiTheme.preferredMarginSize
-                }
-
-                UserIdentity {
-                    id: userIdentity
-                    isSIP: root.isSIP
-
-                    Layout.fillWidth: true
-                    Layout.alignment: Qt.AlignHCenter
-                    Layout.leftMargin: JamiTheme.preferredMarginSize
-                    Layout.rightMargin: JamiTheme.preferredMarginSize
-
-                    itemWidth: preferredColumnWidth
-                }
-
-                MaterialButton {
-                    id: passwdPushButton
-
-                    visible: !isSIP && SettingsAdapter.getAccountConfig_Manageruri() === ""
-                    Layout.alignment: Qt.AlignHCenter
-                    Layout.preferredWidth: JamiTheme.preferredFieldWidth
-                    Layout.preferredHeight: JamiTheme.preferredFieldHeight
-
-                    color: JamiTheme.buttonTintedBlack
-                    hoveredColor: JamiTheme.buttonTintedBlackHovered
-                    pressedColor: JamiTheme.buttonTintedBlackPressed
-                    outlined: true
-
-                    toolTipText: AccountAdapter.hasPassword() ?
-                                JamiStrings.changeCurrentPassword : JamiStrings.setAPassword
-                    text: AccountAdapter.hasPassword() ? JamiStrings.changePassword : JamiStrings.setPassword
-
-                    source: "qrc:/images/icons/round-edit-24px.svg"
-
-                    onClicked: {
-                        passwordClicked()
-                    }
-                }
-
-                MaterialButton {
-                    id: btnExportAccount
-
-                    visible: !isSIP && SettingsAdapter.getAccountConfig_Manageruri() === ""
-                    Layout.alignment: Qt.AlignHCenter
-                    Layout.preferredWidth: JamiTheme.preferredFieldWidth
-                    Layout.preferredHeight: JamiTheme.preferredFieldHeight
-
-                    color: JamiTheme.buttonTintedBlack
-                    hoveredColor: JamiTheme.buttonTintedBlackHovered
-                    pressedColor: JamiTheme.buttonTintedBlackPressed
-                    outlined: true
-
-                    toolTipText: JamiStrings.tipBackupAccount
-                    text: JamiStrings.backupAccountBtn
-
-                    source: "qrc:/images/icons/round-save_alt-24px.svg"
-
-                    onClicked: {
-                        exportAccountSlot()
-                    }
-                }
-
-                MaterialButton {
-                    Layout.alignment: Qt.AlignHCenter
-                    Layout.preferredWidth: JamiTheme.preferredFieldWidth
-                    Layout.preferredHeight: JamiTheme.preferredFieldHeight
-                    Layout.leftMargin: JamiTheme.preferredMarginSize
-                    Layout.rightMargin: JamiTheme.preferredMarginSize
-
-                    color: JamiTheme.buttonTintedRed
-                    hoveredColor: JamiTheme.buttonTintedRedHovered
-                    pressedColor: JamiTheme.buttonTintedRedPressed
-
-                    text: JamiStrings.deleteAccount
-
-                    source: "qrc:/images/icons/delete_forever-24px.svg"
-
-                    onClicked: {
-                        delAccountSlot()
-                    }
-                }
-
-                LinkedDevices {
-                    id: linkedDevices
-                    visible: !isSIP && SettingsAdapter.getAccountConfig_Manageruri() === ""
-
-                    Layout.fillWidth: true
-                    Layout.alignment: Qt.AlignHCenter
-                    Layout.leftMargin: JamiTheme.preferredMarginSize
-                    Layout.rightMargin: JamiTheme.preferredMarginSize
-                }
-
-                BannedContacts {
-                    id: bannedContacts
-                    isSIP: root.isSIP
-
-                    Layout.fillWidth: true
-                    Layout.alignment: Qt.AlignHCenter
-                    Layout.leftMargin: JamiTheme.preferredMarginSize
-                    Layout.rightMargin: JamiTheme.preferredMarginSize
-                }
-
-                AdvancedSettings {
-                    id: advancedSettings
-
-                    Layout.fillWidth: true
-                    Layout.leftMargin: JamiTheme.preferredMarginSize
-                    Layout.rightMargin: JamiTheme.preferredMarginSize
-                    Layout.bottomMargin: 8
-
-                    itemWidth: preferredColumnWidth
-                    isSIP: root.isSIP
-
-                    onScrolled: scrollView.vScrollBar.position = advancedSettings.y / accountLayout.height
-                }
+            onClicked: {
+                passwordClicked()
             }
+        }
+
+        MaterialButton {
+            id: btnExportAccount
+
+            visible: !isSIP && SettingsAdapter.getAccountConfig_Manageruri() === ""
+            Layout.alignment: Qt.AlignHCenter
+            Layout.preferredWidth: JamiTheme.preferredFieldWidth
+            Layout.preferredHeight: JamiTheme.preferredFieldHeight
+
+            color: JamiTheme.buttonTintedBlack
+            hoveredColor: JamiTheme.buttonTintedBlackHovered
+            pressedColor: JamiTheme.buttonTintedBlackPressed
+            outlined: true
+
+            toolTipText: JamiStrings.tipBackupAccount
+            text: JamiStrings.backupAccountBtn
+
+            source: "qrc:/images/icons/round-save_alt-24px.svg"
+
+            onClicked: {
+                exportAccountSlot()
+            }
+        }
+
+        MaterialButton {
+            Layout.alignment: Qt.AlignHCenter
+            Layout.preferredWidth: JamiTheme.preferredFieldWidth
+            Layout.preferredHeight: JamiTheme.preferredFieldHeight
+            Layout.topMargin: isSIP ? JamiTheme.preferredMarginSize : 0
+            Layout.leftMargin: JamiTheme.preferredMarginSize
+            Layout.rightMargin: JamiTheme.preferredMarginSize
+
+            color: JamiTheme.buttonTintedRed
+            hoveredColor: JamiTheme.buttonTintedRedHovered
+            pressedColor: JamiTheme.buttonTintedRedPressed
+
+            text: JamiStrings.deleteAccount
+
+            source: "qrc:/images/icons/delete_forever-24px.svg"
+
+            onClicked: {
+                delAccountSlot()
+            }
+        }
+
+        LinkedDevices {
+            id: linkedDevices
+            visible: !isSIP && SettingsAdapter.getAccountConfig_Manageruri() === ""
+
+            Layout.fillWidth: true
+            Layout.alignment: Qt.AlignHCenter
+            Layout.leftMargin: JamiTheme.preferredMarginSize
+            Layout.rightMargin: JamiTheme.preferredMarginSize
+        }
+
+        BannedContacts {
+            id: bannedContacts
+            isSIP: root.isSIP
+
+            Layout.fillWidth: true
+            Layout.alignment: Qt.AlignHCenter
+            Layout.leftMargin: JamiTheme.preferredMarginSize
+            Layout.rightMargin: JamiTheme.preferredMarginSize
+        }
+
+        AdvancedSettings {
+            id: advancedSettings
+
+            Layout.fillWidth: true
+            Layout.leftMargin: JamiTheme.preferredMarginSize
+            Layout.rightMargin: JamiTheme.preferredMarginSize
+            Layout.bottomMargin: 8
+
+            itemWidth: preferredColumnWidth
+            isSIP: root.isSIP
+
+            onHeightChanged: advancedSettingsToggled(settingsVisible)
         }
     }
 }

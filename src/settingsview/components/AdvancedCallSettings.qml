@@ -123,7 +123,7 @@ ColumnLayout {
         SettingMaterialButton {
             id: btnRingtone
             Layout.fillWidth: true
-            Layout.preferredHeight: JamiTheme.preferredFieldHeight
+            Layout.minimumHeight: JamiTheme.preferredFieldHeight
 
             titleField: JamiStrings.selectCustomRingtone
             source: "qrc:/images/icons/round-folder-24px.svg"

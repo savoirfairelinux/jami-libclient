@@ -136,7 +136,7 @@ ColumnLayout {
         SettingMaterialButton {
             id: btnCACert
             Layout.fillWidth: true
-            Layout.preferredHeight: JamiTheme.preferredFieldHeight
+            Layout.minimumHeight: JamiTheme.preferredFieldHeight
 
             titleField: JamiStrings.caCertificate
             source: "qrc:/images/icons/round-folder-24px.svg"
@@ -147,7 +147,7 @@ ColumnLayout {
         SettingMaterialButton {
             id: btnUserCert
             Layout.fillWidth: true
-            Layout.preferredHeight: JamiTheme.preferredFieldHeight
+            Layout.minimumHeight: JamiTheme.preferredFieldHeight
 
             titleField: JamiStrings.userCertificate
             source: "qrc:/images/icons/round-folder-24px.svg"
@@ -158,7 +158,7 @@ ColumnLayout {
         SettingMaterialButton {
             id: btnPrivateKey
             Layout.fillWidth: true
-            Layout.preferredHeight: JamiTheme.preferredFieldHeight
+            Layout.minimumHeight: JamiTheme.preferredFieldHeight
 
             titleField: JamiStrings.privateKey
             source: "qrc:/images/icons/round-folder-24px.svg"

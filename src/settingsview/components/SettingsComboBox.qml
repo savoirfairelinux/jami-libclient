@@ -52,17 +52,19 @@ RowLayout {
 
     ElidedTextLabel {
         id: label
+
         Layout.fillWidth: true
         Layout.preferredHeight: heightOfLayout
-        Layout.rightMargin: JamiTheme.preferredMarginSize
+        Layout.rightMargin: JamiTheme.preferredMarginSize / 2
 
         eText: qsTr(labelText)
         fontSize: JamiTheme.settingsFontSize
-        maxWidth: width
+        maxWidth: widthOfComboBox
     }
 
     SettingParaCombobox {
         id: comboBoxOfLayout
+
         Layout.preferredWidth: widthOfComboBox
         Layout.preferredHeight: JamiTheme.preferredFieldHeight
 

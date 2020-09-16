@@ -134,6 +134,7 @@ Rectangle {
 
     Rectangle {
         id: settingsViewRect
+
         anchors.fill: root
 
         signal stopAudioMeter
@@ -151,79 +152,132 @@ Rectangle {
             }
         }
 
-        StackLayout {
-            id: rightSettingsWidget
+        SettingsHeader {
+            id: settingsHeader
 
-            anchors.fill: parent
+            anchors.top: settingsViewRect.top
+            anchors.left: settingsViewRect.left
+            anchors.leftMargin: {
+                var pageWidth = rightSettingsStackLayout.itemAt(
+                            rightSettingsStackLayout.currentIndex).contentWidth
+                return (settingsViewRect.width - pageWidth) / 2 + JamiTheme.preferredMarginSize
+            }
 
-            property int pageIdCurrentAccountSettingsPage: 0
-            property int pageIdGeneralSettingsPage: 1
-            property int pageIdAvSettingPage: 2
-            property int pageIdPluginSettingsPage: 3
+            height: JamiTheme.settingsHeaderpreferredHeight
 
-            currentIndex: {
+            title: {
                 switch(selectedMenu){
                     case SettingsView.Account:
-                        return pageIdCurrentAccountSettingsPage
+                        return qsTr("Account Settings")
                     case SettingsView.General:
-                        return pageIdGeneralSettingsPage
+                        return qsTr("General")
                     case SettingsView.Media:
-                        return pageIdAvSettingPage
+                        return JamiStrings.avSettingsTitle
                     case SettingsView.Plugin:
-                        return pageIdPluginSettingsPage
+                        return qsTr("Plugin")
                 }
             }
 
-            // current account setting scroll page, index 0
-            CurrentAccountSettings {
-                id: pageIdCurrentAccountSettings
+            onBackArrowClicked: root.settingsBackArrowClicked()
+        }
 
-                Layout.fillHeight: true
-                Layout.fillWidth: true
+        ScrollView {
+            id: settingsViewScrollView
 
-                isSIP: settingsViewRect.isSIP
+            property ScrollBar vScrollBar: ScrollBar.vertical
 
-                onNavigateToMainView: {
-                    leaveSettingsSlot(true)
+            anchors.top: settingsHeader.bottom
+            anchors.horizontalCenter: settingsViewRect.horizontalCenter
+
+            height: settingsViewRect.height - settingsHeader.height
+            width: settingsViewRect.width
+
+            ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
+            ScrollBar.vertical.policy: ScrollBar.AsNeeded
+
+            clip: true
+            contentHeight: rightSettingsStackLayout.height
+
+            StackLayout {
+                id: rightSettingsStackLayout
+
+                anchors.centerIn: parent
+
+                width: settingsViewScrollView.width
+
+                property int pageIdCurrentAccountSettingsPage: 0
+                property int pageIdGeneralSettingsPage: 1
+                property int pageIdAvSettingPage: 2
+                property int pageIdPluginSettingsPage: 3
+
+                currentIndex: {
+                    switch(selectedMenu){
+                        case SettingsView.Account:
+                            return pageIdCurrentAccountSettingsPage
+                        case SettingsView.General:
+                            return pageIdGeneralSettingsPage
+                        case SettingsView.Media:
+                            return pageIdAvSettingPage
+                        case SettingsView.Plugin:
+                            return pageIdPluginSettingsPage
+                    }
                 }
 
-                onNavigateToNewWizardView: {
-                    leaveSettingsSlot(false)
+                Component.onCompleted: {
+                    // avoid binding loop
+                    height = Qt.binding(function (){
+                        return Math.max(
+                                    rightSettingsStackLayout.itemAt(currentIndex).preferredHeight,
+                                    settingsViewScrollView.height)
+                    })
                 }
-            }
 
-            // general setting page, index 1
-            GeneralSettingsPage {
-                id: generalSettings
+                // current account setting scroll page, index 0
+                CurrentAccountSettings {
+                    id: pageIdCurrentAccountSettings
 
-                Layout.fillHeight: true
-                Layout.fillWidth: true
-            }
+                    Layout.alignment: Qt.AlignCenter
 
-            // av setting page, index 2
-            AvSettingPage {
-                id: avSettings
+                    isSIP: settingsViewRect.isSIP
 
-                Layout.fillHeight: true
-                Layout.fillWidth: true
-            }
+                    onNavigateToMainView: {
+                        leaveSettingsSlot(true)
+                    }
 
-            // plugin setting page, index 3
-            PluginSettingsPage {
-                id: pluginSettings
+                    onNavigateToNewWizardView: {
+                        leaveSettingsSlot(false)
+                    }
 
-                Layout.fillHeight: true
-                Layout.fillWidth: true
+                    onAdvancedSettingsToggled: {
+                        if (settingsVisible)
+                            settingsViewScrollView.vScrollBar.position =
+                                    getAdvancedSettingsScrollPosition()
+                        else
+                            settingsViewScrollView.vScrollBar.position = 0
+                    }
+                }
+
+                // general setting page, index 1
+                GeneralSettingsPage {
+                    id: generalSettings
+
+                    Layout.alignment: Qt.AlignCenter
+                }
+
+                // av setting page, index 2
+                AvSettingPage {
+                    id: avSettings
+
+                    Layout.alignment: Qt.AlignCenter
+                }
+
+                // plugin setting page, index 3
+                PluginSettingsPage {
+                    id: pluginSettings
+
+                    Layout.alignment: Qt.AlignCenter
+                }
             }
         }
-    }
-
-
-    // Back button signal redirection
-    Component.onCompleted: {
-        pageIdCurrentAccountSettings.backArrowClicked.connect(settingsBackArrowClicked)
-        generalSettings.backArrowClicked.connect(settingsBackArrowClicked)
-        avSettings.backArrowClicked.connect(settingsBackArrowClicked)
-        pluginSettings.backArrowClicked.connect(settingsBackArrowClicked)
     }
 }

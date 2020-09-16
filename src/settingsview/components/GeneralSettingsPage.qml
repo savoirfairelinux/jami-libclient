@@ -32,66 +32,43 @@ Rectangle {
     id: root
 
     property int preferredColumnWidth : Math.min(root.width / 2 - 50, 350)
-
-    signal backArrowClicked
+    property int contentWidth: generalSettingsColumnLayout.width
+    property int preferredHeight: generalSettingsColumnLayout.implicitHeight
 
     ColumnLayout {
+        id: generalSettingsColumnLayout
+
         anchors.centerIn: root
 
         height: root.height
         width: Math.min(JamiTheme.maximumWidthSettingsView, root.width)
 
-        SettingsHeader {
-            Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
-            Layout.leftMargin: JamiTheme.preferredMarginSize
+        // system setting panel
+        SystemSettings {
             Layout.fillWidth: true
-            Layout.preferredHeight: 64
+            Layout.topMargin: JamiTheme.preferredMarginSize
+            Layout.leftMargin: JamiTheme.preferredMarginSize
+            Layout.rightMargin: JamiTheme.preferredMarginSize
 
-            title: qsTr("General")
-
-            onBackArrowClicked: root.backArrowClicked()
+            itemWidth: preferredColumnWidth
         }
 
-        ScrollView {
-            id: generalSettingsScrollView
-
-            Layout.fillHeight: true
+        // call recording setting panel
+        RecordingSettings {
             Layout.fillWidth: true
+            Layout.leftMargin: JamiTheme.preferredMarginSize
+            Layout.rightMargin: JamiTheme.preferredMarginSize
 
-            focus: true
-            clip: true
+            itemWidth: preferredColumnWidth
+        }
 
-            ColumnLayout {
-                width: generalSettingsScrollView.width
-
-                // system setting panel
-                SystemSettings {
-                    Layout.fillWidth: true
-                    Layout.topMargin: JamiTheme.preferredMarginSize
-                    Layout.leftMargin: JamiTheme.preferredMarginSize
-                    Layout.rightMargin: JamiTheme.preferredMarginSize
-
-                    itemWidth: preferredColumnWidth
-                }
-
-                // call recording setting panel
-                RecordingSettings {
-                    Layout.fillWidth: true
-                    Layout.leftMargin: JamiTheme.preferredMarginSize
-                    Layout.rightMargin: JamiTheme.preferredMarginSize
-
-                    itemWidth: preferredColumnWidth
-                }
-
-                // update setting panel
-                UpdateSettings {
-                    Layout.fillWidth: true
-                    Layout.leftMargin: JamiTheme.preferredMarginSize
-                    Layout.rightMargin: JamiTheme.preferredMarginSize
-                    Layout.bottomMargin: JamiTheme.preferredMarginSize
-                    visible: Qt.platform.os == "windows"? true : false
-                }
-            }
+        // update setting panel
+        UpdateSettings {
+            Layout.fillWidth: true
+            Layout.leftMargin: JamiTheme.preferredMarginSize
+            Layout.rightMargin: JamiTheme.preferredMarginSize
+            Layout.bottomMargin: JamiTheme.preferredMarginSize
+            visible: Qt.platform.os == "windows"? true : false
         }
     }
 }

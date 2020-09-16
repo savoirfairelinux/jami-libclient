@@ -91,6 +91,7 @@ Item {
     property int menuFontSize: 12
 
     property int maximumWidthSettingsView: 600
+    property int settingsHeaderpreferredHeight: 64
     property int preferredFieldWidth: 256
     property int preferredFieldHeight: 32
     property int preferredMarginSize: 16

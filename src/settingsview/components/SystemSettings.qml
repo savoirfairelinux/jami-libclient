@@ -127,7 +127,7 @@ ColumnLayout {
 
             Layout.alignment: Qt.AlignRight
             Layout.preferredWidth: itemWidth
-            Layout.fillHeight: true
+            Layout.preferredHeight: JamiTheme.preferredFieldHeight
 
             toolTipText: JamiStrings.tipChooseDownloadFolder
             text: downloadPath

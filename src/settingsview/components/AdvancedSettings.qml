@@ -34,8 +34,7 @@ ColumnLayout {
 
     property bool isSIP
     property int itemWidth
-
-    signal scrolled
+    property alias settingsVisible: advancedSettingsView.visible
 
     function updateAdvancedAccountInfos() {
         advancedCallSettings.updateCallSettingsInfos()
@@ -90,77 +89,87 @@ ColumnLayout {
                 advancedSettingsView.visible = !advancedSettingsView.visible
                 if(advancedSettingsView.visible)
                     updateAdvancedAccountInfos()
-                scrolled()
             }
         }
     }
 
     ColumnLayout {
         id: advancedSettingsView
+
+        Layout.fillWidth: true
+
         visible: false
 
         AdvancedCallSettings {
             id: advancedCallSettings
-            isSIP: root.isSIP
-            itemWidth: root.itemWidth
 
             Layout.fillWidth: true
+
+            isSIP: root.isSIP
+            itemWidth: root.itemWidth
         }
 
         AdvancedVoiceMailSettings {
             id: advancedVoiceMailSettings
-            visible: root.isSIP
-            itemWidth: root.itemWidth
 
             Layout.fillWidth: true
+
+            visible: root.isSIP
+            itemWidth: root.itemWidth
         }
 
         AdvancedSIPSecuritySettings {
             id: advancedSIPSecuritySettings
-            visible: root.isSIP
-            itemWidth: root.itemWidth
 
             Layout.fillWidth: true
+
+            visible: root.isSIP
+            itemWidth: root.itemWidth
         }
 
         AdvancedNameServerSettings {
             id: advancedNameServerSettings
-            visible: !root.isSIP
-            itemWidth: root.itemWidth
 
             Layout.fillWidth: true
+
+            visible: !root.isSIP
+            itemWidth: root.itemWidth
         }
 
         AdvancedOpenDHTSettings {
             id: advancedOpenDHTSettings
-            visible: !root.isSIP
-            itemWidth: root.itemWidth
 
             Layout.fillWidth: true
+
+            visible: !root.isSIP
+            itemWidth: root.itemWidth
         }
 
         AdvancedJamiSecuritySettings {
             id: advancedJamiSecuritySettings
-            visible: !root.isSIP
-            itemWidth: root.itemWidth
 
             Layout.fillWidth: true
+
+            visible: !root.isSIP
+            itemWidth: root.itemWidth
         }
 
         AdvancedConnectivitySettings {
             id: advancedConnectivitySettings
-            itemWidth: root.itemWidth
-            isSIP: root.isSIP
 
             Layout.fillWidth: true
+
+            itemWidth: root.itemWidth
+            isSIP: root.isSIP
         }
 
         AdvancedPublicAddressSettings {
             id: advancedPublicAddressSettings
-            visible: isSIP
-            itemWidth: root.itemWidth
 
             Layout.fillWidth: true
+
+            visible: isSIP
+            itemWidth: root.itemWidth
         }
 
         AdvancedMediaSettings {
@@ -171,10 +180,11 @@ ColumnLayout {
 
         AdvancedSDPSettings {
             id: advancedSDPStettings
-            visible: isSIP
-            itemWidth: root.itemWidth
 
             Layout.fillWidth: true
+
+            visible: isSIP
+            itemWidth: root.itemWidth
         }
     }
 }

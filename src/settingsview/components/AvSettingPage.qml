@@ -32,8 +32,8 @@ Rectangle {
     id: root
 
     property int preferredColumnWidth: Math.min(root.width / 2 - 50, 275)
-
-    signal backArrowClicked
+    property int contentWidth: avSettingsColumnLayout.width
+    property int preferredHeight: avSettingsColumnLayout.implicitHeight
 
     onVisibleChanged: {
         if (!visible) {
@@ -48,60 +48,33 @@ Rectangle {
     }
 
     ColumnLayout {
+        id: avSettingsColumnLayout
+
         anchors.centerIn: root
 
         height: root.height
         width: Math.min(JamiTheme.maximumWidthSettingsView, root.width)
 
-        SettingsHeader {
-            Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
-            Layout.leftMargin: JamiTheme.preferredMarginSize
+        // Audio
+        AudioSettings {
+            id: audioSettings
+
             Layout.fillWidth: true
-            Layout.preferredHeight: 64
+            Layout.leftMargin: JamiTheme.preferredMarginSize
+            Layout.rightMargin: JamiTheme.preferredMarginSize
 
-            title: JamiStrings.avSettingsTitle
-
-            onBackArrowClicked: root.backArrowClicked()
+            itemWidth: preferredColumnWidth
         }
 
-        ScrollView {
-            id: avSettingsScrollView
+        // Video
+        VideoSettings {
+            id: videoSettings
 
-            property ScrollBar vScrollBar: ScrollBar.vertical
-            ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
-            ScrollBar.vertical.policy: ScrollBar.AsNeeded
-
-            Layout.fillHeight: true
             Layout.fillWidth: true
+            Layout.leftMargin: JamiTheme.preferredMarginSize
+            Layout.rightMargin: JamiTheme.preferredMarginSize
 
-            focus: true
-            clip: true
-
-            ColumnLayout {
-                width: avSettingsScrollView.width
-
-                // Audio
-                AudioSettings {
-                    id: audioSettings
-
-                    Layout.fillWidth: true
-                    Layout.leftMargin: JamiTheme.preferredMarginSize
-                    Layout.rightMargin: JamiTheme.preferredMarginSize
-
-                    itemWidth: preferredColumnWidth
-                }
-
-                // Video
-                VideoSettings {
-                    id: videoSettings
-
-                    Layout.fillWidth: true
-                    Layout.leftMargin: JamiTheme.preferredMarginSize
-                    Layout.rightMargin: JamiTheme.preferredMarginSize
-
-                    itemWidth: preferredColumnWidth
-                }
-            }
+            itemWidth: preferredColumnWidth
         }
     }
 }

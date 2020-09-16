@@ -202,7 +202,7 @@ ColumnLayout {
         SettingMaterialButton {
             id: btnSIPCACert
             Layout.fillWidth: true
-            Layout.preferredHeight: JamiTheme.preferredFieldHeight
+            Layout.minimumHeight: JamiTheme.preferredFieldHeight
 
             titleField: JamiStrings.caCertificate
             source: "qrc:/images/icons/round-folder-24px.svg"
@@ -213,7 +213,7 @@ ColumnLayout {
         SettingMaterialButton {
             id: btnSIPUserCert
             Layout.fillWidth: true
-            Layout.preferredHeight: JamiTheme.preferredFieldHeight
+            Layout.minimumHeight: JamiTheme.preferredFieldHeight
 
             titleField: JamiStrings.userCertificate
             source: "qrc:/images/icons/round-folder-24px.svg"
@@ -224,7 +224,7 @@ ColumnLayout {
         SettingMaterialButton {
             id: btnSIPPrivateKey
             Layout.fillWidth: true
-            Layout.preferredHeight: JamiTheme.preferredFieldHeight
+            Layout.minimumHeight: JamiTheme.preferredFieldHeight
 
             titleField: JamiStrings.privateKey
             source: "qrc:/images/icons/round-folder-24px.svg"
@@ -282,7 +282,6 @@ ColumnLayout {
 
             Layout.fillWidth: true
             Layout.preferredHeight: JamiTheme.preferredFieldHeight
-            Layout.rightMargin: JamiTheme.preferredMarginSize
 
             labelText: JamiStrings.tlsProtocol
             fontPointSize: JamiTheme.settingsFontSize

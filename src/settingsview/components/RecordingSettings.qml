@@ -174,7 +174,7 @@ ColumnLayout {
             id: recordPathButton
 
             Layout.alignment: Qt.AlignRight
-            Layout.fillHeight: true
+            Layout.preferredHeight: JamiTheme.preferredFieldHeight
             Layout.preferredWidth: itemWidth
 
             toolTipText: JamiStrings.tipRecordFolder

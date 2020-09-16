@@ -29,6 +29,9 @@ import "../../commoncomponents"
 Rectangle {
     id: root
 
+    property int contentWidth: pluginSettingsColumnLayout.width
+    property int preferredHeight: pluginSettingsColumnLayout.implicitHeight
+
     function populatePluginSettings() {
         enabledplugin.checked = PluginModel.getPluginsEnabled()
         pluginListSettingsView.visible = enabledplugin.checked
@@ -38,82 +41,62 @@ Rectangle {
         PluginModel.setPluginsEnabled(state)
     }
 
-    signal backArrowClicked
-
     ColumnLayout {
+        id: pluginSettingsColumnLayout
+
         anchors.centerIn: root
 
         height: root.height
         width: Math.min(JamiTheme.maximumWidthSettingsView, root.width)
 
-        SettingsHeader {
-            Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
+        ToggleSwitch {
+            id: enabledplugin
+
+            Layout.alignment: Qt.AlignTop | Qt.AlignHCenter
+            Layout.fillWidth: true
+            Layout.topMargin: JamiTheme.preferredMarginSize
             Layout.leftMargin: JamiTheme.preferredMarginSize
-            Layout.fillWidth: true
-            Layout.preferredHeight: 64
+            Layout.rightMargin: JamiTheme.preferredMarginSize
 
-            title: qsTr("Plugin")
+            labelText: "Enable"
+            fontPointSize: JamiTheme.headerFontSize
 
-            onBackArrowClicked: root.backArrowClicked()
-        }
+            onSwitchToggled: {
+                slotSetPluginEnabled(checked)
 
-        ScrollView {
-            id: pluginScrollView
-
-            Layout.fillHeight: true
-            Layout.fillWidth: true
-
-            focus: true
-            clip: true
-
-            ColumnLayout {
-                width: pluginScrollView.width
-
-                ToggleSwitch {
-                    id: enabledplugin
-                    Layout.fillWidth: true
-                    Layout.topMargin: JamiTheme.preferredMarginSize
-                    Layout.leftMargin: JamiTheme.preferredMarginSize
-                    Layout.rightMargin: JamiTheme.preferredMarginSize
-
-                    labelText: "Enable"
-                    fontPointSize: JamiTheme.headerFontSize
-
-                    onSwitchToggled: {
-                        slotSetPluginEnabled(checked)
-
-                        pluginListSettingsView.visible = checked
-                        if (!pluginListSettingsView.visible) {
-                            PluginModel.toggleCallMediaHandler("", true)
-                            pluginListSettingsView.hidePreferences()
-                        }
-                    }
-                }
-
-                PluginListSettingsView {
-                    id: pluginListSettingsView
-                    Layout.fillWidth: true
-                    Layout.leftMargin: JamiTheme.preferredMarginSize
-                    Layout.rightMargin: JamiTheme.preferredMarginSize
-                    Layout.alignment: Qt.AlignHCenter
-
-                    pluginListPreferencesView: pluginListPreferencesView
-
-                    Layout.topMargin: JamiTheme.preferredMarginSize
-                    Layout.minimumHeight: 0
-                    Layout.preferredHeight: childrenRect.height
-                }
-
-                PluginListPreferencesView {
-                    id: pluginListPreferencesView
-                    Layout.fillWidth: true
-                    Layout.leftMargin: JamiTheme.preferredMarginSize
-                    Layout.rightMargin: JamiTheme.preferredMarginSize
-                    Layout.bottomMargin: JamiTheme.preferredMarginSize
-                    Layout.minimumHeight: 0
-                    Layout.preferredHeight: childrenRect.height
+                pluginListSettingsView.visible = checked
+                if (!pluginListSettingsView.visible) {
+                    PluginModel.toggleCallMediaHandler("", true)
+                    pluginListSettingsView.hidePreferences()
                 }
             }
+        }
+
+        PluginListSettingsView {
+            id: pluginListSettingsView
+
+            Layout.alignment: Qt.AlignTop | Qt.AlignHCenter
+            Layout.fillWidth: true
+            Layout.leftMargin: JamiTheme.preferredMarginSize
+            Layout.rightMargin: JamiTheme.preferredMarginSize
+
+            pluginListPreferencesView: pluginListPreferencesView
+
+            Layout.topMargin: JamiTheme.preferredMarginSize
+            Layout.minimumHeight: 0
+            Layout.preferredHeight: childrenRect.height
+        }
+
+        PluginListPreferencesView {
+            id: pluginListPreferencesView
+
+            Layout.alignment: Qt.AlignTop | Qt.AlignHCenter
+            Layout.fillWidth: true
+            Layout.leftMargin: JamiTheme.preferredMarginSize
+            Layout.rightMargin: JamiTheme.preferredMarginSize
+            Layout.bottomMargin: JamiTheme.preferredMarginSize
+            Layout.minimumHeight: 0
+            Layout.preferredHeight: childrenRect.height
         }
     }
 }
