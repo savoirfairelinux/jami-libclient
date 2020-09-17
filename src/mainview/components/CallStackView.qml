@@ -187,6 +187,7 @@ Rectangle {
         property bool isFullscreen: false
 
         onNeedToShowInFullScreen: {
+
             isFullscreen = !isFullscreen
             VideoCallFullScreenWindowContainerCreation.createvideoCallFullScreenWindowContainerObject()
 

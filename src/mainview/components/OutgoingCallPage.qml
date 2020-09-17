@@ -44,7 +44,8 @@ Rectangle {
     MouseArea {
         anchors.fill: parent
         propagateComposedEvents: false
-        acceptedButtons: Qt.RightButton
+        acceptedButtons: Qt.AllButtons
+        onDoubleClicked: mouse.accepted = true
     }
 
     ColumnLayout {
