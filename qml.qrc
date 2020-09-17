@@ -61,7 +61,6 @@
         <file>src/commoncomponents/LookupStatusLabel.qml</file>
         <file>src/commoncomponents/ListViewJami.qml</file>
         <file>src/commoncomponents/DeleteAccountDialog.qml</file>
-        <file>src/commoncomponents/MessageBox.qml</file>
         <file>src/wizardview/WizardView.qml</file>
         <file>src/wizardview/components/WelcomePage.qml</file>
         <file>src/wizardview/components/CreateAccountPage.qml</file>
@@ -140,5 +139,6 @@
         <file>src/mainview/components/UserInfoCallPage.qml</file>
         <file>src/commoncomponents/BaseDialog.qml</file>
         <file>src/commoncomponents/ModalPopup.qml</file>
+        <file>src/commoncomponents/SimpleMessageDialog.qml</file>
     </qresource>
 </RCC>

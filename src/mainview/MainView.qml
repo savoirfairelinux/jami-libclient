@@ -549,7 +549,7 @@ Window {
 
         onSettingsViewWindowNeedToShowMainViewWindow: {
             mainViewWindowSidePanel.refreshAccountComboBox(0)
-            AccountAdapter.accountChanged(index)
+            AccountAdapter.accountChanged(0)
             toggleSettingsView()
         }
 

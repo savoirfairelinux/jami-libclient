@@ -98,12 +98,12 @@ Rectangle {
                     JamiStrings.setPassword
     }
 
-    MessageBox {
+    SimpleMessageDialog {
         id: msgDialog
 
-        onAccepted: {
-            setPasswordButtonText()
-        }
+        buttonTitles: [qsTr("Ok")]
+        buttonStyles: [SimpleMessageDialog.ButtonStyle.TintedBlue]
+        buttonCallBacks: [setPasswordButtonText]
     }
 
     DeleteAccountDialog {
@@ -125,7 +125,6 @@ Rectangle {
 
         onDoneSignal: {
             var title = success ? qsTr("Success") : qsTr("Error")
-            var iconMode = success ? StandardIcon.Information : StandardIcon.Critical
 
             var info
             switch(currentPurpose) {
@@ -141,7 +140,7 @@ Rectangle {
                     break
             }
 
-            msgDialog.openWithParameters(title,info, iconMode, StandardButton.Ok)
+            msgDialog.openWithParameters(title, info)
         }
     }
 
@@ -166,9 +165,9 @@ Rectangle {
                 if (exportPath.length > 0) {
                     var isSuccessful = AccountAdapter.model.exportToFile(UtilsAdapter.getCurrAccId(), exportPath,"")
                     var title = isSuccessful ? qsTr("Success") : qsTr("Error")
-                    var iconMode = isSuccessful ? StandardIcon.Information : StandardIcon.Critical
                     var info = isSuccessful ? JamiStrings.backupSuccessful : JamiStrings.backupFailed
-                    msgDialog.openWithParameters(title,info, iconMode, StandardButton.Ok)
+
+                    msgDialog.openWithParameters(title,info)
                 }
             }
         }

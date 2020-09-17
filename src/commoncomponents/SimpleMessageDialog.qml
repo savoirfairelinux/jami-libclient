@@ -1,0 +1,128 @@
+/*
+ * Copyright (C) 2020 by Savoir-faire Linux
+ * Author: Mingrui Zhang <mingrui.zhang@savoirfairelinux.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
+import QtQuick 2.15
+import QtQuick.Controls 2.14
+import QtQuick.Layouts 1.14
+import net.jami.Models 1.0
+import net.jami.Adapters 1.0
+
+BaseDialog {
+    id: root
+
+    // TODO: make MaterialButton ButtonStyle
+    enum ButtonStyle {
+        TintedBlue,
+        TintedBlack,
+        TintedRed
+    }
+
+    property var buttonTitles: []
+    property var buttonCallBacks: []
+    property var buttonStyles: []
+    property alias description: descriptionText.text
+
+    function openWithParameters(title, info) {
+        root.title = title
+        descriptionText.text = info
+        open()
+    }
+
+    contentItem: Rectangle {
+        id: simpleMessageDialogContentRect
+
+        implicitWidth: Math.max(JamiTheme.preferredDialogWidth,
+                                buttonTitles.length * (JamiTheme.preferredFieldWidth / 2
+                                + JamiTheme.preferredMarginSize))
+        implicitHeight: JamiTheme.preferredDialogHeight / 2
+
+        ColumnLayout {
+            anchors.fill: parent
+
+            Label {
+                id: descriptionText
+
+                Layout.alignment: Qt.AlignCenter
+                Layout.preferredWidth: JamiTheme.preferredDialogWidth - JamiTheme.preferredMarginSize
+                Layout.topMargin: JamiTheme.preferredMarginSize
+
+                font.pointSize: JamiTheme.menuFontSize - 2
+                wrapMode: Text.WordWrap
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+            }
+
+            RowLayout {
+                spacing: JamiTheme.preferredMarginSize
+
+                Layout.fillWidth: true
+                Layout.alignment: Qt.AlignHCenter | Qt.AlignBottom
+                Layout.bottomMargin: JamiTheme.preferredMarginSize
+
+                Repeater {
+                    model: buttonTitles.length
+                    MaterialButton {
+                        Layout.alignment: Qt.AlignVCenter
+                        Layout.preferredWidth: JamiTheme.preferredFieldWidth / 2
+                        Layout.preferredHeight: JamiTheme.preferredFieldHeight
+
+                        color: {
+                            switch(buttonStyles[modelData]) {
+                            case SimpleMessageDialog.ButtonStyle.TintedBlue:
+                                return JamiTheme.buttonTintedBlue
+                            case SimpleMessageDialog.ButtonStyle.TintedBlack:
+                                return JamiTheme.buttonTintedBlack
+                            case SimpleMessageDialog.ButtonStyle.TintedRed:
+                                return JamiTheme.buttonTintedRed
+                            }
+                        }
+                        hoveredColor: {
+                            switch(buttonStyles[modelData]) {
+                            case SimpleMessageDialog.ButtonStyle.TintedBlue:
+                                return JamiTheme.buttonTintedBlueHovered
+                            case SimpleMessageDialog.ButtonStyle.TintedBlack:
+                                return JamiTheme.buttonTintedBlackHovered
+                            case SimpleMessageDialog.ButtonStyle.TintedRed:
+                                return JamiTheme.buttonTintedRedHovered
+                            }
+                        }
+                        pressedColor: {
+                            switch(buttonStyles[modelData]) {
+                            case SimpleMessageDialog.ButtonStyle.TintedBlue:
+                                return JamiTheme.buttonTintedBluePressed
+                            case SimpleMessageDialog.ButtonStyle.TintedBlack:
+                                return JamiTheme.buttonTintedBlackPressed
+                            case SimpleMessageDialog.ButtonStyle.TintedRed:
+                                return JamiTheme.buttonTintedRedPressed
+                            }
+                        }
+                        outlined: true
+
+                        text: buttonTitles[modelData]
+
+                        onClicked: {
+                            if (buttonCallBacks[modelData])
+                                buttonCallBacks[modelData]()
+                            close()
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

@@ -88,17 +88,18 @@ ColumnLayout {
         onRevokeDeviceWithPassword: revokeDeviceWithIDAndPassword(idOfDevice, password)
     }
 
-    MessageBox {
+    SimpleMessageDialog {
         id: revokeDeviceMessageBox
 
         property string idOfDev: ""
 
-        title:qsTr("Remove Device")
-        text :qsTr("Are you sure you wish to remove this device?")
-        icon :StandardIcon.Information
-        standardButtons: StandardButton.Ok | StandardButton.Cancel
+        title: qsTr("Remove Device")
+        description: qsTr("Are you sure you wish to remove this device?")
 
-        onAccepted: revokeDeviceWithIDAndPassword(idOfDev,"")
+        buttonTitles: [qsTr("Ok"), qsTr("Cancel")]
+        buttonStyles: [SimpleMessageDialog.ButtonStyle.TintedBlue,
+                       SimpleMessageDialog.ButtonStyle.TintedBlack]
+        buttonCallBacks: [function() {revokeDeviceWithIDAndPassword(idOfDev, "")}]
     }
 
     Label {
