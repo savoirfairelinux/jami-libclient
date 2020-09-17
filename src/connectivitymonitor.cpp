@@ -18,9 +18,8 @@
 
 #include "connectivitymonitor.h"
 
-#include <QDebug>
-
 #ifdef Q_OS_WIN
+#include <QDebug>
 #include <atlbase.h>
 #include <netlistmgr.h>
 

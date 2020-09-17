@@ -4,13 +4,16 @@
   <Product Id="*" Name="$(var.Name)" Language="1033" Version="$(fun.AutoVersion(1.0))" Manufacturer="$(var.Manufacturer)" UpgradeCode="7c45b52b-0390-4fe8-947a-3f13e82dd346">
     <Package InstallerVersion="301" Compressed="yes" InstallScope="perMachine" />
 
-    <MajorUpgrade AllowSameVersionUpgrades="yes" DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+    <MajorUpgrade Schedule="afterInstallInitialize" AllowDowngrades="yes"/>
     <MediaTemplate EmbedCab="yes" CompressionLevel="high" />
 
     <!--Icon File should be in release folder(not wix project), otherwise cannot be read-->
     <Icon Id="icon.ico" SourceFile="$(var.ReleaseDir)\jami.ico" />
     <Property Id="ARPPRODUCTICON" Value="icon.ico" />
     <Property Id="ARPNOMODIFY" Value="1" />
+
+    <!-- It seems that QtWebEngineProcess.exe versioning requires us to force reinstall. -->
+    <Property Id="REINSTALLMODE" Value="dm" />
 
     <Feature Id="ProductFeature" Title="Main" Level="1" Absent="disallow">
       <ComponentGroupRef Id="StandardComponents" Primary="yes" />
@@ -38,7 +41,13 @@
     <WixVariable Id="WixUIDialogBmp" Value="main-banner.bmp" />
     <WixVariable Id="WixUISupportPerUser" Value="0" />
 
-    <CustomAction Id="removeOldJamiFiles" Directory="APPLICATIONFOLDER" ExeCommand="cmd /c &quot;del vc_redist.x64.exe; del uninstall.exe; del WinSparkle.dll;&quot;" Execute="deferred" Return="ignore" HideTarget="no" Impersonate="no" />
+    <CustomAction Id="removeOldJamiFiles"
+                  Directory="APPLICATIONFOLDER"
+                  ExeCommand="cmd /c &quot;del vc_redist.x64.exe; del uninstall.exe; del WinSparkle.dll;&quot;"
+                  Execute="deferred"
+                  Return="ignore"
+                  HideTarget="no"
+                  Impersonate="no"/>
 
     <Property Id="QtExecCmdLine" Value='"[WindowsFolder]\System32\taskkill.exe" /F /IM QtWebEngineProcess.exe /IM Jami.exe'/>
     <CustomAction Id="JamiProcesses.TaskKill"

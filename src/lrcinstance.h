@@ -25,6 +25,7 @@
 #endif
 
 #include "accountlistmodel.h"
+#include "updatemanager.h"
 #include "rendermanager.h"
 #include "appsettingsmanager.h"
 #include "utils.h"
@@ -55,6 +56,8 @@
 
 #include <memory>
 
+class ConnectivityMonitor;
+
 using namespace lrc::api;
 
 using migrateCallback = std::function<void()>;
@@ -65,15 +68,21 @@ class LRCInstance : public QObject
     Q_OBJECT
 
 public:
-    static LRCInstance& instance(migrateCallback willMigrate = {}, migrateCallback didMigrate = {})
+    static LRCInstance& instance(migrateCallback willMigrate = {},
+                                 migrateCallback didMigrate = {},
+                                 const QString& updateUrl = {},
+                                 ConnectivityMonitor* connectivityMonitor = {})
     {
-        static LRCInstance instance_(willMigrate, didMigrate);
+        static LRCInstance instance_(willMigrate, didMigrate, updateUrl, connectivityMonitor);
         return instance_;
     }
 
-    static void init(migrateCallback willMigrate = {}, migrateCallback didMigrate = {})
+    static void init(migrateCallback willMigrate = {},
+                     migrateCallback didMigrate = {},
+                     const QString& updateUrl = {},
+                     ConnectivityMonitor* connectivityMonitor = {})
     {
-        instance(willMigrate, didMigrate);
+        instance(willMigrate, didMigrate, updateUrl, connectivityMonitor);
     }
 
     static Lrc& getAPI()
@@ -84,6 +93,11 @@ public:
     static RenderManager* renderer()
     {
         return instance().renderer_.get();
+    }
+
+    static UpdateManager* getUpdateManager()
+    {
+        return instance().updateManager_.get();
     }
 
     static void connectivityChanged()
@@ -443,16 +457,22 @@ signals:
     void restoreAppRequested();
     void notificationClicked(bool forceToTop = false);
     void updateSmartList();
+    void quitEngineRequested();
 
 private:
-    LRCInstance(migrateCallback willMigrateCb = {}, migrateCallback didMigrateCb = {})
+    LRCInstance(migrateCallback willMigrateCb = {},
+                migrateCallback didMigrateCb = {},
+                const QString& updateUrl = {},
+                ConnectivityMonitor* connectivityMonitor = {})
     {
         lrc_ = std::make_unique<Lrc>(willMigrateCb, didMigrateCb);
         renderer_ = std::make_unique<RenderManager>(lrc_->getAVModel());
+        updateManager_ = std::make_unique<UpdateManager>(updateUrl, connectivityMonitor);
     };
 
     std::unique_ptr<Lrc> lrc_;
     std::unique_ptr<RenderManager> renderer_;
+    std::unique_ptr<UpdateManager> updateManager_;
     AccountListModel accountListModel_;
     QString selectedAccountId_;
     QString selectedConvUid_;

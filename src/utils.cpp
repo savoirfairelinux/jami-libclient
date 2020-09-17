@@ -403,47 +403,6 @@ Utils::getProjectCredits()
     return credits;
 }
 
-void
-Utils::cleanUpdateFiles()
-{
-    /*
-     * Delete all logs and msi in the %TEMP% directory before launching.
-     */
-    QString dir = QString(Utils::WinGetEnv("TEMP"));
-    QDir log_dir(dir, {"jami*.log"});
-    for (const QString& filename : log_dir.entryList()) {
-        log_dir.remove(filename);
-    }
-    QDir msi_dir(dir, {"jami*.msi"});
-    for (const QString& filename : msi_dir.entryList()) {
-        msi_dir.remove(filename);
-    }
-    QDir version_dir(dir, {"version"});
-    for (const QString& filename : version_dir.entryList()) {
-        version_dir.remove(filename);
-    }
-}
-
-void
-Utils::checkForUpdates(bool withUI, QWidget* parent)
-{
-    Q_UNUSED(withUI)
-    Q_UNUSED(parent)
-    /*
-     * TODO: check update logic.
-     */
-}
-
-void
-Utils::applyUpdates(bool updateToBeta, QWidget* parent)
-{
-    Q_UNUSED(updateToBeta)
-    Q_UNUSED(parent)
-    /*
-     * TODO: update logic.
-     */
-}
-
 inline QString
 removeEndlines(const QString& str)
 {

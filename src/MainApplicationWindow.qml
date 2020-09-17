@@ -15,6 +15,8 @@ import "commoncomponents"
 ApplicationWindow {
     id: root
 
+    property ApplicationWindow appWindow: root
+
     AccountMigrationDialog{
         id: accountMigrationDialog
 
@@ -25,11 +27,11 @@ ApplicationWindow {
         }
     }
 
-    function close() {
+    function close(force = false) {
         // If we're in the onboarding wizard or 'MinimizeOnClose'
         // is set, then we can quit
-        if (!SettingsAdapter.getAppValue(Settings.MinimizeOnClose) ||
-            !UtilsAdapter.getAccountListSize()) {
+        if (force || !SettingsAdapter.getAppValue(Settings.MinimizeOnClose) ||
+                !UtilsAdapter.getAccountListSize()) {
             Qt.quit()
         } else {
             // hide to the systray

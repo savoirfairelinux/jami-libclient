@@ -20,6 +20,7 @@
 
 #include "mainapplication.h"
 #include "runguard.h"
+#include "version.h"
 
 #include <QCryptographicHash>
 #include <QtWebEngine>
@@ -60,14 +61,12 @@ main(int argc, char* argv[])
     QApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
     QApplication::setQuitOnLastWindowClosed(false);
     QCoreApplication::setAttribute(Qt::AA_UseOpenGLES);
+    QCoreApplication::setApplicationVersion(QString(VERSION_STRING));
     QApplication::setHighDpiScaleFactorRoundingPolicy(
         Qt::HighDpiScaleFactorRoundingPolicy::RoundPreferFloor);
     QtWebEngine::initialize();
 
-    // Allow QtWebEngine to load local resources.
-    char ARG_DISABLE_WEB_SECURITY[] = "--disable-web-security";
-    auto newArgv = parseInputArgument(argc, argv, ARG_DISABLE_WEB_SECURITY);
-    MainApplication app(argc, newArgv);
+    MainApplication app(argc, argv);
 
     /*
      * Runguard to make sure that only one instance runs at a time.

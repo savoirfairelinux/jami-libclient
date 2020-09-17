@@ -94,7 +94,7 @@ ColumnLayout {
         property string idOfDev: ""
 
         title: qsTr("Remove Device")
-        description: qsTr("Are you sure you wish to remove this device?")
+        infoText: qsTr("Are you sure you wish to remove this device?")
 
         buttonTitles: [qsTr("Ok"), qsTr("Cancel")]
         buttonStyles: [SimpleMessageDialog.ButtonStyle.TintedBlue,

@@ -87,6 +87,7 @@ Rectangle {
                 UpdateSettings {
                     Layout.fillWidth: true
                     Layout.leftMargin: JamiTheme.preferredMarginSize
+                    Layout.rightMargin: JamiTheme.preferredMarginSize
                     Layout.bottomMargin: JamiTheme.preferredMarginSize
                     visible: Qt.platform.os == "windows"? true : false
                 }

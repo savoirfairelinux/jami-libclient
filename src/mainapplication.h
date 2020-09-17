@@ -1,4 +1,4 @@
-/*
+/*!
  * Copyright (C) 2020 by Savoir-faire Linux
  * Author: Edric Ladent Milaret <edric.ladent-milaret@savoirfairelinux.com>
  * Author: Andreas Traczyk <andreas.traczyk@savoirfairelinux.com>
@@ -20,14 +20,14 @@
 
 #pragma once
 
-#include "connectivitymonitor.h"
-
 #include <QFile>
 #include <QApplication>
 #include <QQmlApplicationEngine>
 #include <QQmlEngine>
 
 #include <memory>
+
+class ConnectivityMonitor;
 
 class MainApplication : public QApplication
 {
@@ -41,19 +41,17 @@ public:
 
 private:
     void loadTranslations();
-    void initLrc();
-    void initConnectivityMonitor();
-    void parseArguments(bool& startMinimized);
+    void initLrc(const QString& downloadUrl, ConnectivityMonitor* cm);
+    const QVariantMap parseArguments();
     void setApplicationFont();
     void initQmlEngine();
     void initSettings();
     void initSystray();
     void cleanup();
+    void connectForceWindowToTop();
 
 private:
-#ifdef Q_OS_WIN
-    QScopedPointer<ConnectivityMonitor> connectivityMonitor_;
-#endif // Q_OS_WIN
     QScopedPointer<QFile> debugFile_;
     QQmlApplicationEngine* engine_;
+    ConnectivityMonitor* connectivityMonitor_;
 };

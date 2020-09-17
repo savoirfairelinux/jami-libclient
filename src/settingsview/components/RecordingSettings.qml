@@ -72,6 +72,7 @@ ColumnLayout {
 
     ToggleSwitch {
         id: alwaysRecordingCheckBox
+
         Layout.fillWidth: true
         Layout.leftMargin: JamiTheme.preferredMarginSize
 
@@ -85,6 +86,7 @@ ColumnLayout {
 
     ToggleSwitch {
         id: recordPreviewCheckBox
+
         Layout.fillWidth: true
         Layout.leftMargin: JamiTheme.preferredMarginSize
 

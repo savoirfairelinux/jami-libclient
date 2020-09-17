@@ -64,10 +64,10 @@ public:
     Q_INVOKABLE void startPreviewing(bool force);
     Q_INVOKABLE void stopPreviewing();
     Q_INVOKABLE bool hasVideoCall();
-    Q_INVOKABLE bool hasCall(const QString &accountId);
-    Q_INVOKABLE const QString getCallConvForAccount(const QString &accountId);
+    Q_INVOKABLE bool hasCall(const QString& accountId);
+    Q_INVOKABLE const QString getCallConvForAccount(const QString& accountId);
     Q_INVOKABLE const QString getCallId(const QString& accountId, const QString& convUid);
-    Q_INVOKABLE int getCallStatus(const QString &callId);
+    Q_INVOKABLE int getCallStatus(const QString& callId);
     Q_INVOKABLE const QString getCallStatusStr(int statusInt);
     Q_INVOKABLE QString getStringUTF8(QString string);
     Q_INVOKABLE bool validateRegNameForm(const QString& regName);
@@ -83,6 +83,7 @@ public:
     Q_INVOKABLE QString fileName(const QString& path);
     Q_INVOKABLE QString getExt(const QString& path);
     Q_INVOKABLE bool isImage(const QString& fileExt);
+    Q_INVOKABLE QString humanFileSize(qint64 fileSize);
 
 private:
     QClipboard* clipboard_;

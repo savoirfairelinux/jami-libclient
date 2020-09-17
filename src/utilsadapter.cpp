@@ -234,11 +234,11 @@ UtilsAdapter::hasVideoCall()
 }
 
 bool
-UtilsAdapter::hasCall(const QString &accountId)
+UtilsAdapter::hasCall(const QString& accountId)
 {
     auto activeCalls = LRCInstance::getActiveCalls();
-    for (const auto &callId : activeCalls) {
-        auto &accountInfo = LRCInstance::accountModel().getAccountInfo(accountId);
+    for (const auto& callId : activeCalls) {
+        auto& accountInfo = LRCInstance::accountModel().getAccountInfo(accountId);
         if (accountInfo.callModel->hasCall(callId)) {
             return true;
         }
@@ -247,11 +247,11 @@ UtilsAdapter::hasCall(const QString &accountId)
 }
 
 const QString
-UtilsAdapter::getCallConvForAccount(const QString &accountId)
+UtilsAdapter::getCallConvForAccount(const QString& accountId)
 {
     // TODO: Currently returning first call, establish priority according to state?
-    for (const auto &callId : LRCInstance::getActiveCalls()) {
-        auto &accountInfo = LRCInstance::accountModel().getAccountInfo(accountId);
+    for (const auto& callId : LRCInstance::getActiveCalls()) {
+        auto& accountInfo = LRCInstance::accountModel().getAccountInfo(accountId);
         if (accountInfo.callModel->hasCall(callId)) {
             return LRCInstance::getConversationFromCallId(callId, accountId).uid;
         }
@@ -278,10 +278,9 @@ UtilsAdapter::getCallId(const QString& accountId, const QString& convUid)
 }
 
 int
-UtilsAdapter::getCallStatus(const QString &callId)
+UtilsAdapter::getCallStatus(const QString& callId)
 {
-    const auto callStatus = LRCInstance::getCallInfo(
-                callId, LRCInstance::getCurrAccId());
+    const auto callStatus = LRCInstance::getCallInfo(callId, LRCInstance::getCurrAccId());
     return static_cast<int>(callStatus->status);
 }
 
@@ -399,4 +398,10 @@ bool
 UtilsAdapter::isImage(const QString& fileExt)
 {
     return Utils::isImage(fileExt);
+}
+
+QString
+UtilsAdapter::humanFileSize(qint64 fileSize)
+{
+    return Utils::humanFileSize(fileSize);
 }

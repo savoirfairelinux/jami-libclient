@@ -78,18 +78,6 @@ QString getProjectCredits();
 void removeOldVersions();
 
 /*
- * Updates
- */
-#ifdef BETA
-static constexpr bool isBeta = true;
-#else
-static constexpr bool isBeta = false;
-#endif
-void cleanUpdateFiles();
-void checkForUpdates(bool withUI, QWidget* parent = nullptr);
-void applyUpdates(bool updateToBeta, QWidget* parent = nullptr);
-
-/*
  * LRC helpers
  */
 QString bestIdForConversation(const lrc::api::conversation::Info& conv,

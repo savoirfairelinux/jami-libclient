@@ -21,10 +21,9 @@
 #include <QObject>
 
 #ifdef Q_OS_WIN
-class ConnectivityMonitor : public QObject
+class ConnectivityMonitor final : public QObject
 {
     Q_OBJECT
-
 public:
     explicit ConnectivityMonitor(QObject* parent = 0);
     ~ConnectivityMonitor();
@@ -43,4 +42,22 @@ private:
     class NetworkEventHandler* netEventHandler_;
     unsigned long cookie_;
 };
+
+#else
+// Dummy implementation for non-Windows platforms.
+// TODO: platform implementations should be in the daemon.
+
+// clang-format off
+class ConnectivityMonitor final : public QObject
+{
+    Q_OBJECT
+public:
+    explicit ConnectivityMonitor(QObject* parent = 0) : QObject(parent) {};
+    ~ConnectivityMonitor() = default;
+
+    bool isOnline() { return false; };
+signals:
+    void connectivityChanged();
+};
+// clang-format on
 #endif // Q_OS_WIN
