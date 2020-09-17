@@ -33,6 +33,11 @@ Rectangle {
     property alias nameRegistrationUIState: usernameEdit.nameRegistrationState
     property bool isRendezVous: false
     property alias text_passwordEditAlias: passwordEdit.text
+    property int preferredHeight: {
+        if (createAccountStack.currentIndex === 0)
+            return usernameColumnLayout.implicitHeight
+        return passwordColumnLayout.implicitHeight
+    }
 
     signal createAccount
     signal leavePage
@@ -94,218 +99,259 @@ Rectangle {
     StackLayout {
         id: createAccountStack
 
-        anchors.verticalCenter: root.verticalCenter
-        anchors.horizontalCenter: root.horizontalCenter
+        anchors.fill: parent
 
-        ColumnLayout {
-            spacing: layoutSpacing
+        currentIndex: 0
 
-            Layout.preferredWidth: root.width
-            Layout.alignment: Qt.AlignCenter
+        Rectangle {
+            color: JamiTheme.backgroundColor
 
-            RowLayout {
+            ColumnLayout {
+                id: usernameColumnLayout
+
                 spacing: layoutSpacing
 
-                Layout.alignment: Qt.AlignCenter
-                Layout.preferredWidth: usernameEdit.width
+                anchors.centerIn: parent
 
-                Label {
-                    text: isRendezVous ? JamiStrings.chooseNameRV : qsTr("Choose a username for your account")
-                    font.pointSize: JamiTheme.textFontSize + 3
-                }
+                width: root.width
 
-                Label {
-                    Layout.alignment: Qt.AlignRight
+                RowLayout {
+                    spacing: layoutSpacing
 
-                    text: JamiStrings.recommended
-                    color: "white"
-                    padding: 8
+                    Layout.alignment: Qt.AlignCenter
+                    Layout.topMargin: backButtonMargins
+                    Layout.preferredWidth: usernameEdit.width
 
-                    background: Rectangle {
-                        color: "#aed581"
-                        radius: 24
-                        anchors.fill: parent
+                    Label {
+                        text: isRendezVous ? JamiStrings.chooseNameRV : qsTr("Choose a username for your account")
+                        font.pointSize: JamiTheme.textFontSize + 3
+                    }
+
+                    Label {
+                        Layout.alignment: Qt.AlignRight
+
+                        text: JamiStrings.recommended
+                        color: "white"
+                        padding: 8
+
+                        background: Rectangle {
+                            color: "#aed581"
+                            radius: 24
+                            anchors.fill: parent
+                        }
                     }
                 }
-            }
 
-            UsernameLineEdit {
-                id: usernameEdit
+                UsernameLineEdit {
+                    id: usernameEdit
 
-                Layout.topMargin: 15
-                Layout.preferredHeight: fieldLayoutHeight
-                Layout.preferredWidth:  chooseUsernameButton.width
-                Layout.alignment: Qt.AlignHCenter
+                    Layout.topMargin: 15
+                    Layout.preferredHeight: fieldLayoutHeight
+                    Layout.preferredWidth:  chooseUsernameButton.width
+                    Layout.alignment: Qt.AlignHCenter
 
-                placeholderText: isRendezVous ? qsTr("Choose a name") : qsTr("Choose your username")
-            }
+                    placeholderText: isRendezVous ? qsTr("Choose a name") : qsTr("Choose your username")
+                }
 
-            Label {
-                Layout.alignment: Qt.AlignHCenter
+                Label {
+                    Layout.alignment: Qt.AlignHCenter
 
-                visible: text.length !==0
+                    visible: text.length !==0
 
-                text: {
-                    switch(nameRegistrationUIState){
-                    case UsernameLineEdit.NameRegistrationState.BLANK:
-                    case UsernameLineEdit.NameRegistrationState.SEARCHING:
-                    case UsernameLineEdit.NameRegistrationState.FREE:
-                        return ""
-                    case UsernameLineEdit.NameRegistrationState.INVALID:
-                        return isRendezVous ? qsTr("Invalid name") : qsTr("Invalid username")
-                    case UsernameLineEdit.NameRegistrationState.TAKEN:
-                        return isRendezVous ? qsTr("Name already taken") : qsTr("Username already taken")
+                    text: {
+                        switch(nameRegistrationUIState){
+                        case UsernameLineEdit.NameRegistrationState.BLANK:
+                        case UsernameLineEdit.NameRegistrationState.SEARCHING:
+                        case UsernameLineEdit.NameRegistrationState.FREE:
+                            return ""
+                        case UsernameLineEdit.NameRegistrationState.INVALID:
+                            return isRendezVous ? qsTr("Invalid name") : qsTr("Invalid username")
+                        case UsernameLineEdit.NameRegistrationState.TAKEN:
+                            return isRendezVous ? qsTr("Name already taken") : qsTr("Username already taken")
+                        }
+                    }
+                    font.pointSize: JamiTheme.textFontSize
+                    color: "red"
+                }
+
+                MaterialButton {
+                    id: chooseUsernameButton
+
+                    Layout.alignment: Qt.AlignCenter
+                    Layout.preferredWidth: preferredWidth
+                    Layout.preferredHeight: preferredHeight
+
+                    fontCapitalization: Font.AllUppercase
+                    text: isRendezVous ? JamiStrings.chooseName : JamiStrings.chooseUsername
+                    enabled: nameRegistrationUIState === UsernameLineEdit.NameRegistrationState.FREE
+                    color: nameRegistrationUIState === UsernameLineEdit.NameRegistrationState.FREE ?
+                               JamiTheme.wizardBlueButtons :
+                               JamiTheme.buttonTintedGreyInactive
+                    hoveredColor: JamiTheme.buttonTintedBlueHovered
+                    pressedColor: JamiTheme.buttonTintedBluePressed
+
+                    onClicked: {
+                        if (nameRegistrationUIState === UsernameLineEdit.NameRegistrationState.FREE)
+                            createAccountStack.currentIndex = createAccountStack.currentIndex + 1
                     }
                 }
-                font.pointSize: JamiTheme.textFontSize
-                color: "red"
-            }
 
-            MaterialButton {
-                id: chooseUsernameButton
+                MaterialButton {
+                    id: skipButton
 
-                Layout.alignment: Qt.AlignCenter
-                Layout.preferredWidth: preferredWidth
-                Layout.preferredHeight: preferredHeight
+                    Layout.alignment: Qt.AlignCenter
+                    Layout.preferredWidth: preferredWidth
+                    Layout.preferredHeight: preferredHeight
 
-                fontCapitalization: Font.AllUppercase
-                text: isRendezVous ? JamiStrings.chooseName : JamiStrings.chooseUsername
-                enabled: nameRegistrationUIState === UsernameLineEdit.NameRegistrationState.FREE
-                color: nameRegistrationUIState === UsernameLineEdit.NameRegistrationState.FREE ?
-                           JamiTheme.wizardBlueButtons :
-                           JamiTheme.buttonTintedGreyInactive
-                hoveredColor: JamiTheme.buttonTintedBlueHovered
-                pressedColor: JamiTheme.buttonTintedBluePressed
+                    text: JamiStrings.skip
+                    color: JamiTheme.buttonTintedGrey
+                    hoveredColor: JamiTheme.buttonTintedGreyHovered
+                    pressedColor: JamiTheme.buttonTintedGreyPressed
+                    outlined: true
 
-                onClicked: {
-                    if (nameRegistrationUIState === UsernameLineEdit.NameRegistrationState.FREE)
-                        createAccountStack.currentIndex = createAccountStack.currentIndex + 1
+                    onClicked: createAccountStack.currentIndex =
+                               createAccountStack.currentIndex + 1
                 }
-            }
 
-            MaterialButton {
-                id: skipButton
+                AccountCreationStepIndicator {
+                    Layout.topMargin: backButtonMargins
+                    Layout.bottomMargin: backButtonMargins
+                    Layout.alignment: Qt.AlignHCenter
 
-                Layout.alignment: Qt.AlignCenter
-                Layout.preferredWidth: preferredWidth
-                Layout.preferredHeight: preferredHeight
-
-                text: JamiStrings.skip
-                color: JamiTheme.buttonTintedGrey
-                hoveredColor: JamiTheme.buttonTintedGreyHovered
-                pressedColor: JamiTheme.buttonTintedGreyPressed
-                outlined: true
-
-                onClicked: createAccountStack.currentIndex =
-                           createAccountStack.currentIndex + 1
+                    spacing: layoutSpacing
+                    steps: 3
+                    currentStep: 1
+                }
             }
         }
 
-        ColumnLayout {
-            spacing: layoutSpacing
+        Rectangle {
+            color: JamiTheme.backgroundColor
 
-            Layout.preferredWidth: root.width
-            Layout.alignment: Qt.AlignCenter
+            ColumnLayout {
+                id: passwordColumnLayout
 
-            RowLayout {
                 spacing: layoutSpacing
 
-                Layout.alignment: Qt.AlignCenter
-                Layout.preferredWidth: usernameEdit.width
+                anchors.centerIn: parent
+                width: root.width
 
-                Label {
-                    text: JamiStrings.createPassword
-                    font.pointSize: JamiTheme.textFontSize + 3
+                RowLayout {
+                    spacing: layoutSpacing
+
+                    Layout.alignment: Qt.AlignCenter
+                    Layout.topMargin: backButtonMargins
+                    Layout.preferredWidth: usernameEdit.width
+
+                    Label {
+                        Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
+                        text: JamiStrings.createPassword
+                        font.pointSize: JamiTheme.textFontSize + 3
+                    }
 
                     Switch {
                         id: passwordSwitch
 
-                        anchors.left: parent.right
-                        anchors.verticalCenter: parent.verticalCenter
+                        Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
+                        Layout.leftMargin:  -layoutSpacing
+                        Layout.topMargin: 5
                     }
+
+                    Label {
+                        Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
+
+                        text: JamiStrings.optional
+                        color: "white"
+                        padding: 8
+
+                        background: Rectangle {
+                            color: "#28b1ed"
+                            radius: 24
+                            anchors.fill: parent
+                        }
+                    }
+                }
+
+                MaterialLineEdit {
+                    id: passwordEdit
+
+                    Layout.preferredHeight: fieldLayoutHeight
+                    Layout.preferredWidth: createAccountButton.width
+                    Layout.alignment: Qt.AlignHCenter
+
+                    visible: passwordSwitch.checked
+
+                    selectByMouse: true
+                    echoMode: TextInput.Password
+                    placeholderText: JamiStrings.password
+                    font.pointSize: 9
+                    font.kerning: true
+                }
+
+                MaterialLineEdit {
+                    id: passwordConfirmEdit
+
+                    Layout.preferredHeight: fieldLayoutHeight
+                    Layout.preferredWidth: createAccountButton.width
+                    Layout.alignment: Qt.AlignHCenter
+
+                    visible: passwordSwitch.checked
+
+                    selectByMouse: true
+                    echoMode: TextInput.Password
+                    placeholderText: JamiStrings.confirmPassword
+                    font.pointSize: 9
+                    font.kerning: true
                 }
 
                 Label {
-                    Layout.alignment: Qt.AlignRight
+                    Layout.alignment: Qt.AlignLeft
+                    Layout.preferredWidth: createAccountButton.width - 10
+                    Layout.leftMargin: (root.width - createAccountButton.width) / 2
 
-                    text: JamiStrings.optional
-                    color: "white"
-                    padding: 8
+                    text: JamiStrings.notePasswordRecovery
+                    wrapMode: Text.WordWrap
+                    font.pointSize: JamiTheme.textFontSize
 
-                    background: Rectangle {
-                        color: "#28b1ed"
-                        radius: 24
-                        anchors.fill: parent
+                    onFontChanged: Layout.preferredHeight =
+                                   JamiQmlUtils.getTextBoundingRect(font, text).height * 2
+                }
+
+                MaterialButton {
+                    id: createAccountButton
+
+                    Layout.alignment: Qt.AlignCenter
+                    Layout.preferredWidth: preferredWidth
+                    Layout.preferredHeight: preferredHeight
+
+                    function checkEnable() {
+                        return !passwordSwitch.checked ||
+                                (passwordEdit.text === passwordConfirmEdit.text
+                                 && passwordEdit.text.length !== 0)
+                    }
+
+                    fontCapitalization: Font.AllUppercase
+                    text: isRendezVous ? JamiStrings.createRV : JamiStrings.createAccount
+                    enabled: checkEnable()
+                    color: checkEnable() ? JamiTheme.wizardBlueButtons :
+                                           JamiTheme.buttonTintedGreyInactive
+                    hoveredColor: JamiTheme.buttonTintedBlueHovered
+                    pressedColor: JamiTheme.buttonTintedBluePressed
+
+                    onClicked: {
+                        createAccount()
+                        createAccountStack.currentIndex += 1
                     }
                 }
-            }
 
-            MaterialLineEdit {
-                id: passwordEdit
+                AccountCreationStepIndicator {
+                    Layout.topMargin: backButtonMargins
+                    Layout.bottomMargin: backButtonMargins
+                    Layout.alignment: Qt.AlignHCenter
 
-                Layout.preferredHeight: fieldLayoutHeight
-                Layout.preferredWidth: createAccountButton.width
-                Layout.alignment: Qt.AlignHCenter
-
-                visible: passwordSwitch.checked
-
-                selectByMouse: true
-                echoMode: TextInput.Password
-                placeholderText: JamiStrings.password
-                font.pointSize: 9
-                font.kerning: true
-            }
-
-            MaterialLineEdit {
-                id: passwordConfirmEdit
-
-                Layout.preferredHeight: fieldLayoutHeight
-                Layout.preferredWidth: createAccountButton.width
-                Layout.alignment: Qt.AlignHCenter
-
-                visible: passwordSwitch.checked
-
-                selectByMouse: true
-                echoMode: TextInput.Password
-                placeholderText: JamiStrings.confirmPassword
-                font.pointSize: 9
-                font.kerning: true
-            }
-
-            Label {
-                Layout.alignment: Qt.AlignLeft
-                Layout.topMargin: 10
-                Layout.leftMargin: (root.width - createAccountButton.width) / 2
-
-                text: JamiStrings.notePasswordRecovery
-                font.pointSize: JamiTheme.textFontSize
-            }
-
-            MaterialButton {
-                id: createAccountButton
-
-                Layout.alignment: Qt.AlignCenter
-                Layout.topMargin: 10
-                Layout.preferredWidth: preferredWidth
-                Layout.preferredHeight: preferredHeight
-
-                function checkEnable() {
-                    return !passwordSwitch.checked ||
-                            (passwordEdit.text === passwordConfirmEdit.text
-                             && passwordEdit.text.length !== 0)
-                }
-
-                fontCapitalization: Font.AllUppercase
-                text: isRendezVous ? JamiStrings.createRV : JamiStrings.createAccount
-                enabled: checkEnable()
-                color: checkEnable() ? JamiTheme.wizardBlueButtons :
-                                       JamiTheme.buttonTintedGreyInactive
-                hoveredColor: JamiTheme.buttonTintedBlueHovered
-                pressedColor: JamiTheme.buttonTintedBluePressed
-
-                onClicked: {
-                    createAccount()
-                    createAccountStack.currentIndex += 1
+                    spacing: layoutSpacing
+                    steps: 3
+                    currentStep: 2
                 }
             }
         }
@@ -316,7 +362,7 @@ Rectangle {
 
         anchors.left: parent.left
         anchors.top: parent.top
-        anchors.margins: 20
+        anchors.margins: backButtonMargins
 
         width: 35
         height: 35
@@ -335,15 +381,5 @@ Rectangle {
             else
                 createAccountStack.currentIndex -= 1
         }
-    }
-
-    AccountCreationStepIndicator {
-        anchors.bottom: root.bottom
-        anchors.bottomMargin: 30
-        anchors.horizontalCenter: root.horizontalCenter
-
-        spacing: layoutSpacing
-        steps: 3
-        currentStep: usernameEdit.visible ? 1 : 2
     }
 }

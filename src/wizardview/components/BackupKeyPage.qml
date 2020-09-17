@@ -28,6 +28,8 @@ import "../../settingsview/components"
 Rectangle {
     id: root
 
+    property int preferredHeight: backupKeysPageColumnLayout.implicitHeight
+
     signal neverShowAgainBoxClicked(bool isChecked)
     signal leavePage
     signal export_Btn_FileDialogAccepted(bool accepted, string folderDir)
@@ -62,6 +64,8 @@ Rectangle {
     color: JamiTheme.backgroundColor
 
     ColumnLayout {
+        id: backupKeysPageColumnLayout
+
         spacing: layoutSpacing
 
         anchors.horizontalCenter: parent.horizontalCenter
@@ -71,6 +75,7 @@ Rectangle {
             spacing: layoutSpacing
 
             Layout.alignment: Qt.AlignCenter
+            Layout.topMargin: backButtonMargins
             Layout.preferredWidth: backupBtn.width
 
             Label {
@@ -151,6 +156,7 @@ Rectangle {
 
         MaterialButton {
             Layout.alignment: Qt.AlignCenter
+            Layout.bottomMargin: backButtonMargins
             Layout.preferredWidth: preferredWidth
             Layout.preferredHeight: preferredHeight
 

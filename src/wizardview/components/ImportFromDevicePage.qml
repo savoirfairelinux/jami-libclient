@@ -29,6 +29,7 @@ Rectangle {
     property alias text_pinFromDeviceAlias: pinFromDevice.text
     property alias text_passwordFromDeviceAlias: passwordFromDevice.text
     property string errorText: ""
+    property int preferredHeight: importFromDevicePageColumnLayout.implicitHeight
 
     signal leavePage
     signal importAccount
@@ -56,6 +57,8 @@ Rectangle {
     }
 
     ColumnLayout {
+        id: importFromDevicePageColumnLayout
+
         spacing: layoutSpacing
 
         // Prevent possible anchor loop detected on centerIn.
@@ -64,6 +67,7 @@ Rectangle {
 
         Text {
             Layout.alignment: Qt.AlignCenter
+            Layout.topMargin: backButtonMargins
 
             text: JamiStrings.mainAccountPassword
             font.pointSize: JamiTheme.menuFontSize
@@ -125,6 +129,7 @@ Rectangle {
             id: connectBtn
 
             Layout.alignment: Qt.AlignCenter
+            Layout.bottomMargin: errorLabel.visible ? 0 : backButtonMargins
             Layout.preferredWidth: preferredWidth
             Layout.preferredHeight: preferredHeight
 
@@ -140,7 +145,10 @@ Rectangle {
         }
 
         Label {
+            id: errorLabel
+
             Layout.alignment: Qt.AlignCenter
+            Layout.bottomMargin: backButtonMargins
 
             visible: errorText.length !== 0
 

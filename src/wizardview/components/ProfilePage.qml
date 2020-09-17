@@ -26,6 +26,8 @@ import "../../commoncomponents"
 Rectangle {
     id: root
 
+    property int preferredHeight: profilePageColumnLayout.implicitHeight
+
     function initializeOnShowUp() {
         clearAllTextFields()
         boothImgBase64 = ""
@@ -51,6 +53,8 @@ Rectangle {
     property bool isRdv: false
 
     ColumnLayout {
+        id: profilePageColumnLayout
+
         spacing: layoutSpacing
 
         width: parent.width
@@ -60,6 +64,7 @@ Rectangle {
         RowLayout {
             spacing: layoutSpacing
 
+            Layout.topMargin: backButtonMargins
             Layout.preferredWidth: saveProfileBtn.width
             Layout.alignment: Qt.AlignCenter
 
@@ -139,15 +144,15 @@ Rectangle {
                 leavePage()
             }
         }
-    }
 
-    AccountCreationStepIndicator {
-        anchors.bottom: root.bottom
-        anchors.bottomMargin: 30
-        anchors.horizontalCenter: root.horizontalCenter
+        AccountCreationStepIndicator {
+            Layout.topMargin: backButtonMargins
+            Layout.bottomMargin: backButtonMargins
+            Layout.alignment: Qt.AlignHCenter
 
-        spacing: layoutSpacing
-        steps: 3
-        currentStep: 3
+            spacing: layoutSpacing
+            steps: 3
+            currentStep: 3
+        }
     }
 }

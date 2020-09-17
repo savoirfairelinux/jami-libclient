@@ -30,6 +30,7 @@ Rectangle {
     property alias text_sipProxyEditAlias: sipProxyEdit.text
     property alias text_sipUsernameEditAlias: sipUsernameEdit.text
     property alias text_sipPasswordEditAlias: sipPasswordEdit.text
+    property int preferredHeight: createSIPAccountPageColumnLayout.implicitHeight
 
     property var boothImgBase64: null
 
@@ -56,6 +57,8 @@ Rectangle {
     }
 
     ColumnLayout {
+        id: createSIPAccountPageColumnLayout
+
         spacing: layoutSpacing
 
         anchors.centerIn: parent
@@ -64,6 +67,7 @@ Rectangle {
             spacing: layoutSpacing
 
             Layout.alignment: Qt.AlignCenter
+            Layout.topMargin: backButtonMargins
             Layout.preferredWidth: createAccountButton.width
 
             Label {
@@ -143,6 +147,7 @@ Rectangle {
             id: createAccountButton
 
             Layout.alignment: Qt.AlignCenter
+            Layout.bottomMargin: backButtonMargins
             Layout.preferredWidth: preferredWidth
             Layout.preferredHeight: preferredHeight
 

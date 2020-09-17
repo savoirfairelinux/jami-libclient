@@ -31,6 +31,7 @@ Rectangle {
 
     property alias text_passwordFromBackupEditAlias: passwordFromBackupEdit.text
     property string fileImportBtnText: JamiStrings.archive
+    property int preferredHeight: importFromBackupPageColumnLayout.implicitHeight
 
     property string filePath: ""
     property string errorText: ""
@@ -72,6 +73,8 @@ Rectangle {
     }
 
     ColumnLayout {
+        id: importFromBackupPageColumnLayout
+
         spacing: layoutSpacing
 
         anchors.horizontalCenter: parent.horizontalCenter
@@ -79,6 +82,7 @@ Rectangle {
 
         Text {
             Layout.alignment: Qt.AlignCenter
+            Layout.topMargin: backButtonMargins
 
             text: qsTr("Import from backup")
             font.pointSize: JamiTheme.menuFontSize
@@ -145,6 +149,7 @@ Rectangle {
             id: connectBtn
 
             Layout.alignment: Qt.AlignCenter
+            Layout.bottomMargin: errorLabel.visible ? 0 : backButtonMargins
             Layout.preferredWidth: preferredWidth
             Layout.preferredHeight: preferredHeight
 
@@ -166,7 +171,10 @@ Rectangle {
         }
 
         Label {
+            id: errorLabel
+
             Layout.alignment: Qt.AlignCenter
+            Layout.bottomMargin: backButtonMargins
 
             visible: errorText.length !== 0
 

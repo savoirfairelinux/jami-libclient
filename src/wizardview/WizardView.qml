@@ -53,6 +53,7 @@ Rectangle {
     }
 
     readonly property int layoutSpacing: 12
+    readonly property int backButtonMargins: 20
 
     property int textFontSize: 9
     property int wizardMode: WizardView.CREATE
@@ -123,7 +124,7 @@ Rectangle {
             isRdv = false
             createAccountPage.nameRegistrationUIState = UsernameLineEdit.NameRegistrationState.BLANK
         } else if (pageIndex === WizardView.WizardViewPageIndex.CREATEACCOUNTPAGE) {
-            createAccountPage.initializeOnShowUp()
+            createAccountPage.initializeOnShowUp(false)
         } else if (pageIndex === WizardView.WizardViewPageIndex.CREATESIPACCOUNTPAGE) {
             createSIPAccountPage.initializeOnShowUp()
         } else if (pageIndex === WizardView.WizardViewPageIndex.IMPORTFROMDEVICEPAGE) {
@@ -169,181 +170,230 @@ Rectangle {
         onClicked: forceActiveFocus()
     }
 
-    StackLayout {
-        id: controlPanelStackView
+    ScrollView {
+        id: wizardViewScrollView
+
+        property ScrollBar vScrollBar: ScrollBar.vertical
 
         anchors.fill: parent
 
-        currentIndex: WizardView.WizardViewPageIndex.WELCOMEPAGE
+        ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
+        ScrollBar.vertical.policy: ScrollBar.AsNeeded
 
-        WelcomePage {
-            id: welcomePage
+        clip: true
+        contentHeight: controlPanelStackView.height
 
-            onWelcomePageRedirectPage: {
-                changePageQML(toPageIndex)
+        StackLayout {
+            id: controlPanelStackView
+
+            anchors.centerIn: parent
+
+            width: wizardViewScrollView.width
+
+            currentIndex: WizardView.WizardViewPageIndex.WELCOMEPAGE
+
+            Component.onCompleted: {
+                // avoid binding loop
+                height = Qt.binding(function (){
+                    var index = currentIndex
+                            === WizardView.WizardViewPageIndex.CREATERENDEZVOUS ?
+                                WizardView.WizardViewPageIndex.CREATEACCOUNTPAGE : currentIndex
+                    return Math.max(
+                                controlPanelStackView.itemAt(index).preferredHeight,
+                                wizardViewScrollView.height)
+                })
             }
 
-            onLeavePage: {
-                wizardViewIsClosed()
-            }
-        }
+            WelcomePage {
+                id: welcomePage
 
-        CreateAccountPage {
-            id: createAccountPage
+                Layout.alignment: Qt.AlignCenter
 
-            onCreateAccount: {
-                inputParaObject = {}
-                inputParaObject["isRendezVous"] = isRdv
-                inputParaObject["password"] = text_passwordEditAlias
-                AccountAdapter.createJamiAccount(
-                    createAccountPage.text_usernameEditAlias,
-                    inputParaObject,
-                    createAccountPage.boothImgBase64,
-                    true)
-                showBackUp = !isRdv
-                showBottom = true
-                changePageQML(WizardView.WizardViewPageIndex.PROFILEPAGE)
-            }
-
-            onLeavePage: {
-                changePageQML(WizardView.WizardViewPageIndex.WELCOMEPAGE)
-            }
-        }
-
-        CreateSIPAccountPage {
-            id: createSIPAccountPage
-
-            onLeavePage: {
-                changePageQML(WizardView.WizardViewPageIndex.WELCOMEPAGE)
-            }
-
-            onCreateAccount: {
-                inputParaObject = {}
-                inputParaObject["hostname"] = createSIPAccountPage.text_sipServernameEditAlias
-                inputParaObject["username"] = createSIPAccountPage.text_sipUsernameEditAlias
-                inputParaObject["password"] = createSIPAccountPage.text_sipPasswordEditAlias
-                inputParaObject["proxy"] = createSIPAccountPage.text_sipProxyEditAlias
-                createSIPAccountPage.clearAllTextFields()
-
-                AccountAdapter.createSIPAccount(inputParaObject, "")
-                showBackUp = false
-                showBottom = false
-                changePageQML(WizardView.WizardViewPageIndex.PROFILEPAGE)
-                controlPanelStackView.profilePage.readyToSaveDetails()
-            }
-        }
-
-        ImportFromBackupPage {
-            id: importFromBackupPage
-
-            onLeavePage: {
-                changePageQML(WizardView.WizardViewPageIndex.WELCOMEPAGE)
-            }
-
-            onImportAccount: {
-                inputParaObject = {}
-                inputParaObject["archivePath"] = UtilsAdapter.getAbsPath(importFromBackupPage.filePath)
-                inputParaObject["password"] = importFromBackupPage.text_passwordFromBackupEditAlias
-                showBackUp = false
-                showBottom = false
-                showProfile = true
-                AccountAdapter.createJamiAccount(
-                    "", inputParaObject, "", false)
-            }
-        }
-
-        BackupKeyPage {
-            id: backupKeysPage
-
-            onNeverShowAgainBoxClicked: {
-                SettingsAdapter.setValue(Settings.NeverShowMeAgain, isChecked)
-            }
-
-            onExport_Btn_FileDialogAccepted: {
-                if (accepted) {
-                    // is there password? If so, go to password dialog, else, go to following directly
-                    if (AccountAdapter.hasPassword()) {
-                        passwordDialog.path = UtilsAdapter.getAbsPath(folderDir)
-                        passwordDialog.open()
-                        return
-                    } else {
-                        if (folderDir.length > 0) {
-                            AccountAdapter.exportToFile(
-                                        AccountAdapter.currentAccountId,
-                                        UtilsAdapter.getAbsPath(folderDir))
-                        }
-                    }
+                onWelcomePageRedirectPage: {
+                    changePageQML(toPageIndex)
                 }
 
-                changePageQML(WizardView.WizardViewPageIndex.WELCOMEPAGE)
-                needToShowMainViewWindow(addedAccountIndex)
+                onLeavePage: {
+                    wizardViewIsClosed()
+                }
+
+                onScrollToBottom: {
+                    if (welcomePage.preferredHeight > root.height)
+                        wizardViewScrollView.vScrollBar.position = 1
+                }
             }
 
-            onLeavePage: {
-                changePageQML(WizardView.WizardViewPageIndex.WELCOMEPAGE)
-                needToShowMainViewWindow(addedAccountIndex)
-            }
-        }
+            CreateAccountPage {
+                id: createAccountPage
 
-        ImportFromDevicePage {
-            id: importFromDevicePage
+                Layout.alignment: Qt.AlignCenter
 
-            onLeavePage: {
-                changePageQML(WizardView.WizardViewPageIndex.WELCOMEPAGE)
-            }
+                onCreateAccount: {
+                    inputParaObject = {}
+                    inputParaObject["isRendezVous"] = isRdv
+                    inputParaObject["password"] = text_passwordEditAlias
+                    AccountAdapter.createJamiAccount(
+                        createAccountPage.text_usernameEditAlias,
+                        inputParaObject,
+                        createAccountPage.boothImgBase64,
+                        true)
+                    showBackUp = !isRdv
+                    showBottom = true
+                    changePageQML(WizardView.WizardViewPageIndex.PROFILEPAGE)
+                }
 
-            onImportAccount: {
-                inputParaObject = {}
-                inputParaObject["archivePin"] = importFromDevicePage.text_pinFromDeviceAlias
-                inputParaObject["password"] = importFromDevicePage.text_passwordFromDeviceAlias
-
-                showProfile = true
-                showBackUp = false
-                showBottom = false
-                AccountAdapter.createJamiAccount(
-                    "", inputParaObject, "", false)
-            }
-        }
-
-        ConnectToAccountManagerPage {
-            id: connectToAccountManagerPage
-
-            onCreateAccount: {
-                inputParaObject = {}
-                inputParaObject["username"]
-                        = connectToAccountManagerPage.text_usernameManagerEditAlias
-                inputParaObject["password"]
-                        = connectToAccountManagerPage.text_passwordManagerEditAlias
-                inputParaObject["manager"]
-                        = connectToAccountManagerPage.text_accountManagerEditAlias
-                AccountAdapter.createJAMSAccount(inputParaObject)
+                onLeavePage: {
+                    changePageQML(WizardView.WizardViewPageIndex.WELCOMEPAGE)
+                }
             }
 
-            onLeavePage: {
-                changePageQML(WizardView.WizardViewPageIndex.WELCOMEPAGE)
+            CreateSIPAccountPage {
+                id: createSIPAccountPage
+
+                Layout.alignment: Qt.AlignCenter
+
+                onLeavePage: {
+                    changePageQML(WizardView.WizardViewPageIndex.WELCOMEPAGE)
+                }
+
+                onCreateAccount: {
+                    inputParaObject = {}
+                    inputParaObject["hostname"] = createSIPAccountPage.text_sipServernameEditAlias
+                    inputParaObject["username"] = createSIPAccountPage.text_sipUsernameEditAlias
+                    inputParaObject["password"] = createSIPAccountPage.text_sipPasswordEditAlias
+                    inputParaObject["proxy"] = createSIPAccountPage.text_sipProxyEditAlias
+                    createSIPAccountPage.clearAllTextFields()
+
+                    AccountAdapter.createSIPAccount(inputParaObject, "")
+                    showBackUp = false
+                    showBottom = false
+                    changePageQML(WizardView.WizardViewPageIndex.PROFILEPAGE)
+                    controlPanelStackView.profilePage.readyToSaveDetails()
+                }
             }
-        }
 
-        ProfilePage {
-            id: profilePage
+            ImportFromBackupPage {
+                id: importFromBackupPage
 
-            function leave() {
-                if (showBackUp)
-                    changePageQML(WizardView.WizardViewPageIndex.BACKUPKEYSPAGE)
-                else {
+                Layout.alignment: Qt.AlignCenter
+
+                onLeavePage: {
+                    changePageQML(WizardView.WizardViewPageIndex.WELCOMEPAGE)
+                }
+
+                onImportAccount: {
+                    inputParaObject = {}
+                    inputParaObject["archivePath"] = UtilsAdapter.getAbsPath(importFromBackupPage.filePath)
+                    inputParaObject["password"] = importFromBackupPage.text_passwordFromBackupEditAlias
+                    showBackUp = false
+                    showBottom = false
+                    showProfile = true
+                    AccountAdapter.createJamiAccount(
+                        "", inputParaObject, "", false)
+                }
+            }
+
+            BackupKeyPage {
+                id: backupKeysPage
+
+                Layout.alignment: Qt.AlignCenter
+
+                onNeverShowAgainBoxClicked: {
+                    SettingsAdapter.setValue(Settings.NeverShowMeAgain, isChecked)
+                }
+
+                onExport_Btn_FileDialogAccepted: {
+                    if (accepted) {
+                        // is there password? If so, go to password dialog, else, go to following directly
+                        if (AccountAdapter.hasPassword()) {
+                            passwordDialog.path = UtilsAdapter.getAbsPath(folderDir)
+                            passwordDialog.open()
+                            return
+                        } else {
+                            if (folderDir.length > 0) {
+                                AccountAdapter.exportToFile(
+                                            AccountAdapter.currentAccountId,
+                                            UtilsAdapter.getAbsPath(folderDir))
+                            }
+                        }
+                    }
+
+                    changePageQML(WizardView.WizardViewPageIndex.WELCOMEPAGE)
+                    needToShowMainViewWindow(addedAccountIndex)
+                }
+
+                onLeavePage: {
                     changePageQML(WizardView.WizardViewPageIndex.WELCOMEPAGE)
                     needToShowMainViewWindow(addedAccountIndex)
                 }
             }
 
-            onSaveProfile: {
-                SettingsAdapter.setCurrAccAvatar(profilePage.boothImgBase64)
-                AccountAdapter.setCurrAccDisplayName(profilePage.displayName)
-                leave()
+            ImportFromDevicePage {
+                id: importFromDevicePage
+
+                Layout.alignment: Qt.AlignCenter
+
+                onLeavePage: {
+                    changePageQML(WizardView.WizardViewPageIndex.WELCOMEPAGE)
+                }
+
+                onImportAccount: {
+                    inputParaObject = {}
+                    inputParaObject["archivePin"] = importFromDevicePage.text_pinFromDeviceAlias
+                    inputParaObject["password"] = importFromDevicePage.text_passwordFromDeviceAlias
+
+                    showProfile = true
+                    showBackUp = false
+                    showBottom = false
+                    AccountAdapter.createJamiAccount(
+                        "", inputParaObject, "", false)
+                }
             }
 
-            onLeavePage: {
-                leave()
+            ConnectToAccountManagerPage {
+                id: connectToAccountManagerPage
+
+                Layout.alignment: Qt.AlignCenter
+
+                onCreateAccount: {
+                    inputParaObject = {}
+                    inputParaObject["username"]
+                            = connectToAccountManagerPage.text_usernameManagerEditAlias
+                    inputParaObject["password"]
+                            = connectToAccountManagerPage.text_passwordManagerEditAlias
+                    inputParaObject["manager"]
+                            = connectToAccountManagerPage.text_accountManagerEditAlias
+                    AccountAdapter.createJAMSAccount(inputParaObject)
+                }
+
+                onLeavePage: {
+                    changePageQML(WizardView.WizardViewPageIndex.WELCOMEPAGE)
+                }
+            }
+
+            ProfilePage {
+                id: profilePage
+
+                Layout.alignment: Qt.AlignCenter
+
+                function leave() {
+                    if (showBackUp)
+                        changePageQML(WizardView.WizardViewPageIndex.BACKUPKEYSPAGE)
+                    else {
+                        changePageQML(WizardView.WizardViewPageIndex.WELCOMEPAGE)
+                        needToShowMainViewWindow(addedAccountIndex)
+                    }
+                }
+
+                onSaveProfile: {
+                    SettingsAdapter.setCurrAccAvatar(profilePage.boothImgBase64)
+                    AccountAdapter.setCurrAccDisplayName(profilePage.displayName)
+                    leave()
+                }
+
+                onLeavePage: {
+                    leave()
+                }
             }
         }
     }

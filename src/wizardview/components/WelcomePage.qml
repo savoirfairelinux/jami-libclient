@@ -30,12 +30,17 @@ import "../../commoncomponents"
 Rectangle {
     id: root
 
+    property int preferredHeight: welcomePageColumnLayout.implicitHeight
+
     signal welcomePageRedirectPage(int toPageIndex)
     signal leavePage
+    signal scrollToBottom
 
     color: JamiTheme.backgroundColor
 
     ColumnLayout {
+        id: welcomePageColumnLayout
+
         anchors.centerIn: parent
 
         spacing: layoutSpacing
@@ -44,6 +49,7 @@ Rectangle {
             id: welcomeLabel
 
             Layout.alignment: Qt.AlignCenter
+            Layout.topMargin: backButtonMargins
             Layout.preferredHeight: contentHeight
 
             text: qsTr("Welcome to")
@@ -154,6 +160,7 @@ Rectangle {
             id: showAdvancedButton
 
             Layout.alignment: Qt.AlignCenter
+            Layout.bottomMargin: newSIPAccountButton.visible ? 0 : backButtonMargins
             Layout.preferredWidth: preferredWidth
             Layout.preferredHeight: preferredHeight
 
@@ -203,6 +210,7 @@ Rectangle {
             id: newSIPAccountButton
 
             Layout.alignment: Qt.AlignCenter
+            Layout.bottomMargin: backButtonMargins
             Layout.preferredWidth: preferredWidth
             Layout.preferredHeight: preferredHeight
 
@@ -220,6 +228,8 @@ Rectangle {
                 welcomePageRedirectPage(2)
             }
         }
+
+        onHeightChanged: scrollToBottom()
     }
 
     HoverableButton {
@@ -227,7 +237,7 @@ Rectangle {
 
         anchors.left: parent.left
         anchors.top: parent.top
-        anchors.margins: 20
+        anchors.margins: backButtonMargins
 
         Connections {
             target: LRCInstance

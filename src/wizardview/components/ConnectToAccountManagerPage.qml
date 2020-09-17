@@ -30,6 +30,7 @@ Rectangle {
     property alias text_passwordManagerEditAlias: passwordManagerEdit.text
     property alias text_accountManagerEditAlias: accountManagerEdit.text
     property string errorText: ""
+    property int preferredHeight: connectToAccountManagerPageColumnLayout.implicitHeight
 
     signal leavePage
     signal createAccount
@@ -59,6 +60,8 @@ Rectangle {
     }
 
     ColumnLayout {
+        id: connectToAccountManagerPageColumnLayout
+
         spacing: layoutSpacing
 
         anchors.horizontalCenter: parent.horizontalCenter
@@ -68,7 +71,8 @@ Rectangle {
             spacing: layoutSpacing
 
             Layout.alignment: Qt.AlignCenter
-            Layout.preferredWidth: connectBtn.width
+            Layout.topMargin: backButtonMargins
+            Layout.preferredWidth: implicitWidth
 
             Label {
                 text: JamiStrings.enterJAMSURL
@@ -108,10 +112,14 @@ Rectangle {
         }
 
         Label {
-            Layout.alignment: Qt.AlignLeft
+            Layout.alignment: Qt.AlignCenter
+            Layout.preferredWidth: connectBtn.width
 
             text: JamiStrings.jamsCredentials
             wrapMode: Text.Wrap
+
+            onTextChanged: Layout.preferredHeight =
+                           JamiQmlUtils.getTextBoundingRect(font, text).height
         }
 
         MaterialLineEdit {
@@ -153,6 +161,7 @@ Rectangle {
             id: connectBtn
 
             Layout.alignment: Qt.AlignCenter
+            Layout.bottomMargin: errorLabel.visible ? 0 : backButtonMargins
             Layout.preferredWidth: preferredWidth
             Layout.preferredHeight: preferredHeight
 
@@ -171,7 +180,10 @@ Rectangle {
         }
 
         Label {
+            id: errorLabel
+
             Layout.alignment: Qt.AlignCenter
+            Layout.bottomMargin: backButtonMargins
 
             visible: errorText.length !== 0
             text: errorText
