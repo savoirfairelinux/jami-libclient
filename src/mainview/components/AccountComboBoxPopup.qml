@@ -164,6 +164,7 @@ Popup {
             }
 
             text: qsTr("Add Account") + "+"
+            font.pointSize: JamiTheme.textFontSize
 
             onClicked: {
                 comboBoxPopup.close()

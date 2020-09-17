@@ -43,6 +43,7 @@ Button {
     property int elide: Text.ElideRight
 
     font.kerning: true
+    font.pointSize: JamiTheme.textFontSize
 
     hoverEnabled: hoveredColor !== undefined
 
