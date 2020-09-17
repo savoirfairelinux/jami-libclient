@@ -144,7 +144,7 @@ CallAdapter::slotShowIncomingCallView(const QString& accountId, const conversati
     if (call.isOutgoing) {
         if (isCallSelected) {
             emit showOutgoingCallPage(accountId, convInfo.uid);
-            emit showCallStack(accountId, convInfo.uid);
+            emit showCallStack(accountId, convInfo.uid, true);
         }
     } else {
         auto showIncomingCall = false;
