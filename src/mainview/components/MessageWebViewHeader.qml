@@ -102,7 +102,7 @@ Rectangle {
                     horizontalAlignment: Text.AlignLeft
                     verticalAlignment: Text.AlignVCenter
 
-                    text: userAliasLabelText
+                    eText: userAliasLabelText
                     maxWidth: userNameOrIdRect.width
                 }
 
@@ -117,7 +117,7 @@ Rectangle {
 
                     horizontalAlignment: Text.AlignLeft
                     verticalAlignment: Text.AlignVCenter
-                    text: userUserNameLabelText
+                    eText: userUserNameLabelText
                     maxWidth: userNameOrIdRect.width
                 }
             }

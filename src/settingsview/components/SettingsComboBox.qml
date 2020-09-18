@@ -56,7 +56,7 @@ RowLayout {
         Layout.preferredHeight: heightOfLayout
         Layout.rightMargin: JamiTheme.preferredMarginSize
 
-        text: qsTr(labelText)
+        eText: qsTr(labelText)
         fontSize: JamiTheme.settingsFontSize
         maxWidth: width
     }
