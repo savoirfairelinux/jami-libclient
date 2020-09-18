@@ -46,7 +46,7 @@ Item {
     property string jamsServer: qsTr("JAMS server")
     property string authenticate: qsTr("Authenticate")
     property string deleteAccount: qsTr("Delete account")
-    property string inProgress: qsTr("In progress...")
+    property string inProgress: qsTr("In progress…")
     property string authenticationFailed: qsTr("Authentication failed")
     property string password: qsTr("Password")
     property string username: qsTr("Username")
@@ -55,7 +55,7 @@ Item {
     // AdvancedCallSettings
     property string callSettings: qsTr("Call Settings")
     property string allowCallsUnknownContacs: qsTr("Allow incoming calls from unknown contacts")
-    property string rendezVous: qsTr("Rendezvous point: turn your account into a meeting point")
+    property string rendezVous: qsTr("Convert your account into a rendezvous point")
     property string autoAnswerCalls: qsTr("Automatically answer calls")
     property string enableCustomRingtone: qsTr("Enable custom ringtone")
     property string selectCustomRingtone: qsTr("Select custom ringtone")
@@ -84,7 +84,7 @@ Item {
     property string tlsServerName: qsTr("TLS server name")
     property string negotiationTimeOut: qsTr("Negotiation timeout (seconds)")
     property string selectPrivateKey: qsTr("Select a private key")
-    property string selectUserCert: qsTr("Select an user certificate")
+    property string selectUserCert: qsTr("Select a user certificate")
     property string selectCACert: qsTr("Select a CA certificate")
 
     // AdvancedConnectivitySettings
@@ -102,7 +102,7 @@ Item {
 
     // AdvancedPublicAddressSettings
     property string publicAddress: qsTr("Public address")
-    property string useCustomAddress: qsTr("Use custom address/port")
+    property string useCustomAddress: qsTr("Use custom address and port")
     property string address: qsTr("Address")
     property string port: qsTr("Port")
 
@@ -119,7 +119,7 @@ Item {
     property string videoRTPMaxPort: qsTr("Video RTP maximum port")
 
     // AdvancedOpenDHTSettings
-    property string enablePeerDiscovery: qsTr("Enable local peer discovery.")
+    property string enablePeerDiscovery: qsTr("Enable local peer discovery")
     property string tooltipPeerDiscovery: qsTr("Connect to other DHT nodes advertising on your local network.")
     property string openDHTConfig: qsTr("OpenDHT Configuration")
     property string enableProxy: qsTr("Enable proxy")
@@ -130,7 +130,7 @@ Item {
     property string back: qsTr("Back")
 
     // AVSettingsPage
-    property string avSettingsTitle: qsTr("Audio & Video Settings")
+    property string avSettingsTitle: qsTr("Audio and Video Settings")
 
     // AudioSettings
     property string audio: qsTr("Audio")
@@ -148,8 +148,8 @@ Item {
     property string device: qsTr("Device")
     property string resolution: qsTr("Resolution")
     property string selectVideoResolution: qsTr("Select video resolution")
-    property string fps: qsTr("Frame per second")
-    property string selectFPS: qsTr("Select video frame per second (fps)")
+    property string fps: qsTr("Frames per second")
+    property string selectFPS: qsTr("Select video frame rate (frames per second)")
     property string enableHWAccel: qsTr("Enable hardware acceleration")
     property string previewUnavailable: qsTr("Preview unavailable")
 
@@ -173,7 +173,7 @@ Item {
     // CallOverlayButtonGroup
     property string mute: qsTr("Mute")
     property string unmute: qsTr("Unmute")
-    property string hangup: qsTr("Hang-up")
+    property string hangup: qsTr("End call")
     property string pause: qsTr("Pause")
     property string resume: qsTr("Resume")
     property string addParticipants: qsTr("Add participants")
@@ -200,19 +200,19 @@ Item {
     property string jamiManagementServerURL: qsTr("Jami Account Management Server URL")
     property string jamsCredentials: qsTr("Enter your JAMS credentials")
     property string connect: qsTr("Connect")
-    property string generatingAccount: qsTr("Generating account…")
+    property string generatingAccount: qsTr("Creating account…")
     property string backToWelcome: qsTr("Back to welcome page")
 
     // CreateAccountPage
     property string chooseName: qsTr("Choose name")
     property string chooseUsername: qsTr("Choose username")
-    property string createPassword: qsTr("Create password")
-    property string createRV: qsTr("Create rendezvous")
+    property string createPassword: qsTr("Encrypt account with password")
+    property string createRV: qsTr("Create a rendezvous point")
     property string createAccount: qsTr("Create account")
     property string confirmPassword: qsTr("Confirm password")
-    property string notePasswordRecovery: qsTr("Note that the password cannot be recovered")
+    property string notePasswordRecovery: qsTr("Choose a password to encrypt your account on this device. Note that the password cannot be recovered.")
     property string optional: qsTr("Optional")
-    property string chooseNameRV: qsTr("Choose a name for your rendezvous")
+    property string chooseNameRV: qsTr("Choose a name for your rendezvous point")
 
     // CreateSIPAccountPage
     property string proxy: qsTr("Proxy")
@@ -229,7 +229,7 @@ Item {
     property string setPasswordFailed: qsTr("Password set failed")
     property string changePassword: qsTr("Change password")
     property string setPassword: qsTr("Set password")
-    property string setAPassword: qsTr("Set a password")
+    property string setAPassword: qsTr("Set password")
     property string changeCurrentPassword: qsTr("Change current password")
     property string tipBackupAccount: qsTr("Backup account to a .gz file")
     property string tipAdvancedSettingsDisplay: qsTr("Display or hide advanced settings") 
@@ -240,7 +240,8 @@ Item {
     property string registeringName: qsTr("Registering name")
 
     // JamiUserIdentity
-    property string registerUsername: qsTr("Register a username")
+    property string registerAUsername: qsTr("Register a username")
+    property string registerUsername: qsTr("Register username")
 
     // LinkedDevices
     property string tipLinkNewDevice: qsTr("Link a new device to this account")
@@ -262,13 +263,14 @@ Item {
     property string enableNotifications: qsTr("Enable notifications")
     property string keepMinimized: qsTr("Keep minimized on close")
     property string tipRunStartup: qsTr("Run application on system startup")
-    property string runStartup: qsTr("Run on startup")
+    property string runStartup: qsTr("Launch at startup")
     property string downloadFolder: qsTr("Downloads directory")
     property string tipChooseDownloadFolder: qsTr("Choose download directory")
     property string recordCall: qsTr("Record call")
 
     // UpdateSettings
     property string betaInstall: qsTr("Install beta version")
+    property string enableAutoUpdates: qsTr("Enable/Disable automatic updates")
 
     // Recording Settings
     property string tipRecordFolder: qsTr("Select a record directory")
@@ -285,8 +287,8 @@ Item {
     // ImportFromDevicePage
     property string mainAccountPassword: qsTr("Enter Jami account password")
     property string enterPIN: qsTr("Enter the PIN from another configured Jami account. " +
-                                "Use the \"Link Another Device\" feature to obtain a PIN")
-    property string connectFromAnotherDevice: qsTr("Create account from an another device")
+                                "Use the \"Link Another Device\" feature to obtain a PIN.")
+    property string connectFromAnotherDevice: qsTr("Link device")
 
     // KeyBoardShortcutTable
     property string conversations: qsTr("Conversations")
@@ -309,19 +311,29 @@ Item {
     // PhotoBoothView
     property string chooseAvatarImage: qsTr("Choose a picture as avatar")
     property string importFromFile: qsTr("Import avatar from image file")
+    property string takePhone: qsTr("Take photo")
+    property string retakePhone: qsTr("Retake photo")
 
     // PluginListPreferencesView
     property string reset: qsTr("Reset")
     property string selectPluginInstall: qsTr("Select a plugin to install")
     property string installPlugin: qsTr("Install plugin")
 
+    // PluginItemDelegate
+    property string showHidePrefs: qsTr("Display or hide preferences")
+
+    // PluginListSettingsView
+    property string addNewPlugin: qsTr("Add new plugin")
+
     // PreferenceItemDelegate
-    property string selectFile: qsTr("Please select a file")
+    property string selectFile: qsTr("Select a file")
+    property string select: qsTr("Select")
+    property string chooseImageFile: qsTr("Choose image file")
 
     // ProfilePage
     property string saveProfile: qsTr("Save profile")
-    property string enterRVName: qsTr("Enter the rendezvous's name")
-    property string generatingRV: qsTr("Generating rendezvous…")
+    property string enterRVName: qsTr("Enter the rendezvous point's name")
+    property string generatingRV: qsTr("Creating rendezvous point…")
 
     // RevokeDevicePasswordDialog
     property string confirmRemovalRequest: qsTr("Enter the account password to confirm the removal of this device")
@@ -341,8 +353,16 @@ Item {
     property string advancedFeatures: qsTr("Advanced features")
     property string showAdvancedFeatures: qsTr("Show advanced features")
     property string connectJAMSServer: qsTr("Connect to a JAMS server")
-    property string createFromJAMS: qsTr("Create account from Jami Account Manager Server (JAMS)")
+    property string createFromJAMS: qsTr("Create account from Jami Account Management Server (JAMS)")
     property string addSIPAccount: qsTr("Add a SIP account")
     property string errorCreateAccount: qsTr("Error while creating your account. Check your credentials.")
-    property string createNewRV: qsTr("Create new rendezvous")
+    property string createNewRV: qsTr("Create new rendezvous point")
+    property string createNewJA: qsTr("Create a Jami account")
+
+    // Smart list context menu
+    property string declineContactRequest: qsTr("Decline contact request")
+    property string acceptContactRequest: qsTr("Accept contact request")
+
+    // Update settings
+    property string update: qsTr("Automatically check for updates")
 }

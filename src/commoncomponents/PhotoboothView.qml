@@ -189,21 +189,21 @@ ColumnLayout {
             font.pointSize: 10
             font.kerning: true
 
-            toolTipText: qsTr("Press this button to take photo")
+            toolTipText: JamiStrings.takePhoto
 
             radius: height / 6
             source: {
 
                 if(takePhotoState) {
-                    toolTipText = qsTr("Press this button to finish taking photo")
+                    toolTipText = qsTr("Take photo")
                     return cameraAltIconUrl
                 }
 
                 if(hasAvatar){
-                    toolTipText = qsTr("Press this button to retake photo")
+                    toolTipText = qsTr("Retake photo")
                     return refreshIconUrl
                 } else {
-                    toolTipText = qsTr("Press this button to take photo")
+                    toolTipText = qsTr("Take photo")
                     return addPhotoIconUrl
                 }
             }

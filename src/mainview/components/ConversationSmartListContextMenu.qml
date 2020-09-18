@@ -72,13 +72,13 @@ Item {
             ContextMenuGenerator.addMenuSeparator()
 
             if (contactType === Profile.Type.PENDING) {
-                ContextMenuGenerator.addMenuItem(qsTr("Accept request"),
+                ContextMenuGenerator.addMenuItem(JamiStrings.acceptContactRequest,
                                                  "qrc:/images/icons/person_add-24px.svg",
                                                  function (){
                                                      MessagesAdapter.acceptInvitation(
                                                                  responsibleConvUid)
                                                  })
-                ContextMenuGenerator.addMenuItem(qsTr("Decline request"),
+                ContextMenuGenerator.addMenuItem(JamiStrings.declineContactRequest,
                                                  "qrc:/images/icons/round-close-24px.svg",
                                                  function (){
                                                      MessagesAdapter.refuseInvitation(

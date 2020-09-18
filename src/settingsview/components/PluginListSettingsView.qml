@@ -121,7 +121,7 @@ Rectangle {
             hoveredColor: JamiTheme.buttonTintedBlackHovered
             pressedColor: JamiTheme.buttonTintedBlackPressed
             outlined: true
-            toolTipText: qsTr("Press to add new plugins")
+            toolTipText: JamiStrings.addNewPlugin
 
             source: "qrc:/images/icons/round-add-24px.svg"
 

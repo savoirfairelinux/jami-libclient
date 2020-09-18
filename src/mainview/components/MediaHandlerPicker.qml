@@ -192,7 +192,7 @@ Popup {
                     horizontalAlignment: Text.AlignHCenter
                     verticalAlignment: Text.AlignVCenter
 
-                    text: qsTr("Preference")
+                    text: qsTr("Preferences")
                 }
 
                 ListView {

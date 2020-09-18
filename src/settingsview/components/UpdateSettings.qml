@@ -52,10 +52,10 @@ ColumnLayout {
         id: autoUpdateCheckBox
 
         checked: SettingsAdapter.getAppValue(Settings.Key.AutoUpdate)
-        labelText: qsTr("Check for updates automatically")
+        labelText: JamiStrings.update
         fontPointSize: JamiTheme.settingsFontSize
 
-        tooltipText: qsTr("toggle automatic updates")
+        tooltipText: JamiStrings.enableAutoUpdates
 
         onSwitchToggled: SettingsAdapter.setAppValue(Settings.Key.AutoUpdate, checked)
     }

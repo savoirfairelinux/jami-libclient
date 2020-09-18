@@ -153,7 +153,7 @@ ColumnLayout {
 
             wrapMode: Text.NoWrap
             placeholderText: registeredIdNeedsSet ?
-                                    JamiStrings.registerUsername : ""
+                                    JamiStrings.registerAUsername : ""
             text: {
                 if (!registeredIdNeedsSet)
                     return SettingsAdapter.get_CurrentAccountInfo_RegisteredName()
@@ -184,7 +184,7 @@ ColumnLayout {
                     UsernameLineEdit.NameRegistrationState.FREE
 
         text: qsTr("Register")
-        toolTipText: qsTr("Register the username")
+        toolTipText: JamiStrings.registerUsername
         color: JamiTheme.buttonTintedGrey
         hoveredColor: JamiTheme.buttonTintedGreyHovered
         pressedColor: JamiTheme.buttonTintedGreyPressed

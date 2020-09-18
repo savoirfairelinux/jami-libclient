@@ -77,7 +77,7 @@ Rectangle {
             Layout.preferredWidth: preferredWidth
             Layout.preferredHeight: preferredHeight
 
-            text: qsTr("Create a jami account")
+            text: JamiStrings.createNewJA
             fontCapitalization: Font.AllUppercase
             toolTipText: qsTr("Create new Jami account")
             source: "qrc:/images/default_avatar_overlay.svg"

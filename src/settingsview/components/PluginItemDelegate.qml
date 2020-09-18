@@ -120,7 +120,7 @@ ItemDelegate {
             }
 
             ToolTip.visible: hovered
-            ToolTip.text: qsTr("Show/Hide preferences")
+            ToolTip.text: JamiStrings.showHidePrefs
 
             onClicked: btnPreferencesPluginClicked()
         }

@@ -141,7 +141,7 @@ BaseDialog {
             }
             ListElement {
                 Shortcut: "Ctrl+D"
-                Description: qsTr("Hangup current call")
+                Description: qsTr("End call")
                 KeyLength: 2
             }
             ListElement {

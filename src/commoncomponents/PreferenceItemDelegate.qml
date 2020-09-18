@@ -141,7 +141,7 @@ ItemDelegate {
             model: pluginListPreferenceModel
             currentIndex: pluginListPreferenceModel.getCurrentSettingIndex()
             textRole: "PreferenceValue"
-            tooltipText: qsTr("Choose the preference")
+            tooltipText: JamiStrings.select
             onActivated: {
                 getNewPreferenceValueSlot(index)
             }
@@ -162,7 +162,7 @@ ItemDelegate {
             icon.height: 24
             icon.width: 24
 
-            toolTipText: qsTr("Press to choose an image file")
+            toolTipText: JamiStrings.chooseImageFile
             text: UtilsAdapter.fileName(preferenceCurrentValue)
             fontPointSize: JamiTheme.buttonFontSize
 
