@@ -149,8 +149,10 @@ Window {
                 mainViewStack.push(settingsView, StackView.Immediate)
                 sidePanelViewStack.push(leftPanelSettingsView, StackView.Immediate)
 
-                mainViewWindow.width = settingsViewPreferredWidth
+                var windowCurrentMinimizedSize = settingsViewPreferredWidth
                         + sidePanelViewStackPreferredWidth + onWidthChangedTriggerDistance
+                if (mainViewWindow.width < windowCurrentMinimizedSize)
+                    mainViewWindow.width = windowCurrentMinimizedSize
             }
         } else {
             sidePanelViewStack.pop(StackView.Immediate)
