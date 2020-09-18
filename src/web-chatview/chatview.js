@@ -572,8 +572,6 @@ function sendMessage() {
         while ((file_src = fileSrcExtract.exec(data_to_send)) !== null) {
             window.jsbridge.sendFile(file_src[1])
         }
-
-        reduce_send_container()
     }
 
     var message = messageBarInput.value
@@ -585,6 +583,8 @@ function sendMessage() {
             window.prompt("SEND:" + message)
         }
     }
+    grow_text_area()
+    reduce_send_container()
 }
 
 /* exported acceptInvitation */
