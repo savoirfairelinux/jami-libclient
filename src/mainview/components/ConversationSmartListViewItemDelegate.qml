@@ -141,6 +141,7 @@ ItemDelegate {
 
         font.hintingPreference: Font.PreferNoHinting
         text: textMetricsConversationSmartListUserLastInteractionMessage.elidedText
+        maximumLineCount: 1
         font.pointSize: JamiTheme.textFontSize
         color: Draft ? JamiTheme.draftRed : JamiTheme.faddedLastInteractionFontColor
     }
