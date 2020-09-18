@@ -129,10 +129,7 @@ ListView {
         context: Qt.ApplicationShortcut
         enabled: root.visible
         onActivated: {
-            UtilsAdapter.removeConversation(UtilsAdapter.getCurrAccId(),
-                                            UtilsAdapter.getCurrConvId(),
-                                            true)
-            root.needToBackToWelcomePage()
+            MessagesAdapter.blockConversation(UtilsAdapter.getCurrConvId())
         }
     }
 

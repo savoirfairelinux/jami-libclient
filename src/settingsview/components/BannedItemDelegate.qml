@@ -151,7 +151,7 @@ ItemDelegate {
             backgroundColor: "transparent"
 
             ToolTip.visible: hovered
-            ToolTip.text: reinstateContact
+            ToolTip.text: JamiStrings.reinstateContact
 
             onClicked: {
                 btnReAddContactClicked()

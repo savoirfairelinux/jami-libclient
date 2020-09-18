@@ -577,6 +577,10 @@ Window {
             function onNeedToUpdateSmartList() {
                 mainViewWindowSidePanel.forceUpdateConversationSmartListView()
             }
+
+            function onContactBanned() {
+                showWelcomeView()
+            }
         }
 
         onNeedToGoBackToWelcomeView: {
