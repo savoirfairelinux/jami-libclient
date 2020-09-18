@@ -60,7 +60,7 @@
         <div id="invitation">
             <div id="invite_header">
                 <span id="invite_image"></span>
-                <div id="text"></div>
+                <div id="text" margin="16px"></div>
             </div>
             <div id="actions">
                 <div id="acceptButton" class="nav-button action-button invite-btn-green" onclick="acceptInvitation()">
@@ -223,7 +223,7 @@
                 </div>
                 <textarea id="message" autofocus placeholder="Type a message" onkeyup="grow_text_area()" onkeydown="process_messagebar_keydown()"
                           rows="1"></textarea>
-                <div id="sendButton" class="nav-button action-button" onclick="sendMessage(); grow_text_area()">
+                <div id="sendButton" class="nav-button action-button" onclick="sendMessage();">
                     <svg class="svgicon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
                         <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" />
                         <path d="M0 0h24v24H0z" fill="none" />
