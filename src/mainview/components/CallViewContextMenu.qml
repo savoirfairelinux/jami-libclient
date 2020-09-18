@@ -149,10 +149,7 @@ Item {
 
         mode: JamiFileDialog.Mode.OpenFile
 
-        onAccepted: {
-            // No need to trim file:///.
-            AvAdapter.shareFile(jamiFileDialog.file)
-        }
+        onAccepted: AvAdapter.shareFile(jamiFileDialog.file)
     }
 
     Component.onCompleted: {

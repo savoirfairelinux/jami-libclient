@@ -353,6 +353,9 @@ UtilsAdapter::toFileAbsolutepath(QString inputFileName)
 QString
 UtilsAdapter::getAbsPath(QString path)
 {
+    // Note: this function is used on urls returned from qml-FileDialogs which
+    // contain 'file:///' for reasons we don't understand.
+    // TODO: this logic can be refactored into the JamiFileDialog component.
 #ifdef Q_OS_WIN
     return path.replace("file:///", "").replace("\n", "").replace("\r", "");
 #else
