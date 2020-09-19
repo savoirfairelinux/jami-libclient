@@ -2,392 +2,392 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/qtwrapper/callmanager_wrap.h" line="315"/>
+        <location filename="../src/qtwrapper/callmanager_wrap.h" line="323"/>
         <source>Me</source>
         <translation>自分</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="60"/>
+        <location filename="../src/api/call.h" line="69"/>
         <source>Hold</source>
         <translation>保留</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="62"/>
+        <location filename="../src/api/call.h" line="71"/>
         <source>Talking</source>
         <translation>通話中</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="64"/>
+        <location filename="../src/api/call.h" line="73"/>
         <source>ERROR</source>
         <translation>エラー</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="66"/>
+        <location filename="../src/api/call.h" line="75"/>
         <source>Incoming</source>
         <translation>着信</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="68"/>
+        <location filename="../src/api/call.h" line="77"/>
         <source>Calling</source>
         <translation>発信中</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="70"/>
+        <location filename="../src/api/call.h" line="79"/>
         <source>Connecting</source>
         <translation>接続中</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="72"/>
+        <location filename="../src/api/call.h" line="81"/>
         <source>Searching</source>
         <translation>検索中</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="74"/>
+        <location filename="../src/api/call.h" line="83"/>
         <source>Inactive</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="76"/>
-        <location filename="../src/api/call.h" line="82"/>
+        <location filename="../src/api/call.h" line="85"/>
+        <location filename="../src/api/call.h" line="91"/>
         <source>Finished</source>
-        <translation type="unfinished"/>
+        <translation>通話終了</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="78"/>
+        <location filename="../src/api/call.h" line="87"/>
         <source>Timeout</source>
-        <translation type="unfinished"/>
+        <translation>タイムアウト</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="80"/>
+        <location filename="../src/api/call.h" line="89"/>
         <source>Peer busy</source>
-        <translation type="unfinished"/>
+        <translation>ピアビジー</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="84"/>
+        <location filename="../src/api/call.h" line="93"/>
         <source>Communication established</source>
         <translation>通信を確立しました</translation>
     </message>
     <message>
-        <location filename="../src/authority/storagehelper.cpp" line="136"/>
-        <location filename="../src/authority/storagehelper.cpp" line="871"/>
-        <source>Invitation received</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
         <location filename="../src/authority/storagehelper.cpp" line="133"/>
-        <location filename="../src/authority/storagehelper.cpp" line="869"/>
-        <source>Contact added</source>
-        <translation type="unfinished"/>
+        <location filename="../src/authority/storagehelper.cpp" line="923"/>
+        <source>Invitation received</source>
+        <translation>招待を受信しました</translation>
     </message>
     <message>
-        <location filename="../src/authority/storagehelper.cpp" line="107"/>
-        <location filename="../src/authority/storagehelper.cpp" line="113"/>
-        <location filename="../src/authority/storagehelper.cpp" line="867"/>
+        <location filename="../src/authority/storagehelper.cpp" line="130"/>
+        <location filename="../src/authority/storagehelper.cpp" line="921"/>
+        <source>Contact added</source>
+        <translation>連絡先を追加しました</translation>
+    </message>
+    <message>
+        <location filename="../src/authority/storagehelper.cpp" line="106"/>
+        <location filename="../src/authority/storagehelper.cpp" line="112"/>
+        <location filename="../src/authority/storagehelper.cpp" line="919"/>
         <source>Outgoing call</source>
         <translation>発信</translation>
     </message>
     <message>
-        <location filename="../src/authority/storagehelper.cpp" line="109"/>
-        <location filename="../src/authority/storagehelper.cpp" line="120"/>
+        <location filename="../src/authority/storagehelper.cpp" line="108"/>
+        <location filename="../src/authority/storagehelper.cpp" line="118"/>
         <source>Incoming call</source>
         <translation>着信</translation>
     </message>
     <message>
-        <location filename="../src/authority/storagehelper.cpp" line="116"/>
-        <location filename="../src/authority/storagehelper.cpp" line="865"/>
+        <location filename="../src/authority/storagehelper.cpp" line="114"/>
+        <location filename="../src/authority/storagehelper.cpp" line="917"/>
         <source>Missed outgoing call</source>
         <translation>不在発信</translation>
     </message>
     <message>
-        <location filename="../src/authority/storagehelper.cpp" line="123"/>
+        <location filename="../src/authority/storagehelper.cpp" line="120"/>
         <source>Missed incoming call</source>
         <translation>不在着信</translation>
     </message>
     <message>
-        <location filename="../src/authority/storagehelper.cpp" line="138"/>
-        <location filename="../src/authority/storagehelper.cpp" line="873"/>
+        <location filename="../src/authority/storagehelper.cpp" line="135"/>
+        <location filename="../src/authority/storagehelper.cpp" line="925"/>
         <source>Invitation accepted</source>
-        <translation type="unfinished"/>
+        <translation>招待を受け入れました</translation>
     </message>
     <message>
-        <location filename="../src/avmodel.cpp" line="322"/>
-        <location filename="../src/avmodel.cpp" line="343"/>
+        <location filename="../src/avmodel.cpp" line="336"/>
+        <location filename="../src/avmodel.cpp" line="357"/>
         <source>default</source>
-        <translation type="unfinished"/>
+        <translation>既定</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="48"/>
+        <location filename="../src/newcallmodel.cpp" line="51"/>
         <source>Null</source>
-        <translation type="unfinished"/>
+        <translation>なし</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="49"/>
+        <location filename="../src/newcallmodel.cpp" line="52"/>
         <source>Trying</source>
-        <translation type="unfinished"/>
+        <translation>試行中</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="50"/>
+        <location filename="../src/newcallmodel.cpp" line="53"/>
         <source>Ringing</source>
         <translation>着信中</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="51"/>
-        <source>Being Forwarded</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/newcallmodel.cpp" line="52"/>
-        <source>Queued</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/newcallmodel.cpp" line="53"/>
-        <source>Progress</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
         <location filename="../src/newcallmodel.cpp" line="54"/>
+        <source>Being Forwarded</source>
+        <translation>転送中</translation>
+    </message>
+    <message>
+        <location filename="../src/newcallmodel.cpp" line="55"/>
+        <source>Queued</source>
+        <translation>待機中</translation>
+    </message>
+    <message>
+        <location filename="../src/newcallmodel.cpp" line="56"/>
+        <source>Progress</source>
+        <translation>進行状況</translation>
+    </message>
+    <message>
+        <location filename="../src/newcallmodel.cpp" line="57"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="55"/>
-        <source>Accepted</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/newcallmodel.cpp" line="56"/>
-        <source>Multiple Choices</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/newcallmodel.cpp" line="57"/>
-        <source>Moved Permanently</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
         <location filename="../src/newcallmodel.cpp" line="58"/>
-        <source>Moved Temporarily</source>
-        <translation type="unfinished"/>
+        <source>Accepted</source>
+        <translation>受諾済み</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="59"/>
-        <source>Use Proxy</source>
-        <translation type="unfinished"/>
+        <source>Multiple Choices</source>
+        <translation>複数の選択肢</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="60"/>
-        <source>Alternative Service</source>
-        <translation type="unfinished"/>
+        <source>Moved Permanently</source>
+        <translation>完全に移動しました</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="61"/>
-        <source>Bad Request</source>
-        <translation type="unfinished"/>
+        <source>Moved Temporarily</source>
+        <translation>一時的に移動しました</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="62"/>
-        <source>Unauthorized</source>
-        <translation type="unfinished"/>
+        <source>Use Proxy</source>
+        <translation>プロキシを使う</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="63"/>
-        <source>Payment Required</source>
-        <translation type="unfinished"/>
+        <source>Alternative Service</source>
+        <translation>代替サービス</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="64"/>
-        <source>Forbidden</source>
-        <translation type="unfinished"/>
+        <source>Bad Request</source>
+        <translation>不正なリクエスト</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="65"/>
-        <source>Not Found</source>
-        <translation type="unfinished"/>
+        <source>Unauthorized</source>
+        <translation>未認証</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="66"/>
-        <source>Method Not Allowed</source>
-        <translation type="unfinished"/>
+        <source>Payment Required</source>
+        <translation>支払いが必要</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="67"/>
-        <location filename="../src/newcallmodel.cpp" line="87"/>
-        <source>Not Acceptable</source>
-        <translation type="unfinished"/>
+        <source>Forbidden</source>
+        <translation>禁止</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="68"/>
-        <source>Proxy Authentication Required</source>
-        <translation type="unfinished"/>
+        <source>Not Found</source>
+        <translation>見つかりません</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="69"/>
+        <source>Method Not Allowed</source>
+        <translation>許可されていない方式</translation>
+    </message>
+    <message>
+        <location filename="../src/newcallmodel.cpp" line="70"/>
+        <location filename="../src/newcallmodel.cpp" line="90"/>
+        <source>Not Acceptable</source>
+        <translation>受け入れ不可</translation>
+    </message>
+    <message>
+        <location filename="../src/newcallmodel.cpp" line="71"/>
+        <source>Proxy Authentication Required</source>
+        <translation>プロキシー認証が必要</translation>
+    </message>
+    <message>
+        <location filename="../src/newcallmodel.cpp" line="72"/>
         <source>Request Timeout</source>
         <translation>リクエストタイムアウト</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="70"/>
-        <source>Gone</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/newcallmodel.cpp" line="71"/>
-        <source>Request Entity Too Large</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/newcallmodel.cpp" line="72"/>
-        <source>Request URI Too Long</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
         <location filename="../src/newcallmodel.cpp" line="73"/>
-        <source>Unsupported Media Type</source>
-        <translation type="unfinished"/>
+        <source>Gone</source>
+        <translation>退去</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="74"/>
-        <source>Unsupported URI Scheme</source>
-        <translation type="unfinished"/>
+        <source>Request Entity Too Large</source>
+        <translation>リクエストサイズが大きすぎます</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="75"/>
-        <source>Bad Extension</source>
-        <translation type="unfinished"/>
+        <source>Request URI Too Long</source>
+        <translation>リクエストURLが長すぎます</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="76"/>
-        <source>Extension Required</source>
-        <translation type="unfinished"/>
+        <source>Unsupported Media Type</source>
+        <translation>サポートされていないメディア形式</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="77"/>
-        <source>Session Timer Too Small</source>
-        <translation type="unfinished"/>
+        <source>Unsupported URI Scheme</source>
+        <translation>サポートされていないURLスキーム</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="78"/>
-        <source>Interval Too Brief</source>
-        <translation type="unfinished"/>
+        <source>Bad Extension</source>
+        <translation>不正な拡張子</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="79"/>
-        <source>Temporarily Unavailable</source>
-        <translation type="unfinished"/>
+        <source>Extension Required</source>
+        <translation>拡張子が必要</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="80"/>
-        <source>Call TSX Does Not Exist</source>
-        <translation type="unfinished"/>
+        <source>Session Timer Too Small</source>
+        <translation>セッションタイマーが短すぎます</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="81"/>
-        <source>Loop Detected</source>
-        <translation type="unfinished"/>
+        <source>Interval Too Brief</source>
+        <translation>間隔が短すぎます</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="82"/>
-        <source>Too Many Hops</source>
-        <translation type="unfinished"/>
+        <source>Temporarily Unavailable</source>
+        <translation>一時的に利用できません</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="83"/>
-        <source>Address Incomplete</source>
-        <translation type="unfinished"/>
+        <source>Call TSX Does Not Exist</source>
+        <translation>Call TSXが存在しません</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="84"/>
-        <source>Ambiguous</source>
-        <translation type="unfinished"/>
+        <source>Loop Detected</source>
+        <translation>ループが検出されました</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="85"/>
-        <source>Busy</source>
-        <translation>話中</translation>
+        <source>Too Many Hops</source>
+        <translation>ホップ数が多すぎます</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="86"/>
-        <source>Request Terminated</source>
-        <translation type="unfinished"/>
+        <source>Address Incomplete</source>
+        <translation>アドレスが不完全です</translation>
+    </message>
+    <message>
+        <location filename="../src/newcallmodel.cpp" line="87"/>
+        <source>Ambiguous</source>
+        <translation>不明瞭</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="88"/>
-        <source>Bad Event</source>
-        <translation type="unfinished"/>
+        <source>Busy</source>
+        <translation>通話中</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="89"/>
-        <source>Request Updated</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/newcallmodel.cpp" line="90"/>
-        <source>Request Pending</source>
-        <translation type="unfinished"/>
+        <source>Request Terminated</source>
+        <translation>リクエストが強制終了されました</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="91"/>
-        <source>Undecipherable</source>
-        <translation type="unfinished"/>
+        <source>Bad Event</source>
+        <translation>不正なイベント</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="92"/>
-        <source>Internal Server Error</source>
-        <translation type="unfinished"/>
+        <source>Request Updated</source>
+        <translation>リクエストを更新しました</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="93"/>
-        <source>Not Implemented</source>
-        <translation type="unfinished"/>
+        <source>Request Pending</source>
+        <translation>リクエストが保留中です</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="94"/>
-        <source>Bad Gateway</source>
-        <translation type="unfinished"/>
+        <source>Undecipherable</source>
+        <translation>復号できません</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="95"/>
-        <source>Service Unavailable</source>
-        <translation type="unfinished"/>
+        <source>Internal Server Error</source>
+        <translation>内部サーバーエラー</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="96"/>
-        <source>Server Timeout</source>
-        <translation type="unfinished"/>
+        <source>Not Implemented</source>
+        <translation>未実装です</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="97"/>
-        <source>Version Not Supported</source>
-        <translation type="unfinished"/>
+        <source>Bad Gateway</source>
+        <translation>不正なゲートウェイ</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="98"/>
-        <source>Message Too Large</source>
-        <translation type="unfinished"/>
+        <source>Service Unavailable</source>
+        <translation>サービス利用不可</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="99"/>
+        <source>Server Timeout</source>
+        <translation>サーバータイムアウト</translation>
+    </message>
+    <message>
+        <location filename="../src/newcallmodel.cpp" line="100"/>
+        <source>Version Not Supported</source>
+        <translation>サポートされていないバージョン</translation>
+    </message>
+    <message>
+        <location filename="../src/newcallmodel.cpp" line="101"/>
+        <source>Message Too Large</source>
+        <translation>メッセージが大きすぎます</translation>
+    </message>
+    <message>
+        <location filename="../src/newcallmodel.cpp" line="102"/>
         <source>Precondition Failure</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="100"/>
+        <location filename="../src/newcallmodel.cpp" line="103"/>
         <source>Busy Everywhere</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="101"/>
+        <location filename="../src/newcallmodel.cpp" line="104"/>
         <source>Call Refused</source>
-        <translation type="unfinished"/>
+        <translation>通話が拒否されました</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="102"/>
+        <location filename="../src/newcallmodel.cpp" line="105"/>
         <source>Does Not Exist Anywhere</source>
-        <translation type="unfinished"/>
+        <translation>どこにも存在しません</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="103"/>
+        <location filename="../src/newcallmodel.cpp" line="106"/>
         <source>Not Acceptable Anywhere</source>
         <translation type="unfinished"/>
     </message>
@@ -395,32 +395,33 @@
 <context>
     <name>lrc::ContactModelPimpl</name>
     <message>
-        <location filename="../src/contactmodel.cpp" line="405"/>
+        <location filename="../src/contactmodel.cpp" line="447"/>
+        <location filename="../src/contactmodel.cpp" line="463"/>
         <source>Searching…</source>
-        <translation type="unfinished"/>
+        <translation>検索中…</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="765"/>
+        <location filename="../src/contactmodel.cpp" line="845"/>
         <source>Invalid ID</source>
-        <translation type="unfinished"/>
+        <translation>不正なID</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="768"/>
+        <location filename="../src/contactmodel.cpp" line="848"/>
         <source>Registered name not found</source>
-        <translation type="unfinished"/>
+        <translation>登録名が見つかりません</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="771"/>
+        <location filename="../src/contactmodel.cpp" line="851"/>
         <source>Couldn&apos;t lookup…</source>
-        <translation type="unfinished"/>
+        <translation>見つけられませんでした...</translation>
     </message>
 </context>
 <context>
     <name>lrc::api::ContactModel</name>
     <message>
-        <location filename="../src/contactmodel.cpp" line="371"/>
+        <location filename="../src/contactmodel.cpp" line="412"/>
         <source>Bad URI scheme</source>
-        <translation type="unfinished"/>
+        <translation>不正なURLスキーム</translation>
     </message>
 </context>
 </TS>

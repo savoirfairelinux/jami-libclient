@@ -2,392 +2,392 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/qtwrapper/callmanager_wrap.h" line="315"/>
+        <location filename="../src/qtwrapper/callmanager_wrap.h" line="323"/>
         <source>Me</source>
         <translation>Meg</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="60"/>
+        <location filename="../src/api/call.h" line="69"/>
         <source>Hold</source>
         <translation>Parker</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="62"/>
+        <location filename="../src/api/call.h" line="71"/>
         <source>Talking</source>
         <translation>Snakker</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="64"/>
+        <location filename="../src/api/call.h" line="73"/>
         <source>ERROR</source>
         <translation>FEIL</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="66"/>
+        <location filename="../src/api/call.h" line="75"/>
         <source>Incoming</source>
         <translation>Innkommende</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="68"/>
+        <location filename="../src/api/call.h" line="77"/>
         <source>Calling</source>
         <translation>Kaller opp</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="70"/>
+        <location filename="../src/api/call.h" line="79"/>
         <source>Connecting</source>
         <translation>Kobler opp</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="72"/>
+        <location filename="../src/api/call.h" line="81"/>
         <source>Searching</source>
         <translation>Søker</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="74"/>
+        <location filename="../src/api/call.h" line="83"/>
         <source>Inactive</source>
         <translation>Uaktiv</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="76"/>
-        <location filename="../src/api/call.h" line="82"/>
+        <location filename="../src/api/call.h" line="85"/>
+        <location filename="../src/api/call.h" line="91"/>
         <source>Finished</source>
         <translation>Fullført</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="78"/>
+        <location filename="../src/api/call.h" line="87"/>
         <source>Timeout</source>
         <translation>Tidsutløp</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="80"/>
+        <location filename="../src/api/call.h" line="89"/>
         <source>Peer busy</source>
         <translation>Motpart opptatt</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="84"/>
+        <location filename="../src/api/call.h" line="93"/>
         <source>Communication established</source>
         <translation>Kommunikasjon etablert</translation>
     </message>
     <message>
-        <location filename="../src/authority/storagehelper.cpp" line="136"/>
-        <location filename="../src/authority/storagehelper.cpp" line="871"/>
+        <location filename="../src/authority/storagehelper.cpp" line="133"/>
+        <location filename="../src/authority/storagehelper.cpp" line="923"/>
         <source>Invitation received</source>
         <translation>Invitasjon mottatt</translation>
     </message>
     <message>
-        <location filename="../src/authority/storagehelper.cpp" line="133"/>
-        <location filename="../src/authority/storagehelper.cpp" line="869"/>
+        <location filename="../src/authority/storagehelper.cpp" line="130"/>
+        <location filename="../src/authority/storagehelper.cpp" line="921"/>
         <source>Contact added</source>
         <translation>Kontakt lagt til</translation>
     </message>
     <message>
-        <location filename="../src/authority/storagehelper.cpp" line="107"/>
-        <location filename="../src/authority/storagehelper.cpp" line="113"/>
-        <location filename="../src/authority/storagehelper.cpp" line="867"/>
+        <location filename="../src/authority/storagehelper.cpp" line="106"/>
+        <location filename="../src/authority/storagehelper.cpp" line="112"/>
+        <location filename="../src/authority/storagehelper.cpp" line="919"/>
         <source>Outgoing call</source>
         <translation>Utgående samtale</translation>
     </message>
     <message>
-        <location filename="../src/authority/storagehelper.cpp" line="109"/>
-        <location filename="../src/authority/storagehelper.cpp" line="120"/>
+        <location filename="../src/authority/storagehelper.cpp" line="108"/>
+        <location filename="../src/authority/storagehelper.cpp" line="118"/>
         <source>Incoming call</source>
         <translation>Innkommende samtale</translation>
     </message>
     <message>
-        <location filename="../src/authority/storagehelper.cpp" line="116"/>
-        <location filename="../src/authority/storagehelper.cpp" line="865"/>
+        <location filename="../src/authority/storagehelper.cpp" line="114"/>
+        <location filename="../src/authority/storagehelper.cpp" line="917"/>
         <source>Missed outgoing call</source>
         <translation>Tapt utgående anrop</translation>
     </message>
     <message>
-        <location filename="../src/authority/storagehelper.cpp" line="123"/>
+        <location filename="../src/authority/storagehelper.cpp" line="120"/>
         <source>Missed incoming call</source>
         <translation>Tapt innkommende anrop</translation>
     </message>
     <message>
-        <location filename="../src/authority/storagehelper.cpp" line="138"/>
-        <location filename="../src/authority/storagehelper.cpp" line="873"/>
+        <location filename="../src/authority/storagehelper.cpp" line="135"/>
+        <location filename="../src/authority/storagehelper.cpp" line="925"/>
         <source>Invitation accepted</source>
         <translation>Invitasjon godtatt</translation>
     </message>
     <message>
-        <location filename="../src/avmodel.cpp" line="322"/>
-        <location filename="../src/avmodel.cpp" line="343"/>
+        <location filename="../src/avmodel.cpp" line="336"/>
+        <location filename="../src/avmodel.cpp" line="357"/>
         <source>default</source>
-        <translation type="unfinished"/>
+        <translation>standard</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="48"/>
+        <location filename="../src/newcallmodel.cpp" line="51"/>
         <source>Null</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="49"/>
+        <location filename="../src/newcallmodel.cpp" line="52"/>
         <source>Trying</source>
-        <translation type="unfinished"/>
+        <translation>Prøver</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="50"/>
+        <location filename="../src/newcallmodel.cpp" line="53"/>
         <source>Ringing</source>
         <translation>Ringer</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="51"/>
-        <source>Being Forwarded</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/newcallmodel.cpp" line="52"/>
-        <source>Queued</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/newcallmodel.cpp" line="53"/>
-        <source>Progress</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
         <location filename="../src/newcallmodel.cpp" line="54"/>
+        <source>Being Forwarded</source>
+        <translation>Blir videresendt</translation>
+    </message>
+    <message>
+        <location filename="../src/newcallmodel.cpp" line="55"/>
+        <source>Queued</source>
+        <translation>I kø</translation>
+    </message>
+    <message>
+        <location filename="../src/newcallmodel.cpp" line="56"/>
+        <source>Progress</source>
+        <translation>Framdrift</translation>
+    </message>
+    <message>
+        <location filename="../src/newcallmodel.cpp" line="57"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="55"/>
-        <source>Accepted</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/newcallmodel.cpp" line="56"/>
-        <source>Multiple Choices</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/newcallmodel.cpp" line="57"/>
-        <source>Moved Permanently</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
         <location filename="../src/newcallmodel.cpp" line="58"/>
-        <source>Moved Temporarily</source>
-        <translation type="unfinished"/>
+        <source>Accepted</source>
+        <translation>Godkjent</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="59"/>
+        <source>Multiple Choices</source>
+        <translation>Flere valg</translation>
+    </message>
+    <message>
+        <location filename="../src/newcallmodel.cpp" line="60"/>
+        <source>Moved Permanently</source>
+        <translation>Flyttet permanent</translation>
+    </message>
+    <message>
+        <location filename="../src/newcallmodel.cpp" line="61"/>
+        <source>Moved Temporarily</source>
+        <translation>Flyttet midlertidig</translation>
+    </message>
+    <message>
+        <location filename="../src/newcallmodel.cpp" line="62"/>
         <source>Use Proxy</source>
         <translation>Bruk mellomtjener</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="60"/>
-        <source>Alternative Service</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/newcallmodel.cpp" line="61"/>
-        <source>Bad Request</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/newcallmodel.cpp" line="62"/>
-        <source>Unauthorized</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
         <location filename="../src/newcallmodel.cpp" line="63"/>
-        <source>Payment Required</source>
-        <translation type="unfinished"/>
+        <source>Alternative Service</source>
+        <translation>Alternativ tjeneste</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="64"/>
-        <source>Forbidden</source>
-        <translation type="unfinished"/>
+        <source>Bad Request</source>
+        <translation>Dårlig forespørsel</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="65"/>
-        <source>Not Found</source>
-        <translation type="unfinished"/>
+        <source>Unauthorized</source>
+        <translation>Uautorisert</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="66"/>
-        <source>Method Not Allowed</source>
-        <translation type="unfinished"/>
+        <source>Payment Required</source>
+        <translation>Betaling kreves</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="67"/>
-        <location filename="../src/newcallmodel.cpp" line="87"/>
-        <source>Not Acceptable</source>
-        <translation type="unfinished"/>
+        <source>Forbidden</source>
+        <translation>Forbudt</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="68"/>
-        <source>Proxy Authentication Required</source>
-        <translation type="unfinished"/>
+        <source>Not Found</source>
+        <translation>Ikke funnet</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="69"/>
+        <source>Method Not Allowed</source>
+        <translation>Metode ikke tillatt</translation>
+    </message>
+    <message>
+        <location filename="../src/newcallmodel.cpp" line="70"/>
+        <location filename="../src/newcallmodel.cpp" line="90"/>
+        <source>Not Acceptable</source>
+        <translation>Ikke akseptabelt</translation>
+    </message>
+    <message>
+        <location filename="../src/newcallmodel.cpp" line="71"/>
+        <source>Proxy Authentication Required</source>
+        <translation>Proxy-godkjenning er påkrevd</translation>
+    </message>
+    <message>
+        <location filename="../src/newcallmodel.cpp" line="72"/>
         <source>Request Timeout</source>
         <translation>Tidsgrense for henvendelse</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="70"/>
+        <location filename="../src/newcallmodel.cpp" line="73"/>
         <source>Gone</source>
-        <translation type="unfinished"/>
+        <translation>Borte</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="71"/>
+        <location filename="../src/newcallmodel.cpp" line="74"/>
         <source>Request Entity Too Large</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="72"/>
+        <location filename="../src/newcallmodel.cpp" line="75"/>
         <source>Request URI Too Long</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="73"/>
+        <location filename="../src/newcallmodel.cpp" line="76"/>
         <source>Unsupported Media Type</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="74"/>
+        <location filename="../src/newcallmodel.cpp" line="77"/>
         <source>Unsupported URI Scheme</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="75"/>
+        <location filename="../src/newcallmodel.cpp" line="78"/>
         <source>Bad Extension</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="76"/>
+        <location filename="../src/newcallmodel.cpp" line="79"/>
         <source>Extension Required</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="77"/>
+        <location filename="../src/newcallmodel.cpp" line="80"/>
         <source>Session Timer Too Small</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="78"/>
+        <location filename="../src/newcallmodel.cpp" line="81"/>
         <source>Interval Too Brief</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="79"/>
+        <location filename="../src/newcallmodel.cpp" line="82"/>
         <source>Temporarily Unavailable</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="80"/>
+        <location filename="../src/newcallmodel.cpp" line="83"/>
         <source>Call TSX Does Not Exist</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="81"/>
+        <location filename="../src/newcallmodel.cpp" line="84"/>
         <source>Loop Detected</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="82"/>
+        <location filename="../src/newcallmodel.cpp" line="85"/>
         <source>Too Many Hops</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="83"/>
+        <location filename="../src/newcallmodel.cpp" line="86"/>
         <source>Address Incomplete</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="84"/>
+        <location filename="../src/newcallmodel.cpp" line="87"/>
         <source>Ambiguous</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="85"/>
+        <location filename="../src/newcallmodel.cpp" line="88"/>
         <source>Busy</source>
         <translation>Opptatt</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="86"/>
+        <location filename="../src/newcallmodel.cpp" line="89"/>
         <source>Request Terminated</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="88"/>
+        <location filename="../src/newcallmodel.cpp" line="91"/>
         <source>Bad Event</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="89"/>
+        <location filename="../src/newcallmodel.cpp" line="92"/>
         <source>Request Updated</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="90"/>
+        <location filename="../src/newcallmodel.cpp" line="93"/>
         <source>Request Pending</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="91"/>
+        <location filename="../src/newcallmodel.cpp" line="94"/>
         <source>Undecipherable</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="92"/>
+        <location filename="../src/newcallmodel.cpp" line="95"/>
         <source>Internal Server Error</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="93"/>
+        <location filename="../src/newcallmodel.cpp" line="96"/>
         <source>Not Implemented</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="94"/>
+        <location filename="../src/newcallmodel.cpp" line="97"/>
         <source>Bad Gateway</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="95"/>
+        <location filename="../src/newcallmodel.cpp" line="98"/>
         <source>Service Unavailable</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="96"/>
+        <location filename="../src/newcallmodel.cpp" line="99"/>
         <source>Server Timeout</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="97"/>
+        <location filename="../src/newcallmodel.cpp" line="100"/>
         <source>Version Not Supported</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="98"/>
+        <location filename="../src/newcallmodel.cpp" line="101"/>
         <source>Message Too Large</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="99"/>
+        <location filename="../src/newcallmodel.cpp" line="102"/>
         <source>Precondition Failure</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="100"/>
+        <location filename="../src/newcallmodel.cpp" line="103"/>
         <source>Busy Everywhere</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="101"/>
+        <location filename="../src/newcallmodel.cpp" line="104"/>
         <source>Call Refused</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="102"/>
+        <location filename="../src/newcallmodel.cpp" line="105"/>
         <source>Does Not Exist Anywhere</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="103"/>
+        <location filename="../src/newcallmodel.cpp" line="106"/>
         <source>Not Acceptable Anywhere</source>
         <translation type="unfinished"/>
     </message>
@@ -395,22 +395,23 @@
 <context>
     <name>lrc::ContactModelPimpl</name>
     <message>
-        <location filename="../src/contactmodel.cpp" line="405"/>
+        <location filename="../src/contactmodel.cpp" line="447"/>
+        <location filename="../src/contactmodel.cpp" line="463"/>
         <source>Searching…</source>
-        <translation type="unfinished"/>
+        <translation>Søker...</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="765"/>
+        <location filename="../src/contactmodel.cpp" line="845"/>
         <source>Invalid ID</source>
         <translation>Ugyldig ID</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="768"/>
+        <location filename="../src/contactmodel.cpp" line="848"/>
         <source>Registered name not found</source>
-        <translation type="unfinished"/>
+        <translation>Registrert navn ikke funnet</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="771"/>
+        <location filename="../src/contactmodel.cpp" line="851"/>
         <source>Couldn&apos;t lookup…</source>
         <translation type="unfinished"/>
     </message>
@@ -418,7 +419,7 @@
 <context>
     <name>lrc::api::ContactModel</name>
     <message>
-        <location filename="../src/contactmodel.cpp" line="371"/>
+        <location filename="../src/contactmodel.cpp" line="412"/>
         <source>Bad URI scheme</source>
         <translation>Ukjent URI-type</translation>
     </message>

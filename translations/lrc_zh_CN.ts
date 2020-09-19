@@ -2,425 +2,426 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/qtwrapper/callmanager_wrap.h" line="315"/>
+        <location filename="../src/qtwrapper/callmanager_wrap.h" line="323"/>
         <source>Me</source>
         <translation>我</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="60"/>
+        <location filename="../src/api/call.h" line="69"/>
         <source>Hold</source>
         <translation>等待</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="62"/>
+        <location filename="../src/api/call.h" line="71"/>
         <source>Talking</source>
         <translation>正在通话</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="64"/>
+        <location filename="../src/api/call.h" line="73"/>
         <source>ERROR</source>
         <translation>错误</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="66"/>
+        <location filename="../src/api/call.h" line="75"/>
         <source>Incoming</source>
         <translation>来电</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="68"/>
+        <location filename="../src/api/call.h" line="77"/>
         <source>Calling</source>
         <translation>正在通话</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="70"/>
+        <location filename="../src/api/call.h" line="79"/>
         <source>Connecting</source>
         <translation>正在连接</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="72"/>
+        <location filename="../src/api/call.h" line="81"/>
         <source>Searching</source>
         <translation>正在搜索</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="74"/>
+        <location filename="../src/api/call.h" line="83"/>
         <source>Inactive</source>
-        <translation type="unfinished"/>
+        <translation>不活跃</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="76"/>
-        <location filename="../src/api/call.h" line="82"/>
+        <location filename="../src/api/call.h" line="85"/>
+        <location filename="../src/api/call.h" line="91"/>
         <source>Finished</source>
-        <translation type="unfinished"/>
+        <translation>完成</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="78"/>
+        <location filename="../src/api/call.h" line="87"/>
         <source>Timeout</source>
-        <translation type="unfinished"/>
+        <translation>超时</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="80"/>
+        <location filename="../src/api/call.h" line="89"/>
         <source>Peer busy</source>
-        <translation type="unfinished"/>
+        <translation>对等节点忙</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="84"/>
+        <location filename="../src/api/call.h" line="93"/>
         <source>Communication established</source>
         <translation>通信已建立</translation>
     </message>
     <message>
-        <location filename="../src/authority/storagehelper.cpp" line="136"/>
-        <location filename="../src/authority/storagehelper.cpp" line="871"/>
+        <location filename="../src/authority/storagehelper.cpp" line="133"/>
+        <location filename="../src/authority/storagehelper.cpp" line="923"/>
         <source>Invitation received</source>
         <translation>已接受邀请</translation>
     </message>
     <message>
-        <location filename="../src/authority/storagehelper.cpp" line="133"/>
-        <location filename="../src/authority/storagehelper.cpp" line="869"/>
+        <location filename="../src/authority/storagehelper.cpp" line="130"/>
+        <location filename="../src/authority/storagehelper.cpp" line="921"/>
         <source>Contact added</source>
         <translation>已加入通讯录</translation>
     </message>
     <message>
-        <location filename="../src/authority/storagehelper.cpp" line="107"/>
-        <location filename="../src/authority/storagehelper.cpp" line="113"/>
-        <location filename="../src/authority/storagehelper.cpp" line="867"/>
+        <location filename="../src/authority/storagehelper.cpp" line="106"/>
+        <location filename="../src/authority/storagehelper.cpp" line="112"/>
+        <location filename="../src/authority/storagehelper.cpp" line="919"/>
         <source>Outgoing call</source>
         <translation>去电</translation>
     </message>
     <message>
-        <location filename="../src/authority/storagehelper.cpp" line="109"/>
-        <location filename="../src/authority/storagehelper.cpp" line="120"/>
+        <location filename="../src/authority/storagehelper.cpp" line="108"/>
+        <location filename="../src/authority/storagehelper.cpp" line="118"/>
         <source>Incoming call</source>
         <translation>来电</translation>
     </message>
     <message>
-        <location filename="../src/authority/storagehelper.cpp" line="116"/>
-        <location filename="../src/authority/storagehelper.cpp" line="865"/>
+        <location filename="../src/authority/storagehelper.cpp" line="114"/>
+        <location filename="../src/authority/storagehelper.cpp" line="917"/>
         <source>Missed outgoing call</source>
         <translation>去电未接</translation>
     </message>
     <message>
-        <location filename="../src/authority/storagehelper.cpp" line="123"/>
+        <location filename="../src/authority/storagehelper.cpp" line="120"/>
         <source>Missed incoming call</source>
         <translation>未接来电</translation>
     </message>
     <message>
-        <location filename="../src/authority/storagehelper.cpp" line="138"/>
-        <location filename="../src/authority/storagehelper.cpp" line="873"/>
+        <location filename="../src/authority/storagehelper.cpp" line="135"/>
+        <location filename="../src/authority/storagehelper.cpp" line="925"/>
         <source>Invitation accepted</source>
-        <translation type="unfinished"/>
+        <translation>已接受邀请</translation>
     </message>
     <message>
-        <location filename="../src/avmodel.cpp" line="322"/>
-        <location filename="../src/avmodel.cpp" line="343"/>
+        <location filename="../src/avmodel.cpp" line="336"/>
+        <location filename="../src/avmodel.cpp" line="357"/>
         <source>default</source>
-        <translation type="unfinished"/>
+        <translation>默认</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="48"/>
+        <location filename="../src/newcallmodel.cpp" line="51"/>
         <source>Null</source>
-        <translation type="unfinished"/>
+        <translation>无效</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="49"/>
+        <location filename="../src/newcallmodel.cpp" line="52"/>
         <source>Trying</source>
-        <translation type="unfinished"/>
+        <translation>正在尝试</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="50"/>
+        <location filename="../src/newcallmodel.cpp" line="53"/>
         <source>Ringing</source>
         <translation>正在呼叫</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="51"/>
-        <source>Being Forwarded</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/newcallmodel.cpp" line="52"/>
-        <source>Queued</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/newcallmodel.cpp" line="53"/>
-        <source>Progress</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
         <location filename="../src/newcallmodel.cpp" line="54"/>
+        <source>Being Forwarded</source>
+        <translation>正在转接</translation>
+    </message>
+    <message>
+        <location filename="../src/newcallmodel.cpp" line="55"/>
+        <source>Queued</source>
+        <translation>排队中</translation>
+    </message>
+    <message>
+        <location filename="../src/newcallmodel.cpp" line="56"/>
+        <source>Progress</source>
+        <translation>进度</translation>
+    </message>
+    <message>
+        <location filename="../src/newcallmodel.cpp" line="57"/>
         <source>OK</source>
         <translation>确定</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="55"/>
-        <source>Accepted</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/newcallmodel.cpp" line="56"/>
-        <source>Multiple Choices</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/newcallmodel.cpp" line="57"/>
-        <source>Moved Permanently</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
         <location filename="../src/newcallmodel.cpp" line="58"/>
-        <source>Moved Temporarily</source>
-        <translation type="unfinished"/>
+        <source>Accepted</source>
+        <translation>已接受</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="59"/>
-        <source>Use Proxy</source>
-        <translation type="unfinished"/>
+        <source>Multiple Choices</source>
+        <translation>多选</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="60"/>
-        <source>Alternative Service</source>
-        <translation type="unfinished"/>
+        <source>Moved Permanently</source>
+        <translation>永久移动 </translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="61"/>
-        <source>Bad Request</source>
-        <translation type="unfinished"/>
+        <source>Moved Temporarily</source>
+        <translation>暂时移动 </translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="62"/>
-        <source>Unauthorized</source>
-        <translation type="unfinished"/>
+        <source>Use Proxy</source>
+        <translation>使用代理</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="63"/>
-        <source>Payment Required</source>
-        <translation type="unfinished"/>
+        <source>Alternative Service</source>
+        <translation>替代服务 </translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="64"/>
-        <source>Forbidden</source>
-        <translation type="unfinished"/>
+        <source>Bad Request</source>
+        <translation>不可用的请求</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="65"/>
-        <source>Not Found</source>
-        <translation type="unfinished"/>
+        <source>Unauthorized</source>
+        <translation>未授权的</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="66"/>
-        <source>Method Not Allowed</source>
-        <translation type="unfinished"/>
+        <source>Payment Required</source>
+        <translation>需要付款</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="67"/>
-        <location filename="../src/newcallmodel.cpp" line="87"/>
-        <source>Not Acceptable</source>
-        <translation type="unfinished"/>
+        <source>Forbidden</source>
+        <translation>禁止的</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="68"/>
-        <source>Proxy Authentication Required</source>
-        <translation type="unfinished"/>
+        <source>Not Found</source>
+        <translation>未找到</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="69"/>
+        <source>Method Not Allowed</source>
+        <translation>方式不允许</translation>
+    </message>
+    <message>
+        <location filename="../src/newcallmodel.cpp" line="70"/>
+        <location filename="../src/newcallmodel.cpp" line="90"/>
+        <source>Not Acceptable</source>
+        <translation>不可接受</translation>
+    </message>
+    <message>
+        <location filename="../src/newcallmodel.cpp" line="71"/>
+        <source>Proxy Authentication Required</source>
+        <translation>需要代理服务器认证</translation>
+    </message>
+    <message>
+        <location filename="../src/newcallmodel.cpp" line="72"/>
         <source>Request Timeout</source>
         <translation>请求超时</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="70"/>
-        <source>Gone</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/newcallmodel.cpp" line="71"/>
-        <source>Request Entity Too Large</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/newcallmodel.cpp" line="72"/>
-        <source>Request URI Too Long</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
         <location filename="../src/newcallmodel.cpp" line="73"/>
-        <source>Unsupported Media Type</source>
-        <translation type="unfinished"/>
+        <source>Gone</source>
+        <translation>已离开</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="74"/>
-        <source>Unsupported URI Scheme</source>
-        <translation type="unfinished"/>
+        <source>Request Entity Too Large</source>
+        <translation>请求的实体太大</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="75"/>
-        <source>Bad Extension</source>
-        <translation type="unfinished"/>
+        <source>Request URI Too Long</source>
+        <translation>请求的 URI 太长</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="76"/>
-        <source>Extension Required</source>
-        <translation type="unfinished"/>
+        <source>Unsupported Media Type</source>
+        <translation>不支持的媒体类型</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="77"/>
-        <source>Session Timer Too Small</source>
-        <translation type="unfinished"/>
+        <source>Unsupported URI Scheme</source>
+        <translation>不受支持的 URI 方案</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="78"/>
-        <source>Interval Too Brief</source>
-        <translation type="unfinished"/>
+        <source>Bad Extension</source>
+        <translation>错误的扩展名 </translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="79"/>
-        <source>Temporarily Unavailable</source>
-        <translation type="unfinished"/>
+        <source>Extension Required</source>
+        <translation>需要扩展名</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="80"/>
-        <source>Call TSX Does Not Exist</source>
-        <translation type="unfinished"/>
+        <source>Session Timer Too Small</source>
+        <translation>会话计时器太小 </translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="81"/>
-        <source>Loop Detected</source>
-        <translation type="unfinished"/>
+        <source>Interval Too Brief</source>
+        <translation>间隔太短 </translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="82"/>
-        <source>Too Many Hops</source>
-        <translation type="unfinished"/>
+        <source>Temporarily Unavailable</source>
+        <translation>暂时不可用 </translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="83"/>
-        <source>Address Incomplete</source>
-        <translation type="unfinished"/>
+        <source>Call TSX Does Not Exist</source>
+        <translation>Call TSX 不存在</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="84"/>
-        <source>Ambiguous</source>
-        <translation type="unfinished"/>
+        <source>Loop Detected</source>
+        <translation>检测到环路</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="85"/>
+        <source>Too Many Hops</source>
+        <translation>跳数太多</translation>
+    </message>
+    <message>
+        <location filename="../src/newcallmodel.cpp" line="86"/>
+        <source>Address Incomplete</source>
+        <translation>地址不完整 </translation>
+    </message>
+    <message>
+        <location filename="../src/newcallmodel.cpp" line="87"/>
+        <source>Ambiguous</source>
+        <translation>含糊</translation>
+    </message>
+    <message>
+        <location filename="../src/newcallmodel.cpp" line="88"/>
         <source>Busy</source>
         <translation>忙碌</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="86"/>
-        <source>Request Terminated</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/newcallmodel.cpp" line="88"/>
-        <source>Bad Event</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
         <location filename="../src/newcallmodel.cpp" line="89"/>
-        <source>Request Updated</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/newcallmodel.cpp" line="90"/>
-        <source>Request Pending</source>
-        <translation type="unfinished"/>
+        <source>Request Terminated</source>
+        <translation>请求终止 </translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="91"/>
-        <source>Undecipherable</source>
-        <translation type="unfinished"/>
+        <source>Bad Event</source>
+        <translation>不良事件 </translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="92"/>
-        <source>Internal Server Error</source>
-        <translation type="unfinished"/>
+        <source>Request Updated</source>
+        <translation>请求已更新</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="93"/>
-        <source>Not Implemented</source>
-        <translation type="unfinished"/>
+        <source>Request Pending</source>
+        <translation>请求待处理 </translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="94"/>
-        <source>Bad Gateway</source>
-        <translation type="unfinished"/>
+        <source>Undecipherable</source>
+        <translation>无法解码</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="95"/>
-        <source>Service Unavailable</source>
-        <translation type="unfinished"/>
+        <source>Internal Server Error</source>
+        <translation>内部服务器错误 </translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="96"/>
-        <source>Server Timeout</source>
-        <translation type="unfinished"/>
+        <source>Not Implemented</source>
+        <translation>未实现 </translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="97"/>
-        <source>Version Not Supported</source>
-        <translation type="unfinished"/>
+        <source>Bad Gateway</source>
+        <translation>无效网关</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="98"/>
-        <source>Message Too Large</source>
-        <translation type="unfinished"/>
+        <source>Service Unavailable</source>
+        <translation>服务不可用</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="99"/>
-        <source>Precondition Failure</source>
-        <translation type="unfinished"/>
+        <source>Server Timeout</source>
+        <translation>服务器超时</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="100"/>
-        <source>Busy Everywhere</source>
-        <translation type="unfinished"/>
+        <source>Version Not Supported</source>
+        <translation>不支持的版本 </translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="101"/>
-        <source>Call Refused</source>
-        <translation type="unfinished"/>
+        <source>Message Too Large</source>
+        <translation>消息尺寸太大</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="102"/>
-        <source>Does Not Exist Anywhere</source>
-        <translation type="unfinished"/>
+        <source>Precondition Failure</source>
+        <translation>前提条件失败</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="103"/>
+        <source>Busy Everywhere</source>
+        <translation>服务器繁忙</translation>
+    </message>
+    <message>
+        <location filename="../src/newcallmodel.cpp" line="104"/>
+        <source>Call Refused</source>
+        <translation>呼叫被拒</translation>
+    </message>
+    <message>
+        <location filename="../src/newcallmodel.cpp" line="105"/>
+        <source>Does Not Exist Anywhere</source>
+        <translation>任何地方都不存在 </translation>
+    </message>
+    <message>
+        <location filename="../src/newcallmodel.cpp" line="106"/>
         <source>Not Acceptable Anywhere</source>
-        <translation type="unfinished"/>
+        <translation>任何地方都不可接受</translation>
     </message>
 </context>
 <context>
     <name>lrc::ContactModelPimpl</name>
     <message>
-        <location filename="../src/contactmodel.cpp" line="405"/>
+        <location filename="../src/contactmodel.cpp" line="447"/>
+        <location filename="../src/contactmodel.cpp" line="463"/>
         <source>Searching…</source>
-        <translation type="unfinished"/>
+        <translation>正在搜索…</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="765"/>
+        <location filename="../src/contactmodel.cpp" line="845"/>
         <source>Invalid ID</source>
-        <translation type="unfinished"/>
+        <translation>非法 ID</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="768"/>
+        <location filename="../src/contactmodel.cpp" line="848"/>
         <source>Registered name not found</source>
-        <translation type="unfinished"/>
+        <translation>找不到注册名称 </translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="771"/>
+        <location filename="../src/contactmodel.cpp" line="851"/>
         <source>Couldn&apos;t lookup…</source>
-        <translation type="unfinished"/>
+        <translation>无法查找...</translation>
     </message>
 </context>
 <context>
     <name>lrc::api::ContactModel</name>
     <message>
-        <location filename="../src/contactmodel.cpp" line="371"/>
+        <location filename="../src/contactmodel.cpp" line="412"/>
         <source>Bad URI scheme</source>
-        <translation type="unfinished"/>
+        <translation>错误的 URI 方案 </translation>
     </message>
 </context>
 </TS>
