@@ -121,7 +121,6 @@ Window {
     }
 
     function newAccountAdded(index) {
-        mainViewWindowSidePanel.refreshAccountComboBox(index)
         AccountAdapter.accountChanged(index)
     }
 
@@ -235,7 +234,6 @@ Window {
             callStackView.responsibleConvUid = convUid
             callStackView.updateCorrespondingUI()
 
-            mainViewWindowSidePanel.refreshAccountComboBox(index)
             AccountAdapter.accountChanged(index)
             ConversationsAdapter.selectConversation(accountId, convUid, !fromNotification)
             MessagesAdapter.setupChatView(convUid)
@@ -310,7 +308,6 @@ Window {
                     onAccountChanged: {
                         mainViewWindowSidePanel.deselectConversationSmartList()
 
-                        mainViewWindowSidePanel.refreshAccountComboBox(index)
                         AccountAdapter.accountChanged(index)
 
                         settingsView.slotAccountListChanged()
@@ -552,7 +549,6 @@ Window {
         visible: false
 
         onSettingsViewWindowNeedToShowMainViewWindow: {
-            mainViewWindowSidePanel.refreshAccountComboBox(0)
             AccountAdapter.accountChanged(0)
             toggleSettingsView()
         }
