@@ -35,8 +35,8 @@ ContactAdapter::getContactSelectableModel(int type)
      * Called from qml every time contact picker refreshes.
      */
     listModeltype_ = static_cast<SmartListModel::Type>(type);
-    smartListModel_.reset(new SmartListModel(LRCInstance::getCurrAccId(),
-                                             this,
+    smartListModel_.reset(new SmartListModel(this,
+                                             LRCInstance::getCurrAccId(),
                                              listModeltype_,
                                              LRCInstance::getCurrentConvUid()));
     selectableProxyModel_->setSourceModel(smartListModel_.get());

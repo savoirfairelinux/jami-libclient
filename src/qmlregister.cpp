@@ -111,6 +111,7 @@ registerTypes()
     QML_REGISTERTYPE("net.jami.Models", VideoFormatResolutionModel, 1, 0);
     QML_REGISTERTYPE("net.jami.Models", VideoFormatFpsModel, 1, 0);
     QML_REGISTERTYPE("net.jami.Models", PluginListPreferenceModel, 1, 0);
+    QML_REGISTERTYPE("net.jami.Models", SmartListModel, 1, 0);
 
     /*
      * QQuickItems

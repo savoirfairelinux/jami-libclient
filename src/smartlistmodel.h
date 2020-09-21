@@ -60,9 +60,10 @@ public:
         AccountId,
         Draft
     };
+    Q_ENUM(Role)
 
-    explicit SmartListModel(const QString& accId,
-                            QObject* parent = 0,
+    explicit SmartListModel(QObject* parent = 0,
+                            const QString& accId = {},
                             SmartListModel::Type listModelType = Type::CONVERSATION,
                             const QString& convUid = {});
     ~SmartListModel();

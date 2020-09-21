@@ -29,8 +29,8 @@
 
 #include <QDateTime>
 
-SmartListModel::SmartListModel(const QString& accId,
-                               QObject* parent,
+SmartListModel::SmartListModel(QObject* parent,
+                               const QString& accId,
                                SmartListModel::Type listModelType,
                                const QString& convUid)
     : QAbstractListModel(parent)

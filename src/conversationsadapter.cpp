@@ -35,7 +35,7 @@ ConversationsAdapter::ConversationsAdapter(QObject* parent)
 void
 ConversationsAdapter::safeInit()
 {
-    conversationSmartListModel_ = new SmartListModel(LRCInstance::getCurrAccId(), this);
+    conversationSmartListModel_ = new SmartListModel(this, LRCInstance::getCurrAccId());
 
     emit modelChanged(QVariant::fromValue(conversationSmartListModel_));
 

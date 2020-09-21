@@ -68,7 +68,8 @@ Popup {
 
                 // Role::Picture
                 source: {
-                    var data = accountListModel.data(accountListModel.index(index, 0), 259)
+                    var data = accountListModel.data(accountListModel.index(index, 0),
+                                                     AccountListModel.Picture)
                     if (data === undefined) {
                         return ""
                     }

@@ -63,7 +63,7 @@ ListView {
             updateListView()
             for (var i = 0; i < count; i++) {
                 if (root.model.data(
-                    root.model.index(i, 0), 261) === uri) {
+                    root.model.index(i, 0), SmartListModel.URI) === uri) {
                     root.currentIndex = i
                     break
                 }

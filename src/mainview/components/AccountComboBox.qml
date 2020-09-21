@@ -42,11 +42,13 @@ ComboBox {
 
         function onModelReset() {
             userImageRoot.source = "data:image/png;base64," + accountListModel.data(
-                        accountListModel.index(0, 0), 259)
+                        accountListModel.index(0, 0), AccountListModel.Picture)
             currentAccountPresenseCycle.accountStatus =
-                    accountListModel.data(accountListModel.index(0, 0), 261)
-            textMetricsUserAliasRoot.text = accountListModel.data(accountListModel.index(0,0), 257)
-            textMetricsUsernameRoot.text = accountListModel.data(accountListModel.index(0,0), 258)
+                    accountListModel.data(accountListModel.index(0, 0), AccountListModel.Status)
+            textMetricsUserAliasRoot.text = accountListModel.data(accountListModel.index(0,0),
+                                                                  AccountListModel.Alias)
+            textMetricsUsernameRoot.text = accountListModel.data(accountListModel.index(0,0),
+                                                                 AccountListModel.Username)
         }
     }
 
@@ -72,7 +74,7 @@ ComboBox {
 
         // Base 64 format
         source: "data:image/png;base64," + accountListModel.data(
-                            accountListModel.index(0, 0), 259)
+                            accountListModel.index(0, 0), AccountListModel.Picture)
         mipmap: true
 
         AccountPresenceCycle {
@@ -83,7 +85,8 @@ ComboBox {
             anchors.bottom: userImageRoot.bottom
             anchors.bottomMargin: -2
 
-            accountStatus: accountListModel.data(accountListModel.index(0, 0), 261)
+            accountStatus: accountListModel.data(accountListModel.index(0, 0),
+                                                 AccountListModel.Status)
         }
     }
 
@@ -133,8 +136,7 @@ ComboBox {
         elideWidth: root.width - userImageRoot.width - settingsButton.width
                     - arrowDropDown.width - qrCodeGenerateButton.width - 55
 
-        // Role::Alias
-        text: accountListModel.data(accountListModel.index(0,0), 257)
+        text: accountListModel.data(accountListModel.index(0,0), AccountListModel.Alias)
     }
 
     TextMetrics {
@@ -145,10 +147,8 @@ ComboBox {
         elideWidth: root.width - userImageRoot.width - settingsButton.width
                     - qrCodeGenerateButton.width - 55
 
-
-
-        // Role::Username
-        text: accountListModel.data(accountListModel.index(0,0), 258)
+        text: accountListModel.data(accountListModel.index(0,0),
+                                    AccountListModel.Username)
     }
 
     HoverableButton {
