@@ -17,10 +17,10 @@
  ***************************************************************************/
 #include "renderer.h"
 
-//Ring
+// Ring
 #include "private/videorenderer_p.h"
 
-//Qt
+// Qt
 #include <QtCore/QMutex>
 
 Video::RendererPrivate::RendererPrivate(Video::Renderer* parent)
@@ -28,44 +28,46 @@ Video::RendererPrivate::RendererPrivate(Video::Renderer* parent)
     , m_isRendering(false)
     , m_pMutex(new QMutex())
     , q_ptr(parent)
-{
-}
+{}
 
 Video::Renderer::Renderer(const QString& id, const QSize& res)
     : d_ptr(new RendererPrivate(this))
 {
-   setObjectName("Renderer:"+id);
-   d_ptr->m_pSize     = res;
-   d_ptr->m_Id        = id;
+    setObjectName("Renderer:" + id);
+    d_ptr->m_pSize = res;
+    d_ptr->m_Id = id;
 }
 
 Video::Renderer::~Renderer()
 {
-   delete d_ptr;
+    delete d_ptr;
 }
 
 /*****************************************************************************
-*                                                                           *
-*                                 Getters                                   *
-*                                                                           *
-****************************************************************************/
+ *                                                                           *
+ *                                 Getters                                   *
+ *                                                                           *
+ ****************************************************************************/
 
-///Return if the rendering is currently active or not
-bool Video::Renderer::isRendering() const
+/// Return if the rendering is currently active or not
+bool
+Video::Renderer::isRendering() const
 {
-  return d_ptr->m_isRendering;
+    return d_ptr->m_isRendering;
 }
 
-///Get mutex, in case renderer and views are not in the same thread
-QMutex* Video::Renderer::mutex() const
+/// Get mutex, in case renderer and views are not in the same thread
+QMutex*
+Video::Renderer::mutex() const
 {
-  return d_ptr->m_pMutex;
+    return d_ptr->m_pMutex;
 }
 
-///Return the current resolution
-QSize Video::Renderer::size() const
+/// Return the current resolution
+QSize
+Video::Renderer::size() const
 {
-  return d_ptr->m_pSize;
+    return d_ptr->m_pSize;
 }
 
 /*****************************************************************************
@@ -74,7 +76,8 @@ QSize Video::Renderer::size() const
  *                                                                           *
  ****************************************************************************/
 
-void Video::Renderer::setSize(const QSize& size) const
+void
+Video::Renderer::setSize(const QSize& size) const
 {
-  d_ptr->m_pSize = size;
+    d_ptr->m_pSize = size;
 }

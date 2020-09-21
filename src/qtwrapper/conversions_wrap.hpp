@@ -27,81 +27,100 @@
 
 #define Q_NOREPLY
 
-//Print all call to some signals
+// Print all call to some signals
 #ifdef VERBOSE_IPC
- #define LOG_DRING_SIGNAL(name,arg) qDebug() << "\033[22;34m >>>>>> \033[0m" << name << arg;
- #define LOG_DRING_SIGNAL2(name,arg,arg2) qDebug() << "\033[22;34m >>>>>> \033[0m" << name << arg << arg2;
- #define LOG_DRING_SIGNAL3(name,arg,arg2,arg3) qDebug() << "\033[22;34m >>>>>> \033[0m" << name << arg << arg2 << arg3;
- #define LOG_DRING_SIGNAL4(name,arg,arg2,arg3,arg4) qDebug() << "\033[22;34m >>>>>> \033[0m" << name << arg << arg2 << arg3 << arg4;
+#define LOG_DRING_SIGNAL(name, arg) qDebug() << "\033[22;34m >>>>>> \033[0m" << name << arg;
+#define LOG_DRING_SIGNAL2(name, arg, arg2) \
+    qDebug() << "\033[22;34m >>>>>> \033[0m" << name << arg << arg2;
+#define LOG_DRING_SIGNAL3(name, arg, arg2, arg3) \
+    qDebug() << "\033[22;34m >>>>>> \033[0m" << name << arg << arg2 << arg3;
+#define LOG_DRING_SIGNAL4(name, arg, arg2, arg3, arg4) \
+    qDebug() << "\033[22;34m >>>>>> \033[0m" << name << arg << arg2 << arg3 << arg4;
 #else
- #define LOG_DRING_SIGNAL(name,args) //Nothing
- #define LOG_DRING_SIGNAL2(name,arg,arg2)
- #define LOG_DRING_SIGNAL3(name,arg,arg2,arg3)
- #define LOG_DRING_SIGNAL4(name,arg,arg2,arg3,arg4)
+#define LOG_DRING_SIGNAL(name, args) // Nothing
+#define LOG_DRING_SIGNAL2(name, arg, arg2)
+#define LOG_DRING_SIGNAL3(name, arg, arg2, arg3)
+#define LOG_DRING_SIGNAL4(name, arg, arg2, arg3, arg4)
 #endif
 
-inline MapStringString convertMap(const std::map<std::string, std::string>& m) {
-   MapStringString temp;
-   for (const auto& x : m) {
-      temp[QString(x.first.c_str())] = QString(x.second.c_str());
-   }
-   return temp;
+inline MapStringString
+convertMap(const std::map<std::string, std::string>& m)
+{
+    MapStringString temp;
+    for (const auto& x : m) {
+        temp[QString(x.first.c_str())] = QString(x.second.c_str());
+    }
+    return temp;
 }
 
-inline std::map<std::string, std::string> convertMap(const MapStringString& m) {
-   std::map<std::string, std::string> temp;
-   for (const auto& x : m.toStdMap()) {
-      temp[x.first.toStdString()] = x.second.toStdString();
-   }
-   return temp;
+inline std::map<std::string, std::string>
+convertMap(const MapStringString& m)
+{
+    std::map<std::string, std::string> temp;
+    for (const auto& x : m.toStdMap()) {
+        temp[x.first.toStdString()] = x.second.toStdString();
+    }
+    return temp;
 }
 
-inline VectorMapStringString convertVecMap(const std::vector<std::map<std::string, std::string>>& m) {
-   VectorMapStringString temp;
-   for (const auto& x : m) {
-      temp.push_back(convertMap(x));
-   }
-   return temp;
+inline VectorMapStringString
+convertVecMap(const std::vector<std::map<std::string, std::string>>& m)
+{
+    VectorMapStringString temp;
+    for (const auto& x : m) {
+        temp.push_back(convertMap(x));
+    }
+    return temp;
 }
 
-inline QStringList convertStringList(const std::vector<std::string>& v) {
-   QStringList temp;
-   for (const auto& x : v) {
-      temp.push_back(QString(x.c_str()));
-   }
-   return temp;
+inline QStringList
+convertStringList(const std::vector<std::string>& v)
+{
+    QStringList temp;
+    for (const auto& x : v) {
+        temp.push_back(QString(x.c_str()));
+    }
+    return temp;
 }
 
-inline VectorString convertVectorString(const std::vector<std::string>& v) {
-   VectorString temp;
-   for (const auto& x : v) {
-      temp.push_back(QString(x.c_str()));
-   }
-   return temp;
+inline VectorString
+convertVectorString(const std::vector<std::string>& v)
+{
+    VectorString temp;
+    for (const auto& x : v) {
+        temp.push_back(QString(x.c_str()));
+    }
+    return temp;
 }
 
-inline VectorULongLong convertVectorULongLong(const std::vector<uint64_t>& v) {
-   VectorULongLong temp;
-   for (const auto& x : v) {
-      temp.push_back(x);
-   }
-   return temp;
+inline VectorULongLong
+convertVectorULongLong(const std::vector<uint64_t>& v)
+{
+    VectorULongLong temp;
+    for (const auto& x : v) {
+        temp.push_back(x);
+    }
+    return temp;
 }
 
-inline std::vector<std::string> convertStringList(const QStringList& v) {
-   std::vector<std::string> temp;
-   for (const auto& x : v) {
-      temp.push_back(x.toStdString());
-   }
-   return temp;
+inline std::vector<std::string>
+convertStringList(const QStringList& v)
+{
+    std::vector<std::string> temp;
+    for (const auto& x : v) {
+        temp.push_back(x.toStdString());
+    }
+    return temp;
 }
 
-inline MapStringInt  convertStringInt(const std::map<std::string, int>& m) {
-   MapStringInt temp;
-   for (const auto& x : m) {
-      temp[QString(x.first.c_str())] = x.second;
-   }
-   return temp;
+inline MapStringInt
+convertStringInt(const std::map<std::string, int>& m)
+{
+    MapStringInt temp;
+    for (const auto& x : m) {
+        temp[QString(x.first.c_str())] = x.second;
+    }
+    return temp;
 }
 
 constexpr static const char* TRUE_STR = "true";
@@ -161,4 +180,4 @@ toQString(const std::time_t& t) noexcept
     return QString::fromStdString(std::to_string(t));
 }
 
-#endif //CONVERSIONS_WRAP_H
+#endif // CONVERSIONS_WRAP_H

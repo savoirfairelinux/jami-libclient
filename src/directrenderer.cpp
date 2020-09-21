@@ -36,8 +36,9 @@
 #include "videomanager_interface.h"
 
 extern "C" {
-    struct AVFrame;
-    auto AVFrameDeleter = [](AVFrame* p) { };
+struct AVFrame;
+auto AVFrameDeleter = [](AVFrame* p) {
+};
 }
 
 namespace Video {
@@ -55,17 +56,18 @@ public:
     DRing::AVSinkTarget av_target;
     mutable QMutex directmutex;
     mutable DRing::SinkTarget::FrameBufferPtr daemonFramePtr_;
-    std::unique_ptr<AVFrame, void(*)(AVFrame*)> avframe;
+    std::unique_ptr<AVFrame, void (*)(AVFrame*)> avframe;
+
 private:
     Video::DirectRenderer* q_ptr;
 };
 
 } // namespace Video
 
-Video::DirectRendererPrivate::DirectRendererPrivate(Video::DirectRenderer* parent, bool useAVFrame) :
-QObject(parent),
-q_ptr(parent),
-avframe{nullptr, AVFrameDeleter}
+Video::DirectRendererPrivate::DirectRendererPrivate(Video::DirectRenderer* parent, bool useAVFrame)
+    : QObject(parent)
+    , q_ptr(parent)
+    , avframe {nullptr, AVFrameDeleter}
 {
     using namespace std::placeholders;
     if (useAVFrame) {
@@ -76,35 +78,37 @@ avframe{nullptr, AVFrameDeleter}
     target.push = std::bind(&Video::DirectRendererPrivate::onNewFrame, this, _1);
 }
 
-///Constructor
+/// Constructor
 Video::DirectRenderer::DirectRenderer(const QString& id, const QSize& res, bool useAVFrame)
-    : Renderer(id, res),
-d_ptr(std::make_unique<DirectRendererPrivate>(this, useAVFrame))
+    : Renderer(id, res)
+    , d_ptr(std::make_unique<DirectRendererPrivate>(this, useAVFrame))
 {
-    setObjectName("Video::DirectRenderer:"+id);
+    setObjectName("Video::DirectRenderer:" + id);
 }
 
-///Destructor
-Video::DirectRenderer::~DirectRenderer()
+/// Destructor
+Video::DirectRenderer::~DirectRenderer() {}
+
+void
+Video::DirectRenderer::startRendering()
 {
+    Video::Renderer::d_ptr->m_isRendering = true;
+    emit started();
+}
+void
+Video::DirectRenderer::stopRendering()
+{
+    Video::Renderer::d_ptr->m_isRendering = false;
+    emit stopped();
+}
+void
+Video::DirectRenderer::configureTarget(bool useAVFrame)
+{
+    d_ptr->configureTarget(useAVFrame);
 }
 
-void Video::DirectRenderer::startRendering()
-{
-   Video::Renderer::d_ptr->m_isRendering = true;
-   emit started();
-}
-void Video::DirectRenderer::stopRendering ()
-{
-   Video::Renderer::d_ptr->m_isRendering = false;
-   emit stopped();
-}
-void Video::DirectRenderer::configureTarget(bool useAVFrame)
-{
-   d_ptr->configureTarget(useAVFrame);
-}
-
-DRing::SinkTarget::FrameBufferPtr Video::DirectRendererPrivate::requestFrameBuffer(std::size_t bytes)
+DRing::SinkTarget::FrameBufferPtr
+Video::DirectRendererPrivate::requestFrameBuffer(std::size_t bytes)
 {
     QMutexLocker lk(q_ptr->mutex());
     if (not daemonFramePtr_)
@@ -115,7 +119,8 @@ DRing::SinkTarget::FrameBufferPtr Video::DirectRendererPrivate::requestFrameBuff
     return std::move(daemonFramePtr_);
 }
 
-void Video::DirectRendererPrivate::configureTarget(bool useAVFrame)
+void
+Video::DirectRendererPrivate::configureTarget(bool useAVFrame)
 {
     using namespace std::placeholders;
     if (useAVFrame) {
@@ -126,10 +131,11 @@ void Video::DirectRendererPrivate::configureTarget(bool useAVFrame)
     }
     target.pull = std::bind(&Video::DirectRendererPrivate::requestFrameBuffer, this, _1);
     target.push = std::bind(&Video::DirectRendererPrivate::onNewFrame, this, _1);
-    av_target.push =  nullptr;
+    av_target.push = nullptr;
 }
 
-void Video::DirectRendererPrivate::onNewFrame(DRing::SinkTarget::FrameBufferPtr buf)
+void
+Video::DirectRendererPrivate::onNewFrame(DRing::SinkTarget::FrameBufferPtr buf)
 {
     if (not q_ptr->isRendering())
         return;
@@ -142,7 +148,8 @@ void Video::DirectRendererPrivate::onNewFrame(DRing::SinkTarget::FrameBufferPtr 
     emit q_ptr->frameUpdated();
 }
 
-void Video::DirectRendererPrivate::onNewAVFrame(std::unique_ptr<DRing::VideoFrame> frame)
+void
+Video::DirectRendererPrivate::onNewAVFrame(std::unique_ptr<DRing::VideoFrame> frame)
 {
     if (not q_ptr->isRendering())
         return;
@@ -153,15 +160,17 @@ void Video::DirectRendererPrivate::onNewAVFrame(std::unique_ptr<DRing::VideoFram
     emit q_ptr->frameUpdated();
 }
 
-std::unique_ptr<AVFrame, void(*)(AVFrame*)> Video::DirectRenderer::currentAVFrame() const
+std::unique_ptr<AVFrame, void (*)(AVFrame*)>
+Video::DirectRenderer::currentAVFrame() const
 {
     if (not isRendering())
-       return {nullptr, AVFrameDeleter};
+        return {nullptr, AVFrameDeleter};
     QMutexLocker lock(mutex());
     return std::move(d_ptr->avframe);
 }
 
-lrc::api::video::Frame Video::DirectRenderer::currentFrame() const
+lrc::api::video::Frame
+Video::DirectRenderer::currentFrame() const
 {
     if (not isRendering())
         return {};
@@ -180,22 +189,25 @@ lrc::api::video::Frame Video::DirectRenderer::currentFrame() const
     return std::move(frame);
 }
 
-const DRing::SinkTarget& Video::DirectRenderer::target() const
+const DRing::SinkTarget&
+Video::DirectRenderer::target() const
 {
     return d_ptr->target;
 }
 
-const DRing::AVSinkTarget& Video::DirectRenderer::avTarget() const
+const DRing::AVSinkTarget&
+Video::DirectRenderer::avTarget() const
 {
     return d_ptr->av_target;
 }
 
-Video::Renderer::ColorSpace Video::DirectRenderer::colorSpace() const
+Video::Renderer::ColorSpace
+Video::DirectRenderer::colorSpace() const
 {
 #ifdef Q_OS_DARWIN
-   return Video::Renderer::ColorSpace::RGBA;
+    return Video::Renderer::ColorSpace::RGBA;
 #else
-   return Video::Renderer::ColorSpace::BGRA;
+    return Video::Renderer::ColorSpace::BGRA;
 #endif
 }
 

@@ -80,7 +80,7 @@ PluginManagerInterface::getCallMediaHandlerStatus()
 MapStringString
 PluginManagerInterface::getCallMediaHandlerDetails(const QString& id)
 {
-return {};
+    return {};
 }
 
 void
@@ -100,7 +100,9 @@ PluginManagerInterface::getPluginPreferences(const QString& path)
 }
 
 bool
-PluginManagerInterface::setPluginPreference(const QString& path, const QString& key, const QString& value)
+PluginManagerInterface::setPluginPreference(const QString& path,
+                                            const QString& key,
+                                            const QString& value)
 {
     return false;
 }

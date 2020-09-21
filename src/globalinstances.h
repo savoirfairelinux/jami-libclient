@@ -57,12 +57,11 @@ void LIB_EXPORT setPixmapManipulator(std::unique_ptr<Interfaces::PixmapManipulat
 LIB_EXPORT Interfaces::ShortcutCreatorI& shortcutCreator();
 void LIB_EXPORT setShortcutCreator(std::unique_ptr<Interfaces::ShortcutCreatorI> instance);
 
-
-//Private use only
-void setInterfaceInternal(Interfaces::ContactMethodSelectorI   *);
-void setInterfaceInternal(Interfaces::DBusErrorHandlerI        *);
-void setInterfaceInternal(Interfaces::PixmapManipulatorI       *);
-void setInterfaceInternal(Interfaces::ShortcutCreatorI         *);
+// Private use only
+void setInterfaceInternal(Interfaces::ContactMethodSelectorI*);
+void setInterfaceInternal(Interfaces::DBusErrorHandlerI*);
+void setInterfaceInternal(Interfaces::PixmapManipulatorI*);
+void setInterfaceInternal(Interfaces::ShortcutCreatorI*);
 
 /**
  * Generic interface setter. This metamethod can set any type of interface
@@ -73,16 +72,16 @@ void setInterfaceInternal(Interfaces::ShortcutCreatorI         *);
  * The interface object is created internally and additional parameters
  * can be passed.
  */
-template<class I, typename ...Ts>
-void setInterface(Ts... args)
+template<class I, typename... Ts>
+void
+setInterface(Ts... args)
 {
-   try {
-      auto i = new I(args...);
-      setInterfaceInternal(i);
-   }
-   catch(void* e) { //TODO define some kind of object for errors like this
-      qDebug() << "Interface could not be set";
-   }
+    try {
+        auto i = new I(args...);
+        setInterfaceInternal(i);
+    } catch (void* e) { // TODO define some kind of object for errors like this
+        qDebug() << "Interface could not be set";
+    }
 }
 
 } // namespace GlobalInstances

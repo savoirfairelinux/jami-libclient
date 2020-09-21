@@ -25,26 +25,31 @@
 
 #include <memory>
 
-namespace lrc
-{
+namespace lrc {
 
 class CallbacksHandler;
 class Database;
 class ContactModelPimpl;
 
-namespace api
-{
+namespace api {
 
-namespace contact { struct Info; }
-namespace account { struct Info; }
-namespace datatransfer { struct Info; }
+namespace contact {
+struct Info;
+}
+namespace account {
+struct Info;
+}
+namespace datatransfer {
+struct Info;
+}
 class NewAccountModel;
 class ConversationModel;
 
 /**
-  *  @brief Class that manages contact information associated to an account.
-  */
-class LIB_EXPORT ContactModel : public QObject {
+ *  @brief Class that manages contact information associated to an account.
+ */
+class LIB_EXPORT ContactModel : public QObject
+{
     Q_OBJECT
 public:
     using ContactInfoMap = QMap<QString, contact::Info>;
@@ -52,9 +57,9 @@ public:
     const account::Info& owner;
 
     ContactModel(const account::Info& owner,
-        Database& db,
-        const CallbacksHandler& callbacksHandler,
-        const BehaviorController& behaviorController);
+                 Database& db,
+                 const CallbacksHandler& callbacksHandler,
+                 const BehaviorController& behaviorController);
     ~ContactModel();
 
     /**
@@ -140,9 +145,9 @@ Q_SIGNALS:
      * @param payloads content of the message
      */
     void newAccountMessage(const QString& accountId,
-        const QString& msgId,
-        const QString& from,
-        const MapStringString& payloads) const;
+                           const QString& msgId,
+                           const QString& from,
+                           const MapStringString& payloads) const;
     /**
      * Connect this signal to know when a file transfer interaction is incoming
      * @param dringId Daemon's ID for incoming transfer

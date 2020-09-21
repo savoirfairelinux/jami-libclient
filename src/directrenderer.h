@@ -19,13 +19,13 @@
 
 #ifdef ENABLE_LIBWRAP
 
-//Base
+// Base
 #include <QtCore/QObject>
 #include "typedefs.h"
 #include "video/renderer.h"
 #include "videomanager_interface.h"
 
-//Qt
+// Qt
 class QMutex;
 class QTimer;
 class QThread;
@@ -33,35 +33,35 @@ class QThread;
 namespace Video {
 class DirectRendererPrivate;
 
-///Manage shared memory and convert it to QByteArray
-class LIB_EXPORT DirectRenderer final : public Renderer {
-   #pragma GCC diagnostic push
-   #pragma GCC diagnostic ignored "-Wzero-as-null-pointer-constant"
-   Q_OBJECT
-   #pragma GCC diagnostic pop
+/// Manage shared memory and convert it to QByteArray
+class LIB_EXPORT DirectRenderer final : public Renderer
+{
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wzero-as-null-pointer-constant"
+    Q_OBJECT
+#pragma GCC diagnostic pop
 
 public:
+    // Constructor
+    DirectRenderer(const QString& id, const QSize& res, bool useAVFrame);
+    virtual ~DirectRenderer();
 
-   //Constructor
-   DirectRenderer (const QString& id, const QSize& res, bool useAVFrame);
-   virtual ~DirectRenderer();
-
-   //Getter
-   const DRing::SinkTarget& target() const;
-   const DRing::AVSinkTarget& avTarget() const;
-   virtual ColorSpace colorSpace() const override;
-   virtual lrc::api::video::Frame currentFrame() const override;
-   virtual std::unique_ptr<AVFrame, void(*)(AVFrame*)> currentAVFrame() const override;
-   void configureTarget(bool useAVFrame);
+    // Getter
+    const DRing::SinkTarget& target() const;
+    const DRing::AVSinkTarget& avTarget() const;
+    virtual ColorSpace colorSpace() const override;
+    virtual lrc::api::video::Frame currentFrame() const override;
+    virtual std::unique_ptr<AVFrame, void (*)(AVFrame*)> currentAVFrame() const override;
+    void configureTarget(bool useAVFrame);
 
 public Q_SLOTS:
-   virtual void startRendering() override;
-   virtual void stopRendering () override;
+    virtual void startRendering() override;
+    virtual void stopRendering() override;
 
 private:
-   std::unique_ptr<DirectRendererPrivate> d_ptr;
+    std::unique_ptr<DirectRendererPrivate> d_ptr;
 };
 
-}
+} // namespace Video
 
 #endif

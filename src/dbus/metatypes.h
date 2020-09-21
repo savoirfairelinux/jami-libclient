@@ -46,7 +46,8 @@ Q_DECLARE_METATYPE(uint64_t)
 Q_DECLARE_METATYPE(Message)
 
 #ifndef ENABLE_LIBWRAP
-static inline QDBusArgument &operator<<(QDBusArgument& argument, const DataTransferInfo& info)
+static inline QDBusArgument&
+operator<<(QDBusArgument& argument, const DataTransferInfo& info)
 {
     argument.beginStructure();
     argument << info.accountId;
@@ -63,7 +64,8 @@ static inline QDBusArgument &operator<<(QDBusArgument& argument, const DataTrans
     return argument;
 }
 
-static inline const QDBusArgument &operator>>(const QDBusArgument& argument, DataTransferInfo& info)
+static inline const QDBusArgument&
+operator>>(const QDBusArgument& argument, DataTransferInfo& info)
 {
     argument.beginStructure();
     argument >> info.accountId;
@@ -80,7 +82,8 @@ static inline const QDBusArgument &operator>>(const QDBusArgument& argument, Dat
     return argument;
 }
 
-static inline QDBusArgument &operator<<(QDBusArgument& argument, const Message& m)
+static inline QDBusArgument&
+operator<<(QDBusArgument& argument, const Message& m)
 {
     argument.beginStructure();
     argument << m.from;
@@ -91,7 +94,8 @@ static inline QDBusArgument &operator<<(QDBusArgument& argument, const Message& 
     return argument;
 }
 
-static inline const QDBusArgument &operator>>(const QDBusArgument& argument, Message& m)
+static inline const QDBusArgument&
+operator>>(const QDBusArgument& argument, Message& m)
 {
     argument.beginStructure();
     argument >> m.from;
@@ -106,22 +110,24 @@ static inline const QDBusArgument &operator>>(const QDBusArgument& argument, Mes
 #ifndef ENABLE_LIBWRAP
 static bool dbus_metaTypeInit = false;
 #endif
-inline void registerCommTypes() {
+inline void
+registerCommTypes()
+{
 #ifndef ENABLE_LIBWRAP
-   qDBusRegisterMetaType<MapStringString>               ();
-   qDBusRegisterMetaType<MapStringInt>                  ();
-   qDBusRegisterMetaType<VectorMapStringString>         ();
-   qDBusRegisterMetaType<MapStringMapStringVectorString>();
-   qDBusRegisterMetaType<VectorInt>                     ();
-   qDBusRegisterMetaType<VectorUInt>                    ();
-   qDBusRegisterMetaType<VectorULongLong>               ();
-   qDBusRegisterMetaType<VectorString>                  ();
-   qDBusRegisterMetaType<MapStringVectorString>         ();
-   qDBusRegisterMetaType<VectorVectorByte>              ();
-   qDBusRegisterMetaType<DataTransferInfo>              ();
-   qDBusRegisterMetaType<Message>                       ();
-   qDBusRegisterMetaType<QVector<Message>>              ();
-   dbus_metaTypeInit = true;
+    qDBusRegisterMetaType<MapStringString>();
+    qDBusRegisterMetaType<MapStringInt>();
+    qDBusRegisterMetaType<VectorMapStringString>();
+    qDBusRegisterMetaType<MapStringMapStringVectorString>();
+    qDBusRegisterMetaType<VectorInt>();
+    qDBusRegisterMetaType<VectorUInt>();
+    qDBusRegisterMetaType<VectorULongLong>();
+    qDBusRegisterMetaType<VectorString>();
+    qDBusRegisterMetaType<MapStringVectorString>();
+    qDBusRegisterMetaType<VectorVectorByte>();
+    qDBusRegisterMetaType<DataTransferInfo>();
+    qDBusRegisterMetaType<Message>();
+    qDBusRegisterMetaType<QVector<Message>>();
+    dbus_metaTypeInit = true;
 #endif
 }
 

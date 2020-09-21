@@ -19,20 +19,20 @@
 #pragma once
 
 #ifdef ENABLE_TEST
- #include "../../test/mocks/callmanager_mock.h"
+#include "../../test/mocks/callmanager_mock.h"
 #else
- #ifdef ENABLE_LIBWRAP
-  #include "../qtwrapper/callmanager_wrap.h"
- #else
-  #include "callmanager_dbus_interface.h"
-  #include <QDBusPendingReply>
- #endif
+#ifdef ENABLE_LIBWRAP
+#include "../qtwrapper/callmanager_wrap.h"
+#else
+#include "callmanager_dbus_interface.h"
+#include <QDBusPendingReply>
+#endif
 #endif
 #include <typedefs.h>
 
 namespace CallManager {
 
-///Singleton to access dbus "CallManager" interface
+/// Singleton to access dbus "CallManager" interface
 LIB_EXPORT CallManagerInterface& instance();
 
-}
+} // namespace CallManager

@@ -42,8 +42,7 @@
 #include "dbus/configurationmanager.h"
 #include "authority/storagehelper.h"
 
-namespace lrc
-{
+namespace lrc {
 
 using namespace api;
 
@@ -54,7 +53,6 @@ bool isFinished(const QString& callState);
 
 class LrcPimpl
 {
-
 public:
     LrcPimpl(Lrc& linked, MigrationCb& willMigrateCb, MigrationCb& didMigrateCb);
 
@@ -65,7 +63,6 @@ public:
     std::unique_ptr<DataTransferModel> dataTransferModel;
     std::unique_ptr<AVModel> AVModel_;
     std::unique_ptr<PluginModel> PluginModel_;
-
 };
 
 Lrc::Lrc(MigrationCb willDoMigrationCb, MigrationCb didDoMigrationCb)
@@ -83,12 +80,12 @@ Lrc::Lrc(MigrationCb willDoMigrationCb, MigrationCb didDoMigrationCb)
 
 Lrc::~Lrc()
 {
-    //Unregister from the daemon
+    // Unregister from the daemon
     InstanceManagerInterface& instance = InstanceManager::instance();
     Q_NOREPLY instance.Unregister(getpid());
 #ifndef ENABLE_LIBWRAP
     instance.connection().disconnectFromBus(instance.connection().baseService());
-#endif //ENABLE_LIBWRAP
+#endif // ENABLE_LIBWRAP
 }
 
 NewAccountModel&
@@ -159,9 +156,9 @@ Lrc::activeCalls()
     QStringList callLists = CallManager::instance().getCallList();
     VectorString result;
     result.reserve(callLists.size());
-    for (const auto &call : callLists) {
+    for (const auto& call : callLists) {
         MapStringString callDetails = CallManager::instance().getCallDetails(call);
-        if(!isFinished(callDetails[QString(DRing::Call::Details::CALL_STATE)]))
+        if (!isFinished(callDetails[QString(DRing::Call::Details::CALL_STATE)]))
             result.push_back(call);
     }
     return result;
@@ -173,7 +170,7 @@ Lrc::getCalls()
     QStringList callLists = CallManager::instance().getCallList();
     VectorString result;
     result.reserve(callLists.size());
-    for (const auto &call : callLists) {
+    for (const auto& call : callLists) {
         result.push_back(call);
     }
     return result;
@@ -185,7 +182,7 @@ Lrc::getConferences()
     QStringList conferencesList = CallManager::instance().getConferenceList();
     VectorString result;
     result.reserve(conferencesList.size());
-    for (const auto &conf : conferencesList) {
+    for (const auto& conf : conferencesList) {
         result.push_back(conf);
     }
     return result;
@@ -197,7 +194,7 @@ Lrc::getConferenceSubcalls(const QString& cid)
     QStringList callList = CallManager::instance().getParticipantList(cid);
     VectorString result;
     result.reserve(callList.size());
-    foreach(const auto& callId, callList) {
+    foreach (const auto& callId, callList) {
         result.push_back(callId);
     }
     return result;
@@ -206,26 +203,29 @@ Lrc::getConferenceSubcalls(const QString& cid)
 bool
 isFinished(const QString& callState)
 {
-    if (callState == QLatin1String(DRing::Call::StateEvent::HUNGUP) ||
-        callState == QLatin1String(DRing::Call::StateEvent::BUSY) ||
-        callState == QLatin1String(DRing::Call::StateEvent::PEER_BUSY) ||
-        callState == QLatin1String(DRing::Call::StateEvent::FAILURE) ||
-        callState == QLatin1String(DRing::Call::StateEvent::INACTIVE) ||
-        callState == QLatin1String(DRing::Call::StateEvent::OVER)) {
+    if (callState == QLatin1String(DRing::Call::StateEvent::HUNGUP)
+        || callState == QLatin1String(DRing::Call::StateEvent::BUSY)
+        || callState == QLatin1String(DRing::Call::StateEvent::PEER_BUSY)
+        || callState == QLatin1String(DRing::Call::StateEvent::FAILURE)
+        || callState == QLatin1String(DRing::Call::StateEvent::INACTIVE)
+        || callState == QLatin1String(DRing::Call::StateEvent::OVER)) {
         return true;
     }
     return false;
 }
 
 LrcPimpl::LrcPimpl(Lrc& linked, MigrationCb& willMigrateCb, MigrationCb& didMigrateCb)
-: linked(linked)
-, behaviorController(std::make_unique<BehaviorController>())
-, callbackHandler(std::make_unique<CallbacksHandler>(linked))
-, accountModel(std::make_unique<NewAccountModel>(linked, *callbackHandler, *behaviorController, willMigrateCb, didMigrateCb))
-, dataTransferModel {std::make_unique<DataTransferModel>()}
-, AVModel_ {std::make_unique<AVModel>(*callbackHandler)}
-, PluginModel_{std::make_unique<PluginModel>()}
-{
-}
+    : linked(linked)
+    , behaviorController(std::make_unique<BehaviorController>())
+    , callbackHandler(std::make_unique<CallbacksHandler>(linked))
+    , accountModel(std::make_unique<NewAccountModel>(linked,
+                                                     *callbackHandler,
+                                                     *behaviorController,
+                                                     willMigrateCb,
+                                                     didMigrateCb))
+    , dataTransferModel {std::make_unique<DataTransferModel>()}
+    , AVModel_ {std::make_unique<AVModel>(*callbackHandler)}
+    , PluginModel_ {std::make_unique<PluginModel>()}
+{}
 
 } // namespace lrc

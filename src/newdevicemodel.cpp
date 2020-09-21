@@ -28,12 +28,11 @@
 #include <list>
 #include <mutex>
 
-namespace lrc
-{
+namespace lrc {
 
 using namespace api;
 
-class NewDeviceModelPimpl: public QObject
+class NewDeviceModelPimpl : public QObject
 {
     Q_OBJECT
 public:
@@ -52,8 +51,7 @@ public Q_SLOTS:
      * @param accountId interaction receiver.
      * @param devices A map of device IDs with corresponding labels.
      */
-    void slotKnownDevicesChanged(const QString& accountId,
-                                 const MapStringString devices);
+    void slotKnownDevicesChanged(const QString& accountId, const MapStringString devices);
 
     /**
      * update devices_ when a device is revoked
@@ -67,9 +65,9 @@ public Q_SLOTS:
 };
 
 NewDeviceModel::NewDeviceModel(const account::Info& owner, const CallbacksHandler& callbacksHandler)
-: owner(owner)
-, pimpl_(std::make_unique<NewDeviceModelPimpl>(*this, callbacksHandler))
-{ }
+    : owner(owner)
+    , pimpl_(std::make_unique<NewDeviceModelPimpl>(*this, callbacksHandler))
+{}
 
 NewDeviceModel::~NewDeviceModel() {}
 
@@ -83,13 +81,12 @@ Device
 NewDeviceModel::getDevice(const QString& id) const
 {
     std::lock_guard<std::mutex> lock(pimpl_->devicesMtx_);
-    auto i = std::find_if(
-        pimpl_->devices_.begin(), pimpl_->devices_.end(),
-        [id](const Device& d) {
-            return d.id == id;
-        });
+    auto i = std::find_if(pimpl_->devices_.begin(), pimpl_->devices_.end(), [id](const Device& d) {
+        return d.id == id;
+    });
 
-    if (i == pimpl_->devices_.end()) return {};
+    if (i == pimpl_->devices_.end())
+        return {};
 
     return *i;
 }
@@ -116,23 +113,24 @@ NewDeviceModel::setCurrentDeviceName(const QString& newName)
     }
 }
 
-NewDeviceModelPimpl::NewDeviceModelPimpl(const NewDeviceModel& linked, const CallbacksHandler& callbacksHandler)
-: linked(linked)
-, callbacksHandler(callbacksHandler)
-, devices_({})
+NewDeviceModelPimpl::NewDeviceModelPimpl(const NewDeviceModel& linked,
+                                         const CallbacksHandler& callbacksHandler)
+    : linked(linked)
+    , callbacksHandler(callbacksHandler)
+    , devices_({})
 {
-    const MapStringString aDetails = ConfigurationManager::instance().getAccountDetails(linked.owner.id);
+    const MapStringString aDetails = ConfigurationManager::instance().getAccountDetails(
+        linked.owner.id);
     currentDeviceId_ = aDetails.value(DRing::Account::ConfProperties::RING_DEVICE_ID);
-    const MapStringString accountDevices = ConfigurationManager::instance().getKnownRingDevices(linked.owner.id);
+    const MapStringString accountDevices = ConfigurationManager::instance().getKnownRingDevices(
+        linked.owner.id);
     auto it = accountDevices.begin();
     while (it != accountDevices.end()) {
         {
             std::lock_guard<std::mutex> lock(devicesMtx_);
-            auto device = Device {
-                /* id= */it.key(),
-                /* name= */it.value(),
-                /* isCurrent= */it.key() == currentDeviceId_
-            };
+            auto device = Device {/* id= */ it.key(),
+                                  /* name= */ it.value(),
+                                  /* isCurrent= */ it.key() == currentDeviceId_};
             if (device.isCurrent) {
                 devices_.push_back(device);
             } else {
@@ -142,25 +140,33 @@ NewDeviceModelPimpl::NewDeviceModelPimpl(const NewDeviceModel& linked, const Cal
         ++it;
     }
 
-    connect(&callbacksHandler, &CallbacksHandler::knownDevicesChanged, this,
+    connect(&callbacksHandler,
+            &CallbacksHandler::knownDevicesChanged,
+            this,
             &NewDeviceModelPimpl::slotKnownDevicesChanged);
-    connect(&callbacksHandler, &CallbacksHandler::deviceRevocationEnded, this,
+    connect(&callbacksHandler,
+            &CallbacksHandler::deviceRevocationEnded,
+            this,
             &NewDeviceModelPimpl::slotDeviceRevocationEnded);
 }
 
 NewDeviceModelPimpl::~NewDeviceModelPimpl()
 {
-    disconnect(&callbacksHandler, &CallbacksHandler::knownDevicesChanged, this,
-            &NewDeviceModelPimpl::slotKnownDevicesChanged);
-    disconnect(&callbacksHandler, &CallbacksHandler::deviceRevocationEnded, this,
-            &NewDeviceModelPimpl::slotDeviceRevocationEnded);
+    disconnect(&callbacksHandler,
+               &CallbacksHandler::knownDevicesChanged,
+               this,
+               &NewDeviceModelPimpl::slotKnownDevicesChanged);
+    disconnect(&callbacksHandler,
+               &CallbacksHandler::deviceRevocationEnded,
+               this,
+               &NewDeviceModelPimpl::slotDeviceRevocationEnded);
 }
 
 void
-NewDeviceModelPimpl::slotKnownDevicesChanged(const QString& accountId,
-                                             const MapStringString devices)
+NewDeviceModelPimpl::slotKnownDevicesChanged(const QString& accountId, const MapStringString devices)
 {
-    if (accountId != linked.owner.id) return;
+    if (accountId != linked.owner.id)
+        return;
     auto devicesMap = devices;
     // Update current devices
     QStringList updatedDevices;
@@ -185,11 +191,9 @@ NewDeviceModelPimpl::slotKnownDevicesChanged(const QString& accountId,
         std::lock_guard<std::mutex> lock(devicesMtx_);
         auto it = devicesMap.begin();
         while (it != devicesMap.end()) {
-            devices_.push_back(Device {
-                /* id= */it.key(),
-                /* name= */it.value(),
-                /* isCurrent= */false
-            });
+            devices_.push_back(Device {/* id= */ it.key(),
+                                       /* name= */ it.value(),
+                                       /* isCurrent= */ false});
             addedDevices.push_back(it.key());
             ++it;
         }
@@ -203,14 +207,13 @@ NewDeviceModelPimpl::slotDeviceRevocationEnded(const QString& accountId,
                                                const QString& deviceId,
                                                const int status)
 {
-    if (accountId != linked.owner.id) return;
+    if (accountId != linked.owner.id)
+        return;
     if (status == 0) {
         std::lock_guard<std::mutex> lock(devicesMtx_);
-        auto it = std::find_if(
-            devices_.begin(), devices_.end(),
-            [deviceId](const Device& d) {
-                return d.id == deviceId;
-            });
+        auto it = std::find_if(devices_.begin(), devices_.end(), [deviceId](const Device& d) {
+            return d.id == deviceId;
+        });
 
         if (it != devices_.end())
             devices_.erase(it);

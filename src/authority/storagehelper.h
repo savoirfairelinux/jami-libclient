@@ -28,18 +28,17 @@
 #include "database.h"
 #include "dbus/configurationmanager.h"
 
-namespace lrc
-{
+namespace lrc {
 
-namespace api { namespace datatransfer {
+namespace api {
+namespace datatransfer {
 struct Info;
-}}
+}
+} // namespace api
 
-namespace authority
-{
+namespace authority {
 
-namespace storage
-{
+namespace storage {
 
 /**
  * Get the base path for the application's local storage
@@ -53,8 +52,7 @@ QString getPath();
  * @param type of account for which to transform the uri
  * @return formatted uri
  */
-QString
-prepareUri(const QString& uri, api::profile::Type type);
+QString prepareUri(const QString& uri, api::profile::Type type);
 
 /**
  * Get a formatted string for a call interaction's body
@@ -62,9 +60,7 @@ prepareUri(const QString& uri, api::profile::Type type);
  * @param duration of the call
  * @return the formatted and translated call message string
  */
-QString
-getCallInteractionString(const QString& authorUri,
-                         const std::time_t& duration);
+QString getCallInteractionString(const QString& authorUri, const std::time_t& duration);
 
 /**
  * Get a formatted string for a contact interaction's body
@@ -72,12 +68,10 @@ getCallInteractionString(const QString& authorUri,
  * @param status
  * @return the formatted and translated call message string
  */
-QString
-getContactInteractionString(const QString& authorUri,
-                            const api::interaction::Status& status);
+QString getContactInteractionString(const QString& authorUri,
+                                    const api::interaction::Status& status);
 
-namespace vcard
-{
+namespace vcard {
 
 /**
  * Build the vCard for a profile
@@ -85,9 +79,7 @@ namespace vcard
  * @param compressImage
  * @return vcard string of the profile
  */
-QString
-profileToVcard(const api::profile::Info& profileInfo,
-               bool compressImage = false);
+QString profileToVcard(const api::profile::Info& profileInfo, bool compressImage = false);
 
 } // namespace vcard
 
@@ -95,26 +87,21 @@ profileToVcard(const api::profile::Info& profileInfo,
  * @param  duration
  * @return a human readable call duration (M:ss)
  */
-QString
-getFormattedCallDuration(const std::time_t duration);
+QString getFormattedCallDuration(const std::time_t duration);
 
 /**
  * Get all conversations with a given participant's URI
  * @param db
  * @param participant_uri
  */
-VectorString
-getConversationsWithPeer(Database& db,
-                         const QString& participant_uri);
+VectorString getConversationsWithPeer(Database& db, const QString& participant_uri);
 
 /**
  * Get all peer participant(s) URIs for a given conversation id
  * @param db
  * @param conversationId
  */
-VectorString
-getPeerParticipantsForConversation(Database& db,
-                                   const QString& conversationId);
+VectorString getPeerParticipantsForConversation(Database& db, const QString& conversationId);
 
 /**
  * Creates or updates a contact or account vCard file with profile data.
@@ -131,8 +118,7 @@ void createOrUpdateProfile(const QString& accountId,
  * @param  accountId
  * @return the account's base64 avatar
  */
-QString
-getAccountAvatar(const QString& accountId);
+QString getAccountAvatar(const QString& accountId);
 
 /**
  * Build a contact info struct from a vCard
@@ -194,25 +180,25 @@ int addMessageToConversation(Database& db,
                              const api::interaction::Info& msg);
 
 /**
-* Add or update an entry into interactions linked to a conversation.
-* @param  db
-* @param  conversationId
-* @param  msg
-* @param  daemonId
-* @return the id of the inserted interaction
-*/
+ * Add or update an entry into interactions linked to a conversation.
+ * @param  db
+ * @param  conversationId
+ * @param  msg
+ * @param  daemonId
+ * @return the id of the inserted interaction
+ */
 int addOrUpdateMessage(Database& db,
                        const QString& conversationId,
                        const api::interaction::Info& msg,
                        const QString& daemonId);
 
 /**
-* Add a data transfer entry into interactions linked to a conversation.
-* @param  db
-* @param  conversationId
-* @param  daemonId
-* @return the id of the inserted interaction
-*/
+ * Add a data transfer entry into interactions linked to a conversation.
+ * @param  db
+ * @param  conversationId
+ * @param  daemonId
+ * @return the id of the inserted interaction
+ */
 int addDataTransferToConversation(Database& db,
                                   const QString& conversationId,
                                   const api::datatransfer::Info& infoFromDaemon);
@@ -223,9 +209,7 @@ int addDataTransferToConversation(Database& db,
  * @param interactionId
  * @param daemonId
  */
-void addDaemonMsgId(Database& db,
-                    const QString& interactionId,
-                    const QString& daemonId);
+void addDaemonMsgId(Database& db, const QString& interactionId, const QString& daemonId);
 
 /**
  * @param  db
@@ -249,8 +233,7 @@ QString getInteractionIdByDaemonId(Database& db, const QString& daemon_id);
  * @param id
  * @param key
  */
-QString getInteractionExtraDataById(Database& db, const QString& id,
-                                    const QString& key = {});
+QString getInteractionExtraDataById(Database& db, const QString& id, const QString& key = {});
 
 /**
  * Change the body of an interaction
@@ -258,8 +241,7 @@ QString getInteractionExtraDataById(Database& db, const QString& id,
  * @param id
  * @param newBody
  */
-void updateInteractionBody(Database& db, unsigned int id,
-                           const QString& newBody);
+void updateInteractionBody(Database& db, unsigned int id, const QString& newBody);
 
 /**
  * Change the status of an interaction
@@ -268,8 +250,7 @@ void updateInteractionBody(Database& db, unsigned int id,
  * @param newStatus
  * @param isRead
  */
-void updateInteractionStatus(Database& db, unsigned int id,
-                             api::interaction::Status newStatus);
+void updateInteractionStatus(Database& db, unsigned int id, api::interaction::Status newStatus);
 
 /**
  * Set interaction to the read state
@@ -283,8 +264,7 @@ void setInteractionRead(Database& db, unsigned int id);
  * @param  db
  * @param  conversationId
  */
-void clearHistory(Database& db,
-                  const QString& conversationId);
+void clearHistory(Database& db, const QString& conversationId);
 
 /**
  * Clear interaction from history
@@ -362,7 +342,7 @@ QJsonObject JSONFromString(const QString& str);
  * @param  args
  * @return a JSON as a QString
  */
-QString JSONStringFromInitList(const std::initializer_list<QPair<QString, QJsonValue> > args);
+QString JSONStringFromInitList(const std::initializer_list<QPair<QString, QJsonValue>> args);
 
 /**
  * Get the value at a key from a JSON object
@@ -379,7 +359,7 @@ QString readJSONValue(const QJsonObject& json, const QString& key);
  * @param  value
  */
 void writeJSONValue(QJsonObject& json, const QString& key, const QString& value);
-}
+} // namespace
 
 /**
  * Retrieve a list of account database via a migration
@@ -388,10 +368,9 @@ void writeJSONValue(QJsonObject& json, const QString& key, const QString& value)
  * @param willMigrateCb to invoke when migration will occur
  * @param didMigrateCb to invoke when migration has completed
  */
-std::vector<std::shared_ptr<Database>>
-migrateIfNeeded(const QStringList& accountIds,
-                MigrationCb& willMigrateCb,
-                MigrationCb& didMigrateCb);
+std::vector<std::shared_ptr<Database>> migrateIfNeeded(const QStringList& accountIds,
+                                                       MigrationCb& willMigrateCb,
+                                                       MigrationCb& didMigrateCb);
 
 } // namespace storage
 

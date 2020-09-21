@@ -44,15 +44,18 @@ class Info;
 /**
  *  @brief Class that manages data transfer.
  */
-class LIB_EXPORT DataTransferModel : public QObject {
+class LIB_EXPORT DataTransferModel : public QObject
+{
     Q_OBJECT
     Q_PROPERTY(QString downloadDirectory_qml MEMBER downloadDirectory)
 public:
     DataTransferModel();
     ~DataTransferModel();
 
-    Q_INVOKABLE void sendFile(const QString& account_id, const QString& peer_uri,
-        const QString& file_path, const QString& display_name);
+    Q_INVOKABLE void sendFile(const QString& account_id,
+                              const QString& peer_uri,
+                              const QString& file_path,
+                              const QString& display_name);
 
     Q_INVOKABLE void transferInfo(long long ringId, datatransfer::Info& lrc_info);
 
@@ -82,17 +85,17 @@ public:
     /**
      * Accept transfer from untrusted contacts
      */
-    bool acceptFromUnstrusted{ false };
+    bool acceptFromUnstrusted {false};
 
     /**
      * Accept transfer from trusted contacts
      */
-    bool automaticAcceptTransfer{ true };
+    bool automaticAcceptTransfer {true};
 
     /**
      * Automatically accept transfer under
      */
-    unsigned acceptBehindMb{ 20 } /* Mb */;
+    unsigned acceptBehindMb {20} /* Mb */;
 
 Q_SIGNALS:
     /**
@@ -111,8 +114,8 @@ private:
     class Impl;
     std::unique_ptr<Impl> pimpl_;
 };
-}
-} // namespace lrc::api
+} // namespace api
+} // namespace lrc
 #if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
 Q_DECLARE_METATYPE(lrc::api::DataTransferModel*)
 #endif

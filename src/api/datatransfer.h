@@ -25,7 +25,8 @@
 
 #include <QString>
 
-namespace lrc { namespace api {
+namespace lrc {
+namespace api {
 
 namespace datatransfer {
 #if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
@@ -35,14 +36,14 @@ Q_CLASSINFO("RegisterEnumClassesUnscoped", "false")
 
 enum class Status {
     on_connection, // outgoing tx: wait for connection/acceptance, incoming tx: wait for local acceptance
-    on_progress, // connected, data transfer progress reporting
-    success, // transfer finished with success, all data sent
-    stop_by_peer, // error: transfer terminated by peer
-    stop_by_host, // eror: transfer terminated by local host
-    unjoinable_peer, // error: (outgoing only) peer connection failed
-    timeout_expired, // error: (outgoing only) peer awaiting too long, close turn socket
+    on_progress,      // connected, data transfer progress reporting
+    success,          // transfer finished with success, all data sent
+    stop_by_peer,     // error: transfer terminated by peer
+    stop_by_host,     // eror: transfer terminated by local host
+    unjoinable_peer,  // error: (outgoing only) peer connection failed
+    timeout_expired,  // error: (outgoing only) peer awaiting too long, close turn socket
     invalid_pathname, // error: (file transfer only) given file is not a valid
-    unsupported, // error: unable to do the transfer (generic error)
+    unsupported,      // error: unable to do the transfer (generic error)
     INVALID
 };
 #if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
@@ -52,7 +53,7 @@ Q_ENUM_NS(Status)
 static inline const QString
 to_string(const Status& status)
 {
-    switch(status) {
+    switch (status) {
     case Status::on_connection:
         return "on_connection";
     case Status::on_progress:
@@ -100,7 +101,6 @@ to_status(const QString& status)
         return datatransfer::Status::unsupported;
     else
         return datatransfer::Status::INVALID;
-
 }
 
 struct Info
@@ -117,6 +117,7 @@ struct Info
     std::time_t timestamp = 0;
 };
 
-} // namespace lrc::api::datatransfer
+} // namespace datatransfer
 
-}} // namespace lrc::api
+} // namespace api
+} // namespace lrc

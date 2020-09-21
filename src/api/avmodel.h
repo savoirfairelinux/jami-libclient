@@ -18,7 +18,7 @@
  ***************************************************************************/
 #pragma once
 
- // std
+// std
 #include <memory>
 #include <string>
 #include <vector>
@@ -30,16 +30,15 @@
 #include "api/newvideo.h"
 #include "typedefs.h"
 
-namespace lrc
-{
+namespace lrc {
 
 class CallbacksHandler;
 class AVModelPimpl;
 
-namespace api
-{
+namespace api {
 
-class LIB_EXPORT AVModel : public QObject {
+class LIB_EXPORT AVModel : public QObject
+{
     Q_OBJECT
 public:
     AVModel(const CallbacksHandler& callbacksHandler);
@@ -288,18 +287,18 @@ public:
      */
     Q_INVOKABLE void useAVFrame(bool useAVFrame);
     /**
-    * set current using device
-    * @ param device name
-    */
+     * set current using device
+     * @ param device name
+     */
     Q_INVOKABLE void setCurrentVideoCaptureDevice(const QString& currentVideoCaptureDevice);
     /**
-    * set current using device
-    * @ return current using device name
-    */
+     * set current using device
+     * @ return current using device name
+     */
     Q_INVOKABLE QString getCurrentVideoCaptureDevice() const;
     /**
-    * clear current using device
-    */
+     * clear current using device
+     */
     Q_INVOKABLE void clearCurrentVideoCaptureDevice();
 
 Q_SIGNALS:

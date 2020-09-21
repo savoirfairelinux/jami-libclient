@@ -32,15 +32,13 @@
 #endif
 #include "conversions_wrap.hpp"
 
-
 /*
  * Proxy class for interface org.ring.Ring.PluginManager
  */
-class PluginManagerInterface: public QObject
+class PluginManagerInterface : public QObject
 {
     Q_OBJECT
 public:
-
     PluginManagerInterface() {}
     ~PluginManagerInterface() {}
 
@@ -82,9 +80,9 @@ public Q_SLOTS: // METHODS
 };
 
 namespace org {
-  namespace ring {
-    namespace Ring {
-      typedef ::PluginManagerInterface PluginManager;
-    }
-  }
+namespace ring {
+namespace Ring {
+typedef ::PluginManagerInterface PluginManager;
 }
+} // namespace ring
+} // namespace org

@@ -22,54 +22,52 @@
 #include "presencemanager.h"
 #include "configurationmanager.h"
 #ifdef ENABLE_VIDEO
- #include "videomanager.h"
-#endif //ENABLE_VIDEO
+#include "videomanager.h"
+#endif // ENABLE_VIDEO
 
 static int ringFlags = 0;
 
 InstanceManagerInterface::InstanceManagerInterface()
 {
-   using namespace std::placeholders;
+    using namespace std::placeholders;
 
-   using std::bind;
-   using DRing::exportable_callback;
-   using DRing::CallSignal;
-   using DRing::ConfigurationSignal;
-   using DRing::PresenceSignal;
-   using DRing::DataTransferSignal;
-   using DRing::DebugSignal;
+    using std::bind;
+    using DRing::exportable_callback;
+    using DRing::CallSignal;
+    using DRing::ConfigurationSignal;
+    using DRing::PresenceSignal;
+    using DRing::DataTransferSignal;
+    using DRing::DebugSignal;
 
 #ifdef ENABLE_VIDEO
-   using DRing::VideoSignal;
+    using DRing::VideoSignal;
 #endif
 
 #ifndef MUTE_DRING
-   ringFlags |= DRing::DRING_FLAG_DEBUG;
-   ringFlags |= DRing::DRING_FLAG_CONSOLE_LOG;
+    ringFlags |= DRing::DRING_FLAG_DEBUG;
+    ringFlags |= DRing::DRING_FLAG_CONSOLE_LOG;
 #endif
 
-   DRing::init(static_cast<DRing::InitFlag>(ringFlags));
+    DRing::init(static_cast<DRing::InitFlag>(ringFlags));
 
-   registerSignalHandlers(CallManager::instance().callHandlers);
-   registerSignalHandlers(ConfigurationManager::instance().confHandlers);
-   registerSignalHandlers(PresenceManager::instance().presHandlers);
-   registerSignalHandlers(ConfigurationManager::instance().dataXferHandlers);
+    registerSignalHandlers(CallManager::instance().callHandlers);
+    registerSignalHandlers(ConfigurationManager::instance().confHandlers);
+    registerSignalHandlers(PresenceManager::instance().presHandlers);
+    registerSignalHandlers(ConfigurationManager::instance().dataXferHandlers);
 #ifdef ENABLE_VIDEO
-   registerSignalHandlers(VideoManager::instance().videoHandlers);
+    registerSignalHandlers(VideoManager::instance().videoHandlers);
 #endif
 
-   if (!DRing::start())
-      printf("Error initializing daemon\n");
-   else
-      printf("Daemon is running\n");
+    if (!DRing::start())
+        printf("Error initializing daemon\n");
+    else
+        printf("Daemon is running\n");
 }
 
-InstanceManagerInterface::~InstanceManagerInterface()
-{
+InstanceManagerInterface::~InstanceManagerInterface() {}
 
-}
-
-bool InstanceManagerInterface::isConnected()
+bool
+InstanceManagerInterface::isConnected()
 {
-   return true;
+    return true;
 }

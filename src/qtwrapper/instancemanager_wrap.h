@@ -34,39 +34,39 @@
 /*
  * Proxy class for interface org.ring.Ring.Instance
  */
-class InstanceManagerInterface: public QObject
+class InstanceManagerInterface : public QObject
 {
-   Q_OBJECT
+    Q_OBJECT
 public:
-   InstanceManagerInterface();
-   ~InstanceManagerInterface();
+    InstanceManagerInterface();
+    ~InstanceManagerInterface();
 
-// TODO: These are not present in dring.h
+    // TODO: These are not present in dring.h
 
 public Q_SLOTS: // METHODS
-   void Register(int pid, const QString &name)
-   {
-      Q_UNUSED(pid ) //When directly linked, the PID is always the current process PID
-      Q_UNUSED(name)
-   }
+    void Register(int pid, const QString& name)
+    {
+        Q_UNUSED(pid) // When directly linked, the PID is always the current process PID
+        Q_UNUSED(name)
+    }
 
-   void Unregister(int pid)
-   {
-      Q_UNUSED(pid) //When directly linked, the PID is always the current process PID
-      DRing::fini();
-   }
+    void Unregister(int pid)
+    {
+        Q_UNUSED(pid) // When directly linked, the PID is always the current process PID
+        DRing::fini();
+    }
 
-   bool isConnected();
+    bool isConnected();
 
 private:
 Q_SIGNALS: // SIGNALS
-   void started();
+    void started();
 };
 
 namespace cx {
-  namespace Ring {
-    namespace Ring {
-      typedef ::InstanceManagerInterface Instance;
-    }
-  }
+namespace Ring {
+namespace Ring {
+typedef ::InstanceManagerInterface Instance;
 }
+} // namespace Ring
+} // namespace cx

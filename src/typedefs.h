@@ -18,7 +18,7 @@
  ***************************************************************************/
 #pragma once
 
-//Qt
+// Qt
 #include <QtCore/QMetaType>
 #include <QtCore/QMap>
 #include <QtCore/QVector>
@@ -26,19 +26,19 @@
 #include <QtCore/QDebug>
 #include <QtCore/QDateTime>
 
-//Typedefs (required to avoid '<' and '>' in the DBus XML)
-typedef QMap<QString, QString>                              MapStringString               ;
-typedef QMap<QString, int>                                  MapStringInt                  ;
-typedef QVector<int>                                        VectorInt                     ;
-typedef QVector<uint>                                       VectorUInt                    ;
-typedef QVector<qulonglong>                                 VectorULongLong               ;
-typedef QVector< QMap<QString, QString> >                   VectorMapStringString         ;
-typedef QVector< QString >                                  VectorString                  ;
-typedef QMap< QString, QMap< QString, QVector<QString> > >  MapStringMapStringVectorString;
-typedef QMap< QString, QVector<QString> >                   MapStringVectorString         ;
-typedef QMap< QString, QMap< QString, QStringList > >       MapStringMapStringStringList  ;
-typedef QMap< QString, QStringList >                        MapStringStringList           ;
-typedef QVector< QByteArray >                               VectorVectorByte              ;
+// Typedefs (required to avoid '<' and '>' in the DBus XML)
+typedef QMap<QString, QString> MapStringString;
+typedef QMap<QString, int> MapStringInt;
+typedef QVector<int> VectorInt;
+typedef QVector<uint> VectorUInt;
+typedef QVector<qulonglong> VectorULongLong;
+typedef QVector<QMap<QString, QString>> VectorMapStringString;
+typedef QVector<QString> VectorString;
+typedef QMap<QString, QMap<QString, QVector<QString>>> MapStringMapStringVectorString;
+typedef QMap<QString, QVector<QString>> MapStringVectorString;
+typedef QMap<QString, QMap<QString, QStringList>> MapStringMapStringStringList;
+typedef QMap<QString, QStringList> MapStringStringList;
+typedef QVector<QByteArray> VectorVectorByte;
 
 // Adapted from libring DRing::DataTransferInfo
 struct DataTransferInfo
@@ -54,7 +54,8 @@ struct DataTransferInfo
     QString mimetype;
 };
 
-struct Message {
+struct Message
+{
     QString from;
     MapStringString payloads;
     quint64 received;
@@ -67,8 +68,11 @@ typedef QVector<Message> messages;
  * @note it cannot be "const" due to some compiler issues
  * @note it cannot be unsigned to avoid some compiler warnings
  */
-template<typename A> constexpr int enum_class_size() {
-   return static_cast<int>(A::COUNT__);
+template<typename A>
+constexpr int
+enum_class_size()
+{
+    return static_cast<int>(A::COUNT__);
 }
 
 #ifdef LRC_IMPORT
@@ -81,15 +85,14 @@ template<typename A> constexpr int enum_class_size() {
 #endif
 #endif
 
-//Doesn't work
+// Doesn't work
 #if ((__GNUC_MINOR__ > 8) || (__GNUC_MINOR__ == 8))
-   #define STRINGIFY(x) #x
-   #define IGNORE_NULL(content)\
-   _Pragma(STRINGIFY(GCC diagnostic ignored "-Wzero-as-null-pointer-constant")) \
-      content
+#define STRINGIFY(x) #x
+#define IGNORE_NULL(content) \
+    _Pragma(STRINGIFY(GCC diagnostic ignored "-Wzero-as-null-pointer-constant")) content
 #else
-   #define IGNORE_NULL(content) content
-#endif //ENABLE_IGNORE_NULL
+#define IGNORE_NULL(content) content
+#endif // ENABLE_IGNORE_NULL
 
 /**
  * Create a safe pack of flags from an enum class.
@@ -103,105 +106,111 @@ template<class T>
 class LIB_EXPORT FlagPack
 {
 public:
-   FlagPack() : m_Flags(0) {}
-   FlagPack(const T& base) : m_Flags(static_cast<uint>(base)) {}
-   FlagPack(const FlagPack<T>& other) : m_Flags(other.m_Flags) {}
+    FlagPack()
+        : m_Flags(0)
+    {}
+    FlagPack(const T& base)
+        : m_Flags(static_cast<uint>(base))
+    {}
+    FlagPack(const FlagPack<T>& other)
+        : m_Flags(other.m_Flags)
+    {}
 
-   //Operator
-   FlagPack<T>& operator|(const T& other) {
-      m_Flags |= static_cast<uint>(other);
-      return *this;
-   }
+    // Operator
+    FlagPack<T>& operator|(const T& other)
+    {
+        m_Flags |= static_cast<uint>(other);
+        return *this;
+    }
 
-   FlagPack<T>& operator|(const FlagPack<T>& other) {
-      m_Flags |= other.m_Flags;
-      return *this;
-   }
+    FlagPack<T>& operator|(const FlagPack<T>& other)
+    {
+        m_Flags |= other.m_Flags;
+        return *this;
+    }
 
-   FlagPack<T>& operator|=(const T& other) {
-      m_Flags |= static_cast<uint>(other);
-      return *this;
-   }
+    FlagPack<T>& operator|=(const T& other)
+    {
+        m_Flags |= static_cast<uint>(other);
+        return *this;
+    }
 
-   FlagPack<T>& operator|=(const FlagPack<T>& other) {
-      m_Flags |= other.m_Flags;
-      return *this;
-   }
+    FlagPack<T>& operator|=(const FlagPack<T>& other)
+    {
+        m_Flags |= other.m_Flags;
+        return *this;
+    }
 
-   FlagPack<T>& operator^=(const T& other) {
-      m_Flags ^= static_cast<uint>(other);
-      return *this;
-   }
+    FlagPack<T>& operator^=(const T& other)
+    {
+        m_Flags ^= static_cast<uint>(other);
+        return *this;
+    }
 
-   FlagPack<T>& operator^=(const FlagPack<T>& other) {
-      m_Flags ^= other.m_Flags;
-      return *this;
-   }
+    FlagPack<T>& operator^=(const FlagPack<T>& other)
+    {
+        m_Flags ^= other.m_Flags;
+        return *this;
+    }
 
-   FlagPack<T> operator&(const T& other) const {
-      return FlagPack<T>(m_Flags & static_cast<uint>(other));
-   }
+    FlagPack<T> operator&(const T& other) const
+    {
+        return FlagPack<T>(m_Flags & static_cast<uint>(other));
+    }
 
-   FlagPack<T> operator&(const FlagPack<T>& other) const {
-      return FlagPack<T>(m_Flags & other.m_Flags);
-   }
+    FlagPack<T> operator&(const FlagPack<T>& other) const
+    {
+        return FlagPack<T>(m_Flags & other.m_Flags);
+    }
 
-   FlagPack<T>&operator=(const FlagPack<T>& other) {
-      m_Flags = other.m_Flags;
-      return *this;
-   }
+    FlagPack<T>& operator=(const FlagPack<T>& other)
+    {
+        m_Flags = other.m_Flags;
+        return *this;
+    }
 
-   bool operator!=(const T& other) const {
-      return  m_Flags != static_cast<uint>(other);
-   }
+    bool operator!=(const T& other) const { return m_Flags != static_cast<uint>(other); }
 
-   bool operator==(const T& other) const {
-      return  m_Flags == static_cast<uint>(other);
-   }
+    bool operator==(const T& other) const { return m_Flags == static_cast<uint>(other); }
 
-   bool operator==(const FlagPack<T>& other) const {
-      return  m_Flags == other.m_Flags;
-   }
+    bool operator==(const FlagPack<T>& other) const { return m_Flags == other.m_Flags; }
 
-   bool operator!() const {
-      return !m_Flags;
-   }
+    bool operator!() const { return !m_Flags; }
 
-   operator bool() const {
-      return m_Flags != 0;
-   }
+    operator bool() const { return m_Flags != 0; }
 
-   uint value() const {
-      return m_Flags;
-   }
+    uint value() const { return m_Flags; }
 
 private:
-   FlagPack(uint base) : m_Flags(base) {}
-   uint m_Flags;
+    FlagPack(uint base)
+        : m_Flags(base)
+    {}
+    uint m_Flags;
 };
 
 #ifdef _MSC_VER
-#define DO_PRAGMA(x) /*do nothing*/
+#define DO_PRAGMA(x)     /*do nothing*/
 #define __attribute__(A) /*do nothing*/
 #include <ciso646>
 #else
-#define DO_PRAGMA(x) _Pragma (#x)
+#define DO_PRAGMA(x) _Pragma(#x)
 #endif // _MSC_VER
 
-//Globally disable the "-Wunused-function" warning for GCC
-//refs: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=55578
+// Globally disable the "-Wunused-function" warning for GCC
+// refs: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=55578
 #if ((__GNUC_MINOR__ > 8) || (__GNUC_MINOR__ == 8))
 #pragma GCC diagnostic ignored "-Wunused-function"
 #endif
 
-#define DECLARE_ENUM_FLAGS(T)\
-DO_PRAGMA(GCC diagnostic push)\
-DO_PRAGMA(GCC diagnostic ignored "-Wunused-function")\
-__attribute__ ((unused)) static FlagPack<T> operator|(const T& first, const T& second) { \
-   FlagPack<T> p (first); \
-   return p | second; \
-} \
-DO_PRAGMA(GCC diagnostic pop)
+#define DECLARE_ENUM_FLAGS(T) \
+    DO_PRAGMA(GCC diagnostic push) \
+    DO_PRAGMA(GCC diagnostic ignored "-Wunused-function") \
+    __attribute__((unused)) static FlagPack<T> operator|(const T& first, const T& second) \
+    { \
+        FlagPack<T> p(first); \
+        return p | second; \
+    } \
+    DO_PRAGMA(GCC diagnostic pop)
 
 #include <functional>
 typedef std::function<void()> MigrationCb;

@@ -23,12 +23,11 @@
 // Dbus
 #include "dbus/configurationmanager.h"
 
-namespace lrc
-{
+namespace lrc {
 
 using namespace api;
 
-class PeerDiscoveryModelPimpl: public QObject
+class PeerDiscoveryModelPimpl : public QObject
 {
     Q_OBJECT
 public:
@@ -48,54 +47,66 @@ public Q_SLOTS:
      * @param accountId
      * @param status
      */
-    void slotPeerMapStatusChanged(const QString& accountID, const QString& contactUri, int state, const QString& displayname);
+    void slotPeerMapStatusChanged(const QString& accountID,
+                                  const QString& contactUri,
+                                  int state,
+                                  const QString& displayname);
 };
 
-PeerDiscoveryModel::PeerDiscoveryModel(const CallbacksHandler& callbacksHandler, const QString& accountID)
-: QObject()
-, pimpl_(std::make_unique<PeerDiscoveryModelPimpl>(*this, callbacksHandler, accountID))
-{
-}
+PeerDiscoveryModel::PeerDiscoveryModel(const CallbacksHandler& callbacksHandler,
+                                       const QString& accountID)
+    : QObject()
+    , pimpl_(std::make_unique<PeerDiscoveryModelPimpl>(*this, callbacksHandler, accountID))
+{}
 
-PeerDiscoveryModel::~PeerDiscoveryModel()
-{
-}
+PeerDiscoveryModel::~PeerDiscoveryModel() {}
 
 PeerDiscoveryModelPimpl::PeerDiscoveryModelPimpl(PeerDiscoveryModel& linked,
                                                  const CallbacksHandler& callbacksHandler,
                                                  const QString& accountID)
-: linked_(linked)
-, callbacksHandler_(callbacksHandler)
-, accountID_(accountID)
+    : linked_(linked)
+    , callbacksHandler_(callbacksHandler)
+    , accountID_(accountID)
 {
-    connect(&callbacksHandler_, &CallbacksHandler::newPeerSubscription, this, &PeerDiscoveryModelPimpl::slotPeerMapStatusChanged);
+    connect(&callbacksHandler_,
+            &CallbacksHandler::newPeerSubscription,
+            this,
+            &PeerDiscoveryModelPimpl::slotPeerMapStatusChanged);
 }
 
 PeerDiscoveryModelPimpl::~PeerDiscoveryModelPimpl()
 {
-    disconnect(&callbacksHandler_, &CallbacksHandler::newPeerSubscription, this, &PeerDiscoveryModelPimpl::slotPeerMapStatusChanged);
+    disconnect(&callbacksHandler_,
+               &CallbacksHandler::newPeerSubscription,
+               this,
+               &PeerDiscoveryModelPimpl::slotPeerMapStatusChanged);
 }
 
 void
-PeerDiscoveryModelPimpl::slotPeerMapStatusChanged(const QString& accountID, const QString& contactUri, int state, const QString& displayname)
+PeerDiscoveryModelPimpl::slotPeerMapStatusChanged(const QString& accountID,
+                                                  const QString& contactUri,
+                                                  int state,
+                                                  const QString& displayname)
 {
-    if(accountID != accountID_){
+    if (accountID != accountID_) {
         return;
     }
-    emit linked_.modelChanged(contactUri,state == 0 ? PeerModelChanged::INSERT : PeerModelChanged::REMOVE,displayname);
-
+    emit linked_.modelChanged(contactUri,
+                              state == 0 ? PeerModelChanged::INSERT : PeerModelChanged::REMOVE,
+                              displayname);
 }
 
 std::vector<PeerContact>
 PeerDiscoveryModel::getNearbyPeers() const
 {
     std::vector<PeerContact> result;
-    const MapStringString nearbyPeers = ConfigurationManager::instance().getNearbyPeers(pimpl_->accountID_);
+    const MapStringString nearbyPeers = ConfigurationManager::instance().getNearbyPeers(
+        pimpl_->accountID_);
     result.reserve(nearbyPeers.size());
 
     QMap<QString, QString>::const_iterator i = nearbyPeers.constBegin();
     while (i != nearbyPeers.constEnd()) {
-        result.emplace_back(PeerContact{i.key().toStdString(), i.value().toStdString()});
+        result.emplace_back(PeerContact {i.key().toStdString(), i.value().toStdString()});
         ++i;
     }
     return result;

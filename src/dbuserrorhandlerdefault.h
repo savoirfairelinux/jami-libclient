@@ -26,7 +26,8 @@ namespace Interfaces {
 /**
  * This implementation of the DBusErrorHandler interface throws an exception with the given message.
  */
-class DBusErrorHandlerDefault : public DBusErrorHandlerI {
+class DBusErrorHandlerDefault : public DBusErrorHandlerI
+{
 public:
     [[noreturn]] void connectionError(const QString& error) override;
     [[noreturn]] void invalidInterfaceError(const QString& error) override;

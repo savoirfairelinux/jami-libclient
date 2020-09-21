@@ -30,50 +30,40 @@ class LIB_EXPORT NameDirectory : public QObject
     Q_CLASSINFO("RegisterEnumClassesUnscoped", "false")
 #endif
 public:
-//Register name status
-enum class RegisterNameStatus {
-    SUCCESS = 0,
-    WRONG_PASSWORD = 1,
-    INVALID_NAME = 2,
-    ALREADY_TAKEN = 3,
-    NETWORK_ERROR = 4
-};
+    // Register name status
+    enum class RegisterNameStatus {
+        SUCCESS = 0,
+        WRONG_PASSWORD = 1,
+        INVALID_NAME = 2,
+        ALREADY_TAKEN = 3,
+        NETWORK_ERROR = 4
+    };
 #if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
-Q_ENUM(RegisterNameStatus)
+    Q_ENUM(RegisterNameStatus)
 #endif
 
-//Lookup name status
-enum class LookupStatus {
-    SUCCESS = 0,
-    INVALID_NAME = 1,
-    NOT_FOUND = 2,
-    ERROR = 3
-};
+    // Lookup name status
+    enum class LookupStatus { SUCCESS = 0, INVALID_NAME = 1, NOT_FOUND = 2, ERROR = 3 };
 #if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
-Q_ENUM(LookupStatus)
+    Q_ENUM(LookupStatus)
 #endif
 
-enum class ExportOnRingStatus {
-    SUCCESS = 0,
-    WRONG_PASSWORD = 1,
-    NETWORK_ERROR = 2,
-    INVALID
-};
+    enum class ExportOnRingStatus { SUCCESS = 0, WRONG_PASSWORD = 1, NETWORK_ERROR = 2, INVALID };
 #if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
     Q_ENUM(ExportOnRingStatus)
 #endif
 
-    //Singleton
+    // Singleton
     static NameDirectory& instance();
 
-    //Lookup
+    // Lookup
     Q_INVOKABLE bool lookupName(const QString& nameServiceURL, const QString& name) const;
     Q_INVOKABLE bool lookupAddress(const QString& nameServiceURL, const QString& address) const;
 
 private:
-    //Constructors & Destructors
+    // Constructors & Destructors
     explicit NameDirectory();
-    virtual  ~NameDirectory();
+    virtual ~NameDirectory();
 
     NameDirectoryPrivate* d_ptr;
 #if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
@@ -82,11 +72,13 @@ private:
 #endif
 
 Q_SIGNALS:
-    ///RegisterName has ended
+    /// RegisterName has ended
     void nameRegistrationEnded(NameDirectory::RegisterNameStatus status, const QString& name);
 
-    ///Name or address lookup has completed
-    void registeredNameFound(NameDirectory::LookupStatus status, const QString& address, const QString& name);
+    /// Name or address lookup has completed
+    void registeredNameFound(NameDirectory::LookupStatus status,
+                             const QString& address,
+                             const QString& name);
 
     // Export account has ended with pin generated
     void exportOnRingEnded(NameDirectory::ExportOnRingStatus status, const QString& pin);

@@ -20,25 +20,26 @@
 #include "../globalinstances.h"
 #include "../interfaces/dbuserrorhandleri.h"
 
-PluginManagerInterface& PluginManager::instance()
+PluginManagerInterface&
+PluginManager::instance()
 {
 #ifdef ENABLE_LIBWRAP
     static auto interface = new PluginManagerInterface();
 #else
-    if (!dbus_metaTypeInit) registerCommTypes();
+    if (!dbus_metaTypeInit)
+        registerCommTypes();
     static auto interface = new PluginManagerInterface("cx.ring.Ring",
-                                                        "/cx/ring/Ring/PluginManagerInterface",
-                                                        QDBusConnection::sessionBus());
+                                                       "/cx/ring/Ring/PluginManagerInterface",
+                                                       QDBusConnection::sessionBus());
 
     if (!interface->connection().isConnected()) {
         GlobalInstances::dBusErrorHandler().connectionError(
-            "Error : dring not connected. Service " + interface->service() + " not connected. From presence interface."
-        );
+            "Error : dring not connected. Service " + interface->service()
+            + " not connected. From presence interface.");
     }
     if (!interface->isValid()) {
         GlobalInstances::dBusErrorHandler().invalidInterfaceError(
-            "Error : dring is not available, make sure it is running"
-        );
+            "Error : dring is not available, make sure it is running");
     }
 #endif
     return *interface;

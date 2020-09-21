@@ -27,134 +27,153 @@
 SmartInfoHub::SmartInfoHub()
 {
     d_ptr = new SmartInfoHubPrivate;
-    connect(&CallManager::instance(), SIGNAL(SmartInfo(MapStringString)), d_ptr , SLOT(slotSmartInfo(MapStringString)), Qt::QueuedConnection);
+    connect(&CallManager::instance(),
+            SIGNAL(SmartInfo(MapStringString)),
+            d_ptr,
+            SLOT(slotSmartInfo(MapStringString)),
+            Qt::QueuedConnection);
 }
 
-SmartInfoHub::~SmartInfoHub()
-{}
+SmartInfoHub::~SmartInfoHub() {}
 
-void SmartInfoHub::start()
+void
+SmartInfoHub::start()
 {
     CallManager::instance().startSmartInfo(d_ptr->m_refreshTimeInformationMS);
 }
 
-void SmartInfoHub::stop()
+void
+SmartInfoHub::stop()
 {
     CallManager::instance().stopSmartInfo();
 }
 
-SmartInfoHub& SmartInfoHub::instance()
+SmartInfoHub&
+SmartInfoHub::instance()
 {
-    //Singleton
+    // Singleton
     static SmartInfoHub instance_;
     return instance_;
 }
 
-void SmartInfoHub::setRefreshTime(uint32_t timeMS)
+void
+SmartInfoHub::setRefreshTime(uint32_t timeMS)
 {
     d_ptr->m_refreshTimeInformationMS = timeMS;
 }
 
-//Retrieve information from the map and implement all the variables
-void SmartInfoHubPrivate::slotSmartInfo(const MapStringString& map)
+// Retrieve information from the map and implement all the variables
+void
+SmartInfoHubPrivate::slotSmartInfo(const MapStringString& map)
 {
-    for(int i = 0; i < map.size(); i++){
-        SmartInfoHubPrivate::m_information[map.keys().at(i)]=map[map.keys().at(i)];
+    for (int i = 0; i < map.size(); i++) {
+        SmartInfoHubPrivate::m_information[map.keys().at(i)] = map[map.keys().at(i)];
     }
 
     emit SmartInfoHub::instance().changed();
 }
-//Getter
+// Getter
 
-bool SmartInfoHub::isConference() const
+bool
+SmartInfoHub::isConference() const
 {
     return (d_ptr->m_information["type"] == "conference");
 }
 
-
-float SmartInfoHub::localFps() const
+float
+SmartInfoHub::localFps() const
 {
-    if(d_ptr->m_information[LOCAL_FPS] != NULL)
+    if (d_ptr->m_information[LOCAL_FPS] != NULL)
         return d_ptr->m_information[LOCAL_FPS].toFloat();
 
     return 0.0;
 }
 
-float SmartInfoHub::remoteFps() const
+float
+SmartInfoHub::remoteFps() const
 {
-    if(d_ptr->m_information[REMOTE_FPS] != NULL)
+    if (d_ptr->m_information[REMOTE_FPS] != NULL)
         return d_ptr->m_information[REMOTE_FPS].toFloat();
 
     return 0.0;
 }
 
-int SmartInfoHub::remoteWidth() const
+int
+SmartInfoHub::remoteWidth() const
 {
-    if(d_ptr->m_information[REMOTE_WIDTH] != NULL)
+    if (d_ptr->m_information[REMOTE_WIDTH] != NULL)
         return d_ptr->m_information[REMOTE_WIDTH].toInt();
     else
         return 0;
 }
 
-int SmartInfoHub::remoteHeight() const
+int
+SmartInfoHub::remoteHeight() const
 {
-    if(d_ptr->m_information[REMOTE_HEIGHT] != NULL)
+    if (d_ptr->m_information[REMOTE_HEIGHT] != NULL)
         return d_ptr->m_information[REMOTE_HEIGHT].toInt();
     else
         return 0;
 }
 
-int SmartInfoHub::localWidth() const
+int
+SmartInfoHub::localWidth() const
 {
-    if(d_ptr->m_information[LOCAL_WIDTH] != NULL)
+    if (d_ptr->m_information[LOCAL_WIDTH] != NULL)
         return d_ptr->m_information[LOCAL_WIDTH].toInt();
     else
         return 0;
 }
 
-int SmartInfoHub::localHeight() const
+int
+SmartInfoHub::localHeight() const
 {
-    if(d_ptr->m_information[LOCAL_HEIGHT] != NULL)
+    if (d_ptr->m_information[LOCAL_HEIGHT] != NULL)
         return d_ptr->m_information[LOCAL_HEIGHT].toInt();
     else
         return 0;
 }
 
-QString SmartInfoHub::callID() const
+QString
+SmartInfoHub::callID() const
 {
-    if(d_ptr->m_information[CALL_ID] != NULL)
+    if (d_ptr->m_information[CALL_ID] != NULL)
         return d_ptr->m_information[CALL_ID];
     else
         return SmartInfoHubPrivate::DEFAULT_RETURN_VALUE_QSTRING;
 }
 
-QString SmartInfoHub::localVideoCodec() const
+QString
+SmartInfoHub::localVideoCodec() const
 {
-    if(d_ptr->m_information[LOCAL_VIDEO_CODEC] != NULL)
+    if (d_ptr->m_information[LOCAL_VIDEO_CODEC] != NULL)
         return d_ptr->m_information[LOCAL_VIDEO_CODEC];
     else
         return SmartInfoHubPrivate::DEFAULT_RETURN_VALUE_QSTRING;
 }
 
-QString SmartInfoHub::localAudioCodec() const
+QString
+SmartInfoHub::localAudioCodec() const
 {
-    if(d_ptr->m_information[LOCAL_AUDIO_CODEC] != NULL)
+    if (d_ptr->m_information[LOCAL_AUDIO_CODEC] != NULL)
         return d_ptr->m_information[LOCAL_AUDIO_CODEC];
     else
         return SmartInfoHubPrivate::DEFAULT_RETURN_VALUE_QSTRING;
 }
 
-QString SmartInfoHub::remoteVideoCodec() const
+QString
+SmartInfoHub::remoteVideoCodec() const
 {
-    if(d_ptr->m_information[REMOTE_VIDEO_CODEC] != NULL)
+    if (d_ptr->m_information[REMOTE_VIDEO_CODEC] != NULL)
         return d_ptr->m_information[REMOTE_VIDEO_CODEC];
     else
         return SmartInfoHubPrivate::DEFAULT_RETURN_VALUE_QSTRING;
 }
 
-QString SmartInfoHub::remoteAudioCodec() const
+QString
+SmartInfoHub::remoteAudioCodec() const
 {
-    if(d_ptr->m_information[REMOTE_AUDIO_CODEC] != NULL)
+    if (d_ptr->m_information[REMOTE_AUDIO_CODEC] != NULL)
         return d_ptr->m_information[REMOTE_AUDIO_CODEC];
     else
         return SmartInfoHubPrivate::DEFAULT_RETURN_VALUE_QSTRING;

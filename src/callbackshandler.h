@@ -26,20 +26,18 @@
 
 #include <memory>
 
-namespace lrc
-{
+namespace lrc {
 
-namespace api
-{
+namespace api {
 class Lrc;
 
-namespace account
-{
-    enum class Status;
+namespace account {
+enum class Status;
 }
-}
+} // namespace api
 
-class CallbacksHandler : public QObject {
+class CallbacksHandler : public QObject
+{
     Q_OBJECT
 
 public:
@@ -73,7 +71,10 @@ Q_SIGNALS:
      * @param contactUri the peer.
      * @param state is 0 if the peer is added.
      */
-    void newPeerSubscription(const QString& accountId, const QString& contactUri, int state, const QString& displayname);
+    void newPeerSubscription(const QString& accountId,
+                             const QString& contactUri,
+                             int state,
+                             const QString& displayname);
     /**
      * Connect this signal to know when a contact is removed by the daemon.
      * @param accountId the one who lost a contact.
@@ -94,7 +95,9 @@ Q_SIGNALS:
      * @param ringId the peer contact
      * @param payload the VCard
      */
-    void incomingContactRequest(const QString& accountId, const QString& ringId, const QString& payload);
+    void incomingContactRequest(const QString& accountId,
+                                const QString& ringId,
+                                const QString& payload);
     /**
      * Connect this signal to know when a call arrives
      * @param accountId the one who receives the call
@@ -118,15 +121,13 @@ Q_SIGNALS:
      * @param accountId the one who changes
      * @param details the new details
      */
-    void accountDetailsChanged(const QString& accountId,
-                               const MapStringString& details);
+    void accountDetailsChanged(const QString& accountId, const MapStringString& details);
     /**
      * Connect this signal to know when the volatile account details have changed
      * @param accountId the one who changes
      * @param details the new details
      */
-    void volatileAccountDetailsChanged(const QString& accountId,
-                                       const MapStringString& details);
+    void volatileAccountDetailsChanged(const QString& accountId, const MapStringString& details);
     /**
      * Connect this signal to know when the accounts list changed
      */
@@ -156,9 +157,7 @@ Q_SIGNALS:
      * @param from interaction sender.
      * @param body the text received.
      */
-    void incomingCallMessage(const QString& callId,
-                             const QString& from,
-                             const QString& body) const;
+    void incomingCallMessage(const QString& callId, const QString& from, const QString& body) const;
     /**
      * Connect this signal to know when a new conference is created
      * @param callId of the conference
@@ -178,7 +177,8 @@ Q_SIGNALS:
      */
     void accountMessageStatusChanged(const QString& accountId,
                                      const uint64_t id,
-                                     const QString& to, int status);
+                                     const QString& to,
+                                     int status);
 
     void transferStatusCreated(long long dringId, api::datatransfer::Info info);
     void transferStatusCanceled(long long dringId, api::datatransfer::Info info);
@@ -195,8 +195,7 @@ Q_SIGNALS:
      * @param accountId interaction receiver.
      * @param devices A map of device IDs with corresponding labels.
      */
-    void knownDevicesChanged(const QString& accountId,
-                             const MapStringString& devices);
+    void knownDevicesChanged(const QString& accountId, const MapStringString& devices);
 
     /**
      * Emit deviceRevocationEnded
@@ -204,9 +203,7 @@ Q_SIGNALS:
      * @param deviceId
      * @param status SUCCESS = 0, WRONG_PASSWORD = 1, UNKNOWN_DEVICE = 2
      */
-    void deviceRevocationEnded(const QString& accountId,
-                               const QString& deviceId,
-                               const int status);
+    void deviceRevocationEnded(const QString& accountId, const QString& deviceId, const int status);
 
     /**
      * Account profile has been received
@@ -214,7 +211,9 @@ Q_SIGNALS:
      * @param displayName
      * @param userPhoto
      */
-    void accountProfileReceived(const QString& accountId, const QString& displayName, const QString& userPhoto);
+    void accountProfileReceived(const QString& accountId,
+                                const QString& displayName,
+                                const QString& userPhoto);
 
     /**
      * Emit exportOnRingEnded
@@ -238,7 +237,10 @@ Q_SIGNALS:
      * @param status
      * @param name
      */
-    void registeredNameFound(const QString& accountId, int status, const QString& address, const QString& name);
+    void registeredNameFound(const QString& accountId,
+                             int status,
+                             const QString& address,
+                             const QString& name);
 
     /**
      * Migration ended
@@ -248,9 +250,9 @@ Q_SIGNALS:
     void migrationEnded(const QString& accountId, bool ok);
 
     /**
-    * Debug message received
-    * @param message
-    */
+     * Debug message received
+     * @param message
+     */
     void debugMessageReceived(const QString& message);
 
     /**
@@ -307,7 +309,7 @@ private Q_SLOTS:
     void slotNewAccountMessage(const QString& accountId,
                                const QString& msgId,
                                const QString& from,
-                               const QMap<QString,QString>& payloads);
+                               const QMap<QString, QString>& payloads);
     /**
      * Emit newBuddySubscription
      * @param accountId
@@ -342,21 +344,20 @@ private Q_SLOTS:
      */
     void slotIncomingContactRequest(const QString& accountId,
                                     const QString& ringId,
-                                    const QByteArray& payload, time_t time);
+                                    const QByteArray& payload,
+                                    time_t time);
     /**
      * Emit accountDetailsChanged
      * @param accountId
      * @param details
      */
-    void slotAccountDetailsChanged(const QString& accountId,
-                                   const MapStringString& details);
+    void slotAccountDetailsChanged(const QString& accountId, const MapStringString& details);
     /**
      * Emit volatileAccountDetailsChanged
      * @param accountId
      * @param details
      */
-    void slotVolatileAccountDetailsChanged(const QString& accountId,
-                                           const MapStringString& details);
+    void slotVolatileAccountDetailsChanged(const QString& accountId, const MapStringString& details);
     /**
      * Emit accountsChanged
      */
@@ -379,14 +380,14 @@ private Q_SLOTS:
      * @param callId the incoming call id
      * @param fromQString the uri of the peer
      */
-    void slotIncomingCall(const QString &accountId, const QString &callId, const QString &fromUri);
+    void slotIncomingCall(const QString& accountId, const QString& callId, const QString& fromUri);
     /**
      * Emit callStateChanged
      * @param callId the call which changes.
      * @param state the new state
      * @param code unused for now
      */
-    void slotCallStateChanged(const QString& callId, const QString &state, int code);
+    void slotCallStateChanged(const QString& callId, const QString& state, int code);
     /**
      * Parse a call message and emit incomingVCardChunk if it's a VCard chunk
      * else incomingCallMessage if it's a text message
@@ -396,7 +397,7 @@ private Q_SLOTS:
      */
     void slotIncomingMessage(const QString& callId,
                              const QString& from,
-                             const QMap<QString,QString>& interaction);
+                             const QMap<QString, QString>& interaction);
     /**
      * Emit conferenceCreated
      * @param callId of the conference
@@ -422,7 +423,8 @@ private Q_SLOTS:
      */
     void slotAccountMessageStatusChanged(const QString& accountId,
                                          const uint64_t id,
-                                         const QString& to, int status);
+                                         const QString& to,
+                                         int status);
 
     void slotDataTransferEvent(qulonglong id, uint code);
 
@@ -431,26 +433,27 @@ private Q_SLOTS:
      * @param accountId
      * @param devices A map of device IDs and corresponding labels
      */
-    void slotKnownDevicesChanged(const QString& accountId,
-                                 const MapStringString& devices);
+    void slotKnownDevicesChanged(const QString& accountId, const MapStringString& devices);
 
-     /**
-      * Emit deviceRevocationEnded
-      * @param accountId
-      * @param deviceId
-      * @param status SUCCESS = 0, WRONG_PASSWORD = 1, UNKNOWN_DEVICE = 2
-      */
-     void slotDeviceRevokationEnded(const QString& accountId,
-                                    const QString& deviceId,
-                                    const int status);
+    /**
+     * Emit deviceRevocationEnded
+     * @param accountId
+     * @param deviceId
+     * @param status SUCCESS = 0, WRONG_PASSWORD = 1, UNKNOWN_DEVICE = 2
+     */
+    void slotDeviceRevokationEnded(const QString& accountId,
+                                   const QString& deviceId,
+                                   const int status);
 
-     /**
+    /**
      * Emit account avatar has been received
      * @param accountId
      * @param displayName
      * @param userPhoto
      */
-     void slotAccountProfileReceived(const QString& accountId, const QString& displayName, const QString& userPhoto);
+    void slotAccountProfileReceived(const QString& accountId,
+                                    const QString& displayName,
+                                    const QString& userPhoto);
 
     /**
      * Emit exportOnRingEnded
@@ -474,7 +477,10 @@ private Q_SLOTS:
      * @param status
      * @param name
      */
-    void slotRegisteredNameFound(const QString& accountId, int status, const QString& address, const QString& name);
+    void slotRegisteredNameFound(const QString& accountId,
+                                 int status,
+                                 const QString& address,
+                                 const QString& name);
 
     /**
      * emit migrationEnded
@@ -484,9 +490,9 @@ private Q_SLOTS:
     void slotMigrationEnded(const QString& accountId, const QString& status);
 
     /**
-    * emit debugMessageReceived
-    * @param message
-    */
+     * emit debugMessageReceived
+     * @param message
+     */
     void slotDebugMessageReceived(const QString& message);
 
     /**
@@ -536,10 +542,7 @@ private Q_SLOTS:
      * @param old VM
      * @param new Urgent VM
      */
-    void slotVoiceMailNotify(const QString& accountId,
-                             int newCount,
-                             int oldCount,
-                             int urgentCount);
+    void slotVoiceMailNotify(const QString& accountId, int newCount, int oldCount, int urgentCount);
 
     /**
      * Emit recordPlaybackStopped
