@@ -106,18 +106,28 @@ ColumnLayout {
         var resolution
         var rate
         if(isResolutionIndex) {
-            resolution = resolutionComboBoxSetting.comboModel.data(resolutionComboBoxSetting.comboModel.index(index, 0), VideoFormatResolutionModel.Resolution)
+            resolution = resolutionComboBoxSetting.comboModel.data(
+                        resolutionComboBoxSetting.comboModel.index(index, 0),
+                        VideoFormatResolutionModel.Resolution)
             fpsComboBoxSetting.comboModel.currentResolution = resolution
             fpsComboBoxSetting.setCurrentIndex(fpsComboBoxSetting.comboModel.getCurrentSettingIndex())
-            rate = fpsComboBoxSetting.comboModel.data(fpsComboBoxSetting.comboModel.index(index, 0), VideoFormatFpsModel.FPS)
+            rate = fpsComboBoxSetting.comboModel.data(
+                        fpsComboBoxSetting.comboModel.index(0, 0),
+                        VideoFormatFpsModel.FPS)
         } else {
-            resolution = resolutionComboBoxSetting.comboModel.data(resolutionComboBoxSetting.comboModel.index(index, 0), VideoFormatResolutionModel.Resolution)
+            resolution = resolutionComboBoxSetting.comboModel.data(
+                        resolutionComboBoxSetting.comboModel.index(
+                            resolutionComboBoxSetting.modelIndex, 0),
+                        VideoFormatResolutionModel.Resolution)
             fpsComboBoxSetting.comboModel.currentResolution = resolution
-            rate = fpsComboBoxSetting.comboModel.data(fpsComboBoxSetting.comboModel.model.index(index, 0), VideoFormatFpsModel.FPS)
+            rate = fpsComboBoxSetting.comboModel.data(
+                        fpsComboBoxSetting.comboModel.index(index, 0),
+                        VideoFormatFpsModel.FPS)
         }
 
         try {
-           SettingsAdapter.set_Video_Settings_Rate_And_Resolution(AVModel.getCurrentVideoCaptureDevice(),rate,resolution)
+           SettingsAdapter.set_Video_Settings_Rate_And_Resolution(
+               AVModel.getCurrentVideoCaptureDevice(),rate, resolution)
             updatePreviewRatio(resolution)
         } catch(error){ console.warn(error.message) }
     }
