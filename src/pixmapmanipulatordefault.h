@@ -21,19 +21,24 @@
 
 namespace Interfaces {
 
-///Default implementation of the PixmapManipulator interface which simply returns empty QVariants/QByteArrays
-class LIB_EXPORT PixmapManipulatorDefault : public PixmapManipulatorI {
+/// Default implementation of the PixmapManipulator interface which simply returns empty
+/// QVariants/QByteArrays
+class LIB_EXPORT PixmapManipulatorDefault : public PixmapManipulatorI
+{
 public:
-    QVariant   conversationPhoto(const lrc::api::conversation::Info& conversation,
-                                 const lrc::api::account::Info& accountInfo,
-                                 const QSize& size,
-                                 bool displayPresence = true) override;
-    QVariant   numberCategoryIcon(const QVariant& p, const QSize& size, bool displayPresence = false, bool isPresent = false) override;
+    QVariant conversationPhoto(const lrc::api::conversation::Info& conversation,
+                               const lrc::api::account::Info& accountInfo,
+                               const QSize& size,
+                               bool displayPresence = true) override;
+    QVariant numberCategoryIcon(const QVariant& p,
+                                const QSize& size,
+                                bool displayPresence = false,
+                                bool isPresent = false) override;
     QByteArray toByteArray(const QVariant& pxm) override;
-    QVariant   personPhoto(const QByteArray& data, const QString& type = "PNG") override;
-    QVariant   decorationRole(const QModelIndex& index) override;
-    QVariant   decorationRole(const lrc::api::conversation::Info& conversation,
-                              const lrc::api::account::Info& accountInfo) override;
+    QVariant personPhoto(const QByteArray& data, const QString& type = "PNG") override;
+    QVariant decorationRole(const QModelIndex& index) override;
+    QVariant decorationRole(const lrc::api::conversation::Info& conversation,
+                            const lrc::api::account::Info& accountInfo) override;
     /**
      * Return the icons associated with the action and its state
      */

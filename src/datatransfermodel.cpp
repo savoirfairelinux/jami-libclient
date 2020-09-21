@@ -36,26 +36,38 @@
 #include <QtCore/QStandardPaths>
 #include <QUuid>
 
-namespace lrc { namespace api {
+namespace lrc {
+namespace api {
 
 // DRING to LRC event code conversion
-static inline
-datatransfer::Status
+static inline datatransfer::Status
 convertDataTransferEvent(DRing::DataTransferEventCode event)
 {
     switch (event) {
-        case DRing::DataTransferEventCode::invalid: return datatransfer::Status::INVALID;
-        case DRing::DataTransferEventCode::created: return datatransfer::Status::on_connection;
-        case DRing::DataTransferEventCode::unsupported: return datatransfer::Status::unsupported;
-        case DRing::DataTransferEventCode::wait_peer_acceptance: return datatransfer::Status::on_connection;
-        case DRing::DataTransferEventCode::wait_host_acceptance: return datatransfer::Status::on_connection;
-        case DRing::DataTransferEventCode::ongoing: return datatransfer::Status::on_progress;
-        case DRing::DataTransferEventCode::finished: return datatransfer::Status::success;
-        case DRing::DataTransferEventCode::closed_by_host: return datatransfer::Status::stop_by_host;
-        case DRing::DataTransferEventCode::closed_by_peer: return datatransfer::Status::stop_by_peer;
-        case DRing::DataTransferEventCode::invalid_pathname: return datatransfer::Status::invalid_pathname;
-        case DRing::DataTransferEventCode::unjoinable_peer: return datatransfer::Status::unjoinable_peer;
-        case DRing::DataTransferEventCode::timeout_expired: return datatransfer::Status::timeout_expired;
+    case DRing::DataTransferEventCode::invalid:
+        return datatransfer::Status::INVALID;
+    case DRing::DataTransferEventCode::created:
+        return datatransfer::Status::on_connection;
+    case DRing::DataTransferEventCode::unsupported:
+        return datatransfer::Status::unsupported;
+    case DRing::DataTransferEventCode::wait_peer_acceptance:
+        return datatransfer::Status::on_connection;
+    case DRing::DataTransferEventCode::wait_host_acceptance:
+        return datatransfer::Status::on_connection;
+    case DRing::DataTransferEventCode::ongoing:
+        return datatransfer::Status::on_progress;
+    case DRing::DataTransferEventCode::finished:
+        return datatransfer::Status::success;
+    case DRing::DataTransferEventCode::closed_by_host:
+        return datatransfer::Status::stop_by_host;
+    case DRing::DataTransferEventCode::closed_by_peer:
+        return datatransfer::Status::stop_by_peer;
+    case DRing::DataTransferEventCode::invalid_pathname:
+        return datatransfer::Status::invalid_pathname;
+    case DRing::DataTransferEventCode::unjoinable_peer:
+        return datatransfer::Status::unjoinable_peer;
+    case DRing::DataTransferEventCode::timeout_expired:
+        return datatransfer::Status::timeout_expired;
     }
     throw std::runtime_error("BUG: broken convertDataTransferEvent() switch");
 }
@@ -110,7 +122,7 @@ DataTransferModel::registerTransferId(long long dringId, int interactionId)
 
 DataTransferModel::DataTransferModel()
     : QObject(nullptr)
-    , pimpl_ { std::make_unique<Impl>(*this) }
+    , pimpl_ {std::make_unique<Impl>(*this)}
 {}
 
 DataTransferModel::~DataTransferModel() = default;
@@ -120,16 +132,18 @@ DataTransferModel::transferInfo(long long ringId, datatransfer::Info& lrc_info)
 {
     DataTransferInfo infoFromDaemon;
     if (ConfigurationManager::instance().dataTransferInfo(ringId, infoFromDaemon) == 0) {
-        //lrc_info.uid = ?
-        lrc_info.status = convertDataTransferEvent(DRing::DataTransferEventCode(infoFromDaemon.lastEvent));
-        lrc_info.isOutgoing = !(infoFromDaemon.flags & (1 << uint32_t(DRing::DataTransferFlags::direction)));
+        // lrc_info.uid = ?
+        lrc_info.status = convertDataTransferEvent(
+            DRing::DataTransferEventCode(infoFromDaemon.lastEvent));
+        lrc_info.isOutgoing = !(infoFromDaemon.flags
+                                & (1 << uint32_t(DRing::DataTransferFlags::direction)));
         lrc_info.totalSize = infoFromDaemon.totalSize;
         lrc_info.progress = infoFromDaemon.bytesProgress;
         lrc_info.path = infoFromDaemon.path;
         lrc_info.displayName = infoFromDaemon.displayName;
         lrc_info.accountId = infoFromDaemon.accountId;
         lrc_info.peerUri = infoFromDaemon.peer;
-        //lrc_info.timestamp = ?
+        // lrc_info.timestamp = ?
         return;
     }
 
@@ -137,8 +151,10 @@ DataTransferModel::transferInfo(long long ringId, datatransfer::Info& lrc_info)
 }
 
 void
-DataTransferModel::sendFile(const QString& account_id, const QString& peer_uri,
-                            const QString& file_path, const QString& display_name)
+DataTransferModel::sendFile(const QString& account_id,
+                            const QString& peer_uri,
+                            const QString& file_path,
+                            const QString& display_name)
 {
     DataTransferInfo info;
     qulonglong id;
@@ -156,15 +172,14 @@ DataTransferModel::sendFile(const QString& account_id, const QString& peer_uri,
 void
 DataTransferModel::bytesProgress(int interactionId, int64_t& total, int64_t& progress)
 {
-    ConfigurationManager::instance().dataTransferBytesProgress(pimpl_->lrc2dringIdMap.at(interactionId),
-                                                               reinterpret_cast<qlonglong&>(total),
-                                                               reinterpret_cast<qlonglong&>(progress));
+    ConfigurationManager::instance()
+        .dataTransferBytesProgress(pimpl_->lrc2dringIdMap.at(interactionId),
+                                   reinterpret_cast<qlonglong&>(total),
+                                   reinterpret_cast<qlonglong&>(progress));
 }
 
 QString
-DataTransferModel::accept(int interactionId,
-                          const QString& file_path,
-                          std::size_t offset)
+DataTransferModel::accept(int interactionId, const QString& file_path, std::size_t offset)
 {
     auto unique_file_path = pimpl_->getUniqueFilePath(file_path);
     auto dring_id = pimpl_->lrc2dringIdMap.at(interactionId);
@@ -194,14 +209,16 @@ DataTransferModel::getDringIdFromInteractionId(int interactionId)
 QString
 DataTransferModel::createDefaultDirectory()
 {
-    auto defaultDirectory = QStandardPaths::writableLocation(QStandardPaths::DownloadLocation) + "/Jami";
+    auto defaultDirectory = QStandardPaths::writableLocation(QStandardPaths::DownloadLocation)
+                            + "/Jami";
     QDir dir(defaultDirectory);
     if (!dir.exists())
         dir.mkpath(".");
     return defaultDirectory;
 }
 
-}} // namespace lrc::api
+} // namespace api
+} // namespace lrc
 
 #include "api/moc_datatransfermodel.cpp"
 #include "datatransfermodel.moc"

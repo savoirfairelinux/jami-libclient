@@ -40,14 +40,13 @@
 Q_DECLARE_METATYPE(std::string);
 #endif
 
-namespace lrc
-{
+namespace lrc {
 
 using namespace api;
 
 CallbacksHandler::CallbacksHandler(const Lrc& parent)
-: QObject()
-, parent(parent)
+    : QObject()
+    , parent(parent)
 {
     // Get signals from daemon
     connect(&ConfigurationManager::instance(),
@@ -236,9 +235,7 @@ CallbacksHandler::CallbacksHandler(const Lrc& parent)
             Qt::QueuedConnection);
 }
 
-CallbacksHandler::~CallbacksHandler()
-{
-}
+CallbacksHandler::~CallbacksHandler() {}
 
 void
 CallbacksHandler::subscribeToDebugReceived()
@@ -282,7 +279,10 @@ CallbacksHandler::slotNearbyPeerSubscription(const QString& accountId,
 }
 
 void
-CallbacksHandler::slotVoiceMailNotify(const QString& accountId, int newCount, int oldCount, int urgentCount)
+CallbacksHandler::slotVoiceMailNotify(const QString& accountId,
+                                      int newCount,
+                                      int oldCount,
+                                      int urgentCount)
 {
     emit voiceMailNotify(accountId, newCount, oldCount, urgentCount);
 }
@@ -320,7 +320,9 @@ CallbacksHandler::slotIncomingContactRequest(const QString& accountId,
 }
 
 void
-CallbacksHandler::slotIncomingCall(const QString &accountId, const QString &callId, const QString &fromUri)
+CallbacksHandler::slotIncomingCall(const QString& accountId,
+                                   const QString& callId,
+                                   const QString& fromUri)
 {
     QString displayname;
     QString fromQString;
@@ -334,7 +336,7 @@ CallbacksHandler::slotIncomingCall(const QString &accountId, const QString &call
     } else {
         auto left = fromUri.indexOf("<") + 1;
         auto right = fromUri.indexOf("@");
-        fromQString = fromUri.mid(left, right-left);
+        fromQString = fromUri.mid(left, right - left);
         displayname = fromUri.left(fromUri.indexOf("<") - 1);
     }
     emit incomingCall(accountId, callId, fromQString, displayname);
@@ -347,8 +349,7 @@ CallbacksHandler::slotCallStateChanged(const QString& callId, const QString& sta
 }
 
 void
-CallbacksHandler::slotAccountDetailsChanged(const QString& accountId,
-                                            const MapStringString& details)
+CallbacksHandler::slotAccountDetailsChanged(const QString& accountId, const MapStringString& details)
 {
     emit accountDetailsChanged(accountId, details);
 }
@@ -386,23 +387,20 @@ CallbacksHandler::slotIncomingMessage(const QString& callId,
     if (from.contains("@ring.dht")) {
         from2 = QString(from).replace("@ring.dht", "");
     } else {
-        auto left = from.indexOf(":")+1;
+        auto left = from.indexOf(":") + 1;
         auto right = from.indexOf("@");
-        from2 = from.mid(left, right-left);
+        from2 = from.mid(left, right - left);
     }
 
     for (auto& e : interaction.toStdMap()) {
         if (e.first.contains("x-ring/ring.profile.vcard")) {
-            auto pieces0 = e.first.split( ";" );
-            auto pieces1 = pieces0[1].split( "," );
-            auto pieces2 = pieces1[1].split( "=" );
-            auto pieces3 = pieces1[2].split( "=" );
-            emit incomingVCardChunk(callId,
-                                    from2,
-                                    pieces2[1].toInt(),
-                                    pieces3[1].toInt(),
-                                    e.second);
-        } else if (e.first.contains("text/plain")) { // we consider it as an usual message interaction
+            auto pieces0 = e.first.split(";");
+            auto pieces1 = pieces0[1].split(",");
+            auto pieces2 = pieces1[1].split("=");
+            auto pieces3 = pieces1[2].split("=");
+            emit incomingVCardChunk(callId, from2, pieces2[1].toInt(), pieces3[1].toInt(), e.second);
+        } else if (e.first.contains(
+                       "text/plain")) { // we consider it as an usual message interaction
             emit incomingCallMessage(callId, from2, e.second);
         }
     }
@@ -429,10 +427,10 @@ CallbacksHandler::slotConferenceRemoved(const QString& callId)
 void
 CallbacksHandler::slotAccountMessageStatusChanged(const QString& accountId,
                                                   const uint64_t id,
-                                                  const QString& to, int status)
+                                                  const QString& to,
+                                                  int status)
 {
-    emit accountMessageStatusChanged(accountId, id,
-                                     to, status);
+    emit accountMessageStatusChanged(accountId, id, to, status);
 }
 
 void
@@ -483,8 +481,7 @@ CallbacksHandler::slotDataTransferEvent(qulonglong dringId, uint codeStatus)
 }
 
 void
-CallbacksHandler::slotKnownDevicesChanged(const QString& accountId,
-                                          const MapStringString& devices)
+CallbacksHandler::slotKnownDevicesChanged(const QString& accountId, const MapStringString& devices)
 {
     emit knownDevicesChanged(accountId, devices);
 }
@@ -512,13 +509,18 @@ CallbacksHandler::slotExportOnRingEnded(const QString& accountId, int status, co
 }
 
 void
-CallbacksHandler::slotNameRegistrationEnded(const QString& accountId, int status, const QString& name)
+CallbacksHandler::slotNameRegistrationEnded(const QString& accountId,
+                                            int status,
+                                            const QString& name)
 {
     emit nameRegistrationEnded(accountId, status, name);
 }
 
 void
-CallbacksHandler::slotRegisteredNameFound(const QString& accountId, int status, const QString& address, const QString& name)
+CallbacksHandler::slotRegisteredNameFound(const QString& accountId,
+                                          int status,
+                                          const QString& address,
+                                          const QString& name)
 {
     emit registeredNameFound(accountId, status, address, name);
 }
@@ -536,7 +538,10 @@ CallbacksHandler::slotDebugMessageReceived(const QString& message)
 }
 
 void
-CallbacksHandler::slotStartedDecoding(const QString& id, const QString& shmPath, int width, int height)
+CallbacksHandler::slotStartedDecoding(const QString& id,
+                                      const QString& shmPath,
+                                      int width,
+                                      int height)
 {
     emit startedDecoding(id, shmPath, width, height);
 }

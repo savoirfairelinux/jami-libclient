@@ -23,18 +23,18 @@
 
 #pragma once
 
-//variables contain in the map information
-static QString LOCAL_FPS           = QStringLiteral("local FPS");
-static QString LOCAL_AUDIO_CODEC   = QStringLiteral("local audio codec");
-static QString LOCAL_VIDEO_CODEC   = QStringLiteral("local video codec");
-static QString LOCAL_WIDTH         = QStringLiteral("local width");
-static QString LOCAL_HEIGHT        = QStringLiteral("local height");
-static QString REMOTE_FPS          = QStringLiteral("remote FPS");
-static QString REMOTE_WIDTH        = QStringLiteral("remote width");
-static QString REMOTE_HEIGHT       = QStringLiteral("remote height");
-static QString REMOTE_VIDEO_CODEC  = QStringLiteral("remote video codec");
-static QString REMOTE_AUDIO_CODEC  = QStringLiteral("remote audio codec");
-static QString CALL_ID             = QStringLiteral("callID");
+// variables contain in the map information
+static QString LOCAL_FPS = QStringLiteral("local FPS");
+static QString LOCAL_AUDIO_CODEC = QStringLiteral("local audio codec");
+static QString LOCAL_VIDEO_CODEC = QStringLiteral("local video codec");
+static QString LOCAL_WIDTH = QStringLiteral("local width");
+static QString LOCAL_HEIGHT = QStringLiteral("local height");
+static QString REMOTE_FPS = QStringLiteral("remote FPS");
+static QString REMOTE_WIDTH = QStringLiteral("remote width");
+static QString REMOTE_HEIGHT = QStringLiteral("remote height");
+static QString REMOTE_VIDEO_CODEC = QStringLiteral("remote video codec");
+static QString REMOTE_AUDIO_CODEC = QStringLiteral("remote audio codec");
+static QString CALL_ID = QStringLiteral("callID");
 
 class SmartInfoHubPrivate;
 class SmartInfoHubPrivate final : public QObject

@@ -20,9 +20,9 @@
 #include "api/newvideo.h"
 #include "dbus/videomanager.h"
 #ifdef ENABLE_LIBWRAP
- #include "directrenderer.h"
+#include "directrenderer.h"
 #else
- #include "shmrenderer.h"
+#include "shmrenderer.h"
 #endif
 
 // std
@@ -31,17 +31,18 @@
 // Qt
 #include <QSize>
 
-namespace lrc
-{
+namespace lrc {
 
 using namespace api::video;
 
-class RendererPimpl: public QObject
+class RendererPimpl : public QObject
 {
 public:
-    RendererPimpl(Renderer& linked, const QString& id,
-        Settings videoSettings, const QString& shmPath,
-        const bool useAVFrame);
+    RendererPimpl(Renderer& linked,
+                  const QString& id,
+                  Settings videoSettings,
+                  const QString& shmPath,
+                  const bool useAVFrame);
     ~RendererPimpl();
 
     Renderer& linked;
@@ -61,9 +62,9 @@ public:
     std::mutex rendering_mtx_;
 
 #ifdef ENABLE_LIBWRAP
-     std::unique_ptr<Video::DirectRenderer> renderer;
+    std::unique_ptr<Video::DirectRenderer> renderer;
 #else
-     std::unique_ptr<Video::ShmRenderer> renderer;
+    std::unique_ptr<Video::ShmRenderer> renderer;
 #endif
 
 public Q_SLOTS:
@@ -73,15 +74,15 @@ public Q_SLOTS:
     void slotFrameUpdated();
 };
 
-namespace api
-{
+namespace api {
 
-namespace video
-{
+namespace video {
 
-Renderer::Renderer(const QString& id, Settings videoSettings,
-    const QString& shmPath, const bool useAVFrame)
-: pimpl_(std::make_unique<RendererPimpl>(*this, id, videoSettings, shmPath, useAVFrame))
+Renderer::Renderer(const QString& id,
+                   Settings videoSettings,
+                   const QString& shmPath,
+                   const bool useAVFrame)
+    : pimpl_(std::make_unique<RendererPimpl>(*this, id, videoSettings, shmPath, useAVFrame))
 {}
 
 Renderer::~Renderer()
@@ -95,33 +96,33 @@ Renderer::initThread()
     if (!pimpl_->renderer)
         return;
 #ifdef ENABLE_LIBWRAP
-    if(pimpl_->usingAVFrame_) {
+    if (pimpl_->usingAVFrame_) {
         VideoManager::instance().registerAVSinkTarget(pimpl_->id_, pimpl_->renderer->avTarget());
     } else {
         VideoManager::instance().registerSinkTarget(pimpl_->id_, pimpl_->renderer->target());
     }
 #endif
     if (!pimpl_->thread_.isRunning())
-       pimpl_->thread_.start();
+        pimpl_->thread_.start();
 }
 
 void
 Renderer::update(const QString& res, const QString& shmPath)
 {
     if (!pimpl_->thread_.isRunning())
-       pimpl_->thread_.start();
+        pimpl_->thread_.start();
 
     // res = "WIDTHxHEIGHT"
     QSize size = RendererPimpl::stringToQSize(res);
     pimpl_->renderer->setSize(size);
 
 #ifdef ENABLE_LIBWRAP
-    if(pimpl_->usingAVFrame_) {
+    if (pimpl_->usingAVFrame_) {
         VideoManager::instance().registerAVSinkTarget(pimpl_->id_, pimpl_->renderer->avTarget());
     } else {
         VideoManager::instance().registerSinkTarget(pimpl_->id_, pimpl_->renderer->target());
     }
-#else //ENABLE_LIBWRAP
+#else // ENABLE_LIBWRAP
     pimpl_->renderer->setShmPath(shmPath);
 #endif
 }
@@ -136,7 +137,8 @@ Renderer::isRendering() const
 }
 
 void
-Renderer::useAVFrame(bool useAVFrame) {
+Renderer::useAVFrame(bool useAVFrame)
+{
     pimpl_->usingAVFrame_ = useAVFrame;
 #ifdef ENABLE_LIBWRAP
     pimpl_->renderer->configureTarget(useAVFrame);
@@ -164,7 +166,7 @@ Renderer::currentFrame() const
 }
 
 #if defined(ENABLE_LIBWRAP)
-std::unique_ptr<AVFrame, void(*)(AVFrame*)>
+std::unique_ptr<AVFrame, void (*)(AVFrame*)>
 Renderer::currentAVFrame() const
 {
     return pimpl_->renderer->currentAVFrame();
@@ -206,38 +208,39 @@ Renderer::stopRendering()
     }
 }
 
-}} // end of api::video
+} // namespace video
+} // namespace api
 
-RendererPimpl::RendererPimpl(Renderer& linked, const QString& id,
-    Settings videoSettings, const QString& shmPath, bool useAVFrame)
-: linked(linked)
-, id_(id)
-, videoSettings_(videoSettings)
-, usingAVFrame_(useAVFrame)
+RendererPimpl::RendererPimpl(Renderer& linked,
+                             const QString& id,
+                             Settings videoSettings,
+                             const QString& shmPath,
+                             bool useAVFrame)
+    : linked(linked)
+    , id_(id)
+    , videoSettings_(videoSettings)
+    , usingAVFrame_(useAVFrame)
 {
     QSize size = stringToQSize(videoSettings.size);
 #ifdef ENABLE_LIBWRAP
     renderer = std::make_unique<Video::DirectRenderer>(id, size, usingAVFrame_);
-#else  // ENABLE_LIBWRAP
+#else // ENABLE_LIBWRAP
     renderer = std::make_unique<Video::ShmRenderer>(id, shmPath, size);
 #endif
     renderer->moveToThread(&thread_);
 
-    connect(&*renderer, &Video::Renderer::frameUpdated,
-            this, &RendererPimpl::slotFrameUpdated);
+    connect(&*renderer, &Video::Renderer::frameUpdated, this, &RendererPimpl::slotFrameUpdated);
 }
 
-RendererPimpl::~RendererPimpl()
-{
-
-}
+RendererPimpl::~RendererPimpl() {}
 
 QSize
 RendererPimpl::stringToQSize(const QString& res)
 {
     QString sizeStr = res;
     auto sizeSplited = sizeStr.split('x');
-    if (sizeSplited.size() != 2) return {};
+    if (sizeSplited.size() != 2)
+        return {};
     auto width = sizeSplited.at(0).toInt();
     auto height = sizeSplited.at(1).toInt();
     return QSize(width, height);

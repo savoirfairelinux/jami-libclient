@@ -44,19 +44,18 @@
 // daemon
 #include <account_const.h>
 
-//qt
+// qt
 #include <QtGui/QPixmap>
 #include <QtGui/QImage>
 #include <QtCore/QBuffer>
 
 #include <atomic>
 
-namespace lrc
-{
+namespace lrc {
 
 using namespace api;
 
-class NewAccountModelPimpl: public QObject
+class NewAccountModelPimpl : public QObject
 {
     Q_OBJECT
 public:
@@ -68,8 +67,7 @@ public:
                          MigrationCb& didMigrateCb);
     ~NewAccountModelPimpl();
 
-    using AccountInfoDbMap = std::map<QString,
-                                      std::pair<account::Info, std::shared_ptr<Database>>>;
+    using AccountInfoDbMap = std::map<QString, std::pair<account::Info, std::shared_ptr<Database>>>;
 
     NewAccountModel& linked;
     Lrc& lrc;
@@ -153,7 +151,10 @@ public Q_SLOTS:
      * @param address
      * @param name
      */
-    void slotRegisteredNameFound(const QString& accountId, int status, const QString& address, const QString& name);
+    void slotRegisteredNameFound(const QString& accountId,
+                                 int status,
+                                 const QString& address,
+                                 const QString& name);
 
     /**
      * Emit migrationEnded
@@ -168,7 +169,9 @@ public Q_SLOTS:
      * @param displayName
      * @param userPhoto
      */
-    void slotAccountProfileReceived(const QString& accountId, const QString& displayName, const QString& userPhoto);
+    void slotAccountProfileReceived(const QString& accountId,
+                                    const QString& displayName,
+                                    const QString& userPhoto);
 };
 
 NewAccountModel::NewAccountModel(Lrc& lrc,
@@ -176,15 +179,16 @@ NewAccountModel::NewAccountModel(Lrc& lrc,
                                  const BehaviorController& behaviorController,
                                  MigrationCb& willMigrateCb,
                                  MigrationCb& didMigrateCb)
-: QObject(nullptr)
-, pimpl_(std::make_unique<NewAccountModelPimpl>(*this, lrc, callbacksHandler, behaviorController,
-                                                willMigrateCb, didMigrateCb))
-{
-}
+    : QObject(nullptr)
+    , pimpl_(std::make_unique<NewAccountModelPimpl>(*this,
+                                                    lrc,
+                                                    callbacksHandler,
+                                                    behaviorController,
+                                                    willMigrateCb,
+                                                    didMigrateCb))
+{}
 
-NewAccountModel::~NewAccountModel()
-{
-}
+NewAccountModel::~NewAccountModel() {}
 
 QStringList
 NewAccountModel::getAccountList() const
@@ -207,7 +211,8 @@ NewAccountModel::setAccountEnabled(const QString& accountId, bool enabled) const
 {
     auto account = pimpl_->accounts.find(accountId);
     if (account == pimpl_->accounts.end()) {
-        throw std::out_of_range("NewAccountModel::getAccountConfig, can't find " + accountId.toStdString());
+        throw std::out_of_range("NewAccountModel::getAccountConfig, can't find "
+                                + accountId.toStdString());
     }
     auto& accountInfo = account->second.first;
     accountInfo.enabled = enabled;
@@ -229,25 +234,29 @@ NewAccountModel::setAccountConfig(const QString& accountId,
     // TODO: move these into the ConfProperties_t struct ?
     using namespace DRing::Account;
     qDebug("UPNP_ENABLED: %s\n", details[ConfProperties::UPNP_ENABLED].toStdString().c_str());
-    details[ConfProperties::ENABLED]                    = accountInfo.enabled ? QString("true") : QString ("false");
-    details[ConfProperties::ALIAS]                      = accountInfo.profileInfo.alias;
-    details[ConfProperties::DISPLAYNAME]                = accountInfo.profileInfo.alias;
-    details[ConfProperties::TYPE]                       = (accountInfo.profileInfo.type == profile::Type::RING) ? QString(ProtocolNames::RING) : QString(ProtocolNames::SIP);
+    details[ConfProperties::ENABLED] = accountInfo.enabled ? QString("true") : QString("false");
+    details[ConfProperties::ALIAS] = accountInfo.profileInfo.alias;
+    details[ConfProperties::DISPLAYNAME] = accountInfo.profileInfo.alias;
+    details[ConfProperties::TYPE] = (accountInfo.profileInfo.type == profile::Type::RING)
+                                        ? QString(ProtocolNames::RING)
+                                        : QString(ProtocolNames::SIP);
     if (accountInfo.profileInfo.type == profile::Type::RING) {
-        details[ConfProperties::USERNAME] = accountInfo.profileInfo.uri.prepend((accountInfo.profileInfo.type == profile::Type::RING) ? "ring:" : "");
+        details[ConfProperties::USERNAME] = accountInfo.profileInfo.uri.prepend(
+            (accountInfo.profileInfo.type == profile::Type::RING) ? "ring:" : "");
     } else if (accountInfo.profileInfo.type == profile::Type::SIP) {
         VectorMapStringString finalCred;
 
         MapStringString credentials;
         credentials[ConfProperties::USERNAME] = confProperties.username;
         credentials[ConfProperties::PASSWORD] = confProperties.password;
-        credentials[ConfProperties::REALM] = confProperties.realm.isEmpty() ? "*" : confProperties.realm;
+        credentials[ConfProperties::REALM] = confProperties.realm.isEmpty() ? "*"
+                                                                            : confProperties.realm;
 
         auto credentialsVec = confProperties.credentials;
         credentialsVec[0] = credentials;
-        for (auto const &i : credentialsVec) {
+        for (auto const& i : credentialsVec) {
             QMap<QString, QString> credMap;
-            for (auto const &j : i.toStdMap()) {
+            for (auto const& j : i.toStdMap()) {
                 credMap[j.first] = j.second;
             }
             finalCred.append(credMap);
@@ -265,7 +274,8 @@ NewAccountModel::getAccountConfig(const QString& accountId) const
 {
     auto account = pimpl_->accounts.find(accountId);
     if (account == pimpl_->accounts.end()) {
-        throw std::out_of_range("NewAccountModel::getAccountConfig, can't find " + accountId.toStdString());
+        throw std::out_of_range("NewAccountModel::getAccountConfig, can't find "
+                                + accountId.toStdString());
     }
     auto& accountInfo = account->second.first;
     return accountInfo.confProperties;
@@ -302,13 +312,17 @@ NewAccountModel::setAvatar(const QString& accountId, const QString& avatar)
 }
 
 bool
-NewAccountModel::registerName(const QString& accountId, const QString& password, const QString& username)
+NewAccountModel::registerName(const QString& accountId,
+                              const QString& password,
+                              const QString& username)
 {
     return ConfigurationManager::instance().registerName(accountId, password, username);
 }
 
 bool
-NewAccountModel::exportToFile(const QString& accountId, const QString& path, const QString& password) const
+NewAccountModel::exportToFile(const QString& accountId,
+                              const QString& path,
+                              const QString& password) const
 {
     return ConfigurationManager::instance().exportToFile(accountId, path, password);
 }
@@ -330,8 +344,9 @@ NewAccountModel::changeAccountPassword(const QString& accountId,
                                        const QString& currentPassword,
                                        const QString& newPassword) const
 {
-    return ConfigurationManager::instance()
-    .changeAccountPassword(accountId, currentPassword, newPassword);
+    return ConfigurationManager::instance().changeAccountPassword(accountId,
+                                                                  currentPassword,
+                                                                  newPassword);
 }
 
 void
@@ -339,7 +354,8 @@ NewAccountModel::flagFreeable(const QString& accountId) const
 {
     auto account = pimpl_->accounts.find(accountId);
     if (account == pimpl_->accounts.end())
-        throw std::out_of_range("NewAccountModel::flagFreeable, can't find " + accountId.toStdString());
+        throw std::out_of_range("NewAccountModel::flagFreeable, can't find "
+                                + accountId.toStdString());
 
     {
         std::lock_guard<std::mutex> lock(pimpl_->m_mutex_account_removal);
@@ -353,7 +369,8 @@ NewAccountModel::getAccountInfo(const QString& accountId) const
 {
     auto accountInfo = pimpl_->accounts.find(accountId);
     if (accountInfo == pimpl_->accounts.end())
-        throw std::out_of_range("NewAccountModel::getAccountInfo, can't find " + accountId.toStdString());
+        throw std::out_of_range("NewAccountModel::getAccountInfo, can't find "
+                                + accountId.toStdString());
 
     return accountInfo->second.first;
 }
@@ -364,11 +381,11 @@ NewAccountModelPimpl::NewAccountModelPimpl(NewAccountModel& linked,
                                            const BehaviorController& behaviorController,
                                            MigrationCb& willMigrateCb,
                                            MigrationCb& didMigrateCb)
-: linked(linked)
-, lrc {lrc}
-, behaviorController(behaviorController)
-, callbacksHandler(callbacksHandler)
-, username_changed(false)
+    : linked(linked)
+    , lrc {lrc}
+    , behaviorController(behaviorController)
+    , callbacksHandler(callbacksHandler)
+    , username_changed(false)
 {
     const QStringList accountIds = ConfigurationManager::instance().getAccountList();
 
@@ -386,20 +403,45 @@ NewAccountModelPimpl::NewAccountModelPimpl(NewAccountModel& linked,
         addToAccounts(id, accountDbs.at(accountIds.indexOf(id)));
     }
 
-    connect(&callbacksHandler, &CallbacksHandler::accountsChanged, this, &NewAccountModelPimpl::updateAccounts);
-    connect(&callbacksHandler, &CallbacksHandler::accountStatusChanged, this, &NewAccountModelPimpl::slotAccountStatusChanged);
-    connect(&callbacksHandler, &CallbacksHandler::accountDetailsChanged, this, &NewAccountModelPimpl::slotAccountDetailsChanged);
-    connect(&callbacksHandler, &CallbacksHandler::volatileAccountDetailsChanged, this, &NewAccountModelPimpl::slotVolatileAccountDetailsChanged);
-    connect(&callbacksHandler, &CallbacksHandler::exportOnRingEnded, this, &NewAccountModelPimpl::slotExportOnRingEnded);
-    connect(&callbacksHandler, &CallbacksHandler::nameRegistrationEnded, this, &NewAccountModelPimpl::slotNameRegistrationEnded);
-    connect(&callbacksHandler, &CallbacksHandler::registeredNameFound, this, &NewAccountModelPimpl::slotRegisteredNameFound);
-    connect(&callbacksHandler, &CallbacksHandler::migrationEnded, this, &NewAccountModelPimpl::slotMigrationEnded);
-    connect(&callbacksHandler, &CallbacksHandler::accountProfileReceived, this, &NewAccountModelPimpl::slotAccountProfileReceived);
+    connect(&callbacksHandler,
+            &CallbacksHandler::accountsChanged,
+            this,
+            &NewAccountModelPimpl::updateAccounts);
+    connect(&callbacksHandler,
+            &CallbacksHandler::accountStatusChanged,
+            this,
+            &NewAccountModelPimpl::slotAccountStatusChanged);
+    connect(&callbacksHandler,
+            &CallbacksHandler::accountDetailsChanged,
+            this,
+            &NewAccountModelPimpl::slotAccountDetailsChanged);
+    connect(&callbacksHandler,
+            &CallbacksHandler::volatileAccountDetailsChanged,
+            this,
+            &NewAccountModelPimpl::slotVolatileAccountDetailsChanged);
+    connect(&callbacksHandler,
+            &CallbacksHandler::exportOnRingEnded,
+            this,
+            &NewAccountModelPimpl::slotExportOnRingEnded);
+    connect(&callbacksHandler,
+            &CallbacksHandler::nameRegistrationEnded,
+            this,
+            &NewAccountModelPimpl::slotNameRegistrationEnded);
+    connect(&callbacksHandler,
+            &CallbacksHandler::registeredNameFound,
+            this,
+            &NewAccountModelPimpl::slotRegisteredNameFound);
+    connect(&callbacksHandler,
+            &CallbacksHandler::migrationEnded,
+            this,
+            &NewAccountModelPimpl::slotMigrationEnded);
+    connect(&callbacksHandler,
+            &CallbacksHandler::accountProfileReceived,
+            this,
+            &NewAccountModelPimpl::slotAccountProfileReceived);
 }
 
-NewAccountModelPimpl::~NewAccountModelPimpl()
-{
-}
+NewAccountModelPimpl::~NewAccountModelPimpl() {}
 
 void
 NewAccountModelPimpl::updateAccounts()
@@ -455,9 +497,9 @@ NewAccountModelPimpl::updateAccountDetails(account::Info& accountInfo)
     // Fill account::Info::confProperties credentials
     VectorMapStringString credGet = ConfigurationManager::instance().getCredentials(accountInfo.id);
     VectorMapStringString credToStore;
-    for (auto const &i : credGet.toStdVector()) {
+    for (auto const& i : credGet.toStdVector()) {
         MapStringString credMap;
-        for (auto const &j : i.toStdMap()) {
+        for (auto const& j : i.toStdMap()) {
             credMap[j.first] = j.second;
         }
         credToStore.push_back(credMap);
@@ -465,14 +507,15 @@ NewAccountModelPimpl::updateAccountDetails(account::Info& accountInfo)
 
     accountInfo.confProperties.credentials.swap(credToStore);
 
-    MapStringString volatileDetails = ConfigurationManager::instance().getVolatileAccountDetails(accountInfo.id);
+    MapStringString volatileDetails = ConfigurationManager::instance().getVolatileAccountDetails(
+        accountInfo.id);
     QString daemonStatus = volatileDetails[DRing::Account::ConfProperties::Registration::STATUS];
     accountInfo.status = lrc::api::account::to_status(daemonStatus);
 }
 
-
 void
-NewAccountModelPimpl::slotAccountStatusChanged(const QString& accountID, const api::account::Status status)
+NewAccountModelPimpl::slotAccountStatusChanged(const QString& accountID,
+                                               const api::account::Status status)
 {
     if (status == api::account::Status::INVALID) {
         emit linked.invalidAccountDetected(accountID);
@@ -507,11 +550,13 @@ NewAccountModelPimpl::slotAccountStatusChanged(const QString& accountID, const a
 }
 
 void
-NewAccountModelPimpl::slotAccountDetailsChanged(const QString& accountId, const MapStringString& details)
+NewAccountModelPimpl::slotAccountDetailsChanged(const QString& accountId,
+                                                const MapStringString& details)
 {
     auto account = accounts.find(accountId);
     if (account == accounts.end()) {
-        throw std::out_of_range("NewAccountModelPimpl::slotAccountDetailsChanged, can't find " + accountId.toStdString());
+        throw std::out_of_range("NewAccountModelPimpl::slotAccountDetailsChanged, can't find "
+                                + accountId.toStdString());
     }
     auto& accountInfo = account->second.first;
     accountInfo.fromDetails(details);
@@ -524,11 +569,13 @@ NewAccountModelPimpl::slotAccountDetailsChanged(const QString& accountId, const 
 }
 
 void
-NewAccountModelPimpl::slotVolatileAccountDetailsChanged(const QString& accountId, const MapStringString& details)
+NewAccountModelPimpl::slotVolatileAccountDetailsChanged(const QString& accountId,
+                                                        const MapStringString& details)
 {
     auto account = accounts.find(accountId);
     if (account == accounts.end()) {
-        qWarning() << "NewAccountModelPimpl::slotVolatileAccountDetailsChanged, can't find " << accountId;
+        qWarning() << "NewAccountModelPimpl::slotVolatileAccountDetailsChanged, can't find "
+                   << accountId;
         return;
     }
     auto& accountInfo = account->second.first;
@@ -561,11 +608,12 @@ NewAccountModelPimpl::slotExportOnRingEnded(const QString& accountID, int status
 }
 
 void
-NewAccountModelPimpl::slotNameRegistrationEnded(const QString& accountId, int status, const QString& name)
+NewAccountModelPimpl::slotNameRegistrationEnded(const QString& accountId,
+                                                int status,
+                                                const QString& name)
 {
     account::RegisterNameStatus convertedStatus = account::RegisterNameStatus::INVALID;
-    switch (status)
-    {
+    switch (status) {
     case 0: {
         convertedStatus = account::RegisterNameStatus::SUCCESS;
         auto account = accounts.find(accountId);
@@ -576,7 +624,7 @@ NewAccountModelPimpl::slotNameRegistrationEnded(const QString& accountId, int st
             linked.setAccountConfig(accountId, conf);
         }
         break;
-      }
+    }
     case 1:
         convertedStatus = account::RegisterNameStatus::WRONG_PASSWORD;
         break;
@@ -596,11 +644,13 @@ NewAccountModelPimpl::slotNameRegistrationEnded(const QString& accountId, int st
 }
 
 void
-NewAccountModelPimpl::slotRegisteredNameFound(const QString& accountId, int status, const QString& address, const QString& name)
+NewAccountModelPimpl::slotRegisteredNameFound(const QString& accountId,
+                                              int status,
+                                              const QString& address,
+                                              const QString& name)
 {
     account::LookupStatus convertedStatus = account::LookupStatus::INVALID;
-    switch (status)
-    {
+    switch (status) {
     case 0:
         convertedStatus = account::LookupStatus::SUCCESS;
         break;
@@ -631,7 +681,8 @@ NewAccountModelPimpl::slotMigrationEnded(const QString& accountId, bool ok)
         auto& accountInfo = it->second.first;
         MapStringString details = ConfigurationManager::instance().getAccountDetails(accountId);
         accountInfo.fromDetails(details);
-        MapStringString volatileDetails = ConfigurationManager::instance().getVolatileAccountDetails(accountId);
+        MapStringString volatileDetails = ConfigurationManager::instance().getVolatileAccountDetails(
+            accountId);
         QString daemonStatus = volatileDetails[DRing::Account::ConfProperties::Registration::STATUS];
         accountInfo.status = lrc::api::account::to_status(daemonStatus);
     }
@@ -639,10 +690,13 @@ NewAccountModelPimpl::slotMigrationEnded(const QString& accountId, bool ok)
 }
 
 void
-NewAccountModelPimpl::slotAccountProfileReceived(const QString& accountId, const QString& displayName, const QString& userPhoto)
+NewAccountModelPimpl::slotAccountProfileReceived(const QString& accountId,
+                                                 const QString& displayName,
+                                                 const QString& userPhoto)
 {
     auto account = accounts.find(accountId);
-    if (account == accounts.end()) return;
+    if (account == accounts.end())
+        return;
     auto& accountInfo = account->second.first;
     accountInfo.profileInfo.avatar = userPhoto;
     accountInfo.profileInfo.alias = displayName;
@@ -653,8 +707,7 @@ NewAccountModelPimpl::slotAccountProfileReceived(const QString& accountId, const
 }
 
 void
-NewAccountModelPimpl::addToAccounts(const QString& accountId,
-                                    std::shared_ptr<Database> db)
+NewAccountModelPimpl::addToAccounts(const QString& accountId, std::shared_ptr<Database> db)
 {
     if (db == nullptr) {
         try {
@@ -688,12 +741,19 @@ NewAccountModelPimpl::addToAccounts(const QString& accountId,
     // Init models for this account
     newAccInfo.accountModel = &linked;
     newAccInfo.callModel = std::make_unique<NewCallModel>(newAccInfo, callbacksHandler);
-    newAccInfo.contactModel = std::make_unique<ContactModel>(newAccInfo, *db, callbacksHandler, behaviorController);
-    newAccInfo.conversationModel = std::make_unique<ConversationModel>(newAccInfo, lrc, *db, callbacksHandler, behaviorController);
-    newAccInfo.peerDiscoveryModel = std::make_unique<PeerDiscoveryModel>(callbacksHandler, accountId);
+    newAccInfo.contactModel = std::make_unique<ContactModel>(newAccInfo,
+                                                             *db,
+                                                             callbacksHandler,
+                                                             behaviorController);
+    newAccInfo.conversationModel = std::make_unique<ConversationModel>(newAccInfo,
+                                                                       lrc,
+                                                                       *db,
+                                                                       callbacksHandler,
+                                                                       behaviorController);
+    newAccInfo.peerDiscoveryModel = std::make_unique<PeerDiscoveryModel>(callbacksHandler,
+                                                                         accountId);
     newAccInfo.deviceModel = std::make_unique<NewDeviceModel>(newAccInfo, callbacksHandler);
     newAccInfo.codecModel = std::make_unique<NewCodecModel>(newAccInfo, callbacksHandler);
-
 }
 
 void
@@ -715,7 +775,7 @@ NewAccountModelPimpl::removeFromAccounts(const QString& accountId)
 #ifdef CHK_FREEABLE_BEFORE_ERASE_ACCOUNT
     std::unique_lock<std::mutex> lock(m_mutex_account_removal);
     // Wait for client to stop using old account structs
-    m_condVar_account_removal.wait(lock, [&](){return accounts[accountId].freeable;});
+    m_condVar_account_removal.wait(lock, [&]() { return accounts[accountId].freeable; });
     lock.unlock();
 #endif
 
@@ -727,113 +787,127 @@ void
 account::Info::fromDetails(const MapStringString& details)
 {
     using namespace DRing::Account;
-    const MapStringString volatileDetails = ConfigurationManager::instance().getVolatileAccountDetails(id);
+    const MapStringString volatileDetails = ConfigurationManager::instance()
+                                                .getVolatileAccountDetails(id);
 
     // General
     if (details[ConfProperties::TYPE] != "")
-        profileInfo.type                                = details[ConfProperties::TYPE] == QString(ProtocolNames::RING) ? profile::Type::RING : profile::Type::SIP;
-    registeredName                                      = profileInfo.type == profile::Type::RING ? volatileDetails[VolatileProperties::REGISTERED_NAME] : "";
-    profileInfo.alias                                   = details[ConfProperties::DISPLAYNAME];
-    enabled                                             = toBool(details[ConfProperties::ENABLED]);
-    confProperties.mailbox                              = details[ConfProperties::MAILBOX];
-    confProperties.dtmfType                             = details[ConfProperties::DTMF_TYPE];
-    confProperties.autoAnswer                           = toBool(details[ConfProperties::AUTOANSWER]);
-    confProperties.isRendezVous                         = toBool(details[ConfProperties::ISRENDEZVOUS]);
-    confProperties.activeCallLimit                      = toInt(details[ConfProperties::ACTIVE_CALL_LIMIT]);
-    confProperties.hostname                             = details[ConfProperties::HOSTNAME];
-    profileInfo.uri                                     = (profileInfo.type == profile::Type::RING and details[ConfProperties::USERNAME].contains("ring:"))
-                                                          ? QString(details[ConfProperties::USERNAME]).remove(QString("ring:"))
-                                                          : details[ConfProperties::USERNAME];
-    confProperties.username                             = details[ConfProperties::USERNAME];
-    confProperties.routeset                             = details[ConfProperties::ROUTE];
-    confProperties.password                             = details[ConfProperties::PASSWORD];
-    confProperties.realm                                = details[ConfProperties::REALM];
-    confProperties.localInterface                       = details[ConfProperties::LOCAL_INTERFACE];
-    confProperties.deviceId                             = details[ConfProperties::RING_DEVICE_ID];
-    confProperties.deviceName                           = details[ConfProperties::RING_DEVICE_NAME];
-    confProperties.publishedSameAsLocal                 = toBool(details[ConfProperties::PUBLISHED_SAMEAS_LOCAL]);
-    confProperties.localPort                            = toInt(details[ConfProperties::LOCAL_PORT]);
-    confProperties.publishedPort                        = toInt(details[ConfProperties::PUBLISHED_PORT]);
-    confProperties.publishedAddress                     = details[ConfProperties::PUBLISHED_ADDRESS];
-    confProperties.userAgent                            = details[ConfProperties::USER_AGENT];
-    confProperties.upnpEnabled                          = toBool(details[ConfProperties::UPNP_ENABLED]);
-    confProperties.hasCustomUserAgent                   = toBool(details[ConfProperties::HAS_CUSTOM_USER_AGENT]);
-    confProperties.allowIncoming                        = toBool(details[ConfProperties::ALLOW_CERT_FROM_HISTORY])
-                                                        | toBool(details[ConfProperties::ALLOW_CERT_FROM_CONTACT])
-                                                        | toBool(details[ConfProperties::ALLOW_CERT_FROM_TRUSTED]);
-    confProperties.archivePassword                      = details[ConfProperties::ARCHIVE_PASSWORD];
-    confProperties.archiveHasPassword                   = toBool(details[ConfProperties::ARCHIVE_HAS_PASSWORD]);
-    confProperties.archivePath                          = details[ConfProperties::ARCHIVE_PATH];
-    confProperties.archivePin                           = details[ConfProperties::ARCHIVE_PIN];
-    confProperties.proxyEnabled                         = toBool(details[ConfProperties::PROXY_ENABLED]);
-    confProperties.proxyServer                          = details[ConfProperties::PROXY_SERVER];
-    confProperties.proxyPushToken                       = details[ConfProperties::PROXY_PUSH_TOKEN];
-    confProperties.peerDiscovery                        = toBool(details[ConfProperties::DHT_PEER_DISCOVERY]);
-    confProperties.accountDiscovery                     = toBool(details[ConfProperties::ACCOUNT_PEER_DISCOVERY]);
-    confProperties.accountPublish                       = toBool(details[ConfProperties::ACCOUNT_PUBLISH]);
+        profileInfo.type = details[ConfProperties::TYPE] == QString(ProtocolNames::RING)
+                               ? profile::Type::RING
+                               : profile::Type::SIP;
+    registeredName = profileInfo.type == profile::Type::RING
+                         ? volatileDetails[VolatileProperties::REGISTERED_NAME]
+                         : "";
+    profileInfo.alias = details[ConfProperties::DISPLAYNAME];
+    enabled = toBool(details[ConfProperties::ENABLED]);
+    confProperties.mailbox = details[ConfProperties::MAILBOX];
+    confProperties.dtmfType = details[ConfProperties::DTMF_TYPE];
+    confProperties.autoAnswer = toBool(details[ConfProperties::AUTOANSWER]);
+    confProperties.isRendezVous = toBool(details[ConfProperties::ISRENDEZVOUS]);
+    confProperties.activeCallLimit = toInt(details[ConfProperties::ACTIVE_CALL_LIMIT]);
+    confProperties.hostname = details[ConfProperties::HOSTNAME];
+    profileInfo.uri = (profileInfo.type == profile::Type::RING
+                       and details[ConfProperties::USERNAME].contains("ring:"))
+                          ? QString(details[ConfProperties::USERNAME]).remove(QString("ring:"))
+                          : details[ConfProperties::USERNAME];
+    confProperties.username = details[ConfProperties::USERNAME];
+    confProperties.routeset = details[ConfProperties::ROUTE];
+    confProperties.password = details[ConfProperties::PASSWORD];
+    confProperties.realm = details[ConfProperties::REALM];
+    confProperties.localInterface = details[ConfProperties::LOCAL_INTERFACE];
+    confProperties.deviceId = details[ConfProperties::RING_DEVICE_ID];
+    confProperties.deviceName = details[ConfProperties::RING_DEVICE_NAME];
+    confProperties.publishedSameAsLocal = toBool(details[ConfProperties::PUBLISHED_SAMEAS_LOCAL]);
+    confProperties.localPort = toInt(details[ConfProperties::LOCAL_PORT]);
+    confProperties.publishedPort = toInt(details[ConfProperties::PUBLISHED_PORT]);
+    confProperties.publishedAddress = details[ConfProperties::PUBLISHED_ADDRESS];
+    confProperties.userAgent = details[ConfProperties::USER_AGENT];
+    confProperties.upnpEnabled = toBool(details[ConfProperties::UPNP_ENABLED]);
+    confProperties.hasCustomUserAgent = toBool(details[ConfProperties::HAS_CUSTOM_USER_AGENT]);
+    confProperties.allowIncoming = toBool(details[ConfProperties::ALLOW_CERT_FROM_HISTORY])
+                                   | toBool(details[ConfProperties::ALLOW_CERT_FROM_CONTACT])
+                                   | toBool(details[ConfProperties::ALLOW_CERT_FROM_TRUSTED]);
+    confProperties.archivePassword = details[ConfProperties::ARCHIVE_PASSWORD];
+    confProperties.archiveHasPassword = toBool(details[ConfProperties::ARCHIVE_HAS_PASSWORD]);
+    confProperties.archivePath = details[ConfProperties::ARCHIVE_PATH];
+    confProperties.archivePin = details[ConfProperties::ARCHIVE_PIN];
+    confProperties.proxyEnabled = toBool(details[ConfProperties::PROXY_ENABLED]);
+    confProperties.proxyServer = details[ConfProperties::PROXY_SERVER];
+    confProperties.proxyPushToken = details[ConfProperties::PROXY_PUSH_TOKEN];
+    confProperties.peerDiscovery = toBool(details[ConfProperties::DHT_PEER_DISCOVERY]);
+    confProperties.accountDiscovery = toBool(details[ConfProperties::ACCOUNT_PEER_DISCOVERY]);
+    confProperties.accountPublish = toBool(details[ConfProperties::ACCOUNT_PUBLISH]);
     // Audio
-    confProperties.Audio.audioPortMax                   = toInt(details[ConfProperties::Audio::PORT_MAX]);
-    confProperties.Audio.audioPortMin                   = toInt(details[ConfProperties::Audio::PORT_MIN]);
+    confProperties.Audio.audioPortMax = toInt(details[ConfProperties::Audio::PORT_MAX]);
+    confProperties.Audio.audioPortMin = toInt(details[ConfProperties::Audio::PORT_MIN]);
     // Video
-    confProperties.Video.videoEnabled                   = toBool(details[ConfProperties::Video::ENABLED]);
-    confProperties.Video.videoPortMax                   = toInt(details[ConfProperties::Video::PORT_MAX]);
-    confProperties.Video.videoPortMin                   = toInt(details[ConfProperties::Video::PORT_MIN]);
+    confProperties.Video.videoEnabled = toBool(details[ConfProperties::Video::ENABLED]);
+    confProperties.Video.videoPortMax = toInt(details[ConfProperties::Video::PORT_MAX]);
+    confProperties.Video.videoPortMin = toInt(details[ConfProperties::Video::PORT_MIN]);
     // STUN
-    confProperties.STUN.server                          = details[ConfProperties::STUN::SERVER];
-    confProperties.STUN.enable                          = toBool(details[ConfProperties::STUN::ENABLED]);
+    confProperties.STUN.server = details[ConfProperties::STUN::SERVER];
+    confProperties.STUN.enable = toBool(details[ConfProperties::STUN::ENABLED]);
     // TURN
-    confProperties.TURN.server                          = details[ConfProperties::TURN::SERVER];
-    confProperties.TURN.enable                          = toBool(details[ConfProperties::TURN::ENABLED]);
-    confProperties.TURN.username                        = details[ConfProperties::TURN::SERVER_UNAME];
-    confProperties.TURN.password                        = details[ConfProperties::TURN::SERVER_PWD];
-    confProperties.TURN.realm                           = details[ConfProperties::TURN::SERVER_REALM];
+    confProperties.TURN.server = details[ConfProperties::TURN::SERVER];
+    confProperties.TURN.enable = toBool(details[ConfProperties::TURN::ENABLED]);
+    confProperties.TURN.username = details[ConfProperties::TURN::SERVER_UNAME];
+    confProperties.TURN.password = details[ConfProperties::TURN::SERVER_PWD];
+    confProperties.TURN.realm = details[ConfProperties::TURN::SERVER_REALM];
     // Presence
-    confProperties.Presence.presencePublishSupported    = toBool(details[ConfProperties::Presence::SUPPORT_PUBLISH]);
-    confProperties.Presence.presenceSubscribeSupported  = toBool(details[ConfProperties::Presence::SUPPORT_SUBSCRIBE]);
-    confProperties.Presence.presenceEnabled             = toBool(details[ConfProperties::Presence::ENABLED]);
+    confProperties.Presence.presencePublishSupported = toBool(
+        details[ConfProperties::Presence::SUPPORT_PUBLISH]);
+    confProperties.Presence.presenceSubscribeSupported = toBool(
+        details[ConfProperties::Presence::SUPPORT_SUBSCRIBE]);
+    confProperties.Presence.presenceEnabled = toBool(details[ConfProperties::Presence::ENABLED]);
     // Ringtone
-    confProperties.Ringtone.ringtonePath                = details[ConfProperties::Ringtone::PATH];
-    confProperties.Ringtone.ringtoneEnabled             = toBool(details[ConfProperties::Ringtone::ENABLED]);
+    confProperties.Ringtone.ringtonePath = details[ConfProperties::Ringtone::PATH];
+    confProperties.Ringtone.ringtoneEnabled = toBool(details[ConfProperties::Ringtone::ENABLED]);
     // SRTP
-    confProperties.SRTP.keyExchange                     = details[ConfProperties::SRTP::KEY_EXCHANGE].isEmpty()? account::KeyExchangeProtocol::NONE : account::KeyExchangeProtocol::SDES;
-    confProperties.SRTP.enable                          = toBool(details[ConfProperties::SRTP::ENABLED]);
-    confProperties.SRTP.rtpFallback                     = toBool(details[ConfProperties::SRTP::RTP_FALLBACK]);
+    confProperties.SRTP.keyExchange = details[ConfProperties::SRTP::KEY_EXCHANGE].isEmpty()
+                                          ? account::KeyExchangeProtocol::NONE
+                                          : account::KeyExchangeProtocol::SDES;
+    confProperties.SRTP.enable = toBool(details[ConfProperties::SRTP::ENABLED]);
+    confProperties.SRTP.rtpFallback = toBool(details[ConfProperties::SRTP::RTP_FALLBACK]);
     // TLS
-    confProperties.TLS.listenerPort                     = toInt(details[ConfProperties::TLS::LISTENER_PORT]);
-    confProperties.TLS.enable                           = details[ConfProperties::TYPE] == QString(ProtocolNames::RING)? true : toBool(details[ConfProperties::TLS::ENABLED]);
-    confProperties.TLS.port                             = toInt(details[ConfProperties::TLS::PORT]);
-    confProperties.TLS.certificateListFile              = details[ConfProperties::TLS::CA_LIST_FILE];
-    confProperties.TLS.certificateFile                  = details[ConfProperties::TLS::CERTIFICATE_FILE];
-    confProperties.TLS.privateKeyFile                   = details[ConfProperties::TLS::PRIVATE_KEY_FILE];
-    confProperties.TLS.password                         = details[ConfProperties::TLS::PASSWORD];
+    confProperties.TLS.listenerPort = toInt(details[ConfProperties::TLS::LISTENER_PORT]);
+    confProperties.TLS.enable = details[ConfProperties::TYPE] == QString(ProtocolNames::RING)
+                                    ? true
+                                    : toBool(details[ConfProperties::TLS::ENABLED]);
+    confProperties.TLS.port = toInt(details[ConfProperties::TLS::PORT]);
+    confProperties.TLS.certificateListFile = details[ConfProperties::TLS::CA_LIST_FILE];
+    confProperties.TLS.certificateFile = details[ConfProperties::TLS::CERTIFICATE_FILE];
+    confProperties.TLS.privateKeyFile = details[ConfProperties::TLS::PRIVATE_KEY_FILE];
+    confProperties.TLS.password = details[ConfProperties::TLS::PASSWORD];
     auto method = toStdString(details[ConfProperties::TLS::METHOD]);
     if (method == "TLSv1") {
-        confProperties.TLS.method                       = account::TlsMethod::TLSv1;
+        confProperties.TLS.method = account::TlsMethod::TLSv1;
     } else if (method == "TLSv1.1") {
-        confProperties.TLS.method                       = account::TlsMethod::TLSv1_1;
+        confProperties.TLS.method = account::TlsMethod::TLSv1_1;
     } else if (method == "TLSv1.2") {
-        confProperties.TLS.method                       = account::TlsMethod::TLSv1_2;
+        confProperties.TLS.method = account::TlsMethod::TLSv1_2;
     } else {
-        confProperties.TLS.method                       = account::TlsMethod::DEFAULT;
+        confProperties.TLS.method = account::TlsMethod::DEFAULT;
     }
-    confProperties.TLS.ciphers                          = details[ConfProperties::TLS::CIPHERS];
-    confProperties.TLS.serverName                       = details[ConfProperties::TLS::SERVER_NAME];
-    confProperties.TLS.verifyServer                     = toBool(details[ConfProperties::TLS::VERIFY_SERVER]);
-    confProperties.TLS.verifyClient                     = toBool(details[ConfProperties::TLS::VERIFY_CLIENT]);
-    confProperties.TLS.requireClientCertificate         = toBool(details[ConfProperties::TLS::REQUIRE_CLIENT_CERTIFICATE]);
-    confProperties.TLS.negotiationTimeoutSec            = toInt(details[ConfProperties::TLS::NEGOTIATION_TIMEOUT_SEC]);
+    confProperties.TLS.ciphers = details[ConfProperties::TLS::CIPHERS];
+    confProperties.TLS.serverName = details[ConfProperties::TLS::SERVER_NAME];
+    confProperties.TLS.verifyServer = toBool(details[ConfProperties::TLS::VERIFY_SERVER]);
+    confProperties.TLS.verifyClient = toBool(details[ConfProperties::TLS::VERIFY_CLIENT]);
+    confProperties.TLS.requireClientCertificate = toBool(
+        details[ConfProperties::TLS::REQUIRE_CLIENT_CERTIFICATE]);
+    confProperties.TLS.negotiationTimeoutSec = toInt(
+        details[ConfProperties::TLS::NEGOTIATION_TIMEOUT_SEC]);
     // DHT
-    confProperties.DHT.port                             = toInt(details[ConfProperties::DHT::PORT]);
-    confProperties.DHT.PublicInCalls                    = toBool(details[ConfProperties::DHT::PUBLIC_IN_CALLS]);
-    confProperties.DHT.AllowFromTrusted                 = toBool(details[ConfProperties::DHT::ALLOW_FROM_TRUSTED]);
+    confProperties.DHT.port = toInt(details[ConfProperties::DHT::PORT]);
+    confProperties.DHT.PublicInCalls = toBool(details[ConfProperties::DHT::PUBLIC_IN_CALLS]);
+    confProperties.DHT.AllowFromTrusted = toBool(details[ConfProperties::DHT::ALLOW_FROM_TRUSTED]);
     // RingNS
-    confProperties.RingNS.uri                           = details[ConfProperties::RingNS::URI];
-    confProperties.RingNS.account                       = details[ConfProperties::RingNS::ACCOUNT];
+    confProperties.RingNS.uri = details[ConfProperties::RingNS::URI];
+    confProperties.RingNS.account = details[ConfProperties::RingNS::ACCOUNT];
     // Registration
-    confProperties.Registration.expire                  = toInt(details[ConfProperties::Registration::EXPIRE]);
+    confProperties.Registration.expire = toInt(details[ConfProperties::Registration::EXPIRE]);
     // Jams
-    confProperties.managerUri                           = details[ConfProperties::MANAGER_URI];
-    confProperties.managerUsername                      = details[ConfProperties::MANAGER_USERNAME];
+    confProperties.managerUri = details[ConfProperties::MANAGER_URI];
+    confProperties.managerUsername = details[ConfProperties::MANAGER_USERNAME];
 }
 
 MapStringString
@@ -842,107 +916,114 @@ account::ConfProperties_t::toDetails() const
     using namespace DRing::Account;
     MapStringString details;
     // General
-    details[ConfProperties::MAILBOX]                    = this->mailbox;
-    details[ConfProperties::DTMF_TYPE]                  = this->dtmfType;
-    details[ConfProperties::AUTOANSWER]                 = toQString(this->autoAnswer);
-    details[ConfProperties::ISRENDEZVOUS]               = toQString(this->isRendezVous);
-    details[ConfProperties::ACTIVE_CALL_LIMIT]          = toQString(this->activeCallLimit);
-    details[ConfProperties::HOSTNAME]                   = this->hostname;
-    details[ConfProperties::ROUTE]                      = this->routeset;
-    details[ConfProperties::PASSWORD]                   = this->password;
-    details[ConfProperties::REALM]                      = this->realm;
-    details[ConfProperties::RING_DEVICE_ID]             = this->deviceId;
-    details[ConfProperties::RING_DEVICE_NAME]           = this->deviceName;
-    details[ConfProperties::LOCAL_INTERFACE]            = this->localInterface;
-    details[ConfProperties::PUBLISHED_SAMEAS_LOCAL]     = toQString(this->publishedSameAsLocal);
-    details[ConfProperties::LOCAL_PORT]                 = toQString(this->localPort);
-    details[ConfProperties::PUBLISHED_PORT]             = toQString(this->publishedPort);
-    details[ConfProperties::PUBLISHED_ADDRESS]          = this->publishedAddress;
-    details[ConfProperties::USER_AGENT]                 = this->userAgent;
-    details[ConfProperties::UPNP_ENABLED]               = toQString(this->upnpEnabled);
-    details[ConfProperties::HAS_CUSTOM_USER_AGENT]      = toQString(this->hasCustomUserAgent);
-    details[ConfProperties::ALLOW_CERT_FROM_HISTORY]    = toQString(this->allowIncoming);
-    details[ConfProperties::ALLOW_CERT_FROM_CONTACT]    = toQString(this->allowIncoming);
-    details[ConfProperties::ALLOW_CERT_FROM_TRUSTED]    = toQString(this->allowIncoming);
-    details[ConfProperties::ARCHIVE_PASSWORD]           = this->archivePassword;
-    details[ConfProperties::ARCHIVE_HAS_PASSWORD]       = toQString(this->archiveHasPassword);
-    details[ConfProperties::ARCHIVE_PATH]               = this->archivePath;
-    details[ConfProperties::ARCHIVE_PIN]                = this->archivePin;
+    details[ConfProperties::MAILBOX] = this->mailbox;
+    details[ConfProperties::DTMF_TYPE] = this->dtmfType;
+    details[ConfProperties::AUTOANSWER] = toQString(this->autoAnswer);
+    details[ConfProperties::ISRENDEZVOUS] = toQString(this->isRendezVous);
+    details[ConfProperties::ACTIVE_CALL_LIMIT] = toQString(this->activeCallLimit);
+    details[ConfProperties::HOSTNAME] = this->hostname;
+    details[ConfProperties::ROUTE] = this->routeset;
+    details[ConfProperties::PASSWORD] = this->password;
+    details[ConfProperties::REALM] = this->realm;
+    details[ConfProperties::RING_DEVICE_ID] = this->deviceId;
+    details[ConfProperties::RING_DEVICE_NAME] = this->deviceName;
+    details[ConfProperties::LOCAL_INTERFACE] = this->localInterface;
+    details[ConfProperties::PUBLISHED_SAMEAS_LOCAL] = toQString(this->publishedSameAsLocal);
+    details[ConfProperties::LOCAL_PORT] = toQString(this->localPort);
+    details[ConfProperties::PUBLISHED_PORT] = toQString(this->publishedPort);
+    details[ConfProperties::PUBLISHED_ADDRESS] = this->publishedAddress;
+    details[ConfProperties::USER_AGENT] = this->userAgent;
+    details[ConfProperties::UPNP_ENABLED] = toQString(this->upnpEnabled);
+    details[ConfProperties::HAS_CUSTOM_USER_AGENT] = toQString(this->hasCustomUserAgent);
+    details[ConfProperties::ALLOW_CERT_FROM_HISTORY] = toQString(this->allowIncoming);
+    details[ConfProperties::ALLOW_CERT_FROM_CONTACT] = toQString(this->allowIncoming);
+    details[ConfProperties::ALLOW_CERT_FROM_TRUSTED] = toQString(this->allowIncoming);
+    details[ConfProperties::ARCHIVE_PASSWORD] = this->archivePassword;
+    details[ConfProperties::ARCHIVE_HAS_PASSWORD] = toQString(this->archiveHasPassword);
+    details[ConfProperties::ARCHIVE_PATH] = this->archivePath;
+    details[ConfProperties::ARCHIVE_PIN] = this->archivePin;
     // ConfProperties::DEVICE_NAME name is set with NewDeviceModel interface
-    details[ConfProperties::PROXY_ENABLED]              = toQString(this->proxyEnabled);
-    details[ConfProperties::PROXY_SERVER]               = this->proxyServer;
-    details[ConfProperties::PROXY_PUSH_TOKEN]           = this->proxyPushToken;
-    details[ConfProperties::DHT_PEER_DISCOVERY]         = toQString(this->peerDiscovery);
-    details[ConfProperties::ACCOUNT_PEER_DISCOVERY]     = toQString(this->accountDiscovery);
-    details[ConfProperties::ACCOUNT_PUBLISH]            = toQString(this->accountPublish);
+    details[ConfProperties::PROXY_ENABLED] = toQString(this->proxyEnabled);
+    details[ConfProperties::PROXY_SERVER] = this->proxyServer;
+    details[ConfProperties::PROXY_PUSH_TOKEN] = this->proxyPushToken;
+    details[ConfProperties::DHT_PEER_DISCOVERY] = toQString(this->peerDiscovery);
+    details[ConfProperties::ACCOUNT_PEER_DISCOVERY] = toQString(this->accountDiscovery);
+    details[ConfProperties::ACCOUNT_PUBLISH] = toQString(this->accountPublish);
     // Audio
-    details[ConfProperties::Audio::PORT_MAX]            = toQString(this->Audio.audioPortMax);
-    details[ConfProperties::Audio::PORT_MIN]            = toQString(this->Audio.audioPortMin);
+    details[ConfProperties::Audio::PORT_MAX] = toQString(this->Audio.audioPortMax);
+    details[ConfProperties::Audio::PORT_MIN] = toQString(this->Audio.audioPortMin);
     // Video
-    details[ConfProperties::Video::ENABLED]             = toQString(this->Video.videoEnabled);
-    details[ConfProperties::Video::PORT_MAX]            = toQString(this->Video.videoPortMax);
-    details[ConfProperties::Video::PORT_MIN]            = toQString(this->Video.videoPortMin);
+    details[ConfProperties::Video::ENABLED] = toQString(this->Video.videoEnabled);
+    details[ConfProperties::Video::PORT_MAX] = toQString(this->Video.videoPortMax);
+    details[ConfProperties::Video::PORT_MIN] = toQString(this->Video.videoPortMin);
     // STUN
-    details[ConfProperties::STUN::SERVER]               = this->STUN.server;
-    details[ConfProperties::STUN::ENABLED]              = toQString(this->STUN.enable);
+    details[ConfProperties::STUN::SERVER] = this->STUN.server;
+    details[ConfProperties::STUN::ENABLED] = toQString(this->STUN.enable);
     // TURN
-    details[ConfProperties::TURN::SERVER]               = this->TURN.server;
-    details[ConfProperties::TURN::ENABLED]              = toQString(this->TURN.enable);
-    details[ConfProperties::TURN::SERVER_UNAME]         = this->TURN.username;
-    details[ConfProperties::TURN::SERVER_PWD]           = this->TURN.password;
-    details[ConfProperties::TURN::SERVER_REALM]         = this->TURN.realm;
+    details[ConfProperties::TURN::SERVER] = this->TURN.server;
+    details[ConfProperties::TURN::ENABLED] = toQString(this->TURN.enable);
+    details[ConfProperties::TURN::SERVER_UNAME] = this->TURN.username;
+    details[ConfProperties::TURN::SERVER_PWD] = this->TURN.password;
+    details[ConfProperties::TURN::SERVER_REALM] = this->TURN.realm;
     // Presence
-    details[ConfProperties::Presence::SUPPORT_PUBLISH]  = toQString(this->Presence.presencePublishSupported);
-    details[ConfProperties::Presence::SUPPORT_SUBSCRIBE] = toQString(this->Presence.presenceSubscribeSupported);
-    details[ConfProperties::Presence::ENABLED]          = toQString(this->Presence.presenceEnabled);
+    details[ConfProperties::Presence::SUPPORT_PUBLISH] = toQString(
+        this->Presence.presencePublishSupported);
+    details[ConfProperties::Presence::SUPPORT_SUBSCRIBE] = toQString(
+        this->Presence.presenceSubscribeSupported);
+    details[ConfProperties::Presence::ENABLED] = toQString(this->Presence.presenceEnabled);
     // Ringtone
-    details[ConfProperties::Ringtone::PATH]             = this->Ringtone.ringtonePath;
-    details[ConfProperties::Ringtone::ENABLED]          = toQString(this->Ringtone.ringtoneEnabled);
+    details[ConfProperties::Ringtone::PATH] = this->Ringtone.ringtonePath;
+    details[ConfProperties::Ringtone::ENABLED] = toQString(this->Ringtone.ringtoneEnabled);
     // SRTP
-    details[ConfProperties::SRTP::KEY_EXCHANGE]         = this->SRTP.keyExchange == account::KeyExchangeProtocol::NONE? "" : "sdes";
-    details[ConfProperties::SRTP::ENABLED]              = toQString(this->SRTP.enable);
-    details[ConfProperties::SRTP::RTP_FALLBACK]         = toQString(this->SRTP.rtpFallback);
+    details[ConfProperties::SRTP::KEY_EXCHANGE] = this->SRTP.keyExchange
+                                                          == account::KeyExchangeProtocol::NONE
+                                                      ? ""
+                                                      : "sdes";
+    details[ConfProperties::SRTP::ENABLED] = toQString(this->SRTP.enable);
+    details[ConfProperties::SRTP::RTP_FALLBACK] = toQString(this->SRTP.rtpFallback);
     // TLS
-    details[ConfProperties::TLS::LISTENER_PORT]         = toQString(this->TLS.listenerPort);
-    details[ConfProperties::TLS::ENABLED]               = toQString(this->TLS.enable);
-    details[ConfProperties::TLS::PORT]                  = toQString(this->TLS.port);
-    details[ConfProperties::TLS::CA_LIST_FILE]          = this->TLS.certificateListFile;
-    details[ConfProperties::TLS::CERTIFICATE_FILE]      = this->TLS.certificateFile;
-    details[ConfProperties::TLS::PRIVATE_KEY_FILE]      = this->TLS.privateKeyFile;
-    details[ConfProperties::TLS::PASSWORD]              = this->TLS.password;
+    details[ConfProperties::TLS::LISTENER_PORT] = toQString(this->TLS.listenerPort);
+    details[ConfProperties::TLS::ENABLED] = toQString(this->TLS.enable);
+    details[ConfProperties::TLS::PORT] = toQString(this->TLS.port);
+    details[ConfProperties::TLS::CA_LIST_FILE] = this->TLS.certificateListFile;
+    details[ConfProperties::TLS::CERTIFICATE_FILE] = this->TLS.certificateFile;
+    details[ConfProperties::TLS::PRIVATE_KEY_FILE] = this->TLS.privateKeyFile;
+    details[ConfProperties::TLS::PASSWORD] = this->TLS.password;
     switch (this->TLS.method) {
     case account::TlsMethod::TLSv1:
-        details[ConfProperties::TLS::METHOD]            = "TLSv1";
+        details[ConfProperties::TLS::METHOD] = "TLSv1";
         break;
     case account::TlsMethod::TLSv1_1:
-        details[ConfProperties::TLS::METHOD]            = "TLSv1.1";
+        details[ConfProperties::TLS::METHOD] = "TLSv1.1";
         break;
     case account::TlsMethod::TLSv1_2:
-        details[ConfProperties::TLS::METHOD]            = "TLSv1.2";
+        details[ConfProperties::TLS::METHOD] = "TLSv1.2";
         break;
     case account::TlsMethod::DEFAULT:
     default:
-        details[ConfProperties::TLS::METHOD]            = "Default";
+        details[ConfProperties::TLS::METHOD] = "Default";
         break;
     }
-    details[ConfProperties::TLS::CIPHERS]               = this->TLS.ciphers;
-    details[ConfProperties::TLS::SERVER_NAME]           = this->TLS.serverName;
-    details[ConfProperties::TLS::VERIFY_SERVER]         = toQString(this->TLS.verifyServer);
-    details[ConfProperties::TLS::VERIFY_CLIENT]         = toQString(this->TLS.verifyClient);
-    details[ConfProperties::TLS::REQUIRE_CLIENT_CERTIFICATE] = toQString(this->TLS.requireClientCertificate);
-    details[ConfProperties::TLS::NEGOTIATION_TIMEOUT_SEC] = toQString(this->TLS.negotiationTimeoutSec);
+    details[ConfProperties::TLS::CIPHERS] = this->TLS.ciphers;
+    details[ConfProperties::TLS::SERVER_NAME] = this->TLS.serverName;
+    details[ConfProperties::TLS::VERIFY_SERVER] = toQString(this->TLS.verifyServer);
+    details[ConfProperties::TLS::VERIFY_CLIENT] = toQString(this->TLS.verifyClient);
+    details[ConfProperties::TLS::REQUIRE_CLIENT_CERTIFICATE] = toQString(
+        this->TLS.requireClientCertificate);
+    details[ConfProperties::TLS::NEGOTIATION_TIMEOUT_SEC] = toQString(
+        this->TLS.negotiationTimeoutSec);
     // DHT
-    details[ConfProperties::DHT::PORT]                  = toQString(this->DHT.port);
-    details[ConfProperties::DHT::PUBLIC_IN_CALLS]       = toQString(this->DHT.PublicInCalls);
-    details[ConfProperties::DHT::ALLOW_FROM_TRUSTED]    = toQString(this->DHT.AllowFromTrusted);
+    details[ConfProperties::DHT::PORT] = toQString(this->DHT.port);
+    details[ConfProperties::DHT::PUBLIC_IN_CALLS] = toQString(this->DHT.PublicInCalls);
+    details[ConfProperties::DHT::ALLOW_FROM_TRUSTED] = toQString(this->DHT.AllowFromTrusted);
     // RingNS
-    details[ConfProperties::RingNS::URI]                = this->RingNS.uri;
-    details[ConfProperties::RingNS::ACCOUNT]            = this->RingNS.account;
+    details[ConfProperties::RingNS::URI] = this->RingNS.uri;
+    details[ConfProperties::RingNS::ACCOUNT] = this->RingNS.account;
     // Registration
-    details[ConfProperties::Registration::EXPIRE]       = toQString(this->Registration.expire);
+    details[ConfProperties::Registration::EXPIRE] = toQString(this->Registration.expire);
     // Manager
-    details[ConfProperties::MANAGER_URI]                = this->managerUri;
-    details[ConfProperties::MANAGER_USERNAME]           = this->managerUsername;
+    details[ConfProperties::MANAGER_URI] = this->managerUri;
+    details[ConfProperties::MANAGER_USERNAME] = this->managerUsername;
 
     return details;
 }
@@ -956,12 +1037,11 @@ NewAccountModel::createNewAccount(profile::Type type,
                                   const QString& uri,
                                   const MapStringString& config)
 {
-
-    MapStringString details = type == profile::Type::SIP?
-                              ConfigurationManager::instance().getAccountTemplate("SIP") :
-                              ConfigurationManager::instance().getAccountTemplate("RING");
+    MapStringString details = type == profile::Type::SIP
+                                  ? ConfigurationManager::instance().getAccountTemplate("SIP")
+                                  : ConfigurationManager::instance().getAccountTemplate("RING");
     using namespace DRing::Account;
-    details[ConfProperties::TYPE] = type == profile::Type::SIP? "SIP" : "RING";
+    details[ConfProperties::TYPE] = type == profile::Type::SIP ? "SIP" : "RING";
     details[ConfProperties::DISPLAYNAME] = displayName;
     details[ConfProperties::ALIAS] = displayName;
     details[ConfProperties::UPNP_ENABLED] = "true";
@@ -1009,8 +1089,7 @@ NewAccountModel::setTopAccount(const QString& accountId)
     QString order = {};
 
     const QStringList accountIds = ConfigurationManager::instance().getAccountList();
-    for (auto& id : accountIds)
-    {
+    for (auto& id : accountIds) {
         if (id == accountId) {
             found = true;
         } else {

@@ -23,27 +23,17 @@
 
 #include <ctime>
 
-namespace lrc
-{
+namespace lrc {
 
-namespace api
-{
+namespace api {
 
-namespace interaction
-{
+namespace interaction {
 #if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
 Q_NAMESPACE
 Q_CLASSINFO("RegisterEnumClassesUnscoped", "false")
 #endif
 
-enum class Type {
-    INVALID,
-    TEXT,
-    CALL,
-    CONTACT,
-    DATA_TRANSFER,
-    COUNT__
-};
+enum class Type { INVALID, TEXT, CALL, CONTACT, DATA_TRANSFER, COUNT__ };
 #if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
 Q_ENUM_NS(Type)
 #endif
@@ -51,7 +41,7 @@ Q_ENUM_NS(Type)
 static inline const QString
 to_string(const Type& type)
 {
-    switch(type) {
+    switch (type) {
     case Type::TEXT:
         return "TEXT";
     case Type::CALL:
@@ -108,7 +98,7 @@ Q_ENUM_NS(Status)
 static inline const QString
 to_string(const Status& status)
 {
-    switch(status) {
+    switch (status) {
     case Status::UNKNOWN:
         return "UNKNOWN";
     case Status::SENDING:
@@ -181,7 +171,6 @@ to_status(const QString& status)
         return Status::TRANSFER_FINISHED;
     else
         return Status::INVALID;
-
 }
 
 /**
@@ -204,7 +193,9 @@ struct Info
     bool isRead = false;
 };
 
-static inline bool isOutgoing(const Info& interaction) {
+static inline bool
+isOutgoing(const Info& interaction)
+{
     return interaction.authorUri.isEmpty();
 }
 

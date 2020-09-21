@@ -17,7 +17,7 @@
  ***************************************************************************/
 #pragma once
 
- // Std
+// Std
 #include <map>
 #include <memory>
 #include <string>
@@ -35,16 +35,13 @@
 
 struct AVFrame;
 
-namespace lrc
-{
+namespace lrc {
 
 class RendererPimpl;
 
-namespace api
-{
+namespace api {
 
-namespace video
-{
+namespace video {
 #if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
 Q_NAMESPACE
 Q_CLASSINFO("RegisterEnumClassesUnscoped", "false")
@@ -66,22 +63,17 @@ using Capabilities = QMap<Channel, ResRateList>;
  * and equals to "size", "ptr" is equals to "storage.data()".
  * If shared data is carried, only "ptr" and "size" are set.
  */
-struct Frame {
-    uint8_t* ptr{ nullptr };
-    std::size_t          size{ 0 };
-    std::vector<uint8_t> storage{         };
+struct Frame
+{
+    uint8_t* ptr {nullptr};
+    std::size_t size {0};
+    std::vector<uint8_t> storage {};
     // Next variables are currently used with DirectRenderer only
-    unsigned int         height{ 0 };
-    unsigned int         width{ 0 };
+    unsigned int height {0};
+    unsigned int width {0};
 };
 
-enum class DeviceType
-{
-    CAMERA,
-    DISPLAY,
-    FILE,
-    INVALID
-};
+enum class DeviceType { CAMERA, DISPLAY, FILE, INVALID };
 #if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
 Q_ENUM_NS(DeviceType)
 #endif
@@ -89,7 +81,7 @@ Q_ENUM_NS(DeviceType)
 /**
  * This class describes the current rendered device
  */
-    struct RenderedDevice
+struct RenderedDevice
 {
     QString name;
     DeviceType type = DeviceType::INVALID;
@@ -107,11 +99,14 @@ struct Settings
     Resolution size = "";
 };
 
-class LIB_EXPORT Renderer : public QObject {
+class LIB_EXPORT Renderer : public QObject
+{
     Q_OBJECT
 public:
-    Renderer(const QString& id, Settings videoSettings,
-        const QString& shmPath = "", const bool useAVFrame = false);
+    Renderer(const QString& id,
+             Settings videoSettings,
+             const QString& shmPath = "",
+             const bool useAVFrame = false);
     ~Renderer();
 
     /**
@@ -147,7 +142,7 @@ public:
     /**
      * @return current avframe
      */
-    std::unique_ptr<AVFrame, void(*)(AVFrame*)> currentAVFrame() const;
+    std::unique_ptr<AVFrame, void (*)(AVFrame*)> currentAVFrame() const;
 #endif
 
     /**

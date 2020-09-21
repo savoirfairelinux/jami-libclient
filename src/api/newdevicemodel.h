@@ -26,16 +26,16 @@
 #include <string>
 #include <list>
 
-namespace lrc
-{
+namespace lrc {
 
 class CallbacksHandler;
 class NewDeviceModelPimpl;
 
-namespace api
-{
+namespace api {
 
-namespace account { struct Info; }
+namespace account {
+struct Info;
+}
 
 struct Device
 {
@@ -45,20 +45,17 @@ struct Device
 };
 
 /**
-  *  @brief Class that manages ring devices for an account
-  */
-class LIB_EXPORT NewDeviceModel : public QObject {
+ *  @brief Class that manages ring devices for an account
+ */
+class LIB_EXPORT NewDeviceModel : public QObject
+{
     Q_OBJECT
 
 public:
     /**
      * Used by deviceRevoked's status
      */
-    enum class Status {
-        SUCCESS = 0,
-        WRONG_PASSWORD = 1,
-        UNKNOWN_DEVICE = 2
-    };
+    enum class Status { SUCCESS = 0, WRONG_PASSWORD = 1, UNKNOWN_DEVICE = 2 };
     const account::Info& owner;
 
     NewDeviceModel(const account::Info& owner, const CallbacksHandler& callbacksHandler);

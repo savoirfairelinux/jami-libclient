@@ -19,18 +19,24 @@
 
 #include <typedefs.h>
 
-//Qt
-class QVariant   ;
+// Qt
+class QVariant;
 class QModelIndex;
-class QByteArray ;
+class QByteArray;
 
-//Ring
-struct UserActionElement  ;
+// Ring
+struct UserActionElement;
 
-namespace lrc { namespace api {
-namespace account { struct Info; }
-namespace conversation { struct Info; }
-}} // namespace lrc::api
+namespace lrc {
+namespace api {
+namespace account {
+struct Info;
+}
+namespace conversation {
+struct Info;
+}
+} // namespace api
+} // namespace lrc
 
 namespace Interfaces {
 
@@ -43,9 +49,10 @@ namespace Interfaces {
  *
  * This interface is not frozen, more methods may be added later.
  */
-class PixmapManipulatorI {
+class PixmapManipulatorI
+{
 public:
-    //Implementation can use random values to extend this
+    // Implementation can use random values to extend this
     enum CollectionIconHint {
         NONE,
         HISTORY,
@@ -62,20 +69,30 @@ public:
 
     virtual ~PixmapManipulatorI() = default;
 
-    virtual QVariant   conversationPhoto(const lrc::api::conversation::Info& conversation,
-                                         const lrc::api::account::Info& accountInfo,
-                                         const QSize& size,
-                                         bool displayPresence = true) {
-        Q_UNUSED(conversation); Q_UNUSED(accountInfo); Q_UNUSED(size); Q_UNUSED(displayPresence);
+    virtual QVariant conversationPhoto(const lrc::api::conversation::Info& conversation,
+                                       const lrc::api::account::Info& accountInfo,
+                                       const QSize& size,
+                                       bool displayPresence = true)
+    {
+        Q_UNUSED(conversation);
+        Q_UNUSED(accountInfo);
+        Q_UNUSED(size);
+        Q_UNUSED(displayPresence);
         return {};
     }
-    virtual QVariant   numberCategoryIcon(const QVariant& p, const QSize& size, bool displayPresence = false, bool isPresent = false) = 0;
+    virtual QVariant numberCategoryIcon(const QVariant& p,
+                                        const QSize& size,
+                                        bool displayPresence = false,
+                                        bool isPresent = false)
+        = 0;
     virtual QByteArray toByteArray(const QVariant& pxm) = 0;
-    virtual QVariant   personPhoto(const QByteArray& data, const QString& type = "PNG") = 0;
-    virtual QVariant   decorationRole(const QModelIndex&   index) = 0;
-    virtual QVariant   decorationRole(const lrc::api::conversation::Info& conversation,
-                                      const lrc::api::account::Info& accountInfo) {
-        Q_UNUSED(conversation); Q_UNUSED(accountInfo);
+    virtual QVariant personPhoto(const QByteArray& data, const QString& type = "PNG") = 0;
+    virtual QVariant decorationRole(const QModelIndex& index) = 0;
+    virtual QVariant decorationRole(const lrc::api::conversation::Info& conversation,
+                                    const lrc::api::account::Info& accountInfo)
+    {
+        Q_UNUSED(conversation);
+        Q_UNUSED(accountInfo);
         return {};
     }
 

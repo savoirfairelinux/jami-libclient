@@ -18,7 +18,7 @@
 
 #pragma once
 
- // Lrc
+// Lrc
 #include "typedefs.h"
 
 // Qt
@@ -29,14 +29,12 @@
 #include <map>
 #include <memory>
 
-namespace lrc
-{
+namespace lrc {
 
 class CallbacksHandler;
 class PeerDiscoveryModelPimpl;
 
-namespace api
-{
+namespace api {
 
 struct PeerContact
 {
@@ -44,19 +42,15 @@ struct PeerContact
     std::string displayName;
 };
 
-enum class PeerModelChanged
-{
-    INSERT,
-    REMOVE
-};
+enum class PeerModelChanged { INSERT, REMOVE };
 
 /**
-  *  @brief Class that manages local peer discovery info
-  */
-class LIB_EXPORT PeerDiscoveryModel : public QObject {
+ *  @brief Class that manages local peer discovery info
+ */
+class LIB_EXPORT PeerDiscoveryModel : public QObject
+{
     Q_OBJECT
 public:
-
     PeerDiscoveryModel(const CallbacksHandler& callbackHandler, const QString& accountID);
     ~PeerDiscoveryModel();
     /**

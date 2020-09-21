@@ -21,24 +21,25 @@
 #include "../globalinstances.h"
 #include "../interfaces/dbuserrorhandleri.h"
 
-ConfigurationManagerInterface& ConfigurationManager::instance()
+ConfigurationManagerInterface&
+ConfigurationManager::instance()
 {
 #ifdef ENABLE_LIBWRAP
     static auto interface = new ConfigurationManagerInterface();
 #else
-    if (!dbus_metaTypeInit) registerCommTypes();
+    if (!dbus_metaTypeInit)
+        registerCommTypes();
     static auto interface = new ConfigurationManagerInterface("cx.ring.Ring",
-                                                            "/cx/ring/Ring/ConfigurationManager",
-                                                            QDBusConnection::sessionBus());
-    if(!interface->connection().isConnected()) {
+                                                              "/cx/ring/Ring/ConfigurationManager",
+                                                              QDBusConnection::sessionBus());
+    if (!interface->connection().isConnected()) {
         GlobalInstances::dBusErrorHandler().connectionError(
-            "Error : dring not connected. Service " + interface->service() + " not connected. From configuration manager interface."
-        );
+            "Error : dring not connected. Service " + interface->service()
+            + " not connected. From configuration manager interface.");
     }
     if (!interface->isValid()) {
         GlobalInstances::dBusErrorHandler().invalidInterfaceError(
-            "Error : dring is not available, make sure it is running"
-        );
+            "Error : dring is not available, make sure it is running");
     }
 #endif
     return *interface;

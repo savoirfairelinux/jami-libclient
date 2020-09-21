@@ -19,7 +19,7 @@
 
 #include "namedirectory.h"
 
-typedef void (NameDirectoryPrivate::* NameDirectoryPrivateFct)();
+typedef void (NameDirectoryPrivate::*NameDirectoryPrivateFct)();
 
 class NameDirectoryPrivate : public QObject
 {
@@ -33,6 +33,9 @@ public:
 
 public Q_SLOTS:
     void slotNameRegistrationEnded(const QString& accountId, int status, const QString& name);
-    void slotRegisteredNameFound(const QString& accountId, int status, const QString& address, const QString& name);
+    void slotRegisteredNameFound(const QString& accountId,
+                                 int status,
+                                 const QString& address,
+                                 const QString& name);
     void slotExportOnRingEnded(const QString& accountId, int status, const QString& pin);
 };

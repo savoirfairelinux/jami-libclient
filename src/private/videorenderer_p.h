@@ -18,7 +18,7 @@
  ***************************************************************************/
 #pragma once
 
-//Qt
+// Qt
 #include <QtCore/QObject>
 #include <QtCore/QSize>
 
@@ -36,15 +36,15 @@ class Renderer;
 
 class RendererPrivate final : public QObject
 {
-Q_OBJECT
+    Q_OBJECT
 public:
     RendererPrivate(Video::Renderer* parent);
 
-    //Attributes
-    std::atomic_bool     m_isRendering ;
-    QMutex*              m_pMutex      ;
-    QString              m_Id          ;
-    QSize                m_pSize       ;
+    // Attributes
+    std::atomic_bool m_isRendering;
+    QMutex* m_pMutex;
+    QString m_Id;
+    QSize m_pSize;
     std::shared_ptr<lrc::api::video::Frame> m_pFrame; // frame given by daemon for direct rendering
 private:
     Video::Renderer* q_ptr;

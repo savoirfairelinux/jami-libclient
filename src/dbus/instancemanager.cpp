@@ -28,21 +28,23 @@
 #include "../globalinstances.h"
 #include "../interfaces/dbuserrorhandleri.h"
 
-InstanceManagerInterface& InstanceManager::instance()
+InstanceManagerInterface&
+InstanceManager::instance()
 {
 #ifdef ENABLE_LIBWRAP
     static auto interface = new InstanceManagerInterface();
 #else
-    if (!dbus_metaTypeInit) registerCommTypes();
+    if (!dbus_metaTypeInit)
+        registerCommTypes();
 
     static auto interface = new InstanceManagerInterface("cx.ring.Ring",
-                                                "/cx/ring/Ring/Instance",
-                                                QDBusConnection::sessionBus());
+                                                         "/cx/ring/Ring/Instance",
+                                                         QDBusConnection::sessionBus());
 
     if (!interface->connection().isConnected()) {
         GlobalInstances::dBusErrorHandler().connectionError(
-            "Error : dring not connected. Service " + interface->service() + " not connected. From instance interface."
-        );
+            "Error : dring not connected. Service " + interface->service()
+            + " not connected. From instance interface.");
     }
     static bool registered = false;
     if (!registered) {

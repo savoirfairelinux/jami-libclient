@@ -24,14 +24,11 @@
 #include <vector>
 #include <map>
 
-namespace lrc
-{
+namespace lrc {
 
-namespace api
-{
+namespace api {
 
-namespace conversation
-{
+namespace conversation {
 
 struct Info
 {

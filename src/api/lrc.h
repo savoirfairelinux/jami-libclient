@@ -25,13 +25,11 @@
 #include <vector>
 #include <atomic>
 
-namespace lrc
-{
+namespace lrc {
 
 class LrcPimpl;
 
-namespace api
-{
+namespace api {
 
 class BehaviorController;
 class NewAccountModel;
@@ -39,7 +37,8 @@ class DataTransferModel;
 class AVModel;
 class PluginModel;
 
-class LIB_EXPORT Lrc {
+class LIB_EXPORT Lrc
+{
 public:
     /**
      * Construct an Lrc object and optionally invoke callbacks
@@ -48,8 +47,7 @@ public:
      * @param willMigrateCb
      * @param didMigrateCb
      */
-    Lrc(MigrationCb willMigrateCb = {},
-        MigrationCb didMigrateCb = {});
+    Lrc(MigrationCb willMigrateCb = {}, MigrationCb didMigrateCb = {});
     ~Lrc();
     /**
      * get a reference on account model.
@@ -121,7 +119,7 @@ public:
      */
     static std::atomic_bool holdConferences;
 
-  private:
+private:
     std::unique_ptr<LrcPimpl> lrcPimpl_;
 };
 

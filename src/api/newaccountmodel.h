@@ -31,30 +31,29 @@
 #include <mutex>
 #include <condition_variable>
 
-namespace lrc
-{
+namespace lrc {
 
 class CallbacksHandler;
 class Database;
 class NewAccountModelPimpl;
 
-namespace api
-{
+namespace api {
 
 class Lrc;
 class BehaviorController;
 
 /**
-  *  @brief Class that manages account information.
-  */
-class LIB_EXPORT NewAccountModel : public QObject {
+ *  @brief Class that manages account information.
+ */
+class LIB_EXPORT NewAccountModel : public QObject
+{
     Q_OBJECT
 public:
     NewAccountModel(Lrc& lrc,
-        const CallbacksHandler& callbackHandler,
-        const api::BehaviorController& behaviorController,
-        MigrationCb& willMigrateCb,
-        MigrationCb& didMigrateCb);
+                    const CallbacksHandler& callbackHandler,
+                    const api::BehaviorController& behaviorController,
+                    MigrationCb& willMigrateCb,
+                    MigrationCb& didMigrateCb);
 
     ~NewAccountModel();
     /**
@@ -72,10 +71,10 @@ public:
      */
     Q_INVOKABLE void flagFreeable(const QString& accountId) const;
     /**
-    * set account enable/disable, save config and do unregister for account
-    * @param accountId.
-    * @param enabled.
-    */
+     * set account enable/disable, save config and do unregister for account
+     * @param accountId.
+     * @param enabled.
+     */
     Q_INVOKABLE void setAccountEnabled(const QString& accountID, bool enabled) const;
     /**
      * saves account config to .yml
@@ -83,7 +82,7 @@ public:
      * @param reference to the confProperties
      */
     Q_INVOKABLE void setAccountConfig(const QString& accountID,
-        const account::ConfProperties_t& confProperties) const;
+                                      const account::ConfProperties_t& confProperties) const;
     /**
      * gets a copy of the accounts config
      * @param accountId.
@@ -97,7 +96,9 @@ public:
      * @param password
      * @return if the file is exported with success
      */
-    Q_INVOKABLE bool exportToFile(const QString& accountId, const QString& path, const QString& password = {}) const;
+    Q_INVOKABLE bool exportToFile(const QString& accountId,
+                                  const QString& path,
+                                  const QString& password = {}) const;
     /**
      * Call exportOnRing from the daemon
      * @param accountId
@@ -119,8 +120,8 @@ public:
      * @return if the password has been changed
      */
     Q_INVOKABLE bool changeAccountPassword(const QString& accountId,
-        const QString& currentPassword,
-        const QString& newPassword) const;
+                                           const QString& currentPassword,
+                                           const QString& newPassword) const;
     /**
      * Change the avatar of an account
      * @param accountId
@@ -142,7 +143,9 @@ public:
      * @param username
      * @return if operation started
      */
-    Q_INVOKABLE bool registerName(const QString& accountId, const QString& password, const QString& username);
+    Q_INVOKABLE bool registerName(const QString& accountId,
+                                  const QString& password,
+                                  const QString& username);
     /**
      * Connect to JAMS to retrieve the account
      * @param username
@@ -151,7 +154,8 @@ public:
      * @param config
      * @return the account id
      */
-    Q_INVOKABLE static QString connectToAccountManager(const QString& username,
+    Q_INVOKABLE static QString connectToAccountManager(
+        const QString& username,
         const QString& password,
         const QString& serverUri,
         const MapStringString& config = MapStringString());
@@ -168,12 +172,12 @@ public:
      * @return the created account
      */
     Q_INVOKABLE static QString createNewAccount(profile::Type type,
-        const QString& displayName = "",
-        const QString& archivePath = "",
-        const QString& password = "",
-        const QString& pin = "",
-        const QString& uri = "",
-        const MapStringString& config = MapStringString());
+                                                const QString& displayName = "",
+                                                const QString& archivePath = "",
+                                                const QString& password = "",
+                                                const QString& pin = "",
+                                                const QString& uri = "",
+                                                const MapStringString& config = MapStringString());
     /**
      * Set an account to the first position
      */
@@ -218,7 +222,9 @@ Q_SIGNALS:
      * @param status
      * @param pin
      */
-    void exportOnRingEnded(const QString& accountID, account::ExportOnRingStatus status, const QString& pin);
+    void exportOnRingEnded(const QString& accountID,
+                           account::ExportOnRingStatus status,
+                           const QString& pin);
 
     /**
      * Name registration has ended
@@ -226,7 +232,9 @@ Q_SIGNALS:
      * @param status
      * @param name
      */
-    void nameRegistrationEnded(const QString& accountId, account::RegisterNameStatus status, const QString& name);
+    void nameRegistrationEnded(const QString& accountId,
+                               account::RegisterNameStatus status,
+                               const QString& name);
 
     /**
      * Name registration has been found
@@ -234,7 +242,10 @@ Q_SIGNALS:
      * @param status
      * @param name
      */
-    void registeredNameFound(const QString& accountId, account::LookupStatus status, const QString& address, const QString& name);
+    void registeredNameFound(const QString& accountId,
+                             account::LookupStatus status,
+                             const QString& address,
+                             const QString& name);
 
     /**
      * Migration has finished

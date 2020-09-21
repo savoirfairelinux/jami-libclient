@@ -31,31 +31,30 @@
 #include <memory>
 #include <deque>
 
-namespace lrc
-{
+namespace lrc {
 
 class CallbacksHandler;
 class ConversationModelPimpl;
 class Database;
 
-namespace api
-{
+namespace api {
 #if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
 Q_NAMESPACE
 Q_CLASSINFO("RegisterEnumClassesUnscoped", "false")
 #endif
 
-namespace account { struct Info; }
-namespace interaction { struct Info; }
+namespace account {
+struct Info;
+}
+namespace interaction {
+struct Info;
+}
 
 class Lrc;
 class BehaviorController;
 class NewAccountModel;
 
-enum class ConferenceableItem {
-    CALL,
-    CONTACT
-};
+enum class ConferenceableItem { CALL, CONTACT };
 #if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
 Q_ENUM_NS(ConferenceableItem)
 #endif
@@ -67,17 +66,18 @@ struct AccountConversation
 };
 
 /*
-  * vector of conversationId and accountId.
-  * for calls and contacts contain only one element
-  * for conferences contains multiple entries
-  */
+ * vector of conversationId and accountId.
+ * for calls and contacts contain only one element
+ * for conferences contains multiple entries
+ */
 
 typedef QVector<QVector<AccountConversation>> ConferenceableValue;
 
 /**
-  *  @brief Class that manages conversation informations.
-  */
-class LIB_EXPORT ConversationModel : public QObject {
+ *  @brief Class that manages conversation informations.
+ */
+class LIB_EXPORT ConversationModel : public QObject
+{
     Q_OBJECT
 public:
     using ConversationQueue = std::deque<conversation::Info>;
@@ -85,10 +85,10 @@ public:
     const account::Info& owner;
 
     ConversationModel(const account::Info& owner,
-        Lrc& lrc,
-        Database& db,
-        const CallbacksHandler& callbacksHandler,
-        const api::BehaviorController& behaviorController);
+                      Lrc& lrc,
+                      Database& db,
+                      const CallbacksHandler& callbacksHandler,
+                      const api::BehaviorController& behaviorController);
     ~ConversationModel();
 
     /**
@@ -108,12 +108,14 @@ public:
      * @param  search name filter
      * @return filtered conversations
      */
-    Q_INVOKABLE QMap<ConferenceableItem, ConferenceableValue> getConferenceableConversations(const QString& convId, const QString& filter = {}) const;
+    Q_INVOKABLE QMap<ConferenceableItem, ConferenceableValue> getConferenceableConversations(
+        const QString& convId, const QString& filter = {}) const;
     /**
      * Get a custom filtered set of conversations
      * @return conversations filtered
      */
-    Q_INVOKABLE const ConversationQueue& getFilteredConversations(const profile::Type& filter = profile::Type::INVALID,
+    Q_INVOKABLE const ConversationQueue& getFilteredConversations(
+        const profile::Type& filter = profile::Type::INVALID,
         bool forceUpdate = false,
         const bool includeBanned = false) const;
     /**
@@ -127,7 +129,7 @@ public:
      * Get the search results
      * @return a searchResult
      */
-    const ConversationQueue&  getAllSearchResults() const;
+    const ConversationQueue& getAllSearchResults() const;
 
     /**
      * Get the conversation at row in the search results
@@ -223,7 +225,8 @@ public:
      * @param convId
      * @param interactionId
      */
-    Q_INVOKABLE void clearInteractionFromConversation(const QString& convId, const uint64_t& interactionId);
+    Q_INVOKABLE void clearInteractionFromConversation(const QString& convId,
+                                                      const uint64_t& interactionId);
     /**
      * Retry to send a message. In fact, will delete the previous interaction and resend a new one.
      * @param convId
@@ -236,7 +239,9 @@ public:
      * @param participant uri
      * @return whether the interaction is last displayed for the conversation
      */
-    Q_INVOKABLE bool isLastDisplayed(const QString& convId, const uint64_t& interactionId, const QString participant);
+    Q_INVOKABLE bool isLastDisplayed(const QString& convId,
+                                     const uint64_t& interactionId,
+                                     const QString participant);
     /**
      * delete obsolete history from the database
      * @param days, number of days from today. Below this date, interactions will be deleted
@@ -247,7 +252,9 @@ public:
 
     Q_INVOKABLE void acceptTransfer(const QString& convUid, uint64_t interactionId);
 
-    Q_INVOKABLE void acceptTransfer(const QString& convUid, uint64_t interactionId, const QString& path);
+    Q_INVOKABLE void acceptTransfer(const QString& convUid,
+                                    uint64_t interactionId,
+                                    const QString& path);
 
     Q_INVOKABLE void cancelTransfer(const QString& convUid, uint64_t interactionId);
 
@@ -271,7 +278,9 @@ Q_SIGNALS:
      * @param interactionId
      * @param interactionInfo
      */
-    void newInteraction(const QString& uid, uint64_t interactionId, const interaction::Info& interactionInfo) const;
+    void newInteraction(const QString& uid,
+                        uint64_t interactionId,
+                        const interaction::Info& interactionInfo) const;
     /**
      * Emitted when an interaction got a new status
      * @param convUid conversation which owns the interaction
@@ -279,15 +288,14 @@ Q_SIGNALS:
      * @param msg
      */
     void interactionStatusUpdated(const QString& convUid,
-        uint64_t interactionId,
-        const api::interaction::Info& msg) const;
+                                  uint64_t interactionId,
+                                  const api::interaction::Info& msg) const;
     /**
      * Emitted when an interaction got removed from the conversation
      * @param convUid conversation which owns the interaction
      * @param interactionId
      */
-    void interactionRemoved(const QString& convUid,
-        uint64_t interactionId) const;
+    void interactionRemoved(const QString& convUid, uint64_t interactionId) const;
     /**
      * Emitted when user clear the history of a conversation
      * @param uid
@@ -333,7 +341,9 @@ Q_SIGNALS:
      * @param contactUri    contact's uri
      * @param isComposing   if contact is composing a message
      */
-    void composingStatusChanged(const QString& uid, const QString& contactUri, bool isComposing) const;
+    void composingStatusChanged(const QString& uid,
+                                const QString& contactUri,
+                                bool isComposing) const;
     /**
      * Emitted when last displayed interaction changed
      * @param uid of conversation
@@ -341,8 +351,10 @@ Q_SIGNALS:
      * @param previousUid uid of a previous displayed interaction
      * @param newdUid uid of a new displayed interaction
      */
-    void displayedInteractionChanged(const QString& uid, const QString& participantURI,
-        const uint64_t previousUid, const uint64_t newdUid) const;
+    void displayedInteractionChanged(const QString& uid,
+                                     const QString& participantURI,
+                                     const uint64_t previousUid,
+                                     const uint64_t newdUid) const;
 
     /**
      * Emitted when search status changed
