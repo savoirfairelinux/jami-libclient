@@ -38,28 +38,18 @@ Window {
 
     property int selectedScreenNumber: -1
 
-
     // Decide whether to show screen area or entire screen.
     property bool selectArea: false
-
 
     // How many rows the ScrollView should have.
     function calculateRepeaterModel() {
         var numberOfScreens = Qt.application.screens.length
 
-        if (numberOfScreens % 2 === 1)
-            return numberOfScreens / 2 + 1
-        else
-            return numberOfScreens / 2
+        return Math.ceil(numberOfScreens / 2)
     }
 
-    function calculateScreenNumber(index) {
-        if (index === 0 || index === 1)
-            return index
-        if (index % 2 === 0)
-            return index * 2
-        else
-            return index * 2 + 1
+    function calculateScreenNumber(index, isEven) {
+        return index * 2 + (isEven ? 2 : 1)
     }
 
     minimumWidth: minWidth
@@ -67,9 +57,10 @@ Window {
 
     title: "Screen sharing"
 
-
     // Note: Qt.application.screens[0] is the app's current existing screen.
     screen: Qt.application.screens[0]
+
+    modality: Qt.ApplicationModal
 
     Rectangle {
         id: selectScreenWindowRect
@@ -80,7 +71,7 @@ Window {
             id: screenListText
 
             anchors.top: selectScreenWindowRect.top
-            anchors.topMargin: 20
+            anchors.topMargin: JamiTheme.preferredMarginSize
             anchors.horizontalCenter: selectScreenWindowRect.horizontalCenter
 
             font.pointSize: JamiTheme.textFontSize + 2
@@ -91,15 +82,17 @@ Window {
         ScrollView {
             id: screenSelectionScrollView
 
-            anchors.centerIn: selectScreenWindowRect
+            anchors.top: screenListText.bottom
+            anchors.topMargin: JamiTheme.preferredMarginSize
+            anchors.horizontalCenter: selectScreenWindowRect.horizontalCenter
 
-            width: selectScreenWindowRect.width - 50
-            height: selectScreenWindowRect.height - 150
+            width: selectScreenWindowRect.width
+            height: selectScreenWindowRect.height -
+                    (screenListText.height + selectButton.height + JamiTheme.preferredMarginSize * 4)
 
             clip: true
 
             ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
-
 
             // Column of rows repeater (two screen captures in a row).
             Column {
@@ -115,20 +108,19 @@ Window {
                     Row {
                         id: screenInfoRow
 
-                        spacing: 20
+                        leftPadding: JamiTheme.preferredMarginSize
+                        rightPadding: JamiTheme.preferredMarginSize
+                        spacing: screenSelectionScrollViewColumn.spacing
 
                         Connections {
                             target: selectScreenWindow
 
                             function onSelectedScreenNumberChanged() {
-
-
                                 // Recover from green state.
                                 screenSelectionRectOdd.borderColor = JamiTheme.tabbarBorderColor
                                 screenSelectionRectEven.borderColor = JamiTheme.tabbarBorderColor
                             }
                         }
-
 
                         // To make sure that two screen captures in one row,
                         // a repeater of two rect is needed, which one in charge
@@ -139,9 +131,9 @@ Window {
                             property string borderColor: JamiTheme.tabbarBorderColor
 
                             height: screenSelectionScrollView.height
-                            width: screenSelectionScrollView.width / 2 - screenInfoRow.spacing / 2
+                            width: screenSelectionScrollView.width / 2 -
+                                   screenInfoRow.spacing / 2 - JamiTheme.preferredMarginSize
 
-                            radius: 10
                             border.color: borderColor
 
                             Image {
@@ -160,7 +152,7 @@ Window {
                                 Component.onCompleted: {
                                     screenShotOdd.source = "data:image/png;base64,"
                                             + AvAdapter.captureScreen(
-                                                calculateScreenNumber(index))
+                                                calculateScreenNumber(index, false) - 1)
                                 }
                             }
 
@@ -172,8 +164,7 @@ Window {
                                 anchors.horizontalCenter: screenSelectionRectOdd.horizontalCenter
 
                                 font.pointSize: JamiTheme.textFontSize - 2
-                                text: qsTr("Screen") + " " + (calculateScreenNumber(
-                                                                  index) + 1)
+                                text: qsTr("Screen") + " " + calculateScreenNumber(index, false)
                             }
 
                             MouseArea {
@@ -182,10 +173,9 @@ Window {
 
                                 onClicked: {
                                     if (selectedScreenNumber == -1
-                                            || selectedScreenNumber !== calculateScreenNumber(
-                                                index)) {
-                                        selectedScreenNumber = calculateScreenNumber(
-                                                    index)
+                                            || selectedScreenNumber !==
+                                            calculateScreenNumber(index, false)) {
+                                        selectedScreenNumber = calculateScreenNumber(index, false)
                                         screenSelectionRectOdd.borderColor
                                                 = JamiTheme.screenSelectionBorderGreen
                                     }
@@ -199,12 +189,17 @@ Window {
                             property string borderColor: JamiTheme.tabbarBorderColor
 
                             height: screenSelectionScrollView.height
-                            width: screenSelectionScrollView.width / 2 - screenInfoRow.spacing / 2
+                            width: screenSelectionScrollView.width / 2 -
+                                   screenInfoRow.spacing / 2 - JamiTheme.preferredMarginSize
 
-                            radius: 10
                             border.color: borderColor
 
-                            visible: (Qt.application.screens.length) % 2 != 1
+                            visible: {
+                                if (calculateScreenNumber(index, true) >=
+                                        Qt.application.screens.length)
+                                    return (Qt.application.screens.length) % 2 != 1
+                                return true
+                            }
 
                             Image {
                                 id: screenShotEven
@@ -223,8 +218,7 @@ Window {
                                     if (screenSelectionRectEven.visible)
                                         screenShotEven.source = "data:image/png;base64,"
                                                 + AvAdapter.captureScreen(
-                                                    calculateScreenNumber(
-                                                        index + 1))
+                                                    calculateScreenNumber(index, true) - 1)
                                 }
                             }
 
@@ -236,9 +230,7 @@ Window {
                                 anchors.horizontalCenter: screenSelectionRectEven.horizontalCenter
 
                                 font.pointSize: JamiTheme.textFontSize - 2
-                                text: qsTr(
-                                          "Screen") + " " + (calculateScreenNumber(
-                                                                 index + 1) + 1)
+                                text: qsTr("Screen") + " " + (calculateScreenNumber(index, true))
                             }
 
                             MouseArea {
@@ -247,10 +239,9 @@ Window {
 
                                 onClicked: {
                                     if (selectedScreenNumber == -1
-                                            || selectedScreenNumber !== calculateScreenNumber(
-                                                index + 1)) {
-                                        selectedScreenNumber = calculateScreenNumber(
-                                                    index + 1)
+                                            || selectedScreenNumber !==
+                                            calculateScreenNumber(index, true)) {
+                                        selectedScreenNumber = calculateScreenNumber(index, true)
                                         screenSelectionRectEven.borderColor
                                                 = JamiTheme.screenSelectionBorderGreen
                                     }
@@ -260,13 +251,6 @@ Window {
                     }
                 }
             }
-
-            background: Rectangle {
-                id: screenSelectionScrollViewBackground
-
-                radius: 10
-                border.color: JamiTheme.tabbarBorderColor
-            }
         }
     }
 
@@ -274,7 +258,7 @@ Window {
         id: selectButton
 
         anchors.bottom: selectScreenWindowRect.bottom
-        anchors.bottomMargin: 10
+        anchors.bottomMargin: JamiTheme.preferredMarginSize
         anchors.horizontalCenter: selectScreenWindowRect.horizontalCenter
 
         visible: selectedScreenNumber != -1
@@ -286,7 +270,7 @@ Window {
             if (selectArea) {
                 selectScreenWindow.hide()
                 ScreenRubberBandCreation.createScreenRubberBandWindowObject(
-                            selectScreenWindow, selectedScreenNumber)
+                            selectScreenWindow, selectedScreenNumber - 1)
                 ScreenRubberBandCreation.showScreenRubberBandWindow()
 
 
@@ -295,7 +279,7 @@ Window {
                     selectScreenWindow.close()
                 })
             } else {
-                AvAdapter.shareEntireScreen(selectedScreenNumber)
+                AvAdapter.shareEntireScreen(selectedScreenNumber - 1)
                 selectScreenWindow.close()
             }
         }
