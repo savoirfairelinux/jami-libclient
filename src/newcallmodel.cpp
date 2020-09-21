@@ -37,6 +37,7 @@
 #include "vcard.h"
 #include "video/renderer.h"
 #include "typedefs.h"
+#include "uri.h"
 
 // Ring daemon
 #include <media_const.h>
@@ -206,10 +207,13 @@ NewCallModel::~NewCallModel()
 const call::Info&
 NewCallModel::getCallFromURI(const QString& uri, bool notOver) const
 {
-    // peer url = ring:uri or sip number
-    auto url = (owner.profileInfo.type != profile::Type::SIP && !uri.contains("ring:")) ? "ring:" + uri : uri;
+    // For a NON SIP account the scheme can be ring:. Sometimes it can miss, and will be certainly
+    // replaced by jami://.
+    // Just make the comparaison ignoring the scheme and check the rest.
+    auto uriObj = URI(uri);
     for (const auto& call: pimpl_->calls) {
-        if (call.second->peerUri == url) {
+        auto contactUri = URI(call.second->peerUri);
+        if (uriObj.userinfo() == contactUri.userinfo() and uriObj.hostname() == contactUri.hostname()) {
             if (!notOver || !call::isTerminating(call.second->status))
                 return *call.second;
         }
