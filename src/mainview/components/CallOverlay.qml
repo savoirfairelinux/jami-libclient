@@ -172,7 +172,7 @@ Rectangle {
                 visible: mainViewWindow.sidePanelOnly
 
                 onClicked: {
-                    mainViewWindow.showWelcomeView() // TODO: refactor with msg manager
+                    mainViewWindow.showWelcomeView()
                 }
             }
 

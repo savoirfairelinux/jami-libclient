@@ -32,7 +32,7 @@ Rectangle {
     property string backToWelcomeViewButtonSource: "qrc:/images/icons/ic_arrow_back_24px.svg"
     property bool sendContactRequestButtonVisible: true
 
-    signal backToWelcomeViewButtonClicked
+    signal backClicked
     signal needToHideConversationInCall
     signal sendContactRequestButtonClicked
 
@@ -65,7 +65,7 @@ Rectangle {
 
             onClicked: {
                 if (backToWelcomeViewButtonSource === "qrc:/images/icons/ic_arrow_back_24px.svg")
-                    messagingHeaderRect.backToWelcomeViewButtonClicked()
+                    messagingHeaderRect.backClicked()
                 else
                     messagingHeaderRect.needToHideConversationInCall()
             }

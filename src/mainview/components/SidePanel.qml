@@ -40,8 +40,6 @@ Rectangle {
     }
 
     signal conversationSmartListNeedToAccessMessageWebView(string currentUserDisplayName, string currentUserAlias, string currentUID, bool callStackViewShouldShow, bool isAudioOnly, int callState)
-    signal accountComboBoxNeedToShowWelcomePage()
-    signal conversationSmartListViewNeedToShowWelcomePage
     signal needToUpdateConversationForAddedContact
     signal needToAddNewAccount
 
@@ -207,10 +205,6 @@ Rectangle {
 
         onNeedToSelectItems: {
             ConversationsAdapter.selectConversation(conversationUid)
-        }
-
-        onNeedToBackToWelcomePage: {
-            sidePanelRect.conversationSmartListViewNeedToShowWelcomePage()
         }
 
         onNeedToAccessMessageWebView: {

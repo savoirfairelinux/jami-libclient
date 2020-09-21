@@ -33,7 +33,6 @@ Rectangle {
     property string headerUserAliasLabelText: ""
     property string headerUserUserNameLabelText: ""
 
-    signal needToGoBackToWelcomeView
     signal needToHideConversationInCall
     signal needToSendContactRequest
 
@@ -93,9 +92,9 @@ Rectangle {
         userAliasLabelText: headerUserAliasLabelText
         userUserNameLabelText: headerUserUserNameLabelText
 
-        onBackToWelcomeViewButtonClicked: {
+        onBackClicked: {
             MessagesAdapter.updateDraft()
-            messageWebViewRect.needToGoBackToWelcomeView()
+            mainViewWindow.showWelcomeView()
         }
 
         onNeedToHideConversationInCall: {

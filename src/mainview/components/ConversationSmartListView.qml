@@ -29,7 +29,6 @@ ListView {
     signal needToAccessMessageWebView(string currentUserDisplayName, string currentUserAlias, string currentUID, bool callStackViewShouldShow, bool isAudioOnly, int callState)
     signal needToSelectItems(string conversationUid)
     signal needToDeselectItems
-    signal needToBackToWelcomePage
     signal needToGrabFocus
 
     signal needToShowChatView(string accountId, string convUid)
@@ -72,10 +71,6 @@ ListView {
 
         function onUpdateListViewRequested() {
             updateListView()
-        }
-
-        function onNavigateToWelcomePageRequested() {
-            root.needToBackToWelcomePage()
         }
     }
 

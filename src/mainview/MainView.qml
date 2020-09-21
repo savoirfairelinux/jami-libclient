@@ -66,6 +66,7 @@ Window {
                 mainViewStack.pop(welcomePage, StackView.Immediate)
             }
         }
+        recordBox.visible = false
     }
 
     function setCallStackView() {
@@ -299,6 +300,11 @@ Window {
                         function onAccountStatusChanged() {
                             accountComboBox.resetAccountListModel()
                         }
+
+                        function onNavigateToWelcomePageRequested() {
+                            if (!inSettingsView && !currentAccountIsCalling())
+                                showWelcomeView()
+                        }
                     }
 
                     onSettingBtnClicked: {
@@ -310,21 +316,11 @@ Window {
 
                         AccountAdapter.accountChanged(index)
 
-                        settingsView.slotAccountListChanged()
-                        settingsView.setSelected(settingsView.selectedMenu, true)
-
-                        if (!inSettingsView) {
-                            if (currentAccountIsCalling()) {
-                                setCallStackView()
-                            } else {
-                                showWelcomeView()
-                            }
-                        }
-                    }
-
-                    onNeedToBackToWelcomePage: {
-                        if (!inSettingsView && !currentAccountIsCalling()) {
-                            mainViewWindowSidePanel.accountComboBoxNeedToShowWelcomePage()
+                        if (inSettingsView) {
+                            settingsView.slotAccountListChanged()
+                            settingsView.setSelected(settingsView.selectedMenu, true)
+                        } else if (currentAccountIsCalling()) {
+                            setCallStackView()
                         }
                     }
 
@@ -509,17 +505,6 @@ Window {
             }
         }
 
-        onAccountComboBoxNeedToShowWelcomePage: {
-            // If the item argument is specified, all items down to (but not including) item will be popped.
-            if (!inSettingsView && !currentAccountIsCalling()) {
-                showWelcomeView()
-            }
-        }
-
-        onConversationSmartListViewNeedToShowWelcomePage: {
-            showWelcomeView()
-        }
-
         onNeedToUpdateConversationForAddedContact: {
             MessagesAdapter.updateConversationForAddedContact()
             mainViewWindowSidePanel.clearContactSearchBar()
@@ -528,6 +513,14 @@ Window {
 
         onNeedToAddNewAccount: {
             mainViewStackLayout.currentIndex = 1
+        }
+
+        Connections {
+            target: ConversationsAdapter
+
+            function onNavigateToWelcomePageRequested() {
+                showWelcomeView()
+            }
         }
     }
 
@@ -581,11 +574,6 @@ Window {
             function onContactBanned() {
                 showWelcomeView()
             }
-        }
-
-        onNeedToGoBackToWelcomeView: {
-            showWelcomeView()
-            recordBox.visible = false
         }
 
         Component.onCompleted: {
