@@ -17,7 +17,7 @@
  ***************************************************************************/
 #include "pixmapmanipulatordefault.h"
 
-//Qt
+// Qt
 #include <QtCore/QSize>
 #include <QtCore/QVariant>
 #include <QtCore/QModelIndex>
@@ -28,7 +28,11 @@
 
 namespace Interfaces {
 
-QVariant PixmapManipulatorDefault::numberCategoryIcon(const QVariant& p, const QSize& size, bool displayPresence, bool isPresent)
+QVariant
+PixmapManipulatorDefault::numberCategoryIcon(const QVariant& p,
+                                             const QSize& size,
+                                             bool displayPresence,
+                                             bool isPresent)
 {
     Q_UNUSED(p)
     Q_UNUSED(size)
@@ -50,38 +54,42 @@ PixmapManipulatorDefault::conversationPhoto(const lrc::api::conversation::Info& 
     return QVariant();
 }
 
-QByteArray PixmapManipulatorDefault::toByteArray(const QVariant& pxm)
+QByteArray
+PixmapManipulatorDefault::toByteArray(const QVariant& pxm)
 {
     Q_UNUSED(pxm)
     return QByteArray();
 }
 
-QVariant PixmapManipulatorDefault::personPhoto(const QByteArray& data, const QString& type)
+QVariant
+PixmapManipulatorDefault::personPhoto(const QByteArray& data, const QString& type)
 {
     Q_UNUSED(data)
     Q_UNUSED(type)
     return QVariant();
 }
 
-QVariant PixmapManipulatorDefault::userActionIcon(const UserActionElement& state) const
+QVariant
+PixmapManipulatorDefault::userActionIcon(const UserActionElement& state) const
 {
     Q_UNUSED(state)
     return QVariant();
 }
 
-QVariant PixmapManipulatorDefault::decorationRole(const QModelIndex& index)
+QVariant
+PixmapManipulatorDefault::decorationRole(const QModelIndex& index)
 {
-   Q_UNUSED(index)
-   return QVariant();
+    Q_UNUSED(index)
+    return QVariant();
 }
 
 QVariant
 PixmapManipulatorDefault::decorationRole(const lrc::api::conversation::Info& conversation,
                                          const lrc::api::account::Info& accountInfo)
 {
-   Q_UNUSED(conversation)
-   Q_UNUSED(accountInfo)
-   return QVariant();
+    Q_UNUSED(conversation)
+    Q_UNUSED(accountInfo)
+    return QVariant();
 }
 
 } // namespace Interfaces

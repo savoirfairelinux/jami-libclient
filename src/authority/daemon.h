@@ -23,14 +23,11 @@
 #include "api/contact.h"
 #include "dbus/configurationmanager.h"
 
-namespace lrc
-{
+namespace lrc {
 
-namespace authority
-{
+namespace authority {
 
-namespace daemon
-{
+namespace daemon {
 /**
  * Ask the daemon to add contact to the daemon.
  * @param owner

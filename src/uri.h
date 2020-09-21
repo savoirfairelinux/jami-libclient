@@ -78,19 +78,12 @@ class LIB_EXPORT URI : public QString
 {
 public:
     URI();
-    URI(const URI&     other);
+    URI(const URI& other);
     URI(const QString& other);
     virtual ~URI();
 
     // @enum SchemeType The very first part of the URI followed by a ':'
-    enum class SchemeType {
-        SIP  ,
-        SIPS ,
-        RING ,
-        NONE ,
-        COUNT__,
-        UNRECOGNIZED
-    };
+    enum class SchemeType { SIP, SIPS, RING, NONE, COUNT__, UNRECOGNIZED };
     Q_ENUMS(URI::SchemeType)
 
     /**
@@ -99,16 +92,16 @@ public:
      */
     enum class Transport {
         NOT_SET, /*!<  The transport have not been set directly in the URI  */
-        TLS    , /*!<  Encrypted calls (capital)                            */
-        tls    , /*!<  Encrypted calls                                      */
-        TCP    , /*!<  TCP (the default) (capital)                          */
-        tcp    , /*!<  TCP (the default)                                    */
-        UDP    , /*!<  Without a connection (capital)                       */
-        udp    , /*!<  Without a connection                                 */
-        SCTP   , /*!<                                                       */
-        sctp   , /*!<                                                       */
-        DTLS   , /*!<                                                       */
-        dtls   , /*!<                                                       */
+        TLS,     /*!<  Encrypted calls (capital)                            */
+        tls,     /*!<  Encrypted calls                                      */
+        TCP,     /*!<  TCP (the default) (capital)                          */
+        tcp,     /*!<  TCP (the default)                                    */
+        UDP,     /*!<  Without a connection (capital)                       */
+        udp,     /*!<  Without a connection                                 */
+        SCTP,    /*!<                                                       */
+        sctp,    /*!<                                                       */
+        DTLS,    /*!<                                                       */
+        dtls,    /*!<                                                       */
         COUNT__
     };
     Q_ENUMS(URI::Transport)
@@ -121,26 +114,26 @@ public:
      *
      */
     enum class Section {
-        CHEVRONS  = 0x1 << 0, /*!< <code><sips:888@192.168.48.213:5060;transport=TLS>
+        CHEVRONS = 0x1 << 0,  /*!< <code><sips:888@192.168.48.213:5060;transport=TLS>
                                 \_/                                              \_/
                                 |_________________Chevrons_______________________|
                                 </code>*/
-        SCHEME    = 0x1 << 1, /*!< <code><sips:888@192.168.48.213:5060;transport=TLS>
+        SCHEME = 0x1 << 1,    /*!< <code><sips:888@192.168.48.213:5060;transport=TLS>
                                 \___/
                                 |______Scheme|</code>                      */
         USER_INFO = 0x1 << 2, /*!< <code><sips:888@192.168.48.213:5060;transport=TLS>
                                 \___/
                                 |_________Userinfo</code>             */
-        HOSTNAME  = 0x1 << 3, /*!< <code><sips:888@192.168.48.213:5060;transport=TLS>
+        HOSTNAME = 0x1 << 3,  /*!< <code><sips:888@192.168.48.213:5060;transport=TLS>
                                 \______________/
                                 |_________Hostname</code>    */
-        PORT      = 0x1 << 4, /*!< <code><sips:888@192.168.48.213:5060;transport=TLS>
+        PORT = 0x1 << 4,      /*!< <code><sips:888@192.168.48.213:5060;transport=TLS>
                                 \____/
                                 |_____Port</code>  */
         TRANSPORT = 0x1 << 5, /*!< <code><sips:888@192.168.48.213:5060;transport=TLS>
                                 \_____________/
                                 Transport________|</code> */
-        TAG       = 0x1 << 6, /*!< <code><sips:888@192.168.48.213:5060;tag=b5c73d9ef>
+        TAG = 0x1 << 6,       /*!< <code><sips:888@192.168.48.213:5060;tag=b5c73d9ef>
                                 \_____________/
                                 Tag_________|</code> */
     };
@@ -200,4 +193,4 @@ Q_DECLARE_METATYPE(URI::ProtocolHint)
 
 DECLARE_ENUM_FLAGS(URI::Section)
 
-QDataStream& operator<< ( QDataStream& stream, const URI::ProtocolHint& ph );
+QDataStream& operator<<(QDataStream& stream, const URI::ProtocolHint& ph);

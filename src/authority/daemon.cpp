@@ -19,14 +19,11 @@
 // Lrc
 #include "daemon.h"
 
-namespace lrc
-{
+namespace lrc {
 
-namespace authority
-{
+namespace authority {
 
-namespace daemon
-{
+namespace daemon {
 
 void
 addContact(const api::account::Info& owner, const QString& contactUri)

@@ -28,14 +28,11 @@
 
 #include "typedefs.h"
 
-namespace lrc
-{
+namespace lrc {
 
-namespace api
-{
+namespace api {
 
-namespace call
-{
+namespace call {
 #if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
 Q_NAMESPACE
 Q_CLASSINFO("RegisterEnumClassesUnscoped", "false")
@@ -63,8 +60,7 @@ Q_ENUM_NS(Status)
 static inline QString
 to_string(const call::Status& status)
 {
-    switch(status)
-    {
+    switch (status) {
     case call::Status::PAUSED:
         return QObject::tr("Hold");
     case call::Status::IN_PROGRESS:
@@ -128,20 +124,12 @@ to_status(const QString& status)
     return Status::INVALID;
 }
 
-enum class Type {
-    INVALID,
-    DIALOG,
-    CONFERENCE
-};
+enum class Type { INVALID, DIALOG, CONFERENCE };
 #if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
 Q_ENUM_NS(Type)
 #endif
 
-enum class Layout {
-    GRID,
-    ONE_WITH_SMALL,
-    ONE
-};
+enum class Layout { GRID, ONE_WITH_SMALL, ONE };
 
 struct Info
 {
@@ -159,9 +147,9 @@ struct Info
 };
 
 static inline bool
-canSendSIPMessage(const Info& call) {
-    switch(call.status)
-    {
+canSendSIPMessage(const Info& call)
+{
+    switch (call.status) {
     case call::Status::PAUSED:
     case call::Status::IN_PROGRESS:
     case call::Status::INCOMING_RINGING:
@@ -182,9 +170,9 @@ canSendSIPMessage(const Info& call) {
 }
 
 static inline bool
-isTerminating(const Status& status) {
-    switch(status)
-    {
+isTerminating(const Status& status)
+{
+    switch (status) {
     case call::Status::INVALID:
     case call::Status::INACTIVE:
     case call::Status::ENDED:

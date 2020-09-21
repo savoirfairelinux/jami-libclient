@@ -29,7 +29,8 @@ public:
     // String associated with the transport name
     static const std::map<URI::Transport, const char*> transportNames;
 
-    struct Constants {
+    struct Constants
+    {
         constexpr static const char TRANSPORT[] = "transport";
         constexpr static const char TAG[] = "tag";
     };
@@ -62,7 +63,7 @@ public:
     // Helpers
     URI::Transport nameToTransport(const QByteArray& name);
     static QString strip(const QString& uri, URI::SchemeType& schemeType, QString& scheme);
-    static bool checkIp(const QString& str, bool &isHash, const URI::SchemeType& scheme);
+    static bool checkIp(const QString& str, bool& isHash, const URI::SchemeType& scheme);
     void parseAttribute(const QByteArray& extHn, const int start, const int pos);
     void parseHostname();
     void parse();
@@ -71,33 +72,31 @@ public:
 constexpr const char URIPimpl::Constants::TRANSPORT[];
 constexpr const char URIPimpl::Constants::TAG[];
 
-const std::map<URI::Transport, const char*> URIPimpl::transportNames = {
-    { URI::Transport::NOT_SET, "NOT_SET" },
-    { URI::Transport::TLS, "TLS" },
-    { URI::Transport::tls, "tls" },
-    { URI::Transport::TCP, "TCP" },
-    { URI::Transport::tcp, "tcp" },
-    { URI::Transport::UDP, "UDP" },
-    { URI::Transport::udp, "udp" },
-    { URI::Transport::SCTP, "SCTP" },
-    { URI::Transport::sctp, "sctp" },
-    { URI::Transport::DTLS, "DTLS" },
-    { URI::Transport::dtls, "dtls" }
-};
+const std::map<URI::Transport, const char*> URIPimpl::transportNames
+    = {{URI::Transport::NOT_SET, "NOT_SET"},
+       {URI::Transport::TLS, "TLS"},
+       {URI::Transport::tls, "tls"},
+       {URI::Transport::TCP, "TCP"},
+       {URI::Transport::tcp, "tcp"},
+       {URI::Transport::UDP, "UDP"},
+       {URI::Transport::udp, "udp"},
+       {URI::Transport::SCTP, "SCTP"},
+       {URI::Transport::sctp, "sctp"},
+       {URI::Transport::DTLS, "DTLS"},
+       {URI::Transport::dtls, "dtls"}};
 
-const std::map<URI::SchemeType, const char*> URIPimpl::schemeNames = {
-    { URI::SchemeType::NONE, "" },
-    { URI::SchemeType::SIP, "sip:" },
-    { URI::SchemeType::SIPS, "sips:" },
-    { URI::SchemeType::RING, "ring:" }
-};
+const std::map<URI::SchemeType, const char*> URIPimpl::schemeNames
+    = {{URI::SchemeType::NONE, ""},
+       {URI::SchemeType::SIP, "sip:"},
+       {URI::SchemeType::SIPS, "sips:"},
+       {URI::SchemeType::RING, "ring:"}};
 
 URIPimpl::URIPimpl(const URI& uri)
-: linked(uri)
-{
-}
+    : linked(uri)
+{}
 
-URIPimpl& URIPimpl::operator=(const URIPimpl& other)
+URIPimpl&
+URIPimpl::operator=(const URIPimpl& other)
 {
     m_Parsed = other.m_Parsed;
     m_HintParsed = other.m_HintParsed;
@@ -119,13 +118,12 @@ URIPimpl& URIPimpl::operator=(const URIPimpl& other)
 }
 
 URI::URI()
-: QString()
-, pimpl_(std::make_unique<URIPimpl>(*this))
-{
-}
+    : QString()
+    , pimpl_(std::make_unique<URIPimpl>(*this))
+{}
 
 URI::URI(const QString& uri)
-: URI()
+    : URI()
 {
     QString simplified = uri.simplified().remove(' ').remove('<').remove('>');
     pimpl_->m_Stripped = URIPimpl::strip(simplified, pimpl_->m_HeaderType, pimpl_->m_Scheme);
@@ -133,13 +131,14 @@ URI::URI(const QString& uri)
 }
 
 URI::URI(const URI& other)
-: URI()
+    : URI()
 {
     *pimpl_ = *other.pimpl_;
     (*static_cast<QString*>(this)) = pimpl_->m_Stripped;
 }
 
-URI& URI::operator=(const URI& other)
+URI&
+URI::operator=(const URI& other)
 {
     if (this != &other) {
         *pimpl_ = *other.pimpl_;
@@ -148,14 +147,13 @@ URI& URI::operator=(const URI& other)
     return *this;
 }
 
-URI::~URI()
-{
-}
+URI::~URI() {}
 
 /**
  * Strip out scheme from the URI
  */
-QString URIPimpl::strip(const QString& uri, URI::SchemeType& schemeType, QString& scheme)
+QString
+URIPimpl::strip(const QString& uri, URI::SchemeType& schemeType, QString& scheme)
 {
     if (uri.isEmpty())
         return {};
@@ -170,7 +168,7 @@ QString URIPimpl::strip(const QString& uri, URI::SchemeType& schemeType, QString
     }
 
     schemeType = URI::SchemeType::UNRECOGNIZED;
-    auto it = std::find_if(schemeNames.begin(), schemeNames.end(), [&scheme] (auto& it) {
+    auto it = std::find_if(schemeNames.begin(), schemeNames.end(), [&scheme](auto& it) {
         if (it.second == "ring:" && scheme == "jami:")
             return true;
         return it.second == scheme;
@@ -184,7 +182,9 @@ QString URIPimpl::strip(const QString& uri, URI::SchemeType& schemeType, QString
         std::string uri_to_match_unrecognized = uri_to_match;
         std::smatch match_unrecognized;
 
-        if (std::regex_search(uri_to_match_unrecognized, match_unrecognized, uri_regex_unrecognized)) {
+        if (std::regex_search(uri_to_match_unrecognized,
+                              match_unrecognized,
+                              uri_regex_unrecognized)) {
             if (match_unrecognized.ready()) {
                 std::string scheme_unrecognized = match_unrecognized.str(0).c_str();
                 if (!scheme_unrecognized.empty()) {
@@ -203,7 +203,8 @@ QString URIPimpl::strip(const QString& uri, URI::SchemeType& schemeType, QString
  *
  * For example, example.com in <sip:12345@example.com>
  */
-QString URI::hostname() const
+QString
+URI::hostname() const
 {
     if (!pimpl_->m_Parsed)
         pimpl_->parse();
@@ -215,7 +216,8 @@ QString URI::hostname() const
  *
  * This will return true if there is something between '@' and ';' (or an end of line)
  */
-bool URI::hasHostname() const
+bool
+URI::hasHostname() const
 {
     return !hostname().isEmpty();
 }
@@ -224,7 +226,8 @@ bool URI::hasHostname() const
  * If hasHostname() is true, this does a second parsing of the hostname to
  * extract the port.
  */
-bool URI::hasPort() const
+bool
+URI::hasPort() const
 {
     return port() != -1;
 }
@@ -232,7 +235,8 @@ bool URI::hasPort() const
 /**
  * Return the port, -1 is none is set
  */
-int URI::port() const
+int
+URI::port() const
 {
     if (!pimpl_->m_IsHNParsed) {
         pimpl_->parseHostname();
@@ -243,7 +247,8 @@ int URI::port() const
 /**
  * Return the URI SchemeType
  */
-URI::SchemeType URI::schemeType() const
+URI::SchemeType
+URI::schemeType() const
 {
     if (!pimpl_->m_Parsed)
         const_cast<URI*>(this)->pimpl_->parse();
@@ -257,7 +262,8 @@ URI::SchemeType URI::schemeType() const
  * @param str an uservalue (faster the scheme and before the "at" sign)
  * @param [out] isHash if the content is pure hexadecimal ASCII
  */
-bool URIPimpl::checkIp(const QString& str, bool &isHash, const URI::SchemeType& scheme)
+bool
+URIPimpl::checkIp(const QString& str, bool& isHash, const URI::SchemeType& scheme)
 {
     const QByteArray raw = str.toLatin1();
     int max = str.size();
@@ -268,15 +274,21 @@ bool URIPimpl::checkIp(const QString& str, bool &isHash, const URI::SchemeType& 
     uchar dc(0), sc(0), i(0), d(0), hx(1);
 
     while (i < max) {
-        switch(raw[i]) {
+        switch (raw[i]) {
         case '.':
             isHash = false;
             d = 0;
             dc++;
             break;
-        case '0': case '1': case '2':
-        case '3': case '4': case '5':
-        case '6': case '7': case '8':
+        case '0':
+        case '1':
+        case '2':
+        case '3':
+        case '4':
+        case '5':
+        case '6':
+        case '7':
+        case '8':
         case '9':
             if (++d > 3 && dc)
                 return false;
@@ -284,12 +296,20 @@ bool URIPimpl::checkIp(const QString& str, bool &isHash, const URI::SchemeType& 
         case ':':
             isHash = false;
             sc++;
-            //No break
+            // No break
             [[clang::fallthrough]];
-        case 'A': case 'B': case 'C':
-        case 'D': case 'E': case 'F':
-        case 'a': case 'b': case 'c':
-        case 'd': case 'e': case 'f':
+        case 'A':
+        case 'B':
+        case 'C':
+        case 'D':
+        case 'E':
+        case 'F':
+        case 'a':
+        case 'b':
+        case 'c':
+        case 'd':
+        case 'e':
+        case 'f':
             hx = 0;
             break;
         default:
@@ -298,7 +318,7 @@ bool URIPimpl::checkIp(const QString& str, bool &isHash, const URI::SchemeType& 
         }
         i++;
     }
-    return (hx && dc == 3 && d < 4) ^ (sc > 1 && dc==0);
+    return (hx && dc == 3 && d < 4) ^ (sc > 1 && dc == 0);
 }
 
 /**
@@ -307,7 +327,8 @@ bool URIPimpl::checkIp(const QString& str, bool &isHash, const URI::SchemeType& 
  *
  * @warning, this method is O(N) when called for the first time on an URI
  */
-URI::ProtocolHint URI::protocolHint() const
+URI::ProtocolHint
+URI::protocolHint() const
 {
     if (!pimpl_->m_Parsed)
         pimpl_->parse();
@@ -317,32 +338,30 @@ URI::ProtocolHint URI::protocolHint() const
 
         URI::ProtocolHint hint;
 
-        //Step 1: Check IP
+        // Step 1: Check IP
         if (URIPimpl::checkIp(pimpl_->m_Userinfo, isHash, pimpl_->m_HeaderType)) {
             hint = URI::ProtocolHint::IP;
         }
-        //Step 2: Check RING hash
-        else if (isHash)
-        {
+        // Step 2: Check RING hash
+        else if (isHash) {
             hint = URI::ProtocolHint::RING;
         }
-        //Step 3: Not a hash but it begins with ring:. This is a username.
-        else if (pimpl_->m_HeaderType == URI::SchemeType::RING){
+        // Step 3: Not a hash but it begins with ring:. This is a username.
+        else if (pimpl_->m_HeaderType == URI::SchemeType::RING) {
             hint = URI::ProtocolHint::RING_USERNAME;
         }
-        //Step 4: Check for SIP URIs
-        else if (pimpl_->m_HeaderType == URI::SchemeType::SIP)
-        {
-            //Step 4.1: Check for SIP URI with hostname
+        // Step 4: Check for SIP URIs
+        else if (pimpl_->m_HeaderType == URI::SchemeType::SIP) {
+            // Step 4.1: Check for SIP URI with hostname
             if (pimpl_->m_HasAt) {
                 hint = URI::ProtocolHint::SIP_HOST;
             }
-            //Step 4.2: Assume SIP URI without hostname
+            // Step 4.2: Assume SIP URI without hostname
             else {
                 hint = URI::ProtocolHint::SIP_OTHER;
             }
         }
-        //Step 5: UNRECOGNIZED
+        // Step 5: UNRECOGNIZED
         else {
             hint = URI::ProtocolHint::UNRECOGNIZED;
         }
@@ -354,9 +373,10 @@ URI::ProtocolHint URI::protocolHint() const
 }
 
 // Convert the transport name to a string
-URI::Transport URIPimpl::nameToTransport(const QByteArray& name)
+URI::Transport
+URIPimpl::nameToTransport(const QByteArray& name)
 {
-    auto it = std::find_if(transportNames.begin(), transportNames.end(), [&name](auto& entry){
+    auto it = std::find_if(transportNames.begin(), transportNames.end(), [&name](auto& entry) {
         return entry.second == name;
     });
 
@@ -368,36 +388,38 @@ URI::Transport URIPimpl::nameToTransport(const QByteArray& name)
 }
 
 // Keep a cache of the values to avoid re-parsing them
-void URIPimpl::parse()
+void
+URIPimpl::parse()
 {
-    //FIXME the indexOf is done twice, the second time could be avoided
+    // FIXME the indexOf is done twice, the second time could be avoided
     if (linked.indexOf('@') != -1) {
         const QStringList split = linked.split('@');
-        m_HasAt       = true;
+        m_HasAt = true;
         m_ExtHostname = split[1];
-        m_Userinfo    = split[0];
-        m_Parsed      = true;
+        m_Userinfo = split[0];
+        m_Parsed = true;
     } else {
         m_Userinfo = (linked);
     }
 }
 
-void URIPimpl::parseAttribute(const QByteArray& extHn, const int start, const int pos)
+void
+URIPimpl::parseAttribute(const QByteArray& extHn, const int start, const int pos)
 {
-    const QList<QByteArray> parts = extHn.mid(start+1,pos-start).split('=');
+    const QList<QByteArray> parts = extHn.mid(start + 1, pos - start).split('=');
 
     if (parts.size() == 2) {
         if (parts[0].toLower() == Constants::TRANSPORT) {
             m_Transport = nameToTransport(parts[1]);
-        }
-        else if (parts[0].toLower() == Constants::TAG) {
+        } else if (parts[0].toLower() == Constants::TAG) {
             m_Tag = parts[1];
         }
     }
 }
 
 // Extract the hostname, port and attributes
-void URIPimpl::parseHostname()
+void
+URIPimpl::parseHostname()
 {
     if (!m_Parsed)
         parse();
@@ -414,9 +436,9 @@ void URIPimpl::parseHostname()
     for (int i = 0; i < length; i++) {
         const char c = extHn[i];
         switch (c) {
-        case ':': //Begin port
+        case ':': // Begin port
             if (section == URI::Section::HOSTNAME) {
-                m_Hostname2 = extHn.mid(start,i);
+                m_Hostname2 = extHn.mid(start, i);
                 start = i;
                 section = URI::Section::PORT;
             }
@@ -426,9 +448,9 @@ void URIPimpl::parseHostname()
                 parseAttribute(extHn, start, i);
             } else {
                 if (section == URI::Section::HOSTNAME) {
-                    m_Hostname2 = extHn.mid(start+1,i-start);
+                    m_Hostname2 = extHn.mid(start + 1, i - start);
                 } else if (section == URI::Section::PORT) {
-                    m_Port = extHn.mid(start+1,i-start-1).toInt();
+                    m_Port = extHn.mid(start + 1, i - start - 1).toInt();
                 }
                 inAttributes = true;
             }
@@ -436,7 +458,7 @@ void URIPimpl::parseHostname()
             start = i;
             break;
         case '#': // Begin fragments
-            //TODO handle fragments to comply to the RFC
+            // TODO handle fragments to comply to the RFC
             break;
         default:
             break;
@@ -444,7 +466,7 @@ void URIPimpl::parseHostname()
     }
 
     // Get the remaining attribute
-    parseAttribute(extHn, start, length-1);
+    parseAttribute(extHn, start, length - 1);
     m_IsHNParsed = true;
 }
 
@@ -453,24 +475,28 @@ void URIPimpl::parseHostname()
  *
  * For example, "123" in sip:123@myserver.net
  */
-QString URI::userinfo() const
+QString
+URI::userinfo() const
 {
     if (!pimpl_->m_Parsed)
         pimpl_->parse();
     return pimpl_->m_Userinfo;
 }
 
-void URI::setUserinfo(const QString & userinfo)
+void
+URI::setUserinfo(const QString& userinfo)
 {
     pimpl_->m_Userinfo = userinfo;
 }
 
-void URI::setHostname(const QString& hostname)
+void
+URI::setHostname(const QString& hostname)
 {
     pimpl_->m_ExtHostname = hostname;
 }
 
-void URI::setPort(const QString& port)
+void
+URI::setPort(const QString& port)
 {
     try {
         pimpl_->m_Port = port.toInt();
@@ -483,7 +509,8 @@ void URI::setPort(const QString& port)
  * Sometime, some metadata can be used to deduce the scheme even if it wasn't
  * originally known.
  */
-void URI::setSchemeType(SchemeType t)
+void
+URI::setSchemeType(SchemeType t)
 {
     pimpl_->m_HeaderType = t;
     pimpl_->m_Scheme = URIPimpl::schemeNames.at(t);
@@ -495,7 +522,8 @@ void URI::setSchemeType(SchemeType t)
  * It is kept as a QString to avoid the URI class to start reformatting
  * it right away.
  */
-QString URI::format(FlagPack<URI::Section> sections) const
+QString
+URI::format(FlagPack<URI::Section> sections) const
 {
     if (!pimpl_->m_IsHNParsed) {
         pimpl_->parseHostname();
@@ -558,30 +586,33 @@ QString URI::format(FlagPack<URI::Section> sections) const
  * Helper function which returns a QString containing a uri formatted to include at minimum the
  * SCHEME and USER_INFO, and also the HOSTNAME and PORT, if available.
  */
-QString URI::full() const
+QString
+URI::full() const
 {
-    return format(URI::Section::SCHEME | URI::Section::USER_INFO | URI::Section::HOSTNAME | URI::Section::PORT);
+    return format(URI::Section::SCHEME | URI::Section::USER_INFO | URI::Section::HOSTNAME
+                  | URI::Section::PORT);
 }
 
-QDataStream& operator<<( QDataStream& stream, const URI::ProtocolHint& ph )
+QDataStream&
+operator<<(QDataStream& stream, const URI::ProtocolHint& ph)
 {
-    switch(ph) {
-        case URI::ProtocolHint::SIP_OTHER:
-            stream << QStringLiteral("SIP_OTHER");
-            break;
-        case URI::ProtocolHint::RING:
-        case URI::ProtocolHint::RING_USERNAME:
-            stream << QStringLiteral("RING");
-            break;
-        case URI::ProtocolHint::IP:
-            stream << QStringLiteral("IP");
-            break;
-        case URI::ProtocolHint::SIP_HOST:
-            stream << QStringLiteral("SIP_HOST");
-            break;
-        case URI::ProtocolHint::UNRECOGNIZED:
-            stream << QStringLiteral("UNRECOGNIZED");
-            break;
+    switch (ph) {
+    case URI::ProtocolHint::SIP_OTHER:
+        stream << QStringLiteral("SIP_OTHER");
+        break;
+    case URI::ProtocolHint::RING:
+    case URI::ProtocolHint::RING_USERNAME:
+        stream << QStringLiteral("RING");
+        break;
+    case URI::ProtocolHint::IP:
+        stream << QStringLiteral("IP");
+        break;
+    case URI::ProtocolHint::SIP_HOST:
+        stream << QStringLiteral("SIP_HOST");
+        break;
+    case URI::ProtocolHint::UNRECOGNIZED:
+        stream << QStringLiteral("UNRECOGNIZED");
+        break;
     }
 
     return stream;

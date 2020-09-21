@@ -29,21 +29,20 @@ namespace GlobalInstances {
 
 struct InstanceManager
 {
-    std::unique_ptr<Interfaces::DBusErrorHandlerI>         m_dBusErrorHandler;
-    std::unique_ptr<Interfaces::PixmapManipulatorI>        m_pixmapManipulator;
+    std::unique_ptr<Interfaces::DBusErrorHandlerI> m_dBusErrorHandler;
+    std::unique_ptr<Interfaces::PixmapManipulatorI> m_pixmapManipulator;
 };
 
 static InstanceManager&
 instanceManager()
 {
-    static std::unique_ptr<InstanceManager> manager{new InstanceManager};
+    static std::unique_ptr<InstanceManager> manager {new InstanceManager};
     return *manager.get();
 }
 /**
  * LRC does not provide a default implementation of this interface, thus an exception will be thrown
  * if this getter is called without an instance being set by the client
  */
-
 
 Interfaces::DBusErrorHandlerI&
 dBusErrorHandler()
@@ -68,8 +67,6 @@ setDBusErrorHandler(std::unique_ptr<Interfaces::DBusErrorHandlerI> instance)
  * LRC does not provide a default implementation of this interface, thus an exception will be thrown
  * if this getter is called without an instance being set by the client
  */
-
-
 
 Interfaces::PixmapManipulatorI&
 pixmapManipulator()
@@ -101,17 +98,14 @@ setPixmapManipulator(std::unique_ptr<Interfaces::PixmapManipulatorI> instance)
  *    also does so without the tick layer of black magic used in the Media and
  *    collection APIs.
  */
-#define REGISTER_INTERFACE(I,m) \
-void setInterfaceInternal(I* i)\
-{\
-   instanceManager().m = std::unique_ptr<I>(i);\
-}
+#define REGISTER_INTERFACE(I, m) \
+    void setInterfaceInternal(I* i) { instanceManager().m = std::unique_ptr<I>(i); }
 
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wmissing-declarations"
 
-REGISTER_INTERFACE(Interfaces::DBusErrorHandlerI        , m_dBusErrorHandler        )
-REGISTER_INTERFACE(Interfaces::PixmapManipulatorI       , m_pixmapManipulator       )
+REGISTER_INTERFACE(Interfaces::DBusErrorHandlerI, m_dBusErrorHandler)
+REGISTER_INTERFACE(Interfaces::PixmapManipulatorI, m_pixmapManipulator)
 
 #pragma GCC diagnostic pop
 

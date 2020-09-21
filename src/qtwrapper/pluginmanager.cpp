@@ -82,7 +82,7 @@ PluginManagerInterface::getCallMediaHandlerStatus()
 MapStringString
 PluginManagerInterface::getCallMediaHandlerDetails(const QString& id)
 {
-return convertMap(DRing::getCallMediaHandlerDetails(id.toStdString()));
+    return convertMap(DRing::getCallMediaHandlerDetails(id.toStdString()));
 }
 
 void
@@ -102,13 +102,15 @@ PluginManagerInterface::getPluginPreferences(const QString& path)
 {
     VectorMapStringString temp;
     for (auto x : DRing::getPluginPreferences(path.toStdString())) {
-            temp.push_back(convertMap(x));
+        temp.push_back(convertMap(x));
     }
     return temp;
 }
 
 bool
-PluginManagerInterface::setPluginPreference(const QString& path, const QString& key, const QString& value)
+PluginManagerInterface::setPluginPreference(const QString& path,
+                                            const QString& key,
+                                            const QString& value)
 {
     return DRing::setPluginPreference(path.toStdString(), key.toStdString(), value.toStdString());
 }

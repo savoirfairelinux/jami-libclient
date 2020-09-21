@@ -20,12 +20,12 @@
 #ifdef ENABLE_TEST
 //  #include "../../test/mocks/pluginmanager_mock.h"
 #else
- #ifdef ENABLE_LIBWRAP
-  #include "pluginmanager_wrap.h"
- #else
-  #include "plugin_dbus_interface.h"
-  #include <QDBusPendingReply>
- #endif
+#ifdef ENABLE_LIBWRAP
+#include "pluginmanager_wrap.h"
+#else
+#include "plugin_dbus_interface.h"
+#include <QDBusPendingReply>
+#endif
 #endif
 
 #include <typedefs.h>

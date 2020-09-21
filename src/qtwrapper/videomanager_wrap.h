@@ -43,47 +43,48 @@ class VideoManagerInterface;
 
 class VideoManagerSignalProxy : public QObject
 {
-   Q_OBJECT
+    Q_OBJECT
 public:
-   VideoManagerSignalProxy(VideoManagerInterface* parent);
+    VideoManagerSignalProxy(VideoManagerInterface* parent);
 
 public Q_SLOTS:
-   void slotDeviceEvent();
-   void slotStartedDecoding(const QString &id, const QString &shmPath, int width, int height, bool isMixer);
-   void slotStoppedDecoding(const QString &id, const QString &shmPath, bool isMixer);
+    void slotDeviceEvent();
+    void slotStartedDecoding(
+        const QString& id, const QString& shmPath, int width, int height, bool isMixer);
+    void slotStoppedDecoding(const QString& id, const QString& shmPath, bool isMixer);
 
 private:
-   VideoManagerInterface* m_pParent;
+    VideoManagerInterface* m_pParent;
 };
 
 class VideoManagerProxySender : public QObject
 {
     Q_OBJECT
     friend class VideoManagerInterface;
-public:
 
+public:
 Q_SIGNALS:
     void deviceEvent();
-    void startedDecoding(const QString &id, const QString &shmPath, int width, int height, bool isMixer);
-    void stoppedDecoding(const QString &id, const QString &shmPath, bool isMixer);
+    void startedDecoding(
+        const QString& id, const QString& shmPath, int width, int height, bool isMixer);
+    void stoppedDecoding(const QString& id, const QString& shmPath, bool isMixer);
 };
 
 /*
  * Proxy class for interface org.ring.Ring.VideoManager
  */
-class VideoManagerInterface: public QObject
+class VideoManagerInterface : public QObject
 {
     Q_OBJECT
 
-friend class VideoManagerSignalProxy;
+    friend class VideoManagerSignalProxy;
 
 public:
-
     VideoManagerInterface();
     ~VideoManagerInterface();
 
 #ifdef ENABLE_VIDEO
-     std::map<std::string, std::shared_ptr<DRing::CallbackWrapperBase>> videoHandlers;
+    std::map<std::string, std::shared_ptr<DRing::CallbackWrapperBase>> videoHandlers;
 #endif
 
 private:
@@ -91,19 +92,18 @@ private:
     VideoManagerProxySender* sender;
 
 public Q_SLOTS: // METHODS
-    void applySettings(const QString &name, MapStringString settings)
+    void applySettings(const QString& name, MapStringString settings)
     {
 #ifdef ENABLE_VIDEO
-        DRing::applySettings(
-            name.toStdString(), convertMap(settings));
+        DRing::applySettings(name.toStdString(), convertMap(settings));
 #else
         Q_UNUSED(name)
         Q_UNUSED(settings)
 #endif
     }
 
-// TODO: test!!!!!!!!!!!!!!!
-    MapStringMapStringVectorString getCapabilities(const QString &name)
+    // TODO: test!!!!!!!!!!!!!!!
+    MapStringMapStringVectorString getCapabilities(const QString& name)
     {
         MapStringMapStringVectorString ret;
 #ifdef ENABLE_VIDEO
@@ -111,7 +111,7 @@ public Q_SLOTS: // METHODS
         temp = DRing::getCapabilities(name.toStdString());
 
         for (auto& x : temp) {
-                QMap<QString, VectorString> ytemp;
+            QMap<QString, VectorString> ytemp;
             for (auto& y : x.second) {
                 ytemp[QString(y.first.c_str())] = convertVectorString(y.second);
             }
@@ -135,19 +135,17 @@ public Q_SLOTS: // METHODS
     QStringList getDeviceList()
     {
 #ifdef ENABLE_VIDEO
-        QStringList temp =
-            convertStringList(DRing::getDeviceList());
+        QStringList temp = convertStringList(DRing::getDeviceList());
 #else
         QStringList temp;
 #endif
         return temp;
     }
 
-    MapStringString getSettings(const QString &device)
+    MapStringString getSettings(const QString& device)
     {
 #ifdef ENABLE_VIDEO
-        MapStringString temp =
-            convertMap(DRing::getSettings(device.toStdString()));
+        MapStringString temp = convertMap(DRing::getSettings(device.toStdString()));
 #else
         Q_UNUSED(device)
         MapStringString temp;
@@ -164,7 +162,7 @@ public Q_SLOTS: // METHODS
 #endif
     }
 
-    void setDefaultDevice(const QString &name)
+    void setDefaultDevice(const QString& name)
     {
 #ifdef ENABLE_VIDEO
         DRing::setDefaultDevice(name.toStdString());
@@ -187,17 +185,11 @@ public Q_SLOTS: // METHODS
 #endif
     }
 
-    void startAudioDevice()
-    {
-        DRing::startAudioDevice();
-    }
+    void startAudioDevice() { DRing::startAudioDevice(); }
 
-    void stopAudioDevice()
-    {
-        DRing::stopAudioDevice();
-    }
+    void stopAudioDevice() { DRing::stopAudioDevice(); }
 
-    bool switchInput(const QString &resource)
+    bool switchInput(const QString& resource)
     {
 #ifdef ENABLE_VIDEO
         return DRing::switchInput(resource.toStdString());
@@ -207,19 +199,17 @@ public Q_SLOTS: // METHODS
 #endif
     }
 
-    void registerSinkTarget(const QString &sinkID,
-                            const DRing::SinkTarget& target)
+    void registerSinkTarget(const QString& sinkID, const DRing::SinkTarget& target)
     {
 #ifdef ENABLE_VIDEO
         DRing::registerSinkTarget(sinkID.toStdString(), target);
 #else
-    Q_UNUSED(sinkID)
-    Q_UNUSED(target)
+        Q_UNUSED(sinkID)
+        Q_UNUSED(target)
 #endif
     }
 
-    void registerAVSinkTarget(const QString &sinkID,
-                            const DRing::AVSinkTarget& target)
+    void registerAVSinkTarget(const QString& sinkID, const DRing::AVSinkTarget& target)
     {
         Q_UNUSED(sinkID)
         Q_UNUSED(target)
@@ -228,30 +218,15 @@ public Q_SLOTS: // METHODS
 #endif
     }
 
-    bool getDecodingAccelerated()
-    {
-        return DRing::getDecodingAccelerated();
-    }
+    bool getDecodingAccelerated() { return DRing::getDecodingAccelerated(); }
 
-    void setDecodingAccelerated(bool state)
-    {
-        DRing::setDecodingAccelerated(state);
-    }
+    void setDecodingAccelerated(bool state) { DRing::setDecodingAccelerated(state); }
 
-    bool getEncodingAccelerated()
-    {
-        return DRing::getEncodingAccelerated();
-    }
+    bool getEncodingAccelerated() { return DRing::getEncodingAccelerated(); }
 
-    void setEncodingAccelerated(bool state)
-    {
-        DRing::setEncodingAccelerated(state);
-    }
+    void setEncodingAccelerated(bool state) { DRing::setEncodingAccelerated(state); }
 
-    void stopLocalRecorder(const QString& path)
-    {
-        DRing::stopLocalRecorder(path.toStdString());
-    }
+    void stopLocalRecorder(const QString& path) { DRing::stopLocalRecorder(path.toStdString()); }
 
     QString startLocalRecorder(bool audioOnly, const QString& path)
     {
@@ -265,10 +240,15 @@ public Q_SLOTS: // METHODS
 
 Q_SIGNALS: // SIGNALS
     void deviceEvent();
-    void startedDecoding(const QString &id, const QString &shmPath, int width, int height, bool isMixer);
-    void stoppedDecoding(const QString &id, const QString &shmPath, bool isMixer);
+    void startedDecoding(
+        const QString& id, const QString& shmPath, int width, int height, bool isMixer);
+    void stoppedDecoding(const QString& id, const QString& shmPath, bool isMixer);
 };
 
-namespace org { namespace ring { namespace Ring {
-      typedef ::VideoManagerInterface VideoManager;
-}}} // namesapce org::ring::Ring
+namespace org {
+namespace ring {
+namespace Ring {
+typedef ::VideoManagerInterface VideoManager;
+}
+} // namespace ring
+} // namespace org

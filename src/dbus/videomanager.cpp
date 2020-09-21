@@ -20,7 +20,8 @@
 #include "../globalinstances.h"
 #include "../interfaces/dbuserrorhandleri.h"
 
-VideoManagerInterface& VideoManager::instance()
+VideoManagerInterface&
+VideoManager::instance()
 {
 #ifdef ENABLE_LIBWRAP
     static auto interface = new VideoManagerInterface();
@@ -33,14 +34,13 @@ VideoManagerInterface& VideoManager::instance()
                                                       QDBusConnection::sessionBus());
     if (!interface->connection().isConnected()) {
         GlobalInstances::dBusErrorHandler().connectionError(
-            "Error : dring not connected. Service " + interface->service() + " not connected. From video manager interface."
-        );
+            "Error : dring not connected. Service " + interface->service()
+            + " not connected. From video manager interface.");
     }
     if (!interface->isValid()) {
         GlobalInstances::dBusErrorHandler().invalidInterfaceError(
-            "Error : dring is not available, make sure it is running"
-        );
+            "Error : dring is not available, make sure it is running");
     }
 #endif
-   return *interface;
+    return *interface;
 }

@@ -26,11 +26,9 @@
 
 #include <QString>
 
-namespace lrc
-{
+namespace lrc {
 
-namespace api
-{
+namespace api {
 
 class ContactModel;
 class ConversationModel;
@@ -40,18 +38,13 @@ class NewDeviceModel;
 class NewCodecModel;
 class PeerDiscoveryModel;
 
-namespace account
-{
+namespace account {
 #if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
 Q_NAMESPACE
 Q_CLASSINFO("RegisterEnumClassesUnscoped", "false")
 #endif
 
-enum class Type {
-    INVALID,
-    RING,
-    SIP
-};
+enum class Type { INVALID, RING, SIP };
 #if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
 Q_ENUM_NS(Type)
 #endif
@@ -59,14 +52,7 @@ Q_ENUM_NS(Type)
 #pragma push_macro("REGISTERED")
 #undef REGISTERED
 
-enum class Status {
-    INVALID,
-    ERROR_NEED_MIGRATION,
-    INITIALIZING,
-    UNREGISTERED,
-    TRYING,
-    REGISTERED
-};
+enum class Status { INVALID, ERROR_NEED_MIGRATION, INITIALIZING, UNREGISTERED, TRYING, REGISTERED };
 #if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
 Q_ENUM_NS(Status)
 #endif
@@ -90,133 +76,132 @@ to_status(const QString& type)
 
 #pragma pop_macro("REGISTERED")
 
-enum class KeyExchangeProtocol {
-    NONE,
-    SDES
-};
+enum class KeyExchangeProtocol { NONE, SDES };
 #if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
 Q_ENUM_NS(KeyExchangeProtocol)
 #endif
 
-enum class TlsMethod {
-    DEFAULT,
-    TLSv1,
-    TLSv1_1,
-    TLSv1_2
-};
+enum class TlsMethod { DEFAULT, TLSv1, TLSv1_1, TLSv1_2 };
 #if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
 Q_ENUM_NS(TlsMethod)
 #endif
 
-struct ConfProperties_t {
-    QString                                           mailbox;
-    QString                                           dtmfType;
-    bool                                              autoAnswer;
-    bool                                              isRendezVous;
-    int                                               activeCallLimit;
-    QString                                           hostname;
-    QString                                           username;
-    QString                                           routeset;
-    QString                                           password;
-    QString                                           realm;
-    QString                                           localInterface;
-    QString                                           deviceId;
-    QString                                           deviceName;
-    QString                                           managerUri;
-    QString                                           managerUsername;
-    bool                                              publishedSameAsLocal;
-    int                                               localPort;
-    int                                               publishedPort;
-    QString                                           publishedAddress;
-    QString                                           userAgent;
-    bool                                              upnpEnabled;
-    bool                                              hasCustomUserAgent;
-    bool                                              allowIncoming;
-    QString                                           archivePassword;
-    bool                                              archiveHasPassword;
-    QString                                           archivePath;
-    QString                                           archivePin;
-    bool                                              proxyEnabled;
-    QString                                           proxyServer;
-    QString                                           proxyPushToken;
-    bool                                              peerDiscovery;
-    bool                                              accountDiscovery;
-    bool                                              accountPublish;
-    int                                               registrationExpire;
-    VectorMapStringString                             credentials;
-    struct Audio_t {
-        int                                           audioPortMax;
-        int                                           audioPortMin;
+struct ConfProperties_t
+{
+    QString mailbox;
+    QString dtmfType;
+    bool autoAnswer;
+    bool isRendezVous;
+    int activeCallLimit;
+    QString hostname;
+    QString username;
+    QString routeset;
+    QString password;
+    QString realm;
+    QString localInterface;
+    QString deviceId;
+    QString deviceName;
+    QString managerUri;
+    QString managerUsername;
+    bool publishedSameAsLocal;
+    int localPort;
+    int publishedPort;
+    QString publishedAddress;
+    QString userAgent;
+    bool upnpEnabled;
+    bool hasCustomUserAgent;
+    bool allowIncoming;
+    QString archivePassword;
+    bool archiveHasPassword;
+    QString archivePath;
+    QString archivePin;
+    bool proxyEnabled;
+    QString proxyServer;
+    QString proxyPushToken;
+    bool peerDiscovery;
+    bool accountDiscovery;
+    bool accountPublish;
+    int registrationExpire;
+    VectorMapStringString credentials;
+    struct Audio_t
+    {
+        int audioPortMax;
+        int audioPortMin;
     } Audio;
-    struct Video_t {
-        bool                                          videoEnabled;
-        int                                           videoPortMax;
-        int                                           videoPortMin;
+    struct Video_t
+    {
+        bool videoEnabled;
+        int videoPortMax;
+        int videoPortMin;
     } Video;
-    struct STUN_t {
-        QString                                       server;
-        bool                                          enable;
+    struct STUN_t
+    {
+        QString server;
+        bool enable;
     } STUN;
-    struct TURN_t {
-        QString                                       server;
-        bool                                          enable;
-        QString                                       username;
-        QString                                       password;
-        QString                                       realm;
+    struct TURN_t
+    {
+        QString server;
+        bool enable;
+        QString username;
+        QString password;
+        QString realm;
     } TURN;
-    struct Presence_t {
-        bool                                          presencePublishSupported;
-        bool                                          presenceSubscribeSupported;
-        bool                                          presenceEnabled;
+    struct Presence_t
+    {
+        bool presencePublishSupported;
+        bool presenceSubscribeSupported;
+        bool presenceEnabled;
     } Presence;
-    struct Ringtone_t {
-        QString                                       ringtonePath;
-        bool                                          ringtoneEnabled;
+    struct Ringtone_t
+    {
+        QString ringtonePath;
+        bool ringtoneEnabled;
     } Ringtone;
-    struct SRTP_t {
-        KeyExchangeProtocol                           keyExchange;
-        bool                                          enable;
-        bool                                          rtpFallback;
+    struct SRTP_t
+    {
+        KeyExchangeProtocol keyExchange;
+        bool enable;
+        bool rtpFallback;
     } SRTP;
-    struct TLS_t {
-        int                                           listenerPort;
-        bool                                          enable;
-        int                                           port;
-        QString                                       certificateListFile;
-        QString                                       certificateFile;
-        QString                                       privateKeyFile;
-        QString                                       password;
-        TlsMethod                                     method;
-        QString                                       ciphers;
-        QString                                       serverName;
-        bool                                          verifyServer;
-        bool                                          verifyClient;
-        bool                                          requireClientCertificate;
-        int                                           negotiationTimeoutSec;
+    struct TLS_t
+    {
+        int listenerPort;
+        bool enable;
+        int port;
+        QString certificateListFile;
+        QString certificateFile;
+        QString privateKeyFile;
+        QString password;
+        TlsMethod method;
+        QString ciphers;
+        QString serverName;
+        bool verifyServer;
+        bool verifyClient;
+        bool requireClientCertificate;
+        int negotiationTimeoutSec;
     } TLS;
-    struct DHT_t {
-        int                                           port;
-        bool                                          PublicInCalls;
-        bool                                          AllowFromTrusted;
+    struct DHT_t
+    {
+        int port;
+        bool PublicInCalls;
+        bool AllowFromTrusted;
     } DHT;
-    struct RingNS_t {
-        QString                                       uri;
-        QString                                       account;
+    struct RingNS_t
+    {
+        QString uri;
+        QString account;
     } RingNS;
-    struct Registration_t {
-        int                                           expire;
+    struct Registration_t
+    {
+        int expire;
     } Registration;
 
-    MapStringString                                   toDetails() const;
+    MapStringString toDetails() const;
 };
 
 // Possible account export status
-enum class ExportOnRingStatus {
-    SUCCESS = 0,
-    WRONG_PASSWORD = 1,
-    NETWORK_ERROR = 2,
-    INVALID
-};
+enum class ExportOnRingStatus { SUCCESS = 0, WRONG_PASSWORD = 1, NETWORK_ERROR = 2, INVALID };
 #if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
 Q_ENUM_NS(ExportOnRingStatus)
 #endif
@@ -233,13 +218,7 @@ enum class RegisterNameStatus {
 Q_ENUM_NS(RegisterNameStatus)
 #endif
 
-enum class LookupStatus {
-    SUCCESS = 0,
-    INVALID_NAME = 1,
-    NOT_FOUND = 2,
-    ERROR = 3,
-    INVALID
-};
+enum class LookupStatus { SUCCESS = 0, INVALID_NAME = 1, NOT_FOUND = 2, ERROR = 3, INVALID };
 #if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
 Q_ENUM_NS(LookupStatus)
 #endif
@@ -256,16 +235,16 @@ struct Info
     std::unique_ptr<lrc::api::NewDeviceModel> deviceModel;
     std::unique_ptr<lrc::api::NewCodecModel> codecModel;
     std::unique_ptr<lrc::api::PeerDiscoveryModel> peerDiscoveryModel;
-    NewAccountModel* accountModel{ nullptr };
+    NewAccountModel* accountModel {nullptr};
 
     // daemon config
-    QString                 id;
-    profile::Info           profileInfo; // contains: type, alias
-    bool                    enabled;
-    ConfProperties_t        confProperties;
+    QString id;
+    profile::Info profileInfo; // contains: type, alias
+    bool enabled;
+    ConfProperties_t confProperties;
 
     // load/save
-    void                    fromDetails(const MapStringString& details);
+    void fromDetails(const MapStringString& details);
 };
 
 } // namespace account

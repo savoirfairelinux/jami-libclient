@@ -17,7 +17,7 @@
  ***************************************************************************/
 #pragma once
 
-//Base
+// Base
 #include <QtCore/QObject>
 #include "api/newvideo.h"
 #include <typedefs.h>
@@ -27,7 +27,7 @@
 #include <vector>
 #include <cstdint>
 
-//Qt
+// Qt
 class QMutex;
 struct AVFrame;
 
@@ -46,13 +46,14 @@ class DirectRenderer;
  * and equals to "size", "ptr" is equals to "storage.data()".
  * If shared data is carried, only "ptr" and "size" are set.
  */
-struct Frame {
-   uint8_t*             ptr     { nullptr };
-   std::size_t          size    { 0       };
-   std::vector<uint8_t> storage {         };
-   // Next variables are currently used with DirectRenderer only
-   unsigned int         height  { 0       };
-   unsigned int         width   { 0       };
+struct Frame
+{
+    uint8_t* ptr {nullptr};
+    std::size_t size {0};
+    std::vector<uint8_t> storage {};
+    // Next variables are currently used with DirectRenderer only
+    unsigned int height {0};
+    unsigned int width {0};
 };
 
 /**
@@ -66,54 +67,52 @@ class LIB_EXPORT Renderer : public QObject
 {
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wzero-as-null-pointer-constant"
-   Q_OBJECT
+    Q_OBJECT
 #pragma GCC diagnostic pop
 
-   friend class Video::ShmRendererPrivate   ;
-   friend class Video::ShmRenderer          ;
-   friend class Video::DirectRendererPrivate;
-   friend class Video::DirectRenderer       ;
-   friend class VideoRendererManagerPrivate ;
+    friend class Video::ShmRendererPrivate;
+    friend class Video::ShmRenderer;
+    friend class Video::DirectRendererPrivate;
+    friend class Video::DirectRenderer;
+    friend class VideoRendererManagerPrivate;
 
 public:
+    /**
+     * Each platform may have its preferred color space. To be able to use a
+     * client on multiple platforms, they need to check the colorspace.
+     */
+    enum class ColorSpace {
+        BGRA, /*!< 32bit BLUE  GREEN RED ALPHA */
+        RGBA, /*!< 32bit ALPHA GREEN RED BLUE  */
+    };
 
-   /**
-    * Each platform may have its preferred color space. To be able to use a
-    * client on multiple platforms, they need to check the colorspace.
-    */
-   enum class ColorSpace {
-      BGRA , /*!< 32bit BLUE  GREEN RED ALPHA */
-      RGBA , /*!< 32bit ALPHA GREEN RED BLUE  */
-   };
+    // Constructor
+    Renderer(const QString& id, const QSize& res);
+    virtual ~Renderer();
 
-   //Constructor
-   Renderer (const QString& id,  const QSize& res);
-   virtual ~Renderer();
-
-   //Getters
-   virtual bool       isRendering     () const;
-   virtual lrc::api::video::Frame currentFrame    () const = 0;
-   virtual QSize      size            () const;
-   virtual QMutex*    mutex           () const;
-   virtual ColorSpace colorSpace      () const = 0;
+    // Getters
+    virtual bool isRendering() const;
+    virtual lrc::api::video::Frame currentFrame() const = 0;
+    virtual QSize size() const;
+    virtual QMutex* mutex() const;
+    virtual ColorSpace colorSpace() const = 0;
 #if defined(ENABLE_LIBWRAP)
-   virtual std::unique_ptr<AVFrame, void(*)(AVFrame*)> currentAVFrame() const = 0;
+    virtual std::unique_ptr<AVFrame, void (*)(AVFrame*)> currentAVFrame() const = 0;
 #endif
-   void setSize(const QSize& size) const;
+    void setSize(const QSize& size) const;
 
 Q_SIGNALS:
-   void frameUpdated(); // Emitted when a new frame is ready
-   void stopped     ();
-   void started     ();
+    void frameUpdated(); // Emitted when a new frame is ready
+    void stopped();
+    void started();
 
 public Q_SLOTS:
-   virtual void startRendering() = 0;
-   virtual void stopRendering () = 0;
+    virtual void startRendering() = 0;
+    virtual void stopRendering() = 0;
 
 private:
-   RendererPrivate* d_ptr;
-   Q_DECLARE_PRIVATE(Renderer)
-
+    RendererPrivate* d_ptr;
+    Q_DECLARE_PRIVATE(Renderer)
 };
 
-}
+} // namespace Video

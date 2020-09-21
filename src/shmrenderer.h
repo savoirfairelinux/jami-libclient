@@ -19,54 +19,54 @@
 
 #ifndef ENABLE_LIBWRAP
 
-//Base
+// Base
 #include "video/renderer.h"
 #include "typedefs.h"
 #include "api/newvideo.h"
 
-//Qt
+// Qt
 class QMutex;
 
-//Private
+// Private
 struct SHMHeader;
 struct AVFrame;
-
 
 namespace Video {
 class ShmRendererPrivate;
 
-///Manage shared memory and convert it to QByteArray
-class LIB_EXPORT ShmRenderer final : public Renderer {
-   #pragma GCC diagnostic push
-   #pragma GCC diagnostic ignored "-Wzero-as-null-pointer-constant"
-   Q_OBJECT
-   #pragma GCC diagnostic pop
+/// Manage shared memory and convert it to QByteArray
+class LIB_EXPORT ShmRenderer final : public Renderer
+{
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wzero-as-null-pointer-constant"
+    Q_OBJECT
+#pragma GCC diagnostic pop
 
 public:
-   //Constructor
-   ShmRenderer (const QString& id, const QString& shmPath, const QSize& res);
-   virtual ~ShmRenderer();
+    // Constructor
+    ShmRenderer(const QString& id, const QString& shmPath, const QSize& res);
+    virtual ~ShmRenderer();
 
-   //Mutators
-   void stopShm  ();
-   bool startShm ();
+    // Mutators
+    void stopShm();
+    bool startShm();
 
-   //Getters
-   int fps() const;
-   virtual lrc::api::video::Frame currentFrame() const override;
-   virtual ColorSpace colorSpace  () const override;
+    // Getters
+    int fps() const;
+    virtual lrc::api::video::Frame currentFrame() const override;
+    virtual ColorSpace colorSpace() const override;
 
-   //Setters
-   void setShmPath(const QString& path);
+    // Setters
+    void setShmPath(const QString& path);
 
 private:
-   std::unique_ptr<ShmRendererPrivate> d_ptr;
+    std::unique_ptr<ShmRendererPrivate> d_ptr;
 
 public Q_SLOTS:
-   void startRendering() override;
-   void stopRendering () override;
+    void startRendering() override;
+    void stopRendering() override;
 };
 
-}
+} // namespace Video
 
 #endif

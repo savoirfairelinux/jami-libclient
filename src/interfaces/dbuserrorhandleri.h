@@ -26,7 +26,8 @@ namespace Interfaces {
  * exception which may occur during an itteration or an event on the main loop). This interface
  * gives them the option to implement various ways to handle dbus errors.
  */
-class DBusErrorHandlerI {
+class DBusErrorHandlerI
+{
 public:
     virtual ~DBusErrorHandlerI() = default;
 

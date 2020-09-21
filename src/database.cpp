@@ -47,8 +47,7 @@
 #include <sstream>
 #include <stdexcept>
 
-namespace lrc
-{
+namespace lrc {
 
 using namespace api;
 
@@ -70,7 +69,8 @@ Database::Database(const QString& name, const QString& basePath)
     auto absoluteDir = databaseFile.absoluteDir();
 
 #ifdef ENABLE_TEST
-    databaseFullPath_ = QDir(QStandardPaths::writableLocation(QStandardPaths::TempLocation)).filePath(databaseFileName);
+    databaseFullPath_ = QDir(QStandardPaths::writableLocation(QStandardPaths::TempLocation))
+                            .filePath(databaseFileName);
 #else
     // make sure the directory exists
     if (!absoluteDir.exists())
@@ -80,9 +80,7 @@ Database::Database(const QString& name, const QString& basePath)
     db_.setDatabaseName(databaseFullPath_);
 }
 
-Database::~Database()
-{
-}
+Database::~Database() {}
 
 void
 Database::remove()
@@ -117,7 +115,6 @@ Database::load()
     } else {
         migrateIfNeeded();
     }
-
 }
 
 void
@@ -125,15 +122,16 @@ Database::createTables()
 {
     QSqlQuery query(db_);
 
-    auto tableConversations  = "CREATE TABLE conversations ( \
+    auto tableConversations = "CREATE TABLE conversations ( \
                                     id INTEGER, \
                                     participant TEXT, \
                                     extra_data TEXT \
                                 )";
 
-    auto indexConversations = "CREATE INDEX `idx_conversations_uri` ON `conversations` (`participant`)";
+    auto indexConversations
+        = "CREATE INDEX `idx_conversations_uri` ON `conversations` (`participant`)";
 
-    auto tableInteractions   = "CREATE TABLE interactions ( \
+    auto tableInteractions = "CREATE TABLE interactions ( \
                                     id INTEGER PRIMARY KEY, \
                                     author TEXT, \
                                     conversation INTEGER, \
@@ -151,7 +149,7 @@ Database::createTables()
 
     // add conversations table
     if (!db_.tables().contains("conversations", Qt::CaseInsensitive)) {
-        if (!query.exec(tableConversations) || ! query.exec(indexConversations)) {
+        if (!query.exec(tableConversations) || !query.exec(indexConversations)) {
             throw QueryError(query);
         }
     }
@@ -187,7 +185,7 @@ Database::migrateIfNeeded()
 void
 Database::migrateFromVersion(const QString& currentVersion)
 {
-    (void)currentVersion;
+    (void) currentVersion;
 }
 
 void
@@ -211,13 +209,15 @@ Database::getVersion()
     if (not query.exec(getVersionQuery))
         throw QueryError(query);
     query.first();
-    return  query.value(0).toString();
+    return query.value(0).toString();
 }
 
 int
-Database::insertInto(const QString& table,                     // "tests"
-                     const MapStringString& bindCol,    // {{":id", "id"}, {":forename", "colforname"}, {":name", "colname"}}
-                     const MapStringString& bindsSet)   // {{":id", "7"}, {":forename", "alice"}, {":name", "cooper"}}
+Database::insertInto(
+    const QString& table, // "tests"
+    const MapStringString&
+        bindCol, // {{":id", "id"}, {":forename", "colforname"}, {":name", "colname"}}
+    const MapStringString& bindsSet) // {{":id", "7"}, {":forename", "alice"}, {":name", "cooper"}}
 {
     QSqlQuery query(db_);
     QString columns;
@@ -251,11 +251,11 @@ Database::insertInto(const QString& table,                     // "tests"
 }
 
 void
-Database::update(const QString& table,                              // "tests"
-                 const QString& set,                                // "location=:place, phone:=nmbr"
-                 const MapStringString& bindsSet,    // {{":place", "montreal"}, {":nmbr", "514"}}
-                 const QString& where,                              // "contact=:name AND id=:id
-                 const MapStringString& bindsWhere)  // {{":name", "toto"}, {":id", "65"}}
+Database::update(const QString& table,              // "tests"
+                 const QString& set,                // "location=:place, phone:=nmbr"
+                 const MapStringString& bindsSet,   // {{":place", "montreal"}, {":nmbr", "514"}}
+                 const QString& where,              // "contact=:name AND id=:id
+                 const MapStringString& bindsWhere) // {{":name", "toto"}, {":id", "65"}}
 {
     QSqlQuery query(db_);
 
@@ -273,16 +273,16 @@ Database::update(const QString& table,                              // "tests"
 }
 
 Database::Result
-Database::select(const QString& select,                            // "id", "body", ...
-                 const QString& table,                             // "tests"
-                 const QString& where,                             // "contact=:name AND id=:id
+Database::select(const QString& select,             // "id", "body", ...
+                 const QString& table,              // "tests"
+                 const QString& where,              // "contact=:name AND id=:id
                  const MapStringString& bindsWhere) // {{":name", "toto"}, {":id", "65"}}
 {
     QSqlQuery query(db_);
     QString columnsSelect;
 
-    auto prepareStr = QString("SELECT " + select + " FROM " + table +
-                                  (where.isEmpty() ? "" : (" WHERE " + where)));
+    auto prepareStr = QString("SELECT " + select + " FROM " + table
+                              + (where.isEmpty() ? "" : (" WHERE " + where)));
     query.prepare(prepareStr);
 
     for (const auto& entry : bindsWhere.toStdMap())
@@ -297,7 +297,7 @@ Database::select(const QString& select,                            // "id", "bod
 
     // for each row
     while (query.next()) {
-        for (int i = 0 ; i < col_num ; i++)
+        for (int i = 0; i < col_num; i++)
             result.payloads.push_back(query.value(i).toString());
     }
 
@@ -305,9 +305,9 @@ Database::select(const QString& select,                            // "id", "bod
 }
 
 int
-Database::count(const QString& count, // "id", "body", ...
-                const QString& table, // "tests"
-                const QString& where, // "contact=:name AND id=:id"
+Database::count(const QString& count,              // "id", "body", ...
+                const QString& table,              // "tests"
+                const QString& where,              // "contact=:name AND id=:id"
                 const MapStringString& bindsWhere) // {{":name", "toto"}, {":id", "65"}}
 {
     QSqlQuery query(db_);
@@ -326,8 +326,8 @@ Database::count(const QString& count, // "id", "body", ...
 }
 
 void
-Database::deleteFrom(const QString& table,                             // "tests"
-                     const QString& where,                             // "contact=:name AND id=:id
+Database::deleteFrom(const QString& table,              // "tests"
+                     const QString& where,              // "contact=:name AND id=:id
                      const MapStringString& bindsWhere) // {{":name", "toto"}, {":id", "65"}}
 {
     QSqlQuery query(db_);
@@ -338,7 +338,7 @@ Database::deleteFrom(const QString& table,                             // "tests
     for (const auto& entry : bindsWhere.toStdMap())
         query.bindValue(entry.first, entry.second);
 
-    if(not query.exec())
+    if (not query.exec())
         throw QueryDeleteError(query, table, where, bindsWhere);
 }
 
@@ -352,7 +352,9 @@ Database::QueryInsertError::QueryInsertError(const QSqlQuery& query,
                                              const MapStringString& bindCol,
                                              const MapStringString& bindsSet)
     : QueryError(query)
-    , table(table), bindCol(bindCol), bindsSet(bindsSet)
+    , table(table)
+    , bindCol(bindCol)
+    , bindsSet(bindsSet)
 {}
 
 QString
@@ -362,9 +364,9 @@ Database::QueryInsertError::details()
     qts << "paramaters sent :";
     qts << "table = " << table;
     for (auto& b : bindCol.toStdMap())
-        qts << "   {" << b.first << "}, {" << b.second <<"}";
+        qts << "   {" << b.first << "}, {" << b.second << "}";
     for (auto& b : bindsSet.toStdMap())
-        qts << "   {" << b.first << "}, {" << b.second <<"}";
+        qts << "   {" << b.first << "}, {" << b.second << "}";
     return qts.readAll();
 }
 
@@ -375,7 +377,11 @@ Database::QueryUpdateError::QueryUpdateError(const QSqlQuery& query,
                                              const QString& where,
                                              const MapStringString& bindsWhere)
     : QueryError(query)
-    , table(table), set(set), bindsSet(bindsSet), where(where), bindsWhere(bindsWhere)
+    , table(table)
+    , set(set)
+    , bindsSet(bindsSet)
+    , where(where)
+    , bindsWhere(bindsWhere)
 {}
 
 QString
@@ -387,11 +393,11 @@ Database::QueryUpdateError::details()
     qts << "set = " << set;
     qts << "bindsSet :";
     for (auto& b : bindsSet.toStdMap())
-        qts << "   {" << b.first << "}, {" << b.second <<"}";
+        qts << "   {" << b.first << "}, {" << b.second << "}";
     qts << "where = " << where;
     qts << "bindsWhere :";
     for (auto& b : bindsWhere.toStdMap())
-        qts << "   {" << b.first << "}, {" << b.second <<"}";
+        qts << "   {" << b.first << "}, {" << b.second << "}";
     return qts.readAll();
 }
 
@@ -401,7 +407,10 @@ Database::QuerySelectError::QuerySelectError(const QSqlQuery& query,
                                              const QString& where,
                                              const MapStringString& bindsWhere)
     : QueryError(query)
-    , select(select), table(table), where(where), bindsWhere(bindsWhere)
+    , select(select)
+    , table(table)
+    , where(where)
+    , bindsWhere(bindsWhere)
 {}
 
 QString
@@ -423,7 +432,9 @@ Database::QueryDeleteError::QueryDeleteError(const QSqlQuery& query,
                                              const QString& where,
                                              const MapStringString& bindsWhere)
     : QueryError(query)
-    , table(table), where(where), bindsWhere(bindsWhere)
+    , table(table)
+    , where(where)
+    , bindsWhere(bindsWhere)
 {}
 
 QString
@@ -435,12 +446,11 @@ Database::QueryDeleteError::details()
     qts << "where = " << where;
     qts << "bindsWhere :";
     for (auto& b : bindsWhere.toStdMap())
-        qts << "   {" << b.first << "}, {" << b.second <<"}";
+        qts << "   {" << b.first << "}, {" << b.second << "}";
     return qts.readAll();
 }
 
-Database::QueryTruncateError::QueryTruncateError(const QSqlQuery& query,
-    const QString& table)
+Database::QueryTruncateError::QueryTruncateError(const QSqlQuery& query, const QString& table)
     : QueryError(query)
     , table(table)
 {}
@@ -529,7 +539,8 @@ LegacyDatabase::createTables()
                                                          FOREIGN KEY(author_id) REFERENCES profiles(id), \
                                                          FOREIGN KEY(conversation_id) REFERENCES conversations(id))";
 
-    auto tableProfileAccounts = "CREATE TABLE profiles_accounts (profile_id INTEGER NOT NULL,                    \
+    auto tableProfileAccounts
+        = "CREATE TABLE profiles_accounts (profile_id INTEGER NOT NULL,                    \
                                                                  account_id TEXT NOT NULL,                        \
                                                                  is_account TEXT,                                 \
                                                                  FOREIGN KEY(profile_id) REFERENCES profiles(id))";
@@ -574,7 +585,7 @@ LegacyDatabase::migrateLocalProfiles()
 {
     const QDir profilesDir = basePath_ + "profiles/";
     const QStringList entries = profilesDir.entryList({QStringLiteral("*.vcf")}, QDir::Files);
-    foreach (const QString& item , entries) {
+    foreach (const QString& item, entries) {
         auto filePath = profilesDir.path() + '/' + item;
         QString content;
         QFile file(filePath);
@@ -599,40 +610,47 @@ LegacyDatabase::migrateLocalProfiles()
                     qWarning() << "Invalid dbus answer. Daemon not running";
                     return;
                 }
-            MapStringString account = ConfigurationManager::instance().
-            getAccountDetails(accountId.toStdString().c_str());
-            auto accountURI = account[DRing::Account::ConfProperties::USERNAME].contains("ring:") ?
-            account[DRing::Account::ConfProperties::USERNAME]
-        .toStdString().substr(std::string("ring:").size()) :
-        account[DRing::Account::ConfProperties::USERNAME].toStdString();
+            MapStringString account = ConfigurationManager::instance().getAccountDetails(
+                accountId.toStdString().c_str());
+            auto accountURI = account[DRing::Account::ConfProperties::USERNAME].contains("ring:")
+                                  ? account[DRing::Account::ConfProperties::USERNAME]
+                                        .toStdString()
+                                        .substr(std::string("ring:").size())
+                                  : account[DRing::Account::ConfProperties::USERNAME].toStdString();
 
-            for (const auto& accountId: accountIds) {
-                MapStringString account = ConfigurationManager::instance()
-                    .getAccountDetails(accountId.toStdString().c_str());
-                auto type = account[DRing::Account::ConfProperties::TYPE] == "SIP"? "SIP" : "RING";
+            for (const auto& accountId : accountIds) {
+                MapStringString account = ConfigurationManager::instance().getAccountDetails(
+                    accountId.toStdString().c_str());
+                auto type = account[DRing::Account::ConfProperties::TYPE] == "SIP" ? "SIP" : "RING";
 
-                auto uri = account[DRing::Account::ConfProperties::USERNAME].contains("ring:") ?
-                        QString(account[DRing::Account::ConfProperties::USERNAME]).remove(0, QString("ring:").size()) :
-                        account[DRing::Account::ConfProperties::USERNAME];
-                if (select("id", "profiles","uri=:uri", {{":uri", uri}}).payloads.empty()) {
+                auto uri = account[DRing::Account::ConfProperties::USERNAME].contains("ring:")
+                               ? QString(account[DRing::Account::ConfProperties::USERNAME])
+                                     .remove(0, QString("ring:").size())
+                               : account[DRing::Account::ConfProperties::USERNAME];
+                if (select("id", "profiles", "uri=:uri", {{":uri", uri}}).payloads.empty()) {
                     insertInto("profiles",
-                            {{":uri", "uri"}, {":alias", "alias"},
-                            {":photo", "photo"}, {":type", "type"},
-                            {":status", "status"}},
-                            {{":uri", uri}, {":alias", alias},
-                            {":photo", avatar}, {":type", type},
-                            {":status", "TRUSTED"}});
-                    auto profileIds = select("id", "profiles","uri=:uri",
-                    {{":uri", uri}}).payloads;
-                    if (!profileIds.empty() && select("profile_id", "profiles_accounts",
-                    "account_id=:account_id AND is_account=:is_account",
-                    {{":account_id", accountId},
-                    {":is_account", "true"}}).payloads.empty()) {
+                               {{":uri", "uri"},
+                                {":alias", "alias"},
+                                {":photo", "photo"},
+                                {":type", "type"},
+                                {":status", "status"}},
+                               {{":uri", uri},
+                                {":alias", alias},
+                                {":photo", avatar},
+                                {":type", type},
+                                {":status", "TRUSTED"}});
+                    auto profileIds = select("id", "profiles", "uri=:uri", {{":uri", uri}}).payloads;
+                    if (!profileIds.empty()
+                        && select("profile_id",
+                                  "profiles_accounts",
+                                  "account_id=:account_id AND is_account=:is_account",
+                                  {{":account_id", accountId}, {":is_account", "true"}})
+                               .payloads.empty()) {
                         insertInto("profiles_accounts",
-                                    {{":profile_id", "profile_id"},
+                                   {{":profile_id", "profile_id"},
                                     {":account_id", "account_id"},
                                     {":is_account", "is_account"}},
-                                    {{":profile_id", profileIds[0]},
+                                   {{":profile_id", profileIds[0]},
                                     {":account_id", accountId},
                                     {":is_account", "true"}});
                     }
@@ -649,7 +667,7 @@ LegacyDatabase::migratePeerProfiles()
 
     const QStringList entries = profilesDir.entryList({QStringLiteral("*.vcf")}, QDir::Files);
 
-    foreach (const QString& item , entries) {
+    foreach (const QString& item, entries) {
         auto filePath = profilesDir.path() + '/' + item;
         QString content;
         QFile file(filePath);
@@ -669,15 +687,19 @@ LegacyDatabase::migratePeerProfiles()
             uri = uri.mid(QString("ring:").size());
         }
 
-        if (select("id", "profiles","uri=:uri", {{":uri", uri}}).payloads.empty()) {
+        if (select("id", "profiles", "uri=:uri", {{":uri", uri}}).payloads.empty()) {
             insertInto("profiles",
-                       {{":uri", "uri"}, {":alias", "alias"}, {":photo", "photo"}, {":type", "type"},
-                       {":status", "status"}},
-                       {{":uri", uri}, {":alias", alias},
-                       {":photo", avatar}, {":type", type},
-                       {":status", "TRUSTED"}});
+                       {{":uri", "uri"},
+                        {":alias", "alias"},
+                        {":photo", "photo"},
+                        {":type", "type"},
+                        {":status", "status"}},
+                       {{":uri", uri},
+                        {":alias", alias},
+                        {":photo", avatar},
+                        {":type", type},
+                        {":status", "TRUSTED"}});
         }
-
     }
 }
 
@@ -690,7 +712,9 @@ LegacyDatabase::migrateTextHistory()
         // get .json files, sorted by time, latest first
         QStringList filters;
         filters << "*.json";
-        auto list = dir.entryInfoList(filters, QDir::Files | QDir::NoSymLinks | QDir::Readable, QDir::Time);
+        auto list = dir.entryInfoList(filters,
+                                      QDir::Files | QDir::NoSymLinks | QDir::Readable,
+                                      QDir::Time);
 
         for (int i = 0; i < list.size(); ++i) {
             QFileInfo fileInfo = list.at(i);
@@ -715,7 +739,8 @@ LegacyDatabase::migrateTextHistory()
                 // Load account
                 auto peersObject = loadDoc["peers"].toArray()[0].toObject();
 
-                MapStringString details = ConfigurationManager::instance().getAccountDetails(peersObject["accountId"].toString());
+                MapStringString details = ConfigurationManager::instance().getAccountDetails(
+                    peersObject["accountId"].toString());
                 if (!details.contains(DRing::Account::ConfProperties::USERNAME))
                     continue;
 
@@ -724,64 +749,77 @@ LegacyDatabase::migrateTextHistory()
                 if (isARingContact) {
                     accountUri = accountUri.mid(QString("ring:").length());
                 }
-                auto accountIds = select("id", "profiles","uri=:uri", {{":uri", accountUri}}).payloads;
-                auto contactIds = select("id", "profiles","uri=:uri", {{":uri", peersObject["uri"].toString()}}).payloads;
+                auto accountIds = select("id", "profiles", "uri=:uri", {{":uri", accountUri}})
+                                      .payloads;
+                auto contactIds = select("id",
+                                         "profiles",
+                                         "uri=:uri",
+                                         {{":uri", peersObject["uri"].toString()}})
+                                      .payloads;
                 if (contactIds.empty()) {
                     insertInto("profiles",
-                               {{":uri", "uri"}, {":alias", "alias"}, {":photo", "photo"}, {":type", "type"},
-                               {":status", "status"}},
-                               {{":uri", peersObject["uri"].toString()}, {":alias", ""},
-                               {":photo", ""}, {":type", "RING"},
-                               {":status", "TRUSTED"}});
-                    // NOTE: this profile is in a case where it's not a contact for the daemon but a conversation with an account.
-                    // So we choose to add the profile to daemon's contacts
-                    if(isARingContact) {
-                        ConfigurationManager::instance().addContact(
-                            peersObject["accountId"].toString(),
-                            peersObject["uri"].toString()
-                        );
+                               {{":uri", "uri"},
+                                {":alias", "alias"},
+                                {":photo", "photo"},
+                                {":type", "type"},
+                                {":status", "status"}},
+                               {{":uri", peersObject["uri"].toString()},
+                                {":alias", ""},
+                                {":photo", ""},
+                                {":type", "RING"},
+                                {":status", "TRUSTED"}});
+                    // NOTE: this profile is in a case where it's not a contact for the daemon but a
+                    // conversation with an account. So we choose to add the profile to daemon's contacts
+                    if (isARingContact) {
+                        ConfigurationManager::instance()
+                            .addContact(peersObject["accountId"].toString(),
+                                        peersObject["uri"].toString());
                     }
-                    contactIds = select("id", "profiles","uri=:uri", {{":uri", peersObject["uri"].toString()}}).payloads;
+                    contactIds = select("id",
+                                        "profiles",
+                                        "uri=:uri",
+                                        {{":uri", peersObject["uri"].toString()}})
+                                     .payloads;
                 }
                 if (accountIds.empty()) {
-                    qDebug() << "Can't find profile for URI: " << peersObject["accountId"].toString() << ". Ignore this file.";
+                    qDebug() << "Can't find profile for URI: "
+                             << peersObject["accountId"].toString() << ". Ignore this file.";
                 } else if (contactIds.empty()) {
-                    qDebug() << "Can't find profile for URI: " << peersObject["uri"].toString() << ". Ignore this file.";
+                    qDebug() << "Can't find profile for URI: " << peersObject["uri"].toString()
+                             << ". Ignore this file.";
                 } else {
                     auto contactId = contactIds[0];
                     // link profile id to account id
-                    auto profiles = select("profile_id", "profiles_accounts",
-                                            "profile_id=:profile_id AND \
+                    auto profiles = select("profile_id",
+                                           "profiles_accounts",
+                                           "profile_id=:profile_id AND \
                                             account_id=:account_id AND  \
                                             is_account=:is_account",
-                                            {{":profile_id", contactId},
+                                           {{":profile_id", contactId},
                                             {":account_id", peersObject["accountId"].toString()},
                                             {":is_account", "false"}})
-                                            .payloads;
+                                        .payloads;
 
                     if (profiles.empty()) {
-                         insertInto("profiles_accounts",
-                                    {{":profile_id", "profile_id"},
+                        insertInto("profiles_accounts",
+                                   {{":profile_id", "profile_id"},
                                     {":account_id", "account_id"},
                                     {":is_account", "is_account"}},
-                                    {{":profile_id", contactId},
+                                   {{":profile_id", contactId},
                                     {":account_id", peersObject["accountId"].toString()},
                                     {":is_account", "false"}});
                     }
                     auto accountId = accountIds[0];
-                    auto newConversationsId = select("IFNULL(MAX(id), 0) + 1",
-                                                        "conversations",
-                                                        "1=1",
-                                                        {}).payloads[0];
-                    try
-                    {
+                    auto newConversationsId
+                        = select("IFNULL(MAX(id), 0) + 1", "conversations", "1=1", {}).payloads[0];
+                    try {
                         QSqlDatabase::database().transaction();
                         insertInto("conversations",
-                                    {{":id", "id"}, {":participant_id", "participant_id"}},
-                                    {{":id", newConversationsId}, {":participant_id", accountId}});
+                                   {{":id", "id"}, {":participant_id", "participant_id"}},
+                                   {{":id", newConversationsId}, {":participant_id", accountId}});
                         insertInto("conversations",
-                                    {{":id", "id"}, {":participant_id", "participant_id"}},
-                                    {{":id", newConversationsId}, {":participant_id", contactId}});
+                                   {{":id", "id"}, {":participant_id", "participant_id"}},
+                                   {{":id", newConversationsId}, {":participant_id", contactId}});
                         QSqlDatabase::database().commit();
                     } catch (QueryInsertError& e) {
                         qDebug() << e.details();
@@ -790,21 +828,29 @@ LegacyDatabase::migrateTextHistory()
 
                     // Load interactions
                     auto groupsArray = loadDoc["groups"].toArray();
-                    for (const auto& groupObject: groupsArray) {
+                    for (const auto& groupObject : groupsArray) {
                         auto messagesArray = groupObject.toObject()["messages"].toArray();
-                        for (const auto& messageRef: messagesArray) {
+                        for (const auto& messageRef : messagesArray) {
                             auto messageObject = messageRef.toObject();
                             auto direction = messageObject["direction"].toInt();
-                            auto body = messageObject["payloads"].toArray()[0].toObject()["payload"].toString();
+                            auto body = messageObject["payloads"]
+                                            .toArray()[0]
+                                            .toObject()["payload"]
+                                            .toString();
                             insertInto("interactions",
-                                        {{":account_id", "account_id"}, {":author_id", "author_id"},
-                                        {":conversation_id", "conversation_id"}, {":timestamp", "timestamp"},
-                                        {":body", "body"}, {":type", "type"},
+                                       {{":account_id", "account_id"},
+                                        {":author_id", "author_id"},
+                                        {":conversation_id", "conversation_id"},
+                                        {":timestamp", "timestamp"},
+                                        {":body", "body"},
+                                        {":type", "type"},
                                         {":status", "status"}},
-                                        {{":account_id", accountId}, {":author_id", direction ? accountId : contactId},
+                                       {{":account_id", accountId},
+                                        {":author_id", direction ? accountId : contactId},
                                         {":conversation_id", newConversationsId},
                                         {":timestamp", messageObject["timestamp"].toString()},
-                                        {":body", body}, {":type", "TEXT"},
+                                        {":body", body},
+                                        {":type", "TEXT"},
                                         {":status", direction ? "SUCCEED" : "READ"}});
                         }
                     }
@@ -828,7 +874,8 @@ void
 LegacyDatabase::migrateSchemaFromVersion1()
 {
     QSqlQuery query(db_);
-    auto tableProfileAccounts = "CREATE TABLE profiles_accounts (profile_id INTEGER NOT NULL,                     \
+    auto tableProfileAccounts
+        = "CREATE TABLE profiles_accounts (profile_id INTEGER NOT NULL,                     \
                                                                  account_id TEXT NOT NULL,                        \
                                                                  is_account TEXT,                                 \
                                                                  FOREIGN KEY(profile_id) REFERENCES profiles(id))";
@@ -853,70 +900,81 @@ LegacyDatabase::linkRingProfilesWithAccounts(bool contactsOnly)
                 qWarning() << "Invalid dbus answer. Daemon not running";
                 return;
             }
-        MapStringString account = ConfigurationManager::instance().
-        getAccountDetails(accountId.toStdString().c_str());
-        auto accountURI = account[DRing::Account::ConfProperties::USERNAME].contains("ring:") ?
-            QString(account[DRing::Account::ConfProperties::USERNAME]).remove(0, QString("ring:").size()) :
-            account[DRing::Account::ConfProperties::USERNAME];
-        auto profileIds = select("id", "profiles","uri=:uri", {{":uri", accountURI}}).payloads;
-        if(profileIds.empty()) {
+        MapStringString account = ConfigurationManager::instance().getAccountDetails(
+            accountId.toStdString().c_str());
+        auto accountURI = account[DRing::Account::ConfProperties::USERNAME].contains("ring:")
+                              ? QString(account[DRing::Account::ConfProperties::USERNAME])
+                                    .remove(0, QString("ring:").size())
+                              : account[DRing::Account::ConfProperties::USERNAME];
+        auto profileIds = select("id", "profiles", "uri=:uri", {{":uri", accountURI}}).payloads;
+        if (profileIds.empty()) {
             continue;
         }
-        if(!contactsOnly) {
-            //if is_account is true we should have only one profile id for account id
-             if (select("profile_id", "profiles_accounts",
-                        "account_id=:account_id AND is_account=:is_account",
-                        {{":account_id", accountId},
-                        {":is_account", "true"}}).payloads.empty()) {
-                            insertInto("profiles_accounts",
-                            {{":profile_id", "profile_id"}, {":account_id", "account_id"},
+        if (!contactsOnly) {
+            // if is_account is true we should have only one profile id for account id
+            if (select("profile_id",
+                       "profiles_accounts",
+                       "account_id=:account_id AND is_account=:is_account",
+                       {{":account_id", accountId}, {":is_account", "true"}})
+                    .payloads.empty()) {
+                insertInto("profiles_accounts",
+                           {{":profile_id", "profile_id"},
+                            {":account_id", "account_id"},
                             {":is_account", "is_account"}},
-                            {{":profile_id", profileIds[0]}, {":account_id", accountId},
+                           {{":profile_id", profileIds[0]},
+                            {":account_id", accountId},
                             {":is_account", "true"}});
-             }
+            }
         }
 
         if (account[DRing::Account::ConfProperties::TYPE] == DRing::Account::ProtocolNames::RING) {
-
             // update RING contacts
-            const VectorMapStringString& contacts_vector = ConfigurationManager::instance()
-           .getContacts(accountId.toStdString().c_str());
-            //update contacts profiles
+            const VectorMapStringString& contacts_vector
+                = ConfigurationManager::instance().getContacts(accountId.toStdString().c_str());
+            // update contacts profiles
             for (auto contact_info : contacts_vector) {
                 auto contactURI = contact_info["id"];
                 updateProfileAccountForContact(contactURI, accountId);
             }
-            //update pending contacts profiles
-            const VectorMapStringString& pending_tr = ConfigurationManager::instance()
-            .getTrustRequests(accountId.toStdString().c_str());
+            // update pending contacts profiles
+            const VectorMapStringString& pending_tr
+                = ConfigurationManager::instance().getTrustRequests(accountId.toStdString().c_str());
             for (auto tr_info : pending_tr) {
                 auto contactURI = tr_info[DRing::Account::TrustRequest::FROM];
                 updateProfileAccountForContact(contactURI, accountId);
             }
-        } else if (account[DRing::Account::ConfProperties::TYPE] == DRing::Account::ProtocolNames::SIP) {
+        } else if (account[DRing::Account::ConfProperties::TYPE]
+                   == DRing::Account::ProtocolNames::SIP) {
             // update SIP contacts
-            auto conversations = select("id", "conversations",
+            auto conversations = select("id",
+                                        "conversations",
                                         "participant_id=:participant_id",
-                                        {{":participant_id", profileIds[0]}}).payloads;
+                                        {{":participant_id", profileIds[0]}})
+                                     .payloads;
             for (const auto& c : conversations) {
-                auto otherParticipants = select("participant_id","conversations",
+                auto otherParticipants = select("participant_id",
+                                                "conversations",
                                                 "id=:id AND participant_id!=:participant_id",
                                                 {{":id", c}, {":participant_id", profileIds[0]}})
-                                                .payloads;
-                for (const auto& participant: otherParticipants) {
-                    auto rows = select("profile_id", "profiles_accounts",
+                                             .payloads;
+                for (const auto& participant : otherParticipants) {
+                    auto rows = select("profile_id",
+                                       "profiles_accounts",
                                        "profile_id=:profile_id AND \
                                         account_id=:account_id AND  \
                                         is_account=:is_account",
-                                        {{":profile_id", participant},
+                                       {{":profile_id", participant},
                                         {":account_id", accountId},
-                                        {":is_account", "false"}}).payloads;
+                                        {":is_account", "false"}})
+                                    .payloads;
                     if (rows.empty()) {
                         insertInto("profiles_accounts",
-                        {{":profile_id", "profile_id"}, {":account_id", "account_id"},
-                        {":is_account", "is_account"}},
-                        {{":profile_id", participant}, {":account_id", accountId},
-                        {":is_account", "false"}});
+                                   {{":profile_id", "profile_id"},
+                                    {":account_id", "account_id"},
+                                    {":is_account", "is_account"}},
+                                   {{":profile_id", participant},
+                                    {":account_id", accountId},
+                                    {":is_account", "false"}});
                     }
                 }
             }
@@ -925,24 +983,25 @@ LegacyDatabase::linkRingProfilesWithAccounts(bool contactsOnly)
 }
 
 void
-LegacyDatabase::updateProfileAccountForContact(const QString& contactURI,
-                                               const QString& accountId)
+LegacyDatabase::updateProfileAccountForContact(const QString& contactURI, const QString& accountId)
 {
-    auto profileIds = select("id", "profiles", "uri=:uri",
-        { {":uri", contactURI} })
-        .payloads;
+    auto profileIds = select("id", "profiles", "uri=:uri", {{":uri", contactURI}}).payloads;
     if (profileIds.empty()) {
         return;
     }
-    auto rows = select("profile_id", "profiles_accounts",
-        "account_id=:account_id AND is_account=:is_account", { {":account_id", accountId},
-        {":is_account", "false"} }).payloads;
+    auto rows = select("profile_id",
+                       "profiles_accounts",
+                       "account_id=:account_id AND is_account=:is_account",
+                       {{":account_id", accountId}, {":is_account", "false"}})
+                    .payloads;
     if (std::find(rows.begin(), rows.end(), profileIds[0]) == rows.end()) {
         insertInto("profiles_accounts",
-            { {":profile_id", "profile_id"}, {":account_id", "account_id"},
-            {":is_account", "is_account"} },
-            { {":profile_id", profileIds[0]}, {":account_id", accountId},
-            {":is_account", "false"} });
+                   {{":profile_id", "profile_id"},
+                    {":account_id", "account_id"},
+                    {":is_account", "is_account"}},
+                   {{":profile_id", profileIds[0]},
+                    {":account_id", accountId},
+                    {":is_account", "false"}});
     }
 }
 

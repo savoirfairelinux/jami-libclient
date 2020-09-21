@@ -25,37 +25,37 @@ class SmartInfoHubPrivate;
 class SmartInfoHub final : public QObject
 {
     Q_OBJECT
-    public:
-        // Singleton
-        static SmartInfoHub& instance();
+public:
+    // Singleton
+    static SmartInfoHub& instance();
 
-        void start();
-        void stop();
+    void start();
+    void stop();
 
-        void setRefreshTime(uint32_t timeMS);
+    void setRefreshTime(uint32_t timeMS);
 
-        //Getter
-        float          localFps() const;
-        float          remoteFps() const;
-        int            remoteWidth() const;
-        int            remoteHeight() const;
-        int            localWidth() const;
-        int            localHeight() const;
-        QString        callID() const;
-        QString        localVideoCodec() const;
-        QString        localAudioCodec() const;
-        QString        remoteVideoCodec() const;
-        QString        remoteAudioCodec() const;
-        bool           isConference() const;
+    // Getter
+    float localFps() const;
+    float remoteFps() const;
+    int remoteWidth() const;
+    int remoteHeight() const;
+    int localWidth() const;
+    int localHeight() const;
+    QString callID() const;
+    QString localVideoCodec() const;
+    QString localAudioCodec() const;
+    QString remoteVideoCodec() const;
+    QString remoteAudioCodec() const;
+    bool isConference() const;
 
-    Q_SIGNALS:
-        ///Emitted when informations have changed
-        void changed();
+Q_SIGNALS:
+    /// Emitted when informations have changed
+    void changed();
 
-    private:
-        //use to initialise the connection between the Qsignal and the lambda function
-        SmartInfoHub();
-        virtual ~SmartInfoHub();
+private:
+    // use to initialise the connection between the Qsignal and the lambda function
+    SmartInfoHub();
+    virtual ~SmartInfoHub();
 
-        SmartInfoHubPrivate* d_ptr;
+    SmartInfoHubPrivate* d_ptr;
 };

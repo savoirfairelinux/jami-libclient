@@ -22,14 +22,11 @@
 
 #include <QString>
 
-namespace lrc
-{
+namespace lrc {
 
-namespace api
-{
+namespace api {
 
-namespace contact
-{
+namespace contact {
 
 /**
  * @var profileInfo

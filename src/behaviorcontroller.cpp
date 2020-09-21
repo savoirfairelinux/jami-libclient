@@ -21,20 +21,15 @@
 // Models and database
 #include "api/lrc.h"
 
-namespace lrc
-{
+namespace lrc {
 
 using namespace api;
 
 BehaviorController::BehaviorController()
-: QObject(nullptr)
-{
-}
+    : QObject(nullptr)
+{}
 
-BehaviorController::~BehaviorController()
-{
-
-}
+BehaviorController::~BehaviorController() {}
 
 } // namespace lrc
 

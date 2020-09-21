@@ -25,16 +25,16 @@
 
 #include <memory>
 
-namespace lrc
-{
+namespace lrc {
 
 class CallbacksHandler;
 class NewCodecModelPimpl;
 
-namespace api
-{
+namespace api {
 
-namespace account { struct Info; }
+namespace account {
+struct Info;
+}
 
 struct Codec
 {
@@ -53,9 +53,10 @@ struct Codec
 };
 
 /**
-  *  @brief Class that manages ring devices for an account
-  */
-class LIB_EXPORT NewCodecModel : public QObject {
+ *  @brief Class that manages ring devices for an account
+ */
+class LIB_EXPORT NewCodecModel : public QObject
+{
     Q_OBJECT
 
 public:
