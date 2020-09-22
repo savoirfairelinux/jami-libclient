@@ -71,7 +71,7 @@ Rectangle {
     }
 
     function delAccountSlot() {
-        deleteAccountDialog.open()
+        deleteAccountDialog.openDialog()
     }
 
     function connectCurrentAccount() {
