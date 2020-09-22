@@ -64,7 +64,7 @@ Item {
             ContextMenuGenerator.addMenuSeparator()
         }
 
-        if (!isAudioOnly) {
+        if (!isAudioOnly && !isPaused) {
             ContextMenuGenerator.addMenuItem(isRecording ? JamiStrings.stopRec :
                                                            JamiStrings.startRec,
                                              "qrc:/images/icons/ic_video_call_24px.svg",
