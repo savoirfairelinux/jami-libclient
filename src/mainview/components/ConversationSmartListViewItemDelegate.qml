@@ -122,9 +122,9 @@ ItemDelegate {
         }
     }
 
-
     Text {
         id: conversationSmartListUserLastInteractionMessage
+
         anchors.left: conversationSmartListUserImage.right
         anchors.leftMargin: 16
         anchors.bottom: rowUsernameAndLastInteractionDate.bottom
@@ -139,14 +139,13 @@ ItemDelegate {
             text: InCall ? UtilsAdapter.getCallStatusStr(CallState) : (Draft ? Draft : LastInteraction)
         }
 
+        font.family: Qt.platform.os === "windows" ? "Segoe UI Emoji" : Qt.application.font.family
         font.hintingPreference: Font.PreferNoHinting
         text: textMetricsConversationSmartListUserLastInteractionMessage.elidedText
         maximumLineCount: 1
         font.pointSize: JamiTheme.textFontSize
         color: Draft ? JamiTheme.draftRed : JamiTheme.faddedLastInteractionFontColor
     }
-
-
 
     background: Rectangle {
         id: itemSmartListBackground
