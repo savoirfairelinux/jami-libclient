@@ -269,7 +269,7 @@ Rectangle {
                     } else {
                         if (folderDir.length > 0) {
                             AccountAdapter.exportToFile(
-                                        UtilsAdapter.getCurrAccId(),
+                                        AccountAdapter.currentAccountId,
                                         UtilsAdapter.getAbsPath(folderDir))
                         }
                     }

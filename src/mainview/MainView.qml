@@ -58,6 +58,18 @@ Window {
     signal closeApp
     signal noAccountIsAvailable
 
+    property string currentAccountId: AccountAdapter.currentAccountId
+    onCurrentAccountIdChanged: {
+        var index = UtilsAdapter.getCurrAccList().indexOf(currentAccountId)
+        mainViewWindowSidePanel.refreshAccountComboBox(index)
+        if (inSettingsView) {
+            settingsView.accountListChanged()
+            settingsView.setSelected(settingsView.selectedMenu, true)
+        } else if (currentAccountIsCalling()) {
+            setCallStackView()
+        }
+    }
+
     function showWelcomeView() {
         mainViewWindowSidePanel.deselectConversationSmartList()
         if (communicationPageMessageWebView.visible || callStackView.visible) {
@@ -121,8 +133,8 @@ Window {
         }
     }
 
-    function newAccountAdded(index) {
-        AccountAdapter.accountChanged(index)
+    function startWizard() {
+        mainViewStackLayout.currentIndex = 1
     }
 
     function currentAccountIsCalling() {
@@ -311,23 +323,6 @@ Window {
                         toggleSettingsView()
                     }
 
-                    onAccountChanged: {
-                        mainViewWindowSidePanel.deselectConversationSmartList()
-
-                        AccountAdapter.accountChanged(index)
-
-                        if (inSettingsView) {
-                            settingsView.slotAccountListChanged()
-                            settingsView.setSelected(settingsView.selectedMenu, true)
-                        } else if (currentAccountIsCalling()) {
-                            setCallStackView()
-                        }
-                    }
-
-                    onNewAccountButtonClicked: {
-                        mainViewWindowSidePanel.needToAddNewAccount()
-                    }
-
                     Component.onCompleted: {
                         AccountAdapter.setQmlObject(this)
                     }
@@ -370,14 +365,6 @@ Window {
             Layout.fillHeight: true
 
             onNeedToShowMainViewWindow: {
-                mainViewLoader.newAddedAccountIndex = accountIndex
-                if (mainViewLoader.source.toString() !== "qrc:/src/mainview/MainView.qml") {
-                    mainViewLoader.loaded.disconnect(slotNewAccountAdded)
-                    mainViewLoader.loaded.connect(slotNewAccountAdded)
-                    mainViewLoader.setSource("qrc:/src/mainview/MainView.qml")
-                } else {
-                    slotNewAccountAdded()
-                }
                 mainViewStackLayout.currentIndex = 0
             }
 
@@ -438,12 +425,11 @@ Window {
         id: mainViewWindowSidePanel
 
         onConversationSmartListNeedToAccessMessageWebView: {
-
             communicationPageMessageWebView.headerUserAliasLabelText = currentUserAlias
             communicationPageMessageWebView.headerUserUserNameLabelText = currentUserDisplayName
 
             callStackView.needToCloseInCallConversationAndPotentialWindow()
-            callStackView.responsibleAccountId = UtilsAdapter.getCurrAccId()
+            callStackView.responsibleAccountId = AccountAdapter.currentAccountId
             callStackView.responsibleConvUid = currentUID
             callStackView.updateCorrespondingUI()
 
@@ -509,10 +495,6 @@ Window {
             MessagesAdapter.updateConversationForAddedContact()
             mainViewWindowSidePanel.clearContactSearchBar()
             mainViewWindowSidePanel.forceReselectConversationSmartListCurrentIndex()
-        }
-
-        onNeedToAddNewAccount: {
-            mainViewStackLayout.currentIndex = 1
         }
 
         Connections {
@@ -747,7 +729,7 @@ Window {
     Shortcut {
         sequence: "Ctrl+Shift+N"
         context: Qt.ApplicationShortcut
-        onActivated: mainViewWindowSidePanel.needToAddNewAccount()
+        onActivated: startWizard()
     }
 
     KeyBoardShortcutTable {

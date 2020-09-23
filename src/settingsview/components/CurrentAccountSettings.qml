@@ -163,7 +163,8 @@ Rectangle {
                 return
             } else {
                 if (exportPath.length > 0) {
-                    var isSuccessful = AccountAdapter.model.exportToFile(UtilsAdapter.getCurrAccId(), exportPath,"")
+                    var isSuccessful = AccountAdapter.model.exportToFile(AccountAdapter.currentAccountId,
+                                                                         exportPath, "")
                     var title = isSuccessful ? qsTr("Success") : qsTr("Error")
                     var info = isSuccessful ? JamiStrings.backupSuccessful : JamiStrings.backupFailed
 
@@ -218,7 +219,8 @@ Rectangle {
                     labelText: JamiStrings.enableAccount
                     fontPointSize: JamiTheme.headerFontSize
 
-                    onSwitchToggled: AccountAdapter.model.setAccountEnabled(UtilsAdapter.getCurrAccId(), checked)
+                    onSwitchToggled: AccountAdapter.model.setAccountEnabled(
+                                         AccountAdapter.currentAccountId, checked)
                 }
 
                 AccountProfile {

@@ -20,6 +20,7 @@ import QtQuick 2.14
 import QtQuick.Controls 2.14
 import QtQuick.Layouts 1.14
 import net.jami.Models 1.0
+import net.jami.Adapters 1.0
 
 import "../../commoncomponents"
 
@@ -27,9 +28,6 @@ Popup {
     id: comboBoxPopup
 
     property bool toogleUpdatePopupHeight: false
-
-    signal accountNeedToChange(int index)
-    signal newAccountButtonClicked
 
     y: accountComboBox.height - 1
     implicitWidth: accountComboBox.width - 1
@@ -143,7 +141,7 @@ Popup {
                     itemCoboBackground.color = JamiTheme.releaseColor
                     currentIndex = index
                     comboBoxPopup.close()
-                    comboBoxPopup.accountNeedToChange(index)
+                    AccountAdapter.accountChanged(index)
                 }
                 onEntered: {
                     itemCoboBackground.color = JamiTheme.hoverColor
@@ -169,7 +167,7 @@ Popup {
 
             onClicked: {
                 comboBoxPopup.close()
-                comboBoxPopup.newAccountButtonClicked()
+                mainViewWindow.startWizard()
             }
         }
 

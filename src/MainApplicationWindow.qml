@@ -42,11 +42,6 @@ ApplicationWindow {
         }
     }
 
-    function slotNewAccountAdded() {
-        if(mainViewLoader.newAddedAccountIndex !== -1)
-            mainViewLoader.item.newAccountAdded(mainViewLoader.newAddedAccountIndex)
-    }
-
     function startAccountMigration(){
         return accountMigrationDialog.startAccountMigrationOfTopStack()
     }
@@ -105,13 +100,8 @@ ApplicationWindow {
 
             onNeedToShowMainViewWindow: {
                 mainViewLoader.newAddedAccountIndex = accountIndex
-                if (mainViewLoader.source.toString() !== "qrc:/src/mainview/MainView.qml") {
-                    mainViewLoader.loaded.disconnect(slotNewAccountAdded)
-                    mainViewLoader.loaded.connect(slotNewAccountAdded)
+                if (mainViewLoader.source.toString() !== "qrc:/src/mainview/MainView.qml")
                     mainViewLoader.setSource("qrc:/src/mainview/MainView.qml")
-                } else {
-                    slotNewAccountAdded()
-                }
                 wizardView.close()
             }
 

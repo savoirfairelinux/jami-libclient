@@ -53,7 +53,8 @@ BaseDialog {
 
     function slotStartNameRegistration() {
         var password = passwordEdit.text
-        AccountAdapter.model.registerName(UtilsAdapter.getCurrAccId(), password, registerdName)
+        AccountAdapter.model.registerName(AccountAdapter.currentAccountId,
+                                          password, registerdName)
     }
 
     function startSpinner() {

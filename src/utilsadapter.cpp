@@ -176,12 +176,6 @@ UtilsAdapter::removeConversation(const QString& accountId, const QString& uid, b
 }
 
 const QString
-UtilsAdapter::getCurrAccId()
-{
-    return LRCInstance::getCurrAccId();
-}
-
-const QString
 UtilsAdapter::getCurrConvId()
 {
     return LRCInstance::getCurrentConvUid();

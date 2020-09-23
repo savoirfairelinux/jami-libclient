@@ -170,7 +170,7 @@ ItemDelegate {
         }
         onDoubleClicked: {
             if (!InCall) {
-                ConversationsAdapter.selectConversation(UtilsAdapter.getCurrAccId(),
+                ConversationsAdapter.selectConversation(AccountAdapter.currentAccountId,
                                                         UID,
                                                         false)
                 CallAdapter.placeCall()
@@ -188,7 +188,7 @@ ItemDelegate {
                                                  mouse.x, mouse.y)
                 smartListContextMenu.x = relativeMousePos.x
                 smartListContextMenu.y = relativeMousePos.y
-                smartListContextMenu.responsibleAccountId = UtilsAdapter.getCurrAccId()
+                smartListContextMenu.responsibleAccountId = AccountAdapter.currentAccountId
                 smartListContextMenu.responsibleConvUid = UID
                 smartListContextMenu.contactType = ContactType
                 userProfile.responsibleConvUid = UID

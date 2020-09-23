@@ -54,7 +54,8 @@ BaseDialog {
     }
 
     function slotExportOnRing(){
-        AccountAdapter.model.exportOnRing(UtilsAdapter.getCurrAccId(),passwordEdit.text)
+        AccountAdapter.model.exportOnRing(AccountAdapter.currentAccountId,
+                                          passwordEdit.text)
     }
 
     Timer{

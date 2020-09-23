@@ -71,7 +71,7 @@ BaseDialog {
         var success = false
         if (path.length > 0) {
             success = AccountAdapter.exportToFile(
-                        UtilsAdapter.getCurrAccId(),
+                        AccountAdapter.currentAccountId,
                         path,
                         currentPasswordEdit.text)
         }
@@ -82,7 +82,7 @@ BaseDialog {
     function savePasswordQML() {
         var success = false
         success = AccountAdapter.savePassword(
-                    UtilsAdapter.getCurrAccId(),
+                    AccountAdapter.currentAccountId,
                     currentPasswordEdit.text,
                     passwordEdit.text)
         if (success) {

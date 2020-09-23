@@ -114,7 +114,7 @@ ListView {
         context: Qt.ApplicationShortcut
         enabled: root.visible
         onActivated: {
-            UtilsAdapter.clearConversationHistory(UtilsAdapter.getCurrAccId(),
+            UtilsAdapter.clearConversationHistory(AccountAdapter.currentAccountId,
                                                   UtilsAdapter.getCurrConvId())
         }
     }
@@ -133,7 +133,7 @@ ListView {
         context: Qt.ApplicationShortcut
         enabled: root.visible
         onActivated: {
-            UtilsAdapter.removeConversation(UtilsAdapter.getCurrAccId(),
+            UtilsAdapter.removeConversation(AccountAdapter.currentAccountId,
                                             UtilsAdapter.getCurrConvId(),
                                             false)
         }

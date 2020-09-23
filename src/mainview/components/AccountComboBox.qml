@@ -27,8 +27,6 @@ import "../../commoncomponents"
 ComboBox {
     id: root
 
-    signal accountChanged(int index)
-    signal newAccountButtonClicked
     signal settingBtnClicked
 
     // Reset accountListModel.
@@ -279,14 +277,6 @@ ComboBox {
             onActivated: comboBoxPopup.visible ?
                 comboBoxPopup.close() :
                 comboBoxPopup.open()
-        }
-
-        onAccountNeedToChange: {
-            root.accountChanged(index)
-        }
-
-        onNewAccountButtonClicked: {
-            root.newAccountButtonClicked()
         }
     }
 

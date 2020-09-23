@@ -33,16 +33,8 @@ Rectangle {
     property int pendingRequestCount: 0
     property int totalUnreadMessagesCount: 0
 
-    property string currentAccountId: AccountAdapter.currentAccountId
-    onCurrentAccountIdChanged: {
-        var index = UtilsAdapter.getCurrAccList().indexOf(currentAccountId)
-        refreshAccountComboBox(index)
-    }
-
     signal conversationSmartListNeedToAccessMessageWebView(string currentUserDisplayName, string currentUserAlias, string currentUID, bool callStackViewShouldShow, bool isAudioOnly, int callState)
     signal needToUpdateConversationForAddedContact
-    signal needToAddNewAccount
-
 
     // Hack -> force redraw.
     function forceReselectConversationSmartListCurrentIndex() {

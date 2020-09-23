@@ -55,7 +55,6 @@ public:
     Q_INVOKABLE const QString getBestName(const QString& accountId, const QString& uid);
     Q_INVOKABLE QString getBestId(const QString& accountId);
     Q_INVOKABLE const QString getBestId(const QString& accountId, const QString& uid);
-    Q_INVOKABLE const QString getCurrAccId();
     Q_INVOKABLE const QString getCurrConvId();
     Q_INVOKABLE void makePermanentCurrentConv();
     Q_INVOKABLE const QStringList getCurrAccList();
