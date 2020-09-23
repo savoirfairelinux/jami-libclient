@@ -27,6 +27,9 @@ import "../../commoncomponents"
 
 BaseDialog {
     id: root
+
+    height: aboutPopUpContentRectColumnLayout.implicitHeight
+
     title: qsTr("About")
 
     ProjectCreditsScrollView {
@@ -42,258 +45,275 @@ BaseDialog {
     }
 
     contentItem: Rectangle {
-        id: aboutPopUpContentRect
+        id: contentRect
 
         implicitWidth: 400
-        implicitHeight: 600
 
-        ColumnLayout {
-            id: aboutPopUpContentRectColumnLayout
-            anchors.centerIn: parent
+        ScrollView {
+            id: aboutPopUpScrollView
+
             anchors.fill: parent
 
-            Image {
-                id: aboutPopUPJamiLogoImage
+            ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
+            ScrollBar.vertical.policy: ScrollBar.AsNeeded
 
-                Layout.alignment: Qt.AlignCenter
-                Layout.topMargin: JamiTheme.preferredMarginSize
-                Layout.preferredWidth: aboutPopUpContentRect.width
-                Layout.preferredHeight: 100
+            clip: true
 
-                fillMode: Image.PreserveAspectFit
-                source: "qrc:/images/logo-jami-standard-coul.png"
-                mipmap: true
-            }
+            ColumnLayout {
+                width: Math.max(root.width, implicitWidth)
+                height: Math.max(aboutPopUpScrollView.height, implicitHeight)
 
-            Label {
-                id: jamiVersionText
+                spacing: 0
 
-                Layout.alignment: Qt.AlignCenter
-                Layout.preferredWidth: aboutPopUpContentRect.width
-                Layout.preferredHeight: textMetricsjamiVersionText.boundingRect.height
+                ColumnLayout {
+                    id: aboutPopUpContentRectColumnLayout
 
-                font.pointSize: JamiTheme.textFontSize
+                    Layout.alignment: Qt.AlignCenter
 
-                horizontalAlignment: Text.AlignHCenter
-                verticalAlignment: Text.AlignVCenter
+                    Image {
+                        id: aboutPopUPJamiLogoImage
 
-                text: textMetricsjamiVersionText.text
+                        Layout.alignment: Qt.AlignCenter
+                        Layout.topMargin: JamiTheme.preferredMarginSize
+                        Layout.preferredWidth: contentRect.width
+                        Layout.preferredHeight: 100
 
-                TextMetrics {
-                    id: textMetricsjamiVersionText
-                    font: jamiVersionText.font
-                    text: JamiStrings.version + ": " + UtilsAdapter.getVersionStr()
-                }
-            }
+                        fillMode: Image.PreserveAspectFit
+                        source: "qrc:/images/logo-jami-standard-coul.png"
+                        mipmap: true
+                    }
 
-            Label {
-                id: jamiSlogansText
+                    Label {
+                        id: jamiVersionText
 
-                Layout.alignment: Qt.AlignCenter
-                Layout.preferredWidth: aboutPopUpContentRect.width
-                Layout.preferredHeight: textMetricsjamiSlogansText.boundingRect.height
-                Layout.topMargin: 5
+                        Layout.alignment: Qt.AlignCenter
+                        Layout.preferredWidth: contentRect.width
+                        Layout.preferredHeight: textMetricsjamiVersionText.boundingRect.height
 
-                wrapMode: Text.WordWrap
-                font.pointSize: JamiTheme.textFontSize
+                        font.pointSize: JamiTheme.textFontSize
 
-                horizontalAlignment: Text.AlignHCenter
-                verticalAlignment: Text.AlignVCenter
+                        horizontalAlignment: Text.AlignHCenter
+                        verticalAlignment: Text.AlignVCenter
 
-                text: textMetricsjamiSlogansText.text
+                        text: textMetricsjamiVersionText.text
 
-                TextMetrics {
-                    id: textMetricsjamiSlogansText
-                    font: jamiSlogansText.font
-                    text: JamiStrings.slogan
-                }
-            }
+                        TextMetrics {
+                            id: textMetricsjamiVersionText
+                            font: jamiVersionText.font
+                            text: JamiStrings.version + ": " + UtilsAdapter.getVersionStr()
+                        }
+                    }
 
-            Label {
-                id: jamiDeclarationText
+                    Label {
+                        id: jamiSlogansText
 
-                Layout.alignment: Qt.AlignCenter
-                Layout.preferredWidth: aboutPopUpContentRect.width
-                Layout.preferredHeight: 40
-                Layout.topMargin: 5
+                        Layout.alignment: Qt.AlignCenter
+                        Layout.preferredWidth: contentRect.width
+                        Layout.preferredHeight: textMetricsjamiSlogansText.boundingRect.height
+                        Layout.topMargin: 5
 
-                wrapMode: Text.WordWrap
-                font.pointSize: JamiTheme.textFontSize
+                        wrapMode: Text.WordWrap
+                        font.pointSize: JamiTheme.textFontSize
 
-                horizontalAlignment: Text.AlignHCenter
-                verticalAlignment: Text.AlignVCenter
+                        horizontalAlignment: Text.AlignHCenter
+                        verticalAlignment: Text.AlignVCenter
+
+                        text: textMetricsjamiSlogansText.text
+
+                        TextMetrics {
+                            id: textMetricsjamiSlogansText
+                            font: jamiSlogansText.font
+                            text: JamiStrings.slogan
+                        }
+                    }
+
+                    Label {
+                        id: jamiDeclarationText
+
+                        Layout.alignment: Qt.AlignCenter
+                        Layout.preferredWidth: contentRect.width
+                        Layout.preferredHeight: 40
+                        Layout.topMargin: 5
+
+                        wrapMode: Text.WordWrap
+                        font.pointSize: JamiTheme.textFontSize
+
+                        horizontalAlignment: Text.AlignHCenter
+                        verticalAlignment: Text.AlignVCenter
 
 
-                // TextMetrics does not work for multi-line.
-                text: JamiStrings.declaration
-            }
+                        // TextMetrics does not work for multi-line.
+                        text: JamiStrings.declaration
+                    }
 
-            Label {
-                id: jamiDeclarationHyperText
+                    Label {
+                        id: jamiDeclarationHyperText
 
-                Layout.alignment: Qt.AlignCenter
+                        Layout.alignment: Qt.AlignCenter
 
-                // Strangely, hoveredLink works badly when width grows too large
-                Layout.preferredWidth: 50
-                Layout.preferredHeight: textMetricsjamiDeclarationHyperText.boundingRect.height
-                Layout.topMargin: 5
-                Layout.bottomMargin: 5
+                        // Strangely, hoveredLink works badly when width grows too large
+                        Layout.preferredWidth: 50
+                        Layout.preferredHeight: textMetricsjamiDeclarationHyperText.boundingRect.height
+                        Layout.topMargin: 5
+                        Layout.bottomMargin: 5
 
-                font.pointSize: JamiTheme.textFontSize
-                horizontalAlignment: Text.AlignHCenter
-                verticalAlignment: Text.AlignVCenter
+                        font.pointSize: JamiTheme.textFontSize
+                        horizontalAlignment: Text.AlignHCenter
+                        verticalAlignment: Text.AlignVCenter
 
-                text: textMetricsjamiDeclarationHyperText.text
-                onLinkActivated: Qt.openUrlExternally(link)
+                        text: textMetricsjamiDeclarationHyperText.text
+                        onLinkActivated: Qt.openUrlExternally(link)
 
-                TextMetrics {
-                    id: textMetricsjamiDeclarationHyperText
-                    font: jamiDeclarationHyperText.font
-                    text: '<html><style type="text/css"></style><a href="https://jami.net">jami.net</a></html>'
-                }
+                        TextMetrics {
+                            id: textMetricsjamiDeclarationHyperText
+                            font: jamiDeclarationHyperText.font
+                            text: '<html><style type="text/css"></style><a href="https://jami.net">jami.net</a></html>'
+                        }
 
-                MouseArea {
-                    anchors.fill: parent
+                        MouseArea {
+                            anchors.fill: parent
 
-                    // We don't want to eat clicks on the Text.
-                    acceptedButtons: Qt.NoButton
-                    cursorShape: parent.hoveredLink ? Qt.PointingHandCursor : Qt.ArrowCursor
-                }
-            }
+                            // We don't want to eat clicks on the Text.
+                            acceptedButtons: Qt.NoButton
+                            cursorShape: parent.hoveredLink ? Qt.PointingHandCursor : Qt.ArrowCursor
+                        }
+                    }
 
-            Label {
-                id: jamiDeclarationYearText
+                    Label {
+                        id: jamiDeclarationYearText
 
-                Layout.alignment: Qt.AlignCenter
-                Layout.preferredWidth: aboutPopUpContentRect.width
-                Layout.preferredHeight: textMetricsjamiDeclarationYearText.boundingRect.height
-                Layout.bottomMargin: 5
+                        Layout.alignment: Qt.AlignCenter
+                        Layout.preferredWidth: contentRect.width
+                        Layout.preferredHeight: textMetricsjamiDeclarationYearText.boundingRect.height
+                        Layout.bottomMargin: 5
 
-                font.pointSize: JamiTheme.textFontSize
+                        font.pointSize: JamiTheme.textFontSize
 
-                horizontalAlignment: Text.AlignHCenter
-                verticalAlignment: Text.AlignVCenter
+                        horizontalAlignment: Text.AlignHCenter
+                        verticalAlignment: Text.AlignVCenter
 
-                text: textMetricsjamiDeclarationYearText.text
+                        text: textMetricsjamiDeclarationYearText.text
 
-                TextMetrics {
-                    id: textMetricsjamiDeclarationYearText
-                    font: jamiDeclarationYearText.font
-                    text: "© 2015-2020 Savoir-faire Linux"
-                }
-            }
+                        TextMetrics {
+                            id: textMetricsjamiDeclarationYearText
+                            font: jamiDeclarationYearText.font
+                            text: JamiStrings.companyDeclarationYear
+                        }
+                    }
 
-            Label {
-                id: jamiNoneWarrantyHyperText
+                    Label {
+                        id: jamiNoneWarrantyHyperText
 
-                Layout.alignment: Qt.AlignCenter
-                Layout.preferredWidth: Math.min(300, aboutPopUpContentRect.width)
-                Layout.preferredHeight: textMetricsjamiNoneWarrantyHyperText.boundingRect.height * 2
-                Layout.bottomMargin: 10
+                        Layout.alignment: Qt.AlignCenter
+                        Layout.preferredWidth: 300
+                        Layout.preferredHeight: textMetricsjamiNoneWarrantyHyperText.boundingRect.height * 2
+                        Layout.bottomMargin: 10
 
-                wrapMode: Text.WordWrap
-                font.pointSize: JamiTheme.tinyFontSize
+                        wrapMode: Text.WordWrap
+                        font.pointSize: JamiTheme.tinyFontSize
 
-                horizontalAlignment: Text.AlignHCenter
-                verticalAlignment: Text.AlignVCenter
+                        horizontalAlignment: Text.AlignHCenter
+                        verticalAlignment: Text.AlignVCenter
 
-                text: textMetricsjamiNoneWarrantyHyperText.text
-                onLinkActivated: Qt.openUrlExternally(link)
+                        text: textMetricsjamiNoneWarrantyHyperText.text
+                        onLinkActivated: Qt.openUrlExternally(link)
 
-                TextMetrics {
-                    id: textMetricsjamiNoneWarrantyHyperText
-                    font: jamiDeclarationHyperText.font
-                    text: '<html><style type="text/css"></style>This program comes with absolutely no warranty.<br\>See the <a href="http://www.gnu.org/licenses/gpl-3.0.html">GNU General Public License, version 3 or later</a> for details.</html>'
-                }
+                        TextMetrics {
+                            id: textMetricsjamiNoneWarrantyHyperText
+                            font: jamiDeclarationHyperText.font
+                            text: '<html><style type="text/css"></style>This program comes with absolutely no warranty.<br\>See the <a href="http://www.gnu.org/licenses/gpl-3.0.html">GNU General Public License, version 3 or later</a> for details.</html>'
+                        }
 
-                MouseArea {
-                    anchors.fill: parent
-                    acceptedButtons: Qt.NoButton
-                    cursorShape: parent.hoveredLink ? Qt.PointingHandCursor : Qt.ArrowCursor
-                }
-            }
+                        MouseArea {
+                            anchors.fill: parent
+                            acceptedButtons: Qt.NoButton
+                            cursorShape: parent.hoveredLink ? Qt.PointingHandCursor : Qt.ArrowCursor
+                        }
+                    }
 
-            Rectangle {
-                id: buttonGroupChangeLogAndCredits
+                    Rectangle {
+                        id: buttonGroupChangeLogAndCredits
 
-                Layout.alignment: Qt.AlignCenter
-                Layout.preferredWidth: aboutPopUpContentRect.width
-                Layout.preferredHeight: 32
+                        Layout.alignment: Qt.AlignCenter
+                        Layout.preferredWidth: contentRect.width
+                        Layout.preferredHeight: 32
 
-                RowLayout {
-                    id: buttonGroupChangeLogAndCreditsRowLayout
+                        RowLayout {
+                            id: buttonGroupChangeLogAndCreditsRowLayout
 
-                    anchors.fill: parent
+                            anchors.fill: parent
 
-                    MaterialButton {
-                        id: changeLogButton
-                        text: JamiStrings.changelog
-                        color: projectCreditsScrollView.visible? JamiTheme.buttonTintedGreyInactive :
-                                                                 JamiTheme.buttonTintedGrey
-                        hoveredColor: JamiTheme.buttonTintedGreyHovered
-                        pressedColor: JamiTheme.buttonTintedGreyPressed
+                            MaterialButton {
+                                id: changeLogButton
+                                text: JamiStrings.changelog
+                                color: projectCreditsScrollView.visible? JamiTheme.buttonTintedGreyInactive :
+                                                                         JamiTheme.buttonTintedGrey
+                                hoveredColor: JamiTheme.buttonTintedGreyHovered
+                                pressedColor: JamiTheme.buttonTintedGreyPressed
 
-                        Layout.alignment: Qt.AlignHCenter
-                        Layout.preferredWidth: JamiTheme.preferredFieldWidth / 2
-                        Layout.preferredHeight: JamiTheme.preferredFieldHeight
+                                Layout.alignment: Qt.AlignHCenter
+                                Layout.preferredWidth: JamiTheme.preferredFieldWidth / 2
+                                Layout.preferredHeight: JamiTheme.preferredFieldHeight
 
-                        onClicked: {
-                            if (changeLogOrCreditsStack.depth > 1) {
-                                changeLogOrCreditsStack.pop()
+                                onClicked: {
+                                    if (changeLogOrCreditsStack.depth > 1) {
+                                        changeLogOrCreditsStack.pop()
+                                    }
+                                }
+                            }
+
+                            MaterialButton {
+                                id: creditsButton
+                                text: JamiStrings.credits
+                                color: projectCreditsScrollView.visible? JamiTheme.buttonTintedGrey :
+                                                                         JamiTheme.buttonTintedGreyInactive
+                                hoveredColor: JamiTheme.buttonTintedGreyHovered
+                                pressedColor: JamiTheme.buttonTintedGreyPressed
+                                Layout.alignment: Qt.AlignHCenter
+                                Layout.preferredWidth: JamiTheme.preferredFieldWidth / 2
+                                Layout.preferredHeight: JamiTheme.preferredFieldHeight
+
+                                onClicked: {
+                                    if (changeLogOrCreditsStack.depth == 1) {
+                                        changeLogOrCreditsStack.push(
+                                                    projectCreditsScrollView)
+                                    }
+                                }
                             }
                         }
                     }
 
+                    StackView {
+                        id: changeLogOrCreditsStack
+
+                        Layout.alignment: Qt.AlignCenter
+                        Layout.preferredWidth: contentRect.width - JamiTheme.preferredMarginSize * 2
+                        Layout.preferredHeight: 150
+                        Layout.margins: JamiTheme.preferredMarginSize
+
+                        initialItem: changeLogScrollView
+
+                        clip: true
+                    }
+
                     MaterialButton {
-                        id: creditsButton
-                        text: JamiStrings.credits
-                        color: projectCreditsScrollView.visible? JamiTheme.buttonTintedGrey :
-                                                                 JamiTheme.buttonTintedGreyInactive
-                        hoveredColor: JamiTheme.buttonTintedGreyHovered
-                        pressedColor: JamiTheme.buttonTintedGreyPressed
+                        id: btnClose
+
                         Layout.alignment: Qt.AlignHCenter
                         Layout.preferredWidth: JamiTheme.preferredFieldWidth / 2
                         Layout.preferredHeight: JamiTheme.preferredFieldHeight
+                        Layout.bottomMargin: JamiTheme.preferredMarginSize
+
+                        text: qsTr("Close")
+                        color: enabled? JamiTheme.buttonTintedBlack : JamiTheme.buttonTintedGrey
+                        hoveredColor: JamiTheme.buttonTintedBlackHovered
+                        pressedColor: JamiTheme.buttonTintedBlackPressed
+                        outlined: true
 
                         onClicked: {
-                            if (changeLogOrCreditsStack.depth == 1) {
-                                changeLogOrCreditsStack.push(
-                                            projectCreditsScrollView)
-                            }
+                            close()
                         }
                     }
-                }
-            }
-
-            StackView {
-                id: changeLogOrCreditsStack
-
-                Layout.alignment: Qt.AlignCenter
-                Layout.preferredWidth: aboutPopUpContentRect.width - JamiTheme.preferredMarginSize*2
-                Layout.preferredHeight: aboutPopUpContentRect.height - 460
-                Layout.margins: JamiTheme.preferredMarginSize
-
-                initialItem: changeLogScrollView
-
-                clip: true
-            }
-
-            MaterialButton {
-                id: btnClose
-
-                Layout.alignment: Qt.AlignHCenter
-                Layout.preferredWidth: JamiTheme.preferredFieldWidth / 2
-                Layout.preferredHeight: JamiTheme.preferredFieldHeight
-                Layout.bottomMargin: JamiTheme.preferredMarginSize
-
-                text: qsTr("Close")
-                color: enabled? JamiTheme.buttonTintedBlack : JamiTheme.buttonTintedGrey
-                hoveredColor: JamiTheme.buttonTintedBlackHovered
-                pressedColor: JamiTheme.buttonTintedBlackPressed
-                outlined: true
-
-                onClicked: {
-                    close()
                 }
             }
         }
