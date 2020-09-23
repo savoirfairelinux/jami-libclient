@@ -231,5 +231,15 @@ Rectangle {
         }
     }
 
+    MouseArea {
+        anchors.fill: parent
+
+        acceptedButtons: Qt.RightButton
+
+        onClicked: {
+            audioCallOverlay.openCallViewContextMenuInPos(mouse.x, mouse.y)
+        }
+    }
+
     color: "black"
 }

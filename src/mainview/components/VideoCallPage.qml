@@ -87,8 +87,6 @@ Rectangle {
     }
 
     function previewMagneticSnap() {
-
-
         // Calculate the position where the previewRenderer should attach to.
         var previewRendererCenter = Qt.point(
                     previewRenderer.x + previewRenderer.width / 2,
@@ -99,8 +97,6 @@ Rectangle {
 
         if (previewRendererCenter.x >= distantRendererCenter.x) {
             if (previewRendererCenter.y >= distantRendererCenter.y) {
-
-
                 // Bottom right.
                 previewToX = Qt.binding(function () {
                     return videoCallPageMainRect.width - previewRenderer.width - previewMargin
@@ -109,8 +105,6 @@ Rectangle {
                     return videoCallPageMainRect.height - previewRenderer.height - previewMarginY
                 })
             } else {
-
-
                 // Top right.
                 previewToX = Qt.binding(function () {
                     return videoCallPageMainRect.width - previewRenderer.width - previewMargin
@@ -119,16 +113,12 @@ Rectangle {
             }
         } else {
             if (previewRendererCenter.y >= distantRendererCenter.y) {
-
-
                 // Bottom left.
                 previewToX = previewMargin
                 previewToY = Qt.binding(function () {
                     return videoCallPageMainRect.height - previewRenderer.height - previewMarginY
                 })
             } else {
-
-
                 // Top left.
                 previewToX = previewMargin
                 previewToY = previewMarginY
@@ -151,7 +141,6 @@ Rectangle {
             implicitHeight: JamiTheme.splitViewHandlePreferredWidth
             color: SplitHandle.pressed ? JamiTheme.pressColor : (SplitHandle.hovered ? JamiTheme.hoverColor : JamiTheme.tabbarBorderColor)
         }
-
 
         Rectangle {
             id: videoCallPageMainRect
@@ -236,7 +225,6 @@ Rectangle {
                 VideoCallPreviewRenderer {
                     id: previewRenderer
 
-
                     // Property is used in the {} expression for height (extra dependency),
                     // it will not affect the true height expression, since expression
                     // at last will be taken only, but it will force the height to update
@@ -298,8 +286,6 @@ Rectangle {
                         }
 
                         onPositionChanged: {
-
-
                             // Calculate mouse position relative change.
                             var delta = Qt.point(mouse.x - clickPos.x,
                                                 mouse.y - clickPos.y)
@@ -327,7 +313,6 @@ Rectangle {
             color: "transparent"
         }
 
-
         StackView {
             id: inVideoCallMessageWebViewStack
 
@@ -337,6 +322,16 @@ Rectangle {
             visible: false
 
             clip: true
+        }
+    }
+
+    MouseArea {
+        anchors.fill: parent
+
+        acceptedButtons: Qt.RightButton
+
+        onClicked: {
+            videoCallOverlay.openCallViewContextMenuInPos(mouse.x, mouse.y)
         }
     }
 
