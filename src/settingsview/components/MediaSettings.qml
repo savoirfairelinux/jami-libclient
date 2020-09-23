@@ -41,11 +41,14 @@ ColumnLayout {
 
     function decreaseCodecPriority() {
         var index = mediaListWidget.currentIndex
-        var codecId = mediaListWidget.model.data(mediaListWidget.model.index(index,0), MediaCodecListModel.MediaCodecID)
+        if (index >= mediaListWidget.model.rowCount() - 1)
+            return
+        var codecId = mediaListWidget.model.data(mediaListWidget.model.index(index,0),
+                                                 MediaCodecListModel.MediaCodecID)
 
-        if (mediaType == MediaSettings.VIDEO)
+        if (mediaType === MediaSettings.VIDEO)
             SettingsAdapter.decreaseVideoCodecPriority(codecId)
-        else if (mediaType == MediaSettings.AUDIO)
+        else if (mediaType === MediaSettings.AUDIO)
             SettingsAdapter.decreaseAudioCodecPriority(codecId)
         mediaListWidget.currentIndex = index + 1
         updateCodecs()
@@ -54,17 +57,21 @@ ColumnLayout {
     function updateCodecs() {
         mediaListWidget.model.layoutAboutToBeChanged()
         mediaListWidget.model.dataChanged(mediaListWidget.model.index(0, 0),
-                                     mediaListWidget.model.index(mediaListWidget.model.rowCount() - 1, 0))
+                                          mediaListWidget.model.index(
+                                              mediaListWidget.model.rowCount() - 1, 0))
         mediaListWidget.model.layoutChanged()
     }
 
     function increaseCodecPriority(){
         var index = mediaListWidget.currentIndex
-        var codecId = mediaListWidget.model.data(mediaListWidget.model.index(index,0), MediaCodecListModel.MediaCodecID)
+        if (index === 0)
+            return
+        var codecId = mediaListWidget.model.data(mediaListWidget.model.index(index,0),
+                                                 MediaCodecListModel.MediaCodecID)
 
-        if (mediaType == MediaSettings.VIDEO)
+        if (mediaType === MediaSettings.VIDEO)
             SettingsAdapter.increaseVideoCodecPriority(codecId)
-        else if (mediaType == MediaSettings.AUDIO)
+        else if (mediaType === MediaSettings.AUDIO)
             SettingsAdapter.increaseAudioCodecPriority(codecId)
         mediaListWidget.currentIndex = index - 1
         updateCodecs()
@@ -81,9 +88,9 @@ ColumnLayout {
 
             maxWidth: width
             eText:  {
-                if (mediaType == MediaSettings.VIDEO)
+                if (mediaType === MediaSettings.VIDEO)
                     return "Video Codecs"
-                else if (mediaType == MediaSettings.AUDIO)
+                else if (mediaType === MediaSettings.AUDIO)
                     return "Audio Codecs"
             }
             fontSize: JamiTheme.settingsFontSize
@@ -147,10 +154,10 @@ ColumnLayout {
             }
 
             onMediaCodecStateChange: {
-                if (mediaType == MediaSettings.VIDEO)
-                    SettingsAdapter.videoCodecsStateChange(idToSet , isToBeEnabled)
-                if (mediaType == MediaSettings.AUDIO)
-                    SettingsAdapter.audioCodecsStateChange(idToSet , isToBeEnabled)
+                if (mediaType === MediaSettings.VIDEO)
+                    SettingsAdapter.videoCodecsStateChange(idToSet, isToBeEnabled)
+                if (mediaType === MediaSettings.AUDIO)
+                    SettingsAdapter.audioCodecsStateChange(idToSet, isToBeEnabled)
                 updateCodecs()
             }
         }
