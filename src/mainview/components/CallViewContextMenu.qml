@@ -22,6 +22,7 @@ import QtQuick 2.14
 import QtQuick.Controls 2.14
 import QtGraphicalEffects 1.12
 import net.jami.Models 1.0
+import net.jami.Adapters 1.0
 
 import "../../commoncomponents"
 
@@ -115,11 +116,13 @@ Item {
                                              })
         }
 
-        ContextMenuGenerator.addMenuItem(JamiStrings.viewPlugin,
-                                         "qrc:/images/icons/extension_24dp.svg",
-                                         function (){
-                                              root.pluginItemClicked()
-                                         })
+        if (UtilsAdapter.checkShowPluginsButton()) {
+            ContextMenuGenerator.addMenuItem(JamiStrings.viewPlugin,
+                                             "qrc:/images/icons/extension_24dp.svg",
+                                             function (){
+                                                  root.pluginItemClicked()
+                                             })
+        }
 
         root.height = ContextMenuGenerator.getMenu().height
         root.width = ContextMenuGenerator.getMenu().width
