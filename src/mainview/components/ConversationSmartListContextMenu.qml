@@ -33,43 +33,57 @@ Item {
     property string responsibleConvUid: ""
     property int contactType: Profile.Type.INVALID
 
-    function openMenu(){
-        ContextMenuGenerator.addMenuItem(qsTr("Start video call"),
-                                         "qrc:/images/icons/ic_video_call_24px.svg",
-                                         function (){
-                                             ConversationsAdapter.selectConversation(
-                                                         responsibleAccountId,
-                                                         responsibleConvUid, false)
-                                             CallAdapter.placeCall()
-                                         })
-        ContextMenuGenerator.addMenuItem(qsTr("Start audio call"),
-                                         "qrc:/images/icons/ic_phone_24px.svg",
-                                         function (){
-                                             ConversationsAdapter.selectConversation(
-                                                         responsibleAccountId,
-                                                         responsibleConvUid, false)
-                                             CallAdapter.placeAudioOnlyCall()
-                                         })
-        ContextMenuGenerator.addMenuItem(qsTr("Clear conversation"),
-                                         "qrc:/images/icons/ic_clear_24px.svg",
-                                         function (){
-                                             UtilsAdapter.clearConversationHistory(
-                                                         responsibleAccountId,
-                                                         responsibleConvUid)
-                                         })
-
-        if (contactType === Profile.Type.RING || contactType === Profile.Type.SIP) {
-            ContextMenuGenerator.addMenuItem(qsTr("Remove contact"),
-                                             "qrc:/images/icons/round-remove_circle-24px.svg",
+    function openMenu() {
+        var hasCall = UtilsAdapter.getCallId(responsibleAccountId, responsibleConvUid) !== ""
+        if (!hasCall) {
+            ContextMenuGenerator.addMenuItem(qsTr("Start video call"),
+                                             "qrc:/images/icons/videocam-24px.svg",
                                              function (){
-                                                 UtilsAdapter.removeConversation(
+                                                 ConversationsAdapter.selectConversation(
+                                                             responsibleAccountId,
+                                                             responsibleConvUid, false)
+                                                 CallAdapter.placeCall()
+                                             })
+            ContextMenuGenerator.addMenuItem(qsTr("Start audio call"),
+                                             "qrc:/images/icons/ic_phone_24px.svg",
+                                             function (){
+                                                 ConversationsAdapter.selectConversation(
+                                                             responsibleAccountId,
+                                                             responsibleConvUid, false)
+                                                 CallAdapter.placeAudioOnlyCall()
+                                             })
+
+            ContextMenuGenerator.addMenuItem(qsTr("Clear conversation"),
+                                             "qrc:/images/icons/ic_clear_24px.svg",
+                                             function (){
+                                                 UtilsAdapter.clearConversationHistory(
                                                              responsibleAccountId,
                                                              responsibleConvUid)
                                              })
+
+            if (contactType === Profile.Type.RING || contactType === Profile.Type.SIP)  {
+                ContextMenuGenerator.addMenuItem(qsTr("Remove contact"),
+                                                 "qrc:/images/icons/round-remove_circle-24px.svg",
+                                                 function (){
+                                                     UtilsAdapter.removeConversation(
+                                                                 responsibleAccountId,
+                                                                 responsibleConvUid)
+                                                 })
+            }
+
+        } else {
+            ContextMenuGenerator.addMenuItem(qsTr("Hang up call"),
+                                             "qrc:/images/icons/ic_call_end_white_24px.svg",
+                                             function (){
+                                                 CallAdapter.hangUpACall(responsibleAccountId,
+                                                                         responsibleConvUid)
+                                             })
         }
 
-        if (contactType === Profile.Type.RING || contactType === Profile.Type.PENDING) {
-            ContextMenuGenerator.addMenuSeparator()
+        if ((contactType === Profile.Type.RING || contactType === Profile.Type.PENDING)) {
+            if (contactType === Profile.Type.PENDING || !hasCall) {
+                ContextMenuGenerator.addMenuSeparator()
+            }
 
             if (contactType === Profile.Type.PENDING) {
                 ContextMenuGenerator.addMenuItem(JamiStrings.acceptContactRequest,
@@ -85,13 +99,14 @@ Item {
                                                                  responsibleConvUid)
                                                  })
             }
-            ContextMenuGenerator.addMenuItem(qsTr("Block contact"),
-                                             "qrc:/images/icons/ic_block_24px.svg",
-                                             function (){
-                                                 MessagesAdapter.blockConversation(
-                                                             responsibleConvUid)
-                                             })
-
+            if (!hasCall) {
+                ContextMenuGenerator.addMenuItem(qsTr("Block contact"),
+                                                 "qrc:/images/icons/ic_block_24px.svg",
+                                                 function (){
+                                                     MessagesAdapter.blockConversation(
+                                                                 responsibleConvUid)
+                                                 })
+            }
             ContextMenuGenerator.addMenuSeparator()
             ContextMenuGenerator.addMenuItem(qsTr("Profile"),
                                              "qrc:/images/icons/person-24px.svg",

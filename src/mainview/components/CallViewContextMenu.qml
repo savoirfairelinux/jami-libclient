@@ -67,7 +67,7 @@ Item {
         if (!isAudioOnly && !isPaused) {
             ContextMenuGenerator.addMenuItem(isRecording ? JamiStrings.stopRec :
                                                            JamiStrings.startRec,
-                                             "qrc:/images/icons/ic_video_call_24px.svg",
+                                             "qrc:/images/icons/keyboard_voice-24px.svg",
                                              function (){
                                                   CallAdapter.recordThisCallToggle()
                                              })

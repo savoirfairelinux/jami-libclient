@@ -165,7 +165,7 @@ Rectangle {
                 width: buttonPreferredSize
 
                 radius: 30
-                source: "qrc:/images/icons/ic_video_call_24px.svg"
+                source: "qrc:/images/icons/videocam-24px.svg"
                 backgroundColor: "white"
                 onExitColor: "white"
 
