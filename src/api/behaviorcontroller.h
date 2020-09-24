@@ -70,7 +70,7 @@ Q_SIGNALS:
     /**
      * Emitted when the client should open the incoming call view.
      */
-    void showIncomingCallView(const QString& accountId, const api::conversation::Info& conversationInfo) const;
+    void showIncomingCallView(const QString& accountId, const QString& convUid) const;
     /**
      * Emitted when the client receives a new trust request
      */

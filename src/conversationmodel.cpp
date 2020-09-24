@@ -633,7 +633,7 @@ ConversationModel::selectConversation(const QString& uid) const
                 case call::Status::CONNECTING:
                 case call::Status::SEARCHING:
                     // We are currently in a call
-                    emit pimpl_->behaviorController.showIncomingCallView(owner.id, conversation);
+                    emit pimpl_->behaviorController.showIncomingCallView(owner.id, conversation.uid);
                     break;
                 case call::Status::PAUSED:
                 case call::Status::CONNECTED:
@@ -774,7 +774,7 @@ ConversationModelPimpl::placeCall(const QString& uid, bool isAudioOnly)
             }
 
             dirtyConversations = { true, true };
-            emit behaviorController.showIncomingCallView(linked.owner.id, newConv);
+            emit behaviorController.showIncomingCallView(linked.owner.id, newConv.uid);
         });
 
         if (isTemporary) {
@@ -1750,7 +1750,7 @@ ConversationModelPimpl::slotIncomingCall(const QString& fromId, const QString& c
     qDebug() << "Add call to conversation with " << fromId;
     conversation.callId = callId;
     dirtyConversations = {true, true};
-    emit behaviorController.showIncomingCallView(linked.owner.id, conversation);
+    emit behaviorController.showIncomingCallView(linked.owner.id, conversation.uid);
 }
 
 void
