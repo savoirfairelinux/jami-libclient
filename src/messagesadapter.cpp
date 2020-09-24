@@ -56,6 +56,10 @@ MessagesAdapter::setupChatView(const QString& uid)
     if (convModel == nullptr) {
         return;
     }
+
+    if (currentConvUid_ == uid)
+        return;
+
     const auto& convInfo = convModel->getConversationForUID(uid);
     if (convInfo.uid.isEmpty() || convInfo.participants.isEmpty()) {
         return;
@@ -105,6 +109,8 @@ MessagesAdapter::setupChatView(const QString& uid)
                           SLOT(slotSendMessageContentSaved(const QString&)));
 
     requestSendMessageContent();
+
+    currentConvUid_ = uid;
 }
 
 void

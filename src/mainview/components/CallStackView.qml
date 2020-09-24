@@ -107,7 +107,7 @@ Rectangle {
         incomingCallPage.updateUI(accountId, convUid)
     }
 
-    function showVideoCallPage(callId) {
+    function showVideoCallPage() {
         var itemToFind = callStackMainView.find(function (item) {
             return item.stackNumber === 2
         })
@@ -118,6 +118,8 @@ Rectangle {
             callStackMainView.pop(itemToFind, StackView.Immediate)
         }
         videoCallPage.updateUI(responsibleAccountId, responsibleConvUid)
+        var callId = UtilsAdapter.getCallId(responsibleAccountId,
+                                            responsibleConvUid)
         videoCallPage.setDistantRendererId(callId)
     }
 
@@ -137,33 +139,6 @@ Rectangle {
 
     Connections {
         target: CallAdapter
-
-        function onShowOutgoingCallPage(accountId, convUid) {
-
-            // Need to check whether it is the current selected conversation.
-            if (responsibleConvUid === convUid
-                    && responsibleAccountId === accountId) {
-                showOutgoingCallPage()
-            }
-        }
-
-        function onShowIncomingCallPage(accountId, convUid) {
-            showIncomingCallPage(accountId, convUid)
-        }
-
-        function onShowAudioCallPage(accountId, convUid) {
-            if (responsibleConvUid === convUid
-                    && responsibleAccountId === accountId) {
-                showAudioCallPage()
-            }
-        }
-
-        function onShowVideoCallPage(accountId, convUid, callId) {
-            if (responsibleConvUid === convUid
-                    && responsibleAccountId === accountId) {
-                showVideoCallPage(callId)
-            }
-        }
 
         function onCallStatusChanged(status, accountId, convUid) {
             if (responsibleConvUid === convUid && responsibleAccountId === accountId) {

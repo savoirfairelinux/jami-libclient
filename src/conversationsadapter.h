@@ -38,17 +38,14 @@ protected:
 public:
     Q_INVOKABLE bool connectConversationModel(bool updateFilter = true);
     Q_INVOKABLE void disconnectConversationModel();
-    Q_INVOKABLE void selectConversation(const QString& accountId,
-                                        const QString& convUid,
-                                        bool preventSendingSignal = true);
-    Q_INVOKABLE void selectConversation(const QString& uid);
+    Q_INVOKABLE void selectConversation(const QString& accountId, const QString& uid);
     Q_INVOKABLE void deselectConversation();
     Q_INVOKABLE void refill();
     Q_INVOKABLE void updateConversationsFilterWidget();
     Q_INVOKABLE void setConversationFilter(const QString& type);
 
 signals:
-    void showChatView(const QString& accountId, const QString& convUid);
+    void showConversation(const QString& accountId, const QString& convUid);
     void showConversationTabs(bool visible);
     void showSearchStatus(const QString& status);
 
@@ -67,8 +64,6 @@ private slots:
 private:
     void setConversationFilter(lrc::api::profile::Type filter);
     void backToWelcomePage();
-    bool selectConversation(const lrc::api::conversation::Info& item,
-                            bool preventSendingSignal = true);
     void updateConversationForNewContact(const QString& convUid);
 
     SmartListModel* conversationSmartListModel_;

@@ -103,6 +103,7 @@ private:
                         const interaction::Info& interaction);
 
     QString LastConvUid_;
+    QString currentConvUid_;
 
     /*
      * Interaction connections.

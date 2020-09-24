@@ -67,21 +67,12 @@ public:
     Q_INVOKABLE QVariantList getConferencesInfos();
 
 signals:
-    void showOutgoingCallPage(const QString& accountId, const QString& convUid);
-    void showIncomingCallPage(const QString& accountId, const QString& convUid);
-    void showAudioCallPage(const QString& accountId, const QString& convUid);
-    void showVideoCallPage(const QString& accountId, const QString& convUid, const QString& callId);
-    void showCallStack(const QString& accountId, const QString& convUid, bool forceReset = false);
-    void closeCallStack(const QString& accountId, const QString& convUid);
     void callStatusChanged(int index, const QString& accountId, const QString& convUid);
     void updateConversationSmartList();
     void updateParticipantsInfos(const QVariantList& infos,
                                  const QString& accountId,
                                  const QString& callId);
-
-    void incomingCallNeedToSetupMainView(const QString& accountId,
-                                         const QString& convUid,
-                                         bool fromNotification = false);
+    void callSetupMainViewRequired(const QString& accountId, const QString& convUid);
     void previewVisibilityNeedToChange(bool visible);
 
     /*

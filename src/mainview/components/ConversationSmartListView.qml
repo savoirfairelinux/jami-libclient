@@ -26,11 +26,7 @@ import net.jami.Adapters 1.0
 ListView {
     id: root
 
-    signal needToAccessMessageWebView(string currentUserDisplayName, string currentUserAlias, string currentUID, bool callStackViewShouldShow, bool isAudioOnly, int callState)
-    signal needToSelectItems(string conversationUid)
     signal needToDeselectItems
-
-    signal needToShowChatView(string accountId, string convUid)
     signal forceUpdatePotentialInvalidItem
 
     // Refresh all items within the model.

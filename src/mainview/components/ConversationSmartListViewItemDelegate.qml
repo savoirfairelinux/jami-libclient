@@ -54,16 +54,19 @@ ItemDelegate {
                     return InCall ? Qt.lighter(JamiTheme.selectionBlue,
                                                1.8) : JamiTheme.releaseColor
                 })
-                conversationSmartListView.needToSelectItems(UID)
+                ConversationsAdapter.selectConversation(
+                            AccountAdapter.currentAccountId, UID)
             }
         }
+    }
 
-        function onNeedToShowChatView(accountId, convUid) {
+    Connections {
+        target: ConversationsAdapter
+
+        function onShowConversation(accountId, convUid) {
             if (convUid === UID) {
-                conversationSmartListView.needToAccessMessageWebView(
-                            DisplayID == DisplayName ? "" : DisplayID,
-                            DisplayName, UID, CallStackViewShouldShow,
-                            IsAudioOnly, CallState)
+                mainViewWindow.setMainView(DisplayID == DisplayName ? "" : DisplayID,
+                            DisplayName, UID, CallStackViewShouldShow, IsAudioOnly, CallState)
             }
         }
     }
