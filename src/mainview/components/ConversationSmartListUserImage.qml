@@ -38,7 +38,7 @@ Image {
         anchors.bottom: userImage.bottom
         anchors.bottomMargin: -2
 
-        visible: Presence
+        visible: Presence === undefined ? false : Presence
     }
 
     Rectangle {

@@ -99,7 +99,7 @@ ItemDelegate {
                 elide: Text.ElideRight
                 elideWidth: LastInteractionDate ? (smartListItemDelegate.width - lastInteractionPreferredWidth - conversationSmartListUserImage.width-32) :
                                                   smartListItemDelegate.width - lastInteractionPreferredWidth
-                text: DisplayName
+                text: DisplayName === undefined ? "" : DisplayName
             }
             text: textMetricsConversationSmartListUserName.elidedText
             font.pointSize: JamiTheme.menuFontSize
@@ -113,7 +113,7 @@ ItemDelegate {
                 font: conversationSmartListUserLastInteractionDate.font
                 elide: Text.ElideRight
                 elideWidth: lastInteractionPreferredWidth
-                text: LastInteractionDate
+                text: LastInteractionDate === undefined ? "" : LastInteractionDate
             }
 
             text: textMetricsConversationSmartListUserLastInteractionDate.elidedText

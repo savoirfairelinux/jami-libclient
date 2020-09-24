@@ -34,9 +34,7 @@ SmartListModel::SmartListModel(QObject* parent,
                                SmartListModel::Type listModelType,
                                const QString& convUid)
     : QAbstractListModel(parent)
-    , accountId_(accId)
     , listModelType_(listModelType)
-    , convUid_(convUid)
 {
     if (listModelType_ == Type::CONFERENCE) {
         setConferenceableFilter();
@@ -49,7 +47,7 @@ int
 SmartListModel::rowCount(const QModelIndex& parent) const
 {
     if (!parent.isValid()) {
-        auto& accInfo = LRCInstance::accountModel().getAccountInfo(accountId_);
+        auto& accInfo = LRCInstance::accountModel().getAccountInfo(LRCInstance::getCurrAccId());
         auto& convModel = accInfo.conversationModel;
         if (listModelType_ == Type::TRANSFER) {
             auto filterType = accInfo.profileInfo.type;
@@ -85,7 +83,7 @@ SmartListModel::data(const QModelIndex& index, int role) const
     }
 
     try {
-        auto& accountInfo = LRCInstance::accountModel().getAccountInfo(accountId_);
+        auto& accountInfo = LRCInstance::accountModel().getAccountInfo(LRCInstance::getCurrAccId());
         auto& convModel = accountInfo.conversationModel;
         lrc::api::conversation::Info item;
         if (listModelType_ == Type::TRANSFER) {
@@ -172,9 +170,10 @@ void
 SmartListModel::setConferenceableFilter(const QString& filter)
 {
     beginResetModel();
-    auto& accountInfo = LRCInstance::accountModel().getAccountInfo(accountId_);
+    auto& accountInfo = LRCInstance::accountModel().getAccountInfo(LRCInstance::getCurrAccId());
     auto& convModel = accountInfo.conversationModel;
-    conferenceables_ = convModel->getConferenceableConversations(convUid_, filter);
+    conferenceables_ = convModel->getConferenceableConversations(LRCInstance::getCurrentConvUid(),
+                                                                 filter);
     sectionState_[tr("Calls")] = true;
     sectionState_[tr("Contacts")] = true;
     endResetModel();
@@ -405,10 +404,4 @@ SmartListModel::flags(const QModelIndex& index) const
         flags &= ~(Qt::ItemIsSelectable);
     }
     return flags;
-}
-
-void
-SmartListModel::setAccount(const QString& accountId)
-{
-    accountId_ = accountId;
 }

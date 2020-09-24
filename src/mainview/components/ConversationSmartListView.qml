@@ -37,6 +37,8 @@ ListView {
 
     // Refresh all items within the model.
     function updateListView() {
+        if (!root.model)
+            return
         root.model.dataChanged(
                     root.model.index(0, 0),
                     root.model.index(

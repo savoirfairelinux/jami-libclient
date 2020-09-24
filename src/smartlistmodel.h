@@ -79,7 +79,6 @@ public:
     QModelIndex parent(const QModelIndex& child) const;
     Qt::ItemFlags flags(const QModelIndex& index) const;
 
-    Q_INVOKABLE void setAccount(const QString& accId);
     Q_INVOKABLE void setConferenceableFilter(const QString& filter = {});
     Q_INVOKABLE void toggleSection(const QString& section);
     Q_INVOKABLE int currentUidSmartListModelIndex();
@@ -87,15 +86,12 @@ public:
     Q_INVOKABLE void updateConversation(const QString& conv);
 
 private:
-    QString accountId_;
-
     QVariant getConversationItemData(const ConversationInfo& item,
                                      const AccountInfo& accountInfo,
                                      int role) const;
     /*
      * List sectioning.
      */
-    QString convUid_;
     Type listModelType_;
     QMap<QString, bool> sectionState_;
     QMap<ConferenceableItem, ConferenceableValue> conferenceables_;

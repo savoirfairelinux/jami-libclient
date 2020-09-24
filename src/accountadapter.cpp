@@ -123,12 +123,13 @@ AccountAdapter::createJamiAccount(QString registeredName,
                 emit accountAdded(showBackup,
                                   LRCInstance::accountModel().getAccountList().indexOf(accountId));
             }
+
             // set up avatar pixmap from photobooth
             QImage avatarImg;
             const bool ret = avatarImg.loadFromData(
                 QByteArray::fromBase64(photoBoothImgBase64.toLatin1()));
             if (!ret) {
-                qDebug() << "JAMI account creation BASE64 image loading failed";
+                qDebug() << "No image provided for JAMI account creation";
             } else {
                 LRCInstance::setAvatarForAccount(QPixmap::fromImage(avatarImg), accountId);
             }

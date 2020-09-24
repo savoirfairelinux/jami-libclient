@@ -147,8 +147,6 @@ void
 ConversationsAdapter::onCurrentAccountIdChanged()
 {
     auto accountId = LRCInstance::getCurrAccId();
-    // Should be called when current account is changed.
-    conversationSmartListModel_->setAccount(accountId);
 
     auto& accountInfo = LRCInstance::accountModel().getAccountInfo(accountId);
     currentTypeFilter_ = accountInfo.profileInfo.type;
@@ -276,7 +274,6 @@ ConversationsAdapter::connectConversationModel(bool updateFilter)
                            &lrc::api::ConversationModel::filterChanged,
                            [this]() {
                                conversationSmartListModel_->fillConversationsList();
-                               conversationSmartListModel_->setAccount(LRCInstance::getCurrAccId());
                                updateConversationsFilterWidget();
                                emit updateListViewRequested();
                            });
@@ -286,7 +283,6 @@ ConversationsAdapter::connectConversationModel(bool updateFilter)
                            &lrc::api::ConversationModel::newConversation,
                            [this](const QString& convUid) {
                                conversationSmartListModel_->fillConversationsList();
-                               conversationSmartListModel_->setAccount(LRCInstance::getCurrAccId());
                                updateConversationForNewContact(convUid);
                            });
 
@@ -320,7 +316,6 @@ ConversationsAdapter::connectConversationModel(bool updateFilter)
                            &lrc::api::ConversationModel::searchResultUpdated,
                            [this]() {
                                conversationSmartListModel_->fillConversationsList();
-                               conversationSmartListModel_->setAccount(LRCInstance::getCurrAccId());
                                emit updateListViewRequested();
                            });
 
