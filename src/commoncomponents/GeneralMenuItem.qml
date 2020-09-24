@@ -65,18 +65,13 @@ MenuItem {
             anchors.left: contextMenuItemImage.right
             anchors.leftMargin: 20
             anchors.verticalCenter: menuItemContentRect.verticalCenter
-            width: textMetrics.boundingRect.width
+            width: contextMenuItemImage.visible ?
+                       (preferredWidth - contextMenuItemImage.width - 58) :
+                       preferredWidth - 24
             height: 30
 
-            TextMetrics {
-                id: textMetrics
-                font: contextMenuItemText.font
-                elide: Text.ElideRight
-                elideWidth: contextMenuItemImage.visible ? (preferredWidth - contextMenuItemImage.width - 58) : preferredWidth - 24
-                text: itemName
-            }
-
-            text: textMetrics.elidedText
+            text: itemName
+            wrapMode: Text.WordWrap
             font.pointSize: JamiTheme.textFontSize
             horizontalAlignment: Text.AlignLeft
             verticalAlignment: Text.AlignVCenter
