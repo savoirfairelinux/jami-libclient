@@ -366,10 +366,26 @@ Window {
 
             onNeedToShowMainViewWindow: {
                 mainViewStackLayout.currentIndex = 0
+                // TODO: to be simplified in the refactor
+                if (!inSettingsView) {
+                    if (currentAccountIsCalling()) {
+                        setCallStackView()
+                    } else {
+                        showWelcomeView()
+                    }
+                }
             }
 
             onWizardViewIsClosed: {
                 mainViewStackLayout.currentIndex = 0
+                // TODO: to be simplified in the refactor
+                if (!inSettingsView) {
+                    if (currentAccountIsCalling()) {
+                        setCallStackView()
+                    } else {
+                        showWelcomeView()
+                    }
+                }
             }
         }
     }
