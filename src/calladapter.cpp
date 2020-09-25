@@ -548,28 +548,21 @@ CallAdapter::maximizeParticipant(const QString& uri, bool isActive)
     const auto conversation = convModel->getConversationForUID(LRCInstance::getCurrentConvUid());
     const auto confId = conversation.confId;
 
-    QString callId;
-    if (LRCInstance::getCurrentAccountInfo().profileInfo.uri != uri) {
-        const auto convInfo = LRCInstance::getConversationFromPeerUri(uri, accountId_);
-        if (!convInfo.uid.isEmpty()) {
-            callId = convInfo.callId;
-        }
-    }
     try {
         const auto call = callModel->getCall(confId);
         switch (call.layout) {
         case lrc::api::call::Layout::GRID:
-            callModel->setActiveParticipant(confId, callId);
+            callModel->setActiveParticipant(confId, uri);
             callModel->setConferenceLayout(confId, lrc::api::call::Layout::ONE_WITH_SMALL);
             break;
         case lrc::api::call::Layout::ONE_WITH_SMALL:
-            callModel->setActiveParticipant(confId, callId);
+            callModel->setActiveParticipant(confId, uri);
             callModel->setConferenceLayout(confId,
                                            isActive ? lrc::api::call::Layout::ONE
                                                     : lrc::api::call::Layout::ONE_WITH_SMALL);
             break;
         case lrc::api::call::Layout::ONE:
-            callModel->setActiveParticipant(confId, callId);
+            callModel->setActiveParticipant(confId, uri);
             callModel->setConferenceLayout(confId, lrc::api::call::Layout::GRID);
             break;
         };
