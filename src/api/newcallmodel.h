@@ -31,23 +31,26 @@ namespace Video {
 class Renderer;
 }
 
-namespace lrc
-{
+namespace lrc {
 
 class CallbacksHandler;
 class NewCallModelPimpl;
 
-namespace api
-{
+namespace api {
 
-namespace account { struct Info; }
-namespace call { struct Info; }
+namespace account {
+struct Info;
+}
+namespace call {
+struct Info;
+}
 class NewAccountModel;
 
 /**
-  *  @brief Class that manages call informations.
-  */
-class LIB_EXPORT NewCallModel : public QObject {
+ *  @brief Class that manages call informations.
+ */
+class LIB_EXPORT NewCallModel : public QObject
+{
     Q_OBJECT
 
 public:
@@ -55,11 +58,7 @@ public:
 
     const account::Info& owner;
 
-    enum class Media {
-        NONE,
-        AUDIO,
-        VIDEO
-    };
+    enum class Media { NONE, AUDIO, VIDEO };
 
     NewCallModel(const account::Info& owner, const CallbacksHandler& callbacksHandler);
     ~NewCallModel();
@@ -188,7 +187,9 @@ public:
      * @param audioOnly If the call is audio only
      * @return id for a new call
      */
-    Q_INVOKABLE QString callAndAddParticipant(const QString uri, const QString& callId, bool audioOnly);
+    Q_INVOKABLE QString callAndAddParticipant(const QString uri,
+                                              const QString& callId,
+                                              bool audioOnly);
 
     /**
      * Not implemented yet
@@ -232,6 +233,8 @@ public:
 
     /**
      * Set the shown participant
+     * @param confId        The call to change
+     * @param participant   Use contact URI (or callId)
      */
     void setActiveParticipant(const QString& confId, const QString& participant);
 
@@ -262,7 +265,9 @@ Q_SIGNALS:
      * @param fromId the peer uri
      * @param displayname
      */
-    void newIncomingCall(const QString& fromId, const QString& callId, const QString& displayname) const;
+    void newIncomingCall(const QString& fromId,
+                         const QString& callId,
+                         const QString& displayname) const;
     /**
      * Emitted when a call is added to a conference
      * @param callId
@@ -277,7 +282,10 @@ Q_SIGNALS:
      * @param oldCount
      * @param urgentCount
      */
-    void voiceMailNotify(const QString& accountId, int newCount, int oldCount, int urgentCount) const;
+    void voiceMailNotify(const QString& accountId,
+                         int newCount,
+                         int oldCount,
+                         int urgentCount) const;
 
 private:
     std::unique_ptr<NewCallModelPimpl> pimpl_;
