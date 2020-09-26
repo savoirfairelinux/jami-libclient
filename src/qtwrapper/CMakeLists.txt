@@ -1,75 +1,74 @@
-CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
+cmake_minimum_required (VERSION 2.8)
 
-IF(POLICY CMP0022)
-  CMAKE_POLICY(SET CMP0022 NEW)
-ENDIF(POLICY CMP0022)
+if (POLICY CMP0022)
+   cmake_policy (SET CMP0022 NEW)
+endif (POLICY CMP0022)
 
-PROJECT(qtwrapper)
+project (qtwrapper)
 
-MESSAGE("Compiling with qtwrapper")
+message ("Compiling with qtwrapper")
 
-SET(ENABLE_LIBWRAP true)
-ADD_DEFINITIONS(-DENABLE_LIBWRAP=true)
+set (ENABLE_LIBWRAP true)
+add_definitions (-DENABLE_LIBWRAP=true)
 
-SET(LOCAL_CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/../../cmake/)
-SET(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${LOCAL_CMAKE_MODULE_PATH})
+set (LOCAL_CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/../../cmake/)
+set (CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${LOCAL_CMAKE_MODULE_PATH})
 
-IF (${MUTE_DRING} MATCHES true)
-   #It makes clients debugging easier
-   MESSAGE("Dring logs are disabled")
-   ADD_DEFINITIONS(-DMUTE_DRING=true)
-ENDIF()
+if (${MUTE_DRING} MATCHES true)
+   # It makes clients debugging easier
+   message ("Dring logs are disabled")
+   add_definitions (-DMUTE_DRING=true)
+endif ()
 
-FIND_PACKAGE(Qt5Core REQUIRED)
-FIND_PACKAGE(Ring REQUIRED)
+find_package (Qt5Core REQUIRED)
+find_package (Ring REQUIRED)
 
-SET(libqtwrapper_LIB_SRCS
-   instancemanager.cpp
-   videomanager_wrap.cpp
-)
+set (libqtwrapper_LIB_SRCS instancemanager.cpp videomanager_wrap.cpp)
 
-IF(NOT (${ENABLE_VIDEO} MATCHES "false"))
-   MESSAGE("VIDEO enabled")
-   ADD_DEFINITIONS(-DENABLE_VIDEO=true)
-   SET(ENABLE_VIDEO 1 CACHE STRING "Enable video")
-ENDIF(NOT (${ENABLE_VIDEO} MATCHES "false"))
+if (NOT (${ENABLE_VIDEO} MATCHES "false"))
+   message ("VIDEO enabled")
+   add_definitions (-DENABLE_VIDEO=true)
+   set (
+      ENABLE_VIDEO
+      1
+      CACHE STRING "Enable video")
+endif (NOT (${ENABLE_VIDEO} MATCHES "false"))
 
-IF(NOT (${ENABLE_PLUGIN} MATCHES "false"))
-   MESSAGE("PLUGIN enabled")
-   ADD_DEFINITIONS(-DENABLE_PLUGIN=true)
-   SET(ENABLE_PLUGIN 1 CACHE STRING "Enable plugin")
-ENDIF(NOT (${ENABLE_PLUGIN} MATCHES "false"))
+if (NOT (${ENABLE_PLUGIN} MATCHES "false"))
+   message ("PLUGIN enabled")
+   add_definitions (-DENABLE_PLUGIN=true)
+   set (
+      ENABLE_PLUGIN
+      1
+      CACHE STRING "Enable plugin")
+endif (NOT (${ENABLE_PLUGIN} MATCHES "false"))
 
-IF(ENABLE_PLUGIN)
-   MESSAGE("Adding pluginmanager.cpp")
-   SET(plugin_SRC pluginmanager.cpp)
-ELSE()
-   MESSAGE("Adding pluginmanagerMock.cpp")
-   SET(plugin_SRC pluginmanagerMock.cpp)
-ENDIF()
+if (ENABLE_PLUGIN)
+   message ("Adding pluginmanager.cpp")
+   set (plugin_SRC pluginmanager.cpp)
+else ()
+   message ("Adding pluginmanagerMock.cpp")
+   set (plugin_SRC pluginmanagerMock.cpp)
+endif ()
 
-INCLUDE_DIRECTORIES(SYSTEM ${Qt5Core_INCLUDE_DIRS} )
-INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR})
-INCLUDE_DIRECTORIES(${ring_INCLUDE_DIRS})
-INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR}/../)
-INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR}/../dbus)
+include_directories (SYSTEM ${Qt5Core_INCLUDE_DIRS})
+include_directories (${CMAKE_CURRENT_SOURCE_DIR})
+include_directories (${ring_INCLUDE_DIRS})
+include_directories (${CMAKE_CURRENT_SOURCE_DIR}/../)
+include_directories (${CMAKE_CURRENT_SOURCE_DIR}/../dbus)
 
-ADD_LIBRARY( qtwrapper STATIC ${libqtwrapper_LIB_SRCS} ${plugin_SRC})
+add_library (qtwrapper STATIC ${libqtwrapper_LIB_SRCS} ${plugin_SRC})
 
-
-IF(NOT ${ring_BIN} MATCHES "ring_BIN-NOTFOUND")
-   TARGET_LINK_LIBRARIES( qtwrapper
-      ${QT_QTCORE_LIBRARY}
-      ${ring_BIN}
-   )
-ENDIF()
+if (NOT ${ring_BIN} MATCHES "ring_BIN-NOTFOUND")
+   target_link_libraries (qtwrapper ${QT_QTCORE_LIBRARY} ${ring_BIN})
+endif ()
 
 if (NOT (CMAKE_CXX_COMPILER_ID MATCHES "MSVC"))
-   ADD_DEFINITIONS("-std=c++0x")
-endif()
+   add_definitions ("-std=c++0x")
+endif ()
 
 if (CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
-    add_definitions(-DUNICODE -D_UNICODE)
-    remove_definitions(-D_MBCS)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
-endif()
+   add_definitions (-DUNICODE -D_UNICODE)
+   remove_definitions (-D_MBCS)
+   set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
+endif ()
