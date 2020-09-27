@@ -55,24 +55,20 @@ Q_SIGNALS:
     /**
      * Emitted when the client should open the chat view.
      */
-    void showChatView(const QString& accountId,
-                      const api::conversation::Info& conversationInfo) const;
+    void showChatView(const QString& accountId, const QString& convUid) const;
     /**
      * Emitted when the client should ask the user whether it wants to leave a message after a
      * failed call.
      */
-    void showLeaveMessageView(const QString& accountId,
-                              const api::conversation::Info& conversationInfo) const;
+    void showLeaveMessageView(const QString& accountId, const QString& convUid) const;
     /**
      * Emitted when the client should open the call view.
      */
-    void showCallView(const QString& accountId,
-                      const api::conversation::Info& conversationInfo) const;
+    void showCallView(const QString& accountId, const QString& convUid) const;
     /**
      * Emitted when the client should open the incoming call view.
      */
-    void showIncomingCallView(const QString& accountId,
-                              const api::conversation::Info& conversationInfo) const;
+    void showIncomingCallView(const QString& accountId, const QString& convUid) const;
     /**
      * Emitted when the client receives a new trust request
      */
