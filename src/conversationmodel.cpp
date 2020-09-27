@@ -652,9 +652,9 @@ ConversationModel::selectConversation(const QString& uid) const
         }
 
         if (not callEnded and not conversation.confId.isEmpty()) {
-            emit pimpl_->behaviorController.showCallView(owner.id, conversation);
+            emit pimpl_->behaviorController.showCallView(owner.id, conversation.uid);
         } else if (callEnded) {
-            emit pimpl_->behaviorController.showChatView(owner.id, conversation);
+            emit pimpl_->behaviorController.showChatView(owner.id, conversation.uid);
         } else {
             try {
                 auto call = owner.callModel->getCall(conversation.callId);
@@ -664,23 +664,23 @@ ConversationModel::selectConversation(const QString& uid) const
                 case call::Status::CONNECTING:
                 case call::Status::SEARCHING:
                     // We are currently in a call
-                    emit pimpl_->behaviorController.showIncomingCallView(owner.id, conversation);
+                    emit pimpl_->behaviorController.showIncomingCallView(owner.id, conversation.uid);
                     break;
                 case call::Status::PAUSED:
                 case call::Status::CONNECTED:
                 case call::Status::IN_PROGRESS:
                     // We are currently receiving a call
-                    emit pimpl_->behaviorController.showCallView(owner.id, conversation);
+                    emit pimpl_->behaviorController.showCallView(owner.id, conversation.uid);
                     break;
                 case call::Status::PEER_BUSY:
-                    emit pimpl_->behaviorController.showLeaveMessageView(owner.id, conversation);
+                    emit pimpl_->behaviorController.showLeaveMessageView(owner.id, conversation.uid);
                     break;
                 case call::Status::TIMEOUT:
                 case call::Status::TERMINATING:
                 case call::Status::INVALID:
                 case call::Status::INACTIVE:
                     // call just ended
-                    emit pimpl_->behaviorController.showChatView(owner.id, conversation);
+                    emit pimpl_->behaviorController.showChatView(owner.id, conversation.uid);
                     break;
                 case call::Status::ENDED:
                 default: // ENDED
@@ -689,7 +689,7 @@ ConversationModel::selectConversation(const QString& uid) const
                 }
             } catch (const std::out_of_range&) {
                 // Should not happen
-                emit pimpl_->behaviorController.showChatView(owner.id, conversation);
+                emit pimpl_->behaviorController.showChatView(owner.id, conversation.uid);
             }
         }
     } catch (const std::out_of_range& e) {
@@ -808,7 +808,7 @@ ConversationModelPimpl::placeCall(const QString& uid, bool isAudioOnly)
                 }
 
                 dirtyConversations = {true, true};
-                emit behaviorController.showIncomingCallView(linked.owner.id, newConv);
+                emit behaviorController.showIncomingCallView(linked.owner.id, newConv.uid);
             });
 
         if (isTemporary) {
@@ -1877,7 +1877,7 @@ ConversationModelPimpl::slotIncomingCall(const QString& fromId, const QString& c
     qDebug() << "Add call to conversation with " << fromId;
     conversation.callId = callId;
     dirtyConversations = {true, true};
-    emit behaviorController.showIncomingCallView(linked.owner.id, conversation);
+    emit behaviorController.showIncomingCallView(linked.owner.id, conversation.uid);
 }
 
 void
@@ -1906,7 +1906,7 @@ ConversationModelPimpl::slotCallStatusChanged(const QString& callId, int code)
                 }
             }
         } else if (call.status == call::Status::PEER_BUSY) {
-            emit behaviorController.showLeaveMessageView(linked.owner.id, *i);
+            emit behaviorController.showLeaveMessageView(linked.owner.id, i->uid);
         }
     } catch (std::out_of_range& e) {
         qDebug() << "ConversationModelPimpl::slotCallStatusChanged can't get inexistant call";
