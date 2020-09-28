@@ -34,7 +34,6 @@ Rectangle {
     property string headerUserUserNameLabelText: ""
 
     signal needToHideConversationInCall
-    signal needToSendContactRequest
 
     signal sendMessageContentSaved(string arg)
     signal messagesCleared
@@ -99,10 +98,6 @@ Rectangle {
 
         onNeedToHideConversationInCall: {
             messageWebViewRect.needToHideConversationInCall()
-        }
-
-        onSendContactRequestButtonClicked: {
-            MessagesAdapter.sendContactRequest()
         }
     }
 

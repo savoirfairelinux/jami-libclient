@@ -34,7 +34,6 @@ Rectangle {
     property int totalUnreadMessagesCount: 0
 
     signal conversationSmartListNeedToAccessMessageWebView(string currentUserDisplayName, string currentUserAlias, string currentUID, bool callStackViewShouldShow, bool isAudioOnly, int callState)
-    signal needToUpdateConversationForAddedContact
 
     // Hack -> force redraw.
     function forceReselectConversationSmartListCurrentIndex() {

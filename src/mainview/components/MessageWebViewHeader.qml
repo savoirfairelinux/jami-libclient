@@ -34,7 +34,6 @@ Rectangle {
 
     signal backClicked
     signal needToHideConversationInCall
-    signal sendContactRequestButtonClicked
 
     function resetBackToWelcomeViewButtonSource(reset) {
         backToWelcomeViewButtonSource = reset ? "qrc:/images/icons/ic_arrow_back_24px.svg" : "qrc:/images/icons/round-close-24px.svg"
@@ -149,7 +148,7 @@ Rectangle {
                 onExitColor: "white"
 
                 onClicked: {
-                    messagingHeaderRect.sendContactRequestButtonClicked()
+                    MessagesAdapter.sendContactRequest()
                     CallAdapter.placeAudioOnlyCall()
                 }
             }
@@ -170,7 +169,7 @@ Rectangle {
                 onExitColor: "white"
 
                 onClicked: {
-                    messagingHeaderRect.sendContactRequestButtonClicked()
+                    MessagesAdapter.sendContactRequest()
                     CallAdapter.placeCall()
                 }
             }
@@ -192,7 +191,7 @@ Rectangle {
                 onExitColor: "white"
 
                 onClicked: {
-                    messagingHeaderRect.sendContactRequestButtonClicked()
+                    MessagesAdapter.sendContactRequest()
                     sendContactRequestButtonVisible = false
                 }
 

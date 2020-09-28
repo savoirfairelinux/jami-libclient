@@ -306,7 +306,9 @@ Window {
                         target: AccountAdapter
 
                         function onUpdateConversationForAddedContact() {
-                            mainViewWindowSidePanel.needToUpdateConversationForAddedContact()
+                            MessagesAdapter.updateConversationForAddedContact()
+                            mainViewWindowSidePanel.clearContactSearchBar()
+                            mainViewWindowSidePanel.forceReselectConversationSmartListCurrentIndex()
                         }
 
                         function onAccountStatusChanged() {
@@ -505,12 +507,6 @@ Window {
                     sidePanelViewStack.push(communicationPageMessageWebView)
                 }
             }
-        }
-
-        onNeedToUpdateConversationForAddedContact: {
-            MessagesAdapter.updateConversationForAddedContact()
-            mainViewWindowSidePanel.clearContactSearchBar()
-            mainViewWindowSidePanel.forceReselectConversationSmartListCurrentIndex()
         }
 
         Connections {
