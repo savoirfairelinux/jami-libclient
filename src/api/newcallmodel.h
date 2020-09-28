@@ -234,7 +234,7 @@ public:
     /**
      * Set the shown participant
      * @param confId        The call to change
-     * @param participant   Use contact URI (or callId)
+     * @param participant   Use contact URI
      */
     void setActiveParticipant(const QString& confId, const QString& participant);
 
