@@ -81,7 +81,7 @@ Rectangle {
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
 
-            text: UtilsAdapter.getCallStatusStr(callStatus) + "..."
+            text: UtilsAdapter.getCallStatusStr(callStatus) + "…"
             color: Qt.lighter("white", 1.5)
         }
 
@@ -91,7 +91,7 @@ Rectangle {
             Layout.alignment: Qt.AlignCenter
             Layout.bottomMargin: 48
 
-            HoverableButton {
+            PushButton {
                 id: callCancelButton
 
                 Layout.alignment: Qt.AlignCenter
@@ -99,18 +99,14 @@ Rectangle {
                 Layout.preferredWidth: buttonPreferredSize
                 Layout.preferredHeight: buttonPreferredSize
 
-                backgroundColor: JamiTheme.declineButtonRed
-                onEnterColor: JamiTheme.declineButtonHoverRed
-                onPressColor: JamiTheme.declineButtonPressedRed
-                onReleaseColor: JamiTheme.declineButtonHoverRed
-                onExitColor: JamiTheme.declineButtonRed
+                pressedColor: JamiTheme.declineButtonPressedRed
+                hoveredColor: JamiTheme.declineButtonHoverRed
+                normalColor: JamiTheme.declineButtonRed
 
-                buttonImageHeight: buttonPreferredSize / 2
-                buttonImageWidth: buttonPreferredSize / 2
-                source: "qrc:/images/icons/ic_close_white_24dp.png"
-                radius: 30
+                source: "qrc:/images/icons/round-close-24px.svg"
+                imageColor: JamiTheme.whiteColor
 
-                toolTipText: qsTr("Cancel the call")
+                toolTipText: JamiStrings.hangup
 
                 onClicked: {
                     callCancelButtonIsClicked()

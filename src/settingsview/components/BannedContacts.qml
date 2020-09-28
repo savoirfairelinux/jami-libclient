@@ -118,8 +118,8 @@ ColumnLayout {
             toolTipText: JamiStrings.tipBannedContacts
 
             source: bannedListWidget.visible?
-                        "qrc:/images/icons/round-arrow_drop_up-24px.svg" :
-                        "qrc:/images/icons/round-arrow_drop_down-24px.svg"
+                        "qrc:/images/icons/expand_less-24px.svg" :
+                        "qrc:/images/icons//expand_more-24px.svg"
 
             onClicked: toggleBannedContacts()
         }

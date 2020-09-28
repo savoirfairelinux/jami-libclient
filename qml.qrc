@@ -80,7 +80,7 @@
         <file>src/mainview/components/WelcomePage.qml</file>
         <file>src/mainview/components/MessageWebView.qml</file>
         <file>src/mainview/components/MessageWebViewHeader.qml</file>
-        <file>src/commoncomponents/HoverableButton.qml</file>
+        <file>src/commoncomponents/PushButton.qml</file>
         <file>src/mainview/components/AccountComboBox.qml</file>
         <file>src/mainview/components/ConversationSmartListView.qml</file>
         <file>src/commoncomponents/JamiFileDialog.qml</file>
@@ -122,7 +122,6 @@
         <file>src/mainview/js/contactpickercreation.js</file>
         <file>src/mainview/js/mediahandlerpickercreation.js</file>
         <file>src/mainview/components/ContactPickerItemDelegate.qml</file>
-        <file>src/wizardview/components/HoverableGradientButton.qml</file>
         <file>src/commoncomponents/AccountMigrationDialog.qml</file>
         <file>src/commoncomponents/MaterialButton.qml</file>
         <file>src/mainview/components/RecordBox.qml</file>
@@ -140,5 +139,6 @@
         <file>src/commoncomponents/BaseDialog.qml</file>
         <file>src/commoncomponents/ModalPopup.qml</file>
         <file>src/commoncomponents/SimpleMessageDialog.qml</file>
+        <file>src/commoncomponents/ResponsiveImage.qml</file>
     </qresource>
 </RCC>

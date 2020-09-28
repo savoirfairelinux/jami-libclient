@@ -68,20 +68,19 @@ ColumnLayout {
             elide: Text.ElideRight
         }
 
-        HoverableButtonTextItem {
+        PushButton {
             Layout.preferredWidth: JamiTheme.preferredFieldHeight
             Layout.preferredHeight: JamiTheme.preferredFieldHeight
             Layout.alignment: Qt.AlignHCenter
 
-            radius: height / 2
-
             toolTipText: JamiStrings.tipAdvancedSettingsDisplay
 
+            preferredSize: 32
             source: {
                 if (advancedSettingsView.visible) {
-                    return "qrc:/images/icons/round-arrow_drop_up-24px.svg"
+                    return "qrc:/images/icons/expand_less-24px.svg"
                 } else {
-                    return "qrc:/images/icons/round-arrow_drop_down-24px.svg"
+                    return "qrc:/images/icons/expand_more-24px.svg"
                 }
             }
 

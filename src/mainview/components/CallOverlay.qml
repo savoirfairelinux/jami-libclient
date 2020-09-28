@@ -161,7 +161,7 @@ Rectangle {
 
             anchors.fill: parent
 
-            HoverableButton {
+            PushButton {
                 id: backButton
 
                 Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
@@ -171,19 +171,18 @@ Rectangle {
                 Layout.topMargin: JamiTheme.preferredMarginSize
                 Layout.leftMargin: JamiTheme.preferredMarginSize
 
-                radius: 32
                 source: "qrc:/images/icons/arrow_back-white-24dp.svg"
-                backgroundColor: "transparent"
-                onExitColor: "transparent"
-                onEnterColor: JamiTheme.lightGrey_
+
+                pressedColor: JamiTheme.invertedPressedButtonColor
+                hoveredColor: JamiTheme.invertedHoveredButtonColor
+                normalColor: JamiTheme.invertedNormalButtonColor
+
                 toolTipText: qsTr("Toggle to display side panel")
-                hoverEnabled: true
 
                 visible: mainViewWindow.sidePanelOnly
 
-                onClicked: {
-                    mainViewWindow.showWelcomeView()
-                }
+                onClicked: mainViewWindow.showWelcomeView()
+
             }
 
             Text {
@@ -287,7 +286,7 @@ Rectangle {
         }
     }
 
-    Image {
+    ResponsiveImage {
         id: onHoldImage
 
         anchors.verticalCenter: callOverlayRect.verticalCenter
@@ -298,9 +297,7 @@ Rectangle {
 
         visible: false
 
-        fillMode: Image.PreserveAspectFit
-        source: "qrc:/images/icons/ic_pause_white_100px.png"
-        asynchronous: true
+        source: "qrc:/images/icons/phone_paused-24px.svg"
     }
 
     CallOverlayButtonGroup {

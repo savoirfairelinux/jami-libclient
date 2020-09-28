@@ -120,5 +120,19 @@
         <file>images/icons/arrow_back-white-24dp.svg</file>
         <file>images/icons/keyboard_voice-24px.svg</file>
         <file>images/icons/videocam-24px.svg</file>
+        <file>images/icons/qr_code-24px.svg</file>
+        <file>images/icons/content_copy-24px.svg</file>
+        <file>images/icons/videocam_off-24px.svg</file>
+        <file>images/icons/check-24px.svg</file>
+        <file>images/icons/mic_off-24px.svg</file>
+        <file>images/icons/mic-24px.svg</file>
+        <file>images/icons/group_add-24px.svg</file>
+        <file>images/icons/chat-24px.svg</file>
+        <file>images/icons/phone_paused-24px.svg</file>
+        <file>images/icons/pause-24px.svg</file>
+        <file>images/icons/arrow_drop_up-24px.svg</file>
+        <file>images/icons/arrow_drop_down-24px.svg</file>
+        <file>images/icons/expand_less-24px.svg</file>
+        <file>images/icons/expand_more-24px.svg</file>
     </qresource>
 </RCC>

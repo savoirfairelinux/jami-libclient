@@ -116,22 +116,13 @@ ItemDelegate {
             }
         }
 
-        HoverableRadiusButton {
+        PushButton {
             id: btnEditDevice
 
             Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
             Layout.rightMargin: 8
             Layout.preferredWidth: JamiTheme.preferredFieldHeight
             Layout.preferredHeight: JamiTheme.preferredFieldHeight
-
-            buttonImageHeight: height - 8
-            buttonImageWidth: width - 8
-
-            radius: height / 2
-            width: 24
-            height: 24
-
-            backgroundColor: "transparent"
 
             source: {
                 if(isCurrent) {
@@ -144,8 +135,7 @@ ItemDelegate {
                 }
             }
 
-            ToolTip.visible: hovered
-            ToolTip.text: {
+            toolTipText: {
                 if(isCurrent) {
                     if (editable) {
                         return JamiStrings.editDeviceName

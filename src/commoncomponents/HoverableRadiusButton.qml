@@ -31,7 +31,7 @@ Button {
     property int fontPointSize: 9
     property int buttonImageHeight: hoverableButtonBackground.height - 10
     property int buttonImageWidth: hoverableButtonBackground.width - 10
-    property string backgroundColor: JamiTheme.releaseColor
+    property string backgroundColor: JamiTheme.normalButtonColor
     property string onPressColor: JamiTheme.pressColor
     property string onReleaseColor: backgroundColor
     property string onEnterColor: JamiTheme.hoverColor

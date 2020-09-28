@@ -254,17 +254,25 @@ Window {
         }
     }
 
-    HoverableButton {
+    MaterialButton {
         id: selectButton
 
         anchors.bottom: selectScreenWindowRect.bottom
         anchors.bottomMargin: JamiTheme.preferredMarginSize
         anchors.horizontalCenter: selectScreenWindowRect.horizontalCenter
 
+        width: 200
+        height: 36
+
         visible: selectedScreenNumber != -1
 
+        color: JamiTheme.buttonTintedBlack
+        hoveredColor: JamiTheme.buttonTintedBlackHovered
+        pressedColor: JamiTheme.buttonTintedBlackPressed
+        outlined: true
+        enabled: true
+
         text: JamiStrings.shareScreen
-        radius: 10
 
         onClicked: {
             if (selectArea) {

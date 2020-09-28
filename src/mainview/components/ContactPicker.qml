@@ -48,7 +48,7 @@ Popup {
 
         width: 250
 
-        HoverableButton {
+        PushButton {
             id: closeButton
 
             anchors.top: contactPickerPopupRect.top
@@ -56,11 +56,7 @@ Popup {
             anchors.right: contactPickerPopupRect.right
             anchors.rightMargin: 5
 
-            width: 30
-            height: 30
-
-            radius: 30
-            source: "qrc:/images/icons/ic_close_black_24dp.png"
+            source: "qrc:/images/icons/round-close-24px.svg"
 
             onClicked: {
                 contactPickerPopup.close()

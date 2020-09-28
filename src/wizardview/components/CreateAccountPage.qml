@@ -360,7 +360,7 @@ Rectangle {
         }
     }
 
-    HoverableButton {
+    PushButton {
         id: backButton
 
         anchors.left: parent.left
@@ -370,10 +370,7 @@ Rectangle {
         width: 35
         height: 35
 
-        radius: 30
-
-        backgroundColor: root.color
-        onExitColor: root.color
+        normalColor: root.color
 
         source: "qrc:/images/icons/ic_arrow_back_24px.svg"
         toolTipText: JamiStrings.back

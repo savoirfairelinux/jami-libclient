@@ -98,7 +98,7 @@ MenuItem {
         implicitHeight: preferredHeight
 
         border.width: 0
-        color: menuItem.down ? JamiTheme.releaseColor : "white"
+        color: menuItem.down ? JamiTheme.normalButtonColor : "white"
 
         MouseArea {
             anchors.fill: parent
@@ -107,7 +107,7 @@ MenuItem {
                 contextMenuBackgroundRect.color = JamiTheme.pressColor
             }
             onReleased: {
-                contextMenuBackgroundRect.color = JamiTheme.releaseColor
+                contextMenuBackgroundRect.color = JamiTheme.normalButtonColor
                 menuItem.clicked()
             }
             onEntered: {

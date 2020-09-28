@@ -92,7 +92,7 @@ Rectangle {
 
                 Layout.alignment: Qt.AlignLeft
 
-                HoverableButton {
+                PushButton {
                     id: callAnswerButton
 
                     Layout.alignment: Qt.AlignCenter
@@ -100,20 +100,14 @@ Rectangle {
                     Layout.preferredWidth: buttonPreferredSize
                     Layout.preferredHeight: buttonPreferredSize
 
-                    backgroundColor: JamiTheme.acceptButtonGreen
-                    onEnterColor: JamiTheme.acceptButtonHoverGreen
-                    onPressColor: JamiTheme.acceptButtonPressedGreen
-                    onReleaseColor: JamiTheme.acceptButtonHoverGreen
-                    onExitColor: JamiTheme.acceptButtonGreen
+                    pressedColor: JamiTheme.acceptButtonPressedGreen
+                    hoveredColor: JamiTheme.acceptButtonHoverGreen
+                    normalColor: JamiTheme.acceptButtonGreen
 
-                    buttonImageHeight: buttonPreferredSize / 2
-                    buttonImageWidth: buttonPreferredSize / 2
-                    source: "qrc:/images/icons/ic_check_white_18dp_2x.png"
-                    radius: 32
+                    source: "qrc:/images/icons/check-24px.svg"
+                    imageColor: JamiTheme.whiteColor
 
-                    onClicked: {
-                        callAcceptButtonIsClicked()
-                    }
+                    onClicked: callAcceptButtonIsClicked()
                 }
             }
 
@@ -122,7 +116,7 @@ Rectangle {
 
                 Layout.alignment: Qt.AlignRight
 
-                HoverableButton {
+                PushButton {
                     id: callDeclineButton
 
                     Layout.alignment: Qt.AlignCenter
@@ -130,20 +124,16 @@ Rectangle {
                     Layout.preferredWidth: buttonPreferredSize
                     Layout.preferredHeight: buttonPreferredSize
 
-                    backgroundColor: JamiTheme.declineButtonRed
-                    onEnterColor: JamiTheme.declineButtonHoverRed
-                    onPressColor: JamiTheme.declineButtonPressedRed
-                    onReleaseColor: JamiTheme.declineButtonHoverRed
-                    onExitColor: JamiTheme.declineButtonRed
+                    pressedColor: JamiTheme.declineButtonPressedRed
+                    hoveredColor: JamiTheme.declineButtonHoverRed
+                    normalColor: JamiTheme.declineButtonRed
 
-                    buttonImageHeight: buttonPreferredSize / 2
-                    buttonImageWidth: buttonPreferredSize / 2
-                    source: "qrc:/images/icons/ic_close_white_24dp.png"
-                    radius: 32
+                    source: "qrc:/images/icons/round-close-24px.svg"
+                    imageColor: JamiTheme.whiteColor
 
-                    onClicked: {
-                        callCancelButtonIsClicked()
-                    }
+                    toolTipText: JamiStrings.hangup
+
+                    onClicked: callCancelButtonIsClicked()
                 }
             }
         }

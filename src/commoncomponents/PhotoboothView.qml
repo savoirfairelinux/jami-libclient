@@ -174,15 +174,13 @@ ColumnLayout {
         Layout.preferredHeight: JamiTheme.preferredFieldHeight
         Layout.topMargin: JamiTheme.preferredMarginSize / 2
 
-        HoverableButton {
+        PushButton {
             id: takePhotoButton
 
             property string cameraAltIconUrl: "qrc:/images/icons/baseline-camera_alt-24px.svg"
             property string addPhotoIconUrl: "qrc:/images/icons/round-add_a_photo-24px.svg"
             property string refreshIconUrl: "qrc:/images/icons/baseline-refresh-24px.svg"
 
-            Layout.preferredWidth: JamiTheme.preferredFieldHeight
-            Layout.preferredHeight: JamiTheme.preferredFieldHeight
             Layout.alignment: Qt.AlignHCenter
 
             text: ""
@@ -226,7 +224,7 @@ ColumnLayout {
             }
         }
 
-        HoverableButton {
+        PushButton {
             id: importButton
 
             Layout.preferredWidth: JamiTheme.preferredFieldHeight

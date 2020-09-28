@@ -33,12 +33,12 @@ Button {
     property alias imageSource: buttonPix.source
     property alias buttonText: buttonText.text
 
-    property string backgroundColor: JamiTheme.releaseColor
-    property string onPressColor: JamiTheme.pressColor
-    property string onReleaseColor: JamiTheme.releaseColor
-    property string onEnterColor: JamiTheme.hoverColor
+    property string backgroundColor: JamiTheme.normalButtonColor
+    property string onPressColor: JamiTheme.pressedButtonColor
+    property string onReleaseColor: JamiTheme.normalButtonColor
+    property string onEnterColor: JamiTheme.hoveredButtonColor
     property string onExitColor: JamiTheme.transparentColor
-    property string checkedColor: JamiTheme.releaseColor
+    property string checkedColor: JamiTheme.normalButtonColor
 
     signal checkedToggledForLeftPanel(var checked)
     signal checkedToggledForRightPanel(var checked)

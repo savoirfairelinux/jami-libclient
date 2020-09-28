@@ -19,6 +19,7 @@
 import QtQuick 2.14
 import QtQuick.Controls 2.14
 import QtGraphicalEffects 1.15
+import QtQuick.Window 2.15
 
 import "../constant"
 
@@ -72,6 +73,23 @@ Button {
 
             Image {
                 id: buttonImage
+
+                property real pixelDensity: Screen.pixelDensity
+                property real isSvg: {
+                    var match = /[^.]+$/.exec(source)
+                    return match !== null && match[0] === 'svg'
+                }
+
+                function setSourceSize() {
+                    if (isSvg) {
+                        sourceSize.width = width
+                        sourceSize.height = height
+                    } else
+                        sourceSize = undefined
+                }
+
+                onPixelDensityChanged: setSourceSize()
+                Component.onCompleted: setSourceSize()
 
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.left: parent.left

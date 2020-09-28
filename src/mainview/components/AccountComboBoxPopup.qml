@@ -138,7 +138,7 @@ Popup {
                     itemComboBackground.color = JamiTheme.pressColor
                 }
                 onReleased: {
-                    itemComboBackground.color = JamiTheme.releaseColor
+                    itemComboBackground.color = JamiTheme.normalButtonColor
                     currentIndex = index
                     root.close()
                     AccountAdapter.accountChanged(index)
@@ -159,7 +159,7 @@ Popup {
             implicitHeight: accountComboBox.height
 
             background: Rectangle {
-                color: comboBoxFooterItem.hovered? JamiTheme.releaseColor : JamiTheme.backgroundColor
+                color: comboBoxFooterItem.hovered? JamiTheme.normalButtonColor : JamiTheme.backgroundColor
             }
 
             text: qsTr("Add Account") + "+"

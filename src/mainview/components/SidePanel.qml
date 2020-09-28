@@ -153,7 +153,7 @@ Rectangle {
             hoverEnabled: true
 
             onReleased: {
-                searchStatusRect.color = JamiTheme.releaseColor
+                searchStatusRect.color = JamiTheme.normalButtonColor
             }
 
             onEntered: {

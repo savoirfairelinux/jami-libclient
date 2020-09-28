@@ -56,21 +56,20 @@ Popup {
                 model: ["1", "2", "3", "A", "4", "5", "6", "B", "7",
                         "8", "9", "C", "*", "0", "#", "D"]
 
-                HoverableButton {
+                PushButton {
                     id: sipInputPanelButton
 
                     Layout.preferredWidth: 30
                     Layout.preferredHeight: 30
 
-                    radius: 30
+                    preferredMargin: 8
                     buttonText: modelData
                     buttonTextColor: "white"
                     checkable: false
-                    backgroundColor: JamiTheme.sipInputButtonBackgroundColor
-                    onEnterColor: JamiTheme.sipInputButtonHoverColor
-                    onExitColor: JamiTheme.sipInputButtonBackgroundColor
-                    onPressColor: JamiTheme.sipInputButtonPressColor
-                    onReleaseColor: JamiTheme.sipInputButtonHoverColor
+
+                    pressedColor: JamiTheme.sipInputButtonPressColor
+                    hoveredColor: JamiTheme.sipInputButtonHoverColor
+                    normalColor: JamiTheme.sipInputButtonBackgroundColor
 
                     toolTipText: modelData
 

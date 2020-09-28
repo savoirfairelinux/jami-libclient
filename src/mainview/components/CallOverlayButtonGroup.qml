@@ -1,4 +1,3 @@
-
 /*
  * Copyright (C) 2020 by Savoir-faire Linux
  * Author: Sébastien Blin <sebastien.blin@savoirfairelinux.com>
@@ -17,6 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+
 import QtQuick 2.14
 import QtQuick.Controls 2.14
 import QtQuick.Layouts 1.14
@@ -31,7 +31,7 @@ Rectangle {
 
     // ButtonCounts here is to make sure that flow layout margin is calculated correctly,
     // since no other methods can make buttons at the layout center.
-    property int buttonPreferredSize: 24
+    property int buttonPreferredSize: 48
     property var isHost: true
     property var isSip: false
 
@@ -66,163 +66,134 @@ Rectangle {
 
         Item {
             Layout.preferredWidth: {
+                // TODO: refactor with Flow if possible
                 // 6 is the number of button
                 // If ~ 500px, go into wide mode
-                (callOverlayButtonGroup.width < buttonPreferredSize * 12 - callOverlayButtonGroup.spacing * 6 + 300)?
-                0 : callOverlayButtonGroup.width / 2 - buttonPreferredSize * 3 - callOverlayButtonGroup.spacing
+                if (callOverlayButtonGroup.width < (buttonPreferredSize * 6 -
+                        callOverlayButtonGroup.spacing * 6 + 300)) {
+                    return 0
+                } else {
+                    return  callOverlayButtonGroup.width / 2 - buttonPreferredSize * 1.5 -
+                            callOverlayButtonGroup.spacing
+                }
             }
         }
 
-        HoverableButton {
+        PushButton {
             id: noMicButton
 
-            Layout.preferredWidth: buttonPreferredSize * 2
-            Layout.preferredHeight: buttonPreferredSize * 2
+            Layout.leftMargin: 8
+            Layout.preferredWidth: buttonPreferredSize
+            Layout.preferredHeight: buttonPreferredSize
 
-            backgroundColor: Qt.rgba(0, 0, 0, 0.75)
-            onEnterColor: Qt.rgba(0, 0, 0, 0.6)
-            onPressColor: Qt.rgba(0, 0, 0, 0.5)
-            onReleaseColor: Qt.rgba(0, 0, 0, 0.6)
-            onExitColor: Qt.rgba(0, 0, 0, 0.75)
+            pressedColor: JamiTheme.invertedPressedButtonColor
+            hoveredColor: JamiTheme.invertedHoveredButtonColor
+            normalColor: JamiTheme.invertedNormalButtonColor
 
-            buttonImageHeight: buttonPreferredSize
-            buttonImageWidth: buttonPreferredSize
-            baseImage: "qrc:/images/icons/ic_mic_white_24dp.png"
-            checkedImage: "qrc:/images/icons/ic_mic_off_white_24dp.png"
-            baseColor: "white"
+            normalImageSource: "qrc:/images/icons/mic-24px.svg"
+            imageColor: JamiTheme.whiteColor
+
+            checkedImageSource: "qrc:/images/icons/mic_off-24px.svg"
             checkedColor: JamiTheme.declineButtonPressedRed
-            radius: 30
 
             toolTipText: !checked ? JamiStrings.mute : JamiStrings.unmute
 
-            onClicked: {
-                CallAdapter.muteThisCallToggle()
-            }
+            onClicked: CallAdapter.muteThisCallToggle()
         }
 
-        HoverableButton {
+        PushButton {
             id: hangUpButton
 
-            Layout.preferredWidth: buttonPreferredSize * 2
-            Layout.preferredHeight: buttonPreferredSize * 2
+            Layout.preferredWidth: buttonPreferredSize
+            Layout.preferredHeight: buttonPreferredSize
 
-            backgroundColor: JamiTheme.declineButtonRed
-            onEnterColor: JamiTheme.declineButtonHoverRed
-            onPressColor: JamiTheme.declineButtonPressedRed
-            onReleaseColor: JamiTheme.declineButtonHoverRed
-            onExitColor: JamiTheme.declineButtonRed
+            pressedColor: JamiTheme.declineButtonPressedRed
+            hoveredColor: JamiTheme.declineButtonHoverRed
+            normalColor: JamiTheme.declineButtonRed
 
-            buttonImageHeight: buttonPreferredSize
-            buttonImageWidth: buttonPreferredSize
             source: "qrc:/images/icons/ic_call_end_white_24px.svg"
-            color: "white"
-            radius: 30
+            imageColor: JamiTheme.whiteColor
 
             toolTipText: JamiStrings.hangup
 
-            onClicked: {
-                CallAdapter.hangUpThisCall()
-            }
+            onClicked: CallAdapter.hangUpThisCall()
         }
 
-        HoverableButton {
+        PushButton {
             id: noVideoButton
 
-            Layout.preferredWidth: buttonPreferredSize * 2
-            Layout.preferredHeight: buttonPreferredSize * 2
+            Layout.preferredWidth: buttonPreferredSize
+            Layout.preferredHeight: buttonPreferredSize
 
-            backgroundColor: Qt.rgba(0, 0, 0, 0.75)
-            onEnterColor: Qt.rgba(0, 0, 0, 0.6)
-            onPressColor: Qt.rgba(0, 0, 0, 0.5)
-            onReleaseColor: Qt.rgba(0, 0, 0, 0.6)
-            onExitColor: Qt.rgba(0, 0, 0, 0.75)
+            pressedColor: JamiTheme.invertedPressedButtonColor
+            hoveredColor: JamiTheme.invertedHoveredButtonColor
+            normalColor: JamiTheme.invertedNormalButtonColor
 
-            buttonImageHeight: buttonPreferredSize
-            buttonImageWidth: buttonPreferredSize
-            baseImage: "qrc:/images/icons/ic_videocam_white.png"
-            checkedImage: "qrc:/images/icons/ic_videocam_off_white_24dp.png"
-            baseColor: "white"
+            normalImageSource: "qrc:/images/icons/videocam-24px.svg"
+            imageColor: JamiTheme.whiteColor
+
+            checkedImageSource: "qrc:/images/icons/videocam_off-24px.svg"
             checkedColor: JamiTheme.declineButtonPressedRed
-            radius: 30
 
             toolTipText: !checked ? JamiStrings.pause : JamiStrings.resume
 
-            onClicked: {
-                CallAdapter.videoPauseThisCallToggle()
-            }
+            onClicked: CallAdapter.videoPauseThisCallToggle()
         }
 
         Item {
             Layout.fillWidth: true
         }
 
-        HoverableButton {
+        PushButton {
             id: addToConferenceButton
 
-            Layout.preferredWidth: buttonPreferredSize * 2
-            Layout.preferredHeight: buttonPreferredSize * 2
+            Layout.preferredWidth: buttonPreferredSize
+            Layout.preferredHeight: buttonPreferredSize
             visible: !isHost
 
-            backgroundColor: Qt.rgba(0, 0, 0, 0.75)
-            onEnterColor: Qt.rgba(0, 0, 0, 0.6)
-            onPressColor: Qt.rgba(0, 0, 0, 0.5)
-            onReleaseColor: Qt.rgba(0, 0, 0, 0.6)
-            onExitColor: Qt.rgba(0, 0, 0, 0.75)
+            pressedColor: JamiTheme.invertedPressedButtonColor
+            hoveredColor: JamiTheme.invertedHoveredButtonColor
+            normalColor: JamiTheme.invertedNormalButtonColor
 
-            buttonImageHeight: buttonPreferredSize
-            buttonImageWidth: buttonPreferredSize
-            color: "white"
-            source: "qrc:/images/icons/ic_group_add_white_24dp.png"
-            radius: 30
+            source: "qrc:/images/icons/group_add-24px.svg"
+            imageColor: JamiTheme.whiteColor
 
             toolTipText: JamiStrings.addParticipants
 
-            onClicked: {
-                root.addToConferenceButtonClicked()
-            }
+            onClicked: root.addToConferenceButtonClicked()
         }
 
-        HoverableButton {
+        PushButton {
             id: chatButton
 
-            Layout.preferredWidth: buttonPreferredSize * 2
-            Layout.preferredHeight: buttonPreferredSize * 2
+            Layout.preferredWidth: buttonPreferredSize
+            Layout.preferredHeight: buttonPreferredSize
 
-            backgroundColor: Qt.rgba(0, 0, 0, 0.75)
-            onEnterColor: Qt.rgba(0, 0, 0, 0.6)
-            onPressColor: Qt.rgba(0, 0, 0, 0.5)
-            onReleaseColor: Qt.rgba(0, 0, 0, 0.6)
-            onExitColor: Qt.rgba(0, 0, 0, 0.75)
+            pressedColor: JamiTheme.invertedPressedButtonColor
+            hoveredColor: JamiTheme.invertedHoveredButtonColor
+            normalColor: JamiTheme.invertedNormalButtonColor
 
-            buttonImageHeight: buttonPreferredSize
-            buttonImageWidth: buttonPreferredSize
-            color: "white"
-            source: "qrc:/images/icons/ic_chat_white_24dp.png"
-            radius: 30
+            source: "qrc:/images/icons/chat-24px.svg"
+            imageColor: JamiTheme.whiteColor
 
             toolTipText: JamiStrings.chat
 
-            onClicked: {
-                root.chatButtonClicked()
-            }
+            onClicked: root.chatButtonClicked()
         }
 
-        HoverableButton {
+        PushButton {
             id: optionsButton
 
-            Layout.preferredWidth: buttonPreferredSize * 2
-            Layout.preferredHeight: buttonPreferredSize * 2
+            Layout.preferredWidth: buttonPreferredSize
+            Layout.preferredHeight: buttonPreferredSize
+            Layout.rightMargin: 8
 
-            backgroundColor: Qt.rgba(0, 0, 0, 0.75)
-            onEnterColor: Qt.rgba(0, 0, 0, 0.6)
-            onPressColor: Qt.rgba(0, 0, 0, 0.5)
-            onReleaseColor: Qt.rgba(0, 0, 0, 0.6)
-            onExitColor: Qt.rgba(0, 0, 0, 0.75)
+            pressedColor: JamiTheme.invertedPressedButtonColor
+            hoveredColor: JamiTheme.invertedHoveredButtonColor
+            normalColor: JamiTheme.invertedNormalButtonColor
 
-            buttonImageHeight: buttonPreferredSize
-            buttonImageWidth: buttonPreferredSize
             source: "qrc:/images/icons/more_vert-24px.svg"
-            radius: 30
+            imageColor: JamiTheme.whiteColor
 
             toolTipText: JamiStrings.moreOptions
 
@@ -234,7 +205,5 @@ Rectangle {
                 callViewContextMenu.openMenu()
             }
         }
-
-        Item { Layout.preferredWidth: 8 }
     }
 }

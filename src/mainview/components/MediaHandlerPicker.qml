@@ -47,7 +47,7 @@ Popup {
             color: "white"
             radius: 10
 
-            HoverableButton {
+            PushButton {
                 id: closeButton
 
                 anchors.top: mediahandlerPickerPopupRect.top
@@ -55,10 +55,6 @@ Popup {
                 anchors.right: mediahandlerPickerPopupRect.right
                 anchors.rightMargin: 5
 
-                width: 30
-                height: 30
-
-                radius: 30
                 source: "qrc:/images/icons/round-close-24px.svg"
 
                 onClicked: {
@@ -136,17 +132,13 @@ Popup {
             color: "white"
             radius: 10
 
-            HoverableButton {
+            PushButton {
                 id: backButton
                 anchors.top: mediahandlerPreferencePopupRect2.top
                 anchors.topMargin: 5
                 anchors.left: mediahandlerPreferencePopupRect2.left
                 anchors.leftMargin: 5
 
-                width: 30
-                height: 30
-
-                radius: 30
                 source: "qrc:/images/icons/ic_arrow_back_24px.svg"
                 toolTipText: qsTr("Go back to plugins list")
                 hoverEnabled: true
@@ -155,7 +147,7 @@ Popup {
                 }
             }
 
-            HoverableButton {
+            PushButton {
                 id: closeButton2
 
                 anchors.top: mediahandlerPreferencePopupRect2.top
@@ -163,10 +155,6 @@ Popup {
                 anchors.right: mediahandlerPreferencePopupRect2.right
                 anchors.rightMargin: 5
 
-                width: 30
-                height: 30
-
-                radius: 30
                 source: "qrc:/images/icons/round-close-24px.svg"
 
                 onClicked: {

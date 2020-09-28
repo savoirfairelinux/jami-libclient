@@ -1,4 +1,3 @@
-
 /*
  * Copyright (C) 2020 by Savoir-faire Linux
  * Author: Mingrui Zhang <mingrui.zhang@savoirfairelinux.com>
@@ -27,7 +26,7 @@ import "../../commoncomponents"
 
 Rectangle {
     id: welcomeRect
-    property int buttonPreferredSize: 30
+
     anchors.fill: parent
 
     Rectangle {
@@ -103,7 +102,9 @@ Rectangle {
 
                 ColumnLayout {
                     id: jamiRegisteredNameRectColumnLayout
+
                     spacing: 0
+
                     Text {
                         id: jamiRegisteredNameText
                         Layout.alignment: Qt.AlignCenter
@@ -122,13 +123,14 @@ Rectangle {
                         }
                     }
 
-                    HoverableButton {
+                    PushButton {
                         id: copyRegisterednameButton
+
+                        preferredSize: 34
+                        imagePadding: 4
+
                         Layout.alignment: Qt.AlignCenter
-                        Layout.preferredWidth: buttonPreferredSize
-                        Layout.preferredHeight: buttonPreferredSize
-                        radius: 30
-                        source: "qrc:/images/icons/ic_content_copy.svg"
+                        source: "qrc:/images/icons/content_copy-24px.svg"
                         onClicked: {
                             UtilsAdapter.setText(
                                         textMetricsjamiRegisteredNameText.text)
@@ -155,9 +157,7 @@ Rectangle {
             color: "grey"
         }
 
-        onClicked: {
-            aboutPopUpDialog.open()
-        }
+        onClicked: aboutPopUpDialog.open()
     }
 
     CustomBorder {

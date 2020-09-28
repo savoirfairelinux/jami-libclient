@@ -118,7 +118,7 @@ ItemDelegate {
         }
 
         onReleased: {
-            itemSmartListBackground.color = JamiTheme.releaseColor
+            itemSmartListBackground.color = JamiTheme.normalButtonColor
 
             ContactAdapter.contactSelected(index)
             contactPickerPopup.close()

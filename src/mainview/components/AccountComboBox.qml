@@ -1,6 +1,7 @@
 /*
  * Copyright (C) 2020 by Savoir-faire Linux
  * Author: Mingrui Zhang <mingrui.zhang@savoirfairelinux.com>
+ * Author: Andreas Traczyk <andreas.traczyk@savoirfairelinux.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -91,7 +92,7 @@ ComboBox {
         font.pointSize: JamiTheme.textFontSize
     }
 
-    Image {
+    ResponsiveImage {
         id: arrowDropDown
 
         anchors.left: textUserAliasRoot.right
@@ -100,8 +101,6 @@ ComboBox {
         width: 24
         height: 24
 
-        fillMode: Image.PreserveAspectFit
-        mipmap: true
         source: "qrc:/images/icons/round-arrow_drop_down-24px.svg"
     }
 
@@ -140,59 +139,6 @@ ComboBox {
                                     AccountListModel.Username)
     }
 
-    HoverableButton {
-        id: qrCodeGenerateButton
-
-        anchors.right: settingsButton.left
-        anchors.rightMargin: 10
-        anchors.verticalCenter: root.verticalCenter
-
-        buttonImageHeight: height - 8
-        buttonImageWidth: width - 8
-        radius: height / 2
-
-        width: 24
-        height: 24
-
-        visible: AccountAdapter.currentAccountType === Profile.Type.RING
-        toolTipText: JamiStrings.displayQRCode
-        hoverEnabled: true
-
-        source: "qrc:/images/qrcode.png"
-        backgroundColor: "white"
-        onClicked: {
-            if (visible)
-                qrDialog.open()
-        }
-    }
-
-    HoverableButton {
-        id: settingsButton
-
-        anchors.right: root.right
-        anchors.rightMargin: 10
-        anchors.verticalCenter: root.verticalCenter
-
-        buttonImageHeight: height - 8
-        buttonImageWidth: width - 8
-        radius: height / 2
-        width: 25
-        height: 25
-
-        source: !mainViewWindow.inSettingsView ?
-                    "qrc:/images/icons/round-settings-24px.svg" :
-                    "qrc:/images/icons/round-close-24px.svg"
-        toolTipText: !mainViewWindow.inSettingsView ?
-                         JamiStrings.openSettings :
-                         JamiStrings.closeSettings
-        hoverEnabled: true
-
-        backgroundColor: "white"
-        onClicked: {
-            settingBtnClicked()
-        }
-    }
-
     background: Rectangle {
         id: rootItemBackground
 
@@ -216,63 +162,58 @@ ComboBox {
         id: comboBoxRootMouseArea
 
         anchors.fill: parent
-
         hoverEnabled: true
-        propagateComposedEvents: true
 
-        onPressed: {
-            if (isMouseOnButton(mouse, qrCodeGenerateButton)) {
-                qrCodeGenerateButton.backgroundColor = JamiTheme.pressColor
-                qrCodeGenerateButton.clicked()
-            }if (isMouseOnButton(mouse, settingsButton)) {
-                settingsButton.backgroundColor = JamiTheme.pressColor
-                settingsButton.clicked()
+        onClicked: {
+            if (comboBoxPopup.opened) {
+                root.popup.close()
             } else {
-                rootItemBackground.color = JamiTheme.pressColor
+                root.popup.open()
             }
         }
+        onEntered: rootItemBackground.color = Qt.lighter(JamiTheme.hoverColor, 1.05)
+        onExited: rootItemBackground.color = JamiTheme.backgroundColor
+    }
 
-        onReleased: {
-            if (isMouseOnButton(mouse, qrCodeGenerateButton)) {
-                qrCodeGenerateButton.backgroundColor = JamiTheme.releaseColor
-            } else if (isMouseOnButton(mouse, settingsButton)) {
-                settingsButton.backgroundColor = JamiTheme.releaseColor
-            } else {
-                rootItemBackground.color = JamiTheme.releaseColor
-                if (comboBoxPopup.opened) {
-                    root.popup.close()
-                } else {
-                    root.popup.open()
-                }
-            }
+    PushButton {
+        id: qrCodeGenerateButton
+
+        anchors.right: settingsButton.left
+        anchors.rightMargin: 10
+        anchors.verticalCenter: root.verticalCenter
+
+        width: visible ? preferredSize : 0
+        height: visible ? preferredSize : 0
+
+        visible: AccountAdapter.currentAccountType === Profile.Type.RING
+        toolTipText: JamiStrings.displayQRCode
+
+        source: "qrc:/images/icons/qr_code-24px.svg"
+
+        onClicked: {
+            if (visible)
+                qrDialog.open()
         }
-        onEntered: {
-            rootItemBackground.color = JamiTheme.hoverColor
-        }
-        onExited: {
+    }
+
+    PushButton {
+        id: settingsButton
+
+        anchors.right: root.right
+        anchors.rightMargin: 10
+        anchors.verticalCenter: root.verticalCenter
+
+        source: !mainViewWindow.inSettingsView ?
+                    "qrc:/images/icons/round-settings-24px.svg" :
+                    "qrc:/images/icons/round-close-24px.svg"
+
+        toolTipText: !mainViewWindow.inSettingsView ?
+                         JamiStrings.openSettings :
+                         JamiStrings.closeSettings
+
+        onClicked: {
+            settingBtnClicked()
             rootItemBackground.color = JamiTheme.backgroundColor
-        }
-        onMouseXChanged: {
-
-            // Manually making button hover.
-            qrCodeGenerateButton.backgroundColor = (isMouseOnButton(mouse, qrCodeGenerateButton)) ?
-                        JamiTheme.hoverColor : "white"
-
-            settingsButton.backgroundColor = (isMouseOnButton(mouse, settingsButton)) ?
-                        JamiTheme.hoverColor : "white"
-        }
-
-        function isMouseOnButton(mouse, button) {
-            var mousePos = mapToItem(comboBoxRootMouseArea, mouse.x, mouse.y)
-            var qrButtonPos = mapToItem(comboBoxRootMouseArea,
-                                              button.x,
-                                              button.y)
-            if ((mousePos.x >= qrButtonPos.x
-                 && mousePos.x <= qrButtonPos.x + button.width)
-                    && (mousePos.y >= qrButtonPos.y
-                        && mousePos.y <= qrButtonPos.y + button.height))
-                return true
-            return false
         }
     }
 
