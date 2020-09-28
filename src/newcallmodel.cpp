@@ -722,19 +722,7 @@ NewCallModel::setConferenceLayout(const QString& confId, const call::Layout& lay
 void
 NewCallModel::setActiveParticipant(const QString& confId, const QString& participant)
 {
-    QString callId = participant; // participant can be directly the callId
-    QStringList callList = CallManager::instance().getParticipantList(confId);
-    for (const auto& call : callList) {
-        // Search related call for participant given
-        MapStringString details = CallManager::instance().getCallDetails(call);
-        auto endId = details["PEER_NUMBER"].indexOf("@");
-        auto peerUri = details["PEER_NUMBER"].left(endId);
-        if (peerUri == participant) {
-            callId = call;
-        }
-    }
-
-    CallManager::instance().setActiveParticipant(confId, callId);
+    CallManager::instance().setActiveParticipant(confId, participant);
 }
 
 void
