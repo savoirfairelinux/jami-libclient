@@ -30,6 +30,7 @@
 
 #include <memory>
 #include <deque>
+#include <optional>
 
 namespace lrc {
 
@@ -54,6 +55,9 @@ class NewAccountModel;
 
 enum class ConferenceableItem { CALL, CONTACT };
 Q_ENUM_NS(ConferenceableItem)
+
+template<typename T>
+using OptRef = std::optional<std::reference_wrapper<T>>;
 
 struct AccountConversation
 {
@@ -92,12 +96,28 @@ public:
      * @return conversations filtered with the current filter
      */
     const ConversationQueue& allFilteredConversations() const;
+
     /**
-     * Get conversation for a given identifier
-     * @param  conversation id
-     * @return conversations with given id
+     * Get conversation for a given uid
+     * @param uid conversation uid
+     * @return reference to conversation info with given uid
      */
-    conversation::Info getConversationForUID(const QString& uid) const;
+    OptRef<conversation::Info> getConversationForUid(const QString& uid);
+
+    /**
+     * Get conversation for a given peer uri
+     * @param uri peer uri
+     * @return reference to conversation info with given peer uri
+     */
+    OptRef<conversation::Info> getConversationForPeerUri(const QString& uri);
+
+    /**
+     * Get conversation for a given call id
+     * @param callId call id
+     * @return reference to conversation info with given call id
+     */
+    OptRef<conversation::Info> getConversationForCallId(const QString& callId);
+
     /**
      * Get conversations that could be added to conference
      * @param  current conversation id
