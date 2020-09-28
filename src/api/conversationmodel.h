@@ -96,12 +96,28 @@ public:
      * @return conversations filtered with the current filter
      */
     Q_INVOKABLE const ConversationQueue& allFilteredConversations() const;
+
     /**
-     * Get conversation for a given identifier
-     * @param  conversation id
-     * @return conversations with given id
+     * Get conversation for a given uid
+     * @param uid conversation uid
+     * @return reference to conversation info with given uid
      */
-    Q_INVOKABLE conversation::Info getConversationForUID(const QString& uid) const;
+    Q_INVOKABLE conversation::Info& getConversationForUid(const QString& uid);
+
+    /**
+     * Get conversation for a given peer uri
+     * @param uri peer uri
+     * @return reference to conversation info with given peer uri
+     */
+    Q_INVOKABLE conversation::Info& getConversationForPeerUri(const QString& uri);
+
+    /**
+     * Get conversation for a given call id
+     * @param callId call id
+     * @return reference to conversation info with given call id
+     */
+    Q_INVOKABLE conversation::Info& getConversationForCallId(const QString& callId);
+
     /**
      * Get conversations that could be added to conference
      * @param  current conversation id
@@ -368,6 +384,9 @@ Q_SIGNALS:
 
 private:
     std::unique_ptr<ConversationModelPimpl> pimpl_;
+
+    // An invalid object with an empty uid to return from helper functions;
+    conversation::Info invalid {};
 };
 } // namespace api
 } // namespace lrc
