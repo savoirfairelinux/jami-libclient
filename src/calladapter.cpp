@@ -546,8 +546,9 @@ CallAdapter::maximizeParticipant(const QString& uri, bool isActive)
     auto* callModel = LRCInstance::getAccountInfo(accountId_).callModel.get();
     auto* convModel = LRCInstance::getCurrentConversationModel();
     const auto conversation = convModel->getConversationForUID(LRCInstance::getCurrentConvUid());
-    const auto confId = conversation.confId;
-
+    auto confId = conversation.confId;
+    if (confId.isEmpty())
+        confId = conversation.callId;
     try {
         const auto call = callModel->getCall(confId);
         switch (call.layout) {
@@ -576,7 +577,9 @@ CallAdapter::minimizeParticipant()
     auto* callModel = LRCInstance::getAccountInfo(accountId_).callModel.get();
     auto* convModel = LRCInstance::getCurrentConversationModel();
     const auto conversation = convModel->getConversationForUID(LRCInstance::getCurrentConvUid());
-    const auto confId = conversation.confId;
+    auto confId = conversation.confId;
+    if (confId.isEmpty())
+        confId = conversation.callId;
     try {
         auto call = callModel->getCall(confId);
         switch (call.layout) {
@@ -619,19 +622,44 @@ CallAdapter::isRecordingThisCall()
 }
 
 bool
-CallAdapter::isCurrentMaster() const
+CallAdapter::isCurrentHost() const
 {
     auto* convModel = LRCInstance::getCurrentConversationModel();
     const auto convInfo = convModel->getConversationForUID(convUid_);
     if (!convInfo.uid.isEmpty()) {
         auto* callModel = LRCInstance::getAccountInfo(accountId_).callModel.get();
         try {
-            if (!convInfo.confId.isEmpty() && callModel->hasCall(convInfo.confId)) {
+            auto call = callModel->getCall(convInfo.callId);
+            if (call.participantsInfos.size() == 0) {
                 return true;
             } else {
-                auto call = callModel->getCall(convInfo.callId);
-                return call.participantsInfos.size() == 0;
+                return !convInfo.confId.isEmpty() && callModel->hasCall(convInfo.confId);
             }
+        } catch (...) {
+        }
+    }
+    return true;
+}
+
+bool
+CallAdapter::isCurrentModerator() const
+{
+    auto* convModel = LRCInstance::getCurrentConversationModel();
+    const auto convInfo = convModel->getConversationForUID(convUid_);
+    if (!convInfo.uid.isEmpty()) {
+        auto* callModel = LRCInstance::getAccountInfo(accountId_).callModel.get();
+        try {
+            auto call = callModel->getCall(convInfo.callId);
+            if (call.participantsInfos.size() == 0) {
+                return true;
+            } else {
+                auto& accInfo = LRCInstance::accountModel().getAccountInfo(accountId_);
+                for (const auto& participant : call.participantsInfos) {
+                    if (participant["uri"] == accInfo.profileInfo.uri)
+                        return participant["isModerator"] == "true";
+                }
+            }
+            return false;
         } catch (...) {
         }
     }

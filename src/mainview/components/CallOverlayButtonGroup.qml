@@ -32,22 +32,22 @@ Rectangle {
     // ButtonCounts here is to make sure that flow layout margin is calculated correctly,
     // since no other methods can make buttons at the layout center.
     property int buttonPreferredSize: 24
-    property var isMaster: true
+    property var isHost: true
     property var isSip: false
 
     signal chatButtonClicked
     signal addToConferenceButtonClicked
 
-    function updateMaster() {
-        root.isMaster = CallAdapter.isCurrentMaster()
-        addToConferenceButton.visible = !root.isSip && root.isMaster
+    function updateMenu() {
+        root.isHost = CallAdapter.isCurrentHost()
+        addToConferenceButton.visible = !root.isSip && root.isHost
     }
 
     function setButtonStatus(isPaused, isAudioOnly, isAudioMuted, isVideoMuted, isRecording, isSIP, isConferenceCall) {
-        root.isMaster = CallAdapter.isCurrentMaster()
+        root.isHost = CallAdapter.isCurrentModerator()
         root.isSip = isSIP
         noVideoButton.visible = !isAudioOnly
-        addToConferenceButton.visible = !isSIP && isMaster
+        addToConferenceButton.visible = !isSIP && isHost
 
         noMicButton.checked = isAudioMuted
         noVideoButton.checked = isVideoMuted
@@ -161,7 +161,7 @@ Rectangle {
 
             Layout.preferredWidth: buttonPreferredSize * 2
             Layout.preferredHeight: buttonPreferredSize * 2
-            visible: !isMaster
+            visible: !isHost
 
             backgroundColor: Qt.rgba(0, 0, 0, 0.75)
             onEnterColor: Qt.rgba(0, 0, 0, 0.6)

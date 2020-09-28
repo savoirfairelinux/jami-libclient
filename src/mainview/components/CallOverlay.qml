@@ -58,8 +58,8 @@ Rectangle {
                                                isConferenceCall)
     }
 
-    function updateMaster() {
-        callOverlayButtonGroup.updateMaster()
+    function updateMenu() {
+        callOverlayButtonGroup.updateMenu()
     }
 
     function showOnHoldImage(visible) {
@@ -75,8 +75,9 @@ Rectangle {
     }
     
     function handleParticipantsInfo(infos) {
-        videoCallOverlay.updateMaster()
-        var isMaster = CallAdapter.isCurrentMaster()
+        videoCallOverlay.updateMenu()
+        var isModerator = CallAdapter.isCurrentModerator()
+        var isHost = CallAdapter.isCurrentHost()
         for (var p in participantOverlays) {
             if (participantOverlays[p])
                 participantOverlays[p].destroy()
@@ -102,7 +103,8 @@ Rectangle {
                 hover.setParticipantName(infos[infoVariant].bestName)
                 hover.active = infos[infoVariant].active;
                 hover.isLocal = infos[infoVariant].isLocal;
-                hover.setMenuVisible(isMaster)
+                hover.setMenuVisible(isModerator)
+                hover.setEndCallVisible(isHost)
                 hover.uri = infos[infoVariant].uri
                 if (infos[infoVariant].videoMuted)
                     hover.setAvatar(infos[infoVariant].avatar)

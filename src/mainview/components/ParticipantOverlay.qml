@@ -31,6 +31,7 @@ Rectangle {
     property var uri: ""
     property var active: true
     property var isLocal: true
+    property var showEndCall: true
     property var injectedContextMenu: null
 
     function setParticipantName(name) {
@@ -49,6 +50,10 @@ Rectangle {
 
     function setMenuVisible(isVisible) {
         optionsButton.visible = isVisible
+    }
+
+    function setEndCallVisible(isVisible) {
+        showEndCall = isVisible
     }
 
     border.width: 1
@@ -147,7 +152,7 @@ Rectangle {
                         var layout = CallAdapter.getCurrentLayoutType()
                         var showMaximized = layout !== 2
                         var showMinimized = !(layout === 0 || (layout === 1 && !active))
-                        injectedContextMenu.showHangup = !root.isLocal
+                        injectedContextMenu.showHangup = !root.isLocal && showEndCall
                         injectedContextMenu.showMaximize = showMaximized
                         injectedContextMenu.showMinimize = showMinimized
                         injectedContextMenu.uri = uri

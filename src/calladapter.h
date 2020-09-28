@@ -56,7 +56,8 @@ public:
     Q_INVOKABLE void maximizeParticipant(const QString& uri, bool isActive);
     Q_INVOKABLE void minimizeParticipant();
     Q_INVOKABLE void hangUpThisCall();
-    Q_INVOKABLE bool isCurrentMaster() const;
+    Q_INVOKABLE bool isCurrentModerator() const;
+    Q_INVOKABLE bool isCurrentHost() const;
     Q_INVOKABLE int getCurrentLayoutType() const;
     Q_INVOKABLE void holdThisCallToggle();
     Q_INVOKABLE void muteThisCallToggle();
