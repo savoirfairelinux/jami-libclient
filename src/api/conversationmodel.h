@@ -30,6 +30,7 @@
 
 #include <memory>
 #include <deque>
+#include <optional>
 
 namespace lrc {
 
@@ -58,6 +59,9 @@ enum class ConferenceableItem { CALL, CONTACT };
 #if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
 Q_ENUM_NS(ConferenceableItem)
 #endif
+
+template<typename T>
+using OptRef = std::optional<std::reference_wrapper<T>>;
 
 struct AccountConversation
 {
@@ -102,21 +106,21 @@ public:
      * @param uid conversation uid
      * @return reference to conversation info with given uid
      */
-    Q_INVOKABLE conversation::Info& getConversationForUid(const QString& uid);
+    Q_INVOKABLE OptRef<conversation::Info> getConversationForUid(const QString& uid);
 
     /**
      * Get conversation for a given peer uri
      * @param uri peer uri
      * @return reference to conversation info with given peer uri
      */
-    Q_INVOKABLE conversation::Info& getConversationForPeerUri(const QString& uri);
+    Q_INVOKABLE OptRef<conversation::Info> getConversationForPeerUri(const QString& uri);
 
     /**
      * Get conversation for a given call id
      * @param callId call id
      * @return reference to conversation info with given call id
      */
-    Q_INVOKABLE conversation::Info& getConversationForCallId(const QString& callId);
+    Q_INVOKABLE OptRef<conversation::Info> getConversationForCallId(const QString& callId);
 
     /**
      * Get conversations that could be added to conference
@@ -384,9 +388,6 @@ Q_SIGNALS:
 
 private:
     std::unique_ptr<ConversationModelPimpl> pimpl_;
-
-    // An invalid object with an empty uid to return from helper functions;
-    conversation::Info invalid {};
 };
 } // namespace api
 } // namespace lrc
