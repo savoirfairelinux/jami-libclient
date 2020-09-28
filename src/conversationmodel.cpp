@@ -69,19 +69,41 @@ public:
 
     ~ConversationModelPimpl();
 
+    using FilterPredicate = std::function<bool(const conversation::Info& convInfo)>;
+
     /**
      * return a conversation index from conversations or -1 if no index is found.
      * @param uid of the contact to search.
      * @return an int.
      */
     int indexOf(const QString& uid) const;
+
+    /**
+     * return a reference to a conversation with given filter
+     * @param pred a unary comparison predicate with which to find the conversation
+     * @param searchResultIncluded if need to search in contacts and userSearch
+     * @return a reference to a conversation with given uid
+     */
+    std::reference_wrapper<conversation::Info> getConversation(
+        const FilterPredicate& pred, const bool searchResultIncluded = false);
+
     /**
      * return a reference to a conversation with given uid.
      * @param conversation uid.
      * @param searchResultIncluded if need to search in contacts and userSearch.
-     * @return a reference to a conversation with given uid.
+     * @return a reference to a conversation with the given uid.
      */
-    conversation::Info& getConversation(const QString& uid, const bool searchResultIncluded = false);
+    std::reference_wrapper<conversation::Info> getConversationForUid(
+        const QString& uid, const bool searchResultIncluded = false);
+
+    /**
+     * return a reference to a conversation with participant.
+     * @param participant uri.
+     * @param searchResultIncluded if need to search in contacts and userSearch.
+     * @return a reference to a conversation with the given peer uri.
+     */
+    std::reference_wrapper<conversation::Info> getConversationForPeerUri(
+        const QString& uri, const bool searchResultIncluded = false);
 
     /**
      * return a conversation index from conversations or -1 if no index is found.
@@ -89,14 +111,7 @@ public:
      * @return an int.
      */
     int indexOfContact(const QString& uri) const;
-    /**
-     * return a reference to a conversation with participant.
-     * @param participant uri.
-     * @param searchResultIncluded if need to search in contacts and userSearch.
-     * @return a reference to a conversation with participant.
-     */
-    conversation::Info& getConversationForContact(const QString& uid,
-                                                  const bool searchResultIncluded = false);
+
     /**
      * Initialize conversations_ and filteredConversations_
      */
@@ -530,7 +545,7 @@ ConversationModel::getConferenceableConversations(const QString& convId, const Q
         for (AccountConversation accConv : it.second) {
             try {
                 auto& account = pimpl_->lrc.getAccountModel().getAccountInfo(accConv.accountId);
-                auto conv = account.conversationModel->getConversationForUID(accConv.convId);
+                auto conv = account.conversationModel->getConversationForUid(accConv.convId)->get();
                 auto cont = account.contactModel->getContact(conv.participants.front());
                 if (cont.profileInfo.alias.contains(filter) || cont.profileInfo.uri.contains(filter)
                     || cont.registeredName.contains(filter)) {
@@ -579,13 +594,40 @@ ConversationModel::getFilteredConversations(const profile::Type& filter,
     return pimpl_->customFilteredConversations;
 }
 
-conversation::Info
-ConversationModel::getConversationForUID(const QString& uid) const
+OptRef<conversation::Info>
+ConversationModel::getConversationForUid(const QString& uid)
 {
     try {
-        return pimpl_->getConversation(uid, true);
-    } catch (const std::out_of_range& e) {
-        return {};
+        return std::make_optional(pimpl_->getConversationForUid(uid, true));
+    } catch (const std::out_of_range&) {
+        return std::nullopt;
+    }
+}
+
+OptRef<conversation::Info>
+ConversationModel::getConversationForPeerUri(const QString& uri)
+{
+    try {
+        return std::make_optional(
+            pimpl_->getConversation([uri](const conversation::Info& conv)
+                                        -> bool { return uri == conv.participants.front(); },
+                                    true));
+    } catch (const std::out_of_range&) {
+        return std::nullopt;
+    }
+}
+
+OptRef<conversation::Info>
+ConversationModel::getConversationForCallId(const QString& callId)
+{
+    try {
+        return std::make_optional(pimpl_->getConversation(
+            [callId](const conversation::Info& conv) -> bool {
+                return (callId == conv.callId || callId == conv.confId);
+            },
+            true));
+    } catch (const std::out_of_range&) {
+        return std::nullopt;
     }
 }
 
@@ -615,7 +657,7 @@ void
 ConversationModel::makePermanent(const QString& uid)
 {
     try {
-        auto& conversation = pimpl_->getConversation(uid, true);
+        auto& conversation = pimpl_->getConversationForUid(uid, true).get();
 
         if (conversation.participants.empty()) {
             // Should not
@@ -635,7 +677,7 @@ void
 ConversationModel::selectConversation(const QString& uid) const
 {
     try {
-        auto& conversation = pimpl_->getConversation(uid, true);
+        auto& conversation = pimpl_->getConversationForUid(uid, true).get();
 
         bool callEnded = true;
         if (!conversation.callId.isEmpty()) {
@@ -735,7 +777,7 @@ void
 ConversationModelPimpl::placeCall(const QString& uid, bool isAudioOnly)
 {
     try {
-        auto& conversation = getConversation(uid, true);
+        auto& conversation = getConversationForUid(uid, true).get();
         if (conversation.participants.empty()) {
             // Should not
             qDebug()
@@ -850,7 +892,7 @@ void
 ConversationModel::sendMessage(const QString& uid, const QString& body)
 {
     try {
-        auto& conversation = pimpl_->getConversation(uid, true);
+        auto& conversation = pimpl_->getConversationForUid(uid, true).get();
 
         if (conversation.participants.empty()) {
             // Should not
@@ -1725,7 +1767,7 @@ ConversationModelPimpl::slotContactModelUpdated(const QString& uri, bool needsSo
     // presence updated
     if (!needsSorted) {
         try {
-            auto& conversation = getConversationForContact(uri, true);
+            auto& conversation = getConversationForPeerUri(uri, true).get();
             dirtyConversations = {true, true};
             emit linked.conversationUpdated(conversation.uid);
         } catch (std::out_of_range&) {
@@ -1817,39 +1859,38 @@ ConversationModelPimpl::indexOf(const QString& uid) const
     return -1;
 }
 
-conversation::Info&
-ConversationModelPimpl::getConversation(const QString& uid, const bool searchResultIncluded)
+std::reference_wrapper<conversation::Info>
+ConversationModelPimpl::getConversation(const FilterPredicate& pred, const bool searchResultIncluded)
 {
-    for (unsigned int i = 0; i < conversations.size(); ++i) {
-        if (conversations.at(i).uid == uid)
-            return conversations.at(i);
+    auto conv = std::find_if(conversations.cbegin(), conversations.cend(), pred);
+    if (conv != conversations.cend()) {
+        return std::remove_const_t<conversation::Info&>(*conv);
     }
 
     if (searchResultIncluded) {
-        for (unsigned int i = 0; i < searchResults.size(); ++i) {
-            if (searchResults.at(i).uid == uid)
-                return searchResults.at(i);
+        auto sr = std::find_if(searchResults.cbegin(), searchResults.cend(), pred);
+        if (sr != searchResults.cend()) {
+            return std::remove_const_t<conversation::Info&>(*sr);
         }
     }
+
     throw std::out_of_range("Conversation out of range");
 }
 
-conversation::Info&
-ConversationModelPimpl::getConversationForContact(const QString& uri,
+std::reference_wrapper<conversation::Info>
+ConversationModelPimpl::getConversationForUid(const QString& uid, const bool searchResultIncluded)
+{
+    return getConversation([uid](const conversation::Info& conv) -> bool { return uid == conv.uid; },
+                           searchResultIncluded);
+}
+
+std::reference_wrapper<conversation::Info>
+ConversationModelPimpl::getConversationForPeerUri(const QString& uri,
                                                   const bool searchResultIncluded)
 {
-    for (unsigned int i = 0; i < conversations.size(); ++i) {
-        if (conversations.at(i).participants.front() == uri)
-            return conversations.at(i);
-    }
-
-    if (searchResultIncluded) {
-        for (unsigned int i = 0; i < searchResults.size(); ++i) {
-            if (searchResults.at(i).participants.front() == uri)
-                return searchResults.at(i);
-        }
-    }
-    throw std::out_of_range("Conversation out of range");
+    return getConversation([uri](const conversation::Info& conv)
+                               -> bool { return uri == conv.participants.front(); },
+                           searchResultIncluded);
 }
 
 int
@@ -2222,7 +2263,7 @@ void
 ConversationModel::sendFile(const QString& convUid, const QString& path, const QString& filename)
 {
     try {
-        auto& conversation = pimpl_->getConversation(convUid, true);
+        auto& conversation = pimpl_->getConversationForUid(convUid, true).get();
 
         const auto peerUri = conversation.participants.front();
         bool isTemporary = peerUri == convUid;
@@ -2573,8 +2614,8 @@ ConversationModelPimpl::slotTransferStatusFinished(long long dringId, datatransf
             auto& interactions = conversations[conversationIdx].interactions;
             auto it = interactions.find(interactionId);
             if (it != interactions.end()) {
-                // We need to check if current status is ONGOING as CANCELED must not be transformed
-                // into FINISHED
+                // We need to check if current status is ONGOING as CANCELED must not be
+                // transformed into FINISHED
                 if (it->second.status == interaction::Status::TRANSFER_ONGOING) {
                     emitUpdated = true;
                     it->second.status = newStatus;
