@@ -66,7 +66,9 @@ main(int argc, char* argv[])
         Qt::HighDpiScaleFactorRoundingPolicy::RoundPreferFloor);
     QtWebEngine::initialize();
 
-    MainApplication app(argc, argv);
+    char ARG_DISABLE_WEB_SECURITY[] = "--disable-web-security";
+    auto newArgv = parseInputArgument(argc, argv, ARG_DISABLE_WEB_SECURITY);
+    MainApplication app(argc, newArgv);
 
     /*
      * Runguard to make sure that only one instance runs at a time.
