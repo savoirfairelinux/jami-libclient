@@ -442,6 +442,7 @@ Window {
     SidePanel {
         id: mainViewWindowSidePanel
 
+        // TODO: remove the evil in this slot
         onConversationSmartListNeedToAccessMessageWebView: {
             communicationPageMessageWebView.headerUserAliasLabelText = currentUserAlias
             communicationPageMessageWebView.headerUserUserNameLabelText = currentUserDisplayName
@@ -507,6 +508,10 @@ Window {
                     sidePanelViewStack.push(communicationPageMessageWebView)
                 }
             }
+
+            if (!callStackViewShouldShow) {
+                communicationPageMessageWebView.focusMessageWebView()
+            }
         }
 
         Connections {
@@ -527,6 +532,7 @@ Window {
 
     WelcomePage {
         id: welcomePage
+
         visible: false
     }
 

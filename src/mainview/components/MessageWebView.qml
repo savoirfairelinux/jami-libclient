@@ -39,6 +39,9 @@ Rectangle {
     signal messagesCleared
     signal messagesLoaded
 
+    function focusMessageWebView() {
+        messageWebView.forceActiveFocus()
+    }
 
     function webViewRunJavaScript(arg) {
         messageWebView.runJavaScript(arg)
@@ -189,7 +192,6 @@ Rectangle {
     }
 
     WebEngineView {
-
         id: messageWebView
 
         anchors.top: messageWebViewHeader.bottom
@@ -269,7 +271,6 @@ Rectangle {
             messageWebView.url = "qrc:/chatview.html"
         }
     }
-
 
     // Provide WebEngineProfile.
     WebEngineProfile {

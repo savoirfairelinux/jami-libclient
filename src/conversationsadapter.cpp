@@ -269,22 +269,22 @@ ConversationsAdapter::connectConversationModel(bool updateFilter)
                                                    emit updateListViewRequested();
                                                });
 
-    filterChangedConnection_
-        = QObject::connect(currentConversationModel,
-                           &lrc::api::ConversationModel::filterChanged,
-                           [this]() {
-                               conversationSmartListModel_->fillConversationsList();
-                               updateConversationsFilterWidget();
-                               emit updateListViewRequested();
-                           });
+    filterChangedConnection_ = QObject::connect(currentConversationModel,
+                                                &lrc::api::ConversationModel::filterChanged,
+                                                [this]() {
+                                                    conversationSmartListModel_
+                                                        ->fillConversationsList();
+                                                    updateConversationsFilterWidget();
+                                                    emit updateListViewRequested();
+                                                });
 
-    newConversationConnection_
-        = QObject::connect(currentConversationModel,
-                           &lrc::api::ConversationModel::newConversation,
-                           [this](const QString& convUid) {
-                               conversationSmartListModel_->fillConversationsList();
-                               updateConversationForNewContact(convUid);
-                           });
+    newConversationConnection_ = QObject::connect(currentConversationModel,
+                                                  &lrc::api::ConversationModel::newConversation,
+                                                  [this](const QString& convUid) {
+                                                      conversationSmartListModel_
+                                                          ->fillConversationsList();
+                                                      updateConversationForNewContact(convUid);
+                                                  });
 
     conversationRemovedConnection_
         = QObject::connect(currentConversationModel,
