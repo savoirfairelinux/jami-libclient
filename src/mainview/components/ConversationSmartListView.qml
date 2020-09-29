@@ -29,10 +29,8 @@ ListView {
     signal needToAccessMessageWebView(string currentUserDisplayName, string currentUserAlias, string currentUID, bool callStackViewShouldShow, bool isAudioOnly, int callState)
     signal needToSelectItems(string conversationUid)
     signal needToDeselectItems
-    signal needToGrabFocus
 
     signal needToShowChatView(string accountId, string convUid)
-    signal currentIndexIsChanged
     signal forceUpdatePotentialInvalidItem
 
     // Refresh all items within the model.
@@ -79,10 +77,6 @@ ListView {
     Connections {
         target: LRCInstance
         function onUpdateSmartList() { updateListView() }
-    }
-
-    onCurrentIndexChanged: {
-        root.currentIndexIsChanged()
     }
 
     clip: true

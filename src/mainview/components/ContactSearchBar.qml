@@ -27,12 +27,6 @@ Rectangle {
 
     signal contactSearchBarTextChanged(string text)
 
-    // Hack - there is no real way now to make TextField lose its focus,
-    // unless transfer it to other component.
-    function clearFocus() {
-        fakeFocus.forceActiveFocus()
-    }
-
     function clearText() {
         contactSearchBar.clear()
         fakeFocus.forceActiveFocus()
