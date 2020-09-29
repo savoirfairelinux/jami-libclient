@@ -1,4 +1,3 @@
-
 /*
  * Copyright (C) 2020 by Savoir-faire Linux
  * Author: Mingrui Zhang <mingrui.zhang@savoirfairelinux.com>
@@ -16,26 +15,27 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+
 import QtQuick 2.14
 import QtQuick.Controls 2.14
 import QtQuick.Layouts 1.14
+import QtGraphicalEffects 1.15
 import net.jami.Models 1.0
 import net.jami.Adapters 1.0
 
 import "../../commoncomponents"
 
 Popup {
-    id: comboBoxPopup
+    id: root
 
     property bool toogleUpdatePopupHeight: false
 
     y: accountComboBox.height - 1
     implicitWidth: accountComboBox.width - 1
 
-
     // Hack - limite the accounts that can be shown.
     implicitHeight: {
-        comboBoxPopup.visible
+        root.visible
         return Math.min(accountComboBox.height *
                         Math.min(5, accountListModel.rowCount() + 1),
                         mainViewSidePanelRect.height)
@@ -140,7 +140,7 @@ Popup {
                 onReleased: {
                     itemCoboBackground.color = JamiTheme.releaseColor
                     currentIndex = index
-                    comboBoxPopup.close()
+                    root.close()
                     AccountAdapter.accountChanged(index)
                 }
                 onEntered: {
@@ -166,23 +166,36 @@ Popup {
             font.pointSize: JamiTheme.textFontSize
 
             onClicked: {
-                comboBoxPopup.close()
+                root.close()
                 mainViewWindow.startWizard()
             }
         }
 
         ScrollIndicator.vertical: ScrollIndicator {}
     }
+
     background: Rectangle {
         id: accountComboBoxPopup
+
         color: JamiTheme.backgroundColor
         CustomBorder {
             commonBorder: false
-            lBorderwidth: 1
+            lBorderwidth: 2
             rBorderwidth: 1
             tBorderwidth: 1
-            bBorderwidth: 1
+            bBorderwidth: 2
             borderColor: JamiTheme.tabbarBorderColor
+        }
+
+        layer {
+            enabled: true
+            effect: DropShadow {
+                color: "#80000000"
+                verticalOffset: 2
+                horizontalOffset: 2
+                samples: 16
+                radius: 10
+            }
         }
     }
 }

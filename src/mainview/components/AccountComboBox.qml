@@ -199,6 +199,17 @@ ComboBox {
         implicitWidth: root.width
         implicitHeight: root.height
         color: JamiTheme.backgroundColor
+
+        // TODO: this can be removed when frameless window is implemented
+        Rectangle {
+            height: 1
+            anchors {
+                top: parent.top
+                left: parent.left
+                right: parent.right
+            }
+            color: JamiTheme.tabbarBorderColor
+        }
     }
 
     MouseArea {
