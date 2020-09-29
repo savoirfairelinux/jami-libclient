@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3a23817d_7c864319",
+        "filename": "src/qtwrapper/CMakeLists.txt",
+        "patchSetId": 3
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2020-09-29T19:34:49Z",
+      "side": 1,
+      "message": "Is this a STRING? wut",
+      "range": {
+        "startLine": 40,
+        "startChar": 29,
+        "endLine": 40,
+        "endChar": 35
+      },
+      "revId": "3843179f12302613dc97bf8283208fe4c85b23d7",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    }
+  ]
+}
