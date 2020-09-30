@@ -262,11 +262,12 @@ MessagesAdapter::sendImage(const QString& message)
          * Img tag contains file paths.
          */
 
+        // TODO: put all QRegExp strings together
         QString msg(message);
 #ifdef Q_OS_WIN
-        msg = msg.replace("file://", "");
+        msg = msg.replace(QRegExp("^file:\\/{2,3}"), "");
 #else
-        msg = msg.replace("file://", "/");
+        msg = msg.replace(QRegExp("^file:\\/{2,3}"), "/");
 #endif
         QFileInfo fi(msg);
         QString fileName = fi.fileName();
@@ -337,7 +338,7 @@ MessagesAdapter::deleteInteraction(const QString& arg)
 void
 MessagesAdapter::openFile(const QString& arg)
 {
-    QUrl fileUrl("file://" + arg);
+    QUrl fileUrl("file:///" + arg);
     if (!QDesktopServices::openUrl(fileUrl)) {
         qDebug() << "Couldn't open file: " << fileUrl;
     }
@@ -399,9 +400,9 @@ MessagesAdapter::pasteKeyDetected()
          */
         for (int i = 0; i < urlList.size(); ++i) {
             /*
-             * Trim file:// from url.
+             * Trim file:// or file:/// from url.
              */
-            QString filePath = urlList.at(i).toString().remove("file://");
+            QString filePath = urlList.at(i).toString().remove(QRegExp("^file:\\/{2,3}"));
             QByteArray imageFormat = QImageReader::imageFormat(filePath);
 
             /*

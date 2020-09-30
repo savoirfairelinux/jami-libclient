@@ -78,7 +78,7 @@ ItemDelegate {
         id: preferenceFilePathDialog
 
         title: JamiStrings.selectFile
-        folder: "file://" + currentPath
+        folder: "file:///" + currentPath
 
         onAccepted: {
             var url = UtilsAdapter.getAbsPath(fileUrl.toString())
