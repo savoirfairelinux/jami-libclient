@@ -23,6 +23,7 @@
 #include "api/conversation.h"
 #include "api/profile.h"
 #include "api/datatransfer.h"
+#include "containerview.h"
 
 #include <QObject>
 #include <QVector>
@@ -30,7 +31,6 @@
 
 #include <memory>
 #include <deque>
-#include <optional>
 
 namespace lrc {
 
@@ -60,9 +60,6 @@ enum class ConferenceableItem { CALL, CONTACT };
 Q_ENUM_NS(ConferenceableItem)
 #endif
 
-template<typename T>
-using OptRef = std::optional<std::reference_wrapper<T>>;
-
 struct AccountConversation
 {
     QString convId;
@@ -74,7 +71,6 @@ struct AccountConversation
  * for calls and contacts contain only one element
  * for conferences contains multiple entries
  */
-
 typedef QVector<QVector<AccountConversation>> ConferenceableValue;
 
 /**
@@ -85,6 +81,7 @@ class LIB_EXPORT ConversationModel : public QObject
     Q_OBJECT
 public:
     using ConversationQueue = std::deque<conversation::Info>;
+    using ConversationQueueProxy = ContainerView<ConversationQueue>;
 
     const account::Info& owner;
 
@@ -99,7 +96,7 @@ public:
      * Get conversations which should be shown client side
      * @return conversations filtered with the current filter
      */
-    Q_INVOKABLE const ConversationQueue& allFilteredConversations() const;
+    Q_INVOKABLE const ConversationQueueProxy& allFilteredConversations() const;
 
     /**
      * Get conversation for a given uid
@@ -134,7 +131,7 @@ public:
      * Get a custom filtered set of conversations
      * @return conversations filtered
      */
-    Q_INVOKABLE const ConversationQueue& getFilteredConversations(
+    Q_INVOKABLE const ConversationQueueProxy& getFilteredConversations(
         const profile::Type& filter = profile::Type::INVALID,
         bool forceUpdate = false,
         const bool includeBanned = false) const;
@@ -143,7 +140,7 @@ public:
      * @param  row
      * @return a copy of the conversation
      */
-    Q_INVOKABLE conversation::Info filteredConversation(unsigned int row) const;
+    Q_INVOKABLE OptRef<conversation::Info> filteredConversation(unsigned row) const;
 
     /**
      * Get the search results
@@ -156,7 +153,7 @@ public:
      * @param  row
      * @return a copy of the conversation
      */
-    conversation::Info searchResultForRow(unsigned int row) const;
+    OptRef<conversation::Info> searchResultForRow(unsigned row) const;
 
     /**
      * Update the searchResults
@@ -327,9 +324,9 @@ Q_SIGNALS:
      */
     void conversationUpdated(const QString& uid) const;
     /**
-     * Emitted when conversations are sorted by last interaction
+     * Emitted when the conversations list is modified
      */
-    void modelSorted() const;
+    void modelChanged() const;
     /**
      * Emitted when filter has changed
      */
