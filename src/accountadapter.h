@@ -97,8 +97,7 @@ public:
     Q_INVOKABLE bool savePassword(const QString& accountId,
                                   const QString& oldPassword,
                                   const QString& newPassword);
-    Q_INVOKABLE void startAudioMeter(bool async);
-    Q_INVOKABLE void stopAudioMeter(bool async);
+
     Q_INVOKABLE void startPreviewing(bool force = false, bool async = true);
     Q_INVOKABLE void stopPreviewing(bool async = true);
     Q_INVOKABLE bool hasVideoCall();

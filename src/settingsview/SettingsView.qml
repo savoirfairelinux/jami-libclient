@@ -51,40 +51,25 @@ Rectangle {
         switch(sel) {
             case SettingsView.Account:
                 pageIdCurrentAccountSettings.connectCurrentAccount()
-
-                settingsViewRect.stopAudioMeter()
                 settingsViewRect.stopPreviewing()
-
                 selectedMenu = sel
-
                 if(pageIdCurrentAccountSettings.isPhotoBoothOpened())
                 {
                     settingsViewRect.setAvatar()
                 }
-
                 pageIdCurrentAccountSettings.updateAccountInfoDisplayed()
                 break
             case SettingsView.General:
-                try{
-                    settingsViewRect.stopAudioMeter()
-                    settingsViewRect.stopPreviewing()
-                } catch(erro) {}
-
+                settingsViewRect.stopPreviewing()
                 selectedMenu = sel
                 break
             case SettingsView.Media:
                 selectedMenu = sel
-
                 settingsViewRect.stopPreviewing()
                 avSettings.populateAVSettings()
-                settingsViewRect.startAudioMeter()
                 break
             case SettingsView.Plugin:
-                try{
-                    settingsViewRect.stopAudioMeter()
-                    settingsViewRect.stopPreviewing()
-                } catch(erro) {}
-
+                settingsViewRect.stopPreviewing()
                 selectedMenu = sel
                 pluginSettings.populatePluginSettings()
                 break
@@ -102,7 +87,6 @@ Rectangle {
 
     // slots
     function leaveSettingsSlot(showMainView) {
-        settingsViewRect.stopAudioMeter()
         settingsViewRect.stopPreviewing()
         settingsViewRect.stopBooth()
         if (showMainView)
@@ -137,8 +121,6 @@ Rectangle {
 
         anchors.fill: root
 
-        signal stopAudioMeter
-        signal startAudioMeter
         signal stopPreviewing
         signal stopBooth
         signal setAvatar

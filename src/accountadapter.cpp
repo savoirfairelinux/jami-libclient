@@ -248,18 +248,6 @@ AccountAdapter::savePassword(const QString& accountId,
 }
 
 void
-AccountAdapter::startAudioMeter(bool async)
-{
-    LRCInstance::startAudioMeter(async);
-}
-
-void
-AccountAdapter::stopAudioMeter(bool async)
-{
-    LRCInstance::stopAudioMeter(async);
-}
-
-void
 AccountAdapter::startPreviewing(bool force, bool async)
 {
     LRCInstance::renderer()->startPreviewing(force, async);

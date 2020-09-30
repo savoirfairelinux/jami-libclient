@@ -41,29 +41,6 @@ ColumnLayout {
         AUDIOMANAGER
     }
 
-    Connections {
-        target: settingsViewRect
-
-        function onStopAudioMeter() {
-            stopAudioMeter()
-        }
-
-        function onStartAudioMeter() {
-            startAudioMeter()
-        }
-    }
-
-    Connections{
-        target: AVModel
-        enabled: root.visible
-
-        function onAudioMeter(id, level) {
-            if (id === "audiolayer_id") {
-                audioInputMeter.setLevel(level)
-            }
-        }
-    }
-
     function populateAudioSettings() {
         inputComboBoxSetting.comboModel.reset()
         audioOutputDeviceModel.reset()
@@ -77,16 +54,6 @@ ColumnLayout {
         }
 
         audioManagerComboBoxSetting.visible = (audioManagerComboBoxSetting.comboModel.rowCount() > 0)
-    }
-
-    function stopAudioMeter(async = true){
-        audioInputMeter.stop()
-        AccountAdapter.stopAudioMeter(async)
-    }
-
-    function startAudioMeter(async = true){
-        audioInputMeter.start()
-        AccountAdapter.startAudioMeter(async)
     }
 
     AudioOutputDeviceModel{
@@ -117,12 +84,12 @@ ColumnLayout {
         role: "ID_UTF8"
 
         onIndexChanged: {
-            stopAudioMeter(false)
+            AvAdapter.stopAudioMeter(false)
             var selectedInputDeviceName = comboModel.data(
                         comboModel.index(modelIndex, 0),
                         AudioInputDeviceModel.Device_ID)
             AVModel.setInputDevice(selectedInputDeviceName)
-            startAudioMeter(false)
+            AvAdapter.startAudioMeter(false)
         }
     }
 
@@ -154,12 +121,12 @@ ColumnLayout {
         role: "ID_UTF8"
 
         onIndexChanged: {
-            stopAudioMeter(false)
+            AvAdapter.stopAudioMeter(false)
             var selectedOutputDeviceName = audioOutputDeviceModel.data(
                         audioOutputDeviceModel.index(modelIndex, 0),
                         AudioOutputDeviceModel.Device_ID)
             AVModel.setOutputDevice(selectedOutputDeviceName)
-            startAudioMeter(false)
+            AvAdapter.startAudioMeter(false)
         }
     }
 
@@ -178,12 +145,12 @@ ColumnLayout {
         role: "ID_UTF8"
 
         onIndexChanged: {
-            stopAudioMeter(false)
+            AvAdapter.stopAudioMeter(false)
             var selectedRingtoneDeviceName = audioOutputDeviceModel.data(
                         audioOutputDeviceModel.index(modelIndex, 0),
                         AudioOutputDeviceModel.Device_ID)
             AVModel.setRingtoneDevice(selectedRingtoneDeviceName)
-            startAudioMeter(false)
+            AvAdapter.startAudioMeter(false)
         }
     }
 
@@ -201,11 +168,11 @@ ColumnLayout {
         role: "ID_UTF8"
 
         onIndexChanged: {
-            stopAudioMeter(false)
+            AvAdapter.stopAudioMeter(false)
             var selectedAudioManager = comboModel.data(
                         comboModel.index(modelIndex, 0), AudioManagerListModel.AudioManagerID)
             AVModel.setAudioManager(selectedAudioManager)
-            startAudioMeter(false)
+            AvAdapter.startAudioMeter(false)
             populateAudioSettings()
         }
     }

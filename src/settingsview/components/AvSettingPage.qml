@@ -38,7 +38,6 @@ Rectangle {
     onVisibleChanged: {
         if (!visible) {
             videoSettings.stopPreviewing()
-            audioSettings.stopAudioMeter()
         }
     }
 

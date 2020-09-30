@@ -18,30 +18,38 @@
 
 import QtQuick 2.15
 import QtQuick.Controls 2.15
+import net.jami.Models 1.0
+import net.jami.Adapters 1.0
 
 ProgressBar {
     id: root
+
+    property real rmsLevel: 0
 
     value: {
         return clamp(rmsLevel * 300.0, 0.0, 100.0)
     }
 
-    property real rmsLevel: 0
+    onVisibleChanged: {
+        if (visible) {
+            rmsLevel = 0
+            AvAdapter.startAudioMeter(true)
+        } else
+            AvAdapter.stopAudioMeter(true)
+    }
 
-    function clamp(num,a,b) {
+    function clamp(num, a, b) {
         return Math.max(Math.min(num, Math.max(a, b)), Math.min(a, b))
     }
 
-    function start() {
-        rmsLevel = 0
+    Connections{
+        target: AVModel
+        enabled: root.visible
+
+        function onAudioMeter(id, level) {
+            if (id === "audiolayer_id") {
+                rmsLevel = level
+            }
+        }
     }
-
-    function stop() {
-
-    }
-
-    function setLevel(rmsLevelIn) {
-        rmsLevel = rmsLevelIn
-    }
-
 }
