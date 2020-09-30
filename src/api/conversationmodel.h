@@ -23,6 +23,7 @@
 #include "api/conversation.h"
 #include "api/profile.h"
 #include "api/datatransfer.h"
+#include "containerview.h"
 
 #include <QObject>
 #include <QVector>
@@ -70,7 +71,6 @@ struct AccountConversation
  * for calls and contacts contain only one element
  * for conferences contains multiple entries
  */
-
 typedef QVector<QVector<AccountConversation>> ConferenceableValue;
 
 /**
@@ -81,6 +81,7 @@ class LIB_EXPORT ConversationModel : public QObject
     Q_OBJECT
 public:
     using ConversationQueue = std::deque<conversation::Info>;
+    using ConversationQueueProxy = ContainerView<ConversationQueue>;
 
     const account::Info& owner;
 
@@ -95,7 +96,7 @@ public:
      * Get conversations which should be shown client side
      * @return conversations filtered with the current filter
      */
-    Q_INVOKABLE const ConversationQueue& allFilteredConversations() const;
+    Q_INVOKABLE const ConversationQueueProxy& allFilteredConversations() const;
 
     /**
      * Get conversation for a given uid
@@ -130,7 +131,7 @@ public:
      * Get a custom filtered set of conversations
      * @return conversations filtered
      */
-    Q_INVOKABLE const ConversationQueue& getFilteredConversations(
+    Q_INVOKABLE const ConversationQueueProxy& getFilteredConversations(
         const profile::Type& filter = profile::Type::INVALID,
         bool forceUpdate = false,
         const bool includeBanned = false) const;
@@ -145,7 +146,7 @@ public:
      * Get the search results
      * @return a searchResult
      */
-    const ConversationQueue& getAllSearchResults() const;
+    const ConversationQueueProxy& getAllSearchResults() const;
 
     /**
      * Get the conversation at row in the search results

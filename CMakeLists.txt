@@ -276,9 +276,11 @@ endif ()
 # File to compile
 set (
    libringclient_LIB_SRCS
+
    # Data objects
    src/uri.cpp
    src/video/renderer.cpp
+
    # Models
    src/contactmodel.cpp
    src/newcallmodel.cpp
@@ -297,6 +299,7 @@ set (
    src/newvideo.cpp
    src/shmrenderer.cpp
    src/directrenderer.cpp
+
    # Communication
    src/dbus/configurationmanager.cpp
    src/dbus/callmanager.cpp
@@ -304,10 +307,12 @@ set (
    src/dbus/videomanager.cpp
    src/dbus/presencemanager.cpp
    src/dbus/pluginmanager.cpp
+
    # Default interface implementations
    src/globalinstances.cpp
    src/pixmapmanipulatordefault.cpp
    src/dbuserrorhandlerdefault.cpp
+
    # Other
    src/avmodel.cpp
    src/pluginmodel.cpp
@@ -371,7 +376,10 @@ set (libringclient_video_LIB_HDRS src/video/renderer.h
 set (libringclient_interface_LIB_HDRS src/interfaces/pixmapmanipulatori.h
                                       src/interfaces/dbuserrorhandleri.h)
 
-set (libringclient_extra_LIB_HDRS src/typedefs.h)
+set (
+   libringclient_extra_LIB_HDRS
+   src/typedefs.h
+   src/containerview.h)
 
 if (${ENABLE_LIBWRAP} MATCHES true OR ${ENABLE_TEST} MATCHES true)
    # done this way because of bug in cmake 2.8 (not necessary in 3.0+)
