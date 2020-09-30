@@ -50,9 +50,8 @@ Rectangle {
     ColumnLayout {
         id: avSettingsColumnLayout
 
-        anchors.centerIn: root
+        anchors.horizontalCenter: root.horizontalCenter
 
-        height: root.height
         width: Math.min(JamiTheme.maximumWidthSettingsView, root.width)
 
         // Audio

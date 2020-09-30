@@ -44,9 +44,8 @@ Rectangle {
     ColumnLayout {
         id: pluginSettingsColumnLayout
 
-        anchors.centerIn: root
+        anchors.horizontalCenter: root.horizontalCenter
 
-        height: root.height
         width: Math.min(JamiTheme.maximumWidthSettingsView, root.width)
 
         ToggleSwitch {
