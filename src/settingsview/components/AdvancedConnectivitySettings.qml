@@ -152,7 +152,6 @@ ColumnLayout {
 
         SettingsMaterialLineEdit {
             id: lineEditTurnRealmSIP
-            visible: isSIP
 
             Layout.fillWidth: true
             Layout.preferredHeight: JamiTheme.preferredFieldHeight
