@@ -442,6 +442,10 @@ Window {
     SidePanel {
         id: mainViewWindowSidePanel
 
+        onFocusMessageWebViewRequested: {
+            communicationPageMessageWebView.focusMessageWebView()
+        }
+
         // TODO: remove the evil in this slot
         onConversationSmartListNeedToAccessMessageWebView: {
             communicationPageMessageWebView.headerUserAliasLabelText = currentUserAlias
@@ -475,12 +479,14 @@ Window {
             callStackView.setLinkedWebview(communicationPageMessageWebView)
 
             if (mainViewStack.find(function (item, index) {
-                return item.objectName === "communicationPageMessageWebView"
-            }) || sidePanelViewStack.find(function (item, index) {
-                return item.objectName === "communicationPageMessageWebView"
-            })) {
-                if (!callStackViewShouldShow)
+                    return item.objectName === "communicationPageMessageWebView"
+                }) || sidePanelViewStack.find(function (item, index) {
+                    return item.objectName === "communicationPageMessageWebView"
+                })) {
+                if (!callStackViewShouldShow) {
+                    communicationPageMessageWebView.focusMessageWebView()
                     return
+                }
             }
 
             // Push messageWebView or callStackView onto the correct stackview
@@ -509,9 +515,8 @@ Window {
                 }
             }
 
-            if (!callStackViewShouldShow) {
+            if (!callStackViewShouldShow)
                 communicationPageMessageWebView.focusMessageWebView()
-            }
         }
 
         Connections {

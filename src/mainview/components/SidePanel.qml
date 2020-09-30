@@ -34,6 +34,7 @@ Rectangle {
     property int totalUnreadMessagesCount: 0
 
     signal conversationSmartListNeedToAccessMessageWebView(string currentUserDisplayName, string currentUserAlias, string currentUID, bool callStackViewShouldShow, bool isAudioOnly, int callState)
+    signal focusMessageWebViewRequested
 
     // Hack -> force redraw.
     function forceReselectConversationSmartListCurrentIndex() {
@@ -174,6 +175,8 @@ Rectangle {
         width: parent.width
         height: tabBarVisible ? sidePanelRect.height - sidePanelTabBar.height - contactSearchBar.height - 20 :
                                 sidePanelRect.height - contactSearchBar.height - 20
+
+        onCurrentIndexChanged: focusMessageWebViewRequested()
 
         Connections {
             target: ConversationsAdapter
