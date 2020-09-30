@@ -13,7 +13,7 @@
     <Property Id="ARPNOMODIFY" Value="1" />
 
     <!-- It seems that QtWebEngineProcess.exe versioning requires us to force reinstall. -->
-    <Property Id="REINSTALLMODE" Value="dm" />
+    <Property Id="REINSTALLMODE" Value="dms" />
 
     <Feature Id="ProductFeature" Title="Main" Level="1" Absent="disallow">
       <ComponentGroupRef Id="StandardComponents" Primary="yes" />
@@ -91,7 +91,7 @@
   <Fragment Id="OtherRegistryEntries">
     <DirectoryRef Id="TARGETDIR">
       <Component Id="RegistryEntries" Guid="*" Win64="yes">
-          <RegistryValue Root="HKCU" Key="Software\jami.net\$(var.AppName)" Name="hasRun" Type="integer" Value="0" KeyPath="yes" />
+        <RegistryValue Root="HKCU" Key="Software\jami.net\$(var.AppName)" Name="hasRun" Type="integer" Value="0" KeyPath="yes" />
       </Component>
     </DirectoryRef>
   </Fragment>
