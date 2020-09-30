@@ -71,6 +71,13 @@ var isInitialLoading = false
 var imagesLoadingCounter = 0
 var canLazyLoad = false
 
+// ctrl + click on link will crash QtWebEngineProcess
+document.body.onclick = function(e) {
+    if (e.ctrlKey) {
+        return false
+    }
+}
+
 /* Set the default target to _self and handle with QWebEnginePage::acceptNavigationRequest */
 var linkifyOptions = {}
 if (use_qt) {
