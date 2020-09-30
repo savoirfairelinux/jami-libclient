@@ -5,3 +5,4 @@ build-qml/
 
 msvc/
 translations/*.qm
+CMakeLists.txt.user
