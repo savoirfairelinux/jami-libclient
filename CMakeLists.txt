@@ -390,6 +390,7 @@ SET(libringclient_interface_LIB_HDRS
 
 SET( libringclient_extra_LIB_HDRS
   src/typedefs.h
+  src/containerview.h
 )
 
 IF(${ENABLE_LIBWRAP} MATCHES true OR ${ENABLE_TEST} MATCHES true)
