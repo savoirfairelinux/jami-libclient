@@ -23,6 +23,7 @@
 #include "api/conversation.h"
 #include "api/profile.h"
 #include "api/datatransfer.h"
+#include "containerview.h"
 
 #include <QObject>
 #include <QVector>
@@ -30,7 +31,6 @@
 
 #include <memory>
 #include <deque>
-#include <optional>
 
 namespace lrc {
 
@@ -60,9 +60,6 @@ enum class ConferenceableItem { CALL, CONTACT };
 Q_ENUM_NS(ConferenceableItem)
 #endif
 
-template <typename T>
-using OptionalRef = std::optional<std::reference_wrapper<T>>;
-
 struct AccountConversation
 {
     QString convId;
@@ -74,7 +71,6 @@ struct AccountConversation
  * for calls and contacts contain only one element
  * for conferences contains multiple entries
  */
-
 typedef QVector<QVector<AccountConversation>> ConferenceableValue;
 
 /**
@@ -85,6 +81,7 @@ class LIB_EXPORT ConversationModel : public QObject
     Q_OBJECT
 public:
     using ConversationQueue = std::deque<conversation::Info>;
+    using ConversationQueueProxy = ContainerView<ConversationQueue>;
 
     const account::Info& owner;
 
@@ -99,28 +96,28 @@ public:
      * Get conversations which should be shown client side
      * @return conversations filtered with the current filter
      */
-    Q_INVOKABLE const ConversationQueue& allFilteredConversations() const;
+    Q_INVOKABLE const ConversationQueueProxy& allFilteredConversations() const;
 
     /**
      * Get conversation for a given uid
      * @param uid conversation uid
      * @return reference to conversation info with given uid
      */
-    Q_INVOKABLE OptionalRef<conversation::Info> getConversationForUid(const QString& uid);
+    Q_INVOKABLE OptRef<conversation::Info> getConversationForUid(const QString& uid);
 
     /**
      * Get conversation for a given peer uri
      * @param uri peer uri
      * @return reference to conversation info with given peer uri
      */
-    Q_INVOKABLE OptionalRef<conversation::Info> getConversationForPeerUri(const QString& uri);
+    Q_INVOKABLE OptRef<conversation::Info> getConversationForPeerUri(const QString& uri);
 
     /**
      * Get conversation for a given call id
      * @param callId call id
      * @return reference to conversation info with given call id
      */
-    Q_INVOKABLE OptionalRef<conversation::Info> getConversationForCallId(const QString& callId);
+    Q_INVOKABLE OptRef<conversation::Info> getConversationForCallId(const QString& callId);
 
     /**
      * Get conversations that could be added to conference
@@ -134,7 +131,7 @@ public:
      * Get a custom filtered set of conversations
      * @return conversations filtered
      */
-    Q_INVOKABLE const ConversationQueue& getFilteredConversations(
+    Q_INVOKABLE const ConversationQueueProxy& getFilteredConversations(
         const profile::Type& filter = profile::Type::INVALID,
         bool forceUpdate = false,
         const bool includeBanned = false) const;
