@@ -32,6 +32,12 @@ namespace conversation {
 
 struct Info
 {
+    Info() = default;
+    Info(const Info& other) = delete;
+    Info(Info&& other) = default;
+    Info& operator=(const Info& other) = delete;
+    Info& operator=(Info&& other) = default;
+
     QString uid = "";
     QString accountId;
     VectorString participants;
