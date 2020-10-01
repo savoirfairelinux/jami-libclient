@@ -1040,10 +1040,17 @@ NewAccountModel::createNewAccount(profile::Type type,
     MapStringString details = type == profile::Type::SIP
                                   ? ConfigurationManager::instance().getAccountTemplate("SIP")
                                   : ConfigurationManager::instance().getAccountTemplate("RING");
+
     using namespace DRing::Account;
     details[ConfProperties::TYPE] = type == profile::Type::SIP ? "SIP" : "RING";
-    details[ConfProperties::DISPLAYNAME] = displayName;
-    details[ConfProperties::ALIAS] = displayName;
+    if (displayName.isEmpty()) {
+        auto defaultAlias = getDefaultAlias();
+        details[ConfProperties::DISPLAYNAME] = defaultAlias;
+        details[ConfProperties::ALIAS] = defaultAlias;
+    } else {
+        details[ConfProperties::DISPLAYNAME] = displayName;
+        details[ConfProperties::ALIAS] = displayName;
+    }
     details[ConfProperties::UPNP_ENABLED] = "true";
     details[ConfProperties::ARCHIVE_PASSWORD] = password;
     details[ConfProperties::ARCHIVE_PIN] = pin;
@@ -1111,6 +1118,13 @@ NewAccountModel::accountVCard(const QString& accountId, bool compressImage) cons
     }
     auto& accountInfo = account->second.first;
     return authority::storage::vcard::profileToVcard(accountInfo.profileInfo, compressImage);
+}
+
+const QString
+NewAccountModel::getDefaultAlias()
+{
+    QString defaultAlias = qgetenv("USER");
+    return defaultAlias.isEmpty() ? qgetenv("USERNAME") : defaultAlias;
 }
 
 } // namespace lrc

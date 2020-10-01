@@ -189,6 +189,8 @@ public:
      */
     Q_INVOKABLE QString accountVCard(const QString& accountId, bool compressImage = true) const;
 
+    static const QString getDefaultAlias();
+
 Q_SIGNALS:
     /**
      * Connect this signal to know when an invalid account is here
