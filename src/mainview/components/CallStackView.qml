@@ -25,7 +25,7 @@ import net.jami.Models 1.0
 import net.jami.Adapters 1.0
 
 import "../js/incomingcallpagecreation.js" as IncomingCallPageCreation
-import "../js/videocallfullscreenwindowcontainercreation.js" as VideoCallFullScreenWindowContainerCreation
+import "../js/callfullscreenwindowcontainercreation.js" as CallFullScreenWindowContainerCreation
 
 Rectangle {
     id: callStackViewWindow
@@ -50,7 +50,7 @@ Rectangle {
         // Close potential window, context menu releated windows.
         audioCallPage.closeContextMenuAndRelatedWindows()
 
-        VideoCallFullScreenWindowContainerCreation.closeVideoCallFullScreenWindowContainer()
+        CallFullScreenWindowContainerCreation.closeVideoCallFullScreenWindowContainer()
         videoCallPage.closeContextMenuAndRelatedWindows()
     }
 
@@ -120,6 +120,20 @@ Rectangle {
         videoCallPage.setDistantRendererId(callId)
     }
 
+    function toogleFullScreen(callPage){
+        callPage.isFullscreen = !callPage.isFullscreen
+        CallFullScreenWindowContainerCreation.createvideoCallFullScreenWindowContainerObject()
+
+        if (!CallFullScreenWindowContainerCreation.checkIfVisible()) {
+            CallFullScreenWindowContainerCreation.setAsContainerChild(
+                        callPage)
+            CallFullScreenWindowContainerCreation.showVideoCallFullScreenWindowContainer()
+        } else {
+            callPage.parent = callStackMainView
+            CallFullScreenWindowContainerCreation.closeVideoCallFullScreenWindowContainer()
+        }
+    }
+
     Connections {
         target: CallAdapter
 
@@ -168,6 +182,9 @@ Rectangle {
         id: audioCallPage
 
         property int stackNumber: 0
+        property bool isFullscreen: false
+
+        onShowFullScreenReqested: toogleFullScreen(this)
     }
 
     OutgoingCallPage {
@@ -186,20 +203,8 @@ Rectangle {
         property int stackNumber: 2
         property bool isFullscreen: false
 
-        onNeedToShowInFullScreen: {
-
-            isFullscreen = !isFullscreen
-            VideoCallFullScreenWindowContainerCreation.createvideoCallFullScreenWindowContainerObject()
-
-            if (!VideoCallFullScreenWindowContainerCreation.checkIfVisible()) {
-                VideoCallFullScreenWindowContainerCreation.setAsContainerChild(
-                            videoCallPage)
-                VideoCallFullScreenWindowContainerCreation.showVideoCallFullScreenWindowContainer()
-            } else {
-                videoCallPage.parent = callStackMainView
-                VideoCallFullScreenWindowContainerCreation.closeVideoCallFullScreenWindowContainer()
-            }
-
+        onShowFullScreenReqested: {
+            toogleFullScreen(this)
             videoCallPage.handleParticipantsInfo(CallAdapter.getConferencesInfos())
         }
     }

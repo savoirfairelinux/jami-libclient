@@ -34,6 +34,8 @@ Rectangle {
 
     property var linkedWebview: null
 
+    signal showFullScreenReqested
+
     function updateUI(accountId, convUid) {
         contactImgSource = "data:image/png;base64," + UtilsAdapter.getContactImageString(
                     accountId, convUid)
@@ -87,135 +89,146 @@ Rectangle {
             SplitView.minimumHeight: audioCallPageRect.height / 2 + 20
             SplitView.fillWidth: true
 
-            CallOverlay {
-                id: audioCallOverlay
-
+            MouseArea {
                 anchors.fill: parent
 
-                Connections {
-                    target: CallAdapter
+                hoverEnabled: true
+                propagateComposedEvents: true
 
-                    function onUpdateTimeText(time) {
-                        audioCallOverlay.timeText = time
-                    }
+                acceptedButtons: Qt.LeftButton
 
-                    function onUpdateOverlay(isPaused, isAudioOnly, isAudioMuted, isVideoMuted, isRecording, isSIP, isConferenceCall, bestName) {
-                        audioCallOverlay.showOnHoldImage(isPaused)
-                        audioCallPageRectCentralRect.visible = !isPaused
-                        audioCallOverlay.updateButtonStatus(isPaused,
-                                                            isAudioOnly,
-                                                            isAudioMuted,
-                                                            isVideoMuted,
-                                                            isRecording, isSIP,
-                                                            isConferenceCall)
-                        audioCallPageRect.bestName = bestName
-                    }
+                onDoubleClicked: showFullScreenReqested()
 
-                    function onShowOnHoldLabel(isPaused) {
-                        audioCallOverlay.showOnHoldImage(isPaused)
-                        audioCallPageRectCentralRect.visible = !isPaused
-                    }
-                }
+                CallOverlay {
+                    id: audioCallOverlay
 
-                onOverlayChatButtonClicked: {
-                    if (inAudioCallMessageWebViewStack.visible) {
-                        linkedWebview.resetMessagingHeaderBackButtonSource(
-                                    true)
-                        linkedWebview.setMessagingHeaderButtonsVisible(
-                                    true)
-                        inAudioCallMessageWebViewStack.visible = false
-                        inAudioCallMessageWebViewStack.clear()
-                    } else {
-                        linkedWebview.resetMessagingHeaderBackButtonSource(
-                                    false)
-                        linkedWebview.setMessagingHeaderButtonsVisible(
-                                    false)
-                        inAudioCallMessageWebViewStack.visible = true
-                        inAudioCallMessageWebViewStack.push(
-                                    linkedWebview)
-                    }
-                }
-            }
+                    anchors.fill: parent
 
-            Rectangle {
-                id: audioCallPageRectCentralRect
+                    Connections {
+                        target: CallAdapter
 
-                anchors.centerIn: parent
+                        function onUpdateTimeText(time) {
+                            audioCallOverlay.timeText = time
+                            audioCallOverlay.setRecording(CallAdapter.isRecordingThisCall())
+                        }
 
-                width: audioCallPageRect.width
-                height: audioCallPageRegisteredNameText.height
-                        + audioCallPageIdText.height + contactImage.height + 10
+                        function onUpdateOverlay(isPaused, isAudioOnly, isAudioMuted, isVideoMuted, isRecording, isSIP, isConferenceCall, bestName) {
+                            audioCallOverlay.showOnHoldImage(isPaused)
+                            audioCallPageRectCentralRect.visible = !isPaused
+                            audioCallOverlay.updateButtonStatus(isPaused,
+                                                                isAudioOnly,
+                                                                isAudioMuted,
+                                                                isVideoMuted,
+                                                                isRecording, isSIP,
+                                                                isConferenceCall)
+                            audioCallPageRect.bestName = bestName
+                        }
 
-                ColumnLayout {
-                    id: audioCallPageRectColumnLayout
-
-                    Image {
-                        id: contactImage
-
-                        Layout.alignment: Qt.AlignCenter
-
-                        Layout.preferredWidth: 100
-                        Layout.preferredHeight: 100
-
-                        fillMode: Image.PreserveAspectFit
-                        source: contactImgSource
-                        asynchronous: true
-                    }
-
-                    Text {
-                        id: audioCallPageRegisteredNameText
-
-                        Layout.alignment: Qt.AlignCenter
-
-                        Layout.preferredWidth: audioCallPageRectCentralRect.width
-                        Layout.preferredHeight: 50
-
-                        font.pointSize: JamiTheme.textFontSize + 3
-
-                        horizontalAlignment: Text.AlignHCenter
-                        verticalAlignment: Text.AlignVCenter
-
-                        text: textMetricsAudioCallPageRegisteredNameText.elidedText
-                        color: "white"
-
-                        TextMetrics {
-                            id: textMetricsAudioCallPageRegisteredNameText
-                            font: audioCallPageRegisteredNameText.font
-                            text: bestName
-                            elideWidth: audioCallPageRectCentralRect.width - 50
-                            elide: Qt.ElideMiddle
+                        function onShowOnHoldLabel(isPaused) {
+                            audioCallOverlay.showOnHoldImage(isPaused)
+                            audioCallPageRectCentralRect.visible = !isPaused
                         }
                     }
 
-                    Text {
-                        id: audioCallPageIdText
-
-                        Layout.alignment: Qt.AlignCenter
-
-                        Layout.preferredWidth: audioCallPageRectCentralRect.width
-                        Layout.preferredHeight: 30
-
-                        font.pointSize: JamiTheme.textFontSize
-
-                        horizontalAlignment: Text.AlignHCenter
-                        verticalAlignment: Text.AlignVCenter
-
-                        text: textMetricsAudioCallPageIdText.elidedText
-                        color: "white"
-
-                        TextMetrics {
-                            id: textMetricsAudioCallPageIdText
-                            font: audioCallPageIdText.font
-                            text: bestId
-                            elideWidth: audioCallPageRectCentralRect.width - 50
-                            elide: Qt.ElideMiddle
+                    onOverlayChatButtonClicked: {
+                        if (inAudioCallMessageWebViewStack.visible) {
+                            linkedWebview.resetMessagingHeaderBackButtonSource(
+                                        true)
+                            linkedWebview.setMessagingHeaderButtonsVisible(
+                                        true)
+                            inAudioCallMessageWebViewStack.visible = false
+                            inAudioCallMessageWebViewStack.clear()
+                        } else {
+                            linkedWebview.resetMessagingHeaderBackButtonSource(
+                                        false)
+                            linkedWebview.setMessagingHeaderButtonsVisible(
+                                        false)
+                            inAudioCallMessageWebViewStack.visible = true
+                            inAudioCallMessageWebViewStack.push(
+                                        linkedWebview)
                         }
                     }
                 }
 
-                color: "transparent"
-            }
+                Rectangle {
+                    id: audioCallPageRectCentralRect
 
+                    anchors.centerIn: parent
+
+                    width: audioCallPageRect.width
+                    height: audioCallPageRegisteredNameText.height
+                            + audioCallPageIdText.height + contactImage.height + 10
+
+                    ColumnLayout {
+                        id: audioCallPageRectColumnLayout
+
+                        Image {
+                            id: contactImage
+
+                            Layout.alignment: Qt.AlignCenter
+
+                            Layout.preferredWidth: 100
+                            Layout.preferredHeight: 100
+
+                            fillMode: Image.PreserveAspectFit
+                            source: contactImgSource
+                            asynchronous: true
+                        }
+
+                        Text {
+                            id: audioCallPageRegisteredNameText
+
+                            Layout.alignment: Qt.AlignCenter
+
+                            Layout.preferredWidth: audioCallPageRectCentralRect.width
+                            Layout.preferredHeight: 50
+
+                            font.pointSize: JamiTheme.textFontSize + 3
+
+                            horizontalAlignment: Text.AlignHCenter
+                            verticalAlignment: Text.AlignVCenter
+
+                            text: textMetricsAudioCallPageRegisteredNameText.elidedText
+                            color: "white"
+
+                            TextMetrics {
+                                id: textMetricsAudioCallPageRegisteredNameText
+                                font: audioCallPageRegisteredNameText.font
+                                text: bestName
+                                elideWidth: audioCallPageRectCentralRect.width - 50
+                                elide: Qt.ElideMiddle
+                            }
+                        }
+
+                        Text {
+                            id: audioCallPageIdText
+
+                            Layout.alignment: Qt.AlignCenter
+
+                            Layout.preferredWidth: audioCallPageRectCentralRect.width
+                            Layout.preferredHeight: 30
+
+                            font.pointSize: JamiTheme.textFontSize
+
+                            horizontalAlignment: Text.AlignHCenter
+                            verticalAlignment: Text.AlignVCenter
+
+                            text: textMetricsAudioCallPageIdText.elidedText
+                            color: "white"
+
+                            TextMetrics {
+                                id: textMetricsAudioCallPageIdText
+                                font: audioCallPageIdText.font
+                                text: bestId
+                                elideWidth: audioCallPageRectCentralRect.width - 50
+                                elide: Qt.ElideMiddle
+                            }
+                        }
+                    }
+
+                    color: "transparent"
+                }
+            }
             color: "transparent"
         }
 

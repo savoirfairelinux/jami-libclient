@@ -65,20 +65,31 @@ Item {
             ContextMenuGenerator.addMenuSeparator()
         }
 
-        if (!isAudioOnly && !isPaused) {
-            ContextMenuGenerator.addMenuItem(isRecording ? JamiStrings.stopRec :
-                                                           JamiStrings.startRec,
-                                             "qrc:/images/icons/av_icons/fiber_manual_record-24px.svg",
+        ContextMenuGenerator.addMenuItem(isRecording ? JamiStrings.stopRec :
+                                                       JamiStrings.startRec,
+                                         "qrc:/images/icons/av_icons/fiber_manual_record-24px.svg",
+                                         function (){
+                                              CallAdapter.recordThisCallToggle()
+                                         })
+
+        if (isAudioOnly && !isPaused)
+            ContextMenuGenerator.addMenuItem(audioCallPage.isFullscreen ? JamiStrings.exitFullScreen :
+                                                                          JamiStrings.fullScreen,
+                                             audioCallPage.isFullscreen ?
+                                                 "qrc:/images/icons/close_fullscreen-24px.svg" :
+                                                 "qrc:/images/icons/open_in_full-24px.svg",
                                              function (){
-                                                  CallAdapter.recordThisCallToggle()
+                                                  audioCallPage.showFullScreenReqested()
                                              })
+
+        if (!isAudioOnly && !isPaused) {
             ContextMenuGenerator.addMenuItem(videoCallPage.isFullscreen ? JamiStrings.exitFullScreen :
                                                                           JamiStrings.fullScreen,
                                              videoCallPage.isFullscreen ?
                                                  "qrc:/images/icons/close_fullscreen-24px.svg" :
                                                  "qrc:/images/icons/open_in_full-24px.svg",
                                              function (){
-                                                  videoCallPageRect.needToShowInFullScreen()
+                                                  videoCallPage.showFullScreenReqested()
                                              })
 
             ContextMenuGenerator.addMenuSeparator()

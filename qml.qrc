@@ -115,7 +115,7 @@
         <file>src/mainview/js/selectscreenwindowcreation.js</file>
         <file>src/mainview/components/ScreenRubberBand.qml</file>
         <file>src/mainview/js/screenrubberbandcreation.js</file>
-        <file>src/mainview/js/videocallfullscreenwindowcontainercreation.js</file>
+        <file>src/mainview/js/callfullscreenwindowcontainercreation.js</file>
         <file>src/mainview/components/VideoCallFullScreenWindowContainer.qml</file>
         <file>src/mainview/components/ContactPicker.qml</file>
         <file>src/mainview/components/MediaHandlerPicker.qml</file>

@@ -40,7 +40,7 @@ Rectangle {
 
     property var linkedWebview: null
 
-    signal needToShowInFullScreen
+    signal showFullScreenReqested
 
     function updateUI(accountId, convUid) {
         videoCallOverlay.handleParticipantsInfo(CallAdapter.getConferencesInfos())
@@ -155,9 +155,7 @@ Rectangle {
 
                 acceptedButtons: Qt.LeftButton
 
-                onDoubleClicked: {
-                    needToShowInFullScreen()
-                }
+                onDoubleClicked: showFullScreenReqested()
 
                 CallOverlay {
                     id: videoCallOverlay
