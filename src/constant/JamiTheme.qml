@@ -110,6 +110,7 @@ Item {
     property int preferredMarginSize: 16
     property int preferredDialogWidth: 400
     property int preferredDialogHeight: 300
+    property int minimumPreviewWidth: 120
 
     // Misc.
     property color white: "white"
