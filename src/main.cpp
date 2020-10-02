@@ -51,11 +51,7 @@ main(int argc, char* argv[])
 #ifdef Q_OS_LINUX
     setenv("QT_QPA_PLATFORMTHEME", "gtk3", true);
 #endif
-#ifdef Q_OS_WIN
-    QApplication::setApplicationName("Ring");
-#else
     QApplication::setApplicationName("Jami");
-#endif
     QApplication::setOrganizationDomain("jami.net");
     QApplication::setAttribute(Qt::AA_EnableHighDpiScaling, true);
     QApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
