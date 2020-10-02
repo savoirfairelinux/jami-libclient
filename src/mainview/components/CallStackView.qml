@@ -36,6 +36,7 @@ Rectangle {
         sequence: "Ctrl+D"
         context: Qt.ApplicationShortcut
         onActivated: CallAdapter.hangUpThisCall()
+        onActivatedAmbiguously: CallAdapter.hangUpThisCall()
     }
 
     // When selected conversation is changed,
