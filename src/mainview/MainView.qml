@@ -501,10 +501,14 @@ Window {
                 }
             } else if (sidePanelViewStack.visible
                        && !mainViewStack.visible) {
+                // Note: the change of visibility for mainViewWindowSidePanel
+                //       is to prevent accountComboBox to be shown when pushing
+                //       pages to sidePanelViewStack (to be refactored)
+                mainViewWindowSidePanel.visible = false
                 if (callStackViewShouldShow) {
-                    sidePanelViewStack.push(callStackView)
+                    sidePanelViewStack.push(callStackView, StackView.Immediate)
                 } else {
-                    sidePanelViewStack.push(communicationPageMessageWebView)
+                    sidePanelViewStack.push(communicationPageMessageWebView, StackView.Immediate)
                 }
             } else if (!sidePanelViewStack.visible
                        && !mainViewStack.visible) {
