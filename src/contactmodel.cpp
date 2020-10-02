@@ -1170,11 +1170,11 @@ ContactModelPimpl::slotUserSearchEnded(const QString& accountId,
     }
     updateTemporaryMessage("");
     for (auto& resultInfo : result) {
-        if (contacts.find(resultInfo.value("jamiId")) != contacts.end()) {
+        if (contacts.find(resultInfo.value("id")) != contacts.end()) {
             continue;
         }
         profile::Info profileInfo;
-        profileInfo.uri = resultInfo.value("jamiId");
+        profileInfo.uri = resultInfo.value("id");
         profileInfo.type = profile::Type::TEMPORARY;
         profileInfo.avatar = resultInfo.value("profilePicture");
         profileInfo.alias = resultInfo.value("firstName") + " " + resultInfo.value("lastName");
