@@ -34,6 +34,7 @@ public:
     Q_INVOKABLE void applyUpdates(bool beta = false);
     Q_INVOKABLE void cancelUpdate();
     Q_INVOKABLE void setAutoUpdateCheck(bool state);
+    Q_INVOKABLE bool isCurrentVersionBeta();
 
 signals:
     void updateCheckReplyReceived(bool ok, bool found = false);

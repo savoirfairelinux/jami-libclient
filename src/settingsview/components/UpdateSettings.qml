@@ -25,6 +25,7 @@ import QtQuick.Layouts 1.3
 import net.jami.Adapters 1.0
 import net.jami.Enums 1.0
 import net.jami.Models 1.0
+import net.jami.Helpers 1.0
 import "../../commoncomponents"
 
 ColumnLayout {
@@ -80,6 +81,8 @@ ColumnLayout {
 
     MaterialButton {
         id: installBetaButton
+
+        visible: !UpdateManager.isCurrentVersionBeta()
 
         Layout.alignment: Qt.AlignHCenter
         Layout.preferredWidth: JamiTheme.preferredFieldWidth

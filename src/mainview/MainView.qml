@@ -181,7 +181,7 @@ Window {
 
     }
 
-    title: "Jami"
+    title: JamiStrings.appTitle
     visible: true
     width: mainViewWindowPreferredWidth
     height: mainViewWindowPreferredHeight

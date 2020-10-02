@@ -57,6 +57,12 @@ UpdateManager::setAutoUpdateCheck(bool state)
     updateTimer_->start(updatePeriod);
 }
 
+bool
+UpdateManager::isCurrentVersionBeta()
+{
+    return isBeta;
+}
+
 void
 UpdateManager::checkForUpdates(bool quiet)
 {

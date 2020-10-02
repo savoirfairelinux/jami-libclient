@@ -20,8 +20,11 @@
 pragma Singleton
 
 import QtQuick 2.14
+import net.jami.Helpers 1.0
 
 Item {
+    readonly property string appTitle: "Jami" + (UpdateManager.isCurrentVersionBeta() ? " (BETA)" : "")
+
     // Misc
     property string contactSearchConversation: qsTr("Find a user or search for a conversation")
     property string contactSearchInvitations: qsTr("Search your invitations")
@@ -29,7 +32,7 @@ Item {
     property string description: qsTr("Jami is free software for universal communication which respects the freedoms and the privacy of its users.")
 
     // AboutPopUp
-    property string version: qsTr("Version")
+    property string version: qsTr("Version") + (UpdateManager.isCurrentVersionBeta() ? " (BETA)" : "")
     property string companyDeclarationYear: "© 2015-2020 Savoir-faire Linux Inc."
     property string slogan: "Together"
     property string declaration: qsTr("Jami is a free software for universal communication which respects the freedom and privacy of its users.")
