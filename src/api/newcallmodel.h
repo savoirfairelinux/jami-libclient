@@ -238,6 +238,14 @@ public:
      */
     void setActiveParticipant(const QString& confId, const QString& participant);
 
+    /**
+     * Check if a participant is a moderator or not
+     * @param confId        The conference to check
+     * @param uri           Uri of the participant to check (if empty, check current account)
+     * @return if moderator
+     */
+    bool isModerator(const QString& confId, const QString& uri = "");
+
 Q_SIGNALS:
     /**
      * Emitted when a call state changes

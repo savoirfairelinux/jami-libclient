@@ -725,6 +725,31 @@ NewCallModel::setActiveParticipant(const QString& confId, const QString& partici
     CallManager::instance().setActiveParticipant(confId, participant);
 }
 
+bool
+NewCallModel::isModerator(const QString& confId, const QString& uri)
+{
+    auto call = pimpl_->calls.find(confId);
+    if (call == pimpl_->calls.end() or not call->second)
+        return false;
+    auto ownerUri = owner.profileInfo.uri;
+    auto uriToCheck = uri;
+    if (uriToCheck.isEmpty()) {
+        uriToCheck = ownerUri;
+    }
+    auto isModerator = uriToCheck == ownerUri
+                           ? call->second->type == lrc::api::call::Type::CONFERENCE
+                           : false;
+    if (!isModerator && call->second->participantsInfos.size() != 0) {
+        for (const auto& participant : call->second->participantsInfos) {
+            if (participant["uri"] == uriToCheck) {
+                isModerator = participant["isModerator"] == "true";
+                break;
+            }
+        }
+    }
+    return isModerator;
+}
+
 void
 NewCallModel::sendSipMessage(const QString& callId, const QString& body) const
 {
