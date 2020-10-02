@@ -17,12 +17,12 @@ If (test-path $stampFile) {
     }
 }
 
-if (!$outDir) { $outDir = $clientDir + "\x64\" + $mode }
-If (!(test-path $outDir)) { New-Item -ItemType directory -Path $outDir -Force }
-
 # default values
 $qtver = If ($qtver) { $qtver } Else { "5.15.0" }
 $mode = If ($mode) { $mode } Else { "Release" }
+
+if (!$outDir) { $outDir = $clientDir + "\x64\" + $mode }
+If (!(test-path $outDir)) { New-Item -ItemType directory -Path $outDir -Force }
 
 $qtverSplit1, $qtverSplit2 , $qtverSplit3 = $qtver.Split('.')
 $qtMsvcDir = "msvc2019_64"
