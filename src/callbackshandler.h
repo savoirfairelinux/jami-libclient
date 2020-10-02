@@ -62,10 +62,11 @@ Q_SIGNALS:
                            const MapStringString& payloads);
     /**
      * Connect this signal to get information when a peer is online.
+     * @param accountId  related account.
      * @param contactUri the peer.
      * @param present if the peer is online.
      */
-    void newBuddySubscription(const QString& contactUri, bool present);
+    void newBuddySubscription(const QString& accountId, const QString& contactUri, bool present);
     /**
      * Connect this signal to get information when peer discovery changes.
      * @param contactUri the peer.

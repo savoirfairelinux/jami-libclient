@@ -123,10 +123,11 @@ public:
 public Q_SLOTS:
     /**
      * Listen CallbacksHandler when a presence update occurs
+     * @param accountId
      * @param contactUri
      * @param status
      */
-    void slotNewBuddySubscription(const QString& uri, bool status);
+    void slotNewBuddySubscription(const QString& accountId, const QString& uri, bool status);
 
     /**
      * Listen CallbacksHandler when a contact is added
@@ -714,8 +715,12 @@ ContactModelPimpl::fillWithJamiContacts()
 }
 
 void
-ContactModelPimpl::slotNewBuddySubscription(const QString& contactUri, bool status)
+ContactModelPimpl::slotNewBuddySubscription(const QString& accountId,
+                                            const QString& contactUri,
+                                            bool status)
 {
+    if (accountId != linked.owner.id)
+        return;
     {
         std::lock_guard<std::mutex> lk(contactsMtx_);
         auto it = contacts.find(contactUri);

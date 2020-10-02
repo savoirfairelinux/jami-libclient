@@ -263,10 +263,9 @@ CallbacksHandler::slotNewBuddySubscription(const QString& accountId,
                                            bool status,
                                            const QString& message)
 {
-    Q_UNUSED(accountId)
     Q_UNUSED(status)
     Q_UNUSED(message)
-    emit newBuddySubscription(uri, status);
+    emit newBuddySubscription(accountId, uri, status);
 }
 
 void
