@@ -2070,7 +2070,7 @@ Please try again later.</source>
     <message>
         <location filename="../src/utils.cpp" line="393"/>
         <source>Artwork by:</source>
-        <translation>美工设计：</translation>
+        <translation>艺术设计：</translation>
     </message>
     <message>
         <location filename="../src/utils.cpp" line="401"/>
