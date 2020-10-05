@@ -107,6 +107,13 @@ public:
      */
     void updateAccountDetails(account::Info& account);
 
+    /**
+     * get a modifiable account informations associated to an accountId.
+     * @param accountId.
+     * @return a account::Info& structure.
+     */
+    account::Info& getAccountInfo(const QString& accountId);
+
 public Q_SLOTS:
 
     /**
@@ -209,12 +216,7 @@ NewAccountModel::getAccountList() const
 void
 NewAccountModel::setAccountEnabled(const QString& accountId, bool enabled) const
 {
-    auto account = pimpl_->accounts.find(accountId);
-    if (account == pimpl_->accounts.end()) {
-        throw std::out_of_range("NewAccountModel::getAccountConfig, can't find "
-                                + accountId.toStdString());
-    }
-    auto& accountInfo = account->second.first;
+    auto& accountInfo = pimpl_->getAccountInfo(accountId);
     accountInfo.enabled = enabled;
     ConfigurationManager::instance().sendRegister(accountId, enabled);
 }
@@ -223,11 +225,7 @@ void
 NewAccountModel::setAccountConfig(const QString& accountId,
                                   const account::ConfProperties_t& confProperties) const
 {
-    auto account = pimpl_->accounts.find(accountId);
-    if (account == pimpl_->accounts.end()) {
-        throw std::out_of_range("NewAccountModel::save, can't find " + accountId.toStdString());
-    }
-    auto& accountInfo = account->second.first;
+    auto& accountInfo = pimpl_->getAccountInfo(accountId);
     auto& configurationManager = ConfigurationManager::instance();
     MapStringString details = confProperties.toDetails();
     // Set values from Info. No need to include ID and TYPE. SIP accounts may modify the USERNAME
@@ -272,23 +270,13 @@ NewAccountModel::setAccountConfig(const QString& accountId,
 account::ConfProperties_t
 NewAccountModel::getAccountConfig(const QString& accountId) const
 {
-    auto account = pimpl_->accounts.find(accountId);
-    if (account == pimpl_->accounts.end()) {
-        throw std::out_of_range("NewAccountModel::getAccountConfig, can't find "
-                                + accountId.toStdString());
-    }
-    auto& accountInfo = account->second.first;
-    return accountInfo.confProperties;
+    return getAccountInfo(accountId).confProperties;
 }
 
 void
 NewAccountModel::setAlias(const QString& accountId, const QString& alias)
 {
-    auto account = pimpl_->accounts.find(accountId);
-    if (account == pimpl_->accounts.end()) {
-        throw std::out_of_range("NewAccountModel::setAlias, can't find " + accountId.toStdString());
-    }
-    auto& accountInfo = account->second.first;
+    auto& accountInfo = pimpl_->getAccountInfo(accountId);
     accountInfo.profileInfo.alias = alias;
 
     authority::storage::createOrUpdateProfile(accountInfo.id, accountInfo.profileInfo);
@@ -299,11 +287,7 @@ NewAccountModel::setAlias(const QString& accountId, const QString& alias)
 void
 NewAccountModel::setAvatar(const QString& accountId, const QString& avatar)
 {
-    auto account = pimpl_->accounts.find(accountId);
-    if (account == pimpl_->accounts.end()) {
-        throw std::out_of_range("NewAccountModel::setAvatar, can't find " + accountId.toStdString());
-    }
-    auto& accountInfo = account->second.first;
+    auto& accountInfo = pimpl_->getAccountInfo(accountId);
     accountInfo.profileInfo.avatar = avatar;
 
     authority::storage::createOrUpdateProfile(accountInfo.id, accountInfo.profileInfo);
@@ -511,6 +495,17 @@ NewAccountModelPimpl::updateAccountDetails(account::Info& accountInfo)
         accountInfo.id);
     QString daemonStatus = volatileDetails[DRing::Account::ConfProperties::Registration::STATUS];
     accountInfo.status = lrc::api::account::to_status(daemonStatus);
+}
+
+account::Info&
+NewAccountModelPimpl::getAccountInfo(const QString& accountId)
+{
+    auto account = accounts.find(accountId);
+    if (account == accounts.end()) {
+        throw std::out_of_range("NewAccountModelPimpl::getAccountInfo, can't find "
+                                + accountId.toStdString());
+    }
+    return account->second.first;
 }
 
 void
@@ -1105,12 +1100,49 @@ NewAccountModel::setTopAccount(const QString& accountId)
 QString
 NewAccountModel::accountVCard(const QString& accountId, bool compressImage) const
 {
-    auto account = pimpl_->accounts.find(accountId);
-    if (account == pimpl_->accounts.end()) {
-        return {};
+    return authority::storage::vcard::profileToVcard(getAccountInfo(accountId).profileInfo,
+                                                     compressImage);
+}
+
+const QString
+NewAccountModel::bestNameForAccount(const QString& accountID)
+{
+    // Order: Alias, registeredName, uri
+    auto& accountInfo = getAccountInfo(accountID);
+
+    auto alias = accountInfo.profileInfo.alias.simplified();
+    auto registeredName = accountInfo.registeredName.simplified();
+    auto infoHash = accountInfo.profileInfo.uri.simplified();
+
+    if (alias.isEmpty()) {
+        if (registeredName.isEmpty())
+            return infoHash;
+        else
+            return registeredName;
     }
-    auto& accountInfo = account->second.first;
-    return authority::storage::vcard::profileToVcard(accountInfo.profileInfo, compressImage);
+    return alias;
+}
+
+const QString
+NewAccountModel::bestIdForAccount(const QString& accountID)
+{
+    // Order: RegisteredName, uri after best name
+    //        return empty string if duplicated with best name
+    auto& accountInfo = getAccountInfo(accountID);
+
+    auto alias = accountInfo.profileInfo.alias.simplified();
+    auto registeredName = accountInfo.registeredName.simplified();
+    auto infoHash = accountInfo.profileInfo.uri.simplified();
+
+    if (alias.isEmpty()) {
+        if (!registeredName.isEmpty())
+            return infoHash;
+    } else if (registeredName.isEmpty()) {
+        return infoHash;
+    } else if (registeredName != alias) {
+        return registeredName;
+    }
+    return QString();
 }
 
 } // namespace lrc

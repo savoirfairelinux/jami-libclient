@@ -188,6 +188,18 @@ public:
      * @return vcard of the account
      */
     Q_INVOKABLE QString accountVCard(const QString& accountId, bool compressImage = true) const;
+    /**
+     * Get the best name for an account
+     * @param id
+     * @return best name of the account
+     */
+    const QString bestNameForAccount(const QString& accountID);
+    /**
+     * Get the best id for an account
+     * @param id
+     * @return best id of the account
+     */
+    const QString bestIdForAccount(const QString& accountID);
 
 Q_SIGNALS:
     /**
