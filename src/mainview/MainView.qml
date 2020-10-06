@@ -156,11 +156,11 @@ Window {
 
         if (inSettingsView) {
             if (sidePanelOnly)
-                sidePanelViewStack.push(leftPanelSettingsView, StackView.Immediate)
+                sidePanelViewStack.push(settingsMenu, StackView.Immediate)
             else {
                 mainViewStack.pop(welcomePage, StackView.Immediate)
                 mainViewStack.push(settingsView, StackView.Immediate)
-                sidePanelViewStack.push(leftPanelSettingsView, StackView.Immediate)
+                sidePanelViewStack.push(settingsMenu, StackView.Immediate)
 
                 var windowCurrentMinimizedSize = settingsViewPreferredWidth
                         + sidePanelViewStackPreferredWidth + onWidthChangedTriggerDistance
@@ -294,7 +294,7 @@ Window {
                     width: mainViewSidePanelRect.width
                     height: 64
 
-                    visible: (mainViewWindowSidePanel.visible || leftPanelSettingsView.visible)
+                    visible: (mainViewWindowSidePanel.visible || settingsMenu.visible)
 
                     currentIndex: 0
 
@@ -373,46 +373,20 @@ Window {
         id: accountListModel
     }
 
-    LeftPanelView {
-        id: leftPanelSettingsView
+    SettingsMenu {
+        id: settingsMenu
 
-        objectName: "leftPanelSettingsView"
+        objectName: "settingsMenu"
 
         visible: false
-        contentViewportWidth: mainViewSidePanelRect.width
-        contentViewPortHeight: mainViewSidePanelRect.height
 
-        Connections {
-            target: leftPanelSettingsView.btnAccountSettings
-            function onCheckedToggledForRightPanel(checked) {
-                settingsView.setSelected(SettingsView.Account)
-                if (sidePanelOnly)
-                    sidePanelViewStack.push(settingsView, StackView.Immediate)
-            }
-        }
-        Connections {
-            target: leftPanelSettingsView.btnGeneralSettings
-            function onCheckedToggledForRightPanel(checked) {
-                settingsView.setSelected(SettingsView.General)
-                if (sidePanelOnly)
-                    sidePanelViewStack.push(settingsView, StackView.Immediate)
-            }
-        }
-        Connections {
-            target: leftPanelSettingsView.btnMediaSettings
-            function onCheckedToggledForRightPanel(checked) {
-                settingsView.setSelected(SettingsView.Media)
-                if (sidePanelOnly)
-                    sidePanelViewStack.push(settingsView, StackView.Immediate)
-            }
-        }
-        Connections {
-            target: leftPanelSettingsView.btnPluginSettings
-            function onCheckedToggledForRightPanel(checked) {
-                settingsView.setSelected(SettingsView.Plugin)
-                if (sidePanelOnly)
-                    sidePanelViewStack.push(settingsView, StackView.Immediate)
-            }
+        width: mainViewSidePanelRect.width
+        height: mainViewSidePanelRect.height
+
+        onItemSelected: {
+            settingsView.setSelected(index)
+            if (sidePanelOnly)
+                sidePanelViewStack.push(settingsView, StackView.Immediate)
         }
     }
 
@@ -534,7 +508,7 @@ Window {
                         })
 
             if (inSettingsView) {
-                if (sidePanelViewStack.currentItem.objectName !== leftPanelSettingsView.objectName)
+                if (sidePanelViewStack.currentItem.objectName !== settingsMenu.objectName)
                     sidePanelViewStack.pop(StackView.Immediate)
                 mainViewStack.push(settingsView, StackView.Immediate)
             } else if (inSidePanelViewStack) {
@@ -577,7 +551,7 @@ Window {
             if (!inSettingsView) {
                 toggleSettingsView()
             }
-            leftPanelSettingsView.btnMediaSettings.clicked()
+            settingsMenu.btnMediaSettings.clicked()
         }
     }
 
@@ -588,7 +562,7 @@ Window {
             if (!inSettingsView) {
                 toggleSettingsView()
             }
-            leftPanelSettingsView.btnGeneralSettings.clicked()
+            settingsMenu.btnGeneralSettings.clicked()
         }
     }
 
@@ -599,7 +573,7 @@ Window {
             if (!inSettingsView) {
                 toggleSettingsView()
             }
-            leftPanelSettingsView.btnAccountSettings.clicked()
+            settingsMenu.btnAccountSettings.clicked()
         }
     }
 
@@ -610,7 +584,7 @@ Window {
             if (!inSettingsView) {
                 toggleSettingsView()
             }
-            leftPanelSettingsView.btnPluginSettings.clicked()
+            settingsMenu.btnPluginSettings.clicked()
         }
     }
 

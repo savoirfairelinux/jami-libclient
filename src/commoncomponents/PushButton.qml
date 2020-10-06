@@ -54,13 +54,16 @@ AbstractButton {
     property string pressedColor: JamiTheme.pressedButtonColor
     property string hoveredColor: JamiTheme.hoveredButtonColor
     property string normalColor: JamiTheme.normalButtonColor
+    property string checkedColor: pressedColor
+
+    // State transition duration
     property int duration: JamiTheme.fadeDuration
 
     // Image properties
     property alias source: image.source
     property var imageColor: null
     property string normalImageSource
-    property var checkedColor: null
+    property var checkedImageColor: null
     property string checkedImageSource
     property alias imagePadding: image.padding
     property alias imageOffset: image.offset
@@ -68,7 +71,7 @@ AbstractButton {
     width: preferredSize
     height: preferredSize
 
-    checkable: true
+    checkable: false
     checked: false
     hoverEnabled: true
     focusPolicy: Qt.TabFocus
@@ -84,34 +87,34 @@ AbstractButton {
 
         states: [
             State {
+                name: "checked"; when: checked
+                PropertyChanges { target: background; color: checkedColor }
+            },
+            State {
                 name: "pressed"; when: pressed
                 PropertyChanges { target: background; color: pressedColor }
-                PropertyChanges { target: image; offset: Qt.point(0, 0.5) }
             },
             State {
                 name: "hovered"; when: hovered
                 PropertyChanges { target: background; color: hoveredColor }
             },
             State {
-                name: "normal"; when: !hovered
+                name: "normal"; when: !hovered && ! checked
                 PropertyChanges { target: background; color: normalColor }
             }
         ]
 
         transitions: [
             Transition {
-                to: "normal"; reversible: true
+                to: "normal"; reversible: true; enabled: duration
                 ColorAnimation { duration: root.duration }
             },
             Transition {
-                to: "pressed"; reversible: true
-                ParallelAnimation {
-                    ColorAnimation { duration: root.duration * 0.5 }
-                    NumberAnimation { duration: root.duration * 0.5 }
-                }
+                to: "pressed"; reversible: true; enabled: duration
+                ColorAnimation { duration: root.duration * 0.5 }
             },
             Transition {
-                to: ""; reversible: true
+                to: ""; reversible: true; enabled: duration
                 ColorAnimation { duration: root.duration }
             }
         ]
@@ -139,9 +142,12 @@ AbstractButton {
                 effect: ColorOverlay {
                     id: overlay
                     color: {
-                        if (checked && checkedColor) return checkedColor
-                        else if (imageColor) return imageColor
-                        else return JamiTheme.transparentColor
+                        if (checked && checkedImageColor)
+                            return checkedImageColor
+                        else if (imageColor)
+                            return imageColor
+                        else
+                            return JamiTheme.transparentColor
                     }
                 }
             }

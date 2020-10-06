@@ -31,7 +31,7 @@ import "components"
 Rectangle {
     id: root
 
-    enum SettingsMenu{
+    enum SettingsMenu {
         Account,
         General,
         Media,
@@ -53,8 +53,7 @@ Rectangle {
                 pageIdCurrentAccountSettings.connectCurrentAccount()
                 settingsViewRect.stopPreviewing()
                 selectedMenu = sel
-                if(pageIdCurrentAccountSettings.isPhotoBoothOpened())
-                {
+                if(pageIdCurrentAccountSettings.isPhotoBoothOpened()) {
                     settingsViewRect.setAvatar()
                 }
                 pageIdCurrentAccountSettings.updateAccountInfoDisplayed()

@@ -92,9 +92,9 @@ Rectangle {
 
             normalImageSource: "qrc:/images/icons/mic-24px.svg"
             imageColor: JamiTheme.whiteColor
-
+            checkable: true
             checkedImageSource: "qrc:/images/icons/mic_off-24px.svg"
-            checkedColor: JamiTheme.declineButtonPressedRed
+            checkedImageColor: JamiTheme.declineButtonPressedRed
 
             toolTipText: !checked ? JamiStrings.mute : JamiStrings.unmute
 
@@ -131,9 +131,9 @@ Rectangle {
 
             normalImageSource: "qrc:/images/icons/videocam-24px.svg"
             imageColor: JamiTheme.whiteColor
-
+            checkable: true
             checkedImageSource: "qrc:/images/icons/videocam_off-24px.svg"
-            checkedColor: JamiTheme.declineButtonPressedRed
+            checkedImageColor: JamiTheme.declineButtonPressedRed
 
             toolTipText: !checked ? JamiStrings.pause : JamiStrings.resume
 
