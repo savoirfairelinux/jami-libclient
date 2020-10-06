@@ -270,6 +270,16 @@ public:
      * @param isComposing   if is composing
      */
     Q_INVOKABLE void setIsComposing(const QString& uid, bool isComposing);
+    /**
+     * Get best id for conversation
+     * @param uid           conversation's id
+     */
+    const QString bestIdForConversation(const QString& convUid) const;
+    /**
+     * Get best name for conversation
+     * @param uid           conversation's id
+     */
+    const QString bestNameForConversation(const QString& convUid) const;
 
 Q_SIGNALS:
     /**
