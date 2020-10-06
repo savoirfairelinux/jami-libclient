@@ -110,6 +110,16 @@ public:
      * @return id from daemon
      */
     uint64_t sendDhtMessage(const QString& uri, const QString& body) const;
+    /**
+     * Get best id for contact
+     * @param contactUri
+     */
+    const QString bestIdForContact(const QString& contactUri) const;
+    /**
+     * Get best name for contact
+     * @param contactUri
+     */
+    const QString bestNameForContact(const QString& contactUri) const;
 
 Q_SIGNALS:
     /**
