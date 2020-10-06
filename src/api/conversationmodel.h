@@ -38,10 +38,8 @@ class ConversationModelPimpl;
 class Database;
 
 namespace api {
-#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
 Q_NAMESPACE
 Q_CLASSINFO("RegisterEnumClassesUnscoped", "false")
-#endif
 
 namespace account {
 struct Info;
@@ -55,9 +53,7 @@ class BehaviorController;
 class NewAccountModel;
 
 enum class ConferenceableItem { CALL, CONTACT };
-#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
 Q_ENUM_NS(ConferenceableItem)
-#endif
 
 struct AccountConversation
 {
@@ -371,6 +367,4 @@ private:
 };
 } // namespace api
 } // namespace lrc
-#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
 Q_DECLARE_METATYPE(lrc::api::ConversationModel*)
-#endif
