@@ -514,6 +514,48 @@ ContactModel::sendDhtMessage(const QString& contactUri, const QString& body) con
     return msgId;
 }
 
+const QString
+ContactModel::bestNameForContact(const QString& contactUri) const
+{
+    try {
+        auto contact = getContact(contactUri);
+        auto alias = contact.profileInfo.alias.simplified();
+
+        if (alias.length() == 0) {
+            return bestIdFromContactInfo(contact);
+        }
+        return alias;
+    } catch (const std::out_of_range& e) {
+        qDebug() << "ContactModel::bestNameForContact" << e.what();
+    }
+
+    return QString();
+}
+
+const QString
+ContactModel::bestIdForContact(const QString& contactUri) const
+{
+    try {
+        return bestIdFromContactInfo(getContact(contactUri));
+    } catch (const std::out_of_range& e) {
+        qDebug() << "ContactModel::bestIdForContact" << e.what();
+    }
+
+    return QString();
+}
+
+const QString
+ContactModel::bestIdFromContactInfo(const contact::Info& contactInfo) const
+{
+    auto registeredName = contactInfo.registeredName.simplified();
+    auto infoHash = contactInfo.profileInfo.uri.simplified();
+
+    if (!registeredName.isEmpty()) {
+        return registeredName;
+    }
+    return infoHash;
+}
+
 ContactModelPimpl::ContactModelPimpl(const ContactModel& linked,
                                      Database& db,
                                      const CallbacksHandler& callbacksHandler,
