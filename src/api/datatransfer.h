@@ -29,7 +29,7 @@ namespace lrc {
 namespace api {
 
 namespace datatransfer {
-#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
+#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
 Q_NAMESPACE
 Q_CLASSINFO("RegisterEnumClassesUnscoped", "false")
 #endif
@@ -46,7 +46,7 @@ enum class Status {
     unsupported,      // error: unable to do the transfer (generic error)
     INVALID
 };
-#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
+#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
 Q_ENUM_NS(Status)
 #endif
 

@@ -28,13 +28,13 @@ namespace lrc {
 namespace api {
 
 namespace interaction {
-#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
+#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
 Q_NAMESPACE
 Q_CLASSINFO("RegisterEnumClassesUnscoped", "false")
 #endif
 
 enum class Type { INVALID, TEXT, CALL, CONTACT, DATA_TRANSFER, COUNT__ };
-#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
+#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
 Q_ENUM_NS(Type)
 #endif
 
@@ -91,7 +91,7 @@ enum class Status {
     TRANSFER_FINISHED,
     COUNT__
 };
-#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
+#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
 Q_ENUM_NS(Status)
 #endif
 

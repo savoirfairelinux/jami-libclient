@@ -39,13 +39,13 @@ class NewCodecModel;
 class PeerDiscoveryModel;
 
 namespace account {
-#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
+#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
 Q_NAMESPACE
 Q_CLASSINFO("RegisterEnumClassesUnscoped", "false")
 #endif
 
 enum class Type { INVALID, RING, SIP };
-#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
+#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
 Q_ENUM_NS(Type)
 #endif
 
@@ -53,7 +53,7 @@ Q_ENUM_NS(Type)
 #undef REGISTERED
 
 enum class Status { INVALID, ERROR_NEED_MIGRATION, INITIALIZING, UNREGISTERED, TRYING, REGISTERED };
-#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
+#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
 Q_ENUM_NS(Status)
 #endif
 
@@ -77,12 +77,12 @@ to_status(const QString& type)
 #pragma pop_macro("REGISTERED")
 
 enum class KeyExchangeProtocol { NONE, SDES };
-#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
+#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
 Q_ENUM_NS(KeyExchangeProtocol)
 #endif
 
 enum class TlsMethod { DEFAULT, TLSv1, TLSv1_1, TLSv1_2 };
-#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
+#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
 Q_ENUM_NS(TlsMethod)
 #endif
 
@@ -202,7 +202,7 @@ struct ConfProperties_t
 
 // Possible account export status
 enum class ExportOnRingStatus { SUCCESS = 0, WRONG_PASSWORD = 1, NETWORK_ERROR = 2, INVALID };
-#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
+#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
 Q_ENUM_NS(ExportOnRingStatus)
 #endif
 
@@ -214,12 +214,12 @@ enum class RegisterNameStatus {
     NETWORK_ERROR = 4,
     INVALID
 };
-#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
+#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
 Q_ENUM_NS(RegisterNameStatus)
 #endif
 
 enum class LookupStatus { SUCCESS = 0, INVALID_NAME = 1, NOT_FOUND = 2, ERROR = 3, INVALID };
-#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
+#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
 Q_ENUM_NS(LookupStatus)
 #endif
 

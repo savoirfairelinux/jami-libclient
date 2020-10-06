@@ -221,7 +221,7 @@ def parse_args():
         '-p', '--purge', action='store_true',
         help='Purges the build directory')
     ap.add_argument(
-        '-q', '--qtver', default='5.15.0',
+        '-q', '--qtver', default='5.14.2',
         help='Sets the Qt version to build with')
     ap.add_argument(
         '-g', '--gen', action='store_true',
