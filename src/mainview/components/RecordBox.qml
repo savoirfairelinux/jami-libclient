@@ -262,106 +262,82 @@ Rectangle {
         anchors.verticalCenterOffset: (isVideo ? 0 : -100)
     }
 
-    HoverableRadiusButton {
+    PushButton {
         id: recordButton
 
-        width: btnSize
-        height: btnSize
+        preferredSize: btnSize
 
         anchors.horizontalCenter: recBox.horizontalCenter
         anchors.bottom: recBox.bottom
         anchors.bottomMargin: 5
 
-        buttonImageHeight: height
-        buttonImageWidth: height
-        backgroundColor: isVideo? "#000000cc" : "white"
+        normalColor: isVideo? "#000000cc" : "white"
 
-        radius: height / 2
+        source: "qrc:/images/icons/av_icons/fiber_manual_record-24px.svg"
+        imageColor: "#dc2719"
 
-        icon.source: "qrc:/images/icons/av_icons/fiber_manual_record-24px.svg"
-        icon.height: 24
-        icon.width: 24
-        icon.color: "#dc2719"
         onClicked: {
             updateState(RecordBox.States.RECORDING)
             startRecording()
         }
     }
 
-    HoverableRadiusButton {
+    PushButton {
         id: btnStop
 
-        width: btnSize
-        height: btnSize
+        preferredSize: btnSize
 
         anchors.horizontalCenter: recBox.horizontalCenter
         anchors.bottom: recBox.bottom
         anchors.bottomMargin: 5
 
-        buttonImageHeight: height
-        buttonImageWidth: height
-        backgroundColor: isVideo? "#000000cc" : "white"
+        normalColor: isVideo? "#000000cc" : "white"
 
-        radius: height / 2
+        source: "qrc:/images/icons/av_icons/stop-24px-red.svg"
+        imageColor: isVideo? "white" : "black"
 
-        icon.source: "qrc:/images/icons/av_icons/stop-24px-red.svg"
-        icon.height: 24
-        icon.width: 24
-        icon.color: isVideo? "white" : "black"
         onClicked: {
             stopRecording()
             updateState(RecordBox.States.REC_SUCCESS)
         }
     }
 
-    HoverableRadiusButton {
+    PushButton {
         id: btnRestart
 
-        width: btnSize
-        height: btnSize
+        preferredSize: btnSize
 
         anchors.horizontalCenter: recBox.horizontalCenter
         anchors.horizontalCenterOffset: -25
         anchors.bottom: recBox.bottom
         anchors.bottomMargin: 5
 
-        buttonImageHeight: height
-        buttonImageWidth: height
-        backgroundColor: isVideo? "#000000cc" : "white"
+        normalColor: isVideo? "#000000cc" : "white"
 
-        radius: height / 2
+        source: "qrc:/images/icons/av_icons/re-record-24px.svg"
+        imageColor: isVideo? "white" : "black"
 
-        icon.source: "qrc:/images/icons/av_icons/re-record-24px.svg"
-        icon.height: 24
-        icon.width: 24
-        icon.color: isVideo? "white" : "black"
         onClicked: {
             stopRecording()
             updateState(RecordBox.States.INIT)
         }
     }
 
-    HoverableRadiusButton {
+    PushButton {
         id: btnSend
 
-        width: btnSize
-        height: btnSize
+        preferredSize: btnSize
 
         anchors.horizontalCenter: recBox.horizontalCenter
         anchors.horizontalCenterOffset: 25
         anchors.bottom: parent.bottom
         anchors.bottomMargin: 5
 
-        buttonImageHeight: height
-        buttonImageWidth: height
-        backgroundColor: isVideo? "#000000cc" : "white"
+        normalColor: isVideo? "#000000cc" : "white"
 
-        radius: height / 2
+        source: "qrc:/images/icons/av_icons/send-24px.svg"
+        imageColor: isVideo? "white" : "black"
 
-        icon.source: "qrc:/images/icons/av_icons/send-24px.svg"
-        icon.height: 24
-        icon.width: 24
-        icon.color: isVideo? "white" : "black"
         onClicked: {
             stopRecording()
             sendRecord()

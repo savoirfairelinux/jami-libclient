@@ -126,11 +126,13 @@ Rectangle {
                     PushButton {
                         id: copyRegisterednameButton
 
+                        Layout.alignment: Qt.AlignCenter
+
                         preferredSize: 34
                         imagePadding: 4
 
-                        Layout.alignment: Qt.AlignCenter
                         source: "qrc:/images/icons/content_copy-24px.svg"
+
                         onClicked: {
                             UtilsAdapter.setText(
                                         textMetricsjamiRegisteredNameText.text)

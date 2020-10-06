@@ -103,24 +103,15 @@ ItemDelegate {
             }
         }
 
-        HoverableRadiusButton{
+        PushButton {
             id: btnPreferencesPlugin
-
-            backgroundColor: "white"
 
             Layout.alignment: Qt.AlingVCenter | Qt.AlignRight
             Layout.rightMargin: 8
-            Layout.preferredHeight: 25
 
-            buttonImageHeight: height
-            buttonImageWidth: height
-
-            source:{
-                return "qrc:/images/icons/round-settings-24px.svg"
-            }
-
-            ToolTip.visible: hovered
-            ToolTip.text: JamiStrings.showHidePrefs
+            source: "qrc:/images/icons/round-settings-24px.svg"
+            normalColor: JamiTheme.primaryBackgroundColor
+            toolTipText: JamiStrings.showHidePrefs
 
             onClicked: btnPreferencesPluginClicked()
         }

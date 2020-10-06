@@ -134,5 +134,7 @@
         <file>images/icons/arrow_drop_down-24px.svg</file>
         <file>images/icons/expand_less-24px.svg</file>
         <file>images/icons/expand_more-24px.svg</file>
+        <file>images/icons/delete-24px.svg</file>
+        <file>images/icons/settings_backup_restore-24px.svg</file>
     </qresource>
 </RCC>

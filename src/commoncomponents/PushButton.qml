@@ -71,6 +71,7 @@ AbstractButton {
     checkable: true
     checked: false
     hoverEnabled: true
+    focusPolicy: Qt.TabFocus
 
     ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
     ToolTip.visible: hovered && (toolTipText.length > 0)

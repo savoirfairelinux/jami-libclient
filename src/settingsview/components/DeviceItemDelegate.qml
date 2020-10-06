@@ -120,7 +120,7 @@ ItemDelegate {
             id: btnEditDevice
 
             Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
-            Layout.rightMargin: 8
+            Layout.rightMargin: 16
             Layout.preferredWidth: JamiTheme.preferredFieldHeight
             Layout.preferredHeight: JamiTheme.preferredFieldHeight
 

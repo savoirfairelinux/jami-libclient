@@ -36,22 +36,6 @@ ItemDelegate {
 
     signal btnReAddContactClicked
 
-    function btnReAddContactEnter(){
-        btnReAddContact.enterBtn()
-    }
-
-    function btnReAddContactExit(){
-        btnReAddContact.exitBtn()
-    }
-
-    function btnReAddContactPress(){
-        btnReAddContact.pressBtn()
-    }
-
-    function btnReAddContactRelease(){
-        btnReAddContact.releaseBtn()
-    }
-
     highlighted: ListView.isCurrentItem
 
     RowLayout {
@@ -130,32 +114,19 @@ ItemDelegate {
             }
         }
 
-        HoverableRadiusButton{
+        PushButton{
             id: btnReAddContact
 
             Layout.alignment: Qt.AlignVCenter | Qt.AlignRight
-            Layout.rightMargin: 8
-
+            Layout.rightMargin: 16
             Layout.preferredWidth: JamiTheme.preferredFieldHeight
             Layout.preferredHeight: JamiTheme.preferredFieldHeight
 
-            buttonImageHeight: height - 8
-            buttonImageWidth: width - 8
-
             source: "qrc:/images/icons/person_add-24px.svg"
 
-            radius: height / 2
-            width: 25
-            height: 25
+            toolTipText: JamiStrings.reinstateContact
 
-            backgroundColor: "transparent"
-
-            ToolTip.visible: hovered
-            ToolTip.text: JamiStrings.reinstateContact
-
-            onClicked: {
-                btnReAddContactClicked()
-            }
+            onClicked: btnReAddContactClicked()
         }
     }
 }

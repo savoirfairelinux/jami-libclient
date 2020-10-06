@@ -61,7 +61,7 @@ ItemDelegate {
                 btnPreferenceClicked()
                 break
             case PreferenceItemDelegate.PATH:
-                if(index == 0){
+                if(index === 0){
                     preferenceFilePathDialog.title = qsTr("Select An Image to " + preferenceName)
                     preferenceFilePathDialog.nameFilters = fileFilters
                     preferenceFilePathDialog.open()
@@ -101,35 +101,27 @@ ItemDelegate {
             ToolTip.text: preferenceSummary
         }
 
-        HoverableRadiusButton {
+        PushButton {
             id: btnPreference
+
             visible: preferenceType === PreferenceItemDelegate.DEFAULT
-            backgroundColor: "white"
+            normalColor: JamiTheme.primaryBackgroundColor
 
             Layout.alignment: Qt.AlignRight | Qt.AlingVCenter
-            Layout.rightMargin: 7
-            Layout.preferredWidth: 30
-            Layout.preferredHeight: 30
+            Layout.rightMargin: 8
+            Layout.preferredWidth: preferredSize
+            Layout.preferredHeight: preferredSize
 
-            buttonImageHeight: 20
-            buttonImageWidth: 20
+            source: "qrc:/images/icons/round-settings-24px.svg"
 
-            source: {
-                return "qrc:/images/icons/round-settings-24px.svg"
-            }
+            toolTipText: qsTr("Edit preference")
 
-            ToolTip.visible: hovered
-            ToolTip.text: {
-                return qsTr("Edit preference")
-            }
-
-            onClicked: {
-                btnPreferenceClicked()
-            }
+            onClicked: btnPreferenceClicked()
         }
 
         SettingParaCombobox {
             id: listPreferenceComboBox
+
             visible: preferenceType === PreferenceItemDelegate.LIST
             Layout.preferredWidth: root.width / 2 - 8
             Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
@@ -147,23 +139,22 @@ ItemDelegate {
             }
         }
 
-        HoverableRadiusButton {
+        PushButton {
             id: pathPreferenceButton
+
             visible: preferenceType === PreferenceItemDelegate.PATH
-            Layout.preferredWidth: root.width / 2 - 16
             Layout.maximumWidth: root.width / 2 - 16
             Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
             Layout.rightMargin: 30
-            Layout.preferredHeight: 30
 
-            radius: height / 2
+            width: root.width / 2 - 16
+            Layout.preferredWidth: width
+            Layout.preferredHeight: 32
 
-            icon.source: "qrc:/images/icons/round-folder-24px.svg"
-            icon.height: 24
-            icon.width: 24
+            source: "qrc:/images/icons/round-folder-24px.svg"
 
             toolTipText: JamiStrings.chooseImageFile
-            text: UtilsAdapter.fileName(preferenceCurrentValue)
+            buttonText: UtilsAdapter.fileName(preferenceCurrentValue)
             fontPointSize: JamiTheme.buttonFontSize
 
             onClicked: {

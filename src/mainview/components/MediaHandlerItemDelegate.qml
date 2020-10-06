@@ -42,7 +42,7 @@ ItemDelegate {
     RowLayout{
         anchors.fill: parent
 
-        Label{
+        Label {
             Layout.leftMargin: 8
             Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
 
@@ -58,7 +58,7 @@ ItemDelegate {
             }
         }
 
-        Label{
+        Label {
             id: labelDeviceId
             Layout.leftMargin: 8
             Layout.fillWidth: true
@@ -110,30 +110,18 @@ ItemDelegate {
             }
         }
 
-         HoverableRadiusButton{
+        PushButton {
             id: btnPreferencesMediaHandler
-
-            backgroundColor: "white"
 
             Layout.alignment: Qt.AlingVCenter | Qt.AlignRight
             Layout.rightMargin: 8
-            Layout.preferredHeight: 25
 
-            buttonImageHeight: height
-            buttonImageWidth: height
+            normalColor: JamiTheme.primaryBackgroundColor
+            source: "qrc:/images/icons/round-settings-24px.svg"
 
-            source:{
-                return "qrc:/images/icons/round-settings-24px.svg"
-            }
+            toolTipText: qsTr(pluginId)
 
-            ToolTip.visible: hovered
-            ToolTip.text: {
-                return qsTr(pluginId)
-            }
-
-            onClicked: {
-                openPreferences()
-            }
+            onClicked: openPreferences()
         }
     }
 }

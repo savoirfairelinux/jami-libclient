@@ -110,8 +110,9 @@ Rectangle {
                 Image {
                     anchors.centerIn: parent
                     source: pluginIcon === "" ? "" : "file:" + pluginIcon
-                    height: 35
-                    width: 35
+                    height: 36
+                    width: 36
+                    mipmap: true
                 }
             }
         }
@@ -132,38 +133,26 @@ Rectangle {
             Layout.topMargin: 10
             height: 30
 
-            HoverableRadiusButton {
+            PushButton {
                 id: resetButton
+
                 Layout.fillWidth: true
 
-                radius: height / 2
-
-                icon.source: "qrc:/images/icons/settings_backup_restore-black-18dp.svg"
-                icon.height: 24
-                icon.width: 24
-
-                text: JamiStrings.reset
+                source: "qrc:/images/icons/settings_backup_restore-24px.svg"
+                buttonText: JamiStrings.reset
                 fontPointSize: JamiTheme.settingsFontSize
-                font.kerning: true
 
-                onClicked: {
-                    resetPluginSlot()
-                }
+                onClicked: resetPluginSlot()
             }
 
-            HoverableRadiusButton {
+            PushButton {
                 id: uninstallButton
+
                 Layout.fillWidth: true
 
-                radius: height / 2
-
-                icon.source: "qrc:/images/icons/ic_delete_black_18dp_2x.png"
-                icon.height: 24
-                icon.width: 24
-
-                text: qsTr("Uninstall")
+                source: "qrc:/images/icons/delete-24px.svg"
+                buttonText: qsTr("Uninstall")
                 fontPointSize: JamiTheme.settingsFontSize
-                font.kerning: true
 
                 onClicked: uninstallPluginSlot()
             }
@@ -178,7 +167,7 @@ Rectangle {
 
             model: PluginAdapter.getPluginPreferencesModel(pluginId)
 
-            delegate: PreferenceItemDelegate{
+            delegate: PreferenceItemDelegate {
                 id: preferenceItemDelegate
 
                 width: pluginPreferenceView.width
