@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c6a87474_397ccd11",
+        "filename": "src/contactmodel.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 531,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2020-10-06T18:37:50Z",
+      "side": 1,
+      "message": "use bestIdForContact if no alias :)",
+      "range": {
+        "startLine": 526,
+        "startChar": 10,
+        "endLine": 531,
+        "endChar": 5
+      },
+      "revId": "1a3a613208f5ee27e9d4e92ae0769d596291bf06",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    }
+  ]
+}
