@@ -65,11 +65,11 @@ public:
      * @param accountId.
      * @return a const account::Info& structure.
      */
-    Q_INVOKABLE const account::Info& getAccountInfo(const QString& accountId) const;
+    const account::Info& getAccountInfo(const QString& accountId) const;
     /**
      * flag account corresponding to passed id as freeable.
      */
-    Q_INVOKABLE void flagFreeable(const QString& accountId) const;
+    void flagFreeable(const QString& accountId) const;
     /**
      * set account enable/disable, save config and do unregister for account
      * @param accountId.
@@ -81,14 +81,14 @@ public:
      * @param accountId.
      * @param reference to the confProperties
      */
-    Q_INVOKABLE void setAccountConfig(const QString& accountID,
-                                      const account::ConfProperties_t& confProperties) const;
+    void setAccountConfig(const QString& accountID,
+                          const account::ConfProperties_t& confProperties) const;
     /**
      * gets a copy of the accounts config
      * @param accountId.
      * @return an account::Info::ConfProperties_t structure.
      */
-    Q_INVOKABLE account::ConfProperties_t getAccountConfig(const QString& accountId) const;
+    account::ConfProperties_t getAccountConfig(const QString& accountId) const;
     /**
      * Call exportToFile from the daemon
      * @param accountId
@@ -119,23 +119,23 @@ public:
      * @param newPassword
      * @return if the password has been changed
      */
-    Q_INVOKABLE bool changeAccountPassword(const QString& accountId,
-                                           const QString& currentPassword,
-                                           const QString& newPassword) const;
+    bool changeAccountPassword(const QString& accountId,
+                               const QString& currentPassword,
+                               const QString& newPassword) const;
     /**
      * Change the avatar of an account
      * @param accountId
      * @param avatar
      * @throws out_of_range exception if account is not found
      */
-    Q_INVOKABLE void setAvatar(const QString& accountId, const QString& avatar);
+    void setAvatar(const QString& accountId, const QString& avatar);
     /**
      * Change the alias of an account
      * @param accountId
      * @param alias
      * @throws out_of_range exception if account is not found
      */
-    Q_INVOKABLE void setAlias(const QString& accountId, const QString& alias);
+    void setAlias(const QString& accountId, const QString& alias);
     /**
      * Try to register a name
      * @param accountId
@@ -154,7 +154,7 @@ public:
      * @param config
      * @return the account id
      */
-    Q_INVOKABLE static QString connectToAccountManager(
+    static QString connectToAccountManager(
         const QString& username,
         const QString& password,
         const QString& serverUri,
@@ -171,23 +171,23 @@ public:
      * @param config
      * @return the created account
      */
-    Q_INVOKABLE static QString createNewAccount(profile::Type type,
-                                                const QString& displayName = "",
-                                                const QString& archivePath = "",
-                                                const QString& password = "",
-                                                const QString& pin = "",
-                                                const QString& uri = "",
-                                                const MapStringString& config = MapStringString());
+    static QString createNewAccount(profile::Type type,
+                                    const QString& displayName = "",
+                                    const QString& archivePath = "",
+                                    const QString& password = "",
+                                    const QString& pin = "",
+                                    const QString& uri = "",
+                                    const MapStringString& config = MapStringString());
     /**
      * Set an account to the first position
      */
-    Q_INVOKABLE void setTopAccount(const QString& accountId);
+    void setTopAccount(const QString& accountId);
     /**
      * Get the vCard for an account
      * @param id
      * @return vcard of the account
      */
-    Q_INVOKABLE QString accountVCard(const QString& accountId, bool compressImage = true) const;
+    QString accountVCard(const QString& accountId, bool compressImage = true) const;
     /**
      * Get the best name for an account
      * @param id
@@ -271,6 +271,4 @@ private:
 };
 } // namespace api
 } // namespace lrc
-#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
 Q_DECLARE_METATYPE(lrc::api::NewAccountModel*)
-#endif

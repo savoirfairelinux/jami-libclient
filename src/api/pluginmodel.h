@@ -76,19 +76,19 @@ public:
      * Get list of installed plugins
      * @return plugins installed
      */
-    Q_INVOKABLE VectorString listAvailablePlugins() const;
+    VectorString listAvailablePlugins() const;
 
     /**
      * Get list of loaded plugins
      * @return plugins loaded
      */
-    Q_INVOKABLE VectorString listLoadedPlugins() const;
+    VectorString listLoadedPlugins() const;
 
     /**
      * Get details of installed plugin
      * @return plugin Details
      */
-    Q_INVOKABLE plugin::PluginDetails getPluginDetails(const QString& path);
+    plugin::PluginDetails getPluginDetails(const QString& path);
 
     /**
      * Install plugin
@@ -118,7 +118,7 @@ public:
      * List all plugins Media Handlers
      * @return List of all plugins Media Handlers
      */
-    Q_INVOKABLE VectorString listCallMediaHandlers() const;
+    VectorString listCallMediaHandlers() const;
 
     /**
      * Toggle media handler
@@ -129,13 +129,13 @@ public:
      * Verify if there is an active plugin media handler
      * @return Map with name and status
      */
-    Q_INVOKABLE MapStringString getCallMediaHandlerStatus();
+    MapStringString getCallMediaHandlerStatus();
 
     /**
      * Get details of installed plugins media handlers
      * @return Media Handler Details
      */
-    Q_INVOKABLE plugin::MediaHandlerDetails getCallMediaHandlerDetails(const QString& id);
+    plugin::MediaHandlerDetails getCallMediaHandlerDetails(const QString& id);
 
     /**
      * Get preferences map of installed plugin
@@ -155,7 +155,7 @@ public:
      * Get preferences values of installed plugin
      * @return Plugin preferences map
      */
-    Q_INVOKABLE MapStringString getPluginPreferencesValues(const QString& path);
+    MapStringString getPluginPreferencesValues(const QString& path);
 
     /**
      * Reste preferences values of installed plugin to default values
