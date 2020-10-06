@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5cb6732d_ce43cfd6",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 2253,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2020-10-06T18:39:32Z",
+      "side": 1,
+      "message": "use the functions you did in contactModel",
+      "range": {
+        "startLine": 2223,
+        "startChar": 1,
+        "endLine": 2253,
+        "endChar": 1
+      },
+      "revId": "4e32cfc45010b26070e6b8da498afa88124a1085",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    }
+  ]
+}
