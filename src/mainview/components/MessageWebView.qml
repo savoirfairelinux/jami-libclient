@@ -32,6 +32,7 @@ Rectangle {
     property int messageWebViewHeaderPreferredHeight: 64
     property string headerUserAliasLabelText: ""
     property string headerUserUserNameLabelText: ""
+    property bool jsLoaded: false
 
     signal needToHideConversationInCall
 
@@ -256,7 +257,8 @@ Rectangle {
                 messageWebView.runJavaScript(UtilsAdapter.qStringFromFile(
                                                  ":/qwebchannel.js"))
                 messageWebView.runJavaScript(UtilsAdapter.qStringFromFile(
-                                                 ":/chatview.js"))
+                                                 ":/chatview.js"),
+                                             function(){jsLoaded = true})
                 messageWebView.runJavaScript("init_i18n();")
                 messageWebView.runJavaScript("displayNavbar(false);")
             }

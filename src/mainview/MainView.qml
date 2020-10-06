@@ -177,6 +177,19 @@ Window {
     // ConversationSmartListViewItemDelegate provides UI information
     function setMainView(currentUserDisplayName, currentUserAlias, currentUID,
                                callStackViewShouldShow, isAudioOnly, callState) {
+        if (!(communicationPageMessageWebView.jsLoaded)) {
+            communicationPageMessageWebView.jsLoadedChanged.connect(
+                        function(currentUserDisplayName, currentUserAlias, currentUID,
+                                 callStackViewShouldShow, isAudioOnly, callState) {
+                            return function() {
+                                setMainView(currentUserDisplayName, currentUserAlias, currentUID,
+                                            callStackViewShouldShow, isAudioOnly, callState)
+                            }
+                        }(currentUserDisplayName, currentUserAlias, currentUID,
+                          callStackViewShouldShow, isAudioOnly, callState))
+            return
+        }
+
         if (callStackViewShouldShow) {
             if (inSettingsView) {
                 toggleSettingsView()
