@@ -17,15 +17,14 @@
  */
 
 import QtQuick 2.14
-import QtQuick.Window 2.14
 import QtQuick.Controls 2.14
-import QtQuick.Controls.Universal 2.12
-import QtQuick.Layouts 1.3
+import QtQuick.Controls.Universal 2.14
+import QtQuick.Layouts 1.14
 import QtGraphicalEffects 1.14
 import QtQuick.Controls.Styles 1.4
 import net.jami.Models 1.0
 
-Rectangle{
+Rectangle {
     id: listViewBackground
 
     property alias model: listView.model
@@ -37,7 +36,7 @@ Rectangle{
 
     color: JamiTheme.normalButtonColor
 
-    ListView{
+    ListView {
         id: listView
 
         anchors.fill: parent
