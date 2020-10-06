@@ -70,7 +70,7 @@ BaseDialog {
 
                     Layout.alignment: Qt.AlignCenter
 
-                    Image {
+                    ResponsiveImage {
                         id: aboutPopUPJamiLogoImage
 
                         Layout.alignment: Qt.AlignCenter
@@ -78,9 +78,10 @@ BaseDialog {
                         Layout.preferredWidth: contentRect.width
                         Layout.preferredHeight: 100
 
-                        fillMode: Image.PreserveAspectFit
-                        source: "qrc:/images/logo-jami-standard-coul.png"
-                        mipmap: true
+                        smooth: true
+                        antialiasing: true
+
+                        source: "qrc:/images/logo-jami-standard-coul.svg"
                     }
 
                     Label {

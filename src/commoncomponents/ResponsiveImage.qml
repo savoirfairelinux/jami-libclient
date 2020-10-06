@@ -46,10 +46,9 @@ Image {
     height: Math.trunc(containerHeight * Math.sqrt(2) * 0.5) + 3 - padding
 
     fillMode: Image.PreserveAspectFit
-    mipmap: true
     smooth: false
-    asynchronous: true
     antialiasing: false
+    asynchronous: true
 
     function setSourceSize() {
         if (isSvg) {

@@ -40,7 +40,7 @@ Rectangle {
         ColumnLayout {
             id: welcomeRectComponentsGroupColumnLayout
 
-            Image {
+            ResponsiveImage {
                 id: jamiLogoImage
 
                 Layout.alignment: Qt.AlignCenter
@@ -49,9 +49,10 @@ Rectangle {
                 Layout.topMargin: 32
                 Layout.bottomMargin: 10
 
-                fillMode: Image.PreserveAspectFit
-                source: "qrc:/images/logo-jami-standard-coul.png"
-                mipmap: true
+                smooth: true
+                antialiasing: true
+
+                source: "qrc:/images/logo-jami-standard-coul.svg"
             }
 
             Label {

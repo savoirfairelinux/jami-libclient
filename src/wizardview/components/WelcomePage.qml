@@ -60,20 +60,17 @@ Rectangle {
             font.kerning: true
         }
 
-        Label {
+        ResponsiveImage {
             id: welcomeLogo
 
             Layout.alignment: Qt.AlignCenter
             Layout.preferredWidth: 300
             Layout.preferredHeight: 150
 
-            color: "transparent"
-            background: Image {
-                id: logoIMG
-                source: "qrc:/images/logo-jami-standard-coul.png"
-                fillMode: Image.PreserveAspectFit
-                mipmap: true
-            }
+            smooth: true
+            antialiasing: true
+
+            source: "qrc:/images/logo-jami-standard-coul.svg"
         }
 
         MaterialButton {
