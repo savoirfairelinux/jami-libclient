@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "71bbbc05_0ba86ad6",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 2224,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2020-10-06T20:48:22Z",
+      "side": 1,
+      "message": "check if participants is not empty else it will crash, also getConversation can throw",
+      "range": {
+        "startLine": 2224,
+        "startChar": 79,
+        "endLine": 2224,
+        "endChar": 95
+      },
+      "revId": "708c86e19e2bbd83f594442c56006ff7081cc227",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    }
+  ]
+}
