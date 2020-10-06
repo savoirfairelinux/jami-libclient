@@ -108,12 +108,10 @@ ColumnLayout {
                         - JamiTheme.preferredMarginSize * 4
         }
 
-        HoverableButtonTextItem {
+        PushButton {
             Layout.alignment: Qt.AlignRight
             Layout.preferredWidth: JamiTheme.preferredFieldHeight
             Layout.preferredHeight: JamiTheme.preferredFieldHeight
-
-            radius: height / 2
 
             toolTipText: JamiStrings.tipBannedContacts
 

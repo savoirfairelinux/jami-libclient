@@ -52,7 +52,6 @@
         <file>src/settingsview/components/NameRegistrationDialog.qml</file>
         <file>src/settingsview/components/LinkDeviceDialog.qml</file>
         <file>src/settingsview/components/RevokeDevicePasswordDialog.qml</file>
-        <file>src/commoncomponents/HoverableButtonTextItem.qml</file>
         <file>src/commoncomponents/HoverableRadiusButton.qml</file>
         <file>src/commoncomponents/PasswordDialog.qml</file>
         <file>src/commoncomponents/InfoLineEdit.qml</file>
