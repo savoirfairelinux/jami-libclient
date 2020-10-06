@@ -22,6 +22,30 @@
       "revId": "1a3a613208f5ee27e9d4e92ae0769d596291bf06",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0203aeff_bef08951",
+        "filename": "src/contactmodel.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 531,
+      "author": {
+        "id": 633
+      },
+      "writtenOn": "2020-10-06T19:45:33Z",
+      "side": 1,
+      "message": "I deliberately left it there,\n\nbecause I think it will make unnecessary function calls (getContact one more time)\n\nDo you think that it matters?",
+      "parentUuid": "c6a87474_397ccd11",
+      "range": {
+        "startLine": 526,
+        "startChar": 10,
+        "endLine": 531,
+        "endChar": 5
+      },
+      "revId": "1a3a613208f5ee27e9d4e92ae0769d596291bf06",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
     }
   ]
 }
