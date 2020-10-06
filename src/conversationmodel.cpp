@@ -2218,6 +2218,18 @@ ConversationModel::setIsComposing(const QString& uid, bool isComposing)
     ConfigurationManager::instance().setIsComposing(owner.id, peerUri, isComposing);
 }
 
+const QString
+ConversationModel::bestIdForConversation(const QString& convUid) const
+{
+    return owner.contactModel->bestIdForContact(getConversationForUID(convUid).participants[0]);
+}
+
+const QString
+ConversationModel::bestNameForConversation(const QString& convUid) const
+{
+    return owner.contactModel->bestNameForContact(getConversationForUID(convUid).participants[0]);
+}
+
 void
 ConversationModel::sendFile(const QString& convUid, const QString& path, const QString& filename)
 {
