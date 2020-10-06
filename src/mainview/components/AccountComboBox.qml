@@ -85,7 +85,7 @@ ComboBox {
 
         anchors.left: userImageRoot.right
         anchors.leftMargin: 16
-        anchors.top: rootItemBackground.top
+        anchors.top: background.top
         anchors.topMargin: 16
 
         text: textMetricsUserAliasRoot.elidedText
@@ -140,7 +140,7 @@ ComboBox {
     }
 
     background: Rectangle {
-        id: rootItemBackground
+        id: background
 
         implicitWidth: root.width
         implicitHeight: root.height
@@ -156,6 +156,37 @@ ComboBox {
             }
             color: JamiTheme.tabbarBorderColor
         }
+
+        states: [
+            State {
+                name: "open"; when: comboBoxPopup.opened
+                PropertyChanges {
+                    target: background
+                    color: Qt.lighter(JamiTheme.hoverColor, 1.0)
+                }
+            },
+            State {
+                name: "hovered"
+                PropertyChanges {
+                    target: background
+                    color: Qt.lighter(JamiTheme.hoverColor, 1.05)
+                }
+            },
+            State {
+                name: "normal"
+                PropertyChanges {
+                    target: background
+                    color: JamiTheme.backgroundColor
+                }
+            }
+        ]
+
+        transitions: [
+            Transition {
+                to: "hovered"; reversible: true
+                ColorAnimation { duration: JamiTheme.fadeDuration }
+            }
+        ]
     }
 
     MouseArea {
@@ -171,51 +202,56 @@ ComboBox {
                 root.popup.open()
             }
         }
-        onEntered: rootItemBackground.color = Qt.lighter(JamiTheme.hoverColor, 1.05)
-        onExited: rootItemBackground.color = JamiTheme.backgroundColor
-    }
-
-    PushButton {
-        id: qrCodeGenerateButton
-
-        anchors.right: settingsButton.left
-        anchors.rightMargin: 10
-        anchors.verticalCenter: root.verticalCenter
-
-        width: visible ? preferredSize : 0
-        height: visible ? preferredSize : 0
-
-        visible: AccountAdapter.currentAccountType === Profile.Type.RING
-        toolTipText: JamiStrings.displayQRCode
-
-        source: "qrc:/images/icons/qr_code-24px.svg"
-
-        onClicked: {
-            if (visible)
-                qrDialog.open()
+        onEntered: background.state = "hovered"
+        onExited: {
+            if (!comboBoxPopup.opened)
+                background.state = "normal"
         }
     }
 
-    PushButton {
-        id: settingsButton
+    Row {
+        spacing: 10
 
         anchors.right: root.right
         anchors.rightMargin: 10
         anchors.verticalCenter: root.verticalCenter
 
-        source: !mainViewWindow.inSettingsView ?
-                    "qrc:/images/icons/round-settings-24px.svg" :
-                    "qrc:/images/icons/round-close-24px.svg"
+        PushButton {
+            id: qrCodeGenerateButton
 
-        toolTipText: !mainViewWindow.inSettingsView ?
-                         JamiStrings.openSettings :
-                         JamiStrings.closeSettings
+            width: visible ? preferredSize : 0
+            height: visible ? preferredSize : 0
 
-        onClicked: {
-            settingBtnClicked()
-            rootItemBackground.color = JamiTheme.backgroundColor
+            visible: AccountAdapter.currentAccountType === Profile.Type.RING
+            toolTipText: JamiStrings.displayQRCode
+
+            source: "qrc:/images/icons/qr_code-24px.svg"
+
+            onClicked: {
+                if (visible)
+                    qrDialog.open()
+            }
+        }
+
+        PushButton {
+            id: settingsButton
+
+            source: !mainViewWindow.inSettingsView ?
+                        "qrc:/images/icons/round-settings-24px.svg" :
+                        "qrc:/images/icons/round-close-24px.svg"
+
+            toolTipText: !mainViewWindow.inSettingsView ?
+                             JamiStrings.openSettings :
+                             JamiStrings.closeSettings
+
+            onClicked: {
+                settingBtnClicked()
+                background.state = "normal"
+            }
         }
     }
+
+
 
     indicator: null
 
