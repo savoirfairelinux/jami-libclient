@@ -26,13 +26,13 @@ namespace lrc {
 namespace api {
 
 namespace profile {
-#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
+#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
 Q_NAMESPACE
 Q_CLASSINFO("RegisterEnumClassesUnscoped", "false")
 #endif
 
 enum class Type { INVALID, RING, SIP, PENDING, TEMPORARY, COUNT__ };
-#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
+#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
 Q_ENUM_NS(Type)
 #endif
 

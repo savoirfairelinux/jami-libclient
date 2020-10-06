@@ -259,6 +259,6 @@ private:
 };
 } // namespace api
 } // namespace lrc
-#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
+#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
 Q_DECLARE_METATYPE(lrc::api::NewAccountModel*)
 #endif

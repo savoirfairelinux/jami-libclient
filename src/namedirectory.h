@@ -26,7 +26,7 @@ class Account;
 class LIB_EXPORT NameDirectory : public QObject
 {
     Q_OBJECT
-#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
+#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
     Q_CLASSINFO("RegisterEnumClassesUnscoped", "false")
 #endif
 public:
@@ -38,18 +38,18 @@ public:
         ALREADY_TAKEN = 3,
         NETWORK_ERROR = 4
     };
-#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
+#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
     Q_ENUM(RegisterNameStatus)
 #endif
 
     // Lookup name status
     enum class LookupStatus { SUCCESS = 0, INVALID_NAME = 1, NOT_FOUND = 2, ERROR = 3 };
-#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
+#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
     Q_ENUM(LookupStatus)
 #endif
 
     enum class ExportOnRingStatus { SUCCESS = 0, WRONG_PASSWORD = 1, NETWORK_ERROR = 2, INVALID };
-#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
+#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
     Q_ENUM(ExportOnRingStatus)
 #endif
 
@@ -66,7 +66,7 @@ private:
     virtual ~NameDirectory();
 
     NameDirectoryPrivate* d_ptr;
-#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
+#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
     Q_DECLARE_PRIVATE(NameDirectory)
     Q_DISABLE_COPY(NameDirectory)
 #endif
@@ -83,6 +83,6 @@ Q_SIGNALS:
     // Export account has ended with pin generated
     void exportOnRingEnded(NameDirectory::ExportOnRingStatus status, const QString& pin);
 };
-#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
+#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
 Q_DECLARE_METATYPE(NameDirectory*)
 #endif

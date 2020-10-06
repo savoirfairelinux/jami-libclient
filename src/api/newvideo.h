@@ -42,7 +42,7 @@ class RendererPimpl;
 namespace api {
 
 namespace video {
-#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
+#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
 Q_NAMESPACE
 Q_CLASSINFO("RegisterEnumClassesUnscoped", "false")
 #endif
@@ -74,7 +74,7 @@ struct Frame
 };
 
 enum class DeviceType { CAMERA, DISPLAY, FILE, INVALID };
-#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
+#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
 Q_ENUM_NS(DeviceType)
 #endif
 
