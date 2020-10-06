@@ -33,10 +33,8 @@ namespace lrc {
 namespace api {
 
 namespace call {
-#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
 Q_NAMESPACE
 Q_CLASSINFO("RegisterEnumClassesUnscoped", "false")
-#endif
 
 enum class Status {
     INVALID,
@@ -53,9 +51,7 @@ enum class Status {
     TERMINATING,
     CONNECTED
 };
-#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
 Q_ENUM_NS(Status)
-#endif
 
 static inline QString
 to_string(const call::Status& status)
@@ -125,9 +121,7 @@ to_status(const QString& status)
 }
 
 enum class Type { INVALID, DIALOG, CONFERENCE };
-#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
 Q_ENUM_NS(Type)
-#endif
 
 enum class Layout { GRID, ONE_WITH_SMALL, ONE };
 

@@ -182,6 +182,4 @@ private:
 };
 } // namespace api
 } // namespace lrc
-#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
 Q_DECLARE_METATYPE(lrc::api::ContactModel*)
-#endif
