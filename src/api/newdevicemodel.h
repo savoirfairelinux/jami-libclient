@@ -88,7 +88,7 @@ public:
      * @note will emit deviceUpdated when finished
      * @note ring can't change the name of another device
      */
-    Q_INVOKABLE void setCurrentDeviceName(const QString& newName);
+    void setCurrentDeviceName(const QString& newName);
 
 Q_SIGNALS:
     /**
@@ -113,6 +113,4 @@ private:
 };
 } // namespace api
 } // namespace lrc
-#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
 Q_DECLARE_METATYPE(lrc::api::NewDeviceModel*)
-#endif

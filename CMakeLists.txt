@@ -75,7 +75,7 @@ SET(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${LOCAL_CMAKE_MODULE_PATH})
 
 FIND_PACKAGE(Ring REQUIRED)
 
-if (${QT_MIN_VER} MATCHES "5.15")
+if (${QT_MIN_VER} MATCHES "5.14")
    message(STATUS "Using custom Qt version")
    find_package(Qt5 ${QT_MIN_VER} REQUIRED
                 COMPONENTS Core DBus Sql Gui
