@@ -85,7 +85,7 @@ public:
      * get list of banned contacts.
      * @return list of banned contacts uris as string
      */
-    Q_INVOKABLE const QList<QString>& getBannedContacts() const;
+    const QList<QString>& getBannedContacts() const;
     /**
      * @return all contacts for this account.
      */
@@ -182,6 +182,4 @@ private:
 };
 } // namespace api
 } // namespace lrc
-#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
 Q_DECLARE_METATYPE(lrc::api::ContactModel*)
-#endif
