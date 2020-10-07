@@ -70,6 +70,30 @@
       "revId": "708c86e19e2bbd83f594442c56006ff7081cc227",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "97dc9c38_0319993f",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 2224,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2020-10-07T19:58:03Z",
+      "side": 1,
+      "message": "We can throw it\u0027s ok, but we must at least avoid the crash or be sure",
+      "parentUuid": "3dd4ed75_633a0382",
+      "range": {
+        "startLine": 2224,
+        "startChar": 79,
+        "endLine": 2224,
+        "endChar": 95
+      },
+      "revId": "708c86e19e2bbd83f594442c56006ff7081cc227",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
     }
   ]
 }
