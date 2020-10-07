@@ -22,6 +22,30 @@
       "revId": "aacf3b14b12efac5803525826082d901c2c81031",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "91da7769_60fbab8f",
+        "filename": "src/api/newaccountmodel.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 275,
+      "author": {
+        "id": 90
+      },
+      "writtenOn": "2020-10-07T20:48:47Z",
+      "side": 1,
+      "message": "and, mutable is antonym to const, but it seems unnecessary here, I vote getAccountInfo if it is not already defined in the pimpl",
+      "parentUuid": "0e6ca5fa_a97e12b2",
+      "range": {
+        "startLine": 270,
+        "startChar": 7,
+        "endLine": 275,
+        "endChar": 76
+      },
+      "revId": "aacf3b14b12efac5803525826082d901c2c81031",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
     }
   ]
 }
