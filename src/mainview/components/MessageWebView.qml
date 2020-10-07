@@ -108,10 +108,8 @@ Rectangle {
     QtObject {
         id: jsBridgeObject
 
-
         // ID, under which this object will be known at chatview.js side.
         WebChannel.id: "jsbridge"
-
 
         // Functions that are exposed, return code can be derived from js side
         // by setting callback function.
@@ -193,6 +191,40 @@ Rectangle {
         function onComposing(isComposing) {
             MessagesAdapter.onComposing(isComposing)
         }
+
+        function parseI18nData() {
+            return {
+                ["backButtonTitle"] : JamiStrings.backButtonTitle,
+                ["placeCallButtonTitle"] : JamiStrings.placeCallButtonTitle,
+                ["placeAudioCallButtonTitle"] : JamiStrings.placeAudioCallButtonTitle,
+                ["addToConversationsButtonTitle"] : JamiStrings.addToConversationsButtonTitle,
+                ["unbanButtonTitle"] : JamiStrings.unbanButtonTitle,
+                ["sendButtonTitle"] : JamiStrings.sendButtonTitle,
+                ["optionsButtonTitle"] : JamiStrings.optionsButtonTitle,
+                ["backToBottomBtnInnerHTML"] : JamiStrings.backToBottomBtnInnerHTML,
+                ["sendFileButtonTitle"] : JamiStrings.sendFileButtonTitle,
+                ["videoRecordButtonTitle"] : JamiStrings.videoRecordButtonTitle,
+                ["audioRecordButtonTitle"] : JamiStrings.audioRecordButtonTitle,
+                ["acceptButtonTitle"] : JamiStrings.acceptButtonTitle,
+                ["refuseButtonTitle"] : JamiStrings.refuseButtonTitle,
+                ["blockButtonTitle"] : JamiStrings.blockButtonTitle,
+                ["messageBarInputPlaceholder"] : JamiStrings.messageBarInputPlaceholder,
+                ["placeHolderTemporaryContact"] : JamiStrings.placeHolderTemporaryContact,
+                ["isNotInYourContacts"] : JamiStrings.isNotInYourContacts,
+                ["automaticallyAcceptInvitation"] : JamiStrings.automaticallyAcceptInvitation,
+                ["daysAgo"] : JamiStrings.daysAgo,
+                ["dayAgo"] : JamiStrings.dayAgo,
+                ["hoursAgo"] : JamiStrings.hoursAgo,
+                ["hourAgo"] : JamiStrings.hourAgo,
+                ["minutesAgo"] : JamiStrings.minutesAgo,
+                ["justNow"] : JamiStrings.justNow,
+                ["failureString"] : JamiStrings.failureString,
+                ["acceptString"] : JamiStrings.acceptString,
+                ["refuseString"] : JamiStrings.refuseString,
+                ["deleteString"] : JamiStrings.deleteString,
+                ["retryString"] : JamiStrings.retryString
+            }
+        }
     }
 
     WebEngineView {
@@ -245,9 +277,6 @@ Rectangle {
                                                  "chatwin",
                                                  UtilsAdapter.qStringFromFile(
                                                      ":/chatview-windows.css")))
-
-                messageWebView.runJavaScript(UtilsAdapter.qStringFromFile(
-                                                 ":/jed.js"))
                 messageWebView.runJavaScript(UtilsAdapter.qStringFromFile(
                                                  ":/linkify.js"))
                 messageWebView.runJavaScript(UtilsAdapter.qStringFromFile(
@@ -256,11 +285,13 @@ Rectangle {
                                                  ":/linkify-string.js"))
                 messageWebView.runJavaScript(UtilsAdapter.qStringFromFile(
                                                  ":/qwebchannel.js"))
-                messageWebView.runJavaScript(UtilsAdapter.qStringFromFile(
-                                                 ":/chatview.js"),
-                                             function(){jsLoaded = true})
-                messageWebView.runJavaScript("init_i18n();")
-                messageWebView.runJavaScript("displayNavbar(false);")
+                messageWebView.runJavaScript(
+                            UtilsAdapter.qStringFromFile(":/chatview.js"),
+                            function() {
+                                messageWebView.runJavaScript("init_i18n();")
+                                messageWebView.runJavaScript("displayNavbar(false);")
+                                jsLoaded = true
+                            })
             }
         }
 

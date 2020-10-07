@@ -78,7 +78,6 @@
         <file alias="chatview.css">../lrc/src/web-chatview/chatview.css</file>
         <file alias="chatview.html">../lrc/src/web-chatview/chatview.html</file>
         <file alias="chatview.js">../lrc/src/web-chatview/chatview.js</file>
-        <file alias="jed.js">../lrc/src/web-chatview/jed.js</file>
         <file alias="linkify.js">../lrc/src/web-chatview/linkify.js</file>
         <file alias="linkify-html.js">../lrc/src/web-chatview/linkify-html.js</file>
         <file alias="linkify-string.js">../lrc/src/web-chatview/linkify-string.js</file>
