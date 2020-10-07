@@ -22,6 +22,30 @@
       "revId": "708c86e19e2bbd83f594442c56006ff7081cc227",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ad247a62_cf450e11",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 2224,
+      "author": {
+        "id": 633
+      },
+      "writtenOn": "2020-10-07T18:39:34Z",
+      "side": 1,
+      "message": "Something like this?\n\nI think getConversationForUID already catch the throw",
+      "parentUuid": "71bbbc05_0ba86ad6",
+      "range": {
+        "startLine": 2224,
+        "startChar": 79,
+        "endLine": 2224,
+        "endChar": 95
+      },
+      "revId": "708c86e19e2bbd83f594442c56006ff7081cc227",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
     }
   ]
 }
