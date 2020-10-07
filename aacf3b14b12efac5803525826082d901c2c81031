@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "0e6ca5fa_a97e12b2",
+        "filename": "src/api/newaccountmodel.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 275,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2020-10-07T19:59:10Z",
+      "side": 1,
+      "message": "no, must be in pimpl if really necessary, avoid changes here",
+      "range": {
+        "startLine": 270,
+        "startChar": 7,
+        "endLine": 275,
+        "endChar": 76
+      },
+      "revId": "aacf3b14b12efac5803525826082d901c2c81031",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    }
+  ]
+}
