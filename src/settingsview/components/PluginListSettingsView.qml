@@ -138,6 +138,7 @@ Rectangle {
             Layout.preferredHeight: childrenRect.height
 
             model: PluginAdapter.getPluginSelectableModel()
+            interactive: false
 
             delegate: PluginItemDelegate {
                 id: pluginItemDelegate
@@ -150,14 +151,17 @@ Rectangle {
                 pluginIcon: PluginIcon
                 isLoaded: IsLoaded
 
-                onClicked: pluginListView.currentIndex = index
-
                 onBtnLoadPluginToggled: {
                     loadPluginSlot(pluginId, isLoaded)
                     pluginListView.model = PluginAdapter.getPluginSelectableModel()
                 }
 
                 onBtnPreferencesPluginClicked: openPreferencesPluginSlot(pluginName, pluginIcon, pluginId, isLoaded)
+
+                background: Rectangle {
+                    anchors.fill: parent
+                    color: "white"
+                }
             }
         }
     }

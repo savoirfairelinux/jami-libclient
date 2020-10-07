@@ -38,26 +38,28 @@ ItemDelegate {
     signal btnLoadPluginToggled
     signal btnPreferencesPluginClicked
 
-    RowLayout{
+    RowLayout {
         anchors.fill: parent
 
-        Label{
+        Label {
             id: pluginImage
             Layout.leftMargin: 8
             Layout.alignment: Qt.AlignLeft | Qt.AlingVCenter
             width: 30
 
-            background: Rectangle{
+            background: Rectangle {
                 Image {
                     anchors.centerIn: parent
-                    source: "file:"+pluginIcon
-                    width: 30
-                    height: 30
+                    source: "file:" + pluginIcon
+                    sourceSize: Qt.size(256, 256)
+                    mipmap: true
+                    width: 32
+                    height: 32
                 }
             }
         }
 
-        Label{
+        Label {
             id: labelDeviceId
             Layout.fillWidth: true
             Layout.leftMargin: 8
@@ -74,22 +76,16 @@ ItemDelegate {
             width: 20
 
             ToolTip.visible: hovered
-            ToolTip.text: {
-                return qsTr("Load/Unload")
-            }
+            ToolTip.text: qsTr("Load/Unload")
 
             checked: isLoaded
-            onClicked: {
-                btnLoadPluginToggled()
-            }
+            onClicked: btnLoadPluginToggled()
 
             background: Rectangle {
                 id: switchBackground
                 MouseArea {
                     id: btnMouseArea
                     hoverEnabled: true
-                    onPressed: {
-                    }
                     onReleased: {
                         loadSwitch.clicked()
                     }

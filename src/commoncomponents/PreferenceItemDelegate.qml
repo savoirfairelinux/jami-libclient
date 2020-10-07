@@ -134,32 +134,27 @@ ItemDelegate {
             currentIndex: pluginListPreferenceModel.getCurrentSettingIndex()
             textRole: "PreferenceValue"
             tooltipText: JamiStrings.select
-            onActivated: {
-                getNewPreferenceValueSlot(index)
-            }
+            onActivated: getNewPreferenceValueSlot(index)
         }
 
-        PushButton {
+        MaterialButton {
             id: pathPreferenceButton
 
             visible: preferenceType === PreferenceItemDelegate.PATH
-            Layout.maximumWidth: root.width / 2 - 16
+            width: root.width / 2 - 16
+            Layout.preferredWidth: width
+            Layout.preferredHeight: 30
             Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
             Layout.rightMargin: 30
 
-            width: root.width / 2 - 16
-            Layout.preferredWidth: width
-            Layout.preferredHeight: 32
-
-            source: "qrc:/images/icons/round-folder-24px.svg"
-
+            text: UtilsAdapter.fileName(preferenceCurrentValue)
             toolTipText: JamiStrings.chooseImageFile
-            buttonText: UtilsAdapter.fileName(preferenceCurrentValue)
-            fontPointSize: JamiTheme.buttonFontSize
+            source: "qrc:/images/icons/round-folder-24px.svg"
+            color: JamiTheme.buttonTintedGrey
+            hoveredColor: JamiTheme.buttonTintedGreyHovered
+            pressedColor: JamiTheme.buttonTintedGreyPressed
 
-            onClicked: {
-                getNewPreferenceValueSlot(0)
-            }
+            onClicked: getNewPreferenceValueSlot(0)
         }
     }
 }
