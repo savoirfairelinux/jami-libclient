@@ -106,40 +106,31 @@ if (use_qt) {
     })
 }
 
-/* i18n manager */
-var i18n = null
-
 /* exported init_i18n */
 function init_i18n(data) {
-    if (data === undefined) {
-        i18n = new Jed({ locale_data: { "messages": { "": {} } } }) // eslint-disable-line no-undef
-    } else {
-        i18n = new Jed(data) // eslint-disable-line no-undef
-    }
-
     reset_message_bar_input()
     set_titles()
 }
 
 function set_titles() {
-    backButton.title = i18n.gettext("Hide chat view")
-    placeCallButton.title = i18n.gettext("Place video call")
-    placeAudioCallButton.title = i18n.gettext("Place audio call")
-    addToConversationsButton.title = i18n.gettext("Add to conversations")
-    unbanButton.title = i18n.gettext("Unban contact")
-    sendButton.title = i18n.gettext("Send")
-    optionsButton.title = i18n.gettext("Options")
-    backToBottomBtn.innerHTML = `${i18n.gettext("Jump to latest")} &#9660;`
-    sendFileButton.title = i18n.gettext("Send file")
-    videoRecordButton.title = i18n.gettext("Leave video message")
-    audioRecordButton.title = i18n.gettext("Leave audio message")
-    acceptButton.title = i18n.gettext("Accept")
-    refuseButton.title = i18n.gettext("Refuse")
-    blockButton.title = i18n.gettext("Block")
+    backButton.title = "Hide chat view"
+    placeCallButton.title = "Place video call"
+    placeAudioCallButton.title = "Place audio call"
+    addToConversationsButton.title = "Add to conversations"
+    unbanButton.title = "Unban contact"
+    sendButton.title = "Send"
+    optionsButton.title = "Options"
+    backToBottomBtn.innerHTML = `${"Jump to latest"} &#9660;`
+    sendFileButton.title = "Send file"
+    videoRecordButton.title = "Leave video message"
+    audioRecordButton.title = "Leave audio message"
+    acceptButton.title = "Accept"
+    refuseButton.title = "Refuse"
+    blockButton.title = "Block"
 }
 
 function reset_message_bar_input() {
-    messageBarInput.placeholder = i18n.gettext("Type a message")
+    messageBarInput.placeholder = "Type a message"
 }
 
 function onScrolled_() {
@@ -264,7 +255,7 @@ function update_chatview_frame(accountEnabled, banned, temporary, alias, bestid)
         isTemporary = temporary
         if (temporary) {
             addToConvButton.style.display = "flex"
-            messageBarInput.placeholder = i18n.gettext("Note: an interaction will create a new contact.")
+            messageBarInput.placeholder = "Note: an interaction will create a new contact."
         } else {
             addToConvButton.style.display = ""
             reset_message_bar_input()
@@ -305,9 +296,9 @@ function showInvitation(contactAlias, contactId) {
             }
         }
         invitationText.innerHTML = "<b>"
-            + i18n.sprintf(i18n.gettext("%s is not in your contacts"), contactAlias)
+            + contactAlias + "is not in your contacts"
             + "</b><br/>"
-            + i18n.gettext("Note: you can automatically accept this invitation by sending a message.")
+            + "Note: you can automatically accept this invitation by sending a message."
         hasInvitation = true
         invitation.style.visibility = "visible"
     }
@@ -537,26 +528,26 @@ function formatDate(date) {
         }
 
         if (interval > 1) {
-            return i18n.sprintf(i18n.gettext("%d days ago"), interval)
+            return interval + "days ago"
         }
         if (interval === 1) {
-            return i18n.gettext("one day ago") // what about "yesterday"?
+            return "one day ago" // what about "yesterday"?
         }
 
         interval = Math.floor(seconds / 3600)
         if (interval > 1) {
-            return i18n.sprintf(i18n.gettext("%d hours ago"), interval)
+            return interval + "hours ago"
         }
         if (interval === 1) {
-            return i18n.gettext("one hour ago")
+            return "one hour ago"
         }
 
         interval = Math.floor(seconds / 60)
         if (interval > 1) {
-            return i18n.sprintf(i18n.gettext("%d minutes ago"), interval)
+            return interval + "minutes ago"
         }
 
-        return i18n.gettext("just now")
+        return "just now"
     }
 }
 
@@ -724,11 +715,7 @@ function getMessageDeliveryStatusText(message_delivery_status) {
     var formatted_delivery_status = message_delivery_status
 
     if (message_delivery_status === "failure") {
-        if (use_qt) {
-            formatted_delivery_status = "Failure <svg overflow='visible' viewBox='0 -2 16 14' height='16px' width='16px'><path class='status-x x-first' stroke='#AA0000' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' fill='none' d='M4,4 L12,12'/><path class='status-x x-second' stroke='#AA0000' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' fill='none' d='M12,4 L4,12'/></svg>"
-        } else {
-            formatted_delivery_status = i18n.gettext("Failure") + "<svg overflow='visible' viewBox='0 -2 16 14' height='16px' width='16px'><path class='status-x x-first' stroke='#AA0000' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' fill='none' d='M4,4 L12,12'/><path class='status-x x-second' stroke='#AA0000' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' fill='none' d='M12,4 L4,12'/></svg>"
-        }
+        formatted_delivery_status = "Failure" + "<svg overflow='visible' viewBox='0 -2 16 14' height='16px' width='16px'><path class='status-x x-first' stroke='#AA0000' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' fill='none' d='M4,4 L12,12'/><path class='status-x x-second' stroke='#AA0000' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' fill='none' d='M12,4 L4,12'/></svg>"
     } else {
         formatted_delivery_status = ""
     }
@@ -1136,11 +1123,7 @@ function updateFileInteraction(message_div, message_object, forceTypeToFile = fa
             // add buttons to accept or refuse a call.
             var accept_button = document.createElement("div")
             accept_button.innerHTML = acceptSvg
-            if (use_qt) {
-                accept_button.setAttribute("title", "Accept")
-            } else {
-                accept_button.setAttribute("title", i18n.gettext("Accept"))
-            }
+            accept_button.setAttribute("title", "Accept")
             accept_button.setAttribute("class", "flat-button accept")
             accept_button.onclick = function () {
                 if (use_qt) {
@@ -1154,11 +1137,7 @@ function updateFileInteraction(message_div, message_object, forceTypeToFile = fa
 
         var refuse_button = document.createElement("div")
         refuse_button.innerHTML = refuseSvg
-        if (use_qt) {
-            refuse_button.setAttribute("title", "Refuse")
-        } else {
-            refuse_button.setAttribute("title", i18n.gettext("Refuse"))
-        }
+        refuse_button.setAttribute("title", "Refuse")
         refuse_button.setAttribute("class", "flat-button refuse")
         refuse_button.onclick = function () {
             if (use_qt) {
@@ -1534,11 +1513,7 @@ function buildMessageDropdown(message_id) {
 
     const remove = document.createElement("div")
     remove.setAttribute("class", "menuoption")
-    if (use_qt) {
-        remove.innerHTML = "Delete"
-    } else {
-        remove.innerHTML = i18n.gettext("Delete")
-    }
+    remove.innerHTML = "Delete"
     remove.msg_id = message_id
     remove.onclick = function () {
         if (use_qt) {
@@ -1779,11 +1754,7 @@ function addOrUpdateMessage(message_object, new_message, insert_after = true, me
         if (!dropdown.querySelector(".retry")) {
             const retry = document.createElement("div")
             retry.setAttribute("class", "retry")
-            if (use_qt) {
-                retry.innerHTML = "Retry"
-            } else {
-                retry.innerHTML = i18n.gettext("Retry")
-            }
+            retry.innerHTML = "Retry"
             retry.msg_id = message_id
             retry.onclick = function () {
                 if (use_qt) {
