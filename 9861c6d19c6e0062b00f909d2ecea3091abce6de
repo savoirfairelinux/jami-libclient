@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6c32ef9a_56bc01ed",
+        "filename": "src/newaccountmodel.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1144,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2020-10-08T14:56:40Z",
+      "side": 1,
+      "message": "no need to check alias, it\u0027s just id or registered name",
+      "range": {
+        "startLine": 1142,
+        "startChar": 6,
+        "endLine": 1144,
+        "endChar": 5
+      },
+      "revId": "9861c6d19c6e0062b00f909d2ecea3091abce6de",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    }
+  ]
+}
