@@ -55,7 +55,7 @@ Rectangle {
         accountProfile.updateAccountInfo()
         userIdentity.updateAccountInfo()
         linkedDevices.updateAndShowDevicesSlot()
-        bannedContacts.setVisibility()
+        bannedContacts.updateAndShowBannedContactsSlot()
         advancedSettings.updateAdvancedAccountInfos()
         setPasswordButtonText()
     }

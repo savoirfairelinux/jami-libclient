@@ -70,13 +70,9 @@ ColumnLayout {
         updateAndShowBannedContactsSlot()
     }
 
-    function setVisibility() {
-        root.visible = bannedListWidget.model.rowCount() > 0
-    }
-
     function updateAndShowBannedContactsSlot() {
         bannedListWidget.model.reset()
-        setVisibility()
+        root.visible = bannedListWidget.model.rowCount() > 0
         if(bannedListWidget.model.rowCount() <= 0) {
             bannedListWidget.visible = false
             bannedContactsBtn.visible = false
