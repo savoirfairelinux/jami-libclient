@@ -22,6 +22,30 @@
       "revId": "9861c6d19c6e0062b00f909d2ecea3091abce6de",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6d9a7645_3e7b0e46",
+        "filename": "src/newaccountmodel.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1144,
+      "author": {
+        "id": 633
+      },
+      "writtenOn": "2020-10-08T15:13:16Z",
+      "side": 1,
+      "message": "this is for checking if the bestNameForAccount is the same as bestIdForAccount\n\nso for what adrien tolde me,\n\n\nbest name: Display Name, username, hash\n\nId,: username, hash\n\n\n\nif id and best name is the same, only show one,\n\nso I decided to return a empty string for id if they are the same",
+      "parentUuid": "6c32ef9a_56bc01ed",
+      "range": {
+        "startLine": 1142,
+        "startChar": 6,
+        "endLine": 1144,
+        "endChar": 5
+      },
+      "revId": "9861c6d19c6e0062b00f909d2ecea3091abce6de",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
     }
   ]
 }
