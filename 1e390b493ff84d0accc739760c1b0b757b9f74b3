@@ -22,6 +22,30 @@
       "revId": "1e390b493ff84d0accc739760c1b0b757b9f74b3",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fd62cebb_dc97961c",
+        "filename": "src/contactmodel.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 524,
+      "author": {
+        "id": 633
+      },
+      "writtenOn": "2020-10-08T16:37:07Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "76435ac6_a014e432",
+      "range": {
+        "startLine": 524,
+        "startChar": 12,
+        "endLine": 524,
+        "endChar": 31
+      },
+      "revId": "1e390b493ff84d0accc739760c1b0b757b9f74b3",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
