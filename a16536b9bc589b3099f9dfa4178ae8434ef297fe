@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5ee397ea_76632acf",
+        "filename": "src/contactmodel.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 520,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2020-10-08T14:58:48Z",
+      "side": 1,
+      "message": "should be in a try/catch getContact can throw, same for all",
+      "range": {
+        "startLine": 520,
+        "startChar": 19,
+        "endLine": 520,
+        "endChar": 29
+      },
+      "revId": "a16536b9bc589b3099f9dfa4178ae8434ef297fe",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    }
+  ]
+}
