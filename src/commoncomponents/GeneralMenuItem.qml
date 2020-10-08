@@ -43,7 +43,7 @@ MenuItem {
         id: menuItemContentRect
 
         anchors.fill: parent
-        Image {
+        ResponsiveImage {
             id: contextMenuItemImage
 
             anchors.left: menuItemContentRect.left
@@ -54,8 +54,6 @@ MenuItem {
             height: (visible ? 24 : 0)
 
             visible: false
-            fillMode: Image.PreserveAspectFit
-            mipmap: true
             opacity: 0.7
         }
 
