@@ -28,7 +28,7 @@ import "../../commoncomponents"
 Popup {
     id: root
 
-    property bool toogleUpdatePopupHeight: false
+    property bool toggleUpdatePopupHeight: false
 
     y: accountComboBox.height - 1
     implicitWidth: accountComboBox.width - 1

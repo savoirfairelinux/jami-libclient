@@ -50,8 +50,8 @@ ColumnLayout {
         enableSDESToggle.checked = (SettingsAdapter.getAccountConfig_SRTP_KeyExchange()  === Account.KeyExchangeProtocol.SDES)
         fallbackRTPToggle.checked = SettingsAdapter.getAccountConfig_SRTP_RtpFallback()
         encryptNegotitationToggle.checked = SettingsAdapter.getAccountConfig_TLS_Enable()
-        verifyIncomingCertificatesServerToogle.checked = SettingsAdapter.getAccountConfig_TLS_VerifyServer()
-        verifyIncomingCertificatesClientToogle.checked = SettingsAdapter.getAccountConfig_TLS_VerifyClient()
+        verifyIncomingCertificatesServerToggle.checked = SettingsAdapter.getAccountConfig_TLS_VerifyServer()
+        verifyIncomingCertificatesClientToggle.checked = SettingsAdapter.getAccountConfig_TLS_VerifyClient()
         requireCeritificateForTLSIncomingToggle.checked = SettingsAdapter.getAccountConfig_TLS_RequireClientCertificate()
 
         var method = SettingsAdapter.getAccountConfig_TLS_Method_inInt()
@@ -245,7 +245,7 @@ ColumnLayout {
         }
 
         ToggleSwitch {
-            id: verifyIncomingCertificatesServerToogle
+            id: verifyIncomingCertificatesServerToggle
 
             labelText: JamiStrings.verifyCertificatesServer
             fontPointSize: JamiTheme.settingsFontSize
@@ -256,7 +256,7 @@ ColumnLayout {
         }
 
         ToggleSwitch {
-            id: verifyIncomingCertificatesClientToogle
+            id: verifyIncomingCertificatesClientToggle
 
             labelText: JamiStrings.verifyCertificatesClient
             fontPointSize: JamiTheme.settingsFontSize

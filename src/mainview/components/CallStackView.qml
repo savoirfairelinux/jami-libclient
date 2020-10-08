@@ -30,6 +30,15 @@ import "../js/callfullscreenwindowcontainercreation.js" as CallFullScreenWindowC
 Rectangle {
     id: callStackViewWindow
 
+    property bool isFullscreen: false
+
+    enum StackNumber {
+        IncomingPageStack,
+        OutgoingPageStack,
+        AudioPageStack,
+        VideoPageStack
+    }
+
     anchors.fill: parent
 
     Shortcut {
@@ -69,7 +78,7 @@ Rectangle {
 
     function showAudioCallPage() {
         var itemToFind = callStackMainView.find(function (item) {
-            return item.stackNumber === 0
+            return item.stackNumber === CallStackView.AudioPageStack
         })
 
         if (!itemToFind) {
@@ -82,7 +91,7 @@ Rectangle {
 
     function showOutgoingCallPage() {
         var itemToFind = callStackMainView.find(function (item) {
-            return item.stackNumber === 1
+            return item.stackNumber === CallStackView.OutgoingPageStack
         })
 
         if (!itemToFind) {
@@ -94,7 +103,7 @@ Rectangle {
 
     function showIncomingCallPage(accountId, convUid) {
         var itemToFind = callStackMainView.find(function (item) {
-            return item.stackNumber === 3
+            return item.stackNumber === CallStackView.IncomingPageStack
         })
 
         if (!itemToFind) {
@@ -109,7 +118,7 @@ Rectangle {
 
     function showVideoCallPage() {
         var itemToFind = callStackMainView.find(function (item) {
-            return item.stackNumber === 2
+            return item.stackNumber === CallStackView.VideoPageStack
         })
 
         if (!itemToFind) {
@@ -123,17 +132,23 @@ Rectangle {
         videoCallPage.setDistantRendererId(callId)
     }
 
-    function toogleFullScreen(callPage){
-        callPage.isFullscreen = !callPage.isFullscreen
+    function toggleFullScreen() {
+        isFullscreen = !isFullscreen
+        var callPage = callStackMainView.currentItem
         CallFullScreenWindowContainerCreation.createvideoCallFullScreenWindowContainerObject()
 
         if (!CallFullScreenWindowContainerCreation.checkIfVisible()) {
-            CallFullScreenWindowContainerCreation.setAsContainerChild(
-                        callPage)
+            CallFullScreenWindowContainerCreation.setAsContainerChild(callPage)
             CallFullScreenWindowContainerCreation.showVideoCallFullScreenWindowContainer()
         } else {
             callPage.parent = callStackMainView
             CallFullScreenWindowContainerCreation.closeVideoCallFullScreenWindowContainer()
+        }
+
+        if (callStackMainView.find(function (item) {
+            return item.stackNumber === CallStackView.VideoPageStack
+        })) {
+            videoCallPage.handleParticipantsInfo(CallAdapter.getConferencesInfos())
         }
     }
 
@@ -157,16 +172,13 @@ Rectangle {
     AudioCallPage {
         id: audioCallPage
 
-        property int stackNumber: 0
-        property bool isFullscreen: false
-
-        onShowFullScreenReqested: toogleFullScreen(this)
+        property int stackNumber: CallStackView.AudioPageStack
     }
 
     OutgoingCallPage {
         id: outgoingCallPage
 
-        property int stackNumber: 1
+        property int stackNumber: CallStackView.OutgoingPageStack
 
         onCallCancelButtonIsClicked: {
             CallAdapter.hangUpACall(responsibleAccountId, responsibleConvUid)
@@ -176,19 +188,14 @@ Rectangle {
     VideoCallPage {
         id: videoCallPage
 
-        property int stackNumber: 2
-        property bool isFullscreen: false
+        property int stackNumber: CallStackView.VideoPageStack
 
-        onShowFullScreenReqested: {
-            toogleFullScreen(this)
-            videoCallPage.handleParticipantsInfo(CallAdapter.getConferencesInfos())
-        }
     }
 
     IncomingCallPage {
         id: incomingCallPage
 
-        property int stackNumber: 3
+        property int stackNumber: CallStackView.IncomingPageStack
 
         onCallAcceptButtonIsClicked: {
             CallAdapter.acceptACall(responsibleAccountId, responsibleConvUid)

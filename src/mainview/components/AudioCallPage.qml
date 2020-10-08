@@ -97,7 +97,7 @@ Rectangle {
 
                 acceptedButtons: Qt.LeftButton
 
-                onDoubleClicked: showFullScreenReqested()
+                onDoubleClicked: callStackView.toggleFullScreen()
 
                 CallOverlay {
                     id: audioCallOverlay

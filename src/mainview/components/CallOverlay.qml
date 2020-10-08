@@ -171,18 +171,27 @@ Rectangle {
                 Layout.topMargin: JamiTheme.preferredMarginSize
                 Layout.leftMargin: JamiTheme.preferredMarginSize
 
-                source: "qrc:/images/icons/arrow_back-white-24dp.svg"
+
+                source: callStackView.isFullscreen ? "qrc:/images/icons/round-close-24px.svg" :
+                                                     "qrc:/images/icons/ic_arrow_back_24px.svg"
 
                 pressedColor: JamiTheme.invertedPressedButtonColor
                 hoveredColor: JamiTheme.invertedHoveredButtonColor
                 normalColor: JamiTheme.invertedNormalButtonColor
 
+                imageColor: JamiTheme.whiteColor
+
                 toolTipText: qsTr("Toggle to display side panel")
 
                 visible: mainViewWindow.sidePanelOnly
 
-                onClicked: mainViewWindow.showWelcomeView()
-
+                onClicked: {
+                    if (callStackView.isFullscreen) {
+                        callStackView.toggleFullScreen()
+                    } else {
+                        mainViewWindow.showWelcomeView()
+                    }
+                }
             }
 
             Text {

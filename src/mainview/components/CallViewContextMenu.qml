@@ -73,23 +73,23 @@ Item {
                                          })
 
         if (isAudioOnly && !isPaused)
-            ContextMenuGenerator.addMenuItem(audioCallPage.isFullscreen ? JamiStrings.exitFullScreen :
+            ContextMenuGenerator.addMenuItem(callStackView.isFullscreen ? JamiStrings.exitFullScreen :
                                                                           JamiStrings.fullScreen,
-                                             audioCallPage.isFullscreen ?
+                                             callStackView.isFullscreen ?
                                                  "qrc:/images/icons/close_fullscreen-24px.svg" :
                                                  "qrc:/images/icons/open_in_full-24px.svg",
                                              function (){
-                                                  audioCallPage.showFullScreenReqested()
+                                                  callStackView.toggleFullScreen()
                                              })
 
         if (!isAudioOnly && !isPaused) {
-            ContextMenuGenerator.addMenuItem(videoCallPage.isFullscreen ? JamiStrings.exitFullScreen :
+            ContextMenuGenerator.addMenuItem(callStackView.isFullscreen ? JamiStrings.exitFullScreen :
                                                                           JamiStrings.fullScreen,
-                                             videoCallPage.isFullscreen ?
+                                             callStackView.isFullscreen ?
                                                  "qrc:/images/icons/close_fullscreen-24px.svg" :
                                                  "qrc:/images/icons/open_in_full-24px.svg",
                                              function (){
-                                                  videoCallPage.showFullScreenReqested()
+                                                  callStackView.toggleFullScreen()
                                              })
 
             ContextMenuGenerator.addMenuSeparator()

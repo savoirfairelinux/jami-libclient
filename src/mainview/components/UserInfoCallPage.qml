@@ -58,11 +58,13 @@ Rectangle {
             Layout.topMargin: JamiTheme.preferredMarginSize
             Layout.leftMargin: JamiTheme.preferredMarginSize
 
-            source: "qrc:/images/icons/arrow_back-white-24dp.svg"
+            source: "qrc:/images/icons/ic_arrow_back_24px.svg"
 
             pressedColor: JamiTheme.invertedPressedButtonColor
             hoveredColor: JamiTheme.invertedHoveredButtonColor
             normalColor: JamiTheme.invertedNormalButtonColor
+
+            imageColor: JamiTheme.whiteColor
 
             toolTipText: qsTr("Toggle to display side panel")
 

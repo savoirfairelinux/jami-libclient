@@ -79,7 +79,8 @@ Rectangle {
 
     function handleParticipantsInfo(infos) {
         if (infos.length === 0) {
-            bestName = UtilsAdapter.getBestName(accountId, convUid)
+            bestName = UtilsAdapter.getBestName(AccountAdapter.currentAccountId,
+                                                UtilsAdapter.getCurrConvId())
         } else {
             bestName = ""
         }
@@ -139,7 +140,9 @@ Rectangle {
         handle: Rectangle {
             implicitWidth: videoCallPageRect.width
             implicitHeight: JamiTheme.splitViewHandlePreferredWidth
-            color: SplitHandle.pressed ? JamiTheme.pressColor : (SplitHandle.hovered ? JamiTheme.hoverColor : JamiTheme.tabbarBorderColor)
+            color: SplitHandle.pressed ? JamiTheme.pressColor :
+                                         (SplitHandle.hovered ? JamiTheme.hoverColor :
+                                                                JamiTheme.tabbarBorderColor)
         }
 
         Rectangle {
@@ -155,7 +158,7 @@ Rectangle {
 
                 acceptedButtons: Qt.LeftButton
 
-                onDoubleClicked: showFullScreenReqested()
+                onDoubleClicked: callStackView.toggleFullScreen()
 
                 CallOverlay {
                     id: videoCallOverlay
@@ -170,7 +173,8 @@ Rectangle {
                             videoCallOverlay.setRecording(CallAdapter.isRecordingThisCall())
                         }
 
-                        function onUpdateOverlay(isPaused, isAudioOnly, isAudioMuted, isVideoMuted, isRecording, isSIP, isConferenceCall, bestName) {
+                        function onUpdateOverlay(isPaused, isAudioOnly, isAudioMuted, isVideoMuted,
+                                                 isRecording, isSIP, isConferenceCall, bestName) {
                             videoCallOverlay.showOnHoldImage(isPaused)
                             videoCallOverlay.updateButtonStatus(isPaused,
                                                                 isAudioOnly,
