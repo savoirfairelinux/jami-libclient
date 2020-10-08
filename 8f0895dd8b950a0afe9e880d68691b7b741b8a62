@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "344e3aa0_19da908c",
+        "filename": "src/api/conversationmodel.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 282,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2020-10-08T15:00:44Z",
+      "side": 1,
+      "message": "In fact not sure we want that. We will soon work on group chats, and bestId doesn,t make any sense, a conversation doesn\u0027t have an id, and actually it\u0027s not a name, the contact has the id/name, and this needs to be used. imho, we don\u0027t want these functions",
+      "range": {
+        "startLine": 272,
+        "startChar": 74,
+        "endLine": 282,
+        "endChar": 72
+      },
+      "revId": "8f0895dd8b950a0afe9e880d68691b7b741b8a62",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    }
+  ]
+}
