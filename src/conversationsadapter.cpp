@@ -61,9 +61,8 @@ ConversationsAdapter::safeInit()
 
     connectConversationModel();
 
-    setProperty("currentTypeFilter", QVariant::fromValue(
-                    LRCInstance::getCurrentAccountInfo().profileInfo.type));
-
+    setProperty("currentTypeFilter",
+                QVariant::fromValue(LRCInstance::getCurrentAccountInfo().profileInfo.type));
 }
 
 void
@@ -129,8 +128,8 @@ ConversationsAdapter::onCurrentAccountIdChanged()
     disconnectConversationModel();
     connectConversationModel();
 
-    setProperty("currentTypeFilter", QVariant::fromValue(
-                    LRCInstance::getCurrentAccountInfo().profileInfo.type));
+    setProperty("currentTypeFilter",
+                QVariant::fromValue(LRCInstance::getCurrentAccountInfo().profileInfo.type));
 }
 
 void
@@ -146,10 +145,7 @@ ConversationsAdapter::onNewUnreadInteraction(const QString& accountId,
         auto& accInfo = LRCInstance::getAccountInfo(accountId);
         auto& contact = accInfo.contactModel->getContact(interaction.authorUri);
         auto from = Utils::bestNameForContact(contact);
-        auto onClicked = [this,
-                          accountId,
-                          convUid,
-                          uri = interaction.authorUri] {
+        auto onClicked = [this, accountId, convUid, uri = interaction.authorUri] {
 #ifdef Q_OS_WINDOWS
             emit LRCInstance::instance().notificationClicked();
 #else
@@ -159,7 +155,7 @@ ConversationsAdapter::onNewUnreadInteraction(const QString& accountId,
             if (!convInfo.uid.isEmpty()) {
                 selectConversation(accountId, convInfo.uid);
                 emit LRCInstance::instance().updateSmartList();
-                emit modelSorted(uri);
+                emit modelSorted(convInfo.uid);
             }
         };
 
@@ -210,7 +206,7 @@ ConversationsAdapter::connectConversationModel(bool updateFilter)
                        == lrc::api::profile::Type::TEMPORARY) {
                 return;
             }
-            emit modelSorted(QVariant::fromValue(contactURI));
+            emit modelSorted(QVariant::fromValue(conversation.uid));
         });
 
     modelUpdatedConnection_ = QObject::connect(currentConversationModel,
@@ -228,6 +224,7 @@ ConversationsAdapter::connectConversationModel(bool updateFilter)
                                                     conversationSmartListModel_
                                                         ->fillConversationsList();
                                                     updateConversationsFilterWidget();
+                                                    emit indexRepositionRequested();
                                                     emit updateListViewRequested();
                                                 });
 
@@ -264,6 +261,11 @@ ConversationsAdapter::connectConversationModel(bool updateFilter)
                            &lrc::api::ConversationModel::searchStatusChanged,
                            [this](const QString& status) { emit showSearchStatus(status); });
 
+    // This connection is ideal when  separated search results list.
+    // This signal is guaranteed to fire just after filterChanged during a search if results are
+    // changed, and once before filterChanged when calling setFilter.
+    // NOTE: Currently, when searching, the entire conversation list will be copied 2-3 times each
+    // keystroke :/.
     searchResultUpdatedConnection_
         = QObject::connect(currentConversationModel,
                            &lrc::api::ConversationModel::searchResultUpdated,

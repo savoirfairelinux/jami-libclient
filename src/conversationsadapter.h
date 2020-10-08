@@ -52,10 +52,11 @@ signals:
     void showSearchStatus(const QString& status);
 
     void modelChanged(const QVariant& model);
-    void modelSorted(const QVariant& uri);
+    void modelSorted(const QVariant& uid);
     void updateListViewRequested();
     void navigateToWelcomePageRequested();
     void currentTypeFilterChanged();
+    void indexRepositionRequested();
 
 private slots:
     void onCurrentAccountIdChanged();

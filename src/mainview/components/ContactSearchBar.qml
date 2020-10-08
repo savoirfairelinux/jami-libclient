@@ -26,13 +26,14 @@ Rectangle {
     id: contactSearchBarRect
 
     signal contactSearchBarTextChanged(string text)
+    signal returnPressedWhileSearching
 
     function clearText() {
         contactSearchBar.clear()
         fakeFocus.forceActiveFocus()
     }
 
-    radius: height/2
+    radius: height / 2
     color: "white"
 
     FocusScope {
@@ -92,5 +93,15 @@ Rectangle {
         sequence: "Ctrl+F"
         context: Qt.ApplicationShortcut
         onActivated: contactSearchBar.forceActiveFocus()
+    }
+
+    Shortcut {
+        sequence: "Return"
+        context: Qt.ApplicationShortcut
+        onActivated: {
+            if (contactSearchBar.text !== "") {
+                returnPressedWhileSearching()
+            }
+        }
     }
 }

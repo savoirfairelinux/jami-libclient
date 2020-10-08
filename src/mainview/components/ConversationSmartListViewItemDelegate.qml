@@ -29,6 +29,11 @@ ItemDelegate {
     height: 72
 
     property int lastInteractionPreferredWidth: 80
+
+    function convUid() {
+        return UID
+    }
+
     Connections {
         target: conversationSmartListView
 

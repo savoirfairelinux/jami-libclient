@@ -40,6 +40,20 @@ ListView {
         root.forceUpdatePotentialInvalidItem()
     }
 
+    function repositionIndex(uid = "") {
+        if (uid === "")
+            uid = mainViewWindow.currentConvUID
+        root.currentIndex = -1
+        updateListView()
+        for (var i = 0; i < count; i++) {
+            if (root.model.data(
+                root.model.index(i, 0), SmartListModel.UID) === uid) {
+                root.currentIndex = i
+                break
+            }
+        }
+    }
+
     ConversationSmartListContextMenu {
         id: smartListContextMenu
     }
@@ -53,20 +67,16 @@ ListView {
 
         // When the model has been sorted, we need to adjust the focus (currentIndex)
         // to the previously focused conversation item.
-        function onModelSorted(uri) {
-            root.currentIndex = -1
-            updateListView()
-            for (var i = 0; i < count; i++) {
-                if (root.model.data(
-                    root.model.index(i, 0), SmartListModel.URI) === uri) {
-                    root.currentIndex = i
-                    break
-                }
-            }
+        function onModelSorted(uid) {
+            repositionIndex(uid)
         }
 
         function onUpdateListViewRequested() {
             updateListView()
+        }
+
+        function onIndexRepositionRequested() {
+            repositionIndex()
         }
     }
 
