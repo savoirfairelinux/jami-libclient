@@ -7,7 +7,7 @@
         <translation>關於</translation>
     </message>
     <message>
-        <location filename="../src/mainview/components/AboutPopUp.qml" line="307"/>
+        <location filename="../src/mainview/components/AboutPopUp.qml" line="308"/>
         <source>Close</source>
         <translation>關閉</translation>
     </message>
@@ -15,7 +15,7 @@
 <context>
     <name>AccountComboBoxPopup</name>
     <message>
-        <location filename="../src/mainview/components/AccountComboBoxPopup.qml" line="165"/>
+        <location filename="../src/mainview/components/AccountComboBoxPopup.qml" line="163"/>
         <source>Add Account</source>
         <translation>新增帳號</translation>
     </message>
@@ -120,7 +120,7 @@
 <context>
     <name>BannedContacts</name>
     <message>
-        <location filename="../src/settingsview/components/BannedContacts.qml" line="105"/>
+        <location filename="../src/settingsview/components/BannedContacts.qml" line="101"/>
         <source>Banned Contacts</source>
         <translation>黑名單聯絡人</translation>
     </message>
@@ -128,13 +128,13 @@
 <context>
     <name>CallAdapter</name>
     <message>
-        <location filename="../src/calladapter.cpp" line="279"/>
-        <location filename="../src/calladapter.cpp" line="369"/>
+        <location filename="../src/calladapter.cpp" line="270"/>
+        <location filename="../src/calladapter.cpp" line="351"/>
         <source>me</source>
         <translation>我</translation>
     </message>
     <message>
-        <location filename="../src/calladapter.cpp" line="333"/>
+        <location filename="../src/calladapter.cpp" line="315"/>
         <source>is calling you</source>
         <translation>正在與您通話</translation>
     </message>
@@ -142,17 +142,17 @@
 <context>
     <name>CallAdvancedOptions</name>
     <message>
-        <location filename="../src/mainview/components/CallAdvancedOptions.qml" line="90"/>
+        <location filename="../src/mainview/components/CallAdvancedOptions.qml" line="85"/>
         <source>Add to conference</source>
         <translation>加入會議</translation>
     </message>
     <message>
-        <location filename="../src/mainview/components/CallAdvancedOptions.qml" line="90"/>
+        <location filename="../src/mainview/components/CallAdvancedOptions.qml" line="85"/>
         <source>Transfer this call</source>
         <translation>轉送此通話</translation>
     </message>
     <message>
-        <location filename="../src/mainview/components/CallAdvancedOptions.qml" line="108"/>
+        <location filename="../src/mainview/components/CallAdvancedOptions.qml" line="103"/>
         <source>Search contacts</source>
         <translation>搜尋聯絡人</translation>
     </message>
@@ -160,7 +160,7 @@
 <context>
     <name>CallOverlay</name>
     <message>
-        <location filename="../src/mainview/components/CallOverlay.qml" line="179"/>
+        <location filename="../src/mainview/components/CallOverlay.qml" line="184"/>
         <source>Toggle to display side panel</source>
         <translation>切換以顯示側邊面板</translation>
     </message>
@@ -181,12 +181,12 @@
 <context>
     <name>ContactPicker</name>
     <message>
-        <location filename="../src/mainview/components/ContactPicker.qml" line="89"/>
+        <location filename="../src/mainview/components/ContactPicker.qml" line="85"/>
         <source>Add to conference</source>
         <translation>加入會議</translation>
     </message>
     <message>
-        <location filename="../src/mainview/components/ContactPicker.qml" line="89"/>
+        <location filename="../src/mainview/components/ContactPicker.qml" line="85"/>
         <source>Transfer this call</source>
         <translation>轉送此通話</translation>
     </message>
@@ -199,27 +199,27 @@
         <translation>開始視訊通話</translation>
     </message>
     <message>
-        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="47"/>
+        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="48"/>
         <source>Start audio call</source>
         <translation>開始音訊通話</translation>
     </message>
     <message>
-        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="56"/>
+        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="58"/>
         <source>Clear conversation</source>
         <translation>清除對話</translation>
     </message>
     <message>
-        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="65"/>
+        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="67"/>
         <source>Remove contact</source>
         <translation>移除聯絡人</translation>
     </message>
     <message>
-        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="103"/>
+        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="109"/>
         <source>Block contact</source>
         <translation>阻擋連絡人</translation>
     </message>
     <message>
-        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="111"/>
+        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="117"/>
         <source>Profile</source>
         <translation>介紹</translation>
     </message>
@@ -331,7 +331,7 @@
         <translation>裝置 Id</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/DeviceItemDelegate.qml" line="153"/>
+        <location filename="../src/settingsview/components/DeviceItemDelegate.qml" line="143"/>
         <source>Save new device name</source>
         <translation>儲存新裝置名稱</translation>
     </message>
@@ -359,7 +359,7 @@
         <translation>正在生成帳號……</translation>
     </message>
     <message>
-        <location filename="../src/wizardview/components/ImportFromBackupPage.qml" line="203"/>
+        <location filename="../src/wizardview/components/ImportFromBackupPage.qml" line="200"/>
         <source>Back to welcome page</source>
         <translation>回到歡迎頁面</translation>
     </message>
@@ -382,7 +382,7 @@
         <translation>正在生成帳號……</translation>
     </message>
     <message>
-        <location filename="../src/wizardview/components/ImportFromDevicePage.qml" line="178"/>
+        <location filename="../src/wizardview/components/ImportFromDevicePage.qml" line="175"/>
         <source>Back to welcome page</source>
         <translation>回到歡迎頁面</translation>
     </message>
@@ -765,27 +765,32 @@
         <translation>建立 Jami 帳號</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="380"/>
+        <location filename="../src/constant/JamiStrings.qml" line="378"/>
+        <source>About Jami</source>
+        <translation>關於 Jami</translation>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="381"/>
         <source>Decline contact request</source>
         <translation>拒絕聯絡人請求</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="381"/>
+        <location filename="../src/constant/JamiStrings.qml" line="382"/>
         <source>Accept contact request</source>
         <translation>接受聯絡人請求</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="384"/>
+        <location filename="../src/constant/JamiStrings.qml" line="385"/>
         <source>Automatically check for updates</source>
         <translation>自動檢查更新</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="387"/>
+        <location filename="../src/constant/JamiStrings.qml" line="388"/>
         <source>Ok</source>
         <translation>確定</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="388"/>
+        <location filename="../src/constant/JamiStrings.qml" line="389"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
@@ -1639,6 +1644,143 @@ Copy and share it with your friends!</source>
         <source>Error while creating your account. Check your credentials.</source>
         <translation>建立您的帳號時發生錯誤。請檢查您的憑證。</translation>
     </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="392"/>
+        <source>Hide chat view</source>
+        <translation>隱藏聊天視窗</translation>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="393"/>
+        <source>Place video call</source>
+        <translation>撥出視訊通話</translation>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="394"/>
+        <source>Place audio call</source>
+        <translation>開始語音通話</translation>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="395"/>
+        <source>Add to conversations</source>
+        <translation>新增到對話中</translation>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="396"/>
+        <source>Unban contact</source>
+        <translation>取消封鎖聯絡人</translation>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="397"/>
+        <source>Send</source>
+        <translation>傳送</translation>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="398"/>
+        <source>Options</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="399"/>
+        <source>Jump to latest</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="400"/>
+        <source>Send file</source>
+        <translation>傳送檔案</translation>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="401"/>
+        <source>Leave video message</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="402"/>
+        <source>Leave audio message</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="403"/>
+        <location filename="../src/constant/JamiStrings.qml" line="417"/>
+        <source>Accept</source>
+        <translation>接聽</translation>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="404"/>
+        <location filename="../src/constant/JamiStrings.qml" line="418"/>
+        <source>Refuse</source>
+        <translation>拒絕</translation>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="405"/>
+        <source>Block</source>
+        <translation>阻擋</translation>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="406"/>
+        <source>Type a message</source>
+        <translation>輸入訊息</translation>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="407"/>
+        <source>Note: an interaction will create a new contact.</source>
+        <translation>注意：互動將會建立新聯絡人。</translation>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="408"/>
+        <source>is not in your contacts</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="409"/>
+        <source>Note: you can automatically accept this invitation by sending a message.</source>
+        <translation>注意：您可以透過傳送訊息來自動接受此邀請。</translation>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="410"/>
+        <source>days ago</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="411"/>
+        <source>day ago</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="412"/>
+        <source>hours ago</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="413"/>
+        <source>hour ago</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="414"/>
+        <source>minutes ago</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="415"/>
+        <source>just now</source>
+        <translation>現在</translation>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="416"/>
+        <source>Failure</source>
+        <translation>失敗</translation>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="419"/>
+        <source>Delete</source>
+        <translation>刪除</translation>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="420"/>
+        <source>Retry</source>
+        <translation>重試</translation>
+    </message>
 </context>
 <context>
     <name>JamiUserIdentity</name>
@@ -1757,29 +1899,6 @@ Copy and share it with your friends!</source>
     </message>
 </context>
 <context>
-    <name>LeftPanelView</name>
-    <message>
-        <location filename="../src/settingsview/components/LeftPanelView.qml" line="61"/>
-        <source>Account</source>
-        <translation>帳號</translation>
-    </message>
-    <message>
-        <location filename="../src/settingsview/components/LeftPanelView.qml" line="74"/>
-        <source>General</source>
-        <translation>一般</translation>
-    </message>
-    <message>
-        <location filename="../src/settingsview/components/LeftPanelView.qml" line="87"/>
-        <source>Audio/Video</source>
-        <translation>音訊／視訊</translation>
-    </message>
-    <message>
-        <location filename="../src/settingsview/components/LeftPanelView.qml" line="100"/>
-        <source>Plugins</source>
-        <translation>外掛程式</translation>
-    </message>
-</context>
-<context>
     <name>LinkDeviceDialog</name>
     <message>
         <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="218"/>
@@ -1873,17 +1992,17 @@ Please try again later.</source>
 <context>
     <name>MediaHandlerPicker</name>
     <message>
-        <location filename="../src/mainview/components/MediaHandlerPicker.qml" line="89"/>
+        <location filename="../src/mainview/components/MediaHandlerPicker.qml" line="85"/>
         <source>Choose plugin</source>
         <translation>選擇外掛程式</translation>
     </message>
     <message>
-        <location filename="../src/mainview/components/MediaHandlerPicker.qml" line="151"/>
+        <location filename="../src/mainview/components/MediaHandlerPicker.qml" line="143"/>
         <source>Go back to plugins list</source>
         <translation>回到外掛程式清單</translation>
     </message>
     <message>
-        <location filename="../src/mainview/components/MediaHandlerPicker.qml" line="195"/>
+        <location filename="../src/mainview/components/MediaHandlerPicker.qml" line="183"/>
         <source>Preferences</source>
         <translation>偏好設定</translation>
     </message>
@@ -1923,14 +2042,6 @@ Please try again later.</source>
     </message>
 </context>
 <context>
-    <name>OutgoingCallPage</name>
-    <message>
-        <location filename="../src/mainview/components/OutgoingCallPage.qml" line="113"/>
-        <source>Cancel the call</source>
-        <translation>取消通話</translation>
-    </message>
-</context>
-<context>
     <name>ParticipantContextMenu</name>
     <message>
         <location filename="../src/mainview/components/ParticipantContextMenu.qml" line="48"/>
@@ -1964,13 +2075,13 @@ Please try again later.</source>
         <translation>所有檔案</translation>
     </message>
     <message>
-        <location filename="../src/commoncomponents/PhotoboothView.qml" line="198"/>
-        <location filename="../src/commoncomponents/PhotoboothView.qml" line="206"/>
+        <location filename="../src/commoncomponents/PhotoboothView.qml" line="196"/>
+        <location filename="../src/commoncomponents/PhotoboothView.qml" line="204"/>
         <source>Take photo</source>
         <translation>照相</translation>
     </message>
     <message>
-        <location filename="../src/commoncomponents/PhotoboothView.qml" line="203"/>
+        <location filename="../src/commoncomponents/PhotoboothView.qml" line="201"/>
         <source>Retake photo</source>
         <translation>重拍照片</translation>
     </message>
@@ -1978,7 +2089,7 @@ Please try again later.</source>
 <context>
     <name>PluginItemDelegate</name>
     <message>
-        <location filename="../src/settingsview/components/PluginItemDelegate.qml" line="78"/>
+        <location filename="../src/settingsview/components/PluginItemDelegate.qml" line="79"/>
         <source>Load/Unload</source>
         <translation>載入／取消載入</translation>
     </message>
@@ -2006,7 +2117,7 @@ Please try again later.</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/PluginListPreferencesView.qml" line="164"/>
+        <location filename="../src/settingsview/components/PluginListPreferencesView.qml" line="168"/>
         <source>Uninstall</source>
         <translation>解除安裝</translation>
     </message>
@@ -2032,7 +2143,7 @@ Please try again later.</source>
 <context>
     <name>PreferenceItemDelegate</name>
     <message>
-        <location filename="../src/commoncomponents/PreferenceItemDelegate.qml" line="123"/>
+        <location filename="../src/commoncomponents/PreferenceItemDelegate.qml" line="117"/>
         <source>Edit preference</source>
         <translation>編輯偏好設定</translation>
     </message>
@@ -2179,19 +2290,42 @@ Please try again later.</source>
     </message>
 </context>
 <context>
-    <name>SettingsView</name>
+    <name>SettingsMenu</name>
     <message>
-        <location filename="../src/settingsview/SettingsView.qml" line="153"/>
-        <source>Account Settings</source>
-        <translation>帳號設定</translation>
+        <location filename="../src/settingsview/components/SettingsMenu.qml" line="34"/>
+        <source>Account</source>
+        <translation>帳號</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/SettingsView.qml" line="155"/>
+        <location filename="../src/settingsview/components/SettingsMenu.qml" line="36"/>
         <source>General</source>
         <translation>一般</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/SettingsView.qml" line="159"/>
+        <location filename="../src/settingsview/components/SettingsMenu.qml" line="38"/>
+        <source>Audio/Video</source>
+        <translation>音訊／視訊</translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/SettingsMenu.qml" line="40"/>
+        <source>Plugin</source>
+        <translation>外掛程式</translation>
+    </message>
+</context>
+<context>
+    <name>SettingsView</name>
+    <message>
+        <location filename="../src/settingsview/SettingsView.qml" line="152"/>
+        <source>Account Settings</source>
+        <translation>帳號設定</translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/SettingsView.qml" line="154"/>
+        <source>General</source>
+        <translation>一般</translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/SettingsView.qml" line="158"/>
         <source>Plugin</source>
         <translation>外掛程式</translation>
     </message>
@@ -2243,7 +2377,7 @@ Please try again later.</source>
 <context>
     <name>UserInfoCallPage</name>
     <message>
-        <location filename="../src/mainview/components/UserInfoCallPage.qml" line="66"/>
+        <location filename="../src/mainview/components/UserInfoCallPage.qml" line="69"/>
         <source>Toggle to display side panel</source>
         <translation>切換以顯示側邊面板</translation>
     </message>
@@ -2267,32 +2401,27 @@ Please try again later.</source>
 <context>
     <name>WelcomePage</name>
     <message>
-        <location filename="../src/mainview/components/WelcomePage.qml" line="154"/>
-        <source>About Jami</source>
-        <translation>關於 Jami</translation>
-    </message>
-    <message>
         <location filename="../src/wizardview/components/WelcomePage.qml" line="55"/>
         <source>Welcome to</source>
         <translation>歡迎來到</translation>
     </message>
     <message>
-        <location filename="../src/wizardview/components/WelcomePage.qml" line="88"/>
+        <location filename="../src/wizardview/components/WelcomePage.qml" line="85"/>
         <source>Create new Jami account</source>
         <translation>建立新 Jami 帳號</translation>
     </message>
     <message>
-        <location filename="../src/wizardview/components/WelcomePage.qml" line="128"/>
+        <location filename="../src/wizardview/components/WelcomePage.qml" line="125"/>
         <source>Import account from other device</source>
         <translation>從其他裝置匯入</translation>
     </message>
     <message>
-        <location filename="../src/wizardview/components/WelcomePage.qml" line="148"/>
+        <location filename="../src/wizardview/components/WelcomePage.qml" line="145"/>
         <source>Import account from backup file</source>
         <translation>從備份檔案匯入</translation>
     </message>
     <message>
-        <location filename="../src/wizardview/components/WelcomePage.qml" line="221"/>
+        <location filename="../src/wizardview/components/WelcomePage.qml" line="218"/>
         <source>Create new SIP account</source>
         <translation>建立新 SIP 帳號</translation>
     </message>

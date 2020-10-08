@@ -7,7 +7,7 @@
         <translation>O aplikaci</translation>
     </message>
     <message>
-        <location filename="../src/mainview/components/AboutPopUp.qml" line="307"/>
+        <location filename="../src/mainview/components/AboutPopUp.qml" line="308"/>
         <source>Close</source>
         <translation>Zavřít</translation>
     </message>
@@ -15,7 +15,7 @@
 <context>
     <name>AccountComboBoxPopup</name>
     <message>
-        <location filename="../src/mainview/components/AccountComboBoxPopup.qml" line="165"/>
+        <location filename="../src/mainview/components/AccountComboBoxPopup.qml" line="163"/>
         <source>Add Account</source>
         <translation>Přidat účet</translation>
     </message>
@@ -120,7 +120,7 @@
 <context>
     <name>BannedContacts</name>
     <message>
-        <location filename="../src/settingsview/components/BannedContacts.qml" line="105"/>
+        <location filename="../src/settingsview/components/BannedContacts.qml" line="101"/>
         <source>Banned Contacts</source>
         <translation>Zakázané kontakty</translation>
     </message>
@@ -128,13 +128,13 @@
 <context>
     <name>CallAdapter</name>
     <message>
-        <location filename="../src/calladapter.cpp" line="279"/>
-        <location filename="../src/calladapter.cpp" line="369"/>
+        <location filename="../src/calladapter.cpp" line="270"/>
+        <location filename="../src/calladapter.cpp" line="351"/>
         <source>me</source>
         <translation>Já</translation>
     </message>
     <message>
-        <location filename="../src/calladapter.cpp" line="333"/>
+        <location filename="../src/calladapter.cpp" line="315"/>
         <source>is calling you</source>
         <translation>vám volá</translation>
     </message>
@@ -142,17 +142,17 @@
 <context>
     <name>CallAdvancedOptions</name>
     <message>
-        <location filename="../src/mainview/components/CallAdvancedOptions.qml" line="90"/>
+        <location filename="../src/mainview/components/CallAdvancedOptions.qml" line="85"/>
         <source>Add to conference</source>
         <translation>Přidat do konference</translation>
     </message>
     <message>
-        <location filename="../src/mainview/components/CallAdvancedOptions.qml" line="90"/>
+        <location filename="../src/mainview/components/CallAdvancedOptions.qml" line="85"/>
         <source>Transfer this call</source>
         <translation>Přesměrovat tento hovor</translation>
     </message>
     <message>
-        <location filename="../src/mainview/components/CallAdvancedOptions.qml" line="108"/>
+        <location filename="../src/mainview/components/CallAdvancedOptions.qml" line="103"/>
         <source>Search contacts</source>
         <translation>Hledat kontakty</translation>
     </message>
@@ -160,7 +160,7 @@
 <context>
     <name>CallOverlay</name>
     <message>
-        <location filename="../src/mainview/components/CallOverlay.qml" line="179"/>
+        <location filename="../src/mainview/components/CallOverlay.qml" line="184"/>
         <source>Toggle to display side panel</source>
         <translation>Přepnout zobrazení bočního panelu</translation>
     </message>
@@ -181,12 +181,12 @@
 <context>
     <name>ContactPicker</name>
     <message>
-        <location filename="../src/mainview/components/ContactPicker.qml" line="89"/>
+        <location filename="../src/mainview/components/ContactPicker.qml" line="85"/>
         <source>Add to conference</source>
         <translation>Přidat do konference</translation>
     </message>
     <message>
-        <location filename="../src/mainview/components/ContactPicker.qml" line="89"/>
+        <location filename="../src/mainview/components/ContactPicker.qml" line="85"/>
         <source>Transfer this call</source>
         <translation>Přesměrovat tento hovor</translation>
     </message>
@@ -199,27 +199,27 @@
         <translation>Začít video hovor</translation>
     </message>
     <message>
-        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="47"/>
+        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="48"/>
         <source>Start audio call</source>
         <translation>Začít audio hovor</translation>
     </message>
     <message>
-        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="56"/>
+        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="58"/>
         <source>Clear conversation</source>
         <translation>Vyprázdnit konverzaci</translation>
     </message>
     <message>
-        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="65"/>
+        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="67"/>
         <source>Remove contact</source>
         <translation>Odstranit kontakt</translation>
     </message>
     <message>
-        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="103"/>
+        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="109"/>
         <source>Block contact</source>
         <translation>Blokovat spojení</translation>
     </message>
     <message>
-        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="111"/>
+        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="117"/>
         <source>Profile</source>
         <translation>Profil</translation>
     </message>
@@ -331,7 +331,7 @@
         <translation>ID zařízení</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/DeviceItemDelegate.qml" line="153"/>
+        <location filename="../src/settingsview/components/DeviceItemDelegate.qml" line="143"/>
         <source>Save new device name</source>
         <translation>Uložit název nového zařízení</translation>
     </message>
@@ -359,7 +359,7 @@
         <translation>Vytváří se účet…</translation>
     </message>
     <message>
-        <location filename="../src/wizardview/components/ImportFromBackupPage.qml" line="203"/>
+        <location filename="../src/wizardview/components/ImportFromBackupPage.qml" line="200"/>
         <source>Back to welcome page</source>
         <translation>Zpět na uvítací stránku</translation>
     </message>
@@ -382,7 +382,7 @@
         <translation>Vytváří se účet…</translation>
     </message>
     <message>
-        <location filename="../src/wizardview/components/ImportFromDevicePage.qml" line="178"/>
+        <location filename="../src/wizardview/components/ImportFromDevicePage.qml" line="175"/>
         <source>Back to welcome page</source>
         <translation>Zpět na uvítací stránku</translation>
     </message>
@@ -765,27 +765,32 @@
         <translation>Vytvořit účet Jami</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="380"/>
+        <location filename="../src/constant/JamiStrings.qml" line="378"/>
+        <source>About Jami</source>
+        <translation>O Jami</translation>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="381"/>
         <source>Decline contact request</source>
         <translation>Zamítnout žádost o kontakt</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="381"/>
+        <location filename="../src/constant/JamiStrings.qml" line="382"/>
         <source>Accept contact request</source>
         <translation>Přijmout žádost o kontakt</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="384"/>
+        <location filename="../src/constant/JamiStrings.qml" line="385"/>
         <source>Automatically check for updates</source>
         <translation>Automaticky zkontrolovat aktualizace</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="387"/>
+        <location filename="../src/constant/JamiStrings.qml" line="388"/>
         <source>Ok</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="388"/>
+        <location filename="../src/constant/JamiStrings.qml" line="389"/>
         <source>Cancel</source>
         <translation>Zrušit</translation>
     </message>
@@ -1398,7 +1403,7 @@
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="279"/>
         <source>toggle automatic updates</source>
-        <translation type="unfinished"/>
+        <translation>přepnout nastavení automatických aktualizací</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="280"/>
@@ -1414,37 +1419,38 @@
         <location filename="../src/constant/JamiStrings.qml" line="282"/>
         <source>A new version of Jami was found
  Would you like to update now?</source>
-        <translation type="unfinished"/>
+        <translation>Byla nalezena nová verze Jami.
+Přejete si nyní provést aktualizaci?</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="283"/>
         <source>No new version of Jami was found</source>
-        <translation type="unfinished"/>
+        <translation>Nebyla nalezena žádná nová verze Jami.</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="284"/>
         <source>An error occured when checking for a new version</source>
-        <translation type="unfinished"/>
+        <translation>Při zjišťování dostupnosti nové verze došlo k chybě.</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="285"/>
         <source>Installer download failed due to a network error</source>
-        <translation type="unfinished"/>
+        <translation>Stažení instalačního souboru selhalo kvůli chybě sítě.</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="286"/>
         <source>Installer download canceled</source>
-        <translation type="unfinished"/>
+        <translation>Stažení instalačního souboru bylo zrušeno.</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="288"/>
         <source>This will uninstall your current Release version and you can always download the latest Release version on our website</source>
-        <translation type="unfinished"/>
+        <translation>Tímto bude odinstalována vaše současná verze vydání. Nejnovější verzi vydání můžete vždy stáhnout z naší webové stránky.</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="289"/>
         <source>Network disconnected</source>
-        <translation type="unfinished"/>
+        <translation>Síť odpojena.</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="290"/>
@@ -1638,6 +1644,143 @@ Zkopírujte je a sdílejte je se svými přáteli!</translation>
         <source>Error while creating your account. Check your credentials.</source>
         <translation>Při vytváření účtu došlo k chybě. Zkontrolujte své přihlašovací údaje.</translation>
     </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="392"/>
+        <source>Hide chat view</source>
+        <translation>Skrýt zprávy</translation>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="393"/>
+        <source>Place video call</source>
+        <translation>Uskutečnit video hovor</translation>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="394"/>
+        <source>Place audio call</source>
+        <translation>Uskutečnit audio hovor</translation>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="395"/>
+        <source>Add to conversations</source>
+        <translation>Přidat do konverzací</translation>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="396"/>
+        <source>Unban contact</source>
+        <translation>Odblokovat kontakt</translation>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="397"/>
+        <source>Send</source>
+        <translation>Odeslat</translation>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="398"/>
+        <source>Options</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="399"/>
+        <source>Jump to latest</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="400"/>
+        <source>Send file</source>
+        <translation>Poslat soubor</translation>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="401"/>
+        <source>Leave video message</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="402"/>
+        <source>Leave audio message</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="403"/>
+        <location filename="../src/constant/JamiStrings.qml" line="417"/>
+        <source>Accept</source>
+        <translation>Přijmout</translation>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="404"/>
+        <location filename="../src/constant/JamiStrings.qml" line="418"/>
+        <source>Refuse</source>
+        <translation>Odmítnout</translation>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="405"/>
+        <source>Block</source>
+        <translation>Blokovat</translation>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="406"/>
+        <source>Type a message</source>
+        <translation>Napište zprávu</translation>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="407"/>
+        <source>Note: an interaction will create a new contact.</source>
+        <translation>Poznámka: interakce vytvoří nový kontakt.</translation>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="408"/>
+        <source>is not in your contacts</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="409"/>
+        <source>Note: you can automatically accept this invitation by sending a message.</source>
+        <translation>Poznámka: můžete tuto pozvánku automaticky přijmout posláním zprávy</translation>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="410"/>
+        <source>days ago</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="411"/>
+        <source>day ago</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="412"/>
+        <source>hours ago</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="413"/>
+        <source>hour ago</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="414"/>
+        <source>minutes ago</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="415"/>
+        <source>just now</source>
+        <translation>teď</translation>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="416"/>
+        <source>Failure</source>
+        <translation>Selhání</translation>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="419"/>
+        <source>Delete</source>
+        <translation>Odstranit</translation>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="420"/>
+        <source>Retry</source>
+        <translation>Zkusit znovu</translation>
+    </message>
 </context>
 <context>
     <name>JamiUserIdentity</name>
@@ -1756,29 +1899,6 @@ Zkopírujte je a sdílejte je se svými přáteli!</translation>
     </message>
 </context>
 <context>
-    <name>LeftPanelView</name>
-    <message>
-        <location filename="../src/settingsview/components/LeftPanelView.qml" line="61"/>
-        <source>Account</source>
-        <translation>Účet</translation>
-    </message>
-    <message>
-        <location filename="../src/settingsview/components/LeftPanelView.qml" line="74"/>
-        <source>General</source>
-        <translation>Obecné</translation>
-    </message>
-    <message>
-        <location filename="../src/settingsview/components/LeftPanelView.qml" line="87"/>
-        <source>Audio/Video</source>
-        <translation>Zvuk/Video</translation>
-    </message>
-    <message>
-        <location filename="../src/settingsview/components/LeftPanelView.qml" line="100"/>
-        <source>Plugins</source>
-        <translation>Zásuvné moduly</translation>
-    </message>
-</context>
-<context>
     <name>LinkDeviceDialog</name>
     <message>
         <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="218"/>
@@ -1872,17 +1992,17 @@ Zkuste to, prosím, později znovu.</translation>
 <context>
     <name>MediaHandlerPicker</name>
     <message>
-        <location filename="../src/mainview/components/MediaHandlerPicker.qml" line="89"/>
+        <location filename="../src/mainview/components/MediaHandlerPicker.qml" line="85"/>
         <source>Choose plugin</source>
         <translation>Zvolit zásuvný modul</translation>
     </message>
     <message>
-        <location filename="../src/mainview/components/MediaHandlerPicker.qml" line="151"/>
+        <location filename="../src/mainview/components/MediaHandlerPicker.qml" line="143"/>
         <source>Go back to plugins list</source>
         <translation>Přejít zpět na seznam zásuvných modulů</translation>
     </message>
     <message>
-        <location filename="../src/mainview/components/MediaHandlerPicker.qml" line="195"/>
+        <location filename="../src/mainview/components/MediaHandlerPicker.qml" line="183"/>
         <source>Preferences</source>
         <translation>Předvolby</translation>
     </message>
@@ -1922,14 +2042,6 @@ Zkuste to, prosím, později znovu.</translation>
     </message>
 </context>
 <context>
-    <name>OutgoingCallPage</name>
-    <message>
-        <location filename="../src/mainview/components/OutgoingCallPage.qml" line="113"/>
-        <source>Cancel the call</source>
-        <translation>Zrušit hovor</translation>
-    </message>
-</context>
-<context>
     <name>ParticipantContextMenu</name>
     <message>
         <location filename="../src/mainview/components/ParticipantContextMenu.qml" line="48"/>
@@ -1963,13 +2075,13 @@ Zkuste to, prosím, později znovu.</translation>
         <translation>Všechny soubory</translation>
     </message>
     <message>
-        <location filename="../src/commoncomponents/PhotoboothView.qml" line="198"/>
-        <location filename="../src/commoncomponents/PhotoboothView.qml" line="206"/>
+        <location filename="../src/commoncomponents/PhotoboothView.qml" line="196"/>
+        <location filename="../src/commoncomponents/PhotoboothView.qml" line="204"/>
         <source>Take photo</source>
         <translation>Vyfotit</translation>
     </message>
     <message>
-        <location filename="../src/commoncomponents/PhotoboothView.qml" line="203"/>
+        <location filename="../src/commoncomponents/PhotoboothView.qml" line="201"/>
         <source>Retake photo</source>
         <translation>Vyfotit znovu</translation>
     </message>
@@ -1977,7 +2089,7 @@ Zkuste to, prosím, později znovu.</translation>
 <context>
     <name>PluginItemDelegate</name>
     <message>
-        <location filename="../src/settingsview/components/PluginItemDelegate.qml" line="78"/>
+        <location filename="../src/settingsview/components/PluginItemDelegate.qml" line="79"/>
         <source>Load/Unload</source>
         <translation>Načíst/vysunout</translation>
     </message>
@@ -2005,7 +2117,7 @@ Zkuste to, prosím, později znovu.</translation>
         <translation>Zrušit</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/PluginListPreferencesView.qml" line="164"/>
+        <location filename="../src/settingsview/components/PluginListPreferencesView.qml" line="168"/>
         <source>Uninstall</source>
         <translation>Odinstalovat</translation>
     </message>
@@ -2031,7 +2143,7 @@ Zkuste to, prosím, později znovu.</translation>
 <context>
     <name>PreferenceItemDelegate</name>
     <message>
-        <location filename="../src/commoncomponents/PreferenceItemDelegate.qml" line="123"/>
+        <location filename="../src/commoncomponents/PreferenceItemDelegate.qml" line="117"/>
         <source>Edit preference</source>
         <translation>Upravit předvolbu</translation>
     </message>
@@ -2178,19 +2290,42 @@ Zkuste to, prosím, později znovu.</translation>
     </message>
 </context>
 <context>
-    <name>SettingsView</name>
+    <name>SettingsMenu</name>
     <message>
-        <location filename="../src/settingsview/SettingsView.qml" line="153"/>
-        <source>Account Settings</source>
-        <translation>Nastavení účtu</translation>
+        <location filename="../src/settingsview/components/SettingsMenu.qml" line="34"/>
+        <source>Account</source>
+        <translation>Účet</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/SettingsView.qml" line="155"/>
+        <location filename="../src/settingsview/components/SettingsMenu.qml" line="36"/>
         <source>General</source>
         <translation>Obecné</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/SettingsView.qml" line="159"/>
+        <location filename="../src/settingsview/components/SettingsMenu.qml" line="38"/>
+        <source>Audio/Video</source>
+        <translation>Zvuk/Video</translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/SettingsMenu.qml" line="40"/>
+        <source>Plugin</source>
+        <translation>Zásuvný modul</translation>
+    </message>
+</context>
+<context>
+    <name>SettingsView</name>
+    <message>
+        <location filename="../src/settingsview/SettingsView.qml" line="152"/>
+        <source>Account Settings</source>
+        <translation>Nastavení účtu</translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/SettingsView.qml" line="154"/>
+        <source>General</source>
+        <translation>Obecné</translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/SettingsView.qml" line="158"/>
         <source>Plugin</source>
         <translation>Zásuvný modul</translation>
     </message>
@@ -2242,7 +2377,7 @@ Zkuste to, prosím, později znovu.</translation>
 <context>
     <name>UserInfoCallPage</name>
     <message>
-        <location filename="../src/mainview/components/UserInfoCallPage.qml" line="66"/>
+        <location filename="../src/mainview/components/UserInfoCallPage.qml" line="69"/>
         <source>Toggle to display side panel</source>
         <translation>Přepnout zobrazení bočního panelu</translation>
     </message>
@@ -2266,32 +2401,27 @@ Zkuste to, prosím, později znovu.</translation>
 <context>
     <name>WelcomePage</name>
     <message>
-        <location filename="../src/mainview/components/WelcomePage.qml" line="154"/>
-        <source>About Jami</source>
-        <translation>O Jami</translation>
-    </message>
-    <message>
         <location filename="../src/wizardview/components/WelcomePage.qml" line="55"/>
         <source>Welcome to</source>
         <translation>Vítejte v</translation>
     </message>
     <message>
-        <location filename="../src/wizardview/components/WelcomePage.qml" line="88"/>
+        <location filename="../src/wizardview/components/WelcomePage.qml" line="85"/>
         <source>Create new Jami account</source>
         <translation>Vytvořit nový účet Jami</translation>
     </message>
     <message>
-        <location filename="../src/wizardview/components/WelcomePage.qml" line="128"/>
+        <location filename="../src/wizardview/components/WelcomePage.qml" line="125"/>
         <source>Import account from other device</source>
         <translation>Importovat účet z jiného zařízení</translation>
     </message>
     <message>
-        <location filename="../src/wizardview/components/WelcomePage.qml" line="148"/>
+        <location filename="../src/wizardview/components/WelcomePage.qml" line="145"/>
         <source>Import account from backup file</source>
         <translation>Importovat účet ze záložního souboru</translation>
     </message>
     <message>
-        <location filename="../src/wizardview/components/WelcomePage.qml" line="221"/>
+        <location filename="../src/wizardview/components/WelcomePage.qml" line="218"/>
         <source>Create new SIP account</source>
         <translation>Vytvořit nový účet SIP</translation>
     </message>

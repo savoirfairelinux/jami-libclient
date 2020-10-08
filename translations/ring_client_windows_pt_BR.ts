@@ -7,7 +7,7 @@
         <translation>Sobre</translation>
     </message>
     <message>
-        <location filename="../src/mainview/components/AboutPopUp.qml" line="307"/>
+        <location filename="../src/mainview/components/AboutPopUp.qml" line="308"/>
         <source>Close</source>
         <translation>Fechar</translation>
     </message>
@@ -15,7 +15,7 @@
 <context>
     <name>AccountComboBoxPopup</name>
     <message>
-        <location filename="../src/mainview/components/AccountComboBoxPopup.qml" line="165"/>
+        <location filename="../src/mainview/components/AccountComboBoxPopup.qml" line="163"/>
         <source>Add Account</source>
         <translation>Adicionar Conta</translation>
     </message>
@@ -33,12 +33,12 @@
     <message>
         <location filename="../src/settingsview/components/AdvancedCallSettings.qml" line="67"/>
         <source>Audio Files</source>
-        <translation type="unfinished"/>
+        <translation>Arquivos de Áudio</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/AdvancedCallSettings.qml" line="67"/>
         <source>All files</source>
-        <translation type="unfinished"/>
+        <translation>Todos os arquivos</translation>
     </message>
 </context>
 <context>
@@ -54,12 +54,12 @@
         <location filename="../src/settingsview/components/AdvancedJamiSecuritySettings.qml" line="94"/>
         <location filename="../src/settingsview/components/AdvancedJamiSecuritySettings.qml" line="114"/>
         <source>All files</source>
-        <translation type="unfinished"/>
+        <translation>Todos os arquivos</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/AdvancedJamiSecuritySettings.qml" line="114"/>
         <source>Key File</source>
-        <translation type="unfinished"/>
+        <translation>Arquivo chave</translation>
     </message>
 </context>
 <context>
@@ -88,12 +88,12 @@
         <location filename="../src/settingsview/components/AdvancedSIPSecuritySettings.qml" line="112"/>
         <location filename="../src/settingsview/components/AdvancedSIPSecuritySettings.qml" line="130"/>
         <source>All files</source>
-        <translation type="unfinished"/>
+        <translation>Todos os arquivos</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/AdvancedSIPSecuritySettings.qml" line="130"/>
         <source>Key File</source>
-        <translation type="unfinished"/>
+        <translation>Arquivo chave</translation>
     </message>
 </context>
 <context>
@@ -101,7 +101,7 @@
     <message>
         <location filename="../src/settingsview/components/AdvancedSettings.qml" line="67"/>
         <source>Advanced Account Settings</source>
-        <translation type="unfinished"/>
+        <translation>Configurações avançadas de conta</translation>
     </message>
 </context>
 <context>
@@ -109,18 +109,18 @@
     <message>
         <location filename="../src/wizardview/components/BackupKeyPage.qml" line="46"/>
         <source>Jami archive files</source>
-        <translation type="unfinished"/>
+        <translation>Arquivos Jami</translation>
     </message>
     <message>
         <location filename="../src/wizardview/components/BackupKeyPage.qml" line="46"/>
         <source>All files</source>
-        <translation type="unfinished"/>
+        <translation>Todos os arquivos</translation>
     </message>
 </context>
 <context>
     <name>BannedContacts</name>
     <message>
-        <location filename="../src/settingsview/components/BannedContacts.qml" line="105"/>
+        <location filename="../src/settingsview/components/BannedContacts.qml" line="101"/>
         <source>Banned Contacts</source>
         <translation>Contatos Banidos</translation>
     </message>
@@ -128,41 +128,41 @@
 <context>
     <name>CallAdapter</name>
     <message>
-        <location filename="../src/calladapter.cpp" line="279"/>
-        <location filename="../src/calladapter.cpp" line="369"/>
+        <location filename="../src/calladapter.cpp" line="270"/>
+        <location filename="../src/calladapter.cpp" line="351"/>
         <source>me</source>
-        <translation type="unfinished"/>
+        <translation>eu</translation>
     </message>
     <message>
-        <location filename="../src/calladapter.cpp" line="333"/>
+        <location filename="../src/calladapter.cpp" line="315"/>
         <source>is calling you</source>
-        <translation type="unfinished"/>
+        <translation>está chamando você</translation>
     </message>
 </context>
 <context>
     <name>CallAdvancedOptions</name>
     <message>
-        <location filename="../src/mainview/components/CallAdvancedOptions.qml" line="90"/>
+        <location filename="../src/mainview/components/CallAdvancedOptions.qml" line="85"/>
         <source>Add to conference</source>
         <translation>Adicionar a conferência</translation>
     </message>
     <message>
-        <location filename="../src/mainview/components/CallAdvancedOptions.qml" line="90"/>
+        <location filename="../src/mainview/components/CallAdvancedOptions.qml" line="85"/>
         <source>Transfer this call</source>
-        <translation type="unfinished"/>
+        <translation>Transferir esta chamada</translation>
     </message>
     <message>
-        <location filename="../src/mainview/components/CallAdvancedOptions.qml" line="108"/>
+        <location filename="../src/mainview/components/CallAdvancedOptions.qml" line="103"/>
         <source>Search contacts</source>
-        <translation type="unfinished"/>
+        <translation>Buscar contatos</translation>
     </message>
 </context>
 <context>
     <name>CallOverlay</name>
     <message>
-        <location filename="../src/mainview/components/CallOverlay.qml" line="179"/>
+        <location filename="../src/mainview/components/CallOverlay.qml" line="184"/>
         <source>Toggle to display side panel</source>
-        <translation type="unfinished"/>
+        <translation>Alternar para exibir o painel lateral</translation>
     </message>
 </context>
 <context>
@@ -175,20 +175,20 @@
     <message>
         <location filename="../src/wizardview/components/CollapsiblePasswordWidget.qml" line="97"/>
         <source>Confirm Password</source>
-        <translation type="unfinished"/>
+        <translation>Confirmar senha</translation>
     </message>
 </context>
 <context>
     <name>ContactPicker</name>
     <message>
-        <location filename="../src/mainview/components/ContactPicker.qml" line="89"/>
+        <location filename="../src/mainview/components/ContactPicker.qml" line="85"/>
         <source>Add to conference</source>
         <translation>Adicionar a conferência</translation>
     </message>
     <message>
-        <location filename="../src/mainview/components/ContactPicker.qml" line="89"/>
+        <location filename="../src/mainview/components/ContactPicker.qml" line="85"/>
         <source>Transfer this call</source>
-        <translation type="unfinished"/>
+        <translation>Transferir esta chamada</translation>
     </message>
 </context>
 <context>
@@ -199,27 +199,27 @@
         <translation>Iniciar videochamada</translation>
     </message>
     <message>
-        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="47"/>
+        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="48"/>
         <source>Start audio call</source>
         <translation>Iniciar chamada de áudio</translation>
     </message>
     <message>
-        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="56"/>
+        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="58"/>
         <source>Clear conversation</source>
         <translation>Eliminar a conversa</translation>
     </message>
     <message>
-        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="65"/>
+        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="67"/>
         <source>Remove contact</source>
         <translation>Remover contato</translation>
     </message>
     <message>
-        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="103"/>
+        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="109"/>
         <source>Block contact</source>
         <translation>Bloquear contato</translation>
     </message>
     <message>
-        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="111"/>
+        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="117"/>
         <source>Profile</source>
         <translation>Perfil</translation>
     </message>
@@ -229,12 +229,12 @@
     <message>
         <location filename="../src/wizardview/components/CreateAccountPage.qml" line="81"/>
         <source>Jami archive files</source>
-        <translation type="unfinished"/>
+        <translation>Arquivos Jami</translation>
     </message>
     <message>
         <location filename="../src/wizardview/components/CreateAccountPage.qml" line="81"/>
         <source>All files</source>
-        <translation type="unfinished"/>
+        <translation>Todos os arquivos</translation>
     </message>
     <message>
         <location filename="../src/wizardview/components/CreateAccountPage.qml" line="126"/>
@@ -249,7 +249,7 @@
     <message>
         <location filename="../src/wizardview/components/CreateAccountPage.qml" line="153"/>
         <source>Choose a name</source>
-        <translation type="unfinished"/>
+        <translation>Escolha um nome</translation>
     </message>
     <message>
         <location filename="../src/wizardview/components/CreateAccountPage.qml" line="168"/>
@@ -259,7 +259,7 @@
     <message>
         <location filename="../src/wizardview/components/CreateAccountPage.qml" line="168"/>
         <source>Invalid name</source>
-        <translation type="unfinished"/>
+        <translation>Nome inválido</translation>
     </message>
     <message>
         <location filename="../src/wizardview/components/CreateAccountPage.qml" line="170"/>
@@ -294,12 +294,12 @@
     <message>
         <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="160"/>
         <source>Jami archive files</source>
-        <translation type="unfinished"/>
+        <translation>Arquivos Jami</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="160"/>
         <source>All files</source>
-        <translation type="unfinished"/>
+        <translation>Todos os arquivos</translation>
     </message>
 </context>
 <context>
@@ -331,7 +331,7 @@
         <translation>Id do Dispositivo</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/DeviceItemDelegate.qml" line="153"/>
+        <location filename="../src/settingsview/components/DeviceItemDelegate.qml" line="143"/>
         <source>Save new device name</source>
         <translation type="unfinished"/>
     </message>
@@ -341,12 +341,12 @@
     <message>
         <location filename="../src/wizardview/components/ImportFromBackupPage.qml" line="63"/>
         <source>Jami archive files</source>
-        <translation type="unfinished"/>
+        <translation>Arquivos Jami</translation>
     </message>
     <message>
         <location filename="../src/wizardview/components/ImportFromBackupPage.qml" line="63"/>
         <source>All files</source>
-        <translation type="unfinished"/>
+        <translation>Todos os arquivos</translation>
     </message>
     <message>
         <location filename="../src/wizardview/components/ImportFromBackupPage.qml" line="87"/>
@@ -359,7 +359,7 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/wizardview/components/ImportFromBackupPage.qml" line="203"/>
+        <location filename="../src/wizardview/components/ImportFromBackupPage.qml" line="200"/>
         <source>Back to welcome page</source>
         <translation type="unfinished"/>
     </message>
@@ -382,7 +382,7 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/wizardview/components/ImportFromDevicePage.qml" line="178"/>
+        <location filename="../src/wizardview/components/ImportFromDevicePage.qml" line="175"/>
         <source>Back to welcome page</source>
         <translation type="unfinished"/>
     </message>
@@ -442,17 +442,17 @@
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="44"/>
         <source>Open settings</source>
-        <translation type="unfinished"/>
+        <translation>Abrir configurações</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="45"/>
         <source>Close settings</source>
-        <translation type="unfinished"/>
+        <translation>Fechar configurações</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="48"/>
         <source>Authentication required</source>
-        <translation type="unfinished"/>
+        <translation>Autenticação requerida</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="49"/>
@@ -467,7 +467,7 @@
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="51"/>
         <source>Authenticate</source>
-        <translation type="unfinished"/>
+        <translation>Autenticado</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="52"/>
@@ -507,7 +507,7 @@
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="53"/>
         <source>In progress…</source>
-        <translation type="unfinished"/>
+        <translation>Em progresso...</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="62"/>
@@ -765,27 +765,32 @@
         <translation>Criar uma conta no Jami</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="380"/>
+        <location filename="../src/constant/JamiStrings.qml" line="378"/>
+        <source>About Jami</source>
+        <translation>Sobre Jami</translation>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="381"/>
         <source>Decline contact request</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="381"/>
+        <location filename="../src/constant/JamiStrings.qml" line="382"/>
         <source>Accept contact request</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="384"/>
+        <location filename="../src/constant/JamiStrings.qml" line="385"/>
         <source>Automatically check for updates</source>
         <translation>Verificar automaticamente se há atualizações</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="387"/>
+        <location filename="../src/constant/JamiStrings.qml" line="388"/>
         <source>Ok</source>
         <translation>Ok</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="388"/>
+        <location filename="../src/constant/JamiStrings.qml" line="389"/>
         <source>Cancel</source>
         <translation>Cancelar</translation>
     </message>
@@ -1062,7 +1067,7 @@
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="178"/>
         <source>Mute</source>
-        <translation type="unfinished"/>
+        <translation>Mudo</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="179"/>
@@ -1077,7 +1082,7 @@
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="182"/>
         <source>Resume</source>
-        <translation type="unfinished"/>
+        <translation>Resumo</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="183"/>
@@ -1217,7 +1222,7 @@
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="223"/>
         <source>Server</source>
-        <translation type="unfinished"/>
+        <translation>Servidor</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="224"/>
@@ -1459,7 +1464,7 @@
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="296"/>
         <source>Archive</source>
-        <translation type="unfinished"/>
+        <translation>Arquivo</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="297"/>
@@ -1529,12 +1534,12 @@
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="324"/>
         <source>Change</source>
-        <translation type="unfinished"/>
+        <translation>Mudar</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="325"/>
         <source>Confirm</source>
-        <translation type="unfinished"/>
+        <translation>Confirmar</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="326"/>
@@ -1564,7 +1569,7 @@
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="335"/>
         <source>Reset</source>
-        <translation type="unfinished"/>
+        <translation>Resetar</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="336"/>
@@ -1574,12 +1579,12 @@
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="337"/>
         <source>Install plugin</source>
-        <translation type="unfinished"/>
+        <translation>Instalar plugin</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="351"/>
         <source>Save profile</source>
-        <translation type="unfinished"/>
+        <translation>Salvar perfil</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="356"/>
@@ -1637,6 +1642,143 @@ Copie-o e compartilhe com seus amigos!</translation>
         <location filename="../src/constant/JamiStrings.qml" line="375"/>
         <source>Error while creating your account. Check your credentials.</source>
         <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="392"/>
+        <source>Hide chat view</source>
+        <translation>Ocultar visão do bate-papo</translation>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="393"/>
+        <source>Place video call</source>
+        <translation>Fazer videochamada</translation>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="394"/>
+        <source>Place audio call</source>
+        <translation>Fazer chamada de áudio</translation>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="395"/>
+        <source>Add to conversations</source>
+        <translation>Adicionar às conversas</translation>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="396"/>
+        <source>Unban contact</source>
+        <translation>Contato não banido</translation>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="397"/>
+        <source>Send</source>
+        <translation>Enviar</translation>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="398"/>
+        <source>Options</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="399"/>
+        <source>Jump to latest</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="400"/>
+        <source>Send file</source>
+        <translation>Enviar arquivo</translation>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="401"/>
+        <source>Leave video message</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="402"/>
+        <source>Leave audio message</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="403"/>
+        <location filename="../src/constant/JamiStrings.qml" line="417"/>
+        <source>Accept</source>
+        <translation>Aceitar</translation>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="404"/>
+        <location filename="../src/constant/JamiStrings.qml" line="418"/>
+        <source>Refuse</source>
+        <translation>Recusar</translation>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="405"/>
+        <source>Block</source>
+        <translation>Bloquear</translation>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="406"/>
+        <source>Type a message</source>
+        <translation>Digite uma mensagem</translation>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="407"/>
+        <source>Note: an interaction will create a new contact.</source>
+        <translation>Observação: uma interação criará um novo contato</translation>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="408"/>
+        <source>is not in your contacts</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="409"/>
+        <source>Note: you can automatically accept this invitation by sending a message.</source>
+        <translation>Observação: você pode aceitar automaticamente este convite enviando uma mensagem.</translation>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="410"/>
+        <source>days ago</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="411"/>
+        <source>day ago</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="412"/>
+        <source>hours ago</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="413"/>
+        <source>hour ago</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="414"/>
+        <source>minutes ago</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="415"/>
+        <source>just now</source>
+        <translation>Agora</translation>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="416"/>
+        <source>Failure</source>
+        <translation>Falha</translation>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="419"/>
+        <source>Delete</source>
+        <translation>Deletar</translation>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="420"/>
+        <source>Retry</source>
+        <translation>Tente novamente</translation>
     </message>
 </context>
 <context>
@@ -1756,29 +1898,6 @@ Copie-o e compartilhe com seus amigos!</translation>
     </message>
 </context>
 <context>
-    <name>LeftPanelView</name>
-    <message>
-        <location filename="../src/settingsview/components/LeftPanelView.qml" line="61"/>
-        <source>Account</source>
-        <translation>Conta</translation>
-    </message>
-    <message>
-        <location filename="../src/settingsview/components/LeftPanelView.qml" line="74"/>
-        <source>General</source>
-        <translation>Geral</translation>
-    </message>
-    <message>
-        <location filename="../src/settingsview/components/LeftPanelView.qml" line="87"/>
-        <source>Audio/Video</source>
-        <translation>Áudio/Vídeo</translation>
-    </message>
-    <message>
-        <location filename="../src/settingsview/components/LeftPanelView.qml" line="100"/>
-        <source>Plugins</source>
-        <translation>Complementos</translation>
-    </message>
-</context>
-<context>
     <name>LinkDeviceDialog</name>
     <message>
         <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="218"/>
@@ -1848,7 +1967,7 @@ Please try again later.</source>
     <message>
         <location filename="../src/settingsview/components/LinkedDevices.qml" line="108"/>
         <source>Linked Devices</source>
-        <translation type="unfinished"/>
+        <translation>Dispositivos Ligados</translation>
     </message>
 </context>
 <context>
@@ -1870,17 +1989,17 @@ Please try again later.</source>
 <context>
     <name>MediaHandlerPicker</name>
     <message>
-        <location filename="../src/mainview/components/MediaHandlerPicker.qml" line="89"/>
+        <location filename="../src/mainview/components/MediaHandlerPicker.qml" line="85"/>
         <source>Choose plugin</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainview/components/MediaHandlerPicker.qml" line="151"/>
+        <location filename="../src/mainview/components/MediaHandlerPicker.qml" line="143"/>
         <source>Go back to plugins list</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainview/components/MediaHandlerPicker.qml" line="195"/>
+        <location filename="../src/mainview/components/MediaHandlerPicker.qml" line="183"/>
         <source>Preferences</source>
         <translation type="unfinished"/>
     </message>
@@ -1920,14 +2039,6 @@ Please try again later.</source>
     </message>
 </context>
 <context>
-    <name>OutgoingCallPage</name>
-    <message>
-        <location filename="../src/mainview/components/OutgoingCallPage.qml" line="113"/>
-        <source>Cancel the call</source>
-        <translation type="unfinished"/>
-    </message>
-</context>
-<context>
     <name>ParticipantContextMenu</name>
     <message>
         <location filename="../src/mainview/components/ParticipantContextMenu.qml" line="48"/>
@@ -1958,16 +2069,16 @@ Please try again later.</source>
     <message>
         <location filename="../src/commoncomponents/PhotoboothView.qml" line="65"/>
         <source>All files</source>
-        <translation type="unfinished"/>
+        <translation>Todos os arquivos</translation>
     </message>
     <message>
-        <location filename="../src/commoncomponents/PhotoboothView.qml" line="198"/>
-        <location filename="../src/commoncomponents/PhotoboothView.qml" line="206"/>
+        <location filename="../src/commoncomponents/PhotoboothView.qml" line="196"/>
+        <location filename="../src/commoncomponents/PhotoboothView.qml" line="204"/>
         <source>Take photo</source>
         <translation>Tirar foto</translation>
     </message>
     <message>
-        <location filename="../src/commoncomponents/PhotoboothView.qml" line="203"/>
+        <location filename="../src/commoncomponents/PhotoboothView.qml" line="201"/>
         <source>Retake photo</source>
         <translation type="unfinished"/>
     </message>
@@ -1975,7 +2086,7 @@ Please try again later.</source>
 <context>
     <name>PluginItemDelegate</name>
     <message>
-        <location filename="../src/settingsview/components/PluginItemDelegate.qml" line="78"/>
+        <location filename="../src/settingsview/components/PluginItemDelegate.qml" line="79"/>
         <source>Load/Unload</source>
         <translation type="unfinished"/>
     </message>
@@ -2003,7 +2114,7 @@ Please try again later.</source>
         <translation>Cancelar</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/PluginListPreferencesView.qml" line="164"/>
+        <location filename="../src/settingsview/components/PluginListPreferencesView.qml" line="168"/>
         <source>Uninstall</source>
         <translation type="unfinished"/>
     </message>
@@ -2018,7 +2129,7 @@ Please try again later.</source>
     <message>
         <location filename="../src/settingsview/components/PluginListSettingsView.qml" line="85"/>
         <source>All files</source>
-        <translation type="unfinished"/>
+        <translation>Todos os arquivos</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/PluginListSettingsView.qml" line="104"/>
@@ -2029,7 +2140,7 @@ Please try again later.</source>
 <context>
     <name>PreferenceItemDelegate</name>
     <message>
-        <location filename="../src/commoncomponents/PreferenceItemDelegate.qml" line="123"/>
+        <location filename="../src/commoncomponents/PreferenceItemDelegate.qml" line="117"/>
         <source>Edit preference</source>
         <translation type="unfinished"/>
     </message>
@@ -2176,21 +2287,44 @@ Please try again later.</source>
     </message>
 </context>
 <context>
-    <name>SettingsView</name>
+    <name>SettingsMenu</name>
     <message>
-        <location filename="../src/settingsview/SettingsView.qml" line="153"/>
-        <source>Account Settings</source>
-        <translation>Configurações da Conta</translation>
+        <location filename="../src/settingsview/components/SettingsMenu.qml" line="34"/>
+        <source>Account</source>
+        <translation>Conta</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/SettingsView.qml" line="155"/>
+        <location filename="../src/settingsview/components/SettingsMenu.qml" line="36"/>
         <source>General</source>
         <translation>Geral</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/SettingsView.qml" line="159"/>
+        <location filename="../src/settingsview/components/SettingsMenu.qml" line="38"/>
+        <source>Audio/Video</source>
+        <translation>Áudio/Vídeo</translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/SettingsMenu.qml" line="40"/>
         <source>Plugin</source>
-        <translation type="unfinished"/>
+        <translation>Plugin</translation>
+    </message>
+</context>
+<context>
+    <name>SettingsView</name>
+    <message>
+        <location filename="../src/settingsview/SettingsView.qml" line="152"/>
+        <source>Account Settings</source>
+        <translation>Configurações da Conta</translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/SettingsView.qml" line="154"/>
+        <source>General</source>
+        <translation>Geral</translation>
+    </message>
+    <message>
+        <location filename="../src/settingsview/SettingsView.qml" line="158"/>
+        <source>Plugin</source>
+        <translation>Plugin</translation>
     </message>
 </context>
 <context>
@@ -2240,9 +2374,9 @@ Please try again later.</source>
 <context>
     <name>UserInfoCallPage</name>
     <message>
-        <location filename="../src/mainview/components/UserInfoCallPage.qml" line="66"/>
+        <location filename="../src/mainview/components/UserInfoCallPage.qml" line="69"/>
         <source>Toggle to display side panel</source>
-        <translation type="unfinished"/>
+        <translation>Alternar para exibir o painel lateral</translation>
     </message>
 </context>
 <context>
@@ -2264,32 +2398,27 @@ Please try again later.</source>
 <context>
     <name>WelcomePage</name>
     <message>
-        <location filename="../src/mainview/components/WelcomePage.qml" line="154"/>
-        <source>About Jami</source>
-        <translation>Sobre Jami</translation>
-    </message>
-    <message>
         <location filename="../src/wizardview/components/WelcomePage.qml" line="55"/>
         <source>Welcome to</source>
         <translation>Bem-vindo à</translation>
     </message>
     <message>
-        <location filename="../src/wizardview/components/WelcomePage.qml" line="88"/>
+        <location filename="../src/wizardview/components/WelcomePage.qml" line="85"/>
         <source>Create new Jami account</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/wizardview/components/WelcomePage.qml" line="128"/>
+        <location filename="../src/wizardview/components/WelcomePage.qml" line="125"/>
         <source>Import account from other device</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/wizardview/components/WelcomePage.qml" line="148"/>
+        <location filename="../src/wizardview/components/WelcomePage.qml" line="145"/>
         <source>Import account from backup file</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/wizardview/components/WelcomePage.qml" line="221"/>
+        <location filename="../src/wizardview/components/WelcomePage.qml" line="218"/>
         <source>Create new SIP account</source>
         <translation type="unfinished"/>
     </message>
