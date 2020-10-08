@@ -1,4 +1,3 @@
-
 /*
  * Copyright (C) 2020 by Savoir-faire Linux
  * Author: Mingrui Zhang <mingrui.zhang@savoirfairelinux.com>
@@ -16,10 +15,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+
 import QtQuick 2.14
 import QtQuick.Controls 2.14
 import QtQuick.Layouts 1.14
 import net.jami.Models 1.0
+import "../../commoncomponents"
 
 Image {
     id: userImage
@@ -31,12 +32,9 @@ Image {
     source: "data:image/png;base64," + Picture
     mipmap: true
 
-    AccountPresenceCycle {
-        id: conversationAccountPresenseCycle
-
+    PresenceIndicator {
         anchors.right: userImage.right
         anchors.bottom: userImage.bottom
-        anchors.bottomMargin: -2
 
         visible: Presence === undefined ? false : Presence
     }

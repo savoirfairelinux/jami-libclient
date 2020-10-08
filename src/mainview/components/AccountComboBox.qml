@@ -41,7 +41,7 @@ ComboBox {
         function onModelReset() {
             userImageRoot.source = "data:image/png;base64," + accountListModel.data(
                         accountListModel.index(0, 0), AccountListModel.Picture)
-            currentAccountPresenseCycle.accountStatus =
+            currentAccountPresenceIndicator.status =
                     accountListModel.data(accountListModel.index(0, 0), AccountListModel.Status)
             textMetricsUserAliasRoot.text = accountListModel.data(accountListModel.index(0,0),
                                                                   AccountListModel.Alias)
@@ -67,15 +67,15 @@ ComboBox {
                             accountListModel.index(0, 0), AccountListModel.Picture)
         mipmap: true
 
-        AccountPresenceCycle {
-            id: currentAccountPresenseCycle
+        PresenceIndicator {
+            id: currentAccountPresenceIndicator
 
             anchors.right: userImageRoot.right
             anchors.rightMargin: -2
             anchors.bottom: userImageRoot.bottom
             anchors.bottomMargin: -2
 
-            accountStatus: accountListModel.data(accountListModel.index(0, 0),
+            status: accountListModel.data(accountListModel.index(0, 0),
                                                  AccountListModel.Status)
         }
     }

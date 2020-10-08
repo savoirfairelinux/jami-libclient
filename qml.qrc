@@ -126,7 +126,6 @@
         <file>src/mainview/components/SipInputPanel.qml</file>
         <file>src/commoncomponents/js/contextmenugenerator.js</file>
         <file>src/commoncomponents/BaseContextMenu.qml</file>
-        <file>src/mainview/components/AccountPresenceCycle.qml</file>
         <file>src/commoncomponents/Scaffold.qml</file>
         <file>src/constant/JamiQmlUtils.qml</file>
         <file>src/wizardview/components/AccountCreationStepIndicator.qml</file>
@@ -137,5 +136,6 @@
         <file>src/commoncomponents/ModalPopup.qml</file>
         <file>src/commoncomponents/SimpleMessageDialog.qml</file>
         <file>src/commoncomponents/ResponsiveImage.qml</file>
+        <file>src/commoncomponents/PresenceIndicator.qml</file>
     </qresource>
 </RCC>

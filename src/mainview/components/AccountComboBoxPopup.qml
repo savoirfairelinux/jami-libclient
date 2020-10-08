@@ -74,15 +74,13 @@ Popup {
                     return "data:image/png;base64," + data
                 }
 
-                AccountPresenceCycle {
-                    id: accountPresenseCycle
-
+                PresenceIndicator {
                     anchors.right: userImage.right
                     anchors.rightMargin: -2
                     anchors.bottom: userImage.bottom
                     anchors.bottomMargin: -2
 
-                    accountStatus: Status
+                    status: Status
                 }
             }
 
