@@ -22,6 +22,30 @@
       "revId": "8f0895dd8b950a0afe9e880d68691b7b741b8a62",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5902c3c4_60de77c4",
+        "filename": "src/api/conversationmodel.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 282,
+      "author": {
+        "id": 633
+      },
+      "writtenOn": "2020-10-08T15:14:07Z",
+      "side": 1,
+      "message": "cool,\nI think from client side, we can use contact best name/id instead",
+      "parentUuid": "344e3aa0_19da908c",
+      "range": {
+        "startLine": 272,
+        "startChar": 74,
+        "endLine": 282,
+        "endChar": 72
+      },
+      "revId": "8f0895dd8b950a0afe9e880d68691b7b741b8a62",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
     }
   ]
 }
