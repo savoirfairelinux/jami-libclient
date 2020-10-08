@@ -38,7 +38,7 @@ ApplicationWindow {
             if (mainViewLoader.item)
                 mainViewLoader.item.hide()
             else
-                wizardView.hide()
+                Qt.quit()
         }
     }
 
@@ -144,8 +144,8 @@ ApplicationWindow {
         }
 
         function onRestoreAppRequested() {
-            var window = mainViewLoader.item ? mainViewLoader.item : wizardView
-            restore(window)
+            if (mainViewLoader.item)
+                restore(mainViewLoader.item)
         }
 
         function onNotificationClicked(forceToTop) {
