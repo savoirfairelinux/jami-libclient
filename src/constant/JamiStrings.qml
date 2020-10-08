@@ -375,6 +375,7 @@ Item {
     property string errorCreateAccount: qsTr("Error while creating your account. Check your credentials.")
     property string createNewRV: qsTr("Create new rendezvous point")
     property string createNewJA: qsTr("Create a Jami account")
+    property string aboutJami: qsTr("About Jami")
 
     // Smart list context menu
     property string declineContactRequest: qsTr("Decline contact request")
