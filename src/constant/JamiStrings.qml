@@ -411,7 +411,7 @@ Item {
     property string oneDayAgo: qsTr("one day ago")
     property string hoursAgo: qsTr("{0} hours ago")
     property string oneHourAgo: qsTr("one hour ago")
-    property string minutesAgo: qsTr("${0} minutes ago")
+    property string minutesAgo: qsTr("{0} minutes ago")
     property string justNow: qsTr("just now")
     property string failureString: qsTr("Failure")
     property string acceptString: qsTr("Accept")
