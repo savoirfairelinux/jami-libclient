@@ -78,6 +78,15 @@ document.body.onclick = function(e) {
     }
 }
 
+/* String sipmle format prototype*/
+String.prototype.format = function() {
+    var a = this
+    for (var k in arguments) {
+      a = a.replace("{" + k + "}", arguments[k])
+    }
+    return a
+}
+
 /* Set the default target to _self and handle with QWebEnginePage::acceptNavigationRequest */
 var linkifyOptions = {}
 if (use_qt) {
@@ -540,28 +549,23 @@ function formatDate(date) {
     var interval = Math.floor(seconds / (3600 * 24))
 
     if (use_qt) {
-        if (interval > 5) {
+        if (interval > 5)
             return date.toLocaleDateString()
-        }
-        if (interval > 1) {
-            return interval + "\u200E " + i18nStringData["daysAgo"]
-        }
-        if (interval === 1) {
-            return interval + "\u200E " + i18nStringData["dayAgo"]
-        }
-        interval = Math.floor(seconds / 3600)
-        if (interval > 1) {
-            return interval + "\u200E " + i18nStringData["hoursAgo"]
-        }
-        if (interval === 1) {
-            return interval + "\u200E " + i18nStringData["hourAgo"]
-        }
-        interval = Math.floor(seconds / 60)
-        if (interval > 1) {
-            return interval + "\u200E " + i18nStringData["minutesAgo"]
-        }
-        return i18nStringData["justNow"]
+        if (interval > 1)
+            return "\u200E " + i18nStringData["daysAgo"].format(interval)
+        if (interval === 1)
+            return "\u200E " + i18nStringData["oneDayAgo"]
 
+        interval = Math.floor(seconds / 3600)
+        if (interval > 1)
+            return "\u200E " + i18nStringData["hoursAgo"].format(interval)
+        if (interval === 1)
+            return "\u200E " + i18nStringData["oneHourAgo"]
+
+        interval = Math.floor(seconds / 60)
+        if (interval > 1)
+            return "\u200E " + i18nStringData["minutesAgo"].format(interval)
+        return i18nStringData["justNow"]
     } else {
         if (interval > 5) {
             return date.toLocaleDateString()
