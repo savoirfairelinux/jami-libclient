@@ -7,6 +7,9 @@
     <MajorUpgrade Schedule="afterInstallInitialize" AllowDowngrades="yes"/>
     <MediaTemplate EmbedCab="yes" CompressionLevel="high" />
 
+    <!--Disables interaction of the package with the Restart Manager.-->
+    <Property Id="MSIRESTARTMANAGERCONTROL" Value="Disable" />
+
     <!--Icon File should be in release folder(not wix project), otherwise cannot be read-->
     <Icon Id="icon.ico" SourceFile="$(var.ReleaseDir)\jami.ico" />
     <Property Id="ARPPRODUCTICON" Value="icon.ico" />
