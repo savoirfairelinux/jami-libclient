@@ -39,8 +39,16 @@ MenuItem {
 
     signal clicked
 
-    contentItem: Rectangle {
+    contentItem: AbstractButton {
         id: menuItemContentRect
+
+        background: Rectangle {
+            id: background
+            anchors.fill: parent
+            anchors.leftMargin: 1
+            anchors.rightMargin: 1
+            color: "transparent"
+        }
 
         anchors.fill: parent
         ResponsiveImage {
@@ -75,7 +83,18 @@ MenuItem {
             verticalAlignment: Text.AlignVCenter
         }
 
-        color: "transparent"
+        onReleased: menuItem.clicked()
+
+        states: [
+            State {
+                name: "hovered"; when: hovered
+                PropertyChanges { target: background; color: JamiTheme.hoverColor }
+            },
+            State {
+                name: "normal"; when: !hovered
+                PropertyChanges { target: background; color: "white" }
+            }
+        ]
     }
 
     onIconSourceChanged: {
@@ -84,6 +103,8 @@ MenuItem {
             contextMenuItemImage.visible = true
         }
     }
+
+    highlighted: true
 
     background: Rectangle {
         id: contextMenuBackgroundRect
@@ -97,24 +118,6 @@ MenuItem {
 
         border.width: 0
         color: menuItem.down ? JamiTheme.normalButtonColor : "white"
-
-        MouseArea {
-            anchors.fill: parent
-            hoverEnabled: true
-            onPressed: {
-                contextMenuBackgroundRect.color = JamiTheme.pressColor
-            }
-            onReleased: {
-                contextMenuBackgroundRect.color = JamiTheme.normalButtonColor
-                menuItem.clicked()
-            }
-            onEntered: {
-                contextMenuBackgroundRect.color = JamiTheme.hoverColor
-            }
-            onExited: {
-                contextMenuBackgroundRect.color = "white"
-            }
-        }
 
         CustomBorder {
             commonBorder: false
