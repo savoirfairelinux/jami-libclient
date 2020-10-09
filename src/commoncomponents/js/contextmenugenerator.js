@@ -35,6 +35,13 @@ function createBaseContextMenuObjects(parent) {
                     baseContextMenuComponent.errorString())
 }
 
+function initMenu() {
+    // Clear any existing items in the menu.
+    for (var i = 0; i < menuItemList.length; i++) {
+        baseContextMenuObject.removeItem(menuItemList[i])
+    }
+}
+
 function finishCreation(parent) {
     baseContextMenuObject = baseContextMenuComponent.createObject(parent)
     if (baseContextMenuObject === null) {

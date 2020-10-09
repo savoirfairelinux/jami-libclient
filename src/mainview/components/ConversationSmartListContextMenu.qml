@@ -34,6 +34,7 @@ Item {
     property int contactType: Profile.Type.INVALID
 
     function openMenu() {
+        ContextMenuGenerator.initMenu()
         var hasCall = UtilsAdapter.getCallId(responsibleAccountId, responsibleConvUid) !== ""
         if (!hasCall) {
             ContextMenuGenerator.addMenuItem(qsTr("Start video call"),

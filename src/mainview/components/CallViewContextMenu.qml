@@ -43,6 +43,7 @@ Item {
     signal transferCallButtonClicked
 
     function openMenu(){
+        ContextMenuGenerator.initMenu()
         if (isSIP){
             ContextMenuGenerator.addMenuItem(isPaused ? JamiStrings.resume : JamiStrings.hold,
                                              isPaused ?

@@ -37,6 +37,7 @@ Item {
     property var showMinimize: false
 
     function openMenu(){
+        ContextMenuGenerator.initMenu()
         if (showHangup)
             ContextMenuGenerator.addMenuItem(JamiStrings.hangup,
                                              "qrc:/images/icons/ic_call_end_white_24px.svg",
