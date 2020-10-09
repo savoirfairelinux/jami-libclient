@@ -2,12 +2,7 @@
 <context>
     <name>AboutPopUp</name>
     <message>
-        <location filename="../src/mainview/components/AboutPopUp.qml" line="33"/>
-        <source>About</source>
-        <translation>Acerca de</translation>
-    </message>
-    <message>
-        <location filename="../src/mainview/components/AboutPopUp.qml" line="308"/>
+        <location filename="../src/mainview/components/AboutPopUp.qml" line="306"/>
         <source>Close</source>
         <translation>Cerrar</translation>
     </message>

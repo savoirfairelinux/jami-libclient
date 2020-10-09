@@ -2,12 +2,7 @@
 <context>
     <name>AboutPopUp</name>
     <message>
-        <location filename="../src/mainview/components/AboutPopUp.qml" line="33"/>
-        <source>About</source>
-        <translation>À Propos</translation>
-    </message>
-    <message>
-        <location filename="../src/mainview/components/AboutPopUp.qml" line="308"/>
+        <location filename="../src/mainview/components/AboutPopUp.qml" line="306"/>
         <source>Close</source>
         <translation>Fermer</translation>
     </message>
@@ -1761,7 +1756,7 @@ Copy and share it with your friends!</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="414"/>
         <source>{0} minutes ago</source>
-        <translation type="unfinished"/>
+        <translation>il y a {0} minutes</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="415"/>

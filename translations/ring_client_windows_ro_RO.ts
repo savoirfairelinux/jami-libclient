@@ -2,12 +2,7 @@
 <context>
     <name>AboutPopUp</name>
     <message>
-        <location filename="../src/mainview/components/AboutPopUp.qml" line="33"/>
-        <source>About</source>
-        <translation>Despre</translation>
-    </message>
-    <message>
-        <location filename="../src/mainview/components/AboutPopUp.qml" line="308"/>
+        <location filename="../src/mainview/components/AboutPopUp.qml" line="306"/>
         <source>Close</source>
         <translation>Închide</translation>
     </message>
@@ -1677,12 +1672,12 @@ Copiază-l și distribuie-l prietenilor!</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="398"/>
         <source>Options</source>
-        <translation type="unfinished"/>
+        <translation>Opțiuni</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="399"/>
         <source>Jump to latest</source>
-        <translation type="unfinished"/>
+        <translation>Sari la cel mai recent</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="400"/>
@@ -1692,7 +1687,7 @@ Copiază-l și distribuie-l prietenilor!</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="401"/>
         <source>Leave video message</source>
-        <translation type="unfinished"/>
+        <translation>Trimite un mesaj video</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="402"/>
