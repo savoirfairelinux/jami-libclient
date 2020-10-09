@@ -41,7 +41,7 @@ ScrollView {
         readOnly: true
         wrapMode: Text.WordWrap
 
-        font.pointSize: JamiTheme.textFontSize - 3
+        font.pointSize: JamiTheme.textFontSize
         text: UtilsAdapter.getProjectCredits()
         textFormat: TextEdit.RichText
 

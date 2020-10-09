@@ -25,12 +25,10 @@ import net.jami.Adapters 1.0
 import "../../constant"
 import "../../commoncomponents"
 
-BaseDialog {
+ModalPopup {
     id: root
 
-    height: aboutPopUpContentRectColumnLayout.implicitHeight
-
-    title: qsTr("About")
+    property alias preferredHeight: aboutPopUpContentRectColumnLayout.implicitHeight
 
     ProjectCreditsScrollView {
         id: projectCreditsScrollView
@@ -70,13 +68,13 @@ BaseDialog {
 
                     Layout.alignment: Qt.AlignCenter
 
-                    ResponsiveImage {
+                    Image {
                         id: aboutPopUPJamiLogoImage
 
                         Layout.alignment: Qt.AlignCenter
                         Layout.topMargin: JamiTheme.preferredMarginSize
-                        Layout.preferredWidth: contentRect.width
-                        Layout.preferredHeight: 100
+                        Layout.preferredWidth: 250
+                        Layout.preferredHeight: 88
 
                         smooth: true
                         antialiasing: true
@@ -289,7 +287,7 @@ BaseDialog {
 
                         Layout.alignment: Qt.AlignCenter
                         Layout.preferredWidth: contentRect.width - JamiTheme.preferredMarginSize * 2
-                        Layout.preferredHeight: 150
+                        Layout.preferredHeight: 128
                         Layout.margins: JamiTheme.preferredMarginSize
 
                         initialItem: changeLogScrollView
