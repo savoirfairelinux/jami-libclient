@@ -275,29 +275,29 @@
 <context>
     <name>CurrentAccountSettings</name>
     <message>
-        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="109"/>
+        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="110"/>
         <source>Ok</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="132"/>
-        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="173"/>
+        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="133"/>
+        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="174"/>
         <source>Success</source>
         <translation>Succès</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="132"/>
-        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="173"/>
+        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="133"/>
+        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="174"/>
         <source>Error</source>
         <translation>Erreur</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="160"/>
+        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="161"/>
         <source>Jami archive files</source>
         <translation>Fichiers d&apos;archive Jami</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="160"/>
+        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="161"/>
         <source>All files</source>
         <translation>Tous les fichiers</translation>
     </message>
@@ -1741,7 +1741,7 @@ Copy and share it with your friends!</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="410"/>
         <source>{0} days ago</source>
-        <translation type="unfinished"/>
+        <translation>Il y a {0} jours</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="411"/>
@@ -1751,7 +1751,7 @@ Copy and share it with your friends!</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="412"/>
         <source>{0} hours ago</source>
-        <translation type="unfinished"/>
+        <translation>il y a {0} heures</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="413"/>
@@ -1760,7 +1760,7 @@ Copy and share it with your friends!</source>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="414"/>
-        <source>${0} minutes ago</source>
+        <source>{0} minutes ago</source>
         <translation type="unfinished"/>
     </message>
     <message>

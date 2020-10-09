@@ -275,29 +275,29 @@
 <context>
     <name>CurrentAccountSettings</name>
     <message>
-        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="109"/>
+        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="110"/>
         <source>Ok</source>
         <translation>Gerai</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="132"/>
-        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="173"/>
+        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="133"/>
+        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="174"/>
         <source>Success</source>
         <translation>Pavyko</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="132"/>
-        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="173"/>
+        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="133"/>
+        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="174"/>
         <source>Error</source>
         <translation>Klaida</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="160"/>
+        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="161"/>
         <source>Jami archive files</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="160"/>
+        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="161"/>
         <source>All files</source>
         <translation type="unfinished"/>
     </message>
@@ -1757,7 +1757,7 @@ Nukopijuokite ir dalinkitės juo su draugais!</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="414"/>
-        <source>${0} minutes ago</source>
+        <source>{0} minutes ago</source>
         <translation type="unfinished"/>
     </message>
     <message>
