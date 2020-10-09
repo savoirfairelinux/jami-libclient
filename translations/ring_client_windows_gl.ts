@@ -239,7 +239,7 @@
     <message>
         <location filename="../src/wizardview/components/CreateAccountPage.qml" line="126"/>
         <source>Choose a username for your account</source>
-        <translation type="unfinished"/>
+        <translation>Escolle un nome de usuaria para a conta</translation>
     </message>
     <message>
         <location filename="../src/wizardview/components/CreateAccountPage.qml" line="153"/>
@@ -677,7 +677,7 @@
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="213"/>
         <source>Encrypt account with password</source>
-        <translation type="unfinished"/>
+        <translation>Cifra a conta cun contrasinal</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="214"/>
@@ -767,7 +767,7 @@
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="378"/>
         <source>About Jami</source>
-        <translation type="unfinished"/>
+        <translation>Acerca de Jami</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="381"/>
@@ -1047,7 +1047,7 @@
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="170"/>
         <source>Recommended</source>
-        <translation type="unfinished"/>
+        <translation>Recomendado</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="173"/>
@@ -1167,7 +1167,7 @@
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="203"/>
         <source>Required</source>
-        <translation type="unfinished"/>
+        <translation>Requerido</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="204"/>
@@ -1212,7 +1212,7 @@
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="218"/>
         <source>Optional</source>
-        <translation type="unfinished"/>
+        <translation>Opcional</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="222"/>
@@ -1645,32 +1645,32 @@ Copy and share it with your friends!</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="392"/>
         <source>Hide chat view</source>
-        <translation type="unfinished"/>
+        <translation>Agochar a vista de conversa</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="393"/>
         <source>Place video call</source>
-        <translation type="unfinished"/>
+        <translation>Facer chamada de vídeo</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="394"/>
         <source>Place audio call</source>
-        <translation type="unfinished"/>
+        <translation>Facer chamada de audio</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="395"/>
         <source>Add to conversations</source>
-        <translation type="unfinished"/>
+        <translation>Engadir as conversas</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="396"/>
         <source>Unban contact</source>
-        <translation type="unfinished"/>
+        <translation>Desbloquear contacto</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="397"/>
         <source>Send</source>
-        <translation type="unfinished"/>
+        <translation>Enviar</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="398"/>
@@ -1685,7 +1685,7 @@ Copy and share it with your friends!</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="400"/>
         <source>Send file</source>
-        <translation type="unfinished"/>
+        <translation>Enviar ficheiro</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="401"/>
@@ -1701,28 +1701,28 @@ Copy and share it with your friends!</source>
         <location filename="../src/constant/JamiStrings.qml" line="403"/>
         <location filename="../src/constant/JamiStrings.qml" line="417"/>
         <source>Accept</source>
-        <translation type="unfinished"/>
+        <translation>Aceptar</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="404"/>
         <location filename="../src/constant/JamiStrings.qml" line="418"/>
         <source>Refuse</source>
-        <translation type="unfinished"/>
+        <translation>Rexeitar</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="405"/>
         <source>Block</source>
-        <translation type="unfinished"/>
+        <translation>Bloquear</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="406"/>
         <source>Type a message</source>
-        <translation type="unfinished"/>
+        <translation>Escribe unha mensaxe</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="407"/>
         <source>Note: an interaction will create a new contact.</source>
-        <translation type="unfinished"/>
+        <translation>Nota: unha interacción creará un novo contacto.</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="408"/>
@@ -1732,52 +1732,52 @@ Copy and share it with your friends!</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="409"/>
         <source>Note: you can automatically accept this invitation by sending a message.</source>
-        <translation type="unfinished"/>
+        <translation>Nota: podes aceptar automáticamente este convite se envías unha mensaxe.</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="410"/>
-        <source>days ago</source>
+        <source>{0} days ago</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="411"/>
-        <source>day ago</source>
-        <translation type="unfinished"/>
+        <source>one day ago</source>
+        <translation>fai un día</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="412"/>
-        <source>hours ago</source>
+        <source>{0} hours ago</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="413"/>
-        <source>hour ago</source>
-        <translation type="unfinished"/>
+        <source>one hour ago</source>
+        <translation>fai unha hora</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="414"/>
-        <source>minutes ago</source>
+        <source>${0} minutes ago</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="415"/>
         <source>just now</source>
-        <translation type="unfinished"/>
+        <translation>xusto agora</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="416"/>
         <source>Failure</source>
-        <translation type="unfinished"/>
+        <translation>Fallo</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="419"/>
         <source>Delete</source>
-        <translation type="unfinished"/>
+        <translation>Eliminar</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="420"/>
         <source>Retry</source>
-        <translation type="unfinished"/>
+        <translation>Volta a intentar</translation>
     </message>
 </context>
 <context>
@@ -1966,7 +1966,7 @@ Please try again later.</source>
     <message>
         <location filename="../src/settingsview/components/LinkedDevices.qml" line="108"/>
         <source>Linked Devices</source>
-        <translation type="unfinished"/>
+        <translation>Dispositivos ligados</translation>
     </message>
 </context>
 <context>
@@ -2149,17 +2149,17 @@ Please try again later.</source>
     <message>
         <location filename="../src/wizardview/components/ProfilePage.qml" line="72"/>
         <source>Profile is only shared with contacts</source>
-        <translation type="unfinished"/>
+        <translation>O perfil só se comparte cos contactos</translation>
     </message>
     <message>
         <location filename="../src/wizardview/components/ProfilePage.qml" line="79"/>
         <source>Optional</source>
-        <translation type="unfinished"/>
+        <translation>Opcional</translation>
     </message>
     <message>
         <location filename="../src/wizardview/components/ProfilePage.qml" line="109"/>
         <source>Enter your name</source>
-        <translation type="unfinished"/>
+        <translation>Escribe o teu nome</translation>
     </message>
     <message>
         <location filename="../src/wizardview/components/ProfilePage.qml" line="127"/>
@@ -2290,12 +2290,12 @@ Please try again later.</source>
     <message>
         <location filename="../src/settingsview/components/SettingsMenu.qml" line="34"/>
         <source>Account</source>
-        <translation type="unfinished"/>
+        <translation>Conta</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/SettingsMenu.qml" line="36"/>
         <source>General</source>
-        <translation type="unfinished"/>
+        <translation>Xeral</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/SettingsMenu.qml" line="38"/>

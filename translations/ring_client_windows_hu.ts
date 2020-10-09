@@ -1677,12 +1677,12 @@ Másolja ki, és ossza meg barátaival!</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="398"/>
         <source>Options</source>
-        <translation type="unfinished"/>
+        <translation>Beállítások</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="399"/>
         <source>Jump to latest</source>
-        <translation type="unfinished"/>
+        <translation>Ugrás a legújabbra</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="400"/>
@@ -1692,12 +1692,12 @@ Másolja ki, és ossza meg barátaival!</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="401"/>
         <source>Leave video message</source>
-        <translation type="unfinished"/>
+        <translation>Videoüzenet hagyása</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="402"/>
         <source>Leave audio message</source>
-        <translation type="unfinished"/>
+        <translation>Hangüzenet hagyása</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="403"/>
@@ -1729,7 +1729,7 @@ Másolja ki, és ossza meg barátaival!</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="408"/>
         <source>is not in your contacts</source>
-        <translation type="unfinished"/>
+        <translation>nincs a kapcsolataiban</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="409"/>
@@ -1738,27 +1738,27 @@ Másolja ki, és ossza meg barátaival!</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="410"/>
-        <source>days ago</source>
+        <source>{0} days ago</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="411"/>
-        <source>day ago</source>
-        <translation type="unfinished"/>
+        <source>one day ago</source>
+        <translation>egy napja</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="412"/>
-        <source>hours ago</source>
+        <source>{0} hours ago</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="413"/>
-        <source>hour ago</source>
-        <translation type="unfinished"/>
+        <source>one hour ago</source>
+        <translation>egy órája</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="414"/>
-        <source>minutes ago</source>
+        <source>${0} minutes ago</source>
         <translation type="unfinished"/>
     </message>
     <message>

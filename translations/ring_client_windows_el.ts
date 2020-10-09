@@ -767,7 +767,7 @@
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="378"/>
         <source>About Jami</source>
-        <translation type="unfinished"/>
+        <translation>Σχετικά με το Jami</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="381"/>
@@ -1645,7 +1645,7 @@ Copy and share it with your friends!</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="392"/>
         <source>Hide chat view</source>
-        <translation type="unfinished"/>
+        <translation>Απόκρυψη προβολής συνομιλίας</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="393"/>
@@ -1670,7 +1670,7 @@ Copy and share it with your friends!</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="397"/>
         <source>Send</source>
-        <translation type="unfinished"/>
+        <translation>Αποστολή</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="398"/>
@@ -1701,18 +1701,18 @@ Copy and share it with your friends!</source>
         <location filename="../src/constant/JamiStrings.qml" line="403"/>
         <location filename="../src/constant/JamiStrings.qml" line="417"/>
         <source>Accept</source>
-        <translation type="unfinished"/>
+        <translation>Αποδοχή</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="404"/>
         <location filename="../src/constant/JamiStrings.qml" line="418"/>
         <source>Refuse</source>
-        <translation type="unfinished"/>
+        <translation>Άρνηση</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="405"/>
         <source>Block</source>
-        <translation type="unfinished"/>
+        <translation>Μπλοκάρισμα</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="406"/>
@@ -1736,27 +1736,27 @@ Copy and share it with your friends!</source>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="410"/>
-        <source>days ago</source>
+        <source>{0} days ago</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="411"/>
-        <source>day ago</source>
+        <source>one day ago</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="412"/>
-        <source>hours ago</source>
+        <source>{0} hours ago</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="413"/>
-        <source>hour ago</source>
+        <source>one hour ago</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="414"/>
-        <source>minutes ago</source>
+        <source>${0} minutes ago</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -1772,7 +1772,7 @@ Copy and share it with your friends!</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="419"/>
         <source>Delete</source>
-        <translation type="unfinished"/>
+        <translation>Διαγραφή</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="420"/>
@@ -2290,17 +2290,17 @@ Please try again later.</source>
     <message>
         <location filename="../src/settingsview/components/SettingsMenu.qml" line="34"/>
         <source>Account</source>
-        <translation type="unfinished"/>
+        <translation>Λογαριασμός</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/SettingsMenu.qml" line="36"/>
         <source>General</source>
-        <translation type="unfinished"/>
+        <translation>Γενικά</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/SettingsMenu.qml" line="38"/>
         <source>Audio/Video</source>
-        <translation type="unfinished"/>
+        <translation>Ήχος/Βίντεο</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/SettingsMenu.qml" line="40"/>

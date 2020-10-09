@@ -1701,7 +1701,7 @@ Copy and share it with your friends!</source>
         <location filename="../src/constant/JamiStrings.qml" line="403"/>
         <location filename="../src/constant/JamiStrings.qml" line="417"/>
         <source>Accept</source>
-        <translation type="unfinished"/>
+        <translation>수락</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="404"/>
@@ -1736,27 +1736,27 @@ Copy and share it with your friends!</source>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="410"/>
-        <source>days ago</source>
+        <source>{0} days ago</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="411"/>
-        <source>day ago</source>
+        <source>one day ago</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="412"/>
-        <source>hours ago</source>
+        <source>{0} hours ago</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="413"/>
-        <source>hour ago</source>
+        <source>one hour ago</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="414"/>
-        <source>minutes ago</source>
+        <source>${0} minutes ago</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -2290,17 +2290,17 @@ Please try again later.</source>
     <message>
         <location filename="../src/settingsview/components/SettingsMenu.qml" line="34"/>
         <source>Account</source>
-        <translation type="unfinished"/>
+        <translation>계정</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/SettingsMenu.qml" line="36"/>
         <source>General</source>
-        <translation type="unfinished"/>
+        <translation>일반</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/SettingsMenu.qml" line="38"/>
         <source>Audio/Video</source>
-        <translation type="unfinished"/>
+        <translation>오디오/비디오</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/SettingsMenu.qml" line="40"/>

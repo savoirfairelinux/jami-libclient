@@ -767,7 +767,7 @@
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="378"/>
         <source>About Jami</source>
-        <translation type="unfinished"/>
+        <translation>Om Jami</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="381"/>
@@ -1646,32 +1646,32 @@ Kopier og del det med dine venner!</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="392"/>
         <source>Hide chat view</source>
-        <translation type="unfinished"/>
+        <translation>Skjul sludrevisning</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="393"/>
         <source>Place video call</source>
-        <translation type="unfinished"/>
+        <translation>Opprett videosamtale</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="394"/>
         <source>Place audio call</source>
-        <translation type="unfinished"/>
+        <translation>Opprett talesamtale</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="395"/>
         <source>Add to conversations</source>
-        <translation type="unfinished"/>
+        <translation>Legg til i samtaler</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="396"/>
         <source>Unban contact</source>
-        <translation type="unfinished"/>
+        <translation>Urban kontakt</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="397"/>
         <source>Send</source>
-        <translation type="unfinished"/>
+        <translation>Send</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="398"/>
@@ -1686,7 +1686,7 @@ Kopier og del det med dine venner!</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="400"/>
         <source>Send file</source>
-        <translation type="unfinished"/>
+        <translation>Send fil</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="401"/>
@@ -1702,28 +1702,28 @@ Kopier og del det med dine venner!</translation>
         <location filename="../src/constant/JamiStrings.qml" line="403"/>
         <location filename="../src/constant/JamiStrings.qml" line="417"/>
         <source>Accept</source>
-        <translation type="unfinished"/>
+        <translation>Aksepter</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="404"/>
         <location filename="../src/constant/JamiStrings.qml" line="418"/>
         <source>Refuse</source>
-        <translation type="unfinished"/>
+        <translation>Avslå</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="405"/>
         <source>Block</source>
-        <translation type="unfinished"/>
+        <translation>Blokker</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="406"/>
         <source>Type a message</source>
-        <translation type="unfinished"/>
+        <translation>Skriv en melding</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="407"/>
         <source>Note: an interaction will create a new contact.</source>
-        <translation type="unfinished"/>
+        <translation>Merk at interaksjon vil opprette en ny kontakt.</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="408"/>
@@ -1733,52 +1733,52 @@ Kopier og del det med dine venner!</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="409"/>
         <source>Note: you can automatically accept this invitation by sending a message.</source>
-        <translation type="unfinished"/>
+        <translation>Merk, du aksepterer automatisk denne invitasjonen ved å sende en melding.</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="410"/>
-        <source>days ago</source>
+        <source>{0} days ago</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="411"/>
-        <source>day ago</source>
-        <translation type="unfinished"/>
+        <source>one day ago</source>
+        <translation>i går</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="412"/>
-        <source>hours ago</source>
+        <source>{0} hours ago</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="413"/>
-        <source>hour ago</source>
-        <translation type="unfinished"/>
+        <source>one hour ago</source>
+        <translation>en time siden</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="414"/>
-        <source>minutes ago</source>
+        <source>${0} minutes ago</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="415"/>
         <source>just now</source>
-        <translation type="unfinished"/>
+        <translation>akkurat nå</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="416"/>
         <source>Failure</source>
-        <translation type="unfinished"/>
+        <translation>Mislyktes</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="419"/>
         <source>Delete</source>
-        <translation type="unfinished"/>
+        <translation>Slett</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="420"/>
         <source>Retry</source>
-        <translation type="unfinished"/>
+        <translation>Forsøk igjen</translation>
     </message>
 </context>
 <context>
@@ -2291,17 +2291,17 @@ Please try again later.</source>
     <message>
         <location filename="../src/settingsview/components/SettingsMenu.qml" line="34"/>
         <source>Account</source>
-        <translation type="unfinished"/>
+        <translation>Konto</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/SettingsMenu.qml" line="36"/>
         <source>General</source>
-        <translation type="unfinished"/>
+        <translation>Generell</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/SettingsMenu.qml" line="38"/>
         <source>Audio/Video</source>
-        <translation type="unfinished"/>
+        <translation>Lyd/bilde</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/SettingsMenu.qml" line="40"/>

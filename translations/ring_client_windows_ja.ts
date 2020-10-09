@@ -239,7 +239,7 @@
     <message>
         <location filename="../src/wizardview/components/CreateAccountPage.qml" line="126"/>
         <source>Choose a username for your account</source>
-        <translation type="unfinished"/>
+        <translation>アカウントのユーザー名を選択</translation>
     </message>
     <message>
         <location filename="../src/wizardview/components/CreateAccountPage.qml" line="153"/>
@@ -677,7 +677,7 @@
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="213"/>
         <source>Encrypt account with password</source>
-        <translation type="unfinished"/>
+        <translation>アカウントをパスワードで暗号化</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="214"/>
@@ -1167,7 +1167,7 @@
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="203"/>
         <source>Required</source>
-        <translation type="unfinished"/>
+        <translation>必須</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="204"/>
@@ -1212,7 +1212,7 @@
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="218"/>
         <source>Optional</source>
-        <translation type="unfinished"/>
+        <translation>オプション</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="222"/>
@@ -1737,27 +1737,27 @@ Copy and share it with your friends!</source>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="410"/>
-        <source>days ago</source>
+        <source>{0} days ago</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="411"/>
-        <source>day ago</source>
-        <translation type="unfinished"/>
+        <source>one day ago</source>
+        <translation>1 日前</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="412"/>
-        <source>hours ago</source>
+        <source>{0} hours ago</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="413"/>
-        <source>hour ago</source>
-        <translation type="unfinished"/>
+        <source>one hour ago</source>
+        <translation>1 時間前</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="414"/>
-        <source>minutes ago</source>
+        <source>${0} minutes ago</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -2155,7 +2155,7 @@ Please try again later.</source>
     <message>
         <location filename="../src/wizardview/components/ProfilePage.qml" line="79"/>
         <source>Optional</source>
-        <translation type="unfinished"/>
+        <translation>オプション</translation>
     </message>
     <message>
         <location filename="../src/wizardview/components/ProfilePage.qml" line="109"/>

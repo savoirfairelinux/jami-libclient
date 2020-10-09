@@ -1650,12 +1650,12 @@ Copy and share it with your friends!</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="393"/>
         <source>Place video call</source>
-        <translation type="unfinished"/>
+        <translation>Faire un appel vidéo</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="394"/>
         <source>Place audio call</source>
-        <translation type="unfinished"/>
+        <translation>Faire un appel audio</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="395"/>
@@ -1670,7 +1670,7 @@ Copy and share it with your friends!</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="397"/>
         <source>Send</source>
-        <translation type="unfinished"/>
+        <translation>Envoyer</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="398"/>
@@ -1701,13 +1701,13 @@ Copy and share it with your friends!</source>
         <location filename="../src/constant/JamiStrings.qml" line="403"/>
         <location filename="../src/constant/JamiStrings.qml" line="417"/>
         <source>Accept</source>
-        <translation type="unfinished"/>
+        <translation>Accepter</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="404"/>
         <location filename="../src/constant/JamiStrings.qml" line="418"/>
         <source>Refuse</source>
-        <translation type="unfinished"/>
+        <translation>Refuser</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="405"/>
@@ -1736,27 +1736,27 @@ Copy and share it with your friends!</source>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="410"/>
-        <source>days ago</source>
+        <source>{0} days ago</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="411"/>
-        <source>day ago</source>
+        <source>one day ago</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="412"/>
-        <source>hours ago</source>
+        <source>{0} hours ago</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="413"/>
-        <source>hour ago</source>
+        <source>one hour ago</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="414"/>
-        <source>minutes ago</source>
+        <source>${0} minutes ago</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -2290,12 +2290,12 @@ Please try again later.</source>
     <message>
         <location filename="../src/settingsview/components/SettingsMenu.qml" line="34"/>
         <source>Account</source>
-        <translation type="unfinished"/>
+        <translation>Compte</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/SettingsMenu.qml" line="36"/>
         <source>General</source>
-        <translation type="unfinished"/>
+        <translation>Général</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/SettingsMenu.qml" line="38"/>

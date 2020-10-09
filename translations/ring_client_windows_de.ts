@@ -767,7 +767,7 @@
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="378"/>
         <source>About Jami</source>
-        <translation type="unfinished"/>
+        <translation>Über Jami</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="381"/>
@@ -1646,32 +1646,32 @@ Kopieren und teilen Sie diesen mit Ihren Freunden!</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="392"/>
         <source>Hide chat view</source>
-        <translation type="unfinished"/>
+        <translation>Chat-Ansicht ausblenden</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="393"/>
         <source>Place video call</source>
-        <translation type="unfinished"/>
+        <translation>Starte Videoanruf</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="394"/>
         <source>Place audio call</source>
-        <translation type="unfinished"/>
+        <translation>Starte Audioanruf</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="395"/>
         <source>Add to conversations</source>
-        <translation type="unfinished"/>
+        <translation>Zu Konversationen hinzufügen</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="396"/>
         <source>Unban contact</source>
-        <translation type="unfinished"/>
+        <translation>Kontakt entsperren</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="397"/>
         <source>Send</source>
-        <translation type="unfinished"/>
+        <translation>Senden</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="398"/>
@@ -1686,7 +1686,7 @@ Kopieren und teilen Sie diesen mit Ihren Freunden!</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="400"/>
         <source>Send file</source>
-        <translation type="unfinished"/>
+        <translation>Datei senden</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="401"/>
@@ -1702,28 +1702,28 @@ Kopieren und teilen Sie diesen mit Ihren Freunden!</translation>
         <location filename="../src/constant/JamiStrings.qml" line="403"/>
         <location filename="../src/constant/JamiStrings.qml" line="417"/>
         <source>Accept</source>
-        <translation type="unfinished"/>
+        <translation>Akzeptieren</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="404"/>
         <location filename="../src/constant/JamiStrings.qml" line="418"/>
         <source>Refuse</source>
-        <translation type="unfinished"/>
+        <translation>Verweigern</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="405"/>
         <source>Block</source>
-        <translation type="unfinished"/>
+        <translation>Sperren</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="406"/>
         <source>Type a message</source>
-        <translation type="unfinished"/>
+        <translation>Schreibe eine Nachricht</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="407"/>
         <source>Note: an interaction will create a new contact.</source>
-        <translation type="unfinished"/>
+        <translation>Hinweis: Durch Interaktion wird ein Kontakt erstellt.</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="408"/>
@@ -1733,52 +1733,52 @@ Kopieren und teilen Sie diesen mit Ihren Freunden!</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="409"/>
         <source>Note: you can automatically accept this invitation by sending a message.</source>
-        <translation type="unfinished"/>
+        <translation>Hinweis: Durch Senden einer Nachricht wird diese Einladung automatisch angenommen.</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="410"/>
-        <source>days ago</source>
+        <source>{0} days ago</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="411"/>
-        <source>day ago</source>
-        <translation type="unfinished"/>
+        <source>one day ago</source>
+        <translation>vor einem Tag</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="412"/>
-        <source>hours ago</source>
+        <source>{0} hours ago</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="413"/>
-        <source>hour ago</source>
-        <translation type="unfinished"/>
+        <source>one hour ago</source>
+        <translation>vor einer Stunde</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="414"/>
-        <source>minutes ago</source>
+        <source>${0} minutes ago</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="415"/>
         <source>just now</source>
-        <translation type="unfinished"/>
+        <translation>gerade eben</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="416"/>
         <source>Failure</source>
-        <translation type="unfinished"/>
+        <translation>Fehler</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="419"/>
         <source>Delete</source>
-        <translation type="unfinished"/>
+        <translation>Löschen</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="420"/>
         <source>Retry</source>
-        <translation type="unfinished"/>
+        <translation>Wiederholen</translation>
     </message>
 </context>
 <context>
@@ -2291,22 +2291,22 @@ Please try again later.</source>
     <message>
         <location filename="../src/settingsview/components/SettingsMenu.qml" line="34"/>
         <source>Account</source>
-        <translation type="unfinished"/>
+        <translation>Konto</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/SettingsMenu.qml" line="36"/>
         <source>General</source>
-        <translation type="unfinished"/>
+        <translation>Allgemein</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/SettingsMenu.qml" line="38"/>
         <source>Audio/Video</source>
-        <translation type="unfinished"/>
+        <translation>Audio/Video</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/SettingsMenu.qml" line="40"/>
         <source>Plugin</source>
-        <translation type="unfinished"/>
+        <translation>Plugin</translation>
     </message>
 </context>
 <context>
