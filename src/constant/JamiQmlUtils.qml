@@ -22,6 +22,8 @@ pragma Singleton
 import QtQuick 2.14
 
 Item {
+    property bool callIsFullscreen: false
+
     TextMetrics {
         id: globalTextMetrics
     }

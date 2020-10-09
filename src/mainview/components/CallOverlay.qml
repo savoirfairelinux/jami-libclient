@@ -172,8 +172,9 @@ Rectangle {
                 Layout.leftMargin: JamiTheme.preferredMarginSize
 
 
-                source: callStackView.isFullscreen ? "qrc:/images/icons/round-close-24px.svg" :
-                                                     "qrc:/images/icons/ic_arrow_back_24px.svg"
+                source: JamiQmlUtils.callIsFullscreen ?
+                            "qrc:/images/icons/round-close-24px.svg" :
+                            "qrc:/images/icons/ic_arrow_back_24px.svg"
 
                 pressedColor: JamiTheme.invertedPressedButtonColor
                 hoveredColor: JamiTheme.invertedHoveredButtonColor
@@ -183,10 +184,10 @@ Rectangle {
 
                 toolTipText: qsTr("Toggle to display side panel")
 
-                visible: mainViewWindow.sidePanelOnly
+                visible: true
 
                 onClicked: {
-                    if (callStackView.isFullscreen) {
+                    if (JamiQmlUtils.callIsFullscreen) {
                         callStackView.toggleFullScreen()
                     } else {
                         mainViewWindow.showWelcomeView()

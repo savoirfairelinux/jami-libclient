@@ -29,8 +29,6 @@ import "../js/callfullscreenwindowcontainercreation.js" as CallFullScreenWindowC
 Rectangle {
     id: callStackViewWindow
 
-    property bool isFullscreen: false
-
     enum StackNumber {
         IncomingPageStack,
         OutgoingPageStack,
@@ -53,33 +51,34 @@ Rectangle {
     property string responsibleAccountId: ""
 
     function needToCloseInCallConversationAndPotentialWindow() {
-        audioCallPage.closeInCallConversation()
-        videoCallPage.closeInCallConversation()
-
         // Close potential window, context menu releated windows.
-        audioCallPage.closeContextMenuAndRelatedWindows()
-
-        CallFullScreenWindowContainerCreation.closeVideoCallFullScreenWindowContainer()
-        videoCallPage.closeContextMenuAndRelatedWindows()
+        if (callStackMainView.currentItem.stackNumber === CallStackView.AudioPageStack) {
+            audioCallPage.closeInCallConversation()
+            CallFullScreenWindowContainerCreation.closeVideoCallFullScreenWindowContainer()
+            audioCallPage.closeContextMenuAndRelatedWindows()
+        } else if (callStackMainView.currentItem.stackNumber === CallStackView.VideoPageStack) {
+            videoCallPage.closeInCallConversation()
+            CallFullScreenWindowContainerCreation.closeVideoCallFullScreenWindowContainer()
+            videoCallPage.closeContextMenuAndRelatedWindows()
+        }
     }
 
     function setLinkedWebview(webViewId) {
-        audioCallPage.setLinkedWebview(webViewId)
-        videoCallPage.setLinkedWebview(webViewId)
+        if (callStackMainView.currentItem.stackNumber === CallStackView.AudioPageStack) {
+            audioCallPage.setLinkedWebview(webViewId)
+        } else if (callStackMainView.currentItem.stackNumber === CallStackView.VideoPageStack) {
+            videoCallPage.setLinkedWebview(webViewId)
+        }
     }
 
-    function updateCorrespondingUI() {
-        audioCallPage.updateUI(responsibleAccountId, responsibleConvUid)
-        outgoingCallPage.updateUI(responsibleAccountId, responsibleConvUid)
-        incomingCallPage.updateUI(responsibleAccountId, responsibleConvUid)
-        videoCallPage.updateUI(responsibleAccountId, responsibleConvUid)
+    function getItemFromStack(itemNumber) {
+        return callStackMainView.find(function (item) {
+            return item.stackNumber === itemNumber
+        })
     }
 
     function showAudioCallPage() {
-        var itemToFind = callStackMainView.find(function (item) {
-            return item.stackNumber === CallStackView.AudioPageStack
-        })
-
+        var itemToFind = getItemFromStack(CallStackView.AudioPageStack)
         if (!itemToFind) {
             callStackMainView.push(audioCallPage, StackView.Immediate)
         } else {
@@ -89,37 +88,27 @@ Rectangle {
     }
 
     function showOutgoingCallPage() {
-        var itemToFind = callStackMainView.find(function (item) {
-            return item.stackNumber === CallStackView.OutgoingPageStack
-        })
-
+        var itemToFind = getItemFromStack(CallStackView.OutgoingPageStack)
         if (!itemToFind) {
             callStackMainView.push(outgoingCallPage, StackView.Immediate)
         } else {
             callStackMainView.pop(itemToFind, StackView.Immediate)
         }
+        outgoingCallPage.updateUI(responsibleAccountId, responsibleConvUid)
     }
 
     function showIncomingCallPage(accountId, convUid) {
-        var itemToFind = callStackMainView.find(function (item) {
-            return item.stackNumber === CallStackView.IncomingPageStack
-        })
-
+        var itemToFind = getItemFromStack(CallStackView.IncomingPageStack)
         if (!itemToFind) {
             callStackMainView.push(incomingCallPage, StackView.Immediate)
         } else {
             callStackMainView.pop(itemToFind, StackView.Immediate)
         }
-        responsibleAccountId = accountId
-        responsibleConvUid = convUid
-        incomingCallPage.updateUI(accountId, convUid)
+        incomingCallPage.updateUI(responsibleAccountId, responsibleConvUid)
     }
 
     function showVideoCallPage() {
-        var itemToFind = callStackMainView.find(function (item) {
-            return item.stackNumber === CallStackView.VideoPageStack
-        })
-
+        var itemToFind = getItemFromStack(CallStackView.VideoPageStack)
         if (!itemToFind) {
             callStackMainView.push(videoCallPage, StackView.Immediate)
         } else {
@@ -132,8 +121,10 @@ Rectangle {
     }
 
     function toggleFullScreen() {
-        isFullscreen = !isFullscreen
+        JamiQmlUtils.callIsFullscreen = !JamiQmlUtils.callIsFullscreen
         var callPage = callStackMainView.currentItem
+        if (!callPage)
+            return
         CallFullScreenWindowContainerCreation.createvideoCallFullScreenWindowContainerObject()
 
         if (!CallFullScreenWindowContainerCreation.checkIfVisible()) {
@@ -144,9 +135,7 @@ Rectangle {
             CallFullScreenWindowContainerCreation.closeVideoCallFullScreenWindowContainer()
         }
 
-        if (callStackMainView.find(function (item) {
-            return item.stackNumber === CallStackView.VideoPageStack
-        })) {
+        if (callPage.stackNumber === CallStackView.VideoPageStack) {
             videoCallPage.handleParticipantsInfo(CallAdapter.getConferencesInfos())
         }
     }
@@ -155,15 +144,18 @@ Rectangle {
         target: CallAdapter
 
         function onCallStatusChanged(status, accountId, convUid) {
-            if (responsibleConvUid === convUid && responsibleAccountId === accountId) {
+            if (callStackMainView.currentItem.stackNumber === CallStackView.OutgoingPageStack
+                    && responsibleConvUid === convUid && responsibleAccountId === accountId) {
                 outgoingCallPage.callStatus = status
             }
         }
 
         function onUpdateParticipantsInfos(infos, accountId, callId) {
-            var responsibleCallId = UtilsAdapter.getCallId(responsibleAccountId, responsibleConvUid)
-            if (responsibleCallId === callId) {
-                videoCallPage.handleParticipantsInfo(infos)
+            if (callStackMainView.currentItem.stackNumber === CallStackView.VideoPageStack) {
+                var responsibleCallId = UtilsAdapter.getCallId(responsibleAccountId, responsibleConvUid)
+                if (responsibleCallId === callId) {
+                    videoCallPage.handleParticipantsInfo(infos)
+                }
             }
         }
     }
@@ -172,12 +164,16 @@ Rectangle {
         id: audioCallPage
 
         property int stackNumber: CallStackView.AudioPageStack
+
+        visible: callStackMainView.currentItem.stackNumber === stackNumber
     }
 
     OutgoingCallPage {
         id: outgoingCallPage
 
         property int stackNumber: CallStackView.OutgoingPageStack
+
+        visible: callStackMainView.currentItem.stackNumber === stackNumber
 
         onCallCancelButtonIsClicked: {
             CallAdapter.hangUpACall(responsibleAccountId, responsibleConvUid)
@@ -189,6 +185,7 @@ Rectangle {
 
         property int stackNumber: CallStackView.VideoPageStack
 
+        visible: callStackMainView.currentItem.stackNumber === stackNumber
     }
 
     IncomingCallPage {
@@ -205,6 +202,8 @@ Rectangle {
         onCallCancelButtonIsClicked: {
             CallAdapter.hangUpACall(responsibleAccountId, responsibleConvUid)
         }
+
+        visible: callStackMainView.currentItem.stackNumber === stackNumber
     }
 
     StackView {

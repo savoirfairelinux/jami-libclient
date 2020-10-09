@@ -33,8 +33,6 @@ Rectangle {
 
     property var linkedWebview: null
 
-    signal showFullScreenReqested
-
     function updateUI(accountId, convUid) {
         contactImage.updateImage(convUid)
         bestName = UtilsAdapter.getBestName(accountId, convUid)

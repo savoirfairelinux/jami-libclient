@@ -40,8 +40,6 @@ Rectangle {
 
     property var linkedWebview: null
 
-    signal showFullScreenReqested
-
     function updateUI(accountId, convUid) {
         videoCallOverlay.handleParticipantsInfo(CallAdapter.getConferencesInfos())
 

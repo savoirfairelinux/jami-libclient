@@ -22,6 +22,7 @@
 
 #include "utilsadapter.h"
 
+#include "globalsystemtray.h"
 #include "lrcinstance.h"
 #include "utils.h"
 #include "version.h"
@@ -380,4 +381,10 @@ QString
 UtilsAdapter::humanFileSize(qint64 fileSize)
 {
     return Utils::humanFileSize(fileSize);
+}
+
+void
+UtilsAdapter::setSystemTrayIconVisible(bool visible)
+{
+    GlobalSystemTray::instance().setVisible(visible);
 }

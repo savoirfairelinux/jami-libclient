@@ -80,6 +80,7 @@ public:
     Q_INVOKABLE QString getExt(const QString& path);
     Q_INVOKABLE bool isImage(const QString& fileExt);
     Q_INVOKABLE QString humanFileSize(qint64 fileSize);
+    Q_INVOKABLE void setSystemTrayIconVisible(bool visible);
 
 private:
     QClipboard* clipboard_;

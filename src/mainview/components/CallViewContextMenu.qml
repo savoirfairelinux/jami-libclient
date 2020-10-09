@@ -73,24 +73,26 @@ Item {
                                          })
 
         if (isAudioOnly && !isPaused)
-            ContextMenuGenerator.addMenuItem(callStackView.isFullscreen ? JamiStrings.exitFullScreen :
-                                                                          JamiStrings.fullScreen,
-                                             callStackView.isFullscreen ?
-                                                 "qrc:/images/icons/close_fullscreen-24px.svg" :
-                                                 "qrc:/images/icons/open_in_full-24px.svg",
-                                             function (){
-                                                  callStackView.toggleFullScreen()
-                                             })
+            ContextMenuGenerator.addMenuItem(
+                        JamiQmlUtils.callIsFullscreen ? JamiStrings.exitFullScreen :
+                                                         JamiStrings.fullScreen,
+                        JamiQmlUtils.callIsFullscreen ?
+                            "qrc:/images/icons/close_fullscreen-24px.svg" :
+                            "qrc:/images/icons/open_in_full-24px.svg",
+                        function (){
+                             callStackView.toggleFullScreen()
+                        })
 
         if (!isAudioOnly && !isPaused) {
-            ContextMenuGenerator.addMenuItem(callStackView.isFullscreen ? JamiStrings.exitFullScreen :
-                                                                          JamiStrings.fullScreen,
-                                             callStackView.isFullscreen ?
-                                                 "qrc:/images/icons/close_fullscreen-24px.svg" :
-                                                 "qrc:/images/icons/open_in_full-24px.svg",
-                                             function (){
-                                                  callStackView.toggleFullScreen()
-                                             })
+            ContextMenuGenerator.addMenuItem(
+                        JamiQmlUtils.callIsFullscreen ? JamiStrings.exitFullScreen :
+                                                        JamiStrings.fullScreen,
+                        JamiQmlUtils.callIsFullscreen ?
+                            "qrc:/images/icons/close_fullscreen-24px.svg" :
+                            "qrc:/images/icons/open_in_full-24px.svg",
+                        function (){
+                            callStackView.toggleFullScreen()
+                        })
 
             ContextMenuGenerator.addMenuSeparator()
 
