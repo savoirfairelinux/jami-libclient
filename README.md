@@ -1,18 +1,96 @@
 # Jami-qt
 
-`jami-qt` is the cross platform client for Jami. For now, it's mainly used for the Windows platform and is not tested on other platforms.
+![jami-logo](https://jami.net/assets/images/logo-jami.svg?v=8595727d35)
 
-![jami-logo](images/logo-jami-standard-coul.png)
+#### Share, freely and privately
 
+# Introduction
+
+Jami provides all its users a universal communication tool, autonomous, free, secure and built on a distributed architecture thus requiring no authority or central server to function.
+
+`jami-qt` is the cross platform client for [Jami](https://jami.net/). For now, it's mainly used for the Windows platform and is not tested on other platforms.
 
 For more information about the jami project, see the following:
 
-- Main website: https://jami.net/
-- Bug tracker: https://git.jami.net/
-- Repositories: https://gerrit-ring.savoirfairelinux.com
++ Main website: https://jami.net/
++ Download: https://jami.net/download/
++ Bug tracker: https://git.jami.net/
++ Repositories: https://review.jami.net
+
+# Getting involved
+
++ Browse our [current issues](https://git.jami.net/savoirfairelinux/jami-client-qt/issues), or file an issue.
++ IRC: #jami on freenode
++ ML: jami@gnu.org
++ Documentation: https://docs.jami.net
++ Localization happens on [Transifex](https://www.transifex.com/savoirfairelinux/jami/dashboard/)
++ [Our contributions propositions](https://git.jami.net/groups/savoirfairelinux/-/epics/1) or [feature requests](https://git.jami.net/savoirfairelinux/ring-project/wikis/technical/4.3.-Features-requests) asked by the community
++ Packaging: Feel free to contact us
+
+## Notes
+
++ Coding style is managed by the clang-format, if you want to contribute, please use the pre-commit hook automatically installed with `./make-ring.py --init`
++ We use gerrit for our review. Please read https://git.jami.net/savoirfairelinux/ring-project/wikis/tutorials/Working-with-gerrit if you want to submit patches.
+
+# Build instructions
+
+Note: This project is quite new, and still need some work for the build integration.
+
+## Dependencies
+
+This client is only the graphical part, you will need to also build the daemon and LRC (the library containing the logic for desktop clients). Because of this, the recommended way is to clone our [meta-repository](https://review.jami.net/admin/repos/ring-project) containing all submodules needed.
+
+In order to use the QML Client it is necessary to install the Qt version 5.15 or higher. You can install it [from sources or download the binary installer](https://www.qt.io/download).
+
+Finally, pandoc is needed to generate the changelog page.
+
+## Build all projects
+
+```bash
+git clone https://review.jami.net/ring-project
+```
+
+Jami installer uses **python3**. If it's not installed, please install it:
+
+```bash
+cd ring-project/
+./make-ring.py --init
+```
+
+Then you will need to install dependencies:
+
++ For GNU/Linux
+
+```bash
+./make-ring.py --dependencies # needs sudo
+```
+
+Then, you can build daemon, lrc and client-qt with:
+
+```bash
+./make-ring.py --install --qt
+```
+
+And you will have the daemon in `daemon/bin/dring` and the client in `client-qt/build-local/jami-qt`. You also can run it with
+
+```bash
+./make-ring.py --run --qt
+```
+
+## Build only the client
+
+```bash
+cd client-qt
+pandoc -f markdown -t html5 -o changelog.html changelog.md
+mkdir build
+cd build
+${YOUR_QT5_gcc64_PATH}/bin/qmake /jami-qt.pro
+make -j9
+```
+
+If you want more details, or separately build other projects you can check [this page](https://git.jami.net/savoirfairelinux/ring-project/wikis/technical/Build-instructions).
 
 ## Building On Native Windows
----
 
 Only 64-bit MSVC build can be compiled.
 
@@ -75,7 +153,6 @@ Only 64-bit MSVC build can be compiled.
 ```
 
 ### Build Module individually
----
 
 - Jami-qt also support building each module (daemon, lrc, jami-qt) seperately
 
@@ -122,73 +199,22 @@ Only 64-bit MSVC build can be compiled.
 - ```--qtver``` option is available on ```make-lrc.py``` and ```make-client.py```.
 
 ## Packaging On Native Windows
----
 
 - To be able to generate a msi package, first download and install [Wixtoolset](https://wixtoolset.org/releases/).
 - In Visual Studio, download WiX Toolset Visual Studio Extension.
 - Build client-windows project first, then the JamiInstaller project, msi package should be stored in ring-project\client-windows\JamiInstaller\bin\Release
-
-## Linux
----
-
-> For now, this process is experimental.
-
-- LibRing and LibRingClient
-must be installed first. If you have not already done so, go to the
-[\#How to Build LibRing (or
-Daemon)](#How_to_Build_LibRing_(or_Daemon) "wikilink") and [\#How to
-Build LibRingClient (or
-LRC)](#How_to_Build_LibRingClient_(or_LRC) "wikilink") sections.
-- Building the whole ring-project is recommended, however, lrc might need to be rebuilt with cmake option ```-DCMAKE_INSTALL_PREFIX=/usr```
-
-#### Other Requirements
-
--   Qt 5.9.4 (qt open source)
--   libqt5svg*, qtwebengine5-dev, qtmultimedia5-dev, qtdeclarative5-dev, pandoc
-
-#### Getting the Source Code
-
-```bash
-    git clone https://review.jami.net/ring-client-windows
-```
-
-#### Build Instructions
-
-**Windows Client dependencies**
-
-- For Debian based:
-```bash
-    sudo apt install qtmultimedia5-dev libqt5svg5* qtwebengine5-dev qtdeclarative5-dev qtquickcontrols2-5-dev qml-module-qtquick* pandoc
-```
-- For Fedora:
-```bash
-    sudo dnf install qt5-qtsvg-devel qt5-qtwebengine-devel qt5-qtmultimedia-devel qt5-qtdeclarative-devel qt5-qtquickcontrols2-devel pandoc
-```
-
-**Build Windows Client**
-
-```bash
-    cd ring-client-windows
-    pandoc -f markdown -t html5 -o changelog.html changelog.md
-    mkdir build
-    cd build
-    qmake -qt=qt5 ../jami-qt.pro
-    make -j9
-```
-- Then, you are finally ready to launch jami-qt in your build directory.
 
 #### Debugging
 
 Compile the client with `BUILD=Debug` and compile LibRingClient with
 `-DCMAKE_BUILD_TYPE=Debug`
 
-#### Known issues
+# License
 
-1. The build system is not straight forward
-2. Video doesn't work
-3. Can't maximize/minimize window
-4. Crash if the daemon is not started and installed.
+Copyright (C) 2020 Savoir-faire Linux Inc.
 
-## Mac OS
----
-TBD
+Jami is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+See COPYING or https://www.gnu.org/licenses/gpl-3.0.en.html for the full GPLv3 license.
