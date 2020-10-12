@@ -34,9 +34,6 @@ public:
         return *instance_;
     }
 
-    inline static QString notificationAccountId {};
-    inline static QString notificationConvUid {};
-
     template<typename Func>
     static void connectClicked(Func&& onClicked)
     {

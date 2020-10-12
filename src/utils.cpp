@@ -297,17 +297,7 @@ Utils::showNotification(const QString& message,
         return;
     }
 
-    if (accountId == GlobalSystemTray::notificationAccountId
-        && convUid == GlobalSystemTray::notificationConvUid) {
-        GlobalSystemTray::notificationAccountId.clear();
-        GlobalSystemTray::notificationConvUid.clear();
-        return;
-    }
-
     GlobalSystemTray::connectClicked(std::move(onClicked));
-
-    GlobalSystemTray::notificationAccountId = accountId;
-    GlobalSystemTray::notificationConvUid = convUid;
 
     if (from.isEmpty())
         GlobalSystemTray::instance().showMessage(message, "", QIcon(":images/jami.png"));
