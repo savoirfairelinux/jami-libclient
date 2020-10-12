@@ -42,7 +42,7 @@
         <location filename="../src/settingsview/components/AdvancedJamiSecuritySettings.qml" line="76"/>
         <location filename="../src/settingsview/components/AdvancedJamiSecuritySettings.qml" line="94"/>
         <source>Certificate File</source>
-        <translation>Tanúsítvány fájl</translation>
+        <translation>Tanúsítványfájl</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/AdvancedJamiSecuritySettings.qml" line="76"/>
@@ -76,7 +76,7 @@
         <location filename="../src/settingsview/components/AdvancedSIPSecuritySettings.qml" line="94"/>
         <location filename="../src/settingsview/components/AdvancedSIPSecuritySettings.qml" line="112"/>
         <source>Certificate File</source>
-        <translation>Tanúsítvány fájl</translation>
+        <translation>Tanúsítványfájl</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/AdvancedSIPSecuritySettings.qml" line="94"/>
@@ -189,32 +189,32 @@
 <context>
     <name>ConversationSmartListContextMenu</name>
     <message>
-        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="39"/>
+        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="40"/>
         <source>Start video call</source>
         <translation>Videóhívás indítása</translation>
     </message>
     <message>
-        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="48"/>
+        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="49"/>
         <source>Start audio call</source>
         <translation>Hanghívás indítása</translation>
     </message>
     <message>
-        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="58"/>
+        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="59"/>
         <source>Clear conversation</source>
         <translation>Beszélgetés törlése</translation>
     </message>
     <message>
-        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="67"/>
+        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="68"/>
         <source>Remove contact</source>
         <translation>Kapcsolat eltávolítása</translation>
     </message>
     <message>
-        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="109"/>
+        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="110"/>
         <source>Block contact</source>
         <translation>Kapcsolat letiltása</translation>
     </message>
     <message>
-        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="117"/>
+        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="118"/>
         <source>Profile</source>
         <translation>Profil</translation>
     </message>
@@ -1734,7 +1734,7 @@ Másolja ki, és ossza meg barátaival!</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="410"/>
         <source>{0} days ago</source>
-        <translation type="unfinished"/>
+        <translation>{0} napja</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="411"/>
@@ -1744,7 +1744,7 @@ Másolja ki, és ossza meg barátaival!</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="412"/>
         <source>{0} hours ago</source>
-        <translation type="unfinished"/>
+        <translation>{0} órája</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="413"/>
@@ -1754,7 +1754,7 @@ Másolja ki, és ossza meg barátaival!</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="414"/>
         <source>{0} minutes ago</source>
-        <translation type="unfinished"/>
+        <translation>{0} perce</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="415"/>
@@ -2038,12 +2038,12 @@ Kérjük, hogy próbálja újra később.</translation>
 <context>
     <name>ParticipantContextMenu</name>
     <message>
-        <location filename="../src/mainview/components/ParticipantContextMenu.qml" line="48"/>
+        <location filename="../src/mainview/components/ParticipantContextMenu.qml" line="49"/>
         <source>Maximize participant</source>
         <translation>Résztvevő teljes méretűvé tétele</translation>
     </message>
     <message>
-        <location filename="../src/mainview/components/ParticipantContextMenu.qml" line="54"/>
+        <location filename="../src/mainview/components/ParticipantContextMenu.qml" line="55"/>
         <source>Minimize participant</source>
         <translation>Résztvevő kis méretűre állítása</translation>
     </message>

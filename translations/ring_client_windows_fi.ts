@@ -189,32 +189,32 @@
 <context>
     <name>ConversationSmartListContextMenu</name>
     <message>
-        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="39"/>
+        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="40"/>
         <source>Start video call</source>
         <translation>Aloita videopuhelu</translation>
     </message>
     <message>
-        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="48"/>
+        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="49"/>
         <source>Start audio call</source>
         <translation>Aloita äänipuhelu</translation>
     </message>
     <message>
-        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="58"/>
+        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="59"/>
         <source>Clear conversation</source>
         <translation>Tyhjennä keskustelu</translation>
     </message>
     <message>
-        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="67"/>
+        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="68"/>
         <source>Remove contact</source>
         <translation>Poista yhteystieto</translation>
     </message>
     <message>
-        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="109"/>
+        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="110"/>
         <source>Block contact</source>
         <translation>Estä yhteystieto</translation>
     </message>
     <message>
-        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="117"/>
+        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="118"/>
         <source>Profile</source>
         <translation>Profiili</translation>
     </message>
@@ -1222,12 +1222,12 @@
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="224"/>
         <source>Create SIP account</source>
-        <translation type="unfinished"/>
+        <translation>Luo SIP-tunnus</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="225"/>
         <source>Configure an existing SIP account</source>
-        <translation type="unfinished"/>
+        <translation>Määritä olemassa oleva SIP-tunnus.</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="228"/>
@@ -2038,12 +2038,12 @@ Yritä myöhemmin uudelleen.</translation>
 <context>
     <name>ParticipantContextMenu</name>
     <message>
-        <location filename="../src/mainview/components/ParticipantContextMenu.qml" line="48"/>
+        <location filename="../src/mainview/components/ParticipantContextMenu.qml" line="49"/>
         <source>Maximize participant</source>
         <translation>Laajenna osallistuja</translation>
     </message>
     <message>
-        <location filename="../src/mainview/components/ParticipantContextMenu.qml" line="54"/>
+        <location filename="../src/mainview/components/ParticipantContextMenu.qml" line="55"/>
         <source>Minimize participant</source>
         <translation>Pienennä osallistuja</translation>
     </message>

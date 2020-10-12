@@ -28,12 +28,12 @@
     <message>
         <location filename="../src/settingsview/components/AdvancedCallSettings.qml" line="67"/>
         <source>Audio Files</source>
-        <translation type="unfinished"/>
+        <translation>Аудио файлы</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/AdvancedCallSettings.qml" line="67"/>
         <source>All files</source>
-        <translation type="unfinished"/>
+        <translation>Все файлы</translation>
     </message>
 </context>
 <context>
@@ -49,12 +49,12 @@
         <location filename="../src/settingsview/components/AdvancedJamiSecuritySettings.qml" line="94"/>
         <location filename="../src/settingsview/components/AdvancedJamiSecuritySettings.qml" line="114"/>
         <source>All files</source>
-        <translation type="unfinished"/>
+        <translation>Все файлы</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/AdvancedJamiSecuritySettings.qml" line="114"/>
         <source>Key File</source>
-        <translation type="unfinished"/>
+        <translation>Файл ключа</translation>
     </message>
 </context>
 <context>
@@ -83,12 +83,12 @@
         <location filename="../src/settingsview/components/AdvancedSIPSecuritySettings.qml" line="112"/>
         <location filename="../src/settingsview/components/AdvancedSIPSecuritySettings.qml" line="130"/>
         <source>All files</source>
-        <translation type="unfinished"/>
+        <translation>Все файлы</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/AdvancedSIPSecuritySettings.qml" line="130"/>
         <source>Key File</source>
-        <translation type="unfinished"/>
+        <translation>Файл ключа</translation>
     </message>
 </context>
 <context>
@@ -104,12 +104,12 @@
     <message>
         <location filename="../src/wizardview/components/BackupKeyPage.qml" line="46"/>
         <source>Jami archive files</source>
-        <translation type="unfinished"/>
+        <translation>Файлы архива Jami</translation>
     </message>
     <message>
         <location filename="../src/wizardview/components/BackupKeyPage.qml" line="46"/>
         <source>All files</source>
-        <translation type="unfinished"/>
+        <translation>Все файлы</translation>
     </message>
 </context>
 <context>
@@ -126,7 +126,7 @@
         <location filename="../src/calladapter.cpp" line="270"/>
         <location filename="../src/calladapter.cpp" line="351"/>
         <source>me</source>
-        <translation type="unfinished"/>
+        <translation>мне</translation>
     </message>
     <message>
         <location filename="../src/calladapter.cpp" line="315"/>
@@ -189,32 +189,32 @@
 <context>
     <name>ConversationSmartListContextMenu</name>
     <message>
-        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="39"/>
+        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="40"/>
         <source>Start video call</source>
         <translation>Начать видеовызов</translation>
     </message>
     <message>
-        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="48"/>
+        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="49"/>
         <source>Start audio call</source>
         <translation>Начать голосовой вызов</translation>
     </message>
     <message>
-        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="58"/>
+        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="59"/>
         <source>Clear conversation</source>
         <translation>Очистить разговор</translation>
     </message>
     <message>
-        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="67"/>
+        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="68"/>
         <source>Remove contact</source>
         <translation>Удалить контакт</translation>
     </message>
     <message>
-        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="109"/>
+        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="110"/>
         <source>Block contact</source>
         <translation>Заблокировать контакт</translation>
     </message>
     <message>
-        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="117"/>
+        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="118"/>
         <source>Profile</source>
         <translation>Профиль</translation>
     </message>
@@ -224,12 +224,12 @@
     <message>
         <location filename="../src/wizardview/components/CreateAccountPage.qml" line="81"/>
         <source>Jami archive files</source>
-        <translation type="unfinished"/>
+        <translation>Файлы архива Jami</translation>
     </message>
     <message>
         <location filename="../src/wizardview/components/CreateAccountPage.qml" line="81"/>
         <source>All files</source>
-        <translation type="unfinished"/>
+        <translation>Все файлы</translation>
     </message>
     <message>
         <location filename="../src/wizardview/components/CreateAccountPage.qml" line="126"/>
@@ -289,12 +289,12 @@
     <message>
         <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="161"/>
         <source>Jami archive files</source>
-        <translation type="unfinished"/>
+        <translation>Файлы архива Jami</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="161"/>
         <source>All files</source>
-        <translation type="unfinished"/>
+        <translation>Все файлы</translation>
     </message>
 </context>
 <context>
@@ -336,12 +336,12 @@
     <message>
         <location filename="../src/wizardview/components/ImportFromBackupPage.qml" line="63"/>
         <source>Jami archive files</source>
-        <translation type="unfinished"/>
+        <translation>Файлы архива Jami</translation>
     </message>
     <message>
         <location filename="../src/wizardview/components/ImportFromBackupPage.qml" line="63"/>
         <source>All files</source>
-        <translation type="unfinished"/>
+        <translation>Все файлы</translation>
     </message>
     <message>
         <location filename="../src/wizardview/components/ImportFromBackupPage.qml" line="87"/>
@@ -677,7 +677,7 @@
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="214"/>
         <source>Create a rendezvous point</source>
-        <translation type="unfinished"/>
+        <translation>Создайте точку встречи</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="217"/>
@@ -962,7 +962,7 @@
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="145"/>
         <source>Ringtone device</source>
-        <translation type="unfinished"/>
+        <translation>Рингтон устройства</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="146"/>
@@ -972,7 +972,7 @@
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="147"/>
         <source>Audio manager</source>
-        <translation type="unfinished"/>
+        <translation>Менеджер звука</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="150"/>
@@ -1092,7 +1092,7 @@
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="185"/>
         <source>More options</source>
-        <translation type="unfinished"/>
+        <translation>Дополнительные опции</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="188"/>
@@ -1172,7 +1172,7 @@
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="205"/>
         <source>Enter your JAMS credentials</source>
-        <translation type="unfinished"/>
+        <translation>Введите свои учетные данные JAMS</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="206"/>
@@ -1479,12 +1479,12 @@
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="302"/>
         <source>Restore an account from backup</source>
-        <translation type="unfinished"/>
+        <translation>Восстановить аккаунт из резервной копии</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="305"/>
         <source>Enter Jami account password</source>
-        <translation type="unfinished"/>
+        <translation>Введите пароль Jami аккаунта</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="314"/>
@@ -1616,7 +1616,7 @@ Copy and share it with your friends!</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="370"/>
         <source>Advanced features</source>
-        <translation type="unfinished"/>
+        <translation>Дополнительные функции</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="371"/>
@@ -1626,7 +1626,7 @@ Copy and share it with your friends!</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="372"/>
         <source>Connect to a JAMS server</source>
-        <translation type="unfinished"/>
+        <translation>Подключиться к JAMS серверу</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="374"/>
@@ -2036,12 +2036,12 @@ Please try again later.</source>
 <context>
     <name>ParticipantContextMenu</name>
     <message>
-        <location filename="../src/mainview/components/ParticipantContextMenu.qml" line="48"/>
+        <location filename="../src/mainview/components/ParticipantContextMenu.qml" line="49"/>
         <source>Maximize participant</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainview/components/ParticipantContextMenu.qml" line="54"/>
+        <location filename="../src/mainview/components/ParticipantContextMenu.qml" line="55"/>
         <source>Minimize participant</source>
         <translation type="unfinished"/>
     </message>
@@ -2064,7 +2064,7 @@ Please try again later.</source>
     <message>
         <location filename="../src/commoncomponents/PhotoboothView.qml" line="65"/>
         <source>All files</source>
-        <translation type="unfinished"/>
+        <translation>Все файлы</translation>
     </message>
     <message>
         <location filename="../src/commoncomponents/PhotoboothView.qml" line="196"/>
@@ -2124,7 +2124,7 @@ Please try again later.</source>
     <message>
         <location filename="../src/settingsview/components/PluginListSettingsView.qml" line="85"/>
         <source>All files</source>
-        <translation type="unfinished"/>
+        <translation>Все файлы</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/PluginListSettingsView.qml" line="104"/>

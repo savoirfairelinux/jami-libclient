@@ -20,7 +20,7 @@
     <message>
         <location filename="../src/settingsview/components/AccountProfile.qml" line="66"/>
         <source>Profile</source>
-        <translation type="unfinished"/>
+        <translation>ਪ੍ਰੋਫ਼ਾਈਲ</translation>
     </message>
 </context>
 <context>
@@ -189,34 +189,34 @@
 <context>
     <name>ConversationSmartListContextMenu</name>
     <message>
-        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="39"/>
+        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="40"/>
         <source>Start video call</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="48"/>
+        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="49"/>
         <source>Start audio call</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="58"/>
+        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="59"/>
         <source>Clear conversation</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="67"/>
+        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="68"/>
         <source>Remove contact</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="109"/>
+        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="110"/>
         <source>Block contact</source>
         <translation>ਸੰਪਰਕ ਬਲਾਕ ਕਰੋ</translation>
     </message>
     <message>
-        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="117"/>
+        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="118"/>
         <source>Profile</source>
-        <translation type="unfinished"/>
+        <translation>ਪ੍ਰੋਫ਼ਾਈਲ</translation>
     </message>
 </context>
 <context>
@@ -234,7 +234,7 @@
     <message>
         <location filename="../src/wizardview/components/CreateAccountPage.qml" line="126"/>
         <source>Choose a username for your account</source>
-        <translation type="unfinished"/>
+        <translation>ਆਪਣੇ ਖਾਤੇ ਲਈ ਕੋਈ ਵਰਤੋਂਕਾਰ ਨਾਂ ਚੁਣੋ</translation>
     </message>
     <message>
         <location filename="../src/wizardview/components/CreateAccountPage.qml" line="153"/>
@@ -672,7 +672,7 @@
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="213"/>
         <source>Encrypt account with password</source>
-        <translation type="unfinished"/>
+        <translation>ਪਾਸਵਰਡ ਨਾਲ ਖਾਤੇ ਵਿੱਚ ਗੁਪਤ ਸੰਕੇਤ ਪਾਓ</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="214"/>
@@ -1042,7 +1042,7 @@
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="170"/>
         <source>Recommended</source>
-        <translation type="unfinished"/>
+        <translation>ਸਿਫ਼ਾਰਸ਼ੀ</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="173"/>
@@ -1072,7 +1072,7 @@
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="181"/>
         <source>Pause</source>
-        <translation type="unfinished"/>
+        <translation>ਰੋਕੋ</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="182"/>
@@ -1162,7 +1162,7 @@
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="203"/>
         <source>Required</source>
-        <translation type="unfinished"/>
+        <translation>ਲੁੜੀਂਦਾ</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="204"/>
@@ -1207,7 +1207,7 @@
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="218"/>
         <source>Optional</source>
-        <translation type="unfinished"/>
+        <translation>ਮਰਜ਼ੀ ਮੁਤਾਬਕ</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="222"/>
@@ -2035,12 +2035,12 @@ Please try again later.</source>
 <context>
     <name>ParticipantContextMenu</name>
     <message>
-        <location filename="../src/mainview/components/ParticipantContextMenu.qml" line="48"/>
+        <location filename="../src/mainview/components/ParticipantContextMenu.qml" line="49"/>
         <source>Maximize participant</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainview/components/ParticipantContextMenu.qml" line="54"/>
+        <location filename="../src/mainview/components/ParticipantContextMenu.qml" line="55"/>
         <source>Minimize participant</source>
         <translation type="unfinished"/>
     </message>
@@ -2144,17 +2144,17 @@ Please try again later.</source>
     <message>
         <location filename="../src/wizardview/components/ProfilePage.qml" line="72"/>
         <source>Profile is only shared with contacts</source>
-        <translation type="unfinished"/>
+        <translation>ਪ੍ਰੋਫ਼ਾਈਲ ਸਿਰਫ਼ ਸੰਪਰਕਾਂ ਨਾਲ ਸਾਂਝੀ ਕੀਤੀ ਜਾਂਦੀ ਹੈ</translation>
     </message>
     <message>
         <location filename="../src/wizardview/components/ProfilePage.qml" line="79"/>
         <source>Optional</source>
-        <translation type="unfinished"/>
+        <translation>ਮਰਜ਼ੀ ਮੁਤਾਬਕ</translation>
     </message>
     <message>
         <location filename="../src/wizardview/components/ProfilePage.qml" line="109"/>
         <source>Enter your name</source>
-        <translation type="unfinished"/>
+        <translation>ਆਪਣਾ ਨਾਂ ਦਾਖਲ ਕਰੋ</translation>
     </message>
     <message>
         <location filename="../src/wizardview/components/ProfilePage.qml" line="127"/>
