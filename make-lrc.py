@@ -9,10 +9,12 @@ import multiprocessing
 import shutil
 import fileinput
 import re
+from enum import Enum
 
 # vs help
 win_sdk_default = '10.0.16299.0'
-win_toolset_default = 'v142'
+win_toolset_default = '142'
+qt_version_default = '5.14.2'
 
 vs_where_path = os.path.join(
     os.environ['ProgramFiles(x86)'], 'Microsoft Visual Studio', 'Installer', 'vswhere.exe'
@@ -20,6 +22,10 @@ vs_where_path = os.path.join(
 
 host_is_64bit = (False, True)[platform.machine().endswith('64')]
 
+class QtVerison(Enum):
+    Major = 0
+    Minor = 1
+    Micro = 2
 
 def getLatestVSVersion():
     args = [
@@ -74,6 +80,11 @@ def getCMakeGenerator(vs_version):
         return 'Visual Studio 15 2017 Win64'
     else:
         return 'Visual Studio ' + vs_version + ' 2019'
+
+
+def getQtVersionNumber(qt_version, version_type):
+    version_list = qt_version.split('.')
+    return version_list[version_type.value]
 
 
 def getVSEnvCmd(arch='x64', platform='', version=''):
@@ -132,8 +143,10 @@ def generate(force, qtver, sdk, toolset, arch):
     # we just assume Qt is installed in the default folder
     qt_dir = 'C:\\Qt\\' + qtver
     cmake_gen = getCMakeGenerator(getLatestVSVersion())
+    qt_minor_version = getQtVersionNumber(qtver, QtVerison.Minor)
 
-    qt_cmake_dir = qt_dir + '\\msvc2019_64\\lib\\cmake\\'
+    qt_cmake_dir = qt_dir + (
+        '\\msvc2017_64' if int(qt_minor_version) <= 14 else '\\msvc2019_64') + '\\lib\\cmake\\'
     cmake_options = [
         '-DQt5_DIR=' + qt_cmake_dir + 'Qt5',
         '-DQt5Core_DIR=' + qt_cmake_dir + 'Qt5Core',
@@ -221,7 +234,7 @@ def parse_args():
         '-p', '--purge', action='store_true',
         help='Purges the build directory')
     ap.add_argument(
-        '-q', '--qtver', default='5.14.2',
+        '-q', '--qtver', default=qt_version_default,
         help='Sets the Qt version to build with')
     ap.add_argument(
         '-g', '--gen', action='store_true',
@@ -237,6 +250,10 @@ def parse_args():
         help='Use specified platform toolset version')
 
     parsed_args = ap.parse_args()
+
+    if parsed_args.toolset:
+        if parsed_args.toolset[0] != 'v':
+            parsed_args.toolset = 'v' + parsed_args.toolset
 
     return parsed_args
 
