@@ -22,6 +22,30 @@
       "revId": "3843179f12302613dc97bf8283208fe4c85b23d7",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "830cc9bc_8b277537",
+        "filename": "src/qtwrapper/CMakeLists.txt",
+        "patchSetId": 3
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 90
+      },
+      "writtenOn": "2020-10-13T15:48:59Z",
+      "side": 1,
+      "message": "\"CMake Warning (dev) at src/qtwrapper/CMakeLists.txt:40 (SET):\n  implicitly converting \u0027BOOLEAN\u0027 to \u0027STRING\u0027 type.\nThis warning is for project developers.  Use -Wno-dev to suppress it.\"\n - CMake\n\n¯\\_(ツ)_/¯\n\nBOOL instead of BOOLEAN seems to work though, so that makes more sense.",
+      "parentUuid": "3a23817d_7c864319",
+      "range": {
+        "startLine": 40,
+        "startChar": 29,
+        "endLine": 40,
+        "endChar": 35
+      },
+      "revId": "3843179f12302613dc97bf8283208fe4c85b23d7",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
     }
   ]
 }
