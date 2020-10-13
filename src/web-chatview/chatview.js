@@ -133,7 +133,16 @@ function init_i18n(data) {
         if (data === undefined) {
             i18n = new Jed({ locale_data: { "messages": { "": {} } } }) // eslint-disable-line no-undef
         } else {
-            i18n = new Jed(data) // eslint-disable-line no-undef
+            var domain = {
+                "" : {
+                    // Domain name
+                    "domain" : "messages",
+                }
+            }
+            for  (var key in data) {
+                domain[key] = [data[key]]
+            }
+            i18n = new Jed({ locale_data: { "messages": domain } })
         }
         reset_message_bar_input()
         set_titles()
@@ -142,20 +151,20 @@ function init_i18n(data) {
 
 function set_titles() {
     if (use_qt){
-        backButton.title = i18nStringData["backButtonTitle"]
-        placeCallButton.title = i18nStringData["placeCallButtonTitle"]
-        placeAudioCallButton.title = i18nStringData["placeAudioCallButtonTitle"]
-        addToConversationsButton.title = i18nStringData["addToConversationsButtonTitle"]
-        unbanButton.title = i18nStringData["unbanButtonTitle"]
-        sendButton.title = i18nStringData["sendButtonTitle"]
-        optionsButton.title = i18nStringData["optionsButtonTitle"]
-        backToBottomBtn.innerHTML = `${i18nStringData["backToBottomBtnInnerHTML"]} &#9660;`
-        sendFileButton.title = i18nStringData["sendFileButtonTitle"]
-        videoRecordButton.title = i18nStringData["videoRecordButtonTitle"]
-        audioRecordButton.title = i18nStringData["audioRecordButtonTitle"]
-        acceptButton.title = i18nStringData["acceptButtonTitle"]
-        refuseButton.title = i18nStringData["refuseButtonTitle"]
-        blockButton.title = i18nStringData["blockButtonTitle"]
+        backButton.title = i18nStringData["Hide chat view"]
+        placeCallButton.title = i18nStringData["Place video call"]
+        placeAudioCallButton.title = i18nStringData["Place audio call"]
+        addToConversationsButton.title = i18nStringData["Add to conversations"]
+        unbanButton.title = i18nStringData["Unban contact"]
+        sendButton.title = i18nStringData["Send"]
+        optionsButton.title = i18nStringData["Options"]
+        backToBottomBtn.innerHTML = `${i18nStringData["Jump to latest"]} &#9660;`
+        sendFileButton.title = i18nStringData["Send file"]
+        videoRecordButton.title = i18nStringData["Leave video message"]
+        audioRecordButton.title = i18nStringData["Leave audio message"]
+        acceptButton.title = i18nStringData["Accept"]
+        refuseButton.title = i18nStringData["Refuse"]
+        blockButton.title = i18nStringData["Block"]
     } else {
         backButton.title = i18n.gettext("Hide chat view")
         placeCallButton.title = i18n.gettext("Place video call")
@@ -176,7 +185,7 @@ function set_titles() {
 
 function reset_message_bar_input() {
     messageBarInput.placeholder = use_qt ?
-        i18nStringData["messageBarInputPlaceholder"] : i18n.gettext("Type a message")
+        i18nStringData["Type a message"] : i18n.gettext("Type a message")
 }
 
 function onScrolled_() {
@@ -301,7 +310,8 @@ function update_chatview_frame(accountEnabled, banned, temporary, alias, bestid)
         isTemporary = temporary
         if (temporary) {
             addToConvButton.style.display = "flex"
-            messageBarInput.placeholder = use_qt ? i18nStringData["placeHolderTemporaryContact"] :
+            messageBarInput.placeholder = use_qt ?
+                i18nStringData["Note: an interaction will create a new contact."] :
                 i18n.gettext("Note: an interaction will create a new contact.")
         } else {
             addToConvButton.style.display = ""
@@ -343,10 +353,11 @@ function showInvitation(contactAlias, contactId) {
             }
         }
         invitationText.innerHTML = "<b>"
-            + contactAlias + use_qt ? i18nStringData["isNotInYourContacts"] :
+            + contactAlias + use_qt ? i18nStringData["is not in your contacts"] :
             i18n.sprintf(i18n.gettext("%s is not in your contacts"), contactAlias)
             + "</b><br/>"
-            + use_qt ? i18nStringData["automaticallyAcceptInvitation"] :
+            + use_qt ?
+            i18nStringData["Note: you can automatically accept this invitation by sending a message."] :
             i18n.gettext("Note: you can automatically accept this invitation by sending a message.")
         hasInvitation = true
         invitation.style.visibility = "visible"
@@ -552,20 +563,20 @@ function formatDate(date) {
         if (interval > 5)
             return date.toLocaleDateString()
         if (interval > 1)
-            return "\u200E " + i18nStringData["daysAgo"].format(interval)
+            return "\u200E " + i18nStringData["%d days ago"].format(interval)
         if (interval === 1)
-            return "\u200E " + i18nStringData["oneDayAgo"]
+            return "\u200E " + i18nStringData["one day ago"]
 
         interval = Math.floor(seconds / 3600)
         if (interval > 1)
-            return "\u200E " + i18nStringData["hoursAgo"].format(interval)
+            return "\u200E " + i18nStringData["%d hours ago"].format(interval)
         if (interval === 1)
-            return "\u200E " + i18nStringData["oneHourAgo"]
+            return "\u200E " + i18nStringData["one hour ago"]
 
         interval = Math.floor(seconds / 60)
         if (interval > 1)
-            return "\u200E " + i18nStringData["minutesAgo"].format(interval)
-        return i18nStringData["justNow"]
+            return "\u200E " + i18nStringData["%d minutes ago"].format(interval)
+        return i18nStringData["just now"]
     } else {
         if (interval > 5) {
             return date.toLocaleDateString()
@@ -759,7 +770,7 @@ function getMessageDeliveryStatusText(message_delivery_status) {
     var formatted_delivery_status = message_delivery_status
 
     if (message_delivery_status === "failure") {
-        formatted_delivery_status = use_qt ? i18nStringData["failureString"] :  i18n.gettext("Failure") +
+        formatted_delivery_status = use_qt ? i18nStringData["Failure"] :  i18n.gettext("Failure") +
         "<svg overflow='visible' viewBox='0 -2 16 14' height='16px' width='16px'><path class='status-x x-first' stroke='#AA0000' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' fill='none' d='M4,4 L12,12'/><path class='status-x x-second' stroke='#AA0000' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' fill='none' d='M12,4 L4,12'/></svg>"
     } else {
         formatted_delivery_status = ""
@@ -1168,7 +1179,7 @@ function updateFileInteraction(message_div, message_object, forceTypeToFile = fa
             // add buttons to accept or refuse a call.
             var accept_button = document.createElement("div")
             accept_button.innerHTML = acceptSvg
-            accept_button.setAttribute("title", use_qt ? i18nStringData["acceptString"] :
+            accept_button.setAttribute("title", use_qt ? i18nStringData["Accept"] :
                 i18n.gettext("Accept"))
             accept_button.setAttribute("class", "flat-button accept")
             accept_button.onclick = function () {
@@ -1183,7 +1194,7 @@ function updateFileInteraction(message_div, message_object, forceTypeToFile = fa
 
         var refuse_button = document.createElement("div")
         refuse_button.innerHTML = refuseSvg
-        refuse_button.setAttribute("title", use_qt ? i18nStringData["refuseString"] :
+        refuse_button.setAttribute("title", use_qt ? i18nStringData["Refuse"] :
             i18n.gettext("Refuse"))
         refuse_button.setAttribute("class", "flat-button refuse")
         refuse_button.onclick = function () {
@@ -1560,7 +1571,7 @@ function buildMessageDropdown(message_id) {
 
     const remove = document.createElement("div")
     remove.setAttribute("class", "menuoption")
-    remove.innerHTML = use_qt ? i18nStringData["deleteString"] : i18n.gettext("Delete")
+    remove.innerHTML = use_qt ? i18nStringData["Delete"] : i18n.gettext("Delete")
     remove.msg_id = message_id
     remove.onclick = function () {
         if (use_qt) {
@@ -1801,7 +1812,7 @@ function addOrUpdateMessage(message_object, new_message, insert_after = true, me
         if (!dropdown.querySelector(".retry")) {
             const retry = document.createElement("div")
             retry.setAttribute("class", "retry")
-            retry.innerHTML = use_qt ? i18nStringData["retryString"] : i18n.gettext("Retry")
+            retry.innerHTML = use_qt ? i18nStringData["Retry"] : i18n.gettext("Retry")
             retry.msg_id = message_id
             retry.onclick = function () {
                 if (use_qt) {
