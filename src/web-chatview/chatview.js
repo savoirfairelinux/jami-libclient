@@ -133,7 +133,16 @@ function init_i18n(data) {
         if (data === undefined) {
             i18n = new Jed({ locale_data: { "messages": { "": {} } } }) // eslint-disable-line no-undef
         } else {
-            i18n = new Jed(data) // eslint-disable-line no-undef
+            var domain = {
+                "" : {
+                    // Domain name
+                    "domain" : "messages",
+                }
+            }
+            for  (var key in data) {
+                domain[key] = [data[key]]
+            }
+            i18n = new Jed({ locale_data: { "messages": domain } })
         }
         reset_message_bar_input()
         set_titles()

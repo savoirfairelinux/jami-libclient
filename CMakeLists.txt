@@ -347,6 +347,7 @@ SET(libringclient_api_LIB_HDRS
   src/api/contact.h
   src/api/call.h
   src/api/account.h
+  src/api/chatview.h
   src/api/lrc.h
   src/api/avmodel.h
   src/api/pluginmodel.h
