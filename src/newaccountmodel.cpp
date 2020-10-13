@@ -1078,6 +1078,26 @@ NewAccountModel::connectToAccountManager(const QString& username,
 }
 
 void
+NewAccountModel::sortAccounts()
+{
+    const QStringList accountIds = ConfigurationManager::instance().getAccountList();
+
+    QString enabled = {};
+    QString disabled = {};
+
+    for (auto const& id : accountIds) {
+        auto& accountInfo = pimpl_->getAccountInfo(id);
+        if (accountInfo.enabled) {
+            enabled += id + "/";
+        } else {
+            disabled += id + "/";
+        }
+    }
+    enabled += disabled;
+    ConfigurationManager::instance().setAccountsOrder(enabled);
+}
+
+void
 NewAccountModel::setTopAccount(const QString& accountId)
 {
     bool found = false;
