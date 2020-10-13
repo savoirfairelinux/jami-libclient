@@ -8,10 +8,12 @@ import argparse
 import multiprocessing
 import fileinput
 import re
+from enum import Enum
 
 # vs help
 win_sdk_default = '10.0.16299.0'
-win_toolset_default = 'v142'
+win_toolset_default = '142'
+qt_version_default = '5.15.0'
 
 vs_where_path = os.path.join(
     os.environ['ProgramFiles(x86)'], 'Microsoft Visual Studio', 'Installer', 'vswhere.exe'
@@ -19,6 +21,10 @@ vs_where_path = os.path.join(
 
 host_is_64bit = (False, True)[platform.machine().endswith('64')]
 
+class QtVerison(Enum):
+    Major = 0
+    Minor = 1
+    Micro = 2
 
 def execute_cmd(cmd, with_shell=False, env_vars={}):
     if(bool(env_vars)):
@@ -61,6 +67,10 @@ def findVSLatestDir():
     else:
         return
 
+
+def getQtVersionNumber(qt_version, version_type):
+    version_list = qt_version.split('.')
+    return version_list[version_type.value]
 
 def findMSBuild():
     filename = 'MSBuild.exe'
@@ -137,7 +147,8 @@ def build(arch, toolset, sdk_version, config_str, project_path_under_current_pat
 
     configuration_type = 'StaticLibrary'
 
-    qtFolderDir = "msvc2019_64"
+    qt_minor_version = getQtVersionNumber(qtver, QtVerison.Minor)
+    qtFolderDir = 'msvc2017_64' if int(qt_minor_version) <= 14 else 'msvc2019_64'
 
     vs_env_vars = {}
     vs_env_vars.update(getVSEnv())
@@ -224,10 +235,14 @@ def parse_args():
         '-t', '--toolset', default=win_toolset_default, type=str,
         help='Use specified platform toolset version')
     ap.add_argument(
-        '-q', '--qtver', default='5.15.0',
+        '-q', '--qtver', default=qt_version_default,
         help='Sets the version of Qmake')
 
     parsed_args = ap.parse_args()
+
+    if parsed_args.toolset:
+        if parsed_args.toolset[0] != 'v':
+            parsed_args.toolset = 'v' + parsed_args.toolset
 
     return parsed_args
 

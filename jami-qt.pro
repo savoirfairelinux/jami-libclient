@@ -6,7 +6,7 @@ win32-msvc {
 
     CONFIG += suppress_vcproj_warnings c++17 qtquickcompiler
 
-    QTQUICK_COMPILER_SKIPPED_RESOURCES += ./resources.qrc
+    QTQUICK_COMPILER_SKIPPED_RESOURCES += resources.qrc
 
     # compiler options
     QMAKE_CXXFLAGS += /wd"4068" /wd"4099" /wd"4189" /wd"4267" /wd"4577" /wd"4467" /wd"4715" /wd"4828"
