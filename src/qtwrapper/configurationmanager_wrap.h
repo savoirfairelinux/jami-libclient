@@ -422,12 +422,6 @@ public Q_SLOTS: // METHODS
 
     int getHistoryLimit() { return DRing::getHistoryLimit(); }
 
-    MapStringString getHookSettings()
-    {
-        MapStringString temp = convertMap(DRing::getHookSettings());
-        return temp;
-    }
-
     bool getIsAlwaysRecording() { return DRing::getIsAlwaysRecording(); }
 
     bool getNoiseSuppressState() { return DRing::getNoiseSuppressState(); }
@@ -597,8 +591,6 @@ public Q_SLOTS: // METHODS
     }
 
     void setHistoryLimit(int days) { DRing::setHistoryLimit(days); }
-
-    void setHookSettings(MapStringString settings) { DRing::setHookSettings(convertMap(settings)); }
 
     void setIsAlwaysRecording(bool enabled) { DRing::setIsAlwaysRecording(enabled); }
 

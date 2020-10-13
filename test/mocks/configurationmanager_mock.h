@@ -306,11 +306,6 @@ public Q_SLOTS: // METHODS
         return 0;
     }
 
-    MapStringString getHookSettings()
-    {
-        return MapStringString();
-    }
-
     bool getIsAlwaysRecording()
     {
         return false;
@@ -525,11 +520,6 @@ public Q_SLOTS: // METHODS
     void setHistoryLimit(int days)
     {
         Q_UNUSED(days)
-    }
-
-    void setHookSettings(MapStringString settings)
-    {
-        Q_UNUSED(settings)
     }
 
     void setIsAlwaysRecording(bool enabled)
