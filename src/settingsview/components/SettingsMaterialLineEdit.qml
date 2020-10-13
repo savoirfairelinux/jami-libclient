@@ -36,6 +36,7 @@ RowLayout {
     property string textField: ""
     property int itemWidth
     property int wrapMode: Text.NoWrap
+    property int echoMode: TextInput.Normal
 
     signal editFinished
 
@@ -75,6 +76,7 @@ RowLayout {
         horizontalAlignment: Text.AlignLeft
         verticalAlignment: Text.AlignVCenter
         wrapMode: root.wrapMode
+        echoMode: root.echoMode
         padding: 8
 
         onEditingFinished: {

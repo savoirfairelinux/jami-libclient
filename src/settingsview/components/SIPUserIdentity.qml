@@ -82,5 +82,6 @@ ColumnLayout {
         titleField: qsTr("Password")
         itemWidth: root.itemWidth
         onEditFinished: SettingsAdapter.setAccountConfig_Password(textField)
+        echoMode: TextInput.Password
     }
 }
