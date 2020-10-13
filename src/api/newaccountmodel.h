@@ -179,6 +179,10 @@ public:
                                                 const QString& uri = "",
                                                 const MapStringString& config = MapStringString());
     /**
+     * Sort accounts enabled / disabled
+     */
+    Q_INVOKABLE void sortAccounts(void);
+    /**
      * Set an account to the first position
      */
     Q_INVOKABLE void setTopAccount(const QString& accountId);
