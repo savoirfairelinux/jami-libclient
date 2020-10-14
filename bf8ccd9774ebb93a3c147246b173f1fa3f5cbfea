@@ -22,6 +22,30 @@
       "revId": "bf8ccd9774ebb93a3c147246b173f1fa3f5cbfea",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "327ac01d_bfd6d732",
+        "filename": "src/api/chatview.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 633
+      },
+      "writtenOn": "2020-10-14T13:56:03Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "ef793e51_a689ca50",
+      "range": {
+        "startLine": 31,
+        "startChar": 0,
+        "endLine": 32,
+        "endChar": 22
+      },
+      "revId": "bf8ccd9774ebb93a3c147246b173f1fa3f5cbfea",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
