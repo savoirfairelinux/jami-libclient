@@ -2,6 +2,52 @@
   "comments": [
     {
       "key": {
+        "uuid": "7e2a8048_74662fcf",
+        "filename": "src/api/chatview.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 90
+      },
+      "writtenOn": "2020-10-14T14:42:41Z",
+      "side": 1,
+      "message": "to remove",
+      "range": {
+        "startLine": 2,
+        "startChar": 20,
+        "endLine": 2,
+        "endChar": 24
+      },
+      "revId": "bf8ccd9774ebb93a3c147246b173f1fa3f5cbfea",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "09aa884b_b5fa65cf",
+        "filename": "src/api/chatview.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 90
+      },
+      "writtenOn": "2020-10-14T14:42:41Z",
+      "side": 1,
+      "message": "to remove",
+      "range": {
+        "startLine": 3,
+        "startChar": 1,
+        "endLine": 3,
+        "endChar": 77
+      },
+      "revId": "bf8ccd9774ebb93a3c147246b173f1fa3f5cbfea",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "ef793e51_a689ca50",
         "filename": "src/api/chatview.h",
         "patchSetId": 1
@@ -37,6 +83,30 @@
       "side": 1,
       "message": "Ack",
       "parentUuid": "ef793e51_a689ca50",
+      "range": {
+        "startLine": 31,
+        "startChar": 0,
+        "endLine": 32,
+        "endChar": 22
+      },
+      "revId": "bf8ccd9774ebb93a3c147246b173f1fa3f5cbfea",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7201942d_65b986c2",
+        "filename": "src/api/chatview.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 90
+      },
+      "writtenOn": "2020-10-14T14:42:41Z",
+      "side": 1,
+      "message": "the QVariantMap is pretty much a nust",
+      "parentUuid": "327ac01d_bfd6d732",
       "range": {
         "startLine": 31,
         "startChar": 0,
