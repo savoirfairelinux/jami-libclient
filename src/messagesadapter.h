@@ -20,6 +20,7 @@
 
 #include "lrcinstance.h"
 #include "qmladapterbase.h"
+#include "api/chatview.h"
 
 #include <QObject>
 #include <QString>
@@ -27,6 +28,8 @@
 class MessagesAdapter final : public QmlAdapterBase
 {
     Q_OBJECT
+    Q_PROPERTY(QVariantMap chatviewTranslatedStrings MEMBER chatviewTranslatedStrings_ CONSTANT)
+
 public:
     explicit MessagesAdapter(QObject* parent = 0);
     ~MessagesAdapter() = default;
@@ -105,6 +108,8 @@ private:
 
     QString LastConvUid_;
     QString currentConvUid_;
+
+    const QVariantMap chatviewTranslatedStrings_ {lrc::api::chatview::getTranslatedStrings()};
 
     /*
      * Interaction connections.

@@ -193,37 +193,7 @@ Rectangle {
         }
 
         function parseI18nData() {
-            return {
-                ["backButtonTitle"] : JamiStrings.backButtonTitle,
-                ["placeCallButtonTitle"] : JamiStrings.placeCallButtonTitle,
-                ["placeAudioCallButtonTitle"] : JamiStrings.placeAudioCallButtonTitle,
-                ["addToConversationsButtonTitle"] : JamiStrings.addToConversationsButtonTitle,
-                ["unbanButtonTitle"] : JamiStrings.unbanButtonTitle,
-                ["sendButtonTitle"] : JamiStrings.sendButtonTitle,
-                ["optionsButtonTitle"] : JamiStrings.optionsButtonTitle,
-                ["backToBottomBtnInnerHTML"] : JamiStrings.backToBottomBtnInnerHTML,
-                ["sendFileButtonTitle"] : JamiStrings.sendFileButtonTitle,
-                ["videoRecordButtonTitle"] : JamiStrings.videoRecordButtonTitle,
-                ["audioRecordButtonTitle"] : JamiStrings.audioRecordButtonTitle,
-                ["acceptButtonTitle"] : JamiStrings.acceptButtonTitle,
-                ["refuseButtonTitle"] : JamiStrings.refuseButtonTitle,
-                ["blockButtonTitle"] : JamiStrings.blockButtonTitle,
-                ["messageBarInputPlaceholder"] : JamiStrings.messageBarInputPlaceholder,
-                ["placeHolderTemporaryContact"] : JamiStrings.placeHolderTemporaryContact,
-                ["isNotInYourContacts"] : JamiStrings.isNotInYourContacts,
-                ["automaticallyAcceptInvitation"] : JamiStrings.automaticallyAcceptInvitation,
-                ["daysAgo"] : JamiStrings.daysAgo,
-                ["oneDayAgo"] : JamiStrings.oneDayAgo,
-                ["hoursAgo"] : JamiStrings.hoursAgo,
-                ["oneHourAgo"] : JamiStrings.oneHourAgo,
-                ["minutesAgo"] : JamiStrings.minutesAgo,
-                ["justNow"] : JamiStrings.justNow,
-                ["failureString"] : JamiStrings.failureString,
-                ["acceptString"] : JamiStrings.acceptString,
-                ["refuseString"] : JamiStrings.refuseString,
-                ["deleteString"] : JamiStrings.deleteString,
-                ["retryString"] : JamiStrings.retryString
-            }
+            return MessagesAdapter.chatviewTranslatedStrings
         }
     }
 
