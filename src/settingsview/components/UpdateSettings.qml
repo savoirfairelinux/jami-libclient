@@ -121,8 +121,9 @@ ColumnLayout {
             case NetWorkManager.DISCONNECTED:
                 return JamiStrings.networkDisconnected
             case NetWorkManager.NETWORK_ERROR:
+                return JamiStrings.updateNetworkError
             case NetWorkManager.SSL_ERROR:
-                return JamiStrings.updateDownloadNetworkError
+                return JamiStrings.updateSSLError
             case NetWorkManager.CANCELED:
                 return JamiStrings.updateDownloadCanceled
             default: return {}
@@ -248,5 +249,9 @@ ColumnLayout {
         buttonTitles: [JamiStrings.optionCancel]
         buttonStyles: [SimpleMessageDialog.ButtonStyle.TintedBlue]
         buttonCallBacks: [function() {UpdateManager.cancelUpdate()}]
+        onVisibilityChanged: {
+            if (!visible)
+                UpdateManager.cancelUpdate()
+        }
     }
 }

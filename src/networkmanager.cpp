@@ -30,9 +30,13 @@ NetWorkManager::NetWorkManager(ConnectivityMonitor* cm, QObject* parent)
     , manager_(new QNetworkAccessManager(this))
     , reply_(nullptr)
     , connectivityMonitor_(cm)
+    , lastConnectionState_(cm->isOnline())
 {
     emit statusChanged(GetStatus::IDLE);
+
     connect(connectivityMonitor_, &ConnectivityMonitor::connectivityChanged, [this] {
+        cancelRequest();
+
         auto connected = connectivityMonitor_->isOnline();
         if (connected && !lastConnectionState_) {
             manager_->deleteLater();
@@ -129,6 +133,9 @@ void
 NetWorkManager::onSslErrors(const QList<QSslError>& sslErrors)
 {
 #if QT_CONFIG(ssl)
+    reply_->disconnect();
+    reset(true);
+
     QString errorsString;
     for (const QSslError& error : sslErrors) {
         if (errorsString.length() > 0) {

@@ -282,7 +282,8 @@ Item {
     property string updateFound: qsTr("A new version of Jami was found\n Would you like to update now?")
     property string updateNotFound: qsTr("No new version of Jami was found")
     property string updateCheckError: qsTr("An error occured when checking for a new version")
-    property string updateDownloadNetworkError: qsTr("Installer download failed due to a network error")
+    property string updateNetworkError: qsTr("Network error")
+    property string updateSSLError: qsTr("SSL error")
     property string updateDownloadCanceled: qsTr("Installer download canceled")
     property string updateDownloading: "Downloading"
     property string confirmBeta: qsTr("This will uninstall your current Release version and you can always download the latest Release version on our website")
