@@ -326,6 +326,7 @@ SET( libringclient_LIB_SRCS
   src/pluginmodel.cpp
   src/namedirectory.cpp
   src/smartinfohub.cpp
+  src/chatview.cpp
 )
 
 # Public API
