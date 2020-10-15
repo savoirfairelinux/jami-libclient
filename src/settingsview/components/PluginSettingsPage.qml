@@ -57,7 +57,7 @@ Rectangle {
             Layout.leftMargin: JamiTheme.preferredMarginSize
             Layout.rightMargin: JamiTheme.preferredMarginSize
 
-            labelText: "Enable"
+            labelText: JamiStrings.enable
             fontPointSize: JamiTheme.headerFontSize
 
             onSwitchToggled: {

@@ -331,6 +331,9 @@ Item {
     property string takePhone: qsTr("Take photo")
     property string retakePhone: qsTr("Retake photo")
 
+    // PluginSettingsPage
+    property string enable: qsTr("Enable")
+
     // PluginListPreferencesView
     property string reset: qsTr("Reset")
     property string selectPluginInstall: qsTr("Select a plugin to install")
