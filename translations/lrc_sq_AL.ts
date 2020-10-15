@@ -2,116 +2,116 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/qtwrapper/callmanager_wrap.h" line="323"/>
+        <location filename="../src/qtwrapper/callmanager_wrap.h" line="328"/>
         <source>Me</source>
         <translation>Unë</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="69"/>
+        <location filename="../src/api/call.h" line="65"/>
         <source>Hold</source>
         <translation>Mbaje</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="71"/>
+        <location filename="../src/api/call.h" line="67"/>
         <source>Talking</source>
         <translation>Po bisedohet</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="73"/>
+        <location filename="../src/api/call.h" line="69"/>
         <source>ERROR</source>
         <translation>GABIM</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="75"/>
+        <location filename="../src/api/call.h" line="71"/>
         <source>Incoming</source>
         <translation>Ardhëse</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="77"/>
+        <location filename="../src/api/call.h" line="73"/>
         <source>Calling</source>
         <translation>Po thirret</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="79"/>
+        <location filename="../src/api/call.h" line="75"/>
         <source>Connecting</source>
         <translation>Po lidhet</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="81"/>
+        <location filename="../src/api/call.h" line="77"/>
         <source>Searching</source>
         <translation>Po kërkohet</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="83"/>
+        <location filename="../src/api/call.h" line="79"/>
         <source>Inactive</source>
         <translation>Jo aktiv</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="85"/>
-        <location filename="../src/api/call.h" line="91"/>
+        <location filename="../src/api/call.h" line="81"/>
+        <location filename="../src/api/call.h" line="87"/>
         <source>Finished</source>
         <translation>Përfundoi</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="87"/>
+        <location filename="../src/api/call.h" line="83"/>
         <source>Timeout</source>
         <translation>Mbarim Kohe</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="89"/>
+        <location filename="../src/api/call.h" line="85"/>
         <source>Peer busy</source>
         <translation>Ana tjetër e zënë</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="93"/>
+        <location filename="../src/api/call.h" line="89"/>
         <source>Communication established</source>
         <translation>Komunikimi u vendos</translation>
     </message>
     <message>
-        <location filename="../src/authority/storagehelper.cpp" line="133"/>
-        <location filename="../src/authority/storagehelper.cpp" line="923"/>
+        <location filename="../src/authority/storagehelper.cpp" line="130"/>
+        <location filename="../src/authority/storagehelper.cpp" line="902"/>
         <source>Invitation received</source>
         <translation>Ftesa u mor</translation>
     </message>
     <message>
-        <location filename="../src/authority/storagehelper.cpp" line="130"/>
-        <location filename="../src/authority/storagehelper.cpp" line="921"/>
+        <location filename="../src/authority/storagehelper.cpp" line="127"/>
+        <location filename="../src/authority/storagehelper.cpp" line="900"/>
         <source>Contact added</source>
         <translation>Kontakti u shtua</translation>
     </message>
     <message>
-        <location filename="../src/authority/storagehelper.cpp" line="106"/>
-        <location filename="../src/authority/storagehelper.cpp" line="112"/>
-        <location filename="../src/authority/storagehelper.cpp" line="919"/>
+        <location filename="../src/authority/storagehelper.cpp" line="104"/>
+        <location filename="../src/authority/storagehelper.cpp" line="110"/>
+        <location filename="../src/authority/storagehelper.cpp" line="898"/>
         <source>Outgoing call</source>
         <translation>Thirrje për</translation>
     </message>
     <message>
-        <location filename="../src/authority/storagehelper.cpp" line="108"/>
-        <location filename="../src/authority/storagehelper.cpp" line="118"/>
+        <location filename="../src/authority/storagehelper.cpp" line="106"/>
+        <location filename="../src/authority/storagehelper.cpp" line="116"/>
         <source>Incoming call</source>
         <translation>Thirrje ardhëse</translation>
     </message>
     <message>
-        <location filename="../src/authority/storagehelper.cpp" line="114"/>
-        <location filename="../src/authority/storagehelper.cpp" line="917"/>
+        <location filename="../src/authority/storagehelper.cpp" line="112"/>
+        <location filename="../src/authority/storagehelper.cpp" line="896"/>
         <source>Missed outgoing call</source>
         <translation>Thirrje ikse të humbura</translation>
     </message>
     <message>
-        <location filename="../src/authority/storagehelper.cpp" line="120"/>
+        <location filename="../src/authority/storagehelper.cpp" line="118"/>
         <source>Missed incoming call</source>
         <translation>Thirrje ardhëse të humbura</translation>
     </message>
     <message>
-        <location filename="../src/authority/storagehelper.cpp" line="135"/>
-        <location filename="../src/authority/storagehelper.cpp" line="925"/>
+        <location filename="../src/authority/storagehelper.cpp" line="132"/>
+        <location filename="../src/authority/storagehelper.cpp" line="904"/>
         <source>Invitation accepted</source>
         <translation>Ftesa u pranua</translation>
     </message>
     <message>
-        <location filename="../src/avmodel.cpp" line="336"/>
-        <location filename="../src/avmodel.cpp" line="357"/>
+        <location filename="../src/avmodel.cpp" line="330"/>
+        <location filename="../src/avmodel.cpp" line="349"/>
         <source>default</source>
         <translation>parazgjedhje</translation>
     </message>
@@ -284,12 +284,12 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="85"/>
         <source>Loop Detected</source>
-        <translation type="unfinished"/>
+        <translation>U pikas Qerthull</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="86"/>
         <source>Too Many Hops</source>
-        <translation type="unfinished"/>
+        <translation>Shumë Kërcime</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="87"/>
@@ -391,27 +391,179 @@
         <source>Not Acceptable Anywhere</source>
         <translation>E papranuar Gjëkundi</translation>
     </message>
+    <message>
+        <location filename="../src/api/chatview.h" line="35"/>
+        <source>Hide chat view</source>
+        <translation>Fshihe pamjen fjalosje</translation>
+    </message>
+    <message>
+        <location filename="../src/api/chatview.h" line="36"/>
+        <source>Place video call</source>
+        <translation>Bëni një thirrje video</translation>
+    </message>
+    <message>
+        <location filename="../src/api/chatview.h" line="37"/>
+        <source>Place audio call</source>
+        <translation>Bëni një thirrje audio</translation>
+    </message>
+    <message>
+        <location filename="../src/api/chatview.h" line="38"/>
+        <source>Add to conversations</source>
+        <translation>Shtoje te biseda</translation>
+    </message>
+    <message>
+        <location filename="../src/api/chatview.h" line="39"/>
+        <source>Unban contact</source>
+        <translation>Hiqja dëbimin kontaktit</translation>
+    </message>
+    <message>
+        <location filename="../src/api/chatview.h" line="40"/>
+        <source>Send</source>
+        <translation>Dërgoje</translation>
+    </message>
+    <message>
+        <location filename="../src/api/chatview.h" line="41"/>
+        <source>Options</source>
+        <translation>Mundësi</translation>
+    </message>
+    <message>
+        <location filename="../src/api/chatview.h" line="42"/>
+        <source>Jump to latest</source>
+        <translation>Hidhu te më i riu</translation>
+    </message>
+    <message>
+        <location filename="../src/api/chatview.h" line="43"/>
+        <source>Send file</source>
+        <translation>Dërgo kartelë</translation>
+    </message>
+    <message>
+        <location filename="../src/api/chatview.h" line="44"/>
+        <source>Leave video message</source>
+        <translation>Lini mesazh video</translation>
+    </message>
+    <message>
+        <location filename="../src/api/chatview.h" line="45"/>
+        <source>Leave audio message</source>
+        <translation>Lini mesazh audio</translation>
+    </message>
+    <message>
+        <location filename="../src/api/chatview.h" line="46"/>
+        <location filename="../src/api/chatview.h" line="68"/>
+        <source>Accept</source>
+        <translation>Pranoje</translation>
+    </message>
+    <message>
+        <location filename="../src/api/chatview.h" line="47"/>
+        <location filename="../src/api/chatview.h" line="69"/>
+        <source>Refuse</source>
+        <translation>Hidhe tej</translation>
+    </message>
+    <message>
+        <location filename="../src/api/chatview.h" line="48"/>
+        <source>Block</source>
+        <translation>Bllokoje</translation>
+    </message>
+    <message>
+        <location filename="../src/api/chatview.h" line="49"/>
+        <source>Type a message</source>
+        <translation>Shtypni një mesazh</translation>
+    </message>
+    <message>
+        <location filename="../src/api/chatview.h" line="51"/>
+        <source>Note: an interaction will create a new contact.</source>
+        <translation>Shënim: një ndërveprim do të krijojë një kontakt të ri.</translation>
+    </message>
+    <message>
+        <location filename="../src/api/chatview.h" line="52"/>
+        <source>is not in your contacts</source>
+        <translation>s’gjendet në kontaktet tuaja</translation>
+    </message>
+    <message>
+        <location filename="../src/api/chatview.h" line="54"/>
+        <source>Note: you can automatically accept this invitation by sending a message.</source>
+        <translation>Shënim: mund ta pranoni automatikisht këtë ftesë duke dërguar një mesazh.</translation>
+    </message>
+    <message>
+        <location filename="../src/api/chatview.h" line="56"/>
+        <source>{0} days ago</source>
+        <translation>{0} ditë më parë</translation>
+    </message>
+    <message>
+        <location filename="../src/api/chatview.h" line="57"/>
+        <source>{0} hours ago</source>
+        <translation>{0} orë më parë</translation>
+    </message>
+    <message>
+        <location filename="../src/api/chatview.h" line="58"/>
+        <source>{0} minutes ago</source>
+        <translation>{0} minuta më parë</translation>
+    </message>
+    <message>
+        <location filename="../src/api/chatview.h" line="60"/>
+        <source>%d days ago</source>
+        <translation>%d ditë më parë</translation>
+    </message>
+    <message>
+        <location filename="../src/api/chatview.h" line="61"/>
+        <source>%d hours ago</source>
+        <translation>%d orë më parë </translation>
+    </message>
+    <message>
+        <location filename="../src/api/chatview.h" line="62"/>
+        <source>%d minutes ago</source>
+        <translation>%d minuta më parë</translation>
+    </message>
+    <message>
+        <location filename="../src/api/chatview.h" line="64"/>
+        <source>one day ago</source>
+        <translation>një ditë më parë</translation>
+    </message>
+    <message>
+        <location filename="../src/api/chatview.h" line="65"/>
+        <source>one hour ago</source>
+        <translation>një orë më parë</translation>
+    </message>
+    <message>
+        <location filename="../src/api/chatview.h" line="66"/>
+        <source>just now</source>
+        <translation>mu tani</translation>
+    </message>
+    <message>
+        <location filename="../src/api/chatview.h" line="67"/>
+        <source>Failure</source>
+        <translation>Dështim</translation>
+    </message>
+    <message>
+        <location filename="../src/api/chatview.h" line="70"/>
+        <source>Delete</source>
+        <translation>Fshije</translation>
+    </message>
+    <message>
+        <location filename="../src/api/chatview.h" line="71"/>
+        <source>Retry</source>
+        <translation>Riprovoni</translation>
+    </message>
 </context>
 <context>
     <name>lrc::ContactModelPimpl</name>
     <message>
-        <location filename="../src/contactmodel.cpp" line="447"/>
-        <location filename="../src/contactmodel.cpp" line="463"/>
+        <location filename="../src/contactmodel.cpp" line="459"/>
+        <location filename="../src/contactmodel.cpp" line="476"/>
         <source>Searching…</source>
         <translation>Po kërkohet…</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="845"/>
+        <location filename="../src/contactmodel.cpp" line="964"/>
         <source>Invalid ID</source>
         <translation>ID e pavlefshme</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="848"/>
+        <location filename="../src/contactmodel.cpp" line="967"/>
         <source>Registered name not found</source>
         <translation>S’u gjet emër i regjistruar</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="851"/>
+        <location filename="../src/contactmodel.cpp" line="970"/>
         <source>Couldn&apos;t lookup…</source>
         <translation>S’u kërkua dot…</translation>
     </message>
@@ -419,7 +571,7 @@
 <context>
     <name>lrc::api::ContactModel</name>
     <message>
-        <location filename="../src/contactmodel.cpp" line="412"/>
+        <location filename="../src/contactmodel.cpp" line="423"/>
         <source>Bad URI scheme</source>
         <translation>Skemë URI i gabuar</translation>
     </message>

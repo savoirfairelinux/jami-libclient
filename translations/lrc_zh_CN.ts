@@ -2,116 +2,116 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/qtwrapper/callmanager_wrap.h" line="323"/>
+        <location filename="../src/qtwrapper/callmanager_wrap.h" line="328"/>
         <source>Me</source>
         <translation>我</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="69"/>
+        <location filename="../src/api/call.h" line="65"/>
         <source>Hold</source>
         <translation>等待</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="71"/>
+        <location filename="../src/api/call.h" line="67"/>
         <source>Talking</source>
         <translation>正在通话</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="73"/>
+        <location filename="../src/api/call.h" line="69"/>
         <source>ERROR</source>
         <translation>错误</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="75"/>
+        <location filename="../src/api/call.h" line="71"/>
         <source>Incoming</source>
         <translation>来电</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="77"/>
+        <location filename="../src/api/call.h" line="73"/>
         <source>Calling</source>
         <translation>正在通话</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="79"/>
+        <location filename="../src/api/call.h" line="75"/>
         <source>Connecting</source>
         <translation>正在连接</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="81"/>
+        <location filename="../src/api/call.h" line="77"/>
         <source>Searching</source>
         <translation>正在搜索</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="83"/>
+        <location filename="../src/api/call.h" line="79"/>
         <source>Inactive</source>
         <translation>不活跃</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="85"/>
-        <location filename="../src/api/call.h" line="91"/>
+        <location filename="../src/api/call.h" line="81"/>
+        <location filename="../src/api/call.h" line="87"/>
         <source>Finished</source>
         <translation>完成</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="87"/>
+        <location filename="../src/api/call.h" line="83"/>
         <source>Timeout</source>
         <translation>超时</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="89"/>
+        <location filename="../src/api/call.h" line="85"/>
         <source>Peer busy</source>
         <translation>对等节点忙</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="93"/>
+        <location filename="../src/api/call.h" line="89"/>
         <source>Communication established</source>
         <translation>通信已建立</translation>
     </message>
     <message>
-        <location filename="../src/authority/storagehelper.cpp" line="133"/>
-        <location filename="../src/authority/storagehelper.cpp" line="923"/>
+        <location filename="../src/authority/storagehelper.cpp" line="130"/>
+        <location filename="../src/authority/storagehelper.cpp" line="902"/>
         <source>Invitation received</source>
         <translation>已接受邀请</translation>
     </message>
     <message>
-        <location filename="../src/authority/storagehelper.cpp" line="130"/>
-        <location filename="../src/authority/storagehelper.cpp" line="921"/>
+        <location filename="../src/authority/storagehelper.cpp" line="127"/>
+        <location filename="../src/authority/storagehelper.cpp" line="900"/>
         <source>Contact added</source>
         <translation>已加入通讯录</translation>
     </message>
     <message>
-        <location filename="../src/authority/storagehelper.cpp" line="106"/>
-        <location filename="../src/authority/storagehelper.cpp" line="112"/>
-        <location filename="../src/authority/storagehelper.cpp" line="919"/>
+        <location filename="../src/authority/storagehelper.cpp" line="104"/>
+        <location filename="../src/authority/storagehelper.cpp" line="110"/>
+        <location filename="../src/authority/storagehelper.cpp" line="898"/>
         <source>Outgoing call</source>
         <translation>去电</translation>
     </message>
     <message>
-        <location filename="../src/authority/storagehelper.cpp" line="108"/>
-        <location filename="../src/authority/storagehelper.cpp" line="118"/>
+        <location filename="../src/authority/storagehelper.cpp" line="106"/>
+        <location filename="../src/authority/storagehelper.cpp" line="116"/>
         <source>Incoming call</source>
         <translation>来电</translation>
     </message>
     <message>
-        <location filename="../src/authority/storagehelper.cpp" line="114"/>
-        <location filename="../src/authority/storagehelper.cpp" line="917"/>
+        <location filename="../src/authority/storagehelper.cpp" line="112"/>
+        <location filename="../src/authority/storagehelper.cpp" line="896"/>
         <source>Missed outgoing call</source>
         <translation>去电未接</translation>
     </message>
     <message>
-        <location filename="../src/authority/storagehelper.cpp" line="120"/>
+        <location filename="../src/authority/storagehelper.cpp" line="118"/>
         <source>Missed incoming call</source>
         <translation>未接来电</translation>
     </message>
     <message>
-        <location filename="../src/authority/storagehelper.cpp" line="135"/>
-        <location filename="../src/authority/storagehelper.cpp" line="925"/>
+        <location filename="../src/authority/storagehelper.cpp" line="132"/>
+        <location filename="../src/authority/storagehelper.cpp" line="904"/>
         <source>Invitation accepted</source>
         <translation>已接受邀请</translation>
     </message>
     <message>
-        <location filename="../src/avmodel.cpp" line="336"/>
-        <location filename="../src/avmodel.cpp" line="357"/>
+        <location filename="../src/avmodel.cpp" line="330"/>
+        <location filename="../src/avmodel.cpp" line="349"/>
         <source>default</source>
         <translation>默认</translation>
     </message>
@@ -391,27 +391,179 @@
         <source>Not Acceptable Anywhere</source>
         <translation>任何地方都不可接受</translation>
     </message>
+    <message>
+        <location filename="../src/api/chatview.h" line="35"/>
+        <source>Hide chat view</source>
+        <translation>隐藏聊天界面</translation>
+    </message>
+    <message>
+        <location filename="../src/api/chatview.h" line="36"/>
+        <source>Place video call</source>
+        <translation>发起视频通话</translation>
+    </message>
+    <message>
+        <location filename="../src/api/chatview.h" line="37"/>
+        <source>Place audio call</source>
+        <translation>发起语音通话</translation>
+    </message>
+    <message>
+        <location filename="../src/api/chatview.h" line="38"/>
+        <source>Add to conversations</source>
+        <translation>添加到会话</translation>
+    </message>
+    <message>
+        <location filename="../src/api/chatview.h" line="39"/>
+        <source>Unban contact</source>
+        <translation>取消屏蔽联系人</translation>
+    </message>
+    <message>
+        <location filename="../src/api/chatview.h" line="40"/>
+        <source>Send</source>
+        <translation>发送</translation>
+    </message>
+    <message>
+        <location filename="../src/api/chatview.h" line="41"/>
+        <source>Options</source>
+        <translation>选项</translation>
+    </message>
+    <message>
+        <location filename="../src/api/chatview.h" line="42"/>
+        <source>Jump to latest</source>
+        <translation>跳转至最新</translation>
+    </message>
+    <message>
+        <location filename="../src/api/chatview.h" line="43"/>
+        <source>Send file</source>
+        <translation>发送文件</translation>
+    </message>
+    <message>
+        <location filename="../src/api/chatview.h" line="44"/>
+        <source>Leave video message</source>
+        <translation>离开视频消息</translation>
+    </message>
+    <message>
+        <location filename="../src/api/chatview.h" line="45"/>
+        <source>Leave audio message</source>
+        <translation>离开音频消息</translation>
+    </message>
+    <message>
+        <location filename="../src/api/chatview.h" line="46"/>
+        <location filename="../src/api/chatview.h" line="68"/>
+        <source>Accept</source>
+        <translation>接收</translation>
+    </message>
+    <message>
+        <location filename="../src/api/chatview.h" line="47"/>
+        <location filename="../src/api/chatview.h" line="69"/>
+        <source>Refuse</source>
+        <translation>拒接</translation>
+    </message>
+    <message>
+        <location filename="../src/api/chatview.h" line="48"/>
+        <source>Block</source>
+        <translation>屏蔽</translation>
+    </message>
+    <message>
+        <location filename="../src/api/chatview.h" line="49"/>
+        <source>Type a message</source>
+        <translation>输入信息</translation>
+    </message>
+    <message>
+        <location filename="../src/api/chatview.h" line="51"/>
+        <source>Note: an interaction will create a new contact.</source>
+        <translation>注：交互将创建一个新的联系人。</translation>
+    </message>
+    <message>
+        <location filename="../src/api/chatview.h" line="52"/>
+        <source>is not in your contacts</source>
+        <translation>不是您的联系人</translation>
+    </message>
+    <message>
+        <location filename="../src/api/chatview.h" line="54"/>
+        <source>Note: you can automatically accept this invitation by sending a message.</source>
+        <translation>注：您可以通过发送消息自动接受此邀请。</translation>
+    </message>
+    <message>
+        <location filename="../src/api/chatview.h" line="56"/>
+        <source>{0} days ago</source>
+        <translation>{0} 天前</translation>
+    </message>
+    <message>
+        <location filename="../src/api/chatview.h" line="57"/>
+        <source>{0} hours ago</source>
+        <translation>{0} 小时前</translation>
+    </message>
+    <message>
+        <location filename="../src/api/chatview.h" line="58"/>
+        <source>{0} minutes ago</source>
+        <translation>{0} 分钟前</translation>
+    </message>
+    <message>
+        <location filename="../src/api/chatview.h" line="60"/>
+        <source>%d days ago</source>
+        <translation>%d天前</translation>
+    </message>
+    <message>
+        <location filename="../src/api/chatview.h" line="61"/>
+        <source>%d hours ago</source>
+        <translation>%d小时前</translation>
+    </message>
+    <message>
+        <location filename="../src/api/chatview.h" line="62"/>
+        <source>%d minutes ago</source>
+        <translation>%d分钟前</translation>
+    </message>
+    <message>
+        <location filename="../src/api/chatview.h" line="64"/>
+        <source>one day ago</source>
+        <translation>一天前</translation>
+    </message>
+    <message>
+        <location filename="../src/api/chatview.h" line="65"/>
+        <source>one hour ago</source>
+        <translation>一小时前</translation>
+    </message>
+    <message>
+        <location filename="../src/api/chatview.h" line="66"/>
+        <source>just now</source>
+        <translation>刚才</translation>
+    </message>
+    <message>
+        <location filename="../src/api/chatview.h" line="67"/>
+        <source>Failure</source>
+        <translation>失败</translation>
+    </message>
+    <message>
+        <location filename="../src/api/chatview.h" line="70"/>
+        <source>Delete</source>
+        <translation>删除</translation>
+    </message>
+    <message>
+        <location filename="../src/api/chatview.h" line="71"/>
+        <source>Retry</source>
+        <translation>重试</translation>
+    </message>
 </context>
 <context>
     <name>lrc::ContactModelPimpl</name>
     <message>
-        <location filename="../src/contactmodel.cpp" line="447"/>
-        <location filename="../src/contactmodel.cpp" line="463"/>
+        <location filename="../src/contactmodel.cpp" line="459"/>
+        <location filename="../src/contactmodel.cpp" line="476"/>
         <source>Searching…</source>
         <translation>正在搜索…</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="845"/>
+        <location filename="../src/contactmodel.cpp" line="964"/>
         <source>Invalid ID</source>
         <translation>非法 ID</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="848"/>
+        <location filename="../src/contactmodel.cpp" line="967"/>
         <source>Registered name not found</source>
         <translation>找不到注册名称 </translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="851"/>
+        <location filename="../src/contactmodel.cpp" line="970"/>
         <source>Couldn&apos;t lookup…</source>
         <translation>无法查找...</translation>
     </message>
@@ -419,7 +571,7 @@
 <context>
     <name>lrc::api::ContactModel</name>
     <message>
-        <location filename="../src/contactmodel.cpp" line="412"/>
+        <location filename="../src/contactmodel.cpp" line="423"/>
         <source>Bad URI scheme</source>
         <translation>错误的 URI 方案 </translation>
     </message>

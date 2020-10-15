@@ -2,116 +2,116 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/qtwrapper/callmanager_wrap.h" line="323"/>
+        <location filename="../src/qtwrapper/callmanager_wrap.h" line="328"/>
         <source>Me</source>
         <translation>自分</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="69"/>
+        <location filename="../src/api/call.h" line="65"/>
         <source>Hold</source>
         <translation>保留</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="71"/>
+        <location filename="../src/api/call.h" line="67"/>
         <source>Talking</source>
         <translation>通話中</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="73"/>
+        <location filename="../src/api/call.h" line="69"/>
         <source>ERROR</source>
         <translation>エラー</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="75"/>
+        <location filename="../src/api/call.h" line="71"/>
         <source>Incoming</source>
         <translation>着信</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="77"/>
+        <location filename="../src/api/call.h" line="73"/>
         <source>Calling</source>
         <translation>発信中</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="79"/>
+        <location filename="../src/api/call.h" line="75"/>
         <source>Connecting</source>
         <translation>接続中</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="81"/>
+        <location filename="../src/api/call.h" line="77"/>
         <source>Searching</source>
         <translation>検索中</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="83"/>
+        <location filename="../src/api/call.h" line="79"/>
         <source>Inactive</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="85"/>
-        <location filename="../src/api/call.h" line="91"/>
+        <location filename="../src/api/call.h" line="81"/>
+        <location filename="../src/api/call.h" line="87"/>
         <source>Finished</source>
         <translation>通話終了</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="87"/>
+        <location filename="../src/api/call.h" line="83"/>
         <source>Timeout</source>
         <translation>タイムアウト</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="89"/>
+        <location filename="../src/api/call.h" line="85"/>
         <source>Peer busy</source>
         <translation>ピアビジー</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="93"/>
+        <location filename="../src/api/call.h" line="89"/>
         <source>Communication established</source>
         <translation>通信を確立しました</translation>
     </message>
     <message>
-        <location filename="../src/authority/storagehelper.cpp" line="133"/>
-        <location filename="../src/authority/storagehelper.cpp" line="923"/>
+        <location filename="../src/authority/storagehelper.cpp" line="130"/>
+        <location filename="../src/authority/storagehelper.cpp" line="902"/>
         <source>Invitation received</source>
         <translation>招待を受信しました</translation>
     </message>
     <message>
-        <location filename="../src/authority/storagehelper.cpp" line="130"/>
-        <location filename="../src/authority/storagehelper.cpp" line="921"/>
+        <location filename="../src/authority/storagehelper.cpp" line="127"/>
+        <location filename="../src/authority/storagehelper.cpp" line="900"/>
         <source>Contact added</source>
         <translation>連絡先を追加しました</translation>
     </message>
     <message>
-        <location filename="../src/authority/storagehelper.cpp" line="106"/>
-        <location filename="../src/authority/storagehelper.cpp" line="112"/>
-        <location filename="../src/authority/storagehelper.cpp" line="919"/>
+        <location filename="../src/authority/storagehelper.cpp" line="104"/>
+        <location filename="../src/authority/storagehelper.cpp" line="110"/>
+        <location filename="../src/authority/storagehelper.cpp" line="898"/>
         <source>Outgoing call</source>
         <translation>発信</translation>
     </message>
     <message>
-        <location filename="../src/authority/storagehelper.cpp" line="108"/>
-        <location filename="../src/authority/storagehelper.cpp" line="118"/>
+        <location filename="../src/authority/storagehelper.cpp" line="106"/>
+        <location filename="../src/authority/storagehelper.cpp" line="116"/>
         <source>Incoming call</source>
         <translation>着信</translation>
     </message>
     <message>
-        <location filename="../src/authority/storagehelper.cpp" line="114"/>
-        <location filename="../src/authority/storagehelper.cpp" line="917"/>
+        <location filename="../src/authority/storagehelper.cpp" line="112"/>
+        <location filename="../src/authority/storagehelper.cpp" line="896"/>
         <source>Missed outgoing call</source>
         <translation>不在発信</translation>
     </message>
     <message>
-        <location filename="../src/authority/storagehelper.cpp" line="120"/>
+        <location filename="../src/authority/storagehelper.cpp" line="118"/>
         <source>Missed incoming call</source>
         <translation>不在着信</translation>
     </message>
     <message>
-        <location filename="../src/authority/storagehelper.cpp" line="135"/>
-        <location filename="../src/authority/storagehelper.cpp" line="925"/>
+        <location filename="../src/authority/storagehelper.cpp" line="132"/>
+        <location filename="../src/authority/storagehelper.cpp" line="904"/>
         <source>Invitation accepted</source>
         <translation>招待を受け入れました</translation>
     </message>
     <message>
-        <location filename="../src/avmodel.cpp" line="336"/>
-        <location filename="../src/avmodel.cpp" line="357"/>
+        <location filename="../src/avmodel.cpp" line="330"/>
+        <location filename="../src/avmodel.cpp" line="349"/>
         <source>default</source>
         <translation>既定</translation>
     </message>
@@ -391,27 +391,179 @@
         <source>Not Acceptable Anywhere</source>
         <translation type="unfinished"/>
     </message>
+    <message>
+        <location filename="../src/api/chatview.h" line="35"/>
+        <source>Hide chat view</source>
+        <translation>チャットを隠す</translation>
+    </message>
+    <message>
+        <location filename="../src/api/chatview.h" line="36"/>
+        <source>Place video call</source>
+        <translation>ビデオ通話を開始</translation>
+    </message>
+    <message>
+        <location filename="../src/api/chatview.h" line="37"/>
+        <source>Place audio call</source>
+        <translation>音声通話を開始</translation>
+    </message>
+    <message>
+        <location filename="../src/api/chatview.h" line="38"/>
+        <source>Add to conversations</source>
+        <translation>会話に追加</translation>
+    </message>
+    <message>
+        <location filename="../src/api/chatview.h" line="39"/>
+        <source>Unban contact</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/api/chatview.h" line="40"/>
+        <source>Send</source>
+        <translation>送信</translation>
+    </message>
+    <message>
+        <location filename="../src/api/chatview.h" line="41"/>
+        <source>Options</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/api/chatview.h" line="42"/>
+        <source>Jump to latest</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/api/chatview.h" line="43"/>
+        <source>Send file</source>
+        <translation>ファイルの送信</translation>
+    </message>
+    <message>
+        <location filename="../src/api/chatview.h" line="44"/>
+        <source>Leave video message</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/api/chatview.h" line="45"/>
+        <source>Leave audio message</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/api/chatview.h" line="46"/>
+        <location filename="../src/api/chatview.h" line="68"/>
+        <source>Accept</source>
+        <translation>受け入れ</translation>
+    </message>
+    <message>
+        <location filename="../src/api/chatview.h" line="47"/>
+        <location filename="../src/api/chatview.h" line="69"/>
+        <source>Refuse</source>
+        <translation>拒否</translation>
+    </message>
+    <message>
+        <location filename="../src/api/chatview.h" line="48"/>
+        <source>Block</source>
+        <translation>ブロック</translation>
+    </message>
+    <message>
+        <location filename="../src/api/chatview.h" line="49"/>
+        <source>Type a message</source>
+        <translation>メッセージを入力</translation>
+    </message>
+    <message>
+        <location filename="../src/api/chatview.h" line="51"/>
+        <source>Note: an interaction will create a new contact.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/api/chatview.h" line="52"/>
+        <source>is not in your contacts</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/api/chatview.h" line="54"/>
+        <source>Note: you can automatically accept this invitation by sending a message.</source>
+        <translation>通知: メッセージを送信すると、自動的にこの招待を受け入れます。</translation>
+    </message>
+    <message>
+        <location filename="../src/api/chatview.h" line="56"/>
+        <source>{0} days ago</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/api/chatview.h" line="57"/>
+        <source>{0} hours ago</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/api/chatview.h" line="58"/>
+        <source>{0} minutes ago</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/api/chatview.h" line="60"/>
+        <source>%d days ago</source>
+        <translation>%d 日前</translation>
+    </message>
+    <message>
+        <location filename="../src/api/chatview.h" line="61"/>
+        <source>%d hours ago</source>
+        <translation>%d 時間前</translation>
+    </message>
+    <message>
+        <location filename="../src/api/chatview.h" line="62"/>
+        <source>%d minutes ago</source>
+        <translation>%d 分前</translation>
+    </message>
+    <message>
+        <location filename="../src/api/chatview.h" line="64"/>
+        <source>one day ago</source>
+        <translation>1 日前</translation>
+    </message>
+    <message>
+        <location filename="../src/api/chatview.h" line="65"/>
+        <source>one hour ago</source>
+        <translation>1 時間前</translation>
+    </message>
+    <message>
+        <location filename="../src/api/chatview.h" line="66"/>
+        <source>just now</source>
+        <translation>ちょうど今</translation>
+    </message>
+    <message>
+        <location filename="../src/api/chatview.h" line="67"/>
+        <source>Failure</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/api/chatview.h" line="70"/>
+        <source>Delete</source>
+        <translation>削除</translation>
+    </message>
+    <message>
+        <location filename="../src/api/chatview.h" line="71"/>
+        <source>Retry</source>
+        <translation type="unfinished"/>
+    </message>
 </context>
 <context>
     <name>lrc::ContactModelPimpl</name>
     <message>
-        <location filename="../src/contactmodel.cpp" line="447"/>
-        <location filename="../src/contactmodel.cpp" line="463"/>
+        <location filename="../src/contactmodel.cpp" line="459"/>
+        <location filename="../src/contactmodel.cpp" line="476"/>
         <source>Searching…</source>
         <translation>検索中…</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="845"/>
+        <location filename="../src/contactmodel.cpp" line="964"/>
         <source>Invalid ID</source>
         <translation>不正なID</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="848"/>
+        <location filename="../src/contactmodel.cpp" line="967"/>
         <source>Registered name not found</source>
         <translation>登録名が見つかりません</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="851"/>
+        <location filename="../src/contactmodel.cpp" line="970"/>
         <source>Couldn&apos;t lookup…</source>
         <translation>見つけられませんでした...</translation>
     </message>
@@ -419,7 +571,7 @@
 <context>
     <name>lrc::api::ContactModel</name>
     <message>
-        <location filename="../src/contactmodel.cpp" line="412"/>
+        <location filename="../src/contactmodel.cpp" line="423"/>
         <source>Bad URI scheme</source>
         <translation>不正なURLスキーム</translation>
     </message>

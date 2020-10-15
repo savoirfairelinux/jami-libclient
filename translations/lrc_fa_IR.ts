@@ -2,116 +2,116 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/qtwrapper/callmanager_wrap.h" line="323"/>
+        <location filename="../src/qtwrapper/callmanager_wrap.h" line="328"/>
         <source>Me</source>
         <translation>من</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="69"/>
+        <location filename="../src/api/call.h" line="65"/>
         <source>Hold</source>
         <translation>نگه داشتن</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="71"/>
+        <location filename="../src/api/call.h" line="67"/>
         <source>Talking</source>
         <translation>در حال صحبت</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="73"/>
+        <location filename="../src/api/call.h" line="69"/>
         <source>ERROR</source>
         <translation>خطا</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="75"/>
+        <location filename="../src/api/call.h" line="71"/>
         <source>Incoming</source>
         <translation>تماس ورودی</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="77"/>
+        <location filename="../src/api/call.h" line="73"/>
         <source>Calling</source>
         <translation>در حال تماس</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="79"/>
+        <location filename="../src/api/call.h" line="75"/>
         <source>Connecting</source>
         <translation>در حال اتّصال</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="81"/>
+        <location filename="../src/api/call.h" line="77"/>
         <source>Searching</source>
         <translation>در حال  جستجو</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="83"/>
+        <location filename="../src/api/call.h" line="79"/>
         <source>Inactive</source>
         <translation>غیر فعال</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="85"/>
-        <location filename="../src/api/call.h" line="91"/>
+        <location filename="../src/api/call.h" line="81"/>
+        <location filename="../src/api/call.h" line="87"/>
         <source>Finished</source>
         <translation>پایان یافته</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="87"/>
+        <location filename="../src/api/call.h" line="83"/>
         <source>Timeout</source>
         <translation>انقضا</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="89"/>
+        <location filename="../src/api/call.h" line="85"/>
         <source>Peer busy</source>
         <translation>همتا مشغول</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="93"/>
+        <location filename="../src/api/call.h" line="89"/>
         <source>Communication established</source>
         <translation>ارتباط برقرار شد.</translation>
     </message>
     <message>
-        <location filename="../src/authority/storagehelper.cpp" line="133"/>
-        <location filename="../src/authority/storagehelper.cpp" line="923"/>
+        <location filename="../src/authority/storagehelper.cpp" line="130"/>
+        <location filename="../src/authority/storagehelper.cpp" line="902"/>
         <source>Invitation received</source>
         <translation>دعوت نامه دریافت شد</translation>
     </message>
     <message>
-        <location filename="../src/authority/storagehelper.cpp" line="130"/>
-        <location filename="../src/authority/storagehelper.cpp" line="921"/>
+        <location filename="../src/authority/storagehelper.cpp" line="127"/>
+        <location filename="../src/authority/storagehelper.cpp" line="900"/>
         <source>Contact added</source>
         <translation>مخاطب افزوده شد</translation>
     </message>
     <message>
-        <location filename="../src/authority/storagehelper.cpp" line="106"/>
-        <location filename="../src/authority/storagehelper.cpp" line="112"/>
-        <location filename="../src/authority/storagehelper.cpp" line="919"/>
+        <location filename="../src/authority/storagehelper.cpp" line="104"/>
+        <location filename="../src/authority/storagehelper.cpp" line="110"/>
+        <location filename="../src/authority/storagehelper.cpp" line="898"/>
         <source>Outgoing call</source>
         <translation>تماس خروجی</translation>
     </message>
     <message>
-        <location filename="../src/authority/storagehelper.cpp" line="108"/>
-        <location filename="../src/authority/storagehelper.cpp" line="118"/>
+        <location filename="../src/authority/storagehelper.cpp" line="106"/>
+        <location filename="../src/authority/storagehelper.cpp" line="116"/>
         <source>Incoming call</source>
         <translation>تماس ورودی</translation>
     </message>
     <message>
-        <location filename="../src/authority/storagehelper.cpp" line="114"/>
-        <location filename="../src/authority/storagehelper.cpp" line="917"/>
+        <location filename="../src/authority/storagehelper.cpp" line="112"/>
+        <location filename="../src/authority/storagehelper.cpp" line="896"/>
         <source>Missed outgoing call</source>
         <translation>تماس خروجی از دست رفته</translation>
     </message>
     <message>
-        <location filename="../src/authority/storagehelper.cpp" line="120"/>
+        <location filename="../src/authority/storagehelper.cpp" line="118"/>
         <source>Missed incoming call</source>
         <translation>تماس ورودی از دست رفته</translation>
     </message>
     <message>
-        <location filename="../src/authority/storagehelper.cpp" line="135"/>
-        <location filename="../src/authority/storagehelper.cpp" line="925"/>
+        <location filename="../src/authority/storagehelper.cpp" line="132"/>
+        <location filename="../src/authority/storagehelper.cpp" line="904"/>
         <source>Invitation accepted</source>
         <translation>دعوت پذیرفته شد</translation>
     </message>
     <message>
-        <location filename="../src/avmodel.cpp" line="336"/>
-        <location filename="../src/avmodel.cpp" line="357"/>
+        <location filename="../src/avmodel.cpp" line="330"/>
+        <location filename="../src/avmodel.cpp" line="349"/>
         <source>default</source>
         <translation>پیش‌فرض</translation>
     </message>
@@ -391,27 +391,179 @@
         <source>Not Acceptable Anywhere</source>
         <translation>هیچ‎‌جا قابل قبول نیست</translation>
     </message>
+    <message>
+        <location filename="../src/api/chatview.h" line="35"/>
+        <source>Hide chat view</source>
+        <translation>مخفی‌کردن نمای گفتگو</translation>
+    </message>
+    <message>
+        <location filename="../src/api/chatview.h" line="36"/>
+        <source>Place video call</source>
+        <translation>قرار تماس ویدیویی بگذار</translation>
+    </message>
+    <message>
+        <location filename="../src/api/chatview.h" line="37"/>
+        <source>Place audio call</source>
+        <translation>قرار تماس صوتی بگذار</translation>
+    </message>
+    <message>
+        <location filename="../src/api/chatview.h" line="38"/>
+        <source>Add to conversations</source>
+        <translation>افزودن به گفتگو‌ها</translation>
+    </message>
+    <message>
+        <location filename="../src/api/chatview.h" line="39"/>
+        <source>Unban contact</source>
+        <translation>رفع ممنوعیت مخاطب</translation>
+    </message>
+    <message>
+        <location filename="../src/api/chatview.h" line="40"/>
+        <source>Send</source>
+        <translation>ارسال</translation>
+    </message>
+    <message>
+        <location filename="../src/api/chatview.h" line="41"/>
+        <source>Options</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/api/chatview.h" line="42"/>
+        <source>Jump to latest</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/api/chatview.h" line="43"/>
+        <source>Send file</source>
+        <translation>ارسال فایل</translation>
+    </message>
+    <message>
+        <location filename="../src/api/chatview.h" line="44"/>
+        <source>Leave video message</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/api/chatview.h" line="45"/>
+        <source>Leave audio message</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/api/chatview.h" line="46"/>
+        <location filename="../src/api/chatview.h" line="68"/>
+        <source>Accept</source>
+        <translation>پذیرش</translation>
+    </message>
+    <message>
+        <location filename="../src/api/chatview.h" line="47"/>
+        <location filename="../src/api/chatview.h" line="69"/>
+        <source>Refuse</source>
+        <translation>رد کردن</translation>
+    </message>
+    <message>
+        <location filename="../src/api/chatview.h" line="48"/>
+        <source>Block</source>
+        <translation>مسدود</translation>
+    </message>
+    <message>
+        <location filename="../src/api/chatview.h" line="49"/>
+        <source>Type a message</source>
+        <translation>نوشتن یک پیام</translation>
+    </message>
+    <message>
+        <location filename="../src/api/chatview.h" line="51"/>
+        <source>Note: an interaction will create a new contact.</source>
+        <translation>توجه: یک تعامل مخاطبی جدید ایجاد می‌کند.</translation>
+    </message>
+    <message>
+        <location filename="../src/api/chatview.h" line="52"/>
+        <source>is not in your contacts</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/api/chatview.h" line="54"/>
+        <source>Note: you can automatically accept this invitation by sending a message.</source>
+        <translation>توجه: شما می توانید با ارسال پیام به طور خودکار این دعوت را بپذیرید.</translation>
+    </message>
+    <message>
+        <location filename="../src/api/chatview.h" line="56"/>
+        <source>{0} days ago</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/api/chatview.h" line="57"/>
+        <source>{0} hours ago</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/api/chatview.h" line="58"/>
+        <source>{0} minutes ago</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/api/chatview.h" line="60"/>
+        <source>%d days ago</source>
+        <translation>%d روز پیش</translation>
+    </message>
+    <message>
+        <location filename="../src/api/chatview.h" line="61"/>
+        <source>%d hours ago</source>
+        <translation>%d ساعت پیش</translation>
+    </message>
+    <message>
+        <location filename="../src/api/chatview.h" line="62"/>
+        <source>%d minutes ago</source>
+        <translation>%d دقیقه قبل</translation>
+    </message>
+    <message>
+        <location filename="../src/api/chatview.h" line="64"/>
+        <source>one day ago</source>
+        <translation>یک روز پیش</translation>
+    </message>
+    <message>
+        <location filename="../src/api/chatview.h" line="65"/>
+        <source>one hour ago</source>
+        <translation>یک ساعت پیش</translation>
+    </message>
+    <message>
+        <location filename="../src/api/chatview.h" line="66"/>
+        <source>just now</source>
+        <translation>همین الان</translation>
+    </message>
+    <message>
+        <location filename="../src/api/chatview.h" line="67"/>
+        <source>Failure</source>
+        <translation>عدم موفقیت</translation>
+    </message>
+    <message>
+        <location filename="../src/api/chatview.h" line="70"/>
+        <source>Delete</source>
+        <translation>حذف</translation>
+    </message>
+    <message>
+        <location filename="../src/api/chatview.h" line="71"/>
+        <source>Retry</source>
+        <translation>تلاش دوباره</translation>
+    </message>
 </context>
 <context>
     <name>lrc::ContactModelPimpl</name>
     <message>
-        <location filename="../src/contactmodel.cpp" line="447"/>
-        <location filename="../src/contactmodel.cpp" line="463"/>
+        <location filename="../src/contactmodel.cpp" line="459"/>
+        <location filename="../src/contactmodel.cpp" line="476"/>
         <source>Searching…</source>
         <translation>در حال جستجو...</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="845"/>
+        <location filename="../src/contactmodel.cpp" line="964"/>
         <source>Invalid ID</source>
         <translation>شناسهٔ نامعتبر</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="848"/>
+        <location filename="../src/contactmodel.cpp" line="967"/>
         <source>Registered name not found</source>
         <translation>نام ثبت‌شده یافت نشد</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="851"/>
+        <location filename="../src/contactmodel.cpp" line="970"/>
         <source>Couldn&apos;t lookup…</source>
         <translation>ناتوانی در جستجو...</translation>
     </message>
@@ -419,7 +571,7 @@
 <context>
     <name>lrc::api::ContactModel</name>
     <message>
-        <location filename="../src/contactmodel.cpp" line="412"/>
+        <location filename="../src/contactmodel.cpp" line="423"/>
         <source>Bad URI scheme</source>
         <translation>شمای نشانی بد</translation>
     </message>
