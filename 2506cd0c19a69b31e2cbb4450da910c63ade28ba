@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "de75ef69_9c6554b0",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 549,
+      "author": {
+        "id": 225
+      },
+      "writtenOn": "2020-10-19T19:11:26Z",
+      "side": 1,
+      "message": "check if conv has value?",
+      "revId": "2506cd0c19a69b31e2cbb4450da910c63ade28ba",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    }
+  ]
+}
