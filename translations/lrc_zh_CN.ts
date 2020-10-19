@@ -1,4 +1,4 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="zh_CN" sourcelanguage="en" version="2.0">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="zh_CN" sourcelanguage="en" version="2.1">
 <context>
     <name>QObject</name>
     <message>
@@ -392,154 +392,154 @@
         <translation>任何地方都不可接受</translation>
     </message>
     <message>
-        <location filename="../src/api/chatview.h" line="35"/>
+        <location filename="../src/chatview.cpp" line="31"/>
         <source>Hide chat view</source>
         <translation>隐藏聊天界面</translation>
     </message>
     <message>
-        <location filename="../src/api/chatview.h" line="36"/>
+        <location filename="../src/chatview.cpp" line="32"/>
         <source>Place video call</source>
         <translation>发起视频通话</translation>
     </message>
     <message>
-        <location filename="../src/api/chatview.h" line="37"/>
+        <location filename="../src/chatview.cpp" line="33"/>
         <source>Place audio call</source>
         <translation>发起语音通话</translation>
     </message>
     <message>
-        <location filename="../src/api/chatview.h" line="38"/>
+        <location filename="../src/chatview.cpp" line="34"/>
         <source>Add to conversations</source>
         <translation>添加到会话</translation>
     </message>
     <message>
-        <location filename="../src/api/chatview.h" line="39"/>
+        <location filename="../src/chatview.cpp" line="35"/>
         <source>Unban contact</source>
         <translation>取消屏蔽联系人</translation>
     </message>
     <message>
-        <location filename="../src/api/chatview.h" line="40"/>
+        <location filename="../src/chatview.cpp" line="35"/>
         <source>Send</source>
         <translation>发送</translation>
     </message>
     <message>
-        <location filename="../src/api/chatview.h" line="41"/>
+        <location filename="../src/chatview.cpp" line="36"/>
         <source>Options</source>
         <translation>选项</translation>
     </message>
     <message>
-        <location filename="../src/api/chatview.h" line="42"/>
+        <location filename="../src/chatview.cpp" line="36"/>
         <source>Jump to latest</source>
         <translation>跳转至最新</translation>
     </message>
     <message>
-        <location filename="../src/api/chatview.h" line="43"/>
+        <location filename="../src/chatview.cpp" line="37"/>
         <source>Send file</source>
         <translation>发送文件</translation>
     </message>
     <message>
-        <location filename="../src/api/chatview.h" line="44"/>
+        <location filename="../src/chatview.cpp" line="38"/>
         <source>Leave video message</source>
         <translation>离开视频消息</translation>
     </message>
     <message>
-        <location filename="../src/api/chatview.h" line="45"/>
+        <location filename="../src/chatview.cpp" line="39"/>
         <source>Leave audio message</source>
         <translation>离开音频消息</translation>
     </message>
     <message>
-        <location filename="../src/api/chatview.h" line="46"/>
-        <location filename="../src/api/chatview.h" line="68"/>
+        <location filename="../src/chatview.cpp" line="40"/>
+        <location filename="../src/chatview.cpp" line="59"/>
         <source>Accept</source>
         <translation>接收</translation>
     </message>
     <message>
-        <location filename="../src/api/chatview.h" line="47"/>
-        <location filename="../src/api/chatview.h" line="69"/>
+        <location filename="../src/chatview.cpp" line="40"/>
+        <location filename="../src/chatview.cpp" line="60"/>
         <source>Refuse</source>
         <translation>拒接</translation>
     </message>
     <message>
-        <location filename="../src/api/chatview.h" line="48"/>
+        <location filename="../src/chatview.cpp" line="41"/>
         <source>Block</source>
         <translation>屏蔽</translation>
     </message>
     <message>
-        <location filename="../src/api/chatview.h" line="49"/>
+        <location filename="../src/chatview.cpp" line="41"/>
         <source>Type a message</source>
         <translation>输入信息</translation>
     </message>
     <message>
-        <location filename="../src/api/chatview.h" line="51"/>
+        <location filename="../src/chatview.cpp" line="43"/>
         <source>Note: an interaction will create a new contact.</source>
         <translation>注：交互将创建一个新的联系人。</translation>
     </message>
     <message>
-        <location filename="../src/api/chatview.h" line="52"/>
+        <location filename="../src/chatview.cpp" line="44"/>
         <source>is not in your contacts</source>
         <translation>不是您的联系人</translation>
     </message>
     <message>
-        <location filename="../src/api/chatview.h" line="54"/>
+        <location filename="../src/chatview.cpp" line="46"/>
         <source>Note: you can automatically accept this invitation by sending a message.</source>
         <translation>注：您可以通过发送消息自动接受此邀请。</translation>
     </message>
     <message>
-        <location filename="../src/api/chatview.h" line="56"/>
+        <location filename="../src/chatview.cpp" line="49"/>
         <source>{0} days ago</source>
         <translation>{0} 天前</translation>
     </message>
     <message>
-        <location filename="../src/api/chatview.h" line="57"/>
+        <location filename="../src/chatview.cpp" line="50"/>
         <source>{0} hours ago</source>
         <translation>{0} 小时前</translation>
     </message>
     <message>
-        <location filename="../src/api/chatview.h" line="58"/>
+        <location filename="../src/chatview.cpp" line="51"/>
         <source>{0} minutes ago</source>
         <translation>{0} 分钟前</translation>
     </message>
     <message>
-        <location filename="../src/api/chatview.h" line="60"/>
+        <location filename="../src/chatview.cpp" line="53"/>
         <source>%d days ago</source>
         <translation>%d天前</translation>
     </message>
     <message>
-        <location filename="../src/api/chatview.h" line="61"/>
+        <location filename="../src/chatview.cpp" line="54"/>
         <source>%d hours ago</source>
         <translation>%d小时前</translation>
     </message>
     <message>
-        <location filename="../src/api/chatview.h" line="62"/>
+        <location filename="../src/chatview.cpp" line="55"/>
         <source>%d minutes ago</source>
         <translation>%d分钟前</translation>
     </message>
     <message>
-        <location filename="../src/api/chatview.h" line="64"/>
+        <location filename="../src/chatview.cpp" line="57"/>
         <source>one day ago</source>
         <translation>一天前</translation>
     </message>
     <message>
-        <location filename="../src/api/chatview.h" line="65"/>
+        <location filename="../src/chatview.cpp" line="58"/>
         <source>one hour ago</source>
         <translation>一小时前</translation>
     </message>
     <message>
-        <location filename="../src/api/chatview.h" line="66"/>
+        <location filename="../src/chatview.cpp" line="58"/>
         <source>just now</source>
         <translation>刚才</translation>
     </message>
     <message>
-        <location filename="../src/api/chatview.h" line="67"/>
+        <location filename="../src/chatview.cpp" line="59"/>
         <source>Failure</source>
         <translation>失败</translation>
     </message>
     <message>
-        <location filename="../src/api/chatview.h" line="70"/>
+        <location filename="../src/chatview.cpp" line="60"/>
         <source>Delete</source>
         <translation>删除</translation>
     </message>
     <message>
-        <location filename="../src/api/chatview.h" line="71"/>
+        <location filename="../src/chatview.cpp" line="61"/>
         <source>Retry</source>
         <translation>重试</translation>
     </message>

@@ -1,4 +1,4 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="fi" sourcelanguage="en" version="2.0">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="fi" sourcelanguage="en" version="2.1">
 <context>
     <name>QObject</name>
     <message>
@@ -392,156 +392,156 @@
         <translation>Ei hyväksytä missään</translation>
     </message>
     <message>
-        <location filename="../src/api/chatview.h" line="35"/>
+        <location filename="../src/chatview.cpp" line="31"/>
         <source>Hide chat view</source>
-        <translation type="unfinished"/>
+        <translation>Piilota chat-näkymä</translation>
     </message>
     <message>
-        <location filename="../src/api/chatview.h" line="36"/>
+        <location filename="../src/chatview.cpp" line="32"/>
         <source>Place video call</source>
-        <translation type="unfinished"/>
+        <translation>Aloita videopuhelu</translation>
     </message>
     <message>
-        <location filename="../src/api/chatview.h" line="37"/>
+        <location filename="../src/chatview.cpp" line="33"/>
         <source>Place audio call</source>
-        <translation type="unfinished"/>
+        <translation>Aloita äänipuhelu</translation>
     </message>
     <message>
-        <location filename="../src/api/chatview.h" line="38"/>
+        <location filename="../src/chatview.cpp" line="34"/>
         <source>Add to conversations</source>
-        <translation type="unfinished"/>
+        <translation>Lisää keskusteluihin</translation>
     </message>
     <message>
-        <location filename="../src/api/chatview.h" line="39"/>
+        <location filename="../src/chatview.cpp" line="35"/>
         <source>Unban contact</source>
-        <translation type="unfinished"/>
+        <translation>Poista esto</translation>
     </message>
     <message>
-        <location filename="../src/api/chatview.h" line="40"/>
+        <location filename="../src/chatview.cpp" line="35"/>
         <source>Send</source>
-        <translation type="unfinished"/>
+        <translation>Lähetä</translation>
     </message>
     <message>
-        <location filename="../src/api/chatview.h" line="41"/>
+        <location filename="../src/chatview.cpp" line="36"/>
         <source>Options</source>
-        <translation type="unfinished"/>
+        <translation>Vaihtoehdot</translation>
     </message>
     <message>
-        <location filename="../src/api/chatview.h" line="42"/>
+        <location filename="../src/chatview.cpp" line="36"/>
         <source>Jump to latest</source>
-        <translation type="unfinished"/>
+        <translation>Hyppää uusimpaan</translation>
     </message>
     <message>
-        <location filename="../src/api/chatview.h" line="43"/>
+        <location filename="../src/chatview.cpp" line="37"/>
         <source>Send file</source>
-        <translation type="unfinished"/>
+        <translation>Lähetä tiedosto</translation>
     </message>
     <message>
-        <location filename="../src/api/chatview.h" line="44"/>
+        <location filename="../src/chatview.cpp" line="38"/>
         <source>Leave video message</source>
-        <translation type="unfinished"/>
+        <translation>Jätä videoviesti</translation>
     </message>
     <message>
-        <location filename="../src/api/chatview.h" line="45"/>
+        <location filename="../src/chatview.cpp" line="39"/>
         <source>Leave audio message</source>
-        <translation type="unfinished"/>
+        <translation>Jätä ääniviesti</translation>
     </message>
     <message>
-        <location filename="../src/api/chatview.h" line="46"/>
-        <location filename="../src/api/chatview.h" line="68"/>
+        <location filename="../src/chatview.cpp" line="40"/>
+        <location filename="../src/chatview.cpp" line="59"/>
         <source>Accept</source>
-        <translation type="unfinished"/>
+        <translation>Hyväksy</translation>
     </message>
     <message>
-        <location filename="../src/api/chatview.h" line="47"/>
-        <location filename="../src/api/chatview.h" line="69"/>
+        <location filename="../src/chatview.cpp" line="40"/>
+        <location filename="../src/chatview.cpp" line="60"/>
         <source>Refuse</source>
-        <translation type="unfinished"/>
+        <translation>Kieltäydy</translation>
     </message>
     <message>
-        <location filename="../src/api/chatview.h" line="48"/>
+        <location filename="../src/chatview.cpp" line="41"/>
         <source>Block</source>
-        <translation type="unfinished"/>
+        <translation>Estä</translation>
     </message>
     <message>
-        <location filename="../src/api/chatview.h" line="49"/>
+        <location filename="../src/chatview.cpp" line="41"/>
         <source>Type a message</source>
-        <translation type="unfinished"/>
+        <translation>Kirjoita viesti</translation>
     </message>
     <message>
-        <location filename="../src/api/chatview.h" line="51"/>
+        <location filename="../src/chatview.cpp" line="43"/>
         <source>Note: an interaction will create a new contact.</source>
-        <translation type="unfinished"/>
+        <translation>Huomaa: yhteydenotto tekee uuden yhteystiedon.</translation>
     </message>
     <message>
-        <location filename="../src/api/chatview.h" line="52"/>
+        <location filename="../src/chatview.cpp" line="44"/>
         <source>is not in your contacts</source>
-        <translation type="unfinished"/>
+        <translation>ei ole yhteystiedoissasi</translation>
     </message>
     <message>
-        <location filename="../src/api/chatview.h" line="54"/>
+        <location filename="../src/chatview.cpp" line="46"/>
         <source>Note: you can automatically accept this invitation by sending a message.</source>
-        <translation type="unfinished"/>
+        <translation>Huomaa: voit automaattisesti hyväksyä tämän kutsun lähettämällä viestin.</translation>
     </message>
     <message>
-        <location filename="../src/api/chatview.h" line="56"/>
+        <location filename="../src/chatview.cpp" line="49"/>
         <source>{0} days ago</source>
-        <translation type="unfinished"/>
+        <translation>{0} päivää sitten</translation>
     </message>
     <message>
-        <location filename="../src/api/chatview.h" line="57"/>
+        <location filename="../src/chatview.cpp" line="50"/>
         <source>{0} hours ago</source>
-        <translation type="unfinished"/>
+        <translation>{0} tuntia sitten</translation>
     </message>
     <message>
-        <location filename="../src/api/chatview.h" line="58"/>
+        <location filename="../src/chatview.cpp" line="51"/>
         <source>{0} minutes ago</source>
-        <translation type="unfinished"/>
+        <translation>{0} minuuttia sitten</translation>
     </message>
     <message>
-        <location filename="../src/api/chatview.h" line="60"/>
+        <location filename="../src/chatview.cpp" line="53"/>
         <source>%d days ago</source>
-        <translation type="unfinished"/>
+        <translation>%d päivää sitten</translation>
     </message>
     <message>
-        <location filename="../src/api/chatview.h" line="61"/>
+        <location filename="../src/chatview.cpp" line="54"/>
         <source>%d hours ago</source>
-        <translation type="unfinished"/>
+        <translation>%d tuntia sitten</translation>
     </message>
     <message>
-        <location filename="../src/api/chatview.h" line="62"/>
+        <location filename="../src/chatview.cpp" line="55"/>
         <source>%d minutes ago</source>
-        <translation type="unfinished"/>
+        <translation>%d minuuttia sitten</translation>
     </message>
     <message>
-        <location filename="../src/api/chatview.h" line="64"/>
+        <location filename="../src/chatview.cpp" line="57"/>
         <source>one day ago</source>
-        <translation type="unfinished"/>
+        <translation>yksi päivä sitten</translation>
     </message>
     <message>
-        <location filename="../src/api/chatview.h" line="65"/>
+        <location filename="../src/chatview.cpp" line="58"/>
         <source>one hour ago</source>
-        <translation type="unfinished"/>
+        <translation>yksi tunti sitten</translation>
     </message>
     <message>
-        <location filename="../src/api/chatview.h" line="66"/>
+        <location filename="../src/chatview.cpp" line="58"/>
         <source>just now</source>
-        <translation type="unfinished"/>
+        <translation>juuri nyt</translation>
     </message>
     <message>
-        <location filename="../src/api/chatview.h" line="67"/>
+        <location filename="../src/chatview.cpp" line="59"/>
         <source>Failure</source>
-        <translation type="unfinished"/>
+        <translation>Virhe</translation>
     </message>
     <message>
-        <location filename="../src/api/chatview.h" line="70"/>
+        <location filename="../src/chatview.cpp" line="60"/>
         <source>Delete</source>
-        <translation type="unfinished"/>
+        <translation>Poista</translation>
     </message>
     <message>
-        <location filename="../src/api/chatview.h" line="71"/>
+        <location filename="../src/chatview.cpp" line="61"/>
         <source>Retry</source>
-        <translation type="unfinished"/>
+        <translation>Yritä uudelleen</translation>
     </message>
 </context>
 <context>
