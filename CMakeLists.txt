@@ -42,7 +42,6 @@ set(COMMON_SOURCES
     src/main.cpp
     src/smartlistmodel.cpp
     src/utils.cpp
-    src/pixbufmanipulator.cpp
     src/rendermanager.cpp
     src/connectivitymonitor.cpp
     src/mainapplication.cpp
@@ -85,7 +84,6 @@ set(COMMON_HEADERS
     src/globalsystemtray.h
     src/appsettingsmanager.h
     src/webchathelpers.h
-    src/pixbufmanipulator.h
     src/rendermanager.h
     src/connectivitymonitor.h
     src/jamiavatartheme.h

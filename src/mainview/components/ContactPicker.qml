@@ -125,8 +125,6 @@ Popup {
     }
 
     onAboutToShow: {
-
-
         // Reset the model on each show.
         contactPickerListView.model = ContactAdapter.getContactSelectableModel(
                     type)

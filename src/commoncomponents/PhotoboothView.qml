@@ -10,18 +10,16 @@ import net.jami.Adapters 1.0
 ColumnLayout {
     property bool takePhotoState: false
     property bool hasAvatar: false
-    property bool isDefaultIcon: false
-    property string imgBase64: ""
+    // saveToConfig is to specify whether the image should be saved to account config
+    property bool saveToConfig: false
     property string fileName: ""
+    property var boothImg: ""
 
     property int boothWidth: 224
 
     readonly property int size: boothWidth +
                                 buttonsRowLayout.height +
                                 JamiTheme.preferredMarginSize / 2
-
-    signal imageAcquired
-    signal imageCleared
 
     function startBooth(force = false){
         hasAvatar = false
@@ -39,12 +37,15 @@ ColumnLayout {
         takePhotoState = false
     }
 
-    function setAvatarPixmap(avatarPixmapBase64, defaultValue = false){
-        imgBase64 = avatarPixmapBase64
-        stopBooth()
-        if(defaultValue){
-            isDefaultIcon = defaultValue
-        }
+    function setAvatarImage(mode = AvatarImage.Mode.FromAccount,
+                            imageId = AccountAdapter.currentAccountId){
+        if (mode === AvatarImage.Mode.Default)
+            boothImg = ""
+
+        avatarImg.mode = mode
+
+        if (imageId)
+            avatarImg.updateImage(imageId)
     }
 
     onVisibleChanged: {
@@ -68,14 +69,13 @@ ColumnLayout {
         onAccepted: {
             fileName = file
             if (fileName.length === 0) {
-                imageCleared()
+                SettingsAdapter.clearCurrentAvatar()
+                setAvatarImage()
                 return
             }
-            imgBase64 = UtilsAdapter.getCroppedImageBase64FromFile(
-                            UtilsAdapter.getAbsPath(fileName),
-                            boothWidth)
-            imageAcquired()
-            stopBooth()
+
+            setAvatarImage(AvatarImage.Mode.FromFile,
+                           UtilsAdapter.getAbsPath(fileName))
         }
     }
 
@@ -96,28 +96,39 @@ ColumnLayout {
             color: "grey"
             radius: height / 2
 
-            Image {
+            AvatarImage {
                 id: avatarImg
 
                 anchors.fill: parent
-                source: {
-                    if(imgBase64.length === 0){
-                        return "qrc:/images/default_avatar_overlay.svg"
-                    } else {
-                        return "data:image/png;base64," + imgBase64
-                    }
-                }
+
+                imageId: AccountAdapter.currentAccountId
+
+                showPresenceIndicator: false
+
                 fillMode: Image.PreserveAspectCrop
+
                 layer.enabled: true
                 layer.effect: OpacityMask {
                     maskSource: Rectangle {
                         width: avatarImg.width
                         height: avatarImg.height
                         radius: {
-                            var size = ((avatarImg.width <= avatarImg.height)? avatarImg.width:avatarImg.height)
-                            return size /2
+                            var size = ((avatarImg.width <= avatarImg.height) ?
+                                            avatarImg.width:avatarImg.height)
+                            return size / 2
                         }
                     }
+                }
+
+                onImageIsReady: {
+                    // Once image is loaded (updated), save to boothImg
+                    avatarImg.grabToImage(function(result) {
+                        if (mode !== AvatarImage.Mode.Default)
+                            boothImg = result.image
+
+                        if (saveToConfig)
+                            SettingsAdapter.setCurrAccAvatar(result.image)
+                    })
                 }
             }
         }
@@ -126,9 +137,7 @@ ColumnLayout {
     PhotoboothPreviewRender {
         id:previewWidget
 
-        onHideBooth:{
-            stopBooth()
-        }
+        onHideBooth: stopBooth()
 
         visible: takePhotoState
         focus: visible
@@ -143,8 +152,9 @@ ColumnLayout {
                 width: previewWidget.width
                 height: previewWidget.height
                 radius: {
-                    var size = ((previewWidget.width <= previewWidget.height)? previewWidget.width:previewWidget.height)
-                    return size /2
+                    var size = ((previewWidget.width <= previewWidget.height) ?
+                                    previewWidget.width:previewWidget.height)
+                    return size / 2
                 }
             }
         }
@@ -191,7 +201,6 @@ ColumnLayout {
 
             radius: height / 6
             source: {
-
                 if(takePhotoState) {
                     toolTipText = qsTr("Take photo")
                     return cameraAltIconUrl
@@ -205,9 +214,9 @@ ColumnLayout {
                     return addPhotoIconUrl
                 }
             }
+
             onClicked: {
                 if(!takePhotoState){
-                    imageCleared()
                     startBooth()
                     return
                 } else {
@@ -215,11 +224,13 @@ ColumnLayout {
                     flashOverlay.visible = true
                     flashAnimation.restart()
 
-                    // run concurrent function call to take photo
-                    imgBase64 = previewWidget.takeCroppedPhotoToBase64(boothWidth)
-                    hasAvatar = true
-                    imageAcquired()
-                    stopBooth()
+                    previewWidget.grabToImage(function(result) {
+
+                        setAvatarImage(AvatarImage.Mode.FromUrl, result.url)
+
+                        hasAvatar = true
+                        stopBooth()
+                    })
                 }
             }
         }

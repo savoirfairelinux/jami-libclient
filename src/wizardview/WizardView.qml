@@ -385,14 +385,13 @@ Rectangle {
                 }
 
                 onSaveProfile: {
-                    SettingsAdapter.setCurrAccAvatar(profilePage.boothImgBase64)
+                    if (profilePage.profileImg)
+                        SettingsAdapter.setCurrAccAvatar(profilePage.profileImg)
                     AccountAdapter.setCurrAccDisplayName(profilePage.displayName)
                     leave()
                 }
 
-                onLeavePage: {
-                    leave()
-                }
+                onLeavePage: leave()
             }
         }
     }

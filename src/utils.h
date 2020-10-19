@@ -100,11 +100,9 @@ bool getReplyMessageBox(QWidget* widget, const QString& title, const QString& te
  * Image manipulation
  */
 static const QSize defaultAvatarSize {128, 128};
-QString getContactImageString(const QString& accountId, const QString& uid);
+QImage contactPhotoFromBase64(const QByteArray& data, const QString& type);
+QImage contactPhoto(const QString& contactUri, const QSize& size = defaultAvatarSize);
 QImage getCirclePhoto(const QImage original, int sizePhoto);
-QImage conversationPhoto(const QString& convUid,
-                         const lrc::api::account::Info& accountInfo,
-                         bool filtered = false);
 QColor getAvatarColor(const QString& canonicalUri);
 QImage fallbackAvatar(const QString& canonicalUriStr,
                       const QString& letterStr = QString(),
@@ -123,6 +121,7 @@ QImage cropImage(const QImage& img);
 QPixmap pixmapFromSvg(const QString& svg_resource, const QSize& size);
 QImage setupQRCode(QString ringID, int margin);
 bool isImage(const QString& fileExt);
+QString generateUid();
 
 /*
  * Misc

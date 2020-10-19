@@ -97,7 +97,6 @@
         <file>src/mainview/components/ProjectCreditsScrollView.qml</file>
         <file>src/mainview/components/AccountComboBoxPopup.qml</file>
         <file>src/mainview/components/ConversationSmartListViewItemDelegate.qml</file>
-        <file>src/mainview/components/ConversationSmartListUserImage.qml</file>
         <file>src/mainview/components/SidePanelTabBar.qml</file>
         <file>src/mainview/components/WelcomePageQrDialog.qml</file>
         <file>src/commoncomponents/GeneralMenuItem.qml</file>
@@ -137,5 +136,6 @@
         <file>src/commoncomponents/SimpleMessageDialog.qml</file>
         <file>src/commoncomponents/ResponsiveImage.qml</file>
         <file>src/commoncomponents/PresenceIndicator.qml</file>
+        <file>src/commoncomponents/AvatarImage.qml</file>
     </qresource>
 </RCC>

@@ -106,12 +106,6 @@ UtilsAdapter::checkStartupLink()
 }
 
 const QString
-UtilsAdapter::getContactImageString(const QString& accountId, const QString& uid)
-{
-    return Utils::getContactImageString(accountId, uid);
-}
-
-const QString
 UtilsAdapter::getBestName(const QString& accountId, const QString& uid)
 {
     auto* convModel = LRCInstance::getAccountInfo(accountId).conversationModel.get();
@@ -354,17 +348,6 @@ UtilsAdapter::getAbsPath(QString path)
 #else
     return path.replace(QRegExp("^file:\\/{2,3}"), "/").replace("\n", "").replace("\r", "");
 #endif
-}
-
-QString
-UtilsAdapter::getCroppedImageBase64FromFile(QString fileName, int size)
-{
-    auto image = Utils::cropImage(QImage(fileName));
-    auto croppedImage = image.scaled(size,
-                                     size,
-                                     Qt::KeepAspectRatioByExpanding,
-                                     Qt::SmoothTransformation);
-    return QString::fromLatin1(Utils::QImageToByteArray(croppedImage).toBase64().data());
 }
 
 bool

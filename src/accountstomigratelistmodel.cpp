@@ -92,9 +92,6 @@ AccountsToMigrateListModel::data(const QModelIndex& index, int role) const
         return QVariant(avatarInfo.confProperties.username);
     case Role::Alias:
         return QVariant(LRCInstance::accountModel().getAccountInfo(accountId).profileInfo.alias);
-    case Role::Picture:
-        return QString::fromLatin1(
-            Utils::QImageToByteArray(Utils::accountPhoto(avatarInfo)).toBase64().data());
     }
     return QVariant();
 }
@@ -108,7 +105,6 @@ AccountsToMigrateListModel::roleNames() const
     roles[ManagerUri] = "ManagerUri";
     roles[Username] = "Username";
     roles[Alias] = "Alias";
-    roles[Picture] = "Picture";
     return roles;
 }
 

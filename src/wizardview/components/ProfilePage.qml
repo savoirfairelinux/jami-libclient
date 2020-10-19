@@ -26,11 +26,13 @@ import "../../commoncomponents"
 Rectangle {
     id: root
 
+    property alias profileImg: setAvatarWidget.boothImg
     property int preferredHeight: profilePageColumnLayout.implicitHeight
 
     function initializeOnShowUp() {
+        setAvatarWidget.hasAvatar = false
+        setAvatarWidget.setAvatarImage(AvatarImage.Mode.Default, "")
         clearAllTextFields()
-        boothImgBase64 = ""
         saveProfileBtn.spinnerTriggered = true
     }
 
@@ -48,7 +50,6 @@ Rectangle {
     signal saveProfile
 
     property var showBottom: false
-    property alias boothImgBase64: setAvatarWidget.imgBase64
     property alias displayName: aliasEdit.text
     property bool isRdv: false
 

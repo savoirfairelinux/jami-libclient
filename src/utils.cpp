@@ -25,9 +25,7 @@
 #include "globalsystemtray.h"
 #include "jamiavatartheme.h"
 #include "lrcinstance.h"
-#include "pixbufmanipulator.h"
 
-#include <globalinstances.h>
 #include <qrencode.h>
 
 #include <QApplication>
@@ -43,6 +41,7 @@
 #include <QSvgRenderer>
 #include <QTranslator>
 #include <QtConcurrent/QtConcurrent>
+#include <QUuid>
 
 #ifdef Q_OS_WIN
 #include <lmcons.h>
@@ -245,14 +244,52 @@ Utils::GetISODate()
 #endif
 }
 
-QString
-Utils::getContactImageString(const QString& accountId, const QString& uid)
+QImage
+Utils::contactPhoto(const QString& contactUri, const QSize& size)
 {
-    return QString::fromLatin1(
-        Utils::QImageToByteArray(
-            Utils::conversationPhoto(uid, LRCInstance::getAccountInfo(accountId)))
-            .toBase64()
-            .data());
+    QImage photo;
+
+    try {
+        /*
+         * Get first contact photo.
+         */
+        auto& accountInfo = LRCInstance::accountModel().getAccountInfo(LRCInstance::getCurrAccId());
+        auto contactInfo = accountInfo.contactModel->getContact(contactUri);
+        auto contactPhoto = contactInfo.profileInfo.avatar;
+        auto bestName = Utils::bestNameForContact(contactInfo);
+        auto bestId = Utils::bestIdForContact(contactInfo);
+        if (accountInfo.profileInfo.type == lrc::api::profile::Type::SIP
+            && contactInfo.profileInfo.type == lrc::api::profile::Type::TEMPORARY) {
+            photo = Utils::fallbackAvatar(QString(), QString());
+        } else if (contactInfo.profileInfo.type == lrc::api::profile::Type::TEMPORARY
+                   && contactInfo.profileInfo.uri.isEmpty()) {
+            photo = Utils::fallbackAvatar(QString(), QString());
+        } else if (!contactPhoto.isEmpty()) {
+            QByteArray byteArray = contactPhoto.toLocal8Bit();
+            photo = contactPhotoFromBase64(byteArray, nullptr);
+            if (photo.isNull()) {
+                auto avatarName = contactInfo.profileInfo.uri == bestName ? QString() : bestName;
+                photo = Utils::fallbackAvatar("ring:" + contactInfo.profileInfo.uri, avatarName);
+            }
+        } else {
+            auto avatarName = contactInfo.profileInfo.uri == bestName ? QString() : bestName;
+            photo = Utils::fallbackAvatar("ring:" + contactInfo.profileInfo.uri, avatarName);
+        }
+    } catch (...) {
+    }
+    return Utils::scaleAndFrame(photo, size);
+}
+
+QImage
+Utils::contactPhotoFromBase64(const QByteArray& data, const QString& type)
+{
+    QImage avatar;
+    const bool ret = avatar.loadFromData(QByteArray::fromBase64(data), type.toLatin1());
+    if (!ret) {
+        qDebug() << "Utils: vCard image loading failed";
+        return QImage();
+    }
+    return Utils::getCirclePhoto(avatar, avatar.size().width());
 }
 
 QImage
@@ -549,21 +586,6 @@ Utils::getReplyMessageBox(QWidget* widget, const QString& title, const QString& 
     return false;
 }
 
-QImage
-Utils::conversationPhoto(const QString& convUid,
-                         const lrc::api::account::Info& accountInfo,
-                         bool filtered)
-{
-    auto* convModel = LRCInstance::getCurrentConversationModel();
-    const auto convInfo = convModel->getConversationForUID(convUid);
-    if (!convInfo.uid.isEmpty()) {
-        return GlobalInstances::pixmapManipulator()
-            .decorationRole(convInfo, accountInfo)
-            .value<QImage>();
-    }
-    return QImage();
-}
-
 QColor
 Utils::getAvatarColor(const QString& canonicalUri)
 {
@@ -587,10 +609,12 @@ Utils::getAvatarColor(const QString& canonicalUri)
 QImage
 Utils::fallbackAvatar(const QString& canonicalUriStr, const QString& letterStr, const QSize& size)
 {
+    auto sizeToUse = size.height() >= defaultAvatarSize.height() ? size : defaultAvatarSize;
+
     /*
      * We start with a transparent avatar.
      */
-    QImage avatar(size, QImage::Format_ARGB32);
+    QImage avatar(sizeToUse, QImage::Format_ARGB32);
     avatar.fill(Qt::transparent);
 
     /*
@@ -651,7 +675,7 @@ Utils::fallbackAvatar(const QString& canonicalUriStr, const QString& letterStr, 
         painter.drawPixmap(overlayRect, QPixmap(":/images/default_avatar_overlay.svg"));
     }
 
-    return avatar;
+    return avatar.scaled(size, Qt::KeepAspectRatio, Qt::SmoothTransformation);
 }
 
 QImage
@@ -802,7 +826,7 @@ Utils::accountPhoto(const lrc::api::account::Info& accountInfo, const QSize& siz
     QImage photo;
     if (!accountInfo.profileInfo.avatar.isEmpty()) {
         QByteArray ba = accountInfo.profileInfo.avatar.toLocal8Bit();
-        photo = GlobalInstances::pixmapManipulator().personPhoto(ba, nullptr).value<QImage>();
+        photo = contactPhotoFromBase64(ba, nullptr);
     } else {
         auto bestId = bestIdForAccount(accountInfo);
         auto bestName = bestNameForAccount(accountInfo);
@@ -842,4 +866,10 @@ Utils::isImage(const QString& fileExt)
     if (fileExt == "png" || fileExt == "jpg" || fileExt == "jpeg")
         return true;
     return false;
+}
+
+QString
+Utils::generateUid()
+{
+    return QUuid::createUuid().toString();
 }

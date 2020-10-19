@@ -373,13 +373,15 @@ AccountAdapter::connectAccount(const QString& accountId)
                                &lrc::api::NewAccountModel::profileUpdated,
                                [this](const QString& accountId) {
                                    if (LRCInstance::getCurrAccId() == accountId)
-                                       emit accountStatusChanged();
+                                       emit accountStatusChanged(accountId);
                                });
 
         accountStatusChangedConnection_
             = QObject::connect(accInfo.accountModel,
                                &lrc::api::NewAccountModel::accountStatusChanged,
-                               [this] { emit accountStatusChanged(); });
+                               [this](const QString& accountId) {
+                                   emit accountStatusChanged(accountId);
+                               });
 
         contactAddedConnection_
             = QObject::connect(accInfo.contactModel.get(),

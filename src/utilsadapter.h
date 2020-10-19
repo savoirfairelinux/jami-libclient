@@ -44,7 +44,6 @@ public:
     Q_INVOKABLE bool createStartupLink();
     Q_INVOKABLE QString GetRingtonePath();
     Q_INVOKABLE bool checkStartupLink();
-    Q_INVOKABLE const QString getContactImageString(const QString& accountId, const QString& uid);
     Q_INVOKABLE void removeConversation(const QString& accountId,
                                         const QString& uid,
                                         bool banContact = false);
@@ -77,7 +76,6 @@ public:
     Q_INVOKABLE QString toFileInfoName(QString inputFileName);
     Q_INVOKABLE QString toFileAbsolutepath(QString inputFileName);
     Q_INVOKABLE QString getAbsPath(QString path);
-    Q_INVOKABLE QString getCroppedImageBase64FromFile(QString fileName, int size);
     Q_INVOKABLE bool checkShowPluginsButton();
     Q_INVOKABLE QString fileName(const QString& path);
     Q_INVOKABLE QString getExt(const QString& path);

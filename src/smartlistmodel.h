@@ -24,6 +24,7 @@
 #include "api/contact.h"
 #include "api/conversation.h"
 #include "api/conversationmodel.h"
+#include "api/contactmodel.h"
 
 #include <QAbstractItemModel>
 
@@ -42,7 +43,6 @@ public:
     enum Role {
         DisplayName = Qt::UserRole + 1,
         DisplayID,
-        Picture,
         Presence,
         URI,
         UnreadMessagesCount,
@@ -58,6 +58,7 @@ public:
         CallState,
         SectionName,
         AccountId,
+        PictureUid,
         Draft
     };
     Q_ENUM(Role)
@@ -85,15 +86,28 @@ public:
     Q_INVOKABLE void fillConversationsList();
     Q_INVOKABLE void updateConversation(const QString& conv);
 
+    /*
+     * This function is to update contact avatar uuid for current account when there's an contact
+     * avatar changed.
+     */
+    Q_INVOKABLE void updateContactAvatarUid(const QString& contactUri);
+
 private:
     QVariant getConversationItemData(const ConversationInfo& item,
                                      const AccountInfo& accountInfo,
                                      int role) const;
+
+    /*
+     * Give a uuid for each contact avatar for current account and it will serve PictureUid role
+     */
+    void fillContactAvatarUidMap(const ContactModel::ContactInfoMap& contacts);
+
     /*
      * List sectioning.
      */
     Type listModelType_;
     QMap<QString, bool> sectionState_;
     QMap<ConferenceableItem, ConferenceableValue> conferenceables_;
+    QMap<QString, QString> contactAvatarUidMap_;
     ConversationModel::ConversationQueue conversations_;
 };

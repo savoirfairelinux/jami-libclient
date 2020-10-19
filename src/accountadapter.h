@@ -110,7 +110,7 @@ signals:
     /*
      * Trigger other components to reconnect account related signals.
      */
-    void accountStatusChanged();
+    void accountStatusChanged(QString accountId = {});
     void updateConversationForAddedContact();
     /*
      * send report failure to QML to make it show the right UI state .

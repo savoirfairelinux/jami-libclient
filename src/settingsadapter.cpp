@@ -263,15 +263,6 @@ SettingsAdapter::getAccountBestName()
     return Utils::bestNameForAccount(LRCInstance::getCurrentAccountInfo());
 }
 
-QString
-SettingsAdapter::getAvatarImage_Base64(int avatarSize)
-{
-    auto& accountInfo = LRCInstance::getCurrentAccountInfo();
-    auto avatar = Utils::accountPhoto(accountInfo, {avatarSize, avatarSize});
-
-    return QString::fromLatin1(Utils::QImageToByteArray(avatar).toBase64().data());
-}
-
 bool
 SettingsAdapter::getIsDefaultAvatar()
 {
@@ -280,18 +271,10 @@ SettingsAdapter::getIsDefaultAvatar()
     return accountInfo.profileInfo.avatar.isEmpty();
 }
 
-bool
-SettingsAdapter::setCurrAccAvatar(QString avatarImgBase64)
+void
+SettingsAdapter::setCurrAccAvatar(QVariant avatarImg)
 {
-    QImage avatarImg;
-    const bool ret = avatarImg.loadFromData(QByteArray::fromBase64(avatarImgBase64.toLatin1()));
-    if (!ret) {
-        qDebug() << "Current avatar loading from base64 fail";
-        return false;
-    } else {
-        LRCInstance::setCurrAccAvatar(QPixmap::fromImage(avatarImg));
-    }
-    return true;
+    LRCInstance::setCurrAccAvatar(QPixmap::fromImage(avatarImg.value<QImage>()));
 }
 
 void

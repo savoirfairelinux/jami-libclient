@@ -31,14 +31,7 @@ class AccountsToMigrateListModel : public QAbstractListModel
 {
     Q_OBJECT
 public:
-    enum Role {
-        Account_ID = Qt::UserRole + 1,
-        ManagerUsername,
-        ManagerUri,
-        Username,
-        Alias,
-        Picture
-    };
+    enum Role { Account_ID = Qt::UserRole + 1, ManagerUsername, ManagerUri, Username, Alias };
     Q_ENUM(Role)
 
     explicit AccountsToMigrateListModel(QObject* parent = 0);

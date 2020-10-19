@@ -27,7 +27,7 @@ class BannedListModel : public QAbstractListModel
     BannedListModel(const BannedListModel& cpy);
 
 public:
-    enum Role { ContactName = Qt::UserRole + 1, ContactID, ContactPicture };
+    enum Role { ContactName = Qt::UserRole + 1, ContactID };
     Q_ENUM(Role)
 
     explicit BannedListModel(QObject* parent = nullptr);

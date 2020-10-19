@@ -450,14 +450,14 @@ MessagesAdapter::setConversationProfileData(const lrc::api::conversation::Info& 
         auto& contact = accInfo->contactModel->getContact(contactUri);
         auto bestName = Utils::bestNameForConversation(convInfo, *convModel);
         setInvitation(contact.profileInfo.type == lrc::api::profile::Type::PENDING
-                      || contact.profileInfo.type == lrc::api::profile::Type::TEMPORARY,
+                          || contact.profileInfo.type == lrc::api::profile::Type::TEMPORARY,
                       bestName,
                       contactUri);
 
         if (!contact.profileInfo.avatar.isEmpty()) {
             setSenderImage(contactUri, contact.profileInfo.avatar);
         } else {
-            auto avatar = Utils::conversationPhoto(convInfo.uid, *accInfo, true);
+            auto avatar = Utils::contactPhoto(convInfo.participants[0]);
             QByteArray ba;
             QBuffer bu(&ba);
             avatar.save(&bu, "PNG");

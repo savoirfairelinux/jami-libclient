@@ -32,8 +32,6 @@ Rectangle {
     property alias text_sipPasswordEditAlias: sipPasswordEdit.text
     property int preferredHeight: createSIPAccountPageColumnLayout.implicitHeight
 
-    property var boothImgBase64: null
-
     signal createAccount
     signal leavePage
 

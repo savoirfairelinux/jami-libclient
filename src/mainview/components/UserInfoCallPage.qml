@@ -30,13 +30,11 @@ Rectangle {
     id: userInfoCallRect
 
     property int buttonPreferredSize: 48
-    property string contactImgSource: ""
     property string bestName: "Best Name"
     property string bestId: "Best Id"
 
     function updateUI(accountId, convUid) {
-        contactImgSource = "data:image/png;base64," + UtilsAdapter.getContactImageString(
-                    accountId, convUid)
+        contactImg.updateImage(convUid)
         bestName = UtilsAdapter.getBestName(accountId, convUid)
         var id = UtilsAdapter.getBestId(accountId, convUid)
         bestId = (bestName !== id) ? id : ""
@@ -74,7 +72,7 @@ Rectangle {
             onClicked: mainViewWindow.showWelcomeView()
         }
 
-        Image {
+        AvatarImage {
             id: contactImg
 
             Layout.alignment: Qt.AlignCenter
@@ -83,9 +81,8 @@ Rectangle {
             Layout.preferredWidth: 100
             Layout.preferredHeight: 100
 
-            fillMode: Image.PreserveAspectFit
-            source: contactImgSource
-            asynchronous: true
+            mode: AvatarImage.Mode.FromConvUid
+            showPresenceIndicator: false
         }
 
         Rectangle {

@@ -94,9 +94,8 @@ public:
     Q_INVOKABLE QString getAccountBestName();
 
     // getters and setters of avatar image
-    Q_INVOKABLE QString getAvatarImage_Base64(int avatarSize);
     Q_INVOKABLE bool getIsDefaultAvatar();
-    Q_INVOKABLE bool setCurrAccAvatar(QString avatarImgBase64);
+    Q_INVOKABLE void setCurrAccAvatar(QVariant avatarImg);
     Q_INVOKABLE void clearCurrentAvatar();
 
     /*

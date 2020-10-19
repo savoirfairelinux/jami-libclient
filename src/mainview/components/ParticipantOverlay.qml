@@ -39,6 +39,7 @@ Rectangle {
         participantName.text = name
     }
 
+    // TODO: try to use AvatarImage as well
     function setAvatar(avatar) {
         if (avatar === "") {
             opacity = 0

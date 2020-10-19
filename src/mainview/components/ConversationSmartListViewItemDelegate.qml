@@ -30,6 +30,8 @@ ItemDelegate {
 
     property int lastInteractionPreferredWidth: 80
 
+    signal updateContactAvatarUidRequested(string uid)
+
     function convUid() {
         return UID
     }
@@ -76,14 +78,29 @@ ItemDelegate {
         }
     }
 
-    ConversationSmartListUserImage {
+    AvatarImage {
         id: conversationSmartListUserImage
 
         anchors.left: parent.left
         anchors.verticalCenter: parent.verticalCenter
         anchors.leftMargin: 16
-    }
 
+        width: 40
+        height: 40
+
+        mode: AvatarImage.Mode.FromContactUri
+
+        showPresenceIndicator: Presence === undefined ? false : Presence
+
+        unreadMessagesCount: UnreadMessagesCount
+
+        Component.onCompleted: {
+            var contactUid = URI
+            if (ContactType === Profile.Type.TEMPORARY)
+                updateContactAvatarUidRequested(contactUid)
+            updateImage(contactUid, PictureUid)
+        }
+    }
 
     RowLayout {
         id: rowUsernameAndLastInteractionDate
@@ -202,7 +219,7 @@ ItemDelegate {
                 userProfile.aliasText = DisplayName
                 userProfile.registeredNameText = DisplayID
                 userProfile.idText = URI
-                userProfile.contactPicBase64 = Picture
+                userProfile.contactImageUid = UID
                 smartListContextMenu.openMenu()
             } else if (mouse.button === Qt.LeftButton) {
                 conversationSmartListView.currentIndex = -1

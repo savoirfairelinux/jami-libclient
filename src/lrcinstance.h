@@ -336,15 +336,6 @@ public:
         return -1;
     }
 
-    static const QPixmap getCurrAccPixmap()
-    {
-        return instance()
-            .accountListModel_
-            .data(instance().accountListModel_.index(getCurrentAccountIndex()),
-                  AccountListModel::Role::Picture)
-            .value<QPixmap>();
-    }
-
     static void setAvatarForAccount(const QPixmap& avatarPixmap, const QString& accountID)
     {
         QByteArray ba;

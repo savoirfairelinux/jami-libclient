@@ -137,7 +137,6 @@ ColumnLayout {
 
             contactName : ContactName
             contactID: ContactID
-            contactPicture_base64: ContactPicture
 
             onClicked: bannedListWidget.currentIndex = index
 

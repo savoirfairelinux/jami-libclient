@@ -112,24 +112,6 @@ PhotoboothPreviewRender::PhotoboothPreviewRender(QQuickItem* parent)
 
 PhotoboothPreviewRender::~PhotoboothPreviewRender() {}
 
-QImage
-PhotoboothPreviewRender::takePhoto()
-{
-    if (auto previewImage = LRCInstance::renderer()->getPreviewFrame()) {
-        return previewImage->copy();
-    }
-    return QImage();
-}
-
-QString
-PhotoboothPreviewRender::takeCroppedPhotoToBase64(int size)
-{
-    auto image = Utils::cropImage(takePhoto());
-    auto avatar = image.scaled(size, size, Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation);
-
-    return QString::fromLatin1(Utils::QImageToByteArray(avatar).toBase64().data());
-}
-
 void
 PhotoboothPreviewRender::paint(QPainter* painter)
 {

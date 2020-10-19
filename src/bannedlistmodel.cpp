@@ -61,12 +61,6 @@ BannedListModel::data(const QModelIndex& index, int role) const
         return QVariant(contactInfo.registeredName);
     case Role::ContactID:
         return QVariant(contactInfo.profileInfo.uri);
-    case Role::ContactPicture:
-        QImage avatarImage = Utils::fallbackAvatar(contactInfo.profileInfo.uri,
-                                                   contactInfo.registeredName,
-                                                   QSize(48, 48));
-
-        return QString::fromLatin1(Utils::QImageToByteArray(avatarImage).toBase64().data());
     }
     return QVariant();
 }
@@ -77,7 +71,6 @@ BannedListModel::roleNames() const
     QHash<int, QByteArray> roles;
     roles[ContactName] = "ContactName";
     roles[ContactID] = "ContactID";
-    roles[ContactPicture] = "ContactPicture";
     return roles;
 }
 

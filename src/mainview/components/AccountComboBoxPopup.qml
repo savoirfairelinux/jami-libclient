@@ -45,42 +45,29 @@ Popup {
     contentItem: ListView {
         id: comboBoxPopupListView
 
-
         // In list view, index is an interger.
         clip: true
         model: accountListModel
         implicitHeight: contentHeight
         delegate: ItemDelegate {
-            Image {
+            AvatarImage {
                 id: userImage
 
                 anchors.left: parent.left
                 anchors.leftMargin: 10
                 anchors.verticalCenter: parent.verticalCenter
 
-                width: 30
-                height: 30
+                width: 40
+                height: 40
 
-                fillMode: Image.PreserveAspectFit
-                mipmap: true
+                presenceStatus: Status
 
-                // Role::Picture
-                source: {
-                    var data = accountListModel.data(accountListModel.index(index, 0),
-                                                     AccountListModel.Picture)
-                    if (data === undefined) {
-                        return ""
-                    }
-                    return "data:image/png;base64," + data
-                }
-
-                PresenceIndicator {
-                    anchors.right: userImage.right
-                    anchors.rightMargin: -2
-                    anchors.bottom: userImage.bottom
-                    anchors.bottomMargin: -2
-
-                    status: Status
+                Component.onCompleted: {
+                    return updateImage(
+                                accountListModel.data(
+                                    accountListModel.index(index, 0), AccountListModel.ID),
+                                accountListModel.data(
+                                    accountListModel.index(index, 0), AccountListModel.PictureUid))
                 }
             }
 

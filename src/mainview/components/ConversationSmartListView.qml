@@ -89,6 +89,8 @@ ListView {
 
     delegate: ConversationSmartListViewItemDelegate {
         id: smartListItemDelegate
+
+        onUpdateContactAvatarUidRequested: root.model.updateContactAvatarUid(uid)
     }
 
     ScrollIndicator.vertical: ScrollIndicator {}

@@ -308,8 +308,8 @@ Window {
                             mainViewWindowSidePanel.forceReselectConversationSmartListCurrentIndex()
                         }
 
-                        function onAccountStatusChanged() {
-                            accountComboBox.resetAccountListModel()
+                        function onAccountStatusChanged(accountId) {
+                            accountComboBox.resetAccountListModel(accountId)
                         }
                     }
 

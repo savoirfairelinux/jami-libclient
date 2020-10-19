@@ -111,6 +111,7 @@ unix {
 
 # Input
 HEADERS += \
+        src/avatarimageprovider.h \
         src/networkmanager.h \
         src/smartlistmodel.h \
         src/updatemanager.h \
@@ -123,7 +124,6 @@ HEADERS += \
         src/globalsystemtray.h \
         src/appsettingsmanager.h \
         src/webchathelpers.h \
-        src/pixbufmanipulator.h \
         src/rendermanager.h \
         src/connectivitymonitor.h \
         src/jamiavatartheme.h \
@@ -168,7 +168,6 @@ SOURCES += \
         src/main.cpp \
         src/smartlistmodel.cpp \
         src/utils.cpp \
-        src/pixbufmanipulator.cpp \
         src/rendermanager.cpp \
         src/connectivitymonitor.cpp \
         src/mainapplication.cpp \

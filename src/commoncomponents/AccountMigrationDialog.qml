@@ -42,7 +42,6 @@ Window {
 
     property bool nonOperationClosing: true
     property bool successState : true
-    property string imgBase64: ""
 
     signal accountMigrationFinished
 
@@ -88,8 +87,7 @@ Window {
         accountID = accountsToMigrateListModel.data(accountsToMigrateListModel.index(
                                                         0, 0), AccountsToMigrateListModel.Account_ID)
 
-        imgBase64 = accountsToMigrateListModel.data(accountsToMigrateListModel.index(
-                                                        0, 0), AccountsToMigrateListModel.Picture)
+        avatarImg.updateImage(accountID)
 
         connectionMigrationEnded.enabled = false
         migrationPushButton.enabled = false
@@ -284,17 +282,13 @@ Window {
                             anchors.fill: parent
                             color: "transparent"
 
-                            Image {
+                            AvatarImage {
                                 id: avatarImg
 
                                 anchors.fill: parent
-                                source: {
-                                    if (imgBase64.length === 0) {
-                                        return ""
-                                    } else {
-                                        return "data:image/png;base64," + imgBase64
-                                    }
-                                }
+
+                                showPresenceIndicator: false
+
                                 fillMode: Image.PreserveAspectCrop
                                 layer.enabled: true
                                 layer.effect: OpacityMask {

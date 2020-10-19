@@ -26,7 +26,7 @@ import "../../commoncomponents"
 ItemDelegate {
     id: contactPickerItemDelegate
 
-    Image {
+    AvatarImage {
         id: contactPickerContactImage
 
         anchors.left: parent.left
@@ -36,9 +36,8 @@ ItemDelegate {
         width: 40
         height: 40
 
-        fillMode: Image.PreserveAspectFit
-        source: "data:image/png;base64," + Picture
-        mipmap: true
+        mode: AvatarImage.Mode.FromContactUri
+        imageId: URI
     }
 
     Rectangle {

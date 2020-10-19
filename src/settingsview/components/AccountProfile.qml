@@ -52,7 +52,7 @@ ColumnLayout {
     }
 
     function setAvatar() {
-        currentAccountAvatar.setAvatarPixmap(SettingsAdapter.getAvatarImage_Base64(currentAccountAvatar.boothWidth), SettingsAdapter.getIsDefaultAvatar())
+        currentAccountAvatar.setAvatarImage()
     }
 
     function stopBooth() {
@@ -79,14 +79,8 @@ ColumnLayout {
         Layout.fillWidth: true
         Layout.alignment: Qt.AlignCenter
 
+        saveToConfig: true
         boothWidth: 180
-
-        onImageAcquired: SettingsAdapter.setCurrAccAvatar(imgBase64)
-
-        onImageCleared: {
-            SettingsAdapter.clearCurrentAvatar()
-            setAvatar()
-        }
     }
 
     MaterialLineEdit {

@@ -28,7 +28,6 @@ import "../../commoncomponents"
 Rectangle {
     id: audioCallPageRect
 
-    property string contactImgSource: ""
     property string bestName: "Best Name"
     property string bestId: "Best Id"
 
@@ -37,8 +36,7 @@ Rectangle {
     signal showFullScreenReqested
 
     function updateUI(accountId, convUid) {
-        contactImgSource = "data:image/png;base64," + UtilsAdapter.getContactImageString(
-                    accountId, convUid)
+        contactImage.updateImage(convUid)
         bestName = UtilsAdapter.getBestName(accountId, convUid)
 
         var id = UtilsAdapter.getBestId(accountId, convUid)
@@ -162,7 +160,7 @@ Rectangle {
                     ColumnLayout {
                         id: audioCallPageRectColumnLayout
 
-                        Image {
+                        AvatarImage {
                             id: contactImage
 
                             Layout.alignment: Qt.AlignCenter
@@ -170,9 +168,8 @@ Rectangle {
                             Layout.preferredWidth: 100
                             Layout.preferredHeight: 100
 
-                            fillMode: Image.PreserveAspectFit
-                            source: contactImgSource
-                            asynchronous: true
+                            mode: AvatarImage.Mode.FromConvUid
+                            showPresenceIndicator: false
                         }
 
                         Text {

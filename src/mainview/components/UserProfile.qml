@@ -28,7 +28,7 @@ BaseDialog {
     id: root
 
     property string responsibleConvUid: ""
-    property string contactPicBase64: ""
+    property string contactImageUid: ""
     property string aliasText: ""
     property string registeredNameText: ""
     property string idText: ""
@@ -53,17 +53,17 @@ BaseDialog {
             rowSpacing: 16
             columnSpacing: 24
 
-            Image {
+            AvatarImage {
                 id: contactImage
 
                 Layout.alignment: Qt.AlignRight
-                Layout.preferredWidth: 130
+                Layout.preferredWidth: preferredImgSize
 
                 sourceSize.width: preferredImgSize
                 sourceSize.height: preferredImgSize
 
-                fillMode: Image.PreserveAspectFit
-                mipmap: true
+                mode: AvatarImage.Mode.FromConvUid
+                showPresenceIndicator: false
             }
 
             // Visible when user alias is not empty or equals to id.
@@ -196,8 +196,5 @@ BaseDialog {
             contactQrImage.source = "image://qrImage/contact_" + responsibleConvUid
     }
 
-    onContactPicBase64Changed: {
-        if (contactPicBase64 !== "")
-            contactImage.source = "data:image/png;base64," + contactPicBase64
-    }
+    onContactImageUidChanged: contactImage.updateImage(contactImageUid)
 }

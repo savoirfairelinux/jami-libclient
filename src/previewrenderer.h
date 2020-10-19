@@ -63,9 +63,6 @@ public:
     explicit PhotoboothPreviewRender(QQuickItem* parent = 0);
     virtual ~PhotoboothPreviewRender();
 
-    QImage takePhoto();
-    Q_INVOKABLE QString takeCroppedPhotoToBase64(int size);
-
 signals:
     void hideBooth();
 

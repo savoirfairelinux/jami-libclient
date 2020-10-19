@@ -26,10 +26,8 @@
 #include "globalsystemtray.h"
 #include "qmlregister.h"
 #include "qrimageprovider.h"
-#include "pixbufmanipulator.h"
 #include "tintedbuttonimageprovider.h"
-
-#include "globalinstances.h"
+#include "avatarimageprovider.h"
 
 #include <QAction>
 #include <QCommandLineParser>
@@ -148,7 +146,6 @@ MainApplication::init()
     gnutls_global_init();
 #endif
 
-    GlobalInstances::setPixmapManipulator(std::make_unique<PixbufManipulator>());
     initLrc(results[opts::UPDATEURL].toString(), connectivityMonitor_);
 
 #ifdef Q_OS_WIN
@@ -322,6 +319,7 @@ MainApplication::initQmlEngine()
 
     engine_->addImageProvider(QLatin1String("qrImage"), new QrImageProvider());
     engine_->addImageProvider(QLatin1String("tintedPixmap"), new TintedButtonImageProvider());
+    engine_->addImageProvider(QLatin1String("avatarImage"), new AvatarImageProvider());
 
     engine_->load(QUrl(QStringLiteral("qrc:/src/MainApplicationWindow.qml")));
 }

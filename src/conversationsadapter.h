@@ -82,6 +82,7 @@ private:
     QMetaObject::Connection newConversationConnection_;
     QMetaObject::Connection conversationRemovedConnection_;
     QMetaObject::Connection conversationClearedConnection;
+    QMetaObject::Connection contactProfileUpdatedConnection_;
     QMetaObject::Connection selectedCallChanged_;
     QMetaObject::Connection smartlistSelectionConnection_;
     QMetaObject::Connection interactionRemovedConnection_;
