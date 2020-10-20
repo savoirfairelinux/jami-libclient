@@ -69,63 +69,75 @@ ComboBox {
                                               AccountListModel.Status)
     }
 
-    Text {
-        id: textUserAliasRoot
-
+    ColumnLayout {
         anchors.left: userImageRoot.right
         anchors.leftMargin: 16
         anchors.top: background.top
-        anchors.topMargin: 16
 
-        text: textMetricsUserAliasRoot.elidedText
-        font.pointSize: JamiTheme.textFontSize
-    }
+        height: root.height
 
-    ResponsiveImage {
-        id: arrowDropDown
+        spacing: 0
 
-        anchors.left: textUserAliasRoot.right
-        anchors.verticalCenter: textUserAliasRoot.verticalCenter
+        RowLayout {
+            Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
+            Layout.topMargin: textUsernameRoot.visible ? root.height / 2 - implicitHeight : 0
 
-        width: 24
-        height: 24
+            Text {
+                id: textUserAliasRoot
 
-        source: "qrc:/images/icons/round-arrow_drop_down-24px.svg"
-    }
+                Layout.alignment: Qt.AlignLeft
 
-    Text {
-        id: textUsernameRoot
+                text: textMetricsUserAliasRoot.elidedText
+                font.pointSize: JamiTheme.textFontSize
 
-        anchors.left: userImageRoot.right
-        anchors.leftMargin: 16
-        anchors.top: textUserAliasRoot.bottom
+                TextMetrics {
+                    id: textMetricsUserAliasRoot
 
-        text: textMetricsUsernameRoot.elidedText
-        font.pointSize: JamiTheme.textFontSize
-        color: JamiTheme.faddedLastInteractionFontColor
-    }
+                    font: textUserAliasRoot.font
+                    elide: Text.ElideRight
+                    elideWidth: root.width - userImageRoot.width - settingsButton.width
+                                - arrowDropDown.width - qrCodeGenerateButton.width - 55
 
-    TextMetrics {
-        id: textMetricsUserAliasRoot
+                    text: accountListModel.data(accountListModel.index(0,0), AccountListModel.Alias)
+                }
+            }
 
-        font: textUserAliasRoot.font
-        elide: Text.ElideRight
-        elideWidth: root.width - userImageRoot.width - settingsButton.width
-                    - arrowDropDown.width - qrCodeGenerateButton.width - 55
+            ResponsiveImage {
+                id: arrowDropDown
 
-        text: accountListModel.data(accountListModel.index(0,0), AccountListModel.Alias)
-    }
+                Layout.alignment: Qt.AlignRight
 
-    TextMetrics {
-        id: textMetricsUsernameRoot
+                width: 24
+                height: 24
 
-        font: textUsernameRoot.font
-        elide: Text.ElideRight
-        elideWidth: root.width - userImageRoot.width - settingsButton.width
-                    - qrCodeGenerateButton.width - 55
+                source: "qrc:/images/icons/round-arrow_drop_down-24px.svg"
+            }
+        }
 
-        text: accountListModel.data(accountListModel.index(0,0),
-                                    AccountListModel.Username)
+        Text {
+            id: textUsernameRoot
+
+            Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
+            Layout.bottomMargin: root.height / 2 - implicitHeight
+
+            visible: textMetricsUsernameRoot.text.length
+
+            text: textMetricsUsernameRoot.elidedText
+            font.pointSize: JamiTheme.textFontSize
+            color: JamiTheme.faddedLastInteractionFontColor
+
+            TextMetrics {
+                id: textMetricsUsernameRoot
+
+                font: textUsernameRoot.font
+                elide: Text.ElideRight
+                elideWidth: root.width - userImageRoot.width - settingsButton.width
+                            - qrCodeGenerateButton.width - 55
+
+                text: accountListModel.data(accountListModel.index(0,0),
+                                            AccountListModel.Username)
+            }
+        }
     }
 
     background: Rectangle {

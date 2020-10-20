@@ -49,7 +49,14 @@ Popup {
         clip: true
         model: accountListModel
         implicitHeight: contentHeight
-        delegate: ItemDelegate {
+        delegate: Rectangle {
+            id: delegate
+
+            width: root.width
+            height: accountComboBox.height
+
+            color: JamiTheme.backgroundColor
+
             AvatarImage {
                 id: userImage
 
@@ -71,68 +78,71 @@ Popup {
                 }
             }
 
-            Text {
-                id: textUserAliasPopup
-
+            ColumnLayout {
                 anchors.left: userImage.right
-                anchors.leftMargin: 10
-                anchors.top: itemComboBackground.top
-                anchors.topMargin: 15
+                anchors.leftMargin: 16
+                anchors.top: delegate.top
 
-                text: textMetricsUserAliasPopup.elidedText
-                font.pointSize: JamiTheme.textFontSize
-            }
+                height: delegate.height
 
-            Text {
-                id: textUsernamePopup
+                spacing: 0
 
-                anchors.left: userImage.right
-                anchors.leftMargin: 10
-                anchors.top: textUserAliasPopup.bottom
+                Text {
+                    id: textUserAliasPopup
 
-                text: textMetricsUsernamePopup.elidedText
-                font.pointSize: JamiTheme.textFontSize
-                color: JamiTheme.faddedLastInteractionFontColor
-            }
+                    Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
+                    Layout.topMargin: textUsernamePopup.visible ?
+                                          delegate.height / 2 - implicitHeight : 0
 
-            TextMetrics {
-                id: textMetricsUserAliasPopup
-                elide: Text.ElideRight
-                elideWidth: accountComboBox.width - userImage.width - settingsButton.width - 30
-                text: Alias
-            }
+                    text: textMetricsUserAliasPopup.elidedText
+                    font.pointSize: JamiTheme.textFontSize
 
-            TextMetrics {
-                id: textMetricsUsernamePopup
-                elide: Text.ElideRight
-                elideWidth: accountComboBox.width - userImage.width - settingsButton.width - 30
-                text: Username
-            }
+                    TextMetrics {
+                        id: textMetricsUserAliasPopup
+                        elide: Text.ElideRight
+                        elideWidth: delegate.width - userImage.width - 80
+                        text: Alias
+                    }
+                }
 
-            background: Rectangle {
-                id: itemComboBackground
-                color: JamiTheme.backgroundColor
-                implicitWidth: accountComboBox.width
-                implicitHeight: accountComboBox.height
+                Text {
+                    id: textUsernamePopup
+
+                    Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
+                    Layout.bottomMargin: delegate.height / 2 - implicitHeight
+
+                    visible: textMetricsUsernamePopup.text.length
+
+                    text: textMetricsUsernamePopup.elidedText
+                    font.pointSize: JamiTheme.textFontSize
+                    color: JamiTheme.faddedLastInteractionFontColor
+
+                    TextMetrics {
+                        id: textMetricsUsernamePopup
+                        elide: Text.ElideRight
+                        elideWidth: delegate.width - userImage.width - 80
+                        text: Username
+                    }
+                }
             }
 
             MouseArea {
                 anchors.fill: parent
                 hoverEnabled: true
                 onPressed: {
-                    itemComboBackground.color = JamiTheme.pressColor
+                    delegate.color = JamiTheme.pressColor
                 }
                 onReleased: {
-                    itemComboBackground.color = JamiTheme.normalButtonColor
+                    delegate.color = JamiTheme.normalButtonColor
                     currentIndex = index
                     root.close()
                     AccountAdapter.accountChanged(index)
                 }
                 onEntered: {
-                    itemComboBackground.color = JamiTheme.hoverColor
+                    delegate.color = JamiTheme.hoverColor
                 }
                 onExited: {
-                    itemComboBackground.color = JamiTheme.backgroundColor
+                    delegate.color = JamiTheme.backgroundColor
                 }
             }
         }

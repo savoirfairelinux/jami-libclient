@@ -144,7 +144,7 @@ ConversationsAdapter::onNewUnreadInteraction(const QString& accountId,
             || convUid != LRCInstance::getCurrentConvUid())) {
         auto& accInfo = LRCInstance::getAccountInfo(accountId);
         auto& contact = accInfo.contactModel->getContact(interaction.authorUri);
-        auto from = Utils::bestNameForContact(contact);
+        auto from = accInfo.contactModel->bestNameForContact(interaction.authorUri);
         auto onClicked = [this, accountId, convUid, uri = interaction.authorUri] {
 #ifdef Q_OS_WINDOWS
             emit LRCInstance::instance().notificationClicked();

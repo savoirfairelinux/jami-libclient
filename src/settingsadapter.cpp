@@ -260,7 +260,7 @@ SettingsAdapter::getCurrentAccount_Profile_Info_Type()
 QString
 SettingsAdapter::getAccountBestName()
 {
-    return Utils::bestNameForAccount(LRCInstance::getCurrentAccountInfo());
+    return LRCInstance::accountModel().bestNameForAccount(LRCInstance::getCurrAccId());
 }
 
 bool

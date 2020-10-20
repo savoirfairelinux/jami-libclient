@@ -63,15 +63,16 @@ AccountListModel::data(const QModelIndex& index, int role) const
         return QVariant();
     }
 
-    auto& accountInfo = LRCInstance::accountModel().getAccountInfo(accountList.at(index.row()));
+    auto accountId = accountList.at(index.row());
+    auto& accountInfo = LRCInstance::accountModel().getAccountInfo(accountId);
 
     // Since we are using image provider right now, image url representation should be unique to
     // be able to use the image cache, account avatar will only be updated once PictureUid changed
     switch (role) {
     case Role::Alias:
-        return QVariant(Utils::bestNameForAccount(accountInfo));
+        return QVariant(LRCInstance::accountModel().bestNameForAccount(accountId));
     case Role::Username:
-        return QVariant(Utils::secondBestNameForAccount(accountInfo));
+        return QVariant(LRCInstance::accountModel().bestIdForAccount(accountId));
     case Role::Type:
         return QVariant(static_cast<int>(accountInfo.profileInfo.type));
     case Role::Status:

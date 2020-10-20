@@ -277,17 +277,13 @@ SmartListModel::getConversationItemData(const conversation::Info& item,
     // be able to use the image cache, account avatar will only be updated once PictureUid changed
     switch (role) {
     case Role::DisplayName: {
-        if (!item.participants.isEmpty()) {
-            auto& contact = contactModel->getContact(item.participants[0]);
-            return QVariant(Utils::bestNameForContact(contact));
-        }
+        if (!item.participants.isEmpty())
+            return QVariant(contactModel->bestNameForContact(item.participants[0]));
         return QVariant("");
     }
     case Role::DisplayID: {
-        if (!item.participants.isEmpty()) {
-            auto& contact = contactModel->getContact(item.participants[0]);
-            return QVariant(Utils::bestIdForContact(contact));
-        }
+        if (!item.participants.isEmpty())
+            return QVariant(contactModel->bestIdForContact(item.participants[0]));
         return QVariant("");
     }
     case Role::Presence: {

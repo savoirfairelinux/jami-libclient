@@ -256,8 +256,8 @@ Utils::contactPhoto(const QString& contactUri, const QSize& size)
         auto& accountInfo = LRCInstance::accountModel().getAccountInfo(LRCInstance::getCurrAccId());
         auto contactInfo = accountInfo.contactModel->getContact(contactUri);
         auto contactPhoto = contactInfo.profileInfo.avatar;
-        auto bestName = Utils::bestNameForContact(contactInfo);
-        auto bestId = Utils::bestIdForContact(contactInfo);
+        auto bestName = accountInfo.contactModel->bestNameForContact(contactUri);
+        auto bestId = accountInfo.contactModel->bestIdForContact(contactUri);
         if (accountInfo.profileInfo.type == lrc::api::profile::Type::SIP
             && contactInfo.profileInfo.type == lrc::api::profile::Type::TEMPORARY) {
             photo = Utils::fallbackAvatar(QString(), QString());
@@ -437,96 +437,6 @@ removeEndlines(const QString& str)
     trimmed.remove(QChar('\n'));
     trimmed.remove(QChar('\r'));
     return trimmed;
-}
-
-QString
-Utils::bestIdForConversation(const lrc::api::conversation::Info& conv,
-                             const lrc::api::ConversationModel& model)
-{
-    auto contact = model.owner.contactModel->getContact(conv.participants[0]);
-    if (!contact.registeredName.isEmpty()) {
-        return removeEndlines(contact.registeredName);
-    }
-    return removeEndlines(contact.profileInfo.uri);
-}
-
-QString
-Utils::bestIdForAccount(const lrc::api::account::Info& account)
-{
-    if (!account.registeredName.isEmpty()) {
-        return removeEndlines(account.registeredName);
-    }
-    return removeEndlines(account.profileInfo.uri);
-}
-
-QString
-Utils::bestNameForAccount(const lrc::api::account::Info& account)
-{
-    if (account.profileInfo.alias.isEmpty()) {
-        return bestIdForAccount(account);
-    }
-    return account.profileInfo.alias;
-}
-
-QString
-Utils::bestIdForContact(const lrc::api::contact::Info& contact)
-{
-    if (!contact.registeredName.isEmpty()) {
-        return removeEndlines(contact.registeredName);
-    }
-    return removeEndlines(contact.profileInfo.uri);
-}
-
-QString
-Utils::bestNameForContact(const lrc::api::contact::Info& contact)
-{
-    auto alias = removeEndlines(contact.profileInfo.alias);
-    if (alias.length() == 0) {
-        return bestIdForContact(contact);
-    }
-    return alias;
-}
-
-QString
-Utils::bestNameForConversation(const lrc::api::conversation::Info& conv,
-                               const lrc::api::ConversationModel& model)
-{
-    try {
-        auto contact = model.owner.contactModel->getContact(conv.participants[0]);
-        auto alias = removeEndlines(contact.profileInfo.alias);
-        if (alias.length() == 0) {
-            return bestIdForConversation(conv, model);
-        }
-        return alias;
-    } catch (...) {
-    }
-    return {};
-}
-
-/*
- * Returns empty string if only infoHash is available,
- * second best identifier otherwise.
- */
-QString
-Utils::secondBestNameForAccount(const lrc::api::account::Info& account)
-{
-    auto alias = removeEndlines(account.profileInfo.alias);
-    auto registeredName = removeEndlines(account.registeredName);
-    auto infoHash = account.profileInfo.uri;
-
-    if (alias.length() != 0) {
-        if (registeredName.length() != 0) {
-            return registeredName;
-        } else {
-            return infoHash;
-        }
-    } else {
-        if (registeredName.length() != 0) {
-            return infoHash;
-        } else {
-            return "";
-        }
-    }
 }
 
 lrc::api::profile::Type
@@ -828,8 +738,8 @@ Utils::accountPhoto(const lrc::api::account::Info& accountInfo, const QSize& siz
         QByteArray ba = accountInfo.profileInfo.avatar.toLocal8Bit();
         photo = contactPhotoFromBase64(ba, nullptr);
     } else {
-        auto bestId = bestIdForAccount(accountInfo);
-        auto bestName = bestNameForAccount(accountInfo);
+        auto bestId = LRCInstance::accountModel().bestIdForAccount(accountInfo.id);
+        auto bestName = LRCInstance::accountModel().bestNameForAccount(accountInfo.id);
         QString letterStr = bestId == bestName ? QString() : bestName;
         QString prefix = accountInfo.profileInfo.type == lrc::api::profile::Type::RING ? "ring:"
                                                                                        : "sip:";

@@ -80,15 +80,6 @@ void removeOldVersions();
 /*
  * LRC helpers
  */
-QString bestIdForConversation(const lrc::api::conversation::Info& conv,
-                              const lrc::api::ConversationModel& model);
-QString bestIdForAccount(const lrc::api::account::Info& account);
-QString bestNameForAccount(const lrc::api::account::Info& account);
-QString bestIdForContact(const lrc::api::contact::Info& contact);
-QString bestNameForContact(const lrc::api::contact::Info& contact);
-QString bestNameForConversation(const lrc::api::conversation::Info& conv,
-                                const lrc::api::ConversationModel& model);
-QString secondBestNameForAccount(const lrc::api::account::Info& account);
 lrc::api::profile::Type profileType(const lrc::api::conversation::Info& conv,
                                     const lrc::api::ConversationModel& model);
 std::string formatTimeString(const std::time_t& timestamp);

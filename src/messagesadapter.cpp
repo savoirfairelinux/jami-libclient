@@ -448,7 +448,7 @@ MessagesAdapter::setConversationProfileData(const lrc::api::conversation::Info& 
     }
     try {
         auto& contact = accInfo->contactModel->getContact(contactUri);
-        auto bestName = Utils::bestNameForConversation(convInfo, *convModel);
+        auto bestName = accInfo->contactModel->bestNameForContact(contactUri);
         setInvitation(contact.profileInfo.type == lrc::api::profile::Type::PENDING
                           || contact.profileInfo.type == lrc::api::profile::Type::TEMPORARY,
                       bestName,
