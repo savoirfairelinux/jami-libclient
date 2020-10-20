@@ -30,12 +30,12 @@ win32-msvc {
 
     # lrc
     INCLUDEPATH += $${LRC}/src/
-    LIBS += $${LRC}/msvc/release/ringclient_static.lib
-    LIBS += $${LRC}/msvc/src/qtwrapper/Release/qtwrapper.lib
+    LIBS += $${LRC}/build/release/ringclient_static.lib
+    LIBS += $${LRC}/build/src/qtwrapper/Release/qtwrapper.lib
 
     # daemon
     INCLUDEPATH += ../daemon/contrib/msvc/include/
-    LIBS += $${DRING}/build-local/x64/ReleaseLib_win32/bin/dring.lib
+    LIBS += $${DRING}/build/x64/ReleaseLib_win32/bin/dring.lib
     LIBS += $${DRING}/contrib/msvc/lib/x64/libgnutls.lib
 
     # windows system libs

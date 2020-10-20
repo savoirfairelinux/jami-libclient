@@ -48,10 +48,8 @@ $FilesToCopy = @(
     "$daemonDir\contrib\build\ffmpeg\Build\win32\x64\bin\swresample-3.dll",
     "$daemonDir\contrib\build\ffmpeg\Build\win32\x64\bin\swscale-5.dll",
     "$daemonDir\contrib\build\ffmpeg\Build\win32\x64\bin\avfilter-7.dll",
-    "$daemonDir\contrib\build\openssl\out32dll\libeay32.dll",
-    "$daemonDir\contrib\build\openssl\out32dll\ssleay32.dll",
-    "$QtDir\..\..\Tools\OpenSSL\Win_x64\bin\libcrypto-1_1-x64.dll",
-    "$QtDir\..\..\Tools\OpenSSL\Win_x64\bin\libssl-1_1-x64.dll",
+    "$daemonDir\contrib\build\openssl\libcrypto-1_1-x64.dll",
+    "$daemonDir\contrib\build\openssl\libssl-1_1-x64.dll",
     "$clientDir\qt.conf",
     "$clientDir\images\jami.ico",
     "$clientDir\License.rtf"
