@@ -19,7 +19,8 @@ vs_where_path = os.path.join(
 )
 
 host_is_64bit = (False, True)[platform.machine().endswith('64')]
-
+this_dir = os.path.dirname(os.path.realpath(__file__))
+build_dir = this_dir + '\\build'
 
 def getLatestVSVersion():
     args = [
@@ -114,8 +115,6 @@ def purge_dir(build_dir):
 
 def generate(force, qtver, sdk, toolset, arch):
     # check build dir
-    this_dir = os.path.dirname(os.path.realpath(__file__))
-    build_dir = this_dir + '\\msvc'
     if os.path.exists(build_dir):
         if not force:
             print("Skipping generate, build directory already exists!")
@@ -123,9 +122,8 @@ def generate(force, qtver, sdk, toolset, arch):
         purge_dir(build_dir)
     print('Generating lrc with Qt-' + qtver + ' ' +
           arch + ' ' + sdk + ' ' + toolset)
-    this_dir = os.path.dirname(os.path.realpath(__file__))
     daemon_dir = os.path.dirname(this_dir) + '\\daemon'
-    daemon_bin = daemon_dir + '\\build-local\\x64\\ReleaseLib_win32\\bin\\dring.lib'
+    daemon_bin = daemon_dir + '\\build\\x64\\ReleaseLib_win32\\bin\\dring.lib'
     if not os.path.exists(daemon_bin):
         print("Daemon library not found!")
         sys.exit(1)
@@ -145,7 +143,6 @@ def generate(force, qtver, sdk, toolset, arch):
         '-DRING_INCLUDE_DIR=' + daemon_dir + '\\src\\dring',
         '-DCMAKE_SYSTEM_VERSION=' + sdk
     ]
-    build_dir = this_dir + '\\msvc'
     if not os.path.exists(build_dir):
         os.makedirs(build_dir)
     os.chdir(build_dir)
@@ -158,8 +155,8 @@ def generate(force, qtver, sdk, toolset, arch):
         print("Couldn't generate!")
         sys.exit(1)
 
-    qtwrapper_proj_path = this_dir + '\\msvc\\src\\qtwrapper\\qtwrapper.vcxproj'
-    lrc_proj_path = this_dir + '\\msvc\\ringclient_static.vcxproj'
+    qtwrapper_proj_path = build_dir + '\\src\\qtwrapper\\qtwrapper.vcxproj'
+    lrc_proj_path = build_dir + '\\ringclient_static.vcxproj'
 
     # force toolset
     replace_vs_prop(qtwrapper_proj_path,
@@ -190,8 +187,6 @@ def build(arch, toolset):
     print('Building lrc Release|' + arch)
     vs_env_vars = {}
     vs_env_vars.update(getVSEnv())
-    this_dir = os.path.dirname(os.path.realpath(__file__))
-    build_dir = this_dir + '\\msvc'
     qtwrapper_proj_path = build_dir + '\\src\\qtwrapper\\qtwrapper.vcxproj'
     lrc_proj_path = build_dir + '\\ringclient_static.vcxproj'
     msbuild = findMSBuild()
@@ -254,8 +249,6 @@ def main():
 
     if parsed_args.purge:
         print('Purging build dir')
-        this_dir = os.path.dirname(os.path.realpath(__file__))
-        build_dir = this_dir + '\\msvc'
         purge_dir(build_dir)
 
     if parsed_args.gen:
