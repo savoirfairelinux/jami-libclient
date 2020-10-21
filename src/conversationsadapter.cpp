@@ -94,7 +94,7 @@ ConversationsAdapter::selectConversation(const QString& accountId, const QString
             Utils::oneShotConnect(&LRCInstance::instance(),
                                   &LRCInstance::currentAccountChanged,
                                   [selectConversation] { selectConversation(); });
-            LRCInstance::setSelectedConvId(); // Hack UI
+            LRCInstance::setSelectedConvId();
             LRCInstance::setSelectedAccountId(convInfo.accountId);
         } else {
             selectConversation();
@@ -224,7 +224,8 @@ ConversationsAdapter::connectConversationModel(bool updateFilter)
                                                     conversationSmartListModel_
                                                         ->fillConversationsList();
                                                     updateConversationsFilterWidget();
-                                                    emit indexRepositionRequested();
+                                                    if (!LRCInstance::getCurrentConvUid().isEmpty())
+                                                        emit indexRepositionRequested();
                                                     emit updateListViewRequested();
                                                 });
 
