@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "10c4bb15_e4926e59",
+        "filename": "src/api/newcallmodel.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 90
+      },
+      "writtenOn": "2020-10-21T19:31:40Z",
+      "side": 1,
+      "message": "looks like this line may not have been graced by clang-format. Am I wrong?",
+      "range": {
+        "startLine": 63,
+        "startChar": 4,
+        "endLine": 63,
+        "endChar": 133
+      },
+      "revId": "47483ba558b7d31b655e4aaedd3274df55389892",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "62c9fb30_07f22d87",
+        "filename": "src/newcallmodel.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 90
+      },
+      "writtenOn": "2020-10-21T19:31:40Z",
+      "side": 1,
+      "message": "this include be in the lrc block below. as this file is the implementation for newcallmodel, the newcallmodel.h include should be at the top, follow by other headers in a local --\u003e global order. maybe toss the STL headers to the bottom too?",
+      "range": {
+        "startLine": 20,
+        "startChar": 0,
+        "endLine": 20,
+        "endChar": 35
+      },
+      "revId": "47483ba558b7d31b655e4aaedd3274df55389892",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    }
+  ]
+}
