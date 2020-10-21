@@ -102,6 +102,11 @@ Q_SIGNALS:
      * Emitted audioMeter
      */
     void audioMeter(const QString& id, float level);
+
+    /**
+     * Emitted callStatusChanged
+     */
+    void callStatusChanged(const QString& callId) const;
 };
 } // namespace api
 } // namespace lrc
