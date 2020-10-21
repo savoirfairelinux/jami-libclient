@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7d643f25_07445907",
+        "filename": "src/containerview.h",
+        "patchSetId": 16
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2020-10-21T18:05:38Z",
+      "side": 1,
+      "message": "maybe an enable if should be added to get if .front() will work for value_type and detect potential error at compile time",
+      "range": {
+        "startLine": 33,
+        "startChar": 15,
+        "endLine": 33,
+        "endChar": 23
+      },
+      "revId": "ce09be087a7d9cc05f09468a64aca44820fc6051",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "96bc9a7c_d0dd5af6",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 1019,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2020-10-21T18:05:38Z",
+      "side": 1,
+      "message": "must be removed while tested",
+      "range": {
+        "startLine": 1017,
+        "startChar": 0,
+        "endLine": 1019,
+        "endChar": 35
+      },
+      "revId": "ce09be087a7d9cc05f09468a64aca44820fc6051",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0e8efecc_d3c71385",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 1516,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2020-10-21T18:05:38Z",
+      "side": 1,
+      "message": "same",
+      "range": {
+        "startLine": 1516,
+        "startChar": 1,
+        "endLine": 1516,
+        "endChar": 27
+      },
+      "revId": "ce09be087a7d9cc05f09468a64aca44820fc6051",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9d208e08_7e0b62c2",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 1547,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2020-10-21T18:05:38Z",
+      "side": 1,
+      "message": "please no /* comment :)",
+      "range": {
+        "startLine": 1546,
+        "startChar": 0,
+        "endLine": 1547,
+        "endChar": 27
+      },
+      "revId": "ce09be087a7d9cc05f09468a64aca44820fc6051",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    }
+  ]
+}
