@@ -18,6 +18,7 @@
  ***************************************************************************/
 #pragma once
 
+#include "api/behaviorcontroller.h"
 #include "api/call.h"
 #include "api/account.h"
 #include "typedefs.h"
@@ -60,7 +61,9 @@ public:
 
     enum class Media { NONE, AUDIO, VIDEO };
 
-    NewCallModel(const account::Info& owner, const CallbacksHandler& callbacksHandler);
+    NewCallModel(const account::Info& owner,
+                 const CallbacksHandler& callbacksHandler,
+                 const BehaviorController& behaviorController);
     ~NewCallModel();
 
     /**
@@ -187,9 +190,7 @@ public:
      * @param audioOnly If the call is audio only
      * @return id for a new call
      */
-    QString callAndAddParticipant(const QString uri,
-                                  const QString& callId,
-                                  bool audioOnly);
+    QString callAndAddParticipant(const QString uri, const QString& callId, bool audioOnly);
 
     /**
      * Not implemented yet
@@ -295,14 +296,16 @@ Q_SIGNALS:
                          int oldCount,
                          int urgentCount) const;
 
-     /**
+    /**
      * Listen from CallbacksHandler when the peer start recording
      * @param callId
      * @param contactId
      * @param peerName
      * @param state the new state
      */
-    void remoteRecordingChanged(const QString& callId, const QSet<QString>& peerRec, bool state) const;
+    void remoteRecordingChanged(const QString& callId,
+                                const QSet<QString>& peerRec,
+                                bool state) const;
 
 private:
     std::unique_ptr<NewCallModelPimpl> pimpl_;
