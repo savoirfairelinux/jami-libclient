@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "a34be678_48e7ce81",
+        "filename": "src/api/conversationmodel.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 90
+      },
+      "writtenOn": "2020-10-21T19:50:34Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "b72535ae_95a82d0a",
+      "range": {
+        "startLine": 105,
+        "startChar": 36,
+        "endLine": 105,
+        "endChar": 57
+      },
+      "revId": "1e63e550783e84e31c8a78b71164176631c4c6a4",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "b8c5244f_d657757b",
         "filename": "src/conversationmodel.cpp",
         "patchSetId": 7
@@ -48,6 +72,30 @@
     },
     {
       "key": {
+        "uuid": "b33c2142_a34e2012",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 90
+      },
+      "writtenOn": "2020-10-21T19:50:34Z",
+      "side": 1,
+      "message": "agreed. Should return a list of conversations if anything, but probably better off just not existing in the api at all",
+      "parentUuid": "b8c5244f_d657757b",
+      "range": {
+        "startLine": 105,
+        "startChar": 24,
+        "endLine": 105,
+        "endChar": 49
+      },
+      "revId": "1e63e550783e84e31c8a78b71164176631c4c6a4",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "0c3a737e_2d0c3922",
         "filename": "src/conversationmodel.cpp",
         "patchSetId": 7
@@ -68,6 +116,30 @@
       "revId": "1e63e550783e84e31c8a78b71164176631c4c6a4",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b5e46818_c7bafab1",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 603,
+      "author": {
+        "id": 90
+      },
+      "writtenOn": "2020-10-21T19:50:34Z",
+      "side": 1,
+      "message": "this should be gone when squashed",
+      "parentUuid": "0c3a737e_2d0c3922",
+      "range": {
+        "startLine": 603,
+        "startChar": 5,
+        "endLine": 603,
+        "endChar": 23
+      },
+      "revId": "1e63e550783e84e31c8a78b71164176631c4c6a4",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
