@@ -60,7 +60,7 @@ public:
 
     enum class Media { NONE, AUDIO, VIDEO };
 
-    NewCallModel(const account::Info& owner, const CallbacksHandler& callbacksHandler);
+    NewCallModel(const account::Info& owner, const CallbacksHandler& callbacksHandler, const BehaviorController& behaviorController);
     ~NewCallModel();
 
     /**

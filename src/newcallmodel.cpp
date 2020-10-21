@@ -17,6 +17,7 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
 
+#include "api/behaviorcontroller.h"
 #include "api/newcallmodel.h"
 
 // std
@@ -113,7 +114,9 @@ using namespace api;
 class NewCallModelPimpl : public QObject
 {
 public:
-    NewCallModelPimpl(const NewCallModel& linked, const CallbacksHandler& callbacksHandler);
+    NewCallModelPimpl(const NewCallModel& linked,
+                      const CallbacksHandler& callbacksHandler,
+                      const BehaviorController& behaviorController);
     ~NewCallModelPimpl();
 
     /**
@@ -125,6 +128,7 @@ public:
     NewCallModel::CallInfoMap calls;
     const CallbacksHandler& callbacksHandler;
     const NewCallModel& linked;
+    const BehaviorController& behaviorController;
 
     /**
      * key = peer's uri
@@ -205,10 +209,12 @@ public Q_SLOTS:
     void remoteRecordingChanged(const QString& callId, const QString& peerNumber, bool state);
 };
 
-NewCallModel::NewCallModel(const account::Info& owner, const CallbacksHandler& callbacksHandler)
+NewCallModel::NewCallModel(const account::Info& owner,
+                           const CallbacksHandler& callbacksHandler,
+                           const BehaviorController& behaviorController)
     : QObject(nullptr)
     , owner(owner)
-    , pimpl_(std::make_unique<NewCallModelPimpl>(*this, callbacksHandler))
+    , pimpl_(std::make_unique<NewCallModelPimpl>(*this, callbacksHandler, behaviorController))
 {}
 
 NewCallModel::~NewCallModel() {}
@@ -537,9 +543,11 @@ NewCallModel::getSIPCallStatusString(const short& statusCode)
 }
 
 NewCallModelPimpl::NewCallModelPimpl(const NewCallModel& linked,
-                                     const CallbacksHandler& callbacksHandler)
+                                     const CallbacksHandler& callbacksHandler,
+                                     const BehaviorController& behaviorController)
     : linked(linked)
     , callbacksHandler(callbacksHandler)
+    , behaviorController(behaviorController)
 {
     connect(&callbacksHandler,
             &CallbacksHandler::incomingCall,
@@ -840,6 +848,7 @@ NewCallModelPimpl::slotCallStateChanged(const QString& callId, const QString& st
     if (status == call::Status::ENDED && !call::isTerminating(call->status)) {
         call->status = call::Status::TERMINATING;
         emit linked.callStatusChanged(callId, code);
+        emit behaviorController.callStatusChanged(linked.owner.id, callId);
     }
 
     // proper state transition
@@ -858,6 +867,7 @@ NewCallModelPimpl::slotCallStateChanged(const QString& callId, const QString& st
 
     // NOTE: signal emission order matters, always emit CallStatusChanged before CallEnded
     emit linked.callStatusChanged(callId, code);
+    emit behaviorController.callStatusChanged(linked.owner.id, callId);
 
     if (call->status == call::Status::ENDED) {
         emit linked.callEnded(callId);
@@ -1028,7 +1038,9 @@ NewCallModelPimpl::sendProfile(const QString& callId)
 }
 
 void
-NewCallModelPimpl::remoteRecordingChanged(const QString& callId, const QString& peerNumber, bool state)
+NewCallModelPimpl::remoteRecordingChanged(const QString& callId,
+                                          const QString& peerNumber,
+                                          bool state)
 {
     auto it = calls.find(callId);
     if (it == calls.end() or not it->second)
