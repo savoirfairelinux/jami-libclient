@@ -47,8 +47,8 @@ inline MapStringString
 convertMap(const std::map<std::string, std::string>& m)
 {
     MapStringString temp;
-    for (const auto& x : m) {
-        temp[QString(x.first.c_str())] = QString(x.second.c_str());
+    for (const auto& [key, value] : m) {
+        temp[QString(key.c_str())] = QString(value.c_str());
     }
     return temp;
 }
@@ -57,8 +57,8 @@ inline std::map<std::string, std::string>
 convertMap(const MapStringString& m)
 {
     std::map<std::string, std::string> temp;
-    for (const auto& x : m.toStdMap()) {
-        temp[x.first.toStdString()] = x.second.toStdString();
+    for (const auto& [key, value] : m.toStdMap()) {
+        temp[key.toStdString()] = value.toStdString();
     }
     return temp;
 }
@@ -93,6 +93,36 @@ convertVectorString(const std::vector<std::string>& v)
     return temp;
 }
 
+inline std::vector<std::string>
+convertVectorString(const VectorString& v)
+{
+    std::vector<std::string> temp;
+    for (const auto& x : v) {
+        temp.emplace_back(x.toStdString());
+    }
+    return temp;
+}
+
+inline std::map<std::string, std::vector<std::string>>
+convertMap(const MapStringVectorString& m)
+{
+    std::map<std::string, std::vector<std::string>> temp;
+    for (const auto& [key, value] : m.toStdMap()) {
+        temp[key.toStdString()] = convertVectorString(value);
+    }
+    return temp;
+}
+
+inline MapStringVectorString
+convertMap(const std::map<std::string, std::vector<std::string>>& m)
+{
+    MapStringVectorString temp;
+    for (const auto& [key, value] : m) {
+        temp[QString(key.c_str())] = convertVectorString(value);
+    }
+    return temp;
+}
+
 inline VectorULongLong
 convertVectorULongLong(const std::vector<uint64_t>& v)
 {
@@ -117,8 +147,8 @@ inline MapStringInt
 convertStringInt(const std::map<std::string, int>& m)
 {
     MapStringInt temp;
-    for (const auto& x : m) {
-        temp[QString(x.first.c_str())] = x.second;
+    for (const auto& [key, value] : m) {
+        temp[QString(key.c_str())] = value;
     }
     return temp;
 }
