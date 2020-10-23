@@ -129,32 +129,30 @@ PluginModel::listCallMediaHandlers() const
 }
 
 void
-PluginModel::toggleCallMediaHandler(const QString& id)
+PluginModel::toggleCallMediaHandler(const QString& mediaHandlerId,
+                                    const QString& callId,
+                                    bool toggle)
 {
-    MapStringString toggleInfo = PluginManager::instance().getCallMediaHandlerStatus();
-    if (toggleInfo["name"] == id) {
-        PluginManager::instance().toggleCallMediaHandler(id, false);
-    } else {
-        PluginManager::instance().toggleCallMediaHandler(id, true);
-    }
+    PluginManager::instance().toggleCallMediaHandler(mediaHandlerId, callId, toggle);
 }
 
-MapStringString
-PluginModel::getCallMediaHandlerStatus()
+MapStringVectorString
+PluginModel::getCallMediaHandlerStatus(const QString& callId)
 {
-    return PluginManager::instance().getCallMediaHandlerStatus();
+    return PluginManager::instance().getCallMediaHandlerStatus(callId);
 }
 
 plugin::MediaHandlerDetails
-PluginModel::getCallMediaHandlerDetails(const QString& id)
+PluginModel::getCallMediaHandlerDetails(const QString& mediaHandlerId)
 {
-    if (id.isEmpty()) {
+    if (mediaHandlerId.isEmpty()) {
         return plugin::MediaHandlerDetails();
     }
-    MapStringString mediaHandlerDetails = PluginManager::instance().getCallMediaHandlerDetails(id);
+    MapStringString mediaHandlerDetails = PluginManager::instance().getCallMediaHandlerDetails(
+        mediaHandlerId);
     plugin::MediaHandlerDetails result;
     if (!mediaHandlerDetails.empty()) {
-        result.id = id;
+        result.id = mediaHandlerId;
         result.iconPath = mediaHandlerDetails["iconPath"];
         result.name = mediaHandlerDetails["name"];
         result.pluginId = mediaHandlerDetails["pluginId"];
