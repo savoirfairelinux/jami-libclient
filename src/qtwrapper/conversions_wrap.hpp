@@ -93,6 +93,36 @@ convertVectorString(const std::vector<std::string>& v)
     return temp;
 }
 
+inline std::vector<std::string>
+convertVectorString(const VectorString& v)
+{
+    std::vector<std::string> temp;
+    for (const auto& x : v) {
+        temp.push_back(x.toStdString());
+    }
+    return temp;
+}
+
+inline std::map<std::string, std::vector<std::string>>
+convertMap(const MapStringVectorString& m)
+{
+    std::map<std::string, std::vector<std::string>> temp;
+    for (auto& x : m.toStdMap()) {
+        temp[x.first.toStdString()] = convertVectorString(x.second);
+    }
+    return temp;
+}
+
+inline MapStringVectorString
+convertMap(const std::map<std::string, std::vector<std::string>>& m)
+{
+    MapStringVectorString temp;
+    for (auto& x : m) {
+        temp[QString(x.first.c_str())] = convertVectorString(x.second);
+    }
+    return temp;
+}
+
 inline VectorULongLong
 convertVectorULongLong(const std::vector<uint64_t>& v)
 {
