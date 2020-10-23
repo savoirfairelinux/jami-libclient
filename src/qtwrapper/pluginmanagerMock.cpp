@@ -68,17 +68,19 @@ PluginManagerInterface::listCallMediaHandlers()
 }
 
 void
-PluginManagerInterface::toggleCallMediaHandler(const QString& id, bool toggle)
+PluginManagerInterface::toggleCallMediaHandler(const QString& mediaHandlerId,
+                                               const QString& callId,
+                                               bool toggle)
 {}
 
-MapStringString
-PluginManagerInterface::getCallMediaHandlerStatus()
+MapStringVectorString
+PluginManagerInterface::getCallMediaHandlerStatus(const QString& callId)
 {
     return {};
 }
 
 MapStringString
-PluginManagerInterface::getCallMediaHandlerDetails(const QString& id)
+PluginManagerInterface::getCallMediaHandlerDetails(const QString& mediaHandlerId)
 {
     return {};
 }
