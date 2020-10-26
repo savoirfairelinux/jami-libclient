@@ -137,17 +137,17 @@
 <context>
     <name>CallAdvancedOptions</name>
     <message>
-        <location filename="../src/mainview/components/CallAdvancedOptions.qml" line="85"/>
+        <location filename="../src/mainview/components/CallAdvancedOptions.qml" line="86"/>
         <source>Add to conference</source>
         <translation>Adaugă la conferință</translation>
     </message>
     <message>
-        <location filename="../src/mainview/components/CallAdvancedOptions.qml" line="85"/>
+        <location filename="../src/mainview/components/CallAdvancedOptions.qml" line="86"/>
         <source>Transfer this call</source>
         <translation>Redirecționează acest apel</translation>
     </message>
     <message>
-        <location filename="../src/mainview/components/CallAdvancedOptions.qml" line="103"/>
+        <location filename="../src/mainview/components/CallAdvancedOptions.qml" line="104"/>
         <source>Search contacts</source>
         <translation>Caută contacte</translation>
     </message>
@@ -189,32 +189,32 @@
 <context>
     <name>ConversationSmartListContextMenu</name>
     <message>
-        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="40"/>
+        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="39"/>
         <source>Start video call</source>
         <translation>Începe un apel video</translation>
     </message>
     <message>
-        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="49"/>
+        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="48"/>
         <source>Start audio call</source>
         <translation>Începe un apel audio</translation>
     </message>
     <message>
-        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="59"/>
+        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="58"/>
         <source>Clear conversation</source>
         <translation>Șterge conversația</translation>
     </message>
     <message>
-        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="68"/>
+        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="67"/>
         <source>Remove contact</source>
         <translation>Șterge contactul</translation>
     </message>
     <message>
-        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="110"/>
+        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="109"/>
         <source>Block contact</source>
         <translation>Blochează contactul</translation>
     </message>
     <message>
-        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="118"/>
+        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="117"/>
         <source>Profile</source>
         <translation>Profil</translation>
     </message>
@@ -270,29 +270,29 @@
 <context>
     <name>CurrentAccountSettings</name>
     <message>
-        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="110"/>
+        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="109"/>
         <source>Ok</source>
         <translation>Ok</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="133"/>
-        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="174"/>
+        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="132"/>
+        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="173"/>
         <source>Success</source>
         <translation>Succes</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="133"/>
-        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="174"/>
+        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="132"/>
+        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="173"/>
         <source>Error</source>
         <translation>Eroare</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="161"/>
+        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="160"/>
         <source>Jami archive files</source>
         <translation>Fișierul arhivei Jami</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="161"/>
+        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="160"/>
         <source>All files</source>
         <translation>Toate fișierele</translation>
     </message>
@@ -321,14 +321,14 @@
 <context>
     <name>DeviceItemDelegate</name>
     <message>
-        <location filename="../src/settingsview/components/DeviceItemDelegate.qml" line="115"/>
+        <location filename="../src/settingsview/components/DeviceItemDelegate.qml" line="114"/>
         <source>Device Id</source>
-        <translation>ID-ul dispozitivului</translation>
+        <translation>ID-ul aparatului</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/DeviceItemDelegate.qml" line="143"/>
+        <location filename="../src/settingsview/components/DeviceItemDelegate.qml" line="142"/>
         <source>Save new device name</source>
-        <translation>Salvează noul nume al dispozitivului</translation>
+        <translation>Salvează noul nume al aparatului</translation>
     </message>
 </context>
 <context>
@@ -452,7 +452,7 @@
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="49"/>
         <source>Your session has expired or been revoked on this device. Please enter your password.</source>
-        <translation>Sesiunea ta a expirat sau a fost închisă pentru acest dispozitiv. Introdu parola.</translation>
+        <translation>Sesiunea ta a expirat sau a fost închisă pentru acest aparat. Introdu parola.</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="50"/>
@@ -612,7 +612,7 @@
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="87"/>
         <source>Audio input device selector</source>
-        <translation>Selector de dispozitiv audio de intrare</translation>
+        <translation>Selector de periferic audio de intrare</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="88"/>
@@ -682,7 +682,7 @@
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="217"/>
         <source>Choose a password to encrypt your account on this device. Note that the password cannot be recovered.</source>
-        <translation>Alege o parolă pentru a cifra contul tău pe acest dispozitiv. Reține că parola nu poate fi recuperată.</translation>
+        <translation>Alege o parolă pentru a cifra contul tău pe acest aparat. Reține că parola nu poate fi recuperată.</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="219"/>
@@ -702,17 +702,17 @@
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="286"/>
         <source>SSL error</source>
-        <translation type="unfinished"/>
+        <translation>eroare SSL</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="307"/>
         <source>Enter the PIN from another configured Jami account. Use the &quot;Link Another Device&quot; feature to obtain a PIN.</source>
-        <translation>Introdu codul PIN obținut de la un cont Jami. Folosește opțiunea &quot;Asociază alt dispozitiv&quot; pentru a obține codul PIN.</translation>
+        <translation>Introdu codul PIN obținut de la un cont Jami. Folosește opțiunea &quot;Asociază alt aparat&quot; pentru a obține codul PIN.</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="309"/>
         <source>Link device</source>
-        <translation>Asociază dispozitivul</translation>
+        <translation>Asociază aparatul</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="312"/>
@@ -962,27 +962,27 @@
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="142"/>
         <source>Select audio input device</source>
-        <translation>Alege dispozitivul audio de intrare</translation>
+        <translation>Alege un periferic audio de intrare</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="143"/>
         <source>Output device</source>
-        <translation>Dispozitiv de ieșire</translation>
+        <translation>Periferic de ieșire</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="144"/>
         <source>Select audio output device</source>
-        <translation>Alege dispozitivul audio de ieșire</translation>
+        <translation>Alege un periferic audio de ieșire</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="145"/>
         <source>Ringtone device</source>
-        <translation>Dispozitiv sonerie</translation>
+        <translation>Periferic sonerie</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="146"/>
         <source>Select ringtone output device</source>
-        <translation>Alege dispozitivul sonerie de ieșire</translation>
+        <translation>Alege un periferic sonerie de ieșire</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="147"/>
@@ -997,12 +997,12 @@
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="151"/>
         <source>Select video device</source>
-        <translation>Alege dispozitivul video</translation>
+        <translation>Alege un periferic video</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="152"/>
         <source>Device</source>
-        <translation>Dispozitiv</translation>
+        <translation>Aparat</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="153"/>
@@ -1027,7 +1027,7 @@
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="161"/>
         <source>Your account only exists on this device. If you lost your device or uninstall the application, your account will be deleted and can not be recovered. You can backup your account now or later.</source>
-        <translation>Acest cont există doar pe acest dispozitiv. Dacă ai pierdut dispozitivul sau ai dezinstalat aplicația, contul tău va fi șters și nu va putea fi recuperat. Poți face o copie de rezervă acum sau mai tîrziu.</translation>
+        <translation>Acest cont există doar în acest aparat. Dacă ai pierdut aparatul sau ai dezinstalat aplicația, contul tău va fi șters și nu va putea fi recuperat. Poți face o copie de rezervă acum sau mai tîrziu.</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="165"/>
@@ -1167,12 +1167,12 @@
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="199"/>
         <source>No video device</source>
-        <translation>Niciun dispozitiv video</translation>
+        <translation>Niciun periferic video</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="202"/>
         <source>Enter Jami Account Management Server (JAMS) URL</source>
-        <translation>Introdu adresa Jami Account Management Server (JAMS)</translation>
+        <translation>Introdu URL-ul Serverului de Administrare a Conturilor JAMI (JAMS)</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="203"/>
@@ -1182,7 +1182,7 @@
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="204"/>
         <source>Jami Account Management Server URL</source>
-        <translation>Adresa Jami Account Management Server</translation>
+        <translation>URL-ul Serverului de Administrare a Conturilor</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="205"/>
@@ -1328,12 +1328,12 @@
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="251"/>
         <source>Link a new device to this account</source>
-        <translation>Asociază un nou dispozitiv acestui cont</translation>
+        <translation>Asociază un nou aparat acestui cont</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="252"/>
         <source>Link another device</source>
-        <translation>Asociază alt dispozitiv</translation>
+        <translation>Asociază alt aparat</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="255"/>
@@ -1348,17 +1348,17 @@
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="259"/>
         <source>If your account has not been backuped, or added to another device, your account and registered name will be irrevocably lost.</source>
-        <translation>Dacă acest cont nu a fost asociat altui dispozitiv și nu ai o copie de rezervă, va fi pierdut definitiv.</translation>
+        <translation>Dacă acest cont nu a fost asociat altui aparat și nu ai o copie de rezervă, va fi pierdut definitiv.</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="262"/>
         <source>Edit device name</source>
-        <translation>Modifică numele dispozitivului</translation>
+        <translation>Modifică numele aparatului</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="263"/>
         <source>Unlink device from account</source>
-        <translation>Disociază dispozitivul de cont</translation>
+        <translation>Disociază aparatul de cont</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="266"/>
@@ -1485,7 +1485,7 @@
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="300"/>
         <source>You can obtain an archive by clicking on &quot;Backup account&quot; in the account settings. This will create a .gz file on your device.</source>
-        <translation>Poți obține o arhivă făcînd clic pe &quot;Copie de rezervă a contului&quot; în reglările contului. Asta va crea un fișier .gz pe dispozitiv.</translation>
+        <translation>Poți obține o arhivă făcînd clic pe &quot;Copie de rezervă a contului&quot; în reglările contului. Asta va crea un fișier .gz în aparatul tău.</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="303"/>
@@ -1500,7 +1500,7 @@
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="315"/>
         <source>The PIN and the account password should be entered in your device within 10 minutes.</source>
-        <translation>Codul PIN și parola contului trebuie introduse în dispozitivul tău în 10 minute.</translation>
+        <translation>Codul PIN și parola contului trebuie introduse în aparatul tău în 10 minute.</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="316"/>
@@ -1515,7 +1515,7 @@
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="318"/>
         <source>Add Device</source>
-        <translation>Adaugă un Dispozitiv</translation>
+        <translation>Adaugă un Aparat</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="321"/>
@@ -1595,7 +1595,7 @@
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="360"/>
         <source>Enter the account password to confirm the removal of this device</source>
-        <translation>Introdu parola acestui cont pentru a confirma eliminarea acestui dispozitiv</translation>
+        <translation>Introdu parola acestui cont pentru a confirma eliminarea acestui aparat</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="363"/>
@@ -1622,7 +1622,7 @@ Copiază-l și distribuie-l prietenilor!</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="373"/>
         <source>Link this device to an existing account</source>
-        <translation>Asociază acest dispozitiv unui cont existent</translation>
+        <translation>Asociază acest aparat unui cont existent</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="374"/>
@@ -1805,7 +1805,7 @@ Please try again later.</source>
     <message>
         <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="318"/>
         <source>This pin and the account password should be entered in your device within 10 minutes.</source>
-        <translation>Acest cod PIN și parola contului trebuie introduse în dispozitiv în 10 minute.</translation>
+        <translation>Acest cod PIN și parola contului trebuie introduse în aparat în 10 minute.</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="100"/>
@@ -1818,12 +1818,12 @@ Please try again later.</source>
     <message>
         <location filename="../src/settingsview/components/LinkedDevices.qml" line="96"/>
         <source>Remove Device</source>
-        <translation>Elimină Dispozitivul</translation>
+        <translation>Elimină Aparatul</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/LinkedDevices.qml" line="97"/>
         <source>Are you sure you wish to remove this device?</source>
-        <translation>Sigur vrei să elimini acest dispozitiv?</translation>
+        <translation>Sigur vrei să elimini acest aparat?</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/LinkedDevices.qml" line="99"/>
@@ -1838,7 +1838,7 @@ Please try again later.</source>
     <message>
         <location filename="../src/settingsview/components/LinkedDevices.qml" line="108"/>
         <source>Linked Devices</source>
-        <translation>Dispozitive asociate</translation>
+        <translation>Aparate asociate</translation>
     </message>
 </context>
 <context>
@@ -1852,7 +1852,7 @@ Please try again later.</source>
 <context>
     <name>MediaHandlerItemDelegate</name>
     <message>
-        <location filename="../src/mainview/components/MediaHandlerItemDelegate.qml" line="84"/>
+        <location filename="../src/mainview/components/MediaHandlerItemDelegate.qml" line="83"/>
         <source>On/Off</source>
         <translation>Pornit/Oprit</translation>
     </message>
@@ -1860,17 +1860,17 @@ Please try again later.</source>
 <context>
     <name>MediaHandlerPicker</name>
     <message>
-        <location filename="../src/mainview/components/MediaHandlerPicker.qml" line="85"/>
+        <location filename="../src/mainview/components/MediaHandlerPicker.qml" line="86"/>
         <source>Choose plugin</source>
         <translation>Alege extensia</translation>
     </message>
     <message>
-        <location filename="../src/mainview/components/MediaHandlerPicker.qml" line="143"/>
+        <location filename="../src/mainview/components/MediaHandlerPicker.qml" line="144"/>
         <source>Go back to plugins list</source>
         <translation>Întoarce-te  la extensii</translation>
     </message>
     <message>
-        <location filename="../src/mainview/components/MediaHandlerPicker.qml" line="183"/>
+        <location filename="../src/mainview/components/MediaHandlerPicker.qml" line="184"/>
         <source>Preferences</source>
         <translation>Preferințe</translation>
     </message>
@@ -1912,12 +1912,12 @@ Please try again later.</source>
 <context>
     <name>ParticipantContextMenu</name>
     <message>
-        <location filename="../src/mainview/components/ParticipantContextMenu.qml" line="49"/>
+        <location filename="../src/mainview/components/ParticipantContextMenu.qml" line="48"/>
         <source>Maximize participant</source>
         <translation>Mărește participantul</translation>
     </message>
     <message>
-        <location filename="../src/mainview/components/ParticipantContextMenu.qml" line="55"/>
+        <location filename="../src/mainview/components/ParticipantContextMenu.qml" line="54"/>
         <source>Minimize participant</source>
         <translation>Micșorează participantul</translation>
     </message>
@@ -1957,7 +1957,7 @@ Please try again later.</source>
 <context>
     <name>PluginItemDelegate</name>
     <message>
-        <location filename="../src/settingsview/components/PluginItemDelegate.qml" line="79"/>
+        <location filename="../src/settingsview/components/PluginItemDelegate.qml" line="78"/>
         <source>Load/Unload</source>
         <translation>Pornește/Oprește</translation>
     </message>
@@ -1965,27 +1965,27 @@ Please try again later.</source>
 <context>
     <name>PluginListPreferencesView</name>
     <message>
-        <location filename="../src/settingsview/components/PluginListPreferencesView.qml" line="71"/>
+        <location filename="../src/settingsview/components/PluginListPreferencesView.qml" line="70"/>
         <source>Uninstall plugin</source>
         <translation>Dezinstalează extensia</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/PluginListPreferencesView.qml" line="50"/>
+        <location filename="../src/settingsview/components/PluginListPreferencesView.qml" line="49"/>
         <source>Reset preferences</source>
         <translation>Restabilește preferințele inițiale</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/PluginListPreferencesView.qml" line="93"/>
+        <location filename="../src/settingsview/components/PluginListPreferencesView.qml" line="92"/>
         <source>Ok</source>
         <translation>Ok</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/PluginListPreferencesView.qml" line="93"/>
+        <location filename="../src/settingsview/components/PluginListPreferencesView.qml" line="92"/>
         <source>Cancel</source>
         <translation>Renunță</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/PluginListPreferencesView.qml" line="168"/>
+        <location filename="../src/settingsview/components/PluginListPreferencesView.qml" line="167"/>
         <source>Uninstall</source>
         <translation>Dezinstalează</translation>
     </message>
@@ -2011,7 +2011,7 @@ Please try again later.</source>
 <context>
     <name>PreferenceItemDelegate</name>
     <message>
-        <location filename="../src/commoncomponents/PreferenceItemDelegate.qml" line="117"/>
+        <location filename="../src/commoncomponents/PreferenceItemDelegate.qml" line="116"/>
         <source>Edit preference</source>
         <translation>Modifică preferința</translation>
     </message>
@@ -2060,13 +2060,13 @@ Please try again later.</source>
         <location filename="../src/videoinputdevicemodel.cpp" line="68"/>
         <location filename="../src/videoinputdevicemodel.cpp" line="70"/>
         <source>No device</source>
-        <translation>Niciun dispozitiv</translation>
+        <translation>Niciun aparat</translation>
     </message>
 </context>
 <context>
     <name>RecordBox</name>
     <message>
-        <location filename="../src/mainview/components/RecordBox.qml" line="240"/>
+        <location filename="../src/mainview/components/RecordBox.qml" line="239"/>
         <source>Preview unavailable</source>
         <translation>Previzualizare indisponibilă</translation>
     </message>
@@ -2099,12 +2099,12 @@ Please try again later.</source>
     <message>
         <location filename="../src/settingsview/components/RevokeDevicePasswordDialog.qml" line="41"/>
         <source>Remove device</source>
-        <translation>Elimină dispozitivul</translation>
+        <translation>Elimină aparatul</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/RevokeDevicePasswordDialog.qml" line="61"/>
         <source>Enter this account&apos;s password to confirm the removal of this device</source>
-        <translation>Introdu parola acestui cont pentru a confirma eliminarea acestui dispozitiv</translation>
+        <translation>Introdu parola acestui cont pentru a confirma eliminarea acestui aparat</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/RevokeDevicePasswordDialog.qml" line="105"/>
@@ -2143,8 +2143,8 @@ Please try again later.</source>
 <context>
     <name>SelectScreen</name>
     <message>
-        <location filename="../src/mainview/components/SelectScreen.qml" line="167"/>
-        <location filename="../src/mainview/components/SelectScreen.qml" line="233"/>
+        <location filename="../src/mainview/components/SelectScreen.qml" line="166"/>
+        <location filename="../src/mainview/components/SelectScreen.qml" line="232"/>
         <source>Screen</source>
         <translation>Ecran</translation>
     </message>
@@ -2183,17 +2183,17 @@ Please try again later.</source>
 <context>
     <name>SettingsView</name>
     <message>
-        <location filename="../src/settingsview/SettingsView.qml" line="152"/>
+        <location filename="../src/settingsview/SettingsView.qml" line="151"/>
         <source>Account Settings</source>
         <translation>Reglările Contului</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/SettingsView.qml" line="154"/>
+        <location filename="../src/settingsview/SettingsView.qml" line="153"/>
         <source>General</source>
         <translation>Generale</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/SettingsView.qml" line="158"/>
+        <location filename="../src/settingsview/SettingsView.qml" line="157"/>
         <source>Plugin</source>
         <translation>Extensie</translation>
     </message>
@@ -2245,7 +2245,7 @@ Please try again later.</source>
 <context>
     <name>UserInfoCallPage</name>
     <message>
-        <location filename="../src/mainview/components/UserInfoCallPage.qml" line="69"/>
+        <location filename="../src/mainview/components/UserInfoCallPage.qml" line="70"/>
         <source>Toggle to display side panel</source>
         <translation>Act/Dez panoul lateral</translation>
     </message>
@@ -2263,7 +2263,7 @@ Please try again later.</source>
     <message>
         <location filename="../src/mainview/components/VideoCallPageContextMenuDeviceItem.qml" line="41"/>
         <source>No video device</source>
-        <translation>Niciun dispozitiv video</translation>
+        <translation>Niciun periferic video</translation>
     </message>
 </context>
 <context>
@@ -2281,7 +2281,7 @@ Please try again later.</source>
     <message>
         <location filename="../src/wizardview/components/WelcomePage.qml" line="125"/>
         <source>Import account from other device</source>
-        <translation>Importă contul din alt dispozitiv</translation>
+        <translation>Importă contul din alt aparat</translation>
     </message>
     <message>
         <location filename="../src/wizardview/components/WelcomePage.qml" line="145"/>
@@ -2297,12 +2297,12 @@ Please try again later.</source>
 <context>
     <name>WizardView</name>
     <message>
-        <location filename="../src/wizardview/WizardView.qml" line="155"/>
+        <location filename="../src/wizardview/WizardView.qml" line="154"/>
         <source>Success</source>
         <translation>Succes</translation>
     </message>
     <message>
-        <location filename="../src/wizardview/WizardView.qml" line="155"/>
+        <location filename="../src/wizardview/WizardView.qml" line="154"/>
         <source>Error</source>
         <translation>Eroare</translation>
     </message>

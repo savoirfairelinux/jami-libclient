@@ -137,17 +137,17 @@
 <context>
     <name>CallAdvancedOptions</name>
     <message>
-        <location filename="../src/mainview/components/CallAdvancedOptions.qml" line="85"/>
+        <location filename="../src/mainview/components/CallAdvancedOptions.qml" line="86"/>
         <source>Add to conference</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainview/components/CallAdvancedOptions.qml" line="85"/>
+        <location filename="../src/mainview/components/CallAdvancedOptions.qml" line="86"/>
         <source>Transfer this call</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainview/components/CallAdvancedOptions.qml" line="103"/>
+        <location filename="../src/mainview/components/CallAdvancedOptions.qml" line="104"/>
         <source>Search contacts</source>
         <translation type="unfinished"/>
     </message>
@@ -189,32 +189,32 @@
 <context>
     <name>ConversationSmartListContextMenu</name>
     <message>
-        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="40"/>
+        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="39"/>
         <source>Start video call</source>
         <translation>Начать видеозвонок </translation>
     </message>
     <message>
-        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="49"/>
+        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="48"/>
         <source>Start audio call</source>
         <translation>Начать аудиозвонок</translation>
     </message>
     <message>
-        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="59"/>
+        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="58"/>
         <source>Clear conversation</source>
         <translation>Очистить переписку</translation>
     </message>
     <message>
-        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="68"/>
+        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="67"/>
         <source>Remove contact</source>
         <translation>Удалить контакт</translation>
     </message>
     <message>
-        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="110"/>
+        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="109"/>
         <source>Block contact</source>
         <translation>Заблокировать контакт</translation>
     </message>
     <message>
-        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="118"/>
+        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="117"/>
         <source>Profile</source>
         <translation>Профиль</translation>
     </message>
@@ -270,29 +270,29 @@
 <context>
     <name>CurrentAccountSettings</name>
     <message>
-        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="110"/>
+        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="109"/>
         <source>Ok</source>
         <translation>Да</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="133"/>
-        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="174"/>
+        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="132"/>
+        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="173"/>
         <source>Success</source>
         <translation>Успешно</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="133"/>
-        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="174"/>
+        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="132"/>
+        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="173"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="161"/>
+        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="160"/>
         <source>Jami archive files</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="161"/>
+        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="160"/>
         <source>All files</source>
         <translation type="unfinished"/>
     </message>
@@ -321,12 +321,12 @@
 <context>
     <name>DeviceItemDelegate</name>
     <message>
-        <location filename="../src/settingsview/components/DeviceItemDelegate.qml" line="115"/>
+        <location filename="../src/settingsview/components/DeviceItemDelegate.qml" line="114"/>
         <source>Device Id</source>
         <translation>Id Устройства</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/DeviceItemDelegate.qml" line="143"/>
+        <location filename="../src/settingsview/components/DeviceItemDelegate.qml" line="142"/>
         <source>Save new device name</source>
         <translation>Сохранить новое имя устройства</translation>
     </message>
@@ -497,7 +497,7 @@
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="61"/>
         <source>Allow incoming calls from unknown contacts</source>
-        <translation type="unfinished"/>
+        <translation>Разрешить входящие звонки от незнакомых контактов</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="53"/>
@@ -672,7 +672,7 @@
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="213"/>
         <source>Encrypt account with password</source>
-        <translation type="unfinished"/>
+        <translation>Зашифровать аккаунт с помощью пароля</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="214"/>
@@ -967,7 +967,7 @@
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="143"/>
         <source>Output device</source>
-        <translation type="unfinished"/>
+        <translation>Устройства вывода</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="144"/>
@@ -977,7 +977,7 @@
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="145"/>
         <source>Ringtone device</source>
-        <translation type="unfinished"/>
+        <translation>Устройство для звонка</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="146"/>
@@ -987,7 +987,7 @@
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="147"/>
         <source>Audio manager</source>
-        <translation type="unfinished"/>
+        <translation>Аудио менеджер</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="150"/>
@@ -1667,7 +1667,7 @@ Copy and share it with your friends!</source>
     <message>
         <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="45"/>
         <source>Open account list</source>
-        <translation type="unfinished"/>
+        <translation>Открыть список аккаунтов</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="50"/>
@@ -1702,12 +1702,12 @@ Copy and share it with your friends!</source>
     <message>
         <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="83"/>
         <source>Start an audio call</source>
-        <translation type="unfinished"/>
+        <translation>Начать аудиозвонок</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="88"/>
         <source>Start a video call</source>
-        <translation type="unfinished"/>
+        <translation>Начать видеозвонок </translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="93"/>
@@ -1849,7 +1849,7 @@ Please try again later.</source>
 <context>
     <name>MediaHandlerItemDelegate</name>
     <message>
-        <location filename="../src/mainview/components/MediaHandlerItemDelegate.qml" line="84"/>
+        <location filename="../src/mainview/components/MediaHandlerItemDelegate.qml" line="83"/>
         <source>On/Off</source>
         <translation type="unfinished"/>
     </message>
@@ -1857,17 +1857,17 @@ Please try again later.</source>
 <context>
     <name>MediaHandlerPicker</name>
     <message>
-        <location filename="../src/mainview/components/MediaHandlerPicker.qml" line="85"/>
+        <location filename="../src/mainview/components/MediaHandlerPicker.qml" line="86"/>
         <source>Choose plugin</source>
-        <translation type="unfinished"/>
+        <translation>Выбрать плагин</translation>
     </message>
     <message>
-        <location filename="../src/mainview/components/MediaHandlerPicker.qml" line="143"/>
+        <location filename="../src/mainview/components/MediaHandlerPicker.qml" line="144"/>
         <source>Go back to plugins list</source>
-        <translation type="unfinished"/>
+        <translation>Назад к списку плагинов</translation>
     </message>
     <message>
-        <location filename="../src/mainview/components/MediaHandlerPicker.qml" line="183"/>
+        <location filename="../src/mainview/components/MediaHandlerPicker.qml" line="184"/>
         <source>Preferences</source>
         <translation type="unfinished"/>
     </message>
@@ -1909,12 +1909,12 @@ Please try again later.</source>
 <context>
     <name>ParticipantContextMenu</name>
     <message>
-        <location filename="../src/mainview/components/ParticipantContextMenu.qml" line="49"/>
+        <location filename="../src/mainview/components/ParticipantContextMenu.qml" line="48"/>
         <source>Maximize participant</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainview/components/ParticipantContextMenu.qml" line="55"/>
+        <location filename="../src/mainview/components/ParticipantContextMenu.qml" line="54"/>
         <source>Minimize participant</source>
         <translation type="unfinished"/>
     </message>
@@ -1954,7 +1954,7 @@ Please try again later.</source>
 <context>
     <name>PluginItemDelegate</name>
     <message>
-        <location filename="../src/settingsview/components/PluginItemDelegate.qml" line="79"/>
+        <location filename="../src/settingsview/components/PluginItemDelegate.qml" line="78"/>
         <source>Load/Unload</source>
         <translation type="unfinished"/>
     </message>
@@ -1962,27 +1962,27 @@ Please try again later.</source>
 <context>
     <name>PluginListPreferencesView</name>
     <message>
-        <location filename="../src/settingsview/components/PluginListPreferencesView.qml" line="71"/>
+        <location filename="../src/settingsview/components/PluginListPreferencesView.qml" line="70"/>
         <source>Uninstall plugin</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/settingsview/components/PluginListPreferencesView.qml" line="50"/>
+        <location filename="../src/settingsview/components/PluginListPreferencesView.qml" line="49"/>
         <source>Reset preferences</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/settingsview/components/PluginListPreferencesView.qml" line="93"/>
+        <location filename="../src/settingsview/components/PluginListPreferencesView.qml" line="92"/>
         <source>Ok</source>
         <translation>Да</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/PluginListPreferencesView.qml" line="93"/>
+        <location filename="../src/settingsview/components/PluginListPreferencesView.qml" line="92"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/PluginListPreferencesView.qml" line="168"/>
+        <location filename="../src/settingsview/components/PluginListPreferencesView.qml" line="167"/>
         <source>Uninstall</source>
         <translation type="unfinished"/>
     </message>
@@ -2002,13 +2002,13 @@ Please try again later.</source>
     <message>
         <location filename="../src/settingsview/components/PluginListSettingsView.qml" line="104"/>
         <source>Installed plugins</source>
-        <translation type="unfinished"/>
+        <translation>Установленные плагины</translation>
     </message>
 </context>
 <context>
     <name>PreferenceItemDelegate</name>
     <message>
-        <location filename="../src/commoncomponents/PreferenceItemDelegate.qml" line="117"/>
+        <location filename="../src/commoncomponents/PreferenceItemDelegate.qml" line="116"/>
         <source>Edit preference</source>
         <translation type="unfinished"/>
     </message>
@@ -2063,7 +2063,7 @@ Please try again later.</source>
 <context>
     <name>RecordBox</name>
     <message>
-        <location filename="../src/mainview/components/RecordBox.qml" line="240"/>
+        <location filename="../src/mainview/components/RecordBox.qml" line="239"/>
         <source>Preview unavailable</source>
         <translation>Предварительный просмотр недоступен</translation>
     </message>
@@ -2140,8 +2140,8 @@ Please try again later.</source>
 <context>
     <name>SelectScreen</name>
     <message>
-        <location filename="../src/mainview/components/SelectScreen.qml" line="167"/>
-        <location filename="../src/mainview/components/SelectScreen.qml" line="233"/>
+        <location filename="../src/mainview/components/SelectScreen.qml" line="166"/>
+        <location filename="../src/mainview/components/SelectScreen.qml" line="232"/>
         <source>Screen</source>
         <translation type="unfinished"/>
     </message>
@@ -2174,25 +2174,25 @@ Please try again later.</source>
     <message>
         <location filename="../src/settingsview/components/SettingsMenu.qml" line="40"/>
         <source>Plugin</source>
-        <translation type="unfinished"/>
+        <translation>Плагин</translation>
     </message>
 </context>
 <context>
     <name>SettingsView</name>
     <message>
-        <location filename="../src/settingsview/SettingsView.qml" line="152"/>
+        <location filename="../src/settingsview/SettingsView.qml" line="151"/>
         <source>Account Settings</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/settingsview/SettingsView.qml" line="154"/>
+        <location filename="../src/settingsview/SettingsView.qml" line="153"/>
         <source>General</source>
         <translation>Основные</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/SettingsView.qml" line="158"/>
+        <location filename="../src/settingsview/SettingsView.qml" line="157"/>
         <source>Plugin</source>
-        <translation type="unfinished"/>
+        <translation>Плагин</translation>
     </message>
 </context>
 <context>
@@ -2242,7 +2242,7 @@ Please try again later.</source>
 <context>
     <name>UserInfoCallPage</name>
     <message>
-        <location filename="../src/mainview/components/UserInfoCallPage.qml" line="69"/>
+        <location filename="../src/mainview/components/UserInfoCallPage.qml" line="70"/>
         <source>Toggle to display side panel</source>
         <translation type="unfinished"/>
     </message>
@@ -2294,12 +2294,12 @@ Please try again later.</source>
 <context>
     <name>WizardView</name>
     <message>
-        <location filename="../src/wizardview/WizardView.qml" line="155"/>
+        <location filename="../src/wizardview/WizardView.qml" line="154"/>
         <source>Success</source>
         <translation>Успешно</translation>
     </message>
     <message>
-        <location filename="../src/wizardview/WizardView.qml" line="155"/>
+        <location filename="../src/wizardview/WizardView.qml" line="154"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
