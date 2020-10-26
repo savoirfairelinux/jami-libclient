@@ -170,6 +170,11 @@ Q_SIGNALS:
      * @param banned whether contact was banned or unbanned
      */
     void bannedStatusChanged(const QString& contactUri, bool banned) const;
+    /**
+     * Connect this signal to know when contact profile was updated.
+     * @param contactUri
+     */
+    void profileUpdated(const QString& contactUri) const;
 
 private:
     /**
