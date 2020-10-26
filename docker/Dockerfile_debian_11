@@ -1,5 +1,9 @@
 FROM debian:bullseye-20200908
 
+ENV DEBIAN_FRONTEND noninteractive
+ENV QT_QUICK_BACKEND software
+ENV QT_QPA_PLATFORM offscreen
+
 RUN apt-get clean
 RUN apt-get update
 RUN apt-get install -y -o Acquire::Retires=10 \
@@ -57,12 +61,24 @@ RUN apt-get install -y -o Acquire::Retires=10 \
         libvdpau-dev \
         libssl-dev
 RUN apt-get install -y qtmultimedia5-dev \
-        libqt5svg5* \
+        libqt5svg5-dev \
         qtwebengine5-dev \
         qtdeclarative5-dev \
         qtquickcontrols2-5-dev \
-        qml-module-qtquick* \
+        libqt5svg5-dev \
+        qml-module-qtquick2 \
+        qml-module-qtquick-controls \
+        qml-module-qtquick-controls2 \
+        qml-module-qtquick-dialogs \
+        qml-module-qtquick-layouts \
+        qml-module-qtquick-privatewidgets \
+        qml-module-qtquick-shapes \
+        qml-module-qtquick-window2 \
+        qml-module-qtquick-templates2
         qml-module-qt-labs-platform \
         qml-module-qtwebengine \
         qml-module-qtwebchannel \
-        pandoc
+        qml-module-qttest \
+        pandoc \
+        googletest \
+        libgtest-dev

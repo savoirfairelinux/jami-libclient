@@ -27,6 +27,8 @@
 
 #include <clocale>
 
+#ifndef ENABLE_TESTS
+
 static char**
 parseInputArgument(int& argc, char* argv[], char* argToParse)
 {
@@ -88,3 +90,4 @@ main(int argc, char* argv[])
     guard.release();
     return ret;
 }
+#endif
