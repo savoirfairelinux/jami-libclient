@@ -7,63 +7,63 @@
         <translation>Ik</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="65"/>
+        <location filename="../src/api/call.h" line="61"/>
         <source>Hold</source>
         <translation>In wacht zetten</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="67"/>
+        <location filename="../src/api/call.h" line="63"/>
         <source>Talking</source>
         <translation>Praten</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="69"/>
+        <location filename="../src/api/call.h" line="65"/>
         <source>ERROR</source>
         <translation>FOUT</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="71"/>
+        <location filename="../src/api/call.h" line="67"/>
         <source>Incoming</source>
         <translation>Inkomend</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="73"/>
+        <location filename="../src/api/call.h" line="69"/>
         <source>Calling</source>
         <translation>Bellen</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="75"/>
+        <location filename="../src/api/call.h" line="71"/>
         <source>Connecting</source>
         <translation>Verbinden</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="77"/>
+        <location filename="../src/api/call.h" line="73"/>
         <source>Searching</source>
         <translation>Zoeken</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="79"/>
+        <location filename="../src/api/call.h" line="75"/>
         <source>Inactive</source>
         <translation>Inactief</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="81"/>
-        <location filename="../src/api/call.h" line="87"/>
+        <location filename="../src/api/call.h" line="77"/>
+        <location filename="../src/api/call.h" line="83"/>
         <source>Finished</source>
         <translation>Beëindigd</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="83"/>
+        <location filename="../src/api/call.h" line="79"/>
         <source>Timeout</source>
         <translation>Time-out</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="85"/>
+        <location filename="../src/api/call.h" line="81"/>
         <source>Peer busy</source>
         <translation>Peer is bezet</translation>
     </message>
     <message>
-        <location filename="../src/api/call.h" line="89"/>
+        <location filename="../src/api/call.h" line="85"/>
         <source>Communication established</source>
         <translation>Communicatie tot stand gebracht</translation>
     </message>
@@ -116,278 +116,278 @@
         <translation>standaard</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="52"/>
+        <location filename="../src/newcallmodel.cpp" line="53"/>
         <source>Null</source>
         <translation>Null</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="53"/>
+        <location filename="../src/newcallmodel.cpp" line="54"/>
         <source>Trying</source>
         <translation>Poging</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="54"/>
+        <location filename="../src/newcallmodel.cpp" line="55"/>
         <source>Ringing</source>
         <translation>Gaat over</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="55"/>
+        <location filename="../src/newcallmodel.cpp" line="56"/>
         <source>Being Forwarded</source>
         <translation>Bezig met doorschakelen</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="56"/>
+        <location filename="../src/newcallmodel.cpp" line="57"/>
         <source>Queued</source>
         <translation>In wachtrij</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="57"/>
+        <location filename="../src/newcallmodel.cpp" line="58"/>
         <source>Progress</source>
         <translation>Voortgang</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="58"/>
+        <location filename="../src/newcallmodel.cpp" line="59"/>
         <source>OK</source>
         <translation>Oké</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="59"/>
+        <location filename="../src/newcallmodel.cpp" line="60"/>
         <source>Accepted</source>
         <translation>Geaccepteerd</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="60"/>
+        <location filename="../src/newcallmodel.cpp" line="61"/>
         <source>Multiple Choices</source>
         <translation>Meerdere mogelijkheden</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="61"/>
+        <location filename="../src/newcallmodel.cpp" line="62"/>
         <source>Moved Permanently</source>
         <translation>Permanent verplaatst</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="62"/>
+        <location filename="../src/newcallmodel.cpp" line="63"/>
         <source>Moved Temporarily</source>
         <translation>Tijdelijk verplaatst</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="63"/>
+        <location filename="../src/newcallmodel.cpp" line="64"/>
         <source>Use Proxy</source>
         <translation>Proxy gebruiken</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="64"/>
+        <location filename="../src/newcallmodel.cpp" line="65"/>
         <source>Alternative Service</source>
         <translation>Alternatieve dienst</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="65"/>
+        <location filename="../src/newcallmodel.cpp" line="66"/>
         <source>Bad Request</source>
         <translation>Slecht verzoek</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="66"/>
+        <location filename="../src/newcallmodel.cpp" line="67"/>
         <source>Unauthorized</source>
         <translation>Niet geautoriseerd</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="67"/>
+        <location filename="../src/newcallmodel.cpp" line="68"/>
         <source>Payment Required</source>
         <translation>Betaling vereist</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="68"/>
+        <location filename="../src/newcallmodel.cpp" line="69"/>
         <source>Forbidden</source>
         <translation>Verboden</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="69"/>
+        <location filename="../src/newcallmodel.cpp" line="70"/>
         <source>Not Found</source>
         <translation>Niet gevonden</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="70"/>
+        <location filename="../src/newcallmodel.cpp" line="71"/>
         <source>Method Not Allowed</source>
         <translation>Methode niet toegestaan</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="71"/>
-        <location filename="../src/newcallmodel.cpp" line="91"/>
+        <location filename="../src/newcallmodel.cpp" line="72"/>
+        <location filename="../src/newcallmodel.cpp" line="92"/>
         <source>Not Acceptable</source>
         <translation>Niet acceptabel</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="72"/>
+        <location filename="../src/newcallmodel.cpp" line="73"/>
         <source>Proxy Authentication Required</source>
         <translation>Proxy-authenticatie vereist</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="73"/>
+        <location filename="../src/newcallmodel.cpp" line="74"/>
         <source>Request Timeout</source>
         <translation>Time-out aanvragen</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="74"/>
+        <location filename="../src/newcallmodel.cpp" line="75"/>
         <source>Gone</source>
         <translation>Weg</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="75"/>
+        <location filename="../src/newcallmodel.cpp" line="76"/>
         <source>Request Entity Too Large</source>
         <translation>Verzoeksentiteit te groot</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="76"/>
+        <location filename="../src/newcallmodel.cpp" line="77"/>
         <source>Request URI Too Long</source>
         <translation>Verzoeks-URI te lang</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="77"/>
+        <location filename="../src/newcallmodel.cpp" line="78"/>
         <source>Unsupported Media Type</source>
         <translation>Niet-ondersteund mediatype</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="78"/>
+        <location filename="../src/newcallmodel.cpp" line="79"/>
         <source>Unsupported URI Scheme</source>
         <translation>Niet-ondersteund URI-schema</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="79"/>
+        <location filename="../src/newcallmodel.cpp" line="80"/>
         <source>Bad Extension</source>
         <translation>Slechte extensie</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="80"/>
+        <location filename="../src/newcallmodel.cpp" line="81"/>
         <source>Extension Required</source>
         <translation>Extensie vereist</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="81"/>
+        <location filename="../src/newcallmodel.cpp" line="82"/>
         <source>Session Timer Too Small</source>
         <translation>Sessietimer te klein</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="82"/>
+        <location filename="../src/newcallmodel.cpp" line="83"/>
         <source>Interval Too Brief</source>
         <translation>Interval te kort</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="83"/>
+        <location filename="../src/newcallmodel.cpp" line="84"/>
         <source>Temporarily Unavailable</source>
         <translation>Tijdelijk niet beschikbaar</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="84"/>
+        <location filename="../src/newcallmodel.cpp" line="85"/>
         <source>Call TSX Does Not Exist</source>
         <translation>Oproep-TSX bestaat niet</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="85"/>
+        <location filename="../src/newcallmodel.cpp" line="86"/>
         <source>Loop Detected</source>
         <translation>Lus gedetecteerd</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="86"/>
+        <location filename="../src/newcallmodel.cpp" line="87"/>
         <source>Too Many Hops</source>
         <translation>Te veel sprongen</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="87"/>
+        <location filename="../src/newcallmodel.cpp" line="88"/>
         <source>Address Incomplete</source>
         <translation>Onvolledig adres</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="88"/>
+        <location filename="../src/newcallmodel.cpp" line="89"/>
         <source>Ambiguous</source>
         <translation>Ambigu</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="89"/>
+        <location filename="../src/newcallmodel.cpp" line="90"/>
         <source>Busy</source>
         <translation>Bezet</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="90"/>
+        <location filename="../src/newcallmodel.cpp" line="91"/>
         <source>Request Terminated</source>
         <translation>Verzoek beëindigd</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="92"/>
+        <location filename="../src/newcallmodel.cpp" line="93"/>
         <source>Bad Event</source>
         <translation>Slechte gebeurtenis</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="93"/>
+        <location filename="../src/newcallmodel.cpp" line="94"/>
         <source>Request Updated</source>
         <translation>Verzoek bijgewerkt</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="94"/>
+        <location filename="../src/newcallmodel.cpp" line="95"/>
         <source>Request Pending</source>
         <translation>Verzoek in afwachting</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="95"/>
+        <location filename="../src/newcallmodel.cpp" line="96"/>
         <source>Undecipherable</source>
         <translation>Onleesbaar</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="96"/>
+        <location filename="../src/newcallmodel.cpp" line="97"/>
         <source>Internal Server Error</source>
         <translation>Interne serverfout</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="97"/>
+        <location filename="../src/newcallmodel.cpp" line="98"/>
         <source>Not Implemented</source>
         <translation>Niet geïmplementeerd</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="98"/>
+        <location filename="../src/newcallmodel.cpp" line="99"/>
         <source>Bad Gateway</source>
         <translation>Slechte gateway</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="99"/>
+        <location filename="../src/newcallmodel.cpp" line="100"/>
         <source>Service Unavailable</source>
         <translation>Dienst niet beschikbaar</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="100"/>
+        <location filename="../src/newcallmodel.cpp" line="101"/>
         <source>Server Timeout</source>
         <translation>Servertime-out</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="101"/>
+        <location filename="../src/newcallmodel.cpp" line="102"/>
         <source>Version Not Supported</source>
         <translation>Versie niet ondersteund</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="102"/>
+        <location filename="../src/newcallmodel.cpp" line="103"/>
         <source>Message Too Large</source>
         <translation>Bericht te groot</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="103"/>
+        <location filename="../src/newcallmodel.cpp" line="104"/>
         <source>Precondition Failure</source>
         <translation>Pre-voorwaardefout</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="104"/>
+        <location filename="../src/newcallmodel.cpp" line="105"/>
         <source>Busy Everywhere</source>
         <translation>Overal bezet</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="105"/>
+        <location filename="../src/newcallmodel.cpp" line="106"/>
         <source>Call Refused</source>
         <translation>Oproep geweigerd</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="106"/>
+        <location filename="../src/newcallmodel.cpp" line="107"/>
         <source>Does Not Exist Anywhere</source>
         <translation>Bestaat nergens</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="107"/>
+        <location filename="../src/newcallmodel.cpp" line="108"/>
         <source>Not Acceptable Anywhere</source>
         <translation>Nergens acceptabel</translation>
     </message>

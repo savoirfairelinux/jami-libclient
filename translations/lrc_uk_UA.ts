@@ -1,4 +1,4 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="et_EE" sourcelanguage="en" version="2.1">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="uk_UA" sourcelanguage="en" version="2.1">
 <context>
     <name>QObject</name>
     <message>
@@ -29,12 +29,12 @@
     <message>
         <location filename="../src/api/call.h" line="69"/>
         <source>Calling</source>
-        <translation>Helistab</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/api/call.h" line="71"/>
         <source>Connecting</source>
-        <translation>Ühendab</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/api/call.h" line="73"/>
@@ -128,7 +128,7 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="55"/>
         <source>Ringing</source>
-        <translation>Heliseb</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="56"/>
@@ -148,7 +148,7 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="59"/>
         <source>OK</source>
-        <translation type="unfinished"/>
+        <translation>OK</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="60"/>
@@ -304,7 +304,7 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="90"/>
         <source>Busy</source>
-        <translation>Kinni</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="91"/>
@@ -434,7 +434,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="37"/>
         <source>Send file</source>
-        <translation type="unfinished"/>
+        <translation>Відправити файл</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="38"/>
