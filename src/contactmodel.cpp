@@ -324,6 +324,7 @@ ContactModel::addContact(contact::Info contactInfo)
             iter->profileInfo = contactInfo.profileInfo;
         }
     }
+    emit profileUpdated(profile.uri);
     emit contactAdded(profile.uri);
 }
 
@@ -1039,7 +1040,8 @@ ContactModelPimpl::slotIncomingCall(const QString& fromId,
         if (linked.owner.profileInfo.type == profile::Type::RING) {
             emit behaviorController.newTrustRequest(linked.owner.id, fromId);
         }
-    }
+    } else
+        emit linked.profileUpdated(fromId);
 
     emit linked.incomingCall(fromId, callId);
 }
