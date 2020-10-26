@@ -38,7 +38,7 @@ public:
 protected:
     void safeInit() override {};
 
-    Q_INVOKABLE QVariant getMediaHandlerSelectableModel();
+    Q_INVOKABLE QVariant getMediaHandlerSelectableModel(const QString& callId = QString(""));
     Q_INVOKABLE QVariant getPluginSelectableModel();
     Q_INVOKABLE QVariant getPluginPreferencesModel(const QString& pluginId,
                                                    const QString& mediaHandlerName = "");

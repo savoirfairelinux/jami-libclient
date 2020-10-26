@@ -25,9 +25,9 @@ PluginAdapter::PluginAdapter(QObject* parent)
 {}
 
 QVariant
-PluginAdapter::getMediaHandlerSelectableModel()
+PluginAdapter::getMediaHandlerSelectableModel(const QString& callId)
 {
-    mediaHandlerListModel_.reset(new MediaHandlerItemListModel(this));
+    mediaHandlerListModel_.reset(new MediaHandlerItemListModel(this, callId));
     return QVariant::fromValue(mediaHandlerListModel_.get());
 }
 

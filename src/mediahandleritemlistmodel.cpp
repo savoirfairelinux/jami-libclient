@@ -18,9 +18,11 @@
 
 #include "mediahandleritemlistmodel.h"
 
-MediaHandlerItemListModel::MediaHandlerItemListModel(QObject* parent)
+MediaHandlerItemListModel::MediaHandlerItemListModel(QObject* parent, const QString& callId)
     : QAbstractListModel(parent)
-{}
+{
+    callId_ = callId;
+}
 
 MediaHandlerItemListModel::~MediaHandlerItemListModel() {}
 
@@ -59,10 +61,11 @@ MediaHandlerItemListModel::data(const QModelIndex& index, int role) const
 
     auto details = LRCInstance::pluginModel().getCallMediaHandlerDetails(
         mediahandlerList.at(index.row()));
-    auto status = LRCInstance::pluginModel().getCallMediaHandlerStatus();
+    auto status = LRCInstance::pluginModel().getCallMediaHandlerStatus(callId_);
     bool loaded = false;
-    if (status["name"] == details.id)
-        loaded = true;
+    for (const auto& mediaHandler : status[callId_])
+        if (mediaHandler == details.id)
+            loaded = true;
     if (!details.pluginId.isEmpty()) {
         details.pluginId.remove(details.pluginId.size() - 5, 5);
     }
@@ -131,4 +134,16 @@ MediaHandlerItemListModel::reset()
 {
     beginResetModel();
     endResetModel();
+}
+
+QString
+MediaHandlerItemListModel::callId()
+{
+    return callId_;
+}
+
+void
+MediaHandlerItemListModel::setCallId(QString callId)
+{
+    callId_ = callId;
 }

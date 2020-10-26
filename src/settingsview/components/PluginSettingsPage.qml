@@ -65,7 +65,6 @@ Rectangle {
 
                 pluginListSettingsView.visible = checked
                 if (!pluginListSettingsView.visible) {
-                    PluginModel.toggleCallMediaHandler("", true)
                     pluginListSettingsView.hidePreferences()
                 }
             }
