@@ -796,11 +796,11 @@ AVModelPimpl::stoppedDecoding(const QString& id, const QString& shmPath)
                 return; // nothing to do
             }
             if (searchFinished->second) {
-                disconnect(&*renderers_[id],
+                disconnect(&*search->second,
                            &api::video::Renderer::frameUpdated,
                            this,
                            &AVModelPimpl::slotFrameUpdated);
-                renderers_.erase(id);
+                renderers_.erase(search);
 #ifndef ENABLE_LIBWRAP
                 SIZE_RENDERER = renderers_.size();
 #endif
@@ -824,12 +824,12 @@ AVModelPimpl::slotCallStateChanged(const QString& id, const QString& state, int 
         qWarning() << "Renderer " << id << "not found";
         return; // nothing to do
     }
-    if (!(*search).second->isRendering()) {
-        disconnect(&*renderers_[id],
+    if (!search->second->isRendering()) {
+        disconnect(&*search->second,
                    &api::video::Renderer::frameUpdated,
                    this,
                    &AVModelPimpl::slotFrameUpdated);
-        renderers_.erase(id);
+        renderers_.erase(search);
 #ifndef ENABLE_LIBWRAP
         SIZE_RENDERER = renderers_.size();
 #endif
