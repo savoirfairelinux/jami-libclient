@@ -78,13 +78,11 @@ Rectangle {
     function connectCurrentAccount() {
         if (!isSIP) {
             linkedDevices.connectCurrentAccount(true)
-            bannedContacts.connectCurrentAccount(true)
         }
     }
 
     function disconnectAccountConnections() {
         linkedDevices.connectCurrentAccount(false)
-        bannedContacts.connectCurrentAccount(false)
     }
 
     function getAdvancedSettingsScrollPosition() {

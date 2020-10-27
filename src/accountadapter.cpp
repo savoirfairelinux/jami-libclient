@@ -53,12 +53,6 @@ AccountAdapter::getModel()
     return &(LRCInstance::accountModel());
 }
 
-lrc::api::ContactModel*
-AccountAdapter::getContactModel()
-{
-    return LRCInstance::getCurrentAccountInfo().contactModel.get();
-}
-
 lrc::api::NewDeviceModel*
 AccountAdapter::getDeviceModel()
 {
@@ -367,6 +361,7 @@ AccountAdapter::connectAccount(const QString& accountId)
         QObject::disconnect(contactAddedConnection_);
         QObject::disconnect(accountProfileChangedConnection_);
         QObject::disconnect(addedToConferenceConnection_);
+        QObject::disconnect(contactUnbannedConnection_);
 
         accountProfileChangedConnection_
             = QObject::connect(&LRCInstance::accountModel(),
@@ -413,6 +408,14 @@ AccountAdapter::connectAccount(const QString& accountId)
                                    Q_UNUSED(callId);
                                    LRCInstance::renderer()->addDistantRenderer(confId);
                                });
+
+        contactUnbannedConnection_ = QObject::connect(accInfo.contactModel.get(),
+                                                      &lrc::api::ContactModel::bannedStatusChanged,
+                                                      [this](const QString& contactUri,
+                                                             bool banned) {
+                                                          if (!banned)
+                                                              emit contactUnbanned();
+                                                      });
     } catch (...) {
         qWarning() << "Couldn't get account: " << accountId;
     }
@@ -424,6 +427,5 @@ AccountAdapter::setProperties(const QString& accountId)
     setProperty("currentAccountId", accountId);
     auto accountType = LRCInstance::getAccountInfo(accountId).profileInfo.type;
     setProperty("currentAccountType", lrc::api::profile::to_string(accountType));
-    emit contactModelChanged();
     emit deviceModelChanged();
 }

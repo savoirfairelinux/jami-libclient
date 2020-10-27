@@ -937,13 +937,13 @@ SettingsAdapter::setDeviceName(QString text)
 void
 SettingsAdapter::unbanContact(int index)
 {
-    auto bannedContactList = LRCInstance::getCurrentAccountInfo().contactModel->getBannedContacts();
+    auto& accountInfo = LRCInstance::getCurrentAccountInfo();
+    auto bannedContactList = accountInfo.contactModel->getBannedContacts();
     auto it = bannedContactList.begin();
     std::advance(it, index);
 
-    auto contactInfo = LRCInstance::getCurrentAccountInfo().contactModel->getContact(*it);
-
-    LRCInstance::getCurrentAccountInfo().contactModel->addContact(contactInfo);
+    auto contactInfo = accountInfo.contactModel->getContact(*it);
+    accountInfo.contactModel->addContact(contactInfo);
 }
 
 void

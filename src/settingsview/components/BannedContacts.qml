@@ -51,15 +51,9 @@ ColumnLayout {
     }
 
     Connections {
-        id: accountConnections_ContactModel
-        target: AccountAdapter.contactModel
-        enabled: root.visible
+        target: AccountAdapter
 
-        function onModelUpdated(uri, needsSorted) {
-            updateAndShowBannedContactsSlot()
-        }
-
-        function onContactAdded(contactUri) {
+        function onContactUnbanned() {
             updateAndShowBannedContactsSlot()
         }
     }
@@ -83,11 +77,6 @@ ColumnLayout {
 
     function unban(index) {
         SettingsAdapter.unbanContact(index)
-        updateAndShowBannedContactsSlot()
-    }
-
-    function connectCurrentAccount(status) {
-        accountConnections_ContactModel.enabled = status
     }
 
     RowLayout {

@@ -37,6 +37,7 @@ MaterialLineEdit {
         id: registeredNameFoundConnection
 
         target: NameDirectory
+        enabled: root.text.length !== 0
 
         function onRegisteredNameFound(status, address, name) {
             if (text === name) {

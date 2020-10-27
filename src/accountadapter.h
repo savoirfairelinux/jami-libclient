@@ -32,7 +32,6 @@ class AccountAdapter final : public QmlAdapterBase
     Q_OBJECT
 
     Q_PROPERTY(lrc::api::NewAccountModel* model READ getModel NOTIFY modelChanged)
-    Q_PROPERTY(lrc::api::ContactModel* contactModel READ getContactModel NOTIFY contactModelChanged)
     Q_PROPERTY(lrc::api::NewDeviceModel* deviceModel READ getDeviceModel NOTIFY deviceModelChanged)
     Q_PROPERTY(QString currentAccountId MEMBER currentAccountId_ NOTIFY currentAccountIdChanged)
     Q_PROPERTY(lrc::api::profile::Type currentAccountType MEMBER currentAccountType_ NOTIFY
@@ -41,14 +40,11 @@ class AccountAdapter final : public QmlAdapterBase
 
 public:
     lrc::api::NewAccountModel* getModel();
-    lrc::api::ContactModel* getContactModel();
     lrc::api::NewDeviceModel* getDeviceModel();
 
 signals:
     void modelChanged();
-    void contactModelChanged();
     void deviceModelChanged();
-
     void currentAccountIdChanged();
     void currentAccountTypeChanged();
     void accountListSizeChanged();
@@ -117,6 +113,7 @@ signals:
      */
     void reportFailure();
     void accountAdded(bool showBackUp, int index);
+    void contactUnbanned();
 
 private slots:
     void onCurrentAccountChanged();
@@ -147,5 +144,6 @@ private:
     QMetaObject::Connection contactAddedConnection_;
     QMetaObject::Connection addedToConferenceConnection_;
     QMetaObject::Connection accountProfileChangedConnection_;
+    QMetaObject::Connection contactUnbannedConnection_;
 };
 Q_DECLARE_METATYPE(AccountAdapter*)

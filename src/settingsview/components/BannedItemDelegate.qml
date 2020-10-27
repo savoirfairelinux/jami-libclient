@@ -68,7 +68,8 @@ ItemDelegate {
                             width: avatarImg.width
                             height: avatarImg.height
                             radius: {
-                                var size = ((avatarImg.width <= avatarImg.height)? avatarImg.width:avatarImg.height)
+                                var size = ((avatarImg.width <= avatarImg.height) ?
+                                                avatarImg.width:avatarImg.height)
                                 return size /2
                             }
                         }
