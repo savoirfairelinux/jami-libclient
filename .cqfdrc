@@ -1,0 +1,7 @@
+[project]
+org='savoirfairelinux'
+name='jami'
+
+[build]
+; default behaviour
+command='cd client-qt && ./compile_tests.sh'
