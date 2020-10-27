@@ -49,8 +49,8 @@ public:
     static NameDirectory& instance();
 
     // Lookup
-    bool lookupName(const QString& nameServiceURL, const QString& name) const;
-    bool lookupAddress(const QString& nameServiceURL, const QString& address) const;
+    Q_INVOKABLE bool lookupName(const QString& nameServiceURL, const QString& name) const;
+    Q_INVOKABLE bool lookupAddress(const QString& nameServiceURL, const QString& address) const;
 
 private:
     // Constructors & Destructors
