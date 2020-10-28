@@ -30,18 +30,6 @@ ModalPopup {
 
     property alias preferredHeight: aboutPopUpContentRectColumnLayout.implicitHeight
 
-    ProjectCreditsScrollView {
-        id: projectCreditsScrollView
-
-        visible: false
-    }
-
-    ChangeLogScrollView {
-        id: changeLogScrollView
-
-        visible: false
-    }
-
     contentItem: Rectangle {
         id: contentRect
 
@@ -230,69 +218,13 @@ ModalPopup {
                         }
                     }
 
-                    Rectangle {
-                        id: buttonGroupChangeLogAndCredits
-
-                        Layout.alignment: Qt.AlignCenter
-                        Layout.preferredWidth: contentRect.width
-                        Layout.preferredHeight: 32
-
-                        RowLayout {
-                            id: buttonGroupChangeLogAndCreditsRowLayout
-
-                            anchors.fill: parent
-
-                            MaterialButton {
-                                id: changeLogButton
-                                text: JamiStrings.changelog
-                                color: projectCreditsScrollView.visible? JamiTheme.buttonTintedGreyInactive :
-                                                                         JamiTheme.buttonTintedGrey
-                                hoveredColor: JamiTheme.buttonTintedGreyHovered
-                                pressedColor: JamiTheme.buttonTintedGreyPressed
-
-                                Layout.alignment: Qt.AlignHCenter
-                                Layout.preferredWidth: JamiTheme.preferredFieldWidth / 2
-                                Layout.preferredHeight: JamiTheme.preferredFieldHeight
-
-                                onClicked: {
-                                    if (changeLogOrCreditsStack.depth > 1) {
-                                        changeLogOrCreditsStack.pop()
-                                    }
-                                }
-                            }
-
-                            MaterialButton {
-                                id: creditsButton
-                                text: JamiStrings.credits
-                                color: projectCreditsScrollView.visible? JamiTheme.buttonTintedGrey :
-                                                                         JamiTheme.buttonTintedGreyInactive
-                                hoveredColor: JamiTheme.buttonTintedGreyHovered
-                                pressedColor: JamiTheme.buttonTintedGreyPressed
-                                Layout.alignment: Qt.AlignHCenter
-                                Layout.preferredWidth: JamiTheme.preferredFieldWidth / 2
-                                Layout.preferredHeight: JamiTheme.preferredFieldHeight
-
-                                onClicked: {
-                                    if (changeLogOrCreditsStack.depth == 1) {
-                                        changeLogOrCreditsStack.push(
-                                                    projectCreditsScrollView)
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-                    StackView {
-                        id: changeLogOrCreditsStack
+                    ProjectCreditsScrollView {
+                        id: projectCreditsScrollView
 
                         Layout.alignment: Qt.AlignCenter
                         Layout.preferredWidth: contentRect.width - JamiTheme.preferredMarginSize * 2
                         Layout.preferredHeight: 128
                         Layout.margins: JamiTheme.preferredMarginSize
-
-                        initialItem: changeLogScrollView
-
-                        clip: true
                     }
 
                     MaterialButton {

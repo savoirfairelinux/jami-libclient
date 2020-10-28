@@ -34,7 +34,6 @@ public:
     explicit UtilsAdapter(QObject* parent = nullptr);
     ~UtilsAdapter() = default;
 
-    Q_INVOKABLE const QString getChangeLog();
     Q_INVOKABLE const QString getProjectCredits();
     Q_INVOKABLE const QString getVersionStr();
     Q_INVOKABLE void setText(QString text);

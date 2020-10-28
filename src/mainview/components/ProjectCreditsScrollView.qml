@@ -24,8 +24,6 @@ import net.jami.Adapters 1.0
 ScrollView {
     id: projectCreditsScrollView
 
-    anchors.fill: parent
-
     clip: true
 
     ScrollBar.horizontal.policy: ScrollBar.AlwaysOff

@@ -73,7 +73,6 @@ void showNotification(const QString& message,
                       std::function<void()> const& onClicked);
 QSize getRealSize(QScreen* screen);
 void forceDeleteAsync(const QString& path);
-QString getChangeLog();
 QString getProjectCredits();
 void removeOldVersions();
 

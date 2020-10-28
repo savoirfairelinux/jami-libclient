@@ -36,12 +36,6 @@ UtilsAdapter::UtilsAdapter(QObject* parent)
 {}
 
 const QString
-UtilsAdapter::getChangeLog()
-{
-    return Utils::getChangeLog();
-}
-
-const QString
 UtilsAdapter::getProjectCredits()
 {
     return Utils::getProjectCredits();

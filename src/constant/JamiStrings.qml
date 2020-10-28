@@ -36,7 +36,6 @@ Item {
     property string companyDeclarationYear: "© 2015-2020 Savoir-faire Linux Inc."
     property string slogan: "Together"
     property string declaration: qsTr("Jami is a free software for universal communication which respects the freedom and privacy of its users.")
-    property string changelog: qsTr("Changelog")
     property string credits: qsTr("Credits")
 
     // AccountComboBox

@@ -93,7 +93,6 @@
         <file>src/mainview/components/VideoCallPage.qml</file>
         <file>src/mainview/components/CallAdvancedOptions.qml</file>
         <file>src/mainview/components/ParticipantOverlay.qml</file>
-        <file>src/mainview/components/ChangeLogScrollView.qml</file>
         <file>src/mainview/components/ProjectCreditsScrollView.qml</file>
         <file>src/mainview/components/AccountComboBoxPopup.qml</file>
         <file>src/mainview/components/ConversationSmartListViewItemDelegate.qml</file>
