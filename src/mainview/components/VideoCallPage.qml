@@ -151,12 +151,21 @@ Rectangle {
 
             MouseArea {
                 anchors.fill: parent
+
                 hoverEnabled: true
                 propagateComposedEvents: true
 
-                acceptedButtons: Qt.LeftButton
+                acceptedButtons: Qt.LeftButton | Qt.RightButton
 
-                onDoubleClicked: callStackView.toggleFullScreen()
+                onDoubleClicked: {
+                    if (mouse.button === Qt.LeftButton)
+                        callStackView.toggleFullScreen()
+                }
+
+                onClicked: {
+                    if (mouse.button === Qt.RightButton)
+                        videoCallOverlay.openCallViewContextMenuInPos(mouse.x, mouse.y)
+                }
 
                 CallOverlay {
                     id: videoCallOverlay
@@ -322,16 +331,6 @@ Rectangle {
             visible: false
 
             clip: true
-        }
-    }
-
-    MouseArea {
-        anchors.fill: parent
-
-        acceptedButtons: Qt.RightButton
-
-        onClicked: {
-            videoCallOverlay.openCallViewContextMenuInPos(mouse.x, mouse.y)
         }
     }
 
