@@ -45,6 +45,30 @@
       "revId": "e2924aebd78f08167006b433fcb0d9c733a66b42",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3ac1ebcb_bf7ac471",
+        "filename": "src/newaccountmodel.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1097,
+      "author": {
+        "id": 90
+      },
+      "writtenOn": "2020-10-29T14:47:19Z",
+      "side": 1,
+      "message": "I agree whole heartedly; if this behaviour is desired across clients then it should be factor out of the clients (getAccountList + setTopAccount ???).",
+      "parentUuid": "816ac082_3fc673b0",
+      "range": {
+        "startLine": 1085,
+        "startChar": 0,
+        "endLine": 1097,
+        "endChar": 63
+      },
+      "revId": "e2924aebd78f08167006b433fcb0d9c733a66b42",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
     }
   ]
 }
