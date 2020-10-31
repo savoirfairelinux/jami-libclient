@@ -90,11 +90,10 @@ public:
                        const QString& displayName = "",
                        bool banned = false);
     /**
-     * Helpers for searchContact. Search for a given RING or SIP contact.
+     * Helpers for searchContact. Search for a given classic or SIP contact.
      */
-    void searchRingContact(const URI& query);
+    void searchContact(const URI& query);
     void searchSipContact(const URI& query);
-    void jamsSearch(const URI& query);
 
     /**
      * Update temporary item to display a given message about a given uri.
@@ -415,11 +414,7 @@ ContactModel::searchContact(const QString& query)
         && owner.profileInfo.type == profile::Type::SIP) {
         pimpl_->searchSipContact(uri);
     } else if (uriScheme == URI::SchemeType::RING && owner.profileInfo.type == profile::Type::RING) {
-        bool isJamsAccount = !owner.confProperties.managerUri.isEmpty();
-        if (isJamsAccount)
-            pimpl_->jamsSearch(uri);
-        else
-            pimpl_->searchRingContact(uri);
+        pimpl_->searchContact(uri);
     } else {
         pimpl_->updateTemporaryMessage(tr("Bad URI scheme"));
     }
@@ -432,7 +427,7 @@ ContactModelPimpl::updateTemporaryMessage(const QString& mes)
 }
 
 void
-ContactModelPimpl::searchRingContact(const URI& query)
+ContactModelPimpl::searchContact(const URI& query)
 {
     QString uriID = query.format(URI::Section::USER_INFO | URI::Section::HOSTNAME
                                  | URI::Section::PORT);
@@ -459,23 +454,13 @@ ContactModelPimpl::searchRingContact(const URI& query)
     } else {
         updateTemporaryMessage(tr("Searching…"));
 
-        // Default searching
-        ConfigurationManager::instance().lookupName(linked.owner.id, "", uriID);
+        // If the username contains an @ it's an exact match
+        bool isJamsAccount = !linked.owner.confProperties.managerUri.isEmpty();
+        if (isJamsAccount and not query.hasHostname())
+            ConfigurationManager::instance().searchUser(linked.owner.id, uriID);
+        else
+            ConfigurationManager::instance().lookupName(linked.owner.id, "", uriID);
     }
-}
-
-void
-ContactModelPimpl::jamsSearch(const URI& query)
-{
-    QString uriID = query.format(URI::Section::USER_INFO | URI::Section::HOSTNAME
-                                 | URI::Section::PORT);
-    if (query.isEmpty()) {
-        emit linked.modelUpdated(uriID);
-        updateTemporaryMessage("");
-        return;
-    }
-    updateTemporaryMessage(tr("Searching…"));
-    ConfigurationManager::instance().searchUser(linked.owner.id, uriID);
 }
 
 void
