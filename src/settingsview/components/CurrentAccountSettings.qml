@@ -56,6 +56,10 @@ Rectangle {
         linkedDevices.updateAndShowDevicesSlot()
         bannedContacts.updateAndShowBannedContactsSlot()
         advancedSettings.updateAdvancedAccountInfos()
+        var isJams = !isSIP && SettingsAdapter.getAccountConfig_Manageruri() !== ""
+        passwdPushButton.visible = !isJams
+        btnExportAccount.visible = !isJams
+        linkedDevices.visible = !isJams
         setPasswordButtonText()
     }
 
