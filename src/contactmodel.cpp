@@ -567,6 +567,8 @@ ContactModelPimpl::ContactModelPimpl(const ContactModel& linked,
     , callbacksHandler(callbacksHandler)
 {
     qRegisterMetaType<VectorMapStringString>("VectorMapStringString");
+    qRegisterMetaType<MapStringVectorString>("MapStringVectorString");
+    qRegisterMetaType<MapStringMapStringVectorString>("MapStringMapStringVectorString");
     // Init contacts map
     if (linked.owner.profileInfo.type == profile::Type::SIP)
         fillWithSIPContacts();

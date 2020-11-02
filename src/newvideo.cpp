@@ -16,8 +16,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
 
-// LRC
 #include "api/newvideo.h"
+
 #include "dbus/videomanager.h"
 #ifdef ENABLE_LIBWRAP
 #include "directrenderer.h"
@@ -25,11 +25,9 @@
 #include "shmrenderer.h"
 #endif
 
-// std
-#include <mutex>
-
-// Qt
 #include <QSize>
+
+#include <mutex>
 
 namespace lrc {
 
@@ -45,7 +43,7 @@ public:
                   const bool useAVFrame);
     ~RendererPimpl();
 
-    Renderer& linked;
+    Renderer& linked_;
 
     QString id_;
     Settings videoSettings_;
@@ -53,13 +51,11 @@ public:
     bool usingAVFrame_;
 
     /**
-     * Convert a string (wxh) to a QSize
+     * Convert a string (WxH) to a QSize
      * @param res the string to convert
      * @return the QSize object
      */
     static QSize stringToQSize(const QString& res);
-
-    std::mutex rendering_mtx_;
 
 #ifdef ENABLE_LIBWRAP
     std::unique_ptr<Video::DirectRenderer> renderer;
@@ -87,23 +83,7 @@ Renderer::Renderer(const QString& id,
 
 Renderer::~Renderer()
 {
-    stopRendering();
-}
-
-void
-Renderer::initThread()
-{
-    if (!pimpl_->renderer)
-        return;
-#ifdef ENABLE_LIBWRAP
-    if (pimpl_->usingAVFrame_) {
-        VideoManager::instance().registerAVSinkTarget(pimpl_->id_, pimpl_->renderer->avTarget());
-    } else {
-        VideoManager::instance().registerSinkTarget(pimpl_->id_, pimpl_->renderer->target());
-    }
-#endif
-    if (!pimpl_->thread_.isRunning())
-        pimpl_->thread_.start();
+    pimpl_.reset();
 }
 
 void
@@ -130,9 +110,7 @@ Renderer::update(const QString& res, const QString& shmPath)
 bool
 Renderer::isRendering() const
 {
-    std::lock_guard<std::mutex> lk(pimpl_->rendering_mtx_);
-    if (pimpl_->renderer)
-        return pimpl_->renderer->isRendering();
+    return pimpl_->renderer->isRendering();
     return false;
 }
 
@@ -176,36 +154,7 @@ Renderer::currentAVFrame() const
 QSize
 Renderer::size() const
 {
-    if (pimpl_->renderer)
-        return pimpl_->renderer->size();
-    return QSize();
-}
-
-void
-Renderer::quit()
-{
-    pimpl_->thread_.quit();
-    pimpl_->thread_.wait();
-}
-
-void
-Renderer::startRendering()
-{
-    if (pimpl_->renderer) {
-        std::lock_guard<std::mutex> lk(pimpl_->rendering_mtx_);
-        if (pimpl_->renderer->isRendering())
-            return;
-        pimpl_->renderer->startRendering();
-    }
-}
-
-void
-Renderer::stopRendering()
-{
-    if (pimpl_->renderer) {
-        std::lock_guard<std::mutex> lk(pimpl_->rendering_mtx_);
-        pimpl_->renderer->stopRendering();
-    }
+    return pimpl_->renderer->size();
 }
 
 } // namespace video
@@ -216,7 +165,7 @@ RendererPimpl::RendererPimpl(Renderer& linked,
                              Settings videoSettings,
                              const QString& shmPath,
                              bool useAVFrame)
-    : linked(linked)
+    : linked_(linked)
     , id_(id)
     , videoSettings_(videoSettings)
     , usingAVFrame_(useAVFrame)
@@ -229,10 +178,62 @@ RendererPimpl::RendererPimpl(Renderer& linked,
 #endif
     renderer->moveToThread(&thread_);
 
-    connect(&*renderer, &Video::Renderer::frameUpdated, this, &RendererPimpl::slotFrameUpdated);
+    connect(&thread_, &QThread::started, [this] { qDebug() << "QThread::started" << id_; });
+    connect(&thread_, &QThread::finished, [this] {
+        qDebug() << "QThread::finished" << id_;
+        emit linked_.stopped(id_);
+        renderer.reset();
+    });
+
+    connect(&linked,
+            &Renderer::startRendering,
+            renderer.get(),
+            &Video::Renderer::startRendering,
+            Qt::QueuedConnection);
+    connect(&linked,
+            &Renderer::stopRendering,
+            renderer.get(),
+            &Video::Renderer::stopRendering,
+            Qt::QueuedConnection);
+
+    connect(renderer.get(), &Video::Renderer::frameUpdated, [this] {
+        emit linked_.frameUpdated(id_);
+    });
+    connect(
+        renderer.get(),
+        &Video::Renderer::started,
+        this,
+        [this] {
+            qDebug() << "Video::Renderer::started" << id_;
+            emit linked_.started(id_);
+        },
+        Qt::DirectConnection);
+    connect(
+        renderer.get(),
+        &Video::Renderer::stopped,
+        this,
+        [this] {
+            qDebug() << "Video::Renderer::stopped" << id_;
+            emit linked_.stopped(id_);
+        },
+        Qt::DirectConnection);
+
+#ifdef ENABLE_LIBWRAP
+    if (pimpl_->usingAVFrame_) {
+        VideoManager::instance().registerAVSinkTarget(pimpl_->id_, pimpl_->renderer->avTarget());
+    } else {
+        VideoManager::instance().registerSinkTarget(pimpl_->id_, pimpl_->renderer->target());
+    }
+#endif
+
+    thread_.start();
 }
 
-RendererPimpl::~RendererPimpl() {}
+RendererPimpl::~RendererPimpl()
+{
+    thread_.quit();
+    thread_.wait();
+}
 
 QSize
 RendererPimpl::stringToQSize(const QString& res)
@@ -244,12 +245,6 @@ RendererPimpl::stringToQSize(const QString& res)
     auto width = sizeSplited.at(0).toInt();
     auto height = sizeSplited.at(1).toInt();
     return QSize(width, height);
-}
-
-void
-RendererPimpl::slotFrameUpdated()
-{
-    emit linked.frameUpdated(id_);
 }
 
 } // end of namespace lrc
