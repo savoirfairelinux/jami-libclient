@@ -115,10 +115,6 @@ public:
      * @param shmPath new shmPath
      */
     void update(const QString& res, const QString& shmPath);
-    /**
-     * Stop renderer and thread
-     */
-    void quit();
 
     // Getters
     /**
@@ -148,14 +144,6 @@ public:
 
     // Utils
     /**
-     * Start rendering
-     */
-    void startRendering();
-    /**
-     * Stop rendering
-     */
-    void stopRendering();
-    /**
      * set to true to receive AVFrames from render
      */
     void useAVFrame(bool useAVFrame);
@@ -166,6 +154,17 @@ Q_SIGNALS:
      * @param id
      */
     void frameUpdated(const QString& id);
+    void started(const QString& id);
+    void stopped(const QString& id);
+
+    /**
+     * Start rendering
+     */
+    void startRendering();
+    /**
+     * Stop rendering
+     */
+    void stopRendering();
 
 private:
     std::unique_ptr<RendererPimpl> pimpl_;
