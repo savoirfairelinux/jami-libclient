@@ -87,7 +87,12 @@ Video::DirectRenderer::DirectRenderer(const QString& id, const QSize& res, bool 
 }
 
 /// Destructor
-Video::DirectRenderer::~DirectRenderer() {}
+Video::DirectRenderer::~DirectRenderer()
+{
+    d_ptr.reset();
+
+    stopRendering();
+}
 
 void
 Video::DirectRenderer::startRendering()
