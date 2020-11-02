@@ -121,7 +121,9 @@ ShmRendererPrivate::ShmRendererPrivate(ShmRenderer* parent)
     , m_frameCount(0)
     , m_lastFrameDebug(std::chrono::system_clock::now())
 #endif
-{}
+{
+
+}
 
 /// Constructor
 ShmRenderer::ShmRenderer(const QString& id, const QString& shmPath, const QSize& res)
@@ -135,10 +137,6 @@ ShmRenderer::ShmRenderer(const QString& id, const QString& shmPath, const QSize&
 /// Destructor
 ShmRenderer::~ShmRenderer()
 {
-    if (d_ptr->m_pTimer) {
-        d_ptr->m_pTimer->stop();
-        d_ptr->m_pTimer = nullptr;
-    }
     stopShm();
 }
 
@@ -274,17 +272,19 @@ ShmRenderer::stopShm()
     if (d_ptr->m_fd < 0)
         return;
 
+    Video::Renderer::d_ptr->m_isRendering = false;
+
     if (d_ptr->m_pTimer) {
         d_ptr->m_pTimer->stop();
         d_ptr->m_pTimer = nullptr;
     }
 
-    // reset the frame so it doesn't point to an old value
-    Video::Renderer::d_ptr->m_pFrame.reset();
-
     // Emit the signal before closing the file, this lower the risk of invalid
     // memory access
     emit stopped();
+
+    // reset the frame so it doesn't point to an old value
+    Video::Renderer::d_ptr->m_pFrame.reset();
 
     ::close(d_ptr->m_fd);
     d_ptr->m_fd = -1;
@@ -323,7 +323,7 @@ ShmRenderer::startRendering()
 {
     QMutexLocker locker {mutex()};
 
-    if (!startShm())
+    if (!startShm() || Video::Renderer::d_ptr->m_isRendering)
         return;
 
     Video::Renderer::d_ptr->m_isRendering = true;
@@ -339,20 +339,10 @@ ShmRenderer::startRendering()
     emit started();
 }
 
-/// Stop the rendering loop
+/// Done on destroy instead
 void
-ShmRenderer::stopRendering()
-{
-    QMutexLocker locker {mutex()};
-    Video::Renderer::d_ptr->m_isRendering = false;
+ShmRenderer::stopRendering() {}
 
-    if (d_ptr->m_pTimer) {
-        d_ptr->m_pTimer->stop();
-        d_ptr->m_pTimer = nullptr;
-    }
-
-    stopShm();
-}
 
 /*****************************************************************************
  *                                                                           *
