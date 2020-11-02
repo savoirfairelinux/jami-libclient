@@ -547,23 +547,23 @@
 <context>
     <name>lrc::ContactModelPimpl</name>
     <message>
-        <location filename="../src/contactmodel.cpp" line="459"/>
-        <location filename="../src/contactmodel.cpp" line="476"/>
+        <location filename="../src/contactmodel.cpp" line="460"/>
+        <location filename="../src/contactmodel.cpp" line="477"/>
         <source>Searching…</source>
         <translation>Etsitään...</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="964"/>
+        <location filename="../src/contactmodel.cpp" line="965"/>
         <source>Invalid ID</source>
         <translation>Virheellinen tunnus</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="967"/>
+        <location filename="../src/contactmodel.cpp" line="968"/>
         <source>Registered name not found</source>
         <translation>Rekisteröityä nimeä ei löytynyt</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="970"/>
+        <location filename="../src/contactmodel.cpp" line="971"/>
         <source>Couldn&apos;t lookup…</source>
         <translation>Ei voitu etsiä...</translation>
     </message>
@@ -571,7 +571,7 @@
 <context>
     <name>lrc::api::ContactModel</name>
     <message>
-        <location filename="../src/contactmodel.cpp" line="423"/>
+        <location filename="../src/contactmodel.cpp" line="424"/>
         <source>Bad URI scheme</source>
         <translation>Virheellinen verkko-osoitteen malli</translation>
     </message>

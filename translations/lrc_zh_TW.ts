@@ -547,23 +547,23 @@
 <context>
     <name>lrc::ContactModelPimpl</name>
     <message>
-        <location filename="../src/contactmodel.cpp" line="459"/>
-        <location filename="../src/contactmodel.cpp" line="476"/>
+        <location filename="../src/contactmodel.cpp" line="460"/>
+        <location filename="../src/contactmodel.cpp" line="477"/>
         <source>Searching…</source>
         <translation>正在搜尋……</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="964"/>
+        <location filename="../src/contactmodel.cpp" line="965"/>
         <source>Invalid ID</source>
         <translation>無效 ID</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="967"/>
+        <location filename="../src/contactmodel.cpp" line="968"/>
         <source>Registered name not found</source>
         <translation>找不到已註冊的名稱</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="970"/>
+        <location filename="../src/contactmodel.cpp" line="971"/>
         <source>Couldn&apos;t lookup…</source>
         <translation>無法查詢……</translation>
     </message>
@@ -571,7 +571,7 @@
 <context>
     <name>lrc::api::ContactModel</name>
     <message>
-        <location filename="../src/contactmodel.cpp" line="423"/>
+        <location filename="../src/contactmodel.cpp" line="424"/>
         <source>Bad URI scheme</source>
         <translation>錯誤的 URI 結構</translation>
     </message>

@@ -424,12 +424,12 @@
     <message>
         <location filename="../src/chatview.cpp" line="36"/>
         <source>Options</source>
-        <translation type="unfinished"/>
+        <translation>Optionen</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="36"/>
         <source>Jump to latest</source>
-        <translation type="unfinished"/>
+        <translation>Zum letzten springen</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="37"/>
@@ -439,12 +439,12 @@
     <message>
         <location filename="../src/chatview.cpp" line="38"/>
         <source>Leave video message</source>
-        <translation type="unfinished"/>
+        <translation>Videonachricht hinterlassen</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="39"/>
         <source>Leave audio message</source>
-        <translation type="unfinished"/>
+        <translation>Sprachnachricht hinterlassen</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="40"/>
@@ -476,7 +476,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="44"/>
         <source>is not in your contacts</source>
-        <translation type="unfinished"/>
+        <translation>ist nicht in deinen Kontakten</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="46"/>
@@ -486,17 +486,17 @@
     <message>
         <location filename="../src/chatview.cpp" line="49"/>
         <source>{0} days ago</source>
-        <translation type="unfinished"/>
+        <translation>vor {0} Tagen</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="50"/>
         <source>{0} hours ago</source>
-        <translation type="unfinished"/>
+        <translation>vor {0} Stunden</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="51"/>
         <source>{0} minutes ago</source>
-        <translation type="unfinished"/>
+        <translation>vor {0} Minuten</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="53"/>
@@ -547,23 +547,23 @@
 <context>
     <name>lrc::ContactModelPimpl</name>
     <message>
-        <location filename="../src/contactmodel.cpp" line="459"/>
-        <location filename="../src/contactmodel.cpp" line="476"/>
+        <location filename="../src/contactmodel.cpp" line="460"/>
+        <location filename="../src/contactmodel.cpp" line="477"/>
         <source>Searching…</source>
         <translation>Suchen…</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="964"/>
+        <location filename="../src/contactmodel.cpp" line="965"/>
         <source>Invalid ID</source>
         <translation>Ungültige ID</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="967"/>
+        <location filename="../src/contactmodel.cpp" line="968"/>
         <source>Registered name not found</source>
         <translation>Registrierter Name wurde nicht gefunden</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="970"/>
+        <location filename="../src/contactmodel.cpp" line="971"/>
         <source>Couldn&apos;t lookup…</source>
         <translation>Konnte nicht nachschlagen...</translation>
     </message>
@@ -571,7 +571,7 @@
 <context>
     <name>lrc::api::ContactModel</name>
     <message>
-        <location filename="../src/contactmodel.cpp" line="423"/>
+        <location filename="../src/contactmodel.cpp" line="424"/>
         <source>Bad URI scheme</source>
         <translation>Ungültiges URI-Schema</translation>
     </message>

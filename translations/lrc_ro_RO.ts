@@ -547,23 +547,23 @@
 <context>
     <name>lrc::ContactModelPimpl</name>
     <message>
-        <location filename="../src/contactmodel.cpp" line="459"/>
-        <location filename="../src/contactmodel.cpp" line="476"/>
+        <location filename="../src/contactmodel.cpp" line="460"/>
+        <location filename="../src/contactmodel.cpp" line="477"/>
         <source>Searching…</source>
         <translation>Căutare...</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="964"/>
+        <location filename="../src/contactmodel.cpp" line="965"/>
         <source>Invalid ID</source>
         <translation>ID greșit</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="967"/>
+        <location filename="../src/contactmodel.cpp" line="968"/>
         <source>Registered name not found</source>
         <translation>Numele înscris nu a fost găsit</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="970"/>
+        <location filename="../src/contactmodel.cpp" line="971"/>
         <source>Couldn&apos;t lookup…</source>
         <translation>Căutare imposibilă...</translation>
     </message>
@@ -571,7 +571,7 @@
 <context>
     <name>lrc::api::ContactModel</name>
     <message>
-        <location filename="../src/contactmodel.cpp" line="423"/>
+        <location filename="../src/contactmodel.cpp" line="424"/>
         <source>Bad URI scheme</source>
         <translation>Schemă URI greșită</translation>
     </message>
