@@ -74,7 +74,6 @@ class LIB_EXPORT Renderer : public QObject
     friend class Video::ShmRenderer;
     friend class Video::DirectRendererPrivate;
     friend class Video::DirectRenderer;
-    friend class VideoRendererManagerPrivate;
 
 public:
     /**
