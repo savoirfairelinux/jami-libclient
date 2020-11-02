@@ -121,13 +121,16 @@ ShmRendererPrivate::ShmRendererPrivate(ShmRenderer* parent)
     , m_frameCount(0)
     , m_lastFrameDebug(std::chrono::system_clock::now())
 #endif
-{}
+{
+
+}
 
 /// Constructor
 ShmRenderer::ShmRenderer(const QString& id, const QString& shmPath, const QSize& res)
     : Renderer(id, res)
     , d_ptr(std::make_unique<ShmRendererPrivate>(this))
 {
+    qDebug() << "ShmRenderer::ShmRenderer : " << shmPath;
     d_ptr->m_ShmPath = shmPath;
     setObjectName("Video::Renderer:" + id);
 }
@@ -135,10 +138,6 @@ ShmRenderer::ShmRenderer(const QString& id, const QString& shmPath, const QSize&
 /// Destructor
 ShmRenderer::~ShmRenderer()
 {
-    if (d_ptr->m_pTimer) {
-        d_ptr->m_pTimer->stop();
-        d_ptr->m_pTimer = nullptr;
-    }
     stopShm();
 }
 
@@ -245,6 +244,8 @@ ShmRenderer::startShm()
         return false;
     }
 
+    qWarning() << "ShmRenderer::startShm opening" << d_ptr->m_ShmPath;
+
     d_ptr->m_fd = ::shm_open(d_ptr->m_ShmPath.toLatin1(), O_RDWR, 0);
 
     if (d_ptr->m_fd < 0) {
@@ -274,17 +275,20 @@ ShmRenderer::stopShm()
     if (d_ptr->m_fd < 0)
         return;
 
+    qDebug() << "ShmRenderer::stopShm";
+
     if (d_ptr->m_pTimer) {
         d_ptr->m_pTimer->stop();
         d_ptr->m_pTimer = nullptr;
     }
 
-    // reset the frame so it doesn't point to an old value
-    Video::Renderer::d_ptr->m_pFrame.reset();
-
     // Emit the signal before closing the file, this lower the risk of invalid
     // memory access
+    qDebug() << "ShmRenderer::stopped";
     emit stopped();
+
+    // reset the frame so it doesn't point to an old value
+    Video::Renderer::d_ptr->m_pFrame.reset();
 
     ::close(d_ptr->m_fd);
     d_ptr->m_fd = -1;
@@ -321,9 +325,10 @@ ShmRendererPrivate::shmUnlock()
 void
 ShmRenderer::startRendering()
 {
+    qDebug() << "ShmRenderer::startRendering 1 " << d_ptr->m_ShmPath;
     QMutexLocker locker {mutex()};
 
-    if (!startShm())
+    if (!startShm() || Video::Renderer::d_ptr->m_isRendering)
         return;
 
     Video::Renderer::d_ptr->m_isRendering = true;
@@ -336,6 +341,8 @@ ShmRenderer::startRendering()
     // FIXME This is a temporary hack as frameUpdated() is no longer emitted
     d_ptr->m_pTimer->start();
 
+    qDebug() << "ShmRenderer::startRendering 2  " << d_ptr->m_ShmPath;
+
     emit started();
 }
 
@@ -345,6 +352,9 @@ ShmRenderer::stopRendering()
 {
     QMutexLocker locker {mutex()};
     Video::Renderer::d_ptr->m_isRendering = false;
+
+    qDebug() << "ShmRenderer::stopRendering" << QThread::currentThread()
+             << d_ptr->m_pTimer->thread();
 
     if (d_ptr->m_pTimer) {
         d_ptr->m_pTimer->stop();
