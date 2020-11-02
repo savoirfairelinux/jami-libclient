@@ -8,8 +8,8 @@ import net.jami.Models 1.0
 import net.jami.Adapters 1.0
 
 ColumnLayout {
-    property bool takePhotoState: false
-    property bool hasAvatar: false
+    property int photoState: PhotoboothView.PhotoState.Default
+    property bool avatarSet: false
     // saveToConfig is to specify whether the image should be saved to account config
     property bool saveToConfig: false
     property string fileName: ""
@@ -17,14 +17,25 @@ ColumnLayout {
 
     property int boothWidth: 224
 
+    enum PhotoState {
+        Default = 0,
+        CameraRendering,
+        Taken
+    }
+
     readonly property int size: boothWidth +
                                 buttonsRowLayout.height +
                                 JamiTheme.preferredMarginSize / 2
 
-    function startBooth(force = false){
-        hasAvatar = false
+    function initUI() {
+        photoState = PhotoboothView.PhotoState.Default
+        avatarSet = false
+        setAvatarImage(AvatarImage.Mode.Default, "")
+    }
+
+    function startBooth(force = false) {
         AccountAdapter.startPreviewing(force)
-        takePhotoState = true
+        photoState = PhotoboothView.PhotoState.CameraRendering
     }
 
     function stopBooth(){
@@ -33,16 +44,17 @@ ColumnLayout {
                 AccountAdapter.stopPreviewing()
             }
         } catch(erro){console.log("Exception: " +  erro.message)}
-
-        takePhotoState = false
     }
 
     function setAvatarImage(mode = AvatarImage.Mode.FromAccount,
                             imageId = AccountAdapter.currentAccountId){
-        if (mode === AvatarImage.Mode.Default)
-            boothImg = ""
-
         avatarImg.mode = mode
+
+        if (mode === AvatarImage.Mode.Default) {
+            boothImg = ""
+            avatarImg.updateImage(imageId)
+            return
+        }
 
         if (imageId)
             avatarImg.updateImage(imageId)
@@ -67,6 +79,9 @@ ColumnLayout {
                 "All files") + " (*)"]
 
         onAccepted: {
+            avatarSet = true
+            photoState = PhotoboothView.PhotoState.Default
+
             fileName = file
             if (fileName.length === 0) {
                 SettingsAdapter.clearCurrentAvatar()
@@ -82,7 +97,7 @@ ColumnLayout {
     Label {
         id: avatarLabel
 
-        visible: !takePhotoState
+        visible: photoState !== PhotoboothView.PhotoState.CameraRendering
 
         Layout.fillWidth: true
         Layout.maximumWidth: boothWidth
@@ -100,8 +115,6 @@ ColumnLayout {
                 id: avatarImg
 
                 anchors.fill: parent
-
-                imageId: AccountAdapter.currentAccountId
 
                 showPresenceIndicator: false
 
@@ -139,7 +152,7 @@ ColumnLayout {
 
         onHideBooth: stopBooth()
 
-        visible: takePhotoState
+        visible: photoState === PhotoboothView.PhotoState.CameraRendering
         focus: visible
 
         Layout.alignment: Qt.AlignHCenter
@@ -201,12 +214,12 @@ ColumnLayout {
 
             radius: height / 6
             source: {
-                if(takePhotoState) {
+                if(photoState === PhotoboothView.PhotoState.Default) {
                     toolTipText = qsTr("Take photo")
                     return cameraAltIconUrl
                 }
 
-                if(hasAvatar){
+                if(photoState === PhotoboothView.PhotoState.Taken){
                     toolTipText = qsTr("Retake photo")
                     return refreshIconUrl
                 } else {
@@ -216,7 +229,7 @@ ColumnLayout {
             }
 
             onClicked: {
-                if(!takePhotoState){
+                if(photoState !== PhotoboothView.PhotoState.CameraRendering){
                     startBooth()
                     return
                 } else {
@@ -228,7 +241,8 @@ ColumnLayout {
 
                         setAvatarImage(AvatarImage.Mode.FromUrl, result.url)
 
-                        hasAvatar = true
+                        photoState = PhotoboothView.PhotoState.Taken
+                        avatarSet = true
                         stopBooth()
                     })
                 }

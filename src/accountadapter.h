@@ -112,7 +112,7 @@ signals:
      * send report failure to QML to make it show the right UI state .
      */
     void reportFailure();
-    void accountAdded(bool showBackUp, int index);
+    void accountAdded(QString accountId, bool showBackUp, int index);
     void contactUnbanned();
 
 private slots:
@@ -145,5 +145,6 @@ private:
     QMetaObject::Connection addedToConferenceConnection_;
     QMetaObject::Connection accountProfileChangedConnection_;
     QMetaObject::Connection contactUnbannedConnection_;
+    QMetaObject::Connection registeredNameSavedConnection_;
 };
 Q_DECLARE_METATYPE(AccountAdapter*)

@@ -80,16 +80,20 @@ Rectangle {
     Connections{
         target: AccountAdapter
 
-        function onAccountAdded(showBackUp, index) {
+        enabled: controlPanelStackView.currentIndex !== WizardView.WizardViewPageIndex.WELCOMEPAGE
+
+        function onAccountAdded(accountId, showBackUp, index) {
             addedAccountIndex = index
             AccountAdapter.accountChanged(index)
             if (showProfile) {
                 changePageQML(WizardView.WizardViewPageIndex.PROFILEPAGE)
                 profilePage.readyToSaveDetails()
                 profilePage.isRdv = isRdv
+                profilePage.createdAccountId = accountId
             } else if (controlPanelStackView.currentIndex === WizardView.WizardViewPageIndex.PROFILEPAGE) {
                 profilePage.readyToSaveDetails()
                 profilePage.isRdv = isRdv
+                profilePage.createdAccountId = accountId
             } else if (showBackUp) {
                 changePageQML(WizardView.WizardViewPageIndex.BACKUPKEYSPAGE)
             } else {
@@ -382,6 +386,8 @@ Rectangle {
                         changePageQML(WizardView.WizardViewPageIndex.WELCOMEPAGE)
                         needToShowMainViewWindow(addedAccountIndex)
                     }
+
+                    profilePage.initializeOnShowUp()
                 }
 
                 onSaveProfile: {

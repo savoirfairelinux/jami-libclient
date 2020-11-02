@@ -26,12 +26,18 @@ import "../../commoncomponents"
 Rectangle {
     id: root
 
+    property string createdAccountId: ""
     property alias profileImg: setAvatarWidget.boothImg
     property int preferredHeight: profilePageColumnLayout.implicitHeight
+    property var showBottom: false
+    property alias displayName: aliasEdit.text
+    property bool isRdv: false
+
+    signal leavePage
+    signal saveProfile
 
     function initializeOnShowUp() {
-        setAvatarWidget.hasAvatar = false
-        setAvatarWidget.setAvatarImage(AvatarImage.Mode.Default, "")
+        setAvatarWidget.initUI()
         clearAllTextFields()
         saveProfileBtn.spinnerTriggered = true
     }
@@ -46,12 +52,10 @@ Rectangle {
 
     color: JamiTheme.backgroundColor
 
-    signal leavePage
-    signal saveProfile
-
-    property var showBottom: false
-    property alias displayName: aliasEdit.text
-    property bool isRdv: false
+    onCreatedAccountIdChanged: {
+        setAvatarWidget.setAvatarImage(AvatarImage.Mode.FromAccount,
+                                       createdAccountId)
+    }
 
     ColumnLayout {
         id: profilePageColumnLayout
@@ -102,6 +106,8 @@ Rectangle {
         MaterialLineEdit {
             id: aliasEdit
 
+            property string lastInitialCharacter: ""
+
             Layout.preferredHeight: fieldLayoutHeight
             Layout.preferredWidth: fieldLayoutWidth
             Layout.alignment: Qt.AlignCenter
@@ -114,6 +120,22 @@ Rectangle {
             borderColorMode: MaterialLineEdit.NORMAL
 
             fieldLayoutWidth: saveProfileBtn.width
+
+            onTextEdited: {
+                if (!(setAvatarWidget.avatarSet)) {
+                    if (text.length === 0) {
+                        setAvatarWidget.setAvatarImage(AvatarImage.Mode.FromAccount,
+                                                       createdAccountId)
+                        return
+                    }
+
+                    if (text.length == 1 && text.charAt(0) !== lastInitialCharacter) {
+                        lastInitialCharacter = text.charAt(0)
+                        setAvatarWidget.setAvatarImage(AvatarImage.Mode.FromTemporaryName,
+                                                       text)
+                    }
+                }
+            }
         }
 
         SpinnerButton {

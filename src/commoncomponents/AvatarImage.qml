@@ -31,6 +31,7 @@ Item {
         FromContactUri,
         FromConvUid,
         FromUrl,
+        FromTemporaryName,
         Default
     }
 
@@ -47,6 +48,10 @@ Item {
             return "contact_"
         case AvatarImage.Mode.FromConvUid:
             return "conversation_"
+        case AvatarImage.Mode.FromTemporaryName:
+            return "fallback_"
+        case AvatarImage.Mode.Default:
+            return "default_"
         default:
             return ""
         }
@@ -56,7 +61,6 @@ Item {
     property string imageProviderUrl: "image://avatarImage/" + forceUpdateUrl + "_" +
                                       imageProviderIdPrefix
     property string imageId: ""
-    property string defaultImgUrl: "qrc:/images/default_avatar_overlay.svg"
     property string forceUpdateUrl: Date.now()
     property alias presenceStatus: presenceIndicator.status
     property bool showPresenceIndicator: true
@@ -73,13 +77,8 @@ Item {
 
         if (mode === AvatarImage.Mode.FromUrl)
             rootImage.source = imageId
-        else if (imageId)
+        else
             rootImage.source = imageProviderUrl + imageId
-    }
-
-    onModeChanged: {
-        if (mode === AvatarImage.Mode.Default)
-            rootImage.source = defaultImgUrl
     }
 
     Image {
@@ -89,6 +88,7 @@ Item {
 
         smooth: false
         antialiasing: true
+        asynchronous: true
 
         sourceSize.width: Math.max(24, width)
         sourceSize.height: Math.max(24, height)
@@ -115,6 +115,7 @@ Item {
 
             smooth: false
             antialiasing: true
+            asynchronous: true
 
             sourceSize.width: Math.max(24, width)
             sourceSize.height: Math.max(24, height)

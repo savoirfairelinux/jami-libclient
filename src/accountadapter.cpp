@@ -100,21 +100,28 @@ AccountAdapter::createJamiAccount(QString registeredName,
                               && !AppSettingsManager::getValue(Settings::Key::NeverShowMeAgain)
                                       .toBool();
             if (!registeredName.isEmpty()) {
-                Utils::oneShotConnect(&LRCInstance::accountModel(),
-                                      &lrc::api::NewAccountModel::nameRegistrationEnded,
-                                      [this, showBackup](const QString& accountId) {
-                                          emit LRCInstance::instance().accountListChanged();
-                                          emit accountAdded(showBackup,
-                                                            LRCInstance::accountModel()
-                                                                .getAccountList()
-                                                                .indexOf(accountId));
-                                      });
+                QObject::disconnect(registeredNameSavedConnection_);
+                registeredNameSavedConnection_ = connect(
+                    &LRCInstance::accountModel(),
+                    &lrc::api::NewAccountModel::profileUpdated,
+                    [this, showBackup, addedAccountId = accountId](const QString& accountId) {
+                        if (addedAccountId == accountId) {
+                            emit LRCInstance::instance().accountListChanged();
+                            emit accountAdded(accountId,
+                                              showBackup,
+                                              LRCInstance::accountModel().getAccountList().indexOf(
+                                                  accountId));
+                            QObject::disconnect(registeredNameSavedConnection_);
+                        }
+                    });
+
                 LRCInstance::accountModel().registerName(accountId,
                                                          settings["password"].toString(),
                                                          registeredName);
             } else {
                 emit LRCInstance::instance().accountListChanged();
-                emit accountAdded(showBackup,
+                emit accountAdded(accountId,
+                                  showBackup,
                                   LRCInstance::accountModel().getAccountList().indexOf(accountId));
             }
 
@@ -175,7 +182,8 @@ AccountAdapter::createSIPAccount(const QVariantMap& settings, QString photoBooth
                               }
 
                               emit LRCInstance::instance().accountListChanged();
-                              emit accountAdded(false,
+                              emit accountAdded(accountId,
+                                                false,
                                                 LRCInstance::accountModel().getAccountList().indexOf(
                                                     accountId));
                           });
@@ -206,7 +214,8 @@ AccountAdapter::createJAMSAccount(const QVariantMap& settings)
                               Q_UNUSED(accountId)
                               if (!LRCInstance::accountModel().getAccountList().size())
                                   return;
-                              emit accountAdded(false,
+                              emit accountAdded(accountId,
+                                                false,
                                                 LRCInstance::accountModel().getAccountList().indexOf(
                                                     accountId));
                               emit LRCInstance::instance().accountListChanged();

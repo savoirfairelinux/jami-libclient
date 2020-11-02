@@ -49,7 +49,7 @@ public:
         // Id content -> every after account_
         auto idContent = id.mid(id.indexOf(idType) + idType.length() + 1);
 
-        if (idContent.isEmpty())
+        if (idContent.isEmpty() && idType != "default")
             return QImage();
 
         if (idType == "account") {
@@ -61,6 +61,10 @@ public:
             return Utils::contactPhoto(conv.participants[0], requestedSize);
         } else if (idType == "contact") {
             return Utils::contactPhoto(idContent, requestedSize);
+        } else if (idType == "fallback") {
+            return Utils::fallbackAvatar(QString(), idContent, requestedSize);
+        } else if (idType == "default") {
+            return Utils::fallbackAvatar(QString(), QString(), requestedSize);
         } else {
             auto image = Utils::cropImage(QImage(idContent));
             return image.scaled(requestedSize,
