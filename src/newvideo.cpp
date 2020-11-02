@@ -188,25 +188,26 @@ Renderer::quit()
     pimpl_->thread_.wait();
 }
 
-void
-Renderer::startRendering()
-{
-    if (pimpl_->renderer) {
-        std::lock_guard<std::mutex> lk(pimpl_->rendering_mtx_);
-        if (pimpl_->renderer->isRendering())
-            return;
-        pimpl_->renderer->startRendering();
-    }
-}
+//void
+//Renderer::startRendering()
+//{
+//    qDebug() << "Renderer::startRendering   " << pimpl_->id_;
+//    if (pimpl_->renderer) {
+//        std::lock_guard<std::mutex> lk(pimpl_->rendering_mtx_);
+//        if (pimpl_->renderer->isRendering())
+//            return;
+//        pimpl_->renderer->startRendering();
+//    }
+//}
 
-void
-Renderer::stopRendering()
-{
-    if (pimpl_->renderer) {
-        std::lock_guard<std::mutex> lk(pimpl_->rendering_mtx_);
-        pimpl_->renderer->stopRendering();
-    }
-}
+//void
+//Renderer::stopRendering()
+//{
+//    if (pimpl_->renderer) {
+//        std::lock_guard<std::mutex> lk(pimpl_->rendering_mtx_);
+//        pimpl_->renderer->stopRendering();
+//    }
+//}
 
 } // namespace video
 } // namespace api
@@ -229,7 +230,28 @@ RendererPimpl::RendererPimpl(Renderer& linked,
 #endif
     renderer->moveToThread(&thread_);
 
-    connect(&*renderer, &Video::Renderer::frameUpdated, this, &RendererPimpl::slotFrameUpdated);
+//    connect(&thread_, &QThread::started, [this]{
+//        qDebug() << "QThread::started" << id_;
+//    });
+    connect(&thread_, &QThread::finished, [this]{
+        qDebug() << "QThread::finished" << id_;
+        emit this->linked.stopped(id_);
+    });
+
+    connect(&linked, &lrc::api::video::Renderer::startRendering,
+            renderer.get(), &Video::Renderer::startRendering, Qt::QueuedConnection);
+    connect(&linked, &lrc::api::video::Renderer::stopRendering,
+            renderer.get(), &Video::Renderer::stopRendering, Qt::QueuedConnection);
+
+    connect(renderer.get(), &Video::Renderer::frameUpdated, [this]{ emit this->linked.frameUpdated(id_);} );
+    connect(renderer.get(), &Video::Renderer::started, [this]{
+        qDebug() << "Video::Renderer::started" << id_;
+        emit this->linked.started(id_);
+    });
+    connect(renderer.get(), &Video::Renderer::stopped, this, [this]{
+        qDebug() << "Video::Renderer::stopped" << id_;
+        emit this->linked.stopped(id_);
+    }, Qt::DirectConnection);
 }
 
 RendererPimpl::~RendererPimpl() {}
@@ -244,12 +266,6 @@ RendererPimpl::stringToQSize(const QString& res)
     auto width = sizeSplited.at(0).toInt();
     auto height = sizeSplited.at(1).toInt();
     return QSize(width, height);
-}
-
-void
-RendererPimpl::slotFrameUpdated()
-{
-    emit linked.frameUpdated(id_);
 }
 
 } // end of namespace lrc

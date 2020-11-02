@@ -537,7 +537,17 @@ AVModel::stopPreview()
     }
     if (previewShouldBeStopped)
         VideoManager::instance().stopCamera();
+    qDebug() << "AVModel::stopPreview";
+    connect(pimpl_->renderers_[video::PREVIEW_RENDERER_ID].get(),
+        &api::video::Renderer::stopped,
+        this,
+        [this](const QString& id) {
+            qDebug() << "api::video::Renderer::stopped   " << id;
+            emit rendererStopped(id);
+        },
+        Qt::DirectConnection);
     pimpl_->renderers_[video::PREVIEW_RENDERER_ID]->stopRendering();
+    pimpl_->renderers_[video::PREVIEW_RENDERER_ID]->quit();
 }
 
 const video::Renderer&
@@ -675,6 +685,16 @@ AVModelPimpl::AVModelPimpl(AVModel& linked, const CallbacksHandler& callbacksHan
     connect(&callbacksHandler, &CallbacksHandler::deviceEvent, this, &AVModelPimpl::slotDeviceEvent);
     connect(&callbacksHandler, &CallbacksHandler::audioMeter, this, &AVModelPimpl::slotAudioMeter);
     connect(&callbacksHandler,
+            &CallbacksHandler::callStateChanged,
+            this,
+            &AVModelPimpl::slotCallStateChanged);
+    connect(&callbacksHandler,
+            &CallbacksHandler::recordPlaybackStopped,
+            this,
+            &AVModelPimpl::slotRecordPlaybackStopped);
+
+    // render connections
+    connect(&callbacksHandler,
             &CallbacksHandler::startedDecoding,
             this,
             &AVModelPimpl::startedDecoding);
@@ -682,18 +702,19 @@ AVModelPimpl::AVModelPimpl(AVModel& linked, const CallbacksHandler& callbacksHan
             &CallbacksHandler::stoppedDecoding,
             this,
             &AVModelPimpl::stoppedDecoding);
-    connect(&callbacksHandler,
-            &CallbacksHandler::callStateChanged,
-            this,
-            &AVModelPimpl::slotCallStateChanged);
+
+//    connect(&*renderers_[video::PREVIEW_RENDERER_ID],
+//            &api::video::Renderer::started,
+//            &this->linked_,
+//            &AVModel::rendererStarted);
+//    connect(&*renderers_[video::PREVIEW_RENDERER_ID],
+//            &api::video::Renderer::stopped,
+//            &this->linked_,
+//            &AVModel::rendererStopped);
     connect(&*renderers_[video::PREVIEW_RENDERER_ID],
             &api::video::Renderer::frameUpdated,
             this,
             &AVModelPimpl::slotFrameUpdated);
-    connect(&callbacksHandler,
-            &CallbacksHandler::recordPlaybackStopped,
-            this,
-            &AVModelPimpl::slotRecordPlaybackStopped);
 
     auto startedPreview = false;
     auto restartRenderers = [&](const QStringList& callList) {
@@ -744,12 +765,14 @@ AVModelPimpl::getRecordingPath() const
 void
 AVModelPimpl::startedDecoding(const QString& id, const QString& shmPath, int width, int height)
 {
+    qDebug() << Q_FUNC_INFO << QThread::currentThread() << "AVModelPimpl::startedDecoding";
     const QString res = toQString(width) + "x" + toQString(height);
     {
         std::lock_guard<std::mutex> lk(renderers_mtx_);
         auto search = renderers_.find(id);
 
         if (search == renderers_.end()) {
+            qDebug() << "startedDecoding  w " << shmPath;
             video::Settings settings;
             settings.size = res;
             renderers_.insert(std::make_pair(id,
@@ -765,18 +788,28 @@ AVModelPimpl::startedDecoding(const QString& id, const QString& shmPath, int wid
             connect(&*renderers_[id],
                     &api::video::Renderer::frameUpdated,
                     this,
-                    &AVModelPimpl::slotFrameUpdated);
+                    &AVModelPimpl::slotFrameUpdated,
+                    Qt::UniqueConnection);
         } else {
+            qDebug() << "startedDecoding update w " << shmPath;
             (*search).second->update(res, shmPath);
         }
-        renderers_.at(id)->startRendering();
     }
-    emit linked_.rendererStarted(id);
+    connect(renderers_[id].get(),
+            &video::Renderer::started,
+            [this](const QString& id) {
+                qDebug() << "video::Renderer::started   " << id;
+                emit linked_.rendererStarted(id);
+            });
+    renderers_.at(id)->startRendering();
+    //emit linked_.rendererStarted(id);
 }
 
 void
 AVModelPimpl::stoppedDecoding(const QString& id, const QString& shmPath)
 {
+    qDebug() << "AVModelPimpl::stoppedDecoding 1";
+    lrc::api::video::Renderer* renderer = nullptr;
     Q_UNUSED(shmPath)
     {
         std::lock_guard<std::mutex> lk(renderers_mtx_);
@@ -785,10 +818,8 @@ AVModelPimpl::stoppedDecoding(const QString& id, const QString& shmPath)
             qWarning() << "Cannot stop decoding, renderer " << id << "not found";
             return; // nothing to do
         }
+        renderer = (*search).second.get();
 
-        (*search).second->stopRendering();
-        qDebug() << "Video stopped for call" << id;
-        (*search).second->quit();
         if (id != video::PREVIEW_RENDERER_ID) {
             auto searchFinished = finishedRenderers_.find(id);
             if (searchFinished == finishedRenderers_.end()) {
@@ -808,7 +839,22 @@ AVModelPimpl::stoppedDecoding(const QString& id, const QString& shmPath)
             }
         }
     }
-    emit linked_.rendererStopped(id);
+    qDebug() << "AVModelPimpl::stoppedDecoding 2";
+    if (!renderer)
+        return;
+    qDebug() << "AVModelPimpl::stoppedDecoding 3";
+    connect(renderer,
+        &api::video::Renderer::stopped,
+        this,
+        [this](const QString& id) {
+            qDebug() << "api::video::Renderer::stopped   " << id;
+            emit linked_.rendererStopped(id);
+        },
+        Qt::DirectConnection);
+    renderer->stopRendering();
+    qDebug() << "Video stopped for call" << id;
+    renderer->quit();
+    qDebug() << "AVModelPimpl::stoppedDecoding 4";
 }
 
 void
