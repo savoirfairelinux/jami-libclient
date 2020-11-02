@@ -64,7 +64,7 @@ private:
 
 public Q_SLOTS:
     void startRendering() override;
-    void stopRendering() override;
+    void stopRendering() override; // Unused
 };
 
 } // namespace Video
