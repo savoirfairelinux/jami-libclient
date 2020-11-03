@@ -65,6 +65,7 @@ Item {
     property alias presenceStatus: presenceIndicator.status
     property bool showPresenceIndicator: true
     property int unreadMessagesCount: 0
+    property bool enableAnimation: true
 
     signal imageIsReady
 
@@ -97,8 +98,13 @@ Item {
 
         onStatusChanged: {
             if (status === Image.Ready) {
-                rootImageOverlay.state = ""
-                rootImageOverlay.state = "rootImageLoading"
+                if (enableAnimation) {
+                    rootImageOverlay.state = ""
+                    rootImageOverlay.state = "rootImageLoading"
+                } else {
+                    rootImageOverlay.source = rootImage.source
+                    root.imageIsReady()
+                }
             }
         }
 
@@ -122,6 +128,8 @@ Item {
 
             fillMode: Image.PreserveAspectFit
 
+            opacity: enableAnimation ? 1 : 0
+
             onOpacityChanged: {
                 if (opacity === 0)
                     source = rootImage.source
@@ -140,7 +148,11 @@ Item {
             }
 
             transitions: Transition {
-                NumberAnimation { properties: "opacity"; easing.type: Easing.InOutQuad; duration: 400}
+                NumberAnimation {
+                    properties: "opacity"
+                    easing.type: Easing.InOutQuad
+                    duration: 400
+                }
             }
         }
     }

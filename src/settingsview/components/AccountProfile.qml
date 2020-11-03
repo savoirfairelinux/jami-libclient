@@ -38,21 +38,14 @@ ColumnLayout {
         function onStopBooth() {
             stopBooth()
         }
-
-        function onSetAvatar() {
-            setAvatar()
-        }
     }
 
     function updateAccountInfo() {
         displayNameLineEdit.text = SettingsAdapter.getCurrentAccount_Profile_Info_Alias()
     }
 
-    function isPhotoBoothOpened() {
-        return currentAccountAvatar.takePhotoState
-    }
-
-    function setAvatar() {
+    function initPhotoBooth() {
+        currentAccountAvatar.initUI(false)
         currentAccountAvatar.setAvatarImage()
     }
 

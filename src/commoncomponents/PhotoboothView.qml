@@ -28,10 +28,11 @@ ColumnLayout {
                                 buttonsRowLayout.height +
                                 JamiTheme.preferredMarginSize / 2
 
-    function initUI() {
+    function initUI(useDefaultAvatar = true) {
         photoState = PhotoboothView.PhotoState.Default
         avatarSet = false
-        setAvatarImage(AvatarImage.Mode.Default, "")
+        if (useDefaultAvatar)
+            setAvatarImage(AvatarImage.Mode.Default, "")
     }
 
     function startBooth(force = false) {
@@ -49,6 +50,11 @@ ColumnLayout {
 
     function setAvatarImage(mode = AvatarImage.Mode.FromAccount,
                             imageId = AccountAdapter.currentAccountId){
+        if (mode !== AvatarImage.Mode.FromUrl)
+            avatarImg.enableAnimation = true
+        else
+            avatarImg.enableAnimation = false
+
         avatarImg.mode = mode
 
         if (mode === AvatarImage.Mode.Default) {
@@ -109,7 +115,7 @@ ColumnLayout {
             id: avatarLabelBackground
 
             anchors.fill: parent
-            color: "grey"
+            color: "white"
             radius: height / 2
 
             AvatarImage {
@@ -135,14 +141,44 @@ ColumnLayout {
                 }
 
                 onImageIsReady: {
-                    // Once image is loaded (updated), save to boothImg
-                    avatarImg.grabToImage(function(result) {
-                        if (mode !== AvatarImage.Mode.Default)
-                            boothImg = result.image
+                    if (mode === AvatarImage.Mode.FromUrl)
+                        photoState = PhotoboothView.PhotoState.Taken
 
-                        if (saveToConfig)
-                            SettingsAdapter.setCurrAccAvatar(result.image)
-                    })
+                    if (photoState === PhotoboothView.PhotoState.Taken) {
+                        avatarImg.state = ""
+                        avatarImg.state = "flashIn"
+                    } else {
+                        // Once image is loaded (updated), save to boothImg (choose from file)
+                        avatarImg.grabToImage(function(result) {
+                            if (mode !== AvatarImage.Mode.Default)
+                                boothImg = result.image
+
+                            if (saveToConfig)
+                                SettingsAdapter.setCurrAccAvatar(result.image)
+                        })
+                    }
+                }
+
+                onOpacityChanged: {
+                    if (avatarImg.state === "flashIn" && opacity === 0)
+                        avatarImg.state = "flashOut"
+                }
+
+                states: [
+                    State {
+                        name: "flashIn"
+                        PropertyChanges { target: avatarImg; opacity: 0}
+                    }, State {
+                        name: "flashOut"
+                        PropertyChanges { target: avatarImg; opacity: 1}
+                    }]
+
+                transitions: Transition {
+                    NumberAnimation {
+                        properties: "opacity"
+                        easing.type: Easing.Linear
+                        duration: 100
+                    }
                 }
             }
         }
@@ -170,22 +206,6 @@ ColumnLayout {
                                     previewWidget.width:previewWidget.height)
                     return size / 2
                 }
-            }
-        }
-
-        Label {
-            id: flashOverlay
-
-            anchors.fill: previewWidget
-            visible: false
-            color: JamiTheme.whiteColor
-
-            OpacityAnimator on opacity {
-                id: flashAnimation
-
-                from: 1
-                to: 0
-                duration: 600
             }
         }
     }
@@ -235,15 +255,14 @@ ColumnLayout {
                     startBooth()
                     return
                 } else {
-                    // show flash overlay
-                    flashOverlay.visible = true
-                    flashAnimation.restart()
-
                     previewWidget.grabToImage(function(result) {
+                        boothImg = result.image
+
+                        if (saveToConfig)
+                            SettingsAdapter.setCurrAccAvatar(result.image)
 
                         setAvatarImage(AvatarImage.Mode.FromUrl, result.url)
 
-                        photoState = PhotoboothView.PhotoState.Taken
                         avatarSet = true
                         stopBooth()
                     })

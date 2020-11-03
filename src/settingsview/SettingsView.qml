@@ -53,9 +53,6 @@ Rectangle {
                 pageIdCurrentAccountSettings.connectCurrentAccount()
                 settingsViewRect.stopPreviewing()
                 selectedMenu = sel
-                if(pageIdCurrentAccountSettings.isPhotoBoothOpened()) {
-                    settingsViewRect.setAvatar()
-                }
                 pageIdCurrentAccountSettings.updateAccountInfoDisplayed()
                 break
             case SettingsView.General:
@@ -123,7 +120,6 @@ Rectangle {
 
         signal stopPreviewing
         signal stopBooth
-        signal setAvatar
 
         property bool isSIP: {
             switch (profileType) {

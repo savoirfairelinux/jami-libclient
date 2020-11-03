@@ -43,12 +43,8 @@ Rectangle {
     signal navigateToNewWizardView
     signal advancedSettingsToggled(bool settingsVisible)
 
-    function isPhotoBoothOpened() {
-        return accountProfile.isPhotoBoothOpened()
-    }
-
     function updateAccountInfoDisplayed() {
-        accountProfile.setAvatar()
+        accountProfile.initPhotoBooth()
 
         accountEnableCheckBox.checked = SettingsAdapter.get_CurrentAccountInfo_Enabled()
         accountProfile.updateAccountInfo()
