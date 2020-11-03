@@ -41,9 +41,11 @@ RowLayout {
 
     signal indexChanged
 
-    function setCurrentIndex(index) {
+    function setCurrentIndex(index, emitIndexChanged = false) {
         comboBoxOfLayout.currentIndex = index
         modelIndex = index
+        if (emitIndexChanged)
+            indexChanged()
     }
 
     function setEnabled(status) {

@@ -201,26 +201,6 @@ UtilsAdapter::setCurrentCall(const QString& accountId, const QString& convUid)
     accInfo.callModel->setCurrentCall(convInfo.callId);
 }
 
-void
-UtilsAdapter::startPreviewing(bool force)
-{
-    LRCInstance::renderer()->startPreviewing(force);
-}
-
-void
-UtilsAdapter::stopPreviewing()
-{
-    if (!LRCInstance::hasVideoCall()) {
-        LRCInstance::renderer()->stopPreviewing();
-    }
-}
-
-bool
-UtilsAdapter::hasVideoCall()
-{
-    return LRCInstance::hasVideoCall();
-}
-
 bool
 UtilsAdapter::hasCall(const QString& accountId)
 {

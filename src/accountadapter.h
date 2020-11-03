@@ -93,8 +93,8 @@ public:
                                   const QString& oldPassword,
                                   const QString& newPassword);
 
-    Q_INVOKABLE void startPreviewing(bool force = false, bool async = true);
-    Q_INVOKABLE void stopPreviewing(bool async = true);
+    Q_INVOKABLE void startPreviewing(bool force = false);
+    Q_INVOKABLE void stopPreviewing();
     Q_INVOKABLE bool hasVideoCall();
     Q_INVOKABLE bool isPreviewing();
     Q_INVOKABLE void setCurrAccDisplayName(const QString& text);

@@ -32,15 +32,11 @@ PreviewRenderer::PreviewRenderer(QQuickItem* parent)
     previewFrameUpdatedConnection_ = connect(LRCInstance::renderer(),
                                              &RenderManager::previewFrameUpdated,
                                              [this]() { update(QRect(0, 0, width(), height())); });
-    previewRenderingStopped_ = connect(LRCInstance::renderer(),
-                                       &RenderManager::previewRenderingStopped,
-                                       [this]() { update(QRect(0, 0, width(), height())); });
 }
 
 PreviewRenderer::~PreviewRenderer()
 {
     disconnect(previewFrameUpdatedConnection_);
-    disconnect(previewRenderingStopped_);
 }
 
 void
@@ -71,30 +67,20 @@ PreviewRenderer::paint(QPainter* painter)
 }
 
 VideoCallPreviewRenderer::VideoCallPreviewRenderer(QQuickItem* parent)
-    : PreviewRenderer(parent)
-{}
+    : PreviewRenderer(parent) {
+    setProperty("previewImageScalingFactor", 1.0);
+}
 
 VideoCallPreviewRenderer::~VideoCallPreviewRenderer() {}
-
-qreal
-VideoCallPreviewRenderer::getPreviewImageScalingFactor()
-{
-    auto previewImage = LRCInstance::renderer()->getPreviewFrame();
-    if (previewImage) {
-        return static_cast<qreal>(previewImage->height())
-               / static_cast<qreal>(previewImage->width());
-    }
-    return 1.0;
-}
 
 void
 VideoCallPreviewRenderer::paint(QPainter* painter)
 {
     auto previewImage = LRCInstance::renderer()->getPreviewFrame();
-
     if (previewImage) {
-        emit previewImageAvailable();
-
+        auto scalingFactor = static_cast<qreal>(previewImage->height())
+                / static_cast<qreal>(previewImage->width());
+        setProperty("previewImageScalingFactor", scalingFactor);
         QImage scaledPreview;
         scaledPreview = previewImage->scaled(size().toSize(), Qt::KeepAspectRatio);
         painter->drawImage(QRect(0, 0, scaledPreview.width(), scaledPreview.height()),

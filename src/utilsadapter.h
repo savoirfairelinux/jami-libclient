@@ -58,9 +58,6 @@ public:
     Q_INVOKABLE const QStringList getCurrAccList();
     Q_INVOKABLE int getAccountListSize();
     Q_INVOKABLE void setCurrentCall(const QString& accountId, const QString& convUid);
-    Q_INVOKABLE void startPreviewing(bool force);
-    Q_INVOKABLE void stopPreviewing();
-    Q_INVOKABLE bool hasVideoCall();
     Q_INVOKABLE bool hasCall(const QString& accountId);
     Q_INVOKABLE const QString getCallConvForAccount(const QString& accountId);
     Q_INVOKABLE const QString getCallId(const QString& accountId, const QString& convUid);

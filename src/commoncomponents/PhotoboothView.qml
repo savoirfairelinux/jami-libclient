@@ -34,8 +34,8 @@ ColumnLayout {
             setAvatarImage(AvatarImage.Mode.Default, "")
     }
 
-    function startBooth(force = false) {
-        AccountAdapter.startPreviewing(force)
+    function startBooth() {
+        AccountAdapter.startPreviewing(false)
         photoState = PhotoboothView.PhotoState.CameraRendering
     }
 

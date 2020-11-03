@@ -137,7 +137,6 @@ registerTypes()
 
     QML_REGISTERSINGLETONTYPE_CUSTOM("net.jami.Models", AVModel, 1, 0, &LRCInstance::avModel())
     QML_REGISTERSINGLETONTYPE_CUSTOM("net.jami.Models", PluginModel, 1, 0, &LRCInstance::pluginModel())
-    QML_REGISTERSINGLETONTYPE_CUSTOM("net.jami.Models", RenderManager, 1, 0, LRCInstance::renderer())
 
     QML_REGISTERSINGLETONTYPE_CUSTOM("net.jami.Helpers", UpdateManager, 1, 0, LRCInstance::getUpdateManager())
 

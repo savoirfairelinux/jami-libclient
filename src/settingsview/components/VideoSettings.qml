@@ -38,7 +38,7 @@ ColumnLayout {
     property int itemWidth
 
     Connections {
-        target: RenderManager
+        target: AvAdapter
         enabled: root.visible
 
         function onVideoDeviceListChanged() {
@@ -54,13 +54,9 @@ ColumnLayout {
         resolutionComboBoxSetting.setEnabled(count)
         fpsComboBoxSetting.setEnabled(count)
 
-        deviceComboBoxSetting.setCurrentIndex(deviceComboBoxSetting.comboModel.getCurrentSettingIndex())
-        slotDeviceBoxCurrentIndexChanged(deviceComboBoxSetting.modelIndex)
+        deviceComboBoxSetting.setCurrentIndex(
+                    deviceComboBoxSetting.comboModel.getCurrentSettingIndex(), true)
         hardwareAccelControl.checked = AVModel.getHardwareAcceleration()
-
-        try {
-            startPreviewing(false)
-        } catch (err2){ console.log("Start preview fail when populate video settings, exception: "+ err2.message) }
     }
 
     function slotDeviceBoxCurrentIndexChanged(index) {
@@ -78,12 +74,12 @@ ColumnLayout {
             AVModel.setCurrentVideoCaptureDevice(deviceId)
             AVModel.setDefaultDevice(deviceId)
             setFormatListForCurrentDevice()
-            startPreviewing(true)
+            startPreviewing()
         } catch(err){ console.warn(err.message) }
     }
 
-    function startPreviewing(force = false, async = true) {
-        AccountAdapter.startPreviewing(force, async)
+    function startPreviewing(force = false) {
+        AccountAdapter.startPreviewing(force)
         previewAvailable = true
     }
 
@@ -94,13 +90,9 @@ ColumnLayout {
 
         try {
             resolutionComboBoxSetting.comboModel.reset()
-            resolutionComboBoxSetting.setCurrentIndex(resolutionComboBoxSetting.comboModel.getCurrentSettingIndex())
-            slotFormatCurrentIndexChanged(resolutionComboBoxSetting.modelIndex, true)
+            resolutionComboBoxSetting.setCurrentIndex(
+                        resolutionComboBoxSetting.comboModel.getCurrentSettingIndex(), true)
         } catch(err){ console.warn("Exception: " + err.message) }
-    }
-
-    function stopPreviewing(async = true) {
-        AccountAdapter.stopPreviewing(async)
     }
 
     function slotFormatCurrentIndexChanged(index, isResolutionIndex) {
@@ -111,7 +103,8 @@ ColumnLayout {
                         resolutionComboBoxSetting.comboModel.index(index, 0),
                         VideoFormatResolutionModel.Resolution)
             fpsComboBoxSetting.comboModel.currentResolution = resolution
-            fpsComboBoxSetting.setCurrentIndex(fpsComboBoxSetting.comboModel.getCurrentSettingIndex())
+            fpsComboBoxSetting.setCurrentIndex(
+                        fpsComboBoxSetting.comboModel.getCurrentSettingIndex(), true)
             rate = fpsComboBoxSetting.comboModel.data(
                         fpsComboBoxSetting.comboModel.index(0, 0),
                         VideoFormatFpsModel.FPS)
@@ -221,7 +214,7 @@ ColumnLayout {
 
         onSwitchToggled: {
             AVModel.setHardwareAcceleration(checked)
-            videoSettings.startPreviewing(true)
+            startPreviewing(true)
         }
     }
 

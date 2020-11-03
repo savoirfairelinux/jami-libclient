@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Copyright (C) 2020 by Savoir-faire Linux
  * Author : Edric Ladent Milaret<edric.ladent - milaret @savoirfairelinux.com>
  * Author : Andreas Traczyk<andreas.traczyk @savoirfairelinux.com>
@@ -21,25 +21,25 @@
 #include "avadapter.h"
 
 #include "lrcinstance.h"
+#include "qtutils.h"
 
+#include <QtConcurrent/QtConcurrent>
 #include <QApplication>
 #include <QScreen>
 
 AvAdapter::AvAdapter(QObject* parent)
     : QmlAdapterBase(parent)
-{}
+{
+    auto& avModel = LRCInstance::avModel();
+
+    deviceListSize_ = avModel.getDevices().size();
+    connect(&avModel, &lrc::api::AVModel::deviceEvent, this, &AvAdapter::slotDeviceEvent);
+}
 
 QVariantMap
 AvAdapter::populateVideoDeviceContextMenuItem()
 {
-    auto* convModel = LRCInstance::getCurrentConversationModel();
-    const auto conversation = convModel->getConversationForUID(LRCInstance::getCurrentConvUid());
-    auto call = LRCInstance::getCallInfoForConversation(conversation);
-    if (!call) {
-        return QVariantMap();
-    }
-
-    auto activeDevice = LRCInstance::avModel().getCurrentRenderedDevice(call->id);
+    auto activeDevice = LRCInstance::avModel().getCurrentVideoCaptureDevice();
 
     /*
      * Create a list of video input devices.
@@ -49,7 +49,7 @@ AvAdapter::populateVideoDeviceContextMenuItem()
     for (int i = 0; i < devices.size(); i++) {
         try {
             auto settings = LRCInstance::avModel().getDeviceSettings(devices[i]);
-            deciveContextMenuNeededInfo[settings.name] = QVariant(devices[i] == activeDevice.name);
+            deciveContextMenuNeededInfo[settings.name] = QVariant(settings.id == activeDevice);
         } catch (...) {
             qDebug().noquote() << "Error in getting device settings";
         }
@@ -137,4 +137,67 @@ void
 AvAdapter::stopAudioMeter(bool async)
 {
     LRCInstance::stopAudioMeter(async);
+}
+
+void
+AvAdapter::slotDeviceEvent()
+{
+    auto& avModel = LRCInstance::avModel();
+    auto defaultDevice = avModel.getDefaultDevice();
+    auto currentCaptureDevice = avModel.getCurrentVideoCaptureDevice();
+    QString callId {};
+
+    auto* convModel = LRCInstance::getCurrentConversationModel();
+    const auto conversation = convModel->getConversationForUID(LRCInstance::getCurrentConvUid());
+    auto call = LRCInstance::getCallInfoForConversation(conversation);
+    if (call)
+        callId = call->id;
+
+    /*
+     * Decide whether a device has plugged, unplugged, or nothing has changed.
+     */
+    auto deviceList = avModel.getDevices();
+    auto currentDeviceListSize = deviceList.size();
+
+    DeviceEvent deviceEvent {DeviceEvent::None};
+    if (currentDeviceListSize > deviceListSize_) {
+        deviceEvent = DeviceEvent::Added;
+    } else if (currentDeviceListSize < deviceListSize_) {
+        /*
+         * Check if the currentCaptureDevice is still in the device list.
+         */
+        if (std::find(std::begin(deviceList), std::end(deviceList), currentCaptureDevice)
+            == std::end(deviceList)) {
+            deviceEvent = DeviceEvent::RemovedCurrent;
+        }
+    }
+
+    auto cb = [this, currentDeviceListSize, deviceEvent, defaultDevice, callId] {
+        auto& avModel = LRCInstance::avModel();
+        if (currentDeviceListSize == 0) {
+            avModel.clearCurrentVideoCaptureDevice();
+            avModel.switchInputTo({}, callId);
+            avModel.stopPreview();
+        } else if (deviceEvent == DeviceEvent::RemovedCurrent && currentDeviceListSize > 0) {
+            avModel.switchInputTo(defaultDevice, callId);
+            avModel.setCurrentVideoCaptureDevice(defaultDevice);
+        }
+    };
+
+    if (LRCInstance::renderer()->isPreviewing()) {
+        Utils::oneShotConnect(LRCInstance::renderer(),
+                              &RenderManager::previewRenderingStopped,
+                              [cb] { QtConcurrent::run([cb]() { cb(); }); });
+    } else {
+        if (deviceEvent == DeviceEvent::Added && currentDeviceListSize == 1) {
+            avModel.switchInputTo(defaultDevice, callId);
+            avModel.setCurrentVideoCaptureDevice(defaultDevice);
+        } else {
+            cb();
+        }
+    }
+
+    emit videoDeviceListChanged();
+
+    deviceListSize_ = currentDeviceListSize;
 }

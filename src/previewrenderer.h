@@ -37,23 +37,23 @@ protected:
 
 private:
     QMetaObject::Connection previewFrameUpdatedConnection_;
-    QMetaObject::Connection previewRenderingStopped_;
 };
 
 class VideoCallPreviewRenderer : public PreviewRenderer
 {
     Q_OBJECT
+    Q_PROPERTY(qreal previewImageScalingFactor MEMBER previewImageScalingFactor_
+               NOTIFY previewImageScalingFactorChanged)
 public:
     explicit VideoCallPreviewRenderer(QQuickItem* parent = 0);
     virtual ~VideoCallPreviewRenderer();
 
-    Q_INVOKABLE qreal getPreviewImageScalingFactor();
-
 signals:
-    void previewImageAvailable();
+    void previewImageScalingFactorChanged();
 
 private:
     void paint(QPainter* painter) override final;
+    qreal previewImageScalingFactor_;
 };
 
 class PhotoboothPreviewRender : public PreviewRenderer

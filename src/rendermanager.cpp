@@ -19,8 +19,6 @@
 
 #include "rendermanager.h"
 
-#include <QtConcurrent/QtConcurrent>
-
 #include <stdexcept>
 
 using namespace lrc::api;
@@ -51,6 +49,9 @@ FrameWrapper::connectStartRendering()
 bool
 FrameWrapper::startRendering()
 {
+    if (isRendering())
+        return true;
+
     try {
         renderer_ = const_cast<video::Renderer*>(&avModel_.getRenderer(id_));
     } catch (std::out_of_range& e) {
@@ -69,15 +70,22 @@ FrameWrapper::startRendering()
     renderConnections_.stopped = QObject::connect(&avModel_,
                                                   &AVModel::rendererStopped,
                                                   this,
-                                                  &FrameWrapper::slotRenderingStopped);
+                                                  &FrameWrapper::slotRenderingStopped,
+                                                  Qt::DirectConnection);
 
     return true;
+}
+
+void
+FrameWrapper::stopRendering()
+{
+    isRendering_ = false;
 }
 
 QImage*
 FrameWrapper::getFrame()
 {
-    return image_.get();
+    return isRendering_ ? image_.get() : nullptr;
 }
 
 bool
@@ -99,8 +107,6 @@ FrameWrapper::slotRenderingStarted(const QString& id)
     }
 
     isRendering_ = true;
-
-    emit renderingStarted(id);
 }
 
 void
@@ -140,7 +146,6 @@ FrameWrapper::slotFrameUpdated(const QString& id)
 #endif
         }
     }
-
     emit frameUpdated(id);
 }
 
@@ -150,19 +155,13 @@ FrameWrapper::slotRenderingStopped(const QString& id)
     if (id != id_) {
         return;
     }
+    isRendering_ = false;
 
     QObject::disconnect(renderConnections_.updated);
-    QObject::disconnect(renderConnections_.stopped);
+
     renderer_ = nullptr;
 
-    /*
-     * The object's QImage pointer is reset before renderingStopped
-     * is emitted, allowing the listener to invoke specific behavior
-     * like clearing the widget or changing the UI entirely.
-     */
     image_.reset();
-
-    isRendering_ = false;
 
     emit renderingStopped(id);
 }
@@ -170,17 +169,8 @@ FrameWrapper::slotRenderingStopped(const QString& id)
 RenderManager::RenderManager(AVModel& avModel)
     : avModel_(avModel)
 {
-    deviceListSize_ = avModel_.getDevices().size();
-    connect(&avModel_, &lrc::api::AVModel::deviceEvent, this, &RenderManager::slotDeviceEvent);
-
     previewFrameWrapper_ = std::make_unique<FrameWrapper>(avModel_);
 
-    QObject::connect(previewFrameWrapper_.get(),
-                     &FrameWrapper::renderingStarted,
-                     [this](const QString& id) {
-                         Q_UNUSED(id);
-                         emit previewRenderingStarted();
-                     });
     QObject::connect(previewFrameWrapper_.get(),
                      &FrameWrapper::frameUpdated,
                      [this](const QString& id) {
@@ -219,37 +209,27 @@ RenderManager::getPreviewFrame()
 }
 
 void
-RenderManager::stopPreviewing(bool async)
+RenderManager::stopPreviewing()
 {
     if (!previewFrameWrapper_->isRendering()) {
         return;
     }
 
-    if (async) {
-        QtConcurrent::run([this] { avModel_.stopPreview(); });
-    } else {
-        avModel_.stopPreview();
-    }
+    previewFrameWrapper_->stopRendering();
+    avModel_.stopPreview();
 }
 
 void
-RenderManager::startPreviewing(bool force, bool async)
+RenderManager::startPreviewing(bool force)
 {
     if (previewFrameWrapper_->isRendering() && !force) {
         return;
     }
 
-    auto restart = [this] {
-        if (previewFrameWrapper_->isRendering()) {
-            avModel_.stopPreview();
-        }
-        avModel_.startPreview();
-    };
-    if (async) {
-        QtConcurrent::run(restart);
-    } else {
-        restart();
+    if (previewFrameWrapper_->isRendering()) {
+        avModel_.stopPreview();
     }
+    avModel_.startPreview();
 }
 
 QImage*
@@ -279,20 +259,10 @@ RenderManager::addDistantRenderer(const QString& id)
         /*
          * Connect this to the FrameWrapper.
          */
-        distantConnectionMap_[id].started = QObject::connect(dfw.get(),
-                                                             &FrameWrapper::renderingStarted,
-                                                             [this](const QString& id) {
-                                                                 emit distantRenderingStarted(id);
-                                                             });
         distantConnectionMap_[id].updated = QObject::connect(dfw.get(),
                                                              &FrameWrapper::frameUpdated,
                                                              [this](const QString& id) {
                                                                  emit distantFrameUpdated(id);
-                                                             });
-        distantConnectionMap_[id].stopped = QObject::connect(dfw.get(),
-                                                             &FrameWrapper::renderingStopped,
-                                                             [this](const QString& id) {
-                                                                 emit distantRenderingStopped(id);
                                                              });
 
         /*
@@ -319,7 +289,6 @@ RenderManager::removeDistantRenderer(const QString& id)
         if (dcIt != distantConnectionMap_.end()) {
             QObject::disconnect(dcIt->second.started);
             QObject::disconnect(dcIt->second.updated);
-            QObject::disconnect(dcIt->second.stopped);
         }
 
         /*
@@ -327,48 +296,4 @@ RenderManager::removeDistantRenderer(const QString& id)
          */
         distantFrameWrapperMap_.erase(dfwIt);
     }
-}
-
-void
-RenderManager::slotDeviceEvent()
-{
-    auto defaultDevice = avModel_.getDefaultDevice();
-    auto currentCaptureDevice = avModel_.getCurrentVideoCaptureDevice();
-    /*
-     * Decide whether a device has plugged, unplugged, or nothing has changed.
-     */
-    auto deviceList = avModel_.getDevices();
-    auto currentDeviceListSize = deviceList.size();
-
-    DeviceEvent deviceEvent {DeviceEvent::None};
-    if (currentDeviceListSize > deviceListSize_) {
-        deviceEvent = DeviceEvent::Added;
-    } else if (currentDeviceListSize < deviceListSize_) {
-        /*
-         * Check if the currentCaptureDevice is still in the device list.
-         */
-        if (std::find(std::begin(deviceList), std::end(deviceList), currentCaptureDevice)
-            == std::end(deviceList)) {
-            deviceEvent = DeviceEvent::RemovedCurrent;
-        }
-    }
-
-    if (previewFrameWrapper_->isRendering()) {
-        if (currentDeviceListSize == 0) {
-            avModel_.clearCurrentVideoCaptureDevice();
-            avModel_.switchInputTo({});
-            stopPreviewing();
-        } else if (deviceEvent == DeviceEvent::RemovedCurrent && currentDeviceListSize > 0) {
-            avModel_.setCurrentVideoCaptureDevice(defaultDevice);
-            startPreviewing(true);
-        } else {
-            startPreviewing();
-        }
-    } else if (deviceEvent == DeviceEvent::Added && currentDeviceListSize == 1) {
-        avModel_.setCurrentVideoCaptureDevice(defaultDevice);
-    }
-
-    emit videoDeviceListChanged();
-
-    deviceListSize_ = currentDeviceListSize;
 }

@@ -33,13 +33,6 @@ DistantRenderer::DistantRenderer(QQuickItem* parent)
         if (distantRenderId_ == id)
             update(QRect(0, 0, width(), height()));
     });
-
-    connect(LRCInstance::renderer(),
-            &RenderManager::distantRenderingStopped,
-            [this](const QString& id) {
-                if (distantRenderId_ == id)
-                    update(QRect(0, 0, width(), height()));
-            });
 }
 
 DistantRenderer::~DistantRenderer() {}
@@ -48,7 +41,6 @@ void
 DistantRenderer::setRendererId(const QString& id)
 {
     distantRenderId_ = id;
-    update(QRect(0, 0, width(), height()));
 }
 
 int

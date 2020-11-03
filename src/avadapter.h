@@ -32,6 +32,13 @@ public:
     explicit AvAdapter(QObject* parent = nullptr);
     ~AvAdapter() = default;
 
+signals:
+
+    /*
+     * Emitted when the size of the video capture device list changes.
+     */
+    void videoDeviceListChanged();
+
 protected:
     void safeInit() override {};
 
@@ -67,4 +74,20 @@ protected:
 
     Q_INVOKABLE void startAudioMeter(bool async);
     Q_INVOKABLE void stopAudioMeter(bool async);
+
+private:
+    /*
+     * Used to classify capture device events.
+     */
+    enum class DeviceEvent { Added, RemovedCurrent, None };
+
+    /*
+     * Used to track the capture device count.
+     */
+    int deviceListSize_;
+
+    /*
+     * Device changed slot.
+     */
+    void slotDeviceEvent();
 };

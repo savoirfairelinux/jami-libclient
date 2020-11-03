@@ -62,6 +62,11 @@ public:
     bool startRendering();
 
     /*
+     * Locally disable frame access to this FrameWrapper
+     */
+    void stopRendering();
+
+    /*
      * Get the most recently rendered frame as a QImage.
      * @return the rendered image of this object's id
      */
@@ -73,11 +78,6 @@ public:
     bool isRendering();
 
 signals:
-    /*
-     * Emitted once in slotRenderingStarted.
-     * @param id of the renderer
-     */
-    void renderingStarted(const QString& id);
     /*
      * Emitted each time a frame is ready to be displayed.
      * @param id of the renderer
@@ -180,14 +180,12 @@ public:
     /*
      * Start capturing and rendering preview frames.
      * @param force if the capture device should be started
-     * @param async
      */
-    void startPreviewing(bool force = false, bool async = true);
+    void startPreviewing(bool force = false);
     /*
      * Stop capturing.
-     * @param async
      */
-    void stopPreviewing(bool async = true);
+    void stopPreviewing();
 
     /*
      * Get the most recently rendered distant frame for a given id
@@ -209,15 +207,6 @@ public:
     void removeDistantRenderer(const QString& id);
 
 signals:
-    /*
-     * Emitted when the size of the video capture device list changes.
-     */
-    void videoDeviceListChanged();
-
-    /*
-     * Emitted when the preview is started.
-     */
-    void previewRenderingStarted();
 
     /*
      * Emitted when the preview has a new frame ready.
@@ -230,11 +219,6 @@ signals:
     void previewRenderingStopped();
 
     /*
-     * Emitted when a distant renderer is started for a given id.
-     */
-    void distantRenderingStarted(const QString& id);
-
-    /*
      * Emitted when a distant renderer has a new frame ready for a given id.
      */
     void distantFrameUpdated(const QString& id);
@@ -244,23 +228,7 @@ signals:
      */
     void distantRenderingStopped(const QString& id);
 
-private slots:
-    /*
-     * Used to listen to AVModel::deviceEvent.
-     */
-    void slotDeviceEvent();
-
 private:
-    /*
-     * Used to classify capture device events.
-     */
-    enum class DeviceEvent { Added, RemovedCurrent, None };
-
-    /*
-     * Used to track the capture device count.
-     */
-    int deviceListSize_;
-
     /*
      * One preview frame.
      */
@@ -277,4 +245,3 @@ private:
      */
     AVModel& avModel_;
 };
-Q_DECLARE_METATYPE(RenderManager*)

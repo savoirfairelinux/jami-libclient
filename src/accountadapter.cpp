@@ -231,16 +231,16 @@ AccountAdapter::savePassword(const QString& accountId,
 }
 
 void
-AccountAdapter::startPreviewing(bool force, bool async)
+AccountAdapter::startPreviewing(bool force)
 {
-    LRCInstance::renderer()->startPreviewing(force, async);
+    LRCInstance::renderer()->startPreviewing(force);
 }
 
 void
-AccountAdapter::stopPreviewing(bool async)
+AccountAdapter::stopPreviewing()
 {
     if (!LRCInstance::hasVideoCall() && LRCInstance::renderer()->isPreviewing()) {
-        LRCInstance::renderer()->stopPreviewing(async);
+        LRCInstance::renderer()->stopPreviewing();
     }
 }
 
