@@ -239,8 +239,10 @@ NewAccountModel::setAccountConfig(const QString& accountId,
                                         ? QString(ProtocolNames::RING)
                                         : QString(ProtocolNames::SIP);
     if (accountInfo.profileInfo.type == profile::Type::RING) {
-        details[ConfProperties::USERNAME] = accountInfo.profileInfo.uri.prepend(
-            (accountInfo.profileInfo.type == profile::Type::RING) ? "ring:" : "");
+        details[ConfProperties::USERNAME] = accountInfo.profileInfo.uri
+                                            + ((accountInfo.profileInfo.type == profile::Type::RING)
+                                                   ? "ring:"
+                                                   : "");
     } else if (accountInfo.profileInfo.type == profile::Type::SIP) {
         VectorMapStringString finalCred;
 
@@ -735,7 +737,9 @@ NewAccountModelPimpl::addToAccounts(const QString& accountId, std::shared_ptr<Da
 
     // Init models for this account
     newAccInfo.accountModel = &linked;
-    newAccInfo.callModel = std::make_unique<NewCallModel>(newAccInfo, callbacksHandler, behaviorController);
+    newAccInfo.callModel = std::make_unique<NewCallModel>(newAccInfo,
+                                                          callbacksHandler,
+                                                          behaviorController);
     newAccInfo.contactModel = std::make_unique<ContactModel>(newAccInfo,
                                                              *db,
                                                              callbacksHandler,
