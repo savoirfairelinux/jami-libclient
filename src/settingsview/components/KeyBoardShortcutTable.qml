@@ -157,7 +157,7 @@ BaseDialog {
             Rectangle {
                 id: cellRectWithThreeKeys
 
-                implicitWidth: minWidth / 2
+                implicitWidth: JamiTheme.mainViewMinWidth / 2
                 implicitHeight: 50
                 anchors.left: parent.left
                 anchors.leftMargin: 20
@@ -257,8 +257,8 @@ BaseDialog {
             anchors.bottomMargin: 20
             anchors.topMargin: 50
 
-            width: minWidth
-            height: minHeight - 100
+            width: JamiTheme.mainViewMinWidth
+            height: JamiTheme.mainViewMinHeight - 100
             anchors.fill: parent
 
             StackLayout {

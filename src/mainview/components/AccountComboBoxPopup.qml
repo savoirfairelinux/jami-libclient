@@ -173,7 +173,7 @@ Popup {
 
             onClicked: {
                 root.close()
-                mainViewWindow.startWizard()
+                mainView.startWizard()
             }
         }
 

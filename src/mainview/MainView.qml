@@ -28,29 +28,24 @@ import net.jami.Constants 1.0
 
 // Import qml component files.
 import "components"
+import "../"
 import "../wizardview"
 import "../settingsview"
 import "../settingsview/components"
 
-Window {
-    id: mainViewWindow
-    objectName: "mainViewWindow"
+Rectangle {
+    id: mainView
 
-    property int minWidth: settingsViewPreferredWidth
-    property int minHeight: 400
+    objectName: "mainView"
 
-    property int mainViewWindowPreferredWidth: 650
-    property int mainViewWindowPreferredHeight: 600
+    property var containerWindow: ""
+
     property int sidePanelViewStackPreferredWidth: 250
     property int mainViewStackPreferredWidth: 250
-    property int settingsViewPreferredWidth: 445
+    property int settingsViewPreferredWidth: 460
     property int onWidthChangedTriggerDistance: 5
 
-    property int savedSidePanelViewMinWidth: 0
-    property int savedSidePanelViewMaxWidth: 0
-    property int savedWelcomeViewMinWidth: 0
-    property int savedWelcomeViewMaxWidth: 0
-    property bool sidePanelOnly: !mainViewStack.visible
+    property bool sidePanelOnly: (!mainViewStack.visible) && sidePanelViewStack.visible
 
     // To calculate tab bar bottom border hidden rect left margin.
     property int tabBarLeftMargin: 8
@@ -60,13 +55,12 @@ Window {
     // For updating msgWebView
     property string currentConvUID: ""
 
-    signal closeApp
-    signal noAccountIsAvailable
+    signal loaderSourceChangeRequested(int sourceToLoad)
 
     property string currentAccountId: AccountAdapter.currentAccountId
     onCurrentAccountIdChanged: {
         var index = UtilsAdapter.getCurrAccList().indexOf(currentAccountId)
-        mainViewWindowSidePanel.refreshAccountComboBox(index)
+        mainViewSidePanel.refreshAccountComboBox(index)
         if (inSettingsView) {
             settingsView.accountListChanged()
             settingsView.setSelected(settingsView.selectedMenu, true)
@@ -86,7 +80,7 @@ Window {
     function showWelcomeView() {
         currentConvUID = ""
         callStackView.needToCloseInCallConversationAndPotentialWindow()
-        mainViewWindowSidePanel.deselectConversationSmartList()
+        mainViewSidePanel.deselectConversationSmartList()
         if (isPageInStack("callStackViewObject", sidePanelViewStack) ||
                 isPageInStack("communicationPageMessageWebView", sidePanelViewStack) ||
                 isPageInStack("communicationPageMessageWebView", mainViewStack) ||
@@ -167,8 +161,8 @@ Window {
 
                 var windowCurrentMinimizedSize = settingsViewPreferredWidth
                         + sidePanelViewStackPreferredWidth + onWidthChangedTriggerDistance
-                if (mainViewWindow.width < windowCurrentMinimizedSize)
-                    mainViewWindow.width = windowCurrentMinimizedSize
+                if (containerWindow.width < windowCurrentMinimizedSize)
+                    containerWindow.width = windowCurrentMinimizedSize
             }
         } else {
             sidePanelViewStack.pop(StackView.Immediate)
@@ -235,12 +229,6 @@ Window {
         }
     }
 
-    title: JamiStrings.appTitle
-    visible: true
-    width: mainViewWindowPreferredWidth
-    height: mainViewWindowPreferredHeight
-    minimumWidth: minWidth
-    minimumHeight: minHeight
     color: JamiTheme.backgroundColor
 
     Connections {
@@ -255,13 +243,14 @@ Window {
     Connections {
         target: JamiQmlUtils
 
+        // TODO: call in fullscreen inside containerWindow
         function onCallIsFullscreenChanged() {
             if (JamiQmlUtils.callIsFullscreen) {
                 UtilsAdapter.setSystemTrayIconVisible(false)
-                mainViewWindow.hide()
+                containerWindow.hide()
             } else {
                 UtilsAdapter.setSystemTrayIconVisible(true)
-                mainViewWindow.show()
+                containerWindow.show()
             }
         }
     }
@@ -279,8 +268,8 @@ Window {
             Layout.fillWidth: true
             Layout.fillHeight: true
 
-            width: mainViewWindow.width
-            height: mainViewWindow.height
+            width: mainView.width
+            height: mainView.height
 
             handle: Rectangle {
                 implicitWidth: JamiTheme.splitViewHandlePreferredWidth
@@ -312,7 +301,7 @@ Window {
                     width: mainViewSidePanelRect.width
                     height: 64
 
-                    visible: (mainViewWindowSidePanel.visible || settingsMenu.visible)
+                    visible: (mainViewSidePanel.visible || settingsMenu.visible)
 
                     currentIndex: 0
 
@@ -321,8 +310,8 @@ Window {
 
                         function onUpdateConversationForAddedContact() {
                             MessagesAdapter.updateConversationForAddedContact()
-                            mainViewWindowSidePanel.clearContactSearchBar()
-                            mainViewWindowSidePanel.forceReselectConversationSmartListCurrentIndex()
+                            mainViewSidePanel.clearContactSearchBar()
+                            mainViewSidePanel.forceReselectConversationSmartListCurrentIndex()
                         }
 
                         function onAccountStatusChanged(accountId) {
@@ -342,7 +331,7 @@ Window {
                 StackView {
                     id: sidePanelViewStack
 
-                    initialItem: mainViewWindowSidePanel
+                    initialItem: mainViewSidePanel
 
                     anchors.top: accountComboBox.visible ? accountComboBox.bottom :
                                                            mainViewSidePanelRect.top
@@ -375,7 +364,7 @@ Window {
             Layout.fillWidth: true
             Layout.fillHeight: true
 
-            onNeedToShowMainViewWindow: {
+            onLoaderSourceChangeRequested: {
                 mainViewStackLayout.currentIndex = 0
                 backToMainView()
             }
@@ -409,7 +398,7 @@ Window {
     }
 
     SidePanel {
-        id: mainViewWindowSidePanel
+        id: mainViewSidePanel
 
         Connections {
             target: ConversationsAdapter
@@ -429,6 +418,7 @@ Window {
 
     WelcomePage {
         id: welcomePage
+
         visible: false
     }
 
@@ -437,14 +427,13 @@ Window {
 
         visible: false
 
-        onSettingsViewWindowNeedToShowMainViewWindow: {
+        onSettingsViewNeedToShowMainView: {
             AccountAdapter.accountChanged(0)
             toggleSettingsView()
         }
 
-        onSettingsViewWindowNeedToShowNewWizardWindow: {
-            mainViewWindow.noAccountIsAvailable()
-        }
+        onSettingsViewNeedToShowNewWizardWindow: loaderSourceChangeRequested(
+                                                     MainApplicationWindow.LoadedSource.WizardView)
 
         onSettingsBackArrowClicked: sidePanelViewStack.pop(StackView.Immediate)
     }
@@ -464,7 +453,7 @@ Window {
             target: MessagesAdapter
 
             function onNeedToUpdateSmartList() {
-                mainViewWindowSidePanel.forceUpdateConversationSmartListView()
+                mainViewSidePanel.forceUpdateConversationSmartListView()
             }
 
             function onNavigateToWelcomePageRequested() {
@@ -498,7 +487,7 @@ Window {
         var widthToCompare = sidePanelViewStackPreferredWidth +
                 (inSettingsView ? settingsViewPreferredWidth : mainViewStackPreferredWidth)
 
-        if (mainViewWindow.width < widthToCompare - onWidthChangedTriggerDistance
+        if (mainView.width < widthToCompare - onWidthChangedTriggerDistance
                 && mainViewStack.visible) {
             mainViewStack.visible = false
 
@@ -515,8 +504,8 @@ Window {
             else if (inWelcomeViewStack)
                 recursionStackViewItemMove(mainViewStack, sidePanelViewStack)
 
-            mainViewWindow.update()
-        } else if (mainViewWindow.width >= widthToCompare + onWidthChangedTriggerDistance
+            mainView.update()
+        } else if (mainView.width >= widthToCompare + onWidthChangedTriggerDistance
                    && !mainViewStack.visible) {
             mainViewStack.visible = true
 
@@ -535,7 +524,7 @@ Window {
                     pushCallStackView()
             }
 
-            mainViewWindow.update()
+            mainView.update()
         }
     }
 
@@ -543,7 +532,7 @@ Window {
         id: aboutPopUpDialog
 
         height: Math.min(preferredHeight,
-                         mainViewWindow.height - JamiTheme.preferredMarginSize * 2)
+                         mainView.height - JamiTheme.preferredMarginSize * 2)
     }
 
     WelcomePageQrDialog {
@@ -557,12 +546,6 @@ Window {
 
     UserProfile {
         id: userProfile
-    }
-
-    onClosing: {
-        close.accepted = false
-        mainViewWindow.hide()
-        mainViewWindow.closeApp()
     }
 
     Shortcut {
@@ -621,10 +604,10 @@ Window {
         sequence: "F11"
         context: Qt.ApplicationShortcut
         onActivated: {
-            if (mainViewWindow.visibility !== 5) // 5 = FullScreen
-                mainViewWindow.visibility = "FullScreen"
+            if (containerWindow.visibility !== Window.FullScreen)
+                containerWindow.visibility = Window.FullScreen
             else
-                mainViewWindow.visibility = "Windowed"
+                containerWindow.visibility = Window.Windowed
         }
     }
 

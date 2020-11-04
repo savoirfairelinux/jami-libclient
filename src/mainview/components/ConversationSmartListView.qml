@@ -42,7 +42,7 @@ ListView {
 
     function repositionIndex(uid = "") {
         if (uid === "")
-            uid = mainViewWindow.currentConvUID
+            uid = mainView.currentConvUID
         root.currentIndex = -1
         updateListView()
         for (var i = 0; i < count; i++) {

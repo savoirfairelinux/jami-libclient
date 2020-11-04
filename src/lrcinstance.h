@@ -446,7 +446,7 @@ signals:
     void accountListChanged();
     void currentAccountChanged();
     void restoreAppRequested();
-    void notificationClicked(bool forceToTop = false);
+    void notificationClicked();
     void updateSmartList();
     void quitEngineRequested();
 

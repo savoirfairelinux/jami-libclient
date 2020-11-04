@@ -73,7 +73,7 @@ ItemDelegate {
 
         function onShowConversation(accountId, convUid) {
             if (convUid === UID) {
-                mainViewWindow.setMainView(DisplayID == DisplayName ? "" : DisplayID,
+                mainView.setMainView(DisplayID == DisplayName ? "" : DisplayID,
                             DisplayName, UID, CallStackViewShouldShow, IsAudioOnly, CallState)
             }
         }

@@ -262,7 +262,7 @@ Rectangle {
                     if (JamiQmlUtils.callIsFullscreen) {
                         callStackView.toggleFullScreen()
                     } else {
-                        mainViewWindow.showWelcomeView()
+                        mainView.showWelcomeView()
                     }
                 }
             }

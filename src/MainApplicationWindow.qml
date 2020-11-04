@@ -1,3 +1,25 @@
+/*
+ * Copyright (C) 2020 by Savoir-faire Linux
+ * Author: Aline Gondim Santos <aline.gondimsantos@savoirfairelinux.com>
+ * Author: Andreas Traczyk <andreas.traczyk@savoirfairelinux.com>
+ * Author: Albert Babí <albert.babi@savoirfairelinux.com>
+ * Author: Mingrui Zhang <mingrui.zhang@savoirfairelinux.com>
+ * Author: Yang Wang   <yang.wang@savoirfairelinux.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 import QtQuick 2.14
 import QtQuick.Window 2.14
 import QtQuick.Controls 2.14
@@ -16,15 +38,63 @@ import "commoncomponents"
 ApplicationWindow {
     id: root
 
-    property ApplicationWindow appWindow: root
+    enum LoadedSource {
+        WizardView = 0,
+        MainView,
+        None
+    }
 
-    AccountMigrationDialog{
-        id: accountMigrationDialog
+    Universal.theme: Universal.Light
 
-        visible: false
+    title: JamiStrings.appTitle
 
-        onAccountMigrationFinished:{
-            startClientByMainview()
+    width: {
+        if (checkLoadedSource() === MainApplicationWindow.LoadedSource.WizardView)
+            return JamiTheme.wizardViewMinWidth
+        return JamiTheme.mainViewPreferredWidth
+    }
+    height: {
+        if (checkLoadedSource() === MainApplicationWindow.LoadedSource.WizardView)
+            return JamiTheme.wizardViewMinHeight
+        return JamiTheme.mainViewPreferredHeight
+    }
+    minimumWidth: {
+        if (checkLoadedSource() === MainApplicationWindow.LoadedSource.WizardView)
+            return JamiTheme.wizardViewMinWidth
+        return JamiTheme.mainViewMinWidth
+    }
+    minimumHeight: {
+        if (checkLoadedSource() === MainApplicationWindow.LoadedSource.WizardView)
+            return JamiTheme.wizardViewMinHeight
+        return JamiTheme.mainViewMinHeight
+    }
+
+    visible: mainApplicationLoader.status === Loader.Ready
+
+    function checkLoadedSource() {
+        var sourceString = mainApplicationLoader.source.toString()
+
+        if (sourceString === JamiQmlUtils.wizardViewLoadPath)
+            return MainApplicationWindow.LoadedSource.WizardView
+        else if (sourceString === JamiQmlUtils.mainViewLoadPath)
+            return MainApplicationWindow.LoadedSource.MainView
+
+        return MainApplicationWindow.LoadedSource.None
+    }
+
+    function startAccountMigration(){
+        return accountMigrationDialog.startAccountMigrationOfTopStack()
+    }
+
+    function startClient(){
+        setX(Screen.width / 2 - width / 2)
+        setY(Screen.height / 2 - height / 2)
+
+        if (UtilsAdapter.getAccountListSize() !== 0) {
+            mainApplicationLoader.setSource(JamiQmlUtils.mainViewLoadPath,
+                                            {"containerWindow": root})
+        } else {
+            mainApplicationLoader.setSource(JamiQmlUtils.wizardViewLoadPath)
         }
     }
 
@@ -34,93 +104,38 @@ ApplicationWindow {
         if (force || !SettingsAdapter.getAppValue(Settings.MinimizeOnClose) ||
                 !UtilsAdapter.getAccountListSize()) {
             Qt.quit()
-        } else {
-            // hide to the systray
-            if (mainViewLoader.item)
-                mainViewLoader.item.hide()
-            else
-                Qt.quit()
-        }
+        } else
+            hide()
     }
 
-    function startAccountMigration(){
-        return accountMigrationDialog.startAccountMigrationOfTopStack()
+    AccountMigrationDialog{
+        id: accountMigrationDialog
+
+        visible: false
+
+        onAccountMigrationFinished: startClient()
     }
 
-    function startClientByMainview(){
-        setX(Screen.width / 2 - width / 2)
-        setY(Screen.height / 2 - height / 2)
-
-        if (!UtilsAdapter.getAccountListSize()) {
-            wizardView.show()
-        } else {
-            mainViewLoader.setSource("qrc:/src/mainview/MainView.qml")
-        }
-    }
-
-    Universal.theme: Universal.Light
-
-    visible: false
 
     Loader {
-        id: mainViewLoader
+        id: mainApplicationLoader
 
-        property int newAddedAccountIndex: -1
+        anchors.fill: parent
 
         asynchronous: true
         visible: status == Loader.Ready
         source: ""
 
         Connections {
-            target: mainViewLoader.item
+            target: mainApplicationLoader.item
 
-            function onCloseApp() {
-                root.close()
+            function onLoaderSourceChangeRequested(sourceToLoad) {
+                if (sourceToLoad === MainApplicationWindow.LoadedSource.WizardView)
+                    mainApplicationLoader.setSource(JamiQmlUtils.wizardViewLoadPath)
+                else
+                    mainApplicationLoader.setSource(JamiQmlUtils.mainViewLoadPath,
+                                                    {"containerWindow": root})
             }
-
-            function onNoAccountIsAvailable() {
-                mainViewLoader.setSource("")
-                wizardViewForApplicationStart.changePageQML(0)
-                wizardView.show()
-            }
-        }
-    }
-
-    Window {
-        id: wizardView
-
-        title: "Jami"
-
-        minimumWidth: 500
-        minimumHeight: 600
-
-        WizardView {
-            id: wizardViewForApplicationStart
-
-            anchors.fill: parent
-
-            onNeedToShowMainViewWindow: {
-                mainViewLoader.newAddedAccountIndex = accountIndex
-                if (mainViewLoader.source.toString() !== "qrc:/src/mainview/MainView.qml")
-                    mainViewLoader.setSource("qrc:/src/mainview/MainView.qml")
-                wizardView.close()
-            }
-
-            onWizardViewIsClosed: parent.close()
-        }
-
-        // @disable-check M16
-        onClosing: {
-            if (mainViewLoader.source.toString() !== "qrc:/src/mainview/MainView.qml") {
-                root.close()
-            }
-        }
-        // @enable-check M16
-    }
-
-    Component.onCompleted: {
-        if(!startAccountMigration()){
-            startClientByMainview()
         }
     }
 
@@ -138,31 +153,25 @@ ApplicationWindow {
     Connections {
         target: LRCInstance
 
-        function restore(window) {
-            window.show()
-            window.raise();
-            window.requestActivate()
-        }
-
         function onRestoreAppRequested() {
-            if (mainViewLoader.item)
-                restore(mainViewLoader.item)
+            requestActivate()
+            showNormal()
         }
 
-        function onNotificationClicked(forceToTop) {
-            var window = mainViewLoader.item ? mainViewLoader.item : wizardView
-            // This is a hack to bring the window to the front which is normally done
-            // with QWindow::requestActivate but is thwarted for qml windows by the
-            // notification being clicked. Native solutions are preferable.
-            if (forceToTop && (!window.visible
-                    || window.visibility & Qt.WindowMinimized
-                    || window.visibility === Qt.WindowNoState)) {
-                var tmpFlags = window.flags
-                window.hide()
-                window.flags = Qt.WindowStaysOnTopHint
-                window.flags = tmpFlags
-            }
-            restore(window)
+        function onNotificationClicked() {
+            requestActivate()
+            raise()
+            if (visibility === Window.Hidden ||
+                    visibility === Window.Minimized)
+                showNormal()
+        }
+    }
+
+    onClosing: root.close()
+
+    Component.onCompleted: {
+        if(!startAccountMigration()){
+            startClient()
         }
     }
 }

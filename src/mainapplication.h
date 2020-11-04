@@ -48,7 +48,6 @@ private:
     void initSettings();
     void initSystray();
     void cleanup();
-    void connectForceWindowToTop();
 
 private:
     QScopedPointer<QFile> debugFile_;

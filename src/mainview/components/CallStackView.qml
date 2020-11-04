@@ -52,6 +52,8 @@ Rectangle {
 
     function needToCloseInCallConversationAndPotentialWindow() {
         // Close potential window, context menu releated windows.
+        if (!callStackMainView.currentItem)
+            return
         if (callStackMainView.currentItem.stackNumber === CallStackView.AudioPageStack) {
             audioCallPage.closeInCallConversation()
             CallFullScreenWindowContainerCreation.closeVideoCallFullScreenWindowContainer()

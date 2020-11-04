@@ -68,9 +68,9 @@ Rectangle {
 
             toolTipText: qsTr("Toggle to display side panel")
 
-            visible: mainViewWindow.sidePanelOnly
+            visible: mainView.sidePanelOnly
 
-            onClicked: mainViewWindow.showWelcomeView()
+            onClicked: mainView.showWelcomeView()
         }
 
         AvatarImage {

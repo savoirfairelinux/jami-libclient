@@ -171,6 +171,16 @@ Item {
     property int preferredDialogHeight: 300
     property int minimumPreviewWidth: 120
 
+    // main application spec
+    property int mainViewMinWidth: 460
+    property int mainViewMinHeight: 400
+
+    property int wizardViewMinWidth: 500
+    property int wizardViewMinHeight: 600
+
+    property int mainViewPreferredWidth: 650
+    property int mainViewPreferredHeight: 600
+
     function setTheme(dark) {
         darkTheme = dark
     }

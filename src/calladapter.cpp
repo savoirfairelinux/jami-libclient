@@ -307,11 +307,7 @@ CallAdapter::showNotification(const QString& accountId, const QString& convUid)
     }
 
     auto onClicked = [this, convInfo]() {
-#ifdef Q_OS_WINDOWS
         emit LRCInstance::instance().notificationClicked();
-#else
-        emit LRCInstance::instance().notificationClicked(true);
-#endif
         if (!convInfo.uid.isEmpty()) {
             emit callSetupMainViewRequired(convInfo.accountId, convInfo.uid);
         }

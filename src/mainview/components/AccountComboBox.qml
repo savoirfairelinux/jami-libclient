@@ -250,13 +250,13 @@ ComboBox {
         PushButton {
             id: settingsButton
 
-            source: !mainViewWindow.inSettingsView ?
+            source: !mainView.inSettingsView ?
                         "qrc:/images/icons/round-settings-24px.svg" :
                         "qrc:/images/icons/round-close-24px.svg"
 
             normalColor: JamiTheme.backgroundColor
             imageColor: JamiTheme.textColor
-            toolTipText: !mainViewWindow.inSettingsView ?
+            toolTipText: !mainView.inSettingsView ?
                              JamiStrings.openSettings :
                              JamiStrings.closeSettings
 
