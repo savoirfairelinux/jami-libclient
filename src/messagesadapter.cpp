@@ -489,6 +489,8 @@ MessagesAdapter::newInteraction(const QString& accountId,
 void
 MessagesAdapter::updateDraft()
 {
+    currentConvUid_.clear();
+
     Utils::oneShotConnect(qmlObj_,
                           SIGNAL(sendMessageContentSaved(const QString&)),
                           this,
