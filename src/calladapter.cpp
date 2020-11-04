@@ -31,7 +31,8 @@ CallAdapter::CallAdapter(QObject* parent)
     : QmlAdapterBase(parent)
     , oneSecondTimer_(new QTimer(this))
 {
-    connectCallModel(LRCInstance::getCurrAccId());
+    accountId_ = LRCInstance::getCurrAccId();
+    connectCallModel(accountId_);
 
     connect(&LRCInstance::behaviorController(),
             &BehaviorController::showIncomingCallView,
@@ -50,7 +51,8 @@ CallAdapter::CallAdapter(QObject* parent)
 void
 CallAdapter::slotAccountChanged()
 {
-    connectCallModel(LRCInstance::getCurrAccId());
+    accountId_ = LRCInstance::getCurrAccId();
+    connectCallModel(accountId_);
 }
 
 void
@@ -431,7 +433,7 @@ CallAdapter::connectCallModel(const QString& accountId)
                     accInfo.conversationModel->selectConversation(convInfo.uid);
                 }
                 LRCInstance::renderer()->addDistantRenderer(callId);
-                updateCall();
+                updateCall(convInfo.uid, accountId);
                 LRCInstance::getAccountInfo(accountId).callModel->setCurrentCall(callId);
                 break;
             }
