@@ -49,6 +49,7 @@ protected:
     Q_INVOKABLE void refuseInvitation(const QString& convUid = "");
     Q_INVOKABLE void blockConversation(const QString& convUid = "");
     Q_INVOKABLE void setNewMessagesContent(const QString& path);
+    Q_INVOKABLE void setDisplayLinks();
     Q_INVOKABLE void sendMessage(const QString& message);
     Q_INVOKABLE void sendImage(const QString& message);
     Q_INVOKABLE void sendFile(const QString& message);

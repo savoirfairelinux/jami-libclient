@@ -259,6 +259,7 @@ Rectangle {
                             UtilsAdapter.qStringFromFile(":/chatview.js"),
                             function() {
                                 messageWebView.runJavaScript("init_i18n();")
+                                MessagesAdapter.setDisplayLinks()
                                 messageWebView.runJavaScript("displayNavbar(false);")
                                 jsLoaded = true
                             })

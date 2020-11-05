@@ -272,6 +272,11 @@ Item {
     property string tipChooseDownloadFolder: qsTr("Choose download directory")
     property string recordCall: qsTr("Record call")
 
+    // ChatviewSettings
+    property string chatview: qsTr("Chatview")
+    property string enableTypingIndicator: qsTr("Show typing indicator")
+    property string displayImages: qsTr("Display images and videos into the chatview")
+
     // Updates
     property string betaInstall: qsTr("Install beta version")
     property string checkForUpdates: qsTr("Check for updates now")

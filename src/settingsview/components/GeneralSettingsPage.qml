@@ -52,6 +52,16 @@ Rectangle {
             itemWidth: preferredColumnWidth
         }
 
+        // chatview setting panel
+        ChatviewSettings {
+            Layout.fillWidth: true
+            Layout.topMargin: JamiTheme.preferredMarginSize
+            Layout.leftMargin: JamiTheme.preferredMarginSize
+            Layout.rightMargin: JamiTheme.preferredMarginSize
+
+            itemWidth: preferredColumnWidth
+        }
+
         // call recording setting panel
         RecordingSettings {
             Layout.fillWidth: true
