@@ -22,6 +22,30 @@
       "revId": "e6f7f3375442dea4c7409802f34b59d1b6fbc059",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9eb9896e_c46e1a70",
+        "filename": "src/newaccountmodel.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 245,
+      "author": {
+        "id": 633
+      },
+      "writtenOn": "2020-11-05T20:04:22Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "1f421fdf_79802988",
+      "range": {
+        "startLine": 242,
+        "startChar": 8,
+        "endLine": 245,
+        "endChar": 74
+      },
+      "revId": "e6f7f3375442dea4c7409802f34b59d1b6fbc059",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
