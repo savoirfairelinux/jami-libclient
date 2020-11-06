@@ -147,3 +147,5 @@ target_link_libraries(jami-qt
     ${QML_LIBS}
     ${ringclient}
     ${qrencode})
+
+add_subdirectory(tests)

@@ -1,11 +1,13 @@
-FROM debian:bullseye
+FROM ubuntu:20.10
 
 ENV DEBIAN_FRONTEND noninteractive
 ENV QT_QUICK_BACKEND software
 ENV QT_QPA_PLATFORM offscreen
 
 RUN apt-get clean
-RUN apt-get update
+RUN apt-get update && \
+    apt-get install -y devscripts equivs
+
 RUN apt-get install -y -o Acquire::Retries=10 \
         python3 \
         git \
