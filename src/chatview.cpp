@@ -24,41 +24,41 @@ namespace api {
 namespace chatview {
 
 QVariantMap
-getTranslatedStrings()
+getTranslatedStrings(bool qwebview)
 {
-    return
-    {
+    return {
         {"Hide chat view", QObject::tr("Hide chat view")},
-            {"Place video call", QObject::tr("Place video call")},
-            {"Place audio call", QObject::tr("Place audio call")},
-            {"Add to conversations", QObject::tr("Add to conversations")},
-            {"Unban contact", QObject::tr("Unban contact")}, {"Send", QObject::tr("Send")},
-            {"Options", QObject::tr("Options")}, {"Jump to latest", QObject::tr("Jump to latest")},
-            {"Send file", QObject::tr("Send file")},
-            {"Leave video message", QObject::tr("Leave video message")},
-            {"Leave audio message", QObject::tr("Leave audio message")},
-            {"Accept", QObject::tr("Accept")}, {"Refuse", QObject::tr("Refuse")},
-            {"Block", QObject::tr("Block")}, {"Type a message", QObject::tr("Type a message")},
-            {"Note: an interaction will create a new contact.",
-             QObject::tr("Note: an interaction will create a new contact.")},
-            {"is not in your contacts", QObject::tr("is not in your contacts")},
-            {"Note: you can automatically accept this invitation by sending a message.",
-             QObject::tr(
-                 "Note: you can automatically accept this invitation by sending a message.")},
-#if defined(WIN32)
-            {"%d days ago", QObject::tr("{0} days ago")},
-            {"%d hours ago", QObject::tr("{0} hours ago")},
-            {"%d minutes ago", QObject::tr("{0} minutes ago")},
-#else
-            {"%d days ago", QObject::tr("%d days ago")},
-            {"%d hours ago", QObject::tr("%d hours ago")},
-            {"%d minutes ago", QObject::tr("%d minutes ago")},
-#endif
-            {"one day ago", QObject::tr("one day ago")},
-            {"one hour ago", QObject::tr("one hour ago")}, {"just now", QObject::tr("just now")},
-            {"Failure", QObject::tr("Failure")}, {"Accept", QObject::tr("Accept")},
-            {"Refuse", QObject::tr("Refuse")}, {"Delete", QObject::tr("Delete")},
-            {"Retry", QObject::tr("Retry")},
+        {"Place video call", QObject::tr("Place video call")},
+        {"Place audio call", QObject::tr("Place audio call")},
+        {"Add to conversations", QObject::tr("Add to conversations")},
+        {"Unban contact", QObject::tr("Unban contact")},
+        {"Send", QObject::tr("Send")},
+        {"Options", QObject::tr("Options")},
+        {"Jump to latest", QObject::tr("Jump to latest")},
+        {"Send file", QObject::tr("Send file")},
+        {"Leave video message", QObject::tr("Leave video message")},
+        {"Leave audio message", QObject::tr("Leave audio message")},
+        {"Accept", QObject::tr("Accept")},
+        {"Refuse", QObject::tr("Refuse")},
+        {"Block", QObject::tr("Block")},
+        {"Type a message", QObject::tr("Type a message")},
+        {"Note: an interaction will create a new contact.",
+         QObject::tr("Note: an interaction will create a new contact.")},
+        {"is not in your contacts", QObject::tr("is not in your contacts")},
+        {"Note: you can automatically accept this invitation by sending a message.",
+         QObject::tr("Note: you can automatically accept this invitation by sending a message.")},
+        {"%d days ago", qwebview ? QObject::tr("{0} days ago") : QObject::tr("%d days ago")},
+        {"%d hours ago", qwebview ? QObject::tr("{0} hours ago") : QObject::tr("%d hours ago")},
+        {"%d minutes ago",
+         qwebview ? QObject::tr("{0} minutes ago") : QObject::tr("%d minutes ago")},
+        {"one day ago", QObject::tr("one day ago")},
+        {"one hour ago", QObject::tr("one hour ago")},
+        {"just now", QObject::tr("just now")},
+        {"Failure", QObject::tr("Failure")},
+        {"Accept", QObject::tr("Accept")},
+        {"Refuse", QObject::tr("Refuse")},
+        {"Delete", QObject::tr("Delete")},
+        {"Retry", QObject::tr("Retry")},
     };
 }
 

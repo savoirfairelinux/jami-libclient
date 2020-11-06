@@ -28,7 +28,7 @@ namespace api {
 
 namespace chatview {
 
-QVariantMap getTranslatedStrings();
+QVariantMap getTranslatedStrings(bool qwebview = true);
 
 } // namespace chatview
 } // namespace api
