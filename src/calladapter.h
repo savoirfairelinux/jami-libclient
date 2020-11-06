@@ -70,6 +70,9 @@ public:
     Q_INVOKABLE void muteParticipant(const QString& uri, const bool state);
     Q_INVOKABLE bool isMuted(const QString& uri) const;
     Q_INVOKABLE void hangupParticipant(const QString& uri);
+    Q_INVOKABLE void updateCall(const QString& convUid = {},
+                                const QString& accountId = {},
+                                bool forceCallOnly = false);
 
 signals:
     void callStatusChanged(int index, const QString& accountId, const QString& convUid);
@@ -101,9 +104,6 @@ public slots:
     void slotAccountChanged();
 
 private:
-    void updateCall(const QString& convUid = {},
-                    const QString& accountId = {},
-                    bool forceCallOnly = false);
     bool shouldShowPreview(bool force);
     void showNotification(const QString& accountId, const QString& convUid);
 

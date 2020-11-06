@@ -269,6 +269,14 @@ RenderManager::addDistantRenderer(const QString& id)
          * Connect FrameWrapper to avmodel.
          */
         dfw->connectStartRendering();
+        try {
+            /*
+             * If the renderer has already started, then start the slot.
+             */
+            if (avModel_.getRenderer(id).isRendering())
+                dfw->slotRenderingStarted(id);
+        } catch (...) {
+        }
 
         /*
          * Add to map.

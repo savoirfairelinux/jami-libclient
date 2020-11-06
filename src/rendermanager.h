@@ -89,7 +89,7 @@ signals:
      */
     void renderingStopped(const QString& id);
 
-private slots:
+public slots:
     /*
      * Used to listen to AVModel::rendererStarted.
      * @param id of the renderer

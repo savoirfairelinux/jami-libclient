@@ -227,6 +227,11 @@ CallAdapter::updateCall(const QString& convUid, const QString& accountId, bool f
     emit callSetupMainViewRequired(accountId_, convUid_);
     updateCallOverlay(convInfo);
     emit previewVisibilityNeedToChange(shouldShowPreview(forceCallOnly));
+
+    if (call->status == lrc::api::call::Status::IN_PROGRESS) {
+        LRCInstance::renderer()->addDistantRenderer(call->id);
+        LRCInstance::getAccountInfo(accountId).callModel->setCurrentCall(call->id);
+    }
 }
 
 bool
@@ -457,9 +462,7 @@ CallAdapter::connectCallModel(const QString& accountId)
                 if (!convInfo.uid.isEmpty() && convInfo.uid == LRCInstance::getCurrentConvUid()) {
                     accInfo.conversationModel->selectConversation(convInfo.uid);
                 }
-                LRCInstance::renderer()->addDistantRenderer(callId);
                 updateCall(convInfo.uid, accountId);
-                LRCInstance::getAccountInfo(accountId).callModel->setCurrentCall(callId);
                 break;
             }
             case lrc::api::call::Status::PAUSED:
