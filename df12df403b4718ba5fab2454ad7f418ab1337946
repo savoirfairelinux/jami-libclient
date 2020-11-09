@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5ba8ce98_ddf3273b",
+        "filename": "CMakeLists.txt",
+        "patchSetId": 2
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2020-11-09T18:55:34Z",
+      "side": 1,
+      "message": "should be \u003d\u003d 5 or \u003e 5 too, for example 4.16 will work",
+      "range": {
+        "startLine": 81,
+        "startChar": 41,
+        "endLine": 83,
+        "endChar": 41
+      },
+      "revId": "df12df403b4718ba5fab2454ad7f418ab1337946",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    }
+  ]
+}
