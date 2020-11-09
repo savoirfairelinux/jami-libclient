@@ -769,6 +769,12 @@ NewCallModel::isModerator(const QString& confId, const QString& uri)
 }
 
 void
+NewCallModel::setModerator(const QString& confId, const QString& peerId, const bool& state)
+{
+    CallManager::instance().setModerator(confId, peerId, state);
+}
+
+void
 NewCallModel::sendSipMessage(const QString& callId, const QString& body) const
 {
     MapStringString payloads;

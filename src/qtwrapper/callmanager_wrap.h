@@ -386,6 +386,11 @@ public Q_SLOTS: // METHODS
 #endif
     }
 
+    void setModerator(const QString& confId, const QString& peerId, const bool& state)
+    {
+        DRing::setModerator(confId.toStdString(), peerId.toStdString(), state);
+    }
+
 Q_SIGNALS: // SIGNALS
     void callStateChanged(const QString& callID, const QString& state, int code);
     void transferFailed();
