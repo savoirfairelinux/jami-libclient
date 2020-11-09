@@ -56,7 +56,7 @@ ModalPopup {
 
                     Layout.alignment: Qt.AlignCenter
 
-                    Image {
+                    ResponsiveImage {
                         id: aboutPopUPJamiLogoImage
 
                         Layout.alignment: Qt.AlignCenter
