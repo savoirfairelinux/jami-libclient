@@ -768,6 +768,12 @@ NewCallModel::isModerator(const QString& confId, const QString& uri)
     return isModerator;
 }
 
+bool
+NewCallModel::changeModerator(const QString& confId, const QString& peerId, const bool state)
+{
+    CallManager::instance().changeModerator(confId, peerId, state);
+}
+
 void
 NewCallModel::sendSipMessage(const QString& callId, const QString& body) const
 {
