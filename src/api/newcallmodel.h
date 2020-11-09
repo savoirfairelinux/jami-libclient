@@ -247,6 +247,15 @@ public:
      */
     bool isModerator(const QString& confId, const QString& uri = "");
 
+    /**
+     * Check if a participant is a moderator or not
+     * @param confId        The conference to change
+     * @param peerId        Uri of the participant to change
+     * @param state         State of the change (true set moderator / false unset moderator)
+     * @return if moderator
+     */
+    void setModerator(const QString& confId, const QString& peerId, const bool& state);
+
 Q_SIGNALS:
     /**
      * Emitted when a call state changes
