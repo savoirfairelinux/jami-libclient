@@ -1,4 +1,4 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="es" sourcelanguage="en" version="2.1">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="es" sourcelanguage="en" version="2.0">
 <context>
     <name>QObject</name>
     <message>
@@ -392,27 +392,27 @@
         <translation>No aceptable en ningún lugar</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="31"/>
+        <location filename="../src/chatview.cpp" line="30"/>
         <source>Hide chat view</source>
         <translation>Ocultar el chat</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="32"/>
+        <location filename="../src/chatview.cpp" line="31"/>
         <source>Place video call</source>
         <translation>Realizar videollamada</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="33"/>
+        <location filename="../src/chatview.cpp" line="32"/>
         <source>Place audio call</source>
         <translation>Realizar llamada de audio</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="34"/>
+        <location filename="../src/chatview.cpp" line="33"/>
         <source>Add to conversations</source>
         <translation>Añadir a conversaciones</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="35"/>
+        <location filename="../src/chatview.cpp" line="34"/>
         <source>Unban contact</source>
         <translation>contacto unban</translation>
     </message>
@@ -427,109 +427,109 @@
         <translation>Opciones</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="36"/>
+        <location filename="../src/chatview.cpp" line="37"/>
         <source>Jump to latest</source>
         <translation>Saltar a lo último</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="37"/>
+        <location filename="../src/chatview.cpp" line="38"/>
         <source>Send file</source>
         <translation>Enviar archivo</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="38"/>
+        <location filename="../src/chatview.cpp" line="39"/>
         <source>Leave video message</source>
         <translation>Dejar mensaje de vídeo</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="39"/>
+        <location filename="../src/chatview.cpp" line="40"/>
         <source>Leave audio message</source>
         <translation>Dejar mensaje de audio</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="40"/>
-        <location filename="../src/chatview.cpp" line="59"/>
+        <location filename="../src/chatview.cpp" line="41"/>
+        <location filename="../src/chatview.cpp" line="58"/>
         <source>Accept</source>
         <translation>Aceptar</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="40"/>
-        <location filename="../src/chatview.cpp" line="60"/>
+        <location filename="../src/chatview.cpp" line="42"/>
+        <location filename="../src/chatview.cpp" line="59"/>
         <source>Refuse</source>
         <translation>No aceptar</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="41"/>
+        <location filename="../src/chatview.cpp" line="43"/>
         <source>Block</source>
         <translation>Bloquear</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="41"/>
+        <location filename="../src/chatview.cpp" line="44"/>
         <source>Type a message</source>
         <translation>Escribir mensaje</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="43"/>
+        <location filename="../src/chatview.cpp" line="46"/>
         <source>Note: an interaction will create a new contact.</source>
         <translation>Nota: La interacción creará un nuevo contacto</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="44"/>
+        <location filename="../src/chatview.cpp" line="47"/>
         <source>is not in your contacts</source>
         <translation>no está en tus contactos</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="46"/>
+        <location filename="../src/chatview.cpp" line="49"/>
         <source>Note: you can automatically accept this invitation by sending a message.</source>
         <translation>Nota: Puedes aceptar esta invitación automáticamente enviando un mensaje</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="49"/>
-        <source>{0} days ago</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
         <location filename="../src/chatview.cpp" line="50"/>
-        <source>{0} hours ago</source>
-        <translation type="unfinished"/>
+        <source>{0} days ago</source>
+        <translation>Hace {0} días</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="51"/>
-        <source>{0} minutes ago</source>
-        <translation type="unfinished"/>
+        <source>{0} hours ago</source>
+        <translation>Hace {0} horas</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="53"/>
+        <source>{0} minutes ago</source>
+        <translation>Hace {0} minutos</translation>
+    </message>
+    <message>
+        <location filename="../src/chatview.cpp" line="50"/>
         <source>%d days ago</source>
         <translation>Hace 1%d días</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="54"/>
+        <location filename="../src/chatview.cpp" line="51"/>
         <source>%d hours ago</source>
         <translation>Hace 1%d horas</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="55"/>
+        <location filename="../src/chatview.cpp" line="53"/>
         <source>%d minutes ago</source>
         <translation>Hace %d minutos</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="57"/>
+        <location filename="../src/chatview.cpp" line="54"/>
         <source>one day ago</source>
         <translation>hace un día</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="58"/>
+        <location filename="../src/chatview.cpp" line="55"/>
         <source>one hour ago</source>
         <translation>hace una hora</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="58"/>
+        <location filename="../src/chatview.cpp" line="56"/>
         <source>just now</source>
         <translation>justo ahora</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="59"/>
+        <location filename="../src/chatview.cpp" line="57"/>
         <source>Failure</source>
         <translation>Error</translation>
     </message>
@@ -547,23 +547,22 @@
 <context>
     <name>lrc::ContactModelPimpl</name>
     <message>
-        <location filename="../src/contactmodel.cpp" line="460"/>
-        <location filename="../src/contactmodel.cpp" line="477"/>
+        <location filename="../src/contactmodel.cpp" line="455"/>
         <source>Searching…</source>
         <translation>Buscando</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="965"/>
+        <location filename="../src/contactmodel.cpp" line="950"/>
         <source>Invalid ID</source>
         <translation>ID inválida</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="968"/>
+        <location filename="../src/contactmodel.cpp" line="953"/>
         <source>Registered name not found</source>
         <translation>Nombre registrado no encontrado</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="971"/>
+        <location filename="../src/contactmodel.cpp" line="956"/>
         <source>Couldn&apos;t lookup…</source>
         <translation>No se ha podido buscar...</translation>
     </message>
@@ -571,7 +570,7 @@
 <context>
     <name>lrc::api::ContactModel</name>
     <message>
-        <location filename="../src/contactmodel.cpp" line="424"/>
+        <location filename="../src/contactmodel.cpp" line="419"/>
         <source>Bad URI scheme</source>
         <translation>Mal esquema de URI</translation>
     </message>

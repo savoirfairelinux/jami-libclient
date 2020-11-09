@@ -1,4 +1,4 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="fi" sourcelanguage="en" version="2.1">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="fi" sourcelanguage="en" version="2.0">
 <context>
     <name>QObject</name>
     <message>
@@ -392,27 +392,27 @@
         <translation>Ei hyväksytä missään</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="31"/>
+        <location filename="../src/chatview.cpp" line="30"/>
         <source>Hide chat view</source>
         <translation>Piilota chat-näkymä</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="32"/>
+        <location filename="../src/chatview.cpp" line="31"/>
         <source>Place video call</source>
         <translation>Aloita videopuhelu</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="33"/>
+        <location filename="../src/chatview.cpp" line="32"/>
         <source>Place audio call</source>
         <translation>Aloita äänipuhelu</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="34"/>
+        <location filename="../src/chatview.cpp" line="33"/>
         <source>Add to conversations</source>
         <translation>Lisää keskusteluihin</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="35"/>
+        <location filename="../src/chatview.cpp" line="34"/>
         <source>Unban contact</source>
         <translation>Poista esto</translation>
     </message>
@@ -427,109 +427,109 @@
         <translation>Vaihtoehdot</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="36"/>
+        <location filename="../src/chatview.cpp" line="37"/>
         <source>Jump to latest</source>
         <translation>Hyppää uusimpaan</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="37"/>
+        <location filename="../src/chatview.cpp" line="38"/>
         <source>Send file</source>
         <translation>Lähetä tiedosto</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="38"/>
+        <location filename="../src/chatview.cpp" line="39"/>
         <source>Leave video message</source>
         <translation>Jätä videoviesti</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="39"/>
+        <location filename="../src/chatview.cpp" line="40"/>
         <source>Leave audio message</source>
         <translation>Jätä ääniviesti</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="40"/>
-        <location filename="../src/chatview.cpp" line="59"/>
+        <location filename="../src/chatview.cpp" line="41"/>
+        <location filename="../src/chatview.cpp" line="58"/>
         <source>Accept</source>
         <translation>Hyväksy</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="40"/>
-        <location filename="../src/chatview.cpp" line="60"/>
+        <location filename="../src/chatview.cpp" line="42"/>
+        <location filename="../src/chatview.cpp" line="59"/>
         <source>Refuse</source>
         <translation>Kieltäydy</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="41"/>
+        <location filename="../src/chatview.cpp" line="43"/>
         <source>Block</source>
         <translation>Estä</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="41"/>
+        <location filename="../src/chatview.cpp" line="44"/>
         <source>Type a message</source>
         <translation>Kirjoita viesti</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="43"/>
+        <location filename="../src/chatview.cpp" line="46"/>
         <source>Note: an interaction will create a new contact.</source>
         <translation>Huomaa: yhteydenotto tekee uuden yhteystiedon.</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="44"/>
+        <location filename="../src/chatview.cpp" line="47"/>
         <source>is not in your contacts</source>
         <translation>ei ole yhteystiedoissasi</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="46"/>
+        <location filename="../src/chatview.cpp" line="49"/>
         <source>Note: you can automatically accept this invitation by sending a message.</source>
         <translation>Huomaa: voit automaattisesti hyväksyä tämän kutsun lähettämällä viestin.</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="49"/>
+        <location filename="../src/chatview.cpp" line="50"/>
         <source>{0} days ago</source>
         <translation>{0} päivää sitten</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="50"/>
+        <location filename="../src/chatview.cpp" line="51"/>
         <source>{0} hours ago</source>
         <translation>{0} tuntia sitten</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="51"/>
+        <location filename="../src/chatview.cpp" line="53"/>
         <source>{0} minutes ago</source>
         <translation>{0} minuuttia sitten</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="53"/>
+        <location filename="../src/chatview.cpp" line="50"/>
         <source>%d days ago</source>
         <translation>%d päivää sitten</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="54"/>
+        <location filename="../src/chatview.cpp" line="51"/>
         <source>%d hours ago</source>
         <translation>%d tuntia sitten</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="55"/>
+        <location filename="../src/chatview.cpp" line="53"/>
         <source>%d minutes ago</source>
         <translation>%d minuuttia sitten</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="57"/>
+        <location filename="../src/chatview.cpp" line="54"/>
         <source>one day ago</source>
         <translation>yksi päivä sitten</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="58"/>
+        <location filename="../src/chatview.cpp" line="55"/>
         <source>one hour ago</source>
         <translation>yksi tunti sitten</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="58"/>
+        <location filename="../src/chatview.cpp" line="56"/>
         <source>just now</source>
         <translation>juuri nyt</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="59"/>
+        <location filename="../src/chatview.cpp" line="57"/>
         <source>Failure</source>
         <translation>Virhe</translation>
     </message>
@@ -547,23 +547,22 @@
 <context>
     <name>lrc::ContactModelPimpl</name>
     <message>
-        <location filename="../src/contactmodel.cpp" line="460"/>
-        <location filename="../src/contactmodel.cpp" line="477"/>
+        <location filename="../src/contactmodel.cpp" line="455"/>
         <source>Searching…</source>
         <translation>Etsitään...</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="965"/>
+        <location filename="../src/contactmodel.cpp" line="950"/>
         <source>Invalid ID</source>
         <translation>Virheellinen tunnus</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="968"/>
+        <location filename="../src/contactmodel.cpp" line="953"/>
         <source>Registered name not found</source>
         <translation>Rekisteröityä nimeä ei löytynyt</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="971"/>
+        <location filename="../src/contactmodel.cpp" line="956"/>
         <source>Couldn&apos;t lookup…</source>
         <translation>Ei voitu etsiä...</translation>
     </message>
@@ -571,7 +570,7 @@
 <context>
     <name>lrc::api::ContactModel</name>
     <message>
-        <location filename="../src/contactmodel.cpp" line="424"/>
+        <location filename="../src/contactmodel.cpp" line="419"/>
         <source>Bad URI scheme</source>
         <translation>Virheellinen verkko-osoitteen malli</translation>
     </message>

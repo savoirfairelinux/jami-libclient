@@ -1,4 +1,4 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="zh_CN" sourcelanguage="en" version="2.1">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="zh_CN" sourcelanguage="en" version="2.0">
 <context>
     <name>QObject</name>
     <message>
@@ -392,27 +392,27 @@
         <translation>任何地方都不可接受</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="31"/>
+        <location filename="../src/chatview.cpp" line="30"/>
         <source>Hide chat view</source>
         <translation>隐藏聊天界面</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="32"/>
+        <location filename="../src/chatview.cpp" line="31"/>
         <source>Place video call</source>
         <translation>发起视频通话</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="33"/>
+        <location filename="../src/chatview.cpp" line="32"/>
         <source>Place audio call</source>
         <translation>发起语音通话</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="34"/>
+        <location filename="../src/chatview.cpp" line="33"/>
         <source>Add to conversations</source>
         <translation>添加到会话</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="35"/>
+        <location filename="../src/chatview.cpp" line="34"/>
         <source>Unban contact</source>
         <translation>取消屏蔽联系人</translation>
     </message>
@@ -427,109 +427,109 @@
         <translation>选项</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="36"/>
+        <location filename="../src/chatview.cpp" line="37"/>
         <source>Jump to latest</source>
         <translation>跳转至最新</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="37"/>
+        <location filename="../src/chatview.cpp" line="38"/>
         <source>Send file</source>
         <translation>发送文件</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="38"/>
+        <location filename="../src/chatview.cpp" line="39"/>
         <source>Leave video message</source>
         <translation>离开视频消息</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="39"/>
+        <location filename="../src/chatview.cpp" line="40"/>
         <source>Leave audio message</source>
         <translation>离开音频消息</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="40"/>
-        <location filename="../src/chatview.cpp" line="59"/>
+        <location filename="../src/chatview.cpp" line="41"/>
+        <location filename="../src/chatview.cpp" line="58"/>
         <source>Accept</source>
         <translation>接收</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="40"/>
-        <location filename="../src/chatview.cpp" line="60"/>
+        <location filename="../src/chatview.cpp" line="42"/>
+        <location filename="../src/chatview.cpp" line="59"/>
         <source>Refuse</source>
         <translation>拒接</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="41"/>
+        <location filename="../src/chatview.cpp" line="43"/>
         <source>Block</source>
         <translation>屏蔽</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="41"/>
+        <location filename="../src/chatview.cpp" line="44"/>
         <source>Type a message</source>
         <translation>输入信息</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="43"/>
+        <location filename="../src/chatview.cpp" line="46"/>
         <source>Note: an interaction will create a new contact.</source>
         <translation>注：交互将创建一个新的联系人。</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="44"/>
+        <location filename="../src/chatview.cpp" line="47"/>
         <source>is not in your contacts</source>
         <translation>不是您的联系人</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="46"/>
+        <location filename="../src/chatview.cpp" line="49"/>
         <source>Note: you can automatically accept this invitation by sending a message.</source>
         <translation>注：您可以通过发送消息自动接受此邀请。</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="49"/>
+        <location filename="../src/chatview.cpp" line="50"/>
         <source>{0} days ago</source>
         <translation>{0} 天前</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="50"/>
+        <location filename="../src/chatview.cpp" line="51"/>
         <source>{0} hours ago</source>
         <translation>{0} 小时前</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="51"/>
+        <location filename="../src/chatview.cpp" line="53"/>
         <source>{0} minutes ago</source>
         <translation>{0} 分钟前</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="53"/>
+        <location filename="../src/chatview.cpp" line="50"/>
         <source>%d days ago</source>
         <translation>%d天前</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="54"/>
+        <location filename="../src/chatview.cpp" line="51"/>
         <source>%d hours ago</source>
         <translation>%d小时前</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="55"/>
+        <location filename="../src/chatview.cpp" line="53"/>
         <source>%d minutes ago</source>
         <translation>%d分钟前</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="57"/>
+        <location filename="../src/chatview.cpp" line="54"/>
         <source>one day ago</source>
         <translation>一天前</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="58"/>
+        <location filename="../src/chatview.cpp" line="55"/>
         <source>one hour ago</source>
         <translation>一小时前</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="58"/>
+        <location filename="../src/chatview.cpp" line="56"/>
         <source>just now</source>
         <translation>刚才</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="59"/>
+        <location filename="../src/chatview.cpp" line="57"/>
         <source>Failure</source>
         <translation>失败</translation>
     </message>
@@ -547,23 +547,22 @@
 <context>
     <name>lrc::ContactModelPimpl</name>
     <message>
-        <location filename="../src/contactmodel.cpp" line="460"/>
-        <location filename="../src/contactmodel.cpp" line="477"/>
+        <location filename="../src/contactmodel.cpp" line="455"/>
         <source>Searching…</source>
         <translation>正在搜索…</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="965"/>
+        <location filename="../src/contactmodel.cpp" line="950"/>
         <source>Invalid ID</source>
         <translation>非法 ID</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="968"/>
+        <location filename="../src/contactmodel.cpp" line="953"/>
         <source>Registered name not found</source>
         <translation>找不到注册名称 </translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="971"/>
+        <location filename="../src/contactmodel.cpp" line="956"/>
         <source>Couldn&apos;t lookup…</source>
         <translation>无法查找...</translation>
     </message>
@@ -571,7 +570,7 @@
 <context>
     <name>lrc::api::ContactModel</name>
     <message>
-        <location filename="../src/contactmodel.cpp" line="424"/>
+        <location filename="../src/contactmodel.cpp" line="419"/>
         <source>Bad URI scheme</source>
         <translation>错误的 URI 方案 </translation>
     </message>

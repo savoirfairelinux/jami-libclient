@@ -1,4 +1,4 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="ro_RO" sourcelanguage="en" version="2.1">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="ro_RO" sourcelanguage="en" version="2.0">
 <context>
     <name>QObject</name>
     <message>
@@ -392,27 +392,27 @@
         <translation>Nu este acceptat nicăieri</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="31"/>
+        <location filename="../src/chatview.cpp" line="30"/>
         <source>Hide chat view</source>
         <translation>Ascunde discuția</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="32"/>
+        <location filename="../src/chatview.cpp" line="31"/>
         <source>Place video call</source>
         <translation>Fă apel video</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="33"/>
+        <location filename="../src/chatview.cpp" line="32"/>
         <source>Place audio call</source>
         <translation>Fă apel audio</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="34"/>
+        <location filename="../src/chatview.cpp" line="33"/>
         <source>Add to conversations</source>
         <translation>Adaugă la conversații</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="35"/>
+        <location filename="../src/chatview.cpp" line="34"/>
         <source>Unban contact</source>
         <translation>Deblochează contactul</translation>
     </message>
@@ -427,109 +427,109 @@
         <translation>Opțiuni</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="36"/>
+        <location filename="../src/chatview.cpp" line="37"/>
         <source>Jump to latest</source>
         <translation>Sari la cel mai recent</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="37"/>
+        <location filename="../src/chatview.cpp" line="38"/>
         <source>Send file</source>
         <translation>Trimite fișierul</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="38"/>
+        <location filename="../src/chatview.cpp" line="39"/>
         <source>Leave video message</source>
         <translation>Trimite un mesaj video</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="39"/>
+        <location filename="../src/chatview.cpp" line="40"/>
         <source>Leave audio message</source>
         <translation>Trimite un mesaj audio</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="40"/>
-        <location filename="../src/chatview.cpp" line="59"/>
+        <location filename="../src/chatview.cpp" line="41"/>
+        <location filename="../src/chatview.cpp" line="58"/>
         <source>Accept</source>
         <translation>Acceptă</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="40"/>
-        <location filename="../src/chatview.cpp" line="60"/>
+        <location filename="../src/chatview.cpp" line="42"/>
+        <location filename="../src/chatview.cpp" line="59"/>
         <source>Refuse</source>
         <translation>Refuză</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="41"/>
+        <location filename="../src/chatview.cpp" line="43"/>
         <source>Block</source>
         <translation>Blochează</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="41"/>
+        <location filename="../src/chatview.cpp" line="44"/>
         <source>Type a message</source>
         <translation>Scrie un mesaj</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="43"/>
+        <location filename="../src/chatview.cpp" line="46"/>
         <source>Note: an interaction will create a new contact.</source>
         <translation>Aviz: o acțiune va crea un nou contact.</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="44"/>
+        <location filename="../src/chatview.cpp" line="47"/>
         <source>is not in your contacts</source>
         <translation>nu e în contactele tale</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="46"/>
+        <location filename="../src/chatview.cpp" line="49"/>
         <source>Note: you can automatically accept this invitation by sending a message.</source>
         <translation>Aviz: poți accepta automat această invitație trimițînd un mesaj.</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="49"/>
+        <location filename="../src/chatview.cpp" line="50"/>
         <source>{0} days ago</source>
         <translation>acum {0} zile</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="50"/>
+        <location filename="../src/chatview.cpp" line="51"/>
         <source>{0} hours ago</source>
         <translation>acum {0} ore</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="51"/>
+        <location filename="../src/chatview.cpp" line="53"/>
         <source>{0} minutes ago</source>
         <translation>acum {0} minute</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="53"/>
+        <location filename="../src/chatview.cpp" line="50"/>
         <source>%d days ago</source>
         <translation>acum %d zile</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="54"/>
+        <location filename="../src/chatview.cpp" line="51"/>
         <source>%d hours ago</source>
         <translation>acum %d ore</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="55"/>
+        <location filename="../src/chatview.cpp" line="53"/>
         <source>%d minutes ago</source>
         <translation>acum %d minute</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="57"/>
+        <location filename="../src/chatview.cpp" line="54"/>
         <source>one day ago</source>
         <translation>acum o zi</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="58"/>
+        <location filename="../src/chatview.cpp" line="55"/>
         <source>one hour ago</source>
         <translation>acum o oră</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="58"/>
+        <location filename="../src/chatview.cpp" line="56"/>
         <source>just now</source>
         <translation>chiar acum</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="59"/>
+        <location filename="../src/chatview.cpp" line="57"/>
         <source>Failure</source>
         <translation>Eșec</translation>
     </message>
@@ -547,23 +547,22 @@
 <context>
     <name>lrc::ContactModelPimpl</name>
     <message>
-        <location filename="../src/contactmodel.cpp" line="460"/>
-        <location filename="../src/contactmodel.cpp" line="477"/>
+        <location filename="../src/contactmodel.cpp" line="455"/>
         <source>Searching…</source>
         <translation>Căutare...</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="965"/>
+        <location filename="../src/contactmodel.cpp" line="950"/>
         <source>Invalid ID</source>
         <translation>ID greșit</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="968"/>
+        <location filename="../src/contactmodel.cpp" line="953"/>
         <source>Registered name not found</source>
         <translation>Numele înscris nu a fost găsit</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="971"/>
+        <location filename="../src/contactmodel.cpp" line="956"/>
         <source>Couldn&apos;t lookup…</source>
         <translation>Căutare imposibilă...</translation>
     </message>
@@ -571,7 +570,7 @@
 <context>
     <name>lrc::api::ContactModel</name>
     <message>
-        <location filename="../src/contactmodel.cpp" line="424"/>
+        <location filename="../src/contactmodel.cpp" line="419"/>
         <source>Bad URI scheme</source>
         <translation>Schemă URI greșită</translation>
     </message>
