@@ -264,6 +264,7 @@ CallAdapter::getConferencesInfos()
                 data["y"] = participant["y"].toInt();
                 data["w"] = participant["w"].toInt();
                 data["h"] = participant["h"].toInt();
+                data["uri"] = participant["uri"];
                 data["active"] = participant["active"] == "true";
                 auto bestName = participant["uri"];
                 auto& accInfo = LRCInstance::accountModel().getAccountInfo(accountId_);
@@ -623,6 +624,44 @@ CallAdapter::isCurrentHost() const
 }
 
 bool
+CallAdapter::participantIsHost(const QString& uri) const
+{
+    auto* convModel = LRCInstance::getCurrentConversationModel();
+    const auto convInfo = convModel->getConversationForUID(convUid_);
+    if (!convInfo.uid.isEmpty()) {
+        auto& accInfo = LRCInstance::getAccountInfo(accountId_);
+        auto* callModel = accInfo.callModel.get();
+        try {
+            auto call = callModel->getCall(convInfo.callId);
+            if (call.participantsInfos.size() == 0) {
+                return (uri.isEmpty() || uri == accInfo.profileInfo.uri);
+            } else {
+                return !convInfo.confId.isEmpty()
+                        && callModel->hasCall(convInfo.confId)
+                        && (uri.isEmpty() || uri == accInfo.profileInfo.uri);
+            }
+        } catch (...) {
+        }
+    }
+    return true;
+}
+
+bool
+CallAdapter::isModerator(const QString& uri) const
+{
+    auto* callModel = LRCInstance::getAccountInfo(accountId_).callModel.get();
+    auto* convModel = LRCInstance::getCurrentConversationModel();
+    const auto conversation = convModel->getConversationForUID(LRCInstance::getCurrentConvUid());
+    auto confId = conversation.confId;
+    if (confId.isEmpty())
+        confId = conversation.callId;
+    try {
+        return callModel->isModerator(confId, uri);
+    } catch (...) {}
+    return false;
+}
+
+bool
 CallAdapter::isCurrentModerator() const
 {
     auto* convModel = LRCInstance::getCurrentConversationModel();
@@ -646,6 +685,21 @@ CallAdapter::isCurrentModerator() const
     }
     return true;
 }
+
+void
+CallAdapter::setModerator(const QString& uri, const bool state)
+{
+    auto* callModel = LRCInstance::getAccountInfo(accountId_).callModel.get();
+    auto* convModel = LRCInstance::getCurrentConversationModel();
+    const auto conversation = convModel->getConversationForUID(LRCInstance::getCurrentConvUid());
+    auto confId = conversation.confId;
+    if (confId.isEmpty())
+        confId = conversation.callId;
+    try {
+        callModel->setModerator(confId, uri, state);
+    } catch (...) {}
+}
+
 
 int
 CallAdapter::getCurrentLayoutType() const
