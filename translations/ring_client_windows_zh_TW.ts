@@ -123,13 +123,13 @@
 <context>
     <name>CallAdapter</name>
     <message>
-        <location filename="../src/calladapter.cpp" line="270"/>
-        <location filename="../src/calladapter.cpp" line="348"/>
+        <location filename="../src/calladapter.cpp" line="272"/>
+        <location filename="../src/calladapter.cpp" line="350"/>
         <source>me</source>
         <translation>我</translation>
     </message>
     <message>
-        <location filename="../src/calladapter.cpp" line="312"/>
+        <location filename="../src/calladapter.cpp" line="314"/>
         <source>is calling you</source>
         <translation>正在與您通話</translation>
     </message>
@@ -155,7 +155,7 @@
 <context>
     <name>CallOverlay</name>
     <message>
-        <location filename="../src/mainview/components/CallOverlay.qml" line="184"/>
+        <location filename="../src/mainview/components/CallOverlay.qml" line="185"/>
         <source>Toggle to display side panel</source>
         <translation>切換以顯示側邊面板</translation>
     </message>
@@ -270,29 +270,29 @@
 <context>
     <name>CurrentAccountSettings</name>
     <message>
-        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="107"/>
+        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="111"/>
         <source>Ok</source>
         <translation>確定</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="130"/>
-        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="171"/>
+        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="134"/>
+        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="175"/>
         <source>Success</source>
         <translation>成功</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="130"/>
-        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="171"/>
+        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="134"/>
+        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="175"/>
         <source>Error</source>
         <translation>錯誤</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="158"/>
+        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="162"/>
         <source>Jami archive files</source>
         <translation>Jami 封存檔</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="158"/>
+        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="162"/>
         <source>All files</source>
         <translation>所有檔案</translation>
     </message>

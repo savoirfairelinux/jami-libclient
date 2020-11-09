@@ -123,13 +123,13 @@
 <context>
     <name>CallAdapter</name>
     <message>
-        <location filename="../src/calladapter.cpp" line="270"/>
-        <location filename="../src/calladapter.cpp" line="348"/>
+        <location filename="../src/calladapter.cpp" line="272"/>
+        <location filename="../src/calladapter.cpp" line="350"/>
         <source>me</source>
         <translation>yo</translation>
     </message>
     <message>
-        <location filename="../src/calladapter.cpp" line="312"/>
+        <location filename="../src/calladapter.cpp" line="314"/>
         <source>is calling you</source>
         <translation>te está llamando</translation>
     </message>
@@ -155,7 +155,7 @@
 <context>
     <name>CallOverlay</name>
     <message>
-        <location filename="../src/mainview/components/CallOverlay.qml" line="184"/>
+        <location filename="../src/mainview/components/CallOverlay.qml" line="185"/>
         <source>Toggle to display side panel</source>
         <translation>Cambia para mostrar el panel lateral</translation>
     </message>
@@ -270,29 +270,29 @@
 <context>
     <name>CurrentAccountSettings</name>
     <message>
-        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="107"/>
+        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="111"/>
         <source>Ok</source>
         <translation>Aceptar</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="130"/>
-        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="171"/>
+        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="134"/>
+        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="175"/>
         <source>Success</source>
         <translation>Hecho</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="130"/>
-        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="171"/>
+        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="134"/>
+        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="175"/>
         <source>Error</source>
         <translation>Error</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="158"/>
+        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="162"/>
         <source>Jami archive files</source>
         <translation>Archivos de archivo de Jami</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="158"/>
+        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="162"/>
         <source>All files</source>
         <translation>Todos los archivos</translation>
     </message>
@@ -1102,7 +1102,7 @@
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="184"/>
         <source>More options</source>
-        <translation type="unfinished"/>
+        <translation>Más opciones</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="187"/>
@@ -1167,7 +1167,7 @@
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="201"/>
         <source>Enter Jami Account Management Server (JAMS) URL</source>
-        <translation type="unfinished"/>
+        <translation>Ingresa la URL del JAMS (Jami Account Management Server)</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="202"/>
@@ -1182,7 +1182,7 @@
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="204"/>
         <source>Enter your JAMS credentials</source>
-        <translation type="unfinished"/>
+        <translation>Ingresa las credenciales de tu JAMS</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="205"/>
@@ -1480,17 +1480,17 @@
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="299"/>
         <source>You can obtain an archive by clicking on &quot;Backup account&quot; in the account settings. This will create a .gz file on your device.</source>
-        <translation type="unfinished"/>
+        <translation>Puedes obtener un archivo haciendo click en &quot;Exportar cuenta&quot; dentro de configuración de la cuenta. Esto creará un archivo .gz en tu dispositivo.</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="302"/>
         <source>Restore an account from backup</source>
-        <translation type="unfinished"/>
+        <translation>Recupera una cuenta desde una copia de seguridad</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="305"/>
         <source>Enter Jami account password</source>
-        <translation type="unfinished"/>
+        <translation>Ingresa la contraseña de tu cuenta Jami</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="314"/>
