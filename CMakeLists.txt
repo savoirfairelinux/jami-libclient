@@ -75,16 +75,23 @@ SET(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${LOCAL_CMAKE_MODULE_PATH})
 
 FIND_PACKAGE(Ring REQUIRED)
 
-if (${QT_MIN_VER} MATCHES "5.14")
-   message(STATUS "Using custom Qt version")
-   find_package(Qt5 ${QT_MIN_VER} REQUIRED
-                COMPONENTS Core DBus Sql Gui
-                PATHS ${QT5_PATH} NO_DEFAULT_PATH)
-   # Linguist tools is not required.
-   find_package(Qt5 ${QT_MIN_VER}
-                COMPONENTS LinguistTools
-                PATHS ${QT5_PATH} NO_DEFAULT_PATH)
-   set(CMAKE_INSTALL_RPATH_USE_LINK_PATH true)
+if(QT_MIN_VER)
+   string(REPLACE "." ";" VERSION_LIST ${QT_MIN_VER})
+   list(GET VERSION_LIST 0 QT_MIN_VER_MAJOR)
+   list(GET VERSION_LIST 1 QT_MIN_VER_MINOR)
+   list(GET VERSION_LIST 2 QT_MIN_VER_PATCH)
+
+   if ((${QT_MIN_VER_MAJOR} GREATER_EQUAL 5) AND (${QT_MIN_VER_MINOR} GREATER_EQUAL 14))
+      message(STATUS "Using custom Qt version")
+      find_package(Qt5 ${QT_MIN_VER} REQUIRED
+                  COMPONENTS Core DBus Sql Gui
+                  PATHS ${QT5_PATH} NO_DEFAULT_PATH)
+      # Linguist tools is not required.
+      find_package(Qt5 ${QT_MIN_VER}
+                  COMPONENTS LinguistTools
+                  PATHS ${QT5_PATH} NO_DEFAULT_PATH)
+      set(CMAKE_INSTALL_RPATH_USE_LINK_PATH true)
+   endif()
 else()
    find_package(Qt5 REQUIRED
                 COMPONENTS Core DBus Sql Gui)
