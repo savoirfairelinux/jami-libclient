@@ -36,6 +36,7 @@ ColumnLayout {
     property bool isSIP
 
     function updateConnectivityAccountInfos() {
+        autoRegistrationAfterExpired.checked = SettingsAdapter.getAccountConfig_KeepAliveEnabled()
         registrationExpireTimeoutSpinBox.setValue(SettingsAdapter.getAccountConfig_Registration_Expire())
         networkInterfaceSpinBox.setValue(SettingsAdapter.getAccountConfig_Localport())
         checkBoxUPnP.checked = SettingsAdapter.getAccountConfig_UpnpEnabled()
@@ -63,6 +64,18 @@ ColumnLayout {
     ColumnLayout {
         Layout.fillWidth: true
         Layout.leftMargin: JamiTheme.preferredMarginSize
+
+        ToggleSwitch {
+            id: autoRegistrationAfterExpired
+
+            Layout.fillWidth: true
+
+            visible: isSIP
+            labelText: JamiStrings.autoRegistration
+            fontPointSize: JamiTheme.settingsFontSize
+
+            onSwitchToggled: SettingsAdapter.setKeepAliveEnabled(checked)
+        }
 
         SettingSpinBox {
             id: registrationExpireTimeoutSpinBox

@@ -108,6 +108,7 @@ public:
     Q_INVOKABLE QString getAccountConfig_Hostname();
     Q_INVOKABLE QString getAccountConfig_Password();
 
+    Q_INVOKABLE bool getAccountConfig_KeepAliveEnabled();
     Q_INVOKABLE QString getAccountConfig_RouteSet();
     Q_INVOKABLE QString getAccountConfig_ProxyServer();
     Q_INVOKABLE bool getAccountConfig_ProxyEnabled();
@@ -175,6 +176,7 @@ public:
     Q_INVOKABLE void setAutoAnswerCalls(bool state);
     Q_INVOKABLE void setEnableRingtone(bool state);
     Q_INVOKABLE void setEnableProxy(bool state);
+    Q_INVOKABLE void setKeepAliveEnabled(bool state);
     Q_INVOKABLE void setUseUPnP(bool state);
     Q_INVOKABLE void setUseTURN(bool state);
     Q_INVOKABLE void setUseSTUN(bool state);

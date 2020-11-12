@@ -92,6 +92,7 @@ Item {
 
     // AdvancedConnectivitySettings
     property string connectivity: qsTr("Connectivity")
+    property string autoRegistration: qsTr("Auto Registration After Expired")
     property string registrationTimeOut: qsTr("Registration expire timeout (seconds)")
     property string networkInterface: qsTr("Network interface")
     property string useUPnP: qsTr("Use UPnP")

@@ -318,6 +318,12 @@ SettingsAdapter::getAccountConfig_Password()
     return getAccountConfig().password;
 }
 
+bool
+SettingsAdapter::getAccountConfig_KeepAliveEnabled()
+{
+    return getAccountConfig().keepAliveEnabled;
+}
+
 QString
 SettingsAdapter::getAccountConfig_RouteSet()
 {
@@ -653,6 +659,14 @@ SettingsAdapter::setEnableProxy(bool state)
 {
     auto confProps = LRCInstance::accountModel().getAccountConfig(LRCInstance::getCurrAccId());
     confProps.proxyEnabled = state;
+    LRCInstance::accountModel().setAccountConfig(LRCInstance::getCurrAccId(), confProps);
+}
+
+void
+SettingsAdapter::setKeepAliveEnabled(bool state)
+{
+    auto confProps = LRCInstance::accountModel().getAccountConfig(LRCInstance::getCurrAccId());
+    confProps.keepAliveEnabled = state;
     LRCInstance::accountModel().setAccountConfig(LRCInstance::getCurrAccId(), confProps);
 }
 
