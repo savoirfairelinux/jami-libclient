@@ -833,6 +833,7 @@ account::Info::fromDetails(const MapStringString& details)
     confProperties.peerDiscovery = toBool(details[ConfProperties::DHT_PEER_DISCOVERY]);
     confProperties.accountDiscovery = toBool(details[ConfProperties::ACCOUNT_PEER_DISCOVERY]);
     confProperties.accountPublish = toBool(details[ConfProperties::ACCOUNT_PUBLISH]);
+    confProperties.keepAliveEnabled = toBool(details[ConfProperties::KEEP_ALIVE_ENABLED]);
     // Audio
     confProperties.Audio.audioPortMax = toInt(details[ConfProperties::Audio::PORT_MAX]);
     confProperties.Audio.audioPortMin = toInt(details[ConfProperties::Audio::PORT_MIN]);
@@ -945,6 +946,7 @@ account::ConfProperties_t::toDetails() const
     details[ConfProperties::DHT_PEER_DISCOVERY] = toQString(this->peerDiscovery);
     details[ConfProperties::ACCOUNT_PEER_DISCOVERY] = toQString(this->accountDiscovery);
     details[ConfProperties::ACCOUNT_PUBLISH] = toQString(this->accountPublish);
+    details[ConfProperties::KEEP_ALIVE_ENABLED] = toQString(this->keepAliveEnabled);
     // Audio
     details[ConfProperties::Audio::PORT_MAX] = toQString(this->Audio.audioPortMax);
     details[ConfProperties::Audio::PORT_MIN] = toQString(this->Audio.audioPortMin);
