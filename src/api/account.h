@@ -112,6 +112,7 @@ struct ConfProperties_t
     bool accountDiscovery;
     bool accountPublish;
     int registrationExpire;
+    bool keepAliveEnabled;
     VectorMapStringString credentials;
     struct Audio_t
     {
