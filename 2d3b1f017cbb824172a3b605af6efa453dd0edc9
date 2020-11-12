@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "e4514403_fa61e1f2",
+        "filename": "src/authority/storagehelper.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2020-11-12T21:42:58Z",
+      "side": 0,
+      "message": "please re-add this comment",
+      "range": {
+        "startLine": 149,
+        "startChar": 47,
+        "endLine": 150,
+        "endChar": 46
+      },
+      "revId": "2d3b1f017cbb824172a3b605af6efa453dd0edc9",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    }
+  ]
+}
