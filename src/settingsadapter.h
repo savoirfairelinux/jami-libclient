@@ -108,6 +108,7 @@ public:
     Q_INVOKABLE QString getAccountConfig_Hostname();
     Q_INVOKABLE QString getAccountConfig_Password();
 
+    Q_INVOKABLE QString getAccountConfig_RouteSet();
     Q_INVOKABLE QString getAccountConfig_ProxyServer();
     Q_INVOKABLE bool getAccountConfig_ProxyEnabled();
 
@@ -166,7 +167,7 @@ public:
     Q_INVOKABLE void setAccountConfig_Username(QString input);
     Q_INVOKABLE void setAccountConfig_Hostname(QString input);
     Q_INVOKABLE void setAccountConfig_Password(QString input);
-    Q_INVOKABLE void setAccountConfig_ProxyServer(QString input);
+    Q_INVOKABLE void setAccountConfig_RouteSet(QString input);
 
     Q_INVOKABLE void setAutoConnectOnLocalNetwork(bool state);
     Q_INVOKABLE void setCallsUntrusted(bool state);

@@ -319,6 +319,12 @@ SettingsAdapter::getAccountConfig_Password()
 }
 
 QString
+SettingsAdapter::getAccountConfig_RouteSet()
+{
+    return getAccountConfig().routeset;
+}
+
+QString
 SettingsAdapter::getAccountConfig_ProxyServer()
 {
     return getAccountConfig().proxyServer;
@@ -595,10 +601,10 @@ SettingsAdapter::setAccountConfig_Password(QString input)
 }
 
 void
-SettingsAdapter::setAccountConfig_ProxyServer(QString input)
+SettingsAdapter::setAccountConfig_RouteSet(QString input)
 {
     auto confProps = getAccountConfig();
-    confProps.proxyServer = input;
+    confProps.routeset = input;
     LRCInstance::accountModel().setAccountConfig(LRCInstance::getCurrAccId(), confProps);
 }
 

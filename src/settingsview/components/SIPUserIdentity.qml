@@ -37,7 +37,7 @@ ColumnLayout {
         usernameSIP.setText(SettingsAdapter.getAccountConfig_Username())
         hostnameSIP.setText(SettingsAdapter.getAccountConfig_Hostname())
         passSIPlineEdit.setText(SettingsAdapter.getAccountConfig_Password())
-        proxySIP.setText(SettingsAdapter.getAccountConfig_ProxyServer())
+        proxySIP.setText(SettingsAdapter.getAccountConfig_RouteSet())
     }
 
     SettingsMaterialLineEdit {
@@ -70,7 +70,7 @@ ColumnLayout {
 
         titleField: qsTr("Proxy")
         itemWidth: root.itemWidth
-        onEditFinished: SettingsAdapter.setAccountConfig_ProxyServer(textField)
+        onEditFinished: SettingsAdapter.setAccountConfig_RouteSet(textField)
     }
 
     SettingsMaterialLineEdit {

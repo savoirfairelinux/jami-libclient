@@ -228,6 +228,7 @@ Rectangle {
 
             visible: !isSIP && SettingsAdapter.getAccountConfig_Manageruri() === ""
             Layout.alignment: Qt.AlignHCenter
+            Layout.topMargin: JamiTheme.preferredMarginSize
             Layout.preferredWidth: JamiTheme.preferredFieldWidth
             Layout.preferredHeight: JamiTheme.preferredFieldHeight
 
@@ -274,7 +275,6 @@ Rectangle {
             Layout.alignment: Qt.AlignHCenter
             Layout.preferredWidth: JamiTheme.preferredFieldWidth
             Layout.preferredHeight: JamiTheme.preferredFieldHeight
-            Layout.topMargin: isSIP ? JamiTheme.preferredMarginSize : 0
             Layout.leftMargin: JamiTheme.preferredMarginSize
             Layout.rightMargin: JamiTheme.preferredMarginSize
 
