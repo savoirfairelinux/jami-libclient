@@ -771,7 +771,21 @@ NewCallModel::isModerator(const QString& confId, const QString& uri)
 void
 NewCallModel::setModerator(const QString& confId, const QString& peerId, const bool& state)
 {
+    qDebug() << "setModerator confid: " << confId << " peerId: " << peerId << " state: " << state;
     CallManager::instance().setModerator(confId, peerId, state);
+}
+
+void
+NewCallModel::muteParticipant(const QString& confId, const QString& peerId, const bool& state)
+{
+    qDebug() << "muteParticipant confid: " << confId << " peerId: " << peerId << " state: " << state;
+    CallManager::instance().muteParticipant(confId, peerId, state);
+}
+
+void
+NewCallModel::hangupParticipant(const QString& confId, const QString& peerId)
+{
+    CallManager::instance().hangupParticipant(confId, peerId);
 }
 
 void
