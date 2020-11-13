@@ -68,6 +68,9 @@ public:
     Q_INVOKABLE void videoPauseThisCallToggle();
     Q_INVOKABLE bool isRecordingThisCall();
     Q_INVOKABLE QVariantList getConferencesInfos();
+    Q_INVOKABLE void muteParticipant(const QString& uri, const bool state);
+    Q_INVOKABLE bool isMuted(const QString& uri) const;
+    Q_INVOKABLE bool isCurrentMuted() const;
 
 signals:
     void callStatusChanged(int index, const QString& accountId, const QString& convUid);

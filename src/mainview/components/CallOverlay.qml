@@ -74,7 +74,7 @@ Rectangle {
     function closePotentialMediaHandlerPicker() {
         MediaHandlerPickerCreation.closeMediaHandlerPicker()
     }
-    
+
     function handleParticipantsInfo(infos) {
         videoCallOverlay.updateMenu()
         var isModerator = CallAdapter.isCurrentModerator()

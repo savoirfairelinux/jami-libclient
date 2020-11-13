@@ -37,6 +37,8 @@ Item {
     property var showMinimize: false
     property var showSetModerator: false
     property var showUnsetModerator: false
+    property var showMute: false
+    property var showUnmute: false
 
     function openMenu(){
         ContextMenuGenerator.initMenu()
@@ -73,6 +75,21 @@ Item {
                                              function (){
                                                   CallAdapter.setModerator(uri, false)
                                              })
+
+        if (showMute)
+            ContextMenuGenerator.addMenuItem(qsTr("Mute participant"),
+                                             "qrc:/images/icons/mic_off-24px.svg",
+                                             function (){
+                                                  CallAdapter.muteParticipant(uri, true)
+                                             })
+
+        if (showUnmute)
+            ContextMenuGenerator.addMenuItem(qsTr("Unmute participant"),
+                                             "qrc:/images/icons/mic-24px.svg",
+                                             function (){
+                                                  CallAdapter.muteParticipant(uri, false)
+                                             })
+
 
         root.height = ContextMenuGenerator.getMenu().height
         root.width = ContextMenuGenerator.getMenu().width
