@@ -1,4 +1,4 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="nl" sourcelanguage="en" version="2.0">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="nl" sourcelanguage="en" version="2.1">
 <context>
     <name>QObject</name>
     <message>
@@ -69,20 +69,20 @@
     </message>
     <message>
         <location filename="../src/authority/storagehelper.cpp" line="130"/>
-        <location filename="../src/authority/storagehelper.cpp" line="902"/>
+        <location filename="../src/authority/storagehelper.cpp" line="898"/>
         <source>Invitation received</source>
         <translation>Uitnodiging ontvangen</translation>
     </message>
     <message>
         <location filename="../src/authority/storagehelper.cpp" line="127"/>
-        <location filename="../src/authority/storagehelper.cpp" line="900"/>
+        <location filename="../src/authority/storagehelper.cpp" line="896"/>
         <source>Contact added</source>
         <translation>Contact toegevoegd</translation>
     </message>
     <message>
         <location filename="../src/authority/storagehelper.cpp" line="104"/>
         <location filename="../src/authority/storagehelper.cpp" line="110"/>
-        <location filename="../src/authority/storagehelper.cpp" line="898"/>
+        <location filename="../src/authority/storagehelper.cpp" line="894"/>
         <source>Outgoing call</source>
         <translation>Uitgaande oproep</translation>
     </message>
@@ -94,7 +94,7 @@
     </message>
     <message>
         <location filename="../src/authority/storagehelper.cpp" line="112"/>
-        <location filename="../src/authority/storagehelper.cpp" line="896"/>
+        <location filename="../src/authority/storagehelper.cpp" line="892"/>
         <source>Missed outgoing call</source>
         <translation>Gemiste uitgaande oproep</translation>
     </message>
@@ -105,7 +105,7 @@
     </message>
     <message>
         <location filename="../src/authority/storagehelper.cpp" line="132"/>
-        <location filename="../src/authority/storagehelper.cpp" line="904"/>
+        <location filename="../src/authority/storagehelper.cpp" line="900"/>
         <source>Invitation accepted</source>
         <translation>Uitnodiging geaccepteerd</translation>
     </message>

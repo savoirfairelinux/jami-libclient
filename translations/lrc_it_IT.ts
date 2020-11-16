@@ -1,4 +1,4 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="it_IT" sourcelanguage="en" version="2.0">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="it_IT" sourcelanguage="en" version="2.1">
 <context>
     <name>QObject</name>
     <message>
@@ -69,20 +69,20 @@
     </message>
     <message>
         <location filename="../src/authority/storagehelper.cpp" line="130"/>
-        <location filename="../src/authority/storagehelper.cpp" line="902"/>
+        <location filename="../src/authority/storagehelper.cpp" line="898"/>
         <source>Invitation received</source>
         <translation>Invito ricevuto</translation>
     </message>
     <message>
         <location filename="../src/authority/storagehelper.cpp" line="127"/>
-        <location filename="../src/authority/storagehelper.cpp" line="900"/>
+        <location filename="../src/authority/storagehelper.cpp" line="896"/>
         <source>Contact added</source>
         <translation>Contatto aggiunto</translation>
     </message>
     <message>
         <location filename="../src/authority/storagehelper.cpp" line="104"/>
         <location filename="../src/authority/storagehelper.cpp" line="110"/>
-        <location filename="../src/authority/storagehelper.cpp" line="898"/>
+        <location filename="../src/authority/storagehelper.cpp" line="894"/>
         <source>Outgoing call</source>
         <translation>Chiamata in uscita</translation>
     </message>
@@ -94,7 +94,7 @@
     </message>
     <message>
         <location filename="../src/authority/storagehelper.cpp" line="112"/>
-        <location filename="../src/authority/storagehelper.cpp" line="896"/>
+        <location filename="../src/authority/storagehelper.cpp" line="892"/>
         <source>Missed outgoing call</source>
         <translation>Chiamata persa in uscita</translation>
     </message>
@@ -105,7 +105,7 @@
     </message>
     <message>
         <location filename="../src/authority/storagehelper.cpp" line="132"/>
-        <location filename="../src/authority/storagehelper.cpp" line="904"/>
+        <location filename="../src/authority/storagehelper.cpp" line="900"/>
         <source>Invitation accepted</source>
         <translation>Invito accettato</translation>
     </message>
@@ -424,12 +424,12 @@
     <message>
         <location filename="../src/chatview.cpp" line="36"/>
         <source>Options</source>
-        <translation type="unfinished"/>
+        <translation>Opzioni</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="37"/>
         <source>Jump to latest</source>
-        <translation type="unfinished"/>
+        <translation>Vai all&apos;ultimo</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="38"/>
@@ -439,12 +439,12 @@
     <message>
         <location filename="../src/chatview.cpp" line="39"/>
         <source>Leave video message</source>
-        <translation type="unfinished"/>
+        <translation>Lascia un videomessaggio</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="40"/>
         <source>Leave audio message</source>
-        <translation type="unfinished"/>
+        <translation>Lascia un messaggio audio</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="41"/>
@@ -476,7 +476,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="47"/>
         <source>is not in your contacts</source>
-        <translation type="unfinished"/>
+        <translation>non è nei tuoi contatti</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="49"/>
@@ -486,17 +486,17 @@
     <message>
         <location filename="../src/chatview.cpp" line="50"/>
         <source>{0} days ago</source>
-        <translation type="unfinished"/>
+        <translation>{0} giorni fa</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="51"/>
         <source>{0} hours ago</source>
-        <translation type="unfinished"/>
+        <translation>{0} ore fa</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="53"/>
         <source>{0} minutes ago</source>
-        <translation type="unfinished"/>
+        <translation>{0} minuti fa</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="50"/>

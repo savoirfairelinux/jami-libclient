@@ -1,4 +1,4 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="nb" sourcelanguage="en" version="2.0">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="nb" sourcelanguage="en" version="2.1">
 <context>
     <name>QObject</name>
     <message>
@@ -69,20 +69,20 @@
     </message>
     <message>
         <location filename="../src/authority/storagehelper.cpp" line="130"/>
-        <location filename="../src/authority/storagehelper.cpp" line="902"/>
+        <location filename="../src/authority/storagehelper.cpp" line="898"/>
         <source>Invitation received</source>
         <translation>Invitasjon mottatt</translation>
     </message>
     <message>
         <location filename="../src/authority/storagehelper.cpp" line="127"/>
-        <location filename="../src/authority/storagehelper.cpp" line="900"/>
+        <location filename="../src/authority/storagehelper.cpp" line="896"/>
         <source>Contact added</source>
         <translation>Kontakt lagt til</translation>
     </message>
     <message>
         <location filename="../src/authority/storagehelper.cpp" line="104"/>
         <location filename="../src/authority/storagehelper.cpp" line="110"/>
-        <location filename="../src/authority/storagehelper.cpp" line="898"/>
+        <location filename="../src/authority/storagehelper.cpp" line="894"/>
         <source>Outgoing call</source>
         <translation>Utgående samtale</translation>
     </message>
@@ -94,7 +94,7 @@
     </message>
     <message>
         <location filename="../src/authority/storagehelper.cpp" line="112"/>
-        <location filename="../src/authority/storagehelper.cpp" line="896"/>
+        <location filename="../src/authority/storagehelper.cpp" line="892"/>
         <source>Missed outgoing call</source>
         <translation>Tapt utgående anrop</translation>
     </message>
@@ -105,7 +105,7 @@
     </message>
     <message>
         <location filename="../src/authority/storagehelper.cpp" line="132"/>
-        <location filename="../src/authority/storagehelper.cpp" line="904"/>
+        <location filename="../src/authority/storagehelper.cpp" line="900"/>
         <source>Invitation accepted</source>
         <translation>Invitasjon godtatt</translation>
     </message>
@@ -118,7 +118,7 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="53"/>
         <source>Null</source>
-        <translation type="unfinished"/>
+        <translation>Null</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="54"/>
@@ -234,72 +234,72 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="76"/>
         <source>Request Entity Too Large</source>
-        <translation type="unfinished"/>
+        <translation>Enhetsforespørsel for stor</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="77"/>
         <source>Request URI Too Long</source>
-        <translation type="unfinished"/>
+        <translation>URI forespørsel for lang</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="78"/>
         <source>Unsupported Media Type</source>
-        <translation type="unfinished"/>
+        <translation>Media type ikke støttet</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="79"/>
         <source>Unsupported URI Scheme</source>
-        <translation type="unfinished"/>
+        <translation>URI-ordning støttes ikke</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="80"/>
         <source>Bad Extension</source>
-        <translation type="unfinished"/>
+        <translation>Utvidelse ødelagt</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="81"/>
         <source>Extension Required</source>
-        <translation type="unfinished"/>
+        <translation>Utvidelse obligatorisk</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="82"/>
         <source>Session Timer Too Small</source>
-        <translation type="unfinished"/>
+        <translation>Øktur for liten</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="83"/>
         <source>Interval Too Brief</source>
-        <translation type="unfinished"/>
+        <translation>Intervall for kort</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="84"/>
         <source>Temporarily Unavailable</source>
-        <translation type="unfinished"/>
+        <translation>Midlertidig utilgjengelig</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="85"/>
         <source>Call TSX Does Not Exist</source>
-        <translation type="unfinished"/>
+        <translation>TSX samtale eksisterer ikke</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="86"/>
         <source>Loop Detected</source>
-        <translation type="unfinished"/>
+        <translation>Løkke oppdaget</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="87"/>
         <source>Too Many Hops</source>
-        <translation type="unfinished"/>
+        <translation>For mange hopp</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="88"/>
         <source>Address Incomplete</source>
-        <translation type="unfinished"/>
+        <translation>Ufullstendig adresse</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="89"/>
         <source>Ambiguous</source>
-        <translation type="unfinished"/>
+        <translation>Tvetydig</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="90"/>
@@ -309,87 +309,87 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="91"/>
         <source>Request Terminated</source>
-        <translation type="unfinished"/>
+        <translation>Forespørsel avsluttet</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="93"/>
         <source>Bad Event</source>
-        <translation type="unfinished"/>
+        <translation>Handling feilet</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="94"/>
         <source>Request Updated</source>
-        <translation type="unfinished"/>
+        <translation>Forespørsel oppdatert</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="95"/>
         <source>Request Pending</source>
-        <translation type="unfinished"/>
+        <translation>Forespørsel venter</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="96"/>
         <source>Undecipherable</source>
-        <translation type="unfinished"/>
+        <translation>Ugjenkjennelig</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="97"/>
         <source>Internal Server Error</source>
-        <translation type="unfinished"/>
+        <translation>Intern tjenerfeil</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="98"/>
         <source>Not Implemented</source>
-        <translation type="unfinished"/>
+        <translation>Ikke implementert</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="99"/>
         <source>Bad Gateway</source>
-        <translation type="unfinished"/>
+        <translation>Feil på mellomtjener</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="100"/>
         <source>Service Unavailable</source>
-        <translation type="unfinished"/>
+        <translation>Tjeneste utilgjengelig</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="101"/>
         <source>Server Timeout</source>
-        <translation type="unfinished"/>
+        <translation>Tidsavbrudd tjener</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="102"/>
         <source>Version Not Supported</source>
-        <translation type="unfinished"/>
+        <translation>Versjon ikke støttet</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="103"/>
         <source>Message Too Large</source>
-        <translation type="unfinished"/>
+        <translation>Melding for stor</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="104"/>
         <source>Precondition Failure</source>
-        <translation type="unfinished"/>
+        <translation>Forutsetning feilet</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="105"/>
         <source>Busy Everywhere</source>
-        <translation type="unfinished"/>
+        <translation>Opptatt overalt</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="106"/>
         <source>Call Refused</source>
-        <translation type="unfinished"/>
+        <translation>Samtale avslått</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="107"/>
         <source>Does Not Exist Anywhere</source>
-        <translation type="unfinished"/>
+        <translation>Eksisterer ingen steder</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="108"/>
         <source>Not Acceptable Anywhere</source>
-        <translation type="unfinished"/>
+        <translation>Aksepteres ingen steder</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="30"/>
@@ -424,12 +424,12 @@
     <message>
         <location filename="../src/chatview.cpp" line="36"/>
         <source>Options</source>
-        <translation type="unfinished"/>
+        <translation>Alternativer</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="37"/>
         <source>Jump to latest</source>
-        <translation type="unfinished"/>
+        <translation>Hopp til siste</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="38"/>
@@ -439,12 +439,12 @@
     <message>
         <location filename="../src/chatview.cpp" line="39"/>
         <source>Leave video message</source>
-        <translation type="unfinished"/>
+        <translation>Legg igjen videomelding</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="40"/>
         <source>Leave audio message</source>
-        <translation type="unfinished"/>
+        <translation>Legg igjen samtalemelding</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="41"/>
@@ -476,7 +476,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="47"/>
         <source>is not in your contacts</source>
-        <translation type="unfinished"/>
+        <translation>er ikke i dine kontakter</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="49"/>
@@ -486,17 +486,17 @@
     <message>
         <location filename="../src/chatview.cpp" line="50"/>
         <source>{0} days ago</source>
-        <translation type="unfinished"/>
+        <translation>{0} dager siden</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="51"/>
         <source>{0} hours ago</source>
-        <translation type="unfinished"/>
+        <translation>{0} timer siden</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="53"/>
         <source>{0} minutes ago</source>
-        <translation type="unfinished"/>
+        <translation>{0} minutter siden</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="50"/>
@@ -564,7 +564,7 @@
     <message>
         <location filename="../src/contactmodel.cpp" line="956"/>
         <source>Couldn&apos;t lookup…</source>
-        <translation type="unfinished"/>
+        <translation>Kunne ikke søke opp...</translation>
     </message>
 </context>
 <context>
