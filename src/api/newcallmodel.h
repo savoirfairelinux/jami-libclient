@@ -255,6 +255,14 @@ public:
      */
     void setModerator(const QString& confId, const QString& peerId, const bool& state);
 
+    /**
+     * Mute/unmute participant
+     * @param confId        The conference to change
+     * @param peerId        Uri of the participant to mute
+     * @param state         State of the change (true mute participant / false unmute participant)
+     */
+    void muteParticipant(const QString& confId, const QString& peerId, const bool& state);
+
 Q_SIGNALS:
     /**
      * Emitted when a call state changes
