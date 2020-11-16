@@ -492,7 +492,7 @@
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="60"/>
         <source>Allow incoming calls from unknown contacts</source>
-        <translation>Permite apelurile primite de la contacte necunoscute</translation>
+        <translation>Primește apeluri de la persoane necunoscute</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="52"/>
@@ -1855,17 +1855,17 @@ Please try again later.</source>
 <context>
     <name>MediaHandlerPicker</name>
     <message>
-        <location filename="../src/mainview/components/MediaHandlerPicker.qml" line="86"/>
+        <location filename="../src/mainview/components/MediaHandlerPicker.qml" line="89"/>
         <source>Choose plugin</source>
         <translation>Alege extensia</translation>
     </message>
     <message>
-        <location filename="../src/mainview/components/MediaHandlerPicker.qml" line="144"/>
+        <location filename="../src/mainview/components/MediaHandlerPicker.qml" line="151"/>
         <source>Go back to plugins list</source>
         <translation>Întoarce-te  la extensii</translation>
     </message>
     <message>
-        <location filename="../src/mainview/components/MediaHandlerPicker.qml" line="184"/>
+        <location filename="../src/mainview/components/MediaHandlerPicker.qml" line="191"/>
         <source>Preferences</source>
         <translation>Preferințe</translation>
     </message>
@@ -2071,7 +2071,7 @@ Please try again later.</source>
     <message>
         <location filename="../src/settingsview/components/RecordingSettings.qml" line="68"/>
         <source>Call Recording</source>
-        <translation>Înregistrare Apel</translation>
+        <translation>Înregistrare Apeluri</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/RecordingSettings.qml" line="81"/>

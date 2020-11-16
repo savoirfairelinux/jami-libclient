@@ -1855,17 +1855,17 @@ Por favor, tente novamente mais tarde.</translation>
 <context>
     <name>MediaHandlerPicker</name>
     <message>
-        <location filename="../src/mainview/components/MediaHandlerPicker.qml" line="86"/>
+        <location filename="../src/mainview/components/MediaHandlerPicker.qml" line="89"/>
         <source>Choose plugin</source>
         <translation>Escolha o Complemento</translation>
     </message>
     <message>
-        <location filename="../src/mainview/components/MediaHandlerPicker.qml" line="144"/>
+        <location filename="../src/mainview/components/MediaHandlerPicker.qml" line="151"/>
         <source>Go back to plugins list</source>
         <translation>Voltar à lista de complementos</translation>
     </message>
     <message>
-        <location filename="../src/mainview/components/MediaHandlerPicker.qml" line="184"/>
+        <location filename="../src/mainview/components/MediaHandlerPicker.qml" line="191"/>
         <source>Preferences</source>
         <translation>Preferências</translation>
     </message>

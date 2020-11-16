@@ -1855,17 +1855,17 @@ Zkuste to, prosím, později znovu.</translation>
 <context>
     <name>MediaHandlerPicker</name>
     <message>
-        <location filename="../src/mainview/components/MediaHandlerPicker.qml" line="86"/>
+        <location filename="../src/mainview/components/MediaHandlerPicker.qml" line="89"/>
         <source>Choose plugin</source>
         <translation>Zvolit zásuvný modul</translation>
     </message>
     <message>
-        <location filename="../src/mainview/components/MediaHandlerPicker.qml" line="144"/>
+        <location filename="../src/mainview/components/MediaHandlerPicker.qml" line="151"/>
         <source>Go back to plugins list</source>
         <translation>Přejít zpět na seznam zásuvných modulů</translation>
     </message>
     <message>
-        <location filename="../src/mainview/components/MediaHandlerPicker.qml" line="184"/>
+        <location filename="../src/mainview/components/MediaHandlerPicker.qml" line="191"/>
         <source>Preferences</source>
         <translation>Předvolby</translation>
     </message>
