@@ -775,6 +775,12 @@ NewCallModel::setModerator(const QString& confId, const QString& peerId, const b
 }
 
 void
+NewCallModel::muteParticipant(const QString& confId, const QString& peerId, const bool& state)
+{
+    CallManager::instance().muteParticipant(confId, peerId, state);
+}
+
+void
 NewCallModel::sendSipMessage(const QString& callId, const QString& body) const
 {
     MapStringString payloads;
