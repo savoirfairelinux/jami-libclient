@@ -25,6 +25,29 @@
     },
     {
       "key": {
+        "uuid": "1647fa96_a259c64f",
+        "filename": "src/avmodel.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 791,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2020-11-17T15:27:40Z",
+      "side": 1,
+      "message": "renderers_.emplace(id, std::make_unique\u003c\u003e())",
+      "range": {
+        "startLine": 787,
+        "startChar": 22,
+        "endLine": 791,
+        "endChar": 93
+      },
+      "revId": "d686632d438a9ab4acf396e660b0739a35eb8e72",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "e9d13778_0b79b115",
         "filename": "src/contactmodel.cpp",
         "patchSetId": 13
