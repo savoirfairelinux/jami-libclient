@@ -150,6 +150,9 @@ AbstractButton {
                             return JamiTheme.transparentColor
                     }
                 }
+                // Mipmap does not render correctly on linux
+                mipmap: false
+                smooth: true
             }
         }
 
