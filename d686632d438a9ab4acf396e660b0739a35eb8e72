@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5c00d4c8_06c8fbe3",
+        "filename": "src/avmodel.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 90
+      },
+      "writtenOn": "2020-11-17T15:24:15Z",
+      "side": 1,
+      "message": "can you add comment these?",
+      "range": {
+        "startLine": 82,
+        "startChar": 4,
+        "endLine": 83,
+        "endChar": 43
+      },
+      "revId": "d686632d438a9ab4acf396e660b0739a35eb8e72",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e9d13778_0b79b115",
+        "filename": "src/contactmodel.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 556,
+      "author": {
+        "id": 90
+      },
+      "writtenOn": "2020-11-17T15:24:15Z",
+      "side": 1,
+      "message": "remove this",
+      "range": {
+        "startLine": 555,
+        "startChar": 4,
+        "endLine": 556,
+        "endChar": 88
+      },
+      "revId": "d686632d438a9ab4acf396e660b0739a35eb8e72",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4b80b000_18ebaa07",
+        "filename": "src/shmrenderer.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 246,
+      "author": {
+        "id": 90
+      },
+      "writtenOn": "2020-11-17T15:24:15Z",
+      "side": 1,
+      "message": "remove",
+      "range": {
+        "startLine": 246,
+        "startChar": 4,
+        "endLine": 246,
+        "endChar": 70
+      },
+      "revId": "d686632d438a9ab4acf396e660b0739a35eb8e72",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    }
+  ]
+}
