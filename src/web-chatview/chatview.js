@@ -78,6 +78,13 @@ document.body.onclick = function(e) {
     }
 }
 
+// same for mouse middle button
+document.body.onauxclick = function(e) {
+    if (e.which === 2) {
+        return false
+    }
+}
+
 /* String sipmle format prototype*/
 String.prototype.format = function() {
     var a = this
