@@ -369,8 +369,16 @@ a:hover {
 }
 
 #data_transfer_send_container::-webkit-scrollbar {
-    height: 10px;
+    height: 8px;
 }
+
+#data_transfer_send_container::-webkit-scrollbar-track {
+    background-color: var(--message-out-bg);
+}
+
+#data_transfer_send_container::-webkit-scrollbar-thumb {
+    background-color: var(--bg-color);
+ }
 
 #data_transfer_send_container::after {
     /*Create the margins with pseudo-elements*/
