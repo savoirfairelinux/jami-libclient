@@ -393,7 +393,7 @@ MessagesAdapter::pasteKeyDetected()
         QBuffer bu(&ba);
         bu.open(QIODevice::WriteOnly);
         pixmap.save(&bu, "PNG");
-        auto str = QString::fromLocal8Bit(ba.toBase64());
+        auto str = QString::fromLatin1(ba.toBase64().data());
 
         setMessagesImageContent(str, true);
     } else if (mimeData->hasUrls()) {
@@ -590,7 +590,7 @@ void
 MessagesAdapter::setMessagesImageContent(const QString& path, bool isBased64)
 {
     if (isBased64) {
-        QString param = QString("addImage_base64('file://%1')").arg(path);
+        QString param = QString("addImage_base64('%1')").arg(path);
         QMetaObject::invokeMethod(qmlObj_, "webViewRunJavaScript", Q_ARG(QVariant, param));
     } else {
         QString param = QString("addImage_path('file://%1')").arg(path);
