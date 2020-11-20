@@ -191,6 +191,7 @@ Rectangle {
                                                                 isRecording, isSIP,
                                                                 isConferenceCall)
                             videoCallPageRect.bestName = bestName
+                            videoCallOverlay.handleParticipantsInfo(CallAdapter.getConferencesInfos())
                         }
 
                         function onShowOnHoldLabel(isPaused) {

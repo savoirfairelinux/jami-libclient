@@ -30,6 +30,8 @@ Item {
     // General
     property color blackColor: "#000000"
     property color whiteColor: "#ffffff"
+    property color darkGreyColor: "#272727"
+    property color darkGreyColorOpacity: "#4D272727" // 77%
     property color transparentColor: "transparent"
     property color primaryForegroundColor: darkTheme? whiteColor : blackColor
     property color primaryBackgroundColor: darkTheme? bgDarkMode_ : whiteColor
@@ -91,6 +93,10 @@ Item {
     property color sipInputButtonHoverColor: "#4477aa"
     property color sipInputButtonPressColor: "#5588bb"
 
+    property string buttonConference: "#110000"
+    property string buttonConferenceHovered: "#66cfff"
+    property string buttonConferencePressed: "#66cfff"
+
     // Wizard / account manager
     property color accountCreationOtherStepColor: "grey"
     property color accountCreationCurrentStepColor: "#28b1ed"
@@ -151,6 +157,7 @@ Item {
     property int textFontSize: 9
     property int settingsFontSize: 9
     property int buttonFontSize: 9
+    property int participantFontSize: 10
     property int menuFontSize: 12
     property int headerFontSize: 13
     property int titleFontSize: 16

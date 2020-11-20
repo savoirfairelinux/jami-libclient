@@ -1,6 +1,7 @@
 /*
  * Copyright (C) 2020 by Savoir-faire Linux
  * Author: Sébastien Blin <sebastien.blin@savoirfairelinux.com>
+ * Author: Albert Babí <albert.babi@savoirfairelinux.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,6 +20,7 @@
 import QtQuick 2.14
 import QtQuick.Controls 2.14
 import QtQuick.Layouts 1.14
+import QtQuick.Shapes 1.14
 import QtQuick.Controls.Universal 2.14
 import QtGraphicalEffects 1.14
 import net.jami.Models 1.0
@@ -29,190 +31,215 @@ import "../../commoncomponents"
 Rectangle {
     id: root
 
-    property int buttonPreferredSize: 12
-    property var uri: ""
-    property var active: true
-    property var isLocal: true
-    property var showEndCall: true
-    property var injectedContextMenu: null
+    // svg path for the background participant shape (width is offset dependant)
+    property int offset: indicatorsRowLayout.width
+    property int shapeHeight: 16
+    property string pathShape: "M 0.0,%8
+    C 0.0,%8 %1,%8 %1,%8 %2,%8 %3,%9 %4,10.0 %5,5.0 %5,0.0 %6,0.0 %7,0.0 %4,0.0
+      0.0,0.0 0.0,0.0 0.0,%8 0.0,%8 Z".arg(offset).arg(4.0+offset).arg(7+offset)
+    .arg(9+offset).arg(11+offset).arg(15+offset).arg(18+offset).arg(shapeHeight)
+    .arg(shapeHeight-2)
 
-    function setParticipantName(name) {
-        participantName.text = name
-    }
+    // TODO: properties should be
+    property string uri: overlayMenu.uri
+    property bool participantIsModerator: false
+    property bool participantIsMuted: false
 
     // TODO: try to use AvatarImage as well
     function setAvatar(avatar) {
         if (avatar === "") {
-            opacity = 0
             contactImage.source = ""
         } else {
-            opacity = 1
             contactImage.source = "data:image/png;base64," + avatar
         }
     }
 
-    function setMenuVisible(isVisible) {
-        optionsButton.visible = isVisible
+    function setMenu(newUri, bestName, isLocal, showMax, showMin) {
+
+        overlayMenu.uri = newUri
+        overlayMenu.bestName = bestName
+
+        var isHost = CallAdapter.isCurrentHost()
+        var isModerator = CallAdapter.isCurrentModerator()
+        var participantIsHost = CallAdapter.participantIsHost(overlayMenu.uri)
+        participantIsModerator = CallAdapter.isModerator(overlayMenu.uri)
+        overlayMenu.showSetModerator = isHost && !isLocal && !participantIsModerator
+        overlayMenu.showUnsetModerator = isHost && !isLocal && participantIsModerator
+
+        participantIsMuted = CallAdapter.isMuted(overlayMenu.uri)
+        overlayMenu.showMute = isModerator && !participantIsMuted
+        overlayMenu.showUnmute = isModerator && participantIsMuted && isLocal
+        overlayMenu.showMaximize = isModerator && showMax
+        overlayMenu.showMinimize = isModerator && showMin
+        overlayMenu.showHangup = isModerator && !isLocal && !participantIsHost
     }
 
-    function setEndCallVisible(isVisible) {
-        showEndCall = isVisible
-    }
-
-    border.width: 1
-    opacity: 0
     color: "transparent"
     z: 1
 
-    MouseArea {
-        id: mouseAreaHover
-        anchors.fill: parent
-        hoverEnabled: true
-        propagateComposedEvents: true
-        acceptedButtons: Qt.LeftButton
+    // Participant header with moderator / mute indicators
+    Rectangle {
+        id: participantIndicators
+        width: indicatorsRowLayout.width
+        height: shapeHeight
+        visible: participantIsModerator || participantIsMuted
+        color: "transparent"
 
-        Image {
-            id: contactImage
-
-            anchors.centerIn: parent
-
-            height:  Math.min(parent.width / 2, parent.height / 2)
-            width:  Math.min(parent.width / 2, parent.height / 2)
-
-            fillMode: Image.PreserveAspectFit
-            source: ""
-            asynchronous: true
-
-            layer.enabled: true
-            layer.effect: OpacityMask {
-                maskSource: Rectangle{
-                    width: contactImage.width
-                    height: contactImage.height
-                    radius: {
-                        var size = ((contactImage.width <= contactImage.height)? contactImage.width:contactImage.height)
-                        return size /2
-                    }
-                }
+        Shape {
+            id: myShape
+            ShapePath {
+                id: backgroundShape
+                strokeColor: "transparent"
+                fillColor: JamiTheme.darkGreyColorOpacity
+                capStyle: ShapePath.RoundCap
+                PathSvg { path: pathShape }
             }
         }
 
         RowLayout {
-            id: bottomLabel
+            id: indicatorsRowLayout
+            height: parent.height
+            anchors.verticalCenter: parent.verticalCenter
 
-            height: 24
-            width: parent.width
-            anchors.bottom: parent.bottom
+            ResponsiveImage {
+                id: isModeratorIndicator
 
-            Rectangle {
-                color: "black"
-                opacity: 0.8
-                height: parent.height
-                width: parent.width
-                Layout.fillWidth: true
-                Layout.preferredHeight: parent.height
+                visible: participantIsModerator
 
-                Text {
-                    id: participantName
-                    anchors.fill: parent
-                    leftPadding: 8.0
+                Layout.alignment: Qt.AlignVCenter
+                Layout.leftMargin: 6
+                containerHeight: 12
+                containerWidth: 12
 
-                    TextMetrics {
-                        id: participantMetrics
-                        elide: Text.ElideRight
-                        elideWidth: bottomLabel.width - 8
-                    }
-
-                    text: participantMetrics.elidedText
-
-                    color: "white"
-                    font.pointSize: JamiTheme.textFontSize
-                    horizontalAlignment: Text.AlignLeft
-                    verticalAlignment: Text.AlignVCenter
-                }
-
-                Button {
-                    id: optionsButton
-
-                    anchors.right: parent.right
-                    anchors.verticalCenter: parent.verticalCenter
-
-                    background: Rectangle {
-                        color: "transparent"
-                    }
-
-
-                    icon.color: "white"
-                    icon.height: buttonPreferredSize
-                    icon.width: buttonPreferredSize
-                    icon.source: "qrc:/images/icons/more_vert-24px.svg"
-
-                    onClicked: {
-                        if (!injectedContextMenu) {
-                            console.log("Participant's overlay don't have any injected context menu")
-                            return
-                        }
-                        var mousePos = mapToItem(videoCallPageRect, parent.x, parent.y)
-                        var layout = CallAdapter.getCurrentLayoutType()
-                        var showMaximized = layout !== 2
-                        var showMinimized = !(layout === 0 || (layout === 1 && !active))
-                        var isModerator = CallAdapter.isModerator(uri)
-                        var isHost = CallAdapter.isCurrentHost()
-                        var participantIsHost = CallAdapter.participantIsHost(uri)
-                        var isMuted = CallAdapter.isMuted(uri)
-                        injectedContextMenu.showHangup = !root.isLocal && showEndCall
-                        injectedContextMenu.showMaximize = showMaximized
-                        injectedContextMenu.showMinimize = showMinimized
-                        injectedContextMenu.uri = uri
-                        injectedContextMenu.active = active
-                        injectedContextMenu.x = mousePos.x
-                        injectedContextMenu.y = mousePos.y - injectedContextMenu.height
-                        injectedContextMenu.showSetModerator = (isHost && !participantIsHost && !isModerator)
-                        injectedContextMenu.showUnsetModerator = (isHost && !participantIsHost && isModerator)
-                        injectedContextMenu.showMute = !isMuted
-                        injectedContextMenu.showUnmute = isMuted && root.isLocal
-                        injectedContextMenu.openMenu()
-                    }
+                source: "qrc:/images/icons/moderator.svg"
+                layer {
+                    enabled: true
+                    effect: ColorOverlay { color: JamiTheme.whiteColor }
+                    mipmap: false
+                    smooth: true
                 }
             }
-        }
 
-        onClicked: {
-            CallAdapter.maximizeParticipant(uri, active)
-        }
+            ResponsiveImage {
+                id: isMutedIndicator
 
-        onEntered: {
-            if (contactImage.status === Image.Null)
-                root.state = "entered"
-        }
+                visible: participantIsMuted
+                Layout.alignment: Qt.AlignVCenter
+                Layout.leftMargin: 6
+                containerHeight: 12
+                containerWidth: 12
 
-        onExited: {
-            if (contactImage.status === Image.Null)
-                root.state = "exited"
+                source: "qrc:/images/icons/mic_off-24px.svg"
+                layer {
+                    enabled: true
+                    effect: ColorOverlay { color: JamiTheme.whiteColor }
+                    mipmap: false
+                    smooth: true
+                }
+            }
         }
     }
 
-    states: [
-        State {
-            name: "entered"
-            PropertyChanges {
-                target: root
-                opacity: 1
+    // Participant background, mousearea, hover and buttons for moderation
+    Rectangle {
+        id: participantRect
+
+        anchors.fill: parent
+        opacity: 0
+        color: JamiTheme.darkGreyColorOpacity
+        z: 1
+
+        MouseArea {
+            id: mouseAreaHover
+
+            anchors.fill: parent
+            hoverEnabled: true
+            propagateComposedEvents: false
+            acceptedButtons: Qt.LeftButton
+
+            Image {
+                id: contactImage
+
+                anchors.centerIn: parent
+                height:  Math.min(parent.width / 2, parent.height / 2)
+                width:  Math.min(parent.width / 2, parent.height / 2)
+
+                fillMode: Image.PreserveAspectFit
+                source: ""
+                asynchronous: true
+
+                layer.enabled: true
+                layer.effect: OpacityMask {
+                    maskSource: Rectangle{
+                        width: contactImage.width
+                        height: contactImage.height
+                        radius: {
+                            var size = ((contactImage.width <= contactImage.height)?
+                                            contactImage.width : contactImage.height)
+                            return size / 2
+                        }
+                    }
+                }
+                layer.mipmap: false
+                layer.smooth: true
             }
-        },
-        State {
-            name: "exited"
-            PropertyChanges {
-                target: root
-                opacity: 0
+
+            ParticipantOverlayMenu {
+                id: overlayMenu
+                visible: participantRect.opacity !== 0
+                anchors.centerIn: parent
+                hasMinimumSize: root.width > minimumWidth && root.height > minimumHeight
+
+                onMouseAreaExited: {
+                    if (contactImage.status === Image.Null) {
+                        root.z = 1
+                        participantRect.state = "exited"
+                    }
+                }
+            }
+
+            onClicked: {
+                CallAdapter.maximizeParticipant(uri)
+            }
+
+            onEntered: {
+                if (contactImage.status === Image.Null) {
+                    root.z = 2
+                    participantRect.state = "entered"
+                }
+            }
+
+            onExited: {
+                if (contactImage.status === Image.Null) {
+                    root.z = 1
+                    participantRect.state = "exited"
+                }
             }
         }
-    ]
 
-    transitions: Transition {
-        PropertyAnimation {
-            target: root
-            property: "opacity"
-            duration: 500
+        states: [
+            State {
+                name: "entered"
+                PropertyChanges {
+                    target: participantRect
+                    opacity: 1
+                }
+            },
+            State {
+                name: "exited"
+                PropertyChanges {
+                    target: participantRect
+                    opacity: 0
+                }
+            }
+        ]
+
+        transitions: Transition {
+            PropertyAnimation {
+                target: participantRect
+                property: "opacity"
+                duration: 500
+            }
         }
     }
 }

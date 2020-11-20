@@ -397,4 +397,14 @@ Item {
     // Generic dialog options
     property string optionOk: qsTr("Ok")
     property string optionCancel: qsTr("Cancel")
+
+    // Conference moderation
+    property string setModerator: qsTr("Set moderator")
+    property string unsetModerator: qsTr("Unset moderator")
+    property string muteParticipant: qsTr("Mute")
+    property string unmuteParticipant: qsTr("Unmute")
+    property string maximizeParticipant: qsTr("Maximize")
+    property string minimizeParticipant: qsTr("Minimize")
+    property string hangupParticipant: qsTr("Hangup")
 }
+

@@ -53,15 +53,14 @@ public:
      * For Call Overlay
      */
     Q_INVOKABLE void hangupCall(const QString& uri);
-    Q_INVOKABLE void maximizeParticipant(const QString& uri, bool isActive);
-    Q_INVOKABLE void minimizeParticipant();
+    Q_INVOKABLE void maximizeParticipant(const QString& uri);
+    Q_INVOKABLE void minimizeParticipant(const QString& uri);
     Q_INVOKABLE void hangUpThisCall();
-    Q_INVOKABLE void setModerator(const QString& uri, const bool state);
     Q_INVOKABLE bool isCurrentHost() const;
-    Q_INVOKABLE bool participantIsHost(const QString& uri = {}) const;
+    Q_INVOKABLE bool participantIsHost(const QString& uri) const;
+    Q_INVOKABLE void setModerator(const QString& uri, const bool state);
     Q_INVOKABLE bool isModerator(const QString& uri = {}) const;
     Q_INVOKABLE bool isCurrentModerator() const;
-    Q_INVOKABLE int getCurrentLayoutType() const;
     Q_INVOKABLE void holdThisCallToggle();
     Q_INVOKABLE void muteThisCallToggle();
     Q_INVOKABLE void recordThisCallToggle();

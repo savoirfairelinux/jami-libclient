@@ -33,22 +33,23 @@ Rectangle {
     // ButtonCounts here is to make sure that flow layout margin is calculated correctly,
     // since no other methods can make buttons at the layout center.
     property int buttonPreferredSize: 48
-    property var isHost: true
+    property var isModerator: true
     property var isSip: false
 
     signal chatButtonClicked
     signal addToConferenceButtonClicked
 
     function updateMenu() {
-        root.isHost = CallAdapter.isCurrentHost()
-        addToConferenceButton.visible = !root.isSip && root.isHost
+        root.isModerator = CallAdapter.isCurrentModerator()
+        addToConferenceButton.visible = !root.isSip && root.isModerator
     }
 
-    function setButtonStatus(isPaused, isAudioOnly, isAudioMuted, isVideoMuted, isRecording, isSIP, isConferenceCall) {
-        root.isHost = CallAdapter.isCurrentModerator()
+    function setButtonStatus(isPaused, isAudioOnly, isAudioMuted, isVideoMuted,
+                             isRecording, isSIP, isConferenceCall) {
+        root.isModerator = CallAdapter.isCurrentModerator()
         root.isSip = isSIP
         noVideoButton.visible = !isAudioOnly
-        addToConferenceButton.visible = !isSIP && isHost
+        addToConferenceButton.visible = !root.isSIP && root.isModerator
 
         noMicButton.checked = isAudioMuted
         noVideoButton.checked = isVideoMuted
@@ -150,7 +151,7 @@ Rectangle {
 
             Layout.preferredWidth: buttonPreferredSize
             Layout.preferredHeight: buttonPreferredSize
-            visible: !isHost
+            visible: !isModerator
 
             pressedColor: JamiTheme.invertedPressedButtonColor
             hoveredColor: JamiTheme.invertedHoveredButtonColor

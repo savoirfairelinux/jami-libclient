@@ -62,8 +62,8 @@ Image {
 
     function setSourceSize() {
         if (isSvg) {
-            sourceSize.width = Math.max(24, width)
-            sourceSize.height = Math.max(24, height)
+            sourceSize.width = width
+            sourceSize.height = height
         } else
             sourceSize = undefined
     }
