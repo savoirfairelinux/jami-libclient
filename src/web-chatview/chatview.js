@@ -767,16 +767,7 @@ function getMessageHtml(message_text) {
  */
 /* exported getMessageDeliveryStatusText */
 function getMessageDeliveryStatusText(message_delivery_status) {
-    var formatted_delivery_status = message_delivery_status
-
-    if (message_delivery_status === "failure") {
-        formatted_delivery_status = use_qt ? i18nStringData["Failure"] :  i18n.gettext("Failure") +
-        "<svg overflow='visible' viewBox='0 -2 16 14' height='16px' width='16px'><path class='status-x x-first' stroke='#AA0000' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' fill='none' d='M4,4 L12,12'/><path class='status-x x-second' stroke='#AA0000' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' fill='none' d='M12,4 L4,12'/></svg>"
-    } else {
-        formatted_delivery_status = ""
-    }
-
-    return formatted_delivery_status
+    return use_qt ? i18nStringData[message_delivery_status] :  i18n.gettext(message_delivery_status)
 }
 
 /**
@@ -978,7 +969,7 @@ function buildFileInformationText(message_object) {
         }
     }
 
-    return informations_txt + " - " + message_object["delivery_status"]
+    return informations_txt + " - " + getMessageDeliveryStatusText(message_object["delivery_status"])
 }
 
 /**
