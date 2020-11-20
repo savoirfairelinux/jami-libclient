@@ -59,6 +59,15 @@ getTranslatedStrings(bool qwebview)
         {"Refuse", QObject::tr("Refuse")},
         {"Delete", QObject::tr("Delete")},
         {"Retry", QObject::tr("Retry")},
+        {"unjoinable peer", QObject::tr("Unjoinable peer")},
+        {"connecting", QObject::tr("Connecting")},
+        {"accepted", QObject::tr("Accepted")},
+        {"canceled", QObject::tr("Canceled")},
+        {"ongoing", QObject::tr("Ongoing")},
+        {"awaiting peer", QObject::tr("Awaiting peer")},
+        {"awaiting host", QObject::tr("Awaiting host")},
+        {"awaiting peer timeout", QObject::tr("Awaiting peer timeout")},
+        {"finished", QObject::tr("Finished")},
     };
 }
 
