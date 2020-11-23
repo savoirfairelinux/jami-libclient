@@ -66,13 +66,19 @@ AvAdapter::populateVideoDeviceContextMenuItem()
 void
 AvAdapter::onVideoContextMenuDeviceItemClicked(const QString& deviceName)
 {
+    auto* convModel = LRCInstance::getCurrentConversationModel();
+    const auto conversation = convModel->getConversationForUID(LRCInstance::getCurrentConvUid());
+    auto call = LRCInstance::getCallInfoForConversation(conversation);
+    if (!call)
+        return;
+
     auto deviceId = LRCInstance::avModel().getDeviceIdFromName(deviceName);
     if (deviceId.isEmpty()) {
         qWarning() << "Couldn't find device: " << deviceName;
         return;
     }
-    LRCInstance::avModel().switchInputTo(deviceId);
     LRCInstance::avModel().setCurrentVideoCaptureDevice(deviceId);
+    LRCInstance::avModel().switchInputTo(deviceId, call->id);
 }
 
 void
@@ -179,8 +185,9 @@ AvAdapter::slotDeviceEvent()
             avModel.switchInputTo({}, callId);
             avModel.stopPreview();
         } else if (deviceEvent == DeviceEvent::RemovedCurrent && currentDeviceListSize > 0) {
-            avModel.switchInputTo(defaultDevice, callId);
+            avModel.setDefaultDevice(defaultDevice);
             avModel.setCurrentVideoCaptureDevice(defaultDevice);
+            avModel.switchInputTo(defaultDevice, callId);
         }
     };
 
@@ -190,14 +197,18 @@ AvAdapter::slotDeviceEvent()
                               [cb] { QtConcurrent::run([cb]() { cb(); }); });
     } else {
         if (deviceEvent == DeviceEvent::Added && currentDeviceListSize == 1) {
-            avModel.switchInputTo(defaultDevice, callId);
+            avModel.setDefaultDevice(defaultDevice);
             avModel.setCurrentVideoCaptureDevice(defaultDevice);
+            if (callId.isEmpty())
+                LRCInstance::renderer()->startPreviewing();
+            else
+                avModel.switchInputTo(defaultDevice, callId);
         } else {
             cb();
         }
     }
 
-    emit videoDeviceListChanged();
+    emit videoDeviceListChanged(currentDeviceListSize == 0);
 
     deviceListSize_ = currentDeviceListSize;
 }

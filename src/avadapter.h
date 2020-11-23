@@ -37,7 +37,7 @@ signals:
     /*
      * Emitted when the size of the video capture device list changes.
      */
-    void videoDeviceListChanged();
+    void videoDeviceListChanged(bool listIsEmpty);
 
 protected:
     void safeInit() override {};

@@ -49,10 +49,18 @@ ColumnLayout {
     function populateVideoSettings() {
         deviceComboBoxSetting.comboModel.reset()
 
-        var count = deviceComboBoxSetting.comboModel.deviceCount() > 0
-        deviceComboBoxSetting.setEnabled(count)
-        resolutionComboBoxSetting.setEnabled(count)
-        fpsComboBoxSetting.setEnabled(count)
+        var count = deviceComboBoxSetting.comboModel.deviceCount()
+        var deviceListIsEmpty = count === 0
+
+        previewWidget.visible = count > 0
+        deviceComboBoxSetting.setEnabled(count > 0)
+        resolutionComboBoxSetting.setEnabled(count > 0)
+        fpsComboBoxSetting.setEnabled(count > 0)
+
+        if (deviceListIsEmpty) {
+            resolutionComboBoxSetting.comboModel.reset()
+            fpsComboBoxSetting.comboModel.reset()
+        }
 
         deviceComboBoxSetting.setCurrentIndex(
                     deviceComboBoxSetting.comboModel.getCurrentSettingIndex(), true)
@@ -71,8 +79,11 @@ ColumnLayout {
                 return
             }
 
-            AVModel.setCurrentVideoCaptureDevice(deviceId)
-            AVModel.setDefaultDevice(deviceId)
+            if (AVModel.getCurrentVideoCaptureDevice() !== deviceId) {
+                AVModel.setCurrentVideoCaptureDevice(deviceId)
+                AVModel.setDefaultDevice(deviceId)
+            }
+
             setFormatListForCurrentDevice()
             startPreviewing()
         } catch(err){ console.warn(err.message) }
@@ -99,6 +110,7 @@ ColumnLayout {
         var resolution
         var rate
         if(isResolutionIndex) {
+            fpsComboBoxSetting.comboModel.reset()
             resolution = resolutionComboBoxSetting.comboModel.data(
                         resolutionComboBoxSetting.comboModel.index(index, 0),
                         VideoFormatResolutionModel.Resolution)

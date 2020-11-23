@@ -34,16 +34,18 @@ public:
 
 protected:
     void paint(QPainter* painter) override;
+    void paintBackground(QPainter* painter);
 
 private:
     QMetaObject::Connection previewFrameUpdatedConnection_;
+    QMetaObject::Connection previewRenderingStopped_;
 };
 
 class VideoCallPreviewRenderer : public PreviewRenderer
 {
     Q_OBJECT
-    Q_PROPERTY(qreal previewImageScalingFactor MEMBER previewImageScalingFactor_
-               NOTIFY previewImageScalingFactorChanged)
+    Q_PROPERTY(qreal previewImageScalingFactor MEMBER previewImageScalingFactor_ NOTIFY
+                   previewImageScalingFactorChanged)
 public:
     explicit VideoCallPreviewRenderer(QQuickItem* parent = 0);
     virtual ~VideoCallPreviewRenderer();

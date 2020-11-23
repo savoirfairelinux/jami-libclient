@@ -244,6 +244,14 @@ Rectangle {
                         }
                     }
 
+                    Connections {
+                        target: AvAdapter
+
+                        function onVideoDeviceListChanged(listIsEmpty) {
+                            previewRenderer.visible = !listIsEmpty
+                        }
+                    }
+
                     width: Math.max(videoCallPageMainRect.width / 5, JamiTheme.minimumPreviewWidth)
                     x: videoCallPageMainRect.width - previewRenderer.width - previewMargin
                     y: videoCallPageMainRect.height - previewRenderer.height - previewMargin - 56 // Avoid overlay
