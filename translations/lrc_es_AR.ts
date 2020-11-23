@@ -424,12 +424,12 @@
     <message>
         <location filename="../src/chatview.cpp" line="36"/>
         <source>Options</source>
-        <translation type="unfinished"/>
+        <translation>Opciones</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="37"/>
         <source>Jump to latest</source>
-        <translation type="unfinished"/>
+        <translation>Ir a lo último</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="38"/>
@@ -439,12 +439,12 @@
     <message>
         <location filename="../src/chatview.cpp" line="39"/>
         <source>Leave video message</source>
-        <translation type="unfinished"/>
+        <translation>Dejar mensaje de video</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="40"/>
         <source>Leave audio message</source>
-        <translation type="unfinished"/>
+        <translation>Dejar mensaje de audio</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="41"/>
@@ -476,7 +476,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="47"/>
         <source>is not in your contacts</source>
-        <translation type="unfinished"/>
+        <translation>no está en tus contactos</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="49"/>
@@ -486,17 +486,17 @@
     <message>
         <location filename="../src/chatview.cpp" line="50"/>
         <source>{0} days ago</source>
-        <translation type="unfinished"/>
+        <translation>Hace {0} días</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="51"/>
         <source>{0} hours ago</source>
-        <translation type="unfinished"/>
+        <translation>Hace {0} horas</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="53"/>
         <source>{0} minutes ago</source>
-        <translation type="unfinished"/>
+        <translation>Hace {0} minutos</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="50"/>
