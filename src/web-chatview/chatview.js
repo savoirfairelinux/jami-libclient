@@ -1368,6 +1368,7 @@ function textInteraction(message_id, message_direction, htmlText) {
     message_wrapper.setAttribute("class", "message_wrapper")
     var message_text = document.createElement("div")
     message_text.setAttribute("class", "message_text")
+    message_text.setAttribute("dir", "auto");
     message_text.innerHTML = htmlText
     message_wrapper.appendChild(message_text)
     // TODO STATUS
