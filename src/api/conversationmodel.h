@@ -119,7 +119,7 @@ public:
      * @param  row
      * @return a copy of the conversation
      */
-     conversation::Info filteredConversation(unsigned int row) const;
+    conversation::Info filteredConversation(unsigned int row) const;
 
     /**
      * Get the search results
@@ -176,8 +176,10 @@ public:
      * Send a message to the conversation
      * @param uid of the conversation
      * @param body of the message
+     * @param parentId id of parent message. Default is "" - last message in conversation. Not
+     * applied for not swarm conversations
      */
-    void sendMessage(const QString& uid, const QString& body);
+    void sendMessage(const QString& uid, const QString& body, const QString& parentId = "");
     /**
      * Modify the current filter (will change the result of getFilteredConversations)
      * @param filter the new filter
@@ -220,8 +222,7 @@ public:
      * @param convId
      * @param interactionId
      */
-    void clearInteractionFromConversation(const QString& convId,
-                                          const uint64_t& interactionId);
+    void clearInteractionFromConversation(const QString& convId, const uint64_t& interactionId);
     /**
      * Retry to send a message. In fact, will delete the previous interaction and resend a new one.
      * @param convId
@@ -247,9 +248,7 @@ public:
 
     void acceptTransfer(const QString& convUid, uint64_t interactionId);
 
-    void acceptTransfer(const QString& convUid,
-                        uint64_t interactionId,
-                        const QString& path);
+    void acceptTransfer(const QString& convUid, uint64_t interactionId, const QString& path);
 
     void cancelTransfer(const QString& convUid, uint64_t interactionId);
 
@@ -265,6 +264,39 @@ public:
      * @param isComposing   if is composing
      */
     void setIsComposing(const QString& uid, bool isComposing);
+    /**
+     * load messages for conversation
+     * @param conversationId conversation's id
+     * @param fromId id of message from wich we will load size messages(in backward direction).
+     * Default is ""  means last loaded message(backward direction)
+     * @param size number of messages should be loaded. Default 1
+     * @return id for loading request.
+     */
+    uint32_t loadConversationMessages(const QString& conversationId,
+                                      const QString& fromId = "",
+                                      const int size = 1);
+    /**
+     * accept request for conversation
+     * @param conversationId conversation's id
+     */
+    void acceptConversationRequest(const QString& conversationId);
+    /**
+     * decline request for conversation
+     * @param conversationId conversation's id
+     */
+    void declineConversationRequest(const QString& conversationId);
+    /**
+     * add member to conversation
+     * @param conversationId conversation's id
+     * @param memberURI members's uri
+     */
+    void addConversationMember(const QString& conversationId, const QString& memberURI);
+    /**
+     * remove member from conversation
+     * @param conversationId conversation's id
+     * @param memberURI members's uri
+     */
+    void removeConversationMember(const QString& conversationId, const QString& memberURI);
 
 Q_SIGNALS:
     /**
@@ -360,6 +392,19 @@ Q_SIGNALS:
      * Emitted when search result has been updated
      */
     void searchResultUpdated() const;
+    /**
+     * Emitted when finish loading messages for conversation
+     * @param loadingRequestId  loading request id
+     * @param conversationId conversation Id
+     */
+    void conversationMessagesLoaded(uint32_t loadingRequestId, const QString& conversationId) const;
+    /**
+     * Emitted when new messages available. When messages loaded from loading request or
+     * receiving/sending new interactions
+     * @param accountId  account id
+     * @param conversationId conversation Id
+     */
+    void newMessagesAvailable(const QString& accountId, const QString& conversationId) const;
 
 private:
     std::unique_ptr<ConversationModelPimpl> pimpl_;

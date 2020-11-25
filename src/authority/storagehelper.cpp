@@ -411,9 +411,8 @@ getHistory(Database& db, api::conversation::Info& conversation)
                                                type,
                                                status,
                                                (payloads[i + 6] == "1" ? true : false)});
-            conversation.interactions.emplace(std::stoull(payloads[i].toStdString()),
-                                              std::move(msg));
-            conversation.lastMessageUid = std::stoull(payloads[i].toStdString());
+            conversation.interactions.emplace(payloads[i], std::move(msg));
+            conversation.lastMessageUid = payloads[i];
             if (status != api::interaction::Status::DISPLAYED || !payloads[i + 1].isEmpty()) {
                 continue;
             }
@@ -424,7 +423,8 @@ getHistory(Database& db, api::conversation::Info& conversation)
                                                              std::stoull(payloads[i].toStdString()));
                 continue;
             }
-            auto lastReadInteraction = conversation.interactions.find(messageId->second);
+            auto lastReadInteraction = conversation.interactions.find(
+                QString::number(messageId->second));
             auto timestamp = std::stoi(payloads[i + 3].toStdString());
             if (lastReadInteraction == conversation.interactions.end()
                 || lastReadInteraction->second.timestamp < timestamp) {

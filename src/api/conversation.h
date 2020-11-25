@@ -37,10 +37,11 @@ struct Info
     VectorString participants;
     QString callId;
     QString confId;
-    std::map<uint64_t, interaction::Info> interactions;
-    uint64_t lastMessageUid = 0;
+    std::map<QString, interaction::Info> interactions;
+    QString lastMessageUid = QString::number(0);
     std::map<QString, uint64_t> lastDisplayedMessageUid;
     unsigned int unreadMessages = 0;
+    bool isSwarm = true;
 };
 
 } // namespace conversation
