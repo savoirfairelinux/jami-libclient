@@ -37,6 +37,7 @@
 #include "api/newaccountmodel.h"
 #include "callbackshandler.h"
 #include "dbus/callmanager.h"
+#include "dbus/conversationmanager.h"
 #include "dbus/configurationmanager.h"
 #include "dbus/instancemanager.h"
 #include "dbus/configurationmanager.h"

@@ -37,6 +37,7 @@
 // Dbus
 #include "dbus/configurationmanager.h"
 #include "dbus/callmanager.h"
+#include "dbus/conversationmanager.h"
 
 // daemon
 #include <account_const.h>
@@ -1517,7 +1518,7 @@ ConversationModelPimpl::initConversations()
     if (accountDetails.empty())
         return;
 
-    // Fill conversations
+    // Fill regular conversations
     for (auto const& c : linked.owner.contactModel->getAllContacts().toStdMap()) {
         auto conv = storage::getConversationsWithPeer(db, c.second.profileInfo.uri);
         if (conv.empty()) {
@@ -1550,6 +1551,11 @@ ConversationModelPimpl::initConversations()
             }
         }
     }
+    // Fill swarm conversations
+    //#ifdef ENABLE_LIBWRAP
+    //    std::vector<std::string> swarm = ConversationManager::instance1().getConversations(
+    //        linked.owner.id.toStdString());
+    //#endif
 
     sortConversations();
     filteredConversations = conversations;
