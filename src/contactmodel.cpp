@@ -371,6 +371,12 @@ const contact::Info
 ContactModel::getContact(const QString& contactUri) const
 {
     std::lock_guard<std::mutex> lk(pimpl_->contactsMtx_);
+    for (auto& contact : pimpl_->contacts.keys()) {
+        qDebug() << contact;
+    }
+    for (auto& contact : pimpl_->searchResult.keys()) {
+        qDebug() << contact;
+    }
     if (pimpl_->contacts.contains(contactUri)) {
         return pimpl_->contacts.value(contactUri);
     } else if (pimpl_->searchResult.contains(contactUri)) {
