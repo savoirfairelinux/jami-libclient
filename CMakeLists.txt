@@ -322,6 +322,7 @@ SET( libringclient_LIB_SRCS
   src/dbus/videomanager.cpp
   src/dbus/presencemanager.cpp
   src/dbus/pluginmanager.cpp
+  src/dbus/conversationmanager.cpp
 
   #Default interface implementations
   src/globalinstances.cpp
@@ -454,6 +455,21 @@ ELSE()
       ${callmanager_xml}
       callmanager_dbus_interface
    )
+    # conversation manager interface
+   SET ( conversationmanager_xml  ${dbus_xml_introspecs_path}/cx.ring.Ring.ConversationManager.xml )
+
+   SET_SOURCE_FILES_PROPERTIES(
+      ${conversationmanager_xml}
+      PROPERTIES
+      CLASSNAME ConversationManagerInterface
+      INCLUDE ${dbus_metatype_path}
+   )
+
+   QT5_ADD_DBUS_INTERFACE(
+      libringclient_LIB_SRCS
+      ${conversationmanager_xml}
+      conversationmanager_dbus_interface
+   )
 
    # video manager interface
    SET ( video_xml  ${dbus_xml_introspecs_path}/cx.ring.Ring.VideoManager.xml )
@@ -517,6 +533,7 @@ IF(${ENABLE_LIBWRAP} MATCHES true AND ${ENABLE_TEST} MATCHES false)
       ${libringclient_PRIVATE_HDRS}
 
       src/qtwrapper/callmanager_wrap.h
+      src/qtwrapper/conversationmanager_wrap.h
       src/qtwrapper/configurationmanager_wrap.h
       src/qtwrapper/instancemanager_wrap.h
       src/qtwrapper/presencemanager_wrap.h
@@ -755,6 +772,7 @@ IF((${ENABLE_TEST} MATCHES true))
       test/mocks/instancemanager_mock.h
       test/mocks/presencemanager_mock.h
       test/mocks/videomanager_mock.h
+      test/mocks/conversationmanager_mock.h
       test/test_runner.cpp
       test/databasetester.h
       test/databasetester.cpp

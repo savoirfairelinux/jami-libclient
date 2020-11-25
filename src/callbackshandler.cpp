@@ -30,6 +30,7 @@
 #include "dbus/configurationmanager.h"
 #include "dbus/presencemanager.h"
 #include "dbus/videomanager.h"
+#include "dbus/conversationmanager.h"
 
 // DRing
 #include <datatransfer_interface.h>
@@ -238,6 +239,26 @@ CallbacksHandler::CallbacksHandler(const Lrc& parent)
             &ConfigurationManagerInterface::audioMeter,
             this,
             &CallbacksHandler::slotAudioMeterReceived,
+            Qt::QueuedConnection);
+    connect(&ConversationManager::instance(),
+            &ConversationManagerInterface::conversationLoaded,
+            this,
+            &CallbacksHandler::slotConversationLoaded,
+            Qt::QueuedConnection);
+    connect(&ConversationManager::instance(),
+            &ConversationManagerInterface::messageReceived,
+            this,
+            &CallbacksHandler::slotMessageReceived,
+            Qt::QueuedConnection);
+    connect(&ConversationManager::instance(),
+            &ConversationManagerInterface::conversationRequestReceived,
+            this,
+            &CallbacksHandler::slotConversationRequestReceived,
+            Qt::QueuedConnection);
+    connect(&ConversationManager::instance(),
+            &ConversationManagerInterface::conversationReady,
+            this,
+            &CallbacksHandler::slotConversationReady,
             Qt::QueuedConnection);
 }
 
@@ -570,9 +591,39 @@ CallbacksHandler::slotAudioMeterReceived(const QString& id, float level)
 }
 
 void
-CallbacksHandler::slotRemoteRecordingChanged(const QString& callId, const QString& peerNumber, bool state)
+CallbacksHandler::slotRemoteRecordingChanged(const QString& callId,
+                                             const QString& peerNumber,
+                                             bool state)
 {
     emit remoteRecordingChanged(callId, peerNumber, state);
+}
+
+void
+CallbacksHandler::slotConversationLoaded(uint32_t loadingRequestId,
+                                         const QString& accountId,
+                                         const QString& conversationId,
+                                         VectorMapStringString messages)
+{
+    emit conversationLoaded(loadingRequestId, accountId, conversationId, messages);
+}
+void
+CallbacksHandler::slotMessageReceived(const QString& accountId,
+                                      const QString& conversationId,
+                                      MapStringString message)
+{
+    emit messageReceived(accountId, conversationId, message);
+}
+void
+CallbacksHandler::slotConversationRequestReceived(const QString& accountId,
+                                                  const QString& conversationId,
+                                                  MapStringString metadatas)
+{
+    emit conversationRequestReceived(accountId, conversationId, metadatas);
+}
+void
+CallbacksHandler::slotConversationReady(const QString& accountId, const QString& conversationId)
+{
+    emit conversationReady(accountId, conversationId);
 }
 
 } // namespace lrc
