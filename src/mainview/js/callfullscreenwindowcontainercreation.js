@@ -42,7 +42,7 @@ function finishCreation() {
 
     // Signal connection.
     callFullScreenWindowContainerObject.onClosing.connect(
-                destoryVideoCallFullScreenWindowContainer)
+                destroyVideoCallFullScreenWindowContainer)
 }
 
 function checkIfVisible() {
@@ -57,7 +57,7 @@ function setAsContainerChild(obj) {
 }
 
 // Destroy and reset callFullScreenWindowContainerObject when window is closed.
-function destoryVideoCallFullScreenWindowContainer() {
+function destroyVideoCallFullScreenWindowContainer() {
     if (!callFullScreenWindowContainerObject)
         return
     callFullScreenWindowContainerObject.destroy()

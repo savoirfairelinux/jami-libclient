@@ -70,25 +70,29 @@ DistantRenderer::getScaledHeight() const
 void
 DistantRenderer::paint(QPainter* painter)
 {
-    auto distantImage = LRCInstance::renderer()->getFrame(distantRenderId_);
-    if (distantImage) {
-        auto scaledDistant = distantImage->scaled(size().toSize(), Qt::KeepAspectRatio);
-        auto tempScaledWidth = static_cast<int>(scaledWidth_ * 1000);
-        auto tempScaledHeight = static_cast<int>(scaledHeight_ * 1000);
-        auto tempXOffset = xOffset_;
-        auto tempYOffset = yOffset_;
-        scaledWidth_ = static_cast<double>(scaledDistant.width())
-                       / static_cast<double>(distantImage->width());
-        scaledHeight_ = static_cast<double>(scaledDistant.height())
-                        / static_cast<double>(distantImage->height());
-        xOffset_ = (width() - scaledDistant.width()) / 2;
-        yOffset_ = (height() - scaledDistant.height()) / 2;
-        if (tempXOffset != xOffset_ or tempYOffset != yOffset_
-            or static_cast<int>(scaledWidth_ * 1000) != tempScaledWidth
-            or static_cast<int>(scaledHeight_ * 1000) != tempScaledHeight) {
-            emit offsetChanged();
+    LRCInstance::renderer()->drawFrame(distantRenderId_, [this, painter](QImage* distantImage) {
+        if (distantImage) {
+            auto scaledDistant = distantImage->scaled(size().toSize(), Qt::KeepAspectRatio);
+            auto tempScaledWidth = static_cast<int>(scaledWidth_ * 1000);
+            auto tempScaledHeight = static_cast<int>(scaledHeight_ * 1000);
+            auto tempXOffset = xOffset_;
+            auto tempYOffset = yOffset_;
+            scaledWidth_ = static_cast<double>(scaledDistant.width())
+                           / static_cast<double>(distantImage->width());
+            scaledHeight_ = static_cast<double>(scaledDistant.height())
+                            / static_cast<double>(distantImage->height());
+            xOffset_ = (width() - scaledDistant.width()) / 2;
+            yOffset_ = (height() - scaledDistant.height()) / 2;
+            if (tempXOffset != xOffset_ or tempYOffset != yOffset_
+                or static_cast<int>(scaledWidth_ * 1000) != tempScaledWidth
+                or static_cast<int>(scaledHeight_ * 1000) != tempScaledHeight) {
+                emit offsetChanged();
+            }
+            painter->drawImage(QRect(xOffset_,
+                                     yOffset_,
+                                     scaledDistant.width(),
+                                     scaledDistant.height()),
+                               scaledDistant);
         }
-        painter->drawImage(QRect(xOffset_, yOffset_, scaledDistant.width(), scaledDistant.height()),
-                           scaledDistant);
-    }
+    });
 }

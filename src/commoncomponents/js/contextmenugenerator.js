@@ -107,8 +107,16 @@ function addMenuItem(itemName,
         console.log("Error loading component:",
                     menuItemComponent.errorString())
     if (menuItemObject !== null) {
-        menuItemObject.clicked.connect(function () {baseContextMenuObject.close()})
-        menuItemObject.clicked.connect(onClickedCallback)
+        menuItemObject.clicked.connect(function () {
+            var callback = function(){
+                onClickedCallback()
+                baseContextMenuObject.onVisibleChanged.disconnect(callback)
+                baseContextMenuObject.close()
+            }
+
+            baseContextMenuObject.onVisibleChanged.connect(callback)
+            baseContextMenuObject.visible = false
+        })
         menuItemObject.icon.color = "green"
 
         baseContextMenuObject.addItem(menuItemObject)

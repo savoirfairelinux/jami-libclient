@@ -103,10 +103,17 @@ unix {
 
     LIBS += -L$${LRC}/lib -lringclient
     LIBS += -lqrencode
+    LIBS += -lX11
 
     isEmpty(PREFIX) { PREFIX = /tmp/$${TARGET}/bin }
     target.path = $$PREFIX/bin
     INSTALLS += target
+
+    # unix specific
+    HEADERS += \
+               src/xrectsel.h
+    SOURCES += \
+               src/xrectsel.c
 }
 
 # Input

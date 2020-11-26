@@ -18,6 +18,7 @@
 
 import QtQuick 2.14
 import QtQuick.Window 2.14
+import net.jami.Models 1.0
 
 Window {
     id: videoWindow
@@ -28,7 +29,11 @@ Window {
 
     flags: Qt.FramelessWindowHint
 
-    screen: Qt.application.screens[0]
+    screen: JamiQmlUtils.mainApplicationScreen
+
+    // +1 so that it does not fallback to the previous screen
+    x: screen.virtualX + 1
+    y: screen.virtualY + 1
 
     visible: false
 

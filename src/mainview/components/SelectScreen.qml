@@ -37,9 +37,7 @@ Window {
     property int minHeight: 500
 
     property int selectedScreenNumber: -1
-
-    // Decide whether to show screen area or entire screen.
-    property bool selectArea: false
+    property bool selectAllScreens: false
 
     // How many rows the ScrollView should have.
     function calculateRepeaterModel() {
@@ -55,10 +53,10 @@ Window {
     minimumWidth: minWidth
     minimumHeight: minHeight
 
-    title: "Screen sharing"
+    width: minWidth
+    height: minHeight
 
-    // Note: Qt.application.screens[0] is the app's current existing screen.
-    screen: Qt.application.screens[0]
+    screen: JamiQmlUtils.mainApplicationScreen
 
     modality: Qt.ApplicationModal
 
@@ -96,6 +94,7 @@ Window {
             clip: true
 
             ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
+            ScrollBar.vertical.policy: ScrollBar.AlwaysOn
 
             // Column of rows repeater (two screen captures in a row).
             Column {
@@ -122,6 +121,21 @@ Window {
                                 // Recover from green state.
                                 screenSelectionRectOdd.borderColor = JamiTheme.tabbarBorderColor
                                 screenSelectionRectEven.borderColor = JamiTheme.tabbarBorderColor
+                            }
+                        }
+
+                        Connections {
+                            target: AvAdapter
+
+                            function onScreenCaptured(screenNumber, source) {
+                                if (screenNumber === -1)
+                                    screenShotAll.source = JamiQmlUtils.base64StringTitle + source
+                                if (screenNumber !== index && screenNumber !== index + 1)
+                                    return
+                                if (screenNumber % 2 !== 1)
+                                    screenShotOdd.source = JamiQmlUtils.base64StringTitle + source
+                                else
+                                    screenShotEven.source = JamiQmlUtils.base64StringTitle + source
                             }
                         }
 
@@ -154,11 +168,8 @@ Window {
                                 fillMode: Image.PreserveAspectFit
                                 mipmap: true
 
-                                Component.onCompleted: {
-                                    screenShotOdd.source = "data:image/png;base64,"
-                                            + AvAdapter.captureScreen(
-                                                calculateScreenNumber(index, false) - 1)
-                                }
+                                Component.onCompleted: AvAdapter.captureScreen(
+                                                           calculateScreenNumber(index, false) - 1)
                             }
 
                             Text {
@@ -224,8 +235,7 @@ Window {
 
                                 Component.onCompleted: {
                                     if (screenSelectionRectEven.visible)
-                                        screenShotEven.source = "data:image/png;base64,"
-                                                + AvAdapter.captureScreen(
+                                        AvAdapter.captureScreen(
                                                     calculateScreenNumber(index, true) - 1)
                                 }
                             }
@@ -259,6 +269,71 @@ Window {
                         }
                     }
                 }
+
+                Rectangle {
+                    id: screenSelectionRectAll
+
+                    property string borderColor: JamiTheme.tabbarBorderColor
+
+                    anchors.horizontalCenter: screenSelectionScrollViewColumn.horizontalCenter
+
+                    color: JamiTheme.secondaryBackgroundColor
+
+                    height: screenSelectionScrollView.height
+                    width: screenSelectionScrollView.width - 2 * JamiTheme.preferredMarginSize
+
+                    border.color: borderColor
+
+                    Connections {
+                        target: selectScreenWindow
+
+                        function onSelectedScreenNumberChanged() {
+                            // Recover from green state.
+                            selectAllScreens = false
+                            screenSelectionRectAll.borderColor = JamiTheme.tabbarBorderColor
+                        }
+                    }
+
+                    Image {
+                        id: screenShotAll
+
+                        anchors.top: screenSelectionRectAll.top
+                        anchors.topMargin: 10
+                        anchors.horizontalCenter: screenSelectionRectAll.horizontalCenter
+
+                        height: screenSelectionRectAll.height - 50
+                        width: screenSelectionRectAll.width - 50
+
+                        fillMode: Image.PreserveAspectFit
+                        mipmap: true
+
+                        Component.onCompleted: AvAdapter.captureAllScreens()
+                    }
+
+                    Text {
+                        id: screenNameAll
+
+                        anchors.top: screenShotAll.bottom
+                        anchors.topMargin: 10
+                        anchors.horizontalCenter: screenSelectionRectAll.horizontalCenter
+
+                        font.pointSize: JamiTheme.textFontSize - 2
+                        text: qsTr("All Screens")
+                        color: JamiTheme.textColor
+                    }
+
+                    MouseArea {
+                        anchors.fill: parent
+                        acceptedButtons: Qt.LeftButton
+
+                        onClicked: {
+                            selectedScreenNumber = -1
+                            selectAllScreens = true
+                            screenSelectionRectAll.borderColor
+                                    = JamiTheme.screenSelectionBorderGreen
+                        }
+                    }
+                }
             }
         }
     }
@@ -273,7 +348,7 @@ Window {
         width: 200
         height: 36
 
-        visible: selectedScreenNumber != -1
+        visible: selectedScreenNumber != -1 || selectAllScreens
 
         color: JamiTheme.buttonTintedBlack
         hoveredColor: JamiTheme.buttonTintedBlackHovered
@@ -284,21 +359,11 @@ Window {
         text: JamiStrings.shareScreen
 
         onClicked: {
-            if (selectArea) {
-                selectScreenWindow.hide()
-                ScreenRubberBandCreation.createScreenRubberBandWindowObject(
-                            selectScreenWindow, selectedScreenNumber - 1)
-                ScreenRubberBandCreation.showScreenRubberBandWindow()
-
-
-                // Destory selectScreenWindow once screenRubberBand is closed.
-                ScreenRubberBandCreation.connectOnClosingEvent(function () {
-                    selectScreenWindow.close()
-                })
-            } else {
+            if (selectAllScreens)
+                AvAdapter.shareAllScreens()
+            else
                 AvAdapter.shareEntireScreen(selectedScreenNumber - 1)
-                selectScreenWindow.close()
-            }
+            selectScreenWindow.close()
         }
     }
 }

@@ -51,7 +51,7 @@ Rectangle {
         if (avatar === "") {
             contactImage.source = ""
         } else {
-            contactImage.source = "data:image/png;base64," + avatar
+            contactImage.source = JamiQmlUtils.base64StringTitle + avatar
         }
     }
 

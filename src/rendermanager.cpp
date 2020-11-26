@@ -85,13 +85,28 @@ FrameWrapper::stopRendering()
 QImage*
 FrameWrapper::getFrame()
 {
-    return isRendering_ ? image_.get() : nullptr;
+    if (image_.get()) {
+        return isRendering_ ? (image_.get()->isNull() ? nullptr : image_.get()) : nullptr;
+    }
+    return nullptr;
 }
 
 bool
 FrameWrapper::isRendering()
 {
     return isRendering_;
+}
+
+bool
+FrameWrapper::frameMutexTryLock()
+{
+    return mutex_.tryLock();
+}
+
+void
+FrameWrapper::frameMutexUnlock()
+{
+    mutex_.unlock();
 }
 
 void
@@ -127,23 +142,25 @@ FrameWrapper::slotFrameUpdated(const QString& id)
 
         unsigned int width = renderer_->size().width();
         unsigned int height = renderer_->size().height();
-
 #ifndef Q_OS_LINUX
         unsigned int size = frame_.storage.size();
+        auto imageFormat = QImage::Format_ARGB32_Premultiplied;
+#else
+        unsigned int size = frame_.size;
+        auto imageFormat = QImage::Format_ARGB32;
+#endif
         /*
          * If the frame is empty or not the expected size,
          * do nothing and keep the last rendered QImage.
          */
         if (size != 0 && size == width * height * 4) {
+#ifndef Q_OS_LINUX
             buffer_ = std::move(frame_.storage);
-            image_.reset(new QImage((uchar*) buffer_.data(),
-                                    width,
-                                    height,
-                                    QImage::Format_ARGB32_Premultiplied));
 #else
-        if (frame_.ptr) {
-            image_.reset(new QImage(frame_.ptr, width, height, QImage::Format_ARGB32));
+            buffer_.reserve(size);
+            std::move(frame_.ptr, frame_.ptr + size, buffer_.begin());
 #endif
+            image_.reset(new QImage((uchar*) buffer_.data(), width, height, imageFormat));
         }
     }
     emit frameUpdated(id);
@@ -161,7 +178,10 @@ FrameWrapper::slotRenderingStopped(const QString& id)
 
     renderer_ = nullptr;
 
-    image_.reset();
+    {
+        QMutexLocker lock(&mutex_);
+        image_.reset();
+    }
 
     emit renderingStopped(id);
 }
@@ -202,12 +222,6 @@ RenderManager::isPreviewing()
     return previewFrameWrapper_->isRendering();
 }
 
-QImage*
-RenderManager::getPreviewFrame()
-{
-    return previewFrameWrapper_->getFrame();
-}
-
 void
 RenderManager::stopPreviewing()
 {
@@ -230,16 +244,6 @@ RenderManager::startPreviewing(bool force)
         avModel_.stopPreview();
     }
     avModel_.startPreview();
-}
-
-QImage*
-RenderManager::getFrame(const QString& id)
-{
-    auto dfwIt = distantFrameWrapperMap_.find(id);
-    if (dfwIt != distantFrameWrapperMap_.end()) {
-        return dfwIt->second->getFrame();
-    }
-    return nullptr;
 }
 
 void
@@ -304,4 +308,29 @@ RenderManager::removeDistantRenderer(const QString& id)
          */
         distantFrameWrapperMap_.erase(dfwIt);
     }
+}
+
+void
+RenderManager::drawFrame(const QString& id, DrawFrameCallback cb)
+{
+    if (id == lrc::api::video::PREVIEW_RENDERER_ID) {
+        if (previewFrameWrapper_->frameMutexTryLock()) {
+            cb(previewFrameWrapper_->getFrame());
+            previewFrameWrapper_->frameMutexUnlock();
+        }
+    } else {
+        auto dfwIt = distantFrameWrapperMap_.find(id);
+        if (dfwIt != distantFrameWrapperMap_.end()) {
+            if (dfwIt->second->frameMutexTryLock()) {
+                cb(dfwIt->second->getFrame());
+                dfwIt->second->frameMutexUnlock();
+            }
+        }
+    }
+}
+
+QImage*
+RenderManager::getPreviewFrame()
+{
+    return previewFrameWrapper_->getFrame();
 }

@@ -77,6 +77,10 @@ public:
      */
     bool isRendering();
 
+    bool frameMutexTryLock();
+
+    void frameMutexUnlock();
+
 signals:
     /*
      * Emitted each time a frame is ready to be displayed.
@@ -168,15 +172,12 @@ public:
     explicit RenderManager(AVModel& avModel);
     ~RenderManager();
 
+    using DrawFrameCallback = std::function<void(QImage*)>;
+
     /*
      * Check if the preview is active.
      */
     bool isPreviewing();
-    /*
-     * Get the most recently rendered preview frame as a QImage.
-     * @return the rendered preview image
-     */
-    QImage* getPreviewFrame();
     /*
      * Start capturing and rendering preview frames.
      * @param force if the capture device should be started
@@ -186,13 +187,6 @@ public:
      * Stop capturing.
      */
     void stopPreviewing();
-
-    /*
-     * Get the most recently rendered distant frame for a given id
-     * as a QImage.
-     * @return the rendered preview image
-     */
-    QImage* getFrame(const QString& id);
     /*
      * Add and connect a distant renderer for a given id
      * to a FrameWrapper object
@@ -205,6 +199,18 @@ public:
      * @param id
      */
     void removeDistantRenderer(const QString& id);
+    /*
+     * Frame will be provided in the callback thread safely
+     * @param id
+     * @param cb
+     */
+    void drawFrame(const QString& id, DrawFrameCallback cb);
+
+    /*
+     * Get the most recently rendered preview frame as a QImage (none thread safe).
+     * @return the rendered preview image
+     */
+    QImage* getPreviewFrame();
 
 signals:
 

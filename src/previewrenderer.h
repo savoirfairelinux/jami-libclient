@@ -38,7 +38,6 @@ protected:
 
 private:
     QMetaObject::Connection previewFrameUpdatedConnection_;
-    QMetaObject::Connection previewRenderingStopped_;
 };
 
 class VideoCallPreviewRenderer : public PreviewRenderer
