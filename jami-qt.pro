@@ -118,9 +118,11 @@ unix {
 
     # unix specific
     HEADERS += \
-               src/xrectsel.h
+            src/dbuserrorhandler.h \
+            src/xrectsel.h
     SOURCES += \
-               src/xrectsel.c
+            src/dbuserrorhandler.cpp \
+            src/xrectsel.c
 }
 
 # Input

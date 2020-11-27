@@ -137,5 +137,7 @@
         <file>src/commoncomponents/PresenceIndicator.qml</file>
         <file>src/commoncomponents/AvatarImage.qml</file>
         <file>src/mainview/components/ParticipantOverlayMenu.qml</file>
+        <file>src/commoncomponents/DaemonReconnectPopup.qml</file>
+        <file>src/DaemonReconnectWindow.qml</file>
     </qresource>
 </RCC>

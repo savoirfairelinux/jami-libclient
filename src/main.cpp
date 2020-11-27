@@ -80,7 +80,10 @@ main(int argc, char* argv[])
         return 0;
     }
 
-    app.init();
+    if (!app.init()) {
+        guard.release();
+        return 0;
+    }
 
     /*
      * Exec the application.

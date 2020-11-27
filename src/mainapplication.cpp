@@ -24,6 +24,7 @@
 #include "appsettingsmanager.h"
 #include "connectivitymonitor.h"
 #include "globalsystemtray.h"
+#include "namedirectory.h"
 #include "qmlregister.h"
 #include "qrimageprovider.h"
 #include "tintedbuttonimageprovider.h"
@@ -41,6 +42,11 @@
 
 #ifdef Q_OS_WIN
 #include <windows.h>
+#endif
+
+#ifdef Q_OS_UNIX
+#include "globalinstances.h"
+#include "dbuserrorhandler.h"
 #endif
 
 #if defined _MSC_VER && !COMPILE_ONLY
@@ -122,7 +128,7 @@ MainApplication::MainApplication(int& argc, char** argv)
     QObject::connect(this, &QApplication::aboutToQuit, [this] { cleanup(); });
 }
 
-void
+bool
 MainApplication::init()
 {
     setWindowIcon(QIcon(":images/jami.ico"));
@@ -144,6 +150,33 @@ MainApplication::init()
 
 #if defined _MSC_VER && !COMPILE_ONLY
     gnutls_global_init();
+#endif
+
+#ifdef Q_OS_UNIX
+    GlobalInstances::setDBusErrorHandler(std::make_unique<Interfaces::DBusErrorHandler>());
+    auto dBusErrorHandlerQObject = dynamic_cast<QObject*>(&GlobalInstances::dBusErrorHandler());
+    qmlRegisterSingletonType<Interfaces::DBusErrorHandler>("net.jami.Models",
+                                                           1,
+                                                           0,
+                                                           "DBusErrorHandler",
+                                                           [dBusErrorHandlerQObject](QQmlEngine* e,
+                                                                                     QJSEngine* se)
+                                                               -> QObject* {
+                                                               Q_UNUSED(e)
+                                                               Q_UNUSED(se)
+                                                               return dBusErrorHandlerQObject;
+                                                           });
+    engine_->setObjectOwnership(dBusErrorHandlerQObject, QQmlEngine::CppOwnership);
+
+    if ((!lrc::api::Lrc::isConnected()) || (!lrc::api::Lrc::dbusIsValid())) {
+        engine_->load(QUrl(QStringLiteral("qrc:/src/DaemonReconnectWindow.qml")));
+        exec();
+
+        if ((!lrc::api::Lrc::isConnected()) || (!lrc::api::Lrc::dbusIsValid()))
+            return false;
+        else
+            engine_.reset(new QQmlApplicationEngine());
+    }
 #endif
 
     initLrc(results[opts::UPDATEURL].toString(), connectivityMonitor_);
@@ -173,6 +206,8 @@ MainApplication::init()
     initSettings();
     initSystray();
     initQmlEngine();
+
+    return true;
 }
 
 void
@@ -317,6 +352,12 @@ MainApplication::initQmlEngine()
     engine_->addImageProvider(QLatin1String("qrImage"), new QrImageProvider());
     engine_->addImageProvider(QLatin1String("tintedPixmap"), new TintedButtonImageProvider());
     engine_->addImageProvider(QLatin1String("avatarImage"), new AvatarImageProvider());
+
+    engine_->setObjectOwnership(&LRCInstance::avModel(), QQmlEngine::CppOwnership);
+    engine_->setObjectOwnership(&LRCInstance::pluginModel(), QQmlEngine::CppOwnership);
+    engine_->setObjectOwnership(LRCInstance::getUpdateManager(), QQmlEngine::CppOwnership);
+    engine_->setObjectOwnership(&LRCInstance::instance(), QQmlEngine::CppOwnership);
+    engine_->setObjectOwnership(&NameDirectory::instance(), QQmlEngine::CppOwnership);
 
     engine_->load(QUrl(QStringLiteral("qrc:/src/MainApplicationWindow.qml")));
 }

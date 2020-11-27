@@ -406,5 +406,9 @@ Item {
     property string maximizeParticipant: qsTr("Maximize")
     property string minimizeParticipant: qsTr("Minimize")
     property string hangupParticipant: qsTr("Hangup")
+
+    // Daemon reconnection
+    property string reconnectDaemon: qsTr("Trying to reconnect to the Jami daemon (dring)…")
+    property string reconnectionFailed: qsTr("Could not re-connect to the Jami daemon (dring).\nJami will now quit.")
 }
 

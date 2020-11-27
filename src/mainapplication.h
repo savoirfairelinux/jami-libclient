@@ -37,7 +37,7 @@ public:
     explicit MainApplication(int& argc, char** argv);
     ~MainApplication() = default;
 
-    void init();
+    bool init();
 
 private:
     void loadTranslations();
@@ -51,6 +51,6 @@ private:
 
 private:
     QScopedPointer<QFile> debugFile_;
-    QQmlApplicationEngine* engine_;
+    QScopedPointer<QQmlApplicationEngine> engine_;
     ConnectivityMonitor* connectivityMonitor_;
 };
