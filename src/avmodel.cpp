@@ -146,7 +146,8 @@ AVModel::~AVModel()
 {
     std::lock_guard<std::mutex> lk(pimpl_->renderers_mtx_);
     for (auto r = pimpl_->renderers_.cbegin(); r != pimpl_->renderers_.cend(); ++r) {
-        (*r).second->quit();
+        if ((*r).second)
+            (*r).second->quit();
     }
 }
 
