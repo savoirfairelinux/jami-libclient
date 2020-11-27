@@ -40,9 +40,7 @@ Note: This project is quite new, and still need some work for the build integrat
 
 This client is only the graphical part, you will need to also build the daemon and LRC (the library containing the logic for desktop clients). Because of this, the recommended way is to clone our [meta-repository](https://review.jami.net/admin/repos/ring-project) containing all submodules needed.
 
-In order to use the QML Client it is necessary to install the Qt version 5.15 or higher. You can install it [from sources or download the binary installer](https://www.qt.io/download).
-
-Finally, pandoc is needed to generate the changelog page.
+In order to use the Qt Client it is necessary to have the Qt version 5.14 or higher. If your system does not have it you can install it [from sources or download the binary installer](https://www.qt.io/download).
 
 ## Build all projects
 
@@ -81,7 +79,6 @@ And you will have the daemon in `daemon/bin/dring` and the client in `client-qt/
 
 ```bash
 cd client-qt
-pandoc -f markdown -t html5 -o changelog.html changelog.md
 mkdir build
 cd build
 ${YOUR_QT5_gcc64_PATH}/bin/qmake /jami-qt.pro
