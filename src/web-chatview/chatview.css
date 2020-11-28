@@ -684,8 +684,8 @@ div.last_message > span {
 .message_in .message_wrapper {
     border-top-left-radius: 0;
     transform-origin: top left;
-    background-color: var(--message-out-bg);
-    color: var(--message-out-txt);
+    background-color: var(--message-in-bg);
+    color: var(--message-in-txt);
 }
 
 @-webkit-keyframes fade-in {
