@@ -43,6 +43,7 @@ ColumnLayout {
         Layout.preferredHeight: JamiTheme.preferredFieldHeight
 
         text: JamiStrings.media
+        color: JamiTheme.textColor
         font.pointSize: JamiTheme.headerFontSize
         font.kerning: true
 

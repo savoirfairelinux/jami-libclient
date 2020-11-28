@@ -22,106 +22,94 @@ pragma Singleton
 import QtQuick 2.14
 
 Item {
-    // Color strings
-    property string blackColor: "#000000"
-    property string whiteColor: "#ffffff"
-    property string transparentColor: "transparent"
-    property string primaryForegroundColor: blackColor
-    property string primaryBackgroundColor: whiteColor
+    // General
+    property color blackColor: "#000000"
+    property color whiteColor: "#ffffff"
+    property color transparentColor: "transparent"
+    property color primaryForegroundColor: blackColor
+    property color primaryBackgroundColor: whiteColor
+    property color backgroundColor: lightGrey_
+    property color shadowColor: "#80000000"
+    property color secondaryBackgroundColor: "white"
+    property color greyBorderColor: "#333"
+    property color selectionBlue: "#109ede"
 
-    property string pressedButtonColor: "#a0a0a0"
-    property string hoveredButtonColor: "#c7c7c7"
-    property string normalButtonColor: "#e0e0e0"
+    property color hoverColor: "#c7c7c7"
+    property color pressColor: "#c0c0c0"
+    property color selectedColor: "#e0e0e0"
+    property color editBackgroundColor: lightGrey_
+    property color textColor: primaryForegroundColor
+    property color tabbarBorderColor: "#e3e3e3"
 
-    property string invertedPressedButtonColor: Qt.rgba(0, 0, 0, 0.5)
-    property string invertedHoveredButtonColor: Qt.rgba(0, 0, 0, 0.6)
-    property string invertedNormalButtonColor: Qt.rgba(0, 0, 0, 0.75)
+    // Side panel
+    property color presenceGreen: "#4cd964"
+    property color notificationRed: "#ff3b30"
+    property color unPresenceOrange: "orange"
+    property color contactSearchBarPlaceHolderTextFontColor: "#767676"
+    property color draftRed: "#cf5300"
 
-    property string hoverColor: "#c7c7c7"
-    property string pressColor: "#c0c0c0"
+    // General buttons
+    property color pressedButtonColor: "#a0a0a0"
+    property color hoveredButtonColor: "#c7c7c7"
+    property color normalButtonColor: "#e0e0e0"
 
-    property string tabbarBorderColor: "#e3e3e3"
-    property string presenceGreen: "#4cd964"
-    property string notificationRed: "#ff3b30"
-    property string unPresenceOrange: "orange"
-    property string backgroundColor: lightGrey_
-    property string backgroundDarkColor: rgb256(220, 220, 220)
+    property color invertedPressedButtonColor: Qt.rgba(0, 0, 0, 0.5)
+    property color invertedHoveredButtonColor: Qt.rgba(0, 0, 0, 0.6)
+    property color invertedNormalButtonColor: Qt.rgba(0, 0, 0, 0.75)
 
-    property string screenSelectionBorderGreen: "green"
+    property color buttonTintedBlue: "#00aaff"
+    property color buttonTintedBlueHovered: "#0e81c5"
+    property color buttonTintedBluePressed: "#273261"
+    property color buttonTintedGrey: "#999"
+    property color buttonTintedGreyHovered: "#777"
+    property color buttonTintedGreyPressed: "#777"
+    property color buttonTintedGreyInactive: "#bbb"
+    property color buttonTintedBlack: "#333"
+    property color buttonTintedBlackHovered: "#111"
+    property color buttonTintedBlackPressed: "#000"
+    property color buttonTintedRed: "red"
+    property color buttonTintedRedHovered: "#c00"
+    property color buttonTintedRedPressed: "#b00"
 
-    property string acceptButtonGreen: "#4caf50"
-    property string acceptButtonHoverGreen: "#5db761"
-    property string acceptButtonPressedGreen: "#449d48"
+    property color closeButtonLighterBlack: "#4c4c4c"
 
-    property string declineButtonRed: "#f44336"
-    property string declineButtonHoverRed: "#f5554a"
-    property string declineButtonPressedRed: "#db3c30"
+    // Call buttons
+    property color acceptButtonGreen: "#4caf50"
+    property color acceptButtonHoverGreen: "#5db761"
+    property color acceptButtonPressedGreen: "#449d48"
 
-    property string hangUpButtonTintedRed: "#ff0000"
-    property string buttonTintedBlue: "#00aaff"
-    property string buttonTintedBlueHovered: "#0e81c5"
-    property string buttonTintedBluePressed: "#273261"
-    property string buttonTintedGrey: "#999"
-    property string buttonTintedGreyHovered: "#777"
-    property string buttonTintedGreyPressed: "#777"
-    property string buttonTintedGreyInactive: "#bbb"
-    property string buttonTintedBlack: "#333"
-    property string buttonTintedBlackHovered: "#111"
-    property string buttonTintedBlackPressed: "#000"
-    property string buttonTintedRed: "red"
-    property string buttonTintedRedHovered: "#c00"
-    property string buttonTintedRedPressed: "#b00"
+    property color declineButtonRed: "#f44336"
+    property color declineButtonHoverRed: "#f5554a"
+    property color declineButtonPressedRed: "#db3c30"
 
-    property string selectionBlue: "#109ede"
-    property string selectionGreen: "#21be2b"
-    property string rubberBandSelectionBlue: "steelblue"
+    property color sipInputButtonBackgroundColor: "#336699"
+    property color sipInputButtonHoverColor: "#4477aa"
+    property color sipInputButtonPressColor: "#5588bb"
 
-    property string closeButtonLighterBlack: "#4c4c4c"
+    // Wizard / account manager
+    property color accountCreationOtherStepColor: "grey"
+    property color accountCreationCurrentStepColor: "#28b1ed"
+    property color wizardBlueButtons: "#28b1ed"
+    property color wizardGreenColor: "#aed581"
+    property color requiredFieldColor: "#ff1f62"
+    property color requiredFieldBackgroundColor: "#fee4e9"
 
-    property string contactSearchBarPlaceHolderTextFontColor: "#767676"
-    property string contactSearchBarPlaceHolderGreyBackground: "#dddddd"
-
-    property string draftRed: "#cf5300"
-
-    property string sipInputButtonBackgroundColor: "#336699"
-    property string sipInputButtonHoverColor: "#4477aa"
-    property string sipInputButtonPressColor: "#5588bb"
-
-    property string accountCreationOtherStepColor: "grey"
-    property string accountCreationCurrentStepColor: "#28b1ed"
+    // Misc
+    property color recordIconColor: "#dc2719"
+    property color successLabelColor: "#2b5084"
+    property color rubberBandSelectionBlue: "steelblue"
+    property color screenSelectionBorderGreen: "green"
 
     // Font.
-    property string faddedFontColor: "#c0c0c0"
-    property string faddedLastInteractionFontColor: "#505050"
-
-    property int splitViewHandlePreferredWidth: 4
-    property int textFontSize: 9
-    property int tinyFontSize: 7
-    property int settingsFontSize: 9
-    property int buttonFontSize: 9
-    property int headerFontSize: 13
-    property int titleFontSize: 16
-    property int menuFontSize: 12
-
-    property int maximumWidthSettingsView: 600
-    property int settingsHeaderpreferredHeight: 64
-    property int preferredFieldWidth: 256
-    property int preferredFieldHeight: 32
-    property int preferredMarginSize: 16
-    property int preferredDialogWidth: 400
-    property int preferredDialogHeight: 300
-    property int minimumPreviewWidth: 120
-
-    // Misc.
-    property color white: "white"
-    property color darkGrey: rgb256(63, 63, 63)
+    property color faddedFontColor: "#a0a0a0"
+    property color faddedLastInteractionFontColor: "#505050"
 
     // Jami theme colors
     function rgb256(r, g, b) {
         return Qt.rgba(r / 255, g / 255, b / 255, 1.0)
     }
 
-    property color wizardBlueButtons: "#28b1ed"
+    property color darkGrey: rgb256(63, 63, 63)
     property color blueLogo_: rgb256(0, 7, 71)
     property color lightGrey_: rgb256(242, 242, 242)
     property color grey_: rgb256(160, 160, 160)
@@ -131,4 +119,23 @@ Item {
     property color presenceGreen_: rgb256(76, 217, 100)
 
     property int fadeDuration: 150
+
+    // Sizes
+    property int splitViewHandlePreferredWidth: 4
+    property int tinyFontSize: 7
+    property int textFontSize: 9
+    property int settingsFontSize: 9
+    property int buttonFontSize: 9
+    property int menuFontSize: 12
+    property int headerFontSize: 13
+    property int titleFontSize: 16
+
+    property int maximumWidthSettingsView: 600
+    property int settingsHeaderpreferredHeight: 64
+    property int preferredFieldWidth: 256
+    property int preferredFieldHeight: 32
+    property int preferredMarginSize: 16
+    property int preferredDialogWidth: 400
+    property int preferredDialogHeight: 300
+    property int minimumPreviewWidth: 120
 }

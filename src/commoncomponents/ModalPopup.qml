@@ -19,6 +19,7 @@
 import QtQuick 2.14
 import QtQuick.Controls 2.14
 import QtGraphicalEffects 1.14
+import net.jami.Models 1.0
 
 Popup {
     id: root
@@ -67,7 +68,7 @@ Popup {
         verticalOffset: 3.0
         radius: container.radius * 2
         samples: 16
-        color: "#80000000"
+        color: JamiTheme.shadowColor
         source: container
     }
 

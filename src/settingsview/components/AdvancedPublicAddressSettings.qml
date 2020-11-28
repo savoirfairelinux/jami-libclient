@@ -50,6 +50,7 @@ ColumnLayout {
         verticalAlignment: Text.AlignVCenter
 
         text: JamiStrings.publicAddress
+        color: JamiTheme.textColor
         elide: Text.ElideRight
     }
 

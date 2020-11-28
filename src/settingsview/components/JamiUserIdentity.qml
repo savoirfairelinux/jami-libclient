@@ -68,6 +68,7 @@ ColumnLayout {
             anchors.verticalCenter: parent.verticalCenter
 
             text: JamiStrings.identifier
+            color: JamiTheme.textColor
             font.pointSize: JamiTheme.settingsFontSize
             font.kerning: true
 
@@ -94,6 +95,7 @@ ColumnLayout {
             selectByMouse: true
 
             text: currentRingIDText.elidedText
+            color: JamiTheme.textColor
 
             horizontalAlignment: Text.AlignRight
             verticalAlignment: Text.AlignVCenter
@@ -131,6 +133,7 @@ ColumnLayout {
             anchors.verticalCenter: parent.verticalCenter
 
             text: JamiStrings.username
+            color: JamiTheme.textColor
             font.pointSize: JamiTheme.settingsFontSize
             font.kerning: true
 

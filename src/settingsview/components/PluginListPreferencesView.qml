@@ -41,6 +41,7 @@ Rectangle {
     property bool isLoaded: false
 
     visible: false
+    color: "transparent"
 
     signal uninstalled
 
@@ -124,6 +125,7 @@ Rectangle {
             text: qsTr(pluginName + "\npreferences")
             font.pointSize: JamiTheme.headerFontSize
             font.kerning: true
+            color: JamiTheme.textColor
 
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
@@ -208,7 +210,7 @@ Rectangle {
 
                 background: Rectangle {
                     anchors.fill: parent
-                    color: "white"
+                    color: JamiTheme.secondaryBackgroundColor
                 }
             }
         }

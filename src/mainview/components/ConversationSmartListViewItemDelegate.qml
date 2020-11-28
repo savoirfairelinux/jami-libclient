@@ -59,7 +59,7 @@ ItemDelegate {
             } else {
                 itemSmartListBackground.color = Qt.binding(function () {
                     return InCall ? Qt.lighter(JamiTheme.selectionBlue,
-                                               1.8) : JamiTheme.normalButtonColor
+                                               1.8) : JamiTheme.selectedColor
                 })
                 ConversationsAdapter.selectConversation(
                             AccountAdapter.currentAccountId, UID)
@@ -127,6 +127,7 @@ ItemDelegate {
             }
             text: textMetricsConversationSmartListUserName.elidedText
             font.pointSize: JamiTheme.menuFontSize
+            color: JamiTheme.textColor
         }
 
         Text {
@@ -202,7 +203,7 @@ ItemDelegate {
         }
         onReleased: {
             if (!InCall) {
-                itemSmartListBackground.color = JamiTheme.normalButtonColor
+                itemSmartListBackground.color = JamiTheme.selectionBlue
             }
             if (mouse.button === Qt.RightButton) {
                 smartListContextMenu.parent = mouseAreaSmartListItemDelegate
@@ -242,7 +243,7 @@ ItemDelegate {
                 } else {
                     itemSmartListBackground.color = Qt.binding(function () {
                         return InCall ? Qt.lighter(JamiTheme.selectionBlue,
-                                                   1.8) : JamiTheme.normalButtonColor
+                                                   1.8) : JamiTheme.selectedColor
                     })
                 }
             }

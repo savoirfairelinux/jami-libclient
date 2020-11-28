@@ -72,8 +72,9 @@ Rectangle {
 
                 buttonText: name
                 source: iconSource
+                imageColor: JamiTheme.textColor
                 pressedColor: Qt.lighter(JamiTheme.pressedButtonColor, 1.25)
-                checkedColor: JamiTheme.normalButtonColor
+                checkedColor: JamiTheme.selectedColor
                 hoveredColor: JamiTheme.hoverColor
                 fontPointSize: JamiTheme.textFontSize + 2
                 duration: 0

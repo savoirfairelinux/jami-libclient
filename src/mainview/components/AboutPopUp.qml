@@ -34,6 +34,7 @@ ModalPopup {
         id: contentRect
 
         implicitWidth: 400
+        color: JamiTheme.backgroundColor
 
         ScrollView {
             id: aboutPopUpScrollView
@@ -83,6 +84,7 @@ ModalPopup {
                         verticalAlignment: Text.AlignVCenter
 
                         text: textMetricsjamiVersionText.text
+                        color: JamiTheme.textColor
 
                         TextMetrics {
                             id: textMetricsjamiVersionText
@@ -106,6 +108,7 @@ ModalPopup {
                         verticalAlignment: Text.AlignVCenter
 
                         text: textMetricsjamiSlogansText.text
+                        color: JamiTheme.textColor
 
                         TextMetrics {
                             id: textMetricsjamiSlogansText
@@ -124,6 +127,7 @@ ModalPopup {
 
                         wrapMode: Text.WordWrap
                         font.pointSize: JamiTheme.textFontSize
+                        color: JamiTheme.textColor
 
                         horizontalAlignment: Text.AlignHCenter
                         verticalAlignment: Text.AlignVCenter
@@ -143,6 +147,7 @@ ModalPopup {
                         Layout.preferredHeight: textMetricsjamiDeclarationHyperText.boundingRect.height
                         Layout.topMargin: 5
                         Layout.bottomMargin: 5
+                        color: JamiTheme.textColor
 
                         font.pointSize: JamiTheme.textFontSize
                         horizontalAlignment: Text.AlignHCenter
@@ -175,6 +180,7 @@ ModalPopup {
                         Layout.bottomMargin: 5
 
                         font.pointSize: JamiTheme.textFontSize
+                        color: JamiTheme.textColor
 
                         horizontalAlignment: Text.AlignHCenter
                         verticalAlignment: Text.AlignVCenter
@@ -201,6 +207,7 @@ ModalPopup {
 
                         horizontalAlignment: Text.AlignHCenter
                         verticalAlignment: Text.AlignVCenter
+                        color: JamiTheme.textColor
 
                         text: textMetricsjamiNoneWarrantyHyperText.text
                         onLinkActivated: Qt.openUrlExternally(link)

@@ -1,5 +1,6 @@
 import QtQuick 2.14
 import QtQuick.Controls 2.14
+import net.jami.Models 1.0
 
 Item {
     property alias text: shortcutText.text
@@ -7,7 +8,7 @@ Item {
         id: keyRect
         width: t_metrics.tightBoundingRect.width + 10
         height: t_metrics.tightBoundingRect.height + 10
-        color: "#525252"
+        color: JamiTheme.buttonTintedGrey
         radius: 5
         anchors.centerIn: parent
         Text {
@@ -16,7 +17,7 @@ Item {
             anchors.leftMargin: 10
             font.family: "Arial"
             font.pointSize: 12
-            color: "white"
+            color: JamiTheme.whiteColor
         }
         TextMetrics {
             id:     t_metrics

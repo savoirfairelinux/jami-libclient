@@ -48,6 +48,7 @@ ColumnLayout {
         verticalAlignment: Text.AlignVCenter
 
         text: qsTr("Name Server")
+        color: JamiTheme.textColor
         elide: Text.ElideRight
     }
 

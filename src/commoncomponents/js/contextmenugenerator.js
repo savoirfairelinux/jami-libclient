@@ -87,7 +87,8 @@ function addMenuSeparator(separatorHeight, separatorColor) {
 
 function addMenuItem(itemName,
                      iconSource,
-                     onClickedCallback) {
+                     onClickedCallback,
+                     iconColor="") {
     if (!baseContextMenuObject.count){
         // Add default separator at the top.
         addMenuSeparator(8, "transparent")
@@ -99,6 +100,7 @@ function addMenuItem(itemName,
         menuItemObject = menuItemComponent.createObject(null,
                          {itemName: itemName,
                           iconSource: iconSource,
+                          iconColor: iconColor,
                           leftBorderWidth: baseContextMenuObject.commonBorderWidth,
                           rightBorderWidth: baseContextMenuObject.commonBorderWidth})
     } else if (menuItemComponent.status === Component.Error)
@@ -107,7 +109,7 @@ function addMenuItem(itemName,
     if (menuItemObject !== null) {
         menuItemObject.clicked.connect(function () {baseContextMenuObject.close()})
         menuItemObject.clicked.connect(onClickedCallback)
-        menuItemObject.icon.color = "black"
+        menuItemObject.icon.color = "green"
 
         baseContextMenuObject.addItem(menuItemObject)
 

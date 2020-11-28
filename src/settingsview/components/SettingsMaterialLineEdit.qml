@@ -60,6 +60,7 @@ RowLayout {
         verticalAlignment: Text.AlignVCenter
 
         text: titleField
+        color: JamiTheme.textColor
         elide: Text.ElideRight
     }
 

@@ -107,6 +107,7 @@ ColumnLayout {
             Layout.fillWidth: true
             Layout.rightMargin: JamiTheme.preferredMarginSize / 2
 
+            color: JamiTheme.textColor
             text: qsTr("Quality")
             font.pointSize: JamiTheme.settingsFontSize
             font.kerning: true
@@ -123,6 +124,7 @@ ColumnLayout {
             Layout.fillWidth: true
             Layout.rightMargin: JamiTheme.preferredMarginSize / 2
 
+            color: JamiTheme.textColor
             text: UtilsAdapter.getRecordQualityString(AVModel.getRecordQuality() / 100)
 
             font.pointSize: JamiTheme.settingsFontSize
@@ -163,6 +165,7 @@ ColumnLayout {
             Layout.fillHeight: true
 
             text: qsTr("Save in")
+            color: JamiTheme.textColor
             font.pointSize: JamiTheme.settingsFontSize
             font.kerning: true
 

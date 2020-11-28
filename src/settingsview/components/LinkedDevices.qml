@@ -106,6 +106,7 @@ ColumnLayout {
         Layout.preferredHeight: JamiTheme.preferredFieldHeight
 
         text: qsTr("Linked Devices")
+        color: JamiTheme.textColor
 
         font.pointSize: JamiTheme.headerFontSize
         font.kerning: true

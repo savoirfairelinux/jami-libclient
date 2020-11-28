@@ -37,6 +37,7 @@ BaseDialog {
 
         implicitWidth: 800
         implicitHeight: 600
+        color: JamiTheme.backgroundColor
 
         ListModel {
             id: keyboardGeneralShortcutsModel
@@ -160,8 +161,8 @@ BaseDialog {
                 implicitHeight: 50
                 anchors.left: parent.left
                 anchors.leftMargin: 20
-                color: "white"
-                border.color: "white"
+                color: JamiTheme.backgroundColor
+                border.color: JamiTheme.backgroundColor
 
                 Rectangle {
                     id: containerRectWithThreeKeys
@@ -171,6 +172,7 @@ BaseDialog {
 
                     anchors.horizontalCenter: parent.horizontalCenter
                     anchors.verticalCenter: parent.verticalCenter
+                    color: JamiTheme.backgroundColor
 
                     Component.onCompleted: {
                         var componentKeyOne = Qt.createComponent("KeyBoardShortcutKey.qml")
@@ -187,7 +189,7 @@ BaseDialog {
                                                                 'anchors.verticalCenterOffset: -2;' +
                                                                 'anchors.left: containerRectWithThreeKeys.left;' +
                                                                 'anchors.leftMargin: 30;' +
-                                                                'color: "#525252";' +
+                                                                'color: "' + JamiTheme.textColor + '";' +
                                                                 'font.bold: true;' +
                                                                 'font.pointSize : 12;' +
                                                                 'text: "+"}',
@@ -209,7 +211,7 @@ BaseDialog {
                                                                     'anchors.verticalCenterOffset: -2;' +
                                                                     'anchors.left: containerRectWithThreeKeys.left;' +
                                                                     'anchors.leftMargin: 97;' +
-                                                                    'color: "#525252";' +
+                                                                    'color: "' + JamiTheme.textColor + '";' +
                                                                     'font.bold: true;' +
                                                                     'font.pointSize : 12;' +
                                                                     'text: "+"}',
@@ -234,8 +236,8 @@ BaseDialog {
                 implicitWidth: root.width / 2
                 implicitHeight: 50
 
-                color: "white"
-                border.color: "white"
+                color: JamiTheme.backgroundColor
+                border.color: JamiTheme.backgroundColor
                 Text {
                     id : descriptionText
                     anchors.verticalCenter: parent.verticalCenter
@@ -244,6 +246,7 @@ BaseDialog {
                     font.family: "Arial"
                     font.pointSize: JamiTheme.textFontSize
                     text: styleData.value
+                    color: JamiTheme.textColor
                 }
             }
         }
@@ -275,6 +278,7 @@ BaseDialog {
                             id: generalTableView
                             anchors.fill: parent
                             horizontalScrollBarPolicy: Qt.ScrollBarAlwaysOff
+                            frameVisible: false
                             TableViewColumn {
                                 role: "Description"
                                 width: generalTableView.width / 2
@@ -294,20 +298,16 @@ BaseDialog {
                             model: keyboardGeneralShortcutsModel
                             rowDelegate: Rectangle {
                                 height: 50
-                                color: "white"
+                                color: JamiTheme.backgroundColor
                             }
                             style: TableViewStyle {
-                                alternateBackgroundColor: "white"
-                                frame: Rectangle {
-                                    border{
-                                        color: "transparent" // color of the border
-                                    }
-                                }
+                                backgroundColor: JamiTheme.backgroundColor
+                                alternateBackgroundColor: JamiTheme.backgroundColor
                                 headerDelegate: Rectangle {
                                     // Only first column's header is shown
                                     height: [t_metrics_general.tightBoundingRect.height + 10, 0][styleData.column % 2]
                                     width: [parent.width, 0][styleData.column % 2]
-                                    color: "white"
+                                    color: JamiTheme.backgroundColor
                                     radius: 4
                                     anchors.top: parent.top
                                     anchors.topMargin: 5
@@ -319,7 +319,7 @@ BaseDialog {
                                         font.family: "Arial"
                                         font.pointSize: JamiTheme.headerFontSize
                                         text: styleData.column % 2 ? "" : "General"
-                                        color: "black"
+                                        color: JamiTheme.textColor
                                     }
                                     TextMetrics {
                                         id:     t_metrics_general
@@ -334,11 +334,11 @@ BaseDialog {
                         implicitWidth: parent.width / 2
                         implicitHeight: parent.height
                         anchors.right: parent.right
-
                         TableView {
                             id: conversationsTableView
                             anchors.fill: parent
                             horizontalScrollBarPolicy: Qt.ScrollBarAlwaysOff
+                            frameVisible: false
                             TableViewColumn {
                                 role: "Description"
                                 width: conversationsTableView.width / 2
@@ -358,20 +358,16 @@ BaseDialog {
                             model: keyboardConversationShortcutsModel
                             rowDelegate: Rectangle {
                                 height: 50
-                                color: "white"
+                                color: JamiTheme.backgroundColor
                             }
                             style: TableViewStyle {
-                                alternateBackgroundColor: "white"
-                                frame: Rectangle {
-                                    border{
-                                        color: "transparent" // color of the border
-                                    }
-                                }
+                                backgroundColor: JamiTheme.backgroundColor
+                                alternateBackgroundColor: JamiTheme.backgroundColor
                                 headerDelegate: Rectangle {
                                     // Only first column's header is shown
                                     height: [t_metrics_conversations.tightBoundingRect.height + 10, 0][styleData.column % 2]
                                     width: [parent.width, 0][styleData.column % 2]
-                                    color: "white"
+                                    color: JamiTheme.backgroundColor
                                     radius: 4
                                     anchors.top: parent.top
                                     anchors.topMargin: 5
@@ -383,7 +379,7 @@ BaseDialog {
                                         font.family: "Arial"
                                         font.pointSize: JamiTheme.headerFontSize
                                         text: styleData.column % 2 ? "" : JamiStrings.conversations
-                                        color: "black"
+                                        color: JamiTheme.textColor
                                     }
                                     TextMetrics {
                                         id:     t_metrics_conversations
@@ -405,6 +401,7 @@ BaseDialog {
                             id: callsTableView
                             anchors.fill: parent
                             horizontalScrollBarPolicy: Qt.ScrollBarAlwaysOff
+                            frameVisible: false
                             TableViewColumn {
                                 role: "Description"
                                 width: callsTableView.width / 2
@@ -424,20 +421,16 @@ BaseDialog {
                             model: keyboardCallsShortcutsModel
                             rowDelegate: Rectangle {
                                 height: 50
-                                color: "white"
+                                color: JamiTheme.backgroundColor
                             }
                             style: TableViewStyle {
-                                alternateBackgroundColor: "white"
-                                frame: Rectangle {
-                                    border{
-                                        color: "transparent" // color of the border
-                                    }
-                                }
+                                backgroundColor: JamiTheme.backgroundColor
+                                alternateBackgroundColor: JamiTheme.backgroundColor
                                 headerDelegate: Rectangle {
                                     // Only first column's header is shown
                                     height: [t_metrics_calls.tightBoundingRect.height + 10, 0][styleData.column % 2]
                                     width: [parent.width, 0][styleData.column % 2]
-                                    color: "white"
+                                    color: JamiTheme.backgroundColor
                                     radius: 4
                                     anchors.top: parent.top
                                     anchors.topMargin: 5
@@ -449,7 +442,7 @@ BaseDialog {
                                         font.family: "Arial"
                                         font.pointSize: 12
                                         text: styleData.column % 2 ? "" : "Calls"
-                                        color: "black"
+                                        color: JamiTheme.textColor
                                     }
                                     // make sure that calls and settings header are parallel
                                     TextMetrics {
@@ -469,6 +462,7 @@ BaseDialog {
                             id: settingsTableView
                             anchors.fill: parent
                             horizontalScrollBarPolicy: Qt.ScrollBarAlwaysOff
+                            frameVisible: false
                             TableViewColumn {
                                 role: "Description"
                                 width: settingsTableView.width / 2
@@ -488,20 +482,16 @@ BaseDialog {
                             model: keyboardSettingsShortcutsModel
                             rowDelegate: Rectangle {
                                 height: 50
-                                color: "white"
+                                color: JamiTheme.backgroundColor
                             }
                             style: TableViewStyle {
-                                alternateBackgroundColor: "white"
-                                frame: Rectangle {
-                                    border{
-                                        color: "transparent" // color of the border
-                                    }
-                                }
+                                backgroundColor: JamiTheme.backgroundColor
+                                alternateBackgroundColor: JamiTheme.backgroundColor
                                 headerDelegate: Rectangle {
                                     // Only first column's header is shown
                                     height: [t_metrics_settings.tightBoundingRect.height + 10, 0][styleData.column % 2]
                                     width: [parent.width, 0][styleData.column % 2]
-                                    color: "white"
+                                    color: JamiTheme.backgroundColor
                                     radius: 4
                                     anchors.top: parent.top
                                     anchors.topMargin: 5
@@ -513,7 +503,7 @@ BaseDialog {
                                         font.family: "Arial"
                                         font.pointSize: 12
                                         text: styleData.column % 2 ? "" : "Settings"
-                                        color: "black"
+                                        color: JamiTheme.textColor
                                     }
                                     TextMetrics {
                                         id:     t_metrics_settings
@@ -537,6 +527,7 @@ BaseDialog {
 
             width: JamiTheme.preferredFieldWidth * 2
             height: JamiTheme.preferredFieldHeight
+            background: Rectangle { color: "transparent" }
 
             currentIndex: 0
             TabButton {
@@ -552,6 +543,7 @@ BaseDialog {
                     horizontalAlignment: Text.AlignHCenter
                     verticalAlignment: Text.AlignVCenter
                     elide: Text.ElideRight
+                    color: JamiTheme.textColor
                 }
                 // customize tab button
                 background: Rectangle {
@@ -559,14 +551,14 @@ BaseDialog {
                     implicitWidth: JamiTheme.preferredFieldWidth
                     implicitHeight: JamiTheme.preferredFieldHeight
                     radius: 4
-                    color: pageOne.down ? "#e0e0e0" :"#fdfdfd"
+                    color: pageOne.down ? JamiTheme.selectedColor : "transparent"
                     MouseArea {
                         anchors.fill: parent
                         hoverEnabled: true
-                        onPressed: { buttonRectOne.color = "#c0c0c0"; tabBar.currentIndex = 0; pageOne.down = true; pageTwo.down = false;}
-                        onReleased: { buttonRectOne.color = "#e0e0e0"; }
-                        onEntered: { buttonRectOne.color = "#c7c7c7"; }
-                        onExited: { buttonRectOne.color = Qt.binding(function() { return pageOne.down ? "#e0e0e0" :"#fdfdfd" }); }
+                        onPressed: { buttonRectOne.color = JamiTheme.pressColor; tabBar.currentIndex = 0; pageOne.down = true; pageTwo.down = false;}
+                        onReleased: { buttonRectOne.color = JamiTheme.selectedColor; }
+                        onEntered: { buttonRectOne.color = JamiTheme.hoverColor; }
+                        onExited: { buttonRectOne.color = Qt.binding(function() { return pageOne.down ? JamiTheme.selectedColor : "transparent" }); }
                     }
                 }
             }
@@ -581,6 +573,7 @@ BaseDialog {
                     horizontalAlignment: Text.AlignHCenter
                     verticalAlignment: Text.AlignVCenter
                     elide: Text.ElideRight
+                    color: JamiTheme.textColor
                 }
 
                 background: Rectangle {
@@ -589,14 +582,14 @@ BaseDialog {
                     implicitHeight: JamiTheme.preferredFieldHeight
 
                     radius: 4
-                    color: pageTwo.down ? "#e0e0e0" :"#fdfdfd"
+                    color: pageTwo.down ? JamiTheme.selectedColor : "transparent"
                     MouseArea {
                         anchors.fill: parent
                         hoverEnabled: true
-                        onPressed: { buttonRectTwo.color = "#c0c0c0"; tabBar.currentIndex = 1; pageTwo.down = true; pageOne.down = false;}
-                        onReleased: { buttonRectTwo.color = "#e0e0e0"; }
-                        onEntered: { buttonRectTwo.color = "#c7c7c7"; }
-                        onExited: { buttonRectTwo.color = Qt.binding(function() { return pageTwo.down ? "#e0e0e0" :"#fdfdfd" }); }
+                        onPressed: { buttonRectTwo.color = JamiTheme.pressColor; tabBar.currentIndex = 1; pageTwo.down = true; pageOne.down = false;}
+                        onReleased: { buttonRectTwo.color = JamiTheme.selectedColor; }
+                        onEntered: { buttonRectTwo.color = JamiTheme.hoverColor; }
+                        onExited: { buttonRectTwo.color = Qt.binding(function() { return pageTwo.down ? JamiTheme.selectedColor : "transparent" }); }
                     }
                 }
             }

@@ -58,6 +58,7 @@ RowLayout {
         verticalAlignment: Text.AlignVCenter
 
         text: root.titleField
+        color: JamiTheme.textColor
         elide: Text.ElideRight
     }
 

@@ -37,8 +37,8 @@ TextField {
 
     property int borderColorMode: MaterialLineEdit.NORMAL
     property var iconSource: ""
-    property var backgroundColor: JamiTheme.rgb256(240,240,240)
-    property var borderColor: "#333"
+    property var backgroundColor: JamiTheme.editBackgroundColor
+    property var borderColor: JamiTheme.greyBorderColor
 
     signal imageClicked
 
@@ -51,11 +51,11 @@ TextField {
         switch(borderColorMode){
         case MaterialLineEdit.SEARCHING:
             iconSource = "qrc:/images/jami_rolling_spinner.gif"
-            borderColor = "#333"
+            borderColor = JamiTheme.greyBorderColor
             break
         case MaterialLineEdit.NORMAL:
             iconSource = ""
-            borderColor = "#333"
+            borderColor = JamiTheme.greyBorderColor
             break
         case MaterialLineEdit.RIGHT:
             iconSource = "qrc:/images/icons/round-check_circle-24px.svg"
@@ -76,6 +76,7 @@ TextField {
     font.kerning: true
     horizontalAlignment: Text.AlignLeft
     verticalAlignment: Text.AlignVCenter
+    color: JamiTheme.textColor
 
     Image {
         id: lineEditImage

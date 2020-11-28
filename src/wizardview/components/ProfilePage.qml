@@ -75,6 +75,7 @@ Rectangle {
 
             Label {
                 text: qsTr("Profile is only shared with contacts")
+                color: JamiTheme.textColor
                 font.pointSize: JamiTheme.textFontSize + 3
             }
 
@@ -82,11 +83,11 @@ Rectangle {
                 Layout.alignment: Qt.AlignRight
 
                 text: qsTr("Optional")
-                color: "white"
+                color: JamiTheme.whiteColor
                 padding: 8
 
                 background: Rectangle {
-                    color: "#28b1ed"
+                    color: JamiTheme.wizardBlueButtons
                     radius: 24
                     anchors.fill: parent
                 }

@@ -59,6 +59,7 @@ RowLayout {
         text: root.title
         font.pointSize: JamiTheme.titleFontSize
         font.kerning: true
+        color: JamiTheme.textColor
 
         horizontalAlignment: Text.AlignLeft
         verticalAlignment: Text.AlignVCenter

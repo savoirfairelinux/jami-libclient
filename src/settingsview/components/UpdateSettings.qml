@@ -236,7 +236,7 @@ ColumnLayout {
                     anchors.horizontalCenter: parent.horizontalCenter
                     anchors.verticalCenter: parent.verticalCenter
 
-                    color: JamiTheme.white
+                    color: JamiTheme.whiteColor
                     font.bold: true
                     font.pointSize: JamiTheme.textFontSize + 1
                     horizontalAlignment: Text.AlignHCenter

@@ -36,7 +36,7 @@ Label {
 
     horizontalAlignment: Text.AlignLeft
     verticalAlignment: Text.AlignVCenter
-    color: "black"
+    color: JamiTheme.textColor
 
     TextMetrics {
         id: elided

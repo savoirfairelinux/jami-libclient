@@ -45,7 +45,6 @@ Popup {
 
     contentItem: Rectangle {
         id: contactPickerPopupRect
-
         width: 250
 
         PushButton {
@@ -55,6 +54,7 @@ Popup {
             anchors.topMargin: 5
             anchors.right: contactPickerPopupRect.right
             anchors.rightMargin: 5
+            imageColor: JamiTheme.textColor
 
             source: "qrc:/images/icons/round-close-24px.svg"
 
@@ -78,6 +78,7 @@ Popup {
 
                 font.pointSize: JamiTheme.textFontSize
                 font.bold: true
+                color: JamiTheme.textColor
 
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
@@ -121,7 +122,7 @@ Popup {
         }
 
         radius: 10
-        color: "white"
+        color: JamiTheme.backgroundColor
     }
 
     onAboutToShow: {

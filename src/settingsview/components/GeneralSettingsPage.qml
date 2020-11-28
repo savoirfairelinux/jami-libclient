@@ -35,6 +35,8 @@ Rectangle {
     property int contentWidth: generalSettingsColumnLayout.width
     property int preferredHeight: generalSettingsColumnLayout.implicitHeight
 
+    color: JamiTheme.secondaryBackgroundColor
+
     ColumnLayout {
         id: generalSettingsColumnLayout
 

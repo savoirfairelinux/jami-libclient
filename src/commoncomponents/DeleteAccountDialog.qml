@@ -56,6 +56,7 @@ BaseDialog {
 
         implicitWidth: JamiTheme.preferredDialogWidth
         implicitHeight: JamiTheme.preferredDialogHeight
+        color: JamiTheme.secondaryBackgroundColor
 
         ColumnLayout {
             anchors.centerIn: parent
@@ -68,6 +69,7 @@ BaseDialog {
                 Layout.alignment: Qt.AlignHCenter
                 Layout.preferredWidth: deleteAccountContentRect.width - JamiTheme.preferredMarginSize * 2
 
+                color: JamiTheme.textColor
                 text: JamiStrings.confirmDeleteQuestion
 
                 font.pointSize: JamiTheme.textFontSize
@@ -84,6 +86,7 @@ BaseDialog {
                 Layout.alignment: Qt.AlignHCenter
                 Layout.preferredWidth: deleteAccountContentRect.width - JamiTheme.preferredMarginSize * 2
 
+                color: JamiTheme.textColor
                 text: SettingsAdapter.getAccountBestName()
 
                 font.pointSize: JamiTheme.textFontSize
@@ -101,6 +104,7 @@ BaseDialog {
                 Layout.alignment: Qt.AlignHCenter
                 Layout.preferredWidth: deleteAccountContentRect.width - JamiTheme.preferredMarginSize * 2
 
+                color: JamiTheme.textColor
                 text: SettingsAdapter.getCurrentAccount_Profile_Info_Uri()
 
                 font.pointSize: JamiTheme.textFontSize

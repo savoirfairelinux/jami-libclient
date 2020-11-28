@@ -130,6 +130,7 @@ BaseDialog {
     contentItem: Rectangle {
         id: linkDeviceContentRect
 
+        color: JamiTheme.secondaryBackgroundColor
         implicitWidth: JamiTheme.preferredDialogWidth
         implicitHeight: JamiTheme.preferredDialogHeight
 
@@ -143,6 +144,7 @@ BaseDialog {
             Rectangle {
                 Layout.fillWidth: true
                 Layout.fillHeight: true
+                color: JamiTheme.secondaryBackgroundColor
 
                 ColumnLayout {
                     anchors.centerIn: parent
@@ -151,6 +153,7 @@ BaseDialog {
                     Label {
                         Layout.alignment: Qt.AlignHCenter
                         text: JamiStrings.enterAccountPassword
+                        color: JamiTheme.textColor
                         font.pointSize: JamiTheme.textFontSize
                         font.kerning: true
                         horizontalAlignment: Text.AlignHCenter
@@ -229,6 +232,7 @@ BaseDialog {
             Rectangle {
                 Layout.fillWidth: true
                 Layout.fillHeight: true
+                color: JamiTheme.secondaryBackgroundColor
 
                 ColumnLayout {
                     anchors.centerIn: parent
@@ -237,6 +241,7 @@ BaseDialog {
                     Label {
                         Layout.alignment: Qt.AlignCenter
                         text: JamiStrings.backupAccount
+                        color: JamiTheme.textColor
                         font.pointSize: JamiTheme.headerFontSize
                         font.kerning: true
                         horizontalAlignment: Text.AlignLeft
@@ -252,6 +257,7 @@ BaseDialog {
                         Layout.preferredHeight: 96
 
                         background: Rectangle {
+                            color: "transparent"
                             AnimatedImage {
                                 id: spinnerMovie
                                 anchors.fill: parent
@@ -270,6 +276,7 @@ BaseDialog {
             Rectangle {
                 Layout.fillWidth: true
                 Layout.fillHeight: true
+                color: "transparent"
 
                 ColumnLayout {
                     anchors.centerIn: parent
@@ -286,6 +293,7 @@ BaseDialog {
 
                             Layout.alignment: Qt.AlignHCenter
                             text: qsTr("Your PIN is:")
+                            color: JamiTheme.textColor
                             font.pointSize: JamiTheme.headerFontSize
                             font.kerning: true
                             horizontalAlignment: Text.AlignHCenter
@@ -296,6 +304,7 @@ BaseDialog {
                             id: exportedPIN
                             Layout.alignment: Qt.AlignHCenter
                             text: qsTr("PIN")
+                            color: JamiTheme.textColor
                             font.pointSize: JamiTheme.headerFontSize
                             font.kerning: true
                             horizontalAlignment: Text.AlignHCenter
@@ -311,7 +320,7 @@ BaseDialog {
                         property int borderRadius : success? 15 : 0
                         property string backgroundColor : success? "whitesmoke" : "transparent"
                         property string borderColor : success? "lightgray" : "transparent"
-                        color: success ? "#2b5084" : "black"
+                        color: success ? JamiTheme.successLabelColor: JamiTheme.textColor
                         padding: success ? 8 : 0
 
                         wrapMode: Text.Wrap
@@ -325,13 +334,13 @@ BaseDialog {
                         horizontalAlignment: Text.AlignHCenter
                         verticalAlignment: Text.AlignVCenter
 
-                        background: Rectangle{
+                        background: Rectangle {
                             id: infoLabelBackground
                             anchors.fill: parent
                             border.width: infoLabel.borderWidth
                             border.color: infoLabel.borderColor
                             radius: infoLabel.borderRadius
-                            color: infoLabel.backgroundColor
+                            color: JamiTheme.secondaryBackgroundColor
                         }
                     }
 

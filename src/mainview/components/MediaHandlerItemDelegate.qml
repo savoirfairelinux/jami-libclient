@@ -48,11 +48,13 @@ ItemDelegate {
             width: 30
 
             background: Rectangle{
+                color: "transparent"
                 Image {
                     anchors.centerIn: parent
                     source: "file:" + mediaHandlerIcon
                     width: 30
                     height: 30
+                    mipmap: true
                 }
             }
         }
@@ -62,6 +64,7 @@ ItemDelegate {
             Layout.leftMargin: 8
             Layout.fillWidth: true
             Layout.alignment: Qt.AlignVCenter
+            color: JamiTheme.textColor
 
             font.pointSize: JamiTheme.settingsFontSize
             font.kerning: true
@@ -90,6 +93,8 @@ ItemDelegate {
 
             background: Rectangle {
                 id: switchBackground
+
+                color: "transparent"
                 MouseArea {
                     id: btnMouseArea
                     anchors.fill: parent
@@ -115,9 +120,9 @@ ItemDelegate {
             Layout.alignment: Qt.AlingVCenter | Qt.AlignRight
             Layout.rightMargin: 8
 
-            normalColor: JamiTheme.primaryBackgroundColor
             source: "qrc:/images/icons/round-settings-24px.svg"
-
+            normalColor: JamiTheme.primaryBackgroundColor
+            imageColor: JamiTheme.textColor
             toolTipText: qsTr(pluginId)
 
             onClicked: openPreferences()

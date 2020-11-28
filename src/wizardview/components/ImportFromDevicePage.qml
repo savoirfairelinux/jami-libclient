@@ -70,6 +70,7 @@ Rectangle {
             Layout.topMargin: backButtonMargins
 
             text: JamiStrings.mainAccountPassword
+            color: JamiTheme.textColor
             font.pointSize: JamiTheme.menuFontSize
         }
 
@@ -99,6 +100,7 @@ Rectangle {
             Layout.preferredHeight: preferredHeight
 
             text: JamiStrings.enterPIN
+            color: JamiTheme.textColor
             wrapMode: Text.Wrap
 
             onTextChanged: {
@@ -170,6 +172,7 @@ Rectangle {
         height: 35
 
         normalColor: root.color
+        imageColor: JamiTheme.primaryForegroundColor
 
         source: "qrc:/images/icons/ic_arrow_back_24px.svg"
         toolTipText: qsTr("Back to welcome page")

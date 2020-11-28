@@ -43,12 +43,15 @@ ComboBox {
                 var currentItem = root.delegateModel.items.get(index)
                 return  currentItem.model[root.textRole].toString()
             }
-            color: "black"
+            color: JamiTheme.textColor
             font: root.font
             elide: Text.ElideRight
             verticalAlignment: Text.AlignVCenter
         }
         highlighted: root.highlightedIndex === index
+        background: Rectangle {
+            color: highlighted? JamiTheme.selectedColor : JamiTheme.editBackgroundColor
+        }
     }
 
     indicator: Canvas {
@@ -72,7 +75,7 @@ ComboBox {
             context.lineTo(width, 0);
             context.lineTo(width / 2, height);
             context.closePath();
-            context.fillStyle = root.pressed ? JamiTheme.pressColor : "black";
+            context.fillStyle = root.pressed ? JamiTheme.pressColor : JamiTheme.textColor;
             context.fill();
         }
     }
@@ -83,15 +86,16 @@ ComboBox {
 
         text: root.displayText
         font: root.font
-        color: "black"
+        color: JamiTheme.textColor
         verticalAlignment: Text.AlignVCenter
         elide: Text.ElideRight
     }
 
     background: Rectangle {
+        color: JamiTheme.editBackgroundColor
         implicitWidth: 120
         implicitHeight: 40
-        border.color: "white"
+        border.color: JamiTheme.editBackgroundColor
         border.width: root.visualFocus ? 2 : 1
         radius: 2
     }
@@ -112,6 +116,7 @@ ComboBox {
         }
 
         background: Rectangle {
+            color: JamiTheme.editBackgroundColor
             border.color: "gray"
             radius: 2
         }

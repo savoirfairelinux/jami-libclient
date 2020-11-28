@@ -37,6 +37,9 @@ ItemDelegate {
     signal mediaCodecStateChange(string idToSet , bool isToBeEnabled)
 
     highlighted: ListView.isCurrentItem
+    background: Rectangle {
+        color: highlighted? JamiTheme.selectedColor : JamiTheme.editBackgroundColor
+    }
 
     RowLayout {
         anchors.fill: parent
@@ -55,6 +58,12 @@ ItemDelegate {
             text: ""
             indicator: Image {
                 anchors.centerIn: parent
+                layer {
+                    enabled: true
+                    effect: ColorOverlay {
+                        color: JamiTheme.textColor
+                    }
+                }
                 width: checkBoxWidth
                 height: checkBoxWidth
                 source: checkBoxIsEnabled.checked ?
@@ -92,6 +101,7 @@ ItemDelegate {
                 else if (mediaType == MediaSettings.AUDIO)
                     return mediaCodecName + " " + samplerRate + " Hz"
             }
+            color: JamiTheme.textColor
             elide: Text.ElideRight
             horizontalAlignment: Text.AlignLeft
             verticalAlignment: Text.AlignVCenter

@@ -32,6 +32,7 @@ import "../../constant"
 RowLayout {
     id: root
 
+    property string borderColor: JamiTheme.greyBorderColor
     property string title: ""
     property int itemWidth
     property int bottomValue
@@ -42,12 +43,12 @@ RowLayout {
     signal newValue
 
     function setEnabled(status) {
-        spinBox.enabled = status
+        textField.enabled = status
     }
 
     function setValue(value) {
         root.valueField = value
-        spinBox.value = value
+        textField.text = value
     }
 
     Text {
@@ -55,15 +56,15 @@ RowLayout {
         Layout.rightMargin: JamiTheme.preferredMarginSize
         Layout.preferredHeight: JamiTheme.preferredFieldHeight
         text: root.title
+        color: JamiTheme.textColor
         elide: Text.ElideRight
         font.pointSize: JamiTheme.settingsFontSize
         font.kerning: true
         verticalAlignment: Text.AlignVCenter
     }
 
-    // TODO: use TextField
-    SpinBox {
-        id: spinBox
+    TextField {
+        id: textField
 
         Layout.preferredWidth: root.itemWidth
         Layout.preferredHeight: JamiTheme.preferredFieldHeight
@@ -73,20 +74,18 @@ RowLayout {
         font.pointSize: JamiTheme.buttonFontSize
         font.kerning: true
 
-        from: root.bottomValue
-        to: root.topValue
+        validator: IntValidator {bottom: root.bottomValue; top: root.topValue}
 
-        editable: true
-        up.indicator.width: 0
-        down.indicator.width: 0
-
-        textFromValue: function(value, locale) {
-            return Number(value)
+        onEditingFinished: {
+            root.valueField = text
+            newValue()
         }
 
-        onValueModified: {
-            root.valueField = value
-            newValue()
+        color: JamiTheme.textColor
+
+        background: Rectangle {
+            border.color: enabled? root.borderColor : "transparent"
+            color: JamiTheme.editBackgroundColor
         }
     }
 }

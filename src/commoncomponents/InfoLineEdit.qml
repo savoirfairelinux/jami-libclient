@@ -30,6 +30,7 @@ TextField{
     }
 
     wrapMode: Text.Wrap
+    color: JamiTheme.textColor
     readOnly: false
     selectByMouse: true
     font.pointSize: JamiTheme.settingsFontSize

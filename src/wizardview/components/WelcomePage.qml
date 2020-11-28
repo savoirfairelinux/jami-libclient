@@ -36,7 +36,7 @@ Rectangle {
     signal leavePage
     signal scrollToBottom
 
-    color: JamiTheme.backgroundColor
+    color: "transparent"
 
     ColumnLayout {
         id: welcomePageColumnLayout
@@ -53,6 +53,7 @@ Rectangle {
             Layout.preferredHeight: contentHeight
 
             text: qsTr("Welcome to")
+            color: JamiTheme.textColor
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
 
@@ -250,6 +251,7 @@ Rectangle {
         visible: UtilsAdapter.getAccountListSize()
 
         normalColor: root.color
+        imageColor: JamiTheme.primaryForegroundColor
 
         source: "qrc:/images/icons/ic_arrow_back_24px.svg"
         toolTipText: JamiStrings.back

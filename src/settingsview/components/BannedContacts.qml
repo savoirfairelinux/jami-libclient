@@ -99,6 +99,7 @@ ColumnLayout {
             Layout.preferredHeight: JamiTheme.preferredFieldHeight
 
             toolTipText: JamiStrings.tipBannedContacts
+            imageColor: JamiTheme.textColor
 
             source: bannedListWidget.visible?
                         "qrc:/images/icons/expand_less-24px.svg" :

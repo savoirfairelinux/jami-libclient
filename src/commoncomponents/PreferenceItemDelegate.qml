@@ -95,6 +95,7 @@ ItemDelegate {
             Layout.leftMargin: 8
 
             text: preferenceName
+            color: JamiTheme.textColor
             font.pointSize: JamiTheme.settingsFontSize
             ToolTip.visible: hovered
             ToolTip.text: preferenceSummary
@@ -110,6 +111,7 @@ ItemDelegate {
             Layout.rightMargin: 8
             Layout.preferredWidth: preferredSize
             Layout.preferredHeight: preferredSize
+            imageColor: JamiTheme.textColor
 
             source: "qrc:/images/icons/round-settings-24px.svg"
 

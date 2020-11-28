@@ -105,6 +105,8 @@ Rectangle {
                     JamiStrings.setPassword
     }
 
+    color: JamiTheme.secondaryBackgroundColor
+
     SimpleMessageDialog {
         id: msgDialog
 

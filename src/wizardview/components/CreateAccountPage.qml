@@ -124,6 +124,7 @@ Rectangle {
 
                     Label {
                         text: isRendezVous ? JamiStrings.chooseNameRV : qsTr("Choose a username for your account")
+                        color: JamiTheme.textColor
                         font.pointSize: JamiTheme.textFontSize + 3
                     }
 
@@ -131,11 +132,11 @@ Rectangle {
                         Layout.alignment: Qt.AlignRight
 
                         text: JamiStrings.recommended
-                        color: "white"
+                        color: JamiTheme.whiteColor
                         padding: 8
 
                         background: Rectangle {
-                            color: "#aed581"
+                            color: JamiTheme.wizardGreenColor
                             radius: 24
                             anchors.fill: parent
                         }
@@ -249,6 +250,7 @@ Rectangle {
                     Label {
                         Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
                         text: JamiStrings.createPassword
+                        color: JamiTheme.textColor
                         font.pointSize: JamiTheme.textFontSize + 3
                     }
 
@@ -268,7 +270,7 @@ Rectangle {
                         padding: 8
 
                         background: Rectangle {
-                            color: "#28b1ed"
+                            color: JamiTheme.wizardBlueButtons
                             radius: 24
                             anchors.fill: parent
                         }
@@ -313,6 +315,7 @@ Rectangle {
                     Layout.leftMargin: (root.width - createAccountButton.width) / 2
 
                     text: JamiStrings.notePasswordRecovery
+                    color: JamiTheme.textColor
                     wrapMode: Text.WordWrap
                     font.pointSize: JamiTheme.textFontSize
 
@@ -371,6 +374,7 @@ Rectangle {
         height: 35
 
         normalColor: root.color
+        imageColor: JamiTheme.primaryForegroundColor
 
         source: "qrc:/images/icons/ic_arrow_back_24px.svg"
         toolTipText: JamiStrings.back

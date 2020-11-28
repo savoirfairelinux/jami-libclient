@@ -63,6 +63,7 @@ ColumnLayout {
 
             horizontalAlignment: Text.AlignLeft
             verticalAlignment: Text.AlignVCenter
+            color: JamiTheme.textColor
 
             text: qsTr("Advanced Account Settings")
             elide: Text.ElideRight
@@ -73,6 +74,7 @@ ColumnLayout {
             Layout.preferredHeight: JamiTheme.preferredFieldHeight
             Layout.alignment: Qt.AlignHCenter
 
+            imageColor: JamiTheme.textColor
             toolTipText: JamiStrings.tipAdvancedSettingsDisplay
 
             preferredSize: 32

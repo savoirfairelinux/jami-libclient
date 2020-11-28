@@ -66,6 +66,7 @@ ItemDelegate {
                 text: DisplayName
             }
 
+            color: JamiTheme.textColor
             text: textMetricsContactPickerContactName.elidedText
             font.pointSize: JamiTheme.textFontSize
         }
@@ -95,7 +96,8 @@ ItemDelegate {
     background: Rectangle {
         id: itemSmartListBackground
 
-        color: "white"
+        color: JamiTheme.backgroundColor
+
 
         implicitWidth: contactPickerPopupRect.width
         implicitHeight: Math.max(
@@ -128,7 +130,7 @@ ItemDelegate {
         }
 
         onExited: {
-            itemSmartListBackground.color = "white"
+            itemSmartListBackground.color = JamiTheme.backgroundColor
         }
     }
 }

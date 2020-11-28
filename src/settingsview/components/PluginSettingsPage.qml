@@ -41,6 +41,8 @@ Rectangle {
         PluginModel.setPluginsEnabled(state)
     }
 
+    color: JamiTheme.secondaryBackgroundColor
+
     ColumnLayout {
         id: pluginSettingsColumnLayout
 

@@ -43,6 +43,8 @@ Rectangle {
         startAVideoCallButton.visible = visible
     }
 
+    color: JamiTheme.secondaryBackgroundColor
+
     RowLayout {
         id: messagingHeaderRectRowLayout
 
@@ -56,7 +58,8 @@ Rectangle {
 
             source: backToWelcomeViewButtonSource
 
-            normalColor: JamiTheme.primaryBackgroundColor
+            normalColor: JamiTheme.secondaryBackgroundColor
+            imageColor: JamiTheme.chatviewButtonColor
 
             onClicked: {
                 if (backToWelcomeViewButtonSource === "qrc:/images/icons/ic_arrow_back_24px.svg")
@@ -138,7 +141,8 @@ Rectangle {
 
                 source: "qrc:/images/icons/ic_phone_24px.svg"
 
-                normalColor: JamiTheme.primaryBackgroundColor
+                normalColor: JamiTheme.secondaryBackgroundColor
+                imageColor: JamiTheme.chatviewButtonColor
 
                 onClicked: {
                     MessagesAdapter.sendContactRequest()
@@ -158,7 +162,8 @@ Rectangle {
 
                 source: "qrc:/images/icons/videocam-24px.svg"
 
-                normalColor: JamiTheme.primaryBackgroundColor
+                normalColor: JamiTheme.secondaryBackgroundColor
+                imageColor: JamiTheme.chatviewButtonColor
 
                 onClicked: {
                     MessagesAdapter.sendContactRequest()
@@ -177,7 +182,8 @@ Rectangle {
                 width: sendContactRequestButton.visible ? preferredSize : 0
                 source: "qrc:/images/icons/person_add-24px.svg"
 
-                normalColor: JamiTheme.primaryBackgroundColor
+                normalColor: JamiTheme.secondaryBackgroundColor
+                imageColor: JamiTheme.chatviewButtonColor
 
                 onClicked: {
                     MessagesAdapter.sendContactRequest()

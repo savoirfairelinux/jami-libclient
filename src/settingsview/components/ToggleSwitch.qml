@@ -52,6 +52,8 @@ RowLayout {
         elide: Text.ElideRight
         horizontalAlignment: Text.AlignLeft
         verticalAlignment: Text.AlignVCenter
+
+        color: JamiTheme.textColor
     }
 
     Switch {

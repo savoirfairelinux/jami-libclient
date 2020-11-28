@@ -18,6 +18,7 @@
 
 import QtQuick 2.14
 import QtQuick.Controls 2.14
+import QtGraphicalEffects 1.14
 import QtQuick.Window 2.14
 
 Image {
@@ -31,6 +32,7 @@ Image {
 
     property string normalSource
     property string checkedSource
+    property string color: "transparent"
 
     property real pixelDensity: Screen.pixelDensity
     property bool isSvg: {
@@ -49,6 +51,14 @@ Image {
     smooth: false
     antialiasing: false
     asynchronous: true
+
+    layer {
+        enabled: true
+        effect: ColorOverlay {
+            id: overlay
+            color: root.color
+        }
+    }
 
     function setSourceSize() {
         if (isSvg) {

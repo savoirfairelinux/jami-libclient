@@ -41,6 +41,7 @@ Rectangle {
     }
 
     visible: false
+    color: JamiTheme.secondaryBackgroundColor
 
     function openPluginFileSlot() {
         pluginPathDialog.open()
@@ -104,6 +105,7 @@ Rectangle {
             text: qsTr("Installed plugins")
             font.pointSize: JamiTheme.headerFontSize
             font.kerning: true
+            color: JamiTheme.textColor
 
             horizontalAlignment: Text.AlignLeft
             verticalAlignment: Text.AlignVCenter
@@ -160,7 +162,7 @@ Rectangle {
 
                 background: Rectangle {
                     anchors.fill: parent
-                    color: "white"
+                    color: JamiTheme.secondaryBackgroundColor
                 }
             }
         }

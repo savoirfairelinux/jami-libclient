@@ -70,7 +70,8 @@ Item {
                                          "qrc:/images/icons/av_icons/fiber_manual_record-24px.svg",
                                          function (){
                                               CallAdapter.recordThisCallToggle()
-                                         })
+                                         },
+                                         JamiTheme.recordIconColor)
 
         if (isAudioOnly && !isPaused)
             ContextMenuGenerator.addMenuItem(

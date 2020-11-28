@@ -239,6 +239,7 @@ Window {
     height: mainViewWindowPreferredHeight
     minimumWidth: minWidth
     minimumHeight: minHeight
+    color: JamiTheme.backgroundColor
 
     Connections {
         target: CallAdapter
@@ -282,7 +283,7 @@ Window {
             handle: Rectangle {
                 implicitWidth: JamiTheme.splitViewHandlePreferredWidth
                 implicitHeight: splitView.height
-                color:"white"
+                color: JamiTheme.backgroundColor
                 Rectangle {
                     implicitWidth: 1
                     implicitHeight: splitView.height
@@ -299,6 +300,7 @@ Window {
                 SplitView.maximumWidth: (sidePanelOnly ? splitView.width :
                                                       splitView.width - sidePanelViewStackPreferredWidth)
                 SplitView.fillHeight: true
+                color: JamiTheme.backgroundColor
 
                 // AccountComboBox is always visible
                 AccountComboBox {

@@ -48,7 +48,7 @@ Popup {
             id: mediahandlerPickerPopupRect
             width: root.width
             height: childrenRect.height + 50
-            color: "white"
+            color: JamiTheme.backgroundColor
             radius: 10
 
             PushButton {
@@ -60,6 +60,7 @@ Popup {
                 anchors.rightMargin: 5
 
                 source: "qrc:/images/icons/round-close-24px.svg"
+                imageColor: JamiTheme.textColor
 
                 onClicked: {
                     root.close()
@@ -85,6 +86,7 @@ Popup {
 
                     horizontalAlignment: Text.AlignHCenter
                     verticalAlignment: Text.AlignVCenter
+                    color: JamiTheme.textColor
 
                     text: qsTr("Choose plugin")
                 }
@@ -137,7 +139,7 @@ Popup {
             id: mediahandlerPreferencePopupRect2
             width: root.width
             height: childrenRect.height + 50
-            color: "white"
+            color: JamiTheme.backgroundColor
             radius: 10
 
             PushButton {
@@ -147,6 +149,7 @@ Popup {
                 anchors.left: mediahandlerPreferencePopupRect2.left
                 anchors.leftMargin: 5
 
+                imageColor: JamiTheme.textColor
                 source: "qrc:/images/icons/ic_arrow_back_24px.svg"
                 toolTipText: qsTr("Go back to plugins list")
                 hoverEnabled: true
@@ -164,6 +167,7 @@ Popup {
                 anchors.rightMargin: 5
 
                 source: "qrc:/images/icons/round-close-24px.svg"
+                imageColor: JamiTheme.textColor
 
                 onClicked: {
                     stack.currentIndex = 0
@@ -188,6 +192,7 @@ Popup {
                     horizontalAlignment: Text.AlignHCenter
                     verticalAlignment: Text.AlignVCenter
 
+                    color: JamiTheme.textColor
                     text: qsTr("Preferences")
                 }
 

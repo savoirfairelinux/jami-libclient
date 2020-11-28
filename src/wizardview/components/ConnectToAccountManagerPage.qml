@@ -76,6 +76,7 @@ Rectangle {
 
             Label {
                 text: JamiStrings.enterJAMSURL
+                color: JamiTheme.textColor
                 font.pointSize: JamiTheme.textFontSize + 3
             }
 
@@ -83,11 +84,11 @@ Rectangle {
                 Layout.alignment: Qt.AlignRight
 
                 text: JamiStrings.required
-                color: "#ff1f62"
+                color: JamiTheme.requiredFieldColor
                 padding: 8
 
                 background: Rectangle {
-                    color: "#fee4e9"
+                    color: JamiTheme.requiredFieldBackgroundColor
                     radius: 24
                     anchors.fill: parent
                 }
@@ -116,6 +117,7 @@ Rectangle {
             Layout.preferredWidth: connectBtn.width
 
             text: JamiStrings.jamsCredentials
+            color: JamiTheme.textColor
             wrapMode: Text.Wrap
 
             onTextChanged: Layout.preferredHeight =
@@ -204,6 +206,7 @@ Rectangle {
         height: 35
 
         normalColor: root.color
+        imageColor: JamiTheme.primaryForegroundColor
 
         source: "qrc:/images/icons/ic_arrow_back_24px.svg"
         toolTipText: JamiStrings.backToWelcome

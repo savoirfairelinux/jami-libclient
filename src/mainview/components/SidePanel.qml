@@ -19,6 +19,7 @@
 import QtQuick 2.14
 import QtQuick.Controls 2.14
 import QtQuick.Layouts 1.14
+import QtGraphicalEffects 1.14
 import net.jami.Models 1.0
 import net.jami.Adapters 1.0
 
@@ -132,6 +133,13 @@ Rectangle {
             width: 24
             height: 24
 
+            layer {
+                enabled: true
+                effect: ColorOverlay {
+                    color: JamiTheme.textColor
+                }
+            }
+
             fillMode: Image.PreserveAspectFit
             mipmap: true
             source: "qrc:/images/icons/ic_baseline-search-24px.svg"
@@ -145,6 +153,7 @@ Rectangle {
             anchors.leftMargin: 24
             width: searchStatusRect.width - searchIcon.width - 24*2 - 8
             text: ""
+            color: JamiTheme.textColor
             wrapMode: Text.WordWrap
             font.pointSize: JamiTheme.menuFontSize
         }

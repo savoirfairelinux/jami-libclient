@@ -61,6 +61,9 @@ ItemDelegate {
         }
     }
 
+    background: Rectangle {
+        color: highlighted? JamiTheme.selectedColor : JamiTheme.editBackgroundColor
+    }
     highlighted: ListView.isCurrentItem
 
     RowLayout {
@@ -70,6 +73,12 @@ ItemDelegate {
             id: deviceImage
             Layout.leftMargin: JamiTheme.preferredMarginSize
             Layout.alignment: Qt.AlignVCenter
+            layer {
+                enabled: true
+                effect: ColorOverlay {
+                    color: JamiTheme.textColor
+                }
+            }
 
             Layout.preferredWidth: 24
             Layout.preferredHeight: 24
@@ -92,7 +101,7 @@ ItemDelegate {
 
                 wrapMode: Text.NoWrap
                 readOnly: !editable
-                backgroundColor: "white"
+                backgroundColor: JamiTheme.editBackgroundColor
                 text: elidedTextDeviceName.elidedText
             }
 
@@ -122,6 +131,8 @@ ItemDelegate {
             Layout.rightMargin: 16
             Layout.preferredWidth: JamiTheme.preferredFieldHeight
             Layout.preferredHeight: JamiTheme.preferredFieldHeight
+            imageColor: JamiTheme.textColor
+            normalColor: highlighted? JamiTheme.selectedColor : JamiTheme.editBackgroundColor
 
             source: {
                 if(isCurrent) {

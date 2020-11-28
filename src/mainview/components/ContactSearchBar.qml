@@ -34,7 +34,7 @@ Rectangle {
     }
 
     radius: height / 2
-    color: "white"
+    color: JamiTheme.secondaryBackgroundColor
 
     FocusScope {
         id: fakeFocus
@@ -63,6 +63,7 @@ Rectangle {
 
     TextField {
         id: contactSearchBar
+        color: JamiTheme.textColor
 
         anchors.verticalCenter: contactSearchBarRect.verticalCenter
         anchors.left: searchIconImage.right

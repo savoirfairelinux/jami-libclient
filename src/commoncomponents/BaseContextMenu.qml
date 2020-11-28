@@ -43,5 +43,6 @@ Menu {
 
         border.width: commonBorderWidth
         border.color: JamiTheme.tabbarBorderColor
+        color: JamiTheme.backgroundColor
     }
 }

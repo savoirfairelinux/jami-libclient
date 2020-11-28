@@ -35,6 +35,9 @@ ItemDelegate {
     signal btnReAddContactClicked
 
     highlighted: ListView.isCurrentItem
+    background: Rectangle {
+        color: highlighted? JamiTheme.selectedColor : JamiTheme.editBackgroundColor
+    }
 
     onContactIDChanged: avatarImg.updateImage(contactID)
 
@@ -97,6 +100,7 @@ ItemDelegate {
                 verticalAlignment: Text.AlignVCenter
                 elide: Text.ElideRight
                 text: contactName === "" ? JamiStrings.name : contactName
+                color: JamiTheme.textColor
             }
 
             Label{
@@ -115,6 +119,7 @@ ItemDelegate {
                 verticalAlignment: Qt.AlignVCenter
                 elide: Text.ElideRight
                 text: contactID === "" ? JamiStrings.identifier : contactID
+                color: JamiTheme.textColor
             }
         }
 
@@ -127,6 +132,8 @@ ItemDelegate {
             Layout.preferredHeight: JamiTheme.preferredFieldHeight
 
             source: "qrc:/images/icons/person_add-24px.svg"
+            imageColor: JamiTheme.textColor
+            normalColor: highlighted? JamiTheme.selectedColor : JamiTheme.editBackgroundColor
 
             toolTipText: JamiStrings.reinstateContact
 

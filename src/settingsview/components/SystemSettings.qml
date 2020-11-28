@@ -56,6 +56,7 @@ ColumnLayout {
         Layout.fillWidth: true
 
         text: qsTr("System")
+        color: JamiTheme.textColor
         font.pointSize: JamiTheme.headerFontSize
         font.kerning: true
 
@@ -114,6 +115,7 @@ ColumnLayout {
             Layout.fillWidth: true
             Layout.fillHeight: true
 
+            color: JamiTheme.textColor
             text: JamiStrings.downloadFolder
             font.pointSize: JamiTheme.settingsFontSize
             font.kerning: true

@@ -41,6 +41,8 @@ BaseDialog {
         implicitWidth: 480
         implicitHeight: 400
 
+        color: JamiTheme.backgroundColor
+
         GridLayout {
             id: userProfileDialogLayout
 
@@ -75,6 +77,7 @@ BaseDialog {
 
                 font.pointSize: JamiTheme.titleFontSize
                 text: textMetricsContactAliasText.elidedText
+                color: JamiTheme.textColor
                 visible: aliasText ? (aliasText === idText ? false : true) : false
 
                 TextMetrics {
@@ -95,6 +98,7 @@ BaseDialog {
                 Layout.alignment: Qt.AlignRight
                 font.pointSize: JamiTheme.menuFontSize
                 text: qsTr("Information")
+                color: JamiTheme.textColor
             }
 
             Item { Layout.fillWidth: true }
@@ -115,6 +119,7 @@ BaseDialog {
 
                 font.pointSize: JamiTheme.textFontSize
                 text: textMetricsContactDisplayNameText.elidedText
+                color: JamiTheme.textColor
                 visible: registeredNameText ? (registeredNameText === idText ? false : true) : false
 
                 TextMetrics {
@@ -142,6 +147,7 @@ BaseDialog {
                 readOnly: true
                 font.pointSize: JamiTheme.textFontSize
                 text: textMetricsContactIdText.elidedText
+                color: JamiTheme.textColor
 
                 TextMetrics {
                     id: textMetricsContactIdText

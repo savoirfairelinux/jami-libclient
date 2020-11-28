@@ -34,7 +34,7 @@ Rectangle {
     border.width: 1
     border.color: JamiTheme.hoverColor
 
-    color: JamiTheme.normalButtonColor
+    color: JamiTheme.backgroundColor
 
     ListView {
         id: listView

@@ -31,6 +31,7 @@ MenuItem {
 
     property string itemName: ""
     property string iconSource: ""
+    property string iconColor: ""
     property int preferredWidth: 220
     property int preferredHeight: 48
 
@@ -60,6 +61,7 @@ MenuItem {
 
             width: (visible ? 24 : 0)
             height: (visible ? 24 : 0)
+            color: iconColor !== ""? iconColor : JamiTheme.textColor
 
             visible: false
             opacity: 0.7
@@ -77,6 +79,7 @@ MenuItem {
             height: 30
 
             text: itemName
+            color: JamiTheme.textColor
             wrapMode: Text.WordWrap
             font.pointSize: JamiTheme.textFontSize
             horizontalAlignment: Text.AlignLeft
@@ -92,7 +95,7 @@ MenuItem {
             },
             State {
                 name: "normal"; when: !hovered
-                PropertyChanges { target: background; color: "white" }
+                PropertyChanges { target: background; color: JamiTheme.backgroundColor }
             }
         ]
     }
@@ -117,7 +120,6 @@ MenuItem {
         implicitHeight: preferredHeight
 
         border.width: 0
-        color: menuItem.down ? JamiTheme.normalButtonColor : "white"
 
         CustomBorder {
             commonBorder: false

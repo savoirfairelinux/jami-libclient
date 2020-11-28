@@ -29,6 +29,8 @@ import "../../commoncomponents"
 Rectangle {
     id: messageWebViewRect
 
+    color: JamiTheme.backgroundColor
+
     property int messageWebViewHeaderPreferredHeight: 64
     property string headerUserAliasLabelText: ""
     property string headerUserUserNameLabelText: ""
@@ -206,6 +208,8 @@ Rectangle {
 
         width: messageWebViewRect.width
         height: messageWebViewRect.height - messageWebViewHeaderPreferredHeight
+
+        backgroundColor: JamiTheme.backgroundColor
 
         settings.javascriptEnabled: true
         settings.javascriptCanOpenWindows: true

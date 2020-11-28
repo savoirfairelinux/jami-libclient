@@ -37,11 +37,11 @@ Rectangle {
     }
 
     id: recBox
-    color: "#FFFFFF"
     width: 320
     height: 240
     radius: 5
     border.color: JamiTheme.tabbarBorderColor
+    color: JamiTheme.backgroundColor
 
     property string pathRecorder: ""
     property string timeText: "00:00"
@@ -168,7 +168,7 @@ Rectangle {
         x: -offset
         y: -offset
         ShapePath {
-            fillColor: "white"
+            fillColor: JamiTheme.backgroundColor
 
             strokeWidth: 1
             strokeColor: JamiTheme.tabbarBorderColor
@@ -216,7 +216,7 @@ Rectangle {
         visible: (isVideo && previewAvailable)
         Layout.alignment: Qt.AlignHCenter
         anchors.fill: parent
-        color: "black"
+        color: JamiTheme.blackColor
         radius: 5
 
         PreviewRenderer{
@@ -253,7 +253,7 @@ Rectangle {
         id: time
         visible: true
         text: "00:00"
-        color: (isVideo ? "white" : "black")
+        color: (isVideo? JamiTheme.whiteColor : JamiTheme.textColor)
         font.pointSize: (isVideo ? 12 : 20)
 
         anchors.centerIn: recordButton
@@ -270,10 +270,10 @@ Rectangle {
         anchors.bottom: recBox.bottom
         anchors.bottomMargin: 5
 
-        normalColor: isVideo? "#000000cc" : "white"
+        normalColor: isVideo? "transparent" : JamiTheme.backgroundColor
 
         source: "qrc:/images/icons/av_icons/fiber_manual_record-24px.svg"
-        imageColor: "#dc2719"
+        imageColor: JamiTheme.recordIconColor
 
         onClicked: {
             updateState(RecordBox.States.RECORDING)
@@ -290,10 +290,10 @@ Rectangle {
         anchors.bottom: recBox.bottom
         anchors.bottomMargin: 5
 
-        normalColor: isVideo? "#000000cc" : "white"
+        normalColor: isVideo? "transparent" : JamiTheme.backgroundColor
 
         source: "qrc:/images/icons/av_icons/stop-24px-red.svg"
-        imageColor: isVideo? "white" : "black"
+        imageColor: isVideo? JamiTheme.whiteColor : JamiTheme.textColor
 
         onClicked: {
             stopRecording()
@@ -311,10 +311,10 @@ Rectangle {
         anchors.bottom: recBox.bottom
         anchors.bottomMargin: 5
 
-        normalColor: isVideo? "#000000cc" : "white"
+        normalColor: isVideo? "transparent" : JamiTheme.backgroundColor
 
         source: "qrc:/images/icons/av_icons/re-record-24px.svg"
-        imageColor: isVideo? "white" : "black"
+        imageColor: isVideo? JamiTheme.whiteColor : JamiTheme.textColor
 
         onClicked: {
             stopRecording()
@@ -332,10 +332,10 @@ Rectangle {
         anchors.bottom: parent.bottom
         anchors.bottomMargin: 5
 
-        normalColor: isVideo? "#000000cc" : "white"
+        normalColor: isVideo? "transparent" : JamiTheme.backgroundColor
 
         source: "qrc:/images/icons/av_icons/send-24px.svg"
-        imageColor: isVideo? "white" : "black"
+        imageColor: isVideo? JamiTheme.whiteColor : JamiTheme.textColor
 
         onClicked: {
             stopRecording()

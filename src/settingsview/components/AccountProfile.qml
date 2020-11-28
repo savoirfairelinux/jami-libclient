@@ -68,6 +68,7 @@ ColumnLayout {
 
         font.pointSize: JamiTheme.headerFontSize
         font.kerning: true
+        color: JamiTheme.textColor
 
         horizontalAlignment: Text.AlignLeft
         verticalAlignment: Text.AlignVCenter

@@ -177,7 +177,7 @@ ColumnLayout {
 
             anchors.fill: previewWidget
             visible: false
-            color: "#fff"
+            color: JamiTheme.whiteColor
 
             OpacityAnimator on opacity {
                 id: flashAnimation
@@ -209,6 +209,7 @@ ColumnLayout {
             text: ""
             font.pointSize: 10
             font.kerning: true
+            imageColor: JamiTheme.textColor
 
             toolTipText: JamiStrings.takePhoto
 
@@ -264,6 +265,7 @@ ColumnLayout {
             source: "qrc:/images/icons/round-folder-24px.svg"
 
             toolTipText: JamiStrings.importFromFile
+            imageColor: JamiTheme.textColor
 
             onClicked: {
                 importFromFileToAvatar_Dialog.open()

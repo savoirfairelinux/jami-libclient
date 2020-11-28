@@ -96,6 +96,7 @@ Popup {
 
                     text: textMetricsUserAliasPopup.elidedText
                     font.pointSize: JamiTheme.textFontSize
+                    color: JamiTheme.textColor
 
                     TextMetrics {
                         id: textMetricsUserAliasPopup
@@ -154,10 +155,19 @@ Popup {
             implicitHeight: accountComboBox.height
 
             background: Rectangle {
-                color: comboBoxFooterItem.hovered? JamiTheme.normalButtonColor : JamiTheme.backgroundColor
+                color: comboBoxFooterItem.hovered? JamiTheme.hoverColor : JamiTheme.backgroundColor
             }
 
-            text: qsTr("Add Account") + "+"
+            contentItem: Text {
+                width: parent.width
+                height: parent.height
+
+                verticalAlignment: Text.AlignVCenter
+                horizontalAlignment: Text.AlignHCenter
+
+                text: qsTr("Add Account") + "+"
+                color: JamiTheme.textColor
+            }
             font.pointSize: JamiTheme.textFontSize
 
             onClicked: {
@@ -185,7 +195,7 @@ Popup {
         layer {
             enabled: true
             effect: DropShadow {
-                color: "#80000000"
+                color: JamiTheme.shadowColor
                 verticalOffset: 2
                 horizontalOffset: 2
                 samples: 16
