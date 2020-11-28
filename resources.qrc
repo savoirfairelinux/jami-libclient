@@ -134,5 +134,6 @@
         <file>images/icons/delete-24px.svg</file>
         <file>images/icons/settings_backup_restore-24px.svg</file>
         <file>images/logo-jami-standard-coul.svg</file>
+        <file>images/logo-jami-standard-coul-white.svg</file>
     </qresource>
 </RCC>

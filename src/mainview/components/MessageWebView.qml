@@ -62,6 +62,34 @@ Rectangle {
         messageWebViewHeader.resetBackToWelcomeViewButtonSource(reset)
     }
 
+    function updateChatviewTheme() {
+        var theme = 'setTheme("\
+            --jami-light-blue:' + JamiTheme.jamiLightBlue + ';\
+            --jami-dark-blue: ' + JamiTheme.jamiDarkBlue + ';\
+            --text-color: ' + JamiTheme.chatviewTextColor + ';\
+            --timestamp-color:' + JamiTheme.timestampColor + ';\
+            --message-out-bg:' + JamiTheme.messageOutBgColor + ';\
+            --message-out-txt:' + JamiTheme.messageOutTxtColor + ';\
+            --message-in-bg:' + JamiTheme.messageInBgColor + ';\
+            --message-in-txt:' + JamiTheme.messageInTxtColor + ';\
+            --file-in-timestamp-color:' + JamiTheme.fileOutTimestampColor + ';\
+            --file-out-timestamp-color:' + JamiTheme.fileInTimestampColor + ';\
+            --bg-color:' + JamiTheme.chatviewBgColor + ';\
+            --non-action-icon-color:' + JamiTheme.nonActionIconColor + ';\
+            --placeholder-text-color:' + JamiTheme.placeholderTextColor + ';\
+            --invite-hover-color:' + JamiTheme.inviteHoverColor + ';\
+            --hairline-color:' + JamiTheme.hairlineColor + ';")'
+        messageWebView.runJavaScript(theme);
+    }
+
+    Connections {
+        target: JamiTheme
+
+        function onDarkThemeChanged() {
+            updateChatviewTheme()
+        }
+    }
+
     JamiFileDialog {
         id: jamiFileDialog
 
@@ -209,7 +237,7 @@ Rectangle {
         width: messageWebViewRect.width
         height: messageWebViewRect.height - messageWebViewHeaderPreferredHeight
 
-        backgroundColor: JamiTheme.backgroundColor
+        backgroundColor: "transparent"
 
         settings.javascriptEnabled: true
         settings.javascriptCanOpenWindows: true
@@ -264,6 +292,7 @@ Rectangle {
                             function() {
                                 messageWebView.runJavaScript("init_i18n();")
                                 MessagesAdapter.setDisplayLinks()
+                                updateChatviewTheme()
                                 messageWebView.runJavaScript("displayNavbar(false);")
                                 jsLoaded = true
                             })

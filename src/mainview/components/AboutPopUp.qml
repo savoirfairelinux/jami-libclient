@@ -68,7 +68,7 @@ ModalPopup {
                         smooth: true
                         antialiasing: true
 
-                        source: "qrc:/images/logo-jami-standard-coul.svg"
+                        source: JamiTheme.darkTheme? "qrc:/images/logo-jami-standard-coul-white.svg" : "qrc:/images/logo-jami-standard-coul.svg"
                     }
 
                     Label {

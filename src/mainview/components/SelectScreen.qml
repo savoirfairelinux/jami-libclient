@@ -66,6 +66,8 @@ Window {
 
         anchors.fill: parent
 
+        color: JamiTheme.backgroundColor
+
         Text {
             id: screenListText
 
@@ -76,6 +78,7 @@ Window {
             font.pointSize: JamiTheme.textFontSize + 2
             font.bold: true
             text: JamiStrings.selectScreen
+            color: JamiTheme.textColor
         }
 
         ScrollView {
@@ -129,6 +132,8 @@ Window {
 
                             property string borderColor: JamiTheme.tabbarBorderColor
 
+                            color: JamiTheme.secondaryBackgroundColor
+
                             height: screenSelectionScrollView.height
                             width: screenSelectionScrollView.width / 2 -
                                    screenInfoRow.spacing / 2 - JamiTheme.preferredMarginSize
@@ -164,6 +169,7 @@ Window {
 
                                 font.pointSize: JamiTheme.textFontSize - 2
                                 text: qsTr("Screen") + " " + calculateScreenNumber(index, false)
+                                color: JamiTheme.textColor
                             }
 
                             MouseArea {
@@ -186,6 +192,8 @@ Window {
                             id: screenSelectionRectEven
 
                             property string borderColor: JamiTheme.tabbarBorderColor
+
+                            color: JamiTheme.secondaryBackgroundColor
 
                             height: screenSelectionScrollView.height
                             width: screenSelectionScrollView.width / 2 -
@@ -230,6 +238,7 @@ Window {
 
                                 font.pointSize: JamiTheme.textFontSize - 2
                                 text: qsTr("Screen") + " " + (calculateScreenNumber(index, true))
+                                color: JamiTheme.textColor
                             }
 
                             MouseArea {

@@ -65,6 +65,24 @@ ColumnLayout {
     }
 
     ToggleSwitch {
+        id: darkThemeCheckBox
+        Layout.fillWidth: true
+        Layout.leftMargin: JamiTheme.preferredMarginSize
+
+        checked: SettingsAdapter.getAppValue(Settings.EnableDarkTheme)
+
+        labelText: qsTr("Enable dark theme")
+        fontPointSize: JamiTheme.settingsFontSize
+
+        tooltipText: JamiStrings.enableDarkTheme
+
+        onSwitchToggled: {
+            JamiTheme.setTheme(checked)
+            SettingsAdapter.setAppValue(Settings.Key.EnableDarkTheme, checked)
+        }
+    }
+
+    ToggleSwitch {
         id: notificationCheckBox
         Layout.fillWidth: true
         Layout.leftMargin: JamiTheme.preferredMarginSize
