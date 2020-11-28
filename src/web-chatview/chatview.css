@@ -440,7 +440,7 @@ a:hover {
     border: 3px solid rgba(255,255,255,0);
     padding: 30px;
     border-radius: 20px;
-    background-color: white;
+    background-color: var(--message-in-bg);
     display: inline-block;
     justify-content: flex-start;
     align-items: center;
@@ -477,12 +477,13 @@ a:hover {
     margin-right: 2em;
     top: 8%;
     left: 1px;
+    fill: var(--message-in-txt);
 }
 
 .file_wrapper .svg-icon path,
 .file_wrapper .svg-icon polygon,
 .file_wrapper .svg-icon rect {
-    fill: #000000;
+    fill:  var(--message-in-txt);
 }
 
 .file_wrapper .svg-icon circle {
@@ -494,6 +495,7 @@ a:hover {
     position: absolute;
     top: 30%;
     left: 7%;
+    color: var(--message-in-txt);
 }
 
 #back_to_bottom_button_container {
@@ -684,8 +686,8 @@ div.last_message > span {
 .message_in .message_wrapper {
     border-top-left-radius: 0;
     transform-origin: top left;
-    background-color: var(--message-out-bg);
-    color: var(--message-out-txt);
+    background-color: var(--message-in-bg);
+    color: var(--message-in-txt);
 }
 
 @-webkit-keyframes fade-in {
