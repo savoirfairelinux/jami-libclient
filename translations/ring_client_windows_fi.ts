@@ -812,7 +812,7 @@
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="95"/>
         <source>Auto Registration After Expired</source>
-        <translation type="unfinished"/>
+        <translation>Rekisteröinnin vanhentumisen jälkeen</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="96"/>

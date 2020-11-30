@@ -815,7 +815,7 @@ Notez que le mot de passe ne peut être récupéré.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="95"/>
         <source>Auto Registration After Expired</source>
-        <translation type="unfinished"/>
+        <translation>Réenregistrement automatique après expiration</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="96"/>
