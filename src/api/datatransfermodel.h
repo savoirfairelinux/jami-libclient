@@ -57,19 +57,19 @@ public:
                   const QString& file_path,
                   const QString& display_name);
 
-    void transferInfo(long long ringId, datatransfer::Info& lrc_info);
+    void transferInfo(qulonglong ringId, datatransfer::Info& lrc_info);
 
-    void bytesProgress(int interactionId, int64_t& total, int64_t& progress);
+    void bytesProgress(const QString& interactionId, int64_t& total, int64_t& progress);
 
-    QString accept(int interactionId, const QString& file_path, std::size_t offset);
+    QString accept(const QString& interactionId, const QString& file_path, std::size_t offset);
 
-    void cancel(int interactionId);
+    void cancel(const QString& interactionId);
 
-    void registerTransferId(long long dringId, int interactionId);
+    void registerTransferId(qulonglong dringId, const QString& interactionId);
 
-    int getInteractionIdFromDringId(long long dringId);
+    QString getInteractionIdFromDringId(qulonglong dringId);
 
-    long long getDringIdFromInteractionId(int interactionId);
+    qulonglong getDringIdFromInteractionId(const QString& interactionId);
 
     /**
      * Used when images < 20 Mb are automatically accepted and downloaded
