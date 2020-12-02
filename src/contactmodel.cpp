@@ -190,7 +190,7 @@ public Q_SLOTS:
      * @param dringId Daemon's ID for incoming transfer
      * @param transferInfo DataTransferInfo structure from daemon
      */
-    void slotNewAccountTransfer(long long dringId, datatransfer::Info info);
+    void slotNewAccountTransfer(DataTransferId dringId, datatransfer::Info info);
 
     /**
      * Listen from daemon to know when a VCard is received
@@ -1124,7 +1124,7 @@ ContactModelPimpl::sipUriReceivedFilter(const QString& uri)
 }
 
 void
-ContactModelPimpl::slotNewAccountTransfer(long long dringId, datatransfer::Info info)
+ContactModelPimpl::slotNewAccountTransfer(qulonglong dringId, datatransfer::Info info)
 {
     if (info.accountId != linked.owner.id)
         return;
