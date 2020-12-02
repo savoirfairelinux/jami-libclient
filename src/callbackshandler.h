@@ -307,6 +307,21 @@ Q_SIGNALS:
      * @param code
      */
     void remoteRecordingChanged(const QString& callId, const QString& peerNumber, bool state);
+    void conversationLoaded(uint32_t loadingRequestId,
+                            const QString& accountId,
+                            const QString& conversationId,
+                            VectorMapStringString messages);
+    void messageReceived(const QString& accountId,
+                         const QString& conversationId,
+                         MapStringString message);
+    void conversationRequestReceived(const QString& accountId,
+                                     const QString& conversationId,
+                                     MapStringString metadatas);
+    void conversationReady(const QString& accountId, const QString& conversationId);
+    void conversationMemberEvent(const QString& accountId,
+                                     const QString& conversationId,
+                                     const QString& memberUri,
+                                     int event);
 
 private Q_SLOTS:
     /**
@@ -566,6 +581,21 @@ private Q_SLOTS:
      * @param state, new state
      */
     void slotRemoteRecordingChanged(const QString& callId, const QString& contactId, bool state);
+    void slotConversationLoaded(uint32_t loadingRequestId,
+                                const QString& accountId,
+                                const QString& conversationId,
+                                VectorMapStringString messages);
+    void slotMessageReceived(const QString& accountId,
+                             const QString& conversationId,
+                             MapStringString message);
+    void slotConversationRequestReceived(const QString& accountId,
+                                         const QString& conversationId,
+                                         MapStringString metadatas);
+    void slotConversationReady(const QString& accountId, const QString& conversationId);
+    void slotConversationMemberEvent(const QString& accountId,
+                                     const QString& conversationId,
+                                     const QString& memberUri,
+                                     int event);
 
 private:
     const api::Lrc& parent;
