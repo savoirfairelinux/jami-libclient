@@ -283,9 +283,9 @@ public:
      * load messages for conversation
      * @param conversationId conversation's id
      * @param size number of messages should be loaded. Default 1
-     * @return id for loading request.
+     * @return id for loading request. -1 if not loaded
      */
-    uint32_t loadConversationMessages(const QString& conversationId,
+    int loadConversationMessages(const QString& conversationId,
                                       const int size = 1);
     /**
      * accept request for conversation
@@ -309,6 +309,24 @@ public:
      * @param memberURI members's uri
      */
     void removeConversationMember(const QString& conversationId, const QString& memberURI);
+    /**
+     * get conversation info
+     * @param conversationId conversation's id
+     * @return conversation info
+     */
+    MapStringString getConversationInfos(const QString& conversationId);
+    /**
+     * create a new swarm conversation
+     * @param participants  conversation's participants
+     * @param title conversation title
+     */
+    void createConversation(const VectorString& participants, const QString& title = "");
+    /**
+     * update conversation info
+     * @param conversationId conversation's id
+     * @param info
+     */
+    void updateConversationInfo(const QString& conversationId, MapStringString info);
 
 Q_SIGNALS:
     /**
@@ -369,11 +387,11 @@ Q_SIGNALS:
      */
     void allHistoryCleared() const;
     /**
-     * Emitted at the end of slotContactAdded to notify that an existing conversation can
+     * Emitted at the end of slotContactAdded and at conversationReady for swarm conversation to notify that an existing conversation can
      * be modified
      * @param uid
      */
-    void conversationReady(QString uid) const;
+    void conversationReady(QString uid, QString participantURI) const;
     /**
      * Emitted when a contact in a conversation is composing a message
      * @param uid           conversation's id
@@ -417,6 +435,15 @@ Q_SIGNALS:
      * @param conversationId conversation Id
      */
     void newMessagesAvailable(const QString& accountId, const QString& conversationId) const;
+
+    /**
+     * Emitted when creation of conversation started, finished with success or finisfed with error
+     * @param accountId  account id
+     * @param conversationId conversation Id, when conversation creation started conversationId = participantURI
+     * @param participantURI participant uri
+     * @param status 0 -started, 1 -created with success, 2 -error
+     */
+    void creatingConversationEvent(const QString& accountId, const QString& conversationId, const QString& participantURI, int status) const;
 
 private:
     std::unique_ptr<ConversationModelPimpl> pimpl_;
