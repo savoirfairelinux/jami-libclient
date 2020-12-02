@@ -118,6 +118,16 @@ public:
      */
     void addConversationWith(const QString& convId, const QString& contactUri);
     /**
+     * Add a swarm conversation to conversation list
+     * @param convId
+     */
+    void addSwarmConversation(const QString& convI);
+    /**
+     * Start swarm conversation with participant
+     * @param participantUri
+     */
+    QString startSwarmConversationWith(const QString& participantUri);
+    /**
      * Add call interaction for conversation with callId
      * @param callId
      * @param duration
@@ -302,6 +312,10 @@ public Q_SLOTS:
     void slotConversationRequestReceived(const QString& accountId,
                                          const QString& conversationId,
                                          MapStringString metadatas);
+    void slotConversationMemberEvent(const QString& accountId,
+                                     const QString& conversationId,
+                                     const QString& memberUri,
+                                     int event);
     void slotConversationReady(const QString& accountId, const QString& conversationId);
 };
 
@@ -801,8 +815,8 @@ ConversationModelPimpl::placeCall(const QString& uid, bool isAudioOnly)
             uri = "ring:" + uri; // Add the ring: before or it will fail.
         }
 
-        auto cb = std::function<void(QString)>(
-            [this, isTemporary, uri, isAudioOnly, &conversation](QString convId) {
+        auto cb = std::function<void(QString, QString)>(
+            [this, isTemporary, uri, isAudioOnly, &conversation](QString convId, QString participantURI) {
                 int contactIndex;
                 if (isTemporary && (contactIndex = indexOfContact(convId)) < 0) {
                     qDebug() << "Can't place call: Other participant is not a contact (removed "
@@ -827,8 +841,8 @@ ConversationModelPimpl::placeCall(const QString& uid, bool isAudioOnly)
             QMetaObject::Connection* const connection = new QMetaObject::Connection;
             *connection = connect(&this->linked,
                                   &ConversationModel::conversationReady,
-                                  [cb, connection](QString convId) {
-                                      cb(convId);
+                                  [cb, connection](QString convId, QString participantURI) {
+                                      cb(convId, participantURI);
                                       QObject::disconnect(*connection);
                                       if (connection) {
                                           delete connection;
@@ -839,7 +853,7 @@ ConversationModelPimpl::placeCall(const QString& uid, bool isAudioOnly)
         sendContactRequest(participant);
 
         if (!isTemporary) {
-            cb(convId);
+            cb(convId, uri);
         }
     } catch (const std::out_of_range& e) {
         qDebug() << "could not place call to not existing conversation";
@@ -878,23 +892,34 @@ ConversationModel::sendMessage(const QString& uid, const QString& body, const QS
         /* Make a copy of participants list: if current conversation is temporary,
          it might me destroyed while we are reading it */
         const auto participants = conversation.participants;
+        
+        bool isSwarm = conversation.isSwarm;
 
-        auto cb = std::function<void(QString)>([this, isTemporary, body, &conversation](
-                                                   QString convId) {
-            /* Now we should be able to retrieve the final conversation, in case the previous
-             one was temporary */
-            // FIXME potential race condition between index check and at() call
-            int contactIndex;
-            if (isTemporary && (contactIndex = pimpl_->indexOfContact(convId)) < 0) {
-                qDebug() << "Can't send message: Other participant is not a contact";
+        auto cb = std::function<void(QString, QString)>([this, isTemporary, body, &conversation, parentId, convId](
+                                                   QString conversationId, QString participantURI) {
+            if (isTemporary && participantURI != convId) {
+                return;
+            }
+            if (isTemporary && pimpl_->indexOf(conversationId) < 0 ) {
+                return;
+            }
+            if (isTemporary) {
+                conversation = pimpl_->getConversation(conversationId);
+            }
+
+            if (conversation.isSwarm) {
+                ConversationManager::instance().sendMessage(owner.id,conversationId,body,parentId);
+                //if (!isTemporary) {
+                ConversationManager::instance().loadConversationMessages(owner.id, conversationId,"",1);
+                //}
                 return;
             }
 
             uint64_t daemonMsgId = 0;
             auto status = interaction::Status::SENDING;
 
-            auto& newConv = isTemporary ? pimpl_->conversations.at(contactIndex) : conversation;
-            convId = newConv.uid;
+            auto& newConv = conversation;
+            auto convId = newConv.uid;
 
             // Send interaction to each participant
             for (const auto& participant : newConv.participants) {
@@ -959,8 +984,8 @@ ConversationModel::sendMessage(const QString& uid, const QString& body, const QS
             QMetaObject::Connection* const connection = new QMetaObject::Connection;
             *connection = connect(this,
                                   &ConversationModel::conversationReady,
-                                  [cb, connection](QString convId) {
-                                      cb(convId);
+                                  [cb, connection](QString convId, QString participantURI) {
+                                      cb(convId, participantURI);
                                       QObject::disconnect(*connection);
                                       if (connection) {
                                           delete connection;
@@ -982,7 +1007,7 @@ ConversationModel::sendMessage(const QString& uid, const QString& body, const QS
         }
 
         if (!isTemporary) {
-            cb(convId);
+            cb(convId, conversation.participants.front());
         }
     } catch (const std::out_of_range& e) {
         qDebug() << "could not send message to not existing conversation";
@@ -1454,6 +1479,10 @@ ConversationModelPimpl::ConversationModelPimpl(const ConversationModel& linked,
             &CallbacksHandler::conversationReady,
             this,
             &ConversationModelPimpl::slotConversationReady);
+    connect(&callbacksHandler,
+            &CallbacksHandler::conversationMemberEvent,
+            this,
+            &ConversationModelPimpl::slotConversationMemberEvent);
 }
 
 ConversationModelPimpl::~ConversationModelPimpl()
@@ -1574,6 +1603,10 @@ ConversationModelPimpl::~ConversationModelPimpl()
                &CallbacksHandler::conversationReady,
                this,
                &ConversationModelPimpl::slotConversationReady);
+    disconnect(&callbacksHandler,
+               &CallbacksHandler::conversationMemberEvent,
+               this,
+               &ConversationModelPimpl::slotConversationMemberEvent);
 }
 
 void
@@ -1584,17 +1617,28 @@ ConversationModelPimpl::initConversations()
     if (accountDetails.empty())
         return;
 
+    // Fill swarm conversations
+    VectorString swarm = ConversationManager::instance().getConversations(linked.owner.id);
+    for (auto& swarmConv : swarm) {
+        addSwarmConversation(swarmConv);
+    }
+
     // Fill conversations
     for (auto const& c : linked.owner.contactModel->getAllContacts().toStdMap()) {
         auto conv = storage::getConversationsWithPeer(db, c.second.profileInfo.uri);
         if (conv.empty()) {
-            // Can't find a conversation with this contact. Start it.
-            auto newConversationsId = storage::beginConversationWithPeer(db,
-                                                                         c.second.profileInfo.uri,
-                                                                         c.second.isTrusted);
-            conv.push_back(std::move(newConversationsId));
+            // Can't find a conversation with this contact
+            // add temporary pending conversation
+            if (!c.second.isTrusted && indexOf(c.second.profileInfo.uri) < 0) {
+                conversation::Info conversation;
+                conversation.uid = c.second.profileInfo.uri;
+                conversation.accountId = linked.owner.id;
+                conversation.participants = {c.second.profileInfo.uri};
+                conversation.isSwarm = false;
+                conversations.emplace_back(conversation);
+            }
+            continue;
         }
-
         addConversationWith(conv[0], c.first);
 
         auto convIdx = indexOf(conv[0]);
@@ -1617,6 +1661,7 @@ ConversationModelPimpl::initConversations()
             }
         }
     }
+    dirtyConversations = {true, true};
 
     sortConversations();
     filteredConversations = conversations;
@@ -1699,24 +1744,120 @@ ConversationModelPimpl::slotConversationLoaded(uint32_t loadingRequestId,
                                                const QString& accountId,
                                                const QString& conversationId,
                                                VectorMapStringString messages)
-{}
+{
+    if (accountId != linked.owner.id) {
+        return;
+    }
+    try {
+        auto& conversation = getConversation(conversationId);
+        for (auto& message : messages) {
+            if (message["type"].isEmpty()) {
+                continue;
+            }
+            auto msgId = message["id"];
+            auto msg = interaction::Info(message, linked.owner.profileInfo.uri);
+            conversation.interactions.emplace(msgId, msg);
+            conversation.lastMessageUid = msgId;
+        }
+        emit linked.newMessagesAvailable(linked.owner.id, conversationId);
+    } catch (const std::exception& e) {
+        qDebug() << "messages loaded for not existing conversation";
+    }
+}
 
 void
 ConversationModelPimpl::slotMessageReceived(const QString& accountId,
                                             const QString& conversationId,
                                             MapStringString message)
-{}
+{
+    if (accountId != linked.owner.id) {
+        return;
+    }
+    try {
+        auto& conversation = getConversation(conversationId);
+        if (message["type"].isEmpty()) {
+            return;
+        }
+        auto msgId = message["id"];
+        auto msg = interaction::Info(message, linked.owner.profileInfo.uri);
+        conversation.interactions.emplace(msgId, msg);
+        conversation.lastMessageUid = msgId;
+        dirtyConversations = {true, true};
+        sortConversations();
+        emit linked.modelSorted();
+        emit linked.newMessagesAvailable(linked.owner.id, conversationId);
+    } catch (const std::exception& e) {
+        qDebug() << "messages received for not existing conversation";
+    }
+}
 
 void
 ConversationModelPimpl::slotConversationRequestReceived(const QString& accountId,
                                                         const QString& conversationId,
                                                         MapStringString metadatas)
-{}
+{
+    qDebug() << "slotConversationRequestReceived";
+}
 
 void
 ConversationModelPimpl::slotConversationReady(const QString& accountId,
                                               const QString& conversationId)
-{}
+{
+    if (accountId != linked.owner.id || indexOf(conversationId) >= 0 ) {
+        return;
+    }
+    addSwarmConversation(conversationId);
+    if (indexOf(conversationId) < 0 ) {
+        return;
+    }
+    dirtyConversations = {true, true};
+    // update participants
+    auto conversation = getConversation(conversationId);
+    auto participants = conversation.participants;
+    emit linked.conversationReady(conversationId, participants.front());
+    emit linked.newConversation(conversationId);
+    sortConversations();
+    emit linked.modelSorted();
+}
+void
+ConversationModelPimpl::slotConversationMemberEvent(const QString& accountId,
+                                 const QString& conversationId,
+                                 const QString& memberUri,
+                                 int event)
+{
+    if (accountId != linked.owner.id || indexOf(conversationId) < 0 ) {
+        return;
+    }
+    switch (event) {
+        case 0: //add
+            // clear search result
+            for (unsigned int i = 0; i < searchResults.size(); ++i) {
+                if (searchResults.at(i).uid == memberUri)
+                    searchResults.erase(searchResults.begin() + i);
+            }
+            break;
+        case 1: //joins
+            break;
+        case 2: //leave
+            break;
+        case 3: //banned
+            break;
+    }
+    // update participants
+    auto conversation = getConversation(conversationId);
+    auto members = ConversationManager::instance().getConversationMembers(linked.owner.id, conversationId);
+    VectorString uris;
+    auto accountURI = linked.owner.profileInfo.uri;
+    for (auto& member : members) {
+        if (member["uri"] != accountURI) {
+            uris.append(member["uri"]);
+        }
+    }
+    conversation.participants = uris;
+    dirtyConversations = {true, true};
+    sortConversations();
+    emit linked.modelSorted();
+}
 
 void
 ConversationModelPimpl::slotContactAdded(const QString& contactUri)
@@ -1730,29 +1871,19 @@ ConversationModelPimpl::slotContactAdded(const QString& contactUri)
     } catch (...) {
     }
     storage::createOrUpdateProfile(linked.owner.id, profileInfo, true);
+    // swarm conversation should be added during interaction
+    // add not swarm conversation if conversation already exists in db (blocked contacts)
     auto conv = storage::getConversationsWithPeer(db, profileInfo.uri);
-    if (conv.empty()) {
-        // pass conversation UID through only element
-        conv.push_back(storage::beginConversationWithPeer(db, profileInfo.uri));
+    if (!conv.empty()) {
+        // Add the conversation if not already here
+        if (indexOf(conv[0]) == -1) {
+            addConversationWith(conv[0], profileInfo.uri);
+            emit linked.newConversation(conv[0]);
+        }
+        sortConversations();
+        emit linked.conversationReady(conv[0], profileInfo.uri);
+        emit linked.modelSorted();
     }
-    // Add the conversation if not already here
-    if (indexOf(conv[0]) == -1) {
-        addConversationWith(conv[0], profileInfo.uri);
-        emit linked.newConversation(conv[0]);
-    }
-
-    // delete temporary conversation if it exists and it has the uri of the added contact as uid
-    if (indexOf(profileInfo.uri) >= 0) {
-        conversations.erase(conversations.begin() + indexOf(profileInfo.uri));
-    }
-    for (unsigned int i = 0; i < searchResults.size(); ++i) {
-        if (searchResults.at(i).uid == profileInfo.uri)
-            searchResults.erase(searchResults.begin() + i);
-    }
-
-    sortConversations();
-    emit linked.conversationReady(profileInfo.uri);
-    emit linked.modelSorted();
 }
 
 void
@@ -1766,9 +1897,7 @@ ConversationModelPimpl::slotPendingContactAccepted(const QString& uri)
     profile::Info profileInfo {uri, {}, {}, type};
     storage::createOrUpdateProfile(linked.owner.id, profileInfo, true);
     auto convs = storage::getConversationsWithPeer(db, uri);
-    if (convs.empty()) {
-        convs.push_back(storage::beginConversationWithPeer(db, uri));
-    } else {
+    if (!convs.empty()) {
         try {
             auto contact = linked.owner.contactModel->getContact(uri);
             auto interaction = interaction::Info {uri,
@@ -1846,12 +1975,53 @@ ConversationModelPimpl::slotContactModelUpdated(const QString& uri, bool needsSo
 }
 
 void
+ConversationModelPimpl::addSwarmConversation(const QString& convId)
+{
+    VectorString uris;
+    auto members = ConversationManager::instance().getConversationMembers(linked.owner.id, convId);
+    auto accountURI = linked.owner.profileInfo.uri;
+    for (auto& member : members) {
+        if (member["uri"] != accountURI) {
+            uris.append(member["uri"]);
+        }
+    }
+    if (uris.isEmpty()) {
+        return;
+    }
+    conversation::Info conversation;
+    conversation.uid = convId;
+    conversation.accountId = linked.owner.id;
+    conversation.participants = uris;
+    conversation.isSwarm = true;
+    auto id = ConversationManager::instance().loadConversationMessages(linked.owner.id,
+                                                                       convId,
+                                                                       "",
+                                                                       1);
+    conversations.emplace_back(conversation);
+}
+
+QString
+ConversationModelPimpl::startSwarmConversationWith(const QString& participantUri)
+{
+    auto convUid = ConversationManager::instance().startConversation(linked.owner.id);
+    ConversationManager::instance().addConversationMember(linked.owner.id, convUid, participantUri);
+    addSwarmConversation(convUid);
+    // clear search result
+    for (unsigned int i = 0; i < searchResults.size(); ++i) {
+        if (searchResults.at(i).uid == participantUri)
+            searchResults.erase(searchResults.begin() + i);
+    }
+    return convUid;
+}
+
+void
 ConversationModelPimpl::addConversationWith(const QString& convId, const QString& contactUri)
 {
     conversation::Info conversation;
     conversation.uid = convId;
     conversation.accountId = linked.owner.id;
     conversation.participants = {contactUri};
+    conversation.isSwarm = false;
     try {
         conversation.confId = linked.owner.callModel->getConferenceFromURI(contactUri).id;
     } catch (...) {
@@ -2046,6 +2216,10 @@ ConversationModelPimpl::addOrUpdateCallMessage(const QString& callId,
                                                const QString& from,
                                                const std::time_t& duration)
 {
+    auto convIds = storage::getConversationsWithPeer(db, from);
+    if (convIds.empty()) {
+        return;
+    }
     // Get conversation
     auto conv_it = std::find_if(conversations.begin(),
                                 conversations.end(),
@@ -2325,8 +2499,8 @@ ConversationModel::sendFile(const QString& convUid, const QString& path, const Q
 
         pimpl_->sendContactRequest(peerUri);
 
-        auto cb = std::function<void(QString)>(
-            [this, isTemporary, peerUri, path, filename](QString convId) {
+        auto cb = std::function<void(QString, QString)>(
+            [this, isTemporary, peerUri, path, filename](QString convId, QString participantURI) {
                 int contactIndex;
                 if (isTemporary && (contactIndex = pimpl_->indexOfContact(convId)) < 0) {
                     qDebug() << "Can't send file: Other participant is not a contact (removed "
@@ -2352,15 +2526,15 @@ ConversationModel::sendFile(const QString& convUid, const QString& path, const Q
             QMetaObject::Connection* const connection = new QMetaObject::Connection;
             *connection = connect(this,
                                   &ConversationModel::conversationReady,
-                                  [cb, connection](QString convId) {
-                                      cb(convId);
+                                  [cb, connection](QString convId, QString participantURI) {
+                                      cb(convId, participantURI);
                                       QObject::disconnect(*connection);
                                       if (connection) {
                                           delete connection;
                                       }
                                   });
         } else {
-            cb(convUidCopy);
+            cb(convUidCopy, peerUri);
         }
     } catch (const std::out_of_range& e) {
         qDebug() << "could not send file to not existing conversation";
