@@ -42,6 +42,7 @@ struct Info
     bool isTrusted = false;
     bool isPresent = false;
     bool isBanned = false;
+    QString conversationId {};
 };
 
 } // namespace contact
