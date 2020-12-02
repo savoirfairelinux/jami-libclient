@@ -57,13 +57,13 @@ public:
                   const QString& file_path,
                   const QString& display_name);
 
-    void transferInfo(long long ringId, datatransfer::Info& lrc_info);
+    void transferInfo(const QString& accountId, const QString& conversationId, long long ringId, datatransfer::Info& lrc_info);
 
-    void bytesProgress(int interactionId, int64_t& total, int64_t& progress);
+    void bytesProgress(const QString& accountId, const QString& conversationId, int interactionId, int64_t& total, int64_t& progress);
 
-    QString accept(int interactionId, const QString& file_path, std::size_t offset);
+    QString accept(const QString& accountId, const QString& conversationId, int interactionId, const QString& file_path, std::size_t offset);
 
-    void cancel(int interactionId);
+    void cancel(const QString& accountId, const QString& conversationId, int interactionId);
 
     void registerTransferId(long long dringId, int interactionId);
 
