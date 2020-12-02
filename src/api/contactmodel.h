@@ -90,18 +90,7 @@ public:
      * @return all contacts for this account.
      */
     const ContactInfoMap& getAllContacts() const;
-    /**
-     * @return if pending requests exists.
-     */
-    bool hasPendingRequests() const;
-    /**
-     * @return number of pending requests
-     */
-    int pendingRequestCount() const;
-    /**
-     * Search a SIP or a Ring contact from a query.
-     * @param query
-     */
+
     void searchContact(const QString& query);
     /**
      * Send a text interaction to a contact over the Dht.
@@ -132,6 +121,11 @@ Q_SIGNALS:
      */
     void contactAdded(const QString& contactUri) const;
     /**
+     * Connect this signal to know when a contact request received
+     * @param contactUri
+     */
+    void incomingContactRequest(const QString& contactUri) const;
+    /**
      * Connect this signal to know when a pending contact was accepted.
      * @param contactUri
      */
@@ -155,15 +149,15 @@ Q_SIGNALS:
      * @param payloads content of the message
      */
     void newAccountMessage(const QString& accountId,
-                           const QString& msgId,
                            const QString& from,
+                           const QString& msgId,
                            const MapStringString& payloads) const;
     /**
      * Connect this signal to know when a file transfer interaction is incoming
      * @param dringId Daemon's ID for incoming transfer
      * @param transferInfo DataTransferInfo structure from daemon
      */
-    void newAccountTransfer(long long dringId, datatransfer::Info info) const;
+    void newAccountTransfer(DataTransferId dringId, datatransfer::Info info) const;
     /**
      * Connect this signal to know when a contact is banned or unbanned
      * @param contactUri
