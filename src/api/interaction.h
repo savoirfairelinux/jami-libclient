@@ -22,6 +22,7 @@
 #include <QObject>
 
 #include <ctime>
+#include "typedefs.h"
 
 namespace lrc {
 
@@ -56,7 +57,8 @@ to_string(const Type& type)
 static inline Type
 to_type(const QString& type)
 {
-    if (type == "TEXT")
+    qDebug() << type;
+    if (type == "TEXT" || type == "text/plain")
         return interaction::Type::TEXT;
     else if (type == "CALL")
         return interaction::Type::CALL;
@@ -185,6 +187,35 @@ struct Info
     Type type = Type::INVALID;
     Status status = Status::INVALID;
     bool isRead = false;
+
+    Info() {}
+
+    Info(QString authorUri1,
+         QString body1,
+         std::time_t timestamp1,
+         std::time_t duration1,
+         Type type1,
+         Status status1,
+         bool isRead1)
+    {
+        authorUri = authorUri1;
+        body = body1;
+        timestamp = timestamp1;
+        duration = duration1;
+        type = type1;
+        status = status1;
+        isRead = isRead1;
+    }
+
+    Info(const MapStringString& message, const QString& accountURI)
+    {
+        type = to_type(message["type"]);
+        body = message["body"];
+        authorUri = accountURI == message["author"] ? "" : message["author"];
+        timestamp = message["timestamp"].toInt();
+        status = Status::SUCCESS;
+        isRead = true;
+    }
 };
 
 static inline bool
