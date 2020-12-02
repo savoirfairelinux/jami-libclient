@@ -313,6 +313,17 @@ public Q_SLOTS:
     void updateTransferStatus(long long dringId,
                               api::datatransfer::Info info,
                               interaction::Status newStatus);
+    void slotConversationLoaded(uint32_t requestId,
+                                const QString& accountId,
+                                const QString& conversationId,
+                                const VectorMapStringString& messages);
+    void slotMessageReceived(const QString& accountId,
+                             const QString& conversationId,
+                             const MapStringString& message);
+    void slotConversationRequestReceived(const QString& accountId,
+                                         const QString& conversationId,
+                                         const MapStringString& metadatas);
+    void slotConversationReady(const QString& accountId, const QString& conversationId);
 };
 
 ConversationModel::ConversationModel(const account::Info& owner,
@@ -811,7 +822,7 @@ ConversationModel::placeCall(const QString& uid)
 }
 
 void
-ConversationModel::sendMessage(const QString& uid, const QString& body)
+ConversationModel::sendMessage(const QString& uid, const QString& body, const QString& parentId)
 {
     try {
         auto& conversation = pimpl_->getConversationForUid(uid, true).get();
@@ -1255,6 +1266,29 @@ ConversationModel::clearUnreadInteractions(const QString& convId)
     }
 }
 
+uint32_t
+ConversationModel::loadConversationMessages(const QString& conversationId,
+                                            const int size)
+{
+    return -1;
+}
+
+void
+ConversationModel::acceptConversationRequest(const QString& conversationId)
+{}
+
+void
+ConversationModel::declineConversationRequest(const QString& conversationId)
+{}
+
+void
+ConversationModel::addConversationMember(const QString& conversationId, const QString& memberId)
+{}
+
+void
+ConversationModel::removeConversationMember(const QString& conversationId, const QString& memberId)
+{}
+
 ConversationModelPimpl::ConversationModelPimpl(const ConversationModel& linked,
                                                Lrc& lrc,
                                                Database& db,
@@ -1372,6 +1406,23 @@ ConversationModelPimpl::ConversationModelPimpl(const ConversationModel& linked,
             &CallbacksHandler::transferStatusUnjoinable,
             this,
             &ConversationModelPimpl::slotTransferStatusUnjoinable);
+    // swarm conversations
+    connect(&callbacksHandler,
+            &CallbacksHandler::conversationLoaded,
+            this,
+            &ConversationModelPimpl::slotConversationLoaded);
+    connect(&callbacksHandler,
+            &CallbacksHandler::messageReceived,
+            this,
+            &ConversationModelPimpl::slotMessageReceived);
+    connect(&callbacksHandler,
+            &CallbacksHandler::conversationRequestReceived,
+            this,
+            &ConversationModelPimpl::slotConversationRequestReceived);
+    connect(&callbacksHandler,
+            &CallbacksHandler::conversationReady,
+            this,
+            &ConversationModelPimpl::slotConversationReady);
 }
 
 ConversationModelPimpl::~ConversationModelPimpl()
@@ -1475,6 +1526,23 @@ ConversationModelPimpl::~ConversationModelPimpl()
                &CallbacksHandler::transferStatusUnjoinable,
                this,
                &ConversationModelPimpl::slotTransferStatusUnjoinable);
+    // swarm conversations
+    disconnect(&callbacksHandler,
+               &CallbacksHandler::conversationLoaded,
+               this,
+               &ConversationModelPimpl::slotConversationLoaded);
+    disconnect(&callbacksHandler,
+               &CallbacksHandler::messageReceived,
+               this,
+               &ConversationModelPimpl::slotMessageReceived);
+    disconnect(&callbacksHandler,
+               &CallbacksHandler::conversationRequestReceived,
+               this,
+               &ConversationModelPimpl::slotConversationRequestReceived);
+    disconnect(&callbacksHandler,
+               &CallbacksHandler::conversationReady,
+               this,
+               &ConversationModelPimpl::slotConversationReady);
 }
 
 void
@@ -1670,6 +1738,29 @@ ConversationModelPimpl::sendContactRequest(const QString& contactUri)
     if (isNotUsed)
         linked.owner.contactModel->addContact(contact);
 }
+void
+ConversationModelPimpl::slotConversationLoaded(uint32_t requestId,
+                                               const QString& accountId,
+                                               const QString& conversationId,
+                                               const VectorMapStringString& messages)
+{}
+
+void
+ConversationModelPimpl::slotMessageReceived(const QString& accountId,
+                                            const QString& conversationId,
+                                            const MapStringString& message)
+{}
+
+void
+ConversationModelPimpl::slotConversationRequestReceived(const QString& accountId,
+                                                        const QString& conversationId,
+                                                        const MapStringString& metadatas)
+{}
+
+void
+ConversationModelPimpl::slotConversationReady(const QString& accountId,
+                                              const QString& conversationId)
+{}
 
 void
 ConversationModelPimpl::slotContactAdded(const QString& contactUri)
@@ -2335,7 +2426,7 @@ void
 ConversationModel::acceptTransfer(const QString& convUid, uint64_t interactionId)
 {
     lrc::api::datatransfer::Info info = {};
-    getTransferInfo(interactionId, info);
+    getTransferInfo(convUid, interactionId, info);
     acceptTransfer(convUid, interactionId, info.displayName);
 }
 
@@ -2372,7 +2463,7 @@ ConversationModel::cancelTransfer(const QString& convUid, uint64_t interactionId
     }
     if (emitUpdated) {
         // Forward cancel action to daemon (will invoke slotTransferStatusCanceled)
-        pimpl_->lrc.getDataTransferModel().cancel(interactionId);
+        pimpl_->lrc.getDataTransferModel().cancel(owner.id, convUid, interactionId);
         pimpl_->invalidateModel();
         emit interactionStatusUpdated(convUid, interactionId, itCopy);
         emit pimpl_->behaviorController.newReadInteraction(owner.id, convUid, interactionId);
@@ -2380,11 +2471,11 @@ ConversationModel::cancelTransfer(const QString& convUid, uint64_t interactionId
 }
 
 void
-ConversationModel::getTransferInfo(uint64_t interactionId, datatransfer::Info& info)
+ConversationModel::getTransferInfo(const QString& conversationId, uint64_t interactionId, datatransfer::Info& info)
 {
     try {
         auto dringId = pimpl_->lrc.getDataTransferModel().getDringIdFromInteractionId(interactionId);
-        pimpl_->lrc.getDataTransferModel().transferInfo(dringId, info);
+        pimpl_->lrc.getDataTransferModel().transferInfo(owner.id, conversationId, dringId, info);
     } catch (...) {
         info.status = datatransfer::Status::INVALID;
     }
@@ -2543,7 +2634,9 @@ ConversationModelPimpl::acceptTransfer(const QString& convUid,
     QDir dir = QFileInfo(destinationDir + path).absoluteDir();
     if (!dir.exists())
         dir.mkpath(".");
-    auto acceptedFilePath = lrc.getDataTransferModel().accept(interactionId,
+    auto acceptedFilePath = lrc.getDataTransferModel().accept(linked.owner.id,
+                                                              convUid,
+                                                              interactionId,
                                                               destinationDir + path,
                                                               0);
     storage::updateInteractionBody(db, interactionId, acceptedFilePath);
