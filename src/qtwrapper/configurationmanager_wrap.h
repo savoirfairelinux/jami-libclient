@@ -232,6 +232,7 @@ public:
                        const std::string& from,
                        int status) {
                     Q_EMIT this->composingStatusChanged(QString(account_id.c_str()),
+                                                        QString(convId.c_str()),
                                                         QString(from.c_str()),
                                                         status > 0 ? true : false);
                 }),
@@ -810,6 +811,7 @@ public Q_SLOTS: // METHODS
         lrc_info.totalSize = dring_info.totalSize;
         lrc_info.bytesProgress = dring_info.bytesProgress;
         lrc_info.peer = QString::fromStdString(dring_info.peer);
+        lrc_info.conversationId = QString::fromStdString(dring_info.conversationId);
         lrc_info.displayName = QString::fromStdString(dring_info.displayName);
         lrc_info.path = QString::fromStdString(dring_info.path);
         lrc_info.mimetype = QString::fromStdString(dring_info.mimetype);
@@ -884,10 +886,10 @@ public Q_SLOTS: // METHODS
     {
         return DRing::removeConversation(accountId.toStdString(), conversationId.toStdString());
     }
-    VectorString getConversations(const QString& accountId)
+    QStringList getConversations(const QString& accountId)
     {
         auto conversations = DRing::getConversations(accountId.toStdString());
-        return convertVectorString(conversations);
+        return convertStringList(conversations);
     }
     VectorMapStringString getConversationRequests(const QString& accountId)
     {
@@ -1003,13 +1005,14 @@ Q_SIGNALS: // SIGNALS
     void contactAdded(const QString& accountID, const QString& uri, bool banned);
     void contactRemoved(const QString& accountID, const QString& uri, bool banned);
     void profileReceived(const QString& accountID, const QString& peer, const QString& vCard);
-    void dataTransferEvent(const QString& accountId, const QString& conversationId, qulonglong transfer_id, uint code);
+    void dataTransferEvent(const QString& accountId, const QString& conversationId, DataTransferId transfer_id, uint code);
     void deviceRevocationEnded(const QString& accountId, const QString& deviceId, int status);
     void accountProfileReceived(const QString& accountId,
                                 const QString& displayName,
                                 const QString& userPhoto);
     void debugMessageReceived(const QString& message);
     void composingStatusChanged(const QString& accountId,
+                                const QString& convId,
                                 const QString& contactId,
                                 bool isComposing);
     void userSearchEnded(const QString& accountId,
