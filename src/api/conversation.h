@@ -19,6 +19,7 @@
 #pragma once
 
 #include "interaction.h"
+#include "messageslist.h"
 #include "typedefs.h"
 
 #include <vector>
@@ -32,15 +33,18 @@ namespace conversation {
 
 struct Info
 {
+    bool allConversationLoaded = false;
     QString uid = "";
     QString accountId;
     VectorString participants;
     QString callId;
     QString confId;
-    std::map<QString, interaction::Info> interactions;
+    MessagesList interactions;
     QString lastMessageUid = 0;
+    QHash<QString, QString> roots; // pair messageid parent id for messages that missed parent
     std::map<QString, QString> lastDisplayedMessageUid;
     unsigned int unreadMessages = 0;
+    bool isSwarm = true;
 };
 
 } // namespace conversation

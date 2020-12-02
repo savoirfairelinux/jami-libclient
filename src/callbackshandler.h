@@ -181,15 +181,15 @@ Q_SIGNALS:
                                      const QString& to,
                                      int status);
 
-    void transferStatusCreated(long long dringId, api::datatransfer::Info info);
-    void transferStatusCanceled(long long dringId, api::datatransfer::Info info);
-    void transferStatusAwaitingPeer(long long dringId, api::datatransfer::Info info);
-    void transferStatusAwaitingHost(long long dringId, api::datatransfer::Info info);
-    void transferStatusOngoing(long long dringId, api::datatransfer::Info info);
-    void transferStatusFinished(long long dringId, api::datatransfer::Info info);
-    void transferStatusError(long long dringId, api::datatransfer::Info info);
-    void transferStatusTimeoutExpired(long long dringId, api::datatransfer::Info info);
-    void transferStatusUnjoinable(long long dringId, api::datatransfer::Info info);
+    void transferStatusCreated(qulonglong dringId, api::datatransfer::Info info);
+    void transferStatusCanceled(qulonglong dringId, api::datatransfer::Info info);
+    void transferStatusAwaitingPeer(qulonglong dringId, api::datatransfer::Info info);
+    void transferStatusAwaitingHost(qulonglong dringId, api::datatransfer::Info info);
+    void transferStatusOngoing(qulonglong dringId, api::datatransfer::Info info);
+    void transferStatusFinished(qulonglong dringId, api::datatransfer::Info info);
+    void transferStatusError(qulonglong dringId, api::datatransfer::Info info);
+    void transferStatusTimeoutExpired(qulonglong dringId, api::datatransfer::Info info);
+    void transferStatusUnjoinable(qulonglong dringId, api::datatransfer::Info info);
 
     /**
      * Connect this signal to get when a device name changed or a device is added
@@ -318,6 +318,10 @@ Q_SIGNALS:
                                      const QString& conversationId,
                                      MapStringString metadatas);
     void conversationReady(const QString& accountId, const QString& conversationId);
+    void conversationMemberEvent(const QString& accountId,
+                                 const QString& conversationId,
+                                 const QString& memberUri,
+                                 int event);
 
 private Q_SLOTS:
     /**
@@ -588,6 +592,10 @@ private Q_SLOTS:
                                          const QString& conversationId,
                                          MapStringString metadatas);
     void slotConversationReady(const QString& accountId, const QString& conversationId);
+    void slotConversationMemberEvent(const QString& accountId,
+                                     const QString& conversationId,
+                                     const QString& memberUri,
+                                     int event);
 
 private:
     const api::Lrc& parent;
