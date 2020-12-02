@@ -163,6 +163,7 @@ public Q_SLOTS:
      * @param payload VCard of the contact
      */
     void slotIncomingContactRequest(const QString& accountId,
+                                    const QString& conversationId,
                                     const QString& contactUri,
                                     const QString& payload);
     /**
@@ -181,8 +182,8 @@ public Q_SLOTS:
      * @param payloads
      */
     void slotNewAccountMessage(const QString& accountId,
-                               const QString& msgId,
                                const QString& from,
+                               const QString& msgId,
                                const MapStringString& payloads);
 
     /**
@@ -190,7 +191,7 @@ public Q_SLOTS:
      * @param dringId Daemon's ID for incoming transfer
      * @param transferInfo DataTransferInfo structure from daemon
      */
-    void slotNewAccountTransfer(long long dringId, datatransfer::Info info);
+    void slotNewAccountTransfer(DataTransferId dringId, datatransfer::Info info);
 
     /**
      * Listen from daemon to know when a VCard is received
@@ -964,6 +965,7 @@ ContactModelPimpl::slotRegisteredNameFound(const QString& accountId,
 
 void
 ContactModelPimpl::slotIncomingContactRequest(const QString& accountId,
+                                              const QString& conversationId,
                                               const QString& contactUri,
                                               const QString& payload)
 {
@@ -1033,8 +1035,8 @@ ContactModelPimpl::slotIncomingCall(const QString& fromId,
 
 void
 ContactModelPimpl::slotNewAccountMessage(const QString& accountId,
-                                         const QString& msgId,
                                          const QString& from,
+                                         const QString& msgId,
                                          const MapStringString& payloads)
 {
     if (accountId != linked.owner.id)
@@ -1066,7 +1068,7 @@ ContactModelPimpl::slotNewAccountMessage(const QString& accountId,
     if (emitNewTrust) {
         emit behaviorController.newTrustRequest(linked.owner.id, from);
     }
-    emit linked.newAccountMessage(accountId, msgId, from2, payloads);
+    emit linked.newAccountMessage(accountId, from2, msgId, payloads);
 }
 
 QString
@@ -1124,7 +1126,7 @@ ContactModelPimpl::sipUriReceivedFilter(const QString& uri)
 }
 
 void
-ContactModelPimpl::slotNewAccountTransfer(long long dringId, datatransfer::Info info)
+ContactModelPimpl::slotNewAccountTransfer(DataTransferId dringId, datatransfer::Info info)
 {
     if (info.accountId != linked.owner.id)
         return;
