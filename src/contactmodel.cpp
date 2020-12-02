@@ -164,6 +164,7 @@ public Q_SLOTS:
      * @param payload VCard of the contact
      */
     void slotIncomingContactRequest(const QString& accountId,
+                                    const QString& conversationId,
                                     const QString& contactUri,
                                     const QString& payload);
     /**
@@ -178,12 +179,12 @@ public Q_SLOTS:
      * Listen from callbacksHandler for new account interaction and add pending contact if not present
      * @param accountId
      * @param msgId
-     * @param from
+     * @param peerId
      * @param payloads
      */
     void slotNewAccountMessage(const QString& accountId,
+                               const QString& peerId,
                                const QString& msgId,
-                               const QString& from,
                                const MapStringString& payloads);
 
     /**
@@ -191,7 +192,7 @@ public Q_SLOTS:
      * @param dringId Daemon's ID for incoming transfer
      * @param transferInfo DataTransferInfo structure from daemon
      */
-    void slotNewAccountTransfer(long long dringId, datatransfer::Info info);
+    void slotNewAccountTransfer(DataTransferId dringId, datatransfer::Info info);
 
     /**
      * Listen from daemon to know when a VCard is received
@@ -230,29 +231,6 @@ const ContactModel::ContactInfoMap&
 ContactModel::getAllContacts() const
 {
     return pimpl_->contacts;
-}
-
-bool
-ContactModel::hasPendingRequests() const
-{
-    return pendingRequestCount() > 0;
-}
-
-int
-ContactModel::pendingRequestCount() const
-{
-    if (!pimpl_)
-        return 0;
-    std::lock_guard<std::mutex> lk(pimpl_->contactsMtx_);
-    int pendingRequestCount = 0;
-    std::for_each(pimpl_->contacts.begin(),
-                  pimpl_->contacts.end(),
-                  [&pendingRequestCount](const auto& c) {
-                      if (!c.isBanned)
-                          pendingRequestCount += static_cast<int>(c.profileInfo.type
-                                                                  == profile::Type::PENDING);
-                  });
-    return pendingRequestCount;
 }
 
 void
@@ -325,7 +303,6 @@ ContactModel::addContact(contact::Info contactInfo)
         }
     }
     emit profileUpdated(profile.uri);
-    emit contactAdded(profile.uri);
 }
 
 void
@@ -974,6 +951,7 @@ ContactModelPimpl::slotRegisteredNameFound(const QString& accountId,
 
 void
 ContactModelPimpl::slotIncomingContactRequest(const QString& accountId,
+                                              const QString& conversationId,
                                               const QString& contactUri,
                                               const QString& payload)
 {
@@ -998,9 +976,8 @@ ContactModelPimpl::slotIncomingContactRequest(const QString& accountId,
             storage::createOrUpdateProfile(accountId, profileInfo, true);
         }
     }
-
+    emit linked.incomingContactRequest(contactUri);
     if (emitTrust) {
-        emit linked.contactAdded(contactUri);
         emit behaviorController.newTrustRequest(linked.owner.id, contactUri);
     }
 }
@@ -1031,7 +1008,6 @@ ContactModelPimpl::slotIncomingCall(const QString& fromId,
         }
     }
     if (emitContactAdded) {
-        emit linked.contactAdded(fromId);
         if (linked.owner.profileInfo.type == profile::Type::RING) {
             emit behaviorController.newTrustRequest(linked.owner.id, fromId);
         }
@@ -1043,40 +1019,40 @@ ContactModelPimpl::slotIncomingCall(const QString& fromId,
 
 void
 ContactModelPimpl::slotNewAccountMessage(const QString& accountId,
+                                         const QString& peerId,
                                          const QString& msgId,
-                                         const QString& from,
                                          const MapStringString& payloads)
 {
     if (accountId != linked.owner.id)
         return;
 
-    QString from2(from);
+    QString peerId2(peerId);
 
     auto emitNewTrust = false;
     {
         std::lock_guard<std::mutex> lk(contactsMtx_);
-        if (contacts.find(from) == contacts.end()) {
+        if (contacts.find(peerId) == contacts.end()) {
             // Contact not found, load profile from database.
             // The conversation model will create an entry and link the incomingCall.
 
             if (linked.owner.profileInfo.type == profile::Type::SIP) {
-                QString potentialContact = sipUriReceivedFilter(from);
+                QString potentialContact = sipUriReceivedFilter(peerId);
                 if (potentialContact.isEmpty()) {
-                    addToContacts(from, profile::Type::SIP, "", false);
+                    addToContacts(peerId, profile::Type::SIP, "", false);
                 } else {
                     // equivalent uri exist, use that uri
-                    from2 = potentialContact;
+                    peerId2 = potentialContact;
                 }
             } else {
-                addToContacts(from, profile::Type::PENDING, "", false);
+                addToContacts(peerId, profile::Type::PENDING, "", false);
                 emitNewTrust = true;
             }
         }
     }
     if (emitNewTrust) {
-        emit behaviorController.newTrustRequest(linked.owner.id, from);
+        emit behaviorController.newTrustRequest(linked.owner.id, peerId);
     }
-    emit linked.newAccountMessage(accountId, msgId, from2, payloads);
+    emit linked.newAccountMessage(accountId, peerId2, msgId, payloads);
 }
 
 QString
@@ -1134,7 +1110,7 @@ ContactModelPimpl::sipUriReceivedFilter(const QString& uri)
 }
 
 void
-ContactModelPimpl::slotNewAccountTransfer(long long dringId, datatransfer::Info info)
+ContactModelPimpl::slotNewAccountTransfer(DataTransferId dringId, datatransfer::Info info)
 {
     if (info.accountId != linked.owner.id)
         return;
@@ -1142,7 +1118,9 @@ ContactModelPimpl::slotNewAccountTransfer(long long dringId, datatransfer::Info 
     bool emitNewTrust = false;
     {
         std::lock_guard<std::mutex> lk(contactsMtx_);
-        if (contacts.find(info.peerUri) == contacts.end()) {
+        // Note: just add a contact for compatibility (so not for swarm).
+        if (info.conversationId.isEmpty() && !info.peerUri.isEmpty()
+            && contacts.find(info.peerUri) == contacts.end()) {
             // Contact not found, load profile from database.
             // The conversation model will create an entry and link the incomingCall.
             auto type = (linked.owner.profileInfo.type == profile::Type::RING)
