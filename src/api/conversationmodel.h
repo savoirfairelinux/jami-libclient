@@ -360,7 +360,7 @@ Q_SIGNALS:
      * be modified
      * @param uid
      */
-    void conversationReady(QString uid) const;
+    void conversationReady(QString uid, QString participantURI) const;
     /**
      * Emitted when a contact in a conversation is composing a message
      * @param uid           conversation's id
