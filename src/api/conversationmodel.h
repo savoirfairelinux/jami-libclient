@@ -356,11 +356,11 @@ Q_SIGNALS:
      */
     void allHistoryCleared() const;
     /**
-     * Emitted at the end of slotContactAdded to notify that an existing conversation can
+     * Emitted at the end of slotContactAdded and at conversationReady for swarm conversation to notify that an existing conversation can
      * be modified
      * @param uid
      */
-    void conversationReady(QString uid) const;
+    void conversationReady(QString uid, QString participantURI) const;
     /**
      * Emitted when a contact in a conversation is composing a message
      * @param uid           conversation's id
