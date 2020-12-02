@@ -331,6 +331,7 @@ SET( libringclient_LIB_SRCS
   src/avmodel.cpp
   src/pluginmodel.cpp
   src/namedirectory.cpp
+  src/messageslist.cpp
   src/smartinfohub.cpp
   src/chatview.cpp
 )
@@ -344,6 +345,7 @@ SET( libringclient_LIB_HDRS
   src/smartinfohub.h
   src/vcard.h
   src/namedirectory.h
+  src/messageslist.h
   src/shmrenderer.h
   src/directrenderer.h
 )

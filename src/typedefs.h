@@ -39,6 +39,7 @@ typedef QMap<QString, QVector<QString>> MapStringVectorString;
 typedef QMap<QString, QMap<QString, QStringList>> MapStringMapStringStringList;
 typedef QMap<QString, QStringList> MapStringStringList;
 typedef QVector<QByteArray> VectorVectorByte;
+typedef uint64_t DataTransferId;
 
 // Adapted from libring DRing::DataTransferInfo
 struct DataTransferInfo
@@ -48,7 +49,9 @@ struct DataTransferInfo
     quint32 flags;
     qlonglong totalSize;
     qlonglong bytesProgress;
+    QString author;
     QString peer;
+    QString conversationId;
     QString displayName;
     QString path;
     QString mimetype;
