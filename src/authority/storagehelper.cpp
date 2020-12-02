@@ -411,9 +411,8 @@ getHistory(Database& db, api::conversation::Info& conversation)
                                                type,
                                                status,
                                                (payloads[i + 6] == "1" ? true : false)});
-            conversation.interactions.emplace(std::stoull(payloads[i].toStdString()),
-                                              std::move(msg));
-            conversation.lastMessageUid = std::stoull(payloads[i].toStdString());
+            conversation.interactions.emplace(payloads[i], std::move(msg));
+            conversation.lastMessageUid = payloads[i];
             if (status != api::interaction::Status::DISPLAYED || !payloads[i + 1].isEmpty()) {
                 continue;
             }
@@ -421,7 +420,7 @@ getHistory(Database& db, api::conversation::Info& conversation)
                 conversation.participants.front());
             if (messageId == conversation.lastDisplayedMessageUid.end()) {
                 conversation.lastDisplayedMessageUid.emplace(conversation.participants.front(),
-                                                             std::stoull(payloads[i].toStdString()));
+                                                             payloads[i]);
                 continue;
             }
             auto lastReadInteraction = conversation.interactions.find(messageId->second);
@@ -435,7 +434,7 @@ getHistory(Database& db, api::conversation::Info& conversation)
     }
 }
 
-int
+QString
 addMessageToConversation(Database& db,
                          const QString& conversationId,
                          const api::interaction::Info& msg)
@@ -457,7 +456,7 @@ addMessageToConversation(Database& db,
                           {":is_read", msg.isRead ? "1" : "0"}});
 }
 
-int
+QString
 addOrUpdateMessage(Database& db,
                    const QString& conversationId,
                    const api::interaction::Info& msg,
@@ -502,10 +501,10 @@ addOrUpdateMessage(Database& db,
                    {extra_data.isEmpty() ? "" : ":extra_data", extra_data}},
                   "id=:id",
                   {{":id", id}});
-        return std::stoi(id.toStdString());
+        return id;
     }
 }
-int
+QString
 addDataTransferToConversation(Database& db,
                               const QString& conversationId,
                               const api::datatransfer::Info& infoFromDaemon)
@@ -567,38 +566,31 @@ getInteractionExtraDataById(Database& db, const QString& id, const QString& key)
 }
 
 void
-updateInteractionBody(Database& db, unsigned int id, const QString& newBody)
+updateInteractionBody(Database& db, const QString& id, const QString& newBody)
 {
-    db.update("interactions", "body=:body", {{":body", newBody}}, "id=:id", {{":id", toQString(id)}});
+    db.update("interactions", "body=:body", {{":body", newBody}}, "id=:id", {{":id", id}});
 }
 
 void
-updateInteractionStatus(Database& db, unsigned int id, api::interaction::Status newStatus)
+updateInteractionStatus(Database& db, const QString& id, api::interaction::Status newStatus)
 {
     db.update("interactions",
               {"status=:status"},
               {{":status", api::interaction::to_string(newStatus)}},
               "id=:id",
-              {{":id", toQString(id)}});
+              {{":id", id}});
 }
 
 void
-setInteractionRead(Database& db, unsigned int id)
+setInteractionRead(Database& db, const QString& id)
 {
-    db.update("interactions",
-              {"is_read=:is_read"},
-              {{":is_read", "1"}},
-              "id=:id",
-              {{":id", toQString(id)}});
+    db.update("interactions", {"is_read=:is_read"}, {{":is_read", "1"}}, "id=:id", {{":id", id}});
 }
 
 QString
-conversationIdFromInteractionId(Database& db, unsigned int interactionId)
+conversationIdFromInteractionId(Database& db, const QString& interactionId)
 {
-    auto result = db.select("conversation",
-                            "interactions",
-                            "id=:id",
-                            {{":id", toQString(interactionId)}});
+    auto result = db.select("conversation", "interactions", "id=:id", {{":id", interactionId}});
     if (result.nbrOfCols == 1 && result.payloads.size()) {
         return result.payloads[0];
     }
@@ -620,12 +612,12 @@ clearHistory(Database& db, const QString& conversationId)
 void
 clearInteractionFromConversation(Database& db,
                                  const QString& conversationId,
-                                 const uint64_t& interactionId)
+                                 const QString& interactionId)
 {
     try {
         db.deleteFrom("interactions",
                       "conversation=:conversation AND id=:id",
-                      {{":conversation", conversationId}, {":id", toQString(interactionId)}});
+                      {{":conversation", conversationId}, {":id", interactionId}});
     } catch (Database::QueryDeleteError& e) {
         qWarning() << "deleteFrom error: " << e.details();
     }
