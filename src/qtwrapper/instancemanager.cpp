@@ -38,6 +38,7 @@ InstanceManagerInterface::InstanceManagerInterface()
     using DRing::PresenceSignal;
     using DRing::DataTransferSignal;
     using DRing::DebugSignal;
+    using DRing::ConversationSignal;
 
 #ifdef ENABLE_VIDEO
     using DRing::VideoSignal;
@@ -57,6 +58,7 @@ InstanceManagerInterface::InstanceManagerInterface()
 #ifdef ENABLE_VIDEO
     registerSignalHandlers(VideoManager::instance().videoHandlers);
 #endif
+    registerSignalHandlers(ConfigurationManager::instance().conversationsHandlers);
 
     if (!DRing::start())
         printf("Error initializing daemon\n");
