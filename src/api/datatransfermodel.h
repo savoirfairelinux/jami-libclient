@@ -54,22 +54,36 @@ public:
 
     void sendFile(const QString& account_id,
                   const QString& peer_uri,
+                  const QString& conversationId,
                   const QString& file_path,
                   const QString& display_name);
 
-    void transferInfo(const QString& accountId, const QString& conversationId, long long ringId, datatransfer::Info& lrc_info);
+    void transferInfo(const QString& accountId,
+                      const QString& conversationId,
+                      DataTransferId ringId,
+                      datatransfer::Info& lrc_info);
 
-    void bytesProgress(const QString& accountId, const QString& conversationId, int interactionId, int64_t& total, int64_t& progress);
+    void bytesProgress(const QString& accountId,
+                       const QString& conversationId,
+                       const QString& interactionId,
+                       int64_t& total,
+                       int64_t& progress);
 
-    QString accept(const QString& accountId, const QString& conversationId, int interactionId, const QString& file_path, std::size_t offset);
+    QString accept(const QString& accountId,
+                   const QString& conversationId,
+                   const QString& interactionId,
+                   const QString& file_path,
+                   std::size_t offset);
 
-    void cancel(const QString& accountId, const QString& conversationId, int interactionId);
+    void cancel(const QString& accountId,
+                const QString& conversationId,
+                const QString& interactionId);
 
-    void registerTransferId(long long dringId, int interactionId);
+    void registerTransferId(DataTransferId dringId, const QString& interactionId);
 
-    int getInteractionIdFromDringId(long long dringId);
+    QString getInteractionIdFromDringId(DataTransferId dringId);
 
-    long long getDringIdFromInteractionId(int interactionId);
+    DataTransferId getDringIdFromInteractionId(const QString& interactionId);
 
     /**
      * Used when images < 20 Mb are automatically accepted and downloaded
