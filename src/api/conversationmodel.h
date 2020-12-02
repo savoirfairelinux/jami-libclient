@@ -146,7 +146,6 @@ public:
      * @return a copy of the conversation
      */
     OptRef<conversation::Info> filteredConversation(unsigned row) const;
-
     /**
      * Get the search results
      * @return a searchResult
@@ -202,8 +201,9 @@ public:
      * Send a message to the conversation
      * @param uid of the conversation
      * @param body of the message
+     * @param parentId id of parent message. Default is "" - last message in conversation.
      */
-    void sendMessage(const QString& uid, const QString& body);
+    void sendMessage(const QString& uid, const QString& body, const QString& parentId = "");
     /**
      * Modify the current filter (will change the result of getFilteredConversations)
      * @param filter the new filter
@@ -276,7 +276,7 @@ public:
 
     void cancelTransfer(const QString& convUid, uint64_t interactionId);
 
-    void getTransferInfo(uint64_t interactionId, api::datatransfer::Info& info);
+    void getTransferInfo(const QString& conversationId, uint64_t interactionId, api::datatransfer::Info& info);
     /**
      * @param convUid, uid of the conversation
      * @return the number of unread messages for the conversation
@@ -288,6 +288,36 @@ public:
      * @param isComposing   if is composing
      */
     void setIsComposing(const QString& uid, bool isComposing);
+    /**
+     * load messages for conversation
+     * @param conversationId conversation's id
+     * @param size number of messages should be loaded. Default 1
+     * @return id for loading request.
+     */
+    uint32_t loadConversationMessages(const QString& conversationId,
+                                      const int size = 1);
+    /**
+     * accept request for conversation
+     * @param conversationId conversation's id
+     */
+    void acceptConversationRequest(const QString& conversationId);
+    /**
+     * decline request for conversation
+     * @param conversationId conversation's id
+     */
+    void declineConversationRequest(const QString& conversationId);
+    /**
+     * add member to conversation
+     * @param conversationId conversation's id
+     * @param memberId members's id
+     */
+    void addConversationMember(const QString& conversationId, const QString& memberId);
+    /**
+     * remove member from conversation
+     * @param conversationId conversation's id
+     * @param memberId members's id
+     */
+    void removeConversationMember(const QString& conversationId, const QString& memberId);
 
 Q_SIGNALS:
     /**
@@ -383,6 +413,19 @@ Q_SIGNALS:
      * Emitted when search result has been updated
      */
     void searchResultUpdated() const;
+    /**
+     * Emitted when finish loading messages for conversation
+     * @param loadingRequestId  loading request id
+     * @param conversationId conversation Id
+     */
+    void conversationMessagesLoaded(uint32_t loadingRequestId, const QString& conversationId) const;
+    /**
+     * Emitted when new messages available. When messages loaded from loading request or
+     * receiving/sending new interactions
+     * @param accountId  account id
+     * @param conversationId conversation Id
+     */
+    void newMessagesAvailable(const QString& accountId, const QString& conversationId) const;
 
     /**
      * The following signals are intended for QAbtractListModel compatibility
