@@ -110,6 +110,7 @@ struct Info
     QString displayName;
     QString accountId;
     QString peerUri;
+    QString conversationId;
     std::time_t timestamp = 0;
 };
 
