@@ -19,6 +19,7 @@
 #pragma once
 
 #include "interaction.h"
+#include "messageslist.h"
 #include "typedefs.h"
 
 #include <vector>
@@ -30,6 +31,27 @@ namespace api {
 
 namespace conversation {
 
+enum class Mode { ONE_TO_ONE, ADMIN_INVITES_ONLY, INVITES_ONLY, PUBLIC, NON_SWARM };
+
+static inline Mode
+to_mode(const int intMode)
+{
+    switch (intMode) {
+        case 0:
+            return Mode::ONE_TO_ONE;
+        case 1:
+            return Mode::ADMIN_INVITES_ONLY;
+        case 2:
+            return Mode::INVITES_ONLY;
+        case 3:
+            return Mode::PUBLIC;
+        case 4:
+            return Mode::NON_SWARM;
+        default:
+            return Mode::ONE_TO_ONE;
+    }
+}
+
 struct Info
 {
     Info() = default;
@@ -38,17 +60,22 @@ struct Info
     Info& operator=(const Info& other) = delete;
     Info& operator=(Info&& other) = default;
 
+    bool allMessagesLoaded = false;
     QString uid = "";
     QString accountId;
     VectorString participants;
     QString callId;
     QString confId;
-    std::map<QString, interaction::Info> interactions;
+    MessagesList interactions;
     QString lastMessageUid = 0;
+    QHash<QString, QString> parentsId; // pair messageid/parentid for messages without parent loaded
     std::map<QString, QString> lastDisplayedMessageUid;
     unsigned int unreadMessages = 0;
 
     QString getCallId() { return confId.isEmpty() ? callId : confId; }
+
+    Mode mode = Mode::NON_SWARM;
+    bool isRequest = false;
 };
 
 } // namespace conversation
