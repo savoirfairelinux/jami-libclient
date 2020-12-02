@@ -318,6 +318,10 @@ Q_SIGNALS:
                                      const QString& conversationId,
                                      MapStringString metadatas);
     void conversationReady(const QString& accountId, const QString& conversationId);
+    void conversationMemberEvent(const QString& accountId,
+                                 const QString& conversationId,
+                                 const QString& memberUri,
+                                 int event);
 
 private Q_SLOTS:
     /**
@@ -588,6 +592,10 @@ private Q_SLOTS:
                                          const QString& conversationId,
                                          MapStringString metadatas);
     void slotConversationReady(const QString& accountId, const QString& conversationId);
+    void slotConversationMemberEvent(const QString& accountId,
+                                     const QString& conversationId,
+                                     const QString& memberUri,
+                                     int event);
 
 private:
     const api::Lrc& parent;
