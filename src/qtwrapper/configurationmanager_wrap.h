@@ -499,12 +499,6 @@ public Q_SLOTS: // METHODS
         return temp;
     }
 
-    MapStringString getTlsDefaultSettings()
-    {
-        MapStringString temp = convertMap(DRing::getTlsDefaultSettings());
-        return temp;
-    }
-
     double getVolume(const QString& device) { return DRing::getVolume(device.toStdString()); }
 
     bool isAgcEnabled() { return DRing::isAgcEnabled(); }
