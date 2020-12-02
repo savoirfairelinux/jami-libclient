@@ -175,9 +175,9 @@ void getHistory(Database& db, api::conversation::Info& conversation);
  * @param  msg
  * @return the id of the inserted interaction
  */
-int addMessageToConversation(Database& db,
-                             const QString& conversationId,
-                             const api::interaction::Info& msg);
+QString addMessageToConversation(Database& db,
+                                 const QString& conversationId,
+                                 const api::interaction::Info& msg);
 
 /**
  * Add or update an entry into interactions linked to a conversation.
@@ -187,10 +187,10 @@ int addMessageToConversation(Database& db,
  * @param  daemonId
  * @return the id of the inserted interaction
  */
-int addOrUpdateMessage(Database& db,
-                       const QString& conversationId,
-                       const api::interaction::Info& msg,
-                       const QString& daemonId);
+QString addOrUpdateMessage(Database& db,
+                           const QString& conversationId,
+                           const api::interaction::Info& msg,
+                           const QString& daemonId);
 
 /**
  * Add a data transfer entry into interactions linked to a conversation.
@@ -199,9 +199,9 @@ int addOrUpdateMessage(Database& db,
  * @param  daemonId
  * @return the id of the inserted interaction
  */
-int addDataTransferToConversation(Database& db,
-                                  const QString& conversationId,
-                                  const api::datatransfer::Info& infoFromDaemon);
+QString addDataTransferToConversation(Database& db,
+                                      const QString& conversationId,
+                                      const api::datatransfer::Info& infoFromDaemon);
 
 /**
  * Change the daemon_id column for an interaction
@@ -221,7 +221,7 @@ QString getDaemonIdByInteractionId(Database& db, const QString& id);
 /**
  * Obtain the id of an interaction of a given daemon_id
  * @param  db
- * @param  id
+ * @param  daemon id
  * @return the interaction id for a daemon id else an empty string
  */
 QString getInteractionIdByDaemonId(Database& db, const QString& daemon_id);
@@ -241,7 +241,7 @@ QString getInteractionExtraDataById(Database& db, const QString& id, const QStri
  * @param id
  * @param newBody
  */
-void updateInteractionBody(Database& db, unsigned int id, const QString& newBody);
+void updateInteractionBody(Database& db, const QString& id, const QString& newBody);
 
 /**
  * Change the status of an interaction
@@ -250,14 +250,14 @@ void updateInteractionBody(Database& db, unsigned int id, const QString& newBody
  * @param newStatus
  * @param isRead
  */
-void updateInteractionStatus(Database& db, unsigned int id, api::interaction::Status newStatus);
+void updateInteractionStatus(Database& db, const QString& id, api::interaction::Status newStatus);
 
 /**
  * Set interaction to the read state
  * @param db
  * @param id
  */
-void setInteractionRead(Database& db, unsigned int id);
+void setInteractionRead(Database& db, const QString& id);
 
 /**
  * Clear history but not the conversation started interaction
@@ -274,7 +274,7 @@ void clearHistory(Database& db, const QString& conversationId);
  */
 void clearInteractionFromConversation(Database& db,
                                       const QString& conversationId,
-                                      const uint64_t& interactionId);
+                                      const QString& interactionId);
 
 /**
  * Clear all history stored in the interactions table of the database
@@ -309,7 +309,7 @@ int countUnreadFromInteractions(Database& db, const QString& conversationId);
  * @param db
  * @param conversationId
  */
-QString conversationIdFromInteractionId(Database& db, unsigned int interactionId);
+QString conversationIdFromInteractionId(Database& db, const QString& interactionId);
 
 /**
  * Retrieve the last timestamp from the interactions table
