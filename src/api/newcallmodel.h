@@ -263,6 +263,13 @@ public:
      */
     void muteParticipant(const QString& confId, const QString& peerId, const bool& state);
 
+    /**
+     * Hangup participant
+     * @param confId        The call to change
+     * @param participant   Use contact URI
+     */
+    void hangupParticipant(const QString& confId, const QString& participant);
+
 Q_SIGNALS:
     /**
      * Emitted when a call state changes
