@@ -119,18 +119,25 @@ public:
                     });
                 }),
             exportable_callback<DRing::ConfigurationSignal::AccountMessageStatusChanged>(
-                [this](const std::string& accountID, uint64_t id, const std::string& to, int status) {
-                    Q_EMIT this->accountMessageStatusChanged(QString(accountID.c_str()),
-                                                             id,
-                                                             QString(to.c_str()),
-                                                             status);
+                [this](const std::string& account_id,
+                       const std::string& conversation_id,
+                       const std::string& peer,
+                       const std::string message_id,
+                       int state) {
+                    Q_EMIT this->accountMessageStatusChanged(QString(account_id.c_str()),
+                                                             QString(conversation_id.c_str()),
+                                                             QString(peer.c_str()),
+                                                             QString(message_id.c_str()),
+                                                             state);
                 }),
             exportable_callback<ConfigurationSignal::IncomingTrustRequest>(
                 [this](const std::string& accountId,
+                       const std::string& conversationId,
                        const std::string& certId,
                        const std::vector<uint8_t>& payload,
                        time_t timestamp) {
                     Q_EMIT this->incomingTrustRequest(QString(accountId.c_str()),
+                                                      QString(conversationId.c_str()),
                                                       QString(certId.c_str()),
                                                       QByteArray(reinterpret_cast<const char*>(
                                                                      payload.data()),
@@ -181,12 +188,12 @@ public:
                 }),
             exportable_callback<ConfigurationSignal::IncomingAccountMessage>(
                 [this](const std::string& account_id,
-                       const std::string& msgId,
                        const std::string& from,
+                       const std::string& msgId,
                        const std::map<std::string, std::string>& payloads) {
                     Q_EMIT this->incomingAccountMessage(QString(account_id.c_str()),
-                                                        QString(msgId.c_str()),
                                                         QString(from.c_str()),
+                                                        QString(msgId.c_str()),
                                                         convertMap(payloads));
                 }),
             exportable_callback<ConfigurationSignal::MediaParametersChanged>(
@@ -232,6 +239,7 @@ public:
                        const std::string& from,
                        int status) {
                     Q_EMIT this->composingStatusChanged(QString(account_id.c_str()),
+                                                        QString(convId.c_str()),
                                                         QString(from.c_str()),
                                                         status > 0 ? true : false);
                 }),
@@ -810,6 +818,7 @@ public Q_SLOTS: // METHODS
         lrc_info.totalSize = dring_info.totalSize;
         lrc_info.bytesProgress = dring_info.bytesProgress;
         lrc_info.peer = QString::fromStdString(dring_info.peer);
+        lrc_info.conversationId = QString::fromStdString(dring_info.conversationId);
         lrc_info.displayName = QString::fromStdString(dring_info.displayName);
         lrc_info.path = QString::fromStdString(dring_info.path);
         lrc_info.mimetype = QString::fromStdString(dring_info.mimetype);
@@ -884,10 +893,10 @@ public Q_SLOTS: // METHODS
     {
         return DRing::removeConversation(accountId.toStdString(), conversationId.toStdString());
     }
-    VectorString getConversations(const QString& accountId)
+    QStringList getConversations(const QString& accountId)
     {
         auto conversations = DRing::getConversations(accountId.toStdString());
-        return convertVectorString(conversations);
+        return convertStringList(conversations);
     }
     VectorMapStringString getConversationRequests(const QString& accountId)
     {
@@ -920,12 +929,12 @@ public Q_SLOTS: // METHODS
     void sendMessage(const QString& accountId,
                      const QString& conversationId,
                      const QString& message,
-                     const QString& parrent)
+                     const QString& parent)
     {
         DRing::sendMessage(accountId.toStdString(),
                            conversationId.toStdString(),
                            message.toStdString(),
-                           parrent.toStdString());
+                           parent.toStdString());
     }
     uint32_t loadConversationMessages(const QString& accountId,
                                       const QString& conversationId,
@@ -978,21 +987,23 @@ Q_SIGNALS: // SIGNALS
                                  const QString& certId,
                                  const QString& status);
     void incomingTrustRequest(const QString& accountId,
+                              const QString& conversdationId,
                               const QString& from,
                               const QByteArray& payload,
                               qulonglong timeStamp);
     void knownDevicesChanged(const QString& accountId, const MapStringString& devices);
     void exportOnRingEnded(const QString& accountId, int status, const QString& pin);
     void incomingAccountMessage(const QString& accountId,
-                                const QString msgId,
                                 const QString& from,
+                                const QString msgId,
                                 const MapStringString& payloads);
     void mediaParametersChanged(const QString& accountId);
     void audioDeviceEvent();
     void audioMeter(const QString& id, float level);
     void accountMessageStatusChanged(const QString& accountId,
-                                     const uint64_t id,
-                                     const QString& to,
+                                     const QString& conversationId,
+                                     const QString& peer,
+                                     const QString& messageId,
                                      int status);
     void nameRegistrationEnded(const QString& accountId, int status, const QString& name);
     void registeredNameFound(const QString& accountId,
@@ -1003,13 +1014,14 @@ Q_SIGNALS: // SIGNALS
     void contactAdded(const QString& accountID, const QString& uri, bool banned);
     void contactRemoved(const QString& accountID, const QString& uri, bool banned);
     void profileReceived(const QString& accountID, const QString& peer, const QString& vCard);
-    void dataTransferEvent(const QString& accountId, const QString& conversationId, qulonglong transfer_id, uint code);
+    void dataTransferEvent(const QString& accountId, const QString& conversationId, DataTransferId transfer_id, uint code);
     void deviceRevocationEnded(const QString& accountId, const QString& deviceId, int status);
     void accountProfileReceived(const QString& accountId,
                                 const QString& displayName,
                                 const QString& userPhoto);
     void debugMessageReceived(const QString& message);
     void composingStatusChanged(const QString& accountId,
+                                const QString& convId,
                                 const QString& contactId,
                                 bool isComposing);
     void userSearchEnded(const QString& accountId,
