@@ -22,6 +22,7 @@
 #include <QObject>
 
 #include <ctime>
+#include "typedefs.h"
 
 namespace lrc {
 
@@ -31,7 +32,7 @@ namespace interaction {
 Q_NAMESPACE
 Q_CLASSINFO("RegisterEnumClassesUnscoped", "false")
 
-enum class Type { INVALID, TEXT, CALL, CONTACT, DATA_TRANSFER, COUNT__ };
+enum class Type { INVALID, TEXT, CALL, CONTACT, DATA_TRANSFER, MERGE, COUNT__ };
 Q_ENUM_NS(Type)
 
 static inline const QString
@@ -46,6 +47,8 @@ to_string(const Type& type)
         return "CONTACT";
     case Type::DATA_TRANSFER:
         return "DATA_TRANSFER";
+    case Type::MERGE:
+        return "MERGE";
     case Type::INVALID:
     case Type::COUNT__:
     default:
@@ -56,14 +59,16 @@ to_string(const Type& type)
 static inline Type
 to_type(const QString& type)
 {
-    if (type == "TEXT")
+    if (type == "TEXT" || type == "text/plain")
         return interaction::Type::TEXT;
-    else if (type == "CALL")
+    else if (type == "CALL" || type == "application/call-history+json")
         return interaction::Type::CALL;
-    else if (type == "CONTACT")
+    else if (type == "CONTACT" || type == "member")
         return interaction::Type::CONTACT;
-    else if (type == "DATA_TRANSFER")
+    else if (type == "DATA_TRANSFER" || type == "application/data-transfer+json")
         return interaction::Type::DATA_TRANSFER;
+    else if (type == "merge")
+        return interaction::Type::MERGE;
     else
         return interaction::Type::INVALID;
 }
@@ -167,6 +172,60 @@ to_status(const QString& status)
         return Status::INVALID;
 }
 
+enum class ContactAction {
+    ADD,
+    JOIN,
+    LEAVE,
+    BANNED
+};
+Q_ENUM_NS(ContactAction)
+
+static inline const QString
+to_string(const ContactAction& action)
+{
+    switch (action) {
+        case ContactAction::ADD:
+            return "ADD";
+        case ContactAction::JOIN:
+            return "JOIN";
+        case ContactAction::LEAVE:
+            return "LEAVE";
+        case ContactAction::BANNED:
+            return "BANNED";
+    }
+}
+
+static inline ContactAction
+to_action(const QString& action)
+{
+    if (action == "add")
+        return ContactAction::ADD;
+    else if (action == "join")
+        return ContactAction::JOIN;
+    else if (action == "remove")
+        return ContactAction::LEAVE;
+    else if (action == "baned")
+        return ContactAction::BANNED;
+}
+
+static inline QString
+getContactInteractionString(const QString& authorUri, const ContactAction& action)
+{
+    switch (action) {
+        case ContactAction::ADD:
+            if (authorUri.isEmpty()) {
+                return QObject::tr("Contact added");
+            }
+            return QObject::tr("Invitation received");
+        case ContactAction::JOIN:
+            return QObject::tr("Invitation accepted");
+        case ContactAction::LEAVE:
+            return QObject::tr("Contact left conversation");
+        case ContactAction::BANNED:
+            return {};
+    }
+}
+
 /**
  * @var authorUri
  * @var body
@@ -180,11 +239,56 @@ struct Info
 {
     QString authorUri;
     QString body;
+    QString parentId = "";
     std::time_t timestamp = 0;
     std::time_t duration = 0;
     Type type = Type::INVALID;
     Status status = Status::INVALID;
     bool isRead = false;
+
+    Info() {}
+
+    Info(QString authorUri,
+         QString body,
+         std::time_t timestamp,
+         std::time_t duration,
+         Type type,
+         Status status,
+         bool isRead)
+    {
+        this->authorUri = authorUri;
+        this->body = body;
+        this->timestamp = timestamp;
+        this->duration = duration;
+        this->type = type;
+        this->status = status;
+        this->isRead = isRead;
+    }
+
+    Info(const MapStringString& message, const QString& accountURI)
+    {
+        type = to_type(message["type"]);
+        if (type == Type::TEXT) {
+            body = message["body"];
+        }
+        authorUri = accountURI == message["author"] ? "" : message["author"];
+        timestamp = message["timestamp"].toInt();
+        status = Status::SUCCESS;
+        parentId = message["linearizedParent"];
+        isRead = false;
+        if (type == Type::CONTACT) {
+            authorUri = accountURI == message["uri"] ? "" : message["uri"];
+            body = getContactInteractionString(authorUri, to_action(message["action"]));
+        }
+        if (message["type"] == "initial" && message.find("invited") != message.end()) {
+            type = Type::CONTACT;
+            authorUri = accountURI != message["invited"] ? "" : message["invited"];
+            body = getContactInteractionString(authorUri, ContactAction::ADD);
+        }
+        if (type == Type::CALL) {
+            duration = message["duration"].toInt() / 1000;
+        }
+    }
 };
 
 static inline bool

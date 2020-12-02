@@ -19,6 +19,7 @@
 #pragma once
 
 #include "interaction.h"
+#include "messageslist.h"
 #include "typedefs.h"
 
 #include <vector>
@@ -38,15 +39,28 @@ struct Info
     Info& operator=(const Info& other) = delete;
     Info& operator=(Info&& other) = default;
 
+    bool allMessagesLoaded = false;
     QString uid = "";
     QString accountId;
     VectorString participants;
     QString callId;
     QString confId;
-    std::map<QString, interaction::Info> interactions;
+    MessagesList interactions;
     QString lastMessageUid = 0;
+    QHash<QString, QString> parentsId; // pair messageid/parentid for messages without parent loaded
     std::map<QString, QString> lastDisplayedMessageUid;
     unsigned int unreadMessages = 0;
+    bool isSwarm = true;
+    bool isRequest = false;
+
+    QString getOneToOneParticipant(QString accountUri) {
+        auto uris = participants;
+        uris.removeOne(accountUri);
+        if (uris.size() != 1) {
+            return {};
+        }
+        return uris.first();
+    }
 };
 
 } // namespace conversation
