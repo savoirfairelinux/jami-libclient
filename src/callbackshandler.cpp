@@ -239,8 +239,31 @@ CallbacksHandler::CallbacksHandler(const Lrc& parent)
             this,
             &CallbacksHandler::slotAudioMeterReceived,
             Qt::QueuedConnection);
-
-
+    connect(&ConfigurationManager::instance(),
+            &ConfigurationManagerInterface::conversationLoaded,
+            this,
+            &CallbacksHandler::slotConversationLoaded,
+            Qt::QueuedConnection);
+    connect(&ConfigurationManager::instance(),
+            &ConfigurationManagerInterface::messageReceived,
+            this,
+            &CallbacksHandler::slotMessageReceived,
+            Qt::QueuedConnection);
+    connect(&ConfigurationManager::instance(),
+            &ConfigurationManagerInterface::conversationRequestReceived,
+            this,
+            &CallbacksHandler::slotConversationRequestReceived,
+            Qt::QueuedConnection);
+    connect(&ConfigurationManager::instance(),
+            &ConfigurationManagerInterface::conversationReady,
+            this,
+            &CallbacksHandler::slotConversationReady,
+            Qt::QueuedConnection);
+    connect(&ConfigurationManager::instance(),
+            &ConfigurationManagerInterface::conversationMemberEvent,
+            this,
+            &CallbacksHandler::slotConversationMemberEvent,
+            Qt::QueuedConnection);
 }
 
 CallbacksHandler::~CallbacksHandler() {}
@@ -442,12 +465,12 @@ CallbacksHandler::slotAccountMessageStatusChanged(const QString& accountId,
 }
 
 void
-CallbacksHandler::slotDataTransferEvent(qulonglong dringId, uint codeStatus)
+CallbacksHandler::slotDataTransferEvent(const QString& accountId, const QString& conversationId, qulonglong dringId, uint codeStatus)
 {
     auto event = DRing::DataTransferEventCode(codeStatus);
 
     api::datatransfer::Info info;
-    parent.getDataTransferModel().transferInfo(dringId, info);
+    parent.getDataTransferModel().transferInfo(accountId, conversationId, dringId, info);
 
     // WARNING: info.status could be INVALID in case of async signaling
     // So listeners must only take account of dringId in such case.
@@ -573,9 +596,48 @@ CallbacksHandler::slotAudioMeterReceived(const QString& id, float level)
 }
 
 void
-CallbacksHandler::slotRemoteRecordingChanged(const QString& callId, const QString& peerNumber, bool state)
+CallbacksHandler::slotRemoteRecordingChanged(const QString& callId,
+                                             const QString& peerNumber,
+                                             bool state)
 {
     emit remoteRecordingChanged(callId, peerNumber, state);
+}
+
+void
+CallbacksHandler::slotConversationLoaded(uint32_t requestId,
+                                         const QString& accountId,
+                                         const QString& conversationId,
+                                         const VectorMapStringString& messages)
+{
+    emit conversationLoaded(requestId, accountId, conversationId, messages);
+}
+void
+CallbacksHandler::slotMessageReceived(const QString& accountId,
+                                      const QString& conversationId,
+                                      const MapStringString& message)
+{
+    emit messageReceived(accountId, conversationId, message);
+}
+void
+CallbacksHandler::slotConversationRequestReceived(const QString& accountId,
+                                                  const QString& conversationId,
+                                                  const MapStringString& metadatas)
+{
+    emit conversationRequestReceived(accountId, conversationId, metadatas);
+}
+void
+CallbacksHandler::slotConversationReady(const QString& accountId, const QString& conversationId)
+{
+    emit conversationReady(accountId, conversationId);
+}
+
+void
+CallbacksHandler::slotConversationMemberEvent(const QString& accountId,
+                                              const QString& conversationId,
+                                              const QString& memberId,
+                                              int event)
+{
+    emit conversationMemberEvent(accountId, conversationId, memberId, event);
 }
 
 } // namespace lrc
