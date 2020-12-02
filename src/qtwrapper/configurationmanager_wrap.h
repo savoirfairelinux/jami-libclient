@@ -224,7 +224,10 @@ public:
                 Q_EMIT this->debugMessageReceived(QString(message.c_str()));
             }),
             exportable_callback<ConfigurationSignal::ComposingStatusChanged>(
-                [this](const std::string& account_id, const std::string& from, int status) {
+                [this](const std::string& account_id,
+                       const std::string& convId,
+                       const std::string& from,
+                       int status) {
                     Q_EMIT this->composingStatusChanged(QString(account_id.c_str()),
                                                         QString(from.c_str()),
                                                         status > 0 ? true : false);
