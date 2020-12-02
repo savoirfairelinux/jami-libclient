@@ -222,7 +222,7 @@ Database::getVersion()
     return query.value(0).toString();
 }
 
-int
+QString
 Database::insertInto(
     const QString& table, // "tests"
     const MapStringString&
@@ -255,9 +255,10 @@ Database::insertInto(
         throw QueryInsertError(query, table, bindCol, bindsSet);
 
     if (!query.next())
-        return -1;
+        return QString::number(-1);
+    ;
 
-    return query.value(0).toInt();
+    return query.value(0).toString();
 }
 
 void
