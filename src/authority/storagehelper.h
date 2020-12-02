@@ -236,6 +236,14 @@ QString getInteractionIdByDaemonId(Database& db, const QString& daemon_id);
 QString getInteractionExtraDataById(Database& db, const QString& id, const QString& key = {});
 
 /**
+ * update interaction
+ * @param db
+ * @param daemon id
+ * @param interaction
+ */
+void updateDataTransferInteractionForDaemonId(Database& db, const QString& daemonId, api::interaction::Info& interaction);
+
+/**
  * Change the body of an interaction
  * @param db
  * @param id

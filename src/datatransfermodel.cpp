@@ -82,8 +82,8 @@ public:
     QString getUniqueFilePath(const QString& filename);
 
     DataTransferModel& upLink;
-    std::map<long long, int> dring2lrcIdMap;
-    std::map<int, long long> lrc2dringIdMap; // stricly the reverse map of dring2lrcIdMap
+    std::map<DataTransferId, QString> dring2lrcIdMap;
+    std::map<QString, DataTransferId> lrc2dringIdMap; // stricly the reverse map of dring2lrcIdMap
 };
 
 DataTransferModel::Impl::Impl(DataTransferModel& up_link)
@@ -113,7 +113,7 @@ DataTransferModel::Impl::getUniqueFilePath(const QString& filename)
 }
 
 void
-DataTransferModel::registerTransferId(long long dringId, int interactionId)
+DataTransferModel::registerTransferId(DataTransferId dringId, const QString& interactionId)
 {
     pimpl_->dring2lrcIdMap.emplace(dringId, interactionId);
     pimpl_->lrc2dringIdMap.erase(interactionId); // Because a file transfer can be retried
@@ -128,11 +128,18 @@ DataTransferModel::DataTransferModel()
 DataTransferModel::~DataTransferModel() = default;
 
 void
-DataTransferModel::transferInfo(const QString& accountId, const QString& conversationId, long long ringId, datatransfer::Info& lrc_info)
+DataTransferModel::transferInfo(const QString& accountId,
+                                const QString& conversationId,
+                                DataTransferId ringId,
+                                datatransfer::Info& lrc_info)
 {
     DataTransferInfo infoFromDaemon;
-    if (ConfigurationManager::instance().dataTransferInfo(accountId, conversationId, ringId, infoFromDaemon) == 0) {
-        // lrc_info.uid = ?
+    if (ConfigurationManager::instance().dataTransferInfo(accountId,
+                                                          conversationId,
+                                                          ringId,
+                                                          infoFromDaemon)
+        == 0) {
+        lrc_info.uid = QString::number(ringId);
         lrc_info.status = convertDataTransferEvent(
             DRing::DataTransferEventCode(infoFromDaemon.lastEvent));
         lrc_info.isOutgoing = !(infoFromDaemon.flags
@@ -143,6 +150,7 @@ DataTransferModel::transferInfo(const QString& accountId, const QString& convers
         lrc_info.displayName = infoFromDaemon.displayName;
         lrc_info.accountId = infoFromDaemon.accountId;
         lrc_info.peerUri = infoFromDaemon.peer;
+        lrc_info.conversationId = infoFromDaemon.conversationId;
         // lrc_info.timestamp = ?
         return;
     }
@@ -153,6 +161,7 @@ DataTransferModel::transferInfo(const QString& accountId, const QString& convers
 void
 DataTransferModel::sendFile(const QString& account_id,
                             const QString& peer_uri,
+                            const QString& conversationId,
                             const QString& file_path,
                             const QString& display_name)
 {
@@ -165,6 +174,7 @@ DataTransferModel::sendFile(const QString& account_id,
     info.accountId = account_id;
     info.peer = peer_uri;
     info.path = file_path;
+    info.conversationId = conversationId;
     info.displayName = display_name;
     info.bytesProgress = 0;
     if (ConfigurationManager::instance().sendFile(info, id) != 0) {
@@ -174,42 +184,62 @@ DataTransferModel::sendFile(const QString& account_id,
 }
 
 void
-DataTransferModel::bytesProgress(const QString& accountId, const QString& conversationId, int interactionId, int64_t& total, int64_t& progress)
+DataTransferModel::bytesProgress(const QString& accountId,
+                                 const QString& conversationId,
+                                 const QString& interactionId,
+                                 int64_t& total,
+                                 int64_t& progress)
 {
     ConfigurationManager::instance()
 #ifdef ENABLE_LIBWRAP
-        .dataTransferBytesProgress(accountId, conversationId, pimpl_->lrc2dringIdMap.at(interactionId), total, progress);
+        .dataTransferBytesProgress(accountId,
+                                   conversationId,
+                                   pimpl_->lrc2dringIdMap.at(interactionId),
+                                   total,
+                                   progress);
 #else
-        .dataTransferBytesProgress(accountId, conversationId, pimpl_->lrc2dringIdMap.at(interactionId),
+        .dataTransferBytesProgress(accountId,
+                                   conversationId,
+                                   pimpl_->lrc2dringIdMap.at(interactionId),
                                    reinterpret_cast<qlonglong&>(total),
                                    reinterpret_cast<qlonglong&>(progress));
 #endif
 }
 
 QString
-DataTransferModel::accept(const QString& accountId, const QString& conversationId, int interactionId, const QString& file_path, std::size_t offset)
+DataTransferModel::accept(const QString& accountId,
+                          const QString& conversationId,
+                          const QString& interactionId,
+                          const QString& file_path,
+                          std::size_t offset)
 {
     auto unique_file_path = pimpl_->getUniqueFilePath(file_path);
     auto dring_id = pimpl_->lrc2dringIdMap.at(interactionId);
-    ConfigurationManager::instance().acceptFileTransfer(accountId, conversationId, dring_id, unique_file_path, offset);
+    ConfigurationManager::instance().acceptFileTransfer(accountId,
+                                                        conversationId,
+                                                        dring_id,
+                                                        unique_file_path,
+                                                        offset);
     return unique_file_path;
 }
 
 void
-DataTransferModel::cancel(const QString& accountId, const QString& conversationId, int interactionId)
+DataTransferModel::cancel(const QString& accountId,
+                          const QString& conversationId,
+                          const QString& interactionId)
 {
     auto dring_id = pimpl_->lrc2dringIdMap.at(interactionId);
     ConfigurationManager::instance().cancelDataTransfer(accountId, conversationId, dring_id);
 }
 
-int
-DataTransferModel::getInteractionIdFromDringId(long long dringId)
+QString
+DataTransferModel::getInteractionIdFromDringId(DataTransferId dringId)
 {
     return pimpl_->dring2lrcIdMap.at(dringId);
 }
 
-long long
-DataTransferModel::getDringIdFromInteractionId(int interactionId)
+DataTransferId
+DataTransferModel::getDringIdFromInteractionId(const QString& interactionId)
 {
     return pimpl_->lrc2dringIdMap.at(interactionId);
 }
