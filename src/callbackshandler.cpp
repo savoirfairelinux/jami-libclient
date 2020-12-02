@@ -260,6 +260,11 @@ CallbacksHandler::CallbacksHandler(const Lrc& parent)
             this,
             &CallbacksHandler::slotConversationReady,
             Qt::QueuedConnection);
+    connect(&ConversationManager::instance(),
+            &ConversationManagerInterface::conversationMemberEvent,
+            this,
+            &CallbacksHandler::slotConversationMemberEvent,
+            Qt::QueuedConnection);
 }
 
 CallbacksHandler::~CallbacksHandler() {}
@@ -624,6 +629,14 @@ void
 CallbacksHandler::slotConversationReady(const QString& accountId, const QString& conversationId)
 {
     emit conversationReady(accountId, conversationId);
+}
+
+void
+CallbacksHandler::slotConversationMemberEvent(const QString& accountId,
+                                              const QString& conversationId,
+                                              const QString& memberUri,
+                                              int event) {
+    emit conversationMemberEvent(accountId, conversationId, memberUri, event);
 }
 
 } // namespace lrc
