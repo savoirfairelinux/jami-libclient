@@ -266,13 +266,10 @@ public:
     /**
      * load messages for conversation
      * @param conversationId conversation's id
-     * @param fromId id of message from wich we will load size messages(in backward direction).
-     * Default is ""  means last loaded message(backward direction)
      * @param size number of messages should be loaded. Default 1
-     * @return id for loading request.
+     * @return id for loading request. -1 if not loaded
      */
     uint32_t loadConversationMessages(const QString& conversationId,
-                                      const QString& fromId = "",
                                       const int size = 1);
     /**
      * accept request for conversation
@@ -356,11 +353,11 @@ Q_SIGNALS:
      */
     void allHistoryCleared() const;
     /**
-     * Emitted at the end of slotContactAdded to notify that an existing conversation can
+     * Emitted at the end of slotContactAdded and at conversationReady for swarm conversation to notify that an existing conversation can
      * be modified
      * @param uid
      */
-    void conversationReady(QString uid) const;
+    void conversationReady(QString uid, QString participantURI) const;
     /**
      * Emitted when a contact in a conversation is composing a message
      * @param uid           conversation's id
