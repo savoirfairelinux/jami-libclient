@@ -41,6 +41,7 @@ struct Info
     QString lastMessageUid = 0;
     std::map<QString, QString> lastDisplayedMessageUid;
     unsigned int unreadMessages = 0;
+    bool isSwarm = true;
 };
 
 } // namespace conversation
