@@ -21,6 +21,7 @@
 #include "callmanager.h"
 #include "presencemanager.h"
 #include "configurationmanager.h"
+#include "conversationmanager.h"
 #ifdef ENABLE_VIDEO
 #include "videomanager.h"
 #endif // ENABLE_VIDEO
@@ -38,6 +39,7 @@ InstanceManagerInterface::InstanceManagerInterface()
     using DRing::PresenceSignal;
     using DRing::DataTransferSignal;
     using DRing::DebugSignal;
+    using DRing::ConversationSignal;
 
 #ifdef ENABLE_VIDEO
     using DRing::VideoSignal;
@@ -57,6 +59,7 @@ InstanceManagerInterface::InstanceManagerInterface()
 #ifdef ENABLE_VIDEO
     registerSignalHandlers(VideoManager::instance().videoHandlers);
 #endif
+    registerSignalHandlers(ConversationManager::instance().conversationsHandlers);
 
     if (!DRing::start())
         printf("Error initializing daemon\n");
