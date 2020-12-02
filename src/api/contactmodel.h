@@ -155,15 +155,15 @@ Q_SIGNALS:
      * @param payloads content of the message
      */
     void newAccountMessage(const QString& accountId,
-                           const QString& msgId,
                            const QString& from,
+                           const QString& msgId,
                            const MapStringString& payloads) const;
     /**
      * Connect this signal to know when a file transfer interaction is incoming
      * @param dringId Daemon's ID for incoming transfer
      * @param transferInfo DataTransferInfo structure from daemon
      */
-    void newAccountTransfer(long long dringId, datatransfer::Info info) const;
+    void newAccountTransfer(DataTransferId dringId, datatransfer::Info info) const;
     /**
      * Connect this signal to know when a contact is banned or unbanned
      * @param contactUri
