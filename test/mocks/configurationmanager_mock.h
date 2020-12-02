@@ -113,9 +113,9 @@ public:
        emit accountMessageStatusChanged(accountId, id, to, status);
    }
 
-   std::map<long long, lrc::api::datatransfer::Info> transferInfos_;
-   std::map<long long, uint32_t> transferInfosEvent_;
-   void setDataTransferInfo(long long ringId, lrc::api::datatransfer::Info lrc_info) {
+   std::map<qulonglong, lrc::api::datatransfer::Info> transferInfos_;
+   std::map<qulonglong, uint32_t> transferInfosEvent_;
+   void setDataTransferInfo(qulonglong ringId, lrc::api::datatransfer::Info lrc_info) {
        transferInfos_.emplace(std::make_pair(ringId, lrc_info));
    }
 
