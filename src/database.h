@@ -188,15 +188,15 @@ public:
      * by ':'. The value is the name of the column from the table.
      * @param bindsSet binds value(s) and identifier(s). The key is the identifier, it should begin
      * by ':'. The value is the value to store.
-     * @return signed integer representing the index of last inserted element. -1 if nothing
-     * inserted.
+     * @return qstring from signed integer representing the index of last inserted element. -1 if
+     * nothing inserted.
      * @exception QueryInsertError insert query failed.
      *
      * @note usually the identifiers has to be the same between bindCol and bindsSet
      */
-    int insertInto(const QString& table,
-                   const MapStringString& bindCol,
-                   const MapStringString& bindsSet);
+    QString insertInto(const QString& table,
+                       const MapStringString& bindCol,
+                       const MapStringString& bindsSet);
     /**
      * Update value(s) inside a table.
      * @param table where to perfom the action on.
