@@ -32,6 +32,7 @@
 #include <configurationmanager_interface.h>
 #include <datatransfer_interface.h>
 #include <account_const.h>
+#include <conversation_interface.h>
 
 #include "typedefs.h"
 #include "conversions_wrap.hpp"
@@ -46,6 +47,7 @@ class ConfigurationManagerInterface : public QObject
 public:
     std::map<std::string, std::shared_ptr<DRing::CallbackWrapperBase>> confHandlers;
     std::map<std::string, std::shared_ptr<DRing::CallbackWrapperBase>> dataXferHandlers;
+    std::map<std::string, std::shared_ptr<DRing::CallbackWrapperBase>> conversationsHandlers;
 
     ConfigurationManagerInterface()
     {
@@ -55,6 +57,7 @@ public:
         using DRing::AudioSignal;
         using DRing::DataTransferSignal;
         using DRing::DebugSignal;
+        using DRing::ConversationSignal;
 
         setObjectName("ConfigurationManagerInterface");
         confHandlers = {
@@ -224,7 +227,10 @@ public:
                 Q_EMIT this->debugMessageReceived(QString(message.c_str()));
             }),
             exportable_callback<ConfigurationSignal::ComposingStatusChanged>(
-                [this](const std::string& account_id, const std::string& from, int status) {
+                [this](const std::string& account_id,
+                       const std::string& convId,
+                       const std::string& from,
+                       int status) {
                     Q_EMIT this->composingStatusChanged(QString(account_id.c_str()),
                                                         QString(from.c_str()),
                                                         status > 0 ? true : false);
@@ -247,6 +253,46 @@ public:
                     Q_EMIT this->dataTransferEvent(transfer_id, code);
                 }),
         };
+        conversationsHandlers
+            = {exportable_callback<ConversationSignal::ConversationLoaded>(
+                   [this](uint32_t loadingRequestId,
+                          const std::string& accountId,
+                          const std::string& conversationId,
+                          const std::vector<std::map<std::string, std::string>>& messages) {
+                       Q_EMIT conversationLoaded(loadingRequestId,
+                                                 QString(accountId.c_str()),
+                                                 QString(conversationId.c_str()),
+                                                 convertVecMap(messages));
+                   }),
+               exportable_callback<ConversationSignal::MessageReceived>(
+                   [this](const std::string& accountId,
+                          const std::string& conversationId,
+                          const std::map<std::string, std::string>& message) {
+                       Q_EMIT messageReceived(QString(accountId.c_str()),
+                                              QString(conversationId.c_str()),
+                                              convertMap(message));
+                   }),
+               exportable_callback<ConversationSignal::ConversationRequestReceived>(
+                   [this](const std::string& accountId,
+                          const std::string& conversationId,
+                          const std::map<std::string, std::string>& metadata) {
+                       Q_EMIT conversationRequestReceived(QString(accountId.c_str()),
+                                                          QString(conversationId.c_str()),
+                                                          convertMap(metadata));
+                   }),
+                exportable_callback<ConversationSignal::ConversationReady>(
+                    [this](const std::string& accountId, const std::string& conversationId) {
+                    Q_EMIT conversationReady(QString(accountId.c_str()),
+                                             QString(conversationId.c_str()));
+                }),
+                exportable_callback<ConversationSignal::ConversationMemberEvent>(
+                    [this](const std::string& accountId, const std::string& conversationId, const std::string& memberUri, int event) {
+                    Q_EMIT conversationMemberEvent(QString(accountId.c_str()),
+                                                   QString(conversationId.c_str()),
+                                                   QString(memberUri.c_str()),
+                                                   event);
+                })
+            };
     }
 
     ~ConfigurationManagerInterface() {}
@@ -822,6 +868,77 @@ public Q_SLOTS: // METHODS
     {
         return DRing::searchUser(accountId.toStdString(), query.toStdString());
     }
+    //swarm
+    QString startConversation(const QString& accountId)
+    {
+        auto convId = DRing::startConversation(accountId.toStdString());
+        return QString(convId.c_str());
+    }
+    void acceptConversationRequest(const QString& accountId, const QString& conversationId)
+    {
+        DRing::acceptConversationRequest(accountId.toStdString(), conversationId.toStdString());
+    }
+    void declineConversationRequest(const QString& accountId, const QString& conversationId)
+    {
+        DRing::declineConversationRequest(accountId.toStdString(), conversationId.toStdString());
+    }
+    bool removeConversation(const QString& accountId, const QString& conversationId)
+    {
+        return DRing::removeConversation(accountId.toStdString(), conversationId.toStdString());
+    }
+    VectorString getConversations(const QString& accountId)
+    {
+        auto conversations = DRing::getConversations(accountId.toStdString());
+        return convertVectorString(conversations);
+    }
+    VectorMapStringString getConversationRequests(const QString& accountId)
+    {
+        auto requests = DRing::getConversationRequests(accountId.toStdString());
+        return convertVecMap(requests);
+    }
+    bool addConversationMember(const QString& accountId,
+                               const QString& conversationId,
+                               const QString& memberURI)
+    {
+        return DRing::addConversationMember(accountId.toStdString(),
+                                            conversationId.toStdString(),
+                                            memberURI.toStdString());
+    }
+    bool removeConversationMember(const QString& accountId,
+                                  const QString& conversationId,
+                                  const QString& memberURI)
+    {
+        return DRing::removeConversationMember(accountId.toStdString(),
+                                               conversationId.toStdString(),
+                                               memberURI.toStdString());
+    }
+    VectorMapStringString getConversationMembers(const QString& accountId,
+                                                 const QString& conversationId)
+    {
+        auto members = DRing::getConversationMembers(accountId.toStdString(),
+                                                     conversationId.toStdString());
+        return convertVecMap(members);
+    }
+    void sendMessage(const QString& accountId,
+                     const QString& conversationId,
+                     const QString& message,
+                     const QString& parrent)
+    {
+        DRing::sendMessage(accountId.toStdString(),
+                           conversationId.toStdString(),
+                           message.toStdString(),
+                           parrent.toStdString());
+    }
+    uint32_t loadConversationMessages(const QString& accountId,
+                                      const QString& conversationId,
+                                      const QString& fromId,
+                                      const int size)
+    {
+        return DRing::loadConversationMessages(accountId.toStdString(),
+                                               conversationId.toStdString(),
+                                               fromId.toStdString(),
+                                               size);
+    }
 
 Q_SIGNALS: // SIGNALS
     void volumeChanged(const QString& device, double value);
@@ -881,6 +998,22 @@ Q_SIGNALS: // SIGNALS
                          int status,
                          const QString& query,
                          VectorMapStringString results);
+    //swarm
+    void conversationLoaded(uint32_t loadingRequestId,
+                            const QString& accountId,
+                            const QString& conversationId,
+                            VectorMapStringString messages);
+    void messageReceived(const QString& accountId,
+                         const QString& conversationId,
+                         MapStringString message);
+    void conversationRequestReceived(const QString& accountId,
+                                     const QString& conversationId,
+                                     MapStringString metadatas);
+    void conversationReady(const QString& accountId, const QString& conversationId);
+    void conversationMemberEvent(const QString& accountId,
+                                     const QString& conversationId,
+                                     const QString& memberUri,
+                                     int event);
 };
 
 namespace org {
