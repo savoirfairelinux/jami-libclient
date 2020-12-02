@@ -313,6 +313,17 @@ public Q_SLOTS:
     void updateTransferStatus(long long dringId,
                               api::datatransfer::Info info,
                               interaction::Status newStatus);
+    void slotConversationLoaded(uint32_t loadingRequestId,
+                                const QString& accountId,
+                                const QString& conversationId,
+                                VectorMapStringString messages);
+    void slotMessageReceived(const QString& accountId,
+                             const QString& conversationId,
+                             MapStringString message);
+    void slotConversationRequestReceived(const QString& accountId,
+                                         const QString& conversationId,
+                                         MapStringString metadatas);
+    void slotConversationReady(const QString& accountId, const QString& conversationId);
 };
 
 ConversationModel::ConversationModel(const account::Info& owner,
@@ -805,7 +816,7 @@ ConversationModel::placeCall(const QString& uid)
 }
 
 void
-ConversationModel::sendMessage(const QString& uid, const QString& body)
+ConversationModel::sendMessage(const QString& uid, const QString& body, const QString& parentId)
 {
     try {
         auto& conversation = pimpl_->getConversationForUid(uid, true).get();
@@ -1245,6 +1256,29 @@ ConversationModel::clearUnreadInteractions(const QString& convId)
     }
 }
 
+uint32_t
+ConversationModel::loadConversationMessages(const QString& conversationId,
+                                            const int size)
+{
+    return -1;
+}
+
+void
+ConversationModel::acceptConversationRequest(const QString& conversationId)
+{}
+
+void
+ConversationModel::declineConversationRequest(const QString& conversationId)
+{}
+
+void
+ConversationModel::addConversationMember(const QString& conversationId, const QString& memberURI)
+{}
+
+void
+ConversationModel::removeConversationMember(const QString& conversationId, const QString& memberURI)
+{}
+
 ConversationModelPimpl::ConversationModelPimpl(const ConversationModel& linked,
                                                Lrc& lrc,
                                                Database& db,
@@ -1362,6 +1396,23 @@ ConversationModelPimpl::ConversationModelPimpl(const ConversationModel& linked,
             &CallbacksHandler::transferStatusUnjoinable,
             this,
             &ConversationModelPimpl::slotTransferStatusUnjoinable);
+    // swarm conversations
+    connect(&callbacksHandler,
+            &CallbacksHandler::conversationLoaded,
+            this,
+            &ConversationModelPimpl::slotConversationLoaded);
+    connect(&callbacksHandler,
+            &CallbacksHandler::messageReceived,
+            this,
+            &ConversationModelPimpl::slotMessageReceived);
+    connect(&callbacksHandler,
+            &CallbacksHandler::conversationRequestReceived,
+            this,
+            &ConversationModelPimpl::slotConversationRequestReceived);
+    connect(&callbacksHandler,
+            &CallbacksHandler::conversationReady,
+            this,
+            &ConversationModelPimpl::slotConversationReady);
 }
 
 ConversationModelPimpl::~ConversationModelPimpl()
@@ -1465,6 +1516,23 @@ ConversationModelPimpl::~ConversationModelPimpl()
                &CallbacksHandler::transferStatusUnjoinable,
                this,
                &ConversationModelPimpl::slotTransferStatusUnjoinable);
+    // swarm conversations
+    disconnect(&callbacksHandler,
+               &CallbacksHandler::conversationLoaded,
+               this,
+               &ConversationModelPimpl::slotConversationLoaded);
+    disconnect(&callbacksHandler,
+               &CallbacksHandler::messageReceived,
+               this,
+               &ConversationModelPimpl::slotMessageReceived);
+    disconnect(&callbacksHandler,
+               &CallbacksHandler::conversationRequestReceived,
+               this,
+               &ConversationModelPimpl::slotConversationRequestReceived);
+    disconnect(&callbacksHandler,
+               &CallbacksHandler::conversationReady,
+               this,
+               &ConversationModelPimpl::slotConversationReady);
 }
 
 void
@@ -1660,6 +1728,29 @@ ConversationModelPimpl::sendContactRequest(const QString& contactUri)
     if (isNotUsed)
         linked.owner.contactModel->addContact(contact);
 }
+void
+ConversationModelPimpl::slotConversationLoaded(uint32_t loadingRequestId,
+                                               const QString& accountId,
+                                               const QString& conversationId,
+                                               VectorMapStringString messages)
+{}
+
+void
+ConversationModelPimpl::slotMessageReceived(const QString& accountId,
+                                            const QString& conversationId,
+                                            MapStringString message)
+{}
+
+void
+ConversationModelPimpl::slotConversationRequestReceived(const QString& accountId,
+                                                        const QString& conversationId,
+                                                        MapStringString metadatas)
+{}
+
+void
+ConversationModelPimpl::slotConversationReady(const QString& accountId,
+                                              const QString& conversationId)
+{}
 
 void
 ConversationModelPimpl::slotContactAdded(const QString& contactUri)

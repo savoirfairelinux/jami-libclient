@@ -812,6 +812,83 @@ public Q_SLOTS: // METHODS
     bool isAudioMeterActive(const std::string& /*id*/) { return false; }
 
     void setAudioMeterState(const std::string& /*id*/, bool /*state*/) { }
+    QString startConversation(const QString& accountId)
+    {
+        Q_UNUSED(accountId);
+        return "";
+    }
+    void acceptConversationRequest(const QString& accountId, const QString& conversationId)
+    {
+        Q_UNUSED(accountId);
+        Q_UNUSED(conversationId);
+    }
+    void declineConversationRequest(const QString& accountId, const QString& conversationId)
+    {
+        Q_UNUSED(accountId);
+        Q_UNUSED(conversationId);
+    }
+    bool removeConversation(const QString& accountId, const QString& conversationId)
+    {
+        Q_UNUSED(accountId);
+        Q_UNUSED(conversationId);
+        return true;
+    }
+    VectorString getConversations(const QString& accountId)
+    {
+        Q_UNUSED(accountId);
+        return VectorString();
+    }
+    VectorMapStringString getConversationRequests(const QString& accountId)
+    {
+        Q_UNUSED(accountId);
+        return VectorMapStringString();
+    }
+    bool addConversationMember(const QString& accountId,
+                               const QString& conversationId,
+                               const QString& memberURI)
+    {
+        Q_UNUSED(accountId);
+        Q_UNUSED(conversationId);
+        Q_UNUSED(memberURI);
+        return true;
+    }
+    bool removeConversationMember(const QString& accountId,
+                                  const QString& conversationId,
+                                  const QString& memberURI)
+    {
+        Q_UNUSED(accountId);
+        Q_UNUSED(conversationId);
+        Q_UNUSED(memberURI);
+        return true;
+    }
+    VectorMapStringString getConversationMembers(const QString& accountId,
+                                                 const QString& conversationId)
+    {
+        Q_UNUSED(accountId);
+        Q_UNUSED(conversationId);
+        return VectorMapStringString();
+    }
+    void sendMessage(const QString& accountId,
+                     const QString& conversationId,
+                     const QString& message,
+                     const QString& parrent)
+    {
+        Q_UNUSED(accountId);
+        Q_UNUSED(conversationId);
+        Q_UNUSED(message);
+        Q_UNUSED(parrent);
+    }
+    uint32_t loadConversationMessages(const QString& accountId,
+                                      const QString& conversationId,
+                                      const QString& fromId,
+                                      const int size)
+    {
+        Q_UNUSED(accountId);
+        Q_UNUSED(conversationId);
+        Q_UNUSED(fromId);
+        Q_UNUSED(size);
+        return 0;
+    }
 
 Q_SIGNALS: // SIGNALS
     void volumeChanged(const QString& device, double value);
@@ -844,6 +921,21 @@ Q_SIGNALS: // SIGNALS
     void deviceRevocationEnded(const QString& accountId, const QString& deviceId, int status);
     void avatarReceived(const QString& accountId, const QString& userPhoto);
     void debugMessageReceived(const std::string& message);
+    void conversationLoaded(uint32_t loadingRequestId,
+                            const QString& accountId,
+                            const QString& conversationId,
+                            VectorMapStringString messages);
+    void messageReceived(const QString& accountId,
+                         const QString& conversationId,
+                         MapStringString message);
+    void conversationRequestReceived(const QString& accountId,
+                                     const QString& conversationId,
+                                     MapStringString metadatas);
+    void conversationReady(const QString& accountId, const QString& conversationId);
+    void conversationMemberEvent(const QString& accountId,
+                                     const QString& conversationId,
+                                     const QString& memberUri,
+                                     int event);
 };
 
 namespace org {
