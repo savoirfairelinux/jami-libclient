@@ -181,15 +181,15 @@ Q_SIGNALS:
                                      const QString& to,
                                      int status);
 
-    void transferStatusCreated(long long dringId, api::datatransfer::Info info);
-    void transferStatusCanceled(long long dringId, api::datatransfer::Info info);
-    void transferStatusAwaitingPeer(long long dringId, api::datatransfer::Info info);
-    void transferStatusAwaitingHost(long long dringId, api::datatransfer::Info info);
-    void transferStatusOngoing(long long dringId, api::datatransfer::Info info);
-    void transferStatusFinished(long long dringId, api::datatransfer::Info info);
-    void transferStatusError(long long dringId, api::datatransfer::Info info);
-    void transferStatusTimeoutExpired(long long dringId, api::datatransfer::Info info);
-    void transferStatusUnjoinable(long long dringId, api::datatransfer::Info info);
+    void transferStatusCreated(DataTransferId dringId, api::datatransfer::Info info);
+    void transferStatusCanceled(DataTransferId dringId, api::datatransfer::Info info);
+    void transferStatusAwaitingPeer(DataTransferId dringId, api::datatransfer::Info info);
+    void transferStatusAwaitingHost(DataTransferId dringId, api::datatransfer::Info info);
+    void transferStatusOngoing(DataTransferId dringId, api::datatransfer::Info info);
+    void transferStatusFinished(DataTransferId dringId, api::datatransfer::Info info);
+    void transferStatusError(DataTransferId dringId, api::datatransfer::Info info);
+    void transferStatusTimeoutExpired(DataTransferId dringId, api::datatransfer::Info info);
+    void transferStatusUnjoinable(DataTransferId dringId, api::datatransfer::Info info);
 
     /**
      * Connect this signal to get when a device name changed or a device is added
@@ -451,7 +451,7 @@ private Q_SLOTS:
                                          const QString& to,
                                          int status);
 
-    void slotDataTransferEvent(const QString& accountId, const QString& conversationId, qulonglong id, uint code);
+    void slotDataTransferEvent(const QString& accountId, const QString& conversationId, DataTransferId id, uint code);
 
     /**
      * Emit knownDevicesChanged
