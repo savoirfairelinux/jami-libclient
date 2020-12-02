@@ -396,6 +396,11 @@ public Q_SLOTS: // METHODS
         DRing::muteParticipant(confId.toStdString(), peerId.toStdString(), state);
     }
 
+    void hangupParticipant(const QString& confId, const QString& participant)
+    {
+        DRing::hangupParticipant(confId.toStdString(), participant.toStdString());
+    }
+
 Q_SIGNALS: // SIGNALS
     void callStateChanged(const QString& callID, const QString& state, int code);
     void transferFailed();

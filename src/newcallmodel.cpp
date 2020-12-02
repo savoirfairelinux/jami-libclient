@@ -781,6 +781,12 @@ NewCallModel::muteParticipant(const QString& confId, const QString& peerId, cons
 }
 
 void
+NewCallModel::hangupParticipant(const QString& confId, const QString& participant)
+{
+    CallManager::instance().hangupParticipant(confId, participant);
+}
+
+void
 NewCallModel::sendSipMessage(const QString& callId, const QString& body) const
 {
     MapStringString payloads;
