@@ -509,6 +509,7 @@ addDataTransferToConversation(Database& db,
                               const QString& conversationId,
                               const api::datatransfer::Info& infoFromDaemon)
 {
+    auto convId = conversationId.isEmpty() ? NULL : conversationId;
     return db.insertInto("interactions",
                          {{":author", "author"},
                           {":conversation", "conversation"},
@@ -516,14 +517,17 @@ addDataTransferToConversation(Database& db,
                           {":body", "body"},
                           {":type", "type"},
                           {":status", "status"},
-                          {":is_read", "is_read"}},
+                          {":is_read", "is_read"},
+                          {":daemon_id", "daemon_id"}},
                          {{":author", infoFromDaemon.isOutgoing ? "" : infoFromDaemon.peerUri},
-                          {":conversation", conversationId},
+                          {":conversation", convId},
                           {":timestamp", toQString(std::time(nullptr))},
                           {":body", infoFromDaemon.path},
                           {":type", infoFromDaemon.isOutgoing ? "DATA_TRANSFER" : "DATA_TRANSFER"},
                           {":status", "TRANSFER_CREATED"},
-                          {":is_read", "0"}});
+                          {":is_read", "0"},
+                          {":daemon_id",  infoFromDaemon.uid}
+    });
 }
 
 void
@@ -549,6 +553,23 @@ getInteractionIdByDaemonId(Database& db, const QString& daemon_id)
     auto ids = db.select("id", "interactions", "daemon_id=:daemon_id", {{":daemon_id", daemon_id}})
                    .payloads;
     return ids.empty() ? "" : ids[0];
+}
+
+void
+updateDataTransferInteractionForDaemonId(Database& db, const QString& daemonId, api::interaction::Info& interaction)
+{
+    auto result
+        = db.select("body, status",
+                    "interactions",
+                    "daemon_id=:daemon_id",
+                    {{":daemon_id", daemonId}}).payloads;
+    if (result.size() < 2) {
+        return;
+    }
+    auto body = result[0];
+    auto status = api::interaction::to_status(result[1]);
+    interaction.body = body;
+    interaction.status = status;
 }
 
 QString
