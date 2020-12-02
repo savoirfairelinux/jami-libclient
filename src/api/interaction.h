@@ -22,6 +22,7 @@
 #include <QObject>
 
 #include <ctime>
+#include "typedefs.h"
 
 namespace lrc {
 
@@ -56,11 +57,12 @@ to_string(const Type& type)
 static inline Type
 to_type(const QString& type)
 {
-    if (type == "TEXT")
+    qDebug() << type;
+    if (type == "TEXT" || type == "text/plain")
         return interaction::Type::TEXT;
-    else if (type == "CALL")
+    else if (type == "CALL" || type == "application/call-history+json")
         return interaction::Type::CALL;
-    else if (type == "CONTACT")
+    else if (type == "CONTACT" || type == "member")
         return interaction::Type::CONTACT;
     else if (type == "DATA_TRANSFER")
         return interaction::Type::DATA_TRANSFER;
@@ -167,6 +169,42 @@ to_status(const QString& status)
         return Status::INVALID;
 }
 
+enum class ContactAction {
+    ADD,
+    JOIN,
+    LEAVE,
+    BANNED
+};
+Q_ENUM_NS(ContactAction)
+
+static inline const QString
+to_string(const ContactAction& action)
+{
+    switch (action) {
+        case ContactAction::ADD:
+            return "ADD";
+        case ContactAction::JOIN:
+            return "JOIN";
+        case ContactAction::LEAVE:
+            return "LEAVE";
+        case ContactAction::BANNED:
+            return "BANNED";
+    }
+}
+
+static inline ContactAction
+to_action(const QString& action)
+{
+    if (action == "add")
+        return ContactAction::ADD;
+    else if (action == "join")
+        return ContactAction::JOIN;
+    else if (action == "leave")
+        return ContactAction::LEAVE;
+    else if (action == "baned")
+        return ContactAction::BANNED;
+}
+
 /**
  * @var authorUri
  * @var body
@@ -180,11 +218,70 @@ struct Info
 {
     QString authorUri;
     QString body;
+    QString participant = "";
+    QString parentId = "";
     std::time_t timestamp = 0;
     std::time_t duration = 0;
     Type type = Type::INVALID;
     Status status = Status::INVALID;
     bool isRead = false;
+
+    Info() {}
+
+    Info(QString authorUri1,
+         QString body1,
+         std::time_t timestamp1,
+         std::time_t duration1,
+         Type type1,
+         Status status1,
+         bool isRead1)
+    {
+        authorUri = authorUri1;
+        body = body1;
+        timestamp = timestamp1;
+        duration = duration1;
+        type = type1;
+        status = status1;
+        isRead = isRead1;
+    }
+
+    Info(const MapStringString& message, const QString& accountURI)
+    {
+        qDebug() << "****message type" << message["type"];
+        type = to_type(message["type"]);
+        if (type == Type::TEXT) {
+            body = message["body"];
+        }
+        authorUri = accountURI == message["author"] ? "" : message["author"];
+        timestamp = message["timestamp"].toInt();
+        status = Status::SUCCESS;
+        parentId = message["parents"];
+        isRead = true;
+        if (type == Type::CONTACT) {
+            participant = message["uri"];
+            switch (to_action(message["action"])) {
+                case ContactAction::ADD:
+                    body = participant != accountURI ? "contact added" : "received contact request";
+                    break;
+                case ContactAction::JOIN:
+                    body = "contact joined conversation";
+                    break;
+                case ContactAction::LEAVE:
+                    body = "contact left conversation";
+                    break;
+                case ContactAction::BANNED:
+                    body = "contact banned";
+                    break;
+            }
+        }
+        if (type == Type::CALL) {
+            QString typeString = accountURI == message["author"] ? "outgoing" : "incoming";
+            int duration = message["duration"].toInt();
+            QString durationString = duration == 0 ? "" : (" - " + message["duration"]);
+            QString missedCall = duration == 0 ? "missed " : "";
+            body = missedCall + typeString + " call " + durationString;
+        }
+    }
 };
 
 static inline bool
