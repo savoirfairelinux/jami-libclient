@@ -57,8 +57,8 @@ Q_SIGNALS:
      * @param payloads.
      */
     void newAccountMessage(const QString& accountId,
-                           const QString& msgId,
                            const QString& from,
+                           const QString& msgId,
                            const MapStringString& payloads);
     /**
      * Connect this signal to get information when a peer is online.
@@ -93,11 +93,12 @@ Q_SIGNALS:
     /**
      * Connect this signal to know when an incoming request is added by the daemon
      * @param accountId the one who got the request
-     * @param ringId the peer contact
+     * @param contactUri the peer contact
      * @param payload the VCard
      */
     void incomingContactRequest(const QString& accountId,
-                                const QString& ringId,
+                                const QString& conversationId,
+                                const QString& contactUri,
                                 const QString& payload);
     /**
      * Connect this signal to know when a call arrives
@@ -172,24 +173,26 @@ Q_SIGNALS:
     /**
      * Connect this signal to know when a message sent get a new status
      * @param accountId, account linked
-     * @param id of the message
-     * @param to, peer uri
+     * @param messageId id of the message
+     * @param conversationId id of the conversation
+     * @param peer, peer uri
      * @param status, new status for this message
      */
     void accountMessageStatusChanged(const QString& accountId,
-                                     const uint64_t id,
-                                     const QString& to,
+                                     const QString& conversationId,
+                                     const QString& peer,
+                                     const QString& messageId,
                                      int status);
 
-    void transferStatusCreated(long long dringId, api::datatransfer::Info info);
-    void transferStatusCanceled(long long dringId, api::datatransfer::Info info);
-    void transferStatusAwaitingPeer(long long dringId, api::datatransfer::Info info);
-    void transferStatusAwaitingHost(long long dringId, api::datatransfer::Info info);
-    void transferStatusOngoing(long long dringId, api::datatransfer::Info info);
-    void transferStatusFinished(long long dringId, api::datatransfer::Info info);
-    void transferStatusError(long long dringId, api::datatransfer::Info info);
-    void transferStatusTimeoutExpired(long long dringId, api::datatransfer::Info info);
-    void transferStatusUnjoinable(long long dringId, api::datatransfer::Info info);
+    void transferStatusCreated(DataTransferId dringId, api::datatransfer::Info info);
+    void transferStatusCanceled(DataTransferId dringId, api::datatransfer::Info info);
+    void transferStatusAwaitingPeer(DataTransferId dringId, api::datatransfer::Info info);
+    void transferStatusAwaitingHost(DataTransferId dringId, api::datatransfer::Info info);
+    void transferStatusOngoing(DataTransferId dringId, api::datatransfer::Info info);
+    void transferStatusFinished(DataTransferId dringId, api::datatransfer::Info info);
+    void transferStatusError(DataTransferId dringId, api::datatransfer::Info info);
+    void transferStatusTimeoutExpired(DataTransferId dringId, api::datatransfer::Info info);
+    void transferStatusUnjoinable(DataTransferId dringId, api::datatransfer::Info info);
 
     /**
      * Connect this signal to get when a device name changed or a device is added
@@ -323,6 +326,7 @@ Q_SIGNALS:
                                      const QString& conversationId,
                                      const MapStringString& metadatas);
     void conversationReady(const QString& accountId, const QString& conversationId);
+    void conversationRemoved(const QString& accountId, const QString& conversationId);
     void conversationMemberEvent(const QString& accountId,
                                  const QString& conversationId,
                                  const QString& memberId,
@@ -332,13 +336,13 @@ private Q_SLOTS:
     /**
      * Emit newAccountMessage
      * @param accountId
+     * @param peerId
      * @param msgId
-     * @param from
      * @param payloads of the interaction
      */
     void slotNewAccountMessage(const QString& accountId,
+                               const QString& peerId,
                                const QString& msgId,
-                               const QString& from,
                                const QMap<QString, QString>& payloads);
     /**
      * Emit newBuddySubscription
@@ -373,6 +377,7 @@ private Q_SLOTS:
      * @param time when the request was received
      */
     void slotIncomingContactRequest(const QString& accountId,
+                                    const QString& conversationId,
                                     const QString& ringId,
                                     const QByteArray& payload,
                                     time_t time);
@@ -446,17 +451,19 @@ private Q_SLOTS:
     void slotConferenceChanged(const QString& callId, const QString& state);
     /**
      * Emit accountMessageStatusChanged
-     * @param accountId
-     * @param id of the message for the daemon
-     * @param to peer uri
-     * @param status, new status
+     * @param accountId, account linked
+     * @param messageId id of the message
+     * @param conversationId id of the conversation
+     * @param peer, peer uri
+     * @param status, new status for this message
      */
     void slotAccountMessageStatusChanged(const QString& accountId,
-                                         const uint64_t id,
-                                         const QString& to,
-                                         int status);
+                                     const QString& conversationId,
+                                     const QString& peer,
+                                     const QString& messageId,
+                                     int status);
 
-    void slotDataTransferEvent(const QString& accountId, const QString& conversationId, qulonglong id, uint code);
+    void slotDataTransferEvent(const QString& accountId, const QString& conversationId, DataTransferId id, uint code);
 
     /**
      * Emit knownDevicesChanged
@@ -602,6 +609,7 @@ private Q_SLOTS:
                                          const QString& conversationId,
                                          const MapStringString& metadatas);
     void slotConversationReady(const QString& accountId, const QString& conversationId);
+    void slotConversationRemoved(const QString& accountId, const QString& conversationId);
     void slotConversationMemberEvent(const QString& accountId,
                                      const QString& conversationId,
                                      const QString& memberId,

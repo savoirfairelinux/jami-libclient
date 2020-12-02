@@ -265,6 +265,11 @@ CallbacksHandler::CallbacksHandler(const Lrc& parent)
             &CallbacksHandler::slotConversationReady,
             Qt::QueuedConnection);
     connect(&ConfigurationManager::instance(),
+            &ConfigurationManagerInterface::conversationRemoved,
+            this,
+            &CallbacksHandler::slotConversationRemoved,
+            Qt::QueuedConnection);
+    connect(&ConfigurationManager::instance(),
             &ConfigurationManagerInterface::conversationMemberEvent,
             this,
             &CallbacksHandler::slotConversationMemberEvent,
@@ -285,12 +290,12 @@ CallbacksHandler::subscribeToDebugReceived()
 
 void
 CallbacksHandler::slotNewAccountMessage(const QString& accountId,
+                                        const QString& peerId,
                                         const QString& msgId,
-                                        const QString& from,
                                         const MapStringString& payloads)
 {
-    auto from2 = QString(from).replace("@ring.dht", "");
-    emit newAccountMessage(accountId, msgId, from2, payloads);
+    auto peerId2 = QString(peerId).replace("@ring.dht", "");
+    emit newAccountMessage(accountId, peerId2, msgId, payloads);
 }
 
 void
@@ -346,12 +351,13 @@ CallbacksHandler::slotContactRemoved(const QString& accountId,
 
 void
 CallbacksHandler::slotIncomingContactRequest(const QString& accountId,
-                                             const QString& ringId,
+                                             const QString& conversationId,
+                                             const QString& contactUri,
                                              const QByteArray& payload,
                                              time_t time)
 {
     Q_UNUSED(time)
-    emit incomingContactRequest(accountId, ringId, payload);
+    emit incomingContactRequest(accountId, conversationId, contactUri, payload);
 }
 
 void
@@ -461,15 +467,16 @@ CallbacksHandler::slotConferenceRemoved(const QString& callId)
 
 void
 CallbacksHandler::slotAccountMessageStatusChanged(const QString& accountId,
-                                                  const uint64_t id,
-                                                  const QString& to,
+                                                  const QString& conversationId,
+                                                  const QString& peer,
+                                                  const QString& messageId,
                                                   int status)
 {
-    emit accountMessageStatusChanged(accountId, id, to, status);
+    emit accountMessageStatusChanged(accountId, conversationId, peer, messageId, status);
 }
 
 void
-CallbacksHandler::slotDataTransferEvent(const QString& accountId, const QString& conversationId, qulonglong dringId, uint codeStatus)
+CallbacksHandler::slotDataTransferEvent(const QString& accountId, const QString& conversationId, DataTransferId dringId, uint codeStatus)
 {
     auto event = DRing::DataTransferEventCode(codeStatus);
 
@@ -482,33 +489,33 @@ CallbacksHandler::slotDataTransferEvent(const QString& accountId, const QString&
 
     switch (event) {
     case DRing::DataTransferEventCode::created:
-        emit transferStatusCreated(static_cast<long long>(dringId), info);
+        emit transferStatusCreated(static_cast<DataTransferId>(dringId), info);
         break;
     case DRing::DataTransferEventCode::closed_by_host:
     case DRing::DataTransferEventCode::closed_by_peer:
-        emit transferStatusCanceled(static_cast<long long>(dringId), info);
+        emit transferStatusCanceled(static_cast<DataTransferId>(dringId), info);
         break;
     case DRing::DataTransferEventCode::wait_peer_acceptance:
-        emit transferStatusAwaitingPeer(static_cast<long long>(dringId), info);
+        emit transferStatusAwaitingPeer(static_cast<DataTransferId>(dringId), info);
         break;
     case DRing::DataTransferEventCode::wait_host_acceptance:
-        emit transferStatusAwaitingHost(static_cast<long long>(dringId), info);
+        emit transferStatusAwaitingHost(static_cast<DataTransferId>(dringId), info);
         break;
     case DRing::DataTransferEventCode::ongoing:
-        emit transferStatusOngoing(static_cast<long long>(dringId), info);
+        emit transferStatusOngoing(static_cast<DataTransferId>(dringId), info);
         break;
     case DRing::DataTransferEventCode::finished:
-        emit transferStatusFinished(static_cast<long long>(dringId), info);
+        emit transferStatusFinished(static_cast<DataTransferId>(dringId), info);
         break;
     case DRing::DataTransferEventCode::invalid_pathname:
     case DRing::DataTransferEventCode::unsupported:
-        emit transferStatusError(static_cast<long long>(dringId), info);
+        emit transferStatusError(static_cast<DataTransferId>(dringId), info);
         break;
     case DRing::DataTransferEventCode::timeout_expired:
-        emit transferStatusTimeoutExpired(static_cast<long long>(dringId), info);
+        emit transferStatusTimeoutExpired(static_cast<DataTransferId>(dringId), info);
         break;
     case DRing::DataTransferEventCode::unjoinable_peer:
-        emit transferStatusUnjoinable(static_cast<long long>(dringId), info);
+        emit transferStatusUnjoinable(static_cast<DataTransferId>(dringId), info);
         break;
     case DRing::DataTransferEventCode::invalid:
         break;
@@ -639,6 +646,12 @@ void
 CallbacksHandler::slotConversationReady(const QString& accountId, const QString& conversationId)
 {
     emit conversationReady(accountId, conversationId);
+}
+
+void
+CallbacksHandler::slotConversationRemoved(const QString& accountId, const QString& conversationId)
+{
+    emit conversationRemoved(accountId, conversationId);
 }
 
 void

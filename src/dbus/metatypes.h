@@ -55,7 +55,9 @@ operator<<(QDBusArgument& argument, const DataTransferInfo& info)
     argument << info.flags;
     argument << info.totalSize;
     argument << info.bytesProgress;
+    argument << info.author;
     argument << info.peer;
+    argument << info.conversationId;
     argument << info.displayName;
     argument << info.path;
     argument << info.mimetype;
@@ -73,7 +75,9 @@ operator>>(const QDBusArgument& argument, DataTransferInfo& info)
     argument >> info.flags;
     argument >> info.totalSize;
     argument >> info.bytesProgress;
+    argument >> info.author;
     argument >> info.peer;
+    argument >> info.conversationId;
     argument >> info.displayName;
     argument >> info.path;
     argument >> info.mimetype;
