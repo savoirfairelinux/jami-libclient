@@ -70,7 +70,18 @@ public:
                    [this](const std::string& accountId, const std::string& conversationId) {
                        Q_EMIT conversationReady(QString(accountId.c_str()),
                                                 QString(conversationId.c_str()));
-                   })};
+                   }),
+        
+               exportable_callback<ConversationSignal::ConversationMemberEvent>(
+                   [this](const std::string& accountId,
+                          const std::string& conversationId,
+                          const std::string& memberUri,
+                          int event) {
+                      Q_EMIT conversationMemberEvent(QString(accountId.c_str()),
+                                                     QString(conversationId.c_str()),
+                                                     QString(memberUri.c_str()),
+                                                     event);
+               })};
     }
 
     ~ConversationManagerInterface() {}
@@ -160,6 +171,10 @@ Q_SIGNALS: // SIGNALS
                                      const QString& conversationId,
                                      MapStringString metadatas);
     void conversationReady(const QString& accountId, const QString& conversationId);
+    void conversationMemberEvent(const QString& accountId,
+                                 const QString& conversationId,
+                                 const QString& memberUri,
+                                 int event);
 };
 
 namespace org {
