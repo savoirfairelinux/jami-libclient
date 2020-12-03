@@ -133,7 +133,7 @@ function init_i18n(data) {
     if (use_qt) {
         window.jsbridge.parseI18nData(function(stringData) {
             i18nStringData = stringData
-            reset_message_bar_input()
+            reset_message_bar_input("")
             set_titles()
         })
     } else {
@@ -151,7 +151,7 @@ function init_i18n(data) {
             }
             i18n = new Jed({ locale_data: { "messages": domain } })
         }
-        reset_message_bar_input()
+        reset_message_bar_input("")
         set_titles()
     }
 }
@@ -190,9 +190,10 @@ function set_titles() {
     }
 }
 
-function reset_message_bar_input() {
+function reset_message_bar_input(name) {
     messageBarInput.placeholder = use_qt ?
-        i18nStringData["Type a message"] : i18n.gettext("Type a message")
+        i18nStringData["Write to {0}"].format(name) :
+        i18n.gettext("Write to {0}").format(name)
 }
 
 function onScrolled_() {
@@ -297,6 +298,8 @@ function update_chatview_frame(accountEnabled, banned, temporary, alias, bestid)
         idField.classList.add("oneEntry")
     }
 
+    reset_message_bar_input(aliasField.innerHTML)
+
     if (isAccountEnabled !== accountEnabled) {
         isAccountEnabled = accountEnabled
         hideMessageBar(!accountEnabled)
@@ -317,12 +320,9 @@ function update_chatview_frame(accountEnabled, banned, temporary, alias, bestid)
         isTemporary = temporary
         if (temporary) {
             addToConvButton.style.display = "flex"
-            messageBarInput.placeholder = use_qt ?
-                i18nStringData["Note: an interaction will create a new contact."] :
-                i18n.gettext("Note: an interaction will create a new contact.")
+            reset_message_bar_input("Note: an interaction will create a new contact.")
         } else {
             addToConvButton.style.display = ""
-            reset_message_bar_input()
         }
     }
 
