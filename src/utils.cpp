@@ -265,7 +265,7 @@ Utils::contactPhoto(const QString& contactUri, const QSize& size)
                    && contactInfo.profileInfo.uri.isEmpty()) {
             photo = Utils::fallbackAvatar(QString(), QString());
         } else if (!contactPhoto.isEmpty()) {
-            QByteArray byteArray = contactPhoto.toLocal8Bit();
+            QByteArray byteArray = Utils::base64StringToByteArray(contactPhoto);
             photo = contactPhotoFromBase64(byteArray, nullptr);
             if (photo.isNull()) {
                 auto avatarName = contactInfo.profileInfo.uri == bestName ? QString() : bestName;
@@ -284,7 +284,7 @@ QImage
 Utils::contactPhotoFromBase64(const QByteArray& data, const QString& type)
 {
     QImage avatar;
-    const bool ret = avatar.loadFromData(QByteArray::fromBase64(data), type.toLatin1());
+    const bool ret = avatar.loadFromData(data, type.toLatin1());
     if (!ret) {
         qDebug() << "Utils: vCard image loading failed";
         return QImage();
@@ -587,6 +587,18 @@ Utils::QImageToByteArray(QImage image)
     return ba;
 }
 
+QString
+Utils::byteArrayToBase64String(QByteArray byteArray)
+{
+    return QString::fromLatin1(byteArray.toBase64().data());
+}
+
+QByteArray
+Utils::base64StringToByteArray(QString base64)
+{
+    return QByteArray::fromBase64(base64.toLatin1());
+}
+
 QImage
 Utils::cropImage(const QImage& img)
 {
@@ -718,7 +730,7 @@ Utils::accountPhoto(const lrc::api::account::Info& accountInfo, const QSize& siz
 {
     QImage photo;
     if (!accountInfo.profileInfo.avatar.isEmpty()) {
-        QByteArray ba = accountInfo.profileInfo.avatar.toLocal8Bit();
+        QByteArray ba = Utils::base64StringToByteArray(accountInfo.profileInfo.avatar);
         photo = contactPhotoFromBase64(ba, nullptr);
     } else {
         auto bestId = LRCInstance::accountModel().bestIdForAccount(accountInfo.id);

@@ -66,9 +66,8 @@ public:
      */
     Q_INVOKABLE void createJamiAccount(QString registeredName,
                                        const QVariantMap& settings,
-                                       QString photoBoothImgBase64,
                                        bool isCreating);
-    Q_INVOKABLE void createSIPAccount(const QVariantMap& settings, QString photoBoothImgBase64);
+    Q_INVOKABLE void createSIPAccount(const QVariantMap& settings);
     Q_INVOKABLE void createJAMSAccount(const QVariantMap& settings);
     /*
      * Delete current account
@@ -101,6 +100,8 @@ public:
     Q_INVOKABLE void setCurrAccDisplayName(const QString& text);
     Q_INVOKABLE void setSelectedConvId(const QString& convId = {});
     Q_INVOKABLE lrc::api::profile::Type getCurrentAccountType();
+
+    Q_INVOKABLE void setCurrAccAvatar(bool fromFile, const QString& source);
 
 signals:
     /*

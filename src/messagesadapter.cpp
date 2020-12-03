@@ -396,7 +396,7 @@ MessagesAdapter::pasteKeyDetected()
         QBuffer bu(&ba);
         bu.open(QIODevice::WriteOnly);
         pixmap.save(&bu, "PNG");
-        auto str = QString::fromLatin1(ba.toBase64().data());
+        auto str = Utils::byteArrayToBase64String(ba);
 
         setMessagesImageContent(str, true);
     } else if (mimeData->hasUrls()) {

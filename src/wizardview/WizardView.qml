@@ -238,7 +238,6 @@ Rectangle {
                     AccountAdapter.createJamiAccount(
                         createAccountPage.text_usernameEditAlias,
                         inputParaObject,
-                        createAccountPage.boothImgBase64,
                         true)
                     showBackUp = !isRdv
                     showBottom = true
@@ -391,8 +390,7 @@ Rectangle {
                 }
 
                 onSaveProfile: {
-                    if (profilePage.profileImg)
-                        SettingsAdapter.setCurrAccAvatar(profilePage.profileImg)
+                    avatarBooth.manualSaveToConfig()
                     AccountAdapter.setCurrAccDisplayName(profilePage.displayName)
                     leave()
                 }

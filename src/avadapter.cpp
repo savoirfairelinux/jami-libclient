@@ -99,7 +99,7 @@ AvAdapter::captureScreen(int screenNumber)
     QBuffer buffer;
     buffer.open(QIODevice::WriteOnly);
     pixmap.save(&buffer, "PNG");
-    return QString::fromLatin1(buffer.data().toBase64().data());
+    return Utils::byteArrayToBase64String(buffer.data());
 }
 
 void

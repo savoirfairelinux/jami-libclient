@@ -24,19 +24,19 @@ import net.jami.Constants 1.0
 Item {
     id: root
 
-    // FromUrl here is for grabToImage image url
     enum Mode {
         FromAccount = 0,
         FromFile,
         FromContactUri,
         FromConvUid,
-        FromUrl,
+        FromBase64,
         FromTemporaryName,
         Default
     }
 
     property alias fillMode: rootImage.fillMode
     property alias sourceSize: rootImage.sourceSize
+    property bool saveToConfig: false
     property int mode: AvatarImage.Mode.FromAccount
     property string imageProviderIdPrefix: {
         switch(mode) {
@@ -50,6 +50,8 @@ Item {
             return "conversation_"
         case AvatarImage.Mode.FromTemporaryName:
             return "fallback_"
+        case AvatarImage.Mode.FromBase64:
+            return "base64_"
         case AvatarImage.Mode.Default:
             return "default_"
         default:
@@ -69,6 +71,19 @@ Item {
 
     signal imageIsReady
 
+    function saveAvatarToConfig() {
+        switch(mode) {
+        case AvatarImage.Mode.FromFile:
+            AccountAdapter.setCurrAccAvatar(true, imageId)
+            break
+        case AvatarImage.Mode.FromBase64:
+            AccountAdapter.setCurrAccAvatar(false, imageId)
+            break
+        default:
+            return
+        }
+    }
+
     function updateImage(updatedId, oneTimeForceUpdateUrl) {
         imageId = updatedId
         if (oneTimeForceUpdateUrl === undefined)
@@ -76,10 +91,10 @@ Item {
         else
             forceUpdateUrl = oneTimeForceUpdateUrl
 
-        if (mode === AvatarImage.Mode.FromUrl)
-            rootImage.source = imageId
-        else
-            rootImage.source = imageProviderUrl + imageId
+        rootImage.source = imageProviderUrl + imageId
+
+        if (saveToConfig)
+            saveAvatarToConfig()
     }
 
     Image {
@@ -192,5 +207,4 @@ Item {
         radius: 30
         color: JamiTheme.notificationRed
     }
-
 }

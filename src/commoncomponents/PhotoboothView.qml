@@ -12,9 +12,8 @@ ColumnLayout {
     property int photoState: PhotoboothView.PhotoState.Default
     property bool avatarSet: false
     // saveToConfig is to specify whether the image should be saved to account config
-    property bool saveToConfig: false
+    property alias saveToConfig: avatarImg.saveToConfig
     property string fileName: ""
-    property var boothImg: ""
 
     property int boothWidth: 224
 
@@ -50,7 +49,7 @@ ColumnLayout {
 
     function setAvatarImage(mode = AvatarImage.Mode.FromAccount,
                             imageId = AccountAdapter.currentAccountId){
-        if (mode !== AvatarImage.Mode.FromUrl)
+        if (mode !== AvatarImage.Mode.FromBase64)
             avatarImg.enableAnimation = true
         else
             avatarImg.enableAnimation = false
@@ -58,13 +57,16 @@ ColumnLayout {
         avatarImg.mode = mode
 
         if (mode === AvatarImage.Mode.Default) {
-            boothImg = ""
             avatarImg.updateImage(imageId)
             return
         }
 
         if (imageId)
             avatarImg.updateImage(imageId)
+    }
+
+    function manualSaveToConfig() {
+        avatarImg.saveAvatarToConfig()
     }
 
     onVisibleChanged: {
@@ -141,21 +143,12 @@ ColumnLayout {
                 }
 
                 onImageIsReady: {
-                    if (mode === AvatarImage.Mode.FromUrl)
+                    if (mode === AvatarImage.Mode.FromBase64)
                         photoState = PhotoboothView.PhotoState.Taken
 
                     if (photoState === PhotoboothView.PhotoState.Taken) {
                         avatarImg.state = ""
                         avatarImg.state = "flashIn"
-                    } else {
-                        // Once image is loaded (updated), save to boothImg (choose from file)
-                        avatarImg.grabToImage(function(result) {
-                            if (mode !== AvatarImage.Mode.Default)
-                                boothImg = result.image
-
-                            if (saveToConfig)
-                                SettingsAdapter.setCurrAccAvatar(result.image)
-                        })
                     }
                 }
 
@@ -255,17 +248,11 @@ ColumnLayout {
                     startBooth()
                     return
                 } else {
-                    previewWidget.grabToImage(function(result) {
-                        boothImg = result.image
+                    setAvatarImage(AvatarImage.Mode.FromBase64,
+                                   previewWidget.takePhoto(boothWidth))
 
-                        if (saveToConfig)
-                            SettingsAdapter.setCurrAccAvatar(result.image)
-
-                        setAvatarImage(AvatarImage.Mode.FromUrl, result.url)
-
-                        avatarSet = true
-                        stopBooth()
-                    })
+                    avatarSet = true
+                    stopBooth()
                 }
             }
         }

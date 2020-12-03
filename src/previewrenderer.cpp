@@ -112,6 +112,16 @@ PhotoboothPreviewRender::PhotoboothPreviewRender(QQuickItem* parent)
 
 PhotoboothPreviewRender::~PhotoboothPreviewRender() {}
 
+QString
+PhotoboothPreviewRender::takePhoto(int size)
+{
+    if (auto previewImage = LRCInstance::renderer()->getPreviewFrame()) {
+        return Utils::byteArrayToBase64String(Utils::QImageToByteArray(
+            previewImage->copy()
+                .scaled(size, size, Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation)));
+    }
+}
+
 void
 PhotoboothPreviewRender::paint(QPainter* painter)
 {

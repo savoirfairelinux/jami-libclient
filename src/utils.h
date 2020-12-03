@@ -101,6 +101,8 @@ QImage fallbackAvatar(const std::string& alias,
                       const std::string& uri,
                       const QSize& size = defaultAvatarSize);
 QByteArray QImageToByteArray(QImage image);
+QString byteArrayToBase64String(QByteArray byteArray);
+QByteArray base64StringToByteArray(QString base64);
 QByteArray QByteArrayFromFile(const QString& filename);
 QPixmap generateTintedPixmap(const QString& filename, QColor color);
 QPixmap generateTintedPixmap(const QPixmap& pix, QColor color);

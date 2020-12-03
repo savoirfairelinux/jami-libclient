@@ -263,26 +263,6 @@ SettingsAdapter::getAccountBestName()
     return LRCInstance::accountModel().bestNameForAccount(LRCInstance::getCurrAccId());
 }
 
-bool
-SettingsAdapter::getIsDefaultAvatar()
-{
-    auto& accountInfo = LRCInstance::getCurrentAccountInfo();
-
-    return accountInfo.profileInfo.avatar.isEmpty();
-}
-
-void
-SettingsAdapter::setCurrAccAvatar(QVariant avatarImg)
-{
-    LRCInstance::setCurrAccAvatar(QPixmap::fromImage(avatarImg.value<QImage>()));
-}
-
-void
-SettingsAdapter::clearCurrentAvatar()
-{
-    LRCInstance::setCurrAccAvatar(QPixmap());
-}
-
 lrc::api::account::ConfProperties_t
 SettingsAdapter::getAccountConfig()
 {

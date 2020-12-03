@@ -27,11 +27,11 @@ Rectangle {
     id: root
 
     property string createdAccountId: ""
-    property alias profileImg: setAvatarWidget.boothImg
     property int preferredHeight: profilePageColumnLayout.implicitHeight
     property var showBottom: false
     property alias displayName: aliasEdit.text
     property bool isRdv: false
+    property alias avatarBooth: setAvatarWidget
 
     signal leavePage
     signal saveProfile

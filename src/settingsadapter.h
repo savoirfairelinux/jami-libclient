@@ -93,11 +93,6 @@ public:
     Q_INVOKABLE int getCurrentAccount_Profile_Info_Type();
     Q_INVOKABLE QString getAccountBestName();
 
-    // getters and setters of avatar image
-    Q_INVOKABLE bool getIsDefaultAvatar();
-    Q_INVOKABLE void setCurrAccAvatar(QVariant avatarImg);
-    Q_INVOKABLE void clearCurrentAvatar();
-
     /*
      * getters and setters of ConfProperties_t
      */

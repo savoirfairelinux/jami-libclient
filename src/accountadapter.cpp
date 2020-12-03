@@ -25,6 +25,8 @@
 
 #include "qtutils.h"
 
+#include <QtConcurrent/QtConcurrent>
+
 #undef REGISTERED
 #include "../daemon/src/dring/account_const.h"
 
@@ -89,13 +91,12 @@ AccountAdapter::connectFailure()
 void
 AccountAdapter::createJamiAccount(QString registeredName,
                                   const QVariantMap& settings,
-                                  QString photoBoothImgBase64,
                                   bool isCreating)
 {
     Utils::oneShotConnect(
         &LRCInstance::accountModel(),
         &lrc::api::NewAccountModel::accountAdded,
-        [this, registeredName, settings, isCreating, photoBoothImgBase64](const QString& accountId) {
+        [this, registeredName, settings, isCreating](const QString& accountId) {
             auto showBackup = isCreating
                               && !AppSettingsManager::getValue(Settings::Key::NeverShowMeAgain)
                                       .toBool();
@@ -124,16 +125,6 @@ AccountAdapter::createJamiAccount(QString registeredName,
                                   showBackup,
                                   LRCInstance::accountModel().getAccountList().indexOf(accountId));
             }
-
-            // set up avatar pixmap from photobooth
-            QImage avatarImg;
-            const bool ret = avatarImg.loadFromData(
-                QByteArray::fromBase64(photoBoothImgBase64.toLatin1()));
-            if (!ret) {
-                qDebug() << "No image provided for JAMI account creation";
-            } else {
-                LRCInstance::setAvatarForAccount(QPixmap::fromImage(avatarImg), accountId);
-            }
         });
 
     connectFailure();
@@ -156,11 +147,11 @@ AccountAdapter::createJamiAccount(QString registeredName,
 }
 
 void
-AccountAdapter::createSIPAccount(const QVariantMap& settings, QString photoBoothImgBase64)
+AccountAdapter::createSIPAccount(const QVariantMap& settings)
 {
     Utils::oneShotConnect(&LRCInstance::accountModel(),
                           &lrc::api::NewAccountModel::accountAdded,
-                          [this, settings, photoBoothImgBase64](const QString& accountId) {
+                          [this, settings](const QString& accountId) {
                               auto confProps = LRCInstance::accountModel().getAccountConfig(
                                   accountId);
                               // set SIP details
@@ -169,17 +160,6 @@ AccountAdapter::createSIPAccount(const QVariantMap& settings, QString photoBooth
                               confProps.password = settings["password"].toString();
                               confProps.routeset = settings["proxy"].toString();
                               LRCInstance::accountModel().setAccountConfig(accountId, confProps);
-
-                              // set up photobooth avatar to SIP avatar
-                              QImage avatarImg;
-                              const bool ret = avatarImg.loadFromData(
-                                  QByteArray::fromBase64(photoBoothImgBase64.toLatin1()));
-                              if (!ret) {
-                                  qDebug() << "SIP account creation BASE64 image loading failed";
-                              } else {
-                                  LRCInstance::setAvatarForAccount(QPixmap::fromImage(avatarImg),
-                                                                   accountId);
-                              }
 
                               emit LRCInstance::instance().accountListChanged();
                               emit accountAdded(accountId,
@@ -292,6 +272,22 @@ lrc::api::profile::Type
 AccountAdapter::getCurrentAccountType()
 {
     return LRCInstance::getCurrentAccountInfo().profileInfo.type;
+}
+
+void
+AccountAdapter::setCurrAccAvatar(bool fromFile, const QString& source)
+{
+    QtConcurrent::run([fromFile, source]() {
+        QPixmap image;
+        bool success;
+        if (fromFile)
+            success = image.load(source);
+        else
+            success = image.loadFromData(Utils::base64StringToByteArray(source));
+
+        if (success)
+            LRCInstance::setCurrAccAvatar(image);
+    });
 }
 
 void
