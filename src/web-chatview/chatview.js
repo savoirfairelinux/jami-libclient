@@ -133,7 +133,7 @@ function init_i18n(data) {
     if (use_qt) {
         window.jsbridge.parseI18nData(function(stringData) {
             i18nStringData = stringData
-            reset_message_bar_input()
+            reset_message_bar_input("")
             set_titles()
         })
     } else {
@@ -151,7 +151,7 @@ function init_i18n(data) {
             }
             i18n = new Jed({ locale_data: { "messages": domain } })
         }
-        reset_message_bar_input()
+        reset_message_bar_input("")
         set_titles()
     }
 }
@@ -190,9 +190,10 @@ function set_titles() {
     }
 }
 
-function reset_message_bar_input() {
+function reset_message_bar_input(name) {
     messageBarInput.placeholder = use_qt ?
-        i18nStringData["Type a message"] : i18n.gettext("Type a message")
+        i18nStringData["Write to {0}"].format(name) :
+        i18n.gettext("Write to {0}").format(name)
 }
 
 function onScrolled_() {
@@ -300,7 +301,7 @@ function update_chatview_frame(accountEnabled, banned, temporary, alias, bestid)
     if (isAccountEnabled !== accountEnabled) {
         isAccountEnabled = accountEnabled
         hideMessageBar(!accountEnabled)
-        hideControls(accountEnabled)
+        hideControls(!accountEnabled)
     }
 
     if (isBanned !== banned) {
@@ -322,8 +323,11 @@ function update_chatview_frame(accountEnabled, banned, temporary, alias, bestid)
                 i18n.gettext("Note: an interaction will create a new contact.")
         } else {
             addToConvButton.style.display = ""
-            reset_message_bar_input()
         }
+    }
+
+    if (!temporary) {
+        reset_message_bar_input(alias ? alias : bestid)
     }
 
     navbar.style.display = ""
@@ -406,16 +410,29 @@ function displayRecordControls(isVisible) {
 /**
  * Hide or show message bar, and update body bottom padding accordingly.
  *
- * @param isHidden whether message bar should be displayed or not
+ * @param hide whether message bar should be displayed or not
  */
 /* exported hideMessageBar */
-function hideMessageBar(isHidden) {
-    if (isHidden) {
+function hideMessageBar(hide) {
+    if (hide) {
         messageBar.classList.add("hiddenState")
         document.body.style.setProperty("--messagebar-size", "0")
     } else {
         messageBar.classList.remove("hiddenState")
         document.body.style.removeProperty("--messagebar-size")
+    }
+}
+
+/**
+ * Hide or show add to conversations/calls
+ *
+ * @param hide whether the buttons should be hidden
+ */
+function hideControls(hide) {
+    if (hide) {
+        callButtons.style.display = "none"
+    } else {
+        callButtons.style.display = ""
     }
 }
 
@@ -816,18 +833,6 @@ function humanFileSize(bytes) {
         ++u
     } while (Math.abs(bytes) >= thresh && u < units.length - 1)
     return bytes.toFixed(1) + " " + units[u]
-}
-
-/**
- * Hide or show add to conversations/calls whether the account is enabled
- * @param accountEnabled true if account is enabled
- */
-function hideControls(accountEnabled) {
-    if (!accountEnabled) {
-        callButtons.style.display = "none"
-    } else {
-        callButtons.style.display = ""
-    }
 }
 
 /**
