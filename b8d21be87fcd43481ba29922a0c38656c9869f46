@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "99c89692_e5a6216a",
+        "filename": "src/web-chatview/chatview.js",
+        "patchSetId": 1
+      },
+      "lineNbr": 196,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2020-12-03T21:23:53Z",
+      "side": 1,
+      "message": "Should be added into chatview.cpp for translation",
+      "range": {
+        "startLine": 194,
+        "startChar": 42,
+        "endLine": 196,
+        "endChar": 49
+      },
+      "revId": "b8d21be87fcd43481ba29922a0c38656c9869f46",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    }
+  ]
+}
