@@ -41,7 +41,7 @@ getTranslatedStrings(bool qwebview)
         {"Accept", QObject::tr("Accept")},
         {"Refuse", QObject::tr("Refuse")},
         {"Block", QObject::tr("Block")},
-        {"Type a message", QObject::tr("Type a message")},
+        {"Write to {0}", QObject::tr("Write to {0}")},
         {"Note: an interaction will create a new contact.",
          QObject::tr("Note: an interaction will create a new contact.")},
         {"is not in your contacts", QObject::tr("is not in your contacts")},
