@@ -73,7 +73,20 @@ PluginManagerInterface::toggleCallMediaHandler(const QString& mediaHandlerId,
                                                bool toggle)
 {}
 
-MapStringVectorString
+QStringList
+PluginManagerInterface::listChatHandlers()
+{
+    return {};
+}
+
+void
+PluginManagerInterface::toggleChatHandler(const QString& chatHandlerId,
+                                          const QString& accountId,
+                                          const QString& peerId,
+                                          bool toggle)
+{}
+
+QStringList
 PluginManagerInterface::getCallMediaHandlerStatus(const QString& callId)
 {
     return {};
@@ -81,6 +94,18 @@ PluginManagerInterface::getCallMediaHandlerStatus(const QString& callId)
 
 MapStringString
 PluginManagerInterface::getCallMediaHandlerDetails(const QString& mediaHandlerId)
+{
+    return {};
+}
+
+QStringList
+PluginManagerInterface::getChatHandlerStatus(const QString& accountId, const QString& peerId)
+{
+    return {};
+}
+
+MapStringString
+PluginManagerInterface::getChatHandlerDetails(const QString& chatHandlerId)
 {
     return {};
 }
