@@ -44,7 +44,7 @@ struct PluginDetails
     bool loaded = false;
 };
 
-struct MediaHandlerDetails
+struct PluginHandlerDetails
 {
     QString id = "";
     QString name = "";
@@ -76,13 +76,13 @@ public:
      * Get list of installed plugins
      * @return plugins installed
      */
-    VectorString listAvailablePlugins() const;
+    VectorString getInstalledPlugins() const;
 
     /**
      * Get list of loaded plugins
      * @return plugins loaded
      */
-    VectorString listLoadedPlugins() const;
+    VectorString getLoadedPlugins() const;
 
     /**
      * Get details of installed plugin
@@ -118,7 +118,7 @@ public:
      * List all plugins Media Handlers
      * @return List of all plugins Media Handlers
      */
-    VectorString listCallMediaHandlers() const;
+    VectorString getCallMediaHandlers() const;
 
     /**
      * Toggle media handler
@@ -127,17 +127,31 @@ public:
                                             const QString& callId,
                                             bool toggle);
 
+    VectorString getChatHandlers() const;
+
+    /**
+     * Toggle chat handler
+     */
+    Q_INVOKABLE void toggleChatHandler(const QString& chatHandlerId,
+                                       const QString& accountId,
+                                       const QString& peerId,
+                                       bool toggle);
+
     /**
      * Verify if there is an active plugin media handler
      * @return Map with name and status
      */
-    MapStringVectorString getCallMediaHandlerStatus(const QString& callId);
+    VectorString getCallMediaHandlerStatus(const QString& callId);
 
     /**
      * Get details of installed plugins media handlers
      * @return Media Handler Details
      */
-    plugin::MediaHandlerDetails getCallMediaHandlerDetails(const QString& mediaHandlerId);
+    plugin::PluginHandlerDetails getCallMediaHandlerDetails(const QString& mediaHandlerId);
+
+    VectorString getChatHandlerStatus(const QString& accountId, const QString& peerId);
+
+    plugin::PluginHandlerDetails getChatHandlerDetails(const QString& chatHandlerId);
 
     /**
      * Get preferences map of installed plugin
@@ -164,7 +178,11 @@ public:
      * @return true if preference was succesfully reset
      */
     Q_INVOKABLE bool resetPluginPreferencesValues(const QString& path);
+
+Q_SIGNALS:
+    void chatHandlerStatusUpdated(bool isVisible);
 };
 
 } // namespace api
 } // namespace lrc
+Q_DECLARE_METATYPE(lrc::api::PluginModel*)
