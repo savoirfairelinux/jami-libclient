@@ -29,6 +29,7 @@ getTranslatedStrings(bool qwebview)
     return {
         {"Hide chat view", QObject::tr("Hide chat view")},
         {"Place video call", QObject::tr("Place video call")},
+        {"Shown available plugins", QObject::tr("Shown available plugins")},
         {"Place audio call", QObject::tr("Place audio call")},
         {"Add to conversations", QObject::tr("Add to conversations")},
         {"Unban contact", QObject::tr("Unban contact")},
