@@ -52,6 +52,10 @@ void
 PluginModel::setPluginsEnabled(bool enable)
 {
     PluginManager::instance().setPluginsEnabled(enable);
+    if (!enable)
+        emit chatHandlerStatusUpdated(false);
+    else
+        emit chatHandlerStatusUpdated(getChatHandlers().size() > 0);
 }
 
 bool
@@ -61,15 +65,15 @@ PluginModel::getPluginsEnabled() const
 }
 
 VectorString
-PluginModel::listAvailablePlugins() const
+PluginModel::getInstalledPlugins() const
 {
-    return VectorString::fromList(PluginManager::instance().listAvailablePlugins());
+    return VectorString::fromList(PluginManager::instance().getInstalledPlugins());
 }
 
 VectorString
-PluginModel::listLoadedPlugins() const
+PluginModel::getLoadedPlugins() const
 {
-    return VectorString::fromList(PluginManager::instance().listLoadedPlugins());
+    return VectorString::fromList(PluginManager::instance().getLoadedPlugins());
 }
 
 plugin::PluginDetails
@@ -86,7 +90,7 @@ PluginModel::getPluginDetails(const QString& path)
         result.iconPath = details["iconPath"];
     }
 
-    VectorString loadedPlugins = listLoadedPlugins();
+    VectorString loadedPlugins = getLoadedPlugins();
     if (std::find(loadedPlugins.begin(), loadedPlugins.end(), result.path) != loadedPlugins.end()) {
         result.loaded = true;
     }
@@ -113,19 +117,24 @@ bool
 PluginModel::loadPlugin(const QString& path)
 {
     bool status = PluginManager::instance().loadPlugin(path);
+    if (getChatHandlers().size() > 0)
+        emit chatHandlerStatusUpdated(getPluginsEnabled());
     return status;
 }
 
 bool
 PluginModel::unloadPlugin(const QString& path)
 {
-    return PluginManager::instance().unloadPlugin(path);
+    bool status = PluginManager::instance().unloadPlugin(path);
+    if (getChatHandlers().size() <= 0)
+        emit chatHandlerStatusUpdated(false);
+    return status;
 }
 
 VectorString
-PluginModel::listCallMediaHandlers() const
+PluginModel::getCallMediaHandlers() const
 {
-    return VectorString::fromList(PluginManager::instance().listCallMediaHandlers());
+    return VectorString::fromList(PluginManager::instance().getCallMediaHandlers());
 }
 
 void
@@ -136,26 +145,66 @@ PluginModel::toggleCallMediaHandler(const QString& mediaHandlerId,
     PluginManager::instance().toggleCallMediaHandler(mediaHandlerId, callId, toggle);
 }
 
-MapStringVectorString
-PluginModel::getCallMediaHandlerStatus(const QString& callId)
+VectorString
+PluginModel::getChatHandlers() const
 {
-    return PluginManager::instance().getCallMediaHandlerStatus(callId);
+    return VectorString::fromList(PluginManager::instance().getChatHandlers());
 }
 
-plugin::MediaHandlerDetails
+void
+PluginModel::toggleChatHandler(const QString& chatHandlerId,
+                               const QString& accountId,
+                               const QString& peerId,
+                               bool toggle)
+{
+    PluginManager::instance().toggleChatHandler(chatHandlerId, accountId, peerId, toggle);
+}
+
+VectorString
+PluginModel::getCallMediaHandlerStatus(const QString& callId)
+{
+    return VectorString::fromList(PluginManager::instance().getCallMediaHandlerStatus(callId));
+}
+
+plugin::PluginHandlerDetails
 PluginModel::getCallMediaHandlerDetails(const QString& mediaHandlerId)
 {
     if (mediaHandlerId.isEmpty()) {
-        return plugin::MediaHandlerDetails();
+        return plugin::PluginHandlerDetails();
     }
     MapStringString mediaHandlerDetails = PluginManager::instance().getCallMediaHandlerDetails(
         mediaHandlerId);
-    plugin::MediaHandlerDetails result;
+    plugin::PluginHandlerDetails result;
     if (!mediaHandlerDetails.empty()) {
         result.id = mediaHandlerId;
         result.iconPath = mediaHandlerDetails["iconPath"];
         result.name = mediaHandlerDetails["name"];
         result.pluginId = mediaHandlerDetails["pluginId"];
+    }
+
+    return result;
+}
+
+VectorString
+PluginModel::getChatHandlerStatus(const QString& accountId, const QString& peerId)
+{
+    return VectorString::fromList(PluginManager::instance().getChatHandlerStatus(accountId, peerId));
+}
+
+plugin::PluginHandlerDetails
+PluginModel::getChatHandlerDetails(const QString& chatHandlerId)
+{
+    if (chatHandlerId.isEmpty()) {
+        return plugin::PluginHandlerDetails();
+    }
+    MapStringString chatHandlerDetails = PluginManager::instance().getChatHandlerDetails(
+        chatHandlerId);
+    plugin::PluginHandlerDetails result;
+    if (!chatHandlerDetails.empty()) {
+        result.id = chatHandlerId;
+        result.iconPath = chatHandlerDetails["iconPath"];
+        result.name = chatHandlerDetails["name"];
+        result.pluginId = chatHandlerDetails["pluginId"];
     }
 
     return result;
