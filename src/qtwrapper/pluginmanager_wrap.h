@@ -50,21 +50,32 @@ public Q_SLOTS: // METHODS
 
     MapStringString getPluginDetails(const QString& path);
 
-    QStringList listAvailablePlugins();
+    QStringList getInstalledPlugins();
 
-    QStringList listLoadedPlugins();
+    QStringList getLoadedPlugins();
 
     int installPlugin(const QString& jplPath, bool force);
 
     int uninstallPlugin(const QString& pluginRootPath);
 
-    QStringList listCallMediaHandlers();
+    QStringList getCallMediaHandlers();
 
     void toggleCallMediaHandler(const QString& mediaHandlerId, const QString& callId, bool toggle);
 
-    MapStringVectorString getCallMediaHandlerStatus(const QString& callId);
+    QStringList getChatHandlers();
+
+    void toggleChatHandler(const QString& chatHandlerId,
+                           const QString& accountId,
+                           const QString& peerId,
+                           bool toggle);
+
+    QStringList getCallMediaHandlerStatus(const QString& callId);
 
     MapStringString getCallMediaHandlerDetails(const QString& mediaHandlerId);
+
+    QStringList getChatHandlerStatus(const QString& accountId, const QString& peerId);
+
+    MapStringString getChatHandlerDetails(const QString& chatHandlerId);
 
     void setPluginsEnabled(bool enable);
 
