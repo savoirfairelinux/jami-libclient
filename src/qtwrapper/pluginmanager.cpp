@@ -75,16 +75,47 @@ PluginManagerInterface::toggleCallMediaHandler(const QString& mediaHandlerId,
     DRing::toggleCallMediaHandler(mediaHandlerId.toStdString(), callId.toStdString(), toggle);
 }
 
-MapStringVectorString
+QStringList
+PluginManagerInterface::listChatHandlers()
+{
+    return convertStringList(DRing::listChatHandlers());
+}
+
+void
+PluginManagerInterface::toggleChatHandler(const QString& chatHandlerId,
+                                          const QString& accountId,
+                                          const QString& peerId,
+                                          bool toggle)
+{
+    DRing::toggleChatHandler(chatHandlerId.toStdString(),
+                             accountId.toStdString(),
+                             peerId.toStdSTring(),
+                             toggle);
+}
+
+QStringList
 PluginManagerInterface::getCallMediaHandlerStatus(const QString& callId)
 {
-    return convertMap(DRing::getCallMediaHandlerStatus(callId.toStdString()));
+    return convertStringList(DRing::getCallMediaHandlerStatus(callId.toStdString()));
 }
 
 MapStringString
 PluginManagerInterface::getCallMediaHandlerDetails(const QString& mediaHandlerId)
 {
     return convertMap(DRing::getCallMediaHandlerDetails(mediaHandlerId.toStdString()));
+}
+
+QStringList
+PluginManagerInterface::getChatHandlerStatus(const QString& accountId, const QString& peerId)
+{
+    return convertStringList(
+        DRing::getCallMediaHandlerStatus(accountId.toStdString(), peerId.toStdString()));
+}
+
+MapStringString
+PluginManagerInterface::getChatHandlerDetails(const QString& chatHandlerId)
+{
+    return convertMap(DRing::getChatHandlerDetails(chatHandlerId.toStdString()));
 }
 
 void
