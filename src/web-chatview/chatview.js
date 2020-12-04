@@ -34,6 +34,7 @@ const addToConversationsButton = document.getElementById("addToConversationsButt
 const placeAudioCallButton = document.getElementById("placeAudioCallButton")
 const backButton = document.getElementById("backButton")
 const placeCallButton = document.getElementById("placeCallButton")
+const pluginsButton = document.getElementById("pluginsButton")
 const unbanButton = document.getElementById("unbanButton")
 const acceptButton = document.getElementById("acceptButton")
 const refuseButton = document.getElementById("refuseButton")
@@ -165,6 +166,7 @@ function set_titles() {
     if (use_qt){
         backButton.title = i18nStringData["Hide chat view"]
         placeCallButton.title = i18nStringData["Place video call"]
+        pluginsButton.title = i18nStringData["Show available plugins"]
         placeAudioCallButton.title = i18nStringData["Place audio call"]
         addToConversationsButton.title = i18nStringData["Add to conversations"]
         unbanButton.title = i18nStringData["Unban contact"]
@@ -180,6 +182,7 @@ function set_titles() {
     } else {
         backButton.title = i18n.gettext("Hide chat view")
         placeCallButton.title = i18n.gettext("Place video call")
+        pluginsButton.title = i18n.gettext("Show available plugins")
         placeAudioCallButton.title = i18n.gettext("Place audio call")
         addToConversationsButton.title = i18n.gettext("Add to conversations")
         unbanButton.title = i18n.gettext("Unban contact")
@@ -413,6 +416,21 @@ function displayRecordControls(isVisible) {
 }
 
 /**
+ * Hide or show plugin controls, and update body top padding accordingly.
+ *
+ * @param isVisible whether navbar should be displayed or not
+ */
+/* exported displayPluginControl */
+function displayPluginControl(isVisible) {
+    if (isVisible) {
+        pluginsButton.style.removeProperty("display")
+    } else {
+        pluginsButton.style.setProperty("display", "none")
+    }
+}
+
+
+/**
  * Hide or show message bar, and update body bottom padding accordingly.
  *
  * @param hide whether message bar should be displayed or not
@@ -577,6 +595,13 @@ function backToWelcomeView() {
     backButton.classList.remove("non-action-button")
     hoverBackButtonAllowed = false
     window.prompt("CLOSE_CHATVIEW")
+}
+
+function openPluginHandlersList() {
+    var rect = pluginsButton.getBoundingClientRect()
+    if (!use_qt) {
+        window.prompt(`LIST_PLUGIN_HANDLERS:${rect.left + rect.width / 2}x${rect.bottom}`)
+    }
 }
 
 /**
