@@ -22,7 +22,7 @@ import QtQuick.Controls 2.14
 import QtQuick.Layouts 1.14
 import QtQuick.Controls.Universal 2.14
 import net.jami.Models 1.0
-
+import net.jami.Constants 1.0
 
 // ScreenRubberBand as a seperate frameless window,
 // is to simulate the whole screen area and provide the user

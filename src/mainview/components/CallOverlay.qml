@@ -25,6 +25,7 @@ import QtQuick.Controls.Universal 2.14
 import QtQml 2.14
 import net.jami.Models 1.0
 import net.jami.Adapters 1.0
+import net.jami.Constants 1.0
 
 import "../js/contactpickercreation.js" as ContactPickerCreation
 import "../js/mediahandlerpickercreation.js" as MediaHandlerPickerCreation

@@ -25,6 +25,7 @@ import QtQuick.Controls.Styles 1.4
 import Qt.labs.platform 1.1
 import net.jami.Models 1.0
 import net.jami.Adapters 1.0
+import net.jami.Constants 1.0
 
 import "../../commoncomponents"
 

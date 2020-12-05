@@ -18,8 +18,7 @@
 
 import QtQuick 2.14
 import QtQuick.Controls 1.4
-
-import "../constant"
+import net.jami.Constants 1.0
 
 Label {
     id: root

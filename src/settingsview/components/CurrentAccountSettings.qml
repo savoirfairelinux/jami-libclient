@@ -26,9 +26,9 @@ import QtQuick.Dialogs 1.3
 import Qt.labs.platform 1.1
 import net.jami.Models 1.0
 import net.jami.Adapters 1.0
+import net.jami.Constants 1.0
 
 import "../../commoncomponents"
-import "../../constant"
 
 Rectangle {
     id: root

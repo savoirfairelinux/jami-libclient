@@ -20,7 +20,7 @@ import QtQuick 2.14
 import QtQuick.Controls 2.14
 import QtQuick.Layouts 1.14
 import QtGraphicalEffects 1.14
-import net.jami.Models 1.0
+import net.jami.Constants 1.0
 
 // General menu item.
 // Can control top, bottom, left, right border width.

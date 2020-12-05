@@ -23,6 +23,7 @@ import QtWebEngine 1.10
 import QtWebChannel 1.14
 import net.jami.Models 1.0
 import net.jami.Adapters 1.0
+import net.jami.Constants 1.0
 
 import "../../commoncomponents"
 

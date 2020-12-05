@@ -72,8 +72,8 @@
                                     return P; \
                                 });
 
-#define QML_REGISTERSINGLETONTYPE_URL(URL, T, MAJ, MIN) \
-    qmlRegisterSingletonType(QUrl(QStringLiteral(URL)), "net.jami.Models", MAJ, MIN, #T);
+#define QML_REGISTERSINGLETONTYPE_URL(N, URL, T, MAJ, MIN) \
+    qmlRegisterSingletonType(QUrl(QStringLiteral(URL)), N, MAJ, MIN, #T);
 
 #define QML_REGISTERTYPE(N, T, MAJ, MIN) qmlRegisterType<T>(N, MAJ, MIN, #T);
 
@@ -144,9 +144,9 @@ registerTypes()
     /*
      * Qml singleton components
      */
-    QML_REGISTERSINGLETONTYPE_URL("qrc:/src/constant/JamiTheme.qml", JamiTheme, 1, 0);
-    QML_REGISTERSINGLETONTYPE_URL("qrc:/src/constant/JamiQmlUtils.qml", JamiQmlUtils, 1, 0);
-    QML_REGISTERSINGLETONTYPE_URL("qrc:/src/constant/JamiStrings.qml", JamiStrings, 1, 0);
+    QML_REGISTERSINGLETONTYPE_URL("net.jami.Constants", "qrc:/src/constant/JamiTheme.qml", JamiTheme, 1, 0);
+    QML_REGISTERSINGLETONTYPE_URL("net.jami.Models", "qrc:/src/constant/JamiQmlUtils.qml", JamiQmlUtils, 1, 0);
+    QML_REGISTERSINGLETONTYPE_URL("net.jami.Constants", "qrc:/src/constant/JamiStrings.qml", JamiStrings, 1, 0);
 
     /*
      * C++ singletons

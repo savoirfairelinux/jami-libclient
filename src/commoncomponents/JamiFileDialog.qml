@@ -18,7 +18,7 @@
 
 import QtQuick 2.14
 import Qt.labs.platform 1.1
-import "../constant"
+import net.jami.Constants 1.0
 
 FileDialog {
     id: root

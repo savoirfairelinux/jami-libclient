@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-// JamiTheme as a singleton is to provide global strings entries.
+// JamiStrings as a singleton is to provide global strings entries.
 pragma Singleton
 
 import QtQuick 2.14
