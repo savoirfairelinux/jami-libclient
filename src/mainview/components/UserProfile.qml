@@ -58,6 +58,7 @@ BaseDialog {
 
                 Layout.alignment: Qt.AlignRight
                 Layout.preferredWidth: preferredImgSize
+                Layout.preferredHeight: preferredImgSize
 
                 sourceSize.width: preferredImgSize
                 sourceSize.height: preferredImgSize
