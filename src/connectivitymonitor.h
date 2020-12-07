@@ -44,20 +44,18 @@ private:
 };
 
 #else
-// Dummy implementation for non-Windows platforms.
 // TODO: platform implementations should be in the daemon.
 
-// clang-format off
 class ConnectivityMonitor final : public QObject
 {
     Q_OBJECT
 public:
-    explicit ConnectivityMonitor(QObject* parent = 0) : QObject(parent) {};
-    ~ConnectivityMonitor() = default;
+    explicit ConnectivityMonitor(QObject* parent = 0);
+    ~ConnectivityMonitor();
 
-    bool isOnline() { return false; };
+    bool isOnline();
+
 signals:
     void connectivityChanged();
 };
-// clang-format on
 #endif // Q_OS_WIN

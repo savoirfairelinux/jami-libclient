@@ -148,11 +148,9 @@ MainApplication::init()
 
     initLrc(results[opts::UPDATEURL].toString(), connectivityMonitor_);
 
-#ifdef Q_OS_WIN
     connect(connectivityMonitor_, &ConnectivityMonitor::connectivityChanged, [] {
         LRCInstance::connectivityChanged();
     });
-#endif // Q_OS_WIN
 
     QObject::connect(
         &LRCInstance::instance(),

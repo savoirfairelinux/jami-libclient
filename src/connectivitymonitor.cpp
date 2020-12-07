@@ -16,10 +16,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifndef _WIN32
+#include <glib.h>
+#include <NetworkManager.h>
+#endif
+
 #include "connectivitymonitor.h"
+#include <QDebug>
 
 #ifdef Q_OS_WIN
-#include <QDebug>
 #include <atlbase.h>
 #include <netlistmgr.h>
 
@@ -158,4 +163,78 @@ ConnectivityMonitor::~ConnectivityMonitor()
     destroy();
     CoUninitialize();
 }
+
+#else
+
+#ifdef USE_LIBNM
+static void
+logConnectionInfo(NMActiveConnection *connection)
+{
+    if (connection) {
+        qDebug() << "primary network connection:"
+                 << nm_active_connection_get_uuid(connection)
+                 << "default: "
+                 << (nm_active_connection_get_default(connection) ? "yes" : "no");
+    } else {
+        qWarning() << "no primary network connection detected, check network settings";
+    }
+}
+
+static void
+primaryConnectionChanged(NMClient *nm, GParamSpec*, ConnectivityMonitor * cm)
+{
+    auto connection = nm_client_get_primary_connection(nm);
+    logConnectionInfo(connection);
+    cm->connectivityChanged();
+}
+
+static void
+nmClientCallback(G_GNUC_UNUSED GObject *source_object,
+                 GAsyncResult *result,
+                 ConnectivityMonitor * cm)
+{
+    GError* error = nullptr;
+    if (auto nm_client = nm_client_new_finish(result, &error)) {
+        qDebug() << "NetworkManager client initialized, version: "
+                 << nm_client_get_version(nm_client)
+                 << ", daemon running:"
+                 << (nm_client_get_nm_running(nm_client) ? "yes" : "no")
+                 << ", networking enabled:"
+                 << (nm_client_networking_get_enabled(nm_client) ? "yes" : "no");
+
+        auto connection = nm_client_get_primary_connection(nm_client);
+        logConnectionInfo(connection);
+        g_signal_connect(nm_client, "notify::active-connections",
+                         G_CALLBACK(primaryConnectionChanged), cm);
+
+    } else {
+        qWarning() << "error initializing NetworkManager client: "
+                   << error->message;
+        g_clear_error(&error);
+    }
+}
+#endif
+
+ConnectivityMonitor::ConnectivityMonitor(QObject* parent)
+    : QObject(parent)
+{
+
+    GCancellable * cancellable = g_cancellable_new();
+#ifdef USE_LIBNM
+    nm_client_new_async(cancellable, (GAsyncReadyCallback)nmClientCallback, this);
+#endif
+}
+
+ConnectivityMonitor::~ConnectivityMonitor()
+{
+    qDebug() << "Destroying connectivity monitor";
+}
+
+
+bool
+ConnectivityMonitor::isOnline()
+{
+    return false;
+}
+
 #endif // Q_OS_WIN

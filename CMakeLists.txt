@@ -117,6 +117,13 @@ set(COMMON_HEADERS
     ${SRC_DIR}/qtutils.h
     ${SRC_DIR}/utilsadapter.h)
 
+find_package(PkgConfig REQUIRED)
+pkg_check_modules(LIBNM libnm)
+
+if(LIBNM_FOUND)
+    add_definitions(-DUSE_LIBNM)
+endif()
+
 find_package(Qt5 CONFIG REQUIRED
     Core
     Quick
@@ -130,7 +137,10 @@ find_package(Qt5 CONFIG REQUIRED
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}
     ${SRC_DIR}
     ${LRC}/include/libringclient
-    ${LRC}/include)
+    ${LRC}/include
+    ${LIBNM_INCLUDE_DIRS})
+
+link_libraries(${LIBNM_LIBRARIES})
 
 add_executable(${PROJECT_NAME}
     ${SRC_DIR}/main.cpp
@@ -139,13 +149,13 @@ add_executable(${PROJECT_NAME}
     ${QML_RESOURCES}
     ${QML_RESOURCES_QML})
 
-# alternative: link_directories(${LRC}/lib)
 find_library(ringclient ringclient ${LRC}/lib NO_DEFAULT_PATH)
 find_library(qrencode qrencode)
 
 target_link_libraries(jami-qt
     ${QML_LIBS}
     ${ringclient}
-    ${qrencode})
+    ${qrencode}
+)
 
 add_subdirectory(tests)
