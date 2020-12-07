@@ -33,6 +33,7 @@
     </message>
     <message>
         <location filename="../src/api/call.h" line="71"/>
+        <location filename="../src/chatview.cpp" line="63"/>
         <source>Connecting</source>
         <translation>Forbinder</translation>
     </message>
@@ -49,6 +50,7 @@
     <message>
         <location filename="../src/api/call.h" line="77"/>
         <location filename="../src/api/call.h" line="83"/>
+        <location filename="../src/chatview.cpp" line="70"/>
         <source>Finished</source>
         <translation>Afsluttet</translation>
     </message>
@@ -151,6 +153,7 @@
         <translation>OK</translation>
     </message>
     <message>
+        <location filename="../src/chatview.cpp" line="64"/>
         <location filename="../src/newcallmodel.cpp" line="60"/>
         <source>Accepted</source>
         <translation type="unfinished"/>
@@ -499,6 +502,36 @@
         <translation type="unfinished"/>
     </message>
     <message>
+        <location filename="../src/chatview.cpp" line="62"/>
+        <source>Unjoinable peer</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/chatview.cpp" line="65"/>
+        <source>Canceled</source>
+        <translation>Annulleret</translation>
+    </message>
+    <message>
+        <location filename="../src/chatview.cpp" line="66"/>
+        <source>Ongoing</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/chatview.cpp" line="67"/>
+        <source>Awaiting peer</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/chatview.cpp" line="68"/>
+        <source>Awaiting host</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/chatview.cpp" line="69"/>
+        <source>Awaiting peer timeout</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/chatview.cpp" line="50"/>
         <source>%d days ago</source>
         <translation type="unfinished"/>
@@ -554,7 +587,7 @@
     <message>
         <location filename="../src/contactmodel.cpp" line="950"/>
         <source>Invalid ID</source>
-        <translation type="unfinished"/>
+        <translation>Ugyldigt ID</translation>
     </message>
     <message>
         <location filename="../src/contactmodel.cpp" line="953"/>

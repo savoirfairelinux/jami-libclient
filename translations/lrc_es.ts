@@ -33,6 +33,7 @@
     </message>
     <message>
         <location filename="../src/api/call.h" line="71"/>
+        <location filename="../src/chatview.cpp" line="63"/>
         <source>Connecting</source>
         <translation>Conectando</translation>
     </message>
@@ -49,6 +50,7 @@
     <message>
         <location filename="../src/api/call.h" line="77"/>
         <location filename="../src/api/call.h" line="83"/>
+        <location filename="../src/chatview.cpp" line="70"/>
         <source>Finished</source>
         <translation>Terminado</translation>
     </message>
@@ -151,6 +153,7 @@
         <translation>OK</translation>
     </message>
     <message>
+        <location filename="../src/chatview.cpp" line="64"/>
         <location filename="../src/newcallmodel.cpp" line="60"/>
         <source>Accepted</source>
         <translation>Aceptada</translation>
@@ -497,6 +500,36 @@
         <location filename="../src/chatview.cpp" line="53"/>
         <source>{0} minutes ago</source>
         <translation>Hace {0} minutos</translation>
+    </message>
+    <message>
+        <location filename="../src/chatview.cpp" line="62"/>
+        <source>Unjoinable peer</source>
+        <translation>No se puede unir a este par</translation>
+    </message>
+    <message>
+        <location filename="../src/chatview.cpp" line="65"/>
+        <source>Canceled</source>
+        <translation>Cancelado</translation>
+    </message>
+    <message>
+        <location filename="../src/chatview.cpp" line="66"/>
+        <source>Ongoing</source>
+        <translation>En curso</translation>
+    </message>
+    <message>
+        <location filename="../src/chatview.cpp" line="67"/>
+        <source>Awaiting peer</source>
+        <translation>Esperando al par</translation>
+    </message>
+    <message>
+        <location filename="../src/chatview.cpp" line="68"/>
+        <source>Awaiting host</source>
+        <translation>Esperando al anfitrión</translation>
+    </message>
+    <message>
+        <location filename="../src/chatview.cpp" line="69"/>
+        <source>Awaiting peer timeout</source>
+        <translation>Tiempo de espera del par</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="50"/>
