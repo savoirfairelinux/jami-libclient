@@ -189,12 +189,11 @@ BaseDialog {
                                                                 'anchors.verticalCenterOffset: -2;' +
                                                                 'anchors.left: containerRectWithThreeKeys.left;' +
                                                                 'anchors.leftMargin: 30;' +
-                                                                'color: "' + JamiTheme.textColor + '";' +
                                                                 'font.bold: true;' +
                                                                 'font.pointSize : 12;' +
                                                                 'text: "+"}',
                                                                 containerRectWithThreeKeys)
-
+                        componentPlusSign.color = Qt.binding(function() { return JamiTheme.textColor })
                         var componentKeyTwo = Qt.createComponent("KeyBoardShortcutKey.qml")
                         if (componentKeyTwo.status === Component.Ready) {
                             var objectKeyTwo = componentKeyTwo.createObject(containerRectWithThreeKeys)
@@ -211,12 +210,11 @@ BaseDialog {
                                                                     'anchors.verticalCenterOffset: -2;' +
                                                                     'anchors.left: containerRectWithThreeKeys.left;' +
                                                                     'anchors.leftMargin: 97;' +
-                                                                    'color: "' + JamiTheme.textColor + '";' +
                                                                     'font.bold: true;' +
                                                                     'font.pointSize : 12;' +
                                                                     'text: "+"}',
                                                                     containerRectWithThreeKeys)
-
+                        componentPlusSignTwo.color = Qt.binding(function() { return JamiTheme.textColor })
                         var componentKeyThree = Qt.createComponent("KeyBoardShortcutKey.qml")
                         if (componentKeyThree.status === Component.Ready) {
                             var objectKeyThree = componentKeyThree.createObject(containerRectWithThreeKeys)

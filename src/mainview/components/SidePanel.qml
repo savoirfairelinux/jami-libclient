@@ -166,15 +166,15 @@ Rectangle {
             hoverEnabled: true
 
             onReleased: {
-                searchStatusRect.color = JamiTheme.normalButtonColor
+                searchStatusRect.color = Qt.binding(function(){return JamiTheme.normalButtonColor})
             }
 
             onEntered: {
-                searchStatusRect.color = JamiTheme.hoverColor
+                searchStatusRect.color = Qt.binding(function(){return JamiTheme.hoverColor})
             }
 
             onExited: {
-                searchStatusRect.color = JamiTheme.backgroundColor
+                searchStatusRect.color = Qt.binding(function(){return JamiTheme.backgroundColor})
             }
         }
     }

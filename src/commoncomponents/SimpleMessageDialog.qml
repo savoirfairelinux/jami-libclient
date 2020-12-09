@@ -53,6 +53,8 @@ BaseDialog {
                                 + JamiTheme.preferredMarginSize))
         implicitHeight: JamiTheme.preferredDialogHeight / 2 - JamiTheme.preferredMarginSize
 
+        color: JamiTheme.secondaryBackgroundColor
+
         ColumnLayout {
             anchors.fill: parent
 
@@ -67,6 +69,7 @@ BaseDialog {
                 wrapMode: Text.WordWrap
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
+                color: JamiTheme.textColor
             }
 
             Item {

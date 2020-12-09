@@ -154,13 +154,13 @@ TabBar {
                     selectTab(SidePanelTabBar.Conversations)
                 }
                 onReleased: {
-                    buttonRectOne.color = JamiTheme.backgroundColor
+                    buttonRectOne.color = Qt.binding(function(){return JamiTheme.backgroundColor})
                 }
                 onEntered: {
-                    buttonRectOne.color = JamiTheme.hoverColor
+                    buttonRectOne.color = Qt.binding(function(){return JamiTheme.hoverColor})
                 }
                 onExited: {
-                    buttonRectOne.color = JamiTheme.backgroundColor
+                    buttonRectOne.color = Qt.binding(function(){return JamiTheme.backgroundColor})
                 }
             }
 
@@ -267,13 +267,13 @@ TabBar {
                     selectTab(SidePanelTabBar.Requests)
                 }
                 onReleased: {
-                    buttonRectTwo.color = JamiTheme.backgroundColor
+                    buttonRectTwo.color = Qt.binding(function(){return JamiTheme.backgroundColor})
                 }
                 onEntered: {
-                    buttonRectTwo.color = JamiTheme.hoverColor
+                    buttonRectTwo.color = Qt.binding(function(){return JamiTheme.hoverColor})
                 }
                 onExited: {
-                    buttonRectTwo.color = JamiTheme.backgroundColor
+                    buttonRectTwo.color = Qt.binding(function(){return JamiTheme.backgroundColor})
                 }
             }
 
