@@ -80,8 +80,8 @@ ComboBox {
     }
 
     contentItem: Text {
-        leftPadding: 0
-        rightPadding: root.indicator.width + root.spacing
+        leftPadding: 10
+        rightPadding: root.indicator.width + leftPadding
 
         text: root.displayText
         font: root.font
