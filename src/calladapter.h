@@ -69,7 +69,7 @@ public:
     Q_INVOKABLE QVariantList getConferencesInfos();
     Q_INVOKABLE void muteParticipant(const QString& uri, const bool state);
     Q_INVOKABLE bool isMuted(const QString& uri) const;
-    Q_INVOKABLE bool isCurrentMuted() const;
+    Q_INVOKABLE void hangupParticipant(const QString& uri);
 
 signals:
     void callStatusChanged(int index, const QString& accountId, const QString& convUid);

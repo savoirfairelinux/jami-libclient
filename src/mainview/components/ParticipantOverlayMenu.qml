@@ -249,7 +249,7 @@ Rectangle {
                     source: "qrc:/images/icons/ic_block_24px.svg"
                     imageColor: hovered? JamiTheme.darkGreyColor
                                        : JamiTheme.whiteColor
-                    onClicked: CallAdapter.hangupCall(uri)
+                    onClicked: CallAdapter.hangupParticipant(uri)
                     onHoveredChanged: hangupParticipantToolTip.visible = hovered
 
                     Text {
