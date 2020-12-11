@@ -741,7 +741,7 @@ public Q_SLOTS: // METHODS
 
     VectorULongLong dataTransferList() { return convertVectorULongLong(DRing::dataTransferList()); }
 
-    uint32_t sendFile(const DataTransferInfo& lrc_info, uint64_t& id)
+    uint32_t sendFile(const DataTransferInfo& lrc_info, DRing::DataTransferId& id)
     {
         DRing::DataTransferInfo dring_info;
         dring_info.accountId = lrc_info.accountId.toStdString();
