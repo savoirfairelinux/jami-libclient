@@ -74,10 +74,11 @@ PreferenceItemListModel::data(const QModelIndex& index, int role) const
             currentPath.truncate(preferenceCurrent.lastIndexOf("/"));
             QStringList mimeTypeList = details["mimeType"].split(',');
             for (auto& mimeType : mimeTypeList) {
-                QString fileExt = mimeType.mid(mimeType.lastIndexOf("/") + 1);
-                acceptedFiles.append((fileExt.toUpper() + " Files") + " (*." + fileExt + ")");
-                checkImage = Utils::isImage(fileExt);
+                mimeType = mimeType.mid(mimeType.lastIndexOf("/") + 1);
+                acceptedFiles.append((mimeType.toUpper() + " Files") + " (*." + mimeType + ")");
+                checkImage |= Utils::isImage(mimeType);
             }
+            acceptedFiles.append(QString("All (*.%1)").arg(mimeTypeList.join(" *.")));
         }
     }
     switch (role) {

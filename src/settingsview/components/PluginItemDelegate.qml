@@ -36,85 +36,127 @@ ItemDelegate {
     property bool isLoaded: false
 
     signal btnLoadPluginToggled
-    signal btnPreferencesPluginClicked
 
-    RowLayout {
+    function btnPreferencesPluginClicked() {
+        pluginListPreferencesView.pluginName = pluginName
+        pluginListPreferencesView.pluginIcon = pluginIcon
+        pluginListPreferencesView.pluginId = pluginId
+        pluginListPreferencesView.isLoaded = isLoaded
+        if (!pluginListPreferencesView.visible) {
+            pluginListPreferencesView.visible = !pluginListPreferencesView.visible
+            root.height += pluginListPreferencesView.childrenRect.height
+        } else {
+            root.height -= pluginListPreferencesView.childrenRect.height
+            pluginListPreferencesView.visible = !pluginListPreferencesView.visible
+        }
+    }
+
+    Connections {
+        target: enabledplugin
+
+        function onHidePreferences() {
+            root.height = 50
+            pluginListPreferencesView.visible = false
+        }
+    }
+
+    ColumnLayout {
         anchors.fill: parent
+        Layout.preferredHeight: childrenRect.height
 
-        Label {
-            id: pluginImage
-            Layout.leftMargin: 8
-            Layout.alignment: Qt.AlignLeft | Qt.AlingVCenter
-            width: 30
-
-            background: Rectangle {
-                color: "transparent"
-                Image {
-                    anchors.centerIn: parent
-                    source: "file:" + pluginIcon
-                    sourceSize: Qt.size(256, 256)
-                    mipmap: true
-                    width: 32
-                    height: 32
-                }
-            }
-        }
-
-        Label {
-            id: labelDeviceId
+        RowLayout {
             Layout.fillWidth: true
-            Layout.leftMargin: 8
-            color: JamiTheme.textColor
 
-            font.pointSize: JamiTheme.settingsFontSize
-            font.kerning: true
-            text: pluginName === "" ? pluginId : pluginName
-        }
+            Label {
+                id: pluginImage
+                Layout.leftMargin: 8
+                Layout.alignment: Qt.AlignLeft | Qt.AlingVCenter
+                width: 30
 
-        Switch {
-            id: loadSwitch
-            property bool isHovering: false
-            Layout.rightMargin: 8
-            width: 20
-
-            ToolTip.visible: hovered
-            ToolTip.text: qsTr("Load/Unload")
-
-            checked: isLoaded
-            onClicked: btnLoadPluginToggled()
-
-            background: Rectangle {
-                id: switchBackground
-
-                color: "transparent"
-                MouseArea {
-                    id: btnMouseArea
-                    hoverEnabled: true
-                    onReleased: {
-                        loadSwitch.clicked()
-                    }
-                    onEntered: {
-                        loadSwitch.isHovering = true
-                    }
-                    onExited: {
-                        loadSwitch.isHovering = false
+                background: Rectangle {
+                    color: "transparent"
+                    Image {
+                        anchors.centerIn: parent
+                        source: "file:" + pluginIcon
+                        sourceSize: Qt.size(256, 256)
+                        mipmap: true
+                        width: 32
+                        height: 32
                     }
                 }
             }
+
+            Label {
+                id: labelDeviceId
+                Layout.fillWidth: true
+                Layout.leftMargin: 8
+                color: JamiTheme.textColor
+
+                font.pointSize: JamiTheme.settingsFontSize
+                font.kerning: true
+                text: pluginName === "" ? pluginId : pluginName
+            }
+
+            Switch {
+                id: loadSwitch
+                property bool isHovering: false
+                Layout.rightMargin: 8
+                width: 20
+
+                ToolTip.visible: hovered
+                ToolTip.text: qsTr("Load/Unload")
+
+                checked: isLoaded
+                onClicked: {
+                    btnLoadPluginToggled()
+                    pluginListPreferencesView.isLoaded = root.isLoaded
+                }
+
+                background: Rectangle {
+                    id: switchBackground
+
+                    color: "transparent"
+                    MouseArea {
+                        id: btnMouseArea
+                        hoverEnabled: true
+                        onReleased: {
+                            loadSwitch.clicked()
+                        }
+                        onEntered: {
+                            loadSwitch.isHovering = true
+                        }
+                        onExited: {
+                            loadSwitch.isHovering = false
+                        }
+                    }
+                }
+            }
+
+            PushButton {
+                id: btnPreferencesPlugin
+
+                Layout.alignment: Qt.AlingVCenter | Qt.AlignRight
+                Layout.rightMargin: 8
+
+                source: "qrc:/images/icons/round-settings-24px.svg"
+                normalColor: JamiTheme.primaryBackgroundColor
+                imageColor: JamiTheme.textColor
+                toolTipText: JamiStrings.showHidePrefs
+
+                onClicked: btnPreferencesPluginClicked()
+            }
         }
 
-        PushButton {
-            id: btnPreferencesPlugin
+        PluginListPreferencesView {
+            id: pluginListPreferencesView
 
-            Layout.alignment: Qt.AlingVCenter | Qt.AlignRight
-            Layout.rightMargin: 8
-
-            source: "qrc:/images/icons/round-settings-24px.svg"
-            normalColor: JamiTheme.primaryBackgroundColor
-            imageColor: JamiTheme.textColor
-            toolTipText: JamiStrings.showHidePrefs
-
-            onClicked: btnPreferencesPluginClicked()
+            Layout.topMargin: 10
+            Layout.fillWidth: true
+            Layout.leftMargin: JamiTheme.preferredMarginSize
+            Layout.rightMargin: JamiTheme.preferredMarginSize
+            Layout.bottomMargin: JamiTheme.preferredMarginSize
+            Layout.minimumHeight: 1
+            Layout.preferredHeight: childrenRect.height
         }
     }
 }

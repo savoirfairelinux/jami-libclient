@@ -65,6 +65,7 @@ ItemDelegate {
                 if (index === 0) {
                     preferenceFilePathDialog.title = qsTr("Select An Image to " + preferenceName)
                     preferenceFilePathDialog.nameFilters = fileFilters
+                    preferenceFilePathDialog.selectedNameFilter.index = fileFilters.length - 1
                     preferenceFilePathDialog.open()
                 }
                 else

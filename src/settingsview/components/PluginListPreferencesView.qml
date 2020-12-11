@@ -48,7 +48,7 @@ Rectangle {
 
     signal uninstalled
 
-    Connections{
+    Connections {
         target: PluginAdapter
 
         function onPreferenceChanged(pluginId) {
@@ -58,7 +58,9 @@ Rectangle {
     }
 
     function resetPluginSlot() {
-        msgDialog.buttonCallBacks = [function () {resetPlugin()}]
+        msgDialog.buttonCallBacks = [function () {
+            resetPlugin()
+        }]
         msgDialog.openWithParameters(qsTr("Reset preferences"),
                                      qsTr("Are you sure you wish to reset "+ pluginName +
                                           " preferences?"))
@@ -79,17 +81,16 @@ Rectangle {
     function uninstallPluginSlot() {
         msgDialog.buttonCallBacks = [function () {
             uninstallPlugin()
-            root.visible = false
         }]
         msgDialog.openWithParameters(qsTr("Uninstall plugin"),
                                      qsTr("Are you sure you wish to uninstall " + pluginName + " ?"))
-        PluginAdapter.pluginHandlersUpdateStatus()
     }
 
     function uninstallPlugin() {
         PluginModel.uninstallPlugin(pluginId)
-        uninstalled()
+        PluginAdapter.pluginUninstalled()
         PluginAdapter.pluginHandlersUpdateStatus()
+        root.visible = false
     }
 
     function setPreference(pluginId, preferenceKey, preferenceNewValue)
@@ -109,11 +110,6 @@ Rectangle {
         buttonTitles: [qsTr("Ok"), qsTr("Cancel")]
         buttonStyles: [SimpleMessageDialog.ButtonStyle.TintedBlue,
                        SimpleMessageDialog.ButtonStyle.TintedBlack]
-
-        onAccepted: {
-            uninstallPlugin()
-            root.visible = false
-        }
     }
 
     ColumnLayout {
@@ -192,7 +188,7 @@ Rectangle {
             id: pluginPreferenceView
 
             Layout.fillWidth: true
-            Layout.minimumHeight: 0
+            Layout.minimumHeight: 1
             Layout.preferredHeight: childrenRect.height + 30
 
             model: PluginAdapter.getPluginPreferencesModel(pluginId)

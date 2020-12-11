@@ -31,12 +31,10 @@ import "../../commoncomponents"
 Rectangle {
     id: root
 
-    property PluginListPreferencesView pluginListPreferencesView
-
     Connections {
-        target: pluginListPreferencesView
+        target: PluginAdapter
 
-        function onUninstalled() {
+        function onPluginUninstalled() {
             pluginListView.model = PluginAdapter.getPluginSelectableModel()
         }
     }
@@ -54,28 +52,8 @@ Rectangle {
             PluginModel.unloadPlugin(pluginId)
         else
             loaded = PluginModel.loadPlugin(pluginId)
-        if (pluginListPreferencesView.pluginId === pluginId)
-            pluginListPreferencesView.isLoaded = loaded
         PluginAdapter.pluginHandlersUpdateStatus()
-    }
-
-    function openPreferencesPluginSlot(pluginName, pluginIcon, pluginId, isLoaded) {
-        if (pluginListPreferencesView.pluginId == pluginId || pluginListPreferencesView.pluginId == "")
-            pluginListPreferencesView.visible = !pluginListPreferencesView.visible
-
-        if (!pluginListPreferencesView.visible) {
-            pluginListPreferencesView.pluginId = ""
-        } else {
-            pluginListPreferencesView.pluginName = pluginName
-            pluginListPreferencesView.pluginIcon = pluginIcon
-            pluginListPreferencesView.pluginId = pluginId
-            pluginListPreferencesView.isLoaded = isLoaded
-        }
-    }
-
-    function hidePreferences() {
-        pluginListPreferencesView.pluginId = ""
-        pluginListPreferencesView.visible = false
+        return loaded
     }
 
     JamiFileDialog {
@@ -140,6 +118,7 @@ Rectangle {
             Layout.fillWidth: true
             Layout.minimumHeight: 0
             Layout.preferredHeight: childrenRect.height
+            Layout.bottomMargin: 10
 
             model: PluginAdapter.getPluginSelectableModel()
             interactive: false
@@ -148,7 +127,7 @@ Rectangle {
                 id: pluginItemDelegate
 
                 width: pluginListView.width
-                height: 50
+                implicitHeight: 50
 
                 pluginName: PluginName
                 pluginId: PluginId
@@ -156,15 +135,7 @@ Rectangle {
                 isLoaded: IsLoaded
 
                 onBtnLoadPluginToggled: {
-                    loadPluginSlot(pluginId, isLoaded)
-                    pluginListView.model = PluginAdapter.getPluginSelectableModel()
-                }
-
-                onBtnPreferencesPluginClicked: openPreferencesPluginSlot(pluginName, pluginIcon, pluginId, isLoaded)
-
-                background: Rectangle {
-                    anchors.fill: parent
-                    color: JamiTheme.secondaryBackgroundColor
+                    isLoaded = loadPluginSlot(pluginId, isLoaded)
                 }
             }
         }

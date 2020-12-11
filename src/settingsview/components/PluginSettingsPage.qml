@@ -55,6 +55,8 @@ Rectangle {
         ToggleSwitch {
             id: enabledplugin
 
+            signal hidePreferences
+
             Layout.alignment: Qt.AlignTop | Qt.AlignHCenter
             Layout.fillWidth: true
             Layout.topMargin: JamiTheme.preferredMarginSize
@@ -69,7 +71,7 @@ Rectangle {
 
                 pluginListSettingsView.visible = checked
                 if (!pluginListSettingsView.visible) {
-                    pluginListSettingsView.hidePreferences()
+                    hidePreferences()
                 }
             }
         }
@@ -82,21 +84,7 @@ Rectangle {
             Layout.leftMargin: JamiTheme.preferredMarginSize
             Layout.rightMargin: JamiTheme.preferredMarginSize
 
-            pluginListPreferencesView: pluginListPreferencesView
-
             Layout.topMargin: JamiTheme.preferredMarginSize
-            Layout.minimumHeight: 0
-            Layout.preferredHeight: childrenRect.height
-        }
-
-        PluginListPreferencesView {
-            id: pluginListPreferencesView
-
-            Layout.alignment: Qt.AlignTop | Qt.AlignHCenter
-            Layout.fillWidth: true
-            Layout.leftMargin: JamiTheme.preferredMarginSize
-            Layout.rightMargin: JamiTheme.preferredMarginSize
-            Layout.bottomMargin: JamiTheme.preferredMarginSize
             Layout.minimumHeight: 0
             Layout.preferredHeight: childrenRect.height
         }

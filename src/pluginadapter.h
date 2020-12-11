@@ -48,6 +48,7 @@ protected:
 signals:
     void pluginHandlersUpdateStatus();
     void preferenceChanged(QString pluginId);
+    void pluginUninstalled();
 
 private:
     std::unique_ptr<PluginHandlerItemListModel> pluginHandlerListModel_;
