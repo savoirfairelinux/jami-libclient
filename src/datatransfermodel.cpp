@@ -157,7 +157,11 @@ DataTransferModel::sendFile(const QString& account_id,
                             const QString& display_name)
 {
     DataTransferInfo info;
+#ifdef ENABLE_LIBWRAP
+    DRing::DataTransferId id;
+#else
     qulonglong id;
+#endif
     info.accountId = account_id;
     info.peer = peer_uri;
     info.path = file_path;
@@ -173,9 +177,13 @@ void
 DataTransferModel::bytesProgress(int interactionId, int64_t& total, int64_t& progress)
 {
     ConfigurationManager::instance()
+#ifdef ENABLE_LIBWRAP
+        .dataTransferBytesProgress(pimpl_->lrc2dringIdMap.at(interactionId), total, progress);
+#else
         .dataTransferBytesProgress(pimpl_->lrc2dringIdMap.at(interactionId),
                                    reinterpret_cast<qlonglong&>(total),
                                    reinterpret_cast<qlonglong&>(progress));
+#endif
 }
 
 QString
