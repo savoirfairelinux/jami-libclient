@@ -42,6 +42,7 @@ Rectangle {
 
     // TODO: properties should be
     property string uri: overlayMenu.uri
+    property bool participantIsHost: false
     property bool participantIsModerator: false
     property bool participantIsMuted: false
 
@@ -61,7 +62,7 @@ Rectangle {
 
         var isHost = CallAdapter.isCurrentHost()
         var isModerator = CallAdapter.isCurrentModerator()
-        var participantIsHost = CallAdapter.participantIsHost(overlayMenu.uri)
+        participantIsHost = CallAdapter.participantIsHost(overlayMenu.uri)
         participantIsModerator = CallAdapter.isModerator(overlayMenu.uri)
         overlayMenu.showSetModerator = isHost && !isLocal && !participantIsModerator
         overlayMenu.showUnsetModerator = isHost && !isLocal && participantIsModerator
@@ -82,7 +83,7 @@ Rectangle {
         id: participantIndicators
         width: indicatorsRowLayout.width
         height: shapeHeight
-        visible: participantIsModerator || participantIsMuted
+        visible: participantIsHost || participantIsModerator || participantIsMuted
         color: "transparent"
 
         Shape {
@@ -100,6 +101,25 @@ Rectangle {
             id: indicatorsRowLayout
             height: parent.height
             anchors.verticalCenter: parent.verticalCenter
+
+            ResponsiveImage {
+                id: isHostIndicator
+
+                visible: participantIsHost
+
+                Layout.alignment: Qt.AlignVCenter
+                Layout.leftMargin: 6
+                containerHeight: 12
+                containerWidth: 12
+
+                source: "qrc:/images/icons/star_outline-24px.svg"
+                layer {
+                    enabled: true
+                    effect: ColorOverlay { color: JamiTheme.whiteColor }
+                    mipmap: false
+                    smooth: true
+                }
+            }
 
             ResponsiveImage {
                 id: isModeratorIndicator

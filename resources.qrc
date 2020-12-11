@@ -136,5 +136,6 @@
         <file>images/logo-jami-standard-coul.svg</file>
         <file>images/logo-jami-standard-coul-white.svg</file>
         <file>images/icons/moderator.svg</file>
+        <file>images/icons/star_outline-24px.svg</file>
     </qresource>
 </RCC>
