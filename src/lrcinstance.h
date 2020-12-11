@@ -426,18 +426,18 @@ public:
         instance().contentDrafts_[draftKey] = content;
     }
 
-    static void pushLastConferencee(const QString& confId, const QString& callId)
+    static void pushlastConference(const QString& confId, const QString& callId)
     {
-        instance().lastConferencees_[confId] = callId;
+        instance().lastConferences_[confId] = callId;
     }
 
-    static QString popLastConferencee(const QString& confId)
+    static QString poplastConference(const QString& confId)
     {
         QString callId = {};
-        auto iter = instance().lastConferencees_.find(confId);
-        if (iter != instance().lastConferencees_.end()) {
+        auto iter = instance().lastConferences_.find(confId);
+        if (iter != instance().lastConferences_.end()) {
             callId = iter.value();
-            instance().lastConferencees_.erase(iter);
+            instance().lastConferences_.erase(iter);
         }
         return callId;
     }
@@ -468,6 +468,6 @@ private:
     QString selectedAccountId_;
     QString selectedConvUid_;
     MapStringString contentDrafts_;
-    MapStringString lastConferencees_;
+    MapStringString lastConferences_;
 };
 Q_DECLARE_METATYPE(LRCInstance*)
