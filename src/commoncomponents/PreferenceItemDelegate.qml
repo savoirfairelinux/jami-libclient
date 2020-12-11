@@ -36,6 +36,7 @@ ItemDelegate {
     enum Type {
         LIST,
         PATH,
+        EDITTEXT,
         DEFAULT
     }
 
@@ -53,21 +54,25 @@ ItemDelegate {
 
     signal btnPreferenceClicked
 
-    function getNewPreferenceValueSlot(index){
-        switch (preferenceType){
+    function getNewPreferenceValueSlot(index) {
+        switch (preferenceType) {
             case PreferenceItemDelegate.LIST:
                 pluginListPreferenceModel.idx = index
                 preferenceNewValue = pluginListPreferenceModel.preferenceNewValue
                 btnPreferenceClicked()
                 break
             case PreferenceItemDelegate.PATH:
-                if(index === 0){
+                if (index === 0) {
                     preferenceFilePathDialog.title = qsTr("Select An Image to " + preferenceName)
                     preferenceFilePathDialog.nameFilters = fileFilters
                     preferenceFilePathDialog.open()
                 }
                 else
                     btnPreferenceClicked()
+                break
+            case PreferenceItemDelegate.EDITTEXT:
+                preferenceNewValue = editTextPreference.text
+                btnPreferenceClicked()
                 break
             default:
                 break
@@ -91,7 +96,7 @@ ItemDelegate {
         anchors.fill: parent
 
         Label {
-            Layout.preferredWidth: root.width / 2
+            Layout.preferredWidth: root.width / 2 - 8
             Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
             Layout.leftMargin: 8
 
@@ -143,11 +148,11 @@ ItemDelegate {
             id: pathPreferenceButton
 
             visible: preferenceType === PreferenceItemDelegate.PATH
-            width: root.width / 2 - 16
+            width: root.width / 2 - 8
             Layout.preferredWidth: width
             Layout.preferredHeight: 30
             Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
-            Layout.rightMargin: 30
+            Layout.rightMargin: 8
 
             text: UtilsAdapter.fileName(preferenceCurrentValue)
             toolTipText: JamiStrings.chooseImageFile
@@ -157,6 +162,26 @@ ItemDelegate {
             pressedColor: JamiTheme.buttonTintedGreyPressed
 
             onClicked: getNewPreferenceValueSlot(0)
+        }
+
+        MaterialLineEdit {
+            id: editTextPreference
+
+            visible: preferenceType === PreferenceItemDelegate.EDITTEXT
+            width: root.width / 2 - 8
+            Layout.preferredWidth: root.width / 2 - 8
+            Layout.preferredHeight: 30
+            Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
+            Layout.rightMargin: 8
+
+            selectByMouse: true
+            text: preferenceCurrentValue
+
+            font.pointSize: JamiTheme.settingsFontSize
+            padding: 8
+            wrapMode: Text.NoWrap
+
+            onEditingFinished: getNewPreferenceValueSlot(0)
         }
     }
 }

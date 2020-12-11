@@ -47,6 +47,7 @@ public:
     typedef enum {
         LIST,
         PATH,
+        EDITTEXT,
         DEFAULT,
     } Type;
 

@@ -23,7 +23,8 @@
 #include <map>
 
 std::map<QString, int> mapType {{QString("List"), PreferenceItemListModel::Type::LIST},
-                                {QString("Path"), PreferenceItemListModel::Type::PATH}};
+                                {QString("Path"), PreferenceItemListModel::Type::PATH},
+                                {QString("EditText"), PreferenceItemListModel::Type::EDITTEXT}};
 
 PreferenceItemListModel::PreferenceItemListModel(QObject* parent)
     : QAbstractListModel(parent)

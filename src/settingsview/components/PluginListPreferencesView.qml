@@ -34,6 +34,7 @@ Rectangle {
     enum Type {
         LIST,
         PATH,
+        EDITTEXT,
         DEFAULT
     }
 
@@ -46,6 +47,15 @@ Rectangle {
     color: "transparent"
 
     signal uninstalled
+
+    Connections{
+        target: PluginAdapter
+
+        function onPreferenceChanged(pluginId) {
+            if (root.pluginId == pluginId)
+                pluginPreferenceView.model = PluginAdapter.getPluginPreferencesModel(pluginId)
+        }
+    }
 
     function resetPluginSlot() {
         msgDialog.buttonCallBacks = [function () {resetPlugin()}]

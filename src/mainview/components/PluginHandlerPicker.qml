@@ -278,7 +278,7 @@ Popup {
 
                         onBtnPreferenceClicked: {
                             PluginModel.setPluginPreference(pluginId, preferenceKey, preferenceNewValue)
-                            PluginAdapter.pluginHandlersUpdateStatus()
+                            PluginAdapter.preferenceChanged(pluginId)
                             pluginhandlerPreferencePickerListView.model = PluginAdapter.getPluginPreferencesModel(pluginId, pluginhandlerPreferencePickerListView.handlerName)
                         }
                     }
