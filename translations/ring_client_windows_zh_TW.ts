@@ -2,7 +2,7 @@
 <context>
     <name>AboutPopUp</name>
     <message>
-        <location filename="../src/mainview/components/AboutPopUp.qml" line="238"/>
+        <location filename="../src/mainview/components/AboutPopUp.qml" line="245"/>
         <source>Close</source>
         <translation>關閉</translation>
     </message>
@@ -10,7 +10,7 @@
 <context>
     <name>AccountComboBoxPopup</name>
     <message>
-        <location filename="../src/mainview/components/AccountComboBoxPopup.qml" line="160"/>
+        <location filename="../src/mainview/components/AccountComboBoxPopup.qml" line="169"/>
         <source>Add Account</source>
         <translation>新增帳號</translation>
     </message>
@@ -18,7 +18,7 @@
 <context>
     <name>AccountProfile</name>
     <message>
-        <location filename="../src/settingsview/components/AccountProfile.qml" line="66"/>
+        <location filename="../src/settingsview/components/AccountProfile.qml" line="60"/>
         <source>Profile</source>
         <translation>介紹</translation>
     </message>
@@ -60,12 +60,12 @@
 <context>
     <name>AdvancedNameServerSettings</name>
     <message>
-        <location filename="../src/settingsview/components/AdvancedNameServerSettings.qml" line="50"/>
+        <location filename="../src/settingsview/components/AdvancedNameServerSettings.qml" line="51"/>
         <source>Name Server</source>
         <translation>名稱伺服器</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/AdvancedNameServerSettings.qml" line="61"/>
+        <location filename="../src/settingsview/components/AdvancedNameServerSettings.qml" line="63"/>
         <source>Address</source>
         <translation>地址</translation>
     </message>
@@ -73,20 +73,20 @@
 <context>
     <name>AdvancedSIPSecuritySettings</name>
     <message>
-        <location filename="../src/settingsview/components/AdvancedSIPSecuritySettings.qml" line="94"/>
-        <location filename="../src/settingsview/components/AdvancedSIPSecuritySettings.qml" line="112"/>
+        <location filename="../src/settingsview/components/AdvancedSIPSecuritySettings.qml" line="95"/>
+        <location filename="../src/settingsview/components/AdvancedSIPSecuritySettings.qml" line="113"/>
         <source>Certificate File</source>
         <translation>證書檔案</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/AdvancedSIPSecuritySettings.qml" line="94"/>
-        <location filename="../src/settingsview/components/AdvancedSIPSecuritySettings.qml" line="112"/>
-        <location filename="../src/settingsview/components/AdvancedSIPSecuritySettings.qml" line="130"/>
+        <location filename="../src/settingsview/components/AdvancedSIPSecuritySettings.qml" line="95"/>
+        <location filename="../src/settingsview/components/AdvancedSIPSecuritySettings.qml" line="113"/>
+        <location filename="../src/settingsview/components/AdvancedSIPSecuritySettings.qml" line="131"/>
         <source>All files</source>
         <translation>所有檔案</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/AdvancedSIPSecuritySettings.qml" line="130"/>
+        <location filename="../src/settingsview/components/AdvancedSIPSecuritySettings.qml" line="131"/>
         <source>Key File</source>
         <translation>金鑰檔案</translation>
     </message>
@@ -94,7 +94,7 @@
 <context>
     <name>AdvancedSettings</name>
     <message>
-        <location filename="../src/settingsview/components/AdvancedSettings.qml" line="67"/>
+        <location filename="../src/settingsview/components/AdvancedSettings.qml" line="68"/>
         <source>Advanced Account Settings</source>
         <translation>進階帳號設定</translation>
     </message>
@@ -102,12 +102,12 @@
 <context>
     <name>BackupKeyPage</name>
     <message>
-        <location filename="../src/wizardview/components/BackupKeyPage.qml" line="46"/>
+        <location filename="../src/wizardview/components/BackupKeyPage.qml" line="47"/>
         <source>Jami archive files</source>
         <translation>Jami 封存檔</translation>
     </message>
     <message>
-        <location filename="../src/wizardview/components/BackupKeyPage.qml" line="46"/>
+        <location filename="../src/wizardview/components/BackupKeyPage.qml" line="47"/>
         <source>All files</source>
         <translation>所有檔案</translation>
     </message>
@@ -115,7 +115,7 @@
 <context>
     <name>BannedContacts</name>
     <message>
-        <location filename="../src/settingsview/components/BannedContacts.qml" line="90"/>
+        <location filename="../src/settingsview/components/BannedContacts.qml" line="91"/>
         <source>Banned Contacts</source>
         <translation>黑名單聯絡人</translation>
     </message>
@@ -123,13 +123,13 @@
 <context>
     <name>CallAdapter</name>
     <message>
-        <location filename="../src/calladapter.cpp" line="272"/>
-        <location filename="../src/calladapter.cpp" line="350"/>
+        <location filename="../src/calladapter.cpp" line="273"/>
+        <location filename="../src/calladapter.cpp" line="352"/>
         <source>me</source>
         <translation>我</translation>
     </message>
     <message>
-        <location filename="../src/calladapter.cpp" line="314"/>
+        <location filename="../src/calladapter.cpp" line="315"/>
         <source>is calling you</source>
         <translation>正在與您通話</translation>
     </message>
@@ -137,17 +137,17 @@
 <context>
     <name>CallAdvancedOptions</name>
     <message>
-        <location filename="../src/mainview/components/CallAdvancedOptions.qml" line="86"/>
+        <location filename="../src/mainview/components/CallAdvancedOptions.qml" line="87"/>
         <source>Add to conference</source>
         <translation>加入會議</translation>
     </message>
     <message>
-        <location filename="../src/mainview/components/CallAdvancedOptions.qml" line="86"/>
+        <location filename="../src/mainview/components/CallAdvancedOptions.qml" line="87"/>
         <source>Transfer this call</source>
         <translation>轉送此通話</translation>
     </message>
     <message>
-        <location filename="../src/mainview/components/CallAdvancedOptions.qml" line="104"/>
+        <location filename="../src/mainview/components/CallAdvancedOptions.qml" line="105"/>
         <source>Search contacts</source>
         <translation>搜尋聯絡人</translation>
     </message>
@@ -155,7 +155,7 @@
 <context>
     <name>CallOverlay</name>
     <message>
-        <location filename="../src/mainview/components/CallOverlay.qml" line="185"/>
+        <location filename="../src/mainview/components/CallOverlay.qml" line="257"/>
         <source>Toggle to display side panel</source>
         <translation>切換以顯示側邊面板</translation>
     </message>
@@ -176,12 +176,12 @@
 <context>
     <name>ContactPicker</name>
     <message>
-        <location filename="../src/mainview/components/ContactPicker.qml" line="85"/>
+        <location filename="../src/mainview/components/ContactPicker.qml" line="87"/>
         <source>Add to conference</source>
         <translation>加入會議</translation>
     </message>
     <message>
-        <location filename="../src/mainview/components/ContactPicker.qml" line="85"/>
+        <location filename="../src/mainview/components/ContactPicker.qml" line="87"/>
         <source>Transfer this call</source>
         <translation>轉送此通話</translation>
     </message>
@@ -189,32 +189,32 @@
 <context>
     <name>ConversationSmartListContextMenu</name>
     <message>
-        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="39"/>
+        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="40"/>
         <source>Start video call</source>
         <translation>開始視訊通話</translation>
     </message>
     <message>
-        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="48"/>
+        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="49"/>
         <source>Start audio call</source>
         <translation>開始音訊通話</translation>
     </message>
     <message>
-        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="58"/>
+        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="59"/>
         <source>Clear conversation</source>
         <translation>清除對話</translation>
     </message>
     <message>
-        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="67"/>
+        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="68"/>
         <source>Remove contact</source>
         <translation>移除聯絡人</translation>
     </message>
     <message>
-        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="109"/>
+        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="110"/>
         <source>Block contact</source>
         <translation>阻擋連絡人</translation>
     </message>
     <message>
-        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="117"/>
+        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="118"/>
         <source>Profile</source>
         <translation>介紹</translation>
     </message>
@@ -222,47 +222,47 @@
 <context>
     <name>CreateAccountPage</name>
     <message>
-        <location filename="../src/wizardview/components/CreateAccountPage.qml" line="81"/>
+        <location filename="../src/wizardview/components/CreateAccountPage.qml" line="82"/>
         <source>Jami archive files</source>
         <translation>Jami 封存檔</translation>
     </message>
     <message>
-        <location filename="../src/wizardview/components/CreateAccountPage.qml" line="81"/>
+        <location filename="../src/wizardview/components/CreateAccountPage.qml" line="82"/>
         <source>All files</source>
         <translation>所有檔案</translation>
     </message>
     <message>
-        <location filename="../src/wizardview/components/CreateAccountPage.qml" line="126"/>
+        <location filename="../src/wizardview/components/CreateAccountPage.qml" line="127"/>
         <source>Choose a username for your account</source>
         <translation>為您的帳號選擇一個使用者名稱</translation>
     </message>
     <message>
-        <location filename="../src/wizardview/components/CreateAccountPage.qml" line="153"/>
+        <location filename="../src/wizardview/components/CreateAccountPage.qml" line="155"/>
         <source>Choose your username</source>
         <translation>選擇您的使用者名稱</translation>
     </message>
     <message>
-        <location filename="../src/wizardview/components/CreateAccountPage.qml" line="153"/>
+        <location filename="../src/wizardview/components/CreateAccountPage.qml" line="155"/>
         <source>Choose a name</source>
         <translation>選擇名稱</translation>
     </message>
     <message>
-        <location filename="../src/wizardview/components/CreateAccountPage.qml" line="168"/>
+        <location filename="../src/wizardview/components/CreateAccountPage.qml" line="170"/>
         <source>Invalid username</source>
         <translation>無效的使用者名稱</translation>
     </message>
     <message>
-        <location filename="../src/wizardview/components/CreateAccountPage.qml" line="168"/>
+        <location filename="../src/wizardview/components/CreateAccountPage.qml" line="170"/>
         <source>Invalid name</source>
         <translation>無效的名稱</translation>
     </message>
     <message>
-        <location filename="../src/wizardview/components/CreateAccountPage.qml" line="170"/>
+        <location filename="../src/wizardview/components/CreateAccountPage.qml" line="172"/>
         <source>Username already taken</source>
         <translation>已取得的使用者名稱</translation>
     </message>
     <message>
-        <location filename="../src/wizardview/components/CreateAccountPage.qml" line="170"/>
+        <location filename="../src/wizardview/components/CreateAccountPage.qml" line="172"/>
         <source>Name already taken</source>
         <translation>名稱已被使用</translation>
     </message>
@@ -270,29 +270,29 @@
 <context>
     <name>CurrentAccountSettings</name>
     <message>
-        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="111"/>
+        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="109"/>
         <source>Ok</source>
         <translation>確定</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="134"/>
-        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="175"/>
+        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="132"/>
+        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="173"/>
         <source>Success</source>
         <translation>成功</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="134"/>
-        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="175"/>
+        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="132"/>
+        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="173"/>
         <source>Error</source>
         <translation>錯誤</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="162"/>
+        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="160"/>
         <source>Jami archive files</source>
         <translation>Jami 封存檔</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="162"/>
+        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="160"/>
         <source>All files</source>
         <translation>所有檔案</translation>
     </message>
@@ -308,12 +308,12 @@
 <context>
     <name>DeleteAccountDialog</name>
     <message>
-        <location filename="../src/commoncomponents/DeleteAccountDialog.qml" line="151"/>
+        <location filename="../src/commoncomponents/DeleteAccountDialog.qml" line="155"/>
         <source>Delete</source>
         <translation>刪除</translation>
     </message>
     <message>
-        <location filename="../src/commoncomponents/DeleteAccountDialog.qml" line="172"/>
+        <location filename="../src/commoncomponents/DeleteAccountDialog.qml" line="176"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
@@ -321,12 +321,12 @@
 <context>
     <name>DeviceItemDelegate</name>
     <message>
-        <location filename="../src/settingsview/components/DeviceItemDelegate.qml" line="114"/>
+        <location filename="../src/settingsview/components/DeviceItemDelegate.qml" line="124"/>
         <source>Device Id</source>
         <translation>裝置 Id</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/DeviceItemDelegate.qml" line="142"/>
+        <location filename="../src/settingsview/components/DeviceItemDelegate.qml" line="154"/>
         <source>Save new device name</source>
         <translation>儲存新裝置名稱</translation>
     </message>
@@ -349,17 +349,17 @@
         <translation>從備份匯入</translation>
     </message>
     <message>
-        <location filename="../src/wizardview/components/ImportFromBackupPage.qml" line="156"/>
+        <location filename="../src/wizardview/components/ImportFromBackupPage.qml" line="158"/>
         <source>Generating account…</source>
         <translation>正在生成帳號……</translation>
     </message>
     <message>
-        <location filename="../src/wizardview/components/ImportFromBackupPage.qml" line="200"/>
+        <location filename="../src/wizardview/components/ImportFromBackupPage.qml" line="203"/>
         <source>Back to welcome page</source>
         <translation>回到歡迎頁面</translation>
     </message>
     <message>
-        <location filename="../src/wizardview/components/ImportFromBackupPage.qml" line="138"/>
+        <location filename="../src/wizardview/components/ImportFromBackupPage.qml" line="140"/>
         <source>Password</source>
         <translation>密碼</translation>
     </message>
@@ -367,22 +367,22 @@
 <context>
     <name>ImportFromDevicePage</name>
     <message>
-        <location filename="../src/wizardview/components/ImportFromDevicePage.qml" line="84"/>
+        <location filename="../src/wizardview/components/ImportFromDevicePage.qml" line="86"/>
         <source>Password</source>
         <translation>密碼</translation>
     </message>
     <message>
-        <location filename="../src/wizardview/components/ImportFromDevicePage.qml" line="136"/>
+        <location filename="../src/wizardview/components/ImportFromDevicePage.qml" line="139"/>
         <source>Generating account…</source>
         <translation>正在生成帳號……</translation>
     </message>
     <message>
-        <location filename="../src/wizardview/components/ImportFromDevicePage.qml" line="175"/>
+        <location filename="../src/wizardview/components/ImportFromDevicePage.qml" line="179"/>
         <source>Back to welcome page</source>
         <translation>回到歡迎頁面</translation>
     </message>
     <message>
-        <location filename="../src/wizardview/components/ImportFromDevicePage.qml" line="119"/>
+        <location filename="../src/wizardview/components/ImportFromDevicePage.qml" line="122"/>
         <source>PIN</source>
         <translation>PIN 碼</translation>
     </message>
@@ -685,117 +685,117 @@
         <translation>選擇您 rendezvous 點的名稱</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="270"/>
+        <location filename="../src/constant/JamiStrings.qml" line="271"/>
         <source>Launch at startup</source>
         <translation>開機時啟動</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="285"/>
+        <location filename="../src/constant/JamiStrings.qml" line="291"/>
         <source>Network error</source>
         <translation>網路錯誤</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="286"/>
+        <location filename="../src/constant/JamiStrings.qml" line="292"/>
         <source>SSL error</source>
         <translation>SSL 錯誤</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="307"/>
+        <location filename="../src/constant/JamiStrings.qml" line="313"/>
         <source>Enter the PIN from another configured Jami account. Use the &quot;Link Another Device&quot; feature to obtain a PIN.</source>
         <translation>輸入從其他設定好的 Jami 帳號而來的 PIN 碼。使用「連結其他裝置」功能以取得 PIN 碼。</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="309"/>
+        <location filename="../src/constant/JamiStrings.qml" line="315"/>
         <source>Link device</source>
         <translation>連結裝置</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="312"/>
+        <location filename="../src/constant/JamiStrings.qml" line="318"/>
         <source>Conversations</source>
         <translation>對話</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="336"/>
+        <location filename="../src/constant/JamiStrings.qml" line="342"/>
         <source>Enable</source>
         <translation>啟用</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="344"/>
+        <location filename="../src/constant/JamiStrings.qml" line="350"/>
         <source>Display or hide preferences</source>
         <translation>顯示或隱藏偏好設定</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="347"/>
+        <location filename="../src/constant/JamiStrings.qml" line="353"/>
         <source>Add new plugin</source>
         <translation>新增新外掛程式</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="350"/>
+        <location filename="../src/constant/JamiStrings.qml" line="356"/>
         <source>Select a file</source>
         <translation>選取檔案</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="351"/>
+        <location filename="../src/constant/JamiStrings.qml" line="357"/>
         <source>Select</source>
         <translation>選擇</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="352"/>
+        <location filename="../src/constant/JamiStrings.qml" line="358"/>
         <source>Choose image file</source>
         <translation>選擇圖片檔</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="356"/>
+        <location filename="../src/constant/JamiStrings.qml" line="362"/>
         <source>Enter the rendezvous point&apos;s name</source>
         <translation>輸入 rendezvous 點名稱</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="357"/>
+        <location filename="../src/constant/JamiStrings.qml" line="363"/>
         <source>Creating rendezvous point…</source>
         <translation>正在建立 rendezvous 點……</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="377"/>
+        <location filename="../src/constant/JamiStrings.qml" line="383"/>
         <source>Create account from Jami Account Management Server (JAMS)</source>
         <translation>從 Jami 帳號管理伺服器 (JAMS) 建立帳號</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="380"/>
+        <location filename="../src/constant/JamiStrings.qml" line="386"/>
         <source>Create new rendezvous point</source>
         <translation>建立新 rendezvous 點</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="381"/>
+        <location filename="../src/constant/JamiStrings.qml" line="387"/>
         <source>Create a Jami account</source>
         <translation>建立 Jami 帳號</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="382"/>
+        <location filename="../src/constant/JamiStrings.qml" line="388"/>
         <source>About Jami</source>
         <translation>關於 Jami</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="385"/>
+        <location filename="../src/constant/JamiStrings.qml" line="391"/>
         <source>Decline contact request</source>
         <translation>拒絕聯絡人請求</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="386"/>
+        <location filename="../src/constant/JamiStrings.qml" line="392"/>
         <source>Accept contact request</source>
         <translation>接受聯絡人請求</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="389"/>
+        <location filename="../src/constant/JamiStrings.qml" line="395"/>
         <source>Automatically check for updates</source>
         <translation>自動檢查更新</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="392"/>
+        <location filename="../src/constant/JamiStrings.qml" line="398"/>
         <source>Ok</source>
         <translation>確定</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="393"/>
+        <location filename="../src/constant/JamiStrings.qml" line="399"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
@@ -1076,11 +1076,13 @@
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="178"/>
+        <location filename="../src/constant/JamiStrings.qml" line="404"/>
         <source>Mute</source>
         <translation>靜音</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="179"/>
+        <location filename="../src/constant/JamiStrings.qml" line="405"/>
         <source>Unmute</source>
         <translation>取消靜音</translation>
     </message>
@@ -1372,288 +1374,333 @@
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="268"/>
+        <source>Enable dark theme</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="269"/>
         <source>Keep minimized on close</source>
         <translation>在關閉時保持最小化</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="269"/>
+        <location filename="../src/constant/JamiStrings.qml" line="270"/>
         <source>Run application on system startup</source>
         <translation>在系統啟動時執行應用程式</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="271"/>
+        <location filename="../src/constant/JamiStrings.qml" line="272"/>
         <source>Downloads directory</source>
         <translation>下載目錄</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="272"/>
+        <location filename="../src/constant/JamiStrings.qml" line="273"/>
         <source>Choose download directory</source>
         <translation>選擇下載目錄</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="273"/>
+        <location filename="../src/constant/JamiStrings.qml" line="274"/>
         <source>Record call</source>
         <translation>記錄通話</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="276"/>
+        <location filename="../src/constant/JamiStrings.qml" line="277"/>
+        <source>Chatview</source>
+        <translation>聊天視窗</translation>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="278"/>
+        <source>Show typing indicator</source>
+        <translation>顯示輸入指示器</translation>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="279"/>
+        <source>Display images and videos into the chatview</source>
+        <translation>在聊天室窗中顯示圖片與影片</translation>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="282"/>
         <source>Install beta version</source>
         <translation>安裝測試版</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="277"/>
+        <location filename="../src/constant/JamiStrings.qml" line="283"/>
         <source>Check for updates now</source>
         <translation>現在檢查更新</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="278"/>
+        <location filename="../src/constant/JamiStrings.qml" line="284"/>
         <source>Enable/Disable automatic updates</source>
         <translation>啟用／停用自動更新</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="279"/>
+        <location filename="../src/constant/JamiStrings.qml" line="285"/>
         <source>toggle automatic updates</source>
         <translation>自動更新</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="280"/>
+        <location filename="../src/constant/JamiStrings.qml" line="286"/>
         <source>Updates</source>
         <translation>更新</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="281"/>
+        <location filename="../src/constant/JamiStrings.qml" line="287"/>
         <source>Update</source>
         <translation>更新</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="282"/>
+        <location filename="../src/constant/JamiStrings.qml" line="288"/>
         <source>A new version of Jami was found
  Would you like to update now?</source>
         <translation>找到新版的 Jami
  您想要現在更新嗎？</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="283"/>
+        <location filename="../src/constant/JamiStrings.qml" line="289"/>
         <source>No new version of Jami was found</source>
         <translation>找不到新版的 Jami</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="284"/>
+        <location filename="../src/constant/JamiStrings.qml" line="290"/>
         <source>An error occured when checking for a new version</source>
         <translation>檢查新版本時遇到錯誤</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="287"/>
+        <location filename="../src/constant/JamiStrings.qml" line="293"/>
         <source>Installer download canceled</source>
         <translation>安裝程式下載已取消</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="289"/>
+        <location filename="../src/constant/JamiStrings.qml" line="295"/>
         <source>This will uninstall your current Release version and you can always download the latest Release version on our website</source>
         <translation>這將會解除安裝您目前的版本，而您總是可以在我們的網站上下載最新版本</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="290"/>
+        <location filename="../src/constant/JamiStrings.qml" line="296"/>
         <source>Network disconnected</source>
         <translation>網路已斷線</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="291"/>
+        <location filename="../src/constant/JamiStrings.qml" line="297"/>
         <source>Something went wrong</source>
         <translation>出了點問題</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="294"/>
+        <location filename="../src/constant/JamiStrings.qml" line="300"/>
         <source>Select a record directory</source>
         <translation>選取紀錄目錄</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="297"/>
+        <location filename="../src/constant/JamiStrings.qml" line="303"/>
         <source>Archive</source>
         <translation>封存</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="298"/>
+        <location filename="../src/constant/JamiStrings.qml" line="304"/>
         <source>Open file</source>
         <translation>開啟檔案</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="299"/>
+        <location filename="../src/constant/JamiStrings.qml" line="305"/>
         <source>Create your account from a backup</source>
         <translation>從備份建立您的帳號</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="300"/>
+        <location filename="../src/constant/JamiStrings.qml" line="306"/>
         <source>You can obtain an archive by clicking on &quot;Backup account&quot; in the account settings. This will create a .gz file on your device.</source>
         <translation>您可以透過點選帳號設定中的「備份帳號」來取得封存。這會在您的裝置上建立一個 .gz 檔案。</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="303"/>
+        <location filename="../src/constant/JamiStrings.qml" line="309"/>
         <source>Restore an account from backup</source>
         <translation>從備份恢復帳號</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="306"/>
+        <location filename="../src/constant/JamiStrings.qml" line="312"/>
         <source>Enter Jami account password</source>
         <translation>輸入 Jami 帳號密碼</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="315"/>
+        <location filename="../src/constant/JamiStrings.qml" line="321"/>
         <source>The PIN and the account password should be entered in your device within 10 minutes.</source>
         <translation>PIN 碼與帳號密碼應該在您的裝置上於10分鐘內輸入。</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="316"/>
+        <location filename="../src/constant/JamiStrings.qml" line="322"/>
         <source>Close</source>
         <translation>關閉</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="317"/>
+        <location filename="../src/constant/JamiStrings.qml" line="323"/>
         <source>Enter your account password</source>
         <translation>輸入您的帳號密碼</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="318"/>
+        <location filename="../src/constant/JamiStrings.qml" line="324"/>
         <source>Add Device</source>
         <translation>新增裝置</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="321"/>
+        <location filename="../src/constant/JamiStrings.qml" line="327"/>
         <source>Enter the password</source>
         <translation>輸入密碼</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="322"/>
+        <location filename="../src/constant/JamiStrings.qml" line="328"/>
         <source>Enter current password</source>
         <translation>輸入目前密碼</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="323"/>
+        <location filename="../src/constant/JamiStrings.qml" line="329"/>
         <source>Enter new password</source>
         <translation>輸入新密碼</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="324"/>
+        <location filename="../src/constant/JamiStrings.qml" line="330"/>
         <source>Confirm new password</source>
         <translation>確認新密碼</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="325"/>
+        <location filename="../src/constant/JamiStrings.qml" line="331"/>
         <source>Change</source>
         <translation>變更</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="326"/>
+        <location filename="../src/constant/JamiStrings.qml" line="332"/>
         <source>Confirm</source>
         <translation>確認</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="327"/>
+        <location filename="../src/constant/JamiStrings.qml" line="333"/>
         <source>Export</source>
         <translation>匯出</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="330"/>
+        <location filename="../src/constant/JamiStrings.qml" line="336"/>
         <source>Choose a picture as avatar</source>
         <translation>選擇要成為大頭貼的圖片</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="331"/>
+        <location filename="../src/constant/JamiStrings.qml" line="337"/>
         <source>Import avatar from image file</source>
         <translation>從圖片檔匯入大頭貼</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="332"/>
+        <location filename="../src/constant/JamiStrings.qml" line="338"/>
         <source>Take photo</source>
         <translation>照相</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="333"/>
+        <location filename="../src/constant/JamiStrings.qml" line="339"/>
         <source>Retake photo</source>
         <translation>重拍照片</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="339"/>
+        <location filename="../src/constant/JamiStrings.qml" line="345"/>
         <source>Reset</source>
         <translation>重設</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="340"/>
+        <location filename="../src/constant/JamiStrings.qml" line="346"/>
         <source>Select a plugin to install</source>
         <translation>選取要安裝的外掛程式</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="341"/>
+        <location filename="../src/constant/JamiStrings.qml" line="347"/>
         <source>Install plugin</source>
         <translation>安裝外掛程式</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="355"/>
+        <location filename="../src/constant/JamiStrings.qml" line="361"/>
         <source>Save profile</source>
         <translation>儲存個人檔案</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="360"/>
+        <location filename="../src/constant/JamiStrings.qml" line="366"/>
         <source>Enter the account password to confirm the removal of this device</source>
         <translation>輸入帳號密碼以確認移除此裝置</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="363"/>
+        <location filename="../src/constant/JamiStrings.qml" line="369"/>
         <source>Select a screen to share</source>
         <translation>選取要分享的畫面</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="366"/>
+        <location filename="../src/constant/JamiStrings.qml" line="372"/>
         <source>QR code</source>
         <translation>QR code</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="369"/>
+        <location filename="../src/constant/JamiStrings.qml" line="375"/>
         <source>Account QR</source>
         <translation>帳號 QR code</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="372"/>
+        <location filename="../src/constant/JamiStrings.qml" line="378"/>
         <source>This is your Jami username.
 Copy and share it with your friends!</source>
         <translation>這是你的 Jami 使用者名稱。
 複製並與你的朋友分享！</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="373"/>
+        <location filename="../src/constant/JamiStrings.qml" line="379"/>
         <source>Link this device to an existing account</source>
         <translation>連結此裝置到既有的帳號</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="374"/>
+        <location filename="../src/constant/JamiStrings.qml" line="380"/>
         <source>Advanced features</source>
         <translation>進階功能</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="375"/>
+        <location filename="../src/constant/JamiStrings.qml" line="381"/>
         <source>Show advanced features</source>
         <translation>顯示進階功能</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="376"/>
+        <location filename="../src/constant/JamiStrings.qml" line="382"/>
         <source>Connect to a JAMS server</source>
         <translation>連線至 JAMS 伺服器</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="378"/>
+        <location filename="../src/constant/JamiStrings.qml" line="384"/>
         <source>Add a SIP account</source>
         <translation>新增 SIP 帳號</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="379"/>
+        <location filename="../src/constant/JamiStrings.qml" line="385"/>
         <source>Error while creating your account. Check your credentials.</source>
         <translation>建立您的帳號時發生錯誤。請檢查您的憑證。</translation>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="402"/>
+        <source>Set moderator</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="403"/>
+        <source>Unset moderator</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="406"/>
+        <source>Maximize</source>
+        <translation>最大化</translation>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="407"/>
+        <source>Minimize</source>
+        <translation>最小化</translation>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="408"/>
+        <source>Hangup</source>
+        <translation>掛斷</translation>
     </message>
 </context>
 <context>
     <name>JamiUserIdentity</name>
     <message>
-        <location filename="../src/settingsview/components/JamiUserIdentity.qml" line="186"/>
+        <location filename="../src/settingsview/components/JamiUserIdentity.qml" line="190"/>
         <source>Register</source>
         <translation>註冊</translation>
     </message>
@@ -1666,102 +1713,102 @@ Copy and share it with your friends!</source>
         <translation>快捷鍵</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="45"/>
+        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="46"/>
         <source>Open account list</source>
         <translation>開啟帳號清單</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="50"/>
+        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="51"/>
         <source>Focus conversations list</source>
         <translation>聚焦於對話清單</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="55"/>
+        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="56"/>
         <source>Requests list</source>
         <translation>請求清單</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="60"/>
+        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="61"/>
         <source>Previous conversation</source>
         <translation>前一個對話</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="65"/>
+        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="66"/>
         <source>Next conversation</source>
         <translation>下一個對話</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="70"/>
+        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="71"/>
         <source>Search bar</source>
         <translation>搜尋列</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="75"/>
+        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="76"/>
         <source>Fullscreen</source>
         <translation>全螢幕</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="83"/>
+        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="84"/>
         <source>Start an audio call</source>
         <translation>開始音訊通話</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="88"/>
+        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="89"/>
         <source>Start a video call</source>
         <translation>開始視訊通話</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="93"/>
+        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="94"/>
         <source>Clear history</source>
         <translation>清除記錄</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="98"/>
+        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="99"/>
         <source>Block contact</source>
         <translation>阻擋連絡人</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="103"/>
+        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="104"/>
         <source>Accept contact request</source>
         <translation>接受聯絡人請求</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="111"/>
+        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="112"/>
         <source>Media settings</source>
         <translation>媒體設定</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="116"/>
+        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="117"/>
         <source>General settings</source>
         <translation>一般設定</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="121"/>
+        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="122"/>
         <source>Account settings</source>
         <translation>帳號設定</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="126"/>
+        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="127"/>
         <source>Open account creation wizard</source>
         <translation>開啟帳號建立精靈</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="131"/>
+        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="132"/>
         <source>Open window</source>
         <translation>開啟視窗</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="139"/>
+        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="140"/>
         <source>Answer an incoming call</source>
         <translation>接聽來電</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="144"/>
+        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="145"/>
         <source>End call</source>
         <translation>結束通話</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="149"/>
+        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="150"/>
         <source>Decline the call request</source>
         <translation>拒絕通話請求</translation>
     </message>
@@ -1769,7 +1816,7 @@ Copy and share it with your friends!</source>
 <context>
     <name>LinkDeviceDialog</name>
     <message>
-        <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="218"/>
+        <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="221"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
@@ -1788,22 +1835,22 @@ Please try again later.</source>
 </translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="198"/>
+        <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="201"/>
         <source>Register</source>
         <translation>註冊</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="288"/>
+        <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="295"/>
         <source>Your PIN is:</source>
         <translation>您的 PIN 碼為：</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="298"/>
+        <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="306"/>
         <source>PIN</source>
         <translation>PIN 碼</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="318"/>
+        <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="327"/>
         <source>This pin and the account password should be entered in your device within 10 minutes.</source>
         <translation>這個 PIN 碼與帳號密碼應該要在 10 分鐘之內在您的裝置上輸入。</translation>
     </message>
@@ -1816,27 +1863,27 @@ Please try again later.</source>
 <context>
     <name>LinkedDevices</name>
     <message>
-        <location filename="../src/settingsview/components/LinkedDevices.qml" line="96"/>
+        <location filename="../src/settingsview/components/LinkedDevices.qml" line="97"/>
         <source>Remove Device</source>
         <translation>移除裝置</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/LinkedDevices.qml" line="97"/>
+        <location filename="../src/settingsview/components/LinkedDevices.qml" line="98"/>
         <source>Are you sure you wish to remove this device?</source>
         <translation>您確定您想要移除此裝置嗎？</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/LinkedDevices.qml" line="99"/>
+        <location filename="../src/settingsview/components/LinkedDevices.qml" line="100"/>
         <source>Ok</source>
         <translation>確定</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/LinkedDevices.qml" line="99"/>
+        <location filename="../src/settingsview/components/LinkedDevices.qml" line="100"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/LinkedDevices.qml" line="108"/>
+        <location filename="../src/settingsview/components/LinkedDevices.qml" line="109"/>
         <source>Linked Devices</source>
         <translation>已連結的裝置</translation>
     </message>
@@ -1852,7 +1899,7 @@ Please try again later.</source>
 <context>
     <name>MediaHandlerItemDelegate</name>
     <message>
-        <location filename="../src/mainview/components/MediaHandlerItemDelegate.qml" line="83"/>
+        <location filename="../src/mainview/components/MediaHandlerItemDelegate.qml" line="87"/>
         <source>On/Off</source>
         <translation>開啟／關閉</translation>
     </message>
@@ -1860,17 +1907,17 @@ Please try again later.</source>
 <context>
     <name>MediaHandlerPicker</name>
     <message>
-        <location filename="../src/mainview/components/MediaHandlerPicker.qml" line="89"/>
+        <location filename="../src/mainview/components/MediaHandlerPicker.qml" line="92"/>
         <source>Choose plugin</source>
         <translation>選擇外掛程式</translation>
     </message>
     <message>
-        <location filename="../src/mainview/components/MediaHandlerPicker.qml" line="151"/>
+        <location filename="../src/mainview/components/MediaHandlerPicker.qml" line="155"/>
         <source>Go back to plugins list</source>
         <translation>回到外掛程式清單</translation>
     </message>
     <message>
-        <location filename="../src/mainview/components/MediaHandlerPicker.qml" line="191"/>
+        <location filename="../src/mainview/components/MediaHandlerPicker.qml" line="197"/>
         <source>Preferences</source>
         <translation>偏好設定</translation>
     </message>
@@ -1910,22 +1957,9 @@ Please try again later.</source>
     </message>
 </context>
 <context>
-    <name>ParticipantContextMenu</name>
-    <message>
-        <location filename="../src/mainview/components/ParticipantContextMenu.qml" line="48"/>
-        <source>Maximize participant</source>
-        <translation>最大化參與者</translation>
-    </message>
-    <message>
-        <location filename="../src/mainview/components/ParticipantContextMenu.qml" line="54"/>
-        <source>Minimize participant</source>
-        <translation>盡量減少參與者</translation>
-    </message>
-</context>
-<context>
     <name>PasswordDialog</name>
     <message>
-        <location filename="../src/commoncomponents/PasswordDialog.qml" line="224"/>
+        <location filename="../src/commoncomponents/PasswordDialog.qml" line="223"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
@@ -1933,23 +1967,23 @@ Please try again later.</source>
 <context>
     <name>PhotoboothView</name>
     <message>
-        <location filename="../src/commoncomponents/PhotoboothView.qml" line="78"/>
+        <location filename="../src/commoncomponents/PhotoboothView.qml" line="87"/>
         <source>Image Files</source>
         <translation>圖片檔</translation>
     </message>
     <message>
-        <location filename="../src/commoncomponents/PhotoboothView.qml" line="78"/>
+        <location filename="../src/commoncomponents/PhotoboothView.qml" line="87"/>
         <source>All files</source>
         <translation>所有檔案</translation>
     </message>
     <message>
-        <location filename="../src/commoncomponents/PhotoboothView.qml" line="218"/>
-        <location filename="../src/commoncomponents/PhotoboothView.qml" line="226"/>
+        <location filename="../src/commoncomponents/PhotoboothView.qml" line="233"/>
+        <location filename="../src/commoncomponents/PhotoboothView.qml" line="241"/>
         <source>Take photo</source>
         <translation>照相</translation>
     </message>
     <message>
-        <location filename="../src/commoncomponents/PhotoboothView.qml" line="223"/>
+        <location filename="../src/commoncomponents/PhotoboothView.qml" line="238"/>
         <source>Retake photo</source>
         <translation>重拍照片</translation>
     </message>
@@ -1957,7 +1991,7 @@ Please try again later.</source>
 <context>
     <name>PluginItemDelegate</name>
     <message>
-        <location filename="../src/settingsview/components/PluginItemDelegate.qml" line="78"/>
+        <location filename="../src/settingsview/components/PluginItemDelegate.qml" line="81"/>
         <source>Load/Unload</source>
         <translation>載入／取消載入</translation>
     </message>
@@ -1965,27 +1999,27 @@ Please try again later.</source>
 <context>
     <name>PluginListPreferencesView</name>
     <message>
-        <location filename="../src/settingsview/components/PluginListPreferencesView.qml" line="70"/>
+        <location filename="../src/settingsview/components/PluginListPreferencesView.qml" line="73"/>
         <source>Uninstall plugin</source>
         <translation>解除安裝外掛程式</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/PluginListPreferencesView.qml" line="49"/>
+        <location filename="../src/settingsview/components/PluginListPreferencesView.qml" line="52"/>
         <source>Reset preferences</source>
         <translation>重設偏好設定</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/PluginListPreferencesView.qml" line="92"/>
+        <location filename="../src/settingsview/components/PluginListPreferencesView.qml" line="95"/>
         <source>Ok</source>
         <translation>確定</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/PluginListPreferencesView.qml" line="92"/>
+        <location filename="../src/settingsview/components/PluginListPreferencesView.qml" line="95"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/PluginListPreferencesView.qml" line="167"/>
+        <location filename="../src/settingsview/components/PluginListPreferencesView.qml" line="171"/>
         <source>Uninstall</source>
         <translation>解除安裝</translation>
     </message>
@@ -1993,17 +2027,17 @@ Please try again later.</source>
 <context>
     <name>PluginListSettingsView</name>
     <message>
-        <location filename="../src/settingsview/components/PluginListSettingsView.qml" line="85"/>
+        <location filename="../src/settingsview/components/PluginListSettingsView.qml" line="87"/>
         <source>Plugin Files</source>
         <translation>外掛程式檔案</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/PluginListSettingsView.qml" line="85"/>
+        <location filename="../src/settingsview/components/PluginListSettingsView.qml" line="87"/>
         <source>All files</source>
         <translation>所有檔案</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/PluginListSettingsView.qml" line="104"/>
+        <location filename="../src/settingsview/components/PluginListSettingsView.qml" line="106"/>
         <source>Installed plugins</source>
         <translation>已安裝的外掛程式</translation>
     </message>
@@ -2011,7 +2045,7 @@ Please try again later.</source>
 <context>
     <name>PreferenceItemDelegate</name>
     <message>
-        <location filename="../src/commoncomponents/PreferenceItemDelegate.qml" line="116"/>
+        <location filename="../src/commoncomponents/PreferenceItemDelegate.qml" line="119"/>
         <source>Edit preference</source>
         <translation>編輯偏好設定</translation>
     </message>
@@ -2024,17 +2058,17 @@ Please try again later.</source>
         <translation>個人檔案僅與聯絡人分享</translation>
     </message>
     <message>
-        <location filename="../src/wizardview/components/ProfilePage.qml" line="84"/>
+        <location filename="../src/wizardview/components/ProfilePage.qml" line="85"/>
         <source>Optional</source>
         <translation>選擇性</translation>
     </message>
     <message>
-        <location filename="../src/wizardview/components/ProfilePage.qml" line="116"/>
+        <location filename="../src/wizardview/components/ProfilePage.qml" line="117"/>
         <source>Enter your name</source>
         <translation>輸入您的名字</translation>
     </message>
     <message>
-        <location filename="../src/wizardview/components/ProfilePage.qml" line="150"/>
+        <location filename="../src/wizardview/components/ProfilePage.qml" line="151"/>
         <source>Generating account…</source>
         <translation>正在生成帳號……</translation>
     </message>
@@ -2066,7 +2100,7 @@ Please try again later.</source>
 <context>
     <name>RecordBox</name>
     <message>
-        <location filename="../src/mainview/components/RecordBox.qml" line="239"/>
+        <location filename="../src/mainview/components/RecordBox.qml" line="240"/>
         <source>Preview unavailable</source>
         <translation>預覽不可用</translation>
     </message>
@@ -2074,22 +2108,22 @@ Please try again later.</source>
 <context>
     <name>RecordingSettings</name>
     <message>
-        <location filename="../src/settingsview/components/RecordingSettings.qml" line="68"/>
+        <location filename="../src/settingsview/components/RecordingSettings.qml" line="69"/>
         <source>Call Recording</source>
         <translation>通話錄音</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/RecordingSettings.qml" line="81"/>
+        <location filename="../src/settingsview/components/RecordingSettings.qml" line="82"/>
         <source>Always record calls</source>
         <translation>永遠記錄通話</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/RecordingSettings.qml" line="110"/>
+        <location filename="../src/settingsview/components/RecordingSettings.qml" line="112"/>
         <source>Quality</source>
         <translation>品質</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/RecordingSettings.qml" line="165"/>
+        <location filename="../src/settingsview/components/RecordingSettings.qml" line="168"/>
         <source>Save in</source>
         <translation>儲存在</translation>
     </message>
@@ -2120,22 +2154,22 @@ Please try again later.</source>
 <context>
     <name>SIPUserIdentity</name>
     <message>
-        <location filename="../src/settingsview/components/SIPUserIdentity.qml" line="49"/>
+        <location filename="../src/settingsview/components/SIPUserIdentity.qml" line="50"/>
         <source>Username</source>
         <translation>使用者名稱</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/SIPUserIdentity.qml" line="60"/>
+        <location filename="../src/settingsview/components/SIPUserIdentity.qml" line="61"/>
         <source>Hostname</source>
         <translation>主機名稱</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/SIPUserIdentity.qml" line="71"/>
+        <location filename="../src/settingsview/components/SIPUserIdentity.qml" line="72"/>
         <source>Proxy</source>
         <translation>代理服務器</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/SIPUserIdentity.qml" line="82"/>
+        <location filename="../src/settingsview/components/SIPUserIdentity.qml" line="83"/>
         <source>Password</source>
         <translation>密碼</translation>
     </message>
@@ -2143,8 +2177,8 @@ Please try again later.</source>
 <context>
     <name>SelectScreen</name>
     <message>
-        <location filename="../src/mainview/components/SelectScreen.qml" line="166"/>
-        <location filename="../src/mainview/components/SelectScreen.qml" line="232"/>
+        <location filename="../src/mainview/components/SelectScreen.qml" line="172"/>
+        <location filename="../src/mainview/components/SelectScreen.qml" line="241"/>
         <source>Screen</source>
         <translation>畫面</translation>
     </message>
@@ -2160,22 +2194,22 @@ Please try again later.</source>
 <context>
     <name>SettingsMenu</name>
     <message>
-        <location filename="../src/settingsview/components/SettingsMenu.qml" line="34"/>
+        <location filename="../src/settingsview/components/SettingsMenu.qml" line="35"/>
         <source>Account</source>
         <translation>帳號</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/SettingsMenu.qml" line="36"/>
+        <location filename="../src/settingsview/components/SettingsMenu.qml" line="37"/>
         <source>General</source>
         <translation>一般</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/SettingsMenu.qml" line="38"/>
+        <location filename="../src/settingsview/components/SettingsMenu.qml" line="39"/>
         <source>Audio/Video</source>
         <translation>音訊／視訊</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/SettingsMenu.qml" line="40"/>
+        <location filename="../src/settingsview/components/SettingsMenu.qml" line="41"/>
         <source>Plugin</source>
         <translation>外掛程式</translation>
     </message>
@@ -2183,17 +2217,17 @@ Please try again later.</source>
 <context>
     <name>SettingsView</name>
     <message>
-        <location filename="../src/settingsview/SettingsView.qml" line="151"/>
+        <location filename="../src/settingsview/SettingsView.qml" line="149"/>
         <source>Account Settings</source>
         <translation>帳號設定</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/SettingsView.qml" line="153"/>
+        <location filename="../src/settingsview/SettingsView.qml" line="151"/>
         <source>General</source>
         <translation>一般</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/SettingsView.qml" line="157"/>
+        <location filename="../src/settingsview/SettingsView.qml" line="155"/>
         <source>Plugin</source>
         <translation>外掛程式</translation>
     </message>
@@ -2224,12 +2258,17 @@ Please try again later.</source>
 <context>
     <name>SystemSettings</name>
     <message>
-        <location filename="../src/settingsview/components/SystemSettings.qml" line="58"/>
+        <location filename="../src/settingsview/components/SystemSettings.qml" line="59"/>
         <source>System</source>
         <translation>系統</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/SystemSettings.qml" line="73"/>
+        <location filename="../src/settingsview/components/SystemSettings.qml" line="75"/>
+        <source>Enable dark theme</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/SystemSettings.qml" line="93"/>
         <source>Enable desktop notifications</source>
         <translation>啟用桌面通知</translation>
     </message>
@@ -2237,7 +2276,7 @@ Please try again later.</source>
 <context>
     <name>UserIdentity</name>
     <message>
-        <location filename="../src/settingsview/components/UserIdentity.qml" line="49"/>
+        <location filename="../src/settingsview/components/UserIdentity.qml" line="50"/>
         <source>Identity</source>
         <translation>身份</translation>
     </message>
@@ -2245,7 +2284,7 @@ Please try again later.</source>
 <context>
     <name>UserInfoCallPage</name>
     <message>
-        <location filename="../src/mainview/components/UserInfoCallPage.qml" line="68"/>
+        <location filename="../src/mainview/components/UserInfoCallPage.qml" line="69"/>
         <source>Toggle to display side panel</source>
         <translation>切換以顯示側邊面板</translation>
     </message>
@@ -2253,7 +2292,7 @@ Please try again later.</source>
 <context>
     <name>UserProfile</name>
     <message>
-        <location filename="../src/mainview/components/UserProfile.qml" line="96"/>
+        <location filename="../src/mainview/components/UserProfile.qml" line="100"/>
         <source>Information</source>
         <translation>資訊</translation>
     </message>
@@ -2261,7 +2300,7 @@ Please try again later.</source>
 <context>
     <name>VideoCallPageContextMenuDeviceItem</name>
     <message>
-        <location filename="../src/mainview/components/VideoCallPageContextMenuDeviceItem.qml" line="41"/>
+        <location filename="../src/mainview/components/VideoCallPageContextMenuDeviceItem.qml" line="42"/>
         <source>No video device</source>
         <translation>無視訊裝置</translation>
     </message>
@@ -2274,22 +2313,22 @@ Please try again later.</source>
         <translation>歡迎來到</translation>
     </message>
     <message>
-        <location filename="../src/wizardview/components/WelcomePage.qml" line="85"/>
+        <location filename="../src/wizardview/components/WelcomePage.qml" line="86"/>
         <source>Create new Jami account</source>
         <translation>建立新 Jami 帳號</translation>
     </message>
     <message>
-        <location filename="../src/wizardview/components/WelcomePage.qml" line="125"/>
+        <location filename="../src/wizardview/components/WelcomePage.qml" line="126"/>
         <source>Import account from other device</source>
         <translation>從其他裝置匯入</translation>
     </message>
     <message>
-        <location filename="../src/wizardview/components/WelcomePage.qml" line="145"/>
+        <location filename="../src/wizardview/components/WelcomePage.qml" line="146"/>
         <source>Import account from backup file</source>
         <translation>從備份檔案匯入</translation>
     </message>
     <message>
-        <location filename="../src/wizardview/components/WelcomePage.qml" line="218"/>
+        <location filename="../src/wizardview/components/WelcomePage.qml" line="219"/>
         <source>Create new SIP account</source>
         <translation>建立新 SIP 帳號</translation>
     </message>

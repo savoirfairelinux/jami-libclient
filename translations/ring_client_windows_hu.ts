@@ -2,7 +2,7 @@
 <context>
     <name>AboutPopUp</name>
     <message>
-        <location filename="../src/mainview/components/AboutPopUp.qml" line="238"/>
+        <location filename="../src/mainview/components/AboutPopUp.qml" line="245"/>
         <source>Close</source>
         <translation>Bezárás</translation>
     </message>
@@ -10,7 +10,7 @@
 <context>
     <name>AccountComboBoxPopup</name>
     <message>
-        <location filename="../src/mainview/components/AccountComboBoxPopup.qml" line="160"/>
+        <location filename="../src/mainview/components/AccountComboBoxPopup.qml" line="169"/>
         <source>Add Account</source>
         <translation>Fiók hozzáadása</translation>
     </message>
@@ -18,7 +18,7 @@
 <context>
     <name>AccountProfile</name>
     <message>
-        <location filename="../src/settingsview/components/AccountProfile.qml" line="66"/>
+        <location filename="../src/settingsview/components/AccountProfile.qml" line="60"/>
         <source>Profile</source>
         <translation>Profil</translation>
     </message>
@@ -60,12 +60,12 @@
 <context>
     <name>AdvancedNameServerSettings</name>
     <message>
-        <location filename="../src/settingsview/components/AdvancedNameServerSettings.qml" line="50"/>
+        <location filename="../src/settingsview/components/AdvancedNameServerSettings.qml" line="51"/>
         <source>Name Server</source>
         <translation>Kiszolgálói néve</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/AdvancedNameServerSettings.qml" line="61"/>
+        <location filename="../src/settingsview/components/AdvancedNameServerSettings.qml" line="63"/>
         <source>Address</source>
         <translation>Cím</translation>
     </message>
@@ -73,20 +73,20 @@
 <context>
     <name>AdvancedSIPSecuritySettings</name>
     <message>
-        <location filename="../src/settingsview/components/AdvancedSIPSecuritySettings.qml" line="94"/>
-        <location filename="../src/settingsview/components/AdvancedSIPSecuritySettings.qml" line="112"/>
+        <location filename="../src/settingsview/components/AdvancedSIPSecuritySettings.qml" line="95"/>
+        <location filename="../src/settingsview/components/AdvancedSIPSecuritySettings.qml" line="113"/>
         <source>Certificate File</source>
         <translation>Tanúsítványfájl</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/AdvancedSIPSecuritySettings.qml" line="94"/>
-        <location filename="../src/settingsview/components/AdvancedSIPSecuritySettings.qml" line="112"/>
-        <location filename="../src/settingsview/components/AdvancedSIPSecuritySettings.qml" line="130"/>
+        <location filename="../src/settingsview/components/AdvancedSIPSecuritySettings.qml" line="95"/>
+        <location filename="../src/settingsview/components/AdvancedSIPSecuritySettings.qml" line="113"/>
+        <location filename="../src/settingsview/components/AdvancedSIPSecuritySettings.qml" line="131"/>
         <source>All files</source>
         <translation>Minden fájl</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/AdvancedSIPSecuritySettings.qml" line="130"/>
+        <location filename="../src/settingsview/components/AdvancedSIPSecuritySettings.qml" line="131"/>
         <source>Key File</source>
         <translation>Kulcsfájl</translation>
     </message>
@@ -94,7 +94,7 @@
 <context>
     <name>AdvancedSettings</name>
     <message>
-        <location filename="../src/settingsview/components/AdvancedSettings.qml" line="67"/>
+        <location filename="../src/settingsview/components/AdvancedSettings.qml" line="68"/>
         <source>Advanced Account Settings</source>
         <translation>Haladó fiókbeállítások</translation>
     </message>
@@ -102,12 +102,12 @@
 <context>
     <name>BackupKeyPage</name>
     <message>
-        <location filename="../src/wizardview/components/BackupKeyPage.qml" line="46"/>
+        <location filename="../src/wizardview/components/BackupKeyPage.qml" line="47"/>
         <source>Jami archive files</source>
         <translation>Jami archív fájlok</translation>
     </message>
     <message>
-        <location filename="../src/wizardview/components/BackupKeyPage.qml" line="46"/>
+        <location filename="../src/wizardview/components/BackupKeyPage.qml" line="47"/>
         <source>All files</source>
         <translation>Minden fájl</translation>
     </message>
@@ -115,7 +115,7 @@
 <context>
     <name>BannedContacts</name>
     <message>
-        <location filename="../src/settingsview/components/BannedContacts.qml" line="90"/>
+        <location filename="../src/settingsview/components/BannedContacts.qml" line="91"/>
         <source>Banned Contacts</source>
         <translation>Letiltott kapcsolatok</translation>
     </message>
@@ -123,13 +123,13 @@
 <context>
     <name>CallAdapter</name>
     <message>
-        <location filename="../src/calladapter.cpp" line="272"/>
-        <location filename="../src/calladapter.cpp" line="350"/>
+        <location filename="../src/calladapter.cpp" line="273"/>
+        <location filename="../src/calladapter.cpp" line="352"/>
         <source>me</source>
         <translation>én</translation>
     </message>
     <message>
-        <location filename="../src/calladapter.cpp" line="314"/>
+        <location filename="../src/calladapter.cpp" line="315"/>
         <source>is calling you</source>
         <translation>hív</translation>
     </message>
@@ -137,17 +137,17 @@
 <context>
     <name>CallAdvancedOptions</name>
     <message>
-        <location filename="../src/mainview/components/CallAdvancedOptions.qml" line="86"/>
+        <location filename="../src/mainview/components/CallAdvancedOptions.qml" line="87"/>
         <source>Add to conference</source>
         <translation>Hozzáadás a konferenciához</translation>
     </message>
     <message>
-        <location filename="../src/mainview/components/CallAdvancedOptions.qml" line="86"/>
+        <location filename="../src/mainview/components/CallAdvancedOptions.qml" line="87"/>
         <source>Transfer this call</source>
         <translation>Hívás átadása</translation>
     </message>
     <message>
-        <location filename="../src/mainview/components/CallAdvancedOptions.qml" line="104"/>
+        <location filename="../src/mainview/components/CallAdvancedOptions.qml" line="105"/>
         <source>Search contacts</source>
         <translation>Keresés a kapcsolatok között</translation>
     </message>
@@ -155,7 +155,7 @@
 <context>
     <name>CallOverlay</name>
     <message>
-        <location filename="../src/mainview/components/CallOverlay.qml" line="185"/>
+        <location filename="../src/mainview/components/CallOverlay.qml" line="257"/>
         <source>Toggle to display side panel</source>
         <translation>Oldallap nézet be-/kikapcsolása</translation>
     </message>
@@ -176,12 +176,12 @@
 <context>
     <name>ContactPicker</name>
     <message>
-        <location filename="../src/mainview/components/ContactPicker.qml" line="85"/>
+        <location filename="../src/mainview/components/ContactPicker.qml" line="87"/>
         <source>Add to conference</source>
         <translation>Hozzáadás a konferenciához</translation>
     </message>
     <message>
-        <location filename="../src/mainview/components/ContactPicker.qml" line="85"/>
+        <location filename="../src/mainview/components/ContactPicker.qml" line="87"/>
         <source>Transfer this call</source>
         <translation>Hívás átadása</translation>
     </message>
@@ -189,32 +189,32 @@
 <context>
     <name>ConversationSmartListContextMenu</name>
     <message>
-        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="39"/>
+        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="40"/>
         <source>Start video call</source>
         <translation>Videohívás indítása</translation>
     </message>
     <message>
-        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="48"/>
+        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="49"/>
         <source>Start audio call</source>
         <translation>Hanghívás indítása</translation>
     </message>
     <message>
-        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="58"/>
+        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="59"/>
         <source>Clear conversation</source>
         <translation>Beszélgetés törlése</translation>
     </message>
     <message>
-        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="67"/>
+        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="68"/>
         <source>Remove contact</source>
         <translation>Kapcsolat eltávolítása</translation>
     </message>
     <message>
-        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="109"/>
+        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="110"/>
         <source>Block contact</source>
         <translation>Kapcsolat letiltása</translation>
     </message>
     <message>
-        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="117"/>
+        <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="118"/>
         <source>Profile</source>
         <translation>Profil</translation>
     </message>
@@ -222,47 +222,47 @@
 <context>
     <name>CreateAccountPage</name>
     <message>
-        <location filename="../src/wizardview/components/CreateAccountPage.qml" line="81"/>
+        <location filename="../src/wizardview/components/CreateAccountPage.qml" line="82"/>
         <source>Jami archive files</source>
         <translation>Jami archív fájlok</translation>
     </message>
     <message>
-        <location filename="../src/wizardview/components/CreateAccountPage.qml" line="81"/>
+        <location filename="../src/wizardview/components/CreateAccountPage.qml" line="82"/>
         <source>All files</source>
         <translation>Minden fájl</translation>
     </message>
     <message>
-        <location filename="../src/wizardview/components/CreateAccountPage.qml" line="126"/>
+        <location filename="../src/wizardview/components/CreateAccountPage.qml" line="127"/>
         <source>Choose a username for your account</source>
         <translation>Válassz egy felhasználónevet fiókja</translation>
     </message>
     <message>
-        <location filename="../src/wizardview/components/CreateAccountPage.qml" line="153"/>
+        <location filename="../src/wizardview/components/CreateAccountPage.qml" line="155"/>
         <source>Choose your username</source>
         <translation>Válasszon egy felhasználónevet</translation>
     </message>
     <message>
-        <location filename="../src/wizardview/components/CreateAccountPage.qml" line="153"/>
+        <location filename="../src/wizardview/components/CreateAccountPage.qml" line="155"/>
         <source>Choose a name</source>
         <translation>Név kiválasztása</translation>
     </message>
     <message>
-        <location filename="../src/wizardview/components/CreateAccountPage.qml" line="168"/>
+        <location filename="../src/wizardview/components/CreateAccountPage.qml" line="170"/>
         <source>Invalid username</source>
         <translation>Érvénytelen felhasználónév</translation>
     </message>
     <message>
-        <location filename="../src/wizardview/components/CreateAccountPage.qml" line="168"/>
+        <location filename="../src/wizardview/components/CreateAccountPage.qml" line="170"/>
         <source>Invalid name</source>
         <translation>Érvénytelen név</translation>
     </message>
     <message>
-        <location filename="../src/wizardview/components/CreateAccountPage.qml" line="170"/>
+        <location filename="../src/wizardview/components/CreateAccountPage.qml" line="172"/>
         <source>Username already taken</source>
         <translation>A felhasználónév már foglalt</translation>
     </message>
     <message>
-        <location filename="../src/wizardview/components/CreateAccountPage.qml" line="170"/>
+        <location filename="../src/wizardview/components/CreateAccountPage.qml" line="172"/>
         <source>Name already taken</source>
         <translation>Név már foglalt</translation>
     </message>
@@ -270,29 +270,29 @@
 <context>
     <name>CurrentAccountSettings</name>
     <message>
-        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="111"/>
+        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="109"/>
         <source>Ok</source>
         <translation>Rendben</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="134"/>
-        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="175"/>
+        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="132"/>
+        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="173"/>
         <source>Success</source>
         <translation>Sikeres</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="134"/>
-        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="175"/>
+        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="132"/>
+        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="173"/>
         <source>Error</source>
         <translation>Hiba</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="162"/>
+        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="160"/>
         <source>Jami archive files</source>
         <translation>Jami archív fájlok</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="162"/>
+        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="160"/>
         <source>All files</source>
         <translation>Minden fájl</translation>
     </message>
@@ -308,12 +308,12 @@
 <context>
     <name>DeleteAccountDialog</name>
     <message>
-        <location filename="../src/commoncomponents/DeleteAccountDialog.qml" line="151"/>
+        <location filename="../src/commoncomponents/DeleteAccountDialog.qml" line="155"/>
         <source>Delete</source>
         <translation>Törlés</translation>
     </message>
     <message>
-        <location filename="../src/commoncomponents/DeleteAccountDialog.qml" line="172"/>
+        <location filename="../src/commoncomponents/DeleteAccountDialog.qml" line="176"/>
         <source>Cancel</source>
         <translation>Mé_gse</translation>
     </message>
@@ -321,12 +321,12 @@
 <context>
     <name>DeviceItemDelegate</name>
     <message>
-        <location filename="../src/settingsview/components/DeviceItemDelegate.qml" line="114"/>
+        <location filename="../src/settingsview/components/DeviceItemDelegate.qml" line="124"/>
         <source>Device Id</source>
         <translation>Eszközazonosító</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/DeviceItemDelegate.qml" line="142"/>
+        <location filename="../src/settingsview/components/DeviceItemDelegate.qml" line="154"/>
         <source>Save new device name</source>
         <translation>Új eszköz nevének mentése</translation>
     </message>
@@ -349,17 +349,17 @@
         <translation>Importálás biztonsági másolatból</translation>
     </message>
     <message>
-        <location filename="../src/wizardview/components/ImportFromBackupPage.qml" line="156"/>
+        <location filename="../src/wizardview/components/ImportFromBackupPage.qml" line="158"/>
         <source>Generating account…</source>
         <translation>Fiók létrehozása…</translation>
     </message>
     <message>
-        <location filename="../src/wizardview/components/ImportFromBackupPage.qml" line="200"/>
+        <location filename="../src/wizardview/components/ImportFromBackupPage.qml" line="203"/>
         <source>Back to welcome page</source>
         <translation>Vissza kezdőlapra</translation>
     </message>
     <message>
-        <location filename="../src/wizardview/components/ImportFromBackupPage.qml" line="138"/>
+        <location filename="../src/wizardview/components/ImportFromBackupPage.qml" line="140"/>
         <source>Password</source>
         <translation>Jelszó</translation>
     </message>
@@ -367,22 +367,22 @@
 <context>
     <name>ImportFromDevicePage</name>
     <message>
-        <location filename="../src/wizardview/components/ImportFromDevicePage.qml" line="84"/>
+        <location filename="../src/wizardview/components/ImportFromDevicePage.qml" line="86"/>
         <source>Password</source>
         <translation>Jelszó</translation>
     </message>
     <message>
-        <location filename="../src/wizardview/components/ImportFromDevicePage.qml" line="136"/>
+        <location filename="../src/wizardview/components/ImportFromDevicePage.qml" line="139"/>
         <source>Generating account…</source>
         <translation>Fiók létrehozása…</translation>
     </message>
     <message>
-        <location filename="../src/wizardview/components/ImportFromDevicePage.qml" line="175"/>
+        <location filename="../src/wizardview/components/ImportFromDevicePage.qml" line="179"/>
         <source>Back to welcome page</source>
         <translation>Vissza kezdőlapra</translation>
     </message>
     <message>
-        <location filename="../src/wizardview/components/ImportFromDevicePage.qml" line="119"/>
+        <location filename="../src/wizardview/components/ImportFromDevicePage.qml" line="122"/>
         <source>PIN</source>
         <translation>PIN-kód</translation>
     </message>
@@ -685,117 +685,117 @@
         <translation>Találkozási pont neve kiválasztása</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="270"/>
+        <location filename="../src/constant/JamiStrings.qml" line="271"/>
         <source>Launch at startup</source>
         <translation>Megnyitás indításkor</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="285"/>
+        <location filename="../src/constant/JamiStrings.qml" line="291"/>
         <source>Network error</source>
         <translation>Hálózati hiba</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="286"/>
+        <location filename="../src/constant/JamiStrings.qml" line="292"/>
         <source>SSL error</source>
         <translation>SSL hiba</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="307"/>
+        <location filename="../src/constant/JamiStrings.qml" line="313"/>
         <source>Enter the PIN from another configured Jami account. Use the &quot;Link Another Device&quot; feature to obtain a PIN.</source>
         <translation>Adja meg egy másik beállított Jami fiók PIN-kódját. Használja az „Eszköz összekapcsolása fiókhoz” működést a PIN-kód eléréséhez.</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="309"/>
+        <location filename="../src/constant/JamiStrings.qml" line="315"/>
         <source>Link device</source>
         <translation>Eszköz összekapcsolása</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="312"/>
+        <location filename="../src/constant/JamiStrings.qml" line="318"/>
         <source>Conversations</source>
         <translation>Beszélgetések</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="336"/>
+        <location filename="../src/constant/JamiStrings.qml" line="342"/>
         <source>Enable</source>
         <translation>Engedélyezés</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="344"/>
+        <location filename="../src/constant/JamiStrings.qml" line="350"/>
         <source>Display or hide preferences</source>
         <translation>Beállítások megjelenítése vagy elrejtése</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="347"/>
+        <location filename="../src/constant/JamiStrings.qml" line="353"/>
         <source>Add new plugin</source>
         <translation>Új beépülő modul hozzáadása</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="350"/>
+        <location filename="../src/constant/JamiStrings.qml" line="356"/>
         <source>Select a file</source>
         <translation>Fájl kiválasztása</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="351"/>
+        <location filename="../src/constant/JamiStrings.qml" line="357"/>
         <source>Select</source>
         <translation>Válasszon</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="352"/>
+        <location filename="../src/constant/JamiStrings.qml" line="358"/>
         <source>Choose image file</source>
         <translation>Képfájl kiválasztása</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="356"/>
+        <location filename="../src/constant/JamiStrings.qml" line="362"/>
         <source>Enter the rendezvous point&apos;s name</source>
         <translation>Találkozási pont neve megadása</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="357"/>
+        <location filename="../src/constant/JamiStrings.qml" line="363"/>
         <source>Creating rendezvous point…</source>
         <translation>Találkozási pont létrehozása…</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="377"/>
+        <location filename="../src/constant/JamiStrings.qml" line="383"/>
         <source>Create account from Jami Account Management Server (JAMS)</source>
         <translation>Fiók létrehozása a Jami-fiókkezelő kiszolgálóból (JAMS)</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="380"/>
+        <location filename="../src/constant/JamiStrings.qml" line="386"/>
         <source>Create new rendezvous point</source>
         <translation>Új találkozási pont létrehozása</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="381"/>
+        <location filename="../src/constant/JamiStrings.qml" line="387"/>
         <source>Create a Jami account</source>
         <translation>Jami-fiók létrehozása</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="382"/>
+        <location filename="../src/constant/JamiStrings.qml" line="388"/>
         <source>About Jami</source>
         <translation>A Jami névjegye</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="385"/>
+        <location filename="../src/constant/JamiStrings.qml" line="391"/>
         <source>Decline contact request</source>
         <translation>Kapcsolatkérelem elutasítása</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="386"/>
+        <location filename="../src/constant/JamiStrings.qml" line="392"/>
         <source>Accept contact request</source>
         <translation>Kapcsolatfelvételi kérelem elfogadása</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="389"/>
+        <location filename="../src/constant/JamiStrings.qml" line="395"/>
         <source>Automatically check for updates</source>
         <translation>Frissítések önműködő ellenőrzése</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="392"/>
+        <location filename="../src/constant/JamiStrings.qml" line="398"/>
         <source>Ok</source>
         <translation>Rendben</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="393"/>
+        <location filename="../src/constant/JamiStrings.qml" line="399"/>
         <source>Cancel</source>
         <translation>Mégse</translation>
     </message>
@@ -1076,11 +1076,13 @@
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="178"/>
+        <location filename="../src/constant/JamiStrings.qml" line="404"/>
         <source>Mute</source>
         <translation>Elnémítás</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="179"/>
+        <location filename="../src/constant/JamiStrings.qml" line="405"/>
         <source>Unmute</source>
         <translation>Némítás feloldása</translation>
     </message>
@@ -1372,287 +1374,332 @@
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="268"/>
+        <source>Enable dark theme</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="269"/>
         <source>Keep minimized on close</source>
         <translation>Bezáráskor legyen minimalizálva</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="269"/>
+        <location filename="../src/constant/JamiStrings.qml" line="270"/>
         <source>Run application on system startup</source>
         <translation>Alkalmazás futtatása rendszerindításkor</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="271"/>
+        <location filename="../src/constant/JamiStrings.qml" line="272"/>
         <source>Downloads directory</source>
         <translation>Letöltések könyvtár</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="272"/>
+        <location filename="../src/constant/JamiStrings.qml" line="273"/>
         <source>Choose download directory</source>
         <translation>Letöltési könyvtár kiválasztása</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="273"/>
+        <location filename="../src/constant/JamiStrings.qml" line="274"/>
         <source>Record call</source>
         <translation>Hívás felvétele</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="276"/>
+        <location filename="../src/constant/JamiStrings.qml" line="277"/>
+        <source>Chatview</source>
+        <translation>Csevegés nézet</translation>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="278"/>
+        <source>Show typing indicator</source>
+        <translation>Gépelésjelző megjelenítése</translation>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="279"/>
+        <source>Display images and videos into the chatview</source>
+        <translation>Képek és videók megjelenítése a csevegés nézetben</translation>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="282"/>
         <source>Install beta version</source>
         <translation>Béta változat telepítése</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="277"/>
+        <location filename="../src/constant/JamiStrings.qml" line="283"/>
         <source>Check for updates now</source>
         <translation>Frissítések ellenőrzése most</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="278"/>
+        <location filename="../src/constant/JamiStrings.qml" line="284"/>
         <source>Enable/Disable automatic updates</source>
         <translation>Önműködő frissítések engedélyezése be-/kikapcsolása</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="279"/>
+        <location filename="../src/constant/JamiStrings.qml" line="285"/>
         <source>toggle automatic updates</source>
         <translation>Önműködő frissítések engedélyezése be-/kikapcsolása</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="280"/>
+        <location filename="../src/constant/JamiStrings.qml" line="286"/>
         <source>Updates</source>
         <translation>Frissítések</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="281"/>
+        <location filename="../src/constant/JamiStrings.qml" line="287"/>
         <source>Update</source>
         <translation>Frissítés</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="282"/>
+        <location filename="../src/constant/JamiStrings.qml" line="288"/>
         <source>A new version of Jami was found
  Would you like to update now?</source>
         <translation>A Jami új verziója elérhető. Kíván most frissíteni?</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="283"/>
+        <location filename="../src/constant/JamiStrings.qml" line="289"/>
         <source>No new version of Jami was found</source>
         <translation>A Jami új verziója nem található</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="284"/>
+        <location filename="../src/constant/JamiStrings.qml" line="290"/>
         <source>An error occured when checking for a new version</source>
         <translation>Hiba történt az új verzió keresésekor</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="287"/>
+        <location filename="../src/constant/JamiStrings.qml" line="293"/>
         <source>Installer download canceled</source>
         <translation>Telepítő letöltése visszavonva</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="289"/>
+        <location filename="../src/constant/JamiStrings.qml" line="295"/>
         <source>This will uninstall your current Release version and you can always download the latest Release version on our website</source>
         <translation>Ez eltávolítja a jelenlegi kiadás verzióját, és bármikor letöltheti a legújabb kiadási verziót a honlapunkról</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="290"/>
+        <location filename="../src/constant/JamiStrings.qml" line="296"/>
         <source>Network disconnected</source>
         <translation>Hálózat leválasztva</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="291"/>
+        <location filename="../src/constant/JamiStrings.qml" line="297"/>
         <source>Something went wrong</source>
         <translation>Valami hiba történt</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="294"/>
+        <location filename="../src/constant/JamiStrings.qml" line="300"/>
         <source>Select a record directory</source>
         <translation>Rekordkönyvtár kiválasztása</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="297"/>
+        <location filename="../src/constant/JamiStrings.qml" line="303"/>
         <source>Archive</source>
         <translation>Archiválás</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="298"/>
+        <location filename="../src/constant/JamiStrings.qml" line="304"/>
         <source>Open file</source>
         <translation>Fájl megnyitása</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="299"/>
+        <location filename="../src/constant/JamiStrings.qml" line="305"/>
         <source>Create your account from a backup</source>
         <translation>Fiók létrehozása biztonsági másolatból</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="300"/>
+        <location filename="../src/constant/JamiStrings.qml" line="306"/>
         <source>You can obtain an archive by clicking on &quot;Backup account&quot; in the account settings. This will create a .gz file on your device.</source>
         <translation>Ha archívumot szeretne kapni, kattintson a fiókbeállítások „Fiók biztonsági mentése” elemére. Ez létrehoz egy .gz fájlt az eszközén.</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="303"/>
+        <location filename="../src/constant/JamiStrings.qml" line="309"/>
         <source>Restore an account from backup</source>
         <translation>Fiók visszaállítása biztonsági mentésből</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="306"/>
+        <location filename="../src/constant/JamiStrings.qml" line="312"/>
         <source>Enter Jami account password</source>
         <translation>Adja meg a Jami fiók jelszavát</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="315"/>
+        <location filename="../src/constant/JamiStrings.qml" line="321"/>
         <source>The PIN and the account password should be entered in your device within 10 minutes.</source>
         <translation>A PIN-kódot és a fiók jelszavát 10 percen belül be kell írni a készülékbe.</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="316"/>
+        <location filename="../src/constant/JamiStrings.qml" line="322"/>
         <source>Close</source>
         <translation>Bezárás</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="317"/>
+        <location filename="../src/constant/JamiStrings.qml" line="323"/>
         <source>Enter your account password</source>
         <translation>Adja meg fiókjának jelszavát</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="318"/>
+        <location filename="../src/constant/JamiStrings.qml" line="324"/>
         <source>Add Device</source>
         <translation>Eszköz hozzáadása</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="321"/>
+        <location filename="../src/constant/JamiStrings.qml" line="327"/>
         <source>Enter the password</source>
         <translation>Jelszó megadása</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="322"/>
+        <location filename="../src/constant/JamiStrings.qml" line="328"/>
         <source>Enter current password</source>
         <translation>Adja meg jelenlegi jelszavát</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="323"/>
+        <location filename="../src/constant/JamiStrings.qml" line="329"/>
         <source>Enter new password</source>
         <translation>Adja meg az új jelszót</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="324"/>
+        <location filename="../src/constant/JamiStrings.qml" line="330"/>
         <source>Confirm new password</source>
         <translation>Új jelszó megerősítése</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="325"/>
+        <location filename="../src/constant/JamiStrings.qml" line="331"/>
         <source>Change</source>
         <translation>Változás</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="326"/>
+        <location filename="../src/constant/JamiStrings.qml" line="332"/>
         <source>Confirm</source>
         <translation>Megerősítés</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="327"/>
+        <location filename="../src/constant/JamiStrings.qml" line="333"/>
         <source>Export</source>
         <translation>Exportálás</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="330"/>
+        <location filename="../src/constant/JamiStrings.qml" line="336"/>
         <source>Choose a picture as avatar</source>
         <translation>Megtestesüléskép kiválasztása</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="331"/>
+        <location filename="../src/constant/JamiStrings.qml" line="337"/>
         <source>Import avatar from image file</source>
         <translation>Megtestesüléskép importálása képfájlból</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="332"/>
+        <location filename="../src/constant/JamiStrings.qml" line="338"/>
         <source>Take photo</source>
         <translation>Fénykép készítése</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="333"/>
+        <location filename="../src/constant/JamiStrings.qml" line="339"/>
         <source>Retake photo</source>
         <translation>Új fénykép készítése</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="339"/>
+        <location filename="../src/constant/JamiStrings.qml" line="345"/>
         <source>Reset</source>
         <translation>Visszaállítás</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="340"/>
+        <location filename="../src/constant/JamiStrings.qml" line="346"/>
         <source>Select a plugin to install</source>
         <translation>Beépülő modul kijelölése a telepítéséhez</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="341"/>
+        <location filename="../src/constant/JamiStrings.qml" line="347"/>
         <source>Install plugin</source>
         <translation>Beépülő modul telepítése</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="355"/>
+        <location filename="../src/constant/JamiStrings.qml" line="361"/>
         <source>Save profile</source>
         <translation>Profil mentése</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="360"/>
+        <location filename="../src/constant/JamiStrings.qml" line="366"/>
         <source>Enter the account password to confirm the removal of this device</source>
         <translation>Adja meg a fiók jelszót ehhez eszköz eltávolításának megerősítéséhez</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="363"/>
+        <location filename="../src/constant/JamiStrings.qml" line="369"/>
         <source>Select a screen to share</source>
         <translation>Képernyőmegosztás kijelölése</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="366"/>
+        <location filename="../src/constant/JamiStrings.qml" line="372"/>
         <source>QR code</source>
         <translation>QR-kód</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="369"/>
+        <location filename="../src/constant/JamiStrings.qml" line="375"/>
         <source>Account QR</source>
         <translation>Fiók QR-kódja</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="372"/>
+        <location filename="../src/constant/JamiStrings.qml" line="378"/>
         <source>This is your Jami username.
 Copy and share it with your friends!</source>
         <translation>Ez az Ön Jami azonosítója.
 Másolja ki, és ossza meg barátaival!</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="373"/>
+        <location filename="../src/constant/JamiStrings.qml" line="379"/>
         <source>Link this device to an existing account</source>
         <translation>Ezen eszköz egy létező fiókhoz kapcsolása</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="374"/>
+        <location filename="../src/constant/JamiStrings.qml" line="380"/>
         <source>Advanced features</source>
         <translation>Haladó jellemzők</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="375"/>
+        <location filename="../src/constant/JamiStrings.qml" line="381"/>
         <source>Show advanced features</source>
         <translation>Haladó jellemzők megjelenítése</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="376"/>
+        <location filename="../src/constant/JamiStrings.qml" line="382"/>
         <source>Connect to a JAMS server</source>
         <translation>Csatlakozás a JAMS kiszolgálóhoz</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="378"/>
+        <location filename="../src/constant/JamiStrings.qml" line="384"/>
         <source>Add a SIP account</source>
         <translation>SIP fiók hozzáadása</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="379"/>
+        <location filename="../src/constant/JamiStrings.qml" line="385"/>
         <source>Error while creating your account. Check your credentials.</source>
         <translation>Hiba történt a fiók létrehozása során. Kérjük, ellenőrizze hitelesítő adatait.</translation>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="402"/>
+        <source>Set moderator</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="403"/>
+        <source>Unset moderator</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="406"/>
+        <source>Maximize</source>
+        <translation>Teljes méret</translation>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="407"/>
+        <source>Minimize</source>
+        <translation>Kis méret</translation>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="408"/>
+        <source>Hangup</source>
+        <translation>Hívás befejezése</translation>
     </message>
 </context>
 <context>
     <name>JamiUserIdentity</name>
     <message>
-        <location filename="../src/settingsview/components/JamiUserIdentity.qml" line="186"/>
+        <location filename="../src/settingsview/components/JamiUserIdentity.qml" line="190"/>
         <source>Register</source>
         <translation>Regisztráció</translation>
     </message>
@@ -1665,102 +1712,102 @@ Másolja ki, és ossza meg barátaival!</translation>
         <translation>Billentyűparancsok</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="45"/>
+        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="46"/>
         <source>Open account list</source>
         <translation>Fióklista megnyitása</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="50"/>
+        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="51"/>
         <source>Focus conversations list</source>
         <translation>Beszélgetéslista összpontosítása</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="55"/>
+        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="56"/>
         <source>Requests list</source>
         <translation>Kérések listája</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="60"/>
+        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="61"/>
         <source>Previous conversation</source>
         <translation>Előző beszélgetés</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="65"/>
+        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="66"/>
         <source>Next conversation</source>
         <translation>Következő beszélgetés</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="70"/>
+        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="71"/>
         <source>Search bar</source>
         <translation>Keresősáv</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="75"/>
+        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="76"/>
         <source>Fullscreen</source>
         <translation>Teljes képernyő</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="83"/>
+        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="84"/>
         <source>Start an audio call</source>
         <translation>Hanghívás indítása</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="88"/>
+        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="89"/>
         <source>Start a video call</source>
         <translation>Videohívás indítása</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="93"/>
+        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="94"/>
         <source>Clear history</source>
         <translation>Előzmények törlése</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="98"/>
+        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="99"/>
         <source>Block contact</source>
         <translation>Kapcsolat letiltása</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="103"/>
+        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="104"/>
         <source>Accept contact request</source>
         <translation>Kapcsolatfelvételi kérelem elfogadása</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="111"/>
+        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="112"/>
         <source>Media settings</source>
         <translation>Média beállítások</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="116"/>
+        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="117"/>
         <source>General settings</source>
         <translation>Általános beállítások</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="121"/>
+        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="122"/>
         <source>Account settings</source>
         <translation>Fiók beállítások</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="126"/>
+        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="127"/>
         <source>Open account creation wizard</source>
         <translation>Fiók létrehozása varázsló megnyitása</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="131"/>
+        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="132"/>
         <source>Open window</source>
         <translation>Ablak megnyitása</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="139"/>
+        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="140"/>
         <source>Answer an incoming call</source>
         <translation>Bejövő hívás fogadása</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="144"/>
+        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="145"/>
         <source>End call</source>
         <translation>Hívás befejezése</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="149"/>
+        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="150"/>
         <source>Decline the call request</source>
         <translation>Hívás kérelem elutasítása</translation>
     </message>
@@ -1768,7 +1815,7 @@ Másolja ki, és ossza meg barátaival!</translation>
 <context>
     <name>LinkDeviceDialog</name>
     <message>
-        <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="218"/>
+        <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="221"/>
         <source>Cancel</source>
         <translation>Mégse</translation>
     </message>
@@ -1786,22 +1833,22 @@ Kérjük, hogy próbálja újra később.</translation>
         <translation>Valami hiba történt.</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="198"/>
+        <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="201"/>
         <source>Register</source>
         <translation>Regisztráció</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="288"/>
+        <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="295"/>
         <source>Your PIN is:</source>
         <translation>PIN-kódja:</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="298"/>
+        <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="306"/>
         <source>PIN</source>
         <translation>PIN-kód</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="318"/>
+        <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="327"/>
         <source>This pin and the account password should be entered in your device within 10 minutes.</source>
         <translation>Ezt a PIN-kódot és a fiók jelszót 10 percen belül be kell írni a eszközbe.</translation>
     </message>
@@ -1814,27 +1861,27 @@ Kérjük, hogy próbálja újra később.</translation>
 <context>
     <name>LinkedDevices</name>
     <message>
-        <location filename="../src/settingsview/components/LinkedDevices.qml" line="96"/>
+        <location filename="../src/settingsview/components/LinkedDevices.qml" line="97"/>
         <source>Remove Device</source>
         <translation>Eszköz eltávolítása</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/LinkedDevices.qml" line="97"/>
+        <location filename="../src/settingsview/components/LinkedDevices.qml" line="98"/>
         <source>Are you sure you wish to remove this device?</source>
         <translation>Biztosan eltávolítja ezt az eszközt?</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/LinkedDevices.qml" line="99"/>
+        <location filename="../src/settingsview/components/LinkedDevices.qml" line="100"/>
         <source>Ok</source>
         <translation>Rendben</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/LinkedDevices.qml" line="99"/>
+        <location filename="../src/settingsview/components/LinkedDevices.qml" line="100"/>
         <source>Cancel</source>
         <translation>Mégse</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/LinkedDevices.qml" line="108"/>
+        <location filename="../src/settingsview/components/LinkedDevices.qml" line="109"/>
         <source>Linked Devices</source>
         <translation>Összekapcsolt eszközök</translation>
     </message>
@@ -1850,7 +1897,7 @@ Kérjük, hogy próbálja újra később.</translation>
 <context>
     <name>MediaHandlerItemDelegate</name>
     <message>
-        <location filename="../src/mainview/components/MediaHandlerItemDelegate.qml" line="83"/>
+        <location filename="../src/mainview/components/MediaHandlerItemDelegate.qml" line="87"/>
         <source>On/Off</source>
         <translation>Be/Ki</translation>
     </message>
@@ -1858,17 +1905,17 @@ Kérjük, hogy próbálja újra később.</translation>
 <context>
     <name>MediaHandlerPicker</name>
     <message>
-        <location filename="../src/mainview/components/MediaHandlerPicker.qml" line="89"/>
+        <location filename="../src/mainview/components/MediaHandlerPicker.qml" line="92"/>
         <source>Choose plugin</source>
         <translation>Beépülő modul kiválasztása</translation>
     </message>
     <message>
-        <location filename="../src/mainview/components/MediaHandlerPicker.qml" line="151"/>
+        <location filename="../src/mainview/components/MediaHandlerPicker.qml" line="155"/>
         <source>Go back to plugins list</source>
         <translation>Visszatérés a beépülő modulok listájához</translation>
     </message>
     <message>
-        <location filename="../src/mainview/components/MediaHandlerPicker.qml" line="191"/>
+        <location filename="../src/mainview/components/MediaHandlerPicker.qml" line="197"/>
         <source>Preferences</source>
         <translation>Beállítások</translation>
     </message>
@@ -1908,22 +1955,9 @@ Kérjük, hogy próbálja újra később.</translation>
     </message>
 </context>
 <context>
-    <name>ParticipantContextMenu</name>
-    <message>
-        <location filename="../src/mainview/components/ParticipantContextMenu.qml" line="48"/>
-        <source>Maximize participant</source>
-        <translation>Résztvevő teljes méretűvé tétele</translation>
-    </message>
-    <message>
-        <location filename="../src/mainview/components/ParticipantContextMenu.qml" line="54"/>
-        <source>Minimize participant</source>
-        <translation>Résztvevő kis méretűre állítása</translation>
-    </message>
-</context>
-<context>
     <name>PasswordDialog</name>
     <message>
-        <location filename="../src/commoncomponents/PasswordDialog.qml" line="224"/>
+        <location filename="../src/commoncomponents/PasswordDialog.qml" line="223"/>
         <source>Cancel</source>
         <translation>Mégse</translation>
     </message>
@@ -1931,23 +1965,23 @@ Kérjük, hogy próbálja újra később.</translation>
 <context>
     <name>PhotoboothView</name>
     <message>
-        <location filename="../src/commoncomponents/PhotoboothView.qml" line="78"/>
+        <location filename="../src/commoncomponents/PhotoboothView.qml" line="87"/>
         <source>Image Files</source>
         <translation>Képfájlok</translation>
     </message>
     <message>
-        <location filename="../src/commoncomponents/PhotoboothView.qml" line="78"/>
+        <location filename="../src/commoncomponents/PhotoboothView.qml" line="87"/>
         <source>All files</source>
         <translation>Minden fájl</translation>
     </message>
     <message>
-        <location filename="../src/commoncomponents/PhotoboothView.qml" line="218"/>
-        <location filename="../src/commoncomponents/PhotoboothView.qml" line="226"/>
+        <location filename="../src/commoncomponents/PhotoboothView.qml" line="233"/>
+        <location filename="../src/commoncomponents/PhotoboothView.qml" line="241"/>
         <source>Take photo</source>
         <translation>Fénykép készítése</translation>
     </message>
     <message>
-        <location filename="../src/commoncomponents/PhotoboothView.qml" line="223"/>
+        <location filename="../src/commoncomponents/PhotoboothView.qml" line="238"/>
         <source>Retake photo</source>
         <translation>Új fénykép készítése</translation>
     </message>
@@ -1955,7 +1989,7 @@ Kérjük, hogy próbálja újra később.</translation>
 <context>
     <name>PluginItemDelegate</name>
     <message>
-        <location filename="../src/settingsview/components/PluginItemDelegate.qml" line="78"/>
+        <location filename="../src/settingsview/components/PluginItemDelegate.qml" line="81"/>
         <source>Load/Unload</source>
         <translation>Betöltés/kirakodás</translation>
     </message>
@@ -1963,27 +1997,27 @@ Kérjük, hogy próbálja újra később.</translation>
 <context>
     <name>PluginListPreferencesView</name>
     <message>
-        <location filename="../src/settingsview/components/PluginListPreferencesView.qml" line="70"/>
+        <location filename="../src/settingsview/components/PluginListPreferencesView.qml" line="73"/>
         <source>Uninstall plugin</source>
         <translation>Beépülő modul eltávolítása</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/PluginListPreferencesView.qml" line="49"/>
+        <location filename="../src/settingsview/components/PluginListPreferencesView.qml" line="52"/>
         <source>Reset preferences</source>
         <translation>Beállítások visszaállítása</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/PluginListPreferencesView.qml" line="92"/>
+        <location filename="../src/settingsview/components/PluginListPreferencesView.qml" line="95"/>
         <source>Ok</source>
         <translation>Rendben</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/PluginListPreferencesView.qml" line="92"/>
+        <location filename="../src/settingsview/components/PluginListPreferencesView.qml" line="95"/>
         <source>Cancel</source>
         <translation>Mégse</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/PluginListPreferencesView.qml" line="167"/>
+        <location filename="../src/settingsview/components/PluginListPreferencesView.qml" line="171"/>
         <source>Uninstall</source>
         <translation>Eltávolítás</translation>
     </message>
@@ -1991,17 +2025,17 @@ Kérjük, hogy próbálja újra később.</translation>
 <context>
     <name>PluginListSettingsView</name>
     <message>
-        <location filename="../src/settingsview/components/PluginListSettingsView.qml" line="85"/>
+        <location filename="../src/settingsview/components/PluginListSettingsView.qml" line="87"/>
         <source>Plugin Files</source>
         <translation>Beépülő modul fájlok</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/PluginListSettingsView.qml" line="85"/>
+        <location filename="../src/settingsview/components/PluginListSettingsView.qml" line="87"/>
         <source>All files</source>
         <translation>Minden fájl</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/PluginListSettingsView.qml" line="104"/>
+        <location filename="../src/settingsview/components/PluginListSettingsView.qml" line="106"/>
         <source>Installed plugins</source>
         <translation>Telepített beépülő modulok</translation>
     </message>
@@ -2009,7 +2043,7 @@ Kérjük, hogy próbálja újra később.</translation>
 <context>
     <name>PreferenceItemDelegate</name>
     <message>
-        <location filename="../src/commoncomponents/PreferenceItemDelegate.qml" line="116"/>
+        <location filename="../src/commoncomponents/PreferenceItemDelegate.qml" line="119"/>
         <source>Edit preference</source>
         <translation>Beállítás szerkesztése</translation>
     </message>
@@ -2022,17 +2056,17 @@ Kérjük, hogy próbálja újra később.</translation>
         <translation>Profil megosztva csak a névjegyekkel</translation>
     </message>
     <message>
-        <location filename="../src/wizardview/components/ProfilePage.qml" line="84"/>
+        <location filename="../src/wizardview/components/ProfilePage.qml" line="85"/>
         <source>Optional</source>
         <translation>Választható</translation>
     </message>
     <message>
-        <location filename="../src/wizardview/components/ProfilePage.qml" line="116"/>
+        <location filename="../src/wizardview/components/ProfilePage.qml" line="117"/>
         <source>Enter your name</source>
         <translation>Név megadása</translation>
     </message>
     <message>
-        <location filename="../src/wizardview/components/ProfilePage.qml" line="150"/>
+        <location filename="../src/wizardview/components/ProfilePage.qml" line="151"/>
         <source>Generating account…</source>
         <translation>Fiók létrehozása…</translation>
     </message>
@@ -2064,7 +2098,7 @@ Kérjük, hogy próbálja újra később.</translation>
 <context>
     <name>RecordBox</name>
     <message>
-        <location filename="../src/mainview/components/RecordBox.qml" line="239"/>
+        <location filename="../src/mainview/components/RecordBox.qml" line="240"/>
         <source>Preview unavailable</source>
         <translation>Előnézet nem érhető el</translation>
     </message>
@@ -2072,22 +2106,22 @@ Kérjük, hogy próbálja újra később.</translation>
 <context>
     <name>RecordingSettings</name>
     <message>
-        <location filename="../src/settingsview/components/RecordingSettings.qml" line="68"/>
+        <location filename="../src/settingsview/components/RecordingSettings.qml" line="69"/>
         <source>Call Recording</source>
         <translation>Hívás felvétel</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/RecordingSettings.qml" line="81"/>
+        <location filename="../src/settingsview/components/RecordingSettings.qml" line="82"/>
         <source>Always record calls</source>
         <translation>Mindig legyen felvétel hívásokat</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/RecordingSettings.qml" line="110"/>
+        <location filename="../src/settingsview/components/RecordingSettings.qml" line="112"/>
         <source>Quality</source>
         <translation>Minőség</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/RecordingSettings.qml" line="165"/>
+        <location filename="../src/settingsview/components/RecordingSettings.qml" line="168"/>
         <source>Save in</source>
         <translation>Mentés helye</translation>
     </message>
@@ -2118,22 +2152,22 @@ Kérjük, hogy próbálja újra később.</translation>
 <context>
     <name>SIPUserIdentity</name>
     <message>
-        <location filename="../src/settingsview/components/SIPUserIdentity.qml" line="49"/>
+        <location filename="../src/settingsview/components/SIPUserIdentity.qml" line="50"/>
         <source>Username</source>
         <translation>Felhasználónév</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/SIPUserIdentity.qml" line="60"/>
+        <location filename="../src/settingsview/components/SIPUserIdentity.qml" line="61"/>
         <source>Hostname</source>
         <translation>Kiszolgálónév</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/SIPUserIdentity.qml" line="71"/>
+        <location filename="../src/settingsview/components/SIPUserIdentity.qml" line="72"/>
         <source>Proxy</source>
         <translation>Proxy</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/SIPUserIdentity.qml" line="82"/>
+        <location filename="../src/settingsview/components/SIPUserIdentity.qml" line="83"/>
         <source>Password</source>
         <translation>Jelszó</translation>
     </message>
@@ -2141,8 +2175,8 @@ Kérjük, hogy próbálja újra később.</translation>
 <context>
     <name>SelectScreen</name>
     <message>
-        <location filename="../src/mainview/components/SelectScreen.qml" line="166"/>
-        <location filename="../src/mainview/components/SelectScreen.qml" line="232"/>
+        <location filename="../src/mainview/components/SelectScreen.qml" line="172"/>
+        <location filename="../src/mainview/components/SelectScreen.qml" line="241"/>
         <source>Screen</source>
         <translation>Képernyő</translation>
     </message>
@@ -2158,22 +2192,22 @@ Kérjük, hogy próbálja újra később.</translation>
 <context>
     <name>SettingsMenu</name>
     <message>
-        <location filename="../src/settingsview/components/SettingsMenu.qml" line="34"/>
+        <location filename="../src/settingsview/components/SettingsMenu.qml" line="35"/>
         <source>Account</source>
         <translation>Fiók</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/SettingsMenu.qml" line="36"/>
+        <location filename="../src/settingsview/components/SettingsMenu.qml" line="37"/>
         <source>General</source>
         <translation>Általános</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/SettingsMenu.qml" line="38"/>
+        <location filename="../src/settingsview/components/SettingsMenu.qml" line="39"/>
         <source>Audio/Video</source>
         <translation>Hang/videó</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/SettingsMenu.qml" line="40"/>
+        <location filename="../src/settingsview/components/SettingsMenu.qml" line="41"/>
         <source>Plugin</source>
         <translation>Beépülő modul</translation>
     </message>
@@ -2181,17 +2215,17 @@ Kérjük, hogy próbálja újra később.</translation>
 <context>
     <name>SettingsView</name>
     <message>
-        <location filename="../src/settingsview/SettingsView.qml" line="151"/>
+        <location filename="../src/settingsview/SettingsView.qml" line="149"/>
         <source>Account Settings</source>
         <translation>Fiók beállítások</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/SettingsView.qml" line="153"/>
+        <location filename="../src/settingsview/SettingsView.qml" line="151"/>
         <source>General</source>
         <translation>Általános</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/SettingsView.qml" line="157"/>
+        <location filename="../src/settingsview/SettingsView.qml" line="155"/>
         <source>Plugin</source>
         <translation>Beépülő modul</translation>
     </message>
@@ -2222,12 +2256,17 @@ Kérjük, hogy próbálja újra később.</translation>
 <context>
     <name>SystemSettings</name>
     <message>
-        <location filename="../src/settingsview/components/SystemSettings.qml" line="58"/>
+        <location filename="../src/settingsview/components/SystemSettings.qml" line="59"/>
         <source>System</source>
         <translation>Rendszer</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/SystemSettings.qml" line="73"/>
+        <location filename="../src/settingsview/components/SystemSettings.qml" line="75"/>
+        <source>Enable dark theme</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/settingsview/components/SystemSettings.qml" line="93"/>
         <source>Enable desktop notifications</source>
         <translation>Az asztali értesítések engedélyezése</translation>
     </message>
@@ -2235,7 +2274,7 @@ Kérjük, hogy próbálja újra később.</translation>
 <context>
     <name>UserIdentity</name>
     <message>
-        <location filename="../src/settingsview/components/UserIdentity.qml" line="49"/>
+        <location filename="../src/settingsview/components/UserIdentity.qml" line="50"/>
         <source>Identity</source>
         <translation>Személyazonosság</translation>
     </message>
@@ -2243,7 +2282,7 @@ Kérjük, hogy próbálja újra később.</translation>
 <context>
     <name>UserInfoCallPage</name>
     <message>
-        <location filename="../src/mainview/components/UserInfoCallPage.qml" line="68"/>
+        <location filename="../src/mainview/components/UserInfoCallPage.qml" line="69"/>
         <source>Toggle to display side panel</source>
         <translation>Oldallap nézet be-/kikapcsolása</translation>
     </message>
@@ -2251,7 +2290,7 @@ Kérjük, hogy próbálja újra később.</translation>
 <context>
     <name>UserProfile</name>
     <message>
-        <location filename="../src/mainview/components/UserProfile.qml" line="96"/>
+        <location filename="../src/mainview/components/UserProfile.qml" line="100"/>
         <source>Information</source>
         <translation>Tájékoztatás</translation>
     </message>
@@ -2259,7 +2298,7 @@ Kérjük, hogy próbálja újra később.</translation>
 <context>
     <name>VideoCallPageContextMenuDeviceItem</name>
     <message>
-        <location filename="../src/mainview/components/VideoCallPageContextMenuDeviceItem.qml" line="41"/>
+        <location filename="../src/mainview/components/VideoCallPageContextMenuDeviceItem.qml" line="42"/>
         <source>No video device</source>
         <translation>Nincs videoeszköz</translation>
     </message>
@@ -2272,22 +2311,22 @@ Kérjük, hogy próbálja újra később.</translation>
         <translation>Isten hozott</translation>
     </message>
     <message>
-        <location filename="../src/wizardview/components/WelcomePage.qml" line="85"/>
+        <location filename="../src/wizardview/components/WelcomePage.qml" line="86"/>
         <source>Create new Jami account</source>
         <translation>Új Jami fiók létrehozása</translation>
     </message>
     <message>
-        <location filename="../src/wizardview/components/WelcomePage.qml" line="125"/>
+        <location filename="../src/wizardview/components/WelcomePage.qml" line="126"/>
         <source>Import account from other device</source>
         <translation>Fiók importálása más eszközről</translation>
     </message>
     <message>
-        <location filename="../src/wizardview/components/WelcomePage.qml" line="145"/>
+        <location filename="../src/wizardview/components/WelcomePage.qml" line="146"/>
         <source>Import account from backup file</source>
         <translation>Fiók importálása biztonsági mentési fájlból</translation>
     </message>
     <message>
-        <location filename="../src/wizardview/components/WelcomePage.qml" line="218"/>
+        <location filename="../src/wizardview/components/WelcomePage.qml" line="219"/>
         <source>Create new SIP account</source>
         <translation>Új SIP fiók létrehozása</translation>
     </message>
