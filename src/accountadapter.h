@@ -108,6 +108,7 @@ signals:
      * Trigger other components to reconnect account related signals.
      */
     void accountStatusChanged(QString accountId = {});
+
     void updateConversationForAddedContact();
     /*
      * send report failure to QML to make it show the right UI state .
@@ -144,7 +145,6 @@ private:
     QMetaObject::Connection accountStatusChangedConnection_;
     QMetaObject::Connection contactAddedConnection_;
     QMetaObject::Connection addedToConferenceConnection_;
-    QMetaObject::Connection accountProfileChangedConnection_;
     QMetaObject::Connection contactUnbannedConnection_;
     QMetaObject::Connection registeredNameSavedConnection_;
 };

@@ -31,7 +31,6 @@ class AudioOutputDeviceModel : public QAbstractListModel
 {
     Q_OBJECT
 public:
-public:
     enum Role { Device_ID = Qt::UserRole + 1, ID_UTF8 };
     Q_ENUM(Role)
 

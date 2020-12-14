@@ -1,6 +1,7 @@
 /*
  * Copyright (C) 2019-2020 by Savoir-faire Linux
- * Author: Yang Wang   <yang.wang@savoirfairelinux.com>
+ * Author: Yang Wang <yang.wang@savoirfairelinux.com>
+ * Author: Albert Babí Oller <albert.babi@savoirfairelinux.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,8 +33,10 @@ ItemDelegate {
 
     property string contactName : ""
     property string contactID: ""
+    property string btnImgSource: ""
+    property string btnToolTip: ""
 
-    signal btnReAddContactClicked
+    signal btnContactClicked
 
     highlighted: ListView.isCurrentItem
     background: Rectangle {
@@ -74,7 +77,7 @@ ItemDelegate {
                             radius: {
                                 var size = ((avatarImg.width <= avatarImg.height) ?
                                                 avatarImg.width:avatarImg.height)
-                                return size /2
+                                return size / 2
                             }
                         }
                     }
@@ -82,12 +85,12 @@ ItemDelegate {
             }
         }
 
-        ColumnLayout{
+        ColumnLayout {
             Layout.fillWidth: true
             Layout.fillHeight: true
             Layout.alignment: Qt.AlignVCenter
 
-            Label{
+            Label {
                 id: labelContactName
 
                 Layout.fillWidth: true
@@ -104,7 +107,7 @@ ItemDelegate {
                 color: JamiTheme.textColor
             }
 
-            Label{
+            Label {
                 id: labelContactId
 
                 Layout.fillWidth: true
@@ -124,21 +127,21 @@ ItemDelegate {
             }
         }
 
-        PushButton{
-            id: btnReAddContact
+        PushButton {
+            id: btnContact
 
             Layout.alignment: Qt.AlignVCenter | Qt.AlignRight
             Layout.rightMargin: 16
             Layout.preferredWidth: JamiTheme.preferredFieldHeight
             Layout.preferredHeight: JamiTheme.preferredFieldHeight
 
-            source: "qrc:/images/icons/person_add-24px.svg"
+            source: btnImgSource
             imageColor: JamiTheme.textColor
             normalColor: highlighted? JamiTheme.selectedColor : JamiTheme.editBackgroundColor
 
-            toolTipText: JamiStrings.reinstateContact
+            toolTipText: btnToolTip
 
-            onClicked: btnReAddContactClicked()
+            onClicked: btnContactClicked()
         }
     }
 }

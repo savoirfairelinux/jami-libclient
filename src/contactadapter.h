@@ -95,4 +95,10 @@ private:
      */
     std::unique_ptr<SmartListModel> smartListModel_;
     std::unique_ptr<SelectableProxyModel> selectableProxyModel_;
+
+    QStringList defaultModerators_;
+
+signals:
+    void defaultModeratorsUpdated();
+
 };

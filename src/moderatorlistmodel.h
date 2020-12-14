@@ -1,7 +1,6 @@
 /*
  * Copyright (C) 2019-2020 by Savoir-faire Linux
- * Author: Isa Nanic <isa.nanic@savoirfairelinux.com>
- * Author: Yang Wang <yang.wang@savoirfairelinux.com>
+ * Author: Albert Babí Oller <albert.babi@savoirfairelinux.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,15 +20,15 @@
 
 #include <QAbstractListModel>
 
-class BannedListModel : public QAbstractListModel
+class ModeratorListModel : public QAbstractListModel
 {
     Q_OBJECT
 public:
     enum Role { ContactName = Qt::UserRole + 1, ContactID };
     Q_ENUM(Role)
 
-    explicit BannedListModel(QObject* parent = nullptr);
-    ~BannedListModel();
+    explicit ModeratorListModel(QObject* parent = nullptr);
+    ~ModeratorListModel();
 
     /*
      * QAbstractListModel override.

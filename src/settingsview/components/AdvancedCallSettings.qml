@@ -1,6 +1,7 @@
 /*
  * Copyright (C) 2020 by Savoir-faire Linux
  * Author: Aline Gondim Santos <aline.gondimsantos@savoirfairelinux.com>
+ * Author: Albert Babí Oller <albert.babi@savoirfairelinux.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,6 +29,8 @@ import net.jami.Adapters 1.0
 import net.jami.Constants 1.0
 
 import "../../commoncomponents"
+import "../../mainview/components"
+import "../../mainview/js/contactpickercreation.js" as ContactPickerCreation
 
 ColumnLayout {
     id: root
@@ -43,6 +46,7 @@ ColumnLayout {
 
         btnRingtone.setEnabled(SettingsAdapter.getAccountConfig_Ringtone_RingtoneEnabled())
         btnRingtone.setText(UtilsAdapter.toFileInfoName(SettingsAdapter.getAccountConfig_Ringtone_RingtonePath()))
+        updateAndShowModeratorsSlot()
     }
 
     function changeRingtonePath(url) {
@@ -51,6 +55,21 @@ ColumnLayout {
             btnRingtone.setText(UtilsAdapter.toFileInfoName(url))
         } else if (SettingsAdapter.getAccountConfig_Ringtone_RingtonePath().length === 0){
             btnRingtone.setText(JamiStrings.addCustomRingtone)
+        }
+    }
+
+    function updateAndShowModeratorsSlot() {
+        toggleLocalModerators.checked = SettingsAdapter.isLocalModeratorsEnabled(
+                    AccountAdapter.currentAccountId)
+        moderatorListWidget.model.reset()
+        moderatorListWidget.visible = (moderatorListWidget.model.rowCount() > 0)
+    }
+
+    Connections {
+        target: ContactAdapter
+
+        function onDefaultModeratorsUpdated() {
+            updateAndShowModeratorsSlot()
         }
     }
 
@@ -140,6 +159,79 @@ ColumnLayout {
 
             onSwitchToggled: {
                 SettingsAdapter.setIsRendezVous(checked)
+            }
+        }
+
+        ToggleSwitch {
+            id: toggleLocalModerators
+
+            labelText: JamiStrings.enableLocalModerators
+            fontPointSize: JamiTheme.settingsFontSize
+
+            onSwitchToggled: SettingsAdapter.enableLocalModerators(
+                                 AccountAdapter.currentAccountId, checked)
+        }
+
+        ElidedTextLabel {
+            Layout.fillWidth: true
+
+            eText: JamiStrings.defaultModerators
+            fontSize: JamiTheme.settingsFontSize
+            maxWidth: root.width - JamiTheme.preferredFieldHeight
+                        - JamiTheme.preferredMarginSize * 4
+        }
+
+        ListViewJami {
+            id: moderatorListWidget
+
+            Layout.fillWidth: true
+            Layout.preferredHeight: 160
+
+            model: ModeratorListModel {}
+
+            delegate: ContactItemDelegate {
+                id: moderatorListDelegate
+
+                width: moderatorListWidget.width
+                height: 74
+
+                contactName: ContactName
+                contactID: ContactID
+
+                btnImgSource: "qrc:/images/icons/round-remove_circle-24px.svg"
+                btnToolTip: JamiStrings.removeDefaultModerator
+
+                onClicked: moderatorListWidget.currentIndex = index
+                onBtnContactClicked: {
+                    SettingsAdapter.setDefaultModerator(
+                                AccountAdapter.currentAccountId, contactID, false)
+                    updateAndShowModeratorsSlot()
+                }
+            }
+        }
+
+        MaterialButton {
+            id: addDefaultModeratorPushButton
+
+            Layout.alignment: Qt.AlignCenter
+            Layout.preferredWidth: JamiTheme.preferredFieldWidth
+            Layout.preferredHeight: JamiTheme.preferredFieldHeight
+
+            color: JamiTheme.buttonTintedBlack
+            hoveredColor: JamiTheme.buttonTintedBlackHovered
+            pressedColor: JamiTheme.buttonTintedBlackPressed
+            outlined: true
+            toolTipText: JamiStrings.addDefaultModerator
+
+            source: "qrc:/images/icons/round-add-24px.svg"
+
+            text: JamiStrings.addDefaultModerator
+
+            onClicked: {
+                ContactPickerCreation.createContactPickerObjects(
+                            ContactPicker.ContactPickerType.CONVERSATION,
+                            mainView)
+                ContactPickerCreation.openContactPicker()
             }
         }
     }

@@ -27,6 +27,8 @@ import net.jami.Adapters 1.0
 import net.jami.Constants 1.0
 
 import "components"
+import "../mainview/js/contactpickercreation.js" as ContactPickerCreation
+
 
 Rectangle {
     id: root

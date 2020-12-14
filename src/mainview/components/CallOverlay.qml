@@ -440,8 +440,6 @@ Rectangle {
             ContactPickerCreation.createContactPickerObjects(
                         ContactPicker.ContactPickerType.JAMICONFERENCE,
                         callOverlayRect)
-            ContactPickerCreation.calculateCurrentGeo(
-                        callOverlayRect.width / 2, callOverlayRect.height / 2)
             ContactPickerCreation.openContactPicker()
         }
 
@@ -551,20 +549,6 @@ Rectangle {
 
     color: "transparent"
 
-    onWidthChanged: {
-        ContactPickerCreation.calculateCurrentGeo(callOverlayRect.width / 2,
-                                                  callOverlayRect.height / 2)
-        MediaHandlerPickerCreation.calculateCurrentGeo(callOverlayRect.width / 2,
-                                                  callOverlayRect.height / 2)
-    }
-
-    onHeightChanged: {
-        ContactPickerCreation.calculateCurrentGeo(callOverlayRect.width / 2,
-                                                  callOverlayRect.height / 2)
-        MediaHandlerPickerCreation.calculateCurrentGeo(callOverlayRect.width / 2,
-                                                  callOverlayRect.height / 2)
-    }
-
     CallViewContextMenu {
         id: callViewContextMenu
 
@@ -573,16 +557,12 @@ Rectangle {
             ContactPickerCreation.createContactPickerObjects(
                         ContactPicker.ContactPickerType.SIPTRANSFER,
                         callOverlayRect)
-            ContactPickerCreation.calculateCurrentGeo(
-                        callOverlayRect.width / 2, callOverlayRect.height / 2)
             ContactPickerCreation.openContactPicker()
         }
 
         onPluginItemClicked: {
             // Create media handler picker - PLUGINS
             MediaHandlerPickerCreation.createMediaHandlerPickerObjects(callOverlayRect)
-            MediaHandlerPickerCreation.calculateCurrentGeo(
-                        callOverlayRect.width / 2, callOverlayRect.height / 2)
             MediaHandlerPickerCreation.openMediaHandlerPicker()
         }
     }

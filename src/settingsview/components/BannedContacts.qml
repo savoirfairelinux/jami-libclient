@@ -30,7 +30,7 @@ import net.jami.Constants 1.0
 import "../../commoncomponents"
 
 ColumnLayout {
-    id:root
+    id: root
 
     property bool isSIP
 
@@ -120,18 +120,20 @@ ColumnLayout {
 
         model: BannedListModel {}
 
-        delegate: BannedItemDelegate {
+        delegate: ContactItemDelegate {
             id: bannedListDelegate
 
             width: bannedListWidget.width
             height: 74
 
-            contactName : ContactName
+            contactName: ContactName
             contactID: ContactID
 
-            onClicked: bannedListWidget.currentIndex = index
+            btnImgSource: "qrc:/images/icons/round-remove_circle-24px.svg"
+            btnToolTip: JamiStrings.reinstateContact
 
-            onBtnReAddContactClicked: unban(index)
+            onClicked: bannedListWidget.currentIndex = index
+            onBtnContactClicked: unban(index)
         }
     }
 }

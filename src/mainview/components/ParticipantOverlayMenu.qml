@@ -41,6 +41,7 @@ Rectangle {
 
     property string uri: ""
     property string bestName: ""
+    property bool isLocalMuted: false
     property bool showSetModerator: false
     property bool showUnsetModerator: false
     property bool showModeratorMute: false
@@ -150,7 +151,10 @@ Rectangle {
                                        : JamiTheme.whiteColor
 
                     onClicked: CallAdapter.muteParticipant(uri, showModeratorMute)
-                    onHoveredChanged: toggleParticipantToolTip.visible = hovered
+                    onHoveredChanged: {
+                        toggleParticipantToolTip.visible = hovered
+                        localMutedText.visible = hovered && isLocalMuted
+                    }
 
                     Text {
                         id: toggleParticipantToolTip
@@ -167,6 +171,22 @@ Rectangle {
                         color: JamiTheme.whiteColor
                         font.pointSize: JamiTheme.tinyFontSize
                     }
+
+                    Text {
+                        id: localMutedText
+
+                        visible: false
+                        width: parent.width
+                        text: "(" + JamiStrings.localMuted + ")"
+                        horizontalAlignment: Text.AlignHCenter
+                        verticalAlignment: Text.AlignTop
+
+                        anchors.top: parent.bottom
+                        anchors.topMargin: 16
+                        color: JamiTheme.whiteColor
+                        font.pointSize: JamiTheme.tinyFontSize
+                    }
+
                 }
 
                 PushButton {

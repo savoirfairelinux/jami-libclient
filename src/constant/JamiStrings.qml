@@ -413,6 +413,14 @@ Item {
     property string maximizeParticipant: qsTr("Maximize")
     property string minimizeParticipant: qsTr("Minimize")
     property string hangupParticipant: qsTr("Hangup")
+    property string localMuted: qsTr("local muted")
+
+    // Settings moderation
+    property string conferenceModeration: qsTr("Conference moderation")
+    property string defaultModerators: qsTr("Default moderators")
+    property string enableLocalModerators: qsTr("Enable local moderators")
+    property string addDefaultModerator: qsTr("Add default moderator")
+    property string removeDefaultModerator: qsTr("Remove default moderator")
 
     // Daemon reconnection
     property string reconnectDaemon: qsTr("Trying to reconnect to the Jami daemon (dring)…")

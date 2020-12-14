@@ -70,12 +70,12 @@ Rectangle {
         overlayMenu.showUnsetModerator = isHost && !isLocal && participantIsModerator
 
         var muteState = CallAdapter.getMuteState(overlayMenu.uri)
-        var isLocalMuted = muteState === CallAdapter.LOCAL_MUTED
+        overlayMenu.isLocalMuted = muteState === CallAdapter.LOCAL_MUTED
                 || muteState === CallAdapter.BOTH_MUTED
         var isModeratorMuted = muteState === CallAdapter.MODERATOR_MUTED
                 || muteState === CallAdapter.BOTH_MUTED
 
-        participantIsMuted = isLocalMuted || isModeratorMuted
+        participantIsMuted = overlayMenu.isLocalMuted || isModeratorMuted
 
         overlayMenu.showModeratorMute = isModerator && !isModeratorMuted
         overlayMenu.showModeratorUnmute = isModerator && isModeratorMuted

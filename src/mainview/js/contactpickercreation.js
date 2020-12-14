@@ -1,4 +1,3 @@
-
 /*
  * Copyright (C) 2020 by Savoir-faire Linux
  * Author: Mingrui Zhang <mingrui.zhang@savoirfairelinux.com>
@@ -27,7 +26,6 @@ var contactPickerObject
 function createContactPickerObjects(type, parent) {
     if (contactPickerObject) {
 
-
         /*
          * If already created, reset parameters, since object cannot be destroyed.
          */
@@ -49,23 +47,15 @@ function finishCreation(type, parent) {
                                                                   "type": type
                                                               })
     if (contactPickerObject === null) {
-
-
         /*
          * Error Handling.
          */
         console.log("Error creating object for contact picker")
-    }
-}
-
-
-/*
- * Put contact picker in the middle of container.
- */
-function calculateCurrentGeo(containerX, containerY) {
-    if (contactPickerObject) {
-        contactPickerObject.x = containerX - contactPickerObject.width / 2
-        contactPickerObject.y = containerY - contactPickerObject.height / 2
+    } else {
+        contactPickerObject.x = Qt.binding(function(){
+            return parent.width/2 - contactPickerObject.width / 2})
+        contactPickerObject.y = Qt.binding(function(){
+            return parent.height/2 - contactPickerObject.height / 2})
     }
 }
 

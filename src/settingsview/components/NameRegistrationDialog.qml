@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 2020 by Savoir-faire Linux
  * Author: Yang Wang <yang.wang@savoirfairelinux.com>
- * Author: Albert Babí <yang.wang@savoirfairelinux.com>
+ * Author: Albert Babí <albert.babi@savoirfairelinux.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by

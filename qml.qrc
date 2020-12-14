@@ -47,7 +47,7 @@
         <file>src/settingsview/components/PluginItemDelegate.qml</file>
         <file>src/mainview/components/MediaHandlerItemDelegate.qml</file>
         <file>src/commoncomponents/PreferenceItemDelegate.qml</file>
-        <file>src/settingsview/components/BannedItemDelegate.qml</file>
+        <file>src/settingsview/components/ContactItemDelegate.qml</file>
         <file>src/settingsview/components/MediaCodecDelegate.qml</file>
         <file>src/settingsview/components/NameRegistrationDialog.qml</file>
         <file>src/settingsview/components/LinkDeviceDialog.qml</file>
@@ -92,7 +92,6 @@
         <file>src/mainview/js/incomingcallpagecreation.js</file>
         <file>src/mainview/components/ContactSearchBar.qml</file>
         <file>src/mainview/components/VideoCallPage.qml</file>
-        <file>src/mainview/components/CallAdvancedOptions.qml</file>
         <file>src/mainview/components/ParticipantOverlay.qml</file>
         <file>src/mainview/components/ProjectCreditsScrollView.qml</file>
         <file>src/mainview/components/AccountComboBoxPopup.qml</file>

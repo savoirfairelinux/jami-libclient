@@ -47,17 +47,11 @@ function finishCreation(parent) {
          * Error Handling.
          */
         console.log("Error creating object for mediahandler picker")
-    }
-}
-
-
-/*
- * Put mediahandler picker in the middle of container.
- */
-function calculateCurrentGeo(containerX, containerY) {
-    if (mediahandlerPickerObject) {
-        mediahandlerPickerObject.x = containerX - mediahandlerPickerObject.width / 2
-        mediahandlerPickerObject.y = containerY - mediahandlerPickerObject.height / 2
+    } else {
+        mediahandlerPickerObject.x = Qt.binding(function(){
+            return parent.width/2 - mediahandlerPickerObject.width / 2})
+        mediahandlerPickerObject.y = Qt.binding(function(){
+            return parent.height/2 - mediahandlerPickerObject.height / 2})
     }
 }
 

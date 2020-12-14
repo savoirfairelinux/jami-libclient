@@ -26,6 +26,7 @@
 #include "audiooutputdevicemodel.h"
 #include "avadapter.h"
 #include "bannedlistmodel.h"
+#include "moderatorlistmodel.h"
 #include "calladapter.h"
 #include "contactadapter.h"
 #include "conversationsadapter.h"
@@ -103,6 +104,7 @@ registerTypes()
     QML_REGISTERTYPE("net.jami.Models", MediaHandlerItemListModel, 1, 0);
     QML_REGISTERTYPE("net.jami.Models", PreferenceItemListModel, 1, 0);
     QML_REGISTERTYPE("net.jami.Models", BannedListModel, 1, 0);
+    QML_REGISTERTYPE("net.jami.Models", ModeratorListModel, 1, 0);
     QML_REGISTERTYPE("net.jami.Models", MediaCodecListModel, 1, 0);
     QML_REGISTERTYPE("net.jami.Models", AccountsToMigrateListModel, 1, 0);
     QML_REGISTERTYPE("net.jami.Models", AudioInputDeviceModel, 1, 0);
