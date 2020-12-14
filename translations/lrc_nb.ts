@@ -33,6 +33,7 @@
     </message>
     <message>
         <location filename="../src/api/call.h" line="71"/>
+        <location filename="../src/chatview.cpp" line="63"/>
         <source>Connecting</source>
         <translation>Kobler opp</translation>
     </message>
@@ -49,6 +50,7 @@
     <message>
         <location filename="../src/api/call.h" line="77"/>
         <location filename="../src/api/call.h" line="83"/>
+        <location filename="../src/chatview.cpp" line="70"/>
         <source>Finished</source>
         <translation>Fullført</translation>
     </message>
@@ -110,8 +112,8 @@
         <translation>Invitasjon godtatt</translation>
     </message>
     <message>
-        <location filename="../src/avmodel.cpp" line="330"/>
-        <location filename="../src/avmodel.cpp" line="349"/>
+        <location filename="../src/avmodel.cpp" line="335"/>
+        <location filename="../src/avmodel.cpp" line="354"/>
         <source>default</source>
         <translation>standard</translation>
     </message>
@@ -151,6 +153,7 @@
         <translation>OK</translation>
     </message>
     <message>
+        <location filename="../src/chatview.cpp" line="64"/>
         <location filename="../src/newcallmodel.cpp" line="60"/>
         <source>Accepted</source>
         <translation>Godkjent</translation>
@@ -497,6 +500,36 @@
         <location filename="../src/chatview.cpp" line="53"/>
         <source>{0} minutes ago</source>
         <translation>{0} minutter siden</translation>
+    </message>
+    <message>
+        <location filename="../src/chatview.cpp" line="62"/>
+        <source>Unjoinable peer</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/chatview.cpp" line="65"/>
+        <source>Canceled</source>
+        <translation>Avbrutt</translation>
+    </message>
+    <message>
+        <location filename="../src/chatview.cpp" line="66"/>
+        <source>Ongoing</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/chatview.cpp" line="67"/>
+        <source>Awaiting peer</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/chatview.cpp" line="68"/>
+        <source>Awaiting host</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/chatview.cpp" line="69"/>
+        <source>Awaiting peer timeout</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="50"/>
