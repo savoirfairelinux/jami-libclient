@@ -200,6 +200,19 @@ public:
      * @return best id of the account
      */
     const QString bestIdForAccount(const QString& accountID);
+    /**
+     * Add/remove default moderator
+     * @param accountID
+     * @param peerURI
+     * @param state
+     */
+    void setDefaultModerator(const QString& accountID, const QString& peerURI, const bool& state);
+    /**
+     * Get default moderators for an account
+     * @param accountID
+     * @return default moderators for the account
+     */
+    QStringList getDefaultModerators(const QString& accountID);
 
 Q_SIGNALS:
     /**
