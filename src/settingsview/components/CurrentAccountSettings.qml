@@ -55,7 +55,6 @@ Rectangle {
         var isJams = !isSIP && SettingsAdapter.getAccountConfig_Manageruri() !== ""
         passwdPushButton.visible = !isJams
         btnExportAccount.visible = !isJams
-        linkedDevices.visible = !isJams
         setPasswordButtonText()
     }
 
@@ -291,7 +290,7 @@ Rectangle {
 
         LinkedDevices {
             id: linkedDevices
-            visible: !isSIP && SettingsAdapter.getAccountConfig_Manageruri() === ""
+            visible: !isSIP
 
             Layout.fillWidth: true
             Layout.alignment: Qt.AlignHCenter
