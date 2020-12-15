@@ -95,13 +95,23 @@ unix {
         QMAKE_CXXFLAGS += -std=c++17
     }
 
-    isEmpty(LRC) { LRC=$$PWD/../install/lrc/ }
-
-    INCLUDEPATH += $${LRC}/include/libringclient
-    INCLUDEPATH += $${LRC}/include
     INCLUDEPATH += ../src
 
-    LIBS += -L$${LRC}/lib -lringclient
+    isEmpty(LRC) {
+        LRC=$$PWD/../install/lrc
+        INCLUDEPATH += $${LRC}/include/libringclient
+        LIBDIR = $${LRC}/lib
+    } else {
+        INCLUDEPATH += $${LRC}/src
+        isEmpty(LRCBUILD) {
+            LIBDIR = $${LRC}/build
+        } else {
+            LIBDIR = $${LRCBUILD}
+        }
+    }
+    QMAKE_RPATHDIR += $${LIBDIR}
+
+    LIBS += -L$${LIBDIR} -lringclient
     LIBS += -lqrencode
     LIBS += -lX11
 

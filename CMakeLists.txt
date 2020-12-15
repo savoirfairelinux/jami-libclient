@@ -18,8 +18,18 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${Qt5Widgets_EXECUTABLE_COMPILE_FLAGS}")
 set(QML_RESOURCES ${CMAKE_SOURCE_DIR}/resources.qrc)
 set(QML_RESOURCES_QML ${CMAKE_SOURCE_DIR}/qml.qrc)
 
-# todo: check LRC exists?
-set(LRC ${CMAKE_CURRENT_SOURCE_DIR}/../install/lrc)
+if(NOT DEFINED LRC)
+    set(LRC ${CMAKE_CURRENT_SOURCE_DIR}/../install/lrc)
+    set(LRCPATH ${LRC}/include/libringclient)
+    set(LRCLIBDIR ${LRC}/lib)
+else()
+    set(LRCPATH ${LRC}/src)
+    if (NOT DEFINED LRCBUILD)
+        set(LRCLIBDIR ${LRC}/build)
+    else()
+        set(LRCLIBDIR ${LRCBUILD})
+    endif()
+endif()
 
 set(QML_LIBS
     Qt5::Quick
@@ -68,9 +78,12 @@ set(COMMON_SOURCES
     ${SRC_DIR}/videoformatresolutionmodel.cpp
     ${SRC_DIR}/audiomanagerlistmodel.cpp
     ${SRC_DIR}/qmlregister.cpp
-    ${SRC_DIR}/utilsadapter.cpp)
+    ${SRC_DIR}/utilsadapter.cpp
+    ${SRC_DIR}/dbuserrorhandler.cpp
+    ${SRC_DIR}/xrectsel.c)
 
 set(COMMON_HEADERS
+    ${SRC_DIR}/avatarimageprovider.h
     ${SRC_DIR}/networkmanager.h
     ${SRC_DIR}/smartlistmodel.h
     ${SRC_DIR}/updatemanager.h
@@ -115,7 +128,9 @@ set(COMMON_HEADERS
     ${SRC_DIR}/audiomanagerlistmodel.h
     ${SRC_DIR}/qmlregister.h
     ${SRC_DIR}/qtutils.h
-    ${SRC_DIR}/utilsadapter.h)
+    ${SRC_DIR}/utilsadapter.h
+    ${SRC_DIR}/dbuserrorhandler.h
+    ${SRC_DIR}/xrectsel.h)
 
 find_package(PkgConfig REQUIRED)
 pkg_check_modules(LIBNM libnm)
@@ -124,20 +139,43 @@ if(LIBNM_FOUND)
     add_definitions(-DUSE_LIBNM)
 endif()
 
-find_package(Qt5 CONFIG REQUIRED
-    Core
-    Quick
-    QuickWidgets
-    Network
-    Svg
-    QuickControls2
-    WebEngine
-    DBus)
+if(QT5_VER AND QT5_PATH)
+   string(REPLACE "." ";" VERSION_LIST ${QT5_VER})
+   list(GET VERSION_LIST 0 QT5_VER_MAJOR)
+   list(GET VERSION_LIST 1 QT5_VER_MINOR)
+   list(GET VERSION_LIST 2 QT5_VER_PATCH)
+
+   if ((${QT5_VER_MAJOR} GREATER_EQUAL 5) AND (${QT5_VER_MINOR} GREATER_EQUAL 14))
+      message(STATUS "Using custom Qt version")
+      find_package(Qt5 ${QT5_VER} REQUIRED
+                  COMPONENTS
+                  Core
+                  Quick
+                  QuickWidgets
+                  Network
+                  Svg
+                  QuickControls2
+                  WebEngine
+                  DBus
+                  PATHS ${QT5_PATH} NO_DEFAULT_PATH)
+      set(CMAKE_INSTALL_RPATH_USE_LINK_PATH true)
+   endif()
+else()
+   find_package(Qt5 REQUIRED
+                COMPONENTS
+                Core
+                Quick
+                QuickWidgets
+                Network
+                Svg
+                QuickControls2
+                WebEngine
+                DBus)
+endif()
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}
     ${SRC_DIR}
-    ${LRC}/include/libringclient
-    ${LRC}/include
+    ${LRCPATH}
     ${LIBNM_INCLUDE_DIRS})
 
 link_libraries(${LIBNM_LIBRARIES})
@@ -149,13 +187,19 @@ add_executable(${PROJECT_NAME}
     ${QML_RESOURCES}
     ${QML_RESOURCES_QML})
 
-find_library(ringclient ringclient ${LRC}/lib NO_DEFAULT_PATH)
+message(${LRCLIBDIR})
+find_library(ringclient ringclient ${LRCLIBDIR} NO_DEFAULT_PATH)
 find_library(qrencode qrencode)
+find_library(X11 X11)
 
 target_link_libraries(jami-qt
     ${QML_LIBS}
     ${ringclient}
     ${qrencode}
+    ${X11}
 )
 
-add_subdirectory(tests)
+if(ENABLE_TESTS)
+    message("Add Jami tests")
+    add_subdirectory(tests)
+endif()

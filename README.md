@@ -60,7 +60,7 @@ Then you will need to install dependencies:
 + For GNU/Linux
 
 ```bash
-./make-ring.py --dependencies # needs sudo
+./make-ring.py --dependencies --qt # needs sudo
 ```
 
 Then, you can build daemon, lrc and client-qt with:
@@ -81,7 +81,7 @@ And you will have the daemon in `daemon/bin/dring` and the client in `client-qt/
 cd client-qt
 mkdir build
 cd build
-${YOUR_QT5_gcc64_PATH}/bin/qmake /jami-qt.pro
+${YOUR_QT5_gcc64_PATH}/bin/qmake ../jami-qt.pro
 make -j9
 ```
 

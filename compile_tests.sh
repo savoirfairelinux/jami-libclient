@@ -21,7 +21,7 @@ echo "Building lrc in "$PWD
 cmake .. -DCMAKE_INSTALL_PREFIX=$installDir/lrc \
       -DRING_INCLUDE_DIR=$daemonDir/src/dring \
       -DRING_XML_INTERFACES_DIR=$daemonDir/bin/dbus
-make
+make -j${cpuCount}
 make install
 
 # Build client and tests
@@ -29,7 +29,6 @@ cd $clientDir
 mkdir -p build
 cd build
 echo "Building client in "$PWD
-pandoc -f markdown -t html5 -o ../changelog.html ../changelog.md
 cmake ..
 make -j${cpuCount}
 
