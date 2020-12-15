@@ -64,6 +64,8 @@ ItemDelegate {
                     effect: ColorOverlay {
                         color: JamiTheme.textColor
                     }
+                    mipmap: false
+                    smooth: true
                 }
                 width: checkBoxWidth
                 height: checkBoxWidth

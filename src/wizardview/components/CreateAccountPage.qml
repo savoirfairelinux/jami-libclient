@@ -319,9 +319,6 @@ Rectangle {
                     color: JamiTheme.textColor
                     wrapMode: Text.WordWrap
                     font.pointSize: JamiTheme.textFontSize
-
-                    onFontChanged: Layout.preferredHeight =
-                                   JamiQmlUtils.getTextBoundingRect(font, text).height * 2
                 }
 
                 MaterialButton {

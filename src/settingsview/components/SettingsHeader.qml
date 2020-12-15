@@ -42,7 +42,8 @@ RowLayout {
         radius: JamiTheme.preferredFieldHeight
         source: "qrc:/images/icons/ic_arrow_back_24px.svg"
 
-        normalColor: JamiTheme.primaryBackgroundColor
+        normalColor: JamiTheme.backgroundColor
+        imageColor: JamiTheme.textColor
 
         toolTipText: JamiStrings.back
         hoverEnabled: true
