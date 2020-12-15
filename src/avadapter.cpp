@@ -234,9 +234,8 @@ AvAdapter::stopAudioMeter(bool async)
 const QString&
 AvAdapter::getCurrentCallId()
 {
-    auto* convModel = LRCInstance::getCurrentConversationModel();
-    const auto conversation = convModel->getConversationForUID(LRCInstance::getCurrentConvUid());
-    auto call = LRCInstance::getCallInfoForConversation(conversation);
+    const auto& convInfo = LRCInstance::getConversationFromConvUid(LRCInstance::getCurrentConvUid());
+    auto call = LRCInstance::getCallInfoForConversation(convInfo);
     if (!call)
         return QString();
     return call->id;

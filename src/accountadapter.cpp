@@ -379,17 +379,16 @@ AccountAdapter::connectAccount(const QString& accountId)
             = QObject::connect(accInfo.contactModel.get(),
                                &lrc::api::ContactModel::contactAdded,
                                [this, accountId](const QString& contactUri) {
-                                   auto& accInfo = LRCInstance::accountModel().getAccountInfo(
-                                       accountId);
-                                   auto* convModel = LRCInstance::getCurrentConversationModel();
-                                   const auto conversation = convModel->getConversationForUID(
+                                   const auto& convInfo = LRCInstance::getConversationFromConvUid(
                                        LRCInstance::getCurrentConvUid());
-                                   if (conversation.uid.isEmpty()) {
+                                   if (convInfo.uid.isEmpty()) {
                                        return;
                                    }
+                                   auto& accInfo = LRCInstance::accountModel().getAccountInfo(
+                                       accountId);
                                    if (contactUri
                                        == accInfo.contactModel
-                                              ->getContact(conversation.participants.at(0))
+                                              ->getContact(convInfo.participants.at(0))
                                               .profileInfo.uri) {
                                        /*
                                         * Update conversation.

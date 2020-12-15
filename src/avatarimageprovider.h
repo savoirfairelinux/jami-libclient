@@ -19,6 +19,7 @@
 #pragma once
 
 #include "utils.h"
+#include "lrcinstance.h"
 
 #include <QImage>
 #include <QQuickImageProvider>
@@ -57,9 +58,8 @@ public:
             return Utils::accountPhoto(LRCInstance::accountModel().getAccountInfo(idContent),
                                        requestedSize);
         } else if (idType == "conversation") {
-            auto* convModel = LRCInstance::getCurrentAccountInfo().conversationModel.get();
-            const auto& conv = convModel->getConversationForUID(idContent);
-            return Utils::contactPhoto(conv.participants[0], requestedSize);
+            const auto& convInfo = LRCInstance::getConversationFromConvUid(idContent);
+            return Utils::contactPhoto(convInfo.participants[0], requestedSize);
         } else if (idType == "contact") {
             return Utils::contactPhoto(idContent, requestedSize);
         } else if (idType == "fallback") {

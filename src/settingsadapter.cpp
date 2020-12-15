@@ -115,6 +115,7 @@ SettingsAdapter::getResolutions(const QString& device)
     auto channelCaps = get_ResRateList(currentChannel, device);
     for (auto [resolution, frameRateList] : channelCaps) {
         for (auto rate : frameRateList) {
+            (void) rate;
             resolutions.append(resolution);
         }
     }

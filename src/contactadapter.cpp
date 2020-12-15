@@ -35,10 +35,7 @@ ContactAdapter::getContactSelectableModel(int type)
      * Called from qml every time contact picker refreshes.
      */
     listModeltype_ = static_cast<SmartListModel::Type>(type);
-    smartListModel_.reset(new SmartListModel(this,
-                                             LRCInstance::getCurrAccId(),
-                                             listModeltype_,
-                                             LRCInstance::getCurrentConvUid()));
+    smartListModel_.reset(new SmartListModel(this, listModeltype_));
     selectableProxyModel_->setSourceModel(smartListModel_.get());
 
     /*
@@ -90,9 +87,7 @@ ContactAdapter::contactSelected(int index)
 {
     auto contactIndex = selectableProxyModel_->index(index, 0);
     auto* callModel = LRCInstance::getCurrentCallModel();
-    auto* convModel = LRCInstance::getCurrentConversationModel();
-    const auto conversation = convModel->getConversationForUID(LRCInstance::getCurrentConvUid());
-
+    const auto& convInfo = LRCInstance::getConversationFromConvUid(LRCInstance::getCurrentConvUid());
     if (contactIndex.isValid()) {
         switch (listModeltype_) {
         case SmartListModel::Type::CONFERENCE: {
@@ -111,16 +106,15 @@ ContactAdapter::contactSelected(int index)
             const auto callId = LRCInstance::getCallIdForConversationUid(convUid, accId);
 
             if (!callId.isEmpty()) {
-                if (conversation.uid.isEmpty()) {
+                if (convInfo.uid.isEmpty()) {
                     return;
                 }
-                auto thisCallId = conversation.confId.isEmpty() ? conversation.callId
-                                                                : conversation.confId;
+                auto thisCallId = convInfo.confId.isEmpty() ? convInfo.callId : convInfo.confId;
 
                 callModel->joinCalls(thisCallId, callId);
             } else {
                 const auto contactUri = contactIndex.data(SmartListModel::Role::URI).value<QString>();
-                auto call = LRCInstance::getCallInfoForConversation(conversation);
+                auto call = LRCInstance::getCallInfoForConversation(convInfo);
                 if (!call) {
                     return;
                 }
@@ -133,11 +127,10 @@ ContactAdapter::contactSelected(int index)
              */
             const auto contactUri = contactIndex.data(SmartListModel::Role::URI).value<QString>();
 
-            if (conversation.uid.isEmpty()) {
+            if (convInfo.uid.isEmpty()) {
                 return;
             }
-            const auto callId = conversation.confId.isEmpty() ? conversation.callId
-                                                              : conversation.confId;
+            const auto callId = convInfo.confId.isEmpty() ? convInfo.callId : convInfo.confId;
 
             QString destCallId;
 

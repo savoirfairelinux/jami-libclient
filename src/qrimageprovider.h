@@ -54,9 +54,7 @@ public:
             /*
              * For contact_xxx, xxx is "" initially
              */
-
-            auto convModel = LRCInstance::getCurrentConversationModel();
-            auto convInfo = convModel->getConversationForUID(list[1]);
+            const auto& convInfo = LRCInstance::getConversationFromConvUid(list[1]);
             auto contact = LRCInstance::getCurrentAccountInfo().contactModel->getContact(
                 convInfo.participants.at(0));
             return QPair(QrType::Contact, contact.profileInfo.uri);
