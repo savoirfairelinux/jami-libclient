@@ -823,6 +823,16 @@ public Q_SLOTS: // METHODS
         return DRing::searchUser(accountId.toStdString(), query.toStdString());
     }
 
+    void setDefaultModerator(const QString& accountID, const QString& peerURI, const bool& state)
+    {
+        DRing::setDefaultModerator(accountId.toStdString(), peerURI.toStdString(), state);
+    }
+
+    QStringList getDefaultModerators(const std::string& accountID)
+    {
+        return convertStringList(DRing::getDefaultModerators(accountId.toStdString()));
+    }
+
 Q_SIGNALS: // SIGNALS
     void volumeChanged(const QString& device, double value);
     void accountsChanged();
