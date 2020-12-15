@@ -1148,6 +1148,18 @@ NewAccountModel::bestIdForAccount(const QString& accountID)
     return QString();
 }
 
+void
+NewAccountModel::setDefaultModerator(const QString& accountID, const QString& peerURI, const bool& state)
+{
+    ConfigurationManager::instance().setDefaultModerator(accountID, peerURI, state);
+}
+
+QStringList
+NewAccountModel::getDefaultModerators(const QString& accountID)
+{
+    return ConfigurationManager::instance().getDefaultModerators(accountID);
+}
+
 } // namespace lrc
 
 #include "api/moc_newaccountmodel.cpp"
