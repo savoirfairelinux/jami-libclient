@@ -665,6 +665,8 @@ MessagesAdapter::refuseInvitation(const QString& convUid)
     const auto currentConvUid = convUid.isEmpty() ? LRCInstance::getCurrentConvUid() : convUid;
     LRCInstance::getCurrentConversationModel()->removeConversation(currentConvUid, false);
     setInvitation(false);
+    if (convUid == currentConvUid_)
+        currentConvUid_.clear();
     emit navigateToWelcomePageRequested();
 }
 
@@ -674,6 +676,25 @@ MessagesAdapter::blockConversation(const QString& convUid)
     const auto currentConvUid = convUid.isEmpty() ? LRCInstance::getCurrentConvUid() : convUid;
     LRCInstance::getCurrentConversationModel()->removeConversation(currentConvUid, true);
     setInvitation(false);
+    if (convUid == currentConvUid_)
+        currentConvUid_.clear();
     emit contactBanned();
+    emit navigateToWelcomePageRequested();
+}
+
+void
+MessagesAdapter::clearConversationHistory(const QString& accountId, const QString& uid)
+{
+    LRCInstance::getAccountInfo(accountId).conversationModel->clearHistory(uid);
+    if (uid == currentConvUid_)
+        currentConvUid_.clear();
+}
+
+void
+MessagesAdapter::removeConversation(const QString& accountId, const QString& uid, bool banContact)
+{
+    LRCInstance::getAccountInfo(accountId).conversationModel->removeConversation(uid, banContact);
+    if (uid == currentConvUid_)
+        currentConvUid_.clear();
     emit navigateToWelcomePageRequested();
 }

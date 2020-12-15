@@ -59,7 +59,7 @@ Item {
             ContextMenuGenerator.addMenuItem(qsTr("Clear conversation"),
                                              "qrc:/images/icons/ic_clear_24px.svg",
                                              function (){
-                                                 UtilsAdapter.clearConversationHistory(
+                                                 MessagesAdapter.clearConversationHistory(
                                                              responsibleAccountId,
                                                              responsibleConvUid)
                                              })
@@ -68,7 +68,7 @@ Item {
                 ContextMenuGenerator.addMenuItem(qsTr("Remove contact"),
                                                  "qrc:/images/icons/round-remove_circle-24px.svg",
                                                  function (){
-                                                     UtilsAdapter.removeConversation(
+                                                     MessagesAdapter.removeConversation(
                                                                  responsibleAccountId,
                                                                  responsibleConvUid)
                                                  })

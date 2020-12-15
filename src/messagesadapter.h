@@ -41,6 +41,10 @@ protected:
     Q_INVOKABLE void connectConversationModel();
     Q_INVOKABLE void sendContactRequest();
     Q_INVOKABLE void updateConversationForAddedContact();
+    Q_INVOKABLE void removeConversation(const QString& accountId,
+                                        const QString& uid,
+                                        bool banContact = false);
+    Q_INVOKABLE void clearConversationHistory(const QString& accountId, const QString& uid);
 
     /*
      * JS Q_INVOKABLE.

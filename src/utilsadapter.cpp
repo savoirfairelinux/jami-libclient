@@ -157,18 +157,6 @@ UtilsAdapter::setConversationFilter(const QString& filter)
     LRCInstance::getCurrentConversationModel()->setFilter(filter);
 }
 
-void
-UtilsAdapter::clearConversationHistory(const QString& accountId, const QString& uid)
-{
-    LRCInstance::getAccountInfo(accountId).conversationModel->clearHistory(uid);
-}
-
-void
-UtilsAdapter::removeConversation(const QString& accountId, const QString& uid, bool banContact)
-{
-    LRCInstance::getAccountInfo(accountId).conversationModel->removeConversation(uid, banContact);
-}
-
 const QString
 UtilsAdapter::getCurrConvId()
 {

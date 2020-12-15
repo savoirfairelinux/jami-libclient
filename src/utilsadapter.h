@@ -43,10 +43,6 @@ public:
     Q_INVOKABLE bool createStartupLink();
     Q_INVOKABLE QString GetRingtonePath();
     Q_INVOKABLE bool checkStartupLink();
-    Q_INVOKABLE void removeConversation(const QString& accountId,
-                                        const QString& uid,
-                                        bool banContact = false);
-    Q_INVOKABLE void clearConversationHistory(const QString& accountId, const QString& uid);
     Q_INVOKABLE void setConversationFilter(const QString& filter);
     Q_INVOKABLE int getTotalUnreadMessages();
     Q_INVOKABLE int getTotalPendingRequest();

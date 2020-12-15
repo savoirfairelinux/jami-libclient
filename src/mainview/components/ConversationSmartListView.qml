@@ -119,10 +119,9 @@ ListView {
         sequence: "Ctrl+Shift+L"
         context: Qt.ApplicationShortcut
         enabled: root.visible
-        onActivated: {
-            UtilsAdapter.clearConversationHistory(AccountAdapter.currentAccountId,
-                                                  UtilsAdapter.getCurrConvId())
-        }
+        onActivated: MessagesAdapter.clearConversationHistory(
+                         AccountAdapter.currentAccountId,
+                         UtilsAdapter.getCurrConvId())
     }
 
     Shortcut {
@@ -138,11 +137,10 @@ ListView {
         sequence: "Ctrl+Shift+Delete"
         context: Qt.ApplicationShortcut
         enabled: root.visible
-        onActivated: {
-            UtilsAdapter.removeConversation(AccountAdapter.currentAccountId,
-                                            UtilsAdapter.getCurrConvId(),
-                                            false)
-        }
+        onActivated: MessagesAdapter.removeConversation(
+                         AccountAdapter.currentAccountId,
+                         UtilsAdapter.getCurrConvId(),
+                         false)
     }
 
     Shortcut {
