@@ -197,6 +197,7 @@ Rectangle {
             callStackView.setLinkedWebview(communicationPageMessageWebView)
             callStackView.responsibleAccountId = AccountAdapter.currentAccountId
             callStackView.responsibleConvUid = currentUID
+            currentConvUID = currentUID
 
             if (callState === Call.Status.IN_PROGRESS || callState === Call.Status.PAUSED) {
                 UtilsAdapter.setCurrentCall(AccountAdapter.currentAccountId, currentUID)
