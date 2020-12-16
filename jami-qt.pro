@@ -77,7 +77,7 @@ win32-msvc {
     Release: RC_FILE = ico.rc
 
     # run the deployment script(run windeployqt)
-    QMAKE_POST_LINK += $$quote(powershell -ExecutionPolicy Unrestricted -File $$PWD/copy-runtime-files.ps1 -outDir $${DESTDIR})
+    QMAKE_POST_LINK += $$quote(python .\copy-runtime-files.py -o $${DESTDIR})
 }
 
 unix {

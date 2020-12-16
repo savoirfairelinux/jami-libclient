@@ -7,7 +7,6 @@ import platform
 import argparse
 import multiprocessing
 import fileinput
-import re
 from enum import Enum
 
 # vs help
@@ -212,7 +211,7 @@ def build(arch, toolset, sdk_version, config_str, project_path_under_current_pat
 
 
 def parse_args():
-    ap = argparse.ArgumentParser(description="Windows Jami-lrc build tool")
+    ap = argparse.ArgumentParser(description="Client qt build tool")
     ap.add_argument(
         '-b', '--build', action='store_true',
         help='Build Qt Client')
