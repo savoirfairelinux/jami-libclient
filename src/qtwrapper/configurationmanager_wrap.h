@@ -833,6 +833,16 @@ public Q_SLOTS: // METHODS
         return convertStringList(DRing::getDefaultModerators(accountID.toStdString()));
     }
 
+    void enableLocalModerators(const QString& accountID, const bool& isModEnabled)
+    {
+        DRing::enableLocalModerators(accountID.toStdString(), isModEnabled);
+    }
+
+    bool isLocalModeratorsEnabled(const QString& accountID)
+    {
+        return DRing::isLocalModeratorsEnabled(accountID.toStdString());
+    }
+
 Q_SIGNALS: // SIGNALS
     void volumeChanged(const QString& device, double value);
     void accountsChanged();
