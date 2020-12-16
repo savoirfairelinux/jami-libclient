@@ -1160,6 +1160,12 @@ NewAccountModel::getDefaultModerators(const QString& accountID)
     return ConfigurationManager::instance().getDefaultModerators(accountID);
 }
 
+void
+NewAccountModel::enableLocalModerators(const QString& accountID, const bool& isModEnabled)
+{
+    ConfigurationManager::instance().enableLocalModerators(accountID, isModEnabled);
+}
+
 } // namespace lrc
 
 #include "api/moc_newaccountmodel.cpp"
