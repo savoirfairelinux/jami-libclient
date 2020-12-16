@@ -213,6 +213,12 @@ public:
      * @return default moderators for the account
      */
     QStringList getDefaultModerators(const QString& accountID);
+    /**
+     * Enable/disable local moderators
+     * @param accountID
+     * @param isModEnabled
+     */
+    void enableLocalModerators(const QString& accountID, const bool& isModEnabled);
 
 Q_SIGNALS:
     /**
