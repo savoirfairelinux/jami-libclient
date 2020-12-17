@@ -45,7 +45,7 @@ Rectangle {
     }
 
     function setButtonStatus(isPaused, isAudioOnly, isAudioMuted, isVideoMuted,
-                             isRecording, isSIP, isConferenceCall) {
+                             isSIP, isConferenceCall) {
         root.isModerator = CallAdapter.isCurrentModerator()
         root.isSip = isSIP
         noVideoButton.visible = !isAudioOnly

@@ -96,6 +96,7 @@ signals:
                        bool isSIP,
                        bool isConferenceCall,
                        const QString& bestName);
+    void remoteRecordingChanged(const QStringList& peers, bool state);
 
 public slots:
     void slotShowIncomingCallView(const QString& accountId,
@@ -117,6 +118,7 @@ private:
     QMetaObject::Connection onParticipantsChangedConnection_;
     QMetaObject::Connection closeIncomingCallPageConnection_;
     QMetaObject::Connection appStateChangedConnection_;
+    QMetaObject::Connection remoteRecordingChangedConnection_;
 
     /*
      * For Call Overlay

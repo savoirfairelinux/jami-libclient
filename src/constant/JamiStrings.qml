@@ -174,6 +174,11 @@ Item {
     property string name: qsTr("name")
     property string identifier: qsTr("Identifier")
 
+    // CallOverlay
+    property string isRecording: qsTr("is recording")
+    property string areRecording: qsTr("are recording")
+    property string peerStoppedRecording: qsTr("Peer stopped recording")
+
     // CallOverlayButtonGroup
     property string mute: qsTr("Mute")
     property string unmute: qsTr("Unmute")

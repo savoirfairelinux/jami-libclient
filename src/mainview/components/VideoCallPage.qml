@@ -197,6 +197,10 @@ Rectangle {
                         function onShowOnHoldLabel(isPaused) {
                             videoCallOverlay.showOnHoldImage(isPaused)
                         }
+
+                        function onRemoteRecordingChanged(label, state) {
+                            videoCallOverlay.showRemoteRecording(label, state)
+                        }
                     }
 
                     onOverlayChatButtonClicked: {

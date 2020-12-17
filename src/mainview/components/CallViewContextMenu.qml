@@ -37,7 +37,8 @@ Item {
     property bool isSIP: false
     property bool isPaused: false
     property bool isAudioOnly: false
-    property bool isRecording: false
+    property bool localIsRecording: false
+    property bool peerIsRecording: false
 
     signal pluginItemClicked
     signal transferCallButtonClicked
@@ -67,7 +68,7 @@ Item {
             ContextMenuGenerator.addMenuSeparator()
         }
 
-        ContextMenuGenerator.addMenuItem(isRecording ? JamiStrings.stopRec :
+        ContextMenuGenerator.addMenuItem(localIsRecording ? JamiStrings.stopRec :
                                                        JamiStrings.startRec,
                                          "qrc:/images/icons/av_icons/fiber_manual_record-24px.svg",
                                          function (){
