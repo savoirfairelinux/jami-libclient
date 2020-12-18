@@ -33,7 +33,7 @@
     </message>
     <message>
         <location filename="../src/api/call.h" line="71"/>
-        <location filename="../src/chatview.cpp" line="63"/>
+        <location filename="../src/chatview.cpp" line="61"/>
         <source>Connecting</source>
         <translation>Connessione in corso </translation>
     </message>
@@ -50,7 +50,7 @@
     <message>
         <location filename="../src/api/call.h" line="77"/>
         <location filename="../src/api/call.h" line="83"/>
-        <location filename="../src/chatview.cpp" line="70"/>
+        <location filename="../src/chatview.cpp" line="68"/>
         <source>Finished</source>
         <translation type="unfinished"/>
     </message>
@@ -153,7 +153,7 @@
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="64"/>
+        <location filename="../src/chatview.cpp" line="62"/>
         <location filename="../src/newcallmodel.cpp" line="60"/>
         <source>Accepted</source>
         <translation type="unfinished"/>
@@ -450,129 +450,127 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="41"/>
-        <location filename="../src/chatview.cpp" line="58"/>
-        <source>Accept</source>
-        <translation>Accetta</translation>
-    </message>
-    <message>
         <location filename="../src/chatview.cpp" line="42"/>
-        <location filename="../src/chatview.cpp" line="59"/>
-        <source>Refuse</source>
-        <translation>Rifiuta</translation>
+        <source>Write to {0}</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="43"/>
+        <location filename="../src/chatview.cpp" line="60"/>
+        <source>Unable to make contact</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/chatview.cpp" line="65"/>
+        <source>Wating for contact</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/chatview.cpp" line="66"/>
+        <source>Incoming transfer</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/chatview.cpp" line="67"/>
+        <source>Timed out waiting for contact</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/chatview.cpp" line="41"/>
         <source>Block</source>
         <translation>Blocca</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="44"/>
-        <source>Type a message</source>
-        <translation>Scrivi un messaggio</translation>
-    </message>
-    <message>
-        <location filename="../src/chatview.cpp" line="46"/>
         <source>Note: an interaction will create a new contact.</source>
         <translation>Nota: un&apos;interazione creerà un nuovo contatto.</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="47"/>
+        <location filename="../src/chatview.cpp" line="45"/>
         <source>is not in your contacts</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="49"/>
+        <location filename="../src/chatview.cpp" line="47"/>
         <source>Note: you can automatically accept this invitation by sending a message.</source>
         <translation>Nota: puoi accettare automaticamente questo invito inviando un messaggio.</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="50"/>
+        <location filename="../src/chatview.cpp" line="48"/>
         <source>{0} days ago</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="51"/>
+        <location filename="../src/chatview.cpp" line="49"/>
         <source>{0} hours ago</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="53"/>
+        <location filename="../src/chatview.cpp" line="51"/>
         <source>{0} minutes ago</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="62"/>
-        <source>Unjoinable peer</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/chatview.cpp" line="65"/>
+        <location filename="../src/chatview.cpp" line="63"/>
         <source>Canceled</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="66"/>
+        <location filename="../src/chatview.cpp" line="64"/>
         <source>Ongoing</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="67"/>
-        <source>Awaiting peer</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/chatview.cpp" line="68"/>
-        <source>Awaiting host</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/chatview.cpp" line="69"/>
-        <source>Awaiting peer timeout</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/chatview.cpp" line="50"/>
+        <location filename="../src/chatview.cpp" line="48"/>
         <source>%d days ago</source>
         <translation>%d giorni fa</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="51"/>
+        <location filename="../src/chatview.cpp" line="49"/>
         <source>%d hours ago</source>
         <translation>%d ore fa</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="53"/>
+        <location filename="../src/chatview.cpp" line="51"/>
         <source>%d minutes ago</source>
         <translation>%d minuti fa</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="54"/>
+        <location filename="../src/chatview.cpp" line="52"/>
         <source>one day ago</source>
         <translation>un giorno fa</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="55"/>
+        <location filename="../src/chatview.cpp" line="53"/>
         <source>one hour ago</source>
         <translation>un&apos;ora fa</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="56"/>
+        <location filename="../src/chatview.cpp" line="54"/>
         <source>just now</source>
         <translation>ora</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="57"/>
+        <location filename="../src/chatview.cpp" line="55"/>
         <source>Failure</source>
         <translation>Fallimento</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="60"/>
+        <location filename="../src/chatview.cpp" line="56"/>
+        <source>Confirm</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/chatview.cpp" line="57"/>
+        <source>Deny</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/chatview.cpp" line="58"/>
         <source>Delete</source>
         <translation>Elimina</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="61"/>
+        <location filename="../src/chatview.cpp" line="59"/>
         <source>Retry</source>
         <translation>Riprova</translation>
     </message>

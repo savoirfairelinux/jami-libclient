@@ -33,7 +33,7 @@
     </message>
     <message>
         <location filename="../src/api/call.h" line="71"/>
-        <location filename="../src/chatview.cpp" line="63"/>
+        <location filename="../src/chatview.cpp" line="61"/>
         <source>Connecting</source>
         <translation>Conectando</translation>
     </message>
@@ -50,7 +50,7 @@
     <message>
         <location filename="../src/api/call.h" line="77"/>
         <location filename="../src/api/call.h" line="83"/>
-        <location filename="../src/chatview.cpp" line="70"/>
+        <location filename="../src/chatview.cpp" line="68"/>
         <source>Finished</source>
         <translation>Terminado</translation>
     </message>
@@ -153,7 +153,7 @@
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="64"/>
+        <location filename="../src/chatview.cpp" line="62"/>
         <location filename="../src/newcallmodel.cpp" line="60"/>
         <source>Accepted</source>
         <translation>Aceptada</translation>
@@ -450,129 +450,127 @@
         <translation>Dejar mensaje de audio</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="41"/>
-        <location filename="../src/chatview.cpp" line="58"/>
-        <source>Accept</source>
-        <translation>Aceptar</translation>
-    </message>
-    <message>
         <location filename="../src/chatview.cpp" line="42"/>
-        <location filename="../src/chatview.cpp" line="59"/>
-        <source>Refuse</source>
-        <translation>No aceptar</translation>
+        <source>Write to {0}</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="43"/>
+        <location filename="../src/chatview.cpp" line="60"/>
+        <source>Unable to make contact</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/chatview.cpp" line="65"/>
+        <source>Wating for contact</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/chatview.cpp" line="66"/>
+        <source>Incoming transfer</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/chatview.cpp" line="67"/>
+        <source>Timed out waiting for contact</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/chatview.cpp" line="41"/>
         <source>Block</source>
         <translation>Bloquear</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="44"/>
-        <source>Type a message</source>
-        <translation>Escribir mensaje</translation>
-    </message>
-    <message>
-        <location filename="../src/chatview.cpp" line="46"/>
         <source>Note: an interaction will create a new contact.</source>
         <translation>Nota: La interacción creará un nuevo contacto</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="47"/>
+        <location filename="../src/chatview.cpp" line="45"/>
         <source>is not in your contacts</source>
         <translation>no está en tus contactos</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="49"/>
+        <location filename="../src/chatview.cpp" line="47"/>
         <source>Note: you can automatically accept this invitation by sending a message.</source>
         <translation>Nota: Puedes aceptar esta invitación automáticamente enviando un mensaje</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="50"/>
+        <location filename="../src/chatview.cpp" line="48"/>
         <source>{0} days ago</source>
         <translation>Hace {0} días</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="51"/>
+        <location filename="../src/chatview.cpp" line="49"/>
         <source>{0} hours ago</source>
         <translation>Hace {0} horas</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="53"/>
+        <location filename="../src/chatview.cpp" line="51"/>
         <source>{0} minutes ago</source>
         <translation>Hace {0} minutos</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="62"/>
-        <source>Unjoinable peer</source>
-        <translation>No se puede unir a este par</translation>
-    </message>
-    <message>
-        <location filename="../src/chatview.cpp" line="65"/>
+        <location filename="../src/chatview.cpp" line="63"/>
         <source>Canceled</source>
         <translation>Cancelado</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="66"/>
+        <location filename="../src/chatview.cpp" line="64"/>
         <source>Ongoing</source>
         <translation>En curso</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="67"/>
-        <source>Awaiting peer</source>
-        <translation>Esperando al par</translation>
-    </message>
-    <message>
-        <location filename="../src/chatview.cpp" line="68"/>
-        <source>Awaiting host</source>
-        <translation>Esperando al anfitrión</translation>
-    </message>
-    <message>
-        <location filename="../src/chatview.cpp" line="69"/>
-        <source>Awaiting peer timeout</source>
-        <translation>Tiempo de espera del par</translation>
-    </message>
-    <message>
-        <location filename="../src/chatview.cpp" line="50"/>
+        <location filename="../src/chatview.cpp" line="48"/>
         <source>%d days ago</source>
         <translation>Hace 1%d días</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="51"/>
+        <location filename="../src/chatview.cpp" line="49"/>
         <source>%d hours ago</source>
         <translation>Hace 1%d horas</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="53"/>
+        <location filename="../src/chatview.cpp" line="51"/>
         <source>%d minutes ago</source>
         <translation>Hace %d minutos</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="54"/>
+        <location filename="../src/chatview.cpp" line="52"/>
         <source>one day ago</source>
         <translation>hace un día</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="55"/>
+        <location filename="../src/chatview.cpp" line="53"/>
         <source>one hour ago</source>
         <translation>hace una hora</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="56"/>
+        <location filename="../src/chatview.cpp" line="54"/>
         <source>just now</source>
         <translation>justo ahora</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="57"/>
+        <location filename="../src/chatview.cpp" line="55"/>
         <source>Failure</source>
         <translation>Error</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="60"/>
+        <location filename="../src/chatview.cpp" line="56"/>
+        <source>Confirm</source>
+        <translation>Confirmar</translation>
+    </message>
+    <message>
+        <location filename="../src/chatview.cpp" line="57"/>
+        <source>Deny</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/chatview.cpp" line="58"/>
         <source>Delete</source>
         <translation>Borrar</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="61"/>
+        <location filename="../src/chatview.cpp" line="59"/>
         <source>Retry</source>
         <translation>Reintentar</translation>
     </message>
