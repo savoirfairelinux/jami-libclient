@@ -452,27 +452,27 @@
     <message>
         <location filename="../src/chatview.cpp" line="42"/>
         <source>Write to {0}</source>
-        <translation type="unfinished"/>
+        <translation>Écrire à {0}</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="60"/>
         <source>Unable to make contact</source>
-        <translation type="unfinished"/>
+        <translation>Impossible de contacter l&apos;interlocuteur</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="65"/>
         <source>Wating for contact</source>
-        <translation type="unfinished"/>
+        <translation>En attente de la réponse de votre interlocuteur</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="66"/>
         <source>Incoming transfer</source>
-        <translation type="unfinished"/>
+        <translation>Transfert entrant</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="67"/>
         <source>Timed out waiting for contact</source>
-        <translation type="unfinished"/>
+        <translation>Délai d&apos;attente de l&apos;interlocuteur dépassé</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="41"/>
@@ -557,12 +557,12 @@
     <message>
         <location filename="../src/chatview.cpp" line="56"/>
         <source>Confirm</source>
-        <translation type="unfinished"/>
+        <translation>Confirmer</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="57"/>
         <source>Deny</source>
-        <translation type="unfinished"/>
+        <translation>Refuser</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="58"/>

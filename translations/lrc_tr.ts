@@ -557,7 +557,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="56"/>
         <source>Confirm</source>
-        <translation type="unfinished"/>
+        <translation>Onayla</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="57"/>

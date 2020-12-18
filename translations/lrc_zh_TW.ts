@@ -452,27 +452,27 @@
     <message>
         <location filename="../src/chatview.cpp" line="42"/>
         <source>Write to {0}</source>
-        <translation type="unfinished"/>
+        <translation>寫入到 {0}</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="60"/>
         <source>Unable to make contact</source>
-        <translation type="unfinished"/>
+        <translation>無法加為聯絡人</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="65"/>
         <source>Wating for contact</source>
-        <translation type="unfinished"/>
+        <translation>等待聯絡人</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="66"/>
         <source>Incoming transfer</source>
-        <translation type="unfinished"/>
+        <translation>來電轉發</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="67"/>
         <source>Timed out waiting for contact</source>
-        <translation type="unfinished"/>
+        <translation>等待聯絡人逾時</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="41"/>
@@ -562,7 +562,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="57"/>
         <source>Deny</source>
-        <translation type="unfinished"/>
+        <translation>拒絕</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="58"/>
