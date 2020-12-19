@@ -62,7 +62,7 @@ getTranslatedStrings(bool qwebview)
         {"accepted", QObject::tr("Accepted")},
         {"canceled", QObject::tr("Canceled")},
         {"ongoing", QObject::tr("Ongoing")},
-        {"awaiting peer", QObject::tr("Wating for contact")},
+        {"awaiting peer", QObject::tr("Waiting for contact")},
         {"awaiting host", QObject::tr("Incoming transfer")},
         {"awaiting peer timeout", QObject::tr("Timed out waiting for contact")},
         {"finished", QObject::tr("Finished")},
