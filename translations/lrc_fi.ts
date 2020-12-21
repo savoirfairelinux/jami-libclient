@@ -452,27 +452,27 @@
     <message>
         <location filename="../src/chatview.cpp" line="42"/>
         <source>Write to {0}</source>
-        <translation type="unfinished"/>
+        <translation>Kirjoittaa {0}</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="60"/>
         <source>Unable to make contact</source>
-        <translation type="unfinished"/>
+        <translation>Yhteyden muodostaminen epäonnistui</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="65"/>
-        <source>Wating for contact</source>
+        <source>Waiting for contact</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="66"/>
         <source>Incoming transfer</source>
-        <translation type="unfinished"/>
+        <translation>Saapuva siirto</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="67"/>
         <source>Timed out waiting for contact</source>
-        <translation type="unfinished"/>
+        <translation>Aikakatkaisu odottavalle yhteydelle</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="41"/>
@@ -562,7 +562,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="57"/>
         <source>Deny</source>
-        <translation type="unfinished"/>
+        <translation>Estä</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="58"/>

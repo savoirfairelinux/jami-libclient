@@ -427,12 +427,12 @@
     <message>
         <location filename="../src/chatview.cpp" line="36"/>
         <source>Options</source>
-        <translation type="unfinished"/>
+        <translation>Optionen</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="37"/>
         <source>Jump to latest</source>
-        <translation type="unfinished"/>
+        <translation>Zum Neuesten wechseln</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="38"/>
@@ -442,37 +442,37 @@
     <message>
         <location filename="../src/chatview.cpp" line="39"/>
         <source>Leave video message</source>
-        <translation type="unfinished"/>
+        <translation>Video-Nachricht hinterlassen</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="40"/>
         <source>Leave audio message</source>
-        <translation type="unfinished"/>
+        <translation>Audio-Nachricht hinterlassen</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="42"/>
         <source>Write to {0}</source>
-        <translation type="unfinished"/>
+        <translation>Nach [0] schreiben</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="60"/>
         <source>Unable to make contact</source>
-        <translation type="unfinished"/>
+        <translation>Kontakt kann nicht hergestellt werden</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="65"/>
-        <source>Wating for contact</source>
+        <source>Waiting for contact</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="66"/>
         <source>Incoming transfer</source>
-        <translation type="unfinished"/>
+        <translation>Eingehende Übertragung</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="67"/>
         <source>Timed out waiting for contact</source>
-        <translation type="unfinished"/>
+        <translation>Frist für das Warten auf Kontakt verstrichen</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="41"/>
@@ -487,7 +487,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="45"/>
         <source>is not in your contacts</source>
-        <translation type="unfinished"/>
+        <translation>ist nicht in Ihrer Kontaktliste</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="47"/>
@@ -517,7 +517,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="64"/>
         <source>Ongoing</source>
-        <translation type="unfinished"/>
+        <translation>Übertragung läuft</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="48"/>
@@ -557,12 +557,12 @@
     <message>
         <location filename="../src/chatview.cpp" line="56"/>
         <source>Confirm</source>
-        <translation type="unfinished"/>
+        <translation>Bestätigen</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="57"/>
         <source>Deny</source>
-        <translation type="unfinished"/>
+        <translation>Ablehnen</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="58"/>

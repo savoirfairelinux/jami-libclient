@@ -452,27 +452,27 @@
     <message>
         <location filename="../src/chatview.cpp" line="42"/>
         <source>Write to {0}</source>
-        <translation type="unfinished"/>
+        <translation>Shkruaje te {0}</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="60"/>
         <source>Unable to make contact</source>
-        <translation type="unfinished"/>
+        <translation>S’arrihet të vendoset kontakt</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="65"/>
-        <source>Wating for contact</source>
+        <source>Waiting for contact</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="66"/>
         <source>Incoming transfer</source>
-        <translation type="unfinished"/>
+        <translation>Shpërngulje ardhëse</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="67"/>
         <source>Timed out waiting for contact</source>
-        <translation type="unfinished"/>
+        <translation>Mbaroi koha duke pritur për kontakt</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="41"/>
@@ -517,7 +517,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="64"/>
         <source>Ongoing</source>
-        <translation type="unfinished"/>
+        <translation>Në punë e sipër</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="48"/>
@@ -557,12 +557,12 @@
     <message>
         <location filename="../src/chatview.cpp" line="56"/>
         <source>Confirm</source>
-        <translation type="unfinished"/>
+        <translation>Ripohoje</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="57"/>
         <source>Deny</source>
-        <translation type="unfinished"/>
+        <translation>Mohoje</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="58"/>

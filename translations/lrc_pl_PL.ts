@@ -442,17 +442,17 @@
     <message>
         <location filename="../src/chatview.cpp" line="39"/>
         <source>Leave video message</source>
-        <translation type="unfinished"/>
+        <translation>Nagraj wiadomość wideo</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="40"/>
         <source>Leave audio message</source>
-        <translation type="unfinished"/>
+        <translation>Nagraj wiadomość głosową</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="42"/>
         <source>Write to {0}</source>
-        <translation type="unfinished"/>
+        <translation>Napisz do {0}</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="60"/>
@@ -461,7 +461,7 @@
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="65"/>
-        <source>Wating for contact</source>
+        <source>Waiting for contact</source>
         <translation type="unfinished"/>
     </message>
     <message>
