@@ -123,13 +123,13 @@
 <context>
     <name>CallAdapter</name>
     <message>
-        <location filename="../src/calladapter.cpp" line="273"/>
-        <location filename="../src/calladapter.cpp" line="352"/>
+        <location filename="../src/calladapter.cpp" line="278"/>
+        <location filename="../src/calladapter.cpp" line="353"/>
         <source>me</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/calladapter.cpp" line="315"/>
+        <location filename="../src/calladapter.cpp" line="316"/>
         <source>is calling you</source>
         <translation type="unfinished"/>
     </message>
@@ -270,29 +270,29 @@
 <context>
     <name>CurrentAccountSettings</name>
     <message>
-        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="109"/>
+        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="108"/>
         <source>Ok</source>
         <translation>Добре</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="132"/>
-        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="173"/>
+        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="131"/>
+        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="172"/>
         <source>Success</source>
         <translation>Успешно</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="132"/>
-        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="173"/>
+        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="131"/>
+        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="172"/>
         <source>Error</source>
         <translation>Грешка</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="160"/>
+        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="159"/>
         <source>Jami archive files</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="160"/>
+        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="159"/>
         <source>All files</source>
         <translation type="unfinished"/>
     </message>
@@ -303,6 +303,33 @@
         <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="816"/>
         <source/>
         <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>DaemonReconnectPopup</name>
+    <message>
+        <location filename="../src/commoncomponents/DaemonReconnectPopup.qml" line="92"/>
+        <source>Ok</source>
+        <translation>Добре</translation>
+    </message>
+</context>
+<context>
+    <name>DaemonReconnectWindow</name>
+    <message>
+        <location filename="../src/DaemonReconnectWindow.qml" line="100"/>
+        <source>Could not re-connect to the Jami daemon (dring).
+Jami will now quit.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/DaemonReconnectWindow.qml" line="101"/>
+        <source>Trying to reconnect to the Jami daemon (dring)…</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/DaemonReconnectWindow.qml" line="156"/>
+        <source>Ok</source>
+        <translation>Добре</translation>
     </message>
 </context>
 <context>
@@ -1694,6 +1721,17 @@ Copy and share it with your friends!</source>
         <source>Hangup</source>
         <translation>Затваряне</translation>
     </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="411"/>
+        <source>Trying to reconnect to the Jami daemon (dring)…</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="412"/>
+        <source>Could not re-connect to the Jami daemon (dring).
+Jami will now quit.</source>
+        <translation type="unfinished"/>
+    </message>
 </context>
 <context>
     <name>JamiUserIdentity</name>
@@ -1887,7 +1925,7 @@ Please try again later.</source>
 <context>
     <name>MainApplication</name>
     <message>
-        <location filename="../src/mainapplication.cpp" line="343"/>
+        <location filename="../src/mainapplication.cpp" line="381"/>
         <source>Exit</source>
         <translation>Изход</translation>
     </message>
@@ -2173,9 +2211,14 @@ Please try again later.</source>
 <context>
     <name>SelectScreen</name>
     <message>
-        <location filename="../src/mainview/components/SelectScreen.qml" line="172"/>
-        <location filename="../src/mainview/components/SelectScreen.qml" line="241"/>
+        <location filename="../src/mainview/components/SelectScreen.qml" line="183"/>
+        <location filename="../src/mainview/components/SelectScreen.qml" line="251"/>
         <source>Screen</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mainview/components/SelectScreen.qml" line="321"/>
+        <source>All Screens</source>
         <translation type="unfinished"/>
     </message>
 </context>
@@ -2332,12 +2375,12 @@ Please try again later.</source>
 <context>
     <name>WizardView</name>
     <message>
-        <location filename="../src/wizardview/WizardView.qml" line="158"/>
+        <location filename="../src/wizardview/WizardView.qml" line="159"/>
         <source>Success</source>
         <translation>Успешно</translation>
     </message>
     <message>
-        <location filename="../src/wizardview/WizardView.qml" line="158"/>
+        <location filename="../src/wizardview/WizardView.qml" line="159"/>
         <source>Error</source>
         <translation>Грешка</translation>
     </message>

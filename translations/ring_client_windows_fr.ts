@@ -123,13 +123,13 @@
 <context>
     <name>CallAdapter</name>
     <message>
-        <location filename="../src/calladapter.cpp" line="273"/>
-        <location filename="../src/calladapter.cpp" line="352"/>
+        <location filename="../src/calladapter.cpp" line="278"/>
+        <location filename="../src/calladapter.cpp" line="353"/>
         <source>me</source>
         <translation>moi</translation>
     </message>
     <message>
-        <location filename="../src/calladapter.cpp" line="315"/>
+        <location filename="../src/calladapter.cpp" line="316"/>
         <source>is calling you</source>
         <translation>vous appelle</translation>
     </message>
@@ -270,29 +270,29 @@
 <context>
     <name>CurrentAccountSettings</name>
     <message>
-        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="109"/>
+        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="108"/>
         <source>Ok</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="132"/>
-        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="173"/>
+        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="131"/>
+        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="172"/>
         <source>Success</source>
         <translation>Succès</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="132"/>
-        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="173"/>
+        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="131"/>
+        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="172"/>
         <source>Error</source>
         <translation>Erreur</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="160"/>
+        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="159"/>
         <source>Jami archive files</source>
         <translation>Fichiers d&apos;archive Jami</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="160"/>
+        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="159"/>
         <source>All files</source>
         <translation>Tous les fichiers</translation>
     </message>
@@ -303,6 +303,34 @@
         <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="816"/>
         <source/>
         <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>DaemonReconnectPopup</name>
+    <message>
+        <location filename="../src/commoncomponents/DaemonReconnectPopup.qml" line="92"/>
+        <source>Ok</source>
+        <translation>OK</translation>
+    </message>
+</context>
+<context>
+    <name>DaemonReconnectWindow</name>
+    <message>
+        <location filename="../src/DaemonReconnectWindow.qml" line="100"/>
+        <source>Could not re-connect to the Jami daemon (dring).
+Jami will now quit.</source>
+        <translation>Impossible de se reconnecter au daemon Jami (dring).
+Le programme va maintenant se terminer.</translation>
+    </message>
+    <message>
+        <location filename="../src/DaemonReconnectWindow.qml" line="101"/>
+        <source>Trying to reconnect to the Jami daemon (dring)…</source>
+        <translation>Redémarrage de Jami en cours …</translation>
+    </message>
+    <message>
+        <location filename="../src/DaemonReconnectWindow.qml" line="156"/>
+        <source>Ok</source>
+        <translation>OK</translation>
     </message>
 </context>
 <context>
@@ -1378,7 +1406,7 @@ Notez que le mot de passe ne peut être récupéré.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="268"/>
         <source>Enable dark theme</source>
-        <translation type="unfinished"/>
+        <translation>Activer le thème sombre</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="269"/>
@@ -1413,7 +1441,7 @@ Notez que le mot de passe ne peut être récupéré.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="278"/>
         <source>Show typing indicator</source>
-        <translation type="unfinished"/>
+        <translation>Montrer l&apos;indicateur de frappe</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="279"/>
@@ -1676,12 +1704,12 @@ Copy and share it with your friends!</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="402"/>
         <source>Set moderator</source>
-        <translation type="unfinished"/>
+        <translation>Définir un modérateur</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="403"/>
         <source>Unset moderator</source>
-        <translation type="unfinished"/>
+        <translation>Supprimer un modérateur</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="406"/>
@@ -1697,6 +1725,18 @@ Copy and share it with your friends!</source>
         <location filename="../src/constant/JamiStrings.qml" line="408"/>
         <source>Hangup</source>
         <translation>Raccrocher</translation>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="411"/>
+        <source>Trying to reconnect to the Jami daemon (dring)…</source>
+        <translation>Redémarrage de Jami en cours …</translation>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="412"/>
+        <source>Could not re-connect to the Jami daemon (dring).
+Jami will now quit.</source>
+        <translation>Impossible de se reconnecter au daemon Jami (dring).
+Le programme va maintenant se terminer.</translation>
     </message>
 </context>
 <context>
@@ -1892,7 +1932,7 @@ Veuillez réessayer plus tard</translation>
 <context>
     <name>MainApplication</name>
     <message>
-        <location filename="../src/mainapplication.cpp" line="343"/>
+        <location filename="../src/mainapplication.cpp" line="381"/>
         <source>Exit</source>
         <translation>Sortir</translation>
     </message>
@@ -2178,10 +2218,15 @@ Veuillez réessayer plus tard</translation>
 <context>
     <name>SelectScreen</name>
     <message>
-        <location filename="../src/mainview/components/SelectScreen.qml" line="172"/>
-        <location filename="../src/mainview/components/SelectScreen.qml" line="241"/>
+        <location filename="../src/mainview/components/SelectScreen.qml" line="183"/>
+        <location filename="../src/mainview/components/SelectScreen.qml" line="251"/>
         <source>Screen</source>
         <translation>Écran</translation>
+    </message>
+    <message>
+        <location filename="../src/mainview/components/SelectScreen.qml" line="321"/>
+        <source>All Screens</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -2266,7 +2311,7 @@ Veuillez réessayer plus tard</translation>
     <message>
         <location filename="../src/settingsview/components/SystemSettings.qml" line="75"/>
         <source>Enable dark theme</source>
-        <translation type="unfinished"/>
+        <translation>Activer le thème sombre</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/SystemSettings.qml" line="93"/>
@@ -2337,12 +2382,12 @@ Veuillez réessayer plus tard</translation>
 <context>
     <name>WizardView</name>
     <message>
-        <location filename="../src/wizardview/WizardView.qml" line="158"/>
+        <location filename="../src/wizardview/WizardView.qml" line="159"/>
         <source>Success</source>
         <translation>Succès</translation>
     </message>
     <message>
-        <location filename="../src/wizardview/WizardView.qml" line="158"/>
+        <location filename="../src/wizardview/WizardView.qml" line="159"/>
         <source>Error</source>
         <translation>Erreur</translation>
     </message>

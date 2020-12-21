@@ -28,12 +28,12 @@
     <message>
         <location filename="../src/settingsview/components/AdvancedCallSettings.qml" line="67"/>
         <source>Audio Files</source>
-        <translation type="unfinished"/>
+        <translation>Audiodateien</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/AdvancedCallSettings.qml" line="67"/>
         <source>All files</source>
-        <translation type="unfinished"/>
+        <translation>Alle Dateien</translation>
     </message>
 </context>
 <context>
@@ -49,7 +49,7 @@
         <location filename="../src/settingsview/components/AdvancedJamiSecuritySettings.qml" line="94"/>
         <location filename="../src/settingsview/components/AdvancedJamiSecuritySettings.qml" line="114"/>
         <source>All files</source>
-        <translation type="unfinished"/>
+        <translation>Alle Dateien</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/AdvancedJamiSecuritySettings.qml" line="114"/>
@@ -83,7 +83,7 @@
         <location filename="../src/settingsview/components/AdvancedSIPSecuritySettings.qml" line="113"/>
         <location filename="../src/settingsview/components/AdvancedSIPSecuritySettings.qml" line="131"/>
         <source>All files</source>
-        <translation type="unfinished"/>
+        <translation>Alle Dateien</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/AdvancedSIPSecuritySettings.qml" line="131"/>
@@ -109,7 +109,7 @@
     <message>
         <location filename="../src/wizardview/components/BackupKeyPage.qml" line="47"/>
         <source>All files</source>
-        <translation type="unfinished"/>
+        <translation>Alle Dateien</translation>
     </message>
 </context>
 <context>
@@ -123,13 +123,13 @@
 <context>
     <name>CallAdapter</name>
     <message>
-        <location filename="../src/calladapter.cpp" line="273"/>
-        <location filename="../src/calladapter.cpp" line="352"/>
+        <location filename="../src/calladapter.cpp" line="278"/>
+        <location filename="../src/calladapter.cpp" line="353"/>
         <source>me</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/calladapter.cpp" line="315"/>
+        <location filename="../src/calladapter.cpp" line="316"/>
         <source>is calling you</source>
         <translation type="unfinished"/>
     </message>
@@ -229,7 +229,7 @@
     <message>
         <location filename="../src/wizardview/components/CreateAccountPage.qml" line="82"/>
         <source>All files</source>
-        <translation type="unfinished"/>
+        <translation>Alle Dateien</translation>
     </message>
     <message>
         <location filename="../src/wizardview/components/CreateAccountPage.qml" line="127"/>
@@ -270,31 +270,31 @@
 <context>
     <name>CurrentAccountSettings</name>
     <message>
-        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="109"/>
+        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="108"/>
         <source>Ok</source>
         <translation>Ok</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="132"/>
-        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="173"/>
+        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="131"/>
+        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="172"/>
         <source>Success</source>
         <translation>Erfolgreich</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="132"/>
-        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="173"/>
+        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="131"/>
+        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="172"/>
         <source>Error</source>
         <translation>Fehler</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="160"/>
+        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="159"/>
         <source>Jami archive files</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="160"/>
+        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="159"/>
         <source>All files</source>
-        <translation type="unfinished"/>
+        <translation>Alle Dateien</translation>
     </message>
 </context>
 <context>
@@ -303,6 +303,34 @@
         <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="816"/>
         <source/>
         <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>DaemonReconnectPopup</name>
+    <message>
+        <location filename="../src/commoncomponents/DaemonReconnectPopup.qml" line="92"/>
+        <source>Ok</source>
+        <translation>Ok</translation>
+    </message>
+</context>
+<context>
+    <name>DaemonReconnectWindow</name>
+    <message>
+        <location filename="../src/DaemonReconnectWindow.qml" line="100"/>
+        <source>Could not re-connect to the Jami daemon (dring).
+Jami will now quit.</source>
+        <translation>Neuverbindung zum Jami-Daemon (dring) fehlgeschlagen.
+Jami wird nun beendet.</translation>
+    </message>
+    <message>
+        <location filename="../src/DaemonReconnectWindow.qml" line="101"/>
+        <source>Trying to reconnect to the Jami daemon (dring)…</source>
+        <translation>Neuer Verbindungsversuch zum Jami-Daemon (dring)...</translation>
+    </message>
+    <message>
+        <location filename="../src/DaemonReconnectWindow.qml" line="156"/>
+        <source>Ok</source>
+        <translation>Ok</translation>
     </message>
 </context>
 <context>
@@ -341,7 +369,7 @@
     <message>
         <location filename="../src/wizardview/components/ImportFromBackupPage.qml" line="63"/>
         <source>All files</source>
-        <translation type="unfinished"/>
+        <translation>Alle Dateien</translation>
     </message>
     <message>
         <location filename="../src/wizardview/components/ImportFromBackupPage.qml" line="87"/>
@@ -1695,6 +1723,18 @@ Kopieren und teilen Sie diesen mit Ihren Freunden!</translation>
         <source>Hangup</source>
         <translation>Auflegen</translation>
     </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="411"/>
+        <source>Trying to reconnect to the Jami daemon (dring)…</source>
+        <translation>Neuer Verbindungsversuch zum Jami-Daemon (dring)...</translation>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="412"/>
+        <source>Could not re-connect to the Jami daemon (dring).
+Jami will now quit.</source>
+        <translation>Neuverbindung zum Jami-Daemon (dring) fehlgeschlagen.
+Jami wird nun beendet.</translation>
+    </message>
 </context>
 <context>
     <name>JamiUserIdentity</name>
@@ -1888,7 +1928,7 @@ Please try again later.</source>
 <context>
     <name>MainApplication</name>
     <message>
-        <location filename="../src/mainapplication.cpp" line="343"/>
+        <location filename="../src/mainapplication.cpp" line="381"/>
         <source>Exit</source>
         <translation>Schliessen</translation>
     </message>
@@ -1971,7 +2011,7 @@ Please try again later.</source>
     <message>
         <location filename="../src/commoncomponents/PhotoboothView.qml" line="87"/>
         <source>All files</source>
-        <translation type="unfinished"/>
+        <translation>Alle Dateien</translation>
     </message>
     <message>
         <location filename="../src/commoncomponents/PhotoboothView.qml" line="233"/>
@@ -2031,7 +2071,7 @@ Please try again later.</source>
     <message>
         <location filename="../src/settingsview/components/PluginListSettingsView.qml" line="87"/>
         <source>All files</source>
-        <translation type="unfinished"/>
+        <translation>Alle Dateien</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/PluginListSettingsView.qml" line="106"/>
@@ -2174,9 +2214,14 @@ Please try again later.</source>
 <context>
     <name>SelectScreen</name>
     <message>
-        <location filename="../src/mainview/components/SelectScreen.qml" line="172"/>
-        <location filename="../src/mainview/components/SelectScreen.qml" line="241"/>
+        <location filename="../src/mainview/components/SelectScreen.qml" line="183"/>
+        <location filename="../src/mainview/components/SelectScreen.qml" line="251"/>
         <source>Screen</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mainview/components/SelectScreen.qml" line="321"/>
+        <source>All Screens</source>
         <translation type="unfinished"/>
     </message>
 </context>
@@ -2333,12 +2378,12 @@ Please try again later.</source>
 <context>
     <name>WizardView</name>
     <message>
-        <location filename="../src/wizardview/WizardView.qml" line="158"/>
+        <location filename="../src/wizardview/WizardView.qml" line="159"/>
         <source>Success</source>
         <translation>Erfolgreich</translation>
     </message>
     <message>
-        <location filename="../src/wizardview/WizardView.qml" line="158"/>
+        <location filename="../src/wizardview/WizardView.qml" line="159"/>
         <source>Error</source>
         <translation>Fehler</translation>
     </message>

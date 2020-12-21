@@ -28,12 +28,12 @@
     <message>
         <location filename="../src/settingsview/components/AdvancedCallSettings.qml" line="67"/>
         <source>Audio Files</source>
-        <translation type="unfinished"/>
+        <translation>Pliki dźwiękowe</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/AdvancedCallSettings.qml" line="67"/>
         <source>All files</source>
-        <translation type="unfinished"/>
+        <translation>Wszystkie pliki</translation>
     </message>
 </context>
 <context>
@@ -49,7 +49,7 @@
         <location filename="../src/settingsview/components/AdvancedJamiSecuritySettings.qml" line="94"/>
         <location filename="../src/settingsview/components/AdvancedJamiSecuritySettings.qml" line="114"/>
         <source>All files</source>
-        <translation type="unfinished"/>
+        <translation>Wszystkie pliki</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/AdvancedJamiSecuritySettings.qml" line="114"/>
@@ -83,7 +83,7 @@
         <location filename="../src/settingsview/components/AdvancedSIPSecuritySettings.qml" line="113"/>
         <location filename="../src/settingsview/components/AdvancedSIPSecuritySettings.qml" line="131"/>
         <source>All files</source>
-        <translation type="unfinished"/>
+        <translation>Wszystkie pliki</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/AdvancedSIPSecuritySettings.qml" line="131"/>
@@ -96,7 +96,7 @@
     <message>
         <location filename="../src/settingsview/components/AdvancedSettings.qml" line="68"/>
         <source>Advanced Account Settings</source>
-        <translation type="unfinished"/>
+        <translation>Zaawansowane ustawienia konta</translation>
     </message>
 </context>
 <context>
@@ -104,12 +104,12 @@
     <message>
         <location filename="../src/wizardview/components/BackupKeyPage.qml" line="47"/>
         <source>Jami archive files</source>
-        <translation type="unfinished"/>
+        <translation>Archiwum Jami</translation>
     </message>
     <message>
         <location filename="../src/wizardview/components/BackupKeyPage.qml" line="47"/>
         <source>All files</source>
-        <translation type="unfinished"/>
+        <translation>Wszystkie pliki</translation>
     </message>
 </context>
 <context>
@@ -117,19 +117,19 @@
     <message>
         <location filename="../src/settingsview/components/BannedContacts.qml" line="91"/>
         <source>Banned Contacts</source>
-        <translation type="unfinished"/>
+        <translation>Zablokowane kontakty</translation>
     </message>
 </context>
 <context>
     <name>CallAdapter</name>
     <message>
-        <location filename="../src/calladapter.cpp" line="273"/>
-        <location filename="../src/calladapter.cpp" line="352"/>
+        <location filename="../src/calladapter.cpp" line="278"/>
+        <location filename="../src/calladapter.cpp" line="353"/>
         <source>me</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/calladapter.cpp" line="315"/>
+        <location filename="../src/calladapter.cpp" line="316"/>
         <source>is calling you</source>
         <translation type="unfinished"/>
     </message>
@@ -149,7 +149,7 @@
     <message>
         <location filename="../src/mainview/components/CallAdvancedOptions.qml" line="105"/>
         <source>Search contacts</source>
-        <translation type="unfinished"/>
+        <translation>Wyszukaj kontakt</translation>
     </message>
 </context>
 <context>
@@ -170,7 +170,7 @@
     <message>
         <location filename="../src/wizardview/components/CollapsiblePasswordWidget.qml" line="97"/>
         <source>Confirm Password</source>
-        <translation type="unfinished"/>
+        <translation>Potwierdź hasło</translation>
     </message>
 </context>
 <context>
@@ -224,12 +224,12 @@
     <message>
         <location filename="../src/wizardview/components/CreateAccountPage.qml" line="82"/>
         <source>Jami archive files</source>
-        <translation type="unfinished"/>
+        <translation>Archiwum Jami</translation>
     </message>
     <message>
         <location filename="../src/wizardview/components/CreateAccountPage.qml" line="82"/>
         <source>All files</source>
-        <translation type="unfinished"/>
+        <translation>Wszystkie pliki</translation>
     </message>
     <message>
         <location filename="../src/wizardview/components/CreateAccountPage.qml" line="127"/>
@@ -270,31 +270,31 @@
 <context>
     <name>CurrentAccountSettings</name>
     <message>
-        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="109"/>
+        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="108"/>
         <source>Ok</source>
         <translation>Ok</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="132"/>
-        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="173"/>
+        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="131"/>
+        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="172"/>
         <source>Success</source>
         <translation>Sukces</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="132"/>
-        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="173"/>
+        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="131"/>
+        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="172"/>
         <source>Error</source>
         <translation>Błąd</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="160"/>
+        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="159"/>
         <source>Jami archive files</source>
-        <translation type="unfinished"/>
+        <translation>Archiwum Jami</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="160"/>
+        <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="159"/>
         <source>All files</source>
-        <translation type="unfinished"/>
+        <translation>Wszystkie pliki</translation>
     </message>
 </context>
 <context>
@@ -302,6 +302,33 @@
     <message>
         <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="816"/>
         <source/>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>DaemonReconnectPopup</name>
+    <message>
+        <location filename="../src/commoncomponents/DaemonReconnectPopup.qml" line="92"/>
+        <source>Ok</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>DaemonReconnectWindow</name>
+    <message>
+        <location filename="../src/DaemonReconnectWindow.qml" line="100"/>
+        <source>Could not re-connect to the Jami daemon (dring).
+Jami will now quit.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/DaemonReconnectWindow.qml" line="101"/>
+        <source>Trying to reconnect to the Jami daemon (dring)…</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/DaemonReconnectWindow.qml" line="156"/>
+        <source>Ok</source>
         <translation type="unfinished"/>
     </message>
 </context>
@@ -336,12 +363,12 @@
     <message>
         <location filename="../src/wizardview/components/ImportFromBackupPage.qml" line="63"/>
         <source>Jami archive files</source>
-        <translation type="unfinished"/>
+        <translation>Archiwum Jami</translation>
     </message>
     <message>
         <location filename="../src/wizardview/components/ImportFromBackupPage.qml" line="63"/>
         <source>All files</source>
-        <translation type="unfinished"/>
+        <translation>Wszystkie pliki</translation>
     </message>
     <message>
         <location filename="../src/wizardview/components/ImportFromBackupPage.qml" line="87"/>
@@ -351,7 +378,7 @@
     <message>
         <location filename="../src/wizardview/components/ImportFromBackupPage.qml" line="158"/>
         <source>Generating account…</source>
-        <translation type="unfinished"/>
+        <translation>Tworzenie konta</translation>
     </message>
     <message>
         <location filename="../src/wizardview/components/ImportFromBackupPage.qml" line="203"/>
@@ -374,7 +401,7 @@
     <message>
         <location filename="../src/wizardview/components/ImportFromDevicePage.qml" line="139"/>
         <source>Generating account…</source>
-        <translation type="unfinished"/>
+        <translation>Tworzenie konta</translation>
     </message>
     <message>
         <location filename="../src/wizardview/components/ImportFromDevicePage.qml" line="179"/>
@@ -492,7 +519,7 @@
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="60"/>
         <source>Allow incoming calls from unknown contacts</source>
-        <translation type="unfinished"/>
+        <translation>Umożliwiaj rozmowy od nieznajomych</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="52"/>
@@ -1139,7 +1166,7 @@
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="193"/>
         <source>Exit full screen</source>
-        <translation type="unfinished"/>
+        <translation>Zakończ tryb pełnoekranowy</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="194"/>
@@ -1695,6 +1722,17 @@ Skopiuj i podziel się nią z przyjaciółmi!</translation>
         <source>Hangup</source>
         <translation>Odłożyć słuchawkę</translation>
     </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="411"/>
+        <source>Trying to reconnect to the Jami daemon (dring)…</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="412"/>
+        <source>Could not re-connect to the Jami daemon (dring).
+Jami will now quit.</source>
+        <translation type="unfinished"/>
+    </message>
 </context>
 <context>
     <name>JamiUserIdentity</name>
@@ -1888,9 +1926,9 @@ Please try again later.</source>
 <context>
     <name>MainApplication</name>
     <message>
-        <location filename="../src/mainapplication.cpp" line="343"/>
+        <location filename="../src/mainapplication.cpp" line="381"/>
         <source>Exit</source>
-        <translation>Wyjdź</translation>
+        <translation>Zakończ</translation>
     </message>
 </context>
 <context>
@@ -1971,7 +2009,7 @@ Please try again later.</source>
     <message>
         <location filename="../src/commoncomponents/PhotoboothView.qml" line="87"/>
         <source>All files</source>
-        <translation type="unfinished"/>
+        <translation>Wszystkie pliki</translation>
     </message>
     <message>
         <location filename="../src/commoncomponents/PhotoboothView.qml" line="233"/>
@@ -2031,7 +2069,7 @@ Please try again later.</source>
     <message>
         <location filename="../src/settingsview/components/PluginListSettingsView.qml" line="87"/>
         <source>All files</source>
-        <translation type="unfinished"/>
+        <translation>Wszystkie pliki</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/PluginListSettingsView.qml" line="106"/>
@@ -2067,7 +2105,7 @@ Please try again later.</source>
     <message>
         <location filename="../src/wizardview/components/ProfilePage.qml" line="151"/>
         <source>Generating account…</source>
-        <translation type="unfinished"/>
+        <translation>Tworzenie konta</translation>
     </message>
 </context>
 <context>
@@ -2107,12 +2145,12 @@ Please try again later.</source>
     <message>
         <location filename="../src/settingsview/components/RecordingSettings.qml" line="69"/>
         <source>Call Recording</source>
-        <translation type="unfinished"/>
+        <translation>Nagrywanie rozmowy</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/RecordingSettings.qml" line="82"/>
         <source>Always record calls</source>
-        <translation type="unfinished"/>
+        <translation>Zawsze nagrywaj rozmowy</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/RecordingSettings.qml" line="112"/>
@@ -2174,9 +2212,14 @@ Please try again later.</source>
 <context>
     <name>SelectScreen</name>
     <message>
-        <location filename="../src/mainview/components/SelectScreen.qml" line="172"/>
-        <location filename="../src/mainview/components/SelectScreen.qml" line="241"/>
+        <location filename="../src/mainview/components/SelectScreen.qml" line="183"/>
+        <location filename="../src/mainview/components/SelectScreen.qml" line="251"/>
         <source>Screen</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mainview/components/SelectScreen.qml" line="321"/>
+        <source>All Screens</source>
         <translation type="unfinished"/>
     </message>
 </context>
@@ -2333,12 +2376,12 @@ Please try again later.</source>
 <context>
     <name>WizardView</name>
     <message>
-        <location filename="../src/wizardview/WizardView.qml" line="158"/>
+        <location filename="../src/wizardview/WizardView.qml" line="159"/>
         <source>Success</source>
         <translation>Sukces</translation>
     </message>
     <message>
-        <location filename="../src/wizardview/WizardView.qml" line="158"/>
+        <location filename="../src/wizardview/WizardView.qml" line="159"/>
         <source>Error</source>
         <translation>Błąd</translation>
     </message>
