@@ -63,6 +63,13 @@ Rectangle {
         messageWebViewHeader.resetBackToWelcomeViewButtonSource(reset)
     }
 
+    function setFilePathsToSend(filePaths) {
+        for (var index = 0; index < filePaths.length; ++index) {
+            var path = UtilsAdapter.getAbsPath(filePaths[index])
+            MessagesAdapter.setNewMessagesContent(path)
+        }
+    }
+
     function updateChatviewTheme() {
         var theme = 'setTheme("\
             --jami-light-blue:' + JamiTheme.jamiLightBlue + ';\
@@ -96,23 +103,14 @@ Rectangle {
 
         mode: JamiFileDialog.Mode.OpenFiles
 
-        onAccepted: {
-            var filePaths = jamiFileDialog.files
-            for (var index = 0; index < filePaths.length; ++index) {
-                var path = UtilsAdapter.getAbsPath(filePaths[index])
-                MessagesAdapter.setNewMessagesContent(path)
-            }
-        }
+        onAccepted: setFilePathsToSend(jamiFileDialog.files)
     }
 
     MessageWebViewHeader {
 
         DropArea{
             anchors.fill: parent
-            onDropped: {
-                var path = UtilsAdapter.getAbsPath(drop.text.toString())
-                MessagesAdapter.setNewMessagesContent(path)
-            }
+            onDropped: setFilePathsToSend(drop.urls)
         }
 
         id: messageWebViewHeader
@@ -257,10 +255,7 @@ Rectangle {
 
         DropArea{
             anchors.fill: parent
-            onDropped: {
-                var path = UtilsAdapter.getAbsPath(drop.text.toString())
-                MessagesAdapter.setNewMessagesContent(path)
-            }
+            onDropped: setFilePathsToSend(drop.urls)
         }
 
         onNavigationRequested: {
