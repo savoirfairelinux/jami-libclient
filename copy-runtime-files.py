@@ -188,6 +188,8 @@ def release_and_copy_translations():
         for file in files:
             if file.endswith(".ts"):
                 execute_cmd(lrelease + " " + lrc_ts_path + os.sep + file)
+
+    for _, _, files in os.walk(lrc_ts_path):
         for file in files:
             if file.endswith(".qm"):
                 print(bcolors.OKBLUE + "Copying translation file: " +
@@ -207,6 +209,8 @@ def release_and_copy_translations():
             if file.endswith(".ts"):
                 execute_cmd(lrelease + " " +
                             client_ts_path + os.sep + file)
+
+    for _, _, files in os.walk(client_ts_path):
         for file in files:
             if file.endswith(".qm"):
                 print(bcolors.OKBLUE + "Copying translation file: " +
