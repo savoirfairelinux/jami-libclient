@@ -314,7 +314,7 @@ public:
      * @param conversationId conversation's id
      * @return conversation info
      */
-    MapStringString getConversationInfos(const QString& conversationId);
+    MapStringString conversationInfos(const QString& conversationId);
     /**
      * create a new swarm conversation
      * @param participants  conversation's participants
@@ -326,7 +326,7 @@ public:
      * @param conversationId conversation's id
      * @param info
      */
-    void updateConversationInfo(const QString& conversationId, MapStringString info);
+    void updateConversationInfos(const QString& conversationId, MapStringString info);
 
 Q_SIGNALS:
     /**
