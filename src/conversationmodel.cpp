@@ -598,11 +598,14 @@ ConversationModel::getFilteredConversations(const profile::Type& filter,
                            pimpl_->conversations.end(),
                            pimpl_->customFilteredConversations.begin(),
                            [this, &includeBanned](const conversation::Info& entry) {
-                               auto contactInfo = owner.contactModel->getContact(
-                                   entry.participants.front());
-                               if (!includeBanned && contactInfo.isBanned)
-                                   return false;
-                               return (contactInfo.profileInfo.type == pimpl_->customTypeFilter);
+                               try {
+                                auto contactInfo = owner.contactModel->getContact(
+                                    entry.participants.front());
+                                if (!includeBanned && contactInfo.isBanned)
+                                    return false;
+                                return (contactInfo.profileInfo.type == pimpl_->customTypeFilter);
+                               } catch (...) {}
+                               return false;
                            });
     pimpl_->customFilteredConversations.resize(
         std::distance(pimpl_->customFilteredConversations.begin(), it));
