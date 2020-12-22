@@ -945,7 +945,7 @@ public Q_SLOTS: // METHODS
                                                size);
     }
 
-    MapStringString getConversationInfos(const QString& accountId, const QString& conversationId)
+    MapStringString conversationInfos(const QString& accountId, const QString& conversationId)
     {
         return convertMap(DRing::conversationInfos(accountId.toStdString(), conversationId.toStdString()));
     }
