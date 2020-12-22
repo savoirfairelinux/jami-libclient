@@ -1183,7 +1183,7 @@ video {
     /* enable selection (it is globally disabled in the body) */
     -webkit-user-select: auto;
     /* contactid field should take as much place as possible, but it should
-     also be the first one to shrink if necesary. */
+     also be the first one to shrink if necessary. */
     flex-grow: 2;
     flex-shrink: 2;
     min-width: 0; /* necessary for child to be able to shrink correctly */

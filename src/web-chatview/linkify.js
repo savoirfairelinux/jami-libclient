@@ -257,7 +257,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 		/**
   	Determine whether a given item "symbolizes" the symbol, where symbol is
   	a class of items handled by this state machine.
-  		This method should be overriden in extended classes.
+  		This method should be overridden in extended classes.
   		@method test
   	@param {Mixed} item Does this item match the given symbol?
   	@param {Mixed} symbol
