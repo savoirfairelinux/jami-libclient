@@ -361,7 +361,7 @@ QString
 Database::QueryInsertError::details()
 {
     QTextStream qts;
-    qts << "paramaters sent :";
+    qts << "parameters sent :";
     qts << "table = " << table;
     for (auto& b : bindCol.toStdMap())
         qts << "   {" << b.first << "}, {" << b.second << "}";
@@ -388,7 +388,7 @@ QString
 Database::QueryUpdateError::details()
 {
     QTextStream qts;
-    qts << "paramaters sent :";
+    qts << "parameters sent :";
     qts << "table = " << table;
     qts << "set = " << set;
     qts << "bindsSet :";
@@ -417,7 +417,7 @@ QString
 Database::QuerySelectError::details()
 {
     QTextStream qts;
-    qts << "paramaters sent :";
+    qts << "parameters sent :";
     qts << "select = " << select;
     qts << "table = " << table;
     qts << "where = " << where;
@@ -441,7 +441,7 @@ QString
 Database::QueryDeleteError::details()
 {
     QTextStream qts;
-    qts << "paramaters sent :";
+    qts << "parameters sent :";
     qts << "table = " << table;
     qts << "where = " << where;
     qts << "bindsWhere :";
@@ -459,7 +459,7 @@ QString
 Database::QueryTruncateError::details()
 {
     QTextStream qts;
-    qts << "paramaters sent :";
+    qts << "parameters sent :";
     qts << "table = " << table;
     return qts.readAll();
 }
