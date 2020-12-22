@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f6d07285_bd3afa9b",
+        "filename": "src/api/conversationmodel.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 272,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2020-12-22T16:39:54Z",
+      "side": 1,
+      "message": "you will need to pass from for lazy loading",
+      "range": {
+        "startLine": 272,
+        "startChar": 13,
+        "endLine": 272,
+        "endChar": 37
+      },
+      "revId": "e9c958e40352e6e3738c1b893b199041ee919bf5",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3bffa708_9ca3a1eb",
+        "filename": "test/mocks/configurationmanager_mock.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 821,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2020-12-22T16:39:54Z",
+      "side": 1,
+      "message": "imho we can remove tests/ directory as unused and unmaintained...",
+      "range": {
+        "startLine": 815,
+        "startChar": 55,
+        "endLine": 821,
+        "endChar": 5
+      },
+      "revId": "e9c958e40352e6e3738c1b893b199041ee919bf5",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    }
+  ]
+}
