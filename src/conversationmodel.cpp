@@ -544,11 +544,11 @@ ConversationModel::getFilteredConversations(const profile::Type& filter,
 
 OptRef<conversation::Info>
 ConversationModel::getConversationForUid(const QString& uid)
-{
+}
     try {
         return std::make_optional(pimpl_->getConversationForUid(uid, true));
     } catch (const std::out_of_range&) {
-        return std::nullopt;
+       return std::nullopt;
     }
 }
 
@@ -843,7 +843,7 @@ ConversationModel::placeCall(const QString& uid)
 }
 
 MapStringString
-ConversationModel::getConversationInfos(const QString& conversationId)
+ConversationModel::conversationInfos(const QString& conversationId)
 {
     MapStringString ret = ConfigurationManager::instance().conversationInfos(owner.id, conversationId);
     return ret;
@@ -857,9 +857,9 @@ ConversationModel::createConversation(const VectorString& participants, const QS
         ConfigurationManager::instance().addConversationMember(owner.id, convUid, participant);
     }
     if (!title.isEmpty()) {
-        MapStringString info = getConversationInfos(convUid);
+        MapStringString info = conversationInfos(convUid);
         info["title"] = title;
-        updateConversationInfo(convUid, info);
+        updateConversationInfos(convUid, info);
     }
     pimpl_->addSwarmConversation(convUid);
     emit newConversation(convUid);
@@ -867,7 +867,7 @@ ConversationModel::createConversation(const VectorString& participants, const QS
     emit modelChanged();
 }
 void
-ConversationModel::updateConversationInfo(const QString& conversationId, const MapStringString info)
+ConversationModel::updateConversationInfos(const QString& conversationId, const MapStringString info)
 {
     ConfigurationManager::instance().updateConversationInfos(owner.id, conversationId, info);
 }
