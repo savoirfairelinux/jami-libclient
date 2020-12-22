@@ -598,11 +598,14 @@ ConversationModel::getFilteredConversations(const profile::Type& filter,
                            pimpl_->conversations.end(),
                            pimpl_->customFilteredConversations.begin(),
                            [this, &includeBanned](const conversation::Info& entry) {
-                               auto contactInfo = owner.contactModel->getContact(
-                                   entry.participants.front());
-                               if (!includeBanned && contactInfo.isBanned)
-                                   return false;
-                               return (contactInfo.profileInfo.type == pimpl_->customTypeFilter);
+                               try {
+                                auto contactInfo = owner.contactModel->getContact(
+                                    entry.participants.front());
+                                if (!includeBanned && contactInfo.isBanned)
+                                    return false;
+                                return (contactInfo.profileInfo.type == pimpl_->customTypeFilter);
+                               } catch (...) {}
+                               return false;
                            });
     pimpl_->customFilteredConversations.resize(
         std::distance(pimpl_->customFilteredConversations.begin(), it));
@@ -886,7 +889,7 @@ ConversationModel::placeCall(const QString& uid)
 }
 
 MapStringString
-ConversationModel::getConversationInfos(const QString& conversationId)
+ConversationModel::conversationInfos(const QString& conversationId)
 {
     MapStringString ret = ConfigurationManager::instance().conversationInfos(owner.id, conversationId);
     return ret;
@@ -900,9 +903,9 @@ ConversationModel::createConversation(const VectorString& participants, const QS
         ConfigurationManager::instance().addConversationMember(owner.id, convUid, participant);
     }
     if (!title.isEmpty()) {
-        MapStringString info = getConversationInfos(convUid);
+        MapStringString info = conversationInfos(convUid);
         info["title"] = title;
-        updateConversationInfo(convUid, info);
+        updateConversationInfos(convUid, info);
     }
     pimpl_->addSwarmConversation(convUid);
     emit newConversation(convUid);
@@ -911,7 +914,7 @@ ConversationModel::createConversation(const VectorString& participants, const QS
     emit modelSorted();
 }
 void
-ConversationModel::updateConversationInfo(const QString& conversationId, const MapStringString info)
+ConversationModel::updateConversationInfos(const QString& conversationId, const MapStringString info)
 {
     ConfigurationManager::instance().updateConversationInfos(owner.id, conversationId, info);
 }
