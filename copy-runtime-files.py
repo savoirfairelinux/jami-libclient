@@ -31,12 +31,12 @@ def execute_cmd(cmd, use_subprocess_pipe=False):
     p = subprocess.Popen(cmd,
                          shell=True,
                          stdout=subprocess.PIPE if use_subprocess_pipe else sys.stdout)
-    output, error = p.communicate()
+    output, _ = p.communicate()
 
     if use_subprocess_pipe:
         if output:
             return output
-        return error
+        return -1
     else:
         if p.returncode != 0:
             sys.exit()
@@ -54,7 +54,7 @@ class globalVar:
     output_path = ""
 
     stamp = execute_cmd('git rev-parse HEAD', True)[0:8]
-    if system_name == "Windows":
+    if type(stamp) is bytes:
         stamp = stamp.decode("utf-8")
     stampFile = client_dir + os.sep + ".deploy.stamp"
 
@@ -94,6 +94,14 @@ def setup_parameters(parsed_args):
             globalVar.qt_path = parsed_args.qtPath
         else:
             globalVar.qt_version = execute_cmd('qmake -v', True)
+            if globalVar.qt_version == -1:
+                globalVar.qt_version = execute_cmd('qmake-qt5 -v', True)
+                if globalVar.qt_version == -1:
+                    print(bcolors.FAIL + "No qmake found!" + bcolors.ENDC)
+                    sys.exit()
+
+            if type(globalVar.qt_version) is bytes:
+                globalVar.qt_version = globalVar.qt_version.decode("utf-8")
             globalVar.qt_version = globalVar.qt_version.split(
                 'Qt version')[1].split('in')[0].strip()
             qt_minor_ver = int(globalVar.qt_version.split('.')[1])
@@ -170,11 +178,27 @@ def copy_ringtones():
 
 
 def release_and_copy_translations():
-    # translations
+    # translations binary
     lrelease = 'lrelease'
+
     if globalVar.qt_path:
         lrelease = globalVar.qt_path + os.sep + 'bin' + os.sep + \
             'lrelease' + ('.exe' if globalVar.system_name == "Windows" else '')
+
+    if execute_cmd(lrelease + ' -version', True) == -1:
+        lrelease = lrelease.replace('lrelease', 'lrelease-qt5')
+        if execute_cmd(lrelease + ' -version', True) == -1:
+            print(bcolors.FAIL + "No lrelease found!" + bcolors.ENDC)
+            sys.exit()
+
+    qt_version_check = execute_cmd(lrelease + ' -version', True)
+    if type(qt_version_check) is bytes:
+        qt_version_check = qt_version_check.decode("utf-8")
+    qt_version_check = qt_version_check.split('version')[1].strip()
+    qt_minor_ver = int(qt_version_check.split('.')[1])
+    if qt_minor_ver < 14:
+        print(bcolors.WARNING + "Qt version not supported" + bcolors.ENDC)
+        sys.exit()
 
     # lrc translations
     lrc_ts_path = globalVar.lrc_path + os.sep + 'translations'
