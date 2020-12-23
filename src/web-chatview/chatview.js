@@ -215,10 +215,17 @@ function onScrolled_() {
             backToBottomBtn.onclick = back_to_bottom
         }
     }
-    if (messages.scrollTop == 0 && historyBufferIndex != historyBuffer.length) {
-        /* At the top and there's something to print */
-        printHistoryPart(messages, messages.scrollHeight)
+    //    if (messages.scrollTop == 0 && historyBufferIndex != historyBuffer.length) {
+    //        /* At the top and there's something to print */
+    //        console.error("at the top", historyBuffer.length)
+    //        printHistoryPart(messages, messages.scrollHeight)
+    //    }
+    if (messages.scrollTop === 0) { // At the top
+        console.error("at the top", historyBuffer.length)
+        window.jsbridge.loadMessages()
+        //printHistoryPart(messages, messages.scrollHeight)
     }
+
 }
 
 const debounce = (fn, time) => {
@@ -2055,8 +2062,9 @@ function on_image_load_finished() {
  * available in the DOM.
  */
 function check_lazy_loading() {
-    if (!canLazyLoad)
+    if (!canLazyLoad) {
         return
+    }
     if (messages.scrollHeight < initialScrollBufferFactor * messages.clientHeight
         && historyBufferIndex !== historyBuffer.length) {
         /* Not enough messages loaded, print a new batch. Enable isInitialLoading
@@ -2080,6 +2088,7 @@ function check_lazy_loading() {
  *                changing the position of the scrollbar)
  */
 function printHistoryPart(messages_div, fixedAt) {
+    console.error("printHistoryPart", messages_div, fixedAt)
     if (historyBufferIndex === historyBuffer.length) {
         return
     }
@@ -2163,13 +2172,24 @@ function showMessagesDiv()
 function printHistory(messages_array)
 {
     historyBuffer = messages_array
-    historyBufferIndex = 0
 
+    //historyBufferIndex = 0
+
+    if (historyBufferIndex === 0) {
+    console.error("printHistory")
     isInitialLoading = true
     printHistoryPart(messages, 0)
     isInitialLoading = false
 
     canLazyLoad = true
+
+    } else {
+        printHistoryPart(messages,  messages.scrollHeight)
+        isInitialLoading = false
+
+        canLazyLoad = true
+
+    }
 
     if (use_qt) {
         window.jsbridge.emitMessagesLoaded()
