@@ -156,7 +156,7 @@ MessagesAdapter::connectConversationModel()
 
     newMessagesAvailableConnection_
         = QObject::connect(currentConversationModel,
-                           &lrc::api::ConversationModel::newMessagesAvailable,
+                           &ConversationModel::newMessagesAvailable,
                            [this](const QString& accountId, const QString& conversationId) {
                                auto* convModel = lrcInstance_->accountModel()
                                                      .getAccountInfo(accountId)
@@ -164,7 +164,9 @@ MessagesAdapter::connectConversationModel()
                                auto optConv = convModel->getConversationForUid(conversationId);
                                if (!optConv)
                                    return;
-                               printHistory(*convModel, optConv->get().interactions);
+                               updateHistory(*convModel,
+                                             optConv->get().interactions,
+                                             optConv->get().allMessagesLoaded);
                                Utils::oneShotConnect(qmlObj_,
                                                      SIGNAL(messagesLoaded()),
                                                      this,
@@ -228,7 +230,7 @@ MessagesAdapter::slotMessagesCleared()
         return;
     if (convOpt->get().mode != lrc::api::conversation::Mode::NON_SWARM
         && !convOpt->get().allMessagesLoaded) {
-        convModel->loadConversationMessages(convOpt->get().uid, 0);
+        convModel->loadConversationMessages(convOpt->get().uid, 20);
     } else {
         printHistory(*convModel, convOpt->get().interactions);
         Utils::oneShotConnect(qmlObj_, SIGNAL(messagesLoaded()), this, SLOT(slotMessagesLoaded()));
@@ -557,6 +559,18 @@ MessagesAdapter::printHistory(lrc::api::ConversationModel& conversationModel,
 }
 
 void
+MessagesAdapter::updateHistory(lrc::api::ConversationModel& conversationModel,
+                               MessagesList interactions,
+                               bool allLoaded)
+{
+    auto interactionsStr = interactionsToJsonArrayObject(conversationModel, interactions).toUtf8();
+    QString s = QString::fromLatin1("updateHistory(%1, %2);")
+                    .arg(interactionsStr.constData())
+                    .arg(allLoaded);
+    QMetaObject::invokeMethod(qmlObj_, "webViewRunJavaScript", Q_ARG(QVariant, s));
+}
+
+void
 MessagesAdapter::setSenderImage(const QString& sender, const QString& senderImage)
 {
     QJsonObject setSenderImageObject = QJsonObject();
@@ -716,4 +730,16 @@ MessagesAdapter::removeConversation(const QString& accountId,
                                                                                   banContact);
     if (convUid == currentConvUid_)
         currentConvUid_.clear();
+}
+
+void
+MessagesAdapter::loadMessages(int n)
+{
+    auto* convModel = lrcInstance_->getCurrentConversationModel();
+    auto convOpt = convModel->getConversationForUid(currentConvUid_);
+    if (!convOpt)
+        return;
+    if (convOpt->get().mode != lrc::api::conversation::Mode::NON_SWARM
+        && !convOpt->get().allMessagesLoaded)
+        convModel->loadConversationMessages(convOpt->get().uid, n);
 }
