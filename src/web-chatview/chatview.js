@@ -239,10 +239,9 @@ function onScrolled_() {
             backToBottomBtn.onclick = back_to_bottom
         }
     }
-    if (messages.scrollTop == 0 && historyBufferIndex != historyBuffer.length) {
-        /* At the top and there's something to print */
-        printHistoryPart(messages, messages.scrollHeight)
-    }
+
+    if (messages.scrollTop === 0)
+        window.jsbridge.loadMessages(scrollBuffer)
 }
 
 const debounce = (fn, time) => {
@@ -768,6 +767,7 @@ function audioRecord() {
  */
 /* exported clearMessages */
 function clearMessages() {
+    historyBufferIndex = 0
     canLazyLoad = false
     while (messages.firstChild) {
         messages.removeChild(messages.firstChild)
@@ -2118,14 +2118,9 @@ function check_lazy_loading() {
  * Display 'scrollBuffer' messages from history in passed div (reverse order).
  *
  * @param messages_div that should be modified
- * @param setMessages if enabled, #messages will be set to the resulting messages
- *                    div after being modified. If #messages already exists it will
- *                    be removed and replaced by the new div.
- * @param fixedAt if setMessages is enabled, maintain scrollbar at the specified
- *                position (otherwise modifying #messages would result in
- *                changing the position of the scrollbar)
+ * @param fixedAt maintain scrollbar at the specified position
  */
-function printHistoryPart(messages_div, fixedAt) {
+function printHistoryPart(messages_div, fixedAt, allLoaded=true) {
     if (historyBufferIndex === historyBuffer.length) {
         return
     }
@@ -2156,7 +2151,7 @@ function printHistoryPart(messages_div, fixedAt) {
     }
 
     /* Add ellipsis (...) at the top if there are still messages to load */
-    if (historyBufferIndex < historyBuffer.length) {
+    if (!allLoaded) {
         var llicon = document.createElement("span")
         llicon.id = "lazyloading-icon"
         llicon.innerHTML = "<svg xmlns=\"http://www.w3.org/2000/svg\" fill=\"#888888\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\"><path d=\"M0 0h24v24H0z\" fill=\"none\"/><path d=\"M6 10c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm12 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm-6 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z\"/></svg>"
@@ -2209,13 +2204,38 @@ function showMessagesDiv()
 function printHistory(messages_array)
 {
     historyBuffer = messages_array
-    historyBufferIndex = 0
 
+    historyBufferIndex = 0
     isInitialLoading = true
     printHistoryPart(messages, 0)
     isInitialLoading = false
 
     canLazyLoad = true
+    if (use_qt) {
+        window.jsbridge.emitMessagesLoaded()
+    } else {
+        window.prompt("MESSAGES_LOADED")
+    }
+}
+
+
+/**
+ * Updates history buffer, used for lazy loading messages.
+ * Note: for swarm chat is used instead of printHistory, so
+ * reset of historyBufferIndex has been moved to clearMessages()
+ *
+ * @param messages_array should contain history to be printed
+ */
+/* exported printHistory */
+function updateHistory(messages_array, all_loaded)
+{
+    historyBuffer = messages_array
+
+    printHistoryPart(messages,  messages.scrollHeight, all_loaded)
+    canLazyLoad = true
+
+    if (messages.scrollTop === 0)
+        window.jsbridge.loadMessages(scrollBuffer)
 
     if (use_qt) {
         window.jsbridge.emitMessagesLoaded()
