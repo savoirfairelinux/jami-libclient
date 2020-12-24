@@ -34,7 +34,6 @@
 #include "containerview.h"
 #include "authority/storagehelper.h"
 #include "uri.h"
-
 // Dbus
 #include "dbus/configurationmanager.h"
 #include "dbus/callmanager.h"
@@ -42,6 +41,7 @@
 // daemon
 #include <account_const.h>
 #include <datatransfer_interface.h>
+#include <media_const.h>
 
 // Qt
 #include <QtCore/QTimer>
@@ -174,6 +174,13 @@ public:
      * @param isAudioOnly, allow to specify if the call is only audio. Set to false by default.
      */
     void placeCall(const QString& uid, bool isAudioOnly = false);
+
+    /**
+     * place a call
+     * @param uid, conversation id
+     * @param mediaList, a list of media descriptions
+     */
+    void placeCall(const QString& uid, const VectorMapStringString& mediaList);
 
     /**
      * get number of unread messages
@@ -757,8 +764,29 @@ ConversationModelPimpl::placeCall(const QString& uid, bool isAudioOnly)
 
                 auto& newConv = isTemporary ? conversations.at(contactIndex) : conversation;
                 convId = newConv.uid;
+#if 1
+                VectorMapStringString mediaList;
+                MapStringString audioMap;
+                audioMap.insert("MEDIA_TYPE", DRing::Media::Details::MEDIA_TYPE_AUDIO);
+                audioMap.insert("ENABLED", "true");
+                audioMap.insert("MUTED", "false");
+                audioMap.insert("SECURE", "true");
+                audioMap.insert("LABEL", "main audio");
+                mediaList.append(audioMap);
+                if (not isAudioOnly) {
+                    MapStringString videoMap;
+                    videoMap.insert("MEDIA_TYPE", DRing::Media::Details::MEDIA_TYPE_VIDEO);
+                    videoMap.insert("ENABLED", "true");
+                    videoMap.insert("MUTED", "false");
+                    videoMap.insert("SECURE", "true");
+                    videoMap.insert("LABEL", "main video");
+                    mediaList.append(videoMap);
+                }
 
+                newConv.callId = linked.owner.callModel->createCall(uri, mediaList);
+#else
                 newConv.callId = linked.owner.callModel->createCall(uri, isAudioOnly);
+#endif
                 if (newConv.callId.isEmpty()) {
                     qDebug() << "Can't place call (daemon side failure ?)";
                     return;

@@ -291,6 +291,40 @@ NewCallModel::createCall(const QString& uri, bool isAudioOnly)
     callInfo->status = call::Status::SEARCHING;
     callInfo->type = call::Type::DIALOG;
     callInfo->isAudioOnly = isAudioOnly;
+    callInfo->videoMuted = callInfo->videoMuted or isAudioOnly;
+    pimpl_->calls.emplace(callId, std::move(callInfo));
+
+    return callId;
+}
+
+QString
+NewCallModel::createCall(const QString& uri, const VectorMapStringString& mediaList)
+{
+    qDebug() << "Calling contact: " << uri;
+#ifdef ENABLE_LIBWRAP
+    auto callId = CallManager::instance().placeCallWithMedias(owner.id, uri, mediaList);
+#else  // dbus
+    // do not use auto here (QDBusPendingReply<QString>)
+    QString callId = CallManager::instance().placeCallWithMedias(owner.id, uri, mediaList);
+#endif // ENABLE_LIBWRAP
+
+    if (callId.isEmpty()) {
+        qDebug() << "no call placed between (account: " << owner.id << ", contact: " << uri << ")";
+        return "";
+    }
+
+    auto callInfo = std::make_shared<call::Info>();
+    callInfo->id = callId;
+    callInfo->peerUri = uri;
+    callInfo->isOutgoing = true;
+    callInfo->status = call::Status::SEARCHING;
+    callInfo->type = call::Type::DIALOG;
+    // TODO_MC. Handle this flag.
+    // callInfo->isAudioOnly = isAudioOnly;
+    for (auto const& media : mediaList) {
+        callInfo->mediaList.append(media);
+    }
+
     pimpl_->calls.emplace(callId, std::move(callInfo));
 
     return callId;
@@ -608,7 +642,11 @@ NewCallModelPimpl::initCallFromDaemon()
             if (linked.owner.profileInfo.type == lrc::api::profile::Type::RING) {
                 callInfo->peerUri = "ring:" + callInfo->peerUri;
             }
+#if 1
+            callInfo->videoMuted = callInfo->isAudioOnly or (details["VIDEO_MUTED"] == "true");
+#else
             callInfo->videoMuted = details["VIDEO_MUTED"] == "true";
+#endif
             callInfo->audioMuted = details["AUDIO_MUTED"] == "true";
             callInfo->type = call::Type::DIALOG;
             VectorMapStringString infos = CallManager::instance().getConferenceInfos(callId);
@@ -838,6 +876,7 @@ NewCallModelPimpl::slotIncomingCall(const QString& accountId,
     callInfo->status = call::Status::INCOMING_RINGING;
     callInfo->type = call::Type::DIALOG;
     callInfo->isAudioOnly = callDetails["AUDIO_ONLY"] == "true" ? true : false;
+    callInfo->videoMuted |= callInfo->isAudioOnly;
     calls.emplace(callId, std::move(callInfo));
 
     if (!linked.owner.confProperties.allowIncoming

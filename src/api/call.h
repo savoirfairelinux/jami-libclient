@@ -125,6 +125,9 @@ Q_ENUM_NS(Type)
 
 enum class Layout { GRID, ONE_WITH_SMALL, ONE };
 
+enum class MediaType { NONE, AUDIO, VIDEO };
+Q_ENUM_NS(MediaType)
+
 struct Info
 {
     QString id;
@@ -133,12 +136,17 @@ struct Info
     Type type = Type::INVALID;
     QString peerUri;
     bool isOutgoing;
+    // TODO_MC. Deprecated by mediaList
     bool audioMuted = false;
+    // TODO_MC. Deprecated by mediaList
     bool videoMuted = false;
+    // TODO_MC. Deprecated by mediaList
     bool isAudioOnly = false;
     Layout layout = Layout::GRID;
     VectorMapStringString participantsInfos = {};
     QSet<QString> peerRec {};
+    // List of included medias
+    VectorMapStringString mediaList = {};
 };
 
 static inline bool

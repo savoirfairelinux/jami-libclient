@@ -75,6 +75,14 @@ public:
     QString createCall(const QString& uri, bool isAudioOnly = false);
 
     /**
+     * Create a new call
+     * @param  uri of the contact to call
+     * @param  mediaList, a list of medias to include
+     * @return the uid of the created call. Empty string on failure.
+     */
+    QString createCall(const QString& uri, const VectorMapStringString& mediaList);
+
+    /**
      * Get the call from its call id
      * @param  uid
      * @return the callInfo
