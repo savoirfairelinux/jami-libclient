@@ -9,6 +9,7 @@
   --jami-red: #dc2719;
   --jami-red-hover: #b02e2c;
   --text-color: black;
+  --hyperlink-color: var(--text-color);
   --timestamp-color: #333;
   --message-out-bg: #cfd8dc;
   --message-out-txt: black;
@@ -342,7 +343,7 @@ input[placeholder], [placeholder], *[placeholder] {
 
 a:link {
   text-decoration: none;
-  color: #0e649b;
+  color: var(--hyperlink-color);
   transition: all 0.2s ease-in-out;
   border-bottom: dotted 1px;
 }
