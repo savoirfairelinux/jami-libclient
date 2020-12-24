@@ -172,9 +172,7 @@ public:
                     Q_EMIT smartInfo(convertMap(info));
                 }),
             exportable_callback<CallSignal::RemoteRecordingChanged>(
-                [this](const std::string &callID,
-                       const std::string &contactId,
-                       bool state) {
+                [this](const std::string& callID, const std::string& contactId, bool state) {
                     LOG_DRING_SIGNAL3("remoteRecordingChanged",
                                       QString(callID.c_str()),
                                       QString(contactId.c_str()),
@@ -315,6 +313,14 @@ public Q_SLOTS: // METHODS
         return temp;
     }
 
+    QString placeCall(const QString& accountID,
+                      const QString& to,
+                      const VectorMapStringString& mediaList)
+    {
+        QString temp(DRing::placeCall(accountID.toStdString(), to.toStdString(), mediaList).c_str());
+        return temp;
+    }
+
     void playDTMF(const QString& key) { DRing::playDTMF(key.toStdString()); }
 
     void recordPlaybackSeek(double value) { DRing::recordPlaybackSeek(value); }
@@ -411,7 +417,9 @@ Q_SIGNALS: // SIGNALS
     void videoMuted(const QString& callID, bool state);
     void peerHold(const QString& callID, bool state);
     void smartInfo(const MapStringString& info);
-    void remoteRecordingChanged(const QString &callID, const QString &peerNumber, bool remoteRecordingState);
+    void remoteRecordingChanged(const QString& callID,
+                                const QString& peerNumber,
+                                bool remoteRecordingState);
 };
 
 namespace org {
