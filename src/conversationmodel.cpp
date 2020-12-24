@@ -156,6 +156,13 @@ public:
     void placeCall(const QString& uid, bool isAudioOnly = false);
 
     /**
+     * place a call
+     * @param uid, conversation id
+     * @param mediaList, a list of media descriptions
+     */
+    void placeCall(const QString& uid, const VectorMapStringString& mediaList);
+
+    /**
      * get number of unread messages
      */
     int getNumberOfUnreadMessagesFor(const QString& uid);
@@ -800,8 +807,27 @@ ConversationModelPimpl::placeCall(const QString& uid, bool isAudioOnly)
 
                 auto& newConv = isTemporary ? conversations.at(contactIndex) : conversation;
                 convId = newConv.uid;
+#if 1
+                VectorMapStringString mediaList;
+                MapStringString audioMap;
+                audioMap.insert("MEDIA_TYPE", "audio");
+                audioMap.insert("ENABLED", "true");
+                audioMap.insert("MUTED", "false");
+                audioMap.insert("SECURE", "true");
+                audioMap.insert("LABEL", "main audio");
+                mediaList.append(audioMap);
+                MapStringString videoMap;
+                audioMap.insert("MEDIA_TYPE", "video");
+                audioMap.insert("ENABLED", "true");
+                audioMap.insert("MUTED", "false");
+                audioMap.insert("SECURE", "true");
+                audioMap.insert("LABEL", "main video");
+                mediaList.append(videoMap);
 
+                newConv.callId = linked.owner.callModel->createCall(uri, mediaList);
+#else
                 newConv.callId = linked.owner.callModel->createCall(uri, isAudioOnly);
+#endif
                 if (newConv.callId.isEmpty()) {
                     qDebug() << "Can't place call (daemon side failure ?)";
                     return;
