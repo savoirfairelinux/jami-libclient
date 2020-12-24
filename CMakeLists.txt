@@ -20,6 +20,8 @@ INCLUDE(GNUInstallDirs)
 INCLUDE(CMakePackageConfigHelpers)
 INCLUDE(GenerateExportHeader)
 
+SET(CMAKE_BUILD_TYPE Debug)
+
 option (ENABLE_SHARED "Build shared library" ON)
 
 string(SUBSTRING ${CMAKE_GENERATOR} 0 14 CMAKE_GENERATOR_SHORT)
@@ -35,7 +37,8 @@ if (NOT (CMAKE_CXX_COMPILER_ID MATCHES "MSVC"))
     ADD_DEFINITIONS(
        ${QT_DEFINITIONS}
        -fexceptions
-       -O2
+       -O0
+       -g
     )
 endif()
 
