@@ -291,6 +291,9 @@ NewCallModel::createCall(const QString& uri, bool isAudioOnly)
     callInfo->status = call::Status::SEARCHING;
     callInfo->type = call::Type::DIALOG;
     callInfo->isAudioOnly = isAudioOnly;
+#if 1
+    callInfo->videoMuted |= isAudioOnly;
+#endif
     pimpl_->calls.emplace(callId, std::move(callInfo));
 
     return callId;
@@ -608,7 +611,11 @@ NewCallModelPimpl::initCallFromDaemon()
             if (linked.owner.profileInfo.type == lrc::api::profile::Type::RING) {
                 callInfo->peerUri = "ring:" + callInfo->peerUri;
             }
+            #if 1
+            callInfo->videoMuted = callInfo->isAudioOnly or (details["VIDEO_MUTED"] == "true");
+            #else
             callInfo->videoMuted = details["VIDEO_MUTED"] == "true";
+            #endif
             callInfo->audioMuted = details["AUDIO_MUTED"] == "true";
             callInfo->type = call::Type::DIALOG;
             VectorMapStringString infos = CallManager::instance().getConferenceInfos(callId);
@@ -826,6 +833,9 @@ NewCallModelPimpl::slotIncomingCall(const QString& accountId,
     callInfo->status = call::Status::INCOMING_RINGING;
     callInfo->type = call::Type::DIALOG;
     callInfo->isAudioOnly = callDetails["AUDIO_ONLY"] == "true" ? true : false;
+#if 1
+    callInfo->videoMuted |= callInfo->isAudioOnly;
+#endif
     calls.emplace(callId, std::move(callInfo));
 
     if (!linked.owner.confProperties.allowIncoming
