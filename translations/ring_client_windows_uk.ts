@@ -310,7 +310,7 @@
     <message>
         <location filename="../src/commoncomponents/DaemonReconnectPopup.qml" line="92"/>
         <source>Ok</source>
-        <translation type="unfinished"/>
+        <translation>Ок</translation>
     </message>
 </context>
 <context>
@@ -319,17 +319,18 @@
         <location filename="../src/DaemonReconnectWindow.qml" line="100"/>
         <source>Could not re-connect to the Jami daemon (dring).
 Jami will now quit.</source>
-        <translation type="unfinished"/>
+        <translation>Не вдалося повторно з&apos;єднатися з сервісом Джамі (dring).
+Джамі зараз закриється.</translation>
     </message>
     <message>
         <location filename="../src/DaemonReconnectWindow.qml" line="101"/>
         <source>Trying to reconnect to the Jami daemon (dring)…</source>
-        <translation type="unfinished"/>
+        <translation>Спроба з&apos;єднання з сервісом Джамі (dring)…</translation>
     </message>
     <message>
         <location filename="../src/DaemonReconnectWindow.qml" line="156"/>
         <source>Ok</source>
-        <translation type="unfinished"/>
+        <translation>Ок</translation>
     </message>
 </context>
 <context>
@@ -1725,13 +1726,14 @@ Copy and share it with your friends!</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="411"/>
         <source>Trying to reconnect to the Jami daemon (dring)…</source>
-        <translation type="unfinished"/>
+        <translation>Спроба з&apos;єднання з сервісом Джамі (dring)…</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="412"/>
         <source>Could not re-connect to the Jami daemon (dring).
 Jami will now quit.</source>
-        <translation type="unfinished"/>
+        <translation>Не вдалося повторно з&apos;єднатися з сервісом Джамі (dring).
+Джамі зараз закриється.</translation>
     </message>
 </context>
 <context>

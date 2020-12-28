@@ -2225,7 +2225,7 @@ Please try again later.</source>
     <message>
         <location filename="../src/mainview/components/SelectScreen.qml" line="321"/>
         <source>All Screens</source>
-        <translation type="unfinished"/>
+        <translation>所有畫面</translation>
     </message>
 </context>
 <context>

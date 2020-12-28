@@ -310,7 +310,7 @@
     <message>
         <location filename="../src/commoncomponents/DaemonReconnectPopup.qml" line="92"/>
         <source>Ok</source>
-        <translation type="unfinished"/>
+        <translation>Ok</translation>
     </message>
 </context>
 <context>
@@ -319,17 +319,18 @@
         <location filename="../src/DaemonReconnectWindow.qml" line="100"/>
         <source>Could not re-connect to the Jami daemon (dring).
 Jami will now quit.</source>
-        <translation type="unfinished"/>
+        <translation>Verbindung mit Jami-Hintergrundprozess (dring) konnte nicht wiederhergestellt werden.
+Jami wird jetzt beendet.</translation>
     </message>
     <message>
         <location filename="../src/DaemonReconnectWindow.qml" line="101"/>
         <source>Trying to reconnect to the Jami daemon (dring)…</source>
-        <translation type="unfinished"/>
+        <translation>Versuche wieder mit dem Jami-Hintergrundprozess zu verbinden (dring)</translation>
     </message>
     <message>
         <location filename="../src/DaemonReconnectWindow.qml" line="156"/>
         <source>Ok</source>
-        <translation type="unfinished"/>
+        <translation>Ok</translation>
     </message>
 </context>
 <context>
@@ -1726,13 +1727,14 @@ Kopieren Sie ihn und teilen Sie ihn mit Ihren Freunden!</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="411"/>
         <source>Trying to reconnect to the Jami daemon (dring)…</source>
-        <translation type="unfinished"/>
+        <translation>Versuche wieder mit dem Jami-Hintergrundprozess zu verbinden (dring)</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="412"/>
         <source>Could not re-connect to the Jami daemon (dring).
 Jami will now quit.</source>
-        <translation type="unfinished"/>
+        <translation>Verbindung mit Jami-Hintergrundprozess (dring) konnte nicht wiederhergestellt werden.
+Jami wird jetzt beendet.</translation>
     </message>
 </context>
 <context>
@@ -2222,7 +2224,7 @@ Versuchen Sie es später erneut.</translation>
     <message>
         <location filename="../src/mainview/components/SelectScreen.qml" line="321"/>
         <source>All Screens</source>
-        <translation type="unfinished"/>
+        <translation>Alle Bildschirme</translation>
     </message>
 </context>
 <context>

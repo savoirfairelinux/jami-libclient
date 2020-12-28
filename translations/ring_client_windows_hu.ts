@@ -310,7 +310,7 @@
     <message>
         <location filename="../src/commoncomponents/DaemonReconnectPopup.qml" line="92"/>
         <source>Ok</source>
-        <translation type="unfinished"/>
+        <translation>Rendben</translation>
     </message>
 </context>
 <context>
@@ -319,17 +319,18 @@
         <location filename="../src/DaemonReconnectWindow.qml" line="100"/>
         <source>Could not re-connect to the Jami daemon (dring).
 Jami will now quit.</source>
-        <translation type="unfinished"/>
+        <translation>Nem sikerült újrakapcsolódni a Jami rendszerfolyamathoz (dring).
+A Jami most kilép.</translation>
     </message>
     <message>
         <location filename="../src/DaemonReconnectWindow.qml" line="101"/>
         <source>Trying to reconnect to the Jami daemon (dring)…</source>
-        <translation type="unfinished"/>
+        <translation>Újrakapcsolódás a Jami rendszerfolyamathoz (dring)…</translation>
     </message>
     <message>
         <location filename="../src/DaemonReconnectWindow.qml" line="156"/>
         <source>Ok</source>
-        <translation type="unfinished"/>
+        <translation>Rendben</translation>
     </message>
 </context>
 <context>
@@ -1725,13 +1726,14 @@ Másolja ki, és ossza meg barátaival!</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="411"/>
         <source>Trying to reconnect to the Jami daemon (dring)…</source>
-        <translation type="unfinished"/>
+        <translation>Újrakapcsolódás a Jami rendszerfolyamathoz (dring)…</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="412"/>
         <source>Could not re-connect to the Jami daemon (dring).
 Jami will now quit.</source>
-        <translation type="unfinished"/>
+        <translation>Nem sikerült újrakapcsolódni a Jami rendszerfolyamathoz (dring).
+A Jami most kilép.</translation>
     </message>
 </context>
 <context>
@@ -2221,7 +2223,7 @@ Kérjük, hogy próbálja újra később.</translation>
     <message>
         <location filename="../src/mainview/components/SelectScreen.qml" line="321"/>
         <source>All Screens</source>
-        <translation type="unfinished"/>
+        <translation>Minden képernyő</translation>
     </message>
 </context>
 <context>

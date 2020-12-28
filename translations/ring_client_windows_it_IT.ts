@@ -2225,7 +2225,7 @@ Per favore riprova più tardi.</translation>
     <message>
         <location filename="../src/mainview/components/SelectScreen.qml" line="321"/>
         <source>All Screens</source>
-        <translation type="unfinished"/>
+        <translation>Tutti gli Schermi</translation>
     </message>
 </context>
 <context>

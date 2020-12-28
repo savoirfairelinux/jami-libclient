@@ -2225,7 +2225,7 @@ Ju lutemi, riprovoni më vonë.</translation>
     <message>
         <location filename="../src/mainview/components/SelectScreen.qml" line="321"/>
         <source>All Screens</source>
-        <translation type="unfinished"/>
+        <translation>Krejt Ekranet</translation>
     </message>
 </context>
 <context>
