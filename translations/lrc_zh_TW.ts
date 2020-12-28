@@ -462,7 +462,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="65"/>
         <source>Waiting for contact</source>
-        <translation type="unfinished"/>
+        <translation>等待聯絡人</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="66"/>

@@ -462,7 +462,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="65"/>
         <source>Waiting for contact</source>
-        <translation type="unfinished"/>
+        <translation>En attente de votre contact</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="66"/>
@@ -472,7 +472,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="67"/>
         <source>Timed out waiting for contact</source>
-        <translation>Délai d&apos;attente de l&apos;interlocuteur dépassé</translation>
+        <translation>Délai d&apos;attente de votre contact dépassé</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="41"/>
