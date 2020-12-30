@@ -27,9 +27,6 @@
 
 #include <QtConcurrent/QtConcurrent>
 
-#undef REGISTERED
-#include "../daemon/src/dring/account_const.h"
-
 AccountAdapter::AccountAdapter(QObject* parent)
     : QmlAdapterBase(parent)
 {}
@@ -97,6 +94,11 @@ AccountAdapter::createJamiAccount(QString registeredName,
         &LRCInstance::accountModel(),
         &lrc::api::NewAccountModel::accountAdded,
         [this, registeredName, settings, isCreating](const QString& accountId) {
+            auto confProps = LRCInstance::accountModel().getAccountConfig(accountId);
+            confProps.Ringtone.ringtonePath = Utils::GetRingtonePath();
+            confProps.isRendezVous = settings["isRendezVous"].toBool();
+            LRCInstance::accountModel().setAccountConfig(accountId, confProps);
+
             auto showBackup = isCreating
                               && !AppSettingsManager::getValue(Settings::Key::NeverShowMeAgain)
                                       .toBool();
@@ -130,19 +132,12 @@ AccountAdapter::createJamiAccount(QString registeredName,
     connectFailure();
 
     QtConcurrent::run([settings] {
-        QMap<QString, QString> additionalAccountConfig;
-        additionalAccountConfig.insert(DRing::Account::ConfProperties::Ringtone::PATH,
-                                       Utils::GetRingtonePath());
-        additionalAccountConfig.insert(DRing::Account::ConfProperties::ISRENDEZVOUS,
-                                       settings["isRendezVous"].toString());
-
         LRCInstance::accountModel().createNewAccount(lrc::api::profile::Type::RING,
                                                      settings["alias"].toString(),
                                                      settings["archivePath"].toString(),
                                                      settings["password"].toString(),
                                                      settings["archivePin"].toString(),
-                                                     "",
-                                                     additionalAccountConfig);
+                                                     "");
     });
 }
 
@@ -159,6 +154,7 @@ AccountAdapter::createSIPAccount(const QVariantMap& settings)
                               confProps.username = settings["username"].toString();
                               confProps.password = settings["password"].toString();
                               confProps.routeset = settings["proxy"].toString();
+                              confProps.Ringtone.ringtonePath = Utils::GetRingtonePath();
                               LRCInstance::accountModel().setAccountConfig(accountId, confProps);
 
                               emit LRCInstance::instance().accountListChanged();
@@ -171,17 +167,13 @@ AccountAdapter::createSIPAccount(const QVariantMap& settings)
     connectFailure();
 
     QtConcurrent::run([settings] {
-        QMap<QString, QString> additionalAccountConfig;
-        additionalAccountConfig.insert(DRing::Account::ConfProperties::Ringtone::PATH,
-                                       Utils::GetRingtonePath());
-
         LRCInstance::accountModel().createNewAccount(lrc::api::profile::Type::SIP,
                                                      settings["alias"].toString(),
                                                      settings["archivePath"].toString(),
                                                      "",
                                                      "",
                                                      settings["username"].toString(),
-                                                     additionalAccountConfig);
+                                                     {});
     });
 }
 
@@ -191,9 +183,14 @@ AccountAdapter::createJAMSAccount(const QVariantMap& settings)
     Utils::oneShotConnect(&LRCInstance::accountModel(),
                           &lrc::api::NewAccountModel::accountAdded,
                           [this](const QString& accountId) {
-                              Q_UNUSED(accountId)
                               if (!LRCInstance::accountModel().getAccountList().size())
                                   return;
+
+                              auto confProps = LRCInstance::accountModel().getAccountConfig(
+                                  accountId);
+                              confProps.Ringtone.ringtonePath = Utils::GetRingtonePath();
+                              LRCInstance::accountModel().setAccountConfig(accountId, confProps);
+
                               emit accountAdded(accountId,
                                                 false,
                                                 LRCInstance::accountModel().getAccountList().indexOf(
@@ -204,14 +201,9 @@ AccountAdapter::createJAMSAccount(const QVariantMap& settings)
     connectFailure();
 
     QtConcurrent::run([settings] {
-        QMap<QString, QString> additionalAccountConfig;
-        additionalAccountConfig.insert(DRing::Account::ConfProperties::Ringtone::PATH,
-                                       Utils::GetRingtonePath());
-
         LRCInstance::accountModel().connectToAccountManager(settings["username"].toString(),
                                                             settings["password"].toString(),
-                                                            settings["manager"].toString(),
-                                                            additionalAccountConfig);
+                                                            settings["manager"].toString());
     });
 }
 
