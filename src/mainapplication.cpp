@@ -1,4 +1,4 @@
-/*!
+﻿/*!
  * Copyright (C) 2015-2020 by Savoir-faire Linux
  * Author: Edric Ladent Milaret <edric.ladent-milaret@savoirfairelinux.com>
  * Author: Andreas Traczyk <andreas.traczyk@savoirfairelinux.com>
@@ -132,6 +132,10 @@ bool
 MainApplication::init()
 {
     setWindowIcon(QIcon(":images/jami.ico"));
+
+    // Lrc web resources
+    QResource::registerResource(QCoreApplication::applicationDirPath() + QDir::separator()
+                                + "webresource.rcc");
 
 #ifdef Q_OS_LINUX
     if (!getenv("QT_QPA_PLATFORMTHEME"))
