@@ -137,7 +137,7 @@ Rectangle {
             checkedImageSource: "qrc:/images/icons/videocam_off-24px.svg"
             checkedImageColor: JamiTheme.declineButtonPressedRed
 
-            toolTipText: !checked ? JamiStrings.pause : JamiStrings.resume
+            toolTipText: !checked ? JamiStrings.pauseVideo : JamiStrings.resumeVideo
 
             onClicked: CallAdapter.videoPauseThisCallToggle()
         }
