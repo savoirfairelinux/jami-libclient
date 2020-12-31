@@ -379,7 +379,7 @@ Rectangle {
 
         visible: false
 
-        source: "qrc:/images/icons/phone_paused-24px.svg"
+        source: "qrc:/images/icons/ic_pause_white_100px.svg"
     }
 
     CallOverlayButtonGroup {

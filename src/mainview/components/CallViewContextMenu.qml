@@ -45,7 +45,8 @@ Item {
     function openMenu(){
         ContextMenuGenerator.initMenu()
         if (isSIP){
-            ContextMenuGenerator.addMenuItem(isPaused ? JamiStrings.resume : JamiStrings.hold,
+            ContextMenuGenerator.addMenuItem(isPaused ? JamiStrings.resumeCall :
+                                                        JamiStrings.pauseCall,
                                              isPaused ?
                                                  "qrc:/images/icons/play_circle_outline-24px.svg" :
                                                  "qrc:/images/icons/pause_circle_outline-24px.svg",

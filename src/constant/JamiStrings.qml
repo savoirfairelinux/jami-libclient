@@ -178,6 +178,8 @@ Item {
     property string mute: qsTr("Mute")
     property string unmute: qsTr("Unmute")
     property string hangup: qsTr("End call")
+    property string pauseCall: qsTr("Pause call")
+    property string resumeCall: qsTr("Resume call")
     property string pauseVideo: qsTr("Pause video")
     property string resumeVideo: qsTr("Resume video")
     property string addParticipants: qsTr("Add participants")
