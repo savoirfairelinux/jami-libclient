@@ -230,7 +230,7 @@ CallAdapter::updateCall(const QString& convUid, const QString& accountId, bool f
 
     if (call->status == lrc::api::call::Status::IN_PROGRESS) {
         LRCInstance::renderer()->addDistantRenderer(call->id);
-        LRCInstance::getAccountInfo(accountId).callModel->setCurrentCall(call->id);
+        LRCInstance::getAccountInfo(accountId_).callModel->setCurrentCall(call->id);
     }
 }
 
