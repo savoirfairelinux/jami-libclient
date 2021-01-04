@@ -98,12 +98,12 @@
         <location filename="../src/authority/storagehelper.cpp" line="112"/>
         <location filename="../src/authority/storagehelper.cpp" line="892"/>
         <source>Missed outgoing call</source>
-        <translation type="unfinished"/>
+        <translation>Appel sortant manqué</translation>
     </message>
     <message>
         <location filename="../src/authority/storagehelper.cpp" line="118"/>
         <source>Missed incoming call</source>
-        <translation type="unfinished"/>
+        <translation>Appel entrant manqué</translation>
     </message>
     <message>
         <location filename="../src/authority/storagehelper.cpp" line="132"/>

@@ -452,7 +452,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="42"/>
         <source>Write to {0}</source>
-        <translation>Scrie-i lui {0}</translation>
+        <translation>Scrie pentru {0}</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="60"/>
