@@ -43,6 +43,10 @@ Rectangle {
     signal messagesCleared
     signal messagesLoaded
 
+    function setSendMessageContent(content) {
+        jsBridgeObject.setSendMessageContentRequest(content)
+    }
+
     function focusMessageWebView() {
         messageWebView.forceActiveFocus()
     }
@@ -139,6 +143,10 @@ Rectangle {
 
         // ID, under which this object will be known at chatview.js side.
         WebChannel.id: "jsbridge"
+
+        // signals to trigger functions in chatview.js
+        // mainly used to avoid input arg string escape
+        signal setSendMessageContentRequest(string content)
 
         // Functions that are exposed, return code can be derived from js side
         // by setting callback function.
@@ -240,6 +248,8 @@ Rectangle {
 
         settings.javascriptEnabled: true
         settings.javascriptCanOpenWindows: true
+        settings.javascriptCanAccessClipboard: true
+        settings.javascriptCanPaste: true
         settings.fullScreenSupportEnabled: true
         settings.allowRunningInsecureContent: true
         settings.localContentCanAccessRemoteUrls: true

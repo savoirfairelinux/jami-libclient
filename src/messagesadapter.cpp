@@ -421,10 +421,11 @@ MessagesAdapter::pasteKeyDetected()
             }
         }
     } else {
+        // Treat as text content, make chatview.js handle in order to
+        // avoid string escape problems
         QMetaObject::invokeMethod(qmlObj_,
                                   "webViewRunJavaScript",
-                                  Q_ARG(QVariant,
-                                        QStringLiteral("replaceText(`%1`)").arg(mimeData->text())));
+                                  Q_ARG(QVariant, QStringLiteral("replaceText()")));
     }
 }
 
@@ -640,8 +641,7 @@ MessagesAdapter::removeInteraction(uint64_t interactionId)
 void
 MessagesAdapter::setSendMessageContent(const QString& content)
 {
-    QString s = QString::fromLatin1("setSendMessageContent(`%1`);").arg(content);
-    QMetaObject::invokeMethod(qmlObj_, "webViewRunJavaScript", Q_ARG(QVariant, s));
+    QMetaObject::invokeMethod(qmlObj_, "setSendMessageContent", Q_ARG(QVariant, content));
 }
 
 void
