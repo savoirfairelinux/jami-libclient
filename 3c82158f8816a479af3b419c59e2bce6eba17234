@@ -22,6 +22,30 @@
       "revId": "3c82158f8816a479af3b419c59e2bce6eba17234",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1bf5a867_00d346db",
+        "filename": "src/web-chatview/chatview.js",
+        "patchSetId": 1
+      },
+      "lineNbr": 2467,
+      "author": {
+        "id": 633
+      },
+      "writtenOn": "2021-01-04T21:09:51Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "07e3680a_0ac9c033",
+      "range": {
+        "startLine": 2467,
+        "startChar": 14,
+        "endLine": 2467,
+        "endChar": 18
+      },
+      "revId": "3c82158f8816a479af3b419c59e2bce6eba17234",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
