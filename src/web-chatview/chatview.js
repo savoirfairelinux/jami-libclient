@@ -119,6 +119,11 @@ if (use_qt) {
     }
     new QWebChannel(qt.webChannelTransport, function (channel) {
         window.jsbridge = channel.objects.jsbridge
+
+        // connect to a signal
+        window.jsbridge.setSendMessageContentRequest.connect(function(content) {
+            setSendMessageContent(content)
+        });
     })
 }
 
@@ -2457,15 +2462,24 @@ function setCaretPosition(elem, caretPos) {
     }
 }
 
-function replaceText(text) {
-    var input = messageBarInput
-    var currentContent = input.value
-    var start = input.selectionStart
-    var end = input.selectionEnd
-    var output = [currentContent.slice(0, start), text, currentContent.slice(end)].join("")
-    input.value = output
-    setCaretPosition(input, start + text.length)
-    grow_text_area()
+function replaceText() {
+    navigator.clipboard.readText()
+        .then(text => {
+            var input = messageBarInput
+            var currentContent = input.value
+            var start = input.selectionStart
+            var end = input.selectionEnd
+            var output = [currentContent.slice(0, start), text, currentContent.slice(end)].join("")
+            input.value = output
+            setCaretPosition(input, start + text.length)
+            grow_text_area()
+        })
+        .catch(err => {
+            document.execCommand('paste')
+            .catch(err => {
+                console.error('Failed to read clipboard contents: ', err)
+            })
+        })
 }
 
 /**
