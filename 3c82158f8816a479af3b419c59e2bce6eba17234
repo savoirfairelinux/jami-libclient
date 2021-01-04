@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "07e3680a_0ac9c033",
+        "filename": "src/web-chatview/chatview.js",
+        "patchSetId": 1
+      },
+      "lineNbr": 2467,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2021-01-04T20:48:19Z",
+      "side": 1,
+      "message": "escape(text)",
+      "range": {
+        "startLine": 2467,
+        "startChar": 14,
+        "endLine": 2467,
+        "endChar": 18
+      },
+      "revId": "3c82158f8816a479af3b419c59e2bce6eba17234",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    }
+  ]
+}
