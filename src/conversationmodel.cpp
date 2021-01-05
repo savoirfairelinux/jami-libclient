@@ -883,6 +883,37 @@ ConversationModel::placeCall(const QString& uid)
     pimpl_->placeCall(uid);
 }
 
+MapStringString
+ConversationModel::getConversationInfos(const QString& conversationId)
+{
+    MapStringString ret = ConfigurationManager::instance().conversationInfos(owner.id, conversationId);
+    return ret;
+}
+
+void
+ConversationModel::createConversation(const VectorString& participants, const QString& title)
+{
+    auto convUid = ConfigurationManager::instance().startConversation(owner.id);
+    for (auto participant : participants) {
+        ConfigurationManager::instance().addConversationMember(owner.id, convUid, participant);
+    }
+    if (!title.isEmpty()) {
+        MapStringString info = getConversationInfos(convUid);
+        info["title"] = title;
+        updateConversationInfo(convUid, info);
+    }
+    pimpl_->addSwarmConversation(convUid);
+    emit newConversation(convUid);
+    pimpl_->dirtyConversations = {true, true};
+    pimpl_->sortConversations();
+    emit modelSorted();
+}
+void
+ConversationModel::updateConversationInfo(const QString& conversationId, const MapStringString info)
+{
+    ConfigurationManager::instance().updateConversationInfos(owner.id, conversationId, info);
+}
+
 void
 ConversationModel::sendMessage(const QString& uid, const QString& body, const QString& parentId)
 {
