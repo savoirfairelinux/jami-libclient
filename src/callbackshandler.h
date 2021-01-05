@@ -173,8 +173,9 @@ Q_SIGNALS:
     /**
      * Connect this signal to know when a message sent get a new status
      * @param accountId, account linked
-     * @param id of the message
-     * @param to, peer uri
+     * @param messageId id of the message
+     * @param conversationId id of the conversation
+     * @param peer, peer uri
      * @param status, new status for this message
      */
     void accountMessageStatusChanged(const QString& accountId,
@@ -444,10 +445,11 @@ private Q_SLOTS:
     void slotConferenceChanged(const QString& callId, const QString& state);
     /**
      * Emit accountMessageStatusChanged
-     * @param accountId
-     * @param id of the message for the daemon
-     * @param to peer uri
-     * @param status, new status
+     * @param accountId, account linked
+     * @param messageId id of the message
+     * @param conversationId id of the conversation
+     * @param peer, peer uri
+     * @param status, new status for this message
      */
     void slotAccountMessageStatusChanged(const QString& accountId,
                                      const QString& conversationId,
