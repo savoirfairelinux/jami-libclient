@@ -144,13 +144,15 @@ public:
     /**
      * Change the status of an interaction. Listen from callbacksHandler
      * @param accountId, account linked
-     * @param id, interaction to update
-     * @param to, peer uri
+     * @param messageId, interaction to update
+     * @param conversationId, conversation
+     * @param peer, peer uri
      * @param status, new status for this interaction
      */
     void slotUpdateInteractionStatus(const QString& accountId,
-                                     const uint64_t& id,
-                                     const QString& to,
+                                     const QString& messageId,
+                                     const QString& conversationId,
+                                     const QString& peer,
                                      int status);
 
     /**
@@ -1261,9 +1263,6 @@ ConversationModel::isLastDisplayed(const QString& convId,
         return false;
     try {
         auto& conversation = pimpl_->conversations.at(conversationIdx);
-        if (conversation.isSwarm) {
-            return false;
-        }
         return conversation.lastDisplayedMessageUid.find(participant)->second == interactionId;
     } catch (const std::out_of_range& e) {
         return false;
@@ -2239,9 +2238,9 @@ ConversationModelPimpl::addConversationWith(const QString& convId, const QString
             try {
                 auto msgId = std::stoull(id.toStdString());
                 status = ConfigurationManager::instance().getMessageStatus(msgId);
-                updateSlots.emplace_back([this, msgId, contactUri, status]() -> void {
+                updateSlots.emplace_back([this, id, convId, contactUri, status]() -> void {
                     auto accId = linked.owner.id;
-                    slotUpdateInteractionStatus(accId, msgId, contactUri, status);
+                    slotUpdateInteractionStatus(accId, id, convId, contactUri, status);
                 });
             } catch (const std::exception& e) {
                 qDebug() << "message id was invalid";
@@ -2552,69 +2551,78 @@ ConversationModelPimpl::slotCallAddedToConference(const QString& callId, const Q
 
 void
 ConversationModelPimpl::slotUpdateInteractionStatus(const QString& accountId,
-                                                    const uint64_t& daemon_id,
-                                                    const QString& peer_uri,
+                                                    const QString& messageId,
+                                                    const QString& conversationId,
+                                                    const QString& peer,
                                                     int status)
 {
     if (accountId != linked.owner.id) {
         return;
     }
-    auto newStatus = interaction::Status::INVALID;
-    switch (static_cast<DRing::Account::MessageStates>(status)) {
-    case DRing::Account::MessageStates::SENDING:
-        newStatus = interaction::Status::SENDING;
-        break;
-    case DRing::Account::MessageStates::CANCELLED:
-        newStatus = interaction::Status::TRANSFER_CANCELED;
-        break;
-    case DRing::Account::MessageStates::SENT:
-        newStatus = interaction::Status::SUCCESS;
-        break;
-    case DRing::Account::MessageStates::FAILURE:
-        newStatus = interaction::Status::FAILURE;
-        break;
-    case DRing::Account::MessageStates::DISPLAYED:
-        newStatus = interaction::Status::DISPLAYED;
-        break;
-    case DRing::Account::MessageStates::UNKNOWN:
-    default:
-        newStatus = interaction::Status::UNKNOWN;
-        break;
-    }
-    // Update database
-    auto interactionId = storage::getInteractionIdByDaemonId(db, toQString(daemon_id));
-    if (interactionId.isEmpty()) {
-        return;
-    }
-    auto msgId = interactionId;
-    storage::updateInteractionStatus(db, msgId, newStatus);
-    // Update conversations
-    auto convIds = storage::getConversationsWithPeer(db, peer_uri);
-    if (!convIds.empty()) {
-        auto conversationIdx = indexOf(convIds[0]);
+    try {
+        auto conversation = getConversation(conversationId);
+        if (conversation.isSwarm) {
+            if (static_cast<DRing::Account::MessageStates>(status) == DRing::Account::MessageStates::DISPLAYED) {
+                auto lastDisplayed = conversation.lastDisplayedMessageUid.find(peer);
+                if (lastDisplayed == conversation.lastDisplayedMessageUid.end() || conversation.interactions.indexOfMessage(lastDisplayed->second) < conversation.interactions.indexOfMessage(messageId)) {
+                    conversation.lastDisplayedMessageUid[peer] = messageId;
+                }
+            }
+            return;
+        }
+        auto newStatus = interaction::Status::INVALID;
+        switch (static_cast<DRing::Account::MessageStates>(status)) {
+            case DRing::Account::MessageStates::SENDING:
+                newStatus = interaction::Status::SENDING;
+                break;
+            case DRing::Account::MessageStates::CANCELLED:
+                newStatus = interaction::Status::TRANSFER_CANCELED;
+                break;
+            case DRing::Account::MessageStates::SENT:
+                newStatus = interaction::Status::SUCCESS;
+                break;
+            case DRing::Account::MessageStates::FAILURE:
+                newStatus = interaction::Status::FAILURE;
+                break;
+            case DRing::Account::MessageStates::DISPLAYED:
+                newStatus = interaction::Status::DISPLAYED;
+                break;
+            case DRing::Account::MessageStates::UNKNOWN:
+            default:
+                newStatus = interaction::Status::UNKNOWN;
+                break;
+        }
+        // Update database
+        auto interactionId = storage::getInteractionIdByDaemonId(db, messageId);
+        if (interactionId.isEmpty()) {
+            return;
+        }
+        auto msgId = interactionId;
+        storage::updateInteractionStatus(db, msgId, newStatus);
+        // Update conversations
         interaction::Info itCopy;
         bool emitUpdated = false;
         bool updateDisplayedUid = false;
         QString oldDisplayedUid = 0;
-        if (conversationIdx != -1) {
-            std::lock_guard<std::mutex> lk(interactionsLocks[conversations[conversationIdx].uid]);
-            auto& interactions = conversations[conversationIdx].interactions;
+        {
+            std::lock_guard<std::mutex> lk(interactionsLocks[conversation.uid]);
+            auto& interactions = conversation.interactions;
             auto it = interactions.find(msgId);
-            auto messageId = conversations[conversationIdx].lastDisplayedMessageUid.find(peer_uri);
+            auto messageId = conversation.lastDisplayedMessageUid.find(peer);
             if (it != interactions.end()) {
                 it->second.status = newStatus;
-                if (messageId != conversations[conversationIdx].lastDisplayedMessageUid.end()) {
+                if (messageId != conversation.lastDisplayedMessageUid.end()) {
                     auto lastDisplayedIt = interactions.find(messageId->second);
                     bool interactionDisplayed = newStatus == interaction::Status::DISPLAYED
-                                                && isOutgoing(it->second);
+                    && isOutgoing(it->second);
                     bool interactionIsLast = lastDisplayedIt == interactions.end()
-                                             || lastDisplayedIt->second.timestamp
-                                                    < it->second.timestamp;
+                    || lastDisplayedIt->second.timestamp
+                    < it->second.timestamp;
                     updateDisplayedUid = interactionDisplayed && interactionIsLast;
                     if (updateDisplayedUid) {
                         oldDisplayedUid = messageId->second;
-                        conversations[conversationIdx].lastDisplayedMessageUid.at(peer_uri)
-                            = it->first;
+                        conversation.lastDisplayedMessageUid.at(peer)
+                        = it->first;
                     }
                 }
                 emitUpdated = true;
@@ -2622,12 +2630,14 @@ ConversationModelPimpl::slotUpdateInteractionStatus(const QString& accountId,
             }
         }
         if (updateDisplayedUid) {
-            emit linked.displayedInteractionChanged(convIds[0], peer_uri, oldDisplayedUid, msgId);
+            emit linked.displayedInteractionChanged(conversation.uid, peer, oldDisplayedUid, msgId);
         }
         if (emitUpdated) {
             dirtyConversations = {true, true};
-            emit linked.interactionStatusUpdated(convIds[0], msgId, itCopy);
+            emit linked.interactionStatusUpdated(conversation.uid, msgId, itCopy);
         }
+    } catch (...) {
+        
     }
 }
 
