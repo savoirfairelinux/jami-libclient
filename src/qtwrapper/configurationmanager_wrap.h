@@ -119,11 +119,15 @@ public:
                     });
                 }),
             exportable_callback<DRing::ConfigurationSignal::AccountMessageStatusChanged>(
-                [this](const std::string& accountID, uint64_t id, const std::string& to, int status) {
-                    Q_EMIT this->accountMessageStatusChanged(QString(accountID.c_str()),
-                                                             id,
-                                                             QString(to.c_str()),
-                                                             status);
+                [this](const std::string& account_id,
+                       const std::string message_id,
+                       const std::string& conversation_id,
+                       const std::string& peer, int state) {
+                    Q_EMIT this->accountMessageStatusChanged(QString(account_id.c_str()),
+                                                             QString(message_id.c_str()),
+                                                             QString(conversation_id.c_str()),
+                                                             QString(peer.c_str()),
+                                                             state);
                 }),
             exportable_callback<ConfigurationSignal::IncomingTrustRequest>(
                 [this](const std::string& accountId,
@@ -982,8 +986,9 @@ Q_SIGNALS: // SIGNALS
     void audioDeviceEvent();
     void audioMeter(const QString& id, float level);
     void accountMessageStatusChanged(const QString& accountId,
-                                     const uint64_t id,
-                                     const QString& to,
+                                     const QString& messageId,
+                                     const QString& conversationId,
+                                     const QString& peer,
                                      int status);
     void nameRegistrationEnded(const QString& accountId, int status, const QString& name);
     void registeredNameFound(const QString& accountId,
