@@ -456,11 +456,12 @@ CallbacksHandler::slotConferenceRemoved(const QString& callId)
 
 void
 CallbacksHandler::slotAccountMessageStatusChanged(const QString& accountId,
-                                                  const uint64_t id,
-                                                  const QString& to,
+                                                  const QString& messageId,
+                                                  const QString& conversationId,
+                                                  const QString& peer,
                                                   int status)
 {
-    emit accountMessageStatusChanged(accountId, id, to, status);
+    emit accountMessageStatusChanged(accountId, messageId, conversationId, peer, status);
 }
 
 void
