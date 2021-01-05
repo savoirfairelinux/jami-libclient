@@ -309,6 +309,24 @@ public:
      * @param memberURI members's uri
      */
     void removeConversationMember(const QString& conversationId, const QString& memberURI);
+    /**
+     * get conversation info
+     * @param conversationId conversation's id
+     * @return conversation info
+     */
+    MapStringString getConversationInfos(const QString& conversationId);
+    /**
+     * create a new swarm conversation
+     * @param participants  conversation's participants
+     * @param title conversation title
+     */
+    void createConversation(const VectorString& participants, const QString& title = "");
+    /**
+     * update conversation info
+     * @param conversationId conversation's id
+     * @param info
+     */
+    void updateConversationInfo(const QString& conversationId, MapStringString info);
 
 Q_SIGNALS:
     /**
