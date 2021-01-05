@@ -43,8 +43,8 @@ Rectangle {
     property string bestName: ""
     property bool showSetModerator: false
     property bool showUnsetModerator: false
-    property bool showMute: false
-    property bool showUnmute: false
+    property bool showModeratorMute: false
+    property bool showModeratorUnmute: false
     property bool showMaximize: false
     property bool showMinimize: false
     property bool showHangup: false
@@ -135,7 +135,7 @@ Rectangle {
                 PushButton {
                     id: toggleMute
 
-                    visible: showMute || showUnmute
+                    visible: showModeratorMute || showModeratorUnmute
                     Layout.preferredWidth: buttonPreferredSize
                     Layout.preferredHeight: buttonPreferredSize
                     preferredSize: 16
@@ -144,12 +144,12 @@ Rectangle {
                     hoveredColor: JamiTheme.buttonConferenceHovered
                     pressedColor: JamiTheme.buttonConferencePressed
 
-                    source: showMute? "qrc:/images/icons/mic-24px.svg"
-                                    : "qrc:/images/icons/mic_off-24px.svg"
+                    source: showModeratorMute? "qrc:/images/icons/mic-24px.svg"
+                                             : "qrc:/images/icons/mic_off-24px.svg"
                     imageColor: hovered? JamiTheme.darkGreyColor
                                        : JamiTheme.whiteColor
 
-                    onClicked: CallAdapter.muteParticipant(uri, showMute)
+                    onClicked: CallAdapter.muteParticipant(uri, showModeratorMute)
                     onHoveredChanged: toggleParticipantToolTip.visible = hovered
 
                     Text {
@@ -157,8 +157,8 @@ Rectangle {
 
                         visible: false
                         width: parent.width
-                        text: showMute? JamiStrings.muteParticipant
-                                      : JamiStrings.unmuteParticipant
+                        text: showModeratorMute? JamiStrings.muteParticipant
+                                               : JamiStrings.unmuteParticipant
                         horizontalAlignment: Text.AlignHCenter
                         verticalAlignment: Text.AlignTop
 

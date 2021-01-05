@@ -45,6 +45,8 @@ Rectangle {
     property bool participantIsHost: false
     property bool participantIsModerator: false
     property bool participantIsMuted: false
+    property bool participantIsLocalMuted: false
+    property bool participantIsModeratorMuted: false
 
     // TODO: try to use AvatarImage as well
     function setAvatar(avatar) {
@@ -67,9 +69,16 @@ Rectangle {
         overlayMenu.showSetModerator = isHost && !isLocal && !participantIsModerator
         overlayMenu.showUnsetModerator = isHost && !isLocal && participantIsModerator
 
-        participantIsMuted = CallAdapter.isMuted(overlayMenu.uri)
-        overlayMenu.showMute = isModerator && !participantIsMuted
-        overlayMenu.showUnmute = isModerator && participantIsMuted && isLocal
+        var muteState = CallAdapter.getMuteState(overlayMenu.uri)
+        var isLocalMuted = muteState === CallAdapter.LOCAL_MUTED
+                || muteState === CallAdapter.BOTH_MUTED
+        var isModeratorMuted = muteState === CallAdapter.MODERATOR_MUTED
+                || muteState === CallAdapter.BOTH_MUTED
+
+        participantIsMuted = isLocalMuted || isModeratorMuted
+
+        overlayMenu.showModeratorMute = isModerator && !isModeratorMuted
+        overlayMenu.showModeratorUnmute = isModerator && isModeratorMuted
         overlayMenu.showMaximize = isModerator && showMax
         overlayMenu.showMinimize = isModerator && showMin
         overlayMenu.showHangup = isModerator && !isLocal && !participantIsHost
@@ -78,7 +87,7 @@ Rectangle {
     color: "transparent"
     z: 1
 
-    // Participant header with moderator / mute indicators
+    // Participant header with host, moderator and mute indicators
     Rectangle {
         id: participantIndicators
         width: indicatorsRowLayout.width

@@ -1,4 +1,4 @@
-/*!
+/*
  * Copyright (C) 2020 by Savoir-faire Linux
  * Author: Edric Ladent Milaret <edric.ladent-milaret@savoirfairelinux.com>
  * Author: Anthony Léonard <anthony.leonard@savoirfairelinux.com>
@@ -256,6 +256,46 @@ CallAdapter::shouldShowPreview(bool force)
     return shouldShowPreview;
 }
 
+QJsonObject
+CallAdapter::fillParticipantData(QMap<QString, QString> participant)
+{
+    QJsonObject data;
+    data["x"] = participant["x"].toInt();
+    data["y"] = participant["y"].toInt();
+    data["w"] = participant["w"].toInt();
+    data["h"] = participant["h"].toInt();
+    data["uri"] = participant["uri"];
+    data["active"] = participant["active"] == "true";
+    data["videoMuted"] = participant["videoMuted"] == "true";
+    data["audioLocalMuted"] = participant["audioLocalMuted"] == "true";
+    data["audioModeratorMuted"] = participant["audioModeratorMuted"] == "true";
+
+    auto bestName = participant["uri"];
+    auto& accInfo = LRCInstance::accountModel().getAccountInfo(accountId_);
+    data["isLocal"] = false;
+    if (bestName == accInfo.profileInfo.uri) {
+        bestName = tr("me");
+        data["isLocal"] = true;
+        if (participant["videoMuted"] == "true")
+            data["avatar"] = accInfo.profileInfo.avatar;
+    } else {
+        try {
+            auto& contact = LRCInstance::getCurrentAccountInfo()
+                    .contactModel->getContact(participant["uri"]);
+            bestName = LRCInstance::getCurrentAccountInfo()
+                    .contactModel->bestNameForContact(participant["uri"]);
+            if (participant["videoMuted"] == "true")
+                data["avatar"] = contact.profileInfo.avatar;
+
+        } catch (...) {
+        }
+    }
+    data["bestName"] = bestName;
+
+    return data;
+}
+
+
 QVariantList
 CallAdapter::getConferencesInfos()
 {
@@ -268,28 +308,7 @@ CallAdapter::getConferencesInfos()
         try {
             auto call = LRCInstance::getCurrentCallModel()->getCall(callId);
             for (const auto& participant : call.participantsInfos) {
-                QJsonObject data;
-                data["x"] = participant["x"].toInt();
-                data["y"] = participant["y"].toInt();
-                data["w"] = participant["w"].toInt();
-                data["h"] = participant["h"].toInt();
-                data["uri"] = participant["uri"];
-                data["active"] = participant["active"] == "true";
-                auto bestName = participant["uri"];
-                auto& accInfo = LRCInstance::accountModel().getAccountInfo(accountId_);
-                data["isLocal"] = false;
-                if (bestName == accInfo.profileInfo.uri) {
-                    bestName = tr("me");
-                    data["isLocal"] = true;
-                } else {
-                    try {
-                        bestName = LRCInstance::getCurrentAccountInfo()
-                                       .contactModel->bestNameForContact(participant["uri"]);
-                    } catch (...) {
-                    }
-                }
-                data["bestName"] = bestName;
-
+                QJsonObject data = fillParticipantData(participant);
                 map.push_back(QVariant(data));
             }
             return map;
@@ -338,54 +357,12 @@ CallAdapter::connectCallModel(const QString& accountId)
             auto& callModel = accInfo.callModel;
             auto call = callModel->getCall(confId);
             const auto& convInfo = LRCInstance::getConversationFromCallId(confId);
-            bool currentMuted = false;
             if (!convInfo.uid.isEmpty()) {
-                // Convert to QML
                 QVariantList map;
                 for (const auto& participant : call.participantsInfos) {
-                    QJsonObject data;
-                    data["x"] = participant["x"].toInt();
-                    data["y"] = participant["y"].toInt();
-                    data["w"] = participant["w"].toInt();
-                    data["h"] = participant["h"].toInt();
-                    data["uri"] = participant["uri"];
-                    data["active"] = participant["active"] == "true";
-                    data["videoMuted"] = participant["videoMuted"] == "true";
-                    data["audioMuted"] = participant["audioMuted"] == "true";
-                    auto bestName = participant["uri"];
-                    data["isLocal"] = false;
-                    auto& accInfo = LRCInstance::accountModel().getAccountInfo(accountId_);
-                    if (bestName == accInfo.profileInfo.uri) {
-                        bestName = tr("me");
-                        data["isLocal"] = true;
-                        currentMuted = participant["audioMuted"] == "true";
-                        if (participant["videoMuted"] == "true")
-                            data["avatar"] = accInfo.profileInfo.avatar;
-                    } else {
-                        try {
-                            auto& contact = LRCInstance::getCurrentAccountInfo()
-                                                .contactModel->getContact(participant["uri"]);
-                            bestName = LRCInstance::getCurrentAccountInfo()
-                                           .contactModel->bestNameForContact(participant["uri"]);
-                            if (participant["videoMuted"] == "true")
-                                data["avatar"] = contact.profileInfo.avatar;
-                        } catch (...) {
-                        }
-                    }
-                    data["bestName"] = bestName;
+                    QJsonObject data = fillParticipantData(participant);
                     map.push_back(QVariant(data));
-                }
-
-                // Link local mute to conference mute
-                const auto& convInfo = LRCInstance::getConversationFromConvUid(convUid_);
-                if (!convInfo.uid.isEmpty()) {
-                    auto call = LRCInstance::getCallInfoForConversation(convInfo);
-                    if (call) {
-                        if (currentMuted != call->audioMuted) {
-                            muteThisCallToggle();
-                            updateCallOverlay(convInfo);
-                        }
-                    }
+                    updateCallOverlay(convInfo);
                 }
                 emit updateParticipantsInfos(map, accountId, confId);
             }
@@ -772,8 +749,8 @@ CallAdapter::muteParticipant(const QString& uri, const bool state)
     }
 }
 
-bool
-CallAdapter::isMuted(const QString& uri) const
+CallAdapter::MuteStates
+CallAdapter::getMuteState(const QString& uri) const
 {
     const auto& convInfo = LRCInstance::getConversationFromConvUid(convUid_);
     auto* callModel = LRCInstance::getAccountInfo(accountId_).callModel.get();
@@ -781,17 +758,27 @@ CallAdapter::isMuted(const QString& uri) const
     try {
         auto call = callModel->getCall(confId);
         if (call.participantsInfos.size() == 0) {
-            return false;
+            return MuteStates::UNMUTED;
         } else {
             for (const auto& participant : call.participantsInfos) {
-                if (participant["uri"] == uri)
-                    return participant["audioMuted"] == "true";
+                if (participant["uri"] == uri) {
+                    if (participant["audioLocalMuted"] == "true") {
+                        if (participant["audioModeratorMuted"] == "true") {
+                            return MuteStates::BOTH_MUTED;
+                        } else {
+                            return MuteStates::LOCAL_MUTED;
+                        }
+                    } else if (participant["audioModeratorMuted"] == "true") {
+                        return MuteStates::MODERATOR_MUTED;
+                    }
+                    return MuteStates::UNMUTED;
+                }
             }
         }
-        return false;
+        return MuteStates::UNMUTED;
     } catch (...) {
     }
-    return false;
+    return MuteStates::UNMUTED;
 }
 
 void

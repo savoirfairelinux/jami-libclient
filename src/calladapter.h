@@ -33,6 +33,9 @@ class CallAdapter final : public QmlAdapterBase
     Q_OBJECT
 
 public:
+    enum MuteStates { UNMUTED, LOCAL_MUTED, MODERATOR_MUTED, BOTH_MUTED };
+    Q_ENUM(MuteStates)
+
     explicit CallAdapter(QObject* parent = nullptr);
     ~CallAdapter() = default;
 
@@ -68,7 +71,7 @@ public:
     Q_INVOKABLE bool isRecordingThisCall();
     Q_INVOKABLE QVariantList getConferencesInfos();
     Q_INVOKABLE void muteParticipant(const QString& uri, const bool state);
-    Q_INVOKABLE bool isMuted(const QString& uri) const;
+    Q_INVOKABLE MuteStates getMuteState(const QString& uri) const;
     Q_INVOKABLE void hangupParticipant(const QString& uri);
     Q_INVOKABLE void updateCall(const QString& convUid = {},
                                 const QString& accountId = {},
@@ -106,6 +109,7 @@ public slots:
 private:
     bool shouldShowPreview(bool force);
     void showNotification(const QString& accountId, const QString& convUid);
+    QJsonObject fillParticipantData(QMap<QString, QString> participant);
 
     /*
      * Current conf/call info.
