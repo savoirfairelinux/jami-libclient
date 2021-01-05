@@ -940,7 +940,16 @@ public Q_SLOTS: // METHODS
                                                fromId.toStdString(),
                                                size);
     }
-
+    
+    MapStringString getConversationInfos(const QString& accountId, const QString& conversationId)
+    {
+        return convertMap(DRing::conversationInfos(accountId.toStdString(), conversationId.toStdString()));
+    }
+    
+    void updateConversationInfo(const QString& accountId, const QString& conversationId, const MapStringString& info)
+    {
+        DRing::updateConversationInfos(accountId.toStdString(), conversationId.toStdString(), convertMap(info));
+    }
 Q_SIGNALS: // SIGNALS
     void volumeChanged(const QString& device, double value);
     void accountsChanged();
