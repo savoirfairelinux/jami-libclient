@@ -107,4 +107,9 @@ private:
      * Device changed slot.
      */
     void slotDeviceEvent();
+
+    /*
+     * Get the screen number
+     */
+    int getScreenNumber() const;
 };

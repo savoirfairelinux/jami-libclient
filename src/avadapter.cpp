@@ -88,21 +88,8 @@ AvAdapter::shareEntireScreen(int screenNumber)
         return;
     QRect rect = screen->geometry();
 
-    int display = 0;
-#ifdef Q_OS_WIN
-    display = screenNumber;
-#else
-    QString display_env {getenv("DISPLAY")};
-    if (!display_env.isEmpty()) {
-        auto list = display_env.split(":", Qt::SkipEmptyParts);
-        // Should only be one display, so get the first one
-        if (list.size() > 0) {
-            display = list.at(0).toInt();
-        }
-    }
-#endif
     LRCInstance::avModel()
-        .setDisplay(display, rect.x(), rect.y(), rect.width(), rect.height(), getCurrentCallId());
+        .setDisplay(getScreenNumber(), rect.x(), rect.y(), rect.width(), rect.height(), getCurrentCallId());
 }
 
 void
@@ -117,7 +104,7 @@ AvAdapter::shareAllScreens()
             height = scr->geometry().height();
     }
 
-    LRCInstance::avModel().setDisplay(0, 0, 0, width, height, getCurrentCallId());
+    LRCInstance::avModel().setDisplay(getScreenNumber(), 0, 0, width, height, getCurrentCallId());
 }
 
 void
@@ -183,18 +170,6 @@ void
 AvAdapter::shareScreenArea(unsigned x, unsigned y, unsigned width, unsigned height)
 {
 #ifdef Q_OS_LINUX
-    int display;
-
-    // Get display
-    QString display_env {getenv("DISPLAY")};
-    if (!display_env.isEmpty()) {
-        auto list = display_env.split(":", Qt::SkipEmptyParts);
-        // Should only be one display, so get the first one
-        if (list.size() > 0) {
-            display = list.at(0).toInt();
-        }
-    }
-
     // xrectsel will freeze all displays too fast so that the call
     // context menu will not be closed even closed signal is emitted
     // use timer to wait until popup is closed
@@ -202,7 +177,7 @@ AvAdapter::shareScreenArea(unsigned x, unsigned y, unsigned width, unsigned heig
         x = y = width = height = 0;
         xrectsel(&x, &y, &width, &height);
 
-        LRCInstance::avModel().setDisplay(0,
+        LRCInstance::avModel().setDisplay(getScreenNumber(),
                                           x,
                                           y,
                                           width < 128 ? 128 : width,
@@ -210,7 +185,7 @@ AvAdapter::shareScreenArea(unsigned x, unsigned y, unsigned width, unsigned heig
                                           getCurrentCallId());
     });
 #else
-    LRCInstance::avModel().setDisplay(0,
+    LRCInstance::avModel().setDisplay(getScreenNumber(),
                                       x,
                                       y,
                                       width < 128 ? 128 : width,
@@ -301,4 +276,23 @@ AvAdapter::slotDeviceEvent()
     emit videoDeviceListChanged(currentDeviceListSize == 0);
 
     deviceListSize_ = currentDeviceListSize;
+}
+
+int
+AvAdapter::getScreenNumber() const
+{
+    int display = 0;
+
+#ifdef Q_OS_LINUX
+    // Get display
+    QString display_env {getenv("DISPLAY")};
+    if (!display_env.isEmpty()) {
+        auto list = display_env.split(":", Qt::SkipEmptyParts);
+        // Should only be one display, so get the first one
+        if (list.size() > 0) {
+            display = list.at(0).toInt();
+        }
+    }
+#endif
+    return display;
 }
