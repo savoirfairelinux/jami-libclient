@@ -265,7 +265,15 @@ private:
     }
 
     // Hard unbox and unwrap underlying data container.
-    const BaseType& data() { return data_.value().get(); }
+    const BaseType& data() { 
+    #ifdef __APPLE__
+        if(!data_.has_value())
+           throw std::logic_error("bad optional access");
+        return *data_;
+    #else
+        return data_.value().get(); 
+    #endif
+    }
 
     // Actually filter the view.
     template<typename T, typename Func = FilterCallback>
