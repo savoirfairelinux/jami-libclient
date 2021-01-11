@@ -93,11 +93,12 @@ Q_SIGNALS:
     /**
      * Connect this signal to know when an incoming request is added by the daemon
      * @param accountId the one who got the request
-     * @param ringId the peer contact
+     * @param contactUri the peer contact
      * @param payload the VCard
      */
     void incomingContactRequest(const QString& accountId,
-                                const QString& ringId,
+                                const QString& contactUri,
+                                const QString& conversationId,
                                 const QString& payload);
     /**
      * Connect this signal to know when a call arrives
@@ -178,9 +179,9 @@ Q_SIGNALS:
      * @param status, new status for this message
      */
     void accountMessageStatusChanged(const QString& accountId,
-                                     const QString& messageId,
                                      const QString& conversationId,
                                      const QString& peer,
+                                     const QString& messageId,
                                      int status);
 
     void transferStatusCreated(DataTransferId dringId, api::datatransfer::Info info);
@@ -371,6 +372,7 @@ private Q_SLOTS:
      */
     void slotIncomingContactRequest(const QString& accountId,
                                     const QString& ringId,
+                                    const QString& conversationId,
                                     const QByteArray& payload,
                                     time_t time);
     /**
@@ -450,9 +452,9 @@ private Q_SLOTS:
      * @param status, new status for this message
      */
     void slotAccountMessageStatusChanged(const QString& accountId,
-                                     const QString& messageId,
                                      const QString& conversationId,
                                      const QString& peer,
+                                     const QString& messageId,
                                      int status);
 
     void slotDataTransferEvent(const QString& accountId, const QString& conversationId, DataTransferId id, uint code);

@@ -164,6 +164,7 @@ public Q_SLOTS:
      */
     void slotIncomingContactRequest(const QString& accountId,
                                     const QString& contactUri,
+                                    const QString& conversationId,
                                     const QString& payload);
     /**
      * Listen from callModel when an incoming call arrives.
@@ -965,6 +966,7 @@ ContactModelPimpl::slotRegisteredNameFound(const QString& accountId,
 void
 ContactModelPimpl::slotIncomingContactRequest(const QString& accountId,
                                               const QString& contactUri,
+                                              const QString& conversationId,
                                               const QString& payload)
 {
     if (linked.owner.id != accountId)
