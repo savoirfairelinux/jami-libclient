@@ -22,6 +22,30 @@
       "revId": "b724a53048b4eca230fafa41297c9ad8838ebe5b",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6b89ade9_126d1ad7",
+        "filename": "src/web-chatview/chatview.js",
+        "patchSetId": 4
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 859
+      },
+      "writtenOn": "2021-01-11T21:09:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "40f49dbf_c5997913",
+      "range": {
+        "startLine": 168,
+        "startChar": 66,
+        "endLine": 169,
+        "endChar": 71
+      },
+      "revId": "b724a53048b4eca230fafa41297c9ad8838ebe5b",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
