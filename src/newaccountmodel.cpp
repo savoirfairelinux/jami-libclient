@@ -559,7 +559,7 @@ NewAccountModelPimpl::slotAccountDetailsChanged(const QString& accountId,
         accountInfo.registeredName = new_username;
         emit linked.profileUpdated(accountId);
     }
-    emit linked.accountStatusChanged(accountId);
+    emit linked.accountDetailsChanged(accountId);
 }
 
 void
@@ -905,6 +905,11 @@ account::Info::fromDetails(const MapStringString& details)
     // Jams
     confProperties.managerUri = details[ConfProperties::MANAGER_URI];
     confProperties.managerUsername = details[ConfProperties::MANAGER_USERNAME];
+    // Default moderators
+    confProperties.defaultModerators = details[ConfProperties::DEFAULT_MODERATORS];
+    confProperties.localModeratorsEnabled = toBool(
+                details[ConfProperties::LOCAL_MODERATORS_ENABLED]);
+
 }
 
 MapStringString
@@ -1022,6 +1027,9 @@ account::ConfProperties_t::toDetails() const
     // Manager
     details[ConfProperties::MANAGER_URI] = this->managerUri;
     details[ConfProperties::MANAGER_USERNAME] = this->managerUsername;
+    // Default moderators
+    details[ConfProperties::DEFAULT_MODERATORS] = this->defaultModerators;
+    details[ConfProperties::LOCAL_MODERATORS_ENABLED] = toQString(this->localModeratorsEnabled);
 
     return details;
 }
@@ -1146,6 +1154,52 @@ NewAccountModel::bestIdForAccount(const QString& accountID)
         return registeredName;
     }
     return QString();
+}
+
+void
+NewAccountModel::setDefaultModerator(const QString& accountID,
+                                     const QString& peerURI,
+                                     const bool& state)
+{
+    auto accConfig = getAccountConfig(accountID);
+    QString defModeratorsString {};
+    QStringList defModerators = accConfig.defaultModerators.split("/");
+    defModerators.removeAll(QString(""));
+
+    if (state) {
+        if (!defModerators.contains(peerURI))
+            defModerators.append(peerURI);
+    } else {
+        defModerators.removeAll(peerURI);
+    }
+    for (const auto& moderator : defModerators) {
+        defModeratorsString.append(moderator + "/");
+    }
+    accConfig.defaultModerators = defModeratorsString;
+    setAccountConfig(accountID, accConfig);
+}
+
+QStringList
+NewAccountModel::getDefaultModerators(const QString& accountID)
+{
+    auto defModerators = getAccountConfig(accountID).defaultModerators.split("/");
+    defModerators.removeAll(QString(""));
+    return defModerators;
+}
+
+void
+NewAccountModel::enableLocalModerators(const QString& accountID,
+                                       const bool& isModEnabled)
+{
+    auto accConfig = getAccountConfig(accountID);
+    accConfig.localModeratorsEnabled = isModEnabled;
+    setAccountConfig(accountID, accConfig);
+}
+
+bool
+NewAccountModel::isLocalModeratorsEnabled(const QString& accountID)
+{
+    return getAccountConfig(accountID).localModeratorsEnabled;
 }
 
 } // namespace lrc

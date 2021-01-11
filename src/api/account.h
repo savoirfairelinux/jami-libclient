@@ -188,6 +188,9 @@ struct ConfProperties_t
         int expire;
     } Registration;
 
+    QString defaultModerators;
+    bool localModeratorsEnabled;
+
     MapStringString toDetails() const;
 };
 

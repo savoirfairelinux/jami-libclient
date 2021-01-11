@@ -200,7 +200,33 @@ public:
      * @return best id of the account
      */
     const QString bestIdForAccount(const QString& accountID);
-
+    /**
+     * Add/remove default moderator
+     * @param accountID
+     * @param peerURI
+     * @param state
+     */
+    void setDefaultModerator(const QString& accountID,
+                             const QString& peerURI,
+                             const bool& state);
+    /**
+     * Get default moderators for an account
+     * @param accountID
+     * @return default moderators for the account
+     */
+    QStringList getDefaultModerators(const QString& accountID);
+    /**
+     * Enable/disable local moderators
+     * @param accountID
+     * @param isModEnabled
+     */
+    void enableLocalModerators(const QString& accountID, const bool& isModEnabled);
+    /**
+     * Get local moderators state
+     * @param accountID
+     * @return if local moderator is enabled
+     */
+    bool isLocalModeratorsEnabled(const QString& accountID);
 Q_SIGNALS:
     /**
      * Connect this signal to know when an invalid account is here
@@ -212,6 +238,11 @@ Q_SIGNALS:
      * @param accountID
      */
     void accountStatusChanged(const QString& accountID);
+    /**
+     * Connect this signal to know when the details of an account have changed.
+     * @param accountID
+     */
+    void accountDetailsChanged(const QString& accountID);
     /**
      * Connect this signal to know when an account was added.
      * @param accountID
