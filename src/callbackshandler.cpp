@@ -341,12 +341,13 @@ CallbacksHandler::slotContactRemoved(const QString& accountId,
 
 void
 CallbacksHandler::slotIncomingContactRequest(const QString& accountId,
-                                             const QString& ringId,
+                                             const QString& contactUri,
+                                             const QString& conversationId,
                                              const QByteArray& payload,
                                              time_t time)
 {
     Q_UNUSED(time)
-    emit incomingContactRequest(accountId, ringId, payload);
+    emit incomingContactRequest(accountId, contactUri, conversationId, payload);
 }
 
 void

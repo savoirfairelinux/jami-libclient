@@ -93,11 +93,12 @@ Q_SIGNALS:
     /**
      * Connect this signal to know when an incoming request is added by the daemon
      * @param accountId the one who got the request
-     * @param ringId the peer contact
+     * @param contactUri the peer contact
      * @param payload the VCard
      */
     void incomingContactRequest(const QString& accountId,
-                                const QString& ringId,
+                                const QString& contactUri,
+                                const QString& conversationId,
                                 const QString& payload);
     /**
      * Connect this signal to know when a call arrives
@@ -371,6 +372,7 @@ private Q_SLOTS:
      */
     void slotIncomingContactRequest(const QString& accountId,
                                     const QString& ringId,
+                                    const QString& conversationId,
                                     const QByteArray& payload,
                                     time_t time);
     /**

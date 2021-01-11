@@ -132,6 +132,7 @@ public:
             exportable_callback<ConfigurationSignal::IncomingTrustRequest>(
                 [this](const std::string& accountId,
                        const std::string& certId,
+                       const std::string& conversationId,
                        const std::vector<uint8_t>& payload,
                        time_t timestamp) {
                     Q_EMIT this->incomingTrustRequest(QString(accountId.c_str()),

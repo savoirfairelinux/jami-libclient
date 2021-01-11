@@ -36,7 +36,8 @@ public:
     QPair<iterator, bool> emplace(QString msgId, interaction::Info message, bool beginning = false);
     iterator find(QString msgId);
     constIterator find(QString msgId) const;
-    QPair<iterator, bool> insert(std::pair<QString, interaction::Info> message, bool beginning = false);
+    QPair<iterator, bool> insert(std::pair<QString, interaction::Info> message,
+                                 bool beginning = false);
     int erase(QString msgId);
     interaction::Info operator[](QString);
     iterator end();
@@ -47,10 +48,10 @@ public:
     reverseIterator rbegin();
     int size() const;
     void clear();
-    bool empty();
-    interaction::Info at(QString intId);
-    QPair<QString, interaction::Info> front();
-    QPair<QString, interaction::Info> last();
+    bool empty() const;
+    interaction::Info at(QString intId) const;
+    QPair<QString, interaction::Info> front() const;
+    QPair<QString, interaction::Info> last() const;
     QPair<QString, interaction::Info> atIndex(int index);
     // jami functions
     QPair<iterator, bool> insert(int it, QPair<QString, interaction::Info> message);
