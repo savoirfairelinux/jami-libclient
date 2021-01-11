@@ -170,9 +170,9 @@ public:
      * @param status, new status for this interaction
      */
     void slotUpdateInteractionStatus(const QString& accountId,
-                                     const QString& messageId,
                                      const QString& conversationId,
                                      const QString& peer,
+                                     const QString& messageId,
                                      int status);
 
     /**
@@ -282,8 +282,8 @@ public Q_SLOTS:
      * @param payloads body
      */
     void slotNewAccountMessage(const QString& accountId,
-                               const QString& msgId,
                                const QString& from,
+                               const QString& msgId,
                                const MapStringString& payloads);
     /**
      * Listen from CallbacksHandler for new messages in a SIP call
@@ -2270,9 +2270,9 @@ ConversationModelPimpl::addConversationWith(const QString& convId, const QString
             try {
                 auto msgId = std::stoull(id.toStdString());
                 status = ConfigurationManager::instance().getMessageStatus(msgId);
-                updateSlots.emplace_back([this, id, convId, contactUri, status]() -> void {
+                updateSlots.emplace_back([this, convId, contactUri,id,  status]() -> void {
                     auto accId = linked.owner.id;
-                    slotUpdateInteractionStatus(accId, id, convId, contactUri, status);
+                    slotUpdateInteractionStatus(accId, convId, contactUri, id, status);
                 });
             } catch (const std::exception& e) {
                 qDebug() << "message id was invalid";
@@ -2484,8 +2484,8 @@ ConversationModelPimpl::addOrUpdateCallMessage(const QString& callId,
 
 void
 ConversationModelPimpl::slotNewAccountMessage(const QString& accountId,
-                                              const QString& msgId,
                                               const QString& from,
+                                              const QString& msgId,
                                               const MapStringString& payloads)
 {
     if (accountId != linked.owner.id)
@@ -2584,9 +2584,9 @@ ConversationModelPimpl::slotCallAddedToConference(const QString& callId, const Q
 
 void
 ConversationModelPimpl::slotUpdateInteractionStatus(const QString& accountId,
-                                                    const QString& messageId,
                                                     const QString& conversationId,
                                                     const QString& peer,
+                                                    const QString& messageId,
                                                     int status)
 {
     if (accountId != linked.owner.id) {

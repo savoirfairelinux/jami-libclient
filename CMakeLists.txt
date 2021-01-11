@@ -742,59 +742,6 @@ ADD_CUSTOM_TARGET(uninstall
     COMMAND ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake)
 
 
-IF((${ENABLE_TEST} MATCHES true))
-  ADD_DEFINITIONS(-DENABLE_LIBWRAP=true) # Avoid dbus models
-  ADD_DEFINITIONS(-DENABLE_TEST=true) # Use mocks
-  INCLUDE_DIRECTORIES(SYSTEM ${Qt5Core_INCLUDE_DIRS} )
-  INCLUDE_DIRECTORIES(SYSTEM ${Qt5Gui_INCLUDE_DIRS} )
-  FIND_PACKAGE(Cppunit REQUIRED)
-  FIND_PACKAGE(Qt5Widgets)
-  MESSAGE(STATUS "Is cppunit present? " ${CPPUNIT_FOUND})
-  # unit testing
-  IF (CPPUNIT_FOUND)
-    add_executable(LRCTester
-      test/mocks/callmanager_mock.h
-      test/mocks/configurationmanager_mock.h
-      test/mocks/instancemanager_mock.h
-      test/mocks/presencemanager_mock.h
-      test/mocks/videomanager_mock.h
-      test/test_runner.cpp
-      test/databasetester.h
-      test/databasetester.cpp
-      test/utils/waitforsignalhelper.h
-      test/utils/waitforsignalhelper.cpp
-      test/conversationmodeltester.h
-      test/conversationmodeltester.cpp
-      test/contactmodeltester.h
-      test/contactmodeltester.cpp
-      test/datatransfertester.h
-      test/datatransfertester.cpp
-      test/newcallmodeltester.h
-      test/newcallmodeltester.cpp
-      test/newaccountmodeltester.h
-      test/newaccountmodeltester.cpp
-      ${libringclient_LIB_SRCS}
-      ${LIB_HEADER_MOC}
-      ${libringclient_PRIVATE_HDRS}
-    )
-    TARGET_LINK_LIBRARIES(LRCTester
-       -lcppunit
-       -lpthread
-       ${QT_QTCORE_LIBRARY}
-       Qt5::Gui
-       Qt5::Sql
-    )
-
-    IF(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
-       TARGET_LINK_LIBRARIES( LRCTester
-          -lrt
-       )
-    ENDIF()
-    enable_testing()
-    add_test(TEST LRCTester)
-  ENDIF()
-ENDIF()
-
 if (CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
     add_definitions(-DUNICODE -D_UNICODE)
     remove_definitions(-D_MBCS)
