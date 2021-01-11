@@ -1,4 +1,4 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="tr" sourcelanguage="en" version="2.1">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="tr" sourcelanguage="en" version="2.0">
 <context>
     <name>QObject</name>
     <message>
@@ -387,7 +387,7 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="107"/>
         <source>Does Not Exist Anywhere</source>
-        <translation>Hiçbir Yerde Mevcut Değil</translation>
+        <translation>Herhangi Bir Yerde Yok</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="108"/>
