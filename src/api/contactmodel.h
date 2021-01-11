@@ -155,8 +155,8 @@ Q_SIGNALS:
      * @param payloads content of the message
      */
     void newAccountMessage(const QString& accountId,
-                           const QString& msgId,
                            const QString& from,
+                           const QString& msgId,
                            const MapStringString& payloads) const;
     /**
      * Connect this signal to know when a file transfer interaction is incoming
