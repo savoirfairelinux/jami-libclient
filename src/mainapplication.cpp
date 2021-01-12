@@ -156,6 +156,8 @@ MainApplication::init()
     gnutls_global_init();
 #endif
 
+    initLrc(results[opts::UPDATEURL].toString(), connectivityMonitor_);
+
 #ifdef Q_OS_UNIX
     GlobalInstances::setDBusErrorHandler(std::make_unique<Interfaces::DBusErrorHandler>());
     auto dBusErrorHandlerQObject = dynamic_cast<QObject*>(&GlobalInstances::dBusErrorHandler());
@@ -183,7 +185,6 @@ MainApplication::init()
     }
 #endif
 
-    initLrc(results[opts::UPDATEURL].toString(), connectivityMonitor_);
 
     connect(connectivityMonitor_, &ConnectivityMonitor::connectivityChanged, [] {
         LRCInstance::connectivityChanged();
