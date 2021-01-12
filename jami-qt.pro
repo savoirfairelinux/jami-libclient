@@ -95,29 +95,48 @@ unix {
         QMAKE_CXXFLAGS += -std=c++17
     }
 
-    INCLUDEPATH += ../src
+    # Client source path
+    INCLUDEPATH += $$PWD/src
 
-    isEmpty(LRC) {
-        LRC=$$PWD/../install/lrc
+    # Default LRC path
+    isEmpty(LRC) { LRC=$$PWD/../install/lrc }
+
+    # Check if LRC is installed or in project dir
+    exists($${LRC}/include/libringclient) {
         INCLUDEPATH += $${LRC}/include/libringclient
-        LIBDIR = $${LRC}/lib
+        message(Will expect lrc headers in $${LRC}/include/libringclient)
     } else {
         INCLUDEPATH += $${LRC}/src
-        isEmpty(LRCBUILD) {
-            LIBDIR = $${LRC}/build
+        message(Will expect lrc headers in $${LRC}/src)
+    }
+
+    # TODO: subdirs should be added as suffixes to $${LRC}
+    isEmpty(LRCLIB) {
+        exists($${LRC}/lib) {
+            LRCLIB = $${LRC}/lib
         } else {
-            LIBDIR = $${LRCBUILD}
+            LRCLIB = $${LRC}/build-local
         }
     }
-    QMAKE_RPATHDIR += $${LIBDIR}
 
-    LIBS += -L$${LIBDIR} -lringclient
+    # Include LRC lib path if custom installation
+    contains(LRCLIB, .*/usr.*) {
+        LIBS += -lringclient
+        message(Will expect lrc library in /usr)
+    } else {
+        QMAKE_RPATHDIR += $${LRCLIB}
+        LIBS += -L$${LRCLIB} -lringclient
+        message(Will expect lrc library in $${LRCLIB})
+    }
+
     LIBS += -lqrencode
     LIBS += -lX11
 
     CONFIG += link_pkgconfig
     PKGCONFIG += libnm
 
+    # TODO: set global installation like cmake (correct
+    # installation paths, desktop files, autostart...)
     isEmpty(PREFIX) { PREFIX = /tmp/$${TARGET}/bin }
     target.path = $$PREFIX/bin
     INSTALLS += target

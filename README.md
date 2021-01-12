@@ -71,6 +71,9 @@ Then, you can build daemon, lrc and client-qt with:
 
 And you will have the daemon in `daemon/bin/dring` and the client in `client-qt/build-local/jami-qt`. You also can run it with
 
+If you use a Qt version that is not wide-system installed you need to specify its path after the `--qt` flag, i. e., `./make-ring.py --install --qt /home/<username>/Qt/5.15.0/gcc_64
+
+
 ```bash
 ./make-ring.py --run --qt
 ```
@@ -81,9 +84,22 @@ And you will have the daemon in `daemon/bin/dring` and the client in `client-qt/
 cd client-qt
 mkdir build
 cd build
-${YOUR_QT5_gcc64_PATH}/bin/qmake ../jami-qt.pro
-make -j9
+cmake .. -DQT5_VER=5.15.0 -DQT5_PATH=/home/<username>/Qt/5.15.0/gcc_64 -DLRC=<path_to_lrc> -DCMAKE_INSTALL_PREFIX=<installation_path>
+make -j
 ```
+
+Variables `QT5_VER` and `QT5_PATH` are used to specify version and path for a custom installation of Qt.
+
+If lrc library is installed in a custom directory you can set its path with the variable LRC. Additionally you can specify built library location with `LRCLIB` (otherwise it will seach inside LRC with the suffixes `/lib`, `/build` and `/build-local`).
+
+After the build has finished, you are finally ready to launch jami-qt in your build directory. 
+
+If you want to install it to the path provided by `CMAKE_INSTALL_PREFIX` you can run:
+
+```bash
+make install
+```
+
 
 If you want more details, or separately build other projects you can check [this page](https://git.jami.net/savoirfairelinux/ring-project/wikis/technical/Build-instructions).
 
@@ -184,7 +200,6 @@ Only 64-bit MSVC build can be compiled.
 
 ```bash
     cd client-windows
-    pandoc -f markdown -t html5 -o changelog.html changelog.md
     python make-client.py -d
     python make-client.py -b
     powershell -ExecutionPolicy Unrestricted -File copy-runtime-files.ps1

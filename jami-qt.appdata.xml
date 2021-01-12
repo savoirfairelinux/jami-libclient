@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 2015-2020 Savoir-faire Linux -->
+<component type="desktop-application">
+ <id>net.jami.Jami</id>
+ <metadata_license>CC-BY-SA-3.0</metadata_license>
+ <project_license>GPL-3.0+</project_license>
+ <name>Jami</name>
+ <summary>Privacy-oriented voice, video, chat, and conference platform</summary>
+ <icon type="stock">jami</icon>
+ <description>
+    <p>
+      An end-to-end encrypted secure and distributed voice, video, and
+      chat communication platform that requires no central server and
+      leaves the power of privacy and freedom in the hands of users.
+    </p>
+    <p>
+      Jami supports the following key features:
+    </p>
+    <ul>
+      <li>One-to-one conversations</li>
+      <li>File sharing</li>
+      <li>Audio calls and conferences</li>
+      <li>Video calls and conferences</li>
+      <li>Screen sharing in video calls and conferences</li>
+      <li>Recording and sending audio messages</li>
+      <li>Recording and sending video messages</li>
+      <li>Functioning as a SIP phone software</li>
+    </ul>
+    <p>
+      Client applications for GNU/Linux, Windows, macOS, iOS, Android,
+      and Android TV are available, making Jami an interoperable and
+      cross-platform communication framework.
+    </p>
+ </description>
+
+ <url type="homepage">https://jami.net/</url>
+ <url type="bugtracker">https://git.jami.net/savoirfairelinux/jami-client-qt/issues</url>
+ <url type="translate">https://www.transifex.com/savoirfairelinux/jami</url>
+ 
+ <!-- Maximum caption length is 60 characters -->
+ <!-- Officially GIF is not an allowed video format, but it appears to work nonetheless -->
+ <screenshots>
+  <screenshot type="default">
+   <caption>Send Audio, Video and Chat messages</caption>
+   <image type="source" width="1310" height="650">https://dl.jami.net/media-resources/screenshots/jami_linux_audiovideo.png</image>
+  </screenshot>
+  <screenshot>
+   <caption>Easily share desktop contents</caption>
+   <image type="source" width="1016" height="659">https://dl.jami.net/media-resources/screenshots/jami_linux_screenshare.png</image>
+  </screenshot>
+  <screenshot>
+   <caption>Crystal clear audio calls between Jami users</caption>
+   <video container="webm" codec="vp9" width="600" height="400">https://dl.jami.net/media-resources/gifs_features/conversiongif_webm/audio-call_web.webm</video>
+  </screenshot>
+  <screenshot>
+   <caption>Conference calls with an unlimited participants</caption>
+   <video container="webm" codec="vp9" width="600" height="400">https://dl.jami.net/media-resources/gifs_features/conversiongif_webm/conference_web.webm</video>
+  </screenshot>
+  <screenshot>
+   <caption>Encrypted and secure text messaging, no servers</caption>
+   <video container="webm" codec="vp9" width="600" height="400">https://dl.jami.net/media-resources/gifs_features/conversiongif_webm/chat_web.webm</video>
+  </screenshot>
+  <screenshot>
+   <caption>Send files of all sizes</caption>
+   <video container="webm" codec="vp9" width="600" height="400">https://dl.jami.net/media-resources/gifs_features/conversiongif_webm/files-share_web.webm</video>
+  </screenshot>
+ </screenshots>
+
+ <launchable type="desktop-id">jami-qt.desktop</launchable>
+
+ <provides><binary>jami-qt</binary><binary>jami</binary></provides>
+
+ <categories>
+  <category>Network</category>
+  <category>P2P</category>
+  <category>InstantMessaging</category>
+  <category>FileTransfer</category>
+ </categories>
+
+ <translation type="gettext">jami-client-qt</translation>
+
+ <content_rating type="oars-1.1">
+  <content_attribute id="social-chat">intense</content_attribute>
+  <content_attribute id="social-audio">intense</content_attribute>
+ </content_rating>
+
+ <requires><id>net.jami.daemon</id></requires>
+
+</component>

@@ -12,24 +12,11 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
-set(SRC_DIR ${CMAKE_SOURCE_DIR}/src)
+set(SRC_DIR ${PROJECT_SOURCE_DIR}/src)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${Qt5Widgets_EXECUTABLE_COMPILE_FLAGS}")
 
-set(QML_RESOURCES ${CMAKE_SOURCE_DIR}/resources.qrc)
-set(QML_RESOURCES_QML ${CMAKE_SOURCE_DIR}/qml.qrc)
-
-if(NOT DEFINED LRC)
-    set(LRC ${CMAKE_CURRENT_SOURCE_DIR}/../install/lrc)
-    set(LRCPATH ${LRC}/include/libringclient)
-    set(LRCLIBDIR ${LRC}/lib)
-else()
-    set(LRCPATH ${LRC}/src)
-    if (NOT DEFINED LRCBUILD)
-        set(LRCLIBDIR ${LRC}/build)
-    else()
-        set(LRCLIBDIR ${LRCBUILD})
-    endif()
-endif()
+set(QML_RESOURCES ${PROJECT_SOURCE_DIR}/resources.qrc)
+set(QML_RESOURCES_QML ${PROJECT_SOURCE_DIR}/qml.qrc)
 
 set(QML_LIBS
     Qt5::Quick
@@ -80,7 +67,8 @@ set(COMMON_SOURCES
     ${SRC_DIR}/qmlregister.cpp
     ${SRC_DIR}/utilsadapter.cpp
     ${SRC_DIR}/dbuserrorhandler.cpp
-    ${SRC_DIR}/xrectsel.c)
+    ${SRC_DIR}/xrectsel.c
+    ${SRC_DIR}/moderatorlistmodel.cpp)
 
 set(COMMON_HEADERS
     ${SRC_DIR}/avatarimageprovider.h
@@ -130,7 +118,8 @@ set(COMMON_HEADERS
     ${SRC_DIR}/qtutils.h
     ${SRC_DIR}/utilsadapter.h
     ${SRC_DIR}/dbuserrorhandler.h
-    ${SRC_DIR}/xrectsel.h)
+    ${SRC_DIR}/xrectsel.h
+    ${SRC_DIR}/moderatorlistmodel.h)
 
 find_package(PkgConfig REQUIRED)
 pkg_check_modules(LIBNM libnm)
@@ -140,66 +129,169 @@ if(LIBNM_FOUND)
 endif()
 
 if(QT5_VER AND QT5_PATH)
-   string(REPLACE "." ";" VERSION_LIST ${QT5_VER})
-   list(GET VERSION_LIST 0 QT5_VER_MAJOR)
-   list(GET VERSION_LIST 1 QT5_VER_MINOR)
-   list(GET VERSION_LIST 2 QT5_VER_PATCH)
+    string(REPLACE "." ";" VERSION_LIST ${QT5_VER})
+    list(GET VERSION_LIST 0 QT5_VER_MAJOR)
+    list(GET VERSION_LIST 1 QT5_VER_MINOR)
+    list(GET VERSION_LIST 2 QT5_VER_PATCH)
 
-   if ((${QT5_VER_MAJOR} GREATER_EQUAL 5) AND (${QT5_VER_MINOR} GREATER_EQUAL 14))
-      message(STATUS "Using custom Qt version")
-      find_package(Qt5 ${QT5_VER} REQUIRED
-                  COMPONENTS
-                  Core
-                  Quick
-                  QuickWidgets
-                  Network
-                  Svg
-                  QuickControls2
-                  WebEngine
-                  DBus
-                  PATHS ${QT5_PATH} NO_DEFAULT_PATH)
-      set(CMAKE_INSTALL_RPATH_USE_LINK_PATH true)
-   endif()
+    if((${QT5_VER_MAJOR} GREATER_EQUAL 5) AND (${QT5_VER_MINOR} GREATER_EQUAL 14))
+        message(STATUS "Using custom Qt version")
+        find_package(Qt5 ${QT5_VER} REQUIRED COMPONENTS
+            Core
+            Quick
+            QuickWidgets
+            Network
+            Svg
+            QuickControls2
+            WebEngine
+            DBus
+            PATHS ${QT5_PATH} NO_DEFAULT_PATH)
+        find_package(Qt5LinguistTools ${QT5_VER}
+            PATHS ${QT5_PATH} NO_DEFAULT_PATH)
+    endif()
 else()
-   find_package(Qt5 REQUIRED
-                COMPONENTS
-                Core
-                Quick
-                QuickWidgets
-                Network
-                Svg
-                QuickControls2
-                WebEngine
-                DBus)
+    find_package(Qt5 REQUIRED COMPONENTS
+        Core
+        Quick
+        QuickWidgets
+        Network
+        Svg
+        QuickControls2
+        WebEngine
+        DBus)
+    find_package(Qt5LinguistTools)
+endif()
+set(CMAKE_INSTALL_RPATH_USE_LINK_PATH true)
+
+# If LRC is not globally installed, it's path should be specified
+# by setting variable LRC. If library is not inside LRC + suffixes
+# lib, build or build-local, it's path should be set with LRCLIB.
+if(DEFINED LRC)
+    if(EXISTS ${LRC}/include/libringclient)
+        set(LRC_SRC_PATH ${LRC}/include/libringclient)
+    else()
+        set(LRC_SRC_PATH ${LRC}/src)
+    endif()
+    if(NOT DEFINED LRCLIB)
+        set(LRCLIB ${LRC})
+    endif()
+    find_library(ringclient ringclient
+        PATHS ${LRCLIB}
+        PATH_SUFFIXES lib build build-local NO_DEFAULT_PATH)
+    message("Will expect lrc library in ${LRCLIB} (including \
+subdirs /lib, /build and /build-local)")
+    set(LRC_LIB_NAME ${ringclient})
+else()
+    find_package(LibRingClient REQUIRED)
+    if (LibRingClient_FOUND)
+        set(LRC_SRC_PATH ${LIB_RING_CLIENT_INCLUDE_DIR})
+        set(LRC_LIB_NAME ${LIB_RING_CLIENT_LIBRARY})
+    else()
+        message("lrc not found!")
+    endif()
 endif()
 
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}
-    ${SRC_DIR}
-    ${LRCPATH}
-    ${LIBNM_INCLUDE_DIRS})
+message("Will expect lrc headers in ${LRC_SRC_PATH}")
 
-link_libraries(${LIBNM_LIBRARIES})
+include_directories(${PROJECT_SOURCE_DIR}
+    ${SRC_DIR}
+    ${LRC_SRC_PATH}
+    ${LIBNM_INCLUDE_DIRS})
 
 add_executable(${PROJECT_NAME}
     ${SRC_DIR}/main.cpp
     ${COMMON_HEADERS}
     ${COMMON_SOURCES}
     ${QML_RESOURCES}
-    ${QML_RESOURCES_QML})
+    ${QML_RESOURCES_QML}
+    ${LRC_SRC_PATH}/webresource.qrc)
 
-message(${LRCLIBDIR})
 find_library(ringclient ringclient ${LRCLIBDIR} NO_DEFAULT_PATH)
 find_library(qrencode qrencode)
 find_library(X11 X11)
 
 target_link_libraries(jami-qt
     ${QML_LIBS}
-    ${ringclient}
+    ${LRC_LIB_NAME}
     ${qrencode}
     ${X11}
-)
+    ${LIBNM_LIBRARIES})
 
 if(ENABLE_TESTS)
     message("Add Jami tests")
     add_subdirectory(tests)
 endif()
+
+# Installation rules
+install(TARGETS jami-qt
+   RUNTIME DESTINATION bin)
+
+# install .desktop in XDG desktop dir so that it is recognized by the system
+install(FILES ${PROJECT_SOURCE_DIR}/jami-qt.desktop
+    DESTINATION ${CMAKE_INSTALL_PREFIX}/share/applications)
+
+# logos
+install(FILES images/jami.svg
+    DESTINATION ${CMAKE_INSTALL_PREFIX}/share/icons/hicolor/scalable/apps)
+
+install(FILES images/jami-48px.png
+    DESTINATION ${CMAKE_INSTALL_PREFIX}/share/icons/hicolor/48x48/apps
+    RENAME jami.png)
+
+install(FILES images/jami-32px.xpm
+    DESTINATION ${CMAKE_INSTALL_PREFIX}/share/pixmaps
+    RENAME jami.xpm)
+
+install(FILES jami-qt.appdata.xml
+    DESTINATION ${CMAKE_INSTALL_PREFIX}/share/metainfo)
+
+# install jami launcher that selects between clients
+install(
+    FILES
+        "${PROJECT_SOURCE_DIR}/src/jami"
+    DESTINATION
+        ${CMAKE_INSTALL_PREFIX}/bin
+    PERMISSIONS
+        WORLD_READ
+        OWNER_WRITE
+        OWNER_READ
+        GROUP_READ
+        OWNER_EXECUTE
+        GROUP_EXECUTE
+        WORLD_EXECUTE)
+
+# add a target to generate API documentation with Doxygen
+find_package(Doxygen)
+if(DOXYGEN_FOUND)
+    configure_file(${CMAKE_CURRENT_SOURCE_DIR}/doc/Doxyfile.in ${CMAKE_CURRENT_SOURCE_DIR}/doc/Doxyfile @ONLY)
+    add_custom_target(doc
+        COMMAND ${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/doc/Doxyfile
+        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/doc
+        COMMENT "Generating API documentation with Doxygen" VERBATIM)
+
+    # create doc/README.md symlink to README since Doxygen doesn't understand file with no extension
+    add_custom_command(
+        TARGET doc
+        PRE_BUILD
+        COMMAND ln -sf ${CMAKE_CURRENT_SOURCE_DIR}/README ${CMAKE_CURRENT_SOURCE_DIR}/doc/README.md)
+endif(DOXYGEN_FOUND)
+
+
+# translations
+if(Qt5LinguistTools_FOUND)
+    message("Releasing and copying translation files")
+    file(GLOB TS_FILES ${PROJECT_SOURCE_DIR}/translations/*.ts)
+    qt5_add_translation(QM_FILES ${TS_FILES})
+    add_custom_target(translations ALL DEPENDS ${QM_FILES})
+    install(FILES ${QM_FILES}
+        DESTINATION "${CMAKE_INSTALL_PREFIX}/share/libringclient/translations")
+endif()
+
+# uninstall
+configure_file(
+    "${CMAKE_CURRENT_SOURCE_DIR}/cmake/cmake_uninstall.cmake.in"
+    "${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake"
+    IMMEDIATE @ONLY)
+
+add_custom_target(uninstall
+    COMMAND ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake)

@@ -195,7 +195,7 @@ def compile_and_copy_web_resources():
             print(bcolors.FAIL + "No rcc found!" + bcolors.ENDC)
             sys.exit()
 
-    lrc_web_resources_path = globalVar.lrc_path + os.sep + 'webresource.qrc'
+    lrc_web_resources_path = globalVar.lrc_path + os.sep + "src" + os.sep + 'webresource.qrc'
 
     execute_cmd(rcc + ' -binary ' + lrc_web_resources_path +
                 ' -o ' + globalVar.output_path + os.sep + 'webresource.rcc')

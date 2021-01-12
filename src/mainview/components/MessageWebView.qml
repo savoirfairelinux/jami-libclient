@@ -293,7 +293,7 @@ Rectangle {
                 messageWebView.runJavaScript(UtilsAdapter.getStyleSheet(
                                                  "chatwin",
                                                  UtilsAdapter.qStringFromFile(
-                                                     ":/chatview-windows.css")))
+                                                     ":/chatview-qt.css")))
                 messageWebView.runJavaScript(UtilsAdapter.qStringFromFile(
                                                  ":/linkify.js"))
                 messageWebView.runJavaScript(UtilsAdapter.qStringFromFile(

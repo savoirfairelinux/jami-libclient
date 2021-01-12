@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Jami
+GenericName=Jami
+Comment=Jami is a secured and distributed communication software
+Exec=jami-qt
+Icon=jami
+StartupNotify=true
+Terminal=false
+Type=Application
+Categories=Qt;Network;Telephony;
