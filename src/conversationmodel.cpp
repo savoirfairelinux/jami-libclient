@@ -1768,10 +1768,8 @@ ConversationModelPimpl::slotContactModelUpdated(const QString& uri, bool needsSo
     }
 
     if (currentFilter.isEmpty()) {
-        if (searchResults.empty()) {
-            emit linked.modelChanged();
+        if (searchResults.empty())
             return;
-        }
         searchResults.clear();
         emit linked.searchResultUpdated();
         return;
