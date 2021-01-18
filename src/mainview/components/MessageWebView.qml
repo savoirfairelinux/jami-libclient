@@ -89,10 +89,13 @@ Rectangle {
             --file-in-timestamp-color:' + JamiTheme.fileOutTimestampColor + ';\
             --file-out-timestamp-color:' + JamiTheme.fileInTimestampColor + ';\
             --bg-color:' + JamiTheme.chatviewBgColor + ';\
-            --non-action-icon-color:' + JamiTheme.nonActionIconColor + ';\
+            --action-icon-color:' + JamiTheme.chatviewButtonColor + ';\
+            --action-icon-hover-color:' + JamiTheme.hoveredButtonColor + ';\
+            --action-icon-press-color:' + JamiTheme.pressedButtonColor + ';\
             --placeholder-text-color:' + JamiTheme.placeholderTextColor + ';\
             --invite-hover-color:' + JamiTheme.inviteHoverColor + ';\
-            --hairline-color:' + JamiTheme.hairlineColor + ';")'
+            --bg-text-input:' + JamiTheme.bgTextInput + ';\
+            --bg-invitation-rect:' + JamiTheme.bgInvitationRectColor + ';")'
         messageWebView.runJavaScript("init_picker(" + JamiTheme.darkTheme + ");")
         messageWebView.runJavaScript(theme);
     }
@@ -199,17 +202,14 @@ Rectangle {
 
         function acceptInvitation() {
             MessagesAdapter.acceptInvitation()
-            messageWebViewHeader.sendContactRequestButtonVisible = false
         }
 
         function refuseInvitation() {
             MessagesAdapter.refuseInvitation()
-            messageWebViewHeader.sendContactRequestButtonVisible = false
         }
 
         function blockConversation() {
             MessagesAdapter.blockConversation()
-            messageWebViewHeader.sendContactRequestButtonVisible = false
         }
 
         function emitMessagesCleared() {

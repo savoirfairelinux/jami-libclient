@@ -31,7 +31,7 @@ Rectangle {
 
     property string userAliasLabelText
     property string userUserNameLabelText
-    property string backToWelcomeViewButtonSource: "qrc:/images/icons/ic_arrow_back_24px.svg"
+    property string backToWelcomeViewButtonSource: "qrc:/images/icons/back-24px.svg"
     property alias sendContactRequestButtonVisible: sendContactRequestButton.visible
 
     signal backClicked
@@ -39,7 +39,8 @@ Rectangle {
     signal pluginSelector
 
     function resetBackToWelcomeViewButtonSource(reset) {
-        backToWelcomeViewButtonSource = reset ? "qrc:/images/icons/ic_arrow_back_24px.svg" : "qrc:/images/icons/round-close-24px.svg"
+        backToWelcomeViewButtonSource = reset ? "qrc:/images/icons/back-24px.svg"
+                                              : "qrc:/images/icons/round-close-24px.svg"
     }
 
     function toggleMessagingHeaderButtonsVisible(visible) {
@@ -47,7 +48,7 @@ Rectangle {
         startAVideoCallButton.visible = visible
     }
 
-    color: JamiTheme.secondaryBackgroundColor
+    color: JamiTheme.chatviewBgColor
 
     RowLayout {
         id: messagingHeaderRectRowLayout
@@ -58,15 +59,18 @@ Rectangle {
             id: backToWelcomeViewButton
 
             Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
-            Layout.leftMargin: 16
+            Layout.leftMargin: 8
+
+            preferredSize: 24
 
             source: backToWelcomeViewButtonSource
+            toolTipText: JamiStrings.hideChatView
 
-            normalColor: JamiTheme.secondaryBackgroundColor
+            normalColor: JamiTheme.chatviewBgColor
             imageColor: JamiTheme.chatviewButtonColor
 
             onClicked: {
-                if (backToWelcomeViewButtonSource === "qrc:/images/icons/ic_arrow_back_24px.svg")
+                if (backToWelcomeViewButtonSource === "qrc:/images/icons/back-24px.svg")
                     messagingHeaderRect.backClicked()
                 else
                     messagingHeaderRect.needToHideConversationInCall()
@@ -84,7 +88,7 @@ Rectangle {
             Layout.fillHeight: true
             Layout.topMargin: 7
             Layout.bottomMargin: 7
-            Layout.leftMargin: 16
+            Layout.leftMargin: 8
 
             color: JamiTheme.transparentColor
 
@@ -132,7 +136,7 @@ Rectangle {
             Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
             Layout.preferredWidth: childrenRect.width + 18
             Layout.preferredHeight: childrenRect.height
-            Layout.rightMargin: 16
+            Layout.rightMargin: 8
 
             color: "transparent"
 
@@ -140,12 +144,13 @@ Rectangle {
                 id: startAAudioCallButton
 
                 anchors.right: startAVideoCallButton.left
-                anchors.rightMargin: 16
+                anchors.rightMargin: 8
                 anchors.verticalCenter: buttonGroup.verticalCenter
 
-                source: "qrc:/images/icons/ic_phone_24px.svg"
+                source: "qrc:/images/icons/place_audiocall-24px.svg"
+                toolTipText: JamiStrings.placeAudioCall
 
-                normalColor: JamiTheme.secondaryBackgroundColor
+                normalColor: JamiTheme.chatviewBgColor
                 imageColor: JamiTheme.chatviewButtonColor
 
                 onClicked: {
@@ -162,12 +167,13 @@ Rectangle {
                                    sendContactRequestButton.visible ?
                                    sendContactRequestButton.left :
                                    buttonGroup.right
-                anchors.rightMargin: 16
+                anchors.rightMargin: 8
                 anchors.verticalCenter: buttonGroup.verticalCenter
 
-                source: "qrc:/images/icons/videocam-24px.svg"
+                source: "qrc:/images/icons/place_videocall-24px.svg"
+                toolTipText: JamiStrings.placeVideoCall
 
-                normalColor: JamiTheme.secondaryBackgroundColor
+                normalColor: JamiTheme.chatviewBgColor
                 imageColor: JamiTheme.chatviewButtonColor
 
                 onClicked: {
@@ -192,12 +198,13 @@ Rectangle {
                 anchors.right: sendContactRequestButton.visible ?
                                    sendContactRequestButton.left :
                                    buttonGroup.right
-                anchors.rightMargin: 16
+                anchors.rightMargin: sendContactRequestButton.visible ? 8 : 16
                 anchors.verticalCenter: buttonGroup.verticalCenter
 
-                source: "qrc:/images/icons/extension_24dp.svg"
+                source: "qrc:/images/icons/plugins-24px.svg"
+                toolTipText: JamiStrings.showPlugins
 
-                normalColor: JamiTheme.secondaryBackgroundColor
+                normalColor: JamiTheme.chatviewBgColor
                 imageColor: JamiTheme.chatviewButtonColor
 
                 onClicked: pluginSelector()
@@ -210,10 +217,10 @@ Rectangle {
                 anchors.rightMargin: 8
                 anchors.verticalCenter: buttonGroup.verticalCenter
 
-                width: sendContactRequestButton.visible ? preferredSize : 0
-                source: "qrc:/images/icons/person_add-24px.svg"
+                source: "qrc:/images/icons/add_people-24px.svg"
+                toolTipText: JamiStrings.addToConversations
 
-                normalColor: JamiTheme.secondaryBackgroundColor
+                normalColor: JamiTheme.chatviewBgColor
                 imageColor: JamiTheme.chatviewButtonColor
 
                 onClicked: {

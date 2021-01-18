@@ -82,20 +82,15 @@ MessagesAdapter::setupChatView(const QString& convUid)
     } catch (...) {
     }
 
-    bool shouldShowSendContactRequestBtn = (contactInfo.profileInfo.type
-                                                == lrc::api::profile::Type::PENDING
-                                            || contactInfo.profileInfo.type
-                                                   == lrc::api::profile::Type::TEMPORARY);
+    bool isPending = contactInfo.profileInfo.type == profile::Type::TEMPORARY;
 
     QMetaObject::invokeMethod(qmlObj_,
                               "setSendContactRequestButtonVisible",
-                              Q_ARG(QVariant, shouldShowSendContactRequestBtn));
+                              Q_ARG(QVariant, isPending));
 
     setMessagesVisibility(false);
 
-    /*
-     * Type Indicator (contact).
-     */
+    // Type Indicator (contact). TODO: Not shown when invitation request?
     contactIsComposing(convInfo.uid, "", false);
     connect(lrcInstance_->getCurrentConversationModel(),
             &ConversationModel::composingStatusChanged,
@@ -106,9 +101,7 @@ MessagesAdapter::setupChatView(const QString& convUid)
                 contactIsComposing(convUid, contactUri, isComposing);
             });
 
-    /*
-     * Draft and message content set up.
-     */
+    // Draft and message content set up.
     Utils::oneShotConnect(qmlObj_,
                           SIGNAL(sendMessageContentSaved(const QString&)),
                           this,

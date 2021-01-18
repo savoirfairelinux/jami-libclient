@@ -213,7 +213,7 @@ Item {
 
             text: unreadMessagesCount > 9 ? "…" : unreadMessagesCount
             color: "white"
-            font.pointSize: JamiTheme.textFontSize - 2
+            font.pointSize: JamiTheme.indicatorFontSize
         }
 
         radius: 30

@@ -52,9 +52,11 @@ Item {
     // Side panel
     property color presenceGreen: "#4cd964"
     property color notificationRed: "#ff3b30"
+    property color notificationBlue: "#31b7ff"
     property color unPresenceOrange: "orange"
     property color contactSearchBarPlaceHolderTextFontColor: "#767676"
     property color draftRed: "#cf5300"
+    property color selectedTabColor: darkTheme? whiteColor : blackColor
 
     // General buttons
     property color pressedButtonColor: darkTheme? pressColor : "#a0a0a0"
@@ -127,12 +129,12 @@ Item {
     property color messageInTxtColor: textColor
     property color fileOutTimestampColor: darkTheme? "#eee" : "#555"
     property color fileInTimestampColor: darkTheme? "#999" : "#555"
-    property color chatviewBgColor: darkTheme? "#202020" : "white"
-    property color nonActionIconColor: darkTheme? "white" : "#212121"
+    property color chatviewBgColor: darkTheme? "#131313" : "#fafafb"
+    property color bgInvitationRectColor: darkTheme? "#222222" : whiteColor
     property color placeholderTextColor: darkTheme? "#2b2b2b" : "#d3d3d3"
     property color inviteHoverColor: darkTheme? blackColor : whiteColor
-    property color hairlineColor: darkTheme? "262626" : "#d9d9d9"
-    property color chatviewButtonColor: darkTheme? "#28b1ed" : "#003b4e"
+    property color chatviewButtonColor: darkTheme? whiteColor : blackColor
+    property color bgTextInput: darkTheme? "#060608" : whiteColor
 
     // Font.
     property color faddedFontColor: darkTheme? "#c0c0c0" : "#a0a0a0"
@@ -158,6 +160,7 @@ Item {
 
     // Sizes
     property int splitViewHandlePreferredWidth: 4
+    property int indicatorFontSize: 6
     property int tinyFontSize: 7
     property int textFontSize: 9
     property int settingsFontSize: 9

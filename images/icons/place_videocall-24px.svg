@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Moderateur</title>
+    <g id="Icones_Outline" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Camera" fill-rule="nonzero" stroke="#000000" stroke-width="1.3">
+            <g id="Ico_Camera" transform="translate(2.000000, 6.000000)">
+                <path d="M14.838,0.964 L15.0727616,4.95098691 L18.549033,2.8441558 L19.1831325,10.5544613 L15.0431125,8.28294586 L15.0431125,12.1828061 C15.0222904,12.2250926 14.9986583,12.2532258 14.9607672,12.2532258 L14.9607672,12.2532258 L0.881,12.253 L0.654407741,1.14977472 L14.838,0.964 Z" id="Path"></path>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -112,7 +112,7 @@ Rectangle {
         anchors.top: contactSearchBar.bottom
         anchors.topMargin: 10
         width: sidePanelRect.width
-        height: tabBarVisible ? 64 : 0
+        height: tabBarVisible ? 48 : 0
     }
 
     Rectangle {

@@ -129,5 +129,17 @@
         <file>images/logo-jami-standard-coul-white.svg</file>
         <file>images/icons/moderator.svg</file>
         <file>images/icons/star_outline-24px.svg</file>
+        <file>images/icons/send_file-24px.svg</file>
+        <file>images/icons/message_video-24px.svg</file>
+        <file>images/icons/message_audio-24px.svg</file>
+        <file>images/icons/send-24px.svg</file>
+        <file>images/icons/place_videocall-24px.svg</file>
+        <file>images/icons/back-24px.svg</file>
+        <file>images/icons/place_audiocall-24px.svg</file>
+        <file>images/icons/add_people-24px.svg</file>
+        <file>images/icons/share-24px.svg</file>
+        <file>images/icons/settings-24px.svg</file>
+        <file>images/icons/quote.svg</file>
+        <file>images/icons/plugins-24px.svg</file>
     </qresource>
 </RCC>

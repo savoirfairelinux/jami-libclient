@@ -68,31 +68,6 @@ TabBar {
         id: pageOne
         down: true
 
-        Rectangle {
-            id: totalUnreadMessagesCountRect
-
-            anchors.centerIn: buttonRectOne
-            anchors.verticalCenterOffset : -20
-            anchors.horizontalCenterOffset : 15
-
-            width: 16
-            height: 16
-
-            visible: totalUnreadMessagesCount > 0
-
-            Text {
-                id: totalUnreadMessagesCountText
-
-                anchors.centerIn: totalUnreadMessagesCountRect
-
-                text: totalUnreadMessagesCount > 9 ? "···" : totalUnreadMessagesCount
-                color: "white"
-                font.pointSize: JamiTheme.textFontSize
-            }
-            radius: 30
-            color: JamiTheme.notificationRed
-
-        }
 
         background: Rectangle {
 
@@ -100,29 +75,6 @@ TabBar {
             width: tabBar.width / 2 + 1
             height: tabBar.height
             color: JamiTheme.backgroundColor
-
-            Image {
-                id: imgRectOne
-                anchors.horizontalCenter: buttonRectOne.horizontalCenter
-                anchors.top: buttonRectOne.top
-                anchors.topMargin: 12
-
-                width: 24
-                height: 24
-
-                fillMode: Image.PreserveAspectFit
-                mipmap: true
-                source: "qrc:/images/icons/baseline-people-24px.svg"
-                //opacity: enabled ? 0.8 : 0.3
-                opacity: pageOne.down == true ? 1.0 : opacityDegree
-            }
-
-            ColorOverlay {
-                anchors.fill: imgRectOne
-                source: imgRectOne
-                color: JamiTheme.blueLogo_
-                opacity: pageOne.down == true ? 1.0 : opacityDegree
-            }
 
             Text {
                 id: textConvElement
@@ -137,7 +89,33 @@ TabBar {
                 text: JamiStrings.conversations
                 font.pointSize: JamiTheme.textFontSize
                 opacity: pageOne.down == true ? 1.0 : opacityDegree
-                color: JamiTheme.blueLogo_
+                color: JamiTheme.textColor
+            }
+
+            Rectangle {
+                id: totalUnreadMessagesCountRect
+
+                anchors.left: textConvElement.right
+                anchors.leftMargin: 4
+                anchors.verticalCenter: textConvElement.verticalCenter
+                anchors.verticalCenterOffset : -5
+
+                width: 12
+                height: 12
+
+                visible: totalUnreadMessagesCount > 0
+
+                Text {
+                    id: totalUnreadMessagesCountText
+
+                    anchors.centerIn: totalUnreadMessagesCountRect
+
+                    text: totalUnreadMessagesCount > 9 ? "···" : totalUnreadMessagesCount
+                    color: "white"
+                    font.pointSize: JamiTheme.indicatorFontSize
+                }
+                radius: 30
+                color: JamiTheme.notificationBlue
             }
 
             Rectangle {
@@ -145,7 +123,7 @@ TabBar {
                 width: buttonRectOne.width
                 anchors.bottom: buttonRectOne.bottom
                 height: 2
-                color: pageOne.down == true ? JamiTheme.blueLogo_ : "transparent"
+                color: pageOne.down == true ? JamiTheme.textColor : "transparent"
             }
 
             MouseArea {
@@ -180,60 +158,12 @@ TabBar {
 
         id: pageTwo
 
-        Rectangle {
-            id: pendingRequestCountRect
-
-            anchors.centerIn: buttonRectTwo
-            anchors.verticalCenterOffset : -20
-            anchors.horizontalCenterOffset : 15
-
-            width: 16
-            height: 16
-
-            visible: pendingRequestCount > 0
-
-            Text {
-                id: pendingRequestCountText
-
-                anchors.centerIn: pendingRequestCountRect
-
-                text: pendingRequestCount > 9 ? "···" : pendingRequestCount
-                color: JamiTheme.backgroundColor
-                font.pointSize: JamiTheme.textFontSize
-            }
-            radius: 30
-            color: JamiTheme.notificationRed
-        }
-
         background: Rectangle {
             id: buttonRectTwo
 
             width: tabBar.width / 2
             height: tabBar.height
             color: JamiTheme.backgroundColor
-
-            Image {
-                id: imgRectTwo
-                anchors.horizontalCenter: buttonRectTwo.horizontalCenter
-                anchors.top: buttonRectTwo.top
-                anchors.topMargin: 10
-
-                width: 24
-                height: 24
-
-                fillMode: Image.PreserveAspectFit
-                mipmap: true
-                source: "qrc:/images/icons/drafts-24px.svg"
-                //opacity: enabled ? 0.8 : 0.3
-                opacity: pageTwo.down == true ? 1.0 : opacityDegree
-            }
-
-            ColorOverlay {
-                anchors.fill: imgRectTwo
-                source: imgRectTwo
-                color: JamiTheme.blueLogo_
-                opacity: pageTwo.down == true ? 1.0 : opacityDegree
-            }
 
             Text {
                 id: textInvElement
@@ -250,7 +180,33 @@ TabBar {
                 text: JamiStrings.invitations
                 //opacity: enabled ? 1.0 : 0.3
                 opacity: pageTwo.down == true ? 1.0 : opacityDegree
-                color: JamiTheme.blueLogo_
+                color: JamiTheme.textColor
+            }
+
+            Rectangle {
+                id: pendingRequestCountRect
+
+                anchors.left: textInvElement.right
+                anchors.leftMargin: 4
+                anchors.verticalCenter: textInvElement.verticalCenter
+                anchors.verticalCenterOffset : -5
+
+                width: 12
+                height: 12
+
+                visible: pendingRequestCount > 0
+
+                Text {
+                    id: pendingRequestCountText
+
+                    anchors.centerIn: pendingRequestCountRect
+
+                    text: pendingRequestCount > 9 ? "···" : pendingRequestCount
+                    color: "white"
+                    font.pointSize: JamiTheme.indicatorFontSize
+                }
+                radius: 30
+                color: JamiTheme.notificationBlue
             }
 
             Rectangle {
@@ -258,7 +214,7 @@ TabBar {
                 width: buttonRectTwo.width
                 anchors.bottom: buttonRectTwo.bottom
                 height: 2
-                color: pageTwo.down == true ? JamiTheme.blueLogo_ : "transparent"
+                color: pageTwo.down == true ? JamiTheme.textColor : "transparent"
             }
 
             MouseArea {

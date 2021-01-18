@@ -206,6 +206,13 @@ Item {
     property string viewPlugin: qsTr("View plugin")
     property string noVideoDevice: qsTr("No video device")
 
+    // Chatview header
+    property string hideChatView: qsTr("Hide chat view")
+    property string placeAudioCall: qsTr("Place audio call")
+    property string placeVideoCall: qsTr("Place video call")
+    property string showPlugins: qsTr("Show available plugins")
+    property string addToConversations: qsTr("Add to conversations")
+
     // ConnectToAccountManager
     property string enterJAMSURL: qsTr("Enter Jami Account Management Server (JAMS) URL")
     property string required: qsTr("Required")
