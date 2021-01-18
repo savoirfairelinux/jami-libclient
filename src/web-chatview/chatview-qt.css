@@ -1,11 +1,9 @@
 :root {
     /* color definitions */
     --jami-light-blue: rgba(59, 193, 211, 0.3);
-    --jami-dark-blue: #004e86;
-    --jami-green: #219d55;
-    --jami-green-hover: #1f8b4c;
-    --jami-red: #dc2719;
-    --jami-red-hover: #b02e2c;
+    --jami-dark-blue: #003b4e;
+    --jami-green: #1ed0a8;
+    --jami-green-hover: #1ed0a8;
     /* main properties */
     --bg-color: #ffffff;
     /* navbar properties */
@@ -16,17 +14,15 @@
     --textarea-max-height: 150px;
     --placeholder-text-color: #d3d3d3;
     /* button properties */
-    --deactivated-icon-color: #bebebe;
-    --action-icon-hover-color: #ededed;
+    --action-icon-color: var(--text-color);
+    --action-icon-hover-color: var(--bg-color);
+    --deactivated-icon-color: var(--text-color);
     --action-critical-icon-hover-color: rgba(211, 77, 59, 0.3); /* complementary color of jami light blue */
     --action-critical-icon-press-color: rgba(211, 77, 59, 0.5);
     --action-critical-icon-color: #4E1300;
-    --non-action-icon-color: #212121;
     --action-icon-press-color: rgba(212, 212, 212, 1.0);
     --invite-hover-color: white;
-    /* hairline properties */
-    --hairline-color: #f0f0f0;
-    --hairline-thickness: 2px;
+    --bg-text-input: white;
 }
 
 body {

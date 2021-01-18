@@ -6,8 +6,6 @@
   --jami-dark-blue: #003b4e;
   --jami-green: #219d55;
   --jami-green-hover: #1f8b4c;
-  --jami-red: #dc2719;
-  --jami-red-hover: #b02e2c;
   --text-color: black;
   --hyperlink-color: var(--text-color);
   --timestamp-color: #333;
@@ -31,18 +29,17 @@
   --placeholder-text-color: #d3d3d3;
 
   /* button properties */
-  --deactivated-icon-color: #BEBEBE;
+  --action-icon-color: var(--text-color);
   --action-icon-hover-color: var(--jami-light-blue);
   --action-critical-icon-hover-color: rgba(211, 77, 59, 0.3); /* complementary color of ring light blue */
   --action-critical-icon-press-color: rgba(211, 77, 59, 0.5);
   --action-critical-icon-color: #4E1300;
-  --non-action-icon-color: #212121;
   --action-icon-press-color: rgba(59, 193, 211, 0.5);
   --invite-hover-color: white;
 
-  /* hairline properties */
-  --hairline-color: #d9d9d9;
-  --hairline-thickness: 0.2px;
+  --bg-text-input: white;
+  --bg-invitation-rect: white;
+
 }
 
 @font-face {
@@ -119,9 +116,6 @@ body {
   /* takes whole width */
   left:0; right:0;
 
-  /* hairline */
-  border-bottom: var(--hairline-thickness) solid var(--hairline-color);
-
   display: flex;
 }
 
@@ -137,8 +131,8 @@ body {
 }
 
 .nav-button {
-  width: 40px;
-  height: 40px;
+  width: 30px;
+  height: 30px;
   display: flex;
   cursor: pointer;
   align-self: center;
@@ -146,11 +140,6 @@ body {
 }
 
 .nav-button.deactivated {
-  width: 40px;
-  height: 40px;
-  align-self: center;
-  display: flex;
-  border-radius: 50%;
   cursor: auto;
 }
 
@@ -170,8 +159,13 @@ body {
     fill: var(--message-in-txt);
 }
 
-.non-action-button svg {
-  fill: var(--non-action-icon-color);
+.non-action-button svg, .action-button svg {
+    stroke: var(--action-icon-color);
+}
+
+.action-button.deactivated svg {
+  fill: var(--deactivated-icon-color);
+  stroke: var(--deactivated-icon-color);
 }
 
 .non-action-button:hover, .action-button:hover {
@@ -214,62 +208,120 @@ body {
   display: flex;
 }
 
-/** Invitation bar */
+/** Invitation */
 
 #invitation {
-  visibility: hidden;
-  background: var(--bg-color);
-  position: absolute;
-  width: 100%;
-  padding-bottom: 10px;
-
-  /* hairline */
-  border-bottom: var(--hairline-thickness) solid var(--hairline-color);
+    width: 100%;
+    height: 100%;
 }
 
-#invitation #invite_header {
-  margin: 10px;
-  list-style: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  /* enable selection (it is globally disabled in the body) */
-  -webkit-user-select: auto;
+.note_container {
+    width: 100%;
+    position: absolute;
+    opacity: 1;
+    transition: opacity 0.3s linear;
+    text-overflow: elipsis;
 }
 
-#invitation .sender_image {
-  width: 50px;
-  height: 50px;
+
+#invitation_text_container {
+    top: 5%;
 }
 
-#invitation #actions {
-  margin-right: auto;
-  margin-left: auto;
-  list-style: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  /* enable selection (it is globally disabled in the body) */
-  -webkit-user-select: auto;
+#invitation_note_container {
+    bottom: 20%;
 }
 
-#invitation #actions div {
+#invitation_text {
+    margin: 0px 20px 0px 20px;
+    text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+#invitation_note {
+    margin: 20px 20px 20px 20px;
+    text-align: center;
+    opacity: 0.5;
+}
+
+#invitation_rect {
+    width: 375px;
+    height: 25%;
+    min-height: 220px;
+    max-height: 280px;
+
+    background-color: var(--bg-invitation-rect);
+    transition: background-color 0.3s;
+    border-radius: 20px;
+    box-shadow: 7px 7px 30px #12000930;
+    transition: box-shadow 0.3s;
+
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -75%);
+    transition: transform 0.8s;
+
     display: flex;
-    align-items: center;
     justify-content: center;
-    margin-right: 5px;
-    margin-left: 5px;
 }
 
-#invitation #text {
-  text-align: center;
-  font-size: 0.8em;
-
-  /* enable selection (it is globally disabled in the body) */
-  -webkit-user-select: auto;
+#invite_image {
+    width: 112px;
+    height: 112px;
+    position: absolute;
+    top: -56px;
+    margin: 0 auto;
+    opacity: 1;
+    transition: opacity 0.3s;
 }
+
+#quote_img_wrapper {
+    position: absolute;
+    top: 40px;
+    opacity: 1;
+    transition: opacity 0.3s;
+}
+
+
+#invite_text {
+    margin-top: 96px;
+    margin-bottom: auto;
+    width: 66%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#join_text {
+    text-align: center;
+    font-size: 1.2em;
+    line-height: 1.5;
+}
+
+#note_text {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    text-align: center;
+    font-size: .9em;
+    line-height: 1.5;
+}
+
+#actions {
+    position: absolute;
+    margin: 0 auto;
+
+    bottom: -40px;
+    width: 240px;
+    height: 20px;
+    max-height: 20px;
+    min-height: 20px;
+
+    display: flex;
+    justify-content: space-between;
+}
+
+
 
 /** Messaging bar */
 
@@ -284,29 +336,37 @@ body {
     right: 0;
     top: 0;
     z-index: 1;
-    /* hairline */
-    border-top: var(--hairline-thickness) solid var(--hairline-color);
-    border-bottom: var(--hairline-thickness) solid var(--hairline-color);
 }
 
 #message {
-  font-family: emoji;
-  flex: 1;
-  background-color: var(--bg-color);
-  border: 0;
-  overflow-y: scroll;
-  color: var(--text-color);;
-  max-height: var(--textarea-max-height);
-  margin-right: 10px;
-  resize: none;
-
-  /* enable selection (it is globally disabled in the body) */
-  -webkit-user-select: auto;
+    flex: 1;
+    background-color: transparent;
+    overflow-y: hidden;
+    color: var(--text-color);
+    width: 100%;
+    min-height: 50px;
+    max-height: var(--textarea-max-height);
+    resize: none;
+    border: none;
+    padding: 30px 5px;
+    padding-left: 20px;
+    /* enable selection (it is globally disabled in the body) */
+    -webkit-user-select: auto;
 }
 
-#message:focus,
-#message.focus {
-  outline: none;
+#message_bar_container {
+    height: "auto";
+    width: 100%;
+    min-height: 50px;
+    background-color: var(--bg-text-input);
+    border-radius: 25px 25px 0px 25px;
+    display: flex;
+    flex-direction: row;
+    vertical-align: middle;
+}
+
+#message:focus{
+    outline: none;
 }
 
 #container[disabled] {
@@ -729,10 +789,6 @@ div.last_message > span {
     opacity: 1;
 }
 
-.message_type_contact svg {
-    fill: var(--message-in-txt);
-}
-
 /* Ellipsis - dropdown menu */
 
 input[type=checkbox] {
@@ -757,40 +813,10 @@ input[type=checkbox] {
     vertical-align: center;
 }
 
-.message_type_call .menu_interaction .dropdown
-.message_type_contact .menu_interaction .dropdown
-{
-    margin-top: -17px;
-}
-
 .message:hover .menu_interaction
 {
     display: block;
     opacity: 1;
-}
-
-.dropdown {
-    display: none;
-    z-index: 1;
-    position: absolute;
-    background-color: #fff;
-    padding-top: 3px;
-    padding-bottom: 3px;
-}
-
-.dropdown div
-{
-    color: #111;
-    padding: 10px;
-}
-
-.dropdown div:hover
-{
-    background-color: #ddd;
-}
-
-.showmenu:checked ~ .dropdown{
-    display: block;
 }
 
 /* Buttons */
@@ -882,68 +908,22 @@ input[type=checkbox] {
     flex-wrap: wrap;
 }
 
-.invite-btn-red {
-    transition: background-color 0.5s ease;
+.text-button {
+    border: none;
+    color: var(--text-color);
+    background-color: transparent;
+    font-size: 13px;
+    text-transform: uppercase;
+    font-weight: bold;
 }
 
-.invite-btn-red:hover {
-    background: var(--jami-red);
+
+.text-button:hover {
+    opacity: 0.5;
 }
 
-.invite-btn-red svg {
-    fill: var(--jami-red);
-    transition: fill 0.5s ease;
-}
-
-.invite-btn-red:hover svg {
-    fill: var(--invite-hover-color);
-}
-
-.invite-btn-green {
-    transition: background-color 0.5s ease;
-}
-
-.invite-btn-green:hover {
-    background: var(--jami-green);
-}
-
-.invite-btn-green svg {
-    fill: var(--jami-green);
-    transition: fill 0.5s ease;
-}
-
-.invite-btn-green:hover svg {
-    fill: var(--invite-hover-color);
-}
-
-.accept, .refuse {
-    border-radius: 50%;
-    cursor: pointer;
-}
-
-.accept svg,
-.refuse svg {
-    padding: 8px;
-    width: 24px;
-    height: 24px;
-}
-
-.accept {
-    fill: var(--jami-green);
-}
-
-.accept:hover {
-    fill: var(--invite-hover-color);
-    background: var(--jami-green-hover);
-}
-
-.refuse {
-    fill: var(--jami-red);
-}
-
-.refuse:hover {
-    fill: var(--invite-hover-color);
-    background: var(--jami-red-hover);
+.text-button-green {
+    color: var(--jami-green);
 }
 
 .message_type_data_transfer .text {
@@ -1147,11 +1127,15 @@ video {
   .message_type_data_transfer .message_wrapper {
       width: 250px;
   }
+
+  #join_text {
+      font-size: 18px;
+  }
 }
 
 /* Special case */
 @media screen and (max-width: 350px) {
-  .sender_image {
+  .sender_image:not(#invite_image) {
       display: none;
   }
 
@@ -1168,6 +1152,35 @@ video {
   .message_type_data_transfer .message_wrapper {
       width: 200px;
   }
+
+  #join_text {
+      font-size: 16px;
+  }
+}
+
+@media screen and (max-height: 640px) {
+
+    .note_container {
+        opacity: 0;
+        transition: opacity 0.3s linear;
+    }
+}
+
+@media screen and (max-height: 500px) {
+
+    #invitation_rect {
+        background-color: transparent;
+        transition: background-color 0.3s;
+        box-shadow: 7px 7px 30px transparent;
+        transition: box-shadow 0.3s;
+        transform: translate(-50%, -95%);
+        transition: transform 0.8s;
+    }
+
+    #invite_image, #quote_img {
+        opacity: 0;
+        transition: opacity 0.3s;
+    }
 }
 
 .nav-right {
