@@ -452,27 +452,27 @@
     <message>
         <location filename="../src/chatview.cpp" line="42"/>
         <source>Write to {0}</source>
-        <translation type="unfinished"/>
+        <translation>写入 {0}</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="60"/>
         <source>Unable to make contact</source>
-        <translation type="unfinished"/>
+        <translation>无法联系</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="65"/>
         <source>Waiting for contact</source>
-        <translation type="unfinished"/>
+        <translation>正在等待联系人</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="66"/>
         <source>Incoming transfer</source>
-        <translation type="unfinished"/>
+        <translation>入站传送</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="67"/>
         <source>Timed out waiting for contact</source>
-        <translation type="unfinished"/>
+        <translation>等待联系人超时</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="41"/>
@@ -517,7 +517,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="64"/>
         <source>Ongoing</source>
-        <translation type="unfinished"/>
+        <translation>正在进行</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="48"/>
@@ -562,7 +562,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="57"/>
         <source>Deny</source>
-        <translation type="unfinished"/>
+        <translation>拒绝</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="58"/>

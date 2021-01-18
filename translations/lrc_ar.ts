@@ -4,7 +4,7 @@
     <message>
         <location filename="../src/qtwrapper/callmanager_wrap.h" line="328"/>
         <source>Me</source>
-        <translation>شخصي</translation>
+        <translation>أنا</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="61"/>
@@ -45,24 +45,24 @@
     <message>
         <location filename="../src/api/call.h" line="75"/>
         <source>Inactive</source>
-        <translation type="unfinished"/>
+        <translation>خامل</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="77"/>
         <location filename="../src/api/call.h" line="83"/>
         <location filename="../src/chatview.cpp" line="68"/>
         <source>Finished</source>
-        <translation type="unfinished"/>
+        <translation>تم الإنتهاء</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="79"/>
         <source>Timeout</source>
-        <translation type="unfinished"/>
+        <translation>انتهت المهلة</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="81"/>
         <source>Peer busy</source>
-        <translation type="unfinished"/>
+        <translation>نظير مشغول</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="85"/>
@@ -109,23 +109,23 @@
         <location filename="../src/authority/storagehelper.cpp" line="132"/>
         <location filename="../src/authority/storagehelper.cpp" line="900"/>
         <source>Invitation accepted</source>
-        <translation type="unfinished"/>
+        <translation>تم قبول الدعوة</translation>
     </message>
     <message>
         <location filename="../src/avmodel.cpp" line="335"/>
         <location filename="../src/avmodel.cpp" line="354"/>
         <source>default</source>
-        <translation type="unfinished"/>
+        <translation>افتراضى</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="53"/>
         <source>Null</source>
-        <translation type="unfinished"/>
+        <translation>فارغ</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="54"/>
         <source>Trying</source>
-        <translation type="unfinished"/>
+        <translation>محاولة</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="55"/>
@@ -135,17 +135,17 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="56"/>
         <source>Being Forwarded</source>
-        <translation type="unfinished"/>
+        <translation>تتم إحالته</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="57"/>
         <source>Queued</source>
-        <translation type="unfinished"/>
+        <translation>قائمة الإنتظار</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="58"/>
         <source>Progress</source>
-        <translation type="unfinished"/>
+        <translation>تقدم</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="59"/>
@@ -156,57 +156,57 @@
         <location filename="../src/chatview.cpp" line="62"/>
         <location filename="../src/newcallmodel.cpp" line="60"/>
         <source>Accepted</source>
-        <translation type="unfinished"/>
+        <translation>مقبول</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="61"/>
         <source>Multiple Choices</source>
-        <translation type="unfinished"/>
+        <translation>خيارات متعددة</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="62"/>
         <source>Moved Permanently</source>
-        <translation type="unfinished"/>
+        <translation>انتقال بشكل دائم</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="63"/>
         <source>Moved Temporarily</source>
-        <translation type="unfinished"/>
+        <translation>انتقال مؤقت</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="64"/>
         <source>Use Proxy</source>
-        <translation type="unfinished"/>
+        <translation>استخدام وكيل</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="65"/>
         <source>Alternative Service</source>
-        <translation type="unfinished"/>
+        <translation>خدمة بديلة</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="66"/>
         <source>Bad Request</source>
-        <translation type="unfinished"/>
+        <translation>طلب غير صالح</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="67"/>
         <source>Unauthorized</source>
-        <translation type="unfinished"/>
+        <translation>غير مسموح به</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="68"/>
         <source>Payment Required</source>
-        <translation type="unfinished"/>
+        <translation>يرجى الدفع</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="69"/>
         <source>Forbidden</source>
-        <translation type="unfinished"/>
+        <translation>محظور</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="70"/>
         <source>Not Found</source>
-        <translation type="unfinished"/>
+        <translation>لم يتم العثور</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="71"/>
@@ -402,12 +402,12 @@
     <message>
         <location filename="../src/chatview.cpp" line="31"/>
         <source>Place video call</source>
-        <translation type="unfinished"/>
+        <translation>إجراء مكالمة فيديو</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="32"/>
         <source>Place audio call</source>
-        <translation type="unfinished"/>
+        <translation>إجراء مكالمة صوتية</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="33"/>
@@ -512,7 +512,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="63"/>
         <source>Canceled</source>
-        <translation type="unfinished"/>
+        <translation>تم الإلغاء</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="64"/>
@@ -580,7 +580,7 @@
     <message>
         <location filename="../src/contactmodel.cpp" line="455"/>
         <source>Searching…</source>
-        <translation type="unfinished"/>
+        <translation>يتم البحث...</translation>
     </message>
     <message>
         <location filename="../src/contactmodel.cpp" line="950"/>
