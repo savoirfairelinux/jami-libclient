@@ -39,8 +39,10 @@ const unbanButton = document.getElementById("unbanButton")
 const acceptButton = document.getElementById("acceptButton")
 const refuseButton = document.getElementById("refuseButton")
 const blockButton = document.getElementById("blockButton")
+
 const callButtons = document.getElementById("callButtons")
 const sendButton = document.getElementById("sendButton")
+sendButton.style.display = "none"
 const optionsButton = document.getElementById("optionsButton")
 const backToBottomBtn = document.getElementById("back_to_bottom_button")
 const backToBottomBtnContainer = document.getElementById("back_to_bottom_button_container")
@@ -54,9 +56,15 @@ const messageBar = document.getElementById("sendMessage")
 const messageBarInput = document.getElementById("message")
 const addToConvButton = document.getElementById("addToConversationsButton")
 const invitation = document.getElementById("invitation")
+invitation.style.display = "none"
+
 const inviteImage = document.getElementById("invite_image")
+
 const navbar = document.getElementById("navbar")
-const invitationText = document.getElementById("text")
+const invitationText = document.getElementById("invitation_text")
+const joinText = document.getElementById("join_text")
+const invitationNoteText = document.getElementById("invitation_note")
+
 var   messages = document.getElementById("messages")
 var   sendContainer = document.getElementById("data_transfer_send_container")
 var   wrapperOfNavbar = document.getElementById("wrapperOfNavbar")
@@ -179,6 +187,9 @@ function set_titles() {
         acceptButton.title = i18nStringData["Accept"]
         refuseButton.title = i18nStringData["Refuse"]
         blockButton.title = i18nStringData["Block"]
+        acceptButton.innerHTML = i18nStringData["Accept"]
+        refuseButton.innerHTML = i18nStringData["Refuse"]
+        blockButton.innerHTML = i18nStringData["Block"]
     } else {
         backButton.title = i18n.gettext("Hide chat view")
         placeCallButton.title = i18n.gettext("Place video call")
@@ -195,6 +206,9 @@ function set_titles() {
         acceptButton.title = i18n.gettext("Accept")
         refuseButton.title = i18n.gettext("Refuse")
         blockButton.title = i18n.gettext("Block")
+        acceptButton.innerHTML = i18n.gettext("Accept")
+        refuseButton.innerHTML = i18n.gettext("Refuse")
+        blockButton.innerHTML = i18n.gettext("Block")
     }
 }
 
@@ -223,9 +237,10 @@ function onScrolled_() {
             backToBottomBtn.onclick = back_to_bottom
         }
     }
-
-    if (messages.scrollTop === 0)
-        window.jsbridge.loadMessages(scrollBuffer)
+    if (messages.scrollTop == 0 && historyBufferIndex != historyBuffer.length) {
+        /* At the top and there's something to print */
+        printHistoryPart(messages, messages.scrollHeight)
+    }
 }
 
 const debounce = (fn, time) => {
@@ -340,6 +355,65 @@ function update_chatview_frame(accountEnabled, banned, temporary, alias, bestid)
     navbar.style.display = ""
 }
 
+
+/**
+ * Hide or show invitation to a conversation.
+ *
+ * Invitation is hidden if no contactAlias/invalid alias is passed.
+ * Otherwise, invitation div is updated.
+ *
+ * @param contactAlias
+ * @param contactId
+ */
+/* exported showConversationInvitation */
+function showInvitation(contactAlias, contactId) {
+    console.error("show", contactAlias, contactId)
+    if (!contactAlias) {
+        if (hasInvitation) {
+            hasInvitation = false
+            invitation.style.display = "none"
+            messages.style.visibility = "visible"
+        }
+    } else {
+        if (!inviteImage.classList.contains("sender_image")) {
+            inviteImage.classList.add("sender_image")
+        }
+        if (use_qt) {
+            if (!inviteImage.classList.contains(`sender_image_${contactId}`)) {
+                inviteImage.classList.add(`sender_image_${contactId}`)
+            }
+        } else {
+            const className = `sender_image_${contactId}`.replace(/@/g, "_").replace(/\./g, "_")
+            if (!inviteImage.classList.contains(className)) {
+                inviteImage.classList.add(className)
+            }
+        }
+        invitationText.innerHTML = contactAlias + " " + (use_qt ?
+            i18nStringData["has sent you a conversation request."] :
+            i18n.sprintf(i18n.gettext("%s has sent you a conversation request."), contactAlias))
+            + "<br/>"
+
+        joinText.innerHTML = (use_qt ?
+            i18nStringData["Hello, do you want to join the conversation?"] :
+            i18n.gettext("Hello, do you want to join the conversation?"))
+            + "<br/>"
+
+        invitationNoteText.innerHTML = (use_qt ?
+            i18nStringData["Note: you can automatically accept this invitation by sending a message."] :
+            i18n.gettext("Note: you can automatically accept this invitation by sending a message."))
+            + "<br/>"
+
+        messages.style.visibility = "hidden"
+        hasInvitation = true
+
+        invitation.style.display = "flex"
+        invitation.style.visibility = "visible"
+    }
+}
+
+
+
+
 /**
  * Hide or show invitation.
  *
@@ -350,7 +424,7 @@ function update_chatview_frame(accountEnabled, banned, temporary, alias, bestid)
  * @param contactId
  */
 /* exported showInvitation */
-function showInvitation(contactAlias, contactId) {
+function showInvitation2(contactAlias, contactId) {
     if (!contactAlias) {
         if (hasInvitation) {
             hasInvitation = false
@@ -487,6 +561,7 @@ function grow_text_area() {
             window.prompt(`ON_COMPOSING:${messageBarInput.value.length !== 0}`)
         }
     }, [])
+    checkSendButton()
 }
 
 /**
@@ -751,7 +826,6 @@ function audioRecord() {
  */
 /* exported clearMessages */
 function clearMessages() {
-    historyBufferIndex = 0
     canLazyLoad = false
     while (messages.firstChild) {
         messages.removeChild(messages.firstChild)
@@ -2102,9 +2176,14 @@ function check_lazy_loading() {
  * Display 'scrollBuffer' messages from history in passed div (reverse order).
  *
  * @param messages_div that should be modified
- * @param fixedAt maintain scrollbar at the specified position
+ * @param setMessages if enabled, #messages will be set to the resulting messages
+ *                    div after being modified. If #messages already exists it will
+ *                    be removed and replaced by the new div.
+ * @param fixedAt if setMessages is enabled, maintain scrollbar at the specified
+ *                position (otherwise modifying #messages would result in
+ *                changing the position of the scrollbar)
  */
-function printHistoryPart(messages_div, fixedAt, allLoaded=true) {
+function printHistoryPart(messages_div, fixedAt) {
     if (historyBufferIndex === historyBuffer.length) {
         return
     }
@@ -2135,7 +2214,7 @@ function printHistoryPart(messages_div, fixedAt, allLoaded=true) {
     }
 
     /* Add ellipsis (...) at the top if there are still messages to load */
-    if (!allLoaded) {
+    if (historyBufferIndex < historyBuffer.length) {
         var llicon = document.createElement("span")
         llicon.id = "lazyloading-icon"
         llicon.innerHTML = "<svg xmlns=\"http://www.w3.org/2000/svg\" fill=\"#888888\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\"><path d=\"M0 0h24v24H0z\" fill=\"none\"/><path d=\"M6 10c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm12 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm-6 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z\"/></svg>"
@@ -2188,38 +2267,13 @@ function showMessagesDiv()
 function printHistory(messages_array)
 {
     historyBuffer = messages_array
-
     historyBufferIndex = 0
+
     isInitialLoading = true
     printHistoryPart(messages, 0)
     isInitialLoading = false
 
     canLazyLoad = true
-    if (use_qt) {
-        window.jsbridge.emitMessagesLoaded()
-    } else {
-        window.prompt("MESSAGES_LOADED")
-    }
-}
-
-
-/**
- * Updates history buffer, used for lazy loading messages.
- * Note: for swarm chat is used instead of printHistory, so
- * reset of historyBufferIndex has been moved to clearMessages()
- *
- * @param messages_array should contain history to be printed
- */
-/* exported printHistory */
-function updateHistory(messages_array, all_loaded)
-{
-    historyBuffer = messages_array
-
-    printHistoryPart(messages,  messages.scrollHeight, all_loaded)
-    canLazyLoad = true
-
-    if (messages.scrollTop === 0)
-        window.jsbridge.loadMessages(scrollBuffer)
 
     if (use_qt) {
         window.jsbridge.emitMessagesLoaded()
@@ -2454,6 +2508,7 @@ function grow_send_container() {
     exec_keeping_scroll_position(function () {
         backToBottomBtnContainer.style.bottom = "calc(var(--messagebar-size) + 168px)"
     }, [])
+    checkSendButton()
 }
 
 /**
@@ -2468,6 +2523,7 @@ function reduce_send_container() {
         backToBottomBtnContainer.style.bottom = "var(--messagebar-size)"
         //6em
     }, [])
+    checkSendButton()
 }
 
 // This function update the bottom of messages window whenever the send_interface changes size when the scroll is at the end
@@ -2475,6 +2531,7 @@ function updateMesPos() {
     if (messages.scrollTop >= messages.scrollHeight - messages.clientHeight - scrollDetectionThresh) {
         back_to_bottom()
     }
+    checkSendButton()
 }
 
 // Remove current cancel button division  and hide the sendContainer
@@ -2533,7 +2590,7 @@ function setTheme(theme) {
     root.setAttribute("style", "\
         --jami-light-blue: rgba(59, 193, 211, 0.3);\
         --jami-dark-blue: #003b4e;\
-        --jami-green: #219d55;\
+        --jami-green: #1ed0a8;\
         --jami-green-hover: #1f8b4c;\
         --jami-red: #dc2719;\
         --jami-red-hover: #b02e2c;\
@@ -2557,11 +2614,9 @@ function setTheme(theme) {
         --action-critical-icon-hover-color: rgba(211, 77, 59, 0.3);\
         --action-critical-icon-press-color: rgba(211, 77, 59, 0.5);\
         --action-critical-icon-color: #4E1300;\
-        --non-action-icon-color: #212121;\
         --action-icon-press-color: rgba(59, 193, 211, 0.5);\
         --invite-hover-color: white;\
-        --hairline-color: #d9d9d9;\
-        --hairline-thickness: 0.2px;\
+        --bg-text-input: white;\
     ")
     if (theme != "") {
         root.setAttribute("style", theme)
@@ -2595,4 +2650,10 @@ function setSendMessageContent(contentStr) {
     messageBarInput.value = contentStr
     grow_text_area();
     reduce_send_container();
+}
+
+function checkSendButton() {
+    sendButton.style.display = (messageBarInput.value.length > 0
+                                   || sendContainer.innerHTML.length > 0)
+            ? "block" : "none"
 }
