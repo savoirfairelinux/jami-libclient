@@ -26,12 +26,12 @@
 <context>
     <name>AdvancedCallSettings</name>
     <message>
-        <location filename="../src/settingsview/components/AdvancedCallSettings.qml" line="67"/>
+        <location filename="../src/settingsview/components/AdvancedCallSettings.qml" line="86"/>
         <source>Audio Files</source>
         <translation>音訊檔案</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/AdvancedCallSettings.qml" line="67"/>
+        <location filename="../src/settingsview/components/AdvancedCallSettings.qml" line="86"/>
         <source>All files</source>
         <translation>所有檔案</translation>
     </message>
@@ -123,33 +123,14 @@
 <context>
     <name>CallAdapter</name>
     <message>
-        <location filename="../src/calladapter.cpp" line="282"/>
-        <location filename="../src/calladapter.cpp" line="359"/>
+        <location filename="../src/calladapter.cpp" line="277"/>
         <source>me</source>
         <translation>我</translation>
     </message>
     <message>
-        <location filename="../src/calladapter.cpp" line="322"/>
+        <location filename="../src/calladapter.cpp" line="341"/>
         <source>is calling you</source>
         <translation>正在與您通話</translation>
-    </message>
-</context>
-<context>
-    <name>CallAdvancedOptions</name>
-    <message>
-        <location filename="../src/mainview/components/CallAdvancedOptions.qml" line="87"/>
-        <source>Add to conference</source>
-        <translation>加入會議</translation>
-    </message>
-    <message>
-        <location filename="../src/mainview/components/CallAdvancedOptions.qml" line="87"/>
-        <source>Transfer this call</source>
-        <translation>轉送此通話</translation>
-    </message>
-    <message>
-        <location filename="../src/mainview/components/CallAdvancedOptions.qml" line="105"/>
-        <source>Search contacts</source>
-        <translation>搜尋聯絡人</translation>
     </message>
 </context>
 <context>
@@ -176,14 +157,19 @@
 <context>
     <name>ContactPicker</name>
     <message>
-        <location filename="../src/mainview/components/ContactPicker.qml" line="87"/>
+        <location filename="../src/mainview/components/ContactPicker.qml" line="91"/>
         <source>Add to conference</source>
         <translation>加入會議</translation>
     </message>
     <message>
-        <location filename="../src/mainview/components/ContactPicker.qml" line="87"/>
+        <location filename="../src/mainview/components/ContactPicker.qml" line="93"/>
         <source>Transfer this call</source>
         <translation>轉送此通話</translation>
+    </message>
+    <message>
+        <location filename="../src/mainview/components/ContactPicker.qml" line="95"/>
+        <source>Add default moderator</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1125,17 +1111,17 @@ Jami 將會結束。</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="178"/>
         <source>is recording</source>
-        <translation type="unfinished"/>
+        <translation>正在錄製</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="179"/>
         <source>are recording</source>
-        <translation type="unfinished"/>
+        <translation>正在錄製</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="180"/>
         <source>Peer stopped recording</source>
-        <translation type="unfinished"/>
+        <translation>對方停止錄製</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="183"/>
@@ -1750,12 +1736,42 @@ Copy and share it with your friends!</source>
         <translation>掛斷</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="418"/>
+        <location filename="../src/constant/JamiStrings.qml" line="416"/>
+        <source>local muted</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="419"/>
+        <source>Conference moderation</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="420"/>
+        <source>Default moderators</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="421"/>
+        <source>Enable local moderators</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="422"/>
+        <source>Add default moderator</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="423"/>
+        <source>Remove default moderator</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="426"/>
         <source>Trying to reconnect to the Jami daemon (dring)…</source>
         <translation>正在嘗試重新連線到 Jami 幕後程式 (dring)……</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="419"/>
+        <location filename="../src/constant/JamiStrings.qml" line="427"/>
         <source>Could not re-connect to the Jami daemon (dring).
 Jami will now quit.</source>
         <translation>無法重新連線到 Jami 幕後程式 (dring)。
@@ -2287,17 +2303,17 @@ Please try again later.</source>
 <context>
     <name>SettingsView</name>
     <message>
-        <location filename="../src/settingsview/SettingsView.qml" line="149"/>
+        <location filename="../src/settingsview/SettingsView.qml" line="151"/>
         <source>Account Settings</source>
         <translation>帳號設定</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/SettingsView.qml" line="151"/>
+        <location filename="../src/settingsview/SettingsView.qml" line="153"/>
         <source>General</source>
         <translation>一般</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/SettingsView.qml" line="155"/>
+        <location filename="../src/settingsview/SettingsView.qml" line="157"/>
         <source>Plugin</source>
         <translation>外掛程式</translation>
     </message>

@@ -4,7 +4,7 @@
     <message>
         <location filename="../src/mainview/components/AboutPopUp.qml" line="245"/>
         <source>Close</source>
-        <translation type="unfinished"/>
+        <translation>إغلاق</translation>
     </message>
 </context>
 <context>
@@ -26,12 +26,12 @@
 <context>
     <name>AdvancedCallSettings</name>
     <message>
-        <location filename="../src/settingsview/components/AdvancedCallSettings.qml" line="67"/>
+        <location filename="../src/settingsview/components/AdvancedCallSettings.qml" line="86"/>
         <source>Audio Files</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/settingsview/components/AdvancedCallSettings.qml" line="67"/>
+        <location filename="../src/settingsview/components/AdvancedCallSettings.qml" line="86"/>
         <source>All files</source>
         <translation type="unfinished"/>
     </message>
@@ -123,32 +123,13 @@
 <context>
     <name>CallAdapter</name>
     <message>
-        <location filename="../src/calladapter.cpp" line="282"/>
-        <location filename="../src/calladapter.cpp" line="359"/>
+        <location filename="../src/calladapter.cpp" line="277"/>
         <source>me</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/calladapter.cpp" line="322"/>
+        <location filename="../src/calladapter.cpp" line="341"/>
         <source>is calling you</source>
-        <translation type="unfinished"/>
-    </message>
-</context>
-<context>
-    <name>CallAdvancedOptions</name>
-    <message>
-        <location filename="../src/mainview/components/CallAdvancedOptions.qml" line="87"/>
-        <source>Add to conference</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/mainview/components/CallAdvancedOptions.qml" line="87"/>
-        <source>Transfer this call</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/mainview/components/CallAdvancedOptions.qml" line="105"/>
-        <source>Search contacts</source>
         <translation type="unfinished"/>
     </message>
 </context>
@@ -176,13 +157,18 @@
 <context>
     <name>ContactPicker</name>
     <message>
-        <location filename="../src/mainview/components/ContactPicker.qml" line="87"/>
+        <location filename="../src/mainview/components/ContactPicker.qml" line="91"/>
         <source>Add to conference</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainview/components/ContactPicker.qml" line="87"/>
+        <location filename="../src/mainview/components/ContactPicker.qml" line="93"/>
         <source>Transfer this call</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mainview/components/ContactPicker.qml" line="95"/>
+        <source>Add default moderator</source>
         <translation type="unfinished"/>
     </message>
 </context>
@@ -191,7 +177,7 @@
     <message>
         <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="40"/>
         <source>Start video call</source>
-        <translation type="unfinished"/>
+        <translation>بدء مكالمة فيديو</translation>
     </message>
     <message>
         <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="49"/>
@@ -201,7 +187,7 @@
     <message>
         <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="59"/>
         <source>Clear conversation</source>
-        <translation type="unfinished"/>
+        <translation>مسح المحادثة</translation>
     </message>
     <message>
         <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="68"/>
@@ -249,7 +235,7 @@
     <message>
         <location filename="../src/wizardview/components/CreateAccountPage.qml" line="170"/>
         <source>Invalid username</source>
-        <translation type="unfinished"/>
+        <translation>اسم مستخدم غير صالح</translation>
     </message>
     <message>
         <location filename="../src/wizardview/components/CreateAccountPage.qml" line="170"/>
@@ -259,7 +245,7 @@
     <message>
         <location filename="../src/wizardview/components/CreateAccountPage.qml" line="172"/>
         <source>Username already taken</source>
-        <translation type="unfinished"/>
+        <translation>اسم المستخدم مستخدم بالفعل</translation>
     </message>
     <message>
         <location filename="../src/wizardview/components/CreateAccountPage.qml" line="172"/>
@@ -373,7 +359,7 @@ Jami will now quit.</source>
     <message>
         <location filename="../src/wizardview/components/ImportFromBackupPage.qml" line="87"/>
         <source>Import from backup</source>
-        <translation type="unfinished"/>
+        <translation>استيراد من النسخ الاحتياطي</translation>
     </message>
     <message>
         <location filename="../src/wizardview/components/ImportFromBackupPage.qml" line="158"/>
@@ -489,7 +475,7 @@ Jami will now quit.</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="51"/>
         <source>Delete account</source>
-        <translation type="unfinished"/>
+        <translation>حذف الحساب</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="53"/>
@@ -664,7 +650,7 @@ Jami will now quit.</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="126"/>
         <source>Enable local peer discovery</source>
-        <translation type="unfinished"/>
+        <translation>تمكين اكتشاف النظراء المحلي</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="137"/>
@@ -719,7 +705,7 @@ Jami will now quit.</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="221"/>
         <source>Create a rendezvous point</source>
-        <translation type="unfinished"/>
+        <translation>إنشاء نقطة اجتماع</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="224"/>
@@ -729,7 +715,7 @@ Jami will now quit.</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="226"/>
         <source>Choose a name for your rendezvous point</source>
-        <translation type="unfinished"/>
+        <translation>اختر اسماً لنقطة الاجتماع</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="278"/>
@@ -739,7 +725,7 @@ Jami will now quit.</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="298"/>
         <source>Network error</source>
-        <translation type="unfinished"/>
+        <translation>خطأ في الشبكة</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="299"/>
@@ -1064,7 +1050,7 @@ Jami will now quit.</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="157"/>
         <source>Enable hardware acceleration</source>
-        <translation type="unfinished"/>
+        <translation>تمكين تسريع الأجهزة</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="158"/>
@@ -1099,7 +1085,7 @@ Jami will now quit.</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="169"/>
         <source>Never show me this again</source>
-        <translation type="unfinished"/>
+        <translation>لا تظهر لي هذا مرة أخرى</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="170"/>
@@ -1181,7 +1167,7 @@ Jami will now quit.</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="198"/>
         <source>Stop recording</source>
-        <translation type="unfinished"/>
+        <translation>إيقاف التسجيل</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="199"/>
@@ -1201,7 +1187,7 @@ Jami will now quit.</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="202"/>
         <source>Share screen</source>
-        <translation type="unfinished"/>
+        <translation>مشاركة الشاشة</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="203"/>
@@ -1246,7 +1232,7 @@ Jami will now quit.</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="213"/>
         <source>Connect</source>
-        <translation type="unfinished"/>
+        <translation>إتصال</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="215"/>
@@ -1578,7 +1564,7 @@ Jami will now quit.</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="329"/>
         <source>Close</source>
-        <translation type="unfinished"/>
+        <translation>إغلاق</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="330"/>
@@ -1714,7 +1700,7 @@ Copy and share it with your friends!</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="391"/>
         <source>Add a SIP account</source>
-        <translation type="unfinished"/>
+        <translation>إضافة حساب SIP</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="392"/>
@@ -1747,12 +1733,42 @@ Copy and share it with your friends!</source>
         <translation>إنهاء المكالمة</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="418"/>
-        <source>Trying to reconnect to the Jami daemon (dring)…</source>
+        <location filename="../src/constant/JamiStrings.qml" line="416"/>
+        <source>local muted</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="419"/>
+        <source>Conference moderation</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="420"/>
+        <source>Default moderators</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="421"/>
+        <source>Enable local moderators</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="422"/>
+        <source>Add default moderator</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="423"/>
+        <source>Remove default moderator</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="426"/>
+        <source>Trying to reconnect to the Jami daemon (dring)…</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="427"/>
         <source>Could not re-connect to the Jami daemon (dring).
 Jami will now quit.</source>
         <translation type="unfinished"/>
@@ -1944,7 +1960,7 @@ Please try again later.</source>
     <message>
         <location filename="../src/settingsview/components/LinkedDevices.qml" line="109"/>
         <source>Linked Devices</source>
-        <translation type="unfinished"/>
+        <translation>الأجهزة المرتبطة</translation>
     </message>
 </context>
 <context>
@@ -2012,7 +2028,7 @@ Please try again later.</source>
     <message>
         <location filename="../src/settingsview/components/NameRegistrationDialog.qml" line="90"/>
         <source>Network error</source>
-        <translation type="unfinished"/>
+        <translation>خطأ في الشبكة</translation>
     </message>
 </context>
 <context>
@@ -2174,7 +2190,7 @@ Please try again later.</source>
     <message>
         <location filename="../src/settingsview/components/RecordingSettings.qml" line="82"/>
         <source>Always record calls</source>
-        <translation type="unfinished"/>
+        <translation>تسجيل المكالمات دائمًا</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/RecordingSettings.qml" line="112"/>
@@ -2281,17 +2297,17 @@ Please try again later.</source>
 <context>
     <name>SettingsView</name>
     <message>
-        <location filename="../src/settingsview/SettingsView.qml" line="149"/>
+        <location filename="../src/settingsview/SettingsView.qml" line="151"/>
         <source>Account Settings</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/settingsview/SettingsView.qml" line="151"/>
+        <location filename="../src/settingsview/SettingsView.qml" line="153"/>
         <source>General</source>
         <translation>عام</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/SettingsView.qml" line="155"/>
+        <location filename="../src/settingsview/SettingsView.qml" line="157"/>
         <source>Plugin</source>
         <translation type="unfinished"/>
     </message>
@@ -2342,7 +2358,7 @@ Please try again later.</source>
     <message>
         <location filename="../src/settingsview/components/UserIdentity.qml" line="50"/>
         <source>Identity</source>
-        <translation type="unfinished"/>
+        <translation>الهوية</translation>
     </message>
 </context>
 <context>

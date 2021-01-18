@@ -26,12 +26,12 @@
 <context>
     <name>AdvancedCallSettings</name>
     <message>
-        <location filename="../src/settingsview/components/AdvancedCallSettings.qml" line="67"/>
+        <location filename="../src/settingsview/components/AdvancedCallSettings.qml" line="86"/>
         <source>Audio Files</source>
         <translation>Fichiers audio</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/AdvancedCallSettings.qml" line="67"/>
+        <location filename="../src/settingsview/components/AdvancedCallSettings.qml" line="86"/>
         <source>All files</source>
         <translation>Tous les fichiers</translation>
     </message>
@@ -123,33 +123,14 @@
 <context>
     <name>CallAdapter</name>
     <message>
-        <location filename="../src/calladapter.cpp" line="282"/>
-        <location filename="../src/calladapter.cpp" line="359"/>
+        <location filename="../src/calladapter.cpp" line="277"/>
         <source>me</source>
         <translation>moi</translation>
     </message>
     <message>
-        <location filename="../src/calladapter.cpp" line="322"/>
+        <location filename="../src/calladapter.cpp" line="341"/>
         <source>is calling you</source>
         <translation>vous appelle</translation>
-    </message>
-</context>
-<context>
-    <name>CallAdvancedOptions</name>
-    <message>
-        <location filename="../src/mainview/components/CallAdvancedOptions.qml" line="87"/>
-        <source>Add to conference</source>
-        <translation>Ajouter à la conférence</translation>
-    </message>
-    <message>
-        <location filename="../src/mainview/components/CallAdvancedOptions.qml" line="87"/>
-        <source>Transfer this call</source>
-        <translation>Transférer cet appel</translation>
-    </message>
-    <message>
-        <location filename="../src/mainview/components/CallAdvancedOptions.qml" line="105"/>
-        <source>Search contacts</source>
-        <translation>Recherche des contacts</translation>
     </message>
 </context>
 <context>
@@ -176,14 +157,19 @@
 <context>
     <name>ContactPicker</name>
     <message>
-        <location filename="../src/mainview/components/ContactPicker.qml" line="87"/>
+        <location filename="../src/mainview/components/ContactPicker.qml" line="91"/>
         <source>Add to conference</source>
         <translation>Ajouter à la conférence</translation>
     </message>
     <message>
-        <location filename="../src/mainview/components/ContactPicker.qml" line="87"/>
+        <location filename="../src/mainview/components/ContactPicker.qml" line="93"/>
         <source>Transfer this call</source>
         <translation>Transférer cet appel</translation>
+    </message>
+    <message>
+        <location filename="../src/mainview/components/ContactPicker.qml" line="95"/>
+        <source>Add default moderator</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -239,7 +225,7 @@
     <message>
         <location filename="../src/wizardview/components/CreateAccountPage.qml" line="155"/>
         <source>Choose your username</source>
-        <translation>Choisissez un nom d&apos;utilisateur</translation>
+        <translation>Choisissez votre nom d&apos;utilisateur</translation>
     </message>
     <message>
         <location filename="../src/wizardview/components/CreateAccountPage.qml" line="155"/>
@@ -259,7 +245,7 @@
     <message>
         <location filename="../src/wizardview/components/CreateAccountPage.qml" line="172"/>
         <source>Username already taken</source>
-        <translation>Ce nom d&apos;utilisateur est déjà utilisé</translation>
+        <translation>Nom d&apos;utilisateur déjà utilisé</translation>
     </message>
     <message>
         <location filename="../src/wizardview/components/CreateAccountPage.qml" line="172"/>
@@ -319,13 +305,13 @@
         <location filename="../src/DaemonReconnectWindow.qml" line="100"/>
         <source>Could not re-connect to the Jami daemon (dring).
 Jami will now quit.</source>
-        <translation>Impossible de se reconnecter au daemon Jami (dring).
+        <translation>Impossible de se reconnecter au service Jami (dring).
 Le programme va maintenant se terminer.</translation>
     </message>
     <message>
         <location filename="../src/DaemonReconnectWindow.qml" line="101"/>
         <source>Trying to reconnect to the Jami daemon (dring)…</source>
-        <translation>Redémarrage de Jami en cours …</translation>
+        <translation>Tentative de reconnexion au service Jami (dring) …</translation>
     </message>
     <message>
         <location filename="../src/DaemonReconnectWindow.qml" line="156"/>
@@ -402,7 +388,7 @@ Le programme va maintenant se terminer.</translation>
     <message>
         <location filename="../src/wizardview/components/ImportFromDevicePage.qml" line="139"/>
         <source>Generating account…</source>
-        <translation>Création du compte en cours... </translation>
+        <translation>Création du compte...</translation>
     </message>
     <message>
         <location filename="../src/wizardview/components/ImportFromDevicePage.qml" line="179"/>
@@ -496,8 +482,7 @@ Veuillez entrer votre mot de passe.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="53"/>
         <source>Authentication failed</source>
-        <translation>Échec de l&apos;authentification
-</translation>
+        <translation>Échec de l&apos;authentification</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="54"/>
@@ -582,7 +567,7 @@ Veuillez entrer votre mot de passe.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="75"/>
         <source>Enable SDES key exchange</source>
-        <translation>Activer SDES (échange de clés)</translation>
+        <translation>Activer l&apos;échange de clés SDES</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="76"/>
@@ -682,7 +667,7 @@ Veuillez entrer votre mot de passe.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="156"/>
         <source>Select video frame rate (frames per second)</source>
-        <translation>Choisir le nombre d&apos;image vidéo par seconde</translation>
+        <translation>Choisir la fréquence d&apos;image vidéo (images par seconde)</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="185"/>
@@ -893,7 +878,7 @@ Notez que le mot de passe ne peut être récupéré.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="101"/>
         <source>TURN username</source>
-        <translation>Utilisateur TURN</translation>
+        <translation>Nom d&apos;utilisateur TURN</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="102"/>
@@ -1013,27 +998,27 @@ Notez que le mot de passe ne peut être récupéré.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="142"/>
         <source>Select audio input device</source>
-        <translation>Périphérique de sortie audio </translation>
+        <translation>Sélection du périphérique d&apos;entrée audio</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="143"/>
         <source>Output device</source>
-        <translation>Périphérique de sortie :</translation>
+        <translation>Périphérique de sortie</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="144"/>
         <source>Select audio output device</source>
-        <translation>Périphérique de sortie audio</translation>
+        <translation>Sélection du périphérique de sortie audio</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="145"/>
         <source>Ringtone device</source>
-        <translation>Périphérique pour la sonnerie :</translation>
+        <translation>Périphérique pour la sonnerie</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="146"/>
         <source>Select ringtone output device</source>
-        <translation>Périphérique de sortie pour la sonnerie</translation>
+        <translation>Sélection du périphérique de sortie pour la sonnerie</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="147"/>
@@ -1048,7 +1033,7 @@ Notez que le mot de passe ne peut être récupéré.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="151"/>
         <source>Select video device</source>
-        <translation>Périphérique vidéo</translation>
+        <translation>Sélection du périphérique vidéo</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="152"/>
@@ -1128,17 +1113,17 @@ Notez que le mot de passe ne peut être récupéré.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="178"/>
         <source>is recording</source>
-        <translation type="unfinished"/>
+        <translation>est en cours d&apos;enregistrement</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="179"/>
         <source>are recording</source>
-        <translation type="unfinished"/>
+        <translation>sont en cours d&apos;enregistrement</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="180"/>
         <source>Peer stopped recording</source>
-        <translation type="unfinished"/>
+        <translation>Le correspondant a arrêté l&apos;enregistrement</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="183"/>
@@ -1752,12 +1737,42 @@ Copy and share it with your friends!</source>
         <translation>Raccrocher</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="418"/>
+        <location filename="../src/constant/JamiStrings.qml" line="416"/>
+        <source>local muted</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="419"/>
+        <source>Conference moderation</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="420"/>
+        <source>Default moderators</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="421"/>
+        <source>Enable local moderators</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="422"/>
+        <source>Add default moderator</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="423"/>
+        <source>Remove default moderator</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="426"/>
         <source>Trying to reconnect to the Jami daemon (dring)…</source>
         <translation>Redémarrage de Jami en cours …</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="419"/>
+        <location filename="../src/constant/JamiStrings.qml" line="427"/>
         <source>Could not re-connect to the Jami daemon (dring).
 Jami will now quit.</source>
         <translation>Impossible de se reconnecter au daemon Jami (dring).
@@ -2288,17 +2303,17 @@ Veuillez réessayer plus tard</translation>
 <context>
     <name>SettingsView</name>
     <message>
-        <location filename="../src/settingsview/SettingsView.qml" line="149"/>
+        <location filename="../src/settingsview/SettingsView.qml" line="151"/>
         <source>Account Settings</source>
         <translation>Paramètres Compte Jami</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/SettingsView.qml" line="151"/>
+        <location filename="../src/settingsview/SettingsView.qml" line="153"/>
         <source>General</source>
         <translation>Général</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/SettingsView.qml" line="155"/>
+        <location filename="../src/settingsview/SettingsView.qml" line="157"/>
         <source>Plugin</source>
         <translation>Module d&apos;extension</translation>
     </message>
