@@ -40,6 +40,7 @@ const refuseButton = document.getElementById("refuseButton")
 const blockButton = document.getElementById("blockButton")
 const callButtons = document.getElementById("callButtons")
 const sendButton = document.getElementById("sendButton")
+sendButton.style.display = "none"
 const optionsButton = document.getElementById("optionsButton")
 const backToBottomBtn = document.getElementById("back_to_bottom_button")
 const backToBottomBtnContainer = document.getElementById("back_to_bottom_button_container")
@@ -51,6 +52,7 @@ const bestIdField = document.getElementById("nav-contactid-bestId")
 const idField = document.getElementById("nav-contactid")
 const messageBar = document.getElementById("sendMessage")
 const messageBarInput = document.getElementById("message")
+const messageBarContainer = document.getElementById("message_bar_container")
 const addToConvButton = document.getElementById("addToConversationsButton")
 const invitation = document.getElementById("invitation")
 const inviteImage = document.getElementById("invite_image")
@@ -457,6 +459,8 @@ function grow_text_area() {
         var old_height = window.getComputedStyle(messageBar).height
         messageBarInput.style.height = "auto" /* <-- necessary, no clue why */
         messageBarInput.style.height = messageBarInput.scrollHeight + "px"
+        messageBarContainer.style.height = "auto"
+        messageBarContainer.style.height = messageBarInput.style.height
         var new_height = window.getComputedStyle(messageBar).height
 
         var msgbar_size = window.getComputedStyle(document.body).getPropertyValue("--messagebar-size")
@@ -470,6 +474,7 @@ function grow_text_area() {
             window.prompt(`ON_COMPOSING:${messageBarInput.value.length !== 0}`)
         }
     }, [])
+    checkSendButton()
 }
 
 /**
@@ -2409,6 +2414,7 @@ function grow_send_container() {
     exec_keeping_scroll_position(function () {
         backToBottomBtnContainer.style.bottom = "calc(var(--messagebar-size) + 168px)"
     }, [])
+    checkSendButton()
 }
 
 /**
@@ -2423,6 +2429,7 @@ function reduce_send_container() {
         backToBottomBtnContainer.style.bottom = "var(--messagebar-size)"
         //6em
     }, [])
+    checkSendButton()
 }
 
 // This function update the bottom of messages window whenever the send_interface changes size when the scroll is at the end
@@ -2430,6 +2437,7 @@ function updateMesPos() {
     if (messages.scrollTop >= messages.scrollHeight - messages.clientHeight - scrollDetectionThresh) {
         back_to_bottom()
     }
+    checkSendButton()
 }
 
 // Remove current cancel button division  and hide the sendContainer
@@ -2517,6 +2525,7 @@ function setTheme(theme) {
         --invite-hover-color: white;\
         --hairline-color: #d9d9d9;\
         --hairline-thickness: 0.2px;\
+        --bg-text-input: white;\
     ")
     if (theme != "") {
         root.setAttribute("style", theme)
@@ -2550,4 +2559,10 @@ function setSendMessageContent(contentStr) {
     messageBarInput.value = contentStr
     grow_text_area();
     reduce_send_container();
+}
+
+function checkSendButton() {
+    sendButton.style.display = (messageBarInput.value.length > 0
+                                   || sendContainer.innerHTML.length > 0)
+            ? "block" : "none"
 }
