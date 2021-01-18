@@ -28,6 +28,7 @@
     /* hairline properties */
     --hairline-color: #f0f0f0;
     --hairline-thickness: 2px;
+    --bg-text-input: white;
 }
 
 body {
@@ -239,4 +240,6 @@ pre {
     display: none;
     padding-bottom: 1.5em !important;
     margin-top: 4px;
+    color: red;
+    background-color: yellow;
 }

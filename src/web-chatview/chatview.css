@@ -44,6 +44,7 @@
   /* hairline properties */
   --hairline-color: #d9d9d9;
   --hairline-thickness: 0.2px;
+  --bg-text-input: white;
 }
 
 @font-face {
@@ -105,10 +106,10 @@ body {
 
 #navbar {
   background-color: var(--bg-color);
-  padding-right: 8px;
+/*  padding-right: 8px;
   padding-left: 8px;
   padding-top: var(--navbar-padding-top);
-  padding-bottom: var(--navbar-padding-bottom);
+  padding-bottom: var(--navbar-padding-bottom);*/
   height: var(--navbar-height);
   overflow: hidden;
   align-items: center;
@@ -151,12 +152,9 @@ body {
   cursor: auto;
 }
 
-.action-button svg {
-  fill: var(--action-icon-color);
-}
 
-.action-button.deactivated svg {
-  fill: var(--deactivated-icon-color);
+.action-button {
+    background-color: var(--text-color);/*var(--deactivated-icon-color);*/
 }
 
 .message_out .filesvg {
@@ -180,7 +178,7 @@ body {
 }
 
 .action-button.deactivated:hover, .action-button.deactivated:active {
-  background: none;
+  background: green;
 }
 
 .action-critical-button svg {
@@ -287,23 +285,32 @@ body {
 }
 
 #message {
-  font-family: emoji;
-  flex: 1;
-  background-color: var(--bg-color);
-  border: 0;
-  overflow-y: scroll;
-  color: var(--text-color);;
-  max-height: var(--textarea-max-height);
-  margin-right: 10px;
-  resize: none;
-
-  /* enable selection (it is globally disabled in the body) */
-  -webkit-user-select: auto;
+    flex: 1;
+    background-color: transparent;
+    overflow-y: hidden;
+    color: var(--text-color);
+    min-height: 20px;
+    max-height: var(--textarea-max-height);
+    resize: none;
+    border: none;
+    /* enable selection (it is globally disabled in the body) */
+    -webkit-user-select: auto;
 }
 
-#message:focus,
-#message.focus {
-  outline: none;
+
+#message:focus{
+    outline: none;
+}
+
+.textarea_container {
+    height: "auto";
+    width: 100%;
+    min-height: 50px;
+    background-color: var(--bg-text-input);
+    border-radius: 25px 25px 0px 25px;
+    display: flex;
+    flex-direction: row;
+    vertical-align: middle;
 }
 
 #container[disabled] {
