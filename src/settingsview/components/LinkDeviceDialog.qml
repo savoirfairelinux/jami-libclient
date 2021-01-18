@@ -53,11 +53,6 @@ BaseDialog {
         timerForExport.restart()
     }
 
-    function slotExportOnRing(){
-        AccountAdapter.model.exportOnRing(AccountAdapter.currentAccountId,
-                                          passwordEdit.text)
-    }
-
     Timer{
         id: timerForExport
 
@@ -65,24 +60,12 @@ BaseDialog {
         interval: 200
 
         onTriggered: {
-            timeOut.restart()
-            slotExportOnRing()
-        }
-    }
-
-    Timer {
-        id: timeOut
-
-        repeat: false
-        interval: exportTimeout
-
-        onTriggered: {
-            setExportPage(NameDirectory.ExportOnRingStatus.NETWORK_ERROR, "")
+            AccountAdapter.model.exportOnRing(AccountAdapter.currentAccountId,
+                                              passwordEdit.text)
         }
     }
 
     function setExportPage(status, pin) {
-        timeOut.stop()
 
         if (status === NameDirectory.ExportOnRingStatus.SUCCESS) {
             infoLabel.success = true
@@ -114,8 +97,6 @@ BaseDialog {
     }
 
     signal accepted
-
-    property int exportTimeout : 20000
 
     title: JamiStrings.addDevice
 
