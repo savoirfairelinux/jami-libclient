@@ -39,8 +39,10 @@ const unbanButton = document.getElementById("unbanButton")
 const acceptButton = document.getElementById("acceptButton")
 const refuseButton = document.getElementById("refuseButton")
 const blockButton = document.getElementById("blockButton")
+
 const callButtons = document.getElementById("callButtons")
 const sendButton = document.getElementById("sendButton")
+sendButton.style.display = "none"
 const optionsButton = document.getElementById("optionsButton")
 const backToBottomBtn = document.getElementById("back_to_bottom_button")
 const backToBottomBtnContainer = document.getElementById("back_to_bottom_button_container")
@@ -54,9 +56,15 @@ const messageBar = document.getElementById("sendMessage")
 const messageBarInput = document.getElementById("message")
 const addToConvButton = document.getElementById("addToConversationsButton")
 const invitation = document.getElementById("invitation")
+invitation.style.display = "none"
+
 const inviteImage = document.getElementById("invite_image")
+
 const navbar = document.getElementById("navbar")
-const invitationText = document.getElementById("text")
+const invitationText = document.getElementById("invitation_text")
+const joinText = document.getElementById("join_text")
+const invitationNoteText = document.getElementById("invitation_note")
+
 var   messages = document.getElementById("messages")
 var   sendContainer = document.getElementById("data_transfer_send_container")
 var   wrapperOfNavbar = document.getElementById("wrapperOfNavbar")
@@ -179,6 +187,9 @@ function set_titles() {
         acceptButton.title = i18nStringData["Accept"]
         refuseButton.title = i18nStringData["Refuse"]
         blockButton.title = i18nStringData["Block"]
+        acceptButton.innerHTML = i18nStringData["Accept"]
+        refuseButton.innerHTML = i18nStringData["Refuse"]
+        blockButton.innerHTML = i18nStringData["Block"]
     } else {
         backButton.title = i18n.gettext("Hide chat view")
         placeCallButton.title = i18n.gettext("Place video call")
@@ -195,6 +206,9 @@ function set_titles() {
         acceptButton.title = i18n.gettext("Accept")
         refuseButton.title = i18n.gettext("Refuse")
         blockButton.title = i18n.gettext("Block")
+        acceptButton.innerHTML = i18n.gettext("Accept")
+        refuseButton.innerHTML = i18n.gettext("Refuse")
+        blockButton.innerHTML = i18n.gettext("Block")
     }
 }
 
@@ -340,8 +354,9 @@ function update_chatview_frame(accountEnabled, banned, temporary, alias, bestid)
     navbar.style.display = ""
 }
 
+
 /**
- * Hide or show invitation.
+ * Hide or show invitation to a conversation.
  *
  * Invitation is hidden if no contactAlias/invalid alias is passed.
  * Otherwise, invitation div is updated.
@@ -350,12 +365,14 @@ function update_chatview_frame(accountEnabled, banned, temporary, alias, bestid)
  * @param contactId
  */
 /* exported showInvitation */
-function showInvitation(contactAlias, contactId) {
+function showInvitation(contactAlias, contactId, isSwarm) {
     if (!contactAlias) {
         if (hasInvitation) {
             hasInvitation = false
-            invitation.style.visibility = ""
+            invitation.style.display = "none"
+            messages.style.visibility = "visible"
         }
+        messageBar.style.visibility = "visible"
     } else {
         if (!inviteImage.classList.contains("sender_image")) {
             inviteImage.classList.add("sender_image")
@@ -370,14 +387,33 @@ function showInvitation(contactAlias, contactId) {
                 inviteImage.classList.add(className)
             }
         }
-        invitationText.innerHTML = "<b>"
-            + contactAlias + use_qt ? i18nStringData["is not in your contacts"] :
-            i18n.sprintf(i18n.gettext("%s is not in your contacts"), contactAlias)
-            + "</b><br/>"
-            + use_qt ?
+        invitationText.innerHTML = contactAlias + " " + (use_qt ?
+            i18nStringData["has sent you a conversation request."] :
+            i18n.sprintf(i18n.gettext("%s has sent you a conversation request."), contactAlias))
+            + "<br/>"
+
+        joinText.innerHTML = (use_qt ?
+            i18nStringData["Hello, do you want to join the conversation?"] :
+            i18n.gettext("Hello, do you want to join the conversation?"))
+            + "<br/>"
+
+        invitationNoteText.innerHTML = (use_qt ?
             i18nStringData["Note: you can automatically accept this invitation by sending a message."] :
-            i18n.gettext("Note: you can automatically accept this invitation by sending a message.")
+            i18n.gettext("Note: you can automatically accept this invitation by sending a message."))
+            + "<br/>"
+
+        messages.style.visibility = "hidden"
         hasInvitation = true
+
+        if (isSwarm) {
+            invitationNoteText.style.visibility = "hidden"
+            messageBar.style.visibility = "hidden"
+        } else {
+            invitationNoteText.style.visibility = "visible"
+            messageBar.style.visibility = "visible"
+        }
+
+        invitation.style.display = "flex"
         invitation.style.visibility = "visible"
     }
 }
@@ -487,6 +523,7 @@ function grow_text_area() {
             window.prompt(`ON_COMPOSING:${messageBarInput.value.length !== 0}`)
         }
     }, [])
+    checkSendButton()
 }
 
 /**
@@ -2454,6 +2491,7 @@ function grow_send_container() {
     exec_keeping_scroll_position(function () {
         backToBottomBtnContainer.style.bottom = "calc(var(--messagebar-size) + 168px)"
     }, [])
+    checkSendButton()
 }
 
 /**
@@ -2468,6 +2506,7 @@ function reduce_send_container() {
         backToBottomBtnContainer.style.bottom = "var(--messagebar-size)"
         //6em
     }, [])
+    checkSendButton()
 }
 
 // This function update the bottom of messages window whenever the send_interface changes size when the scroll is at the end
@@ -2475,6 +2514,7 @@ function updateMesPos() {
     if (messages.scrollTop >= messages.scrollHeight - messages.clientHeight - scrollDetectionThresh) {
         back_to_bottom()
     }
+    checkSendButton()
 }
 
 // Remove current cancel button division  and hide the sendContainer
@@ -2533,7 +2573,7 @@ function setTheme(theme) {
     root.setAttribute("style", "\
         --jami-light-blue: rgba(59, 193, 211, 0.3);\
         --jami-dark-blue: #003b4e;\
-        --jami-green: #219d55;\
+        --jami-green: #1ed0a8;\
         --jami-green-hover: #1f8b4c;\
         --jami-red: #dc2719;\
         --jami-red-hover: #b02e2c;\
@@ -2557,11 +2597,9 @@ function setTheme(theme) {
         --action-critical-icon-hover-color: rgba(211, 77, 59, 0.3);\
         --action-critical-icon-press-color: rgba(211, 77, 59, 0.5);\
         --action-critical-icon-color: #4E1300;\
-        --non-action-icon-color: #212121;\
         --action-icon-press-color: rgba(59, 193, 211, 0.5);\
         --invite-hover-color: white;\
-        --hairline-color: #d9d9d9;\
-        --hairline-thickness: 0.2px;\
+        --bg-text-input: white;\
     ")
     if (theme != "") {
         root.setAttribute("style", theme)
@@ -2595,4 +2633,10 @@ function setSendMessageContent(contentStr) {
     messageBarInput.value = contentStr
     grow_text_area();
     reduce_send_container();
+}
+
+function checkSendButton() {
+    sendButton.style.display = (messageBarInput.value.length > 0
+                                   || sendContainer.innerHTML.length > 0)
+            ? "block" : "none"
 }
