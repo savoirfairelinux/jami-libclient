@@ -39,8 +39,10 @@ const unbanButton = document.getElementById("unbanButton")
 const acceptButton = document.getElementById("acceptButton")
 const refuseButton = document.getElementById("refuseButton")
 const blockButton = document.getElementById("blockButton")
+
 const callButtons = document.getElementById("callButtons")
 const sendButton = document.getElementById("sendButton")
+sendButton.style.display = "none"
 const optionsButton = document.getElementById("optionsButton")
 const backToBottomBtn = document.getElementById("back_to_bottom_button")
 const backToBottomBtnContainer = document.getElementById("back_to_bottom_button_container")
@@ -54,9 +56,15 @@ const messageBar = document.getElementById("sendMessage")
 const messageBarInput = document.getElementById("message")
 const addToConvButton = document.getElementById("addToConversationsButton")
 const invitation = document.getElementById("invitation")
+invitation.style.display = "none"
+
 const inviteImage = document.getElementById("invite_image")
+
 const navbar = document.getElementById("navbar")
-const invitationText = document.getElementById("text")
+const invitationText = document.getElementById("invitation_text")
+const joinText = document.getElementById("join_text")
+const invitationNoteText = document.getElementById("invitation_note")
+
 var   messages = document.getElementById("messages")
 var   sendContainer = document.getElementById("data_transfer_send_container")
 var   wrapperOfNavbar = document.getElementById("wrapperOfNavbar")
@@ -179,6 +187,9 @@ function set_titles() {
         acceptButton.title = i18nStringData["Accept"]
         refuseButton.title = i18nStringData["Refuse"]
         blockButton.title = i18nStringData["Block"]
+        acceptButton.innerHTML = i18nStringData["Accept"]
+        refuseButton.innerHTML = i18nStringData["Refuse"]
+        blockButton.innerHTML = i18nStringData["Block"]
     } else {
         backButton.title = i18n.gettext("Hide chat view")
         placeCallButton.title = i18n.gettext("Place video call")
@@ -195,6 +206,9 @@ function set_titles() {
         acceptButton.title = i18n.gettext("Accept")
         refuseButton.title = i18n.gettext("Refuse")
         blockButton.title = i18n.gettext("Block")
+        acceptButton.innerHTML = i18n.gettext("Accept")
+        refuseButton.innerHTML = i18n.gettext("Refuse")
+        blockButton.innerHTML = i18n.gettext("Block")
     }
 }
 
@@ -340,8 +354,9 @@ function update_chatview_frame(accountEnabled, banned, temporary, alias, bestid)
     navbar.style.display = ""
 }
 
+
 /**
- * Hide or show invitation.
+ * Hide or show invitation to a conversation.
  *
  * Invitation is hidden if no contactAlias/invalid alias is passed.
  * Otherwise, invitation div is updated.
@@ -350,12 +365,14 @@ function update_chatview_frame(accountEnabled, banned, temporary, alias, bestid)
  * @param contactId
  */
 /* exported showInvitation */
-function showInvitation(contactAlias, contactId) {
+function showInvitation(contactAlias, contactId, isSwarm) {
     if (!contactAlias) {
         if (hasInvitation) {
             hasInvitation = false
-            invitation.style.visibility = ""
+            invitation.style.display = "none"
+            messages.style.visibility = "visible"
         }
+        messageBar.style.visibility = "visible"
     } else {
         if (!inviteImage.classList.contains("sender_image")) {
             inviteImage.classList.add("sender_image")
@@ -370,15 +387,48 @@ function showInvitation(contactAlias, contactId) {
                 inviteImage.classList.add(className)
             }
         }
-        invitationText.innerHTML = "<b>"
-            + contactAlias + use_qt ? i18nStringData["is not in your contacts"] :
-            i18n.sprintf(i18n.gettext("%s is not in your contacts"), contactAlias)
-            + "</b><br/>"
-            + use_qt ?
+        invitationText.innerHTML = contactAlias + " " + (use_qt ?
+            i18nStringData["has sent you a conversation request."] :
+            i18n.sprintf(i18n.gettext("%s has sent you a conversation request."), contactAlias))
+            + "<br/>"
+
+        joinText.innerHTML = (use_qt ?
+            i18nStringData["Hello, do you want to join the conversation?"] :
+            i18n.gettext("Hello, do you want to join the conversation?"))
+            + "<br/>"
+
+        invitationNoteText.innerHTML = (use_qt ?
             i18nStringData["Note: you can automatically accept this invitation by sending a message."] :
-            i18n.gettext("Note: you can automatically accept this invitation by sending a message.")
+            i18n.gettext("Note: you can automatically accept this invitation by sending a message."))
+            + "<br/>"
+
+        messages.style.visibility = "hidden"
         hasInvitation = true
+
+        if (isSwarm) {
+            invitationNoteText.style.visibility = "hidden"
+            messageBar.style.visibility = "hidden"
+        } else {
+            invitationNoteText.style.visibility = "visible"
+            messageBar.style.visibility = "visible"
+        }
+
+        invitation.style.display = "flex"
         invitation.style.visibility = "visible"
+
+        var actions = document.getElementById("actions")
+        var quote_img = document.getElementById("quote_img_wrapper")
+        if (isSyncing) {
+            actions.style.visibility = "collapse"
+            invitationText.style.visibility = "hidden"
+            quote_img.style.visibility = "collapse"
+            noteText.style.visibility = "visible"
+        } else {
+            actions.style.visibility = "visible"
+            invitationText.style.visibility = "visible"
+            quote_img.style.visibility = "visible"
+            noteText.style.visibility = "collapse"
+        }
     }
 }
 
@@ -487,6 +537,7 @@ function grow_text_area() {
             window.prompt(`ON_COMPOSING:${messageBarInput.value.length !== 0}`)
         }
     }, [])
+    checkSendButton()
 }
 
 /**
@@ -1023,6 +1074,12 @@ function buildFileInformationText(message_object) {
  */
 function updateFileInteraction(message_div, message_object, forceTypeToFile = false) {
     if (!message_div.querySelector(".informations")) return // media
+
+    if (!message_object["text"]) {
+        message_div.style.visibility = "collapse"
+    } else {
+        message_div.style.visibility = "visible"
+    }
 
     var acceptSvg = "<svg height=\"24\" viewBox=\"0 0 24 24\" width=\"24\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M0 0h24v24H0z\" fill=\"none\"/><path d=\"M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z\"/></svg>",
         refuseSvg = "<svg height=\"24\" viewBox=\"0 0 24 24\" width=\"24\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z\"/><path d=\"M0 0h24v24H0z\" fill=\"none\"/></svg>",
@@ -1574,53 +1631,6 @@ function removeInteraction(interaction_id) {
 }
 
 /**
- * Build message dropdown
- * @return a message dropdown for passed message id
- */
-function buildMessageDropdown(message_id) {
-    const menu_element = document.createElement("div")
-    menu_element.setAttribute("class", "menu_interaction")
-    menu_element.innerHTML =
-    `<input type="checkbox" id="showmenu${message_id}" class="showmenu">
-     <label for="showmenu${message_id}">
-       <svg fill="#888888" height="12" viewBox="0 0 24 24" width="12" xmlns="http://www.w3.org/2000/svg">
-         <path d="M0 0h24v24H0z" fill="none"/>
-         <path d="M6 10c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm12 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm-6 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
-       </svg>
-     </label>`
-    menu_element.onclick = function () {
-        const button = this.querySelector(".showmenu")
-        button.checked = !button.checked
-    }
-    menu_element.onmouseleave = function () {
-        const button = this.querySelector(".showmenu")
-        button.checked = false
-    }
-    const dropdown = document.createElement("div")
-    const dropdown_classes = [
-        "dropdown",
-        `dropdown_${message_id}`
-    ]
-    dropdown.setAttribute("class", dropdown_classes.join(" "))
-
-    const remove = document.createElement("div")
-    remove.setAttribute("class", "menuoption")
-    remove.innerHTML = use_qt ? i18nStringData["Delete"] : i18n.gettext("Delete")
-    remove.msg_id = message_id
-    remove.onclick = function () {
-        if (use_qt) {
-            window.jsbridge.deleteInteraction(`${this.msg_id}`)
-        } else {
-            window.prompt(`DELETE_INTERACTION:${this.msg_id}`)
-        }
-    }
-    dropdown.appendChild(remove)
-    menu_element.appendChild(dropdown)
-
-    return menu_element
-}
-
-/**
  * Build a message div for passed message object
  * @param message_object to treat
  */
@@ -1709,21 +1719,6 @@ function buildNewMessage(message_object) {
         const temp = document.createElement("div")
         temp.innerText = message_type
         message_div.appendChild(temp)
-    }
-
-    if (message_id !== 'typing') {
-        var message_dropdown = buildMessageDropdown(message_id)
-        if (message_type !== "call" && message_type !== "contact") {
-            message_div.appendChild(message_dropdown)
-        } else {
-            var wrapper = message_div.querySelector(".message_wrapper")
-            wrapper.insertBefore(message_dropdown, wrapper.firstChild)
-        }
-    }
-
-    if(use_qt) {
-        // Add sender images if necessary (like if the interaction doesn't take the whole width)
-        addSenderImage(message_div, message_type, message_sender_contact_method)
     }
 
     return message_div
@@ -1838,24 +1833,6 @@ function addOrUpdateMessage(message_object, new_message, insert_after = true, me
             var nextMessage = messages_div.firstChild
             messages_div.prepend(message_div)
             computeSequencing(message_div, nextMessage, null, insert_after)
-        }
-    }
-
-    if (isErrorStatus(delivery_status) && message_direction === "out") {
-        const dropdown = messages_div.querySelector(`.dropdown_${message_id}`)
-        if (!dropdown.querySelector(".retry")) {
-            const retry = document.createElement("div")
-            retry.setAttribute("class", "retry")
-            retry.innerHTML = use_qt ? i18nStringData["Retry"] : i18n.gettext("Retry")
-            retry.msg_id = message_id
-            retry.onclick = function () {
-                if (use_qt) {
-                    window.jsbridge.retryInteraction(`${this.msg_id}`)
-                } else {
-                    window.prompt(`RETRY_INTERACTION:${this.msg_id}`)
-                }
-            }
-            dropdown.insertBefore(retry, message_div.querySelector(".delete"))
         }
     }
 
@@ -2454,6 +2431,7 @@ function grow_send_container() {
     exec_keeping_scroll_position(function () {
         backToBottomBtnContainer.style.bottom = "calc(var(--messagebar-size) + 168px)"
     }, [])
+    checkSendButton()
 }
 
 /**
@@ -2468,6 +2446,7 @@ function reduce_send_container() {
         backToBottomBtnContainer.style.bottom = "var(--messagebar-size)"
         //6em
     }, [])
+    checkSendButton()
 }
 
 // This function update the bottom of messages window whenever the send_interface changes size when the scroll is at the end
@@ -2475,6 +2454,7 @@ function updateMesPos() {
     if (messages.scrollTop >= messages.scrollHeight - messages.clientHeight - scrollDetectionThresh) {
         back_to_bottom()
     }
+    checkSendButton()
 }
 
 // Remove current cancel button division  and hide the sendContainer
@@ -2533,7 +2513,7 @@ function setTheme(theme) {
     root.setAttribute("style", "\
         --jami-light-blue: rgba(59, 193, 211, 0.3);\
         --jami-dark-blue: #003b4e;\
-        --jami-green: #219d55;\
+        --jami-green: #1ed0a8;\
         --jami-green-hover: #1f8b4c;\
         --jami-red: #dc2719;\
         --jami-red-hover: #b02e2c;\
@@ -2557,11 +2537,9 @@ function setTheme(theme) {
         --action-critical-icon-hover-color: rgba(211, 77, 59, 0.3);\
         --action-critical-icon-press-color: rgba(211, 77, 59, 0.5);\
         --action-critical-icon-color: #4E1300;\
-        --non-action-icon-color: #212121;\
         --action-icon-press-color: rgba(59, 193, 211, 0.5);\
         --invite-hover-color: white;\
-        --hairline-color: #d9d9d9;\
-        --hairline-thickness: 0.2px;\
+        --bg-text-input: white;\
     ")
     if (theme != "") {
         root.setAttribute("style", theme)
@@ -2595,4 +2573,10 @@ function setSendMessageContent(contentStr) {
     messageBarInput.value = contentStr
     grow_text_area();
     reduce_send_container();
+}
+
+function checkSendButton() {
+    sendButton.style.display = (messageBarInput.value.length > 0
+                                   || sendContainer.innerHTML.length > 0)
+            ? "block" : "none"
 }
