@@ -40,6 +40,7 @@ const refuseButton = document.getElementById("refuseButton")
 const blockButton = document.getElementById("blockButton")
 const callButtons = document.getElementById("callButtons")
 const sendButton = document.getElementById("sendButton")
+sendButton.style.visibility = "hidden"
 const optionsButton = document.getElementById("optionsButton")
 const backToBottomBtn = document.getElementById("back_to_bottom_button")
 const backToBottomBtnContainer = document.getElementById("back_to_bottom_button_container")
@@ -51,6 +52,7 @@ const bestIdField = document.getElementById("nav-contactid-bestId")
 const idField = document.getElementById("nav-contactid")
 const messageBar = document.getElementById("sendMessage")
 const messageBarInput = document.getElementById("message")
+const messageBarContainer = document.getElementById("message_bar_container")
 const addToConvButton = document.getElementById("addToConversationsButton")
 const invitation = document.getElementById("invitation")
 const inviteImage = document.getElementById("invite_image")
@@ -163,6 +165,8 @@ function init_i18n(data) {
 
 function set_titles() {
     if (use_qt){
+        console.error("h")
+
         backButton.title = i18nStringData["Hide chat view"]
         placeCallButton.title = i18nStringData["Place video call"]
         placeAudioCallButton.title = i18nStringData["Place audio call"]
@@ -172,11 +176,16 @@ function set_titles() {
         optionsButton.title = i18nStringData["Options"]
         backToBottomBtn.innerHTML = `${i18nStringData["Jump to latest"]} &#9660;`
         sendFileButton.title = i18nStringData["Send file"]
+        console.error("h")
+
         videoRecordButton.title = i18nStringData["Leave video message"]
         audioRecordButton.title = i18nStringData["Leave audio message"]
+        console.error("hg")
+
         acceptButton.title = i18nStringData["Accept"]
         refuseButton.title = i18nStringData["Refuse"]
         blockButton.title = i18nStringData["Block"]
+        console.error("h")
     } else {
         backButton.title = i18n.gettext("Hide chat view")
         placeCallButton.title = i18n.gettext("Place video call")
@@ -457,6 +466,8 @@ function grow_text_area() {
         var old_height = window.getComputedStyle(messageBar).height
         messageBarInput.style.height = "auto" /* <-- necessary, no clue why */
         messageBarInput.style.height = messageBarInput.scrollHeight + "px"
+        messageBarContainer.style.height = "auto"
+        messageBarContainer.style.height = messageBarInput.style.height
         var new_height = window.getComputedStyle(messageBar).height
 
         var msgbar_size = window.getComputedStyle(document.body).getPropertyValue("--messagebar-size")
@@ -470,6 +481,7 @@ function grow_text_area() {
             window.prompt(`ON_COMPOSING:${messageBarInput.value.length !== 0}`)
         }
     }, [])
+    checkSendButton()
 }
 
 /**
@@ -2409,6 +2421,7 @@ function grow_send_container() {
     exec_keeping_scroll_position(function () {
         backToBottomBtnContainer.style.bottom = "calc(var(--messagebar-size) + 168px)"
     }, [])
+    checkSendButton()
 }
 
 /**
@@ -2423,6 +2436,7 @@ function reduce_send_container() {
         backToBottomBtnContainer.style.bottom = "var(--messagebar-size)"
         //6em
     }, [])
+    checkSendButton()
 }
 
 // This function update the bottom of messages window whenever the send_interface changes size when the scroll is at the end
@@ -2430,6 +2444,7 @@ function updateMesPos() {
     if (messages.scrollTop >= messages.scrollHeight - messages.clientHeight - scrollDetectionThresh) {
         back_to_bottom()
     }
+    checkSendButton()
 }
 
 // Remove current cancel button division  and hide the sendContainer
@@ -2550,4 +2565,11 @@ function setSendMessageContent(contentStr) {
     messageBarInput.value = contentStr
     grow_text_area();
     reduce_send_container();
+}
+
+function checkSendButton() {
+
+    sendButton.style.visibility = (messageBarInput.value.length > 0
+                                   || sendContainer.innerHTML.length > 0)
+            ? "visible" : "hidden"
 }

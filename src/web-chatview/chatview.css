@@ -151,12 +151,9 @@ body {
   cursor: auto;
 }
 
-.action-button svg {
-  fill: var(--action-icon-color);
-}
 
-.action-button.deactivated svg {
-  fill: var(--deactivated-icon-color);
+.action-button {
+    background-color: var(--text-color);/*var(--deactivated-icon-color);*/
 }
 
 .message_out .filesvg {
@@ -289,10 +286,12 @@ body {
 #message {
   font-family: emoji;
   flex: 1;
-  background-color: var(--bg-color);
+/*  background-color: var(--bg-color);*/
+  background-color: transparent;
   border: 0;
   overflow-y: scroll;
-  color: var(--text-color);;
+  color: green;/*var(--text-color);*/
+  min-height: 20px;
   max-height: var(--textarea-max-height);
   margin-right: 10px;
   resize: none;
@@ -304,6 +303,16 @@ body {
 #message:focus,
 #message.focus {
   outline: none;
+}
+
+.textarea_container {
+    height: "auto";
+    width: 100%;
+    background-color: yellow;
+    border-radius: 25px 25px 0px 25px;
+    display: flex;
+    flex-direction: row;
+    border-color: blue;
 }
 
 #container[disabled] {

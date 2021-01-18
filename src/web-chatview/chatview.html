@@ -30,25 +30,17 @@
             </div>
             <div id="callButtons">
                 <!-- callButtons block allows more efficient hiding of placeCallButton and placeAudioCallButton -->
-                <div id="placeCallButton" class="nav-button action-button nav-right" onclick="placeCall()">
-                    <svg class="svgicon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                        <path d="M0 0h24v24H0z" fill="none" />
-                        <path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z" />
-                    </svg>
+                <div id="placeCallButton" class="nav-button action-button nav-rigth" onclick="placeCall();"
+                style="-webkit-mask: url('qrc:/images/icons/place_videocall-24px.svg') no-repeat center;">
                 </div>
-                <div id="placeAudioCallButton" class="nav-button action-button nav-right" onclick="placeAudioCall()">
-                    <svg class="svgicon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                        <path fill="none" d="M0 0h24v24H0z" />
-                        <path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56-.35-.12-.74-.03-1.01.24l-1.57 1.97c-2.83-1.35-5.48-3.9-6.89-6.83l1.95-1.66c.27-.28.35-.67.24-1.02-.37-1.11-.56-2.3-.56-3.53 0-.54-.45-.99-.99-.99H4.19C3.65 3 3 3.24 3 3.99 3 13.28 10.73 21 20.01 21c.71 0 .99-.63.99-1.18v-3.45c0-.54-.45-.99-.99-.99z" />
-                    </svg>
+                <div id="placeAudioCallButton" class="nav-button action-button" onclick="placeAudioCall();"
+                style="-webkit-mask: url('qrc:/images/icons/place_audiocall-24px.svg') no-repeat center;">
                 </div>
             </div>
-            <div id="addToConversationsButton" class="nav-button action-button nav-right" onclick="addToConversations()">
-                <svg class="svgicon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                    <path d="M0 0h24v24H0z" fill="none" />
-                    <path d="M15 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm-9-2V7H4v3H1v2h3v3h2v-3h3v-2H6zm9 4c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
-                </svg>
+            <div id="addToConversationsButton" class="nav-button action-button nav-right" onclick="addToConversations();"
+            style="-webkit-mask: url('qrc:/images/icons/add_contact-24px.svg') no-repeat center;">
             </div>
+
             <div id="unbanButton" class="nav-button action-critical-button nav-right" onclick="addBannedContact()">
                 <svg class="svgicon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
                     <path fill="none" d="M0 0h24v24H0V0z" />
@@ -94,31 +86,25 @@
         </div>
         <div id="send_inteface_container" onresize="updateBackToBottomContainer()">
             <div id="sendMessage">
-                <div id="sendFileButton" class="nav-button action-button" onclick="selectFileToSend()">
-                    <svg class="svgicon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                        <path d="M16.5 6v11.5c0 2.21-1.79 4-4 4s-4-1.79-4-4V5c0-1.38 1.12-2.5 2.5-2.5s2.5 1.12 2.5 2.5v10.5c0 .55-.45 1-1 1s-1-.45-1-1V6H10v9.5c0 1.38 1.12 2.5 2.5 2.5s2.5-1.12 2.5-2.5V5c0-2.21-1.79-4-4-4S7 2.79 7 5v12.5c0 3.04 2.46 5.5 5.5 5.5s5.5-2.46 5.5-5.5V6h-1.5z" />
-                        <path d="M0 0h24v24H0z" fill="none" />
-                    </svg>
+                <div id="audioRecordButton" class="nav-button action-button" onclick="audioRecord();"
+                style="-webkit-mask: url('qrc:/images/icons/message_audio-24px.svg') no-repeat center;">
                 </div>
-                <div id="audioRecordButton" class="action-button nav-button" onclick="audioRecord()">
-                    <svg class="svgicon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                        <path d="M 4 2 C 2.9 2 2 2.9 2 4 L 2 22 L 6 18 L 20 18 C 21.1 18 22 17.1 22 16 L 22 4 C 22 2.9 21.1 2 20 2 L 4 2 z M 11.765625 3.9160156 C 12.508867 3.8551642 13.272016 4.2527996 13.636719 5.0410156 C 13.767503 5.3236557 13.771484 5.4322983 13.771484 7.6992188 C 13.771484 10.028985 13.770647 10.067925 13.625 10.363281 C 13.179285 11.267942 12.168586 11.679676 11.216797 11.34375 C 10.81743 11.202796 10.295752 10.671154 10.15625 10.261719 C 10.06289 9.987737 10.048828 9.6285584 10.048828 7.6992188 C 10.048828 5.1451299 10.0615 5.0663092 10.539062 4.5351562 C 10.881846 4.1538981 11.31968 3.9525265 11.765625 3.9160156 z M 7.4550781 9.6015625 L 8.5390625 9.6015625 C 8.5390625 11.512087 10.156379 12.849609 11.914062 12.849609 C 13.671745 12.849609 15.289062 11.512087 15.289062 9.6015625 L 16.371094 9.6015625 C 16.371094 11.779558 14.639627 13.575172 12.550781 13.880859 L 12.550781 15.970703 L 11.277344 15.970703 L 11.277344 13.880859 C 9.1884992 13.568806 7.4550781 11.773189 7.4550781 9.6015625 z "/>
-                        <path d="M0 0h24v24H0z" fill="none"/>
-                    </svg>
+                <div id="videoRecordButton" class="nav-button action-button" onclick="videoRecord();"
+                style="-webkit-mask: url('qrc:/images/icons/message_video-24px.svg') no-repeat center;">
                 </div>
-                <div id="videoRecordButton" class="nav-button action-button" onclick="videoRecord()">
-                    <svg class="svgicon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                        <path d="M 4 2 C 2.9 2 2 2.9 2 4 L 2 22 L 6 18 L 20 18 C 21.1 18 22 17.1 22 16 L 22 4 C 22 2.9 21.1 2 20 2 L 4 2 z M 7.3066406 6.2734375 L 14.75 6.2734375 C 15.091141 6.2734375 15.371094 6.5533905 15.371094 6.8945312 L 15.371094 9.0644531 L 17.851562 6.5839844 L 17.851562 13.40625 L 15.371094 10.925781 L 15.371094 13.097656 C 15.371094 13.438797 15.091141 13.716797 14.75 13.716797 L 7.3066406 13.716797 C 6.9654996 13.716797 6.6875 13.438797 6.6875 13.097656 L 6.6875 6.8945312 C 6.6875 6.5533905 6.9654996 6.2734375 7.3066406 6.2734375 z "/>
-                        <path d="M0 0h24v24H0z" fill="none"/>
-                    </svg>
-                </div>
+                <div id="message_bar_container" class="textarea_container">
                 <textarea id="message" autofocus onkeyup="grow_text_area()" onkeydown="process_messagebar_keydown()"
-                          dir="auto" rows="1"></textarea>
-                <div id="sendButton" class="nav-button action-button" onclick="sendMessage();">
-                    <svg class="svgicon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                        <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" />
-                        <path d="M0 0h24v24H0z" fill="none" />
-                    </svg>
+                          dir="auto" rows="1">
+                </textarea>
+                <div id="sendFileButton" class="nav-button action-button" onclick="selectFileToSend();"
+                style="-webkit-mask: url('qrc:/images/icons/send_file-24px.svg') no-repeat center;">
+                </div>
+                </div>
+                <div id="sendFileButton" class="nav-button action-button" onclick="selectFileToSend();"
+                style="-webkit-mask: url('qrc:/images/icons/send_file-24px.svg') no-repeat center;">
+                </div>
+                <div id="sendButton" class="nav-button action-button" onclick="sendMessage();"
+                style="-webkit-mask: url('qrc:/images/icons/send-24px.svg') no-repeat center;">
                 </div>
             </div>
         </div>
