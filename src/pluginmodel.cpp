@@ -102,7 +102,21 @@ bool
 PluginModel::installPlugin(const QString& jplPath, bool force)
 {
     if (getPluginsEnabled()) {
-        return PluginManager::instance().installPlugin(jplPath, force);
+        auto status = PluginManager::instance().installPlugin(jplPath, force);
+
+        QString pluginName = jplPath.mid(jplPath.lastIndexOf("/")+1);
+        pluginName = pluginName.mid(pluginName.lastIndexOf("\\")+1);
+        pluginName = pluginName.left(pluginName.lastIndexOf("."));
+        for (auto& plugin : getInstalledPlugins()) {
+            QString installedName = plugin.mid(plugin.lastIndexOf("/")+1);
+            installedName = installedName.mid(installedName.lastIndexOf("\\")+1);
+            if (installedName == pluginName) {
+                loadPlugin(plugin);
+                break;
+            }
+        }
+
+        return status;
     }
     return false;
 }
