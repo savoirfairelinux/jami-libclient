@@ -51,7 +51,7 @@
         </div>
         <div id="invitation">
             <div id="invite_header">
-                <span id="invite_image"></span>
+                <span id="invite_image2"></span>
                 <div id="text" margin="16px"></div>
             </div>
             <div id="actions">
@@ -77,6 +77,33 @@
         </div>
     </div>
     <div id="container">
+
+        <div id="invitation_conversation" class="column">
+            <div id="invitation_text"></div>
+            <div id="invitation_rect">
+                <span id="invite_image"></span>
+
+                <div id="join_text_rect">
+                    <div id="join_text" text-align="center"></div>
+                </div>
+            </div>
+
+            <div id="conv_actions">
+                <button id="blockConvButton" class="text-button" onclick="blockConversation()">
+                </button>
+                <button id="refuseConvButton" class="text-button" onclick="refuseInvitation()">
+                </button>
+                <button id="acceptConvButton" class="text-button text-button-green" onclick="acceptInvitation()">
+                </button>
+            </div>
+
+
+                <div id="invitation_note" margin="16px"></div>
+        </div>
+
+
+
+
         <div id="messages" onscroll="onScrolled()"></div>
 
         <div id="typing_indicator_container"></div>

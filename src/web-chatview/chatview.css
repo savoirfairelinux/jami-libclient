@@ -234,8 +234,8 @@ body {
 }
 
 #invitation .sender_image {
-  width: 50px;
-  height: 50px;
+    width: 112px;
+    height: 112px;
 }
 
 #invitation #actions {
@@ -265,6 +265,93 @@ body {
   /* enable selection (it is globally disabled in the body) */
   -webkit-user-select: auto;
 }
+
+#invitation_conversation {
+  visibility: hidden;
+  background: var(--bg-color);
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+#invitation_conversation #invite_image {
+  width: 112px;
+  height: 112px;
+  position: relative;
+/*  top: -56px;*/
+}
+
+#invitation_conversation #invitation_rect {
+    width: 375px;
+    height: 208px;
+    background: var(--message-in-bg);
+    border-radius: 20px;
+    margin-right: 50px;
+    margin-left: 50px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+#invitation_conversation #invitation_text {
+    margin: auto;
+    text-align: center;
+    margin-right: 50px;
+    margin-left: 50px;
+}
+
+#invitation_conversation #join_text_rect {
+    font-size: 20px;
+    height: 70px;
+}
+
+#invitation_conversation #join_text {
+    margin: auto;
+    text-align: center;
+    margin-right: 50px;
+    margin-left: 50px;
+    font-size: 20px;
+}
+
+#invitation #actions {
+  margin-right: auto;
+  margin-left: auto;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  /* enable selection (it is globally disabled in the body) */
+  -webkit-user-select: auto;
+}
+
+#conv_actions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 5px;
+    margin-left: 5px;
+}
+#invitation_note {
+    text-align: center;
+}
+#invitation #text {
+  text-align: center;
+  font-size: 0.8em;
+
+ /* enable selection (it is globally disabled in the body) */
+  -webkit-user-select: auto;
+}
+
+
+
+
+
 
 /** Messaging bar */
 
@@ -949,6 +1036,22 @@ input[type=checkbox] {
     fill: var(--invite-hover-color);
     background: var(--jami-red-hover);
 }
+
+.text-button {
+    border: none;
+    color: var(--text-color);
+    background-color: inherit;
+    padding: 14px 28px;
+    font-size: 16px;
+    text-transform: uppercase;
+}
+
+.text-button:hover {
+    opacity: 0.5;
+}
+
+.text-button-green { color: green; }
+
 
 .message_type_data_transfer .text {
     text-align: left;
