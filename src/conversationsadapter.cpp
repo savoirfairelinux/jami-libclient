@@ -192,7 +192,6 @@ ConversationsAdapter::connectConversationModel(bool updateFilter)
         currentConversationModel, &lrc::api::ConversationModel::modelChanged, [this]() {
             conversationSmartListModel_->fillConversationsList();
             updateConversationsFilterWidget();
-            emit updateListViewRequested();
 
             auto* convModel = lrcInstance_->getCurrentConversationModel();
             const auto& convInfo = lrcInstance_->getConversationFromConvUid(
@@ -257,7 +256,7 @@ ConversationsAdapter::connectConversationModel(bool updateFilter)
                            &lrc::api::ConversationModel::conversationCleared,
                            [this](const QString& convUid) {
                                // If currently selected, switch to welcome screen (deselecting
-                               // current smartlist item ).
+                               // current smartlist item).
                                if (convUid != lrcInstance_->getCurrentConvUid()) {
                                    return;
                                }

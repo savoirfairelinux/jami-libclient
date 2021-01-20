@@ -42,6 +42,8 @@ ListView {
     }
 
     function repositionIndex(uid = "") {
+        // Only update index if it has changed
+        var currentI = root.currentIndex
         if (uid === "")
             uid = mainView.currentConvUID
         root.currentIndex = -1
