@@ -376,6 +376,7 @@ SET(libringclient_api_LIB_HDRS
 SET(libringclient_WEB_chatview
    src/web-chatview/.eslintrc.json
    src/web-chatview/chatview-gnome.css
+   src/web-chatview/chatview-qt.css
    src/web-chatview/chatview.css
    src/web-chatview/chatview.html
    src/web-chatview/chatview.js
@@ -646,6 +647,11 @@ INSTALL( FILES ${libringclient_plugin_LIB_HDRS}
 
 INSTALL( FILES ${libringclient_WEB_chatview}
   DESTINATION ${INCLUDE_INSTALL_DIR}/libringclient/web-chatview
+  COMPONENT Devel
+)
+
+INSTALL( FILES src/webresource.qrc
+  DESTINATION ${INCLUDE_INSTALL_DIR}/libringclient
   COMPONENT Devel
 )
 
