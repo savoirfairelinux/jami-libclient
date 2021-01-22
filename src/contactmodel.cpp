@@ -118,6 +118,7 @@ public:
     QString searchQuery;
     std::mutex contactsMtx_;
     std::mutex bannedContactsMtx_;
+    QString searchStatus_ {};
 
 public Q_SLOTS:
     /**
@@ -423,7 +424,10 @@ ContactModel::searchContact(const QString& query)
 void
 ContactModelPimpl::updateTemporaryMessage(const QString& mes)
 {
-    linked.owner.conversationModel->updateSearchStatus(mes);
+    if (searchStatus_ != mes) {
+        searchStatus_ = mes;
+        linked.owner.conversationModel->updateSearchStatus(mes);
+    }
 }
 
 void
