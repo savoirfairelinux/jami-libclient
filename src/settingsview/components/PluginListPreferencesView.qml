@@ -63,6 +63,7 @@ Rectangle {
             PluginModel.resetPluginPreferencesValues(pluginId)
         }
         pluginPreferenceView.model = PluginAdapter.getPluginPreferencesModel(pluginId)
+        PluginAdapter.pluginHandlersUpdateStatus()
     }
 
     function uninstallPluginSlot() {
@@ -72,11 +73,13 @@ Rectangle {
         }]
         msgDialog.openWithParameters(qsTr("Uninstall plugin"),
                                      qsTr("Are you sure you wish to uninstall " + pluginName + " ?"))
+        PluginAdapter.pluginHandlersUpdateStatus()
     }
 
     function uninstallPlugin() {
         PluginModel.uninstallPlugin(pluginId)
         uninstalled()
+        PluginAdapter.pluginHandlersUpdateStatus()
     }
 
     function setPreference(pluginId, preferenceKey, preferenceNewValue)
@@ -87,6 +90,7 @@ Rectangle {
             PluginModel.loadPlugin(pluginId)
         } else
             PluginModel.setPluginPreference(pluginId, preferenceKey, preferenceNewValue)
+        PluginAdapter.pluginHandlersUpdateStatus()
     }
 
     SimpleMessageDialog {

@@ -56,6 +56,7 @@ Rectangle {
             loaded = PluginModel.loadPlugin(pluginId)
         if (pluginListPreferencesView.pluginId === pluginId)
             pluginListPreferencesView.isLoaded = loaded
+        PluginAdapter.pluginHandlersUpdateStatus()
     }
 
     function openPreferencesPluginSlot(pluginName, pluginIcon, pluginId, isLoaded) {

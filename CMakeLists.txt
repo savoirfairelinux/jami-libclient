@@ -66,7 +66,7 @@ set(COMMON_SOURCES
     ${SRC_DIR}/settingsadapter.cpp
     ${SRC_DIR}/deviceitemlistmodel.cpp
     ${SRC_DIR}/pluginitemlistmodel.cpp
-    ${SRC_DIR}/mediahandleritemlistmodel.cpp
+    ${SRC_DIR}/pluginhandleritemlistmodel.cpp
     ${SRC_DIR}/preferenceitemlistmodel.cpp
     ${SRC_DIR}/mediacodeclistmodel.cpp
     ${SRC_DIR}/accountstomigratelistmodel.cpp
@@ -115,7 +115,7 @@ set(COMMON_HEADERS
     ${SRC_DIR}/settingsadapter.h
     ${SRC_DIR}/deviceitemlistmodel.h
     ${SRC_DIR}/pluginitemlistmodel.h
-    ${SRC_DIR}/mediahandleritemlistmodel.h
+    ${SRC_DIR}/pluginhandleritemlistmodel.h
     ${SRC_DIR}/preferenceitemlistmodel.h
     ${SRC_DIR}/mediacodeclistmodel.h
     ${SRC_DIR}/accountstomigratelistmodel.h

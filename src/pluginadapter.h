@@ -20,7 +20,7 @@
 
 #include "qmladapterbase.h"
 #include "pluginitemlistmodel.h"
-#include "mediahandleritemlistmodel.h"
+#include "pluginhandleritemlistmodel.h"
 #include "pluginlistpreferencemodel.h"
 #include "preferenceitemlistmodel.h"
 
@@ -38,13 +38,18 @@ public:
 protected:
     void safeInit() override {};
 
-    Q_INVOKABLE QVariant getMediaHandlerSelectableModel(const QString& callId = QString(""));
+    Q_INVOKABLE QVariant getMediaHandlerSelectableModel(const QString& callId);
+    Q_INVOKABLE QVariant getChatHandlerSelectableModel(const QString& accountId,
+                                                       const QString& peerId);
     Q_INVOKABLE QVariant getPluginSelectableModel();
     Q_INVOKABLE QVariant getPluginPreferencesModel(const QString& pluginId,
                                                    const QString& mediaHandlerName = "");
 
+signals:
+    void pluginHandlersUpdateStatus();
+
 private:
-    std::unique_ptr<MediaHandlerItemListModel> mediaHandlerListModel_;
+    std::unique_ptr<PluginHandlerItemListModel> pluginHandlerListModel_;
     std::unique_ptr<PreferenceItemListModel> preferenceItemListModel_;
     std::unique_ptr<PluginItemListModel> pluginItemListModel_;
 };

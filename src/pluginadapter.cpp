@@ -27,8 +27,15 @@ PluginAdapter::PluginAdapter(QObject* parent)
 QVariant
 PluginAdapter::getMediaHandlerSelectableModel(const QString& callId)
 {
-    mediaHandlerListModel_.reset(new MediaHandlerItemListModel(this, callId));
-    return QVariant::fromValue(mediaHandlerListModel_.get());
+    pluginHandlerListModel_.reset(new PluginHandlerItemListModel(this, callId, QString("")));
+    return QVariant::fromValue(pluginHandlerListModel_.get());
+}
+
+QVariant
+PluginAdapter::getChatHandlerSelectableModel(const QString& accountId, const QString& peerId)
+{
+    pluginHandlerListModel_.reset(new PluginHandlerItemListModel(this, accountId, peerId));
+    return QVariant::fromValue(pluginHandlerListModel_.get());
 }
 
 QVariant

@@ -21,6 +21,7 @@ import QtQuick.Controls 2.14
 import QtQuick.Layouts 1.14
 import net.jami.Models 1.0
 import net.jami.Constants 1.0
+import net.jami.Adapters 1.0
 
 import "../../commoncomponents"
 
@@ -34,6 +35,7 @@ Rectangle {
 
     signal backClicked
     signal needToHideConversationInCall
+    signal pluginSelector
 
     function resetBackToWelcomeViewButtonSource(reset) {
         backToWelcomeViewButtonSource = reset ? "qrc:/images/icons/ic_arrow_back_24px.svg" : "qrc:/images/icons/round-close-24px.svg"
@@ -42,6 +44,7 @@ Rectangle {
     function toggleMessagingHeaderButtonsVisible(visible) {
         startAAudioCallButton.visible = visible
         startAVideoCallButton.visible = visible
+        selectPluginButton.visible = visible
     }
 
     color: JamiTheme.secondaryBackgroundColor
@@ -155,7 +158,8 @@ Rectangle {
             PushButton {
                 id: startAVideoCallButton
 
-                anchors.right: sendContactRequestButton.visible ?
+                anchors.right:  selectPluginButton.visible ? selectPluginButton.left :
+                                   sendContactRequestButton.visible ?
                                    sendContactRequestButton.left :
                                    buttonGroup.right
                 anchors.rightMargin: 16
@@ -171,6 +175,32 @@ Rectangle {
                     CallAdapter.placeCall()
                     communicationPageMessageWebView.setSendContactRequestButtonVisible(false)
                 }
+            }
+
+            PushButton {
+                id: selectPluginButton
+
+                visible: UtilsAdapter.checkShowPluginsButton(false)
+
+                Connections {
+                    target: PluginAdapter
+                    function onPluginHandlersUpdateStatus() {
+                        selectPluginButton.visible = UtilsAdapter.checkShowPluginsButton(false)
+                    }
+                }
+
+                anchors.right: sendContactRequestButton.visible ?
+                                   sendContactRequestButton.left :
+                                   buttonGroup.right
+                anchors.rightMargin: 16
+                anchors.verticalCenter: buttonGroup.verticalCenter
+
+                source: "qrc:/images/icons/extension_24dp.svg"
+
+                normalColor: JamiTheme.secondaryBackgroundColor
+                imageColor: JamiTheme.chatviewButtonColor
+
+                onClicked: pluginSelector()
             }
 
             PushButton {

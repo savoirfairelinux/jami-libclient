@@ -30,13 +30,13 @@ import "../../commoncomponents"
 ItemDelegate {
     id: root
 
-    property string mediaHandlerName : ""
-    property string mediaHandlerId: ""
-    property string mediaHandlerIcon: ""
+    property string handlerName : ""
+    property string handlerId: ""
+    property string handlerIcon: ""
     property bool isLoaded: false
     property string pluginId: ""
 
-    signal btnLoadMediaHandlerToggled
+    signal btnLoadHandlerToggled
     signal openPreferences
 
     RowLayout{
@@ -52,7 +52,7 @@ ItemDelegate {
                 color: "transparent"
                 Image {
                     anchors.centerIn: parent
-                    source: "file:" + mediaHandlerIcon
+                    source: "file:" + handlerIcon
                     width: 30
                     height: 30
                     mipmap: true
@@ -69,7 +69,7 @@ ItemDelegate {
 
             font.pointSize: JamiTheme.settingsFontSize
             font.kerning: true
-            text: mediaHandlerName === "" ? mediaHandlerId : mediaHandlerName
+            text: handlerName === "" ? handlerId : handlerName
         }
 
         Switch {
@@ -89,7 +89,7 @@ ItemDelegate {
 
             checked: isLoaded
             onClicked: {
-                btnLoadMediaHandlerToggled()
+                btnLoadHandlerToggled()
             }
 
             background: Rectangle {
@@ -116,7 +116,7 @@ ItemDelegate {
         }
 
         PushButton {
-            id: btnPreferencesMediaHandler
+            id: btnPreferencesPluginHandler
 
             Layout.alignment: Qt.AlingVCenter | Qt.AlignRight
             Layout.rightMargin: 8

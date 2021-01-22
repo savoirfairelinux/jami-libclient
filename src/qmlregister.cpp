@@ -33,7 +33,7 @@
 #include "deviceitemlistmodel.h"
 #include "distantrenderer.h"
 #include "pluginadapter.h"
-#include "mediahandleritemlistmodel.h"
+#include "pluginhandleritemlistmodel.h"
 #include "messagesadapter.h"
 #include "namedirectory.h"
 #include "updatemanager.h"
@@ -101,7 +101,7 @@ registerTypes()
     QML_REGISTERTYPE("net.jami.Models", AccountListModel, 1, 0);
     QML_REGISTERTYPE("net.jami.Models", DeviceItemListModel, 1, 0);
     QML_REGISTERTYPE("net.jami.Models", PluginItemListModel, 1, 0);
-    QML_REGISTERTYPE("net.jami.Models", MediaHandlerItemListModel, 1, 0);
+    QML_REGISTERTYPE("net.jami.Models", PluginHandlerItemListModel, 1, 0);
     QML_REGISTERTYPE("net.jami.Models", PreferenceItemListModel, 1, 0);
     QML_REGISTERTYPE("net.jami.Models", BannedListModel, 1, 0);
     QML_REGISTERTYPE("net.jami.Models", ModeratorListModel, 1, 0);

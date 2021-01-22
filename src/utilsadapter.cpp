@@ -110,6 +110,14 @@ UtilsAdapter::getBestName(const QString& accountId, const QString& uid)
     return QString();
 }
 
+const QString
+UtilsAdapter::getPeerUri(const QString& accountId, const QString& uid)
+{
+    auto* convModel = LRCInstance::getAccountInfo(accountId).conversationModel.get();
+    const auto& convInfo = convModel->getConversationForUid(uid).value();
+    return convInfo.get().participants.front();
+}
+
 QString
 UtilsAdapter::getBestId(const QString& accountId)
 {
@@ -316,10 +324,14 @@ UtilsAdapter::getAbsPath(QString path)
 }
 
 bool
-UtilsAdapter::checkShowPluginsButton()
+UtilsAdapter::checkShowPluginsButton(bool isCall)
 {
-    return LRCInstance::pluginModel().getPluginsEnabled()
-           && (LRCInstance::pluginModel().listLoadedPlugins().size() > 0);
+    if (isCall)
+        return LRCInstance::pluginModel().getPluginsEnabled()
+               && (LRCInstance::pluginModel().getCallMediaHandlers().size() > 0);
+    else
+        return LRCInstance::pluginModel().getPluginsEnabled()
+               && (LRCInstance::pluginModel().getChatHandlers().size() > 0);
 }
 
 QString

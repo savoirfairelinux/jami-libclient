@@ -29,7 +29,7 @@ PluginItemListModel::rowCount(const QModelIndex& parent) const
 {
     if (!parent.isValid()) {
         /// Count
-        return LRCInstance::pluginModel().listAvailablePlugins().size();
+        return LRCInstance::pluginModel().getInstalledPlugins().size();
     }
     /// A valid QModelIndex returns 0 as no entry has sub-elements.
     return 0;
@@ -46,7 +46,7 @@ PluginItemListModel::columnCount(const QModelIndex& parent) const
 QVariant
 PluginItemListModel::data(const QModelIndex& index, int role) const
 {
-    auto pluginList = LRCInstance::pluginModel().listAvailablePlugins();
+    auto pluginList = LRCInstance::pluginModel().getInstalledPlugins();
     if (!index.isValid() || pluginList.size() <= index.row()) {
         return QVariant();
     }
@@ -119,5 +119,5 @@ PluginItemListModel::reset()
 int
 PluginItemListModel::pluginsCount()
 {
-    return LRCInstance::pluginModel().listAvailablePlugins().size();
+    return LRCInstance::pluginModel().getInstalledPlugins().size();
 }

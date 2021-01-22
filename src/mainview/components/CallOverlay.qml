@@ -28,7 +28,7 @@ import net.jami.Adapters 1.0
 import net.jami.Constants 1.0
 
 import "../js/contactpickercreation.js" as ContactPickerCreation
-import "../js/mediahandlerpickercreation.js" as MediaHandlerPickerCreation
+import "../js/pluginhandlerpickercreation.js" as PluginHandlerPickerCreation
 
 import "../../commoncomponents"
 
@@ -73,8 +73,8 @@ Rectangle {
         ContactPickerCreation.closeContactPicker()
     }
 
-    function closePotentialMediaHandlerPicker() {
-        MediaHandlerPickerCreation.closeMediaHandlerPicker()
+    function closePotentialPluginHandlerPicker() {
+        PluginHandlerPickerCreation.closePluginHandlerPicker()
     }
 
     // returns true if participant is not fully maximized
@@ -561,9 +561,9 @@ Rectangle {
         }
 
         onPluginItemClicked: {
-            // Create media handler picker - PLUGINS
-            MediaHandlerPickerCreation.createMediaHandlerPickerObjects(callOverlayRect)
-            MediaHandlerPickerCreation.openMediaHandlerPicker()
+            // Create plugin handler picker - PLUGINS
+            PluginHandlerPickerCreation.createPluginHandlerPickerObjects(callOverlayRect, true)
+            PluginHandlerPickerCreation.openPluginHandlerPicker()
         }
     }
 }

@@ -170,6 +170,8 @@ Item {
     property int preferredDialogWidth: 400
     property int preferredDialogHeight: 300
     property int minimumPreviewWidth: 120
+    property int pluginHandlersPopupViewHeight: 200
+    property int pluginHandlersPopupViewDelegateHeight: 50
 
     // main application spec
     property int mainViewMinWidth: 460

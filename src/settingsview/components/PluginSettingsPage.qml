@@ -40,6 +40,7 @@ Rectangle {
 
     function slotSetPluginEnabled(state) {
         PluginModel.setPluginsEnabled(state)
+        PluginAdapter.pluginHandlersUpdateStatus()
     }
 
     color: JamiTheme.secondaryBackgroundColor

@@ -24,22 +24,20 @@
 
 #include "lrcinstance.h"
 
-class MediaHandlerItemListModel : public QAbstractListModel
+class PluginHandlerItemListModel : public QAbstractListModel
 {
     Q_OBJECT
 
 public:
-    enum Role {
-        MediaHandlerName = Qt::UserRole + 1,
-        MediaHandlerId,
-        MediaHandlerIcon,
-        IsLoaded,
-        PluginId
-    };
+    enum Role { HandlerName = Qt::UserRole + 1, HandlerId, HandlerIcon, IsLoaded, PluginId };
     Q_ENUM(Role)
 
-    explicit MediaHandlerItemListModel(QObject* parent = 0, const QString& callId = QString(""));
-    ~MediaHandlerItemListModel();
+    explicit PluginHandlerItemListModel(
+        QObject* parent = 0,
+        const QString& accountId = QString(""),
+        const QString& peerId = QString(
+            "")); // for calls, accountId is the callId and peerId is null
+    ~PluginHandlerItemListModel();
 
     /*
      * QAbstractListModel override.
@@ -62,7 +60,14 @@ public:
 
     QString callId();
     void setCallId(QString callId);
+    QString accountId();
+    void setAccountId(QString accountId);
+    QString peerId();
+    void setPeerId(QString peerId);
 
 private:
     QString callId_ = QString("");
+    QString accountId_ = QString("");
+    QString peerId_ = QString("");
+    bool isMediaHandler_;
 };
