@@ -69,7 +69,72 @@ Utils::CreateStartupLink(const std::wstring& wstrAppName)
 
     return Utils::CreateLink(programPath.c_str(), linkPath.c_str());
 #else
-    return true;
+
+    QString desktopPath;
+    /* cmake should set JAMI_DATA_DIR, otherwise it checks the following dirs
+     *  - /usr/<data dir>
+     *  - /usr/local/<data dir>
+     *  - default install data dir
+     */
+
+#ifdef JAMI_DATA_DIR
+    desktopPath = JAMI_DATA_DIR;
+    desktopPath = desktopPath + "/jami-qt.desktop";
+#else
+    QString dataDir = "share/jami-qt/";
+    QStringList paths = { "/usr/" + dataDir + "jami-qt.desktop",
+                          "/usr/local/" + dataDir + "jami-qt.desktop",
+                          QDir::currentPath() + "/../../install/"
+                          + dataDir + "jami-qt/jami-qt.desktop" };
+    for (QString filename : paths) {
+        if (QFile::exists(filename)) {
+            desktopPath = filename;
+            break;
+        }
+    }
+#endif
+
+    if (desktopPath.isEmpty() || !(QFile::exists(desktopPath))) {
+        qDebug() << "Cannot locate .desktop file";
+        return false;
+    }
+
+    qDebug() << "Setting autostart link from " << desktopPath;
+
+    QString symlink = QStandardPaths::locate(QStandardPaths::ConfigLocation,
+                                             "autostart/jami-qt.desktop");
+    if (!symlink.isEmpty()) {
+        QFileInfo symlinkInfo(symlink);
+        if (symlinkInfo.isSymLink()) {
+            if (symlinkInfo.symLinkTarget() == desktopPath) {
+                qDebug() << symlink << "already points to" << desktopPath;
+                return true;
+            } else {
+                qDebug() << symlink << "exists but does not point to " << desktopPath;
+                QFile::remove(symlink);
+            }
+        }
+    } else {
+        QString autoStartDir = QStandardPaths::writableLocation(QStandardPaths::ConfigLocation)
+                + "/autostart";
+
+        if (!QDir(autoStartDir).exists()) {
+            if (QDir().mkdir(autoStartDir)) {
+                qDebug() << "Created autostart directory: " << autoStartDir;
+            } else {
+                qWarning() << "Cannot create autostart directory: " << autoStartDir;
+                return false;
+            }
+        }
+        symlink = autoStartDir + "/jami-qt.desktop";
+    }
+
+    QFile srcFile (desktopPath);
+
+    bool result = srcFile.link(symlink);
+    qDebug() << symlink << (result ? "->" + desktopPath + " created successfully"
+                                   : "cannot be created");
+    return result;
 #endif
 }
 
@@ -116,6 +181,20 @@ Utils::DeleteStartupLink(const std::wstring& wstrAppName)
     linkPath += std::wstring(TEXT("\\") + wstrAppName + TEXT(".lnk"));
 
     DeleteFile(linkPath.c_str());
+
+#else
+    QString symlink = QStandardPaths::locate(QStandardPaths::ConfigLocation,
+                                             "autostart/jami-qt.desktop");
+    if (!symlink.isEmpty()) {
+        try {
+            QFile::remove(symlink);
+            qDebug() << "Autostart disabled," << symlink << "removed";
+        } catch (...) {
+            qDebug() << "Could not remove" << symlink;
+        }
+    } else {
+        qDebug() << "jami-qt.desktop symlink does not exist";
+    }
 #endif
 }
 
@@ -130,7 +209,8 @@ Utils::CheckStartupLink(const std::wstring& wstrAppName)
     linkPath += std::wstring(TEXT("\\") + wstrAppName + TEXT(".lnk"));
     return PathFileExists(linkPath.c_str());
 #else
-    return true;
+    return (!QStandardPaths::locate(QStandardPaths::ConfigLocation,
+                                    "autostart/jami-qt.desktop").isEmpty());
 #endif
 }
 

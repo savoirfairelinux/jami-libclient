@@ -13,7 +13,8 @@ set(CMAKE_AUTOUIC ON)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 set(SRC_DIR ${PROJECT_SOURCE_DIR}/src)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${Qt5Widgets_EXECUTABLE_COMPILE_FLAGS}")
+set(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} ${Qt5Widgets_EXECUTABLE_COMPILE_FLAGS}
+    -DJAMI_DATA_DIR='"'${CMAKE_INSTALL_PREFIX}/share/jami-qt'"')
 
 set(QML_RESOURCES ${PROJECT_SOURCE_DIR}/resources.qrc)
 set(QML_RESOURCES_QML ${PROJECT_SOURCE_DIR}/qml.qrc)
@@ -229,6 +230,18 @@ install(TARGETS jami-qt
 # install .desktop in XDG desktop dir so that it is recognized by the system
 install(FILES ${PROJECT_SOURCE_DIR}/jami-qt.desktop
     DESTINATION ${CMAKE_INSTALL_PREFIX}/share/applications)
+
+# install .desktop in the jami-qt data dir, so that it can be copied to the
+# autostart dir by the client
+install(FILES ${PROJECT_SOURCE_DIR}/jami-qt.desktop
+   DESTINATION
+      ${CMAKE_INSTALL_PREFIX}/share/jami-qt
+   PERMISSIONS
+      WORLD_READ
+      OWNER_WRITE
+      OWNER_READ
+      GROUP_READ
+)
 
 # logos
 install(FILES images/jami.svg
