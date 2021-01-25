@@ -44,7 +44,6 @@ Rectangle {
     function toggleMessagingHeaderButtonsVisible(visible) {
         startAAudioCallButton.visible = visible
         startAVideoCallButton.visible = visible
-        selectPluginButton.visible = visible
     }
 
     color: JamiTheme.secondaryBackgroundColor

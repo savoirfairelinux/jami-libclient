@@ -24,7 +24,8 @@
 
 std::map<QString, int> mapType {{QString("List"), PreferenceItemListModel::Type::LIST},
                                 {QString("Path"), PreferenceItemListModel::Type::PATH},
-                                {QString("EditText"), PreferenceItemListModel::Type::EDITTEXT}};
+                                {QString("EditText"), PreferenceItemListModel::Type::EDITTEXT},
+                                {QString("Switch"), PreferenceItemListModel::Type::SWITCH}};
 
 PreferenceItemListModel::PreferenceItemListModel(QObject* parent)
     : QAbstractListModel(parent)
@@ -58,14 +59,15 @@ PreferenceItemListModel::data(const QModelIndex& index, int role) const
         return QVariant();
     }
 
-    auto details = preferenceList_.at(index.row());
-    QString preferenceCurrent = LRCInstance::pluginModel().getPluginPreferencesValues(
-        pluginId_)[details["key"]];
-
+    QString preferenceCurrent = QString("");
     int type = Type::DEFAULT;
-    QString currentPath = "";
+    QString currentPath = QString("");
     QStringList acceptedFiles = {};
     bool checkImage = false;
+
+    auto details = preferenceList_.at(index.row());
+    preferenceCurrent = LRCInstance::pluginModel().getPluginPreferencesValues(
+        pluginId_)[details["key"]];
     auto it = mapType.find(details["type"]);
     if (it != mapType.end()) {
         type = mapType[details["type"]];
@@ -101,6 +103,7 @@ PreferenceItemListModel::data(const QModelIndex& index, int role) const
     case Role::IsImage:
         return QVariant(checkImage);
     }
+
     return QVariant();
 }
 

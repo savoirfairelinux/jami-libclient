@@ -48,6 +48,7 @@ public:
         LIST,
         PATH,
         EDITTEXT,
+        SWITCH,
         DEFAULT,
     } Type;
 

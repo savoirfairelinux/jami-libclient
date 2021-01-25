@@ -37,6 +37,7 @@ ItemDelegate {
         LIST,
         PATH,
         EDITTEXT,
+        SWITCH,
         DEFAULT
     }
 
@@ -75,19 +76,23 @@ ItemDelegate {
                 preferenceNewValue = editTextPreference.text
                 btnPreferenceClicked()
                 break
+            case PreferenceItemDelegate.SWITCH:
+                preferenceNewValue = index ? "1" : "0"
+                btnPreferenceClicked()
+                break
             default:
                 break
         }
     }
 
-    FileDialog {
+    JamiFileDialog {
         id: preferenceFilePathDialog
 
         title: JamiStrings.selectFile
         folder: "file:///" + currentPath
 
         onAccepted: {
-            var url = UtilsAdapter.getAbsPath(fileUrl.toString())
+            var url = UtilsAdapter.getAbsPath(file.toString())
             preferenceNewValue = url
             btnPreferenceClicked()
         }
@@ -96,20 +101,22 @@ ItemDelegate {
     RowLayout{
         anchors.fill: parent
 
-        Label {
-            Layout.preferredWidth: root.width / 2 - 8
+        Text {
+            id: prefLlabel
+            Layout.fillWidth: true
             Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
             Layout.leftMargin: 8
 
             text: preferenceName
             color: JamiTheme.textColor
+            elide: Text.ElideRight
             font.pointSize: JamiTheme.settingsFontSize
             ToolTip.visible: hovered
             ToolTip.text: preferenceSummary
         }
 
         PushButton {
-            id: btnPreference
+            id: btnPreferenceDefault
 
             visible: preferenceType === PreferenceItemDelegate.DEFAULT
             normalColor: JamiTheme.primaryBackgroundColor
@@ -123,8 +130,19 @@ ItemDelegate {
             source: "qrc:/images/icons/round-settings-24px.svg"
 
             toolTipText: qsTr("Edit preference")
+        }
 
-            onClicked: btnPreferenceClicked()
+        Switch {
+            id: btnPreferenceSwitch
+
+            visible: preferenceType === PreferenceItemDelegate.SWITCH
+            Layout.alignment: Qt.AlignRight | Qt.AlingVCenter
+            Layout.rightMargin: 16
+            Layout.preferredHeight: 30
+            Layout.preferredWidth: 30
+            checked: preferenceCurrentValue === "1"
+
+            onToggled: getNewPreferenceValueSlot(checked)
         }
 
         SettingParaCombobox {
@@ -133,7 +151,7 @@ ItemDelegate {
             visible: preferenceType === PreferenceItemDelegate.LIST
             Layout.preferredWidth: root.width / 2 - 8
             Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
-            Layout.rightMargin: 8
+            Layout.rightMargin: 4
 
             font.pointSize: JamiTheme.settingsFontSize
             font.kerning: true
@@ -153,7 +171,7 @@ ItemDelegate {
             Layout.preferredWidth: width
             Layout.preferredHeight: 30
             Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
-            Layout.rightMargin: 8
+            Layout.rightMargin: 4
 
             text: UtilsAdapter.fileName(preferenceCurrentValue)
             toolTipText: JamiStrings.chooseImageFile
@@ -173,7 +191,7 @@ ItemDelegate {
             Layout.preferredWidth: root.width / 2 - 8
             Layout.preferredHeight: 30
             Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
-            Layout.rightMargin: 8
+            Layout.rightMargin: 4
 
             selectByMouse: true
             text: preferenceCurrentValue
