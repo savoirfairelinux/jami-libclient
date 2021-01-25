@@ -169,7 +169,7 @@
     <message>
         <location filename="../src/mainview/components/ContactPicker.qml" line="95"/>
         <source>Add default moderator</source>
-        <translation type="unfinished"/>
+        <translation>Ajouter un modérateur par défaut</translation>
     </message>
 </context>
 <context>
@@ -1739,32 +1739,32 @@ Copy and share it with your friends!</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="416"/>
         <source>local muted</source>
-        <translation type="unfinished"/>
+        <translation>Micro local éteint</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="419"/>
         <source>Conference moderation</source>
-        <translation type="unfinished"/>
+        <translation>Modération de conférence</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="420"/>
         <source>Default moderators</source>
-        <translation type="unfinished"/>
+        <translation>Modérateurs par défaut</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="421"/>
         <source>Enable local moderators</source>
-        <translation type="unfinished"/>
+        <translation>Activer les modérateur locaux</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="422"/>
         <source>Add default moderator</source>
-        <translation type="unfinished"/>
+        <translation>Ajouter un modérateur par défaut</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="423"/>
         <source>Remove default moderator</source>
-        <translation type="unfinished"/>
+        <translation>Supprimer un modérateur par défaut</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="426"/>

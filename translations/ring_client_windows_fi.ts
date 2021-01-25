@@ -169,7 +169,7 @@
     <message>
         <location filename="../src/mainview/components/ContactPicker.qml" line="95"/>
         <source>Add default moderator</source>
-        <translation type="unfinished"/>
+        <translation>Lisää oletusvalvoja</translation>
     </message>
 </context>
 <context>
@@ -1738,32 +1738,32 @@ Kopioi ja jaa se ystäviesi kanssa!</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="416"/>
         <source>local muted</source>
-        <translation type="unfinished"/>
+        <translation>paikallinen mykistetty</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="419"/>
         <source>Conference moderation</source>
-        <translation type="unfinished"/>
+        <translation>Kokouksen valvonta</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="420"/>
         <source>Default moderators</source>
-        <translation type="unfinished"/>
+        <translation>Oletus valvojat</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="421"/>
         <source>Enable local moderators</source>
-        <translation type="unfinished"/>
+        <translation>Paikallisten valvojien ottaminen käyttöön</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="422"/>
         <source>Add default moderator</source>
-        <translation type="unfinished"/>
+        <translation>Lisää oletusvalvoja</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="423"/>
         <source>Remove default moderator</source>
-        <translation type="unfinished"/>
+        <translation>Poista oletus valvoja</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="426"/>

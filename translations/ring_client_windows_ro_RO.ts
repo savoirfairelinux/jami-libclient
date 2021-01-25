@@ -169,7 +169,7 @@
     <message>
         <location filename="../src/mainview/components/ContactPicker.qml" line="95"/>
         <source>Add default moderator</source>
-        <translation type="unfinished"/>
+        <translation>Adaugă un moderator prestabilit</translation>
     </message>
 </context>
 <context>
@@ -1738,32 +1738,32 @@ Copiază-l și distribuie-l prietenilor!</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="416"/>
         <source>local muted</source>
-        <translation type="unfinished"/>
+        <translation>dezactivat local</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="419"/>
         <source>Conference moderation</source>
-        <translation type="unfinished"/>
+        <translation>Moderarea conferinței</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="420"/>
         <source>Default moderators</source>
-        <translation type="unfinished"/>
+        <translation>Moderatori prestabiliți</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="421"/>
         <source>Enable local moderators</source>
-        <translation type="unfinished"/>
+        <translation>Activează moderatori locali</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="422"/>
         <source>Add default moderator</source>
-        <translation type="unfinished"/>
+        <translation>Adaugă un moderator prestabilit</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="423"/>
         <source>Remove default moderator</source>
-        <translation type="unfinished"/>
+        <translation>Elimină moderatorul prestabilit</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="426"/>

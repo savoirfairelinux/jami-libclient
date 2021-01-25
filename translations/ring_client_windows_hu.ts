@@ -169,7 +169,7 @@
     <message>
         <location filename="../src/mainview/components/ContactPicker.qml" line="95"/>
         <source>Add default moderator</source>
-        <translation type="unfinished"/>
+        <translation>Alapértelmezett moderátor hozzáadása</translation>
     </message>
 </context>
 <context>
@@ -1737,32 +1737,32 @@ Másolja ki, és ossza meg barátaival!</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="416"/>
         <source>local muted</source>
-        <translation type="unfinished"/>
+        <translation>helyi némítva</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="419"/>
         <source>Conference moderation</source>
-        <translation type="unfinished"/>
+        <translation>Konferencia moderálása</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="420"/>
         <source>Default moderators</source>
-        <translation type="unfinished"/>
+        <translation>Alapértelmezett moderátorok</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="421"/>
         <source>Enable local moderators</source>
-        <translation type="unfinished"/>
+        <translation>Helyi moderátorok engedélyezése</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="422"/>
         <source>Add default moderator</source>
-        <translation type="unfinished"/>
+        <translation>Alapértelmezett moderátor hozzáadása</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="423"/>
         <source>Remove default moderator</source>
-        <translation type="unfinished"/>
+        <translation>Alapértelmezett moderátor eltávolítása</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="426"/>

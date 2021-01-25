@@ -169,7 +169,7 @@
     <message>
         <location filename="../src/mainview/components/ContactPicker.qml" line="95"/>
         <source>Add default moderator</source>
-        <translation type="unfinished"/>
+        <translation>添加默认会议主持人</translation>
     </message>
 </context>
 <context>
@@ -1738,32 +1738,32 @@ Copy and share it with your friends!</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="416"/>
         <source>local muted</source>
-        <translation type="unfinished"/>
+        <translation>本地静音</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="419"/>
         <source>Conference moderation</source>
-        <translation type="unfinished"/>
+        <translation>会议主持人</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="420"/>
         <source>Default moderators</source>
-        <translation type="unfinished"/>
+        <translation>默认会议主持人</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="421"/>
         <source>Enable local moderators</source>
-        <translation type="unfinished"/>
+        <translation>启用本地会议主持人</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="422"/>
         <source>Add default moderator</source>
-        <translation type="unfinished"/>
+        <translation>添加默认会议主持人</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="423"/>
         <source>Remove default moderator</source>
-        <translation type="unfinished"/>
+        <translation>删除默认会议主持人</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="426"/>
