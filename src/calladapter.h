@@ -22,6 +22,7 @@
 #include "lrcinstance.h"
 #include "qmladapterbase.h"
 #include "globalsystemtray.h"
+#include "screensaver.h"
 
 #include <QObject>
 #include <QString>
@@ -129,4 +130,7 @@ private:
     void updateCallOverlay(const lrc::api::conversation::Info& convInfo);
     void setTime(const QString& accountId, const QString& convUid);
     QTimer* oneSecondTimer_;
+    ScreenSaver screenSaver;
+
+    void preventScreenSaver(bool state);
 };

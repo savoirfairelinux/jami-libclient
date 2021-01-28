@@ -432,6 +432,7 @@ CallAdapter::connectCallModel(const QString& accountId)
                         }
                     }
                 }
+                preventScreenSaver(false);
                 break;
             }
             case lrc::api::call::Status::CONNECTED:
@@ -441,6 +442,7 @@ CallAdapter::connectCallModel(const QString& accountId)
                     accInfo.conversationModel->selectConversation(convInfo.uid);
                 }
                 updateCall(convInfo.uid, accountId);
+                preventScreenSaver(true);
                 break;
             }
             case lrc::api::call::Status::PAUSED:
@@ -865,3 +867,14 @@ CallAdapter::setTime(const QString& accountId, const QString& convUid)
         emit updateTimeText(timeString);
     }
 }
+
+void
+CallAdapter::preventScreenSaver(bool state)
+{
+    if (state) {
+        if (!screenSaver.isInhibited())
+            screenSaver.inhibit();
+    } else if (screenSaver.isInhibited()) {
+        screenSaver.uninhibit();
+    }
+};

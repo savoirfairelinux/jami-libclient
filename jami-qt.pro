@@ -159,6 +159,7 @@ HEADERS += \
         src/avatarimageprovider.h \
         src/moderatorlistmodel.h \
         src/networkmanager.h \
+        src/screensaver.h \
         src/smartlistmodel.h \
         src/updatemanager.h \
         src/utils.h \
@@ -210,6 +211,7 @@ SOURCES += \
         src/moderatorlistmodel.cpp \
         src/networkmanager.cpp \
         src/runguard.cpp \
+        src/screensaver.cpp \
         src/updatemanager.cpp \
         src/webchathelpers.cpp \
         src/main.cpp \
