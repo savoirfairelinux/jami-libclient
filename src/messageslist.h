@@ -39,7 +39,7 @@ public:
     QPair<iterator, bool> insert(std::pair<QString, interaction::Info> message,
                                  bool beginning = false);
     int erase(QString msgId);
-    interaction::Info operator[](QString);
+    interaction::Info& operator[](QString);
     iterator end();
     constIterator end() const;
     constIterator cend() const;

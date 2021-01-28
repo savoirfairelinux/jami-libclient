@@ -147,7 +147,8 @@ public:
      * @param duration
      */
     void addOrUpdateCallMessage(const QString& callId,
-                                const QString& from = {},
+                                const QString&,
+                                bool  incoming,
                                 const std::time_t& duration = -1);
     /**
      * Add a new message from a peer in the database
@@ -2398,7 +2399,7 @@ ConversationModelPimpl::slotCallStarted(const QString& callId)
 {
     try {
         auto call = linked.owner.callModel->getCall(callId);
-        addOrUpdateCallMessage(callId, (!call.isOutgoing ? call.peerUri : ""));
+        addOrUpdateCallMessage(callId, call.peerUri.remove("ring:"), !call.isOutgoing);
     } catch (std::out_of_range& e) {
         qDebug() << "ConversationModelPimpl::slotCallStarted can't start inexistant call";
     }
@@ -2416,7 +2417,7 @@ ConversationModelPimpl::slotCallEnded(const QString& callId)
             duration = std::chrono::duration_cast<std::chrono::seconds>(duration_ns).count();
         }
         // add or update call interaction with duration
-        addOrUpdateCallMessage(callId, (!call.isOutgoing ? call.peerUri : ""), duration);
+        addOrUpdateCallMessage(callId, call.peerUri.remove("ring:"), !call.isOutgoing, duration);
         /* Reset the callId stored in the conversation.
            Do not call selectConversation() since it is already done in slotCallStatusChanged. */
         for (auto& conversation : conversations)
@@ -2434,6 +2435,7 @@ ConversationModelPimpl::slotCallEnded(const QString& callId)
 void
 ConversationModelPimpl::addOrUpdateCallMessage(const QString& callId,
                                                const QString& from,
+                                               bool incoming,
                                                const std::time_t& duration)
 {
     // do not save call interaction for swarm conversation
@@ -2451,7 +2453,7 @@ ConversationModelPimpl::addOrUpdateCallMessage(const QString& callId,
         return;
     }
     auto uid = conv_it->uid;
-    auto uriString = storage::prepareUri(from, linked.owner.profileInfo.type);
+    auto uriString = incoming ? storage::prepareUri(from, linked.owner.profileInfo.type) : "";
     auto msg = interaction::Info {uriString,
                                   {},
                                   std::time(nullptr),
@@ -2530,7 +2532,7 @@ ConversationModelPimpl::addIncomingMessage(const QString& from,
 {
     auto convIds = storage::getConversationsWithPeer(db, from);
     if (convIds.empty()) {
-        convIds.push_back(storage::beginConversationWithPeer(db, from, false));
+        return "";
     }
     auto msg = interaction::Info {from,
                                   body,
@@ -2592,21 +2594,14 @@ ConversationModelPimpl::slotUpdateInteractionStatus(const QString& accountId,
     if (accountId != linked.owner.id) {
         return;
     }
-    try {
-        auto& conversation = getConversationForUid(conversationId).get();
-        if (conversation.isSwarm) {
-            if (static_cast<DRing::Account::MessageStates>(status) == DRing::Account::MessageStates::DISPLAYED) {
-                if(conversation.lastDisplayedMessageUid.find(peer) == conversation.lastDisplayedMessageUid.end()) {
-                    conversation.lastDisplayedMessageUid[peer] = messageId;
-                    emit linked.displayedInteractionChanged(conversationId, peer, "", messageId);
-                } else if (conversation.interactions.indexOfMessage(conversation.lastDisplayedMessageUid.find(peer)->second) < conversation.interactions.indexOfMessage(messageId)) {
-                    auto lastDisplayedMsg = conversation.lastDisplayedMessageUid.find(peer)->second;
-                    conversation.lastDisplayedMessageUid[peer] = messageId;
-                    emit linked.displayedInteractionChanged(conversationId, peer, lastDisplayedMsg, messageId);
-                }
-            }
+    // it may be not swarm conversation check in db
+    if (conversationId.isEmpty()) {
+        auto convIds = storage::getConversationsWithPeer(db, peer);
+        if (convIds.empty()) {
             return;
         }
+        auto conversationIdx = indexOf(convIds[0]);
+        auto& conversation = conversations[conversationIdx];
         auto newStatus = interaction::Status::INVALID;
         switch (static_cast<DRing::Account::MessageStates>(status)) {
             case DRing::Account::MessageStates::SENDING:
@@ -2622,6 +2617,7 @@ ConversationModelPimpl::slotUpdateInteractionStatus(const QString& accountId,
                 newStatus = interaction::Status::FAILURE;
                 break;
             case DRing::Account::MessageStates::DISPLAYED:
+                qDebug() << "$%$%$%$ DRing::Account::MessageStates::DISPLAYED";
                 newStatus = interaction::Status::DISPLAYED;
                 break;
             case DRing::Account::MessageStates::UNKNOWN:
@@ -2667,14 +2663,31 @@ ConversationModelPimpl::slotUpdateInteractionStatus(const QString& accountId,
             }
         }
         if (updateDisplayedUid) {
+            qDebug() << "$%$%$%$ last displayed changed";
             emit linked.displayedInteractionChanged(conversation.uid, peer, oldDisplayedUid, msgId);
         }
         if (emitUpdated) {
             invalidateModel();
             emit linked.interactionStatusUpdated(conversation.uid, msgId, itCopy);
         }
+        return;
+    }
+    try {
+        auto& conversation = getConversationForUid(conversationId).get();
+        if (conversation.isSwarm) {
+            if (static_cast<DRing::Account::MessageStates>(status) == DRing::Account::MessageStates::DISPLAYED) {
+                if(conversation.lastDisplayedMessageUid.find(peer) == conversation.lastDisplayedMessageUid.end()) {
+                    conversation.lastDisplayedMessageUid[peer] = messageId;
+                    emit linked.displayedInteractionChanged(conversationId, peer, "", messageId);
+                } else if (conversation.interactions.indexOfMessage(conversation.lastDisplayedMessageUid.find(peer)->second) < conversation.interactions.indexOfMessage(messageId)) {
+                    auto lastDisplayedMsg = conversation.lastDisplayedMessageUid.find(peer)->second;
+                    conversation.lastDisplayedMessageUid[peer] = messageId;
+                    emit linked.displayedInteractionChanged(conversationId, peer, lastDisplayedMsg, messageId);
+                }
+            }
+        }
     } catch (const std::out_of_range& e) {
-        qDebug() << "could not update message status for not existing conversation";
+        qDebug() << "could not update message status for not existing conversation" << conversationId;
     }
 }
 

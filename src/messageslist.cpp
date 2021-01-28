@@ -80,10 +80,20 @@ MessagesList::erase(QString msgId)
         }
     }
 }
-interaction::Info
-MessagesList::operator[](QString index)
+interaction::Info&
+MessagesList::operator[](QString messageId)
 {
-    return at(index);
+    for (auto it = interactions_.cbegin(); it != interactions_.cend(); ++it) {
+        if (it->first == messageId) {
+            return const_cast<interaction::Info&>(it->second);
+        }
+    }
+    // element not find, add it to the end
+    interaction::Info newMessage = {};
+    interactions_.insert(interactions_.end(), qMakePair(messageId, newMessage));
+    if (interactions_.last().first == messageId) {
+        return const_cast<interaction::Info&>(interactions_.last().second);
+    }
 }
 
 iterator
