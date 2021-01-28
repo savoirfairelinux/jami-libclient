@@ -145,16 +145,15 @@ MessagesList::clear()
 }
 
 bool
-MessagesList::empty()
+MessagesList::empty() const
 {
     return interactions_.empty();
 }
 
 interaction::Info
-MessagesList::at(QString msgId)
+MessagesList::at(QString msgId) const
 {
-    iterator it;
-    for (it = interactions_.begin(); it != interactions_.end(); ++it) {
+    for (auto it = interactions_.cbegin(); it != interactions_.cend(); ++it) {
         if (it->first == msgId) {
             return it->second;
         }
@@ -163,19 +162,20 @@ MessagesList::at(QString msgId)
 }
 
 QPair<QString, interaction::Info>
-MessagesList::front()
+MessagesList::front() const
 {
     return interactions_.front();
 }
 
 QPair<QString, interaction::Info>
-MessagesList::last()
+MessagesList::last() const
 {
     return interactions_.last();
 }
 
 QPair<QString, interaction::Info>
-MessagesList::atIndex(int index) {
+MessagesList::atIndex(int index)
+{
     return interactions_.at(index);
 }
 
@@ -196,52 +196,34 @@ MessagesList::insert(int it, QPair<QString, interaction::Info> message) {
 }
 
 int
-MessagesList::indexOfMessage(QString msgId, bool reverse)
+MessagesList::indexOfMessage(QString msgId, bool searchBackward)
 {
-    auto getIndex = [reverse, &msgId](const auto& start, const auto& end) -> int {
-        auto it = std::find_if(start, end, [&msgId] (const auto& it) { return it.first == msgId; });
-        if (it == end) {
-            return -1;
+    if (searchBackward) {
+        for (int i = interactions_.size() - 1; i >= 0; i--) {
+            auto iteration = interactions_[i];
+            if (iteration.first == msgId) {
+                return i;
+            }
         }
-        return reverse ? std::distance(it, end) - 1 :  std::distance(start, it);
-    };
-    return reverse ?
-       getIndex(interactions_.rbegin(), interactions_.rend()) :
-       getIndex(interactions_.begin(), interactions_.end());
+    } else {
+        for (int i = 0; i < interactions_.size(); i++) {
+            auto iteration = interactions_[i];
+            if (iteration.first == msgId) {
+                return i;
+            }
+        }
+    }
+    return -1;
 }
 
 void
 MessagesList::moveMessages(QList<QString> msgIds, QString parentId)
 {
     for (auto msgId : msgIds) {
-        moveMessage(msgId, parentId);
-    }
-}
-
-void
-MessagesList::moveMessage(QString msgId, QString parentId)
-{
-    int currentIndex = indexOfMessage(msgId);
-
-    // if we have a next element check if it is a child interaction
-    QString childMessageIdToMove;
-    if (currentIndex < (interactions_.size() - 1)) {
-        const auto& next = interactions_.at(currentIndex + 1);
-        if (next.second.parentId == msgId) {
-            childMessageIdToMove = next.first;
-        }
-    }
-
-    // move a message
-    int newIndex = indexOfMessage(parentId) + 1;
-    if (newIndex >= interactions_.size()) {
-        newIndex = interactions_.size() - 1;
-    }
-    interactions_.move(currentIndex, newIndex);
-
-    // move a child message
-    if (!childMessageIdToMove.isEmpty()) {
-        moveMessage(childMessageIdToMove, msgId);
+        int currentIndex = indexOfMessage(msgId);
+        int newIndex = indexOfMessage(parentId) + 1 < interactions_.size() ? indexOfMessage(parentId) + 1 : interactions_.size() - 1;
+        qDebug() << "moved message" << msgId;
+        interactions_.move(currentIndex, newIndex);
     }
 }
 } // namespace lrc

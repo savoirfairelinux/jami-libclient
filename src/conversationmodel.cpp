@@ -535,10 +535,14 @@ ConversationModel::getFilteredConversations(const profile::Type& filter,
     pimpl_->customTypeFilter = filter;
     return pimpl_->customFilteredConversations.reset(pimpl_->conversations)
         .filter([this, &includeBanned](const conversation::Info& entry) {
-            auto contactInfo = owner.contactModel->getContact(entry.participants.front());
-            if (!includeBanned && contactInfo.isBanned)
+            try {
+                auto contactInfo = owner.contactModel->getContact(entry.participants.front());
+                if (!includeBanned && contactInfo.isBanned)
+                    return false;
+                return (contactInfo.profileInfo.type == pimpl_->customTypeFilter);
+            } catch (...) {
                 return false;
-            return (contactInfo.profileInfo.type == pimpl_->customTypeFilter);
+            }
         })
         .validate();
 }
