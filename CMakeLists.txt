@@ -380,6 +380,7 @@ SET(libringclient_WEB_chatview
    src/web-chatview/chatview.html
    src/web-chatview/chatview.js
    src/web-chatview/jed.js
+   src/web-chatview/emoji.js
    src/web-chatview/linkify-html.js
    src/web-chatview/linkify-string.js
    src/web-chatview/linkify.js
