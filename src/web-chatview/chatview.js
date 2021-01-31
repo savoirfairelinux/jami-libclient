@@ -57,9 +57,18 @@ const invitation = document.getElementById("invitation")
 const inviteImage = document.getElementById("invite_image")
 const navbar = document.getElementById("navbar")
 const invitationText = document.getElementById("text")
+const emojiBtn = document.getElementById('emojiButton');
 var   messages = document.getElementById("messages")
 var   sendContainer = document.getElementById("data_transfer_send_container")
 var   wrapperOfNavbar = document.getElementById("wrapperOfNavbar")
+
+const picker = new EmojiButton();
+picker.on('emoji', emoji => {
+    messageBarInput.value += emoji;
+});
+emojiBtn.addEventListener('click', () => {
+    picker.togglePicker(emojiBtn);
+});
 
 /* States: allows us to avoid re-doing something if it isn't meaningful */
 var displayLinksEnabled = true

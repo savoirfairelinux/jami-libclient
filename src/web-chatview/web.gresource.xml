@@ -10,6 +10,7 @@
       <file>linkify-string.js</file>
       <file>linkify-html.js</file>
       <file>jed.js</file>
+      <file>emoji.js</file>
 
       <!-- CSS -->
       <file>chatview.css</file>

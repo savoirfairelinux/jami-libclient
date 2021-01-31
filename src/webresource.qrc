@@ -2,6 +2,7 @@
     <qresource prefix="/">
         <file alias="chatview.css">web-chatview/chatview.css</file>
         <file alias="chatview.html">web-chatview/chatview.html</file>
+        <file alias="emoji.js">web-chatview/emoji.js</file>
         <file alias="chatview.js">web-chatview/chatview.js</file>
         <file alias="linkify.js">web-chatview/linkify.js</file>
         <file alias="linkify-html.js">web-chatview/linkify-html.js</file>
