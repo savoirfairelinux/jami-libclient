@@ -57,6 +57,7 @@ const invitation = document.getElementById("invitation")
 const inviteImage = document.getElementById("invite_image")
 const navbar = document.getElementById("navbar")
 const invitationText = document.getElementById("text")
+const emojiBtn = document.getElementById('emojiButton');
 var   messages = document.getElementById("messages")
 var   sendContainer = document.getElementById("data_transfer_send_container")
 var   wrapperOfNavbar = document.getElementById("wrapperOfNavbar")
@@ -126,6 +127,10 @@ if (use_qt) {
             setSendMessageContent(content)
         });
     })
+} else {
+    // For now hide on non qt client, as it needs some modifications in cpp code
+    emojiBtn.style.visibility = "collapse"
+    emojiBtn.style.width = 0
 }
 
 /* i18n manager */
@@ -160,6 +165,21 @@ function init_i18n(data) {
         reset_message_bar_input("")
         set_titles()
     }
+}
+
+/* exported init_picker */
+function init_picker(dark) {
+    if (!use_qt)
+        return;
+    const picker = new EmojiButton({
+        theme: dark? 'dark' : 'light'
+    });
+    picker.on('emoji', emoji => {
+        messageBarInput.value += emoji.emoji;
+    });
+    emojiBtn.addEventListener('click', () => {
+        picker.togglePicker(emojiBtn);
+    });
 }
 
 function set_titles() {
