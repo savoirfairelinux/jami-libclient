@@ -115,6 +115,16 @@ public:
     static VectorString getConferenceSubcalls(const QString& cid);
 
     /**
+     * whether any accounts have any notifications
+     */
+    bool hasNotifications();
+
+    /**
+     * remove any existing notifications
+     */
+    void removeNotifications();
+
+    /**
      * Preference
      */
     static std::atomic_bool holdConferences;
