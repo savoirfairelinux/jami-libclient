@@ -20,8 +20,7 @@ import QtQuick 2.14
 import QtQuick.Controls 2.14
 import QtGraphicalEffects 1.14
 import QtQuick.Layouts 1.14
-
-import net.jami.Adapters 1.0
+import QtQuick.Shapes 1.14
 import net.jami.Models 1.0
 import net.jami.Constants 1.0
 
@@ -31,19 +30,9 @@ import "../../commoncomponents"
 Rectangle {
     id: root
 
-    property bool hasMinimumSize: true
-    property int buttonPreferredSize: 30
-    property int minimumWidth: Math.max(114, visibleButtons * 37 + 21 * 2)
-    property int minimumHeight: 114
-    property int visibleButtons: toggleModerator.visible
-                                 + toggleMute.visible
-                                 + maximizeParticipant.visible
-                                 + minimizeParticipant.visible
-                                 + hangupParticipant.visible
-
     property string uri: ""
     property string bestName: ""
-    property bool isLocalMuted: false
+    property bool isLocalMuted: true
     property bool showSetModerator: false
     property bool showUnsetModerator: false
     property bool showModeratorMute: false
@@ -52,14 +41,48 @@ Rectangle {
     property bool showMinimize: false
     property bool showHangup: false
 
+    property int buttonPreferredSize: 24
+    property int iconButtonPreferredSize: 16
+
+    property int visibleButtons: toggleModerator.visible
+                                 + toggleMute.visible
+                                 + maximizeParticipant.visible
+                                 + minimizeParticipant.visible
+                                 + hangupParticipant.visible
+
+    property int buttonsSize: visibleButtons * 24 + 8 * 2
+
+    property int shapeWidth: bestNameLabel.contentWidth + (visibleButtons > 0
+                                                           ? buttonsSize : 0) + 32
+    property int shapeHeight: 30
+    property int shapeRadius: 8
+    property string pathShape: "M0,0 h%1 v%2 q0,%3 -%3,%3 h-%4 z"
+    .arg(shapeWidth).arg(shapeHeight-shapeRadius).arg(shapeRadius).
+    arg(shapeWidth-shapeRadius)
+
+    property bool isBarLayout: parent.width > 220
+    property bool isOverlayRect: buttonsSize + 32 > parent.width
+
+    property int labelMaxWidth: isBarLayout? Math.max(parent.width - buttonsSize, 80)
+                                           : visibleButtons > 0? buttonsSize
+                                                               : parent.width - 16
+
+    property int isSmall: !isBarLayout && (height < 100 || width < 160)
+
     signal mouseAreaExited
+    signal mouseChanged
 
-    // values taken from sketch
-    width: hasMinimumSize? parent.width : minimumWidth
-    height: hasMinimumSize? parent.height: minimumHeight
+    width: isBarLayout? bestNameLabel.contentWidth + buttonsSize + 32
+                      : (isOverlayRect? buttonsSize + 32 : parent.width)
+    height: isBarLayout? shapeHeight : (isOverlayRect? 80 : parent.height)
 
-    color: hasMinimumSize? "transparent" : JamiTheme.darkGreyColorOpacity
-    radius: 10
+    anchors.top: isBarLayout? parent.top : undefined
+    anchors.left: isBarLayout? parent.left : undefined
+    anchors.centerIn: isBarLayout? undefined : parent
+
+    color: isBarLayout? "transparent" : JamiTheme.darkGreyColorOpacity
+
+    radius: (isBarLayout || !isOverlayRect)? 0 : 10
 
     MouseArea {
         id: mouseAreaHover
@@ -70,37 +93,62 @@ Rectangle {
         acceptedButtons: Qt.LeftButton
 
         onExited: mouseAreaExited()
+        onMouseXChanged: mouseChanged()
 
-        ColumnLayout {
-            id: layout
-            anchors.horizontalCenter: parent.horizontalCenter
-            anchors.verticalCenter: parent.verticalCenter
-            spacing: 8
+        Shape {
+            id: myShape
+            visible: isBarLayout
+            ShapePath {
+                id: backgroundShape
+                strokeColor: "transparent"
+                fillColor: JamiTheme.darkGreyColorOpacity
+                capStyle: ShapePath.RoundCap
+                PathSvg { path: pathShape }
+            }
+        }
 
-            Text {
-                id: participantName
+        Text {
+            id: bestNameLabel
+            anchors {
+                left: isBarLayout? parent.left : undefined
+                leftMargin: isBarLayout? 8 : 0
+                bottom: isBarLayout? parent.bottom : undefined
+                bottomMargin: isBarLayout? 8 : 0
+                horizontalCenter: isBarLayout? undefined : parent.horizontalCenter
+                verticalCenter: parent.verticalCenter
+                verticalCenterOffset:
+                    (isBarLayout || visibleButtons === 0)? 0 : (isSmall? -12 : -16)
+            }
+            TextMetrics {
+                id: participantMetricsColumn
+                text: bestName
+                elide: Text.ElideRight
+                elideWidth: labelMaxWidth
+            }
 
-                TextMetrics {
-                    id: participantMetrics
-                    text: bestName
-                    elide: Text.ElideRight
-                    elideWidth: root.width - JamiTheme.preferredMarginSize * 2
-                }
+            text: participantMetricsColumn.elidedText
+            color: JamiTheme.whiteColor
+            font.pointSize: JamiTheme.participantFontSize
+            horizontalAlignment: isBarLayout? Text.AlignLeft : Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
+        }
 
-                text: participantMetrics.elidedText
-                color: JamiTheme.whiteColor
-                font.pointSize: JamiTheme.participantFontSize
-                Layout.alignment: Qt.AlignCenter
-                horizontalAlignment: Text.AlignHCenter
-                verticalAlignment: Text.AlignVCenter
+        Rectangle {
+            color: "transparent"
+            width: buttonsSize
+            height: shapeHeight
+            anchors {
+                right: isBarLayout? parent.right : undefined
+                rightMargin: isBarLayout? 8 : 0
+                horizontalCenter: isBarLayout? undefined : parent.horizontalCenter
+                verticalCenter: parent.verticalCenter
+                verticalCenterOffset: isBarLayout? 0 : (isSmall? 12 : 16)
             }
 
             RowLayout {
                 id: rowLayoutButtons
-
-                Layout.alignment: Qt.AlignHCenter | Qt.AlignBottom
-                Layout.fillWidth: true
-                spacing: 7
+                anchors.centerIn: parent
+                anchors.fill: parent
 
                 PushButton {
                     id: toggleModerator
@@ -108,30 +156,41 @@ Rectangle {
                     visible: (showSetModerator || showUnsetModerator)
                     Layout.preferredWidth: buttonPreferredSize
                     Layout.preferredHeight: buttonPreferredSize
-                    preferredSize: 16
+                    preferredSize: iconButtonPreferredSize
                     normalColor: JamiTheme.buttonConference
                     hoveredColor: JamiTheme.buttonConferenceHovered
                     pressedColor: JamiTheme.buttonConferencePressed
 
                     source: "qrc:/images/icons/moderator.svg"
-                    imageColor: hovered? JamiTheme.darkGreyColor
-                                       : JamiTheme.whiteColor
+                    imageColor: JamiTheme.whiteColor
 
                     onClicked: CallAdapter.setModerator(uri, showSetModerator)
-                    onHoveredChanged: toggleModeratorToolTip.visible = hovered
+                    onHoveredChanged:
+                        toggleModeratorToolTip.visible = hovered && !isSmall
 
-                    Text {
+                    Rectangle {
                         id: toggleModeratorToolTip
-
+                        height: 16
+                        width: toggleModeratorToolTipText.width + 8
+                        anchors {
+                            horizontalCenter: parent.horizontalCenter
+                            top: parent.bottom
+                            topMargin: isBarLayout? 6 : 2
+                        }
+                        color : isBarLayout? JamiTheme.darkGreyColorOpacity
+                                           : "transparent"
                         visible: false
-                        width: parent.width
-                        text: showSetModerator? JamiStrings.setModerator
-                                              : JamiStrings.unsetModerator
-                        horizontalAlignment: Text.AlignHCenter
-                        anchors.top: parent.bottom
-                        anchors.topMargin: 6
-                        color: JamiTheme.whiteColor
-                        font.pointSize: JamiTheme.tinyFontSize
+                        radius: 2
+
+                        Text {
+                            id: toggleModeratorToolTipText
+                            anchors.centerIn: parent
+                            text: showSetModerator? JamiStrings.setModerator
+                                                  : JamiStrings.unsetModerator
+                            horizontalAlignment: Text.AlignHCenter
+                            color: JamiTheme.whiteColor
+                            font.pointSize: JamiTheme.tinyFontSize
+                        }
                     }
                 }
 
@@ -141,7 +200,8 @@ Rectangle {
                     visible: showModeratorMute || showModeratorUnmute
                     Layout.preferredWidth: buttonPreferredSize
                     Layout.preferredHeight: buttonPreferredSize
-                    preferredSize: 16
+                    Layout.alignment: Qt.AlignVCenter
+                    preferredSize: iconButtonPreferredSize
 
                     normalColor: JamiTheme.buttonConference
                     hoveredColor: JamiTheme.buttonConferenceHovered
@@ -149,46 +209,54 @@ Rectangle {
 
                     source: showModeratorMute? "qrc:/images/icons/mic-24px.svg"
                                              : "qrc:/images/icons/mic_off-24px.svg"
-                    imageColor: hovered? JamiTheme.darkGreyColor
-                                       : JamiTheme.whiteColor
+                    imageColor: JamiTheme.whiteColor
 
                     onClicked: CallAdapter.muteParticipant(uri, showModeratorMute)
-                    onHoveredChanged: {
-                        toggleParticipantToolTip.visible = hovered
-                        localMutedText.visible = hovered && isLocalMuted
-                    }
+                    onHoveredChanged:
+                        toggleMuteToolTip.visible = hovered && !isSmall
 
-                    Text {
-                        id: toggleParticipantToolTip
-
+                    Rectangle {
+                        id: toggleMuteToolTip
+                        height: localMutedText.visible? 28 : 16
+                        width: localMutedText.visible? localMutedText.width + 8
+                                                     : toggleMuteToolTipText.width + 8
+                        anchors {
+                            horizontalCenter: parent.horizontalCenter
+                            top: parent.bottom
+                            topMargin: isBarLayout? 6 : 2
+                        }
+                        color : isBarLayout? JamiTheme.darkGreyColorOpacity
+                                           : "transparent"
                         visible: false
-                        width: parent.width
-                        text: showModeratorMute? JamiStrings.muteParticipant
-                                               : JamiStrings.unmuteParticipant
-                        horizontalAlignment: Text.AlignHCenter
-                        verticalAlignment: Text.AlignTop
+                        radius: 2
 
-                        anchors.top: parent.bottom
-                        anchors.topMargin: 6
-                        color: JamiTheme.whiteColor
-                        font.pointSize: JamiTheme.tinyFontSize
+                        Text {
+                            id: toggleMuteToolTipText
+                            text: (showModeratorMute? JamiStrings.muteParticipant
+                                                    : JamiStrings.unmuteParticipant)
+                            horizontalAlignment: Text.AlignHCenter
+                            anchors {
+                                horizontalCenter: parent.horizontalCenter
+                                top: parent.top
+                            }
+
+                            color: JamiTheme.whiteColor
+                            font.pointSize: JamiTheme.tinyFontSize
+                        }
+
+                        Text {
+                            id: localMutedText
+                            visible: isLocalMuted
+                            text: "(" + JamiStrings.localMuted + ")"
+                            horizontalAlignment: Text.AlignHCenter
+                            anchors {
+                                top: toggleMuteToolTipText.bottom
+                                horizontalCenter: parent.horizontalCenter
+                            }
+                            color: JamiTheme.whiteColor
+                            font.pointSize: JamiTheme.tinyFontSize
+                        }
                     }
-
-                    Text {
-                        id: localMutedText
-
-                        visible: false
-                        width: parent.width
-                        text: "(" + JamiStrings.localMuted + ")"
-                        horizontalAlignment: Text.AlignHCenter
-                        verticalAlignment: Text.AlignTop
-
-                        anchors.top: parent.bottom
-                        anchors.topMargin: 16
-                        color: JamiTheme.whiteColor
-                        font.pointSize: JamiTheme.tinyFontSize
-                    }
-
                 }
 
                 PushButton {
@@ -197,30 +265,41 @@ Rectangle {
                     visible: showMaximize
                     Layout.preferredWidth: buttonPreferredSize
                     Layout.preferredHeight: buttonPreferredSize
-                    preferredSize: 16
+                    preferredSize: iconButtonPreferredSize
 
                     normalColor: JamiTheme.buttonConference
                     hoveredColor: JamiTheme.buttonConferenceHovered
                     pressedColor: JamiTheme.buttonConferencePressed
 
                     source: "qrc:/images/icons/open_in_full-24px.svg"
-                    imageColor: hovered? JamiTheme.darkGreyColor
-                                       : JamiTheme.whiteColor
+                    imageColor: JamiTheme.whiteColor
 
                     onClicked: CallAdapter.maximizeParticipant(uri)
-                    onHoveredChanged: maximizeParticipantToolTip.visible = hovered
+                    onHoveredChanged:
+                        maximizeParticipantToolTip.visible = hovered && !isSmall
 
-                    Text {
+                    Rectangle {
                         id: maximizeParticipantToolTip
-
+                        height: 16
+                        width: maximizeParticipantToolTipText.width + 8
+                        anchors {
+                            horizontalCenter: parent.horizontalCenter
+                            top: parent.bottom
+                            topMargin: isBarLayout? 6 : 2
+                        }
+                        color : isBarLayout? JamiTheme.darkGreyColorOpacity
+                                           : "transparent"
                         visible: false
-                        width: parent.width
-                        text: JamiStrings.maximizeParticipant
-                        horizontalAlignment: Text.AlignHCenter
-                        anchors.top: parent.bottom
-                        anchors.topMargin: 6
-                        color: JamiTheme.whiteColor
-                        font.pointSize: JamiTheme.tinyFontSize
+                        radius: 2
+
+                        Text {
+                            id: maximizeParticipantToolTipText
+                            text: JamiStrings.maximizeParticipant
+                            horizontalAlignment: Text.AlignHCenter
+                            anchors.centerIn: parent
+                            color: JamiTheme.whiteColor
+                            font.pointSize: JamiTheme.tinyFontSize
+                        }
                     }
                 }
 
@@ -230,29 +309,40 @@ Rectangle {
                     visible: showMinimize
                     Layout.preferredWidth: buttonPreferredSize
                     Layout.preferredHeight: buttonPreferredSize
-                    preferredSize: 16
+                    preferredSize: iconButtonPreferredSize
 
                     normalColor: JamiTheme.buttonConference
                     hoveredColor: JamiTheme.buttonConferenceHovered
                     pressedColor: JamiTheme.buttonConferencePressed
 
                     source: "qrc:/images/icons/close_fullscreen-24px.svg"
-                    imageColor: hovered? JamiTheme.darkGreyColor
-                                       : JamiTheme.whiteColor
+                    imageColor: JamiTheme.whiteColor
                     onClicked: CallAdapter.minimizeParticipant(uri)
-                    onHoveredChanged: minimizeParticipantToolTip.visible = hovered
+                    onHoveredChanged:
+                        minimizeParticipantToolTip.visible = hovered && !isSmall
 
-                    Text {
+                    Rectangle {
                         id: minimizeParticipantToolTip
-
+                        height: 16
+                        width: minimizeParticipantToolTipText.width + 8
+                        anchors {
+                            horizontalCenter: parent.horizontalCenter
+                            top: parent.bottom
+                            topMargin: isBarLayout? 6 : 2
+                        }
+                        color : isBarLayout? JamiTheme.darkGreyColorOpacity
+                                           : "transparent"
                         visible: false
-                        width: parent.width
-                        text: JamiStrings.minimizeParticipant
-                        horizontalAlignment: Text.AlignHCenter
-                        anchors.top: parent.bottom
-                        anchors.topMargin: 6
-                        color: JamiTheme.whiteColor
-                        font.pointSize: JamiTheme.tinyFontSize
+                        radius: 2
+
+                        Text {
+                            id: minimizeParticipantToolTipText
+                            text: JamiStrings.minimizeParticipant
+                            horizontalAlignment: Text.AlignHCenter
+                            anchors.centerIn: parent
+                            color: JamiTheme.whiteColor
+                            font.pointSize: JamiTheme.tinyFontSize
+                        }
                     }
                 }
 
@@ -262,29 +352,40 @@ Rectangle {
                     visible: showHangup
                     Layout.preferredWidth: buttonPreferredSize
                     Layout.preferredHeight: buttonPreferredSize
-                    preferredSize: 16
+                    preferredSize: iconButtonPreferredSize
 
                     normalColor: JamiTheme.buttonConference
                     hoveredColor: JamiTheme.buttonConferenceHovered
                     pressedColor: JamiTheme.buttonConferencePressed
 
-                    source: "qrc:/images/icons/ic_block_24px.svg"
-                    imageColor: hovered? JamiTheme.darkGreyColor
-                                       : JamiTheme.whiteColor
+                    source: "qrc:/images/icons/ic_hangup_participant-24px.svg"
+                    imageColor: JamiTheme.whiteColor
                     onClicked: CallAdapter.hangupParticipant(uri)
-                    onHoveredChanged: hangupParticipantToolTip.visible = hovered
+                    onHoveredChanged:
+                        hangupParticipantToolTip.visible = hovered && !isSmall
 
-                    Text {
+                    Rectangle {
                         id: hangupParticipantToolTip
-
+                        height: 16
+                        width: hangupParticipantToolTipText.width + 8
+                        anchors {
+                            horizontalCenter: parent.horizontalCenter
+                            top: parent.bottom
+                            topMargin: isBarLayout? 6 : 2
+                        }
+                        color : isBarLayout? JamiTheme.darkGreyColorOpacity
+                                           : "transparent"
                         visible: false
-                        width: parent.width
-                        text: JamiStrings.hangupParticipant
-                        horizontalAlignment: Text.AlignHCenter
-                        anchors.top: parent.bottom
-                        anchors.topMargin: 6
-                        color: JamiTheme.whiteColor
-                        font.pointSize: JamiTheme.tinyFontSize
+                        radius: 2
+
+                        Text {
+                            id: hangupParticipantToolTipText
+                            text: JamiStrings.hangupParticipant
+                            horizontalAlignment: Text.AlignHCenter
+                            anchors.centerIn: parent
+                            color: JamiTheme.whiteColor
+                            font.pointSize: JamiTheme.tinyFontSize
+                        }
                     }
                 }
             }

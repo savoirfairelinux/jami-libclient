@@ -31,7 +31,8 @@ Item {
     property color blackColor: "#000000"
     property color whiteColor: "#ffffff"
     property color darkGreyColor: "#272727"
-    property color darkGreyColorOpacity: "#4D272727" // 77%
+    property color darkGreyColorOpacity: "#be272727" // 77%
+
     property color transparentColor: "transparent"
     property color primaryForegroundColor: darkTheme? whiteColor : blackColor
     property color primaryBackgroundColor: darkTheme? bgDarkMode_ : whiteColor
@@ -93,9 +94,9 @@ Item {
     property color sipInputButtonHoverColor: "#4477aa"
     property color sipInputButtonPressColor: "#5588bb"
 
-    property string buttonConference: "#110000"
-    property string buttonConferenceHovered: "#66cfff"
-    property string buttonConferencePressed: "#66cfff"
+    property string buttonConference: "transparent"
+    property string buttonConferenceHovered:"#110000"
+    property string buttonConferencePressed: "#110000"
 
     // Wizard / account manager
     property color accountCreationOtherStepColor: "grey"

@@ -95,6 +95,8 @@ Rectangle {
 
     function handleParticipantsInfo(infos) {
         // TODO: in the future the conference layout should be entirely managed by the client
+        // Hack: truncate and ceil participant's overlay position and size to correct
+        // when they are not exacts
         videoCallOverlay.updateMenu()
         var showMax = false
         var showMin = false
@@ -106,14 +108,15 @@ Rectangle {
                 var participant = infos.find(e => e.uri === participantOverlays[p].uri);
                 if (participant) {
                     // Update participant's information
-                    var newX = distantRenderer.getXOffset()
-                            + participant.x * distantRenderer.getScaledWidth()
-                    var newY = distantRenderer.getYOffset()
-                            + participant.y * distantRenderer.getScaledHeight()
-                    var newWidth = participant.w * distantRenderer.getScaledWidth()
-                    var newHeight = participant.h * distantRenderer.getScaledHeight()
-                    var newVisible = participant.w !== 0 && participant.h !== 0
+                    var newX = Math.trunc(distantRenderer.getXOffset()
+                            + participant.x * distantRenderer.getScaledWidth())
+                    var newY = Math.trunc(distantRenderer.getYOffset()
+                            + participant.y * distantRenderer.getScaledHeight())
 
+                    var newWidth = Math.ceil(participant.w * distantRenderer.getScaledWidth())
+                    var newHeight = Math.ceil(participant.h * distantRenderer.getScaledHeight())
+
+                    var newVisible = participant.w !== 0 && participant.h !== 0
                     if (participantOverlays[p].x !== newX)
                         participantOverlays[p].x = newX
                     if (participantOverlays[p].y !== newY)
@@ -162,10 +165,10 @@ Rectangle {
                 // Only create overlay for new participants
                 if (!currentUris.includes(infos[infoVariant].uri)) {
                     var hover = participantComponent.createObject(callOverlayRectMouseArea, {
-                        x: distantRenderer.getXOffset() + infos[infoVariant].x * distantRenderer.getScaledWidth(),
-                        y: distantRenderer.getYOffset() + infos[infoVariant].y * distantRenderer.getScaledHeight(),
-                        width: infos[infoVariant].w * distantRenderer.getScaledWidth(),
-                        height: infos[infoVariant].h * distantRenderer.getScaledHeight(),
+                        x: Math.trunc(distantRenderer.getXOffset() + infos[infoVariant].x * distantRenderer.getScaledWidth()),
+                        y: Math.trunc(distantRenderer.getYOffset() + infos[infoVariant].y * distantRenderer.getScaledHeight()),
+                        width: Math.ceil(infos[infoVariant].w * distantRenderer.getScaledWidth()),
+                        height: Math.ceil(infos[infoVariant].h * distantRenderer.getScaledHeight()),
                         visible: infos[infoVariant].w !== 0 && infos[infoVariant].h !== 0
                     })
                     if (!hover) {
