@@ -7,6 +7,6 @@
         <file alias="linkify-html.js">web-chatview/linkify-html.js</file>
         <file alias="linkify-string.js">web-chatview/linkify-string.js</file>
         <file alias="qwebchannel.js">web-chatview/qwebchannel.js</file>
-        <file alias="chatview-windows.css">web-chatview/chatview-qt.css</file>
+        <file alias="chatview-qt.css">web-chatview/chatview-qt.css</file>
     </qresource>
 </RCC>
