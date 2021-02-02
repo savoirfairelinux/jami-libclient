@@ -237,8 +237,7 @@ public:
      * @param convId
      * @param interactionId
      */
-    void clearInteractionFromConversation(const QString& convId,
-                                          const uint64_t& interactionId);
+    void clearInteractionFromConversation(const QString& convId, const uint64_t& interactionId);
     /**
      * Retry to send a message. In fact, will delete the previous interaction and resend a new one.
      * @param convId
@@ -264,9 +263,7 @@ public:
 
     void acceptTransfer(const QString& convUid, uint64_t interactionId);
 
-    void acceptTransfer(const QString& convUid,
-                        uint64_t interactionId,
-                        const QString& path);
+    void acceptTransfer(const QString& convUid, uint64_t interactionId, const QString& path);
 
     void cancelTransfer(const QString& convUid, uint64_t interactionId);
 
@@ -282,6 +279,9 @@ public:
      * @param isComposing   if is composing
      */
     void setIsComposing(const QString& uid, bool isComposing);
+
+    bool hasNotifications() const;
+    void removeNotifications();
 
 Q_SIGNALS:
     /**

@@ -35,6 +35,7 @@
 #include "api/behaviorcontroller.h"
 #include "api/datatransfermodel.h"
 #include "api/newaccountmodel.h"
+#include "api/conversationmodel.h"
 #include "callbackshandler.h"
 #include "dbus/callmanager.h"
 #include "dbus/configurationmanager.h"
@@ -198,6 +199,34 @@ Lrc::getConferenceSubcalls(const QString& cid)
         result.push_back(callId);
     }
     return result;
+}
+
+bool
+Lrc::hasNotifications(const QString& accountId)
+{
+    return getAccountModel().getAccountInfo(accountId).conversationModel->hasNotifications();
+}
+
+bool
+Lrc::hasNotifications()
+{
+    for (const auto& accountId : getAccountModel().getAccountList())
+        if (hasNotifications(accountId))
+            return true;
+    return false;
+}
+
+void
+Lrc::removeNotifications(const QString& accountId)
+{
+    getAccountModel().getAccountInfo(accountId).conversationModel->removeNotifications();
+}
+
+void
+Lrc::removeNotifications()
+{
+    for (const auto& accountId : getAccountModel().getAccountList())
+        removeNotifications(accountId);
 }
 
 bool

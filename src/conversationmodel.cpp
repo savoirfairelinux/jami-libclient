@@ -221,6 +221,8 @@ public:
 
     std::map<QString, std::mutex> interactionsLocks; ///< {convId, mutex}
 
+    unsigned int notifications = 0;
+
 public Q_SLOTS:
     /**
      * Listen from contactModel when updated (like new alias, avatar, etc.)
@@ -313,6 +315,9 @@ public Q_SLOTS:
     void updateTransferStatus(long long dringId,
                               api::datatransfer::Info info,
                               interaction::Status newStatus);
+
+    void slotNewTrustRequest(const QString& accountId, const QString& contactUri);
+    void slotTrustRequestTreated(const QString& accountId, const QString& contactUri);
 };
 
 ConversationModel::ConversationModel(const account::Info& owner,
@@ -621,6 +626,7 @@ ConversationModel::selectConversation(const QString& uid) const
                 case call::Status::CONNECTING:
                 case call::Status::SEARCHING:
                     // We are currently in a call
+                    pimpl_->notifications++;
                     emit pimpl_->behaviorController.showIncomingCallView(owner.id, conversation.uid);
                     break;
                 case call::Status::PAUSED:
@@ -1185,6 +1191,8 @@ ConversationModel::setInteractionRead(const QString& convId, const uint64_t& int
             it->second.isRead = true;
             if (pimpl_->conversations[conversationIdx].unreadMessages != 0)
                 pimpl_->conversations[conversationIdx].unreadMessages -= 1;
+            if (pimpl_->notifications > 0)
+                pimpl_->notifications--;
             itCopy = it->second;
         }
     }
@@ -1239,6 +1247,10 @@ ConversationModel::clearUnreadInteractions(const QString& convId)
                                  lastDisplayed,
                                  3);
     if (emitUpdated) {
+        if (pimpl_->notifications <= pimpl_->conversations[conversationIdx].unreadMessages)
+            pimpl_->notifications = 0;
+        else
+            pimpl_->notifications -= pimpl_->conversations[conversationIdx].unreadMessages;
         pimpl_->conversations[conversationIdx].unreadMessages = 0;
         pimpl_->invalidateModel();
         emit conversationUpdated(convId);
@@ -1362,6 +1374,16 @@ ConversationModelPimpl::ConversationModelPimpl(const ConversationModel& linked,
             &CallbacksHandler::transferStatusUnjoinable,
             this,
             &ConversationModelPimpl::slotTransferStatusUnjoinable);
+
+    // trust requests
+    connect(&behaviorController,
+            &BehaviorController::newTrustRequest,
+            this,
+            &ConversationModelPimpl::slotNewTrustRequest);
+    connect(&behaviorController,
+            &BehaviorController::trustRequestTreated,
+            this,
+            &ConversationModelPimpl::slotTrustRequestTreated);
 }
 
 ConversationModelPimpl::~ConversationModelPimpl()
@@ -1465,6 +1487,16 @@ ConversationModelPimpl::~ConversationModelPimpl()
                &CallbacksHandler::transferStatusUnjoinable,
                this,
                &ConversationModelPimpl::slotTransferStatusUnjoinable);
+
+    // trust requests
+    disconnect(&behaviorController,
+               &BehaviorController::newTrustRequest,
+               this,
+               &ConversationModelPimpl::slotNewTrustRequest);
+    disconnect(&behaviorController,
+               &BehaviorController::trustRequestTreated,
+               this,
+               &ConversationModelPimpl::slotTrustRequestTreated);
 }
 
 void
@@ -1834,6 +1866,7 @@ ConversationModelPimpl::addConversationWith(const QString& convId, const QString
     }
 
     conversation.unreadMessages = getNumberOfUnreadMessagesFor(convId);
+    notifications += conversation.unreadMessages;
     conversations.emplace_back(std::move(conversation));
     invalidateModel();
 }
@@ -1906,6 +1939,7 @@ ConversationModelPimpl::slotIncomingCall(const QString& fromId, const QString& c
 
     qDebug() << "Add call to conversation with " << fromId;
     conversation.callId = callId;
+    notifications++;
     invalidateModel();
     emit behaviorController.showIncomingCallView(linked.owner.id, conversation.uid);
 }
@@ -2018,10 +2052,12 @@ ConversationModelPimpl::addOrUpdateCallMessage(const QString& callId,
         conv_it->interactions[msgId] = msg;
     }
 
-    if (newInteraction)
+    if (newInteraction) {
+        notifications++;
         emit linked.newInteraction(conv_it->uid, msgId, msg);
-    else
+    } else {
         emit linked.interactionStatusUpdated(conv_it->uid, msgId, msg);
+    }
 
     invalidateModel();
     emit linked.modelChanged();
@@ -2101,6 +2137,7 @@ ConversationModelPimpl::addIncomingMessage(const QString& from,
         }
         conversations[conversationIdx].lastMessageUid = msgId;
         conversations[conversationIdx].unreadMessages = getNumberOfUnreadMessagesFor(convIds[0]);
+        notifications += conversations[conversationIdx].unreadMessages;
     }
 
     emit behaviorController.newUnreadInteraction(linked.owner.id, convIds[0], msgId, msg);
@@ -2375,6 +2412,18 @@ ConversationModel::getNumberOfUnreadMessagesFor(const QString& convUid)
 }
 
 bool
+ConversationModel::hasNotifications() const
+{
+    return pimpl_->notifications > 0;
+}
+
+void
+ConversationModel::removeNotifications()
+{
+    pimpl_->notifications = 0;
+}
+
+bool
 ConversationModelPimpl::usefulDataFromDataTransfer(long long dringId,
                                                    const datatransfer::Info& info,
                                                    int& interactionId,
@@ -2437,6 +2486,7 @@ ConversationModelPimpl::slotTransferStatusCreated(long long dringId, datatransfe
         }
         conversations[conversationIdx].lastMessageUid = interactionId;
         conversations[conversationIdx].unreadMessages = getNumberOfUnreadMessagesFor(convId);
+        notifications += conversations[conversationIdx].unreadMessages;
     }
     emit behaviorController.newUnreadInteraction(linked.owner.id,
                                                  convId,
@@ -2716,6 +2766,23 @@ ConversationModelPimpl::updateTransfer(QTimer* timer,
 
     timer->stop();
     timer->deleteLater();
+}
+
+void
+ConversationModelPimpl::slotNewTrustRequest(const QString& accountId, const QString& contactUri)
+{
+    Q_UNUSED(accountId);
+    Q_UNUSED(contactUri);
+    notifications++;
+}
+
+void
+ConversationModelPimpl::slotTrustRequestTreated(const QString& accountId, const QString& contactUri)
+{
+    Q_UNUSED(accountId);
+    Q_UNUSED(contactUri);
+    if (notifications > 0)
+        notifications--;
 }
 
 } // namespace lrc
