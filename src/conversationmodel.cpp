@@ -1291,43 +1291,44 @@ ConversationModel::setInteractionRead(const QString& convId, const QString& inte
 void
 ConversationModel::clearUnreadInteractions(const QString& convId)
 {
-    auto conversationIdx = pimpl_->indexOf(convId);
-    if (conversationIdx == -1) {
-        return;
-    }
-    bool emitUpdated = false;
-    QString lastDisplayed;
-    {
-        std::lock_guard<std::mutex> lk(pimpl_->interactionsLocks[convId]);
-        auto& interactions = pimpl_->conversations[conversationIdx].interactions;
-        std::for_each(interactions.begin(),
-                      interactions.end(),
-                      [&](decltype(*interactions.begin())& it) {
-                          if (!it.second.isRead) {
-                              emitUpdated = true;
-                              it.second.isRead = true;
-                              if (pimpl_->conversations[conversationIdx].isSwarm) {
-                                  lastDisplayed = it.first;
-                                  return;
-                              }
-                              if (owner.profileInfo.type != profile::Type::SIP)
-                                  lastDisplayed = storage::getDaemonIdByInteractionId(pimpl_->db,
-                                                                                      it.first);
-                              storage::setInteractionRead(pimpl_->db, it.first);
-                          }
-                      });
-    }
-    if (!lastDisplayed.isEmpty())
-        ConfigurationManager::instance()
+    try {
+        auto& conversation = pimpl_->getConversationForUid(convId).get();
+        bool emitUpdated = false;
+        QString lastDisplayed;
+        {
+            std::lock_guard<std::mutex> lk(pimpl_->interactionsLocks[convId]);
+            auto& interactions = conversation.interactions;
+            std::for_each(interactions.begin(),
+                          interactions.end(),
+                          [&](decltype(*interactions.begin())& it) {
+                if (!it.second.isRead) {
+                    emitUpdated = true;
+                    it.second.isRead = true;
+                    if (conversation.isSwarm) {
+                        lastDisplayed = it.first;
+                        return;
+                    }
+                    if (owner.profileInfo.type != profile::Type::SIP)
+                        lastDisplayed = storage::getDaemonIdByInteractionId(pimpl_->db,
+                                                                            it.first);
+                    storage::setInteractionRead(pimpl_->db, it.first);
+                }
+            });
+        }
+        if (!lastDisplayed.isEmpty()) {
+            auto to = conversation.isSwarm ? convId : conversation.participants.first();
+            ConfigurationManager::instance()
             .setMessageDisplayed(owner.id,
-                                 convId,
+                                 to,
                                  lastDisplayed,
                                  3);
-    if (emitUpdated) {
-        pimpl_->conversations[conversationIdx].unreadMessages = 0;
-        pimpl_->invalidateModel();
-        emit conversationUpdated(convId);
-    }
+        }
+        if (emitUpdated) {
+            conversation.unreadMessages = 0;
+            pimpl_->invalidateModel();
+            emit conversationUpdated(convId);
+        }
+    } catch (std::out_of_range& e) {}
 }
 
 int
@@ -2595,7 +2596,7 @@ ConversationModelPimpl::slotUpdateInteractionStatus(const QString& accountId,
         return;
     }
     // it may be not swarm conversation check in db
-    if (conversationId.isEmpty()) {
+    if (conversationId.isEmpty() || conversationId == linked.owner.profileInfo.uri) {
         auto convIds = storage::getConversationsWithPeer(db, peer);
         if (convIds.empty()) {
             return;
@@ -2618,6 +2619,7 @@ ConversationModelPimpl::slotUpdateInteractionStatus(const QString& accountId,
                 break;
             case DRing::Account::MessageStates::DISPLAYED:
                 newStatus = interaction::Status::DISPLAYED;
+                qDebug() << "&*&*&*&*& interaction::Status::DISPLAYED";
                 break;
             case DRing::Account::MessageStates::UNKNOWN:
             default:
@@ -2643,10 +2645,10 @@ ConversationModelPimpl::slotUpdateInteractionStatus(const QString& accountId,
             auto messageId = conversation.lastDisplayedMessageUid.find(peer);
             if (it != interactions.end()) {
                 it->second.status = newStatus;
+                bool interactionDisplayed = newStatus == interaction::Status::DISPLAYED
+                && isOutgoing(it->second);
                 if (messageId != conversation.lastDisplayedMessageUid.end()) {
                     auto lastDisplayedIt = interactions.find(messageId->second);
-                    bool interactionDisplayed = newStatus == interaction::Status::DISPLAYED
-                    && isOutgoing(it->second);
                     bool interactionIsLast = lastDisplayedIt == interactions.end()
                     || lastDisplayedIt->second.timestamp
                     < it->second.timestamp;
@@ -2656,12 +2658,17 @@ ConversationModelPimpl::slotUpdateInteractionStatus(const QString& accountId,
                         conversation.lastDisplayedMessageUid.at(peer)
                         = it->first;
                     }
+                } else {
+                    oldDisplayedUid = "";
+                    conversation.lastDisplayedMessageUid[peer] = it->first;
+                    updateDisplayedUid = true;
                 }
                 emitUpdated = true;
                 itCopy = it->second;
             }
         }
         if (updateDisplayedUid) {
+            qDebug() << "&*&*&*&*& updateDisplayedUid";
             emit linked.displayedInteractionChanged(conversation.uid, peer, oldDisplayedUid, msgId);
         }
         if (emitUpdated) {
