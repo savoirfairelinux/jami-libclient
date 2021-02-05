@@ -13,8 +13,8 @@ set(CMAKE_AUTOUIC ON)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 set(SRC_DIR ${PROJECT_SOURCE_DIR}/src)
-set(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} ${Qt5Widgets_EXECUTABLE_COMPILE_FLAGS}
-    -DJAMI_DATA_DIR='"'${CMAKE_INSTALL_PREFIX}/share/jami-qt'"')
+set(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS}
+    ${Qt5Widgets_EXECUTABLE_COMPILE_FLAGS})
 
 set(QML_RESOURCES ${PROJECT_SOURCE_DIR}/resources.qrc)
 set(QML_RESOURCES_QML ${PROJECT_SOURCE_DIR}/qml.qrc)
@@ -206,6 +206,9 @@ add_executable(${PROJECT_NAME}
     ${QML_RESOURCES}
     ${QML_RESOURCES_QML}
     ${LRC_SRC_PATH}/webresource.qrc)
+
+target_compile_definitions(jami-qt PRIVATE
+    JAMI_DATA_DIR="${CMAKE_INSTALL_PREFIX}/share/${PROJECT_NAME}")
 
 find_library(ringclient ringclient ${LRCLIBDIR} NO_DEFAULT_PATH)
 find_library(qrencode qrencode)
