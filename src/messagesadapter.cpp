@@ -71,15 +71,16 @@ MessagesAdapter::setupChatView(const QString& convUid)
     auto selectedAccountId = LRCInstance::getCurrAccId();
     auto& accountInfo = LRCInstance::accountModel().getAccountInfo(selectedAccountId);
 
-    lrc::api::profile::Type contactType = lrc::api::profile::Type::INVALID;
+    lrc::api::contact::Info contactInfo;
     try {
-        auto contactInfo = accountInfo.contactModel->getContact(contactURI);
-        contactType = contactInfo.profileInfo.type;
+        contactInfo = accountInfo.contactModel->getContact(contactURI);
     } catch (...) {
     }
 
-    bool shouldShowSendContactRequestBtn = (contactType == lrc::api::profile::Type::PENDING
-                                            || contactType == lrc::api::profile::Type::TEMPORARY);
+    bool shouldShowSendContactRequestBtn = (contactInfo.profileInfo.type
+                                                == lrc::api::profile::Type::PENDING
+                                            || contactInfo.profileInfo.type
+                                                   == lrc::api::profile::Type::TEMPORARY);
 
     QMetaObject::invokeMethod(qmlObj_,
                               "setSendContactRequestButtonVisible",
@@ -111,6 +112,10 @@ MessagesAdapter::setupChatView(const QString& convUid)
     requestSendMessageContent();
 
     currentConvUid_ = convUid;
+
+    QString s = QString::fromLatin1("reset_message_bar_input(`%1`);")
+                    .arg(accountInfo.contactModel->bestNameForContact(contactURI));
+    QMetaObject::invokeMethod(qmlObj_, "webViewRunJavaScript", Q_ARG(QVariant, s));
 }
 
 void
