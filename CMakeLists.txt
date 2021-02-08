@@ -276,9 +276,10 @@ install(
         GROUP_EXECUTE
         WORLD_EXECUTE)
 
-# add a target to generate API documentation with Doxygen
+# add a target to generate API documentation with Doxygen and graphviz-dot
 find_package(Doxygen)
-if(DOXYGEN_FOUND)
+find_program(dot "dot")
+if(Doxygen_FOUND AND dot)
     configure_file(${CMAKE_CURRENT_SOURCE_DIR}/doc/Doxyfile.in ${CMAKE_CURRENT_SOURCE_DIR}/doc/Doxyfile @ONLY)
     add_custom_target(doc
         COMMAND ${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/doc/Doxyfile
@@ -290,7 +291,7 @@ if(DOXYGEN_FOUND)
         TARGET doc
         PRE_BUILD
         COMMAND ln -sf ${CMAKE_CURRENT_SOURCE_DIR}/README ${CMAKE_CURRENT_SOURCE_DIR}/doc/README.md)
-endif(DOXYGEN_FOUND)
+endif()
 
 
 # translations
