@@ -1,4 +1,4 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="es" sourcelanguage="en" version="2.0">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="es" sourcelanguage="en" version="2.1">
 <context>
     <name>QObject</name>
     <message>
@@ -583,22 +583,22 @@
 <context>
     <name>lrc::ContactModelPimpl</name>
     <message>
-        <location filename="../src/contactmodel.cpp" line="455"/>
+        <location filename="../src/contactmodel.cpp" line="459"/>
         <source>Searching…</source>
         <translation>Buscando</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="950"/>
+        <location filename="../src/contactmodel.cpp" line="954"/>
         <source>Invalid ID</source>
         <translation>ID inválida</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="953"/>
+        <location filename="../src/contactmodel.cpp" line="957"/>
         <source>Registered name not found</source>
         <translation>Nombre registrado no encontrado</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="956"/>
+        <location filename="../src/contactmodel.cpp" line="960"/>
         <source>Couldn&apos;t lookup…</source>
         <translation>No se ha podido buscar...</translation>
     </message>
@@ -606,7 +606,7 @@
 <context>
     <name>lrc::api::ContactModel</name>
     <message>
-        <location filename="../src/contactmodel.cpp" line="419"/>
+        <location filename="../src/contactmodel.cpp" line="420"/>
         <source>Bad URI scheme</source>
         <translation>Mal esquema de URI</translation>
     </message>

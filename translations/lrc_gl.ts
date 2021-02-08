@@ -1,4 +1,4 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="gl" sourcelanguage="en" version="2.0">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="gl" sourcelanguage="en" version="2.1">
 <context>
     <name>QObject</name>
     <message>
@@ -407,7 +407,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="32"/>
         <source>Show available plugins</source>
-        <translation type="unfinished"/>
+        <translation>Mostrar complementos dispoñibles</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="33"/>
@@ -583,22 +583,22 @@
 <context>
     <name>lrc::ContactModelPimpl</name>
     <message>
-        <location filename="../src/contactmodel.cpp" line="455"/>
+        <location filename="../src/contactmodel.cpp" line="459"/>
         <source>Searching…</source>
         <translation>Buscando...</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="950"/>
+        <location filename="../src/contactmodel.cpp" line="954"/>
         <source>Invalid ID</source>
         <translation>ID non válido</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="953"/>
+        <location filename="../src/contactmodel.cpp" line="957"/>
         <source>Registered name not found</source>
         <translation>Non se atopou o nome rexistrado</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="956"/>
+        <location filename="../src/contactmodel.cpp" line="960"/>
         <source>Couldn&apos;t lookup…</source>
         <translation>Non se puido establecer..</translation>
     </message>
@@ -606,7 +606,7 @@
 <context>
     <name>lrc::api::ContactModel</name>
     <message>
-        <location filename="../src/contactmodel.cpp" line="419"/>
+        <location filename="../src/contactmodel.cpp" line="420"/>
         <source>Bad URI scheme</source>
         <translation>Esquema URI incorrecto</translation>
     </message>
