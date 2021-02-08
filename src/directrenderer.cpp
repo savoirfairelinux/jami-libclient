@@ -1,5 +1,5 @@
-/****************************************************************************
- *    Copyright (C) 2012-2021 Savoir-faire Linux Inc.                          *
+﻿/****************************************************************************
+ *   Copyright (C) 2012-2021 Savoir-faire Linux Inc.                        *
  *   Author : Alexandre Lision <alexandre.lision@savoirfairelinux.com>      *
  *   Author : Guillaume Roguez <guillaume.roguez@savoirfairelinux.com>      *
  *                                                                          *
@@ -89,6 +89,7 @@ Video::DirectRenderer::DirectRenderer(const QString& id, const QSize& res, bool 
 /// Destructor
 Video::DirectRenderer::~DirectRenderer()
 {
+    QMutexLocker lk(mutex());
     stopRendering();
 
     d_ptr.reset();
