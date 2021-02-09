@@ -207,8 +207,7 @@ add_executable(${PROJECT_NAME}
     ${QML_RESOURCES_QML}
     ${LRC_SRC_PATH}/webresource.qrc)
 
-target_compile_definitions(jami-qt PRIVATE
-    JAMI_DATA_DIR="${CMAKE_INSTALL_PREFIX}/share/${PROJECT_NAME}")
+set(JAMI_DATA_PATH "${CMAKE_INSTALL_PREFIX}/share/${PROJECT_NAME}")
 
 find_library(ringclient ringclient ${LRCLIBDIR} NO_DEFAULT_PATH)
 find_library(qrencode qrencode)
@@ -228,7 +227,7 @@ endif()
 
 # Installation rules
 install(TARGETS jami-qt
-   RUNTIME DESTINATION bin)
+    RUNTIME DESTINATION bin)
 
 # install .desktop in XDG desktop dir so that it is recognized by the system
 install(FILES ${PROJECT_SOURCE_DIR}/jami-qt.desktop
@@ -238,13 +237,24 @@ install(FILES ${PROJECT_SOURCE_DIR}/jami-qt.desktop
 # autostart dir by the client
 install(FILES ${PROJECT_SOURCE_DIR}/jami-qt.desktop
    DESTINATION
-      ${CMAKE_INSTALL_PREFIX}/share/jami-qt
+      ${JAMI_DATA_PATH}
    PERMISSIONS
       WORLD_READ
       OWNER_WRITE
       OWNER_READ
       GROUP_READ
 )
+
+# adjust JAMI_DATA_PATH for snap package
+#   (this must come after all 'install' commands that refer to
+#    JAMI_DATA_PATH; the following value is not meant to be used for
+#    any install destinations)
+if(DEFINED ENV{SNAPCRAFT_PROJECT_NAME})
+    set(JAMI_DATA_PATH "/snap/$ENV{SNAPCRAFT_PROJECT_NAME}/current/usr/share/${PROJECT_NAME}")
+endif()
+
+# (this must come after the above adjustment to JAMI_DATA_PATH)
+target_compile_definitions(jami-qt PRIVATE JAMI_DATA_DIR="${JAMI_DATA_PATH}")
 
 # logos
 install(FILES images/jami.svg
