@@ -37,7 +37,7 @@ InstanceManagerInterface::InstanceManagerInterface()
     using DRing::ConfigurationSignal;
     using DRing::PresenceSignal;
     using DRing::DataTransferSignal;
-    using DRing::DebugSignal;
+    using DRing::ConfigurationSignal;
     using DRing::ConversationSignal;
 
 #ifdef ENABLE_VIDEO
