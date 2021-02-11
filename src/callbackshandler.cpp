@@ -260,6 +260,11 @@ CallbacksHandler::CallbacksHandler(const Lrc& parent)
             &CallbacksHandler::slotConversationReady,
             Qt::QueuedConnection);
     connect(&ConfigurationManager::instance(),
+            &ConfigurationManagerInterface::conversationRemoved,
+            this,
+            &CallbacksHandler::slotConversationRemoved,
+            Qt::QueuedConnection);
+    connect(&ConfigurationManager::instance(),
             &ConfigurationManagerInterface::conversationMemberEvent,
             this,
             &CallbacksHandler::slotConversationMemberEvent,
@@ -630,6 +635,12 @@ void
 CallbacksHandler::slotConversationReady(const QString& accountId, const QString& conversationId)
 {
     emit conversationReady(accountId, conversationId);
+}
+
+void
+CallbacksHandler::slotConversationRemoved(const QString& accountId, const QString& conversationId)
+{
+    emit conversationRemoved(accountId, conversationId);
 }
 
 void
