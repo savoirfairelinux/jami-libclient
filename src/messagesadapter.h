@@ -91,6 +91,7 @@ signals:
     void needToUpdateSmartList();
     void contactBanned();
     void navigateToWelcomePageRequested();
+    void invitationAccepted();
 
 public slots:
     void slotSendMessageContentSaved(const QString& content);

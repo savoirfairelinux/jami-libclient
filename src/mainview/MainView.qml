@@ -463,6 +463,11 @@ Rectangle {
             function onNavigateToWelcomePageRequested() {
                 backToMainView()
             }
+
+            function onInvitationAccepted() {
+                mainViewSidePanel.selectTab(SidePanelTabBar.Conversations)
+                showWelcomeView()
+            }
         }
 
         Component.onCompleted: {

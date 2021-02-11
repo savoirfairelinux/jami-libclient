@@ -664,6 +664,9 @@ MessagesAdapter::acceptInvitation(const QString& convUid)
 {
     const auto currentConvUid = convUid.isEmpty() ? lrcInstance_->getCurrentConvUid() : convUid;
     lrcInstance_->getCurrentConversationModel()->makePermanent(currentConvUid);
+    if (convUid == currentConvUid_)
+        currentConvUid_.clear();
+    emit invitationAccepted();
 }
 
 void
