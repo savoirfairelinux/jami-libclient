@@ -159,7 +159,7 @@ Item {
 
     // BackupKeyPage
     property string  backupAccountInfos: qsTr("Your account only exists on this device. " +
-                                            "If you lost your device or uninstall the application, " +
+                                            "If you lose your device or uninstall the application, " +
                                             "your account will be deleted and can not be recovered. " +
                                             "You can backup your account now or later.")
     property string backupAccountHere: qsTr("Backup account here")
@@ -263,7 +263,7 @@ Item {
 
     // DeleteAccountDialog
     property string confirmDeleteQuestion: qsTr("Do you really want to delete this account?")
-    property string deleteAccountInfos: qsTr("If your account has not been backuped, or added to another device, your account and registered name will be irrevocably lost.")
+    property string deleteAccountInfos: qsTr("If your account has not been backed up or added to another device, your account and registered name will be irrevocably lost.")
 
     // DeviceItemDelegate
     property string editDeviceName: qsTr("Edit device name")
@@ -282,8 +282,8 @@ Item {
 
     // ChatviewSettings
     property string chatview: qsTr("Chatview")
-    property string enableTypingIndicator: qsTr("Show typing indicator")
-    property string displayImages: qsTr("Display images and videos into the chatview")
+    property string enableTypingIndicator: qsTr("Enable typing indicators")
+    property string displayImages: qsTr("Display images and videos in the chatview")
 
     // Updates
     property string betaInstall: qsTr("Install beta version")
@@ -426,4 +426,3 @@ Item {
     property string reconnectDaemon: qsTr("Trying to reconnect to the Jami daemon (dring)…")
     property string reconnectionFailed: qsTr("Could not re-connect to the Jami daemon (dring).\nJami will now quit.")
 }
-
