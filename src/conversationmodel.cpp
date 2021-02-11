@@ -345,6 +345,7 @@ public Q_SLOTS:
                                      const QString& memberUri,
                                      int event);
     void slotConversationReady(const QString& accountId, const QString& conversationId);
+    void slotConversationRemoved(const QString& accountId, const QString& conversationId);
 };
 
 ConversationModel::ConversationModel(const account::Info& owner,
@@ -1507,6 +1508,10 @@ ConversationModelPimpl::ConversationModelPimpl(const ConversationModel& linked,
             this,
             &ConversationModelPimpl::slotConversationReady);
     connect(&callbacksHandler,
+            &CallbacksHandler::conversationRemoved,
+            this,
+            &ConversationModelPimpl::slotConversationRemoved);
+    connect(&callbacksHandler,
             &CallbacksHandler::conversationMemberEvent,
             this,
             &ConversationModelPimpl::slotConversationMemberEvent);
@@ -1630,6 +1635,10 @@ ConversationModelPimpl::~ConversationModelPimpl()
                &CallbacksHandler::conversationReady,
                this,
                &ConversationModelPimpl::slotConversationReady);
+    disconnect(&callbacksHandler,
+               &CallbacksHandler::conversationRemoved,
+               this,
+               &ConversationModelPimpl::slotConversationRemoved);
     disconnect(&callbacksHandler,
                &CallbacksHandler::conversationMemberEvent,
                this,
@@ -1995,6 +2004,39 @@ ConversationModelPimpl::slotConversationReady(const QString& accountId,
     invalidateModel();
     emit linked.modelChanged();
 }
+
+void
+ConversationModelPimpl::slotConversationRemoved(const QString& accountId,
+                                                const QString& conversationId)
+{
+    if (accountId != linked.owner.id || indexOf(conversationId) < 0) {
+        return;
+    }
+    auto& conversation = getConversationForUid(conversationId).get();
+    try {
+        // if conversation removed but we still have contact it is means contact uses not swarm conversations. We should create not swarm conversation as well
+        auto contactUri = conversation.participants.first();
+        auto contact = linked.owner.contactModel->getContact(contactUri);
+        if (contact.profileInfo.type != api::profile::Type::RING) {
+            return;
+        }
+        auto convId = storage::beginConversationWithPeer(db, contactUri);
+        auto messages = conversation.interactions;
+        // save text, call and data transfer interactions
+        for (auto message : messages) {
+            if (message.second.type == interaction::Type::TEXT || message.second.type == interaction::Type::CALL || message.second.type == interaction::Type::DATA_TRANSFER) {
+                storage::addMessageToConversation(db, convId, message.second);
+            }
+        }
+        conversations.erase(conversations.begin() + indexOf(conversationId));
+        addConversationWith(convId, contactUri);
+        invalidateModel();
+        emit linked.newConversation(convId);
+        emit linked.modelChanged();
+    } catch (...) {
+    }
+}
+
 void
 ConversationModelPimpl::slotConversationMemberEvent(const QString& accountId,
                                  const QString& conversationId,
