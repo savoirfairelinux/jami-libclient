@@ -49,9 +49,10 @@ struct DataTransferInfo
     quint32 flags;
     qlonglong totalSize;
     qlonglong bytesProgress;
+    QString author;
     QString peer;
-    QString displayName;
     QString conversationId;
+    QString displayName;
     QString path;
     QString mimetype;
 };
