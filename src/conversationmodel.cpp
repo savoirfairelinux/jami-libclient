@@ -2863,7 +2863,7 @@ ConversationModel::acceptTransfer(const QString& convUid,
                                   const QString& interactionId,
                                   const QString& path)
 {
-    pimpl_->acceptTransfer(convUid, convUid, path);
+    pimpl_->acceptTransfer(convUid, interactionId, path);
 }
 
 void
