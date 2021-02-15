@@ -22,15 +22,16 @@
 
 ScreenSaver::ScreenSaver(QObject* parent)
 #ifdef Q_OS_LINUX
-    : QObject(parent),
-      sessionBus_(QDBusConnection::sessionBus()),
-      screenSaverInterface_(nullptr)
+    : QObject(parent)
+    , sessionBus_(QDBusConnection::sessionBus())
+    , screenSaverInterface_(nullptr)
 {
     request_ = 0u;
     createInterface();
 }
 #else
-    : QObject(parent) {}
+    : QObject(parent)
+{}
 #endif
 
 #ifdef Q_OS_LINUX
@@ -42,12 +43,12 @@ ScreenSaver::createInterface(void)
         return false;
     }
 
-    for(int i = 0; i <= N_SERVICES ; i++) {
+    for (int i = 0; i < N_SERVICES; i++) {
         screenSaverInterface_ = new QDBusInterface(services_[i],
                                                    paths_[i],
                                                    services_[i],
                                                    sessionBus_);
-        if (screenSaverInterface_->isValid()) {
+        if (screenSaverInterface_ && screenSaverInterface_->isValid()) {
             qDebug() << "Screen saver dbus interface: " << services_[i];
             return true;
         }
@@ -72,17 +73,14 @@ ScreenSaver::inhibit(void)
         }
     }
 
-    QDBusReply<uint> reply =
-            screenSaverInterface_->call("Inhibit", "jami-qt", "In a call");
+    QDBusReply<uint> reply = screenSaverInterface_->call("Inhibit", "jami-qt", "In a call");
     if (reply.isValid()) {
         qDebug() << "Screen saver inhibited";
         request_ = static_cast<uint>(reply.value());
         return true;
     } else {
         QDBusError error = reply.error();
-        qDebug() << "Error inhibiting screen saver: "
-                 << error.message()
-                 << error.name();
+        qDebug() << "Error inhibiting screen saver: " << error.message() << error.name();
     }
 #endif
     return false;
@@ -102,17 +100,14 @@ ScreenSaver::uninhibit(void)
         }
     }
 
-    QDBusReply<void> reply =
-            screenSaverInterface_->call("UnInhibit", static_cast<uint>(request_));
+    QDBusReply<void> reply = screenSaverInterface_->call("UnInhibit", static_cast<uint>(request_));
     if (reply.isValid()) {
         qDebug() << "Screen saver uninhibited";
         request_ = 0u;
         return true;
     } else {
         QDBusError error = reply.error();
-        qDebug() << "Error uninhibiting screen saver: "
-                 << error.message()
-                 << error.name();
+        qDebug() << "Error uninhibiting screen saver: " << error.message() << error.name();
     }
     request_ = 0u;
 #endif
