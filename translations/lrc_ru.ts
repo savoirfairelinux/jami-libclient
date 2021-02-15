@@ -1,4 +1,4 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="ru" sourcelanguage="en" version="2.0">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="ru" sourcelanguage="en" version="2.1">
 <context>
     <name>QObject</name>
     <message>
@@ -407,7 +407,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="32"/>
         <source>Show available plugins</source>
-        <translation type="unfinished"/>
+        <translation>Показать доступные плагины</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="33"/>
@@ -457,27 +457,27 @@
     <message>
         <location filename="../src/chatview.cpp" line="43"/>
         <source>Write to {0}</source>
-        <translation type="unfinished"/>
+        <translation>Запись в {0}</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="61"/>
         <source>Unable to make contact</source>
-        <translation type="unfinished"/>
+        <translation>Не удалось установить контакт</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="66"/>
         <source>Waiting for contact</source>
-        <translation type="unfinished"/>
+        <translation>Ожидание контакта</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="67"/>
         <source>Incoming transfer</source>
-        <translation type="unfinished"/>
+        <translation>Входящий перевод</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="68"/>
         <source>Timed out waiting for contact</source>
-        <translation type="unfinished"/>
+        <translation>Тайм-аут ожидания контакта</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="42"/>
@@ -522,7 +522,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="65"/>
         <source>Ongoing</source>
-        <translation type="unfinished"/>
+        <translation>Текущий</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="49"/>
@@ -567,7 +567,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="58"/>
         <source>Deny</source>
-        <translation type="unfinished"/>
+        <translation>Отказать</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="59"/>
@@ -583,22 +583,22 @@
 <context>
     <name>lrc::ContactModelPimpl</name>
     <message>
-        <location filename="../src/contactmodel.cpp" line="455"/>
+        <location filename="../src/contactmodel.cpp" line="459"/>
         <source>Searching…</source>
         <translation>Поиск…</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="950"/>
+        <location filename="../src/contactmodel.cpp" line="954"/>
         <source>Invalid ID</source>
         <translation>Неверный ID</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="953"/>
+        <location filename="../src/contactmodel.cpp" line="957"/>
         <source>Registered name not found</source>
         <translation>Зарегистрированное имя не найдено</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="956"/>
+        <location filename="../src/contactmodel.cpp" line="960"/>
         <source>Couldn&apos;t lookup…</source>
         <translation>Не могу найти ...</translation>
     </message>
@@ -606,7 +606,7 @@
 <context>
     <name>lrc::api::ContactModel</name>
     <message>
-        <location filename="../src/contactmodel.cpp" line="419"/>
+        <location filename="../src/contactmodel.cpp" line="420"/>
         <source>Bad URI scheme</source>
         <translation>Некорректная схема URI</translation>
     </message>

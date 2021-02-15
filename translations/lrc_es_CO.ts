@@ -1,46 +1,46 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="lt" sourcelanguage="en" version="2.1">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="es_CO" sourcelanguage="en" version="2.1">
 <context>
     <name>QObject</name>
     <message>
         <location filename="../src/qtwrapper/callmanager_wrap.h" line="328"/>
         <source>Me</source>
-        <translation>Aš</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/api/call.h" line="61"/>
         <source>Hold</source>
-        <translation>Užlaikyta</translation>
+        <translation>Poner en espera</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="63"/>
         <source>Talking</source>
-        <translation>Kalbama</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/api/call.h" line="65"/>
         <source>ERROR</source>
-        <translation>KLAIDA</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/api/call.h" line="67"/>
         <source>Incoming</source>
-        <translation>Gaunamasis</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/api/call.h" line="69"/>
         <source>Calling</source>
-        <translation>Skambinama</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/api/call.h" line="71"/>
         <location filename="../src/chatview.cpp" line="62"/>
         <source>Connecting</source>
-        <translation>Sujungiama</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/api/call.h" line="73"/>
         <source>Searching</source>
-        <translation>Ieškoma</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/api/call.h" line="75"/>
@@ -52,7 +52,7 @@
         <location filename="../src/api/call.h" line="83"/>
         <location filename="../src/chatview.cpp" line="69"/>
         <source>Finished</source>
-        <translation>Užbaigta</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/api/call.h" line="79"/>
@@ -67,32 +67,32 @@
     <message>
         <location filename="../src/api/call.h" line="85"/>
         <source>Communication established</source>
-        <translation>Ryšys užmegztas</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/authority/storagehelper.cpp" line="130"/>
         <location filename="../src/authority/storagehelper.cpp" line="898"/>
         <source>Invitation received</source>
-        <translation>Gautas pakvietimas</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/authority/storagehelper.cpp" line="127"/>
         <location filename="../src/authority/storagehelper.cpp" line="896"/>
         <source>Contact added</source>
-        <translation>Adresatas pridėtas</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/authority/storagehelper.cpp" line="104"/>
         <location filename="../src/authority/storagehelper.cpp" line="110"/>
         <location filename="../src/authority/storagehelper.cpp" line="894"/>
         <source>Outgoing call</source>
-        <translation>Išsiunčiamasis skambutis</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/authority/storagehelper.cpp" line="106"/>
         <location filename="../src/authority/storagehelper.cpp" line="116"/>
         <source>Incoming call</source>
-        <translation>Gaunamasis skambutis</translation>
+        <translation>Llamada entrante</translation>
     </message>
     <message>
         <location filename="../src/authority/storagehelper.cpp" line="112"/>
@@ -103,13 +103,13 @@
     <message>
         <location filename="../src/authority/storagehelper.cpp" line="118"/>
         <source>Missed incoming call</source>
-        <translation>Praleistas gaunamasis skambutis</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/authority/storagehelper.cpp" line="132"/>
         <location filename="../src/authority/storagehelper.cpp" line="900"/>
         <source>Invitation accepted</source>
-        <translation>Pakvietimas priimtas</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/avmodel.cpp" line="335"/>
@@ -125,12 +125,12 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="54"/>
         <source>Trying</source>
-        <translation>Bandoma</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="55"/>
         <source>Ringing</source>
-        <translation>Skambina</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="56"/>
@@ -150,7 +150,7 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="59"/>
         <source>OK</source>
-        <translation>Gerai</translation>
+        <translation>Aceptar</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="63"/>
@@ -186,7 +186,7 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="66"/>
         <source>Bad Request</source>
-        <translation>Bloga Užklausa</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="67"/>
@@ -201,12 +201,12 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="69"/>
         <source>Forbidden</source>
-        <translation>Neleidžiama</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="70"/>
         <source>Not Found</source>
-        <translation>Nerasta</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="71"/>
@@ -227,7 +227,7 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="74"/>
         <source>Request Timeout</source>
-        <translation>Užklausos laikas baigėsi</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="75"/>
@@ -252,7 +252,7 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="79"/>
         <source>Unsupported URI Scheme</source>
-        <translation>Nepalaikoma URI schema</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="80"/>
@@ -287,7 +287,7 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="86"/>
         <source>Loop Detected</source>
-        <translation>Aptiktas ciklas</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="87"/>
@@ -297,7 +297,7 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="88"/>
         <source>Address Incomplete</source>
-        <translation>Nepilnas adresas</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="89"/>
@@ -307,7 +307,7 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="90"/>
         <source>Busy</source>
-        <translation>Užimta</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="91"/>
@@ -317,7 +317,7 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="93"/>
         <source>Bad Event</source>
-        <translation>Blogas įvykis</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="94"/>
@@ -337,17 +337,17 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="97"/>
         <source>Internal Server Error</source>
-        <translation>Vidinė Serverio Klaida</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="98"/>
         <source>Not Implemented</source>
-        <translation>Neįgyvendinta</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="99"/>
         <source>Bad Gateway</source>
-        <translation>Blogas Tinklų Sietuvas</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="100"/>
@@ -362,7 +362,7 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="102"/>
         <source>Version Not Supported</source>
-        <translation>Versija nėra palaikoma</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="103"/>
@@ -397,12 +397,12 @@
     <message>
         <location filename="../src/chatview.cpp" line="30"/>
         <source>Hide chat view</source>
-        <translation>Slėpti pokalbio rodinį</translation>
+        <translation>Ocultar vista de charla</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="31"/>
         <source>Place video call</source>
-        <translation>Pradėti vaizdo skambutį</translation>
+        <translation>Hacer videollamada</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="32"/>
@@ -412,22 +412,22 @@
     <message>
         <location filename="../src/chatview.cpp" line="33"/>
         <source>Place audio call</source>
-        <translation>Pradėti garso skambutį</translation>
+        <translation>Hacer llamada de voz</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="34"/>
         <source>Add to conversations</source>
-        <translation type="unfinished"/>
+        <translation>Agregar a conversaciones</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="35"/>
         <source>Unban contact</source>
-        <translation type="unfinished"/>
+        <translation>Desbloquear contacto</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="36"/>
         <source>Send</source>
-        <translation>Siųsti</translation>
+        <translation>Enviar</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="37"/>
@@ -442,7 +442,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="39"/>
         <source>Send file</source>
-        <translation>Siųsti failą</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="40"/>
@@ -482,12 +482,12 @@
     <message>
         <location filename="../src/chatview.cpp" line="42"/>
         <source>Block</source>
-        <translation>Užblokuoti</translation>
+        <translation>Bloquear</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="45"/>
         <source>Note: an interaction will create a new contact.</source>
-        <translation>Pastaba: sąveika sukurs naują adresatą.</translation>
+        <translation>Nota: la interacción creará un contacto nuevo.</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="46"/>
@@ -497,7 +497,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="48"/>
         <source>Note: you can automatically accept this invitation by sending a message.</source>
-        <translation>Pastaba: galite automatiškai priimti šį pakvietimą išsiųsdami žinutę.</translation>
+        <translation>Nota: puede aceptar automáticamente esta invitación enviando un mensaje.</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="49"/>
@@ -517,7 +517,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="64"/>
         <source>Canceled</source>
-        <translation>Atsisakyta</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="65"/>
@@ -527,42 +527,42 @@
     <message>
         <location filename="../src/chatview.cpp" line="49"/>
         <source>%d days ago</source>
-        <translation>prieš %d d.</translation>
+        <translation>Hace %d días</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="50"/>
         <source>%d hours ago</source>
-        <translation>prieš %d val.</translation>
+        <translation>hace %d horas</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="52"/>
         <source>%d minutes ago</source>
-        <translation>prieš %d min.</translation>
+        <translation>hace %d minutos</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="53"/>
         <source>one day ago</source>
-        <translation>prieš vieną dieną</translation>
+        <translation>hace un día</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="54"/>
         <source>one hour ago</source>
-        <translation>prieš vieną valandą</translation>
+        <translation>hace una hora</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="55"/>
         <source>just now</source>
-        <translation>ką tik</translation>
+        <translation>hace unos segundos</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="56"/>
         <source>Failure</source>
-        <translation>Nesėkmė</translation>
+        <translation>Falló</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="57"/>
         <source>Confirm</source>
-        <translation>Patvirtinti</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="58"/>
@@ -572,12 +572,12 @@
     <message>
         <location filename="../src/chatview.cpp" line="59"/>
         <source>Delete</source>
-        <translation>Ištrinti</translation>
+        <translation>Borrar</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="60"/>
         <source>Retry</source>
-        <translation type="unfinished"/>
+        <translation>Reintentar</translation>
     </message>
 </context>
 <context>
@@ -585,12 +585,12 @@
     <message>
         <location filename="../src/contactmodel.cpp" line="459"/>
         <source>Searching…</source>
-        <translation>Ieškoma…</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/contactmodel.cpp" line="954"/>
         <source>Invalid ID</source>
-        <translation>Neteisingas ID</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/contactmodel.cpp" line="957"/>
@@ -608,7 +608,7 @@
     <message>
         <location filename="../src/contactmodel.cpp" line="420"/>
         <source>Bad URI scheme</source>
-        <translation>Bloga URI schema</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 </TS>
