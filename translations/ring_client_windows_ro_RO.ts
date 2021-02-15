@@ -669,6 +669,11 @@ Jami se va închide acum.</translation>
         <translation>Alege frecvența video (imagini/secundă)</translation>
     </message>
     <message>
+        <location filename="../src/constant/JamiStrings.qml" line="161"/>
+        <source>Your account only exists on this device. If you lose your device or uninstall the application, your account will be deleted and can not be recovered. You can backup your account now or later.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/constant/JamiStrings.qml" line="185"/>
         <source>End call</source>
         <translation>Închide apelul</translation>
@@ -711,7 +716,7 @@ Jami se va închide acum.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="224"/>
         <source>Choose a password to encrypt your account on this device. Note that the password cannot be recovered.</source>
-        <translation>Alege o parolă pentru a cifra contul tău pe acest aparat. Reține că parola nu poate fi recuperată.</translation>
+        <translation>Alege o parolă pentru a cifra contul tău în acest aparat. Reține că parola nu poate fi recuperată.</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="226"/>
@@ -719,9 +724,24 @@ Jami se va închide acum.</translation>
         <translation>Alege un nume pentru locul de întîlnire</translation>
     </message>
     <message>
+        <location filename="../src/constant/JamiStrings.qml" line="266"/>
+        <source>If your account has not been backed up or added to another device, your account and registered name will be irrevocably lost.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/constant/JamiStrings.qml" line="278"/>
         <source>Launch at startup</source>
         <translation>Pornește odată cu aparatul</translation>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="285"/>
+        <source>Enable typing indicators</source>
+        <translation>Arată indicatorul de scriere</translation>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="286"/>
+        <source>Display images and videos in the chatview</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="298"/>
@@ -1059,11 +1079,6 @@ Jami se va închide acum.</translation>
         <translation>Previzualizare indisponibilă</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="161"/>
-        <source>Your account only exists on this device. If you lost your device or uninstall the application, your account will be deleted and can not be recovered. You can backup your account now or later.</source>
-        <translation>Acest cont există doar în acest aparat. Dacă ai pierdut aparatul sau ai dezinstalat aplicația, contul tău va fi șters și nu va putea fi recuperat. Poți face o copie de rezervă acum sau mai tîrziu.</translation>
-    </message>
-    <message>
         <location filename="../src/constant/JamiStrings.qml" line="165"/>
         <source>Backup account here</source>
         <translation>Fă aici o copie de rezervă a contului</translation>
@@ -1387,11 +1402,6 @@ Jami se va închide acum.</translation>
         <translation>Chiar vrei să ștergi acest cont?</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="266"/>
-        <source>If your account has not been backuped, or added to another device, your account and registered name will be irrevocably lost.</source>
-        <translation>Dacă acest cont nu a fost asociat altui aparat și nu ai o copie de rezervă, va fi pierdut definitiv.</translation>
-    </message>
-    <message>
         <location filename="../src/constant/JamiStrings.qml" line="269"/>
         <source>Edit device name</source>
         <translation>Modifică numele aparatului</translation>
@@ -1445,16 +1455,6 @@ Jami se va închide acum.</translation>
         <location filename="../src/constant/JamiStrings.qml" line="284"/>
         <source>Chatview</source>
         <translation>Discuție</translation>
-    </message>
-    <message>
-        <location filename="../src/constant/JamiStrings.qml" line="285"/>
-        <source>Show typing indicator</source>
-        <translation>Arată indicatorul de scriere</translation>
-    </message>
-    <message>
-        <location filename="../src/constant/JamiStrings.qml" line="286"/>
-        <source>Display images and videos into the chatview</source>
-        <translation>Arată imagini și video în discuție</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="289"/>
@@ -1897,46 +1897,46 @@ Jami se va închide acum.</translation>
 <context>
     <name>LinkDeviceDialog</name>
     <message>
-        <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="221"/>
+        <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="202"/>
         <source>Cancel</source>
         <translation>Renunță</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="104"/>
+        <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="87"/>
         <source>Error connecting to the network.
 Please try again later.</source>
         <translation>Eroare la conectarea la rețea.
 Încearcă din nou mai tîrziu.</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="108"/>
+        <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="91"/>
         <source>Something went wrong.
 </source>
         <translation>Ceva n-a mers bine.
 </translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="201"/>
+        <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="182"/>
         <source>Register</source>
         <translation>Înscrie-te</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="295"/>
+        <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="276"/>
         <source>Your PIN is:</source>
         <translation>Codul tău PIN e:</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="306"/>
+        <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="287"/>
         <source>PIN</source>
         <translation>PIN</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="327"/>
+        <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="308"/>
         <source>This pin and the account password should be entered in your device within 10 minutes.</source>
         <translation>Acest cod PIN și parola contului trebuie introduse în aparat în 10 minute.</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="100"/>
+        <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="83"/>
         <source>Incorrect password</source>
         <translation>Parolă greșită</translation>
     </message>
@@ -1972,35 +1972,9 @@ Please try again later.</source>
 <context>
     <name>MainApplication</name>
     <message>
-        <location filename="../src/mainapplication.cpp" line="385"/>
+        <location filename="../src/mainapplication.cpp" line="386"/>
         <source>Exit</source>
         <translation>Ieșire</translation>
-    </message>
-</context>
-<context>
-    <name>MediaHandlerItemDelegate</name>
-    <message>
-        <location filename="../src/mainview/components/MediaHandlerItemDelegate.qml" line="87"/>
-        <source>On/Off</source>
-        <translation>Pornit/Oprit</translation>
-    </message>
-</context>
-<context>
-    <name>MediaHandlerPicker</name>
-    <message>
-        <location filename="../src/mainview/components/MediaHandlerPicker.qml" line="92"/>
-        <source>Choose plugin</source>
-        <translation>Alege extensia</translation>
-    </message>
-    <message>
-        <location filename="../src/mainview/components/MediaHandlerPicker.qml" line="155"/>
-        <source>Go back to plugins list</source>
-        <translation>Întoarce-te  la extensii</translation>
-    </message>
-    <message>
-        <location filename="../src/mainview/components/MediaHandlerPicker.qml" line="197"/>
-        <source>Preferences</source>
-        <translation>Preferințe</translation>
     </message>
 </context>
 <context>
@@ -2070,9 +2044,35 @@ Please try again later.</source>
     </message>
 </context>
 <context>
+    <name>PluginHandlerItemDelegate</name>
+    <message>
+        <location filename="../src/mainview/components/PluginHandlerItemDelegate.qml" line="87"/>
+        <source>On/Off</source>
+        <translation>Pornit/Oprit</translation>
+    </message>
+</context>
+<context>
+    <name>PluginHandlerPicker</name>
+    <message>
+        <location filename="../src/mainview/components/PluginHandlerPicker.qml" line="121"/>
+        <source>Choose plugin</source>
+        <translation>Alege extensia</translation>
+    </message>
+    <message>
+        <location filename="../src/mainview/components/PluginHandlerPicker.qml" line="208"/>
+        <source>Go back to plugins list</source>
+        <translation>Întoarce-te  la extensii</translation>
+    </message>
+    <message>
+        <location filename="../src/mainview/components/PluginHandlerPicker.qml" line="227"/>
+        <source>Preferences</source>
+        <translation>Preferințe</translation>
+    </message>
+</context>
+<context>
     <name>PluginItemDelegate</name>
     <message>
-        <location filename="../src/settingsview/components/PluginItemDelegate.qml" line="81"/>
+        <location filename="../src/settingsview/components/PluginItemDelegate.qml" line="107"/>
         <source>Load/Unload</source>
         <translation>Pornește/Oprește</translation>
     </message>
@@ -2080,27 +2080,27 @@ Please try again later.</source>
 <context>
     <name>PluginListPreferencesView</name>
     <message>
-        <location filename="../src/settingsview/components/PluginListPreferencesView.qml" line="73"/>
+        <location filename="../src/settingsview/components/PluginListPreferencesView.qml" line="85"/>
         <source>Uninstall plugin</source>
         <translation>Dezinstalează extensia</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/PluginListPreferencesView.qml" line="52"/>
+        <location filename="../src/settingsview/components/PluginListPreferencesView.qml" line="64"/>
         <source>Reset preferences</source>
         <translation>Restabilește preferințele inițiale</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/PluginListPreferencesView.qml" line="95"/>
+        <location filename="../src/settingsview/components/PluginListPreferencesView.qml" line="110"/>
         <source>Ok</source>
         <translation>Ok</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/PluginListPreferencesView.qml" line="95"/>
+        <location filename="../src/settingsview/components/PluginListPreferencesView.qml" line="110"/>
         <source>Cancel</source>
         <translation>Renunță</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/PluginListPreferencesView.qml" line="171"/>
+        <location filename="../src/settingsview/components/PluginListPreferencesView.qml" line="181"/>
         <source>Uninstall</source>
         <translation>Dezinstalează</translation>
     </message>
@@ -2108,17 +2108,17 @@ Please try again later.</source>
 <context>
     <name>PluginListSettingsView</name>
     <message>
-        <location filename="../src/settingsview/components/PluginListSettingsView.qml" line="87"/>
+        <location filename="../src/settingsview/components/PluginListSettingsView.qml" line="67"/>
         <source>Plugin Files</source>
         <translation>Extensii</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/PluginListSettingsView.qml" line="87"/>
+        <location filename="../src/settingsview/components/PluginListSettingsView.qml" line="67"/>
         <source>All files</source>
         <translation>Toate fișierele</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/PluginListSettingsView.qml" line="106"/>
+        <location filename="../src/settingsview/components/PluginListSettingsView.qml" line="87"/>
         <source>Installed plugins</source>
         <translation>Extensii instalate</translation>
     </message>
@@ -2126,7 +2126,7 @@ Please try again later.</source>
 <context>
     <name>PreferenceItemDelegate</name>
     <message>
-        <location filename="../src/commoncomponents/PreferenceItemDelegate.qml" line="119"/>
+        <location filename="../src/commoncomponents/PreferenceItemDelegate.qml" line="132"/>
         <source>Edit preference</source>
         <translation>Modifică preferința</translation>
     </message>
@@ -2157,17 +2157,17 @@ Please try again later.</source>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/utils.cpp" line="397"/>
+        <location filename="../src/utils.cpp" line="476"/>
         <source>Created by:</source>
         <translation>Creat de:</translation>
     </message>
     <message>
-        <location filename="../src/utils.cpp" line="403"/>
+        <location filename="../src/utils.cpp" line="482"/>
         <source>Artwork by:</source>
         <translation>Grafică de:</translation>
     </message>
     <message>
-        <location filename="../src/utils.cpp" line="411"/>
+        <location filename="../src/utils.cpp" line="490"/>
         <source>Based on the SFLPhone project</source>
         <translation>Bazat pe proiectul SFLPhone</translation>
     </message>

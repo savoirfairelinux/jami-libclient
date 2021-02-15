@@ -12,7 +12,7 @@
     <message>
         <location filename="../src/mainview/components/AccountComboBoxPopup.qml" line="169"/>
         <source>Add Account</source>
-        <translation>Lisää tili</translation>
+        <translation>Lisää tunnus</translation>
     </message>
 </context>
 <context>
@@ -96,7 +96,7 @@
     <message>
         <location filename="../src/settingsview/components/AdvancedSettings.qml" line="68"/>
         <source>Advanced Account Settings</source>
-        <translation>Tilin lisäasetukset</translation>
+        <translation>Tunnuksen lisäasetukset</translation>
     </message>
 </context>
 <context>
@@ -220,7 +220,7 @@
     <message>
         <location filename="../src/wizardview/components/CreateAccountPage.qml" line="127"/>
         <source>Choose a username for your account</source>
-        <translation>Valitse tilillesi käyttäjänimi</translation>
+        <translation>Valitse tunnuksellesi käyttäjänimi</translation>
     </message>
     <message>
         <location filename="../src/wizardview/components/CreateAccountPage.qml" line="155"/>
@@ -365,7 +365,7 @@ Jami sulkeutuu nyt.</translation>
     <message>
         <location filename="../src/wizardview/components/ImportFromBackupPage.qml" line="158"/>
         <source>Generating account…</source>
-        <translation>Luodaan tiliä…</translation>
+        <translation>Luodaan tunnusta…</translation>
     </message>
     <message>
         <location filename="../src/wizardview/components/ImportFromBackupPage.qml" line="203"/>
@@ -388,7 +388,7 @@ Jami sulkeutuu nyt.</translation>
     <message>
         <location filename="../src/wizardview/components/ImportFromDevicePage.qml" line="139"/>
         <source>Generating account…</source>
-        <translation>Luodaan tiliä…</translation>
+        <translation>Luodaan tunnusta…</translation>
     </message>
     <message>
         <location filename="../src/wizardview/components/ImportFromDevicePage.qml" line="179"/>
@@ -476,7 +476,7 @@ Jami sulkeutuu nyt.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="51"/>
         <source>Delete account</source>
-        <translation>Poista tili</translation>
+        <translation>Poista tunnus</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="53"/>
@@ -516,7 +516,7 @@ Jami sulkeutuu nyt.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="61"/>
         <source>Convert your account into a rendezvous point</source>
-        <translation>Muunna tilisi tapaamispaikaksi</translation>
+        <translation>Muunna tunnus tapaamispaikaksi</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="62"/>
@@ -669,6 +669,11 @@ Jami sulkeutuu nyt.</translation>
         <translation>Valitse videon nopeus (kuvaa sekunnissa)</translation>
     </message>
     <message>
+        <location filename="../src/constant/JamiStrings.qml" line="161"/>
+        <source>Your account only exists on this device. If you lose your device or uninstall the application, your account will be deleted and can not be recovered. You can backup your account now or later.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/constant/JamiStrings.qml" line="185"/>
         <source>End call</source>
         <translation>Lopeta puhelu</translation>
@@ -696,12 +701,12 @@ Jami sulkeutuu nyt.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="214"/>
         <source>Creating account…</source>
-        <translation>Luodaan tiliä...</translation>
+        <translation>Luodaan tunnusta...</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="220"/>
         <source>Encrypt account with password</source>
-        <translation>Salaa tili salasanalla</translation>
+        <translation>Salaa tunnus salasanalla</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="221"/>
@@ -711,7 +716,7 @@ Jami sulkeutuu nyt.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="224"/>
         <source>Choose a password to encrypt your account on this device. Note that the password cannot be recovered.</source>
-        <translation>Valitse salasana, joka salaa tilisi tällä laitteella. Huomaa, että salasanaa ei voi palauttaa.</translation>
+        <translation>Valitse salasana, joka salaa tunnuksen tällä laitteella. Huomaa, että salasanaa ei voi palauttaa.</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="226"/>
@@ -719,9 +724,24 @@ Jami sulkeutuu nyt.</translation>
         <translation>Valitse tapaamispaikan nimi</translation>
     </message>
     <message>
+        <location filename="../src/constant/JamiStrings.qml" line="266"/>
+        <source>If your account has not been backed up or added to another device, your account and registered name will be irrevocably lost.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/constant/JamiStrings.qml" line="278"/>
         <source>Launch at startup</source>
         <translation>Käynnistä käynnistettäessä</translation>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="285"/>
+        <source>Enable typing indicators</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="286"/>
+        <source>Display images and videos in the chatview</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="298"/>
@@ -736,7 +756,7 @@ Jami sulkeutuu nyt.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="320"/>
         <source>Enter the PIN from another configured Jami account. Use the &quot;Link Another Device&quot; feature to obtain a PIN.</source>
-        <translation>Syötä toisen määritetyn Jami-tilin PIN-koodi. Käytä PIN-koodin &quot;Yhdistä toinen laite&quot; -ominaisuutta.</translation>
+        <translation>Syötä toisen määritetyn Jami tunnuksen PIN-koodi. Käytä PIN-koodin &quot;Yhdistä toinen laite&quot; -ominaisuutta.</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="322"/>
@@ -791,7 +811,7 @@ Jami sulkeutuu nyt.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="390"/>
         <source>Create account from Jami Account Management Server (JAMS)</source>
-        <translation>Luo tili Jami Account Management Server (JAMS) palvelimeen</translation>
+        <translation>Luo tunnus Jami Account Management Server (JAMS) palvelimeen</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="393"/>
@@ -801,7 +821,7 @@ Jami sulkeutuu nyt.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="394"/>
         <source>Create a Jami account</source>
-        <translation>Luo Jami-tili</translation>
+        <translation>Luo Jami tunnus</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="395"/>
@@ -1059,14 +1079,9 @@ Jami sulkeutuu nyt.</translation>
         <translation>Esikatselua ei käytettävissä</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="161"/>
-        <source>Your account only exists on this device. If you lost your device or uninstall the application, your account will be deleted and can not be recovered. You can backup your account now or later.</source>
-        <translation>Tilisi on olemassa vain tällä laitteella. Jos kadotat laitteen tai poistat sovelluksen asennuksen, tilisi poistetaan eikä sitä voi palauttaa. Voit varmuuskopioida tilisi nyt tai myöhemmin.</translation>
-    </message>
-    <message>
         <location filename="../src/constant/JamiStrings.qml" line="165"/>
         <source>Backup account here</source>
-        <translation>Varmuuskopioi tili täällä</translation>
+        <translation>Varmuuskopioi tunnus täällä</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="166"/>
@@ -1076,7 +1091,7 @@ Jami sulkeutuu nyt.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="167"/>
         <source>Backup account</source>
-        <translation>Varmuuskopioi tili</translation>
+        <translation>Varmuuskopioi tunnus</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="168"/>
@@ -1253,7 +1268,7 @@ Jami sulkeutuu nyt.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="222"/>
         <source>Create account</source>
-        <translation>Luo tili</translation>
+        <translation>Luo tunnus</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="223"/>
@@ -1278,12 +1293,12 @@ Jami sulkeutuu nyt.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="231"/>
         <source>Create SIP account</source>
-        <translation>Luo SIP-tili</translation>
+        <translation>Luo SIP tunnus</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="232"/>
         <source>Configure an existing SIP account</source>
-        <translation>Määritä olemassa oleva SIP-tili</translation>
+        <translation>Määritä olemassa oleva SIP tunnus</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="235"/>
@@ -1334,7 +1349,7 @@ Jami sulkeutuu nyt.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="245"/>
         <source>Backup account to a .gz file</source>
-        <translation>Varmuuskopioi tili .gz-tiedostoon</translation>
+        <translation>Varmuuskopioi tunnus .gz-tiedostoon</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="246"/>
@@ -1344,7 +1359,7 @@ Jami sulkeutuu nyt.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="247"/>
         <source>Enable account</source>
-        <translation>Hyväksy tili</translation>
+        <translation>Hyväksy tunnus</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="250"/>
@@ -1369,7 +1384,7 @@ Jami sulkeutuu nyt.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="258"/>
         <source>Link a new device to this account</source>
-        <translation>Linkitä uusi laite tähän tiliin</translation>
+        <translation>Linkitä uusi laite tähän tunnukseen</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="259"/>
@@ -1384,12 +1399,7 @@ Jami sulkeutuu nyt.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="265"/>
         <source>Do you really want to delete this account?</source>
-        <translation>Haluatko varmasti poistaa tämän tilin?</translation>
-    </message>
-    <message>
-        <location filename="../src/constant/JamiStrings.qml" line="266"/>
-        <source>If your account has not been backuped, or added to another device, your account and registered name will be irrevocably lost.</source>
-        <translation>Jos tiliäsi ei ole varmuuskopioitu tai lisätty toiseen laitteeseen, tilisi ja rekisteröity nimi menetetään lopullisesti.</translation>
+        <translation>Haluatko varmasti poistaa tämän tunnuksen?</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="269"/>
@@ -1399,7 +1409,7 @@ Jami sulkeutuu nyt.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="270"/>
         <source>Unlink device from account</source>
-        <translation>Poista laitteen linkitys tililtä</translation>
+        <translation>Poista laitteen linkitys tunnukselta</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="273"/>
@@ -1445,16 +1455,6 @@ Jami sulkeutuu nyt.</translation>
         <location filename="../src/constant/JamiStrings.qml" line="284"/>
         <source>Chatview</source>
         <translation>Chat-näkymä</translation>
-    </message>
-    <message>
-        <location filename="../src/constant/JamiStrings.qml" line="285"/>
-        <source>Show typing indicator</source>
-        <translation>Näytä kirjoituksen osoitin</translation>
-    </message>
-    <message>
-        <location filename="../src/constant/JamiStrings.qml" line="286"/>
-        <source>Display images and videos into the chatview</source>
-        <translation>Näytä kuvat ja videot chat-näkymään</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="289"/>
@@ -1541,27 +1541,27 @@ Haluatko päivittää nyt?</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="312"/>
         <source>Create your account from a backup</source>
-        <translation>Luo tili varmuuskopiosta</translation>
+        <translation>Luo tunnus varmuuskopiosta</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="313"/>
         <source>You can obtain an archive by clicking on &quot;Backup account&quot; in the account settings. This will create a .gz file on your device.</source>
-        <translation>Voit tehdä pakatun varmistuksen napsauttamalla &quot;Varmuuskopioi tili&quot;  Tilin asetuksissa. Tämä luo gz-tiedoston laitteellesi.</translation>
+        <translation>Voit tehdä pakatun varmistuksen napsauttamalla &quot;Varmuuskopioi tunnus&quot;  Tunnuksen asetuksissa. Tämä luo gz-tiedoston laitteellesi.</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="316"/>
         <source>Restore an account from backup</source>
-        <translation>Tilin palauttaminen varmuuskopiosta</translation>
+        <translation>Tunnuksen palauttaminen varmuuskopiosta</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="319"/>
         <source>Enter Jami account password</source>
-        <translation>Anna Jami-tilin salasana</translation>
+        <translation>Anna Jami tunnuksen salasana</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="328"/>
         <source>The PIN and the account password should be entered in your device within 10 minutes.</source>
-        <translation>PIN-koodi ja tilin salasana tulee antaa laitteellesi 10 minuutin kuluessa.</translation>
+        <translation>PIN-koodi ja tunnuksen salasana tulee antaa laitteellesi 10 minuutin kuluessa.</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="329"/>
@@ -1656,7 +1656,7 @@ Haluatko päivittää nyt?</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="373"/>
         <source>Enter the account password to confirm the removal of this device</source>
-        <translation>Vahvista laitteen poisto antamalla tilin salasana</translation>
+        <translation>Vahvista laitteen poisto antamalla tunnuksen salasana</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="376"/>
@@ -1671,7 +1671,7 @@ Haluatko päivittää nyt?</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="382"/>
         <source>Account QR</source>
-        <translation>Tilin QR</translation>
+        <translation>Tunnuksen QR</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="385"/>
@@ -1683,7 +1683,7 @@ Kopioi ja jaa se ystäviesi kanssa!</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="386"/>
         <source>Link this device to an existing account</source>
-        <translation>Yhdistä tämä laite olemassa olevaan tiliin</translation>
+        <translation>Yhdistä tämä laite olemassa olevaan tunnukseen</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="387"/>
@@ -1703,12 +1703,12 @@ Kopioi ja jaa se ystäviesi kanssa!</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="391"/>
         <source>Add a SIP account</source>
-        <translation>Lisää SIP-tili</translation>
+        <translation>Lisää SIP tunnus</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="392"/>
         <source>Error while creating your account. Check your credentials.</source>
-        <translation>Virhe luotaessa tiliä. Tarkista kirjautumistietosi.</translation>
+        <translation>Virhe luotaessa tunnusta. Tarkista kirjautumistietosi.</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="409"/>
@@ -1796,7 +1796,7 @@ Jami sulkeutuu nyt.</translation>
     <message>
         <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="46"/>
         <source>Open account list</source>
-        <translation>Avaa tililuettelo</translation>
+        <translation>Avaa tunnusluettelo</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="51"/>
@@ -1866,12 +1866,12 @@ Jami sulkeutuu nyt.</translation>
     <message>
         <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="122"/>
         <source>Account settings</source>
-        <translation>Tilin asetukset</translation>
+        <translation>Tunnuksen asetukset</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="127"/>
         <source>Open account creation wizard</source>
-        <translation>Ohjattu tilin luominen</translation>
+        <translation>Ohjattu tunnuksen luominen</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="132"/>
@@ -1897,46 +1897,46 @@ Jami sulkeutuu nyt.</translation>
 <context>
     <name>LinkDeviceDialog</name>
     <message>
-        <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="221"/>
+        <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="202"/>
         <source>Cancel</source>
         <translation>Peruuta</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="104"/>
+        <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="87"/>
         <source>Error connecting to the network.
 Please try again later.</source>
         <translation>Virhe yhdistettäessä verkkoon.
 Yritä myöhemmin uudelleen.</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="108"/>
+        <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="91"/>
         <source>Something went wrong.
 </source>
         <translation>Jokin meni pieleen.
 </translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="201"/>
+        <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="182"/>
         <source>Register</source>
         <translation>Rekistöröi</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="295"/>
+        <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="276"/>
         <source>Your PIN is:</source>
         <translation>Sinun PIN on:</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="306"/>
+        <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="287"/>
         <source>PIN</source>
         <translation>PIN</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="327"/>
+        <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="308"/>
         <source>This pin and the account password should be entered in your device within 10 minutes.</source>
         <translation>Tämä pin-koodi ja tunnuksen salasana on syötettävä laitteeseesi 10 minuutin kuluessa.</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="100"/>
+        <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="83"/>
         <source>Incorrect password</source>
         <translation>Väärä salasana</translation>
     </message>
@@ -1972,35 +1972,9 @@ Yritä myöhemmin uudelleen.</translation>
 <context>
     <name>MainApplication</name>
     <message>
-        <location filename="../src/mainapplication.cpp" line="385"/>
+        <location filename="../src/mainapplication.cpp" line="386"/>
         <source>Exit</source>
         <translation>Poistu</translation>
-    </message>
-</context>
-<context>
-    <name>MediaHandlerItemDelegate</name>
-    <message>
-        <location filename="../src/mainview/components/MediaHandlerItemDelegate.qml" line="87"/>
-        <source>On/Off</source>
-        <translation>Päällä/pois</translation>
-    </message>
-</context>
-<context>
-    <name>MediaHandlerPicker</name>
-    <message>
-        <location filename="../src/mainview/components/MediaHandlerPicker.qml" line="92"/>
-        <source>Choose plugin</source>
-        <translation>Valitse laajennus</translation>
-    </message>
-    <message>
-        <location filename="../src/mainview/components/MediaHandlerPicker.qml" line="155"/>
-        <source>Go back to plugins list</source>
-        <translation>Palaa laajennusten luetteloon</translation>
-    </message>
-    <message>
-        <location filename="../src/mainview/components/MediaHandlerPicker.qml" line="197"/>
-        <source>Preferences</source>
-        <translation>Asetukset</translation>
     </message>
 </context>
 <context>
@@ -2070,9 +2044,35 @@ Yritä myöhemmin uudelleen.</translation>
     </message>
 </context>
 <context>
+    <name>PluginHandlerItemDelegate</name>
+    <message>
+        <location filename="../src/mainview/components/PluginHandlerItemDelegate.qml" line="87"/>
+        <source>On/Off</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>PluginHandlerPicker</name>
+    <message>
+        <location filename="../src/mainview/components/PluginHandlerPicker.qml" line="121"/>
+        <source>Choose plugin</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mainview/components/PluginHandlerPicker.qml" line="208"/>
+        <source>Go back to plugins list</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mainview/components/PluginHandlerPicker.qml" line="227"/>
+        <source>Preferences</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>PluginItemDelegate</name>
     <message>
-        <location filename="../src/settingsview/components/PluginItemDelegate.qml" line="81"/>
+        <location filename="../src/settingsview/components/PluginItemDelegate.qml" line="107"/>
         <source>Load/Unload</source>
         <translation>Lataa/poista</translation>
     </message>
@@ -2080,27 +2080,27 @@ Yritä myöhemmin uudelleen.</translation>
 <context>
     <name>PluginListPreferencesView</name>
     <message>
-        <location filename="../src/settingsview/components/PluginListPreferencesView.qml" line="73"/>
+        <location filename="../src/settingsview/components/PluginListPreferencesView.qml" line="85"/>
         <source>Uninstall plugin</source>
         <translation>Poista laajennus</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/PluginListPreferencesView.qml" line="52"/>
+        <location filename="../src/settingsview/components/PluginListPreferencesView.qml" line="64"/>
         <source>Reset preferences</source>
         <translation>Nollaa asetukset</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/PluginListPreferencesView.qml" line="95"/>
+        <location filename="../src/settingsview/components/PluginListPreferencesView.qml" line="110"/>
         <source>Ok</source>
         <translation>Vahvista</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/PluginListPreferencesView.qml" line="95"/>
+        <location filename="../src/settingsview/components/PluginListPreferencesView.qml" line="110"/>
         <source>Cancel</source>
         <translation>Peruuta</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/PluginListPreferencesView.qml" line="171"/>
+        <location filename="../src/settingsview/components/PluginListPreferencesView.qml" line="181"/>
         <source>Uninstall</source>
         <translation>Poista asennus</translation>
     </message>
@@ -2108,17 +2108,17 @@ Yritä myöhemmin uudelleen.</translation>
 <context>
     <name>PluginListSettingsView</name>
     <message>
-        <location filename="../src/settingsview/components/PluginListSettingsView.qml" line="87"/>
+        <location filename="../src/settingsview/components/PluginListSettingsView.qml" line="67"/>
         <source>Plugin Files</source>
         <translation>Laajennukset</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/PluginListSettingsView.qml" line="87"/>
+        <location filename="../src/settingsview/components/PluginListSettingsView.qml" line="67"/>
         <source>All files</source>
         <translation>Kaikki tiedostot</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/PluginListSettingsView.qml" line="106"/>
+        <location filename="../src/settingsview/components/PluginListSettingsView.qml" line="87"/>
         <source>Installed plugins</source>
         <translation>Asennetut laajennukset</translation>
     </message>
@@ -2126,7 +2126,7 @@ Yritä myöhemmin uudelleen.</translation>
 <context>
     <name>PreferenceItemDelegate</name>
     <message>
-        <location filename="../src/commoncomponents/PreferenceItemDelegate.qml" line="119"/>
+        <location filename="../src/commoncomponents/PreferenceItemDelegate.qml" line="132"/>
         <source>Edit preference</source>
         <translation>Muokkaa asetuksia</translation>
     </message>
@@ -2151,23 +2151,23 @@ Yritä myöhemmin uudelleen.</translation>
     <message>
         <location filename="../src/wizardview/components/ProfilePage.qml" line="151"/>
         <source>Generating account…</source>
-        <translation>Luodaan tiliä…</translation>
+        <translation>Luodaan tunnusta…</translation>
     </message>
 </context>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/utils.cpp" line="397"/>
+        <location filename="../src/utils.cpp" line="476"/>
         <source>Created by:</source>
         <translation>Luonut:</translation>
     </message>
     <message>
-        <location filename="../src/utils.cpp" line="403"/>
+        <location filename="../src/utils.cpp" line="482"/>
         <source>Artwork by:</source>
         <translation>Grafiikka:</translation>
     </message>
     <message>
-        <location filename="../src/utils.cpp" line="411"/>
+        <location filename="../src/utils.cpp" line="490"/>
         <source>Based on the SFLPhone project</source>
         <translation>Pohjautuu SFLPhone-projektiin</translation>
     </message>
@@ -2282,7 +2282,7 @@ Yritä myöhemmin uudelleen.</translation>
     <message>
         <location filename="../src/settingsview/components/SettingsMenu.qml" line="35"/>
         <source>Account</source>
-        <translation>Tili</translation>
+        <translation>Tunnus</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/SettingsMenu.qml" line="37"/>
@@ -2305,7 +2305,7 @@ Yritä myöhemmin uudelleen.</translation>
     <message>
         <location filename="../src/settingsview/SettingsView.qml" line="151"/>
         <source>Account Settings</source>
-        <translation>Tilin asetukset</translation>
+        <translation>Tunnuksen asetukset</translation>
     </message>
     <message>
         <location filename="../src/settingsview/SettingsView.qml" line="153"/>
@@ -2401,22 +2401,22 @@ Yritä myöhemmin uudelleen.</translation>
     <message>
         <location filename="../src/wizardview/components/WelcomePage.qml" line="86"/>
         <source>Create new Jami account</source>
-        <translation>Luo uusi Jami-tili</translation>
+        <translation>Luo uusi Jami tunnus</translation>
     </message>
     <message>
         <location filename="../src/wizardview/components/WelcomePage.qml" line="126"/>
         <source>Import account from other device</source>
-        <translation>Tuo tili toisesta laitteesta</translation>
+        <translation>Tuo tunnus toisesta laitteesta</translation>
     </message>
     <message>
         <location filename="../src/wizardview/components/WelcomePage.qml" line="146"/>
         <source>Import account from backup file</source>
-        <translation>Tuo tili varmuuskopiosta</translation>
+        <translation>Tuo tunnus varmuuskopiosta</translation>
     </message>
     <message>
         <location filename="../src/wizardview/components/WelcomePage.qml" line="219"/>
         <source>Create new SIP account</source>
-        <translation>Luo uusi SIP-tili</translation>
+        <translation>Luo uusi SIP tunnus</translation>
     </message>
 </context>
 <context>

@@ -669,6 +669,11 @@ Jami avslutter nå.</translation>
         <translation>Velg videofrekvens (bilder per sekund)</translation>
     </message>
     <message>
+        <location filename="../src/constant/JamiStrings.qml" line="161"/>
+        <source>Your account only exists on this device. If you lose your device or uninstall the application, your account will be deleted and can not be recovered. You can backup your account now or later.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/constant/JamiStrings.qml" line="185"/>
         <source>End call</source>
         <translation>Avslutt samtale</translation>
@@ -676,17 +681,17 @@ Jami avslutter nå.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="186"/>
         <source>Pause call</source>
-        <translation type="unfinished"/>
+        <translation>Sett samtale på vent</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="187"/>
         <source>Resume call</source>
-        <translation type="unfinished"/>
+        <translation>Gjenopta samtale</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="188"/>
         <source>Pause video</source>
-        <translation type="unfinished"/>
+        <translation>Pause video</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="189"/>
@@ -719,9 +724,24 @@ Jami avslutter nå.</translation>
         <translation>Velg et navn for din møteplass</translation>
     </message>
     <message>
+        <location filename="../src/constant/JamiStrings.qml" line="266"/>
+        <source>If your account has not been backed up or added to another device, your account and registered name will be irrevocably lost.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/constant/JamiStrings.qml" line="278"/>
         <source>Launch at startup</source>
         <translation>Kjør ved oppstart</translation>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="285"/>
+        <source>Enable typing indicators</source>
+        <translation>Aktiver inntastingindikator</translation>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="286"/>
+        <source>Display images and videos in the chatview</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="298"/>
@@ -1059,11 +1079,6 @@ Jami avslutter nå.</translation>
         <translation>Forhåndsvisning ikke tilgjengelig</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="161"/>
-        <source>Your account only exists on this device. If you lost your device or uninstall the application, your account will be deleted and can not be recovered. You can backup your account now or later.</source>
-        <translation>Kontoen din eksisterer bare på denne enheten. Hvis du mistet enheten eller avinstallerer applikasjonen, blir kontoen din slettet og kan ikke gjenopprettes. Du kan sikkerhetskopiere kontoen din nå eller senere.</translation>
-    </message>
-    <message>
         <location filename="../src/constant/JamiStrings.qml" line="165"/>
         <source>Backup account here</source>
         <translation>Sikkerhetskopier kontoen her</translation>
@@ -1387,11 +1402,6 @@ Jami avslutter nå.</translation>
         <translation>Ønsker du virkelig å slette denne kontoen?</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="266"/>
-        <source>If your account has not been backuped, or added to another device, your account and registered name will be irrevocably lost.</source>
-        <translation>Hvis kontoen din ikke har blitt sikkerhetskopiert, eller lagt til en annen enhet, vil kontoen og det registrerte navnet gå tapt.</translation>
-    </message>
-    <message>
         <location filename="../src/constant/JamiStrings.qml" line="269"/>
         <source>Edit device name</source>
         <translation>Rediger enhetsnavn</translation>
@@ -1445,16 +1455,6 @@ Jami avslutter nå.</translation>
         <location filename="../src/constant/JamiStrings.qml" line="284"/>
         <source>Chatview</source>
         <translation>Meldingsvisning</translation>
-    </message>
-    <message>
-        <location filename="../src/constant/JamiStrings.qml" line="285"/>
-        <source>Show typing indicator</source>
-        <translation>Vis tasteindikator</translation>
-    </message>
-    <message>
-        <location filename="../src/constant/JamiStrings.qml" line="286"/>
-        <source>Display images and videos into the chatview</source>
-        <translation>Vis bilder og filmer i meldingsvisning</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="289"/>
@@ -1897,46 +1897,46 @@ Jami avslutter nå.</translation>
 <context>
     <name>LinkDeviceDialog</name>
     <message>
-        <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="221"/>
+        <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="202"/>
         <source>Cancel</source>
         <translation>Avbryt</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="104"/>
+        <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="87"/>
         <source>Error connecting to the network.
 Please try again later.</source>
         <translation>Feil ved tilkobling til nettverket
 Vennligst forsøk igjen senere.</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="108"/>
+        <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="91"/>
         <source>Something went wrong.
 </source>
         <translation>Noe gikk galt.
 </translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="201"/>
+        <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="182"/>
         <source>Register</source>
         <translation>Registrer</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="295"/>
+        <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="276"/>
         <source>Your PIN is:</source>
         <translation>Din PIN er:</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="306"/>
+        <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="287"/>
         <source>PIN</source>
         <translation>PIN</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="327"/>
+        <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="308"/>
         <source>This pin and the account password should be entered in your device within 10 minutes.</source>
         <translation>Pin og kontopassord må tastes inn på din enhet i løpet av 10 minutter.</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="100"/>
+        <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="83"/>
         <source>Incorrect password</source>
         <translation>Feil passord</translation>
     </message>
@@ -1972,35 +1972,9 @@ Vennligst forsøk igjen senere.</translation>
 <context>
     <name>MainApplication</name>
     <message>
-        <location filename="../src/mainapplication.cpp" line="385"/>
+        <location filename="../src/mainapplication.cpp" line="386"/>
         <source>Exit</source>
         <translation>Avslutt</translation>
-    </message>
-</context>
-<context>
-    <name>MediaHandlerItemDelegate</name>
-    <message>
-        <location filename="../src/mainview/components/MediaHandlerItemDelegate.qml" line="87"/>
-        <source>On/Off</source>
-        <translation>På/Av</translation>
-    </message>
-</context>
-<context>
-    <name>MediaHandlerPicker</name>
-    <message>
-        <location filename="../src/mainview/components/MediaHandlerPicker.qml" line="92"/>
-        <source>Choose plugin</source>
-        <translation>Velg utvidelse</translation>
-    </message>
-    <message>
-        <location filename="../src/mainview/components/MediaHandlerPicker.qml" line="155"/>
-        <source>Go back to plugins list</source>
-        <translation>Gå tilbake til liste for utvidelser</translation>
-    </message>
-    <message>
-        <location filename="../src/mainview/components/MediaHandlerPicker.qml" line="197"/>
-        <source>Preferences</source>
-        <translation>Innstillinger</translation>
     </message>
 </context>
 <context>
@@ -2070,9 +2044,35 @@ Vennligst forsøk igjen senere.</translation>
     </message>
 </context>
 <context>
+    <name>PluginHandlerItemDelegate</name>
+    <message>
+        <location filename="../src/mainview/components/PluginHandlerItemDelegate.qml" line="87"/>
+        <source>On/Off</source>
+        <translation>På/Av</translation>
+    </message>
+</context>
+<context>
+    <name>PluginHandlerPicker</name>
+    <message>
+        <location filename="../src/mainview/components/PluginHandlerPicker.qml" line="121"/>
+        <source>Choose plugin</source>
+        <translation>Velg utvidelse</translation>
+    </message>
+    <message>
+        <location filename="../src/mainview/components/PluginHandlerPicker.qml" line="208"/>
+        <source>Go back to plugins list</source>
+        <translation>Gå tilbake til liste for utvidelser</translation>
+    </message>
+    <message>
+        <location filename="../src/mainview/components/PluginHandlerPicker.qml" line="227"/>
+        <source>Preferences</source>
+        <translation>Innstillinger</translation>
+    </message>
+</context>
+<context>
     <name>PluginItemDelegate</name>
     <message>
-        <location filename="../src/settingsview/components/PluginItemDelegate.qml" line="81"/>
+        <location filename="../src/settingsview/components/PluginItemDelegate.qml" line="107"/>
         <source>Load/Unload</source>
         <translation>Start/stopp</translation>
     </message>
@@ -2080,27 +2080,27 @@ Vennligst forsøk igjen senere.</translation>
 <context>
     <name>PluginListPreferencesView</name>
     <message>
-        <location filename="../src/settingsview/components/PluginListPreferencesView.qml" line="73"/>
+        <location filename="../src/settingsview/components/PluginListPreferencesView.qml" line="85"/>
         <source>Uninstall plugin</source>
         <translation>Avinstaller utvidelse</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/PluginListPreferencesView.qml" line="52"/>
+        <location filename="../src/settingsview/components/PluginListPreferencesView.qml" line="64"/>
         <source>Reset preferences</source>
         <translation>Tilbakestill innstillinger</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/PluginListPreferencesView.qml" line="95"/>
+        <location filename="../src/settingsview/components/PluginListPreferencesView.qml" line="110"/>
         <source>Ok</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/PluginListPreferencesView.qml" line="95"/>
+        <location filename="../src/settingsview/components/PluginListPreferencesView.qml" line="110"/>
         <source>Cancel</source>
         <translation>Avbryt</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/PluginListPreferencesView.qml" line="171"/>
+        <location filename="../src/settingsview/components/PluginListPreferencesView.qml" line="181"/>
         <source>Uninstall</source>
         <translation>Avinstaller</translation>
     </message>
@@ -2108,17 +2108,17 @@ Vennligst forsøk igjen senere.</translation>
 <context>
     <name>PluginListSettingsView</name>
     <message>
-        <location filename="../src/settingsview/components/PluginListSettingsView.qml" line="87"/>
+        <location filename="../src/settingsview/components/PluginListSettingsView.qml" line="67"/>
         <source>Plugin Files</source>
         <translation>Filer utvidelser</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/PluginListSettingsView.qml" line="87"/>
+        <location filename="../src/settingsview/components/PluginListSettingsView.qml" line="67"/>
         <source>All files</source>
         <translation>Alle filer</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/PluginListSettingsView.qml" line="106"/>
+        <location filename="../src/settingsview/components/PluginListSettingsView.qml" line="87"/>
         <source>Installed plugins</source>
         <translation>Installerte utvidelser</translation>
     </message>
@@ -2126,7 +2126,7 @@ Vennligst forsøk igjen senere.</translation>
 <context>
     <name>PreferenceItemDelegate</name>
     <message>
-        <location filename="../src/commoncomponents/PreferenceItemDelegate.qml" line="119"/>
+        <location filename="../src/commoncomponents/PreferenceItemDelegate.qml" line="132"/>
         <source>Edit preference</source>
         <translation>Rediger innstillinger</translation>
     </message>
@@ -2157,17 +2157,17 @@ Vennligst forsøk igjen senere.</translation>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/utils.cpp" line="397"/>
+        <location filename="../src/utils.cpp" line="476"/>
         <source>Created by:</source>
         <translation>Opprettet av:</translation>
     </message>
     <message>
-        <location filename="../src/utils.cpp" line="403"/>
+        <location filename="../src/utils.cpp" line="482"/>
         <source>Artwork by:</source>
         <translation>Omslagskunst av:</translation>
     </message>
     <message>
-        <location filename="../src/utils.cpp" line="411"/>
+        <location filename="../src/utils.cpp" line="490"/>
         <source>Based on the SFLPhone project</source>
         <translation>Basert på SFLPhone-prosjektet</translation>
     </message>

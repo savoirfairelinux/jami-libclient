@@ -669,6 +669,11 @@ Jami się teraz wyłączy.</translation>
         <translation type="unfinished"/>
     </message>
     <message>
+        <location filename="../src/constant/JamiStrings.qml" line="161"/>
+        <source>Your account only exists on this device. If you lose your device or uninstall the application, your account will be deleted and can not be recovered. You can backup your account now or later.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/constant/JamiStrings.qml" line="185"/>
         <source>End call</source>
         <translation>Skończ rozmowę</translation>
@@ -719,8 +724,23 @@ Jami się teraz wyłączy.</translation>
         <translation type="unfinished"/>
     </message>
     <message>
+        <location filename="../src/constant/JamiStrings.qml" line="266"/>
+        <source>If your account has not been backed up or added to another device, your account and registered name will be irrevocably lost.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/constant/JamiStrings.qml" line="278"/>
         <source>Launch at startup</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="285"/>
+        <source>Enable typing indicators</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="286"/>
+        <source>Display images and videos in the chatview</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -1059,11 +1079,6 @@ Jami się teraz wyłączy.</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="161"/>
-        <source>Your account only exists on this device. If you lost your device or uninstall the application, your account will be deleted and can not be recovered. You can backup your account now or later.</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
         <location filename="../src/constant/JamiStrings.qml" line="165"/>
         <source>Backup account here</source>
         <translation type="unfinished"/>
@@ -1387,11 +1402,6 @@ Jami się teraz wyłączy.</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="266"/>
-        <source>If your account has not been backuped, or added to another device, your account and registered name will be irrevocably lost.</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
         <location filename="../src/constant/JamiStrings.qml" line="269"/>
         <source>Edit device name</source>
         <translation type="unfinished"/>
@@ -1444,16 +1454,6 @@ Jami się teraz wyłączy.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="284"/>
         <source>Chatview</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/constant/JamiStrings.qml" line="285"/>
-        <source>Show typing indicator</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/constant/JamiStrings.qml" line="286"/>
-        <source>Display images and videos into the chatview</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -1896,44 +1896,44 @@ Jami się teraz wyłączy.</translation>
 <context>
     <name>LinkDeviceDialog</name>
     <message>
-        <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="221"/>
+        <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="202"/>
         <source>Cancel</source>
         <translation>Anuluj</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="104"/>
+        <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="87"/>
         <source>Error connecting to the network.
 Please try again later.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="108"/>
+        <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="91"/>
         <source>Something went wrong.
 </source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="201"/>
+        <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="182"/>
         <source>Register</source>
         <translation>Zarejestruj</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="295"/>
+        <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="276"/>
         <source>Your PIN is:</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="306"/>
+        <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="287"/>
         <source>PIN</source>
         <translation>PIN</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="327"/>
+        <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="308"/>
         <source>This pin and the account password should be entered in your device within 10 minutes.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="100"/>
+        <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="83"/>
         <source>Incorrect password</source>
         <translation>Nieprawidłowe hasło</translation>
     </message>
@@ -1969,35 +1969,9 @@ Please try again later.</source>
 <context>
     <name>MainApplication</name>
     <message>
-        <location filename="../src/mainapplication.cpp" line="385"/>
+        <location filename="../src/mainapplication.cpp" line="386"/>
         <source>Exit</source>
         <translation>Zakończ</translation>
-    </message>
-</context>
-<context>
-    <name>MediaHandlerItemDelegate</name>
-    <message>
-        <location filename="../src/mainview/components/MediaHandlerItemDelegate.qml" line="87"/>
-        <source>On/Off</source>
-        <translation type="unfinished"/>
-    </message>
-</context>
-<context>
-    <name>MediaHandlerPicker</name>
-    <message>
-        <location filename="../src/mainview/components/MediaHandlerPicker.qml" line="92"/>
-        <source>Choose plugin</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/mainview/components/MediaHandlerPicker.qml" line="155"/>
-        <source>Go back to plugins list</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/mainview/components/MediaHandlerPicker.qml" line="197"/>
-        <source>Preferences</source>
-        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -2067,9 +2041,35 @@ Please try again later.</source>
     </message>
 </context>
 <context>
+    <name>PluginHandlerItemDelegate</name>
+    <message>
+        <location filename="../src/mainview/components/PluginHandlerItemDelegate.qml" line="87"/>
+        <source>On/Off</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>PluginHandlerPicker</name>
+    <message>
+        <location filename="../src/mainview/components/PluginHandlerPicker.qml" line="121"/>
+        <source>Choose plugin</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mainview/components/PluginHandlerPicker.qml" line="208"/>
+        <source>Go back to plugins list</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mainview/components/PluginHandlerPicker.qml" line="227"/>
+        <source>Preferences</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>PluginItemDelegate</name>
     <message>
-        <location filename="../src/settingsview/components/PluginItemDelegate.qml" line="81"/>
+        <location filename="../src/settingsview/components/PluginItemDelegate.qml" line="107"/>
         <source>Load/Unload</source>
         <translation type="unfinished"/>
     </message>
@@ -2077,27 +2077,27 @@ Please try again later.</source>
 <context>
     <name>PluginListPreferencesView</name>
     <message>
-        <location filename="../src/settingsview/components/PluginListPreferencesView.qml" line="73"/>
+        <location filename="../src/settingsview/components/PluginListPreferencesView.qml" line="85"/>
         <source>Uninstall plugin</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/settingsview/components/PluginListPreferencesView.qml" line="52"/>
+        <location filename="../src/settingsview/components/PluginListPreferencesView.qml" line="64"/>
         <source>Reset preferences</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/settingsview/components/PluginListPreferencesView.qml" line="95"/>
+        <location filename="../src/settingsview/components/PluginListPreferencesView.qml" line="110"/>
         <source>Ok</source>
         <translation>Ok</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/PluginListPreferencesView.qml" line="95"/>
+        <location filename="../src/settingsview/components/PluginListPreferencesView.qml" line="110"/>
         <source>Cancel</source>
         <translation>Anuluj</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/PluginListPreferencesView.qml" line="171"/>
+        <location filename="../src/settingsview/components/PluginListPreferencesView.qml" line="181"/>
         <source>Uninstall</source>
         <translation type="unfinished"/>
     </message>
@@ -2105,17 +2105,17 @@ Please try again later.</source>
 <context>
     <name>PluginListSettingsView</name>
     <message>
-        <location filename="../src/settingsview/components/PluginListSettingsView.qml" line="87"/>
+        <location filename="../src/settingsview/components/PluginListSettingsView.qml" line="67"/>
         <source>Plugin Files</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/settingsview/components/PluginListSettingsView.qml" line="87"/>
+        <location filename="../src/settingsview/components/PluginListSettingsView.qml" line="67"/>
         <source>All files</source>
         <translation>Wszystkie pliki</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/PluginListSettingsView.qml" line="106"/>
+        <location filename="../src/settingsview/components/PluginListSettingsView.qml" line="87"/>
         <source>Installed plugins</source>
         <translation type="unfinished"/>
     </message>
@@ -2123,7 +2123,7 @@ Please try again later.</source>
 <context>
     <name>PreferenceItemDelegate</name>
     <message>
-        <location filename="../src/commoncomponents/PreferenceItemDelegate.qml" line="119"/>
+        <location filename="../src/commoncomponents/PreferenceItemDelegate.qml" line="132"/>
         <source>Edit preference</source>
         <translation type="unfinished"/>
     </message>
@@ -2154,17 +2154,17 @@ Please try again later.</source>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/utils.cpp" line="397"/>
+        <location filename="../src/utils.cpp" line="476"/>
         <source>Created by:</source>
         <translation>Stworzone przez:</translation>
     </message>
     <message>
-        <location filename="../src/utils.cpp" line="403"/>
+        <location filename="../src/utils.cpp" line="482"/>
         <source>Artwork by:</source>
         <translation>Obrazki przez:</translation>
     </message>
     <message>
-        <location filename="../src/utils.cpp" line="411"/>
+        <location filename="../src/utils.cpp" line="490"/>
         <source>Based on the SFLPhone project</source>
         <translation>Na podstawie projektu SFLPhone</translation>
     </message>
