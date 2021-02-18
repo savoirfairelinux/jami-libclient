@@ -275,10 +275,10 @@ public:
     int getNumberOfUnreadMessagesFor(const QString& convUid);
     /**
      * Send a composing status
-     * @param uid           conversation's id
+     * @param convUid       conversation's id
      * @param isComposing   if is composing
      */
-    void setIsComposing(const QString& uid, bool isComposing);
+    void setIsComposing(const QString& convUid, bool isComposing);
     /**
      * load messages for conversation
      * @param conversationId conversation's id
