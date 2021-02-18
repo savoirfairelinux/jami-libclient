@@ -70,15 +70,15 @@ Utils::CreateStartupLink(const std::wstring& wstrAppName)
     return Utils::CreateLink(programPath.c_str(), linkPath.c_str());
 #else
     QString desktopPath;
-    /* cmake should set JAMI_DATA_DIR, otherwise it checks the following dirs
+    /* cmake should set JAMI_INSTALL_PREFIX, otherwise it checks the following dirs
      *  - /usr/<data dir>
      *  - /usr/local/<data dir>
      *  - default install data dir
      */
 
-#ifdef JAMI_DATA_DIR
-    desktopPath = JAMI_DATA_DIR;
-    desktopPath += "/jami-qt.desktop";
+#ifdef JAMI_INSTALL_PREFIX
+    desktopPath = JAMI_INSTALL_PREFIX;
+    desktopPath += "/jami-qt/jami-qt.desktop";
 #else
     desktopPath = "share/jami-qt/jami-qt.desktop";
     QStringList paths = {

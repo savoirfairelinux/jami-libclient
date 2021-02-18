@@ -209,7 +209,7 @@ add_executable(${PROJECT_NAME}
     ${QML_RESOURCES_QML}
     ${LRC_SRC_PATH}/webresource.qrc)
 
-set(JAMI_DATA_PATH "${CMAKE_INSTALL_PREFIX}/share/${PROJECT_NAME}")
+set(JAMI_DATA_PREFIX "${CMAKE_INSTALL_PREFIX}/share")
 
 find_library(ringclient ringclient ${LRCLIBDIR} NO_DEFAULT_PATH)
 find_library(qrencode qrencode)
@@ -233,13 +233,13 @@ install(TARGETS jami-qt
 
 # install .desktop in XDG desktop dir so that it is recognized by the system
 install(FILES ${PROJECT_SOURCE_DIR}/jami-qt.desktop
-    DESTINATION ${CMAKE_INSTALL_PREFIX}/share/applications)
+    DESTINATION ${JAMI_DATA_PREFIX}/applications)
 
 # install .desktop in the jami-qt data dir, so that it can be copied to the
 # autostart dir by the client
 install(FILES ${PROJECT_SOURCE_DIR}/jami-qt.desktop
    DESTINATION
-      ${JAMI_DATA_PATH}
+      "${JAMI_DATA_PREFIX}/${PROJECT_NAME}"
    PERMISSIONS
       WORLD_READ
       OWNER_WRITE
@@ -247,16 +247,16 @@ install(FILES ${PROJECT_SOURCE_DIR}/jami-qt.desktop
       GROUP_READ
 )
 
-# adjust JAMI_DATA_PATH for snap package
+# adjust JAMI_DATA_PREFIX for snap package
 #   (this must come after all 'install' commands that refer to
-#    JAMI_DATA_PATH; the following value is not meant to be used for
+#    JAMI_DATA_PREFIX; the following value is not meant to be used for
 #    any install destinations)
 if(DEFINED ENV{SNAPCRAFT_PROJECT_NAME})
-    set(JAMI_DATA_PATH "/snap/$ENV{SNAPCRAFT_PROJECT_NAME}/current/usr/share/${PROJECT_NAME}")
+    set(JAMI_DATA_PREFIX "/snap/$ENV{SNAPCRAFT_PROJECT_NAME}/current/usr/share")
 endif()
 
-# (this must come after the above adjustment to JAMI_DATA_PATH)
-target_compile_definitions(jami-qt PRIVATE JAMI_DATA_DIR="${JAMI_DATA_PATH}")
+# (this must come after the above adjustment to JAMI_DATA_PREFIX)
+target_compile_definitions(jami-qt PRIVATE JAMI_INSTALL_PREFIX="${JAMI_DATA_PREFIX}")
 
 # logos
 install(FILES images/jami.svg
@@ -309,11 +309,13 @@ endif()
 # translations
 if(Qt5LinguistTools_FOUND)
     message("Releasing and copying translation files")
+    file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/share/ring/translations/")
     file(GLOB TS_FILES ${PROJECT_SOURCE_DIR}/translations/*.ts)
+    set_source_files_properties(${TS_FILES} PROPERTIES OUTPUT_LOCATION "share/ring/translations")
     qt5_add_translation(QM_FILES ${TS_FILES})
     add_custom_target(translations ALL DEPENDS ${QM_FILES})
-    install(FILES ${QM_FILES}
-        DESTINATION "${CMAKE_INSTALL_PREFIX}/share/libringclient/translations")
+    install(DIRECTORY "${CMAKE_BINARY_DIR}/share/ring/translations/"
+        DESTINATION ${CMAKE_INSTALL_PREFIX}/share/ring/translations)
 endif()
 
 # uninstall
