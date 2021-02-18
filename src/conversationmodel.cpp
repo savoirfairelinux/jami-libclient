@@ -1276,7 +1276,7 @@ ConversationModel::setInteractionRead(const QString& convId, const QString& inte
         if (pimpl_->conversations[conversationIdx].isSwarm) {
             ConfigurationManager::instance()
             .setMessageDisplayed(owner.id,
-                                 convId,
+                                 "swarm:"+convId,
                                  interactionId,
                                  3);
         } else {
@@ -1284,7 +1284,7 @@ ConversationModel::setInteractionRead(const QString& convId, const QString& inte
             if (owner.profileInfo.type != profile::Type::SIP) {
                 ConfigurationManager::instance()
                 .setMessageDisplayed(owner.id,
-                                     pimpl_->conversations[conversationIdx].participants.front(),
+                                     "jami:"+pimpl_->conversations[conversationIdx].participants.front(),
                                      daemonId,
                                      3);
             }
@@ -1323,7 +1323,8 @@ ConversationModel::clearUnreadInteractions(const QString& convId)
             });
         }
         if (!lastDisplayed.isEmpty()) {
-            auto to = conversation.isSwarm ? convId : conversation.participants.first();
+            auto to = conversation.isSwarm ? "swarm:"+convId
+                                           : "jami:"+conversation.participants.first();
             ConfigurationManager::instance()
             .setMessageDisplayed(owner.id,
                                  to,
@@ -2781,14 +2782,14 @@ ConversationModelPimpl::getNumberOfUnreadMessagesFor(const QString& uid)
 }
 
 void
-ConversationModel::setIsComposing(const QString& uid, bool isComposing)
+ConversationModel::setIsComposing(const QString& convUid, bool isComposing)
 {
-    auto conversationIdx = pimpl_->indexOf(uid);
-    if (conversationIdx == -1 || !owner.enabled)
-        return;
-
-    const auto peerUri = pimpl_->conversations[conversationIdx].participants.front();
-    ConfigurationManager::instance().setIsComposing(owner.id, peerUri, isComposing);
+    try {
+        auto& conversation = pimpl_->getConversationForUid(convUid).get();
+        QString to = conversation.isSwarm ? "swarm:"+convUid
+                                        : "jami:"+conversation.participants.first();
+        ConfigurationManager::instance().setIsComposing(owner.id, to, isComposing);
+    } catch (...) {}
 }
 
 void
