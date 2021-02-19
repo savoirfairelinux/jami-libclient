@@ -35,6 +35,7 @@ ColumnLayout {
     property bool isSIP
     property int itemWidth
     property alias settingsVisible: advancedSettingsView.visible
+    signal showAdvancedSettingsRequest
 
     function updateAdvancedAccountInfos() {
         advancedCallSettings.updateCallSettingsInfos()
@@ -90,6 +91,7 @@ ColumnLayout {
                 advancedSettingsView.visible = !advancedSettingsView.visible
                 if(advancedSettingsView.visible)
                     updateAdvancedAccountInfos()
+                showAdvancedSettingsRequest()
             }
         }
     }

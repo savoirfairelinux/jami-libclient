@@ -85,8 +85,8 @@ Rectangle {
     }
 
     function getAdvancedSettingsScrollPosition() {
-        return advancedSettings.y / (currentAccountSettingsColumnLayout.height
-                                     - advancedSettings.height + 40) // 40 = btnSize+margin
+        return advancedSettings.height / (currentAccountSettingsColumnLayout.height
+                                     + advancedSettings.height + 46) // 40 = btnSize+2*margin
     }
 
     function setPasswordButtonText() {
@@ -319,7 +319,9 @@ Rectangle {
             itemWidth: preferredColumnWidth
             isSIP: root.isSIP
 
-            onHeightChanged: advancedSettingsToggled(settingsVisible)
+            onShowAdvancedSettingsRequest: {
+                advancedSettingsToggled(settingsVisible)
+            }
         }
     }
 }
