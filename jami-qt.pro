@@ -47,8 +47,11 @@ win32-msvc {
     RCC_DIR = obj/.rcc
     UI_DIR = obj/.ui
 
+    MODE = "Release"
+
     # ReleaseCompile config
     contains(CONFIG, ReleaseCompile) {
+        MODE = "ReleaseCompile"
         CONFIG(ReleaseCompile) {
             message(ReleaseCompile config enabled)
             Release: DEFINES += COMPILE_ONLY
@@ -57,6 +60,7 @@ win32-msvc {
 
     # beta config
     contains(CONFIG, Beta) {
+        MODE = "Beta"
         CONFIG(Beta) {
             message(Beta config enabled)
             Release: DESTDIR = x64/Beta
@@ -77,7 +81,9 @@ win32-msvc {
     Release: RC_FILE = ico.rc
 
     # run the deployment script(run windeployqt)
-    QMAKE_POST_LINK += $$quote(python .\copy-runtime-files.py -o $${DESTDIR})
+    !equals(MODE, "ReleaseCompile") {
+        QMAKE_POST_LINK += $$quote(python .\copy-runtime-files.py -m  $${MODE} -q $${QT_VERSION} -o $${DESTDIR})
+    }
 }
 
 unix {
