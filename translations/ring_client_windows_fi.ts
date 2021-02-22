@@ -736,7 +736,7 @@ Jami sulkeutuu nyt.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="285"/>
         <source>Enable typing indicators</source>
-        <translation type="unfinished"/>
+        <translation>Kirjoittamisen merkki käyttöön</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="286"/>
@@ -1972,7 +1972,7 @@ Yritä myöhemmin uudelleen.</translation>
 <context>
     <name>MainApplication</name>
     <message>
-        <location filename="../src/mainapplication.cpp" line="386"/>
+        <location filename="../src/mainapplication.cpp" line="409"/>
         <source>Exit</source>
         <translation>Poistu</translation>
     </message>
@@ -2048,7 +2048,7 @@ Yritä myöhemmin uudelleen.</translation>
     <message>
         <location filename="../src/mainview/components/PluginHandlerItemDelegate.qml" line="87"/>
         <source>On/Off</source>
-        <translation type="unfinished"/>
+        <translation>Päällä/pois</translation>
     </message>
 </context>
 <context>
@@ -2056,17 +2056,17 @@ Yritä myöhemmin uudelleen.</translation>
     <message>
         <location filename="../src/mainview/components/PluginHandlerPicker.qml" line="121"/>
         <source>Choose plugin</source>
-        <translation type="unfinished"/>
+        <translation>Valitse laajennus</translation>
     </message>
     <message>
         <location filename="../src/mainview/components/PluginHandlerPicker.qml" line="208"/>
         <source>Go back to plugins list</source>
-        <translation type="unfinished"/>
+        <translation>Palaa laajennusten luetteloon</translation>
     </message>
     <message>
         <location filename="../src/mainview/components/PluginHandlerPicker.qml" line="227"/>
         <source>Preferences</source>
-        <translation type="unfinished"/>
+        <translation>Asetukset</translation>
     </message>
 </context>
 <context>

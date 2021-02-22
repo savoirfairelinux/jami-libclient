@@ -1972,7 +1972,7 @@ Por favor intentalo más tarde.</translation>
 <context>
     <name>MainApplication</name>
     <message>
-        <location filename="../src/mainapplication.cpp" line="386"/>
+        <location filename="../src/mainapplication.cpp" line="409"/>
         <source>Exit</source>
         <translation>Salir</translation>
     </message>

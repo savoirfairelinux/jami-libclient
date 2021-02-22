@@ -1966,7 +1966,7 @@ Please try again later.</source>
 <context>
     <name>MainApplication</name>
     <message>
-        <location filename="../src/mainapplication.cpp" line="386"/>
+        <location filename="../src/mainapplication.cpp" line="409"/>
         <source>Exit</source>
         <translation>Έξοδος</translation>
     </message>

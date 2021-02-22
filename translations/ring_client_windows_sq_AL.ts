@@ -671,7 +671,7 @@ Jami tani do të dalë.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="161"/>
         <source>Your account only exists on this device. If you lose your device or uninstall the application, your account will be deleted and can not be recovered. You can backup your account now or later.</source>
-        <translation type="unfinished"/>
+        <translation>Llogaria juaj ekziston vetëm në këtë pajisje. Nëse humbni pajisjen ose çinstaloni aplikacionin, llogaria juaj do të fshihet dhe s’mund të rikthehet. Mund të bëni një kopjeruajtje të llogarisë tuaj tani ose më vonë.</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="185"/>
@@ -726,7 +726,7 @@ Jami tani do të dalë.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="266"/>
         <source>If your account has not been backed up or added to another device, your account and registered name will be irrevocably lost.</source>
-        <translation type="unfinished"/>
+        <translation>Nëse llogaria juaj s’është kopjeruajtur ose shtuar te një tjetër pajisje, llogari dhe emri që keni regjistruar do të humbë në mënyrë të pakthyeshme.</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="278"/>
@@ -741,7 +741,7 @@ Jami tani do të dalë.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="286"/>
         <source>Display images and videos in the chatview</source>
-        <translation type="unfinished"/>
+        <translation>Shfaqni figura dhe video te pamja e fjalosjes</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="298"/>
@@ -1738,7 +1738,7 @@ Kopjojeni dhe jepuani shokëve!</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="416"/>
         <source>local muted</source>
-        <translation type="unfinished"/>
+        <translation>heshtuar lokalisht</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="419"/>
@@ -1972,7 +1972,7 @@ Ju lutemi, riprovoni më vonë.</translation>
 <context>
     <name>MainApplication</name>
     <message>
-        <location filename="../src/mainapplication.cpp" line="386"/>
+        <location filename="../src/mainapplication.cpp" line="409"/>
         <source>Exit</source>
         <translation>Dalje</translation>
     </message>

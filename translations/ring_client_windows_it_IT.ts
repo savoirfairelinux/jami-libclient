@@ -671,7 +671,7 @@ Jami ora verrà terminato.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="161"/>
         <source>Your account only exists on this device. If you lose your device or uninstall the application, your account will be deleted and can not be recovered. You can backup your account now or later.</source>
-        <translation type="unfinished"/>
+        <translation>Il tuo account esiste solo su questo dispositivo. Se perdi il tuo dispositivo o disinstalli l&apos;applicazione, il tuo account verrà eliminato e non potrà essere recuperato. Puoi eseguire il backup del tuo account ora o più tardi.</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="185"/>
@@ -726,7 +726,7 @@ Jami ora verrà terminato.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="266"/>
         <source>If your account has not been backed up or added to another device, your account and registered name will be irrevocably lost.</source>
-        <translation type="unfinished"/>
+        <translation>Se il tuo account non è stato sottoposto a backup o aggiunto a un altro dispositivo, il tuo account e il nome registrato andranno persi irrevocabilmente.</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="278"/>
@@ -741,7 +741,7 @@ Jami ora verrà terminato.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="286"/>
         <source>Display images and videos in the chatview</source>
-        <translation type="unfinished"/>
+        <translation>Visualizza immagini e video nella vista chat</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="298"/>
@@ -1972,7 +1972,7 @@ Per favore riprova più tardi.</translation>
 <context>
     <name>MainApplication</name>
     <message>
-        <location filename="../src/mainapplication.cpp" line="386"/>
+        <location filename="../src/mainapplication.cpp" line="409"/>
         <source>Exit</source>
         <translation>Esci</translation>
     </message>
