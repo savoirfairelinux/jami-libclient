@@ -721,19 +721,25 @@ INSTALL( FILES ${libringclient_CONFIG_PATH}
 
 # translations
 IF( Qt5LinguistTools_FOUND )
+
+   # create .qm local destination folder
+   FILE(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/share/libringclient/translations")
+
    # translation template file
    SET(TS_TEMPLATE ${CMAKE_SOURCE_DIR}/translations/lrc_en.ts)
 
    # get all translation files except the template
    FILE(GLOB TS_FILES ${CMAKE_SOURCE_DIR}/translations/*.ts)
    LIST(REMOVE_ITEM TS_FILES ${TS_TEMPLATE})
+   SET_SOURCE_FILES_PROPERTIES(${TS_FILES}
+       PROPERTIES OUTPUT_LOCATION "share/libringclient/translations")
 
    # compiled .qm files
    QT5_ADD_TRANSLATION(QM_FILES ${TS_FILES})
 
    ADD_CUSTOM_TARGET(translations ALL DEPENDS ${QM_FILES})
-
-   INSTALL(FILES ${QM_FILES} DESTINATION "${CMAKE_INSTALL_PREFIX}/share/libringclient/translations")
+   INSTALL(DIRECTORY "${CMAKE_BINARY_DIR}/share/libringclient/translations/"
+       DESTINATION ${CMAKE_INSTALL_PREFIX}/share/libringclient/translations)
 ENDIF()
 
 # uninstall target
