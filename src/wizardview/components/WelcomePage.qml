@@ -65,13 +65,13 @@ Rectangle {
             id: welcomeLogo
 
             Layout.alignment: Qt.AlignCenter
-            Layout.preferredWidth: 300
-            Layout.preferredHeight: 150
+            Layout.preferredWidth: 330
+            Layout.preferredHeight: 110
 
             smooth: true
             antialiasing: true
 
-            source: JamiTheme.darkTheme? "qrc:/images/logo-jami-standard-coul-white.svg" : "qrc:/images/logo-jami-standard-coul.svg"
+            source: JamiTheme.darkTheme ? "qrc:/images/logo-jami-standard-coul-white.svg" : "qrc:/images/logo-jami-standard-coul.svg"
         }
 
         MaterialButton {

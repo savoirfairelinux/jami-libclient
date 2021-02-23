@@ -1,4 +1,4 @@
-/*!
+﻿/*!
  * Copyright (C) 2020 by Savoir-faire Linux
  * Author: Edric Ladent Milaret <edric.ladent-milaret@savoirfairelinux.com>
  * Author: Andreas Traczyk <andreas.traczyk@savoirfairelinux.com>
@@ -24,10 +24,41 @@
 #include <QApplication>
 #include <QQmlApplicationEngine>
 #include <QQmlEngine>
+#include <QScreen>
+#include <QWindow>
 
 #include <memory>
 
 class ConnectivityMonitor;
+
+// Provides information about the screen the app is displayed on
+class ScreenInfo : public QObject
+{
+    Q_OBJECT
+    Q_PROPERTY(double devicePixelRatio MEMBER devicePixelRatio_ NOTIFY devicePixelRatioChanged)
+public:
+    void setCurrentFocusWindow(QWindow* window);
+    void setDevicePixelRatio(double ratio)
+    {
+        if (ratio != devicePixelRatio_) {
+            devicePixelRatio_ = ratio;
+
+            emit devicePixelRatioChanged();
+        }
+    }
+
+signals:
+    void devicePixelRatioChanged();
+
+private:
+    double devicePixelRatio_ {0.0};
+
+    QMetaObject::Connection currentFocusWindowScreenConnection_;
+    QMetaObject::Connection devicePixelRatioConnection_;
+
+    QWindow* currentFocusWindow_ {nullptr};
+    QScreen* currentFocusWindowScreen_ {nullptr};
+};
 
 class MainApplication : public QApplication
 {
@@ -52,5 +83,7 @@ private:
 private:
     QScopedPointer<QFile> debugFile_;
     QScopedPointer<QQmlApplicationEngine> engine_;
-    ConnectivityMonitor* connectivityMonitor_;
+    ConnectivityMonitor* connectivityMonitor_ {nullptr};
+
+    ScreenInfo screenInfo_;
 };

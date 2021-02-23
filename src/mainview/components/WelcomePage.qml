@@ -49,8 +49,8 @@ Rectangle {
                 id: jamiLogoImage
 
                 Layout.alignment: Qt.AlignCenter
-                Layout.preferredWidth: welcomePageColumnLayout.width
-                Layout.preferredHeight: 100
+                Layout.preferredWidth: Math.min(welcomePageColumnLayout.width, 330)
+                Layout.preferredHeight: Math.min(welcomePageColumnLayout.width / 3, 110)
                 Layout.bottomMargin: 10
 
                 smooth: true

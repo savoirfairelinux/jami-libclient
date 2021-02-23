@@ -19,7 +19,8 @@
 import QtQuick 2.14
 import QtQuick.Controls 2.14
 import QtGraphicalEffects 1.14
-import QtQuick.Window 2.14
+
+import net.jami.Models 1.0
 
 Image {
     id: root
@@ -34,7 +35,6 @@ Image {
     property string checkedSource
     property string color: "transparent"
 
-    property real pixelDensity: Screen.pixelDensity
     property bool isSvg: {
         var match = /[^.]+$/.exec(source)
         return match !== null && match[0] === 'svg'
@@ -62,12 +62,20 @@ Image {
 
     function setSourceSize() {
         if (isSvg) {
-            sourceSize.width = width
-            sourceSize.height = height
-        } else
+            sourceSize = Qt.size(0, 0)
+            sourceSize = Qt.size(width, height)
+        }
+        else
             sourceSize = undefined
     }
 
-    onPixelDensityChanged: setSourceSize()
+    Connections {
+        target: ScreenInfo
+
+        function onDevicePixelRatioChanged(){
+            setSourceSize()
+        }
+    }
+
     Component.onCompleted: setSourceSize()
 }

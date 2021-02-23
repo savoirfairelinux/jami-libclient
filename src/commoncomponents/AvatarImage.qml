@@ -18,9 +18,10 @@
 
 import QtQuick 2.14
 import QtQuick.Controls 2.14
-import QtQuick.Window 2.14
+
 import net.jami.Adapters 1.0
 import net.jami.Constants 1.0
+import net.jami.Models 1.0
 
 Item {
     id: root
@@ -96,6 +97,16 @@ Item {
 
         if (saveToConfig)
             saveAvatarToConfig()
+    }
+
+    function reloadImageSource() {
+        var tempEnableAnimation = enableAnimation
+        var tempImageSource = rootImage.source
+
+        enableAnimation = false
+        rootImage.source = ""
+        rootImage.source = tempImageSource
+        enableAnimation = tempEnableAnimation
     }
 
     Image {
@@ -207,5 +218,13 @@ Item {
 
         radius: 30
         color: JamiTheme.notificationRed
+    }
+
+    Connections {
+        target: ScreenInfo
+
+        function onDevicePixelRatioChanged(){
+            reloadImageSource()
+        }
     }
 }
