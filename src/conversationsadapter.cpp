@@ -246,10 +246,7 @@ ConversationsAdapter::connectConversationModel(bool updateFilter)
     conversationRemovedConnection_
         = QObject::connect(currentConversationModel,
                            &lrc::api::ConversationModel::conversationRemoved,
-                           [this]() {
-                               conversationSmartListModel_->fillConversationsList();
-                               backToWelcomePage();
-                           });
+                           [this]() { backToWelcomePage(); });
 
     conversationClearedConnection
         = QObject::connect(currentConversationModel,
