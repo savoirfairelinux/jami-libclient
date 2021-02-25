@@ -362,22 +362,27 @@ ConversationModel::getConferenceableConversations(const QString& convId, const Q
         if (!conv.callId.isEmpty() || !conv.confId.isEmpty()) {
             continue;
         }
-        auto contact = owner.contactModel->getContact(conv.participants.front());
-        if (contact.isBanned || contact.profileInfo.type == profile::Type::PENDING) {
+        try {
+            auto contact = owner.contactModel->getContact(conv.participants.front());
+            if (contact.isBanned || contact.profileInfo.type == profile::Type::PENDING) {
+                continue;
+            }
+            QVector<AccountConversation> cv;
+            AccountConversation accConv = {conv.uid, currentAccountID};
+            cv.push_back(accConv);
+            if (filter.isEmpty()) {
+                contactsVector.push_back(cv);
+                continue;
+            }
+            bool result = contact.profileInfo.alias.contains(filter)
+                          || contact.profileInfo.uri.contains(filter)
+                          || contact.registeredName.contains(filter);
+            if (result) {
+                contactsVector.push_back(cv);
+            }
+        } catch (const std::out_of_range& e) {
+            qDebug() << e.what();
             continue;
-        }
-        QVector<AccountConversation> cv;
-        AccountConversation accConv = {conv.uid, currentAccountID};
-        cv.push_back(accConv);
-        if (filter.isEmpty()) {
-            contactsVector.push_back(cv);
-            continue;
-        }
-        bool result = contact.profileInfo.alias.contains(filter)
-                      || contact.profileInfo.uri.contains(filter)
-                      || contact.registeredName.contains(filter);
-        if (result) {
-            contactsVector.push_back(cv);
         }
     }
 
