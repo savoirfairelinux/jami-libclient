@@ -567,6 +567,19 @@ private Q_SLOTS:
      */
     void slotRemoteRecordingChanged(const QString& callId, const QString& contactId, bool state);
 
+    /**
+     * @brief Emit PluginModel askTrustPluginIssuer signal
+     *
+     * @param issuer
+     * @param companyDivision
+     * @param pluginName
+     * @param rootPath
+     */
+    void slotAskTrustPluginIssuer(const QString& issuer,
+                                  const QString& companyDivision,
+                                  const QString& pluginName,
+                                  const QString& rootPath);
+
 private:
     const api::Lrc& parent;
 };

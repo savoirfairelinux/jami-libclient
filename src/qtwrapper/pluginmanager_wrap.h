@@ -88,6 +88,8 @@ public Q_SLOTS: // METHODS
     MapStringString getPluginPreferencesValues(const QString& path);
 
     bool resetPluginPreferencesValues(const QString& path);
+
+    void answerTrustPlugin(bool trust, const QString& path);
 };
 
 namespace org {

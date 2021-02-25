@@ -159,3 +159,9 @@ PluginManagerInterface::resetPluginPreferencesValues(const QString& path)
 {
     return DRing::resetPluginPreferencesValues(path.toStdString());
 }
+
+void
+PluginManagerInterface::answerTrustPlugin(bool trust, const QString& path)
+{
+    DRing::answerTrustPlugins(trust, path.toStdString());
+}
