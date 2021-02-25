@@ -225,6 +225,18 @@ public:
      * @return if local moderator is enabled
      */
     bool isLocalModeratorsEnabled(const QString& accountID);
+    /**
+     * Enable/disable all moderators
+     * @param accountID
+     * @param isModEnabled
+     */
+    void enableAllModerators(const QString& accountID, const bool& isAllModEnabled);
+    /**
+     * Get all moderators state
+     * @param accountID
+     * @return if all moderator is enabled
+     */
+    bool isAllModeratorsEnabled(const QString& accountID);
 
 Q_SIGNALS:
     /**

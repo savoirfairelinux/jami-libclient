@@ -1172,6 +1172,18 @@ NewAccountModel::isLocalModeratorsEnabled(const QString& accountID)
     return ConfigurationManager::instance().isLocalModeratorsEnabled(accountID);
 }
 
+void
+NewAccountModel::enableAllModerators(const QString& accountID, const bool& isAllModEnabled)
+{
+    ConfigurationManager::instance().enableAllModerators(accountID, isAllModEnabled);
+}
+
+bool
+NewAccountModel::isAllModeratorsEnabled(const QString& accountID)
+{
+    return ConfigurationManager::instance().isAllModeratorsEnabled(accountID);
+}
+
 } // namespace lrc
 
 #include "api/moc_newaccountmodel.cpp"
