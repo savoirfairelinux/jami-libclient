@@ -61,7 +61,7 @@ main(int argc, char* argv[])
     QCoreApplication::setAttribute(Qt::AA_UseOpenGLES);
     QCoreApplication::setApplicationVersion(QString(VERSION_STRING));
     QApplication::setHighDpiScaleFactorRoundingPolicy(
-        Qt::HighDpiScaleFactorRoundingPolicy::RoundPreferFloor);
+        Qt::HighDpiScaleFactorRoundingPolicy::PassThrough);
     QtWebEngine::initialize();
 
     char ARG_DISABLE_WEB_SECURITY[] = "--disable-web-security";
