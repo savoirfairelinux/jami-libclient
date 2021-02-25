@@ -96,14 +96,14 @@ ColumnLayout {
 
     function setFormatListForCurrentDevice() {
         var device = AVModel.getCurrentVideoCaptureDevice()
-        if (SettingsAdapter.get_DeviceCapabilitiesSize(device) === 0)
-            return
-
         try {
+            if (SettingsAdapter.get_DeviceCapabilitiesSize(device) === 0)
+                return
+
             resolutionComboBoxSetting.comboModel.reset()
             resolutionComboBoxSetting.setCurrentIndex(
                         resolutionComboBoxSetting.comboModel.getCurrentSettingIndex(), true)
-        } catch(err){ console.warn("Exception: " + err.message) }
+        } catch(err) { console.warn("Exception: " + err.message) }
     }
 
     function slotFormatCurrentIndexChanged(index, isResolutionIndex) {

@@ -935,8 +935,12 @@ SettingsAdapter::unbanContact(int index)
     auto it = bannedContactList.begin();
     std::advance(it, index);
 
-    auto contactInfo = accountInfo.contactModel->getContact(*it);
-    accountInfo.contactModel->addContact(contactInfo);
+    try {
+        auto contactInfo = accountInfo.contactModel->getContact(*it);
+        accountInfo.contactModel->addContact(contactInfo);
+    } catch (const std::out_of_range& e) {
+        qDebug() << e.what();
+    }
 }
 
 void

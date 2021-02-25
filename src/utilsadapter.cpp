@@ -113,9 +113,14 @@ UtilsAdapter::getBestName(const QString& accountId, const QString& uid)
 const QString
 UtilsAdapter::getPeerUri(const QString& accountId, const QString& uid)
 {
-    auto* convModel = lrcInstance_->getAccountInfo(accountId).conversationModel.get();
-    const auto& convInfo = convModel->getConversationForUid(uid).value();
-    return convInfo.get().participants.front();
+    try {
+        auto* convModel = lrcInstance_->getAccountInfo(accountId).conversationModel.get();
+        const auto& convInfo = convModel->getConversationForUid(uid).value();
+        return convInfo.get().participants.front();
+    } catch (const std::out_of_range& e) {
+        qDebug() << e.what();
+        return "";
+    }
 }
 
 QString

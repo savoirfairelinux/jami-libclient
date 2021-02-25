@@ -91,9 +91,13 @@ ConversationsAdapter::selectConversation(const QString& accountId, const QString
             lrcInstance_->setSelectedConvId(convInfo.uid);
             accInfo.conversationModel->clearUnreadInteractions(convInfo.uid);
 
-            // Set contact filter (for conversation tab selection)
-            auto& contact = accInfo.contactModel->getContact(convInfo.participants.front());
-            setProperty("currentTypeFilter", QVariant::fromValue(contact.profileInfo.type));
+            try {
+                // Set contact filter (for conversation tab selection)
+                auto& contact = accInfo.contactModel->getContact(convInfo.participants.front());
+                setProperty("currentTypeFilter", QVariant::fromValue(contact.profileInfo.type));
+            } catch (const std::out_of_range& e) {
+                qDebug() << e.what();
+            }
         };
         if (convInfo.accountId != lrcInstance_->getCurrAccId()) {
             Utils::oneShotConnect(lrcInstance_,
