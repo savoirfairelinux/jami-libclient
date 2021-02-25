@@ -24,12 +24,14 @@
 #include "api/newaccountmodel.h"
 #include "api/datatransfermodel.h"
 #include "api/behaviorcontroller.h"
+#include "api/pluginmodel.h"
 
 // Lrc
 #include "dbus/callmanager.h"
 #include "dbus/configurationmanager.h"
 #include "dbus/presencemanager.h"
 #include "dbus/videomanager.h"
+#include "dbus/pluginmanager.h"
 
 // DRing
 #include <datatransfer_interface.h>
@@ -238,6 +240,12 @@ CallbacksHandler::CallbacksHandler(const Lrc& parent)
             &ConfigurationManagerInterface::audioMeter,
             this,
             &CallbacksHandler::slotAudioMeterReceived,
+            Qt::QueuedConnection);
+
+    connect(&PluginManager::instance(),
+            &PluginManagerInterface::askTrustPluginIssuer,
+            this,
+            &CallbacksHandler::slotAskTrustPluginIssuer,
             Qt::QueuedConnection);
 }
 
@@ -570,9 +578,19 @@ CallbacksHandler::slotAudioMeterReceived(const QString& id, float level)
 }
 
 void
-CallbacksHandler::slotRemoteRecordingChanged(const QString& callId, const QString& peerNumber, bool state)
+CallbacksHandler::slotRemoteRecordingChanged(const QString& callId,
+                                             const QString& peerNumber,
+                                             bool state)
 {
     emit remoteRecordingChanged(callId, peerNumber, state);
 }
 
+void
+CallbacksHandler::slotAskTrustPluginIssuer(const QString& issuer,
+                                           const QString& companyDivision,
+                                           const QString& pluginName,
+                                           const QString& rootPath)
+{
+    emit parent.getPluginModel().askTrustPluginIssuer(issuer, companyDivision, pluginName, rootPath);
+}
 } // namespace lrc
