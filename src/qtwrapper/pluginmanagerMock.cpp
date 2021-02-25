@@ -145,3 +145,7 @@ PluginManagerInterface::resetPluginPreferencesValues(const QString& path)
 {
     return false;
 }
+
+void
+PluginManagerInterface::answerTrustPlugin(bool trust, const QString& path)
+{}

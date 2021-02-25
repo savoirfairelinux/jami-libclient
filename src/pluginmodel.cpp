@@ -33,8 +33,6 @@
 #include <QtCore/QDir>
 #include <QUrl>
 
-// Ring daemon
-
 // LRC
 #include "dbus/pluginmanager.h"
 
@@ -234,6 +232,11 @@ PluginModel::resetPluginPreferencesValues(const QString& path)
     return PluginManager::instance().resetPluginPreferencesValues(path);
 }
 
+void
+PluginModel::answerTrustPlugin(bool trust, const QString& path)
+{
+    PluginManager::instance().answerTrustPlugin(trust, path);
+}
 } // namespace lrc
 
 #include "api/moc_pluginmodel.cpp"

@@ -174,13 +174,25 @@ public:
     MapStringString getPluginPreferencesValues(const QString& path);
 
     /**
-     * Reste preferences values of installed plugin to default values
+     * Reset preferences values of installed plugin to default values
      * @return true if preference was succesfully reset
      */
     Q_INVOKABLE bool resetPluginPreferencesValues(const QString& path);
 
+    /**
+     * Tells Daemon if user trust plugin issuer
+     *
+     * @param trust
+     * @param path
+     */
+    Q_INVOKABLE void answerTrustPlugin(bool trust, const QString& path);
+
 Q_SIGNALS:
     void chatHandlerStatusUpdated(bool isVisible);
+    void askTrustPluginIssuer(const QString& issuer,
+                              const QString& companyDivision,
+                              const QString& pluginName,
+                              const QString& rootPath);
 };
 
 } // namespace api
