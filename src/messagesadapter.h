@@ -37,14 +37,14 @@ public:
 protected:
     void safeInit() override;
 
-    Q_INVOKABLE void setupChatView(const QString& uid);
+    Q_INVOKABLE void setupChatView(const QString& convUid);
     Q_INVOKABLE void connectConversationModel();
     Q_INVOKABLE void sendContactRequest();
     Q_INVOKABLE void updateConversationForAddedContact();
     Q_INVOKABLE void removeConversation(const QString& accountId,
-                                        const QString& uid,
+                                        const QString& convUid,
                                         bool banContact = false);
-    Q_INVOKABLE void clearConversationHistory(const QString& accountId, const QString& uid);
+    Q_INVOKABLE void clearConversationHistory(const QString& accountId, const QString& convUid);
 
     // JS Q_INVOKABLE.
     Q_INVOKABLE void acceptInvitation(const QString& convUid = "");
