@@ -169,7 +169,7 @@
     <message>
         <location filename="../src/mainview/components/ContactPicker.qml" line="95"/>
         <source>Add default moderator</source>
-        <translation type="unfinished"/>
+        <translation>Añadir moderador por defecto</translation>
     </message>
 </context>
 <context>
@@ -360,7 +360,7 @@ Ahora Jami se cerrará.</translation>
     <message>
         <location filename="../src/wizardview/components/ImportFromBackupPage.qml" line="87"/>
         <source>Import from backup</source>
-        <translation>Importar desde copia de resguardo</translation>
+        <translation>Importar desde copia de respaldo</translation>
     </message>
     <message>
         <location filename="../src/wizardview/components/ImportFromBackupPage.qml" line="158"/>
@@ -671,7 +671,7 @@ Ahora Jami se cerrará.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="161"/>
         <source>Your account only exists on this device. If you lose your device or uninstall the application, your account will be deleted and can not be recovered. You can backup your account now or later.</source>
-        <translation type="unfinished"/>
+        <translation>Esta cuenta sólo existe en este dispositivo. Si lo perdés o desinstalás la aplicación, tu cuenta se borrará y no se podrá recuperar. Podés crear un archivo de respaldo de tu cuenta ahora o más adelante.</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="185"/>
@@ -681,22 +681,22 @@ Ahora Jami se cerrará.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="186"/>
         <source>Pause call</source>
-        <translation type="unfinished"/>
+        <translation>Pausar llamada</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="187"/>
         <source>Resume call</source>
-        <translation type="unfinished"/>
+        <translation>Reanudar llamada</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="188"/>
         <source>Pause video</source>
-        <translation type="unfinished"/>
+        <translation>Pausar video</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="189"/>
         <source>Resume video</source>
-        <translation type="unfinished"/>
+        <translation>Reanudar video</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="214"/>
@@ -726,7 +726,7 @@ Ahora Jami se cerrará.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="266"/>
         <source>If your account has not been backed up or added to another device, your account and registered name will be irrevocably lost.</source>
-        <translation type="unfinished"/>
+        <translation>Si no has creado un archivo de respaldo ni has vinculado tu cuenta a otro dispositivo, tu cuenta y nombre de usuario se perderán irrevocablemente.</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="278"/>
@@ -736,12 +736,12 @@ Ahora Jami se cerrará.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="285"/>
         <source>Enable typing indicators</source>
-        <translation type="unfinished"/>
+        <translation>Habilitar indicadores de tipeo</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="286"/>
         <source>Display images and videos in the chatview</source>
-        <translation type="unfinished"/>
+        <translation>Mostrar imágenes y videos en la vista de chat</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="298"/>
@@ -866,7 +866,7 @@ Ahora Jami se cerrará.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="95"/>
         <source>Auto Registration After Expired</source>
-        <translation type="unfinished"/>
+        <translation>Registro automático luego de haber expirado</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="96"/>
@@ -1091,7 +1091,7 @@ Ahora Jami se cerrará.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="167"/>
         <source>Backup account</source>
-        <translation>Crear copia de seguridad de la cuenta</translation>
+        <translation>Crear respaldo de la cuenta</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="168"/>
@@ -1126,17 +1126,17 @@ Ahora Jami se cerrará.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="178"/>
         <source>is recording</source>
-        <translation type="unfinished"/>
+        <translation>está grabando</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="179"/>
         <source>are recording</source>
-        <translation type="unfinished"/>
+        <translation>están grabando</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="180"/>
         <source>Peer stopped recording</source>
-        <translation type="unfinished"/>
+        <translation>El par detuvo la grabación</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="183"/>
@@ -1424,7 +1424,7 @@ Ahora Jami se cerrará.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="275"/>
         <source>Enable dark theme</source>
-        <translation type="unfinished"/>
+        <translation>Habilitar tema oscuro</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="276"/>
@@ -1546,7 +1546,7 @@ Ahora Jami se cerrará.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="313"/>
         <source>You can obtain an archive by clicking on &quot;Backup account&quot; in the account settings. This will create a .gz file on your device.</source>
-        <translation>Podés obtener un archivo de respaldo haciendo click en &quot;Exportar cuenta&quot; dentro de configuración de la cuenta. Esto creará un archivo .gz en tu dispositivo.</translation>
+        <translation>Podés obtener un archivo de respaldo haciendo click en &quot;Respaldá tu cuenta&quot; dentro de configuración de la cuenta. Esto creará un archivo .gz en tu dispositivo.</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="316"/>
@@ -1713,12 +1713,12 @@ Copy and share it with your friends!</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="409"/>
         <source>Set moderator</source>
-        <translation type="unfinished"/>
+        <translation>Asignar moderador</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="410"/>
         <source>Unset moderator</source>
-        <translation type="unfinished"/>
+        <translation>Desasignar moderador</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="413"/>
@@ -1738,32 +1738,32 @@ Copy and share it with your friends!</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="416"/>
         <source>local muted</source>
-        <translation type="unfinished"/>
+        <translation>silenciado localmente</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="419"/>
         <source>Conference moderation</source>
-        <translation type="unfinished"/>
+        <translation>Moderación de conferencia</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="420"/>
         <source>Default moderators</source>
-        <translation type="unfinished"/>
+        <translation>Moderadores por defecto</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="421"/>
         <source>Enable local moderators</source>
-        <translation type="unfinished"/>
+        <translation>Habilitar moderadores locales</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="422"/>
         <source>Add default moderator</source>
-        <translation type="unfinished"/>
+        <translation>Añadir moderador por defecto</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="423"/>
         <source>Remove default moderator</source>
-        <translation type="unfinished"/>
+        <translation>Eliminar moderador por defecto</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="426"/>
@@ -2266,7 +2266,7 @@ Por favor intentalo más tarde.</translation>
     <message>
         <location filename="../src/mainview/components/SelectScreen.qml" line="321"/>
         <source>All Screens</source>
-        <translation type="unfinished"/>
+        <translation>Todas las pantallas</translation>
     </message>
 </context>
 <context>
@@ -2351,7 +2351,7 @@ Por favor intentalo más tarde.</translation>
     <message>
         <location filename="../src/settingsview/components/SystemSettings.qml" line="75"/>
         <source>Enable dark theme</source>
-        <translation type="unfinished"/>
+        <translation>Habilitar tema oscuro</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/SystemSettings.qml" line="93"/>
@@ -2411,7 +2411,7 @@ Por favor intentalo más tarde.</translation>
     <message>
         <location filename="../src/wizardview/components/WelcomePage.qml" line="146"/>
         <source>Import account from backup file</source>
-        <translation>Importar cuenta desde respaldo</translation>
+        <translation>Importar cuenta desde archivo de respaldo</translation>
     </message>
     <message>
         <location filename="../src/wizardview/components/WelcomePage.qml" line="219"/>

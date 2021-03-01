@@ -671,7 +671,7 @@ Jami ahora se cerrará.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="161"/>
         <source>Your account only exists on this device. If you lose your device or uninstall the application, your account will be deleted and can not be recovered. You can backup your account now or later.</source>
-        <translation type="unfinished"/>
+        <translation>Esta cuenta sólo existe en este dispositivo. Si lo pierdes o desinstalas la aplicación, tu cuenta se borrará y no se podrá recuperar. Puedes crear un archivo de respaldo de tu cuenta ahora o más adelante.</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="185"/>
@@ -726,7 +726,7 @@ Jami ahora se cerrará.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="266"/>
         <source>If your account has not been backed up or added to another device, your account and registered name will be irrevocably lost.</source>
-        <translation type="unfinished"/>
+        <translation>Si no has creado un archivo de respaldo ni has vinculado tu cuenta a otro dispositivo, tu cuenta y nombre de usuario se perderán irrevocablemente.</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="278"/>
@@ -741,7 +741,7 @@ Jami ahora se cerrará.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="286"/>
         <source>Display images and videos in the chatview</source>
-        <translation type="unfinished"/>
+        <translation>Mostrar imágenes y videos en la vista de chat</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="298"/>

@@ -28,12 +28,12 @@
     <message>
         <location filename="../src/settingsview/components/AdvancedCallSettings.qml" line="86"/>
         <source>Audio Files</source>
-        <translation type="unfinished"/>
+        <translation>فایل‌های صوتی</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/AdvancedCallSettings.qml" line="86"/>
         <source>All files</source>
-        <translation type="unfinished"/>
+        <translation>همه فایل‌ها</translation>
     </message>
 </context>
 <context>
@@ -49,12 +49,12 @@
         <location filename="../src/settingsview/components/AdvancedJamiSecuritySettings.qml" line="94"/>
         <location filename="../src/settingsview/components/AdvancedJamiSecuritySettings.qml" line="114"/>
         <source>All files</source>
-        <translation type="unfinished"/>
+        <translation>همه فایل‌ها</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/AdvancedJamiSecuritySettings.qml" line="114"/>
         <source>Key File</source>
-        <translation type="unfinished"/>
+        <translation>فایل کلید</translation>
     </message>
 </context>
 <context>
@@ -83,12 +83,12 @@
         <location filename="../src/settingsview/components/AdvancedSIPSecuritySettings.qml" line="113"/>
         <location filename="../src/settingsview/components/AdvancedSIPSecuritySettings.qml" line="131"/>
         <source>All files</source>
-        <translation type="unfinished"/>
+        <translation>همه فایل‌ها</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/AdvancedSIPSecuritySettings.qml" line="131"/>
         <source>Key File</source>
-        <translation type="unfinished"/>
+        <translation>فایل کلید</translation>
     </message>
 </context>
 <context>
@@ -104,12 +104,12 @@
     <message>
         <location filename="../src/wizardview/components/BackupKeyPage.qml" line="47"/>
         <source>Jami archive files</source>
-        <translation type="unfinished"/>
+        <translation>فایل‌های بایگانی جمی</translation>
     </message>
     <message>
         <location filename="../src/wizardview/components/BackupKeyPage.qml" line="47"/>
         <source>All files</source>
-        <translation type="unfinished"/>
+        <translation>همه فایل‌ها</translation>
     </message>
 </context>
 <context>
@@ -125,12 +125,12 @@
     <message>
         <location filename="../src/calladapter.cpp" line="277"/>
         <source>me</source>
-        <translation type="unfinished"/>
+        <translation>من</translation>
     </message>
     <message>
         <location filename="../src/calladapter.cpp" line="341"/>
         <source>is calling you</source>
-        <translation type="unfinished"/>
+        <translation>در حال تماس با شماست</translation>
     </message>
 </context>
 <context>
@@ -164,12 +164,12 @@
     <message>
         <location filename="../src/mainview/components/ContactPicker.qml" line="93"/>
         <source>Transfer this call</source>
-        <translation type="unfinished"/>
+        <translation>انتقال این تماس</translation>
     </message>
     <message>
         <location filename="../src/mainview/components/ContactPicker.qml" line="95"/>
         <source>Add default moderator</source>
-        <translation type="unfinished"/>
+        <translation>افزودن مدیر پیش‌فرض</translation>
     </message>
 </context>
 <context>
@@ -210,12 +210,12 @@
     <message>
         <location filename="../src/wizardview/components/CreateAccountPage.qml" line="82"/>
         <source>Jami archive files</source>
-        <translation type="unfinished"/>
+        <translation>فایل‌های بایگانی جمی</translation>
     </message>
     <message>
         <location filename="../src/wizardview/components/CreateAccountPage.qml" line="82"/>
         <source>All files</source>
-        <translation type="unfinished"/>
+        <translation>همه فایل‌ها</translation>
     </message>
     <message>
         <location filename="../src/wizardview/components/CreateAccountPage.qml" line="127"/>
@@ -275,12 +275,12 @@
     <message>
         <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="159"/>
         <source>Jami archive files</source>
-        <translation type="unfinished"/>
+        <translation>فایل‌های بایگانی جمی</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="159"/>
         <source>All files</source>
-        <translation type="unfinished"/>
+        <translation>همه فایل‌ها</translation>
     </message>
 </context>
 <context>
@@ -350,12 +350,12 @@ Jami اکنون بسته خواهد شد.</translation>
     <message>
         <location filename="../src/wizardview/components/ImportFromBackupPage.qml" line="63"/>
         <source>Jami archive files</source>
-        <translation type="unfinished"/>
+        <translation>فایل‌های بایگانی جمی</translation>
     </message>
     <message>
         <location filename="../src/wizardview/components/ImportFromBackupPage.qml" line="63"/>
         <source>All files</source>
-        <translation type="unfinished"/>
+        <translation>همه فایل‌ها</translation>
     </message>
     <message>
         <location filename="../src/wizardview/components/ImportFromBackupPage.qml" line="87"/>
@@ -365,7 +365,7 @@ Jami اکنون بسته خواهد شد.</translation>
     <message>
         <location filename="../src/wizardview/components/ImportFromBackupPage.qml" line="158"/>
         <source>Generating account…</source>
-        <translation type="unfinished"/>
+        <translation>ایجاد حساب...</translation>
     </message>
     <message>
         <location filename="../src/wizardview/components/ImportFromBackupPage.qml" line="203"/>
@@ -388,7 +388,7 @@ Jami اکنون بسته خواهد شد.</translation>
     <message>
         <location filename="../src/wizardview/components/ImportFromDevicePage.qml" line="139"/>
         <source>Generating account…</source>
-        <translation type="unfinished"/>
+        <translation>ایجاد حساب...</translation>
     </message>
     <message>
         <location filename="../src/wizardview/components/ImportFromDevicePage.qml" line="179"/>
@@ -511,12 +511,12 @@ Jami اکنون بسته خواهد شد.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="52"/>
         <source>In progress…</source>
-        <translation type="unfinished"/>
+        <translation>در جریان...</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="61"/>
         <source>Convert your account into a rendezvous point</source>
-        <translation type="unfinished"/>
+        <translation>حساب خود را به یک نقطه قرار ملاقات تبدیل کنید</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="62"/>
@@ -681,7 +681,7 @@ Jami اکنون بسته خواهد شد.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="186"/>
         <source>Pause call</source>
-        <translation type="unfinished"/>
+        <translation>توقف تماس</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="187"/>
@@ -711,7 +711,7 @@ Jami اکنون بسته خواهد شد.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="221"/>
         <source>Create a rendezvous point</source>
-        <translation type="unfinished"/>
+        <translation>یک نقطه قرار ملاقات ایجاد کنید</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="224"/>
@@ -721,7 +721,7 @@ Jami اکنون بسته خواهد شد.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="226"/>
         <source>Choose a name for your rendezvous point</source>
-        <translation type="unfinished"/>
+        <translation>یک نام برای نقطه قرار ملاقات خود انتخاب کنید</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="266"/>
@@ -736,7 +736,7 @@ Jami اکنون بسته خواهد شد.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="285"/>
         <source>Enable typing indicators</source>
-        <translation type="unfinished"/>
+        <translation>فعال‌سازی نشان‌های نوشتاری</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="286"/>
@@ -756,7 +756,7 @@ Jami اکنون بسته خواهد شد.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="320"/>
         <source>Enter the PIN from another configured Jami account. Use the &quot;Link Another Device&quot; feature to obtain a PIN.</source>
-        <translation type="unfinished"/>
+        <translation>پین را از حساب پیکربندی‌شده جمی دیگر وارد کنید. برای به دست آوردن یک پین، از ویژگی «برون‌برد حساب جمی» استفاده کنید.</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="322"/>
@@ -866,7 +866,7 @@ Jami اکنون بسته خواهد شد.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="95"/>
         <source>Auto Registration After Expired</source>
-        <translation type="unfinished"/>
+        <translation>ثبت‌نام خودکار پس از انقضا</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="96"/>
@@ -1163,7 +1163,7 @@ Jami اکنون بسته خواهد شد.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="192"/>
         <source>More options</source>
-        <translation type="unfinished"/>
+        <translation>تنظیمات بیشتر</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="195"/>
@@ -1228,7 +1228,7 @@ Jami اکنون بسته خواهد شد.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="209"/>
         <source>Enter Jami Account Management Server (JAMS) URL</source>
-        <translation type="unfinished"/>
+        <translation>آدرس URL سرور مدیریت حساب جمی (JAMS) را وارد کن</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="210"/>
@@ -1243,7 +1243,7 @@ Jami اکنون بسته خواهد شد.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="212"/>
         <source>Enter your JAMS credentials</source>
-        <translation type="unfinished"/>
+        <translation>اعتبار‌نامه JAMS خود را وارد کنید</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="213"/>
@@ -1293,12 +1293,12 @@ Jami اکنون بسته خواهد شد.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="231"/>
         <source>Create SIP account</source>
-        <translation type="unfinished"/>
+        <translation>ساخت حساب کاربری SIP</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="232"/>
         <source>Configure an existing SIP account</source>
-        <translation type="unfinished"/>
+        <translation>پیکربندی یک حساب SIP موجود.</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="235"/>
@@ -1545,17 +1545,17 @@ Jami اکنون بسته خواهد شد.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="313"/>
         <source>You can obtain an archive by clicking on &quot;Backup account&quot; in the account settings. This will create a .gz file on your device.</source>
-        <translation type="unfinished"/>
+        <translation>می‌توانید با کلیک روی &quot;پشتیبان‌گیری حساب&quot; در تنظیمات حساب،یک بایگانی تهیه کنید. این کار یک پرونده ‎.gz را در دستگاه شما ایجاد می‌کند.</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="316"/>
         <source>Restore an account from backup</source>
-        <translation type="unfinished"/>
+        <translation>بازگردانی یک حساب از پشتیبان</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="319"/>
         <source>Enter Jami account password</source>
-        <translation type="unfinished"/>
+        <translation>گذرواژه حساب جمی را وارد کنید</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="328"/>
@@ -1687,7 +1687,7 @@ Copy and share it with your friends!</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="387"/>
         <source>Advanced features</source>
-        <translation type="unfinished"/>
+        <translation>ویژگی‌های پیش‌رفته</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="388"/>
@@ -1697,7 +1697,7 @@ Copy and share it with your friends!</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="389"/>
         <source>Connect to a JAMS server</source>
-        <translation type="unfinished"/>
+        <translation>اتصال یه سرور JAMS</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="391"/>
@@ -1712,17 +1712,17 @@ Copy and share it with your friends!</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="409"/>
         <source>Set moderator</source>
-        <translation type="unfinished"/>
+        <translation>تعیین مدیریت</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="410"/>
         <source>Unset moderator</source>
-        <translation type="unfinished"/>
+        <translation>لغو میدیریت</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="413"/>
         <source>Maximize</source>
-        <translation type="unfinished"/>
+        <translation>به حداکثر رساندن</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="414"/>
@@ -1752,12 +1752,12 @@ Copy and share it with your friends!</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="421"/>
         <source>Enable local moderators</source>
-        <translation type="unfinished"/>
+        <translation>فعال‌سازی مدیران محلی</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="422"/>
         <source>Add default moderator</source>
-        <translation type="unfinished"/>
+        <translation>افزودن مدیر پیش‌فرض</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="423"/>
@@ -2026,7 +2026,7 @@ Please try again later.</source>
     <message>
         <location filename="../src/commoncomponents/PhotoboothView.qml" line="87"/>
         <source>All files</source>
-        <translation type="unfinished"/>
+        <translation>همه فایل‌ها</translation>
     </message>
     <message>
         <location filename="../src/commoncomponents/PhotoboothView.qml" line="233"/>
@@ -2112,7 +2112,7 @@ Please try again later.</source>
     <message>
         <location filename="../src/settingsview/components/PluginListSettingsView.qml" line="67"/>
         <source>All files</source>
-        <translation type="unfinished"/>
+        <translation>همه فایل‌ها</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/PluginListSettingsView.qml" line="87"/>
@@ -2148,7 +2148,7 @@ Please try again later.</source>
     <message>
         <location filename="../src/wizardview/components/ProfilePage.qml" line="151"/>
         <source>Generating account…</source>
-        <translation type="unfinished"/>
+        <translation>ایجاد حساب...</translation>
     </message>
 </context>
 <context>
