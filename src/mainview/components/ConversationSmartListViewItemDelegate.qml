@@ -198,7 +198,10 @@ ItemDelegate {
                 ConversationsAdapter.selectConversation(AccountAdapter.currentAccountId,
                                                         UID,
                                                         false)
-                CallAdapter.placeCall()
+                if (AccountAdapter.currentAccountType === Profile.Type.SIP)
+                    CallAdapter.placeAudioOnlyCall()
+                else
+                    CallAdapter.placeCall()
                 communicationPageMessageWebView.setSendContactRequestButtonVisible(false)
             }
         }
