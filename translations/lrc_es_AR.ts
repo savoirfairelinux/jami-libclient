@@ -1,4 +1,4 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="es_AR" sourcelanguage="en" version="2.0">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="es_AR" sourcelanguage="en" version="2.1">
 <context>
     <name>QObject</name>
     <message>
@@ -407,7 +407,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="32"/>
         <source>Show available plugins</source>
-        <translation type="unfinished"/>
+        <translation>Mostrar complementos disponibles</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="33"/>
@@ -457,27 +457,27 @@
     <message>
         <location filename="../src/chatview.cpp" line="43"/>
         <source>Write to {0}</source>
-        <translation type="unfinished"/>
+        <translation>Escribir a {0}</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="61"/>
         <source>Unable to make contact</source>
-        <translation type="unfinished"/>
+        <translation>No se pudo contactar</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="66"/>
         <source>Waiting for contact</source>
-        <translation type="unfinished"/>
+        <translation>Esperando al contacto</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="67"/>
         <source>Incoming transfer</source>
-        <translation type="unfinished"/>
+        <translation>Transferencia entrante</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="68"/>
         <source>Timed out waiting for contact</source>
-        <translation type="unfinished"/>
+        <translation>Expiró el tiempo de espera al contacto</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="42"/>
@@ -522,7 +522,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="65"/>
         <source>Ongoing</source>
-        <translation type="unfinished"/>
+        <translation>En curso</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="49"/>
@@ -567,7 +567,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="58"/>
         <source>Deny</source>
-        <translation type="unfinished"/>
+        <translation>Rechazar</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="59"/>

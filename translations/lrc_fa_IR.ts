@@ -1,4 +1,4 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="fa_IR" sourcelanguage="en" version="2.0">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="fa_IR" sourcelanguage="en" version="2.1">
 <context>
     <name>QObject</name>
     <message>
@@ -407,7 +407,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="32"/>
         <source>Show available plugins</source>
-        <translation type="unfinished"/>
+        <translation>نمایش افزونه‌های موجود</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="33"/>
@@ -432,12 +432,12 @@
     <message>
         <location filename="../src/chatview.cpp" line="37"/>
         <source>Options</source>
-        <translation type="unfinished"/>
+        <translation>تنظیمات</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="38"/>
         <source>Jump to latest</source>
-        <translation type="unfinished"/>
+        <translation>پرش به آخرین</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="39"/>
@@ -447,37 +447,37 @@
     <message>
         <location filename="../src/chatview.cpp" line="40"/>
         <source>Leave video message</source>
-        <translation type="unfinished"/>
+        <translation>یک پیام تصویری بگذارید</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="41"/>
         <source>Leave audio message</source>
-        <translation type="unfinished"/>
+        <translation>یک پیام صوتی بگذارید</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="43"/>
         <source>Write to {0}</source>
-        <translation type="unfinished"/>
+        <translation>نوشتن به {0}</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="61"/>
         <source>Unable to make contact</source>
-        <translation type="unfinished"/>
+        <translation>برقراری تماس امکان‌پذیر نیست</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="66"/>
         <source>Waiting for contact</source>
-        <translation type="unfinished"/>
+        <translation> در انتظار برقراری تماس</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="67"/>
         <source>Incoming transfer</source>
-        <translation type="unfinished"/>
+        <translation>انتقال ورودی</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="68"/>
         <source>Timed out waiting for contact</source>
-        <translation type="unfinished"/>
+        <translation>زمان انتظار برای تماس به پایان رسید</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="42"/>
@@ -492,7 +492,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="46"/>
         <source>is not in your contacts</source>
-        <translation type="unfinished"/>
+        <translation>در مخاطبین شما نیست</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="48"/>
@@ -502,17 +502,17 @@
     <message>
         <location filename="../src/chatview.cpp" line="49"/>
         <source>{0} days ago</source>
-        <translation type="unfinished"/>
+        <translation>{0} روز پیش</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="50"/>
         <source>{0} hours ago</source>
-        <translation type="unfinished"/>
+        <translation>{0} ساعت قبل</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="52"/>
         <source>{0} minutes ago</source>
-        <translation type="unfinished"/>
+        <translation>{0} دقیقه قبل</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="64"/>
@@ -522,7 +522,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="65"/>
         <source>Ongoing</source>
-        <translation type="unfinished"/>
+        <translation>در جریان</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="49"/>
@@ -567,7 +567,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="58"/>
         <source>Deny</source>
-        <translation type="unfinished"/>
+        <translation>رد کردن</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="59"/>
