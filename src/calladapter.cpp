@@ -207,7 +207,9 @@ CallAdapter::onShowCallView(const QString& accountId, const QString& convUid)
     if (convInfo.uid.isEmpty()) {
         return;
     }
+
     updateCall(convInfo.uid, accountId);
+    emit callSetupMainViewRequired(accountId, convInfo.uid);
 }
 
 void
@@ -226,7 +228,6 @@ CallAdapter::updateCall(const QString& convUid, const QString& accountId, bool f
         return;
     }
 
-    emit callSetupMainViewRequired(accountId_, convUid_);
     updateCallOverlay(convInfo);
     emit previewVisibilityNeedToChange(shouldShowPreview(forceCallOnly));
 
@@ -423,11 +424,14 @@ CallAdapter::connectCallModel(const QString& accountId)
                                 /*
                                  * Reset the call view corresponding accountId, uid.
                                  */
-                                lrcInstance_->setSelectedConvId(otherConv.uid);
                                 updateCall(otherConv.uid, otherConv.accountId, forceCallOnly);
+
+                                emit callSetupMainViewRequired(accountId, convInfo.uid);
                             }
                         }
                     }
+
+                    return;
                 }
                 preventScreenSaver(false);
                 break;

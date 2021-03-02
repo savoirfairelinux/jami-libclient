@@ -189,14 +189,6 @@ UtilsAdapter::getAccountListSize()
     return getCurrAccList().size();
 }
 
-void
-UtilsAdapter::setCurrentCall(const QString& accountId, const QString& convUid)
-{
-    auto& accInfo = lrcInstance_->getAccountInfo(accountId);
-    auto const& convInfo = lrcInstance_->getConversationFromConvUid(convUid, accountId);
-    accInfo.callModel->setCurrentCall(convInfo.callId);
-}
-
 bool
 UtilsAdapter::hasCall(const QString& accountId)
 {

@@ -200,7 +200,7 @@ Rectangle {
             currentConvUID = currentUID
 
             if (callState === Call.Status.IN_PROGRESS || callState === Call.Status.PAUSED) {
-                UtilsAdapter.setCurrentCall(AccountAdapter.currentAccountId, currentUID)
+                CallAdapter.updateCall(currentUID, AccountAdapter.currentAccountId)
                 if (isAudioOnly)
                     callStackView.showAudioCallPage()
                 else
