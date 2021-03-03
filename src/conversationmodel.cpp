@@ -203,6 +203,8 @@ public:
                                     QString& conversationId);
     void awaitingHost(DataTransferId dringId, datatransfer::Info info);
 
+    bool hasOneOneSwarmWith(const QString& participant) const;
+
     /**
      * accept a file transfer
      * @param convUid
@@ -1668,14 +1670,10 @@ ConversationModelPimpl::initConversations()
     // Fill conversations
     for (auto const& c : linked.owner.contactModel->getAllContacts().toStdMap()) {
         auto conv = storage::getConversationsWithPeer(db, c.second.profileInfo.uri);
-        if (conv.empty()) {
-            // Can't find a conversation with this contact
-            // add temporary pending conversation
-            if (c.second.profileInfo.type == profile::Type::PENDING && indexOf(c.second.profileInfo.uri) < 0) {
-                addTemporaryPendingConversation(c.second.profileInfo.uri);
-            }
+        if (hasOneOneSwarmWith(c.second.profileInfo.uri))
             continue;
-        }
+        if (conv.empty())
+            conv.push_back(storage::beginConversationWithPeer(db, c.second.profileInfo.uri));
         addConversationWith(conv[0], c.first);
 
         auto convIdx = indexOf(conv[0]);
@@ -3010,6 +3008,18 @@ void
 ConversationModelPimpl::slotTransferStatusAwaitingHost(DataTransferId dringId, datatransfer::Info info)
 {
     awaitingHost(dringId, info);
+}
+
+bool
+ConversationModelPimpl::hasOneOneSwarmWith(const QString& participant) const
+{
+    for (const auto& conversation : conversations) {
+        // TODO check mode one to one
+        // TODO !!!! conversation.participants should contains all members imho
+        if (conversation.isSwarm && conversation.participants.size() == 1 && conversation.participants.first() == participant)
+            return true;
+    }
+    return false;
 }
 
 void
