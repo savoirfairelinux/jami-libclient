@@ -203,6 +203,8 @@ public:
                                     QString& conversationId);
     void awaitingHost(DataTransferId dringId, datatransfer::Info info);
 
+    bool hasOneOneSwarmWith(const QString& participant) const;
+
     /**
      * accept a file transfer
      * @param convUid
@@ -1672,9 +1674,8 @@ ConversationModelPimpl::initConversations()
         if (conv.empty()) {
             // Can't find a conversation with this contact
             // add pending not swarm conversation
-            if (c.second.profileInfo.type == profile::Type::PENDING && indexOf(c.second.profileInfo.uri) < 0) {
+            if (!hasOneOneSwarmWith(c.second.profileInfo.uri))
                 addPendingConversation(c.second.profileInfo.uri);
-            }
             continue;
         }
         addConversationWith(conv[0], c.first);
@@ -2001,28 +2002,34 @@ void
 ConversationModelPimpl::slotConversationReady(const QString& accountId,
                                               const QString& conversationId)
 {
-    if (accountId != linked.owner.id || indexOf(conversationId) >= 0 ) {
+    if (accountId != linked.owner.id) {
         return;
     }
     // remove conversation that was added from slotContactAdded
     const VectorMapStringString& members = ConfigurationManager::instance().getConversationMembers(accountId, conversationId);
     auto accountURI = linked.owner.profileInfo.uri;
+    VectorString uris;
     for (auto& member : members) {
         if (member["uri"] != accountURI) {
-            try {
-                auto& conversation = getConversationForPeerUri(member["uri"]).get();
-                conversations.erase(conversations.begin() + indexOf(member["uri"]));
-            } catch (std::out_of_range&) {}
+            uris.append(member["uri"]);
+        }
+        if (indexOf(member["uri"]) >= 0) {
+            conversations.erase(conversations.begin() + indexOf(member["uri"]));;
         }
     }
-    addSwarmConversation(conversationId);
-    if (indexOf(conversationId) < 0 ) {
-        return;
+    if (indexOf(conversationId) < 0) {
+        addSwarmConversation(conversationId);
+    } else {
+        // update participants
+        auto& conversation = getConversationForUid(conversationId).get();
+        conversation.participants = uris;
+        conversation.isSwarm = true;
+        auto id = ConfigurationManager::instance().loadConversationMessages(linked.owner.id,
+                                                                            conversationId,
+                                                                           "",
+                                                                           5);
     }
-    // update participants
-    auto& conversation = getConversationForUid(conversationId).get();
-    auto participants = conversation.participants;
-    emit linked.conversationReady(conversationId, participants.front());
+    emit linked.conversationReady(conversationId, uris.front());
     emit linked.newConversation(conversationId);
     invalidateModel();
     emit linked.modelChanged();
@@ -3080,6 +3087,18 @@ void
 ConversationModelPimpl::slotTransferStatusAwaitingHost(DataTransferId dringId, datatransfer::Info info)
 {
     awaitingHost(dringId, info);
+}
+
+bool
+ConversationModelPimpl::hasOneOneSwarmWith(const QString& participant) const
+{
+    for (const auto& conversation : conversations) {
+        // TODO check mode one to one
+        // TODO !!!! conversation.participants should contains all members imho
+        if (conversation.isSwarm && conversation.participants.size() == 1 && conversation.participants.first() == participant)
+            return true;
+    }
+    return false;
 }
 
 void

@@ -1138,7 +1138,7 @@ ContactModelPimpl::slotNewAccountTransfer(DataTransferId dringId, datatransfer::
     bool emitNewTrust = false;
     {
         std::lock_guard<std::mutex> lk(contactsMtx_);
-        if (contacts.find(info.peerUri) == contacts.end()) {
+        if (!info.peerUri.isEmpty() && contacts.find(info.peerUri) == contacts.end()) {
             // Contact not found, load profile from database.
             // The conversation model will create an entry and link the incomingCall.
             auto type = (linked.owner.profileInfo.type == profile::Type::RING)
