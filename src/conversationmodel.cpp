@@ -1669,12 +1669,7 @@ ConversationModelPimpl::initConversations()
     for (auto const& c : linked.owner.contactModel->getAllContacts().toStdMap()) {
         auto conv = storage::getConversationsWithPeer(db, c.second.profileInfo.uri);
         if (conv.empty()) {
-            // Can't find a conversation with this contact
-            // add temporary pending conversation
-            if (c.second.profileInfo.type == profile::Type::PENDING && indexOf(c.second.profileInfo.uri) < 0) {
-                addTemporaryPendingConversation(c.second.profileInfo.uri);
-            }
-            continue;
+            conv.push_back(storage::beginConversationWithPeer(db, c.second.profileInfo.uri));
         }
         addConversationWith(conv[0], c.first);
 
