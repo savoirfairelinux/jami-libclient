@@ -203,6 +203,8 @@ public:
                                     QString& conversationId);
     void awaitingHost(DataTransferId dringId, datatransfer::Info info);
 
+    bool hasOneOneSwarmWith(const QString& participant) const;
+
     /**
      * accept a file transfer
      * @param convUid
@@ -1672,9 +1674,8 @@ ConversationModelPimpl::initConversations()
         if (conv.empty()) {
             // Can't find a conversation with this contact
             // add pending not swarm conversation
-            if (c.second.profileInfo.type == profile::Type::PENDING && indexOf(c.second.profileInfo.uri) < 0) {
+            if (!hasOneOneSwarmWith(c.second.profileInfo.uri))
                 addPendingConversation(c.second.profileInfo.uri);
-            }
             continue;
         }
         addConversationWith(conv[0], c.first);
@@ -2001,7 +2002,7 @@ void
 ConversationModelPimpl::slotConversationReady(const QString& accountId,
                                               const QString& conversationId)
 {
-    if (accountId != linked.owner.id || indexOf(conversationId) >= 0 ) {
+    if (accountId != linked.owner.id) {
         return;
     }
     // remove conversation that was added from slotContactAdded
@@ -3080,6 +3081,18 @@ void
 ConversationModelPimpl::slotTransferStatusAwaitingHost(DataTransferId dringId, datatransfer::Info info)
 {
     awaitingHost(dringId, info);
+}
+
+bool
+ConversationModelPimpl::hasOneOneSwarmWith(const QString& participant) const
+{
+    for (const auto& conversation : conversations) {
+        // TODO check mode one to one
+        // TODO !!!! conversation.participants should contains all members imho
+        if (conversation.isSwarm && conversation.participants.size() == 1 && conversation.participants.first() == participant)
+            return true;
+    }
+    return false;
 }
 
 void
