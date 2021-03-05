@@ -202,7 +202,7 @@ Rectangle {
         }
 
         onCallCancelButtonIsClicked: {
-            CallAdapter.hangUpACall(responsibleAccountId, responsibleConvUid)
+            CallAdapter.refuseACall(responsibleAccountId, responsibleConvUid)
         }
 
         visible: callStackMainView.currentItem.stackNumber === stackNumber
