@@ -231,8 +231,8 @@ public:
     ConversationModel::ConversationQueueProxy customFilteredConversations;
 
     QString currentFilter;
-    profile::Type typeFilter;
-    profile::Type customTypeFilter;
+    FilterType typeFilter;
+    FilterType customTypeFilter;
 
     std::map<QString, std::mutex> interactionsLocks; ///< {convId, mutex}
     MapStringString transfIdToDbIntId;
@@ -445,8 +445,8 @@ ConversationModel::getConferenceableConversations(const QString& convId, const Q
     for (const auto& account_id : pimpl_->lrc.getAccountModel().getAccountList()) {
         try {
             auto& accountInfo = pimpl_->lrc.getAccountModel().getAccountInfo(account_id);
-            auto accountConv = accountInfo.conversationModel->getFilteredConversations(
-                accountInfo.profileInfo.type);
+            auto type = accountInfo.profileInfo.type == profile::Type::SIP ? FilterType::SIP : FilterType::RING;
+            auto accountConv = accountInfo.conversationModel->getFilteredConversations(type);
             accountConv.for_each([filter,
                                   &accountInfo,
                                   account_id,
@@ -536,7 +536,7 @@ ConversationModel::getAllSearchResults() const
 }
 
 const ConversationModel::ConversationQueueProxy&
-ConversationModel::getFilteredConversations(const profile::Type& filter,
+ConversationModel::getFilteredConversations(const FilterType& filter,
                                             bool forceUpdate,
                                             const bool includeBanned) const
 {
@@ -551,7 +551,16 @@ ConversationModel::getFilteredConversations(const profile::Type& filter,
                 auto contactInfo = owner.contactModel->getContact(entry.participants.front());
                 if (!includeBanned && contactInfo.isBanned)
                     return false;
-                return (contactInfo.profileInfo.type == pimpl_->customTypeFilter);
+                switch (pimpl_->customTypeFilter) {
+                    case FilterType::RING:
+                        return (contactInfo.profileInfo.type == profile::Type::RING && !entry.isRequest);
+                    case FilterType::SIP:
+                        return (contactInfo.profileInfo.type == profile::Type::SIP && !entry.isRequest);
+                    case FilterType::REQUEST:
+                        return entry.isRequest;
+                    default:
+                        break;
+                }
             } catch (...) {
                 return false;
             }
@@ -1063,7 +1072,7 @@ ConversationModel::setFilter(const QString& filter)
 }
 
 void
-ConversationModel::setFilter(const profile::Type& filter)
+ConversationModel::setFilter(const FilterType& filter)
 {
     // Switch between PENDING, RING and SIP contacts.
     pimpl_->typeFilter = filter;
@@ -1412,8 +1421,8 @@ ConversationModelPimpl::ConversationModelPimpl(const ConversationModel& linked,
     , lrc {lrc}
     , db(db)
     , callbacksHandler(callbacksHandler)
-    , typeFilter(profile::Type::INVALID)
-    , customTypeFilter(profile::Type::INVALID)
+    , typeFilter(FilterType::INVALID)
+    , customTypeFilter(FilterType::INVALID)
     , behaviorController(behaviorController)
 {
     filteredConversations.bindSortCallback(this, &ConversationModelPimpl::sort);
@@ -1806,26 +1815,20 @@ ConversationModelPimpl::filter(const conversation::Info& entry)
         };
 
         // Check type
-        if (typeFilter != profile::Type::PENDING) {
-            // Remove pending contacts and get the temporary item if filter is not empty
-            switch (contactInfo.profileInfo.type) {
-            case profile::Type::COUNT__:
-            case profile::Type::INVALID:
-            case profile::Type::PENDING:
-                return false;
-            case profile::Type::TEMPORARY:
-                return filterUriAndReg(contactInfo, currentFilter);
-            case profile::Type::SIP:
-            case profile::Type::RING:
-                    if (entry.isRequest) {
-                        return false;
-                    }
+        switch (typeFilter) {
+            case FilterType::RING:
+            case FilterType::SIP:
+                if (entry.isRequest)
+                    return false;
+                if (contactInfo.profileInfo.type == profile::Type::TEMPORARY)
+                    return filterUriAndReg(contactInfo, currentFilter);
                 break;
-            }
-        } else {
-            // We only want conversation requests matching with the filter
-            if (!entry.isRequest)
-                return false;
+            case FilterType::REQUEST:
+                if (!entry.isRequest);
+                    return false;
+                break;
+            default:
+                break;
         }
 
         // Otherwise perform usual regex search

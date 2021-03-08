@@ -56,6 +56,9 @@ class NewAccountModel;
 enum class ConferenceableItem { CALL, CONTACT };
 Q_ENUM_NS(ConferenceableItem)
 
+enum class FilterType {RING, SIP, REQUEST, INVALID};
+Q_ENUM_NS(FilterType)
+
 struct AccountConversation
 {
     QString convId;
@@ -128,7 +131,7 @@ public:
      * @return conversations filtered
      */
     const ConversationQueueProxy& getFilteredConversations(
-        const profile::Type& filter = profile::Type::INVALID,
+        const FilterType& filter = FilterType::INVALID,
         bool forceUpdate = false,
         const bool includeBanned = false) const;
     /**
@@ -202,9 +205,9 @@ public:
     void setFilter(const QString& filter);
     /**
      * Modify the current filter (will change the result of getFilteredConversations)
-     * @param filter the new filter (example: PENDING, RING)
+     * @param filter the new filter (example: SIP, RING, REQUESTS)
      */
-    void setFilter(const profile::Type& filter = profile::Type::INVALID);
+    void setFilter(const FilterType& filter = FilterType::INVALID);
     /**
      * Join participants from A to B and vice-versa.
      * @note conversations must be in a call.
