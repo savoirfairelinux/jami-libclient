@@ -328,6 +328,15 @@ public:
      */
     void updateConversationInfo(const QString& conversationId, MapStringString info);
 
+    /**
+     * @return if conversations requests exists.
+    */
+    bool hasPendingRequests() const;
+    /**
+     * @return number of conversations requests
+     */
+    int pendingRequestCount() const;
+
 Q_SIGNALS:
     /**
      * Emitted when a conversation receives a new interaction

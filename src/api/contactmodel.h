@@ -90,18 +90,7 @@ public:
      * @return all contacts for this account.
      */
     const ContactInfoMap& getAllContacts() const;
-    /**
-     * @return if pending requests exists.
-     */
-    bool hasPendingRequests() const;
-    /**
-     * @return number of pending requests
-     */
-    int pendingRequestCount() const;
-    /**
-     * Search a SIP or a Ring contact from a query.
-     * @param query
-     */
+
     void searchContact(const QString& query);
     /**
      * Send a text interaction to a contact over the Dht.
@@ -131,6 +120,11 @@ Q_SIGNALS:
      * @param contactUri
      */
     void contactAdded(const QString& contactUri) const;
+    /**
+     * Connect this signal to know when a contact request received
+     * @param contactUri
+     */
+    void incomingContactRequest(const QString& contactUri) const;
     /**
      * Connect this signal to know when a pending contact was accepted.
      * @param contactUri
