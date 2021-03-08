@@ -96,7 +96,7 @@
 <context>
     <name>AdvancedSettings</name>
     <message>
-        <location filename="../src/settingsview/components/AdvancedSettings.qml" line="68"/>
+        <location filename="../src/settingsview/components/AdvancedSettings.qml" line="69"/>
         <source>Advanced Account Settings</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1968,7 +1968,7 @@ Please try again later.</source>
 <context>
     <name>MainApplication</name>
     <message>
-        <location filename="../src/mainapplication.cpp" line="409"/>
+        <location filename="../src/mainapplication.cpp" line="426"/>
         <source>Exit</source>
         <translation type="unfinished"></translation>
     </message>

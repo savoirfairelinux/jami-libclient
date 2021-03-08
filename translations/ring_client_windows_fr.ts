@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="fr" version="2.1">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="fr">
 <context>
     <name>AboutPopUp</name>
     <message>
@@ -94,7 +96,7 @@
 <context>
     <name>AdvancedSettings</name>
     <message>
-        <location filename="../src/settingsview/components/AdvancedSettings.qml" line="68"/>
+        <location filename="../src/settingsview/components/AdvancedSettings.qml" line="69"/>
         <source>Advanced Account Settings</source>
         <translation>Paramètres avancés du compte</translation>
     </message>
@@ -287,8 +289,8 @@
     <name>CurrentAccountSettingsScrollPage</name>
     <message>
         <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="816"/>
-        <source/>
-        <translation type="unfinished"/>
+        <source></source>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -672,7 +674,7 @@ Veuillez entrer votre mot de passe.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="161"/>
         <source>Your account only exists on this device. If you lose your device or uninstall the application, your account will be deleted and can not be recovered. You can backup your account now or later.</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="185"/>
@@ -728,7 +730,7 @@ Notez que le mot de passe ne peut être récupéré.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="266"/>
         <source>If your account has not been backed up or added to another device, your account and registered name will be irrevocably lost.</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="278"/>
@@ -743,7 +745,7 @@ Notez que le mot de passe ne peut être récupéré.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="286"/>
         <source>Display images and videos in the chatview</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="298"/>
@@ -1043,7 +1045,7 @@ Notez que le mot de passe ne peut être récupéré.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="147"/>
         <source>Audio manager</source>
-        <translation>Gestionnaire audio :</translation>
+        <translation>Gestionnaire audio&#xa0;:</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="150"/>
@@ -1972,7 +1974,7 @@ Veuillez réessayer plus tard</translation>
 <context>
     <name>MainApplication</name>
     <message>
-        <location filename="../src/mainapplication.cpp" line="409"/>
+        <location filename="../src/mainapplication.cpp" line="426"/>
         <source>Exit</source>
         <translation>Sortir</translation>
     </message>
@@ -2273,8 +2275,8 @@ Veuillez réessayer plus tard</translation>
     <name>SettingParaCombobox</name>
     <message>
         <location filename="../src/commoncomponents/SettingParaCombobox.qml" line="42"/>
-        <source/>
-        <translation type="unfinished"/>
+        <source></source>
+        <translation></translation>
     </message>
 </context>
 <context>

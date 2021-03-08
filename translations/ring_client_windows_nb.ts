@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="nb" version="2.1">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="nb">
 <context>
     <name>AboutPopUp</name>
     <message>
@@ -94,7 +96,7 @@
 <context>
     <name>AdvancedSettings</name>
     <message>
-        <location filename="../src/settingsview/components/AdvancedSettings.qml" line="68"/>
+        <location filename="../src/settingsview/components/AdvancedSettings.qml" line="69"/>
         <source>Advanced Account Settings</source>
         <translation>Avanserte kontoinnstillinger</translation>
     </message>
@@ -169,7 +171,7 @@
     <message>
         <location filename="../src/mainview/components/ContactPicker.qml" line="95"/>
         <source>Add default moderator</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -287,8 +289,8 @@
     <name>CurrentAccountSettingsScrollPage</name>
     <message>
         <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="816"/>
-        <source/>
-        <translation type="unfinished"/>
+        <source></source>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -671,7 +673,7 @@ Jami avslutter nå.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="161"/>
         <source>Your account only exists on this device. If you lose your device or uninstall the application, your account will be deleted and can not be recovered. You can backup your account now or later.</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="185"/>
@@ -696,7 +698,7 @@ Jami avslutter nå.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="189"/>
         <source>Resume video</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="214"/>
@@ -726,7 +728,7 @@ Jami avslutter nå.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="266"/>
         <source>If your account has not been backed up or added to another device, your account and registered name will be irrevocably lost.</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="278"/>
@@ -741,7 +743,7 @@ Jami avslutter nå.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="286"/>
         <source>Display images and videos in the chatview</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="298"/>
@@ -1126,17 +1128,17 @@ Jami avslutter nå.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="178"/>
         <source>is recording</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="179"/>
         <source>are recording</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="180"/>
         <source>Peer stopped recording</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="183"/>
@@ -1738,32 +1740,32 @@ Kopier og del det med dine venner!</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="416"/>
         <source>local muted</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="419"/>
         <source>Conference moderation</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="420"/>
         <source>Default moderators</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="421"/>
         <source>Enable local moderators</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="422"/>
         <source>Add default moderator</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="423"/>
         <source>Remove default moderator</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="426"/>
@@ -1972,7 +1974,7 @@ Vennligst forsøk igjen senere.</translation>
 <context>
     <name>MainApplication</name>
     <message>
-        <location filename="../src/mainapplication.cpp" line="409"/>
+        <location filename="../src/mainapplication.cpp" line="426"/>
         <source>Exit</source>
         <translation>Avslutt</translation>
     </message>
@@ -2273,8 +2275,8 @@ Vennligst forsøk igjen senere.</translation>
     <name>SettingParaCombobox</name>
     <message>
         <location filename="../src/commoncomponents/SettingParaCombobox.qml" line="42"/>
-        <source/>
-        <translation type="unfinished"/>
+        <source></source>
+        <translation></translation>
     </message>
 </context>
 <context>

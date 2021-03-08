@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="sq_AL" version="2.1">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="sq_AL">
 <context>
     <name>AboutPopUp</name>
     <message>
@@ -94,7 +96,7 @@
 <context>
     <name>AdvancedSettings</name>
     <message>
-        <location filename="../src/settingsview/components/AdvancedSettings.qml" line="68"/>
+        <location filename="../src/settingsview/components/AdvancedSettings.qml" line="69"/>
         <source>Advanced Account Settings</source>
         <translation>Rregullime të Mëtejshme Llogarie</translation>
     </message>
@@ -287,8 +289,8 @@
     <name>CurrentAccountSettingsScrollPage</name>
     <message>
         <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="816"/>
-        <source/>
-        <translation type="unfinished"/>
+        <source></source>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -906,7 +908,7 @@ Jami tani do të dalë.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="103"/>
         <source>TURN Realm</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="104"/>
@@ -1972,7 +1974,7 @@ Ju lutemi, riprovoni më vonë.</translation>
 <context>
     <name>MainApplication</name>
     <message>
-        <location filename="../src/mainapplication.cpp" line="409"/>
+        <location filename="../src/mainapplication.cpp" line="426"/>
         <source>Exit</source>
         <translation>Dalje</translation>
     </message>
@@ -2273,8 +2275,8 @@ Ju lutemi, riprovoni më vonë.</translation>
     <name>SettingParaCombobox</name>
     <message>
         <location filename="../src/commoncomponents/SettingParaCombobox.qml" line="42"/>
-        <source/>
-        <translation type="unfinished"/>
+        <source></source>
+        <translation></translation>
     </message>
 </context>
 <context>
