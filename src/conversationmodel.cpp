@@ -212,7 +212,7 @@ public:
      * @param final name of the file
      */
     void acceptTransfer(const QString& convUid, const QString& interactionId, const QString& path);
-    void addPendingConversation(const QString& contactUri, const QString& convId = "");
+    void addConversationRequest(const QString& contactUri, const QString& convId = ""); // for non swarm conversation id is empty
     void removePendingConversation(const QString& contactUri);
     void insertSwarmInteraction(const QString& interactionId, const interaction::Info& interaction, conversation::Info& conversation, bool insertAtBegin);
 
@@ -247,7 +247,11 @@ public Q_SLOTS:
      * @param uri
      */
     void slotContactAdded(const QString& contactUri);
-
+    /**
+     * Listen from contactModel when receive a new contact request
+     * @param uri
+     */
+    void slotIncomingContactRequest(const QString& contactUri);
     /**
      * Listen from contactModel when a pending contact is accepted
      * @param uri
@@ -885,6 +889,24 @@ ConversationModel::updateConversationInfo(const QString& conversationId, const M
     ConfigurationManager::instance().updateConversationInfos(owner.id, conversationId, info);
 }
 
+bool
+ConversationModel::hasPendingRequests() const
+{
+    return pendingRequestCount() > 0;
+}
+
+int
+ConversationModel::pendingRequestCount() const
+{
+    int pendingRequestCount = 0;
+    std::for_each(pimpl_->conversations.begin(),
+                  pimpl_->conversations.end(),
+                  [&pendingRequestCount](const auto& c) {
+                      pendingRequestCount += c.isRequest;
+                  });
+    return pendingRequestCount;
+}
+
 void
 ConversationModel::sendMessage(const QString& uid, const QString& body, const QString& parentId)
 {
@@ -1409,6 +1431,10 @@ ConversationModelPimpl::ConversationModelPimpl(const ConversationModel& linked,
             this,
             &ConversationModelPimpl::slotContactAdded);
     connect(&*linked.owner.contactModel,
+            &ContactModel::incomingContactRequest,
+            this,
+            &ConversationModelPimpl::slotIncomingContactRequest);
+    connect(&*linked.owner.contactModel,
             &ContactModel::pendingContactAccepted,
             this,
             &ConversationModelPimpl::slotPendingContactAccepted);
@@ -1536,6 +1562,10 @@ ConversationModelPimpl::~ConversationModelPimpl()
                &ContactModel::contactAdded,
                this,
                &ConversationModelPimpl::slotContactAdded);
+    disconnect(&*linked.owner.contactModel,
+               &ContactModel::incomingContactRequest,
+               this,
+               &ConversationModelPimpl::slotIncomingContactRequest);
     disconnect(&*linked.owner.contactModel,
                &ContactModel::pendingContactAccepted,
                this,
@@ -1669,8 +1699,7 @@ ConversationModelPimpl::initConversations()
     
     VectorMapStringString conversationsRequests = ConfigurationManager::instance().getConversationRequests(linked.owner.id);
     for (auto& request : conversationsRequests) {
-        // add pending swarm conversations
-        addPendingConversation(request["from"], request["id"]);
+        addConversationRequest(request["from"], request["id"]);
     }
 
     // Fill conversations
@@ -1679,9 +1708,13 @@ ConversationModelPimpl::initConversations()
         if (conv.empty()) {
             // Can't find a conversation with this contact
             // add pending not swarm conversation
-            if (!hasOneOneSwarmWith(c.second.profileInfo.uri))
-                addPendingConversation(c.second.profileInfo.uri);
-            continue;
+            if (hasOneOneSwarmWith(c.second.profileInfo.uri))
+                continue;
+            if (c.second.profileInfo.type == profile::Type::PENDING) {
+                addConversationRequest(c.second.profileInfo.uri);
+                continue;
+            }
+            conv.push_back(storage::beginConversationWithPeer(db, c.second.profileInfo.uri));
         }
         addConversationWith(conv[0], c.first);
 
@@ -1788,7 +1821,8 @@ ConversationModelPimpl::filter(const conversation::Info& entry)
             }
         } else {
             // We only want pending requests matching with the filter
-            if (contactInfo.profileInfo.type != profile::Type::PENDING)
+            if (!entry.isRequest)
+            //if (contactInfo.profileInfo.type != profile::Type::PENDING)
                 return false;
         }
 
@@ -1924,6 +1958,7 @@ ConversationModelPimpl::slotMessageReceived(const QString& accountId,
             if (message.find("invited") == message.end()) {
                 return;
             }
+            qDebug() << "invited interacion with id" << message["id"];
         }
         auto msgId = message["id"];
         auto msg = interaction::Info(message, linked.owner.profileInfo.uri);
@@ -1975,6 +2010,9 @@ ConversationModelPimpl::insertSwarmInteraction(const QString& interactionId, con
 {
     std::lock_guard<std::mutex> lk(interactionsLocks[conversation.uid]);
     int index = conversation.interactions.indexOfMessage(interaction.parentId);
+    if (interaction.type == interaction::Type::CONTACT) {
+        qDebug() << "**** insert swarm interaction for contact vwith id" << interactionId;
+    }
     if (index >= 0) {
         conversation.interactions.insert(index + 1, qMakePair(interactionId, interaction));
     } else {
@@ -1999,18 +2037,18 @@ ConversationModelPimpl::slotConversationRequestReceived(const QString& accountId
     if (accountId != linked.owner.id) {
         return;
     }
-    // add pending swarm conversation
-    addPendingConversation(metadatas["from"], conversationId);
+    addConversationRequest(metadatas["from"], conversationId);
 }
 
 void
 ConversationModelPimpl::slotConversationReady(const QString& accountId,
                                               const QString& conversationId)
 {
+    // we receive this signal after we accept conversation request or after we send conversation request
     if (accountId != linked.owner.id) {
         return;
     }
-    // remove conversation that was added from slotContactAdded
+    // remove non swarm conversation that was added from slotContactAdded
     const VectorMapStringString& members = ConfigurationManager::instance().getConversationMembers(accountId, conversationId);
     auto accountURI = linked.owner.profileInfo.uri;
     VectorString uris;
@@ -2018,25 +2056,31 @@ ConversationModelPimpl::slotConversationReady(const QString& accountId,
         if (member["uri"] != accountURI) {
             uris.append(member["uri"]);
         }
-        if (indexOf(member["uri"]) >= 0) {
-            conversations.erase(conversations.begin() + indexOf(member["uri"]));;
+        try {
+            auto& conversation = getConversationForPeerUri(member["uri"]).get();
+            if (!conversation.isSwarm) {
+                conversations.erase(conversations.begin() + indexOf(conversation.uid));
+                storage::removeContact(db, member["uri"]);
+            }
+        } catch (...) {
         }
     }
     if (indexOf(conversationId) < 0) {
         addSwarmConversation(conversationId);
     } else {
-        // update participants
+        // if swarm request already exists, update participnts
         auto& conversation = getConversationForUid(conversationId).get();
         conversation.participants = uris;
         conversation.isSwarm = true;
+        conversation.isRequest = false;
         auto id = ConfigurationManager::instance().loadConversationMessages(linked.owner.id,
                                                                             conversationId,
                                                                            "",
-                                                                           5);
+                                                                           0);
     }
+    invalidateModel();
     emit linked.conversationReady(conversationId, uris.front());
     emit linked.newConversation(conversationId);
-    invalidateModel();
     emit linked.modelChanged();
 }
 
@@ -2049,23 +2093,23 @@ ConversationModelPimpl::slotConversationRemoved(const QString& accountId,
         return;
     }
     try {
-        // if conversation removed but we still have contact it is means contact uses not swarm conversations. We should create not swarm conversation.
         auto& conversation = getConversationForUid(conversationId).get();
         auto contactUri = conversation.participants.first();
-        auto conv = storage::getConversationsWithPeer(db, contactUri);
-        if (!conv.empty()) {
-            return;
-        }
+        // remove swarm conversation
+        conversations.erase(conversations.begin() + conversationIndex);
+        // if swarm conversation removed but we still have contact we create non swarm conversation.
         auto contact = linked.owner.contactModel->getContact(contactUri);
         if (contact.profileInfo.type != api::profile::Type::RING) {
             return;
         }
-        auto newConversationId = storage::beginConversationWithPeer(db, contactUri);
-        conversations.erase(conversations.begin() + conversationIndex);
-        addConversationWith(newConversationId, contactUri);
+        auto conv = storage::getConversationsWithPeer(db, contactUri);
+        if (conv.empty()) {
+            conv.push_back(storage::beginConversationWithPeer(db, contactUri));
+        }
+        addConversationWith(conv[0], contactUri);
         invalidateModel();
         emit linked.conversationRemoved(conversationId);
-        emit linked.newConversation(newConversationId);
+        emit linked.newConversation(conv[0]);
         emit linked.modelChanged();
     } catch (...) {
     }
@@ -2112,65 +2156,49 @@ ConversationModelPimpl::slotConversationMemberEvent(const QString& accountId,
 }
 
 void
+ConversationModelPimpl::slotIncomingContactRequest(const QString& contactUri) {
+    // It is contact request. But for compatibility with swarm conversations we add it like non swarm conversation request.
+    addConversationRequest(contactUri);
+}
+
+void
 ConversationModelPimpl::slotContactAdded(const QString& contactUri)
 {
-    /*
-     this signal will be triggered for the same contactUri multiple times. When receive
-     contact requests, when the client adds contact, and after contact was added in the daemon.
-     We add conversation to the conversation list when we first time receive the signal for
-     contactUri. And we save the not swarm conversation to db after contact was added in the daemon
-     for incoming contact request.
-     */
-    auto type = linked.owner.profileInfo.type;
-    profile::Info profileInfo {contactUri, {}, {}, type};
-    auto pending = true;
+    auto conv = storage::getConversationsWithPeer(db, contactUri);
+    bool addConversation = false;
     try {
-        auto contact = linked.owner.contactModel->getContact(contactUri);
-        type = contact.profileInfo.type;
-        profileInfo.alias = contact.profileInfo.alias;
-        pending = contact.profileInfo.type == profile::Type::PENDING;
-    } catch (...) {
-    }
-    storage::createOrUpdateProfile(linked.owner.id, profileInfo, true);
-    auto conv = storage::getConversationsWithPeer(db, profileInfo.uri);
-    if (conv.empty()) {
-        // save conversation for SIP contacts
-        if (type == profile::Type::SIP) {
-            conv.push_back(storage::beginConversationWithPeer(db, profileInfo.uri));
-            if (indexOf(conv[0]) == -1) {
-                addConversationWith(conv[0], profileInfo.uri);
-                emit linked.newConversation(conv[0]);
-            }
-            emit linked.conversationReady(conv[0], profileInfo.uri);
-            emit linked.modelChanged();
+        auto& conversation = getConversationForPeerUri(contactUri).get();
+        // swarm conversation we update when receive conversation ready.
+        if (conversation.isSwarm) {
             return;
         }
+        if (conv.empty()) {
+            conv.push_back(storage::beginConversationWithPeer(db, contactUri));
+        }
+        // remove temporary conversation that was added when receiving an incoming request
+        if (indexOf(contactUri) >= 0) {
+            conversations.erase(conversations.begin() + indexOf(contactUri));
+        }
+        // add a conversation if not exists
+        addConversation = indexOf(conv[0]) == -1;
+    } catch (std::out_of_range&) {
         /*
-         Contact will be not pending in two cases: when we send contact requests and when we
-         accept contact requests. We save the only conversation after accepting the contact request.
-         In this case conversation for participants should already exist.
+         if the conversation does not exists we save it to DB and add non-swarm
+         conversation to the conversion list. After receiving a conversation request or
+         conversation ready signal swarm conversation should be updated and removed from DB.
          */
-        if (!pending && indexOf(contactUri) >= 0) {
-            try {
-                auto& conversation = getConversationForPeerUri(contactUri).get();
-                if (conversation.isSwarm) {
-                    return;
-                }
-                conv.push_back(storage::beginConversationWithPeer(db, profileInfo.uri));
-                conversations.erase(conversations.begin() + indexOf(profileInfo.uri));
-                if (indexOf(conv[0]) == -1) {
-                    addConversationWith(conv[0], profileInfo.uri);
-                    emit linked.newConversation(conv[0]);
-                }
-                emit linked.conversationReady(conv[0], profileInfo.uri);
-                emit linked.modelChanged();
-            } catch (std::out_of_range&) {}
+        addConversation = true;
+        if (conv.empty()) {
+            conv.push_back(storage::beginConversationWithPeer(db, contactUri));
         }
     }
-    /* Add pending conversation as not swarm because at this point we do not know if the conversation is swarm.
-       For swarm conversation it will be updated after receiving conversationRequest or conversationReady signal.
-    */
-    addPendingConversation(contactUri);
+    if (addConversation) {
+        addConversationWith(conv[0], contactUri);
+        invalidateModel();
+        emit linked.conversationReady(conv[0], contactUri);
+        emit linked.newConversation(conv[0]);
+        emit linked.modelChanged();
+    }
 }
 
 void
@@ -2205,27 +2233,29 @@ ConversationModelPimpl::removePendingConversation(const QString& contactUri) {
 }
 
 void
-ConversationModelPimpl::addPendingConversation(const QString& contactUri, const QString& convId) {
-    // add conversation for participant if not exists
-    qDebug() << "*** add conversation for uri" << contactUri << " conv id" << convId;
+ConversationModelPimpl::addConversationRequest(const QString& contactUri, const QString& convId) {
     try {
+        // if convId is empty it is non swarm conversation.
         auto& conv = getConversationForPeerUri(contactUri).get();
-        /* For swarm conversation, we receive both: conversationRequest signal and contactAdded signal. If the
-         first signal we received was contactAdded conversation is added as not swarm. In this case after
-         receiving conversationRequest signal we update conversation isSwarm property
-         */
-        if (!conv.isSwarm && !convId.isEmpty()) {
+        qDebug() << "!!!request for" << contactUri;
+        // we should not have more than one non swarm conversation for participant
+        if (convId.isEmpty()) {
+            return;
+        } else if (!conv.isSwarm) {
+            /* For swarm conversation, we receive both: conversationRequest signal and contactAdded signal. If the
+             first signal we received was contactAdded, conversation is added as not swarm. In this case after
+             receiving conversationRequest signal we update conversation and remove it from db.
+             */
             conv.isSwarm = true;
             conv.uid = convId;
+            storage::removeContact(db, contactUri);
             invalidateModel();
             emit linked.modelChanged();
             return;
-        } else if (!conv.isSwarm || (!convId.isEmpty() && conv.uid == convId) || convId.isEmpty()) {
+        } else if (conv.uid == convId) {
             /*
              for the swarm, we could have multiple conversations for the same participant.
-             If we already have non swarm conversation for a participant or a swarm
-             conversation with same conversation id for participant we return.
-             Otherwise, a new conversation will be added.
+             But if we already have swarm conversation request with the same conversation id we do not add it again.
             */
             return;
         }
@@ -2235,14 +2265,7 @@ ConversationModelPimpl::addPendingConversation(const QString& contactUri, const 
     conversation.accountId = linked.owner.id;
     conversation.participants = {contactUri};
     conversation.isSwarm = !convId.isEmpty();
-    auto msg = api::interaction::Info({contactUri,
-        QObject::tr("Invitation received"),
-        std::time(nullptr),
-        0,
-        interaction::Type::CONTACT,
-        interaction::Status::SUCCESS,
-        true});
-    conversation.interactions.emplace(contactUri, msg);
+    conversation.isRequest = true;
     conversations.emplace_back(std::move(conversation));
     invalidateModel();
     emit linked.newConversation(contactUri);
@@ -2274,7 +2297,7 @@ ConversationModelPimpl::slotPendingContactAccepted(const QString& uri)
             interaction.body = storage::getContactInteractionString(uri,
                                                                     interaction::Status::SUCCESS);
             auto convIdx = indexOf(convs[0]);
-            {
+            if (convIdx >= 0) {
                 std::lock_guard<std::mutex> lk(interactionsLocks[conversations[convIdx].uid]);
                 conversations[convIdx].interactions.emplace(msgId, interaction);
             }
@@ -2296,9 +2319,8 @@ ConversationModelPimpl::slotContactRemoved(const QString& uri)
     }
     auto& conversationUid = conversations[conversationIdx].uid;
     conversations.erase(conversations.begin() + conversationIdx);
-    emit linked.conversationRemoved(conversationUid);
-
     invalidateModel();
+    emit linked.conversationRemoved(conversationUid);
     emit linked.modelChanged();
 }
 
@@ -2577,6 +2599,13 @@ ConversationModelPimpl::addOrUpdateCallMessage(const QString& callId,
     // do not save call interaction for swarm conversation
     auto convIds = storage::getConversationsWithPeer(db, from);
     if (convIds.empty()) {
+        // in case if we receive call after removing contact add conversation request;
+        try {
+            auto contact = linked.owner.contactModel->getContact(from);
+            if (contact.profileInfo.type == profile::Type::PENDING && !contact.isBanned) {
+                addConversationRequest(from);
+            }
+        } catch (const std::out_of_range&) {}
         return;
     }
     // Get conversation
@@ -2668,6 +2697,13 @@ ConversationModelPimpl::addIncomingMessage(const QString& from,
 {
     auto convIds = storage::getConversationsWithPeer(db, from);
     if (convIds.empty()) {
+        // in case if we receive message after removing contact add conversation request;
+        try {
+            auto contact = linked.owner.contactModel->getContact(from);
+            if (contact.profileInfo.type == profile::Type::PENDING && !contact.isBanned) {
+                addConversationRequest(from);
+            }
+        } catch (const std::out_of_range&) {}
         return "";
     }
     auto msg = interaction::Info {from,
@@ -3039,7 +3075,13 @@ ConversationModelPimpl::slotTransferStatusCreated(DataTransferId dringId, datatr
     // create a new conversation if needed
     auto convIds = storage::getConversationsWithPeer(db, info.peerUri);
     if (convIds.empty()) {
-        // it is swarm conversation interaction will be saved when message received
+        // in case if we receive file after removing contact add conversation request. If we have swarm request this function will do nothing.
+        try {
+            auto contact = linked.owner.contactModel->getContact(info.peerUri);
+            if (contact.profileInfo.type == profile::Type::PENDING && !contact.isBanned) {
+                addConversationRequest(info.peerUri);
+            }
+        } catch (const std::out_of_range&) {}
         return;
     }
 
