@@ -51,6 +51,16 @@ struct Info
     std::map<QString, QString> lastDisplayedMessageUid;
     unsigned int unreadMessages = 0;
     bool isSwarm = true;
+    bool isRequest = false;
+    
+    QString getOneToOneParticipant(QString accountUri) {
+        auto uris = participants;
+        uris.removeOne(accountUri);
+        if (uris.size() != 1) {
+            return {};
+        }
+        return uris.first();
+    }
 };
 
 } // namespace conversation

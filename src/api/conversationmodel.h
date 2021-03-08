@@ -327,6 +327,19 @@ public:
      * @param info
      */
     void updateConversationInfo(const QString& conversationId, MapStringString info);
+    
+        /**
+         * @return if pending requests exists.
+         */
+        bool hasPendingRequests() const;
+        /**
+         * @return number of pending requests
+         */
+        int pendingRequestCount() const;
+        /**
+         * Search a SIP or a Ring contact from a query.
+         * @param query
+         */
 
 Q_SIGNALS:
     /**
