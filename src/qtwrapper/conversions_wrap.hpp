@@ -186,6 +186,12 @@ toQString(uint64_t i) noexcept
     return QString::number(i);
 }
 
+static inline QString
+toQString(long int i) noexcept
+{
+    return QString::number(i);
+}
+
 static inline bool
 toBool(QString qs) noexcept
 {

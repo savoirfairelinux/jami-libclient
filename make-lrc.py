@@ -142,17 +142,24 @@ def generate(force, qtver, sdk, toolset, arch):
     # we just assume Qt is installed in the default folder
     qt_dir = 'C:\\Qt\\' + qtver
     cmake_gen = getCMakeGenerator(getLatestVSVersion())
+    qt_major_version = getQtVersionNumber(qtver, QtVerison.Major)
     qt_minor_version = getQtVersionNumber(qtver, QtVerison.Minor)
 
-    qt_cmake_dir = qt_dir + (
-        '\\msvc2017_64' if int(qt_minor_version) <= 14 else '\\msvc2019_64') + '\\lib\\cmake\\'
+    qt_path = qt_dir + (
+        '\\msvc2017_64' if int(qt_minor_version) <= 14 and int(qt_major_version) <= 5 else '\\msvc2019_64')
+    qt_cmake_dir = qt_path + '\\lib\\cmake\\'
+    qt_cmake_ver = 'Qt' + qt_major_version
+    qt_six_needed_tools_str = 'Tools' if int(qt_major_version) == 6 else ''
     cmake_options = [
-        '-DQt5_DIR=' + qt_cmake_dir + 'Qt5',
-        '-DQt5Core_DIR=' + qt_cmake_dir + 'Qt5Core',
-        '-DQt5Sql_DIR=' + qt_cmake_dir + 'Qt5Sql',
-        '-DQt5LinguistTools_DIR=' + qt_cmake_dir + 'Qt5LinguistTools',
-        '-DQt5Concurrent_DIR=' + qt_cmake_dir + 'Qt5Concurrent',
-        '-DQt5Gui_DIR=' + qt_cmake_dir + 'Qt5Gui',
+        '-DQT_VER=' + qtver,
+        '-DQT_PATH=' + qt_path,
+        '-D' + qt_cmake_ver + '_DIR=' + qt_cmake_dir + qt_cmake_ver,
+        '-D' + qt_cmake_ver + 'Core' + qt_six_needed_tools_str + '_DIR=' + qt_cmake_dir + qt_cmake_ver + 'Core' + qt_six_needed_tools_str,
+        '-D' + qt_cmake_ver + 'Sql' + qt_six_needed_tools_str + '_DIR=' + qt_cmake_dir + qt_cmake_ver + 'Sql' + qt_six_needed_tools_str,
+        '-D' + qt_cmake_ver + 'DBus' + qt_six_needed_tools_str + '_DIR=' + qt_cmake_dir + qt_cmake_ver + 'DBus' + qt_six_needed_tools_str,
+        '-D' + qt_cmake_ver + 'LinguistTools_DIR=' + qt_cmake_dir + qt_cmake_ver + 'LinguistTools',
+        '-D' + qt_cmake_ver + 'Concurrent_DIR=' + qt_cmake_dir + qt_cmake_ver + 'Concurrent',
+        '-D' + qt_cmake_ver + 'Gui' +  qt_six_needed_tools_str + '_DIR=' + qt_cmake_dir + qt_cmake_ver + 'Gui' + qt_six_needed_tools_str,
         '-Dring_BIN=' + daemon_bin,
         '-DRING_INCLUDE_DIR=' + daemon_dir + '\\src\\dring',
         '-DCMAKE_SYSTEM_VERSION=' + sdk
