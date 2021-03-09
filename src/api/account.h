@@ -113,6 +113,10 @@ struct ConfProperties_t
     bool accountPublish;
     int registrationExpire;
     bool keepAliveEnabled;
+    QString bootstrapListUrl;
+    QString dhtProxyListUrl;
+    QString defaultModerators;
+    bool localModeratorsEnabled;
     VectorMapStringString credentials;
     struct Audio_t
     {
