@@ -169,7 +169,7 @@ URIPimpl::strip(const QString& uri, URI::SchemeType& schemeType, QString& scheme
 
     schemeType = URI::SchemeType::UNRECOGNIZED;
     auto it = std::find_if(schemeNames.begin(), schemeNames.end(), [&scheme](auto& it) {
-        if (it.second == "ring:" && scheme == "jami:")
+        if (std::string(it.second) == "ring:" && scheme == "jami:")
             return true;
         return it.second == scheme;
     });
