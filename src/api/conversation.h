@@ -72,6 +72,7 @@ struct Info
     std::map<QString, QString> lastDisplayedMessageUid;
     unsigned int unreadMessages = 0;
     Mode mode = Mode::NON_SWARM;
+    bool needsSyncing = false;
     bool isRequest = false;
 
     // for each contact we must have one non-swarm conversation or one active one-to-one conversation. Where active means peer did not leave the conversation, so number of participants size should be 2
