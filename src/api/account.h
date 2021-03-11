@@ -37,6 +37,7 @@ class NewAccountModel;
 class NewDeviceModel;
 class NewCodecModel;
 class PeerDiscoveryModel;
+class DataTransferModel;
 
 namespace account {
 Q_NAMESPACE
@@ -224,6 +225,7 @@ struct Info
     std::unique_ptr<lrc::api::NewDeviceModel> deviceModel;
     std::unique_ptr<lrc::api::NewCodecModel> codecModel;
     std::unique_ptr<lrc::api::PeerDiscoveryModel> peerDiscoveryModel;
+    std::unique_ptr<DataTransferModel> dataTransferModel;
     NewAccountModel* accountModel {nullptr};
 
     // daemon config

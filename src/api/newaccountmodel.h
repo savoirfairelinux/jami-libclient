@@ -48,6 +48,7 @@ class BehaviorController;
 class LIB_EXPORT NewAccountModel : public QObject
 {
     Q_OBJECT
+    Q_PROPERTY(QString downloadDirectory_qml MEMBER downloadDirectory)
 public:
     NewAccountModel(Lrc& lrc,
                     const CallbacksHandler& callbackHandler,
@@ -70,6 +71,12 @@ public:
      * flag account corresponding to passed id as freeable.
      */
     void flagFreeable(const QString& accountId) const;
+    
+    /**
+     * Used when images < 20 Mb are automatically accepted and downloaded
+     * Should contains the full directory with the end marker (/ on linux for example)
+     */
+    QString downloadDirectory;
     /**
      * set account enable/disable, save config and do unregister for account
      * @param accountId.
