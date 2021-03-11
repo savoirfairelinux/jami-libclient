@@ -744,7 +744,7 @@ NewCallModelPimpl::initCallFromDaemon()
             callInfo->status = call::to_status(details["CALL_STATE"]);
             auto endId = details["PEER_NUMBER"].indexOf("@");
             callInfo->peerUri = details["PEER_NUMBER"].left(endId);
-            if (linked.owner.profileInfo.type == lrc::api::profile::Type::RING) {
+            if (linked.owner.profileInfo.type == lrc::api::profile::Type::JAMI) {
                 callInfo->peerUri = "ring:" + callInfo->peerUri;
             }
             callInfo->videoMuted = details["VIDEO_MUTED"] == "true";
@@ -1001,7 +1001,7 @@ NewCallModelPimpl::slotIncomingCallWithMedia(const QString& accountId,
     calls.emplace(callId, std::move(callInfo));
 
     if (!linked.owner.confProperties.allowIncoming
-        && linked.owner.profileInfo.type == profile::Type::RING) {
+        && linked.owner.profileInfo.type == profile::Type::JAMI) {
         linked.refuse(callId);
         return;
     }
@@ -1167,7 +1167,7 @@ NewCallModelPimpl::slotincomingVCardChunk(
                             [](const auto& s) { return s.isEmpty(); })) {
             profile::Info profileInfo;
             profileInfo.uri = from;
-            profileInfo.type = profile::Type::RING;
+            profileInfo.type = profile::Type::JAMI;
 
             QString vcardPhoto;
 
