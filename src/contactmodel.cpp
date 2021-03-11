@@ -84,11 +84,13 @@ public:
      * @param type
      * @param displayName
      * @param banned whether contact is banned or not
+     * @param conversationId linked swarm if one
      */
     void addToContacts(const QString& contactId,
                        const profile::Type& type,
                        const QString& displayName = "",
-                       bool banned = false);
+                       bool banned = false,
+                       const QString& conversationId = "");
     /**
      * Helpers for searchContact. Search for a given classic or SIP contact.
      */
@@ -657,7 +659,11 @@ ContactModelPimpl::fillWithJamiContacts()
     for (auto contact_info : contacts_vector) {
         std::lock_guard<std::mutex> lk(contactsMtx_);
         bool banned = contact_info["banned"] == "true" ? true : false;
-        addToContacts(contact_info["id"], linked.owner.profileInfo.type, "", banned);
+        addToContacts(contact_info["id"],
+                      linked.owner.profileInfo.type,
+                      "",
+                      banned,
+                      contact_info["conversationId"]);
     }
 
     // Add pending contacts
@@ -687,6 +693,7 @@ ContactModelPimpl::fillWithJamiContacts()
             contactInfo.profileInfo.avatar = photo.constData();
         contactInfo.registeredName = "";
         contactInfo.isBanned = false;
+        contactInfo.conversationId = tr_info[DRing::Account::TrustRequest::CONVERSATIONID];
 
         {
             std::lock_guard<std::mutex> lk(contactsMtx_);
@@ -787,7 +794,13 @@ ContactModelPimpl::slotContactAdded(const QString& accountId,
                 bannedContacts.erase(it);
             }
 
-            addToContacts(contactUri, linked.owner.profileInfo.type, "", false);
+            MapStringString details = ConfigurationManager::instance()
+                                          .getContactDetails(linked.owner.id, contactUri);
+            addToContacts(contactUri,
+                          linked.owner.profileInfo.type,
+                          "",
+                          false,
+                          details["conversationId"]);
         }
     }
     if (isBanned) {
@@ -859,7 +872,8 @@ void
 ContactModelPimpl::addToContacts(const QString& contactUri,
                                  const profile::Type& type,
                                  const QString& displayName,
-                                 bool banned)
+                                 bool banned,
+                                 const QString& conversationId)
 {
     // create a vcard if necessary
     profile::Info profileInfo {contactUri, {}, displayName, linked.owner.profileInfo.type};
@@ -867,6 +881,7 @@ ContactModelPimpl::addToContacts(const QString& contactUri,
 
     auto contactInfo = storage::buildContactFromProfile(linked.owner.id, contactUri, type);
     contactInfo.isBanned = banned;
+    contactInfo.conversationId = conversationId;
 
     // lookup address in case of RING contact
     if (type == profile::Type::JAMI) {
