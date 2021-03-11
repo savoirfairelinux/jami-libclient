@@ -1473,6 +1473,9 @@ ConversationModel::acceptConversationRequest(const QString& conversationId)
     default:
         break;
     }
+    conversation.needsSyncing = true;
+    pimpl_->invalidateModel();
+    emit modelChanged();
     ConfigurationManager::instance().acceptConversationRequest(owner.id, conversationId);
 }
 
@@ -1831,6 +1834,16 @@ ConversationModelPimpl::initConversations()
             conv.push_back(storage::beginConversationWithPeer(db, c.second.profileInfo.uri));
         }
         addConversationWith(conv[0], c.first);
+        if (!c.second.conversationId.isEmpty()) {
+            // it is a swarm conversation.
+            try {
+                auto& conversation = getConversationForUid(conv[0]).get();
+                conversation.mode = conversation::Mode::ONE_TO_ONE;
+                conversation.needsSyncing = true;
+            } catch (...) {
+                continue;
+            }
+        }
 
         auto convIdx = indexOf(conv[0]);
 
@@ -2262,6 +2275,7 @@ ConversationModelPimpl::slotConversationReady(const QString& accountId,
                                              .conversationInfos(accountId, conversationId);
         conversation.mode = conversation::to_mode(details["mode"].toInt());
         conversation.isRequest = false;
+        conversation.needsSyncing = false;
         auto id = ConfigurationManager::instance().loadConversationMessages(linked.owner.id,
                                                                             conversationId,
                                                                             "",
@@ -2382,6 +2396,13 @@ ConversationModelPimpl::slotContactAdded(const QString& contactUri)
         auto& conversation = getConversationForPeerUri(contactUri).get();
         // swarm conversation we update when receive conversation ready signal.
         if (conversation.mode != conversation::Mode::NON_SWARM) {
+            QStringList swarms = ConfigurationManager::instance().getConversations(linked.owner.id);
+            bool needsSyncing = swarms.indexOf(conversation.uid) == -1;
+            if (conversation.needsSyncing != needsSyncing) {
+                conversation.needsSyncing = needsSyncing;
+                invalidateModel();
+                emit linked.modelChanged();
+            }
             return;
         }
         if (conv.empty()) {
@@ -2627,6 +2648,7 @@ ConversationModelPimpl::addSwarmConversation(const QString& convId)
         } catch (...) {
         }
     }
+    conversation.needsSyncing = false;
     conversations.emplace_back(std::move(conversation));
     auto id = ConfigurationManager::instance().loadConversationMessages(linked.owner.id,
                                                                         convId,
@@ -2642,6 +2664,7 @@ ConversationModelPimpl::addConversationWith(const QString& convId, const QString
     conversation.accountId = linked.owner.id;
     conversation.participants = {contactUri};
     conversation.mode = conversation::Mode::NON_SWARM;
+    conversation.needsSyncing = false;
     try {
         conversation.confId = linked.owner.callModel->getConferenceFromURI(contactUri).id;
     } catch (...) {
