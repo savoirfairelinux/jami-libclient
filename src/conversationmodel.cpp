@@ -2379,6 +2379,10 @@ ConversationModelPimpl::slotContactAdded(const QString& contactUri)
         auto& conversation = getConversationForPeerUri(contactUri).get();
         // swarm conversation we update when receive conversation ready signal.
         if (conversation.mode != conversation::Mode::NON_SWARM) {
+            QStringList swarms = ConfigurationManager::instance().getConversations(linked.owner.id);
+            conversation.needsSyncing = swarms.indexOf(conversation.uid) == -1;
+            invalidateModel();
+            emit linked.modelChanged();
             return;
         }
         if (conv.empty()) {
@@ -2624,6 +2628,7 @@ ConversationModelPimpl::addSwarmConversation(const QString& convId)
         } catch (...) {
         }
     }
+    conversation.needsSyncing = false;
     conversations.emplace_back(std::move(conversation));
     auto id = ConfigurationManager::instance().loadConversationMessages(linked.owner.id,
                                                                         convId,
@@ -2638,7 +2643,15 @@ ConversationModelPimpl::addConversationWith(const QString& convId, const QString
     conversation.uid = convId;
     conversation.accountId = linked.owner.id;
     conversation.participants = {contactUri};
-    conversation.mode = conversation::Mode::NON_SWARM;
+    try {
+        // TODO will be true when we drop non swarm support
+        auto contactInfo = linked.owner.contactModel->getContact(contactUri);
+        conversation.mode = contactInfo.conversationId.isEmpty() ? conversation::Mode::NON_SWARM
+                                                                 : conversation::Mode::ONE_TO_ONE;
+        conversation.needsSyncing = !contactInfo.conversationId.isEmpty();
+    } catch (...) {
+        conversation.mode = conversation::Mode::NON_SWARM;
+    }
     try {
         conversation.confId = linked.owner.callModel->getConferenceFromURI(contactUri).id;
     } catch (...) {
