@@ -60,11 +60,6 @@ public:
      */
     BehaviorController& getBehaviorController() const;
     /**
-     * get a reference on the DataTransfer controller.
-     * @return a DataTransferModel&.
-     */
-    DataTransferModel& getDataTransferModel() const;
-    /**
      * get a reference on the audio-video controller.
      * @return a AVModel&.
      */
