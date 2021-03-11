@@ -85,8 +85,7 @@ Rectangle {
     }
 
     function getAdvancedSettingsScrollPosition() {
-        return advancedSettings.height / (currentAccountSettingsColumnLayout.height
-                                     + advancedSettings.height + 46) // 40 = btnSize+2*margin
+        return advancedSettings.y / root.height
     }
 
     function setPasswordButtonText() {
