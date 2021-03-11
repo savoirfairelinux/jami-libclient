@@ -70,9 +70,11 @@ struct Info
     std::map<QString, QString> lastDisplayedMessageUid;
     unsigned int unreadMessages = 0;
     Mode mode = Mode::NON_SWARM;
+    bool needsSyncing = false;
     bool isRequest = false;
 
-    QString getOneToOneParticipant(QString accountUri) {
+    QString getOneToOneParticipant(QString accountUri)
+    {
         auto uris = participants;
         uris.removeOne(accountUri);
         if (uris.size() != 1) {
