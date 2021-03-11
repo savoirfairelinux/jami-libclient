@@ -75,7 +75,7 @@ main(int argc, char* argv[])
     QCryptographicHash appData(QCryptographicHash::Sha256);
     appData.addData(QApplication::applicationName().toUtf8());
     appData.addData(QApplication::organizationDomain().toUtf8());
-    RunGuard guard(appData.result());
+    RunGuard guard(appData.result(), &app);
     if (!guard.tryToRun()) {
         return 0;
     }

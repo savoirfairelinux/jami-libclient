@@ -18,11 +18,18 @@
 
 #include "pluginhandleritemlistmodel.h"
 
+#include "lrcinstance.h"
+
+#include "api/pluginmodel.h"
+
 PluginHandlerItemListModel::PluginHandlerItemListModel(QObject* parent,
                                                        const QString& accountId,
-                                                       const QString& peerId)
-    : QAbstractListModel(parent)
+                                                       const QString& peerId,
+                                                       LRCInstance* instance)
+    : AbstractListModelBase(parent)
 {
+    lrcInstance_ = instance;
+
     if (!peerId.isEmpty()) {
         accountId_ = accountId;
         peerId_ = peerId;
@@ -38,14 +45,14 @@ PluginHandlerItemListModel::~PluginHandlerItemListModel() {}
 int
 PluginHandlerItemListModel::rowCount(const QModelIndex& parent) const
 {
-    if (!parent.isValid()) {
+    if (!parent.isValid() && lrcInstance_) {
         /*
          * Count.
          */
         if (isMediaHandler_)
-            return LRCInstance::pluginModel().getCallMediaHandlers().size();
+            return lrcInstance_->pluginModel().getCallMediaHandlers().size();
         else
-            return LRCInstance::pluginModel().getChatHandlers().size();
+            return lrcInstance_->pluginModel().getChatHandlers().size();
     }
     /*
      * A valid QModelIndex returns 0 as no entry has sub-elements.
@@ -73,15 +80,15 @@ PluginHandlerItemListModel::data(const QModelIndex& index, int role) const
     bool loaded = false;
 
     if (isMediaHandler_) {
-        auto mediahandlerList = LRCInstance::pluginModel().getCallMediaHandlers();
+        auto mediahandlerList = lrcInstance_->pluginModel().getCallMediaHandlers();
         if (!index.isValid() || mediahandlerList.size() <= index.row()) {
             return QVariant();
         }
 
-        auto details = LRCInstance::pluginModel().getCallMediaHandlerDetails(
+        auto details = lrcInstance_->pluginModel().getCallMediaHandlerDetails(
             mediahandlerList.at(index.row()));
         for (const auto& mediaHandler :
-             LRCInstance::pluginModel().getCallMediaHandlerStatus(callId_))
+             lrcInstance_->pluginModel().getCallMediaHandlerStatus(callId_))
             if (mediaHandler == details.id)
                 loaded = true;
         if (!details.pluginId.isEmpty()) {
@@ -94,15 +101,15 @@ PluginHandlerItemListModel::data(const QModelIndex& index, int role) const
         pluginId = details.pluginId;
 
     } else {
-        auto chathandlerList = LRCInstance::pluginModel().getChatHandlers();
+        auto chathandlerList = lrcInstance_->pluginModel().getChatHandlers();
         if (!index.isValid() || chathandlerList.size() <= index.row()) {
             return QVariant();
         }
 
-        auto details = LRCInstance::pluginModel().getChatHandlerDetails(
+        auto details = lrcInstance_->pluginModel().getChatHandlerDetails(
             chathandlerList.at(index.row()));
         for (const auto& chatHandler :
-             LRCInstance::pluginModel().getChatHandlerStatus(accountId_, peerId_))
+             lrcInstance_->pluginModel().getChatHandlerStatus(accountId_, peerId_))
             if (chatHandler == details.id)
                 loaded = true;
         if (!details.pluginId.isEmpty()) {

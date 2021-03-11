@@ -18,13 +18,11 @@
 
 #pragma once
 
-#include <QAbstractItemModel>
+#include "abstractitemmodelbase.h"
 
-#include "api/pluginmodel.h"
+class LRCInstance;
 
-#include "lrcinstance.h"
-
-class PluginItemListModel : public QAbstractListModel
+class PluginItemListModel : public AbstractListModelBase
 {
     Q_OBJECT
     Q_PROPERTY(int pluginsCount READ pluginsCount)
@@ -33,7 +31,7 @@ public:
     enum Role { PluginName = Qt::UserRole + 1, PluginId, PluginIcon, IsLoaded };
     Q_ENUM(Role)
 
-    explicit PluginItemListModel(QObject* parent = 0);
+    explicit PluginItemListModel(QObject* parent = nullptr, LRCInstance* instance = nullptr);
     ~PluginItemListModel();
 
     /*

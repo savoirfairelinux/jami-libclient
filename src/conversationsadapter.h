@@ -32,7 +32,7 @@ class ConversationsAdapter final : public QmlAdapterBase
     Q_PROPERTY(lrc::api::profile::Type currentTypeFilter MEMBER currentTypeFilter_ NOTIFY
                    currentTypeFilterChanged)
 public:
-    explicit ConversationsAdapter(QObject* parent = nullptr);
+    explicit ConversationsAdapter(QObject* parent = nullptr, LRCInstance* instance = nullptr);
     ~ConversationsAdapter() = default;
 
 protected:
@@ -73,9 +73,7 @@ private:
 
     lrc::api::profile::Type currentTypeFilter_ {};
 
-    /*
-     * Connections.
-     */
+    // Connections.
     QMetaObject::Connection modelSortedConnection_;
     QMetaObject::Connection modelUpdatedConnection_;
     QMetaObject::Connection filterChangedConnection_;

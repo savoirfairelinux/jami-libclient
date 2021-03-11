@@ -18,9 +18,9 @@
 
 #pragma once
 
-#include <QAbstractItemModel>
+#include "abstractitemmodelbase.h"
 
-class AudioDeviceModel : public QAbstractListModel
+class AudioDeviceModel : public AbstractListModelBase
 {
     Q_OBJECT
 public:

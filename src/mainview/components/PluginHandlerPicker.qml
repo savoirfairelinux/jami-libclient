@@ -270,6 +270,8 @@ Popup {
                         isImage: IsImage
                         pluginListPreferenceModel: PluginListPreferenceModel {
                             id: handlerPickerPreferenceModel
+
+                            lrcInstance: LRCInstance
                             preferenceKey : PreferenceKey
                             pluginId: PluginId
                         }

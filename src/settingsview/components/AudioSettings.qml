@@ -66,7 +66,10 @@ ColumnLayout {
 
         labelText: JamiStrings.microphone
         fontPointSize: JamiTheme.settingsFontSize
-        comboModel: AudioDeviceModel { type: AudioDeviceModel.Type.Record }
+        comboModel: AudioDeviceModel {
+            lrcInstance: LRCInstance
+            type: AudioDeviceModel.Type.Record
+        }
         widthOfComboBox: itemWidth
         tipText: JamiStrings.selectAudioInputDevice
         role: "DeviceName"
@@ -102,7 +105,10 @@ ColumnLayout {
 
         labelText: JamiStrings.outputDevice
         fontPointSize: JamiTheme.settingsFontSize
-        comboModel: AudioDeviceModel { type: AudioDeviceModel.Type.Playback }
+        comboModel: AudioDeviceModel {
+            lrcInstance: LRCInstance
+            type: AudioDeviceModel.Type.Playback
+        }
         widthOfComboBox: itemWidth
         tipText: JamiStrings.selectAudioOutputDevice
         role: "DeviceName"
@@ -125,7 +131,10 @@ ColumnLayout {
 
         labelText: JamiStrings.ringtoneDevice
         fontPointSize: JamiTheme.settingsFontSize
-        comboModel: AudioDeviceModel { type: AudioDeviceModel.Type.Ringtone }
+        comboModel: AudioDeviceModel {
+            lrcInstance: LRCInstance
+            type: AudioDeviceModel.Type.Ringtone
+        }
         widthOfComboBox: itemWidth
         tipText: JamiStrings.selectRingtoneOutputDevice
         role: "DeviceName"
@@ -148,7 +157,9 @@ ColumnLayout {
 
         labelText: JamiStrings.audioManager
         fontPointSize: JamiTheme.settingsFontSize
-        comboModel: AudioManagerListModel {}
+        comboModel: AudioManagerListModel {
+            lrcInstance: LRCInstance
+        }
         widthOfComboBox: itemWidth
         role: "ID_UTF8"
 

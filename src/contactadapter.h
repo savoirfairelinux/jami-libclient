@@ -25,6 +25,8 @@
 #include <QSortFilterProxyModel>
 #include <QString>
 
+class LRCInstance;
+
 /*
  * The SelectableProxyModel class
  * provides support for sorting and filtering data passed between another model and a view.
@@ -53,9 +55,8 @@ public:
 
     virtual bool filterAcceptsRow(int source_row, const QModelIndex& source_parent) const
     {
-        /*
-         * Accept all contacts in conversation list filtered with account type, except those in a call.
-         */
+        // Accept all contacts in conversation list filtered with account type, except those in a call.
+
         auto index = sourceModel()->index(source_row, 0, source_parent);
         if (filterPredicate_) {
             return filterPredicate_(index, filterRegExp());
@@ -71,7 +72,7 @@ class ContactAdapter final : public QmlAdapterBase
     Q_OBJECT
 
 public:
-    explicit ContactAdapter(QObject* parent = nullptr);
+    explicit ContactAdapter(QObject* parent = nullptr, LRCInstance* instance = nullptr);
     ~ContactAdapter() = default;
 
 protected:
@@ -85,14 +86,10 @@ protected:
 private:
     SmartListModel::Type listModeltype_;
 
-    /*
-     * For sip call transfer, to exclude current sip callee.
-     */
+    // For sip call transfer, to exclude current sip callee.
     QString calleeDisplayName_;
 
-    /*
-     * SmartListModel is the source model of SelectableProxyModel.
-     */
+    // SmartListModel is the source model of SelectableProxyModel.
     std::unique_ptr<SmartListModel> smartListModel_;
     std::unique_ptr<SelectableProxyModel> selectableProxyModel_;
 
@@ -100,5 +97,4 @@ private:
 
 signals:
     void defaultModeratorsUpdated();
-
 };

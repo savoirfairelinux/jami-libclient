@@ -18,4 +18,6 @@
 
 #pragma once
 
-void registerTypes();
+class LRCInstance;
+
+void registerTypes(LRCInstance* instance);

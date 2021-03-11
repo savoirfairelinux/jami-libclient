@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Copyright (C) 2020 by Savoir-faire Linux
  * Author : Edric Ladent Milaret<edric.ladent - milaret @savoirfairelinux.com>
  * Author : Andreas Traczyk<andreas.traczyk @savoirfairelinux.com>
@@ -32,10 +32,10 @@
 #include <QPainter>
 #include <QScreen>
 
-AvAdapter::AvAdapter(QObject* parent)
-    : QmlAdapterBase(parent)
+AvAdapter::AvAdapter(QObject* parent, LRCInstance* instance)
+    : QmlAdapterBase(parent, instance)
 {
-    auto& avModel = LRCInstance::avModel();
+    auto& avModel = lrcInstance_->avModel();
 
     deviceListSize_ = avModel.getDevices().size();
     connect(&avModel, &lrc::api::AVModel::deviceEvent, this, &AvAdapter::slotDeviceEvent);
@@ -44,16 +44,16 @@ AvAdapter::AvAdapter(QObject* parent)
 QVariantMap
 AvAdapter::populateVideoDeviceContextMenuItem()
 {
-    auto activeDevice = LRCInstance::avModel().getCurrentVideoCaptureDevice();
+    auto activeDevice = lrcInstance_->avModel().getCurrentVideoCaptureDevice();
 
     /*
      * Create a list of video input devices.
      */
     QVariantMap deciveContextMenuNeededInfo;
-    auto devices = LRCInstance::avModel().getDevices();
+    auto devices = lrcInstance_->avModel().getDevices();
     for (int i = 0; i < devices.size(); i++) {
         try {
-            auto settings = LRCInstance::avModel().getDeviceSettings(devices[i]);
+            auto settings = lrcInstance_->avModel().getDeviceSettings(devices[i]);
             deciveContextMenuNeededInfo[settings.name] = QVariant(settings.id == activeDevice);
         } catch (...) {
             qDebug().noquote() << "Error in getting device settings";
@@ -71,13 +71,13 @@ AvAdapter::populateVideoDeviceContextMenuItem()
 void
 AvAdapter::onVideoContextMenuDeviceItemClicked(const QString& deviceName)
 {
-    auto deviceId = LRCInstance::avModel().getDeviceIdFromName(deviceName);
+    auto deviceId = lrcInstance_->avModel().getDeviceIdFromName(deviceName);
     if (deviceId.isEmpty()) {
         qWarning() << "Couldn't find device: " << deviceName;
         return;
     }
-    LRCInstance::avModel().setCurrentVideoCaptureDevice(deviceId);
-    LRCInstance::avModel().switchInputTo(deviceId, getCurrentCallId());
+    lrcInstance_->avModel().setCurrentVideoCaptureDevice(deviceId);
+    lrcInstance_->avModel().switchInputTo(deviceId, getCurrentCallId());
 }
 
 void
@@ -88,12 +88,12 @@ AvAdapter::shareEntireScreen(int screenNumber)
         return;
     QRect rect = screen->geometry();
 
-    LRCInstance::avModel().setDisplay(getScreenNumber(),
-                                      rect.x(),
-                                      rect.y(),
-                                      rect.width(),
-                                      rect.height(),
-                                      getCurrentCallId());
+    lrcInstance_->avModel().setDisplay(getScreenNumber(),
+                                       rect.x(),
+                                       rect.y(),
+                                       rect.width(),
+                                       rect.height(),
+                                       getCurrentCallId());
 }
 
 void
@@ -108,7 +108,7 @@ AvAdapter::shareAllScreens()
             height = scr->geometry().height();
     }
 
-    LRCInstance::avModel().setDisplay(getScreenNumber(), 0, 0, width, height, getCurrentCallId());
+    lrcInstance_->avModel().setDisplay(getScreenNumber(), 0, 0, width, height, getCurrentCallId());
 }
 
 void
@@ -167,7 +167,7 @@ AvAdapter::captureAllScreens()
 void
 AvAdapter::shareFile(const QString& filePath)
 {
-    LRCInstance::avModel().setInputFile(filePath, getCurrentCallId());
+    lrcInstance_->avModel().setInputFile(filePath, getCurrentCallId());
 }
 
 void
@@ -181,47 +181,48 @@ AvAdapter::shareScreenArea(unsigned x, unsigned y, unsigned width, unsigned heig
         x = y = width = height = 0;
         xrectsel(&x, &y, &width, &height);
 
-        LRCInstance::avModel().setDisplay(getScreenNumber(),
-                                          x,
-                                          y,
-                                          width < 128 ? 128 : width,
-                                          height < 128 ? 128 : height,
-                                          getCurrentCallId());
+        lrcInstance_->avModel().setDisplay(getScreenNumber(),
+                                           x,
+                                           y,
+                                           width < 128 ? 128 : width,
+                                           height < 128 ? 128 : height,
+                                           getCurrentCallId());
     });
 #else
-    LRCInstance::avModel().setDisplay(getScreenNumber(),
-                                      x,
-                                      y,
-                                      width < 128 ? 128 : width,
-                                      height < 128 ? 128 : height,
-                                      getCurrentCallId());
+    lrcInstance_->avModel().setDisplay(getScreenNumber(),
+                                       x,
+                                       y,
+                                       width < 128 ? 128 : width,
+                                       height < 128 ? 128 : height,
+                                       getCurrentCallId());
 #endif
 }
 
 void
 AvAdapter::startAudioMeter(bool async)
 {
-    LRCInstance::startAudioMeter(async);
+    lrcInstance_->startAudioMeter(async);
 }
 
 void
 AvAdapter::stopAudioMeter(bool async)
 {
-    LRCInstance::stopAudioMeter(async);
+    lrcInstance_->stopAudioMeter(async);
 }
 
 QString
 AvAdapter::getCurrentCallId()
 {
-    const auto& convInfo = LRCInstance::getConversationFromConvUid(LRCInstance::getCurrentConvUid());
-    auto call = LRCInstance::getCallInfoForConversation(convInfo);
+    const auto& convInfo = lrcInstance_->getConversationFromConvUid(
+        lrcInstance_->getCurrentConvUid());
+    auto call = lrcInstance_->getCallInfoForConversation(convInfo);
     return call ? call->id : QString();
 }
 
 void
 AvAdapter::slotDeviceEvent()
 {
-    auto& avModel = LRCInstance::avModel();
+    auto& avModel = lrcInstance_->avModel();
     auto defaultDevice = avModel.getDefaultDevice();
     auto currentCaptureDevice = avModel.getCurrentVideoCaptureDevice();
     QString callId = getCurrentCallId();
@@ -246,7 +247,7 @@ AvAdapter::slotDeviceEvent()
     }
 
     auto cb = [this, currentDeviceListSize, deviceEvent, defaultDevice, callId] {
-        auto& avModel = LRCInstance::avModel();
+        auto& avModel = lrcInstance_->avModel();
         if (currentDeviceListSize == 0) {
             avModel.clearCurrentVideoCaptureDevice();
             avModel.switchInputTo({}, callId);
@@ -258,8 +259,8 @@ AvAdapter::slotDeviceEvent()
         }
     };
 
-    if (LRCInstance::renderer()->isPreviewing()) {
-        Utils::oneShotConnect(LRCInstance::renderer(),
+    if (lrcInstance_->renderer()->isPreviewing()) {
+        Utils::oneShotConnect(lrcInstance_->renderer(),
                               &RenderManager::previewRenderingStopped,
                               [cb] { QtConcurrent::run([cb]() { cb(); }); });
     } else {
@@ -267,7 +268,7 @@ AvAdapter::slotDeviceEvent()
             avModel.setDefaultDevice(defaultDevice);
             avModel.setCurrentVideoCaptureDevice(defaultDevice);
             if (callId.isEmpty())
-                LRCInstance::renderer()->startPreviewing();
+                lrcInstance_->renderer()->startPreviewing();
             else
                 avModel.switchInputTo(defaultDevice, callId);
         } else {

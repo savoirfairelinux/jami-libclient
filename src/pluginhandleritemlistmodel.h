@@ -18,13 +18,11 @@
 
 #pragma once
 
-#include <QAbstractItemModel>
+#include "abstractitemmodelbase.h"
 
-#include "api/pluginmodel.h"
+class LRCInstance;
 
-#include "lrcinstance.h"
-
-class PluginHandlerItemListModel : public QAbstractListModel
+class PluginHandlerItemListModel : public AbstractListModelBase
 {
     Q_OBJECT
 
@@ -33,10 +31,10 @@ public:
     Q_ENUM(Role)
 
     explicit PluginHandlerItemListModel(
-        QObject* parent = 0,
+        QObject* parent = nullptr,
         const QString& accountId = QString(""),
-        const QString& peerId = QString(
-            "")); // for calls, accountId is the callId and peerId is null
+        const QString& peerId = QString(""),
+        LRCInstance* instance = nullptr); // for calls, accountId is the callId and peerId is null
     ~PluginHandlerItemListModel();
 
     /*

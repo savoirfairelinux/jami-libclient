@@ -20,35 +20,37 @@
 
 #include "lrcinstance.h"
 
-PluginAdapter::PluginAdapter(QObject* parent)
-    : QmlAdapterBase(parent)
+PluginAdapter::PluginAdapter(QObject* parent, LRCInstance* instance)
+    : QmlAdapterBase(parent, instance)
 {}
 
 QVariant
 PluginAdapter::getMediaHandlerSelectableModel(const QString& callId)
 {
-    pluginHandlerListModel_.reset(new PluginHandlerItemListModel(this, callId, QString("")));
+    pluginHandlerListModel_.reset(
+        new PluginHandlerItemListModel(this, callId, QString(""), lrcInstance_));
     return QVariant::fromValue(pluginHandlerListModel_.get());
 }
 
 QVariant
 PluginAdapter::getChatHandlerSelectableModel(const QString& accountId, const QString& peerId)
 {
-    pluginHandlerListModel_.reset(new PluginHandlerItemListModel(this, accountId, peerId));
+    pluginHandlerListModel_.reset(
+        new PluginHandlerItemListModel(this, accountId, peerId, lrcInstance_));
     return QVariant::fromValue(pluginHandlerListModel_.get());
 }
 
 QVariant
 PluginAdapter::getPluginSelectableModel()
 {
-    pluginItemListModel_.reset(new PluginItemListModel(this));
+    pluginItemListModel_.reset(new PluginItemListModel(this, lrcInstance_));
     return QVariant::fromValue(pluginItemListModel_.get());
 }
 
 QVariant
 PluginAdapter::getPluginPreferencesModel(const QString& pluginId, const QString& mediaHandlerName)
 {
-    preferenceItemListModel_.reset(new PreferenceItemListModel(this));
+    preferenceItemListModel_.reset(new PreferenceItemListModel(this, lrcInstance_));
     preferenceItemListModel_->setMediaHandlerName(mediaHandlerName);
     preferenceItemListModel_->setPluginId(pluginId);
 

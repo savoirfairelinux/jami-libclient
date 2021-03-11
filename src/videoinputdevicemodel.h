@@ -18,16 +18,9 @@
 
 #pragma once
 
-#include <QAbstractItemModel>
+#include "abstractitemmodelbase.h"
 
-#include "api/account.h"
-#include "api/contact.h"
-#include "api/conversation.h"
-#include "api/newdevicemodel.h"
-
-#include "lrcinstance.h"
-
-class VideoInputDeviceModel : public QAbstractListModel
+class VideoInputDeviceModel : public AbstractListModelBase
 {
     Q_OBJECT
 public:
@@ -41,7 +34,7 @@ public:
     };
     Q_ENUM(Role)
 
-    explicit VideoInputDeviceModel(QObject* parent = 0);
+    explicit VideoInputDeviceModel(QObject* parent = nullptr);
     ~VideoInputDeviceModel();
 
     /*

@@ -232,6 +232,8 @@ Rectangle {
                     width: videoCallPageMainRect.width
                     height: videoCallPageMainRect.height
 
+                    lrcInstance: LRCInstance
+
                     onOffsetChanged: {
                         videoCallOverlay.handleParticipantsInfo(CallAdapter.getConferencesInfos())
                     }
@@ -239,6 +241,8 @@ Rectangle {
 
                 VideoCallPreviewRenderer {
                     id: previewRenderer
+
+                    lrcInstance: LRCInstance
 
                     Connections {
                         target: CallAdapter

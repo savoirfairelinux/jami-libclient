@@ -18,8 +18,15 @@
 
 #include "mediacodeclistmodel.h"
 
+#include "lrcinstance.h"
+
+#include "api/account.h"
+#include "api/contact.h"
+#include "api/conversation.h"
+#include "api/newdevicemodel.h"
+
 MediaCodecListModel::MediaCodecListModel(QObject* parent)
-    : QAbstractListModel(parent)
+    : AbstractListModelBase(parent)
 {}
 
 MediaCodecListModel::~MediaCodecListModel() {}
@@ -27,12 +34,12 @@ MediaCodecListModel::~MediaCodecListModel() {}
 int
 MediaCodecListModel::rowCount(const QModelIndex& parent) const
 {
-    if (!parent.isValid()) {
+    if (!parent.isValid() && lrcInstance_) {
         if (mediaType_ == MediaCodecListModel::MediaType::AUDIO)
-            return LRCInstance::getCurrentAccountInfo().codecModel->getAudioCodecs().size();
+            return lrcInstance_->getCurrentAccountInfo().codecModel->getAudioCodecs().size();
         if (mediaType_ == MediaCodecListModel::MediaType::VIDEO) {
             QList<lrc::api::Codec> realCodecList;
-            auto videoCodecListOld = LRCInstance::getCurrentAccountInfo()
+            auto videoCodecListOld = lrcInstance_->getCurrentAccountInfo()
                                          .codecModel->getVideoCodecs();
 
             for (auto codec : videoCodecListOld) {
@@ -62,9 +69,9 @@ MediaCodecListModel::data(const QModelIndex& index, int role) const
 {
     QList<lrc::api::Codec> mediaCodecList;
     if (mediaType_ == MediaCodecListModel::MediaType::AUDIO)
-        mediaCodecList = LRCInstance::getCurrentAccountInfo().codecModel->getAudioCodecs();
+        mediaCodecList = lrcInstance_->getCurrentAccountInfo().codecModel->getAudioCodecs();
     else if (mediaType_ == MediaCodecListModel::MediaType::VIDEO) {
-        QList<lrc::api::Codec> videoCodecList = LRCInstance::getCurrentAccountInfo()
+        QList<lrc::api::Codec> videoCodecList = lrcInstance_->getCurrentAccountInfo()
                                                     .codecModel->getVideoCodecs();
 
         for (auto codec : videoCodecList) {

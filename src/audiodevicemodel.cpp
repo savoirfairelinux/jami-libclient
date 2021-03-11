@@ -21,7 +21,7 @@
 #include "lrcinstance.h"
 
 AudioDeviceModel::AudioDeviceModel(QObject* parent)
-    : QAbstractListModel(parent)
+    : AbstractListModelBase(parent)
 {
     connect(this, &AudioDeviceModel::typeChanged, this, &AudioDeviceModel::reset);
 }
@@ -109,15 +109,15 @@ void
 AudioDeviceModel::reset()
 {
     beginResetModel();
-    devices_ = type_ == Type::Record ? LRCInstance::avModel().getAudioInputDevices()
-                                     : LRCInstance::avModel().getAudioOutputDevices();
+    devices_ = type_ == Type::Record ? lrcInstance_->avModel().getAudioInputDevices()
+                                     : lrcInstance_->avModel().getAudioOutputDevices();
     endResetModel();
 }
 
 int
 AudioDeviceModel::getCurrentIndex()
 {
-    QString currentId = LRCInstance::avModel().getInputDevice();
+    QString currentId = lrcInstance_->avModel().getInputDevice();
     auto resultList = match(index(0, 0), Qt::DisplayRole, QVariant(currentId));
     return resultList.size() > 0 ? resultList[0].row() : 0;
 }

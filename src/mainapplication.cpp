@@ -1,4 +1,4 @@
-﻿/*!
+/*!
  * Copyright (C) 2015-2020 by Savoir-faire Linux
  * Author: Edric Ladent Milaret <edric.ladent-milaret@savoirfairelinux.com>
  * Author: Andreas Traczyk <andreas.traczyk@savoirfairelinux.com>
@@ -82,41 +82,12 @@ consoleDebug()
 #endif
 }
 
-static void
-vsConsoleDebug()
-{
-#ifdef _MSC_VER
-    /*
-     * Print debug to output window if using VS.
-     */
-    QObject::connect(&LRCInstance::behaviorController(),
-                     &lrc::api::BehaviorController::debugMessageReceived,
-                     [](const QString& message) {
-                         OutputDebugStringA((message + "\n").toStdString().c_str());
-                     });
-#endif
-}
-
 static QString
 getDebugFilePath()
 {
     QDir logPath(QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation));
     logPath.cdUp();
     return QString(logPath.absolutePath() + "/jami/jami.log");
-}
-
-static void
-fileDebug(QFile* debugFile)
-{
-    QObject::connect(&LRCInstance::behaviorController(),
-                     &lrc::api::BehaviorController::debugMessageReceived,
-                     [debugFile](const QString& message) {
-                         if (debugFile->open(QIODevice::WriteOnly | QIODevice::Append)) {
-                             auto msg = (message + "\n").toStdString().c_str();
-                             debugFile->write(msg, qstrlen(msg));
-                             debugFile->close();
-                         }
-                     });
 }
 
 void
@@ -140,6 +111,35 @@ ScreenInfo::setCurrentFocusWindow(QWindow* window)
                       });
               });
     }
+}
+
+void
+MainApplication::vsConsoleDebug()
+{
+#ifdef _MSC_VER
+    /*
+     * Print debug to output window if using VS.
+     */
+    QObject::connect(&lrcInstance_->behaviorController(),
+                     &lrc::api::BehaviorController::debugMessageReceived,
+                     [](const QString& message) {
+                         OutputDebugStringA((message + "\n").toStdString().c_str());
+                     });
+#endif
+}
+
+void
+MainApplication::fileDebug(QFile* debugFile)
+{
+    QObject::connect(&lrcInstance_->behaviorController(),
+                     &lrc::api::BehaviorController::debugMessageReceived,
+                     [debugFile](const QString& message) {
+                         if (debugFile->open(QIODevice::WriteOnly | QIODevice::Append)) {
+                             auto msg = (message + "\n").toStdString().c_str();
+                             debugFile->write(msg, qstrlen(msg));
+                             debugFile->close();
+                         }
+                     });
 }
 
 MainApplication::MainApplication(int& argc, char** argv)
@@ -207,8 +207,8 @@ MainApplication::init()
     }
 #endif
 
-    connect(connectivityMonitor_, &ConnectivityMonitor::connectivityChanged, [] {
-        LRCInstance::connectivityChanged();
+    connect(connectivityMonitor_, &ConnectivityMonitor::connectivityChanged, [this] {
+        lrcInstance_->connectivityChanged();
     });
 
     connect(this, &QGuiApplication::focusWindowChanged, [this] {
@@ -216,7 +216,7 @@ MainApplication::init()
     });
 
     QObject::connect(
-        &LRCInstance::instance(),
+        lrcInstance_.get(),
         &LRCInstance::quitEngineRequested,
         this,
         [this] { engine_->quit(); },
@@ -238,6 +238,12 @@ MainApplication::init()
     initQmlEngine();
 
     return true;
+}
+
+void
+MainApplication::restoreApp()
+{
+    emit lrcInstance_->restoreAppRequested();
 }
 
 void
@@ -299,7 +305,7 @@ MainApplication::initLrc(const QString& downloadUrl, ConnectivityMonitor* cm)
      * Init mainwindow and finish splash when mainwindow shows up.
      */
     std::atomic_bool isMigrating(false);
-    LRCInstance::init(
+    lrcInstance_.reset(new LRCInstance(
         [this, &isMigrating] {
             /*
              * TODO: splash screen for account migration.
@@ -316,9 +322,9 @@ MainApplication::initLrc(const QString& downloadUrl, ConnectivityMonitor* cm)
             isMigrating = false;
         },
         downloadUrl,
-        cm);
-    LRCInstance::subscribeToDebugReceived();
-    LRCInstance::getAPI().holdConferences = false;
+        cm));
+    lrcInstance_->subscribeToDebugReceived();
+    lrcInstance_->getAPI().holdConferences = false;
 }
 
 const QVariantMap
@@ -390,18 +396,21 @@ MainApplication::setApplicationFont()
 void
 MainApplication::initQmlEngine()
 {
-    registerTypes();
+    registerTypes(lrcInstance_.get());
 
-    engine_->addImageProvider(QLatin1String("qrImage"), new QrImageProvider());
-    engine_->addImageProvider(QLatin1String("tintedPixmap"), new TintedButtonImageProvider());
-    engine_->addImageProvider(QLatin1String("avatarImage"), new AvatarImageProvider());
+    engine_->addImageProvider(QLatin1String("qrImage"), new QrImageProvider(lrcInstance_.get()));
+    engine_->addImageProvider(QLatin1String("tintedPixmap"),
+                              new TintedButtonImageProvider(lrcInstance_.get()));
+    engine_->addImageProvider(QLatin1String("avatarImage"),
+                              new AvatarImageProvider(lrcInstance_.get()));
 
     engine_->rootContext()->setContextProperty("ScreenInfo", &screenInfo_);
+    engine_->rootContext()->setContextProperty("LRCInstance", lrcInstance_.get());
 
-    engine_->setObjectOwnership(&LRCInstance::avModel(), QQmlEngine::CppOwnership);
-    engine_->setObjectOwnership(&LRCInstance::pluginModel(), QQmlEngine::CppOwnership);
-    engine_->setObjectOwnership(LRCInstance::getUpdateManager(), QQmlEngine::CppOwnership);
-    engine_->setObjectOwnership(&LRCInstance::instance(), QQmlEngine::CppOwnership);
+    engine_->setObjectOwnership(&lrcInstance_->avModel(), QQmlEngine::CppOwnership);
+    engine_->setObjectOwnership(&lrcInstance_->pluginModel(), QQmlEngine::CppOwnership);
+    engine_->setObjectOwnership(lrcInstance_->getUpdateManager(), QQmlEngine::CppOwnership);
+    engine_->setObjectOwnership(lrcInstance_.get(), QQmlEngine::CppOwnership);
     engine_->setObjectOwnership(&NameDirectory::instance(), QQmlEngine::CppOwnership);
 
     engine_->load(QUrl(QStringLiteral("qrc:/src/MainApplicationWindow.qml")));
@@ -412,7 +421,7 @@ MainApplication::initSettings()
 {
     AppSettingsManager::instance().initValues();
     auto downloadPath = AppSettingsManager::instance().getValue(Settings::Key::DownloadPath);
-    LRCInstance::dataTransferModel().downloadDirectory = downloadPath.toString() + "/";
+    lrcInstance_->dataTransferModel().downloadDirectory = downloadPath.toString() + "/";
 }
 
 void
@@ -428,9 +437,9 @@ MainApplication::initSystray()
         engine_->quit();
         cleanup();
     });
-    connect(&sysIcon, &QSystemTrayIcon::activated, [](QSystemTrayIcon::ActivationReason reason) {
+    connect(&sysIcon, &QSystemTrayIcon::activated, [this](QSystemTrayIcon::ActivationReason reason) {
         if (reason != QSystemTrayIcon::ActivationReason::Context)
-            emit LRCInstance::instance().restoreAppRequested();
+            restoreApp();
     });
 
     systrayMenu->addAction(exitAction);

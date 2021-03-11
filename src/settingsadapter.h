@@ -26,18 +26,17 @@
 #include "lrcinstance.h"
 #include "typedefs.h"
 #include "utils.h"
+#include "qmladapterbase.h"
 
-class SettingsAdapter : public QObject
+class SettingsAdapter : public QmlAdapterBase
 {
     Q_OBJECT
 public:
-    explicit SettingsAdapter(QObject* parent = nullptr);
+    explicit SettingsAdapter(QObject* parent = nullptr, LRCInstance* instance = nullptr);
 
-    // Singleton
-    static SettingsAdapter& instance();
-    /*
-     * getters of directories
-     */
+    void safeInit() override {}
+
+    // Getters of directories
     Q_INVOKABLE QString getDir_Document();
     Q_INVOKABLE QString getDir_Download();
 
@@ -47,23 +46,17 @@ public:
     Q_INVOKABLE void setRunOnStartUp(bool state);
     Q_INVOKABLE void setDownloadPath(QString dir);
 
-    /*
-     * getters of devices' Info and options
-     */
+    // Getters of devices' Info and options
     Q_INVOKABLE lrc::api::video::Capabilities get_DeviceCapabilities(const QString& device);
     Q_INVOKABLE lrc::api::video::ResRateList get_ResRateList(lrc::api::video::Channel channel,
                                                              QString device);
     Q_INVOKABLE int get_DeviceCapabilitiesSize(const QString& device);
 
-    /*
-     * getters of resolution and frame rates of current device
-     */
+    // Getters of resolution and frame rates of current device
     Q_INVOKABLE QVector<QString> getResolutions(const QString& device);
     Q_INVOKABLE QVector<int> getFrameRates(const QString& device);
 
-    /*
-     * getters and setters: lrc video::setting
-     */
+    // Getters and setters: lrc video::setting
     Q_INVOKABLE QString get_Video_Settings_Channel(const QString& deviceId);
     Q_INVOKABLE QString get_Video_Settings_Name(const QString& deviceId);
     Q_INVOKABLE QString get_Video_Settings_Id(const QString& deviceId);
@@ -74,9 +67,7 @@ public:
                                                             qreal rate,
                                                             const QString& resolution);
 
-    /*
-     * getters and setters of current account Info
-     */
+    // Getters and setters of current account Info
     const Q_INVOKABLE lrc::api::account::Info& getCurrentAccountInfo();
     const Q_INVOKABLE lrc::api::profile::Info& getCurrentAccount_Profile_Info();
 
@@ -87,16 +78,14 @@ public:
     Q_INVOKABLE QString get_CurrentAccountInfo_Id();
     Q_INVOKABLE bool get_CurrentAccountInfo_Enabled();
 
-    // profile info
+    // Profile info
     Q_INVOKABLE QString getCurrentAccount_Profile_Info_Uri();
     Q_INVOKABLE QString getCurrentAccount_Profile_Info_Alias();
     Q_INVOKABLE int getCurrentAccount_Profile_Info_Type();
     Q_INVOKABLE QString getAccountBestName();
 
-    /*
-     * getters and setters of ConfProperties_t
-     */
-    // getters
+    // Getters and setters of ConfProperties_t
+    // Getters
     Q_INVOKABLE lrc::api::account::ConfProperties_t getAccountConfig();
     Q_INVOKABLE QString getAccountConfig_Manageruri();
     Q_INVOKABLE QString getAccountConfig_Username();
@@ -159,7 +148,7 @@ public:
 
     Q_INVOKABLE QString getAccountConfig_Mailbox();
 
-    // setters
+    // Setters
     Q_INVOKABLE void setAccountConfig_Username(QString input);
     Q_INVOKABLE void setAccountConfig_Hostname(QString input);
     Q_INVOKABLE void setAccountConfig_Password(QString input);
@@ -232,9 +221,7 @@ public:
                                          const QString& peerURI,
                                          const bool& state);
     Q_INVOKABLE QStringList getDefaultModerators(const QString& accId);
-    Q_INVOKABLE void enableLocalModerators(const QString& accountID,
-                                           const bool& isModEnabled);
+    Q_INVOKABLE void enableLocalModerators(const QString& accountID, const bool& isModEnabled);
     Q_INVOKABLE bool isLocalModeratorsEnabled(const QString& accountId);
-
 };
 Q_DECLARE_METATYPE(SettingsAdapter*)

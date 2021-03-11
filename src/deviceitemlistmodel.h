@@ -18,16 +18,9 @@
 
 #pragma once
 
-#include <QAbstractItemModel>
+#include "abstractitemmodelbase.h"
 
-#include "api/account.h"
-#include "api/contact.h"
-#include "api/conversation.h"
-#include "api/newdevicemodel.h"
-
-#include "lrcinstance.h"
-
-class DeviceItemListModel : public QAbstractListModel
+class DeviceItemListModel : public AbstractListModelBase
 {
     Q_OBJECT
 
@@ -35,7 +28,7 @@ public:
     enum Role { DeviceName = Qt::UserRole + 1, DeviceID, IsCurrent };
     Q_ENUM(Role)
 
-    explicit DeviceItemListModel(QObject* parent = 0);
+    explicit DeviceItemListModel(QObject* parent = nullptr);
     ~DeviceItemListModel();
 
     /*

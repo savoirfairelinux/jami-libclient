@@ -19,13 +19,9 @@
 
 #pragma once
 
-#include <QAbstractItemModel>
+#include "abstractitemmodelbase.h"
 
-#include "api/account.h"
-#include "api/contact.h"
-#include "api/conversation.h"
-
-class AccountListModel : public QAbstractListModel
+class AccountListModel : public AbstractListModelBase
 {
     Q_OBJECT
 
@@ -33,7 +29,7 @@ public:
     enum Role { Alias = Qt::UserRole + 1, Username, Type, Status, ID, PictureUid };
     Q_ENUM(Role)
 
-    explicit AccountListModel(QObject* parent = 0);
+    explicit AccountListModel(QObject* parent = nullptr);
     ~AccountListModel();
 
     /*

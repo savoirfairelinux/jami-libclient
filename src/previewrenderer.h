@@ -21,6 +21,8 @@
 
 #include <QtQuick>
 
+class LRCInstance;
+
 /*
  * Use QQuickPaintedItem so that QPainter apis can be used.
  * Note: Old video pipeline.
@@ -28,13 +30,21 @@
 class PreviewRenderer : public QQuickPaintedItem
 {
     Q_OBJECT
+    Q_PROPERTY(LRCInstance* lrcInstance MEMBER lrcInstance_ NOTIFY lrcInstanceChanged)
+
 public:
-    explicit PreviewRenderer(QQuickItem* parent = 0);
+    explicit PreviewRenderer(QQuickItem* parent = nullptr);
     ~PreviewRenderer();
+
+signals:
+    void lrcInstanceChanged();
 
 protected:
     void paint(QPainter* painter) override;
     void paintBackground(QPainter* painter);
+
+    // LRCInstance pointer (set in qml)
+    LRCInstance* lrcInstance_ {nullptr};
 
 private:
     QMetaObject::Connection previewFrameUpdatedConnection_;
@@ -46,7 +56,7 @@ class VideoCallPreviewRenderer : public PreviewRenderer
     Q_PROPERTY(qreal previewImageScalingFactor MEMBER previewImageScalingFactor_ NOTIFY
                    previewImageScalingFactorChanged)
 public:
-    explicit VideoCallPreviewRenderer(QQuickItem* parent = 0);
+    explicit VideoCallPreviewRenderer(QQuickItem* parent = nullptr);
     virtual ~VideoCallPreviewRenderer();
 
 signals:
@@ -54,6 +64,7 @@ signals:
 
 private:
     void paint(QPainter* painter) override final;
+
     qreal previewImageScalingFactor_;
 };
 
@@ -61,7 +72,7 @@ class PhotoboothPreviewRender : public PreviewRenderer
 {
     Q_OBJECT
 public:
-    explicit PhotoboothPreviewRender(QQuickItem* parent = 0);
+    explicit PhotoboothPreviewRender(QQuickItem* parent = nullptr);
     virtual ~PhotoboothPreviewRender();
 
     Q_INVOKABLE QString takePhoto(int size);

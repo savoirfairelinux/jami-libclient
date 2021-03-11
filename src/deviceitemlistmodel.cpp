@@ -18,8 +18,15 @@
 
 #include "deviceitemlistmodel.h"
 
+#include "lrcinstance.h"
+
+#include "api/account.h"
+#include "api/contact.h"
+#include "api/conversation.h"
+#include "api/newdevicemodel.h"
+
 DeviceItemListModel::DeviceItemListModel(QObject* parent)
-    : QAbstractListModel(parent)
+    : AbstractListModelBase(parent)
 {}
 
 DeviceItemListModel::~DeviceItemListModel() {}
@@ -27,11 +34,11 @@ DeviceItemListModel::~DeviceItemListModel() {}
 int
 DeviceItemListModel::rowCount(const QModelIndex& parent) const
 {
-    if (!parent.isValid()) {
+    if (!parent.isValid() && lrcInstance_) {
         /*
          * Count.
          */
-        return LRCInstance::getCurrentAccountInfo().deviceModel->getAllDevices().size();
+        return lrcInstance_->getCurrentAccountInfo().deviceModel->getAllDevices().size();
     }
     /*
      * A valid QModelIndex returns 0 as no entry has sub-elements.
@@ -52,7 +59,7 @@ DeviceItemListModel::columnCount(const QModelIndex& parent) const
 QVariant
 DeviceItemListModel::data(const QModelIndex& index, int role) const
 {
-    auto deviceList = LRCInstance::getCurrentAccountInfo().deviceModel->getAllDevices();
+    auto deviceList = lrcInstance_->getCurrentAccountInfo().deviceModel->getAllDevices();
     if (!index.isValid() || deviceList.size() <= index.row()) {
         return QVariant();
     }

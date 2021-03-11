@@ -18,8 +18,15 @@
 
 #include "videoinputdevicemodel.h"
 
+#include "lrcinstance.h"
+
+#include "api/account.h"
+#include "api/contact.h"
+#include "api/conversation.h"
+#include "api/newdevicemodel.h"
+
 VideoInputDeviceModel::VideoInputDeviceModel(QObject* parent)
-    : QAbstractListModel(parent)
+    : AbstractListModelBase(parent)
 {}
 
 VideoInputDeviceModel::~VideoInputDeviceModel() {}
@@ -27,11 +34,11 @@ VideoInputDeviceModel::~VideoInputDeviceModel() {}
 int
 VideoInputDeviceModel::rowCount(const QModelIndex& parent) const
 {
-    if (!parent.isValid()) {
+    if (!parent.isValid() && lrcInstance_) {
         /*
          * Count.
          */
-        int deviceListSize = LRCInstance::avModel().getDevices().size();
+        int deviceListSize = lrcInstance_->avModel().getDevices().size();
         if (deviceListSize > 0) {
             return deviceListSize;
         } else {
@@ -57,7 +64,7 @@ VideoInputDeviceModel::columnCount(const QModelIndex& parent) const
 QVariant
 VideoInputDeviceModel::data(const QModelIndex& index, int role) const
 {
-    auto deviceList = LRCInstance::avModel().getDevices();
+    auto deviceList = lrcInstance_->avModel().getDevices();
     if (!index.isValid()) {
         return QVariant();
     }
@@ -75,7 +82,7 @@ VideoInputDeviceModel::data(const QModelIndex& index, int role) const
         return QVariant();
     }
 
-    auto currentDeviceSetting = LRCInstance::avModel().getDeviceSettings(deviceList[index.row()]);
+    auto currentDeviceSetting = lrcInstance_->avModel().getDeviceSettings(deviceList[index.row()]);
 
     switch (role) {
     case Role::DeviceChannel:
@@ -148,13 +155,13 @@ VideoInputDeviceModel::reset()
 int
 VideoInputDeviceModel::deviceCount()
 {
-    return LRCInstance::avModel().getDevices().size();
+    return lrcInstance_->avModel().getDevices().size();
 }
 
 int
 VideoInputDeviceModel::getCurrentSettingIndex()
 {
-    QString currentId = LRCInstance::avModel().getCurrentVideoCaptureDevice();
+    QString currentId = lrcInstance_->avModel().getCurrentVideoCaptureDevice();
     auto resultList = match(index(0, 0), DeviceId, QVariant(currentId));
 
     int resultRowIndex = 0;

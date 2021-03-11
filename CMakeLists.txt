@@ -115,6 +115,8 @@ set(COMMON_HEADERS
     ${SRC_DIR}/videoformatresolutionmodel.h
     ${SRC_DIR}/audiomanagerlistmodel.h
     ${SRC_DIR}/qmlregister.h
+    ${SRC_DIR}/abstractitemmodelbase.h
+    ${SRC_DIR}/quickimageproviderbase.h
     ${SRC_DIR}/qtutils.h
     ${SRC_DIR}/utilsadapter.h
     ${SRC_DIR}/dbuserrorhandler.h

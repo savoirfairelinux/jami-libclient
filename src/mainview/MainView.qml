@@ -379,6 +379,8 @@ Rectangle {
 
     AccountListModel {
         id: accountListModel
+
+        lrcInstance: LRCInstance
     }
 
     SettingsMenu {

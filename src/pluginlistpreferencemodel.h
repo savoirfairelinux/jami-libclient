@@ -18,13 +18,9 @@
 
 #pragma once
 
-#include <QAbstractItemModel>
+#include "abstractitemmodelbase.h"
 
-#include "api/pluginmodel.h"
-
-#include "lrcinstance.h"
-
-class PluginListPreferenceModel : public QAbstractListModel
+class PluginListPreferenceModel : public AbstractListModelBase
 {
     Q_OBJECT
     Q_PROPERTY(QString pluginId READ pluginId WRITE setPluginId)
@@ -36,7 +32,7 @@ public:
     enum Role { PreferenceValue = Qt::UserRole + 1, PreferenceEntryValue };
     Q_ENUM(Role)
 
-    explicit PluginListPreferenceModel(QObject* parent = 0);
+    explicit PluginListPreferenceModel(QObject* parent = nullptr);
     ~PluginListPreferenceModel();
 
     /*
@@ -89,7 +85,7 @@ public:
     }
     QString preferenceCurrentValue()
     {
-        return LRCInstance::pluginModel().getPluginPreferencesValues(pluginId_)[preferenceKey_];
+        return lrcInstance_->pluginModel().getPluginPreferencesValues(pluginId_)[preferenceKey_];
     }
 
     QString preferenceNewValue()

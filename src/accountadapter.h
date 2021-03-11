@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Copyright (C) 2020 by Savoir-faire Linux
  * Author: Mingrui Zhang   <mingrui.zhang@savoirfairelinux.com>
  *
@@ -50,45 +50,38 @@ signals:
     void accountListSizeChanged();
 
 public:
-    explicit AccountAdapter(QObject* parent = 0);
+    explicit AccountAdapter(QObject* parent = nullptr, LRCInstance* instance = nullptr);
     ~AccountAdapter() = default;
 
 protected:
     void safeInit() override;
 
 public:
-    /*
-     * Change to account corresponding to combox box index.
-     */
+    // Change to account corresponding to combox box index.
     Q_INVOKABLE void accountChanged(int index);
-    /*
-     * Create normal Jami account, SIP account and JAMS accounts.
-     */
+
+    // Create normal Jami account, SIP account and JAMS accounts.
     Q_INVOKABLE void createJamiAccount(QString registeredName,
                                        const QVariantMap& settings,
                                        bool isCreating);
     Q_INVOKABLE void createSIPAccount(const QVariantMap& settings);
     Q_INVOKABLE void createJAMSAccount(const QVariantMap& settings);
-    /*
-     * Delete current account
-     */
+
+    // Delete current account
     Q_INVOKABLE void deleteCurrentAccount();
-    /*
-     * Setting related
-     */
+
+    // Setting related
     Q_INVOKABLE void passwordSetStatusMessageBox(bool success, QString title, QString infoToDisplay);
-    /*
-     * conf property
-     */
+
+    // Conf property
     Q_INVOKABLE bool hasPassword();
     Q_INVOKABLE void setArchiveHasPassword(bool isHavePassword);
     Q_INVOKABLE bool exportToFile(const QString& accountId,
                                   const QString& path,
                                   const QString& password = {}) const;
     Q_INVOKABLE void setArchivePasswordAsync(const QString& accountID, const QString& password);
-    /*
-     * lrc instances functions wrappers
-     */
+
+    // Lrc instances functions wrappers
     Q_INVOKABLE bool savePassword(const QString& accountId,
                                   const QString& oldPassword,
                                   const QString& newPassword);
@@ -104,15 +97,12 @@ public:
     Q_INVOKABLE void setCurrAccAvatar(bool fromFile, const QString& source);
 
 signals:
-    /*
-     * Trigger other components to reconnect account related signals.
-     */
+    // Trigger other components to reconnect account related signals.
     void accountStatusChanged(QString accountId = {});
 
     void updateConversationForAddedContact();
-    /*
-     * send report failure to QML to make it show the right UI state .
-     */
+
+    // Send report failure to QML to make it show the right UI state .
     void reportFailure();
     void accountAdded(QString accountId, bool showBackUp, int index);
     void contactUnbanned();
@@ -127,19 +117,13 @@ private:
 
     void deselectConversation();
 
-    /*
-     * Make account signal connections.
-     */
+    // Make account signal connections.
     void connectAccount(const QString& accountId);
 
-    /*
-     * Make account signal connections.
-     */
+    // Make account signal connections.
     void setProperties(const QString& accountId);
 
-    /*
-     * Implement what to do when account creation fails.
-     */
+    // Implement what to do when account creation fails.
     void connectFailure();
 
     QMetaObject::Connection accountStatusChangedConnection_;

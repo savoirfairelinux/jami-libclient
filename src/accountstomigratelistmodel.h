@@ -18,23 +18,16 @@
 
 #pragma once
 
-#include <QAbstractItemModel>
+#include "abstractitemmodelbase.h"
 
-#include "api/account.h"
-#include "api/contact.h"
-#include "api/conversation.h"
-#include "api/newdevicemodel.h"
-
-#include "lrcinstance.h"
-
-class AccountsToMigrateListModel : public QAbstractListModel
+class AccountsToMigrateListModel : public AbstractListModelBase
 {
     Q_OBJECT
 public:
     enum Role { Account_ID = Qt::UserRole + 1, ManagerUsername, ManagerUri, Username, Alias };
     Q_ENUM(Role)
 
-    explicit AccountsToMigrateListModel(QObject* parent = 0);
+    explicit AccountsToMigrateListModel(QObject* parent = nullptr);
     ~AccountsToMigrateListModel();
 
     /*

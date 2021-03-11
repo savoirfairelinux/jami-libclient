@@ -18,16 +18,9 @@
 
 #pragma once
 
-#include <QAbstractItemModel>
+#include "abstractitemmodelbase.h"
 
-#include "api/account.h"
-#include "api/contact.h"
-#include "api/conversation.h"
-#include "api/newdevicemodel.h"
-
-#include "lrcinstance.h"
-
-class VideoFormatFpsModel : public QAbstractListModel
+class VideoFormatFpsModel : public AbstractListModelBase
 {
     Q_OBJECT
     Q_PROPERTY(QString currentResolution READ getCurrentResolution WRITE setCurrentResolution NOTIFY
@@ -37,7 +30,7 @@ public:
     enum Role { FPS = Qt::UserRole + 1, FPS_ToDisplay_UTF8 };
     Q_ENUM(Role)
 
-    explicit VideoFormatFpsModel(QObject* parent = 0);
+    explicit VideoFormatFpsModel(QObject* parent = nullptr);
     ~VideoFormatFpsModel();
 
     /*

@@ -18,8 +18,15 @@
 
 #include "videoformatresolutionmodel.h"
 
+#include "lrcinstance.h"
+
+#include "api/account.h"
+#include "api/contact.h"
+#include "api/conversation.h"
+#include "api/newdevicemodel.h"
+
 VideoFormatResolutionModel::VideoFormatResolutionModel(QObject* parent)
-    : QAbstractListModel(parent)
+    : AbstractListModelBase(parent)
 {}
 
 VideoFormatResolutionModel::~VideoFormatResolutionModel() {}
@@ -27,17 +34,17 @@ VideoFormatResolutionModel::~VideoFormatResolutionModel() {}
 int
 VideoFormatResolutionModel::rowCount(const QModelIndex& parent) const
 {
-    if (!parent.isValid()) {
+    if (!parent.isValid() && lrcInstance_) {
         /*
          * Count.
          */
-        QString currentDeviceId = LRCInstance::avModel().getCurrentVideoCaptureDevice();
-        auto deviceCapabilities = LRCInstance::avModel().getDeviceCapabilities(currentDeviceId);
+        QString currentDeviceId = lrcInstance_->avModel().getCurrentVideoCaptureDevice();
+        auto deviceCapabilities = lrcInstance_->avModel().getDeviceCapabilities(currentDeviceId);
         if (deviceCapabilities.size() == 0) {
             return 0;
         }
         try {
-            auto currentSettings = LRCInstance::avModel().getDeviceSettings(currentDeviceId);
+            auto currentSettings = lrcInstance_->avModel().getDeviceSettings(currentDeviceId);
             auto currentChannel = currentSettings.channel;
             currentChannel = currentChannel.isEmpty() ? "default" : currentChannel;
             auto channelCaps = deviceCapabilities[currentChannel];
@@ -68,10 +75,10 @@ QVariant
 VideoFormatResolutionModel::data(const QModelIndex& index, int role) const
 {
     try {
-        QString currentDeviceId = LRCInstance::avModel().getCurrentVideoCaptureDevice();
-        auto deviceCapabilities = LRCInstance::avModel().getDeviceCapabilities(currentDeviceId);
+        QString currentDeviceId = lrcInstance_->avModel().getCurrentVideoCaptureDevice();
+        auto deviceCapabilities = lrcInstance_->avModel().getDeviceCapabilities(currentDeviceId);
 
-        auto currentSettings = LRCInstance::avModel().getDeviceSettings(currentDeviceId);
+        auto currentSettings = lrcInstance_->avModel().getDeviceSettings(currentDeviceId);
         auto currentChannel = currentSettings.channel;
         currentChannel = currentChannel.isEmpty() ? "default" : currentChannel;
         auto channelCaps = deviceCapabilities[currentChannel];
@@ -147,8 +154,8 @@ VideoFormatResolutionModel::getCurrentSettingIndex()
 {
     int resultRowIndex = 0;
     try {
-        QString currentDeviceId = LRCInstance::avModel().getCurrentVideoCaptureDevice();
-        auto currentSettings = LRCInstance::avModel().getDeviceSettings(currentDeviceId);
+        QString currentDeviceId = lrcInstance_->avModel().getCurrentVideoCaptureDevice();
+        auto currentSettings = lrcInstance_->avModel().getDeviceSettings(currentDeviceId);
         QString currentResolution = currentSettings.size;
         auto resultList = match(index(0, 0), Resolution, QVariant(currentResolution));
 

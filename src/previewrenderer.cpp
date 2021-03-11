@@ -29,12 +29,15 @@ PreviewRenderer::PreviewRenderer(QQuickItem* parent)
     setRenderTarget(QQuickPaintedItem::FramebufferObject);
     setPerformanceHint(QQuickPaintedItem::FastFBOResizing);
 
-    previewFrameUpdatedConnection_ = connect(LRCInstance::renderer(),
-                                             &RenderManager::previewFrameUpdated,
-                                             [this]() {
-                                                 if (isVisible())
-                                                     update(QRect(0, 0, width(), height()));
-                                             });
+    connect(this, &PreviewRenderer::lrcInstanceChanged, [this] {
+        if (lrcInstance_)
+            previewFrameUpdatedConnection_ = connect(lrcInstance_->renderer(),
+                                                     &RenderManager::previewFrameUpdated,
+                                                     [this]() {
+                                                         if (isVisible())
+                                                             update(QRect(0, 0, width(), height()));
+                                                     });
+    });
 }
 
 PreviewRenderer::~PreviewRenderer()
@@ -45,7 +48,7 @@ PreviewRenderer::~PreviewRenderer()
 void
 PreviewRenderer::paint(QPainter* painter)
 {
-    LRCInstance::renderer()
+    lrcInstance_->renderer()
         ->drawFrame(lrc::api::video::PREVIEW_RENDERER_ID, [this, painter](QImage* previewImage) {
             if (previewImage) {
                 auto aspectRatio = static_cast<qreal>(previewImage->width())
@@ -95,7 +98,7 @@ VideoCallPreviewRenderer::~VideoCallPreviewRenderer() {}
 void
 VideoCallPreviewRenderer::paint(QPainter* painter)
 {
-    LRCInstance::renderer()
+    lrcInstance_->renderer()
         ->drawFrame(lrc::api::video::PREVIEW_RENDERER_ID, [this, painter](QImage* previewImage) {
             if (previewImage) {
                 auto scalingFactor = static_cast<qreal>(previewImage->height())
@@ -112,8 +115,11 @@ VideoCallPreviewRenderer::paint(QPainter* painter)
 PhotoboothPreviewRender::PhotoboothPreviewRender(QQuickItem* parent)
     : PreviewRenderer(parent)
 {
-    connect(LRCInstance::renderer(), &RenderManager::previewRenderingStopped, [this]() {
-        emit hideBooth();
+    connect(this, &PreviewRenderer::lrcInstanceChanged, [this] {
+        if (lrcInstance_)
+            connect(lrcInstance_->renderer(), &RenderManager::previewRenderingStopped, [this]() {
+                emit hideBooth();
+            });
     });
 }
 
@@ -122,7 +128,7 @@ PhotoboothPreviewRender::~PhotoboothPreviewRender() {}
 QString
 PhotoboothPreviewRender::takePhoto(int size)
 {
-    if (auto previewImage = LRCInstance::renderer()->getPreviewFrame()) {
+    if (auto previewImage = lrcInstance_->renderer()->getPreviewFrame()) {
         return Utils::byteArrayToBase64String(Utils::QImageToByteArray(
             previewImage->copy()
                 .scaled(size, size, Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation)));
@@ -134,7 +140,7 @@ PhotoboothPreviewRender::paint(QPainter* painter)
 {
     painter->setRenderHint(QPainter::Antialiasing, true);
 
-    LRCInstance::renderer()
+    lrcInstance_->renderer()
         ->drawFrame(lrc::api::video::PREVIEW_RENDERER_ID, [this, painter](QImage* previewImage) {
             if (previewImage) {
                 QImage scaledPreview;

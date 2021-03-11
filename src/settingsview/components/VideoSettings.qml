@@ -166,7 +166,9 @@ ColumnLayout {
 
         labelText: JamiStrings.device
         fontPointSize: JamiTheme.settingsFontSize
-        comboModel: VideoInputDeviceModel {}
+        comboModel: VideoInputDeviceModel {
+            lrcInstance: LRCInstance
+        }
         widthOfComboBox: itemWidth
         tipText: JamiStrings.selectVideoDevice
         role: "DeviceName_UTF8"
@@ -185,7 +187,9 @@ ColumnLayout {
 
         labelText: JamiStrings.resolution
         fontPointSize: JamiTheme.settingsFontSize
-        comboModel: VideoFormatResolutionModel {}
+        comboModel: VideoFormatResolutionModel {
+            lrcInstance: LRCInstance
+        }
         widthOfComboBox: itemWidth
         tipText: JamiStrings.selectVideoResolution
         role: "Resolution_UTF8"
@@ -204,7 +208,9 @@ ColumnLayout {
 
         labelText: JamiStrings.fps
         fontPointSize: JamiTheme.settingsFontSize
-        comboModel: VideoFormatFpsModel {}
+        comboModel: VideoFormatFpsModel {
+            lrcInstance: LRCInstance
+        }
         widthOfComboBox: itemWidth
         tipText: JamiStrings.selectFPS
         role: "FPS_ToDisplay_UTF8"
@@ -247,7 +253,10 @@ ColumnLayout {
 
         PreviewRenderer {
             id: previewWidget
+
             anchors.fill: rectBox
+
+            lrcInstance: LRCInstance
 
             layer.enabled: true
             layer.effect: OpacityMask {

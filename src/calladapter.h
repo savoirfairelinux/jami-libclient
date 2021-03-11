@@ -37,7 +37,7 @@ public:
     enum MuteStates { UNMUTED, LOCAL_MUTED, MODERATOR_MUTED, BOTH_MUTED };
     Q_ENUM(MuteStates)
 
-    explicit CallAdapter(QObject* parent = nullptr);
+    explicit CallAdapter(QObject* parent = nullptr, LRCInstance* instance = nullptr);
     ~CallAdapter() = default;
 
 protected:
@@ -53,9 +53,7 @@ public:
     Q_INVOKABLE void connectCallModel(const QString& accountId);
     Q_INVOKABLE void sipInputPanelPlayDTMF(const QString& key);
 
-    /*
-     * For Call Overlay
-     */
+    // For Call Overlay
     Q_INVOKABLE void hangupCall(const QString& uri);
     Q_INVOKABLE void maximizeParticipant(const QString& uri);
     Q_INVOKABLE void minimizeParticipant(const QString& uri);
@@ -87,9 +85,7 @@ signals:
     void callSetupMainViewRequired(const QString& accountId, const QString& convUid);
     void previewVisibilityNeedToChange(bool visible);
 
-    /*
-     * For Call Overlay
-     */
+    // For Call Overlay
     void updateTimeText(const QString& time);
     void showOnHoldLabel(bool isPaused);
     void updateOverlay(bool isPaused,
@@ -112,9 +108,7 @@ private:
     void showNotification(const QString& accountId, const QString& convUid);
     QJsonObject fillParticipantData(QMap<QString, QString> participant);
 
-    /*
-     * Current conf/call info.
-     */
+    // Current conf/call info.
     QString accountId_;
     QString convUid_;
 
@@ -124,9 +118,7 @@ private:
     QMetaObject::Connection appStateChangedConnection_;
     QMetaObject::Connection remoteRecordingChangedConnection_;
 
-    /*
-     * For Call Overlay
-     */
+    // For Call Overlay
     void updateCallOverlay(const lrc::api::conversation::Info& convInfo);
     void setTime(const QString& accountId, const QString& convUid);
     QTimer* oneSecondTimer_;

@@ -35,6 +35,8 @@ Window {
 
     AccountsToMigrateListModel {
         id: accountsToMigrateListModel
+
+        lrcInstance: LRCInstance
     }
 
     property string accountID: ""

@@ -24,8 +24,12 @@
 #include "lrcinstance.h"
 #include "utils.h"
 
+#include "api/account.h"
+#include "api/contact.h"
+#include "api/conversation.h"
+
 AccountListModel::AccountListModel(QObject* parent)
-    : QAbstractListModel(parent)
+    : AbstractListModelBase(parent)
 {}
 
 AccountListModel::~AccountListModel() {}
@@ -33,11 +37,11 @@ AccountListModel::~AccountListModel() {}
 int
 AccountListModel::rowCount(const QModelIndex& parent) const
 {
-    if (!parent.isValid()) {
+    if (!parent.isValid() && lrcInstance_) {
         /*
          * Count.
          */
-        return LRCInstance::accountModel().getAccountList().size();
+        return lrcInstance_->accountModel().getAccountList().size();
     }
     /*
      * A valid QModelIndex returns 0 as no entry has sub-elements.
@@ -58,21 +62,21 @@ AccountListModel::columnCount(const QModelIndex& parent) const
 QVariant
 AccountListModel::data(const QModelIndex& index, int role) const
 {
-    auto accountList = LRCInstance::accountModel().getAccountList();
+    auto accountList = lrcInstance_->accountModel().getAccountList();
     if (!index.isValid() || accountList.size() <= index.row()) {
         return QVariant();
     }
 
     auto accountId = accountList.at(index.row());
-    auto& accountInfo = LRCInstance::accountModel().getAccountInfo(accountId);
+    auto& accountInfo = lrcInstance_->accountModel().getAccountInfo(accountId);
 
     // Since we are using image provider right now, image url representation should be unique to
     // be able to use the image cache, account avatar will only be updated once PictureUid changed
     switch (role) {
     case Role::Alias:
-        return QVariant(LRCInstance::accountModel().bestNameForAccount(accountId));
+        return QVariant(lrcInstance_->accountModel().bestNameForAccount(accountId));
     case Role::Username:
-        return QVariant(LRCInstance::accountModel().bestIdForAccount(accountId));
+        return QVariant(lrcInstance_->accountModel().bestIdForAccount(accountId));
     case Role::Type:
         return QVariant(static_cast<int>(accountInfo.profileInfo.type));
     case Role::Status:
@@ -133,7 +137,7 @@ void
 AccountListModel::reset()
 {
     beginResetModel();
-    fillAvatarUidMap(LRCInstance::accountModel().getAccountList());
+    fillAvatarUidMap(lrcInstance_->accountModel().getAccountList());
     endResetModel();
 }
 

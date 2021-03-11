@@ -20,17 +20,12 @@
 
 #pragma once
 
-#include "api/account.h"
-#include "api/contact.h"
-#include "api/conversation.h"
-#include "api/conversationmodel.h"
-#include "api/contactmodel.h"
-
-#include <QAbstractItemModel>
+#include "abstractitemmodelbase.h"
 
 using namespace lrc::api;
+class LRCInstance;
 
-class SmartListModel : public QAbstractListModel
+class SmartListModel : public AbstractListModelBase
 {
     Q_OBJECT
 public:
@@ -63,8 +58,9 @@ public:
     };
     Q_ENUM(Role)
 
-    explicit SmartListModel(QObject* parent = 0,
-                            SmartListModel::Type listModelType = Type::CONVERSATION);
+    explicit SmartListModel(QObject* parent = nullptr,
+                            SmartListModel::Type listModelType = Type::CONVERSATION,
+                            LRCInstance* instance = nullptr);
     ~SmartListModel();
 
     /*

@@ -19,9 +19,9 @@
 
 #pragma once
 
-#include <QAbstractListModel>
+#include "abstractitemmodelbase.h"
 
-class BannedListModel : public QAbstractListModel
+class BannedListModel : public AbstractListModelBase
 {
     Q_OBJECT
 public:

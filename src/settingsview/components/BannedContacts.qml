@@ -118,7 +118,9 @@ ColumnLayout {
 
         visible: false
 
-        model: BannedListModel {}
+        model: BannedListModel {
+            lrcInstance: LRCInstance
+        }
 
         delegate: ContactItemDelegate {
             id: bannedListDelegate

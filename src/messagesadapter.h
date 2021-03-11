@@ -31,7 +31,7 @@ class MessagesAdapter final : public QmlAdapterBase
     Q_PROPERTY(QVariantMap chatviewTranslatedStrings MEMBER chatviewTranslatedStrings_ CONSTANT)
 
 public:
-    explicit MessagesAdapter(QObject* parent = 0);
+    explicit MessagesAdapter(QObject* parent = nullptr, LRCInstance* instance = nullptr);
     ~MessagesAdapter() = default;
 
 protected:
@@ -46,9 +46,7 @@ protected:
                                         bool banContact = false);
     Q_INVOKABLE void clearConversationHistory(const QString& accountId, const QString& uid);
 
-    /*
-     * JS Q_INVOKABLE.
-     */
+    // JS Q_INVOKABLE.
     Q_INVOKABLE void acceptInvitation(const QString& convUid = "");
     Q_INVOKABLE void refuseInvitation(const QString& convUid = "");
     Q_INVOKABLE void blockConversation(const QString& convUid = "");
@@ -66,14 +64,10 @@ protected:
     Q_INVOKABLE void pasteKeyDetected();
     Q_INVOKABLE void onComposing(bool isComposing);
 
-    /*
-     * Manually update draft when hiding message web view (Back to welcome page).
-     */
+    // Manually update draft when hiding message web view (Back to welcome page).
     Q_INVOKABLE void updateDraft();
 
-    /*
-     * Run corrsponding js functions, c++ to qml.
-     */
+    // Run corrsponding js functions, c++ to qml.
     void setMessagesVisibility(bool visible);
     void requestSendMessageContent();
     void setInvitation(bool show, const QString& contactUri = "", const QString& contactId = "");
@@ -116,9 +110,7 @@ private:
 
     const QVariantMap chatviewTranslatedStrings_ {lrc::api::chatview::getTranslatedStrings()};
 
-    /*
-     * Interaction connections.
-     */
+    // Interaction connections.
     QMetaObject::Connection newInteractionConnection_;
     QMetaObject::Connection interactionStatusUpdatedConnection_;
     QMetaObject::Connection interactionRemovedConnection_;

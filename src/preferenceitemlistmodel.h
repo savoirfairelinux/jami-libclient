@@ -18,13 +18,11 @@
 
 #pragma once
 
-#include <QAbstractItemModel>
+#include "abstractitemmodelbase.h"
 
-#include "api/pluginmodel.h"
+class LRCInstance;
 
-#include "lrcinstance.h"
-
-class PreferenceItemListModel : public QAbstractListModel
+class PreferenceItemListModel : public AbstractListModelBase
 {
     Q_OBJECT
 
@@ -54,7 +52,7 @@ public:
 
     Q_ENUM(Role)
 
-    explicit PreferenceItemListModel(QObject* parent = 0);
+    explicit PreferenceItemListModel(QObject* parent = nullptr, LRCInstance* instance = nullptr);
     ~PreferenceItemListModel();
 
     /*

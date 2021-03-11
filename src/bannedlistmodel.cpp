@@ -18,10 +18,11 @@
  */
 
 #include "bannedlistmodel.h"
+
 #include "lrcinstance.h"
 
 BannedListModel::BannedListModel(QObject* parent)
-    : QAbstractListModel(parent)
+    : AbstractListModelBase(parent)
 {}
 
 BannedListModel::~BannedListModel() {}
@@ -29,8 +30,8 @@ BannedListModel::~BannedListModel() {}
 int
 BannedListModel::rowCount(const QModelIndex& parent) const
 {
-    if (!parent.isValid()) {
-        return LRCInstance::getCurrentAccountInfo().contactModel->getBannedContacts().size();
+    if (!parent.isValid() && lrcInstance_) {
+        return lrcInstance_->getCurrentAccountInfo().contactModel->getBannedContacts().size();
     }
     return 0;
 }
@@ -48,12 +49,12 @@ BannedListModel::columnCount(const QModelIndex& parent) const
 QVariant
 BannedListModel::data(const QModelIndex& index, int role) const
 {
-    auto contactList = LRCInstance::getCurrentAccountInfo().contactModel->getBannedContacts();
+    auto contactList = lrcInstance_->getCurrentAccountInfo().contactModel->getBannedContacts();
     if (!index.isValid() || contactList.size() <= index.row()) {
         return QVariant();
     }
 
-    auto contactInfo = LRCInstance::getCurrentAccountInfo().contactModel->getContact(
+    auto contactInfo = lrcInstance_->getCurrentAccountInfo().contactModel->getContact(
         contactList.at(index.row()));
 
     switch (role) {

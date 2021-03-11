@@ -18,25 +18,31 @@
 
 #include "preferenceitemlistmodel.h"
 
+#include "lrcinstance.h"
 #include "utils.h"
+
+#include "api/pluginmodel.h"
 
 #include <map>
 
+// TODO: Use QMap
 std::map<QString, int> mapType {{QString("List"), PreferenceItemListModel::Type::LIST},
                                 {QString("Path"), PreferenceItemListModel::Type::PATH},
                                 {QString("EditText"), PreferenceItemListModel::Type::EDITTEXT},
                                 {QString("Switch"), PreferenceItemListModel::Type::SWITCH}};
 
-PreferenceItemListModel::PreferenceItemListModel(QObject* parent)
-    : QAbstractListModel(parent)
-{}
+PreferenceItemListModel::PreferenceItemListModel(QObject* parent, LRCInstance* instance)
+    : AbstractListModelBase(parent)
+{
+    lrcInstance_ = instance;
+}
 
 PreferenceItemListModel::~PreferenceItemListModel() {}
 
 int
 PreferenceItemListModel::rowCount(const QModelIndex& parent) const
 {
-    if (!parent.isValid()) {
+    if (!parent.isValid() && lrcInstance_) {
         /// Count.
         return preferenceList_.size();
     }
@@ -66,7 +72,7 @@ PreferenceItemListModel::data(const QModelIndex& index, int role) const
     bool checkImage = false;
 
     auto details = preferenceList_.at(index.row());
-    preferenceCurrent = LRCInstance::pluginModel().getPluginPreferencesValues(
+    preferenceCurrent = lrcInstance_->pluginModel().getPluginPreferencesValues(
         pluginId_)[details["key"]];
     auto it = mapType.find(details["type"]);
     if (it != mapType.end()) {
@@ -192,10 +198,10 @@ PreferenceItemListModel::preferencesCount()
     if (!preferenceList_.isEmpty())
         return preferenceList_.size();
     if (mediaHandlerName_.isEmpty()) {
-        preferenceList_ = LRCInstance::pluginModel().getPluginPreferences(pluginId_);
+        preferenceList_ = lrcInstance_->pluginModel().getPluginPreferences(pluginId_);
         return preferenceList_.size();
     } else {
-        auto preferences = LRCInstance::pluginModel().getPluginPreferences(pluginId_);
+        auto preferences = lrcInstance_->pluginModel().getPluginPreferences(pluginId_);
         for (auto& preference : preferences) {
             QStringList scopeList = preference["scope"].split(",");
             if (scopeList.contains(mediaHandlerName_))

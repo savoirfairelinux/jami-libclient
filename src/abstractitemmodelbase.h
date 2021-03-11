@@ -1,6 +1,5 @@
 /*
- * Copyright (C) 2020 by Savoir-faire Linux
- * Author: Andreas Traczyk <andreas.traczyk@savoirfairelinux.com>
+ * Copyright (C) 2019-2020 by Savoir-faire Linux
  * Author: Mingrui Zhang   <mingrui.zhang@savoirfairelinux.com>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -19,46 +18,24 @@
 
 #pragma once
 
-#include <QtQuick>
+#include <QAbstractItemModel>
 
-class LRCInstance;
+#include "lrcinstance.h"
 
-/*
- * Use QQuickPaintedItem so that QPainter apis can be used.
- * Note: Old video pipeline.
- */
-class DistantRenderer : public QQuickPaintedItem
+class AbstractListModelBase : public QAbstractListModel
 {
     Q_OBJECT
     Q_PROPERTY(LRCInstance* lrcInstance MEMBER lrcInstance_ NOTIFY lrcInstanceChanged)
 
 public:
-    explicit DistantRenderer(QQuickItem* parent = nullptr);
-    ~DistantRenderer();
-
-    Q_INVOKABLE void setRendererId(const QString& id);
-    Q_INVOKABLE int getXOffset() const;
-    Q_INVOKABLE int getYOffset() const;
-    Q_INVOKABLE double getScaledWidth() const;
-    Q_INVOKABLE double getScaledHeight() const;
+    explicit AbstractListModelBase(QObject* parent = nullptr)
+        : QAbstractListModel(parent) {};
+    ~AbstractListModelBase() = default;
 
 signals:
-    void offsetChanged();
     void lrcInstanceChanged();
 
 protected:
     // LRCInstance pointer (set in qml)
     LRCInstance* lrcInstance_ {nullptr};
-
-private:
-    void paint(QPainter* painter);
-
-    /*
-     * Unique DistantRenderId for each call.
-     */
-    QString distantRenderId_;
-    int xOffset_ {0};
-    int yOffset_ {0};
-    double scaledWidth_ {0};
-    double scaledHeight_ {0};
 };

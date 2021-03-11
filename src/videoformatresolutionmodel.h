@@ -18,23 +18,16 @@
 
 #pragma once
 
-#include <QAbstractItemModel>
+#include "abstractitemmodelbase.h"
 
-#include "api/account.h"
-#include "api/contact.h"
-#include "api/conversation.h"
-#include "api/newdevicemodel.h"
-
-#include "lrcinstance.h"
-
-class VideoFormatResolutionModel : public QAbstractListModel
+class VideoFormatResolutionModel : public AbstractListModelBase
 {
     Q_OBJECT
 public:
     enum Role { Resolution = Qt::UserRole + 1, Resolution_UTF8 };
     Q_ENUM(Role)
 
-    explicit VideoFormatResolutionModel(QObject* parent = 0);
+    explicit VideoFormatResolutionModel(QObject* parent = nullptr);
     ~VideoFormatResolutionModel();
 
     /*

@@ -81,10 +81,9 @@ Utils::CreateStartupLink(const std::wstring& wstrAppName)
     desktopPath += "/jami-qt/jami-qt.desktop";
 #else
     desktopPath = "share/jami-qt/jami-qt.desktop";
-    QStringList paths = {
-        "/usr/" + desktopPath,
-        "/usr/local/" + desktopPath,
-        QDir::currentPath() + "/../../install/client-qt/" + desktopPath };
+    QStringList paths = {"/usr/" + desktopPath,
+                         "/usr/local/" + desktopPath,
+                         QDir::currentPath() + "/../../install/client-qt/" + desktopPath};
     for (QString filename : paths) {
         if (QFile::exists(filename)) {
             desktopPath = filename;
@@ -115,7 +114,7 @@ Utils::CreateStartupLink(const std::wstring& wstrAppName)
         }
     } else {
         QString autoStartDir = QStandardPaths::writableLocation(QStandardPaths::ConfigLocation)
-                + "/autostart";
+                               + "/autostart";
 
         if (!QDir(autoStartDir).exists()) {
             if (QDir().mkdir(autoStartDir)) {
@@ -130,9 +129,8 @@ Utils::CreateStartupLink(const std::wstring& wstrAppName)
 
     QFile srcFile(desktopPath);
     bool result = srcFile.link(desktopFile);
-    qDebug() << desktopFile << (result
-                                ? "-> " + desktopPath + " successfully created"
-                                : "could not be created");
+    qDebug() << desktopFile
+             << (result ? "-> " + desktopPath + " successfully created" : "could not be created");
     return result;
 #endif
 }
@@ -208,8 +206,8 @@ Utils::CheckStartupLink(const std::wstring& wstrAppName)
     linkPath += std::wstring(TEXT("\\") + wstrAppName + TEXT(".lnk"));
     return PathFileExists(linkPath.c_str());
 #else
-    return (!QStandardPaths::locate(QStandardPaths::ConfigLocation,
-                                    "autostart/jami-qt.desktop").isEmpty());
+    return (!QStandardPaths::locate(QStandardPaths::ConfigLocation, "autostart/jami-qt.desktop")
+                 .isEmpty());
 #endif
 }
 
@@ -324,7 +322,7 @@ Utils::GetISODate()
 }
 
 QImage
-Utils::contactPhoto(const QString& contactUri, const QSize& size)
+Utils::contactPhoto(LRCInstance* instance, const QString& contactUri, const QSize& size)
 {
     QImage photo;
 
@@ -332,7 +330,7 @@ Utils::contactPhoto(const QString& contactUri, const QSize& size)
         /*
          * Get first contact photo.
          */
-        auto& accountInfo = LRCInstance::accountModel().getAccountInfo(LRCInstance::getCurrAccId());
+        auto& accountInfo = instance->accountModel().getAccountInfo(instance->getCurrAccId());
         auto contactInfo = accountInfo.contactModel->getContact(contactUri);
         auto contactPhoto = contactInfo.profileInfo.avatar;
         auto bestName = accountInfo.contactModel->bestNameForContact(contactUri);
@@ -805,15 +803,17 @@ Utils::scaleAndFrame(const QImage photo, const QSize& size)
 }
 
 QImage
-Utils::accountPhoto(const lrc::api::account::Info& accountInfo, const QSize& size)
+Utils::accountPhoto(LRCInstance* instance,
+                    const lrc::api::account::Info& accountInfo,
+                    const QSize& size)
 {
     QImage photo;
     if (!accountInfo.profileInfo.avatar.isEmpty()) {
         QByteArray ba = Utils::base64StringToByteArray(accountInfo.profileInfo.avatar);
         photo = contactPhotoFromBase64(ba, nullptr);
     } else {
-        auto bestId = LRCInstance::accountModel().bestIdForAccount(accountInfo.id);
-        auto bestName = LRCInstance::accountModel().bestNameForAccount(accountInfo.id);
+        auto bestId = instance->accountModel().bestIdForAccount(accountInfo.id);
+        auto bestName = instance->accountModel().bestNameForAccount(accountInfo.id);
         QString letterStr = (bestId == bestName || bestName == accountInfo.profileInfo.uri)
                                 ? QString()
                                 : bestName;

@@ -18,23 +18,16 @@
 
 #pragma once
 
-#include <QAbstractItemModel>
+#include "abstractitemmodelbase.h"
 
-#include "api/account.h"
-#include "api/contact.h"
-#include "api/conversation.h"
-#include "api/newdevicemodel.h"
-
-#include "lrcinstance.h"
-
-class AudioManagerListModel : public QAbstractListModel
+class AudioManagerListModel : public AbstractListModelBase
 {
     Q_OBJECT
 public:
     enum Role { AudioManagerID = Qt::UserRole + 1, ID_UTF8 };
     Q_ENUM(Role)
 
-    explicit AudioManagerListModel(QObject* parent = 0);
+    explicit AudioManagerListModel(QObject* parent = nullptr);
     ~AudioManagerListModel();
 
     /*

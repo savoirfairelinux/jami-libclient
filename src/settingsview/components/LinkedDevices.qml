@@ -133,7 +133,9 @@ ColumnLayout {
         Layout.fillWidth: true
         Layout.preferredHeight: 160
 
-        model: DeviceItemListModel {}
+        model: DeviceItemListModel {
+            lrcInstance: LRCInstance
+        }
 
         delegate: DeviceItemDelegate {
             id: settingsListDelegate

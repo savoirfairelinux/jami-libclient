@@ -31,8 +31,8 @@
 #include <QClipboard>
 #include <QFileInfo>
 
-UtilsAdapter::UtilsAdapter(QObject* parent)
-    : QObject(parent)
+UtilsAdapter::UtilsAdapter(QObject* parent, LRCInstance* instance)
+    : QmlAdapterBase(parent, instance)
     , clipboard_(QApplication::clipboard())
 {}
 
@@ -103,9 +103,9 @@ UtilsAdapter::checkStartupLink()
 const QString
 UtilsAdapter::getBestName(const QString& accountId, const QString& uid)
 {
-    const auto& conv = LRCInstance::getConversationFromConvUid(uid);
+    const auto& conv = lrcInstance_->getConversationFromConvUid(uid);
     if (!conv.participants.isEmpty())
-        return LRCInstance::getAccountInfo(accountId).contactModel->bestNameForContact(
+        return lrcInstance_->getAccountInfo(accountId).contactModel->bestNameForContact(
             conv.participants[0]);
     return QString();
 }
@@ -113,7 +113,7 @@ UtilsAdapter::getBestName(const QString& accountId, const QString& uid)
 const QString
 UtilsAdapter::getPeerUri(const QString& accountId, const QString& uid)
 {
-    auto* convModel = LRCInstance::getAccountInfo(accountId).conversationModel.get();
+    auto* convModel = lrcInstance_->getAccountInfo(accountId).conversationModel.get();
     const auto& convInfo = convModel->getConversationForUid(uid).value();
     return convInfo.get().participants.front();
 }
@@ -123,15 +123,15 @@ UtilsAdapter::getBestId(const QString& accountId)
 {
     if (accountId.isEmpty())
         return {};
-    return LRCInstance::accountModel().bestIdForAccount(accountId);
+    return lrcInstance_->accountModel().bestIdForAccount(accountId);
 }
 
 const QString
 UtilsAdapter::getBestId(const QString& accountId, const QString& uid)
 {
-    const auto& conv = LRCInstance::getConversationFromConvUid(uid);
+    const auto& conv = lrcInstance_->getConversationFromConvUid(uid);
     if (!conv.participants.isEmpty())
-        return LRCInstance::getAccountInfo(accountId).contactModel->bestIdForContact(
+        return lrcInstance_->getAccountInfo(accountId).contactModel->bestIdForContact(
             conv.participants[0]);
     return QString();
 }
@@ -140,8 +140,8 @@ int
 UtilsAdapter::getTotalUnreadMessages()
 {
     int totalUnreadMessages {0};
-    if (LRCInstance::getCurrentAccountInfo().profileInfo.type != lrc::api::profile::Type::SIP) {
-        auto* convModel = LRCInstance::getCurrentConversationModel();
+    if (lrcInstance_->getCurrentAccountInfo().profileInfo.type != lrc::api::profile::Type::SIP) {
+        auto* convModel = lrcInstance_->getCurrentConversationModel();
         auto ringConversations = convModel->getFilteredConversations(lrc::api::profile::Type::RING,
                                                                      false);
         ringConversations.for_each(
@@ -155,32 +155,32 @@ UtilsAdapter::getTotalUnreadMessages()
 int
 UtilsAdapter::getTotalPendingRequest()
 {
-    auto& accountInfo = LRCInstance::getCurrentAccountInfo();
+    auto& accountInfo = lrcInstance_->getCurrentAccountInfo();
     return accountInfo.contactModel->pendingRequestCount();
 }
 
 void
 UtilsAdapter::setConversationFilter(const QString& filter)
 {
-    LRCInstance::getCurrentConversationModel()->setFilter(filter);
+    lrcInstance_->getCurrentConversationModel()->setFilter(filter);
 }
 
 const QString
 UtilsAdapter::getCurrConvId()
 {
-    return LRCInstance::getCurrentConvUid();
+    return lrcInstance_->getCurrentConvUid();
 }
 
 void
 UtilsAdapter::makePermanentCurrentConv()
 {
-    LRCInstance::getCurrentConversationModel()->makePermanent(LRCInstance::getCurrentConvUid());
+    lrcInstance_->getCurrentConversationModel()->makePermanent(lrcInstance_->getCurrentConvUid());
 }
 
 const QStringList
 UtilsAdapter::getCurrAccList()
 {
-    return LRCInstance::accountModel().getAccountList();
+    return lrcInstance_->accountModel().getAccountList();
 }
 
 int
@@ -192,17 +192,17 @@ UtilsAdapter::getAccountListSize()
 void
 UtilsAdapter::setCurrentCall(const QString& accountId, const QString& convUid)
 {
-    auto& accInfo = LRCInstance::getAccountInfo(accountId);
-    auto const& convInfo = LRCInstance::getConversationFromConvUid(convUid, accountId);
+    auto& accInfo = lrcInstance_->getAccountInfo(accountId);
+    auto const& convInfo = lrcInstance_->getConversationFromConvUid(convUid, accountId);
     accInfo.callModel->setCurrentCall(convInfo.callId);
 }
 
 bool
 UtilsAdapter::hasCall(const QString& accountId)
 {
-    auto activeCalls = LRCInstance::getActiveCalls();
+    auto activeCalls = lrcInstance_->getActiveCalls();
     for (const auto& callId : activeCalls) {
-        auto& accountInfo = LRCInstance::accountModel().getAccountInfo(accountId);
+        auto& accountInfo = lrcInstance_->accountModel().getAccountInfo(accountId);
         if (accountInfo.callModel->hasCall(callId)) {
             return true;
         }
@@ -214,10 +214,10 @@ const QString
 UtilsAdapter::getCallConvForAccount(const QString& accountId)
 {
     // TODO: Currently returning first call, establish priority according to state?
-    for (const auto& callId : LRCInstance::getActiveCalls()) {
-        auto& accountInfo = LRCInstance::accountModel().getAccountInfo(accountId);
+    for (const auto& callId : lrcInstance_->getActiveCalls()) {
+        auto& accountInfo = lrcInstance_->accountModel().getAccountInfo(accountId);
         if (accountInfo.callModel->hasCall(callId)) {
-            return LRCInstance::getConversationFromCallId(callId, accountId).uid;
+            return lrcInstance_->getConversationFromCallId(callId, accountId).uid;
         }
     }
     return "";
@@ -226,12 +226,12 @@ UtilsAdapter::getCallConvForAccount(const QString& accountId)
 const QString
 UtilsAdapter::getCallId(const QString& accountId, const QString& convUid)
 {
-    auto const& convInfo = LRCInstance::getConversationFromConvUid(convUid, accountId);
+    auto const& convInfo = lrcInstance_->getConversationFromConvUid(convUid, accountId);
     if (convInfo.uid.isEmpty()) {
         return {};
     }
 
-    if (auto* call = LRCInstance::getCallInfoForConversation(convInfo, false)) {
+    if (auto* call = lrcInstance_->getCallInfoForConversation(convInfo, false)) {
         return call->id;
     }
 
@@ -241,7 +241,7 @@ UtilsAdapter::getCallId(const QString& accountId, const QString& convUid)
 int
 UtilsAdapter::getCallStatus(const QString& callId)
 {
-    const auto callStatus = LRCInstance::getCallInfo(callId, LRCInstance::getCurrAccId());
+    const auto callStatus = lrcInstance_->getCallInfo(callId, lrcInstance_->getCurrAccId());
     return static_cast<int>(callStatus->status);
 }
 
@@ -327,11 +327,11 @@ bool
 UtilsAdapter::checkShowPluginsButton(bool isCall)
 {
     if (isCall)
-        return LRCInstance::pluginModel().getPluginsEnabled()
-               && (LRCInstance::pluginModel().getCallMediaHandlers().size() > 0);
+        return lrcInstance_->pluginModel().getPluginsEnabled()
+               && (lrcInstance_->pluginModel().getCallMediaHandlers().size() > 0);
     else
-        return LRCInstance::pluginModel().getPluginsEnabled()
-               && (LRCInstance::pluginModel().getChatHandlers().size() > 0);
+        return lrcInstance_->pluginModel().getPluginsEnabled()
+               && (lrcInstance_->pluginModel().getChatHandlers().size() > 0);
 }
 
 QString

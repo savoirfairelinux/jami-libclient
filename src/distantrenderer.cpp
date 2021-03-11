@@ -29,9 +29,14 @@ DistantRenderer::DistantRenderer(QQuickItem* parent)
     setRenderTarget(QQuickPaintedItem::FramebufferObject);
     setPerformanceHint(QQuickPaintedItem::FastFBOResizing);
 
-    connect(LRCInstance::renderer(), &RenderManager::distantFrameUpdated, [this](const QString& id) {
-        if (distantRenderId_ == id)
-            update(QRect(0, 0, width(), height()));
+    connect(this, &DistantRenderer::lrcInstanceChanged, [this] {
+        if (lrcInstance_)
+            connect(lrcInstance_->renderer(),
+                    &RenderManager::distantFrameUpdated,
+                    [this](const QString& id) {
+                        if (distantRenderId_ == id)
+                            update(QRect(0, 0, width(), height()));
+                    });
     });
 }
 
@@ -70,7 +75,7 @@ DistantRenderer::getScaledHeight() const
 void
 DistantRenderer::paint(QPainter* painter)
 {
-    LRCInstance::renderer()->drawFrame(distantRenderId_, [this, painter](QImage* distantImage) {
+    lrcInstance_->renderer()->drawFrame(distantRenderId_, [this, painter](QImage* distantImage) {
         if (distantImage) {
             auto scaledDistant = distantImage->scaled(size().toSize(), Qt::KeepAspectRatio);
             auto tempScaledWidth = static_cast<int>(scaledWidth_ * 1000);

@@ -18,8 +18,15 @@
 
 #include "accountstomigratelistmodel.h"
 
+#include "lrcinstance.h"
+
+#include "api/account.h"
+#include "api/contact.h"
+#include "api/conversation.h"
+#include "api/newdevicemodel.h"
+
 AccountsToMigrateListModel::AccountsToMigrateListModel(QObject* parent)
-    : QAbstractListModel(parent)
+    : AbstractListModelBase(parent)
 {}
 
 AccountsToMigrateListModel::~AccountsToMigrateListModel() {}
@@ -27,16 +34,16 @@ AccountsToMigrateListModel::~AccountsToMigrateListModel() {}
 int
 AccountsToMigrateListModel::rowCount(const QModelIndex& parent) const
 {
-    if (!parent.isValid()) {
+    if (!parent.isValid() && lrcInstance_) {
         /*
          * Count.
          */
-        auto accountList = LRCInstance::accountModel().getAccountList();
+        auto accountList = lrcInstance_->accountModel().getAccountList();
 
         int countAccountToMigrate = 0;
 
         for (const QString& i : accountList) {
-            auto accountStatus = LRCInstance::accountModel().getAccountInfo(i).status;
+            auto accountStatus = lrcInstance_->accountModel().getAccountInfo(i).status;
             if (accountStatus == lrc::api::account::Status::ERROR_NEED_MIGRATION) {
                 countAccountToMigrate++;
             }
@@ -63,7 +70,7 @@ AccountsToMigrateListModel::columnCount(const QModelIndex& parent) const
 QVariant
 AccountsToMigrateListModel::data(const QModelIndex& index, int role) const
 {
-    auto accountList = LRCInstance::accountModel().getAccountList();
+    auto accountList = lrcInstance_->accountModel().getAccountList();
     if (!index.isValid() || accountList.size() <= index.row()) {
         return QVariant();
     }
@@ -71,7 +78,7 @@ AccountsToMigrateListModel::data(const QModelIndex& index, int role) const
     QList<QString> accountToMigrateList;
 
     for (QString i : accountList) {
-        auto accountStatus = LRCInstance::accountModel().getAccountInfo(i).status;
+        auto accountStatus = lrcInstance_->accountModel().getAccountInfo(i).status;
         if (accountStatus == lrc::api::account::Status::ERROR_NEED_MIGRATION) {
             accountToMigrateList.append(i);
         }
@@ -79,7 +86,7 @@ AccountsToMigrateListModel::data(const QModelIndex& index, int role) const
 
     QString accountId = accountToMigrateList.at(index.row());
 
-    auto& avatarInfo = LRCInstance::accountModel().getAccountInfo(accountId);
+    auto& avatarInfo = lrcInstance_->accountModel().getAccountInfo(accountId);
 
     switch (role) {
     case Role::Account_ID:
@@ -91,7 +98,7 @@ AccountsToMigrateListModel::data(const QModelIndex& index, int role) const
     case Role::Username:
         return QVariant(avatarInfo.confProperties.username);
     case Role::Alias:
-        return QVariant(LRCInstance::accountModel().getAccountInfo(accountId).profileInfo.alias);
+        return QVariant(lrcInstance_->accountModel().getAccountInfo(accountId).profileInfo.alias);
     }
     return QVariant();
 }

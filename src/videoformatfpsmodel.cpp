@@ -18,16 +18,26 @@
 
 #include "videoformatfpsmodel.h"
 
+#include "lrcinstance.h"
+
+#include "api/account.h"
+#include "api/contact.h"
+#include "api/conversation.h"
+#include "api/newdevicemodel.h"
+
 VideoFormatFpsModel::VideoFormatFpsModel(QObject* parent)
-    : QAbstractListModel(parent)
+    : AbstractListModelBase(parent)
 {
-    try {
-        QString currentDeviceId = LRCInstance::avModel().getCurrentVideoCaptureDevice();
-        auto currentSettings = LRCInstance::avModel().getDeviceSettings(currentDeviceId);
-        currentResolution_ = currentSettings.size;
-    } catch (const std::exception& e) {
-        qWarning() << "Constructor of VideoFormatFpsModel, exception: " << e.what();
-    }
+    connect(this, &AbstractListModelBase::lrcInstanceChanged, [this] {
+        if (lrcInstance_)
+            try {
+                QString currentDeviceId = lrcInstance_->avModel().getCurrentVideoCaptureDevice();
+                auto currentSettings = lrcInstance_->avModel().getDeviceSettings(currentDeviceId);
+                currentResolution_ = currentSettings.size;
+            } catch (const std::exception& e) {
+                qWarning() << "Constructor of VideoFormatFpsModel, exception: " << e.what();
+            }
+    });
 }
 
 VideoFormatFpsModel::~VideoFormatFpsModel() {}
@@ -35,17 +45,17 @@ VideoFormatFpsModel::~VideoFormatFpsModel() {}
 int
 VideoFormatFpsModel::rowCount(const QModelIndex& parent) const
 {
-    if (!parent.isValid()) {
+    if (!parent.isValid() && lrcInstance_) {
         /*
          * Count.
          */
-        QString currentDeviceId = LRCInstance::avModel().getCurrentVideoCaptureDevice();
-        auto deviceCapabilities = LRCInstance::avModel().getDeviceCapabilities(currentDeviceId);
+        QString currentDeviceId = lrcInstance_->avModel().getCurrentVideoCaptureDevice();
+        auto deviceCapabilities = lrcInstance_->avModel().getDeviceCapabilities(currentDeviceId);
         if (deviceCapabilities.size() == 0) {
             return 0;
         }
         try {
-            auto currentSettings = LRCInstance::avModel().getDeviceSettings(currentDeviceId);
+            auto currentSettings = lrcInstance_->avModel().getDeviceSettings(currentDeviceId);
             auto currentChannel = currentSettings.channel;
             currentChannel = currentChannel.isEmpty() ? "default" : currentChannel;
             auto channelCaps = deviceCapabilities[currentChannel];
@@ -90,10 +100,10 @@ QVariant
 VideoFormatFpsModel::data(const QModelIndex& index, int role) const
 {
     try {
-        QString currentDeviceId = LRCInstance::avModel().getCurrentVideoCaptureDevice();
-        auto deviceCapabilities = LRCInstance::avModel().getDeviceCapabilities(currentDeviceId);
+        QString currentDeviceId = lrcInstance_->avModel().getCurrentVideoCaptureDevice();
+        auto deviceCapabilities = lrcInstance_->avModel().getDeviceCapabilities(currentDeviceId);
 
-        auto currentSettings = LRCInstance::avModel().getDeviceSettings(currentDeviceId);
+        auto currentSettings = lrcInstance_->avModel().getDeviceSettings(currentDeviceId);
         auto currentChannel = currentSettings.channel;
         currentChannel = currentChannel.isEmpty() ? "default" : currentChannel;
         auto channelCaps = deviceCapabilities[currentChannel];
@@ -183,8 +193,8 @@ VideoFormatFpsModel::getCurrentSettingIndex()
 {
     int resultRowIndex = 0;
     try {
-        QString currentDeviceId = LRCInstance::avModel().getCurrentVideoCaptureDevice();
-        auto currentSettings = LRCInstance::avModel().getDeviceSettings(currentDeviceId);
+        QString currentDeviceId = lrcInstance_->avModel().getCurrentVideoCaptureDevice();
+        auto currentSettings = lrcInstance_->avModel().getDeviceSettings(currentDeviceId);
         float currentFps = currentSettings.rate;
         auto resultList = match(index(0, 0), FPS, QVariant(currentFps));
 

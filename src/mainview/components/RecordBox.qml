@@ -222,8 +222,12 @@ Rectangle {
 
         PreviewRenderer{
             id: previewWidget
+
             anchors.fill: rectBox
             anchors.centerIn: rectBox
+
+            lrcInstance: LRCInstance
+
             layer.enabled: true
             layer.effect: OpacityMask {
                 maskSource: rectBox

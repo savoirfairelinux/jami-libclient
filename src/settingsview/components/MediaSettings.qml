@@ -117,6 +117,7 @@ ColumnLayout {
 
         model: MediaCodecListModel {
             mediaType: root.mediaType
+            lrcInstance: LRCInstance
         }
 
         delegate: MediaCodecDelegate {

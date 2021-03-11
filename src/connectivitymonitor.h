@@ -25,7 +25,7 @@ class ConnectivityMonitor final : public QObject
 {
     Q_OBJECT
 public:
-    explicit ConnectivityMonitor(QObject* parent = 0);
+    explicit ConnectivityMonitor(QObject* parent = nullptr);
     ~ConnectivityMonitor();
 
     bool isOnline();
@@ -50,7 +50,7 @@ class ConnectivityMonitor final : public QObject
 {
     Q_OBJECT
 public:
-    explicit ConnectivityMonitor(QObject* parent = 0);
+    explicit ConnectivityMonitor(QObject* parent = nullptr);
     ~ConnectivityMonitor();
 
     bool isOnline();

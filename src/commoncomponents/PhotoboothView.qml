@@ -189,6 +189,8 @@ ColumnLayout {
         Layout.preferredWidth: boothWidth
         Layout.preferredHeight: boothWidth
 
+        lrcInstance: LRCInstance
+
         layer.enabled: true
         layer.effect: OpacityMask {
             maskSource: Rectangle {

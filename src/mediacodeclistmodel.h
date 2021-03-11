@@ -18,16 +18,9 @@
 
 #pragma once
 
-#include <QAbstractItemModel>
+#include "abstractitemmodelbase.h"
 
-#include "api/account.h"
-#include "api/contact.h"
-#include "api/conversation.h"
-#include "api/newdevicemodel.h"
-
-#include "lrcinstance.h"
-
-class MediaCodecListModel : public QAbstractListModel
+class MediaCodecListModel : public AbstractListModelBase
 {
     Q_OBJECT
     Q_PROPERTY(int mediaType READ mediaType WRITE setMediaType)
@@ -36,7 +29,7 @@ public:
     enum Role { MediaCodecName = Qt::UserRole + 1, IsEnabled, MediaCodecID, Samplerate };
     Q_ENUM(Role)
 
-    explicit MediaCodecListModel(QObject* parent = 0);
+    explicit MediaCodecListModel(QObject* parent = nullptr);
     ~MediaCodecListModel();
 
     /*

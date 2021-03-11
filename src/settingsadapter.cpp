@@ -20,17 +20,9 @@
 
 #include "api/newdevicemodel.h"
 
-SettingsAdapter::SettingsAdapter(QObject* parent)
-    : QObject(parent)
+SettingsAdapter::SettingsAdapter(QObject* parent, LRCInstance* instance)
+    : QmlAdapterBase(parent, instance)
 {}
-
-/// Singleton
-SettingsAdapter&
-SettingsAdapter::instance()
-{
-    static auto instance = new SettingsAdapter;
-    return *instance;
-}
 
 QString
 SettingsAdapter::getDir_Document()
@@ -43,11 +35,11 @@ QString
 SettingsAdapter::getDir_Download()
 {
     QString downloadPath = QDir::toNativeSeparators(
-        LRCInstance::dataTransferModel().downloadDirectory);
+        lrcInstance_->dataTransferModel().downloadDirectory);
     if (downloadPath.isEmpty()) {
         downloadPath = lrc::api::DataTransferModel::createDefaultDirectory();
         setDownloadPath(downloadPath);
-        LRCInstance::dataTransferModel().downloadDirectory = downloadPath;
+        lrcInstance_->dataTransferModel().downloadDirectory = downloadPath;
     }
 #ifdef Q_OS_WIN
     int pos = downloadPath.lastIndexOf(QChar('\\'));
@@ -87,7 +79,7 @@ void
 SettingsAdapter::setDownloadPath(QString dir)
 {
     setAppValue(Settings::Key::DownloadPath, dir);
-    LRCInstance::dataTransferModel().downloadDirectory = dir + "/";
+    lrcInstance_->dataTransferModel().downloadDirectory = dir + "/";
 }
 
 lrc::api::video::ResRateList
@@ -109,7 +101,7 @@ SettingsAdapter::getResolutions(const QString& device)
 {
     QVector<QString> resolutions;
 
-    auto currentSettings = LRCInstance::avModel().getDeviceSettings(device);
+    auto currentSettings = lrcInstance_->avModel().getDeviceSettings(device);
 
     auto currentChannel = currentSettings.channel.isEmpty() ? "default" : currentSettings.channel;
     auto channelCaps = get_ResRateList(currentChannel, device);
@@ -128,7 +120,7 @@ SettingsAdapter::getFrameRates(const QString& device)
 {
     QVector<int> rates;
 
-    auto currentSettings = LRCInstance::avModel().getDeviceSettings(device);
+    auto currentSettings = lrcInstance_->avModel().getDeviceSettings(device);
 
     auto currentChannel = currentSettings.channel.isEmpty() ? "default" : currentSettings.channel;
     auto channelCaps = get_ResRateList(currentChannel, device);
@@ -144,13 +136,13 @@ SettingsAdapter::getFrameRates(const QString& device)
 lrc::api::video::Capabilities
 SettingsAdapter::get_DeviceCapabilities(const QString& device)
 {
-    return LRCInstance::avModel().getDeviceCapabilities(device);
+    return lrcInstance_->avModel().getDeviceCapabilities(device);
 }
 
 QString
 SettingsAdapter::get_Video_Settings_Channel(const QString& deviceId)
 {
-    auto settings = LRCInstance::avModel().getDeviceSettings(deviceId);
+    auto settings = lrcInstance_->avModel().getDeviceSettings(deviceId);
 
     return (QString) settings.channel;
 }
@@ -158,7 +150,7 @@ SettingsAdapter::get_Video_Settings_Channel(const QString& deviceId)
 QString
 SettingsAdapter::get_Video_Settings_Name(const QString& deviceId)
 {
-    auto settings = LRCInstance::avModel().getDeviceSettings(deviceId);
+    auto settings = lrcInstance_->avModel().getDeviceSettings(deviceId);
 
     return (QString) settings.name;
 }
@@ -166,7 +158,7 @@ SettingsAdapter::get_Video_Settings_Name(const QString& deviceId)
 QString
 SettingsAdapter::get_Video_Settings_Id(const QString& deviceId)
 {
-    auto settings = LRCInstance::avModel().getDeviceSettings(deviceId);
+    auto settings = lrcInstance_->avModel().getDeviceSettings(deviceId);
 
     return (QString) settings.id;
 }
@@ -174,7 +166,7 @@ SettingsAdapter::get_Video_Settings_Id(const QString& deviceId)
 qreal
 SettingsAdapter::get_Video_Settings_Rate(const QString& deviceId)
 {
-    auto settings = LRCInstance::avModel().getDeviceSettings(deviceId);
+    auto settings = lrcInstance_->avModel().getDeviceSettings(deviceId);
 
     return (qreal) settings.rate;
 }
@@ -182,7 +174,7 @@ SettingsAdapter::get_Video_Settings_Rate(const QString& deviceId)
 QString
 SettingsAdapter::get_Video_Settings_Size(const QString& deviceId)
 {
-    auto settings = LRCInstance::avModel().getDeviceSettings(deviceId);
+    auto settings = lrcInstance_->avModel().getDeviceSettings(deviceId);
 
     return (QString) settings.size;
 }
@@ -192,22 +184,22 @@ SettingsAdapter::set_Video_Settings_Rate_And_Resolution(const QString& deviceId,
                                                         qreal rate,
                                                         const QString& resolution)
 {
-    auto settings = LRCInstance::avModel().getDeviceSettings(deviceId);
+    auto settings = lrcInstance_->avModel().getDeviceSettings(deviceId);
     settings.rate = rate;
     settings.size = resolution;
-    LRCInstance::avModel().setDeviceSettings(settings);
+    lrcInstance_->avModel().setDeviceSettings(settings);
 }
 
 const lrc::api::account::Info&
 SettingsAdapter::getCurrentAccountInfo()
 {
-    return LRCInstance::getCurrentAccountInfo();
+    return lrcInstance_->getCurrentAccountInfo();
 }
 
 const Q_INVOKABLE lrc::api::profile::Info&
 SettingsAdapter::getCurrentAccount_Profile_Info()
 {
-    return LRCInstance::getCurrentAccountInfo().profileInfo;
+    return lrcInstance_->getCurrentAccountInfo().profileInfo;
 }
 
 lrc::api::ContactModel*
@@ -225,19 +217,19 @@ SettingsAdapter::getDeviceModel()
 QString
 SettingsAdapter::get_CurrentAccountInfo_RegisteredName()
 {
-    return LRCInstance::getCurrentAccountInfo().registeredName;
+    return lrcInstance_->getCurrentAccountInfo().registeredName;
 }
 
 QString
 SettingsAdapter::get_CurrentAccountInfo_Id()
 {
-    return LRCInstance::getCurrentAccountInfo().id;
+    return lrcInstance_->getCurrentAccountInfo().id;
 }
 
 bool
 SettingsAdapter::get_CurrentAccountInfo_Enabled()
 {
-    return LRCInstance::getCurrentAccountInfo().enabled;
+    return lrcInstance_->getCurrentAccountInfo().enabled;
 }
 
 QString
@@ -261,7 +253,7 @@ SettingsAdapter::getCurrentAccount_Profile_Info_Type()
 QString
 SettingsAdapter::getAccountBestName()
 {
-    return LRCInstance::accountModel().bestNameForAccount(LRCInstance::getCurrAccId());
+    return lrcInstance_->accountModel().bestNameForAccount(lrcInstance_->getCurrAccId());
 }
 
 lrc::api::account::ConfProperties_t
@@ -269,7 +261,7 @@ SettingsAdapter::getAccountConfig()
 {
     lrc::api::account::ConfProperties_t res;
     try {
-        res = LRCInstance::accountModel().getAccountConfig(LRCInstance::getCurrAccId());
+        res = lrcInstance_->accountModel().getAccountConfig(lrcInstance_->getCurrAccId());
     } catch (...) {
     }
     return res;
@@ -568,7 +560,7 @@ SettingsAdapter::setAccountConfig_Username(QString input)
 {
     auto confProps = getAccountConfig();
     confProps.username = input;
-    LRCInstance::accountModel().setAccountConfig(LRCInstance::getCurrAccId(), confProps);
+    lrcInstance_->accountModel().setAccountConfig(lrcInstance_->getCurrAccId(), confProps);
 }
 
 void
@@ -576,7 +568,7 @@ SettingsAdapter::setAccountConfig_Hostname(QString input)
 {
     auto confProps = getAccountConfig();
     confProps.hostname = input;
-    LRCInstance::accountModel().setAccountConfig(LRCInstance::getCurrAccId(), confProps);
+    lrcInstance_->accountModel().setAccountConfig(lrcInstance_->getCurrAccId(), confProps);
 }
 
 void
@@ -584,7 +576,7 @@ SettingsAdapter::setAccountConfig_Password(QString input)
 {
     auto confProps = getAccountConfig();
     confProps.password = input;
-    LRCInstance::accountModel().setAccountConfig(LRCInstance::getCurrAccId(), confProps);
+    lrcInstance_->accountModel().setAccountConfig(lrcInstance_->getCurrAccId(), confProps);
 }
 
 void
@@ -592,326 +584,326 @@ SettingsAdapter::setAccountConfig_RouteSet(QString input)
 {
     auto confProps = getAccountConfig();
     confProps.routeset = input;
-    LRCInstance::accountModel().setAccountConfig(LRCInstance::getCurrAccId(), confProps);
+    lrcInstance_->accountModel().setAccountConfig(lrcInstance_->getCurrAccId(), confProps);
 }
 
 void
 SettingsAdapter::setAutoConnectOnLocalNetwork(bool state)
 {
-    auto confProps = LRCInstance::accountModel().getAccountConfig(LRCInstance::getCurrAccId());
+    auto confProps = lrcInstance_->accountModel().getAccountConfig(lrcInstance_->getCurrAccId());
     confProps.peerDiscovery = state;
-    LRCInstance::accountModel().setAccountConfig(LRCInstance::getCurrAccId(), confProps);
+    lrcInstance_->accountModel().setAccountConfig(lrcInstance_->getCurrAccId(), confProps);
 }
 
 void
 SettingsAdapter::setCallsUntrusted(bool state)
 {
-    auto confProps = LRCInstance::accountModel().getAccountConfig(LRCInstance::getCurrAccId());
+    auto confProps = lrcInstance_->accountModel().getAccountConfig(lrcInstance_->getCurrAccId());
     confProps.DHT.PublicInCalls = state;
-    LRCInstance::accountModel().setAccountConfig(LRCInstance::getCurrAccId(), confProps);
+    lrcInstance_->accountModel().setAccountConfig(lrcInstance_->getCurrAccId(), confProps);
 }
 
 void
 SettingsAdapter::setIsRendezVous(bool state)
 {
-    auto confProps = LRCInstance::accountModel().getAccountConfig(LRCInstance::getCurrAccId());
+    auto confProps = lrcInstance_->accountModel().getAccountConfig(lrcInstance_->getCurrAccId());
     confProps.isRendezVous = state;
-    LRCInstance::accountModel().setAccountConfig(LRCInstance::getCurrAccId(), confProps);
+    lrcInstance_->accountModel().setAccountConfig(lrcInstance_->getCurrAccId(), confProps);
 }
 
 void
 SettingsAdapter::setAutoAnswerCalls(bool state)
 {
-    auto confProps = LRCInstance::accountModel().getAccountConfig(LRCInstance::getCurrAccId());
+    auto confProps = lrcInstance_->accountModel().getAccountConfig(lrcInstance_->getCurrAccId());
     confProps.autoAnswer = state;
-    LRCInstance::accountModel().setAccountConfig(LRCInstance::getCurrAccId(), confProps);
+    lrcInstance_->accountModel().setAccountConfig(lrcInstance_->getCurrAccId(), confProps);
 }
 
 void
 SettingsAdapter::setEnableRingtone(bool state)
 {
-    auto confProps = LRCInstance::accountModel().getAccountConfig(LRCInstance::getCurrAccId());
+    auto confProps = lrcInstance_->accountModel().getAccountConfig(lrcInstance_->getCurrAccId());
     confProps.Ringtone.ringtoneEnabled = state;
-    LRCInstance::accountModel().setAccountConfig(LRCInstance::getCurrAccId(), confProps);
+    lrcInstance_->accountModel().setAccountConfig(lrcInstance_->getCurrAccId(), confProps);
 }
 
 void
 SettingsAdapter::setEnableProxy(bool state)
 {
-    auto confProps = LRCInstance::accountModel().getAccountConfig(LRCInstance::getCurrAccId());
+    auto confProps = lrcInstance_->accountModel().getAccountConfig(lrcInstance_->getCurrAccId());
     confProps.proxyEnabled = state;
-    LRCInstance::accountModel().setAccountConfig(LRCInstance::getCurrAccId(), confProps);
+    lrcInstance_->accountModel().setAccountConfig(lrcInstance_->getCurrAccId(), confProps);
 }
 
 void
 SettingsAdapter::setKeepAliveEnabled(bool state)
 {
-    auto confProps = LRCInstance::accountModel().getAccountConfig(LRCInstance::getCurrAccId());
+    auto confProps = lrcInstance_->accountModel().getAccountConfig(lrcInstance_->getCurrAccId());
     confProps.keepAliveEnabled = state;
-    LRCInstance::accountModel().setAccountConfig(LRCInstance::getCurrAccId(), confProps);
+    lrcInstance_->accountModel().setAccountConfig(lrcInstance_->getCurrAccId(), confProps);
 }
 
 void
 SettingsAdapter::setUseUPnP(bool state)
 {
-    auto confProps = LRCInstance::accountModel().getAccountConfig(LRCInstance::getCurrAccId());
+    auto confProps = lrcInstance_->accountModel().getAccountConfig(lrcInstance_->getCurrAccId());
     confProps.upnpEnabled = state;
-    LRCInstance::accountModel().setAccountConfig(LRCInstance::getCurrAccId(), confProps);
+    lrcInstance_->accountModel().setAccountConfig(lrcInstance_->getCurrAccId(), confProps);
 }
 
 void
 SettingsAdapter::setUseTURN(bool state)
 {
-    auto confProps = LRCInstance::accountModel().getAccountConfig(LRCInstance::getCurrAccId());
+    auto confProps = lrcInstance_->accountModel().getAccountConfig(lrcInstance_->getCurrAccId());
     confProps.TURN.enable = state;
-    LRCInstance::accountModel().setAccountConfig(LRCInstance::getCurrAccId(), confProps);
+    lrcInstance_->accountModel().setAccountConfig(lrcInstance_->getCurrAccId(), confProps);
 }
 
 void
 SettingsAdapter::setUseSTUN(bool state)
 {
-    auto confProps = LRCInstance::accountModel().getAccountConfig(LRCInstance::getCurrAccId());
+    auto confProps = lrcInstance_->accountModel().getAccountConfig(lrcInstance_->getCurrAccId());
     confProps.STUN.enable = state;
-    LRCInstance::accountModel().setAccountConfig(LRCInstance::getCurrAccId(), confProps);
+    lrcInstance_->accountModel().setAccountConfig(lrcInstance_->getCurrAccId(), confProps);
 }
 
 void
 SettingsAdapter::setVideoState(bool state)
 {
-    auto confProps = LRCInstance::accountModel().getAccountConfig(LRCInstance::getCurrAccId());
+    auto confProps = lrcInstance_->accountModel().getAccountConfig(lrcInstance_->getCurrAccId());
     confProps.Video.videoEnabled = state;
-    LRCInstance::accountModel().setAccountConfig(LRCInstance::getCurrAccId(), confProps);
+    lrcInstance_->accountModel().setAccountConfig(lrcInstance_->getCurrAccId(), confProps);
 }
 
 void
 SettingsAdapter::setUseSRTP(bool state)
 {
-    auto confProps = LRCInstance::accountModel().getAccountConfig(LRCInstance::getCurrAccId());
+    auto confProps = lrcInstance_->accountModel().getAccountConfig(lrcInstance_->getCurrAccId());
     confProps.SRTP.enable = state;
-    LRCInstance::accountModel().setAccountConfig(LRCInstance::getCurrAccId(), confProps);
+    lrcInstance_->accountModel().setAccountConfig(lrcInstance_->getCurrAccId(), confProps);
 }
 
 void
 SettingsAdapter::setUseSDES(bool state)
 {
-    auto confProps = LRCInstance::accountModel().getAccountConfig(LRCInstance::getCurrAccId());
+    auto confProps = lrcInstance_->accountModel().getAccountConfig(lrcInstance_->getCurrAccId());
     confProps.SRTP.keyExchange = state ? lrc::api::account::KeyExchangeProtocol::SDES
                                        : lrc::api::account::KeyExchangeProtocol::NONE;
-    LRCInstance::accountModel().setAccountConfig(LRCInstance::getCurrAccId(), confProps);
+    lrcInstance_->accountModel().setAccountConfig(lrcInstance_->getCurrAccId(), confProps);
 }
 
 void
 SettingsAdapter::setUseRTPFallback(bool state)
 {
-    auto confProps = LRCInstance::accountModel().getAccountConfig(LRCInstance::getCurrAccId());
+    auto confProps = lrcInstance_->accountModel().getAccountConfig(lrcInstance_->getCurrAccId());
     confProps.SRTP.rtpFallback = state;
-    LRCInstance::accountModel().setAccountConfig(LRCInstance::getCurrAccId(), confProps);
+    lrcInstance_->accountModel().setAccountConfig(lrcInstance_->getCurrAccId(), confProps);
 }
 
 void
 SettingsAdapter::setUseTLS(bool state)
 {
-    auto confProps = LRCInstance::accountModel().getAccountConfig(LRCInstance::getCurrAccId());
+    auto confProps = lrcInstance_->accountModel().getAccountConfig(lrcInstance_->getCurrAccId());
     confProps.TLS.enable = state;
-    LRCInstance::accountModel().setAccountConfig(LRCInstance::getCurrAccId(), confProps);
+    lrcInstance_->accountModel().setAccountConfig(lrcInstance_->getCurrAccId(), confProps);
 }
 
 void
 SettingsAdapter::setVerifyCertificatesServer(bool state)
 {
-    auto confProps = LRCInstance::accountModel().getAccountConfig(LRCInstance::getCurrAccId());
+    auto confProps = lrcInstance_->accountModel().getAccountConfig(lrcInstance_->getCurrAccId());
     confProps.TLS.verifyServer = state;
-    LRCInstance::accountModel().setAccountConfig(LRCInstance::getCurrAccId(), confProps);
+    lrcInstance_->accountModel().setAccountConfig(lrcInstance_->getCurrAccId(), confProps);
 }
 
 void
 SettingsAdapter::setVerifyCertificatesClient(bool state)
 {
-    auto confProps = LRCInstance::accountModel().getAccountConfig(LRCInstance::getCurrAccId());
+    auto confProps = lrcInstance_->accountModel().getAccountConfig(lrcInstance_->getCurrAccId());
     confProps.TLS.verifyClient = state;
-    LRCInstance::accountModel().setAccountConfig(LRCInstance::getCurrAccId(), confProps);
+    lrcInstance_->accountModel().setAccountConfig(lrcInstance_->getCurrAccId(), confProps);
 }
 
 void
 SettingsAdapter::setRequireCertificatesIncomingTLS(bool state)
 {
-    auto confProps = LRCInstance::accountModel().getAccountConfig(LRCInstance::getCurrAccId());
+    auto confProps = lrcInstance_->accountModel().getAccountConfig(lrcInstance_->getCurrAccId());
     confProps.TLS.requireClientCertificate = state;
-    LRCInstance::accountModel().setAccountConfig(LRCInstance::getCurrAccId(), confProps);
+    lrcInstance_->accountModel().setAccountConfig(lrcInstance_->getCurrAccId(), confProps);
 }
 
 void
 SettingsAdapter::setUseCustomAddressAndPort(bool state)
 {
-    auto confProps = LRCInstance::accountModel().getAccountConfig(LRCInstance::getCurrAccId());
+    auto confProps = lrcInstance_->accountModel().getAccountConfig(lrcInstance_->getCurrAccId());
     confProps.publishedSameAsLocal = state;
-    LRCInstance::accountModel().setAccountConfig(LRCInstance::getCurrAccId(), confProps);
+    lrcInstance_->accountModel().setAccountConfig(lrcInstance_->getCurrAccId(), confProps);
 }
 
 void
 SettingsAdapter::setNameServer(QString text)
 {
-    auto confProps = LRCInstance::accountModel().getAccountConfig(LRCInstance::getCurrAccId());
+    auto confProps = lrcInstance_->accountModel().getAccountConfig(lrcInstance_->getCurrAccId());
     confProps.RingNS.uri = text;
-    LRCInstance::accountModel().setAccountConfig(LRCInstance::getCurrAccId(), confProps);
+    lrcInstance_->accountModel().setAccountConfig(lrcInstance_->getCurrAccId(), confProps);
 }
 
 void
 SettingsAdapter::setProxyAddress(QString text)
 {
-    auto confProps = LRCInstance::accountModel().getAccountConfig(LRCInstance::getCurrAccId());
+    auto confProps = lrcInstance_->accountModel().getAccountConfig(lrcInstance_->getCurrAccId());
     confProps.proxyServer = text;
-    LRCInstance::accountModel().setAccountConfig(LRCInstance::getCurrAccId(), confProps);
+    lrcInstance_->accountModel().setAccountConfig(lrcInstance_->getCurrAccId(), confProps);
 }
 
 void
 SettingsAdapter::setBootstrapAddress(QString text)
 {
-    auto confProps = LRCInstance::accountModel().getAccountConfig(LRCInstance::getCurrAccId());
+    auto confProps = lrcInstance_->accountModel().getAccountConfig(lrcInstance_->getCurrAccId());
     confProps.hostname = text;
-    LRCInstance::accountModel().setAccountConfig(LRCInstance::getCurrAccId(), confProps);
+    lrcInstance_->accountModel().setAccountConfig(lrcInstance_->getCurrAccId(), confProps);
 }
 
 void
 SettingsAdapter::setTURNAddress(QString text)
 {
-    auto confProps = LRCInstance::accountModel().getAccountConfig(LRCInstance::getCurrAccId());
+    auto confProps = lrcInstance_->accountModel().getAccountConfig(lrcInstance_->getCurrAccId());
     confProps.TURN.server = text;
-    LRCInstance::accountModel().setAccountConfig(LRCInstance::getCurrAccId(), confProps);
+    lrcInstance_->accountModel().setAccountConfig(lrcInstance_->getCurrAccId(), confProps);
 }
 
 void
 SettingsAdapter::setTURNUsername(QString text)
 {
-    auto confProps = LRCInstance::accountModel().getAccountConfig(LRCInstance::getCurrAccId());
+    auto confProps = lrcInstance_->accountModel().getAccountConfig(lrcInstance_->getCurrAccId());
     confProps.TURN.username = text;
-    LRCInstance::accountModel().setAccountConfig(LRCInstance::getCurrAccId(), confProps);
+    lrcInstance_->accountModel().setAccountConfig(lrcInstance_->getCurrAccId(), confProps);
 }
 
 void
 SettingsAdapter::setTURNPassword(QString text)
 {
-    auto confProps = LRCInstance::accountModel().getAccountConfig(LRCInstance::getCurrAccId());
+    auto confProps = lrcInstance_->accountModel().getAccountConfig(lrcInstance_->getCurrAccId());
     confProps.TURN.password = text;
-    LRCInstance::accountModel().setAccountConfig(LRCInstance::getCurrAccId(), confProps);
+    lrcInstance_->accountModel().setAccountConfig(lrcInstance_->getCurrAccId(), confProps);
 }
 
 void
 SettingsAdapter::setTURNRealm(QString text)
 {
-    auto confProps = LRCInstance::accountModel().getAccountConfig(LRCInstance::getCurrAccId());
+    auto confProps = lrcInstance_->accountModel().getAccountConfig(lrcInstance_->getCurrAccId());
     confProps.TURN.realm = text;
-    LRCInstance::accountModel().setAccountConfig(LRCInstance::getCurrAccId(), confProps);
+    lrcInstance_->accountModel().setAccountConfig(lrcInstance_->getCurrAccId(), confProps);
 }
 
 void
 SettingsAdapter::setSTUNAddress(QString text)
 {
-    auto confProps = LRCInstance::accountModel().getAccountConfig(LRCInstance::getCurrAccId());
+    auto confProps = lrcInstance_->accountModel().getAccountConfig(lrcInstance_->getCurrAccId());
     confProps.STUN.server = text;
-    LRCInstance::accountModel().setAccountConfig(LRCInstance::getCurrAccId(), confProps);
+    lrcInstance_->accountModel().setAccountConfig(lrcInstance_->getCurrAccId(), confProps);
 }
 
 void
 SettingsAdapter::lineEditVoiceMailDialCodeEditFinished(QString text)
 {
-    auto confProps = LRCInstance::accountModel().getAccountConfig(LRCInstance::getCurrAccId());
+    auto confProps = lrcInstance_->accountModel().getAccountConfig(lrcInstance_->getCurrAccId());
     confProps.mailbox = text;
-    LRCInstance::accountModel().setAccountConfig(LRCInstance::getCurrAccId(), confProps);
+    lrcInstance_->accountModel().setAccountConfig(lrcInstance_->getCurrAccId(), confProps);
 }
 
 void
 SettingsAdapter::outgoingTLSServerNameLineEditTextChanged(QString text)
 {
-    auto confProps = LRCInstance::accountModel().getAccountConfig(LRCInstance::getCurrAccId());
+    auto confProps = lrcInstance_->accountModel().getAccountConfig(lrcInstance_->getCurrAccId());
     confProps.TLS.serverName = text;
-    LRCInstance::accountModel().setAccountConfig(LRCInstance::getCurrAccId(), confProps);
+    lrcInstance_->accountModel().setAccountConfig(lrcInstance_->getCurrAccId(), confProps);
 }
 
 void
 SettingsAdapter::lineEditSIPCertPasswordLineEditTextChanged(QString text)
 {
-    auto confProps = LRCInstance::accountModel().getAccountConfig(LRCInstance::getCurrAccId());
+    auto confProps = lrcInstance_->accountModel().getAccountConfig(lrcInstance_->getCurrAccId());
     confProps.TLS.password = text;
-    LRCInstance::accountModel().setAccountConfig(LRCInstance::getCurrAccId(), confProps);
+    lrcInstance_->accountModel().setAccountConfig(lrcInstance_->getCurrAccId(), confProps);
 }
 
 void
 SettingsAdapter::lineEditSIPCustomAddressLineEditTextChanged(QString text)
 {
-    auto confProps = LRCInstance::accountModel().getAccountConfig(LRCInstance::getCurrAccId());
+    auto confProps = lrcInstance_->accountModel().getAccountConfig(lrcInstance_->getCurrAccId());
     confProps.publishedAddress = text;
-    LRCInstance::accountModel().setAccountConfig(LRCInstance::getCurrAccId(), confProps);
+    lrcInstance_->accountModel().setAccountConfig(lrcInstance_->getCurrAccId(), confProps);
 }
 
 void
 SettingsAdapter::customPortSIPSpinBoxValueChanged(int value)
 {
-    auto confProps = LRCInstance::accountModel().getAccountConfig(LRCInstance::getCurrAccId());
+    auto confProps = lrcInstance_->accountModel().getAccountConfig(lrcInstance_->getCurrAccId());
     confProps.publishedPort = value;
-    LRCInstance::accountModel().setAccountConfig(LRCInstance::getCurrAccId(), confProps);
+    lrcInstance_->accountModel().setAccountConfig(lrcInstance_->getCurrAccId(), confProps);
 }
 
 void
 SettingsAdapter::negotiationTimeoutSpinBoxValueChanged(int value)
 {
-    auto confProps = LRCInstance::accountModel().getAccountConfig(LRCInstance::getCurrAccId());
+    auto confProps = lrcInstance_->accountModel().getAccountConfig(lrcInstance_->getCurrAccId());
     confProps.TLS.negotiationTimeoutSec = value;
-    LRCInstance::accountModel().setAccountConfig(LRCInstance::getCurrAccId(), confProps);
+    lrcInstance_->accountModel().setAccountConfig(lrcInstance_->getCurrAccId(), confProps);
 }
 
 void
 SettingsAdapter::registrationTimeoutSpinBoxValueChanged(int value)
 {
-    auto confProps = LRCInstance::accountModel().getAccountConfig(LRCInstance::getCurrAccId());
+    auto confProps = lrcInstance_->accountModel().getAccountConfig(lrcInstance_->getCurrAccId());
     confProps.Registration.expire = value;
-    LRCInstance::accountModel().setAccountConfig(LRCInstance::getCurrAccId(), confProps);
+    lrcInstance_->accountModel().setAccountConfig(lrcInstance_->getCurrAccId(), confProps);
 }
 
 void
 SettingsAdapter::networkInterfaceSpinBoxValueChanged(int value)
 {
-    auto confProps = LRCInstance::accountModel().getAccountConfig(LRCInstance::getCurrAccId());
+    auto confProps = lrcInstance_->accountModel().getAccountConfig(lrcInstance_->getCurrAccId());
     confProps.localPort = value;
-    LRCInstance::accountModel().setAccountConfig(LRCInstance::getCurrAccId(), confProps);
+    lrcInstance_->accountModel().setAccountConfig(lrcInstance_->getCurrAccId(), confProps);
 }
 
 void
 SettingsAdapter::audioRTPMinPortSpinBoxEditFinished(int value)
 {
-    auto confProps = LRCInstance::accountModel().getAccountConfig(LRCInstance::getCurrAccId());
+    auto confProps = lrcInstance_->accountModel().getAccountConfig(lrcInstance_->getCurrAccId());
     confProps.Audio.audioPortMin = value;
-    LRCInstance::accountModel().setAccountConfig(LRCInstance::getCurrAccId(), confProps);
+    lrcInstance_->accountModel().setAccountConfig(lrcInstance_->getCurrAccId(), confProps);
 }
 
 void
 SettingsAdapter::audioRTPMaxPortSpinBoxEditFinished(int value)
 {
-    auto confProps = LRCInstance::accountModel().getAccountConfig(LRCInstance::getCurrAccId());
+    auto confProps = lrcInstance_->accountModel().getAccountConfig(lrcInstance_->getCurrAccId());
     confProps.Audio.audioPortMax = value;
-    LRCInstance::accountModel().setAccountConfig(LRCInstance::getCurrAccId(), confProps);
+    lrcInstance_->accountModel().setAccountConfig(lrcInstance_->getCurrAccId(), confProps);
 }
 
 void
 SettingsAdapter::videoRTPMinPortSpinBoxEditFinished(int value)
 {
-    auto confProps = LRCInstance::accountModel().getAccountConfig(LRCInstance::getCurrAccId());
+    auto confProps = lrcInstance_->accountModel().getAccountConfig(lrcInstance_->getCurrAccId());
     confProps.Video.videoPortMin = value;
-    LRCInstance::accountModel().setAccountConfig(LRCInstance::getCurrAccId(), confProps);
+    lrcInstance_->accountModel().setAccountConfig(lrcInstance_->getCurrAccId(), confProps);
 }
 
 void
 SettingsAdapter::videoRTPMaxPortSpinBoxEditFinished(int value)
 {
-    auto confProps = LRCInstance::accountModel().getAccountConfig(LRCInstance::getCurrAccId());
+    auto confProps = lrcInstance_->accountModel().getAccountConfig(lrcInstance_->getCurrAccId());
     confProps.Video.videoPortMax = value;
-    LRCInstance::accountModel().setAccountConfig(LRCInstance::getCurrAccId(), confProps);
+    lrcInstance_->accountModel().setAccountConfig(lrcInstance_->getCurrAccId(), confProps);
 }
 
 void
 SettingsAdapter::tlsProtocolComboBoxIndexChanged(const int& index)
 {
-    auto confProps = LRCInstance::accountModel().getAccountConfig(LRCInstance::getCurrAccId());
+    auto confProps = lrcInstance_->accountModel().getAccountConfig(lrcInstance_->getCurrAccId());
 
     if (static_cast<int>(confProps.TLS.method) != index) {
         if (index == 0) {
@@ -923,22 +915,22 @@ SettingsAdapter::tlsProtocolComboBoxIndexChanged(const int& index)
         } else {
             confProps.TLS.method = lrc::api::account::TlsMethod::TLSv1_2;
         }
-        LRCInstance::accountModel().setAccountConfig(LRCInstance::getCurrAccId(), confProps);
+        lrcInstance_->accountModel().setAccountConfig(lrcInstance_->getCurrAccId(), confProps);
     }
 }
 
 void
 SettingsAdapter::setDeviceName(QString text)
 {
-    auto confProps = LRCInstance::accountModel().getAccountConfig(LRCInstance::getCurrAccId());
+    auto confProps = lrcInstance_->accountModel().getAccountConfig(lrcInstance_->getCurrAccId());
     confProps.deviceName = text;
-    LRCInstance::accountModel().setAccountConfig(LRCInstance::getCurrAccId(), confProps);
+    lrcInstance_->accountModel().setAccountConfig(lrcInstance_->getCurrAccId(), confProps);
 }
 
 void
 SettingsAdapter::unbanContact(int index)
 {
-    auto& accountInfo = LRCInstance::getCurrentAccountInfo();
+    auto& accountInfo = lrcInstance_->getCurrentAccountInfo();
     auto bannedContactList = accountInfo.contactModel->getBannedContacts();
     auto it = bannedContactList.begin();
     std::advance(it, index);
@@ -950,71 +942,71 @@ SettingsAdapter::unbanContact(int index)
 void
 SettingsAdapter::audioCodecsStateChange(unsigned int id, bool isToEnable)
 {
-    auto audioCodecList = LRCInstance::getCurrentAccountInfo().codecModel->getAudioCodecs();
-    LRCInstance::getCurrentAccountInfo().codecModel->enable(id, isToEnable);
+    auto audioCodecList = lrcInstance_->getCurrentAccountInfo().codecModel->getAudioCodecs();
+    lrcInstance_->getCurrentAccountInfo().codecModel->enable(id, isToEnable);
 }
 
 void
 SettingsAdapter::videoCodecsStateChange(unsigned int id, bool isToEnable)
 {
-    auto videoCodecList = LRCInstance::getCurrentAccountInfo().codecModel->getVideoCodecs();
-    LRCInstance::getCurrentAccountInfo().codecModel->enable(id, isToEnable);
+    auto videoCodecList = lrcInstance_->getCurrentAccountInfo().codecModel->getVideoCodecs();
+    lrcInstance_->getCurrentAccountInfo().codecModel->enable(id, isToEnable);
 }
 
 void
 SettingsAdapter::decreaseAudioCodecPriority(unsigned int id)
 {
-    LRCInstance::getCurrentAccountInfo().codecModel->decreasePriority(id, false);
+    lrcInstance_->getCurrentAccountInfo().codecModel->decreasePriority(id, false);
 }
 
 void
 SettingsAdapter::increaseAudioCodecPriority(unsigned int id)
 {
-    LRCInstance::getCurrentAccountInfo().codecModel->increasePriority(id, false);
+    lrcInstance_->getCurrentAccountInfo().codecModel->increasePriority(id, false);
 }
 
 void
 SettingsAdapter::decreaseVideoCodecPriority(unsigned int id)
 {
-    LRCInstance::getCurrentAccountInfo().codecModel->decreasePriority(id, true);
+    lrcInstance_->getCurrentAccountInfo().codecModel->decreasePriority(id, true);
 }
 
 void
 SettingsAdapter::increaseVideoCodecPriority(unsigned int id)
 {
-    LRCInstance::getCurrentAccountInfo().codecModel->increasePriority(id, true);
+    lrcInstance_->getCurrentAccountInfo().codecModel->increasePriority(id, true);
 }
 
 void
 SettingsAdapter::set_RingtonePath(QString text)
 {
-    auto confProps = LRCInstance::accountModel().getAccountConfig(LRCInstance::getCurrAccId());
+    auto confProps = lrcInstance_->accountModel().getAccountConfig(lrcInstance_->getCurrAccId());
     confProps.Ringtone.ringtonePath = text;
-    LRCInstance::accountModel().setAccountConfig(LRCInstance::getCurrAccId(), confProps);
+    lrcInstance_->accountModel().setAccountConfig(lrcInstance_->getCurrAccId(), confProps);
 }
 
 void
 SettingsAdapter::set_FileCACert(QString text)
 {
-    auto confProps = LRCInstance::accountModel().getAccountConfig(LRCInstance::getCurrAccId());
+    auto confProps = lrcInstance_->accountModel().getAccountConfig(lrcInstance_->getCurrAccId());
     confProps.TLS.certificateListFile = text;
-    LRCInstance::accountModel().setAccountConfig(LRCInstance::getCurrAccId(), confProps);
+    lrcInstance_->accountModel().setAccountConfig(lrcInstance_->getCurrAccId(), confProps);
 }
 
 void
 SettingsAdapter::set_FileUserCert(QString text)
 {
-    auto confProps = LRCInstance::accountModel().getAccountConfig(LRCInstance::getCurrAccId());
+    auto confProps = lrcInstance_->accountModel().getAccountConfig(lrcInstance_->getCurrAccId());
     confProps.TLS.certificateFile = text;
-    LRCInstance::accountModel().setAccountConfig(LRCInstance::getCurrAccId(), confProps);
+    lrcInstance_->accountModel().setAccountConfig(lrcInstance_->getCurrAccId(), confProps);
 }
 
 void
 SettingsAdapter::set_FilePrivateKey(QString text)
 {
-    auto confProps = LRCInstance::accountModel().getAccountConfig(LRCInstance::getCurrAccId());
+    auto confProps = lrcInstance_->accountModel().getAccountConfig(lrcInstance_->getCurrAccId());
     confProps.TLS.privateKeyFile = text;
-    LRCInstance::accountModel().setAccountConfig(LRCInstance::getCurrAccId(), confProps);
+    lrcInstance_->accountModel().setAccountConfig(lrcInstance_->getCurrAccId(), confProps);
 }
 
 void
@@ -1022,24 +1014,23 @@ SettingsAdapter::setDefaultModerator(const QString& accountId,
                                      const QString& peerURI,
                                      const bool& state)
 {
-    return LRCInstance::accountModel().setDefaultModerator(accountId, peerURI, state);
+    return lrcInstance_->accountModel().setDefaultModerator(accountId, peerURI, state);
 }
 
 QStringList
 SettingsAdapter::getDefaultModerators(const QString& accountId)
 {
-    return LRCInstance::accountModel().getDefaultModerators(accountId);
+    return lrcInstance_->accountModel().getDefaultModerators(accountId);
 }
 
 void
-SettingsAdapter::enableLocalModerators(const QString& accountId,
-                                       const bool& isModEnabled)
+SettingsAdapter::enableLocalModerators(const QString& accountId, const bool& isModEnabled)
 {
-    return LRCInstance::accountModel().enableLocalModerators(accountId, isModEnabled);
+    return lrcInstance_->accountModel().enableLocalModerators(accountId, isModEnabled);
 }
 
 bool
 SettingsAdapter::isLocalModeratorsEnabled(const QString& accountId)
 {
-    return LRCInstance::accountModel().isLocalModeratorsEnabled(accountId);
+    return lrcInstance_->accountModel().isLocalModeratorsEnabled(accountId);
 }

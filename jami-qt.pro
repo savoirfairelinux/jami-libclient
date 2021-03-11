@@ -162,9 +162,11 @@ unix {
 
 # Input
 HEADERS += \
+        src/abstractitemmodelbase.h \
         src/avatarimageprovider.h \
         src/moderatorlistmodel.h \
         src/networkmanager.h \
+        src/quickimageproviderbase.h \
         src/screensaver.h \
         src/smartlistmodel.h \
         src/updatemanager.h \

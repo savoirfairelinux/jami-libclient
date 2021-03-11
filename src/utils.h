@@ -53,11 +53,11 @@
 #include "api/contactmodel.h"
 #include "api/conversationmodel.h"
 
+class LRCInstance;
+
 namespace Utils {
 
-/*
- * App/System
- */
+// App System
 bool CreateStartupLink(const std::wstring& wstrAppName);
 void DeleteStartupLink(const std::wstring& wstrAppName);
 bool CreateLink(LPCWSTR lpszPathObj, LPCWSTR lpszPathLink);
@@ -76,9 +76,7 @@ void forceDeleteAsync(const QString& path);
 QString getProjectCredits();
 void removeOldVersions();
 
-/*
- * LRC helpers
- */
+// LRC helpers
 lrc::api::profile::Type profileType(const lrc::api::conversation::Info& conv,
                                     const lrc::api::ConversationModel& model);
 std::string formatTimeString(const std::time_t& timestamp);
@@ -86,12 +84,12 @@ bool isInteractionGenerated(const lrc::api::interaction::Type& interaction);
 bool isContactValid(const QString& contactUid, const lrc::api::ConversationModel& model);
 bool getReplyMessageBox(QWidget* widget, const QString& title, const QString& text);
 
-/*
- * Image manipulation
- */
+// Image manipulation
 static const QSize defaultAvatarSize {128, 128};
 QImage contactPhotoFromBase64(const QByteArray& data, const QString& type);
-QImage contactPhoto(const QString& contactUri, const QSize& size = defaultAvatarSize);
+QImage contactPhoto(LRCInstance* instance,
+                    const QString& contactUri,
+                    const QSize& size = defaultAvatarSize);
 QImage getCirclePhoto(const QImage original, int sizePhoto);
 QColor getAvatarColor(const QString& canonicalUri);
 QImage fallbackAvatar(const QString& canonicalUriStr,
@@ -107,7 +105,8 @@ QByteArray QByteArrayFromFile(const QString& filename);
 QPixmap generateTintedPixmap(const QString& filename, QColor color);
 QPixmap generateTintedPixmap(const QPixmap& pix, QColor color);
 QImage scaleAndFrame(const QImage photo, const QSize& size = defaultAvatarSize);
-QImage accountPhoto(const lrc::api::account::Info& accountInfo,
+QImage accountPhoto(LRCInstance* instance,
+                    const lrc::api::account::Info& accountInfo,
                     const QSize& size = defaultAvatarSize);
 QImage cropImage(const QImage& img);
 QPixmap pixmapFromSvg(const QString& svg_resource, const QSize& size);
@@ -115,9 +114,7 @@ QImage setupQRCode(QString ringID, int margin);
 bool isImage(const QString& fileExt);
 QString generateUid();
 
-/*
- * Misc
- */
+// Misc
 QString formattedTime(int seconds);
 QString humanFileSize(qint64 fileSize);
 

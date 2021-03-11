@@ -36,14 +36,14 @@
 #include <QList>
 #include <QUrl>
 
-MessagesAdapter::MessagesAdapter(QObject* parent)
-    : QmlAdapterBase(parent)
+MessagesAdapter::MessagesAdapter(QObject* parent, LRCInstance* instance)
+    : QmlAdapterBase(parent, instance)
 {}
 
 void
 MessagesAdapter::safeInit()
 {
-    connect(&LRCInstance::instance(), &LRCInstance::currentAccountChanged, [this]() {
+    connect(lrcInstance_, &LRCInstance::currentAccountChanged, [this]() {
         currentConvUid_.clear();
         connectConversationModel();
     });
@@ -53,7 +53,7 @@ MessagesAdapter::safeInit()
 void
 MessagesAdapter::setupChatView(const QString& convUid)
 {
-    auto* convModel = LRCInstance::getCurrentConversationModel();
+    auto* convModel = lrcInstance_->getCurrentConversationModel();
     if (convModel == nullptr) {
         return;
     }
@@ -61,15 +61,15 @@ MessagesAdapter::setupChatView(const QString& convUid)
     if (currentConvUid_ == convUid)
         return;
 
-    const auto& convInfo = LRCInstance::getConversationFromConvUid(convUid);
+    const auto& convInfo = lrcInstance_->getConversationFromConvUid(convUid);
     if (convInfo.uid.isEmpty() || convInfo.participants.isEmpty()) {
         return;
     }
 
     QString contactURI = convInfo.participants.at(0);
 
-    auto selectedAccountId = LRCInstance::getCurrAccId();
-    auto& accountInfo = LRCInstance::accountModel().getAccountInfo(selectedAccountId);
+    auto selectedAccountId = lrcInstance_->getCurrAccId();
+    auto& accountInfo = lrcInstance_->accountModel().getAccountInfo(selectedAccountId);
 
     lrc::api::contact::Info contactInfo;
     try {
@@ -92,7 +92,7 @@ MessagesAdapter::setupChatView(const QString& convUid)
      * Type Indicator (contact).
      */
     contactIsComposing(convInfo.uid, "", false);
-    connect(LRCInstance::getCurrentConversationModel(),
+    connect(lrcInstance_->getCurrentConversationModel(),
             &ConversationModel::composingStatusChanged,
             [this](const QString& convUid, const QString& contactUri, bool isComposing) {
                 if (!AppSettingsManager::getValue(Settings::Key::EnableTypingIndicator).toBool()) {
@@ -121,7 +121,7 @@ MessagesAdapter::setupChatView(const QString& convUid)
 void
 MessagesAdapter::connectConversationModel()
 {
-    auto currentConversationModel = LRCInstance::getCurrentConversationModel();
+    auto currentConversationModel = lrcInstance_->getCurrentConversationModel();
 
     QObject::disconnect(newInteractionConnection_);
     QObject::disconnect(interactionRemovedConnection_);
@@ -133,7 +133,7 @@ MessagesAdapter::connectConversationModel()
                            [this](const QString& convUid,
                                   uint64_t interactionId,
                                   const lrc::api::interaction::Info& interaction) {
-                               auto accountId = LRCInstance::getCurrAccId();
+                               auto accountId = lrcInstance_->getCurrAccId();
                                newInteraction(accountId, convUid, interactionId, interaction);
                            });
 
@@ -143,7 +143,7 @@ MessagesAdapter::connectConversationModel()
         [this](const QString& convUid,
                uint64_t interactionId,
                const lrc::api::interaction::Info& interaction) {
-            auto currentConversationModel = LRCInstance::getCurrentConversationModel();
+            auto currentConversationModel = lrcInstance_->getCurrentConversationModel();
             currentConversationModel->clearUnreadInteractions(convUid);
             updateInteraction(*currentConversationModel, interactionId, interaction);
         });
@@ -162,17 +162,18 @@ MessagesAdapter::connectConversationModel()
 void
 MessagesAdapter::sendContactRequest()
 {
-    const auto convUid = LRCInstance::getCurrentConvUid();
+    const auto convUid = lrcInstance_->getCurrentConvUid();
     if (!convUid.isEmpty()) {
-        LRCInstance::getCurrentConversationModel()->makePermanent(convUid);
+        lrcInstance_->getCurrentConversationModel()->makePermanent(convUid);
     }
 }
 
 void
 MessagesAdapter::updateConversationForAddedContact()
 {
-    auto* convModel = LRCInstance::getCurrentConversationModel();
-    const auto& convInfo = LRCInstance::getConversationFromConvUid(LRCInstance::getCurrentConvUid());
+    auto* convModel = lrcInstance_->getCurrentConversationModel();
+    const auto& convInfo = lrcInstance_->getConversationFromConvUid(
+        lrcInstance_->getCurrentConvUid());
 
     clear();
     setConversationProfileData(convInfo);
@@ -183,16 +184,16 @@ void
 MessagesAdapter::slotSendMessageContentSaved(const QString& content)
 {
     if (!LastConvUid_.isEmpty()) {
-        LRCInstance::setContentDraft(LastConvUid_, LRCInstance::getCurrAccId(), content);
+        lrcInstance_->setContentDraft(LastConvUid_, lrcInstance_->getCurrAccId(), content);
     }
-    LastConvUid_ = LRCInstance::getCurrentConvUid();
+    LastConvUid_ = lrcInstance_->getCurrentConvUid();
 
     Utils::oneShotConnect(qmlObj_, SIGNAL(messagesCleared()), this, SLOT(slotMessagesCleared()));
 
     setInvitation(false);
     clear();
-    auto restoredContent = LRCInstance::getContentDraft(LRCInstance::getCurrentConvUid(),
-                                                        LRCInstance::getCurrAccId());
+    auto restoredContent = lrcInstance_->getContentDraft(lrcInstance_->getCurrentConvUid(),
+                                                         lrcInstance_->getCurrAccId());
     setSendMessageContent(restoredContent);
     emit needToUpdateSmartList();
 }
@@ -201,7 +202,7 @@ void
 MessagesAdapter::slotUpdateDraft(const QString& content)
 {
     if (!LastConvUid_.isEmpty()) {
-        LRCInstance::setContentDraft(LastConvUid_, LRCInstance::getCurrAccId(), content);
+        lrcInstance_->setContentDraft(LastConvUid_, lrcInstance_->getCurrAccId(), content);
     }
     emit needToUpdateSmartList();
 }
@@ -209,8 +210,9 @@ MessagesAdapter::slotUpdateDraft(const QString& content)
 void
 MessagesAdapter::slotMessagesCleared()
 {
-    auto* convModel = LRCInstance::getCurrentConversationModel();
-    const auto& convInfo = LRCInstance::getConversationFromConvUid(LRCInstance::getCurrentConvUid());
+    auto* convModel = lrcInstance_->getCurrentConversationModel();
+    const auto& convInfo = lrcInstance_->getConversationFromConvUid(
+        lrcInstance_->getCurrentConvUid());
 
     printHistory(*convModel, convInfo.interactions);
 
@@ -229,8 +231,8 @@ void
 MessagesAdapter::sendMessage(const QString& message)
 {
     try {
-        const auto convUid = LRCInstance::getCurrentConvUid();
-        LRCInstance::getCurrentConversationModel()->sendMessage(convUid, message);
+        const auto convUid = lrcInstance_->getCurrentConvUid();
+        lrcInstance_->getCurrentConversationModel()->sendMessage(convUid, message);
     } catch (...) {
         qDebug() << "Exception during sendMessage:" << message;
     }
@@ -261,8 +263,8 @@ MessagesAdapter::sendImage(const QString& message)
         }
 
         try {
-            auto convUid = LRCInstance::getCurrentConvUid();
-            LRCInstance::getCurrentConversationModel()->sendFile(convUid, path, fileName);
+            auto convUid = lrcInstance_->getCurrentConvUid();
+            lrcInstance_->getCurrentConversationModel()->sendFile(convUid, path, fileName);
         } catch (...) {
             qDebug().noquote() << "Exception during sendFile - base64 img"
                                << "\n";
@@ -284,8 +286,8 @@ MessagesAdapter::sendImage(const QString& message)
         QString fileName = fi.fileName();
 
         try {
-            auto convUid = LRCInstance::getCurrentConvUid();
-            LRCInstance::getCurrentConversationModel()->sendFile(convUid, msg, fileName);
+            auto convUid = lrcInstance_->getCurrentConvUid();
+            lrcInstance_->getCurrentConversationModel()->sendFile(convUid, msg, fileName);
         } catch (...) {
             qDebug().noquote() << "Exception during sendFile - image from path"
                                << "\n";
@@ -299,8 +301,8 @@ MessagesAdapter::sendFile(const QString& message)
     QFileInfo fi(message);
     QString fileName = fi.fileName();
     try {
-        auto convUid = LRCInstance::getCurrentConvUid();
-        LRCInstance::getCurrentConversationModel()->sendFile(convUid, message, fileName);
+        auto convUid = lrcInstance_->getCurrentConvUid();
+        lrcInstance_->getCurrentConversationModel()->sendFile(convUid, message, fileName);
     } catch (...) {
         qDebug() << "Exception during sendFile";
     }
@@ -312,8 +314,8 @@ MessagesAdapter::retryInteraction(const QString& arg)
     bool ok;
     uint64_t interactionUid = arg.toULongLong(&ok);
     if (ok) {
-        LRCInstance::getCurrentConversationModel()
-            ->retryInteraction(LRCInstance::getCurrentConvUid(), interactionUid);
+        lrcInstance_->getCurrentConversationModel()
+            ->retryInteraction(lrcInstance_->getCurrentConvUid(), interactionUid);
     } else {
         qDebug() << "retryInteraction - invalid arg" << arg;
     }
@@ -339,8 +341,8 @@ MessagesAdapter::deleteInteraction(const QString& arg)
     bool ok;
     uint64_t interactionUid = arg.toULongLong(&ok);
     if (ok) {
-        LRCInstance::getCurrentConversationModel()
-            ->clearInteractionFromConversation(LRCInstance::getCurrentConvUid(), interactionUid);
+        lrcInstance_->getCurrentConversationModel()
+            ->clearInteractionFromConversation(lrcInstance_->getCurrentConvUid(), interactionUid);
     } else {
         qDebug() << "DeleteInteraction - invalid arg" << arg;
     }
@@ -368,8 +370,8 @@ MessagesAdapter::acceptFile(const QString& arg)
 {
     try {
         auto interactionUid = arg.toLongLong();
-        auto convUid = LRCInstance::getCurrentConvUid();
-        LRCInstance::getCurrentConversationModel()->acceptTransfer(convUid, interactionUid);
+        auto convUid = lrcInstance_->getCurrentConvUid();
+        lrcInstance_->getCurrentConversationModel()->acceptTransfer(convUid, interactionUid);
     } catch (...) {
         qDebug() << "JS bridging - exception during acceptFile: " << arg;
     }
@@ -380,8 +382,8 @@ MessagesAdapter::refuseFile(const QString& arg)
 {
     try {
         auto interactionUid = arg.toLongLong();
-        const auto convUid = LRCInstance::getCurrentConvUid();
-        LRCInstance::getCurrentConversationModel()->cancelTransfer(convUid, interactionUid);
+        const auto convUid = lrcInstance_->getCurrentConvUid();
+        lrcInstance_->getCurrentConversationModel()->cancelTransfer(convUid, interactionUid);
     } catch (...) {
         qDebug() << "JS bridging - exception during refuseFile:" << arg;
     }
@@ -440,14 +442,14 @@ MessagesAdapter::onComposing(bool isComposing)
     if (!AppSettingsManager::getValue(Settings::Key::EnableTypingIndicator).toBool()) {
         return;
     }
-    LRCInstance::getCurrentConversationModel()->setIsComposing(LRCInstance::getCurrentConvUid(),
-                                                               isComposing);
+    lrcInstance_->getCurrentConversationModel()->setIsComposing(lrcInstance_->getCurrentConvUid(),
+                                                                isComposing);
 }
 
 void
 MessagesAdapter::setConversationProfileData(const lrc::api::conversation::Info& convInfo)
 {
-    auto accInfo = &LRCInstance::getCurrentAccountInfo();
+    auto accInfo = &lrcInstance_->getCurrentAccountInfo();
 
     if (convInfo.participants.isEmpty()) {
         return;
@@ -468,7 +470,7 @@ MessagesAdapter::setConversationProfileData(const lrc::api::conversation::Info& 
         if (!contact.profileInfo.avatar.isEmpty()) {
             setSenderImage(contactUri, contact.profileInfo.avatar);
         } else {
-            auto avatar = Utils::contactPhoto(convInfo.participants[0]);
+            auto avatar = Utils::contactPhoto(lrcInstance_, convInfo.participants[0]);
             QByteArray ba;
             QBuffer bu(&ba);
             avatar.save(&bu, "PNG");
@@ -486,10 +488,10 @@ MessagesAdapter::newInteraction(const QString& accountId,
 {
     Q_UNUSED(interactionId);
     try {
-        if (convUid.isEmpty() || convUid != LRCInstance::getCurrentConvUid()) {
+        if (convUid.isEmpty() || convUid != lrcInstance_->getCurrentConvUid()) {
             return;
         }
-        auto& accountInfo = LRCInstance::getAccountInfo(accountId);
+        auto& accountInfo = lrcInstance_->getAccountInfo(accountId);
         auto& convModel = accountInfo.conversationModel;
         convModel->clearUnreadInteractions(convUid);
         printNewInteraction(*convModel, interactionId, interaction);
@@ -650,7 +652,7 @@ MessagesAdapter::setSendMessageContent(const QString& content)
 void
 MessagesAdapter::contactIsComposing(const QString& uid, const QString& contactUri, bool isComposing)
 {
-    if (LRCInstance::getCurrentConvUid() == uid) {
+    if (lrcInstance_->getCurrentConvUid() == uid) {
         QString s
             = QString::fromLatin1("showTypingIndicator(`%1`, %2);").arg(contactUri).arg(isComposing);
         QMetaObject::invokeMethod(qmlObj_, "webViewRunJavaScript", Q_ARG(QVariant, s));
@@ -660,15 +662,15 @@ MessagesAdapter::contactIsComposing(const QString& uid, const QString& contactUr
 void
 MessagesAdapter::acceptInvitation(const QString& convUid)
 {
-    const auto currentConvUid = convUid.isEmpty() ? LRCInstance::getCurrentConvUid() : convUid;
-    LRCInstance::getCurrentConversationModel()->makePermanent(currentConvUid);
+    const auto currentConvUid = convUid.isEmpty() ? lrcInstance_->getCurrentConvUid() : convUid;
+    lrcInstance_->getCurrentConversationModel()->makePermanent(currentConvUid);
 }
 
 void
 MessagesAdapter::refuseInvitation(const QString& convUid)
 {
-    const auto currentConvUid = convUid.isEmpty() ? LRCInstance::getCurrentConvUid() : convUid;
-    LRCInstance::getCurrentConversationModel()->removeConversation(currentConvUid, false);
+    const auto currentConvUid = convUid.isEmpty() ? lrcInstance_->getCurrentConvUid() : convUid;
+    lrcInstance_->getCurrentConversationModel()->removeConversation(currentConvUid, false);
     setInvitation(false);
     if (convUid == currentConvUid_)
         currentConvUid_.clear();
@@ -678,8 +680,8 @@ MessagesAdapter::refuseInvitation(const QString& convUid)
 void
 MessagesAdapter::blockConversation(const QString& convUid)
 {
-    const auto currentConvUid = convUid.isEmpty() ? LRCInstance::getCurrentConvUid() : convUid;
-    LRCInstance::getCurrentConversationModel()->removeConversation(currentConvUid, true);
+    const auto currentConvUid = convUid.isEmpty() ? lrcInstance_->getCurrentConvUid() : convUid;
+    lrcInstance_->getCurrentConversationModel()->removeConversation(currentConvUid, true);
     setInvitation(false);
     if (convUid == currentConvUid_)
         currentConvUid_.clear();
@@ -690,7 +692,7 @@ MessagesAdapter::blockConversation(const QString& convUid)
 void
 MessagesAdapter::clearConversationHistory(const QString& accountId, const QString& uid)
 {
-    LRCInstance::getAccountInfo(accountId).conversationModel->clearHistory(uid);
+    lrcInstance_->getAccountInfo(accountId).conversationModel->clearHistory(uid);
     if (uid == currentConvUid_)
         currentConvUid_.clear();
 }
@@ -698,7 +700,7 @@ MessagesAdapter::clearConversationHistory(const QString& accountId, const QStrin
 void
 MessagesAdapter::removeConversation(const QString& accountId, const QString& uid, bool banContact)
 {
-    LRCInstance::getAccountInfo(accountId).conversationModel->removeConversation(uid, banContact);
+    lrcInstance_->getAccountInfo(accountId).conversationModel->removeConversation(uid, banContact);
     if (uid == currentConvUid_)
         currentConvUid_.clear();
     emit navigateToWelcomePageRequested();

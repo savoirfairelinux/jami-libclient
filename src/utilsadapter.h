@@ -25,14 +25,18 @@
 #include <QApplication>
 #include <QObject>
 
+#include "qmladapterbase.h"
+
 class QClipboard;
 
-class UtilsAdapter final : public QObject
+class UtilsAdapter final : public QmlAdapterBase
 {
     Q_OBJECT
 public:
-    explicit UtilsAdapter(QObject* parent = nullptr);
+    explicit UtilsAdapter(QObject* parent = nullptr, LRCInstance* instance = nullptr);
     ~UtilsAdapter() = default;
+
+    void safeInit() override {}
 
     Q_INVOKABLE const QString getProjectCredits();
     Q_INVOKABLE const QString getVersionStr();

@@ -18,8 +18,15 @@
 
 #include "audiomanagerlistmodel.h"
 
+#include "lrcinstance.h"
+
+#include "api/account.h"
+#include "api/contact.h"
+#include "api/conversation.h"
+#include "api/newdevicemodel.h"
+
 AudioManagerListModel::AudioManagerListModel(QObject* parent)
-    : QAbstractListModel(parent)
+    : AbstractListModelBase(parent)
 {}
 
 AudioManagerListModel::~AudioManagerListModel() {}
@@ -27,11 +34,11 @@ AudioManagerListModel::~AudioManagerListModel() {}
 int
 AudioManagerListModel::rowCount(const QModelIndex& parent) const
 {
-    if (!parent.isValid()) {
+    if (!parent.isValid() && lrcInstance_) {
         /*
          * Count.
          */
-        return LRCInstance::avModel().getSupportedAudioManagers().size();
+        return lrcInstance_->avModel().getSupportedAudioManagers().size();
     }
     /*
      * A valid QModelIndex returns 0 as no entry has sub-elements.
@@ -52,7 +59,7 @@ AudioManagerListModel::columnCount(const QModelIndex& parent) const
 QVariant
 AudioManagerListModel::data(const QModelIndex& index, int role) const
 {
-    auto managerList = LRCInstance::avModel().getSupportedAudioManagers();
+    auto managerList = lrcInstance_->avModel().getSupportedAudioManagers();
     if (!index.isValid() || managerList.size() <= index.row()) {
         return QVariant();
     }
@@ -116,7 +123,7 @@ AudioManagerListModel::reset()
 int
 AudioManagerListModel::getCurrentSettingIndex()
 {
-    QString currentId = LRCInstance::avModel().getAudioManager();
+    QString currentId = lrcInstance_->avModel().getAudioManager();
     auto resultList = match(index(0, 0), AudioManagerID, QVariant(currentId));
 
     int resultRowIndex = 0;

@@ -187,7 +187,9 @@ ColumnLayout {
             Layout.fillWidth: true
             Layout.preferredHeight: 160
 
-            model: ModeratorListModel {}
+            model: ModeratorListModel {
+                lrcInstance: LRCInstance
+            }
 
             delegate: ContactItemDelegate {
                 id: moderatorListDelegate

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020 by Savoir-faire Linux
+ * Copyright (C) 2019-2020 by Savoir-faire Linux
  * Author: Mingrui Zhang   <mingrui.zhang@savoirfairelinux.com>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -18,38 +18,23 @@
 
 #pragma once
 
+#include <QImage>
 #include <QObject>
+#include <QQuickImageProvider>
 
 class LRCInstance;
 
-// The main purpose of this class is to operate on qml objects,
-// or provide api calls to qml objects that cannot be done directly in qml.
-class QmlAdapterBase : public QObject
+class QuickImageProviderBase : public QObject, public QQuickImageProvider
 {
-    Q_OBJECT
 public:
-    explicit QmlAdapterBase(QObject* parent = nullptr, LRCInstance* instance = nullptr)
-        : QObject(parent)
-        , qmlObj_(nullptr)
-        , lrcInstance_(instance) {};
-
-    virtual ~QmlAdapterBase() = default;
-
-    // This function should be called in the Component.onCompleted slot
-    // in the qml component that this adapter should attach to.
-    Q_INVOKABLE void setQmlObject(QObject* obj)
-    {
-        qmlObj_ = obj;
-        safeInit();
-    };
+    QuickImageProviderBase(QQuickImageProvider::ImageType type,
+                            QQmlImageProviderBase::Flag flag,
+                            LRCInstance* instance = nullptr)
+        : QQuickImageProvider(type, flag)
+        , lrcInstance_(instance)
+    {}
 
 protected:
-    // Once the qml object is set, Qml method invokation can be done
-    virtual void safeInit() = 0;
-
-    // Object pointer.
-    QObject* qmlObj_;
-
     // LRCInstance pointer
     LRCInstance* lrcInstance_ {nullptr};
 };

@@ -25,12 +25,14 @@
 #include <QtNetwork/QLocalServer>
 #include <QtNetwork/QLocalSocket>
 
+class MainApplication;
+
 class RunGuard : public QObject
 {
     Q_OBJECT;
 
 public:
-    RunGuard(const QString& key);
+    RunGuard(const QString& key, MainApplication* mainApp = nullptr);
     ~RunGuard();
 
     bool isAnotherRunning();
@@ -41,6 +43,8 @@ private slots:
     void tryRestorePrimaryInstance();
 
 private:
+    MainApplication* mainAppInstance_;
+
     const QString key_;
     const QString memLockKey_;
     const QString sharedmemKey_;

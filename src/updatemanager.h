@@ -20,6 +20,7 @@
 
 #include "networkmanager.h"
 
+class LRCInstance;
 class ConnectivityMonitor;
 class QTimer;
 
@@ -27,7 +28,10 @@ class UpdateManager final : public NetWorkManager
 {
     Q_OBJECT
 public:
-    explicit UpdateManager(const QString& url, ConnectivityMonitor* cm, QObject* parent = nullptr);
+    explicit UpdateManager(const QString& url,
+                           ConnectivityMonitor* cm,
+                           QObject* parent = nullptr,
+                           LRCInstance* instance = nullptr);
     ~UpdateManager() = default;
 
     Q_INVOKABLE void checkForUpdates(bool quiet = false);
@@ -46,6 +50,9 @@ signals:
     void appCloseRequested();
 
 private:
+    // LRCInstance pointer
+    LRCInstance* lrcInstance_ {nullptr};
+
     QByteArray baseUrl_;
     QString tempPath_;
     QTimer* updateTimer_;

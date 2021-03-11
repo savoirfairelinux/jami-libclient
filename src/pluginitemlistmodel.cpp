@@ -18,18 +18,24 @@
 
 #include "pluginitemlistmodel.h"
 
-PluginItemListModel::PluginItemListModel(QObject* parent)
-    : QAbstractListModel(parent)
-{}
+#include "lrcinstance.h"
+
+#include "api/pluginmodel.h"
+
+PluginItemListModel::PluginItemListModel(QObject* parent, LRCInstance* instance)
+    : AbstractListModelBase(parent)
+{
+    lrcInstance_ = instance;
+}
 
 PluginItemListModel::~PluginItemListModel() {}
 
 int
 PluginItemListModel::rowCount(const QModelIndex& parent) const
 {
-    if (!parent.isValid()) {
+    if (!parent.isValid() && lrcInstance_) {
         /// Count
-        return LRCInstance::pluginModel().getInstalledPlugins().size();
+        return lrcInstance_->pluginModel().getInstalledPlugins().size();
     }
     /// A valid QModelIndex returns 0 as no entry has sub-elements.
     return 0;
@@ -46,12 +52,12 @@ PluginItemListModel::columnCount(const QModelIndex& parent) const
 QVariant
 PluginItemListModel::data(const QModelIndex& index, int role) const
 {
-    auto pluginList = LRCInstance::pluginModel().getInstalledPlugins();
+    auto pluginList = lrcInstance_->pluginModel().getInstalledPlugins();
     if (!index.isValid() || pluginList.size() <= index.row()) {
         return QVariant();
     }
 
-    auto details = LRCInstance::pluginModel().getPluginDetails(pluginList.at(index.row()));
+    auto details = lrcInstance_->pluginModel().getPluginDetails(pluginList.at(index.row()));
 
     switch (role) {
     case Role::PluginName:
@@ -119,5 +125,5 @@ PluginItemListModel::reset()
 int
 PluginItemListModel::pluginsCount()
 {
-    return LRCInstance::pluginModel().getInstalledPlugins().size();
+    return lrcInstance_->pluginModel().getInstalledPlugins().size();
 }
