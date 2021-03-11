@@ -29,6 +29,7 @@
 #include "api/newcodecmodel.h"
 #include "api/newdevicemodel.h"
 #include "api/behaviorcontroller.h"
+#include "api/datatransfermodel.h"
 #include "authority/storagehelper.h"
 #include "callbackshandler.h"
 #include "database.h"
@@ -751,6 +752,7 @@ NewAccountModelPimpl::addToAccounts(const QString& accountId, std::shared_ptr<Da
                                                                          accountId);
     newAccInfo.deviceModel = std::make_unique<NewDeviceModel>(newAccInfo, callbacksHandler);
     newAccInfo.codecModel = std::make_unique<NewCodecModel>(newAccInfo, callbacksHandler);
+    newAccInfo.dataTransferModel = std::make_unique<DataTransferModel>();
 }
 
 void
