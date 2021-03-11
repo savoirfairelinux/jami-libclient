@@ -37,18 +37,18 @@ static inline Mode
 to_mode(const int intMode)
 {
     switch (intMode) {
-        case 0:
-            return Mode::ONE_TO_ONE;
-        case 1:
-            return Mode::ADMIN_INVITES_ONLY;
-        case 2:
-            return Mode::INVITES_ONLY;
-        case 3:
-            return Mode::PUBLIC;
-        case 4:
-            return Mode::NON_SWARM;
-        default:
-            return Mode::ONE_TO_ONE;
+    case 0:
+        return Mode::ONE_TO_ONE;
+    case 1:
+        return Mode::ADMIN_INVITES_ONLY;
+    case 2:
+        return Mode::INVITES_ONLY;
+    case 3:
+        return Mode::PUBLIC;
+    case 4:
+        return Mode::NON_SWARM;
+    default:
+        return Mode::ONE_TO_ONE;
     }
 }
 
@@ -75,6 +75,7 @@ struct Info
     QString getCallId() { return confId.isEmpty() ? callId : confId; }
 
     Mode mode = Mode::NON_SWARM;
+    bool needsSyncing = false;
     bool isRequest = false;
 };
 
