@@ -64,6 +64,7 @@ const navbar = document.getElementById("navbar")
 const emojiBtn = document.getElementById('emojiButton');
 const invitationText = document.getElementById("invitation_text")
 const joinText = document.getElementById("join_text")
+const noteText = document.getElementById("note_text")
 const invitationNoteText = document.getElementById("invitation_note")
 
 var   messages = document.getElementById("messages")
@@ -383,9 +384,11 @@ function update_chatview_frame(accountEnabled, banned, temporary, alias, bestid)
  *
  * @param contactAlias
  * @param contactId
+ * @param isSwarm
+ * @param isSyncing
  */
 /* exported showInvitation */
-function showInvitation(contactAlias, contactId, isSwarm) {
+function showInvitation(contactAlias, contactId, isSwarm, isSyncing) {
     if (!contactAlias) {
         if (hasInvitation) {
             hasInvitation = false
@@ -412,9 +415,17 @@ function showInvitation(contactAlias, contactId, isSwarm) {
             i18n.sprintf(i18n.gettext("%s has sent you a conversation request."), contactAlias))
             + "<br/>"
 
+        var joinTextValue = (isSyncing ?
+            "You have accepted the conversation request." :
+            "Hello, do you want to join the conversation?")
         joinText.innerHTML = (use_qt ?
-            i18nStringData["Hello, do you want to join the conversation?"] :
-            i18n.gettext("Hello, do you want to join the conversation?"))
+            i18nStringData[joinTextValue] :
+            i18n.gettext(joinTextValue))
+            + "<br/>"
+
+        noteText.innerHTML = (use_qt ?
+            i18nStringData["We are waiting for another device to synchronize the conversation."] :
+            i18n.gettext("We are waiting for another device to synchronize the conversation."))
             + "<br/>"
 
         invitationNoteText.innerHTML = (use_qt ?
@@ -432,7 +443,7 @@ function showInvitation(contactAlias, contactId, isSwarm) {
             invitationNoteText.style.visibility = "visible"
             messageBar.style.visibility = "visible"
         }
-
+        
         invitation.style.display = "flex"
         invitation.style.visibility = "visible"
 
@@ -1026,14 +1037,7 @@ function fileInteraction(message_id, message_direction) {
 
     const internal_mes_wrapper = document.createElement("div")
     internal_mes_wrapper.setAttribute("class", "internal_mes_wrapper")
-   // if(use_qt) {
-   //     var tbl = buildMsgTable(message_direction)
-   //     var msg_cell = tbl.querySelector(".msg_cell")
-   //     msg_cell.appendChild(message_wrapper)
-   //     internal_mes_wrapper.appendChild(tbl)
-   // } else {
-        internal_mes_wrapper.appendChild(message_wrapper)
-   // }
+    internal_mes_wrapper.appendChild(message_wrapper)
 
     return internal_mes_wrapper
 }
