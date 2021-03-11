@@ -582,7 +582,7 @@ ConversationModel::getFilteredConversations(const FilterType& filter,
                 switch (pimpl_->customTypeFilter) {
                 case FilterType::JAMI:
                     // we have conversation with many participants only for JAMI
-                    return (owner.profileInfo.type == profile::Type::RING && !entry.isRequest);
+                    return (owner.profileInfo.type == profile::Type::JAMI && !entry.isRequest);
                 case FilterType::SIP:
                     return (owner.profileInfo.type == profile::Type::SIP && !entry.isRequest);
                 case FilterType::REQUEST:
@@ -2324,7 +2324,7 @@ ConversationModelPimpl::slotConversationRemoved(const QString& accountId,
         // remove swarm conversation
         conversations.erase(conversations.begin() + conversationIndex);
         auto contact = linked.owner.contactModel->getContact(contactId);
-        if (contact.profileInfo.type != api::profile::Type::RING) {
+        if (contact.profileInfo.type != api::profile::Type::JAMI) {
             emit linked.conversationRemoved(conversationId);
             return;
         }
