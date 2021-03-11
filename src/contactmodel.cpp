@@ -248,7 +248,7 @@ ContactModel::addContact(contact::Info contactInfo)
     }
 
     if ((owner.profileInfo.type != profile.type)
-        and (profile.type == profile::Type::RING or profile.type == profile::Type::SIP)) {
+        and (profile.type == profile::Type::JAMI or profile.type == profile::Type::SIP)) {
         qDebug() << "ContactModel::addContact, types invalids.";
         return;
     }
@@ -277,7 +277,7 @@ ContactModel::addContact(contact::Info contactInfo)
             return;
         }
         break;
-    case profile::Type::RING:
+    case profile::Type::JAMI:
     case profile::Type::SIP:
         break;
     case profile::Type::INVALID:
@@ -384,14 +384,14 @@ ContactModel::searchContact(const QString& query)
     if (static_cast<int>(uriScheme) > 2 && owner.profileInfo.type == profile::Type::SIP) {
         // sip account do not care if schemeType is NONE, or UNRECOGNIZED (enum value > 2)
         uriScheme = URI::SchemeType::SIP;
-    } else if (uriScheme == URI::SchemeType::NONE && owner.profileInfo.type == profile::Type::RING) {
+    } else if (uriScheme == URI::SchemeType::NONE && owner.profileInfo.type == profile::Type::JAMI) {
         uriScheme = URI::SchemeType::RING;
     }
 
     if ((uriScheme == URI::SchemeType::SIP || uriScheme == URI::SchemeType::SIPS)
         && owner.profileInfo.type == profile::Type::SIP) {
         pimpl_->searchSipContact(uri);
-    } else if (uriScheme == URI::SchemeType::RING && owner.profileInfo.type == profile::Type::RING) {
+    } else if (uriScheme == URI::SchemeType::RING && owner.profileInfo.type == profile::Type::JAMI) {
         pimpl_->searchContact(uri);
     } else {
         pimpl_->updateTemporaryMessage(tr("Bad URI scheme"));
@@ -753,7 +753,7 @@ ContactModelPimpl::slotContactAdded(const QString& accountId,
     if (contact != contacts.end()) {
         if (contact->profileInfo.type == profile::Type::PENDING) {
             emit behaviorController.trustRequestTreated(linked.owner.id, contactUri);
-        } else if (contact->profileInfo.type == profile::Type::RING && !contact->isBanned
+        } else if (contact->profileInfo.type == profile::Type::JAMI && !contact->isBanned
                    && confirmed) {
             // This means that the peer accepted the trust request. We don't need to re-add the
             // contact a second time (and this reset the presence to false).
@@ -869,7 +869,7 @@ ContactModelPimpl::addToContacts(const QString& contactUri,
     contactInfo.isBanned = banned;
 
     // lookup address in case of RING contact
-    if (type == profile::Type::RING) {
+    if (type == profile::Type::JAMI) {
         ConfigurationManager::instance().lookupAddress(linked.owner.id, "", contactUri);
         PresenceManager::instance().subscribeBuddy(linked.owner.id, contactUri, !banned);
     } else {
@@ -989,7 +989,7 @@ ContactModelPimpl::slotIncomingCall(const QString& fromId,
         if (it == contacts.end()) {
             // Contact not found, load profile from database.
             // The conversation model will create an entry and link the incomingCall.
-            auto type = (linked.owner.profileInfo.type == profile::Type::RING)
+            auto type = (linked.owner.profileInfo.type == profile::Type::JAMI)
                             ? profile::Type::PENDING
                             : profile::Type::SIP;
             addToContacts(fromId, type, displayname, false);
@@ -1003,7 +1003,7 @@ ContactModelPimpl::slotIncomingCall(const QString& fromId,
         }
     }
     if (emitContactAdded) {
-        if (linked.owner.profileInfo.type == profile::Type::RING) {
+        if (linked.owner.profileInfo.type == profile::Type::JAMI) {
             emit behaviorController.newTrustRequest(linked.owner.id, fromId);
         }
     } else
@@ -1118,11 +1118,11 @@ ContactModelPimpl::slotNewAccountTransfer(DataTransferId dringId, datatransfer::
             && contacts.find(info.peerUri) == contacts.end()) {
             // Contact not found, load profile from database.
             // The conversation model will create an entry and link the incomingCall.
-            auto type = (linked.owner.profileInfo.type == profile::Type::RING)
+            auto type = (linked.owner.profileInfo.type == profile::Type::JAMI)
                             ? profile::Type::PENDING
                             : profile::Type::SIP;
             addToContacts(info.peerUri, type, "", false);
-            emitNewTrust = (linked.owner.profileInfo.type == profile::Type::RING);
+            emitNewTrust = (linked.owner.profileInfo.type == profile::Type::JAMI);
         }
     }
     if (emitNewTrust) {
@@ -1151,7 +1151,7 @@ ContactModelPimpl::slotProfileReceived(const QString& accountId,
 
     profile::Info profileInfo;
     profileInfo.uri = peer;
-    profileInfo.type = profile::Type::RING;
+    profileInfo.type = profile::Type::JAMI;
 
     for (auto& e : QString(vCard).split("\n"))
         if (e.contains("PHOTO"))
