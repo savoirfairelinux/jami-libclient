@@ -318,12 +318,14 @@ body {
     flex: 1;
     background-color: transparent;
     overflow-y: hidden;
+    vertical-align:middle;
     color: var(--text-color);
     width: 100%;
     min-height: 50px;
     max-height: var(--textarea-max-height);
     resize: none;
     border: none;
+    padding: 30px 5px;
     /* enable selection (it is globally disabled in the body) */
     -webkit-user-select: auto;
 }
