@@ -47,7 +47,6 @@ class Info;
 class LIB_EXPORT DataTransferModel : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(QString downloadDirectory_qml MEMBER downloadDirectory)
 public:
     DataTransferModel();
     ~DataTransferModel();
@@ -57,25 +56,32 @@ public:
                   const QString& file_path,
                   const QString& display_name);
 
-    void transferInfo(const QString& accountId, const QString& conversationId, DataTransferId ringId, datatransfer::Info& lrc_info);
+    void transferInfo(const QString& accountId,
+                      const QString& conversationId,
+                      DataTransferId ringId,
+                      datatransfer::Info& lrc_info);
 
-    void bytesProgress(const QString& accountId, const QString& conversationId, const QString& interactionId, int64_t& total, int64_t& progress);
+    void bytesProgress(const QString& accountId,
+                       const QString& conversationId,
+                       const QString& interactionId,
+                       int64_t& total,
+                       int64_t& progress);
 
-    QString accept(const QString& accountId, const QString& conversationId, const QString& interactionId, const QString& file_path, std::size_t offset);
+    QString accept(const QString& accountId,
+                   const QString& conversationId,
+                   const QString& interactionId,
+                   const QString& file_path,
+                   std::size_t offset);
 
-    void cancel(const QString& accountId, const QString& conversationId, const QString& interactionId);
+    void cancel(const QString& accountId,
+                const QString& conversationId,
+                const QString& interactionId);
 
     void registerTransferId(DataTransferId dringId, const QString& interactionId);
 
     QString getInteractionIdFromDringId(DataTransferId dringId);
 
     DataTransferId getDringIdFromInteractionId(const QString& interactionId);
-
-    /**
-     * Used when images < 20 Mb are automatically accepted and downloaded
-     * Should contains the full directory with the end marker (/ on linux for example)
-     */
-    QString downloadDirectory;
 
     /**
      *  Creates APPDATA/received and return the path
