@@ -29,6 +29,7 @@
 #include "api/newcodecmodel.h"
 #include "api/newdevicemodel.h"
 #include "api/behaviorcontroller.h"
+#include "api/datatransfermodel.h"
 #include "authority/storagehelper.h"
 #include "callbackshandler.h"
 #include "database.h"
