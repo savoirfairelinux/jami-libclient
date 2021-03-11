@@ -1121,7 +1121,11 @@ video {
   }
 
   #join_text {
-      font-size: 18px;
+      font-size: 1.1em;
+  }
+
+  #note_text {
+      font-size: .8em;
   }
 }
 
@@ -1146,7 +1150,11 @@ video {
   }
 
   #join_text {
-      font-size: 16px;
+      font-size: 1em;
+  }
+
+  #note_text {
+      font-size: .8em;
   }
 }
 
