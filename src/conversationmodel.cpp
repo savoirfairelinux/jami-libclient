@@ -1398,19 +1398,54 @@ ConversationModel::loadConversationMessages(const QString& conversationId,
 
 void
 ConversationModel::acceptConversationRequest(const QString& conversationId)
-{}
+{
+    try {
+        auto& conversation = pimpl_->getConversationForUid(conversationId).get();
+        auto participant = conversation.getOneToOneParticipant(owner.profileInfo.uri);
+        if (!conversation.isSwarm) {
+            pimpl_->sendContactRequest(participant);
+            return;
+        }
+        // for swarm conversation add contact if not added yet. Otherwise accept request
+        if (!participant.isEmpty()) {
+            auto contact = owner.contactModel->getContact(participant);
+            auto isNotUsed = contact.profileInfo.type == profile::Type::TEMPORARY
+            || contact.profileInfo.type == profile::Type::PENDING;
+            if (isNotUsed) {
+                owner.contactModel->addContact(contact);
+                return;
+            }
+        }
+        ConfigurationManager::instance().acceptConversationRequest(owner.id, conversationId);
+    } catch (std::out_of_range& e) {}
+}
 
 void
-ConversationModel::declineConversationRequest(const QString& conversationId)
-{}
+ConversationModel::declineConversationRequest(const QString& conversationId, bool banned)
+{
+    try {
+        auto& conversation = pimpl_->getConversationForUid(conversationId).get();
+        auto participant = conversation.getOneToOneParticipant(owner.profileInfo.uri);
+        // for non-swarm and one-to-one conversation remove contact.
+        if (!participant.isEmpty()) {
+            removeConversation(conversationId, banned);
+        } else {
+            ConfigurationManager::instance().declineConversationRequest(owner.id, conversationId);
+        }
+    } catch (std::out_of_range& e) {}
+}
 
 void
 ConversationModel::addConversationMember(const QString& conversationId, const QString& memberURI)
-{}
+{
+    ConfigurationManager::instance().addConversationMember(owner.id, conversationId, memberURI);
+}
 
 void
 ConversationModel::removeConversationMember(const QString& conversationId, const QString& memberURI)
-{}
+{
+    ConfigurationManager::instance().removeConversationMember(owner.id, conversationId, memberURI);
+}
 
 ConversationModelPimpl::ConversationModelPimpl(const ConversationModel& linked,
                                                Lrc& lrc,

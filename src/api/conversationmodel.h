@@ -298,8 +298,9 @@ public:
     /**
      * decline request for conversation
      * @param conversationId conversation's id
+     * @param banned. Used for non-swarm and one-to-one conversation to remove contact
      */
-    void declineConversationRequest(const QString& conversationId);
+    void declineConversationRequest(const QString& conversationId, bool banned = false);
     /**
      * add member to conversation
      * @param conversationId conversation's id
