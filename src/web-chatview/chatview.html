@@ -96,7 +96,10 @@
                 <div id="invitation_rect">
                     <div id="invite_image"></div>
                     <img id="quote_img" src="qrc:/images/icons/quote.svg"></img>
-                    <div id="join_text"></div>
+                    <div id="invite_text">
+                        <div id="join_text"></div>
+                        <div id="note_text"></div>
+                    </div>
 <!--            </div>-->
                     <div id="actions">
                         <button id="blockButton" class="text-button" onclick="blockConversation()">
@@ -120,7 +123,8 @@
         <div id="typing_indicator_container"></div>
 
         <div id="back_to_bottom_button_container">
-            <div id="back_to_bottom_button" onclick="back_to_bottom()">Jump to latest &#9660;</div>
+            <div id="back_to_bottom_button" onclick="back_to_bottom()">Jump to latest &#9660;
+</div>
         </div>
         <div id="send_inteface_container" onresize="updateBackToBottomContainer()">
             <div id="sendMessage">
