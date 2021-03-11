@@ -29,15 +29,15 @@ namespace profile {
 Q_NAMESPACE
 Q_CLASSINFO("RegisterEnumClassesUnscoped", "false")
 
-enum class Type { INVALID, RING, SIP, PENDING, TEMPORARY, COUNT__ };
+enum class Type { INVALID, JAMI, SIP, PENDING, TEMPORARY, COUNT__ };
 Q_ENUM_NS(Type)
 
 static inline const QString
 to_string(const Type& type)
 {
     switch (type) {
-    case Type::RING:
-        return "RING";
+    case Type::JAMI:
+        return "JAMI";
     case Type::SIP:
         return "SIP";
     case Type::PENDING:
@@ -58,8 +58,8 @@ to_type(const QString& type)
         return Type::PENDING;
     else if (type == "SIP")
         return Type::SIP;
-    else if (type == "RING")
-        return Type::RING;
+    else if (type == "JAMI")
+        return Type::JAMI;
     else if (type == "TEMPORARY")
         return Type::TEMPORARY;
     else
