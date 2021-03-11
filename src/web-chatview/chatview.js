@@ -1022,14 +1022,14 @@ function fileInteraction(message_id, message_direction) {
 
     const internal_mes_wrapper = document.createElement("div")
     internal_mes_wrapper.setAttribute("class", "internal_mes_wrapper")
-    if(use_qt) {
-        var tbl = buildMsgTable(message_direction)
-        var msg_cell = tbl.querySelector(".msg_cell")
-        msg_cell.appendChild(message_wrapper)
-        internal_mes_wrapper.appendChild(tbl)
-    } else {
+   // if(use_qt) {
+   //     var tbl = buildMsgTable(message_direction)
+   //     var msg_cell = tbl.querySelector(".msg_cell")
+   //     msg_cell.appendChild(message_wrapper)
+   //     internal_mes_wrapper.appendChild(tbl)
+   // } else {
         internal_mes_wrapper.appendChild(message_wrapper)
-    }
+   // }
 
     return internal_mes_wrapper
 }
@@ -1135,9 +1135,6 @@ function updateFileInteraction(message_div, message_object, forceTypeToFile = fa
         message_div.insertBefore(new_wrapper, message_div.querySelector(".menu_interaction"))
         message_div.querySelector("img").id = message_id
         message_div.querySelector("img").msg_obj = message_object
-        if (use_qt) {
-            addSenderImage(message_div, message_object["type"], message_object["sender_contact_method"])
-        }
         return
     }
 
@@ -1149,12 +1146,7 @@ function updateFileInteraction(message_div, message_object, forceTypeToFile = fa
         }
 
         var errorHandler = function () {
-            var wrapper
-            if (use_qt) {
-                wrapper = message_div.querySelector(".msg_cell")
-            } else {
-                wrapper = message_div.querySelector(".internal_mes_wrapper")
-            }
+            var wrapper = message_div.querySelector(".internal_mes_wrapper")
             var wrapper_audio_video = message_div.querySelector(".message_type_audio_video_transfer")
             wrapper_audio_video.parentNode.classList.remove("no-audio-overlay")
             wrapper_audio_video.parentNode.removeChild(wrapper_audio_video)
@@ -1194,11 +1186,7 @@ function updateFileInteraction(message_div, message_object, forceTypeToFile = fa
         const audio_video_wrapper = document.createElement("div")
         audio_video_wrapper.setAttribute("class", "message_type_audio_video_transfer")
         audio_video_wrapper.appendChild(new_wrapper)
-        if (use_qt) {
-            message_div.querySelector(".msg_cell").appendChild(audio_video_wrapper)
-        } else {
-            message_div.querySelector(".internal_mes_wrapper").insertBefore(audio_video_wrapper, message_div.querySelector(".timestamp"))
-        }
+        message_div.querySelector(".internal_mes_wrapper").insertBefore(audio_video_wrapper, message_div.querySelector(".timestamp"))
         audio_video_wrapper.parentNode.classList.add("no-audio-overlay")
         return
     }
@@ -1211,12 +1199,7 @@ function updateFileInteraction(message_div, message_object, forceTypeToFile = fa
         }
 
         var errorHandler = function () {
-            var wrapper
-            if (use_qt) {
-                wrapper = message_div.querySelector(".msg_cell")
-            } else {
-                wrapper = message_div.querySelector(".internal_mes_wrapper")
-            }
+            var wrapper = message_div.querySelector(".internal_mes_wrapper")
             var wrapper_audio_video = message_div.querySelector(".message_type_audio_video_transfer")
             wrapper_audio_video.parentNode.classList.remove("no-audio-overlay")
             wrapper_audio_video.parentNode.removeChild(wrapper_audio_video)
@@ -1261,11 +1244,7 @@ function updateFileInteraction(message_div, message_object, forceTypeToFile = fa
 
         audio_video_wrapper.setAttribute("class", "message_type_audio_video_transfer")
         audio_video_wrapper.appendChild(new_wrapper)
-        if (use_qt) {
-            message_div.querySelector(".msg_cell").appendChild(audio_video_wrapper)
-        } else {
-            message_div.querySelector(".internal_mes_wrapper").insertBefore(audio_video_wrapper, message_div.querySelector(".timestamp"))
-        }
+        message_div.querySelector(".internal_mes_wrapper").insertBefore(audio_video_wrapper, message_div.querySelector(".timestamp"))
         audio_video_wrapper.parentNode.classList.add("no-video-overlay")
         return
     }
@@ -1452,14 +1431,14 @@ function mediaInteraction(message_id, message_direction, link, ytid, errorHandle
 
     const internal_mes_wrapper = document.createElement("div")
     internal_mes_wrapper.setAttribute("class", "internal_mes_wrapper")
-    if(use_qt) {
-        var tbl = buildMsgTable(message_direction)
-        var msg_cell = tbl.querySelector(".msg_cell")
-        msg_cell.appendChild(media_wrapper)
-        internal_mes_wrapper.appendChild(tbl)
-    } else {
+    //if(use_qt) {
+    //    var tbl = buildMsgTable(message_direction)
+    //    var msg_cell = tbl.querySelector(".msg_cell")
+    //    msg_cell.appendChild(media_wrapper)
+    //    internal_mes_wrapper.appendChild(tbl)
+    //} else {
         internal_mes_wrapper.appendChild(media_wrapper)
-    }
+    //}
 
     return internal_mes_wrapper
 }
@@ -1481,14 +1460,14 @@ function textInteraction(message_id, message_direction, htmlText) {
 
     const internal_mes_wrapper = document.createElement("div")
     internal_mes_wrapper.setAttribute("class", "internal_mes_wrapper")
-    if(use_qt) {
-        var tbl = buildMsgTable(message_direction)
-        var msg_cell = tbl.querySelector(".msg_cell")
-        msg_cell.appendChild(message_wrapper)
-        internal_mes_wrapper.appendChild(tbl)
-    } else {
+    //if(use_qt) {
+    //    var tbl = buildMsgTable(message_direction)
+    //    var msg_cell = tbl.querySelector(".msg_cell")
+    //    msg_cell.appendChild(message_wrapper)
+    //    internal_mes_wrapper.appendChild(tbl)
+    //} else {
         internal_mes_wrapper.appendChild(message_wrapper)
-    }
+    //}
 
     return internal_mes_wrapper
 }
@@ -1621,11 +1600,7 @@ function removeInteraction(interaction_id) {
         var timestamp = interaction.querySelector(".timestamp")
         var previousTimeStamp = interaction.previousSibling.querySelector(".timestamp")
         if (timestamp && !previousTimeStamp) {
-            if (use_qt) {
-                interaction.previousSibling.querySelector(".timestamp_cell").appendChild(timestamp)
-            } else {
-                interaction.previousSibling.querySelector(".internal_mes_wrapper").appendChild(timestamp)
-            }
+            interaction.previousSibling.querySelector(".internal_mes_wrapper").appendChild(timestamp)
         }
     }
 
@@ -1661,7 +1636,7 @@ function buildNewMessage(message_object) {
     message_div.setAttribute("class", classes.join(" "))
 
     // Build message for each types.
-    if(!use_qt) {
+   // if(!use_qt) {
         // Add sender images if necessary (like if the interaction doesn't take the whole width)
         const need_sender = (message_type === "data_transfer" || message_type === "text")
         if (need_sender) {
@@ -1669,15 +1644,12 @@ function buildNewMessage(message_object) {
             message_sender_image.setAttribute("class", `sender_image sender_image_${message_sender_contact_method}`)
             message_div.appendChild(message_sender_image)
         }
-    }
+   // }
 
     // Build main content
     if (message_type === "data_transfer") {
         if (isImage(message_text) && delivery_status === "finished" && displayLinksEnabled) {
             var errorHandler = function () {
-                if (use_qt) {
-                    return
-                }
                 var wrapper = message_div.querySelector(".internal_mes_wrapper")
                 var message_wrapper = message_div.querySelector(".message_wrapper")
                 if (message_wrapper) {
@@ -1796,13 +1768,7 @@ function addOrUpdateMessage(message_object, new_message, insert_after = true, me
             message_div.querySelector(".message_wrapper").appendChild(date_elt)
         } else if (insert_after || !timestamp || timestamp.className !== date_elt.className
                                 || timestamp.innerHTML !== date_elt.innerHTML) {
-            if (use_qt) {
-                message_div.querySelector(".timestamp_cell").appendChild(date_elt)
-                if (message_direction === "out")
-                    message_div.querySelector(".timestamp_cell").setAttribute("class", "timestamp_cell_out")
-            } else {
-                message_div.querySelector(".internal_mes_wrapper").appendChild(date_elt)
-            }
+            message_div.querySelector(".internal_mes_wrapper").appendChild(date_elt)
         }
 
         var isGenerated = message_type === "call" || message_type === "contact"
@@ -2258,14 +2224,6 @@ function setSenderImage(set_sender_image_object)
     invite_style.id = invite_sender_image_id
     invite_style.innerHTML = "." + invite_sender_image_id + " {content: url(data:image/png;base64," + sender_image + ");height: 48px; width: 48px;}"
     document.head.appendChild(invite_style)
-
-    if (use_qt) {
-        var typing_indicator_container_div = document.getElementById("typing_indicator_container")
-        var sender_image_span = typing_indicator_container_div.querySelector(".sender_image_cell")
-        if (sender_image_span) {
-            sender_image_span.childNodes[0].setAttribute("class", "sender_image " + sender_image_id)
-        }
-    }
 }
 
 /**
@@ -2273,68 +2231,36 @@ function setSenderImage(set_sender_image_object)
  */
 /* exported showTypingIndicator */
 function showTypingIndicator(contactUri, isTyping) {
+    var message_div = messages.lastChild.querySelector("#message_typing")
 
-    if (use_qt) {
-        var typing_indicator_container_div = document.getElementById("typing_indicator_container")
-
-        if (isTyping === 0) {
-            typing_indicator_container_div.style.display = "none";
-        } else if (typing_indicator_container_div.style.display !== "block") {
-            typing_indicator_container_div.style.display = "block";
-            var message_div = typing_indicator_container_div.querySelector("#message_typing")
-
-            if (!message_div){
-                message_div = buildNewMessage({
-                    "id":"typing",
-                    "type":"text",
-                    "text":"",
-                    "direction":"in",
-                    "delivery_status":"",
-                    "sender_contact_method": contactUri
-                })
-                message_div.classList.add("single_message")
-                let msg_text = message_div.querySelector(".message_text")
-                msg_text.innerHTML = " \
-                                <div class=\"typing-indicator\"> \
-                                    <span></span> \
-                                    <span></span> \
-                                    <span></span> \
-                                </div>"
-                typing_indicator_container_div.appendChild(message_div)
-            }
+    if (isTyping === 0) {
+        if (message_div) {
+            message_div.parentNode.removeChild(message_div)
         }
-    } else {
-        var message_div = messages.lastChild.querySelector("#message_typing")
+    } else if (!message_div) {
+        message_div = buildNewMessage({
+            "id":"typing",
+            "type":"text",
+            "text":"",
+            "direction":"in",
+            "delivery_status":"",
+            "sender_contact_method": contactUri
+        })
 
-        if (isTyping === 0) {
-            if (message_div) {
-                message_div.parentNode.removeChild(message_div)
-            }
-        } else if (!message_div) {
-            message_div = buildNewMessage({
-                "id":"typing",
-                "type":"text",
-                "text":"",
-                "direction":"in",
-                "delivery_status":"",
-                "sender_contact_method": contactUri
-            })
-
-            var previousMessage = messages.lastChild.lastChild
-            messages.lastChild.appendChild(message_div)
-            computeSequencing(previousMessage, message_div, null, true)
-            if (previousMessage) {
-                previousMessage.classList.remove("last_message")
-            }
-            message_div.classList.add("last_message")
-            let msg_text = message_div.querySelector(".message_text")
-            msg_text.innerHTML = " \
-                            <div class=\"typing-indicator\"> \
-                                <span></span> \
-                                <span></span> \
-                                <span></span> \
-                            </div>"
+        var previousMessage = messages.lastChild.lastChild
+        messages.lastChild.appendChild(message_div)
+        computeSequencing(previousMessage, message_div, null, true)
+        if (previousMessage) {
+            previousMessage.classList.remove("last_message")
         }
+        message_div.classList.add("last_message")
+        let msg_text = message_div.querySelector(".message_text")
+        msg_text.innerHTML = " \
+                        <div class=\"typing-indicator\"> \
+                            <span></span> \
+                            <span></span> \
+                            <span></span> \
+                        </div>"
     }
     updateMesPos()
 }
