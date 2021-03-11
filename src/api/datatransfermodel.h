@@ -47,7 +47,6 @@ class Info;
 class LIB_EXPORT DataTransferModel : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(QString downloadDirectory_qml MEMBER downloadDirectory)
 public:
     DataTransferModel();
     ~DataTransferModel();
@@ -84,12 +83,6 @@ public:
     QString getInteractionIdFromDringId(DataTransferId dringId);
 
     DataTransferId getDringIdFromInteractionId(const QString& interactionId);
-
-    /**
-     * Used when images < 20 Mb are automatically accepted and downloaded
-     * Should contains the full directory with the end marker (/ on linux for example)
-     */
-    QString downloadDirectory;
 
     /**
      *  Creates APPDATA/received and return the path
