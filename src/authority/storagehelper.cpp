@@ -62,7 +62,7 @@ prepareUri(const QString& uri, api::profile::Type type)
     case api::profile::Type::SIP:
         return uriObject.format(URI::Section::USER_INFO | URI::Section::HOSTNAME);
         break;
-    case api::profile::Type::RING:
+    case api::profile::Type::JAMI:
         return uriObject.format(URI::Section::USER_INFO);
         break;
     case api::profile::Type::INVALID:
@@ -177,7 +177,7 @@ profileToVcard(const api::profile::Info& profileInfo, bool compressImage)
     vCardStr += ":";
     vCardStr += profileInfo.alias;
     vCardStr += vCard::Delimiter::END_LINE_TOKEN;
-    if (profileInfo.type == profile::Type::RING) {
+    if (profileInfo.type == profile::Type::JAMI) {
         vCardStr += vCard::Property::TELEPHONE;
         vCardStr += vCard::Delimiter::SEPARATOR_TOKEN;
         vCardStr += "other:ring:";
@@ -526,8 +526,7 @@ addDataTransferToConversation(Database& db,
                           {":type", infoFromDaemon.isOutgoing ? "DATA_TRANSFER" : "DATA_TRANSFER"},
                           {":status", "TRANSFER_CREATED"},
                           {":is_read", "0"},
-                          {":daemon_id",  infoFromDaemon.uid}
-    });
+                          {":daemon_id", infoFromDaemon.uid}});
 }
 
 void
@@ -556,13 +555,15 @@ getInteractionIdByDaemonId(Database& db, const QString& daemon_id)
 }
 
 void
-updateDataTransferInteractionForDaemonId(Database& db, const QString& daemonId, api::interaction::Info& interaction)
+updateDataTransferInteractionForDaemonId(Database& db,
+                                         const QString& daemonId,
+                                         api::interaction::Info& interaction)
 {
-    auto result
-        = db.select("body, status",
-                    "interactions",
-                    "daemon_id=:daemon_id",
-                    {{":daemon_id", daemonId}}).payloads;
+    auto result = db.select("body, status",
+                            "interactions",
+                            "daemon_id=:daemon_id",
+                            {{":daemon_id", daemonId}})
+                      .payloads;
     if (result.size() < 2) {
         return;
     }
@@ -856,7 +857,7 @@ profileToVcard(const api::profile::Info& profileInfo, const QString& accountId =
     vCardStr += ":";
     vCardStr += profileInfo.alias;
     vCardStr += vCard::Delimiter::END_LINE_TOKEN;
-    if (profileInfo.type == profile::Type::RING) {
+    if (profileInfo.type == profile::Type::JAMI) {
         vCardStr += vCard::Property::TELEPHONE;
         vCardStr += ":";
         vCardStr += vCard::Delimiter::SEPARATOR_TOKEN;
@@ -1008,7 +1009,7 @@ migrateAccountDb(const QString& accountId,
         accountProfileInfo = {accountUri,
                               accountProfile[0],
                               accountProfile[1],
-                              isRingAccount ? profile::Type::RING : profile::Type::SIP};
+                              isRingAccount ? profile::Type::JAMI : profile::Type::SIP};
     }
     auto accountVcard = profileToVcard(accountProfileInfo, accountId);
     auto profileFilePath = accountLocalPath + "profile" + ".vcf";
