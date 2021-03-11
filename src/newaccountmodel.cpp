@@ -235,10 +235,10 @@ NewAccountModel::setAccountConfig(const QString& accountId,
     details[ConfProperties::ENABLED] = accountInfo.enabled ? QString("true") : QString("false");
     details[ConfProperties::ALIAS] = accountInfo.profileInfo.alias;
     details[ConfProperties::DISPLAYNAME] = accountInfo.profileInfo.alias;
-    details[ConfProperties::TYPE] = (accountInfo.profileInfo.type == profile::Type::RING)
+    details[ConfProperties::TYPE] = (accountInfo.profileInfo.type == profile::Type::JAMI)
                                         ? QString(ProtocolNames::RING)
                                         : QString(ProtocolNames::SIP);
-    if (accountInfo.profileInfo.type == profile::Type::RING) {
+    if (accountInfo.profileInfo.type == profile::Type::JAMI) {
         details[ConfProperties::USERNAME] = accountInfo.profileInfo.uri;
     } else if (accountInfo.profileInfo.type == profile::Type::SIP) {
         VectorMapStringString finalCred;
@@ -790,9 +790,9 @@ account::Info::fromDetails(const MapStringString& details)
     // General
     if (details[ConfProperties::TYPE] != "")
         profileInfo.type = details[ConfProperties::TYPE] == QString(ProtocolNames::RING)
-                               ? profile::Type::RING
+                               ? profile::Type::JAMI
                                : profile::Type::SIP;
-    registeredName = profileInfo.type == profile::Type::RING
+    registeredName = profileInfo.type == profile::Type::JAMI
                          ? volatileDetails[VolatileProperties::REGISTERED_NAME]
                          : "";
     profileInfo.alias = details[ConfProperties::DISPLAYNAME];
@@ -803,7 +803,7 @@ account::Info::fromDetails(const MapStringString& details)
     confProperties.isRendezVous = toBool(details[ConfProperties::ISRENDEZVOUS]);
     confProperties.activeCallLimit = toInt(details[ConfProperties::ACTIVE_CALL_LIMIT]);
     confProperties.hostname = details[ConfProperties::HOSTNAME];
-    profileInfo.uri = (profileInfo.type == profile::Type::RING
+    profileInfo.uri = (profileInfo.type == profile::Type::JAMI
                        and details[ConfProperties::USERNAME].contains("ring:"))
                           ? QString(details[ConfProperties::USERNAME]).remove(QString("ring:"))
                           : details[ConfProperties::USERNAME];

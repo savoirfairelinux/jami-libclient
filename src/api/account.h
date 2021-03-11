@@ -42,7 +42,7 @@ namespace account {
 Q_NAMESPACE
 Q_CLASSINFO("RegisterEnumClassesUnscoped", "false")
 
-enum class Type { INVALID, RING, SIP };
+enum class Type { INVALID, JAMI, SIP };
 Q_ENUM_NS(Type)
 
 #pragma push_macro("REGISTERED")
