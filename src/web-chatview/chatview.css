@@ -272,15 +272,22 @@ body {
     transition: opacity 0.3s;
 }
 
+#invite_text {
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
 #join_text {
     text-align: center;
-    font-size: 20px;
+    font-size: 1.5em;
     line-height: 1.5;
+}
 
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -22%);
+#note_text {
+    margin-top: 20px;
+    text-align: center;
+    font-size: .9em;
+    line-height: 1;
 }
 
 #actions {
@@ -1139,7 +1146,11 @@ video {
   }
 
   #join_text {
-      font-size: 18px;
+      font-size: 1.1em;
+  }
+
+  #note_text {
+      font-size: .8em;
   }
 }
 
@@ -1164,7 +1175,11 @@ video {
   }
 
   #join_text {
-      font-size: 16px;
+      font-size: 1em;
+  }
+
+  #note_text {
+      font-size: .8em;
   }
 }
 
