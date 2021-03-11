@@ -351,6 +351,7 @@ body {
     flex: 1;
     background-color: transparent;
     overflow-y: hidden;
+    vertical-align:middle;
     color: var(--text-color);
     width: 100%;
     min-height: 50px;
