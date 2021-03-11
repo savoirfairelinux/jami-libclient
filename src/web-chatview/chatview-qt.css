@@ -53,11 +53,37 @@ body {
 }
 
 .internal_mes_wrapper {
-    margin: 0;
+    margin: 0px 0 0 0;
 }
 
 .message_wrapper {
-    padding: 0.5em 1em 0.5em 1em;
+    padding: 1em;
+}
+
+.sender_image {
+    margin: 10px;
+}
+
+.message_out + .message_out .message_wrapper {
+    border-top-right-radius: 10px;
+}
+
+.message_in + .message_in .message_wrapper {
+    border-top-left-radius: 10px;
+}
+
+.message_in + .message_in .sender_image {
+    visibility: hidden;
+}
+
+.message_out + .message_out .sender_image {
+    visibility: hidden;
+}
+
+.message_text {
+    hyphens: auto;
+    word-break: break-word;
+    word-wrap: break-word;
 }
 
 .sender_image {
@@ -211,10 +237,6 @@ pre {
 
 #sendMessage {
     padding: 7px;
-}
-
-#message {
-    margin: 0 16px 2px 16px;
 }
 
 #nav-contactid-alias {
