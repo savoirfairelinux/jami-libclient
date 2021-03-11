@@ -60,7 +60,6 @@ public:
     std::unique_ptr<BehaviorController> behaviorController;
     std::unique_ptr<CallbacksHandler> callbackHandler;
     std::unique_ptr<NewAccountModel> accountModel;
-    std::unique_ptr<DataTransferModel> dataTransferModel;
     std::unique_ptr<AVModel> AVModel_;
     std::unique_ptr<PluginModel> PluginModel_;
 };
@@ -98,12 +97,6 @@ BehaviorController&
 Lrc::getBehaviorController() const
 {
     return *lrcPimpl_->behaviorController;
-}
-
-DataTransferModel&
-Lrc::getDataTransferModel() const
-{
-    return *lrcPimpl_->dataTransferModel;
 }
 
 AVModel&
@@ -229,7 +222,6 @@ LrcPimpl::LrcPimpl(Lrc& linked, MigrationCb& willMigrateCb, MigrationCb& didMigr
                                                      *behaviorController,
                                                      willMigrateCb,
                                                      didMigrateCb))
-    , dataTransferModel {std::make_unique<DataTransferModel>()}
     , AVModel_ {std::make_unique<AVModel>(*callbackHandler)}
     , PluginModel_ {std::make_unique<PluginModel>()}
 {}
