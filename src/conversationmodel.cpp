@@ -553,7 +553,7 @@ ConversationModel::getFilteredConversations(const FilterType& filter,
                     return false;
                 switch (pimpl_->customTypeFilter) {
                     case FilterType::JAMI:
-                        return (contactInfo.profileInfo.type == profile::Type::RING && !entry.isRequest);
+                        return (contactInfo.profileInfo.type == profile::Type::JAMI && !entry.isRequest);
                     case FilterType::SIP:
                         return (contactInfo.profileInfo.type == profile::Type::SIP && !entry.isRequest);
                     case FilterType::REQUEST:
@@ -2135,7 +2135,7 @@ ConversationModelPimpl::slotConversationRemoved(const QString& accountId,
         conversations.erase(conversations.begin() + conversationIndex);
         // if swarm conversation removed but we still have contact we create non swarm conversation.
         auto contact = linked.owner.contactModel->getContact(contactUri);
-        if (contact.profileInfo.type != api::profile::Type::RING) {
+        if (contact.profileInfo.type != api::profile::Type::JAMI) {
             return;
         }
         auto conv = storage::getConversationsWithPeer(db, contactUri);
