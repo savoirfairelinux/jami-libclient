@@ -1831,6 +1831,16 @@ ConversationModelPimpl::initConversations()
             conv.push_back(storage::beginConversationWithPeer(db, c.second.profileInfo.uri));
         }
         addConversationWith(conv[0], c.first);
+        if (!c.second.conversationId.isEmpty()) {
+            // it is a swarm conversation.
+            try {
+                auto& conversation = getConversationForUid(conv[0]).get();
+                conversation.mode = conversation::Mode::ONE_TO_ONE;
+                conversation.needsSyncing = true;
+            } catch (...) {
+                continue;
+            }
+        }
 
         auto convIdx = indexOf(conv[0]);
 
@@ -2379,6 +2389,13 @@ ConversationModelPimpl::slotContactAdded(const QString& contactUri)
         auto& conversation = getConversationForPeerUri(contactUri).get();
         // swarm conversation we update when receive conversation ready signal.
         if (conversation.mode != conversation::Mode::NON_SWARM) {
+            QStringList swarms = ConfigurationManager::instance().getConversations(linked.owner.id);
+            bool needsSyncing = swarms.indexOf(conversation.uid) == -1;
+            if (conversation.needsSyncing != needsSyncing) {
+                conversation.needsSyncing = needsSyncing;
+                invalidateModel();
+                emit linked.modelChanged();
+            }
             return;
         }
         if (conv.empty()) {
@@ -2610,6 +2627,8 @@ ConversationModelPimpl::addSwarmConversation(const QString& convId)
     const MapStringString& details = ConfigurationManager::instance()
                                          .conversationInfos(linked.owner.id, convId);
     conversation.mode = conversation::to_mode(details["mode"].toInt());
+    QStringList swarms = ConfigurationManager::instance().getConversations(linked.owner.id);
+    conversation.needsSyncing = swarms.indexOf(convId) == -1;
     // If conversation has only one peer it is possible that non swarm conversation was created.
     // remove non swarm conversation
     auto& peers = peersForConversation(conversation);
@@ -2639,6 +2658,7 @@ ConversationModelPimpl::addConversationWith(const QString& convId, const QString
     conversation.accountId = linked.owner.id;
     conversation.participants = {contactUri};
     conversation.mode = conversation::Mode::NON_SWARM;
+    conversation.needsSyncing = false;
     try {
         conversation.confId = linked.owner.callModel->getConferenceFromURI(contactUri).id;
     } catch (...) {
