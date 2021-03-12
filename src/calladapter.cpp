@@ -251,7 +251,7 @@ CallAdapter::shouldShowPreview(bool force)
     auto call = LRCInstance::getCallInfoForConversation(convInfo, force);
     if (call) {
         shouldShowPreview = !call->isAudioOnly && !(call->status == lrc::api::call::Status::PAUSED)
-                            && !call->videoMuted && call->type != lrc::api::call::Type::CONFERENCE;
+                            && !call->videoMuted && call->participantsInfos.isEmpty();
     }
     return shouldShowPreview;
 }
@@ -280,10 +280,10 @@ CallAdapter::fillParticipantData(QMap<QString, QString> participant)
             data["avatar"] = accInfo.profileInfo.avatar;
     } else {
         try {
-            auto& contact = LRCInstance::getCurrentAccountInfo()
-                    .contactModel->getContact(participant["uri"]);
-            bestName = LRCInstance::getCurrentAccountInfo()
-                    .contactModel->bestNameForContact(participant["uri"]);
+            auto& contact = LRCInstance::getCurrentAccountInfo().contactModel->getContact(
+                participant["uri"]);
+            bestName = LRCInstance::getCurrentAccountInfo().contactModel->bestNameForContact(
+                participant["uri"]);
             if (participant["videoMuted"] == "true")
                 data["avatar"] = contact.profileInfo.avatar;
 
@@ -294,7 +294,6 @@ CallAdapter::fillParticipantData(QMap<QString, QString> participant)
 
     return data;
 }
-
 
 QVariantList
 CallAdapter::getConferencesInfos()
@@ -349,24 +348,24 @@ CallAdapter::connectCallModel(const QString& accountId)
     QObject::disconnect(callStatusChangedConnection_);
     QObject::disconnect(onParticipantsChangedConnection_);
 
-    onParticipantsChangedConnection_ = QObject::connect(
-        accInfo.callModel.get(),
-        &lrc::api::NewCallModel::onParticipantsChanged,
-        [this, accountId](const QString& confId) {
-            auto& accInfo = LRCInstance::accountModel().getAccountInfo(accountId);
-            auto& callModel = accInfo.callModel;
-            auto call = callModel->getCall(confId);
-            const auto& convInfo = LRCInstance::getConversationFromCallId(confId);
-            if (!convInfo.uid.isEmpty()) {
-                QVariantList map;
-                for (const auto& participant : call.participantsInfos) {
-                    QJsonObject data = fillParticipantData(participant);
-                    map.push_back(QVariant(data));
-                    updateCallOverlay(convInfo);
-                }
-                emit updateParticipantsInfos(map, accountId, confId);
-            }
-        });
+    onParticipantsChangedConnection_
+        = QObject::connect(accInfo.callModel.get(),
+                           &lrc::api::NewCallModel::onParticipantsChanged,
+                           [this, accountId](const QString& confId) {
+                               auto& accInfo = LRCInstance::accountModel().getAccountInfo(accountId);
+                               auto& callModel = accInfo.callModel;
+                               auto call = callModel->getCall(confId);
+                               const auto& convInfo = LRCInstance::getConversationFromCallId(confId);
+                               if (!convInfo.uid.isEmpty()) {
+                                   QVariantList map;
+                                   for (const auto& participant : call.participantsInfos) {
+                                       QJsonObject data = fillParticipantData(participant);
+                                       map.push_back(QVariant(data));
+                                       updateCallOverlay(convInfo);
+                                   }
+                                   emit updateParticipantsInfos(map, accountId, confId);
+                               }
+                           });
 
     callStatusChangedConnection_ = QObject::connect(
         accInfo.callModel.get(),
@@ -458,12 +457,12 @@ CallAdapter::connectCallModel(const QString& accountId)
         accInfo.callModel.get(),
         &lrc::api::NewCallModel::remoteRecordingChanged,
         [this](const QString& callId, const QSet<QString>& peerRec, bool state) {
-            const auto currentCallId =
-                    LRCInstance::getCallIdForConversationUid(convUid_, accountId_);
+            const auto currentCallId = LRCInstance::getCallIdForConversationUid(convUid_,
+                                                                                accountId_);
             if (callId == currentCallId) {
                 const auto& accInfo = LRCInstance::getCurrentAccountInfo();
                 QStringList peers {};
-                for (const auto& uri: peerRec) {
+                for (const auto& uri : peerRec) {
                     auto bestName = accInfo.contactModel->bestNameForContact(uri);
                     if (!bestName.isEmpty()) {
                         peers.append(bestName);
@@ -475,7 +474,7 @@ CallAdapter::connectCallModel(const QString& accountId)
                     emit remoteRecordingChanged(peers, false);
                 }
             }
-    });
+        });
 }
 
 void
