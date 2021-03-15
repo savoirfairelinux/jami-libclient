@@ -31,9 +31,7 @@ ContactAdapter::ContactAdapter(QObject* parent, LRCInstance* instance)
 QVariant
 ContactAdapter::getContactSelectableModel(int type)
 {
-    /*
-     * Called from qml every time contact picker refreshes.
-     */
+    // Called from qml every time contact picker refreshes.
     listModeltype_ = static_cast<SmartListModel::Type>(type);
 
     if (listModeltype_ == SmartListModel::Type::CONVERSATION) {
@@ -46,9 +44,7 @@ ContactAdapter::getContactSelectableModel(int type)
     }
     selectableProxyModel_->setSourceModel(smartListModel_.get());
 
-    /*
-     * Adjust filter.
-     */
+    // Adjust filter.
     switch (listModeltype_) {
     case SmartListModel::Type::CONVERSATION:
         selectableProxyModel_->setPredicate([this](const QModelIndex& index, const QRegExp&) {
@@ -63,16 +59,21 @@ ContactAdapter::getContactSelectableModel(int type)
         break;
     case SmartListModel::Type::TRANSFER:
         selectableProxyModel_->setPredicate([this](const QModelIndex& index, const QRegExp& regexp) {
-            /*
-             * Regex to remove current callee.
-             */
-            QRegExp matchExcept = QRegExp(QString("\\b(?!" + calleeDisplayName_ + "\\b)\\w+"));
-            bool match = false;
-            bool match_non_self = matchExcept.indexIn(
-                                      index.data(SmartListModel::Role::DisplayName).toString())
-                                  != -1;
-            if (match_non_self) {
-                match = regexp.indexIn(index.data(SmartListModel::Role::DisplayName).toString())
+            // Exclude current sip callee and filtered contact.
+            bool match = true;
+            const auto& conv = lrcInstance_->getConversationFromConvUid(
+                lrcInstance_->getCurrentConvUid());
+            if (!conv.participants.isEmpty()) {
+                QString calleeDisplayId = lrcInstance_->getAccountInfo(lrcInstance_->getCurrAccId())
+                                              .contactModel->bestIdForContact(conv.participants[0]);
+
+                QRegExp matchExcept = QRegExp(QString("\\b(?!" + calleeDisplayId + "\\b)\\w+"));
+                match = matchExcept.indexIn(index.data(SmartListModel::Role::DisplayID).toString())
+                        != -1;
+            }
+
+            if (match) {
+                match = regexp.indexIn(index.data(SmartListModel::Role::DisplayID).toString())
                         != -1;
             }
             return match && !index.parent().isValid();
@@ -112,9 +113,7 @@ ContactAdapter::contactSelected(int index)
     if (contactIndex.isValid()) {
         switch (listModeltype_) {
         case SmartListModel::Type::CONFERENCE: {
-            /*
-             * Conference.
-             */
+            // Conference.
             const auto sectionName = contactIndex.data(SmartListModel::Role::SectionName)
                                          .value<QString>();
             if (!sectionName.isEmpty()) {
@@ -143,9 +142,7 @@ ContactAdapter::contactSelected(int index)
             }
         } break;
         case SmartListModel::Type::TRANSFER: {
-            /*
-             * SIP Transfer.
-             */
+            // SIP Transfer.
             const auto contactUri = contactIndex.data(SmartListModel::Role::URI).value<QString>();
 
             if (convInfo.uid.isEmpty()) {
@@ -156,19 +153,16 @@ ContactAdapter::contactSelected(int index)
             QString destCallId;
 
             try {
-                /*
-                 * Check if the call exist - (check non-finished calls).
-                 */
+                // Check if the call exist - (check non-finished calls).
                 const auto callInfo = callModel->getCallFromURI(contactUri, true);
                 destCallId = callInfo.id;
             } catch (std::exception& e) {
                 qDebug().noquote() << e.what();
                 destCallId = "";
             }
-            /*
-             * If no second call -> blind transfer.
-             * If there is a second call -> attended transfer.
-             */
+
+            // If no second call -> blind transfer.
+            // If there is a second call -> attended transfer.
             if (destCallId.size() == 0) {
                 callModel->transfer(callId, "sip:" + contactUri);
                 callModel->hangUp(callId);
@@ -194,10 +188,4 @@ ContactAdapter::contactSelected(int index)
             break;
         }
     }
-}
-
-void
-ContactAdapter::setCalleeDisplayName(const QString& name)
-{
-    calleeDisplayName_ = name;
 }

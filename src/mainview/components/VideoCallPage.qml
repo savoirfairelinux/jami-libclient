@@ -344,9 +344,5 @@ Rectangle {
         }
     }
 
-    onBestNameChanged: {
-        ContactAdapter.setCalleeDisplayName(bestName)
-    }
-
     color: "black"
 }

@@ -81,13 +81,9 @@ protected:
     Q_INVOKABLE QVariant getContactSelectableModel(int type);
     Q_INVOKABLE void setSearchFilter(const QString& filter);
     Q_INVOKABLE void contactSelected(int index);
-    Q_INVOKABLE void setCalleeDisplayName(const QString& name);
 
 private:
     SmartListModel::Type listModeltype_;
-
-    // For sip call transfer, to exclude current sip callee.
-    QString calleeDisplayName_;
 
     // SmartListModel is the source model of SelectableProxyModel.
     std::unique_ptr<SmartListModel> smartListModel_;
