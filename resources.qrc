@@ -11,7 +11,6 @@
         <file>images/ajax-loader.gif</file>
         <file>images/default_avatar_overlay.svg</file>
         <file>images/FontAwesome.otf</file>
-        <file>images/qrcode.png</file>
         <file>images/jami.ico</file>
         <file>images/jami.png</file>
         <file>images/spike.png</file>
@@ -23,7 +22,7 @@
         <file>images/icons/check_box-24px.svg</file>
         <file>images/icons/devices-24px.svg</file>
         <file>images/icons/ic_arrow_back_24px.svg</file>
-        <file>images/icons/ic_arrow_back_white_24dp.png</file>
+        <file>images/icons/ic_arrow_back_white_24dp.svg</file>
         <file>images/icons/ic_arrow_drop_down_black_9dp_2x.png</file>
         <file>images/icons/ic_arrow_drop_down_black_18dp_2x.png</file>
         <file>images/icons/ic_arrow_drop_up_black_9dp_2x.png</file>
@@ -40,8 +39,7 @@
         <file>images/icons/more_vert-24px.svg</file>
         <file>images/icons/ic_check_white_18dp_2x.png</file>
         <file>images/icons/ic_clear_24px.svg</file>
-        <file>images/icons/ic_close_white_24dp.png</file>
-        <file>images/icons/ic_delete_black_18dp_2x.png</file>
+        <file>images/icons/ic_content_copy.svg</file>
         <file>images/icons/ic_done_white_24dp.png</file>
         <file>images/icons/ic_keypad.svg</file>
         <file>images/icons/open_in_full-24px.svg</file>
@@ -51,7 +49,6 @@
         <file>images/icons/pause_circle_outline-24px.svg</file>
         <file>images/icons/play_circle_outline-24px.svg</file>
         <file>images/icons/ic_pause_white_100px.svg</file>
-        <file>images/icons/ic_phone_24px.svg</file>
         <file>images/icons/groups-24px.svg</file>
         <file>images/icons/ic_photo_camera_white_24dp_2x.png</file>
         <file>images/icons/ic_baseline-search-24px.svg</file>
@@ -98,16 +95,13 @@
         <file>images/icons/av_icons/send-24px.svg</file>
         <file>images/icons/av_icons/stop-24px.svg</file>
         <file>images/icons/av_icons/mic-24px.svg</file>
-        <file>images/icons/ic_close_black_24dp.png</file>
         <file>images/icons/extension_24dp.svg</file>
         <file>images/icons/settings_backup_restore-black-18dp.svg</file>
         <file>images/icons/person-24px.svg</file>
         <file>images/icons/drafts-24px.svg</file>
-        <file>images/icons/person_add-24px.svg</file>
         <file>images/icons/router-24px.svg</file>
         <file>images/icons/insert_drive_file-24dp.svg</file>
         <file>images/icons/arrow_back-white-24dp.svg</file>
-        <file>images/icons/keyboard_voice-24px.svg</file>
         <file>images/icons/videocam-24px.svg</file>
         <file>images/icons/qr_code-24px.svg</file>
         <file>images/icons/content_copy-24px.svg</file>
@@ -133,7 +127,6 @@
         <file>images/icons/message_video-24px.svg</file>
         <file>images/icons/message_audio-24px.svg</file>
         <file>images/icons/send-24px.svg</file>
-        <file>images/icons/place_videocall-24px.svg</file>
         <file>images/icons/back-24px.svg</file>
         <file>images/icons/place_audiocall-24px.svg</file>
         <file>images/icons/add_people-24px.svg</file>

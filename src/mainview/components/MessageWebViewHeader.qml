@@ -170,7 +170,7 @@ Rectangle {
                 anchors.rightMargin: 8
                 anchors.verticalCenter: buttonGroup.verticalCenter
 
-                source: "qrc:/images/icons/place_videocall-24px.svg"
+                source: "qrc:/images/icons/videocam-24px.svg"
                 toolTipText: JamiStrings.placeVideoCall
 
                 normalColor: JamiTheme.chatviewBgColor

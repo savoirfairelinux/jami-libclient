@@ -1,1 +1,12 @@
-<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0zm0 0h24v24H0z" fill="none"/><path d="M21 6.5l-4 4V7c0-.55-.45-1-1-1H9.82L21 17.18V6.5zM3.27 2L2 3.27 4.73 6H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.21 0 .39-.08.54-.18L19.73 21 21 19.73 3.27 2z"/></svg>
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Camera Off</title>
+    <g id="Icones_Outline" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Camera-Off" stroke="#000000" stroke-width="1.75">
+            <line x1="4.5" y1="18.5" x2="15.5" y2="6.5" id="Line" stroke-linecap="round"></line>
+            <g id="Ico_Camera" transform="translate(3.000000, 5.000000)" fill-rule="nonzero" stroke-linejoin="round">
+                <path d="M17.739656,2.05124654 C17.62808,1.97368421 17.4421199,1.93490305 17.1817759,2.0900277 L13.4997675,4.41689751 L13.4997675,1.15927978 C13.4997675,0.849030471 13.3138075,0.5 12.7187355,0.5 L0.929800093,0.5 C0.371920037,0.538781163 0,0.810249307 0,1.19806094 L0,13.8407202 C0,14.2285319 0.371920037,14.5 0.929800093,14.5 L12.7559275,14.5 C13.3138075,14.5 13.5369596,14.1509695 13.5369596,13.8407202 L13.5369596,10.5831025 L17.2189679,12.9487535 C17.4421199,13.1038781 17.62808,13.065097 17.739656,12.9875346 C18,12.83241 18,12.5221607 18,12.4058172 L18,2.63296399 C18,2.5166205 18,2.20637119 17.739656,2.05124654 Z" id="Path"></path>
+            </g>
+        </g>
+    </g>
+</svg>
