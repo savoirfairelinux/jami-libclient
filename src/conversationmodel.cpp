@@ -2028,7 +2028,10 @@ ConversationModelPimpl::slotMessageReceived(const QString& accountId,
             // conversation id and db id
             QString transferId = message["tid"];
             transferIdInt = std::stoull(message["tid"].toStdString());
-            linked.owner.dataTransferModel->transferInfo(accountId, conversationId, transferIdInt, info);
+            linked.owner.dataTransferModel->transferInfo(accountId,
+                                                         conversationId,
+                                                         transferIdInt,
+                                                         info);
             // create db entry for valid data transfer
             if (info.status != datatransfer::Status::INVALID) {
                 msg.body = info.path;
@@ -2036,12 +2039,10 @@ ConversationModelPimpl::slotMessageReceived(const QString& accountId,
                               && !interaction::isOutgoing(msg))
                                  ? interaction::Status::TRANSFER_AWAITING_HOST
                                  : interaction::Status::TRANSFER_CREATED;
-                auto interactionId = storage::addDataTransferToConversation(db,
-                                                                            conversationId,
-                                                                            info);
-                transfIdToDbIntId[transferId] = interactionId;
-                linked.owner.dataTransferModel->registerTransferId(transferIdInt, msgId);
             }
+            auto interactionId = storage::addDataTransferToConversation(db, conversationId, info);
+            transfIdToDbIntId[transferId] = interactionId;
+            linked.owner.dataTransferModel->registerTransferId(transferIdInt, msgId);
         } else if (msg.type == interaction::Type::CALL) {
             msg.body = storage::getCallInteractionString(msg.authorUri, msg.duration);
         } else if (msg.type == interaction::Type::TEXT
@@ -3070,9 +3071,9 @@ ConversationModel::sendFile(const QString& convUid, const QString& path, const Q
                     return;
                 }
 
-            auto to = isSwarm ? conversationId : participantURI;
-            owner.dataTransferModel->sendFile(owner.id, to, path, filename);
-        });
+                auto to = isSwarm ? conversationId : participantURI;
+                owner.dataTransferModel->sendFile(owner.id, to, path, filename);
+            });
 
         if (isTemporary) {
             QMetaObject::Connection* const connection = new QMetaObject::Connection;
@@ -3156,8 +3157,12 @@ ConversationModel::getTransferInfo(const QString& conversationId,
                                    datatransfer::Info& info)
 {
     try {
-        auto dringId = pimpl_->linked.owner.dataTransferModel->getDringIdFromInteractionId(interactionId);
-        pimpl_->linked.owner.dataTransferModel->transferInfo(owner.id, conversationId, dringId, info);
+        auto dringId = pimpl_->linked.owner.dataTransferModel->getDringIdFromInteractionId(
+            interactionId);
+        pimpl_->linked.owner.dataTransferModel->transferInfo(owner.id,
+                                                             conversationId,
+                                                             dringId,
+                                                             info);
     } catch (...) {
         info.status = datatransfer::Status::INVALID;
     }
@@ -3348,10 +3353,10 @@ ConversationModelPimpl::acceptTransfer(const QString& convUid,
     // for swarm conversation we need converstion id to accept file and for not swarm participant uri
     auto identifier = conversation.isSwarm ? convUid : conversation.participants.first();
     auto acceptedFilePath = linked.owner.dataTransferModel->accept(linked.owner.id,
-                                                              identifier,
-                                                              interactionId,
-                                                              destinationDir + path,
-                                                              0);
+                                                                   identifier,
+                                                                   interactionId,
+                                                                   destinationDir + path,
+                                                                   0);
     auto dringId = linked.owner.dataTransferModel->getDringIdFromInteractionId(interactionId);
     if (transfIdToDbIntId.find(QString::number(dringId)) != transfIdToDbIntId.end()) {
         auto dbInteractionId = transfIdToDbIntId[QString::number(dringId)];
@@ -3534,6 +3539,7 @@ ConversationModelPimpl::updateTransferStatus(DataTransferId dringId,
         if (it != interactions.end()) {
             emitUpdated = true;
             it->second.status = newStatus;
+            it->second.body = info.path;
             itCopy = it->second;
         }
     }
