@@ -703,6 +703,25 @@ ContactModelPimpl::fillWithJamiContacts()
         storage::createOrUpdateProfile(linked.owner.id, contactInfo.profileInfo, true);
     }
 
+    // Add pending contacts from conversation requests
+    const VectorMapStringString& convRequests {
+        ConfigurationManager::instance().getConversationRequests(linked.owner.id)};
+    for (const auto& convReq : convRequests) {
+        // If a convrequest come from a non contact
+        auto uri = convReq["from"];
+        std::lock_guard<std::mutex> lk(contactsMtx_);
+        auto it = contacts.find(uri);
+        if (it == contacts.end()) {
+            auto contactInfo = storage::buildContactFromProfile(linked.owner.id,
+                                                                uri,
+                                                                profile::Type::PENDING);
+            contactInfo.conversationId = convReq["id"];
+            contacts.insert(uri, contactInfo);
+            // create profile vcard for contact
+            storage::createOrUpdateProfile(linked.owner.id, contactInfo.profileInfo, true);
+        }
+    }
+
     // Update presence
     // TODO fix this map. This is dumb for now. The map contains values as keys, and empty values.
     const VectorMapStringString& subscriptions {
