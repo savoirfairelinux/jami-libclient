@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ea049001_d83dfefa",
+        "filename": "src/api/conversation.h",
+        "patchSetId": 65
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2021-03-16T20:26:42Z",
+      "side": 1,
+      "message": "We must remove isSwarm and replace by mode. This will simplify a lot of things soon\n\ncf https://review.jami.net/c/ring-lrc/+/17322",
+      "range": {
+        "startLine": 53,
+        "startChar": 4,
+        "endLine": 53,
+        "endChar": 24
+      },
+      "revId": "42fb2ec13580ac36092ff69302f0694f41e61c0b",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c52e63ce_32c7530d",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 65
+      },
+      "lineNbr": 215,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2021-03-16T20:26:42Z",
+      "side": 1,
+      "message": "imho we should split in two (cf https://review.jami.net/c/ring-lrc/+/17322) to simplify maintenance. 1 if trustRequest come, 1 if conversationRequest come",
+      "range": {
+        "startLine": 215,
+        "startChar": 9,
+        "endLine": 215,
+        "endChar": 31
+      },
+      "revId": "42fb2ec13580ac36092ff69302f0694f41e61c0b",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fe15b0aa_19f3bb69",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 65
+      },
+      "lineNbr": 3199,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2021-03-16T20:26:42Z",
+      "side": 1,
+      "message": "can be simplified, cf https://review.jami.net/c/ring-lrc/+/17322",
+      "range": {
+        "startLine": 3199,
+        "startChar": 24,
+        "endLine": 3199,
+        "endChar": 42
+      },
+      "revId": "42fb2ec13580ac36092ff69302f0694f41e61c0b",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    }
+  ]
+}
