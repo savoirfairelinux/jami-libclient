@@ -374,6 +374,12 @@ ConversationModel::ConversationModel(const account::Info& owner,
 
 ConversationModel::~ConversationModel() {}
 
+void
+ConversationModel::startConversation()
+{
+    ConfigurationManager::instance().startConversation(owner.id);
+}
+
 const ConversationModel::ConversationQueueProxy&
 ConversationModel::allFilteredConversations() const
 {
@@ -398,7 +404,7 @@ ConversationModel::getConferenceableConversations(const QString& convId, const Q
     auto calls = pimpl_->lrc.getCalls();
     auto conferences = pimpl_->lrc.getConferences();
     auto& conversations = pimpl_->conversations;
-    auto currentAccountID = pimpl_->linked.owner.id;
+    auto currentAccountID = owner.id;
     // add contacts for current account
     for (const auto& conv : conversations) {
         // conversations with calls will be added in call section
@@ -552,6 +558,18 @@ ConversationModel::getFilteredConversations(const FilterType& filter,
     pimpl_->customTypeFilter = filter;
     return pimpl_->customFilteredConversations.reset(pimpl_->conversations)
         .filter([this, &includeBanned](const conversation::Info& entry) {
+            if (entry.mode != conversation::Mode::NON_SWARM) {
+                switch (pimpl_->customTypeFilter) {
+                case FilterType::JAMI:
+                    return !entry.isRequest;
+                case FilterType::SIP:
+                    return false;
+                case FilterType::REQUEST:
+                    return entry.isRequest;
+                default:
+                    return false;
+                }
+            }
             try {
                 auto contactInfo = owner.contactModel->getContact(entry.participants.front());
                 if (!includeBanned && contactInfo.isBanned)
@@ -1823,7 +1841,14 @@ bool
 ConversationModelPimpl::filter(const conversation::Info& entry)
 {
     try {
-        auto contactInfo = linked.owner.contactModel->getContact(entry.participants.front());
+        // TODO improve for swarm
+        contact::Info contactInfo;
+        if (entry.participants.front() == linked.owner.profileInfo.uri) {
+            contactInfo.profileInfo = linked.owner.profileInfo;
+            contactInfo.registeredName = linked.owner.registeredName;
+        } else {
+            contactInfo = linked.owner.contactModel->getContact(entry.participants.front());
+        }
 
         auto uri = URI(currentFilter);
         bool stripScheme = (uri.schemeType() < URI::SchemeType::COUNT__);
@@ -2122,18 +2147,19 @@ ConversationModelPimpl::slotConversationReady(const QString& accountId,
     auto accountURI = linked.owner.profileInfo.uri;
     VectorString uris;
     for (auto& member : members) {
+        uris.append(member["uri"]);
         if (member["uri"] != accountURI) {
-            uris.append(member["uri"]);
-        }
-        try {
-            auto& conversation = getConversationForPeerUri(member["uri"]).get();
-            if (conversation.mode == conversation::Mode::NON_SWARM or conversation.needsSyncing) {
-                conversations.erase(conversations.begin() + indexOf(conversation.uid));
-                storage::removeContact(db, member["uri"]);
-                invalidateModel();
-                emit linked.conversationRemoved(conversation.uid);
+            try {
+                auto& conversation = getConversationForPeerUri(member["uri"]).get();
+                if (conversation.mode == conversation::Mode::NON_SWARM
+                    or conversation.needsSyncing) {
+                    conversations.erase(conversations.begin() + indexOf(conversation.uid));
+                    storage::removeContact(db, member["uri"]);
+                    invalidateModel();
+                    emit linked.conversationRemoved(conversation.uid);
+                }
+            } catch (...) {
             }
-        } catch (...) {
         }
     }
     if (indexOf(conversationId) < 0) {
@@ -2489,12 +2515,7 @@ ConversationModelPimpl::addSwarmConversation(const QString& convId)
                                                .getConversationMembers(linked.owner.id, convId);
     auto accountURI = linked.owner.profileInfo.uri;
     for (auto& member : members) {
-        if (member["uri"] != accountURI) {
-            uris.append(member["uri"]);
-        }
-    }
-    if (uris.isEmpty()) {
-        return;
+        uris.append(member["uri"]);
     }
     conversation::Info conversation;
     conversation.uid = convId;
@@ -2518,15 +2539,17 @@ ConversationModelPimpl::addSwarmConversation(const QString& convId)
         break;
     }
     conversation.needsSyncing = false;
-    try {
-        conversation.confId = linked.owner.callModel->getConferenceFromURI(uris.first()).id;
-    } catch (...) {
-        conversation.confId = "";
-    }
-    try {
-        conversation.callId = linked.owner.callModel->getCallFromURI(uris.first()).id;
-    } catch (...) {
-        conversation.callId = "";
+    if (uris.size() > 0) {
+        try {
+            conversation.confId = linked.owner.callModel->getConferenceFromURI(uris.first()).id;
+        } catch (...) {
+            conversation.confId = "";
+        }
+        try {
+            conversation.callId = linked.owner.callModel->getCallFromURI(uris.first()).id;
+        } catch (...) {
+            conversation.callId = "";
+        }
     }
     auto participant = conversation.getOneToOneParticipant(linked.owner.profileInfo.uri);
     // remove non swarm conversation

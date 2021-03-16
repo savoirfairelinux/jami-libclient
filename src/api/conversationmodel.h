@@ -91,6 +91,8 @@ public:
                       const api::BehaviorController& behaviorController);
     ~ConversationModel();
 
+    void startConversation(); // TODO
+
     /**
      * Get conversations which should be shown client side
      * @return conversations filtered with the current filter
@@ -270,7 +272,9 @@ public:
 
     void cancelTransfer(const QString& convUid, const QString& interactionId);
 
-    void getTransferInfo(const QString& conversationId, const QString& interactionId, api::datatransfer::Info& info);
+    void getTransferInfo(const QString& conversationId,
+                         const QString& interactionId,
+                         api::datatransfer::Info& info);
     /**
      * @param convUid, uid of the conversation
      * @return the number of unread messages for the conversation
@@ -288,8 +292,7 @@ public:
      * @param size number of messages should be loaded. Default 1
      * @return id for loading request. -1 if not loaded
      */
-    int loadConversationMessages(const QString& conversationId,
-                                      const int size = 1);
+    int loadConversationMessages(const QString& conversationId, const int size = 1);
     /**
      * accept request for conversation
      * @param conversationId conversation's id
@@ -334,7 +337,7 @@ public:
 
     /**
      * @return if conversations requests exists.
-    */
+     */
     bool hasPendingRequests() const;
     /**
      * @return number of conversations requests
@@ -400,8 +403,8 @@ Q_SIGNALS:
      */
     void allHistoryCleared() const;
     /**
-     * Emitted at the end of slotContactAdded and at conversationReady for swarm conversation to notify that an existing conversation can
-     * be modified
+     * Emitted at the end of slotContactAdded and at conversationReady for swarm conversation to
+     * notify that an existing conversation can be modified
      * @param uid
      */
     void conversationReady(QString uid, QString participantURI) const;
@@ -452,11 +455,15 @@ Q_SIGNALS:
     /**
      * Emitted when creation of conversation started, finished with success or finisfed with error
      * @param accountId  account id
-     * @param conversationId conversation Id, when conversation creation started conversationId = participantURI
+     * @param conversationId conversation Id, when conversation creation started conversationId =
+     * participantURI
      * @param participantURI participant uri
      * @param status 0 -started, 1 -created with success, 2 -error
      */
-    void creatingConversationEvent(const QString& accountId, const QString& conversationId, const QString& participantURI, int status) const;
+    void creatingConversationEvent(const QString& accountId,
+                                   const QString& conversationId,
+                                   const QString& participantURI,
+                                   int status) const;
 
 private:
     std::unique_ptr<ConversationModelPimpl> pimpl_;
