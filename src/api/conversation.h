@@ -31,6 +31,8 @@ namespace api {
 
 namespace conversation {
 
+enum class Mode { NON_SWARM, ONE_TO_ONE, ADMIN_INVITES_ONLY, INVITES_ONLY, PUBLIC };
+
 struct Info
 {
     Info() = default;
@@ -50,9 +52,9 @@ struct Info
     QHash<QString, QString> parentsId; // pair messageid/parentid for messages without parent loaded
     std::map<QString, QString> lastDisplayedMessageUid;
     unsigned int unreadMessages = 0;
-    bool isSwarm = true;
     bool needsSyncing = false;
     bool isRequest = false;
+    Mode mode = Mode::NON_SWARM;
 
     QString getOneToOneParticipant(QString accountUri)
     {
