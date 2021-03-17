@@ -975,6 +975,10 @@ ConversationModel::sendMessage(const QString& uid, const QString& body, const QS
 {
     try {
         auto& conversation = pimpl_->getConversationForUid(uid, true).get();
+        if (conversation.mode != conversation::Mode::NON_SWARM) {
+            ConfigurationManager::instance().sendMessage(owner.id, uid, body, parentId);
+            return;
+        }
 
         if (conversation.participants.empty()) {
             // Should not
