@@ -49,6 +49,7 @@ ItemDelegate {
             root.height -= pluginListPreferencesView.childrenRect.height
             pluginListPreferencesView.visible = !pluginListPreferencesView.visible
         }
+        PluginAdapter.preferenceChanged(pluginId)
     }
 
     Connections {
