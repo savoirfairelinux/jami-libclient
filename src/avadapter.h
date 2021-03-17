@@ -91,7 +91,7 @@ private:
     /*
      * Get current callId from current selected conv id.
      */
-    const QString& getCurrentCallId();
+    QString getCurrentCallId();
 
     /*
      * Used to classify capture device events.

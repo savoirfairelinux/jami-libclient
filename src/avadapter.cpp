@@ -88,8 +88,12 @@ AvAdapter::shareEntireScreen(int screenNumber)
         return;
     QRect rect = screen->geometry();
 
-    LRCInstance::avModel()
-        .setDisplay(getScreenNumber(), rect.x(), rect.y(), rect.width(), rect.height(), getCurrentCallId());
+    LRCInstance::avModel().setDisplay(getScreenNumber(),
+                                      rect.x(),
+                                      rect.y(),
+                                      rect.width(),
+                                      rect.height(),
+                                      getCurrentCallId());
 }
 
 void
@@ -206,14 +210,12 @@ AvAdapter::stopAudioMeter(bool async)
     LRCInstance::stopAudioMeter(async);
 }
 
-const QString&
+QString
 AvAdapter::getCurrentCallId()
 {
     const auto& convInfo = LRCInstance::getConversationFromConvUid(LRCInstance::getCurrentConvUid());
     auto call = LRCInstance::getCallInfoForConversation(convInfo);
-    if (!call)
-        return QString();
-    return call->id;
+    return call ? call->id : QString();
 }
 
 void
