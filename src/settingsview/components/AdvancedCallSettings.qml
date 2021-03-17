@@ -43,6 +43,7 @@ ColumnLayout {
         checkBoxRdv.checked = SettingsAdapter.getAccountConfig_RendezVous()
         checkBoxAutoAnswer.checked = SettingsAdapter.getAccountConfig_AutoAnswer()
         checkBoxCustomRingtone.checked = SettingsAdapter.getAccountConfig_Ringtone_RingtoneEnabled()
+        checkboxAllModerators.checked = SettingsAdapter.isAllModeratorsEnabled(AccountAdapter.currentAccountId)
 
         btnRingtone.setEnabled(SettingsAdapter.getAccountConfig_Ringtone_RingtoneEnabled())
         btnRingtone.setText(UtilsAdapter.toFileInfoName(SettingsAdapter.getAccountConfig_Ringtone_RingtonePath()))
@@ -235,6 +236,16 @@ ColumnLayout {
                             mainView)
                 ContactPickerCreation.openContactPicker()
             }
+        }
+
+        ToggleSwitch {
+            id: checkboxAllModerators
+
+            labelText: JamiStrings.enableAllModerators
+            fontPointSize: JamiTheme.settingsFontSize
+
+            onSwitchToggled: SettingsAdapter.setAllModeratorsEnabled(
+                                 AccountAdapter.currentAccountId, checked)
         }
     }
 }

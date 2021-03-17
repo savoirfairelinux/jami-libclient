@@ -419,6 +419,7 @@ Item {
     property string conferenceModeration: qsTr("Conference moderation")
     property string defaultModerators: qsTr("Default moderators")
     property string enableLocalModerators: qsTr("Enable local moderators")
+    property string enableAllModerators: qsTr("Make all participants moderators")
     property string addDefaultModerator: qsTr("Add default moderator")
     property string removeDefaultModerator: qsTr("Remove default moderator")
 

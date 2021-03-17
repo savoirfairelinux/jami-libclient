@@ -220,8 +220,10 @@ public:
     Q_INVOKABLE void setDefaultModerator(const QString& accountID,
                                          const QString& peerURI,
                                          const bool& state);
+    Q_INVOKABLE void setAllModeratorsEnabled(const QString& accountId, bool enabled);
     Q_INVOKABLE QStringList getDefaultModerators(const QString& accId);
     Q_INVOKABLE void enableLocalModerators(const QString& accountID, const bool& isModEnabled);
     Q_INVOKABLE bool isLocalModeratorsEnabled(const QString& accountId);
+    Q_INVOKABLE bool isAllModeratorsEnabled(const QString& accountId);
 };
 Q_DECLARE_METATYPE(SettingsAdapter*)

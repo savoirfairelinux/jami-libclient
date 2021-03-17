@@ -1014,7 +1014,13 @@ SettingsAdapter::setDefaultModerator(const QString& accountId,
                                      const QString& peerURI,
                                      const bool& state)
 {
-    return lrcInstance_->accountModel().setDefaultModerator(accountId, peerURI, state);
+    lrcInstance_->accountModel().setDefaultModerator(accountId, peerURI, state);
+}
+
+void
+SettingsAdapter::setAllModeratorsEnabled(const QString& accountId, bool enabled)
+{
+    lrcInstance_->accountModel().setAllModerators(accountId, enabled);
 }
 
 QStringList
@@ -1026,11 +1032,17 @@ SettingsAdapter::getDefaultModerators(const QString& accountId)
 void
 SettingsAdapter::enableLocalModerators(const QString& accountId, const bool& isModEnabled)
 {
-    return lrcInstance_->accountModel().enableLocalModerators(accountId, isModEnabled);
+    lrcInstance_->accountModel().enableLocalModerators(accountId, isModEnabled);
 }
 
 bool
 SettingsAdapter::isLocalModeratorsEnabled(const QString& accountId)
 {
     return lrcInstance_->accountModel().isLocalModeratorsEnabled(accountId);
+}
+
+bool
+SettingsAdapter::isAllModeratorsEnabled(const QString& accountId)
+{
+    return lrcInstance_->accountModel().isAllModerators(accountId);
 }
