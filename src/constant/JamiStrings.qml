@@ -20,6 +20,7 @@
 pragma Singleton
 
 import QtQuick 2.14
+
 import net.jami.Helpers 1.0
 
 Item {

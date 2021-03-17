@@ -18,6 +18,7 @@
 
 import QtQuick 2.14
 import Qt.labs.platform 1.1
+
 import net.jami.Constants 1.0
 
 FileDialog {

@@ -21,6 +21,7 @@ import QtQuick.Controls 2.14
 import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
 import QtQuick.Layouts 1.14
+
 import net.jami.Models 1.0
 import net.jami.Constants 1.0
 

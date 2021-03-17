@@ -22,6 +22,7 @@ import QtQuick.Controls.Universal 2.14
 import QtQuick.Layouts 1.14
 import Qt.labs.platform 1.1
 import QtGraphicalEffects 1.14
+
 import net.jami.Models 1.0
 import net.jami.Adapters 1.0
 import net.jami.Enums 1.0
