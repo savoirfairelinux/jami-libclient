@@ -941,6 +941,35 @@ ConversationModel::pendingRequestCount() const
     return pendingRequestCount;
 }
 
+QString
+ConversationModel::title(const QString& conversationId) const
+{
+    auto conversationIdx = pimpl_->indexOf(conversationId);
+    if (conversationIdx == -1)
+        return {};
+    auto& conversation = pimpl_->conversations[conversationIdx];
+    if (conversation.mode == conversation::Mode::NON_SWARM) {
+        // In this case, we can just display contact name
+        return owner.contactModel->bestNameForContact(conversation.participants.at(0));
+    }
+    // In this case, it depends if we have infos from daemon (TODO conferencesInfo() support)
+    // NOTE: Do not call any daemon method there as title() is called a lot for drawing
+    QString title;
+    auto idx = 0;
+    for (const auto& member : conversation.participants) {
+        if (member == owner.profileInfo.uri) {
+            title += owner.accountModel->bestNameForAccount(owner.id);
+        } else {
+            title += owner.contactModel->bestNameForContact(member);
+        }
+        idx += 1;
+        if (idx != conversation.participants.size()) {
+            title += ", ";
+        }
+    }
+    return title;
+}
+
 void
 ConversationModel::sendMessage(const QString& uid, const QString& body, const QString& parentId)
 {

@@ -344,6 +344,13 @@ public:
      */
     int pendingRequestCount() const;
 
+    /**
+     * Get conversation title. This means the title to show in the smartlist
+     * @param conversationId
+     * @return the title to display
+     */
+    QString title(const QString& conversationId) const;
+
 Q_SIGNALS:
     /**
      * Emitted when a conversation receives a new interaction

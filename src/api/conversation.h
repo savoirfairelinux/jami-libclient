@@ -56,6 +56,7 @@ struct Info
     bool isRequest = false;
     Mode mode = Mode::NON_SWARM;
 
+    // TODO remove
     QString getOneToOneParticipant(QString accountUri)
     {
         auto uris = participants;
