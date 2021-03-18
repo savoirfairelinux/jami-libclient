@@ -1,6 +1,6 @@
 /*
- * Copyright (C) 2019-2020 by Savoir-faire Linux
- * Author: Yang Wang   <yang.wang@savoirfairelinux.com>
+ * Copyright (C) 2021 by Savoir-faire Linux
+ * Author: Andreas Traczyk <andreas.traczyk@savoirfairelinux.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,22 +20,23 @@
 
 #include <QAbstractItemModel>
 
-#include "api/account.h"
-#include "api/contact.h"
-#include "api/conversation.h"
-#include "api/newdevicemodel.h"
-
-#include "lrcinstance.h"
-
-class AudioInputDeviceModel : public QAbstractListModel
+class AudioDeviceModel : public QAbstractListModel
 {
     Q_OBJECT
 public:
-    enum Role { Device_ID = Qt::UserRole + 1, ID_UTF8 };
+    enum class Type { Invalid, Record, Playback, Ringtone };
+    Q_ENUM(Type)
+    Q_PROPERTY(Type type MEMBER type_ NOTIFY typeChanged)
+
+    enum Role { DeviceName = Qt::UserRole + 1, RawDeviceName };
     Q_ENUM(Role)
 
-    explicit AudioInputDeviceModel(QObject* parent = 0);
-    ~AudioInputDeviceModel();
+signals:
+    void typeChanged();
+
+public:
+    explicit AudioDeviceModel(QObject* parent = 0);
+    ~AudioDeviceModel() = default;
 
     /*
      * QAbstractListModel override.
@@ -43,20 +44,22 @@ public:
     int rowCount(const QModelIndex& parent = QModelIndex()) const override;
     int columnCount(const QModelIndex& parent) const override;
     QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override;
+
     /*
      * Override role name as access point in qml.
      */
     QHash<int, QByteArray> roleNames() const override;
-    QModelIndex index(int row, int column = 0, const QModelIndex& parent = QModelIndex()) const;
-    QModelIndex parent(const QModelIndex& child) const;
-    Qt::ItemFlags flags(const QModelIndex& index) const;
+    QModelIndex index(int row,
+                      int column = 0,
+                      const QModelIndex& parent = QModelIndex()) const override;
+    QModelIndex parent(const QModelIndex& child) const override;
+    Qt::ItemFlags flags(const QModelIndex& index) const override;
 
-    /*
-     * This function is to reset the model when there's new account added.
-     */
     Q_INVOKABLE void reset();
-    /*
-     * This function is to get the current device id in the demon.
-     */
-    Q_INVOKABLE int getCurrentSettingIndex();
+    Q_INVOKABLE int getCurrentIndex();
+
+private:
+    QVector<QString> devices_;
+
+    Type type_ {Type::Invalid};
 };

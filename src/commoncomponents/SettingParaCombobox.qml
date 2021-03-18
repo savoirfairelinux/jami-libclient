@@ -22,6 +22,7 @@ import QtQuick.Controls.Universal 2.14
 import QtQuick.Layouts 1.14
 import QtGraphicalEffects 1.14
 import QtQuick.Controls.Styles 1.4
+
 import net.jami.Constants 1.0
 
 ComboBox {
@@ -37,10 +38,8 @@ ComboBox {
         width: root.width
         contentItem: Text {
             text: {
-                if (index < 0)
-                    return qsTr("")
                 var currentItem = root.delegateModel.items.get(index)
-                return  currentItem.model[root.textRole].toString()
+                return currentItem.model[root.textRole].toString()
             }
             color: JamiTheme.textColor
             font: root.font

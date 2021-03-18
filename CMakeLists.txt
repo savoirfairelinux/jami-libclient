@@ -58,9 +58,8 @@ set(COMMON_SOURCES
     ${SRC_DIR}/preferenceitemlistmodel.cpp
     ${SRC_DIR}/mediacodeclistmodel.cpp
     ${SRC_DIR}/accountstomigratelistmodel.cpp
-    ${SRC_DIR}/audioinputdevicemodel.cpp
+    ${SRC_DIR}/audiodevicemodel.cpp
     ${SRC_DIR}/videoinputdevicemodel.cpp
-    ${SRC_DIR}/audiooutputdevicemodel.cpp
     ${SRC_DIR}/pluginlistpreferencemodel.cpp
     ${SRC_DIR}/videoformatfpsmodel.cpp
     ${SRC_DIR}/videoformatresolutionmodel.cpp
@@ -109,9 +108,8 @@ set(COMMON_HEADERS
     ${SRC_DIR}/preferenceitemlistmodel.h
     ${SRC_DIR}/mediacodeclistmodel.h
     ${SRC_DIR}/accountstomigratelistmodel.h
-    ${SRC_DIR}/audioinputdevicemodel.h
+    ${SRC_DIR}/audiodevicemodel.h
     ${SRC_DIR}/videoinputdevicemodel.h
-    ${SRC_DIR}/audiooutputdevicemodel.h
     ${SRC_DIR}/pluginlistpreferencemodel.h
     ${SRC_DIR}/videoformatfpsmodel.h
     ${SRC_DIR}/videoformatresolutionmodel.h

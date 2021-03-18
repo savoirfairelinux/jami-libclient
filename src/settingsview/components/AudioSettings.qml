@@ -17,12 +17,8 @@
  */
 
 import QtQuick 2.14
-import QtQuick.Controls 2.14
-import QtQuick.Controls.Universal 2.14
 import QtQuick.Layouts 1.14
-import QtGraphicalEffects 1.14
-import QtQuick.Controls.Styles 1.4
-import Qt.labs.platform 1.1
+
 import net.jami.Models 1.0
 import net.jami.Adapters 1.0
 import net.jami.Enums 1.0
@@ -43,22 +39,13 @@ ColumnLayout {
     }
 
     function populateAudioSettings() {
-        inputComboBoxSetting.comboModel.reset()
-        audioOutputDeviceModel.reset()
-        audioManagerComboBoxSetting.comboModel.reset()
-
-        inputComboBoxSetting.setCurrentIndex(inputComboBoxSetting.comboModel.getCurrentSettingIndex())
-        outputComboBoxSetting.setCurrentIndex(audioOutputDeviceModel.getCurrentSettingIndex())
-        ringtoneDeviceComboBoxSetting.setCurrentIndex(audioOutputDeviceModel.getCurrentRingtoneDeviceIndex())
+        inputComboBoxSetting.setCurrentIndex(inputComboBoxSetting.comboModel.getCurrentIndex())
+        outputComboBoxSetting.setCurrentIndex(outputComboBoxSetting.comboModel.getCurrentIndex())
+        ringtoneComboBoxSetting.setCurrentIndex(outputComboBoxSetting.comboModel.getCurrentIndex())
         if(audioManagerComboBoxSetting.comboModel.rowCount() > 0) {
             audioManagerComboBoxSetting.setCurrentIndex(audioManagerComboBoxSetting.comboModel.getCurrentSettingIndex())
         }
-
         audioManagerComboBoxSetting.visible = (audioManagerComboBoxSetting.comboModel.rowCount() > 0)
-    }
-
-    AudioOutputDeviceModel{
-        id: audioOutputDeviceModel
     }
 
     ElidedTextLabel {
@@ -79,17 +66,16 @@ ColumnLayout {
 
         labelText: JamiStrings.microphone
         fontPointSize: JamiTheme.settingsFontSize
-        comboModel: AudioInputDeviceModel {}
+        comboModel: AudioDeviceModel { type: AudioDeviceModel.Type.Record }
         widthOfComboBox: itemWidth
         tipText: JamiStrings.selectAudioInputDevice
-        role: "ID_UTF8"
+        role: "DeviceName"
 
         onIndexChanged: {
             AvAdapter.stopAudioMeter(false)
-            var selectedInputDeviceName = comboModel.data(
-                        comboModel.index(modelIndex, 0),
-                        AudioInputDeviceModel.Device_ID)
-            AVModel.setInputDevice(selectedInputDeviceName)
+            AVModel.setInputDevice(comboModel.data(
+                                       comboModel.index(modelIndex, 0),
+                                       AudioDeviceModel.RawDeviceName))
             AvAdapter.startAudioMeter(false)
         }
     }
@@ -116,23 +102,22 @@ ColumnLayout {
 
         labelText: JamiStrings.outputDevice
         fontPointSize: JamiTheme.settingsFontSize
-        comboModel: audioOutputDeviceModel
+        comboModel: AudioDeviceModel { type: AudioDeviceModel.Type.Playback }
         widthOfComboBox: itemWidth
         tipText: JamiStrings.selectAudioOutputDevice
-        role: "ID_UTF8"
+        role: "DeviceName"
 
         onIndexChanged: {
             AvAdapter.stopAudioMeter(false)
-            var selectedOutputDeviceName = audioOutputDeviceModel.data(
-                        audioOutputDeviceModel.index(modelIndex, 0),
-                        AudioOutputDeviceModel.Device_ID)
-            AVModel.setOutputDevice(selectedOutputDeviceName)
+            AVModel.setOutputDevice(comboModel.data(
+                                        comboModel.index(modelIndex, 0),
+                                        AudioDeviceModel.RawDeviceName))
             AvAdapter.startAudioMeter(false)
         }
     }
 
     SettingsComboBox {
-        id: ringtoneDeviceComboBoxSetting
+        id: ringtoneComboBoxSetting
 
         Layout.fillWidth: true
         Layout.preferredHeight: JamiTheme.preferredFieldHeight
@@ -140,17 +125,16 @@ ColumnLayout {
 
         labelText: JamiStrings.ringtoneDevice
         fontPointSize: JamiTheme.settingsFontSize
-        comboModel: audioOutputDeviceModel
+        comboModel: AudioDeviceModel { type: AudioDeviceModel.Type.Ringtone }
         widthOfComboBox: itemWidth
         tipText: JamiStrings.selectRingtoneOutputDevice
-        role: "ID_UTF8"
+        role: "DeviceName"
 
         onIndexChanged: {
             AvAdapter.stopAudioMeter(false)
-            var selectedRingtoneDeviceName = audioOutputDeviceModel.data(
-                        audioOutputDeviceModel.index(modelIndex, 0),
-                        AudioOutputDeviceModel.Device_ID)
-            AVModel.setRingtoneDevice(selectedRingtoneDeviceName)
+            AVModel.setRingtoneDevice(comboModel.data(
+                                          comboModel.index(modelIndex, 0),
+                                          AudioDeviceModel.RawDeviceName))
             AvAdapter.startAudioMeter(false)
         }
     }
