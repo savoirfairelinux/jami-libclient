@@ -1693,8 +1693,8 @@ ConversationModelPimpl::slotContactAdded(const QString& contactUri)
             searchResults.erase(searchResults.begin() + i);
     }
 
-    emit linked.conversationReady(profileInfo.uri);
     emit linked.modelChanged();
+    emit linked.conversationReady(profileInfo.uri);
 }
 
 void
@@ -1746,10 +1746,10 @@ ConversationModelPimpl::slotContactRemoved(const QString& uri)
     }
     auto& conversationUid = conversations[conversationIdx].uid;
     conversations.erase(conversations.begin() + conversationIdx);
-    emit linked.conversationRemoved(conversationUid);
 
     invalidateModel();
     emit linked.modelChanged();
+    emit linked.conversationRemoved(conversationUid);
 }
 
 void
