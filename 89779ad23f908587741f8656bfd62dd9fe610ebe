@@ -1,0 +1,855 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bf49bdcb_e7935aa3",
+        "filename": "src/api/contactmodel.h",
+        "patchSetId": 68
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2021-03-22T17:23:44Z",
+      "side": 1,
+      "message": "we should call it incomingTrustRequest just to avoid to change names everywhere",
+      "range": {
+        "startLine": 127,
+        "startChar": 9,
+        "endLine": 127,
+        "endChar": 31
+      },
+      "revId": "89779ad23f908587741f8656bfd62dd9fe610ebe",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4d3c59b4_833b0445",
+        "filename": "src/api/conversation.h",
+        "patchSetId": 68
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2021-03-22T17:23:44Z",
+      "side": 1,
+      "message": "We can remove all the calls to that function. Mode can help with that, we can check if mode is supported yet by LRC. Because anyway this function is hacky",
+      "range": {
+        "startLine": 75,
+        "startChar": 10,
+        "endLine": 82,
+        "endChar": 5
+      },
+      "revId": "89779ad23f908587741f8656bfd62dd9fe610ebe",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "797cad9b_4f6129c4",
+        "filename": "src/api/conversationmodel.h",
+        "patchSetId": 68
+      },
+      "lineNbr": 457,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2021-03-22T17:23:44Z",
+      "side": 1,
+      "message": "error should be \u003c 0",
+      "range": {
+        "startLine": 457,
+        "startChar": 57,
+        "endLine": 457,
+        "endChar": 66
+      },
+      "revId": "89779ad23f908587741f8656bfd62dd9fe610ebe",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0d7b089f_bc8a1708",
+        "filename": "src/contactmodel.cpp",
+        "patchSetId": 68
+      },
+      "lineNbr": 1016,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2021-03-22T17:23:44Z",
+      "side": 1,
+      "message": "we should precise what is \"from\", an id, a uri, a device, a member? (Here it\u0027s peerId)",
+      "range": {
+        "startLine": 1016,
+        "startChar": 56,
+        "endLine": 1016,
+        "endChar": 60
+      },
+      "revId": "89779ad23f908587741f8656bfd62dd9fe610ebe",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3a966757_1692496b",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 68
+      },
+      "lineNbr": 144,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2021-03-22T17:23:44Z",
+      "side": 1,
+      "message": "typo",
+      "range": {
+        "startLine": 144,
+        "startChar": 45,
+        "endLine": 144,
+        "endChar": 50
+      },
+      "revId": "89779ad23f908587741f8656bfd62dd9fe610ebe",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8ca442d8_701c9b41",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 68
+      },
+      "lineNbr": 176,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2021-03-22T17:23:44Z",
+      "side": 1,
+      "message": "peerId",
+      "range": {
+        "startLine": 176,
+        "startChar": 52,
+        "endLine": 176,
+        "endChar": 56
+      },
+      "revId": "89779ad23f908587741f8656bfd62dd9fe610ebe",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fb84093a_d6cd131d",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 68
+      },
+      "lineNbr": 406,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2021-03-22T17:23:44Z",
+      "side": 1,
+      "message": "future proof: avoid conv.participants.front() but switch on the mode.\n\nImho here, we want to get only one_to_one conv \u0026 fallback and add the participant which is not the account",
+      "range": {
+        "startLine": 406,
+        "startChar": 58,
+        "endLine": 406,
+        "endChar": 83
+      },
+      "revId": "89779ad23f908587741f8656bfd62dd9fe610ebe",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b204af69_80e7405a",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 68
+      },
+      "lineNbr": 566,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2021-03-22T17:23:44Z",
+      "side": 1,
+      "message": "here we should not even do a getContact(). Just filter via the conv.mode is enough (if account is a SIP account, all contacts will be SIPs)",
+      "range": {
+        "startLine": 551,
+        "startChar": 17,
+        "endLine": 566,
+        "endChar": 29
+      },
+      "revId": "89779ad23f908587741f8656bfd62dd9fe610ebe",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "aa259ea2_f9a7cab5",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 68
+      },
+      "lineNbr": 730,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2021-03-22T17:23:44Z",
+      "side": 1,
+      "message": "we don,t care about participants, just mode !\u003d NON_SWARM \u0026 uid is the same",
+      "range": {
+        "startLine": 730,
+        "startChar": 58,
+        "endLine": 730,
+        "endChar": 98
+      },
+      "revId": "89779ad23f908587741f8656bfd62dd9fe610ebe",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e93541fa_1e52cd79",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 68
+      },
+      "lineNbr": 814,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2021-03-22T17:23:44Z",
+      "side": 1,
+      "message": "not sure this part is useful as it will be casted",
+      "range": {
+        "startLine": 814,
+        "startChar": 18,
+        "endLine": 814,
+        "endChar": 56
+      },
+      "revId": "89779ad23f908587741f8656bfd62dd9fe610ebe",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9eea84bc_e1adfbb4",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 68
+      },
+      "lineNbr": 815,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2021-03-22T17:23:44Z",
+      "side": 1,
+      "message": "avoid participantURI. participant is not defined. Moreover it\u0027s unused there. (Clean build warnings0",
+      "range": {
+        "startLine": 815,
+        "startChar": 100,
+        "endLine": 815,
+        "endChar": 111
+      },
+      "revId": "89779ad23f908587741f8656bfd62dd9fe610ebe",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "dae9d0e7_3639f034",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 68
+      },
+      "lineNbr": 839,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2021-03-22T17:23:44Z",
+      "side": 1,
+      "message": "same. Also it\u0027s not an URI (URI contains  ring:, swarm:, etc)",
+      "range": {
+        "startLine": 839,
+        "startChar": 42,
+        "endLine": 839,
+        "endChar": 56
+      },
+      "revId": "89779ad23f908587741f8656bfd62dd9fe610ebe",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b6fc0a6f_5ad7cad9",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 68
+      },
+      "lineNbr": 883,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2021-03-22T17:23:44Z",
+      "side": 1,
+      "message": "const auto\u0026",
+      "range": {
+        "startLine": 883,
+        "startChar": 7,
+        "endLine": 883,
+        "endChar": 14
+      },
+      "revId": "89779ad23f908587741f8656bfd62dd9fe610ebe",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c0c74faa_d3d367c6",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 68
+      },
+      "lineNbr": 897,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2021-03-22T17:23:44Z",
+      "side": 1,
+      "message": "same",
+      "range": {
+        "startLine": 897,
+        "startChar": 95,
+        "endLine": 897,
+        "endChar": 99
+      },
+      "revId": "89779ad23f908587741f8656bfd62dd9fe610ebe",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7a6f6858_b80dda51",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 68
+      },
+      "lineNbr": 897,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2021-03-22T17:23:44Z",
+      "side": 1,
+      "message": "Infos",
+      "range": {
+        "startLine": 897,
+        "startChar": 19,
+        "endLine": 897,
+        "endChar": 41
+      },
+      "revId": "89779ad23f908587741f8656bfd62dd9fe610ebe",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7d2f2057_e1f9149c",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 68
+      },
+      "lineNbr": 940,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2021-03-22T17:23:44Z",
+      "side": 1,
+      "message": "same",
+      "range": {
+        "startLine": 940,
+        "startChar": 16,
+        "endLine": 940,
+        "endChar": 55
+      },
+      "revId": "89779ad23f908587741f8656bfd62dd9fe610ebe",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7b8568d9_287b0995",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 68
+      },
+      "lineNbr": 941,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2021-03-22T17:23:44Z",
+      "side": 1,
+      "message": "same",
+      "range": {
+        "startLine": 941,
+        "startChar": 83,
+        "endLine": 941,
+        "endChar": 97
+      },
+      "revId": "89779ad23f908587741f8656bfd62dd9fe610ebe",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c417872e_dd5fc657",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 68
+      },
+      "lineNbr": 1018,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2021-03-22T17:23:44Z",
+      "side": 1,
+      "message": "sane",
+      "range": {
+        "startLine": 1018,
+        "startChar": 91,
+        "endLine": 1018,
+        "endChar": 100
+      },
+      "revId": "89779ad23f908587741f8656bfd62dd9fe610ebe",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a1c1c794_640ea83a",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 68
+      },
+      "lineNbr": 1044,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2021-03-22T17:23:44Z",
+      "side": 1,
+      "message": "imho we should remove to \"members\", Moreover remove .front() for future proof",
+      "range": {
+        "startLine": 1044,
+        "startChar": 36,
+        "endLine": 1044,
+        "endChar": 48
+      },
+      "revId": "89779ad23f908587741f8656bfd62dd9fe610ebe",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a9494ff5_62d3b9bc",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 68
+      },
+      "lineNbr": 1155,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2021-03-22T17:23:44Z",
+      "side": 1,
+      "message": "Please add a warning \"Unimplemented\"",
+      "range": {
+        "startLine": 1152,
+        "startChar": 27,
+        "endLine": 1155,
+        "endChar": 13
+      },
+      "revId": "89779ad23f908587741f8656bfd62dd9fe610ebe",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "91f237f8_0e987682",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 68
+      },
+      "lineNbr": 1219,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2021-03-22T17:23:44Z",
+      "side": 1,
+      "message": "Please add a warning \"Unimplemented\"",
+      "range": {
+        "startLine": 1217,
+        "startChar": 24,
+        "endLine": 1219,
+        "endChar": 13
+      },
+      "revId": "89779ad23f908587741f8656bfd62dd9fe610ebe",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fa0144fa_6e6d2bc2",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 68
+      },
+      "lineNbr": 1280,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2021-03-22T17:23:44Z",
+      "side": 1,
+      "message": "same",
+      "range": {
+        "startLine": 1277,
+        "startChar": 9,
+        "endLine": 1280,
+        "endChar": 13
+      },
+      "revId": "89779ad23f908587741f8656bfd62dd9fe610ebe",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d7ca3628_3f9b1035",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 68
+      },
+      "lineNbr": 1740,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2021-03-22T17:23:44Z",
+      "side": 1,
+      "message": "plural",
+      "range": {
+        "startLine": 1740,
+        "startChar": 16,
+        "endLine": 1740,
+        "endChar": 21
+      },
+      "revId": "89779ad23f908587741f8656bfd62dd9fe610ebe",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e898c046_ab5cfa07",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 68
+      },
+      "lineNbr": 1744,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2021-03-22T17:23:44Z",
+      "side": 1,
+      "message": "Please add clang format hook!\ntrailing spaces",
+      "range": {
+        "startLine": 1744,
+        "startChar": 2,
+        "endLine": 1744,
+        "endChar": 4
+      },
+      "revId": "89779ad23f908587741f8656bfd62dd9fe610ebe",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b89ff59e_2bd8a394",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 68
+      },
+      "lineNbr": 1949,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2021-03-22T17:23:44Z",
+      "side": 1,
+      "message": "for (const auto\u0026 message : messages)",
+      "range": {
+        "startLine": 1947,
+        "startChar": 36,
+        "endLine": 1949,
+        "endChar": 39
+      },
+      "revId": "89779ad23f908587741f8656bfd62dd9fe610ebe",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "56eac32d_06a5346d",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 68
+      },
+      "lineNbr": 1974,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2021-03-22T17:23:44Z",
+      "side": 1,
+      "message": "Warning! i defined twice",
+      "range": {
+        "startLine": 1970,
+        "startChar": 13,
+        "endLine": 1974,
+        "endChar": 13
+      },
+      "revId": "89779ad23f908587741f8656bfd62dd9fe610ebe",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b3cc0f26_ea4ce076",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 68
+      },
+      "lineNbr": 2090,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2021-03-22T17:23:44Z",
+      "side": 1,
+      "message": "const auto\u0026",
+      "range": {
+        "startLine": 2090,
+        "startChar": 5,
+        "endLine": 2090,
+        "endChar": 9
+      },
+      "revId": "89779ad23f908587741f8656bfd62dd9fe610ebe",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b5531e67_297cf5b5",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 68
+      },
+      "lineNbr": 2092,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2021-03-22T17:23:44Z",
+      "side": 1,
+      "message": "const",
+      "range": {
+        "startLine": 2092,
+        "startChar": 9,
+        "endLine": 2092,
+        "endChar": 11
+      },
+      "revId": "89779ad23f908587741f8656bfd62dd9fe610ebe",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2966b020_68bc24b3",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 68
+      },
+      "lineNbr": 2775,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2021-03-22T17:23:44Z",
+      "side": 1,
+      "message": "peerId",
+      "range": {
+        "startLine": 2775,
+        "startChar": 58,
+        "endLine": 2775,
+        "endChar": 62
+      },
+      "revId": "89779ad23f908587741f8656bfd62dd9fe610ebe",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a87315b1_3533db12",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 68
+      },
+      "lineNbr": 3018,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2021-03-22T17:23:44Z",
+      "side": 1,
+      "message": "same",
+      "range": {
+        "startLine": 3018,
+        "startChar": 16,
+        "endLine": 3018,
+        "endChar": 52
+      },
+      "revId": "89779ad23f908587741f8656bfd62dd9fe610ebe",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7bb97e01_75348ad5",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 68
+      },
+      "lineNbr": 3020,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2021-03-22T17:23:44Z",
+      "side": 1,
+      "message": "same",
+      "range": {
+        "startLine": 3020,
+        "startChar": 0,
+        "endLine": 3020,
+        "endChar": 12
+      },
+      "revId": "89779ad23f908587741f8656bfd62dd9fe610ebe",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b6af2ee5_87d07db1",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 68
+      },
+      "lineNbr": 3241,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2021-03-22T17:23:44Z",
+      "side": 1,
+      "message": "same",
+      "range": {
+        "startLine": 3239,
+        "startChar": 8,
+        "endLine": 3241,
+        "endChar": 4
+      },
+      "revId": "89779ad23f908587741f8656bfd62dd9fe610ebe",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "436c26b2_5b958365",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 68
+      },
+      "lineNbr": 3438,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2021-03-22T17:23:44Z",
+      "side": 1,
+      "message": "same",
+      "range": {
+        "startLine": 3437,
+        "startChar": 5,
+        "endLine": 3438,
+        "endChar": 4
+      },
+      "revId": "89779ad23f908587741f8656bfd62dd9fe610ebe",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "acea79f8_4b273b86",
+        "filename": "src/messageslist.cpp",
+        "patchSetId": 68
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2021-03-22T17:23:44Z",
+      "side": 1,
+      "message": "date",
+      "range": {
+        "startLine": 2,
+        "startChar": 18,
+        "endLine": 2,
+        "endChar": 22
+      },
+      "revId": "89779ad23f908587741f8656bfd62dd9fe610ebe",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "31ca6f19_2eab3029",
+        "filename": "src/messageslist.h",
+        "patchSetId": 68
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2021-03-22T17:23:44Z",
+      "side": 1,
+      "message": "date",
+      "range": {
+        "startLine": 2,
+        "startChar": 18,
+        "endLine": 2,
+        "endChar": 22
+      },
+      "revId": "89779ad23f908587741f8656bfd62dd9fe610ebe",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cc8497ac_1b4987cf",
+        "filename": "src/messageslist.h",
+        "patchSetId": 68
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2021-03-22T17:23:44Z",
+      "side": 1,
+      "message": "const?",
+      "range": {
+        "startLine": 37,
+        "startChar": 29,
+        "endLine": 37,
+        "endChar": 33
+      },
+      "revId": "89779ad23f908587741f8656bfd62dd9fe610ebe",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e9806338_565e033d",
+        "filename": "src/messageslist.h",
+        "patchSetId": 68
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2021-03-22T17:23:44Z",
+      "side": 1,
+      "message": "const?",
+      "range": {
+        "startLine": 58,
+        "startChar": 52,
+        "endLine": 58,
+        "endChar": 59
+      },
+      "revId": "89779ad23f908587741f8656bfd62dd9fe610ebe",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    }
+  ]
+}

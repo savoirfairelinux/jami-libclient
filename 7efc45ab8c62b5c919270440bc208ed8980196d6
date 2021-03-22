@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "40349559_c839022d",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 68
+      },
+      "lineNbr": 2166,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2021-03-22T17:23:44Z",
+      "side": 0,
+      "message": "Check if it\u0027s us? like peerId \u003d\u003d owner.profileInfo.uri",
+      "range": {
+        "startLine": 2166,
+        "startChar": 34,
+        "endLine": 2166,
+        "endChar": 48
+      },
+      "revId": "7efc45ab8c62b5c919270440bc208ed8980196d6",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    }
+  ]
+}
