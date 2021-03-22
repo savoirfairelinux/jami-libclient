@@ -1,10 +1,10 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="de" sourcelanguage="en" version="2.0">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="de" sourcelanguage="en" version="2.1">
 <context>
     <name>QObject</name>
     <message>
         <location filename="../src/qtwrapper/callmanager_wrap.h" line="328"/>
         <source>Me</source>
-        <translation>not lch</translation>
+        <translation>lch</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="61"/>
@@ -337,7 +337,7 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="97"/>
         <source>Internal Server Error</source>
-        <translation>Interner Server Fehler</translation>
+        <translation>Interner Serverfehler</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="98"/>
@@ -397,7 +397,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="30"/>
         <source>Hide chat view</source>
-        <translation>Chat-Ansicht ausblenden</translation>
+        <translation>Chatansicht ausblenden</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="31"/>
@@ -407,7 +407,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="32"/>
         <source>Show available plugins</source>
-        <translation type="unfinished"/>
+        <translation>Verfügbare Plugins anzeigen</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="33"/>
@@ -457,27 +457,27 @@
     <message>
         <location filename="../src/chatview.cpp" line="43"/>
         <source>Write to {0}</source>
-        <translation type="unfinished"/>
+        <translation>Schreibe an {0}</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="61"/>
         <source>Unable to make contact</source>
-        <translation type="unfinished"/>
+        <translation>Kein Kontakt möglich</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="66"/>
         <source>Waiting for contact</source>
-        <translation type="unfinished"/>
+        <translation>Wartet auf Kontakt</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="67"/>
         <source>Incoming transfer</source>
-        <translation type="unfinished"/>
+        <translation>Eingehende Übertragung</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="68"/>
         <source>Timed out waiting for contact</source>
-        <translation type="unfinished"/>
+        <translation>Zeitüberschreitung beim Warten auf Kontakt</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="42"/>
@@ -522,7 +522,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="65"/>
         <source>Ongoing</source>
-        <translation type="unfinished"/>
+        <translation>Laufend</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="49"/>
@@ -567,7 +567,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="58"/>
         <source>Deny</source>
-        <translation type="unfinished"/>
+        <translation>Ablehnen</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="59"/>
@@ -588,17 +588,17 @@
         <translation>Suchen…</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="954"/>
+        <location filename="../src/contactmodel.cpp" line="955"/>
         <source>Invalid ID</source>
         <translation>Ungültige ID</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="957"/>
+        <location filename="../src/contactmodel.cpp" line="958"/>
         <source>Registered name not found</source>
         <translation>Registrierter Name wurde nicht gefunden</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="960"/>
+        <location filename="../src/contactmodel.cpp" line="961"/>
         <source>Couldn&apos;t lookup…</source>
         <translation>Konnte nicht nachschlagen...</translation>
     </message>

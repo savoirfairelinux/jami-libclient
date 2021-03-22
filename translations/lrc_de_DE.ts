@@ -1,4 +1,4 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="de_DE" sourcelanguage="en" version="2.0">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="de_DE" sourcelanguage="en" version="2.1">
 <context>
     <name>QObject</name>
     <message>
@@ -277,7 +277,7 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="84"/>
         <source>Temporarily Unavailable</source>
-        <translation> Temporär nicht verfügbar</translation>
+        <translation>Temporär nicht verfügbar</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="85"/>
@@ -352,7 +352,7 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="100"/>
         <source>Service Unavailable</source>
-        <translation> Dienst nicht verfügbar</translation>
+        <translation>Dienst nicht verfügbar</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="101"/>
@@ -407,7 +407,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="32"/>
         <source>Show available plugins</source>
-        <translation type="unfinished"/>
+        <translation>Verfügbare Plugins anzeigen</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="33"/>
@@ -502,7 +502,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="49"/>
         <source>{0} days ago</source>
-        <translation>Vor {0} Tagen</translation>
+        <translation>vor {0} Tagen</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="50"/>
@@ -512,7 +512,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="52"/>
         <source>{0} minutes ago</source>
-        <translation>Vor {0} Minuten</translation>
+        <translation>vor {0} Minuten</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="64"/>
@@ -527,32 +527,32 @@
     <message>
         <location filename="../src/chatview.cpp" line="49"/>
         <source>%d days ago</source>
-        <translation>Vor %d Tagen</translation>
+        <translation>vor %d Tagen</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="50"/>
         <source>%d hours ago</source>
-        <translation>Vor %d Stunden</translation>
+        <translation>vor %d Stunden</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="52"/>
         <source>%d minutes ago</source>
-        <translation>Vor %d Minuten</translation>
+        <translation>vor %d Minuten</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="53"/>
         <source>one day ago</source>
-        <translation>Vor einem Tag</translation>
+        <translation>vor einem Tag</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="54"/>
         <source>one hour ago</source>
-        <translation>Vor einer Stunde</translation>
+        <translation>vor einer Stunde</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="55"/>
         <source>just now</source>
-        <translation>Gerade eben</translation>
+        <translation>gerade eben</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="56"/>
@@ -588,17 +588,17 @@
         <translation>Suche ...</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="954"/>
+        <location filename="../src/contactmodel.cpp" line="955"/>
         <source>Invalid ID</source>
         <translation>Ungültige Identifikation (ID)</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="957"/>
+        <location filename="../src/contactmodel.cpp" line="958"/>
         <source>Registered name not found</source>
         <translation>Der registrierte Name wurde nicht gefunden</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="960"/>
+        <location filename="../src/contactmodel.cpp" line="961"/>
         <source>Couldn&apos;t lookup…</source>
         <translation>Nicht gefunden ...</translation>
     </message>
