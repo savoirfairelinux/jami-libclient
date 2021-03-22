@@ -479,10 +479,11 @@ ContactModelPimpl::searchSipContact(const URI& query)
         return;
     }
 
-    auto& temporaryContact = searchResult[query];
     {
         std::lock_guard<std::mutex> lk(contactsMtx_);
         if (contacts.find(uriID) == contacts.end()) {
+            auto& temporaryContact = searchResult[query];
+
             temporaryContact.profileInfo.uri = uriID;
             temporaryContact.profileInfo.alias = uriID;
             temporaryContact.profileInfo.type = profile::Type::TEMPORARY;
