@@ -130,7 +130,7 @@
         <translation>jaz</translation>
     </message>
     <message>
-        <location filename="../src/calladapter.cpp" line="341"/>
+        <location filename="../src/calladapter.cpp" line="340"/>
         <source>is calling you</source>
         <translation>vas kliče</translation>
     </message>
@@ -1946,27 +1946,27 @@ Poskusite znova kasneje.</translation>
 <context>
     <name>LinkedDevices</name>
     <message>
-        <location filename="../src/settingsview/components/LinkedDevices.qml" line="97"/>
+        <location filename="../src/settingsview/components/LinkedDevices.qml" line="111"/>
         <source>Remove Device</source>
         <translation>Odstrani napravo</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/LinkedDevices.qml" line="98"/>
+        <location filename="../src/settingsview/components/LinkedDevices.qml" line="112"/>
         <source>Are you sure you wish to remove this device?</source>
         <translation>Ali ste prepričani, da želite odstraniti to napravo?</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/LinkedDevices.qml" line="100"/>
+        <location filename="../src/settingsview/components/LinkedDevices.qml" line="114"/>
         <source>Ok</source>
         <translation>V redu</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/LinkedDevices.qml" line="100"/>
+        <location filename="../src/settingsview/components/LinkedDevices.qml" line="114"/>
         <source>Cancel</source>
         <translation>Prekliči</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/LinkedDevices.qml" line="109"/>
+        <location filename="../src/settingsview/components/LinkedDevices.qml" line="123"/>
         <source>Linked Devices</source>
         <translation>Povezane naprave</translation>
     </message>
@@ -2074,7 +2074,7 @@ Poskusite znova kasneje.</translation>
 <context>
     <name>PluginItemDelegate</name>
     <message>
-        <location filename="../src/settingsview/components/PluginItemDelegate.qml" line="107"/>
+        <location filename="../src/settingsview/components/PluginItemDelegate.qml" line="108"/>
         <source>Load/Unload</source>
         <translation>Naloži/Odstrani</translation>
     </message>

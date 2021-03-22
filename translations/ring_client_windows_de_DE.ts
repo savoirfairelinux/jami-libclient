@@ -130,7 +130,7 @@
         <translation>ich</translation>
     </message>
     <message>
-        <location filename="../src/calladapter.cpp" line="341"/>
+        <location filename="../src/calladapter.cpp" line="340"/>
         <source>is calling you</source>
         <translation>ruft Sie an</translation>
     </message>
@@ -1945,27 +1945,27 @@ Versuchen Sie es später erneut.</translation>
 <context>
     <name>LinkedDevices</name>
     <message>
-        <location filename="../src/settingsview/components/LinkedDevices.qml" line="97"/>
+        <location filename="../src/settingsview/components/LinkedDevices.qml" line="111"/>
         <source>Remove Device</source>
         <translation>Gerät entfernen</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/LinkedDevices.qml" line="98"/>
+        <location filename="../src/settingsview/components/LinkedDevices.qml" line="112"/>
         <source>Are you sure you wish to remove this device?</source>
         <translation>Sind Sie sicher, dass Sie dieses Gerät entfernen wollen?</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/LinkedDevices.qml" line="100"/>
+        <location filename="../src/settingsview/components/LinkedDevices.qml" line="114"/>
         <source>Ok</source>
         <translation>Ok</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/LinkedDevices.qml" line="100"/>
+        <location filename="../src/settingsview/components/LinkedDevices.qml" line="114"/>
         <source>Cancel</source>
         <translation>Abbrechen</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/LinkedDevices.qml" line="109"/>
+        <location filename="../src/settingsview/components/LinkedDevices.qml" line="123"/>
         <source>Linked Devices</source>
         <translation>Verknüpfte Gräte</translation>
     </message>
@@ -2073,7 +2073,7 @@ Versuchen Sie es später erneut.</translation>
 <context>
     <name>PluginItemDelegate</name>
     <message>
-        <location filename="../src/settingsview/components/PluginItemDelegate.qml" line="107"/>
+        <location filename="../src/settingsview/components/PluginItemDelegate.qml" line="108"/>
         <source>Load/Unload</source>
         <translation>Laden/Entladen</translation>
     </message>
