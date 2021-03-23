@@ -29,6 +29,7 @@ ComboBox {
     id: root
 
     property string tooltipText:""
+    property string comboBoxBackgroundColor: JamiTheme.editBackgroundColor
 
     ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
     ToolTip.visible: hovered && (tooltipText.length > 0)
@@ -90,10 +91,10 @@ ComboBox {
     }
 
     background: Rectangle {
-        color: JamiTheme.editBackgroundColor
+        color: root.comboBoxBackgroundColor
         implicitWidth: 120
         implicitHeight: 40
-        border.color: JamiTheme.editBackgroundColor
+        border.color: root.comboBoxBackgroundColor
         border.width: root.visualFocus ? 2 : 1
         radius: 2
     }

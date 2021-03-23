@@ -23,6 +23,7 @@ import QtQuick.Layouts 1.14
 import QtGraphicalEffects 1.14
 
 import net.jami.Models 1.0
+import net.jami.Adapters 1.0
 import net.jami.Constants 1.0
 
 import "../../commoncomponents"
@@ -34,45 +35,39 @@ ItemDelegate {
     property string pluginId: ""
     property string pluginIcon: ""
     property bool isLoaded: false
+    property int rowHeight: implicitHeight
 
     signal btnLoadPluginToggled
 
     function btnPreferencesPluginClicked() {
-        pluginListPreferencesView.pluginName = pluginName
-        pluginListPreferencesView.pluginIcon = pluginIcon
-        pluginListPreferencesView.pluginId = pluginId
-        pluginListPreferencesView.isLoaded = isLoaded
-        if (!pluginListPreferencesView.visible) {
-            pluginListPreferencesView.visible = !pluginListPreferencesView.visible
-            root.height += pluginListPreferencesView.childrenRect.height
-        } else {
-            root.height -= pluginListPreferencesView.childrenRect.height
-            pluginListPreferencesView.visible = !pluginListPreferencesView.visible
-        }
-        PluginAdapter.preferenceChanged(pluginId)
+        pluginListPreferencesView.visible = !pluginListPreferencesView.visible
+        pluginListPreferencesView.updateProperties(root.pluginName, root.pluginIcon, root.pluginId, root.isLoaded)
     }
 
     Connections {
         target: enabledplugin
 
         function onHidePreferences() {
-            root.height = 50
             pluginListPreferencesView.visible = false
+            pluginListPreferencesView.updatePluginPrefListView()
         }
     }
 
     ColumnLayout {
         anchors.fill: parent
-        Layout.preferredHeight: childrenRect.height
+        implicitHeight: childrenRect.height
 
         RowLayout {
             Layout.fillWidth: true
+            Layout.preferredHeight: root.rowHeight
 
             Label {
                 id: pluginImage
                 Layout.leftMargin: 8
+                Layout.topMargin: 8
                 Layout.alignment: Qt.AlignLeft | Qt.AlingVCenter
-                width: 30
+                width: JamiTheme.preferredFieldHeight
+                Layout.fillHeight: true
 
                 background: Rectangle {
                     color: "transparent"
@@ -81,26 +76,31 @@ ItemDelegate {
                         source: "file:" + pluginIcon
                         sourceSize: Qt.size(256, 256)
                         mipmap: true
-                        width: 32
-                        height: 32
+                        width: JamiTheme.preferredFieldHeight
+                        height: JamiTheme.preferredFieldHeight
                     }
                 }
             }
 
             Label {
                 id: labelDeviceId
+                Layout.fillHeight: true
                 Layout.fillWidth: true
+                Layout.topMargin: 8
                 Layout.leftMargin: 8
                 color: JamiTheme.textColor
 
                 font.pointSize: JamiTheme.settingsFontSize
                 font.kerning: true
                 text: pluginName === "" ? pluginId : pluginName
+                verticalAlignment: Text.AlignVCenter
             }
 
             Switch {
                 id: loadSwitch
+                Layout.fillHeight: true
                 property bool isHovering: false
+                Layout.topMargin: 8
                 Layout.rightMargin: 8
                 width: 20
 
@@ -137,6 +137,7 @@ ItemDelegate {
                 id: btnPreferencesPlugin
 
                 Layout.alignment: Qt.AlingVCenter | Qt.AlignRight
+                Layout.topMargin: 8
                 Layout.rightMargin: 8
 
                 source: "qrc:/images/icons/round-settings-24px.svg"
@@ -151,13 +152,18 @@ ItemDelegate {
         PluginListPreferencesView {
             id: pluginListPreferencesView
 
-            Layout.topMargin: 10
             Layout.fillWidth: true
             Layout.leftMargin: JamiTheme.preferredMarginSize
             Layout.rightMargin: JamiTheme.preferredMarginSize
-            Layout.bottomMargin: JamiTheme.preferredMarginSize
             Layout.minimumHeight: 1
             Layout.preferredHeight: childrenRect.height
+
+            onUpdatePluginPrefListView: {
+                if (pluginListPreferencesView.visible)
+                    root.implicitHeight = root.rowHeight + pluginListPreferencesView.childrenRect.height
+                else
+                    root.implicitHeight = root.rowHeight
+            }
         }
     }
 }

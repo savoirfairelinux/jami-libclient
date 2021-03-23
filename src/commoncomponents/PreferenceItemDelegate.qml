@@ -113,6 +113,7 @@ ItemDelegate {
             font.pointSize: JamiTheme.settingsFontSize
             ToolTip.visible: hovered
             ToolTip.text: preferenceSummary
+            opacity: enabled ? 1.0 : 0.5
         }
 
         PushButton {
@@ -130,6 +131,7 @@ ItemDelegate {
             source: "qrc:/images/icons/round-settings-24px.svg"
 
             toolTipText: qsTr("Edit preference")
+            opacity: enabled ? 1.0 : 0.5
         }
 
         Switch {
@@ -143,6 +145,7 @@ ItemDelegate {
             checked: preferenceCurrentValue === "1"
 
             onToggled: getNewPreferenceValueSlot(checked)
+            opacity: enabled ? 1.0 : 0.5
         }
 
         SettingParaCombobox {
@@ -161,6 +164,8 @@ ItemDelegate {
             textRole: "PreferenceValue"
             tooltipText: JamiStrings.select
             onActivated: getNewPreferenceValueSlot(index)
+            opacity: enabled ? 1.0 : 0.5
+            comboBoxBackgroundColor: JamiTheme.comboBoxBackgroundColor
         }
 
         MaterialButton {
@@ -181,6 +186,7 @@ ItemDelegate {
             pressedColor: JamiTheme.buttonTintedGreyPressed
 
             onClicked: getNewPreferenceValueSlot(0)
+            opacity: enabled ? 1.0 : 0.5
         }
 
         MaterialLineEdit {
@@ -201,6 +207,7 @@ ItemDelegate {
             wrapMode: Text.NoWrap
 
             onEditingFinished: getNewPreferenceValueSlot(0)
+            opacity: enabled ? 1.0 : 0.5
         }
     }
 }

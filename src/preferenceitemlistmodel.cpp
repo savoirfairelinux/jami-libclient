@@ -89,6 +89,26 @@ PreferenceItemListModel::data(const QModelIndex& index, int role) const
             acceptedFiles.append(QString("All (*.%1)").arg(mimeTypeList.join(" *.")));
         }
     }
+    const auto dependsOn = details["dependsOn"].split(",");
+    const auto preferences = lrcInstance_->pluginModel().getPluginPreferences(pluginId_);
+    const auto prefValues = lrcInstance_->pluginModel().getPluginPreferencesValues(pluginId_);
+    bool enabled = true;
+    for (auto& preference : preferences) {
+        auto key = preference["key"];
+        auto prefValue = prefValues[key];
+        for (auto& item : dependsOn) {
+            if (preference["type"] == "Switch" && item.endsWith(key)) {
+                if (!item.startsWith("!") && prefValue == "0") {
+                    enabled = false;
+                    break;
+                } else if (item.startsWith("!") && prefValue == "1") {
+                    enabled = false;
+                    break;
+                }
+            }
+        }
+    }
+
     switch (role) {
     case Role::PreferenceKey:
         return QVariant(details["key"]);
@@ -108,6 +128,8 @@ PreferenceItemListModel::data(const QModelIndex& index, int role) const
         return QVariant(acceptedFiles);
     case Role::IsImage:
         return QVariant(checkImage);
+    case Role::Enabled:
+        return QVariant(enabled);
     }
 
     return QVariant();
@@ -126,6 +148,7 @@ PreferenceItemListModel::roleNames() const
     roles[CurrentPath] = "CurrentPath";
     roles[FileFilters] = "FileFilters";
     roles[IsImage] = "IsImage";
+    roles[Enabled] = "Enabled";
     return roles;
 }
 
@@ -192,13 +215,32 @@ PreferenceItemListModel::setMediaHandlerName(const QString mediaHandlerName)
     mediaHandlerName_ = mediaHandlerName;
 }
 
+QString
+PreferenceItemListModel::category() const
+{
+    return category_;
+}
+
+void
+PreferenceItemListModel::setCategory(const QString category)
+{
+    category_ = category;
+}
+
 int
 PreferenceItemListModel::preferencesCount()
 {
     if (!preferenceList_.isEmpty())
         return preferenceList_.size();
     if (mediaHandlerName_.isEmpty()) {
-        preferenceList_ = lrcInstance_->pluginModel().getPluginPreferences(pluginId_);
+        auto preferences = lrcInstance_->pluginModel().getPluginPreferences(pluginId_);
+        if (category_ != "all")
+            for (auto& preference : preferences) {
+                if (preference["category"] == category_)
+                    preferenceList_.push_back(preference);
+            }
+        else
+            preferenceList_ = preferences;
         return preferenceList_.size();
     } else {
         auto preferences = lrcInstance_->pluginModel().getPluginPreferences(pluginId_);

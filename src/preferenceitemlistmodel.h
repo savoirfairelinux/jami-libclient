@@ -39,7 +39,8 @@ public:
         PreferenceCurrentValue,
         CurrentPath,
         FileFilters,
-        IsImage
+        IsImage,
+        Enabled
     };
 
     typedef enum {
@@ -78,10 +79,13 @@ public:
     void setPluginId(const QString& pluginId);
     QString mediaHandlerName() const;
     void setMediaHandlerName(const QString mediaHandlerName);
+    QString category() const;
+    void setCategory(const QString category);
     int preferencesCount();
 
 private:
     QString pluginId_;
     QString mediaHandlerName_ = "";
     VectorMapStringString preferenceList_;
+    QString category_ = "all";
 };

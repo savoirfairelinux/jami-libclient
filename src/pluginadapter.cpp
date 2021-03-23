@@ -48,11 +48,36 @@ PluginAdapter::getPluginSelectableModel()
 }
 
 QVariant
-PluginAdapter::getPluginPreferencesModel(const QString& pluginId, const QString& mediaHandlerName)
+PluginAdapter::getPluginPreferencesModel(const QString& pluginId, const QString& category)
+{
+    preferenceItemListModel_.reset(new PreferenceItemListModel(this, lrcInstance_));
+    preferenceItemListModel_->setCategory(category);
+    preferenceItemListModel_->setPluginId(pluginId);
+
+    return QVariant::fromValue(preferenceItemListModel_.get());
+}
+
+QVariant
+PluginAdapter::getHandlerPreferencesModel(const QString& pluginId, const QString& mediaHandlerName)
 {
     preferenceItemListModel_.reset(new PreferenceItemListModel(this, lrcInstance_));
     preferenceItemListModel_->setMediaHandlerName(mediaHandlerName);
     preferenceItemListModel_->setPluginId(pluginId);
 
     return QVariant::fromValue(preferenceItemListModel_.get());
+}
+
+QVariant
+PluginAdapter::getPluginPreferencesCategories(const QString& pluginId, bool removeLast)
+{
+    QStringList categories;
+    auto preferences = lrcInstance_->pluginModel().getPluginPreferences(pluginId);
+    for (auto& preference : preferences) {
+        if (!preference["category"].isEmpty())
+            categories.push_back(preference["category"]);
+    }
+    categories.removeDuplicates();
+    if (removeLast)
+        categories.pop_back();
+    return categories;
 }

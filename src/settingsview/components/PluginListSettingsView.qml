@@ -124,13 +124,13 @@ Rectangle {
             Layout.bottomMargin: 10
 
             model: PluginAdapter.getPluginSelectableModel()
-            interactive: false
 
             delegate: PluginItemDelegate {
                 id: pluginItemDelegate
 
                 width: pluginListView.width
-                implicitHeight: 50
+                rowHeight: 40
+                implicitHeight: 40
 
                 pluginName: PluginName
                 pluginId: PluginId
@@ -139,6 +139,11 @@ Rectangle {
 
                 onBtnLoadPluginToggled: {
                     isLoaded = loadPluginSlot(pluginId, isLoaded)
+                }
+
+                background: Rectangle {
+                    anchors.fill: parent
+                    color: "transparent"
                 }
             }
         }

@@ -43,7 +43,11 @@ protected:
                                                        const QString& peerId);
     Q_INVOKABLE QVariant getPluginSelectableModel();
     Q_INVOKABLE QVariant getPluginPreferencesModel(const QString& pluginId,
-                                                   const QString& mediaHandlerName = "");
+                                                   const QString& category = "all");
+    Q_INVOKABLE QVariant getHandlerPreferencesModel(const QString& pluginId,
+                                                    const QString& mediaHandlerName = "");
+    Q_INVOKABLE QVariant getPluginPreferencesCategories(const QString& pluginId,
+                                                        bool removeLast = false);
 
 signals:
     void pluginHandlersUpdateStatus();
