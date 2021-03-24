@@ -165,11 +165,8 @@ ContactAdapter::contactSelected(int index)
             // If there is a second call -> attended transfer.
             if (destCallId.size() == 0) {
                 callModel->transfer(callId, "sip:" + contactUri);
-                callModel->hangUp(callId);
             } else {
                 callModel->transferToCall(callId, destCallId);
-                callModel->hangUp(callId);
-                callModel->hangUp(destCallId);
             }
         } break;
         case SmartListModel::Type::CONVERSATION: {
