@@ -176,7 +176,10 @@ def copy_ringtones():
         for file in files:
             print(bcolors.OKBLUE + "Copying ringtone: " +
                   file + " -> " + copy_to_path + bcolors.ENDC)
-            shutil.copy(ringtone_path + os.sep + file, copy_to_path)
+            try:
+                shutil.copy(ringtone_path + os.sep + file, copy_to_path)
+            except:
+                print(bcolors.FAIL + "Unable to copy file." + bcolors.ENDC)
 
 
 def compile_and_copy_web_resources():
