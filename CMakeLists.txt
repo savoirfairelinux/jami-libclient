@@ -90,7 +90,6 @@ if(QT5_VER AND QT5_PATH)
       find_package(Qt5 ${QT5_VER}
                   COMPONENTS LinguistTools
                   PATHS ${QT5_PATH} NO_DEFAULT_PATH)
-      set(CMAKE_INSTALL_RPATH_USE_LINK_PATH true)
    endif()
 else()
    find_package(Qt5 REQUIRED
@@ -512,6 +511,8 @@ SET(libringclient_PRIVATE_HDRS
    src/private/smartInfoHub_p.h
    src/private/videorenderer_p.h
 )
+
+set(CMAKE_INSTALL_RPATH_USE_LINK_PATH true)
 
 
 IF(${ENABLE_LIBWRAP} MATCHES true AND ${ENABLE_TEST} MATCHES false)
