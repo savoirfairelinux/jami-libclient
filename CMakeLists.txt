@@ -513,6 +513,11 @@ SET(libringclient_PRIVATE_HDRS
    src/private/videorenderer_p.h
 )
 
+set(QT_JAMI_DIR "/opt/qt-jami")
+if(EXISTS "{QT_JAMI_DIR}/lib")
+    set(CMAKE_INSTALL_RPATH "${QT_JAMI_DIR}/lib")
+endif()
+
 
 IF(${ENABLE_LIBWRAP} MATCHES true AND ${ENABLE_TEST} MATCHES false)
    SET(libringclient_PRIVATE_HDRS
