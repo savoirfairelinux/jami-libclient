@@ -30,8 +30,8 @@ class UpdateManager final : public NetWorkManager
 public:
     explicit UpdateManager(const QString& url,
                            ConnectivityMonitor* cm,
-                           QObject* parent = nullptr,
-                           LRCInstance* instance = nullptr);
+                           LRCInstance* instance = nullptr,
+                           QObject* parent = nullptr);
     ~UpdateManager() = default;
 
     Q_INVOKABLE void checkForUpdates(bool quiet = false);

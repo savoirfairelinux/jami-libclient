@@ -36,8 +36,8 @@ static constexpr int updatePeriod = 1000 * 60 * 60 * 24; // one day in millis
 
 UpdateManager::UpdateManager(const QString& url,
                              ConnectivityMonitor* cm,
-                             QObject* parent,
-                             LRCInstance* instance)
+                             LRCInstance* instance,
+                             QObject* parent)
     : NetWorkManager(cm, parent)
     , baseUrl_(url.isEmpty() ? "https://dl.jami.net/windows" : url.toLatin1())
     , tempPath_(Utils::WinGetEnv("TEMP"))
