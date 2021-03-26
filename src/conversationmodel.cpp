@@ -2313,7 +2313,43 @@ ConversationModelPimpl::slotConversationRemoved(const QString& accountId,
         if (conv.empty()) {
             conv.push_back(storage::beginConversationWithPeer(db, contactId));
         }
-        addConversationWith(conv[0], contactId);
+        auto convId = conv[0];
+        conversation::Info newConv;
+        newConv.uid = convId;
+        newConv.accountId = linked.owner.id;
+        newConv.participants = {contactUri};
+        storage::getHistory(db, newConv);
+        std::vector<std::function<void(void)>> updateSlots;
+        {
+            std::lock_guard<std::mutex> lk(interactionsLocks[convId]);
+            for (auto& interaction : newConv.interactions) {
+                if (interaction.second.status != interaction::Status::SENDING) {
+                    continue;
+                }
+                // Get the message status from daemon, else unknown
+                auto id = storage::getDaemonIdByInteractionId(db, interaction.first);
+                int status = 0;
+                if (id.isEmpty()) {
+                    continue;
+                }
+                try {
+                    auto msgId = std::stoull(id.toStdString());
+                    status = ConfigurationManager::instance().getMessageStatus(msgId);
+                    updateSlots.emplace_back([this, convId, contactUri, id, status]() -> void {
+                        auto accId = linked.owner.id;
+                        slotUpdateInteractionStatus(accId, convId, contactUri, id, status);
+                    });
+                } catch (const std::exception& e) {
+                    qDebug() << "message id was invalid";
+                }
+            }
+        }
+        for (const auto& s : updateSlots) {
+            s();
+        }
+
+        newConv.unreadMessages = getNumberOfUnreadMessagesFor(convId);
+        conversations.emplace_back(std::move(newConv));
         invalidateModel();
         emit linked.conversationRemoved(conversationId);
         emit linked.newConversation(conv[0]);
