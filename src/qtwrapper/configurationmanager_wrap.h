@@ -54,7 +54,6 @@ public:
         using DRing::ConfigurationSignal;
         using DRing::AudioSignal;
         using DRing::DataTransferSignal;
-        using DRing::DebugSignal;
 
         setObjectName("ConfigurationManagerInterface");
         confHandlers = {
@@ -220,9 +219,10 @@ public:
                                                 QString(uri.c_str()),
                                                 banned);
                 }),
-            exportable_callback<DebugSignal::MessageSend>([this](const std::string& message) {
-                Q_EMIT this->debugMessageReceived(QString(message.c_str()));
-            }),
+            exportable_callback<ConfigurationSignal::MessageSend>(
+                [this](const std::string& message) {
+                    Q_EMIT this->debugMessageReceived(QString(message.c_str()));
+                }),
             exportable_callback<ConfigurationSignal::ComposingStatusChanged>(
                 [this](const std::string& account_id, const std::string& from, int status) {
                     Q_EMIT this->composingStatusChanged(QString(account_id.c_str()),
