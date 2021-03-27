@@ -485,9 +485,9 @@ Rectangle {
 
         hoverEnabled: true
         propagateComposedEvents: true
-        acceptedButtons: Qt.NoButton
+        acceptedButtons: Qt.LeftButton
 
-        onEntered: {
+        function resetStates() {
             if (overlayUpperPartRect.state !== 'entered') {
                 overlayUpperPartRect.state = 'entered'
             }
@@ -497,14 +497,15 @@ Rectangle {
             callOverlayTimer.restart()
         }
 
+        onReleased: {
+            resetStates()
+        }
+        onEntered: {
+            resetStates()
+        }
+
         onMouseXChanged: {
-            if (overlayUpperPartRect.state !== 'entered') {
-                overlayUpperPartRect.state = 'entered'
-            }
-            if (callOverlayButtonGroup.state !== 'entered') {
-                callOverlayButtonGroup.state = 'entered'
-            }
-            callOverlayTimer.restart()
+            resetStates()
         }
     }
 

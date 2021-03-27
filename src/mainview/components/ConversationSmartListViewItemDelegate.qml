@@ -34,6 +34,8 @@ ItemDelegate {
 
     signal updateContactAvatarUidRequested(string uid)
 
+    property bool openedMenu: false
+
     function convUid() {
         return UID
     }
@@ -190,6 +192,26 @@ ItemDelegate {
         hoverEnabled: true
         acceptedButtons: Qt.LeftButton | Qt.RightButton
 
+        function openContextMenu(mouse) {
+            openedMenu = true
+            smartListContextMenu.parent = mouseAreaSmartListItemDelegate
+
+            // Make menu pos at mouse.
+            var relativeMousePos = mapToItem(itemSmartListBackground,
+                                                mouse.x, mouse.y)
+            smartListContextMenu.x = relativeMousePos.x
+            smartListContextMenu.y = relativeMousePos.y
+            smartListContextMenu.responsibleAccountId = AccountAdapter.currentAccountId
+            smartListContextMenu.responsibleConvUid = UID
+            smartListContextMenu.contactType = ContactType
+            userProfile.responsibleConvUid = UID
+            userProfile.aliasText = DisplayName
+            userProfile.registeredNameText = DisplayID
+            userProfile.idText = URI
+            userProfile.contactImageUid = UID
+            smartListContextMenu.openMenu()
+        }
+
         onPressed: {
             if (!InCall) {
                 itemSmartListBackground.color = JamiTheme.pressColor
@@ -207,31 +229,20 @@ ItemDelegate {
                 communicationPageMessageWebView.setSendContactRequestButtonVisible(false)
             }
         }
+        onPressAndHold: {
+            openContextMenu(mouse)
+        }
         onReleased: {
             if (!InCall) {
                 itemSmartListBackground.color = JamiTheme.selectionBlue
             }
             if (mouse.button === Qt.RightButton) {
-                smartListContextMenu.parent = mouseAreaSmartListItemDelegate
-
-                // Make menu pos at mouse.
-                var relativeMousePos = mapToItem(itemSmartListBackground,
-                                                 mouse.x, mouse.y)
-                smartListContextMenu.x = relativeMousePos.x
-                smartListContextMenu.y = relativeMousePos.y
-                smartListContextMenu.responsibleAccountId = AccountAdapter.currentAccountId
-                smartListContextMenu.responsibleConvUid = UID
-                smartListContextMenu.contactType = ContactType
-                userProfile.responsibleConvUid = UID
-                userProfile.aliasText = DisplayName
-                userProfile.registeredNameText = DisplayID
-                userProfile.idText = URI
-                userProfile.contactImageUid = UID
-                smartListContextMenu.openMenu()
-            } else if (mouse.button === Qt.LeftButton) {
+                openContextMenu(mouse)
+            } else if (mouse.button === Qt.LeftButton && !openedMenu) {
                 conversationSmartListView.currentIndex = -1
                 conversationSmartListView.currentIndex = index
             }
+            openedMenu = false
         }
         onEntered: {
             if (!InCall) {
