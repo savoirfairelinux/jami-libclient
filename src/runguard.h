@@ -39,7 +39,7 @@ public:
     bool tryToRun();
     void release();
 
-private slots:
+private Q_SLOTS:
     void tryRestorePrimaryInstance();
 
 private:

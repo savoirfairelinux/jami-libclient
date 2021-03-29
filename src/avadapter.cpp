@@ -127,7 +127,7 @@ AvAdapter::captureScreen(int screenNumber)
         buffer.open(QIODevice::WriteOnly);
         pixmap.save(&buffer, "PNG");
 
-        emit screenCaptured(screenNumber, Utils::byteArrayToBase64String(buffer.data()));
+        Q_EMIT screenCaptured(screenNumber, Utils::byteArrayToBase64String(buffer.data()));
     });
 }
 
@@ -140,7 +140,7 @@ AvAdapter::captureAllScreens()
         QList<QPixmap> scrs;
         int width = 0, height = 0, currentPoint = 0;
 
-        foreach (auto scr, screens) {
+        for(auto scr : screens) {
             QPixmap pix = scr->grabWindow(0);
             width += pix.width();
             if (height < pix.height())
@@ -152,7 +152,7 @@ AvAdapter::captureAllScreens()
         QPainter painter(&final);
         final.fill(Qt::black);
 
-        foreach (auto scr, scrs) {
+        for(auto scr : scrs) {
             painter.drawPixmap(QPoint(currentPoint, 0), scr);
             currentPoint += scr.width();
         }
@@ -160,7 +160,7 @@ AvAdapter::captureAllScreens()
         QBuffer buffer;
         buffer.open(QIODevice::WriteOnly);
         final.save(&buffer, "PNG");
-        emit screenCaptured(-1, Utils::byteArrayToBase64String(buffer.data()));
+        Q_EMIT screenCaptured(-1, Utils::byteArrayToBase64String(buffer.data()));
     });
 }
 
@@ -276,7 +276,7 @@ AvAdapter::slotDeviceEvent()
         }
     }
 
-    emit videoDeviceListChanged(currentDeviceListSize == 0);
+    Q_EMIT videoDeviceListChanged(currentDeviceListSize == 0);
 
     deviceListSize_ = currentDeviceListSize;
 }

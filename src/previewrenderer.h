@@ -36,7 +36,7 @@ public:
     explicit PreviewRenderer(QQuickItem* parent = nullptr);
     ~PreviewRenderer();
 
-signals:
+Q_SIGNALS:
     void lrcInstanceChanged();
 
 protected:
@@ -59,7 +59,7 @@ public:
     explicit VideoCallPreviewRenderer(QQuickItem* parent = nullptr);
     virtual ~VideoCallPreviewRenderer();
 
-signals:
+Q_SIGNALS:
     void previewImageScalingFactorChanged();
 
 private:
@@ -77,7 +77,7 @@ public:
 
     Q_INVOKABLE QString takePhoto(int size);
 
-signals:
+Q_SIGNALS:
     void hideBooth();
 
 private:

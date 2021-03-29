@@ -145,8 +145,8 @@ CallAdapter::onShowIncomingCallView(const QString& accountId, const QString& con
                 return;
             }
         }
-        emit callSetupMainViewRequired(accountId, convInfo.uid);
-        emit lrcInstance_->updateSmartList();
+        Q_EMIT callSetupMainViewRequired(accountId, convInfo.uid);
+        Q_EMIT lrcInstance_->updateSmartList();
         return;
     }
 
@@ -155,7 +155,7 @@ CallAdapter::onShowIncomingCallView(const QString& accountId, const QString& con
 
     if (call.isOutgoing) {
         if (isCallSelected) {
-            emit callSetupMainViewRequired(accountId, convInfo.uid);
+            Q_EMIT callSetupMainViewRequired(accountId, convInfo.uid);
         }
     } else {
         auto accountProperties = lrcInstance_->accountModel().getAccountConfig(selectedAccountId);
@@ -180,10 +180,10 @@ CallAdapter::onShowIncomingCallView(const QString& accountId, const QString& con
                         showNotification(accountId, convInfo.uid);
                         return;
                     } else {
-                        emit callSetupMainViewRequired(accountId, convInfo.uid);
+                        Q_EMIT callSetupMainViewRequired(accountId, convInfo.uid);
                     }
                 } else {
-                    emit callSetupMainViewRequired(accountId, convInfo.uid);
+                    Q_EMIT callSetupMainViewRequired(accountId, convInfo.uid);
                 }
             } else { // Not current conversation
                 if (currentConvHasCall) {
@@ -195,12 +195,12 @@ CallAdapter::onShowIncomingCallView(const QString& accountId, const QString& con
                         return;
                     }
                 }
-                emit callSetupMainViewRequired(accountId, convInfo.uid);
+                Q_EMIT callSetupMainViewRequired(accountId, convInfo.uid);
             }
         }
     }
-    emit callStatusChanged(static_cast<int>(call.status), accountId, convInfo.uid);
-    emit lrcInstance_->updateSmartList();
+    Q_EMIT callStatusChanged(static_cast<int>(call.status), accountId, convInfo.uid);
+    Q_EMIT lrcInstance_->updateSmartList();
 }
 
 void
@@ -212,7 +212,7 @@ CallAdapter::onShowCallView(const QString& accountId, const QString& convUid)
     }
 
     updateCall(convInfo.uid, accountId);
-    emit callSetupMainViewRequired(accountId, convInfo.uid);
+    Q_EMIT callSetupMainViewRequired(accountId, convInfo.uid);
 }
 
 void
@@ -232,7 +232,7 @@ CallAdapter::updateCall(const QString& convUid, const QString& accountId, bool f
     }
 
     updateCallOverlay(convInfo);
-    emit previewVisibilityNeedToChange(shouldShowPreview(forceCallOnly));
+    Q_EMIT previewVisibilityNeedToChange(shouldShowPreview(forceCallOnly));
 
     if (call->status == lrc::api::call::Status::IN_PROGRESS) {
         lrcInstance_->renderer()->addDistantRenderer(call->id);
@@ -334,10 +334,10 @@ CallAdapter::showNotification(const QString& accountId, const QString& convUid)
         if (convInfo.uid.isEmpty()) {
             return;
         }
-        emit lrcInstance_->notificationClicked();
-        emit callSetupMainViewRequired(convInfo.accountId, convInfo.uid);
+        Q_EMIT lrcInstance_->notificationClicked();
+        Q_EMIT callSetupMainViewRequired(convInfo.accountId, convInfo.uid);
     };
-    emit lrcInstance_->updateSmartList();
+    Q_EMIT lrcInstance_->updateSmartList();
     systemTray_->showNotification(tr("is calling you"), from, onClicked);
 }
 
@@ -366,7 +366,7 @@ CallAdapter::connectCallModel(const QString& accountId)
                                        map.push_back(QVariant(data));
                                        updateCallOverlay(convInfo);
                                    }
-                                   emit updateParticipantsInfos(map, accountId, confId);
+                                   Q_EMIT updateParticipantsInfos(map, accountId, confId);
                                }
                            });
 
@@ -383,7 +383,7 @@ CallAdapter::connectCallModel(const QString& accountId)
              */
             const auto& convInfo = lrcInstance_->getConversationFromCallId(callId);
             if (!convInfo.uid.isEmpty()) {
-                emit callStatusChanged(static_cast<int>(call.status), accountId, convInfo.uid);
+                Q_EMIT callStatusChanged(static_cast<int>(call.status), accountId, convInfo.uid);
                 updateCallOverlay(convInfo);
             }
 
@@ -395,7 +395,7 @@ CallAdapter::connectCallModel(const QString& accountId)
             case lrc::api::call::Status::TIMEOUT:
             case lrc::api::call::Status::TERMINATING: {
                 lrcInstance_->renderer()->removeDistantRenderer(callId);
-                emit callSetupMainViewRequired(accountId, convInfo.uid);
+                Q_EMIT callSetupMainViewRequired(accountId, convInfo.uid);
                 if (convInfo.uid.isEmpty()) {
                     break;
                 }
@@ -472,9 +472,9 @@ CallAdapter::connectCallModel(const QString& accountId)
                     }
                 }
                 if (!peers.isEmpty()) {
-                    emit remoteRecordingChanged(peers, true);
+                    Q_EMIT remoteRecordingChanged(peers, true);
                 } else if (!state) {
-                    emit remoteRecordingChanged(peers, false);
+                    Q_EMIT remoteRecordingChanged(peers, false);
                 }
             }
         });
@@ -517,7 +517,7 @@ CallAdapter::updateCallOverlay(const lrc::api::conversation::Info& convInfo)
                         ? QString()
                         : accInfo.contactModel->bestNameForContact(convInfo.participants[0]);
 
-    emit updateOverlay(isPaused,
+    Q_EMIT updateOverlay(isPaused,
                        isAudioOnly,
                        isAudioMuted,
                        isVideoMuted,
@@ -812,7 +812,7 @@ CallAdapter::holdThisCallToggle()
     if (callModel->hasCall(callId)) {
         callModel->togglePause(callId);
     }
-    emit showOnHoldLabel(true);
+    Q_EMIT showOnHoldLabel(true);
 }
 
 void
@@ -852,7 +852,7 @@ CallAdapter::videoPauseThisCallToggle()
     if (callModel->hasCall(callId)) {
         callModel->toggleMedia(callId, lrc::api::NewCallModel::Media::VIDEO);
     }
-    emit previewVisibilityNeedToChange(shouldShowPreview(false));
+    Q_EMIT previewVisibilityNeedToChange(shouldShowPreview(false));
 }
 
 void
@@ -866,7 +866,7 @@ CallAdapter::setTime(const QString& accountId, const QString& convUid)
     if (callInfo.status == lrc::api::call::Status::IN_PROGRESS
         || callInfo.status == lrc::api::call::Status::PAUSED) {
         auto timeString = lrcInstance_->getCurrentCallModel()->getFormattedCallDuration(callId);
-        emit updateTimeText(timeString);
+        Q_EMIT updateTimeText(timeString);
     }
 }
 

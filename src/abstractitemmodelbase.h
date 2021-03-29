@@ -32,7 +32,7 @@ public:
         : QAbstractListModel(parent) {};
     ~AbstractListModelBase() = default;
 
-signals:
+Q_SIGNALS:
     void lrcInstanceChanged();
 
 protected:

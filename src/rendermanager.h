@@ -81,7 +81,7 @@ public:
 
     void frameMutexUnlock();
 
-signals:
+Q_SIGNALS:
     /*
      * Emitted each time a frame is ready to be displayed.
      * @param id of the renderer
@@ -93,7 +93,7 @@ signals:
      */
     void renderingStopped(const QString& id);
 
-public slots:
+public Q_SLOTS:
     /*
      * Used to listen to AVModel::rendererStarted.
      * @param id of the renderer
@@ -212,7 +212,7 @@ public:
      */
     QImage* getPreviewFrame();
 
-signals:
+Q_SIGNALS:
 
     /*
      * Emitted when the preview has a new frame ready.

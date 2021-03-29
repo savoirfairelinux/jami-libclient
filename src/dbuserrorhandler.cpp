@@ -31,12 +31,12 @@ DBusErrorHandler::errorCallback()
     qDebug() << "Dring has possibly crashed, "
                 "or has been killed... will wait 2.5 seconds and try to reconnect";
 
-    emit showDaemonReconnectPopup(true);
+    Q_EMIT showDaemonReconnectPopup(true);
 
     QTimer::singleShot(2500, [this]() {
         if ((!lrc::api::Lrc::isConnected()) || (!lrc::api::Lrc::dbusIsValid())) {
             qDebug() << "Could not reconnect to the daemon";
-            emit daemonReconnectFailed();
+            Q_EMIT daemonReconnectFailed();
         } else {
             static_cast<DBusErrorHandler&>(GlobalInstances::dBusErrorHandler())
                 .finishedHandlingError();
@@ -87,7 +87,7 @@ void
 DBusErrorHandler::finishedHandlingError()
 {
     handlingError = false;
-    emit showDaemonReconnectPopup(false);
+    Q_EMIT showDaemonReconnectPopup(false);
 }
 
 } // namespace Interfaces

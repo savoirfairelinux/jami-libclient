@@ -91,7 +91,7 @@ DistantRenderer::paint(QPainter* painter)
             if (tempXOffset != xOffset_ or tempYOffset != yOffset_
                 or static_cast<int>(scaledWidth_ * 1000) != tempScaledWidth
                 or static_cast<int>(scaledHeight_ * 1000) != tempScaledHeight) {
-                emit offsetChanged();
+                Q_EMIT offsetChanged();
             }
             painter->drawImage(QRect(xOffset_,
                                      yOffset_,

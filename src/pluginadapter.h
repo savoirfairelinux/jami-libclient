@@ -49,7 +49,7 @@ protected:
     Q_INVOKABLE QVariant getPluginPreferencesCategories(const QString& pluginId,
                                                         bool removeLast = false);
 
-signals:
+Q_SIGNALS:
     void pluginHandlersUpdateStatus();
     void preferenceChanged(QString pluginId);
     void pluginUninstalled();

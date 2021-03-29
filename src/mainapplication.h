@@ -47,11 +47,11 @@ public:
         if (ratio != devicePixelRatio_) {
             devicePixelRatio_ = ratio;
 
-            emit devicePixelRatioChanged();
+            Q_EMIT devicePixelRatioChanged();
         }
     }
 
-signals:
+Q_SIGNALS:
     void devicePixelRatioChanged();
 
 private:

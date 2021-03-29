@@ -44,7 +44,7 @@ public:
     lrc::api::NewAccountModel* getModel();
     lrc::api::NewDeviceModel* getDeviceModel();
 
-signals:
+Q_SIGNALS:
     void modelChanged();
     void deviceModelChanged();
     void currentAccountIdChanged();
@@ -100,7 +100,7 @@ public:
 
     Q_INVOKABLE void setCurrAccAvatar(bool fromFile, const QString& source);
 
-signals:
+Q_SIGNALS:
     // Trigger other components to reconnect account related signals.
     void accountStatusChanged(QString accountId = {});
 
@@ -111,7 +111,7 @@ signals:
     void accountAdded(QString accountId, bool showBackUp, int index);
     void contactUnbanned();
 
-private slots:
+private Q_SLOTS:
     void onCurrentAccountChanged();
 
 private:

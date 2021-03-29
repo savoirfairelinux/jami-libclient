@@ -83,7 +83,7 @@ UpdateManager::checkForUpdates(bool quiet)
         if (latestVersionString.isEmpty()) {
             qWarning() << "Error checking version";
             if (!quiet)
-                emit updateCheckReplyReceived(false);
+                Q_EMIT updateCheckReplyReceived(false);
             return;
         }
         auto currentVersion = QString(VERSION_STRING).toULongLong();
@@ -91,11 +91,11 @@ UpdateManager::checkForUpdates(bool quiet)
         qDebug() << "latest: " << latestVersion << " current: " << currentVersion;
         if (latestVersion > currentVersion) {
             qDebug() << "New version found";
-            emit updateCheckReplyReceived(true, true);
+            Q_EMIT updateCheckReplyReceived(true, true);
         } else {
             qDebug() << "No new version found";
             if (!quiet)
-                emit updateCheckReplyReceived(true, false);
+                Q_EMIT updateCheckReplyReceived(true, false);
         }
     });
 }
@@ -112,10 +112,10 @@ UpdateManager::applyUpdates(bool beta)
                     &NetWorkManager::downloadProgressChanged,
                     this,
                     &UpdateManager::updateDownloadProgressChanged);
-            emit updateDownloadStarted();
+            Q_EMIT updateDownloadStarted();
             break;
         case GetStatus::FINISHED:
-            emit updateDownloadFinished();
+            Q_EMIT updateDownloadFinished();
             break;
         default:
             break;
@@ -129,7 +129,7 @@ UpdateManager::applyUpdates(bool beta)
         downloadUrl,
         [this, downloadUrl](const QString&) {
             lrcInstance_->reset();
-            emit lrcInstance_->quitEngineRequested();
+            Q_EMIT lrcInstance_->quitEngineRequested();
             auto args = QString(" /passive /norestart WIXNONUILAUNCH=1");
             QProcess process;
             process.start("powershell ",

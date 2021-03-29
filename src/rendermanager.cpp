@@ -163,7 +163,7 @@ FrameWrapper::slotFrameUpdated(const QString& id)
             image_.reset(new QImage((uchar*) buffer_.data(), width, height, imageFormat));
         }
     }
-    emit frameUpdated(id);
+    Q_EMIT frameUpdated(id);
 }
 
 void
@@ -183,7 +183,7 @@ FrameWrapper::slotRenderingStopped(const QString& id)
         image_.reset();
     }
 
-    emit renderingStopped(id);
+    Q_EMIT renderingStopped(id);
 }
 
 RenderManager::RenderManager(AVModel& avModel)
@@ -195,13 +195,13 @@ RenderManager::RenderManager(AVModel& avModel)
                      &FrameWrapper::frameUpdated,
                      [this](const QString& id) {
                          Q_UNUSED(id);
-                         emit previewFrameUpdated();
+                         Q_EMIT previewFrameUpdated();
                      });
     QObject::connect(previewFrameWrapper_.get(),
                      &FrameWrapper::renderingStopped,
                      [this](const QString& id) {
                          Q_UNUSED(id);
-                         emit previewRenderingStopped();
+                         Q_EMIT previewRenderingStopped();
                      });
 
     previewFrameWrapper_->connectStartRendering();
@@ -266,7 +266,7 @@ RenderManager::addDistantRenderer(const QString& id)
         distantConnectionMap_[id].updated = QObject::connect(dfw.get(),
                                                              &FrameWrapper::frameUpdated,
                                                              [this](const QString& id) {
-                                                                 emit distantFrameUpdated(id);
+                                                                 Q_EMIT distantFrameUpdated(id);
                                                              });
 
         /*

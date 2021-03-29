@@ -6,6 +6,9 @@ win32-msvc {
 
     CONFIG += suppress_vcproj_warnings c++17 qtquickcompiler
 
+    # library compatibility (boost, libnotify, etc.)
+    CONFIG += no_keywords
+
     QTQUICK_COMPILER_SKIPPED_RESOURCES += resources.qrc
 
     # compiler options

@@ -255,7 +255,7 @@ public:
         // Last selected account should be set as preferred.
         accountModel().setTopAccount(accountId);
 
-        emit currentAccountChanged();
+        Q_EMIT currentAccountChanged();
     }
 
     const QString& getCurrentConvUid()
@@ -393,7 +393,7 @@ public:
         return callId;
     }
 
-signals:
+Q_SIGNALS:
     void accountListChanged();
     void currentAccountChanged();
     void restoreAppRequested();

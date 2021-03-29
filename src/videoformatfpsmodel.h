@@ -62,7 +62,7 @@ public:
     QString getCurrentResolution();
     void setCurrentResolution(QString resNew);
 
-signals:
+Q_SIGNALS:
     void currentResolutionChanged(QString resNew);
 
 private:

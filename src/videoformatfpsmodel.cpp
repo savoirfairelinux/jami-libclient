@@ -221,6 +221,6 @@ VideoFormatFpsModel::setCurrentResolution(QString resNew)
     if (currentResolution_ != resNew) {
         currentResolution_ = resNew;
         reset();
-        emit currentResolutionChanged(resNew);
+        Q_EMIT currentResolutionChanged(resNew);
     }
 }

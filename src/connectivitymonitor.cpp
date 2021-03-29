@@ -119,7 +119,7 @@ ConnectivityMonitor::ConnectivityMonitor(QObject* parent)
     if (SUCCEEDED(hr)) {
         cookie_ = NULL;
         netEventHandler_ = new NetworkEventHandler;
-        netEventHandler_->setOnConnectivityChangedCallBack([this] { emit connectivityChanged(); });
+        netEventHandler_->setOnConnectivityChangedCallBack([this] { Q_EMIT connectivityChanged(); });
         hr = pConnectPoint_->Advise((IUnknown*) netEventHandler_, &cookie_);
     } else {
         destroy();

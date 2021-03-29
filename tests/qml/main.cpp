@@ -9,7 +9,7 @@ class Setup : public QObject
 public:
     Setup() {}
 
-public slots:
+public Q_SLOTS:
 
     void qmlEngineAvailable(QQmlEngine *engine)
     {

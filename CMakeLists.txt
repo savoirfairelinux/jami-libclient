@@ -29,6 +29,9 @@ set(QML_LIBS
     Qt5::DBus
     Qt5::Core)
 
+# library compatibility (boost, libnotify, etc.)
+add_definitions(-DQT_NO_KEYWORDS)
+
 set(COMMON_SOURCES
     ${SRC_DIR}/bannedlistmodel.cpp
     ${SRC_DIR}/accountlistmodel.cpp

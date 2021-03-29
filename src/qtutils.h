@@ -85,7 +85,7 @@ public:
     }
     ~OneShotConnection() = default;
 
-public slots:
+public Q_SLOTS:
     void onTriggered()
     {
         if (connection_) {

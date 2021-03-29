@@ -47,12 +47,12 @@ ConversationsAdapter::safeInit()
                                                      SmartListModel::Type::CONVERSATION,
                                                      lrcInstance_);
 
-    emit modelChanged(QVariant::fromValue(conversationSmartListModel_));
+    Q_EMIT modelChanged(QVariant::fromValue(conversationSmartListModel_));
 
     connect(&lrcInstance_->behaviorController(),
             &BehaviorController::showChatView,
             [this](const QString& accountId, const QString& convId) {
-                emit showConversation(accountId, convId);
+                Q_EMIT showConversation(accountId, convId);
             });
 
     connect(&lrcInstance_->behaviorController(),
@@ -75,7 +75,7 @@ void
 ConversationsAdapter::backToWelcomePage()
 {
     deselectConversation();
-    emit navigateToWelcomePageRequested();
+    Q_EMIT navigateToWelcomePageRequested();
 }
 
 void
@@ -115,7 +115,7 @@ ConversationsAdapter::selectConversation(const QString& accountId, const QString
     }
 
     if (!convInfo.uid.isEmpty()) {
-        emit showConversation(lrcInstance_->getCurrAccId(), convInfo.uid);
+        Q_EMIT showConversation(lrcInstance_->getCurrAccId(), convInfo.uid);
     }
 }
 
@@ -158,12 +158,12 @@ ConversationsAdapter::onNewUnreadInteraction(const QString& accountId,
         auto& accInfo = lrcInstance_->getAccountInfo(accountId);
         auto from = accInfo.contactModel->bestNameForContact(interaction.authorUri);
         auto onClicked = [this, accountId, convUid, uri = interaction.authorUri] {
-            emit lrcInstance_->notificationClicked();
+            Q_EMIT lrcInstance_->notificationClicked();
             const auto& convInfo = lrcInstance_->getConversationFromConvUid(convUid, accountId);
             if (!convInfo.uid.isEmpty()) {
                 selectConversation(accountId, convInfo.uid);
-                emit lrcInstance_->updateSmartList();
-                emit modelSorted(convInfo.uid);
+                Q_EMIT lrcInstance_->updateSmartList();
+                Q_EMIT modelSorted(convInfo.uid);
             }
         };
 
@@ -214,7 +214,7 @@ ConversationsAdapter::connectConversationModel(bool updateFilter)
                        == lrc::api::profile::Type::TEMPORARY) {
                 return;
             }
-            emit modelSorted(QVariant::fromValue(convInfo.uid));
+            Q_EMIT modelSorted(QVariant::fromValue(convInfo.uid));
         });
 
     contactProfileUpdatedConnection_
@@ -222,14 +222,14 @@ ConversationsAdapter::connectConversationModel(bool updateFilter)
                            &lrc::api::ContactModel::profileUpdated,
                            [this](const QString& contactUri) {
                                conversationSmartListModel_->updateContactAvatarUid(contactUri);
-                               emit updateListViewRequested();
+                               Q_EMIT updateListViewRequested();
                            });
 
     modelUpdatedConnection_ = QObject::connect(currentConversationModel,
                                                &lrc::api::ConversationModel::conversationUpdated,
                                                [this](const QString&) {
                                                    updateConversationsFilterWidget();
-                                                   emit updateListViewRequested();
+                                                   Q_EMIT updateListViewRequested();
                                                });
 
     filterChangedConnection_
@@ -239,8 +239,8 @@ ConversationsAdapter::connectConversationModel(bool updateFilter)
                                conversationSmartListModel_->fillConversationsList();
                                updateConversationsFilterWidget();
                                if (!lrcInstance_->getCurrentConvUid().isEmpty())
-                                   emit indexRepositionRequested();
-                               emit updateListViewRequested();
+                                   Q_EMIT indexRepositionRequested();
+                               Q_EMIT updateListViewRequested();
                            });
 
     newConversationConnection_ = QObject::connect(currentConversationModel,
@@ -271,7 +271,7 @@ ConversationsAdapter::connectConversationModel(bool updateFilter)
     searchStatusChangedConnection_
         = QObject::connect(currentConversationModel,
                            &lrc::api::ConversationModel::searchStatusChanged,
-                           [this](const QString& status) { emit showSearchStatus(status); });
+                           [this](const QString& status) { Q_EMIT showSearchStatus(status); });
 
     // This connection is ideal when separated search results list.
     // This signal is guaranteed to fire just after filterChanged during a search if results are
@@ -283,7 +283,7 @@ ConversationsAdapter::connectConversationModel(bool updateFilter)
                            &lrc::api::ConversationModel::searchResultUpdated,
                            [this]() {
                                conversationSmartListModel_->fillConversationsList();
-                               emit updateListViewRequested();
+                               Q_EMIT updateListViewRequested();
                            });
 
     if (updateFilter) {

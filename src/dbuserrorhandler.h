@@ -37,7 +37,7 @@ public:
 
     void finishedHandlingError();
 
-signals:
+Q_SIGNALS:
     void showDaemonReconnectPopup(bool visible);
     void daemonReconnectFailed();
 

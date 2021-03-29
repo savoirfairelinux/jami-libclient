@@ -55,12 +55,12 @@ public:
      */
     Q_INVOKABLE void cancelRequest();
 
-signals:
+Q_SIGNALS:
     void statusChanged(GetStatus error);
     void downloadProgressChanged(qint64 bytesRead, qint64 totalBytes);
     void errorOccured(GetError error, const QString& msg = {});
 
-private slots:
+private Q_SLOTS:
     void onSslErrors(const QList<QSslError>& sslErrors);
     void onHttpReadyRead();
 

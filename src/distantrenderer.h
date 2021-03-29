@@ -42,7 +42,7 @@ public:
     Q_INVOKABLE double getScaledWidth() const;
     Q_INVOKABLE double getScaledHeight() const;
 
-signals:
+Q_SIGNALS:
     void offsetChanged();
     void lrcInstanceChanged();
 

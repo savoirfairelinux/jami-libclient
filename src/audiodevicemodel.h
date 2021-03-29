@@ -31,7 +31,7 @@ public:
     enum Role { DeviceName = Qt::UserRole + 1, RawDeviceName };
     Q_ENUM(Role)
 
-signals:
+Q_SIGNALS:
     void typeChanged();
 
 public:

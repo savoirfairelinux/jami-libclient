@@ -257,7 +257,7 @@ MainApplication::init()
 void
 MainApplication::restoreApp()
 {
-    emit lrcInstance_->restoreAppRequested();
+    Q_EMIT lrcInstance_->restoreAppRequested();
 }
 
 void

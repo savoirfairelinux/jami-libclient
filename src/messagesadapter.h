@@ -91,13 +91,13 @@ protected:
     void setSendMessageContent(const QString& content);
     void contactIsComposing(const QString& uid, const QString& contactUri, bool isComposing);
 
-signals:
+Q_SIGNALS:
     void needToUpdateSmartList();
     void contactBanned();
     void navigateToWelcomePageRequested();
     void invitationAccepted();
 
-public slots:
+public Q_SLOTS:
     void slotSendMessageContentSaved(const QString& content);
     void slotUpdateDraft(const QString& content);
     void slotMessagesCleared();

@@ -30,7 +30,7 @@ public:
 
     bool isOnline();
 
-signals:
+Q_SIGNALS:
     void connectivityChanged();
 
 private:
@@ -55,7 +55,7 @@ public:
 
     bool isOnline();
 
-signals:
+Q_SIGNALS:
     void connectivityChanged();
 };
 #endif // Q_OS_WIN

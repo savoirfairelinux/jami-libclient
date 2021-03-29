@@ -118,7 +118,7 @@ PhotoboothPreviewRender::PhotoboothPreviewRender(QQuickItem* parent)
     connect(this, &PreviewRenderer::lrcInstanceChanged, [this] {
         if (lrcInstance_)
             connect(lrcInstance_->renderer(), &RenderManager::previewRenderingStopped, [this]() {
-                emit hideBooth();
+                Q_EMIT hideBooth();
             });
     });
 }

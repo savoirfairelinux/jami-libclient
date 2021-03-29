@@ -40,7 +40,7 @@ public:
     Q_INVOKABLE void setAutoUpdateCheck(bool state);
     Q_INVOKABLE bool isCurrentVersionBeta();
 
-signals:
+Q_SIGNALS:
     void updateCheckReplyReceived(bool ok, bool found = false);
     void updateCheckErrorOccurred(GetError error);
     void updateDownloadStarted();

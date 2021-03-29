@@ -32,7 +32,7 @@ public:
     explicit AvAdapter(LRCInstance* instance, QObject* parent = nullptr);
     ~AvAdapter() = default;
 
-signals:
+Q_SIGNALS:
 
     // Emitted when the size of the video capture device list changes.
     void videoDeviceListChanged(bool listIsEmpty);

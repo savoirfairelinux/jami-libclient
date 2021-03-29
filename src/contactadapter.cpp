@@ -178,7 +178,7 @@ ContactAdapter::contactSelected(int index)
             lrcInstance_->accountModel().setDefaultModerator(lrcInstance_->getCurrAccId(),
                                                              contactUri,
                                                              true);
-            emit defaultModeratorsUpdated();
+            Q_EMIT defaultModeratorsUpdated();
 
         } break;
         default:

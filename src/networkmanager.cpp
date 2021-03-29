@@ -32,7 +32,7 @@ NetWorkManager::NetWorkManager(ConnectivityMonitor* cm, QObject* parent)
     , connectivityMonitor_(cm)
     , lastConnectionState_(cm->isOnline())
 {
-    emit statusChanged(GetStatus::IDLE);
+    Q_EMIT statusChanged(GetStatus::IDLE);
 
     connect(connectivityMonitor_, &ConnectivityMonitor::connectivityChanged, [this] {
         cancelRequest();
@@ -51,7 +51,7 @@ void
 NetWorkManager::get(const QUrl& url, const DoneCallBack& doneCb, const QString& path)
 {
     if (!connectivityMonitor_->isOnline()) {
-        emit errorOccured(GetError::DISCONNECTED);
+        Q_EMIT errorOccured(GetError::DISCONNECTED);
         return;
     }
 
@@ -69,7 +69,7 @@ NetWorkManager::get(const QUrl& url, const DoneCallBack& doneCb, const QString& 
 
         file_.reset(new QFile(path + "/" + fileName));
         if (!file_->open(QIODevice::WriteOnly)) {
-            emit errorOccured(GetError::ACCESS_DENIED);
+            Q_EMIT errorOccured(GetError::ACCESS_DENIED);
             file_.reset(nullptr);
             return;
         }
@@ -78,7 +78,7 @@ NetWorkManager::get(const QUrl& url, const DoneCallBack& doneCb, const QString& 
     QNetworkRequest request(url);
     reply_ = manager_->get(request);
 
-    emit statusChanged(GetStatus::STARTED);
+    Q_EMIT statusChanged(GetStatus::STARTED);
 
     connect(reply_,
 #if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
@@ -91,7 +91,7 @@ NetWorkManager::get(const QUrl& url, const DoneCallBack& doneCb, const QString& 
                 reset(true);
                 qWarning() << Q_FUNC_INFO << "NetworkError: "
                            << QMetaEnum::fromType<QNetworkReply::NetworkError>().valueToKey(error);
-                emit errorOccured(GetError::NETWORK_ERROR);
+                Q_EMIT errorOccured(GetError::NETWORK_ERROR);
             });
 
     connect(reply_, &QNetworkReply::finished, [this, doneCb, path]() {
@@ -100,7 +100,7 @@ NetWorkManager::get(const QUrl& url, const DoneCallBack& doneCb, const QString& 
         if (path.isEmpty())
             response = QString(reply_->readAll());
         reset(!path.isEmpty());
-        emit statusChanged(GetStatus::FINISHED);
+        Q_EMIT statusChanged(GetStatus::FINISHED);
         if (doneCb)
             doneCb(response);
     });
@@ -147,7 +147,7 @@ NetWorkManager::onSslErrors(const QList<QSslError>& sslErrors)
         }
         errorsString += error.errorString();
     }
-    emit errorOccured(GetError::SSL_ERROR, errorsString);
+    Q_EMIT errorOccured(GetError::SSL_ERROR, errorsString);
     return;
 #else
     Q_UNUSED(sslErrors);
@@ -172,6 +172,6 @@ NetWorkManager::cancelRequest()
 {
     if (reply_) {
         reply_->abort();
-        emit errorOccured(GetError::CANCELED);
+        Q_EMIT errorOccured(GetError::CANCELED);
     }
 }
