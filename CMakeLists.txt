@@ -166,6 +166,12 @@ else()
 endif()
 set(CMAKE_INSTALL_RPATH_USE_LINK_PATH true)
 
+if(NOT DEFINED LRC)
+    if(EXISTS ${PROJECT_SOURCE_DIR}/../install/lrc)
+        set(LRC ${PROJECT_SOURCE_DIR}/../install/lrc)
+    endif()
+endif()
+
 # If LRC is not globally installed, it's path should be specified
 # by setting variable LRC. If library is not inside LRC + suffixes
 # lib, build or build-local, it's path should be set with LRCLIB.
