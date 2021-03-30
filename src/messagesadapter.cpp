@@ -23,7 +23,6 @@
 
 #include "messagesadapter.h"
 
-#include "globalsystemtray.h"
 #include "qtutils.h"
 #include "utils.h"
 #include "webchathelpers.h"
@@ -36,8 +35,8 @@
 #include <QList>
 #include <QUrl>
 
-MessagesAdapter::MessagesAdapter(QObject* parent, LRCInstance* instance)
-    : QmlAdapterBase(parent, instance)
+MessagesAdapter::MessagesAdapter(LRCInstance* instance, QObject* parent)
+    : QmlAdapterBase(instance, parent)
 {}
 
 void
@@ -714,7 +713,7 @@ MessagesAdapter::removeConversation(const QString& accountId,
     }
 
     lrcInstance_->getAccountInfo(accountId).conversationModel->removeConversation(convUid,
-                                                                                 banContact);
+                                                                                  banContact);
     if (convUid == currentConvUid_)
         currentConvUid_.clear();
 }

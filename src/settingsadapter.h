@@ -32,7 +32,7 @@ class SettingsAdapter : public QmlAdapterBase
 {
     Q_OBJECT
 public:
-    explicit SettingsAdapter(QObject* parent = nullptr, LRCInstance* instance = nullptr);
+    explicit SettingsAdapter(LRCInstance* instance, QObject* parent = nullptr);
 
     void safeInit() override {}
 

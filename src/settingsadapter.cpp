@@ -20,8 +20,8 @@
 
 #include "api/newdevicemodel.h"
 
-SettingsAdapter::SettingsAdapter(QObject* parent, LRCInstance* instance)
-    : QmlAdapterBase(parent, instance)
+SettingsAdapter::SettingsAdapter(LRCInstance* instance, QObject* parent)
+    : QmlAdapterBase(instance, parent)
 {}
 
 QString

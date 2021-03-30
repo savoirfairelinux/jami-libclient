@@ -33,7 +33,7 @@ class UtilsAdapter final : public QmlAdapterBase
 {
     Q_OBJECT
 public:
-    explicit UtilsAdapter(QObject* parent = nullptr, LRCInstance* instance = nullptr);
+    explicit UtilsAdapter(LRCInstance* instance, QObject* parent = nullptr);
     ~UtilsAdapter() = default;
 
     void safeInit() override {}

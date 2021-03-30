@@ -28,8 +28,8 @@
 
 #include <QApplication>
 
-ConversationsAdapter::ConversationsAdapter(QObject* parent, LRCInstance* instance)
-    : QmlAdapterBase(parent, instance)
+ConversationsAdapter::ConversationsAdapter(LRCInstance* instance, QObject* parent)
+    : QmlAdapterBase(instance, parent)
 {
     connect(this, &ConversationsAdapter::currentTypeFilterChanged, [this]() {
         lrcInstance_->getCurrentConversationModel()->setFilter(currentTypeFilter_);

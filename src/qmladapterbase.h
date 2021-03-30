@@ -28,7 +28,7 @@ class QmlAdapterBase : public QObject
 {
     Q_OBJECT
 public:
-    explicit QmlAdapterBase(QObject* parent = nullptr, LRCInstance* instance = nullptr)
+    explicit QmlAdapterBase(LRCInstance* instance, QObject* parent = nullptr)
         : QObject(parent)
         , qmlObj_(nullptr)
         , lrcInstance_(instance) {};

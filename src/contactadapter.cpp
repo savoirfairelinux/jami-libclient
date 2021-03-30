@@ -22,8 +22,8 @@
 
 #include "lrcinstance.h"
 
-ContactAdapter::ContactAdapter(QObject* parent, LRCInstance* instance)
-    : QmlAdapterBase(parent, instance)
+ContactAdapter::ContactAdapter(LRCInstance* instance, QObject* parent)
+    : QmlAdapterBase(instance, parent)
 {
     selectableProxyModel_.reset(new SelectableProxyModel(smartListModel_.get()));
 }

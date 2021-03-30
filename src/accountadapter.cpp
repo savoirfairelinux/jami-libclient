@@ -27,8 +27,8 @@
 
 #include <QtConcurrent/QtConcurrent>
 
-AccountAdapter::AccountAdapter(QObject* parent, LRCInstance* instance)
-    : QmlAdapterBase(parent, instance)
+AccountAdapter::AccountAdapter(LRCInstance* instance, QObject* parent)
+    : QmlAdapterBase(instance, parent)
 {}
 
 void

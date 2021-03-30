@@ -32,7 +32,7 @@ class PluginAdapter final : public QmlAdapterBase
 {
     Q_OBJECT
 public:
-    explicit PluginAdapter(QObject* parent = nullptr, LRCInstance* instance = nullptr);
+    explicit PluginAdapter(LRCInstance* instance, QObject* parent = nullptr);
     ~PluginAdapter() = default;
 
 protected:

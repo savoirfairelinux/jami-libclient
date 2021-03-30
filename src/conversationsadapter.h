@@ -32,7 +32,7 @@ class ConversationsAdapter final : public QmlAdapterBase
     Q_PROPERTY(lrc::api::profile::Type currentTypeFilter MEMBER currentTypeFilter_ NOTIFY
                    currentTypeFilterChanged)
 public:
-    explicit ConversationsAdapter(QObject* parent = nullptr, LRCInstance* instance = nullptr);
+    explicit ConversationsAdapter(LRCInstance* instance, QObject* parent = nullptr);
     ~ConversationsAdapter() = default;
 
 protected:

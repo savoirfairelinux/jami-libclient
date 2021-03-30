@@ -72,7 +72,7 @@ class ContactAdapter final : public QmlAdapterBase
     Q_OBJECT
 
 public:
-    explicit ContactAdapter(QObject* parent = nullptr, LRCInstance* instance = nullptr);
+    explicit ContactAdapter(LRCInstance* instance, QObject* parent = nullptr);
     ~ContactAdapter() = default;
 
 protected:

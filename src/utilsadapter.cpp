@@ -31,8 +31,8 @@
 #include <QClipboard>
 #include <QFileInfo>
 
-UtilsAdapter::UtilsAdapter(QObject* parent, LRCInstance* instance)
-    : QmlAdapterBase(parent, instance)
+UtilsAdapter::UtilsAdapter(LRCInstance* instance, QObject* parent)
+    : QmlAdapterBase(instance, parent)
     , clipboard_(QApplication::clipboard())
 {}
 

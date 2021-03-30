@@ -31,7 +31,7 @@ class MessagesAdapter final : public QmlAdapterBase
     Q_PROPERTY(QVariantMap chatviewTranslatedStrings MEMBER chatviewTranslatedStrings_ CONSTANT)
 
 public:
-    explicit MessagesAdapter(QObject* parent = nullptr, LRCInstance* instance = nullptr);
+    explicit MessagesAdapter(LRCInstance* instance, QObject* parent = nullptr);
     ~MessagesAdapter() = default;
 
 protected:

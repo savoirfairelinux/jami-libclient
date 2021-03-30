@@ -50,7 +50,7 @@ signals:
     void accountListSizeChanged();
 
 public:
-    explicit AccountAdapter(QObject* parent = nullptr, LRCInstance* instance = nullptr);
+    explicit AccountAdapter(LRCInstance* instance, QObject* parent = nullptr);
     ~AccountAdapter() = default;
 
 protected:

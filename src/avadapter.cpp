@@ -32,8 +32,8 @@
 #include <QPainter>
 #include <QScreen>
 
-AvAdapter::AvAdapter(QObject* parent, LRCInstance* instance)
-    : QmlAdapterBase(parent, instance)
+AvAdapter::AvAdapter(LRCInstance* instance, QObject* parent)
+    : QmlAdapterBase(instance, parent)
 {
     auto& avModel = lrcInstance_->avModel();
 

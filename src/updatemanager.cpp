@@ -18,7 +18,6 @@
 
 #include "updatemanager.h"
 
-#include "appsettingsmanager.h"
 #include "lrcinstance.h"
 #include "utils.h"
 #include "version.h"
@@ -39,10 +38,10 @@ UpdateManager::UpdateManager(const QString& url,
                              LRCInstance* instance,
                              QObject* parent)
     : NetWorkManager(cm, parent)
+    , lrcInstance_(instance)
     , baseUrl_(url.isEmpty() ? "https://dl.jami.net/windows" : url.toLatin1())
     , tempPath_(Utils::WinGetEnv("TEMP"))
     , updateTimer_(new QTimer(this))
-    , lrcInstance_(instance)
 {
     connect(updateTimer_, &QTimer::timeout, [this] {
         // Quiet period update check.

@@ -29,7 +29,7 @@ class AvAdapter final : public QmlAdapterBase
     Q_OBJECT
 
 public:
-    explicit AvAdapter(QObject* parent = nullptr, LRCInstance* instance = nullptr);
+    explicit AvAdapter(LRCInstance* instance, QObject* parent = nullptr);
     ~AvAdapter() = default;
 
 signals:

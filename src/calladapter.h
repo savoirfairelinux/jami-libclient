@@ -21,7 +21,6 @@
 
 #include "lrcinstance.h"
 #include "qmladapterbase.h"
-#include "globalsystemtray.h"
 #include "screensaver.h"
 
 #include <QObject>
@@ -37,7 +36,7 @@ public:
     enum MuteStates { UNMUTED, LOCAL_MUTED, MODERATOR_MUTED, BOTH_MUTED };
     Q_ENUM(MuteStates)
 
-    explicit CallAdapter(QObject* parent = nullptr, LRCInstance* instance = nullptr);
+    explicit CallAdapter(LRCInstance* instance, QObject* parent = nullptr);
     ~CallAdapter() = default;
 
 protected:

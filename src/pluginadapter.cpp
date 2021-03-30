@@ -20,8 +20,8 @@
 
 #include "lrcinstance.h"
 
-PluginAdapter::PluginAdapter(QObject* parent, LRCInstance* instance)
-    : QmlAdapterBase(parent, instance)
+PluginAdapter::PluginAdapter(LRCInstance* instance, QObject* parent)
+    : QmlAdapterBase(instance, parent)
 {}
 
 QVariant

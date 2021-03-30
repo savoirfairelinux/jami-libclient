@@ -27,8 +27,8 @@
 
 #include <QApplication>
 
-CallAdapter::CallAdapter(QObject* parent, LRCInstance* instance)
-    : QmlAdapterBase(parent, instance)
+CallAdapter::CallAdapter(LRCInstance* instance, QObject* parent)
+    : QmlAdapterBase(instance, parent)
     , oneSecondTimer_(new QTimer(this))
 {
     accountId_ = lrcInstance_->getCurrAccId();
