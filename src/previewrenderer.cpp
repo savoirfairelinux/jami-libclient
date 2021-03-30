@@ -117,13 +117,16 @@ PhotoboothPreviewRender::PhotoboothPreviewRender(QQuickItem* parent)
 {
     connect(this, &PreviewRenderer::lrcInstanceChanged, [this] {
         if (lrcInstance_)
-            connect(lrcInstance_->renderer(), &RenderManager::previewRenderingStopped, [this]() {
-                Q_EMIT hideBooth();
-            });
+            rendererStoppedConnection_ = connect(lrcInstance_->renderer(),
+                                                 &RenderManager::previewRenderingStopped,
+                                                 [this]() { Q_EMIT hideBooth(); });
     });
 }
 
-PhotoboothPreviewRender::~PhotoboothPreviewRender() {}
+PhotoboothPreviewRender::~PhotoboothPreviewRender()
+{
+    disconnect(rendererStoppedConnection_);
+}
 
 QString
 PhotoboothPreviewRender::takePhoto(int size)
@@ -133,6 +136,7 @@ PhotoboothPreviewRender::takePhoto(int size)
             previewImage->copy()
                 .scaled(size, size, Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation)));
     }
+    return {};
 }
 
 void
