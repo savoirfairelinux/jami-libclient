@@ -1,4 +1,5 @@
 *.user
+doc/Doxyfile
 
 GeneratedFiles/
 .vs/
