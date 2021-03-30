@@ -25,13 +25,17 @@
 #include <QObject>
 #include <QString>
 
+class AppSettingsManager;
+
 class MessagesAdapter final : public QmlAdapterBase
 {
     Q_OBJECT
     Q_PROPERTY(QVariantMap chatviewTranslatedStrings MEMBER chatviewTranslatedStrings_ CONSTANT)
 
 public:
-    explicit MessagesAdapter(LRCInstance* instance, QObject* parent = nullptr);
+    explicit MessagesAdapter(AppSettingsManager* settingsManager,
+                             LRCInstance* instance,
+                             QObject* parent = nullptr);
     ~MessagesAdapter() = default;
 
 protected:
@@ -115,4 +119,6 @@ private:
     QMetaObject::Connection newInteractionConnection_;
     QMetaObject::Connection interactionStatusUpdatedConnection_;
     QMetaObject::Connection interactionRemovedConnection_;
+
+    AppSettingsManager* settingsManager_;
 };

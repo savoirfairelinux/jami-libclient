@@ -56,11 +56,8 @@ public:
     virtual bool filterAcceptsRow(int source_row, const QModelIndex& source_parent) const
     {
         // Accept all contacts in conversation list filtered with account type, except those in a call.
-
         auto index = sourceModel()->index(source_row, 0, source_parent);
-        if (filterPredicate_) {
-            return filterPredicate_(index, filterRegExp());
-        }
+        return filterPredicate_ ? filterPredicate_(index, filterRegExp()) : false;
     }
 
 private:

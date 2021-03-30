@@ -66,11 +66,6 @@ const char* WinGetEnv(const char* name);
 QString GetRingtonePath();
 QString GenGUID();
 QString GetISODate();
-void showNotification(const QString& message,
-                      const QString& from,
-                      const QString& accountId,
-                      const QString& convUid,
-                      std::function<void()> const& onClicked);
 QSize getRealSize(QScreen* screen);
 void forceDeleteAsync(const QString& path);
 QString getProjectCredits();

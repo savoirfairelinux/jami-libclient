@@ -20,8 +20,11 @@
 
 #include "api/newdevicemodel.h"
 
-SettingsAdapter::SettingsAdapter(LRCInstance* instance, QObject* parent)
+SettingsAdapter::SettingsAdapter(AppSettingsManager* settingsManager,
+                                 LRCInstance* instance,
+                                 QObject* parent)
     : QmlAdapterBase(instance, parent)
+    , settingsManager_(settingsManager)
 {}
 
 QString
@@ -54,13 +57,13 @@ SettingsAdapter::getDir_Download()
 QVariant
 SettingsAdapter::getAppValue(const Settings::Key key)
 {
-    return AppSettingsManager::getValue(key);
+    return settingsManager_->getValue(key);
 }
 
 void
 SettingsAdapter::setAppValue(const Settings::Key key, const QVariant& value)
 {
-    AppSettingsManager::setValue(key, value);
+    settingsManager_->setValue(key, value);
 }
 
 void

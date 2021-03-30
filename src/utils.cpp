@@ -22,7 +22,6 @@
 
 #include "utils.h"
 
-#include "globalsystemtray.h"
 #include "jamiavatartheme.h"
 #include "lrcinstance.h"
 
@@ -393,31 +392,6 @@ Utils::getCirclePhoto(const QImage original, int sizePhoto)
     painter.setCompositionMode(QPainter::CompositionMode_SourceIn);
     painter.drawImage(0, 0, scaledPhoto, margin, 0);
     return target;
-}
-
-void
-Utils::showNotification(const QString& message,
-                        const QString& from,
-                        const QString& accountId,
-                        const QString& convUid,
-                        std::function<void()> const& onClicked)
-{
-    if (accountId.isEmpty() || convUid.isEmpty()) {
-        // This should never happen.
-        qFatal("Invalid account or conversation.");
-    }
-
-    if (!AppSettingsManager::getValue(Settings::Key::EnableNotifications).toBool()) {
-        qWarning() << "Notifications are disabled";
-        return;
-    }
-
-    GlobalSystemTray::connectClicked(std::move(onClicked));
-
-    if (from.isEmpty())
-        GlobalSystemTray::instance().showMessage(message, "", QIcon(":images/jami.png"));
-    else
-        GlobalSystemTray::instance().showMessage(from, message, QIcon(":images/jami.png"));
 }
 
 QSize

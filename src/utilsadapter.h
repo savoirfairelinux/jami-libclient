@@ -28,12 +28,13 @@
 #include "qmladapterbase.h"
 
 class QClipboard;
+class SystemTray;
 
 class UtilsAdapter final : public QmlAdapterBase
 {
     Q_OBJECT
 public:
-    explicit UtilsAdapter(LRCInstance* instance, QObject* parent = nullptr);
+    explicit UtilsAdapter(SystemTray* systemTray, LRCInstance* instance, QObject* parent = nullptr);
     ~UtilsAdapter() = default;
 
     void safeInit() override {}
@@ -81,5 +82,6 @@ public:
 
 private:
     QClipboard* clipboard_;
+    SystemTray* systemTray_;
 };
 Q_DECLARE_METATYPE(UtilsAdapter*)

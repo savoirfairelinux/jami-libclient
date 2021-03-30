@@ -176,8 +176,6 @@ HEADERS += \
         src/accountlistmodel.h \
         src/runguard.h \
         src/lrcinstance.h \
-        src/globalsystemtray.h \
-        src/appsettingsmanager.h \
         src/webchathelpers.h \
         src/rendermanager.h \
         src/connectivitymonitor.h \
@@ -210,7 +208,9 @@ HEADERS += \
         src/audiomanagerlistmodel.h \
         src/qmlregister.h \
         src/qtutils.h \
-        src/utilsadapter.h
+        src/utilsadapter.h \
+        src/systemtray.h \
+        src/appsettingsmanager.h
 
 SOURCES += \
         src/bannedlistmodel.cpp \
@@ -250,7 +250,9 @@ SOURCES += \
         src/videoformatresolutionmodel.cpp \
         src/audiomanagerlistmodel.cpp \
         src/qmlregister.cpp \
-        src/utilsadapter.cpp
+        src/utilsadapter.cpp \
+        src/systemtray.cpp \
+        src/appsettingsmanager.cpp
 
 RESOURCES += \
         resources.qrc \

@@ -25,6 +25,8 @@
 #include <QObject>
 #include <QString>
 
+class SystemTray;
+
 class ConversationsAdapter final : public QmlAdapterBase
 {
     Q_OBJECT
@@ -32,7 +34,9 @@ class ConversationsAdapter final : public QmlAdapterBase
     Q_PROPERTY(lrc::api::profile::Type currentTypeFilter MEMBER currentTypeFilter_ NOTIFY
                    currentTypeFilterChanged)
 public:
-    explicit ConversationsAdapter(LRCInstance* instance, QObject* parent = nullptr);
+    explicit ConversationsAdapter(SystemTray* systemTray,
+                                  LRCInstance* instance,
+                                  QObject* parent = nullptr);
     ~ConversationsAdapter() = default;
 
 protected:
@@ -86,4 +90,6 @@ private:
     QMetaObject::Connection interactionRemovedConnection_;
     QMetaObject::Connection searchStatusChangedConnection_;
     QMetaObject::Connection searchResultUpdatedConnection_;
+
+    SystemTray* systemTray_;
 };

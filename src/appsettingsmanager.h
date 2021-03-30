@@ -1,5 +1,5 @@
 /*!
- * Copyright (C) 2020 by Savoir-faire Linux
+ * Copyright (C) 2020-2021 by Savoir-faire Linux
  * Author: Andreas Traczyk <andreas.traczyk@savoirfairelinux.com>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -84,51 +84,16 @@ private:
 Q_DECLARE_METATYPE(Settings::Key)
 // clang-format on
 
-/*
- * A singleton object to manage settings access.
- */
 class AppSettingsManager : public QObject
 {
     Q_OBJECT
 public:
-    virtual ~AppSettingsManager() = default;
+    explicit AppSettingsManager(QObject* parent = nullptr);
+    ~AppSettingsManager() = default;
 
-    static AppSettingsManager& instance()
-    {
-        static AppSettingsManager* instance_ = new AppSettingsManager(nullptr);
-        return *instance_;
-    }
-
-    static QVariant getValue(const Settings::Key key)
-    {
-        auto settings = instance().settings_;
-        auto value = settings->value(Settings::toString(key), Settings::defaultValue(key));
-
-        if (QString(value.typeName()) == "QString"
-            && (value.toString() == "false" || value.toString() == "true"))
-            return value.toBool();
-
-        return value;
-    }
-
-    static void setValue(const Settings::Key key, const QVariant& value)
-    {
-        instance().settings_->setValue(Settings::toString(key), value);
-    }
-
-    static void initValues()
-    {
-        for (int i = 0; i < static_cast<int>(Settings::Key::COUNT__); ++i) {
-            auto key = static_cast<Settings::Key>(i);
-            if (!instance().settings_->contains(Settings::toString(key)))
-                setValue(key, Settings::defaultValue(key));
-        }
-    }
+    QVariant getValue(const Settings::Key key);
+    void setValue(const Settings::Key key, const QVariant& value);
 
 private:
-    explicit AppSettingsManager(QObject*)
-        : settings_(new QSettings("jami.net", "Jami", this))
-    {}
-
     QSettings* settings_;
 };

@@ -19,7 +19,6 @@
 #pragma once
 
 #include <QObject>
-#include <QSettings>
 
 #include "api/account.h"
 #include "api/datatransfermodel.h"
@@ -27,12 +26,15 @@
 #include "typedefs.h"
 #include "utils.h"
 #include "qmladapterbase.h"
+#include "appsettingsmanager.h"
 
 class SettingsAdapter : public QmlAdapterBase
 {
     Q_OBJECT
 public:
-    explicit SettingsAdapter(LRCInstance* instance, QObject* parent = nullptr);
+    explicit SettingsAdapter(AppSettingsManager* settingsManager,
+                             LRCInstance* instance,
+                             QObject* parent = nullptr);
 
     void safeInit() override {}
 
@@ -225,5 +227,8 @@ public:
     Q_INVOKABLE void enableLocalModerators(const QString& accountID, const bool& isModEnabled);
     Q_INVOKABLE bool isLocalModeratorsEnabled(const QString& accountId);
     Q_INVOKABLE bool isAllModeratorsEnabled(const QString& accountId);
+
+private:
+    AppSettingsManager* settingsManager_;
 };
 Q_DECLARE_METATYPE(SettingsAdapter*)

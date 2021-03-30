@@ -27,6 +27,8 @@
 #include "lrcinstance.h"
 #include "utils.h"
 
+class AppSettingsManager;
+
 class AccountAdapter final : public QmlAdapterBase
 {
     Q_OBJECT
@@ -50,7 +52,9 @@ signals:
     void accountListSizeChanged();
 
 public:
-    explicit AccountAdapter(LRCInstance* instance, QObject* parent = nullptr);
+    explicit AccountAdapter(AppSettingsManager* settingsManager,
+                            LRCInstance* instance,
+                            QObject* parent = nullptr);
     ~AccountAdapter() = default;
 
 protected:
@@ -132,5 +136,7 @@ private:
     QMetaObject::Connection addedToConferenceConnection_;
     QMetaObject::Connection contactUnbannedConnection_;
     QMetaObject::Connection registeredNameSavedConnection_;
+
+    AppSettingsManager* settingsManager_;
 };
 Q_DECLARE_METATYPE(AccountAdapter*)

@@ -28,6 +28,8 @@
 #include <QVariant>
 #include <QSystemTrayIcon>
 
+class SystemTray;
+
 class CallAdapter final : public QmlAdapterBase
 {
     Q_OBJECT
@@ -36,7 +38,7 @@ public:
     enum MuteStates { UNMUTED, LOCAL_MUTED, MODERATOR_MUTED, BOTH_MUTED };
     Q_ENUM(MuteStates)
 
-    explicit CallAdapter(LRCInstance* instance, QObject* parent = nullptr);
+    explicit CallAdapter(SystemTray* systemTray, LRCInstance* instance, QObject* parent = nullptr);
     ~CallAdapter() = default;
 
 protected:
@@ -124,4 +126,6 @@ private:
     ScreenSaver screenSaver;
 
     void preventScreenSaver(bool state);
+
+    SystemTray* systemTray_;
 };

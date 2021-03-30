@@ -23,13 +23,16 @@
  */
 
 #include "calladapter.h"
+
+#include "systemtray.h"
 #include "utils.h"
 
 #include <QApplication>
 
-CallAdapter::CallAdapter(LRCInstance* instance, QObject* parent)
+CallAdapter::CallAdapter(SystemTray* systemTray, LRCInstance* instance, QObject* parent)
     : QmlAdapterBase(instance, parent)
     , oneSecondTimer_(new QTimer(this))
+    , systemTray_(systemTray)
 {
     accountId_ = lrcInstance_->getCurrAccId();
     connectCallModel(accountId_);
@@ -335,7 +338,7 @@ CallAdapter::showNotification(const QString& accountId, const QString& convUid)
         emit callSetupMainViewRequired(convInfo.accountId, convInfo.uid);
     };
     emit lrcInstance_->updateSmartList();
-    Utils::showNotification(tr("is calling you"), from, accountId, convUid, onClicked);
+    systemTray_->showNotification(tr("is calling you"), from, onClicked);
 }
 
 void

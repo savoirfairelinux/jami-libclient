@@ -92,7 +92,7 @@ Variables `QT5_VER` and `QT5_PATH` are used to specify version and path for a cu
 
 If lrc library is installed in a custom directory you can set its path with the variable LRC. Additionally you can specify built library location with `LRCLIB` (otherwise it will seach inside LRC with the suffixes `/lib`, `/build` and `/build-local`).
 
-After the build has finished, you are finally ready to launch jami-qt in your build directory. 
+After the build has finished, you are finally ready to launch jami-qt in your build directory.
 
 If you want to install it to the path provided by `CMAKE_INSTALL_PREFIX` you can run:
 
@@ -162,7 +162,7 @@ Only 64-bit MSVC build can be compiled.
 > By default: ```toolset=v141```, ```sdk=10.0.16299.0```,  ```qtver=5.9.4``` <br>
 > For example:
 ```sh
-    python make-ring.py --install --toolset v142 --sdk 10.0.18362.0 --qtver 5.12.0
+    python make-ring.py --install --toolset v142 --sdk 10.0.18362.0 --qtver 5.14.0
 ```
 
 ### Build Module individually

@@ -23,6 +23,7 @@
 
 #include "messagesadapter.h"
 
+#include "appsettingsmanager.h"
 #include "qtutils.h"
 #include "utils.h"
 #include "webchathelpers.h"
@@ -35,8 +36,11 @@
 #include <QList>
 #include <QUrl>
 
-MessagesAdapter::MessagesAdapter(LRCInstance* instance, QObject* parent)
+MessagesAdapter::MessagesAdapter(AppSettingsManager* settingsManager,
+                                 LRCInstance* instance,
+                                 QObject* parent)
     : QmlAdapterBase(instance, parent)
+    , settingsManager_(settingsManager)
 {}
 
 void
@@ -94,7 +98,7 @@ MessagesAdapter::setupChatView(const QString& convUid)
     connect(lrcInstance_->getCurrentConversationModel(),
             &ConversationModel::composingStatusChanged,
             [this](const QString& convUid, const QString& contactUri, bool isComposing) {
-                if (!AppSettingsManager::getValue(Settings::Key::EnableTypingIndicator).toBool()) {
+                if (!settingsManager_->getValue(Settings::Key::EnableTypingIndicator).toBool()) {
                     return;
                 }
                 contactIsComposing(convUid, contactUri, isComposing);
@@ -438,7 +442,7 @@ MessagesAdapter::pasteKeyDetected()
 void
 MessagesAdapter::onComposing(bool isComposing)
 {
-    if (!AppSettingsManager::getValue(Settings::Key::EnableTypingIndicator).toBool()) {
+    if (!settingsManager_->getValue(Settings::Key::EnableTypingIndicator).toBool()) {
         return;
     }
     lrcInstance_->getCurrentConversationModel()->setIsComposing(lrcInstance_->getCurrentConvUid(),
@@ -550,8 +554,7 @@ void
 MessagesAdapter::setDisplayLinks()
 {
     QString s = QString::fromLatin1("setDisplayLinks(%1);")
-                    .arg(
-                        AppSettingsManager::getValue(Settings::Key::DisplayImagesChatview).toBool());
+                    .arg(settingsManager_->getValue(Settings::Key::DisplayImagesChatview).toBool());
     QMetaObject::invokeMethod(qmlObj_, "webViewRunJavaScript", Q_ARG(QVariant, s));
 }
 

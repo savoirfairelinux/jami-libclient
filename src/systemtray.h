@@ -1,6 +1,6 @@
 /*
- * Copyright (C) 2015-2020 by Savoir-faire Linux
- * Author: Edric Ladent Milaret <edric.ladent-milaret@savoirfairelinux.com>
+ * Copyright (C) 2021 by Savoir-faire Linux
+ * Author: Andreas Traczyk <andreas.traczyk@savoirfairelinux.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,33 +18,26 @@
 
 #pragma once
 
-#include "lrcinstance.h"
-
 #include <QSystemTrayIcon>
 
-class GlobalSystemTray final : public QSystemTrayIcon
+class AppSettingsManager;
+
+class SystemTray final : public QSystemTrayIcon
 {
     Q_OBJECT
 
 public:
-    ~GlobalSystemTray() = default;
-    static GlobalSystemTray& instance()
-    {
-        static GlobalSystemTray* instance_ = new GlobalSystemTray();
-        return *instance_;
-    }
+    explicit SystemTray(AppSettingsManager* settingsManager, QObject* parent = nullptr);
+    ~SystemTray();
+
+    void showNotification(const QString& message,
+                          const QString& from,
+                          std::function<void()> const& onClickedCb);
 
     template<typename Func>
-    static void connectClicked(Func&& onClicked)
-    {
-        auto& instance_ = instance();
-        instance_.disconnect(instance_.messageClicked_);
-        instance_.connect(&instance_, &QSystemTrayIcon::messageClicked, onClicked);
-    }
+    void setOnClickedCallback(Func&& onClickedCb);
 
 private:
-    explicit GlobalSystemTray()
-        : QSystemTrayIcon() {};
-
     QMetaObject::Connection messageClicked_;
+    AppSettingsManager* settingsManager_;
 };

@@ -26,7 +26,6 @@
 
 #include "updatemanager.h"
 #include "rendermanager.h"
-#include "appsettingsmanager.h"
 #include "utils.h"
 
 #include "api/account.h"
