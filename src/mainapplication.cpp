@@ -48,6 +48,7 @@
 #include <QQmlContext>
 
 #include <locale.h>
+#include <thread>
 
 #ifdef Q_OS_WIN
 #include <windows.h>

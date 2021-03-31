@@ -20,6 +20,8 @@
 
 #include <QSystemTrayIcon>
 
+#include <functional>
+
 class AppSettingsManager;
 
 class SystemTray final : public QSystemTrayIcon

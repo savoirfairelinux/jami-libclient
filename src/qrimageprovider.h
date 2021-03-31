@@ -29,8 +29,8 @@ class QrImageProvider : public QuickImageProviderBase
 public:
     QrImageProvider(LRCInstance* instance = nullptr)
         : QuickImageProviderBase(QQuickImageProvider::Image,
-                                  QQmlImageProviderBase::ForceAsynchronousImageLoading,
-                                  instance)
+                                 QQmlImageProviderBase::ForceAsynchronousImageLoading,
+                                 instance)
     {}
 
     enum class QrType { Account, Contact };
@@ -43,11 +43,11 @@ public:
      */
     QPair<QrType, QString> getIndexFromID(const QString& id)
     {
-        auto list = id.split('_', Qt::SkipEmptyParts);
+        auto list = id.split('_', QString::SplitBehavior::SkipEmptyParts);
         if (list.size() < 2)
-            return QPair(QrType::Account, "");
+            return {QrType::Account, ""};
         if (list.contains("account") && list.size() > 1) {
-            return QPair(QrType::Account, list[1]);
+            return {QrType::Account, list[1]};
         } else if (list.contains("contact") && list.size() > 1) {
             /*
              * For contact_xxx, xxx is "" initially
@@ -55,9 +55,9 @@ public:
             const auto& convInfo = lrcInstance_->getConversationFromConvUid(list[1]);
             auto contact = lrcInstance_->getCurrentAccountInfo().contactModel->getContact(
                 convInfo.participants.at(0));
-            return QPair(QrType::Contact, contact.profileInfo.uri);
+            return {QrType::Contact, contact.profileInfo.uri};
         }
-        return QPair(QrType::Account, "");
+        return {QrType::Account, ""};
     }
 
     QImage requestImage(const QString& id, QSize* size, const QSize& requestedSize) override
