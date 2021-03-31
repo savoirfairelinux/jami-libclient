@@ -270,7 +270,7 @@ NewCallModel::createCall(const QString& uri, bool isAudioOnly)
     auto callId = isAudioOnly
                       ? CallManager::instance().placeCall(owner.id, uri, {{"AUDIO_ONLY", "true"}})
                       : CallManager::instance().placeCall(owner.id, uri);
-#else  // dbus
+#else // dbus
     // do not use auto here (QDBusPendingReply<QString>)
     QString callId = isAudioOnly
                          ? CallManager::instance().placeCallWithDetails(owner.id,
@@ -348,6 +348,7 @@ NewCallModel::playDTMF(const QString& callId, const QString& value) const
 void
 NewCallModel::togglePause(const QString& callId) const
 {
+    // function should now only serves for SIP accounts
     if (!hasCall(callId))
         return;
     auto& call = pimpl_->calls[callId];
@@ -355,7 +356,6 @@ NewCallModel::togglePause(const QString& callId) const
     if (call->status == call::Status::PAUSED) {
         if (call->type == call::Type::DIALOG) {
             CallManager::instance().unhold(callId);
-            setCurrentCall(callId);
         } else {
             CallManager::instance().unholdConference(callId);
         }
