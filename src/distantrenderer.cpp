@@ -30,13 +30,21 @@ DistantRenderer::DistantRenderer(QQuickItem* parent)
     setPerformanceHint(QQuickPaintedItem::FastFBOResizing);
 
     connect(this, &DistantRenderer::lrcInstanceChanged, [this] {
-        if (lrcInstance_)
+        if (lrcInstance_) {
             connect(lrcInstance_->renderer(),
                     &RenderManager::distantFrameUpdated,
                     [this](const QString& id) {
                         if (distantRenderId_ == id)
                             update(QRect(0, 0, width(), height()));
                     });
+
+            connect(lrcInstance_->renderer(),
+                    &RenderManager::distantRenderingStopped,
+                    [this](const QString& id) {
+                        if (distantRenderId_ == id)
+                            update(QRect(0, 0, width(), height()));
+                    });
+        }
     });
 }
 
@@ -46,6 +54,8 @@ void
 DistantRenderer::setRendererId(const QString& id)
 {
     distantRenderId_ = id;
+    // Note: Force a paint to update frame as we change the renderer
+    update(QRect(0, 0, width(), height()));
 }
 
 int
