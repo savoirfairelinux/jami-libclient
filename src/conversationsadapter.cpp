@@ -38,6 +38,43 @@ ConversationsAdapter::ConversationsAdapter(SystemTray* systemTray,
     connect(this, &ConversationsAdapter::currentTypeFilterChanged, [this]() {
         lrcInstance_->getCurrentConversationModel()->setFilter(currentTypeFilter_);
     });
+
+    connect(lrcInstance_, &LRCInstance::conversationSelected, [this]() {
+        auto convUid = lrcInstance_->getCurrentConvUid();
+        if (!convUid.isEmpty()) {
+            Q_EMIT showConversation(lrcInstance_->getCurrAccId(), convUid);
+        }
+    });
+
+#ifdef Q_OS_LINUX
+    // notification responses
+    connect(systemTray_,
+            &SystemTray::openConversationActivated,
+            [this](const QString& accountId, const QString& convUid) {
+                Q_EMIT lrcInstance_->notificationClicked();
+                selectConversation(accountId, convUid);
+                Q_EMIT lrcInstance_->updateSmartList();
+                Q_EMIT modelSorted(convUid);
+            });
+    connect(systemTray_,
+            &SystemTray::acceptPendingActivated,
+            [this](const QString& accountId, const QString& peerUri) {
+                auto& convInfo = lrcInstance_->getConversationFromPeerUri(peerUri, accountId);
+                if (convInfo.uid.isEmpty())
+                    return;
+                lrcInstance_->getAccountInfo(accountId).conversationModel->makePermanent(
+                    convInfo.uid);
+            });
+    connect(systemTray_,
+            &SystemTray::refusePendingActivated,
+            [this](const QString& accountId, const QString& peerUri) {
+                auto& convInfo = lrcInstance_->getConversationFromPeerUri(peerUri, accountId);
+                if (convInfo.uid.isEmpty())
+                    return;
+                lrcInstance_->getAccountInfo(accountId).conversationModel->removeConversation(
+                    convInfo.uid);
+            });
+#endif
 }
 
 void
@@ -60,6 +97,21 @@ ConversationsAdapter::safeInit()
             this,
             &ConversationsAdapter::onNewUnreadInteraction);
 
+    connect(&lrcInstance_->behaviorController(),
+            &BehaviorController::newReadInteraction,
+            this,
+            &ConversationsAdapter::onNewReadInteraction);
+
+    connect(&lrcInstance_->behaviorController(),
+            &BehaviorController::newTrustRequest,
+            this,
+            &ConversationsAdapter::onNewTrustRequest);
+
+    connect(&lrcInstance_->behaviorController(),
+            &BehaviorController::trustRequestTreated,
+            this,
+            &ConversationsAdapter::onTrustRequestTreated);
+
     connect(lrcInstance_,
             &LRCInstance::currentAccountChanged,
             this,
@@ -81,42 +133,7 @@ ConversationsAdapter::backToWelcomePage()
 void
 ConversationsAdapter::selectConversation(const QString& accountId, const QString& convUid)
 {
-    const auto& convInfo = lrcInstance_->getConversationFromConvUid(convUid, accountId);
-
-    if (lrcInstance_->getCurrentConvUid() != convInfo.uid && convInfo.participants.size() > 0) {
-        // If the account is not currently selected, do that first, then
-        // proceed to select the conversation.
-        auto selectConversation = [this, accountId, convUid = convInfo.uid] {
-            const auto& convInfo = lrcInstance_->getConversationFromConvUid(convUid, accountId);
-            if (convInfo.uid.isEmpty()) {
-                return;
-            }
-            auto& accInfo = lrcInstance_->getAccountInfo(convInfo.accountId);
-            lrcInstance_->setSelectedConvId(convInfo.uid);
-            accInfo.conversationModel->clearUnreadInteractions(convInfo.uid);
-
-            try {
-                // Set contact filter (for conversation tab selection)
-                auto& contact = accInfo.contactModel->getContact(convInfo.participants.front());
-                setProperty("currentTypeFilter", QVariant::fromValue(contact.profileInfo.type));
-            } catch (const std::out_of_range& e) {
-                qDebug() << e.what();
-            }
-        };
-        if (convInfo.accountId != lrcInstance_->getCurrAccId()) {
-            Utils::oneShotConnect(lrcInstance_,
-                                  &LRCInstance::currentAccountChanged,
-                                  [selectConversation] { selectConversation(); });
-            lrcInstance_->setSelectedConvId();
-            lrcInstance_->setSelectedAccountId(convInfo.accountId);
-        } else {
-            selectConversation();
-        }
-    }
-
-    if (!convInfo.uid.isEmpty()) {
-        Q_EMIT showConversation(lrcInstance_->getCurrAccId(), convInfo.uid);
-    }
+    lrcInstance_->selectConversation(accountId, convUid);
 }
 
 void
@@ -151,12 +168,20 @@ ConversationsAdapter::onNewUnreadInteraction(const QString& accountId,
                                              uint64_t interactionId,
                                              const interaction::Info& interaction)
 {
-    Q_UNUSED(interactionId)
     if (!interaction.authorUri.isEmpty()
         && (!QApplication::focusWindow() || accountId != lrcInstance_->getCurrAccId()
             || convUid != lrcInstance_->getCurrentConvUid())) {
         auto& accInfo = lrcInstance_->getAccountInfo(accountId);
         auto from = accInfo.contactModel->bestNameForContact(interaction.authorUri);
+#ifdef Q_OS_LINUX
+        auto notifId = QString("%1;%2;%3").arg(accountId).arg(convUid).arg(interactionId);
+        systemTray_->showNotification(notifId,
+                                      tr("New message"),
+                                      from + ": " + interaction.body,
+                                      NotificationType::CHAT);
+
+#else
+        Q_UNUSED(interactionId)
         auto onClicked = [this, accountId, convUid, uri = interaction.authorUri] {
             Q_EMIT lrcInstance_->notificationClicked();
             const auto& convInfo = lrcInstance_->getConversationFromConvUid(convUid, accountId);
@@ -166,10 +191,47 @@ ConversationsAdapter::onNewUnreadInteraction(const QString& accountId,
                 Q_EMIT modelSorted(convInfo.uid);
             }
         };
-
         systemTray_->showNotification(interaction.body, from, onClicked);
-        return;
+#endif
     }
+}
+
+void
+ConversationsAdapter::onNewReadInteraction(const QString& accountId,
+                                           const QString& convUid,
+                                           uint64_t interactionId)
+{
+#ifdef Q_OS_LINUX
+    // hide notification
+    auto notifId = QString("%1;%2;%3").arg(accountId).arg(convUid).arg(interactionId);
+    systemTray_->hideNotification(notifId);
+#endif
+}
+
+void
+ConversationsAdapter::onNewTrustRequest(const QString& accountId, const QString& peerUri)
+{
+#ifdef Q_OS_LINUX
+    if (!QApplication::focusWindow() || accountId != lrcInstance_->getCurrAccId()) {
+        auto& accInfo = lrcInstance_->getAccountInfo(accountId);
+        auto from = accInfo.contactModel->bestNameForContact(peerUri);
+        auto notifId = QString("%1;%2").arg(accountId).arg(peerUri);
+        systemTray_->showNotification(notifId,
+                                      tr("Trust request"),
+                                      "New request from " + from,
+                                      NotificationType::REQUEST);
+    }
+#endif
+}
+
+void
+ConversationsAdapter::onTrustRequestTreated(const QString& accountId, const QString& peerUri)
+{
+#ifdef Q_OS_LINUX
+    // hide notification
+    auto notifId = QString("%1;%2").arg(accountId).arg(peerUri);
+    systemTray_->hideNotification(notifId);
+#endif
 }
 
 void

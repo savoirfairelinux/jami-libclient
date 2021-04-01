@@ -22,6 +22,11 @@
 
 #include <functional>
 
+#ifdef Q_OS_LINUX
+enum class NotificationType { INVALID, CALL, REQUEST, CHAT };
+Q_ENUMS(NotificationType)
+#endif // Q_OS_LINUX
+
 class AppSettingsManager;
 
 class SystemTray final : public QSystemTrayIcon
@@ -32,14 +37,32 @@ public:
     explicit SystemTray(AppSettingsManager* settingsManager, QObject* parent = nullptr);
     ~SystemTray();
 
+#ifdef Q_OS_LINUX
+    bool hideNotification(const QString& id);
+    void showNotification(const QString& id,
+                          const QString& title,
+                          const QString& body,
+                          NotificationType type);
+
+Q_SIGNALS:
+    void openConversationActivated(const QString& accountId, const QString& convUid);
+    void acceptPendingActivated(const QString& accountId, const QString& peerUri);
+    void refusePendingActivated(const QString& accountId, const QString&);
+    void answerCallActivated(const QString& accountId, const QString&);
+    void declineCallActivated(const QString& accountId, const QString&);
+#else
     void showNotification(const QString& message,
                           const QString& from,
                           std::function<void()> const& onClickedCb);
 
     template<typename Func>
     void setOnClickedCallback(Func&& onClickedCb);
+#endif // Q_OS_LINUX
 
 private:
     QMetaObject::Connection messageClicked_;
     AppSettingsManager* settingsManager_;
+
+    struct SystemTrayImpl;
+    std::unique_ptr<SystemTrayImpl> pimpl_;
 };

@@ -68,6 +68,11 @@ private Q_SLOTS:
                                 const QString& convUid,
                                 uint64_t interactionId,
                                 const interaction::Info& interaction);
+    void onNewReadInteraction(const QString& accountId,
+                              const QString& convUid,
+                              uint64_t interactionId);
+    void onNewTrustRequest(const QString& accountId, const QString& peerUri);
+    void onTrustRequestTreated(const QString& accountId, const QString& peerUri);
 
 private:
     void backToWelcomePage();

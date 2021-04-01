@@ -354,6 +354,7 @@ AccountAdapter::deselectConversation()
         return;
     }
 
+    // TODO: remove this unhealthy section
     auto currentConversationModel = lrcInstance_->getCurrentConversationModel();
 
     if (currentConversationModel == nullptr) {
@@ -421,8 +422,7 @@ AccountAdapter::connectAccount(const QString& accountId)
 
         contactUnbannedConnection_ = QObject::connect(accInfo.contactModel.get(),
                                                       &lrc::api::ContactModel::bannedStatusChanged,
-                                                      [this](const QString& contactUri,
-                                                             bool banned) {
+                                                      [this](const QString&, bool banned) {
                                                           if (!banned)
                                                               Q_EMIT contactUnbanned();
                                                       });

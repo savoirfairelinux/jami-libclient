@@ -49,6 +49,29 @@ CallAdapter::CallAdapter(SystemTray* systemTray, LRCInstance* instance, QObject*
             &CallAdapter::onShowCallView);
 
     connect(lrcInstance_, &LRCInstance::currentAccountChanged, this, &CallAdapter::onAccountChanged);
+
+#ifdef Q_OS_LINUX
+    // notification responses (gnu/linux currently)
+    connect(systemTray_,
+            &SystemTray::answerCallActivated,
+            [this](const QString& accountId, const QString& convUid) {
+                acceptACall(accountId, convUid);
+                Q_EMIT lrcInstance_->notificationClicked();
+                lrcInstance_->selectConversation(accountId, convUid);
+                updateCall(convUid, accountId);
+                Q_EMIT callSetupMainViewRequired(accountId, convUid);
+            });
+    connect(systemTray_,
+            &SystemTray::declineCallActivated,
+            [this](const QString& accountId, const QString& convUid) {
+                refuseACall(accountId, convUid);
+            });
+#endif
+
+    connect(&lrcInstance_->behaviorController(),
+            &BehaviorController::callStatusChanged,
+            this,
+            &CallAdapter::onCallStatusChanged);
 }
 
 void
@@ -56,6 +79,39 @@ CallAdapter::onAccountChanged()
 {
     accountId_ = lrcInstance_->getCurrAccId();
     connectCallModel(accountId_);
+}
+
+void
+CallAdapter::onCallStatusChanged(const QString& accountId, const QString& callId)
+{
+#ifdef Q_OS_LINUX
+    auto& accInfo = lrcInstance_->accountModel().getAccountInfo(accountId);
+    auto& callModel = accInfo.callModel;
+    const auto call = callModel->getCall(callId);
+
+    const auto& convInfo = lrcInstance_->getConversationFromCallId(callId, accountId);
+    if (convInfo.uid.isEmpty())
+        return;
+
+    // handle notifications
+    if (call.status == lrc::api::call::Status::IN_PROGRESS) {
+        // Call answered and in progress; close the notification
+        systemTray_->hideNotification(QString("%1;%2").arg(accountId).arg(convInfo.uid));
+    } else if (call.status == lrc::api::call::Status::ENDED) {
+        // Call ended; close the notification
+        if (systemTray_->hideNotification(QString("%1;%2").arg(accountId).arg(convInfo.uid))
+            && call.startTime.time_since_epoch().count() == 0) {
+            // This was a missed call; show a missed call notification
+            auto& accInfo = lrcInstance_->getAccountInfo(accountId);
+            auto from = accInfo.contactModel->bestNameForContact(convInfo.participants[0]);
+            auto notifId = QString("%1;%2").arg(accountId).arg(convInfo.uid);
+            systemTray_->showNotification(notifId,
+                                          tr("Missed call"),
+                                          tr("Missed call from %1").arg(from),
+                                          NotificationType::CHAT);
+        }
+    }
+#endif
 }
 
 void
@@ -207,13 +263,8 @@ CallAdapter::onShowIncomingCallView(const QString& accountId, const QString& con
 void
 CallAdapter::onShowCallView(const QString& accountId, const QString& convUid)
 {
-    const auto& convInfo = lrcInstance_->getConversationFromConvUid(convUid, accountId);
-    if (convInfo.uid.isEmpty()) {
-        return;
-    }
-
-    updateCall(convInfo.uid, accountId);
-    Q_EMIT callSetupMainViewRequired(accountId, convInfo.uid);
+    updateCall(convUid, accountId);
+    Q_EMIT callSetupMainViewRequired(accountId, convUid);
 }
 
 void
@@ -330,16 +381,25 @@ CallAdapter::showNotification(const QString& accountId, const QString& convUid)
             from = accInfo.contactModel->bestNameForContact(convInfo.participants[0]);
     }
 
+    Q_EMIT lrcInstance_->updateSmartList();
+
+#ifdef Q_OS_LINUX
+    auto notifId = QString("%1;%2").arg(accountId).arg(convUid);
+    systemTray_->showNotification(notifId,
+                                  tr("Incoming call"),
+                                  tr("%1 is calling you").arg(from),
+                                  NotificationType::CALL);
+#else
     auto onClicked = [this, accountId, convUid = convInfo.uid]() {
         const auto& convInfo = lrcInstance_->getConversationFromConvUid(convUid, accountId);
         if (convInfo.uid.isEmpty()) {
             return;
         }
         Q_EMIT lrcInstance_->notificationClicked();
-        Q_EMIT callSetupMainViewRequired(convInfo.accountId, convInfo.uid);
+        Q_EMIT callSetupMainViewRequired(accountId, convInfo.uid);
     };
-    Q_EMIT lrcInstance_->updateSmartList();
     systemTray_->showNotification(tr("is calling you"), from, onClicked);
+#endif
 }
 
 void
@@ -347,33 +407,31 @@ CallAdapter::connectCallModel(const QString& accountId)
 {
     auto& accInfo = lrcInstance_->accountModel().getAccountInfo(accountId);
 
-    QObject::disconnect(callStatusChangedConnection_);
-    QObject::disconnect(onParticipantsChangedConnection_);
+    connect(
+        accInfo.callModel.get(),
+        &lrc::api::NewCallModel::onParticipantsChanged,
+        this,
+        [this, accountId](const QString& confId) {
+            auto& accInfo = lrcInstance_->accountModel().getAccountInfo(accountId);
+            auto& callModel = accInfo.callModel;
+            auto call = callModel->getCall(confId);
+            const auto& convInfo = lrcInstance_->getConversationFromCallId(confId);
+            if (!convInfo.uid.isEmpty()) {
+                QVariantList map;
+                for (const auto& participant : call.participantsInfos) {
+                    QJsonObject data = fillParticipantData(participant);
+                    map.push_back(QVariant(data));
+                    updateCallOverlay(convInfo);
+                }
+                Q_EMIT updateParticipantsInfos(map, accountId, confId);
+            }
+        },
+        Qt::UniqueConnection);
 
-    onParticipantsChangedConnection_
-        = QObject::connect(accInfo.callModel.get(),
-                           &lrc::api::NewCallModel::onParticipantsChanged,
-                           [this, accountId](const QString& confId) {
-                               auto& accInfo = lrcInstance_->accountModel().getAccountInfo(
-                                   accountId);
-                               auto& callModel = accInfo.callModel;
-                               auto call = callModel->getCall(confId);
-                               const auto& convInfo = lrcInstance_->getConversationFromCallId(
-                                   confId);
-                               if (!convInfo.uid.isEmpty()) {
-                                   QVariantList map;
-                                   for (const auto& participant : call.participantsInfos) {
-                                       QJsonObject data = fillParticipantData(participant);
-                                       map.push_back(QVariant(data));
-                                       updateCallOverlay(convInfo);
-                                   }
-                                   Q_EMIT updateParticipantsInfos(map, accountId, confId);
-                               }
-                           });
-
-    callStatusChangedConnection_ = QObject::connect(
+    connect(
         accInfo.callModel.get(),
         &lrc::api::NewCallModel::callStatusChanged,
+        this,
         [this, accountId](const QString& callId) {
             auto& accInfo = lrcInstance_->accountModel().getAccountInfo(accountId);
             auto& callModel = accInfo.callModel;
@@ -455,11 +513,13 @@ CallAdapter::connectCallModel(const QString& accountId)
             default:
                 break;
             }
-        });
+        },
+        Qt::UniqueConnection);
 
-    remoteRecordingChangedConnection_ = QObject::connect(
+    connect(
         accInfo.callModel.get(),
         &lrc::api::NewCallModel::remoteRecordingChanged,
+        this,
         [this](const QString& callId, const QSet<QString>& peerRec, bool state) {
             const auto currentCallId = lrcInstance_->getCallIdForConversationUid(convUid_,
                                                                                  accountId_);
@@ -478,7 +538,8 @@ CallAdapter::connectCallModel(const QString& accountId)
                     Q_EMIT remoteRecordingChanged(peers, false);
                 }
             }
-        });
+        },
+        Qt::UniqueConnection);
 }
 
 void

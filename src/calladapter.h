@@ -103,6 +103,7 @@ public Q_SLOTS:
     void onShowIncomingCallView(const QString& accountId, const QString& convUid);
     void onShowCallView(const QString& accountId, const QString& convUid);
     void onAccountChanged();
+    void onCallStatusChanged(const QString& accountId, const QString& callId);
 
 private:
     bool shouldShowPreview(bool force);
@@ -112,12 +113,6 @@ private:
     // Current conf/call info.
     QString accountId_;
     QString convUid_;
-
-    QMetaObject::Connection callStatusChangedConnection_;
-    QMetaObject::Connection onParticipantsChangedConnection_;
-    QMetaObject::Connection closeIncomingCallPageConnection_;
-    QMetaObject::Connection appStateChangedConnection_;
-    QMetaObject::Connection remoteRecordingChangedConnection_;
 
     // For Call Overlay
     void updateCallOverlay(const lrc::api::conversation::Info& convInfo);

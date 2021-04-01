@@ -26,6 +26,7 @@
 
 #include "updatemanager.h"
 #include "rendermanager.h"
+#include "qtutils.h"
 #include "utils.h"
 
 #include "api/account.h"
@@ -393,6 +394,43 @@ public:
         return callId;
     }
 
+    void selectConversation(const QString& accountId, const QString& convUid)
+    {
+        const auto& convInfo = getConversationFromConvUid(convUid, accountId);
+
+        if (getCurrentConvUid() != convInfo.uid || convInfo.participants.size() > 0) {
+            // If the account is not currently selected, do that first, then
+            // proceed to select the conversation.
+            auto selectConversation = [this, accountId, convUid = convInfo.uid] {
+                const auto& convInfo = getConversationFromConvUid(convUid, accountId);
+                if (convInfo.uid.isEmpty()) {
+                    return;
+                }
+                auto& accInfo = getAccountInfo(convInfo.accountId);
+                setSelectedConvId(convInfo.uid);
+                accInfo.conversationModel->clearUnreadInteractions(convInfo.uid);
+
+                try {
+                    // Set contact filter (for conversation tab selection)
+                    auto& contact = accInfo.contactModel->getContact(convInfo.participants.front());
+                    setProperty("currentTypeFilter", QVariant::fromValue(contact.profileInfo.type));
+                } catch (const std::out_of_range& e) {
+                    qDebug() << e.what();
+                }
+            };
+            if (convInfo.accountId != getCurrAccId()) {
+                Utils::oneShotConnect(this,
+                                      &LRCInstance::currentAccountChanged,
+                                      [selectConversation] { selectConversation(); });
+                setSelectedConvId();
+                setSelectedAccountId(convInfo.accountId);
+            } else {
+                selectConversation();
+            }
+        }
+        Q_EMIT conversationSelected();
+    }
+
 Q_SIGNALS:
     void accountListChanged();
     void currentAccountChanged();
@@ -400,6 +438,7 @@ Q_SIGNALS:
     void notificationClicked();
     void updateSmartList();
     void quitEngineRequested();
+    void conversationSelected();
 
 private:
     std::unique_ptr<Lrc> lrc_;
