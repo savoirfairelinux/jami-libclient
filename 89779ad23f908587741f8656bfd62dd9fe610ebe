@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "25a3f8cd_4ce39b5c",
+        "filename": "src/api/contactmodel.h",
+        "patchSetId": 68
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 225
+      },
+      "writtenOn": "2021-04-01T20:23:21Z",
+      "side": 1,
+      "message": "on lrc we use contactRequest and on daemon trustRequest. Do we want to update lrc to use trustRequest?",
+      "parentUuid": "bf49bdcb_e7935aa3",
+      "range": {
+        "startLine": 127,
+        "startChar": 9,
+        "endLine": 127,
+        "endChar": 31
+      },
+      "revId": "89779ad23f908587741f8656bfd62dd9fe610ebe",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "4d3c59b4_833b0445",
         "filename": "src/api/conversation.h",
         "patchSetId": 68
@@ -45,6 +69,30 @@
       "revId": "89779ad23f908587741f8656bfd62dd9fe610ebe",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "14ed24cf_f974e8a4",
+        "filename": "src/api/conversation.h",
+        "patchSetId": 68
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 225
+      },
+      "writtenOn": "2021-04-01T20:23:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4d3c59b4_833b0445",
+      "range": {
+        "startLine": 75,
+        "startChar": 10,
+        "endLine": 82,
+        "endChar": 5
+      },
+      "revId": "89779ad23f908587741f8656bfd62dd9fe610ebe",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     },
     {
       "key": {
@@ -71,6 +119,30 @@
     },
     {
       "key": {
+        "uuid": "983d0191_2aed7227",
+        "filename": "src/api/conversationmodel.h",
+        "patchSetId": 68
+      },
+      "lineNbr": 457,
+      "author": {
+        "id": 225
+      },
+      "writtenOn": "2021-04-01T20:23:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "797cad9b_4f6129c4",
+      "range": {
+        "startLine": 457,
+        "startChar": 57,
+        "endLine": 457,
+        "endChar": 66
+      },
+      "revId": "89779ad23f908587741f8656bfd62dd9fe610ebe",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "0d7b089f_bc8a1708",
         "filename": "src/contactmodel.cpp",
         "patchSetId": 68
@@ -91,6 +163,30 @@
       "revId": "89779ad23f908587741f8656bfd62dd9fe610ebe",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9166d1f1_d4da033c",
+        "filename": "src/contactmodel.cpp",
+        "patchSetId": 68
+      },
+      "lineNbr": 1016,
+      "author": {
+        "id": 225
+      },
+      "writtenOn": "2021-04-01T20:23:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0d7b089f_bc8a1708",
+      "range": {
+        "startLine": 1016,
+        "startChar": 56,
+        "endLine": 1016,
+        "endChar": 60
+      },
+      "revId": "89779ad23f908587741f8656bfd62dd9fe610ebe",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     },
     {
       "key": {
@@ -117,6 +213,30 @@
     },
     {
       "key": {
+        "uuid": "3d3cf966_24f4aaf9",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 68
+      },
+      "lineNbr": 144,
+      "author": {
+        "id": 225
+      },
+      "writtenOn": "2021-04-01T20:23:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3a966757_1692496b",
+      "range": {
+        "startLine": 144,
+        "startChar": 45,
+        "endLine": 144,
+        "endChar": 50
+      },
+      "revId": "89779ad23f908587741f8656bfd62dd9fe610ebe",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "8ca442d8_701c9b41",
         "filename": "src/conversationmodel.cpp",
         "patchSetId": 68
@@ -137,6 +257,30 @@
       "revId": "89779ad23f908587741f8656bfd62dd9fe610ebe",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3d5dd999_c354677e",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 68
+      },
+      "lineNbr": 176,
+      "author": {
+        "id": 225
+      },
+      "writtenOn": "2021-04-01T20:23:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8ca442d8_701c9b41",
+      "range": {
+        "startLine": 176,
+        "startChar": 52,
+        "endLine": 176,
+        "endChar": 56
+      },
+      "revId": "89779ad23f908587741f8656bfd62dd9fe610ebe",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     },
     {
       "key": {
@@ -163,6 +307,30 @@
     },
     {
       "key": {
+        "uuid": "873049fd_4a3657cc",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 68
+      },
+      "lineNbr": 406,
+      "author": {
+        "id": 225
+      },
+      "writtenOn": "2021-04-01T20:23:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fb84093a_d6cd131d",
+      "range": {
+        "startLine": 406,
+        "startChar": 58,
+        "endLine": 406,
+        "endChar": 83
+      },
+      "revId": "89779ad23f908587741f8656bfd62dd9fe610ebe",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "b204af69_80e7405a",
         "filename": "src/conversationmodel.cpp",
         "patchSetId": 68
@@ -174,6 +342,30 @@
       "writtenOn": "2021-03-22T17:23:44Z",
       "side": 1,
       "message": "here we should not even do a getContact(). Just filter via the conv.mode is enough (if account is a SIP account, all contacts will be SIPs)",
+      "range": {
+        "startLine": 551,
+        "startChar": 17,
+        "endLine": 566,
+        "endChar": 29
+      },
+      "revId": "89779ad23f908587741f8656bfd62dd9fe610ebe",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f6137ff1_97f086b5",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 68
+      },
+      "lineNbr": 566,
+      "author": {
+        "id": 225
+      },
+      "writtenOn": "2021-04-01T20:23:21Z",
+      "side": 1,
+      "message": "we need it to check if contact is banned for conversation with one peer. But for check type we could use account",
+      "parentUuid": "b204af69_80e7405a",
       "range": {
         "startLine": 551,
         "startChar": 17,
@@ -209,6 +401,30 @@
     },
     {
       "key": {
+        "uuid": "52fcc6fb_12f9a909",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 68
+      },
+      "lineNbr": 730,
+      "author": {
+        "id": 225
+      },
+      "writtenOn": "2021-04-01T20:23:21Z",
+      "side": 1,
+      "message": "for an active ONE_TO_ONE conversation we also should remove contact",
+      "parentUuid": "aa259ea2_f9a7cab5",
+      "range": {
+        "startLine": 730,
+        "startChar": 58,
+        "endLine": 730,
+        "endChar": 98
+      },
+      "revId": "89779ad23f908587741f8656bfd62dd9fe610ebe",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "e93541fa_1e52cd79",
         "filename": "src/conversationmodel.cpp",
         "patchSetId": 68
@@ -229,6 +445,30 @@
       "revId": "89779ad23f908587741f8656bfd62dd9fe610ebe",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7f4ae06e_f23f8aef",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 68
+      },
+      "lineNbr": 814,
+      "author": {
+        "id": 225
+      },
+      "writtenOn": "2021-04-01T20:23:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e93541fa_1e52cd79",
+      "range": {
+        "startLine": 814,
+        "startChar": 18,
+        "endLine": 814,
+        "endChar": 56
+      },
+      "revId": "89779ad23f908587741f8656bfd62dd9fe610ebe",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     },
     {
       "key": {
@@ -255,6 +495,30 @@
     },
     {
       "key": {
+        "uuid": "163e5e6c_1677f249",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 68
+      },
+      "lineNbr": 815,
+      "author": {
+        "id": 225
+      },
+      "writtenOn": "2021-04-01T20:23:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9eea84bc_e1adfbb4",
+      "range": {
+        "startLine": 815,
+        "startChar": 100,
+        "endLine": 815,
+        "endChar": 111
+      },
+      "revId": "89779ad23f908587741f8656bfd62dd9fe610ebe",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "dae9d0e7_3639f034",
         "filename": "src/conversationmodel.cpp",
         "patchSetId": 68
@@ -266,6 +530,30 @@
       "writtenOn": "2021-03-22T17:23:44Z",
       "side": 1,
       "message": "same. Also it\u0027s not an URI (URI contains  ring:, swarm:, etc)",
+      "range": {
+        "startLine": 839,
+        "startChar": 42,
+        "endLine": 839,
+        "endChar": 56
+      },
+      "revId": "89779ad23f908587741f8656bfd62dd9fe610ebe",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4b50cd4e_ace2b7e8",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 68
+      },
+      "lineNbr": 839,
+      "author": {
+        "id": 225
+      },
+      "writtenOn": "2021-04-01T20:23:21Z",
+      "side": 1,
+      "message": "should be participantId, but we need it to check if conversation ready for this participant",
+      "parentUuid": "dae9d0e7_3639f034",
       "range": {
         "startLine": 839,
         "startChar": 42,
@@ -298,6 +586,30 @@
       "revId": "89779ad23f908587741f8656bfd62dd9fe610ebe",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d0addfe4_8dafd1e8",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 68
+      },
+      "lineNbr": 883,
+      "author": {
+        "id": 225
+      },
+      "writtenOn": "2021-04-01T20:23:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b6fc0a6f_5ad7cad9",
+      "range": {
+        "startLine": 883,
+        "startChar": 7,
+        "endLine": 883,
+        "endChar": 14
+      },
+      "revId": "89779ad23f908587741f8656bfd62dd9fe610ebe",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     },
     {
       "key": {
@@ -347,6 +659,54 @@
     },
     {
       "key": {
+        "uuid": "98ed11af_06d5096f",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 68
+      },
+      "lineNbr": 897,
+      "author": {
+        "id": 225
+      },
+      "writtenOn": "2021-04-01T20:23:21Z",
+      "side": 1,
+      "message": "it is single conversation we update",
+      "parentUuid": "7a6f6858_b80dda51",
+      "range": {
+        "startLine": 897,
+        "startChar": 19,
+        "endLine": 897,
+        "endChar": 41
+      },
+      "revId": "89779ad23f908587741f8656bfd62dd9fe610ebe",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9d2f2cd9_079ddc11",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 68
+      },
+      "lineNbr": 897,
+      "author": {
+        "id": 225
+      },
+      "writtenOn": "2021-04-01T20:23:21Z",
+      "side": 1,
+      "message": "it is single conversation we update",
+      "parentUuid": "c0c74faa_d3d367c6",
+      "range": {
+        "startLine": 897,
+        "startChar": 95,
+        "endLine": 897,
+        "endChar": 99
+      },
+      "revId": "89779ad23f908587741f8656bfd62dd9fe610ebe",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "7d2f2057_e1f9149c",
         "filename": "src/conversationmodel.cpp",
         "patchSetId": 68
@@ -367,6 +727,30 @@
       "revId": "89779ad23f908587741f8656bfd62dd9fe610ebe",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4197ad5a_fe5851c7",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 68
+      },
+      "lineNbr": 940,
+      "author": {
+        "id": 225
+      },
+      "writtenOn": "2021-04-01T20:23:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7d2f2057_e1f9149c",
+      "range": {
+        "startLine": 940,
+        "startChar": 16,
+        "endLine": 940,
+        "endChar": 55
+      },
+      "revId": "89779ad23f908587741f8656bfd62dd9fe610ebe",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     },
     {
       "key": {
@@ -393,6 +777,30 @@
     },
     {
       "key": {
+        "uuid": "83bbc7aa_bdb0d2dc",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 68
+      },
+      "lineNbr": 941,
+      "author": {
+        "id": 225
+      },
+      "writtenOn": "2021-04-01T20:23:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7b8568d9_287b0995",
+      "range": {
+        "startLine": 941,
+        "startChar": 83,
+        "endLine": 941,
+        "endChar": 97
+      },
+      "revId": "89779ad23f908587741f8656bfd62dd9fe610ebe",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "c417872e_dd5fc657",
         "filename": "src/conversationmodel.cpp",
         "patchSetId": 68
@@ -413,6 +821,30 @@
       "revId": "89779ad23f908587741f8656bfd62dd9fe610ebe",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8a28c7c2_c4193f24",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 68
+      },
+      "lineNbr": 1018,
+      "author": {
+        "id": 225
+      },
+      "writtenOn": "2021-04-01T20:23:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c417872e_dd5fc657",
+      "range": {
+        "startLine": 1018,
+        "startChar": 91,
+        "endLine": 1018,
+        "endChar": 100
+      },
+      "revId": "89779ad23f908587741f8656bfd62dd9fe610ebe",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     },
     {
       "key": {
@@ -439,6 +871,30 @@
     },
     {
       "key": {
+        "uuid": "963ba86b_7d707190",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 68
+      },
+      "lineNbr": 1044,
+      "author": {
+        "id": 225
+      },
+      "writtenOn": "2021-04-01T20:23:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a1c1c794_640ea83a",
+      "range": {
+        "startLine": 1044,
+        "startChar": 36,
+        "endLine": 1044,
+        "endChar": 48
+      },
+      "revId": "89779ad23f908587741f8656bfd62dd9fe610ebe",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "a9494ff5_62d3b9bc",
         "filename": "src/conversationmodel.cpp",
         "patchSetId": 68
@@ -459,6 +915,30 @@
       "revId": "89779ad23f908587741f8656bfd62dd9fe610ebe",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "71f8a8ec_dd2755a4",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 68
+      },
+      "lineNbr": 1155,
+      "author": {
+        "id": 225
+      },
+      "writtenOn": "2021-04-01T20:23:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a9494ff5_62d3b9bc",
+      "range": {
+        "startLine": 1152,
+        "startChar": 27,
+        "endLine": 1155,
+        "endChar": 13
+      },
+      "revId": "89779ad23f908587741f8656bfd62dd9fe610ebe",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     },
     {
       "key": {
@@ -485,6 +965,30 @@
     },
     {
       "key": {
+        "uuid": "87b916b4_3de1dbf3",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 68
+      },
+      "lineNbr": 1219,
+      "author": {
+        "id": 225
+      },
+      "writtenOn": "2021-04-01T20:23:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "91f237f8_0e987682",
+      "range": {
+        "startLine": 1217,
+        "startChar": 24,
+        "endLine": 1219,
+        "endChar": 13
+      },
+      "revId": "89779ad23f908587741f8656bfd62dd9fe610ebe",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fa0144fa_6e6d2bc2",
         "filename": "src/conversationmodel.cpp",
         "patchSetId": 68
@@ -508,6 +1012,30 @@
     },
     {
       "key": {
+        "uuid": "de5dc82f_174839f4",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 68
+      },
+      "lineNbr": 1280,
+      "author": {
+        "id": 225
+      },
+      "writtenOn": "2021-04-01T20:23:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fa0144fa_6e6d2bc2",
+      "range": {
+        "startLine": 1277,
+        "startChar": 9,
+        "endLine": 1280,
+        "endChar": 13
+      },
+      "revId": "89779ad23f908587741f8656bfd62dd9fe610ebe",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "d7ca3628_3f9b1035",
         "filename": "src/conversationmodel.cpp",
         "patchSetId": 68
@@ -528,6 +1056,30 @@
       "revId": "89779ad23f908587741f8656bfd62dd9fe610ebe",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "86d05870_014971a9",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 68
+      },
+      "lineNbr": 1740,
+      "author": {
+        "id": 225
+      },
+      "writtenOn": "2021-04-01T20:23:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d7ca3628_3f9b1035",
+      "range": {
+        "startLine": 1740,
+        "startChar": 16,
+        "endLine": 1740,
+        "endChar": 21
+      },
+      "revId": "89779ad23f908587741f8656bfd62dd9fe610ebe",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     },
     {
       "key": {
@@ -577,6 +1129,30 @@
     },
     {
       "key": {
+        "uuid": "b31641df_a3776b73",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 68
+      },
+      "lineNbr": 1949,
+      "author": {
+        "id": 225
+      },
+      "writtenOn": "2021-04-01T20:23:21Z",
+      "side": 1,
+      "message": "when performing loop backward we could more likely get parent message first, and so on messages, there will be less reordering.",
+      "parentUuid": "b89ff59e_2bd8a394",
+      "range": {
+        "startLine": 1947,
+        "startChar": 36,
+        "endLine": 1949,
+        "endChar": 39
+      },
+      "revId": "89779ad23f908587741f8656bfd62dd9fe610ebe",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "56eac32d_06a5346d",
         "filename": "src/conversationmodel.cpp",
         "patchSetId": 68
@@ -597,6 +1173,30 @@
       "revId": "89779ad23f908587741f8656bfd62dd9fe610ebe",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bd2a0e93_15b45258",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 68
+      },
+      "lineNbr": 1974,
+      "author": {
+        "id": 225
+      },
+      "writtenOn": "2021-04-01T20:23:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "56eac32d_06a5346d",
+      "range": {
+        "startLine": 1970,
+        "startChar": 13,
+        "endLine": 1974,
+        "endChar": 13
+      },
+      "revId": "89779ad23f908587741f8656bfd62dd9fe610ebe",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     },
     {
       "key": {
@@ -623,6 +1223,30 @@
     },
     {
       "key": {
+        "uuid": "7cda3fbb_ba55eac5",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 68
+      },
+      "lineNbr": 2090,
+      "author": {
+        "id": 225
+      },
+      "writtenOn": "2021-04-01T20:23:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b3cc0f26_ea4ce076",
+      "range": {
+        "startLine": 2090,
+        "startChar": 5,
+        "endLine": 2090,
+        "endChar": 9
+      },
+      "revId": "89779ad23f908587741f8656bfd62dd9fe610ebe",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "b5531e67_297cf5b5",
         "filename": "src/conversationmodel.cpp",
         "patchSetId": 68
@@ -643,6 +1267,30 @@
       "revId": "89779ad23f908587741f8656bfd62dd9fe610ebe",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0084988a_f3db19c4",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 68
+      },
+      "lineNbr": 2092,
+      "author": {
+        "id": 225
+      },
+      "writtenOn": "2021-04-01T20:23:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b5531e67_297cf5b5",
+      "range": {
+        "startLine": 2092,
+        "startChar": 9,
+        "endLine": 2092,
+        "endChar": 11
+      },
+      "revId": "89779ad23f908587741f8656bfd62dd9fe610ebe",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     },
     {
       "key": {
@@ -669,6 +1317,54 @@
     },
     {
       "key": {
+        "uuid": "5a816d09_a3a75866",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 68
+      },
+      "lineNbr": 2775,
+      "author": {
+        "id": 225
+      },
+      "writtenOn": "2021-04-01T20:23:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2966b020_68bc24b3",
+      "range": {
+        "startLine": 2775,
+        "startChar": 58,
+        "endLine": 2775,
+        "endChar": 62
+      },
+      "revId": "89779ad23f908587741f8656bfd62dd9fe610ebe",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "08b7e095_1859bb35",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 68
+      },
+      "lineNbr": 2775,
+      "author": {
+        "id": 225
+      },
+      "writtenOn": "2021-04-01T20:23:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2966b020_68bc24b3",
+      "range": {
+        "startLine": 2775,
+        "startChar": 58,
+        "endLine": 2775,
+        "endChar": 62
+      },
+      "revId": "89779ad23f908587741f8656bfd62dd9fe610ebe",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "a87315b1_3533db12",
         "filename": "src/conversationmodel.cpp",
         "patchSetId": 68
@@ -692,6 +1388,30 @@
     },
     {
       "key": {
+        "uuid": "b4a4fa2d_b4ff0e34",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 68
+      },
+      "lineNbr": 3018,
+      "author": {
+        "id": 225
+      },
+      "writtenOn": "2021-04-01T20:23:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a87315b1_3533db12",
+      "range": {
+        "startLine": 3018,
+        "startChar": 16,
+        "endLine": 3018,
+        "endChar": 52
+      },
+      "revId": "89779ad23f908587741f8656bfd62dd9fe610ebe",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "7bb97e01_75348ad5",
         "filename": "src/conversationmodel.cpp",
         "patchSetId": 68
@@ -712,6 +1432,30 @@
       "revId": "89779ad23f908587741f8656bfd62dd9fe610ebe",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3f470ec5_86134951",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 68
+      },
+      "lineNbr": 3020,
+      "author": {
+        "id": 225
+      },
+      "writtenOn": "2021-04-01T20:23:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7bb97e01_75348ad5",
+      "range": {
+        "startLine": 3020,
+        "startChar": 0,
+        "endLine": 3020,
+        "endChar": 12
+      },
+      "revId": "89779ad23f908587741f8656bfd62dd9fe610ebe",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     },
     {
       "key": {
@@ -784,6 +1528,30 @@
     },
     {
       "key": {
+        "uuid": "4dedf804_0e424cc3",
+        "filename": "src/messageslist.cpp",
+        "patchSetId": 68
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 225
+      },
+      "writtenOn": "2021-04-01T20:23:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "acea79f8_4b273b86",
+      "range": {
+        "startLine": 2,
+        "startChar": 18,
+        "endLine": 2,
+        "endChar": 22
+      },
+      "revId": "89779ad23f908587741f8656bfd62dd9fe610ebe",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "31ca6f19_2eab3029",
         "filename": "src/messageslist.h",
         "patchSetId": 68
@@ -807,6 +1575,30 @@
     },
     {
       "key": {
+        "uuid": "23d5ea2c_e0bbcbe1",
+        "filename": "src/messageslist.h",
+        "patchSetId": 68
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 225
+      },
+      "writtenOn": "2021-04-01T20:23:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "31ca6f19_2eab3029",
+      "range": {
+        "startLine": 2,
+        "startChar": 18,
+        "endLine": 2,
+        "endChar": 22
+      },
+      "revId": "89779ad23f908587741f8656bfd62dd9fe610ebe",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "cc8497ac_1b4987cf",
         "filename": "src/messageslist.h",
         "patchSetId": 68
@@ -818,6 +1610,30 @@
       "writtenOn": "2021-03-22T17:23:44Z",
       "side": 1,
       "message": "const?",
+      "range": {
+        "startLine": 37,
+        "startChar": 29,
+        "endLine": 37,
+        "endChar": 33
+      },
+      "revId": "89779ad23f908587741f8656bfd62dd9fe610ebe",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "946049af_b9325723",
+        "filename": "src/messageslist.h",
+        "patchSetId": 68
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 225
+      },
+      "writtenOn": "2021-04-01T20:23:21Z",
+      "side": 1,
+      "message": "no, for const we should return constIterator",
+      "parentUuid": "cc8497ac_1b4987cf",
       "range": {
         "startLine": 37,
         "startChar": 29,
@@ -850,6 +1666,30 @@
       "revId": "89779ad23f908587741f8656bfd62dd9fe610ebe",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "daf81acc_e6d4d3a0",
+        "filename": "src/messageslist.h",
+        "patchSetId": 68
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 225
+      },
+      "writtenOn": "2021-04-01T20:23:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e9806338_565e033d",
+      "range": {
+        "startLine": 58,
+        "startChar": 52,
+        "endLine": 58,
+        "endChar": 59
+      },
+      "revId": "89779ad23f908587741f8656bfd62dd9fe610ebe",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
