@@ -284,7 +284,7 @@ Rectangle {
             PropertyAnimation {
                 target: participantRect
                 property: "opacity"
-                duration: 500
+                duration: 50
             }
         }
     }
