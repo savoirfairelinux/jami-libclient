@@ -93,6 +93,7 @@ Rectangle {
             --placeholder-text-color:' + JamiTheme.placeholderTextColor + ';\
             --invite-hover-color:' + JamiTheme.inviteHoverColor + ';\
             --hairline-color:' + JamiTheme.hairlineColor + ';")'
+        messageWebView.runJavaScript("init_picker(" + JamiTheme.darkTheme + ");")
         messageWebView.runJavaScript(theme);
     }
 
@@ -268,7 +269,7 @@ Rectangle {
         settings.pluginsEnabled: false
         settings.screenCaptureEnabled: false
         settings.linksIncludedInFocusChain: false
-        settings.localStorageEnabled: false
+        settings.localStorageEnabled: true
 
         webChannel: messageWebViewChannel
         profile: messageWebViewProfile
@@ -303,6 +304,8 @@ Rectangle {
                                                  ":/linkify-string.js"))
                 messageWebView.runJavaScript(UtilsAdapter.qStringFromFile(
                                                  ":/qwebchannel.js"))
+                messageWebView.runJavaScript(UtilsAdapter.qStringFromFile(
+                                                 ":/emoji.js"))
                 messageWebView.runJavaScript(
                             UtilsAdapter.qStringFromFile(":/chatview.js"),
                             function() {
