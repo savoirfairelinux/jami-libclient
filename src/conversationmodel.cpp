@@ -1903,6 +1903,7 @@ ConversationModelPimpl::slotIncomingCall(const QString& fromId, const QString& c
     }
 
     auto& conversation = conversations.at(conversationIdx);
+    addOrUpdateCallMessage(callId, fromId);
 
     qDebug() << "Add call to conversation with " << fromId;
     conversation.callId = callId;
