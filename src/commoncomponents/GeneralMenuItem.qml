@@ -53,6 +53,7 @@ MenuItem {
         }
 
         anchors.fill: parent
+
         ResponsiveImage {
             id: contextMenuItemImage
 
@@ -72,8 +73,9 @@ MenuItem {
             id: contextMenuItemText
 
             anchors.left: contextMenuItemImage.right
-            anchors.leftMargin: 20
+            anchors.leftMargin: contextMenuItemImage.visible ? 20 : 5
             anchors.verticalCenter: menuItemContentRect.verticalCenter
+
             width: contextMenuItemImage.visible ?
                        (preferredWidth - contextMenuItemImage.width - 58) :
                        preferredWidth - 24

@@ -50,7 +50,7 @@ UtilsAdapter::getVersionStr()
 }
 
 void
-UtilsAdapter::setText(QString text)
+UtilsAdapter::setClipboardText(QString text)
 {
     clipboard_->setText(text, QClipboard::Clipboard);
 }

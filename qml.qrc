@@ -138,5 +138,6 @@
         <file>src/mainview/components/ParticipantOverlayMenu.qml</file>
         <file>src/commoncomponents/DaemonReconnectPopup.qml</file>
         <file>src/DaemonReconnectWindow.qml</file>
+        <file>src/commoncomponents/LineEditContextMenu.qml</file>
     </qresource>
 </RCC>

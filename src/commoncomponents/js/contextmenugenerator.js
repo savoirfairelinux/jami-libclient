@@ -20,26 +20,19 @@
 var baseContextMenuComponent
 var baseContextMenuObject
 var menuItemList = []
+var menuDefaultSeparatorHeight = 8
 
 function createBaseContextMenuObjects(parent) {
     // If already created, return, since object cannot be destroyed.
     if (baseContextMenuObject)
         return
 
-    baseContextMenuComponent = Qt.createComponent(
-                "../BaseContextMenu.qml")
+    baseContextMenuComponent = Qt.createComponent("../BaseContextMenu.qml")
     if (baseContextMenuComponent.status === Component.Ready)
         finishCreation(parent)
     else if (baseContextMenuComponent.status === Component.Error)
         console.log("Error loading component:",
                     baseContextMenuComponent.errorString())
-}
-
-function initMenu() {
-    // Clear any existing items in the menu.
-    for (var i = 0; i < menuItemList.length; i++) {
-        baseContextMenuObject.removeItem(menuItemList[i])
-    }
 }
 
 function finishCreation(parent) {
@@ -49,27 +42,45 @@ function finishCreation(parent) {
         console.log("Error creating object for base context menu")
     }
 
-    baseContextMenuObject.closed.connect(function (){
+    baseContextMenuObject.closed.connect(function () {
         // Remove the menu items when hidden.
         for (var i = 0; i < menuItemList.length; i++) {
             baseContextMenuObject.removeItem(menuItemList[i])
         }
     })
 
-    baseContextMenuObject.aboutToShow.connect(function (){
+    baseContextMenuObject.aboutToShow.connect(function () {
         // Add default separator at the bottom.
-        addMenuSeparator(8, "transparent")
+        addMenuSeparator(menuDefaultSeparatorHeight, "transparent")
     })
+}
+
+function initMenu(preferedMenuItemSize, defaultSeparatorHeight) {
+    // Clear any existing items in the menu.
+    for (var i = 0; i < menuItemList.length; i++) {
+        baseContextMenuObject.removeItem(menuItemList[i])
+    }
+
+    if (preferedMenuItemSize) {
+        baseContextMenuObject.menuItemsPreferredWidth = preferedMenuItemSize.width
+        baseContextMenuObject.menuItemsPreferredHeight = preferedMenuItemSize.height
+    }
+
+    if (defaultSeparatorHeight)
+        menuDefaultSeparatorHeight = defaultSeparatorHeight
 }
 
 function addMenuSeparator(separatorHeight, separatorColor) {
     var menuSeparatorObject
-    var menuSeparatorComponent = Qt.createComponent("../GeneralMenuSeparator.qml");
+    var menuSeparatorComponent = Qt.createComponent(
+                "../GeneralMenuSeparator.qml")
     if (menuSeparatorComponent.status === Component.Ready) {
-        baseContextMenuObject.generalMenuSeparatorCount ++
-        menuSeparatorObject = menuSeparatorComponent.createObject(null,
-                              {preferredWidth: baseContextMenuObject.menuItemsPreferredWidth,
-                               preferredHeight: separatorHeight ? separatorHeight : 1})
+        baseContextMenuObject.generalMenuSeparatorCount++
+        menuSeparatorObject = menuSeparatorComponent.createObject(
+                    null, {
+                        "preferredWidth": baseContextMenuObject.menuItemsPreferredWidth,
+                        "preferredHeight": separatorHeight ? separatorHeight : 1
+                    })
         if (separatorColor)
             menuSeparatorObject.separatorColor = separatorColor
     } else if (menuSeparatorComponent.status === Component.Error)
@@ -85,30 +96,30 @@ function addMenuSeparator(separatorHeight, separatorColor) {
     }
 }
 
-function addMenuItem(itemName,
-                     iconSource,
-                     onClickedCallback,
-                     iconColor="") {
-    if (!baseContextMenuObject.count){
+function addMenuItem(itemName, iconSource, onClickedCallback, iconColor) {
+    if (!baseContextMenuObject.count) {
         // Add default separator at the top.
-        addMenuSeparator(8, "transparent")
+        addMenuSeparator(menuDefaultSeparatorHeight, "transparent")
     }
 
     var menuItemObject
-    var menuItemComponent = Qt.createComponent("../GeneralMenuItem.qml");
+    var menuItemComponent = Qt.createComponent("../GeneralMenuItem.qml")
     if (menuItemComponent.status === Component.Ready) {
-        menuItemObject = menuItemComponent.createObject(null,
-                         {itemName: itemName,
-                          iconSource: iconSource,
-                          iconColor: iconColor,
-                          leftBorderWidth: baseContextMenuObject.commonBorderWidth,
-                          rightBorderWidth: baseContextMenuObject.commonBorderWidth})
+        menuItemObject = menuItemComponent.createObject(
+                    null, {
+                        "itemName": itemName,
+                        "iconSource": iconSource,
+                        "iconColor": iconColor,
+                        "preferredWidth": baseContextMenuObject.menuItemsPreferredWidth,
+                        "preferredHeight": baseContextMenuObject.menuItemsPreferredHeight,
+                        "leftBorderWidth": baseContextMenuObject.commonBorderWidth,
+                        "rightBorderWidth": baseContextMenuObject.commonBorderWidth
+                    })
     } else if (menuItemComponent.status === Component.Error)
-        console.log("Error loading component:",
-                    menuItemComponent.errorString())
+        console.log("Error loading component:", menuItemComponent.errorString())
     if (menuItemObject !== null) {
         menuItemObject.clicked.connect(function () {
-            var callback = function(){
+            var callback = function () {
                 onClickedCallback()
                 baseContextMenuObject.onVisibleChanged.disconnect(callback)
                 baseContextMenuObject.close()

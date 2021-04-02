@@ -41,7 +41,7 @@ public:
 
     Q_INVOKABLE const QString getProjectCredits();
     Q_INVOKABLE const QString getVersionStr();
-    Q_INVOKABLE void setText(QString text);
+    Q_INVOKABLE void setClipboardText(QString text);
     Q_INVOKABLE const QString qStringFromFile(const QString& filename);
     Q_INVOKABLE const QString getStyleSheet(const QString& name, const QString& source);
     Q_INVOKABLE const QString getCachePath();

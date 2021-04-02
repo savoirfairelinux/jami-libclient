@@ -24,6 +24,8 @@ import QtGraphicalEffects 1.14
 import net.jami.Constants 1.0
 
 TextField {
+    id: root
+
     enum BorderColorMode {
         NORMAL,
         SEARCHING,
@@ -71,12 +73,17 @@ TextField {
     wrapMode: Text.Wrap
     readOnly: false
     selectByMouse: true
+    selectionColor: JamiTheme.contactSearchBarPlaceHolderTextFontColor
     font.pointSize: 10
     padding: 16
     font.kerning: true
     horizontalAlignment: Text.AlignLeft
     verticalAlignment: Text.AlignVCenter
     color: JamiTheme.textColor
+
+    LineEditContextMenu {
+        id: lineEditContextMenu
+    }
 
     Image {
         id: lineEditImage
@@ -127,8 +134,14 @@ TextField {
 
     background: Rectangle {
         anchors.fill: parent
-        radius: 4
+
+        radius: JamiTheme.lineEditRadius
         border.color: readOnly? "transparent" : borderColor
         color: readOnly? "transparent" : backgroundColor
+    }
+
+    onReleased: {
+        if (event.button == Qt.RightButton)
+            lineEditContextMenu.openMenu(root, event)
     }
 }

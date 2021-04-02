@@ -46,6 +46,10 @@ Rectangle {
         id: fakeFocus
     }
 
+    LineEditContextMenu {
+        id: lineEditContextMenu
+    }
+
     Image {
         id: searchIconImage
 
@@ -94,6 +98,10 @@ Rectangle {
         }
 
         onTextChanged: root.contactSearchBarTextChanged(contactSearchBar.text)
+        onReleased: {
+            if (event.button == Qt.RightButton)
+                lineEditContextMenu.openMenu(contactSearchBar, event)
+        }
     }
 
     PushButton {
