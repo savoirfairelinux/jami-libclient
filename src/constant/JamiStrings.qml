@@ -395,7 +395,10 @@ Item {
     property string createNewJA: qsTr("Create a Jami account")
     property string aboutJami: qsTr("About Jami")
 
-    // Smart list context menu
+    // SmartList
+    property string clearText: qsTr("Clear Text")
+
+    // SmartList context menu
     property string declineContactRequest: qsTr("Decline contact request")
     property string acceptContactRequest: qsTr("Accept contact request")
 

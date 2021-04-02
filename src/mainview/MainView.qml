@@ -41,12 +41,13 @@ Rectangle {
 
     property var containerWindow: ""
 
-    property int sidePanelViewStackPreferredWidth: 250
-    property int mainViewStackPreferredWidth: 250
+    property int sidePanelViewStackMinimumWidth: 300
+    property int mainViewStackPreferredWidth: 425
     property int settingsViewPreferredWidth: 460
     property int onWidthChangedTriggerDistance: 5
 
     property bool sidePanelOnly: (!mainViewStack.visible) && sidePanelViewStack.visible
+    property int previousWidth: width
 
     // To calculate tab bar bottom border hidden rect left margin.
     property int tabBarLeftMargin: 8
@@ -161,7 +162,7 @@ Rectangle {
                 sidePanelViewStack.push(settingsMenu, StackView.Immediate)
 
                 var windowCurrentMinimizedSize = settingsViewPreferredWidth
-                        + sidePanelViewStackPreferredWidth + onWidthChangedTriggerDistance
+                        + sidePanelViewStackMinimumWidth + onWidthChangedTriggerDistance
                 if (containerWindow.width < windowCurrentMinimizedSize)
                     containerWindow.width = windowCurrentMinimizedSize
             }
@@ -289,9 +290,10 @@ Rectangle {
             Rectangle {
                 id: mainViewSidePanelRect
 
-                SplitView.minimumWidth: sidePanelViewStackPreferredWidth
-                SplitView.maximumWidth: (sidePanelOnly ? splitView.width :
-                                                      splitView.width - sidePanelViewStackPreferredWidth)
+                SplitView.minimumWidth: sidePanelViewStackMinimumWidth
+                SplitView.maximumWidth: (sidePanelOnly ?
+                                             splitView.width :
+                                             splitView.width - sidePanelViewStackMinimumWidth)
                 SplitView.fillHeight: true
                 color: JamiTheme.backgroundColor
 
@@ -352,8 +354,9 @@ Rectangle {
 
                 SplitView.maximumWidth: sidePanelOnly ?
                                             splitView.width :
-                                            splitView.width - sidePanelViewStackPreferredWidth
-                SplitView.minimumWidth: sidePanelViewStackPreferredWidth
+                                            splitView.width - sidePanelViewStackMinimumWidth
+                SplitView.preferredWidth: mainViewStackPreferredWidth
+                SplitView.minimumWidth: sidePanelViewStackMinimumWidth
                 SplitView.fillHeight: true
 
                 clip: true
@@ -493,8 +496,10 @@ Rectangle {
 
     onWidthChanged: {
         // Hide unnecessary stackview when width is changed.
-        var widthToCompare = sidePanelViewStackPreferredWidth +
-                (inSettingsView ? settingsViewPreferredWidth : mainViewStackPreferredWidth)
+        var widthToCompare = previousWidth < mainView.width ?
+                    sidePanelViewStackMinimumWidth :
+                    (sidePanelViewStackMinimumWidth +
+                     (inSettingsView ? settingsViewPreferredWidth : mainViewStackPreferredWidth))
 
         if (mainView.width < widthToCompare - onWidthChangedTriggerDistance
                 && mainViewStack.visible) {
@@ -512,8 +517,6 @@ Rectangle {
             }
             else if (inWelcomeViewStack)
                 recursionStackViewItemMove(mainViewStack, sidePanelViewStack)
-
-            mainView.update()
         } else if (mainView.width >= widthToCompare + onWidthChangedTriggerDistance
                    && !mainViewStack.visible) {
             mainViewStack.visible = true
@@ -532,9 +535,9 @@ Rectangle {
                 if (currentAccountIsCalling())
                     pushCallStackView()
             }
-
-            mainView.update()
         }
+
+        previousWidth = mainView.width
     }
 
     AboutPopUp {

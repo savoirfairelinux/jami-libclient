@@ -166,6 +166,7 @@ Item {
     property int menuFontSize: 12
     property int headerFontSize: 13
     property int titleFontSize: 16
+    property int lineEditRadius: 4
 
     property int maximumWidthSettingsView: 600
     property int settingsHeaderpreferredHeight: 64
@@ -179,13 +180,13 @@ Item {
     property int pluginHandlersPopupViewDelegateHeight: 50
 
     // main application spec
-    property int mainViewMinWidth: 460
+    property int mainViewMinWidth: 300
     property int mainViewMinHeight: 400
 
     property int wizardViewMinWidth: 500
     property int wizardViewMinHeight: 600
 
-    property int mainViewPreferredWidth: 650
+    property int mainViewPreferredWidth: 725
     property int mainViewPreferredHeight: 600
 
     function setTheme(dark) {

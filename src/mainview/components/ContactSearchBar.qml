@@ -24,8 +24,12 @@ import QtGraphicalEffects 1.14
 import net.jami.Models 1.0
 import net.jami.Constants 1.0
 
+import "../../commoncomponents"
+
 Rectangle {
-    id: contactSearchBarRect
+    id: root
+
+    property int itemMargin: 8
 
     signal contactSearchBarTextChanged(string text)
     signal returnPressedWhileSearching
@@ -35,7 +39,7 @@ Rectangle {
         fakeFocus.forceActiveFocus()
     }
 
-    radius: height / 2
+    radius: JamiTheme.lineEditRadius
     color: JamiTheme.secondaryBackgroundColor
 
     FocusScope {
@@ -45,12 +49,12 @@ Rectangle {
     Image {
         id: searchIconImage
 
-        anchors.verticalCenter: contactSearchBarRect.verticalCenter
-        anchors.left: contactSearchBarRect.left
-        anchors.leftMargin: 8
+        anchors.verticalCenter: root.verticalCenter
+        anchors.left: root.left
+        anchors.leftMargin: itemMargin
 
-        width: 20
-        height: 20
+        width: 16
+        height: 16
 
         fillMode: Image.PreserveAspectFit
         mipmap: true
@@ -65,15 +69,18 @@ Rectangle {
 
     TextField {
         id: contactSearchBar
-        color: JamiTheme.textColor
 
-        anchors.verticalCenter: contactSearchBarRect.verticalCenter
+        anchors.verticalCenter: root.verticalCenter
         anchors.left: searchIconImage.right
 
-        width: contactSearchBarRect.width - searchIconImage.width - 10
-        height: contactSearchBarRect.height - 5
+        width: root.width - searchIconImage.width - clearTextButton.width - itemMargin * 2
+        height: root.height - 5
+
+        color: JamiTheme.textColor
 
         font.pointSize: JamiTheme.textFontSize
+        font.kerning: true
+
         selectByMouse: true
         selectionColor: JamiTheme.contactSearchBarPlaceHolderTextFontColor
 
@@ -86,10 +93,26 @@ Rectangle {
             color: "transparent"
         }
 
-        onTextChanged: {
-            contactSearchBarRect.contactSearchBarTextChanged(
-                        contactSearchBar.text)
-        }
+        onTextChanged: root.contactSearchBarTextChanged(contactSearchBar.text)
+    }
+
+    PushButton {
+        id: clearTextButton
+
+        anchors.verticalCenter: root.verticalCenter
+        anchors.left: contactSearchBar.right
+
+        preferredSize: 16
+
+        visible: contactSearchBar.text.length
+
+        normalColor: root.color
+        imageColor: JamiTheme.primaryForegroundColor
+
+        source: "qrc:/images/icons/ic_clear_24px.svg"
+        toolTipText: JamiStrings.clearText
+
+        onClicked: contactSearchBar.clear()
     }
 
     Shortcut {
