@@ -267,6 +267,7 @@ Item {
     property string deleteAccountInfos: qsTr("If your account has not been backed up or added to another device, your account and registered name will be irrevocably lost.")
 
     // DeviceItemDelegate
+    property string saveNewDeviceName: qsTr("Save new device name")
     property string editDeviceName: qsTr("Edit device name")
     property string unlinkDevice: qsTr("Unlink device from account")
 

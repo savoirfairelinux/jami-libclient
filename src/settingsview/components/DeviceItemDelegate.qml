@@ -39,25 +39,9 @@ ItemDelegate {
 
     signal btnRemoveDeviceClicked
 
-    function btnEditDeviceEnter() {
-        btnEditDevice.enterBtn()
-    }
-
-    function btnEditDeviceExit() {
-        btnEditDevice.exitBtn()
-    }
-
-    function btnEditPress() {
-        btnEditDevice.pressBtn()
-    }
-
-    function btnEditRelease() {
-        btnEditDevice.releaseBtn()
-    }
-
     function toggleEditable() {
         editable = !editable
-        if (editable) {
+        if (!editable) {
            SettingsAdapter.setDeviceName(elidedTextDeviceName.text)
         }
     }
@@ -67,58 +51,70 @@ ItemDelegate {
     }
     highlighted: ListView.isCurrentItem
 
+    CustomBorder {
+        commonBorder: false
+        lBorderwidth: 0
+        rBorderwidth: 0
+        tBorderwidth: 0
+        bBorderwidth: 2
+        borderColor: JamiTheme.selectedColor
+    }
+
     RowLayout {
         anchors.fill: root
 
         Image {
             id: deviceImage
-            Layout.leftMargin: JamiTheme.preferredMarginSize
+
             Layout.alignment: Qt.AlignVCenter
+            Layout.preferredWidth: 24
+            Layout.preferredHeight: 24
+            Layout.leftMargin: JamiTheme.preferredMarginSize
+
             layer {
                 enabled: true
                 effect: ColorOverlay {
                     color: JamiTheme.textColor
                 }
             }
-
-            Layout.preferredWidth: 24
-            Layout.preferredHeight: 24
             source: "qrc:/images/icons/baseline-desktop_windows-24px.svg"
         }
 
         ColumnLayout {
             Layout.fillWidth: true
-            Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
+            Layout.fillHeight: true
             Layout.leftMargin: JamiTheme.preferredMarginSize
 
-            InfoLineEdit {
+            MaterialLineEdit {
                 id: editDeviceName
-                implicitWidth: parent.width
+
+                Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
                 Layout.fillWidth: true
                 Layout.preferredHeight: 30
-                Layout.alignment: Qt.AlignLeft
+
                 font.pointSize: JamiTheme.textFontSize
-                font.kerning: true
 
                 wrapMode: Text.NoWrap
                 readOnly: !editable
                 backgroundColor: JamiTheme.editBackgroundColor
                 text: elidedTextDeviceName.elidedText
+                padding: 8
             }
 
             TextMetrics {
                 id: elidedTextDeviceName
 
                 elide: Text.ElideRight
-                elideWidth: root.width - btnEditDevice.width - deviceImage.width - 8
+                elideWidth: root.width - btnEditDevice.width - deviceImage.width
+                            - editDeviceName.leftPadding
                 text: deviceName
             }
 
             ElidedTextLabel {
                 id: labelDeviceId
 
-                Layout.preferredHeight: 24
-                Layout.leftMargin: 8
+                Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
+                Layout.leftMargin: editDeviceName.leftPadding
 
                 maxWidth: root.width - btnEditDevice.width - deviceImage.width
                 eText: deviceId === "" ? qsTr("Device Id") : deviceId
@@ -132,6 +128,7 @@ ItemDelegate {
             Layout.rightMargin: 16
             Layout.preferredWidth: JamiTheme.preferredFieldHeight
             Layout.preferredHeight: JamiTheme.preferredFieldHeight
+
             imageColor: JamiTheme.textColor
             normalColor: highlighted? JamiTheme.selectedColor : JamiTheme.editBackgroundColor
 
@@ -149,9 +146,9 @@ ItemDelegate {
             toolTipText: {
                 if(isCurrent) {
                     if (editable) {
-                        return JamiStrings.editDeviceName
+                        return JamiStrings.saveNewDeviceName
                     } else {
-                        return qsTr("Save new device name")
+                        return JamiStrings.editDeviceName
                     }
                 } else {
                     return JamiStrings.unlinkDevice

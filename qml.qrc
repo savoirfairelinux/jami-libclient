@@ -53,7 +53,6 @@
         <file>src/settingsview/components/LinkDeviceDialog.qml</file>
         <file>src/settingsview/components/RevokeDevicePasswordDialog.qml</file>
         <file>src/commoncomponents/PasswordDialog.qml</file>
-        <file>src/commoncomponents/InfoLineEdit.qml</file>
         <file>src/commoncomponents/MaterialLineEdit.qml</file>
         <file>src/commoncomponents/PhotoboothView.qml</file>
         <file>src/commoncomponents/LookupStatusLabel.qml</file>

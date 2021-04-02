@@ -76,7 +76,7 @@ BaseDialog {
 
                 echoMode: TextInput.Password
                 placeholderText: JamiStrings.enterCurrentPassword
-                borderColorMode: InfoLineEdit.NORMAL
+                borderColorMode: MaterialLineEdit.NORMAL
 
                 onTextChanged: {
                     btnRemove.enabled = text.length > 0

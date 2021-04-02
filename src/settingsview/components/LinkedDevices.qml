@@ -133,6 +133,8 @@ ColumnLayout {
         Layout.fillWidth: true
         Layout.preferredHeight: 160
 
+        border.width: 0
+
         model: DeviceItemListModel {
             lrcInstance: LRCInstance
         }
@@ -147,8 +149,6 @@ ColumnLayout {
             deviceName: DeviceName
             deviceId: DeviceID
             isCurrent: IsCurrent
-
-            onClicked: settingsListView.currentIndex = index
 
             onBtnRemoveDeviceClicked: removeDeviceSlot(index)
         }
