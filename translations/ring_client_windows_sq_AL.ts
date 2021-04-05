@@ -125,12 +125,12 @@
 <context>
     <name>CallAdapter</name>
     <message>
-        <location filename="../src/calladapter.cpp" line="275"/>
+        <location filename="../src/calladapter.cpp" line="278"/>
         <source>me</source>
         <translation>unë</translation>
     </message>
     <message>
-        <location filename="../src/calladapter.cpp" line="338"/>
+        <location filename="../src/calladapter.cpp" line="341"/>
         <source>is calling you</source>
         <translation>po ju thërret</translation>
     </message>
@@ -1979,7 +1979,7 @@ Ju lutemi, riprovoni më vonë.</translation>
 <context>
     <name>MainApplication</name>
     <message>
-        <location filename="../src/mainapplication.cpp" line="435"/>
+        <location filename="../src/mainapplication.cpp" line="469"/>
         <source>Exit</source>
         <translation>Dalje</translation>
     </message>
@@ -2164,17 +2164,17 @@ Ju lutemi, riprovoni më vonë.</translation>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/utils.cpp" line="475"/>
+        <location filename="../src/utils.cpp" line="449"/>
         <source>Created by:</source>
         <translation>Krijuar nga:</translation>
     </message>
     <message>
-        <location filename="../src/utils.cpp" line="481"/>
+        <location filename="../src/utils.cpp" line="455"/>
         <source>Artwork by:</source>
         <translation>Përkujdesja grafike:</translation>
     </message>
     <message>
-        <location filename="../src/utils.cpp" line="489"/>
+        <location filename="../src/utils.cpp" line="463"/>
         <source>Based on the SFLPhone project</source>
         <translation>Bazuar në projektin SFLPhone</translation>
     </message>

@@ -125,12 +125,12 @@
 <context>
     <name>CallAdapter</name>
     <message>
-        <location filename="../src/calladapter.cpp" line="275"/>
+        <location filename="../src/calladapter.cpp" line="278"/>
         <source>me</source>
         <translation>mig</translation>
     </message>
     <message>
-        <location filename="../src/calladapter.cpp" line="338"/>
+        <location filename="../src/calladapter.cpp" line="341"/>
         <source>is calling you</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1974,7 +1974,7 @@ Please try again later.</source>
 <context>
     <name>MainApplication</name>
     <message>
-        <location filename="../src/mainapplication.cpp" line="435"/>
+        <location filename="../src/mainapplication.cpp" line="469"/>
         <source>Exit</source>
         <translation>Afslut</translation>
     </message>
@@ -2159,17 +2159,17 @@ Please try again later.</source>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/utils.cpp" line="475"/>
+        <location filename="../src/utils.cpp" line="449"/>
         <source>Created by:</source>
         <translation>Skabt af:</translation>
     </message>
     <message>
-        <location filename="../src/utils.cpp" line="481"/>
+        <location filename="../src/utils.cpp" line="455"/>
         <source>Artwork by:</source>
         <translation>Grafik af:</translation>
     </message>
     <message>
-        <location filename="../src/utils.cpp" line="489"/>
+        <location filename="../src/utils.cpp" line="463"/>
         <source>Based on the SFLPhone project</source>
         <translation>Baseret på SFLPhone-projektet</translation>
     </message>
