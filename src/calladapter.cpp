@@ -35,7 +35,8 @@ CallAdapter::CallAdapter(SystemTray* systemTray, LRCInstance* instance, QObject*
     , systemTray_(systemTray)
 {
     accountId_ = lrcInstance_->getCurrAccId();
-    connectCallModel(accountId_);
+    if (!accountId_.isEmpty())
+        connectCallModel(accountId_);
 
     connect(&lrcInstance_->behaviorController(),
             &BehaviorController::showIncomingCallView,
@@ -518,13 +519,13 @@ CallAdapter::updateCallOverlay(const lrc::api::conversation::Info& convInfo)
                         : accInfo.contactModel->bestNameForContact(convInfo.participants[0]);
 
     Q_EMIT updateOverlay(isPaused,
-                       isAudioOnly,
-                       isAudioMuted,
-                       isVideoMuted,
-                       isRecording,
-                       accInfo.profileInfo.type == lrc::api::profile::Type::SIP,
-                       !convInfo.confId.isEmpty(),
-                       bestName);
+                         isAudioOnly,
+                         isAudioMuted,
+                         isVideoMuted,
+                         isRecording,
+                         accInfo.profileInfo.type == lrc::api::profile::Type::SIP,
+                         !convInfo.confId.isEmpty(),
+                         bestName);
 }
 
 void
