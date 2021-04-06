@@ -343,7 +343,7 @@ SmartListModel::getConversationItemData(const conversation::Info& item,
     }
     case Role::CallStackViewShouldShow: {
         const auto& convInfo = lrcInstance_->getConversationFromConvUid(item.uid);
-        if (!convInfo.uid.isEmpty()) {
+        if (!convInfo.uid.isEmpty() && !convInfo.callId.isEmpty()) {
             auto* callModel = lrcInstance_->getCurrentCallModel();
             const auto& call = callModel->getCall(convInfo.callId);
             return QVariant(
