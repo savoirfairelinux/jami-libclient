@@ -99,7 +99,9 @@ AccountAdapter::createJamiAccount(QString registeredName,
         &lrc::api::NewAccountModel::accountAdded,
         [this, registeredName, settings, isCreating](const QString& accountId) {
             auto confProps = lrcInstance_->accountModel().getAccountConfig(accountId);
+#ifdef Q_OS_WIN
             confProps.Ringtone.ringtonePath = Utils::GetRingtonePath();
+#endif
             confProps.isRendezVous = settings["isRendezVous"].toBool();
             lrcInstance_->accountModel().setAccountConfig(accountId, confProps);
 
@@ -108,19 +110,21 @@ AccountAdapter::createJamiAccount(QString registeredName,
                                       .toBool();
             if (!registeredName.isEmpty()) {
                 QObject::disconnect(registeredNameSavedConnection_);
-                registeredNameSavedConnection_ = connect(
-                    &lrcInstance_->accountModel(),
-                    &lrc::api::NewAccountModel::profileUpdated,
-                    [this, showBackup, addedAccountId = accountId](const QString& accountId) {
-                        if (addedAccountId == accountId) {
-                            Q_EMIT lrcInstance_->accountListChanged();
-                            Q_EMIT accountAdded(accountId,
-                                              showBackup,
-                                              lrcInstance_->accountModel().getAccountList().indexOf(
-                                                  accountId));
-                            QObject::disconnect(registeredNameSavedConnection_);
-                        }
-                    });
+                registeredNameSavedConnection_
+                    = connect(&lrcInstance_->accountModel(),
+                              &lrc::api::NewAccountModel::profileUpdated,
+                              [this, showBackup, addedAccountId = accountId](
+                                  const QString& accountId) {
+                                  if (addedAccountId == accountId) {
+                                      Q_EMIT lrcInstance_->accountListChanged();
+                                      Q_EMIT accountAdded(accountId,
+                                                          showBackup,
+                                                          lrcInstance_->accountModel()
+                                                              .getAccountList()
+                                                              .indexOf(accountId));
+                                      QObject::disconnect(registeredNameSavedConnection_);
+                                  }
+                              });
 
                 lrcInstance_->accountModel().registerName(accountId,
                                                           settings["password"].toString(),
@@ -128,8 +132,9 @@ AccountAdapter::createJamiAccount(QString registeredName,
             } else {
                 Q_EMIT lrcInstance_->accountListChanged();
                 Q_EMIT accountAdded(accountId,
-                                  showBackup,
-                                  lrcInstance_->accountModel().getAccountList().indexOf(accountId));
+                                    showBackup,
+                                    lrcInstance_->accountModel().getAccountList().indexOf(
+                                        accountId));
             }
         });
 
@@ -158,14 +163,17 @@ AccountAdapter::createSIPAccount(const QVariantMap& settings)
                               confProps.username = settings["username"].toString();
                               confProps.password = settings["password"].toString();
                               confProps.routeset = settings["proxy"].toString();
+#ifdef Q_OS_WIN
                               confProps.Ringtone.ringtonePath = Utils::GetRingtonePath();
+#endif
                               lrcInstance_->accountModel().setAccountConfig(accountId, confProps);
 
                               Q_EMIT lrcInstance_->accountListChanged();
                               Q_EMIT accountAdded(accountId,
-                                                false,
-                                                lrcInstance_->accountModel().getAccountList().indexOf(
-                                                    accountId));
+                                                  false,
+                                                  lrcInstance_->accountModel()
+                                                      .getAccountList()
+                                                      .indexOf(accountId));
                           });
 
     connectFailure();
@@ -192,13 +200,16 @@ AccountAdapter::createJAMSAccount(const QVariantMap& settings)
 
                               auto confProps = lrcInstance_->accountModel().getAccountConfig(
                                   accountId);
+#ifdef Q_OS_WIN
                               confProps.Ringtone.ringtonePath = Utils::GetRingtonePath();
+#endif
                               lrcInstance_->accountModel().setAccountConfig(accountId, confProps);
 
                               Q_EMIT accountAdded(accountId,
-                                                false,
-                                                lrcInstance_->accountModel().getAccountList().indexOf(
-                                                    accountId));
+                                                  false,
+                                                  lrcInstance_->accountModel()
+                                                      .getAccountList()
+                                                      .indexOf(accountId));
                               Q_EMIT lrcInstance_->accountListChanged();
                           });
 
