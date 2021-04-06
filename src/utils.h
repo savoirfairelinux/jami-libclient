@@ -84,7 +84,8 @@ static const QSize defaultAvatarSize {128, 128};
 QImage contactPhotoFromBase64(const QByteArray& data, const QString& type);
 QImage contactPhoto(LRCInstance* instance,
                     const QString& contactUri,
-                    const QSize& size = defaultAvatarSize);
+                    const QSize& size = defaultAvatarSize,
+                    const QString& accountId = {});
 QImage getCirclePhoto(const QImage original, int sizePhoto);
 QColor getAvatarColor(const QString& canonicalUri);
 QImage fallbackAvatar(const QString& canonicalUriStr,

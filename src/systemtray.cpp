@@ -167,7 +167,8 @@ void
 SystemTray::showNotification(const QString& id,
                              const QString& title,
                              const QString& body,
-                             NotificationType type)
+                             NotificationType type,
+                             const QByteArray& avatar)
 {
     if (!settingsManager_->getValue(Settings::Key::EnableNotifications).toBool())
         return;
@@ -184,7 +185,16 @@ SystemTray::showNotification(const QString& id,
 
     pimpl_->notifications.emplace(id, n);
 
-    // TODO: notify_notification_set_image_from_pixbuf <- GdkPixbuf
+    if (!avatar.isEmpty()) {
+        GError* error = nullptr;
+        GdkPixbuf* pixbuf = nullptr;
+        GInputStream* stream = nullptr;
+        stream = g_memory_input_stream_new_from_data(avatar.constData(), avatar.size(), NULL);
+        pixbuf = gdk_pixbuf_new_from_stream(stream, nullptr, &error);
+        g_input_stream_close(stream, nullptr, nullptr);
+        g_object_unref(stream);
+        notify_notification_set_image_from_pixbuf(notification.get(), pixbuf);
+    }
 
     if (type != NotificationType::CHAT) {
         notify_notification_set_urgency(notification.get(), NOTIFY_URGENCY_CRITICAL);

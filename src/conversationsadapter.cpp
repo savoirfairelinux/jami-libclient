@@ -171,14 +171,19 @@ ConversationsAdapter::onNewUnreadInteraction(const QString& accountId,
     if (!interaction.authorUri.isEmpty()
         && (!QApplication::focusWindow() || accountId != lrcInstance_->getCurrAccId()
             || convUid != lrcInstance_->getCurrentConvUid())) {
-        auto& accInfo = lrcInstance_->getAccountInfo(accountId);
-        auto from = accInfo.contactModel->bestNameForContact(interaction.authorUri);
+        auto& accountInfo = lrcInstance_->getAccountInfo(accountId);
+        auto from = accountInfo.contactModel->bestNameForContact(interaction.authorUri);
 #ifdef Q_OS_LINUX
+        auto contactPhoto = Utils::contactPhoto(lrcInstance_,
+                                                interaction.authorUri,
+                                                QSize(50, 50),
+                                                accountId);
         auto notifId = QString("%1;%2;%3").arg(accountId).arg(convUid).arg(interactionId);
         systemTray_->showNotification(notifId,
                                       tr("New message"),
                                       from + ": " + interaction.body,
-                                      NotificationType::CHAT);
+                                      NotificationType::CHAT,
+                                      Utils::QImageToByteArray(contactPhoto));
 
 #else
         Q_UNUSED(interactionId)
@@ -215,11 +220,13 @@ ConversationsAdapter::onNewTrustRequest(const QString& accountId, const QString&
     if (!QApplication::focusWindow() || accountId != lrcInstance_->getCurrAccId()) {
         auto& accInfo = lrcInstance_->getAccountInfo(accountId);
         auto from = accInfo.contactModel->bestNameForContact(peerUri);
+        auto contactPhoto = Utils::contactPhoto(lrcInstance_, peerUri, QSize(50, 50), accountId);
         auto notifId = QString("%1;%2").arg(accountId).arg(peerUri);
         systemTray_->showNotification(notifId,
                                       tr("Trust request"),
                                       "New request from " + from,
-                                      NotificationType::REQUEST);
+                                      NotificationType::REQUEST,
+                                      Utils::QImageToByteArray(contactPhoto));
     }
 #endif
 }

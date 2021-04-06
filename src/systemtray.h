@@ -42,7 +42,8 @@ public:
     void showNotification(const QString& id,
                           const QString& title,
                           const QString& body,
-                          NotificationType type);
+                          NotificationType type,
+                          const QByteArray& avatar = {});
 
 Q_SIGNALS:
     void openConversationActivated(const QString& accountId, const QString& convUid);

@@ -140,6 +140,8 @@ pkg_check_modules(LIBNOTIFY libnotify>=0.7.6)
 if(LIBNOTIFY_FOUND)
     add_definitions(-DUSE_LIBNOTIFY)
     add_definitions(${LIBNOTIFY_CFLAGS})
+    pkg_check_modules(LIBGDKPIXBUF gdk-pixbuf-2.0>=2.40.0)
+    add_definitions(${LIBGDKPIXBUF_CFLAGS})
 endif()
 
 if(QT5_VER AND QT5_PATH)
@@ -217,7 +219,8 @@ include_directories(${PROJECT_SOURCE_DIR}
     ${SRC_DIR}
     ${LRC_SRC_PATH}
     ${LIBNM_INCLUDE_DIRS}
-    ${LIBNOTIFY_INCLUDE_DIRS})
+    ${LIBNOTIFY_INCLUDE_DIRS}
+    ${LIBGDKPIXBUF_INCLUDE_DIRS})
 
 add_executable(${PROJECT_NAME}
     ${SRC_DIR}/main.cpp
@@ -239,7 +242,8 @@ target_link_libraries(jami-qt
     ${qrencode}
     ${X11}
     ${LIBNM_LIBRARIES}
-    ${LIBNOTIFY_LIBRARIES})
+    ${LIBNOTIFY_LIBRARIES}
+    ${LIBGDKPIXBUF_LIBRARIES})
 
 if(ENABLE_TESTS)
     message("Add Jami tests")

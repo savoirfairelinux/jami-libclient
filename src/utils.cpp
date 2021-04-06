@@ -68,6 +68,7 @@ Utils::CreateStartupLink(const std::wstring& wstrAppName)
 
     return Utils::CreateLink(programPath.c_str(), linkPath.c_str());
 #else
+    Q_UNUSED(wstrAppName)
     QString desktopPath;
     /* cmake should set JAMI_INSTALL_PREFIX, otherwise it checks the following dirs
      *  - /usr/<data dir>
@@ -179,6 +180,7 @@ Utils::DeleteStartupLink(const std::wstring& wstrAppName)
     DeleteFile(linkPath.c_str());
 
 #else
+    Q_UNUSED(wstrAppName)
     QString desktopFile = QStandardPaths::locate(QStandardPaths::ConfigLocation,
                                                  "autostart/jami-qt.desktop");
     if (!desktopFile.isEmpty()) {
@@ -205,6 +207,7 @@ Utils::CheckStartupLink(const std::wstring& wstrAppName)
     linkPath += std::wstring(TEXT("\\") + wstrAppName + TEXT(".lnk"));
     return PathFileExists(linkPath.c_str());
 #else
+    Q_UNUSED(wstrAppName)
     return (!QStandardPaths::locate(QStandardPaths::ConfigLocation, "autostart/jami-qt.desktop")
                  .isEmpty());
 #endif
@@ -222,6 +225,7 @@ Utils::WinGetEnv(const char* name)
         return 0;
     }
 #else
+    Q_UNUSED(name)
     return 0;
 #endif
 }
@@ -321,7 +325,10 @@ Utils::GetISODate()
 }
 
 QImage
-Utils::contactPhoto(LRCInstance* instance, const QString& contactUri, const QSize& size)
+Utils::contactPhoto(LRCInstance* instance,
+                    const QString& contactUri,
+                    const QSize& size,
+                    const QString& accountId)
 {
     QImage photo;
 
@@ -329,7 +336,8 @@ Utils::contactPhoto(LRCInstance* instance, const QString& contactUri, const QSiz
         /*
          * Get first contact photo.
          */
-        auto& accountInfo = instance->accountModel().getAccountInfo(instance->getCurrAccId());
+        auto& accountInfo = instance->accountModel().getAccountInfo(
+            accountId.isEmpty() ? instance->getCurrAccId() : accountId);
         auto contactInfo = accountInfo.contactModel->getContact(contactUri);
         auto contactPhoto = contactInfo.profileInfo.avatar;
         auto bestName = accountInfo.contactModel->bestNameForContact(contactUri);
@@ -405,6 +413,7 @@ Utils::getRealSize(QScreen* screen)
                         (DEVMODE*) &dmThisScreen);
     return QSize(dmThisScreen.dmPelsWidth, dmThisScreen.dmPelsHeight);
 #else
+    Q_UNUSED(screen)
     return {};
 #endif
 }
