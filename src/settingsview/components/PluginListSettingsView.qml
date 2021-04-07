@@ -124,6 +124,7 @@ Rectangle {
             Layout.bottomMargin: 10
 
             model: PluginAdapter.getPluginSelectableModel()
+            maximumFlickVelocity: 1024
 
             delegate: PluginItemDelegate {
                 id: pluginItemDelegate

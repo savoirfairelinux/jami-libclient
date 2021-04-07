@@ -276,6 +276,7 @@ Rectangle {
 
                     model: PluginAdapter.getPluginPreferencesModel(root.pluginId, root.category)
                     interactive: false
+                    maximumFlickVelocity: 1024
 
                     delegate: PreferenceItemDelegate {
                         id: preferenceItemDelegateCategory
@@ -325,6 +326,7 @@ Rectangle {
 
             model: PluginAdapter.getPluginPreferencesModel(root.pluginId)
             interactive: false
+            maximumFlickVelocity: 1024
 
             delegate: PreferenceItemDelegate {
                 id: preferenceItemDelegate

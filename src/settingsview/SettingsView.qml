@@ -162,10 +162,8 @@ Rectangle {
             onBackArrowClicked: root.settingsBackArrowClicked()
         }
 
-        ScrollView {
+        Flickable {
             id: settingsViewScrollView
-
-            property ScrollBar vScrollBar: ScrollBar.vertical
 
             anchors.top: settingsHeader.bottom
             anchors.horizontalCenter: settingsViewRect.horizontalCenter
@@ -173,8 +171,8 @@ Rectangle {
             height: settingsViewRect.height - settingsHeader.height
             width: settingsViewRect.width
 
-            ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
-            ScrollBar.vertical.policy: ScrollBar.AsNeeded
+            maximumFlickVelocity: 1024
+            ScrollIndicator.vertical: ScrollIndicator {}
 
             clip: true
             contentHeight: rightSettingsStackLayout.height
@@ -231,10 +229,9 @@ Rectangle {
 
                     onAdvancedSettingsToggled: {
                         if (settingsVisible)
-                            settingsViewScrollView.vScrollBar.position =
-                                    getAdvancedSettingsScrollPosition()
+                            settingsViewScrollView.contentY = getAdvancedSettingsScrollPosition()
                         else
-                            settingsViewScrollView.vScrollBar.position = 0
+                            settingsViewScrollView.contentY = 0
                     }
                 }
 

@@ -85,7 +85,7 @@ Rectangle {
     }
 
     function getAdvancedSettingsScrollPosition() {
-        return advancedSettings.y / root.height
+        return advancedSettings.y
     }
 
     function setPasswordButtonText() {

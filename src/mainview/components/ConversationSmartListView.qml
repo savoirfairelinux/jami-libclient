@@ -89,6 +89,7 @@ ListView {
     }
 
     clip: true
+    maximumFlickVelocity: 1024
 
     delegate: ConversationSmartListViewItemDelegate {
         id: smartListItemDelegate

@@ -44,6 +44,7 @@ Rectangle {
         visible: listViewBackground.visible
         layer.mipmap: false
         clip: true
+        maximumFlickVelocity: 1024
 
         ScrollIndicator.vertical: ScrollIndicator {}
     }
