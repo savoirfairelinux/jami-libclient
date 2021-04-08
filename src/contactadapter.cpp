@@ -62,7 +62,7 @@ ContactAdapter::getContactSelectableModel(int type)
             // Exclude current sip callee and filtered contact.
             bool match = true;
             const auto& conv = lrcInstance_->getConversationFromConvUid(
-                lrcInstance_->getCurrentConvUid());
+                lrcInstance_->get_selectedConvUid());
             if (!conv.participants.isEmpty()) {
                 QString calleeDisplayId = lrcInstance_->getAccountInfo(lrcInstance_->getCurrAccId())
                                               .contactModel->bestIdForContact(conv.participants[0]);
@@ -109,7 +109,7 @@ ContactAdapter::contactSelected(int index)
     auto contactIndex = selectableProxyModel_->index(index, 0);
     auto* callModel = lrcInstance_->getCurrentCallModel();
     const auto& convInfo = lrcInstance_->getConversationFromConvUid(
-        lrcInstance_->getCurrentConvUid());
+        lrcInstance_->get_selectedConvUid());
     if (contactIndex.isValid()) {
         switch (listModeltype_) {
         case SmartListModel::Type::CONFERENCE: {

@@ -125,7 +125,7 @@ CallAdapter::onCallStatusChanged(const QString& accountId, const QString& callId
 void
 CallAdapter::placeAudioOnlyCall()
 {
-    const auto convUid = lrcInstance_->getCurrentConvUid();
+    const auto convUid = lrcInstance_->get_selectedConvUid();
     if (!convUid.isEmpty()) {
         lrcInstance_->getCurrentConversationModel()->placeAudioOnlyCall(convUid);
     }
@@ -134,7 +134,7 @@ CallAdapter::placeAudioOnlyCall()
 void
 CallAdapter::placeCall()
 {
-    const auto convUid = lrcInstance_->getCurrentConvUid();
+    const auto convUid = lrcInstance_->get_selectedConvUid();
     if (!convUid.isEmpty()) {
         lrcInstance_->getCurrentConversationModel()->placeCall(convUid);
     }
@@ -198,7 +198,7 @@ CallAdapter::onShowIncomingCallView(const QString& accountId, const QString& con
         }
 
         const auto& currentConvInfo = lrcInstance_->getConversationFromConvUid(
-            lrcInstance_->getCurrentConvUid());
+            lrcInstance_->get_selectedConvUid());
 
         // Current call
         auto currentConvHasCall = callModel->hasCall(currentConvInfo.callId);
@@ -216,7 +216,7 @@ CallAdapter::onShowIncomingCallView(const QString& accountId, const QString& con
     }
 
     auto call = callModel->getCall(convInfo.callId);
-    auto isCallSelected = lrcInstance_->getCurrentConvUid() == convInfo.uid;
+    auto isCallSelected = lrcInstance_->get_selectedConvUid() == convInfo.uid;
 
     if (call.isOutgoing) {
         if (isCallSelected) {
@@ -232,7 +232,7 @@ CallAdapter::onShowIncomingCallView(const QString& accountId, const QString& con
             }
 
             const auto& currentConvInfo = lrcInstance_->getConversationFromConvUid(
-                lrcInstance_->getCurrentConvUid());
+                lrcInstance_->get_selectedConvUid());
 
             // Call in current conversation
             auto currentConvHasCall = callModel->hasCall(currentConvInfo.callId);
@@ -500,7 +500,7 @@ CallAdapter::connectCallModel(const QString& accountId)
                                 /*
                                  * Reset the call view corresponding accountId, uid.
                                  */
-                                lrcInstance_->setSelectedConvId(otherConv.uid);
+                                lrcInstance_->set_selectedConvUid(otherConv.uid);
                                 updateCall(otherConv.uid, otherConv.accountId, forceCallOnly);
                             }
                         }
@@ -514,7 +514,7 @@ CallAdapter::connectCallModel(const QString& accountId)
             case lrc::api::call::Status::CONNECTED:
             case lrc::api::call::Status::IN_PROGRESS: {
                 const auto& convInfo = lrcInstance_->getConversationFromCallId(callId, accountId);
-                if (!convInfo.uid.isEmpty() && convInfo.uid == lrcInstance_->getCurrentConvUid()) {
+                if (!convInfo.uid.isEmpty() && convInfo.uid == lrcInstance_->get_selectedConvUid()) {
                     accInfo.conversationModel->selectConversation(convInfo.uid);
                 }
                 updateCall(convInfo.uid, accountId);
@@ -633,7 +633,7 @@ CallAdapter::maximizeParticipant(const QString& uri)
 {
     auto* callModel = lrcInstance_->getAccountInfo(accountId_).callModel.get();
     const auto& convInfo
-        = lrcInstance_->getConversationFromConvUid(lrcInstance_->getCurrentConvUid(), accountId_);
+        = lrcInstance_->getConversationFromConvUid(lrcInstance_->get_selectedConvUid(), accountId_);
 
     auto confId = convInfo.confId;
     if (confId.isEmpty())
@@ -666,7 +666,7 @@ CallAdapter::minimizeParticipant(const QString& uri)
 {
     auto* callModel = lrcInstance_->getAccountInfo(accountId_).callModel.get();
     const auto& convInfo
-        = lrcInstance_->getConversationFromConvUid(lrcInstance_->getCurrentConvUid(), accountId_);
+        = lrcInstance_->getConversationFromConvUid(lrcInstance_->get_selectedConvUid(), accountId_);
     auto confId = convInfo.confId;
 
     if (confId.isEmpty())

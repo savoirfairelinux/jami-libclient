@@ -174,7 +174,7 @@ SmartListModel::setConferenceableFilter(const QString& filter)
     beginResetModel();
     auto& accountInfo = lrcInstance_->accountModel().getAccountInfo(lrcInstance_->getCurrAccId());
     auto& convModel = accountInfo.conversationModel;
-    conferenceables_ = convModel->getConferenceableConversations(lrcInstance_->getCurrentConvUid(),
+    conferenceables_ = convModel->getConferenceableConversations(lrcInstance_->get_selectedConvUid(),
                                                                  filter);
     sectionState_[tr("Calls")] = true;
     sectionState_[tr("Contacts")] = true;
@@ -242,7 +242,7 @@ SmartListModel::toggleSection(const QString& section)
 int
 SmartListModel::currentUidSmartListModelIndex()
 {
-    const auto convUid = lrcInstance_->getCurrentConvUid();
+    const auto convUid = lrcInstance_->get_selectedConvUid();
     for (int i = 0; i < rowCount(); i++) {
         if (convUid == data(index(i, 0), Role::UID))
             return i;

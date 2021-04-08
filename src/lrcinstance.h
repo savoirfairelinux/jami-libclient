@@ -54,6 +54,7 @@ using getConvPredicate = std::function<bool(const conversation::Info& conv)>;
 class LRCInstance : public QObject
 {
     Q_OBJECT
+    QML_PROPERTY(QString, selectedConvUid)
 
 public:
     explicit LRCInstance(migrateCallback willMigrateCb = {},
@@ -95,9 +96,7 @@ public:
 
     const QString& getCurrAccId();
     void setSelectedAccountId(const QString& accountId = {});
-    const QString& getCurrentConvUid();
     void selectConversation(const QString& accountId, const QString& convUid);
-    void setSelectedConvId(const QString& convUid = {});
     int getCurrentAccountIndex();
     void setAvatarForAccount(const QPixmap& avatarPixmap, const QString& accountID);
     void setCurrAccAvatar(const QPixmap& avatarPixmap);
@@ -130,7 +129,6 @@ private:
     std::unique_ptr<RenderManager> renderer_;
     std::unique_ptr<UpdateManager> updateManager_;
     QString selectedAccountId_ {""};
-    QString selectedConvUid_ {""};
     MapStringString contentDrafts_;
     MapStringString lastConferences_;
 

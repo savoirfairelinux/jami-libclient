@@ -167,7 +167,7 @@ MessagesAdapter::connectConversationModel()
 void
 MessagesAdapter::sendContactRequest()
 {
-    const auto convUid = lrcInstance_->getCurrentConvUid();
+    const auto convUid = lrcInstance_->get_selectedConvUid();
     if (!convUid.isEmpty()) {
         lrcInstance_->getCurrentConversationModel()->makePermanent(convUid);
     }
@@ -178,7 +178,7 @@ MessagesAdapter::updateConversationForAddedContact()
 {
     auto* convModel = lrcInstance_->getCurrentConversationModel();
     const auto& convInfo = lrcInstance_->getConversationFromConvUid(
-        lrcInstance_->getCurrentConvUid());
+        lrcInstance_->get_selectedConvUid());
 
     clear();
     setConversationProfileData(convInfo);
@@ -191,13 +191,13 @@ MessagesAdapter::slotSendMessageContentSaved(const QString& content)
     if (!LastConvUid_.isEmpty()) {
         lrcInstance_->setContentDraft(LastConvUid_, lrcInstance_->getCurrAccId(), content);
     }
-    LastConvUid_ = lrcInstance_->getCurrentConvUid();
+    LastConvUid_ = lrcInstance_->get_selectedConvUid();
 
     Utils::oneShotConnect(qmlObj_, SIGNAL(messagesCleared()), this, SLOT(slotMessagesCleared()));
 
     setInvitation(false);
     clear();
-    auto restoredContent = lrcInstance_->getContentDraft(lrcInstance_->getCurrentConvUid(),
+    auto restoredContent = lrcInstance_->getContentDraft(lrcInstance_->get_selectedConvUid(),
                                                          lrcInstance_->getCurrAccId());
     setSendMessageContent(restoredContent);
     Q_EMIT needToUpdateSmartList();
@@ -217,7 +217,7 @@ MessagesAdapter::slotMessagesCleared()
 {
     auto* convModel = lrcInstance_->getCurrentConversationModel();
     const auto& convInfo = lrcInstance_->getConversationFromConvUid(
-        lrcInstance_->getCurrentConvUid());
+        lrcInstance_->get_selectedConvUid());
 
     printHistory(*convModel, convInfo.interactions);
 
@@ -236,7 +236,7 @@ void
 MessagesAdapter::sendMessage(const QString& message)
 {
     try {
-        const auto convUid = lrcInstance_->getCurrentConvUid();
+        const auto convUid = lrcInstance_->get_selectedConvUid();
         lrcInstance_->getCurrentConversationModel()->sendMessage(convUid, message);
     } catch (...) {
         qDebug() << "Exception during sendMessage:" << message;
@@ -268,7 +268,7 @@ MessagesAdapter::sendImage(const QString& message)
         }
 
         try {
-            auto convUid = lrcInstance_->getCurrentConvUid();
+            auto convUid = lrcInstance_->get_selectedConvUid();
             lrcInstance_->getCurrentConversationModel()->sendFile(convUid, path, fileName);
         } catch (...) {
             qDebug().noquote() << "Exception during sendFile - base64 img"
@@ -291,7 +291,7 @@ MessagesAdapter::sendImage(const QString& message)
         QString fileName = fi.fileName();
 
         try {
-            auto convUid = lrcInstance_->getCurrentConvUid();
+            auto convUid = lrcInstance_->get_selectedConvUid();
             lrcInstance_->getCurrentConversationModel()->sendFile(convUid, msg, fileName);
         } catch (...) {
             qDebug().noquote() << "Exception during sendFile - image from path"
@@ -306,7 +306,7 @@ MessagesAdapter::sendFile(const QString& message)
     QFileInfo fi(message);
     QString fileName = fi.fileName();
     try {
-        auto convUid = lrcInstance_->getCurrentConvUid();
+        auto convUid = lrcInstance_->get_selectedConvUid();
         lrcInstance_->getCurrentConversationModel()->sendFile(convUid, message, fileName);
     } catch (...) {
         qDebug() << "Exception during sendFile";
@@ -320,7 +320,7 @@ MessagesAdapter::retryInteraction(const QString& arg)
     uint64_t interactionUid = arg.toULongLong(&ok);
     if (ok) {
         lrcInstance_->getCurrentConversationModel()
-            ->retryInteraction(lrcInstance_->getCurrentConvUid(), interactionUid);
+            ->retryInteraction(lrcInstance_->get_selectedConvUid(), interactionUid);
     } else {
         qDebug() << "retryInteraction - invalid arg" << arg;
     }
@@ -347,7 +347,7 @@ MessagesAdapter::deleteInteraction(const QString& arg)
     uint64_t interactionUid = arg.toULongLong(&ok);
     if (ok) {
         lrcInstance_->getCurrentConversationModel()
-            ->clearInteractionFromConversation(lrcInstance_->getCurrentConvUid(), interactionUid);
+            ->clearInteractionFromConversation(lrcInstance_->get_selectedConvUid(), interactionUid);
     } else {
         qDebug() << "DeleteInteraction - invalid arg" << arg;
     }
@@ -375,7 +375,7 @@ MessagesAdapter::acceptFile(const QString& arg)
 {
     try {
         auto interactionUid = arg.toLongLong();
-        auto convUid = lrcInstance_->getCurrentConvUid();
+        auto convUid = lrcInstance_->get_selectedConvUid();
         lrcInstance_->getCurrentConversationModel()->acceptTransfer(convUid, interactionUid);
     } catch (...) {
         qDebug() << "JS bridging - exception during acceptFile: " << arg;
@@ -387,7 +387,7 @@ MessagesAdapter::refuseFile(const QString& arg)
 {
     try {
         auto interactionUid = arg.toLongLong();
-        const auto convUid = lrcInstance_->getCurrentConvUid();
+        const auto convUid = lrcInstance_->get_selectedConvUid();
         lrcInstance_->getCurrentConversationModel()->cancelTransfer(convUid, interactionUid);
     } catch (...) {
         qDebug() << "JS bridging - exception during refuseFile:" << arg;
@@ -447,7 +447,7 @@ MessagesAdapter::onComposing(bool isComposing)
     if (!settingsManager_->getValue(Settings::Key::EnableTypingIndicator).toBool()) {
         return;
     }
-    lrcInstance_->getCurrentConversationModel()->setIsComposing(lrcInstance_->getCurrentConvUid(),
+    lrcInstance_->getCurrentConversationModel()->setIsComposing(lrcInstance_->get_selectedConvUid(),
                                                                 isComposing);
 }
 
@@ -493,7 +493,7 @@ MessagesAdapter::newInteraction(const QString& accountId,
 {
     Q_UNUSED(interactionId);
     try {
-        if (convUid.isEmpty() || convUid != lrcInstance_->getCurrentConvUid()) {
+        if (convUid.isEmpty() || convUid != lrcInstance_->get_selectedConvUid()) {
             return;
         }
         auto& accountInfo = lrcInstance_->getAccountInfo(accountId);
@@ -656,7 +656,7 @@ MessagesAdapter::setSendMessageContent(const QString& content)
 void
 MessagesAdapter::contactIsComposing(const QString& uid, const QString& contactUri, bool isComposing)
 {
-    if (lrcInstance_->getCurrentConvUid() == uid) {
+    if (lrcInstance_->get_selectedConvUid() == uid) {
         QString s
             = QString::fromLatin1("showTypingIndicator(`%1`, %2);").arg(contactUri).arg(isComposing);
         QMetaObject::invokeMethod(qmlObj_, "webViewRunJavaScript", Q_ARG(QVariant, s));
@@ -666,7 +666,7 @@ MessagesAdapter::contactIsComposing(const QString& uid, const QString& contactUr
 void
 MessagesAdapter::acceptInvitation(const QString& convUid)
 {
-    const auto currentConvUid = convUid.isEmpty() ? lrcInstance_->getCurrentConvUid() : convUid;
+    const auto currentConvUid = convUid.isEmpty() ? lrcInstance_->get_selectedConvUid() : convUid;
     lrcInstance_->getCurrentConversationModel()->makePermanent(currentConvUid);
     if (convUid == currentConvUid_)
         currentConvUid_.clear();
@@ -676,7 +676,7 @@ MessagesAdapter::acceptInvitation(const QString& convUid)
 void
 MessagesAdapter::refuseInvitation(const QString& convUid)
 {
-    const auto currentConvUid = convUid.isEmpty() ? lrcInstance_->getCurrentConvUid() : convUid;
+    const auto currentConvUid = convUid.isEmpty() ? lrcInstance_->get_selectedConvUid() : convUid;
     lrcInstance_->getCurrentConversationModel()->removeConversation(currentConvUid, false);
     setInvitation(false);
     if (convUid == currentConvUid_)
@@ -687,7 +687,7 @@ MessagesAdapter::refuseInvitation(const QString& convUid)
 void
 MessagesAdapter::blockConversation(const QString& convUid)
 {
-    const auto currentConvUid = convUid.isEmpty() ? lrcInstance_->getCurrentConvUid() : convUid;
+    const auto currentConvUid = convUid.isEmpty() ? lrcInstance_->get_selectedConvUid() : convUid;
     lrcInstance_->getCurrentConversationModel()->removeConversation(currentConvUid, true);
     setInvitation(false);
     if (convUid == currentConvUid_)

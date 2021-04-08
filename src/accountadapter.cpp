@@ -272,7 +272,7 @@ AccountAdapter::setCurrAccDisplayName(const QString& text)
 void
 AccountAdapter::setSelectedConvId(const QString& convId)
 {
-    lrcInstance_->setSelectedConvId(convId);
+    lrcInstance_->set_selectedConvUid(convId);
 }
 
 lrc::api::profile::Type
@@ -350,7 +350,7 @@ AccountAdapter::passwordSetStatusMessageBox(bool success, QString title, QString
 void
 AccountAdapter::deselectConversation()
 {
-    if (lrcInstance_->getCurrentConvUid().isEmpty()) {
+    if (lrcInstance_->get_selectedConvUid().isEmpty()) {
         return;
     }
 
@@ -361,7 +361,7 @@ AccountAdapter::deselectConversation()
         return;
     }
 
-    lrcInstance_->setSelectedConvId();
+    lrcInstance_->set_selectedConvUid();
 }
 
 void
@@ -395,7 +395,7 @@ AccountAdapter::connectAccount(const QString& accountId)
                                &lrc::api::ContactModel::contactAdded,
                                [this, accountId](const QString& contactUri) {
                                    const auto& convInfo = lrcInstance_->getConversationFromConvUid(
-                                       lrcInstance_->getCurrentConvUid());
+                                       lrcInstance_->get_selectedConvUid());
                                    if (convInfo.uid.isEmpty()) {
                                        return;
                                    }

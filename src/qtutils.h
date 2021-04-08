@@ -1,4 +1,4 @@
-/*!
+/*
  * Copyright (C) 2015-2020 by Savoir-faire Linux
  * Author: Edric Ladent Milaret <edric.ladent-milaret@savoirfairelinux.com>
  * Author: Andreas Traczyk <andreas.traczyk@savoirfairelinux.com>
@@ -23,6 +23,25 @@
 #pragma once
 
 #include <QObject>
+
+#define QML_PROPERTY(type, prop) \
+private: \
+    Q_PROPERTY(type prop MEMBER prop##_ NOTIFY prop##Changed); \
+    type prop##_ {}; \
+\
+public: \
+    Q_SIGNAL void prop##Changed(); \
+    type get_##prop() \
+    { \
+        return prop##_; \
+    } \
+    void set_##prop(const type& x = {}) \
+    { \
+        if (prop##_ != x) { \
+            prop##_ = x; \
+            Q_EMIT prop##Changed(); \
+        } \
+    }
 
 namespace Utils {
 

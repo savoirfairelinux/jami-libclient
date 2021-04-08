@@ -176,13 +176,13 @@ UtilsAdapter::setConversationFilter(const QString& filter)
 const QString
 UtilsAdapter::getCurrConvId()
 {
-    return lrcInstance_->getCurrentConvUid();
+    return lrcInstance_->get_selectedConvUid();
 }
 
 void
 UtilsAdapter::makePermanentCurrentConv()
 {
-    lrcInstance_->getCurrentConversationModel()->makePermanent(lrcInstance_->getCurrentConvUid());
+    lrcInstance_->getCurrentConversationModel()->makePermanent(lrcInstance_->get_selectedConvUid());
 }
 
 const QStringList

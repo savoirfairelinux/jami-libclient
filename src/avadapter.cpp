@@ -214,7 +214,7 @@ QString
 AvAdapter::getCurrentCallId()
 {
     const auto& convInfo = lrcInstance_->getConversationFromConvUid(
-        lrcInstance_->getCurrentConvUid());
+        lrcInstance_->get_selectedConvUid());
     auto call = lrcInstance_->getCallInfoForConversation(convInfo);
     return call ? call->id : QString();
 }

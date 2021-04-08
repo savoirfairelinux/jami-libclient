@@ -40,7 +40,7 @@ ConversationsAdapter::ConversationsAdapter(SystemTray* systemTray,
     });
 
     connect(lrcInstance_, &LRCInstance::conversationSelected, [this]() {
-        auto convUid = lrcInstance_->getCurrentConvUid();
+        auto convUid = lrcInstance_->get_selectedConvUid();
         if (!convUid.isEmpty()) {
             Q_EMIT showConversation(lrcInstance_->getCurrAccId(), convUid);
         }
@@ -139,7 +139,7 @@ ConversationsAdapter::selectConversation(const QString& accountId, const QString
 void
 ConversationsAdapter::deselectConversation()
 {
-    if (lrcInstance_->getCurrentConvUid().isEmpty()) {
+    if (lrcInstance_->get_selectedConvUid().isEmpty()) {
         return;
     }
 
@@ -149,7 +149,7 @@ ConversationsAdapter::deselectConversation()
         return;
     }
 
-    lrcInstance_->setSelectedConvId();
+    lrcInstance_->set_selectedConvUid();
 }
 
 void
@@ -170,7 +170,7 @@ ConversationsAdapter::onNewUnreadInteraction(const QString& accountId,
 {
     if (!interaction.authorUri.isEmpty()
         && (!QApplication::focusWindow() || accountId != lrcInstance_->getCurrAccId()
-            || convUid != lrcInstance_->getCurrentConvUid())) {
+            || convUid != lrcInstance_->get_selectedConvUid())) {
         auto& accountInfo = lrcInstance_->getAccountInfo(accountId);
         auto from = accountInfo.contactModel->bestNameForContact(interaction.authorUri);
 #ifdef Q_OS_LINUX
@@ -272,7 +272,7 @@ ConversationsAdapter::connectConversationModel(bool updateFilter)
 
             auto* convModel = lrcInstance_->getCurrentConversationModel();
             const auto& convInfo = lrcInstance_->getConversationFromConvUid(
-                lrcInstance_->getCurrentConvUid());
+                lrcInstance_->get_selectedConvUid());
 
             if (convInfo.uid.isEmpty() || convInfo.participants.isEmpty()) {
                 return;
@@ -307,7 +307,7 @@ ConversationsAdapter::connectConversationModel(bool updateFilter)
                            [this]() {
                                conversationSmartListModel_->fillConversationsList();
                                updateConversationsFilterWidget();
-                               if (!lrcInstance_->getCurrentConvUid().isEmpty())
+                               if (!lrcInstance_->get_selectedConvUid().isEmpty())
                                    Q_EMIT indexRepositionRequested();
                                Q_EMIT updateListViewRequested();
                            });
@@ -331,7 +331,7 @@ ConversationsAdapter::connectConversationModel(bool updateFilter)
                            [this](const QString& convUid) {
                                // If currently selected, switch to welcome screen (deselecting
                                // current smartlist item).
-                               if (convUid != lrcInstance_->getCurrentConvUid()) {
+                               if (convUid != lrcInstance_->get_selectedConvUid()) {
                                    return;
                                }
                                backToWelcomePage();
@@ -391,8 +391,8 @@ ConversationsAdapter::updateConversationForNewContact(const QString& convUid)
         try {
             const auto contact = convModel->owner.contactModel->getContact(convInfo.participants[0]);
             if (!contact.profileInfo.uri.isEmpty()
-                && contact.profileInfo.uri == lrcInstance_->getCurrentConvUid()) {
-                lrcInstance_->setSelectedConvId(convUid);
+                && contact.profileInfo.uri == lrcInstance_->get_selectedConvUid()) {
+                lrcInstance_->set_selectedConvUid(convUid);
                 convModel->selectConversation(convUid);
             }
         } catch (...) {

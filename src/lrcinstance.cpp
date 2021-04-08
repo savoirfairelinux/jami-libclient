@@ -238,18 +238,6 @@ LRCInstance::setSelectedAccountId(const QString& accountId)
     Q_EMIT currentAccountChanged();
 }
 
-const QString&
-LRCInstance::getCurrentConvUid()
-{
-    return selectedConvUid_;
-}
-
-void
-LRCInstance::setSelectedConvId(const QString& convUid)
-{
-    selectedConvUid_ = convUid;
-}
-
 int
 LRCInstance::getCurrentAccountIndex()
 {
@@ -384,7 +372,7 @@ LRCInstance::selectConversation(const QString& accountId, const QString& convUid
 {
     const auto& convInfo = getConversationFromConvUid(convUid, accountId);
 
-    if (getCurrentConvUid() != convInfo.uid || convInfo.participants.size() > 0) {
+    if (get_selectedConvUid() != convInfo.uid || convInfo.participants.size() > 0) {
         // If the account is not currently selected, do that first, then
         // proceed to select the conversation.
         auto selectConversation = [this, accountId, convUid = convInfo.uid] {
@@ -393,7 +381,7 @@ LRCInstance::selectConversation(const QString& accountId, const QString& convUid
                 return;
             }
             auto& accInfo = getAccountInfo(convInfo.accountId);
-            setSelectedConvId(convInfo.uid);
+            set_selectedConvUid(convInfo.uid);
             accInfo.conversationModel->clearUnreadInteractions(convInfo.uid);
 
             try {
@@ -408,7 +396,7 @@ LRCInstance::selectConversation(const QString& accountId, const QString& convUid
             Utils::oneShotConnect(this, &LRCInstance::currentAccountChanged, [selectConversation] {
                 selectConversation();
             });
-            setSelectedConvId();
+            set_selectedConvUid();
             setSelectedAccountId(convInfo.accountId);
         } else {
             selectConversation();
