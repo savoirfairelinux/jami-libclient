@@ -277,13 +277,11 @@ Rectangle {
             handle: Rectangle {
                 implicitWidth: JamiTheme.splitViewHandlePreferredWidth
                 implicitHeight: splitView.height
-                color: JamiTheme.backgroundColor
+                color: JamiTheme.primaryBackgroundColor
                 Rectangle {
                     implicitWidth: 1
                     implicitHeight: splitView.height
-                    color: SplitHandle.pressed ? JamiTheme.pressColor :
-                                                 (SplitHandle.hovered ? JamiTheme.hoverColor :
-                                                                        JamiTheme.tabbarBorderColor)
+                    color: JamiTheme.tabbarBorderColor
                 }
             }
 
