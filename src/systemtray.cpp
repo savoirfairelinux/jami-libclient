@@ -227,7 +227,6 @@ SystemTray::showNotification(const QString& id,
     Q_UNUSED(title)
     Q_UNUSED(body)
     Q_UNUSED(type)
-    Q_UNUSED(convUid)
 #endif // USE_LIBNOTIFY
 }
 
