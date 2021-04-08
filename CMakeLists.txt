@@ -74,7 +74,8 @@ set(COMMON_SOURCES
     ${SRC_DIR}/moderatorlistmodel.cpp
     ${SRC_DIR}/screensaver.cpp
     ${SRC_DIR}/systemtray.cpp
-    ${SRC_DIR}/appsettingsmanager.cpp)
+    ${SRC_DIR}/appsettingsmanager.cpp
+    ${SRC_DIR}/lrcinstance.cpp)
 
 set(COMMON_HEADERS
     ${SRC_DIR}/avatarimageprovider.h
@@ -86,7 +87,6 @@ set(COMMON_HEADERS
     ${SRC_DIR}/version.h
     ${SRC_DIR}/accountlistmodel.h
     ${SRC_DIR}/runguard.h
-    ${SRC_DIR}/lrcinstance.h
     ${SRC_DIR}/webchathelpers.h
     ${SRC_DIR}/rendermanager.h
     ${SRC_DIR}/connectivitymonitor.h
@@ -127,7 +127,8 @@ set(COMMON_HEADERS
     ${SRC_DIR}/moderatorlistmodel.h
     ${SRC_DIR}/screensaver.h
     ${SRC_DIR}/systemtray.h
-    ${SRC_DIR}/appsettingsmanager.h)
+    ${SRC_DIR}/appsettingsmanager.h
+    ${SRC_DIR}/lrcinstance.h)
 
 find_package(PkgConfig REQUIRED)
 

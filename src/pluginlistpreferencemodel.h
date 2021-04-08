@@ -20,6 +20,8 @@
 
 #include "abstractitemmodelbase.h"
 
+#include "api/pluginmodel.h"
+
 class PluginListPreferenceModel : public AbstractListModelBase
 {
     Q_OBJECT

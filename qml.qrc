@@ -1,6 +1,40 @@
 <RCC>
     <qresource prefix="/">
+        <file>src/MainApplicationWindow.qml</file>
+        <file>src/DaemonReconnectWindow.qml</file>
+        <file>src/constant/JamiQmlUtils.qml</file>
         <file>src/constant/JamiStrings.qml</file>
+        <file>src/constant/JamiTheme.qml</file>
+        <file>src/commoncomponents/SettingParaCombobox.qml</file>
+        <file>src/commoncomponents/PreferenceItemDelegate.qml</file>
+        <file>src/commoncomponents/PasswordDialog.qml</file>
+        <file>src/commoncomponents/MaterialLineEdit.qml</file>
+        <file>src/commoncomponents/PhotoboothView.qml</file>
+        <file>src/commoncomponents/LookupStatusLabel.qml</file>
+        <file>src/commoncomponents/ListViewJami.qml</file>
+        <file>src/commoncomponents/DeleteAccountDialog.qml</file>
+        <file>src/commoncomponents/CustomBorder.qml</file>
+        <file>src/commoncomponents/PushButton.qml</file>
+        <file>src/commoncomponents/JamiFileDialog.qml</file>
+        <file>src/commoncomponents/TintedButton.qml</file>
+        <file>src/commoncomponents/GeneralMenuItem.qml</file>
+        <file>src/commoncomponents/GeneralMenuSeparator.qml</file>
+        <file>src/commoncomponents/AccountMigrationDialog.qml</file>
+        <file>src/commoncomponents/MaterialButton.qml</file>
+        <file>src/commoncomponents/ElidedTextLabel.qml</file>
+        <file>src/commoncomponents/js/contextmenugenerator.js</file>
+        <file>src/commoncomponents/BaseContextMenu.qml</file>
+        <file>src/commoncomponents/SpinnerButton.qml</file>
+        <file>src/commoncomponents/UsernameLineEdit.qml</file>
+        <file>src/commoncomponents/Scaffold.qml</file>
+        <file>src/commoncomponents/LineEditContextMenu.qml</file>
+        <file>src/commoncomponents/BaseDialog.qml</file>
+        <file>src/commoncomponents/ModalPopup.qml</file>
+        <file>src/commoncomponents/SimpleMessageDialog.qml</file>
+        <file>src/commoncomponents/ResponsiveImage.qml</file>
+        <file>src/commoncomponents/PresenceIndicator.qml</file>
+        <file>src/commoncomponents/AvatarImage.qml</file>
+        <file>src/commoncomponents/DaemonReconnectPopup.qml</file>
         <file>src/settingsview/SettingsView.qml</file>
         <file>src/settingsview/components/ChatviewSettings.qml</file>
         <file>src/settingsview/components/SettingsMenu.qml</file>
@@ -42,22 +76,13 @@
         <file>src/settingsview/components/SettingsComboBox.qml</file>
         <file>src/settingsview/components/SettingsMaterialLineEdit.qml</file>
         <file>src/settingsview/components/LevelMeter.qml</file>
-        <file>src/commoncomponents/SettingParaCombobox.qml</file>
         <file>src/settingsview/components/DeviceItemDelegate.qml</file>
         <file>src/settingsview/components/PluginItemDelegate.qml</file>
-        <file>src/mainview/components/PluginHandlerItemDelegate.qml</file>
-        <file>src/commoncomponents/PreferenceItemDelegate.qml</file>
         <file>src/settingsview/components/ContactItemDelegate.qml</file>
         <file>src/settingsview/components/MediaCodecDelegate.qml</file>
         <file>src/settingsview/components/NameRegistrationDialog.qml</file>
         <file>src/settingsview/components/LinkDeviceDialog.qml</file>
         <file>src/settingsview/components/RevokeDevicePasswordDialog.qml</file>
-        <file>src/commoncomponents/PasswordDialog.qml</file>
-        <file>src/commoncomponents/MaterialLineEdit.qml</file>
-        <file>src/commoncomponents/PhotoboothView.qml</file>
-        <file>src/commoncomponents/LookupStatusLabel.qml</file>
-        <file>src/commoncomponents/ListViewJami.qml</file>
-        <file>src/commoncomponents/DeleteAccountDialog.qml</file>
         <file>src/wizardview/WizardView.qml</file>
         <file>src/wizardview/components/WelcomePage.qml</file>
         <file>src/wizardview/components/CreateAccountPage.qml</file>
@@ -68,27 +93,22 @@
         <file>src/wizardview/components/ConnectToAccountManagerPage.qml</file>
         <file>src/wizardview/components/ProfilePage.qml</file>
         <file>src/wizardview/components/CollapsiblePasswordWidget.qml</file>
-        <file>src/MainApplicationWindow.qml</file>
+        <file>src/wizardview/components/AccountCreationStepIndicator.qml</file>
         <file>src/mainview/MainView.qml</file>
-        <file>src/commoncomponents/CustomBorder.qml</file>
-        <file>src/constant/JamiTheme.qml</file>
+        <file>src/mainview/components/PluginHandlerItemDelegate.qml</file>
         <file>src/mainview/components/AboutPopUp.qml</file>
         <file>src/mainview/components/SidePanel.qml</file>
         <file>src/mainview/components/WelcomePage.qml</file>
         <file>src/mainview/components/MessageWebView.qml</file>
         <file>src/mainview/components/MessageWebViewHeader.qml</file>
-        <file>src/commoncomponents/PushButton.qml</file>
         <file>src/mainview/components/AccountComboBox.qml</file>
         <file>src/mainview/components/ConversationSmartListView.qml</file>
-        <file>src/commoncomponents/JamiFileDialog.qml</file>
         <file>src/mainview/components/CallStackView.qml</file>
         <file>src/mainview/components/IncomingCallPage.qml</file>
         <file>src/mainview/components/OutgoingCallPage.qml</file>
         <file>src/mainview/components/AudioCallPage.qml</file>
         <file>src/mainview/components/CallOverlay.qml</file>
-        <file>src/commoncomponents/TintedButton.qml</file>
         <file>src/mainview/components/CallOverlayButtonGroup.qml</file>
-        <file>src/mainview/js/incomingcallpagecreation.js</file>
         <file>src/mainview/components/ContactSearchBar.qml</file>
         <file>src/mainview/components/VideoCallPage.qml</file>
         <file>src/mainview/components/ParticipantOverlay.qml</file>
@@ -97,46 +117,26 @@
         <file>src/mainview/components/ConversationSmartListViewItemDelegate.qml</file>
         <file>src/mainview/components/SidePanelTabBar.qml</file>
         <file>src/mainview/components/WelcomePageQrDialog.qml</file>
-        <file>src/commoncomponents/GeneralMenuItem.qml</file>
         <file>src/mainview/components/ConversationSmartListContextMenu.qml</file>
         <file>src/mainview/components/CallViewContextMenu.qml</file>
-        <file>src/commoncomponents/GeneralMenuSeparator.qml</file>
         <file>src/mainview/components/UserProfile.qml</file>
-        <file>src/mainview/js/videodevicecontextmenuitemcreation.js</file>
         <file>src/mainview/components/VideoCallPageContextMenuDeviceItem.qml</file>
         <file>src/mainview/components/SelectScreen.qml</file>
-        <file>src/mainview/js/selectscreenwindowcreation.js</file>
         <file>src/mainview/components/ScreenRubberBand.qml</file>
-        <file>src/mainview/js/screenrubberbandcreation.js</file>
-        <file>src/mainview/js/callfullscreenwindowcontainercreation.js</file>
         <file>src/mainview/components/VideoCallFullScreenWindowContainer.qml</file>
         <file>src/mainview/components/ContactPicker.qml</file>
         <file>src/mainview/components/PluginHandlerPicker.qml</file>
+        <file>src/mainview/components/ContactPickerItemDelegate.qml</file>
+        <file>src/mainview/components/RecordBox.qml</file>
+        <file>src/mainview/components/SipInputPanel.qml</file>
+        <file>src/mainview/components/ParticipantOverlayMenu.qml</file>
+        <file>src/mainview/components/UserInfoCallPage.qml</file>
+        <file>src/mainview/js/videodevicecontextmenuitemcreation.js</file>
+        <file>src/mainview/js/incomingcallpagecreation.js</file>
+        <file>src/mainview/js/selectscreenwindowcreation.js</file>
+        <file>src/mainview/js/screenrubberbandcreation.js</file>
+        <file>src/mainview/js/callfullscreenwindowcontainercreation.js</file>
         <file>src/mainview/js/contactpickercreation.js</file>
         <file>src/mainview/js/pluginhandlerpickercreation.js</file>
-        <file>src/mainview/components/ContactPickerItemDelegate.qml</file>
-        <file>src/commoncomponents/AccountMigrationDialog.qml</file>
-        <file>src/commoncomponents/MaterialButton.qml</file>
-        <file>src/mainview/components/RecordBox.qml</file>
-        <file>src/commoncomponents/ElidedTextLabel.qml</file>
-        <file>src/mainview/components/SipInputPanel.qml</file>
-        <file>src/commoncomponents/js/contextmenugenerator.js</file>
-        <file>src/commoncomponents/BaseContextMenu.qml</file>
-        <file>src/commoncomponents/Scaffold.qml</file>
-        <file>src/constant/JamiQmlUtils.qml</file>
-        <file>src/wizardview/components/AccountCreationStepIndicator.qml</file>
-        <file>src/commoncomponents/SpinnerButton.qml</file>
-        <file>src/commoncomponents/UsernameLineEdit.qml</file>
-        <file>src/mainview/components/UserInfoCallPage.qml</file>
-        <file>src/commoncomponents/BaseDialog.qml</file>
-        <file>src/commoncomponents/ModalPopup.qml</file>
-        <file>src/commoncomponents/SimpleMessageDialog.qml</file>
-        <file>src/commoncomponents/ResponsiveImage.qml</file>
-        <file>src/commoncomponents/PresenceIndicator.qml</file>
-        <file>src/commoncomponents/AvatarImage.qml</file>
-        <file>src/mainview/components/ParticipantOverlayMenu.qml</file>
-        <file>src/commoncomponents/DaemonReconnectPopup.qml</file>
-        <file>src/DaemonReconnectWindow.qml</file>
-        <file>src/commoncomponents/LineEditContextMenu.qml</file>
     </qresource>
 </RCC>

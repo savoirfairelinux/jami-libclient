@@ -128,7 +128,7 @@ UpdateManager::applyUpdates(bool beta)
     get(
         downloadUrl,
         [this, downloadUrl](const QString&) {
-            lrcInstance_->reset();
+            lrcInstance_->finish();
             Q_EMIT lrcInstance_->quitEngineRequested();
             auto args = QString(" /passive /norestart WIXNONUILAUNCH=1");
             QProcess process;

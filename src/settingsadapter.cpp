@@ -18,6 +18,7 @@
 
 #include "settingsadapter.h"
 
+#include "api/newcodecmodel.h"
 #include "api/newdevicemodel.h"
 
 SettingsAdapter::SettingsAdapter(AppSettingsManager* settingsManager,

@@ -28,6 +28,8 @@
 #include "utils.h"
 
 #include <QApplication>
+#include <QTimer>
+#include <QJsonObject>
 
 CallAdapter::CallAdapter(SystemTray* systemTray, LRCInstance* instance, QObject* parent)
     : QmlAdapterBase(instance, parent)
@@ -475,7 +477,7 @@ CallAdapter::connectCallModel(const QString& accountId)
                  */
                 bool forceCallOnly {false};
                 if (!convInfo.confId.isEmpty()) {
-                    auto callList = lrcInstance_->getAPI().getConferenceSubcalls(convInfo.confId);
+                    auto callList = lrcInstance_->getConferenceSubcalls(convInfo.confId);
                     if (callList.empty()) {
                         auto lastConference = lrcInstance_->poplastConference(convInfo.confId);
                         if (!lastConference.isEmpty()) {
@@ -612,7 +614,7 @@ CallAdapter::hangupCall(const QString& uri)
              * so we can switch the smartlist index after termination.
              */
             if (!convInfo.confId.isEmpty()) {
-                auto callList = lrcInstance_->getAPI().getConferenceSubcalls(convInfo.confId);
+                auto callList = lrcInstance_->getConferenceSubcalls(convInfo.confId);
                 if (callList.size() == 2) {
                     for (const auto& cId : callList) {
                         if (cId != convInfo.callId) {

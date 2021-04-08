@@ -35,6 +35,8 @@
 #include <QImageReader>
 #include <QList>
 #include <QUrl>
+#include <QMimeData>
+#include <QBuffer>
 
 MessagesAdapter::MessagesAdapter(AppSettingsManager* settingsManager,
                                  LRCInstance* instance,

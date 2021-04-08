@@ -104,7 +104,6 @@ HEADERS += \
         src/version.h \
         src/accountlistmodel.h \
         src/runguard.h \
-        src/lrcinstance.h \
         src/webchathelpers.h \
         src/rendermanager.h \
         src/connectivitymonitor.h \
@@ -139,7 +138,8 @@ HEADERS += \
         src/qtutils.h \
         src/utilsadapter.h \
         src/systemtray.h \
-        src/appsettingsmanager.h
+        src/appsettingsmanager.h \
+        src/lrcinstance.h
 
 SOURCES += \
         src/bannedlistmodel.cpp \
@@ -181,7 +181,8 @@ SOURCES += \
         src/qmlregister.cpp \
         src/utilsadapter.cpp \
         src/systemtray.cpp \
-        src/appsettingsmanager.cpp
+        src/appsettingsmanager.cpp \
+        src/lrcinstance.cpp
 
 RESOURCES += \
         resources.qrc \

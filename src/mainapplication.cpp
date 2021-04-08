@@ -46,6 +46,9 @@
 #include <QFontDatabase>
 #include <QMenu>
 #include <QQmlContext>
+#include <QResource>
+#include <QTranslator>
+#include <QLibraryInfo>
 
 #include <locale.h>
 #include <thread>
@@ -339,7 +342,6 @@ MainApplication::initLrc(const QString& downloadUrl, ConnectivityMonitor* cm)
         downloadUrl,
         cm));
     lrcInstance_->subscribeToDebugReceived();
-    lrcInstance_->getAPI().holdConferences = false;
 }
 
 const QVariantMap

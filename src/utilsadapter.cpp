@@ -27,6 +27,8 @@
 #include "utils.h"
 #include "version.h"
 
+#include "api/pluginmodel.h"
+
 #include <QApplication>
 #include <QClipboard>
 #include <QFileInfo>

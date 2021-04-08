@@ -39,6 +39,12 @@
 #include "videoformatresolutionmodel.h"
 #include "videoinputdevicemodel.h"
 
+#include "api/peerdiscoverymodel.h"
+#include "api/newcodecmodel.h"
+#include "api/newdevicemodel.h"
+#include "api/datatransfermodel.h"
+#include "api/pluginmodel.h"
+
 #include <QMetaType>
 #include <QQmlEngine>
 
