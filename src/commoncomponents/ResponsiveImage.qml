@@ -61,19 +61,15 @@ Image {
     }
 
     function setSourceSize() {
-        if (ScreenInfo.getDevicePixelRatio() === 1.0)
-            return
-        if (isSvg) {
-            sourceSize = undefined
+        sourceSize = undefined
+        if (isSvg)
             sourceSize = Qt.size(width, height)
-        } else
-            sourceSize = undefined
     }
 
     Connections {
         target: ScreenInfo
 
-        function onDevicePixelRatioChanged(){
+        function onDevicePixelRatioChanged() {
             setSourceSize()
         }
     }

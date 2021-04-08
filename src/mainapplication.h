@@ -50,10 +50,6 @@ public:
             Q_EMIT devicePixelRatioChanged();
         }
     }
-    Q_INVOKABLE double getDevicePixelRatio()
-    {
-        return devicePixelRatio_;
-    }
 
 Q_SIGNALS:
     void devicePixelRatioChanged();
