@@ -616,6 +616,8 @@ Rectangle {
         sequence: "F11"
         context: Qt.ApplicationShortcut
         onActivated: {
+            if (JamiQmlUtils.callIsFullscreen)
+                return
             if (containerWindow.visibility !== Window.FullScreen)
                 containerWindow.visibility = Window.FullScreen
             else
@@ -643,6 +645,15 @@ Rectangle {
         sequence: "Ctrl+Shift+N"
         context: Qt.ApplicationShortcut
         onActivated: startWizard()
+    }
+
+    Shortcut {
+        sequence: "Escape"
+        context: Qt.ApplicationShortcut
+        onActivated: {
+            if (JamiQmlUtils.callIsFullscreen)
+                callStackView.toggleFullScreen()
+        }
     }
 
     KeyBoardShortcutTable {

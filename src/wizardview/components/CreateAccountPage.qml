@@ -59,13 +59,6 @@ Rectangle {
 
     color: JamiTheme.backgroundColor
 
-    Shortcut {
-        context: Qt.ApplicationShortcut
-        sequence: "Esc"
-        enabled: !root.activeFocus
-        onActivated: leavePage()
-    }
-
     onVisibleChanged: {
         if (visible && createAccountStack.currentIndex === 0)
             usernameEdit.focus = true
