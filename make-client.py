@@ -19,6 +19,8 @@ vs_where_path = os.path.join(
 )
 
 host_is_64bit = (False, True)[platform.machine().endswith('64')]
+this_dir = os.path.dirname(os.path.realpath(__file__))
+build_dir = this_dir + '\\build'
 
 class QtVerison(Enum):
     Major = 0
@@ -50,6 +52,11 @@ def getLatestVSVersion():
     else:
         return
 
+def getCMakeGenerator(vs_version):
+    if vs_version == '15':
+        return 'Visual Studio 15 2017 Win64'
+    else:
+        return 'Visual Studio ' + vs_version + ' 2019'
 
 def findVSLatestDir():
     args = [
@@ -66,7 +73,6 @@ def findVSLatestDir():
     else:
         return
 
-
 def getQtVersionNumber(qt_version, version_type):
     version_list = qt_version.split('.')
     return version_list[version_type.value]
@@ -77,6 +83,18 @@ def findMSBuild():
         if filename in files:
             return os.path.join(root, filename)
 
+def getMSBuildArgs(arch, config_str, configuration_type, toolset):
+    msbuild_args = [
+        '/nologo',
+        '/verbosity:minimal',
+        '/maxcpucount:' + str(multiprocessing.cpu_count()),
+        '/p:Platform=' + arch,
+        '/p:Configuration=' + config_str,
+        '/p:ConfigurationType=' + configuration_type,
+        '/p:useenv=true']
+    if (toolset != ''):
+        msbuild_args.append('/p:PlatformToolset=' + toolset)
+    return msbuild_args
 
 def getVSEnv(arch='x64', platform='', version=''):
     env_cmd = 'set path=%path:"=% && ' + \
@@ -137,8 +155,19 @@ def deps(arch, toolset, qtver):
         sys.exit(1)
 
     print('Building qrcodelib')
-    build(arch, '', '', 'Release-Lib',
-          '\\qrencode-win32\\qrencode-win32\\vc8\\qrcodelib\\qrcodelib.vcxproj', qtver, False)
+
+    vs_env_vars = {}
+    vs_env_vars.update(getVSEnv())
+
+    msbuild = findMSBuild()
+    if not os.path.isfile(msbuild):
+        raise IOError('msbuild.exe not found. path=' + msbuild)
+    msbuild_args = getMSBuildArgs(arch, 'Release-Lib', 'StaticLibrary', toolset)
+
+    this_dir = os.path.dirname(os.path.realpath(__file__))
+    proj_path = this_dir + '\\qrencode-win32\\qrencode-win32\\vc8\\qrcodelib\\qrcodelib.vcxproj'
+
+    build_project(msbuild, msbuild_args, proj_path, vs_env_vars)
 
 
 def build(arch, toolset, sdk_version, config_str, project_path_under_current_path, qtver, force_option=True):
@@ -146,30 +175,56 @@ def build(arch, toolset, sdk_version, config_str, project_path_under_current_pat
 
     configuration_type = 'StaticLibrary'
 
-    qt_minor_version = getQtVersionNumber(qtver, QtVerison.Minor)
-    qtFolderDir = 'msvc2017_64' if int(qt_minor_version) <= 14 else 'msvc2019_64'
-
     vs_env_vars = {}
     vs_env_vars.update(getVSEnv())
 
-    qmake_cmd = "C:\\Qt\\" + qtver + "\\" + qtFolderDir + "\\bin\\qmake.exe"
+    qt_dir = 'C:\\Qt\\' + qtver
+    cmake_gen = getCMakeGenerator(getLatestVSVersion())
+    qt_minor_version = getQtVersionNumber(qtver, QtVerison.Minor)
+    msvc_folder = '\\msvc2017_64' if int(qt_minor_version) <= 14 else '\\msvc2019_64'
+
+    qt_cmake_dir = qt_dir + msvc_folder + '\\lib\\cmake\\'
+    cmake_prefix_path = qt_dir + msvc_folder
+
+    cmake_options = [
+        '-DCMAKE_PREFIX_PATH=' + cmake_prefix_path,
+        '-DQt5_DIR=' + qt_cmake_dir + 'Qt5',
+        '-DQt5Core_DIR=' + qt_cmake_dir + 'Qt5Core',
+        '-DQt5Sql_DIR=' + qt_cmake_dir + 'Qt5Sql',
+        '-DQt5LinguistTools_DIR=' + qt_cmake_dir + 'Qt5LinguistTools',
+        '-DQt5Concurrent_DIR=' + qt_cmake_dir + 'Qt5Concurrent',
+        '-DQt5Gui_DIR=' + qt_cmake_dir + 'Qt5Gui',
+        '-DCMAKE_SYSTEM_VERSION=' + sdk_version
+    ]
+    if not os.path.exists(build_dir):
+        os.makedirs(build_dir)
+    os.chdir(build_dir)
+
     if (config_str == 'Release'):
-        print('Generating project using qmake ' + config_str + '|' + arch)
-        if(execute_cmd(qmake_cmd + " -tp vc jami-qt.pro -o jami-qt.vcxproj", False, vs_env_vars)):
-            print("Qmake vcxproj file generate error")
+        print('Generating project using cmake ' + config_str + '|' + arch)
+        cmd = ['cmake', '..', '-G', cmake_gen]
+        cmd.extend(cmake_options)
+        if(execute_cmd(cmd, False, vs_env_vars)):
+            print("Cmake vcxproj file generate error")
             sys.exit(1)
         configuration_type = 'Application'
     elif (config_str == 'Beta'):
-        print('Generating project using qmake ' + config_str + '|' + arch)
-        if(execute_cmd(qmake_cmd + " -tp vc jami-qt.pro -o jami-qt.vcxproj CONFIG+=Beta", False, vs_env_vars)):
-            print("Beta: Qmake vcxproj file generate error")
+        print('Generating project using cmake ' + config_str + '|' + arch)
+        cmake_options.append('-DBETA=1')
+        cmd = ['cmake', '..', '-G', cmake_gen]
+        cmd.extend(cmake_options)
+        if(execute_cmd(cmd, False, vs_env_vars)):
+            print("Beta: Cmake vcxproj file generate error")
             sys.exit(1)
         config_str = 'Release'
         configuration_type = 'Application'
     elif (config_str == 'ReleaseCompile'):
         print('Generating project using qmake ' + config_str + '|' + arch)
-        if(execute_cmd(qmake_cmd + " -tp vc jami-qt.pro -o jami-qt.vcxproj CONFIG+=ReleaseCompile", False, vs_env_vars)):
-            print("ReleaseCompile: Qmake vcxproj file generate error")
+        cmake_options.append('-DReleaseCompile=1')
+        cmd = ['cmake', '..', '-G', cmake_gen]
+        cmd.extend(cmake_options)
+        if(execute_cmd(cmd, False, vs_env_vars)):
+            print("ReleaseCompile: Cmake vcxproj file generate error")
             sys.exit(1)
         config_str = 'Release'
 
@@ -177,22 +232,13 @@ def build(arch, toolset, sdk_version, config_str, project_path_under_current_pat
     # but will be outputted into x64/Beta folder (for Beta Only)
 
     print('Building projects in ' + config_str + '|' + arch)
-    this_dir = os.path.dirname(os.path.realpath(__file__))
-    qt_client_proj_path = this_dir + project_path_under_current_path
+    qt_client_proj_path = build_dir + project_path_under_current_path
 
     msbuild = findMSBuild()
     if not os.path.isfile(msbuild):
         raise IOError('msbuild.exe not found. path=' + msbuild)
-    msbuild_args = [
-        '/nologo',
-        '/verbosity:minimal',
-        '/maxcpucount:' + str(multiprocessing.cpu_count()),
-        '/p:Platform=' + arch,
-        '/p:Configuration=' + config_str,
-        '/p:ConfigurationType=' + configuration_type,
-        '/p:useenv=true']
-    if (toolset != ''):
-        msbuild_args.append('/p:PlatformToolset=' + toolset)
+    msbuild_args = getMSBuildArgs(arch, config_str, configuration_type, toolset)
+
     if (force_option):
         # force toolset
         replace_vs_prop(qt_client_proj_path,

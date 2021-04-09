@@ -43,7 +43,7 @@ public:
      */
     QPair<QrType, QString> getIndexFromID(const QString& id)
     {
-        auto list = id.split('_', QString::SplitBehavior::SkipEmptyParts);
+        auto list = id.split('_', Qt::SkipEmptyParts);
         if (list.size() < 2)
             return {QrType::Account, ""};
         if (list.contains("account") && list.size() > 1) {

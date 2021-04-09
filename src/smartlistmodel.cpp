@@ -298,7 +298,7 @@ SmartListModel::getConversationItemData(const conversation::Info& item,
     case Role::LastInteractionDate: {
         if (!item.interactions.empty()) {
             auto& date = item.interactions.at(item.lastMessageUid).timestamp;
-            return QVariant(QString::fromStdString(Utils::formatTimeString(date)));
+            return QVariant(Utils::formatTimeString(date));
         }
         return QVariant("");
     }

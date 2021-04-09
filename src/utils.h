@@ -74,7 +74,7 @@ void removeOldVersions();
 // LRC helpers
 lrc::api::profile::Type profileType(const lrc::api::conversation::Info& conv,
                                     const lrc::api::ConversationModel& model);
-std::string formatTimeString(const std::time_t& timestamp);
+QString formatTimeString(const std::time_t& timeStamp);
 bool isInteractionGenerated(const lrc::api::interaction::Type& interaction);
 bool isContactValid(const QString& contactUid, const lrc::api::ConversationModel& model);
 bool getReplyMessageBox(QWidget* widget, const QString& title, const QString& text);

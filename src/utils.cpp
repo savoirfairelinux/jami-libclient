@@ -36,7 +36,7 @@
 #include <QPainter>
 #include <QPropertyAnimation>
 #include <QScreen>
-#include <QStackedWidget>
+#include <QDateTime>
 #include <QSvgRenderer>
 #include <QTranslator>
 #include <QtConcurrent/QtConcurrent>
@@ -496,21 +496,16 @@ Utils::profileType(const lrc::api::conversation::Info& conv,
     }
 }
 
-// TODO: use Qt for this
-std::string
-Utils::formatTimeString(const std::time_t& timestamp)
+QString
+Utils::formatTimeString(const std::time_t& timeStamp)
 {
-    std::time_t now = std::time(nullptr);
-    char interactionDay[64];
-    char nowDay[64];
-    std::strftime(interactionDay, sizeof(interactionDay), "%D", std::localtime(&timestamp));
-    std::strftime(nowDay, sizeof(nowDay), "%D", std::localtime(&now));
-    if (std::string(interactionDay) == std::string(nowDay)) {
-        char interactionTime[64];
-        std::strftime(interactionTime, sizeof(interactionTime), "%R", std::localtime(&timestamp));
-        return interactionTime;
+    auto currentTimeStamp = QDateTime::fromSecsSinceEpoch(timeStamp);
+    auto now = QDateTime::currentDateTime();
+    auto timeStampDMY = currentTimeStamp.toString("dd/MM/yyyy");
+    if (timeStampDMY == now.toString("dd/MM/yyyy")) {
+        return currentTimeStamp.toString("hh:mm");
     } else {
-        return interactionDay;
+        return timeStampDMY;
     }
 }
 
