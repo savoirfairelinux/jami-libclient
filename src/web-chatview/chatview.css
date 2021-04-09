@@ -50,10 +50,14 @@
     font-family: emoji;
 
     /* Fonts for text outside emoji blocks */
-    src: local('Open sans'),
+    src: local('Muli'),
+         local('Open sans'),
          local('Helvetica'),
          local('Segoe UI'),
-         local('sans-serif');
+         local('sans-serif'),
+         local('Liberation Sans'),
+         local('Liberation Mono'),
+         local('Ubuntu');
 }
 
 @font-face {
