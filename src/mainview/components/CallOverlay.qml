@@ -270,40 +270,6 @@ Rectangle {
 
             anchors.fill: parent
 
-            PushButton {
-                id: backButton
-
-                Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
-                Layout.preferredWidth: JamiTheme.preferredFieldHeight
-                Layout.preferredHeight: JamiTheme.preferredFieldHeight
-                Layout.rightMargin: JamiTheme.preferredMarginSize
-                Layout.topMargin: JamiTheme.preferredMarginSize
-                Layout.leftMargin: JamiTheme.preferredMarginSize
-
-
-                source: JamiQmlUtils.callIsFullscreen ?
-                            "qrc:/images/icons/round-close-24px.svg" :
-                            "qrc:/images/icons/ic_arrow_back_24px.svg"
-
-                pressedColor: JamiTheme.invertedPressedButtonColor
-                hoveredColor: JamiTheme.invertedHoveredButtonColor
-                normalColor: JamiTheme.invertedNormalButtonColor
-
-                imageColor: JamiTheme.whiteColor
-
-                toolTipText: qsTr("Toggle to display side panel")
-
-                visible: true
-
-                onClicked: {
-                    if (JamiQmlUtils.callIsFullscreen) {
-                        callStackView.toggleFullScreen()
-                    } else {
-                        mainView.showWelcomeView()
-                    }
-                }
-            }
-
             Text {
                 id: jamiBestNameText
 
