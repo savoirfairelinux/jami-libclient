@@ -134,6 +134,10 @@ Rectangle {
                             audioCallOverlay.showOnHoldImage(isPaused)
                             audioCallPageRectCentralRect.visible = !isPaused
                         }
+
+                        function onRemoteRecordingChanged(label, state) {
+                            audioCallOverlay.showRemoteRecording(label, state)
+                        }
                     }
 
                     onOverlayChatButtonClicked: {

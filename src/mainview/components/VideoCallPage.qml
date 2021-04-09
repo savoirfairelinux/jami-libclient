@@ -179,7 +179,6 @@ Rectangle {
 
                         function onUpdateTimeText(time) {
                             videoCallOverlay.timeText = time
-                            videoCallOverlay.setRecording(CallAdapter.isRecordingThisCall())
                         }
 
                         function onUpdateOverlay(isPaused, isAudioOnly, isAudioMuted, isVideoMuted,

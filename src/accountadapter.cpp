@@ -246,7 +246,7 @@ AccountAdapter::startPreviewing(bool force)
 void
 AccountAdapter::stopPreviewing()
 {
-    if (!lrcInstance_->hasVideoCall() && lrcInstance_->renderer()->isPreviewing()) {
+    if (!lrcInstance_->hasActiveCall(true) && lrcInstance_->renderer()->isPreviewing()) {
         lrcInstance_->renderer()->stopPreviewing();
     }
 }
@@ -254,7 +254,7 @@ AccountAdapter::stopPreviewing()
 bool
 AccountAdapter::hasVideoCall()
 {
-    return lrcInstance_->hasVideoCall();
+    return lrcInstance_->hasActiveCall(true);
 }
 
 bool

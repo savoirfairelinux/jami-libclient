@@ -86,6 +86,10 @@ CallAdapter::onAccountChanged()
 void
 CallAdapter::onCallStatusChanged(const QString& accountId, const QString& callId)
 {
+    // :/ one timer for all the call overlays
+    if (!lrcInstance_->hasActiveCall())
+        oneSecondTimer_->stop();
+
 #ifdef Q_OS_LINUX
     auto& accInfo = lrcInstance_->accountModel().getAccountInfo(accountId);
     auto& callModel = accInfo.callModel;
@@ -119,6 +123,9 @@ CallAdapter::onCallStatusChanged(const QString& accountId, const QString& callId
                                           Utils::QImageToByteArray(contactPhoto));
         }
     }
+#else
+    Q_UNUSED(accountId)
+    Q_UNUSED(callId)
 #endif
 }
 
@@ -420,6 +427,13 @@ CallAdapter::connectCallModel(const QString& accountId)
 {
     auto& accInfo = lrcInstance_->accountModel().getAccountInfo(accountId);
 
+    QObject::connect(
+        oneSecondTimer_,
+        &QTimer::timeout,
+        this,
+        [this] { setTime(accountId_, convUid_); },
+        Qt::UniqueConnection);
+
     connect(
         accInfo.callModel.get(),
         &lrc::api::NewCallModel::onParticipantsChanged,
@@ -573,9 +587,7 @@ void
 CallAdapter::updateCallOverlay(const lrc::api::conversation::Info& convInfo)
 {
     setTime(accountId_, convUid_);
-    QObject::disconnect(oneSecondTimer_);
-    QObject::connect(oneSecondTimer_, &QTimer::timeout, [this] { setTime(accountId_, convUid_); });
-    oneSecondTimer_->start(20);
+    oneSecondTimer_->start(1000);
     auto& accInfo = lrcInstance_->accountModel().getAccountInfo(accountId_);
 
     auto* call = lrcInstance_->getCallInfoForConversation(convInfo);
