@@ -186,7 +186,7 @@ Rectangle {
 
             anchors.fill: parent
             hoverEnabled: true
-            propagateComposedEvents: false
+            propagateComposedEvents: true
             acceptedButtons: Qt.LeftButton
 
             Image {
@@ -231,10 +231,6 @@ Rectangle {
                     fadeOutTimer.restart()
                     participantMenuActive = true
                 }
-            }
-
-            onClicked: {
-                CallAdapter.maximizeParticipant(uri)
             }
 
             onEntered: {
