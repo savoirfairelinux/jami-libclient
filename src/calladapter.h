@@ -33,6 +33,7 @@ class SystemTray;
 class CallAdapter final : public QmlAdapterBase
 {
     Q_OBJECT
+    QML_PROPERTY(bool, hasCall)
 
 public:
     enum MuteStates { UNMUTED, LOCAL_MUTED, MODERATOR_MUTED, BOTH_MUTED };

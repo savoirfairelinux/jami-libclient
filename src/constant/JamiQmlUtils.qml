@@ -21,6 +21,8 @@ pragma Singleton
 
 import QtQuick 2.14
 
+import net.jami.Adapters 1.0
+
 Item {
     readonly property string mainViewLoadPath: "qrc:/src/mainview/MainView.qml"
     readonly property string wizardViewLoadPath: "qrc:/src/wizardview/WizardView.qml"
@@ -28,6 +30,15 @@ Item {
 
     property var mainApplicationScreen: ""
     property bool callIsFullscreen: false
+
+    Connections {
+        target: CallAdapter
+
+        function onHasCallChanged() {
+            if (!CallAdapter.hasCall && callIsFullscreen)
+                callIsFullscreen = false
+        }
+    }
 
     TextMetrics {
         id: globalTextMetrics

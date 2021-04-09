@@ -86,8 +86,10 @@ CallAdapter::onAccountChanged()
 void
 CallAdapter::onCallStatusChanged(const QString& accountId, const QString& callId)
 {
+    set_hasCall(lrcInstance_->hasActiveCall());
+
     // :/ one timer for all the call overlays
-    if (!lrcInstance_->hasActiveCall())
+    if (!hasCall_)
         oneSecondTimer_->stop();
 
 #ifdef Q_OS_LINUX
