@@ -1,4 +1,4 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="ro_RO" sourcelanguage="en" version="2.1">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="ro_RO" sourcelanguage="en" version="2.0">
 <context>
     <name>QObject</name>
     <message>
@@ -67,7 +67,7 @@
     <message>
         <location filename="../src/api/call.h" line="85"/>
         <source>Communication established</source>
-        <translation>Legătură realizată</translation>
+        <translation>Legătură stabilită</translation>
     </message>
     <message>
         <location filename="../src/authority/storagehelper.cpp" line="130"/>
@@ -166,7 +166,7 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="62"/>
         <source>Moved Permanently</source>
-        <translation>Mutat Permanent</translation>
+        <translation>Mutat permanent</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="63"/>
@@ -181,12 +181,12 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="65"/>
         <source>Alternative Service</source>
-        <translation>Serviciu Alternativ</translation>
+        <translation>Serviciu alternativ</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="66"/>
         <source>Bad Request</source>
-        <translation>Cerere Greșită</translation>
+        <translation>Cerere greșită</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="67"/>
@@ -196,7 +196,7 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="68"/>
         <source>Payment Required</source>
-        <translation>Plată Obligatorie</translation>
+        <translation>Plată obligatorie</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="69"/>
@@ -211,7 +211,7 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="71"/>
         <source>Method Not Allowed</source>
-        <translation>Metodă Nepermisă</translation>
+        <translation>Metodă nepermisă</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="72"/>
@@ -227,7 +227,7 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="74"/>
         <source>Request Timeout</source>
-        <translation>Timpul a Expirat</translation>
+        <translation>Timpul a expirat</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="75"/>
@@ -257,12 +257,12 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="80"/>
         <source>Bad Extension</source>
-        <translation>Extensie Greșită</translation>
+        <translation>Extensie greșită</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="81"/>
         <source>Extension Required</source>
-        <translation>Extensie Necesară</translation>
+        <translation>Extensie necesară</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="82"/>
@@ -277,17 +277,17 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="84"/>
         <source>Temporarily Unavailable</source>
-        <translation>Temporar Indisponibil</translation>
+        <translation>Temporar indisponibil</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="85"/>
         <source>Call TSX Does Not Exist</source>
-        <translation>Apelul TSX Nu Există</translation>
+        <translation>Apelul TSX nu există</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="86"/>
         <source>Loop Detected</source>
-        <translation>Loop Descoperit</translation>
+        <translation>Loop descoperit</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="87"/>
@@ -312,17 +312,17 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="91"/>
         <source>Request Terminated</source>
-        <translation>Cerere Terminată</translation>
+        <translation>Cerere terminată</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="93"/>
         <source>Bad Event</source>
-        <translation>Eveniment Greșit</translation>
+        <translation>Eveniment greșit</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="94"/>
         <source>Request Updated</source>
-        <translation>Cerere Actualizată</translation>
+        <translation>Cerere actualizată</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="95"/>
@@ -347,7 +347,7 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="99"/>
         <source>Bad Gateway</source>
-        <translation>Poartă Greșită</translation>
+        <translation>Poartă greșită</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="100"/>
@@ -362,7 +362,7 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="102"/>
         <source>Version Not Supported</source>
-        <translation>Versiune Incompatibilă</translation>
+        <translation>Versiune incompatibilă</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="103"/>
@@ -372,7 +372,7 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="104"/>
         <source>Precondition Failure</source>
-        <translation>Eșec al Precondiției</translation>
+        <translation>Eșec al precondiției</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="105"/>
@@ -382,7 +382,7 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="106"/>
         <source>Call Refused</source>
-        <translation>Apel Refuzat</translation>
+        <translation>Apel refuzat</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="107"/>
@@ -437,7 +437,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="38"/>
         <source>Jump to latest</source>
-        <translation>Sari la cel mai recent</translation>
+        <translation>Saltă la cel mai recent</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="39"/>

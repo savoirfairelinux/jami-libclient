@@ -1,583 +1,583 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="pt_BR" sourcelanguage="en" version="2.0">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="sr_RS" sourcelanguage="en" version="2.0">
 <context>
     <name>QObject</name>
     <message>
         <location filename="../src/qtwrapper/callmanager_wrap.h" line="328"/>
         <source>Me</source>
-        <translation>Eu</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/api/call.h" line="61"/>
         <source>Hold</source>
-        <translation>Aguarde</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/api/call.h" line="63"/>
         <source>Talking</source>
-        <translation>Falando</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/api/call.h" line="65"/>
         <source>ERROR</source>
-        <translation>ERRO</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/api/call.h" line="67"/>
         <source>Incoming</source>
-        <translation>Entrada</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/api/call.h" line="69"/>
         <source>Calling</source>
-        <translation>Chamando</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/api/call.h" line="71"/>
         <location filename="../src/chatview.cpp" line="62"/>
         <source>Connecting</source>
-        <translation>Conectando</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/api/call.h" line="73"/>
         <source>Searching</source>
-        <translation>Pesquisando</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/api/call.h" line="75"/>
         <source>Inactive</source>
-        <translation>Inativo</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/api/call.h" line="77"/>
         <location filename="../src/api/call.h" line="83"/>
         <location filename="../src/chatview.cpp" line="69"/>
         <source>Finished</source>
-        <translation>Terminado</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/api/call.h" line="79"/>
         <source>Timeout</source>
-        <translation>Tempo esgotado</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/api/call.h" line="81"/>
         <source>Peer busy</source>
-        <translation>Pessoa ocupada</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/api/call.h" line="85"/>
         <source>Communication established</source>
-        <translation>Comunicação estabelecida</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/authority/storagehelper.cpp" line="130"/>
         <location filename="../src/authority/storagehelper.cpp" line="898"/>
         <source>Invitation received</source>
-        <translation>Convite recebido</translation>
+        <translation>Primljen poziv</translation>
     </message>
     <message>
         <location filename="../src/authority/storagehelper.cpp" line="127"/>
         <location filename="../src/authority/storagehelper.cpp" line="896"/>
         <source>Contact added</source>
-        <translation>Contato adicionado</translation>
+        <translation>Kontakt dodat</translation>
     </message>
     <message>
         <location filename="../src/authority/storagehelper.cpp" line="104"/>
         <location filename="../src/authority/storagehelper.cpp" line="110"/>
         <location filename="../src/authority/storagehelper.cpp" line="894"/>
         <source>Outgoing call</source>
-        <translation>Chamada efetuada</translation>
+        <translation>Poziva se</translation>
     </message>
     <message>
         <location filename="../src/authority/storagehelper.cpp" line="106"/>
         <location filename="../src/authority/storagehelper.cpp" line="116"/>
         <source>Incoming call</source>
-        <translation>Chamada recebida</translation>
+        <translation>Dolazeći poziv</translation>
     </message>
     <message>
         <location filename="../src/authority/storagehelper.cpp" line="112"/>
         <location filename="../src/authority/storagehelper.cpp" line="892"/>
         <source>Missed outgoing call</source>
-        <translation>Chamadas efetuadas perdidas</translation>
+        <translation>Propušten odlazeći poziv</translation>
     </message>
     <message>
         <location filename="../src/authority/storagehelper.cpp" line="118"/>
         <source>Missed incoming call</source>
-        <translation>Chamadas recebidas perdidas</translation>
+        <translation>Propušten dolazeći poziv</translation>
     </message>
     <message>
         <location filename="../src/authority/storagehelper.cpp" line="132"/>
         <location filename="../src/authority/storagehelper.cpp" line="900"/>
         <source>Invitation accepted</source>
-        <translation>Convite aceito</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/avmodel.cpp" line="335"/>
         <location filename="../src/avmodel.cpp" line="354"/>
         <source>default</source>
-        <translation>padrão</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="53"/>
         <source>Null</source>
-        <translation>Nulo</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="54"/>
         <source>Trying</source>
-        <translation>Tentando</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="55"/>
         <source>Ringing</source>
-        <translation>Tocando</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="56"/>
         <source>Being Forwarded</source>
-        <translation>Está sendo encaminhado</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="57"/>
         <source>Queued</source>
-        <translation>Esperando</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="58"/>
         <source>Progress</source>
-        <translation>Progresso</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="59"/>
         <source>OK</source>
-        <translation>OK</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="63"/>
         <location filename="../src/newcallmodel.cpp" line="60"/>
         <source>Accepted</source>
-        <translation>Aceito</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="61"/>
         <source>Multiple Choices</source>
-        <translation>Múltiplas Escolhas</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="62"/>
         <source>Moved Permanently</source>
-        <translation>Movido Permanentemente</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="63"/>
         <source>Moved Temporarily</source>
-        <translation>Movido Temporariamente</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="64"/>
         <source>Use Proxy</source>
-        <translation>Usar proxy</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="65"/>
         <source>Alternative Service</source>
-        <translation>Serviço Alternativo</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="66"/>
         <source>Bad Request</source>
-        <translation>Pedido Inadequado</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="67"/>
         <source>Unauthorized</source>
-        <translation>Não autorizado</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="68"/>
         <source>Payment Required</source>
-        <translation>Pagamento Requerido</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="69"/>
         <source>Forbidden</source>
-        <translation>Proibido</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="70"/>
         <source>Not Found</source>
-        <translation>Não Encontrado</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="71"/>
         <source>Method Not Allowed</source>
-        <translation>Método Não Permitido</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="72"/>
         <location filename="../src/newcallmodel.cpp" line="92"/>
         <source>Not Acceptable</source>
-        <translation>Não Aceitável</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="73"/>
         <source>Proxy Authentication Required</source>
-        <translation>Autenticação de Proxy Necessária</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="74"/>
         <source>Request Timeout</source>
-        <translation>A requisição excedeu o tempo limite</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="75"/>
         <source>Gone</source>
-        <translation>Perdido</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="76"/>
         <source>Request Entity Too Large</source>
-        <translation>Pedido Muito Grande</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="77"/>
         <source>Request URI Too Long</source>
-        <translation>Pedido de URI Muito Longo</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="78"/>
         <source>Unsupported Media Type</source>
-        <translation>Mídia Não Suportada</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="79"/>
         <source>Unsupported URI Scheme</source>
-        <translation>Tipo de URI Sem Suporte</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="80"/>
         <source>Bad Extension</source>
-        <translation>Complemento Inadequado</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="81"/>
         <source>Extension Required</source>
-        <translation>Complemento Necessário</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="82"/>
         <source>Session Timer Too Small</source>
-        <translation>Temporizador de Sessão Muito Pequeno</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="83"/>
         <source>Interval Too Brief</source>
-        <translation>Intervalo Muito Curto</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="84"/>
         <source>Temporarily Unavailable</source>
-        <translation>Temporariamente Indisponível</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="85"/>
         <source>Call TSX Does Not Exist</source>
-        <translation>Chamada TSX Não Existe</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="86"/>
         <source>Loop Detected</source>
-        <translation>Loop Detectado</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="87"/>
         <source>Too Many Hops</source>
-        <translation>Muitos Ressaltos</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="88"/>
         <source>Address Incomplete</source>
-        <translation>Endereço Incompleto</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="89"/>
         <source>Ambiguous</source>
-        <translation>Ambíguo</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="90"/>
         <source>Busy</source>
-        <translation>Ocupado</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="91"/>
         <source>Request Terminated</source>
-        <translation>Pedido Terminado</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="93"/>
         <source>Bad Event</source>
-        <translation>Evento Inadequado</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="94"/>
         <source>Request Updated</source>
-        <translation>Pedido Atualizado</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="95"/>
         <source>Request Pending</source>
-        <translation>Pedido Pendente</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="96"/>
         <source>Undecipherable</source>
-        <translation>Indecifrável</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="97"/>
         <source>Internal Server Error</source>
-        <translation>Erro Interno do Servidor</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="98"/>
         <source>Not Implemented</source>
-        <translation>Não Implementado</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="99"/>
         <source>Bad Gateway</source>
-        <translation>Gateway Inadequado</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="100"/>
         <source>Service Unavailable</source>
-        <translation>Serviço Indisponível</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="101"/>
         <source>Server Timeout</source>
-        <translation>Tempo do Servidor Esgotou</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="102"/>
         <source>Version Not Supported</source>
-        <translation>Versão Não Suportada</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="103"/>
         <source>Message Too Large</source>
-        <translation>Mensagem Muito Grande</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="104"/>
         <source>Precondition Failure</source>
-        <translation>Requisito Insuficiente</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="105"/>
         <source>Busy Everywhere</source>
-        <translation>Ocupado em Toda Parte</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="106"/>
         <source>Call Refused</source>
-        <translation>Chamada Recusada</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="107"/>
         <source>Does Not Exist Anywhere</source>
-        <translation>Não Existe em Nenhum Lugar</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="108"/>
         <source>Not Acceptable Anywhere</source>
-        <translation>Não Aceitável em Qualquer Lugar</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="30"/>
         <source>Hide chat view</source>
-        <translation>Ocultar visão do bate-papo</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="31"/>
         <source>Place video call</source>
-        <translation>Fazer videochamada</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="32"/>
         <source>Show available plugins</source>
-        <translation>Mostrar extensões disponíveis</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="33"/>
         <source>Place audio call</source>
-        <translation>Fazer chamada de áudio</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="34"/>
         <source>Add to conversations</source>
-        <translation>Adicionar às conversas</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="35"/>
         <source>Unban contact</source>
-        <translation>Contato não banido</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="36"/>
         <source>Send</source>
-        <translation>Enviar</translation>
+        <translation>Pošalji</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="37"/>
         <source>Options</source>
-        <translation>Opções</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="38"/>
         <source>Jump to latest</source>
-        <translation>Pular para o mais recente</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="39"/>
         <source>Send file</source>
-        <translation>Enviar arquivo</translation>
+        <translation>Pošalji podatak</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="40"/>
         <source>Leave video message</source>
-        <translation>Deixe uma mensagem de vídeo</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="41"/>
         <source>Leave audio message</source>
-        <translation>Deixe uma mensagem de áudio</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="43"/>
         <source>Write to {0}</source>
-        <translation>Escrever para {0}</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="61"/>
         <source>Unable to make contact</source>
-        <translation>Não é possível fazer contato</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="66"/>
         <source>Waiting for contact</source>
-        <translation>Aguardando pelo contato</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="67"/>
         <source>Incoming transfer</source>
-        <translation>Recebendo transferência</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="68"/>
         <source>Timed out waiting for contact</source>
-        <translation>O tempo de aguardo pelo contato chegou ao fim</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="42"/>
         <source>Block</source>
-        <translation>Bloquear</translation>
+        <translation>Blokiraj</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="45"/>
         <source>Note: an interaction will create a new contact.</source>
-        <translation>Observação: uma interação criará um novo contato</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="46"/>
         <source>is not in your contacts</source>
-        <translation>não está em seus contatos</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="48"/>
         <source>Note: you can automatically accept this invitation by sending a message.</source>
-        <translation>Observação: você pode aceitar automaticamente este convite enviando uma mensagem.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="49"/>
         <source>{0} days ago</source>
-        <translation>{0} dias atrás</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="50"/>
         <source>{0} hours ago</source>
-        <translation>{0} horas atrás</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="52"/>
         <source>{0} minutes ago</source>
-        <translation>{0} minutos atrás</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="64"/>
         <source>Canceled</source>
-        <translation>Cancelada</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="65"/>
         <source>Ongoing</source>
-        <translation>Em andamento</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="49"/>
         <source>%d days ago</source>
-        <translation>%d dias atrás</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="50"/>
         <source>%d hours ago</source>
-        <translation>%d horas atrás</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="52"/>
         <source>%d minutes ago</source>
-        <translation>%d minutos atrás</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="53"/>
         <source>one day ago</source>
-        <translation>um dia atrás</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="54"/>
         <source>one hour ago</source>
-        <translation>uma hora atrás</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="55"/>
         <source>just now</source>
-        <translation>Agora</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="56"/>
         <source>Failure</source>
-        <translation>Falha</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="57"/>
         <source>Confirm</source>
-        <translation>Confirmar</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="58"/>
         <source>Deny</source>
-        <translation>Negar</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="59"/>
         <source>Delete</source>
-        <translation>Deletar</translation>
+        <translation>Izbriši</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="60"/>
         <source>Retry</source>
-        <translation>Tente novamente</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -585,22 +585,22 @@
     <message>
         <location filename="../src/contactmodel.cpp" line="459"/>
         <source>Searching…</source>
-        <translation>Buscando...</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/contactmodel.cpp" line="955"/>
         <source>Invalid ID</source>
-        <translation>ID inválido</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/contactmodel.cpp" line="958"/>
         <source>Registered name not found</source>
-        <translation>Nome registrado não encontrado</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/contactmodel.cpp" line="961"/>
         <source>Couldn&apos;t lookup…</source>
-        <translation>Não consegui procurar...</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -608,7 +608,7 @@
     <message>
         <location filename="../src/contactmodel.cpp" line="420"/>
         <source>Bad URI scheme</source>
-        <translation>Mau esquema de URI</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 </TS>
