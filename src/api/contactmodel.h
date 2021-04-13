@@ -157,7 +157,7 @@ Q_SIGNALS:
      * @param dringId Daemon's ID for incoming transfer
      * @param transferInfo DataTransferInfo structure from daemon
      */
-    void newAccountTransfer(DataTransferId dringId, datatransfer::Info info) const;
+    void newAccountTransfer(const QString& fileId, datatransfer::Info info) const;
     /**
      * Connect this signal to know when a contact is banned or unbanned
      * @param contactUri
