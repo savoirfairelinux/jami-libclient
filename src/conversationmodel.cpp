@@ -2803,7 +2803,7 @@ ConversationModelPimpl::slotIncomingCall(const QString& fromId, const QString& c
     qDebug() << "Add call to conversation with " << fromId;
     conversation.callId = callId;
 
-    addOrUpdateCallMessage(callId, fromId);
+    addOrUpdateCallMessage(callId, fromId, true);
     emit behaviorController.showIncomingCallView(linked.owner.id, conversation.uid);
 }
 
