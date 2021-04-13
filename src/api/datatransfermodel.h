@@ -57,32 +57,32 @@ public:
                   const QString& file_path,
                   const QString& display_name);
 
-    void transferInfo(const QString& accountId,
-                      const QString& conversationId,
-                      DataTransferId ringId,
-                      datatransfer::Info& lrc_info);
+    void transferInfo(const QString& accountId, const QString& fileId, datatransfer::Info& lrc_info);
 
-    void bytesProgress(const QString& accountId,
-                       const QString& conversationId,
-                       const QString& interactionId,
-                       int64_t& total,
-                       int64_t& progress);
+    void fileTransferInfo(const QString& accountId,
+                          const QString& conversationId,
+                          const QString& fileId,
+                          QString& path,
+                          qlonglong& total,
+                          qlonglong& progress);
 
     QString accept(const QString& accountId,
-                   const QString& conversationId,
-                   const QString& interactionId,
+                   const QString& fileId,
                    const QString& file_path,
                    std::size_t offset);
 
-    void cancel(const QString& accountId,
-                const QString& conversationId,
-                const QString& interactionId);
+    void download(const QString& accountId,
+                  const QString& convId,
+                  const QString& fileId,
+                  const QString& path);
 
-    void registerTransferId(DataTransferId dringId, const QString& interactionId);
+    void cancel(const QString& accountId, const QString& conversationId, const QString& fileId);
 
-    QString getInteractionIdFromDringId(DataTransferId dringId);
+    void registerTransferId(const QString& fileId, const QString& interactionId);
 
-    DataTransferId getDringIdFromInteractionId(const QString& interactionId);
+    QString getInteractionIdFromFileId(const QString& fileId);
+
+    QString getDringIdFromFileId(const QString& fileId);
 
     /**
      *  Creates APPDATA/received and return the path
