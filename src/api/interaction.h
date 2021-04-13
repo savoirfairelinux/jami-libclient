@@ -172,26 +172,21 @@ to_status(const QString& status)
         return Status::INVALID;
 }
 
-enum class ContactAction {
-    ADD,
-    JOIN,
-    LEAVE,
-    BANNED
-};
+enum class ContactAction { ADD, JOIN, LEAVE, BANNED };
 Q_ENUM_NS(ContactAction)
 
 static inline const QString
 to_string(const ContactAction& action)
 {
     switch (action) {
-        case ContactAction::ADD:
-            return "ADD";
-        case ContactAction::JOIN:
-            return "JOIN";
-        case ContactAction::LEAVE:
-            return "LEAVE";
-        case ContactAction::BANNED:
-            return "BANNED";
+    case ContactAction::ADD:
+        return "ADD";
+    case ContactAction::JOIN:
+        return "JOIN";
+    case ContactAction::LEAVE:
+        return "LEAVE";
+    case ContactAction::BANNED:
+        return "BANNED";
     }
 }
 
@@ -212,17 +207,17 @@ static inline QString
 getContactInteractionString(const QString& authorUri, const ContactAction& action)
 {
     switch (action) {
-        case ContactAction::ADD:
-            if (authorUri.isEmpty()) {
-                return QObject::tr("Contact added");
-            }
-            return QObject::tr("Invitation received");
-        case ContactAction::JOIN:
-            return QObject::tr("Invitation accepted");
-        case ContactAction::LEAVE:
-            return QObject::tr("Contact left conversation");
-        case ContactAction::BANNED:
-            return {};
+    case ContactAction::ADD:
+        if (authorUri.isEmpty()) {
+            return QObject::tr("Contact added");
+        }
+        return QObject::tr("Invitation received");
+    case ContactAction::JOIN:
+        return QObject::tr("Invitation accepted");
+    case ContactAction::LEAVE:
+        return QObject::tr("Contact left conversation");
+    case ContactAction::BANNED:
+        return {};
     }
 }
 
@@ -245,6 +240,7 @@ struct Info
     Type type = Type::INVALID;
     Status status = Status::INVALID;
     bool isRead = false;
+    MapStringString commit;
 
     Info() {}
 
@@ -288,6 +284,7 @@ struct Info
         if (type == Type::CALL) {
             duration = message["duration"].toInt() / 1000;
         }
+        commit = message;
     }
 };
 
