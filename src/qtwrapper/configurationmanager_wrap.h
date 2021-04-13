@@ -259,11 +259,13 @@ public:
             exportable_callback<DataTransferSignal::DataTransferEvent>(
                 [this](const std::string& accountId,
                        const std::string& conversationId,
-                       const uint64_t& transfer_id,
+                       const std::string& interactionId,
+                       const std::string& fileId,
                        const uint32_t& code) {
                     Q_EMIT this->dataTransferEvent(QString(accountId.c_str()),
                                                    QString(conversationId.c_str()),
-                                                   transfer_id,
+                                                   QString(interactionId.c_str()),
+                                                   QString(fileId.c_str()),
                                                    code);
                 }),
         };
@@ -794,7 +796,7 @@ public Q_SLOTS: // METHODS
         return convertMap(DRing::getContactDetails(accountID.toStdString(), uri.toStdString()));
     }
 
-    uint32_t sendFile(const DataTransferInfo& lrc_info, DRing::DataTransferId& id)
+    uint32_t sendFileLegacy(const DataTransferInfo& lrc_info, DRing::DataTransferId& id)
     {
         DRing::DataTransferInfo dring_info;
         dring_info.accountId = lrc_info.accountId.toStdString();
@@ -807,19 +809,25 @@ public Q_SLOTS: // METHODS
         dring_info.displayName = lrc_info.displayName.toStdString();
         dring_info.path = lrc_info.path.toStdString();
         dring_info.mimetype = lrc_info.mimetype.toStdString();
-        return uint32_t(DRing::sendFile(dring_info, id));
+        return uint32_t(DRing::sendFileLegacy(dring_info, id));
+    }
+
+    void sendFile(const std::string& accountId,
+                  const std::string& conversationId,
+                  const std::string& filePath,
+                  const std::string& fileDisplayName,
+                  const std::string& parent)
+    {
+        DRing::sendFile(accountId, conversationId, filePath, fileDisplayName, parent);
     }
 
     uint32_t dataTransferInfo(QString accountId,
-                              QString conversationId,
                               const DRing::DataTransferId& transfer_id,
                               DataTransferInfo& lrc_info)
     {
         DRing::DataTransferInfo dring_info;
-        auto error = uint32_t(DRing::dataTransferInfo(accountId.toStdString(),
-                                                      conversationId.toStdString(),
-                                                      transfer_id,
-                                                      dring_info));
+        auto error = uint32_t(
+            DRing::dataTransferInfo(accountId.toStdString(), transfer_id, dring_info));
         lrc_info.accountId = QString::fromStdString(dring_info.accountId);
         lrc_info.lastEvent = quint32(dring_info.lastEvent);
         lrc_info.flags = dring_info.flags;
@@ -833,30 +841,34 @@ public Q_SLOTS: // METHODS
         return error;
     }
 
-    uint64_t dataTransferBytesProgress(QString accountId,
-                                       QString conversationId,
-                                       const DRing::DataTransferId& transfer_id,
-                                       int64_t& total,
-                                       int64_t& progress)
+    <arg type = "s" name = "accountId" direction = "in" />
+        <arg type = "s" name = "to" direction = "in" />
+        <arg type = "s" name = "fileId" direction = "in" />
+        <arg type = "s" name = "path" direction = "out" />
+        <arg type = "x" name = "totalSize" direction = "out" />
+        <arg type = "x" name = "bytesProgress" direction = "out" />
+
+            uint64_t fileTransferInfo(QString accountId,
+                                      QString conversationId,
+                                      QString fileId,
+                                      QString& path,
+                                      int64_t& total,
+                                      int64_t& progress)
     {
-        return uint32_t(DRing::dataTransferBytesProgress(accountId.toStdString(),
-                                                         conversationId.toStdString(),
-                                                         transfer_id,
-                                                         total,
-                                                         progress));
+        std::string pathstr;
+        auto result = uint32_t(DRing::fileTransferInfo(accountId.toStdString(),
+                                                       conversationId.toStdString(),
+                                                       fileId.toStdString();
+                                                       pathstr, total, progress));
+        path = pathstr.c_str();
+        return result;
     }
 
-    uint32_t acceptFileTransfer(QString accountId,
-                                QString conversationId,
-                                const DRing::DataTransferId& transfer_id,
-                                const QString& file_path,
-                                int64_t offset)
+    uint32_t acceptFileTransfer(QString accountId, const QString& fileId, const QString& file_path)
     {
         return uint32_t(DRing::acceptFileTransfer(accountId.toStdString(),
-                                                  conversationId.toStdString(),
-                                                  transfer_id,
-                                                  file_path.toStdString(),
-                                                  offset));
+                                                  fileId.toStdString(),
+                                                  file_path.toStdString()));
     }
 
     uint32_t cancelDataTransfer(QString accountId,
@@ -1068,7 +1080,8 @@ Q_SIGNALS: // SIGNALS
     void profileReceived(const QString& accountID, const QString& peer, const QString& vCard);
     void dataTransferEvent(const QString& accountId,
                            const QString& conversationId,
-                           DataTransferId transfer_id,
+                           const QString& interactionId,
+                           const QString& fileId,
                            uint code);
     void deviceRevocationEnded(const QString& accountId, const QString& deviceId, int status);
     void accountProfileReceived(const QString& accountId,

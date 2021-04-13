@@ -482,7 +482,7 @@ NewAccountModelPimpl::updateAccountDetails(account::Info& accountInfo)
     // Fill account::Info::confProperties credentials
     VectorMapStringString credGet = ConfigurationManager::instance().getCredentials(accountInfo.id);
     VectorMapStringString credToStore;
-    for (auto const& i : credGet.toStdVector()) {
+    for (auto const& i : std::vector<MapStringString>(credGet.begin(), credGet.end())) {
         MapStringString credMap;
         for (auto const& j : i.toStdMap()) {
             credMap[j.first] = j.second;

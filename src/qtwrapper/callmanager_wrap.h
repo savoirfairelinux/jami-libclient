@@ -58,7 +58,7 @@ public:
             exportable_callback<CallSignal::MediaNegotiationStatus>(
                 [this](const std::string& callID,
                        const std::string& event,
-                       const std::vector<std::map<std::string, std::string>>&) {
+                       const std::vector<std::map<std::string, std::string>>& mediaList) {
                     LOG_DRING_SIGNAL3("mediaNegotiationStatus",
                                       QString(callID.c_str()),
                                       QString(event.c_str()),
