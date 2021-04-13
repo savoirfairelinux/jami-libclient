@@ -57,10 +57,7 @@ public:
                   const QString& file_path,
                   const QString& display_name);
 
-    void transferInfo(const QString& accountId,
-                      const QString& conversationId,
-                      DataTransferId ringId,
-                      datatransfer::Info& lrc_info);
+    void transferInfo(const QString& accountId, DataTransferId ringId, datatransfer::Info& lrc_info);
 
     void bytesProgress(const QString& accountId,
                        const QString& conversationId,
@@ -78,11 +75,11 @@ public:
                 const QString& conversationId,
                 const QString& interactionId);
 
-    void registerTransferId(DataTransferId dringId, const QString& interactionId);
+    void registerTransferId(const QString& fileId, const QString& interactionId);
 
-    QString getInteractionIdFromDringId(DataTransferId dringId);
+    QString getInteractionIdFromDringId(const QString& fileId);
 
-    DataTransferId getDringIdFromInteractionId(const QString& interactionId);
+    QString getDringIdFromInteractionId(const QString& interactionId);
 
     /**
      *  Creates APPDATA/received and return the path

@@ -473,15 +473,15 @@ CallbacksHandler::slotAccountMessageStatusChanged(const QString& accountId,
 void
 CallbacksHandler::slotDataTransferEvent(const QString& accountId,
                                         const QString& conversationId,
-                                        DataTransferId dringId,
+                                        const QString& fileId,
                                         uint codeStatus)
 {
     auto event = DRing::DataTransferEventCode(codeStatus);
 
     api::datatransfer::Info info;
-    parent.getAccountModel()
-        .getAccountInfo(accountId)
-        .dataTransferModel->transferInfo(accountId, conversationId, dringId, info);
+    //    parent.getAccountModel()
+    //        .getAccountInfo(accountId)
+    //        .dataTransferModel->transferInfo(accountId, conversationId, dringId, info);
 
     // WARNING: info.status could be INVALID in case of async signaling
     // So listeners must only take account of dringId in such case.
@@ -489,33 +489,33 @@ CallbacksHandler::slotDataTransferEvent(const QString& accountId,
 
     switch (event) {
     case DRing::DataTransferEventCode::created:
-        emit transferStatusCreated(static_cast<DataTransferId>(dringId), info);
+        emit transferStatusCreated(fileId, info);
         break;
     case DRing::DataTransferEventCode::closed_by_host:
     case DRing::DataTransferEventCode::closed_by_peer:
-        emit transferStatusCanceled(static_cast<DataTransferId>(dringId), info);
+        emit transferStatusCanceled(fileId, info);
         break;
     case DRing::DataTransferEventCode::wait_peer_acceptance:
-        emit transferStatusAwaitingPeer(static_cast<DataTransferId>(dringId), info);
+        emit transferStatusAwaitingPeer(fileId, info);
         break;
     case DRing::DataTransferEventCode::wait_host_acceptance:
-        emit transferStatusAwaitingHost(static_cast<DataTransferId>(dringId), info);
+        emit transferStatusAwaitingHost(fileId, info);
         break;
     case DRing::DataTransferEventCode::ongoing:
-        emit transferStatusOngoing(static_cast<DataTransferId>(dringId), info);
+        emit transferStatusOngoing(fileId, info);
         break;
     case DRing::DataTransferEventCode::finished:
-        emit transferStatusFinished(static_cast<DataTransferId>(dringId), info);
+        emit transferStatusFinished(fileId, info);
         break;
     case DRing::DataTransferEventCode::invalid_pathname:
     case DRing::DataTransferEventCode::unsupported:
-        emit transferStatusError(static_cast<DataTransferId>(dringId), info);
+        emit transferStatusError(fileId, info);
         break;
     case DRing::DataTransferEventCode::timeout_expired:
-        emit transferStatusTimeoutExpired(static_cast<DataTransferId>(dringId), info);
+        emit transferStatusTimeoutExpired(fileId, info);
         break;
     case DRing::DataTransferEventCode::unjoinable_peer:
-        emit transferStatusUnjoinable(static_cast<DataTransferId>(dringId), info);
+        emit transferStatusUnjoinable(fileId, info);
         break;
     case DRing::DataTransferEventCode::invalid:
         break;
