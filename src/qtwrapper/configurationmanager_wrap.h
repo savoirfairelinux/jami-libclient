@@ -259,11 +259,13 @@ public:
             exportable_callback<DataTransferSignal::DataTransferEvent>(
                 [this](const std::string& accountId,
                        const std::string& conversationId,
-                       const uint64_t& transfer_id,
+                       const stdLLstring& fileId,
+                       const stdLLstring& interactionId,
                        const uint32_t& code) {
                     Q_EMIT this->dataTransferEvent(QString(accountId.c_str()),
                                                    QString(conversationId.c_str()),
-                                                   transfer_id,
+                                                   QString(fileId.c_str()),
+                                                   QString(interactionId.c_str()),
                                                    code);
                 }),
         };
@@ -1068,7 +1070,8 @@ Q_SIGNALS: // SIGNALS
     void profileReceived(const QString& accountID, const QString& peer, const QString& vCard);
     void dataTransferEvent(const QString& accountId,
                            const QString& conversationId,
-                           DataTransferId transfer_id,
+                           const QString& interactionId,
+                           const QString& fileId,
                            uint code);
     void deviceRevocationEnded(const QString& accountId, const QString& deviceId, int status);
     void accountProfileReceived(const QString& accountId,
