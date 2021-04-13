@@ -72,7 +72,8 @@ struct Info
     std::map<QString, QString> lastDisplayedMessageUid;
     unsigned int unreadMessages = 0;
 
-    QString getCallId() { return confId.isEmpty() ? callId : confId; }
+    QString getCallId() const { return confId.isEmpty() ? callId : confId; }
+    bool isNotASwarm() const { return mode == Mode::NON_SWARM; }
 
     Mode mode = Mode::NON_SWARM;
     bool needsSyncing = false;
