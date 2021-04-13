@@ -509,6 +509,7 @@ addOrUpdateMessage(Database& db,
         return id;
     }
 }
+
 QString
 addDataTransferToConversation(Database& db,
                               const QString& conversationId,
@@ -528,7 +529,7 @@ addDataTransferToConversation(Database& db,
                           {":conversation", convId},
                           {":timestamp", toQString(std::time(nullptr))},
                           {":body", infoFromDaemon.path},
-                          {":type", infoFromDaemon.isOutgoing ? "DATA_TRANSFER" : "DATA_TRANSFER"},
+                          {":type", "DATA_TRANSFER"},
                           {":status", "TRANSFER_CREATED"},
                           {":is_read", "0"},
                           {":daemon_id", infoFromDaemon.uid}});
