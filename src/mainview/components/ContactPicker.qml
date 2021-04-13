@@ -115,12 +115,13 @@ Popup {
                 }
             }
 
-            ListView {
+            ListViewJami {
                 id: contactPickerListView
 
                 Layout.alignment: Qt.AlignCenter
                 Layout.preferredWidth: contactPickerPopupRect.width
                 Layout.preferredHeight: 200
+                border.width: 0
 
                 model: ContactAdapter.getContactSelectableModel(type)
 
@@ -129,8 +130,6 @@ Popup {
                 delegate: ContactPickerItemDelegate {
                     id: contactPickerItemDelegate
                 }
-
-                ScrollIndicator.vertical: ScrollIndicator {}
             }
         }
 
