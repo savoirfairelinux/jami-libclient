@@ -168,11 +168,11 @@ CallbacksHandler::CallbacksHandler(const Lrc& parent)
             &CallbacksHandler::slotRemoteRecordingChanged,
             Qt::QueuedConnection);
 
-    connect(&ConfigurationManager::instance(),
-            &ConfigurationManagerInterface::dataTransferEvent,
-            this,
-            &CallbacksHandler::slotDataTransferEvent,
-            Qt::QueuedConnection);
+    //    connect(&ConfigurationManager::instance(),
+    //            &ConfigurationManagerInterface::dataTransferEvent,
+    //            this,
+    //            &CallbacksHandler::slotDataTransferEvent,
+    //            Qt::QueuedConnection);
 
     connect(&ConfigurationManager::instance(),
             &ConfigurationManagerInterface::knownDevicesChanged,
@@ -479,9 +479,9 @@ CallbacksHandler::slotDataTransferEvent(const QString& accountId,
     auto event = DRing::DataTransferEventCode(codeStatus);
 
     api::datatransfer::Info info;
-    parent.getAccountModel()
-        .getAccountInfo(accountId)
-        .dataTransferModel->transferInfo(accountId, conversationId, dringId, info);
+    //    parent.getAccountModel()
+    //        .getAccountInfo(accountId)
+    //        .dataTransferModel->transferInfo(accountId, conversationId, dringId, info);
 
     // WARNING: info.status could be INVALID in case of async signaling
     // So listeners must only take account of dringId in such case.
