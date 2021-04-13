@@ -24,6 +24,8 @@ var historyBuffer = []
 // If we use qt
 var use_qt = false
 
+var is_swarm = false
+
 if (navigator.userAgent == "jami-windows") {
     use_qt = true
 }
@@ -183,6 +185,11 @@ function init_picker(dark) {
     emojiBtn.addEventListener('click', () => {
         picker.togglePicker(emojiBtn);
     });
+}
+
+/* exported set_is_swarm */
+function set_is_swarm(value) {
+    is_swarm = value
 }
 
 function set_titles() {
@@ -951,14 +958,14 @@ function humanFileSize(bytes) {
  */
 function updateProgressBar(progress_bar, message_object) {
     var delivery_status = message_object["delivery_status"]
-    if ("progress" in message_object && !isErrorStatus(delivery_status) && message_object["progress"] !== 100) {
+    if (delivery_status === "ongoing" && "progress" in message_object && message_object["progress"] !== 100) {
         var progress_percent = (100 * message_object["progress"] / message_object["totalSize"])
         if (progress_percent !== 100)
-            progress_bar.childNodes[0].setAttribute("style", "width: " + progress_percent + "%")
+            progress_bar.childNodes[0].setAttribute("style", "display: block; width: " + progress_percent + "%")
         else
-            progress_bar.setAttribute("style", "display: none")
+            progress_bar.setAttribute("style", "display: none;")
     } else
-        progress_bar.setAttribute("style", "display: none")
+        progress_bar.setAttribute("style", "display: none;")
 }
 
 /**
@@ -976,7 +983,7 @@ function isErrorStatus(status) {
  * Build a new file interaction
  * @param message_id
  */
-function fileInteraction(message_id, message_direction) {
+function fileInteraction(message_id) {
     var message_wrapper = document.createElement("div")
     message_wrapper.setAttribute("class", "message_wrapper")
 
@@ -1030,6 +1037,7 @@ function fileInteraction(message_id, message_direction) {
     var message_transfer_progress_completion = document.createElement("span")
     message_transfer_progress_bar.appendChild(message_transfer_progress_completion)
     message_wrapper.appendChild(message_transfer_progress_bar)
+    message_transfer_progress_completion.setAttribute("style", "display: none;")
 
     const internal_mes_wrapper = document.createElement("div")
     internal_mes_wrapper.setAttribute("class", "internal_mes_wrapper")
@@ -1105,6 +1113,9 @@ function updateFileInteraction(message_div, message_object, forceTypeToFile = fa
         refuseSvg = "<svg height=\"24\" viewBox=\"0 0 24 24\" width=\"24\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z\"/><path d=\"M0 0h24v24H0z\" fill=\"none\"/></svg>",
         fileSvg = "<svg class=\"filesvg\" height=\"24\" viewBox=\"0 0 24 24\" width=\"24\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M16.5 6v11.5c0 2.21-1.79 4-4 4s-4-1.79-4-4V5c0-1.38 1.12-2.5 2.5-2.5s2.5 1.12 2.5 2.5v10.5c0 .55-.45 1-1 1s-1-.45-1-1V6H10v9.5c0 1.38 1.12 2.5 2.5 2.5s2.5-1.12 2.5-2.5V5c0-2.21-1.79-4-4-4S7 2.79 7 5v12.5c0 3.04 2.46 5.5 5.5 5.5s5.5-2.46 5.5-5.5V6h-1.5z\"/><path d=\"M0 0h24v24H0z\" fill=\"none\"/></svg>",
         warningSvg = "<svg class=\"filesvg\" height=\"24\" viewBox=\"0 0 24 24\" width=\"24\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M0 0h24v24H0z\" fill=\"none\"/><path d=\"M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z\"/></svg>"
+    if (is_swarm) {
+        acceptSvg = "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"24px\" viewBox=\"0 0 24 24\" width=\"24px\"><path d=\"M0 0h24v24H0z\" fill=\"none\"/><path d=\"M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z\"/></svg>"
+    }
     var message_delivery_status = message_object["delivery_status"]
     var message_direction = message_object["direction"]
     var message_id = message_object["id"]
@@ -1129,7 +1140,7 @@ function updateFileInteraction(message_div, message_object, forceTypeToFile = fa
                 media_wrapper.parentNode.removeChild(media_wrapper)
             }
 
-            var new_interaction = fileInteraction(message_id, message_direction)
+            var new_interaction = fileInteraction(message_id)
             var new_message_wrapper = new_interaction.querySelector(".message_wrapper")
             wrapper.prepend(new_message_wrapper)
             updateFileInteraction(message_div, message_object, true)
@@ -1281,19 +1292,22 @@ function updateFileInteraction(message_div, message_object, forceTypeToFile = fa
             left_buttons.appendChild(accept_button)
         }
 
-        var refuse_button = document.createElement("div")
-        refuse_button.innerHTML = refuseSvg
-        refuse_button.setAttribute("title", use_qt ? i18nStringData["Refuse"] :
-            i18n.gettext("Refuse"))
-        refuse_button.setAttribute("class", "flat-button refuse")
-        refuse_button.onclick = function () {
-            if (use_qt) {
-                window.jsbridge.refuseFile(message_id)
-            } else {
-                window.prompt(`REFUSE_FILE:${message_id}`)
+        if (!is_swarm || message_delivery_status.indexOf("ongoing") === 0) {
+            var refuse_button = document.createElement("div")
+            refuse_button.innerHTML = refuseSvg
+            refuse_button.setAttribute("title", use_qt ? i18nStringData["Refuse"] :
+                i18n.gettext("Refuse"))
+            refuse_button.setAttribute("class", "flat-button refuse")
+            refuse_button.onclick = function () {
+                if (use_qt) {
+                    window.jsbridge.refuseFile(message_id)
+                } else {
+                    window.prompt(`REFUSE_FILE:${message_id}`)
+                }
             }
+            left_buttons.appendChild(refuse_button)
         }
-        left_buttons.appendChild(refuse_button)
+
     } else {
         var status_button = document.createElement("div")
         var statusFile = fileSvg
@@ -1665,7 +1679,7 @@ function buildNewMessage(message_object) {
                     media_wrapper.parentNode.removeChild(media_wrapper)
                 }
 
-                var new_interaction = fileInteraction(message_id, message_direction)
+                var new_interaction = fileInteraction(message_id)
                 var new_message_wrapper = new_interaction.querySelector(".message_wrapper")
                 wrapper.prepend(new_message_wrapper)
                 updateFileInteraction(message_div, message_object, true)
@@ -1674,7 +1688,8 @@ function buildNewMessage(message_object) {
             message_div.querySelector("img").id = message_id
             message_div.querySelector("img").msg_obj = message_object
         } else {
-            message_div.append(fileInteraction(message_id, message_direction))
+            message_div.append(fileInteraction(message_id))
+            updateProgressBar(message_div.querySelector(".message_progress_bar"), message_object)
         }
     } else if (message_type === "text") {
         // TODO add the possibility to update messages (remove and rebuild)

@@ -79,21 +79,24 @@ MessagesList::erase(QString msgId)
             return 1;
         }
     }
+    return 0;
 }
+
 interaction::Info&
 MessagesList::operator[](QString messageId)
 {
     for (auto it = interactions_.cbegin(); it != interactions_.cend(); ++it) {
-         if (it->first == messageId) {
-             return const_cast<interaction::Info&>(it->second);
-         }
-     }
-     // element not find, add it to the end
-     interaction::Info newMessage = {};
-     interactions_.insert(interactions_.end(), qMakePair(messageId, newMessage));
-     if (interactions_.last().first == messageId) {
-         return const_cast<interaction::Info&>(interactions_.last().second);
-     }
+        if (it->first == messageId) {
+            return const_cast<interaction::Info&>(it->second);
+        }
+    }
+    // element not find, add it to the end
+    interaction::Info newMessage = {};
+    interactions_.insert(interactions_.end(), qMakePair(messageId, newMessage));
+    if (interactions_.last().first == messageId) {
+        return const_cast<interaction::Info&>(interactions_.last().second);
+    }
+    throw std::out_of_range("Cannot find message");
 }
 
 iterator
@@ -200,15 +203,14 @@ int
 MessagesList::indexOfMessage(QString msgId, bool reverse) const
 {
     auto getIndex = [reverse, &msgId](const auto& start, const auto& end) -> int {
-        auto it = std::find_if(start, end, [&msgId] (const auto& it) { return it.first == msgId; });
+        auto it = std::find_if(start, end, [&msgId](const auto& it) { return it.first == msgId; });
         if (it == end) {
             return -1;
         }
-        return reverse ? std::distance(it, end) - 1 :  std::distance(start, it);
+        return reverse ? std::distance(it, end) - 1 : std::distance(start, it);
     };
-    return reverse ?
-       getIndex(interactions_.rbegin(), interactions_.rend()) :
-       getIndex(interactions_.begin(), interactions_.end());
+    return reverse ? getIndex(interactions_.rbegin(), interactions_.rend())
+                   : getIndex(interactions_.begin(), interactions_.end());
 }
 
 void
