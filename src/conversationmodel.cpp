@@ -2160,10 +2160,10 @@ ConversationModelPimpl::slotMessageReceived(const QString& accountId,
             // conversation id and db id
             QString transferId = message["tid"];
             transferIdInt = std::stoull(message["tid"].toStdString());
-            linked.owner.dataTransferModel->transferInfo(accountId,
-                                                         conversationId,
-                                                         transferIdInt,
-                                                         info);
+            //            linked.owner.dataTransferModel->transferInfo(accountId,
+            //                                                         conversationId,
+            //                                                         transferIdInt,
+            //                                                         info);
             // create db entry for valid data transfer
             if (info.status != datatransfer::Status::INVALID) {
                 msg.body = info.path;
@@ -2799,7 +2799,7 @@ ConversationModelPimpl::slotIncomingCall(const QString& fromId, const QString& c
     qDebug() << "Add call to conversation with " << fromId;
     conversation.callId = callId;
 
-    addOrUpdateCallMessage(callId, fromId);
+    addOrUpdateCallMessage(callId, fromId, true);
     emit behaviorController.showIncomingCallView(linked.owner.id, conversation.uid);
 }
 
@@ -3355,10 +3355,10 @@ ConversationModel::getTransferInfo(const QString& conversationId,
     try {
         auto dringId = pimpl_->linked.owner.dataTransferModel->getDringIdFromInteractionId(
             interactionId);
-        pimpl_->linked.owner.dataTransferModel->transferInfo(owner.id,
-                                                             conversationId,
-                                                             dringId,
-                                                             info);
+        //        pimpl_->linked.owner.dataTransferModel->transferInfo(owner.id,
+        //                                                             conversationId,
+        //                                                             dringId,
+        //                                                             info);
     } catch (...) {
         info.status = datatransfer::Status::INVALID;
     }

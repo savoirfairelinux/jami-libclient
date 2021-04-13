@@ -129,14 +129,12 @@ DataTransferModel::~DataTransferModel() = default;
 
 void
 DataTransferModel::transferInfo(const QString& accountId,
-                                const QString& conversationId,
                                 DataTransferId ringId,
                                 datatransfer::Info& lrc_info)
 {
-    DataTransferInfo infoFromDaemon;
+    /*DataTransferInfo infoFromDaemon;
     if (ConfigurationManager::instance().dataTransferInfo(accountId,
-                                                          conversationId,
-                                                          ringId,
+                                                          std::to_string(ringId),
                                                           infoFromDaemon)
         == 0) {
         lrc_info.uid = QString::number(ringId);
@@ -155,7 +153,7 @@ DataTransferModel::transferInfo(const QString& accountId,
         return;
     }
 
-    lrc_info.status = datatransfer::Status::INVALID;
+    lrc_info.status = datatransfer::Status::INVALID;*/
 }
 
 void
@@ -177,7 +175,7 @@ DataTransferModel::sendFile(const QString& account_id,
     info.conversationId = conversationId;
     info.displayName = display_name;
     info.bytesProgress = 0;
-    if (ConfigurationManager::instance().sendFile(info, id) != 0) {
+    if (ConfigurationManager::instance().sendFileLegacy(info, id) != 0) {
         qDebug() << "DataTransferModel::sendFile(), error";
         return;
     }
@@ -190,20 +188,7 @@ DataTransferModel::bytesProgress(const QString& accountId,
                                  int64_t& total,
                                  int64_t& progress)
 {
-    ConfigurationManager::instance()
-#ifdef ENABLE_LIBWRAP
-        .dataTransferBytesProgress(accountId,
-                                   conversationId,
-                                   pimpl_->lrc2dringIdMap.at(interactionId),
-                                   total,
-                                   progress);
-#else
-        .dataTransferBytesProgress(accountId,
-                                   conversationId,
-                                   pimpl_->lrc2dringIdMap.at(interactionId),
-                                   reinterpret_cast<qlonglong&>(total),
-                                   reinterpret_cast<qlonglong&>(progress));
-#endif
+    // TODO
 }
 
 QString
@@ -215,11 +200,10 @@ DataTransferModel::accept(const QString& accountId,
 {
     auto unique_file_path = pimpl_->getUniqueFilePath(file_path);
     auto dring_id = pimpl_->lrc2dringIdMap.at(interactionId);
-    ConfigurationManager::instance().acceptFileTransfer(accountId,
-                                                        conversationId,
-                                                        dring_id,
-                                                        unique_file_path,
-                                                        offset);
+    //    ConfigurationManager::instance().acceptFileTransfer(accountId,
+    //                                                        conversationId,
+    //                                                        dring_id,
+    //                                                        unique_file_path);
     return unique_file_path;
 }
 
@@ -229,7 +213,8 @@ DataTransferModel::cancel(const QString& accountId,
                           const QString& interactionId)
 {
     auto dring_id = pimpl_->lrc2dringIdMap.at(interactionId);
-    ConfigurationManager::instance().cancelDataTransfer(accountId, conversationId, dring_id);
+    //    ConfigurationManager::instance().cancelDataTransfer(accountId, conversationId,
+    //    std::to_string(dring_id));
 }
 
 QString
