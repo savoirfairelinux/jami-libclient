@@ -259,11 +259,15 @@ public:
             exportable_callback<DataTransferSignal::DataTransferEvent>(
                 [this](const std::string& accountId,
                        const std::string& conversationId,
-                       const uint64_t& transfer_id,
+                       const std::string& interactionId,
+                       const std::string& fileId,
+                       const std::string& interactionId,
                        const uint32_t& code) {
                     Q_EMIT this->dataTransferEvent(QString(accountId.c_str()),
                                                    QString(conversationId.c_str()),
-                                                   transfer_id,
+                                                   QString(interactionId.c_str()),
+                                                   QString(fileId.c_str()),
+                                                   QString(interactionId.c_str()),
                                                    code);
                 }),
         };
@@ -847,16 +851,12 @@ public Q_SLOTS: // METHODS
     }
 
     uint32_t acceptFileTransfer(QString accountId,
-                                QString conversationId,
                                 const DRing::DataTransferId& transfer_id,
-                                const QString& file_path,
-                                int64_t offset)
+                                const QString& file_path)
     {
         return uint32_t(DRing::acceptFileTransfer(accountId.toStdString(),
-                                                  conversationId.toStdString(),
                                                   transfer_id,
-                                                  file_path.toStdString(),
-                                                  offset));
+                                                  file_path.toStdString()));
     }
 
     uint32_t cancelDataTransfer(QString accountId,
@@ -1068,7 +1068,8 @@ Q_SIGNALS: // SIGNALS
     void profileReceived(const QString& accountID, const QString& peer, const QString& vCard);
     void dataTransferEvent(const QString& accountId,
                            const QString& conversationId,
-                           DataTransferId transfer_id,
+                           const QString& interactionId,
+                           const QString& fileId,
                            uint code);
     void deviceRevocationEnded(const QString& accountId, const QString& deviceId, int status);
     void accountProfileReceived(const QString& accountId,
