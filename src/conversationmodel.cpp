@@ -199,11 +199,11 @@ public:
                         int conversationIdx,
                         const QString& interactionId);
 
-    bool usefulDataFromDataTransfer(DataTransferId dringId,
+    bool usefulDataFromDataTransfer(const QString& fileId,
                                     const datatransfer::Info& info,
                                     QString& interactionId,
                                     QString& conversationId);
-    void awaitingHost(DataTransferId dringId, datatransfer::Info info);
+    void awaitingHost(const QString& fileId, datatransfer::Info info);
 
     bool hasOneOneSwarmWith(const QString& participant);
 
@@ -214,6 +214,10 @@ public:
      * @param final name of the file
      */
     void acceptTransfer(const QString& convUid, const QString& interactionId, const QString& path);
+    void handleIncomingFile(const QString& convId,
+                            const QString& interactionId,
+                            const QString& displayName,
+                            int totalSize);
     void addConversationRequest(const MapStringString& convRequest);
     void addContactRequest(const QString& contactUri);
     const VectorString peersForConversation(const conversation::Info& conversation)
@@ -332,16 +336,16 @@ public Q_SLOTS:
                                     const QString& contactUri,
                                     bool isComposing);
 
-    void slotTransferStatusCreated(DataTransferId dringId, api::datatransfer::Info info);
-    void slotTransferStatusCanceled(DataTransferId dringId, api::datatransfer::Info info);
-    void slotTransferStatusAwaitingPeer(DataTransferId dringId, api::datatransfer::Info info);
-    void slotTransferStatusAwaitingHost(DataTransferId dringId, api::datatransfer::Info info);
-    void slotTransferStatusOngoing(DataTransferId dringId, api::datatransfer::Info info);
-    void slotTransferStatusFinished(DataTransferId dringId, api::datatransfer::Info info);
-    void slotTransferStatusError(DataTransferId dringId, api::datatransfer::Info info);
-    void slotTransferStatusTimeoutExpired(DataTransferId dringId, api::datatransfer::Info info);
-    void slotTransferStatusUnjoinable(DataTransferId dringId, api::datatransfer::Info info);
-    bool updateTransferStatus(DataTransferId dringId,
+    void slotTransferStatusCreated(const QString& fileId, api::datatransfer::Info info);
+    void slotTransferStatusCanceled(const QString& fileId, api::datatransfer::Info info);
+    void slotTransferStatusAwaitingPeer(const QString& fileId, api::datatransfer::Info info);
+    void slotTransferStatusAwaitingHost(const QString& fileId, api::datatransfer::Info info);
+    void slotTransferStatusOngoing(const QString& fileId, api::datatransfer::Info info);
+    void slotTransferStatusFinished(const QString& fileId, api::datatransfer::Info info);
+    void slotTransferStatusError(const QString& fileId, api::datatransfer::Info info);
+    void slotTransferStatusTimeoutExpired(const QString& fileId, api::datatransfer::Info info);
+    void slotTransferStatusUnjoinable(const QString& fileId, api::datatransfer::Info info);
+    bool updateTransferStatus(const QString& fileId,
                               datatransfer::Info info,
                               interaction::Status newStatus,
                               bool& updated);
@@ -587,12 +591,13 @@ ConversationModel::getFilteredConversations(const FilterType& filter,
                     return (owner.profileInfo.type == profile::Type::SIP && !entry.isRequest);
                 case FilterType::REQUEST:
                     return entry.isRequest;
+                case FilterType::INVALID:
                 default:
                     break;
                 }
             } catch (...) {
-                return false;
             }
+            return false;
         })
         .validate();
 }
@@ -615,6 +620,9 @@ ConversationModel::getConversationForPeerUri(const QString& uri)
             [this, uri](const conversation::Info& conv) -> bool {
                 if (!pimpl_->isCoreDialog(conv)) {
                     return false;
+                }
+                if (conv.mode == conversation::Mode::ONE_TO_ONE) {
+                    return pimpl_->peersForConversation(conv).indexOf(uri) != -1;
                 }
                 return uri == pimpl_->peersForConversation(conv).front();
             },
@@ -1482,6 +1490,9 @@ ConversationModel::acceptConversationRequest(const QString& conversationId)
         }
         break;
     }
+    case conversation::Mode::ADMIN_INVITES_ONLY:
+    case conversation::Mode::INVITES_ONLY:
+    case conversation::Mode::PUBLIC:
     default:
         break;
     }
@@ -1904,10 +1915,9 @@ ConversationModelPimpl::peersForConversation(const conversation::Info& conversat
     default:
         break;
     }
-    for (const auto& participant : conversation.participants) {
+    for (const auto& participant : conversation.participants)
         if (participant != linked.owner.profileInfo.uri)
             result.push_back(participant);
-    }
     return result;
 }
 
@@ -1930,8 +1940,9 @@ ConversationModelPimpl::isCoreDialog(const conversation::Info& conversation) con
             return true;
         }
     default:
-        return false;
+        break;
     }
+    return false;
 }
 
 bool
@@ -2083,7 +2094,7 @@ ConversationModelPimpl::sendContactRequest(const QString& contactUri)
         linked.owner.contactModel->addContact(contact);
 }
 void
-ConversationModelPimpl::slotConversationLoaded(uint32_t requestId,
+ConversationModelPimpl::slotConversationLoaded(uint32_t,
                                                const QString& accountId,
                                                const QString& conversationId,
                                                const VectorMapStringString& messages)
@@ -2108,8 +2119,25 @@ ConversationModelPimpl::slotConversationLoaded(uint32_t requestId,
             auto msgId = message["id"];
             auto msg = interaction::Info(message, linked.owner.profileInfo.uri);
             if (msg.type == interaction::Type::DATA_TRANSFER) {
-                auto daemponID = message["tid"];
-                storage::updateDataTransferInteractionForDaemonId(db, daemponID, msg);
+                auto fileId = message["fileId"];
+                QString path;
+                qlonglong bytesProgress, totalSize;
+                linked.owner.dataTransferModel->fileTransferInfo(accountId,
+                                                                 conversationId,
+                                                                 fileId,
+                                                                 path,
+                                                                 totalSize,
+                                                                 bytesProgress);
+                QFileInfo fi(path);
+                if (fi.isSymLink()) {
+                    msg.body = fi.symLinkTarget();
+                } else {
+                    msg.body = path;
+                }
+                msg.status = bytesProgress == 0 ? interaction::Status::TRANSFER_AWAITING_HOST
+                             : bytesProgress == totalSize ? interaction::Status::TRANSFER_FINISHED
+                                                          : interaction::Status::TRANSFER_ONGOING;
+                linked.owner.dataTransferModel->registerTransferId(fileId, msgId);
             } else if (msg.type == interaction::Type::CALL) {
                 msg.body = storage::getCallInteractionString(msg.authorUri, msg.duration);
             }
@@ -2154,27 +2182,30 @@ ConversationModelPimpl::slotMessageReceived(const QString& accountId,
         auto msgId = message["id"];
         auto msg = interaction::Info(message, linked.owner.profileInfo.uri);
         api::datatransfer::Info info;
-        DataTransferId transferIdInt;
+        QString fileId;
+
         if (msg.type == interaction::Type::DATA_TRANSFER) {
             // save data transfer interaction to db and assosiate daemon id with interaction id,
             // conversation id and db id
-            QString transferId = message["tid"];
-            transferIdInt = std::stoull(message["tid"].toStdString());
-            linked.owner.dataTransferModel->transferInfo(accountId,
-                                                         conversationId,
-                                                         transferIdInt,
-                                                         info);
-            // create db entry for valid data transfer
-            if (info.status != datatransfer::Status::INVALID) {
-                msg.body = info.path;
-                msg.status = (info.status == datatransfer::Status::on_connection
-                              && !interaction::isOutgoing(msg))
-                                 ? interaction::Status::TRANSFER_AWAITING_HOST
-                                 : interaction::Status::TRANSFER_CREATED;
+            QString fileId = message["fileId"];
+            QString path;
+            qlonglong bytesProgress, totalSize;
+            linked.owner.dataTransferModel->fileTransferInfo(accountId,
+                                                             conversationId,
+                                                             fileId,
+                                                             path,
+                                                             totalSize,
+                                                             bytesProgress);
+            QFileInfo fi(path);
+            if (fi.isSymLink()) {
+                msg.body = fi.symLinkTarget();
+            } else {
+                msg.body = path;
             }
-            auto interactionId = storage::addDataTransferToConversation(db, conversationId, info);
-            transfIdToDbIntId[transferId] = interactionId;
-            linked.owner.dataTransferModel->registerTransferId(transferIdInt, msgId);
+            msg.status = bytesProgress == 0           ? interaction::Status::TRANSFER_AWAITING_HOST
+                         : bytesProgress == totalSize ? interaction::Status::TRANSFER_FINISHED
+                                                      : interaction::Status::TRANSFER_ONGOING;
+            linked.owner.dataTransferModel->registerTransferId(fileId, msgId);
         } else if (msg.type == interaction::Type::CALL) {
             msg.body = storage::getCallInteractionString(msg.authorUri, msg.duration);
         } else if (msg.type == interaction::Type::TEXT
@@ -2197,7 +2228,10 @@ ConversationModelPimpl::slotMessageReceived(const QString& accountId,
         emit linked.newInteraction(conversationId, msgId, msg);
         emit linked.modelChanged();
         if (msg.status == interaction::Status::TRANSFER_AWAITING_HOST) {
-            awaitingHost(transferIdInt, info);
+            handleIncomingFile(conversationId,
+                               msgId,
+                               message["displayName"],
+                               message["totalSize"].toInt());
         }
         Q_EMIT linked.dataChanged(indexOf(conversationId));
     } catch (const std::exception& e) {
@@ -2231,7 +2265,7 @@ ConversationModelPimpl::insertSwarmInteraction(const QString& interactionId,
 
 void
 ConversationModelPimpl::slotConversationRequestReceived(const QString& accountId,
-                                                        const QString& conversationId,
+                                                        const QString&,
                                                         const MapStringString& metadatas)
 {
     if (accountId != linked.owner.id) {
@@ -2267,20 +2301,23 @@ ConversationModelPimpl::slotConversationReady(const QString& accountId,
                 auto& conversation = getConversationForPeerUri(member["uri"]).get();
                 // remove non swarm conversation
                 if (conversation.mode == conversation::Mode::NON_SWARM) {
+                    Q_EMIT linked.beginRemoveRows(indexOf(conversation.uid));
                     conversations.erase(conversations.begin() + indexOf(conversation.uid));
                     storage::removeContact(db, member["uri"]);
+                    Q_EMIT linked.endRemoveRows();
                     invalidateModel();
                     emit linked.conversationRemoved(conversation.uid);
+                    emit linked.modelChanged();
                 }
             } catch (...) {
             }
         }
     }
 
-    Q_EMIT linked.beginInsertRows(conversations.size());
     bool conversationExists = indexOf(conversationId) >= 0;
 
     if (!conversationExists) {
+        Q_EMIT linked.beginInsertRows(conversations.size());
         addSwarmConversation(conversationId);
     }
     auto& conversation = getConversationForUid(conversationId).get();
@@ -2293,10 +2330,13 @@ ConversationModelPimpl::slotConversationReady(const QString& accountId,
         conversation.mode = conversation::to_mode(details["mode"].toInt());
         conversation.isRequest = false;
         conversation.needsSyncing = false;
+        emit linked.conversationUpdated(conversationId);
+        Q_EMIT linked.dataChanged(indexOf(conversationId));
         auto id = ConfigurationManager::instance().loadConversationMessages(linked.owner.id,
                                                                             conversationId,
                                                                             "",
                                                                             0);
+        return;
     }
     invalidateModel();
     // we use conversationReady callback only for conversation with one participant. We could use
@@ -2324,36 +2364,33 @@ ConversationModelPimpl::slotConversationRemoved(const QString& accountId,
         // we should create non swarm conversation only for removed one-to-one conversation.
         if (conversation.mode != conversation::Mode::ONE_TO_ONE) {
             // remove swarm conversation
+            Q_EMIT linked.beginRemoveRows(conversationIndex);
             conversations.erase(conversations.begin() + conversationIndex);
             emit linked.conversationRemoved(conversationId);
+            Q_EMIT linked.endRemoveRows();
             return;
         }
         auto& peers = peersForConversation(conversation);
         if (peers.isEmpty()) {
             // remove swarm conversation
+            Q_EMIT linked.beginRemoveRows(conversationIndex);
             conversations.erase(conversations.begin() + conversationIndex);
             emit linked.conversationRemoved(conversationId);
+            Q_EMIT linked.endRemoveRows();
             return;
         }
         auto contactId = peers.first();
         // remove swarm conversation
+        Q_EMIT linked.beginRemoveRows(conversationIndex);
         conversations.erase(conversations.begin() + conversationIndex);
-        auto contact = linked.owner.contactModel->getContact(contactId);
-        if (contact.profileInfo.type != api::profile::Type::JAMI) {
-            emit linked.conversationRemoved(conversationId);
-            return;
-        }
-        Q_EMIT linked.beginInsertRows(conversations.size());
+        emit linked.conversationRemoved(conversationId);
+        Q_EMIT linked.endRemoveRows();
         auto conv = storage::getConversationsWithPeer(db, contactId);
         if (conv.empty()) {
             conv.push_back(storage::beginConversationWithPeer(db, contactId));
         }
         addConversationWith(conv[0], contactId);
-        invalidateModel();
-        emit linked.conversationRemoved(conversationId);
         emit linked.newConversation(conv[0]);
-        emit linked.modelChanged();
-        Q_EMIT linked.endInsertRows();
     } catch (...) {
     }
 }
@@ -2420,6 +2457,7 @@ ConversationModelPimpl::slotContactAdded(const QString& contactUri)
             QStringList swarms = ConfigurationManager::instance().getConversations(linked.owner.id);
             bool needsSyncing = swarms.indexOf(conversation.uid) == -1;
             if (conversation.needsSyncing != needsSyncing) {
+                conversation.isRequest = false;
                 conversation.needsSyncing = needsSyncing;
                 invalidateModel();
                 emit linked.modelChanged();
@@ -2430,8 +2468,14 @@ ConversationModelPimpl::slotContactAdded(const QString& contactUri)
             conv.push_back(storage::beginConversationWithPeer(db, contactUri));
         }
         // remove temporary conversation that was added when receiving an incoming request
-        if (indexOf(contactUri) >= 0) {
-            conversations.erase(conversations.begin() + indexOf(contactUri));
+        auto contactIdx = indexOf(contactUri);
+        if (contactIdx >= 0) {
+            Q_EMIT linked.beginRemoveRows(contactIdx);
+            conversations.erase(conversations.begin() + contactIdx);
+            Q_EMIT linked.endRemoveRows();
+
+            invalidateModel();
+            emit linked.modelChanged();
         }
         // add a conversation if not exists
         addConversation = indexOf(conv[0]) == -1;
@@ -2447,13 +2491,9 @@ ConversationModelPimpl::slotContactAdded(const QString& contactUri)
         }
     }
     if (addConversation) {
-        Q_EMIT linked.beginInsertRows(conversations.size());
         addConversationWith(conv[0], contactUri);
-        invalidateModel();
         emit linked.conversationReady(conv[0], contactUri);
         emit linked.newConversation(conv[0]);
-        emit linked.modelChanged();
-        Q_EMIT linked.endInsertRows();
     }
 }
 
@@ -2461,7 +2501,7 @@ void
 ConversationModelPimpl::addContactRequest(const QString& contactUri)
 {
     try {
-        auto& conv = getConversationForPeerUri(contactUri).get();
+        getConversationForPeerUri(contactUri).get();
         // request from contact already exists, return
         return;
     } catch (std::out_of_range&) {
@@ -2617,9 +2657,8 @@ ConversationModelPimpl::addSwarmConversation(const QString& convId)
     for (auto& member : members) {
         // this check should be removed once all usage of participants replaced by
         // peersForConversation. We should have ourself in participants list
-        if (member["uri"] != accountURI) {
+        if (member["uri"] != accountURI)
             participants.append(member["uri"]);
-        }
     }
     if (participants.isEmpty()) {
         return;
@@ -2799,7 +2838,7 @@ ConversationModelPimpl::slotIncomingCall(const QString& fromId, const QString& c
     qDebug() << "Add call to conversation with " << fromId;
     conversation.callId = callId;
 
-    addOrUpdateCallMessage(callId, fromId);
+    addOrUpdateCallMessage(callId, fromId, true);
     emit behaviorController.showIncomingCallView(linked.owner.id, conversation.uid);
 }
 
@@ -3311,7 +3350,7 @@ ConversationModel::acceptTransfer(const QString& convUid,
 }
 
 void
-ConversationModel::cancelTransfer(const QString& convUid, const QString& interactionId)
+ConversationModel::cancelTransfer(const QString& convUid, const QString& fileId)
 {
     // For this action, we change interaction status before effective canceling as daemon will
     // emit Finished event code immediately (before leaving this method) in non-DBus mode.
@@ -3321,13 +3360,13 @@ ConversationModel::cancelTransfer(const QString& convUid, const QString& interac
     if (conversationIdx != -1) {
         std::lock_guard<std::mutex> lk(pimpl_->interactionsLocks[convUid]);
         auto& interactions = pimpl_->conversations[conversationIdx].interactions;
-        auto it = interactions.find(interactionId);
+        auto it = interactions.find(fileId);
         if (it != interactions.end()) {
             it->second.status = interaction::Status::TRANSFER_CANCELED;
 
             // update information in the db
             storage::updateInteractionStatus(pimpl_->db,
-                                             interactionId,
+                                             fileId,
                                              interaction::Status::TRANSFER_CANCELED);
             emitUpdated = true;
             itCopy = it->second;
@@ -3337,13 +3376,12 @@ ConversationModel::cancelTransfer(const QString& convUid, const QString& interac
         // for swarm conversations we need to provide conversation id to accept file, for not swarm
         // conversations we need peer uri
         lrc::api::datatransfer::Info info = {};
-        getTransferInfo(convUid, interactionId, info);
-        auto identifier = info.conversationId.isEmpty() ? info.peerUri : convUid;
+        getTransferInfo(convUid, fileId, info);
         // Forward cancel action to daemon (will invoke slotTransferStatusCanceled)
-        owner.dataTransferModel->cancel(owner.id, identifier, interactionId);
+        owner.dataTransferModel->cancel(owner.id, convUid, fileId);
         pimpl_->invalidateModel();
-        emit interactionStatusUpdated(convUid, interactionId, itCopy);
-        emit pimpl_->behaviorController.newReadInteraction(owner.id, convUid, interactionId);
+        emit interactionStatusUpdated(convUid, fileId, itCopy);
+        emit pimpl_->behaviorController.newReadInteraction(owner.id, convUid, fileId);
     }
 }
 
@@ -3352,15 +3390,24 @@ ConversationModel::getTransferInfo(const QString& conversationId,
                                    const QString& interactionId,
                                    datatransfer::Info& info)
 {
-    try {
-        auto dringId = pimpl_->linked.owner.dataTransferModel->getDringIdFromInteractionId(
-            interactionId);
-        pimpl_->linked.owner.dataTransferModel->transferInfo(owner.id,
-                                                             conversationId,
-                                                             dringId,
-                                                             info);
-    } catch (...) {
-        info.status = datatransfer::Status::INVALID;
+    auto convOpt = getConversationForUid(conversationId);
+    if (!convOpt)
+        return;
+    auto fileId = owner.dataTransferModel->getFileIdFromInteractionId(interactionId);
+    if (convOpt->get().mode == conversation::Mode::NON_SWARM) {
+        try {
+            owner.dataTransferModel->transferInfo(owner.id, fileId, info);
+        } catch (...) {
+            info.status = datatransfer::Status::INVALID;
+        }
+    } else {
+        QString path;
+        qlonglong bytesProgress, totalSize;
+        owner.dataTransferModel
+            ->fileTransferInfo(owner.id, conversationId, fileId, path, totalSize, bytesProgress);
+        info.path = path;
+        info.totalSize = totalSize;
+        info.progress = bytesProgress;
     }
 }
 
@@ -3371,7 +3418,7 @@ ConversationModel::getNumberOfUnreadMessagesFor(const QString& convUid)
 }
 
 bool
-ConversationModelPimpl::usefulDataFromDataTransfer(DataTransferId dringId,
+ConversationModelPimpl::usefulDataFromDataTransfer(const QString& fileId,
                                                    const datatransfer::Info& info,
                                                    QString& interactionId,
                                                    QString& conversationId)
@@ -3379,19 +3426,19 @@ ConversationModelPimpl::usefulDataFromDataTransfer(DataTransferId dringId,
     if (info.accountId != linked.owner.id)
         return false;
     try {
-        interactionId = linked.owner.dataTransferModel->getInteractionIdFromDringId(dringId);
+        interactionId = linked.owner.dataTransferModel->getInteractionIdFromFileId(fileId);
         conversationId = info.conversationId.isEmpty()
                              ? storage::conversationIdFromInteractionId(db, interactionId)
                              : info.conversationId;
     } catch (const std::out_of_range& e) {
-        qWarning() << "Couldn't get interaction from daemon Id: " << dringId;
+        qWarning() << "Couldn't get interaction from daemon Id: " << fileId;
         return false;
     }
     return true;
 }
 
 void
-ConversationModelPimpl::slotTransferStatusCreated(DataTransferId dringId, datatransfer::Info info)
+ConversationModelPimpl::slotTransferStatusCreated(const QString& fileId, datatransfer::Info info)
 {
     // check if transfer is for the current account
     if (info.accountId != linked.owner.id)
@@ -3421,8 +3468,8 @@ ConversationModelPimpl::slotTransferStatusCreated(DataTransferId dringId, datatr
     const auto& convId = convIds[0];
     auto interactionId = storage::addDataTransferToConversation(db, convId, info);
 
-    // map dringId and interactionId for latter retrivial from client (that only known the interactionId)
-    linked.owner.dataTransferModel->registerTransferId(dringId, interactionId);
+    // map fileId and interactionId for latter retrivial from client (that only known the interactionId)
+    linked.owner.dataTransferModel->registerTransferId(fileId, interactionId);
 
     auto interaction = interaction::Info {info.isOutgoing ? "" : info.peerUri,
                                           info.isOutgoing ? info.path : info.displayName,
@@ -3457,22 +3504,22 @@ ConversationModelPimpl::slotTransferStatusCreated(DataTransferId dringId, datatr
 }
 
 void
-ConversationModelPimpl::slotTransferStatusAwaitingPeer(DataTransferId dringId,
+ConversationModelPimpl::slotTransferStatusAwaitingPeer(const QString& fileId,
                                                        datatransfer::Info info)
 {
     if (info.accountId != linked.owner.id)
         return;
     bool intUpdated;
-    updateTransferStatus(dringId, info, interaction::Status::TRANSFER_AWAITING_PEER, intUpdated);
+    updateTransferStatus(fileId, info, interaction::Status::TRANSFER_AWAITING_PEER, intUpdated);
 }
 
 void
-ConversationModelPimpl::slotTransferStatusAwaitingHost(DataTransferId dringId,
+ConversationModelPimpl::slotTransferStatusAwaitingHost(const QString& fileId,
                                                        datatransfer::Info info)
 {
     if (info.accountId != linked.owner.id)
         return;
-    awaitingHost(dringId, info);
+    awaitingHost(fileId, info);
 }
 
 bool
@@ -3487,18 +3534,18 @@ ConversationModelPimpl::hasOneOneSwarmWith(const QString& participant)
 }
 
 void
-ConversationModelPimpl::awaitingHost(DataTransferId dringId, datatransfer::Info info)
+ConversationModelPimpl::awaitingHost(const QString& fileId, datatransfer::Info info)
 {
     if (info.accountId != linked.owner.id)
         return;
     QString interactionId;
     QString conversationId;
-    if (not usefulDataFromDataTransfer(dringId, info, interactionId, conversationId))
+    if (not usefulDataFromDataTransfer(fileId, info, interactionId, conversationId))
         return;
 
     bool intUpdated;
 
-    if (!updateTransferStatus(dringId,
+    if (!updateTransferStatus(fileId,
                               info,
                               interaction::Status::TRANSFER_AWAITING_HOST,
                               intUpdated)) {
@@ -3520,11 +3567,22 @@ ConversationModelPimpl::awaitingHost(DataTransferId dringId, datatransfer::Info 
             return;
         }
     }
+    handleIncomingFile(conversationId, interactionId, info.displayName, info.totalSize);
+}
+
+void
+ConversationModelPimpl::handleIncomingFile(const QString& convId,
+                                           const QString& interactionId,
+                                           const QString& displayName,
+                                           int totalSize)
+{
     // If it's an accepted file type and less than 20 MB, accept transfer.
     if (linked.owner.dataTransferModel->automaticAcceptTransfer) {
         if (linked.owner.dataTransferModel->acceptBehindMb == 0
-            || info.totalSize < linked.owner.dataTransferModel->acceptBehindMb * 1024 * 1024) {
-            acceptTransfer(conversationId, interactionId, info.displayName);
+            || (totalSize > 0
+                && static_cast<unsigned>(totalSize)
+                       < linked.owner.dataTransferModel->acceptBehindMb * 1024 * 1024)) {
+            acceptTransfer(convId, interactionId, displayName);
         }
     }
 }
@@ -3547,48 +3605,79 @@ ConversationModelPimpl::acceptTransfer(const QString& convUid,
     if (!dir.exists())
         dir.mkpath(".");
     auto& conversation = getConversationForUid(convUid).get();
-    // for swarm conversation we need converstion id to accept file and for not swarm participant uri
-    auto identifier = conversation.mode != conversation::Mode::NON_SWARM
-                          ? convUid
-                          : peersForConversation(conversation).front();
-    auto acceptedFilePath = linked.owner.dataTransferModel->accept(linked.owner.id,
-                                                                   identifier,
-                                                                   interactionId,
-                                                                   destinationDir + path,
-                                                                   0);
-    auto dringId = linked.owner.dataTransferModel->getDringIdFromInteractionId(interactionId);
-    if (transfIdToDbIntId.find(QString::number(dringId)) != transfIdToDbIntId.end()) {
-        auto dbInteractionId = transfIdToDbIntId[QString::number(dringId)];
-        storage::updateInteractionBody(db, dbInteractionId, acceptedFilePath);
-        storage::updateInteractionStatus(db,
-                                         dbInteractionId,
-                                         interaction::Status::TRANSFER_ACCEPTED);
+    if (conversation.mode == conversation::Mode::NON_SWARM) {
+        auto acceptedFilePath = linked.owner.dataTransferModel->accept(linked.owner.id,
+                                                                       interactionId,
+                                                                       destinationDir + path,
+                                                                       0);
+        auto fileId = linked.owner.dataTransferModel->getFileIdFromInteractionId(interactionId);
+        if (transfIdToDbIntId.find(fileId) != transfIdToDbIntId.end()) {
+            auto dbInteractionId = transfIdToDbIntId[fileId];
+            storage::updateInteractionBody(db, dbInteractionId, acceptedFilePath);
+            storage::updateInteractionStatus(db,
+                                             dbInteractionId,
+                                             interaction::Status::TRANSFER_ACCEPTED);
+        } else {
+            storage::updateInteractionBody(db, interactionId, acceptedFilePath);
+            storage::updateInteractionStatus(db,
+                                             interactionId,
+                                             interaction::Status::TRANSFER_ACCEPTED);
+        }
+        // prepare interaction Info and emit signal for the client
+        auto conversationIdx = indexOf(convUid);
+        interaction::Info itCopy;
+        bool emitUpdated = false;
+        if (conversationIdx != -1) {
+            std::lock_guard<std::mutex> lk(interactionsLocks[convUid]);
+            auto& interactions = conversations[conversationIdx].interactions;
+            auto it = interactions.find(interactionId);
+            if (it != interactions.end()) {
+                it->second.body = acceptedFilePath;
+                it->second.status = interaction::Status::TRANSFER_ACCEPTED;
+                emitUpdated = true;
+                itCopy = it->second;
+            }
+        }
+        if (emitUpdated) {
+            if (isCoreDialog(conversations[conversationIdx])) {
+                sendContactRequest(peersForConversation(conversations[conversationIdx]).front());
+            }
+            invalidateModel();
+            emit linked.interactionStatusUpdated(convUid, interactionId, itCopy);
+            emit behaviorController.newReadInteraction(linked.owner.id, convUid, interactionId);
+        }
+        return;
+    }
+
+    auto interaction = conversation.interactions.find(interactionId);
+    if (interaction != conversation.interactions.end()) {
+        auto displayName = interaction->second.commit["displayName"];
+        auto fileId = interaction->second.commit["fileId"];
+        if (fileId.isEmpty()) {
+            qWarning() << "Cannot download file without fileId";
+        }
+        if (displayName.isEmpty()) {
+            displayName = interactionId;
+        }
+        int i = 0;
+        auto path = destinationDir + displayName;
+        do {
+            if (i > 0) {
+                path = destinationDir + QString::number(i) + displayName;
+            }
+            QFileInfo fi(path);
+            if (!fi.isFile())
+                break;
+            ++i;
+
+        } while (i < 1000);
+        if (i == 1000) {
+            qWarning() << "Too much duplicates for " << destinationDir << path;
+            return;
+        }
+        linked.owner.dataTransferModel->download(linked.owner.id, convUid, fileId, path);
     } else {
-        storage::updateInteractionBody(db, interactionId, acceptedFilePath);
-        storage::updateInteractionStatus(db, interactionId, interaction::Status::TRANSFER_ACCEPTED);
-    }
-    // prepare interaction Info and emit signal for the client
-    auto conversationIdx = indexOf(convUid);
-    interaction::Info itCopy;
-    bool emitUpdated = false;
-    if (conversationIdx != -1) {
-        std::lock_guard<std::mutex> lk(interactionsLocks[convUid]);
-        auto& interactions = conversations[conversationIdx].interactions;
-        auto it = interactions.find(interactionId);
-        if (it != interactions.end()) {
-            it->second.body = acceptedFilePath;
-            it->second.status = interaction::Status::TRANSFER_ACCEPTED;
-            emitUpdated = true;
-            itCopy = it->second;
-        }
-    }
-    if (emitUpdated) {
-        if (isCoreDialog(conversations[conversationIdx])) {
-            sendContactRequest(peersForConversation(conversations[conversationIdx]).front());
-        }
-        invalidateModel();
-        emit linked.interactionStatusUpdated(convUid, interactionId, itCopy);
-        emit behaviorController.newReadInteraction(linked.owner.id, convUid, interactionId);
+        qWarning() << "Cannot download file without valid interaction";
     }
 }
 
@@ -3600,17 +3689,17 @@ ConversationModelPimpl::invalidateModel()
 }
 
 void
-ConversationModelPimpl::slotTransferStatusOngoing(DataTransferId dringId, datatransfer::Info info)
+ConversationModelPimpl::slotTransferStatusOngoing(const QString& fileId, datatransfer::Info info)
 {
     if (info.accountId != linked.owner.id)
         return;
     QString interactionId;
     QString conversationId;
-    if (not usefulDataFromDataTransfer(dringId, info, interactionId, conversationId))
+    if (not usefulDataFromDataTransfer(fileId, info, interactionId, conversationId))
         return;
     bool intUpdated;
 
-    if (!updateTransferStatus(dringId, info, interaction::Status::TRANSFER_ONGOING, intUpdated)) {
+    if (!updateTransferStatus(fileId, info, interaction::Status::TRANSFER_ONGOING, intUpdated)) {
         return;
     }
     if (!intUpdated) {
@@ -3625,13 +3714,13 @@ ConversationModelPimpl::slotTransferStatusOngoing(DataTransferId dringId, datatr
 }
 
 void
-ConversationModelPimpl::slotTransferStatusFinished(DataTransferId dringId, datatransfer::Info info)
+ConversationModelPimpl::slotTransferStatusFinished(const QString& fileId, datatransfer::Info info)
 {
     if (info.accountId != linked.owner.id)
         return;
     QString interactionId;
     QString conversationId;
-    if (not usefulDataFromDataTransfer(dringId, info, interactionId, conversationId))
+    if (not usefulDataFromDataTransfer(fileId, info, interactionId, conversationId))
         return;
     // prepare interaction Info and emit signal for the client
     auto conversationIdx = indexOf(conversationId);
@@ -3656,65 +3745,65 @@ ConversationModelPimpl::slotTransferStatusFinished(DataTransferId dringId, datat
         if (emitUpdated) {
             invalidateModel();
             if (conversations[conversationIdx].mode != conversation::Mode::NON_SWARM) {
-                if (transfIdToDbIntId.find(QString::number(dringId)) != transfIdToDbIntId.end()) {
-                    auto dbIntId = transfIdToDbIntId[QString::number(dringId)];
+                if (transfIdToDbIntId.find(fileId) != transfIdToDbIntId.end()) {
+                    auto dbIntId = transfIdToDbIntId[fileId];
                     storage::updateInteractionStatus(db, dbIntId, newStatus);
                 }
             } else {
                 storage::updateInteractionStatus(db, interactionId, newStatus);
             }
             emit linked.interactionStatusUpdated(conversationId, interactionId, itCopy);
-            transfIdToDbIntId.remove(QString::number(dringId));
+            transfIdToDbIntId.remove(fileId);
         }
     }
 }
 
 void
-ConversationModelPimpl::slotTransferStatusCanceled(DataTransferId dringId, datatransfer::Info info)
+ConversationModelPimpl::slotTransferStatusCanceled(const QString& fileId, datatransfer::Info info)
 {
     if (info.accountId != linked.owner.id)
         return;
     bool intUpdated;
-    updateTransferStatus(dringId, info, interaction::Status::TRANSFER_CANCELED, intUpdated);
+    updateTransferStatus(fileId, info, interaction::Status::TRANSFER_CANCELED, intUpdated);
 }
 
 void
-ConversationModelPimpl::slotTransferStatusError(DataTransferId dringId, datatransfer::Info info)
+ConversationModelPimpl::slotTransferStatusError(const QString& fileId, datatransfer::Info info)
 {
     if (info.accountId != linked.owner.id)
         return;
     bool intUpdated;
-    updateTransferStatus(dringId, info, interaction::Status::TRANSFER_ERROR, intUpdated);
+    updateTransferStatus(fileId, info, interaction::Status::TRANSFER_ERROR, intUpdated);
 }
 
 void
-ConversationModelPimpl::slotTransferStatusUnjoinable(DataTransferId dringId, datatransfer::Info info)
+ConversationModelPimpl::slotTransferStatusUnjoinable(const QString& fileId, datatransfer::Info info)
 {
     if (info.accountId != linked.owner.id)
         return;
     bool intUpdated;
-    updateTransferStatus(dringId, info, interaction::Status::TRANSFER_UNJOINABLE_PEER, intUpdated);
+    updateTransferStatus(fileId, info, interaction::Status::TRANSFER_UNJOINABLE_PEER, intUpdated);
 }
 
 void
-ConversationModelPimpl::slotTransferStatusTimeoutExpired(DataTransferId dringId,
+ConversationModelPimpl::slotTransferStatusTimeoutExpired(const QString& fileId,
                                                          datatransfer::Info info)
 {
     if (info.accountId != linked.owner.id)
         return;
     bool intUpdated;
-    updateTransferStatus(dringId, info, interaction::Status::TRANSFER_TIMEOUT_EXPIRED, intUpdated);
+    updateTransferStatus(fileId, info, interaction::Status::TRANSFER_TIMEOUT_EXPIRED, intUpdated);
 }
 
 bool
-ConversationModelPimpl::updateTransferStatus(DataTransferId dringId,
+ConversationModelPimpl::updateTransferStatus(const QString& fileId,
                                              datatransfer::Info info,
                                              interaction::Status newStatus,
                                              bool& updated)
 {
     QString interactionId;
     QString conversationId;
-    if (not usefulDataFromDataTransfer(dringId, info, interactionId, conversationId)) {
+    if (not usefulDataFromDataTransfer(fileId, info, interactionId, conversationId)) {
         return false;
     }
 
@@ -3722,13 +3811,7 @@ ConversationModelPimpl::updateTransferStatus(DataTransferId dringId,
     if (conversationIdx < 0) {
         return false;
     }
-    if (conversations[conversationIdx].mode != conversation::Mode::NON_SWARM) {
-        if (transfIdToDbIntId.find(QString::number(dringId)) == transfIdToDbIntId.end()) {
-            return false;
-        }
-        auto dbIntId = transfIdToDbIntId[QString::number(dringId)];
-        storage::updateInteractionStatus(db, dbIntId, newStatus);
-    } else {
+    if (conversations[conversationIdx].mode == conversation::Mode::NON_SWARM) {
         storage::updateInteractionStatus(db, interactionId, newStatus);
     }
     bool emitUpdated = false;
