@@ -45,21 +45,17 @@ public:
     enum class ExportOnRingStatus { SUCCESS = 0, WRONG_PASSWORD = 1, NETWORK_ERROR = 2, INVALID };
     Q_ENUM(ExportOnRingStatus)
 
-    // Singleton
-    static NameDirectory& instance();
+    // Constructors & Destructors
+    explicit NameDirectory(QObject* parent = nullptr);
+    ~NameDirectory();
+    Q_DISABLE_COPY(NameDirectory)
 
     // Lookup
     Q_INVOKABLE bool lookupName(const QString& nameServiceURL, const QString& name) const;
     Q_INVOKABLE bool lookupAddress(const QString& nameServiceURL, const QString& address) const;
 
 private:
-    // Constructors & Destructors
-    explicit NameDirectory();
-    virtual ~NameDirectory();
-
     NameDirectoryPrivate* d_ptr;
-    Q_DECLARE_PRIVATE(NameDirectory)
-    Q_DISABLE_COPY(NameDirectory)
 
 Q_SIGNALS:
     /// RegisterName has ended

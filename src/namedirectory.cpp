@@ -44,18 +44,10 @@ NameDirectoryPrivate::NameDirectoryPrivate(NameDirectory* q)
             Qt::QueuedConnection);
 }
 
-NameDirectory::NameDirectory()
-    : QObject(QCoreApplication::instance())
+NameDirectory::NameDirectory(QObject* parent)
+    : QObject(parent)
     , d_ptr(new NameDirectoryPrivate(this))
 {}
-
-/// Singleton
-NameDirectory&
-NameDirectory::instance()
-{
-    static auto instance = new NameDirectory;
-    return *instance;
-}
 
 // Name registration ended
 void
