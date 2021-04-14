@@ -87,12 +87,6 @@ Rectangle {
                 || pH < (distantRenderer.height - distantRenderer.getYOffset() * 2 - 1))
     }
 
-    // returns true if participant takes renderer's width
-    function showMinimize(pX, pW) {
-        return (pX - distantRenderer.getXOffset() === 0
-                && pW >= distantRenderer.width - distantRenderer.getXOffset() * 2 - 1)
-    }
-
     function handleParticipantsInfo(infos) {
         // TODO: in the future the conference layout should be entirely managed by the client
         // Hack: truncate and ceil participant's overlay position and size to correct
@@ -132,11 +126,9 @@ Rectangle {
                                            participantOverlays[p].y,
                                            participantOverlays[p].width,
                                            participantOverlays[p].height)
-                    showMin = showMinimize(participantOverlays[p].x,
-                                           participantOverlays[p].width)
 
                     participantOverlays[p].setMenu(participant.uri, participant.bestName,
-                                                   participant.isLocal, showMax, showMin)
+                                                   participant.isLocal, participant.active, showMax)
                     if (participant.videoMuted)
                         participantOverlays[p].setAvatar(participant.avatar)
                     else
@@ -177,10 +169,9 @@ Rectangle {
                     }
 
                     showMax = showMaximize(hover.x, hover.y, hover.width, hover.height)
-                    showMin = showMinimize(hover.x, hover.width)
 
                     hover.setMenu(infos[infoVariant].uri, infos[infoVariant].bestName,
-                                  infos[infoVariant].isLocal, showMax, showMin)
+                                  infos[infoVariant].isLocal, infos[infoVariant].active, showMax)
                     if (infos[infoVariant].videoMuted)
                         hover.setAvatar(infos[infoVariant].avatar)
                     else

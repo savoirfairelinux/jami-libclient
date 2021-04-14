@@ -42,10 +42,10 @@ Rectangle {
     arg(shapeWidth)
 
     property string uri: overlayMenu.uri
+    property bool participantIsActive: false
     property bool participantIsHost: false
     property bool participantIsModerator: false
     property bool participantIsMuted: false
-    property bool participantIsLocalMuted: false
     property bool participantIsModeratorMuted: false
 
     property bool participantMenuActive: false
@@ -59,7 +59,7 @@ Rectangle {
         }
     }
 
-    function setMenu(newUri, bestName, isLocal, showMax, showMin) {
+    function setMenu(newUri, bestName, isLocal, isActive, showMax) {
 
         overlayMenu.uri = newUri
         overlayMenu.bestName = bestName
@@ -68,6 +68,7 @@ Rectangle {
         var isModerator = CallAdapter.isCurrentModerator()
         participantIsHost = CallAdapter.participantIsHost(overlayMenu.uri)
         participantIsModerator = CallAdapter.isModerator(overlayMenu.uri)
+        participantIsActive = isActive
         overlayMenu.showSetModerator = isHost && !isLocal && !participantIsModerator
         overlayMenu.showUnsetModerator = isHost && !isLocal && participantIsModerator
 
@@ -82,7 +83,7 @@ Rectangle {
         overlayMenu.showModeratorMute = isModerator && !isModeratorMuted
         overlayMenu.showModeratorUnmute = isModerator && isModeratorMuted
         overlayMenu.showMaximize = isModerator && showMax
-        overlayMenu.showMinimize = isModerator && showMin
+        overlayMenu.showMinimize = isModerator && participantIsActive
         overlayMenu.showHangup = isModerator && !isLocal && !participantIsHost
     }
 
