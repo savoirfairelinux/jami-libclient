@@ -39,6 +39,23 @@ import "commoncomponents"
 ApplicationWindow {
     id: root
 
+    property ApplicationWindow appWindow : root
+
+    // To facilitate reparenting of the callview during
+    // fullscreen mode, we need QQuickItem based object.
+    Item {
+        id: appContainer
+        anchors.fill: parent
+    }
+    property bool isFullScreen: false
+    visibility: !visible ?
+                   Window.Hidden : (isFullScreen ?
+                                        Window.FullScreen :
+                                        Window.Windowed)
+    function toggleFullScreen() {
+        isFullScreen = !isFullScreen
+    }
+
     enum LoadedSource {
         WizardView = 0,
         MainView,
@@ -92,8 +109,7 @@ ApplicationWindow {
         setY(Screen.height / 2 - height / 2)
 
         if (UtilsAdapter.getAccountListSize() !== 0) {
-            mainApplicationLoader.setSource(JamiQmlUtils.mainViewLoadPath,
-                                            {"containerWindow": root})
+            mainApplicationLoader.setSource(JamiQmlUtils.mainViewLoadPath)
         } else {
             mainApplicationLoader.setSource(JamiQmlUtils.wizardViewLoadPath)
         }
@@ -125,6 +141,7 @@ ApplicationWindow {
         id: mainApplicationLoader
 
         anchors.fill: parent
+        z: -1
 
         asynchronous: true
         visible: status == Loader.Ready
@@ -137,8 +154,7 @@ ApplicationWindow {
                 if (sourceToLoad === MainApplicationWindow.LoadedSource.WizardView)
                     mainApplicationLoader.setSource(JamiQmlUtils.wizardViewLoadPath)
                 else
-                    mainApplicationLoader.setSource(JamiQmlUtils.mainViewLoadPath,
-                                                    {"containerWindow": root})
+                    mainApplicationLoader.setSource(JamiQmlUtils.mainViewLoadPath)
             }
         }
     }
@@ -159,15 +175,22 @@ ApplicationWindow {
 
         function onRestoreAppRequested() {
             requestActivate()
-            showNormal()
+            if (isFullScreen)
+                showFullScreen()
+            else
+                showNormal()
         }
 
         function onNotificationClicked() {
             requestActivate()
             raise()
             if (visibility === Window.Hidden ||
-                    visibility === Window.Minimized)
-                showNormal()
+                    visibility === Window.Minimized) {
+                if (isFullScreen)
+                    showFullScreen()
+                else
+                    showNormal()
+            }
         }
     }
 

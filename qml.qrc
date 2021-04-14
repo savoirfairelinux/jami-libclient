@@ -123,7 +123,6 @@
         <file>src/mainview/components/VideoCallPageContextMenuDeviceItem.qml</file>
         <file>src/mainview/components/SelectScreen.qml</file>
         <file>src/mainview/components/ScreenRubberBand.qml</file>
-        <file>src/mainview/components/VideoCallFullScreenWindowContainer.qml</file>
         <file>src/mainview/components/ContactPicker.qml</file>
         <file>src/mainview/components/PluginHandlerPicker.qml</file>
         <file>src/mainview/components/ContactPickerItemDelegate.qml</file>
@@ -135,7 +134,6 @@
         <file>src/mainview/js/incomingcallpagecreation.js</file>
         <file>src/mainview/js/selectscreenwindowcreation.js</file>
         <file>src/mainview/js/screenrubberbandcreation.js</file>
-        <file>src/mainview/js/callfullscreenwindowcontainercreation.js</file>
         <file>src/mainview/js/contactpickercreation.js</file>
         <file>src/mainview/js/pluginhandlerpickercreation.js</file>
     </qresource>

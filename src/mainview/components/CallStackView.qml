@@ -25,7 +25,6 @@ import net.jami.Models 1.0
 import net.jami.Adapters 1.0
 
 import "../js/incomingcallpagecreation.js" as IncomingCallPageCreation
-import "../js/callfullscreenwindowcontainercreation.js" as CallFullScreenWindowContainerCreation
 
 Rectangle {
     id: callStackViewWindow
@@ -57,11 +56,9 @@ Rectangle {
             return
         if (callStackMainView.currentItem.stackNumber === CallStackView.AudioPageStack) {
             audioCallPage.closeInCallConversation()
-            CallFullScreenWindowContainerCreation.closeVideoCallFullScreenWindowContainer()
             audioCallPage.closeContextMenuAndRelatedWindows()
         } else if (callStackMainView.currentItem.stackNumber === CallStackView.VideoPageStack) {
             videoCallPage.closeInCallConversation()
-            CallFullScreenWindowContainerCreation.closeVideoCallFullScreenWindowContainer()
             videoCallPage.closeContextMenuAndRelatedWindows()
         }
     }
@@ -124,22 +121,33 @@ Rectangle {
     }
 
     function toggleFullScreen() {
-        JamiQmlUtils.callIsFullscreen = !JamiQmlUtils.callIsFullscreen
         var callPage = callStackMainView.currentItem
         if (!callPage)
             return
-        CallFullScreenWindowContainerCreation.createvideoCallFullScreenWindowContainerObject()
 
-        if (!CallFullScreenWindowContainerCreation.checkIfVisible()) {
-            CallFullScreenWindowContainerCreation.setAsContainerChild(callPage)
-            CallFullScreenWindowContainerCreation.showVideoCallFullScreenWindowContainer()
-        } else {
-            callPage.parent = callStackMainView
-            CallFullScreenWindowContainerCreation.closeVideoCallFullScreenWindowContainer()
-        }
+        // manual toggle here because of our fake fullscreen mode (F11)
+        // TODO: handle and save window states, not just a boolean isFullScreen
+        if (!appWindow.isFullScreen && !JamiQmlUtils.callIsFullscreen)
+            appWindow.isFullScreen = true
+        else if (JamiQmlUtils.callIsFullscreen)
+            appWindow.isFullScreen = false
 
+        JamiQmlUtils.callIsFullscreen = !JamiQmlUtils.callIsFullscreen
+        callPage.parent = JamiQmlUtils.callIsFullscreen ?
+                    appContainer :
+                    callStackMainView
         if (callPage.stackNumber === CallStackView.VideoPageStack) {
             videoCallPage.handleParticipantsInfo(CallAdapter.getConferencesInfos())
+        }
+    }
+
+    Connections {
+        target: JamiQmlUtils
+
+        function onFullScreenCallEnded() {
+            if (appWindow.isFullScreen) {
+                toggleFullScreen()
+            }
         }
     }
 

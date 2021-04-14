@@ -29,14 +29,16 @@ Item {
     readonly property string base64StringTitle: "data:image/png;base64,"
 
     property var mainApplicationScreen: ""
+
     property bool callIsFullscreen: false
+    signal fullScreenCallEnded
 
     Connections {
         target: CallAdapter
 
         function onHasCallChanged() {
             if (!CallAdapter.hasCall && callIsFullscreen)
-                callIsFullscreen = false
+                fullScreenCallEnded()
         }
     }
 
