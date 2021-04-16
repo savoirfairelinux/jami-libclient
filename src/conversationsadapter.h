@@ -44,7 +44,6 @@ protected:
 
 public:
     Q_INVOKABLE bool connectConversationModel(bool updateFilter = true);
-    Q_INVOKABLE void disconnectConversationModel();
     Q_INVOKABLE void selectConversation(const QString& accountId, const QString& uid);
     Q_INVOKABLE void deselectConversation();
     Q_INVOKABLE void refill();
@@ -81,20 +80,6 @@ private:
     SmartListModel* conversationSmartListModel_;
 
     lrc::api::profile::Type currentTypeFilter_ {};
-
-    // Connections.
-    QMetaObject::Connection modelSortedConnection_;
-    QMetaObject::Connection modelUpdatedConnection_;
-    QMetaObject::Connection filterChangedConnection_;
-    QMetaObject::Connection newConversationConnection_;
-    QMetaObject::Connection conversationRemovedConnection_;
-    QMetaObject::Connection conversationClearedConnection;
-    QMetaObject::Connection contactProfileUpdatedConnection_;
-    QMetaObject::Connection selectedCallChanged_;
-    QMetaObject::Connection smartlistSelectionConnection_;
-    QMetaObject::Connection interactionRemovedConnection_;
-    QMetaObject::Connection searchStatusChangedConnection_;
-    QMetaObject::Connection searchResultUpdatedConnection_;
 
     SystemTray* systemTray_;
 };

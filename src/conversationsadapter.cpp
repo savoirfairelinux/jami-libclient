@@ -155,7 +155,6 @@ ConversationsAdapter::deselectConversation()
 void
 ConversationsAdapter::onCurrentAccountIdChanged()
 {
-    disconnectConversationModel();
     connectConversationModel();
 
     setProperty("currentTypeFilter",
@@ -265,8 +264,11 @@ ConversationsAdapter::connectConversationModel(bool updateFilter)
     // Signal connections
     auto currentConversationModel = lrcInstance_->getCurrentConversationModel();
 
-    modelSortedConnection_ = QObject::connect(
-        currentConversationModel, &lrc::api::ConversationModel::modelChanged, [this]() {
+    QObject::connect(
+        currentConversationModel,
+        &lrc::api::ConversationModel::modelChanged,
+        this,
+        [this]() {
             conversationSmartListModel_->fillConversationsList();
             updateConversationsFilterWidget();
 
@@ -284,98 +286,99 @@ ConversationsAdapter::connectConversationModel(bool updateFilter)
                 return;
             }
             Q_EMIT modelSorted(QVariant::fromValue(convInfo.uid));
-        });
+        },
+        Qt::UniqueConnection);
 
-    contactProfileUpdatedConnection_
-        = QObject::connect(lrcInstance_->getCurrentAccountInfo().contactModel.get(),
-                           &lrc::api::ContactModel::profileUpdated,
-                           [this](const QString& contactUri) {
-                               conversationSmartListModel_->updateContactAvatarUid(contactUri);
-                               Q_EMIT updateListViewRequested();
-                           });
+    QObject::connect(
+        lrcInstance_->getCurrentAccountInfo().contactModel.get(),
+        &lrc::api::ContactModel::profileUpdated,
+        this,
+        [this](const QString& contactUri) {
+            conversationSmartListModel_->updateContactAvatarUid(contactUri);
+            Q_EMIT updateListViewRequested();
+        },
+        Qt::UniqueConnection);
 
-    modelUpdatedConnection_ = QObject::connect(currentConversationModel,
-                                               &lrc::api::ConversationModel::conversationUpdated,
-                                               [this](const QString&) {
-                                                   updateConversationsFilterWidget();
-                                                   Q_EMIT updateListViewRequested();
-                                               });
+    QObject::connect(
+        currentConversationModel,
+        &lrc::api::ConversationModel::conversationUpdated,
+        this,
+        [this](const QString&) {
+            updateConversationsFilterWidget();
+            Q_EMIT updateListViewRequested();
+        },
+        Qt::UniqueConnection);
 
-    filterChangedConnection_
-        = QObject::connect(currentConversationModel,
-                           &lrc::api::ConversationModel::filterChanged,
-                           [this]() {
-                               conversationSmartListModel_->fillConversationsList();
-                               updateConversationsFilterWidget();
-                               if (!lrcInstance_->get_selectedConvUid().isEmpty())
-                                   Q_EMIT indexRepositionRequested();
-                               Q_EMIT updateListViewRequested();
-                           });
+    QObject::connect(
+        currentConversationModel,
+        &lrc::api::ConversationModel::filterChanged,
+        this,
+        [this]() {
+            conversationSmartListModel_->fillConversationsList();
+            updateConversationsFilterWidget();
+            if (!lrcInstance_->get_selectedConvUid().isEmpty())
+                Q_EMIT indexRepositionRequested();
+            Q_EMIT updateListViewRequested();
+        },
+        Qt::UniqueConnection);
 
-    newConversationConnection_ = QObject::connect(currentConversationModel,
-                                                  &lrc::api::ConversationModel::newConversation,
-                                                  [this](const QString& convUid) {
-                                                      conversationSmartListModel_
-                                                          ->fillConversationsList();
-                                                      updateConversationForNewContact(convUid);
-                                                  });
+    QObject::connect(
+        currentConversationModel,
+        &lrc::api::ConversationModel::newConversation,
+        this,
+        [this](const QString& convUid) {
+            conversationSmartListModel_->fillConversationsList();
+            updateConversationForNewContact(convUid);
+        },
+        Qt::UniqueConnection);
 
-    conversationRemovedConnection_
-        = QObject::connect(currentConversationModel,
-                           &lrc::api::ConversationModel::conversationRemoved,
-                           [this]() { backToWelcomePage(); });
+    QObject::connect(
+        currentConversationModel,
+        &lrc::api::ConversationModel::conversationRemoved,
+        this,
+        [this]() { backToWelcomePage(); },
+        Qt::UniqueConnection);
 
-    conversationClearedConnection
-        = QObject::connect(currentConversationModel,
-                           &lrc::api::ConversationModel::conversationCleared,
-                           [this](const QString& convUid) {
-                               // If currently selected, switch to welcome screen (deselecting
-                               // current smartlist item).
-                               if (convUid != lrcInstance_->get_selectedConvUid()) {
-                                   return;
-                               }
-                               backToWelcomePage();
-                           });
+    QObject::connect(
+        currentConversationModel,
+        &lrc::api::ConversationModel::conversationCleared,
+        this,
+        [this](const QString& convUid) {
+            // If currently selected, switch to welcome screen (deselecting
+            // current smartlist item).
+            if (convUid != lrcInstance_->get_selectedConvUid()) {
+                return;
+            }
+            backToWelcomePage();
+        },
+        Qt::UniqueConnection);
 
-    searchStatusChangedConnection_
-        = QObject::connect(currentConversationModel,
-                           &lrc::api::ConversationModel::searchStatusChanged,
-                           [this](const QString& status) { Q_EMIT showSearchStatus(status); });
+    QObject::connect(
+        currentConversationModel,
+        &lrc::api::ConversationModel::searchStatusChanged,
+        this,
+        [this](const QString& status) { Q_EMIT showSearchStatus(status); },
+        Qt::UniqueConnection);
 
     // This connection is ideal when separated search results list.
     // This signal is guaranteed to fire just after filterChanged during a search if results are
     // changed, and once before filterChanged when calling setFilter.
     // NOTE: Currently, when searching, the entire conversation list will be copied 2-3 times each
     // keystroke :/.
-    searchResultUpdatedConnection_
-        = QObject::connect(currentConversationModel,
-                           &lrc::api::ConversationModel::searchResultUpdated,
-                           [this]() {
-                               conversationSmartListModel_->fillConversationsList();
-                               Q_EMIT updateListViewRequested();
-                           });
+    QObject::connect(
+        currentConversationModel,
+        &lrc::api::ConversationModel::searchResultUpdated,
+        this,
+        [this]() {
+            conversationSmartListModel_->fillConversationsList();
+            Q_EMIT updateListViewRequested();
+        },
+        Qt::UniqueConnection);
 
     if (updateFilter) {
         currentTypeFilter_ = lrc::api::profile::Type::INVALID;
     }
     return true;
-}
-
-void
-ConversationsAdapter::disconnectConversationModel()
-{
-    QObject::disconnect(modelSortedConnection_);
-    QObject::disconnect(modelUpdatedConnection_);
-    QObject::disconnect(filterChangedConnection_);
-    QObject::disconnect(newConversationConnection_);
-    QObject::disconnect(conversationRemovedConnection_);
-    QObject::disconnect(conversationClearedConnection);
-    QObject::disconnect(selectedCallChanged_);
-    QObject::disconnect(smartlistSelectionConnection_);
-    QObject::disconnect(interactionRemovedConnection_);
-    QObject::disconnect(searchStatusChangedConnection_);
-    QObject::disconnect(searchResultUpdatedConnection_);
-    QObject::disconnect(contactProfileUpdatedConnection_);
 }
 
 void
