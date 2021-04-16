@@ -34,6 +34,8 @@ Item {
     property string responsibleConvUid: ""
     property int contactType: Profile.Type.INVALID
 
+    function isOpen() { return ContextMenuGenerator.getMenu().visible }
+
     function openMenu() {
         ContextMenuGenerator.initMenu()
         var hasCall = UtilsAdapter.getCallId(responsibleAccountId, responsibleConvUid) !== ""
@@ -41,18 +43,14 @@ Item {
             ContextMenuGenerator.addMenuItem(qsTr("Start video call"),
                                              "qrc:/images/icons/videocam-24px.svg",
                                              function (){
-                                                 ConversationsAdapter.selectConversation(
-                                                             responsibleAccountId,
-                                                             responsibleConvUid, false)
+                                                 LRCInstance.selectConversation(responsibleConvUid, responsibleAccountId)
                                                  CallAdapter.placeCall()
                                                  communicationPageMessageWebView.setSendContactRequestButtonVisible(false)
                                              })
             ContextMenuGenerator.addMenuItem(qsTr("Start audio call"),
                                              "qrc:/images/icons/place_audiocall-24px.svg",
                                              function (){
-                                                 ConversationsAdapter.selectConversation(
-                                                             responsibleAccountId,
-                                                             responsibleConvUid, false)
+                                                 LRCInstance.selectConversation(responsibleConvUid, responsibleAccountId)
                                                  CallAdapter.placeAudioOnlyCall()
                                                  communicationPageMessageWebView.setSendContactRequestButtonVisible(false)
                                              })
@@ -116,7 +114,7 @@ Item {
                                                  })
             }
             ContextMenuGenerator.addMenuSeparator()
-            ContextMenuGenerator.addMenuItem(qsTr("Profile"),
+            ContextMenuGenerator.addMenuItem(qsTr("Contact details"),
                                              "qrc:/images/icons/person-24px.svg",
                                              function (){
                                                  userProfile.open()

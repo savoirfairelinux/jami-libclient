@@ -112,11 +112,11 @@ Popup {
         layer {
             enabled: true
             effect: DropShadow {
-                color: JamiTheme.shadowColor
-                verticalOffset: 2
-                horizontalOffset: 2
+                horizontalOffset: 3.0
+                verticalOffset: 3.0
+                radius: 16.0
                 samples: 16
-                radius: 10
+                color: JamiTheme.shadowColor
             }
         }
     }

@@ -27,6 +27,7 @@
 #include "moderatorlistmodel.h"
 #include "deviceitemlistmodel.h"
 #include "smartlistmodel.h"
+#include "conversationlistmodelbase.h"
 
 #include "appsettingsmanager.h"
 #include "distantrenderer.h"
@@ -105,6 +106,10 @@ registerTypes()
     QML_REGISTERTYPE(NS_MODELS, VideoFormatFpsModel);
     QML_REGISTERTYPE(NS_MODELS, PluginListPreferenceModel);
     QML_REGISTERTYPE(NS_MODELS, SmartListModel);
+
+    // Roles & type enums for models
+    QML_REGISTERNAMESPACE(NS_MODELS, ConversationList::staticMetaObject, "ConversationList");
+    QML_REGISTERNAMESPACE(NS_MODELS, ContactList::staticMetaObject, "ContactList");
 
     // QQuickItems
     QML_REGISTERTYPE(NS_MODELS, PreviewRenderer);

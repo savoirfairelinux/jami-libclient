@@ -34,7 +34,20 @@ Label {
     signal settingBtnClicked
     property alias popup: comboBoxPopup
 
-    // Reset accountListModel.
+    // TODO: remove these refresh hacks use QAbstractItemModels correctly
+    Connections {
+        target: AccountAdapter
+
+        function onCurrentAccountIdChanged() {
+            root.update()
+            resetAccountListModel(AccountAdapter.currentAccountId)
+        }
+
+        function onAccountStatusChanged(accountId) {
+            resetAccountListModel(accountId)
+        }
+    }
+
     function resetAccountListModel(accountId) {
         accountListModel.updateAvatarUid(accountId)
         accountListModel.reset()

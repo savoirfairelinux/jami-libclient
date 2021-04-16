@@ -67,7 +67,7 @@ Popup {
         height: root.height
         horizontalOffset: 3.0
         verticalOffset: 3.0
-        radius: container.radius * 2
+        radius: container.radius * 4
         samples: 16
         color: JamiTheme.shadowColor
         source: container

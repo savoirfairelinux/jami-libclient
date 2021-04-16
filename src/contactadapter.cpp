@@ -1,4 +1,4 @@
-/*!
+/*
  * Copyright (C) 2020 by Savoir-faire Linux
  * Author: Edric Ladent Milaret <edric.ladent-milaret@savoirfairelinux.com>
  * Author: Andreas Traczyk <andreas.traczyk@savoirfairelinux.com>
@@ -48,13 +48,13 @@ ContactAdapter::getContactSelectableModel(int type)
     switch (listModeltype_) {
     case SmartListModel::Type::CONVERSATION:
         selectableProxyModel_->setPredicate([this](const QModelIndex& index, const QRegExp&) {
-            return !defaultModerators_.contains(index.data(SmartListModel::URI).toString());
+            return !defaultModerators_.contains(index.data(Role::URI).toString());
         });
         break;
 
     case SmartListModel::Type::CONFERENCE:
         selectableProxyModel_->setPredicate([](const QModelIndex& index, const QRegExp&) {
-            return index.data(SmartListModel::Presence).toBool();
+            return index.data(Role::Presence).toBool();
         });
         break;
     case SmartListModel::Type::TRANSFER:
@@ -68,13 +68,11 @@ ContactAdapter::getContactSelectableModel(int type)
                                               .contactModel->bestIdForContact(conv.participants[0]);
 
                 QRegExp matchExcept = QRegExp(QString("\\b(?!" + calleeDisplayId + "\\b)\\w+"));
-                match = matchExcept.indexIn(index.data(SmartListModel::Role::DisplayID).toString())
-                        != -1;
+                match = matchExcept.indexIn(index.data(Role::BestId).toString()) != -1;
             }
 
             if (match) {
-                match = regexp.indexIn(index.data(SmartListModel::Role::DisplayID).toString())
-                        != -1;
+                match = regexp.indexIn(index.data(Role::BestId).toString()) != -1;
             }
             return match && !index.parent().isValid();
         });
@@ -95,8 +93,8 @@ ContactAdapter::setSearchFilter(const QString& filter)
     } else if (listModeltype_ == SmartListModel::Type::CONVERSATION) {
         selectableProxyModel_->setPredicate(
             [this, filter](const QModelIndex& index, const QRegExp&) {
-                return (!defaultModerators_.contains(index.data(SmartListModel::URI).toString())
-                        && index.data(SmartListModel::DisplayName).toString().contains(filter));
+                return (!defaultModerators_.contains(index.data(Role::URI).toString())
+                        && index.data(Role::BestName).toString().contains(filter));
             });
     }
     selectableProxyModel_->setFilterRegExp(
@@ -114,15 +112,14 @@ ContactAdapter::contactSelected(int index)
         switch (listModeltype_) {
         case SmartListModel::Type::CONFERENCE: {
             // Conference.
-            const auto sectionName = contactIndex.data(SmartListModel::Role::SectionName)
-                                         .value<QString>();
+            const auto sectionName = contactIndex.data(Role::SectionName).value<QString>();
             if (!sectionName.isEmpty()) {
                 smartListModel_->toggleSection(sectionName);
                 return;
             }
 
-            const auto convUid = contactIndex.data(SmartListModel::Role::UID).value<QString>();
-            const auto accId = contactIndex.data(SmartListModel::Role::AccountId).value<QString>();
+            const auto convUid = contactIndex.data(Role::UID).value<QString>();
+            const auto accId = contactIndex.data(Role::AccountId).value<QString>();
             const auto callId = lrcInstance_->getCallIdForConversationUid(convUid, accId);
 
             if (!callId.isEmpty()) {
@@ -133,7 +130,7 @@ ContactAdapter::contactSelected(int index)
 
                 callModel->joinCalls(thisCallId, callId);
             } else {
-                const auto contactUri = contactIndex.data(SmartListModel::Role::URI).value<QString>();
+                const auto contactUri = contactIndex.data(Role::URI).value<QString>();
                 auto call = lrcInstance_->getCallInfoForConversation(convInfo);
                 if (!call) {
                     return;
@@ -143,7 +140,7 @@ ContactAdapter::contactSelected(int index)
         } break;
         case SmartListModel::Type::TRANSFER: {
             // SIP Transfer.
-            const auto contactUri = contactIndex.data(SmartListModel::Role::URI).value<QString>();
+            const auto contactUri = contactIndex.data(Role::URI).value<QString>();
 
             if (convInfo.uid.isEmpty()) {
                 return;
@@ -170,7 +167,7 @@ ContactAdapter::contactSelected(int index)
             }
         } break;
         case SmartListModel::Type::CONVERSATION: {
-            const auto contactUri = contactIndex.data(SmartListModel::Role::URI).value<QString>();
+            const auto contactUri = contactIndex.data(Role::URI).value<QString>();
             if (contactUri.isEmpty()) {
                 return;
             }

@@ -1,6 +1,7 @@
-/*!
+/*
  * Copyright (C) 2020 by Savoir-faire Linux
  * Author: Mingrui Zhang <mingrui.zhang@savoirfairelinux.com>
+ * Author: Andreas Traczyk <andreas.traczyk@savoirfairelinux.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,6 +22,8 @@
 #include "lrcinstance.h"
 #include "qmladapterbase.h"
 #include "smartlistmodel.h"
+#include "conversationlistmodel.h"
+#include "searchresultslistmodel.h"
 
 #include <QObject>
 #include <QString>
@@ -30,9 +33,10 @@ class SystemTray;
 class ConversationsAdapter final : public QmlAdapterBase
 {
     Q_OBJECT
+    QML_PROPERTY(lrc::api::profile::Type, currentTypeFilter)
+    QML_PROPERTY(int, totalUnreadMessageCount)
+    QML_PROPERTY(int, pendingRequestCount)
 
-    Q_PROPERTY(lrc::api::profile::Type currentTypeFilter MEMBER currentTypeFilter_ NOTIFY
-                   currentTypeFilterChanged)
 public:
     explicit ConversationsAdapter(SystemTray* systemTray,
                                   LRCInstance* instance,
@@ -44,25 +48,22 @@ protected:
 
 public:
     Q_INVOKABLE bool connectConversationModel(bool updateFilter = true);
-    Q_INVOKABLE void selectConversation(const QString& accountId, const QString& uid);
-    Q_INVOKABLE void deselectConversation();
-    Q_INVOKABLE void refill();
-    Q_INVOKABLE void updateConversationsFilterWidget();
+    Q_INVOKABLE void setFilter(const QString& filterString);
+    Q_INVOKABLE void setTypeFilter(const profile::Type& typeFilter);
+    Q_INVOKABLE QVariantMap getConvInfoMap(const QString& convId);
 
 Q_SIGNALS:
     void showConversation(const QString& accountId, const QString& convUid);
-    void showConversationTabs(bool visible);
     void showSearchStatus(const QString& status);
 
     void modelChanged(const QVariant& model);
-    void modelSorted(const QVariant& uid);
-    void updateListViewRequested();
     void navigateToWelcomePageRequested();
-    void currentTypeFilterChanged();
     void indexRepositionRequested();
 
 private Q_SLOTS:
     void onCurrentAccountIdChanged();
+
+    // cross-account slots
     void onNewUnreadInteraction(const QString& accountId,
                                 const QString& convUid,
                                 uint64_t interactionId,
@@ -73,6 +74,7 @@ private Q_SLOTS:
     void onNewTrustRequest(const QString& accountId, const QString& peerUri);
     void onTrustRequestTreated(const QString& accountId, const QString& peerUri);
 
+    // per-account slots
     void onModelChanged();
     void onProfileUpdated(const QString&);
     void onConversationUpdated(const QString&);
@@ -83,13 +85,18 @@ private Q_SLOTS:
     void onSearchStatusChanged(const QString&);
     void onSearchResultUpdated();
 
+    void updateConversationFilterData();
+
 private:
     void backToWelcomePage();
     void updateConversationForNewContact(const QString& convUid);
 
     SmartListModel* conversationSmartListModel_;
 
-    lrc::api::profile::Type currentTypeFilter_ {};
-
     SystemTray* systemTray_;
+
+    QScopedPointer<ConversationListModel> convSrcModel_;
+    QScopedPointer<ConversationListProxyModel> convModel_;
+    QScopedPointer<SearchResultsListModel> searchSrcModel_;
+    QScopedPointer<SelectableListProxyModel> searchModel_;
 };

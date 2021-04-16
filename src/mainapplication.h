@@ -34,6 +34,7 @@
 class ConnectivityMonitor;
 class AppSettingsManager;
 class SystemTray;
+class CallAdapter;
 
 // Provides information about the screen the app is displayed on
 class ScreenInfo : public QObject
@@ -98,4 +99,6 @@ private:
     SystemTray* systemTray_;
 
     ScreenInfo screenInfo_;
+
+    CallAdapter* callAdapter_;
 };

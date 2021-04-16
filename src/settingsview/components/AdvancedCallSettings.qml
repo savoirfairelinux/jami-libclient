@@ -232,7 +232,7 @@ ColumnLayout {
 
             onClicked: {
                 ContactPickerCreation.createContactPickerObjects(
-                            ContactPicker.ContactPickerType.CONVERSATION,
+                            ContactList.CONVERSATION,
                             mainView)
                 ContactPickerCreation.openContactPicker()
             }

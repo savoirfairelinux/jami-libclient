@@ -153,8 +153,6 @@ MessagesAdapter::connectConversationModel()
                                Q_UNUSED(convUid);
                                removeInteraction(interactionId);
                            });
-
-    currentConversationModel->setFilter("");
 }
 
 void
@@ -169,7 +167,7 @@ MessagesAdapter::sendContactRequest()
 void
 MessagesAdapter::updateConversationForAddedContact()
 {
-    auto* convModel = lrcInstance_->getCurrentConversationModel();
+    auto convModel = lrcInstance_->getCurrentConversationModel();
     const auto& convInfo = lrcInstance_->getConversationFromConvUid(
         lrcInstance_->get_selectedConvUid());
 
@@ -193,7 +191,6 @@ MessagesAdapter::slotSendMessageContentSaved(const QString& content)
     auto restoredContent = lrcInstance_->getContentDraft(lrcInstance_->get_selectedConvUid(),
                                                          lrcInstance_->getCurrAccId());
     setSendMessageContent(restoredContent);
-    Q_EMIT needToUpdateSmartList();
 }
 
 void
@@ -202,7 +199,6 @@ MessagesAdapter::slotUpdateDraft(const QString& content)
     if (!LastConvUid_.isEmpty()) {
         lrcInstance_->setContentDraft(LastConvUid_, lrcInstance_->getCurrAccId(), content);
     }
-    Q_EMIT needToUpdateSmartList();
 }
 
 void
@@ -460,11 +456,9 @@ MessagesAdapter::setConversationProfileData(const lrc::api::conversation::Info& 
     try {
         auto& contact = accInfo->contactModel->getContact(contactUri);
         auto bestName = accInfo->contactModel->bestNameForContact(contactUri);
-        setInvitation(contact.profileInfo.type == lrc::api::profile::Type::PENDING
-                          || contact.profileInfo.type == lrc::api::profile::Type::TEMPORARY,
+        setInvitation(contact.profileInfo.type == lrc::api::profile::Type::PENDING,
                       bestName,
                       contactUri);
-
         if (!contact.profileInfo.avatar.isEmpty()) {
             setSenderImage(contactUri, contact.profileInfo.avatar);
         } else {

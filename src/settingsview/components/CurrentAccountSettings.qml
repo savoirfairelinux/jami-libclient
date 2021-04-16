@@ -113,7 +113,7 @@ Rectangle {
         id: deleteAccountDialog
 
         onAccepted: {
-            AccountAdapter.setSelectedConvId()
+            LRCInstance.deselectConversation()
 
             if(UtilsAdapter.getAccountListSize() > 0) {
                 navigateToMainView()

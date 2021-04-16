@@ -28,29 +28,16 @@ import net.jami.Constants 1.0
 
 import "../../commoncomponents"
 
-// TODO:
-// - totalUnreadMessagesCount and pendingRequestCount could be
-//   properties of ConversationsAdapter
-// - onCurrentTypeFilterChanged shouldn't need to update the smartlist
-// - tabBarVisible could be factored out
-
 TabBar {
     id: tabBar
+
+    property int currentTypeFilter: ConversationsAdapter.currentTypeFilter
+
+    currentIndex: 0
 
     enum TabIndex {
         Conversations,
         Requests
-    }
-
-    Connections {
-        target: ConversationsAdapter
-
-        function onCurrentTypeFilterChanged() {
-            pageOne.down = ConversationsAdapter.currentTypeFilter !==  Profile.Type.PENDING
-            pageTwo.down = ConversationsAdapter.currentTypeFilter ===  Profile.Type.PENDING
-            setCurrentUidSmartListModelIndex()
-            forceReselectConversationSmartListCurrentIndex()
-        }
     }
 
     function selectTab(tabIndex) {
@@ -60,28 +47,25 @@ TabBar {
                     Profile.Type.PENDING
     }
 
-    visible: tabBarVisible
-
-    currentIndex: 0
-
     FilterTabButton {
-        id: pageOne
+        id: conversationsTabButton
 
+        down: currentTypeFilter !==  Profile.Type.PENDING
         tabBar: parent
-        down: true
         labelText: JamiStrings.conversations
         onSelected: selectTab(SidePanelTabBar.Conversations)
-        badgeCount: totalUnreadMessagesCount
+        badgeCount: ConversationsAdapter.totalUnreadMessageCount
         acceleratorSequence: "Ctrl+L"
     }
 
     FilterTabButton {
-        id: pageTwo
+        id: requestsTabButton
 
+        down: !conversationsTabButton.down
         tabBar: parent
         labelText: JamiStrings.invitations
         onSelected: selectTab(SidePanelTabBar.Requests)
-        badgeCount: pendingRequestCount
+        badgeCount: ConversationsAdapter.pendingRequestCount
         acceleratorSequence: "Ctrl+R"
     }
 }

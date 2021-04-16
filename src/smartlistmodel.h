@@ -20,60 +20,32 @@
 
 #pragma once
 
-#include "abstractlistmodelbase.h"
+#include "conversationlistmodelbase.h"
+
+namespace ContactList {
+Q_NAMESPACE
+enum Type { CONVERSATION, CONFERENCE, TRANSFER, COUNT__ };
+Q_ENUM_NS(Type)
+} // namespace ContactList
 
 using namespace lrc::api;
 class LRCInstance;
 
-class SmartListModel : public AbstractListModelBase
+class SmartListModel : public ConversationListModelBase
 {
     Q_OBJECT
 public:
-    using AccountInfo = lrc::api::account::Info;
-    using ConversationInfo = lrc::api::conversation::Info;
-    using ContactInfo = lrc::api::contact::Info;
-
-    enum class Type { CONVERSATION, CONFERENCE, TRANSFER, COUNT__ };
-
-    enum Role {
-        DisplayName = Qt::UserRole + 1,
-        DisplayID,
-        Presence,
-        URI,
-        UnreadMessagesCount,
-        LastInteractionDate,
-        LastInteraction,
-        LastInteractionType,
-        ContactType,
-        UID,
-        ContextMenuOpen,
-        InCall,
-        IsAudioOnly,
-        CallStackViewShouldShow,
-        CallState,
-        SectionName,
-        AccountId,
-        PictureUid,
-        Draft
-    };
-    Q_ENUM(Role)
+    using Type = ContactList::Type;
 
     explicit SmartListModel(QObject* parent = nullptr,
-                            SmartListModel::Type listModelType = Type::CONVERSATION,
+                            Type listModelType = Type::CONVERSATION,
                             LRCInstance* instance = nullptr);
-    ~SmartListModel();
 
-    /*
-     * QAbstractListModel.
-     */
     int rowCount(const QModelIndex& parent = QModelIndex()) const override;
-    int columnCount(const QModelIndex& parent) const override;
     QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override;
-    QHash<int, QByteArray> roleNames() const override;
     QModelIndex index(int row,
                       int column = 0,
                       const QModelIndex& parent = QModelIndex()) const override;
-    QModelIndex parent(const QModelIndex& child) const override;
     Qt::ItemFlags flags(const QModelIndex& index) const override;
 
     Q_INVOKABLE void setConferenceableFilter(const QString& filter = {});
@@ -81,28 +53,9 @@ public:
     Q_INVOKABLE int currentUidSmartListModelIndex();
     Q_INVOKABLE void fillConversationsList();
 
-    /*
-     * This function is to update contact avatar uuid for current account when there's an contact
-     * avatar changed.
-     */
-    Q_INVOKABLE void updateContactAvatarUid(const QString& contactUri);
-
 private:
-    QVariant getConversationItemData(const ConversationInfo& item,
-                                     const AccountInfo& accountInfo,
-                                     int role) const;
-
-    /*
-     * Give a uuid for each contact avatar for current account and it will serve PictureUid role
-     */
-    void fillContactAvatarUidMap(const ContactModel::ContactInfoMap& contacts);
-
-    /*
-     * List sectioning.
-     */
     Type listModelType_;
     QMap<QString, bool> sectionState_;
     QMap<ConferenceableItem, ConferenceableValue> conferenceables_;
-    QMap<QString, QString> contactAvatarUidMap_;
     ConversationModel::ConversationQueueProxy conversations_;
 };

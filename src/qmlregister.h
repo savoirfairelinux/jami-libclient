@@ -42,13 +42,12 @@ Q_CLASSINFO("RegisterEnumClassesUnscoped", "false")
     QQmlEngine::setObjectOwnership(I, QQmlEngine::CppOwnership); \
     { using T = std::remove_reference<decltype(*I)>::type; \
     qmlRegisterSingletonType<T>(NS, VER_MAJ, VER_MIN, N, \
-                                [I](QQmlEngine*, QJSEngine*) -> QObject* { \
-                                    return I; }); }
+                                [i=I](QQmlEngine*, QJSEngine*) -> QObject* { \
+                                    return i; }); }
 
 #define QML_REGISTERSINGLETONTYPE_CUSTOM(NS, T, P) \
     qmlRegisterSingletonType<T>(NS, VER_MAJ, VER_MIN, #T, \
-                                [p=P](QQmlEngine* e, QJSEngine* se) -> QObject* { \
-                                    Q_UNUSED(e); Q_UNUSED(se); \
+                                [p=P](QQmlEngine*, QJSEngine*) -> QObject* { \
                                     return p; \
                                 });
 // clang-format on

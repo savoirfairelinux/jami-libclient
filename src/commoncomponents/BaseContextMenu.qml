@@ -31,6 +31,12 @@ Menu {
     property int commonBorderWidth: 1
     font.pointSize: JamiTheme.menuFontSize
 
+    modal: true
+    Overlay.modal: Rectangle {
+        color: "transparent"
+    }
+
+    // TODO: investigate
     function openMenu(){
         visible = true
         visible = false
@@ -38,6 +44,8 @@ Menu {
     }
 
     background: Rectangle {
+        id: container
+
         implicitWidth: menuItemsPreferredWidth
         implicitHeight: menuItemsPreferredHeight
                         * (root.count - generalMenuSeparatorCount)
@@ -45,5 +53,15 @@ Menu {
         border.width: commonBorderWidth
         border.color: JamiTheme.tabbarBorderColor
         color: JamiTheme.backgroundColor
+
+        layer.enabled: true
+        layer.effect: DropShadow {
+            z: -1
+            horizontalOffset: 3.0
+            verticalOffset: 3.0
+            radius: 16.0
+            samples: 16
+            color: JamiTheme.shadowColor
+        }
     }
 }

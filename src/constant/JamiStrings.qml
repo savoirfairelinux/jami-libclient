@@ -330,9 +330,6 @@ Item {
                                 "Use the \"Link Another Device\" feature to obtain a PIN.")
     property string connectFromAnotherDevice: qsTr("Link device")
 
-    // KeyBoardShortcutTable
-    property string conversations: qsTr("Conversations")
-
     // LinkDevicesDialog
     property string pinTimerInfos: qsTr("The PIN and the account password should be entered in your device within 10 minutes.")
     property string close: qsTr("Close")
@@ -405,6 +402,8 @@ Item {
 
     // SmartList
     property string clearText: qsTr("Clear Text")
+    property string conversations: qsTr("Conversations")
+    property string searchResults: qsTr("Search Results")
 
     // SmartList context menu
     property string declineContactRequest: qsTr("Decline contact request")

@@ -32,6 +32,8 @@ Rectangle {
     signal contactSearchBarTextChanged(string text)
     signal returnPressedWhileSearching
 
+    property alias textContent: contactSearchBar.text
+
     function clearText() {
         contactSearchBar.clear()
         fakeFocus.forceActiveFocus()
@@ -108,10 +110,11 @@ Rectangle {
         anchors.right: root.right
         anchors.rightMargin: 10
 
-        preferredSize: 20
+        preferredSize: 21
         radius: JamiTheme.primaryRadius
 
         visible: contactSearchBar.text.length
+        opacity: visible ? 1 : 0
 
         normalColor: root.color
         imageColor: JamiTheme.primaryForegroundColor
@@ -120,6 +123,10 @@ Rectangle {
         toolTipText: JamiStrings.clearText
 
         onClicked: contactSearchBar.clear()
+
+        Behavior on opacity {
+            NumberAnimation { duration: 500; easing.type: Easing.OutCubic }
+        }
     }
 
     Shortcut {

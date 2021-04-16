@@ -23,6 +23,12 @@ import QtQuick.Controls 2.12
 Rectangle {
     property alias name: label.text
     property bool stretchParent: false
+    property string tag: this.toString()
+    signal moveX(real dx)
+    signal moveY(real dy)
+    property real ox: 0
+    property real oy: 0
+    property real step: 0.5
 
     border.width: 1
     color: {
@@ -33,6 +39,19 @@ Rectangle {
     }
     anchors.fill: parent
     focus: false
+    Keys.onPressed: {
+        if (event.key === Qt.Key_Left)
+            moveX(-step)
+        else if (event.key === Qt.Key_Right)
+            moveX(step)
+        else if (event.key === Qt.Key_Down)
+            moveY(step)
+        else if (event.key === Qt.Key_Up)
+            moveY(-step)
+        console.log(tag, ox, oy)
+        event.accepted = true;
+    }
+
     Component.onCompleted: {
         // fallback to some description of the object
         if (label.text === "")
@@ -45,10 +64,24 @@ Rectangle {
         }
     }
 
+    onMoveX: {
+        parent.anchors.leftMargin += dx
+        parent.x += dx
+        ox += dx;
+    }
+    onMoveY: {
+        parent.anchors.topMargin += dy
+        parent.y += dy
+        oy += dy
+    }
+
     Label {
         id: label
-
         anchors.centerIn: parent
     }
 
+    MouseArea {
+        anchors.fill: parent
+        onPressed: parent.forceActiveFocus()
+    }
 }

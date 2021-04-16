@@ -66,7 +66,7 @@ ItemDelegate {
                 font: contactPickerContactName.font
                 elide: Text.ElideMiddle
                 elideWidth: contactPickerContactInfoRect.width
-                text: DisplayName
+                text: BestName
             }
 
             color: JamiTheme.textColor
@@ -88,7 +88,7 @@ ItemDelegate {
                 font: contactPickerContactId.font
                 elide: Text.ElideMiddle
                 elideWidth: contactPickerContactInfoRect.width
-                text: DisplayID == DisplayName ? "" : DisplayID
+                text: BestId == BestName ? "" : BestId
             }
 
             text: textMetricsContactPickerContactId.elidedText

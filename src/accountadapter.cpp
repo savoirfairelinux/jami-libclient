@@ -43,8 +43,6 @@ AccountAdapter::safeInit()
             this,
             &AccountAdapter::onCurrentAccountChanged);
 
-    deselectConversation();
-
     auto accountId = lrcInstance_->getCurrAccId();
     setProperties(accountId);
     connectAccount(accountId);
@@ -65,7 +63,6 @@ AccountAdapter::getDeviceModel()
 void
 AccountAdapter::changeAccount(int row)
 {
-    deselectConversation(); // Hack UI
     auto accountList = lrcInstance_->accountModel().getAccountList();
     if (accountList.size() > row) {
         lrcInstance_->setSelectedAccountId(accountList.at(row));
@@ -269,12 +266,6 @@ AccountAdapter::setCurrAccDisplayName(const QString& text)
     lrcInstance_->setCurrAccDisplayName(text);
 }
 
-void
-AccountAdapter::setSelectedConvId(const QString& convId)
-{
-    lrcInstance_->set_selectedConvUid(convId);
-}
-
 lrc::api::profile::Type
 AccountAdapter::getCurrentAccountType()
 {
@@ -348,23 +339,6 @@ AccountAdapter::passwordSetStatusMessageBox(bool success, QString title, QString
 }
 
 void
-AccountAdapter::deselectConversation()
-{
-    if (lrcInstance_->get_selectedConvUid().isEmpty()) {
-        return;
-    }
-
-    // TODO: remove this unhealthy section
-    auto currentConversationModel = lrcInstance_->getCurrentConversationModel();
-
-    if (currentConversationModel == nullptr) {
-        return;
-    }
-
-    lrcInstance_->set_selectedConvUid();
-}
-
-void
 AccountAdapter::connectAccount(const QString& accountId)
 {
     try {
@@ -374,7 +348,7 @@ AccountAdapter::connectAccount(const QString& accountId)
         QObject::disconnect(accountProfileUpdatedConnection_);
         QObject::disconnect(contactAddedConnection_);
         QObject::disconnect(addedToConferenceConnection_);
-        QObject::disconnect(contactUnbannedConnection_);
+        QObject::disconnect(bannedStatusChangedConnection_);
 
         accountStatusChangedConnection_
             = QObject::connect(accInfo.accountModel,
@@ -390,27 +364,22 @@ AccountAdapter::connectAccount(const QString& accountId)
                                    Q_EMIT accountStatusChanged(accountId);
                                });
 
-        contactAddedConnection_
-            = QObject::connect(accInfo.contactModel.get(),
-                               &lrc::api::ContactModel::contactAdded,
-                               [this, accountId](const QString& contactUri) {
-                                   const auto& convInfo = lrcInstance_->getConversationFromConvUid(
-                                       lrcInstance_->get_selectedConvUid());
-                                   if (convInfo.uid.isEmpty()) {
-                                       return;
-                                   }
-                                   auto& accInfo = lrcInstance_->accountModel().getAccountInfo(
-                                       accountId);
-                                   if (contactUri
-                                       == accInfo.contactModel
-                                              ->getContact(convInfo.participants.at(0))
-                                              .profileInfo.uri) {
-                                       /*
-                                        * Update conversation.
-                                        */
-                                       Q_EMIT updateConversationForAddedContact();
-                                   }
-                               });
+        contactAddedConnection_ = QObject::connect(
+            accInfo.contactModel.get(),
+            &lrc::api::ContactModel::contactAdded,
+            [this, accountId](const QString& contactUri) {
+                const auto& convInfo = lrcInstance_->getConversationFromConvUid(
+                    lrcInstance_->get_selectedConvUid());
+                if (convInfo.uid.isEmpty()) {
+                    return;
+                }
+                auto& accInfo = lrcInstance_->accountModel().getAccountInfo(accountId);
+                auto selectedContactUri
+                    = accInfo.contactModel->getContact(convInfo.participants.at(0)).profileInfo.uri;
+                if (contactUri == selectedContactUri) {
+                    Q_EMIT selectedContactAdded(convInfo.uid);
+                }
+            });
 
         addedToConferenceConnection_
             = QObject::connect(accInfo.callModel.get(),
@@ -420,12 +389,15 @@ AccountAdapter::connectAccount(const QString& accountId)
                                    lrcInstance_->renderer()->addDistantRenderer(confId);
                                });
 
-        contactUnbannedConnection_ = QObject::connect(accInfo.contactModel.get(),
-                                                      &lrc::api::ContactModel::bannedStatusChanged,
-                                                      [this](const QString&, bool banned) {
-                                                          if (!banned)
-                                                              Q_EMIT contactUnbanned();
-                                                      });
+        bannedStatusChangedConnection_
+            = QObject::connect(accInfo.contactModel.get(),
+                               &lrc::api::ContactModel::bannedStatusChanged,
+                               [this](const QString& uri, bool banned) {
+                                   if (!banned)
+                                       Q_EMIT contactUnbanned();
+                                   else
+                                       Q_EMIT lrcInstance_->contactBanned(uri);
+                               });
     } catch (...) {
         qWarning() << "Couldn't get account: " << accountId;
     }

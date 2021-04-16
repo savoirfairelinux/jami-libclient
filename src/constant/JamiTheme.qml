@@ -55,10 +55,10 @@ Item {
     property color notificationBlue: "#31b7ff"
     property color unPresenceOrange: "orange"
     property color placeHolderTextFontColor: "#767676"
-    property color draftRed: "#cf5300"
+    property color draftTextColor: "#cf5300"
     property color selectedTabColor: primaryForegroundColor
-    property color filterBadgeColor: mediumGrey
-    property color filterBadgeTextColor: blackColor
+    property color filterBadgeColor: "#eed4d8"
+    property color filterBadgeTextColor: "#cc0022"
 
     // General buttons
     property color pressedButtonColor: darkTheme ? pressColor : "#a0a0a0"
@@ -174,10 +174,14 @@ Item {
     property real titleFontSize: 16
     property real primaryRadius: 4
     property real smartlistItemFontSize: 10.5
+    property real smartlistItemInfoFontSize: 9
     property real filterItemFontSize: smartlistItemFontSize
     property real filterBadgeFontSize: 8.25
     property real accountListItemHeight: 64
     property real accountListAvatarSize: 40
+    property real smartListItemHeight: 64
+    property real smartListAvatarSize: 52
+    property real smartListTransitionDuration: 120
 
     property real maximumWidthSettingsView: 600
     property real settingsHeaderpreferredHeight: 64

@@ -399,7 +399,7 @@ Rectangle {
         onAddToConferenceButtonClicked: {
             // Create contact picker - conference.
             ContactPickerCreation.createContactPickerObjects(
-                        ContactPicker.ContactPickerType.JAMICONFERENCE,
+                        ContactList.CONFERENCE,
                         callOverlayRect)
             ContactPickerCreation.openContactPicker()
         }
@@ -517,7 +517,7 @@ Rectangle {
         onTransferCallButtonClicked: {
             // Create contact picker - sip transfer.
             ContactPickerCreation.createContactPickerObjects(
-                        ContactPicker.ContactPickerType.SIPTRANSFER,
+                        ContactList.TRANSFER,
                         callOverlayRect)
             ContactPickerCreation.openContactPicker()
         }

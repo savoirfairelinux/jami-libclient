@@ -92,7 +92,6 @@ protected:
     void contactIsComposing(const QString& convUid, const QString& contactUri, bool isComposing);
 
 Q_SIGNALS:
-    void needToUpdateSmartList();
     void contactBanned();
     void navigateToWelcomePageRequested();
     void invitationAccepted();

@@ -30,7 +30,7 @@ Rectangle {
     // This is set to REGISTERED for contact presence
     // as status is not currently tracked for contact items.
     property int status: Account.Status.REGISTERED
-    property int size: 12
+    property int size: 15
 
     width: size
     height: size

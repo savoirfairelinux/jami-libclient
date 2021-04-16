@@ -144,29 +144,6 @@ UtilsAdapter::getBestId(const QString& accountId, const QString& uid)
     return QString();
 }
 
-int
-UtilsAdapter::getTotalUnreadMessages()
-{
-    int totalUnreadMessages {0};
-    if (lrcInstance_->getCurrentAccountInfo().profileInfo.type != lrc::api::profile::Type::SIP) {
-        auto* convModel = lrcInstance_->getCurrentConversationModel();
-        auto ringConversations = convModel->getFilteredConversations(lrc::api::profile::Type::RING,
-                                                                     false);
-        ringConversations.for_each(
-            [&totalUnreadMessages](const lrc::api::conversation::Info& conversation) {
-                totalUnreadMessages += conversation.unreadMessages;
-            });
-    }
-    return totalUnreadMessages;
-}
-
-int
-UtilsAdapter::getTotalPendingRequest()
-{
-    auto& accountInfo = lrcInstance_->getCurrentAccountInfo();
-    return accountInfo.contactModel->pendingRequestCount();
-}
-
 void
 UtilsAdapter::setConversationFilter(const QString& filter)
 {

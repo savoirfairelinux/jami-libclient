@@ -1,4 +1,4 @@
-/*!
+/*
  * Copyright (C) 2020 by Savoir-faire Linux
  * Author: Mingrui Zhang <mingrui.zhang@savoirfairelinux.com>
  *
@@ -20,6 +20,7 @@
 
 #include "qmladapterbase.h"
 #include "smartlistmodel.h"
+#include "conversationlistmodel.h"
 
 #include <QObject>
 #include <QSortFilterProxyModel>
@@ -38,30 +39,42 @@ class LRCInstance;
  */
 class SelectableProxyModel final : public QSortFilterProxyModel
 {
+    Q_OBJECT
+
 public:
     using FilterPredicate = std::function<bool(const QModelIndex&, const QRegExp&)>;
 
-    explicit SelectableProxyModel(QAbstractItemModel* parent)
+    explicit SelectableProxyModel(QAbstractListModel* parent = nullptr)
         : QSortFilterProxyModel(parent)
     {
         setSourceModel(parent);
+        setSortRole(ConversationList::Role::LastInteractionTimeStamp);
+        sort(0, Qt::DescendingOrder);
+        setFilterCaseSensitivity(Qt::CaseSensitivity::CaseInsensitive);
     }
-    ~SelectableProxyModel() {}
 
     void setPredicate(FilterPredicate filterPredicate)
     {
         filterPredicate_ = filterPredicate;
     }
 
-    virtual bool filterAcceptsRow(int source_row, const QModelIndex& source_parent) const
+    virtual bool filterAcceptsRow(int sourceRow, const QModelIndex& sourceParent) const override
     {
         // Accept all contacts in conversation list filtered with account type, except those in a call.
-        auto index = sourceModel()->index(source_row, 0, source_parent);
+        auto index = sourceModel()->index(sourceRow, 0, sourceParent);
         return filterPredicate_ ? filterPredicate_(index, filterRegExp()) : false;
     }
 
+    bool lessThan(const QModelIndex& left, const QModelIndex& right) const override
+    {
+        QVariant leftData = sourceModel()->data(left, sortRole());
+        QVariant rightData = sourceModel()->data(right, sortRole());
+        // we're assuming the sort role data type here is some integral time
+        return leftData.toUInt() < rightData.toUInt();
+    };
+
 private:
-    std::function<bool(const QModelIndex&, const QRegExp&)> filterPredicate_;
+    FilterPredicate filterPredicate_;
 };
 
 class ContactAdapter final : public QmlAdapterBase
@@ -73,6 +86,8 @@ public:
     ~ContactAdapter() = default;
 
 protected:
+    using Role = ConversationList::Role;
+
     void safeInit() override {};
 
     Q_INVOKABLE QVariant getContactSelectableModel(int type);
@@ -81,10 +96,8 @@ protected:
 
 private:
     SmartListModel::Type listModeltype_;
-
-    // SmartListModel is the source model of SelectableProxyModel.
-    std::unique_ptr<SmartListModel> smartListModel_;
-    std::unique_ptr<SelectableProxyModel> selectableProxyModel_;
+    QScopedPointer<SmartListModel> smartListModel_;
+    QScopedPointer<SelectableProxyModel> selectableProxyModel_;
 
     QStringList defaultModerators_;
 
