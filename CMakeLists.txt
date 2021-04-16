@@ -461,17 +461,12 @@ else()
     if(Qt5LinguistTools_FOUND)
         message("Releasing and copying translation files")
         file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/share/ring/translations/")
-        file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/share/libringclient/translations/")
-        file(GLOB TS_CLIENT_FILES ${PROJECT_SOURCE_DIR}/translations/*.ts)
-        file(GLOB QM_LRC_FILES ${LRC}/share/libringclient/translations/*.qm)
-        set_source_files_properties(${TS_CLIENT_FILES} PROPERTIES OUTPUT_LOCATION "share/ring/translations")
-        qt5_add_translation(QM_CLIENT_FILES ${TS_CLIENT_FILES})
-        add_custom_target(translations_client ALL DEPENDS ${QM_CLIENT_FILES})
+        file(GLOB TS_FILES ${PROJECT_SOURCE_DIR}/translations/*.ts)
+        set_source_files_properties(${TS_FILES} PROPERTIES OUTPUT_LOCATION "share/ring/translations")
+        qt5_add_translation(QM_FILES ${TS_FILES})
+        add_custom_target(translations ALL DEPENDS ${QM_FILES})
         install(DIRECTORY "${CMAKE_BINARY_DIR}/share/ring/translations/"
                 DESTINATION ${CMAKE_INSTALL_PREFIX}/share/ring/translations)
-        add_custom_target(translations_lrc ALL DEPENDS ${QM_LRC_FILES})
-        install(DIRECTORY "${LRC}/share/libringclient/translations/"
-                DESTINATION ${CMAKE_INSTALL_PREFIX}/share/libringclient/translations)
     endif()
 
     # uninstall
