@@ -241,26 +241,20 @@ NewAccountModel::setAccountConfig(const QString& accountId,
     if (accountInfo.profileInfo.type == profile::Type::RING) {
         details[ConfProperties::USERNAME] = accountInfo.profileInfo.uri;
     } else if (accountInfo.profileInfo.type == profile::Type::SIP) {
-        VectorMapStringString finalCred;
-
         MapStringString credentials;
-        credentials[ConfProperties::USERNAME] = confProperties.username;
+        credentials[ConfProperties::USERNAME] = confProperties.authenticationUsername.isEmpty()
+                                                    ? confProperties.username
+                                                    : confProperties.authenticationUsername;
         credentials[ConfProperties::PASSWORD] = confProperties.password;
         credentials[ConfProperties::REALM] = confProperties.realm.isEmpty() ? "*"
                                                                             : confProperties.realm;
 
         auto credentialsVec = confProperties.credentials;
         credentialsVec[0] = credentials;
-        for (auto const& i : credentialsVec) {
-            QMap<QString, QString> credMap;
-            for (auto const& j : i.toStdMap()) {
-                credMap[j.first] = j.second;
-            }
-            finalCred.append(credMap);
-        }
 
-        ConfigurationManager::instance().setCredentials(accountId, finalCred);
+        ConfigurationManager::instance().setCredentials(accountId, credentialsVec);
         details[ConfProperties::USERNAME] = confProperties.username;
+        details[ConfProperties::AUTHENTICATION_USERNAME] = confProperties.authenticationUsername;
         accountInfo.confProperties.credentials.swap(credentialsVec);
     }
     configurationManager.setAccountDetails(accountId, details);
@@ -479,16 +473,7 @@ NewAccountModelPimpl::updateAccountDetails(account::Info& accountInfo)
 
     // Fill account::Info::confProperties credentials
     VectorMapStringString credGet = ConfigurationManager::instance().getCredentials(accountInfo.id);
-    VectorMapStringString credToStore;
-    for (auto const& i : credGet.toStdVector()) {
-        MapStringString credMap;
-        for (auto const& j : i.toStdMap()) {
-            credMap[j.first] = j.second;
-        }
-        credToStore.push_back(credMap);
-    }
-
-    accountInfo.confProperties.credentials.swap(credToStore);
+    accountInfo.confProperties.credentials.swap(credGet);
 
     MapStringString volatileDetails = ConfigurationManager::instance().getVolatileAccountDetails(
         accountInfo.id);
@@ -806,6 +791,7 @@ account::Info::fromDetails(const MapStringString& details)
                        and details[ConfProperties::USERNAME].contains("ring:"))
                           ? QString(details[ConfProperties::USERNAME]).remove(QString("ring:"))
                           : details[ConfProperties::USERNAME];
+    confProperties.authenticationUsername = details[ConfProperties::AUTHENTICATION_USERNAME];
     confProperties.username = details[ConfProperties::USERNAME];
     confProperties.routeset = details[ConfProperties::ROUTE];
     confProperties.password = details[ConfProperties::PASSWORD];
@@ -837,7 +823,8 @@ account::Info::fromDetails(const MapStringString& details)
     confProperties.bootstrapListUrl = QString(details[ConfProperties::BOOTSTRAP_LIST_URL]);
     confProperties.dhtProxyListUrl = QString(details[ConfProperties::DHT_PROXY_LIST_URL]);
     confProperties.defaultModerators = QString(details[ConfProperties::DEFAULT_MODERATORS]);
-    confProperties.localModeratorsEnabled = toBool(details[ConfProperties::LOCAL_MODERATORS_ENABLED]);
+    confProperties.localModeratorsEnabled = toBool(
+        details[ConfProperties::LOCAL_MODERATORS_ENABLED]);
     // Audio
     confProperties.Audio.audioPortMax = toInt(details[ConfProperties::Audio::PORT_MAX]);
     confProperties.Audio.audioPortMin = toInt(details[ConfProperties::Audio::PORT_MIN]);
@@ -1157,7 +1144,9 @@ NewAccountModel::bestIdForAccount(const QString& accountID)
 }
 
 void
-NewAccountModel::setDefaultModerator(const QString& accountID, const QString& peerURI, const bool& state)
+NewAccountModel::setDefaultModerator(const QString& accountID,
+                                     const QString& peerURI,
+                                     const bool& state)
 {
     ConfigurationManager::instance().setDefaultModerator(accountID, peerURI, state);
 }
