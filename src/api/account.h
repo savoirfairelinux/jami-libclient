@@ -84,6 +84,7 @@ struct ConfProperties_t
     bool isRendezVous;
     int activeCallLimit;
     QString hostname;
+    QString authenticationUsername;
     QString username;
     QString routeset;
     QString password;
