@@ -331,6 +331,12 @@ ConversationModel::ConversationModel(const account::Info& owner,
 
 ConversationModel::~ConversationModel() {}
 
+const ConversationModel::ConversationQueue&
+ConversationModel::getConversations() const
+{
+    return pimpl_->conversations;
+}
+
 const ConversationModel::ConversationQueueProxy&
 ConversationModel::allFilteredConversations() const
 {
@@ -898,6 +904,7 @@ ConversationModel::sendMessage(const QString& uid, const QString& body)
             // The order has changed, informs the client to redraw the list
             pimpl_->invalidateModel();
             emit modelChanged();
+            Q_EMIT dataChanged(pimpl_->indexOf(convId));
         });
 
         if (isTemporary) {
@@ -1013,10 +1020,11 @@ ConversationModel::clearHistory(const QString& uid)
         std::lock_guard<std::mutex> lk(pimpl_->interactionsLocks[uid]);
         conversation.interactions.clear();
     }
-    storage::getHistory(pimpl_->db, conversation); // will contains "Conversation started"
+    storage::getHistory(pimpl_->db, conversation); // will contain "Conversation started"
 
     emit modelChanged();
     emit conversationCleared(uid);
+    Q_EMIT dataChanged(conversationIdx);
 }
 
 void
@@ -1079,8 +1087,9 @@ ConversationModel::clearInteractionFromConversation(const QString& convId,
         emit interactionRemoved(convId, interactionId);
     }
     if (lastInteractionUpdated) {
-        // last interaction as changed, so the order can changes.
+        // last interaction as changed, so the order can change.
         emit modelChanged();
+        Q_EMIT dataChanged(conversationIdx);
     }
 }
 
@@ -1242,6 +1251,7 @@ ConversationModel::clearUnreadInteractions(const QString& convId)
         pimpl_->conversations[conversationIdx].unreadMessages = 0;
         pimpl_->invalidateModel();
         emit conversationUpdated(convId);
+        Q_EMIT dataChanged(conversationIdx);
     }
 }
 
@@ -1686,7 +1696,10 @@ ConversationModelPimpl::slotContactAdded(const QString& contactUri)
 
     // delete temporary conversation if it exists and it has the uri of the added contact as uid
     if (indexOf(profileInfo.uri) >= 0) {
-        conversations.erase(conversations.begin() + indexOf(profileInfo.uri));
+        auto position = indexOf(profileInfo.uri);
+        Q_EMIT linked.beginRemoveRows(position);
+        conversations.erase(conversations.begin() + position);
+        Q_EMIT linked.endRemoveRows();
     }
     for (unsigned int i = 0; i < searchResults.size(); ++i) {
         if (searchResults.at(i).uid == profileInfo.uri)
@@ -1730,6 +1743,7 @@ ConversationModelPimpl::slotPendingContactAccepted(const QString& uri)
             }
             filteredConversations.invalidate();
             emit linked.newInteraction(convs[0], msgId, interaction);
+            Q_EMIT linked.dataChanged(convIdx);
         } catch (std::out_of_range& e) {
             qDebug() << "ConversationModelPimpl::slotContactAdded can't find contact";
         }
@@ -1745,7 +1759,10 @@ ConversationModelPimpl::slotContactRemoved(const QString& uri)
         return; // Not a contact
     }
     auto& conversationUid = conversations[conversationIdx].uid;
+
+    Q_EMIT linked.beginRemoveRows(conversationIdx);
     conversations.erase(conversations.begin() + conversationIdx);
+    Q_EMIT linked.endRemoveRows();
 
     invalidateModel();
     emit linked.modelChanged();
@@ -1761,6 +1778,7 @@ ConversationModelPimpl::slotContactModelUpdated(const QString& uri, bool needsSo
             auto& conversation = getConversationForPeerUri(uri, true).get();
             invalidateModel();
             emit linked.conversationUpdated(conversation.uid);
+            Q_EMIT linked.dataChanged(indexOf(conversation.uid));
         } catch (std::out_of_range&) {
             qDebug() << "contact updated for not existing conversation";
         }
@@ -1834,7 +1852,11 @@ ConversationModelPimpl::addConversationWith(const QString& convId, const QString
     }
 
     conversation.unreadMessages = getNumberOfUnreadMessagesFor(convId);
+
+    Q_EMIT linked.beginInsertRows(conversations.size());
     conversations.emplace_back(std::move(conversation));
+    Q_EMIT linked.endInsertRows();
+
     invalidateModel();
 }
 
@@ -1907,7 +1929,6 @@ ConversationModelPimpl::slotIncomingCall(const QString& fromId, const QString& c
     conversation.callId = callId;
 
     addOrUpdateCallMessage(callId, fromId);
-    invalidateModel();
     emit behaviorController.showIncomingCallView(linked.owner.id, conversation.uid);
 }
 
@@ -1934,6 +1955,7 @@ ConversationModelPimpl::slotCallStatusChanged(const QString& callId, int code)
                     conversation.callId = callId;
                     invalidateModel();
                     emit linked.conversationUpdated(conversation.uid);
+                    Q_EMIT linked.dataChanged(indexOf(conversation.uid));
                 }
             }
         } else if (call.status == call::Status::PEER_BUSY) {
@@ -1976,6 +1998,7 @@ ConversationModelPimpl::slotCallEnded(const QString& callId)
                 conversation.confId = ""; // The participant is detached
                 invalidateModel();
                 emit linked.conversationUpdated(conversation.uid);
+                Q_EMIT linked.dataChanged(indexOf(conversation.uid));
             }
     } catch (std::out_of_range& e) {
         qDebug() << "ConversationModelPimpl::slotCallEnded can't end inexistant call";
@@ -2026,6 +2049,7 @@ ConversationModelPimpl::addOrUpdateCallMessage(const QString& callId,
 
     invalidateModel();
     emit linked.modelChanged();
+    Q_EMIT linked.dataChanged(static_cast<int>(std::distance(conversations.begin(), conv_it)));
 }
 
 void
@@ -2109,6 +2133,7 @@ ConversationModelPimpl::addIncomingMessage(const QString& from,
 
     invalidateModel();
     emit linked.modelChanged();
+    Q_EMIT linked.dataChanged(conversationIdx);
 
     return msgId;
 }
@@ -2447,6 +2472,7 @@ ConversationModelPimpl::slotTransferStatusCreated(long long dringId, datatransfe
 
     invalidateModel();
     emit linked.modelChanged();
+    Q_EMIT linked.dataChanged(conversationIdx);
 }
 
 void
