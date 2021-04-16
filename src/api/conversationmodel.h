@@ -89,6 +89,15 @@ public:
     ~ConversationModel();
 
     /**
+     * Get unfiltered underlying conversation data. This is intended to
+     * serve as the underlying data for QAbstractListModel based objects.
+     * The corresponding data mutation signals will need to be responded
+     * to with appropriate QAbstractListModel signal forwarding.
+     * @return raw conversation queue
+     */
+    const ConversationQueue& getConversations() const;
+
+    /**
      * Get conversations which should be shown client side
      * @return conversations filtered with the current filter
      */
@@ -237,8 +246,7 @@ public:
      * @param convId
      * @param interactionId
      */
-    void clearInteractionFromConversation(const QString& convId,
-                                          const uint64_t& interactionId);
+    void clearInteractionFromConversation(const QString& convId, const uint64_t& interactionId);
     /**
      * Retry to send a message. In fact, will delete the previous interaction and resend a new one.
      * @param convId
@@ -264,9 +272,7 @@ public:
 
     void acceptTransfer(const QString& convUid, uint64_t interactionId);
 
-    void acceptTransfer(const QString& convUid,
-                        uint64_t interactionId,
-                        const QString& path);
+    void acceptTransfer(const QString& convUid, uint64_t interactionId, const QString& path);
 
     void cancelTransfer(const QString& convUid, uint64_t interactionId);
 
@@ -377,6 +383,36 @@ Q_SIGNALS:
      * Emitted when search result has been updated
      */
     void searchResultUpdated() const;
+
+    /**
+     * The following signals are intended for QAbtractListModel compatibility
+     */
+
+    /*!
+     * Emitted before conversations are inserted into the underlying queue
+     * @param position The starting row of the insertion
+     * @param rows The number of items inserted
+     */
+    void beginInsertRows(int position, int rows = 1) const;
+
+    //! Emitted once insertion is complete
+    void endInsertRows() const;
+
+    /*!
+     * Emitted before conversations are removed from the underlying queue
+     * @param position The starting row of the removal
+     * @param rows The number of items removed
+     */
+    void beginRemoveRows(int position, int rows = 1) const;
+
+    //! Emitted once removal is complete
+    void endRemoveRows() const;
+
+    /**
+     * Emitted once a conversation has been updated
+     * @param position
+     */
+    void dataChanged(int position) const;
 
 private:
     std::unique_ptr<ConversationModelPimpl> pimpl_;
