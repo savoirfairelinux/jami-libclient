@@ -1,7 +1,7 @@
 if (EXISTS ${TIME_STAMP_FILE})
-    message("No need to deploy")
+    message("No need for daemon deployment")
 else()
-    message("Deploying ...")
+    message("Daemon deploying ...")
     file(COPY "${DRING_PATH}/contrib/build/ffmpeg/Build/win32/x64/bin/avcodec-58.dll"
               "${DRING_PATH}/contrib/build/ffmpeg/Build/win32/x64/bin/avutil-56.dll"
               "${DRING_PATH}/contrib/build/ffmpeg/Build/win32/x64/bin/avformat-58.dll"
@@ -15,8 +15,4 @@ else()
               "${PROJECT_ROOT_DIR}/images/jami.ico"
               "${PROJECT_ROOT_DIR}/License.rtf"
          DESTINATION ${COPY_TO_PATH})
-    execute_process(COMMAND "${WIN_DEPLOY_QT_PATH}/windeployqt.exe"
-                            --verbose 1
-                            --qmldir ${QML_SRC_DIR}
-                            --release ${EXE_NAME})
 endif()

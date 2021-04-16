@@ -111,14 +111,14 @@ Only 64-bit MSVC build can be compiled.
 
   | | Prebuild | Module |
   |---|---|---|
-  | Components: | msvc2017_64 | Qt WebEngine |
+  | Components: | msvc2019_64 | Qt WebEngine |
 
-- Download [Visual Studio](https://visualstudio.microsoft.com/) (version >= 2015) <br>
+- Download [Visual Studio](https://visualstudio.microsoft.com/) (version >= 2019) <br>
 - Install Qt Vs Tools under extensions, and configure msvc2017_64 path under Qt Options <br>
 
   | | Qt Version | SDK | Toolset |
   |---|---|---|---|
-  | Minimum requirement: | 5.9.4 | 10.0.16299.0 | V141 |
+  | Minimum requirement: | 5.14.0 | 10.0.16299.0 | V142 |
 
 - Install [Python3](https://www.python.org/downloads/) for Windows
 
@@ -156,13 +156,13 @@ Only 64-bit MSVC build can be compiled.
 > Note: <br>
 > To control the toolset and the sdk version that are used by msbuild, you can use ```--toolset``` and ```--sdk``` options <br>
 > To control which Qt version should be used (qmake, windeployqt), uou can use ```--qtver``` option <br>
-> By default: ```toolset=v141```, ```sdk=10.0.16299.0```,  ```qtver=5.9.4``` <br>
+> By default: ```toolset=v142```, ```sdk=10.0.16299.0```,  ```qtver=5.15.0``` <br>
 > For example:
 ```sh
-    python make-ring.py --install --toolset v142 --sdk 10.0.18362.0 --qtver 5.14.0
+    python make-ring.py --install --toolset v142 --sdk 10.0.16299.0 --qtver 5.15.0
 ```
 
-### Build Module individually
+### Build Module Individually
 
 - Jami-qt also support building each module (daemon, lrc, jami-qt) seperately
 
@@ -199,7 +199,6 @@ Only 64-bit MSVC build can be compiled.
     cd client-windows
     python make-client.py -d
     python make-client.py -b
-    powershell -ExecutionPolicy Unrestricted -File copy-runtime-files.ps1
 ```
 
 **Note**
@@ -213,7 +212,16 @@ Only 64-bit MSVC build can be compiled.
 - In Visual Studio, download WiX Toolset Visual Studio Extension.
 - Build client-windows project first, then the JamiInstaller project, msi package should be stored in ring-project\client-windows\JamiInstaller\bin\Release
 
-#### Debugging
+## Testing For Client-qt
+
+- We currently use [GoogleTest](https://github.com/google/googletest) and [Qt Quick Test](https://doc.qt.io/qt-5/qtquicktest-index.html#introduction) in our product. To build and run tests, you could use the following command.
+
+```
+    python make-client.py -b -wt
+    python make-client.py runtests
+```
+
+## Debugging
 
 Compile the client with `BUILD=Debug` and compile LibRingClient with
 `-DCMAKE_BUILD_TYPE=Debug`
