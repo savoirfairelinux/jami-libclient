@@ -93,22 +93,9 @@ Popup {
                 RowLayout {
                     height: JamiTheme.preferredFieldHeight
 
-                    PushButton {
-                        id: closeButton
-                        Layout.leftMargin: 5
-                        Layout.topMargin: 5
-
-                        source: "qrc:/images/icons/round-close-24px.svg"
-                        imageColor: JamiTheme.textColor
-
-                        onClicked: {
-                            root.close()
-                        }
-                    }
-
                     Text {
                         Layout.topMargin: 10
-                        Layout.rightMargin: 5 + closeButton.width
+                        Layout.leftMargin: 5 + closeButton.width
                         Layout.alignment: Qt.AlignCenter
                         Layout.fillWidth: true
 
@@ -120,6 +107,20 @@ Popup {
                         color: JamiTheme.textColor
 
                         text: qsTr("Choose plugin")
+                    }
+
+                    PushButton {
+                        id: closeButton
+                        Layout.alignment: Qt.AlignRight
+                        Layout.rightMargin: 5
+                        Layout.topMargin: 5
+
+                        source: "qrc:/images/icons/round-close-24px.svg"
+                        imageColor: JamiTheme.textColor
+
+                        onClicked: {
+                            root.close()
+                        }
                     }
                 }
 
