@@ -129,7 +129,7 @@ Item {
     property color messageInTxtColor: textColor
     property color fileOutTimestampColor: darkTheme? "#eee" : "#555"
     property color fileInTimestampColor: darkTheme? "#999" : "#555"
-    property color chatviewBgColor: darkTheme? "#131313" : "#fafafb"
+    property color chatviewBgColor: darkTheme? bgDarkMode_ : whiteColor
     property color bgInvitationRectColor: darkTheme? "#222222" : whiteColor
     property color placeholderTextColor: darkTheme? "#2b2b2b" : "#d3d3d3"
     property color inviteHoverColor: darkTheme? blackColor : whiteColor
