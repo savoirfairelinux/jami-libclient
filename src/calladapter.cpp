@@ -339,6 +339,7 @@ CallAdapter::fillParticipantData(QMap<QString, QString> participant)
     data["videoMuted"] = participant["videoMuted"] == "true";
     data["audioLocalMuted"] = participant["audioLocalMuted"] == "true";
     data["audioModeratorMuted"] = participant["audioModeratorMuted"] == "true";
+    data["isContact"] = false;
 
     auto bestName = participant["uri"];
     auto& accInfo = lrcInstance_->accountModel().getAccountInfo(accountId_);
@@ -356,7 +357,7 @@ CallAdapter::fillParticipantData(QMap<QString, QString> participant)
                 participant["uri"]);
             if (participant["videoMuted"] == "true")
                 data["avatar"] = contact.profileInfo.avatar;
-
+            data["isContact"] = true;
         } catch (...) {
         }
     }

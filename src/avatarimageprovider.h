@@ -29,8 +29,8 @@ class AvatarImageProvider : public QuickImageProviderBase
 public:
     AvatarImageProvider(LRCInstance* instance = nullptr)
         : QuickImageProviderBase(QQuickImageProvider::Image,
-                                  QQmlImageProviderBase::ForceAsynchronousImageLoading,
-                                  instance)
+                                 QQmlImageProviderBase::ForceAsynchronousImageLoading,
+                                 instance)
     {}
 
     /*
@@ -65,7 +65,7 @@ public:
         } else if (idType == "contact") {
             return Utils::contactPhoto(lrcInstance_, idContent, requestedSize);
         } else if (idType == "fallback") {
-            return Utils::fallbackAvatar(QString(), idContent, requestedSize);
+            return Utils::fallbackAvatar(idContent, QString(), requestedSize);
         } else if (idType == "default") {
             return Utils::fallbackAvatar(QString(), QString(), requestedSize);
         } else if (idType == "base64") {

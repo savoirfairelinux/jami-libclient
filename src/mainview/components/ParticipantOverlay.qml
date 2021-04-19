@@ -47,15 +47,26 @@ Rectangle {
     property bool participantIsModerator: false
     property bool participantIsMuted: false
     property bool participantIsModeratorMuted: false
-
     property bool participantMenuActive: false
 
-    // TODO: try to use AvatarImage as well
-    function setAvatar(avatar) {
-        if (avatar === "") {
-            contactImage.source = ""
-        } else {
-            contactImage.source = JamiQmlUtils.base64StringTitle + avatar
+    function setAvatar(show, avatar, uri, local, isContact) {
+        if (!show)
+            contactImage.visible = false
+        else {
+            if (avatar) {
+                contactImage.mode = AvatarImage.Mode.FromBase64
+                contactImage.updateImage(avatar)
+            } else if (local) {
+                contactImage.mode = AvatarImage.Mode.FromAccount
+                contactImage.updateImage(AccountAdapter.currentAccountId)
+            } else if (isContact) {
+                contactImage.mode = AvatarImage.Mode.FromContactUri
+                contactImage.updateImage(uri)
+            } else {
+                contactImage.mode = AvatarImage.Mode.FromTemporaryName
+                contactImage.updateImage(uri)
+            }
+            contactImage.visible = true
         }
     }
 
@@ -173,6 +184,35 @@ Rectangle {
         }
     }
 
+    AvatarImage {
+        id: contactImage
+
+        anchors.centerIn: parent
+        height:  Math.min(parent.width / 2, parent.height / 2)
+        width:  Math.min(parent.width / 2, parent.height / 2)
+
+        fillMode: Image.PreserveAspectFit
+        imageId: ""
+        visible: false
+        mode: AvatarImage.Mode.Default
+        showPresenceIndicator: false
+
+        layer.enabled: true
+        layer.effect: OpacityMask {
+            maskSource: Rectangle {
+                width: contactImage.width
+                height: contactImage.height
+                radius: {
+                    var size = ((contactImage.width <= contactImage.height)?
+                                    contactImage.width : contactImage.height)
+                    return size / 2
+                }
+            }
+        }
+        layer.mipmap: false
+        layer.smooth: true
+    }
+
     // Participant background, mousearea, hover and buttons for moderation
     Rectangle {
         id: participantRect
@@ -190,42 +230,13 @@ Rectangle {
             propagateComposedEvents: true
             acceptedButtons: Qt.LeftButton
 
-            Image {
-                id: contactImage
-
-                anchors.centerIn: parent
-                height:  Math.min(parent.width / 2, parent.height / 2)
-                width:  Math.min(parent.width / 2, parent.height / 2)
-
-                fillMode: Image.PreserveAspectFit
-                source: ""
-                asynchronous: true
-
-                layer.enabled: true
-                layer.effect: OpacityMask {
-                    maskSource: Rectangle{
-                        width: contactImage.width
-                        height: contactImage.height
-                        radius: {
-                            var size = ((contactImage.width <= contactImage.height)?
-                                            contactImage.width : contactImage.height)
-                            return size / 2
-                        }
-                    }
-                }
-                layer.mipmap: false
-                layer.smooth: true
-            }
-
             ParticipantOverlayMenu {
                 id: overlayMenu
                 visible: participantRect.opacity !== 0
 
                 onMouseAreaExited: {
-                    if (contactImage.status === Image.Null) {
-                        root.z = 1
-                        participantRect.state = "exited"
-                    }
+                    root.z = 1
+                    participantRect.state = "exited"
                 }
                 onMouseChanged: {
                     participantRect.state = "entered"
@@ -235,17 +246,13 @@ Rectangle {
             }
 
             onEntered: {
-                if (contactImage.status === Image.Null) {
-                    root.z = 2
-                    participantRect.state = "entered"
-                }
+                root.z = 2
+                participantRect.state = "entered"
             }
 
             onExited: {
-                if (contactImage.status === Image.Null) {
-                    root.z = 1
-                    participantRect.state = "exited"
-                }
+                root.z = 1
+                participantRect.state = "exited"
             }
 
             onMouseXChanged: {
