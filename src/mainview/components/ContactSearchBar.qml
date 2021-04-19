@@ -29,8 +29,6 @@ import "../../commoncomponents"
 Rectangle {
     id: root
 
-    property int itemMargin: 8
-
     signal contactSearchBarTextChanged(string text)
     signal returnPressedWhileSearching
 
@@ -50,25 +48,22 @@ Rectangle {
         id: lineEditContextMenu
     }
 
-    Image {
+    ResponsiveImage {
         id: searchIconImage
 
         anchors.verticalCenter: root.verticalCenter
         anchors.left: root.left
-        anchors.leftMargin: itemMargin
+        anchors.leftMargin: 10
 
-        width: 16
-        height: 16
+        width: 20
+        height: 20
 
-        fillMode: Image.PreserveAspectFit
-        mipmap: true
         source: "qrc:/images/icons/ic_baseline-search-24px.svg"
-    }
 
-    ColorOverlay {
-        anchors.fill: searchIconImage
-        source: searchIconImage
-        color: JamiTheme.contactSearchBarPlaceHolderTextFontColor
+        layer.enabled: true
+        layer.effect: ColorOverlay {
+            color: JamiTheme.primaryForegroundColor
+        }
     }
 
     TextField {
@@ -76,8 +71,10 @@ Rectangle {
 
         anchors.verticalCenter: root.verticalCenter
         anchors.left: searchIconImage.right
+        anchors.right: contactSearchBar.text.length ?
+                           clearTextButton.left :
+                           root.right
 
-        width: root.width - searchIconImage.width - clearTextButton.width - itemMargin * 2
         height: root.height - 5
 
         color: JamiTheme.textColor
@@ -108,9 +105,11 @@ Rectangle {
         id: clearTextButton
 
         anchors.verticalCenter: root.verticalCenter
-        anchors.left: contactSearchBar.right
+        anchors.right: root.right
+        anchors.rightMargin: 10
 
-        preferredSize: 16
+        preferredSize: 20
+        radius: JamiTheme.lineEditRadius
 
         visible: contactSearchBar.text.length
 

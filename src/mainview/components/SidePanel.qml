@@ -88,12 +88,14 @@ Rectangle {
     // Search bar container to embed search label
     ContactSearchBar {
         id: contactSearchBar
-        width: sidePanelRect.width - 26
-        height: 35
+
+        height: 40
         anchors.top: sidePanelRect.top
         anchors.topMargin: 10
         anchors.left: sidePanelRect.left
-        anchors.leftMargin: 16
+        anchors.leftMargin: 15
+        anchors.right: sidePanelRect.right
+        anchors.rightMargin: 15
 
         onContactSearchBarTextChanged: {
             UtilsAdapter.setConversationFilter(text)
