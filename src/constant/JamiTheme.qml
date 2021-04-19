@@ -159,38 +159,38 @@ Item {
     property int fadeDuration: 150
 
     // Sizes
-    property int splitViewHandlePreferredWidth: 4
-    property int indicatorFontSize: 6
-    property int tinyFontSize: 7
-    property int textFontSize: 9
-    property int settingsFontSize: 9
-    property int buttonFontSize: 9
-    property int participantFontSize: 10
-    property int menuFontSize: 12
-    property int headerFontSize: 13
-    property int titleFontSize: 16
-    property int lineEditRadius: 4
+    property real splitViewHandlePreferredWidth: 4
+    property real indicatorFontSize: 6
+    property real tinyFontSize: 7
+    property real textFontSize: 9
+    property real settingsFontSize: 9
+    property real buttonFontSize: 9
+    property real participantFontSize: 10
+    property real menuFontSize: 12
+    property real headerFontSize: 13
+    property real titleFontSize: 16
+    property real lineEditRadius: 4
 
-    property int maximumWidthSettingsView: 600
-    property int settingsHeaderpreferredHeight: 64
-    property int preferredFieldWidth: 256
-    property int preferredFieldHeight: 32
-    property int preferredMarginSize: 16
-    property int preferredDialogWidth: 400
-    property int preferredDialogHeight: 300
-    property int minimumPreviewWidth: 120
-    property int pluginHandlersPopupViewHeight: 200
-    property int pluginHandlersPopupViewDelegateHeight: 50
+    property real maximumWidthSettingsView: 600
+    property real settingsHeaderpreferredHeight: 64
+    property real preferredFieldWidth: 256
+    property real preferredFieldHeight: 32
+    property real preferredMarginSize: 16
+    property real preferredDialogWidth: 400
+    property real preferredDialogHeight: 300
+    property real minimumPreviewWidth: 120
+    property real pluginHandlersPopupViewHeight: 200
+    property real pluginHandlersPopupViewDelegateHeight: 50
 
     // main application spec
-    property int mainViewMinWidth: 300
-    property int mainViewMinHeight: 400
+    property real mainViewMinWidth: 300
+    property real mainViewMinHeight: 400
 
-    property int wizardViewMinWidth: 500
-    property int wizardViewMinHeight: 600
+    property real wizardViewMinWidth: 500
+    property real wizardViewMinHeight: 600
 
-    property int mainViewPreferredWidth: 725
-    property int mainViewPreferredHeight: 600
+    property real mainViewPreferredWidth: 725
+    property real mainViewPreferredHeight: 600
 
     function setTheme(dark) {
         darkTheme = dark
