@@ -295,6 +295,9 @@ add_executable(${PROJECT_NAME}
                ${LRC_SRC_PATH}/webresource.qrc)
 
 if(MSVC)
+    # Makes it a GUI executable instead of a console application
+    set_target_properties(${PROJECT_NAME} PROPERTIES WIN32_EXECUTABLE TRUE)
+
     target_link_libraries(${PROJECT_NAME}
                           ${QML_LIBS}
                           ${QRENCODE_LIB}
