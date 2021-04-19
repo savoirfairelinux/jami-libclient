@@ -79,7 +79,7 @@
         <location filename="../src/authority/storagehelper.cpp" line="127"/>
         <location filename="../src/authority/storagehelper.cpp" line="896"/>
         <source>Contact added</source>
-        <translation type="unfinished"/>
+        <translation>Η επαφή προστέθηκε</translation>
     </message>
     <message>
         <location filename="../src/authority/storagehelper.cpp" line="104"/>
@@ -442,7 +442,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="39"/>
         <source>Send file</source>
-        <translation type="unfinished"/>
+        <translation>Αποστολή αρχείου</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="40"/>
