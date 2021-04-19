@@ -73,7 +73,7 @@ TextField {
     wrapMode: Text.Wrap
     readOnly: false
     selectByMouse: true
-    selectionColor: JamiTheme.contactSearchBarPlaceHolderTextFontColor
+    selectionColor: JamiTheme.placeHolderTextFontColor
     font.pointSize: 10
     padding: 16
     font.kerning: true
@@ -135,7 +135,7 @@ TextField {
     background: Rectangle {
         anchors.fill: parent
 
-        radius: JamiTheme.lineEditRadius
+        radius: JamiTheme.primaryRadius
         border.color: readOnly? "transparent" : borderColor
         color: readOnly? "transparent" : backgroundColor
     }

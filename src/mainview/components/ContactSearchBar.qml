@@ -37,7 +37,7 @@ Rectangle {
         fakeFocus.forceActiveFocus()
     }
 
-    radius: JamiTheme.lineEditRadius
+    radius: JamiTheme.primaryRadius
     color: JamiTheme.secondaryBackgroundColor
 
     FocusScope {
@@ -83,10 +83,10 @@ Rectangle {
         font.kerning: true
 
         selectByMouse: true
-        selectionColor: JamiTheme.contactSearchBarPlaceHolderTextFontColor
+        selectionColor: JamiTheme.placeHolderTextFontColor
 
         placeholderText: JamiStrings.contactSearchConversation
-        placeholderTextColor: JamiTheme.contactSearchBarPlaceHolderTextFontColor
+        placeholderTextColor: JamiTheme.placeHolderTextFontColor
 
         background: Rectangle {
             id: searchBarBackground
@@ -109,7 +109,7 @@ Rectangle {
         anchors.rightMargin: 10
 
         preferredSize: 20
-        radius: JamiTheme.lineEditRadius
+        radius: JamiTheme.primaryRadius
 
         visible: contactSearchBar.text.length
 

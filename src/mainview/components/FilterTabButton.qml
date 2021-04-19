@@ -49,49 +49,51 @@ TabButton {
                    JamiTheme.hoverColor :
                    JamiTheme.backgroundColor
 
-        Text {
-            id: label
-
+        RowLayout {
             anchors.horizontalCenter: rect.horizontalCenter
-            anchors.bottom: rect.bottom
-            anchors.bottomMargin: 12
-
-            horizontalAlignment: Text.AlignHCenter
-            verticalAlignment: Text.AlignVCenter
-
-            font.pointSize: JamiTheme.textFontSize
-            color: Qt.lighter(JamiTheme.textColor, root.down ? 1.0 : 1.5)
-        }
-
-        Rectangle {
-            id: badgeRect
-
-            anchors.left: label.right
-            anchors.leftMargin: 4
-            anchors.verticalCenter: label.verticalCenter
-            anchors.verticalCenterOffset : -5
-
-            width: 12
-            height: 12
-
-            visible: badgeCount > 0
+            anchors.verticalCenter: rect.verticalCenter
 
             Text {
-                anchors.centerIn: badgeRect
-                text: badgeCount > 9 ? "···" : badgeCount
-                color: JamiTheme.whiteColor
-                font.pointSize: JamiTheme.indicatorFontSize
-            }
-            radius: 30
-            color: JamiTheme.notificationBlue
-        }
+                id: label
 
-        Rectangle {
-            width: rect.width
-            anchors.bottom: rect.bottom
-            height: 2
-            color: root.down ? JamiTheme.textColor : "transparent"
+                Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
+
+                font.pointSize: JamiTheme.filterItemFontSize
+                color: Qt.lighter(JamiTheme.textColor,
+                                  root.down == true ? 1.0 : 1.5)
+            }
+
+            Rectangle {
+                id: badgeRect
+
+                readonly property real size: 20
+
+                Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
+
+                width: size
+                height: size
+                radius: JamiTheme.primaryRadius
+                color: JamiTheme.filterBadgeColor
+
+                visible: badgeCount > 0
+
+                Text {
+                    anchors.centerIn: badgeRect
+                    text: badgeCount > 9 ? "…" : badgeCount
+                    color: JamiTheme.filterBadgeTextColor
+                    font.pointSize: JamiTheme.filterBadgeFontSize
+                }
+            }
         }
+    }
+
+    Rectangle {
+        width: rect.width
+        anchors.bottom: rect.bottom
+        height: 2
+        color: root.down === true ?
+                   JamiTheme.textColor :
+                   "transparent"
     }
 
     Shortcut {
