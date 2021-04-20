@@ -27,7 +27,7 @@
 
 static int ringFlags = 0;
 
-InstanceManagerInterface::InstanceManagerInterface()
+InstanceManagerInterface::InstanceManagerInterface(bool muteDring)
 {
     using namespace std::placeholders;
 
@@ -44,8 +44,10 @@ InstanceManagerInterface::InstanceManagerInterface()
 #endif
 
 #ifndef MUTE_DRING
-    ringFlags |= DRing::DRING_FLAG_DEBUG;
-    ringFlags |= DRing::DRING_FLAG_CONSOLE_LOG;
+    if (!muteDring) {
+        ringFlags |= DRing::DRING_FLAG_DEBUG;
+        ringFlags |= DRing::DRING_FLAG_CONSOLE_LOG;
+    }
 #endif
 
     DRing::init(static_cast<DRing::InitFlag>(ringFlags));

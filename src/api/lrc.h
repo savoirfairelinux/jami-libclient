@@ -47,7 +47,7 @@ public:
      * @param willMigrateCb
      * @param didMigrateCb
      */
-    Lrc(MigrationCb willMigrateCb = {}, MigrationCb didMigrateCb = {});
+    Lrc(MigrationCb willMigrateCb = {}, MigrationCb didMigrateCb = {}, bool muteDring = false);
     ~Lrc();
     /**
      * get a reference on account model.
