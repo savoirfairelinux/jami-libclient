@@ -37,6 +37,7 @@ getTranslatedStrings(bool qwebview)
         {"Options", QObject::tr("Options")},
         {"Jump to latest", QObject::tr("Jump to latest")},
         {"Send file", QObject::tr("Send file")},
+        {"Add emoji", QObject::tr("Add emoji")},
         {"Leave video message", QObject::tr("Leave video message")},
         {"Leave audio message", QObject::tr("Leave audio message")},
         {"Block", QObject::tr("Block")},

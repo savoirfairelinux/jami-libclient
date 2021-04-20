@@ -194,6 +194,7 @@ function set_titles() {
         optionsButton.title = i18nStringData["Options"]
         backToBottomBtn.innerHTML = `${i18nStringData["Jump to latest"]} &#9660;`
         sendFileButton.title = i18nStringData["Send file"]
+        emojiBtn.title = i18nStringData["Add emoji"]
         videoRecordButton.title = i18nStringData["Leave video message"]
         audioRecordButton.title = i18nStringData["Leave audio message"]
         acceptButton.title = i18nStringData["Accept"]
@@ -210,6 +211,7 @@ function set_titles() {
         optionsButton.title = i18n.gettext("Options")
         backToBottomBtn.innerHTML = `${i18n.gettext("Jump to latest")} &#9660;`
         sendFileButton.title = i18n.gettext("Send file")
+        emojiBtn.title = i18n.gettext("Add emoji")
         videoRecordButton.title = i18n.gettext("Leave video message")
         audioRecordButton.title = i18n.gettext("Leave audio message")
         acceptButton.title = i18n.gettext("Accept")
