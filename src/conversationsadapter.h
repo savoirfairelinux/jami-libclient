@@ -73,6 +73,16 @@ private Q_SLOTS:
     void onNewTrustRequest(const QString& accountId, const QString& peerUri);
     void onTrustRequestTreated(const QString& accountId, const QString& peerUri);
 
+    void onModelChanged();
+    void onProfileUpdated(const QString&);
+    void onConversationUpdated(const QString&);
+    void onFilterChanged();
+    void onNewConversation(const QString&);
+    void onConversationRemoved(const QString&);
+    void onConversationCleared(const QString&);
+    void onSearchStatusChanged(const QString&);
+    void onSearchResultUpdated();
+
 private:
     void backToWelcomePage();
     void updateConversationForNewContact(const QString& convUid);
