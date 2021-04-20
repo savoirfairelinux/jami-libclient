@@ -38,7 +38,7 @@ class InstanceManagerInterface : public QObject
 {
     Q_OBJECT
 public:
-    InstanceManagerInterface();
+    InstanceManagerInterface(bool muteDring = false);
     ~InstanceManagerInterface();
 
     // TODO: These are not present in dring.h

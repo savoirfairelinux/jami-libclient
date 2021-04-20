@@ -65,7 +65,7 @@ public:
     std::unique_ptr<PluginModel> PluginModel_;
 };
 
-Lrc::Lrc(MigrationCb willDoMigrationCb, MigrationCb didDoMigrationCb)
+Lrc::Lrc(MigrationCb willDoMigrationCb, MigrationCb didDoMigrationCb, bool muteDring)
 {
     lrc::api::Lrc::holdConferences.store(true);
 #ifndef ENABLE_LIBWRAP
@@ -74,7 +74,7 @@ Lrc::Lrc(MigrationCb willDoMigrationCb, MigrationCb didDoMigrationCb)
 #endif
     // Ensure Daemon is running/loaded (especially on non-DBus platforms)
     // before instantiating LRC and its members
-    InstanceManager::instance();
+    InstanceManager::instance(muteDring);
     lrcPimpl_ = std::make_unique<LrcPimpl>(*this, willDoMigrationCb, didDoMigrationCb);
 }
 

@@ -32,6 +32,6 @@
 
 namespace InstanceManager {
 
-LIB_EXPORT InstanceManagerInterface& instance();
+LIB_EXPORT InstanceManagerInterface& instance(bool muteDring = false);
 
 }

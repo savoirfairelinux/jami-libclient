@@ -29,10 +29,10 @@
 #include "../interfaces/dbuserrorhandleri.h"
 
 InstanceManagerInterface&
-InstanceManager::instance()
+InstanceManager::instance(bool muteDring)
 {
 #ifdef ENABLE_LIBWRAP
-    static auto interface = new InstanceManagerInterface();
+    static auto interface = new InstanceManagerInterface(muteDring);
 #else
     if (!dbus_metaTypeInit)
         registerCommTypes();
