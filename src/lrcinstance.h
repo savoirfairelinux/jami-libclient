@@ -60,7 +60,8 @@ public:
     explicit LRCInstance(migrateCallback willMigrateCb = {},
                          migrateCallback didMigrateCb = {},
                          const QString& updateUrl = {},
-                         ConnectivityMonitor* connectivityMonitor = {});
+                         ConnectivityMonitor* connectivityMonitor = {},
+                         bool muteDring = false);
     ~LRCInstance() = default;
 
     void finish();
