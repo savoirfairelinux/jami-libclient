@@ -18,7 +18,7 @@
 
 #pragma once
 
-#include "abstractitemmodelbase.h"
+#include "abstractlistmodelbase.h"
 
 class AccountsToMigrateListModel : public AbstractListModelBase
 {

@@ -20,7 +20,7 @@
 
 #pragma once
 
-#include "abstractitemmodelbase.h"
+#include "abstractlistmodelbase.h"
 
 using namespace lrc::api;
 class LRCInstance;

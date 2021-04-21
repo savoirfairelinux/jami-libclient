@@ -19,7 +19,7 @@
 
 #pragma once
 
-#include "abstractitemmodelbase.h"
+#include "abstractlistmodelbase.h"
 
 class AccountListModel : public AbstractListModelBase
 {

@@ -18,7 +18,7 @@
 
 #pragma once
 
-#include <QAbstractItemModel>
+#include <QAbstractListModel>
 
 #include "lrcinstance.h"
 
