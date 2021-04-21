@@ -1,4 +1,4 @@
-/*!
+/*
  * Copyright (C) 2020 by Savoir-faire Linux
  * Author: Andreas Traczyk <andreas.traczyk@savoirfairelinux.com>
  *
@@ -29,6 +29,13 @@
 #define NS_ENUMS     "net.jami.Enums"
 #define VER_MAJ      1
 #define VER_MIN      0
+
+// Hack for QtCreator autocomplete (part 1)
+// https://bugreports.qt.io/browse/QTCREATORBUG-20569
+namespace dummy {
+Q_NAMESPACE
+Q_CLASSINFO("RegisterEnumClassesUnscoped", "false")
+} // namespace dummy
 
 // clang-format off
 #define QML_REGISTERSINGLETONTYPE_POBJECT(NS, I, N) \

@@ -1,4 +1,4 @@
-/*!
+/*
  * Copyright (C) 2020 by Savoir-faire Linux
  * Author: Andreas Traczyk <andreas.traczyk@savoirfairelinux.com>
  *
@@ -62,8 +62,8 @@
 
 #define QML_REGISTERTYPE(NS, T) qmlRegisterType<T>(NS, VER_MAJ, VER_MIN, #T);
 
-#define QML_REGISTERNAMESPACE(T, NAME) \
-    qmlRegisterUncreatableMetaObject(T, NS_MODELS, VER_MAJ, VER_MIN, NAME, "")
+#define QML_REGISTERNAMESPACE(NS, T, NAME) \
+    qmlRegisterUncreatableMetaObject(T, NS, VER_MAJ, VER_MIN, NAME, "")
 
 #define QML_REGISTERUNCREATABLE(N, T) \
     qmlRegisterUncreatableType<T>(N, VER_MAJ, VER_MIN, #T, "Don't try to add to a qml definition of " #T);
@@ -81,6 +81,16 @@ namespace Utils {
 void
 registerTypes()
 {
+    // Hack for QtCreator autocomplete (part 2)
+    // https://bugreports.qt.io/browse/QTCREATORBUG-20569
+    // Use a dummy object to register the import namespace.
+    // This occurs when we register from within MainApplication
+    QML_REGISTERNAMESPACE(NS_MODELS, dummy::staticMetaObject, "");
+    QML_REGISTERNAMESPACE(NS_ADAPTERS, dummy::staticMetaObject, "");
+    QML_REGISTERNAMESPACE(NS_CONSTANTS, dummy::staticMetaObject, "");
+    QML_REGISTERNAMESPACE(NS_HELPERS, dummy::staticMetaObject, "");
+    QML_REGISTERNAMESPACE(NS_ENUMS, dummy::staticMetaObject, "");
+
     // QAbstractListModels
     QML_REGISTERTYPE(NS_MODELS, AccountListModel);
     QML_REGISTERTYPE(NS_MODELS, DeviceItemListModel);
@@ -112,13 +122,13 @@ registerTypes()
     QML_REGISTERSINGLETONTYPE_WITH_INSTANCE(NameDirectory);
 
     // Lrc namespaces, models, and singletons
-    QML_REGISTERNAMESPACE(lrc::api::staticMetaObject, "Lrc");
-    QML_REGISTERNAMESPACE(lrc::api::account::staticMetaObject, "Account");
-    QML_REGISTERNAMESPACE(lrc::api::call::staticMetaObject, "Call");
-    QML_REGISTERNAMESPACE(lrc::api::datatransfer::staticMetaObject, "Datatransfer");
-    QML_REGISTERNAMESPACE(lrc::api::interaction::staticMetaObject, "Interaction");
-    QML_REGISTERNAMESPACE(lrc::api::video::staticMetaObject, "Video");
-    QML_REGISTERNAMESPACE(lrc::api::profile::staticMetaObject, "Profile");
+    QML_REGISTERNAMESPACE(NS_MODELS, lrc::api::staticMetaObject, "Lrc");
+    QML_REGISTERNAMESPACE(NS_MODELS, lrc::api::account::staticMetaObject, "Account");
+    QML_REGISTERNAMESPACE(NS_MODELS, lrc::api::call::staticMetaObject, "Call");
+    QML_REGISTERNAMESPACE(NS_MODELS, lrc::api::datatransfer::staticMetaObject, "Datatransfer");
+    QML_REGISTERNAMESPACE(NS_MODELS, lrc::api::interaction::staticMetaObject, "Interaction");
+    QML_REGISTERNAMESPACE(NS_MODELS, lrc::api::video::staticMetaObject, "Video");
+    QML_REGISTERNAMESPACE(NS_MODELS, lrc::api::profile::staticMetaObject, "Profile");
 
     // Same as QML_REGISTERUNCREATABLE but omit the namespace in Qml
     QML_REGISTERUNCREATABLE_IN_NAMESPACE(NewAccountModel, lrc::api);
