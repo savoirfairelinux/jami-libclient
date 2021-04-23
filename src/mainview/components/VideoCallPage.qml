@@ -263,7 +263,6 @@ Rectangle {
                     width: Math.max(videoCallPageMainRect.width / 5, JamiTheme.minimumPreviewWidth)
                     x: videoCallPageMainRect.width - previewRenderer.width - previewMargin
                     y: videoCallPageMainRect.height - previewRenderer.height - previewMargin - 56 // Avoid overlay
-                    z: -1
 
                     states: [
                         State {
