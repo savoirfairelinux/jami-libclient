@@ -955,7 +955,7 @@ ContactModelPimpl::slotRegisteredNameFound(const QString& accountId,
             updateTemporaryMessage(tr("Invalid ID"));
             break;
         case 2 /* NOT FOUND */:
-            updateTemporaryMessage(tr("Registered name not found"));
+            updateTemporaryMessage(tr("Username not found"));
             break;
         case 3 /* ERROR */:
             updateTemporaryMessage(tr("Couldn't lookup…"));
