@@ -31,7 +31,6 @@
   --placeholder-text-color: #d3d3d3;
 
   /* button properties */
-  --action-icon-color: var(--jami-dark-blue);
   --deactivated-icon-color: #BEBEBE;
   --action-icon-hover-color: var(--jami-light-blue);
   --action-critical-icon-hover-color: rgba(211, 77, 59, 0.3); /* complementary color of ring light blue */
@@ -156,11 +155,11 @@ body {
 }
 
 .action-button svg {
-  fill: var(--action-icon-color);
+  filter: invert(var(--svg-invert-percentage));
 }
 
 .action-button.deactivated svg {
-  fill: var(--deactivated-icon-color);
+  filter: invert(50%);
 }
 
 .message_out .filesvg {
