@@ -137,7 +137,7 @@ Item {
     property color inviteHoverColor: darkTheme ? blackColor : whiteColor
     property color chatviewButtonColor: darkTheme ? whiteColor : blackColor
     property color bgTextInput: darkTheme ? "#060608" : whiteColor
-
+    property int invertPercentageInDecimal: darkTheme ? 1 : 0
     // Font.
     property color faddedFontColor: darkTheme? "#c0c0c0" : "#a0a0a0"
     property color faddedLastInteractionFontColor: darkTheme ? "#c0c0c0" : "#505050"
