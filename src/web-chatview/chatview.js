@@ -2553,7 +2553,6 @@ function setTheme(theme) {
         --navbar-padding-bottom: var(--navbar-padding-top);\
         --textarea-max-height: 150px;\
         --placeholder-text-color: #d3d3d3;\
-        --action-icon-color: var(--jami-dark-blue);\
         --deactivated-icon-color: #BEBEBE;\
         --action-icon-hover-color: var(--jami-light-blue);\
         --action-critical-icon-hover-color: rgba(211, 77, 59, 0.3);\
