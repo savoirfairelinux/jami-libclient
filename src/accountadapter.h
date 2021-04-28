@@ -62,7 +62,7 @@ protected:
 
 public:
     // Change to account corresponding to combox box index.
-    Q_INVOKABLE void accountChanged(int index);
+    Q_INVOKABLE void changeAccount(int row);
 
     // Create normal Jami account, SIP account and JAMS accounts.
     Q_INVOKABLE void createJamiAccount(QString registeredName,

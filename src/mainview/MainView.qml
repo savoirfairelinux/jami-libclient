@@ -278,17 +278,15 @@ Rectangle {
                 SplitView.fillHeight: true
                 color: JamiTheme.backgroundColor
 
-                // AccountComboBox is always visible
+                // AccountComboBox is not a ComboBox
                 AccountComboBox {
                     id: accountComboBox
 
                     anchors.top: mainViewSidePanelRect.top
                     width: mainViewSidePanelRect.width
-                    height: 64
+                    height: JamiTheme.accountListItemHeight
 
                     visible: (mainViewSidePanel.visible || settingsMenu.visible)
-
-                    currentIndex: 0
 
                     Connections {
                         target: AccountAdapter
@@ -416,7 +414,7 @@ Rectangle {
         visible: false
 
         onSettingsViewNeedToShowMainView: {
-            AccountAdapter.accountChanged(0)
+            AccountAdapter.changeAccount(0)
             toggleSettingsView()
         }
 

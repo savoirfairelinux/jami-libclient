@@ -28,10 +28,11 @@ import net.jami.Constants 1.0
 
 import "../../commoncomponents"
 
-ComboBox {
+Label {
     id: root
 
     signal settingBtnClicked
+    property alias popup: comboBoxPopup
 
     // Reset accountListModel.
     function resetAccountListModel(accountId) {
@@ -39,115 +40,11 @@ ComboBox {
         accountListModel.reset()
     }
 
-    Connections {
-        target: accountListModel
-
-        function onModelReset() {
-            userImageRoot.updateImage(
-                        AccountAdapter.currentAccountId,
-                        accountListModel.data(
-                            accountListModel.index(0, 0), AccountListModel.PictureUid))
-            userImageRoot.presenceStatus =
-                    accountListModel.data(accountListModel.index(0, 0), AccountListModel.Status)
-            textMetricsUserAliasRoot.text = accountListModel.data(accountListModel.index(0,0),
-                                                                  AccountListModel.Alias)
-            textMetricsUsernameRoot.text = accountListModel.data(accountListModel.index(0,0),
-                                                                 AccountListModel.Username)
-        }
-    }
-
-    AvatarImage {
-        id: userImageRoot
-
-        anchors.left: root.left
-        anchors.leftMargin: 16
-        anchors.verticalCenter: root.verticalCenter
-
-        width: 40
-        height: 40
-
-        imageId: AccountAdapter.currentAccountId
-
-        presenceStatus: accountListModel.data(accountListModel.index(0, 0),
-                                              AccountListModel.Status)
-    }
-
-    ColumnLayout {
-        anchors.left: userImageRoot.right
-        anchors.leftMargin: 16
-        anchors.top: background.top
-
-        height: root.height
-
-        spacing: 0
-
-        RowLayout {
-            Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
-            Layout.topMargin: textUsernameRoot.visible ? root.height / 2 - implicitHeight : 0
-
-            Text {
-                id: textUserAliasRoot
-
-                Layout.alignment: Qt.AlignLeft
-
-                text: textMetricsUserAliasRoot.elidedText
-                font.pointSize: JamiTheme.textFontSize
-                color: JamiTheme.textColor
-
-                TextMetrics {
-                    id: textMetricsUserAliasRoot
-
-                    font: textUserAliasRoot.font
-                    elide: Text.ElideRight
-                    elideWidth: root.width - userImageRoot.width - settingsButton.width
-                                - arrowDropDown.width - qrCodeGenerateButton.width - 55
-
-                    text: accountListModel.data(accountListModel.index(0,0), AccountListModel.Alias)
-                }
-            }
-
-            ResponsiveImage {
-                id: arrowDropDown
-
-                Layout.alignment: Qt.AlignRight
-
-                width: 24
-                height: 24
-
-                layer {
-                    enabled: true
-                    effect: ColorOverlay {
-                        color: JamiTheme.textColor
-                    }
-                }
-
-                source: "qrc:/images/icons/round-arrow_drop_down-24px.svg"
-            }
-        }
-
-        Text {
-            id: textUsernameRoot
-
-            Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
-            Layout.bottomMargin: root.height / 2 - implicitHeight
-
-            visible: textMetricsUsernameRoot.text.length
-
-            text: textMetricsUsernameRoot.elidedText
-            font.pointSize: JamiTheme.textFontSize
-            color: JamiTheme.faddedLastInteractionFontColor
-
-            TextMetrics {
-                id: textMetricsUsernameRoot
-
-                font: textUsernameRoot.font
-                elide: Text.ElideRight
-                elideWidth: root.width - userImageRoot.width - settingsButton.width
-                            - qrCodeGenerateButton.width - 55
-
-                text: accountListModel.data(accountListModel.index(0,0),
-                                            AccountListModel.Username)
-            }
+    function togglePopup() {
+        if (root.popup.opened) {
+            root.popup.close()
+        } else {
+            root.popup.open()
         }
     }
 
@@ -156,7 +53,14 @@ ComboBox {
 
         implicitWidth: root.width
         implicitHeight: root.height
-        color: JamiTheme.backgroundColor
+        color: root.popup.opened ?
+                   Qt.lighter(JamiTheme.hoverColor, 1.0) :
+                   mouseArea.containsMouse ?
+                       Qt.lighter(JamiTheme.hoverColor, 1.05) :
+                       JamiTheme.backgroundColor
+        Behavior on color {
+            ColorAnimation { duration: JamiTheme.fadeDuration }
+        }
 
         // TODO: this can be removed when frameless window is implemented
         Rectangle {
@@ -168,118 +72,162 @@ ComboBox {
             }
             color: JamiTheme.tabbarBorderColor
         }
-
-        states: [
-            State {
-                name: "open"; when: comboBoxPopup.opened
-                PropertyChanges {
-                    target: background
-                    color: Qt.lighter(JamiTheme.hoverColor, 1.0)
-                }
-            },
-            State {
-                name: "hovered"
-                PropertyChanges {
-                    target: background
-                    color: Qt.lighter(JamiTheme.hoverColor, 1.05)
-                }
-            },
-            State {
-                name: "normal"
-                PropertyChanges {
-                    target: background
-                    color: JamiTheme.backgroundColor
-                }
-            }
-        ]
-
-        transitions: [
-            Transition {
-                to: "hovered"; reversible: true
-                ColorAnimation { duration: JamiTheme.fadeDuration }
-            }
-        ]
     }
 
     MouseArea {
-        id: comboBoxRootMouseArea
-
+        id: mouseArea
         anchors.fill: parent
         hoverEnabled: true
-
-        onClicked: {
-            if (comboBoxPopup.opened) {
-                root.popup.close()
-            } else {
-                root.popup.open()
-            }
-        }
-        onEntered: background.state = "hovered"
-        onExited: {
-            if (!comboBoxPopup.opened)
-                background.state = "normal"
-        }
+        onClicked: togglePopup()
     }
 
-    Row {
-        spacing: 10
-
-        anchors.right: root.right
-        anchors.rightMargin: 10
-        anchors.verticalCenter: root.verticalCenter
-
-        PushButton {
-            id: qrCodeGenerateButton
-
-            width: visible ? preferredSize : 0
-            height: visible ? preferredSize : 0
-
-            visible: AccountAdapter.currentAccountType === Profile.Type.RING
-            toolTipText: JamiStrings.displayQRCode
-
-            source: "qrc:/images/icons/share-24px.svg"
-
-            normalColor: JamiTheme.backgroundColor
-            imageColor: JamiTheme.textColor
-
-            onClicked: {
-                if (visible)
-                    qrDialog.open()
-            }
-        }
-
-        PushButton {
-            id: settingsButton
-
-            source: !mainView.inSettingsView ?
-                        "qrc:/images/icons/settings-24px.svg" :
-                        "qrc:/images/icons/round-close-24px.svg"
-
-            normalColor: JamiTheme.backgroundColor
-            imageColor: JamiTheme.textColor
-            toolTipText: !mainView.inSettingsView ?
-                             JamiStrings.openSettings :
-                             JamiStrings.closeSettings
-
-            onClicked: {
-                settingBtnClicked()
-                background.state = "normal"
-            }
-        }
-    }
-
-    indicator: null
-
-    // Overwrite the combo box pop up to add footer (for add accounts).
-    popup: AccountComboBoxPopup {
+    AccountComboBoxPopup {
         id: comboBoxPopup
 
         Shortcut {
             sequence: "Ctrl+J"
             context: Qt.ApplicationShortcut
-            onActivated: comboBoxPopup.visible ?
-                comboBoxPopup.close() :
-                comboBoxPopup.open()
+            onActivated: togglePopup()
+        }
+    }
+
+    Connections {
+        target: accountListModel
+
+        function onModelReset() {
+            avatar.updateImage(AccountAdapter.currentAccountId,
+                               accountListModel.data(accountListModel.index(0, 0),
+                                                     AccountListModel.PictureUid))
+            avatar.presenceStatus = accountListModel.data(accountListModel.index(0, 0),
+                                                          AccountListModel.Status)
+            userAliasText.text = accountListModel.data(accountListModel.index(0,0),
+                                                       AccountListModel.Alias)
+            usernameText.text = accountListModel.data(accountListModel.index(0,0),
+                                                      AccountListModel.Username)
+        }
+    }
+
+    RowLayout {
+        anchors.fill: parent
+        anchors.leftMargin: 15
+        anchors.rightMargin: 15
+        spacing: 10
+
+        AvatarImage {
+            id: avatar
+
+            Layout.preferredWidth: JamiTheme.accountListAvatarSize
+            Layout.preferredHeight: JamiTheme.accountListAvatarSize
+            Layout.alignment: Qt.AlignVCenter
+
+            imageId: AccountAdapter.currentAccountId
+
+            presenceStatus: accountListModel.data(accountListModel.index(0, 0),
+                                                  AccountListModel.Status)
+        }
+
+        ColumnLayout {
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+            spacing: 2
+
+            Text {
+                id: userAliasText
+
+                Layout.fillWidth: true
+                Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
+
+                text: accountListModel.data(accountListModel.index(0,0),
+                                            AccountListModel.Alias)
+                font.pointSize: JamiTheme.textFontSize
+                color: JamiTheme.textColor
+                elide: Text.ElideRight
+            }
+
+            Text {
+                id: usernameText
+
+                Layout.fillWidth: true
+                Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
+
+                visible: text.length
+
+                text:  accountListModel.data(accountListModel.index(0,0),
+                                             AccountListModel.Username)
+                font.pointSize: JamiTheme.textFontSize
+                color: JamiTheme.faddedLastInteractionFontColor
+                elide: Text.ElideRight
+            }
+        }
+
+        Row {
+            id: controlRow
+
+            spacing: 10
+
+            Layout.preferredWidth: childrenRect.width
+            Layout.preferredHeight: parent.height
+
+            ResponsiveImage {
+                id: arrowDropDown
+
+                width: 24
+                height: 24
+                anchors.verticalCenter: parent.verticalCenter
+
+                layer {
+                    enabled: true
+                    effect: ColorOverlay {
+                        color: JamiTheme.textColor
+                    }
+                }
+
+                source: !root.popup.opened ?
+                            "qrc:/images/icons/expand_more-24px.svg" :
+                            "qrc:/images/icons/expand_less-24px.svg"
+            }
+
+
+            PushButton {
+                id: shareButton
+
+                width: visible ? preferredSize : 0
+                height: visible ? preferredSize : 0
+                anchors.verticalCenter: parent.verticalCenter
+
+                visible: AccountAdapter.currentAccountType === Profile.Type.RING
+                toolTipText: JamiStrings.displayQRCode
+
+                source: "qrc:/images/icons/share-24px.svg"
+
+                normalColor: JamiTheme.backgroundColor
+                imageColor: JamiTheme.textColor
+
+                onClicked: {
+                    if (visible)
+                        qrDialog.open()
+                }
+            }
+
+            PushButton {
+                id: settingsButton
+
+                anchors.verticalCenter: parent.verticalCenter
+                source: !mainView.inSettingsView ?
+                            "qrc:/images/icons/settings-24px.svg" :
+                            "qrc:/images/icons/round-close-24px.svg"
+
+                normalColor: JamiTheme.backgroundColor
+                imageColor: JamiTheme.textColor
+                toolTipText: !mainView.inSettingsView ?
+                                 JamiStrings.openSettings :
+                                 JamiStrings.closeSettings
+
+                onClicked: {
+                    settingBtnClicked()
+                    background.state = "normal"
+                }
+            }
         }
     }
 

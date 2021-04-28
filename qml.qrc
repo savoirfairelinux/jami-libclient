@@ -137,5 +137,6 @@
         <file>src/mainview/js/contactpickercreation.js</file>
         <file>src/mainview/js/pluginhandlerpickercreation.js</file>
         <file>src/mainview/components/FilterTabButton.qml</file>
+        <file>src/mainview/components/AccountItemDelegate.qml</file>
     </qresource>
 </RCC>

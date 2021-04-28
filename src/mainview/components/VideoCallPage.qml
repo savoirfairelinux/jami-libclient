@@ -324,7 +324,7 @@ Rectangle {
                         maskSource: Rectangle {
                             width: previewRenderer.width
                             height: previewRenderer.height
-                            radius: JamiTheme.lineEditRadius
+                            radius: JamiTheme.primaryRadius
                         }
                     }
 

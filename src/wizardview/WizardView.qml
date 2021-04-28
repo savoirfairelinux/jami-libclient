@@ -86,7 +86,7 @@ Rectangle {
 
         function onAccountAdded(accountId, showBackUp, index) {
             addedAccountIndex = index
-            AccountAdapter.accountChanged(index)
+            AccountAdapter.changeAccount(index)
             if (showProfile) {
                 changePageQML(WizardView.WizardViewPageIndex.PROFILEPAGE)
                 profilePage.readyToSaveDetails()

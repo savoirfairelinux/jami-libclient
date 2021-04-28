@@ -114,7 +114,7 @@ Item {
 
         anchors.fill: root
 
-        smooth: false
+        smooth: true
         antialiasing: true
         asynchronous: true
 
@@ -146,7 +146,7 @@ Item {
 
             anchors.fill: rootImage
 
-            smooth: false
+            smooth: true
             antialiasing: true
             asynchronous: true
 
