@@ -87,7 +87,12 @@ DistantRenderer::paint(QPainter* painter)
 {
     lrcInstance_->renderer()->drawFrame(distantRenderId_, [this, painter](QImage* distantImage) {
         if (distantImage) {
-            auto scaledDistant = distantImage->scaled(size().toSize(), Qt::KeepAspectRatio);
+            painter->setRenderHint(QPainter::Antialiasing);
+            painter->setRenderHint(QPainter::SmoothPixmapTransform);
+
+            auto scaledDistant = distantImage->scaled(size().toSize(),
+                                                      Qt::KeepAspectRatio,
+                                                      Qt::SmoothTransformation);
             auto tempScaledWidth = static_cast<int>(scaledWidth_ * 1000);
             auto tempScaledHeight = static_cast<int>(scaledHeight_ * 1000);
             auto tempXOffset = xOffset_;

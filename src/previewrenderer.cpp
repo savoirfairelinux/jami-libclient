@@ -51,6 +51,9 @@ PreviewRenderer::paint(QPainter* painter)
     lrcInstance_->renderer()
         ->drawFrame(lrc::api::video::PREVIEW_RENDERER_ID, [this, painter](QImage* previewImage) {
             if (previewImage) {
+                painter->setRenderHint(QPainter::Antialiasing);
+                painter->setRenderHint(QPainter::SmoothPixmapTransform);
+
                 auto aspectRatio = static_cast<qreal>(previewImage->width())
                                    / static_cast<qreal>(previewImage->height());
                 auto previewHeight = height();
@@ -69,7 +72,9 @@ PreviewRenderer::paint(QPainter* painter)
 
                 // If the given size is empty, this function returns a null image.
                 QImage scaledPreview;
-                scaledPreview = previewImage->scaled(size().toSize(), Qt::KeepAspectRatio);
+                scaledPreview = previewImage->scaled(size().toSize(),
+                                                     Qt::KeepAspectRatio,
+                                                     Qt::SmoothTransformation);
                 painter->drawImage(QRect(0, 0, scaledPreview.width(), scaledPreview.height()),
                                    scaledPreview);
             } else {
