@@ -127,10 +127,6 @@ if (use_qt) {
             setSendMessageContent(content)
         });
     })
-} else {
-    // For now hide on non qt client, as it needs some modifications in cpp code
-    emojiBtn.style.visibility = "collapse"
-    emojiBtn.style.width = 0
 }
 
 /* i18n manager */
@@ -169,8 +165,6 @@ function init_i18n(data) {
 
 /* exported init_picker */
 function init_picker(dark) {
-    if (!use_qt)
-        return;
     const picker = new EmojiButton({
         theme: dark? 'dark' : 'light'
     });
