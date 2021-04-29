@@ -10,10 +10,13 @@
       <file>linkify-string.js</file>
       <file>linkify-html.js</file>
       <file>jed.js</file>
+      <file>emoji.js</file>
 
       <!-- CSS -->
       <file>chatview.css</file>
       <file>chatview-gnome.css</file>
+      <file>emoji.css</file>
+      <file>fa.css</file>
 
       <!-- Locale -->
     </gresource>
