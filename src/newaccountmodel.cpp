@@ -319,6 +319,8 @@ NewAccountModel::exportOnRing(const QString& accountId, const QString& password)
 void
 NewAccountModel::removeAccount(const QString& accountId) const
 {
+    pimpl_->accounts[accountId].second->remove();
+    pimpl_->accounts.erase(accountId);
     ConfigurationManager::instance().removeAccount(accountId);
 }
 
@@ -837,7 +839,8 @@ account::Info::fromDetails(const MapStringString& details)
     confProperties.bootstrapListUrl = QString(details[ConfProperties::BOOTSTRAP_LIST_URL]);
     confProperties.dhtProxyListUrl = QString(details[ConfProperties::DHT_PROXY_LIST_URL]);
     confProperties.defaultModerators = QString(details[ConfProperties::DEFAULT_MODERATORS]);
-    confProperties.localModeratorsEnabled = toBool(details[ConfProperties::LOCAL_MODERATORS_ENABLED]);
+    confProperties.localModeratorsEnabled = toBool(
+        details[ConfProperties::LOCAL_MODERATORS_ENABLED]);
     // Audio
     confProperties.Audio.audioPortMax = toInt(details[ConfProperties::Audio::PORT_MAX]);
     confProperties.Audio.audioPortMin = toInt(details[ConfProperties::Audio::PORT_MIN]);
@@ -1157,7 +1160,9 @@ NewAccountModel::bestIdForAccount(const QString& accountID)
 }
 
 void
-NewAccountModel::setDefaultModerator(const QString& accountID, const QString& peerURI, const bool& state)
+NewAccountModel::setDefaultModerator(const QString& accountID,
+                                     const QString& peerURI,
+                                     const bool& state)
 {
     ConfigurationManager::instance().setDefaultModerator(accountID, peerURI, state);
 }
