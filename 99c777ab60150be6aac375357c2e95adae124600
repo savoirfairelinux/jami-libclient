@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "49ebce00_e621316a",
+        "filename": "src/newaccountmodel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 322,
+      "author": {
+        "id": 90
+      },
+      "writtenOn": "2021-04-30T21:50:37Z",
+      "side": 1,
+      "message": "this is not implicitly within the database destructor?",
+      "range": {
+        "startLine": 322,
+        "startChar": 40,
+        "endLine": 322,
+        "endChar": 48
+      },
+      "revId": "99c777ab60150be6aac375357c2e95adae124600",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    }
+  ]
+}
