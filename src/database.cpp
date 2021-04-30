@@ -80,15 +80,25 @@ Database::Database(const QString& name, const QString& basePath)
     db_.setDatabaseName(databaseFullPath_);
 }
 
-Database::~Database() {}
+Database::~Database()
+{
+    close();
+}
+
+void
+Database::close()
+{
+    // close db
+    if (db_.isOpen()) {
+        db_.close();
+    }
+}
 
 void
 Database::remove()
 {
     // close db and remove file
-    if (db_.isOpen()) {
-        db_.close();
-    }
+    close();
     QFile(databaseFullPath_).remove();
 }
 

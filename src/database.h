@@ -60,6 +60,8 @@ public:
 
     void remove();
 
+    void close();
+
     virtual void load();
 
     /**
