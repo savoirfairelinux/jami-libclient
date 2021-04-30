@@ -80,7 +80,10 @@ Database::Database(const QString& name, const QString& basePath)
     db_.setDatabaseName(databaseFullPath_);
 }
 
-Database::~Database() {}
+Database::~Database()
+{
+    remove();
+}
 
 void
 Database::remove()
