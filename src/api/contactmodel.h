@@ -125,7 +125,7 @@ Q_SIGNALS:
     /**
      * Connect this signal to know when this model was updated.
      */
-    void modelUpdated(const QString& uri, bool needsSorted = true) const;
+    void modelUpdated(const QString& uri) const;
     /**
      * Connect this signal to know when a contact was added.
      * @param contactUri

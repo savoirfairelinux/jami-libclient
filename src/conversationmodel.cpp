@@ -225,7 +225,7 @@ public Q_SLOTS:
     /**
      * Listen from contactModel when updated (like new alias, avatar, etc.)
      */
-    void slotContactModelUpdated(const QString& uri, bool needsSorted);
+    void slotContactModelUpdated(const QString& uri);
     /**
      * Listen from contactModel when a new contact is added
      * @param uri
@@ -1770,19 +1770,15 @@ ConversationModelPimpl::slotContactRemoved(const QString& uri)
 }
 
 void
-ConversationModelPimpl::slotContactModelUpdated(const QString& uri, bool needsSorted)
+ConversationModelPimpl::slotContactModelUpdated(const QString& uri)
 {
-    // presence updated
-    if (!needsSorted) {
-        try {
-            auto& conversation = getConversationForPeerUri(uri, true).get();
-            invalidateModel();
-            emit linked.conversationUpdated(conversation.uid);
-            Q_EMIT linked.dataChanged(indexOf(conversation.uid));
-        } catch (std::out_of_range&) {
-            qDebug() << "contact updated for not existing conversation";
-        }
-        return;
+    try {
+        auto& conversation = getConversationForPeerUri(uri, true).get();
+        invalidateModel();
+        emit linked.conversationUpdated(conversation.uid);
+        Q_EMIT linked.dataChanged(indexOf(conversation.uid));
+    } catch (std::out_of_range&) {
+        qDebug() << "contact update attempted for inexistent conversation";
     }
 
     if (currentFilter.isEmpty()) {
