@@ -80,6 +80,39 @@ AvAdapter::onVideoContextMenuDeviceItemClicked(const QString& deviceName)
     lrcInstance_->avModel().switchInputTo(deviceId, getCurrentCallId());
 }
 
+// The top left corner of primary screen is (0, 0).
+// For Qt, QScreen geometry contains x, y location relative to primary screen.
+// The purpose of the function is to use calculate a boundingRect for virtual desktop
+// to help screen sharing.
+const QRect
+AvAdapter::getAllScreensBoundingRect()
+{
+    auto screens = QGuiApplication::screens();
+
+    // p0 is for x axis, p1 is for y axis,
+    // points contain values that are the maximum positive and negative domain value
+    QPoint p0(0, 0), p1(0, 0);
+
+    for (auto scr : screens) {
+        auto devicePixelRatio = scr->devicePixelRatio();
+        auto screenRect = scr->geometry();
+
+        if (screenRect.y() < 0 && p1.y() < abs(screenRect.y()))
+            p1.setY(abs(screenRect.y()));
+        else if (screenRect.y() >= 0
+                 && p1.x() < screenRect.y() + screenRect.height() * devicePixelRatio)
+            p1.setX(screenRect.y() + screenRect.height() * devicePixelRatio);
+
+        if (screenRect.x() < 0 && p0.y() < abs(screenRect.x()))
+            p0.setY(abs(screenRect.x()));
+        else if (screenRect.x() >= 0
+                 && p0.x() < screenRect.x() + screenRect.width() * devicePixelRatio)
+            p0.setX(screenRect.x() + screenRect.width() * devicePixelRatio);
+    }
+
+    return QRect(-p0.y(), -p1.y(), p0.y() + p0.x(), p1.y() + p1.x());
+}
+
 void
 AvAdapter::shareEntireScreen(int screenNumber)
 {
@@ -91,24 +124,22 @@ AvAdapter::shareEntireScreen(int screenNumber)
     lrcInstance_->avModel().setDisplay(getScreenNumber(),
                                        rect.x(),
                                        rect.y(),
-                                       rect.width(),
-                                       rect.height(),
+                                       rect.width() * screen->devicePixelRatio(),
+                                       rect.height() * screen->devicePixelRatio(),
                                        getCurrentCallId());
 }
 
 void
 AvAdapter::shareAllScreens()
 {
-    auto screens = QGuiApplication::screens();
+    const auto arrangementRect = getAllScreensBoundingRect();
 
-    int width = 0, height = 0;
-    for (auto scr : screens) {
-        width += scr->geometry().width();
-        if (height < scr->geometry().height())
-            height = scr->geometry().height();
-    }
-
-    lrcInstance_->avModel().setDisplay(getScreenNumber(), 0, 0, width, height, getCurrentCallId());
+    lrcInstance_->avModel().setDisplay(getScreenNumber(),
+                                       arrangementRect.x(),
+                                       arrangementRect.y(),
+                                       arrangementRect.width(),
+                                       arrangementRect.height(),
+                                       getCurrentCallId());
 }
 
 void
@@ -140,11 +171,12 @@ AvAdapter::captureAllScreens()
         QList<QPixmap> scrs;
         int width = 0, height = 0, currentPoint = 0;
 
-        for(auto scr : screens) {
+        for (auto scr : screens) {
             QPixmap pix = scr->grabWindow(0);
-            width += pix.width();
-            if (height < pix.height())
-                height = pix.height();
+            auto devicePixelRatio = scr->devicePixelRatio();
+            width += scr->geometry().width() * devicePixelRatio;
+            if (height < scr->geometry().height() * devicePixelRatio)
+                height = scr->geometry().height() * devicePixelRatio;
             scrs << pix;
         }
 
@@ -152,8 +184,8 @@ AvAdapter::captureAllScreens()
         QPainter painter(&final);
         final.fill(Qt::black);
 
-        for(auto scr : scrs) {
-            painter.drawPixmap(QPoint(currentPoint, 0), scr);
+        for (auto scr : scrs) {
+            painter.drawPixmap(currentPoint, 0, scr.width(), scr.height(), scr);
             currentPoint += scr.width();
         }
 

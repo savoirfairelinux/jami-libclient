@@ -70,6 +70,9 @@ protected:
     Q_INVOKABLE void stopAudioMeter(bool async);
 
 private:
+    // Get screens arrangement rect relative to primary screen.
+    const QRect getAllScreensBoundingRect();
+
     // Get current callId from current selected conv id.
     QString getCurrentCallId();
 
