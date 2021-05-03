@@ -737,7 +737,7 @@ ContactModelPimpl::fillWithJamiContacts()
                     auto it = contacts.find(uri);
                     if (it != contacts.end()) {
                         it->isPresent = key == "Online";
-                        linked.modelUpdated(uri, false);
+                        linked.modelUpdated(uri);
                     }
                 }
                 break;
@@ -762,7 +762,7 @@ ContactModelPimpl::slotNewBuddySubscription(const QString& accountId,
         } else
             return;
     }
-    emit linked.modelUpdated(contactUri, false);
+    emit linked.modelUpdated(contactUri);
 }
 
 void
@@ -1200,29 +1200,27 @@ ContactModelPimpl::slotUserSearchEnded(const QString& accountId,
     searchResult.clear();
     switch (status) {
     case 0: /* SUCCESS */
+        for (auto& resultInfo : result) {
+            if (contacts.find(resultInfo.value("id")) != contacts.end()) {
+                continue;
+            }
+            profile::Info profileInfo;
+            profileInfo.uri = resultInfo.value("id");
+            profileInfo.type = profile::Type::TEMPORARY;
+            profileInfo.avatar = resultInfo.value("profilePicture");
+            profileInfo.alias = resultInfo.value("firstName") + " " + resultInfo.value("lastName");
+            contact::Info contactInfo;
+            contactInfo.profileInfo = profileInfo;
+            contactInfo.registeredName = resultInfo.value("username");
+            searchResult.insert(profileInfo.uri, contactInfo);
+        }
+        updateTemporaryMessage("");
         break;
     case 3: /* ERROR */
         updateTemporaryMessage("could not find contact matching search");
-        emit linked.modelUpdated(query);
-        return;
+        break;
     default:
-        emit linked.modelUpdated(query);
-        return;
-    }
-    updateTemporaryMessage("");
-    for (auto& resultInfo : result) {
-        if (contacts.find(resultInfo.value("id")) != contacts.end()) {
-            continue;
-        }
-        profile::Info profileInfo;
-        profileInfo.uri = resultInfo.value("id");
-        profileInfo.type = profile::Type::TEMPORARY;
-        profileInfo.avatar = resultInfo.value("profilePicture");
-        profileInfo.alias = resultInfo.value("firstName") + " " + resultInfo.value("lastName");
-        contact::Info contactInfo;
-        contactInfo.profileInfo = profileInfo;
-        contactInfo.registeredName = resultInfo.value("username");
-        searchResult.insert(profileInfo.uri, contactInfo);
+        break;
     }
     emit linked.modelUpdated(query);
 }
