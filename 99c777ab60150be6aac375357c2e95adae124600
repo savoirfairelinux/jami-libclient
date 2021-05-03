@@ -22,6 +22,30 @@
       "revId": "99c777ab60150be6aac375357c2e95adae124600",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7e3c6d12_3450e423",
+        "filename": "src/newaccountmodel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 322,
+      "author": {
+        "id": 633
+      },
+      "writtenOn": "2021-05-03T14:54:43Z",
+      "side": 1,
+      "message": "no, not in destructor, and yeah, better to add in destructor",
+      "parentUuid": "49ebce00_e621316a",
+      "range": {
+        "startLine": 322,
+        "startChar": 40,
+        "endLine": 322,
+        "endChar": 48
+      },
+      "revId": "99c777ab60150be6aac375357c2e95adae124600",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
     }
   ]
 }
