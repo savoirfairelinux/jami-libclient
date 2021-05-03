@@ -135,22 +135,22 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/calladapter.cpp" line="347"/>
+        <location filename="../src/calladapter.cpp" line="348"/>
         <source>me</source>
         <translation>moi</translation>
     </message>
     <message>
-        <location filename="../src/calladapter.cpp" line="410"/>
+        <location filename="../src/calladapter.cpp" line="411"/>
         <source>Incoming call</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/calladapter.cpp" line="411"/>
+        <location filename="../src/calladapter.cpp" line="412"/>
         <source>%1 is calling you</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/calladapter.cpp" line="423"/>
+        <location filename="../src/calladapter.cpp" line="424"/>
         <source>is calling you</source>
         <translation>vous appelle</translation>
     </message>
@@ -2134,17 +2134,17 @@ Veuillez réessayer plus tard</translation>
 <context>
     <name>PluginHandlerPicker</name>
     <message>
-        <location filename="../src/mainview/components/PluginHandlerPicker.qml" line="122"/>
+        <location filename="../src/mainview/components/PluginHandlerPicker.qml" line="109"/>
         <source>Choose plugin</source>
         <translation>Choisir un module d&apos;extension</translation>
     </message>
     <message>
-        <location filename="../src/mainview/components/PluginHandlerPicker.qml" line="209"/>
+        <location filename="../src/mainview/components/PluginHandlerPicker.qml" line="211"/>
         <source>Go back to plugins list</source>
         <translation>Revenir à la liste des modules d&apos;extension</translation>
     </message>
     <message>
-        <location filename="../src/mainview/components/PluginHandlerPicker.qml" line="228"/>
+        <location filename="../src/mainview/components/PluginHandlerPicker.qml" line="230"/>
         <source>Preferences</source>
         <translation>Préférences</translation>
     </message>

@@ -135,22 +135,22 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/calladapter.cpp" line="347"/>
+        <location filename="../src/calladapter.cpp" line="348"/>
         <source>me</source>
         <translation>én</translation>
     </message>
     <message>
-        <location filename="../src/calladapter.cpp" line="410"/>
+        <location filename="../src/calladapter.cpp" line="411"/>
         <source>Incoming call</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/calladapter.cpp" line="411"/>
+        <location filename="../src/calladapter.cpp" line="412"/>
         <source>%1 is calling you</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/calladapter.cpp" line="423"/>
+        <location filename="../src/calladapter.cpp" line="424"/>
         <source>is calling you</source>
         <translation>hív</translation>
     </message>
@@ -2132,17 +2132,17 @@ Kérjük, hogy próbálja újra később.</translation>
 <context>
     <name>PluginHandlerPicker</name>
     <message>
-        <location filename="../src/mainview/components/PluginHandlerPicker.qml" line="122"/>
+        <location filename="../src/mainview/components/PluginHandlerPicker.qml" line="109"/>
         <source>Choose plugin</source>
         <translation>Beépülő modul kiválasztása</translation>
     </message>
     <message>
-        <location filename="../src/mainview/components/PluginHandlerPicker.qml" line="209"/>
+        <location filename="../src/mainview/components/PluginHandlerPicker.qml" line="211"/>
         <source>Go back to plugins list</source>
         <translation>Visszatérés a beépülő modulok listájához</translation>
     </message>
     <message>
-        <location filename="../src/mainview/components/PluginHandlerPicker.qml" line="228"/>
+        <location filename="../src/mainview/components/PluginHandlerPicker.qml" line="230"/>
         <source>Preferences</source>
         <translation>Beállítások</translation>
     </message>
