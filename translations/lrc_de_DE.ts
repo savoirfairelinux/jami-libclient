@@ -599,8 +599,8 @@
     </message>
     <message>
         <location filename="../src/contactmodel.cpp" line="958"/>
-        <source>Registered name not found</source>
-        <translation>Der registrierte Name wurde nicht gefunden</translation>
+        <source>Username not found</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/contactmodel.cpp" line="961"/>

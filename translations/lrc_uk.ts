@@ -599,7 +599,7 @@
     </message>
     <message>
         <location filename="../src/contactmodel.cpp" line="958"/>
-        <source>Registered name not found</source>
+        <source>Username not found</source>
         <translation type="unfinished"/>
     </message>
     <message>
