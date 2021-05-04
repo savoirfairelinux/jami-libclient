@@ -267,16 +267,33 @@ QString
 NewCallModel::createCall(const QString& uri, bool isAudioOnly)
 {
 #ifdef ENABLE_LIBWRAP
-    auto callId = isAudioOnly
-                      ? CallManager::instance().placeCall(owner.id, uri, {{"AUDIO_ONLY", "true"}})
-                      : CallManager::instance().placeCall(owner.id, uri);
-#else // dbus
+    std::vector<std::map<std::string, std::string>> mediaList {};
+    std::map<std::string, std::string> mediaAttribute = {{"MEDIA_TYPE", "MEDIA_TYPE_AUDIO"},
+                                                         {"ENABLED", "false"},
+                                                         {"MUTED", "false"},
+                                                         {"SOURCE", ""},
+                                                         {"LABEL", ""}};
+    mediaList.emplace_back(mediaAttribute);
+    if (!isAudioOnly) {
+        mediaAttribute["MEDIA_TYPE"] = "MEDIA_TYPE_VIDEO";
+        mediaList.emplace_back(mediaAttribute);
+    }
+
+    auto callId = CallManager::instance().placeCallWithMedia(owner.id, uri, mediaList);
+#else  // dbus
+    VectorMapStringString mediaList {};
+    MapStringString mediaAttribute = {{"MEDIA_TYPE", "MEDIA_TYPE_AUDIO"},
+                                      {"ENABLED", "false"},
+                                      {"MUTED", "false"},
+                                      {"SOURCE", ""},
+                                      {"LABEL", ""}};
+    mediaList.push_back(mediaAttribute);
+    if (!isAudioOnly) {
+        mediaAttribute["MEDIA_TYPE"] = "MEDIA_TYPE_VIDEO";
+        mediaList.push_back(mediaAttribute);
+    }
     // do not use auto here (QDBusPendingReply<QString>)
-    QString callId = isAudioOnly
-                         ? CallManager::instance().placeCallWithDetails(owner.id,
-                                                                        uri,
-                                                                        {{"AUDIO_ONLY", "true"}})
-                         : CallManager::instance().placeCall(owner.id, uri);
+    QString callId = CallManager::instance().placeCallWithMedia(owner.id, uri, mediaList);
 #endif // ENABLE_LIBWRAP
 
     if (callId.isEmpty()) {
@@ -299,7 +316,45 @@ NewCallModel::createCall(const QString& uri, bool isAudioOnly)
 void
 NewCallModel::accept(const QString& callId) const
 {
-    CallManager::instance().accept(callId);
+    auto& callInfo = pimpl_->calls[callId];
+    if (!callInfo)
+        return;
+    acceptWithMedia(callId, callInfo->isAudioOnly);
+}
+
+void
+NewCallModel::acceptWithMedia(const QString& callId, bool isAudioOnly = false) const
+{
+    auto& callInfo = pimpl_->calls[callId];
+    if (!callInfo)
+        return;
+    isAudioOnly = callInfo->isAudioOnly;
+#ifdef ENABLE_LIBWRAP
+    std::vector<std::map<std::string, std::string>> mediaList {};
+    std::map<std::string, std::string> mediaAttribute = {{"MEDIA_TYPE", "MEDIA_TYPE_AUDIO"},
+                                                         {"ENABLED", "false"},
+                                                         {"MUTED", "false"},
+                                                         {"SOURCE", ""},
+                                                         {"LABEL", ""}};
+    mediaList.emplace_back(mediaAttribute);
+    if (!isAudioOnly) {
+        mediaAttribute["MEDIA_TYPE"] = "MEDIA_TYPE_VIDEO";
+        mediaList.emplace_back(mediaAttribute);
+    }
+#else  // dbus
+    VectorMapStringString mediaList {};
+    MapStringString mediaAttribute = {{"MEDIA_TYPE", "MEDIA_TYPE_AUDIO"},
+                                      {"ENABLED", "false"},
+                                      {"MUTED", "false"},
+                                      {"SOURCE", ""},
+                                      {"LABEL", ""}};
+    mediaList.push_back(mediaAttribute);
+    if (!isAudioOnly) {
+        mediaAttribute["MEDIA_TYPE"] = "MEDIA_TYPE_VIDEO";
+        mediaList.push_back(mediaAttribute);
+    }
+#endif // ENABLE_LIBWRAP
+    CallManager::instance().acceptWithMedia(callId, mediaList);
 }
 
 void
@@ -850,7 +905,7 @@ NewCallModelPimpl::slotIncomingCall(const QString& accountId,
 
     // HACK. BECAUSE THE DAEMON DOESN'T HANDLE THIS CASE!
     if (linked.owner.confProperties.autoAnswer) {
-        linked.accept(callId);
+        linked.acceptWithMedia(callId, callInfo->isAudioOnly);
     }
 }
 

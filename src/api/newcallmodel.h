@@ -119,6 +119,14 @@ public:
     void accept(const QString& callId) const;
 
     /**
+     * @brief accept a call with defined medias
+     *
+     * @param callId
+     * @param isAudioOnly
+     */
+    void acceptWithMedia(const QString& callId, bool isAudioOnly) const;
+
+    /**
      * Hang up a call
      * @param callId
      */

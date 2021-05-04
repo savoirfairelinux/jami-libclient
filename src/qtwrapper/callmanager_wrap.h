@@ -172,9 +172,7 @@ public:
                     Q_EMIT smartInfo(convertMap(info));
                 }),
             exportable_callback<CallSignal::RemoteRecordingChanged>(
-                [this](const std::string &callID,
-                       const std::string &contactId,
-                       bool state) {
+                [this](const std::string& callID, const std::string& contactId, bool state) {
                     LOG_DRING_SIGNAL3("remoteRecordingChanged",
                                       QString(callID.c_str()),
                                       QString(contactId.c_str()),
@@ -315,6 +313,35 @@ public Q_SLOTS: // METHODS
         return temp;
     }
 
+    // MULTISTREAM FUNCTIONS
+    QString placeCallWithMedia(const QString& accountID,
+                               const QString& to,
+                               const std::vector<std::map<std::string, std::string>>& mediaList)
+    {
+        QString temp(
+            DRing::placeCallWithMedia(accountID.toStdString(), to.toStdString(), mediaList).c_str());
+        return temp;
+    }
+
+    bool requestMediaChange(const QString& callID,
+                            const std::vector<std::map<std::string, std::string>>& mediaList)
+    {
+        return DRing::requestMediaChange(callID.toStdString(), mediaList);
+    }
+
+    bool acceptWithMedia(const QString& callID,
+                         const std::vector<std::map<std::string, std::string>>& mediaList)
+    {
+        return DRing::acceptWithMedia(callID.toStdString(), mediaList);
+    }
+
+    bool answerMediaChangeRequest(const QString& callID,
+                                  const std::vector<std::map<std::string, std::string>>& mediaList)
+    {
+        return DRing::answerMediaChangeRequest(callID.toStdString(), mediaList);
+    }
+    // END OF MULTISTREAM FUNCTIONS
+
     void playDTMF(const QString& key) { DRing::playDTMF(key.toStdString()); }
 
     void recordPlaybackSeek(double value) { DRing::recordPlaybackSeek(value); }
@@ -421,7 +448,9 @@ Q_SIGNALS: // SIGNALS
     void videoMuted(const QString& callID, bool state);
     void peerHold(const QString& callID, bool state);
     void smartInfo(const MapStringString& info);
-    void remoteRecordingChanged(const QString &callID, const QString &peerNumber, bool remoteRecordingState);
+    void remoteRecordingChanged(const QString& callID,
+                                const QString& peerNumber,
+                                bool remoteRecordingState);
 };
 
 namespace org {
