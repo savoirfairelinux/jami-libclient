@@ -520,19 +520,24 @@ ContactModel::bestNameForContact(const QString& contactUri) const
         qDebug() << "ContactModel::bestNameForContact" << e.what();
     }
 
-    return QString();
+    return {};
 }
 
 const QString
 ContactModel::bestIdForContact(const QString& contactUri) const
 {
     try {
-        return bestIdFromContactInfo(getContact(contactUri));
+        auto contact = getContact(contactUri);
+        auto alias = contact.profileInfo.alias.simplified();
+        if (alias.isEmpty()) {
+            return {};
+        }
+        return bestIdFromContactInfo(contact);
     } catch (const std::out_of_range& e) {
         qDebug() << "ContactModel::bestIdForContact" << e.what();
     }
 
-    return QString();
+    return {};
 }
 
 const QString
