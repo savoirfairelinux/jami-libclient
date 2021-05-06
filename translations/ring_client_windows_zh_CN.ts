@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="zh_CN">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="zh_CN" version="2.1">
 <context>
     <name>AboutPopUp</name>
     <message>
@@ -127,12 +125,12 @@
     <message>
         <location filename="../src/calladapter.cpp" line="122"/>
         <source>Missed call</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/calladapter.cpp" line="123"/>
         <source>Missed call from %1</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/calladapter.cpp" line="348"/>
@@ -142,12 +140,12 @@
     <message>
         <location filename="../src/calladapter.cpp" line="411"/>
         <source>Incoming call</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/calladapter.cpp" line="412"/>
         <source>%1 is calling you</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/calladapter.cpp" line="424"/>
@@ -224,12 +222,12 @@
     <message>
         <location filename="../src/conversationsadapter.cpp" line="182"/>
         <source>New message</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/conversationsadapter.cpp" line="225"/>
         <source>Trust request</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -314,8 +312,8 @@
     <name>CurrentAccountSettingsScrollPage</name>
     <message>
         <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="816"/>
-        <source></source>
-        <translation></translation>
+        <source/>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -693,7 +691,7 @@ Jami 将立即退出。</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="162"/>
         <source>Your account only exists on this device. If you lose your device or uninstall the application, your account will be deleted and can not be recovered. You can backup your account now or later.</source>
-        <translation type="unfinished"></translation>
+        <translation>本账户仅存在于此设备上。如果您丢失了该设备或卸载了本应用，那么您的账户也会被删除并且无法恢复。您可现在或稍后备份您的账户。</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="186"/>
@@ -748,7 +746,7 @@ Jami 将立即退出。</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="274"/>
         <source>If your account has not been backed up or added to another device, your account and registered name will be irrevocably lost.</source>
-        <translation type="unfinished"></translation>
+        <translation>如果您的账户尚未备份或添加到其他设备，您的账户和已注册名称将不可挽回地丢失。</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="287"/>
@@ -763,7 +761,7 @@ Jami 将立即退出。</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="295"/>
         <source>Display images and videos in the chatview</source>
-        <translation type="unfinished"></translation>
+        <translation>在聊天界面中显示图片和视频</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="307"/>
@@ -1250,27 +1248,27 @@ Jami 将立即退出。</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="210"/>
         <source>Hide chat view</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="211"/>
         <source>Place audio call</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="212"/>
         <source>Place video call</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="213"/>
         <source>Show available plugins</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="214"/>
         <source>Add to conversations</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="217"/>
@@ -1325,7 +1323,7 @@ Jami 将立即退出。</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="233"/>
         <source>Optional</source>
-        <translation>选填</translation>
+        <translation>可选</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="237"/>
@@ -1451,7 +1449,7 @@ Jami 将立即退出。</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="277"/>
         <source>Save new device name</source>
-        <translation type="unfinished">保存新设备名称 </translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="278"/>
@@ -1708,7 +1706,7 @@ Jami 将立即退出。</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="382"/>
         <source>Enter the account password to confirm the removal of this device</source>
-        <translation>输入此账户的密码，以确认删除该设备</translation>
+        <translation>输入此账户的密码，以确认删除本设备</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="385"/>
@@ -1765,7 +1763,7 @@ Copy and share it with your friends!</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="407"/>
         <source>Clear Text</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="421"/>
@@ -1815,7 +1813,7 @@ Copy and share it with your friends!</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="434"/>
         <source>Make all participants moderators</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="435"/>
@@ -1873,12 +1871,12 @@ Jami 将立即退出。</translation>
     <message>
         <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="62"/>
         <source>Previous conversation</source>
-        <translation>上一个对话</translation>
+        <translation>上一个会话</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="67"/>
         <source>Next conversation</source>
-        <translation>下一个对话</translation>
+        <translation>下一个会话</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="72"/>
@@ -1961,17 +1959,17 @@ Jami 将立即退出。</translation>
     <message>
         <location filename="../src/commoncomponents/LineEditContextMenu.qml" line="36"/>
         <source>Copy</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/commoncomponents/LineEditContextMenu.qml" line="42"/>
         <source>Cut</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/commoncomponents/LineEditContextMenu.qml" line="49"/>
         <source>Paste</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -2221,7 +2219,7 @@ Please try again later.</source>
     <message>
         <location filename="../src/wizardview/components/ProfilePage.qml" line="86"/>
         <source>Optional</source>
-        <translation>选填</translation>
+        <translation>可选</translation>
     </message>
     <message>
         <location filename="../src/wizardview/components/ProfilePage.qml" line="118"/>
@@ -2299,7 +2297,7 @@ Please try again later.</source>
     <message>
         <location filename="../src/settingsview/components/RevokeDevicePasswordDialog.qml" line="61"/>
         <source>Enter this account&apos;s password to confirm the removal of this device</source>
-        <translation>输入此账户的密码，以确认删除该设备</translation>
+        <translation>输入此账户的密码，以确认删除本设备</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/RevokeDevicePasswordDialog.qml" line="105"/>
@@ -2353,8 +2351,8 @@ Please try again later.</source>
     <name>SettingParaCombobox</name>
     <message>
         <location filename="../src/commoncomponents/SettingParaCombobox.qml" line="42"/>
-        <source></source>
-        <translation></translation>
+        <source/>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -2444,27 +2442,27 @@ Please try again later.</source>
     <message>
         <location filename="../src/systemtray.cpp" line="208"/>
         <source>Answer</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/systemtray.cpp" line="209"/>
         <source>Decline</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/systemtray.cpp" line="211"/>
         <source>Open conversation</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/systemtray.cpp" line="213"/>
         <source>Accept</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/systemtray.cpp" line="214"/>
         <source>Refuse</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

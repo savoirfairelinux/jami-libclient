@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="sq_AL">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="sq_AL" version="2.1">
 <context>
     <name>AboutPopUp</name>
     <message>
@@ -127,12 +125,12 @@
     <message>
         <location filename="../src/calladapter.cpp" line="122"/>
         <source>Missed call</source>
-        <translation type="unfinished"></translation>
+        <translation>Thirrje e humbur</translation>
     </message>
     <message>
         <location filename="../src/calladapter.cpp" line="123"/>
         <source>Missed call from %1</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/calladapter.cpp" line="348"/>
@@ -142,12 +140,12 @@
     <message>
         <location filename="../src/calladapter.cpp" line="411"/>
         <source>Incoming call</source>
-        <translation type="unfinished"></translation>
+        <translation>Thirrje ardhëse</translation>
     </message>
     <message>
         <location filename="../src/calladapter.cpp" line="412"/>
         <source>%1 is calling you</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/calladapter.cpp" line="424"/>
@@ -224,12 +222,12 @@
     <message>
         <location filename="../src/conversationsadapter.cpp" line="182"/>
         <source>New message</source>
-        <translation type="unfinished"></translation>
+        <translation>Mesazh i ri</translation>
     </message>
     <message>
         <location filename="../src/conversationsadapter.cpp" line="225"/>
         <source>Trust request</source>
-        <translation type="unfinished"></translation>
+        <translation>Kërkesë besueshmërie</translation>
     </message>
 </context>
 <context>
@@ -314,8 +312,8 @@
     <name>CurrentAccountSettingsScrollPage</name>
     <message>
         <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="816"/>
-        <source></source>
-        <translation></translation>
+        <source/>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -928,7 +926,7 @@ Jami tani do të dalë.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="104"/>
         <source>TURN Realm</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="105"/>
@@ -1250,27 +1248,27 @@ Jami tani do të dalë.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="210"/>
         <source>Hide chat view</source>
-        <translation type="unfinished"></translation>
+        <translation>Fshihe pamjen fjalosje</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="211"/>
         <source>Place audio call</source>
-        <translation type="unfinished"></translation>
+        <translation>Bëni një thirrje audio</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="212"/>
         <source>Place video call</source>
-        <translation type="unfinished"></translation>
+        <translation>Bëni një thirrje video</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="213"/>
         <source>Show available plugins</source>
-        <translation type="unfinished"></translation>
+        <translation>Shfaq shtojcat e gatshme</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="214"/>
         <source>Add to conversations</source>
-        <translation type="unfinished"></translation>
+        <translation>Shtoje te biseda</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="217"/>
@@ -1451,7 +1449,7 @@ Jami tani do të dalë.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="277"/>
         <source>Save new device name</source>
-        <translation type="unfinished">Ruani emrin e pajisjes së re</translation>
+        <translation>Ruani emrin e pajisjes së re</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="278"/>
@@ -1765,7 +1763,7 @@ Kopjojeni dhe jepuani shokëve!</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="407"/>
         <source>Clear Text</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="421"/>
@@ -1815,7 +1813,7 @@ Kopjojeni dhe jepuani shokëve!</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="434"/>
         <source>Make all participants moderators</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="435"/>
@@ -1961,17 +1959,17 @@ Jami tani do të dalë.</translation>
     <message>
         <location filename="../src/commoncomponents/LineEditContextMenu.qml" line="36"/>
         <source>Copy</source>
-        <translation type="unfinished"></translation>
+        <translation>Kopjoje</translation>
     </message>
     <message>
         <location filename="../src/commoncomponents/LineEditContextMenu.qml" line="42"/>
         <source>Cut</source>
-        <translation type="unfinished"></translation>
+        <translation>Prije</translation>
     </message>
     <message>
         <location filename="../src/commoncomponents/LineEditContextMenu.qml" line="49"/>
         <source>Paste</source>
-        <translation type="unfinished"></translation>
+        <translation>Ngjite</translation>
     </message>
 </context>
 <context>
@@ -2353,8 +2351,8 @@ Ju lutemi, riprovoni më vonë.</translation>
     <name>SettingParaCombobox</name>
     <message>
         <location filename="../src/commoncomponents/SettingParaCombobox.qml" line="42"/>
-        <source></source>
-        <translation></translation>
+        <source/>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -2444,27 +2442,27 @@ Ju lutemi, riprovoni më vonë.</translation>
     <message>
         <location filename="../src/systemtray.cpp" line="208"/>
         <source>Answer</source>
-        <translation type="unfinished"></translation>
+        <translation>Përgjigjuni</translation>
     </message>
     <message>
         <location filename="../src/systemtray.cpp" line="209"/>
         <source>Decline</source>
-        <translation type="unfinished"></translation>
+        <translation>Hidhe tej</translation>
     </message>
     <message>
         <location filename="../src/systemtray.cpp" line="211"/>
         <source>Open conversation</source>
-        <translation type="unfinished"></translation>
+        <translation>Hap bisedë</translation>
     </message>
     <message>
         <location filename="../src/systemtray.cpp" line="213"/>
         <source>Accept</source>
-        <translation type="unfinished"></translation>
+        <translation>Pranoje</translation>
     </message>
     <message>
         <location filename="../src/systemtray.cpp" line="214"/>
         <source>Refuse</source>
-        <translation type="unfinished"></translation>
+        <translation>Hidhe tej</translation>
     </message>
 </context>
 <context>

@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="it_IT">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="it_IT" version="2.1">
 <context>
     <name>AboutPopUp</name>
     <message>
@@ -127,12 +125,12 @@
     <message>
         <location filename="../src/calladapter.cpp" line="122"/>
         <source>Missed call</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/calladapter.cpp" line="123"/>
         <source>Missed call from %1</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/calladapter.cpp" line="348"/>
@@ -142,12 +140,12 @@
     <message>
         <location filename="../src/calladapter.cpp" line="411"/>
         <source>Incoming call</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/calladapter.cpp" line="412"/>
         <source>%1 is calling you</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/calladapter.cpp" line="424"/>
@@ -191,7 +189,7 @@
     <message>
         <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="41"/>
         <source>Start video call</source>
-        <translation>Inizia la video chiamata</translation>
+        <translation>Avvia una videochiamata</translation>
     </message>
     <message>
         <location filename="../src/mainview/components/ConversationSmartListContextMenu.qml" line="50"/>
@@ -224,12 +222,12 @@
     <message>
         <location filename="../src/conversationsadapter.cpp" line="182"/>
         <source>New message</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/conversationsadapter.cpp" line="225"/>
         <source>Trust request</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -314,8 +312,8 @@
     <name>CurrentAccountSettingsScrollPage</name>
     <message>
         <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="816"/>
-        <source></source>
-        <translation></translation>
+        <source/>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -538,7 +536,7 @@ Jami ora verrà terminato.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="62"/>
         <source>Convert your account into a rendezvous point</source>
-        <translation>Converti il tuo account in un rendezvous point</translation>
+        <translation>Converti il tuo account in un punto di rendezvous</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="63"/>
@@ -673,7 +671,7 @@ Jami ora verrà terminato.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="127"/>
         <source>Enable local peer discovery</source>
-        <translation>Abilita rilevamento peer locale</translation>
+        <translation>Abilita il rilevamento di utenti locali</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="138"/>
@@ -733,7 +731,7 @@ Jami ora verrà terminato.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="229"/>
         <source>Create a rendezvous point</source>
-        <translation>Crea un rendezvous point</translation>
+        <translation>Crea un punto di rendezvous</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="232"/>
@@ -743,7 +741,7 @@ Jami ora verrà terminato.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="234"/>
         <source>Choose a name for your rendezvous point</source>
-        <translation>Scegli un nome per il tuo rendezvous point</translation>
+        <translation>Scegli un nome per il tuo punto di rendezvous</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="274"/>
@@ -818,7 +816,7 @@ Jami ora verrà terminato.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="374"/>
         <source>Choose image file</source>
-        <translation>Scegli file immagine</translation>
+        <translation>Scegli un file immagine</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="378"/>
@@ -828,7 +826,7 @@ Jami ora verrà terminato.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="379"/>
         <source>Creating rendezvous point…</source>
-        <translation>Creazione punto rendezvous...</translation>
+        <translation>Creazione punto di rendezvous...</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="399"/>
@@ -838,7 +836,7 @@ Jami ora verrà terminato.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="402"/>
         <source>Create new rendezvous point</source>
-        <translation>Crea nuovo punto rendezvous</translation>
+        <translation>Crea un nuovo punto di rendezvous</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="403"/>
@@ -1158,7 +1156,7 @@ Jami ora verrà terminato.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="181"/>
         <source>Peer stopped recording</source>
-        <translation>Il peer ha interrotto la registrazione</translation>
+        <translation>L&apos;interlocutore ha interrotto la registrazione</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="184"/>
@@ -1250,27 +1248,27 @@ Jami ora verrà terminato.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="210"/>
         <source>Hide chat view</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="211"/>
         <source>Place audio call</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="212"/>
         <source>Place video call</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="213"/>
         <source>Show available plugins</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="214"/>
         <source>Add to conversations</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="217"/>
@@ -1451,7 +1449,7 @@ Jami ora verrà terminato.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="277"/>
         <source>Save new device name</source>
-        <translation type="unfinished">Salva il nuovo nome del dispositivo</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="278"/>
@@ -1740,12 +1738,12 @@ Copia e condividi con i tuoi amici!</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="396"/>
         <source>Advanced features</source>
-        <translation>Funzionalità avanzate</translation>
+        <translation>Caratteristiche avanzate</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="397"/>
         <source>Show advanced features</source>
-        <translation>Mostra funzionalità avanzate</translation>
+        <translation>Mostra caratteristiche avanzate</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="398"/>
@@ -1765,7 +1763,7 @@ Copia e condividi con i tuoi amici!</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="407"/>
         <source>Clear Text</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="421"/>
@@ -1815,7 +1813,7 @@ Copia e condividi con i tuoi amici!</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="434"/>
         <source>Make all participants moderators</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="435"/>
@@ -1961,17 +1959,17 @@ Jami ora verrà terminato.</translation>
     <message>
         <location filename="../src/commoncomponents/LineEditContextMenu.qml" line="36"/>
         <source>Copy</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/commoncomponents/LineEditContextMenu.qml" line="42"/>
         <source>Cut</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/commoncomponents/LineEditContextMenu.qml" line="49"/>
         <source>Paste</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -2353,8 +2351,8 @@ Per favore riprova più tardi.</translation>
     <name>SettingParaCombobox</name>
     <message>
         <location filename="../src/commoncomponents/SettingParaCombobox.qml" line="42"/>
-        <source></source>
-        <translation></translation>
+        <source/>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -2444,27 +2442,27 @@ Per favore riprova più tardi.</translation>
     <message>
         <location filename="../src/systemtray.cpp" line="208"/>
         <source>Answer</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/systemtray.cpp" line="209"/>
         <source>Decline</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/systemtray.cpp" line="211"/>
         <source>Open conversation</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/systemtray.cpp" line="213"/>
         <source>Accept</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/systemtray.cpp" line="214"/>
         <source>Refuse</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

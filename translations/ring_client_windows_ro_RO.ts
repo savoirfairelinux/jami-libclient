@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="ro_RO">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="ro_RO" version="2.1">
 <context>
     <name>AboutPopUp</name>
     <message>
@@ -14,7 +12,7 @@
     <message>
         <location filename="../src/mainview/components/AccountComboBoxPopup.qml" line="170"/>
         <source>Add Account</source>
-        <translation>Adaugă un Cont</translation>
+        <translation>Adaugă un cont</translation>
     </message>
 </context>
 <context>
@@ -98,7 +96,7 @@
     <message>
         <location filename="../src/settingsview/components/AdvancedSettings.qml" line="69"/>
         <source>Advanced Account Settings</source>
-        <translation>Reglări Avansate ale Contului</translation>
+        <translation>Reglări avansate ale contului</translation>
     </message>
 </context>
 <context>
@@ -119,7 +117,7 @@
     <message>
         <location filename="../src/settingsview/components/BannedContacts.qml" line="91"/>
         <source>Banned Contacts</source>
-        <translation>Contacte Blocate</translation>
+        <translation>Contacte blocate</translation>
     </message>
 </context>
 <context>
@@ -127,12 +125,12 @@
     <message>
         <location filename="../src/calladapter.cpp" line="122"/>
         <source>Missed call</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/calladapter.cpp" line="123"/>
         <source>Missed call from %1</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/calladapter.cpp" line="348"/>
@@ -142,12 +140,12 @@
     <message>
         <location filename="../src/calladapter.cpp" line="411"/>
         <source>Incoming call</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/calladapter.cpp" line="412"/>
         <source>%1 is calling you</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/calladapter.cpp" line="424"/>
@@ -224,12 +222,12 @@
     <message>
         <location filename="../src/conversationsadapter.cpp" line="182"/>
         <source>New message</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/conversationsadapter.cpp" line="225"/>
         <source>Trust request</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -314,8 +312,8 @@
     <name>CurrentAccountSettingsScrollPage</name>
     <message>
         <location filename="../src/settingsview/components/CurrentAccountSettingsScrollPage.qml" line="816"/>
-        <source></source>
-        <translation></translation>
+        <source/>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -332,13 +330,13 @@
         <location filename="../src/DaemonReconnectWindow.qml" line="100"/>
         <source>Could not re-connect to the Jami daemon (dring).
 Jami will now quit.</source>
-        <translation>Imposibilă reconectarea la procesul de sistem Jami (dring).
+        <translation>Reconectare imposibilă la serviciul Jami (dring).
 Jami se va închide acum.</translation>
     </message>
     <message>
         <location filename="../src/DaemonReconnectWindow.qml" line="101"/>
         <source>Trying to reconnect to the Jami daemon (dring)…</source>
-        <translation>Reconectare la procesul de sistem Jami (dring)...</translation>
+        <translation>Reconectare la serviciul Jami (dring)...</translation>
     </message>
     <message>
         <location filename="../src/DaemonReconnectWindow.qml" line="156"/>
@@ -356,7 +354,7 @@ Jami se va închide acum.</translation>
     <message>
         <location filename="../src/commoncomponents/DeleteAccountDialog.qml" line="176"/>
         <source>Cancel</source>
-        <translation>Renunță</translation>
+        <translation>Anulează</translation>
     </message>
 </context>
 <context>
@@ -463,7 +461,7 @@ Jami se va închide acum.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="43"/>
         <source>Display QR code</source>
-        <translation>Afișează codul QR</translation>
+        <translation>Arată codul QR</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="44"/>
@@ -568,7 +566,7 @@ Jami se va închide acum.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="70"/>
         <source>Voicemail</source>
-        <translation>Mesagerie Vocală</translation>
+        <translation>Mesagerie vocală</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="71"/>
@@ -673,7 +671,7 @@ Jami se va închide acum.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="127"/>
         <source>Enable local peer discovery</source>
-        <translation>Activează Descoperă utilizatori locali</translation>
+        <translation>Activează descoperirea utilizatorilor locali</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="138"/>
@@ -778,7 +776,7 @@ Jami se va închide acum.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="329"/>
         <source>Enter the PIN from another configured Jami account. Use the &quot;Link Another Device&quot; feature to obtain a PIN.</source>
-        <translation>Introdu codul PIN obținut de la un cont Jami. Folosește opțiunea &quot;Asociază alt aparat&quot; pentru a obține codul PIN.</translation>
+        <translation>Introdu codul PIN obținut de la un cont Jami. Folosește opțiunea „Asociază alt aparat” pentru a obține codul PIN.</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="331"/>
@@ -873,7 +871,7 @@ Jami se va închide acum.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="418"/>
         <source>Cancel</source>
-        <translation>Renunță</translation>
+        <translation>Anulează</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="92"/>
@@ -978,22 +976,22 @@ Jami se va închide acum.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="121"/>
         <source>Audio RTP minimum Port</source>
-        <translation>Port Minim RTP Audio</translation>
+        <translation>Port Minim audio RTP</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="122"/>
         <source>Audio RTP maximum Port</source>
-        <translation>Port Maxim RTP Audio</translation>
+        <translation>Port Maxim audio RTP</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="123"/>
         <source>Video RTP minimum Port</source>
-        <translation>Port Minim RTP Video</translation>
+        <translation>Port Minim video RTP</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="124"/>
         <source>Video RTP maximum port</source>
-        <translation>Port Maxim RTP Video</translation>
+        <translation>Port Maxim video RTP</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="128"/>
@@ -1038,27 +1036,27 @@ Jami se va închide acum.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="143"/>
         <source>Select audio input device</source>
-        <translation>Alege un periferic audio de intrare</translation>
+        <translation>Alege un dispozitiv audio de intrare</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="144"/>
         <source>Output device</source>
-        <translation>Periferic de ieșire</translation>
+        <translation>Dispozitiv de ieșire</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="145"/>
         <source>Select audio output device</source>
-        <translation>Alege un periferic audio de ieșire</translation>
+        <translation>Alege un dispozitiv audio de ieșire</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="146"/>
         <source>Ringtone device</source>
-        <translation>Periferic sonerie</translation>
+        <translation>Dispozitiv sonerie</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="147"/>
         <source>Select ringtone output device</source>
-        <translation>Alege un periferic sonerie de ieșire</translation>
+        <translation>Alege dispozitivul sonerie de ieșire</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="148"/>
@@ -1073,7 +1071,7 @@ Jami se va închide acum.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="152"/>
         <source>Select video device</source>
-        <translation>Alege un periferic video</translation>
+        <translation>Alege dispozitivul video</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="153"/>
@@ -1220,7 +1218,7 @@ Jami se va închide acum.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="202"/>
         <source>Full screen</source>
-        <translation>Ecran complet</translation>
+        <translation>Pe tot ecranul</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="203"/>
@@ -1245,32 +1243,32 @@ Jami se va închide acum.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="207"/>
         <source>No video device</source>
-        <translation>Niciun periferic video</translation>
+        <translation>Niciun dispozitiv video</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="210"/>
         <source>Hide chat view</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="211"/>
         <source>Place audio call</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="212"/>
         <source>Place video call</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="213"/>
         <source>Show available plugins</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="214"/>
         <source>Add to conversations</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="217"/>
@@ -1451,7 +1449,7 @@ Jami se va închide acum.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="277"/>
         <source>Save new device name</source>
-        <translation type="unfinished">Salvează noul nume al aparatului</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="278"/>
@@ -1598,7 +1596,7 @@ Jami se va închide acum.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="322"/>
         <source>You can obtain an archive by clicking on &quot;Backup account&quot; in the account settings. This will create a .gz file on your device.</source>
-        <translation>Poți obține o arhivă făcînd clic pe &quot;Copie de rezervă a contului&quot; în reglările contului. Asta va crea un fișier .gz în aparatul tău.</translation>
+        <translation>Poți obține o arhivă făcînd clic pe „Copie de rezervă a contului” în reglările contului. Asta va crea un fișier .gz în aparatul tău.</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="325"/>
@@ -1745,7 +1743,7 @@ Copiază-l și distribuie-l prietenilor!</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="397"/>
         <source>Show advanced features</source>
-        <translation>Arată caracteristici avansate</translation>
+        <translation>Arată caracteristicile avansate</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="398"/>
@@ -1765,7 +1763,7 @@ Copiază-l și distribuie-l prietenilor!</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="407"/>
         <source>Clear Text</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="421"/>
@@ -1795,7 +1793,7 @@ Copiază-l și distribuie-l prietenilor!</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="428"/>
         <source>local muted</source>
-        <translation>dezactivat local</translation>
+        <translation>microfon local oprit</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="431"/>
@@ -1815,7 +1813,7 @@ Copiază-l și distribuie-l prietenilor!</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="434"/>
         <source>Make all participants moderators</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="435"/>
@@ -1830,13 +1828,13 @@ Copiază-l și distribuie-l prietenilor!</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="439"/>
         <source>Trying to reconnect to the Jami daemon (dring)…</source>
-        <translation>Reconectare la procesul de sistem Jami (dring)...</translation>
+        <translation>Reconectare la serviciul Jami (dring)...</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="440"/>
         <source>Could not re-connect to the Jami daemon (dring).
 Jami will now quit.</source>
-        <translation>Imposibilă reconectarea la procesul de sistem Jami (dring).
+        <translation>Reconectare imposibilă la serviciul Jami (dring).
 Jami se va închide acum.</translation>
     </message>
 </context>
@@ -1863,7 +1861,7 @@ Jami se va închide acum.</translation>
     <message>
         <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="52"/>
         <source>Focus conversations list</source>
-        <translation>Vezi lista conversațiilor</translation>
+        <translation>Arată lista conversațiilor</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="57"/>
@@ -1883,12 +1881,12 @@ Jami se va închide acum.</translation>
     <message>
         <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="72"/>
         <source>Search bar</source>
-        <translation>Bară de căutare</translation>
+        <translation>Bandă de căutare</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="77"/>
         <source>Fullscreen</source>
-        <translation>Ecran complet</translation>
+        <translation>Pe tot ecranul</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="85"/>
@@ -1961,17 +1959,17 @@ Jami se va închide acum.</translation>
     <message>
         <location filename="../src/commoncomponents/LineEditContextMenu.qml" line="36"/>
         <source>Copy</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/commoncomponents/LineEditContextMenu.qml" line="42"/>
         <source>Cut</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/commoncomponents/LineEditContextMenu.qml" line="49"/>
         <source>Paste</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1979,7 +1977,7 @@ Jami se va închide acum.</translation>
     <message>
         <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="202"/>
         <source>Cancel</source>
-        <translation>Renunță</translation>
+        <translation>Anulează</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="87"/>
@@ -2026,7 +2024,7 @@ Please try again later.</source>
     <message>
         <location filename="../src/settingsview/components/LinkedDevices.qml" line="111"/>
         <source>Remove Device</source>
-        <translation>Elimină Aparatul</translation>
+        <translation>Elimină aparatul</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/LinkedDevices.qml" line="112"/>
@@ -2041,7 +2039,7 @@ Please try again later.</source>
     <message>
         <location filename="../src/settingsview/components/LinkedDevices.qml" line="114"/>
         <source>Cancel</source>
-        <translation>Renunță</translation>
+        <translation>Anulează</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/LinkedDevices.qml" line="123"/>
@@ -2072,7 +2070,7 @@ Please try again later.</source>
     <message>
         <location filename="../src/settingsview/components/NameRegistrationDialog.qml" line="185"/>
         <source>Cancel</source>
-        <translation>Renunță</translation>
+        <translation>Anulează</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/NameRegistrationDialog.qml" line="39"/>
@@ -2096,7 +2094,7 @@ Please try again later.</source>
     <message>
         <location filename="../src/commoncomponents/PasswordDialog.qml" line="223"/>
         <source>Cancel</source>
-        <translation>Renunță</translation>
+        <translation>Anulează</translation>
     </message>
 </context>
 <context>
@@ -2177,7 +2175,7 @@ Please try again later.</source>
     <message>
         <location filename="../src/settingsview/components/PluginListPreferencesView.qml" line="151"/>
         <source>Cancel</source>
-        <translation>Renunță</translation>
+        <translation>Anulează</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/PluginListPreferencesView.qml" line="403"/>
@@ -2271,7 +2269,7 @@ Please try again later.</source>
     <message>
         <location filename="../src/settingsview/components/RecordingSettings.qml" line="69"/>
         <source>Call Recording</source>
-        <translation>Înregistrare Apeluri</translation>
+        <translation>Înregistrare apeluri</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/RecordingSettings.qml" line="82"/>
@@ -2309,7 +2307,7 @@ Please try again later.</source>
     <message>
         <location filename="../src/settingsview/components/RevokeDevicePasswordDialog.qml" line="126"/>
         <source>Cancel</source>
-        <translation>Renunță</translation>
+        <translation>Anulează</translation>
     </message>
 </context>
 <context>
@@ -2353,8 +2351,8 @@ Please try again later.</source>
     <name>SettingParaCombobox</name>
     <message>
         <location filename="../src/commoncomponents/SettingParaCombobox.qml" line="42"/>
-        <source></source>
-        <translation></translation>
+        <source/>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -2444,27 +2442,27 @@ Please try again later.</source>
     <message>
         <location filename="../src/systemtray.cpp" line="208"/>
         <source>Answer</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/systemtray.cpp" line="209"/>
         <source>Decline</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/systemtray.cpp" line="211"/>
         <source>Open conversation</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/systemtray.cpp" line="213"/>
         <source>Accept</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/systemtray.cpp" line="214"/>
         <source>Refuse</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -2496,7 +2494,7 @@ Please try again later.</source>
     <message>
         <location filename="../src/mainview/components/VideoCallPageContextMenuDeviceItem.qml" line="43"/>
         <source>No video device</source>
-        <translation>Niciun periferic video</translation>
+        <translation>Niciun dispozitiv video</translation>
     </message>
 </context>
 <context>
