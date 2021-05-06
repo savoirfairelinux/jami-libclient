@@ -153,7 +153,7 @@ Rectangle {
 
             Layout.preferredWidth: buttonPreferredSize
             Layout.preferredHeight: buttonPreferredSize
-            visible: !isModerator
+            visible: !isModerator && !isSip
 
             pressedColor: JamiTheme.invertedPressedButtonColor
             hoveredColor: JamiTheme.invertedHoveredButtonColor
