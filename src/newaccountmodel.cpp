@@ -812,8 +812,8 @@ account::Info::fromDetails(const MapStringString& details)
     confProperties.password = details[ConfProperties::PASSWORD];
     confProperties.realm = details[ConfProperties::REALM];
     confProperties.localInterface = details[ConfProperties::LOCAL_INTERFACE];
-    confProperties.deviceId = details[ConfProperties::RING_DEVICE_ID];
-    confProperties.deviceName = details[ConfProperties::RING_DEVICE_NAME];
+    confProperties.deviceId = details[ConfProperties::DEVICE_ID];
+    confProperties.deviceName = details[ConfProperties::DEVICE_NAME];
     confProperties.publishedSameAsLocal = toBool(details[ConfProperties::PUBLISHED_SAMEAS_LOCAL]);
     confProperties.localPort = toInt(details[ConfProperties::LOCAL_PORT]);
     confProperties.publishedPort = toInt(details[ConfProperties::PUBLISHED_PORT]);
@@ -928,8 +928,8 @@ account::ConfProperties_t::toDetails() const
     details[ConfProperties::ROUTE] = this->routeset;
     details[ConfProperties::PASSWORD] = this->password;
     details[ConfProperties::REALM] = this->realm;
-    details[ConfProperties::RING_DEVICE_ID] = this->deviceId;
-    details[ConfProperties::RING_DEVICE_NAME] = this->deviceName;
+    details[ConfProperties::DEVICE_ID] = this->deviceId;
+    details[ConfProperties::DEVICE_NAME] = this->deviceName;
     details[ConfProperties::LOCAL_INTERFACE] = this->localInterface;
     details[ConfProperties::PUBLISHED_SAMEAS_LOCAL] = toQString(this->publishedSameAsLocal);
     details[ConfProperties::LOCAL_PORT] = toQString(this->localPort);
