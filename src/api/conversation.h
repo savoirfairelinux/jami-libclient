@@ -47,6 +47,8 @@ struct Info
     uint64_t lastMessageUid = 0;
     std::map<QString, uint64_t> lastDisplayedMessageUid;
     unsigned int unreadMessages = 0;
+
+    QString getConfIdOrCallId() { return confId.isEmpty() ? callId : confId; }
 };
 
 } // namespace conversation
