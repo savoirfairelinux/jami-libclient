@@ -270,7 +270,7 @@ NewCallModel::createCall(const QString& uri, bool isAudioOnly)
     auto callId = isAudioOnly
                       ? CallManager::instance().placeCall(owner.id, uri, {{"AUDIO_ONLY", "true"}})
                       : CallManager::instance().placeCall(owner.id, uri);
-#else // dbus
+#else  // dbus
     // do not use auto here (QDBusPendingReply<QString>)
     QString callId = isAudioOnly
                          ? CallManager::instance().placeCallWithDetails(owner.id,
@@ -806,6 +806,16 @@ NewCallModel::hangupCallsAndConferences()
     for (const auto& call : calls) {
         CallManager::instance().hangUp(call);
     }
+}
+
+bool
+NewCallModel::isConferenceHost(const QString& callId)
+{
+    auto call = pimpl_->calls.find(callId);
+    if (call == pimpl_->calls.end() or not call->second)
+        return false;
+    else
+        return call->second->type == lrc::api::call::Type::CONFERENCE;
 }
 
 void
