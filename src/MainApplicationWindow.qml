@@ -30,6 +30,7 @@ import QtGraphicalEffects 1.14
 import net.jami.Models 1.0
 import net.jami.Adapters 1.0
 import net.jami.Enums 1.0
+import net.jami.Helpers 1.0
 import net.jami.Constants 1.0
 
 import "mainview"
@@ -155,6 +156,14 @@ ApplicationWindow {
                     mainApplicationLoader.setSource(JamiQmlUtils.wizardViewLoadPath)
                 else
                     mainApplicationLoader.setSource(JamiQmlUtils.mainViewLoadPath)
+            }
+        }
+
+        onLoaded: {
+            // Quiet check for updates on start if set to.
+            if (SettingsAdapter.getAppValue(Settings.AutoUpdate)) {
+                UpdateManager.checkForUpdates(true)
+                UpdateManager.setAutoUpdateCheck(true)
             }
         }
     }

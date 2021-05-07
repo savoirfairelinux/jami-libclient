@@ -105,14 +105,6 @@ ColumnLayout {
         }
     }
 
-    Component.onCompleted: {
-        // Quiet check for updates on start if set to.
-        if (SettingsAdapter.getAppValue(Settings.AutoUpdate)) {
-            UpdateManager.checkForUpdates(true)
-            UpdateManager.setAutoUpdateCheck(true)
-        }
-    }
-
     Connections {
         target: UpdateManager
 
