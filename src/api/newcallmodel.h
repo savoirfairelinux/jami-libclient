@@ -270,6 +270,13 @@ public:
      */
     void hangupParticipant(const QString& confId, const QString& participant);
 
+    /**
+     * Check if a call is a conference or not
+     * @param callId        The call to check
+     * @return if conference
+     */
+    bool isConference(const QString& callId);
+
 Q_SIGNALS:
     /**
      * Emitted when a call state changes
