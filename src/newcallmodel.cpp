@@ -808,6 +808,16 @@ NewCallModel::hangupCallsAndConferences()
     }
 }
 
+bool
+NewCallModel::isConference(const QString& callId)
+{
+    auto call = pimpl_->calls.find(callId);
+    if (call == pimpl_->calls.end() or not call->second)
+        return false;
+    else
+        return call->second->type == lrc::api::call::Type::CONFERENCE;
+}
+
 void
 NewCallModelPimpl::slotIncomingCall(const QString& accountId,
                                     const QString& callId,
