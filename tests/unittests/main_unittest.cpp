@@ -20,6 +20,8 @@
 #include "globaltestenvironment.h"
 
 #include <QApplication>
+#include <QStandardPaths>
+
 #include <gtest/gtest.h>
 
 bool muteDring;
@@ -39,6 +41,8 @@ main(int argc, char* argv[])
         // Adjust the argument count.
         argc = std::distance(argv, end);
     }
+
+    QStandardPaths::setTestModeEnabled(true);
 
     QApplication a(argc, argv);
     a.processEvents();

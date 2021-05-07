@@ -127,8 +127,8 @@ Only 64-bit MSVC build can be compiled.
 ```sh
     git clone https://review.jami.net/ring-project
     cd ring-project/
-    git submodule update --init daemon lrc client-windows
-    git submodule update --recursive --remote daemon lrc client-windows
+    git submodule update --init daemon lrc client-qt
+    git submodule update --recursive --remote daemon lrc client-qt
 ```
 - Using **Elevated Command Prompt**
 ```sh
@@ -212,7 +212,7 @@ Only 64-bit MSVC build can be compiled.
 - In Visual Studio, download WiX Toolset Visual Studio Extension.
 - Build client-windows project first, then the JamiInstaller project, msi package should be stored in ring-project\client-windows\JamiInstaller\bin\Release
 
-## Testing For Client-qt
+## Testing for Client-qt on Windows
 
 - We currently use [GoogleTest](https://github.com/google/googletest) and [Qt Quick Test](https://doc.qt.io/qt-5/qtquicktest-index.html#introduction) in our product. To build and run tests, you could use the following command.
 
@@ -220,6 +220,16 @@ Only 64-bit MSVC build can be compiled.
     python make-client.py -b -wt
     python make-client.py runtests
 ```
+
+- Note that, for tests, the path of local storage files for jami will be changed based on following environment variables.
+
+```
+    %JAMI_DATA_HOME% = %TEMP% + '\\jami_test\\jami'
+    %JAMI_CONFIG_HOME% = %TEMP% + '\\jami_test\\.config'
+    %JAMI_CACHE_HOME% = %TEMP% + '\\jami_test\\.cache'
+```
+
+- These environment variables will be temporarily set when using make-client.py to run tests.
 
 ## Debugging
 

@@ -21,6 +21,7 @@ vs_where_path = os.path.join(
 host_is_64bit = (False, True)[platform.machine().endswith('64')]
 this_dir = os.path.dirname(os.path.realpath(__file__))
 build_dir = this_dir + '\\build'
+temp_path = os.environ['TEMP']
 
 # project path
 jami_qt_project = build_dir + '\\jami-qt.vcxproj'
@@ -30,6 +31,11 @@ qml_test_project = build_dir + '\\tests\\qml_tests.vcxproj'
 # test executable command
 qml_test_exe = this_dir + '\\x64\\test\\qml_tests.exe -input ' + this_dir + '\\tests\\qml'
 unit_test_exe = this_dir + '\\x64\\test\\unittests.exe'
+
+# test env path
+test_data_dir = temp_path + '\\jami_test\\jami'
+test_config_dir = temp_path + '\\jami_test\\.config'
+test_cache_dir = temp_path + '\\jami_test\\.cache'
 
 class QtVerison(Enum):
     Major = 0
@@ -308,6 +314,12 @@ def run_tests(mute_dring, output_to_files):
     # make sure that the tests are rendered offscreen
     os.environ["QT_QPA_PLATFORM"] = 'offscreen'
     os.environ["QT_QUICK_BACKEND"] = 'software'
+
+    # set test env variables
+    os.environ["JAMI_DATA_HOME"] = test_data_dir
+    os.environ["JAMI_CONFIG_HOME"] = test_config_dir
+    os.environ["JAMI_CACHE_HOME"] = test_cache_dir
+
     for test_exe_command in test_exe_command_list:
         if (execute_cmd(test_exe_command, True)):
             test_result_code = 1

@@ -195,6 +195,8 @@ main(int argc, char** argv)
         argc = std::distance(argv, end);
     }
 
+    QStandardPaths::setTestModeEnabled(true);
+
     QTEST_SET_MAIN_SOURCE_PATH
     Setup setup(muteDring);
     return quick_test_main_with_setup(argc, argv, "qml_test", nullptr, &setup);
