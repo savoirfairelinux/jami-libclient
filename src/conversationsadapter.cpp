@@ -99,8 +99,6 @@ ConversationsAdapter::ConversationsAdapter(SystemTray* systemTray,
         Q_EMIT convSrcModel_->dataChanged(index, index);
     });
 
-    updateConversationFilterData();
-
 #ifdef Q_OS_LINUX
     // notification responses
     connect(systemTray_,
@@ -188,14 +186,7 @@ ConversationsAdapter::onCurrentAccountIdChanged()
 {
     lrcInstance_->deselectConversation();
 
-    convSrcModel_.reset(new ConversationListModel(lrcInstance_));
-    convModel_->bindSourceModel(convSrcModel_.get());
-    searchSrcModel_.reset(new SearchResultsListModel(lrcInstance_));
-    searchModel_->bindSourceModel(searchSrcModel_.get());
-
     connectConversationModel();
-
-    updateConversationFilterData();
 
     set_currentTypeFilter(lrcInstance_->getCurrentAccountInfo().profileInfo.type);
 }
@@ -502,6 +493,14 @@ ConversationsAdapter::connectConversationModel(bool updateFilter)
     if (updateFilter) {
         currentTypeFilter_ = profile::Type::INVALID;
     }
+
+    convSrcModel_.reset(new ConversationListModel(lrcInstance_));
+    convModel_->bindSourceModel(convSrcModel_.get());
+    searchSrcModel_.reset(new SearchResultsListModel(lrcInstance_));
+    searchModel_->bindSourceModel(searchSrcModel_.get());
+
+    updateConversationFilterData();
+
     return true;
 }
 

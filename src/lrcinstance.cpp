@@ -210,19 +210,34 @@ LRCInstance::getConversationFromCallId(const QString& callId, const QString& acc
 ConversationModel*
 LRCInstance::getCurrentConversationModel()
 {
-    return getCurrentAccountInfo().conversationModel.get();
+    try {
+        const auto& accInfo = getCurrentAccountInfo();
+        return accInfo.conversationModel.get();
+    } catch (...) {
+        return nullptr;
+    }
 }
 
 NewCallModel*
 LRCInstance::getCurrentCallModel()
 {
-    return getCurrentAccountInfo().callModel.get();
+    try {
+        const auto& accInfo = getCurrentAccountInfo();
+        return accInfo.callModel.get();
+    } catch (...) {
+        return nullptr;
+    }
 }
 
 ContactModel*
 LRCInstance::getCurrentContactModel()
 {
-    return getCurrentAccountInfo().contactModel.get();
+    try {
+        const auto& accInfo = getCurrentAccountInfo();
+        return accInfo.contactModel.get();
+    } catch (...) {
+        return nullptr;
+    }
 }
 
 const QString&

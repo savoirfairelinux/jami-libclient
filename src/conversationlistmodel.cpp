@@ -24,6 +24,9 @@
 ConversationListModel::ConversationListModel(LRCInstance* instance, QObject* parent)
     : ConversationListModelBase(instance, parent)
 {
+    if (!model_)
+        return;
+
     connect(
         model_,
         &ConversationModel::beginInsertRows,
