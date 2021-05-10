@@ -22,6 +22,30 @@
       "revId": "c67510337bc60bf8e1fb29fbffd6d45636ff160c",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c097932f_7d35f4fd",
+        "filename": "src/api/conversation.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 892
+      },
+      "writtenOn": "2021-05-10T20:46:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c42f60eb_24456370",
+      "range": {
+        "startLine": 51,
+        "startChar": 12,
+        "endLine": 51,
+        "endChar": 29
+      },
+      "revId": "c67510337bc60bf8e1fb29fbffd6d45636ff160c",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
