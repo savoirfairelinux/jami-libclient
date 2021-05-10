@@ -503,7 +503,7 @@ Utils::formatTimeString(const std::time_t& timeStamp)
     auto now = QDateTime::currentDateTime();
     auto timeStampDMY = currentTimeStamp.toString("dd/MM/yy");
     if (timeStampDMY == now.toString("dd/MM/yy")) {
-        return currentTimeStamp.toString("hhmm");
+        return currentTimeStamp.toString("hh:mm");
     } else {
         return timeStampDMY;
     }
