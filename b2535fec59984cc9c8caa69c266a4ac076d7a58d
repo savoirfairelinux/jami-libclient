@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "951be45d_7f7f2e56",
+        "filename": "src/newcallmodel.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 812,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2021-05-10T20:13:20Z",
+      "side": 1,
+      "message": "isConferenceHost() or isConfId(). Because if we use a callId with participantsInfos() it\u0027s a conference",
+      "range": {
+        "startLine": 812,
+        "startChar": 14,
+        "endLine": 812,
+        "endChar": 26
+      },
+      "revId": "b2535fec59984cc9c8caa69c266a4ac076d7a58d",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    }
+  ]
+}
