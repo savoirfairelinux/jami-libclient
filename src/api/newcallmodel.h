@@ -119,6 +119,14 @@ public:
     void accept(const QString& callId) const;
 
     /**
+     * @brief accept a call with defined medias
+     *
+     * @param callId
+     * @param isAudioOnly
+     */
+    void acceptWithMedia(const QString& callId, const VectorMapStringString& mediaList) const;
+
+    /**
      * Hang up a call
      * @param callId
      */
@@ -300,6 +308,16 @@ Q_SIGNALS:
     void newIncomingCall(const QString& fromId,
                          const QString& callId,
                          const QString& displayname) const;
+    /**
+     * Emitted when a call is incoming
+     * @param callId
+     * @param fromId the peer uri
+     * @param displayname
+     */
+    void newIncomingCallWithMedia(const QString& fromId,
+                                  const QString& callId,
+                                  const QString& displayname,
+                                  const VectorMapStringString& mediaList) const;
     /**
      * Emitted when a call is added to a conference
      * @param callId
