@@ -106,8 +106,18 @@ Item {
 
         enableAnimation = false
         rootImage.source = ""
-        rootImage.source = tempImageSource
+
         enableAnimation = tempEnableAnimation
+        rootImage.source = tempImageSource
+    }
+
+    function rootImageOverlayReadyCallback() {
+        if (rootImageOverlay.status === Image.Ready &&
+                (rootImageOverlay.state === "avatarImgFadeIn")) {
+            rootImageOverlay.statusChanged.disconnect(rootImageOverlayReadyCallback)
+
+            rootImageOverlay.state = ''
+        }
     }
 
     Image {
@@ -127,8 +137,7 @@ Item {
         onStatusChanged: {
             if (status === Image.Ready) {
                 if (enableAnimation) {
-                    rootImageOverlay.state = ""
-                    rootImageOverlay.state = "rootImageLoading"
+                    rootImageOverlay.state = "avatarImgFadeIn"
                 } else {
                     rootImageOverlay.source = rootImage.source
                     root.imageIsReady()
@@ -156,30 +165,30 @@ Item {
 
             fillMode: Image.PreserveAspectFit
 
-            opacity: enableAnimation ? 1 : 0
-
-            onOpacityChanged: {
-                if (opacity === 0)
-                    source = rootImage.source
-            }
-
-            onStatusChanged: {
-                if (status === Image.Ready && opacity === 0) {
-                    opacity = 1
-                    root.imageIsReady()
-                }
-            }
-
             states: State {
-                name: "rootImageLoading"
-                PropertyChanges { target: rootImageOverlay; opacity: 0}
+                name: "avatarImgFadeIn"
+                PropertyChanges {
+                    target: rootImageOverlay
+                    opacity: 0
+                }
             }
 
             transitions: Transition {
                 NumberAnimation {
                     properties: "opacity"
                     easing.type: Easing.InOutQuad
-                    duration: transitionDuration
+                    duration: enableAnimation ? 400 : 0
+                }
+
+                onRunningChanged: {
+                    if ((rootImageOverlay.state === "avatarImgFadeIn") && (!running)) {
+                        if (rootImageOverlay.source === rootImage.source) {
+                            rootImageOverlay.state = ''
+                            return
+                        }
+                        rootImageOverlay.statusChanged.connect(rootImageOverlayReadyCallback)
+                        rootImageOverlay.source = rootImage.source
+                    }
                 }
             }
         }
