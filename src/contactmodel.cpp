@@ -175,6 +175,17 @@ public Q_SLOTS:
     void slotIncomingCall(const QString& fromId, const QString& callId, const QString& displayname);
 
     /**
+     * Listen from callModel when an incoming call arrives.
+     * @param fromId
+     * @param callId
+     * @param displayName
+     */
+    void slotIncomingCallWithMedia(const QString& fromId,
+                                   const QString& callId,
+                                   const QString& displayname,
+                                   const VectorMapStringString& mediaList);
+
+    /**
      * Listen from callbacksHandler for new account interaction and add pending contact if not present
      * @param accountId
      * @param msgId
@@ -588,6 +599,10 @@ ContactModelPimpl::ContactModelPimpl(const ContactModel& linked,
             &NewCallModel::newIncomingCall,
             this,
             &ContactModelPimpl::slotIncomingCall);
+    connect(&*linked.owner.callModel,
+            &NewCallModel::newIncomingCallWithMedia,
+            this,
+            &ContactModelPimpl::slotIncomingCallWithMedia);
     connect(&callbacksHandler,
             &lrc::CallbacksHandler::newAccountMessage,
             this,
@@ -632,6 +647,10 @@ ContactModelPimpl::~ContactModelPimpl()
                &NewCallModel::newIncomingCall,
                this,
                &ContactModelPimpl::slotIncomingCall);
+    disconnect(&*linked.owner.callModel,
+               &NewCallModel::newIncomingCallWithMedia,
+               this,
+               &ContactModelPimpl::slotIncomingCallWithMedia);
     disconnect(&callbacksHandler,
                &lrc::CallbacksHandler::newAccountMessage,
                this,
@@ -1034,6 +1053,43 @@ ContactModelPimpl::slotIncomingCall(const QString& fromId,
         emit linked.profileUpdated(fromId);
 
     emit linked.incomingCall(fromId, callId);
+}
+
+void
+ContactModelPimpl::slotIncomingCallWithMedia(const QString& fromId,
+                                             const QString& callId,
+                                             const QString& displayname,
+                                             const VectorMapStringString& mediaList)
+{
+    bool emitContactAdded = false;
+    {
+        std::lock_guard<std::mutex> lk(contactsMtx_);
+        auto it = contacts.find(fromId);
+        if (it == contacts.end()) {
+            // Contact not found, load profile from database.
+            // The conversation model will create an entry and link the incomingCall.
+            auto type = (linked.owner.profileInfo.type == profile::Type::RING)
+                            ? profile::Type::PENDING
+                            : profile::Type::SIP;
+            addToContacts(fromId, type, displayname, false);
+            emitContactAdded = true;
+        } else {
+            // Update the display name
+            if (!displayname.isEmpty()) {
+                it->profileInfo.alias = displayname;
+                storage::createOrUpdateProfile(linked.owner.id, it->profileInfo, true);
+            }
+        }
+    }
+    if (emitContactAdded) {
+        emit linked.contactAdded(fromId);
+        if (linked.owner.profileInfo.type == profile::Type::RING) {
+            emit behaviorController.newTrustRequest(linked.owner.id, fromId);
+        }
+    } else
+        emit linked.profileUpdated(fromId);
+
+    emit linked.incomingCallWithMedia(fromId, callId, mediaList);
 }
 
 void

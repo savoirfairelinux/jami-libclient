@@ -138,6 +138,7 @@ struct Info
     bool isAudioOnly = false;
     Layout layout = Layout::GRID;
     VectorMapStringString participantsInfos = {};
+    VectorMapStringString mediaList = {};
     QSet<QString> peerRec {};
 };
 

@@ -248,6 +248,14 @@ public Q_SLOTS:
      */
     void slotIncomingCall(const QString& fromId, const QString& callId);
     /**
+     * Listen from callmodel for new calls.
+     * @param fromId caller uri
+     * @param callId
+     */
+    void slotIncomingCallWithMedia(const QString& fromId,
+                                   const QString& callId,
+                                   const VectorMapStringString& mediaList);
+    /**
      * Listen from callmodel for calls status changed.
      * @param callId
      */
@@ -1310,6 +1318,10 @@ ConversationModelPimpl::ConversationModelPimpl(const ConversationModel& linked,
             &ContactModel::incomingCall,
             this,
             &ConversationModelPimpl::slotIncomingCall);
+    connect(&*linked.owner.contactModel,
+            &ContactModel::incomingCallWithMedia,
+            this,
+            &ConversationModelPimpl::slotIncomingCallWithMedia);
     connect(&*linked.owner.callModel,
             &lrc::api::NewCallModel::callStatusChanged,
             this,
@@ -1413,6 +1425,10 @@ ConversationModelPimpl::~ConversationModelPimpl()
                &ContactModel::incomingCall,
                this,
                &ConversationModelPimpl::slotIncomingCall);
+    disconnect(&*linked.owner.contactModel,
+               &ContactModel::incomingCallWithMedia,
+               this,
+               &ConversationModelPimpl::slotIncomingCallWithMedia);
     disconnect(&*linked.owner.callModel,
                &lrc::api::NewCallModel::callStatusChanged,
                this,
@@ -1917,6 +1933,26 @@ ConversationModelPimpl::slotIncomingCall(const QString& fromId, const QString& c
 
     if (conversationIdx == -1) {
         qDebug() << "ConversationModelPimpl::slotIncomingCall, but conversation not found";
+        return; // Not a contact
+    }
+
+    auto& conversation = conversations.at(conversationIdx);
+    qDebug() << "Add call to conversation with " << fromId;
+    conversation.callId = callId;
+
+    addOrUpdateCallMessage(callId, fromId);
+    emit behaviorController.showIncomingCallView(linked.owner.id, conversation.uid);
+}
+
+void
+ConversationModelPimpl::slotIncomingCallWithMedia(const QString& fromId,
+                                                  const QString& callId,
+                                                  const VectorMapStringString& mediaList)
+{
+    auto conversationIdx = indexOfContact(fromId);
+
+    if (conversationIdx == -1) {
+        qDebug() << "ConversationModelPimpl::slotIncomingCallWithMedia, but conversation not found";
         return; // Not a contact
     }
 
