@@ -339,14 +339,14 @@ if(MSVC)
         # translations
         if(Qt5LinguistTools_FOUND)
             message("Releasing and copying translation files")
-            file(MAKE_DIRECTORY "${CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE}/share/ring/translations/")
-            file(MAKE_DIRECTORY "${CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE}/share/libringclient/translations/")
+            file(MAKE_DIRECTORY "${JAMI_OUTPUT_DIRECTORY_RELEASE}/share/ring/translations/")
+            file(MAKE_DIRECTORY "${JAMI_OUTPUT_DIRECTORY_RELEASE}/share/libringclient/translations/")
             file(GLOB TS_CLIENT_FILES ${PROJECT_SOURCE_DIR}/translations/*.ts)
             file(GLOB TS_LRC_FILES ${LRC}/translations/*.ts)
             set_source_files_properties(${TS_CLIENT_FILES} PROPERTIES OUTPUT_LOCATION
-                                        "${CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE}/share/ring/translations")
+                                        "${JAMI_OUTPUT_DIRECTORY_RELEASE}/share/ring/translations")
             set_source_files_properties(${TS_LRC_FILES} PROPERTIES OUTPUT_LOCATION
-                                        "${CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE}/share/libringclient/translations")
+                                        "${JAMI_OUTPUT_DIRECTORY_RELEASE}/share/libringclient/translations")
             qt5_add_translation(QM_CLIENT_FILES ${TS_CLIENT_FILES})
             qt5_add_translation(QM_LRC_FILES ${TS_LRC_FILES})
             target_sources(${PROJECT_NAME} PRIVATE ${QM_CLIENT_FILES})
