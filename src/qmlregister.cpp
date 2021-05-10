@@ -93,7 +93,6 @@ registerTypes()
     QML_REGISTERNAMESPACE(NS_ENUMS, dummy::staticMetaObject, "");
 
     // QAbstractListModels
-    QML_REGISTERTYPE(NS_MODELS, AccountListModel);
     QML_REGISTERTYPE(NS_MODELS, DeviceItemListModel);
     QML_REGISTERTYPE(NS_MODELS, BannedListModel);
     QML_REGISTERTYPE(NS_MODELS, ModeratorListModel);
@@ -108,6 +107,7 @@ registerTypes()
     QML_REGISTERTYPE(NS_MODELS, SmartListModel);
 
     // Roles & type enums for models
+    QML_REGISTERNAMESPACE(NS_MODELS, AccountList::staticMetaObject, "AccountList");
     QML_REGISTERNAMESPACE(NS_MODELS, ConversationList::staticMetaObject, "ConversationList");
     QML_REGISTERNAMESPACE(NS_MODELS, ContactList::staticMetaObject, "ContactList");
 

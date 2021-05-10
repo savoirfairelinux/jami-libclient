@@ -49,8 +49,8 @@ Label {
     }
 
     function resetAccountListModel(accountId) {
-        accountListModel.updateAvatarUid(accountId)
-        accountListModel.reset()
+        AccountListModel.updateAvatarUid(accountId)
+        AccountListModel.reset()
     }
 
     function togglePopup() {
@@ -105,18 +105,18 @@ Label {
     }
 
     Connections {
-        target: accountListModel
+        target: AccountListModel
 
         function onModelReset() {
             avatar.updateImage(AccountAdapter.currentAccountId,
-                               accountListModel.data(accountListModel.index(0, 0),
-                                                     AccountListModel.PictureUid))
-            avatar.presenceStatus = accountListModel.data(accountListModel.index(0, 0),
-                                                          AccountListModel.Status)
-            userAliasText.text = accountListModel.data(accountListModel.index(0,0),
-                                                       AccountListModel.Alias)
-            usernameText.text = accountListModel.data(accountListModel.index(0,0),
-                                                      AccountListModel.Username)
+                               AccountListModel.data(AccountListModel.index(0, 0),
+                                                     AccountList.PictureUid))
+            avatar.presenceStatus = AccountListModel.data(AccountListModel.index(0, 0),
+                                                          AccountList.Status)
+            userAliasText.text = AccountListModel.data(AccountListModel.index(0,0),
+                                                       AccountList.Alias)
+            usernameText.text = AccountListModel.data(AccountListModel.index(0,0),
+                                                      AccountList.Username)
         }
     }
 
@@ -135,8 +135,8 @@ Label {
 
             imageId: AccountAdapter.currentAccountId
 
-            presenceStatus: accountListModel.data(accountListModel.index(0, 0),
-                                                  AccountListModel.Status)
+            presenceStatus: AccountListModel.data(AccountListModel.index(0, 0),
+                                                  AccountList.Status)
         }
 
         ColumnLayout {
@@ -150,8 +150,8 @@ Label {
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
 
-                text: accountListModel.data(accountListModel.index(0,0),
-                                            AccountListModel.Alias)
+                text: AccountListModel.data(AccountListModel.index(0,0),
+                                            AccountList.Alias)
                 font.pointSize: JamiTheme.textFontSize
                 color: JamiTheme.textColor
                 elide: Text.ElideRight
@@ -165,8 +165,8 @@ Label {
 
                 visible: text.length
 
-                text:  accountListModel.data(accountListModel.index(0,0),
-                                             AccountListModel.Username)
+                text:  AccountListModel.data(AccountListModel.index(0,0),
+                                             AccountList.Username)
                 font.pointSize: JamiTheme.textFontSize
                 color: JamiTheme.faddedLastInteractionFontColor
                 elide: Text.ElideRight

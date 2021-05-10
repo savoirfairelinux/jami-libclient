@@ -28,9 +28,11 @@
 #include "api/contact.h"
 #include "api/conversation.h"
 
-AccountListModel::AccountListModel(QObject* parent)
+AccountListModel::AccountListModel(LRCInstance* instance, QObject* parent)
     : AbstractListModelBase(parent)
-{}
+{
+    lrcInstance_ = instance;
+}
 
 AccountListModel::~AccountListModel() {}
 
@@ -92,45 +94,12 @@ AccountListModel::data(const QModelIndex& index, int role) const
 QHash<int, QByteArray>
 AccountListModel::roleNames() const
 {
+    using namespace AccountList;
     QHash<int, QByteArray> roles;
-    roles[Alias] = "Alias";
-    roles[Username] = "Username";
-    roles[Type] = "Type";
-    roles[Status] = "Status";
-    roles[ID] = "ID";
-    roles[PictureUid] = "PictureUid";
+#define X(role) roles[role] = #role;
+    ACC_ROLES
+#undef X
     return roles;
-}
-
-QModelIndex
-AccountListModel::index(int row, int column, const QModelIndex& parent) const
-{
-    Q_UNUSED(parent);
-    if (column != 0) {
-        return QModelIndex();
-    }
-
-    if (row >= 0 && row < rowCount()) {
-        return createIndex(row, column);
-    }
-    return QModelIndex();
-}
-
-QModelIndex
-AccountListModel::parent(const QModelIndex& child) const
-{
-    Q_UNUSED(child);
-    return QModelIndex();
-}
-
-Qt::ItemFlags
-AccountListModel::flags(const QModelIndex& index) const
-{
-    auto flags = QAbstractItemModel::flags(index) | Qt::ItemNeverHasChildren | Qt::ItemIsSelectable;
-    if (!index.isValid()) {
-        return QAbstractItemModel::flags(index);
-    }
-    return flags;
 }
 
 void

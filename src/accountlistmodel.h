@@ -21,15 +21,62 @@
 
 #include "abstractlistmodelbase.h"
 
+#include <QSortFilterProxyModel>
+
+#define ACC_ROLES \
+    X(Alias) \
+    X(Username) \
+    X(Type) \
+    X(Status) \
+    X(ID) \
+    X(PictureUid)
+
+namespace AccountList {
+Q_NAMESPACE
+enum Role {
+    DummyRole = Qt::UserRole + 1,
+#define X(role) role,
+    ACC_ROLES
+#undef X
+};
+Q_ENUM_NS(Role)
+} // namespace AccountList
+
+/*
+ * The CurrentAccountFilterModel class
+ * is for the sole purpose of filtering out current account.
+ */
+class CurrentAccountFilterModel final : public QSortFilterProxyModel
+{
+    Q_OBJECT
+
+public:
+    explicit CurrentAccountFilterModel(LRCInstance* lrcInstance,
+                                       QAbstractListModel* parent = nullptr)
+        : QSortFilterProxyModel(parent)
+        , lrcInstance_(lrcInstance)
+    {
+        setSourceModel(parent);
+    }
+
+    virtual bool filterAcceptsRow(int sourceRow, const QModelIndex& sourceParent) const override
+    {
+        // Accept all contacts in conversation list filtered with account type, except those in a call.
+        auto index = sourceModel()->index(sourceRow, 0, sourceParent);
+        auto accountID = sourceModel()->data(index, AccountList::ID);
+        return accountID != lrcInstance_->getCurrAccId();
+    }
+
+protected:
+    LRCInstance* lrcInstance_ {nullptr};
+};
+
 class AccountListModel : public AbstractListModelBase
 {
     Q_OBJECT
 
 public:
-    enum Role { Alias = Qt::UserRole + 1, Username, Type, Status, ID, PictureUid };
-    Q_ENUM(Role)
-
-    explicit AccountListModel(QObject* parent = nullptr);
+    explicit AccountListModel(LRCInstance* instance, QObject* parent = nullptr);
     ~AccountListModel();
 
     /*
@@ -43,9 +90,6 @@ public:
      * Override role name as access point in qml.
      */
     QHash<int, QByteArray> roleNames() const override;
-    QModelIndex index(int row, int column = 0, const QModelIndex& parent = QModelIndex()) const;
-    QModelIndex parent(const QModelIndex& child) const;
-    Qt::ItemFlags flags(const QModelIndex& index) const;
 
     /*
      * This function is to reset the model when there's new account added.
@@ -56,6 +100,9 @@ public:
      * This function is to update avatar uuid when there's an avatar changed.
      */
     Q_INVOKABLE void updateAvatarUid(const QString& accountId);
+
+protected:
+    using Role = AccountList::Role;
 
 private:
     /*

@@ -350,12 +350,6 @@ Rectangle {
         }
     }
 
-    AccountListModel {
-        id: accountListModel
-
-        lrcInstance: LRCInstance
-    }
-
     SettingsMenu {
         id: settingsMenu
 

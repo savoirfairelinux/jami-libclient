@@ -24,6 +24,7 @@
 #include <QSettings>
 #include <QString>
 
+#include "accountlistmodel.h"
 #include "lrcinstance.h"
 #include "utils.h"
 
@@ -134,5 +135,8 @@ private:
     QMetaObject::Connection registeredNameSavedConnection_;
 
     AppSettingsManager* settingsManager_;
+
+    QScopedPointer<AccountListModel> accSrcModel_;
+    QScopedPointer<CurrentAccountFilterModel> accModel_;
 };
 Q_DECLARE_METATYPE(AccountAdapter*)
