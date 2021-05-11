@@ -163,6 +163,18 @@ public Q_SLOTS:
                           const QString& fromId,
                           const QString& displayname);
     /**
+     * Listen from CallbacksHandler when a call is incoming
+     * @param accountId account which receives the call
+     * @param callId
+     * @param fromId peer uri
+     * @param displayname
+     */
+    void slotIncomingCallWithMedia(const QString& accountId,
+                                   const QString& callId,
+                                   const QString& fromId,
+                                   const QString& displayname,
+                                   const VectorMapStringString& mediaList);
+    /**
      * Listen from CallbacksHandler when a call got a new state
      * @param callId
      * @param state the new state
@@ -263,20 +275,32 @@ NewCallModel::getCall(const QString& uid) const
     return *pimpl_->calls.at(uid);
 }
 
+void
+NewCallModel::setCallMediaList(const QString& callId, const VectorMapStringString& mediaList)
+{
+    pimpl_->calls.at(callId)->mediaList = mediaList;
+}
+
 QString
 NewCallModel::createCall(const QString& uri, bool isAudioOnly)
 {
+    VectorMapStringString mediaList {};
+    MapStringString mediaAttribute = {{"MEDIA_TYPE", "MEDIA_TYPE_AUDIO"},
+                                      {"ENABLED", "true"},
+                                      {"MUTED", "false"},
+                                      {"SOURCE", ""},
+                                      {"LABEL", "main_audio"}};
+    mediaList.push_back(mediaAttribute);
+    if (!isAudioOnly) {
+        mediaAttribute["MEDIA_TYPE"] = "MEDIA_TYPE_VIDEO";
+        mediaAttribute["LABEL"] = "main_video";
+        mediaList.push_back(mediaAttribute);
+    }
 #ifdef ENABLE_LIBWRAP
-    auto callId = isAudioOnly
-                      ? CallManager::instance().placeCall(owner.id, uri, {{"AUDIO_ONLY", "true"}})
-                      : CallManager::instance().placeCall(owner.id, uri);
-#else // dbus
+    auto callId = CallManager::instance().placeCallWithMedia(owner.id, uri, mediaList);
+#else  // dbus
     // do not use auto here (QDBusPendingReply<QString>)
-    QString callId = isAudioOnly
-                         ? CallManager::instance().placeCallWithDetails(owner.id,
-                                                                        uri,
-                                                                        {{"AUDIO_ONLY", "true"}})
-                         : CallManager::instance().placeCall(owner.id, uri);
+    QString callId = CallManager::instance().placeCallWithMedia(owner.id, uri, mediaList);
 #endif // ENABLE_LIBWRAP
 
     if (callId.isEmpty()) {
@@ -291,6 +315,7 @@ NewCallModel::createCall(const QString& uri, bool isAudioOnly)
     callInfo->status = call::Status::SEARCHING;
     callInfo->type = call::Type::DIALOG;
     callInfo->isAudioOnly = isAudioOnly;
+    callInfo->mediaList = mediaList;
     pimpl_->calls.emplace(callId, std::move(callInfo));
 
     return callId;
@@ -299,7 +324,19 @@ NewCallModel::createCall(const QString& uri, bool isAudioOnly)
 void
 NewCallModel::accept(const QString& callId) const
 {
-    CallManager::instance().accept(callId);
+    auto& callInfo = pimpl_->calls[callId];
+    if (!callInfo)
+        return;
+    if (callInfo->mediaList.empty())
+        CallManager::instance().accept(callId);
+    else
+        acceptWithMedia(callId, callInfo->mediaList);
+}
+
+void
+NewCallModel::acceptWithMedia(const QString& callId, const VectorMapStringString& mediaList) const
+{
+    CallManager::instance().acceptWithMedia(callId, mediaList);
 }
 
 void
@@ -553,6 +590,10 @@ NewCallModelPimpl::NewCallModelPimpl(const NewCallModel& linked,
             &CallbacksHandler::incomingCall,
             this,
             &NewCallModelPimpl::slotIncomingCall);
+    connect(&callbacksHandler,
+            &CallbacksHandler::incomingCallWithMedia,
+            this,
+            &NewCallModelPimpl::slotIncomingCallWithMedia);
     connect(&callbacksHandler,
             &CallbacksHandler::callStateChanged,
             this,
@@ -851,6 +892,54 @@ NewCallModelPimpl::slotIncomingCall(const QString& accountId,
     // HACK. BECAUSE THE DAEMON DOESN'T HANDLE THIS CASE!
     if (linked.owner.confProperties.autoAnswer) {
         linked.accept(callId);
+    }
+}
+
+void
+NewCallModelPimpl::slotIncomingCallWithMedia(const QString& accountId,
+                                             const QString& callId,
+                                             const QString& fromId,
+                                             const QString& displayname,
+                                             const VectorMapStringString& mediaList)
+{
+    if (linked.owner.id != accountId) {
+        return;
+    }
+    // TODO: uncomment this. For now, the rendez-vous account is showing calls
+    // if (linked.owner.confProperties.isRendezVous) {
+    //    // Do not notify for calls if rendez vous because it's in a detached
+    //    // mode and auto answer is managed by the daemon
+    //    return;
+    //}
+
+    // do not use auto here (QDBusPendingReply<MapStringString>)
+    MapStringString callDetails = CallManager::instance().getCallDetails(callId);
+
+    auto callInfo = std::make_shared<call::Info>();
+    callInfo->id = callId;
+    // peer uri = ring:<jami_id> or sip number
+    auto uri = (linked.owner.profileInfo.type != profile::Type::SIP && !fromId.contains("ring:"))
+                   ? "ring:" + fromId
+                   : fromId;
+    callInfo->peerUri = uri;
+    callInfo->isOutgoing = false;
+    callInfo->status = call::Status::INCOMING_RINGING;
+    callInfo->type = call::Type::DIALOG;
+    callInfo->isAudioOnly = callDetails["AUDIO_ONLY"] == "true" ? true : false;
+    callInfo->mediaList = mediaList;
+    calls.emplace(callId, std::move(callInfo));
+
+    if (!linked.owner.confProperties.allowIncoming
+        && linked.owner.profileInfo.type == profile::Type::RING) {
+        linked.refuse(callId);
+        return;
+    }
+
+    emit linked.newIncomingCall(fromId, callId, displayname);
+
+    // HACK. BECAUSE THE DAEMON DOESN'T HANDLE THIS CASE!
+    if (!linked.owner.confProperties.isRendezVous && linked.owner.confProperties.autoAnswer) {
+        linked.acceptWithMedia(callId, callInfo->mediaList);
     }
 }
 
