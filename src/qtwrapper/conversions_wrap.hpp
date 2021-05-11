@@ -73,6 +73,16 @@ convertVecMap(const std::vector<std::map<std::string, std::string>>& m)
     return temp;
 }
 
+inline std::vector<std::map<std::string, std::string>>
+convertVecMap(const VectorMapStringString& m)
+{
+    std::vector<std::map<std::string, std::string>> temp;
+    for (const auto& x : m) {
+        temp.push_back(convertMap(x));
+    }
+    return temp;
+}
+
 inline QStringList
 convertStringList(const std::vector<std::string>& v)
 {
