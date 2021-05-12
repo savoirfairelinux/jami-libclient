@@ -34,7 +34,6 @@ Rectangle {
 
     // ButtonCounts here is to make sure that flow layout margin is calculated correctly,
     // since no other methods can make buttons at the layout center.
-    property int buttonPreferredSize: 48
     property var isModerator: true
     property var isSip: false
 
@@ -73,11 +72,11 @@ Rectangle {
                 // TODO: refactor with Flow if possible
                 // 6 is the number of button
                 // If ~ 500px, go into wide mode
-                if (callOverlayButtonGroup.width < (buttonPreferredSize * 6 -
+                if (callOverlayButtonGroup.width < (JamiTheme.callButtonPreferredSize * 6 -
                         callOverlayButtonGroup.spacing * 6 + 300)) {
                     return 0
                 } else {
-                    return  callOverlayButtonGroup.width / 2 - buttonPreferredSize * 1.5 -
+                    return  callOverlayButtonGroup.width / 2 - JamiTheme.callButtonPreferredSize * 1.5 -
                             callOverlayButtonGroup.spacing
                 }
             }
@@ -87,8 +86,8 @@ Rectangle {
             id: noMicButton
 
             Layout.leftMargin: 8
-            Layout.preferredWidth: buttonPreferredSize
-            Layout.preferredHeight: buttonPreferredSize
+            Layout.preferredWidth: JamiTheme.callButtonPreferredSize
+            Layout.preferredHeight: JamiTheme.callButtonPreferredSize
 
             pressedColor: JamiTheme.invertedPressedButtonColor
             hoveredColor: JamiTheme.invertedHoveredButtonColor
@@ -108,8 +107,8 @@ Rectangle {
         PushButton {
             id: hangUpButton
 
-            Layout.preferredWidth: buttonPreferredSize
-            Layout.preferredHeight: buttonPreferredSize
+            Layout.preferredWidth: JamiTheme.callButtonPreferredSize
+            Layout.preferredHeight: JamiTheme.callButtonPreferredSize
 
             pressedColor: JamiTheme.declineButtonPressedRed
             hoveredColor: JamiTheme.declineButtonHoverRed
@@ -126,8 +125,8 @@ Rectangle {
         PushButton {
             id: noVideoButton
 
-            Layout.preferredWidth: buttonPreferredSize
-            Layout.preferredHeight: buttonPreferredSize
+            Layout.preferredWidth: JamiTheme.callButtonPreferredSize
+            Layout.preferredHeight: JamiTheme.callButtonPreferredSize
 
             pressedColor: JamiTheme.invertedPressedButtonColor
             hoveredColor: JamiTheme.invertedHoveredButtonColor
@@ -151,8 +150,8 @@ Rectangle {
         PushButton {
             id: addToConferenceButton
 
-            Layout.preferredWidth: buttonPreferredSize
-            Layout.preferredHeight: buttonPreferredSize
+            Layout.preferredWidth: JamiTheme.callButtonPreferredSize
+            Layout.preferredHeight: JamiTheme.callButtonPreferredSize
             visible: !isModerator && !isSip
 
             pressedColor: JamiTheme.invertedPressedButtonColor
@@ -170,8 +169,8 @@ Rectangle {
         PushButton {
             id: chatButton
 
-            Layout.preferredWidth: buttonPreferredSize
-            Layout.preferredHeight: buttonPreferredSize
+            Layout.preferredWidth: JamiTheme.callButtonPreferredSize
+            Layout.preferredHeight: JamiTheme.callButtonPreferredSize
 
             pressedColor: JamiTheme.invertedPressedButtonColor
             hoveredColor: JamiTheme.invertedHoveredButtonColor
@@ -188,8 +187,8 @@ Rectangle {
         PushButton {
             id: optionsButton
 
-            Layout.preferredWidth: buttonPreferredSize
-            Layout.preferredHeight: buttonPreferredSize
+            Layout.preferredWidth: JamiTheme.callButtonPreferredSize
+            Layout.preferredHeight: JamiTheme.callButtonPreferredSize
             Layout.rightMargin: 8
 
             pressedColor: JamiTheme.invertedPressedButtonColor

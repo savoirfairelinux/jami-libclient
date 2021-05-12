@@ -71,6 +71,7 @@ Item {
     property bool showPresenceIndicator: true
     property int unreadMessagesCount: 0
     property bool enableAnimation: true
+    property bool showSpinningAnimation: false
 
     signal imageIsReady
 
@@ -205,6 +206,18 @@ Item {
         size: root.width * 0.26
 
         visible: showPresenceIndicator
+    }
+
+    SpinningAnimation {
+        id: spinningAnimation
+
+        anchors.horizontalCenter: root.horizontalCenter
+        anchors.verticalCenter: root.verticalCenter
+
+        visible: showSpinningAnimation
+        width: Math.ceil(root.width * 1.05)
+        height: Math.ceil(root.height * 1.05)
+        z: -1
     }
 
     Connections {

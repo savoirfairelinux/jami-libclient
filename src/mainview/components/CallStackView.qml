@@ -23,6 +23,9 @@ import QtQuick.Controls.Universal 2.14
 
 import net.jami.Models 1.0
 import net.jami.Adapters 1.0
+import net.jami.Constants 1.0
+
+import "../../commoncomponents"
 
 import "../js/incomingcallpagecreation.js" as IncomingCallPageCreation
 
@@ -30,8 +33,7 @@ Rectangle {
     id: callStackViewWindow
 
     enum StackNumber {
-        IncomingPageStack,
-        OutgoingPageStack,
+        InitialPageStack,
         AudioPageStack,
         VideoPageStack
     }
@@ -77,6 +79,21 @@ Rectangle {
         })
     }
 
+    function showInitialCallPage(callState) {
+        var itemToFind = getItemFromStack(CallStackView.InitialPageStack)
+        if (!itemToFind) {
+            callStackMainView.push(initialCallPage, StackView.Immediate)
+        } else {
+            callStackMainView.pop(itemToFind, StackView.Immediate)
+        }
+        initialCallPage.accountConvPair = [responsibleAccountId, responsibleConvUid]
+        initialCallPage.callStatus = callState
+        if (initialCallPage.callStatus === Call.Status.INCOMING_RINGING)
+            initialCallPage.isIncoming = true
+        else
+            initialCallPage.isIncoming = false
+    }
+
     function showAudioCallPage() {
         var itemToFind = getItemFromStack(CallStackView.AudioPageStack)
         if (!itemToFind) {
@@ -85,26 +102,6 @@ Rectangle {
             callStackMainView.pop(itemToFind, StackView.Immediate)
         }
         audioCallPage.updateUI(responsibleAccountId, responsibleConvUid)
-    }
-
-    function showOutgoingCallPage() {
-        var itemToFind = getItemFromStack(CallStackView.OutgoingPageStack)
-        if (!itemToFind) {
-            callStackMainView.push(outgoingCallPage, StackView.Immediate)
-        } else {
-            callStackMainView.pop(itemToFind, StackView.Immediate)
-        }
-        outgoingCallPage.updateUI(responsibleAccountId, responsibleConvUid)
-    }
-
-    function showIncomingCallPage(accountId, convUid) {
-        var itemToFind = getItemFromStack(CallStackView.IncomingPageStack)
-        if (!itemToFind) {
-            callStackMainView.push(incomingCallPage, StackView.Immediate)
-        } else {
-            callStackMainView.pop(itemToFind, StackView.Immediate)
-        }
-        incomingCallPage.updateUI(responsibleAccountId, responsibleConvUid)
     }
 
     function showVideoCallPage() {
@@ -155,9 +152,9 @@ Rectangle {
         target: CallAdapter
 
         function onCallStatusChanged(status, accountId, convUid) {
-            if (callStackMainView.currentItem.stackNumber === CallStackView.OutgoingPageStack
+            if (callStackMainView.currentItem.stackNumber === CallStackView.InitialPageStack
                     && responsibleConvUid === convUid && responsibleAccountId === accountId) {
-                outgoingCallPage.callStatus = status
+                initialCallPage.callStatus = status
             }
         }
 
@@ -179,18 +176,6 @@ Rectangle {
         visible: callStackMainView.currentItem.stackNumber === stackNumber
     }
 
-    OutgoingCallPage {
-        id: outgoingCallPage
-
-        property int stackNumber: CallStackView.OutgoingPageStack
-
-        visible: callStackMainView.currentItem.stackNumber === stackNumber
-
-        onCallCancelButtonIsClicked: {
-            CallAdapter.hangUpACall(responsibleAccountId, responsibleConvUid)
-        }
-    }
-
     VideoCallPage {
         id: videoCallPage
 
@@ -199,19 +184,19 @@ Rectangle {
         visible: callStackMainView.currentItem.stackNumber === stackNumber
     }
 
-    IncomingCallPage {
-        id: incomingCallPage
+    InitialCallPage {
+        id: initialCallPage
 
-        property int stackNumber: CallStackView.IncomingPageStack
+        property int stackNumber: CallStackView.InitialPageStack
 
-        onCallAcceptButtonIsClicked: {
+        onCallAccepted: {
             CallAdapter.acceptACall(responsibleAccountId, responsibleConvUid)
             communicationPageMessageWebView.setSendContactRequestButtonVisible(false)
             mainViewSidePanel.selectTab(SidePanelTabBar.Conversations)
         }
 
-        onCallCancelButtonIsClicked: {
-            CallAdapter.refuseACall(responsibleAccountId, responsibleConvUid)
+        onCallCanceled: {
+            CallAdapter.hangUpACall(responsibleAccountId, responsibleConvUid)
         }
 
         visible: callStackMainView.currentItem.stackNumber === stackNumber
@@ -222,6 +207,6 @@ Rectangle {
 
         anchors.fill: parent
 
-        initialItem: outgoingCallPage
+        initialItem: initialCallPage
     }
 }

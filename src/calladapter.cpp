@@ -68,7 +68,7 @@ CallAdapter::CallAdapter(SystemTray* systemTray, LRCInstance* instance, QObject*
     connect(systemTray_,
             &SystemTray::declineCallActivated,
             [this](const QString& accountId, const QString& convUid) {
-                refuseACall(accountId, convUid);
+                hangUpACall(accountId, convUid);
             });
 #endif
 
@@ -153,15 +153,6 @@ CallAdapter::hangUpACall(const QString& accountId, const QString& convUid)
     const auto& convInfo = lrcInstance_->getConversationFromConvUid(convUid, accountId);
     if (!convInfo.uid.isEmpty()) {
         lrcInstance_->getAccountInfo(accountId).callModel->hangUp(convInfo.callId);
-    }
-}
-
-void
-CallAdapter::refuseACall(const QString& accountId, const QString& convUid)
-{
-    const auto& convInfo = lrcInstance_->getConversationFromConvUid(convUid, accountId);
-    if (!convInfo.uid.isEmpty()) {
-        lrcInstance_->getAccountInfo(accountId).callModel->refuse(convInfo.callId);
     }
 }
 

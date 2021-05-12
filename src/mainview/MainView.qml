@@ -198,10 +198,8 @@ Rectangle {
                     callStackView.showAudioCallPage()
                 else
                     callStackView.showVideoCallPage()
-            } else if (item.callState === Call.Status.INCOMING_RINGING) {
-                callStackView.showIncomingCallPage()
             } else {
-                callStackView.showOutgoingCallPage(item.callState)
+                callStackView.showInitialCallPage(item.callState)
             }
             pushCallStackView()
 

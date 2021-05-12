@@ -27,6 +27,11 @@ import net.jami.Enums 1.0
 Item {
     property bool darkTheme: SettingsAdapter.getAppValue(Settings.EnableDarkTheme)
 
+    // Jami theme colors
+    function rgba256(r, g, b, a) {
+        return Qt.rgba(r / 255, g / 255, b / 255, a / 100.)
+    }
+
     // General
     property color blackColor: "#000000"
     property color whiteColor: "#ffffff"
@@ -82,6 +87,10 @@ Item {
     property color buttonTintedRed: "red"
     property color buttonTintedRedHovered: "#c00"
     property color buttonTintedRedPressed: "#b00"
+    property color acceptGreen: rgba256(11, 130, 113, 100)
+    property color acceptGreenTransparency: rgba256(11, 130, 113, 56)
+    property color refuseRed: rgba256(204, 0, 34, 100)
+    property color refuseRedTransparent: rgba256(204, 0, 34, 56)
 
     property color closeButtonLighterBlack: "#4c4c4c"
 
@@ -142,22 +151,17 @@ Item {
     property color faddedFontColor: darkTheme? "#c0c0c0" : "#a0a0a0"
     property color faddedLastInteractionFontColor: darkTheme ? "#c0c0c0" : "#505050"
 
-    // Jami theme colors
-    function rgb256(r, g, b) {
-        return Qt.rgba(r / 255, g / 255, b / 255, 1.0)
-    }
-
-    property color darkGrey: rgb256(63, 63, 63)
-    property color blueLogo_: darkTheme ? whiteColor : rgb256(0, 7, 71)
-    property color lightGrey_: rgb256(242, 242, 242)
-    property color mediumGrey: rgb256(218, 219, 220)
-    property color grey_: rgb256(160, 160, 160)
-    property color red_: rgb256(251, 72, 71)
-    property color urgentOrange_: rgb256(255, 165, 0)
-    property color green_: rgb256(127, 255, 0)
-    property color presenceGreen_: rgb256(76, 217, 100)
-    property color bgSideBarDarkMode_: rgb256(24, 24, 24)
-    property color bgDarkMode_: rgb256(32, 32, 32)
+    property color darkGrey: rgba256(63, 63, 63, 100)
+    property color blueLogo_: darkTheme ? whiteColor : rgba256(0, 7, 71, 100)
+    property color lightGrey_: rgba256(242, 242, 242, 100)
+    property color mediumGrey: rgba256(218, 219, 220, 100)
+    property color grey_: rgba256(160, 160, 160, 100)
+    property color red_: rgba256(251, 72, 71, 100)
+    property color urgentOrange_: rgba256(255, 165, 0, 100)
+    property color green_: rgba256(127, 255, 0, 100)
+    property color presenceGreen_: rgba256(76, 217, 100, 100)
+    property color bgSideBarDarkMode_: rgba256(24, 24, 24, 100)
+    property color bgDarkMode_: rgba256(32, 32, 32, 100)
 
     property int fadeDuration: 150
 
@@ -182,6 +186,8 @@ Item {
     property real smartListItemHeight: 64
     property real smartListAvatarSize: 52
     property real smartListTransitionDuration: 120
+    property real avatarSizeInitialCall: 130
+    property real callButtonPreferredSize: 50
 
     property real maximumWidthSettingsView: 600
     property real settingsHeaderpreferredHeight: 64

@@ -35,6 +35,7 @@
         <file>src/commoncomponents/PresenceIndicator.qml</file>
         <file>src/commoncomponents/AvatarImage.qml</file>
         <file>src/commoncomponents/DaemonReconnectPopup.qml</file>
+        <file>src/commoncomponents/SpinningAnimation.qml</file>
         <file>src/settingsview/SettingsView.qml</file>
         <file>src/settingsview/components/ChatviewSettings.qml</file>
         <file>src/settingsview/components/SettingsMenu.qml</file>
@@ -103,8 +104,7 @@
         <file>src/mainview/components/MessageWebViewHeader.qml</file>
         <file>src/mainview/components/AccountComboBox.qml</file>
         <file>src/mainview/components/CallStackView.qml</file>
-        <file>src/mainview/components/IncomingCallPage.qml</file>
-        <file>src/mainview/components/OutgoingCallPage.qml</file>
+        <file>src/mainview/components/InitialCallPage.qml</file>
         <file>src/mainview/components/AudioCallPage.qml</file>
         <file>src/mainview/components/CallOverlay.qml</file>
         <file>src/mainview/components/CallOverlayButtonGroup.qml</file>
@@ -127,7 +127,6 @@
         <file>src/mainview/components/RecordBox.qml</file>
         <file>src/mainview/components/SipInputPanel.qml</file>
         <file>src/mainview/components/ParticipantOverlayMenu.qml</file>
-        <file>src/mainview/components/UserInfoCallPage.qml</file>
         <file>src/mainview/js/videodevicecontextmenuitemcreation.js</file>
         <file>src/mainview/js/incomingcallpagecreation.js</file>
         <file>src/mainview/js/selectscreenwindowcreation.js</file>
