@@ -50,8 +50,8 @@ SmartListModel::rowCount(const QModelIndex& parent) const
             lrcInstance_->getCurrentAccountId());
         auto& convModel = accInfo.conversationModel;
         if (listModelType_ == Type::TRANSFER) {
-            auto filterType = accInfo.profileInfo.type;
-            return convModel->getFilteredConversations(filterType).size();
+            //            auto filterType = accInfo.profileInfo.type;
+            //            return convModel->getFilteredConversations(filterType).size();
         } else if (listModelType_ == Type::CONFERENCE) {
             auto calls = conferenceables_[ConferenceableItem::CALL];
             auto contacts = conferenceables_[ConferenceableItem::CONTACT];
@@ -81,8 +81,9 @@ SmartListModel::data(const QModelIndex& index, int role) const
                 lrcInstance_->getCurrentAccountId());
             auto& convModel = currentAccountInfo.conversationModel;
             auto filterType = currentAccountInfo.profileInfo.type;
-            auto& item = convModel->getFilteredConversations(filterType).at(index.row());
-            return dataForItem(item, role);
+            return {};
+            // auto& item = convModel->getFilteredConversations(filterType).at(index.row());
+            // return dataForItem(item, role);
         } catch (const std::exception& e) {
             qWarning() << e.what();
         }

@@ -208,7 +208,7 @@ Label {
                 height: visible ? preferredSize : 0
                 anchors.verticalCenter: parent.verticalCenter
 
-                visible: LRCInstance.currentAccountType === Profile.Type.RING
+                visible: LRCInstance.currentAccountType === Profile.Type.JAMI
                 toolTipText: JamiStrings.displayQRCode
 
                 source: "qrc:/images/icons/share-24px.svg"

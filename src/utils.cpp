@@ -525,7 +525,7 @@ Utils::isContactValid(const QString& contactUid, const lrc::api::ConversationMod
         const auto contact = model.owner.contactModel->getContact(contactUid);
         return (contact.profileInfo.type == lrc::api::profile::Type::PENDING
                 || contact.profileInfo.type == lrc::api::profile::Type::TEMPORARY
-                || contact.profileInfo.type == lrc::api::profile::Type::RING
+                || contact.profileInfo.type == lrc::api::profile::Type::JAMI
                 || contact.profileInfo.type == lrc::api::profile::Type::SIP)
                && !contact.profileInfo.uri.isEmpty();
     } catch (const std::out_of_range& e) {
@@ -804,7 +804,7 @@ Utils::accountPhoto(LRCInstance* instance,
         QString letterStr = (bestId == bestName || bestName == accountInfo.profileInfo.uri)
                                 ? QString()
                                 : bestName;
-        QString prefix = accountInfo.profileInfo.type == lrc::api::profile::Type::RING ? "ring:"
+        QString prefix = accountInfo.profileInfo.type == lrc::api::profile::Type::JAMI ? "ring:"
                                                                                        : "sip:";
         photo = fallbackAvatar(prefix + accountInfo.profileInfo.uri, letterStr, size);
     }

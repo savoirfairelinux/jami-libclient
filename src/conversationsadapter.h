@@ -66,7 +66,7 @@ private Q_SLOTS:
     // cross-account slots
     void onNewUnreadInteraction(const QString& accountId,
                                 const QString& convUid,
-                                uint64_t interactionId,
+                                const QString& interactionId,
                                 const interaction::Info& interaction);
     void onNewReadInteraction(const QString& accountId,
                               const QString& convUid,

@@ -33,7 +33,7 @@ ConversationsAdapter::ConversationsAdapter(SystemTray* systemTray,
                                            LRCInstance* instance,
                                            QObject* parent)
     : QmlAdapterBase(instance, parent)
-    , currentTypeFilter_(profile::Type::RING)
+    , currentTypeFilter_(profile::Type::JAMI)
     , systemTray_(systemTray)
     , convSrcModel_(new ConversationListModel(lrcInstance_))
     , convModel_(new ConversationListProxyModel(convSrcModel_.get()))
@@ -139,17 +139,17 @@ ConversationsAdapter::safeInit()
 
     Q_EMIT modelChanged(QVariant::fromValue(conversationSmartListModel_));
 
-    connect(&lrcInstance_->behaviorController(),
-            &BehaviorController::newUnreadInteraction,
-            this,
-            &ConversationsAdapter::onNewUnreadInteraction,
-            Qt::UniqueConnection);
+    //    connect(&lrcInstance_->behaviorController(),
+    //            &BehaviorController::newUnreadInteraction,
+    //            this,
+    //            &ConversationsAdapter::onNewUnreadInteraction,
+    //            Qt::UniqueConnection);
 
-    connect(&lrcInstance_->behaviorController(),
-            &BehaviorController::newReadInteraction,
-            this,
-            &ConversationsAdapter::onNewReadInteraction,
-            Qt::UniqueConnection);
+    //  connect(&lrcInstance_->behaviorController(),
+    //          &BehaviorController::newReadInteraction,
+    //          this,
+    //          &ConversationsAdapter::onNewReadInteraction,
+    //          Qt::UniqueConnection);
 
     connect(&lrcInstance_->behaviorController(),
             &BehaviorController::newTrustRequest,
@@ -194,7 +194,7 @@ ConversationsAdapter::onCurrentAccountIdChanged()
 void
 ConversationsAdapter::onNewUnreadInteraction(const QString& accountId,
                                              const QString& convUid,
-                                             uint64_t interactionId,
+                                             const QString& interactionId,
                                              const interaction::Info& interaction)
 {
     if (!interaction.authorUri.isEmpty()
@@ -357,15 +357,15 @@ ConversationsAdapter::updateConversationFilterData()
     int totalUnreadMessages {0};
     if (accountInfo.profileInfo.type != profile::Type::SIP) {
         auto& convModel = accountInfo.conversationModel;
-        auto conversations = convModel->getFilteredConversations(profile::Type::RING, false);
+        auto conversations = convModel->getFilteredConversations(FilterType::JAMI, false);
         conversations.for_each([&totalUnreadMessages](const conversation::Info& conversation) {
             totalUnreadMessages += conversation.unreadMessages;
         });
     }
     set_totalUnreadMessageCount(totalUnreadMessages);
-    set_pendingRequestCount(accountInfo.contactModel->pendingRequestCount());
+    set_pendingRequestCount(accountInfo.conversationModel->pendingRequestCount());
     if (pendingRequestCount_ == 0 && currentTypeFilter_ == profile::Type::PENDING) {
-        set_currentTypeFilter(profile::Type::RING);
+        set_currentTypeFilter(profile::Type::JAMI);
     }
 }
 

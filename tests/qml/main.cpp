@@ -77,7 +77,7 @@ public:
         lrcInstance_->subscribeToDebugReceived();
 
         auto downloadPath = settingsManager_->getValue(Settings::Key::DownloadPath);
-        lrcInstance_->dataTransferModel().downloadDirectory = downloadPath.toString() + "/";
+        lrcInstance_->accountModel().downloadDirectory = downloadPath.toString() + "/";
     }
 
     void qmlEngineRegistration(QQmlEngine* engine)

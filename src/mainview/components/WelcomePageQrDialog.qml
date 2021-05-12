@@ -50,7 +50,7 @@ ModalPopup {
             fillMode: Image.PreserveAspectFit
             source: {
                 if (LRCInstance.currentAccountId &&
-                        LRCInstance.currentAccountType === Profile.Type.RING)
+                        LRCInstance.currentAccountType === Profile.Type.JAMI)
                     return "image://qrImage/account_" + LRCInstance.currentAccountId
                 return ""
             }

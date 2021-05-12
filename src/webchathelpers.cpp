@@ -23,15 +23,20 @@
 
 QJsonObject
 buildInteractionJson(lrc::api::ConversationModel& conversationModel,
-                     const uint64_t msgId,
+                     const QString msgId,
                      const lrc::api::interaction::Info& inter)
 {
     QRegExp reg(".(jpeg|jpg|gif|png)$");
     auto interaction = inter;
-    if (interaction.type == lrc::api::interaction::Type::DATA_TRANSFER
-        && interaction.body.toLower().contains(reg)) {
-        interaction.body = "file://" + interaction.body;
+    if (interaction.type == lrc::api::interaction::Type::DATA_TRANSFER) {
+        if (interaction.body.isEmpty())
+            return {};
+        else if (interaction.body.toLower().contains(reg))
+            interaction.body = "file://" + interaction.body;
     }
+
+    if (interaction.type == lrc::api::interaction::Type::MERGE)
+        return {};
 
     auto sender = interaction.authorUri;
     auto timestamp = QString::number(interaction.timestamp);
@@ -40,7 +45,7 @@ buildInteractionJson(lrc::api::ConversationModel& conversationModel,
 
     QJsonObject interactionObject = QJsonObject();
     interactionObject.insert("text", QJsonValue(interaction.body));
-    interactionObject.insert("id", QJsonValue(QString::number(msgId)));
+    interactionObject.insert("id", QJsonValue(msgId));
     interactionObject.insert("sender", QJsonValue(sender));
     interactionObject.insert("sender_contact_method", QJsonValue(sender));
     interactionObject.insert("timestamp", QJsonValue(timestamp));
@@ -60,7 +65,7 @@ buildInteractionJson(lrc::api::ConversationModel& conversationModel,
     case lrc::api::interaction::Type::DATA_TRANSFER: {
         interactionObject.insert("type", QJsonValue("data_transfer"));
         lrc::api::datatransfer::Info info = {};
-        conversationModel.getTransferInfo(msgId, info);
+        // conversationModel.getTransferInfo(msgId, info);
         if (info.status != lrc::api::datatransfer::Status::INVALID) {
             interactionObject.insert("totalSize", QJsonValue(qint64(info.totalSize)));
             interactionObject.insert("progress", QJsonValue(qint64(info.progress)));
@@ -125,7 +130,7 @@ buildInteractionJson(lrc::api::ConversationModel& conversationModel,
 
 QString
 interactionToJsonInteractionObject(lrc::api::ConversationModel& conversationModel,
-                                   const uint64_t msgId,
+                                   const QString& msgId,
                                    const lrc::api::interaction::Info& interaction)
 {
     auto interactionObject = buildInteractionJson(conversationModel, msgId, interaction);
@@ -134,7 +139,7 @@ interactionToJsonInteractionObject(lrc::api::ConversationModel& conversationMode
 
 QString
 interactionsToJsonArrayObject(lrc::api::ConversationModel& conversationModel,
-                              const std::map<uint64_t, lrc::api::interaction::Info> interactions)
+                              MessagesList interactions)
 {
     QJsonArray array;
     for (const auto& interaction : interactions) {
