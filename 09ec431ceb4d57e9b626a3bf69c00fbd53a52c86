@@ -1,0 +1,118 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "cd0cb94e_d2702214",
+        "filename": "src/api/newcallmodel.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 856
+      },
+      "writtenOn": "2021-05-12T12:44:49Z",
+      "side": 1,
+      "message": "wrong param",
+      "range": {
+        "startLine": 125,
+        "startChar": 14,
+        "endLine": 125,
+        "endChar": 25
+      },
+      "revId": "09ec431ceb4d57e9b626a3bf69c00fbd53a52c86",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9e9123e0_b8a38e1e",
+        "filename": "src/callbackshandler.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 856
+      },
+      "writtenOn": "2021-05-12T12:44:49Z",
+      "side": 1,
+      "message": "received",
+      "range": {
+        "startLine": 119,
+        "startChar": 30,
+        "endLine": 119,
+        "endChar": 39
+      },
+      "revId": "09ec431ceb4d57e9b626a3bf69c00fbd53a52c86",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fdb221c9_95b0dbc4",
+        "filename": "src/newcallmodel.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 171,
+      "author": {
+        "id": 856
+      },
+      "writtenOn": "2021-05-12T12:44:49Z",
+      "side": 1,
+      "message": "missing medialist param",
+      "revId": "09ec431ceb4d57e9b626a3bf69c00fbd53a52c86",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8d40bfa4_208435a4",
+        "filename": "src/newcallmodel.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 330,
+      "author": {
+        "id": 856
+      },
+      "writtenOn": "2021-05-12T12:44:49Z",
+      "side": 1,
+      "message": "We should not need this. The client should call either acceptWithMedia if it support multi-stream, or call accept otherwise.",
+      "revId": "09ec431ceb4d57e9b626a3bf69c00fbd53a52c86",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "04787a9d_3ce055c9",
+        "filename": "src/newcallmodel.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 918,
+      "author": {
+        "id": 856
+      },
+      "writtenOn": "2021-05-12T12:44:49Z",
+      "side": 1,
+      "message": "TBD",
+      "revId": "09ec431ceb4d57e9b626a3bf69c00fbd53a52c86",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a1fd87e1_30b576f7",
+        "filename": "src/newcallmodel.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 950,
+      "author": {
+        "id": 856
+      },
+      "writtenOn": "2021-05-12T12:44:49Z",
+      "side": 1,
+      "message": "What\u0027s missing in the daemon ?",
+      "revId": "09ec431ceb4d57e9b626a3bf69c00fbd53a52c86",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    }
+  ]
+}
