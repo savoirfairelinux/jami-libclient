@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "0cc1722d_676f408c",
+        "filename": "src/api/newcallmodel.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 859
+      },
+      "writtenOn": "2021-05-12T13:49:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cd0cb94e_d2702214",
+      "range": {
+        "startLine": 125,
+        "startChar": 14,
+        "endLine": 125,
+        "endChar": 25
+      },
+      "revId": "09ec431ceb4d57e9b626a3bf69c00fbd53a52c86",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9e9123e0_b8a38e1e",
         "filename": "src/callbackshandler.h",
         "patchSetId": 6
@@ -48,6 +72,30 @@
     },
     {
       "key": {
+        "uuid": "5fd74a04_3b5c7b8a",
+        "filename": "src/callbackshandler.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 859
+      },
+      "writtenOn": "2021-05-12T13:49:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9e9123e0_b8a38e1e",
+      "range": {
+        "startLine": 119,
+        "startChar": 30,
+        "endLine": 119,
+        "endChar": 39
+      },
+      "revId": "09ec431ceb4d57e9b626a3bf69c00fbd53a52c86",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fdb221c9_95b0dbc4",
         "filename": "src/newcallmodel.cpp",
         "patchSetId": 6
@@ -62,6 +110,24 @@
       "revId": "09ec431ceb4d57e9b626a3bf69c00fbd53a52c86",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c9fe990a_c94b5cd0",
+        "filename": "src/newcallmodel.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 171,
+      "author": {
+        "id": 859
+      },
+      "writtenOn": "2021-05-12T13:49:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fdb221c9_95b0dbc4",
+      "revId": "09ec431ceb4d57e9b626a3bf69c00fbd53a52c86",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     },
     {
       "key": {
@@ -82,6 +148,24 @@
     },
     {
       "key": {
+        "uuid": "1c734be8_2a1e0c08",
+        "filename": "src/newcallmodel.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 330,
+      "author": {
+        "id": 859
+      },
+      "writtenOn": "2021-05-12T13:49:15Z",
+      "side": 1,
+      "message": "I was avoiding client binding changes. but yes, it can be done",
+      "parentUuid": "8d40bfa4_208435a4",
+      "revId": "09ec431ceb4d57e9b626a3bf69c00fbd53a52c86",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "04787a9d_3ce055c9",
         "filename": "src/newcallmodel.cpp",
         "patchSetId": 6
@@ -99,6 +183,24 @@
     },
     {
       "key": {
+        "uuid": "e5fa505a_338f11d5",
+        "filename": "src/newcallmodel.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 918,
+      "author": {
+        "id": 859
+      },
+      "writtenOn": "2021-05-12T13:49:15Z",
+      "side": 1,
+      "message": "keeping same code used for previous api.",
+      "parentUuid": "04787a9d_3ce055c9",
+      "revId": "09ec431ceb4d57e9b626a3bf69c00fbd53a52c86",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "a1fd87e1_30b576f7",
         "filename": "src/newcallmodel.cpp",
         "patchSetId": 6
@@ -110,6 +212,24 @@
       "writtenOn": "2021-05-12T12:44:49Z",
       "side": 1,
       "message": "What\u0027s missing in the daemon ?",
+      "revId": "09ec431ceb4d57e9b626a3bf69c00fbd53a52c86",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c8c580be_c045b1bc",
+        "filename": "src/newcallmodel.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 950,
+      "author": {
+        "id": 859
+      },
+      "writtenOn": "2021-05-12T13:49:15Z",
+      "side": 1,
+      "message": "same, but added !linked.owner.confProperties.isRendezVous to avoid client crash",
+      "parentUuid": "a1fd87e1_30b576f7",
       "revId": "09ec431ceb4d57e9b626a3bf69c00fbd53a52c86",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": true
