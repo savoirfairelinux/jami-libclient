@@ -33,6 +33,7 @@ BaseDialog {
     property string aliasText: ""
     property string registeredNameText: ""
     property string idText: ""
+    property bool isSwarm: false
 
     property int preferredImgSize: 80
 
@@ -203,6 +204,20 @@ BaseDialog {
                 sourceSize.width: preferredImgSize
                 sourceSize.height: preferredImgSize
                 mipmap: true
+            }
+
+            Text {
+                Layout.alignment: Qt.AlignRight
+                font.pointSize: JamiTheme.textFontSize
+                text: JamiStrings.isSwarm
+                color: JamiTheme.faddedFontColor
+            }
+	
+            Text {
+                Layout.alignment: Qt.AlignLeft
+                font.pointSize: JamiTheme.textFontSize
+                text: isSwarm? JamiStrings.trueStr : JamiStrings.falseStr
+                color: JamiTheme.faddedFontColor
             }
 
             MaterialButton {

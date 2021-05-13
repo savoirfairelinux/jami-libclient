@@ -104,6 +104,9 @@ ConversationListModelBase::dataForItem(item_t item, int role) const
     case Role::ContactType: {
         return QVariant(static_cast<int>(contact.profileInfo.type));
     }
+    case Role::IsSwarm: {
+        return QVariant(item.mode != lrc::api::conversation::Mode::NON_SWARM);
+    }
     case Role::IsBanned: {
         return QVariant(contact.isBanned);
     }

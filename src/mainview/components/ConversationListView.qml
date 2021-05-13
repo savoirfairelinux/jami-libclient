@@ -134,6 +134,7 @@ ListView {
                 "displayName": model.dataForRow(row, ConversationList.BestName),
                 "uri": model.dataForRow(row, ConversationList.URI),
                 "contactType": model.dataForRow(row, ConversationList.ContactType),
+                "isSwarm": model.dataForRow(row, ConversationList.IsSwarm),
             }
 
             responsibleAccountId = LRCInstance.currentAccountId
@@ -145,6 +146,7 @@ ListView {
             userProfile.registeredNameText = item.displayId
             userProfile.idText = item.uri
             userProfile.contactImageUid = item.convId
+            userProfile.isSwarm = item.isSwarm
 
             openMenu()
         }

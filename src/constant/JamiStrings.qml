@@ -480,4 +480,9 @@ Item {
     // Daemon reconnection
     property string reconnectDaemon: qsTr("Trying to reconnect to the Jami daemon (dring)…")
     property string reconnectionFailed: qsTr("Could not re-connect to the Jami daemon (dring).\nJami will now quit.")
+
+    // Is Swarm
+    property string isSwarm: qsTr("Is swarm:")
+    property string trueStr: qsTr("True")
+    property string falseStr: qsTr("False")
 }
