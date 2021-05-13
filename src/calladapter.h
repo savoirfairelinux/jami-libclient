@@ -77,6 +77,7 @@ public:
     Q_INVOKABLE void updateCall(const QString& convUid = {},
                                 const QString& accountId = {},
                                 bool forceCallOnly = false);
+    Q_INVOKABLE QString getCallDurationTime(const QString& accountId, const QString& convUid);
 
 Q_SIGNALS:
     void callStatusChanged(int index, const QString& accountId, const QString& convUid);
@@ -115,8 +116,6 @@ private:
 
     // For Call Overlay
     void updateCallOverlay(const lrc::api::conversation::Info& convInfo);
-    void setTime(const QString& accountId, const QString& convUid);
-    QTimer* oneSecondTimer_;
     ScreenSaver screenSaver;
 
     void preventScreenSaver(bool state);

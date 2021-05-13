@@ -33,7 +33,6 @@
 
 CallAdapter::CallAdapter(SystemTray* systemTray, LRCInstance* instance, QObject* parent)
     : QmlAdapterBase(instance, parent)
-    , oneSecondTimer_(new QTimer(this))
     , systemTray_(systemTray)
 {
     accountId_ = lrcInstance_->getCurrentAccountId();
@@ -90,10 +89,6 @@ void
 CallAdapter::onCallStatusChanged(const QString& accountId, const QString& callId)
 {
     set_hasCall(lrcInstance_->hasActiveCall());
-
-    // :/ one timer for all the call overlays
-    if (!hasCall_)
-        oneSecondTimer_->stop();
 
 #ifdef Q_OS_LINUX
     auto& accInfo = lrcInstance_->accountModel().getAccountInfo(accountId);
@@ -437,13 +432,6 @@ CallAdapter::connectCallModel(const QString& accountId)
 {
     auto& accInfo = lrcInstance_->accountModel().getAccountInfo(accountId);
 
-    QObject::connect(
-        oneSecondTimer_,
-        &QTimer::timeout,
-        this,
-        [this] { setTime(accountId_, convUid_); },
-        Qt::UniqueConnection);
-
     connect(
         accInfo.callModel.get(),
         &lrc::api::NewCallModel::onParticipantsChanged,
@@ -596,8 +584,6 @@ CallAdapter::sipInputPanelPlayDTMF(const QString& key)
 void
 CallAdapter::updateCallOverlay(const lrc::api::conversation::Info& convInfo)
 {
-    setTime(accountId_, convUid_);
-    oneSecondTimer_->start(1000);
     auto& accInfo = lrcInstance_->accountModel().getAccountInfo(accountId_);
 
     auto* call = lrcInstance_->getCallInfoForConversation(convInfo);
@@ -952,19 +938,20 @@ CallAdapter::videoPauseThisCallToggle()
     Q_EMIT previewVisibilityNeedToChange(shouldShowPreview(false));
 }
 
-void
-CallAdapter::setTime(const QString& accountId, const QString& convUid)
+QString
+CallAdapter::getCallDurationTime(const QString& accountId, const QString& convUid)
 {
     const auto callId = lrcInstance_->getCallIdForConversationUid(convUid, accountId);
     if (callId.isEmpty() || !lrcInstance_->getCurrentCallModel()->hasCall(callId)) {
-        return;
+        return QString();
     }
     const auto callInfo = lrcInstance_->getCurrentCallModel()->getCall(callId);
     if (callInfo.status == lrc::api::call::Status::IN_PROGRESS
         || callInfo.status == lrc::api::call::Status::PAUSED) {
-        auto timeString = lrcInstance_->getCurrentCallModel()->getFormattedCallDuration(callId);
-        Q_EMIT updateTimeText(timeString);
+        return lrcInstance_->getCurrentCallModel()->getFormattedCallDuration(callId);
     }
+
+    return QString();
 }
 
 void

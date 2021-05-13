@@ -34,7 +34,7 @@ import "../js/pluginhandlerpickercreation.js" as PluginHandlerPickerCreation
 import "../../commoncomponents"
 
 Rectangle {
-    id: callOverlayRect
+    id: root
 
     property string timeText: "00:00"
     property string remoteRecordingLabel: ""
@@ -216,8 +216,8 @@ Rectangle {
     SipInputPanel {
         id: sipInputPanel
 
-        x: callOverlayRect.width / 2 - sipInputPanel.width / 2
-        y: callOverlayRect.height / 2 - sipInputPanel.height / 2
+        x: root.width / 2 - sipInputPanel.width / 2
+        y: root.height / 2 - sipInputPanel.height / 2
     }
 
     // Timer to decide when overlay fade out.
@@ -227,20 +227,25 @@ Rectangle {
         onTriggered: {
             if (overlayUpperPartRect.state !== 'freezed') {
                 overlayUpperPartRect.state = 'freezed'
-                resetRecordingLabelTimer.restart()
+                resetLabelsTimer.restart()
             }
             if (callOverlayButtonGroup.state !== 'freezed') {
                 callOverlayButtonGroup.state = 'freezed'
-                resetRecordingLabelTimer.restart()
+                resetLabelsTimer.restart()
             }
         }
     }
 
-    // Timer to reset recording label text
+    // Timer to reset recording label and call duration time
     Timer {
-        id: resetRecordingLabelTimer
+        id: resetLabelsTimer
+
         interval: 1000
+        running: root.visible
+        repeat: true
         onTriggered: {
+            timeText = CallAdapter.getCallDurationTime(LRCInstance.currentAccountId,
+                                                       LRCInstance.selectedConvUid)
             if (callOverlayButtonGroup.state === 'freezed'
                     && !callViewContextMenu.peerIsRecording)
                 remoteRecordingLabel = ""
@@ -250,9 +255,9 @@ Rectangle {
     Rectangle {
         id: overlayUpperPartRect
 
-        anchors.top: callOverlayRect.top
+        anchors.top: root.top
 
-        width: callOverlayRect.width
+        width: root.width
         height: 50
         opacity: 0
 
@@ -370,8 +375,8 @@ Rectangle {
     ResponsiveImage {
         id: onHoldImage
 
-        anchors.verticalCenter: callOverlayRect.verticalCenter
-        anchors.horizontalCenter: callOverlayRect.horizontalCenter
+        anchors.verticalCenter: root.verticalCenter
+        anchors.horizontalCenter: root.horizontalCenter
 
         width: 200
         height: 200
@@ -384,23 +389,23 @@ Rectangle {
     CallOverlayButtonGroup {
         id: callOverlayButtonGroup
 
-        anchors.bottom: callOverlayRect.bottom
+        anchors.bottom: root.bottom
         anchors.bottomMargin: 10
-        anchors.horizontalCenter: callOverlayRect.horizontalCenter
+        anchors.horizontalCenter: root.horizontalCenter
 
         height: 56
-        width: callOverlayRect.width
+        width: root.width
         opacity: 0
 
         onChatButtonClicked: {
-            callOverlayRect.overlayChatButtonClicked()
+            root.overlayChatButtonClicked()
         }
 
         onAddToConferenceButtonClicked: {
             // Create contact picker - conference.
             ContactPickerCreation.createContactPickerObjects(
                         ContactList.CONFERENCE,
-                        callOverlayRect)
+                        root)
             ContactPickerCreation.openContactPicker()
         }
 
@@ -434,10 +439,10 @@ Rectangle {
     MouseArea {
         id: callOverlayButtonGroupLeftSideMouseArea
 
-        anchors.bottom: callOverlayRect.bottom
-        anchors.left: callOverlayRect.left
+        anchors.bottom: root.bottom
+        anchors.left: root.left
 
-        width: callOverlayRect.width / 6
+        width: root.width / 6
         height: 60
 
         hoverEnabled: true
@@ -456,10 +461,10 @@ Rectangle {
     MouseArea {
         id: callOverlayButtonGroupRightSideMouseArea
 
-        anchors.bottom: callOverlayRect.bottom
-        anchors.right: callOverlayRect.right
+        anchors.bottom: root.bottom
+        anchors.right: root.right
 
-        width: callOverlayRect.width / 6
+        width: root.width / 6
         height: 60
 
         hoverEnabled: true
@@ -478,10 +483,10 @@ Rectangle {
     MouseArea {
         id: callOverlayRectMouseArea
 
-        anchors.top: callOverlayRect.top
+        anchors.top: root.top
 
-        width: callOverlayRect.width
-        height: callOverlayRect.height
+        width: root.width
+        height: root.height
 
         hoverEnabled: true
         propagateComposedEvents: true
@@ -518,13 +523,13 @@ Rectangle {
             // Create contact picker - sip transfer.
             ContactPickerCreation.createContactPickerObjects(
                         ContactList.TRANSFER,
-                        callOverlayRect)
+                        root)
             ContactPickerCreation.openContactPicker()
         }
 
         onPluginItemClicked: {
             // Create plugin handler picker - PLUGINS
-            PluginHandlerPickerCreation.createPluginHandlerPickerObjects(callOverlayRect, true)
+            PluginHandlerPickerCreation.createPluginHandlerPickerObjects(root, true)
             PluginHandlerPickerCreation.openPluginHandlerPicker()
         }
     }

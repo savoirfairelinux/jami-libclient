@@ -177,10 +177,6 @@ Rectangle {
                     Connections {
                         target: CallAdapter
 
-                        function onUpdateTimeText(time) {
-                            videoCallOverlay.timeText = time
-                        }
-
                         function onUpdateOverlay(isPaused, isAudioOnly, isAudioMuted, isVideoMuted,
                                                  isRecording, isSIP, isConferenceCall, bestName) {
                             videoCallOverlay.showOnHoldImage(isPaused)
