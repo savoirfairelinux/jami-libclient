@@ -296,6 +296,19 @@ CallAdapter::hangUpACall(const QString& accountId, const QString& convUid)
 }
 
 void
+CallAdapter::setCallMedia(const QString& accountId, const QString& convUid, bool video)
+{
+    const auto& convInfo = lrcInstance_->getConversationFromConvUid(convUid, accountId);
+    if (convInfo.uid.isEmpty())
+        return;
+    try {
+        lrcInstance_->getAccountInfo(accountId).callModel->updateCallMediaList(convInfo.callId,
+                                                                               video);
+    } catch (...) {
+    }
+}
+
+void
 CallAdapter::acceptACall(const QString& accountId, const QString& convUid)
 {
     const auto& convInfo = lrcInstance_->getConversationFromConvUid(convUid, accountId);

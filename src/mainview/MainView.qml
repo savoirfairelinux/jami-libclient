@@ -197,7 +197,7 @@ Rectangle {
                 CallAdapter.updateCall(convId, LRCInstance.currentAccountId)
                 callStackView.showOngoingCallPage()
             } else {
-                callStackView.showInitialCallPage(item.callState)
+                callStackView.showInitialCallPage(item.callState, item.isAudioOnly)
             }
             pushCallStackView()
 

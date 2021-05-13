@@ -51,6 +51,7 @@ public:
     Q_INVOKABLE void placeAudioOnlyCall();
     Q_INVOKABLE void placeCall();
     Q_INVOKABLE void hangUpACall(const QString& accountId, const QString& convUid);
+    Q_INVOKABLE void setCallMedia(const QString& accountId, const QString& convUid, bool video);
     Q_INVOKABLE void acceptACall(const QString& accountId, const QString& convUid);
 
     Q_INVOKABLE void connectCallModel(const QString& accountId);

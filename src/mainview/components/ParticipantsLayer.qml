@@ -22,6 +22,8 @@ import QtQml 2.14
 Item {
     id: root
 
+    property bool isAudioOnly
+    property bool isVideoMuted
     property var participantOverlays: []
     property var participantComponent: Qt.createComponent("ParticipantOverlay.qml")
 

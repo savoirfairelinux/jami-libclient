@@ -28,6 +28,8 @@ Item {
 
     // Misc
     property string accept: qsTr("Accept")
+    property string acceptAudio: qsTr("Accept in audio")
+    property string acceptVideo: qsTr("Accept in video")
     property string refuse: qsTr("Refuse")
     property string endCall: qsTr("End call")
     property string incomingAudioCallFrom: qsTr("Incoming audio call from {}")
