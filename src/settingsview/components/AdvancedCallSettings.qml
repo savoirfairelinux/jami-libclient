@@ -43,7 +43,7 @@ ColumnLayout {
         checkBoxRdv.checked = SettingsAdapter.getAccountConfig_RendezVous()
         checkBoxAutoAnswer.checked = SettingsAdapter.getAccountConfig_AutoAnswer()
         checkBoxCustomRingtone.checked = SettingsAdapter.getAccountConfig_Ringtone_RingtoneEnabled()
-        checkboxAllModerators.checked = SettingsAdapter.isAllModeratorsEnabled(AccountAdapter.currentAccountId)
+        checkboxAllModerators.checked = SettingsAdapter.isAllModeratorsEnabled(LRCInstance.currentAccountId)
 
         btnRingtone.setEnabled(SettingsAdapter.getAccountConfig_Ringtone_RingtoneEnabled())
         btnRingtone.setText(UtilsAdapter.toFileInfoName(SettingsAdapter.getAccountConfig_Ringtone_RingtonePath()))
@@ -61,7 +61,7 @@ ColumnLayout {
 
     function updateAndShowModeratorsSlot() {
         toggleLocalModerators.checked = SettingsAdapter.isLocalModeratorsEnabled(
-                    AccountAdapter.currentAccountId)
+                    LRCInstance.currentAccountId)
         moderatorListWidget.model.reset()
         moderatorListWidget.visible = (moderatorListWidget.model.rowCount() > 0)
     }
@@ -170,7 +170,7 @@ ColumnLayout {
             fontPointSize: JamiTheme.settingsFontSize
 
             onSwitchToggled: SettingsAdapter.enableLocalModerators(
-                                 AccountAdapter.currentAccountId, checked)
+                                 LRCInstance.currentAccountId, checked)
         }
 
         ElidedTextLabel {
@@ -207,7 +207,7 @@ ColumnLayout {
                 onClicked: moderatorListWidget.currentIndex = index
                 onBtnContactClicked: {
                     SettingsAdapter.setDefaultModerator(
-                                AccountAdapter.currentAccountId, contactID, false)
+                                LRCInstance.currentAccountId, contactID, false)
                     updateAndShowModeratorsSlot()
                 }
             }
@@ -245,7 +245,7 @@ ColumnLayout {
             fontPointSize: JamiTheme.settingsFontSize
 
             onSwitchToggled: SettingsAdapter.setAllModeratorsEnabled(
-                                 AccountAdapter.currentAccountId, checked)
+                                 LRCInstance.currentAccountId, checked)
         }
     }
 }

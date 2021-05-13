@@ -337,7 +337,7 @@ Utils::contactPhoto(LRCInstance* instance,
          * Get first contact photo.
          */
         auto& accountInfo = instance->accountModel().getAccountInfo(
-            accountId.isEmpty() ? instance->getCurrAccId() : accountId);
+            accountId.isEmpty() ? instance->getCurrentAccountId() : accountId);
         auto contactInfo = accountInfo.contactModel->getContact(contactUri);
         auto contactPhoto = contactInfo.profileInfo.avatar;
         auto bestName = accountInfo.contactModel->bestNameForContact(contactUri);

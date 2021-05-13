@@ -164,7 +164,7 @@ ConversationsAdapter::safeInit()
             Qt::UniqueConnection);
 
     connect(lrcInstance_,
-            &LRCInstance::currentAccountChanged,
+            &LRCInstance::currentAccountIdChanged,
             this,
             &ConversationsAdapter::onCurrentAccountIdChanged,
             Qt::UniqueConnection);
@@ -198,7 +198,7 @@ ConversationsAdapter::onNewUnreadInteraction(const QString& accountId,
                                              const interaction::Info& interaction)
 {
     if (!interaction.authorUri.isEmpty()
-        && (!QApplication::focusWindow() || accountId != lrcInstance_->getCurrAccId()
+        && (!QApplication::focusWindow() || accountId != lrcInstance_->getCurrentAccountId()
             || convUid != lrcInstance_->get_selectedConvUid())) {
         auto& accountInfo = lrcInstance_->getAccountInfo(accountId);
         auto from = accountInfo.contactModel->bestNameForContact(interaction.authorUri);
@@ -248,7 +248,7 @@ void
 ConversationsAdapter::onNewTrustRequest(const QString& accountId, const QString& peerUri)
 {
 #ifdef Q_OS_LINUX
-    if (!QApplication::focusWindow() || accountId != lrcInstance_->getCurrAccId()) {
+    if (!QApplication::focusWindow() || accountId != lrcInstance_->getCurrentAccountId()) {
         auto& accInfo = lrcInstance_->getAccountInfo(accountId);
         auto from = accInfo.contactModel->bestNameForContact(peerUri);
         auto contactPhoto = Utils::contactPhoto(lrcInstance_, peerUri, QSize(50, 50), accountId);

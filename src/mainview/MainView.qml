@@ -57,7 +57,7 @@ Rectangle {
 
     signal loaderSourceChangeRequested(int sourceToLoad)
 
-    property string currentAccountId: AccountAdapter.currentAccountId
+    property string currentAccountId: LRCInstance.currentAccountId
     onCurrentAccountIdChanged: {
         if (inSettingsView) {
             settingsView.accountListChanged()
@@ -115,7 +115,7 @@ Rectangle {
     }
 
     function currentAccountIsCalling() {
-        return UtilsAdapter.hasCall(AccountAdapter.currentAccountId)
+        return UtilsAdapter.hasCall(LRCInstance.currentAccountId)
     }
 
     // Only called onWidthChanged
@@ -137,7 +137,7 @@ Rectangle {
             return
         if (checkCurrentCall && currentAccountIsCalling()) {
             var callConv = UtilsAdapter.getCallConvForAccount(
-                        AccountAdapter.currentAccountId)
+                        LRCInstance.currentAccountId)
             LRCInstance.selectConversation(callConv)
             CallAdapter.updateCall(callConv, currentAccountId)
         } else {
@@ -187,13 +187,13 @@ Rectangle {
             }
             MessagesAdapter.setupChatView(convId)
             callStackView.setLinkedWebview(communicationPageMessageWebView)
-            callStackView.responsibleAccountId = AccountAdapter.currentAccountId
+            callStackView.responsibleAccountId = LRCInstance.currentAccountId
             callStackView.responsibleConvUid = convId
             currentConvUID = convId
 
             if (item.callState === Call.Status.IN_PROGRESS ||
                     item.callState === Call.Status.PAUSED) {
-                CallAdapter.updateCall(convId, AccountAdapter.currentAccountId)
+                CallAdapter.updateCall(convId, LRCInstance.currentAccountId)
                 if (item.isAudioOnly)
                     callStackView.showAudioCallPage()
                 else

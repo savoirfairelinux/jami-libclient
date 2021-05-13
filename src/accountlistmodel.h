@@ -64,7 +64,7 @@ public:
         // Accept all contacts in conversation list filtered with account type, except those in a call.
         auto index = sourceModel()->index(sourceRow, 0, sourceParent);
         auto accountID = sourceModel()->data(index, AccountList::ID);
-        return accountID != lrcInstance_->getCurrAccId();
+        return accountID != lrcInstance_->getCurrentAccountId();
     }
 
 protected:

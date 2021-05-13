@@ -58,7 +58,7 @@ Rectangle {
                 contactImage.updateImage(avatar)
             } else if (local) {
                 contactImage.mode = AvatarImage.Mode.FromAccount
-                contactImage.updateImage(AccountAdapter.currentAccountId)
+                contactImage.updateImage(LRCInstance.currentAccountId)
             } else if (isContact) {
                 contactImage.mode = AvatarImage.Mode.FromContactUri
                 contactImage.updateImage(uri)

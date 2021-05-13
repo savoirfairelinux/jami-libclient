@@ -91,7 +91,7 @@ Rectangle {
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
 
-                visible: AccountAdapter.currentAccountType === Profile.Type.RING
+                visible: LRCInstance.currentAccountType === Profile.Type.RING
 
                 text: JamiStrings.shareInvite
                 color: JamiTheme.faddedFontColor
@@ -106,7 +106,7 @@ Rectangle {
 
                 color: JamiTheme.secondaryBackgroundColor
 
-                visible: AccountAdapter.currentAccountType === Profile.Type.RING
+                visible: LRCInstance.currentAccountType === Profile.Type.RING
 
                 ColumnLayout {
                     id: jamiRegisteredNameRectColumnLayout
@@ -128,7 +128,7 @@ Rectangle {
                         TextMetrics {
                             id: textMetricsjamiRegisteredNameText
                             font: jamiRegisteredNameText.font
-                            text: UtilsAdapter.getBestId(AccountAdapter.currentAccountId)
+                            text: UtilsAdapter.getBestId(LRCInstance.currentAccountId)
                             elideWidth: welcomePageColumnLayout.width
                             elide: Qt.ElideMiddle
                         }

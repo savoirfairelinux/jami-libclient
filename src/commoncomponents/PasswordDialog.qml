@@ -69,7 +69,7 @@ BaseDialog {
         var success = false
         if (path.length > 0) {
             success = AccountAdapter.exportToFile(
-                        AccountAdapter.currentAccountId,
+                        LRCInstance.currentAccountId,
                         path,
                         currentPasswordEdit.text)
         }
@@ -80,7 +80,7 @@ BaseDialog {
     function savePasswordQML() {
         var success = false
         success = AccountAdapter.savePassword(
-                    AccountAdapter.currentAccountId,
+                    LRCInstance.currentAccountId,
                     currentPasswordEdit.text,
                     passwordEdit.text)
         if (success) {

@@ -36,10 +36,6 @@ class AccountAdapter final : public QmlAdapterBase
 
     Q_PROPERTY(lrc::api::NewAccountModel* model READ getModel NOTIFY modelChanged)
     Q_PROPERTY(lrc::api::NewDeviceModel* deviceModel READ getDeviceModel NOTIFY deviceModelChanged)
-    Q_PROPERTY(QString currentAccountId MEMBER currentAccountId_ NOTIFY currentAccountIdChanged)
-    Q_PROPERTY(lrc::api::profile::Type currentAccountType MEMBER currentAccountType_ NOTIFY
-                   currentAccountTypeChanged)
-    Q_PROPERTY(int accountListSize MEMBER accountListSize_ NOTIFY accountListSizeChanged)
 
 public:
     lrc::api::NewAccountModel* getModel();
@@ -48,9 +44,6 @@ public:
 Q_SIGNALS:
     void modelChanged();
     void deviceModelChanged();
-    void currentAccountIdChanged();
-    void currentAccountTypeChanged();
-    void accountListSizeChanged();
 
 public:
     explicit AccountAdapter(AppSettingsManager* settingsManager,
@@ -114,15 +107,8 @@ private Q_SLOTS:
     void onCurrentAccountChanged();
 
 private:
-    QString currentAccountId_ {};
-    lrc::api::profile::Type currentAccountType_ {};
-    int accountListSize_ {};
-
     // Make account signal connections.
     void connectAccount(const QString& accountId);
-
-    // Make account signal connections.
-    void setProperties(const QString& accountId);
 
     // Implement what to do when account creation fails.
     void connectFailure();

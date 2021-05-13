@@ -45,13 +45,11 @@ void
 AccountAdapter::safeInit()
 {
     connect(lrcInstance_,
-            &LRCInstance::currentAccountChanged,
+            &LRCInstance::currentAccountIdChanged,
             this,
             &AccountAdapter::onCurrentAccountChanged);
 
-    auto accountId = lrcInstance_->getCurrAccId();
-    setProperties(accountId);
-    connectAccount(accountId);
+    connectAccount(lrcInstance_->getCurrentAccountId());
 }
 
 lrc::api::NewAccountModel*
@@ -71,7 +69,7 @@ AccountAdapter::changeAccount(int row)
 {
     auto accountList = lrcInstance_->accountModel().getAccountList();
     if (accountList.size() > row) {
-        lrcInstance_->setSelectedAccountId(accountList.at(row));
+        lrcInstance_->setCurrentAccountId(accountList.at(row));
     }
 }
 
@@ -228,7 +226,7 @@ AccountAdapter::createJAMSAccount(const QVariantMap& settings)
 void
 AccountAdapter::deleteCurrentAccount()
 {
-    lrcInstance_->accountModel().removeAccount(lrcInstance_->getCurrAccId());
+    lrcInstance_->accountModel().removeAccount(lrcInstance_->getCurrentAccountId());
     Q_EMIT lrcInstance_->accountListChanged();
 }
 
@@ -297,24 +295,24 @@ AccountAdapter::setCurrAccAvatar(bool fromFile, const QString& source)
 void
 AccountAdapter::onCurrentAccountChanged()
 {
-    auto accountId = lrcInstance_->getCurrAccId();
-    setProperties(accountId);
-    connectAccount(accountId);
+    connectAccount(lrcInstance_->getCurrentAccountId());
 }
 
 bool
 AccountAdapter::hasPassword()
 {
-    auto confProps = lrcInstance_->accountModel().getAccountConfig(lrcInstance_->getCurrAccId());
+    auto confProps = lrcInstance_->accountModel().getAccountConfig(
+        lrcInstance_->getCurrentAccountId());
     return confProps.archiveHasPassword;
 }
 
 void
 AccountAdapter::setArchiveHasPassword(bool isHavePassword)
 {
-    auto confProps = lrcInstance_->accountModel().getAccountConfig(lrcInstance_->getCurrAccId());
+    auto confProps = lrcInstance_->accountModel().getAccountConfig(
+        lrcInstance_->getCurrentAccountId());
     confProps.archiveHasPassword = isHavePassword;
-    lrcInstance_->accountModel().setAccountConfig(lrcInstance_->getCurrAccId(), confProps);
+    lrcInstance_->accountModel().setAccountConfig(lrcInstance_->getCurrentAccountId(), confProps);
 }
 bool
 AccountAdapter::exportToFile(const QString& accountId,
@@ -407,13 +405,4 @@ AccountAdapter::connectAccount(const QString& accountId)
     } catch (...) {
         qWarning() << "Couldn't get account: " << accountId;
     }
-}
-
-void
-AccountAdapter::setProperties(const QString& accountId)
-{
-    setProperty("currentAccountId", accountId);
-    auto accountType = lrcInstance_->getAccountInfo(accountId).profileInfo.type;
-    setProperty("currentAccountType", lrc::api::profile::to_string(accountType));
-    Q_EMIT deviceModelChanged();
 }

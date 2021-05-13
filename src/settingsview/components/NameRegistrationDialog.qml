@@ -53,7 +53,7 @@ BaseDialog {
 
     function slotStartNameRegistration() {
         var password = passwordEdit.text
-        AccountAdapter.model.registerName(AccountAdapter.currentAccountId,
+        AccountAdapter.model.registerName(LRCInstance.currentAccountId,
                                           password, registerdName)
     }
 

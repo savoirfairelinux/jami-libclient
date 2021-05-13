@@ -36,7 +36,7 @@ CallAdapter::CallAdapter(SystemTray* systemTray, LRCInstance* instance, QObject*
     , oneSecondTimer_(new QTimer(this))
     , systemTray_(systemTray)
 {
-    accountId_ = lrcInstance_->getCurrAccId();
+    accountId_ = lrcInstance_->getCurrentAccountId();
     if (!accountId_.isEmpty())
         connectCallModel(accountId_);
 
@@ -50,7 +50,10 @@ CallAdapter::CallAdapter(SystemTray* systemTray, LRCInstance* instance, QObject*
             this,
             &CallAdapter::onShowCallView);
 
-    connect(lrcInstance_, &LRCInstance::currentAccountChanged, this, &CallAdapter::onAccountChanged);
+    connect(lrcInstance_,
+            &LRCInstance::currentAccountIdChanged,
+            this,
+            &CallAdapter::onAccountChanged);
 
 #ifdef Q_OS_LINUX
     // notification responses (gnu/linux currently)
@@ -79,7 +82,7 @@ CallAdapter::CallAdapter(SystemTray* systemTray, LRCInstance* instance, QObject*
 void
 CallAdapter::onAccountChanged()
 {
-    accountId_ = lrcInstance_->getCurrAccId();
+    accountId_ = lrcInstance_->getCurrentAccountId();
     connectCallModel(accountId_);
 }
 
@@ -197,7 +200,7 @@ CallAdapter::onShowIncomingCallView(const QString& accountId, const QString& con
     if (convInfo.uid.isEmpty()) {
         return;
     }
-    auto selectedAccountId = lrcInstance_->getCurrAccId();
+    auto selectedAccountId = lrcInstance_->getCurrentAccountId();
     auto* callModel = lrcInstance_->getCurrentCallModel();
 
     // new call

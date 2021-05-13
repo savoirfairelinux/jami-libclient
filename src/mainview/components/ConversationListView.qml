@@ -136,7 +136,7 @@ ListView {
                 "contactType": model.dataForRow(row, ConversationList.ContactType),
             }
 
-            responsibleAccountId = AccountAdapter.currentAccountId
+            responsibleAccountId = LRCInstance.currentAccountId
             responsibleConvUid = item.convId
             contactType = item.contactType
 
@@ -175,7 +175,7 @@ ListView {
         context: Qt.ApplicationShortcut
         enabled: root.visible
         onActivated: MessagesAdapter.clearConversationHistory(
-                         AccountAdapter.currentAccountId,
+                         LRCInstance.currentAccountId,
                          UtilsAdapter.getCurrConvId())
     }
 
@@ -193,7 +193,7 @@ ListView {
         context: Qt.ApplicationShortcut
         enabled: root.visible
         onActivated: MessagesAdapter.removeConversation(
-                         AccountAdapter.currentAccountId,
+                         LRCInstance.currentAccountId,
                          UtilsAdapter.getCurrConvId(),
                          false)
     }

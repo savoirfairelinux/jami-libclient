@@ -36,7 +36,7 @@ ContactAdapter::getContactSelectableModel(int type)
 
     if (listModeltype_ == SmartListModel::Type::CONVERSATION) {
         defaultModerators_ = lrcInstance_->accountModel().getDefaultModerators(
-            lrcInstance_->getCurrAccId());
+            lrcInstance_->getCurrentAccountId());
         smartListModel_.reset(new SmartListModel(this, listModeltype_, lrcInstance_));
         smartListModel_->fillConversationsList();
     } else {
@@ -64,7 +64,8 @@ ContactAdapter::getContactSelectableModel(int type)
             const auto& conv = lrcInstance_->getConversationFromConvUid(
                 lrcInstance_->get_selectedConvUid());
             if (!conv.participants.isEmpty()) {
-                QString calleeDisplayId = lrcInstance_->getAccountInfo(lrcInstance_->getCurrAccId())
+                QString calleeDisplayId = lrcInstance_
+                                              ->getAccountInfo(lrcInstance_->getCurrentAccountId())
                                               .contactModel->bestIdForContact(conv.participants[0]);
 
                 QRegExp matchExcept = QRegExp(QString("\\b(?!" + calleeDisplayId + "\\b)\\w+"));
@@ -172,7 +173,7 @@ ContactAdapter::contactSelected(int index)
                 return;
             }
 
-            lrcInstance_->accountModel().setDefaultModerator(lrcInstance_->getCurrAccId(),
+            lrcInstance_->accountModel().setDefaultModerator(lrcInstance_->getCurrentAccountId(),
                                                              contactUri,
                                                              true);
             Q_EMIT defaultModeratorsUpdated();

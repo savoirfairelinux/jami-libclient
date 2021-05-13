@@ -65,7 +65,7 @@ Popup {
                         pluginhandlerPickerListView.model = PluginAdapter.getMediaHandlerSelectableModel(callId)
                     } else {
                         // Reset the model on each show.
-                        var accountId = AccountAdapter.currentAccountId
+                        var accountId = LRCInstance.currentAccountId
                         var peerId = UtilsAdapter.getPeerUri(accountId, UtilsAdapter.getCurrConvId())
                         pluginhandlerPickerListView.model = PluginAdapter.getChatHandlerSelectableModel(accountId, peerId)
                     }
@@ -79,7 +79,7 @@ Popup {
                     PluginModel.toggleCallMediaHandler(handlerId, callId, !isLoaded)
                     pluginhandlerPickerListView.model = PluginAdapter.getMediaHandlerSelectableModel(callId)
                 } else {
-                    var accountId = AccountAdapter.currentAccountId
+                    var accountId = LRCInstance.currentAccountId
                     var peerId = UtilsAdapter.getPeerUri(accountId, UtilsAdapter.getCurrConvId())
                     PluginModel.toggleChatHandler(handlerId, accountId, peerId, !isLoaded)
                     pluginhandlerPickerListView.model = PluginAdapter.getChatHandlerSelectableModel(accountId, peerId)
@@ -138,7 +138,7 @@ Popup {
                                                                 callStackViewWindow.responsibleConvUid)
                             return PluginAdapter.getMediaHandlerSelectableModel(callId)
                         } else {
-                            var accountId = AccountAdapter.currentAccountId
+                            var accountId = LRCInstance.currentAccountId
                             var peerId = UtilsAdapter.getPeerUri(accountId, UtilsAdapter.getCurrConvId())
                             return PluginAdapter.getChatHandlerSelectableModel(accountId, peerId)
                         }

@@ -48,7 +48,7 @@ MessagesAdapter::MessagesAdapter(AppSettingsManager* settingsManager,
 void
 MessagesAdapter::safeInit()
 {
-    connect(lrcInstance_, &LRCInstance::currentAccountChanged, [this]() {
+    connect(lrcInstance_, &LRCInstance::currentAccountIdChanged, [this]() {
         currentConvUid_.clear();
         connectConversationModel();
     });
@@ -73,7 +73,7 @@ MessagesAdapter::setupChatView(const QString& convUid)
 
     QString contactURI = convInfo.participants.at(0);
 
-    auto selectedAccountId = lrcInstance_->getCurrAccId();
+    auto selectedAccountId = lrcInstance_->getCurrentAccountId();
     auto& accountInfo = lrcInstance_->accountModel().getAccountInfo(selectedAccountId);
 
     lrc::api::contact::Info contactInfo;
@@ -131,7 +131,7 @@ MessagesAdapter::connectConversationModel()
                            [this](const QString& convUid,
                                   uint64_t interactionId,
                                   const lrc::api::interaction::Info& interaction) {
-                               auto accountId = lrcInstance_->getCurrAccId();
+                               auto accountId = lrcInstance_->getCurrentAccountId();
                                newInteraction(accountId, convUid, interactionId, interaction);
                            });
 
@@ -180,7 +180,7 @@ void
 MessagesAdapter::slotSendMessageContentSaved(const QString& content)
 {
     if (!LastConvUid_.isEmpty()) {
-        lrcInstance_->setContentDraft(LastConvUid_, lrcInstance_->getCurrAccId(), content);
+        lrcInstance_->setContentDraft(LastConvUid_, lrcInstance_->getCurrentAccountId(), content);
     }
     LastConvUid_ = lrcInstance_->get_selectedConvUid();
 
@@ -189,7 +189,7 @@ MessagesAdapter::slotSendMessageContentSaved(const QString& content)
     setInvitation(false);
     clear();
     auto restoredContent = lrcInstance_->getContentDraft(lrcInstance_->get_selectedConvUid(),
-                                                         lrcInstance_->getCurrAccId());
+                                                         lrcInstance_->getCurrentAccountId());
     setSendMessageContent(restoredContent);
 }
 
@@ -197,7 +197,7 @@ void
 MessagesAdapter::slotUpdateDraft(const QString& content)
 {
     if (!LastConvUid_.isEmpty()) {
-        lrcInstance_->setContentDraft(LastConvUid_, lrcInstance_->getCurrAccId(), content);
+        lrcInstance_->setContentDraft(LastConvUid_, lrcInstance_->getCurrentAccountId(), content);
     }
 }
 

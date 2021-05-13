@@ -166,7 +166,7 @@ Rectangle {
                 return
             } else {
                 if (exportPath.length > 0) {
-                    var isSuccessful = AccountAdapter.model.exportToFile(AccountAdapter.currentAccountId,
+                    var isSuccessful = AccountAdapter.model.exportToFile(LRCInstance.currentAccountId,
                                                                          exportPath, "")
                     var title = isSuccessful ? qsTr("Success") : qsTr("Error")
                     var info = isSuccessful ? JamiStrings.backupSuccessful : JamiStrings.backupFailed
@@ -195,7 +195,7 @@ Rectangle {
             fontPointSize: JamiTheme.headerFontSize
 
             onSwitchToggled: AccountAdapter.model.setAccountEnabled(
-                                 AccountAdapter.currentAccountId, checked)
+                                 LRCInstance.currentAccountId, checked)
         }
 
         AccountProfile {

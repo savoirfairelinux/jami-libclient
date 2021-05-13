@@ -166,7 +166,7 @@ ItemDelegate {
     onClicked: ListView.view.model.select(index)
     onDoubleClicked: {
         ListView.view.model.select(index)
-        if (AccountAdapter.currentAccountType === Profile.Type.SIP)
+        if (LRCInstance.currentAccountType === Profile.Type.SIP)
             CallAdapter.placeAudioOnlyCall()
         else
             CallAdapter.placeCall()

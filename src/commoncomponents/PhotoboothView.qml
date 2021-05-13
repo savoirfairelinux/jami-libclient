@@ -66,7 +66,7 @@ ColumnLayout {
     }
 
     function setAvatarImage(mode = AvatarImage.Mode.FromAccount,
-                            imageId = AccountAdapter.currentAccountId){
+                            imageId = LRCInstance.currentAccountId){
         if (mode !== AvatarImage.Mode.FromBase64)
             avatarImg.enableAnimation = true
         else

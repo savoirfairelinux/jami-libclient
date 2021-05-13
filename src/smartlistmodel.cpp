@@ -46,7 +46,8 @@ int
 SmartListModel::rowCount(const QModelIndex& parent) const
 {
     if (!parent.isValid() && lrcInstance_) {
-        auto& accInfo = lrcInstance_->accountModel().getAccountInfo(lrcInstance_->getCurrAccId());
+        auto& accInfo = lrcInstance_->accountModel().getAccountInfo(
+            lrcInstance_->getCurrentAccountId());
         auto& convModel = accInfo.conversationModel;
         if (listModelType_ == Type::TRANSFER) {
             auto filterType = accInfo.profileInfo.type;
@@ -77,7 +78,7 @@ SmartListModel::data(const QModelIndex& index, int role) const
     case Type::TRANSFER: {
         try {
             auto& currentAccountInfo = lrcInstance_->accountModel().getAccountInfo(
-                lrcInstance_->getCurrAccId());
+                lrcInstance_->getCurrentAccountId());
             auto& convModel = currentAccountInfo.conversationModel;
             auto filterType = currentAccountInfo.profileInfo.type;
             auto& item = convModel->getFilteredConversations(filterType).at(index.row());
@@ -142,7 +143,8 @@ void
 SmartListModel::setConferenceableFilter(const QString& filter)
 {
     beginResetModel();
-    auto& accountInfo = lrcInstance_->accountModel().getAccountInfo(lrcInstance_->getCurrAccId());
+    auto& accountInfo = lrcInstance_->accountModel().getAccountInfo(
+        lrcInstance_->getCurrentAccountId());
     auto& convModel = accountInfo.conversationModel;
     conferenceables_ = convModel->getConferenceableConversations(lrcInstance_->get_selectedConvUid(),
                                                                  filter);

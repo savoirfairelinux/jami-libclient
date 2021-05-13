@@ -43,7 +43,7 @@ TabBar {
     function selectTab(tabIndex) {
         ConversationsAdapter.currentTypeFilter =
                 (tabIndex === SidePanelTabBar.Conversations) ?
-                    AccountAdapter.currentAccountType :
+                    LRCInstance.currentAccountType :
                     Profile.Type.PENDING
     }
 

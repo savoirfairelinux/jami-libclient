@@ -52,7 +52,7 @@ ModeratorListModel::data(const QModelIndex& index, int role) const
 {
     try {
         QStringList list = lrcInstance_->accountModel().getDefaultModerators(
-                    lrcInstance_->getCurrAccId());
+                    lrcInstance_->getCurrentAccountId());
         if (!index.isValid() || list.size() <= index.row()) {
             return QVariant();
         }

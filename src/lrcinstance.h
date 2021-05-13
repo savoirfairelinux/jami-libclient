@@ -55,6 +55,10 @@ class LRCInstance : public QObject
 {
     Q_OBJECT
     QML_PROPERTY(QString, selectedConvUid)
+    Q_PROPERTY(lrc::api::profile::Type currentAccountType READ getCurrentAccountType NOTIFY
+                   currentAccountTypeChanged)
+    Q_PROPERTY(QString currentAccountId READ getCurrentAccountId WRITE setCurrentAccountId NOTIFY
+                   currentAccountIdChanged)
 
 public:
     explicit LRCInstance(migrateCallback willMigrateCb = {},
@@ -85,6 +89,7 @@ public:
 
     const account::Info& getAccountInfo(const QString& accountId);
     const account::Info& getCurrentAccountInfo();
+    profile::Type getCurrentAccountType();
     QString getCallIdForConversationUid(const QString& convUid, const QString& accountId);
     const call::Info* getCallInfo(const QString& callId, const QString& accountId);
     const call::Info* getCallInfoForConversation(const conversation::Info& convInfo,
@@ -99,8 +104,8 @@ public:
     Q_INVOKABLE void selectConversation(const QString& convId, const QString& accountId = {});
     Q_INVOKABLE void deselectConversation();
 
-    const QString& getCurrAccId();
-    void setSelectedAccountId(const QString& accountId = {});
+    const QString& getCurrentAccountId();
+    void setCurrentAccountId(const QString& accountId = {});
     int getCurrentAccountIndex();
     void setAvatarForAccount(const QPixmap& avatarPixmap, const QString& accountID);
     void setCurrAccAvatar(const QPixmap& avatarPixmap);
@@ -122,19 +127,22 @@ public:
 
 Q_SIGNALS:
     void accountListChanged();
-    void currentAccountChanged();
     void restoreAppRequested();
     void notificationClicked();
     void quitEngineRequested();
     void conversationUpdated(const QString& convId, const QString& accountId);
     void draftSaved(const QString& convId);
     void contactBanned(const QString& uri);
+    void currentAccountIdChanged(const QString& accountId);
+    void currentAccountTypeChanged(profile::Type type);
 
 private:
     std::unique_ptr<Lrc> lrc_;
     std::unique_ptr<RenderManager> renderer_;
     std::unique_ptr<UpdateManager> updateManager_;
-    QString selectedAccountId_ {};
+
+    QString currentAccountId_ {};
+    profile::Type currentAccountType_ = profile::Type::INVALID;
     MapStringString contentDrafts_;
     MapStringString lastConferences_;
 

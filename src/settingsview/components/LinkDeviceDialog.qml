@@ -60,7 +60,7 @@ BaseDialog {
         interval: 200
 
         onTriggered: {
-            AccountAdapter.model.exportOnRing(AccountAdapter.currentAccountId,
+            AccountAdapter.model.exportOnRing(LRCInstance.currentAccountId,
                                               passwordEdit.text)
         }
     }

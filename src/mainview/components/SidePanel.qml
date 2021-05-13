@@ -38,13 +38,17 @@ Rectangle {
     Connections {
         target: AccountAdapter
 
-        function onCurrentAccountIdChanged() {
-            clearContactSearchBar()
-        }
-
         function onSelectedContactAdded(convId) {
             clearContactSearchBar()
             LRCInstance.selectConversation(convId)
+        }
+    }
+
+    Connections {
+        target: LRCInstance
+
+        function onCurrentAccountIdChanged() {
+            clearContactSearchBar()
         }
     }
 

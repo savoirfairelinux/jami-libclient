@@ -316,7 +316,7 @@ Rectangle {
                         } else {
                             if (folderDir.length > 0) {
                                 AccountAdapter.exportToFile(
-                                            AccountAdapter.currentAccountId,
+                                            LRCInstance.currentAccountId,
                                             UtilsAdapter.getAbsPath(folderDir))
                             }
                         }

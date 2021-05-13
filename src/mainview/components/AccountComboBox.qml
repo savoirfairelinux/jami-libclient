@@ -38,13 +38,17 @@ Label {
     Connections {
         target: AccountAdapter
 
-        function onCurrentAccountIdChanged() {
-            root.update()
-            resetAccountListModel(AccountAdapter.currentAccountId)
-        }
-
         function onAccountStatusChanged(accountId) {
             resetAccountListModel(accountId)
+        }
+    }
+
+    Connections {
+        target: LRCInstance
+
+        function onCurrentAccountIdChanged() {
+            root.update()
+            resetAccountListModel(LRCInstance.currentAccountId)
         }
     }
 
@@ -108,7 +112,7 @@ Label {
         target: AccountListModel
 
         function onModelReset() {
-            avatar.updateImage(AccountAdapter.currentAccountId,
+            avatar.updateImage(LRCInstance.currentAccountId,
                                AccountListModel.data(AccountListModel.index(0, 0),
                                                      AccountList.PictureUid))
             avatar.presenceStatus = AccountListModel.data(AccountListModel.index(0, 0),
@@ -133,7 +137,7 @@ Label {
             Layout.preferredHeight: JamiTheme.accountListAvatarSize
             Layout.alignment: Qt.AlignVCenter
 
-            imageId: AccountAdapter.currentAccountId
+            imageId: LRCInstance.currentAccountId
 
             presenceStatus: AccountListModel.data(AccountListModel.index(0, 0),
                                                   AccountList.Status)
@@ -208,7 +212,7 @@ Label {
                 height: visible ? preferredSize : 0
                 anchors.verticalCenter: parent.verticalCenter
 
-                visible: AccountAdapter.currentAccountType === Profile.Type.RING
+                visible: LRCInstance.currentAccountType === Profile.Type.RING
                 toolTipText: JamiStrings.displayQRCode
 
                 source: "qrc:/images/icons/share-24px.svg"
