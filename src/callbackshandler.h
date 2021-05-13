@@ -100,6 +100,7 @@ Q_SIGNALS:
                                 const QString& ringId,
                                 const QString& payload);
     /**
+     * @deprecated Use incomingCallWithMedia instead
      * Connect this signal to know when a call arrives
      * @param accountId the one who receives the call
      * @param callId the call id
@@ -110,6 +111,19 @@ Q_SIGNALS:
                       const QString& callId,
                       const QString& fromUri,
                       const QString& displayName);
+    /**
+     * Connect this signal to know when a call arrives
+     * @param accountId the one who receives the call
+     * @param callId the call id
+     * @param fromUri the caller uri
+     * @param displayName the display name of incoming call
+     * @param mediaList media received
+     */
+    void incomingCallWithMedia(const QString& accountId,
+                               const QString& callId,
+                               const QString& fromUri,
+                               const QString& displayName,
+                               const VectorMapStringString& mediaList);
     /**
      * Connect this signal to know when a call is updated
      * @param callId the call id
@@ -385,12 +399,24 @@ private Q_SLOTS:
                                       unsigned detail_code,
                                       const QString& detail_str);
     /**
+     * @deprecated Use slotIncomingCallWithMedia instead
      * Get the URI of the peer and emit incomingCall
      * @param accountId account linked
      * @param callId the incoming call id
      * @param fromQString the uri of the peer
      */
     void slotIncomingCall(const QString& accountId, const QString& callId, const QString& fromUri);
+    /**
+     * Get the URI of the peer and emit incomingCallWithMedia
+     * @param accountId account linked
+     * @param callId the incoming call id
+     * @param fromQString the uri of the peer
+     * @param mediaList the mediaList received
+     */
+    void slotIncomingCallWithMedia(const QString& accountId,
+                                   const QString& callId,
+                                   const QString& fromUri,
+                                   const VectorMapStringString& mediaList);
     /**
      * Emit callStateChanged
      * @param callId the call which changes.

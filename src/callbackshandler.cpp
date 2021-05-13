@@ -121,6 +121,12 @@ CallbacksHandler::CallbacksHandler(const Lrc& parent)
             Qt::QueuedConnection);
 
     connect(&CallManager::instance(),
+            &CallManagerInterface::incomingCallWithMedia,
+            this,
+            &CallbacksHandler::slotIncomingCallWithMedia,
+            Qt::QueuedConnection);
+
+    connect(&CallManager::instance(),
             &CallManagerInterface::callStateChanged,
             this,
             &CallbacksHandler::slotCallStateChanged,
@@ -348,6 +354,30 @@ CallbacksHandler::slotIncomingCall(const QString& accountId,
 }
 
 void
+CallbacksHandler::slotIncomingCallWithMedia(const QString& accountId,
+                                            const QString& callId,
+                                            const QString& fromUri,
+                                            const VectorMapStringString& mediaList)
+{
+    QString displayname;
+    QString fromQString;
+    if (fromUri.contains("ring.dht")) {
+        auto qDisplayname = fromUri.left(fromUri.indexOf("<") + 1);
+        if (qDisplayname.size() > 2) {
+            displayname = qDisplayname.left(qDisplayname.indexOf("<") - 1);
+        }
+        fromQString = fromUri.right(50);
+        fromQString = fromQString.left(40);
+    } else {
+        auto left = fromUri.indexOf("<") + 1;
+        auto right = fromUri.indexOf("@");
+        fromQString = fromUri.mid(left, right - left);
+        displayname = fromUri.left(fromUri.indexOf("<") - 1);
+    }
+    emit incomingCallWithMedia(accountId, callId, fromQString, displayname, mediaList);
+}
+
+void
 CallbacksHandler::slotCallStateChanged(const QString& callId, const QString& state, int code)
 {
     emit callStateChanged(callId, state, code);
@@ -570,7 +600,9 @@ CallbacksHandler::slotAudioMeterReceived(const QString& id, float level)
 }
 
 void
-CallbacksHandler::slotRemoteRecordingChanged(const QString& callId, const QString& peerNumber, bool state)
+CallbacksHandler::slotRemoteRecordingChanged(const QString& callId,
+                                             const QString& peerNumber,
+                                             bool state)
 {
     emit remoteRecordingChanged(callId, peerNumber, state);
 }
