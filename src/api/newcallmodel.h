@@ -119,6 +119,13 @@ public:
     void accept(const QString& callId) const;
 
     /**
+     * @brief accept a call with defined medias
+     *
+     * @param callId
+     */
+    void acceptWithMedia(const QString& callId) const;
+
+    /**
      * Hang up a call
      * @param callId
      */
@@ -226,6 +233,11 @@ public:
      * Set a call as the current call (hold other calls)
      */
     void setCurrentCall(const QString& callId) const;
+
+    /**
+     * Update callInfo to be used in the call answering
+     */
+    void setCallInfos(const QString& callId, const call::Info& callInfo);
 
     /**
      * Change the conference layout
