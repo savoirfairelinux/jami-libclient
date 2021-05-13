@@ -228,6 +228,14 @@ public:
     void setCurrentCall(const QString& callId) const;
 
     /**
+     * Update call mediaList to be used in the call answering
+     *
+     * @param callId
+     * @param acceptVideo
+     */
+    void updateCallMediaList(const QString& callId, bool acceptVideo);
+
+    /**
      * Change the conference layout
      */
     void setConferenceLayout(const QString& confId, const call::Layout& layout);

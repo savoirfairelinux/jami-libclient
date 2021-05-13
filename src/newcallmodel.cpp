@@ -157,11 +157,13 @@ public Q_SLOTS:
      * @param callId
      * @param fromId peer uri
      * @param displayname
+     * @param mediaList media received
      */
-    void slotIncomingCall(const QString& accountId,
-                          const QString& callId,
-                          const QString& fromId,
-                          const QString& displayname);
+    void slotIncomingCallWithMedia(const QString& accountId,
+                                   const QString& callId,
+                                   const QString& fromId,
+                                   const QString& displayname,
+                                   const VectorMapStringString& mediaList);
     /**
      * Listen from CallbacksHandler when a call got a new state
      * @param callId
@@ -263,20 +265,46 @@ NewCallModel::getCall(const QString& uid) const
     return *pimpl_->calls.at(uid);
 }
 
+void
+NewCallModel::updateCallMediaList(const QString& callId, bool acceptVideo)
+{
+    try {
+        auto callInfos = pimpl_->calls.find(callId);
+        if (callInfos != pimpl_->calls.end()) {
+            for (auto it = callInfos->second->mediaList.begin();
+                 it != callInfos->second->mediaList.end();
+                 it++) {
+                if ((*it)["MEDIA_TYPE"] == "MEDIA_TYPE_VIDEO" && !acceptVideo) {
+                    (*it)["ENABLED"] = "false";
+                    (*it)["MUTED"] = "true";
+                    callInfos->second->videoMuted = !acceptVideo;
+                }
+            }
+        }
+    } catch (...) {
+    }
+}
+
 QString
 NewCallModel::createCall(const QString& uri, bool isAudioOnly)
 {
+    VectorMapStringString mediaList {};
+    MapStringString mediaAttribute = {{"MEDIA_TYPE", "MEDIA_TYPE_AUDIO"},
+                                      {"ENABLED", "true"},
+                                      {"MUTED", "false"},
+                                      {"SOURCE", ""},
+                                      {"LABEL", "main_audio"}};
+    mediaList.push_back(mediaAttribute);
+    if (!isAudioOnly) {
+        mediaAttribute["MEDIA_TYPE"] = "MEDIA_TYPE_VIDEO";
+        mediaAttribute["LABEL"] = "main_video";
+        mediaList.push_back(mediaAttribute);
+    }
 #ifdef ENABLE_LIBWRAP
-    auto callId = isAudioOnly
-                      ? CallManager::instance().placeCall(owner.id, uri, {{"AUDIO_ONLY", "true"}})
-                      : CallManager::instance().placeCall(owner.id, uri);
+    auto callId = CallManager::instance().placeCallWithMedia(owner.id, uri, mediaList);
 #else  // dbus
     // do not use auto here (QDBusPendingReply<QString>)
-    QString callId = isAudioOnly
-                         ? CallManager::instance().placeCallWithDetails(owner.id,
-                                                                        uri,
-                                                                        {{"AUDIO_ONLY", "true"}})
-                         : CallManager::instance().placeCall(owner.id, uri);
+    QString callId = CallManager::instance().placeCallWithMedia(owner.id, uri, mediaList);
 #endif // ENABLE_LIBWRAP
 
     if (callId.isEmpty()) {
@@ -291,6 +319,7 @@ NewCallModel::createCall(const QString& uri, bool isAudioOnly)
     callInfo->status = call::Status::SEARCHING;
     callInfo->type = call::Type::DIALOG;
     callInfo->isAudioOnly = isAudioOnly;
+    callInfo->mediaList = mediaList;
     pimpl_->calls.emplace(callId, std::move(callInfo));
 
     return callId;
@@ -299,7 +328,16 @@ NewCallModel::createCall(const QString& uri, bool isAudioOnly)
 void
 NewCallModel::accept(const QString& callId) const
 {
-    CallManager::instance().accept(callId);
+    try {
+        auto& callInfo = pimpl_->calls[callId];
+        if (!callInfo)
+            return;
+        if (callInfo->mediaList.empty())
+            CallManager::instance().accept(callId);
+        else
+            CallManager::instance().acceptWithMedia(callId, callInfo->mediaList);
+    } catch (...) {
+    }
 }
 
 void
@@ -556,9 +594,9 @@ NewCallModelPimpl::NewCallModelPimpl(const NewCallModel& linked,
     , behaviorController(behaviorController)
 {
     connect(&callbacksHandler,
-            &CallbacksHandler::incomingCall,
+            &CallbacksHandler::incomingCallWithMedia,
             this,
-            &NewCallModelPimpl::slotIncomingCall);
+            &NewCallModelPimpl::slotIncomingCallWithMedia);
     connect(&callbacksHandler,
             &CallbacksHandler::callStateChanged,
             this,
@@ -825,10 +863,11 @@ NewCallModel::isConferenceHost(const QString& callId)
 }
 
 void
-NewCallModelPimpl::slotIncomingCall(const QString& accountId,
-                                    const QString& callId,
-                                    const QString& fromId,
-                                    const QString& displayname)
+NewCallModelPimpl::slotIncomingCallWithMedia(const QString& accountId,
+                                             const QString& callId,
+                                             const QString& fromId,
+                                             const QString& displayname,
+                                             const VectorMapStringString& mediaList)
 {
     if (linked.owner.id != accountId) {
         return;
@@ -854,6 +893,7 @@ NewCallModelPimpl::slotIncomingCall(const QString& accountId,
     callInfo->status = call::Status::INCOMING_RINGING;
     callInfo->type = call::Type::DIALOG;
     callInfo->isAudioOnly = callDetails["AUDIO_ONLY"] == "true" ? true : false;
+    callInfo->mediaList = mediaList;
     calls.emplace(callId, std::move(callInfo));
 
     if (!linked.owner.confProperties.allowIncoming
@@ -865,7 +905,7 @@ NewCallModelPimpl::slotIncomingCall(const QString& accountId,
     emit linked.newIncomingCall(fromId, callId, displayname);
 
     // HACK. BECAUSE THE DAEMON DOESN'T HANDLE THIS CASE!
-    if (linked.owner.confProperties.autoAnswer) {
+    if (!linked.owner.confProperties.isRendezVous && linked.owner.confProperties.autoAnswer) {
         linked.accept(callId);
     }
 }
