@@ -121,6 +121,12 @@ CallbacksHandler::CallbacksHandler(const Lrc& parent)
             Qt::QueuedConnection);
 
     connect(&CallManager::instance(),
+            &CallManagerInterface::incomingCallWithMedia,
+            this,
+            &CallbacksHandler::slotIncomingCallWithMedia,
+            Qt::QueuedConnection);
+
+    connect(&CallManager::instance(),
             &CallManagerInterface::callStateChanged,
             this,
             &CallbacksHandler::slotCallStateChanged,
@@ -334,6 +340,15 @@ CallbacksHandler::slotIncomingCall(const QString& accountId,
                                    const QString& callId,
                                    const QString& fromUri)
 {
+    slotIncomingCallWithMedia(accountId, callId, fromUri, {});
+}
+
+void
+CallbacksHandler::slotIncomingCallWithMedia(const QString& accountId,
+                                            const QString& callId,
+                                            const QString& fromUri,
+                                            const VectorMapStringString& mediaList)
+{
     QString displayname;
     QString fromQString;
     if (fromUri.contains("ring.dht")) {
@@ -349,7 +364,7 @@ CallbacksHandler::slotIncomingCall(const QString& accountId,
         fromQString = fromUri.mid(left, right - left);
         displayname = fromUri.left(fromUri.indexOf("<") - 1);
     }
-    emit incomingCall(accountId, callId, fromQString, displayname);
+    emit incomingCallWithMedia(accountId, callId, fromQString, displayname, mediaList);
 }
 
 void
