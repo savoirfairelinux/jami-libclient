@@ -118,6 +118,18 @@ public:
                                                  QString(from.c_str()),
                                                  convertVecMap(mediaList));
                 }),
+            exportable_callback<CallSignal::MediaChangeRequested>(
+                [this](const std::string& accountID,
+                       const std::string& callID,
+                       const std::vector<std::map<std::string, std::string>>& mediaList) {
+                    LOG_DRING_SIGNAL4("mediaChangeRequested",
+                                      QString(accountID.c_str()),
+                                      QString(callID.c_str()),
+                                      convertVecMap(mediaList));
+                    Q_EMIT mediaChangeRequested(QString(accountID.c_str()),
+                                                QString(callID.c_str()),
+                                                convertVecMap(mediaList));
+                }),
             exportable_callback<CallSignal::RecordPlaybackFilepath>(
                 [this](const std::string& callID, const std::string& filepath) {
                     LOG_DRING_SIGNAL2("recordPlaybackFilepath",
@@ -454,6 +466,9 @@ Q_SIGNALS: // SIGNALS
                                const QString& callID,
                                const QString& from,
                                const VectorMapStringString& mediaList);
+    void mediaChangeRequested(const QString& accountID,
+                              const QString& callID,
+                              const VectorMapStringString& mediaList);
     void recordPlaybackFilepath(const QString& callID, const QString& filepath);
     void conferenceCreated(const QString& confID);
     void conferenceChanged(const QString& confID, const QString& state);
