@@ -127,6 +127,12 @@ CallbacksHandler::CallbacksHandler(const Lrc& parent)
             Qt::QueuedConnection);
 
     connect(&CallManager::instance(),
+            &CallManagerInterface::mediaChangeRequested,
+            this,
+            &CallbacksHandler::slotMediaChangeRequested,
+            Qt::QueuedConnection);
+
+    connect(&CallManager::instance(),
             &CallManagerInterface::callStateChanged,
             this,
             &CallbacksHandler::slotCallStateChanged,
@@ -376,6 +382,14 @@ CallbacksHandler::slotIncomingCallWithMedia(const QString& accountId,
         displayname = fromUri.left(fromUri.indexOf("<") - 1);
     }
     emit incomingCallWithMedia(accountId, callId, fromQString, displayname, mediaList);
+}
+
+void
+CallbacksHandler::slotMediaChangeRequested(const QString& accountId,
+                                           const QString& callId,
+                                           const VectorMapStringString& mediaList)
+{
+    emit mediaChangeRequested(accountId, callId, mediaList);
 }
 
 void
