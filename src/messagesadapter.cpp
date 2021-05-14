@@ -77,8 +77,10 @@ MessagesAdapter::setupChatView(const QString& convUid)
     auto& accountInfo = lrcInstance_->accountModel().getAccountInfo(selectedAccountId);
 
     lrc::api::contact::Info contactInfo;
+    QString bestName;
     try {
         contactInfo = accountInfo.contactModel->getContact(contactURI);
+        bestName = accountInfo.contactModel->bestNameForContact(contactURI);
     } catch (...) {
     }
 
@@ -87,8 +89,18 @@ MessagesAdapter::setupChatView(const QString& convUid)
     QMetaObject::invokeMethod(qmlObj_,
                               "setSendContactRequestButtonVisible",
                               Q_ARG(QVariant, isPending));
+    QMetaObject::invokeMethod(qmlObj_,
+                              "setMessagingHeaderButtonsVisible",
+                              Q_ARG(QVariant,
+                                    !(convInfo.mode != lrc::api::conversation::Mode::NON_SWARM
+                                      && (convInfo.isRequest || convInfo.needsSyncing))));
 
     setMessagesVisibility(false);
+    setInvitation(convInfo.isRequest or convInfo.needsSyncing,
+                  bestName,
+                  contactURI,
+                  convInfo.mode != lrc::api::conversation::Mode::NON_SWARM,
+                  convInfo.needsSyncing);
 
     // Type Indicator (contact). TODO: Not shown when invitation request?
     contactIsComposing(convInfo.uid, "", false);
@@ -457,9 +469,11 @@ MessagesAdapter::setConversationProfileData(const lrc::api::conversation::Info& 
     try {
         auto& contact = accInfo->contactModel->getContact(contactUri);
         auto bestName = accInfo->contactModel->bestNameForContact(contactUri);
-        setInvitation(contact.profileInfo.type == lrc::api::profile::Type::PENDING,
+        setInvitation(convInfo.isRequest or convInfo.needsSyncing,
                       bestName,
-                      contactUri);
+                      contactUri,
+                      convInfo.mode != lrc::api::conversation::Mode::NON_SWARM,
+                      convInfo.needsSyncing);
         if (!contact.profileInfo.avatar.isEmpty()) {
             setSenderImage(contactUri, contact.profileInfo.avatar);
         } else {
@@ -524,13 +538,15 @@ MessagesAdapter::requestSendMessageContent()
 }
 
 void
-MessagesAdapter::setInvitation(bool show, const QString& contactUri, const QString& contactId)
+MessagesAdapter::setInvitation(
+    bool show, const QString& contactUri, const QString& contactId, bool isSwarm, bool needsSyncing)
 {
-    QString s
-        = show
-              ? QString::fromLatin1("showInvitation(\"%1\", \"%2\")").arg(contactUri).arg(contactId)
-              : QString::fromLatin1("showInvitation()");
-
+    QString s = show ? QString::fromLatin1("showInvitation(\"%1\", \"%2\", %3, %4)")
+                           .arg(contactUri)
+                           .arg(contactId)
+                           .arg(isSwarm)
+                           .arg(needsSyncing)
+                     : QString::fromLatin1("showInvitation()");
     QMetaObject::invokeMethod(qmlObj_, "webViewRunJavaScript", Q_ARG(QVariant, s));
 }
 
