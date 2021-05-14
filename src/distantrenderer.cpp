@@ -58,6 +58,12 @@ DistantRenderer::setRendererId(const QString& id)
     update(QRect(0, 0, width(), height()));
 }
 
+QString
+DistantRenderer::rendererId()
+{
+    return distantRenderId_;
+}
+
 int
 DistantRenderer::getXOffset() const
 {

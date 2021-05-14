@@ -105,11 +105,10 @@
         <file>src/mainview/components/AccountComboBox.qml</file>
         <file>src/mainview/components/CallStackView.qml</file>
         <file>src/mainview/components/InitialCallPage.qml</file>
-        <file>src/mainview/components/AudioCallPage.qml</file>
         <file>src/mainview/components/CallOverlay.qml</file>
         <file>src/mainview/components/CallOverlayButtonGroup.qml</file>
         <file>src/mainview/components/ContactSearchBar.qml</file>
-        <file>src/mainview/components/VideoCallPage.qml</file>
+        <file>src/mainview/components/OngoingCallPage.qml</file>
         <file>src/mainview/components/ParticipantOverlay.qml</file>
         <file>src/mainview/components/ProjectCreditsScrollView.qml</file>
         <file>src/mainview/components/AccountComboBoxPopup.qml</file>
@@ -128,7 +127,6 @@
         <file>src/mainview/components/SipInputPanel.qml</file>
         <file>src/mainview/components/ParticipantOverlayMenu.qml</file>
         <file>src/mainview/js/videodevicecontextmenuitemcreation.js</file>
-        <file>src/mainview/js/incomingcallpagecreation.js</file>
         <file>src/mainview/js/selectscreenwindowcreation.js</file>
         <file>src/mainview/js/screenrubberbandcreation.js</file>
         <file>src/mainview/js/contactpickercreation.js</file>

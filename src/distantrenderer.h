@@ -31,12 +31,14 @@ class DistantRenderer : public QQuickPaintedItem
 {
     Q_OBJECT
     Q_PROPERTY(LRCInstance* lrcInstance MEMBER lrcInstance_ NOTIFY lrcInstanceChanged)
+    Q_PROPERTY(QString rendererId READ rendererId WRITE setRendererId)
 
 public:
     explicit DistantRenderer(QQuickItem* parent = nullptr);
     ~DistantRenderer();
 
     Q_INVOKABLE void setRendererId(const QString& id);
+    Q_INVOKABLE QString rendererId();
     Q_INVOKABLE int getXOffset() const;
     Q_INVOKABLE int getYOffset() const;
     Q_INVOKABLE double getScaledWidth() const;

@@ -76,8 +76,8 @@ Rectangle {
             id: contactImg
 
             Layout.alignment: Qt.AlignHCenter
-            Layout.preferredWidth: JamiTheme.avatarSizeInitialCall
-            Layout.preferredHeight: JamiTheme.avatarSizeInitialCall
+            Layout.preferredWidth: JamiTheme.avatarSizeInCall
+            Layout.preferredHeight: JamiTheme.avatarSizeInCall
 
             mode: AvatarImage.Mode.FromConvUid
             showPresenceIndicator: false
