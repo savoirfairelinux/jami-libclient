@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "329e552a_5d366ae6",
+        "filename": "src/api/newcallmodel.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2021-05-14T14:04:57Z",
+      "side": 1,
+      "message": "mark as deprecated",
+      "range": {
+        "startLine": 119,
+        "startChar": 8,
+        "endLine": 119,
+        "endChar": 11
+      },
+      "revId": "e1e5bf30b524a58d3885fc5a7566c70c1e2af584",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "52368b1b_1676a6d0",
+        "filename": "src/callbackshandler.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 406,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2021-05-14T14:04:57Z",
+      "side": 1,
+      "message": "same",
+      "range": {
+        "startLine": 406,
+        "startChar": 9,
+        "endLine": 406,
+        "endChar": 25
+      },
+      "revId": "e1e5bf30b524a58d3885fc5a7566c70c1e2af584",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    }
+  ]
+}
