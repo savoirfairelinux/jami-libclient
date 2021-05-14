@@ -140,6 +140,7 @@ struct Info
     VectorMapStringString participantsInfos = {};
     VectorMapStringString mediaList = {};
     QSet<QString> peerRec {};
+    bool peerMultiStream {true};
 };
 
 static inline bool
