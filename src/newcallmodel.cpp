@@ -177,6 +177,15 @@ public Q_SLOTS:
                                    const QString& displayname,
                                    const VectorMapStringString& mediaList);
     /**
+     * Connect this signal to know when a call arrives
+     * @param accountId the one who receives the call
+     * @param callId the call id
+     * @param mediaList new media received
+     */
+    void slotMediaChangeRequested(const QString& accountId,
+                                  const QString& callId,
+                                  const VectorMapStringString& mediaList);
+    /**
      * Listen from CallbacksHandler when a call got a new state
      * @param callId
      * @param state the new state
@@ -321,6 +330,33 @@ NewCallModel::createCall(const QString& uri, bool isAudioOnly)
     pimpl_->calls.emplace(callId, std::move(callInfo));
 
     return callId;
+}
+
+void
+NewCallModel::requestMediaChange(const QString& callId, bool activateVideo)
+{
+    auto& callInfo = pimpl_->calls[callId];
+    if (!callInfo)
+        return;
+    callInfo->isAudioOnly &= !activateVideo;
+    callInfo->videoMuted = !activateVideo;
+    bool found {false};
+    for (auto& item : callInfo->mediaList) {
+        if (item["MEDIA_TYPE"] == "MEDIA_TYPE_VIDEO") {
+            item["ENABLED"] = activateVideo ? "true" : "false";
+            item["MUTED"] = activateVideo ? "false" : "true";
+            found = true;
+        }
+    }
+    if (!found && activateVideo) {
+        MapStringString mediaAttribute = {{"MEDIA_TYPE", "MEDIA_TYPE_AUDIO"},
+                                          {"ENABLED", "true"},
+                                          {"MUTED", "false"},
+                                          {"SOURCE", ""},
+                                          {"LABEL", "main_video"}};
+        callInfo->mediaList.push_back(mediaAttribute);
+    }
+    CallManager::instance().requestMediaChange(callId, callInfo->mediaList);
 }
 
 void
@@ -599,6 +635,10 @@ NewCallModelPimpl::NewCallModelPimpl(const NewCallModel& linked,
             &CallbacksHandler::incomingCallWithMedia,
             this,
             &NewCallModelPimpl::slotIncomingCallWithMedia);
+    connect(&callbacksHandler,
+            &CallbacksHandler::mediaChangeRequested,
+            this,
+            &NewCallModelPimpl::slotMediaChangeRequested);
     connect(&callbacksHandler,
             &CallbacksHandler::callStateChanged,
             this,
@@ -956,6 +996,31 @@ NewCallModelPimpl::slotIncomingCallWithMedia(const QString& accountId,
     if (!linked.owner.confProperties.isRendezVous && linked.owner.confProperties.autoAnswer) {
         linked.acceptWithMedia(callId);
     }
+}
+
+void
+NewCallModelPimpl::slotMediaChangeRequested(const QString& accountId,
+                                            const QString& callId,
+                                            const VectorMapStringString& mediaList)
+{
+    if (mediaList.empty())
+        return;
+    auto& callInfo = calls[callId];
+    auto answerMedia = QList<MapStringString>::fromVector(mediaList);
+
+    for (auto& item : answerMedia) {
+        if (callInfo->mediaList.contains(item)) {
+            continue;
+        }
+        if (item["MEDIA_TYPE"] == "MEDIA_TYPE_VIDEO") {
+            callInfo->isAudioOnly = false;
+            callInfo->videoMuted = true;
+            item["ENABLED"] = "false";
+            item["MUTED"] = "true";
+        }
+    }
+    callInfo->mediaList = QVector<MapStringString>::fromList(answerMedia);
+    CallManager::instance().answerMediaChangeRequest(callId, callInfo->mediaList);
 }
 
 void
