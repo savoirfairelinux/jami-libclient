@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4d9e386d_2b661e49",
+        "filename": "src/newcallmodel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 313,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2021-05-14T13:12:09Z",
+      "side": 1,
+      "message": "should return to avoid to refuse \u0026 hangup",
+      "range": {
+        "startLine": 312,
+        "startChar": 51,
+        "endLine": 313,
+        "endChar": 47
+      },
+      "revId": "73ea133b6e3975164eff81752d77335e83826fdb",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    }
+  ]
+}
