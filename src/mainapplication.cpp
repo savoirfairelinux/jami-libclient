@@ -161,9 +161,18 @@ MainApplication::MainApplication(int& argc, char** argv)
     , engine_(new QQmlApplicationEngine())
     , connectivityMonitor_(new ConnectivityMonitor(this))
     , settingsManager_(new AppSettingsManager(this))
-    , systemTray_(new SystemTray(settingsManager_, this))
+    , systemTray_(new SystemTray(settingsManager_.get(), this))
 {
     QObject::connect(this, &QApplication::aboutToQuit, [this] { cleanup(); });
+}
+
+MainApplication::~MainApplication()
+{
+    engine_.reset();
+    systemTray_.reset();
+    settingsManager_.reset();
+    lrcInstance_.reset();
+    connectivityMonitor_.reset();
 }
 
 bool
@@ -194,7 +203,7 @@ MainApplication::init()
     gnutls_global_init();
 #endif
 
-    initLrc(results[opts::UPDATEURL].toString(), connectivityMonitor_);
+    initLrc(results[opts::UPDATEURL].toString(), connectivityMonitor_.get());
 
 #ifdef Q_OS_UNIX
     GlobalInstances::setDBusErrorHandler(std::make_unique<Interfaces::DBusErrorHandler>());
@@ -223,7 +232,7 @@ MainApplication::init()
     }
 #endif
 
-    connect(connectivityMonitor_, &ConnectivityMonitor::connectivityChanged, [this] {
+    connect(connectivityMonitor_.get(), &ConnectivityMonitor::connectivityChanged, [this] {
         lrcInstance_->connectivityChanged();
     });
 
@@ -414,14 +423,16 @@ void
 MainApplication::initQmlLayer()
 {
     // setup the adapters (their lifetimes are that of MainApplication)
-    auto callAdapter = new CallAdapter(systemTray_, lrcInstance_.data(), this);
-    auto messagesAdapter = new MessagesAdapter(settingsManager_, lrcInstance_.data(), this);
-    auto conversationsAdapter = new ConversationsAdapter(systemTray_, lrcInstance_.data(), this);
+    auto callAdapter = new CallAdapter(systemTray_.get(), lrcInstance_.data(), this);
+    auto messagesAdapter = new MessagesAdapter(settingsManager_.get(), lrcInstance_.data(), this);
+    auto conversationsAdapter = new ConversationsAdapter(systemTray_.get(),
+                                                         lrcInstance_.data(),
+                                                         this);
     auto avAdapter = new AvAdapter(lrcInstance_.data(), this);
     auto contactAdapter = new ContactAdapter(lrcInstance_.data(), this);
-    auto accountAdapter = new AccountAdapter(settingsManager_, lrcInstance_.data(), this);
-    auto utilsAdapter = new UtilsAdapter(systemTray_, lrcInstance_.data(), this);
-    auto settingsAdapter = new SettingsAdapter(settingsManager_, lrcInstance_.data(), this);
+    auto accountAdapter = new AccountAdapter(settingsManager_.get(), lrcInstance_.data(), this);
+    auto utilsAdapter = new UtilsAdapter(systemTray_.get(), lrcInstance_.data(), this);
+    auto settingsAdapter = new SettingsAdapter(settingsManager_.get(), lrcInstance_.data(), this);
     auto pluginAdapter = new PluginAdapter(lrcInstance_.data(), this);
 
     // qml adapter registration
@@ -473,7 +484,7 @@ MainApplication::initSystray()
         engine_->quit();
         cleanup();
     });
-    connect(systemTray_,
+    connect(systemTray_.get(),
             &QSystemTrayIcon::activated,
             [this](QSystemTrayIcon::ActivationReason reason) {
                 if (reason != QSystemTrayIcon::ActivationReason::Context)

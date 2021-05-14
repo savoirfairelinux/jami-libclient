@@ -71,7 +71,7 @@ class MainApplication : public QApplication
 
 public:
     explicit MainApplication(int& argc, char** argv);
-    ~MainApplication() = default;
+    ~MainApplication();
 
     bool init();
     void restoreApp();
@@ -94,9 +94,9 @@ private:
 
     QScopedPointer<LRCInstance> lrcInstance_;
 
-    ConnectivityMonitor* connectivityMonitor_;
-    AppSettingsManager* settingsManager_;
-    SystemTray* systemTray_;
+    QScopedPointer<ConnectivityMonitor> connectivityMonitor_;
+    QScopedPointer<AppSettingsManager> settingsManager_;
+    QScopedPointer<SystemTray> systemTray_;
 
     ScreenInfo screenInfo_;
 
