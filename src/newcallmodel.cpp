@@ -308,6 +308,10 @@ NewCallModel::hangUp(const QString& callId) const
     if (!hasCall(callId))
         return;
     auto& call = pimpl_->calls[callId];
+
+    if (call->status == call::Status::INCOMING_RINGING)
+        CallManager::instance().refuse(callId);
+
     switch (call->type) {
     case call::Type::DIALOG:
         CallManager::instance().hangUp(callId);
