@@ -32,6 +32,7 @@ ContextMenuAutoLoader {
 
     property string responsibleAccountId: ""
     property string responsibleConvUid: ""
+    property bool isSwarm: false
     property int contactType: Profile.Type.INVALID
     property bool hasCall: {
         if (responsibleAccountId && responsibleConvUid)
@@ -53,6 +54,18 @@ ContextMenuAutoLoader {
                 CallAdapter.placeCall()
                 communicationPageMessageWebView.setSendContactRequestButtonVisible(
                             false)
+            }
+        },
+        GeneralMenuItem {
+            id: clearConversation
+
+            canTrigger: !isSwarm
+            itemName: JamiStrings.clearConversation
+            iconSource: "qrc:/images/icons/place_audiocall-24px.svg"
+            onClicked: {
+                MessagesAdapter.clearConversationHistory(
+                            responsibleAccountId,
+                            responsibleConvUid)
             }
         },
         GeneralMenuItem {
