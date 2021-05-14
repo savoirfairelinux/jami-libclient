@@ -113,6 +113,15 @@ Q_SIGNALS:
                                const QString& displayName,
                                const VectorMapStringString& mediaList);
     /**
+     * Connect this signal to know when a call arrives
+     * @param accountId the one who receives the call
+     * @param callId the call id
+     * @param mediaList new media received
+     */
+    void mediaChangeRequested(const QString& accountId,
+                              const QString& callId,
+                              const VectorMapStringString& mediaList);
+    /**
      * Connect this signal to know when a call is updated
      * @param callId the call id
      * @param state the new state
@@ -410,6 +419,16 @@ private Q_SLOTS:
                                    const QString& callId,
                                    const QString& fromUri,
                                    const VectorMapStringString& mediaList);
+    /**
+     * Get the URI of the peer and emit mediaChangeRequested
+     * @param accountId account linked
+     * @param callId the incoming call id
+     * @param fromQString the uri of the peer
+     * @param mediaList the mediaList received
+     */
+    void slotMediaChangeRequested(const QString& accountId,
+                                  const QString& callId,
+                                  const VectorMapStringString& mediaList);
     /**
      * Emit callStateChanged
      * @param callId the call which changes.
