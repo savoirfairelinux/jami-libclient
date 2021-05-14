@@ -22,6 +22,7 @@
 #include "lrcinstance.h"
 #include "qmladapterbase.h"
 #include "screensaver.h"
+#include "calloverlaymodel.h"
 
 #include <QObject>
 #include <QString>
@@ -104,6 +105,9 @@ public Q_SLOTS:
     void onShowCallView(const QString& accountId, const QString& convUid);
     void onAccountChanged();
     void onCallStatusChanged(const QString& accountId, const QString& callId);
+    void onParticipantsChanged(const QString& confId);
+    void onCallStatusChanged(const QString& callId, int code);
+    void onRemoteRecordingChanged(const QString& callId, const QSet<QString>& peerRec, bool state);
 
 private:
     void updateRecordingPeers(bool eraseLabelOnEmpty = false);
@@ -122,4 +126,6 @@ private:
     void preventScreenSaver(bool state);
 
     SystemTray* systemTray_;
+
+    QScopedPointer<CallOverlayModel> overlayModel_;
 };

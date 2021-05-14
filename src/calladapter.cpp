@@ -26,6 +26,7 @@
 
 #include "systemtray.h"
 #include "utils.h"
+#include "qmlregister.h"
 
 #include <QApplication>
 #include <QTimer>
@@ -35,6 +36,9 @@ CallAdapter::CallAdapter(SystemTray* systemTray, LRCInstance* instance, QObject*
     : QmlAdapterBase(instance, parent)
     , systemTray_(systemTray)
 {
+    overlayModel_.reset(new CallOverlayModel(lrcInstance_, this));
+    QML_REGISTERSINGLETONTYPE_POBJECT(NS_MODELS, overlayModel_.get(), "CallOverlayModel");
+
     accountId_ = lrcInstance_->getCurrentAccountId();
     if (!accountId_.isEmpty())
         connectCallModel(accountId_);
@@ -75,7 +79,7 @@ CallAdapter::CallAdapter(SystemTray* systemTray, LRCInstance* instance, QObject*
     connect(&lrcInstance_->behaviorController(),
             &BehaviorController::callStatusChanged,
             this,
-            &CallAdapter::onCallStatusChanged);
+            QOverload<const QString&, const QString&>::of(&CallAdapter::onCallStatusChanged));
 }
 
 void
@@ -127,6 +131,129 @@ CallAdapter::onCallStatusChanged(const QString& accountId, const QString& callId
     Q_UNUSED(accountId)
     Q_UNUSED(callId)
 #endif
+}
+
+void
+CallAdapter::onParticipantsChanged(const QString& confId)
+{
+    auto& accInfo = lrcInstance_->accountModel().getAccountInfo(accountId_);
+    auto& callModel = accInfo.callModel;
+    try {
+        auto call = callModel->getCall(confId);
+        const auto& convInfo = lrcInstance_->getConversationFromCallId(confId);
+        if (!convInfo.uid.isEmpty()) {
+            QVariantList map;
+            for (const auto& participant : call.participantsInfos) {
+                QJsonObject data = fillParticipantData(participant);
+                map.push_back(QVariant(data));
+                updateCallOverlay(convInfo);
+            }
+            Q_EMIT updateParticipantsInfos(map, accountId_, confId);
+        }
+    } catch (...) {
+    }
+}
+
+void
+CallAdapter::onCallStatusChanged(const QString& callId, int code)
+{
+    Q_UNUSED(code)
+
+    auto& accInfo = lrcInstance_->accountModel().getAccountInfo(accountId_);
+    auto& callModel = accInfo.callModel;
+
+    try {
+        const auto call = callModel->getCall(callId);
+        /*
+         * Change status label text.
+         */
+        const auto& convInfo = lrcInstance_->getConversationFromCallId(callId);
+        if (!convInfo.uid.isEmpty()) {
+            Q_EMIT callStatusChanged(static_cast<int>(call.status), accountId_, convInfo.uid);
+            updateCallOverlay(convInfo);
+        }
+
+        switch (call.status) {
+        case lrc::api::call::Status::INVALID:
+        case lrc::api::call::Status::INACTIVE:
+        case lrc::api::call::Status::ENDED:
+        case lrc::api::call::Status::PEER_BUSY:
+        case lrc::api::call::Status::TIMEOUT:
+        case lrc::api::call::Status::TERMINATING: {
+            lrcInstance_->renderer()->removeDistantRenderer(callId);
+            Q_EMIT lrcInstance_->conversationUpdated(convInfo.uid, accountId_);
+            if (convInfo.uid.isEmpty()) {
+                break;
+            }
+            /*
+             * If it's a conference, change the smartlist index
+             * to the next remaining participant.
+             */
+            bool forceCallOnly {false};
+            if (!convInfo.confId.isEmpty()) {
+                auto callList = lrcInstance_->getConferenceSubcalls(convInfo.confId);
+                if (callList.empty()) {
+                    auto lastConference = lrcInstance_->poplastConference(convInfo.confId);
+                    if (!lastConference.isEmpty()) {
+                        callList.append(lastConference);
+                        forceCallOnly = true;
+                    }
+                }
+                if (callList.isEmpty()) {
+                    callList = lrcInstance_->getActiveCalls();
+                    forceCallOnly = true;
+                }
+                for (const auto& callId : callList) {
+                    if (!callModel->hasCall(callId)) {
+                        continue;
+                    }
+                    auto currentCall = callModel->getCall(callId);
+                    if (currentCall.status == lrc::api::call::Status::IN_PROGRESS) {
+                        const auto& otherConv = lrcInstance_->getConversationFromCallId(callId);
+                        if (!otherConv.uid.isEmpty() && otherConv.uid != convInfo.uid) {
+                            /*
+                             * Reset the call view corresponding accountId, uid.
+                             */
+                            lrcInstance_->selectConversation(otherConv.uid);
+                            updateCall(otherConv.uid, otherConv.accountId, forceCallOnly);
+                        }
+                    }
+                }
+
+                return;
+            }
+            preventScreenSaver(false);
+            break;
+        }
+        case lrc::api::call::Status::CONNECTED:
+        case lrc::api::call::Status::IN_PROGRESS: {
+            const auto& convInfo = lrcInstance_->getConversationFromCallId(callId, accountId_);
+            if (!convInfo.uid.isEmpty() && convInfo.uid == lrcInstance_->get_selectedConvUid()) {
+                accInfo.conversationModel->selectConversation(convInfo.uid);
+            }
+            updateCall(convInfo.uid, accountId_);
+            preventScreenSaver(true);
+            break;
+        }
+        case lrc::api::call::Status::PAUSED:
+            updateCall();
+        default:
+            break;
+        }
+    } catch (...) {
+    }
+}
+
+void
+CallAdapter::onRemoteRecordingChanged(const QString& callId,
+                                      const QSet<QString>& peerRec,
+                                      bool state)
+{
+    Q_UNUSED(peerRec)
+    Q_UNUSED(state)
+    const auto currentCallId = lrcInstance_->getCallIdForConversationUid(convUid_, accountId_);
+    if (callId == currentCallId)
+        updateRecordingPeers();
 }
 
 void
@@ -429,126 +556,23 @@ CallAdapter::connectCallModel(const QString& accountId)
 {
     auto& accInfo = lrcInstance_->accountModel().getAccountInfo(accountId);
 
-    connect(
-        accInfo.callModel.get(),
-        &lrc::api::NewCallModel::onParticipantsChanged,
-        this,
-        [this, accountId](const QString& confId) {
-            auto& accInfo = lrcInstance_->accountModel().getAccountInfo(accountId);
-            auto& callModel = accInfo.callModel;
-            auto call = callModel->getCall(confId);
-            const auto& convInfo = lrcInstance_->getConversationFromCallId(confId);
-            if (!convInfo.uid.isEmpty()) {
-                QVariantList map;
-                for (const auto& participant : call.participantsInfos) {
-                    QJsonObject data = fillParticipantData(participant);
-                    map.push_back(QVariant(data));
-                    updateCallOverlay(convInfo);
-                }
-                Q_EMIT updateParticipantsInfos(map, accountId, confId);
-            }
-        },
-        Qt::UniqueConnection);
+    connect(accInfo.callModel.get(),
+            &NewCallModel::onParticipantsChanged,
+            this,
+            &CallAdapter::onParticipantsChanged,
+            Qt::UniqueConnection);
 
-    connect(
-        accInfo.callModel.get(),
-        &lrc::api::NewCallModel::callStatusChanged,
-        this,
-        [this, accountId](const QString& callId) {
-            auto& accInfo = lrcInstance_->accountModel().getAccountInfo(accountId);
-            auto& callModel = accInfo.callModel;
-            const auto call = callModel->getCall(callId);
+    connect(accInfo.callModel.get(),
+            &NewCallModel::callStatusChanged,
+            this,
+            QOverload<const QString&, int>::of(&CallAdapter::onCallStatusChanged),
+            Qt::UniqueConnection);
 
-            /*
-             * Change status label text.
-             */
-            const auto& convInfo = lrcInstance_->getConversationFromCallId(callId);
-            if (!convInfo.uid.isEmpty()) {
-                Q_EMIT callStatusChanged(static_cast<int>(call.status), accountId, convInfo.uid);
-                updateCallOverlay(convInfo);
-            }
-
-            switch (call.status) {
-            case lrc::api::call::Status::INVALID:
-            case lrc::api::call::Status::INACTIVE:
-            case lrc::api::call::Status::ENDED:
-            case lrc::api::call::Status::PEER_BUSY:
-            case lrc::api::call::Status::TIMEOUT:
-            case lrc::api::call::Status::TERMINATING: {
-                lrcInstance_->renderer()->removeDistantRenderer(callId);
-                Q_EMIT lrcInstance_->conversationUpdated(convInfo.uid, accountId);
-                if (convInfo.uid.isEmpty()) {
-                    break;
-                }
-                /*
-                 * If it's a conference, change the smartlist index
-                 * to the next remaining participant.
-                 */
-                bool forceCallOnly {false};
-                if (!convInfo.confId.isEmpty()) {
-                    auto callList = lrcInstance_->getConferenceSubcalls(convInfo.confId);
-                    if (callList.empty()) {
-                        auto lastConference = lrcInstance_->poplastConference(convInfo.confId);
-                        if (!lastConference.isEmpty()) {
-                            callList.append(lastConference);
-                            forceCallOnly = true;
-                        }
-                    }
-                    if (callList.isEmpty()) {
-                        callList = lrcInstance_->getActiveCalls();
-                        forceCallOnly = true;
-                    }
-                    for (const auto& callId : callList) {
-                        if (!callModel->hasCall(callId)) {
-                            continue;
-                        }
-                        auto currentCall = callModel->getCall(callId);
-                        if (currentCall.status == lrc::api::call::Status::IN_PROGRESS) {
-                            const auto& otherConv = lrcInstance_->getConversationFromCallId(callId);
-                            if (!otherConv.uid.isEmpty() && otherConv.uid != convInfo.uid) {
-                                /*
-                                 * Reset the call view corresponding accountId, uid.
-                                 */
-                                lrcInstance_->selectConversation(otherConv.uid);
-                                updateCall(otherConv.uid, otherConv.accountId, forceCallOnly);
-                            }
-                        }
-                    }
-
-                    return;
-                }
-                preventScreenSaver(false);
-                break;
-            }
-            case lrc::api::call::Status::CONNECTED:
-            case lrc::api::call::Status::IN_PROGRESS: {
-                const auto& convInfo = lrcInstance_->getConversationFromCallId(callId, accountId);
-                if (!convInfo.uid.isEmpty() && convInfo.uid == lrcInstance_->get_selectedConvUid()) {
-                    accInfo.conversationModel->selectConversation(convInfo.uid);
-                }
-                updateCall(convInfo.uid, accountId);
-                preventScreenSaver(true);
-                break;
-            }
-            case lrc::api::call::Status::PAUSED:
-                updateCall();
-            default:
-                break;
-            }
-        },
-        Qt::UniqueConnection);
-
-    connect(
-        accInfo.callModel.get(),
-        &lrc::api::NewCallModel::remoteRecordingChanged,
-        this,
-        [this](const QString& callId, const QSet<QString>&, bool) {
-            const auto currentCallId = lrcInstance_->getCallIdForConversationUid(convUid_,
-                                                                                 accountId_);
-            if (callId == currentCallId)
-                updateRecordingPeers();
-        },
-        Qt::UniqueConnection);
+    connect(accInfo.callModel.get(),
+            &NewCallModel::remoteRecordingChanged,
+            this,
+            &CallAdapter::onRemoteRecordingChanged,
+            Qt::UniqueConnection);
 }
 
 void
