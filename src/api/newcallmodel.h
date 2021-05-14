@@ -82,6 +82,13 @@ public:
     QString createCall(const QString& uri, bool isAudioOnly = false);
 
     /**
+     * Request a media change in a ongoing call.
+     * @param  callId
+     * @param  mediaList new media list for call
+     */
+    void requestMediaChange(const QString& callId, bool activateVideo);
+
+    /**
      * Get the call from its call id
      * @param  uid
      * @return the callInfo
@@ -162,7 +169,7 @@ public:
      * @param callId
      * @param media {AUDIO, VIDEO}
      */
-    void toggleMedia(const QString& callId, const NewCallModel::Media media) const;
+    void toggleMedia(const QString& callId, const NewCallModel::Media media);
 
     /**
      * Not implemented yet
@@ -377,6 +384,11 @@ Q_SIGNALS:
 
     //! Emitted once the removal of new pending conferences is complete
     void endRemovePendingConferenceesRows() const;
+
+    /**
+     * Emitted callInfosChanged
+     */
+    void callInfosChanged(const QString& accountId, const QString& callId) const;
 
 private:
     std::unique_ptr<NewCallModelPimpl> pimpl_;
