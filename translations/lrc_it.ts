@@ -29,7 +29,7 @@
     <message>
         <location filename="../src/api/call.h" line="69"/>
         <source>Calling</source>
-        <translation>Chiamando</translation>
+        <translation>Stai chiamando</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="71"/>
@@ -40,24 +40,24 @@
     <message>
         <location filename="../src/api/call.h" line="73"/>
         <source>Searching</source>
-        <translation>Ricerca in corso...</translation>
+        <translation>Ricerca in corso</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="75"/>
         <source>Inactive</source>
-        <translation type="unfinished"/>
+        <translation>Inattivo</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="77"/>
         <location filename="../src/api/call.h" line="83"/>
         <location filename="../src/chatview.cpp" line="70"/>
         <source>Finished</source>
-        <translation type="unfinished"/>
+        <translation>Completato</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="79"/>
         <source>Timeout</source>
-        <translation type="unfinished"/>
+        <translation>Tempo scaduto</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="81"/>
@@ -67,7 +67,7 @@
     <message>
         <location filename="../src/api/call.h" line="85"/>
         <source>Communication established</source>
-        <translation>Comunicazione stabilita</translation>
+        <translation>Connessione stabilita</translation>
     </message>
     <message>
         <location filename="../src/authority/storagehelper.cpp" line="130"/>
@@ -115,37 +115,37 @@
         <location filename="../src/avmodel.cpp" line="335"/>
         <location filename="../src/avmodel.cpp" line="354"/>
         <source>default</source>
-        <translation type="unfinished"/>
+        <translation>predefinito</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="53"/>
         <source>Null</source>
-        <translation type="unfinished"/>
+        <translation>Null</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="54"/>
         <source>Trying</source>
-        <translation type="unfinished"/>
+        <translation>Tentativo</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="55"/>
         <source>Ringing</source>
-        <translation>Suonando</translation>
+        <translation>Sta squillando</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="56"/>
         <source>Being Forwarded</source>
-        <translation type="unfinished"/>
+        <translation>In inoltro</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="57"/>
         <source>Queued</source>
-        <translation type="unfinished"/>
+        <translation>In coda</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="58"/>
         <source>Progress</source>
-        <translation type="unfinished"/>
+        <translation>In corso</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="59"/>
@@ -452,7 +452,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="41"/>
         <source>Leave video message</source>
-        <translation type="unfinished"/>
+        <translation>Registra videomessaggio</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="42"/>
@@ -590,7 +590,7 @@
     <message>
         <location filename="../src/contactmodel.cpp" line="459"/>
         <source>Searching…</source>
-        <translation type="unfinished"/>
+        <translation>Ricerca in corso...</translation>
     </message>
     <message>
         <location filename="../src/contactmodel.cpp" line="955"/>
@@ -600,7 +600,7 @@
     <message>
         <location filename="../src/contactmodel.cpp" line="958"/>
         <source>Username not found</source>
-        <translation type="unfinished"/>
+        <translation>Nome utente non trovato</translation>
     </message>
     <message>
         <location filename="../src/contactmodel.cpp" line="961"/>

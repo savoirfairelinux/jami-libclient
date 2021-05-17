@@ -600,7 +600,7 @@
     <message>
         <location filename="../src/contactmodel.cpp" line="958"/>
         <source>Username not found</source>
-        <translation type="unfinished"/>
+        <translation>未找到用户名</translation>
     </message>
     <message>
         <location filename="../src/contactmodel.cpp" line="961"/>

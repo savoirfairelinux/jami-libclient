@@ -135,7 +135,7 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="56"/>
         <source>Being Forwarded</source>
-        <translation>Desviando llamada</translation>
+        <translation>Derivando llamada</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="57"/>
@@ -447,7 +447,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="40"/>
         <source>Add emoji</source>
-        <translation type="unfinished"/>
+        <translation>Añadir emoji</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="41"/>
@@ -600,7 +600,7 @@
     <message>
         <location filename="../src/contactmodel.cpp" line="958"/>
         <source>Username not found</source>
-        <translation type="unfinished"/>
+        <translation>Nombre de usuario no encontrado</translation>
     </message>
     <message>
         <location filename="../src/contactmodel.cpp" line="961"/>

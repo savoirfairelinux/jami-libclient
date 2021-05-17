@@ -432,7 +432,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="37"/>
         <source>Options</source>
-        <translation type="unfinished"/>
+        <translation>Seçenekler</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="38"/>
@@ -447,12 +447,12 @@
     <message>
         <location filename="../src/chatview.cpp" line="40"/>
         <source>Add emoji</source>
-        <translation type="unfinished"/>
+        <translation>Emoji ekle</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="41"/>
         <source>Leave video message</source>
-        <translation type="unfinished"/>
+        <translation>Görüntülü ileti bırak</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="42"/>
@@ -477,7 +477,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="68"/>
         <source>Incoming transfer</source>
-        <translation type="unfinished"/>
+        <translation>Gelen aktarım</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="69"/>
@@ -497,27 +497,27 @@
     <message>
         <location filename="../src/chatview.cpp" line="47"/>
         <source>is not in your contacts</source>
-        <translation type="unfinished"/>
+        <translation>kişilerinizde yok</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="49"/>
         <source>Note: you can automatically accept this invitation by sending a message.</source>
-        <translation>Note: Bir ileti göndererek bu davetiyeyi otomatik olarak kabul edebilirsiniz.</translation>
+        <translation>Anımsatma: ileti göndererek bu davetiyeyi kendiliğinden kabul edebilirsiniz.</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="50"/>
         <source>{0} days ago</source>
-        <translation type="unfinished"/>
+        <translation>{0} gün önce</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="51"/>
         <source>{0} hours ago</source>
-        <translation type="unfinished"/>
+        <translation>{0} saat önce</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="53"/>
         <source>{0} minutes ago</source>
-        <translation type="unfinished"/>
+        <translation>{0} dakika önce</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="65"/>
@@ -600,7 +600,7 @@
     <message>
         <location filename="../src/contactmodel.cpp" line="958"/>
         <source>Username not found</source>
-        <translation type="unfinished"/>
+        <translation>Kullanıcı adı bulunamadı</translation>
     </message>
     <message>
         <location filename="../src/contactmodel.cpp" line="961"/>

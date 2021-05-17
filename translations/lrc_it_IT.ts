@@ -29,7 +29,7 @@
     <message>
         <location filename="../src/api/call.h" line="69"/>
         <source>Calling</source>
-        <translation>Sta chiamando</translation>
+        <translation>Stai chiamando</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="71"/>
@@ -45,7 +45,7 @@
     <message>
         <location filename="../src/api/call.h" line="75"/>
         <source>Inactive</source>
-        <translation>Non attivo</translation>
+        <translation>Inattivo</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="77"/>
@@ -57,7 +57,7 @@
     <message>
         <location filename="../src/api/call.h" line="79"/>
         <source>Timeout</source>
-        <translation>Timeout</translation>
+        <translation>Tempo scaduto</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="81"/>
@@ -67,7 +67,7 @@
     <message>
         <location filename="../src/api/call.h" line="85"/>
         <source>Communication established</source>
-        <translation>Comunicazione stabilita</translation>
+        <translation>Connessione stabilita</translation>
     </message>
     <message>
         <location filename="../src/authority/storagehelper.cpp" line="130"/>
@@ -115,7 +115,7 @@
         <location filename="../src/avmodel.cpp" line="335"/>
         <location filename="../src/avmodel.cpp" line="354"/>
         <source>default</source>
-        <translation>default</translation>
+        <translation>predefinito</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="53"/>
@@ -130,7 +130,7 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="55"/>
         <source>Ringing</source>
-        <translation>Squilla</translation>
+        <translation>Sta squillando</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="56"/>
@@ -402,7 +402,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="31"/>
         <source>Place video call</source>
-        <translation>Effettua una videochiamata</translation>
+        <translation>Effettua videochiamata</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="32"/>
@@ -412,7 +412,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="33"/>
         <source>Place audio call</source>
-        <translation>Metti la chiamata audio</translation>
+        <translation>Effettua una chiamata audio</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="34"/>
@@ -452,12 +452,12 @@
     <message>
         <location filename="../src/chatview.cpp" line="41"/>
         <source>Leave video message</source>
-        <translation>Lascia un videomessaggio</translation>
+        <translation>Registra videomessaggio</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="42"/>
         <source>Leave audio message</source>
-        <translation>Lascia un messaggio audio</translation>
+        <translation>Registra audiomessaggio</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="44"/>
@@ -600,7 +600,7 @@
     <message>
         <location filename="../src/contactmodel.cpp" line="958"/>
         <source>Username not found</source>
-        <translation type="unfinished"/>
+        <translation>Nome utente non trovato</translation>
     </message>
     <message>
         <location filename="../src/contactmodel.cpp" line="961"/>

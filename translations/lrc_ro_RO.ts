@@ -29,7 +29,7 @@
     <message>
         <location filename="../src/api/call.h" line="69"/>
         <source>Calling</source>
-        <translation>Apel în curs</translation>
+        <translation>Sună</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="71"/>
@@ -98,7 +98,7 @@
         <location filename="../src/authority/storagehelper.cpp" line="112"/>
         <location filename="../src/authority/storagehelper.cpp" line="892"/>
         <source>Missed outgoing call</source>
-        <translation>Apelul efectuat a fost pierdut</translation>
+        <translation>Apel efectuat nepreluat</translation>
     </message>
     <message>
         <location filename="../src/authority/storagehelper.cpp" line="118"/>
@@ -145,7 +145,7 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="58"/>
         <source>Progress</source>
-        <translation>Progres</translation>
+        <translation>În curs</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="59"/>
@@ -452,12 +452,12 @@
     <message>
         <location filename="../src/chatview.cpp" line="41"/>
         <source>Leave video message</source>
-        <translation>Trimite un mesaj video</translation>
+        <translation>Trimite mesaj video</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="42"/>
         <source>Leave audio message</source>
-        <translation>Trimite un mesaj vocal</translation>
+        <translation>Trimite mesaj vocal</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="44"/>
@@ -600,7 +600,7 @@
     <message>
         <location filename="../src/contactmodel.cpp" line="958"/>
         <source>Username not found</source>
-        <translation type="unfinished"/>
+        <translation>Numele de utilizator nu a fost găsit</translation>
     </message>
     <message>
         <location filename="../src/contactmodel.cpp" line="961"/>

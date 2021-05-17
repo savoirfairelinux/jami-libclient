@@ -447,7 +447,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="40"/>
         <source>Add emoji</source>
-        <translation type="unfinished"/>
+        <translation>Ajouter un émoji</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="41"/>
@@ -600,7 +600,7 @@
     <message>
         <location filename="../src/contactmodel.cpp" line="958"/>
         <source>Username not found</source>
-        <translation type="unfinished"/>
+        <translation>Nom d&apos;utilisateur non trouvé</translation>
     </message>
     <message>
         <location filename="../src/contactmodel.cpp" line="961"/>

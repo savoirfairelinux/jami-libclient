@@ -600,7 +600,7 @@
     <message>
         <location filename="../src/contactmodel.cpp" line="958"/>
         <source>Username not found</source>
-        <translation type="unfinished"/>
+        <translation>Felhasználónév nem található</translation>
     </message>
     <message>
         <location filename="../src/contactmodel.cpp" line="961"/>
