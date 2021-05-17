@@ -192,7 +192,7 @@ public:
 
     Q_INVOKABLE void customPortSIPSpinBoxValueChanged(int value);
     Q_INVOKABLE void negotiationTimeoutSpinBoxValueChanged(int value);
-    Q_INVOKABLE void registrationTimeoutSpinBoxValueChanged(int value);
+    Q_INVOKABLE void registrationExpirationTimeSpinBoxValueChanged(int value);
     Q_INVOKABLE void networkInterfaceSpinBoxValueChanged(int value);
     Q_INVOKABLE void audioRTPMinPortSpinBoxEditFinished(int value);
     Q_INVOKABLE void audioRTPMaxPortSpinBoxEditFinished(int value);

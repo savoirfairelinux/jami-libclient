@@ -94,7 +94,7 @@ Item {
     // AdvancedConnectivitySettings
     property string connectivity: qsTr("Connectivity")
     property string autoRegistration: qsTr("Auto Registration After Expired")
-    property string registrationTimeOut: qsTr("Registration expire timeout (seconds)")
+    property string registrationExpirationTime: qsTr("Registration expiration time (seconds)")
     property string networkInterface: qsTr("Network interface")
     property string useUPnP: qsTr("Use UPnP")
     property string useTURN: qsTr("Use TURN")
@@ -252,7 +252,7 @@ Item {
     property string setAPassword: qsTr("Set password")
     property string changeCurrentPassword: qsTr("Change current password")
     property string tipBackupAccount: qsTr("Backup account to a .gz file")
-    property string tipAdvancedSettingsDisplay: qsTr("Display or hide advanced settings") 
+    property string tipAdvancedSettingsDisplay: qsTr("Display or hide advanced settings")
     property string enableAccount: qsTr("Enable account")
 
     // NameRegistrationDialog

@@ -81,13 +81,13 @@ ColumnLayout {
             id: registrationExpireTimeoutSpinBox
             visible: isSIP
 
-            title: JamiStrings.registrationTimeOut
+            title: JamiStrings.registrationExpirationTime
             itemWidth: root.itemWidth
             bottomValue: 0
-            topValue: 3000
+            topValue: 7*24*3600
             step: 1
 
-            onNewValue: SettingsAdapter.registrationTimeoutSpinBoxValueChanged(valueField)
+            onNewValue: SettingsAdapter.registrationExpirationTimeSpinBoxValueChanged(valueField)
         }
 
         SettingSpinBox {
@@ -97,7 +97,7 @@ ColumnLayout {
             title: JamiStrings.networkInterface
             itemWidth: root.itemWidth
             bottomValue: 0
-            topValue: 65536
+            topValue: 65535
             step: 1
 
             onNewValue: SettingsAdapter.networkInterfaceSpinBoxValueChanged(valueField)
