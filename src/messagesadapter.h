@@ -80,6 +80,7 @@ protected:
                        const QString& contactId = {},
                        bool isSwarm = false,
                        bool needsSyncing = false);
+    void setIsSwarm(bool isSwarm);
     void clear();
     void printHistory(ConversationModel& conversationModel, MessagesList interactions);
     void updateHistory(ConversationModel& conversationModel,

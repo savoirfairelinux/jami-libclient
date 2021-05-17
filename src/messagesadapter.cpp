@@ -96,6 +96,7 @@ MessagesAdapter::setupChatView(const QString& convUid)
                                       && (convInfo.isRequest || convInfo.needsSyncing))));
 
     setMessagesVisibility(false);
+    setIsSwarm(convInfo.mode != lrc::api::conversation::Mode::NON_SWARM);
     setInvitation(convInfo.isRequest or convInfo.needsSyncing,
                   bestName,
                   contactURI,
@@ -547,6 +548,13 @@ MessagesAdapter::setInvitation(
                            .arg(isSwarm)
                            .arg(needsSyncing)
                      : QString::fromLatin1("showInvitation()");
+    QMetaObject::invokeMethod(qmlObj_, "webViewRunJavaScript", Q_ARG(QVariant, s));
+}
+
+void
+MessagesAdapter::setIsSwarm(bool isSwarm)
+{
+    QString s = QString::fromLatin1("set_is_swarm(%1)").arg(isSwarm);
     QMetaObject::invokeMethod(qmlObj_, "webViewRunJavaScript", Q_ARG(QVariant, s));
 }
 
