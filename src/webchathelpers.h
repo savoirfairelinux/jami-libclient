@@ -30,10 +30,13 @@
 #include "api/conversationmodel.h"
 
 QJsonObject buildInteractionJson(lrc::api::ConversationModel& conversationModel,
+                                 const QString& convId,
                                  const QString& msgId,
                                  lrc::api::interaction::Info& interaction);
 QString interactionToJsonInteractionObject(lrc::api::ConversationModel& conversationModel,
+                                           const QString& convId,
                                            const QString& msgId,
                                            const lrc::api::interaction::Info& interaction);
 QString interactionsToJsonArrayObject(lrc::api::ConversationModel& conversationModel,
+                                      const QString& convId,
                                       MessagesList interactions);

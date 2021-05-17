@@ -139,17 +139,17 @@ ConversationsAdapter::safeInit()
 
     Q_EMIT modelChanged(QVariant::fromValue(conversationSmartListModel_));
 
-    //    connect(&lrcInstance_->behaviorController(),
-    //            &BehaviorController::newUnreadInteraction,
-    //            this,
-    //            &ConversationsAdapter::onNewUnreadInteraction,
-    //            Qt::UniqueConnection);
+    connect(&lrcInstance_->behaviorController(),
+            &BehaviorController::newUnreadInteraction,
+            this,
+            &ConversationsAdapter::onNewUnreadInteraction,
+            Qt::UniqueConnection);
 
-    //  connect(&lrcInstance_->behaviorController(),
-    //          &BehaviorController::newReadInteraction,
-    //          this,
-    //          &ConversationsAdapter::onNewReadInteraction,
-    //          Qt::UniqueConnection);
+    connect(&lrcInstance_->behaviorController(),
+            &BehaviorController::newReadInteraction,
+            this,
+            &ConversationsAdapter::onNewReadInteraction,
+            Qt::UniqueConnection);
 
     connect(&lrcInstance_->behaviorController(),
             &BehaviorController::newTrustRequest,
@@ -231,7 +231,7 @@ ConversationsAdapter::onNewUnreadInteraction(const QString& accountId,
 void
 ConversationsAdapter::onNewReadInteraction(const QString& accountId,
                                            const QString& convUid,
-                                           uint64_t interactionId)
+                                           const QString& interactionId)
 {
 #ifdef Q_OS_LINUX
     // hide notification
@@ -424,7 +424,7 @@ ConversationsAdapter::getConvInfoMap(const QString& convId)
             {"bestId", contactModel->bestIdForContact(peerUri)},
             {"bestName", contactModel->bestNameForContact(peerUri)},
             {"uri", peerUri},
-            {"isSwarm", convInfo.mode != lrc::api::conversation::Mode::NON_SWARM},
+            {"isSwarm", !convInfo.isNotASwarm()},
             {"contactType", static_cast<int>(contact.profileInfo.type)},
             {"isAudioOnly", isAudioOnly},
             {"callState", static_cast<int>(callState)},

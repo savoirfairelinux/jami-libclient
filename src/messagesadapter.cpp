@@ -88,19 +88,19 @@ MessagesAdapter::setupChatView(const QString& convUid)
 
     QMetaObject::invokeMethod(qmlObj_,
                               "setSendContactRequestButtonVisible",
-                              Q_ARG(QVariant, isPending));
+                              Q_ARG(QVariant, convInfo.isNotASwarm() && isPending));
     QMetaObject::invokeMethod(qmlObj_,
                               "setMessagingHeaderButtonsVisible",
                               Q_ARG(QVariant,
-                                    !(convInfo.mode != lrc::api::conversation::Mode::NON_SWARM
+                                    !(convInfo.isNotASwarm()
                                       && (convInfo.isRequest || convInfo.needsSyncing))));
 
     setMessagesVisibility(false);
-    setIsSwarm(convInfo.mode != lrc::api::conversation::Mode::NON_SWARM);
+    setIsSwarm(!convInfo.isNotASwarm());
     setInvitation(convInfo.isRequest or convInfo.needsSyncing,
                   bestName,
                   contactURI,
-                  convInfo.mode != lrc::api::conversation::Mode::NON_SWARM,
+                  !convInfo.isNotASwarm(),
                   convInfo.needsSyncing);
 
     // Type Indicator (contact). TODO: Not shown when invitation request?
@@ -137,6 +137,7 @@ MessagesAdapter::connectConversationModel()
     QObject::disconnect(newInteractionConnection_);
     QObject::disconnect(interactionRemovedConnection_);
     QObject::disconnect(interactionStatusUpdatedConnection_);
+    QObject::disconnect(conversationUpdatedConnection_);
 
     newInteractionConnection_
         = QObject::connect(currentConversationModel,
@@ -184,6 +185,17 @@ MessagesAdapter::connectConversationModel()
                                                      SIGNAL(messagesLoaded()),
                                                      this,
                                                      SLOT(slotMessagesLoaded()));
+                           });
+
+    conversationUpdatedConnection_
+        = QObject::connect(currentConversationModel,
+                           &ConversationModel::conversationReady,
+                           [this](const QString& conversationId) {
+                               if (conversationId != lrcInstance_->get_selectedConvUid())
+                                   return;
+                               auto* convModel = lrcInstance_->getCurrentConversationModel();
+                               if (auto optConv = convModel->getConversationForUid(conversationId))
+                                   setConversationProfileData(optConv->get());
                            });
 }
 
@@ -241,8 +253,7 @@ MessagesAdapter::slotMessagesCleared()
     auto convOpt = convModel->getConversationForUid(lrcInstance_->get_selectedConvUid());
     if (!convOpt)
         return;
-    if (convOpt->get().mode != lrc::api::conversation::Mode::NON_SWARM
-        && !convOpt->get().allMessagesLoaded) {
+    if (!convOpt->get().isNotASwarm() && !convOpt->get().allMessagesLoaded) {
         convModel->loadConversationMessages(convOpt->get().uid, 20);
     } else {
         printHistory(*convModel, convOpt->get().interactions);
@@ -470,10 +481,21 @@ MessagesAdapter::setConversationProfileData(const lrc::api::conversation::Info& 
     try {
         auto& contact = accInfo->contactModel->getContact(contactUri);
         auto bestName = accInfo->contactModel->bestNameForContact(contactUri);
+        bool isPending = contact.profileInfo.type == profile::Type::TEMPORARY;
+
+        QMetaObject::invokeMethod(qmlObj_,
+                                  "setSendContactRequestButtonVisible",
+                                  Q_ARG(QVariant, convInfo.isNotASwarm() && isPending));
+        QMetaObject::invokeMethod(qmlObj_,
+                                  "setMessagingHeaderButtonsVisible",
+                                  Q_ARG(QVariant,
+                                        !(!convInfo.isNotASwarm()
+                                          && (convInfo.isRequest || convInfo.needsSyncing))));
+
         setInvitation(convInfo.isRequest or convInfo.needsSyncing,
                       bestName,
                       contactUri,
-                      convInfo.mode != lrc::api::conversation::Mode::NON_SWARM,
+                      !convInfo.isNotASwarm(),
                       convInfo.needsSyncing);
         if (!contact.profileInfo.avatar.isEmpty()) {
             setSenderImage(contactUri, contact.profileInfo.avatar);
@@ -577,7 +599,10 @@ void
 MessagesAdapter::printHistory(lrc::api::ConversationModel& conversationModel,
                               MessagesList interactions)
 {
-    auto interactionsStr = interactionsToJsonArrayObject(conversationModel, interactions).toUtf8();
+    auto interactionsStr = interactionsToJsonArrayObject(conversationModel,
+                                                         lrcInstance_->get_selectedConvUid(),
+                                                         interactions)
+                               .toUtf8();
     QString s = QString::fromLatin1("printHistory(%1);").arg(interactionsStr.constData());
     QMetaObject::invokeMethod(qmlObj_, "webViewRunJavaScript", Q_ARG(QVariant, s));
 }
@@ -587,7 +612,10 @@ MessagesAdapter::updateHistory(lrc::api::ConversationModel& conversationModel,
                                MessagesList interactions,
                                bool allLoaded)
 {
-    auto interactionsStr = interactionsToJsonArrayObject(conversationModel, interactions).toUtf8();
+    auto interactionsStr = interactionsToJsonArrayObject(conversationModel,
+                                                         lrcInstance_->get_selectedConvUid(),
+                                                         interactions)
+                               .toUtf8();
     QString s = QString::fromLatin1("updateHistory(%1, %2);")
                     .arg(interactionsStr.constData())
                     .arg(allLoaded);
@@ -613,8 +641,11 @@ MessagesAdapter::printNewInteraction(lrc::api::ConversationModel& conversationMo
                                      const QString& msgId,
                                      const lrc::api::interaction::Info& interaction)
 {
-    auto interactionObject
-        = interactionToJsonInteractionObject(conversationModel, msgId, interaction).toUtf8();
+    auto interactionObject = interactionToJsonInteractionObject(conversationModel,
+                                                                lrcInstance_->get_selectedConvUid(),
+                                                                msgId,
+                                                                interaction)
+                                 .toUtf8();
     if (interactionObject.isEmpty()) {
         return;
     }
@@ -627,8 +658,11 @@ MessagesAdapter::updateInteraction(lrc::api::ConversationModel& conversationMode
                                    const QString& msgId,
                                    const lrc::api::interaction::Info& interaction)
 {
-    auto interactionObject
-        = interactionToJsonInteractionObject(conversationModel, msgId, interaction).toUtf8();
+    auto interactionObject = interactionToJsonInteractionObject(conversationModel,
+                                                                lrcInstance_->get_selectedConvUid(),
+                                                                msgId,
+                                                                interaction)
+                                 .toUtf8();
     if (interactionObject.isEmpty()) {
         return;
     }
@@ -686,9 +720,9 @@ MessagesAdapter::contactIsComposing(const QString& uid, const QString& contactUr
     if (!convInfo)
         return;
     auto& conv = convInfo->get();
-    bool showIsComposing = conv.mode != lrc::api::conversation::Mode::NON_SWARM
-                               ? uid == conv.uid
-                               : uid.isEmpty() && conv.participants.first() == contactUri;
+    bool showIsComposing = conv.isNotASwarm()
+                               ? uid.isEmpty() && conv.participants.first() == contactUri
+                               : uid == conv.uid;
     if (showIsComposing) {
         QString s
             = QString::fromLatin1("showTypingIndicator(`%1`, %2);").arg(contactUri).arg(isComposing);
@@ -763,7 +797,6 @@ MessagesAdapter::loadMessages(int n)
     auto convOpt = convModel->getConversationForUid(currentConvUid_);
     if (!convOpt)
         return;
-    if (convOpt->get().mode != lrc::api::conversation::Mode::NON_SWARM
-        && !convOpt->get().allMessagesLoaded)
+    if (!convOpt->get().isNotASwarm() && !convOpt->get().allMessagesLoaded)
         convModel->loadConversationMessages(convOpt->get().uid, n);
 }

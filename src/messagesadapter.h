@@ -128,6 +128,7 @@ private:
     QMetaObject::Connection interactionStatusUpdatedConnection_;
     QMetaObject::Connection interactionRemovedConnection_;
     QMetaObject::Connection newMessagesAvailableConnection_;
+    QMetaObject::Connection conversationUpdatedConnection_;
 
     AppSettingsManager* settingsManager_;
 };
