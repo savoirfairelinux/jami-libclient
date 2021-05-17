@@ -56,7 +56,7 @@ public:
     Q_INVOKABLE void sipInputPanelPlayDTMF(const QString& key);
 
     // For Call Overlay
-    Q_INVOKABLE void hangupCall(const QString& uri);
+    Q_INVOKABLE void hangUpCall(const QString& callId);
     Q_INVOKABLE void maximizeParticipant(const QString& uri);
     Q_INVOKABLE void minimizeParticipant(const QString& uri);
     Q_INVOKABLE void hangUpThisCall();

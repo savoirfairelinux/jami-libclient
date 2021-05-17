@@ -68,7 +68,7 @@ ItemDelegate {
             Layout.preferredWidth: JamiTheme.smartListAvatarSize
             Layout.preferredHeight: JamiTheme.smartListAvatarSize
 
-            mode: AvatarImage.Mode.FromContactUri
+            avatarMode: AvatarImage.AvatarMode.FromContactUri
             showPresenceIndicator: Presence === undefined ? false : Presence
             transitionDuration: 0
         }

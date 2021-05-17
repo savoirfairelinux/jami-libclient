@@ -49,7 +49,7 @@ ColumnLayout {
         photoState = PhotoboothView.PhotoState.Default
         avatarSet = false
         if (useDefaultAvatar)
-            setAvatarImage(AvatarImage.Mode.Default, "")
+            setAvatarImage(AvatarImage.AvatarMode.Default, "")
     }
 
     function startBooth() {
@@ -65,16 +65,16 @@ ColumnLayout {
         } catch(erro){console.log("Exception: " +  erro.message)}
     }
 
-    function setAvatarImage(mode = AvatarImage.Mode.FromAccount,
+    function setAvatarImage(mode = AvatarImage.AvatarMode.FromAccount,
                             imageId = LRCInstance.currentAccountId){
-        if (mode !== AvatarImage.Mode.FromBase64)
-            avatarImg.enableAnimation = true
+        if (mode !== AvatarImage.AvatarMode.FromBase64)
+            avatarImg.enableFadeAnimation = true
         else
-            avatarImg.enableAnimation = false
+            avatarImg.enableFadeAnimation = false
 
-        avatarImg.mode = mode
+        avatarImg.avatarMode = mode
 
-        if (mode === AvatarImage.Mode.Default) {
+        if (mode === AvatarImage.AvatarMode.Default) {
             avatarImg.updateImage(imageId)
             return
         }
@@ -116,7 +116,7 @@ ColumnLayout {
                 return
             }
 
-            setAvatarImage(AvatarImage.Mode.FromFile,
+            setAvatarImage(AvatarImage.AvatarMode.FromFile,
                            UtilsAdapter.getAbsPath(fileName))
         }
     }
@@ -161,7 +161,7 @@ ColumnLayout {
                 }
 
                 onImageIsReady: {
-                    if (mode === AvatarImage.Mode.FromBase64)
+                    if (avatarMode === AvatarImage.AvatarMode.FromBase64)
                         photoState = PhotoboothView.PhotoState.Taken
 
                     if (photoState === PhotoboothView.PhotoState.Taken) {
@@ -268,7 +268,7 @@ ColumnLayout {
                     startBooth()
                     return
                 } else {
-                    setAvatarImage(AvatarImage.Mode.FromBase64,
+                    setAvatarImage(AvatarImage.AvatarMode.FromBase64,
                                    previewWidget.takePhoto(boothWidth))
 
                     avatarSet = true

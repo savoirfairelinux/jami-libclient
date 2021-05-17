@@ -58,16 +58,16 @@ Item {
             contactImage.visible = false
         else {
             if (avatar) {
-                contactImage.mode = AvatarImage.Mode.FromBase64
+                contactImage.avatarMode = AvatarImage.AvatarMode.FromBase64
                 contactImage.updateImage(avatar)
             } else if (local) {
-                contactImage.mode = AvatarImage.Mode.FromAccount
+                contactImage.avatarMode = AvatarImage.AvatarMode.FromAccount
                 contactImage.updateImage(LRCInstance.currentAccountId)
             } else if (isContact) {
-                contactImage.mode = AvatarImage.Mode.FromContactUri
+                contactImage.avatarMode = AvatarImage.AvatarMode.FromContactUri
                 contactImage.updateImage(uri)
             } else {
-                contactImage.mode = AvatarImage.Mode.FromTemporaryName
+                contactImage.avatarMode = AvatarImage.AvatarMode.FromTemporaryName
                 contactImage.updateImage(uri)
             }
             contactImage.visible = true
@@ -195,7 +195,7 @@ Item {
         fillMode: Image.PreserveAspectFit
         imageId: ""
         visible: false
-        mode: AvatarImage.Mode.Default
+        avatarMode: AvatarImage.AvatarMode.Default
         showPresenceIndicator: false
 
         layer.enabled: true

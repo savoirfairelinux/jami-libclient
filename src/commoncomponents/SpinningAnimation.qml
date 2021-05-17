@@ -1,6 +1,7 @@
 /*
  * Copyright (C) 2021 by Savoir-faire Linux
  * Author: Aline Gondim Santos <aline.gondimsantos@savoirfairelinux.com>
+ * Author: Mingrui Zhang <mingrui.zhang@savoirfairelinux.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,8 +26,23 @@ import QtGraphicalEffects 1.12
 Item {
     id: root
 
+    enum SpinningAnimationMode {
+        DISABLED = 0,
+        NORMAL,
+        SYMMETRY
+    }
+
+    property int spinningAnimationMode: SpinningAnimation.SpinningAnimationMode.DISABLED
+    property int spinningAnimationWidth: 5
+    property real outerCutRadius: root.height / 2
+    property int spinningAnimationDuration: 1000
+
     ConicalGradient {
+        id: conicalGradientOne
+
         anchors.fill: parent
+
+        visible: spinningAnimationMode !== SpinningAnimation.SpinningAnimationMode.DISABLED
         angle: 0.0
         gradient: Gradient {
             GradientStop { position: 0.5; color: "transparent" }
@@ -35,17 +51,74 @@ Item {
 
         RotationAnimation on angle {
             loops: Animation.Infinite
-            duration: 1000
+            duration: spinningAnimationDuration
             from: 0
             to: 360
         }
+
+        layer.enabled: true
+        layer.effect: OpacityMask {
+            invert: true
+            maskSource: Item {
+                width: conicalGradientOne.width
+                height: conicalGradientOne.height
+
+                Rectangle {
+                    anchors.fill: parent
+                    anchors.margins: spinningAnimationWidth
+                    radius: outerCutRadius
+                }
+            }
+        }
     }
-    layer.enabled: true
+
+    ConicalGradient {
+        id: conicalGradientTwo
+
+        anchors.fill: parent
+
+        visible: spinningAnimationMode === SpinningAnimation.SpinningAnimationMode.SYMMETRY
+        angle: 180.0
+        gradient: Gradient {
+            GradientStop {
+                position: 0.75
+                color: "transparent"
+            }
+            GradientStop {
+                position: 1.0
+                color: "white"
+            }
+        }
+
+        RotationAnimation on angle {
+            loops: Animation.Infinite
+            duration: spinningAnimationDuration
+            from: 180.0
+            to: 540.0
+        }
+
+        layer.enabled: true
+        layer.effect: OpacityMask {
+            invert: true
+            maskSource: Item {
+                width: conicalGradientTwo.width
+                height: conicalGradientTwo.height
+
+                Rectangle {
+                    anchors.fill: parent
+                    anchors.margins: spinningAnimationWidth
+                    radius: outerCutRadius
+                }
+            }
+        }
+    }
+
+    layer.enabled: spinningAnimationMode !== SpinningAnimation.SpinningAnimationMode.DISABLED
     layer.effect: OpacityMask {
         maskSource: Rectangle {
-            width: root.height
+            width: root.width
             height: root.height
-            radius: root.height / 2
+            radius: outerCutRadius
         }
     }
 }

@@ -54,7 +54,7 @@ Rectangle {
     color: JamiTheme.backgroundColor
 
     onCreatedAccountIdChanged: {
-        setAvatarWidget.setAvatarImage(AvatarImage.Mode.FromAccount,
+        setAvatarWidget.setAvatarImage(AvatarImage.AvatarMode.FromAccount,
                                        createdAccountId)
     }
 
@@ -126,14 +126,14 @@ Rectangle {
             onTextEdited: {
                 if (!(setAvatarWidget.avatarSet)) {
                     if (text.length === 0) {
-                        setAvatarWidget.setAvatarImage(AvatarImage.Mode.FromAccount,
+                        setAvatarWidget.setAvatarImage(AvatarImage.AvatarMode.FromAccount,
                                                        createdAccountId)
                         return
                     }
 
                     if (text.length == 1 && text.charAt(0) !== lastInitialCharacter) {
                         lastInitialCharacter = text.charAt(0)
-                        setAvatarWidget.setAvatarImage(AvatarImage.Mode.FromTemporaryName,
+                        setAvatarWidget.setAvatarImage(AvatarImage.AvatarMode.FromTemporaryName,
                                                        text)
                     }
                 }

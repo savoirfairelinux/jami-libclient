@@ -141,5 +141,7 @@
         <file>src/mainview/components/CallActionBar.qml</file>
         <file>src/commoncomponents/HalfPill.qml</file>
         <file>src/commoncomponents/MaterialToolTip.qml</file>
+        <file>src/mainview/components/ParticipantCallInStatusDelegate.qml</file>
+        <file>src/mainview/components/ParticipantCallInStatusView.qml</file>
     </qresource>
 </RCC>

@@ -643,29 +643,9 @@ CallAdapter::updateCallOverlay(const lrc::api::conversation::Info& convInfo)
 }
 
 void
-CallAdapter::hangupCall(const QString& uri)
+CallAdapter::hangUpCall(const QString& callId)
 {
-    const auto& convInfo = lrcInstance_->getConversationFromPeerUri(uri, accountId_);
-    if (!convInfo.uid.isEmpty()) {
-        auto callModel = lrcInstance_->getAccountInfo(accountId_).callModel.get();
-        if (callModel->hasCall(convInfo.callId)) {
-            /*
-             * Store the last remaining participant of the conference,
-             * so we can switch the smartlist index after termination.
-             */
-            if (!convInfo.confId.isEmpty()) {
-                auto callList = lrcInstance_->getConferenceSubcalls(convInfo.confId);
-                if (callList.size() == 2) {
-                    for (const auto& cId : callList) {
-                        if (cId != convInfo.callId) {
-                            lrcInstance_->pushlastConference(convInfo.confId, cId);
-                        }
-                    }
-                }
-            }
-            callModel->hangUp(convInfo.callId);
-        }
-    }
+    lrcInstance_->getCurrentCallModel()->hangUp(callId);
 }
 
 void

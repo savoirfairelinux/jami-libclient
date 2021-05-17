@@ -34,7 +34,7 @@ Rectangle {
 
     property bool isIncoming: false
     property bool isAudioOnly: false
-    property var accountConvPair: ["",""]
+    property var accountConvPair: ["", ""]
     property int callStatus: 0
     property string bestName: ""
 
@@ -76,12 +76,12 @@ Rectangle {
             id: contactImg
 
             Layout.alignment: Qt.AlignHCenter
-            Layout.preferredWidth: JamiTheme.avatarSizeInCall
-            Layout.preferredHeight: JamiTheme.avatarSizeInCall
+            Layout.preferredWidth: JamiTheme.avatarSizeInCall + spinningAnimationWidth
+            Layout.preferredHeight: JamiTheme.avatarSizeInCall + spinningAnimationWidth
 
-            mode: AvatarImage.Mode.FromConvUid
+            avatarMode: AvatarImage.AvatarMode.FromConvUid
             showPresenceIndicator: false
-            showSpinningAnimation: true
+            spinningAnimationMode: SpinningAnimation.SpinningAnimationMode.NORMAL
         }
 
         Text {

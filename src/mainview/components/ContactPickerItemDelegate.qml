@@ -39,7 +39,7 @@ ItemDelegate {
         width: 40
         height: 40
 
-        mode: AvatarImage.Mode.FromContactUri
+        avatarMode: AvatarImage.AvatarMode.FromContactUri
         imageId: URI
     }
 

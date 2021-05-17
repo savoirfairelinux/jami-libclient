@@ -44,7 +44,8 @@ Item {
 
     property bool frozen: callActionBar.overflowOpen ||
                           callActionBar.hovered ||
-                          callActionBar.subMenuOpen
+                          callActionBar.subMenuOpen ||
+                          participantCallInStatusView.visible
 
     opacity: 0
 
@@ -182,6 +183,15 @@ Item {
                 }
             }
         }
+    }
+
+    ParticipantCallInStatusView {
+        id: participantCallInStatusView
+
+        anchors.right: root.right
+        anchors.rightMargin: 10
+        anchors.bottom: __callActionBar.top
+        anchors.bottomMargin: 20
     }
 
     CallActionBar {

@@ -66,7 +66,7 @@ BaseDialog {
                 sourceSize.width: preferredImgSize
                 sourceSize.height: preferredImgSize
 
-                mode: AvatarImage.Mode.FromConvUid
+                avatarMode: AvatarImage.AvatarMode.FromConvUid
                 showPresenceIndicator: false
             }
 

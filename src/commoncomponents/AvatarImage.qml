@@ -23,10 +23,10 @@ import net.jami.Adapters 1.0
 import net.jami.Constants 1.0
 import net.jami.Models 1.0
 
-Item {
+SpinningAnimation {
     id: root
 
-    enum Mode {
+    enum AvatarMode {
         FromAccount = 0,
         FromFile,
         FromContactUri,
@@ -40,22 +40,22 @@ Item {
     property alias sourceSize: rootImage.sourceSize
     property int transitionDuration: 150
     property bool saveToConfig: false
-    property int mode: AvatarImage.Mode.FromAccount
+    property int avatarMode: AvatarImage.AvatarMode.FromAccount
     property string imageProviderIdPrefix: {
-        switch(mode) {
-        case AvatarImage.Mode.FromAccount:
+        switch (avatarMode) {
+        case AvatarImage.AvatarMode.FromAccount:
             return "account_"
-        case AvatarImage.Mode.FromFile:
+        case AvatarImage.AvatarMode.FromFile:
             return "file_"
-        case AvatarImage.Mode.FromContactUri:
+        case AvatarImage.AvatarMode.FromContactUri:
             return "contact_"
-        case AvatarImage.Mode.FromConvUid:
+        case AvatarImage.AvatarMode.FromConvUid:
             return "conversation_"
-        case AvatarImage.Mode.FromTemporaryName:
+        case AvatarImage.AvatarMode.FromTemporaryName:
             return "fallback_"
-        case AvatarImage.Mode.FromBase64:
+        case AvatarImage.AvatarMode.FromBase64:
             return "base64_"
-        case AvatarImage.Mode.Default:
+        case AvatarImage.AvatarMode.Default:
             return "default_"
         default:
             return ""
@@ -63,24 +63,23 @@ Item {
     }
 
     // Full request url example: forceUpdateUrl_xxxxxxx_account_xxxxxxxx
-    property string imageProviderUrl: "image://avatarImage/" + forceUpdateUrl + "_" +
-                                      imageProviderIdPrefix
+    property string imageProviderUrl: "image://avatarImage/" + forceUpdateUrl
+                                      + "_" + imageProviderIdPrefix
     property string imageId: ""
     property string forceUpdateUrl: Date.now()
     property alias presenceStatus: presenceIndicator.status
     property bool showPresenceIndicator: true
     property int unreadMessagesCount: 0
-    property bool enableAnimation: true
-    property bool showSpinningAnimation: false
+    property bool enableFadeAnimation: true
 
     signal imageIsReady
 
     function saveAvatarToConfig() {
-        switch(mode) {
-        case AvatarImage.Mode.FromFile:
+        switch (avatarMode) {
+        case AvatarImage.AvatarMode.FromFile:
             AccountAdapter.setCurrAccAvatar(true, imageId)
             break
-        case AvatarImage.Mode.FromBase64:
+        case AvatarImage.AvatarMode.FromBase64:
             AccountAdapter.setCurrAccAvatar(false, imageId)
             break
         default:
@@ -102,60 +101,38 @@ Item {
     }
 
     function reloadImageSource() {
-        var tempEnableAnimation = enableAnimation
+        var tempEnableAnimation = enableFadeAnimation
         var tempImageSource = rootImage.source
 
-        enableAnimation = false
+        enableFadeAnimation = false
         rootImage.source = ""
 
-        enableAnimation = tempEnableAnimation
+        enableFadeAnimation = tempEnableAnimation
         rootImage.source = tempImageSource
     }
 
     function rootImageOverlayReadyCallback() {
-        if (rootImageOverlay.status === Image.Ready &&
-                (rootImageOverlay.state === "avatarImgFadeIn")) {
-            rootImageOverlay.statusChanged.disconnect(rootImageOverlayReadyCallback)
+        if (rootImageOverlay.status === Image.Ready
+                && (rootImageOverlay.state === "avatarImgFadeIn")) {
+            rootImageOverlay.statusChanged.disconnect(
+                        rootImageOverlayReadyCallback)
 
             rootImageOverlay.state = ''
         }
     }
 
-    Image {
-        id: rootImage
+    Item {
+        id: imageGroup
 
-        anchors.fill: root
+        anchors.centerIn: root
 
-        smooth: true
-        antialiasing: true
-        asynchronous: true
-
-        sourceSize.width: Math.max(24, width)
-        sourceSize.height: Math.max(24, height)
-
-        fillMode: Image.PreserveAspectFit
-
-        onStatusChanged: {
-            if (status === Image.Ready) {
-                if (enableAnimation) {
-                    rootImageOverlay.state = "avatarImgFadeIn"
-                } else {
-                    rootImageOverlay.source = rootImage.source
-                    root.imageIsReady()
-                }
-            }
-        }
-
-        Component.onCompleted: {
-            if (imageId)
-                return source = imageProviderUrl + imageId
-            return source = ""
-        }
+        width: root.width - spinningAnimationWidth
+        height: root.height - spinningAnimationWidth
 
         Image {
-            id: rootImageOverlay
+            id: rootImage
 
-            anchors.fill: rootImage
+            anchors.fill: imageGroup
 
             smooth: true
             antialiasing: true
@@ -166,65 +143,87 @@ Item {
 
             fillMode: Image.PreserveAspectFit
 
-            states: State {
-                name: "avatarImgFadeIn"
-                PropertyChanges {
-                    target: rootImageOverlay
-                    opacity: 0
+            onStatusChanged: {
+                if (status === Image.Ready) {
+                    if (enableFadeAnimation) {
+                        rootImageOverlay.state = "avatarImgFadeIn"
+                    } else {
+                        rootImageOverlay.source = rootImage.source
+                        root.imageIsReady()
+                    }
                 }
             }
 
-            transitions: Transition {
-                NumberAnimation {
-                    properties: "opacity"
-                    easing.type: Easing.InOutQuad
-                    duration: enableAnimation ? 400 : 0
+            Component.onCompleted: {
+                if (imageId)
+                    return source = imageProviderUrl + imageId
+                return source = ""
+            }
+
+            Image {
+                id: rootImageOverlay
+
+                anchors.fill: rootImage
+
+                smooth: true
+                antialiasing: true
+                asynchronous: true
+
+                sourceSize.width: Math.max(24, width)
+                sourceSize.height: Math.max(24, height)
+
+                fillMode: Image.PreserveAspectFit
+
+                states: State {
+                    name: "avatarImgFadeIn"
+                    PropertyChanges {
+                        target: rootImageOverlay
+                        opacity: 0
+                    }
                 }
 
-                onRunningChanged: {
-                    if ((rootImageOverlay.state === "avatarImgFadeIn") && (!running)) {
-                        if (rootImageOverlay.source === rootImage.source) {
-                            rootImageOverlay.state = ''
-                            return
+                transitions: Transition {
+                    NumberAnimation {
+                        properties: "opacity"
+                        easing.type: Easing.InOutQuad
+                        duration: enableFadeAnimation ? 400 : 0
+                    }
+
+                    onRunningChanged: {
+                        if ((rootImageOverlay.state === "avatarImgFadeIn")
+                                && (!running)) {
+                            if (rootImageOverlay.source === rootImage.source) {
+                                rootImageOverlay.state = ''
+                                return
+                            }
+                            rootImageOverlay.statusChanged.connect(
+                                        rootImageOverlayReadyCallback)
+                            rootImageOverlay.source = rootImage.source
                         }
-                        rootImageOverlay.statusChanged.connect(rootImageOverlayReadyCallback)
-                        rootImageOverlay.source = rootImage.source
                     }
                 }
             }
         }
-    }
 
-    PresenceIndicator {
-        id: presenceIndicator
+        PresenceIndicator {
+            id: presenceIndicator
 
-        anchors.right: root.right
-        anchors.rightMargin: -1
-        anchors.bottom: root.bottom
-        anchors.bottomMargin: -1
+            anchors.right: imageGroup.right
+            anchors.rightMargin: -1
+            anchors.bottom: imageGroup.bottom
+            anchors.bottomMargin: -1
 
-        size: root.width * 0.26
+            size: imageGroup.width * 0.26
 
-        visible: showPresenceIndicator
-    }
+            visible: showPresenceIndicator
+        }
 
-    SpinningAnimation {
-        id: spinningAnimation
+        Connections {
+            target: ScreenInfo
 
-        anchors.horizontalCenter: root.horizontalCenter
-        anchors.verticalCenter: root.verticalCenter
-
-        visible: showSpinningAnimation
-        width: Math.ceil(root.width * 1.05)
-        height: Math.ceil(root.height * 1.05)
-        z: -1
-    }
-
-    Connections {
-        target: ScreenInfo
-
-        function onDevicePixelRatioChanged(){
-            reloadImageSource()
+            function onDevicePixelRatioChanged() {
+                reloadImageSource()
+            }
         }
     }
 }

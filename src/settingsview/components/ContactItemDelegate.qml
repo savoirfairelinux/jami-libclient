@@ -65,7 +65,7 @@ ItemDelegate {
 
                     anchors.fill: parent
 
-                    mode: AvatarImage.Mode.FromContactUri
+                    avatarMode: AvatarImage.AvatarMode.FromContactUri
                     showPresenceIndicator: false
 
                     fillMode: Image.PreserveAspectCrop
