@@ -297,6 +297,12 @@ public:
      */
     bool isConferenceHost(const QString& callId);
 
+    /**
+     * Get pending conferences
+     * @return pending conferences
+     */
+    const QList<QPair<QString, QString>>& getPendingConferences();
+
 Q_SIGNALS:
     /**
      * Emitted when a call state changes
@@ -356,6 +362,26 @@ Q_SIGNALS:
     void remoteRecordingChanged(const QString& callId,
                                 const QSet<QString>& peerRec,
                                 bool state) const;
+
+    /*!
+     * Emitted before new pending conferences are inserted into the underlying list
+     * @param position The starting row of the insertion
+     * @param rows The number of items inserted
+     */
+    void beginInsertPendingConferencesRows(int position, int rows = 1) const;
+
+    //! Emitted once the insertion of new pending conferences is complete
+    void endInsertPendingConferencesRows() const;
+
+    /*!
+     * Emitted before new pending conferences are removed from the underlying list
+     * @param position The starting row of the removal
+     * @param rows The number of items removed
+     */
+    void beginRemovePendingConferencesRows(int position, int rows = 1) const;
+
+    //! Emitted once the removal of new pending conferences is complete
+    void endRemovePendingConferencesRows() const;
 
 private:
     std::unique_ptr<NewCallModelPimpl> pimpl_;
