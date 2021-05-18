@@ -44,6 +44,8 @@ Rectangle {
 
     signal overlayChatButtonClicked
 
+    onVisibleChanged: if (!visible) callViewContextMenu.close()
+
     function setRecording(localIsRecording) {
         callViewContextMenu.localIsRecording = localIsRecording
         recordingRect.visible = localIsRecording

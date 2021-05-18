@@ -44,6 +44,14 @@ Item {
     signal pluginItemClicked
     signal transferCallButtonClicked
 
+    function close() {
+        // leave this debug line is a reminder of a design failure
+        console.debug("call view context menu close")
+        const menu = ContextMenuGenerator.getMenu()
+        if (menu)
+            menu.close()
+    }
+
     function openMenu(){
         ContextMenuGenerator.initMenu()
         if (isSIP){

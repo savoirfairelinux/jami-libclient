@@ -50,25 +50,25 @@ Rectangle {
     property string responsibleConvUid: ""
     property string responsibleAccountId: ""
 
+    // TODO: this should all be done by listening to
+    // parent visibility change or parent `Component.onDestruction`
     function needToCloseInCallConversationAndPotentialWindow() {
         // Close potential window, context menu releated windows.
-        if (!callStackMainView.currentItem)
-            return
-        if (callStackMainView.currentItem.stackNumber === CallStackView.AudioPageStack) {
+        if (audioCallPage) {
             audioCallPage.closeInCallConversation()
             audioCallPage.closeContextMenuAndRelatedWindows()
-        } else if (callStackMainView.currentItem.stackNumber === CallStackView.VideoPageStack) {
+        }
+        if (videoCallPage) {
             videoCallPage.closeInCallConversation()
             videoCallPage.closeContextMenuAndRelatedWindows()
         }
     }
 
     function setLinkedWebview(webViewId) {
-        if (callStackMainView.currentItem.stackNumber === CallStackView.AudioPageStack) {
+        if (audioCallPage)
             audioCallPage.setLinkedWebview(webViewId)
-        } else if (callStackMainView.currentItem.stackNumber === CallStackView.VideoPageStack) {
+        if (videoCallPage)
             videoCallPage.setLinkedWebview(webViewId)
-        }
     }
 
     function getItemFromStack(itemNumber) {

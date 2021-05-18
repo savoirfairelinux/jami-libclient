@@ -63,14 +63,22 @@ Rectangle {
                     closeInCallConversation)
     }
 
-    function closeInCallConversation() {
-        if (inVideoCallMessageWebViewStack.visible) {
-            linkedWebview.resetMessagingHeaderBackButtonSource(
-                        true)
-            linkedWebview.setMessagingHeaderButtonsVisible(true)
-            inVideoCallMessageWebViewStack.visible = false
-            inVideoCallMessageWebViewStack.clear()
+    function openInCallConversation() {
+        if (linkedWebview) {
+            linkedWebview.resetMessagingHeaderBackButtonSource(false)
+            linkedWebview.setMessagingHeaderButtonsVisible(false)
         }
+        inVideoCallMessageWebViewStack.visible = true
+        inVideoCallMessageWebViewStack.push(linkedWebview)
+    }
+
+    function closeInCallConversation() {
+        if (linkedWebview) {
+            linkedWebview.resetMessagingHeaderBackButtonSource(true)
+            linkedWebview.setMessagingHeaderButtonsVisible(true)
+        }
+        inVideoCallMessageWebViewStack.visible = false
+        inVideoCallMessageWebViewStack.clear()
     }
 
     function closeContextMenuAndRelatedWindows() {
@@ -200,22 +208,9 @@ Rectangle {
                     }
 
                     onOverlayChatButtonClicked: {
-                        if (inVideoCallMessageWebViewStack.visible) {
-                            linkedWebview.resetMessagingHeaderBackButtonSource(
-                                        true)
-                            linkedWebview.setMessagingHeaderButtonsVisible(
-                                        true)
-                            inVideoCallMessageWebViewStack.visible = false
-                            inVideoCallMessageWebViewStack.clear()
-                        } else {
-                            linkedWebview.resetMessagingHeaderBackButtonSource(
-                                        false)
-                            linkedWebview.setMessagingHeaderButtonsVisible(
-                                        false)
-                            inVideoCallMessageWebViewStack.visible = true
-                            inVideoCallMessageWebViewStack.push(
-                                        linkedWebview)
-                        }
+                        inVideoCallMessageWebViewStack.visible ?
+                                    closeInCallConversation() :
+                                    openInCallConversation()
                     }
                 }
 

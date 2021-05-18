@@ -51,14 +51,22 @@ Rectangle {
                     closeInCallConversation)
     }
 
-    function closeInCallConversation() {
-        if (inAudioCallMessageWebViewStack.visible) {
-            linkedWebview.resetMessagingHeaderBackButtonSource(
-                        true)
-            linkedWebview.setMessagingHeaderButtonsVisible(true)
-            inAudioCallMessageWebViewStack.visible = false
-            inAudioCallMessageWebViewStack.clear()
+    function openInCallConversation() {
+        if (linkedWebview) {
+            linkedWebview.resetMessagingHeaderBackButtonSource(false)
+            linkedWebview.setMessagingHeaderButtonsVisible(false)
         }
+        inAudioCallMessageWebViewStack.visible = true
+        inAudioCallMessageWebViewStack.push(linkedWebview)
+    }
+
+    function closeInCallConversation() {
+        if (linkedWebview) {
+            linkedWebview.resetMessagingHeaderBackButtonSource(true)
+            linkedWebview.setMessagingHeaderButtonsVisible(true)
+        }
+        inAudioCallMessageWebViewStack.visible = false
+        inAudioCallMessageWebViewStack.clear()
     }
 
     function closeContextMenuAndRelatedWindows() {
@@ -136,22 +144,9 @@ Rectangle {
                     }
 
                     onOverlayChatButtonClicked: {
-                        if (inAudioCallMessageWebViewStack.visible) {
-                            linkedWebview.resetMessagingHeaderBackButtonSource(
-                                        true)
-                            linkedWebview.setMessagingHeaderButtonsVisible(
-                                        true)
-                            inAudioCallMessageWebViewStack.visible = false
-                            inAudioCallMessageWebViewStack.clear()
-                        } else {
-                            linkedWebview.resetMessagingHeaderBackButtonSource(
-                                        false)
-                            linkedWebview.setMessagingHeaderButtonsVisible(
-                                        false)
-                            inAudioCallMessageWebViewStack.visible = true
-                            inAudioCallMessageWebViewStack.push(
-                                        linkedWebview)
-                        }
+                        inAudioCallMessageWebViewStack.visible ?
+                                    closeInCallConversation() :
+                                    openInCallConversation()
                     }
                 }
 
