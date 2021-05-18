@@ -434,6 +434,11 @@ LRCInstance::poplastConference(const QString& confId)
 void
 LRCInstance::selectConversation(const QString& convId, const QString& accountId)
 {
+    // reselection can be used to update the conversation
+    if (convId == selectedConvUid_ && accountId == currentAccountId_) {
+        Q_EMIT conversationUpdated(convId, accountId);
+        return;
+    }
     // if the account is not currently selected, do that first, then
     // proceed to select the conversation
     if (!accountId.isEmpty() && accountId != getCurrentAccountId()) {

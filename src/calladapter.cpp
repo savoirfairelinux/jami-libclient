@@ -232,6 +232,9 @@ CallAdapter::onShowIncomingCallView(const QString& accountId, const QString& con
     if (call.isOutgoing) {
         if (isCallSelected) {
             // don't reselect
+            // TODO: this signal can be renamed to conversationReselected,
+            // isCallSelected and any other similar logic can be removed
+            // and calling selectConversation should be sufficient
             Q_EMIT lrcInstance_->conversationUpdated(convInfo.uid, accountId);
         }
     } else {

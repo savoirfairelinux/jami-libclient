@@ -138,7 +138,7 @@ Rectangle {
         if (checkCurrentCall && currentAccountIsCalling()) {
             var callConv = UtilsAdapter.getCallConvForAccount(
                         LRCInstance.currentAccountId)
-            LRCInstance.selectConversation(callConv)
+            LRCInstance.selectConversation(callConv, currentAccountId)
             CallAdapter.updateCall(callConv, currentAccountId)
         } else {
             showWelcomeView()
