@@ -149,7 +149,7 @@ public:
     bool manageCurrentCall_ {true};
     QString currentCall_ {};
 
-    std::map<QString, QString> pendingConferences_;
+    QList<QPair<QString, QString>> pendingConferences_;
 public Q_SLOTS:
     /**
      * @deprecated Use slotIncomingCallWithMedia instead
@@ -309,7 +309,7 @@ NewCallModel::createCall(const QString& uri, bool isAudioOnly)
     }
 #ifdef ENABLE_LIBWRAP
     auto callId = CallManager::instance().placeCallWithMedia(owner.id, uri, mediaList);
-#else  // dbus
+#else // dbus
     // do not use auto here (QDBusPendingReply<QString>)
     QString callId = CallManager::instance().placeCallWithMedia(owner.id, uri, mediaList);
 #endif // ENABLE_LIBWRAP
@@ -570,7 +570,14 @@ NewCallModel::joinCalls(const QString& callIdA, const QString& callIdB) const
             emit callAddedToConference(call, conf);
 
         // Remove from pendingConferences_
-        pimpl_->pendingConferences_.erase(call);
+        for (int i = 0; i < pimpl_->pendingConferences_.size(); ++i) {
+            if (pimpl_->pendingConferences_.at(i).first == call) {
+                beginRemovePendingConferencesRows(i);
+                pimpl_->pendingConferences_.removeAt(i);
+                endRemovePendingConferencesRows();
+                break;
+            }
+        }
     } else {
         CallManager::instance().joinParticipant(callIdA, callIdB);
         // NOTE: This will trigger slotConferenceCreated.
@@ -581,7 +588,9 @@ QString
 NewCallModel::callAndAddParticipant(const QString uri, const QString& callId, bool audioOnly)
 {
     auto newCallId = createCall(uri, audioOnly);
-    pimpl_->pendingConferences_.insert({newCallId, callId});
+    Q_EMIT beginInsertPendingConferencesRows(0);
+    pimpl_->pendingConferences_.prepend({newCallId, callId});
+    Q_EMIT endInsertPendingConferencesRows();
     return newCallId;
 }
 
@@ -624,6 +633,12 @@ NewCallModel::getSIPCallStatusString(const short& statusCode)
         return element->second;
     }
     return "";
+}
+
+const QList<QPair<QString, QString>>&
+NewCallModel::getPendingConferences()
+{
+    return pimpl_->pendingConferences_;
 }
 
 NewCallModelPimpl::NewCallModelPimpl(const NewCallModel& linked,
@@ -752,10 +767,16 @@ NewCallModel::setCurrentCall(const QString& callId) const
 {
     if (!pimpl_->manageCurrentCall_)
         return;
-    auto it = pimpl_->pendingConferences_.find(callId);
+    bool foundCallId = false;
+    for (int i = 0; i < pimpl_->pendingConferences_.size(); ++i) {
+        if (pimpl_->pendingConferences_.at(i).first == callId) {
+            foundCallId = true;
+            break;
+        }
+    }
     // Set current call only if not adding this call
     // to a current conference
-    if (it != pimpl_->pendingConferences_.end())
+    if (foundCallId)
         return;
     if (!hasCall(callId))
         return;
@@ -1077,9 +1098,11 @@ NewCallModelPimpl::slotCallStateChanged(const QString& callId, const QString& st
             sendProfile(callId);
         }
         // Add to calls if in pendingConferences_
-        auto it = pendingConferences_.find(callId);
-        if (it != pendingConferences_.end()) {
-            linked.joinCalls(it->second, it->first);
+        for (int i = 0; i < pendingConferences_.size(); ++i) {
+            if (pendingConferences_.at(i).first == callId) {
+                linked.joinCalls(pendingConferences_.at(i).second, pendingConferences_.at(i).first);
+                break;
+            }
         }
     } else if (call->status == call::Status::PAUSED) {
         currentCall_ = "";
@@ -1200,7 +1223,14 @@ NewCallModelPimpl::slotConferenceCreated(const QString& confId)
     foreach (const auto& call, callList) {
         emit linked.callAddedToConference(call, confId);
         // Remove call from pendingConferences_
-        pendingConferences_.erase(call);
+        for (int i = 0; i < pendingConferences_.size(); ++i) {
+            if (pendingConferences_.at(i).first == call) {
+                linked.beginRemovePendingConferencesRows(i);
+                pendingConferences_.removeAt(i);
+                linked.endRemovePendingConferencesRows();
+                break;
+            }
+        }
     }
 }
 
