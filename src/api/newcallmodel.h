@@ -44,7 +44,14 @@ struct Info;
 }
 namespace call {
 struct Info;
-}
+
+struct PendingConferenceesInfo
+{
+    QString pendingConferenceeUri;
+    QString pendingConferenceeCallId;
+    QString joinCallId;
+};
+} // namespace call
 class NewAccountModel;
 
 /**
@@ -297,6 +304,12 @@ public:
      */
     bool isConferenceHost(const QString& callId);
 
+    /**
+     * Get the list of lists of pending conferencees callId , contact uri, and join callId
+     * @return pending conferencees
+     */
+    const QList<call::PendingConferenceesInfo>& getPendingConferencees();
+
 Q_SIGNALS:
     /**
      * Emitted when a call state changes
@@ -356,6 +369,26 @@ Q_SIGNALS:
     void remoteRecordingChanged(const QString& callId,
                                 const QSet<QString>& peerRec,
                                 bool state) const;
+
+    /*!
+     * Emitted before new pending conferences are inserted into the underlying list
+     * @param position The starting row of the insertion
+     * @param rows The number of items inserted
+     */
+    void beginInsertPendingConferenceesRows(int position, int rows = 1) const;
+
+    //! Emitted once the insertion of new pending conferences is complete
+    void endInsertPendingConferenceesRows() const;
+
+    /*!
+     * Emitted before new pending conferences are removed from the underlying list
+     * @param position The starting row of the removal
+     * @param rows The number of items removed
+     */
+    void beginRemovePendingConferenceesRows(int position, int rows = 1) const;
+
+    //! Emitted once the removal of new pending conferences is complete
+    void endRemovePendingConferenceesRows() const;
 
 private:
     std::unique_ptr<NewCallModelPimpl> pimpl_;
