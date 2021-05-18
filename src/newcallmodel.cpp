@@ -149,7 +149,7 @@ public:
     bool manageCurrentCall_ {true};
     QString currentCall_ {};
 
-    std::map<QString, QString> pendingConferences_;
+    QList<call::PendingConferenceesInfo> pendingConferencees_;
 public Q_SLOTS:
     /**
      * Listen from CallbacksHandler when a call is incoming
@@ -311,7 +311,7 @@ NewCallModel::createCall(const QString& uri, bool isAudioOnly)
     }
 #ifdef ENABLE_LIBWRAP
     auto callId = CallManager::instance().placeCallWithMedia(owner.id, uri, mediaList);
-#else  // dbus
+#else // dbus
     // do not use auto here (QDBusPendingReply<QString>)
     QString callId = CallManager::instance().placeCallWithMedia(owner.id, uri, mediaList);
 #endif // ENABLE_LIBWRAP
@@ -572,7 +572,14 @@ NewCallModel::joinCalls(const QString& callIdA, const QString& callIdB) const
             emit callAddedToConference(call, conf);
 
         // Remove from pendingConferences_
-        pimpl_->pendingConferences_.erase(call);
+        for (int i = 0; i < pimpl_->pendingConferencees_.size(); ++i) {
+            if (pimpl_->pendingConferencees_.at(i).pendingConferenceeCallId == call) {
+                Q_EMIT beginRemovePendingConferenceesRows(i);
+                pimpl_->pendingConferencees_.removeAt(i);
+                Q_EMIT endRemovePendingConferenceesRows();
+                break;
+            }
+        }
     } else {
         CallManager::instance().joinParticipant(callIdA, callIdB);
         // NOTE: This will trigger slotConferenceCreated.
@@ -583,7 +590,9 @@ QString
 NewCallModel::callAndAddParticipant(const QString uri, const QString& callId, bool audioOnly)
 {
     auto newCallId = createCall(uri, audioOnly);
-    pimpl_->pendingConferences_.insert({newCallId, callId});
+    Q_EMIT beginInsertPendingConferenceesRows(0);
+    pimpl_->pendingConferencees_.prepend({uri, newCallId, callId});
+    Q_EMIT endInsertPendingConferenceesRows();
     return newCallId;
 }
 
@@ -626,6 +635,12 @@ NewCallModel::getSIPCallStatusString(const short& statusCode)
         return element->second;
     }
     return "";
+}
+
+const QList<call::PendingConferenceesInfo>&
+NewCallModel::getPendingConferencees()
+{
+    return pimpl_->pendingConferencees_;
 }
 
 NewCallModelPimpl::NewCallModelPimpl(const NewCallModel& linked,
@@ -750,10 +765,16 @@ NewCallModel::setCurrentCall(const QString& callId) const
 {
     if (!pimpl_->manageCurrentCall_)
         return;
-    auto it = pimpl_->pendingConferences_.find(callId);
+    bool foundCallId = false;
+    for (int i = 0; i < pimpl_->pendingConferencees_.size(); ++i) {
+        if (pimpl_->pendingConferencees_.at(i).pendingConferenceeCallId == callId) {
+            foundCallId = true;
+            break;
+        }
+    }
     // Set current call only if not adding this call
     // to a current conference
-    if (it != pimpl_->pendingConferences_.end())
+    if (foundCallId)
         return;
     if (!hasCall(callId))
         return;
@@ -1015,6 +1036,16 @@ NewCallModelPimpl::slotCallStateChanged(const QString& callId, const QString& st
 
     if (call->status == call::Status::ENDED) {
         emit linked.callEnded(callId);
+
+        // Remove from pendingConferences_
+        for (int i = 0; i < pendingConferencees_.size(); ++i) {
+            if (pendingConferencees_.at(i).pendingConferenceeCallId == callId) {
+                Q_EMIT linked.beginRemovePendingConferenceesRows(i);
+                pendingConferencees_.removeAt(i);
+                Q_EMIT linked.endRemovePendingConferenceesRows();
+                break;
+            }
+        }
     } else if (call->status == call::Status::IN_PROGRESS) {
         if (previousStatus == call::Status::INCOMING_RINGING
             || previousStatus == call::Status::OUTGOING_RINGING) {
@@ -1029,9 +1060,12 @@ NewCallModelPimpl::slotCallStateChanged(const QString& callId, const QString& st
             sendProfile(callId);
         }
         // Add to calls if in pendingConferences_
-        auto it = pendingConferences_.find(callId);
-        if (it != pendingConferences_.end()) {
-            linked.joinCalls(it->second, it->first);
+        for (int i = 0; i < pendingConferencees_.size(); ++i) {
+            if (pendingConferencees_.at(i).pendingConferenceeCallId == callId) {
+                linked.joinCalls(pendingConferencees_.at(i).joinCallId,
+                                 pendingConferencees_.at(i).pendingConferenceeCallId);
+                break;
+            }
         }
     } else if (call->status == call::Status::PAUSED) {
         currentCall_ = "";
@@ -1152,7 +1186,14 @@ NewCallModelPimpl::slotConferenceCreated(const QString& confId)
     foreach (const auto& call, callList) {
         emit linked.callAddedToConference(call, confId);
         // Remove call from pendingConferences_
-        pendingConferences_.erase(call);
+        for (int i = 0; i < pendingConferencees_.size(); ++i) {
+            if (pendingConferencees_.at(i).pendingConferenceeCallId == call) {
+                Q_EMIT linked.beginRemovePendingConferenceesRows(i);
+                pendingConferencees_.removeAt(i);
+                Q_EMIT linked.endRemovePendingConferenceesRows();
+                break;
+            }
+        }
     }
 }
 
