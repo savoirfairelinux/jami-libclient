@@ -214,6 +214,12 @@ isFinished(const QString& callState)
     return false;
 }
 
+void
+Lrc::monitor(bool continuous)
+{
+    ConfigurationManager::instance().monitor(continuous);
+}
+
 LrcPimpl::LrcPimpl(Lrc& linked, MigrationCb& willMigrateCb, MigrationCb& didMigrateCb)
     : linked(linked)
     , behaviorController(std::make_unique<BehaviorController>())

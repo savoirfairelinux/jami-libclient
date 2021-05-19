@@ -239,6 +239,8 @@ CallbacksHandler::CallbacksHandler(const Lrc& parent)
             this,
             &CallbacksHandler::slotAudioMeterReceived,
             Qt::QueuedConnection);
+
+
 }
 
 CallbacksHandler::~CallbacksHandler() {}
@@ -247,10 +249,11 @@ void
 CallbacksHandler::subscribeToDebugReceived()
 {
     connect(&ConfigurationManager::instance(),
-            &ConfigurationManagerInterface::debugMessageReceived,
-            this,
-            &CallbacksHandler::slotDebugMessageReceived,
-            Qt::QueuedConnection);
+           &ConfigurationManagerInterface::messageSend,
+           this,
+           &CallbacksHandler::slotDebugMessageReceived,
+           Qt::QueuedConnection);
+
 }
 
 void
