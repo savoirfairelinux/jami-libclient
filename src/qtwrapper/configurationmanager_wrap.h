@@ -221,7 +221,7 @@ public:
                 }),
             exportable_callback<ConfigurationSignal::MessageSend>(
                 [this](const std::string& message) {
-                    Q_EMIT this->debugMessageReceived(QString(message.c_str()));
+                    Q_EMIT this->messageSend(QString(message.c_str()));
                 }),
             exportable_callback<ConfigurationSignal::ComposingStatusChanged>(
                 [this](const std::string& account_id, const std::string& from, int status) {
@@ -516,6 +516,8 @@ public Q_SLOTS: // METHODS
     void mutePlayback(bool mute) { DRing::mutePlayback(mute); }
 
     void registerAllAccounts() { DRing::registerAllAccounts(); }
+
+    void monitor(bool continuous) { DRing::monitor(continuous); }
 
     void removeAccount(const QString& accountID) { DRing::removeAccount(accountID.toStdString()); }
 
@@ -889,7 +891,7 @@ Q_SIGNALS: // SIGNALS
     void accountProfileReceived(const QString& accountId,
                                 const QString& displayName,
                                 const QString& userPhoto);
-    void debugMessageReceived(const QString& message);
+    void messageSend(const QString& message);
     void composingStatusChanged(const QString& accountId,
                                 const QString& contactId,
                                 bool isComposing);
