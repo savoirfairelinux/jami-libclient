@@ -119,6 +119,11 @@ public:
      */
     static std::atomic_bool holdConferences;
 
+    /**
+     * Make monitor continous or discrete
+     */
+    static void monitor(bool continous);
+
 private:
     std::unique_ptr<LrcPimpl> lrcPimpl_;
 };
