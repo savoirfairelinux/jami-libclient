@@ -69,9 +69,20 @@ Rectangle {
         // call recording setting panel
         RecordingSettings {
             Layout.fillWidth: true
+            Layout.topMargin: JamiTheme.preferredMarginSize
             Layout.leftMargin: JamiTheme.preferredMarginSize
             Layout.rightMargin: JamiTheme.preferredMarginSize
 
+            itemWidth: preferredColumnWidth
+        }
+
+        // Trouble shooting setting panel
+        TroubleshootSettings {
+            Layout.fillWidth: true
+            Layout.topMargin: JamiTheme.preferredMarginSize
+            Layout.leftMargin: JamiTheme.preferredMarginSize
+            Layout.rightMargin: JamiTheme.preferredMarginSize
+            Layout.bottomMargin: JamiTheme.preferredMarginSize
             itemWidth: preferredColumnWidth
         }
 

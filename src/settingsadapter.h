@@ -228,6 +228,11 @@ public:
     Q_INVOKABLE bool isLocalModeratorsEnabled(const QString& accountId);
     Q_INVOKABLE bool isAllModeratorsEnabled(const QString& accountId);
 
+    Q_INVOKABLE void monitor(const bool& continuous);
+
+Q_SIGNALS:
+    void debugMessageReceived(const QString& message);
+
 private:
     AppSettingsManager* settingsManager_;
 };

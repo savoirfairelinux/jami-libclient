@@ -463,3 +463,9 @@ LRCInstance::finish()
     renderer_.reset();
     lrc_.reset();
 }
+
+void
+LRCInstance::monitor(bool continuous)
+{
+    lrc_->monitor(continuous);
+}

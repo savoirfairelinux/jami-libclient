@@ -320,9 +320,26 @@ Item {
     property string networkDisconnected: qsTr("Network disconnected")
     property string genericError: qsTr("Something went wrong")
 
+    //Troubleshoot Settings
+    property string troubleshootTitle: qsTr("Troubleshoot")
+    property string troubleshootButton: qsTr("Open logs")
+    property string troubleshootText: qsTr("Get logs")
+
     // Recording Settings
     property string tipRecordFolder: qsTr("Select a record directory")
 
+    // View Logs
+    property string logsViewTitle: qsTr("Debug")
+    property string logsViewShowStats: qsTr("Show Stats")
+    property string logsViewStart: qsTr("Start")
+    property string logsViewStop: qsTr("Stop")
+    property string logsViewCopy: qsTr("Copy")
+    property string logsViewReport: qsTr("Report Bug")
+    property string logsViewClear: qsTr("Clear")
+    property string logsViewCancel: qsTr("Cancel")
+    property string logsViewCopied: qsTr("Copied to clipboard!")
+    property string logsViewDisplay: qsTr("Receive Logs")
+    
     // ImportFromBackupPage
     property string archive: qsTr("Archive")
     property string openFile: qsTr("Open file")

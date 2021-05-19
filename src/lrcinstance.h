@@ -120,6 +120,8 @@ public:
     QString getContentDraft(const QString& convUid, const QString& accountId);
     void setContentDraft(const QString& convUid, const QString& accountId, const QString& content);
 
+    void monitor(bool continous);
+
     bool hasActiveCall(bool withVideo = false);
     void pushlastConference(const QString& confId, const QString& callId);
     QString poplastConference(const QString& confId);

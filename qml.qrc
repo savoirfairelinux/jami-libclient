@@ -143,5 +143,7 @@
         <file>src/commoncomponents/MaterialToolTip.qml</file>
         <file>src/mainview/components/ParticipantCallInStatusDelegate.qml</file>
         <file>src/mainview/components/ParticipantCallInStatusView.qml</file>
+        <file>src/settingsview/components/TroubleshootSettings.qml</file>
+        <file>src/settingsview/components/LogsView.qml</file>
     </qresource>
 </RCC>

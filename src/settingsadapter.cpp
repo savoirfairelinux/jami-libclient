@@ -26,7 +26,13 @@ SettingsAdapter::SettingsAdapter(AppSettingsManager* settingsManager,
                                  QObject* parent)
     : QmlAdapterBase(instance, parent)
     , settingsManager_(settingsManager)
-{}
+{
+    QObject::connect(&lrcInstance_->behaviorController(),
+                     &lrc::api::BehaviorController::debugMessageReceived,
+                     this,
+                     &SettingsAdapter::debugMessageReceived,
+                     Qt::ConnectionType::UniqueConnection);
+}
 
 QString
 SettingsAdapter::getDir_Document()
@@ -1099,4 +1105,10 @@ bool
 SettingsAdapter::isAllModeratorsEnabled(const QString& accountId)
 {
     return lrcInstance_->accountModel().isAllModerators(accountId);
+}
+
+void
+SettingsAdapter::monitor(const bool& continuous)
+{
+    lrcInstance_->monitor(continuous);
 }
