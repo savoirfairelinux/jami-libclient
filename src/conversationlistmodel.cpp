@@ -107,12 +107,15 @@ ConversationListProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex& s
     auto registeredName = index.data(ConversationList::Role::RegisteredName).toString();
     auto itemProfileType = index.data(ConversationList::Role::ContactType).toInt();
     auto typeFilter = static_cast<profile::Type>(itemProfileType) == currentTypeFilter_;
+    bool match {false};
     if (index.data(ConversationList::Role::IsBanned).toBool()) {
-        return typeFilter
-               && (rx.exactMatch(uri) || rx.exactMatch(alias) || rx.exactMatch(registeredName));
+        match = !rx.isEmpty()
+                && (rx.exactMatch(uri) || rx.exactMatch(alias) || rx.exactMatch(registeredName));
+    } else {
+        match = (rx.indexIn(uri) != -1 || rx.indexIn(alias) != -1
+                 || rx.indexIn(registeredName) != -1);
     }
-    return typeFilter
-           && (rx.indexIn(uri) != -1 || rx.indexIn(alias) != -1 || rx.indexIn(registeredName) != -1);
+    return typeFilter && match;
 }
 
 bool
