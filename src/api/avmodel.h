@@ -169,6 +169,18 @@ public:
      * @param name of the new audio manager
      * @return if the operation is successful
      */
+    /**
+     * Set volume for audio device
+     * @param name of audio device
+     * @param volume of audio device
+     */
+    void setVolume(const QString& device, double value);
+    /**
+     * Get volume for audio device
+     * @param name of audio device
+     * @return device volume
+     */
+    double getVolume(const QString& device);
     Q_INVOKABLE bool setAudioManager(const QString& name);
     /**
      * Set current ringtone device

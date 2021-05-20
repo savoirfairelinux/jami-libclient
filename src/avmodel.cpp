@@ -634,6 +634,18 @@ AVModel::clearCurrentVideoCaptureDevice()
     pimpl_->currentVideoCaptureDevice_.clear();
 }
 
+void
+AVModel::setVolume(const QString& device, double value)
+{
+    ConfigurationManager::instance().setVolume(device, value);
+}
+
+double
+AVModel::getVolume(const QString& device)
+{
+    return ConfigurationManager::instance().getVolume(device);
+}
+
 AVModelPimpl::AVModelPimpl(AVModel& linked, const CallbacksHandler& callbacksHandler)
     : callbacksHandler(callbacksHandler)
     , linked_(linked)
