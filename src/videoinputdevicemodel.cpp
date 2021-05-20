@@ -97,6 +97,8 @@ VideoInputDeviceModel::data(const QModelIndex& index, int role) const
         return QVariant((QString) currentDeviceSetting.size);
     case Role::DeviceName_UTF8:
         return QVariant(currentDeviceSetting.name.toUtf8());
+    case Role::isCurrent:
+        return QVariant(index.row() == getCurrentIndex());
     }
     return QVariant();
 }
@@ -111,6 +113,7 @@ VideoInputDeviceModel::roleNames() const
     roles[CurrentFrameRate] = "CurrentFrameRate";
     roles[CurrentResolution] = "CurrentResolution";
     roles[DeviceName_UTF8] = "DeviceName_UTF8";
+    roles[isCurrent] = "isCurrent";
     return roles;
 }
 
@@ -159,15 +162,9 @@ VideoInputDeviceModel::deviceCount()
 }
 
 int
-VideoInputDeviceModel::getCurrentSettingIndex()
+VideoInputDeviceModel::getCurrentIndex() const
 {
     QString currentId = lrcInstance_->avModel().getCurrentVideoCaptureDevice();
     auto resultList = match(index(0, 0), DeviceId, QVariant(currentId));
-
-    int resultRowIndex = 0;
-    if (resultList.size() > 0) {
-        resultRowIndex = resultList[0].row();
-    }
-
-    return resultRowIndex;
+    return resultList.size() > 0 ? resultList[0].row() : 0;
 }

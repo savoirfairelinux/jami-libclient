@@ -45,8 +45,11 @@ protected:
     // Return needed info for populating video device context menu item.
     Q_INVOKABLE QVariantMap populateVideoDeviceContextMenuItem();
 
-    // Preview video input switching.
-    Q_INVOKABLE void onVideoContextMenuDeviceItemClicked(const QString& deviceName);
+    // switch preview video input by device name
+    Q_INVOKABLE void selectVideoInputDeviceByName(const QString& deviceName);
+
+    // switch preview video input by device id
+    Q_INVOKABLE void selectVideoInputDeviceById(const QString& deviceId);
 
     // Share the screen specificed by screen number.
     Q_INVOKABLE void shareEntireScreen(int screenNumber);

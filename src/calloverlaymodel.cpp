@@ -44,15 +44,10 @@ CallControlListModel::data(const QModelIndex& index, int role) const
     auto item = data_.at(index.row());
 
     switch (role) {
-    case Role::DummyRole:
-        break;
-#define X(t, role) \
-    case Role::role: \
-        return QVariant::fromValue(item.role);
-        CC_ROLES
-#undef X
-    default:
-        break;
+    case Role::ItemAction:
+        return QVariant::fromValue(item.itemAction);
+    case Role::BadgeCount:
+        return QVariant::fromValue(item.badgeCount);
     }
     return QVariant();
 }
@@ -62,9 +57,8 @@ CallControlListModel::roleNames() const
 {
     using namespace CallControl;
     QHash<int, QByteArray> roles;
-#define X(t, role) roles[role] = #role;
-    CC_ROLES
-#undef X
+    roles[ItemAction] = "ItemAction";
+    roles[BadgeCount] = "BadgeCount";
     return roles;
 }
 
@@ -73,7 +67,7 @@ CallControlListModel::setBadgeCount(int row, int count)
 {
     if (row >= rowCount())
         return;
-    data_[row].BadgeCount = count;
+    data_[row].badgeCount = count;
     auto idx = index(row, 0);
     Q_EMIT dataChanged(idx, idx);
 }
@@ -84,6 +78,12 @@ CallControlListModel::addItem(const CallControl::Item& item)
     beginResetModel();
     data_.append(item);
     endResetModel();
+}
+
+void
+CallControlListModel::clearData()
+{
+    data_.clear();
 }
 
 IndexRangeFilterProxyModel::IndexRangeFilterProxyModel(QAbstractListModel* parent)
@@ -129,25 +129,15 @@ CallOverlayModel::CallOverlayModel(LRCInstance* instance, QObject* parent)
 }
 
 void
-CallOverlayModel::addPrimaryControl(const QVariantMap& props)
+CallOverlayModel::addPrimaryControl(const QVariant& action)
 {
-    CallControl::Item item {
-#define X(t, role) props[#role].value<t>(),
-        CC_ROLES
-#undef X
-    };
-    primaryModel_->addItem(item);
+    primaryModel_->addItem(CallControl::Item {action.value<QObject*>()});
 }
 
 void
-CallOverlayModel::addSecondaryControl(const QVariantMap& props)
+CallOverlayModel::addSecondaryControl(const QVariant& action)
 {
-    CallControl::Item item {
-#define X(t, role) props[#role].value<t>(),
-        CC_ROLES
-#undef X
-    };
-    secondaryModel_->addItem(item);
+    secondaryModel_->addItem(CallControl::Item {action.value<QObject*>()});
     setControlRanges();
 }
 
@@ -185,6 +175,13 @@ QVariant
 CallOverlayModel::overflowHiddenModel()
 {
     return QVariant::fromValue(overflowHiddenModel_);
+}
+
+void
+CallOverlayModel::clearControls()
+{
+    primaryModel_->clearData();
+    secondaryModel_->clearData();
 }
 
 void

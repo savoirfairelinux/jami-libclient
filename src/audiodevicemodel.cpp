@@ -62,6 +62,8 @@ AudioDeviceModel::data(const QModelIndex& index, int role) const
     }
     case Role::RawDeviceName:
         return QVariant(devices_.at(index.row()));
+    case Role::isCurrent:
+        return QVariant(index.row() == getCurrentIndex());
     default:
         break;
     }
@@ -115,7 +117,7 @@ AudioDeviceModel::reset()
 }
 
 int
-AudioDeviceModel::getCurrentIndex()
+AudioDeviceModel::getCurrentIndex() const
 {
     QString currentId = lrcInstance_->avModel().getInputDevice();
     auto resultList = match(index(0, 0), Qt::DisplayRole, QVariant(currentId));

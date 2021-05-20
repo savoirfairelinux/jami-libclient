@@ -134,5 +134,11 @@
         <file>images/icons/settings-24px.svg</file>
         <file>images/icons/quote.svg</file>
         <file>images/icons/plugins-24px.svg</file>
+        <file>images/icons/record_black_24dp.svg</file>
+        <file>images/icons/share_screen_black_24dp.svg</file>
+        <file>images/icons/chat_black_24dp.svg</file>
+        <file>images/icons/add_people_black_24dp.svg</file>
+        <file>images/icons/spk_black_24dp.svg</file>
+        <file>images/icons/spk_none_black_24dp.svg</file>
     </qresource>
 </RCC>

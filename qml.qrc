@@ -106,7 +106,6 @@
         <file>src/mainview/components/CallStackView.qml</file>
         <file>src/mainview/components/InitialCallPage.qml</file>
         <file>src/mainview/components/CallOverlay.qml</file>
-        <file>src/mainview/components/CallOverlayButtonGroup.qml</file>
         <file>src/mainview/components/ContactSearchBar.qml</file>
         <file>src/mainview/components/OngoingCallPage.qml</file>
         <file>src/mainview/components/ParticipantOverlay.qml</file>
@@ -137,5 +136,10 @@
         <file>src/mainview/components/SmartListItemDelegate.qml</file>
         <file>src/mainview/components/BadgeNotifier.qml</file>
         <file>src/mainview/components/ParticipantsLayer.qml</file>
+        <file>src/mainview/components/MainOverlay.qml</file>
+        <file>src/mainview/components/CallButtonDelegate.qml</file>
+        <file>src/mainview/components/CallActionBar.qml</file>
+        <file>src/commoncomponents/HalfPill.qml</file>
+        <file>src/commoncomponents/MaterialToolTip.qml</file>
     </qresource>
 </RCC>

@@ -28,7 +28,7 @@ public:
     Q_ENUM(Type)
     Q_PROPERTY(Type type MEMBER type_ NOTIFY typeChanged)
 
-    enum Role { DeviceName = Qt::UserRole + 1, RawDeviceName };
+    enum Role { DeviceName = Qt::UserRole + 1, RawDeviceName, isCurrent };
     Q_ENUM(Role)
 
 Q_SIGNALS:
@@ -56,7 +56,7 @@ public:
     Qt::ItemFlags flags(const QModelIndex& index) const override;
 
     Q_INVOKABLE void reset();
-    Q_INVOKABLE int getCurrentIndex();
+    Q_INVOKABLE int getCurrentIndex() const;
 
 private:
     QVector<QString> devices_;

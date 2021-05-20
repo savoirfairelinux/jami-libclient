@@ -25,8 +25,8 @@ import net.jami.Models 1.0
 Image {
     id: root
 
-    property real containerWidth
-    property real containerHeight
+    property real containerWidth: 30
+    property real containerHeight: 30
 
     property int padding: 0
     property point offset: Qt.point(0, 0)

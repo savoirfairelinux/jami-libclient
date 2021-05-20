@@ -95,7 +95,6 @@ Q_SIGNALS:
                        bool isVideoMuted,
                        bool isRecording,
                        bool isSIP,
-                       bool isConferenceCall,
                        const QString& bestName);
     void remoteRecordingChanged(const QStringList& peers, bool state);
     void eraseRemoteRecording();

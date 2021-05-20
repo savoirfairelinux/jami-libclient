@@ -639,7 +639,6 @@ CallAdapter::updateCallOverlay(const lrc::api::conversation::Info& convInfo)
                          isVideoMuted,
                          isRecording,
                          accInfo.profileInfo.type == lrc::api::profile::Type::SIP,
-                         !convInfo.confId.isEmpty(),
                          bestName);
 }
 

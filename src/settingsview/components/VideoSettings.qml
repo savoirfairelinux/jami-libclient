@@ -63,7 +63,7 @@ ColumnLayout {
         }
 
         deviceComboBoxSetting.setCurrentIndex(
-                    deviceComboBoxSetting.comboModel.getCurrentSettingIndex(), true)
+                    deviceComboBoxSetting.comboModel.getCurrentIndex(), true)
         hardwareAccelControl.checked = AVModel.getHardwareAcceleration()
     }
 

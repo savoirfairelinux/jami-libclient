@@ -40,7 +40,7 @@ Item {
         // TODO: in the future the conference layout should be entirely managed by the client
         // Hack: truncate and ceil participant's overlay position and size to correct
         // when they are not exacts
-        callOverlay.updateMenu()
+        callOverlay.updateUI()
         var showMax = false
         var showMin = false
 

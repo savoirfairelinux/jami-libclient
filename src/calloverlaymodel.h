@@ -27,28 +27,15 @@
 #include <QSortFilterProxyModel>
 #include <QQuickItem>
 
-#define CC_ROLES \
-    X(QObject*, ItemAction) \
-    X(int, BadgeCount) \
-    X(bool, HasBackground) \
-    X(QObject*, MenuAction) \
-    X(QString, Name)
-
 namespace CallControl {
 Q_NAMESPACE
-enum Role {
-    DummyRole = Qt::UserRole + 1,
-#define X(t, role) role,
-    CC_ROLES
-#undef X
-};
+enum Role { ItemAction = Qt::UserRole + 1, BadgeCount };
 Q_ENUM_NS(Role)
 
 struct Item
 {
-#define X(t, role) t role;
-    CC_ROLES
-#undef X
+    QObject* itemAction;
+    int badgeCount {0};
 };
 } // namespace CallControl
 
@@ -64,6 +51,7 @@ public:
 
     void setBadgeCount(int row, int count);
     void addItem(const CallControl::Item& item);
+    void clearData();
 
 private:
     QList<CallControl::Item> data_;
@@ -93,9 +81,10 @@ class CallOverlayModel : public QObject
 public:
     CallOverlayModel(LRCInstance* instance, QObject* parent = nullptr);
 
-    Q_INVOKABLE void addPrimaryControl(const QVariantMap& props);
-    Q_INVOKABLE void addSecondaryControl(const QVariantMap& props);
+    Q_INVOKABLE void addPrimaryControl(const QVariant& action);
+    Q_INVOKABLE void addSecondaryControl(const QVariant& action);
     Q_INVOKABLE void setBadgeCount(int row, int count);
+    Q_INVOKABLE void clearControls();
 
     Q_INVOKABLE QVariant primaryModel();
     Q_INVOKABLE QVariant secondaryModel();

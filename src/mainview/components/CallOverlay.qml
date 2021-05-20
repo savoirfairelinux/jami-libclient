@@ -2,7 +2,7 @@
  * Copyright (C) 2020 by Savoir-faire Linux
  * Author: Mingrui Zhang <mingrui.zhang@savoirfairelinux.com>
  * Author: Sébastien Blin <sebastien.blin@savoirfairelinux.com>
- * Author: Aline Gondim Santos   <aline.gondimsantos@savoirfairelinux.com>
+ * Author: Aline Gondim Santos <aline.gondimsantos@savoirfairelinux.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,6 +29,8 @@ import net.jami.Adapters 1.0
 import net.jami.Constants 1.0
 
 import "../js/contactpickercreation.js" as ContactPickerCreation
+import "../js/selectscreenwindowcreation.js" as SelectScreenWindowCreation
+import "../js/screenrubberbandcreation.js" as ScreenRubberBandCreation
 import "../js/pluginhandlerpickercreation.js" as PluginHandlerPickerCreation
 
 import "../../commoncomponents"
@@ -37,13 +39,18 @@ Item {
     id: root
 
     property alias participantsLayer: __participantsLayer
-    property string timeText: "00:00"
-    property string remoteRecordingLabel: ""
-    property bool isVideoMuted: true
-    property bool isAudioOnly: false
+
+    property bool isPaused
+    property bool isAudioOnly
+    property bool isAudioMuted
+    property bool isVideoMuted
+    property bool isRecording
+    property bool isSIP
+    property bool isModerator
+
     property string bestName: ""
 
-    signal overlayChatButtonClicked
+    signal chatButtonClicked
 
     onVisibleChanged: if (!visible) callViewContextMenu.close()
 
@@ -54,25 +61,23 @@ Item {
 
     function setRecording(localIsRecording) {
         callViewContextMenu.localIsRecording = localIsRecording
-        recordingRect.visible = localIsRecording
+        mainOverlay.recordingVisible = localIsRecording
                 || callViewContextMenu.peerIsRecording
     }
 
-    function updateButtonStatus(isPaused, isAudioOnly, isAudioMuted, isVideoMuted,
-                                isRecording, isSIP, isConferenceCall) {
-        root.isVideoMuted = isVideoMuted
-        callViewContextMenu.isSIP = isSIP
-        callViewContextMenu.isPaused = isPaused
-        callViewContextMenu.isAudioOnly = isAudioOnly
-        callViewContextMenu.localIsRecording = isRecording
-        recordingRect.visible = isRecording
-        callOverlayButtonGroup.setButtonStatus(isPaused, isAudioOnly,
-                                               isAudioMuted, isVideoMuted,
-                                               isSIP, isConferenceCall)
-    }
+    function updateUI(isPaused, isAudioOnly, isAudioMuted,
+                      isVideoMuted, isRecording, isSIP) {
+        if (isPaused !== undefined) {
+            root.isPaused = isPaused
+            root.isAudioOnly = isAudioOnly
+            root.isAudioMuted = isAudioMuted
+            root.isVideoMuted = isVideoMuted
+            root.isRecording = isRecording
+            root.isSIP = isSIP
+            mainOverlay.recordingVisible = isRecording
+        }
 
-    function updateMenu() {
-        callOverlayButtonGroup.updateMenu()
+        root.isModerator = CallAdapter.isCurrentModerator()
     }
 
     function showOnHoldImage(visible) {
@@ -109,17 +114,19 @@ Item {
                                               : JamiStrings.isRecording)
         }
 
-        remoteRecordingLabel = state? label : JamiStrings.peerStoppedRecording
+        mainOverlay.remoteRecordingLabel = state ?
+                    label :
+                    JamiStrings.peerStoppedRecording
         callViewContextMenu.peerIsRecording = state
-        recordingRect.visible = callViewContextMenu.localIsRecording
+        mainOverlay.recordingVisible = callViewContextMenu.localIsRecording
                 || callViewContextMenu.peerIsRecording
         callOverlayRectMouseArea.entered()
     }
 
     function resetRemoteRecording() {
-        remoteRecordingLabel = ""
+        mainOverlay.remoteRecordingLabel = ""
         callViewContextMenu.peerIsRecording = false
-        recordingRect.visible = callViewContextMenu.localIsRecording
+        mainOverlay.recordingVisible = callViewContextMenu.localIsRecording
     }
 
     SipInputPanel {
@@ -143,182 +150,61 @@ Item {
         source: "qrc:/images/icons/ic_pause_white_100px.svg"
     }
 
-    Item {
+    function openContactPicker(type) {
+        ContactPickerCreation.createContactPickerObjects(type, root)
+        ContactPickerCreation.openContactPicker()
+    }
+
+    function openShareScreen() {
+        if (Qt.application.screens.length === 1) {
+            AvAdapter.shareEntireScreen(0)
+        } else {
+            SelectScreenWindowCreation.createSelectScreenWindowObject()
+            SelectScreenWindowCreation.showSelectScreenWindow()
+        }
+    }
+
+    function openShareScreenArea() {
+        if (Qt.platform.os !== "windows") {
+            AvAdapter.shareScreenArea(0, 0, 0, 0)
+        } else {
+            ScreenRubberBandCreation.createScreenRubberBandWindowObject()
+            ScreenRubberBandCreation.showScreenRubberBandWindow()
+        }
+    }
+
+    function openPluginsMenu() {
+        PluginHandlerPickerCreation.createPluginHandlerPickerObjects(root, true)
+        PluginHandlerPickerCreation.openPluginHandlerPicker()
+    }
+
+    MainOverlay {
         id: mainOverlay
 
         anchors.fill: parent
-        opacity: 0
 
-        // (un)subscribe to an app-wide mouse move event trap filtered
-        // for the overlay's geometry
-        onVisibleChanged: visible ?
-                              CallOverlayModel.registerFilter(appWindow, this) :
-                              CallOverlayModel.unregisterFilter(appWindow, this)
+        bestName: root.bestName
 
         Connections {
-            target: CallOverlayModel
-
-            function onMouseMoved(item) {
-                if (item === mainOverlay) {
-                    mainOverlay.opacity = 1
-                    fadeOutTimer.restart()
-                }
-            }
+            target: mainOverlay.callActionBar
+            function onChatClicked() { root.chatButtonClicked() }
+            function onAddToConferenceClicked() { openContactPicker(ContactList.CONFERENCE) }
+            function onTransferClicked() { openContactPicker(ContactList.TRANSFER) }
+            function onShareScreenClicked() { openShareScreen() }
+            function onShareScreenAreaClicked() { openShareScreenArea() }
+            function onPluginsClicked() { openPluginsMenu() }
         }
-
-        // control overlay fade out.
-        Timer {
-            id: fadeOutTimer
-            interval: JamiTheme.overlayFadeDelay
-            onTriggered: {
-                if (callOverlayButtonGroup.hovered)
-                    return
-                mainOverlay.opacity = 0
-                resetLabelsTimer.restart()
-            }
-        }
-
-        // Timer to reset recording label and call duration time
-        Timer {
-            id: resetLabelsTimer
-            interval: 1000
-            running: root.visible
-            repeat: true
-            onTriggered: {
-                timeText = CallAdapter.getCallDurationTime(LRCInstance.currentAccountId,
-                                                           LRCInstance.selectedConvUid)
-                if (mainOverlay.opacity === 0 && !callViewContextMenu.peerIsRecording)
-                    remoteRecordingLabel = ""
-            }
-        }
-
-        Item {
-            id: overlayUpperPartRect
-
-            anchors.top: parent.top
-
-            width: parent.width
-            height: 50
-
-            RowLayout {
-                anchors.fill: parent
-
-                Text {
-                    id: jamiBestNameText
-
-                    Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
-                    Layout.preferredWidth: overlayUpperPartRect.width / 3
-                    Layout.preferredHeight: 50
-                    leftPadding: 16
-
-                    font.pointSize: JamiTheme.textFontSize
-
-                    horizontalAlignment: Text.AlignLeft
-                    verticalAlignment: Text.AlignVCenter
-
-                    text: textMetricsjamiBestNameText.elidedText
-                    color: "white"
-
-                    TextMetrics {
-                        id: textMetricsjamiBestNameText
-                        font: jamiBestNameText.font
-                        text: {
-                            if (!root.isAudioOnly) {
-                                if (remoteRecordingLabel === "") {
-                                    return root.bestName
-                                } else {
-                                    return remoteRecordingLabel
-                                }
-                            }
-                            return ""
-                        }
-                        elideWidth: overlayUpperPartRect.width / 3
-                        elide: Qt.ElideRight
-                    }
-                }
-
-                Text {
-                    id: callTimerText
-                    Layout.alignment: Qt.AlignVCenter | Qt.AlignRight
-                    Layout.preferredWidth: 64
-                    Layout.minimumWidth: 64
-                    Layout.preferredHeight: 48
-                    Layout.rightMargin: recordingRect.visible?
-                                            0 : JamiTheme.preferredMarginSize
-                    font.pointSize: JamiTheme.textFontSize
-                    horizontalAlignment: Text.AlignRight
-                    verticalAlignment: Text.AlignVCenter
-                    text: textMetricscallTimerText.elidedText
-                    color: "white"
-                    TextMetrics {
-                        id: textMetricscallTimerText
-                        font: callTimerText.font
-                        text: timeText
-                        elideWidth: overlayUpperPartRect.width / 4
-                        elide: Qt.ElideRight
-                    }
-                }
-
-                Rectangle {
-                    id: recordingRect
-                    Layout.alignment: Qt.AlignVCenter | Qt.AlignRight
-                    Layout.rightMargin: JamiTheme.preferredMarginSize
-                    height: 16
-                    width: 16
-                    radius: height / 2
-                    color: "red"
-
-                    SequentialAnimation on color {
-                        loops: Animation.Infinite
-                        running: true
-                        ColorAnimation { from: "red"; to: "transparent";  duration: 500 }
-                        ColorAnimation { from: "transparent"; to: "red"; duration: 500 }
-                    }
-                }
-            }
-        }
-
-        CallOverlayButtonGroup {
-            id: callOverlayButtonGroup
-
-            anchors.bottom: parent.bottom
-            anchors.bottomMargin: 10
-            anchors.horizontalCenter: parent.horizontalCenter
-
-            height: 56
-            width: root.width
-
-            onChatButtonClicked: {
-                root.overlayChatButtonClicked()
-            }
-
-            onAddToConferenceButtonClicked: {
-                // Create contact picker - conference.
-                ContactPickerCreation.createContactPickerObjects(
-                            ContactList.CONFERENCE,
-                            root)
-                ContactPickerCreation.openContactPicker()
-            }
-        }
-
-        Behavior on opacity { NumberAnimation { duration: JamiTheme.overlayFadeDuration }}
     }
 
     CallViewContextMenu {
         id: callViewContextMenu
 
-        onTransferCallButtonClicked: {
-            // Create contact picker - sip transfer.
-            ContactPickerCreation.createContactPickerObjects(
-                        ContactList.TRANSFER,
-                        root)
-            ContactPickerCreation.openContactPicker()
-        }
+        isSIP: root.isSIP
+        isPaused: root.isPaused
+        isAudioOnly: root.isAudioOnly
+        localIsRecording: root.isRecording
 
-        onPluginItemClicked: {
-            // Create plugin handler picker - PLUGINS
-            PluginHandlerPickerCreation.createPluginHandlerPickerObjects(root, true)
-            PluginHandlerPickerCreation.openPluginHandlerPicker()
-        }
+        onTransferCallButtonClicked: openContactPicker(ContactList.TRANSFER)
+        onPluginItemClicked: openPluginsMenu()
     }
 }

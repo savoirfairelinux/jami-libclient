@@ -25,12 +25,13 @@ class VideoInputDeviceModel : public AbstractListModelBase
     Q_OBJECT
 public:
     enum Role {
-        DeviceChannel = Qt::UserRole + 1,
-        DeviceName,
+        DeviceName = Qt::UserRole + 1,
+        DeviceChannel,
         DeviceId,
         CurrentFrameRate,
         CurrentResolution,
-        DeviceName_UTF8
+        DeviceName_UTF8,
+        isCurrent
     };
     Q_ENUM(Role)
 
@@ -59,8 +60,7 @@ public:
      * This function is to reset the model when there's new account added.
      */
     Q_INVOKABLE int deviceCount();
-    /*
-     * This function is to get the current device id in the demon.
-     */
-    Q_INVOKABLE int getCurrentSettingIndex();
+
+    // get model index of the current device
+    Q_INVOKABLE int getCurrentIndex() const;
 };

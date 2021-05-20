@@ -50,6 +50,6 @@ GeneralMenuItem {
 
     onClicked: {
         var deviceName = videoCallPageContextMenuDeviceItem.itemName
-        AvAdapter.onVideoContextMenuDeviceItemClicked(deviceName)
+        AvAdapter.selectVideoInputDeviceByName(deviceName)
     }
 }

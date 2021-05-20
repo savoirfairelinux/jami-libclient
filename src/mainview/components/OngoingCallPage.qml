@@ -302,15 +302,11 @@ Rectangle  {
                         target: CallAdapter
 
                         function onUpdateOverlay(isPaused, isAudioOnly, isAudioMuted, isVideoMuted,
-                                                 isRecording, isSIP, isConferenceCall, bestName) {
+                                                 isRecording, isSIP, bestName) {
                             callOverlay.showOnHoldImage(isPaused)
                             audioCallPageRectCentralRect.visible = !isPaused && root.isAudioOnly
-                            callOverlay.updateButtonStatus(isPaused,
-                                                                isAudioOnly,
-                                                                isAudioMuted,
-                                                                isVideoMuted,
-                                                                isRecording, isSIP,
-                                                                isConferenceCall)
+                            callOverlay.updateUI(isPaused, isAudioOnly, isAudioMuted, isVideoMuted,
+                                                 isRecording, isSIP)
                             root.bestName = bestName
                             callOverlay.participantsLayer.update(CallAdapter.getConferencesInfos())
                         }
@@ -329,7 +325,7 @@ Rectangle  {
                         }
                     }
 
-                    onOverlayChatButtonClicked: {
+                    onChatButtonClicked: {
                         inCallMessageWebViewStack.visible ?
                                     closeInCallConversation() :
                                     openInCallConversation()

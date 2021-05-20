@@ -69,13 +69,19 @@ AvAdapter::populateVideoDeviceContextMenuItem()
 }
 
 void
-AvAdapter::onVideoContextMenuDeviceItemClicked(const QString& deviceName)
+AvAdapter::selectVideoInputDeviceByName(const QString& deviceName)
 {
     auto deviceId = lrcInstance_->avModel().getDeviceIdFromName(deviceName);
     if (deviceId.isEmpty()) {
         qWarning() << "Couldn't find device: " << deviceName;
         return;
     }
+    selectVideoInputDeviceById(deviceId);
+}
+
+void
+AvAdapter::selectVideoInputDeviceById(const QString& deviceId)
+{
     lrcInstance_->avModel().setCurrentVideoCaptureDevice(deviceId);
     lrcInstance_->avModel().switchInputTo(deviceId, getCurrentCallId());
 }
