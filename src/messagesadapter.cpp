@@ -487,6 +487,7 @@ MessagesAdapter::newInteraction(const QString& accountId,
         auto& convModel = accountInfo.conversationModel;
         convModel->clearUnreadInteractions(convUid);
         printNewInteraction(*convModel, interactionId, interaction);
+        Q_EMIT newInteraction(static_cast<int>(interaction.type));
     } catch (...) {
     }
 }

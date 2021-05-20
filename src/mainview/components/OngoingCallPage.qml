@@ -300,6 +300,12 @@ Rectangle {
 
                     anchors.fill: parent
 
+                    function toggleConversation() {
+                        inCallMessageWebViewStack.visible ?
+                                    closeInCallConversation() :
+                                    openInCallConversation()
+                    }
+
                     Connections {
                         target: CallAdapter
 
@@ -327,6 +333,16 @@ Rectangle {
 
                         function onEraseRemoteRecording() {
                             callOverlay.resetRemoteRecording()
+                        }
+                    }
+
+                    Connections {
+                        target: MessagesAdapter
+
+                        function onNewInteraction(interactionType) {
+                            // Ignore call notifications, as we are in the call.
+                            if (interactionType !== Interaction.Type.CALL && !inCallMessageWebViewStack.visible)
+                                openInCallConversation()
                         }
                     }
 

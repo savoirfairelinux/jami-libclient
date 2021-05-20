@@ -95,6 +95,7 @@ Q_SIGNALS:
     void contactBanned();
     void navigateToWelcomePageRequested();
     void invitationAccepted();
+    void newInteraction(int type);
 
 public Q_SLOTS:
     void slotSendMessageContentSaved(const QString& content);
