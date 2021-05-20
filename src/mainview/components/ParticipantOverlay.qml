@@ -30,7 +30,7 @@ import net.jami.Constants 1.0
 
 import "../../commoncomponents"
 
-Rectangle {
+Item {
     id: root
 
     // svg path for the participant indicators background shape
@@ -38,8 +38,10 @@ Rectangle {
     property int shapeHeight: 16
     property int shapeRadius: 6
     property string pathShape: "M0,0 h%1 q%2,0 %2,%2 v%3 h-%4 z"
-    .arg(shapeWidth-shapeRadius).arg(shapeRadius).arg(shapeHeight-shapeRadius).
-    arg(shapeWidth)
+        .arg(shapeWidth - shapeRadius)
+        .arg(shapeRadius)
+        .arg(shapeHeight - shapeRadius)
+        .arg(shapeWidth)
 
     property string uri: overlayMenu.uri
     property bool participantIsActive: false
@@ -48,6 +50,8 @@ Rectangle {
     property bool participantIsMuted: false
     property bool participantIsModeratorMuted: false
     property bool participantMenuActive: false
+
+    z: -1
 
     function setAvatar(show, avatar, uri, local, isContact) {
         if (!show)
@@ -97,9 +101,6 @@ Rectangle {
         overlayMenu.showMinimize = isModerator && participantIsActive
         overlayMenu.showHangup = isModerator && !isLocal && !participantIsHost
     }
-
-    color: "transparent"
-    z: 1
 
     // Participant header with host, moderator and mute indicators
     Rectangle {
@@ -213,90 +214,40 @@ Rectangle {
         layer.smooth: true
     }
 
-    // Participant background, mousearea, hover and buttons for moderation
-    Rectangle {
+    // Participant background and buttons for moderation
+    MouseArea {
         id: participantRect
 
         anchors.fill: parent
         opacity: 0
-        color: "transparent"
         z: 1
 
-        MouseArea {
-            id: mouseAreaHover
+        propagateComposedEvents: true
+        hoverEnabled: true
+        onPositionChanged: {
+            participantRect.opacity = 1
+            fadeOutTimer.restart()
+            // Here we could call: root.parent.positionChanged(mouse)
+            // to relay the event to a main overlay mouse area, either
+            // as a parent object or some property passed in. But, this
+            // will still fail when hovering over menus, etc.
+        }
+        onExited: participantRect.opacity = 0
+        onEntered: participantRect.opacity = 1
 
-            anchors.fill: parent
-            hoverEnabled: true
-            propagateComposedEvents: true
-            acceptedButtons: Qt.LeftButton
-
-            ParticipantOverlayMenu {
-                id: overlayMenu
-                visible: participantRect.opacity !== 0
-
-                onMouseAreaExited: {
-                    root.z = 1
-                    participantRect.state = "exited"
-                }
-                onMouseChanged: {
-                    participantRect.state = "entered"
-                    fadeOutTimer.restart()
-                    participantMenuActive = true
-                }
-            }
-
-            onEntered: {
-                root.z = 2
-                participantRect.state = "entered"
-            }
-
-            onExited: {
-                root.z = 1
-                participantRect.state = "exited"
-            }
-
-            onMouseXChanged: {
-                // Hack: avoid listening mouseXChanged emitted when
-                // ParticipantOverlayMenu is exited
-                if (participantMenuActive) {
-                    participantMenuActive = false
-                } else {
-                    participantRect.state = "entered"
-                    fadeOutTimer.restart()
-                }
+        // Timer to decide when ParticipantOverlay fade out
+        Timer {
+            id: fadeOutTimer
+            interval: JamiTheme.overlayFadeDelay
+            onTriggered: {
+                if (overlayMenu.hovered)
+                    return
+                participantRect.opacity = 0
             }
         }
 
-        states: [
-            State {
-                name: "entered"
-                PropertyChanges {
-                    target: participantRect
-                    opacity: 1
-                }
-            },
-            State {
-                name: "exited"
-                PropertyChanges {
-                    target: participantRect
-                    opacity: 0
-                }
-            }
-        ]
+        ParticipantOverlayMenu { id: overlayMenu }
 
-        transitions: Transition {
-            PropertyAnimation {
-                target: participantRect
-                property: "opacity"
-                duration: 50
-            }
-        }
-    }
-
-    // Timer to decide when ParticipantOverlay fade out
-    Timer {
-        id: fadeOutTimer
-        interval: 5000
-        onTriggered: participantRect.state = "exited"
+        Behavior on opacity { NumberAnimation { duration: JamiTheme.shortFadeDuration }}
     }
 }

@@ -58,7 +58,7 @@ AbstractButton {
     property string checkedColor: pressedColor
 
     // State transition duration
-    property int duration: JamiTheme.fadeDuration
+    property int duration: JamiTheme.shortFadeDuration
 
     // Image properties
     property alias source: image.source

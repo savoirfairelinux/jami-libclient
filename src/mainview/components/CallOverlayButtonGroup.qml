@@ -29,7 +29,7 @@ import net.jami.Constants 1.0
 
 import "../../commoncomponents"
 
-Rectangle {
+Control {
     id: root
 
     // ButtonCounts here is to make sure that flow layout margin is calculated correctly,
@@ -56,7 +56,6 @@ Rectangle {
         noVideoButton.checked = isVideoMuted
     }
 
-    color: "transparent"
     z: 2
 
     RowLayout {

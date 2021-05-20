@@ -25,7 +25,7 @@
 #include <QObject>
 #include <QQmlEngine>
 #include <QSortFilterProxyModel>
-#include <QDebug>
+#include <QQuickItem>
 
 #define CC_ROLES \
     X(QObject*, ItemAction) \
@@ -103,6 +103,13 @@ public:
     Q_INVOKABLE QVariant overflowVisibleModel();
     Q_INVOKABLE QVariant overflowHiddenModel();
 
+    Q_INVOKABLE void registerFilter(QQuickWindow* object, QQuickItem* item);
+    Q_INVOKABLE void unregisterFilter(QQuickWindow* object, QQuickItem* item);
+    bool eventFilter(QObject* object, QEvent* event) override;
+
+Q_SIGNALS:
+    void mouseMoved(QQuickItem* item);
+
 private Q_SLOTS:
     void setControlRanges();
 
@@ -114,4 +121,6 @@ private:
     IndexRangeFilterProxyModel* overflowModel_;
     IndexRangeFilterProxyModel* overflowVisibleModel_;
     IndexRangeFilterProxyModel* overflowHiddenModel_;
+
+    QList<QQuickItem*> watchedItems_;
 };

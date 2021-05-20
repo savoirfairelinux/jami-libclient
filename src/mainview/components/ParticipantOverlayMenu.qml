@@ -29,7 +29,7 @@ import net.jami.Constants 1.0
 import "../../commoncomponents"
 
 // Overlay menu for conference moderation
-Rectangle {
+Control {
     id: root
 
     property string uri: ""
@@ -71,9 +71,6 @@ Rectangle {
 
     property int isSmall: !isBarLayout && (height < 100 || width < 160)
 
-    signal mouseAreaExited
-    signal mouseChanged
-
     width: isBarLayout? bestNameLabel.contentWidth + buttonsSize + 32
                       : (isOverlayRect? buttonsSize + 32 : parent.width)
     height: isBarLayout? shapeHeight : (isOverlayRect? 80 : parent.height)
@@ -82,20 +79,13 @@ Rectangle {
     anchors.left: isBarLayout? parent.left : undefined
     anchors.centerIn: isBarLayout? undefined : parent
 
-    color: isBarLayout? "transparent" : JamiTheme.darkGreyColorOpacity
+    background: Rectangle {
+        color: isBarLayout? "transparent" : JamiTheme.darkGreyColorOpacity
+        radius: (isBarLayout || !isOverlayRect)? 0 : 10
+    }
 
-    radius: (isBarLayout || !isOverlayRect)? 0 : 10
-
-    MouseArea {
-        id: mouseAreaHover
-
+    Item {
         anchors.fill: parent
-        hoverEnabled: true
-        propagateComposedEvents: true
-        acceptedButtons: Qt.LeftButton
-
-        onExited: mouseAreaExited()
-        onMouseXChanged: mouseChanged()
 
         Shape {
             id: myShape

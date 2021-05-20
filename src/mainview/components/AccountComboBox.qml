@@ -76,7 +76,7 @@ Label {
                        Qt.lighter(JamiTheme.hoverColor, 1.05) :
                        JamiTheme.backgroundColor
         Behavior on color {
-            ColorAnimation { duration: JamiTheme.fadeDuration }
+            ColorAnimation { duration: JamiTheme.shortFadeDuration }
         }
 
         // TODO: this can be removed when frameless window is implemented

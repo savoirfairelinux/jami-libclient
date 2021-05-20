@@ -30,7 +30,7 @@ import net.jami.Constants 1.0
 
 import "../../commoncomponents"
 
-Rectangle {
+Rectangle  {
     id: root
 
     property var accountPeerPair: ["", ""]
@@ -45,11 +45,13 @@ Rectangle {
     property alias callId: distantRenderer.rendererId
     property var linkedWebview: null
 
+    color: "black"
+
     onAccountPeerPairChanged: {
         if (accountPeerPair[0] === "" || accountPeerPair[1] === "")
             return;
         contactImage.updateImage(accountPeerPair[1])
-        callOverlay.handleParticipantsInfo(CallAdapter.getConferencesInfos())
+        callOverlay.participantsLayer.update(CallAdapter.getConferencesInfos())
 
         bestName = UtilsAdapter.getBestName(accountPeerPair[0], accountPeerPair[1])
         var id = UtilsAdapter.getBestId(accountPeerPair[0], accountPeerPair[1])
@@ -95,7 +97,7 @@ Rectangle {
         } else {
             bestName = ""
         }
-        callOverlay.handleParticipantsInfo(infos)
+        callOverlay.participantsLayer.update(infos)
     }
 
     function previewMagneticSnap() {
@@ -178,49 +180,6 @@ Rectangle {
                         callOverlay.openCallViewContextMenuInPos(mouse.x, mouse.y)
                 }
 
-                CallOverlay {
-                    id: callOverlay
-
-                    anchors.fill: parent
-
-                    Connections {
-                        target: CallAdapter
-
-                        function onUpdateOverlay(isPaused, isAudioOnly, isAudioMuted, isVideoMuted,
-                                                 isRecording, isSIP, isConferenceCall, bestName) {
-                            callOverlay.showOnHoldImage(isPaused)
-                            audioCallPageRectCentralRect.visible = !isPaused && root.isAudioOnly
-                            callOverlay.updateButtonStatus(isPaused,
-                                                                isAudioOnly,
-                                                                isAudioMuted,
-                                                                isVideoMuted,
-                                                                isRecording, isSIP,
-                                                                isConferenceCall)
-                            root.bestName = bestName
-                            callOverlay.handleParticipantsInfo(CallAdapter.getConferencesInfos())
-                        }
-
-                        function onShowOnHoldLabel(isPaused) {
-                            callOverlay.showOnHoldImage(isPaused)
-                            audioCallPageRectCentralRect.visible = !isPaused && root.isAudioOnly
-                        }
-
-                        function onRemoteRecordingChanged(label, state) {
-                            callOverlay.showRemoteRecording(label, state)
-                        }
-
-                        function onEraseRemoteRecording() {
-                            callOverlay.resetRemoteRecording()
-                        }
-                    }
-
-                    onOverlayChatButtonClicked: {
-                        inCallMessageWebViewStack.visible ?
-                                    closeInCallConversation() :
-                                    openInCallConversation()
-                    }
-                }
-
                 DistantRenderer {
                     id: distantRenderer
 
@@ -232,7 +191,7 @@ Rectangle {
                     visible: !root.isAudioOnly
 
                     onOffsetChanged: {
-                        callOverlay.handleParticipantsInfo(CallAdapter.getConferencesInfos())
+                        callOverlay.participantsLayer.update(CallAdapter.getConferencesInfos())
                     }
                 }
 
@@ -334,6 +293,49 @@ Rectangle {
                     }
                 }
 
+                CallOverlay {
+                    id: callOverlay
+
+                    anchors.fill: parent
+
+                    Connections {
+                        target: CallAdapter
+
+                        function onUpdateOverlay(isPaused, isAudioOnly, isAudioMuted, isVideoMuted,
+                                                 isRecording, isSIP, isConferenceCall, bestName) {
+                            callOverlay.showOnHoldImage(isPaused)
+                            audioCallPageRectCentralRect.visible = !isPaused && root.isAudioOnly
+                            callOverlay.updateButtonStatus(isPaused,
+                                                                isAudioOnly,
+                                                                isAudioMuted,
+                                                                isVideoMuted,
+                                                                isRecording, isSIP,
+                                                                isConferenceCall)
+                            root.bestName = bestName
+                            callOverlay.participantsLayer.update(CallAdapter.getConferencesInfos())
+                        }
+
+                        function onShowOnHoldLabel(isPaused) {
+                            callOverlay.showOnHoldImage(isPaused)
+                            audioCallPageRectCentralRect.visible = !isPaused && root.isAudioOnly
+                        }
+
+                        function onRemoteRecordingChanged(label, state) {
+                            callOverlay.showRemoteRecording(label, state)
+                        }
+
+                        function onEraseRemoteRecording() {
+                            callOverlay.resetRemoteRecording()
+                        }
+                    }
+
+                    onOverlayChatButtonClicked: {
+                        inCallMessageWebViewStack.visible ?
+                                    closeInCallConversation() :
+                                    openInCallConversation()
+                    }
+                }
+
                 ColumnLayout {
                     id: audioCallPageRectCentralRect
                     anchors.centerIn: parent
@@ -400,6 +402,4 @@ Rectangle {
             clip: true
         }
     }
-
-    color: "black"
 }

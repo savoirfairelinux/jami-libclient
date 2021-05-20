@@ -18,6 +18,10 @@
 
 #include "calloverlaymodel.h"
 
+#include <QEvent>
+#include <QMouseEvent>
+#include <QQuickWindow>
+
 CallControlListModel::CallControlListModel(QObject* parent)
     : QAbstractListModel(parent)
 {}
@@ -181,6 +185,42 @@ QVariant
 CallOverlayModel::overflowHiddenModel()
 {
     return QVariant::fromValue(overflowHiddenModel_);
+}
+
+void
+CallOverlayModel::registerFilter(QQuickWindow* object, QQuickItem* item)
+{
+    if (!object || !item || watchedItems_.contains(item))
+        return;
+    watchedItems_.push_back(item);
+    if (watchedItems_.size() == 1)
+        object->installEventFilter(this);
+}
+
+void
+CallOverlayModel::unregisterFilter(QQuickWindow* object, QQuickItem* item)
+{
+    if (!object || !item || !watchedItems_.contains(item))
+        return;
+    watchedItems_.removeOne(item);
+    if (watchedItems_.size() == 0)
+        object->removeEventFilter(this);
+}
+
+bool
+CallOverlayModel::eventFilter(QObject* object, QEvent* event)
+{
+    if (event->type() == QEvent::MouseMove) {
+        auto mouseEvent = static_cast<QMouseEvent*>(event);
+        QPoint eventPos(mouseEvent->x(), mouseEvent->y());
+        auto windowItem = static_cast<QQuickWindow*>(object)->contentItem();
+        Q_FOREACH (const auto& item, watchedItems_) {
+            if (item->contains(windowItem->mapToItem(item, eventPos))) {
+                Q_EMIT mouseMoved(item);
+            }
+        }
+    }
+    return QObject::eventFilter(object, event);
 }
 
 void

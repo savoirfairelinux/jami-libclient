@@ -25,8 +25,6 @@ import net.jami.Constants 1.0
 Popup {
     id: root
 
-    property int fadeDuration: 100
-
     // convient access to closePolicy
     property bool autoClose: true
 
@@ -76,13 +74,13 @@ Popup {
     enter: Transition {
         NumberAnimation {
             properties: "opacity"; from: 0.0; to: 1.0
-            duration: fadeDuration
+            duration: JamiTheme.shortFadeDuration
         }
     }
     exit: Transition {
         NumberAnimation {
             properties: "opacity"; from: 1.0; to: 0.0
-            duration: fadeDuration
+            duration: JamiTheme.shortFadeDuration
         }
     }
 }
