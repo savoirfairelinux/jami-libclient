@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "3a0c3d0c_9530de18",
+        "filename": "src/api/newcallmodel.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 859
+      },
+      "writtenOn": "2021-05-20T17:43:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "305067ec_73367029",
+      "range": {
+        "startLine": 122,
+        "startChar": 7,
+        "endLine": 127,
+        "endChar": 12
+      },
+      "revId": "73cecc4a62ebccc33f1ad1c6586915869c377912",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "ffc01dbb_17461097",
         "filename": "src/api/newcallmodel.h",
         "patchSetId": 10
@@ -48,6 +72,30 @@
     },
     {
       "key": {
+        "uuid": "8d776536_54fa117b",
+        "filename": "src/api/newcallmodel.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 241,
+      "author": {
+        "id": 859
+      },
+      "writtenOn": "2021-05-20T17:43:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ffc01dbb_17461097",
+      "range": {
+        "startLine": 239,
+        "startChar": 55,
+        "endLine": 241,
+        "endChar": 73
+      },
+      "revId": "73cecc4a62ebccc33f1ad1c6586915869c377912",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "ed6b2c06_a73ed20a",
         "filename": "src/callbackshandler.cpp",
         "patchSetId": 10
@@ -59,6 +107,30 @@
       "writtenOn": "2021-05-19T20:07:57Z",
       "side": 1,
       "message": "NOTE LRC has a URI class (uri.cpp) that can be used",
+      "range": {
+        "startLine": 370,
+        "startChar": 43,
+        "endLine": 375,
+        "endChar": 61
+      },
+      "revId": "73cecc4a62ebccc33f1ad1c6586915869c377912",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5e2cdd03_ce63d03b",
+        "filename": "src/callbackshandler.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 375,
+      "author": {
+        "id": 859
+      },
+      "writtenOn": "2021-05-20T17:43:22Z",
+      "side": 1,
+      "message": "copied from above",
+      "parentUuid": "ed6b2c06_a73ed20a",
       "range": {
         "startLine": 370,
         "startChar": 43,
@@ -94,6 +166,30 @@
     },
     {
       "key": {
+        "uuid": "680bbfcc_99b3d9b4",
+        "filename": "src/callbackshandler.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 859
+      },
+      "writtenOn": "2021-05-20T17:43:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "19edbe36_b52480e8",
+      "range": {
+        "startLine": 103,
+        "startChar": 45,
+        "endLine": 113,
+        "endChar": 46
+      },
+      "revId": "73cecc4a62ebccc33f1ad1c6586915869c377912",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1bb0e4cd_9162b28f",
         "filename": "src/newcallmodel.cpp",
         "patchSetId": 10
@@ -105,6 +201,30 @@
       "writtenOn": "2021-05-20T12:47:33Z",
       "side": 1,
       "message": "This method should not even exists. This makes the client able to modify all the call info and this is unwanted. Only the mediaList can be muted if necessary, client should not change the state of a call",
+      "range": {
+        "startLine": 280,
+        "startChar": 1,
+        "endLine": 284,
+        "endChar": 1
+      },
+      "revId": "73cecc4a62ebccc33f1ad1c6586915869c377912",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "052c3d01_fd652ede",
+        "filename": "src/newcallmodel.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 284,
+      "author": {
+        "id": 859
+      },
+      "writtenOn": "2021-05-20T17:43:22Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "1bb0e4cd_9162b28f",
       "range": {
         "startLine": 280,
         "startChar": 1,
@@ -137,6 +257,30 @@
       "revId": "73cecc4a62ebccc33f1ad1c6586915869c377912",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c124952d_ecb25dd9",
+        "filename": "src/newcallmodel.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 335,
+      "author": {
+        "id": 859
+      },
+      "writtenOn": "2021-05-20T17:43:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f6ee9392_61c9e138",
+      "range": {
+        "startLine": 335,
+        "startChar": 28,
+        "endLine": 335,
+        "endChar": 41
+      },
+      "revId": "73cecc4a62ebccc33f1ad1c6586915869c377912",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     },
     {
       "key": {
