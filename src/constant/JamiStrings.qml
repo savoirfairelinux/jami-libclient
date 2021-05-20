@@ -179,6 +179,7 @@ Item {
     property string isRecording: qsTr("is recording")
     property string areRecording: qsTr("are recording")
     property string peerStoppedRecording: qsTr("Peer stopped recording")
+    property string isCallingYou: qsTr("is calling you")
 
     // CallOverlayButtonGroup
     property string mute: qsTr("Mute")

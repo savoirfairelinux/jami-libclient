@@ -75,7 +75,7 @@ Rectangle {
             verticalAlignment: Text.AlignVCenter
             color: "white"
 
-            text: "is calling you"
+            text: JamiStrings.isCallingYou
         }
 
         RowLayout {
