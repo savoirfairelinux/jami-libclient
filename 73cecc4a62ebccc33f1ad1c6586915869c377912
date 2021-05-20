@@ -2,6 +2,52 @@
   "comments": [
     {
       "key": {
+        "uuid": "305067ec_73367029",
+        "filename": "src/api/newcallmodel.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2021-05-20T12:47:33Z",
+      "side": 1,
+      "message": "why not just replace accept(). Anyway accept() will not work anymore and lrc should not call any deprecated method from the daemon",
+      "range": {
+        "startLine": 122,
+        "startChar": 7,
+        "endLine": 127,
+        "endChar": 12
+      },
+      "revId": "73cecc4a62ebccc33f1ad1c6586915869c377912",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ffc01dbb_17461097",
+        "filename": "src/api/newcallmodel.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 241,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2021-05-20T12:47:33Z",
+      "side": 1,
+      "message": "should not exists, incomplete doc",
+      "range": {
+        "startLine": 239,
+        "startChar": 55,
+        "endLine": 241,
+        "endChar": 73
+      },
+      "revId": "73cecc4a62ebccc33f1ad1c6586915869c377912",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "ed6b2c06_a73ed20a",
         "filename": "src/callbackshandler.cpp",
         "patchSetId": 10
@@ -18,6 +64,52 @@
         "startChar": 43,
         "endLine": 375,
         "endChar": 61
+      },
+      "revId": "73cecc4a62ebccc33f1ad1c6586915869c377912",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "19edbe36_b52480e8",
+        "filename": "src/callbackshandler.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2021-05-20T12:47:33Z",
+      "side": 1,
+      "message": "can be removed. Unless if breaks macOS? In this case I prefer to wait for macOS before merging",
+      "range": {
+        "startLine": 103,
+        "startChar": 45,
+        "endLine": 113,
+        "endChar": 46
+      },
+      "revId": "73cecc4a62ebccc33f1ad1c6586915869c377912",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1bb0e4cd_9162b28f",
+        "filename": "src/newcallmodel.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 284,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2021-05-20T12:47:33Z",
+      "side": 1,
+      "message": "This method should not even exists. This makes the client able to modify all the call info and this is unwanted. Only the mediaList can be muted if necessary, client should not change the state of a call",
+      "range": {
+        "startLine": 280,
+        "startChar": 1,
+        "endLine": 284,
+        "endChar": 1
       },
       "revId": "73cecc4a62ebccc33f1ad1c6586915869c377912",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
