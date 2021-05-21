@@ -25,7 +25,7 @@
 ContactAdapter::ContactAdapter(LRCInstance* instance, QObject* parent)
     : QmlAdapterBase(instance, parent)
 {
-    selectableProxyModel_.reset(new SelectableProxyModel(smartListModel_.get()));
+    selectableProxyModel_.reset(new SelectableProxyModel(this));
 }
 
 QVariant

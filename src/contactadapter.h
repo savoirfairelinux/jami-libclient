@@ -44,10 +44,9 @@ class SelectableProxyModel final : public QSortFilterProxyModel
 public:
     using FilterPredicate = std::function<bool(const QModelIndex&, const QRegExp&)>;
 
-    explicit SelectableProxyModel(QAbstractListModel* parent = nullptr)
+    explicit SelectableProxyModel(QObject* parent = nullptr)
         : QSortFilterProxyModel(parent)
     {
-        setSourceModel(parent);
         setSortRole(ConversationList::Role::LastInteractionTimeStamp);
         sort(0, Qt::DescendingOrder);
         setFilterCaseSensitivity(Qt::CaseSensitivity::CaseInsensitive);
