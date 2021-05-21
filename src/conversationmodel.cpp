@@ -1949,13 +1949,20 @@ ConversationModelPimpl::slotCallStatusChanged(const QString& callId, int code)
             for (auto& conversation : conversations) {
                 if (conversation.participants.front() == call.peerUri) {
                     conversation.callId = callId;
+                    // Update interaction status
                     invalidateModel();
                     emit linked.conversationUpdated(conversation.uid);
                     Q_EMIT linked.dataChanged(indexOf(conversation.uid));
                 }
             }
-        } else if (call.status == call::Status::PEER_BUSY) {
-            emit behaviorController.showLeaveMessageView(linked.owner.id, i->uid);
+        } else if (i != conversations.end()) {
+            if (call.status == call::Status::PEER_BUSY) {
+                emit behaviorController.showLeaveMessageView(linked.owner.id, i->uid);
+            }
+            // Update interaction status
+            invalidateModel();
+            emit linked.conversationUpdated(i->uid);
+            Q_EMIT linked.dataChanged(indexOf(i->uid));
         }
     } catch (std::out_of_range& e) {
         qDebug() << "ConversationModelPimpl::slotCallStatusChanged can't get inexistant call";
