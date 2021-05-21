@@ -32,7 +32,6 @@
 #include <configurationmanager_interface.h>
 #include <datatransfer_interface.h>
 #include <account_const.h>
-
 #include "typedefs.h"
 #include "conversions_wrap.hpp"
 
@@ -219,9 +218,9 @@ public:
                                                 QString(uri.c_str()),
                                                 banned);
                 }),
-            exportable_callback<ConfigurationSignal::MessageSend>(
+            exportable_callback<ConfigurationSignal::DebugLogged>(
                 [this](const std::string& message) {
-                    Q_EMIT this->messageSend(QString(message.c_str()));
+                    Q_EMIT this->debugLogged(QString(message.c_str()));
                 }),
             exportable_callback<ConfigurationSignal::ComposingStatusChanged>(
                 [this](const std::string& account_id, const std::string& from, int status) {
@@ -891,7 +890,7 @@ Q_SIGNALS: // SIGNALS
     void accountProfileReceived(const QString& accountId,
                                 const QString& displayName,
                                 const QString& userPhoto);
-    void messageSend(const QString& message);
+    void debugLogged(const QString& message);
     void composingStatusChanged(const QString& accountId,
                                 const QString& contactId,
                                 bool isComposing);

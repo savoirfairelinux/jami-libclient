@@ -91,9 +91,9 @@ Q_SIGNALS:
                             const QString& conversation,
                             uint64_t interactionId) const;
     /**
-     * Emitted debugMessageReceived
+     * Emitted debugLogged
      */
-    void debugMessageReceived(const QString& message);
+    void debugLogged(const QString& message);
     /**
      * Emitted audioMeter
      */

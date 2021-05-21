@@ -254,7 +254,7 @@ Q_SIGNALS:
      * Debug message received
      * @param message
      */
-    void debugMessageReceived(const QString& message);
+    void debugLogged(const QString& message);
 
     /**
      * Renderer is started
@@ -500,10 +500,10 @@ private Q_SLOTS:
     void slotMigrationEnded(const QString& accountId, const QString& status);
 
     /**
-     * emit debugMessageReceived
+     * emit debugLogged
      * @param message
      */
-    void slotDebugMessageReceived(const QString& message);
+    void onDebugLogged(const QString& message);
 
     /**
      * Renderer is started

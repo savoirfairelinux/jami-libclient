@@ -35,7 +35,7 @@
 #include <datatransfer_interface.h>
 
 #ifdef ENABLE_LIBWRAP
-// For the debugMessageReceived connection that queues const std::string refs
+// For the debugLogged connection that queues const std::string refs
 // when not using dbus
 Q_DECLARE_METATYPE(std::string);
 #endif
@@ -239,8 +239,6 @@ CallbacksHandler::CallbacksHandler(const Lrc& parent)
             this,
             &CallbacksHandler::slotAudioMeterReceived,
             Qt::QueuedConnection);
-
-
 }
 
 CallbacksHandler::~CallbacksHandler() {}
@@ -249,11 +247,10 @@ void
 CallbacksHandler::subscribeToDebugReceived()
 {
     connect(&ConfigurationManager::instance(),
-           &ConfigurationManagerInterface::messageSend,
-           this,
-           &CallbacksHandler::slotDebugMessageReceived,
-           Qt::QueuedConnection);
-
+            &ConfigurationManagerInterface::debugLogged,
+            this,
+            &CallbacksHandler::onDebugLogged,
+            Qt::QueuedConnection);
 }
 
 void
@@ -540,9 +537,9 @@ CallbacksHandler::slotMigrationEnded(const QString& accountId, const QString& st
 }
 
 void
-CallbacksHandler::slotDebugMessageReceived(const QString& message)
+CallbacksHandler::onDebugLogged(const QString& message)
 {
-    emit parent.getBehaviorController().debugMessageReceived(message);
+    emit parent.getBehaviorController().debugLogged(message);
 }
 
 void
@@ -573,7 +570,9 @@ CallbacksHandler::slotAudioMeterReceived(const QString& id, float level)
 }
 
 void
-CallbacksHandler::slotRemoteRecordingChanged(const QString& callId, const QString& peerNumber, bool state)
+CallbacksHandler::slotRemoteRecordingChanged(const QString& callId,
+                                             const QString& peerNumber,
+                                             bool state)
 {
     emit remoteRecordingChanged(callId, peerNumber, state);
 }
