@@ -90,6 +90,7 @@ Rectangle {
             --file-in-timestamp-color:' + JamiTheme.fileOutTimestampColor + ';\
             --file-out-timestamp-color:' + JamiTheme.fileInTimestampColor + ';\
             --bg-color:' + JamiTheme.chatviewBgColor + ';\
+            --action-icon-color:' + JamiTheme.chatviewButtonColor + ';\
             --action-icon-hover-color:' + JamiTheme.hoveredButtonColor + ';\
             --action-icon-press-color:' + JamiTheme.pressedButtonColor + ';\
             --placeholder-text-color:' + JamiTheme.placeholderTextColor + ';\
