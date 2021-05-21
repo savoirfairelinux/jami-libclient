@@ -31,6 +31,7 @@
   --placeholder-text-color: #d3d3d3;
 
   /* button properties */
+  --action-icon-color: var(--jami-dark-blue);
   --deactivated-icon-color: #BEBEBE;
   --action-icon-hover-color: var(--jami-light-blue);
   --action-critical-icon-hover-color: rgba(211, 77, 59, 0.3); /* complementary color of ring light blue */
@@ -133,7 +134,8 @@ body {
 .svgicon {
   display: block;
   margin: auto;
-  height: 70%;
+  width: 95%;
+  height: 95%;
 }
 
 .nav-button {
@@ -142,6 +144,7 @@ body {
   display: flex;
   cursor: pointer;
   align-self: center;
+  align-content: center;
   border-radius: 50%;
 }
 
@@ -149,17 +152,18 @@ body {
   width: 40px;
   height: 40px;
   align-self: center;
+  align-content: center;
   display: flex;
   border-radius: 50%;
   cursor: auto;
 }
 
 .action-button svg {
-  filter: invert(var(--svg-invert-percentage));
+  fill: var(--action-icon-color);
 }
 
 .action-button.deactivated svg {
-  filter: invert(50%);
+  fill: var(--deactivated-icon-color);
 }
 
 .message_out .filesvg {
