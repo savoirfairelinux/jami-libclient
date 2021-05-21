@@ -308,13 +308,15 @@ CallAdapter::updateCall(const QString& convUid, const QString& accountId, bool f
         return;
     }
 
+    if (convInfo.uid == lrcInstance_->get_selectedConvUid()) {
+        auto& accInfo = lrcInstance_->accountModel().getAccountInfo(accountId_);
+        if (accInfo.profileInfo.type != lrc::api::profile::Type::SIP)
+            accInfo.callModel->setCurrentCall(call->id);
+        lrcInstance_->renderer()->addDistantRenderer(call->id);
+    }
+
     updateCallOverlay(convInfo);
     Q_EMIT previewVisibilityNeedToChange(shouldShowPreview(forceCallOnly));
-
-    if (call->status == lrc::api::call::Status::IN_PROGRESS) {
-        lrcInstance_->renderer()->addDistantRenderer(call->id);
-        lrcInstance_->getAccountInfo(accountId_).callModel->setCurrentCall(call->id);
-    }
 }
 
 bool
