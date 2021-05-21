@@ -90,7 +90,7 @@ public:
      */
     static bool dbusIsValid();
     /**
-     * Connect to debugMessageReceived signal
+     * Connect to debugLogged signal
      */
     void subscribeToDebugReceived();
 
