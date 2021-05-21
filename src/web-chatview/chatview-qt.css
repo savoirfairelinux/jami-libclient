@@ -16,6 +16,7 @@
     --textarea-max-height: 150px;
     --placeholder-text-color: #d3d3d3;
     /* button properties */
+    --action-icon-color: var(--jami-dark-blue);
     --deactivated-icon-color: #bebebe;
     --action-icon-hover-color: #ededed;
     --action-critical-icon-hover-color: rgba(211, 77, 59, 0.3); /* complementary color of jami light blue */
