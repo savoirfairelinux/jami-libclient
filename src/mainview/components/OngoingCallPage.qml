@@ -208,6 +208,10 @@ Rectangle {
                         function onRemoteRecordingChanged(label, state) {
                             callOverlay.showRemoteRecording(label, state)
                         }
+
+                        function onEraseRemoteRecording() {
+                            callOverlay.resetRemoteRecording()
+                        }
                     }
 
                     onOverlayChatButtonClicked: {

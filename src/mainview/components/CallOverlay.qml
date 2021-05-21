@@ -218,6 +218,12 @@ Rectangle {
         callOverlayRectMouseArea.entered()
     }
 
+    function resetRemoteRecording() {
+        remoteRecordingLabel = ""
+        callViewContextMenu.peerIsRecording = false
+        recordingRect.visible = callViewContextMenu.localIsRecording
+    }
+
     anchors.fill: parent
 
     SipInputPanel {

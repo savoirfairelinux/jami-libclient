@@ -97,6 +97,7 @@ Q_SIGNALS:
                        bool isConferenceCall,
                        const QString& bestName);
     void remoteRecordingChanged(const QStringList& peers, bool state);
+    void eraseRemoteRecording();
 
 public Q_SLOTS:
     void onShowIncomingCallView(const QString& accountId, const QString& convUid);
@@ -105,6 +106,7 @@ public Q_SLOTS:
     void onCallStatusChanged(const QString& accountId, const QString& callId);
 
 private:
+    void updateRecordingPeers(bool eraseLabelOnEmpty = false);
     bool shouldShowPreview(bool force);
     void showNotification(const QString& accountId, const QString& convUid);
     QJsonObject fillParticipantData(QMap<QString, QString> participant);

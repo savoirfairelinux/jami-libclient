@@ -307,6 +307,7 @@ CallAdapter::updateCall(const QString& convUid, const QString& accountId, bool f
     }
 
     updateCallOverlay(convInfo);
+    updateRecordingPeers(true);
     Q_EMIT previewVisibilityNeedToChange(shouldShowPreview(forceCallOnly));
 }
 
@@ -541,26 +542,38 @@ CallAdapter::connectCallModel(const QString& accountId)
         accInfo.callModel.get(),
         &lrc::api::NewCallModel::remoteRecordingChanged,
         this,
-        [this](const QString& callId, const QSet<QString>& peerRec, bool state) {
+        [this](const QString& callId, const QSet<QString>&, bool) {
             const auto currentCallId = lrcInstance_->getCallIdForConversationUid(convUid_,
                                                                                  accountId_);
-            if (callId == currentCallId) {
-                const auto& accInfo = lrcInstance_->getCurrentAccountInfo();
-                QStringList peers {};
-                for (const auto& uri : peerRec) {
-                    auto bestName = accInfo.contactModel->bestNameForContact(uri);
-                    if (!bestName.isEmpty()) {
-                        peers.append(bestName);
-                    }
-                }
-                if (!peers.isEmpty()) {
-                    Q_EMIT remoteRecordingChanged(peers, true);
-                } else if (!state) {
-                    Q_EMIT remoteRecordingChanged(peers, false);
-                }
-            }
+            if (callId == currentCallId)
+                updateRecordingPeers();
         },
         Qt::UniqueConnection);
+}
+
+void
+CallAdapter::updateRecordingPeers(bool eraseLabelOnEmpty)
+{
+    const auto& convInfo = lrcInstance_->getConversationFromConvUid(convUid_);
+    auto* call = lrcInstance_->getCallInfoForConversation(convInfo);
+    if (!call) {
+        return;
+    }
+
+    const auto& accInfo = lrcInstance_->getCurrentAccountInfo();
+    QStringList peers {};
+    for (const auto& uri : call->peerRec) {
+        auto bestName = accInfo.contactModel->bestNameForContact(uri);
+        if (!bestName.isEmpty()) {
+            peers.append(bestName);
+        }
+    }
+    if (!peers.isEmpty())
+        Q_EMIT remoteRecordingChanged(peers, true);
+    else if (eraseLabelOnEmpty)
+        Q_EMIT eraseRemoteRecording();
+    else
+        Q_EMIT remoteRecordingChanged(peers, false);
 }
 
 void
