@@ -176,7 +176,7 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="64"/>
         <source>Use Proxy</source>
-        <translation>Meghatalmazott használata</translation>
+        <translation>Meghatalmazás használata</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="65"/>
@@ -427,7 +427,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="36"/>
         <source>Send</source>
-        <translation>Elküld</translation>
+        <translation>Küldés</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="37"/>
@@ -462,7 +462,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="44"/>
         <source>Write to {0}</source>
-        <translation>Írj a következőnek: {0}</translation>
+        <translation>Írj a következőknek: {0}</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="62"/>
@@ -593,17 +593,17 @@
         <translation>Keresés…</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="955"/>
+        <location filename="../src/contactmodel.cpp" line="960"/>
         <source>Invalid ID</source>
         <translation>Érvénytelen azonosító</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="958"/>
+        <location filename="../src/contactmodel.cpp" line="963"/>
         <source>Username not found</source>
         <translation>Felhasználónév nem található</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="961"/>
+        <location filename="../src/contactmodel.cpp" line="966"/>
         <source>Couldn&apos;t lookup…</source>
         <translation>Betekintés sikertelen…</translation>
     </message>

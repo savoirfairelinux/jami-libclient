@@ -452,17 +452,17 @@
     <message>
         <location filename="../src/chatview.cpp" line="41"/>
         <source>Leave video message</source>
-        <translation>离开视频消息</translation>
+        <translation>视频留言</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="42"/>
         <source>Leave audio message</source>
-        <translation>离开音频消息</translation>
+        <translation>音频留言</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="44"/>
         <source>Write to {0}</source>
-        <translation>写入 {0}</translation>
+        <translation>写给 {0}</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="62"/>
@@ -593,17 +593,17 @@
         <translation>正在搜索…</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="955"/>
+        <location filename="../src/contactmodel.cpp" line="960"/>
         <source>Invalid ID</source>
         <translation>非法 ID</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="958"/>
+        <location filename="../src/contactmodel.cpp" line="963"/>
         <source>Username not found</source>
         <translation>未找到用户名</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="961"/>
+        <location filename="../src/contactmodel.cpp" line="966"/>
         <source>Couldn&apos;t lookup…</source>
         <translation>无法查找...</translation>
     </message>

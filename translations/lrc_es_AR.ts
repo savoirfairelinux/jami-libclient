@@ -593,17 +593,17 @@
         <translation>Buscando...</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="955"/>
+        <location filename="../src/contactmodel.cpp" line="960"/>
         <source>Invalid ID</source>
         <translation>ID inválido</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="958"/>
+        <location filename="../src/contactmodel.cpp" line="963"/>
         <source>Username not found</source>
         <translation>Nombre de usuario no encontrado</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="961"/>
+        <location filename="../src/contactmodel.cpp" line="966"/>
         <source>Couldn&apos;t lookup…</source>
         <translation>No se pudo buscar...</translation>
     </message>
