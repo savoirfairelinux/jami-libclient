@@ -121,13 +121,18 @@ PluginManagerInterface::getChatHandlerDetails(const QString& chatHandlerId)
 void
 PluginManagerInterface::setPluginsEnabled(bool enable)
 {
+    auto enabledStr = enable ? "true" : "false";
+    qDebug() << "*** PluginManagerInterface::setPluginsEnabled: " << enabledStr;
     DRing::setPluginsEnabled(enable);
 }
 
 bool
 PluginManagerInterface::getPluginsEnabled()
 {
-    return DRing::getPluginsEnabled();
+    auto enabled = DRing::getPluginsEnabled();
+    auto enabledStr = enabled ? "true" : "false";
+    qDebug() << "*** PluginManagerInterface::getPluginsEnabled(): " << enabledStr;
+    return enabled;
 }
 
 VectorMapStringString

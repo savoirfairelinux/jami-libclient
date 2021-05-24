@@ -51,6 +51,8 @@ PluginModel::~PluginModel() {}
 void
 PluginModel::setPluginsEnabled(bool enable)
 {
+    auto enabledStr = enable ? "true" : "false";
+    qDebug() << "*** PluginModel::setPluginsEnabled: " << enabledStr;
     PluginManager::instance().setPluginsEnabled(enable);
     if (!enable)
         emit chatHandlerStatusUpdated(false);
@@ -61,6 +63,9 @@ PluginModel::setPluginsEnabled(bool enable)
 bool
 PluginModel::getPluginsEnabled() const
 {
+    auto enabled = PluginManager::instance().getPluginsEnabled();
+    auto enabledStr = enabled ? "true" : "false";
+    qDebug() << "*** PluginModel::getPluginsEnabled(): " << enabledStr;
     return PluginManager::instance().getPluginsEnabled();
 }
 
