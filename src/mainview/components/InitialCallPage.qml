@@ -50,7 +50,7 @@ Rectangle {
     }
     ListModel {
         id: outgoingControlsModel
-        ListElement { type: "cancel"; image: "qrc:/images/icons/round-close-24px.svg"}
+        ListElement { type: "cancel"; image: "qrc:/images/icons/ic_call_end_white_24px.svg"}
     }
 
     onAccountConvPairChanged: {
@@ -131,6 +131,7 @@ Rectangle {
 
                 delegate: ColumnLayout {
                     PushButton {
+                        id: actionButton
                         Layout.leftMargin: 10
                         Layout.rightMargin: 10
                         Layout.alignment: Qt.AlignHCenter
@@ -165,13 +166,14 @@ Rectangle {
                     }
 
                     Label {
+                        id: buttonLabel
                         Layout.alignment: Qt.AlignHCenter
                         Layout.preferredWidth: JamiTheme.callButtonPreferredSize
                         Layout.preferredHeight: JamiTheme.preferredFieldHeight
 
                         font.pointSize: JamiTheme.smartlistItemInfoFontSize
                         font.kerning: true
-                        color: JamiTheme.whiteColor
+                        color: actionButton.hovered ? JamiTheme.whiteColor : JamiTheme.whiteColorTransparent
 
                         text: {
                             if (type === "refuse")

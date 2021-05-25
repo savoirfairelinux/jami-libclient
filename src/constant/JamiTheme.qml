@@ -93,6 +93,7 @@ Item {
     property color refuseRed: rgba256(204, 0, 34, 100)
     property color refuseRedTransparent: rgba256(204, 0, 34, 56)
     property color mosaicButtonNormalColor: "#272727"
+    property color whiteColorTransparent: rgba256(255, 255, 255, 50)
 
     property color closeButtonLighterBlack: "#4c4c4c"
 
