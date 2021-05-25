@@ -77,6 +77,12 @@ BaseDialog {
                 Description: qsTr("Fullscreen")
                 KeyLength: 1
             }
+            // TODO: add the following after redesign
+            // ListElement {
+            //     Shortcut: Qt.platform.os !== "windows" ? "Ctrl+Q" : "Alt+F4"
+            //     Description: Qt.platform.os !== "windows" ? qsTr("Quit") : qsTr("Exit")
+            //     KeyLength: 2
+            // }
         }
         ListModel {
             id: keyboardConversationShortcutsModel

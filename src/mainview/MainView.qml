@@ -612,6 +612,12 @@ Rectangle {
         }
     }
 
+    Shortcut {
+        sequence: StandardKey.Quit
+        context: Qt.ApplicationShortcut
+        onActivated: Qt.quit()
+    }
+
     KeyBoardShortcutTable {
         id: shortcutsTable
     }
