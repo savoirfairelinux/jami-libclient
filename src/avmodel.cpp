@@ -114,9 +114,13 @@ public Q_SLOTS:
      */
     void slotFrameUpdated(const QString& id);
     /**
-     * Detect when a device is plugged or unplugged
+     * Detect when a video device is plugged or unplugged
      */
     void slotDeviceEvent();
+    /**
+     * Detect when an audio device is plugged or unplugged
+     */
+    void slotAudioDeviceEvent();
     /**
      * Audio volume level
      * @param id Ringbuffer id
@@ -643,6 +647,10 @@ AVModelPimpl::AVModelPimpl(AVModel& linked, const CallbacksHandler& callbacksHan
     SIZE_RENDERER = renderers_.size();
 #endif
     connect(&callbacksHandler, &CallbacksHandler::deviceEvent, this, &AVModelPimpl::slotDeviceEvent);
+    connect(&callbacksHandler,
+            &CallbacksHandler::audioDeviceEvent,
+            this,
+            &AVModelPimpl::slotAudioDeviceEvent);
     connect(&callbacksHandler, &CallbacksHandler::audioMeter, this, &AVModelPimpl::slotAudioMeter);
     connect(&callbacksHandler,
             &CallbacksHandler::recordPlaybackStopped,
@@ -857,6 +865,12 @@ void
 AVModelPimpl::slotDeviceEvent()
 {
     emit linked_.deviceEvent();
+}
+
+void
+AVModelPimpl::slotAudioDeviceEvent()
+{
+    emit linked_.audioDeviceEvent();
 }
 
 void
