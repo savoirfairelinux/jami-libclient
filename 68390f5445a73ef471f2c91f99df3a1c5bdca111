@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "76bda307_6295d9b8",
+        "filename": "src/api/newcallmodel.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 90
+      },
+      "writtenOn": "2021-05-26T19:06:42Z",
+      "side": 1,
+      "message": "PendingConferenceeInfo",
+      "range": {
+        "startLine": 48,
+        "startChar": 7,
+        "endLine": 48,
+        "endChar": 30
+      },
+      "revId": "68390f5445a73ef471f2c91f99df3a1c5bdca111",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "db68a3d4_e37c4b12",
+        "filename": "src/api/newcallmodel.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 90
+      },
+      "writtenOn": "2021-05-26T19:06:42Z",
+      "side": 1,
+      "message": "leave out pendingConferencee as it\u0027s implied by context, just uri and callId",
+      "range": {
+        "startLine": 50,
+        "startChar": 4,
+        "endLine": 51,
+        "endChar": 37
+      },
+      "revId": "68390f5445a73ef471f2c91f99df3a1c5bdca111",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    }
+  ]
+}
