@@ -273,9 +273,14 @@ Q_SIGNALS:
     void stoppedDecoding(const QString& id, const QString& shmPath);
 
     /**
-     * Emitted when a device is plugged or unplugged
+     * Emitted when a video device is plugged or unplugged
      */
     void deviceEvent();
+
+    /**
+     * Emitted when an audio level is plugged or unplugged
+     */
+    void audioDeviceEvent();
 
     /**
      * Emitted when an audio level is received
@@ -522,9 +527,14 @@ private Q_SLOTS:
     void slotStoppedDecoding(const QString& id, const QString& shmPath);
 
     /**
-     * Detect when a device is plugged or unplugged
+     * Detect when a video device is plugged or unplugged
      */
     void slotDeviceEvent();
+
+    /**
+     * Detect when an audio device is plugged or unplugged
+     */
+    void slotAudioDeviceEvent();
 
     /**
      * Called when an audio meter level is received

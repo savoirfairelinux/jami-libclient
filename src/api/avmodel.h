@@ -318,9 +318,13 @@ Q_SIGNALS:
      */
     void frameUpdated(const QString& id);
     /**
-     * Emitted when a device is plugged or unplugged
+     * Emitted when a video device is plugged or unplugged
      */
     void deviceEvent();
+    /**
+     * Emitted when an audio device is plugged or unplugged
+     */
+    void audioDeviceEvent();
     /**
      * Audio volume level
      * @param id Ringbuffer id
