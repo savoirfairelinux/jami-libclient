@@ -19,8 +19,6 @@
  */
 
 #include "avadapter.h"
-
-#include "lrcinstance.h"
 #include "qtutils.h"
 
 #ifdef Q_OS_LINUX
@@ -39,6 +37,13 @@ AvAdapter::AvAdapter(LRCInstance* instance, QObject* parent)
 
     deviceListSize_ = avModel.getDevices().size();
     connect(&avModel, &lrc::api::AVModel::deviceEvent, this, &AvAdapter::slotDeviceEvent);
+    connect(lrcInstance_->renderer(), &RenderManager::previewFrameStarted, [this]() {
+        // TODO: listen to the correct signals that are needed to be added in daemon or lrc
+        auto callId = getCurrentCallId();
+        if (!callId.isEmpty())
+            set_currentRenderingDeviceType(
+                lrcInstance_->avModel().getCurrentRenderedDevice(callId).type);
+    });
 }
 
 QVariantMap
@@ -237,6 +242,15 @@ AvAdapter::shareScreenArea(unsigned x, unsigned y, unsigned width, unsigned heig
 }
 
 void
+AvAdapter::stopSharingScreen()
+{
+    auto callId = getCurrentCallId();
+    if (!callId.isEmpty())
+        lrcInstance_->avModel().switchInputTo(lrcInstance_->avModel().getCurrentVideoCaptureDevice(),
+                                              callId);
+}
+
+void
 AvAdapter::startAudioMeter(bool async)
 {
     lrcInstance_->startAudioMeter(async);
@@ -251,10 +265,14 @@ AvAdapter::stopAudioMeter(bool async)
 QString
 AvAdapter::getCurrentCallId()
 {
-    const auto& convInfo = lrcInstance_->getConversationFromConvUid(
-        lrcInstance_->get_selectedConvUid());
-    auto call = lrcInstance_->getCallInfoForConversation(convInfo);
-    return call ? call->id : QString();
+    try {
+        const auto& convInfo = lrcInstance_->getConversationFromConvUid(
+            lrcInstance_->get_selectedConvUid());
+        auto call = lrcInstance_->getCallInfoForConversation(convInfo);
+        return call ? call->id : QString();
+    } catch (...) {
+        return QString();
+    }
 }
 
 void

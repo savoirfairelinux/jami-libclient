@@ -122,6 +122,8 @@ FrameWrapper::slotRenderingStarted(const QString& id)
     }
 
     isRendering_ = true;
+
+    Q_EMIT renderingStarted(id);
 }
 
 void
@@ -190,6 +192,13 @@ RenderManager::RenderManager(AVModel& avModel)
     : avModel_(avModel)
 {
     previewFrameWrapper_ = std::make_unique<FrameWrapper>(avModel_);
+
+    QObject::connect(previewFrameWrapper_.get(),
+                     &FrameWrapper::renderingStarted,
+                     [this](const QString& id) {
+                         Q_UNUSED(id);
+                         Q_EMIT previewFrameStarted();
+                     });
 
     QObject::connect(previewFrameWrapper_.get(),
                      &FrameWrapper::frameUpdated,

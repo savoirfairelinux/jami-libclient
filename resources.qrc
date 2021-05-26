@@ -83,7 +83,6 @@
         <file>images/icons/baseline-people-24px.svg</file>
         <file>images/icons/ic_high_quality_24px.svg</file>
         <file>images/icons/insert_photo-24px.svg</file>
-        <file>images/icons/screen_share-24px.svg</file>
         <file>images/icons/round-add_a_photo-24px.svg</file>
         <file>images/icons/ic_mic_white_24dp.png</file>
         <file>images/icons/ic_play_white_24dp.png</file>
@@ -137,6 +136,7 @@
         <file>images/icons/quote.svg</file>
         <file>images/icons/plugins-24px.svg</file>
         <file>images/icons/record_black_24dp.svg</file>
+        <file>images/icons/share_stop_black_24dp.svg</file>
         <file>images/icons/share_screen_black_24dp.svg</file>
         <file>images/icons/chat_black_24dp.svg</file>
         <file>images/icons/add_people_black_24dp.svg</file>

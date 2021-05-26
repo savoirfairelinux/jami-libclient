@@ -19,14 +19,17 @@
 #pragma once
 
 #include "qmladapterbase.h"
+#include "lrcinstance.h"
 
 #include <QObject>
 #include <QVariant>
 #include <QString>
+#include <qtutils.h>
 
 class AvAdapter final : public QmlAdapterBase
 {
     Q_OBJECT
+    QML_PROPERTY(lrc::api::video::DeviceType, currentRenderingDeviceType)
 
 public:
     explicit AvAdapter(LRCInstance* instance, QObject* parent = nullptr);
@@ -68,6 +71,9 @@ protected:
 
     // Select screen area to display (from all screens).
     Q_INVOKABLE void shareScreenArea(unsigned x, unsigned y, unsigned width, unsigned height);
+
+    // Stop sharing the screen
+    Q_INVOKABLE void stopSharingScreen();
 
     Q_INVOKABLE void startAudioMeter(bool async);
     Q_INVOKABLE void stopAudioMeter(bool async);

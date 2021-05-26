@@ -195,6 +195,7 @@ Item {
             function onAddToConferenceClicked() { openContactPicker(ContactList.CONFERENCE) }
             function onTransferClicked() { openContactPicker(ContactList.TRANSFER) }
             function onShareScreenClicked() { openShareScreen() }
+            function onStopSharingScreenClicked() { AvAdapter.stopSharingScreen() }
             function onShareScreenAreaClicked() { openShareScreenArea() }
             function onPluginsClicked() { openPluginsMenu() }
         }

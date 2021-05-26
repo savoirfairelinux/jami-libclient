@@ -83,6 +83,11 @@ public:
 
 Q_SIGNALS:
     /*
+     * Emitted once in slotRenderingStarted.
+     * @param id of the renderer
+     */
+    void renderingStarted(const QString& id);
+    /*
      * Emitted each time a frame is ready to be displayed.
      * @param id of the renderer
      */
@@ -213,6 +218,11 @@ public:
     QImage* getPreviewFrame();
 
 Q_SIGNALS:
+
+    /*
+     * Emitted when the preview the preview is started.
+     */
+    void previewFrameStarted();
 
     /*
      * Emitted when the preview has a new frame ready.

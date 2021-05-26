@@ -208,6 +208,7 @@ Item {
     property string exitFullScreen: qsTr("Exit full screen")
     property string fullScreen: qsTr("Full screen")
     property string shareScreen: qsTr("Share screen")
+    property string stopSharingScreen: qsTr("Stop sharing screen")
     property string shareScreenArea: qsTr("Share screen area")
     property string shareFile: qsTr("Share file")
     property string viewPlugin: qsTr("View plugin")

@@ -52,59 +52,54 @@ Item {
             menu.close()
     }
 
-    function openMenu(){
+    function openMenu() {
         ContextMenuGenerator.initMenu()
-        if (isSIP){
-            ContextMenuGenerator.addMenuItem(isPaused ? JamiStrings.resumeCall :
-                                                        JamiStrings.pauseCall,
-                                             isPaused ?
-                                                 "qrc:/images/icons/play_circle_outline-24px.svg" :
-                                                 "qrc:/images/icons/pause_circle_outline-24px.svg",
-                                             function (){
-                                                 CallAdapter.holdThisCallToggle()
-                                             })
+        if (isSIP) {
+            ContextMenuGenerator.addMenuItem(
+                        isPaused ? JamiStrings.resumeCall : JamiStrings.pauseCall,
+                        isPaused ? "qrc:/images/icons/play_circle_outline-24px.svg" :
+                                   "qrc:/images/icons/pause_circle_outline-24px.svg",
+                        function () {
+                            CallAdapter.holdThisCallToggle()
+                        })
             ContextMenuGenerator.addMenuItem(JamiStrings.sipInputPanel,
                                              "qrc:/images/icons/ic_keypad.svg",
-                                             function (){
+                                             function () {
                                                  sipInputPanel.open()
                                              })
-            ContextMenuGenerator.addMenuItem(JamiStrings.transferCall,
-                                             "qrc:/images/icons/phone_forwarded-24px.svg",
-                                             function (){
-                                                 root.transferCallButtonClicked()
-                                             })
+            ContextMenuGenerator.addMenuItem(
+                        JamiStrings.transferCall,
+                        "qrc:/images/icons/phone_forwarded-24px.svg",
+                        function () {
+                            root.transferCallButtonClicked()
+                        })
 
             ContextMenuGenerator.addMenuSeparator()
         }
 
-        ContextMenuGenerator.addMenuItem(localIsRecording ? JamiStrings.stopRec :
-                                                       JamiStrings.startRec,
-                                         "qrc:/images/icons/av_icons/fiber_manual_record-24px.svg",
-                                         function (){
-                                              CallAdapter.recordThisCallToggle()
-                                              localIsRecording = CallAdapter.isRecordingThisCall()
-                                         },
-                                         JamiTheme.recordIconColor)
+        ContextMenuGenerator.addMenuItem(
+                    localIsRecording ? JamiStrings.stopRec : JamiStrings.startRec,
+                    "qrc:/images/icons/av_icons/fiber_manual_record-24px.svg",
+                    function () {
+                        CallAdapter.recordThisCallToggle()
+                        localIsRecording = CallAdapter.isRecordingThisCall()
+                    }, JamiTheme.recordIconColor)
 
         if (isAudioOnly && !isPaused)
             ContextMenuGenerator.addMenuItem(
-                        JamiQmlUtils.callIsFullscreen ? JamiStrings.exitFullScreen :
-                                                         JamiStrings.fullScreen,
-                        JamiQmlUtils.callIsFullscreen ?
-                            "qrc:/images/icons/close_fullscreen-24px.svg" :
-                            "qrc:/images/icons/open_in_full-24px.svg",
-                        function (){
-                             callStackView.toggleFullScreen()
+                        JamiQmlUtils.callIsFullscreen ? JamiStrings.exitFullScreen : JamiStrings.fullScreen,
+                        JamiQmlUtils.callIsFullscreen ? "qrc:/images/icons/close_fullscreen-24px.svg" :
+                                                        "qrc:/images/icons/open_in_full-24px.svg",
+                        function () {
+                            callStackView.toggleFullScreen()
                         })
 
         if (!isAudioOnly && !isPaused) {
             ContextMenuGenerator.addMenuItem(
-                        JamiQmlUtils.callIsFullscreen ? JamiStrings.exitFullScreen :
-                                                        JamiStrings.fullScreen,
-                        JamiQmlUtils.callIsFullscreen ?
-                            "qrc:/images/icons/close_fullscreen-24px.svg" :
-                            "qrc:/images/icons/open_in_full-24px.svg",
-                        function (){
+                        JamiQmlUtils.callIsFullscreen ? JamiStrings.exitFullScreen : JamiStrings.fullScreen,
+                        JamiQmlUtils.callIsFullscreen ? "qrc:/images/icons/close_fullscreen-24px.svg" :
+                                                        "qrc:/images/icons/open_in_full-24px.svg",
+                        function () {
                             callStackView.toggleFullScreen()
                         })
 
@@ -114,39 +109,51 @@ Item {
 
             ContextMenuGenerator.addMenuSeparator()
 
-            ContextMenuGenerator.addMenuItem(JamiStrings.shareScreen,
-                                             "qrc:/images/icons/screen_share-24px.svg",
-                                             function (){
-                                                 if (Qt.application.screens.length === 1) {
-                                                     AvAdapter.shareEntireScreen(0)
-                                                 } else {
-                                                     SelectScreenWindowCreation.createSelectScreenWindowObject()
-                                                     SelectScreenWindowCreation.showSelectScreenWindow()
-                                                 }
-                                             })
-            ContextMenuGenerator.addMenuItem(JamiStrings.shareScreenArea,
-                                             "qrc:/images/icons/screen_share-24px.svg",
-                                             function (){
-                                                 if (Qt.platform.os !== "windows") {
-                                                     AvAdapter.shareScreenArea(0, 0, 0, 0)
-                                                 } else {
-                                                     ScreenRubberBandCreation.createScreenRubberBandWindowObject()
-                                                     ScreenRubberBandCreation.showScreenRubberBandWindow()
-                                                 }
-                                             })
-            ContextMenuGenerator.addMenuItem(JamiStrings.shareFile,
-                                             "qrc:/images/icons/insert_photo-24px.svg",
-                                             function (){
-                                                  jamiFileDialog.open()
-                                             })
+            if (AvAdapter.currentRenderingDeviceType === Video.DeviceType.DISPLAY) {
+                ContextMenuGenerator.addMenuItem(
+                            JamiStrings.stopSharingScreen,
+                            "qrc:/images/icons/share_stop_black_24dp.svg",
+                            function () {
+                                AvAdapter.stopSharingScreen()
+                            })
+            } else {
+                ContextMenuGenerator.addMenuItem(
+                            JamiStrings.shareScreen,
+                            "qrc:/images/icons/share_screen_black_24dp.svg",
+                            function () {
+                                if (Qt.application.screens.length === 1) {
+                                    AvAdapter.shareEntireScreen(0)
+                                } else {
+                                    SelectScreenWindowCreation.createSelectScreenWindowObject()
+                                    SelectScreenWindowCreation.showSelectScreenWindow()
+                                }
+                            })
+                ContextMenuGenerator.addMenuItem(
+                            JamiStrings.shareScreenArea,
+                            "qrc:/images/icons/share_screen_black_24dp.svg",
+                            function () {
+                                if (Qt.platform.os !== "windows") {
+                                    AvAdapter.shareScreenArea(0, 0, 0, 0)
+                                } else {
+                                    ScreenRubberBandCreation.createScreenRubberBandWindowObject()
+                                    ScreenRubberBandCreation.showScreenRubberBandWindow()
+                                }
+                            })
+            }
+
+            ContextMenuGenerator.addMenuItem(
+                        JamiStrings.shareFile,
+                        "qrc:/images/icons/insert_photo-24px.svg", function () {
+                            jamiFileDialog.open()
+                        })
         }
 
         if (UtilsAdapter.checkShowPluginsButton(true)) {
-            ContextMenuGenerator.addMenuItem(JamiStrings.viewPlugin,
-                                             "qrc:/images/icons/extension_24dp.svg",
-                                             function (){
-                                                  root.pluginItemClicked()
-                                             })
+            ContextMenuGenerator.addMenuItem(
+                        JamiStrings.viewPlugin,
+                        "qrc:/images/icons/extension_24dp.svg", function () {
+                            root.pluginItemClicked()
+                        })
         }
 
         root.height = ContextMenuGenerator.getMenu().height
@@ -182,9 +189,10 @@ Item {
 
     Component.onCompleted: {
         ContextMenuGenerator.createBaseContextMenuObjects(root)
-        VideoDeviceContextMenuItemCreation.setVideoContextMenuObject(ContextMenuGenerator.getMenu())
+        VideoDeviceContextMenuItemCreation.setVideoContextMenuObject(
+                    ContextMenuGenerator.getMenu())
 
-        ContextMenuGenerator.getMenu().closed.connect(function (){
+        ContextMenuGenerator.getMenu().closed.connect(function () {
             VideoDeviceContextMenuItemCreation.removeCreatedItems()
         })
     }
@@ -204,4 +212,3 @@ Item {
     //     }
     // }
 }
-
