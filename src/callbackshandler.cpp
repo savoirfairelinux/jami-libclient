@@ -233,14 +233,17 @@ CallbacksHandler::CallbacksHandler(const Lrc& parent)
             this,
             &CallbacksHandler::slotDeviceEvent,
             Qt::QueuedConnection);
+    connect(&ConfigurationManager::instance(),
+            &ConfigurationManagerInterface::audioDeviceEvent,
+            this,
+            &CallbacksHandler::slotAudioDeviceEvent,
+            Qt::QueuedConnection);
 
     connect(&ConfigurationManager::instance(),
             &ConfigurationManagerInterface::audioMeter,
             this,
             &CallbacksHandler::slotAudioMeterReceived,
             Qt::QueuedConnection);
-
-
 }
 
 CallbacksHandler::~CallbacksHandler() {}
@@ -249,11 +252,10 @@ void
 CallbacksHandler::subscribeToDebugReceived()
 {
     connect(&ConfigurationManager::instance(),
-           &ConfigurationManagerInterface::messageSend,
-           this,
-           &CallbacksHandler::slotDebugMessageReceived,
-           Qt::QueuedConnection);
-
+            &ConfigurationManagerInterface::messageSend,
+            this,
+            &CallbacksHandler::slotDebugMessageReceived,
+            Qt::QueuedConnection);
 }
 
 void
@@ -567,13 +569,21 @@ CallbacksHandler::slotDeviceEvent()
 }
 
 void
+CallbacksHandler::slotAudioDeviceEvent()
+{
+    emit audioDeviceEvent();
+}
+
+void
 CallbacksHandler::slotAudioMeterReceived(const QString& id, float level)
 {
     emit audioMeter(id, level);
 }
 
 void
-CallbacksHandler::slotRemoteRecordingChanged(const QString& callId, const QString& peerNumber, bool state)
+CallbacksHandler::slotRemoteRecordingChanged(const QString& callId,
+                                             const QString& peerNumber,
+                                             bool state)
 {
     emit remoteRecordingChanged(callId, peerNumber, state);
 }
