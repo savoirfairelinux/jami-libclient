@@ -91,6 +91,7 @@ Item {
     property color acceptGreenTransparency: rgba256(11, 130, 113, 56)
     property color refuseRed: rgba256(204, 0, 34, 100)
     property color refuseRedTransparent: rgba256(204, 0, 34, 56)
+    property color mozaicButtonNormalColor: "#272727"
 
     property color closeButtonLighterBlack: "#4c4c4c"
 
@@ -204,6 +205,14 @@ Item {
     property int participantCallInStatusFontSize: 9
     property int participantCallInStatusTextWidthLimit: 100
     property int participantCallInStatusTextWidth: 68
+    property int mozaicButtonRadius: 5
+    property int mozaicButtonPreferredMargin: 5
+    property real mozaicButtonOpacity: 0.77
+    property int mozaicButtonTextPreferredWidth: 40
+    property int mozaicButtonTextPreferredHeight: 16
+    property int mozaicButtonTextPointSize: 8
+    property int mozaicButtonPreferredWidth: 70
+    property int mozaicButtonMaxWidth: 100
 
     property real maximumWidthSettingsView: 600
     property real settingsHeaderpreferredHeight: 64

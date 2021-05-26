@@ -240,9 +240,6 @@ ColumnLayout {
 
             Layout.alignment: Qt.AlignHCenter
 
-            text: ""
-            font.pointSize: 10
-            font.kerning: true
             imageColor: JamiTheme.textColor
 
             toolTipText: JamiStrings.takePhoto
@@ -283,10 +280,6 @@ ColumnLayout {
             Layout.preferredWidth: JamiTheme.preferredFieldHeight
             Layout.preferredHeight: JamiTheme.preferredFieldHeight
             Layout.alignment: Qt.AlignHCenter
-
-            text: ""
-            font.pointSize: 10
-            font.kerning: true
 
             radius: height / 6
             source: "qrc:/images/icons/round-folder-24px.svg"

@@ -51,9 +51,10 @@ Item {
 
     // (un)subscribe to an app-wide mouse move event trap filtered
     // for the overlay's geometry
-    onVisibleChanged: visible ?
-                          CallOverlayModel.registerFilter(appWindow, this) :
-                          CallOverlayModel.unregisterFilter(appWindow, this)
+    onVisibleChanged: visible ? CallOverlayModel.registerFilter(
+                                    appWindow,
+                                    this) : CallOverlayModel.unregisterFilter(
+                                    appWindow, this)
 
     Connections {
         target: CallOverlayModel
@@ -104,80 +105,117 @@ Item {
         RowLayout {
             anchors.fill: parent
 
+            spacing: 0
+
             Text {
                 id: jamiBestNameText
 
                 Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
-                Layout.preferredWidth: overlayUpperPartRect.width / 3
+                Layout.preferredWidth: overlayUpperPartRect.width / 2
                 Layout.preferredHeight: 50
-                leftPadding: 16
 
-                font.pointSize: JamiTheme.textFontSize
+                leftPadding: 16
 
                 horizontalAlignment: Text.AlignLeft
                 verticalAlignment: Text.AlignVCenter
 
-                text: textMetricsjamiBestNameText.elidedText
-                color: "white"
-
-                TextMetrics {
-                    id: textMetricsjamiBestNameText
-                    font: jamiBestNameText.font
-                    text: {
-                        if (!root.isAudioOnly) {
-                            if (remoteRecordingLabel === "") {
-                                return root.bestName
-                            } else {
-                                return remoteRecordingLabel
-                            }
+                font.pointSize: JamiTheme.textFontSize
+                text: {
+                    if (!root.isAudioOnly) {
+                        if (remoteRecordingLabel === "") {
+                            return root.bestName
+                        } else {
+                            return remoteRecordingLabel
                         }
-                        return ""
                     }
-                    elideWidth: overlayUpperPartRect.width / 3
-                    elide: Qt.ElideRight
+                    return ""
                 }
+                color: JamiTheme.whiteColor
+                elide: Qt.ElideRight
+            }
+
+            PushButton {
+                id: mozaicButton
+
+                Layout.alignment: Qt.AlignVCenter | Qt.AlignRight
+                Layout.preferredWidth: JamiTheme.mozaicButtonPreferredWidth
+                Layout.preferredHeight: 30
+                Layout.rightMargin: 5
+
+                visible: isConferenceCall && !isGrid
+
+                preferredMargin: JamiTheme.mozaicButtonPreferredMargin
+                radius: JamiTheme.mozaicButtonRadius
+                opacity: JamiTheme.mozaicButtonOpacity
+
+                buttonText: JamiStrings.mozaic
+                buttonTextColor: JamiTheme.whiteColor
+                buttonTextHeight: JamiTheme.mozaicButtonTextPreferredHeight
+                buttonTextFont.weight: Font.DemiBold
+                buttonTextFont.pointSize: JamiTheme.mozaicButtonTextPointSize
+                textHAlign: Text.AlignLeft
+
+                imageColor: JamiTheme.whiteColor
+                imageContainerHeight: 20
+                imageContainerWidth: 20
+                source: "qrc:/images/icons/mozaic_black_24dp.svg"
+
+                normalColor: JamiTheme.mozaicButtonNormalColor
+                onButtonTextWidthChanged: {
+                    if (buttonTextWidth > JamiTheme.mozaicButtonTextPreferredWidth) {
+                        if (mozaicButton.Layout.preferredWidth + buttonTextWidth
+                                - JamiTheme.mozaicButtonTextPreferredWidth
+                                > JamiTheme.mozaicButtonMaxWidth) {
+                            mozaicButton.Layout.preferredWidth = JamiTheme.mozaicButtonMaxWidth
+                            buttonTextEnableElide = true
+                        } else
+                            mozaicButton.Layout.preferredWidth += buttonTextWidth
+                                    - JamiTheme.mozaicButtonTextPreferredWidth
+                    }
+                }
+
+                onClicked: CallAdapter.showGridConferenceLayout()
             }
 
             Text {
                 id: callTimerText
+
                 Layout.alignment: Qt.AlignVCenter | Qt.AlignRight
-                Layout.preferredWidth: 64
-                Layout.minimumWidth: 64
                 Layout.preferredHeight: 48
-                Layout.rightMargin: recordingRect.visible?
-                                        0 : JamiTheme.preferredMarginSize
+                Layout.rightMargin: recordingRect.visible ? 0 : JamiTheme.preferredMarginSize
+
                 font.pointSize: JamiTheme.textFontSize
                 horizontalAlignment: Text.AlignRight
                 verticalAlignment: Text.AlignVCenter
-                text: textMetricscallTimerText.elidedText
-                color: "white"
-                TextMetrics {
-                    id: textMetricscallTimerText
-                    font: callTimerText.font
-                    text: timeText
-                    elideWidth: overlayUpperPartRect.width / 4
-                    elide: Qt.ElideRight
-                }
+
+                text: timeText
+                color: JamiTheme.whiteColor
+                elide: Qt.ElideRight
             }
 
             Rectangle {
                 id: recordingRect
+
                 Layout.alignment: Qt.AlignVCenter | Qt.AlignRight
                 Layout.rightMargin: JamiTheme.preferredMarginSize
+
                 height: 16
                 width: 16
+
                 radius: height / 2
-                color: "red"
+                color: JamiTheme.recordIconColor
 
                 SequentialAnimation on color {
                     loops: Animation.Infinite
                     running: true
                     ColorAnimation {
-                        from: "red"; to: "transparent";
+                        from: JamiTheme.recordIconColor
+                        to: "transparent"
                         duration: JamiTheme.recordBlinkDuration
                     }
                     ColorAnimation {
-                        from: "transparent"; to: "red";
+                        from: "transparent"
+                        to: JamiTheme.recordIconColor
                         duration: JamiTheme.recordBlinkDuration
                     }
                 }
@@ -206,5 +244,9 @@ Item {
         height: 55
     }
 
-    Behavior on opacity { NumberAnimation { duration: JamiTheme.overlayFadeDuration }}
+    Behavior on opacity {
+        NumberAnimation {
+            duration: JamiTheme.overlayFadeDuration
+        }
+    }
 }

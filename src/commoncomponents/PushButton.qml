@@ -37,17 +37,18 @@ AbstractButton {
     // Shape will default to a 15px circle
     // but can be sized accordingly.
     property int preferredSize: 30
-    property int preferredWidth: preferredSize
-    property int preferredHeight: preferredSize
     property int preferredMargin: 16
-    property alias textHAlign: textContent.horizontalAlignment
     // Note the radius will default to preferredSize
     property alias radius: background.radius
 
     // Text properties
     property alias buttonText: textContent.text
+    property alias buttonTextHeight: textContent.height
+    readonly property alias buttonTextWidth: textContent.width
+    property alias buttonTextFont: textContent.font
     property alias buttonTextColor: textContent.color
-    property alias fontPointSize: textContent.font.pointSize
+    property alias textHAlign: textContent.horizontalAlignment
+    property bool buttonTextEnableElide: false
 
     property string toolTipText: ""
 
@@ -61,6 +62,8 @@ AbstractButton {
     property int duration: JamiTheme.shortFadeDuration
 
     // Image properties
+    property alias imageContainerWidth: image.containerWidth
+    property alias imageContainerHeight: image.containerHeight
     property alias source: image.source
     property var imageColor: null
     property string normalImageSource
@@ -80,6 +83,63 @@ AbstractButton {
     ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
     ToolTip.visible: hovered && (toolTipText.length > 0)
     ToolTip.text: toolTipText
+
+    ResponsiveImage {
+        id: image
+
+        anchors.centerIn: textContent.text ? undefined : root
+        anchors.left: textContent.text ? root.left : undefined
+        anchors.leftMargin: textContent.text ? preferredMargin : 0
+        anchors.verticalCenter: root.verticalCenter
+
+        containerHeight: preferredSize
+        containerWidth: preferredSize
+
+        source: {
+            if (checkable && checkedImageSource)
+                return checked ? checkedImageSource : normalImageSource
+            else
+                return normalImageSource
+        }
+
+        layer {
+            enabled: imageColor || checkedColor
+            effect: ColorOverlay {
+                id: overlay
+                color: {
+                    if (checked && checkedImageColor)
+                        return checkedImageColor
+                    else if (imageColor)
+                        return imageColor
+                    else
+                        return JamiTheme.transparentColor
+                }
+            }
+            // Mipmap does not render correctly on linux
+            mipmap: false
+            smooth: true
+        }
+    }
+
+    Text {
+        id: textContent
+
+        anchors.left: image.right
+        anchors.leftMargin: preferredMargin
+        anchors.verticalCenter: root.verticalCenter
+
+        anchors.right: buttonTextEnableElide ? root.right : undefined
+        anchors.rightMargin: preferredMargin
+
+        visible: text ? true : false
+
+        horizontalAlignment: Text.AlignHCenter
+
+        color: JamiTheme.primaryForegroundColor
+        font.kerning: true
+        font.pointSize: 9
+        elide: Qt.ElideRight
+    }
 
     background: Rectangle {
         id: background
@@ -119,64 +179,5 @@ AbstractButton {
                 ColorAnimation { duration: root.duration }
             }
         ]
-
-        ResponsiveImage {
-            id: image
-
-            containerWidth: preferredSize
-            containerHeight: preferredSize
-
-            anchors.verticalCenter: background.verticalCenter
-            anchors.horizontalCenter: textContent.text ? undefined : parent.horizontalCenter
-            anchors.left: textContent.text ? parent.left : undefined
-            anchors.leftMargin: preferredMargin
-
-            source: {
-                if (checkable && checkedImageSource)
-                    return checked ? checkedImageSource : normalImageSource
-                else
-                    return normalImageSource
-            }
-
-            layer {
-                enabled: imageColor || checkedColor
-                effect: ColorOverlay {
-                    id: overlay
-                    color: {
-                        if (checked && checkedImageColor)
-                            return checkedImageColor
-                        else if (imageColor)
-                            return imageColor
-                        else
-                            return JamiTheme.transparentColor
-                    }
-                }
-                // Mipmap does not render correctly on linux
-                mipmap: false
-                smooth: true
-            }
-        }
-
-        Text {
-            id: textContent
-
-            anchors.left: {
-                if (image.source.toString() !== '')
-                    return image.right
-                else
-                    return background.left
-            }
-            anchors.leftMargin: preferredMargin
-            anchors.right: background.right
-            anchors.rightMargin: preferredMargin
-            anchors.verticalCenter: background.verticalCenter
-
-            horizontalAlignment: Text.AlignHCenter
-
-            color: JamiTheme.primaryForegroundColor
-            font.kerning:  true
-            font.pointSize: 9
-            elide: Qt.ElideRight
-        }
     }
 }

@@ -78,7 +78,7 @@ Rectangle {
                 pressedColor: Qt.lighter(JamiTheme.pressedButtonColor, 1.25)
                 checkedColor: JamiTheme.selectedColor
                 hoveredColor: JamiTheme.hoverColor
-                fontPointSize: JamiTheme.textFontSize + 2
+                buttonTextFont.pointSize: JamiTheme.textFontSize + 2
                 duration: 0
                 textHAlign: Text.AlignLeft
                 preferredMargin: 24
