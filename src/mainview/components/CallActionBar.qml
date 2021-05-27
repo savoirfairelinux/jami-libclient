@@ -270,6 +270,7 @@ Control {
                 orientation: ListView.Horizontal
                 implicitWidth: contentWidth
                 implicitHeight: contentHeight
+                interactive: false
 
                 model: CallOverlayModel.primaryModel()
                 delegate: buttonDelegate
@@ -293,6 +294,7 @@ Control {
                 implicitWidth: contentWidth
                 implicitHeight: overflowRect.height
 
+                interactive: false
                 spacing: itemSpacing
 
                 property int overflowIndex: {
@@ -385,7 +387,10 @@ Control {
                         id: overflowListView
                         spacing: itemSpacing
                         implicitHeight: contentHeight
-                        model: overflowButton.popup.visible ? overflowButton.delegateModel : null
+                        interactive: false
+                        model: overflowButton.popup.visible ?
+                                   overflowButton.delegateModel :
+                                   null
 
                         ScrollIndicator.vertical: ScrollIndicator {}
                     }
