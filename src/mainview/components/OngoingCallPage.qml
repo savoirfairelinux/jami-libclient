@@ -38,7 +38,8 @@ Rectangle  {
     property string bestId: "Best Id"
     property variant clickPos: "1,1"
     property int previewMargin: 15
-    property int previewMarginY: previewMargin + 56
+    property int previewMarginYTop: previewMargin + 42
+    property int previewMarginYBottom: previewMargin + 84
     property int previewToX: 0
     property int previewToY: 0
     property bool isAudioOnly: false
@@ -116,26 +117,26 @@ Rectangle  {
                     return callPageMainRect.width - previewRenderer.width - previewMargin
                 })
                 previewToY = Qt.binding(function () {
-                    return callPageMainRect.height - previewRenderer.height - previewMarginY
+                    return callPageMainRect.height - previewRenderer.height - previewMarginYBottom
                 })
             } else {
                 // Top right.
                 previewToX = Qt.binding(function () {
                     return callPageMainRect.width - previewRenderer.width - previewMargin
                 })
-                previewToY = previewMarginY
+                previewToY = previewMarginYTop
             }
         } else {
             if (previewRendererCenter.y >= distantRendererCenter.y) {
                 // Bottom left.
                 previewToX = previewMargin
                 previewToY = Qt.binding(function () {
-                    return callPageMainRect.height - previewRenderer.height - previewMarginY
+                    return callPageMainRect.height - previewRenderer.height - previewMarginYBottom
                 })
             } else {
                 // Top left.
                 previewToX = previewMargin
-                previewToY = previewMarginY
+                previewToY = previewMarginYTop
             }
         }
         previewRenderer.state = "geoChanging"
@@ -219,7 +220,7 @@ Rectangle  {
 
                     width: Math.max(callPageMainRect.width / 5, JamiTheme.minimumPreviewWidth)
                     x: callPageMainRect.width - previewRenderer.width - previewMargin
-                    y: callPageMainRect.height - previewRenderer.height - previewMargin - 56 // Avoid overlay
+                    y: previewMarginYTop
 
                     states: [
                         State {
