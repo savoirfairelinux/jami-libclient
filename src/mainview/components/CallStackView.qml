@@ -31,6 +31,12 @@ Rectangle {
     id: callStackViewWindow
 
     property bool isAudioOnly: false
+    property var sipKeys: [
+        "1", "2", "3", "A",
+        "4", "5", "6", "B",
+        "7", "8", "9", "C",
+        "*", "0", "#", "D"
+    ]
 
     enum StackNumber {
         InitialPageStack,
@@ -44,6 +50,18 @@ Rectangle {
         context: Qt.ApplicationShortcut
         onActivated: CallAdapter.hangUpThisCall()
         onActivatedAmbiguously: CallAdapter.hangUpThisCall()
+    }
+
+    Keys.onPressed: {
+        if (LRCInstance.currentAccountType !== Profile.Type.SIP)
+            return
+        print(event.text)
+        var key = event.text.toUpperCase()
+        if(sipKeys.find(function (item) {
+            return item === key
+        })) {
+            CallAdapter.sipInputPanelPlayDTMF(key)
+        }
     }
 
     // When selected conversation is changed,
