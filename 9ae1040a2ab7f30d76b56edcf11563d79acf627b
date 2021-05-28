@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "17424732_42f09e7b",
+        "filename": "src/newcallmodel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 905,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2021-05-28T19:25:19Z",
+      "side": 1,
+      "message": "do not access via [], find return an iterator, use it",
+      "range": {
+        "startLine": 905,
+        "startChar": 7,
+        "endLine": 905,
+        "endChar": 21
+      },
+      "revId": "9ae1040a2ab7f30d76b56edcf11563d79acf627b",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    }
+  ]
+}
