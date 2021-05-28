@@ -84,6 +84,7 @@ public:
 
 Q_SIGNALS:
     void callStatusChanged(int index, const QString& accountId, const QString& convUid);
+    void callInfosChanged(const QVariant& infos, const QString& accountId, const QString& convUid);
     void updateParticipantsInfos(const QVariantList& infos,
                                  const QString& accountId,
                                  const QString& callId);
@@ -109,6 +110,7 @@ public Q_SLOTS:
     void onShowCallView(const QString& accountId, const QString& convUid);
     void onAccountChanged();
     void onCallStatusChanged(const QString& accountId, const QString& callId);
+    void onCallInfosChanged(const QString& accountId, const QString& callId);
     void onParticipantsChanged(const QString& confId);
     void onCallStatusChanged(const QString& callId, int code);
     void onRemoteRecordingChanged(const QString& callId, const QSet<QString>& peerRec, bool state);

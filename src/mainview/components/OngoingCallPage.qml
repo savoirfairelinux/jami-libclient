@@ -202,7 +202,7 @@ Rectangle {
                     id: previewRenderer
 
                     lrcInstance: LRCInstance
-                    visible: !root.isAudioOnly
+                    visible: !callOverlay.isAudioOnly && !callOverlay.isConferenceCall && !callOverlay.isVideoMuted && !callOverlay.isPaused
 
                     Connections {
                         target: CallAdapter
@@ -313,6 +313,7 @@ Rectangle {
                                                  isRecording, isSIP, isConferenceCall, isGrid,
                                                  bestName) {
                             callOverlay.showOnHoldImage(isPaused)
+                            root.isAudioOnly = isAudioOnly
                             audioCallPageRectCentralRect.visible = !isPaused && root.isAudioOnly
                             callOverlay.updateUI(isPaused, isAudioOnly,
                                                  isAudioMuted, isVideoMuted,

@@ -22,8 +22,6 @@ import QtQml 2.14
 Item {
     id: root
 
-    property bool isAudioOnly
-    property bool isVideoMuted
     property var participantOverlays: []
     property var participantComponent: Qt.createComponent("ParticipantOverlay.qml")
 
@@ -37,8 +35,6 @@ Item {
     }
 
     function update(infos) {
-        if (isAudioOnly)
-            return;
         // TODO: in the future the conference layout should be entirely managed by the client
         // Hack: truncate and ceil participant's overlay position and size to correct
         // when they are not exacts
@@ -95,7 +91,7 @@ Item {
         participantOverlays = participantOverlays.filter(part => !deletedUris.includes(part.uri))
 
         if (infos.length === 0) { // Return to normal call
-            previewRenderer.visible = !isVideoMuted
+            previewRenderer.visible = !isAudioOnly && !isVideoMuted && !isConferenceCall && !isPaused
             for (var part in participantOverlays) {
                 if (participantOverlays[part]) {
                     participantOverlays[part].destroy()
