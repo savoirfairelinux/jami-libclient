@@ -338,6 +338,7 @@ Rectangle {
 
                     Connections {
                         target: MessagesAdapter
+                        enabled: root.visible
 
                         function onNewInteraction(interactionType) {
                             // Ignore call notifications, as we are in the call.
