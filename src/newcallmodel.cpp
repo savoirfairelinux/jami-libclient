@@ -899,6 +899,12 @@ NewCallModelPimpl::slotCallStateChanged(const QString& callId, const QString& st
     auto status = call::to_status(state);
     auto& call = calls[callId];
 
+    // Audio only parameter will be potentially updated here
+    MapStringString callDetails = CallManager::instance().getCallDetails(callId);
+    auto callDetailIt = calls.find(callId);
+    if (callDetailIt != calls.end())
+        callDetailIt->second->isAudioOnly = callDetails["AUDIO_ONLY"] == "true" ? true : false;
+
     if (status == call::Status::ENDED && !call::isTerminating(call->status)) {
         call->status = call::Status::TERMINATING;
         emit linked.callStatusChanged(callId, code);
