@@ -197,7 +197,7 @@ Item {
     property string addParticipants: qsTr("Add participants")
     property string chat: qsTr("Chat")
     property string moreOptions: qsTr("More options")
-    property string mozaic: qsTr("Mozaic")
+    property string mosaic: qsTr("Mosaic")
 
     // CallViewContextMenu
     property string hold: qsTr("Hold")

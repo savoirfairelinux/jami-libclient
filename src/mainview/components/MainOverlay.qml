@@ -135,42 +135,42 @@ Item {
             }
 
             PushButton {
-                id: mozaicButton
+                id: mosaicButton
 
                 Layout.alignment: Qt.AlignVCenter | Qt.AlignRight
-                Layout.preferredWidth: JamiTheme.mozaicButtonPreferredWidth
+                Layout.preferredWidth: JamiTheme.mosaicButtonPreferredWidth
                 Layout.preferredHeight: 30
                 Layout.rightMargin: 5
 
                 visible: isConferenceCall && !isGrid
 
-                preferredMargin: JamiTheme.mozaicButtonPreferredMargin
-                radius: JamiTheme.mozaicButtonRadius
-                opacity: JamiTheme.mozaicButtonOpacity
+                preferredMargin: JamiTheme.mosaicButtonPreferredMargin
+                radius: JamiTheme.mosaicButtonRadius
+                opacity: JamiTheme.mosaicButtonOpacity
 
-                buttonText: JamiStrings.mozaic
+                buttonText: JamiStrings.mosaic
                 buttonTextColor: JamiTheme.whiteColor
-                buttonTextHeight: JamiTheme.mozaicButtonTextPreferredHeight
+                buttonTextHeight: JamiTheme.mosaicButtonTextPreferredHeight
                 buttonTextFont.weight: Font.DemiBold
-                buttonTextFont.pointSize: JamiTheme.mozaicButtonTextPointSize
+                buttonTextFont.pointSize: JamiTheme.mosaicButtonTextPointSize
                 textHAlign: Text.AlignLeft
 
                 imageColor: JamiTheme.whiteColor
                 imageContainerHeight: 20
                 imageContainerWidth: 20
-                source: "qrc:/images/icons/mozaic_black_24dp.svg"
+                source: "qrc:/images/icons/mosaic_black_24dp.svg"
 
-                normalColor: JamiTheme.mozaicButtonNormalColor
+                normalColor: JamiTheme.mosaicButtonNormalColor
                 onButtonTextWidthChanged: {
-                    if (buttonTextWidth > JamiTheme.mozaicButtonTextPreferredWidth) {
-                        if (mozaicButton.Layout.preferredWidth + buttonTextWidth
-                                - JamiTheme.mozaicButtonTextPreferredWidth
-                                > JamiTheme.mozaicButtonMaxWidth) {
-                            mozaicButton.Layout.preferredWidth = JamiTheme.mozaicButtonMaxWidth
+                    if (buttonTextWidth > JamiTheme.mosaicButtonTextPreferredWidth) {
+                        if (mosaicButton.Layout.preferredWidth + buttonTextWidth
+                                - JamiTheme.mosaicButtonTextPreferredWidth
+                                > JamiTheme.mosaicButtonMaxWidth) {
+                            mosaicButton.Layout.preferredWidth = JamiTheme.mosaicButtonMaxWidth
                             buttonTextEnableElide = true
                         } else
-                            mozaicButton.Layout.preferredWidth += buttonTextWidth
-                                    - JamiTheme.mozaicButtonTextPreferredWidth
+                            mosaicButton.Layout.preferredWidth += buttonTextWidth
+                                    - JamiTheme.mosaicButtonTextPreferredWidth
                     }
                 }
 

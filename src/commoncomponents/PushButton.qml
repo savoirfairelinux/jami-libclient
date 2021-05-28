@@ -124,7 +124,8 @@ AbstractButton {
     Text {
         id: textContent
 
-        anchors.left: image.right
+        anchors.centerIn: image.status !== Image.Null ? undefined : root
+        anchors.left: image.status !== Image.Null ? image.right : undefined
         anchors.leftMargin: preferredMargin
         anchors.verticalCenter: root.verticalCenter
 
@@ -134,6 +135,7 @@ AbstractButton {
         visible: text ? true : false
 
         horizontalAlignment: Text.AlignHCenter
+        verticalAlignment: Text.AlignVCenter
 
         color: JamiTheme.primaryForegroundColor
         font.kerning: true
