@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020 by Savoir-faire Linux
+ * Copyright (C) 2020-2021 by Savoir-faire Linux
  * Author: Edric Ladent Milaret <edric.ladent-milaret@savoirfairelinux.com>
  * Author: Anthony Léonard <anthony.leonard@savoirfairelinux.com>
  * Author: Olivier Soldano <olivier.soldano@savoirfairelinux.com>
@@ -80,6 +80,11 @@ CallAdapter::CallAdapter(SystemTray* systemTray, LRCInstance* instance, QObject*
             &BehaviorController::callStatusChanged,
             this,
             QOverload<const QString&, const QString&>::of(&CallAdapter::onCallStatusChanged));
+
+    connect(lrcInstance_,
+            &LRCInstance::selectedConvUidChanged,
+            this,
+            &CallAdapter::saveConferenceSubcalls);
 }
 
 void
@@ -181,47 +186,44 @@ CallAdapter::onCallStatusChanged(const QString& callId, int code)
         case lrc::api::call::Status::TIMEOUT:
         case lrc::api::call::Status::TERMINATING: {
             lrcInstance_->renderer()->removeDistantRenderer(callId);
-            Q_EMIT lrcInstance_->conversationUpdated(convInfo.uid, accountId_);
+            const auto& convInfo = lrcInstance_->getConversationFromCallId(callId);
             if (convInfo.uid.isEmpty()) {
-                break;
-            }
-            /*
-             * If it's a conference, change the smartlist index
-             * to the next remaining participant.
-             */
-            bool forceCallOnly {false};
-            if (!convInfo.confId.isEmpty()) {
-                auto callList = lrcInstance_->getConferenceSubcalls(convInfo.confId);
-                if (callList.empty()) {
-                    auto lastConference = lrcInstance_->poplastConference(convInfo.confId);
-                    if (!lastConference.isEmpty()) {
-                        callList.append(lastConference);
-                        forceCallOnly = true;
-                    }
-                }
-                if (callList.isEmpty()) {
-                    callList = lrcInstance_->getActiveCalls();
-                    forceCallOnly = true;
-                }
-                for (const auto& callId : callList) {
-                    if (!callModel->hasCall(callId)) {
-                        continue;
-                    }
-                    auto currentCall = callModel->getCall(callId);
-                    if (currentCall.status == lrc::api::call::Status::IN_PROGRESS) {
-                        const auto& otherConv = lrcInstance_->getConversationFromCallId(callId);
-                        if (!otherConv.uid.isEmpty() && otherConv.uid != convInfo.uid) {
-                            /*
-                             * Reset the call view corresponding accountId, uid.
-                             */
-                            lrcInstance_->selectConversation(otherConv.uid);
-                            updateCall(otherConv.uid, otherConv.accountId, forceCallOnly);
-                        }
-                    }
-                }
-
                 return;
             }
+
+            const auto& currentConvId = lrcInstance_->get_selectedConvUid();
+            const auto& currentConvInfo = lrcInstance_->getConversationFromConvUid(currentConvId);
+
+            // was it a conference and now is a dialog?
+            if (currentConvInfo.confId.isEmpty() && currentConfSubcalls_.size() == 2) {
+                auto it = std::find_if(currentConfSubcalls_.cbegin(),
+                                       currentConfSubcalls_.cend(),
+                                       [&callId](const QString& cid) { return cid != callId; });
+                if (it != currentConfSubcalls_.cend()) {
+                    // select the conversation using the other callId
+                    auto otherCall = lrcInstance_->getCurrentCallModel()->getCall(*it);
+                    if (otherCall.status == lrc::api::call::Status::IN_PROGRESS) {
+                        const auto& otherConv = lrcInstance_->getConversationFromCallId(*it);
+                        if (!otherConv.uid.isEmpty() && otherConv.uid != convInfo.uid) {
+                            lrcInstance_->selectConversation(otherConv.uid);
+                            Q_EMIT lrcInstance_->conversationUpdated(otherConv.uid, accountId_);
+                            updateCall(otherConv.uid);
+                        }
+                    }
+                    // then clear the list
+                    currentConfSubcalls_.clear();
+                    return;
+                }
+            } else {
+                // okay, still a conference, so just update the subcall list and this call
+                saveConferenceSubcalls();
+                Q_EMIT lrcInstance_->conversationUpdated(currentConvInfo.uid, accountId_);
+                updateCall(currentConvInfo.uid);
+                return;
+            }
+
+            Q_EMIT lrcInstance_->conversationUpdated(convInfo.uid, accountId_);
+            updateCall(currentConvInfo.uid);
             preventScreenSaver(false);
             break;
         }
@@ -231,12 +233,14 @@ CallAdapter::onCallStatusChanged(const QString& callId, int code)
             if (!convInfo.uid.isEmpty() && convInfo.uid == lrcInstance_->get_selectedConvUid()) {
                 accInfo.conversationModel->selectConversation(convInfo.uid);
             }
+            saveConferenceSubcalls();
             updateCall(convInfo.uid, accountId_);
             preventScreenSaver(true);
             break;
         }
         case lrc::api::call::Status::PAUSED:
             updateCall();
+            break;
         default:
             break;
         }
@@ -254,6 +258,14 @@ CallAdapter::onRemoteRecordingChanged(const QString& callId,
     const auto currentCallId = lrcInstance_->getCallIdForConversationUid(convUid_, accountId_);
     if (callId == currentCallId)
         updateRecordingPeers();
+}
+
+void
+CallAdapter::onCallAddedToConference(const QString& callId, const QString& confId)
+{
+    Q_UNUSED(callId)
+    Q_UNUSED(confId)
+    saveConferenceSubcalls();
 }
 
 void
@@ -573,6 +585,12 @@ CallAdapter::connectCallModel(const QString& accountId)
             this,
             &CallAdapter::onRemoteRecordingChanged,
             Qt::UniqueConnection);
+
+    connect(accInfo.callModel.get(),
+            &NewCallModel::callAddedToConference,
+            this,
+            &CallAdapter::onCallAddedToConference,
+            Qt::UniqueConnection);
 }
 
 void
@@ -645,6 +663,16 @@ CallAdapter::updateCallOverlay(const lrc::api::conversation::Info& convInfo)
                          isConferenceCall,
                          isGrid,
                          bestName);
+}
+
+void
+CallAdapter::saveConferenceSubcalls()
+{
+    const auto& currentConvId = lrcInstance_->get_selectedConvUid();
+    const auto& convInfo = lrcInstance_->getConversationFromConvUid(currentConvId);
+    if (!convInfo.confId.isEmpty()) {
+        currentConfSubcalls_ = lrcInstance_->getConferenceSubcalls(convInfo.confId);
+    }
 }
 
 void

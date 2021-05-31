@@ -414,24 +414,6 @@ LRCInstance::setContentDraft(const QString& convUid,
 }
 
 void
-LRCInstance::pushlastConference(const QString& confId, const QString& callId)
-{
-    lastConferences_[confId] = callId;
-}
-
-QString
-LRCInstance::poplastConference(const QString& confId)
-{
-    QString callId = {};
-    auto iter = lastConferences_.find(confId);
-    if (iter != lastConferences_.end()) {
-        callId = iter.value();
-        lastConferences_.erase(iter);
-    }
-    return callId;
-}
-
-void
 LRCInstance::selectConversation(const QString& convId, const QString& accountId)
 {
     // reselection can be used to update the conversation

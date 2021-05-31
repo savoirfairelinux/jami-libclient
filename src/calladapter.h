@@ -1,7 +1,8 @@
-/*!
- * Copyright (C) 2020 by Savoir-faire Linux
+/*
+ * Copyright (C) 2020-2021 by Savoir-faire Linux
  * Author: Mingrui Zhang <mingrui.zhang@savoirfairelinux.com>
  * Author: Sébastien Blin <sebastien.blin@savoirfairelinux.com>
+ * Author: Andreas Traczyk <andreas.traczyk@savoirfairelinux.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -110,24 +111,22 @@ public Q_SLOTS:
     void onParticipantsChanged(const QString& confId);
     void onCallStatusChanged(const QString& callId, int code);
     void onRemoteRecordingChanged(const QString& callId, const QSet<QString>& peerRec, bool state);
+    void onCallAddedToConference(const QString& callId, const QString& confId);
 
 private:
     void updateRecordingPeers(bool eraseLabelOnEmpty = false);
     bool shouldShowPreview(bool force);
     void showNotification(const QString& accountId, const QString& convUid);
     QJsonObject fillParticipantData(QMap<QString, QString> participant);
+    void preventScreenSaver(bool state);
+    void updateCallOverlay(const lrc::api::conversation::Info& convInfo);
+    void saveConferenceSubcalls();
 
-    // Current conf/call info.
     QString accountId_;
     QString convUid_;
 
-    // For Call Overlay
-    void updateCallOverlay(const lrc::api::conversation::Info& convInfo);
     ScreenSaver screenSaver;
-
-    void preventScreenSaver(bool state);
-
     SystemTray* systemTray_;
-
     QScopedPointer<CallOverlayModel> overlayModel_;
+    VectorString currentConfSubcalls_;
 };
