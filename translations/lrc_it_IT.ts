@@ -112,8 +112,8 @@
         <translation>Invito accettato</translation>
     </message>
     <message>
-        <location filename="../src/avmodel.cpp" line="335"/>
-        <location filename="../src/avmodel.cpp" line="354"/>
+        <location filename="../src/avmodel.cpp" line="339"/>
+        <location filename="../src/avmodel.cpp" line="358"/>
         <source>default</source>
         <translation>predefinito</translation>
     </message>
@@ -232,7 +232,7 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="75"/>
         <source>Gone</source>
-        <translation>Non disponible</translation>
+        <translation>Non disponibile</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="76"/>
@@ -247,7 +247,7 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="78"/>
         <source>Unsupported Media Type</source>
-        <translation>Media Type non supportato</translation>
+        <translation>Tipo di Media non supportato</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="79"/>
@@ -357,7 +357,7 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="101"/>
         <source>Server Timeout</source>
-        <translation>Timeout del server</translation>
+        <translation>Tempo scaduto per il server</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="102"/>
@@ -397,7 +397,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="30"/>
         <source>Hide chat view</source>
-        <translation>Nascondi la vista della chat</translation>
+        <translation>Nascondi vista chat</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="31"/>
@@ -412,7 +412,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="33"/>
         <source>Place audio call</source>
-        <translation>Effettua una chiamata audio</translation>
+        <translation>Effettua chiamata vocale</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="34"/>
@@ -457,7 +457,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="42"/>
         <source>Leave audio message</source>
-        <translation>Registra audiomessaggio</translation>
+        <translation>Registra messaggio vocale</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="44"/>

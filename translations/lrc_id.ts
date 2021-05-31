@@ -35,7 +35,7 @@
         <location filename="../src/api/call.h" line="71"/>
         <location filename="../src/chatview.cpp" line="63"/>
         <source>Connecting</source>
-        <translation type="unfinished"/>
+        <translation>Menghubungkan</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="73"/>
@@ -112,8 +112,8 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/avmodel.cpp" line="335"/>
-        <location filename="../src/avmodel.cpp" line="354"/>
+        <location filename="../src/avmodel.cpp" line="339"/>
+        <location filename="../src/avmodel.cpp" line="358"/>
         <source>default</source>
         <translation type="unfinished"/>
     </message>
@@ -577,7 +577,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="60"/>
         <source>Delete</source>
-        <translation type="unfinished"/>
+        <translation>Hapus</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="61"/>

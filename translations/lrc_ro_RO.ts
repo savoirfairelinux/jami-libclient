@@ -112,8 +112,8 @@
         <translation>Invitație acceptată</translation>
     </message>
     <message>
-        <location filename="../src/avmodel.cpp" line="335"/>
-        <location filename="../src/avmodel.cpp" line="354"/>
+        <location filename="../src/avmodel.cpp" line="339"/>
+        <location filename="../src/avmodel.cpp" line="358"/>
         <source>default</source>
         <translation>prestabilit</translation>
     </message>
@@ -247,7 +247,7 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="78"/>
         <source>Unsupported Media Type</source>
-        <translation>Media Type neacceptat</translation>
+        <translation>Tip de media neacceptat</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="79"/>
@@ -437,7 +437,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="38"/>
         <source>Jump to latest</source>
-        <translation>Saltă la cel mai recent</translation>
+        <translation>Saltă la ultimul</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="39"/>

@@ -112,8 +112,8 @@
         <translation>Invito accettato</translation>
     </message>
     <message>
-        <location filename="../src/avmodel.cpp" line="335"/>
-        <location filename="../src/avmodel.cpp" line="354"/>
+        <location filename="../src/avmodel.cpp" line="339"/>
+        <location filename="../src/avmodel.cpp" line="358"/>
         <source>default</source>
         <translation>predefinito</translation>
     </message>
@@ -227,17 +227,17 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="74"/>
         <source>Request Timeout</source>
-        <translation>Richiedi Timeout</translation>
+        <translation>Richiesta scaduta</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="75"/>
         <source>Gone</source>
-        <translation type="unfinished"/>
+        <translation>Non disponibile</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="76"/>
         <source>Request Entity Too Large</source>
-        <translation type="unfinished"/>
+        <translation>Entità richiesta troppo grande</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="77"/>
@@ -247,7 +247,7 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="78"/>
         <source>Unsupported Media Type</source>
-        <translation type="unfinished"/>
+        <translation>Tipo di Media non supportato</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="79"/>
@@ -357,7 +357,7 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="101"/>
         <source>Server Timeout</source>
-        <translation type="unfinished"/>
+        <translation>Tempo scaduto per il server</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="102"/>
@@ -397,7 +397,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="30"/>
         <source>Hide chat view</source>
-        <translation>Nascondere la vista del chat</translation>
+        <translation>Nascondi vista chat</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="31"/>
@@ -412,7 +412,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="33"/>
         <source>Place audio call</source>
-        <translation>Effettua chiamata audio</translation>
+        <translation>Effettua chiamata vocale</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="34"/>
@@ -437,7 +437,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="38"/>
         <source>Jump to latest</source>
-        <translation type="unfinished"/>
+        <translation>Vai all&apos;ultimo</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="39"/>
@@ -457,7 +457,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="42"/>
         <source>Leave audio message</source>
-        <translation type="unfinished"/>
+        <translation>Registra messaggio vocale</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="44"/>
@@ -482,7 +482,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="69"/>
         <source>Timed out waiting for contact</source>
-        <translation type="unfinished"/>
+        <translation>Tempo scaduto in attesa di contatto</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="43"/>
