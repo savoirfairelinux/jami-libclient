@@ -339,7 +339,7 @@ Item {
     property string logsViewCancel: qsTr("Cancel")
     property string logsViewCopied: qsTr("Copied to clipboard!")
     property string logsViewDisplay: qsTr("Receive Logs")
-    
+
     // ImportFromBackupPage
     property string archive: qsTr("Archive")
     property string openFile: qsTr("Open file")

@@ -235,5 +235,7 @@ Q_SIGNALS:
 
 private:
     AppSettingsManager* settingsManager_;
+
+    QMetaObject::Connection debugMessageReceivedConnection_;
 };
 Q_DECLARE_METATYPE(SettingsAdapter*)
