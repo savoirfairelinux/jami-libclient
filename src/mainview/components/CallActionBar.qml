@@ -338,7 +338,7 @@ Control {
                 background: HalfPill {
                     implicitWidth: root.height
                     implicitHeight: implicitWidth
-                    radius: 5
+                    radius: type === HalfPill.None ? 0 : 5
                     color: overflowButton.down ?
                                "#80aaaaaa" :
                                overflowButton.hovered ?
@@ -377,15 +377,11 @@ Control {
                         add: Transition {
                             NumberAnimation {
                                 property: "opacity"
-                                from: 0
-                                to: 1.0
-                                duration: 80
+                                from: 0 ; to: 1.0; duration: 80
                             }
                             NumberAnimation {
                                 property: "scale"
-                                from: 0
-                                to: 1.0
-                                duration: 80
+                                from: 0; to: 1.0; duration: 80
                             }
                         }
                     }

@@ -39,17 +39,19 @@ Item {
         id: rect
 
         property bool horizontal: type === HalfPill.Left ||
-                                  type == HalfPill.Right
+                                  type === HalfPill.Right
         property bool direction: type === HalfPill.Right ||
-                                 type == HalfPill.Bottom
+                                 type === HalfPill.Bottom
 
-        radius: root.radius * (type !== HalfPill.None)
-        width: root.size + radius
-        height: root.size + radius
+        property bool bp: type === HalfPill.None
+
+        radius: root.radius
+        width: root.size + radius * !bp
+        height: root.size + radius * !bp
         anchors.fill: root
-        anchors.leftMargin: horizontal * direction * -radius
-        anchors.rightMargin: horizontal * !direction * -radius
-        anchors.topMargin: !horizontal * direction * -radius
-        anchors.bottomMargin: !horizontal * !direction * -radius
+        anchors.leftMargin: horizontal * direction * -radius * !bp
+        anchors.rightMargin: horizontal * !direction * -radius * !bp
+        anchors.topMargin: !horizontal * direction * -radius * !bp
+        anchors.bottomMargin: !horizontal * !direction * -radius * !bp
     }
 }

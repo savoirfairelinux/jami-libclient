@@ -55,7 +55,7 @@ ItemDelegate {
 
     background: HalfPill {
         anchors.fill: parent
-        radius: 5
+        radius: type === HalfPill.None ? 0 : 5
         color: {
             if (supplimentaryBackground.visible)
                 return "#c4272727"
@@ -85,7 +85,8 @@ ItemDelegate {
         }
     }
 
-    Rectangle {
+    // TODO: this can be a Rectangle once multistream is done
+    HalfPill {
         id: supplimentaryBackground
 
         visible: ItemAction.hasBg !== undefined
@@ -95,7 +96,8 @@ ItemDelegate {
                        JamiTheme.refuseRed :
                        JamiTheme.refuseRedTransparent
         anchors.fill: parent
-        radius: width / 2
+        radius: isLast ? 5 : width / 2
+        type: isLast ? HalfPill.Right : HalfPill.None
 
         Behavior on color {
             ColorAnimation { duration: JamiTheme.shortFadeDuration }
