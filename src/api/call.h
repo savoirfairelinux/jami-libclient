@@ -125,6 +125,45 @@ Q_ENUM_NS(Type)
 
 enum class Layout { GRID, ONE_WITH_SMALL, ONE };
 
+struct ParticipantInfo
+{
+    QString uri;
+    QString device;
+    QString sinkId;
+    QString bestName;
+    bool active;
+    int x;
+    int y;
+    int width;
+    int height;
+    bool audioLocalMuted;
+    bool audioModeratorMuted;
+    bool videoMuted;
+    bool isModerator;
+    bool islocal;
+    bool isContact;
+
+    ParticipantInfo(const MapStringString& infos, const QString& callId)
+    {
+        uri = infos["uri"];
+        device = infos["device"];
+        active = infos["active"] == "true";
+        x = infos["x"].toInt();
+        y = infos["y"].toInt();
+        width = infos["w"].toInt();
+        height = infos["h"].toInt();
+        videoMuted = infos["videoMuted"] == "true";
+        audioLocalMuted = infos["audioLocalMuted"] == "true";
+        audioModeratorMuted = infos["audioModeratorMuted"] == "true";
+        isModerator = infos["isModerator"] == "true";
+
+        sinkId = callId + infos["uri"];
+        bestName = "";
+        islocal = false;
+        isContact = false;
+    }
+};
+
 struct Info
 {
     QString id;
@@ -137,7 +176,7 @@ struct Info
     bool videoMuted = false;
     bool isAudioOnly = false;
     Layout layout = Layout::GRID;
-    VectorMapStringString participantsInfos = {};
+    QList<ParticipantInfo> participantsInfos = {};
     VectorMapStringString mediaList = {};
     QSet<QString> peerRec {};
 };
