@@ -119,7 +119,8 @@ AudioDeviceModel::reset()
 int
 AudioDeviceModel::getCurrentIndex() const
 {
-    QString currentId = lrcInstance_->avModel().getInputDevice();
+    auto currentId = type_ == Type::Record ? lrcInstance_->avModel().getInputDevice()
+                                           : lrcInstance_->avModel().getOutputDevice();
     auto resultList = match(index(0, 0), Qt::DisplayRole, QVariant(currentId));
     return resultList.size() > 0 ? resultList[0].row() : 0;
 }
