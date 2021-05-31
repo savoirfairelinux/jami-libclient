@@ -216,6 +216,7 @@ ItemDelegate {
                     verticalAlignment: Text.AlignVCenter
                     text: DeviceName
                     elide: Text.ElideRight
+                    font.pointSize: 9
                     color: "white"
                 }
             }

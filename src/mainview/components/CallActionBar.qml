@@ -328,23 +328,35 @@ Control {
 
                 indicator: null
 
-                contentItem: Text {
-                    text: "⋮"
+                contentItem: ResponsiveImage {
                     color: "white"
-                    font.pointSize: 24
-                    font.weight: Font.Bold
-                    verticalAlignment: Text.AlignVCenter
-                    horizontalAlignment: Text.AlignHCenter
+                    source: "qrc:/images/icons/more_vert-24dp.svg"
+                    anchors.fill: parent
+                    anchors.margins: 17
                 }
 
-                background: Rectangle {
+                background: HalfPill {
                     implicitWidth: root.height
                     implicitHeight: implicitWidth
+                    radius: 5
                     color: overflowButton.down ?
                                "#80aaaaaa" :
                                overflowButton.hovered ?
                                    "#80777777" :
                                    "#80444444"
+                    type: {
+                        if ((overflowItemListView.count &&
+                                !urgentOverflowListView.count) ||
+                                overflowHiddenListView.count) {
+                            return HalfPill.None
+                        } else {
+                            return HalfPill.Left
+                        }
+                    }
+
+                    Behavior on color {
+                        ColorAnimation { duration: JamiTheme.shortFadeDuration }
+                    }
                 }
 
                 Item {
@@ -354,6 +366,8 @@ Control {
                     anchors.bottomMargin: itemSpacing
                     visible: !overflowButton.popup.visible
                     ListView {
+                        id: urgentOverflowListView
+
                         spacing: itemSpacing
                         anchors.fill: parent
                         model: CallOverlayModel.overflowVisibleModel()
@@ -384,7 +398,7 @@ Control {
                     padding: 0
 
                     contentItem: ListView {
-                        id: overflowListView
+                        id: overflowHiddenListView
                         spacing: itemSpacing
                         implicitHeight: contentHeight
                         interactive: false
