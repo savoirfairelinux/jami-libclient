@@ -54,10 +54,7 @@ Image {
 
     layer {
         enabled: true
-        effect: ColorOverlay {
-            id: overlay
-            color: root.color
-        }
+        effect: ColorOverlay { color: root.color }
     }
 
     function setSourceSize() {

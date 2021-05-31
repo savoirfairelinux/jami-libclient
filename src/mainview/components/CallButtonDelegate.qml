@@ -156,10 +156,18 @@ ItemDelegate {
         indicator: null
 
         visible: menuAction !== undefined && !BadgeCount
-        anchors.horizontalCenter: parent.horizontalCenter
+
+        y: isVertical ? 0 : -4
+        x: isVertical ? -4 : 0
+        anchors.horizontalCenter: isVertical ?
+                                      undefined :
+                                      parent.horizontalCenter
+        anchors.verticalCenter: isVertical ?
+                                    parent.verticalCenter :
+                                    undefined
+
         width: 18
         height: width
-        y: -4
 
         Connections {
             target: menuAction !== undefined ?
@@ -171,10 +179,11 @@ ItemDelegate {
             }
         }
 
-        contentItem: Text {
-            text: "^"
-            horizontalAlignment: Text.AlignHCenter
-            verticalAlignment: Text.AlignVCenter
+        contentItem: ResponsiveImage {
+            source: isVertical ?
+                        "qrc:/images/icons/chevron_left_black_24dp.svg" :
+                        "qrc:/images/icons/expand_less-24px.svg"
+            smooth: true
             color: "white"
         }
 
@@ -231,7 +240,7 @@ ItemDelegate {
                    -(implicitHeight - wrapper.height) / 2 :
                    -implicitHeight - 12
             x: isVertical ?
-                   -implicitWidth - 24 :
+                   -implicitWidth - 18 :
                    -(implicitWidth - wrapper.width) / 2 - 18
 
             implicitWidth: contentItem.implicitWidth

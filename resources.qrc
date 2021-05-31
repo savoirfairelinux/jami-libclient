@@ -142,5 +142,6 @@
         <file>images/icons/spk_black_24dp.svg</file>
         <file>images/icons/spk_none_black_24dp.svg</file>
         <file>images/icons/more_vert-24dp.svg</file>
+        <file>images/icons/chevron_left_black_24dp.svg</file>
     </qresource>
 </RCC>
