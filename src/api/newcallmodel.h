@@ -63,6 +63,7 @@ class LIB_EXPORT NewCallModel : public QObject
 
 public:
     using CallInfoMap = std::map<QString, std::shared_ptr<call::Info>>;
+    using ParticipantsInfoMap = std::map<QString, std::shared_ptr<QVector<call::ParticipantInfo>>>;
 
     const account::Info& owner;
 

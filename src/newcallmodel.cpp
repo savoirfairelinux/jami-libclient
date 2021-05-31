@@ -126,6 +126,7 @@ public:
     void sendProfile(const QString& callId);
 
     NewCallModel::CallInfoMap calls;
+    NewCallModel::ParticipantsInfoMap participants;
     const CallbacksHandler& callbacksHandler;
     const NewCallModel& linked;
     const BehaviorController& behaviorController;
@@ -270,7 +271,7 @@ NewCallModel::createCall(const QString& uri, bool isAudioOnly)
     auto callId = isAudioOnly
                       ? CallManager::instance().placeCall(owner.id, uri, {{"AUDIO_ONLY", "true"}})
                       : CallManager::instance().placeCall(owner.id, uri);
-#else // dbus
+#else  // dbus
     // do not use auto here (QDBusPendingReply<QString>)
     QString callId = isAudioOnly
                          ? CallManager::instance().placeCallWithDetails(owner.id,
@@ -634,6 +635,31 @@ NewCallModelPimpl::initCallFromDaemon()
             callInfo->type = call::Type::DIALOG;
             VectorMapStringString infos = CallManager::instance().getConferenceInfos(callId);
             callInfo->participantsInfos = infos;
+
+            auto participantsInfo = std::make_shared<QVector<call::ParticipantInfo>>();
+            for (auto& item : infos) {
+                call::ParticipantInfo participant;
+                participant.uri = item["uri"];
+                participant.device = item["device"];
+                participant.active = item["active"] == "true";
+                participant.x = item["x"].toInt();
+                participant.y = item["y"].toInt();
+                participant.width = item["w"].toInt();
+                participant.height = item["h"].toInt();
+                participant.videoMuted = item["videoMuted"] == "true";
+                participant.audioLocalMuted = item["audioLocalMuted"] == "true";
+                participant.audioModeratorMuted = item["audioModeratorMuted"] == "true";
+                participant.isModerator = item["isModerator"] == "true";
+
+                participant.sinkId = callId + item["uri"];
+                participant.bestName = "";
+                participant.islocal = false;
+                participant.isContact = false;
+
+                participantsInfo->push_back(participant);
+            }
+
+            participants.emplace(callId, std::move(participantsInfo));
             calls.emplace(callId, std::move(callInfo));
             // NOTE/BUG: the videorenderer can't know that the client has restarted
             // So, for now, a user will have to manually restart the medias until
@@ -672,6 +698,32 @@ NewCallModelPimpl::initConferencesFromDaemon()
         callInfo->type = call::Type::CONFERENCE;
         VectorMapStringString infos = CallManager::instance().getConferenceInfos(callId);
         callInfo->participantsInfos = infos;
+
+        auto participantsInfo = std::make_shared<QVector<call::ParticipantInfo>>();
+        for (auto& item : infos) {
+            call::ParticipantInfo participant;
+            participant.uri = item["uri"];
+            participant.device = item["device"];
+            participant.active = item["active"] == "true";
+            participant.x = item["x"].toInt();
+            participant.y = item["y"].toInt();
+            participant.width = item["w"].toInt();
+            participant.height = item["h"].toInt();
+            participant.videoMuted = item["videoMuted"] == "true";
+            participant.audioLocalMuted = item["audioLocalMuted"] == "true";
+            participant.audioModeratorMuted = item["audioModeratorMuted"] == "true";
+            participant.isModerator = item["isModerator"] == "true";
+
+            participant.sinkId = callId + item["uri"];
+            participant.bestName = "";
+            participant.islocal = false;
+            participant.isContact = false;
+
+            participantsInfo->push_back(participant);
+        }
+
+        participants.emplace(callId, std::move(participantsInfo));
+
         calls.emplace(callId, std::move(callInfo));
     }
 }
@@ -1069,6 +1121,30 @@ NewCallModelPimpl::slotConferenceCreated(const QString& confId)
     callInfo->type = call::Type::CONFERENCE;
     callInfo->startTime = std::chrono::steady_clock::now();
     callInfo->participantsInfos = CallManager::instance().getConferenceInfos(confId);
+    auto participantsInfo = std::make_shared<QVector<call::ParticipantInfo>>();
+    for (auto& item : callInfo->participantsInfos) {
+        call::ParticipantInfo participant;
+        participant.uri = item["uri"];
+        participant.device = item["device"];
+        participant.active = item["active"] == "true";
+        participant.x = item["x"].toInt();
+        participant.y = item["y"].toInt();
+        participant.width = item["w"].toInt();
+        participant.height = item["h"].toInt();
+        participant.videoMuted = item["videoMuted"] == "true";
+        participant.audioLocalMuted = item["audioLocalMuted"] == "true";
+        participant.audioModeratorMuted = item["audioModeratorMuted"] == "true";
+        participant.isModerator = item["isModerator"] == "true";
+
+        participant.sinkId = confId + item["uri"];
+        participant.bestName = "";
+        participant.islocal = false;
+        participant.isContact = false;
+
+        participantsInfo->push_back(participant);
+    }
+
+    participants.emplace(confId, std::move(participantsInfo));
     for (auto& i : callInfo->participantsInfos)
         i["uri"].replace("@ring.dht", "");
     calls[confId] = callInfo;

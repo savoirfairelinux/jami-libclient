@@ -141,6 +141,25 @@ struct Info
     QSet<QString> peerRec {};
 };
 
+struct ParticipantInfo
+{
+    QString uri;
+    QString device;
+    QString sinkId;
+    QString bestName;
+    bool active;
+    int x;
+    int y;
+    int width;
+    int height;
+    bool audioLocalMuted;
+    bool audioModeratorMuted;
+    bool videoMuted;
+    bool isModerator;
+    bool islocal;
+    bool isContact;
+};
+
 static inline bool
 canSendSIPMessage(const Info& call)
 {
